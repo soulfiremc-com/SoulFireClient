@@ -46,6 +46,13 @@
       },
       "close": "Đóng"
     },
+    "support": {
+      "title": "Ủng hộ SoulFire",
+      "description": "SoulFire là phần mềm miễn phí và mã nguồn mở, được xây dựng với niềm đam mê bởi cộng đồng.",
+      "body": "Nếu SoulFire đã hữu ích với bạn, xin hãy cân nhắc ủng hộ dự án. Sự đóng góp của bạn giúp chi trả chi phí máy chủ, tài trợ phát triển, và giữ cho SoulFire miễn phí cho tất cả mọi người.",
+      "dismiss": "Để sau",
+      "action": "Ủng hộ SoulFire"
+    },
     "createInstance": {
       "title": "Tạo một phiên bản mới",
       "description": "Các phiên bản cần tên thân thiện để bạn phân biệt. Bạn có thể đặt bất kỳ tên nào bạn muốn, ví dụ, \"Bot Minecraft của tôi\".",
@@ -230,6 +237,9 @@
       "add": "Thêm",
       "remove": "Xóa"
     },
+    "combo": {
+      "searchPlaceholder": "Tìm kiếm giá trị..."
+    },
     "invalidNumberToast": {
       "title": "Số không hợp lệ!",
       "description": "Giá trị phải nằm trong khoảng từ {{min}} đến {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Bật/Tắt thanh bên"
+  },
+  "window": {
+    "minimize": "Thu nhỏ",
+    "minimizeLabel": "Thu nhỏ cửa sổ",
+    "maximize": "Phóng to",
+    "maximizeLabel": "Phóng to cửa sổ",
+    "restore": "Khôi phục",
+    "restoreLabel": "Khôi phục cửa sổ",
+    "close": "Đóng",
+    "closeLabel": "Đóng cửa sổ",
+    "back": "Quay lại",
+    "backLabel": "Quay lại",
+    "forward": "Tiến tới",
+    "forwardLabel": "Đi tiếp"
+  },
+  "infoButton": {
+    "showInfo": "Hiện thông tin"
   },
   "castMenu": {
     "title": "Truyền",
@@ -334,6 +361,7 @@
     },
     "configDir": "Thư mục cấu hình",
     "dataDir": "Thư mục dữ liệu",
+    "supportSoulFire": "Ủng hộ SoulFire",
     "about": "Giới thiệu",
     "logOut": "Đăng xuất",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Tài liệu hướng dẫn",
-    "supportSoulFire": "Ủng hộ tôi một ly cà phê",
+    "supportSoulFire": "Ủng hộ SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

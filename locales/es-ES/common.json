@@ -46,6 +46,13 @@
       },
       "close": "Cerrar"
     },
+    "support": {
+      "title": "Apoyar SoulFire",
+      "description": "SoulFire es gratuito y de código abierto, construido con pasión por la comunidad.",
+      "body": "Si SoulFire te ha sido útil, por favor considera apoyar el proyecto. Tu contribución ayuda a cubrir los costos del servidor, financiar el desarrollo y mantener SoulFire gratis para todos.",
+      "dismiss": "Quizás más tarde",
+      "action": "Apoyar SoulFire"
+    },
     "createInstance": {
       "title": "Crear una instancia nueva",
       "description": "",
@@ -230,6 +237,9 @@
       "add": "Añadir",
       "remove": "Eliminar"
     },
+    "combo": {
+      "searchPlaceholder": "Buscar valor..."
+    },
     "invalidNumberToast": {
       "title": "¡Número inválido!",
       "description": "El valor debe estar entre {{min}} y {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Mostrar/Ocultar barra lateral"
+  },
+  "window": {
+    "minimize": "Minimizar",
+    "minimizeLabel": "Minimizar ventana",
+    "maximize": "Maximizar",
+    "maximizeLabel": "Maximizar ventana",
+    "restore": "Restaurar",
+    "restoreLabel": "Restaurar ventana",
+    "close": "Cerrar",
+    "closeLabel": "Cerrar ventana",
+    "back": "Volver",
+    "backLabel": "Regresar",
+    "forward": "Adelante",
+    "forwardLabel": "Ir adelante"
+  },
+  "infoButton": {
+    "showInfo": "Mostrar info"
   },
   "castMenu": {
     "title": "Emitir",
@@ -334,6 +361,7 @@
     },
     "configDir": "Directorio de configuración",
     "dataDir": "Directorio de datos",
+    "supportSoulFire": "Apoyar SoulFire",
     "about": "Acerca de",
     "logOut": "Cerrar Sesión",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Documentación",
-    "supportSoulFire": "Invítame a un café",
+    "supportSoulFire": "Apoyar SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

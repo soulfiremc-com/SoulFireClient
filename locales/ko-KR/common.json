@@ -46,6 +46,13 @@
       },
       "close": "닫기"
     },
+    "support": {
+      "title": "SoulFire를 지원하기",
+      "description": "SoulFire는 커뮤니티가 사랑으로 만든 무료 오픈 소스입니다.",
+      "body": "SoulFire가 도움이 되었다면 프로젝트를 지원하는 것을 고려해 주세요. 여러분의 기여는 서버 비용을 충당하고, 개발을 지원하며, 모든 사람에게 SoulFire를 무료로 제공하는 데 도움이 됩니다.",
+      "dismiss": "나중에 할게요",
+      "action": "SoulFire를 지원하기"
+    },
     "createInstance": {
       "title": "새 인스턴스 만들기",
       "description": "인스턴스를 구분할 수 있도록 친근한 이름이 필요합니다. 원하는 어떤 이름이든 사용할 수 있습니다. 예시: \"내 마인크래프트 봇\"",
@@ -230,6 +237,9 @@
       "add": "추가",
       "remove": "제거"
     },
+    "combo": {
+      "searchPlaceholder": "값 검색..."
+    },
     "invalidNumberToast": {
       "title": "유효하지 않은 숫자입니다!",
       "description": "값은 {{min}}에서 {{max}} 사이여야 합니다"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "사이드바 전환"
+  },
+  "window": {
+    "minimize": "최소화",
+    "minimizeLabel": "창 최소화",
+    "maximize": "최대화",
+    "maximizeLabel": "창 최대화",
+    "restore": "복원",
+    "restoreLabel": "창 복원",
+    "close": "닫기",
+    "closeLabel": "창 닫기",
+    "back": "뒤로",
+    "backLabel": "뒤로 가기",
+    "forward": "앞으로",
+    "forwardLabel": "앞으로 가기"
+  },
+  "infoButton": {
+    "showInfo": "정보 표시"
   },
   "castMenu": {
     "title": "캐스트",
@@ -334,6 +361,7 @@
     },
     "configDir": "설정 디렉터리",
     "dataDir": "데이터 디렉터리",
+    "supportSoulFire": "SoulFire를 지원하기",
     "about": "정보",
     "logOut": "로그아웃",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "문서",
-    "supportSoulFire": "커피 한 잔 사주세요",
+    "supportSoulFire": "SoulFire를 지원하기",
     "discord": "Discord"
   },
   "breadcrumbs": {

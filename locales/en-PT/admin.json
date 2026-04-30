@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rank",
+          "placeholder": "Pick a role, matey!",
           "description": "The matey rank. Cap'ns may command all, swabs tend only their own ships.",
           "user": "Buccaneer",
           "admin": "Admiral"

@@ -149,7 +149,21 @@
       "description": "กำหนดค่าบ็อตแต่ละตัวสำหรับบัญชีนี้",
       "openButton": "กำหนดค่าบัญชี",
       "pageTitle": "{{name}} - การตั้งค่า {{page}}",
-      "noSettings": "ไม่มีการตั้งค่าสำหรับหน้านี้"
+      "noSettings": "ไม่มีการตั้งค่าสำหรับหน้านี้",
+      "search": "ค้นหาการตั้งค่า",
+      "overrides": "การแทนที่",
+      "allSettings": "การตั้งค่าทั้งหมด",
+      "noOverrides": "บอทนี้ยังไม่มีการแทนที่ที่กำหนดไว้อย่างชัดเจน",
+      "noOverridesMatching": "ไม่มีการแทนที่ใดที่ตรงกับการค้นหานี้",
+      "noOverridesHelp": "เปิดการตั้งค่าทั้งหมดเพื่อสืบทอดค่าหรือสร้างการแทนที่เฉพาะบอทแรก",
+      "tryDifferentSearch": "ลองใช้คำค้นหาอื่น",
+      "openAllSettings": "เปิดการตั้งค่าทั้งหมด",
+      "selectPage": "เลือกหน้าการตั้งค่า",
+      "noSearchResults": "ไม่พบการตั้งค่าที่ตรงกับการค้นหานี้",
+      "matchesInheritedValue": "ตรงกับค่าที่สืบทอดมา",
+      "instanceValue": "ค่าของอินสแตนซ์",
+      "defaultValue": "ค่าเริ่มต้น",
+      "resetOverride": "รีเซ็ตการแทนที่"
     },
     "deviceCodeConfirmDialog": {
       "title": "การยืนยันตัวตนด้วยรหัสอุปกรณ์",
@@ -232,6 +246,12 @@
     "offline": "ออฟไลน์",
     "notJoined": "ยังไม่ได้เข้าร่วม",
     "backToBots": "กลับไปที่บอท",
+    "tabs": {
+      "overview": "ภาพรวม",
+      "inventory": "อินเวนทอรี",
+      "controls": "ส่วนควบคุม",
+      "terminal": "เทอร์มินัล"
+    },
     "comingSoon": "เร็วๆ นี้",
     "terminalPanel": {
       "title": "เทอร์มินัลบอท"
@@ -362,6 +382,102 @@
       "offline": "บอทออฟไลน์ หน้าต่างโต้ตอบจะใช้ได้ต่อเมื่อบอทเชื่อมต่ออยู่เท่านั้น"
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "เอ็นเดอร์เพิร์ล"
+    },
+    "filters": {
+      "searchBots": "ค้นหาบ็อต...",
+      "searchClaims": "ค้นหาการอ้างสิทธิ์...",
+      "noBotsMatchTitle": "ไม่มีบอทที่ตรงกับตัวกรองปัจจุบัน",
+      "noBotsMatchDescription": "ปรับหรือล้างตัวกรองปัจจุบันเพื่อดูรายชื่อบอทอัตโนมัติทั้งหมด"
+    },
+    "attention": {
+      "empty": "ขณะนี้ไม่มีบอทที่ดูเหมือนจะค้างหรือเสื่อมประสิทธิภาพ"
+    },
+    "memory": {
+      "noBots": "ไม่มีบอทอัตโนมัติที่สามารถตรวจสอบหน่วยความจำได้",
+      "blocks": "บล็อก",
+      "noBlocks": "ไม่มีบล็อกที่จดจำไว้ในสแนปช็อตนี้",
+      "containers": "คอนเทนเนอร์",
+      "noContainers": "ไม่มีคอนเทนเนอร์ที่จดจำไว้ในสแนปช็อตนี้",
+      "entities": "เอนทิตี",
+      "noEntities": "ไม่มีเอนทิตีที่จดจำไว้ในสแนปช็อตนี้",
+      "droppedItems": "ไอเท็มที่ตก",
+      "noDroppedItems": "ไม่มีไอเท็มที่ตกที่จดจำไว้ในสแนปช็อตนี้",
+      "unreachablePositions": "ตำแหน่งที่เข้าถึงไม่ได้",
+      "noUnreachablePositions": "ไม่มีตำแหน่งที่เข้าถึงไม่ได้ในสแนปช็อตนี้"
+    },
+    "coordination": {
+      "sharedBlocks": "บล็อกร่วมกัน",
+      "noBlockHints": "ยังไม่มีคำแนะนำบล็อกร่วมกัน",
+      "eyeSamples": "ตัวอย่างสายตา",
+      "noEyeSamples": "ยังไม่มีการบันทึกตัวอย่างสายตา"
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "ไม่มีข้อมูล"
+    },
+    "summary": {
+      "online": "ออนไลน์",
+      "packetsPerSecond": "แพ็กเก็ต/วินาที",
+      "traffic": "ทราฟฟิก",
+      "health": "พลังชีวิต",
+      "tick": "ติ๊ก"
+    },
+    "botsOnline": {
+      "title": "บอทออนไลน์",
+      "online": "ออนไลน์",
+      "total": "รวม"
+    },
+    "packets": {
+      "title": "แพ็กเก็ต / วินาที",
+      "sent": "ส่ง/วินาที",
+      "received": "รับ/วินาที"
+    },
+    "bandwidth": {
+      "title": "แบนด์วิดท์",
+      "upload": "อัปโหลด",
+      "download": "ดาวน์โหลด"
+    },
+    "tick": {
+      "title": "ระยะเวลาติ๊ก",
+      "avg": "เฉลี่ย (มิลลิวินาที)",
+      "max": "สูงสุด (มิลลิวินาที)"
+    },
+    "healthFood": {
+      "title": "สุขภาพ / อาหาร",
+      "health": "สุขภาพเฉลี่ย",
+      "food": "อาหารเฉลี่ย"
+    },
+    "chunksEntities": {
+      "title": "ชังก์ / เอนทิตี",
+      "chunks": "ชังก์",
+      "entities": "เอนทิตี"
+    },
+    "connections": {
+      "title": "เหตุการณ์เชื่อมต่อ",
+      "connections": "การเชื่อมต่อ",
+      "disconnections": "การตัดการเชื่อมต่อ"
+    },
+    "healthDistribution": {
+      "title": "การแจกแจงสุขภาพ",
+      "bots": "บอท"
+    },
+    "dimensions": {
+      "title": "มิติ",
+      "bots": "บอท"
+    },
+    "gameModes": {
+      "title": "โหมดเกม",
+      "bots": "บอท"
+    },
+    "positions": {
+      "title": "ตำแหน่งบอท (XZ)",
+      "bot": "บอท"
+    }
+  },
   "scripts": {
     "title": "สคริปต์แบบภาพ",
     "description": "สร้างสคริปต์อัตโนมัติด้วยตัวแก้ไขแบบโหนดภาพ",
@@ -430,6 +546,7 @@
         "pause": "หยุดชั่วคราว",
         "pauseTooltip": "หยุดการทำงานของสคริปต์ชั่วคราว",
         "unsaved": "ยังไม่ได้บันทึก",
+        "unsavedChanges": "การเปลี่ยนแปลงที่ยังไม่ได้บันทึก",
         "clearCanvas": "ล้างผืนผ้าใบ",
         "zoomIn": "ขยายเข้า",
         "zoomOut": "ย่อออก",
@@ -461,6 +578,64 @@
         "showPreview": "แสดงตัวอย่าง",
         "hidePreview": "ซ่อนตัวอย่าง",
         "delete": "ลบ"
+      },
+      "node": {
+        "expand": "ขยายโหนด",
+        "collapse": "ย่อโหนด"
+      },
+      "debug": {
+        "copyValue": "คัดลอกค่าปัจจุบัน",
+        "clearHistory": "ล้างประวัติ"
+      },
+      "edge": {
+        "direction": "ทิศทางขอบ"
+      },
+      "note": {
+        "placeholder": "เขียนโน้ต..."
+      },
+      "complexity": {
+        "title": "คะแนนความซับซ้อนของสคริปต์"
+      },
+      "group": {
+        "returnToRoot": "กลับสู่รูท (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "เมนูเพิ่มโหนดด่วน",
+        "searchPlaceholder": "ค้นหาโหนด..."
+      },
+      "diff": {
+        "tooltip": "ตรวจสอบการเปลี่ยนแปลง"
+      },
+      "dryRun": {
+        "tooltip": "ทดสอบจำลอง (Dry Run)",
+        "title": "ทดสอบจำลองสคริปต์",
+        "description": "รันสคริปต์จากทริกเกอร์ที่เลือกด้วยอินพุตจำลอง",
+        "triggerNode": "โหนดทริกเกอร์",
+        "selectTrigger": "เลือกทริกเกอร์...",
+        "triggerDescription": "เลือกโหนดทริกเกอร์เพื่อรันด้วยค่าจำลองอินพุต",
+        "mockInputs": "อินพุตจำลอง",
+        "valuePlaceholder": "ค่าประเภท {{type}}",
+        "start": "เริ่มทดสอบจำลอง"
+      },
+      "quotas": {
+        "tooltip": "โควต้าสคริปต์",
+        "title": "โควต้าสคริปต์",
+        "description": "กำหนดขีดจำกัดทรัพยากรสำหรับสคริปต์นี้ ฟิลด์ที่ว่างจะใช้ค่ามาตรฐานของเซิร์ฟเวอร์",
+        "maxExecutionCount": "จำนวนรันสูงสุด",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "จำนวนครั้งที่ดำเนินการโหนดสูงสุดต่อการเรียกทริกเกอร์",
+        "maxExecutionTime": "เวลารันสูงสุด (มิลลิวินาที)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "เวลารวมสูงสุดต่อการเรียกทริกเกอร์",
+        "maxConcurrentTriggers": "จำนวนทริกเกอร์ที่ทำงานพร้อมกันสูงสุด",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "จำนวนทริกเกอร์ที่ทำงานพร้อมกันสูงสุด",
+        "maxStateStoreEntries": "จำนวนรายการใน State Store สูงสุด",
+        "maxStateStoreEntriesPlaceholder": "ไม่จำกัด",
+        "maxStateStoreEntriesDescription": "จำนวนรายการสูงสุดใน State Store ของสคริปต์",
+        "disableTimeouts": "ปิดใช้งานการหมดเวลา",
+        "disableTimeoutsDescription": "ปิดใช้งานการตั้งเวลาหมดเวลาในแต่ละโหนดและ edge ข้อมูล",
+        "save": "บันทึกโควต้า"
       }
     }
   }

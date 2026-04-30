@@ -46,6 +46,13 @@
       },
       "close": "關閉"
     },
+    "support": {
+      "title": "支持 SoulFire",
+      "description": "SoulFire 是由社群用心打造的免費開源方案。",
+      "body": "如果你覺得 SoulFire 對你有幫助，請考慮支持本專案。你的貢獻將協助支付伺服器費用、資助開發並讓 SoulFire 持續對所有人免費開放。",
+      "dismiss": "稍後再說",
+      "action": "支持 SoulFire"
+    },
     "createInstance": {
       "title": "建立新實例",
       "description": "實例需要設定易於識別的名稱，以便您區分。這可以是您想要的任何名稱，例如「我的 Minecraft Bot」。",
@@ -230,6 +237,9 @@
       "add": "新增",
       "remove": "移除"
     },
+    "combo": {
+      "searchPlaceholder": "搜尋數值..."
+    },
     "invalidNumberToast": {
       "title": "無效的數字！",
       "description": "數值必須介於 {{min}} 和 {{max}} 之間"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "切換側邊欄"
+  },
+  "window": {
+    "minimize": "最小化",
+    "minimizeLabel": "最小化視窗",
+    "maximize": "最大化",
+    "maximizeLabel": "最大化視窗",
+    "restore": "還原",
+    "restoreLabel": "還原視窗",
+    "close": "關閉",
+    "closeLabel": "關閉視窗",
+    "back": "返回",
+    "backLabel": "返回",
+    "forward": "前進",
+    "forwardLabel": "前往下一步"
+  },
+  "infoButton": {
+    "showInfo": "顯示資訊"
   },
   "castMenu": {
     "title": "投放",
@@ -334,6 +361,7 @@
     },
     "configDir": "設定目錄",
     "dataDir": "資料目錄",
+    "supportSoulFire": "支持 SoulFire",
     "about": "關於",
     "logOut": "登出",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "文件",
-    "supportSoulFire": "請請我喝杯咖啡",
+    "supportSoulFire": "支持 SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

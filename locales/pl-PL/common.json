@@ -46,6 +46,13 @@
       },
       "close": "Zamknij"
     },
+    "support": {
+      "title": "Wesprzyj SoulFire",
+      "description": "SoulFire jest darmowy i open-source, stworzony z pasją przez społeczność.",
+      "body": "Jeśli SoulFire okazał się dla Ciebie przydatny, rozważ wsparcie projektu. Twoja pomoc pokryje koszty serwera, finansuje rozwój i pozwala utrzymać SoulFire darmowym dla wszystkich.",
+      "dismiss": "Może później",
+      "action": "Wesprzyj SoulFire"
+    },
     "createInstance": {
       "title": "Stwórz nową instancję",
       "description": "Instancje potrzebują przyjaznych nazw, aby je rozróżniać. Może to być cokolwiek, na przykład \"Mój bot Minecraft\".",
@@ -230,6 +237,9 @@
       "add": "Dodaj",
       "remove": "Usuń"
     },
+    "combo": {
+      "searchPlaceholder": "Szukaj wartości..."
+    },
     "invalidNumberToast": {
       "title": "Nieprawidłowy numer!",
       "description": "Wartość musi być pomiędzy {{min}} i {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Wyświetla/ukrywa panel boczny"
+  },
+  "window": {
+    "minimize": "Minimalizuj",
+    "minimizeLabel": "Minimalizuj okno",
+    "maximize": "Maksymalizuj",
+    "maximizeLabel": "Maksymalizuj okno",
+    "restore": "Przywróć",
+    "restoreLabel": "Przywróć okno",
+    "close": "Zamknij",
+    "closeLabel": "Zamknij okno",
+    "back": "Wróć",
+    "backLabel": "Wstecz",
+    "forward": "Dalej",
+    "forwardLabel": "Idź dalej"
+  },
+  "infoButton": {
+    "showInfo": "Pokaż informacje"
   },
   "castMenu": {
     "title": "Udostępnij",
@@ -334,6 +361,7 @@
     },
     "configDir": "Katalog konfiguracji",
     "dataDir": "Katalog danych",
+    "supportSoulFire": "Wesprzyj SoulFire",
     "about": "O programie",
     "logOut": "Wyloguj się",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentacja",
-    "supportSoulFire": "Kup mi kawę",
+    "supportSoulFire": "Wesprzyj SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

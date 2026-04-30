@@ -149,7 +149,21 @@
       "description": "Configurer les paramètres par bot pour ce compte",
       "openButton": "Configurer le compte",
       "pageTitle": "Paramètres {{name}} - {{page}}",
-      "noSettings": "Aucun paramètre disponible pour cette page"
+      "noSettings": "Aucun paramètre disponible pour cette page",
+      "search": "Paramètres de recherche",
+      "overrides": "Remplacements",
+      "allSettings": "Tous les paramètres",
+      "noOverrides": "Ce bot n'a pas encore de remplacements explicites.",
+      "noOverridesMatching": "Aucun remplacement ne correspond à cette recherche.",
+      "noOverridesHelp": "Ouvrez Tous les paramètres pour hériter des valeurs ou créez le premier remplacement spécifique au bot.",
+      "tryDifferentSearch": "Essayez un autre terme de recherche.",
+      "openAllSettings": "Ouvrir tous les paramètres",
+      "selectPage": "Sélectionnez une page de paramètres",
+      "noSearchResults": "Aucun paramètre ne correspond à cette recherche.",
+      "matchesInheritedValue": "Correspond à la valeur héritée",
+      "instanceValue": "Valeur de l\\'instance",
+      "defaultValue": "Valeur par défaut",
+      "resetOverride": "Réinitialiser l\\'écrasement"
     },
     "deviceCodeConfirmDialog": {
       "title": "Authentification avec le code de l'appareil",
@@ -232,6 +246,12 @@
     "offline": "Hors-ligne",
     "notJoined": "Non rejoint",
     "backToBots": "Retour aux Bots",
+    "tabs": {
+      "overview": "Aperçu",
+      "inventory": "Inventaire",
+      "controls": "Contrôles",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Bientôt disponible",
     "terminalPanel": {
       "title": "Terminal du bot"
@@ -362,6 +382,102 @@
       "offline": "Le bot est hors ligne. Les dialogues sont disponibles uniquement lorsque le bot est connecté."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "perle de l'Ender"
+    },
+    "filters": {
+      "searchBots": "Rechercher des bots...",
+      "searchClaims": "Rechercher des revendications...",
+      "noBotsMatchTitle": "Aucun bot ne correspond aux filtres actuels.",
+      "noBotsMatchDescription": "Ajustez ou effacez les filtres actuels pour afficher toute la liste d'automatisation."
+    },
+    "attention": {
+      "empty": "Aucun bot ne semble actuellement bloqué ou dégradé."
+    },
+    "memory": {
+      "noBots": "Aucun bot d'automatisation n'est disponible pour l'inspection de la mémoire.",
+      "blocks": "Blocs",
+      "noBlocks": "Aucun bloc mémorisé dans cette capture.",
+      "containers": "Conteneurs",
+      "noContainers": "Aucun conteneur mémorisé dans cette capture.",
+      "entities": "Entités",
+      "noEntities": "Aucune entité mémorisée dans cette capture.",
+      "droppedItems": "Objets déposés",
+      "noDroppedItems": "Aucun objet déposé mémorisé dans cette capture.",
+      "unreachablePositions": "Positions inaccessibles",
+      "noUnreachablePositions": "Aucune position inaccessible dans cette capture."
+    },
+    "coordination": {
+      "sharedBlocks": "Blocs partagés",
+      "noBlockHints": "Aucune suggestion de bloc partagé pour l'instant.",
+      "eyeSamples": "Échantillons d'yeux",
+      "noEyeSamples": "Aucun échantillon d'yeux enregistré."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Aucune donnée"
+    },
+    "summary": {
+      "online": "En ligne",
+      "packetsPerSecond": "Paq/s",
+      "traffic": "Trafic",
+      "health": "Santé",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots en ligne",
+      "online": "En ligne",
+      "total": "Total"
+    },
+    "packets": {
+      "title": "Paquets / seconde",
+      "sent": "Envoyé/s",
+      "received": "Reçu/s"
+    },
+    "bandwidth": {
+      "title": "Bande passante",
+      "upload": "Envoi",
+      "download": "Téléchargement"
+    },
+    "tick": {
+      "title": "Durée du tick",
+      "avg": "Moy (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Santé / Nourriture",
+      "health": "Santé moyenne",
+      "food": "Nourriture moyenne"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entités",
+      "chunks": "Chunks",
+      "entities": "Entités"
+    },
+    "connections": {
+      "title": "Événements de connexion",
+      "connections": "Connexions",
+      "disconnections": "Déconnexions"
+    },
+    "healthDistribution": {
+      "title": "Distribution de la santé",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensions",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Modes de jeu",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Positions du bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Scripts visuels",
     "description": "Créez des scripts d'automatisation à l'aide d'un éditeur visuel basé sur des nœuds.",
@@ -430,6 +546,7 @@
         "pause": "Pauser",
         "pauseTooltip": "Mettre en pause l'exécution du script",
         "unsaved": "Non enregistré",
+        "unsavedChanges": "Modifications non enregistrées",
         "clearCanvas": "Effacer le canevas",
         "zoomIn": "Agrandir",
         "zoomOut": "Rétrécir",
@@ -462,6 +579,64 @@
         "showPreview": "Afficher l'aperçu",
         "hidePreview": "Masquer l'aperçu",
         "delete": "Supprimer"
+      },
+      "node": {
+        "expand": "Développer le nœud",
+        "collapse": "Réduire le nœud"
+      },
+      "debug": {
+        "copyValue": "Copier la valeur actuelle",
+        "clearHistory": "Effacer l'historique"
+      },
+      "edge": {
+        "direction": "Direction de l'arête"
+      },
+      "note": {
+        "placeholder": "Écrire une note..."
+      },
+      "complexity": {
+        "title": "Score de complexité du script"
+      },
+      "group": {
+        "returnToRoot": "Revenir à la racine (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu d'ajout rapide de nœud",
+        "searchPlaceholder": "Rechercher des nœuds..."
+      },
+      "diff": {
+        "tooltip": "Revoir les modifications"
+      },
+      "dryRun": {
+        "tooltip": "Exécution à sec",
+        "title": "Script d'exécution à sec",
+        "description": "Exécutez un script à partir d'un déclencheur sélectionné avec des entrées simulées.",
+        "triggerNode": "Nœud de déclenchement",
+        "selectTrigger": "Sélectionnez un déclencheur...",
+        "triggerDescription": "Sélectionnez le nœud de déclenchement à exécuter avec les valeurs d'entrée simulées.",
+        "mockInputs": "Entrées simulées",
+        "valuePlaceholder": "valeur {{type}}",
+        "start": "Démarrer l'exécution à sec"
+      },
+      "quotas": {
+        "tooltip": "Quotas du script",
+        "title": "Quotas du script",
+        "description": "Configurez les limites de ressources pour ce script. Les champs vides utilisent les valeurs par défaut du serveur.",
+        "maxExecutionCount": "Nombre maximal d'exécutions",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Nombre maximal d'exécutions de nœuds par déclencheur",
+        "maxExecutionTime": "Temps d'exécution maximal (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Temps maximal en temps réel par exécution de déclencheur",
+        "maxConcurrentTriggers": "Déclencheurs simultanés max",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Nombre maximal de déclenchements simultanés",
+        "maxStateStoreEntries": "Nombre maximal d'entrées dans le magasin d'état",
+        "maxStateStoreEntriesPlaceholder": "Illimité",
+        "maxStateStoreEntriesDescription": "Nombre maximal d'entrées dans le magasin d'état du script",
+        "disableTimeouts": "Désactiver les délais d'attente",
+        "disableTimeoutsDescription": "Désactive les délais d'attente par nœud et sur les arêtes de données",
+        "save": "Enregistrer les quotas"
       }
     }
   }

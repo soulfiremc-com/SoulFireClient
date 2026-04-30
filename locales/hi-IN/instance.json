@@ -149,7 +149,21 @@
       "description": "इस खाते के लिए प्रति-बॉट सेटिंग्स कॉन्फ़िगर करें",
       "openButton": "खाता कॉन्फ़िगर करें",
       "pageTitle": "{{name}} - {{page}} सेटिंग्स",
-      "noSettings": "इस पेज के लिए कोई सेटिंग्स उपलब्ध नहीं हैं"
+      "noSettings": "इस पेज के लिए कोई सेटिंग्स उपलब्ध नहीं हैं",
+      "search": "खोज सेटिंग्स",
+      "overrides": "ओवरराइड्स",
+      "allSettings": "सभी सेटिंग्स",
+      "noOverrides": "इस बॉट के पास अभी कोई स्पष्ट ओवरराइड्स नहीं हैं।",
+      "noOverridesMatching": "इस खोज से कोई ओवरराइड मेल नहीं खाते।",
+      "noOverridesHelp": "मूल्य विरासत में लेने या पहले बॉट-विशिष्ट ओवरराइड बनाने के लिए सभी सेटिंग्स खोलें।",
+      "tryDifferentSearch": "कोई अन्य खोज शब्द आज़माएँ।",
+      "openAllSettings": "सभी सेटिंग्स खोलें",
+      "selectPage": "एक सेटिंग्स पेज चुनें",
+      "noSearchResults": "इस खोज से कोई सेटिंग्स मेल नहीं खाती।",
+      "matchesInheritedValue": "इनहेरिटेड मान से मेल खाता है",
+      "instanceValue": "इंस्टेंस मान",
+      "defaultValue": "डिफ़ॉल्ट मान",
+      "resetOverride": "ओवरराइड रीसेट करें"
     },
     "deviceCodeConfirmDialog": {
       "title": "डिवाइस कोड प्रमाणीकरण",
@@ -232,6 +246,12 @@
     "offline": "ऑफ़लाइन",
     "notJoined": "शामिल नहीं हुआ",
     "backToBots": "बॉट्स पर वापस जाएं",
+    "tabs": {
+      "overview": "अवलोकन",
+      "inventory": "इन्वेंटरी",
+      "controls": "नियंत्रण",
+      "terminal": "टर्मिनल"
+    },
     "comingSoon": "जल्द आ रहा है",
     "terminalPanel": {
       "title": "बॉट टर्मिनल"
@@ -362,6 +382,102 @@
       "offline": "बॉट ऑफ़लाइन है। संवाद केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "एंडर पर्ल"
+    },
+    "filters": {
+      "searchBots": "बॉट्स खोजें...",
+      "searchClaims": "दावे खोजें...",
+      "noBotsMatchTitle": "वर्तमान फ़िल्टर से कोई बॉट मेल नहीं खाता।",
+      "noBotsMatchDescription": "पूरी ऑटोमेशन सूची देखने के लिए फ़िल्टर समायोजित करें या साफ़ करें।"
+    },
+    "attention": {
+      "empty": "कोई भी बॉट फिलहाल रुका हुआ या कमज़ोर नहीं लगता।"
+    },
+    "memory": {
+      "noBots": "मेमोरी जांच के लिए कोई ऑटोमेशन बॉट उपलब्ध नहीं है।",
+      "blocks": "ब्लॉक",
+      "noBlocks": "इस स्नैपशॉट में कोई याद किए गए ब्लॉक नहीं हैं।",
+      "containers": "कंटेनर",
+      "noContainers": "इस स्नैपशॉट में कोई याद किए गए कंटेनर नहीं हैं।",
+      "entities": "इकाइयाँ",
+      "noEntities": "इस स्नैपशॉट में कोई याद की गई इकाइयाँ नहीं हैं।",
+      "droppedItems": "गिरे हुए आइटम",
+      "noDroppedItems": "इस स्नैपशॉट में कोई याद किए गए गिरे हुए आइटम नहीं हैं।",
+      "unreachablePositions": "अप्राप्य स्थान",
+      "noUnreachablePositions": "इस स्नैपशॉट में कोई अप्राप्य स्थान नहीं हैं।"
+    },
+    "coordination": {
+      "sharedBlocks": "साझा ब्लॉक",
+      "noBlockHints": "अभी तक कोई साझा ब्लॉक संकेत नहीं हैं।",
+      "eyeSamples": "आई सैंपल्स",
+      "noEyeSamples": "कोई आई सैंपल्स दर्ज नहीं किए गए।"
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "कोई डेटा नहीं"
+    },
+    "summary": {
+      "online": "ऑनलाइन",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "ट्रैफिक",
+      "health": "स्वास्थ्य",
+      "tick": "टिक"
+    },
+    "botsOnline": {
+      "title": "बॉट्स ऑनलाइन",
+      "online": "ऑनलाइन",
+      "total": "कुल"
+    },
+    "packets": {
+      "title": "पैकेट्स / सेकंड",
+      "sent": "भेजे गए/सेकंड",
+      "received": "प्राप्त/सेकंड"
+    },
+    "bandwidth": {
+      "title": "बैंडविड्थ",
+      "upload": "अपलोड",
+      "download": "डाउनलोड"
+    },
+    "tick": {
+      "title": "टिक अवधि",
+      "avg": "औसत (मिलीसेकंड)",
+      "max": "अधिकतम (मिलीसेकंड)"
+    },
+    "healthFood": {
+      "title": "स्वास्थ्य / भोजन",
+      "health": "औसत स्वास्थ्य",
+      "food": "औसत भोजन"
+    },
+    "chunksEntities": {
+      "title": "चंक्स / इकाइयाँ",
+      "chunks": "चंक्स",
+      "entities": "इकाइयाँ"
+    },
+    "connections": {
+      "title": "कनेक्शन घटनाएँ",
+      "connections": "कनेक्शन्स",
+      "disconnections": "डिस्कनेक्शन"
+    },
+    "healthDistribution": {
+      "title": "स्वास्थ्य वितरण",
+      "bots": "बॉट्स"
+    },
+    "dimensions": {
+      "title": "आयाम",
+      "bots": "बॉट्स"
+    },
+    "gameModes": {
+      "title": "गेम मोड्स",
+      "bots": "बॉट्स"
+    },
+    "positions": {
+      "title": "बॉट स्थान (XZ)",
+      "bot": "बॉट"
+    }
+  },
   "scripts": {
     "title": "विजुअल स्क्रिप्ट्स",
     "description": "विजुअल नोड-आधारित संपादक का उपयोग करके ऑटोमेशन स्क्रिप्ट्स बनाएँ।",
@@ -430,6 +546,7 @@
         "pause": "रोकें",
         "pauseTooltip": "स्क्रिप्ट निष्पादन रोकें",
         "unsaved": "असुरक्षित",
+        "unsavedChanges": "संक्षित बदलाव",
         "clearCanvas": "कैनवास साफ़ करें",
         "zoomIn": "ज़ूम इन",
         "zoomOut": "ज़ूम आउट",
@@ -462,6 +579,64 @@
         "showPreview": "पूर्वावलोकन दिखाएँ",
         "hidePreview": "पूर्वावलोकन छुपाएँ",
         "delete": "हटाएँ"
+      },
+      "node": {
+        "expand": "नोड विस्तार करें",
+        "collapse": "नोड संक्षिप्त करें"
+      },
+      "debug": {
+        "copyValue": "वर्तमान मान कॉपी करें",
+        "clearHistory": "इतिहास साफ़ करें"
+      },
+      "edge": {
+        "direction": "एज दिशा"
+      },
+      "note": {
+        "placeholder": "नोट लिखें..."
+      },
+      "complexity": {
+        "title": "स्क्रिप्ट जटिलता स्कोर"
+      },
+      "group": {
+        "returnToRoot": "रूट पर लौटें (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "त्वरित नोड जोड़ने का मेनू",
+        "searchPlaceholder": "नोड खोजें..."
+      },
+      "diff": {
+        "tooltip": "बदलाव देखें"
+      },
+      "dryRun": {
+        "tooltip": "ड्राई रन",
+        "title": "ड्राई रन स्क्रिप्ट",
+        "description": "चयनित ट्रिगर से स्क्रिप्ट चलाएं, मॉक इनपुट के साथ।",
+        "triggerNode": "ट्रिगर नोड",
+        "selectTrigger": "ट्रिगर चुनें...",
+        "triggerDescription": "मॉक इनपुट मानों के साथ निष्पादित करने के लिए ट्रिगर नोड चुनें।",
+        "mockInputs": "मॉक इनपुट्स",
+        "valuePlaceholder": "{{type}} मान",
+        "start": "ड्राई रन शुरू करें"
+      },
+      "quotas": {
+        "tooltip": "स्क्रिप्ट कोटा",
+        "title": "स्क्रिप्ट कोटा",
+        "description": "इस स्क्रिप्ट के लिए संसाधन सीमाएँ कॉन्फ़िगर करें। खाली फ़ील्ड सर्वर डिफ़ॉल्ट का उपयोग करती हैं।",
+        "maxExecutionCount": "अधिकतम निष्पादन गिनती",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "प्रति ट्रिगर इनवोकेशन अधिकतम नोड निष्पादन",
+        "maxExecutionTime": "अधिकतम निष्पादन समय (मिलीसेकंड)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "प्रति ट्रिगर निष्पादन अधिकतम वॉल-क्लॉक समय",
+        "maxConcurrentTriggers": "अधिकतम समवर्ती ट्रिगर",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "अधिकतम समवर्ती ट्रिगर इनवोकेशन",
+        "maxStateStoreEntries": "अधिकतम स्टेट स्टोर प्रविष्टियाँ",
+        "maxStateStoreEntriesPlaceholder": "असीमित",
+        "maxStateStoreEntriesDescription": "स्क्रिप्ट स्टेट स्टोर में अधिकतम प्रविष्टियाँ",
+        "disableTimeouts": "टाइमआउट अक्षम करें",
+        "disableTimeoutsDescription": "प्रति-नोड और डेटा एज टाइमआउट्स को अक्षम करता है",
+        "save": "कोटा सहेजें"
       }
     }
   }

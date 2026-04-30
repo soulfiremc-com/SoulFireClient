@@ -149,7 +149,21 @@
       "description": "このアカウントのボットごとの設定を構成します",
       "openButton": "アカウントを設定する",
       "pageTitle": "{{name}} - {{page}}の設定",
-      "noSettings": "このページには設定がありません"
+      "noSettings": "このページには設定がありません",
+      "search": "検索設定",
+      "overrides": "オーバーライド",
+      "allSettings": "すべての設定",
+      "noOverrides": "このボットにはまだ明示的なオーバーライドがありません。",
+      "noOverridesMatching": "この検索に一致するオーバーライドはありません。",
+      "noOverridesHelp": "「すべての設定」を開いて値を継承するか、最初のボット固有のオーバーライドを作成してください。",
+      "tryDifferentSearch": "別の検索語を試してください。",
+      "openAllSettings": "すべての設定を開く",
+      "selectPage": "設定ページを選択",
+      "noSearchResults": "この検索に一致する設定はありません。",
+      "matchesInheritedValue": "継承された値と一致",
+      "instanceValue": "インスタンス値",
+      "defaultValue": "デフォルト値",
+      "resetOverride": "上書きをリセット"
     },
     "deviceCodeConfirmDialog": {
       "title": "デバイスコード認証",
@@ -232,6 +246,12 @@
     "offline": "オフライン",
     "notJoined": "未参加",
     "backToBots": "ボット一覧に戻る",
+    "tabs": {
+      "overview": "概要",
+      "inventory": "インベントリ",
+      "controls": "コントロール",
+      "terminal": "ターミナル"
+    },
     "comingSoon": "近日公開",
     "terminalPanel": {
       "title": "ボット端末"
@@ -362,6 +382,102 @@
       "offline": "ボットはオフラインです。ダイアログはボットが接続されている時のみ利用できます。"
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "エンダーパール"
+    },
+    "filters": {
+      "searchBots": "ボットを検索...",
+      "searchClaims": "クレームを検索...",
+      "noBotsMatchTitle": "現在のフィルターに一致するボットがありません。",
+      "noBotsMatchDescription": "フィルターを調整またはクリアして、自動化ボット一覧全体を確認してください。"
+    },
+    "attention": {
+      "empty": "現在、停止または劣化しているボットはありません。"
+    },
+    "memory": {
+      "noBots": "メモリ検査可能な自動化ボットはありません。",
+      "blocks": "ブロック",
+      "noBlocks": "このスナップショットには記憶されたブロックがありません。",
+      "containers": "コンテナ",
+      "noContainers": "このスナップショットには記憶されたコンテナがありません。",
+      "entities": "エンティティ",
+      "noEntities": "このスナップショットには記憶されたエンティティがありません。",
+      "droppedItems": "ドロップアイテム",
+      "noDroppedItems": "このスナップショットには記憶されたドロップアイテムがありません。",
+      "unreachablePositions": "到達不能な位置",
+      "noUnreachablePositions": "このスナップショットには到達不能な位置はありません。"
+    },
+    "coordination": {
+      "sharedBlocks": "共有ブロック",
+      "noBlockHints": "まだ共有ブロックのヒントはありません。",
+      "eyeSamples": "視線サンプル",
+      "noEyeSamples": "視線サンプルは記録されていません。"
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "データなし"
+    },
+    "summary": {
+      "online": "オンライン",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "トラフィック",
+      "health": "体力",
+      "tick": "ティック"
+    },
+    "botsOnline": {
+      "title": "オンライン中のボット",
+      "online": "オンライン",
+      "total": "合計"
+    },
+    "packets": {
+      "title": "パケット／秒",
+      "sent": "送信／秒",
+      "received": "受信／秒"
+    },
+    "bandwidth": {
+      "title": "帯域幅",
+      "upload": "アップロード",
+      "download": "ダウンロード"
+    },
+    "tick": {
+      "title": "ティック時間",
+      "avg": "平均（ms）",
+      "max": "最大（ms）"
+    },
+    "healthFood": {
+      "title": "ヘルス／フード",
+      "health": "平均ヘルス",
+      "food": "平均フード"
+    },
+    "chunksEntities": {
+      "title": "チャンク／エンティティ",
+      "chunks": "チャンク",
+      "entities": "エンティティ"
+    },
+    "connections": {
+      "title": "接続イベント",
+      "connections": "接続数",
+      "disconnections": "切断数"
+    },
+    "healthDistribution": {
+      "title": "ヘルス分布",
+      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
+    },
+    "dimensions": {
+      "title": "ディメンション",
+      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
+    },
+    "gameModes": {
+      "title": "ゲームモード",
+      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
+    },
+    "positions": {
+      "title": "ボット位置（XZ）",
+      "bot": "ボット"
+    }
+  },
   "scripts": {
     "title": "ビジュアルスクリプト",
     "description": "ビジュアルノードベースのエディターを使って自動化スクリプトを作成しましょう。",
@@ -430,6 +546,7 @@
         "pause": "一時停止",
         "pauseTooltip": "スクリプトの実行を一時停止",
         "unsaved": "未保存",
+        "unsavedChanges": "未保存の変更",
         "clearCanvas": "キャンバスをクリア",
         "zoomIn": "ズームイン",
         "zoomOut": "ズームアウト",
@@ -461,6 +578,64 @@
         "showPreview": "プレビューを表示",
         "hidePreview": "プレビューを非表示",
         "delete": "削除"
+      },
+      "node": {
+        "expand": "ノードを展開",
+        "collapse": "ノードを折りたたむ"
+      },
+      "debug": {
+        "copyValue": "現在の値をコピー",
+        "clearHistory": "履歴をクリア"
+      },
+      "edge": {
+        "direction": "エッジの方向"
+      },
+      "note": {
+        "placeholder": "メモを入力..."
+      },
+      "complexity": {
+        "title": "スクリプト複雑度スコア"
+      },
+      "group": {
+        "returnToRoot": "ルートに戻る（Tab）"
+      },
+      "quickAdd": {
+        "menuLabel": "ノード追加メニュー",
+        "searchPlaceholder": "ノード検索..."
+      },
+      "diff": {
+        "tooltip": "変更を確認"
+      },
+      "dryRun": {
+        "tooltip": "ドライラン",
+        "title": "ドライランスクリプト",
+        "description": "選択したトリガーからスクリプトをモック入力で実行します。",
+        "triggerNode": "トリガーノード",
+        "selectTrigger": "トリガーを選択...",
+        "triggerDescription": "モック入力値で実行するトリガーノードを選択してください。",
+        "mockInputs": "モック入力",
+        "valuePlaceholder": "{{type}}の値",
+        "start": "ドライラン開始"
+      },
+      "quotas": {
+        "tooltip": "スクリプトクォータ",
+        "title": "スクリプトクォータ",
+        "description": "このスクリプトのリソース制限を設定します。空欄はサーバーのデフォルトを使用します。",
+        "maxExecutionCount": "最大実行回数",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "トリガー1回実行ごとの最大ノード実行数",
+        "maxExecutionTime": "最大実行時間（ms）",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "トリガー1回実行あたりの最大壁時計時間",
+        "maxConcurrentTriggers": "同時トリガー最大数",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "同時実行可能なトリガー呼び出しの最大数",
+        "maxStateStoreEntries": "ステートストア最大エントリ数",
+        "maxStateStoreEntriesPlaceholder": "無制限",
+        "maxStateStoreEntriesDescription": "スクリプト状態ストア内の最大エントリ数",
+        "disableTimeouts": "タイムアウト無効",
+        "disableTimeoutsDescription": "ノードごとおよびデータエッジごとのタイムアウトを無効化します",
+        "save": "クォータを保存"
       }
     }
   }

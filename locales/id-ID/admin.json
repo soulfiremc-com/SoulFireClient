@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Peran",
+          "placeholder": "Pilih peran",
           "description": "Peran pengguna. Admin dapat mengelola pengguna dan semua instansi. Pengguna hanya dapat mengelola instansi mereka sendiri.",
           "user": "Pengguna",
           "admin": "Admin"

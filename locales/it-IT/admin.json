@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Ruolo",
+          "placeholder": "Seleziona un ruolo",
           "description": "Il ruolo dell'utente. Gli amministratori possono gestire utenti e tutte le istanze. Gli utenti possono gestire solo le proprie istanze.",
           "user": "Utente",
           "admin": "Admin"

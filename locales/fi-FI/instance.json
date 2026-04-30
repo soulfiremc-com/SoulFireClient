@@ -149,7 +149,21 @@
       "description": "Määritä tämän tilin bottikohtaiset asetukset",
       "openButton": "Määritä tili",
       "pageTitle": "{{name}} - {{page}} asetukset",
-      "noSettings": "Tälle sivulle ei ole asetuksia saatavilla"
+      "noSettings": "Tälle sivulle ei ole asetuksia saatavilla",
+      "search": "Hakuasetukset",
+      "overrides": "Ohitukset",
+      "allSettings": "Kaikki asetukset",
+      "noOverrides": "Tällä botilla ei ole vielä yhtään määritettyä ohitusta.",
+      "noOverridesMatching": "Yksikään ohitus ei vastaa tätä hakua.",
+      "noOverridesHelp": "Avaa Kaikki asetukset perityksesi arvoja tai luodaksesi ensimmäisen botille tarkoitetun ohituksen.",
+      "tryDifferentSearch": "Kokeile toista hakutermia.",
+      "openAllSettings": "Avaa kaikki asetukset",
+      "selectPage": "Valitse asetus­sivu",
+      "noSearchResults": "Hakusi ei tuottanut tuloksia.",
+      "matchesInheritedValue": "Vastaa perittyä arvoa",
+      "instanceValue": "Instanssin arvo",
+      "defaultValue": "Oletusarvo",
+      "resetOverride": "Palauta ohitus"
     },
     "deviceCodeConfirmDialog": {
       "title": "Laitteen kooditodennus",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Ei liittynyt",
     "backToBots": "Takaisin botteihin",
+    "tabs": {
+      "overview": "Yleiskatsaus",
+      "inventory": "Inventaario",
+      "controls": "Ohjaimet",
+      "terminal": "Terminaali"
+    },
     "comingSoon": "Tulossa pian",
     "terminalPanel": {
       "title": "Botti-terminaali"
@@ -362,6 +382,102 @@
       "offline": "Botti on offline-tilassa. Dialogit ovat käytettävissä vain, kun botti on yhdistetty."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "enderinhelmi"
+    },
+    "filters": {
+      "searchBots": "Hae botteja...",
+      "searchClaims": "Etsi alueita...",
+      "noBotsMatchTitle": "Yhtään bottia ei vastaa nykyisiä suodattimia.",
+      "noBotsMatchDescription": "Muokkaa tai tyhjennä nykyiset suodattimet nähdäksesi koko automaatiorosterin."
+    },
+    "attention": {
+      "empty": "Yksikään botti ei tällä hetkellä näytä olevan jumissa tai hidastunut."
+    },
+    "memory": {
+      "noBots": "Yhtään automaatiobottia ei ole saatavilla muistin tarkastelua varten.",
+      "blocks": "Palikat",
+      "noBlocks": "Tässä tilannevedoksessa ei ole muistiin tallennettuja palikoita.",
+      "containers": "Säiliöt",
+      "noContainers": "Tässä tilannevedoksessa ei ole muistiin tallennettuja säiliöitä.",
+      "entities": "Entiteetit",
+      "noEntities": "Tässä tilannevedoksessa ei ole muistiin tallennettuja entiteettejä.",
+      "droppedItems": "Pudotetut esineet",
+      "noDroppedItems": "Tässä tilannevedoksessa ei ole muistiin tallennettuja pudotettuja esineitä.",
+      "unreachablePositions": "Saavuttamattomat sijainnit",
+      "noUnreachablePositions": "Tässä tilannevedoksessa ei ole saavuttamattomia sijainteja."
+    },
+    "coordination": {
+      "sharedBlocks": "Jaetut palikat",
+      "noBlockHints": "Ei ehdotettuja jaettuja palikoita vielä.",
+      "eyeSamples": "Silmänäytteet",
+      "noEyeSamples": "Yhtään silmänäytettä ei ole tallennettu."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Ei tietoja"
+    },
+    "summary": {
+      "online": "Paikalla",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Liikenne",
+      "health": "Terveys",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Botit verkossa",
+      "online": "Paikalla",
+      "total": "Yhteensä"
+    },
+    "packets": {
+      "title": "Paketit / sekunti",
+      "sent": "Lähetetty/s",
+      "received": "Vastaanotettu/s"
+    },
+    "bandwidth": {
+      "title": "Kaistanleveys",
+      "upload": "Lähetys",
+      "download": "Lataus"
+    },
+    "tick": {
+      "title": "Tickin kesto",
+      "avg": "Avg (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Terveys / Ruoka",
+      "health": "Keskimääräinen terveys",
+      "food": "Keskimääräinen ruoka"
+    },
+    "chunksEntities": {
+      "title": "Palikat / Entiteetit",
+      "chunks": "Palikat",
+      "entities": "Entiteetit"
+    },
+    "connections": {
+      "title": "Yhteys tapahtumat",
+      "connections": "Yhteydet",
+      "disconnections": "Katkaisut"
+    },
+    "healthDistribution": {
+      "title": "Terveysjakauma",
+      "bots": "Botit"
+    },
+    "dimensions": {
+      "title": "Ulottuvuudet",
+      "bots": "Botit"
+    },
+    "gameModes": {
+      "title": "Pelimuodot",
+      "bots": "Botit"
+    },
+    "positions": {
+      "title": "Botin sijainnit (XZ)",
+      "bot": "Botti"
+    }
+  },
   "scripts": {
     "title": "Visuaaliset skriptit",
     "description": "Luo automaatioskriptejä visuaalisella solmupohjaisella editorilla.",
@@ -430,6 +546,7 @@
         "pause": "Tauota",
         "pauseTooltip": "Keskeytä skriptin suoritus",
         "unsaved": "Tallentamaton",
+        "unsavedChanges": "Tallentamattomat muutokset",
         "clearCanvas": "Tyhjennä työtila",
         "zoomIn": "Lähennä",
         "zoomOut": "Loitonna",
@@ -462,6 +579,64 @@
         "showPreview": "Näytä esikatselu",
         "hidePreview": "Piilota esikatselu",
         "delete": "Poista"
+      },
+      "node": {
+        "expand": "Laajenna solmu",
+        "collapse": "Supista solmu"
+      },
+      "debug": {
+        "copyValue": "Kopioi nykyinen arvo",
+        "clearHistory": "Tyhjennä historia"
+      },
+      "edge": {
+        "direction": "Reunan suunta"
+      },
+      "note": {
+        "placeholder": "Kirjoita muistiinpano..."
+      },
+      "complexity": {
+        "title": "Skriptin monimutkaisuuspisteet"
+      },
+      "group": {
+        "returnToRoot": "Palaa juureen (Välilehti)"
+      },
+      "quickAdd": {
+        "menuLabel": "Pikalisäyssolmun valikko",
+        "searchPlaceholder": "Etsi solmuja..."
+      },
+      "diff": {
+        "tooltip": "Tarkista muutokset"
+      },
+      "dryRun": {
+        "tooltip": "Testiajo",
+        "title": "Testiajo Skripti",
+        "description": "Suorita skripti valitusta laukaisevasta solmusta käyttäen mallisyötteitä.",
+        "triggerNode": "Laukaiseva solmu",
+        "selectTrigger": "Valitse laukaisin...",
+        "triggerDescription": "Valitse laukaiseva solmu, joka suoritetaan malliarvoilla.",
+        "mockInputs": "Mallisyötteet",
+        "valuePlaceholder": "{{type}} arvo",
+        "start": "Aloita testiajo"
+      },
+      "quotas": {
+        "tooltip": "Skriptin kiintiöt",
+        "title": "Skriptin kiintiöt",
+        "description": "Aseta tämän skriptin resurssirajat. Tyhjät kentät käyttävät palvelimen oletuksia.",
+        "maxExecutionCount": "Suurin suorituskertojen määrä",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Suurin solmujen suoritusmäärä yhtä laukaisua kohden",
+        "maxExecutionTime": "Suurin suoritusaika (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Suurin seinäkelloaika yhtä laukaisevaa suoritusta kohden",
+        "maxConcurrentTriggers": "Suurin samanaikaisten laukaisujen määrä",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Suurin samanaikaisten laukaisevien suoritusten määrä",
+        "maxStateStoreEntries": "Suurin tilakaupan merkintöjen määrä",
+        "maxStateStoreEntriesPlaceholder": "Rajoittamaton",
+        "maxStateStoreEntriesDescription": "Suurin määrä merkintöjä skriptin tilakaupassa",
+        "disableTimeouts": "Poista aikakatkaisut käytöstä",
+        "disableTimeoutsDescription": "Poistaa käytöstä solmu- ja datareunasidonnaiset aikakatkaisut",
+        "save": "Tallenna kiintiöt"
       }
     }
   }

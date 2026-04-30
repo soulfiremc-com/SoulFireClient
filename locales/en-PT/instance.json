@@ -149,7 +149,21 @@
       "description": "Set per-bot gear fer this account",
       "openButton": "Rig up the account",
       "pageTitle": "{{name}} - {{page}} Ship's Settings",
-      "noSettings": "No ship's settings fer this page, matey"
+      "noSettings": "No ship's settings fer this page, matey",
+      "search": "Search fer settin's",
+      "overrides": "Overrides, arrr",
+      "allSettings": "All me settin's",
+      "noOverrides": "This here bot be lackin' any explicit orders yet, matey.",
+      "noOverridesMatching": "No overrides be matchin' this here search, ye scallywag.",
+      "noOverridesHelp": "Hoist open All settin's t' inherit values or craft the first override fer this bot, arrr!",
+      "tryDifferentSearch": "Try ye a different search term, savvy?",
+      "openAllSettings": "Hoist all sails to settings, matey!",
+      "selectPage": "Pick a settings page, ye scallywag",
+      "noSearchResults": "Nay settings be matchin' this here search.",
+      "matchesInheritedValue": "Aye, this matches yer inherited booty",
+      "instanceValue": "This be the instance value, arrr!",
+      "defaultValue": "This be the default booty, savvy?",
+      "resetOverride": "Scuttle the override and set sail anew!"
     },
     "deviceCodeConfirmDialog": {
       "title": "Device Code Authentication",
@@ -232,6 +246,12 @@
     "offline": "Off th' grid",
     "notJoined": "Yet t' board",
     "backToBots": "Back t' th' Bots!",
+    "tabs": {
+      "overview": "Spyglass View",
+      "inventory": "Cargo Hold",
+      "controls": "Controls o’ the ship",
+      "terminal": "Deck o' Terminals"
+    },
     "comingSoon": "Comin' Soon, prepare yerself!",
     "terminalPanel": {
       "title": "Parrot's Command Window"
@@ -362,6 +382,102 @@
       "offline": "Bot drifted off. Banter's gone silent."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Search bots, arrr...",
+      "searchClaims": "Scour fer booty claims...",
+      "noBotsMatchTitle": "No bots be fitten' the current spyglass filters, matey.",
+      "noBotsMatchDescription": "Swab or abandon the filters if ye wish to peruse the whole automatin' crew roster."
+    },
+    "attention": {
+      "empty": "Nay bots be seemin' stuck or run aground at the moment, arr!"
+    },
+    "memory": {
+      "noBots": "No bots ready fer memory inspectin', by thunder.",
+      "blocks": "Scallywag Blocks",
+      "noBlocks": "No remembered blocks in this here snapshot o' the voyage.",
+      "containers": "Booty Chests",
+      "noContainers": "No stashed chests remembered in this snapshot, matey.",
+      "entities": "Swabbies",
+      "noEntities": "Nay creatures remembered in this snapshot o' the ship's log.",
+      "droppedItems": "Booty Loot Cast Overboard",
+      "noDroppedItems": "No memory of tossed loot in this here snapshot, arrr.",
+      "unreachablePositions": "Unreachable Shores",
+      "noUnreachablePositions": "No uncharted waters in this snapshot, matey."
+    },
+    "coordination": {
+      "sharedBlocks": "Shared Planks",
+      "noBlockHints": "No shared plank hints yet, ye scurvy dog.",
+      "eyeSamples": "Lookout Eye Traces",
+      "noEyeSamples": "No lookout eye records in the captain's log."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Nothin' in the hold"
+    },
+    "summary": {
+      "online": "Afloat, matey!",
+      "packetsPerSecond": "Pkt/s (Packets fer second, ya landlubber!)",
+      "traffic": "Ship's Traffic",
+      "health": "Vigor",
+      "tick": "Tick o' the Clock"
+    },
+    "botsOnline": {
+      "title": "Bots On Deck",
+      "online": "Afloat, matey!",
+      "total": "All Hands On Deck"
+    },
+    "packets": {
+      "title": "Packets / Second",
+      "sent": "Sent per tick",
+      "received": "Received fer each tick"
+    },
+    "bandwidth": {
+      "title": "Bandwidth o' the Seas",
+      "upload": "Heave Ho Uploads",
+      "download": "Plunderin' Downloads"
+    },
+    "tick": {
+      "title": "Tick Time Span",
+      "avg": "Average (ms)",
+      "max": "Maximum (ms)"
+    },
+    "healthFood": {
+      "title": "Health & Vittles",
+      "health": "Average Health o' the Crew",
+      "food": "Average Vittles"
+    },
+    "chunksEntities": {
+      "title": "Chunks & Swabbies",
+      "chunks": "Treasure Chunks",
+      "entities": "Swabbies"
+    },
+    "connections": {
+      "title": "Mast Climbing Events",
+      "connections": "Gangplank Crossin's",
+      "disconnections": "Thrown Overboard"
+    },
+    "healthDistribution": {
+      "title": "Health Spread o' the Crew",
+      "bots": "Crew"
+    },
+    "dimensions": {
+      "title": "Dimensions o' the High Seas",
+      "bots": "Crew"
+    },
+    "gameModes": {
+      "title": "Game Callin's",
+      "bots": "Crew"
+    },
+    "positions": {
+      "title": "Bot Coordinates (East/West)",
+      "bot": "Bot Buccaneer"
+    }
+  },
   "scripts": {
     "title": "Visual Spell Scrolls",
     "description": "Make yer automation with magic node-maps, ye scallywag!",
@@ -430,6 +546,7 @@
         "pause": "Drop anchor",
         "pauseTooltip": "Pause yer spell, drop anchor!",
         "unsaved": "Unbottled",
+        "unsavedChanges": "Changes not stowed!",
         "clearCanvas": "Scrub the canvas clean!",
         "zoomIn": "Zoom in close with yer glass",
         "zoomOut": "Zoom out, see th' broad seas",
@@ -462,6 +579,64 @@
         "showPreview": "Unfurl Preview!",
         "hidePreview": "Hide away the Preview!",
         "delete": "Scuttle it!"
+      },
+      "node": {
+        "expand": "Expand the branch, like openin' a treasure map",
+        "collapse": "Collapse this branch, fold the sails!"
+      },
+      "debug": {
+        "copyValue": "Copy the current booty value",
+        "clearHistory": "Wipe the tale o' history"
+      },
+      "edge": {
+        "direction": "Compass direction o' the edge"
+      },
+      "note": {
+        "placeholder": "Scrawl yer note here..."
+      },
+      "complexity": {
+        "title": "Scribblin' Script Complexity Score"
+      },
+      "group": {
+        "returnToRoot": "Return to the root, like findin' yer way back to port (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Quick plunderin' node menu",
+        "searchPlaceholder": "Scour for nodes..."
+      },
+      "diff": {
+        "tooltip": "Inspect the changes, matey"
+      },
+      "dryRun": {
+        "tooltip": "Dry Run (No cannonballs fired)",
+        "title": "Dry Run o' the Script",
+        "description": "Sail a script from yer chosen trigger with pretend cargo.",
+        "triggerNode": "Fire Trigger Node",
+        "selectTrigger": "Choose ye a trigger...",
+        "triggerDescription": "Pick the trigger node to set sail with pretend loot.",
+        "mockInputs": "Mock Inputs, arrr!",
+        "valuePlaceholder": "{{type}} booty value",
+        "start": "Hoist the Dry Run!"
+      },
+      "quotas": {
+        "tooltip": "Script Rations",
+        "title": "Script Rations",
+        "description": "Set yer resource limits for this parchment. Empty chest means ship defaults.",
+        "maxExecutionCount": "Maximum Voyages Count",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximum ship node runs per trigger fire",
+        "maxExecutionTime": "Max Voyage Time (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Greatest hourglass time per trigger fired",
+        "maxConcurrentTriggers": "Maximum Triggers at Once",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Most simultaneous trigger blazes",
+        "maxStateStoreEntries": "Max Entries in Ship Log",
+        "maxStateStoreEntriesPlaceholder": "No limits in Davy Jones' locker",
+        "maxStateStoreEntriesDescription": "Maximum notches in the ship's state log",
+        "disableTimeouts": "Cut Timeouts loose",
+        "disableTimeoutsDescription": "Disables single-node and data line timeouts, arrr!",
+        "save": "Save the rations, secure the cargo!"
       }
     }
   }

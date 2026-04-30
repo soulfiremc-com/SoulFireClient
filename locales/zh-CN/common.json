@@ -46,6 +46,13 @@
       },
       "close": "关闭"
     },
+    "support": {
+      "title": "支持 SoulFire.",
+      "description": "SoulFire 是免费的开源项目，由社区倾心打造。",
+      "body": "如果 SoulFire 对您有帮助，请考虑支持该项目。您的贡献将帮助我们支付服务器费用、资助开发，使 SoulFire 能持续免费提供给所有人。",
+      "dismiss": "稍后再说",
+      "action": "支持 SoulFire."
+    },
     "createInstance": {
       "title": "创建一个新实例",
       "description": "实例需要一个名字来区分它们，它可以是你想要的任何名字，例如“Minecraft Bot”。",
@@ -230,6 +237,9 @@
       "add": "添加",
       "remove": "删除"
     },
+    "combo": {
+      "searchPlaceholder": "搜索值..."
+    },
     "invalidNumberToast": {
       "title": "无效数字！",
       "description": "值必须介于 {{min}} 和 {{max}} 之间"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "切换侧边栏"
+  },
+  "window": {
+    "minimize": "最小化",
+    "minimizeLabel": "最小化窗口",
+    "maximize": "最大化",
+    "maximizeLabel": "最大化窗口",
+    "restore": "还原",
+    "restoreLabel": "还原窗口",
+    "close": "关闭",
+    "closeLabel": "关闭窗口",
+    "back": "返回",
+    "backLabel": "返回",
+    "forward": "前进",
+    "forwardLabel": "前进"
+  },
+  "infoButton": {
+    "showInfo": "显示信息"
   },
   "castMenu": {
     "title": "投放",
@@ -334,6 +361,7 @@
     },
     "configDir": "配置目录",
     "dataDir": "数据目录",
+    "supportSoulFire": "支持 SoulFire.",
     "about": "关于",
     "logOut": "退出登录",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "文档",
-    "supportSoulFire": "捐赠",
+    "supportSoulFire": "支持 SoulFire.",
     "discord": "Discord"
   },
   "breadcrumbs": {

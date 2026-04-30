@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rola",
+          "placeholder": "Vyberte rolu",
           "description": "Rola používateľa. Správcovia môžu spravovať používateľov a všetky inštancie. Používatelia môžu spravovať iba svoje vlastné inštancie.",
           "user": "Používateľ",
           "admin": "Admin"

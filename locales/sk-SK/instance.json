@@ -149,7 +149,21 @@
       "description": "Nastavte individuálne možnosti pre bota na tomto účte",
       "openButton": "Nastaviť účet",
       "pageTitle": "{{name}} – Nastavenia {{page}}",
-      "noSettings": "Pre túto stránku nie sú k dispozícii žiadne nastavenia"
+      "noSettings": "Pre túto stránku nie sú k dispozícii žiadne nastavenia",
+      "search": "Nastavenia vyhľadávania",
+      "overrides": "Prepísania",
+      "allSettings": "Všetky nastavenia",
+      "noOverrides": "Tento bot zatiaľ nemá žiadne explicitné prepísania.",
+      "noOverridesMatching": "Žiadne prepísania nezodpovedajú tomuto vyhľadávaniu.",
+      "noOverridesHelp": "Otvor Všetky nastavenia pre zdedenie hodnôt alebo vytvor prvé špecifické prepísanie pre bota.",
+      "tryDifferentSearch": "Skúste iný výraz na vyhľadávanie.",
+      "openAllSettings": "Otvoriť všetky nastavenia",
+      "selectPage": "Vyberte stránku nastavení",
+      "noSearchResults": "Žiadne nastavenia nezodpovedajú tomuto vyhľadávaniu.",
+      "matchesInheritedValue": "Zhoduje sa s zdedenou hodnotou",
+      "instanceValue": "Hodnota inštancie",
+      "defaultValue": "Predvolená hodnota",
+      "resetOverride": "Obnoviť prepísanie"
     },
     "deviceCodeConfirmDialog": {
       "title": "Overenie zariadenia pomocou kódu",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Nepripojený",
     "backToBots": "Späť na botov",
+    "tabs": {
+      "overview": "Prehľad",
+      "inventory": "Inventár",
+      "controls": "Ovládanie",
+      "terminal": "Terminál"
+    },
     "comingSoon": "Už čoskoro",
     "terminalPanel": {
       "title": "Terminál bota"
@@ -362,6 +382,102 @@
       "offline": "Bot je offline. Dialógy sú dostupné len keď je bot pripojený."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Hľadať botov...",
+      "searchClaims": "Hľadať požiadavky...",
+      "noBotsMatchTitle": "Žiadne boty nezodpovedajú aktuálnym filtrom.",
+      "noBotsMatchDescription": "Upravte alebo vymažte aktuálne filtre, aby ste si mohli pozrieť celý zoznam automatizácie."
+    },
+    "attention": {
+      "empty": "Aktuálne žiadne boty nevyzerajú byť zaseknuté alebo spomalené."
+    },
+    "memory": {
+      "noBots": "Žiadne automatizačné boty nie sú dostupné na kontrolu pamäti.",
+      "blocks": "Bloky",
+      "noBlocks": "V tejto snímke nie sú žiadne zapamätané bloky.",
+      "containers": "Kontajnery",
+      "noContainers": "V tejto snímke nie sú žiadne zapamätané kontajnery.",
+      "entities": "Entity",
+      "noEntities": "V tejto snímke nie sú žiadne zapamätané entity.",
+      "droppedItems": "Pustené predmety",
+      "noDroppedItems": "V tejto snímke nie sú žiadne zapamätané pustené predmety.",
+      "unreachablePositions": "Nedostupné pozície",
+      "noUnreachablePositions": "V tejto snímke nie sú žiadne nedostupné pozície."
+    },
+    "coordination": {
+      "sharedBlocks": "Zdieľané bloky",
+      "noBlockHints": "Zatiaľ nie sú žiadne tipy k zdieľaným blokom.",
+      "eyeSamples": "Vzorky očí",
+      "noEyeSamples": "Žiadne vzorky očí neboli zaznamenané."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Žiadne údaje"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Prenos",
+      "health": "Zdravie",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Boti online",
+      "online": "Online",
+      "total": "Celkovo"
+    },
+    "packets": {
+      "title": "Pakety / sekunda",
+      "sent": "Odoslané/s",
+      "received": "Prijaté/s"
+    },
+    "bandwidth": {
+      "title": "Šírka pásma",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Trvanie ticku",
+      "avg": "Priemer (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Zdravie / Jedlo",
+      "health": "Priemerné zdravie",
+      "food": "Priemerné jedlo"
+    },
+    "chunksEntities": {
+      "title": "Chunky / Entity",
+      "chunks": "Chunky",
+      "entities": "Entity"
+    },
+    "connections": {
+      "title": "Udalosti pripojení",
+      "connections": "Pripojenia",
+      "disconnections": "Odpojenia"
+    },
+    "healthDistribution": {
+      "title": "Rozloženie zdravia",
+      "bots": "Boti"
+    },
+    "dimensions": {
+      "title": "Dimenzie",
+      "bots": "Boti"
+    },
+    "gameModes": {
+      "title": "Herné režimy",
+      "bots": "Boti"
+    },
+    "positions": {
+      "title": "Pozície bota (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Vizuálne skripty",
     "description": "Vytvárajte automatizačné skripty použitím vizuálneho editora na základe uzlov.",
@@ -430,6 +546,7 @@
         "pause": "Pozastaviť",
         "pauseTooltip": "Pozastaviť vykonávanie skriptu",
         "unsaved": "Neuložené",
+        "unsavedChanges": "Neuložené zmeny",
         "clearCanvas": "Vyčistiť plátno",
         "zoomIn": "Priblížiť",
         "zoomOut": "Oddialiť",
@@ -464,6 +581,64 @@
         "showPreview": "Zobraziť ukážku",
         "hidePreview": "Skryť ukážku",
         "delete": "Odstrániť"
+      },
+      "node": {
+        "expand": "Rozbaliť uzol",
+        "collapse": "Zbaliť uzol"
+      },
+      "debug": {
+        "copyValue": "Kopírovať aktuálnu hodnotu",
+        "clearHistory": "Vymazať históriu"
+      },
+      "edge": {
+        "direction": "Smer hrany"
+      },
+      "note": {
+        "placeholder": "Napíšte poznámku..."
+      },
+      "complexity": {
+        "title": "Skóre komplexnosti skriptu"
+      },
+      "group": {
+        "returnToRoot": "Vrátiť sa na koreň (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Rýchle pridanie uzla — menu",
+        "searchPlaceholder": "Hľadať uzly..."
+      },
+      "diff": {
+        "tooltip": "Skontrolovať zmeny"
+      },
+      "dryRun": {
+        "tooltip": "Testovací beh nasucho",
+        "title": "Skript testovacieho behu nasucho",
+        "description": "Spustite skript zo zvoleného spúšťača so simulovanými vstupmi.",
+        "triggerNode": "Spúšťací uzol",
+        "selectTrigger": "Vyberte spúšťač...",
+        "triggerDescription": "Vyberte spúšťací uzol, ktorý sa má vykonať so simulovanými vstupnými hodnotami.",
+        "mockInputs": "Simulované vstupy",
+        "valuePlaceholder": "{{type}} hodnota",
+        "start": "Začať testovací beh nasucho"
+      },
+      "quotas": {
+        "tooltip": "Kvóty skriptov",
+        "title": "Kvóty skriptov",
+        "description": "Nakonfigurujte limity zdrojov pre tento skript. Prázdne polia použijú predvolené hodnoty servera.",
+        "maxExecutionCount": "Max počet vykonaní",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximálny počet vykonaní uzla na jedno spustenie spúšťača",
+        "maxExecutionTime": "Maximálny čas vykonávania (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximálny čas na jedno spustenie spúšťača podľa reálneho času",
+        "maxConcurrentTriggers": "Max počet súbežných spúšťačov",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximálny počet súčasných spustení spúšťača",
+        "maxStateStoreEntries": "Maximálny počet položiek v úložisku skriptu",
+        "maxStateStoreEntriesPlaceholder": "Neobmedzené",
+        "maxStateStoreEntriesDescription": "Maximálny počet položiek v úložisku stavu skriptu",
+        "disableTimeouts": "Vypnúť časové limity",
+        "disableTimeoutsDescription": "Zakazuje časové limity pre jednotlivé uzly a dátové hrany",
+        "save": "Uložiť kvóty"
       }
     }
   }

@@ -46,6 +46,13 @@
       },
       "close": "Cloes"
     },
+    "support": {
+      "title": "Halp SoulFire plz",
+      "description": "SoulFire iz free an open-soars, bilt wif luv by teh community. ",
+      "body": "If SoulFire has bin useful 2 u, plz consider halping teh projek. Ur contribushun helps payz for servur costz, funds devz, an keepz SoulFire free fur all teh kittehs.",
+      "dismiss": "Maybz latah",
+      "action": "Halp SoulFire plz"
+    },
     "createInstance": {
       "title": "Creaet nu instanec",
       "description": "Instances ned friendly namez 4 u 2 distinguish dem. Srsly It can bees any naym u wantz, 4 exampel, \"mah Minecraft Bot\".",
@@ -230,6 +237,9 @@
       "add": "Put stuff",
       "remove": "Exit stuff"
     },
+    "combo": {
+      "searchPlaceholder": "SRS VALUE..."
+    },
     "invalidNumberToast": {
       "title": "Dats Invalid Number!",
       "description": "Da valyo must be btw {{min}} an {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Toggle Sidebar"
+  },
+  "window": {
+    "minimize": "minimiez",
+    "minimizeLabel": "minimiez window",
+    "maximize": "maximiez",
+    "maximizeLabel": "maximiez window",
+    "restore": "restorz",
+    "restoreLabel": "restorz window",
+    "close": "Cloes",
+    "closeLabel": "cloz window",
+    "back": "Bak",
+    "backLabel": "go bak",
+    "forward": "fwrd",
+    "forwardLabel": "go fwrd"
+  },
+  "infoButton": {
+    "showInfo": "sho info"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +361,7 @@
     },
     "configDir": "Config direktery",
     "dataDir": "Data direktery",
+    "supportSoulFire": "Halp SoulFire plz",
     "about": "Aboutz",
     "logOut": "Walk out",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Documentashun",
-    "supportSoulFire": "Buy me coffeez",
+    "supportSoulFire": "Halp SoulFire plz",
     "discord": "Discord"
   },
   "breadcrumbs": {

@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rol",
+          "placeholder": "Selecteer een rol",
           "description": "De rol van de gebruiker. Beheerders kunnen gebruikers en alle instanties beheren. Gebruikers kunnen alleen hun eigen instanties beheren.",
           "user": "Gebruiker",
           "admin": "Beheerder"

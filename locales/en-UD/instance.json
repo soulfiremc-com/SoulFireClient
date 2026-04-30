@@ -149,7 +149,21 @@
       "description": "ʇunoɔɔɐ sᴉɥʇ ɹoɟ sƃuᴉʇsǝʇ ʇoq-dɹǝ ǝɹnƃᴉɟuoɔ",
       "openButton": "ʇunoɔɔɐ ǝɹnƃᴉɟuoɔ",
       "pageTitle": "sƃuᴉʇsǝʇ {{page}} - {{name}}",
-      "noSettings": "ǝƃɐd sᴉɥʇ ɹoɟ ǝlqɐlᴉɐʌɐ sƃuᴉʇsǝʇ oN"
+      "noSettings": "ǝƃɐd sᴉɥʇ ɹoɟ ǝlqɐlᴉɐʌɐ sƃuᴉʇsǝʇ oN",
+      "search": "",
+      "overrides": "s\u0018\u0018p\u0018o\u00189\u00020\u0006f\u000065q",
+      "allSettings": "s\u0018\u0018\u0018g\u0018n\u0018i\u0018t\u0018t\u0018e\u0018s\u0018l\u0018l\u0018A",
+      "noOverrides": ".\u0018t\u0018e\u0018y\u0018 \u0018t\u0018e\u0018y\u0018 \u0018s\u0018e\u0018d\u0018i\u0018r\u0018r\u0018o\u0018 \u0018c\u0018i\u0018f\u0018i\u0018c\u0018i\u0018f\u0018e\u0018p\u0018x\u0018e\u0018 \u0018y\u0018n\u0018a\u0018 \u0018t\u0018o\u0018n\u0018 s\u0018o\u0018d\u0018 \u0018t\u0018o\u0018b\u0018 \u0018s\u0018i\u0018h\u0018t\u0018 ",
+      "noOverridesMatching": ".\u0018h\u0018c\u0018r\u0018a\u0018e\u0018s\u0018 \u0018s\u0018i\u0018h\u0018t\u0018 \u0018g\u0018n\u0018i\u0018h\u0018c\u0018a\u0018e\u0018m\u0018 \u0018s\u0018e\u0018d\u0018i\u0018r\u0018r\u0018o\u0018 \u0018o\u0018N",
+      "noOverridesHelp": ".\u0018e\u0018d\u0018i\u0018r\u0018r\u0018e\u0018v\u0018r\u0018e\u0018t\u0018 n\u0018o\u0018c\u0018i\u0018f\u0018i\u0018c\u0018e\u0018p\u0018- \u0018t\u0018o\u0018b\u0018 \u0018t\u0018s\u0018r\u0018i\u0018f\u0018 \u0018e\u0018t\u0018a\u0018e\u0018r\u0018c\u0018 \u0018r\u0018o\u0018 \u0018s\u0018e\u0018l\u0018u\u0018v\u0018a\u0018 \u0018t\u0018i\u0018r\u0018e\u0018h\u0018n\u0018i\u0018 \u0018o\u0018t\u0018 \u0018s\u0018g\u0018n\u0018i\u0018t\u0018t\u0018e\u0018s\u0018l\u0018l\u0018A\u0018 n\u0018e\u0018p\u0018O",
+      "tryDifferentSearch": ".\u0018m\u0018r\u0018e\u0018t\u0018 \u0018h\u0018c\u0018r\u0018a\u0018e\u0018s\u0018 \u0018t\u0018n\u0018e\u0018r\u0018e\u0018f\u0018f\u0018i\u0018d\u0018 \u0018a\u0018y\u0018r\u0018T",
+      "openAllSettings": "nitinfetsnlla pninepO",
+      "selectPage": "peagepgs aa tcniseleS",
+      "noSearchResults": ".hcraes siht hctam sgnits sero n oN",
+      "matchesInheritedValue": "eulav detarihnI sehctam",
+      "instanceValue": "eulav ecnatsnI",
+      "defaultValue": "eulav tluafed",
+      "resetOverride": "ediverrO teser"
     },
     "deviceCodeConfirmDialog": {
       "title": "uoıʇɐɔıɟıʇuǝ lɐʇuǝɥʇn∀ ǝpoɔ ǝɔıʌǝp",
@@ -232,6 +246,12 @@
     "offline": "ǝuᴉlɟɟO",
     "notJoined": "pǝuᴉoɾ ʇoN",
     "backToBots": "sʇoq oʇ ʞɔɐԐ",
+    "tabs": {
+      "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
+      "inventory": "ʎɹoʇuǝʌuI",
+      "controls": "sdoɹʇuoↃ",
+      "terminal": "ןɐuᴉɯɹǝ┴"
+    },
     "comingSoon": "uooS ƃuᴉɯoɔ",
     "terminalPanel": {
       "title": "lɐuᴉɹǝɯɹǝʇ ʇoq"
@@ -362,6 +382,102 @@
       "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ llɐ ǝlqɐlᴉɐʌ sᴉ sɐƃolɐp .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "lɐɹɐǝd ɹǝpuǝ"
+    },
+    "filters": {
+      "searchBots": "...sʇoq ɥɔɹɐǝS",
+      "searchClaims": "...sɯɐilɔ ɥɔɹɐǝS",
+      "noBotsMatchTitle": ".sɹǝɟlᴉɟ ʇuǝɹɹnɔ ǝɥʇ ɥɔɐɯ sʇoq oN",
+      "noBotsMatchDescription": ".ɹǝʇsɹoɹ uoᴉʇɐɯoʇnɐ llnɟ ǝɥʇ ʍǝᴉʌǝɹ oʇ sɹǝʇlᴉɟ ʇuǝɹɹnɔ ǝɥʇ ɹɐǝlɔ ɹo ʇsuɐpɾⱯ"
+    },
+    "attention": {
+      "empty": ".pǝpuǝɐɹƃǝp ɹo pǝlʇɐs ʞooן ʎןʇuǝɹɹnɔ sʇoq oN"
+    },
+    "memory": {
+      "noBots": ".uoᴉʇɔǝdsᴉ uoᴉɯǝɹoɯ ɹoɟ ǝןqɐןᴉɐʌɐ ǝɹɐ sʇoq uoᴉʇɐɯoʇnɐ oN",
+      "blocks": "sʞɔolq",
+      "noBlocks": ".ʇoɥsdlɐɥs sᴉɥʇ uᴉ sʞɔolq pǝpǝɯǝɯǝɹ oN",
+      "containers": "sɹǝuᴉɐʇuᴉɐʇuoɔ",
+      "noContainers": ".ʇoɥsdlɐɥs sᴉɥʇ uᴉ sɹǝuᴉɐʇuᴉɐʇuoɔ pǝpǝɯǝɯǝɹ oN",
+      "entities": "sǝᴉʇᴉʇuǝ",
+      "noEntities": ".ʇoɥsdlɐɥs sᴉɥʇ uᴉ sǝᴉʇᴉʇuǝ pǝpǝɯǝɯǝɹ oN",
+      "droppedItems": "sɯǝʇᴉ  pǝddoɹp",
+      "noDroppedItems": ".ʇoɥsdlɐɥs sᴉɥʇ uᴉ sɯǝʇᴉ pǝddoɹp pǝpǝɯǝɯǝɹ oN",
+      "unreachablePositions": "suoᴉʇᴉsod ǝןqɐɥɔɐǝɹnu",
+      "noUnreachablePositions": ".ʇoɥsdlɐɥs sᴉɥʇ uᴉ suoᴉʇᴉsod ǝןqɐɥɔɐǝɹnu oN"
+    },
+    "coordination": {
+      "sharedBlocks": "sʞɔolq pǝɹɐɥs",
+      "noBlockHints": ".ʇǝʎ sʇuɥ ʞɔolq pǝɹɐɥs oN",
+      "eyeSamples": "sǝןdɯɐS ǝʎǝ",
+      "noEyeSamples": ".pǝpɹoɔǝɹ sǝןdɯɐs ǝʎǝ oN"
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "ɐʇɐp oN"
+    },
+    "summary": {
+      "online": "ǝuᴉlO",
+      "packetsPerSecond": "sʞʇd/",
+      "traffic": "ɔᴉɟɟɐɹ⊥",
+      "health": "ɥʇlɐǝH",
+      "tick": "ʞɔᴉ⊥"
+    },
+    "botsOnline": {
+      "title": "  ",
+      "online": "ǝuᴉlO",
+      "total": "ןɐʇo⊥"
+    },
+    "packets": {
+      "title": "puoɔǝS / sʇǝʞɔɐԀ",
+      "sent": "s/ʇuǝS",
+      "received": "s/ʌǝɔǝᴚ"
+    },
+    "bandwidth": {
+      "title": "ɥʇpᴉʍpuɐ𐑃",
+      "upload": "polɐoןd∩",
+      "download": "pɐoןuʍoᗡ"
+    },
+    "tick": {
+      "title": "uoᴉʇɐɹnɐɹnᗡ ʞɔᴉ⊥",
+      "avg": ")sɯ( ᵷʌ∀",
+      "max": ")sɯ( xaW"
+    },
+    "healthFood": {
+      "title": "pooℲ / ɥʇlɐǝH",
+      "health": "ɥʇlɐǝH ᵷʌ∀",
+      "food": "pooℲ ᵷʌ∀"
+    },
+    "chunksEntities": {
+      "title": "sǝᴉʇᴉʇuǝ / sʞuɥɔ",
+      "chunks": "sʞuɥɔ",
+      "entities": "sǝᴉʇᴉʇuǝ"
+    },
+    "connections": {
+      "title": "sʇuǝʌƎ uoᴉʇɔǝuuoɔɐ",
+      "connections": "suoᴉɔɔǝuuoɔ",
+      "disconnections": "suoᴉuoᴉɔǝpuᴉsᴉᗡ"
+    },
+    "healthDistribution": {
+      "title": "uoᴉʇnqᴉɹʇsᴉᗡ ɥʇlɐǝH",
+      "bots": "sʇoԐ"
+    },
+    "dimensions": {
+      "title": "suoᴉsuǝɯᴉᗡ",
+      "bots": "sʇoԐ"
+    },
+    "gameModes": {
+      "title": "sǝpoW ǝɯɐᵷ",
+      "bots": "sʇoԐ"
+    },
+    "positions": {
+      "title": "(ZX) suoᴉʇᴉsod ʇoq",
+      "bot": "ʇoq"
+    }
+  },
   "scripts": {
     "title": "sʇdıɹɔS lɐnsᴉ˥",
     "description": ".ɹoʇᴉpǝ ǝsɐq-ǝpou lɐnsᴉʌ ɐ ƃuᴉnsnlɐ ɥɔᴉɹɔs uoᴉʇɐɯnlɐ ǝʇɐǝɹↃ",
@@ -430,6 +546,7 @@
         "pause": "ǝsnsɐԀ",
         "pauseTooltip": "uoᴉʇnɔǝxǝ ʇdıɹɔs ǝsnuɐd",
         "unsaved": "pǝʌɐsnu",
+        "unsavedChanges": "sǝᵷuɐɥɔ pǝʌɐsnu",
         "clearCanvas": "sɐʇuǝʌɐɔ ɹɐǝlↃ",
         "zoomIn": "uᴉ ɯooZ",
         "zoomOut": "ʇno ooɯZ",
@@ -462,6 +579,64 @@
         "showPreview": "ʍǝɹd ʍoɥS",
         "hidePreview": "ʍǝɹd ǝpᴉH",
         "delete": "ǝʇǝlǝᗡ"
+      },
+      "node": {
+        "expand": "ǝpou puɐdxƎ",
+        "collapse": "ǝpou ǝdsɐןןoɔ"
+      },
+      "debug": {
+        "copyValue": "ǝnlɐʌ ʇuǝɹɹnɔ ʎdoɔ",
+        "clearHistory": "ʎɹoɹʇsᴉɥ ɹɐǝlnɔ"
+      },
+      "edge": {
+        "direction": "uoᴉʇɔǝɹp ǝƃpǝ"
+      },
+      "note": {
+        "placeholder": "...ǝʇou ɐ ǝʇᴉɹM"
+      },
+      "complexity": {
+        "title": "ǝɹoɔs ʎʇᴉxǝןdɯoɔ ʇdᴉɹɔS"
+      },
+      "group": {
+        "returnToRoot": ")qɐⱯ( ʇooɹ oʇ uɹnʇǝᴚ"
+      },
+      "quickAdd": {
+        "menuLabel": "nǝɯ ǝpon ppɐʞɔᴉnQ",
+        "searchPlaceholder": "...sǝpou ɥɔɹɐǝS"
+      },
+      "diff": {
+        "tooltip": "sǝᵷuɐɥɔ ʍǝᴉʌǝᴚ"
+      },
+      "dryRun": {
+        "tooltip": "uɐᴚ ʎɹᗡ",
+        "title": "ʇdᴉɹɔS uɐᴚ ʎɹᗡ",
+        "description": ".sʇnɾuᴉ uʞɔoɯ ɥʇᴉʍ ɹǝᵷɡᴉɹʇ dǝʇɔǝlǝs ɐ ɯoɹɟ ʇdᴉɹɔs ɐ nɹ uɐ",
+        "triggerNode": "ǝpoN ɹǝᵷɡᴉɹ⟘",
+        "selectTrigger": "...ɹǝᵷɡᴉɹʇ ɐ ʇɔǝlǝS",
+        "triggerDescription": ".sǝnlɐʌ ʇnᴉdnᴉ ʞɔoɯ ɥʇᴉʍ ǝʇnɔǝxǝ oʇ ǝpou ɹǝᵷɡᴉɹ⟘ ǝɥʇ ʞɔᴉd",
+        "mockInputs": "sʇnduᴉ ʞɔoW",
+        "valuePlaceholder": "ǝnlɐǝnlԀ {{ʎdǝʇ}}",
+        "start": "uɐᴚ ʎɹᗡ ʇɹɐʇS"
+      },
+      "quotas": {
+        "tooltip": "sɐʇonbᴉn ʇdᴉɹɔS",
+        "title": "sɐʇonbᴉn ʇdᴉɹɔS",
+        "description": ".sʇlǝɟɐnp ɹǝʌɹǝs ǝs∩ splǝɥʇ dɯǝ ǝsu∩ .ʇdᴉɹɔs sᴉɥʇ ɹoɟ sʇᴉɯᴉן ǝɔɹnoɥɔuᴉɟuoɔ ǝɹnᵷᴉɟuoɔ",
+        "maxExecutionCount": "ʇunoɔ noᴉʇnɔǝxƎ xaW",
+        "maxExecutionCountPlaceholder": "00000Ɩ",
+        "maxExecutionCountDescription": "uoᴉʇɐɔoʌuᴉ sᴉɹǝɟᴉɟᴉ ɹǝᵷɡᴉɹʇ ɹǝd suoᴉʇnɔǝxǝ ǝpou ɯnᴉɯᴉɐɯ ɥɔɐW",
+        "maxExecutionTime": ")sɯ( ǝɯɐᴉʇ uoᴉʇnɔǝxƎ xaW",
+        "maxExecutionTimePlaceholder": "00003",
+        "maxExecutionTimeDescription": ".uoᴉʇnɔǝxǝ ɹǝᵷɡᴉɹʇ ɹǝd ǝɯᴉʇ ʞɔoןɔ-ʇןןɐʍ ɯnᴉɯxɐɯ",
+        "maxConcurrentTriggers": "sɹǝɷᵷᴉɹʇ ʇuǝɹɹnɔ ɯnᴉɯxɐW",
+        "maxConcurrentTriggersPlaceholder": "Ɩ",
+        "maxConcurrentTriggersDescription": ".suoᴉɔɐɔoʌuᴉ ɹǝᵷɡᴉɹʇ ʇuǝɹɹnɔ ɯnᴉɯxɐɯ",
+        "maxStateStoreEntries": "sǝᴉɹʇuǝ ǝɹoʇS ǝʇɐʇS xaW",
+        "maxStateStoreEntriesPlaceholder": "pǝpᴉɯᴉןu∩",
+        "maxStateStoreEntriesDescription": "ǝɹoʇs ǝʇɐʇs ʇdᴉɹɔs ǝɥʇ uᴉ sǝᴉɹʇuǝ ɯnᴉɯxɐW",
+        "disableTimeouts": "snoǝʇnoɯɐᴉʇ ǝןqɐsᴉᗡ",
+        "disableTimeoutsDescription": ".snoǝʇnoɯɐᴉʇ ǝᗡ ɐʇɐp puɐ ǝpou-ɹǝd sǝlqɐsᴉᗡ",
+        "save": "sɐʇonbᴉn ǝʌɐS"
       }
     }
   }

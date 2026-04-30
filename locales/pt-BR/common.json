@@ -46,6 +46,13 @@
       },
       "close": "Fechar"
     },
+    "support": {
+      "title": "Apoie o SoulFire",
+      "description": "O SoulFire é gratuito e de código aberto, criado com carinho pela comunidade.",
+      "body": "Se o SoulFire foi útil para você, considere apoiar o projeto. Sua contribuição ajuda a cobrir os custos dos servidores, financiar o desenvolvimento e manter o SoulFire gratuito para todos.",
+      "dismiss": "Talvez mais tarde",
+      "action": "Apoie o SoulFire"
+    },
     "createInstance": {
       "title": "Criar uma nova instância",
       "description": "As instâncias precisam de nomes amigáveis para que você os distingua. Pode ser qualquer nome que você quiser, por exemplo, \"Meu Bot de Minecraft\".",
@@ -230,6 +237,9 @@
       "add": "Adicionar",
       "remove": "Remover"
     },
+    "combo": {
+      "searchPlaceholder": "Pesquisar valor..."
+    },
     "invalidNumberToast": {
       "title": "Número inválido!",
       "description": "O valor deve estar entre {{min}} e {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Alternar a barra lateral"
+  },
+  "window": {
+    "minimize": "Minimizar",
+    "minimizeLabel": "Minimizar janela",
+    "maximize": "Maximizar",
+    "maximizeLabel": "Maximizar janela",
+    "restore": "Restaurar",
+    "restoreLabel": "Restaurar janela",
+    "close": "Fechar",
+    "closeLabel": "Fechar janela",
+    "back": "Voltar",
+    "backLabel": "Voltar",
+    "forward": "Avançar",
+    "forwardLabel": "Avançar"
+  },
+  "infoButton": {
+    "showInfo": "Mostrar informações"
   },
   "castMenu": {
     "title": "Transmitir",
@@ -334,6 +361,7 @@
     },
     "configDir": "Diretório de configuração",
     "dataDir": "Diretório de dados",
+    "supportSoulFire": "Apoie o SoulFire",
     "about": "Sobre",
     "logOut": "Sair",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Documentação",
-    "supportSoulFire": "Compre-me um café",
+    "supportSoulFire": "Apoie o SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Role",
+          "placeholder": "Vyberte roli",
           "description": "Role uživatele. Správci mohou spravovat uživatele a všechny instance. Uživatelé mohou spravovat pouze své vlastní instance.",
           "user": "Uživatel",
           "admin": "Admin"

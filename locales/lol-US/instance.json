@@ -149,7 +149,21 @@
       "description": "Configur pwoper bot settns fur dis account",
       "openButton": "Configur accownt",
       "pageTitle": "{{name}} - {{page}} Settnz",
-      "noSettings": "No settnz availabru fur dis page"
+      "noSettings": "No settnz availabru fur dis page",
+      "search": "Seerch settinzs!",
+      "overrides": "Overridzez",
+      "allSettings": "All settinzs!",
+      "noOverrides": "Dis bot haz no speshul ovverridzez yet, kthx.",
+      "noOverridesMatching": "No overridzez match dis seerch. :(",
+      "noOverridesHelp": "Open All settinzs to inheritz vals or makez da furst bot-spechul ovverride!",
+      "tryDifferentSearch": "Try sum othur seerch werd, kthx!",
+      "openAllSettings": "Opun ALL teh settinz, kthx!",
+      "selectPage": "Pickz a settinz page, mebbe?",
+      "noSearchResults": "No settinz match dis search. Oh noes!",
+      "matchesInheritedValue": "Iz matchin' inherited valu, so fancy!",
+      "instanceValue": "Instance valu here, kitteh seez.",
+      "defaultValue": "Defawlt valu! Naow u kno.",
+      "resetOverride": "Reset teh overraide, kthxbai!"
     },
     "deviceCodeConfirmDialog": {
       "title": "DEVIC COD AUTENTIKASHUNZ!11!",
@@ -232,6 +246,12 @@
     "offline": "Offlyne",
     "notJoined": "Nawt Joind",
     "backToBots": "Bak 2 Botz",
+    "tabs": {
+      "overview": "Ovarview",
+      "inventory": "Inventoryz",
+      "controls": "Controlz",
+      "terminal": "Termenawl"
+    },
     "comingSoon": "CUHMIN SOONZ",
     "terminalPanel": {
       "title": "Bot Termynal"
@@ -362,6 +382,102 @@
       "offline": "Bot iz offline. Dialogz only avaylbul wen bot iz connectd."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_purrl"
+    },
+    "filters": {
+      "searchBots": "Serch bots...",
+      "searchClaims": "Seerch klaims...",
+      "noBotsMatchTitle": "No kittehs match teh curreht filterz.",
+      "noBotsMatchDescription": "Adjust or clear teh current filterz tu see all teh automashun kittehs."
+    },
+    "attention": {
+      "empty": "No kittehs lookz stucked or broked rite nao."
+    },
+    "memory": {
+      "noBots": "No automashun kittehs r availabul for memory chekinz.",
+      "blocks": "Blawks",
+      "noBlocks": "No remembered blawks in dis snappyshot.",
+      "containers": "Boxez",
+      "noContainers": "No remembered boxez in dis snappyshot.",
+      "entities": "Thingz",
+      "noEntities": "No remembered thingz in dis snappyshot.",
+      "droppedItems": "Dropd Stuffz",
+      "noDroppedItems": "No rememburd dropd stuffz in dis snappyshot.",
+      "unreachablePositions": "No can reech posishunz",
+      "noUnreachablePositions": "No no-can-reech spotz in dis snappyshot."
+    },
+    "coordination": {
+      "sharedBlocks": "Shayrd Blawks",
+      "noBlockHints": "No shayrd blawk hintz yet.",
+      "eyeSamples": "Eye Samplez",
+      "noEyeSamples": "No eye samplez recawrded."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "No dataz"
+    },
+    "summary": {
+      "online": "ONLIEN",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Trafik",
+      "health": "Helth",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "BOTS ONLAIIN",
+      "online": "ONLIEN",
+      "total": "Totalz"
+    },
+    "packets": {
+      "title": "Packetz / Secondz",
+      "sent": "Sendz/s",
+      "received": "Recvz/s"
+    },
+    "bandwidth": {
+      "title": "Bandwidf",
+      "upload": "Uplode",
+      "download": "Downlode"
+    },
+    "tick": {
+      "title": "Tick Lonng",
+      "avg": "Avg (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Helth / Nomz",
+      "health": "Avg Helth",
+      "food": "Avg Nomz"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Thingz",
+      "chunks": "Chunks",
+      "entities": "Thingz"
+    },
+    "connections": {
+      "title": "Connectshun Eventz",
+      "connections": "Connectshunz",
+      "disconnections": "Disconnexshunz"
+    },
+    "healthDistribution": {
+      "title": "Helth Sploshun",
+      "bots": "BOTZ"
+    },
+    "dimensions": {
+      "title": "Dimensionz",
+      "bots": "BOTZ"
+    },
+    "gameModes": {
+      "title": "Game Modez",
+      "bots": "BOTZ"
+    },
+    "positions": {
+      "title": "Bot Spotz (XZ)",
+      "bot": "Botteh"
+    }
+  },
   "scripts": {
     "title": "Vizhul Skriptz",
     "description": "Mak awtomaet skript using funneh nodez editor, kthx.",
@@ -430,6 +546,7 @@
         "pause": "Pawse",
         "pauseTooltip": "PAWZ skript runnin'",
         "unsaved": "UNSAVEZ",
+        "unsavedChanges": "Unsaved cheengez",
         "clearCanvas": "Cleer doodle pad",
         "zoomIn": "ZOOMZ IN",
         "zoomOut": "ZOOMZ OWT",
@@ -462,6 +579,64 @@
         "showPreview": "SHOW PREVYU",
         "hidePreview": "HIDE PREVYU",
         "delete": "DELEET"
+      },
+      "node": {
+        "expand": "Expand nodeh",
+        "collapse": "Hidez nodeh"
+      },
+      "debug": {
+        "copyValue": "Copy dis value nao",
+        "clearHistory": "Clearz hisstorry"
+      },
+      "edge": {
+        "direction": "Edge direcshun"
+      },
+      "note": {
+        "placeholder": "Rite a note..."
+      },
+      "complexity": {
+        "title": "Script komplixitee skor"
+      },
+      "group": {
+        "returnToRoot": "Return to cheezburger base (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Qwik add node menoo",
+        "searchPlaceholder": "Sersch nodez..."
+      },
+      "diff": {
+        "tooltip": "Look at cheenz!"
+      },
+      "dryRun": {
+        "tooltip": "Dry Ploy",
+        "title": "Dry Ploy Scriptz",
+        "description": "Runn a script from a pikd triggur wif cheez inputs.",
+        "triggerNode": "Triggur Nodeh",
+        "selectTrigger": "Selekt a triggur...",
+        "triggerDescription": "Pik teh triggur nodeh to use wif cheez inputz.",
+        "mockInputs": "Mock Inputz",
+        "valuePlaceholder": "{{type}} valu",
+        "start": "START DRY PLOY!"
+      },
+      "quotas": {
+        "tooltip": "Script Quotas",
+        "title": "Script Quotas",
+        "description": "Configur teh resors limitz 4 dis script. Emptiez fieldz use servur defawltz.",
+        "maxExecutionCount": "Max Run Countz",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximum nodeh runz per triggur push",
+        "maxExecutionTime": "Max Run Tyme (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maxtimum wall-clawk tymez per triggur execushun",
+        "maxConcurrentTriggers": "Max Cat Triggurz at Once",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Biggest triggurz runnin togethur",
+        "maxStateStoreEntries": "Max Saved Stat Stuffz",
+        "maxStateStoreEntriesPlaceholder": "Infinity",
+        "maxStateStoreEntriesDescription": "Biggest thingz in teh script stash box",
+        "disableTimeouts": "No Tiem Owtz",
+        "disableTimeoutsDescription": "Stopz tiem owtz for nodez and edgez",
+        "save": "Savez da Quota"
       }
     }
   }
