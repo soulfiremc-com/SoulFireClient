@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Roll",
+          "placeholder": "Välj en roll",
           "description": "Användarens roll. Administratörer kan hantera användare och alla instanser. Användare kan endast hantera sina egna instanser.",
           "user": "Användare",
           "admin": "Admin"

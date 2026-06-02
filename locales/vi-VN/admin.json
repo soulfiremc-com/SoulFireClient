@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Vai trò",
+          "placeholder": "Chọn vai trò",
           "description": "Vai trò của người dùng. Quản trị viên có thể quản lý người dùng và tất cả các phiên bản. Người dùng chỉ được phép quản lý phiên bản của riêng mình.",
           "user": "Người dùng",
           "admin": "Quản trị viên"

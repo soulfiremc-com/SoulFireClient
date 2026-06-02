@@ -46,6 +46,13 @@
       },
       "close": "ǝsolↃ"
     },
+    "support": {
+      "title": "ǝɹᴉɟlnoS ʇɹoddoS",
+      "description": ".ʎʇᴉunɯɯoɔ ǝɥʇ ʎq ǝʌoʅ ɥʇᴉʍ ʇʅᴉnb ǝɔɹnos-uodǝ puɐ ǝǝɹɟ sᴉ ǝɹᴉɟlnoS",
+      "body": ".ǝuoʎǝɹʎǝuoɹǝʌǝɹ ɹoɟ ǝǝɹɟ ɹᴉɟlnoS dǝǝʞ puɐ ‚ʇuǝɯdoʅǝʌǝp puɐ sʇsod ɹǝʌɹǝs ɹǝʌoɔ sǝdlɥ uoᴉʇnᴉɹʇuoɔ ɹnoʎ ˙ʇɔǝɾoɹd ǝɥʇ ƃuᴉʇɹoddns ɹǝpᴉsuoɔ ǝsɐǝʅd ‚noʎ oʇ ʅnɟǝsq ǝɐɥ sɐɥ ǝɹᴉɟlnoS ɟI",
+      "dismiss": "ɹǝʇɐʅ ǝqɐʎɯ",
+      "action": "ǝɹᴉɟlnoS ʇɹoddoS"
+    },
     "createInstance": {
       "title": "ǝɔuɐʇsᴉ uǝʍ ɐ ǝʇɐɹɔ",
       "description": ".\"ʇoԐ ʇɐɹɔɐuǝᴉɯ ʎW ┴ :ǝ˙ǝʟԐԀ ןɐ ɹoɟ ƃuǝɯɐu ʎlpuᴉɹɟ pǝǝu sǝɔuɐʇsᴉ ≈ sǝʇuǝuᴉ | oɹxǝ ,ʇuɐʍ noʎ ǝɹɐu ǝɯɐu ʎuɐ pƃuᴉsɐɔɐ, ǝʎuoɾ oʇ ʎɐʍ ʎuɐ",
@@ -230,6 +237,9 @@
       "add": "pp∀",
       "remove": "ǝʌoɯǝᴚ"
     },
+    "combo": {
+      "searchPlaceholder": "˙˙˙ǝnlɐʌ ɥɔɹɐǝS"
+    },
     "invalidNumberToast": {
       "title": "!ɹǝqɯnu pᴉlɐʌuI",
       "description": "{{max}} puɐ {{min}} uǝǝʇʍǝq ǝq ʇsnɯ ǝnlɐʌ ǝɥ┴"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "ɹɐqǝpᴉS ǝƃƃlo┴"
+  },
+  "window": {
+    "minimize": "ǝzᴉɯᴉuᴉW",
+    "minimizeLabel": "ǝzᴉɯᴉuᴉʍ ǝzᴉuᴉɯ",
+    "maximize": "ǝzᴉɯᴉʌɐxɐW",
+    "maximizeLabel": "ǝzᴉɯᴉʌɐxɐʍ ǝzᴉuᴉɯ",
+    "restore": "ǝɹoʇsǝɹ",
+    "restoreLabel": "ǝɹoʇsǝɹ ǝzᴉuᴉɯ",
+    "close": "ǝsolↃ",
+    "closeLabel": "ǝzᴉuᴉɯ ǝsolɔ",
+    "back": "ʞɔɐԐ",
+    "backLabel": "ʞɔɐq o⅁",
+    "forward": "pɹɐʍɹoℲ",
+    "forwardLabel": "pɹɐʍɹoɟ o⅁"
+  },
+  "infoButton": {
+    "showInfo": "oɟuᴉ ʍoɥS"
   },
   "castMenu": {
     "title": "ʇsɐↃ",
@@ -334,6 +361,7 @@
     },
     "configDir": "ʎɹoʇɔǝɹᴉp ƃᴉɟᴉƆ",
     "dataDir": "ʎɹoʇɔǝɹᴉp ɐʇɐᗡ",
+    "supportSoulFire": "ǝɹᴉɟlnoS ʇɹoddoS",
     "about": "ʇnoq∀",
     "logOut": "ʇno ƃo˥",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "uoᴉʇɐʇuǝɯnɔoᗡ",
-    "supportSoulFire": "ǝǝɟɟoɔ ɐ ǝɯ ʎnq",
+    "supportSoulFire": "ǝɹᴉɟlnoS ʇɹoddoS",
     "discord": "poɹɔsᴉᗡ"
   },
   "breadcrumbs": {

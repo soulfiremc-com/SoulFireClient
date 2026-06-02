@@ -46,6 +46,13 @@
       },
       "close": "Fermer"
     },
+    "support": {
+      "title": "Soutenir SoulFire",
+      "description": "SoulFire est gratuit et open source, développé avec amour par la communauté.",
+      "body": "Si SoulFire vous a été utile, veuillez envisager de soutenir le projet. Votre contribution aide à couvrir les frais de serveur, à financer le développement et à garder SoulFire gratuit pour tous.",
+      "dismiss": "Peut-être plus tard",
+      "action": "Soutenir SoulFire"
+    },
     "createInstance": {
       "title": "Créer une nouvelle instance",
       "description": "Les instances ont besoin de noms conviviaux pour que vous puissiez les distinguer. Il peut s'agir du nom de votre choix, par exemple « Mon Bot Minecraft ».",
@@ -230,6 +237,9 @@
       "add": "Ajouter",
       "remove": "Retirer"
     },
+    "combo": {
+      "searchPlaceholder": "Rechercher une valeur..."
+    },
     "invalidNumberToast": {
       "title": "Nombre invalide !",
       "description": "La valeur doit être comprise entre {{min}} et {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Activer/désactiver la barre latérale"
+  },
+  "window": {
+    "minimize": "Minimiser",
+    "minimizeLabel": "Minimiser la fenêtre",
+    "maximize": "Agrandir",
+    "maximizeLabel": "Agrandir la fenêtre",
+    "restore": "Restaurer",
+    "restoreLabel": "Restaurer la fenêtre",
+    "close": "Fermer",
+    "closeLabel": "Fermer la fenêtre",
+    "back": "Retour",
+    "backLabel": "Revenir en arrière",
+    "forward": "Avancer",
+    "forwardLabel": "Aller en avant"
+  },
+  "infoButton": {
+    "showInfo": "Afficher les infos"
   },
   "castMenu": {
     "title": "Diffuser",
@@ -334,6 +361,7 @@
     },
     "configDir": "Dossier de configuration",
     "dataDir": "Dossier des données",
+    "supportSoulFire": "Soutenir SoulFire",
     "about": "À propos",
     "logOut": "Déconnexion",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Documentation",
-    "supportSoulFire": "Offrez-moi un café",
+    "supportSoulFire": "Soutenir SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

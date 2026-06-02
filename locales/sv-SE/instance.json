@@ -149,7 +149,21 @@
       "description": "Konfigurera inställningar per bot för detta konto",
       "openButton": "Konfigurera konto",
       "pageTitle": "{{name}} - {{page}} Inställningar",
-      "noSettings": "Inga inställningar tillgängliga för denna sida"
+      "noSettings": "Inga inställningar tillgängliga för denna sida",
+      "search": "Sökinställningar",
+      "overrides": "Åsidosättningar",
+      "allSettings": "Alla inställningar",
+      "noOverrides": "Den här boten har ännu inga explicita åsidosättningar.",
+      "noOverridesMatching": "Inga åsidosättningar matchar denna sökning.",
+      "noOverridesHelp": "Öppna Alla inställningar för att ärva värden eller skapa den första bot-specifika åsidosättningen.",
+      "tryDifferentSearch": "Försök med ett annat sökord.",
+      "openAllSettings": "Öppna alla inställningar",
+      "selectPage": "Välj en inställningssida",
+      "noSearchResults": "Inga inställningar matchar denna sökning.",
+      "matchesInheritedValue": "Matchar ärvt värde",
+      "instanceValue": "Instansvärde",
+      "defaultValue": "Standardvärde",
+      "resetOverride": "Återställ överskridande"
     },
     "deviceCodeConfirmDialog": {
       "title": "Enhetskodautentisering",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Inte ansluten",
     "backToBots": "Tillbaka till Botar",
+    "tabs": {
+      "overview": "Översikt",
+      "inventory": "Inventory",
+      "controls": "Kontroller",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Kommer snart",
     "terminalPanel": {
       "title": "Botterminal"
@@ -362,6 +382,102 @@
       "offline": "Bot är offline. Dialoger är endast tillgängliga när boten är ansluten."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "enderpärla"
+    },
+    "filters": {
+      "searchBots": "Sök bland botar...",
+      "searchClaims": "Sök anspråk...",
+      "noBotsMatchTitle": "Inga bottar matchar de aktuella filtren.",
+      "noBotsMatchDescription": "Justera eller rensa de aktuella filtren för att visa hela automatiseringslistan."
+    },
+    "attention": {
+      "empty": "Inga bottar verkar för närvarande vara fast eller försämrade."
+    },
+    "memory": {
+      "noBots": "Inga automationsbottar är tillgängliga för minnesinspektion.",
+      "blocks": "Block",
+      "noBlocks": "Inga ihågkomna block i denna ögonblicksbild.",
+      "containers": "Behållare",
+      "noContainers": "Inga ihågkomna behållare i denna ögonblicksbild.",
+      "entities": "Enheter",
+      "noEntities": "Inga ihågkomna enheter i denna ögonblicksbild.",
+      "droppedItems": "Släppta föremål",
+      "noDroppedItems": "Inga ihågkomna släppta föremål i denna ögonblicksbild.",
+      "unreachablePositions": "Oåtkomliga positioner",
+      "noUnreachablePositions": "Inga oåtkomliga positioner i denna ögonblicksbild."
+    },
+    "coordination": {
+      "sharedBlocks": "Delade block",
+      "noBlockHints": "Inga tips om delade block än.",
+      "eyeSamples": "Ögonprover",
+      "noEyeSamples": "Inga ögonprover registrerade."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Ingen data"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Trafik",
+      "health": "Hälsa",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots online",
+      "online": "Online",
+      "total": "Totalt"
+    },
+    "packets": {
+      "title": "Pakets / sekund",
+      "sent": "Skickat/s",
+      "received": "Mottaget/s"
+    },
+    "bandwidth": {
+      "title": "Bandbredd",
+      "upload": "Uppladdning",
+      "download": "Nedladdning"
+    },
+    "tick": {
+      "title": "Ticklängd",
+      "avg": "Genomsnitt (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Hälsa / Mat",
+      "health": "Genomsnittlig hälsa",
+      "food": "Genomsnittlig mat"
+    },
+    "chunksEntities": {
+      "title": "Chunker / Enheter",
+      "chunks": "Chunker",
+      "entities": "Enheter"
+    },
+    "connections": {
+      "title": "Anslutningshändelser",
+      "connections": "Anslutningar",
+      "disconnections": "Frånkopplingar"
+    },
+    "healthDistribution": {
+      "title": "Hälsofördelning",
+      "bots": "Bottar"
+    },
+    "dimensions": {
+      "title": "Dimensioner",
+      "bots": "Bottar"
+    },
+    "gameModes": {
+      "title": "Spellägen",
+      "bots": "Bottar"
+    },
+    "positions": {
+      "title": "Bottars positioner (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visuella skript",
     "description": "Skapa automationsskript med en visuell nodbaserad editor.",
@@ -430,6 +546,7 @@
         "pause": "Pausa",
         "pauseTooltip": "Pausa skriptkörning",
         "unsaved": "Ej sparad",
+        "unsavedChanges": "Osparade ändringar",
         "clearCanvas": "Rensa arbetsyta",
         "zoomIn": "Zooma in",
         "zoomOut": "Zooma ut",
@@ -462,6 +579,64 @@
         "showPreview": "Visa förhandsgranskning",
         "hidePreview": "Dölj förhandsgranskning",
         "delete": "Ta bort"
+      },
+      "node": {
+        "expand": "Expandera nod",
+        "collapse": "Dra ihop nod"
+      },
+      "debug": {
+        "copyValue": "Kopiera aktuellt värde",
+        "clearHistory": "Rensa historik"
+      },
+      "edge": {
+        "direction": "Kantens riktning"
+      },
+      "note": {
+        "placeholder": "Skriv en anteckning..."
+      },
+      "complexity": {
+        "title": "Skriptkomplexitetspoäng"
+      },
+      "group": {
+        "returnToRoot": "Återgå till rotnivån (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Snabbmeny för att lägga till nod",
+        "searchPlaceholder": "Sök noder..."
+      },
+      "diff": {
+        "tooltip": "Granska ändringar"
+      },
+      "dryRun": {
+        "tooltip": "Testkörning",
+        "title": "Testkör skript",
+        "description": "Kör ett skript från en vald trigger med simulerad indata.",
+        "triggerNode": "Trigger-nod",
+        "selectTrigger": "Välj en trigger...",
+        "triggerDescription": "Välj trigger-noden att köra med simulerade indata.",
+        "mockInputs": "Simulerad indata",
+        "valuePlaceholder": "{{type}}-värde",
+        "start": "Starta testkörning"
+      },
+      "quotas": {
+        "tooltip": "Skriptkvoter",
+        "title": "Skriptkvoter",
+        "description": "Konfigurera resursgränser för detta skript. Tomma fält använder serverns standardvärden.",
+        "maxExecutionCount": "Maximalt antal körningar",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximalt antal node-körningar per triggeranrop",
+        "maxExecutionTime": "Maximal körtid (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximal verklig tid per triggerkörning",
+        "maxConcurrentTriggers": "Maximalt antal samtidiga triggers",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximalt antal samtidiga triggeranrop",
+        "maxStateStoreEntries": "Maximalt antal poster i lagringsutrymmet",
+        "maxStateStoreEntriesPlaceholder": "Obegränsad",
+        "maxStateStoreEntriesDescription": "Maximalt antal poster i skriptets lagringsutrymme",
+        "disableTimeouts": "Inaktivera timeout",
+        "disableTimeoutsDescription": "Inaktiverar timeout för varje nod och datakant",
+        "save": "Spara kvoter"
       }
     }
   }

@@ -46,6 +46,13 @@
       },
       "close": "Stäng"
     },
+    "support": {
+      "title": "Stöd SoulFire",
+      "description": "SoulFire är gratis och öppen källkod, byggd med kärlek av communityn.",
+      "body": "Om SoulFire har varit användbar för dig, överväg gärna att stödja projektet. Ditt bidrag hjälper till att täcka serverkostnader, finansiera utveckling och hålla SoulFire gratis för alla.",
+      "dismiss": "Kanske senare",
+      "action": "Stöd SoulFire"
+    },
     "createInstance": {
       "title": "Skapa en ny instans",
       "description": "Instanser behöver vänliga namn så du kan särskilja dem. Det kan vara vilket namn som helst, t.ex. \"Min Minecraft-bot\".",
@@ -230,6 +237,9 @@
       "add": "Lägg till",
       "remove": "Ta bort"
     },
+    "combo": {
+      "searchPlaceholder": "Sökvärde..."
+    },
     "invalidNumberToast": {
       "title": "Ogiltigt nummer!",
       "description": "Värdet måste vara mellan {{min}} och {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Visa/dölj sidofält"
+  },
+  "window": {
+    "minimize": "Minimera",
+    "minimizeLabel": "Minimera fönster",
+    "maximize": "Maximera",
+    "maximizeLabel": "Maximera fönster",
+    "restore": "Återställ",
+    "restoreLabel": "Återställ fönster",
+    "close": "Stäng",
+    "closeLabel": "Stäng fönster",
+    "back": "Tillbaka",
+    "backLabel": "Gå tillbaka",
+    "forward": "Framåt",
+    "forwardLabel": "Gå framåt"
+  },
+  "infoButton": {
+    "showInfo": "Visa info"
   },
   "castMenu": {
     "title": "Casta",
@@ -334,6 +361,7 @@
     },
     "configDir": "Konfigurationsmapp",
     "dataDir": "Datamapp",
+    "supportSoulFire": "Stöd SoulFire",
     "about": "Om",
     "logOut": "Logga ut",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentation",
-    "supportSoulFire": "Bjud på en kaffe",
+    "supportSoulFire": "Stöd SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

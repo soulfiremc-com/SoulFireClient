@@ -46,6 +46,13 @@
       },
       "close": "Schließen"
     },
+    "support": {
+      "title": "SoulFire unterstützen",
+      "description": "SoulFire ist kostenlos und Open-Source und wird mit Liebe von der Community entwickelt.",
+      "body": "Wenn SoulFire dir geholfen hat, erwäge bitte, das Projekt zu unterstützen. Dein Beitrag hilft, die Serverkosten zu decken, die Entwicklung zu fördern und SoulFire für alle kostenlos zu halten.",
+      "dismiss": "Vielleicht später",
+      "action": "SoulFire unterstützen"
+    },
     "createInstance": {
       "title": "Neue Instanz erstellen",
       "description": "Instanzen benötigen Anzeigenamen, um sie zu unterscheiden. Es kann jeder Name sein, den du möchtest, zum Beispiel \"Mein Minecraft-Bot\".",
@@ -230,6 +237,9 @@
       "add": "Hinzufügen",
       "remove": "Entfernen"
     },
+    "combo": {
+      "searchPlaceholder": "Suchwert..."
+    },
     "invalidNumberToast": {
       "title": "Ungültige Zahl!",
       "description": "Der Wert muss zwischen {{min}} und {{max}} liegen"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Seitenleiste umschalten"
+  },
+  "window": {
+    "minimize": "Minimieren",
+    "minimizeLabel": "Fenster minimieren",
+    "maximize": "Maximieren",
+    "maximizeLabel": "Fenster maximieren",
+    "restore": "Wiederherstellen",
+    "restoreLabel": "Fenster wiederherstellen",
+    "close": "Schließen",
+    "closeLabel": "Fenster schließen",
+    "back": "Zurück",
+    "backLabel": "Zurück",
+    "forward": "Vorwärts",
+    "forwardLabel": "Vorwärts gehen"
+  },
+  "infoButton": {
+    "showInfo": "Info anzeigen"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +361,7 @@
     },
     "configDir": "Konfigverzeichnis",
     "dataDir": "Datenverzeichnis",
+    "supportSoulFire": "SoulFire unterstützen",
     "about": "Über",
     "logOut": "Ausloggen",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentation",
-    "supportSoulFire": "Kauf mir einen Kaffee",
+    "supportSoulFire": "SoulFire unterstützen",
     "discord": "Discord"
   },
   "breadcrumbs": {

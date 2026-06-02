@@ -149,7 +149,21 @@
       "description": "Pro-Bot-Einstellungen für dieses Konto konfigurieren",
       "openButton": "Konto konfigurieren",
       "pageTitle": "{{name}} - {{page}} Einstellungen",
-      "noSettings": "Für diese Seite sind keine Einstellungen verfügbar"
+      "noSettings": "Für diese Seite sind keine Einstellungen verfügbar",
+      "search": "Sucheinstellungen",
+      "overrides": "Überschreibungen",
+      "allSettings": "Alle Einstellungen",
+      "noOverrides": "Dieser Bot hat noch keine expliziten Überschreibungen.",
+      "noOverridesMatching": "Keine Überschreibungen entsprechen dieser Suche.",
+      "noOverridesHelp": "Öffne \"Alle Einstellungen\", um Werte zu übernehmen oder erstelle die erste bot-spezifische Überschreibung.",
+      "tryDifferentSearch": "Versuche es mit einem anderen Suchbegriff.",
+      "openAllSettings": "Alle Einstellungen öffnen",
+      "selectPage": "Eine Einstellungsseite auswählen",
+      "noSearchResults": "Keine Einstellungen entsprechen dieser Suche.",
+      "matchesInheritedValue": "Entspricht dem geerbten Wert",
+      "instanceValue": "Instanzwert",
+      "defaultValue": "Standardwert",
+      "resetOverride": "Überschreibung zurücksetzen"
     },
     "deviceCodeConfirmDialog": {
       "title": "Gerätecode-Authentifizierung",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Nicht beigetreten",
     "backToBots": "Zurück zu Bots",
+    "tabs": {
+      "overview": "Übersicht",
+      "inventory": "Inventar",
+      "controls": "Steuerung",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Demnächst verfügbar",
     "terminalPanel": {
       "title": "Bot-Terminal"
@@ -362,6 +382,102 @@
       "offline": "Bot ist offline. Dialoge sind nur verfügbar, wenn der Bot verbunden ist."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Bots suchen...",
+      "searchClaims": "Ansprüche suchen...",
+      "noBotsMatchTitle": "Keine Bots entsprechen den aktuellen Filtern.",
+      "noBotsMatchDescription": "Passen Sie die aktuellen Filter an oder löschen Sie sie, um das vollständige Automatisierungs-Roster einzusehen."
+    },
+    "attention": {
+      "empty": "Derzeit sehen keine Bots blockiert oder beeinträchtigt aus."
+    },
+    "memory": {
+      "noBots": "Keine Automatisierungs-Bots sind für die Speicherprüfung verfügbar.",
+      "blocks": "Blöcke",
+      "noBlocks": "Keine gespeicherten Blöcke in diesem Snapshot.",
+      "containers": "Behälter",
+      "noContainers": "Keine gespeicherten Behälter in diesem Snapshot.",
+      "entities": "Entitäten",
+      "noEntities": "Keine gespeicherten Entitäten in diesem Snapshot.",
+      "droppedItems": "Fallengelassene Gegenstände",
+      "noDroppedItems": "Keine gespeicherten fallengelassenen Gegenstände in diesem Snapshot.",
+      "unreachablePositions": "Unerreichbare Positionen",
+      "noUnreachablePositions": "Keine unerreichbaren Positionen in diesem Snapshot."
+    },
+    "coordination": {
+      "sharedBlocks": "Geteilte Blöcke",
+      "noBlockHints": "Noch keine Hinweise zu geteilten Blöcken.",
+      "eyeSamples": "Augenproben",
+      "noEyeSamples": "Keine Augenproben aufgezeichnet."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Keine Daten"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Verkehr",
+      "health": "Gesundheit",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots online",
+      "online": "Online",
+      "total": "Gesamt"
+    },
+    "packets": {
+      "title": "Pakete / Sekunde",
+      "sent": "Gesendet/s",
+      "received": "Empf./s"
+    },
+    "bandwidth": {
+      "title": "Bandbreite",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Tick-Dauer",
+      "avg": "Durchschn. (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Leben / Nahrung",
+      "health": "Durchschn. Leben",
+      "food": "Durchschn. Nahrung"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entitäten",
+      "chunks": "Chunks",
+      "entities": "Entitäten"
+    },
+    "connections": {
+      "title": "Verbindungsereignisse",
+      "connections": "Verbindungen",
+      "disconnections": "Trennungen"
+    },
+    "healthDistribution": {
+      "title": "Lebenspunkte-Verteilung",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensionen",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Spielmodi",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Bot-Positionen (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visuelle Skripte",
     "description": "Erstellen Sie Automatisierungsskripte mit einem visuellen, node-basierten Editor.",
@@ -430,6 +546,7 @@
         "pause": "Pausieren",
         "pauseTooltip": "Skriptausführung pausieren",
         "unsaved": "Nicht gespeichert",
+        "unsavedChanges": "Ungespeicherte Änderungen",
         "clearCanvas": "Leinwand leeren",
         "zoomIn": "Vergrößern",
         "zoomOut": "Verkleinern",
@@ -462,6 +579,64 @@
         "showPreview": "Vorschau anzeigen",
         "hidePreview": "Vorschau ausblenden",
         "delete": "Löschen"
+      },
+      "node": {
+        "expand": "Knoten erweitern",
+        "collapse": "Knoten reduzieren"
+      },
+      "debug": {
+        "copyValue": "Aktuellen Wert kopieren",
+        "clearHistory": "Verlauf löschen"
+      },
+      "edge": {
+        "direction": "Kantenrichtung"
+      },
+      "note": {
+        "placeholder": "Notiz schreiben..."
+      },
+      "complexity": {
+        "title": "Skript-Komplexitätswert"
+      },
+      "group": {
+        "returnToRoot": "Zur Wurzel zurückkehren (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Schnell hinzufügen - Knotenmenü",
+        "searchPlaceholder": "Knoten suchen..."
+      },
+      "diff": {
+        "tooltip": "Änderungen prüfen"
+      },
+      "dryRun": {
+        "tooltip": "Probelauf",
+        "title": "Probelauf-Skript",
+        "description": "Führen Sie ein Skript von einem ausgewählten Auslöser mit simulierten Eingaben aus.",
+        "triggerNode": "Auslöser-Knoten",
+        "selectTrigger": "Wählen Sie einen Auslöser...",
+        "triggerDescription": "Wählen Sie den Auslöser-Knoten aus, der mit simulierten Eingabewerten ausgeführt werden soll.",
+        "mockInputs": "Simulierte Eingaben",
+        "valuePlaceholder": "{{type}} Wert",
+        "start": "Probelauf starten"
+      },
+      "quotas": {
+        "tooltip": "Skript-Kontingente",
+        "title": "Skript-Kontingente",
+        "description": "Konfigurieren Sie Ressourcengrenzen für dieses Skript. Leere Felder verwenden die Server-Standards.",
+        "maxExecutionCount": "Maximale Ausführungsanzahl",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximale Knotenausführungen pro Auslöser-Aufruf",
+        "maxExecutionTime": "Maximale Ausführungszeit (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximale Echtzeit pro Auslöser-Ausführung",
+        "maxConcurrentTriggers": "Maximal gleichzeitige Auslöser",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximale gleichzeitige Auslöser-Aufrufe",
+        "maxStateStoreEntries": "Maximale State Store-Einträge",
+        "maxStateStoreEntriesPlaceholder": "Unbegrenzt",
+        "maxStateStoreEntriesDescription": "Maximale Einträge im Skript-State Store",
+        "disableTimeouts": "Timeouts deaktivieren",
+        "disableTimeoutsDescription": "Deaktiviert Timeouts pro Knoten und Datenkante",
+        "save": "Kontingente speichern"
       }
     }
   }

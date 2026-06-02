@@ -149,7 +149,21 @@
       "description": "Configura le impostazioni per-bot di questo account",
       "openButton": "Configura account",
       "pageTitle": "Impostazioni di {{name}} - {{page}}",
-      "noSettings": "Nessuna impostazione disponibile per questa pagina"
+      "noSettings": "Nessuna impostazione disponibile per questa pagina",
+      "search": "Impostazioni di ricerca",
+      "overrides": "Sostituzioni",
+      "allSettings": "Tutte le impostazioni",
+      "noOverrides": "Questo bot non ha ancora nessuna sostituzione esplicita.",
+      "noOverridesMatching": "Nessuna sostituzione corrisponde a questa ricerca.",
+      "noOverridesHelp": "Apri tutte le impostazioni per ereditare i valori o crea la prima sostituzione specifica del bot.",
+      "tryDifferentSearch": "Prova un termine di ricerca diverso.",
+      "openAllSettings": "Apri tutte le impostazioni.",
+      "selectPage": "Seleziona una pagina delle impostazioni",
+      "noSearchResults": "Nessuna impostazione corrisponde a questa ricerca.",
+      "matchesInheritedValue": "Corrisponde al valore ereditato",
+      "instanceValue": "Valore dell'istanza",
+      "defaultValue": "Valore predefinito",
+      "resetOverride": "Reimposta sostituzione"
     },
     "deviceCodeConfirmDialog": {
       "title": "Autenticazione tramite codice dispositivo",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Non unito",
     "backToBots": "Torna ai Bot",
+    "tabs": {
+      "overview": "Panoramica",
+      "inventory": "Inventario",
+      "controls": "Controlli",
+      "terminal": "Terminale"
+    },
     "comingSoon": "Prossimamente",
     "terminalPanel": {
       "title": "Terminale Bot"
@@ -362,6 +382,102 @@
       "offline": "Il bot è offline. I dialoghi sono disponibili solo quando il bot è connesso."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Cerca bot...",
+      "searchClaims": "Cerca rivendicazioni...",
+      "noBotsMatchTitle": "Nessun bot corrisponde ai filtri attuali.",
+      "noBotsMatchDescription": "Modifica o cancella i filtri attuali per visualizzare l'intero elenco di automazione."
+    },
+    "attention": {
+      "empty": "Nessun bot attualmente sembra bloccato o degradato."
+    },
+    "memory": {
+      "noBots": "Nessun bot di automazione disponibile per l'ispezione della memoria.",
+      "blocks": "Blocchi",
+      "noBlocks": "Nessun blocco memorizzato in questo snapshot.",
+      "containers": "Contenitori",
+      "noContainers": "Nessun contenitore memorizzato in questo snapshot.",
+      "entities": "Entità",
+      "noEntities": "Nessuna entità memorizzata in questo snapshot.",
+      "droppedItems": "Oggetti lasciati cadere",
+      "noDroppedItems": "Nessun oggetto lasciato cadere memorizzato in questo snapshot.",
+      "unreachablePositions": "Posizioni irraggiungibili",
+      "noUnreachablePositions": "Nessuna posizione irraggiungibile in questo snapshot."
+    },
+    "coordination": {
+      "sharedBlocks": "Blocchi condivisi",
+      "noBlockHints": "Nessun suggerimento di blocco condiviso al momento.",
+      "eyeSamples": "Campioni di visione",
+      "noEyeSamples": "Nessun campione di visione registrato."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Nessun dato"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Traffico",
+      "health": "Salute",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bot online",
+      "online": "Online",
+      "total": "Totale"
+    },
+    "packets": {
+      "title": "Pacchetti / Secondo",
+      "sent": "Inviati/s",
+      "received": "Ricevuti/s"
+    },
+    "bandwidth": {
+      "title": "Banda",
+      "upload": "Caricamento",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Durata del tick",
+      "avg": "Media (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Salute / Cibo",
+      "health": "Salute media",
+      "food": "Cibo medio"
+    },
+    "chunksEntities": {
+      "title": "Chunk / Entità",
+      "chunks": "Chunk",
+      "entities": "Entità"
+    },
+    "connections": {
+      "title": "Eventi di connessione",
+      "connections": "Connessioni",
+      "disconnections": "Disconnessioni"
+    },
+    "healthDistribution": {
+      "title": "Distribuzione della salute",
+      "bots": "Bot"
+    },
+    "dimensions": {
+      "title": "Dimensioni",
+      "bots": "Bot"
+    },
+    "gameModes": {
+      "title": "Modalità di gioco",
+      "bots": "Bot"
+    },
+    "positions": {
+      "title": "Posizioni Bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Script Visuali",
     "description": "Crea script di automazione usando un editor visuale basato su nodi.",
@@ -430,6 +546,7 @@
         "pause": "Pausa",
         "pauseTooltip": "Metti in pausa l'esecuzione dello script",
         "unsaved": "Non salvato",
+        "unsavedChanges": "Modifiche non salvate",
         "clearCanvas": "Pulisci area di lavoro",
         "zoomIn": "Ingrandisci",
         "zoomOut": "Riduci",
@@ -462,6 +579,64 @@
         "showPreview": "Mostra anteprima",
         "hidePreview": "Nascondi anteprima",
         "delete": "Elimina"
+      },
+      "node": {
+        "expand": "Espandi nodo",
+        "collapse": "Comprimi nodo"
+      },
+      "debug": {
+        "copyValue": "Copia valore attuale",
+        "clearHistory": "Cancella cronologia"
+      },
+      "edge": {
+        "direction": "Direzione lato"
+      },
+      "note": {
+        "placeholder": "Scrivi una nota..."
+      },
+      "complexity": {
+        "title": "Punteggio complessità script"
+      },
+      "group": {
+        "returnToRoot": "Torna alla radice (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu aggiunta rapida nodo",
+        "searchPlaceholder": "Cerca nodi..."
+      },
+      "diff": {
+        "tooltip": "Revisiona modifiche"
+      },
+      "dryRun": {
+        "tooltip": "Esecuzione di prova",
+        "title": "Script di prova",
+        "description": "Esegui uno script da un trigger selezionato con input di prova.",
+        "triggerNode": "Nodo Trigger",
+        "selectTrigger": "Seleziona un trigger...",
+        "triggerDescription": "Scegli il nodo trigger da eseguire con valori di input di prova.",
+        "mockInputs": "Input di prova",
+        "valuePlaceholder": "Valore {{type}}",
+        "start": "Avvia esecuzione di prova"
+      },
+      "quotas": {
+        "tooltip": "Quote script",
+        "title": "Quote script",
+        "description": "Configura i limiti delle risorse per questo script. I campi vuoti usano i valori predefiniti del server.",
+        "maxExecutionCount": "Conteggio massimo di esecuzioni",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Massimo numero di esecuzioni dei nodi per ogni attivazione del trigger",
+        "maxExecutionTime": "Tempo massimo di esecuzione (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Tempo massimo per ciascuna esecuzione con orologio reale per trigger",
+        "maxConcurrentTriggers": "Trigger concorrenti massimi",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Numero massimo di trigger concorrenti",
+        "maxStateStoreEntries": "Voci massime archivio di stato",
+        "maxStateStoreEntriesPlaceholder": "Illimitato",
+        "maxStateStoreEntriesDescription": "Numero massimo di voci nello stato dello script",
+        "disableTimeouts": "Disabilita timeout",
+        "disableTimeoutsDescription": "Disabilita i timeout per singoli nodi e per i collegamenti di dati",
+        "save": "Salva quote"
       }
     }
   }

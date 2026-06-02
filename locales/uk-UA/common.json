@@ -46,6 +46,13 @@
       },
       "close": "Закрити"
     },
+    "support": {
+      "title": "Підтримати SoulFire",
+      "description": "SoulFire безкоштовний і з відкритим кодом, створений з любовʼю спільнотою.",
+      "body": "Якщо SoulFire був для вас корисний, будь ласка, розгляньте можливість підтримати проєкт. Ваш внесок допомагає покривати витрати на сервери, фінансувати розробку й залишати SoulFire безкоштовним для всіх.",
+      "dismiss": "Можливо, пізніше",
+      "action": "Підтримати SoulFire"
+    },
     "createInstance": {
       "title": "Створити новий екземпляр",
       "description": "Екземплярам потрібні дружні імена, щоб ви могли їх розрізняти. Це може бути будь-яке ім'я, наприклад, \"Мій бот Minecraft\".",
@@ -230,6 +237,9 @@
       "add": "Додати",
       "remove": "Видалити"
     },
+    "combo": {
+      "searchPlaceholder": "Знайти значення..."
+    },
     "invalidNumberToast": {
       "title": "Некоректне число!",
       "description": "Значення має бути між {{min}} і {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Показати/Сховати бічну панель"
+  },
+  "window": {
+    "minimize": "Згорнути",
+    "minimizeLabel": "Згорнути вікно",
+    "maximize": "Розгорнути",
+    "maximizeLabel": "Розгорнути вікно",
+    "restore": "Відновити",
+    "restoreLabel": "Відновити вікно",
+    "close": "Закрити",
+    "closeLabel": "Закрити вікно",
+    "back": "Назад",
+    "backLabel": "Назад",
+    "forward": "Вперед",
+    "forwardLabel": "Перейти вперед"
+  },
+  "infoButton": {
+    "showInfo": "Показати інформацію"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +361,7 @@
     },
     "configDir": "Директорія конфігурації",
     "dataDir": "Директорія даних",
+    "supportSoulFire": "Підтримати SoulFire",
     "about": "Про",
     "logOut": "Вийти",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Документація",
-    "supportSoulFire": "Купити мені каву",
+    "supportSoulFire": "Підтримати SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

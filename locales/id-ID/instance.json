@@ -149,7 +149,21 @@
       "description": "Atur pengaturan per-bot untuk akun ini",
       "openButton": "Konfigurasi akun",
       "pageTitle": "{{name}} - Pengaturan {{page}}",
-      "noSettings": "Tidak ada pengaturan yang tersedia untuk halaman ini"
+      "noSettings": "Tidak ada pengaturan yang tersedia untuk halaman ini",
+      "search": "Pengaturan pencarian",
+      "overrides": "Penimpaan",
+      "allSettings": "Semua pengaturan",
+      "noOverrides": "Bot ini belum memiliki penimpaan eksplisit.",
+      "noOverridesMatching": "Tidak ada penimpaan yang cocok dengan pencarian ini.",
+      "noOverridesHelp": "Buka Semua pengaturan untuk mewarisi nilai atau buat penimpaan khusus bot pertama.",
+      "tryDifferentSearch": "Coba istilah pencarian lain.",
+      "openAllSettings": "Buka semua pengaturan",
+      "selectPage": "Pilih halaman pengaturan",
+      "noSearchResults": "Tidak ada pengaturan yang cocok dengan pencarian ini.",
+      "matchesInheritedValue": "Cocok dengan nilai turunan",
+      "instanceValue": "Nilai instance",
+      "defaultValue": "Nilai default",
+      "resetOverride": "Atur ulang penggantian"
     },
     "deviceCodeConfirmDialog": {
       "title": "Otentikasi Kode Perangkat",
@@ -232,6 +246,12 @@
     "offline": "Luring",
     "notJoined": "Belum Bergabung",
     "backToBots": "Kembali ke Bot",
+    "tabs": {
+      "overview": "Ikhtisar",
+      "inventory": "Inventaris",
+      "controls": "Kontrol",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Segera Hadir",
     "terminalPanel": {
       "title": "Terminal Bot"
@@ -362,6 +382,102 @@
       "offline": "Bot sedang offline. Dialog hanya tersedia saat bot terhubung."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Cari bot...",
+      "searchClaims": "Cari klaim...",
+      "noBotsMatchTitle": "Tidak ada bot yang cocok dengan filter saat ini.",
+      "noBotsMatchDescription": "Sesuaikan atau hapus filter saat ini untuk melihat semua daftar otomatisasi."
+    },
+    "attention": {
+      "empty": "Tidak ada bot yang tampak terhenti atau menurun saat ini."
+    },
+    "memory": {
+      "noBots": "Tidak ada bot otomatisasi yang tersedia untuk inspeksi memori.",
+      "blocks": "Blok",
+      "noBlocks": "Tidak ada blok yang diingat dalam snapshot ini.",
+      "containers": "Kontainer",
+      "noContainers": "Tidak ada kontainer yang diingat dalam snapshot ini.",
+      "entities": "Entitas",
+      "noEntities": "Tidak ada entitas yang diingat dalam snapshot ini.",
+      "droppedItems": "Item Terjatuh",
+      "noDroppedItems": "Tidak ada item yang terjatuh dan diingat dalam snapshot ini.",
+      "unreachablePositions": "Posisi Tak Terjangkau",
+      "noUnreachablePositions": "Tidak ada posisi tak terjangkau dalam snapshot ini."
+    },
+    "coordination": {
+      "sharedBlocks": "Blok Bersama",
+      "noBlockHints": "Belum ada petunjuk blok bersama.",
+      "eyeSamples": "Sampel Mata",
+      "noEyeSamples": "Belum ada sampel mata yang direkam."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Tidak ada data"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/d",
+      "traffic": "Lalu lintas",
+      "health": "Kesehatan",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bot Online",
+      "online": "Online",
+      "total": "Total"
+    },
+    "packets": {
+      "title": "Paket / Detik",
+      "sent": "Dikirim/d",
+      "received": "Diterima/d"
+    },
+    "bandwidth": {
+      "title": "Bandwidth",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Durasi Tick",
+      "avg": "Rata-rata (ms)",
+      "max": "Maks (ms)"
+    },
+    "healthFood": {
+      "title": "Kesehatan / Makanan",
+      "health": "Rata-rata Kesehatan",
+      "food": "Rata-rata Makanan"
+    },
+    "chunksEntities": {
+      "title": "Chunk / Entitas",
+      "chunks": "Chunk",
+      "entities": "Entitas"
+    },
+    "connections": {
+      "title": "Peristiwa Koneksi",
+      "connections": "Koneksi",
+      "disconnections": "Diskoneksi"
+    },
+    "healthDistribution": {
+      "title": "Distribusi Kesehatan",
+      "bots": "Bot"
+    },
+    "dimensions": {
+      "title": "Dimensi",
+      "bots": "Bot"
+    },
+    "gameModes": {
+      "title": "Mode Permainan",
+      "bots": "Bot"
+    },
+    "positions": {
+      "title": "Posisi Bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Skrip Visual",
     "description": "Buat skrip otomatisasi menggunakan editor node visual.",
@@ -430,6 +546,7 @@
         "pause": "Jeda",
         "pauseTooltip": "Jeda eksekusi skrip",
         "unsaved": "Belum disimpan",
+        "unsavedChanges": "Perubahan belum disimpan",
         "clearCanvas": "Bersihkan kanvas",
         "zoomIn": "Perbesar",
         "zoomOut": "Perkecil",
@@ -461,6 +578,64 @@
         "showPreview": "Tampilkan Pratinjau",
         "hidePreview": "Sembunyikan Pratinjau",
         "delete": "Hapus"
+      },
+      "node": {
+        "expand": "Perluas node",
+        "collapse": "Ciutkan node"
+      },
+      "debug": {
+        "copyValue": "Salin nilai saat ini",
+        "clearHistory": "Bersihkan riwayat"
+      },
+      "edge": {
+        "direction": "Arah edge"
+      },
+      "note": {
+        "placeholder": "Tulis catatan..."
+      },
+      "complexity": {
+        "title": "Skor kompleksitas skrip"
+      },
+      "group": {
+        "returnToRoot": "Kembali ke root (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu tambah node cepat",
+        "searchPlaceholder": "Cari node..."
+      },
+      "diff": {
+        "tooltip": "Tinjau perubahan"
+      },
+      "dryRun": {
+        "tooltip": "Dry Run",
+        "title": "Script Dry Run",
+        "description": "Jalankan skrip dari trigger yang dipilih dengan input tiruan.",
+        "triggerNode": "Node Trigger",
+        "selectTrigger": "Pilih trigger...",
+        "triggerDescription": "Pilih node trigger untuk dieksekusi dengan nilai input tiruan.",
+        "mockInputs": "Input Tiruan",
+        "valuePlaceholder": "nilai {{type}}",
+        "start": "Mulai Dry Run"
+      },
+      "quotas": {
+        "tooltip": "Kuota Skrip",
+        "title": "Kuota Skrip",
+        "description": "Atur batas sumber daya untuk skrip ini. Kolom kosong akan memakai standar server.",
+        "maxExecutionCount": "Jumlah Eksekusi Maksimum",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maksimum eksekusi node per pemanggilan trigger",
+        "maxExecutionTime": "Waktu Eksekusi Maksimum (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Waktu wall-clock maksimum per eksekusi trigger",
+        "maxConcurrentTriggers": "Trigger Bersamaan Maksimum",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Pemanggilan trigger bersamaan maksimum",
+        "maxStateStoreEntries": "Entri State Store Maksimum",
+        "maxStateStoreEntriesPlaceholder": "Tidak terbatas",
+        "maxStateStoreEntriesDescription": "Jumlah entri maksimum di state store skrip",
+        "disableTimeouts": "Nonaktifkan Timeout",
+        "disableTimeoutsDescription": "Menonaktifkan timeout per-node dan data edge",
+        "save": "Simpan Kuota"
       }
     }
   }

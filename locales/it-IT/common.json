@@ -46,6 +46,13 @@
       },
       "close": "Chiudi"
     },
+    "support": {
+      "title": "Supporta SoulFire",
+      "description": "SoulFire è gratuito e open-source, creato con amore dalla comunità.",
+      "body": "Se SoulFire ti è stato utile, ti preghiamo di considerare di sostenere il progetto. Il tuo contributo aiuta a coprire i costi dei server, finanziare lo sviluppo e mantenere SoulFire gratuito per tutti.",
+      "dismiss": "Forse più tardi",
+      "action": "Supporta SoulFire"
+    },
     "createInstance": {
       "title": "Crea una nuova istanza",
       "description": "Le istanze hanno bisogno di nomi descrittivi per distinguerle. Può essere qualsiasi nome, ad esempio, \"Il mio Bot Minecraft\".",
@@ -230,6 +237,9 @@
       "add": "Aggiungi",
       "remove": "Rimuovi"
     },
+    "combo": {
+      "searchPlaceholder": "Cerca valore..."
+    },
     "invalidNumberToast": {
       "title": "Numero non valido!",
       "description": "Il valore deve essere compreso tra {{min}} e {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Mostra/Nascondi barra laterale"
+  },
+  "window": {
+    "minimize": "Minimizza",
+    "minimizeLabel": "Minimizza finestra",
+    "maximize": "Massimizza",
+    "maximizeLabel": "Massimizza finestra",
+    "restore": "Ripristina",
+    "restoreLabel": "Ripristina finestra",
+    "close": "Chiudi",
+    "closeLabel": "Chiudi finestra",
+    "back": "Indietro",
+    "backLabel": "Torna indietro",
+    "forward": "Avanti",
+    "forwardLabel": "Vai avanti"
+  },
+  "infoButton": {
+    "showInfo": "Mostra info"
   },
   "castMenu": {
     "title": "Trasmetti",
@@ -334,6 +361,7 @@
     },
     "configDir": "Cartella configurazione",
     "dataDir": "Cartella dati",
+    "supportSoulFire": "Supporta SoulFire",
     "about": "Informazioni",
     "logOut": "Disconnetti",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Documentazione",
-    "supportSoulFire": "Offrimi un caffè",
+    "supportSoulFire": "Supporta SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

@@ -149,7 +149,21 @@
       "description": "Skonfiguruj ustawienia dla tego konta osobno dla każdego bota",
       "openButton": "Skonfiguruj konto",
       "pageTitle": "{{name}} - Ustawienia {{page}}",
-      "noSettings": "Brak dostępnych ustawień dla tej strony"
+      "noSettings": "Brak dostępnych ustawień dla tej strony",
+      "search": "Ustawienia wyszukiwania",
+      "overrides": "Nadpisania",
+      "allSettings": "Wszystkie ustawienia",
+      "noOverrides": "Ten bot nie ma jeszcze żadnych jawnych nadpisań.",
+      "noOverridesMatching": "Brak nadpisań pasujących do tego wyszukiwania.",
+      "noOverridesHelp": "Otwórz Wszystkie ustawienia, aby odziedziczyć wartości lub utwórz pierwsze nadpisanie specyficzne dla bota.",
+      "tryDifferentSearch": "Spróbuj innego hasła wyszukiwania.",
+      "openAllSettings": "Otwórz wszystkie ustawienia",
+      "selectPage": "Wybierz stronę ustawień",
+      "noSearchResults": "Brak ustawień pasujących do tego wyszukiwania.",
+      "matchesInheritedValue": "Pasuje do wartości dziedziczonej",
+      "instanceValue": "Wartość instancji",
+      "defaultValue": "Wartość domyślna",
+      "resetOverride": "Resetuj nadpisanie"
     },
     "deviceCodeConfirmDialog": {
       "title": "Uwierzytelnianie za pomocą kodu urządzenia",
@@ -232,6 +246,12 @@
     "offline": "Niedostępny",
     "notJoined": "Nie dołączono",
     "backToBots": "Powrót do botów",
+    "tabs": {
+      "overview": "Przegląd",
+      "inventory": "Ekwipunek",
+      "controls": "Sterowanie",
+      "terminal": "Konsola"
+    },
     "comingSoon": "Wkrótce dostępne",
     "terminalPanel": {
       "title": "Terminal Bota"
@@ -362,6 +382,102 @@
       "offline": "Bot jest offline. Dialogi są dostępne tylko gdy bot jest połączony."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Szukaj botów...",
+      "searchClaims": "Szukaj działek...",
+      "noBotsMatchTitle": "Żadne boty nie spełniają obecnych filtrów.",
+      "noBotsMatchDescription": "Dostosuj lub wyczyść filtry, aby zobaczyć pełną listę automatyzacji."
+    },
+    "attention": {
+      "empty": "Żadne boty nie wydają się obecnie zacięte lub zdegradowane."
+    },
+    "memory": {
+      "noBots": "Brak dostępnych botów do inspekcji pamięci.",
+      "blocks": "Bloki",
+      "noBlocks": "Brak zapamiętanych bloków w tym migawce.",
+      "containers": "Kontenery",
+      "noContainers": "Brak zapamiętanych kontenerów w tym migawce.",
+      "entities": "Byty",
+      "noEntities": "Brak zapamiętanych bytów w tym migawce.",
+      "droppedItems": "Upuszczone przedmioty",
+      "noDroppedItems": "Brak zapamiętanych upuszczonych przedmiotów w tym migawce.",
+      "unreachablePositions": "Nieosiągalne pozycje",
+      "noUnreachablePositions": "Brak nieosiągalnych pozycji w tym migawce."
+    },
+    "coordination": {
+      "sharedBlocks": "Współdzielone bloki",
+      "noBlockHints": "Brak wskazówek o współdzielonych blokach.",
+      "eyeSamples": "Próbki oka",
+      "noEyeSamples": "Brak zapisanych próbek oka."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Brak danych"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Ruch sieciowy",
+      "health": "Zdrowie",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Boty online",
+      "online": "Online",
+      "total": "Razem"
+    },
+    "packets": {
+      "title": "Pakiety / Sekunda",
+      "sent": "Wysłane/s",
+      "received": "Odebrane/s"
+    },
+    "bandwidth": {
+      "title": "Przepustowość",
+      "upload": "Wysłane",
+      "download": "Pobrane"
+    },
+    "tick": {
+      "title": "Czas trwania ticka",
+      "avg": "Średnia (ms)",
+      "max": "Maks. (ms)"
+    },
+    "healthFood": {
+      "title": "Zdrowie / Jedzenie",
+      "health": "Średnie zdrowie",
+      "food": "Średnie jedzenie"
+    },
+    "chunksEntities": {
+      "title": "Chunki / Byty",
+      "chunks": "Chunki",
+      "entities": "Byty"
+    },
+    "connections": {
+      "title": "Zdarzenia połączeń",
+      "connections": "Połączenia",
+      "disconnections": "Rozłączenia"
+    },
+    "healthDistribution": {
+      "title": "Rozkład zdrowia",
+      "bots": "Boty"
+    },
+    "dimensions": {
+      "title": "Wymiary",
+      "bots": "Boty"
+    },
+    "gameModes": {
+      "title": "Tryby gry",
+      "bots": "Boty"
+    },
+    "positions": {
+      "title": "Pozycje bota (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Skrypty wizualne",
     "description": "Twórz skrypty automatyzacji za pomocą wizualnego edytora węzłów.",
@@ -430,6 +546,7 @@
         "pause": "Wstrzymaj",
         "pauseTooltip": "Wstrzymaj wykonywanie skryptu",
         "unsaved": "Niezapisane",
+        "unsavedChanges": "Niezapisane zmiany",
         "clearCanvas": "Wyczyść płótno",
         "zoomIn": "Powiększ",
         "zoomOut": "Pomniejsz",
@@ -464,6 +581,64 @@
         "showPreview": "Pokaż podgląd",
         "hidePreview": "Ukryj podgląd",
         "delete": "Usuń"
+      },
+      "node": {
+        "expand": "Rozwiń węzeł",
+        "collapse": "Zwiń węzeł"
+      },
+      "debug": {
+        "copyValue": "Skopiuj bieżącą wartość",
+        "clearHistory": "Wyczyść historię"
+      },
+      "edge": {
+        "direction": "Kierunek krawędzi"
+      },
+      "note": {
+        "placeholder": "Napisz notatkę..."
+      },
+      "complexity": {
+        "title": "Wskaźnik złożoności skryptu"
+      },
+      "group": {
+        "returnToRoot": "Wróć do korzenia (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu szybkiego dodawania węzła",
+        "searchPlaceholder": "Szukaj węzłów..."
+      },
+      "diff": {
+        "tooltip": "Przejrzyj zmiany"
+      },
+      "dryRun": {
+        "tooltip": "Symulacja",
+        "title": "Symuluj skrypt",
+        "description": "Uruchom skrypt z wybranego wyzwalacza z przykładowymi danymi wejściowymi.",
+        "triggerNode": "Węzeł wyzwalacza",
+        "selectTrigger": "Wybierz wyzwalacz...",
+        "triggerDescription": "Wybierz węzeł wyzwalacza do wykonania z przykładowymi wartościami wejściowymi.",
+        "mockInputs": "Przykładowe dane wejściowe",
+        "valuePlaceholder": "Wartość typu {{type}}",
+        "start": "Rozpocznij symulację"
+      },
+      "quotas": {
+        "tooltip": "Limity skryptu",
+        "title": "Limity skryptu",
+        "description": "Skonfiguruj limity zasobów dla tego skryptu. Puste pola użyją domyślnych ustawień serwera.",
+        "maxExecutionCount": "Maks. liczba wykonań",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maksymalna liczba wykonań węzła na jedno wywołanie wyzwalacza",
+        "maxExecutionTime": "Maks. czas wykonania (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maksymalny czas w zegarze rzeczywistym na jedno uruchomienie wyzwalacza",
+        "maxConcurrentTriggers": "Maks. równoczesnych wyzwalaczy",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maksymalna liczba równoczesnych wywołań wyzwalacza",
+        "maxStateStoreEntries": "Maks. wpisów w magazynie stanu",
+        "maxStateStoreEntriesPlaceholder": "Bez limitu",
+        "maxStateStoreEntriesDescription": "Maksymalna liczba wpisów w magazynie stanu skryptu",
+        "disableTimeouts": "Wyłącz limity czasu",
+        "disableTimeoutsDescription": "Wyłącza limity czasu dla poszczególnych węzłów i krawędzi danych",
+        "save": "Zapisz limity"
       }
     }
   }

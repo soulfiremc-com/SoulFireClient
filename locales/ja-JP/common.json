@@ -46,6 +46,13 @@
       },
       "close": "閉じる"
     },
+    "support": {
+      "title": "SoulFireを支援する",
+      "description": "SoulFireは、コミュニティによって愛情を込めて作られた、無料でオープンソースのプロジェクトです。",
+      "body": "もしSoulFireが役に立ったと感じていただけたなら、プロジェクトの支援をご検討ください。ご支援はサーバーの運用費や開発資金となり、SoulFireをすべての人に無料で提供し続ける助けになります。",
+      "dismiss": "後で",
+      "action": "SoulFireを支援する"
+    },
     "createInstance": {
       "title": "新しいインスタンスを作成",
       "description": "インスタンスを区別するために、わかりやすい名前が必要です。どんな名前でも構いません。例：「マイMinecraftボット」",
@@ -230,6 +237,9 @@
       "add": "追加",
       "remove": "削除"
     },
+    "combo": {
+      "searchPlaceholder": "値を検索..."
+    },
     "invalidNumberToast": {
       "title": "無効な数値です！",
       "description": "値は{{min}}〜{{max}}の間である必要があります"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "サイドバーの切り替え"
+  },
+  "window": {
+    "minimize": "最小化",
+    "minimizeLabel": "ウィンドウを最小化",
+    "maximize": "最大化",
+    "maximizeLabel": "ウィンドウを最大化",
+    "restore": "元に戻す",
+    "restoreLabel": "ウィンドウを元に戻す",
+    "close": "閉じる",
+    "closeLabel": "ウィンドウを閉じる",
+    "back": "戻る",
+    "backLabel": "戻る",
+    "forward": "進む",
+    "forwardLabel": "進む"
+  },
+  "infoButton": {
+    "showInfo": "情報を表示"
   },
   "castMenu": {
     "title": "キャスト",
@@ -334,6 +361,7 @@
     },
     "configDir": "設定ディレクトリ",
     "dataDir": "データディレクトリ",
+    "supportSoulFire": "SoulFireを支援する",
     "about": "情報",
     "logOut": "ログアウト",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "ドキュメント",
-    "supportSoulFire": "コーヒーをおごってください",
+    "supportSoulFire": "SoulFireを支援する",
     "discord": "Discord"
   },
   "breadcrumbs": {

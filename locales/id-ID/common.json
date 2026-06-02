@@ -46,6 +46,13 @@
       },
       "close": "Tutup"
     },
+    "support": {
+      "title": "Dukung SoulFire",
+      "description": "SoulFire gratis dan open-source, dibuat dengan penuh cinta oleh komunitas.",
+      "body": "Jika SoulFire bermanfaat untuk Anda, pertimbangkan untuk mendukung proyek ini. Kontribusi Anda membantu menutupi biaya server, mendanai pengembangan, dan menjaga SoulFire tetap gratis untuk semua orang.",
+      "dismiss": "Mungkin nanti",
+      "action": "Dukung SoulFire"
+    },
     "createInstance": {
       "title": "Buat instansi baru",
       "description": "Tiap instansi memerlukan nama ramah agar dapat dibedakan. Anda bebas memberi nama apapun, misalnya, \"Bot Minecraft Saya\".",
@@ -230,6 +237,9 @@
       "add": "Tambah",
       "remove": "Hapus"
     },
+    "combo": {
+      "searchPlaceholder": "Cari nilai..."
+    },
     "invalidNumberToast": {
       "title": "Nomor tidak valid!",
       "description": "Nilai harus antara {{min}} dan {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Tampilkan/Sembunyikan Sidebar"
+  },
+  "window": {
+    "minimize": "Minimalkan",
+    "minimizeLabel": "Minimalkan jendela",
+    "maximize": "Maksimalkan",
+    "maximizeLabel": "Maksimalkan jendela",
+    "restore": "Pulihkan",
+    "restoreLabel": "Pulihkan jendela",
+    "close": "Tutup",
+    "closeLabel": "Tutup jendela",
+    "back": "Kembali",
+    "backLabel": "Kembali",
+    "forward": "Maju",
+    "forwardLabel": "Lanjutkan ke depan"
+  },
+  "infoButton": {
+    "showInfo": "Tampilkan info"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +361,7 @@
     },
     "configDir": "Direktori konfigurasi",
     "dataDir": "Direktori data",
+    "supportSoulFire": "Dukung SoulFire",
     "about": "Tentang",
     "logOut": "Keluar",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentasi",
-    "supportSoulFire": "Beli saya kopi",
+    "supportSoulFire": "Dukung SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {

@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rooli",
+          "placeholder": "Valitse rooli",
           "description": "Käyttäjän rooli. Ylläpitäjät voivat hallita käyttäjiä ja kaikkia instansseja. Käyttäjät voivat hallita vain omia instanssejaan.",
           "user": "Käyttäjä",
           "admin": "Ylläpitäjä"

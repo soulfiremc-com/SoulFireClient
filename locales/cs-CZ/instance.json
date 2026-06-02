@@ -149,7 +149,21 @@
       "description": "Nastavit nastavení pro jednotlivé boty tohoto účtu",
       "openButton": "Nastavit účet",
       "pageTitle": "Nastavení {{name}} – {{page}}",
-      "noSettings": "Pro tuto stránku nejsou k dispozici žádná nastavení"
+      "noSettings": "Pro tuto stránku nejsou k dispozici žádná nastavení",
+      "search": "Nastavení hledání",
+      "overrides": "Přepsání",
+      "allSettings": "Všechna nastavení",
+      "noOverrides": "Tento bot zatím nemá žádná explicitní přepsání.",
+      "noOverridesMatching": "Žádné přepsání neodpovídá tomuto hledání.",
+      "noOverridesHelp": "Otevřete Všechna nastavení pro převzetí hodnot nebo vytvořte první přepsání specifické pro bota.",
+      "tryDifferentSearch": "Zkuste jiný vyhledávací výraz.",
+      "openAllSettings": "Otevřít všechna nastavení",
+      "selectPage": "Vyberte stránku nastavení",
+      "noSearchResults": "Žádná nastavení neodpovídají tomuto vyhledávání.",
+      "matchesInheritedValue": "Shoduje se s převzatou hodnotou",
+      "instanceValue": "Hodnota instance",
+      "defaultValue": "Výchozí hodnota",
+      "resetOverride": "Obnovit přepsání"
     },
     "deviceCodeConfirmDialog": {
       "title": "Ověření pomocí kódu zařízení",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Nepřipojený",
     "backToBots": "Zpět na boty",
+    "tabs": {
+      "overview": "Přehled",
+      "inventory": "Inventář",
+      "controls": "Ovládací prvky",
+      "terminal": "Terminál"
+    },
     "comingSoon": "Již brzy",
     "terminalPanel": {
       "title": "Terminál Bota"
@@ -362,6 +382,102 @@
       "offline": "Bot je offline. Dialogy jsou k dispozici pouze když je bot připojen."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Vyhledat boty...",
+      "searchClaims": "Hledat nároky...",
+      "noBotsMatchTitle": "Žádní boti neodpovídají aktuálním filtrům.",
+      "noBotsMatchDescription": "Upravte nebo vymažte aktuální filtry pro zobrazení celého seznamu automatizace."
+    },
+    "attention": {
+      "empty": "Žádní boti v tuto chvíli nevypadají jako zaseknutí nebo degradovaní."
+    },
+    "memory": {
+      "noBots": "Žádní boti nejsou k dispozici pro kontrolu paměti.",
+      "blocks": "Bloky",
+      "noBlocks": "V této snímku nejsou uložené žádné bloky.",
+      "containers": "Kontejnery",
+      "noContainers": "V této snímku nejsou uložené žádné kontejnery.",
+      "entities": "Entity",
+      "noEntities": "V této snímku nejsou uložené žádné entity.",
+      "droppedItems": "Zahozené předměty",
+      "noDroppedItems": "V této snímku nejsou uložené žádné zahozené předměty.",
+      "unreachablePositions": "Nedosažitelné pozice",
+      "noUnreachablePositions": "V této snímku nejsou žádné nedosažitelné pozice."
+    },
+    "coordination": {
+      "sharedBlocks": "Sdílené bloky",
+      "noBlockHints": "Zatím žádné návrhy sdílených bloků.",
+      "eyeSamples": "Oční vzorky",
+      "noEyeSamples": "Žádné oční vzorky nebyly zaznamenány."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Žádná data"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Provoz",
+      "health": "Zdraví",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Boti online",
+      "online": "Online",
+      "total": "Celkem"
+    },
+    "packets": {
+      "title": "Pakety / sekunda",
+      "sent": "Odesláno/s",
+      "received": "Přijato/s"
+    },
+    "bandwidth": {
+      "title": "Šířka pásma",
+      "upload": "Nahrávání",
+      "download": "Stahování"
+    },
+    "tick": {
+      "title": "Doba trvání ticku",
+      "avg": "Prům. (ms)",
+      "max": "Max. (ms)"
+    },
+    "healthFood": {
+      "title": "Zdraví / Jídlo",
+      "health": "Průměrné zdraví",
+      "food": "Průměrné jídlo"
+    },
+    "chunksEntities": {
+      "title": "Chunky / entity",
+      "chunks": "Chunky",
+      "entities": "Entity"
+    },
+    "connections": {
+      "title": "Události připojení",
+      "connections": "Připojení",
+      "disconnections": "Odpojení"
+    },
+    "healthDistribution": {
+      "title": "Distribuce zdraví",
+      "bots": "Boti"
+    },
+    "dimensions": {
+      "title": "Dimenze",
+      "bots": "Boti"
+    },
+    "gameModes": {
+      "title": "Herní módy",
+      "bots": "Boti"
+    },
+    "positions": {
+      "title": "Pozice botů (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Vizuální skripty",
     "description": "Vytvářejte automatizační skripty pomocí vizuálního editoru založeného na uzlech.",
@@ -430,6 +546,7 @@
         "pause": "Pozastavit",
         "pauseTooltip": "Pozastavit vykonávání skriptu",
         "unsaved": "Neuloženo",
+        "unsavedChanges": "Neuložené změny",
         "clearCanvas": "Vymazat plátno",
         "zoomIn": "Přiblížit",
         "zoomOut": "Oddálit",
@@ -464,6 +581,64 @@
         "showPreview": "Zobrazit náhled",
         "hidePreview": "Skrýt náhled",
         "delete": "Smazat"
+      },
+      "node": {
+        "expand": "Rozbalit uzel",
+        "collapse": "Sbalit uzel"
+      },
+      "debug": {
+        "copyValue": "Kopírovat aktuální hodnotu",
+        "clearHistory": "Vymazat historii"
+      },
+      "edge": {
+        "direction": "Směr hrany"
+      },
+      "note": {
+        "placeholder": "Napsat poznámku..."
+      },
+      "complexity": {
+        "title": "Skóre složitosti skriptu"
+      },
+      "group": {
+        "returnToRoot": "Vrátit se na kořen (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Rychlé přidání uzlu – nabídka",
+        "searchPlaceholder": "Hledat uzly..."
+      },
+      "diff": {
+        "tooltip": "Zkontrolovat změny"
+      },
+      "dryRun": {
+        "tooltip": "Suchý běh",
+        "title": "Suchý běh skriptu",
+        "description": "Spusťte skript ze zvoleného spouštěče s testovacími vstupy.",
+        "triggerNode": "Spouštěcí uzel",
+        "selectTrigger": "Vyberte spouštěč...",
+        "triggerDescription": "Vyberte uzel spouštěče, který se má provést s testovacími vstupy.",
+        "mockInputs": "Testovací vstupy",
+        "valuePlaceholder": "Hodnota typu {{type}}",
+        "start": "Spustit suchý běh"
+      },
+      "quotas": {
+        "tooltip": "Limity skriptu",
+        "title": "Limity skriptu",
+        "description": "Nastavte limity zdrojů pro tento skript. Prázdná pole použijí výchozí hodnoty serveru.",
+        "maxExecutionCount": "Maximální počet spuštění",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximální počet spuštění uzlů na jedno spuštění spouštěče",
+        "maxExecutionTime": "Maximální čas spuštění (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximální čas běhu na jedno spuštění spouštěče",
+        "maxConcurrentTriggers": "Maximální počet současně spuštěných spouštěčů",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximální počet souběžně spuštěných spouštěčů",
+        "maxStateStoreEntries": "Maximální počet záznamů ve stavovém úložišti",
+        "maxStateStoreEntriesPlaceholder": "Neomezeno",
+        "maxStateStoreEntriesDescription": "Maximální počet záznamů ve stavovém úložišti skriptu",
+        "disableTimeouts": "Zakázat časové limity",
+        "disableTimeoutsDescription": "Zakáže časové limity pro jednotlivé uzly a datové hrany",
+        "save": "Uložit limity"
       }
     }
   }

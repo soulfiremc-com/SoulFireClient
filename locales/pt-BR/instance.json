@@ -149,7 +149,21 @@
       "description": "Configurar configurações por bot para esta conta",
       "openButton": "Configurar conta",
       "pageTitle": "Configurações de {{name}} - {{page}}",
-      "noSettings": "Nenhuma configuração disponível para esta página"
+      "noSettings": "Nenhuma configuração disponível para esta página",
+      "search": "Configurações de pesquisa",
+      "overrides": "Substituições",
+      "allSettings": "Todas as configurações",
+      "noOverrides": "Este bot ainda não tem nenhuma substituição explícita.",
+      "noOverridesMatching": "Nenhuma substituição corresponde a esta pesquisa.",
+      "noOverridesHelp": "Abra Todas as configurações para herdar valores ou crie a primeira substituição específica do bot.",
+      "tryDifferentSearch": "Tente outro termo de pesquisa.",
+      "openAllSettings": "Abrir todas as configurações",
+      "selectPage": "Selecione uma página de configurações",
+      "noSearchResults": "Nenhuma configuração corresponde a esta pesquisa.",
+      "matchesInheritedValue": "Corresponde ao valor herdado",
+      "instanceValue": "Valor da instância",
+      "defaultValue": "Valor padrão",
+      "resetOverride": "Redefinir substituição"
     },
     "deviceCodeConfirmDialog": {
       "title": "Autenticação por Código de Dispositivo",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Não entrou ainda",
     "backToBots": "Voltar para Bots",
+    "tabs": {
+      "overview": "Visão geral",
+      "inventory": "Inventário",
+      "controls": "Controles",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Em breve",
     "terminalPanel": {
       "title": "Terminal do Bot"
@@ -362,6 +382,102 @@
       "offline": "O bot está offline. Diálogos só estão disponíveis quando o bot está conectado."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Pesquisar bots...",
+      "searchClaims": "Pesquisar reivindicações...",
+      "noBotsMatchTitle": "Nenhum bot corresponde aos filtros atuais.",
+      "noBotsMatchDescription": "Ajuste ou limpe os filtros atuais para revisar toda a lista de automação."
+    },
+    "attention": {
+      "empty": "Nenhum bot parece travado ou degradado no momento."
+    },
+    "memory": {
+      "noBots": "Nenhum bot de automação disponível para inspeção de memória.",
+      "blocks": "Blocos",
+      "noBlocks": "Nenhum bloco lembrado neste instantâneo.",
+      "containers": "Contêineres",
+      "noContainers": "Nenhum contêiner lembrado neste instantâneo.",
+      "entities": "Entidades",
+      "noEntities": "Nenhuma entidade lembrada neste instantâneo.",
+      "droppedItems": "Itens Soltos",
+      "noDroppedItems": "Nenhum item solto lembrado neste instantâneo.",
+      "unreachablePositions": "Posições inalcançáveis",
+      "noUnreachablePositions": "Nenhuma posição inalcançável neste instantâneo."
+    },
+    "coordination": {
+      "sharedBlocks": "Blocos Compartilhados",
+      "noBlockHints": "Nenhuma sugestão de bloco compartilhado ainda.",
+      "eyeSamples": "Amostras oculares",
+      "noEyeSamples": "Nenhuma amostra ocular registrada."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Sem dados"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Tráfego",
+      "health": "Saúde",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots Online",
+      "online": "Online",
+      "total": "Total"
+    },
+    "packets": {
+      "title": "Pacotes / Segundo",
+      "sent": "Enviados/s",
+      "received": "Recebidos/s"
+    },
+    "bandwidth": {
+      "title": "Largura de banda",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Duração do Tick",
+      "avg": "Média (ms)",
+      "max": "Máx (ms)"
+    },
+    "healthFood": {
+      "title": "Vida / Comida",
+      "health": "Vida média",
+      "food": "Comida média"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entidades",
+      "chunks": "Chunks",
+      "entities": "Entidades"
+    },
+    "connections": {
+      "title": "Eventos de Conexão",
+      "connections": "Conexões",
+      "disconnections": "Desconexões"
+    },
+    "healthDistribution": {
+      "title": "Distribuição de Vida",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensões",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Modos de Jogo",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Posições dos Bots (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Scripts Visuais",
     "description": "Crie scripts automáticos usando um editor visual baseado em nós.",
@@ -430,6 +546,7 @@
         "pause": "Pausar",
         "pauseTooltip": "Pausar execução do script",
         "unsaved": "Não salvo",
+        "unsavedChanges": "Alterações não salvas",
         "clearCanvas": "Limpar tela",
         "zoomIn": "Aumentar zoom",
         "zoomOut": "Diminuir zoom",
@@ -462,6 +579,64 @@
         "showPreview": "Mostrar prévia",
         "hidePreview": "Ocultar prévia",
         "delete": "Excluir"
+      },
+      "node": {
+        "expand": "Expandir nó",
+        "collapse": "Recolher nó"
+      },
+      "debug": {
+        "copyValue": "Copiar valor atual",
+        "clearHistory": "Limpar histórico"
+      },
+      "edge": {
+        "direction": "Direção da ligação"
+      },
+      "note": {
+        "placeholder": "Escreva uma nota..."
+      },
+      "complexity": {
+        "title": "Pontuação de complexidade do script"
+      },
+      "group": {
+        "returnToRoot": "Retornar à raiz (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu rápido de adicionar nó",
+        "searchPlaceholder": "Pesquisar nós..."
+      },
+      "diff": {
+        "tooltip": "Revisar alterações"
+      },
+      "dryRun": {
+        "tooltip": "Execução Simulada",
+        "title": "Script de Execução Simulada",
+        "description": "Execute um script a partir de um gatilho selecionado com entradas simuladas.",
+        "triggerNode": "Nó de Gatilho",
+        "selectTrigger": "Selecione um gatilho...",
+        "triggerDescription": "Escolha o nó de gatilho para executar com valores de entrada simulados.",
+        "mockInputs": "Entradas simuladas",
+        "valuePlaceholder": "valor {{type}}",
+        "start": "Iniciar Execução Simulada"
+      },
+      "quotas": {
+        "tooltip": "Cotas de Script",
+        "title": "Cotas de Script",
+        "description": "Configure limites de recursos para este script. Campos vazios usam os padrões do servidor.",
+        "maxExecutionCount": "Contagem Máxima de Execuções",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Execuções máximas de nós por ativação de gatilho",
+        "maxExecutionTime": "Tempo Máximo de Execução (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Tempo máximo de execução por ativação do gatilho",
+        "maxConcurrentTriggers": "Gatilhos Concorrentes Máximos",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Ativações máximas de gatilho concorrentes",
+        "maxStateStoreEntries": "Entradas Máximas na Store de Estado",
+        "maxStateStoreEntriesPlaceholder": "Ilimitado",
+        "maxStateStoreEntriesDescription": "Entradas máximas na store de estado do script",
+        "disableTimeouts": "Desativar Timeouts",
+        "disableTimeoutsDescription": "Desativa timeouts por nó e por ligação de dados",
+        "save": "Salvar Cotas"
       }
     }
   }

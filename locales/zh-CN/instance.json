@@ -149,7 +149,21 @@
       "description": "为此账号配置每个机器人的设置",
       "openButton": "配置账号",
       "pageTitle": "{{name}} - {{page}} 设置",
-      "noSettings": "此页面暂无可用设置"
+      "noSettings": "此页面暂无可用设置",
+      "search": "搜索设置",
+      "overrides": "覆盖项",
+      "allSettings": "所有设置",
+      "noOverrides": "此机器人尚未有任何明确的覆盖项。",
+      "noOverridesMatching": "没有覆盖项符合此搜索条件。",
+      "noOverridesHelp": "打开“所有设置”以继承数值，或创建第一个专属于机器人的覆盖项。",
+      "tryDifferentSearch": "请尝试其他搜索词。",
+      "openAllSettings": "打开所有设置​​",
+      "selectPage": "选择一个设置页面",
+      "noSearchResults": "没有与此搜索匹配的设置。",
+      "matchesInheritedValue": "与继承值匹配",
+      "instanceValue": "实例值",
+      "defaultValue": "默认值",
+      "resetOverride": "重置覆盖"
     },
     "deviceCodeConfirmDialog": {
       "title": "设备代码认证",
@@ -232,6 +246,12 @@
     "offline": "离线",
     "notJoined": "未加入",
     "backToBots": "返回机器人列表",
+    "tabs": {
+      "overview": "概况",
+      "inventory": "背包",
+      "controls": "控制",
+      "terminal": "终端"
+    },
     "comingSoon": "即将上线",
     "terminalPanel": {
       "title": "机器人终端"
@@ -362,6 +382,102 @@
       "offline": "机器人离线。只有当机器人已连接时对话框可用。"
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "末影珍珠"
+    },
+    "filters": {
+      "searchBots": "搜索机器人...",
+      "searchClaims": "搜索领地...",
+      "noBotsMatchTitle": "没有机器人符合当前筛选条件。",
+      "noBotsMatchDescription": "请调整或清除当前筛选条件以查看全部自动化队列。"
+    },
+    "attention": {
+      "empty": "当前没有机器人处于停滞或降级状态。"
+    },
+    "memory": {
+      "noBots": "没有可用的自动化机器人可供内存检查。",
+      "blocks": "方块",
+      "noBlocks": "此快照中未记住任何方块。",
+      "containers": "容器",
+      "noContainers": "此快照中未记住任何容器。",
+      "entities": "实体",
+      "noEntities": "此快照中未记住任何实体。",
+      "droppedItems": "掉落物品",
+      "noDroppedItems": "此快照中未记住任何掉落物品。",
+      "unreachablePositions": "无法到达的位置",
+      "noUnreachablePositions": "此快照中没有无法到达的位置。"
+    },
+    "coordination": {
+      "sharedBlocks": "共享方块",
+      "noBlockHints": "尚无共享方块提示。",
+      "eyeSamples": "视角样本",
+      "noEyeSamples": "未记录视角样本。"
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "无数据"
+    },
+    "summary": {
+      "online": "在线",
+      "packetsPerSecond": "包/秒",
+      "traffic": "流量",
+      "health": "生命值",
+      "tick": "刻"
+    },
+    "botsOnline": {
+      "title": "机器人在线",
+      "online": "在线",
+      "total": "总计"
+    },
+    "packets": {
+      "title": "数据包 / 秒",
+      "sent": "发送/秒",
+      "received": "接收/秒"
+    },
+    "bandwidth": {
+      "title": "带宽",
+      "upload": "上传",
+      "download": "下载"
+    },
+    "tick": {
+      "title": "刻持续时间",
+      "avg": "平均值（毫秒）",
+      "max": "最大值（毫秒）"
+    },
+    "healthFood": {
+      "title": "生命值 / 饱食度",
+      "health": "平均生命值",
+      "food": "平均饱食度"
+    },
+    "chunksEntities": {
+      "title": "区块 / 实体",
+      "chunks": "区块",
+      "entities": "实体"
+    },
+    "connections": {
+      "title": "连接事件",
+      "connections": "连接数",
+      "disconnections": "断开连接数"
+    },
+    "healthDistribution": {
+      "title": "生命值分布",
+      "bots": "机器人"
+    },
+    "dimensions": {
+      "title": "维度",
+      "bots": "机器人"
+    },
+    "gameModes": {
+      "title": "游戏模式",
+      "bots": "机器人"
+    },
+    "positions": {
+      "title": "机器人位置（XZ）",
+      "bot": "机器人"
+    }
+  },
   "scripts": {
     "title": "可视化脚本",
     "description": "使用可视化节点编辑器创建自动化脚本。",
@@ -430,6 +546,7 @@
         "pause": "暂停",
         "pauseTooltip": "暂停脚本执行",
         "unsaved": "未保存",
+        "unsavedChanges": "有未保存的更改",
         "clearCanvas": "清除画布",
         "zoomIn": "放大",
         "zoomOut": "缩小",
@@ -461,6 +578,64 @@
         "showPreview": "显示预览",
         "hidePreview": "隐藏预览",
         "delete": "删除"
+      },
+      "node": {
+        "expand": "展开节点",
+        "collapse": "折叠节点"
+      },
+      "debug": {
+        "copyValue": "复制当前值",
+        "clearHistory": "清空历史记录"
+      },
+      "edge": {
+        "direction": "边方向"
+      },
+      "note": {
+        "placeholder": "写备注..."
+      },
+      "complexity": {
+        "title": "脚本复杂度评分"
+      },
+      "group": {
+        "returnToRoot": "返回根目录（Tab）"
+      },
+      "quickAdd": {
+        "menuLabel": "快速添加节点菜单",
+        "searchPlaceholder": "搜索节点..."
+      },
+      "diff": {
+        "tooltip": "查看更改"
+      },
+      "dryRun": {
+        "tooltip": "模拟运行",
+        "title": "模拟运行脚本",
+        "description": "从选定触发器用模拟输入运行脚本。",
+        "triggerNode": "触发节点",
+        "selectTrigger": "选择一个触发器...",
+        "triggerDescription": "选择用于模拟输入值执行的触发节点。",
+        "mockInputs": "模拟输入",
+        "valuePlaceholder": "{{type}}值",
+        "start": "开始模拟运行"
+      },
+      "quotas": {
+        "tooltip": "脚本配额",
+        "title": "脚本配额",
+        "description": "为此脚本配置资源限制。留空的字段将使用服务器默认值。",
+        "maxExecutionCount": "最大执行次数",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "每次触发调用时节点最大执行次数",
+        "maxExecutionTime": "最大执行时间（毫秒）",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "每次触发执行的最大时钟时间",
+        "maxConcurrentTriggers": "最大并发触发器数",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "最大并发触发调用数",
+        "maxStateStoreEntries": "最大状态存储条目数",
+        "maxStateStoreEntriesPlaceholder": "无限制",
+        "maxStateStoreEntriesDescription": "脚本状态存储中的最大条目数",
+        "disableTimeouts": "禁用超时",
+        "disableTimeoutsDescription": "禁用每节点和数据边的超时时间",
+        "save": "保存配额"
       }
     }
   }

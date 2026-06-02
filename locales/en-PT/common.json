@@ -46,6 +46,13 @@
       },
       "close": "Batten down!"
     },
+    "support": {
+      "title": "Be Supportin' SoulFire, matey!",
+      "description": "SoulFire be a free 'n open-source treasure, forged with love by the crew.",
+      "body": "If SoulFire's been worth its weight in gold to ye, consider throwin' a coin to the project. Yer booty helps keep the ship sailin', pays fer more grog and code, an' keeps SoulFire free fer all hands.",
+      "dismiss": "Maybe another tide",
+      "action": "Be Supportin' SoulFire, matey!"
+    },
     "createInstance": {
       "title": "Raise a new hull",
       "description": "Every vessel needs a jolly name, so ye can tell 'em apart. Call it whatever you please, like \"Me Minecraft Matey\".",
@@ -230,6 +237,9 @@
       "add": "Chart course",
       "remove": "Scuttle"
     },
+    "combo": {
+      "searchPlaceholder": "Be searchin' fer booty..."
+    },
     "invalidNumberToast": {
       "title": "Arrr! That be a bogus number!",
       "description": "Yarrr! Value should be between {{min}} and {{max}}, no more and no less!"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Open the hold"
+  },
+  "window": {
+    "minimize": "Make 'er small",
+    "minimizeLabel": "Shrink the porthole",
+    "maximize": "Hoist the sails!",
+    "maximizeLabel": "Make the porthole as big as the horizon",
+    "restore": "Set 'er right again",
+    "restoreLabel": "Put the porthole back t' normal",
+    "close": "Batten down!",
+    "closeLabel": "Batten down the porthole",
+    "back": "Avast",
+    "backLabel": "Sail astern",
+    "forward": "Onward",
+    "forwardLabel": "Sail forward"
+  },
+  "infoButton": {
+    "showInfo": "Show th' map o' secrets"
   },
   "castMenu": {
     "title": "Send a signal!",
@@ -334,6 +361,7 @@
     },
     "configDir": "Map Folder",
     "dataDir": "Treasure Hold",
+    "supportSoulFire": "Be Supportin' SoulFire, matey!",
     "about": "This Page o' Lore",
     "logOut": "Abandon Ship",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "The Captain's Log",
-    "supportSoulFire": "Buy me a tankard o' rum",
+    "supportSoulFire": "Be Supportin' SoulFire, matey!",
     "discord": "Discord’s Cove"
   },
   "breadcrumbs": {

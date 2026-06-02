@@ -46,6 +46,13 @@
       },
       "close": "Bağla"
     },
+    "support": {
+      "title": "SoulFire-ə dəstək olun",
+      "description": "SoulFire pulsuz və açıq mənbəlidir, icma tərəfindən sevgi ilə hazırlanıb.",
+      "body": "Əgər SoulFire sizə faydalı olubsa, layihəni dəstəkləməyi nəzərdən keçirin. Sizin töhfəniz server xərclərini qarşılamağa, inkişafı maliyyələşdirməyə və SoulFire-nı hamı üçün pulsuz saxlamağa kömək edir.",
+      "dismiss": "Bəlkə sonra",
+      "action": "SoulFire-ə dəstək olun"
+    },
     "createInstance": {
       "title": "Yeni instansiya yaradın",
       "description": "İnstanları fərqləndirmək üçün onlara dost adlar verməlisiniz. İstədiyiniz adı yaza bilərsiniz, məsələn, \"Mənim Minecraft Botum\".",
@@ -230,6 +237,9 @@
       "add": "Əlavə et",
       "remove": "Sil"
     },
+    "combo": {
+      "searchPlaceholder": "Axtarış dəyəri..."
+    },
     "invalidNumberToast": {
       "title": "Yanlış say!",
       "description": "Dəyər {{min}} və {{max}} arasında olmalıdır"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Yan paneli aç/bağla"
+  },
+  "window": {
+    "minimize": "Minimize et",
+    "minimizeLabel": "Pəncərəni minimallaşdır",
+    "maximize": "Maksimumlaşdır",
+    "maximizeLabel": "Pəncərəni maksimumlaşdır",
+    "restore": "Bərpa et",
+    "restoreLabel": "Pəncərəni bərpa et",
+    "close": "Bağla",
+    "closeLabel": "Pəncərəni bağla",
+    "back": "Geri",
+    "backLabel": "Geriyə get",
+    "forward": "İrəli",
+    "forwardLabel": "İrəli get"
+  },
+  "infoButton": {
+    "showInfo": "Məlumatı göstər"
   },
   "castMenu": {
     "title": "Yayımla",
@@ -334,6 +361,7 @@
     },
     "configDir": "Qovluq konfiqurasiyası",
     "dataDir": "Məlumat qovluğu",
+    "supportSoulFire": "SoulFire-ə dəstək olun",
     "about": "Haqqında",
     "logOut": "Çıxış",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Sənədlər",
-    "supportSoulFire": "Bir kubok al",
+    "supportSoulFire": "SoulFire-ə dəstək olun",
     "discord": "Discord"
   },
   "breadcrumbs": {

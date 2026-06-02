@@ -149,7 +149,21 @@
       "description": "이 계정의 봇별 설정을 구성하세요",
       "openButton": "계정 설정",
       "pageTitle": "{{name}} - {{page}} 설정",
-      "noSettings": "이 페이지에 사용할 수 있는 설정이 없습니다"
+      "noSettings": "이 페이지에 사용할 수 있는 설정이 없습니다",
+      "search": "설정 검색하기",
+      "overrides": "재정의",
+      "allSettings": "모든 설정",
+      "noOverrides": "이 봇에는 아직 명시적으로 재정의된 항목이 없습니다.",
+      "noOverridesMatching": "이 검색과 일치하는 재정의 항목이 없습니다.",
+      "noOverridesHelp": "값을 상속하거나 첫 번째 봇 전용 재정의를 생성하려면 모든 설정을 여세요.",
+      "tryDifferentSearch": "다른 검색어를 시도해 보세요.",
+      "openAllSettings": "모든 설정 열기",
+      "selectPage": "설정 페이지 선택",
+      "noSearchResults": "이 검색어와 일치하는 설정이 없습니다.",
+      "matchesInheritedValue": "상속된 값과 일치함",
+      "instanceValue": "인스턴스 값",
+      "defaultValue": "기본값",
+      "resetOverride": "재정의 초기화"
     },
     "deviceCodeConfirmDialog": {
       "title": "디바이스 코드 인증",
@@ -232,6 +246,12 @@
     "offline": "오프라인",
     "notJoined": "미참가",
     "backToBots": "봇 목록으로 돌아가기",
+    "tabs": {
+      "overview": "개요",
+      "inventory": "인벤토리",
+      "controls": "컨트롤",
+      "terminal": "터미널"
+    },
     "comingSoon": "곧 출시 예정",
     "terminalPanel": {
       "title": "봇 터미널"
@@ -362,6 +382,102 @@
       "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 대화상자를 사용할 수 있습니다."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "엔더 진주"
+    },
+    "filters": {
+      "searchBots": "봇 검색...",
+      "searchClaims": "청구항 검색...",
+      "noBotsMatchTitle": "현재 필터와 일치하는 봇이 없습니다.",
+      "noBotsMatchDescription": "전체 자동화 목록을 보려면 현재 필터를 조정하거나 지우세요."
+    },
+    "attention": {
+      "empty": "현재 멈추거나 성능 저하된 봇이 없습니다."
+    },
+    "memory": {
+      "noBots": "메모리 점검을 위한 자동화 봇이 없습니다.",
+      "blocks": "블록",
+      "noBlocks": "이 스냅샷에 저장된 블록이 없습니다.",
+      "containers": "컨테이너",
+      "noContainers": "이 스냅샷에 저장된 컨테이너가 없습니다.",
+      "entities": "엔터티",
+      "noEntities": "이 스냅샷에 저장된 엔터티가 없습니다.",
+      "droppedItems": "드롭된 아이템",
+      "noDroppedItems": "이 스냅샷에 저장된 드롭된 아이템이 없습니다.",
+      "unreachablePositions": "도달 불가능한 위치",
+      "noUnreachablePositions": "이 스냅샷에 도달 불가능한 위치가 없습니다."
+    },
+    "coordination": {
+      "sharedBlocks": "공유된 블록",
+      "noBlockHints": "아직 공유된 블록 힌트가 없습니다.",
+      "eyeSamples": "시선 샘플",
+      "noEyeSamples": "기록된 시선 샘플이 없습니다."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "데이터 없음"
+    },
+    "summary": {
+      "online": "온라인",
+      "packetsPerSecond": "패킷/초",
+      "traffic": "트래픽",
+      "health": "체력",
+      "tick": "틱"
+    },
+    "botsOnline": {
+      "title": "온라인 봇",
+      "online": "온라인",
+      "total": "전체"
+    },
+    "packets": {
+      "title": "패킷 / 초",
+      "sent": "전송/초",
+      "received": "수신/초"
+    },
+    "bandwidth": {
+      "title": "대역폭",
+      "upload": "업로드",
+      "download": "다운로드"
+    },
+    "tick": {
+      "title": "틱 지속 시간",
+      "avg": "평균 (ms)",
+      "max": "최대 (ms)"
+    },
+    "healthFood": {
+      "title": "체력 / 음식",
+      "health": "평균 체력",
+      "food": "평균 음식"
+    },
+    "chunksEntities": {
+      "title": "청크 / 엔터티",
+      "chunks": "청크",
+      "entities": "엔터티"
+    },
+    "connections": {
+      "title": "연결 이벤트",
+      "connections": "연결",
+      "disconnections": "연결 해제"
+    },
+    "healthDistribution": {
+      "title": "체력 분포",
+      "bots": "봇들"
+    },
+    "dimensions": {
+      "title": "차원",
+      "bots": "봇들"
+    },
+    "gameModes": {
+      "title": "게임 모드",
+      "bots": "봇들"
+    },
+    "positions": {
+      "title": "봇 위치 (XZ)",
+      "bot": "봇"
+    }
+  },
   "scripts": {
     "title": "비주얼 스크립트",
     "description": "비주얼 노드 기반 에디터로 자동화 스크립트를 만들 수 있습니다.",
@@ -430,6 +546,7 @@
         "pause": "일시 정지",
         "pauseTooltip": "스크립트 실행 일시 중지하기",
         "unsaved": "저장되지 않음",
+        "unsavedChanges": "저장되지 않은 변경 사항",
         "clearCanvas": "캔버스 지우기",
         "zoomIn": "확대",
         "zoomOut": "축소",
@@ -461,6 +578,64 @@
         "showPreview": "미리보기 표시",
         "hidePreview": "미리보기 숨기기",
         "delete": "삭제"
+      },
+      "node": {
+        "expand": "노드 확장",
+        "collapse": "노드 접기"
+      },
+      "debug": {
+        "copyValue": "현재 값 복사",
+        "clearHistory": "기록 지우기"
+      },
+      "edge": {
+        "direction": "엣지 방향"
+      },
+      "note": {
+        "placeholder": "노트 작성..."
+      },
+      "complexity": {
+        "title": "스크립트 복잡도 점수"
+      },
+      "group": {
+        "returnToRoot": "루트로 돌아가기 (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "빠른 노드 추가 메뉴",
+        "searchPlaceholder": "노드 검색..."
+      },
+      "diff": {
+        "tooltip": "변경 사항 검토"
+      },
+      "dryRun": {
+        "tooltip": "드라이 런",
+        "title": "드라이 런 스크립트",
+        "description": "선택한 트리거에서 스크립트를 모의 입력값과 함께 실행합니다.",
+        "triggerNode": "트리거 노드",
+        "selectTrigger": "트리거 선택...",
+        "triggerDescription": "모의 입력값으로 실행할 트리거 노드를 선택하세요.",
+        "mockInputs": "모의 입력값",
+        "valuePlaceholder": "{{type}} 값",
+        "start": "드라이 런 시작"
+      },
+      "quotas": {
+        "tooltip": "스크립트 할당량",
+        "title": "스크립트 할당량",
+        "description": "이 스크립트의 리소스 제한을 설정합니다. 비워두면 서버 기본값이 사용됩니다.",
+        "maxExecutionCount": "최대 실행 횟수",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "트리거 호출마다 최대 노드 실행 횟수",
+        "maxExecutionTime": "최대 실행 시간 (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "트리거 실행당 최대 벽시계 시간",
+        "maxConcurrentTriggers": "최대 동시 트리거 수",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "최대 동시 트리거 호출 수",
+        "maxStateStoreEntries": "최대 상태 저장소 항목 수",
+        "maxStateStoreEntriesPlaceholder": "무제한",
+        "maxStateStoreEntriesDescription": "스크립트 상태 저장소의 최대 항목 수",
+        "disableTimeouts": "타임아웃 비활성화",
+        "disableTimeoutsDescription": "노드별 및 데이터 엣지 타임아웃을 비활성화합니다.",
+        "save": "할당량 저장"
       }
     }
   }

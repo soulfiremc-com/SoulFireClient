@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Função",
+          "placeholder": "Selecione um cargo",
           "description": "O papel do usuário. Administradores podem gerenciar usuários e todas as instâncias. Usuários podem gerenciar apenas suas próprias instâncias.",
           "user": "Usuário",
           "admin": "Administrador"

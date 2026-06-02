@@ -149,7 +149,21 @@
       "description": "Bu hesab üçün hər bot üçün ayarları tənzimləyin",
       "openButton": "Hesabı tənzimləyin",
       "pageTitle": "{{name}} - {{page}} Ayarları",
-      "noSettings": "Bu səhifə üçün heç bir ayar mövcud deyil"
+      "noSettings": "Bu səhifə üçün heç bir ayar mövcud deyil",
+      "search": "Axtarış parametrləri",
+      "overrides": "Dəyişikliklər",
+      "allSettings": "Bütün parametrlər",
+      "noOverrides": "Bu bot üçün hələ heç bir xüsusi dəyişiklik təyin edilməyib.",
+      "noOverridesMatching": "Bu axtarışa uyğun dəyişiklik tapılmadı.",
+      "noOverridesHelp": "Dəyərləri miras almaq və ya bot üçün ilk xüsusi dəyişiklik yaratmaq üçün Bütün parametrləri açın.",
+      "tryDifferentSearch": "Başqa axtarış sözünü yoxlayın.",
+      "openAllSettings": "Bütün parametrləri açın",
+      "selectPage": "Parametrlər səhifəsini seçin",
+      "noSearchResults": "Axtarışa uyğun heç bir parametr tapılmadı.",
+      "matchesInheritedValue": "İrsi dəyərə uyğundur",
+      "instanceValue": "Instance dəyəri",
+      "defaultValue": "Susmaya görə dəyər",
+      "resetOverride": "İstisnanı sıfırla"
     },
     "deviceCodeConfirmDialog": {
       "title": "Cihaz Kodu İlə Doğrulama",
@@ -232,6 +246,12 @@
     "offline": "Offline",
     "notJoined": "Qoşulmayıb",
     "backToBots": "Botlara qayıt",
+    "tabs": {
+      "overview": "İcmal",
+      "inventory": "İnventar",
+      "controls": "İdarəetmə",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Tezliklə",
     "terminalPanel": {
       "title": "Bot Terminalı"
@@ -362,6 +382,102 @@
       "offline": "Bot oflayndır. Dialoqlar yalnız bot qoşulu olduqda mövcuddur."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Botları axtar...",
+      "searchClaims": "Tələbləri axtar...",
+      "noBotsMatchTitle": "Cari filtrlərə uyğun heç bir bot tapılmadı.",
+      "noBotsMatchDescription": "Bütün avtomatlaşdırma siyahısına baxmaq üçün cari filtrləri dəyişin və ya təmizləyin."
+    },
+    "attention": {
+      "empty": "Hazırda heç bir bot ilişib qalmış və ya zəiflədilmiş vəziyyətdə deyil."
+    },
+    "memory": {
+      "noBots": "Yaddaş baxışı üçün heç bir avtomatlaşdırma botu mövcud deyil.",
+      "blocks": "Bloklar",
+      "noBlocks": "Bu saxlama şəklində yadda qalan blok yoxdur.",
+      "containers": "Konteynerlər",
+      "noContainers": "Bu saxlama şəklində yadda qalan konteyner yoxdur.",
+      "entities": "Entitilər",
+      "noEntities": "Bu saxlama şəklində yadda qalan entiti yoxdur.",
+      "droppedItems": "Atılmış Əşyalar",
+      "noDroppedItems": "Bu saxlama şəklində yadda qalan atılmış əşya yoxdur.",
+      "unreachablePositions": "Çatılmaz Mövqelər",
+      "noUnreachablePositions": "Bu saxlama şəklində çatılmaz mövqe yoxdur."
+    },
+    "coordination": {
+      "sharedBlocks": "Paylaşılan Bloklar",
+      "noBlockHints": "Hələ paylaşılan bloka dair heç bir ipucu yoxdur.",
+      "eyeSamples": "Göz Nümunələri",
+      "noEyeSamples": "Heç bir göz nümunəsi qeydə alınmayıb."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Məlumat yoxdur"
+    },
+    "summary": {
+      "online": "Onlayn",
+      "packetsPerSecond": "Paket/s",
+      "traffic": "Trafik",
+      "health": "Sağlamlıq",
+      "tick": "Tik"
+    },
+    "botsOnline": {
+      "title": "Onlayn Botlar",
+      "online": "Onlayn",
+      "total": "Cəmi"
+    },
+    "packets": {
+      "title": "Paketlər / Saniyə",
+      "sent": "Göndərilən/s",
+      "received": "Alınan/s"
+    },
+    "bandwidth": {
+      "title": "Bant genişliyi",
+      "upload": "Yüklə",
+      "download": "Yüklə (download)"
+    },
+    "tick": {
+      "title": "Tik Müddəti",
+      "avg": "Orta (ms)",
+      "max": "Maksimum (ms)"
+    },
+    "healthFood": {
+      "title": "Sağlamlıq / Yemək",
+      "health": "Orta Sağlamlıq",
+      "food": "Orta Yemək"
+    },
+    "chunksEntities": {
+      "title": "Bloklar / Entitilər",
+      "chunks": "Bloklar",
+      "entities": "Entitilər"
+    },
+    "connections": {
+      "title": "Bağlantı Hadisələri",
+      "connections": "Bağlantılar",
+      "disconnections": "Bağlantıların kəsilməsi"
+    },
+    "healthDistribution": {
+      "title": "Sağlamlıq bölgüsü",
+      "bots": "Botlar"
+    },
+    "dimensions": {
+      "title": "Ölçülər",
+      "bots": "Botlar"
+    },
+    "gameModes": {
+      "title": "Oyun rejimləri",
+      "bots": "Botlar"
+    },
+    "positions": {
+      "title": "Bot Mövqeləri (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Vizual Skriptlər",
     "description": "Vizual düyün əsaslı redaktor vasitəsi ilə avtomatlaşdırma skriptləri yaradın.",
@@ -430,6 +546,7 @@
         "pause": "Fasilə",
         "pauseTooltip": "Skriptin icrasını dayandırın",
         "unsaved": "Yadda saxlanılmayıb",
+        "unsavedChanges": "Saxlanılmamış dəyişikliklər",
         "clearCanvas": "Kanvası təmizlə",
         "zoomIn": "Yaxınlaşdır",
         "zoomOut": "Uzaqlaşdır",
@@ -462,6 +579,64 @@
         "showPreview": "İlkin Baxışı Göstər",
         "hidePreview": "İlkin Baxışı Gizlət",
         "delete": "Sil"
+      },
+      "node": {
+        "expand": "Qovşağı genişlət",
+        "collapse": "Qovşağı daralt"
+      },
+      "debug": {
+        "copyValue": "Cari dəyəri kopyala",
+        "clearHistory": "Tarixçəni təmizlə"
+      },
+      "edge": {
+        "direction": "Kənar istiqaməti"
+      },
+      "note": {
+        "placeholder": "Bir qeyd yazın..."
+      },
+      "complexity": {
+        "title": "Skript mürəkkəblik balı"
+      },
+      "group": {
+        "returnToRoot": "Kökə qayıt (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Tez əlavə qovşağı menyusu",
+        "searchPlaceholder": "Düyünləri axtarın..."
+      },
+      "diff": {
+        "tooltip": "Dəyişiklikləri nəzərdən keçir"
+      },
+      "dryRun": {
+        "tooltip": "Quru İcra",
+        "title": "Quru İcra Skripti",
+        "description": "Seçilmiş tetikçidən skript işlədin, saxta girişlərdən istifadə edin.",
+        "triggerNode": "Tetikçi qovşağı",
+        "selectTrigger": "Tetikçi seçin...",
+        "triggerDescription": "Saxta giriş dəyərləri ilə işlədiləcək tetikçi qovşağı seçin.",
+        "mockInputs": "Saxta Girişlər",
+        "valuePlaceholder": "{{type}} dəyər",
+        "start": "Quru İcranı Başlat"
+      },
+      "quotas": {
+        "tooltip": "Skript Kotası",
+        "title": "Skript Kotası",
+        "description": "Bu skript üçün resurs limitlərini tənzimləyin. Boş sahələr serverin standart dəyərlərini istifadə edəcəkdir.",
+        "maxExecutionCount": "Maksimum İcra Sayı",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Bir tetikçi istəyi üçün maksimum qovşaq icra sayı",
+        "maxExecutionTime": "Maks İcra Müddəti (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Bir tetikçi icrası üçün maksimum divar saatı vaxtı",
+        "maxConcurrentTriggers": "Maksimum Eyni Anda Aktiv Tetikçilər",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maksimum eyni anda aktiv tetikçi istəklər",
+        "maxStateStoreEntries": "Maksimum Hal Qeydiyyatları",
+        "maxStateStoreEntriesPlaceholder": "Limitsiz",
+        "maxStateStoreEntriesDescription": "Skript hal mağazasında maksimum qeyd sayı",
+        "disableTimeouts": "Timeoutları söndür",
+        "disableTimeoutsDescription": "Qovşaq və məlumat kənarı zamanı timeoutlar söndürüləcək",
+        "save": "Kotaları yadda saxla"
       }
     }
   }

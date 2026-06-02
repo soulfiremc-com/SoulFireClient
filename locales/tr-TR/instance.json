@@ -149,7 +149,21 @@
       "description": "Bu hesap için bot başına ayarları yapılandırın",
       "openButton": "Hesabı yapılandır",
       "pageTitle": "{{name}} - {{page}} Ayarları",
-      "noSettings": "Bu sayfa için ayar mevcut değil"
+      "noSettings": "Bu sayfa için ayar mevcut değil",
+      "search": "Arama ayarları",
+      "overrides": "Geçersiz kılmalar",
+      "allSettings": "Tüm ayarlar",
+      "noOverrides": "Bu botun henüz herhangi bir açıkça geçersiz kılması yok.",
+      "noOverridesMatching": "Bu aramayla eşleşen geçersiz kılma bulunamadı.",
+      "noOverridesHelp": "Değerleri devralmak veya ilk bota özel geçersiz kılmayı oluşturmak için Tüm ayarları açın.",
+      "tryDifferentSearch": "Farklı bir arama terimi deneyin.",
+      "openAllSettings": "Tüm ayarları aç",
+      "selectPage": "Bir ayarlar sayfası seçin",
+      "noSearchResults": "Bu aramayla eşleşen bir ayar yok.",
+      "matchesInheritedValue": "Miras alınan değerle eşleşiyor",
+      "instanceValue": "Örnek değeri",
+      "defaultValue": "Varsayılan değer",
+      "resetOverride": "Geçersiz kılmayı sıfırla"
     },
     "deviceCodeConfirmDialog": {
       "title": "Cihaz Kodu Kimlik Doğrulaması",
@@ -232,6 +246,12 @@
     "offline": "Çevrimdışı",
     "notJoined": "Katılmadı",
     "backToBots": "Botlara Geri Dön",
+    "tabs": {
+      "overview": "Genel Bakış",
+      "inventory": "Envanter",
+      "controls": "Kontroller",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Çok Yakında",
     "terminalPanel": {
       "title": "Bot Terminali"
@@ -362,6 +382,102 @@
       "offline": "Bot çevrimdışı. Diyaloglar yalnızca bot bağlandığında kullanılabilir."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Botlarda ara...",
+      "searchClaims": "İddialarda ara...",
+      "noBotsMatchTitle": "Mevcut filtrelerle eşleşen bot yok.",
+      "noBotsMatchDescription": "Tüm otomasyon kadrosunu görmek için mevcut filtreleri ayarlayın veya temizleyin."
+    },
+    "attention": {
+      "empty": "Şu anda hiçbir bot takılı kalmış veya bozulmuş görünmüyor."
+    },
+    "memory": {
+      "noBots": "Bellek denetimi için mevcut otomasyon botu yok.",
+      "blocks": "Bloklar",
+      "noBlocks": "Bu anlık görüntüde hatırlanan blok yok.",
+      "containers": "Konteynerler",
+      "noContainers": "Bu anlık görüntüde hatırlanan konteyner yok.",
+      "entities": "Varlıklar",
+      "noEntities": "Bu anlık görüntüde hatırlanan varlık yok.",
+      "droppedItems": "Düşürülen Eşyalar",
+      "noDroppedItems": "Bu anlık görüntüde hatırlanan düşürülen eşya yok.",
+      "unreachablePositions": "Ulaşılamayan Pozisyonlar",
+      "noUnreachablePositions": "Bu anlık görüntüde ulaşılamayan pozisyon yok."
+    },
+    "coordination": {
+      "sharedBlocks": "Paylaşılan Bloklar",
+      "noBlockHints": "Henüz paylaşılan blok ipucu yok.",
+      "eyeSamples": "Göz Örnekleri",
+      "noEyeSamples": "Hiç göz örneği kaydedilmedi."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Veri yok"
+    },
+    "summary": {
+      "online": "Çevrim içi",
+      "packetsPerSecond": "Pkt/sn",
+      "traffic": "Trafik",
+      "health": "Can",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Çevrimiçi Botlar",
+      "online": "Çevrim içi",
+      "total": "Toplam"
+    },
+    "packets": {
+      "title": "Paketler / Saniye",
+      "sent": "Gönderilen/sn",
+      "received": "Alınan/sn"
+    },
+    "bandwidth": {
+      "title": "Bant genişliği",
+      "upload": "Yükleme",
+      "download": "İndirme"
+    },
+    "tick": {
+      "title": "Tick Süresi",
+      "avg": "Ort. (ms)",
+      "max": "Maks. (ms)"
+    },
+    "healthFood": {
+      "title": "Can / Yemek",
+      "health": "Ort. Can",
+      "food": "Ort. Yemek"
+    },
+    "chunksEntities": {
+      "title": "Bölütler / Varlıklar",
+      "chunks": "Bölütler",
+      "entities": "Varlıklar"
+    },
+    "connections": {
+      "title": "Bağlantı Olayları",
+      "connections": "Bağlantılar",
+      "disconnections": "Bağlantı Kesilmeleri"
+    },
+    "healthDistribution": {
+      "title": "Can Dağılımı",
+      "bots": "Botlar"
+    },
+    "dimensions": {
+      "title": "Boyutlar",
+      "bots": "Botlar"
+    },
+    "gameModes": {
+      "title": "Oyun Modları",
+      "bots": "Botlar"
+    },
+    "positions": {
+      "title": "Bot Pozisyonları (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Görsel Scriptler",
     "description": "Görsel bir düğüm tabanlı düzenleyici kullanarak otomasyon scriptleri oluşturun.",
@@ -430,6 +546,7 @@
         "pause": "Duraklat",
         "pauseTooltip": "Komut dosyası yürütmesini duraklat",
         "unsaved": "Kaydedilmedi",
+        "unsavedChanges": "Kaydedilmemiş değişiklikler",
         "clearCanvas": "Tuvali temizle",
         "zoomIn": "Yakınlaştır",
         "zoomOut": "Uzaklaştır",
@@ -462,6 +579,64 @@
         "showPreview": "Önizlemeyi Göster",
         "hidePreview": "Önizlemeyi Gizle",
         "delete": "Sil"
+      },
+      "node": {
+        "expand": "Düğümü genişlet",
+        "collapse": "Düğümü daralt"
+      },
+      "debug": {
+        "copyValue": "Mevcut değeri kopyala",
+        "clearHistory": "Geçmişi temizle"
+      },
+      "edge": {
+        "direction": "Kenar yönü"
+      },
+      "note": {
+        "placeholder": "Bir not yaz..."
+      },
+      "complexity": {
+        "title": "Script karmaşıklık puanı"
+      },
+      "group": {
+        "returnToRoot": "Kök'e dön (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Hızlı düğüm ekleme menüsü",
+        "searchPlaceholder": "Düğüm ara..."
+      },
+      "diff": {
+        "tooltip": "Değişiklikleri incele"
+      },
+      "dryRun": {
+        "tooltip": "Deneme Çalıştır",
+        "title": "Deneme Çalıştır Script",
+        "description": "Seçili bir tetikleyiciden script çalıştır, sahte girişlerle.",
+        "triggerNode": "Tetikleyici Düğümü",
+        "selectTrigger": "Bir tetikleyici seç...",
+        "triggerDescription": "Sahte giriş değerleriyle çalıştırılacak tetikleyici düğümünü seçin.",
+        "mockInputs": "Sahte Girdiler",
+        "valuePlaceholder": "{{type}} değeri",
+        "start": "Deneme Çalıştır'ı Başlat"
+      },
+      "quotas": {
+        "tooltip": "Script Kotaları",
+        "title": "Script Kotaları",
+        "description": "Bu script için kaynak limitlerini yapılandırın. Boş alanlar sunucu varsayılanlarını kullanır.",
+        "maxExecutionCount": "Maksimum Çalıştırma Sayısı",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Her tetikleyici çağrısı başına maksimum düğüm çalıştırma",
+        "maxExecutionTime": "Maksimum Çalıştırma Süresi (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Her tetikleyici çalıştırma başına maksimum duvar saati süresi",
+        "maxConcurrentTriggers": "Maksimum Eşzamanlı Tetikleyici",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maksimum eşzamanlı tetikleyici çağrısı",
+        "maxStateStoreEntries": "Maksimum Durum Deposu Girişi",
+        "maxStateStoreEntriesPlaceholder": "Sınırsız",
+        "maxStateStoreEntriesDescription": "Script durum deposundaki maksimum giriş sayısı",
+        "disableTimeouts": "Zaman Aşımını Devre Dışı Bırak",
+        "disableTimeoutsDescription": "Düğüm ve veri kenarı zaman aşımı devre dışı bırakılır",
+        "save": "Kotaları Kaydet"
       }
     }
   }

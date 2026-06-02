@@ -46,6 +46,13 @@
       },
       "close": "बंद करें"
     },
+    "support": {
+      "title": "SoulFire का समर्थन करें",
+      "description": "SoulFire मुफ्त और ओपन-सोर्स है, जो समुदाय द्वारा प्रेम से बनाया गया है।",
+      "body": "यदि SoulFire आपके लिए उपयोगी रहा है, तो कृपया परियोजना का समर्थन करने पर विचार करें। आपका योगदान सर्वर लागतों को कवर करने, विकास को वित्तपोषित करने और SoulFire को सभी के लिए मुफ्त बनाए रखने में मदद करता है।",
+      "dismiss": "शायद बाद में",
+      "action": "SoulFire का समर्थन करें"
+    },
     "createInstance": {
       "title": "नई इंस्टेंस बनाएँ",
       "description": "इंस्टेंस को पहचानने के लिए आपको मित्रवत नाम की आवश्यकता होती है। यह कोई भी नाम हो सकता है, उदाहरण के लिए, \"मेरा Minecraft बॉट\"।",
@@ -230,6 +237,9 @@
       "add": "जोड़ें",
       "remove": "हटाएँ"
     },
+    "combo": {
+      "searchPlaceholder": "खोज मूल्य..."
+    },
     "invalidNumberToast": {
       "title": "अमान्य संख्या!",
       "description": "मान {{min}} से {{max}} के बीच होना चाहिए"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "साइडबार टॉगल करें"
+  },
+  "window": {
+    "minimize": "न्यूनतम करें",
+    "minimizeLabel": "विंडो न्यूनतम करें",
+    "maximize": "अधिकतम करें",
+    "maximizeLabel": "विंडो अधिकतम करें",
+    "restore": "बहाल करें",
+    "restoreLabel": "विंडो बहाल करें",
+    "close": "बंद करें",
+    "closeLabel": "विंडो बंद करें",
+    "back": "वापस",
+    "backLabel": "वापस जाएँ",
+    "forward": "आगे",
+    "forwardLabel": "आगे जाएँ"
+  },
+  "infoButton": {
+    "showInfo": "जानकारी दिखाएँ"
   },
   "castMenu": {
     "title": "कास्ट",
@@ -334,6 +361,7 @@
     },
     "configDir": "कॉन्फ़िग डायरेक्टरी",
     "dataDir": "डाटा डायरेक्टरी",
+    "supportSoulFire": "SoulFire का समर्थन करें",
     "about": "के बारे में",
     "logOut": "लॉग आउट करें",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "दस्तावेज़ीकरण",
-    "supportSoulFire": "मुझे कॉफ़ी खरीदें",
+    "supportSoulFire": "SoulFire का समर्थन करें",
     "discord": "Discord"
   },
   "breadcrumbs": {

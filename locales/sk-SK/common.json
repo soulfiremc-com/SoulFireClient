@@ -46,6 +46,13 @@
       },
       "close": "Zavrieť"
     },
+    "support": {
+      "title": "Podporte SoulFire",
+      "description": "SoulFire je zadarmo a open-source, vytvorený s láskou komunitou.",
+      "body": "Ak vám SoulFire bol užitočný, zvážte, prosím, podporu tohto projektu. Váš príspevok pomáha pokryť náklady na servery, financovať vývoj a udržiavať SoulFire zadarmo pre všetkých.",
+      "dismiss": "Možno neskôr",
+      "action": "Podporte SoulFire"
+    },
     "createInstance": {
       "title": "Vytvoriť novú inštanciu",
       "description": "Inštancie potrebujú priateľské názvy, aby ste ich mohli rozlíšiť. Môže to byť akýkoľvek názov, napríklad \"Môj Minecraft Bot\".",
@@ -230,6 +237,9 @@
       "add": "Pridať",
       "remove": "Odstrániť"
     },
+    "combo": {
+      "searchPlaceholder": "Hľadať hodnotu..."
+    },
     "invalidNumberToast": {
       "title": "Neplatné číslo!",
       "description": "Hodnota musí byť medzi {{min}} a {{max}}"
@@ -253,6 +263,23 @@
   },
   "uiSidebar": {
     "toggle": "Prepnúť bočný panel"
+  },
+  "window": {
+    "minimize": "Minimalizovať",
+    "minimizeLabel": "Minimalizovať okno",
+    "maximize": "Maximalizovať",
+    "maximizeLabel": "Maximalizovať okno",
+    "restore": "Obnoviť",
+    "restoreLabel": "Obnoviť okno",
+    "close": "Zavrieť",
+    "closeLabel": "Zavrieť okno",
+    "back": "Späť",
+    "backLabel": "Ísť späť",
+    "forward": "Dopredu",
+    "forwardLabel": "Ísť dopredu"
+  },
+  "infoButton": {
+    "showInfo": "Zobraziť informácie"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +361,7 @@
     },
     "configDir": "Konfiguračný adresár",
     "dataDir": "Adresár s dátami",
+    "supportSoulFire": "Podporte SoulFire",
     "about": "O aplikácii",
     "logOut": "Odhlásiť sa",
     "logOutToast": {
@@ -347,7 +375,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentácia",
-    "supportSoulFire": "Kúpte mi kávu",
+    "supportSoulFire": "Podporte SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
