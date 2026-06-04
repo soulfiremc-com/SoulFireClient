@@ -266,6 +266,8 @@ const accountTypeToIcon = (
         return CookieIcon;
       case "MICROSOFT_JAVA_ACCESS_TOKEN":
         return TicketIcon;
+      case "THE_ALTENING":
+        return TicketIcon;
       case "MICROSOFT_BEDROCK_CREDENTIALS":
         return KeyRoundIcon;
       case "MICROSOFT_BEDROCK_DEVICE_CODE":
@@ -893,6 +895,16 @@ function AddButton() {
               }}
             >
               {t("account.ravealts.button")}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                void trackEvent("import_account_the_altening");
+                setAccountTypeCredentialsSelected(
+                  AccountTypeCredentials.THE_ALTENING,
+                );
+              }}
+            >
+              {t("account.import.theAltening")}
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

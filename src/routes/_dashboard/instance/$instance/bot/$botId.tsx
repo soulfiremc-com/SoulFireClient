@@ -203,6 +203,8 @@ const accountTypeLabel = (
         return "Java (Cookies)";
       case "MICROSOFT_JAVA_ACCESS_TOKEN":
         return "Java (Access Token)";
+      case "THE_ALTENING":
+        return "Java (TheAltening)";
       case "MICROSOFT_BEDROCK_CREDENTIALS":
         return "Bedrock (Credentials)";
       case "MICROSOFT_BEDROCK_DEVICE_CODE":
@@ -226,6 +228,8 @@ const accountTypeToIcon = (
       case "MICROSOFT_JAVA_COOKIES":
         return CookieIcon;
       case "MICROSOFT_JAVA_ACCESS_TOKEN":
+        return TicketIcon;
+      case "THE_ALTENING":
         return TicketIcon;
       case "MICROSOFT_BEDROCK_CREDENTIALS":
         return KeyRoundIcon;

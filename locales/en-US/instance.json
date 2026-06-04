@@ -118,6 +118,7 @@
       "microsoftRefreshToken": "Microsoft Refresh Token",
       "microsoftCookies": "Microsoft Cookies",
       "microsoftAccessToken": "Microsoft Access Token",
+      "theAltening": "TheAltening Token",
       "altProviders": "Alt Providers",
       "dialog": {
         "title": "Import {{type}} accounts",
