@@ -1,4 +1,5 @@
 import { createClient } from "@connectrpc/connect";
+import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
   useQueryClient,
@@ -12,6 +13,7 @@ import {
 } from "@tanstack/react-router";
 import {
   ClipboardCopyIcon,
+  CopyPlusIcon,
   ExternalLinkIcon,
   LoaderCircleIcon,
   PauseIcon,
@@ -20,10 +22,12 @@ import {
   SearchXIcon,
   SquareIcon,
   TrashIcon,
+  XIcon,
 } from "lucide-react";
-import { type ComponentType, use } from "react";
+import { type ComponentType, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { z } from "zod";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   MenuItem,
@@ -35,12 +39,29 @@ import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
+  Credenza,
+  CredenzaBody,
+  CredenzaClose,
+  CredenzaContent,
+  CredenzaDescription,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+} from "@/components/ui/credenza.tsx";
+import {
   Empty,
   EmptyContent,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field.tsx";
+import { Input } from "@/components/ui/input.tsx";
 import {
   Item,
   ItemContent,
@@ -85,6 +106,10 @@ type StateAction = {
   Icon: ComponentType<{ className?: string }>;
 };
 
+type DuplicateInstanceForm = {
+  friendlyName: string;
+};
+
 const stateIndicatorStyles: Record<InstanceState, string> = {
   [InstanceState.STARTING]:
     "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200",
@@ -113,6 +138,17 @@ function generateN(count: number) {
     { length: Math.max(0, Math.floor(count)) },
     (_, index) => index + 1,
   );
+}
+
+function getDuplicateInstanceName(friendlyName: string) {
+  const suffix = " Copy";
+  const maxLength = 32;
+  const baseName = friendlyName.trim();
+  if (baseName.length + suffix.length <= maxLength) {
+    return `${baseName}${suffix}`;
+  }
+
+  return `${baseName.slice(0, maxLength - suffix.length).trimEnd()}${suffix}`;
 }
 
 function getAvailableStateActions(state: InstanceState): StateAction[] {
@@ -159,6 +195,115 @@ function InstanceStateIndicator({ state }: { state: InstanceState }) {
   );
 }
 
+function DuplicateInstanceDialog({
+  sourceInstance,
+  open,
+  onOpenChange,
+  onDuplicate,
+  pending,
+}: {
+  sourceInstance: InstanceListResponse_Instance | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onDuplicate: (value: DuplicateInstanceForm) => void;
+  pending: boolean;
+}) {
+  const { t } = useTranslation("common");
+  const formSchema = z.object({
+    friendlyName: z
+      .string()
+      .min(3, t("dialog.createInstance.form.friendlyName.min"))
+      .max(32, t("dialog.createInstance.form.friendlyName.max"))
+      .regex(
+        /^[a-zA-Z0-9 ]+$/,
+        t("dialog.createInstance.form.friendlyName.regex"),
+      ),
+  });
+  const form = useForm({
+    defaultValues: {
+      friendlyName: sourceInstance
+        ? getDuplicateInstanceName(sourceInstance.friendlyName)
+        : "",
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: async ({ value }) => {
+      onDuplicate(value);
+    },
+  });
+
+  return (
+    <Credenza open={open} onOpenChange={onOpenChange}>
+      <CredenzaContent className="pb-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
+          <CredenzaHeader>
+            <CredenzaTitle>{t("dialog.duplicateInstance.title")}</CredenzaTitle>
+            <CredenzaDescription>
+              {t("dialog.duplicateInstance.description", {
+                name: sourceInstance?.friendlyName ?? "",
+              })}
+            </CredenzaDescription>
+          </CredenzaHeader>
+          <CredenzaBody>
+            <form.Field name="friendlyName">
+              {(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>
+                      {t("dialog.createInstance.form.friendlyName.label")}
+                    </FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      autoFocus
+                      placeholder={t(
+                        "dialog.createInstance.form.friendlyName.placeholder",
+                      )}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                    />
+                    <FieldDescription>
+                      {t(
+                        "dialog.duplicateInstance.form.friendlyName.description",
+                      )}
+                    </FieldDescription>
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            </form.Field>
+          </CredenzaBody>
+          <CredenzaFooter className="justify-between">
+            <CredenzaClose asChild>
+              <Button variant="outline" disabled={pending}>
+                <XIcon />
+                {t("dialog.createInstance.form.cancel")}
+              </Button>
+            </CredenzaClose>
+            <Button type="submit" disabled={pending || sourceInstance === null}>
+              <CopyPlusIcon />
+              {t("dialog.duplicateInstance.form.duplicate")}
+            </Button>
+          </CredenzaFooter>
+        </form>
+      </CredenzaContent>
+    </Credenza>
+  );
+}
+
 function InstanceCardSkeleton() {
   return (
     <div className="flex w-full flex-row items-center gap-4 rounded-lg border px-6 py-4">
@@ -198,14 +343,18 @@ function InstanceSelectPage() {
 
 function Content() {
   const { t } = useTranslation("common");
-  const { instanceListQueryOptions } = Route.useRouteContext();
+  const { clientDataQueryOptions, instanceListQueryOptions } =
+    Route.useRouteContext();
   const { data: instanceList } = useSuspenseQuery(instanceListQueryOptions);
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const navigate = useNavigate();
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<InstanceListResponse_Instance>();
   const copyToClipboard = useCopyToClipboard();
+  const [duplicateSource, setDuplicateSource] =
+    useState<InstanceListResponse_Instance | null>(null);
 
   const stateMutation = useMutation({
     mutationKey: ["instance", "state", "list"],
@@ -234,6 +383,74 @@ function Content() {
           return t(`controls.${action}Toast.error`);
         },
       });
+      return promise;
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: instanceListQueryOptions.queryKey,
+      });
+    },
+  });
+
+  const duplicateMutation = useMutation({
+    mutationKey: ["instance", "duplicate"],
+    mutationFn: async ({
+      sourceInstance,
+      friendlyName,
+    }: {
+      sourceInstance: InstanceListResponse_Instance;
+      friendlyName: string;
+    }) => {
+      if (transport === null) return;
+      const instanceService = createClient(InstanceService, transport);
+      const promise = (async () => {
+        const sourceResponse = await instanceService.getInstanceInfo({
+          id: sourceInstance.id,
+        });
+        if (
+          sourceResponse.result.case !== "info" ||
+          sourceResponse.result.value.config === undefined
+        ) {
+          throw new Error("Source instance profile is unavailable");
+        }
+
+        const sourceInfo = sourceResponse.result.value;
+        const created = await instanceService.createInstance({
+          friendlyName,
+        });
+        await instanceService.updateInstanceConfig({
+          id: created.id,
+          config: sourceInfo.config,
+        });
+        if (sourceInfo.icon !== "") {
+          await instanceService.updateInstanceMeta({
+            id: created.id,
+            meta: {
+              case: "icon",
+              value: sourceInfo.icon,
+            },
+          });
+        }
+
+        return created;
+      })();
+
+      toast.promise(promise, {
+        loading: t("dialog.duplicateInstance.duplicateToast.loading"),
+        success: (created) => {
+          setDuplicateSource(null);
+          void navigate({
+            to: "/instance/$instance",
+            params: { instance: created.id },
+          });
+          return t("dialog.duplicateInstance.duplicateToast.success");
+        },
+        error: (e) => {
+          console.error(e);
+          return t("dialog.duplicateInstance.duplicateToast.error");
+        },
+      });
+
       return promise;
     },
     onSettled: async () => {
@@ -279,6 +496,10 @@ function Content() {
   const canDeleteContextInstance =
     contextMenu &&
     hasInstancePermission(contextMenu.data, InstancePermission.DELETE_INSTANCE);
+  const canCreateInstance = hasGlobalPermission(
+    clientInfo,
+    GlobalPermission.CREATE_INSTANCE,
+  );
 
   return (
     <>
@@ -354,6 +575,17 @@ function Content() {
             <ExternalLinkIcon />
             {t("contextMenu.instance.goToInstance")}
           </MenuItem>
+          {canCreateInstance && (
+            <MenuItem
+              onClick={() => {
+                setDuplicateSource(contextMenu.data);
+                dismiss();
+              }}
+            >
+              <CopyPlusIcon />
+              {t("contextMenu.instance.duplicateInstance")}
+            </MenuItem>
+          )}
           {contextStateActions.length > 0 && (
             <>
               <MenuSeparator />
@@ -411,6 +643,27 @@ function Content() {
           )}
         </ContextMenuPortal>
       )}
+      <DuplicateInstanceDialog
+        key={duplicateSource?.id ?? "closed"}
+        sourceInstance={duplicateSource}
+        open={duplicateSource !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDuplicateSource(null);
+          }
+        }}
+        pending={duplicateMutation.isPending}
+        onDuplicate={(value) => {
+          if (duplicateSource === null) {
+            return;
+          }
+
+          duplicateMutation.mutate({
+            sourceInstance: duplicateSource,
+            friendlyName: value.friendlyName,
+          });
+        }}
+      />
     </>
   );
 }

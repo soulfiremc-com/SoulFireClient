@@ -74,6 +74,21 @@
         "error": "Failed to create instance"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplicate instance",
+      "description": "Create a new instance using the profile from \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "The name for the duplicated instance."
+        },
+        "duplicate": "Duplicate"
+      },
+      "duplicateToast": {
+        "loading": "Duplicating instance...",
+        "success": "Instance duplicated successfully",
+        "error": "Failed to duplicate instance"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "From file",
@@ -559,6 +574,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Go to Instance",
+      "duplicateInstance": "Duplicate Instance",
       "copyInstanceId": "Copy Instance ID",
       "copyInstanceName": "Copy Instance Name",
       "deleteInstance": "Delete Instance"
