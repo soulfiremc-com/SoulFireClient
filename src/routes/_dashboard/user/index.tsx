@@ -15,7 +15,6 @@ import {
   ClipboardCopyIcon,
   CopyPlusIcon,
   ExternalLinkIcon,
-  LoaderCircleIcon,
   PauseIcon,
   PlayIcon,
   PlusIcon,
@@ -35,6 +34,7 @@ import {
 } from "@/components/context-menu-primitives.tsx";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
+import { InstanceStateIndicator } from "@/components/instance-state-indicator.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -84,12 +84,7 @@ import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
-import { translateInstanceState } from "@/lib/types.ts";
-import {
-  cn,
-  hasGlobalPermission,
-  hasInstancePermission,
-} from "@/lib/utils.tsx";
+import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/user/")({
   beforeLoad: () =>
@@ -108,29 +103,6 @@ type StateAction = {
 
 type DuplicateInstanceForm = {
   friendlyName: string;
-};
-
-const stateIndicatorStyles: Record<InstanceState, string> = {
-  [InstanceState.STARTING]:
-    "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200",
-  [InstanceState.RUNNING]:
-    "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200",
-  [InstanceState.PAUSED]:
-    "border-muted-foreground/30 bg-muted text-muted-foreground",
-  [InstanceState.STOPPING]:
-    "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200",
-  [InstanceState.STOPPED]: "border-border bg-background text-muted-foreground",
-};
-
-const stateIndicatorIcons: Record<
-  InstanceState,
-  ComponentType<{ className?: string }>
-> = {
-  [InstanceState.STARTING]: LoaderCircleIcon,
-  [InstanceState.RUNNING]: PlayIcon,
-  [InstanceState.PAUSED]: PauseIcon,
-  [InstanceState.STOPPING]: LoaderCircleIcon,
-  [InstanceState.STOPPED]: SquareIcon,
 };
 
 function generateN(count: number) {
@@ -169,30 +141,6 @@ function getAvailableStateActions(state: InstanceState): StateAction[] {
     case InstanceState.STOPPING:
       return [];
   }
-}
-
-function InstanceStateIndicator({ state }: { state: InstanceState }) {
-  const { i18n } = useTranslation("common");
-  const Icon = stateIndicatorIcons[state];
-
-  return (
-    <span
-      className={cn(
-        "inline-flex w-fit items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium",
-        stateIndicatorStyles[state],
-      )}
-    >
-      <Icon
-        className={cn(
-          "size-3.5",
-          (state === InstanceState.STARTING ||
-            state === InstanceState.STOPPING) &&
-            "animate-spin",
-        )}
-      />
-      {translateInstanceState(i18n, state)}
-    </span>
-  );
 }
 
 function DuplicateInstanceDialog({

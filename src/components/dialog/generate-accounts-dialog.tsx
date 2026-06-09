@@ -28,7 +28,9 @@ import { Input } from "@/components/ui/input.tsx";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -290,37 +292,56 @@ export default function GenerateAccountsDialog({
               }}
             </form.Field>
             <form.Field name="mode">
-              {(field) => (
-                <Field>
-                  <div className="flex items-center gap-2">
-                    <FieldLabel htmlFor={field.name}>
-                      {t("account.generate.mode")}
-                    </FieldLabel>
-                    <TextInfoButton value={t("account.generate.modeHelp")} />
-                  </div>
-                  <Select
-                    value={field.state.value}
-                    onValueChange={(value) =>
-                      field.handleChange(value as GenerateAccountsMode)
-                    }
-                  >
-                    <SelectTrigger id={field.name} className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="IGNORE_EXISTING">
-                        {t("account.generate.modeIgnoreExisting")}
-                      </SelectItem>
-                      <SelectItem value="REPLACE_EXISTING">
-                        {t("account.generate.modeReplaceExisting")}
-                      </SelectItem>
-                      <SelectItem value="REPLACE_ALL">
-                        {t("account.generate.modeReplaceAll")}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </Field>
-              )}
+              {(field) => {
+                const modeItems = [
+                  {
+                    label: t("account.generate.modeIgnoreExisting"),
+                    value: "IGNORE_EXISTING",
+                  },
+                  {
+                    label: t("account.generate.modeReplaceExisting"),
+                    value: "REPLACE_EXISTING",
+                  },
+                  {
+                    label: t("account.generate.modeReplaceAll"),
+                    value: "REPLACE_ALL",
+                  },
+                ];
+
+                return (
+                  <Field>
+                    <div className="flex items-center gap-2">
+                      <FieldLabel htmlFor={field.name}>
+                        {t("account.generate.mode")}
+                      </FieldLabel>
+                      <TextInfoButton value={t("account.generate.modeHelp")} />
+                    </div>
+                    <Select
+                      value={field.state.value}
+                      onValueChange={(value) =>
+                        field.handleChange(value as GenerateAccountsMode)
+                      }
+                      items={modeItems}
+                    >
+                      <SelectTrigger id={field.name} className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>
+                            {t("account.generate.mode")}
+                          </SelectLabel>
+                          {modeItems.map((mode) => (
+                            <SelectItem key={mode.value} value={mode.value}>
+                              {mode.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                );
+              }}
             </form.Field>
           </CredenzaBody>
           <CredenzaFooter>

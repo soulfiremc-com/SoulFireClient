@@ -36,7 +36,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -702,6 +704,11 @@ function DialogContentInner({
   const currentPageMeta = botSettingsPages.find(
     (page) => page.id === currentPage?.id,
   );
+  const pageItems = filteredPages.map((page) => ({
+    iconId: page.iconId,
+    label: page.pageName,
+    value: page.id,
+  }));
 
   return (
     <div className="flex h-[540px] min-h-0 flex-col bg-background">
@@ -861,8 +868,14 @@ function DialogContentInner({
                 <Select
                   value={currentPage?.id}
                   onValueChange={(value) => setSelectedPage(value)}
+                  items={pageItems}
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger
+                    aria-label={t("account.config.selectPage", {
+                      defaultValue: "Select a settings page",
+                    })}
+                    className="w-full"
+                  >
                     <SelectValue
                       placeholder={t("account.config.selectPage", {
                         defaultValue: "Select a settings page",
@@ -870,17 +883,24 @@ function DialogContentInner({
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    {filteredPages.map((page) => (
-                      <SelectItem key={page.id} value={page.id}>
-                        <div className="flex items-center gap-2">
-                          <DynamicIcon
-                            name={page.iconId}
-                            className="size-4 shrink-0"
-                          />
-                          <span>{page.pageName}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
+                    <SelectGroup>
+                      <SelectLabel>
+                        {t("account.config.selectPage", {
+                          defaultValue: "Settings pages",
+                        })}
+                      </SelectLabel>
+                      {pageItems.map((page) => (
+                        <SelectItem key={page.value} value={page.value}>
+                          <div className="flex items-center gap-2">
+                            <DynamicIcon
+                              name={page.iconId}
+                              className="size-4 shrink-0"
+                            />
+                            <span>{page.label}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>

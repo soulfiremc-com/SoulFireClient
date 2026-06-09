@@ -24,6 +24,7 @@ import {
   Suspense,
   useDeferredValue,
   useEffect,
+  useId,
   useMemo,
   useState,
 } from "react";
@@ -64,7 +65,9 @@ import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -1642,6 +1645,7 @@ function Content() {
             placeholder={t("automation.filters.searchBots")}
           />
           <InlineSelect
+            label="Bot role filter"
             value={botRoleFilter}
             options={[
               { value: "all", label: "All Roles" },
@@ -1657,6 +1661,7 @@ function Content() {
             onValueChange={setBotRoleFilter}
           />
           <InlineSelect
+            label="Bot status filter"
             value={botStatusFilter}
             options={[
               { value: "all", label: "All Statuses" },
@@ -1666,6 +1671,7 @@ function Content() {
             onValueChange={setBotStatusFilter}
           />
           <InlineSelect
+            label="Bot health filter"
             value={botAttentionFilter}
             options={[
               { value: "all", label: "All Health" },
@@ -1676,6 +1682,7 @@ function Content() {
             onValueChange={setBotAttentionFilter}
           />
           <InlineSelect
+            label="Bot dimension filter"
             value={botDimensionFilter}
             options={[
               { value: "all", label: "All Dimensions" },
@@ -1776,6 +1783,7 @@ function Content() {
             </div>
             <div className="ml-auto flex flex-wrap items-center gap-2">
               <InlineSelect
+                label="Bulk enabled setting"
                 value={bulkEnabledInput}
                 options={[
                   { value: NO_CHANGE, label: "Enabled: No Change" },
@@ -1785,6 +1793,7 @@ function Content() {
                 onValueChange={setBulkEnabledInput}
               />
               <InlineSelect
+                label="Bulk death recovery setting"
                 value={bulkDeathRecoveryInput}
                 options={[
                   {
@@ -1797,6 +1806,7 @@ function Content() {
                 onValueChange={setBulkDeathRecoveryInput}
               />
               <InlineSelect
+                label="Bulk role override setting"
                 value={bulkRoleOverrideInput}
                 options={[
                   { value: NO_CHANGE, label: "Role: No Change" },
@@ -2096,12 +2106,14 @@ function Content() {
 }
 
 function InlineSelect(props: {
+  label: string;
   value: string;
   options: { value: string; label: string }[];
   onValueChange: (value: string) => void;
 }) {
   return (
     <Select
+      items={props.options}
       value={props.value}
       onValueChange={(value) => {
         if (value) {
@@ -2109,15 +2121,18 @@ function InlineSelect(props: {
         }
       }}
     >
-      <SelectTrigger className="h-8 w-auto min-w-28">
+      <SelectTrigger aria-label={props.label} className="h-8 w-auto min-w-28">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        {props.options.map((o) => (
-          <SelectItem key={o.value} value={o.value}>
-            {o.label}
-          </SelectItem>
-        ))}
+        <SelectGroup>
+          <SelectLabel>{props.label}</SelectLabel>
+          {props.options.map((o) => (
+            <SelectItem key={o.value} value={o.value}>
+              {o.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
       </SelectContent>
     </Select>
   );
@@ -2187,12 +2202,17 @@ function SettingSelect(props: {
   disabled: boolean;
   onValueChange: (value: string) => void;
 }) {
+  const selectId = useId();
+
   return (
     <div className="grid gap-2">
       {props.label.length > 0 && (
-        <p className="text-sm font-medium">{props.label}</p>
+        <label htmlFor={selectId} className="text-sm font-medium">
+          {props.label}
+        </label>
       )}
       <Select
+        items={props.options}
         value={props.value}
         disabled={props.disabled}
         onValueChange={(value) => {
@@ -2201,15 +2221,22 @@ function SettingSelect(props: {
           }
         }}
       >
-        <SelectTrigger className="w-full">
+        <SelectTrigger
+          id={selectId}
+          aria-label={props.label.length > 0 ? undefined : "Setting"}
+          className="w-full"
+        >
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {props.options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            {props.label.length > 0 && <SelectLabel>{props.label}</SelectLabel>}
+            {props.options.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </div>
@@ -2770,6 +2797,7 @@ function ClaimsPanel(props: {
           onChange={(event) => props.onClaimSearchChange(event.target.value)}
         />
         <InlineSelect
+          label="Claim owner filter"
           value={props.ownerFilter}
           options={[
             { value: "all", label: "All Owners" },
@@ -2778,6 +2806,7 @@ function ClaimsPanel(props: {
           onValueChange={props.onOwnerFilterChange}
         />
         <InlineSelect
+          label="Claim type filter"
           value={props.typeFilter}
           options={[
             { value: "all", label: "All Claim Types" },
@@ -2910,6 +2939,7 @@ function MemoryPanel(props: {
       {props.bots.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
           <InlineSelect
+            label="Memory bot"
             value={selectedBotId}
             options={props.bots.map((bot) => ({
               value: bot.botId,

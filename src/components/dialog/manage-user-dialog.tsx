@@ -19,7 +19,9 @@ import { Input } from "@/components/ui/input.tsx";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -231,6 +233,13 @@ export function ManageUserDialog({
               {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
+                const roleItems = getEnumEntries(UserRole).map((role) => ({
+                  label: t(
+                    `users.baseUserDialog.form.role.${role.key.toLowerCase()}`,
+                  ),
+                  value: String(role.value),
+                }));
+
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>
@@ -242,6 +251,7 @@ export function ManageUserDialog({
                       onValueChange={(value) =>
                         field.handleChange(Number(value))
                       }
+                      items={roleItems}
                     >
                       <SelectTrigger id={field.name} aria-invalid={isInvalid}>
                         <SelectValue
@@ -251,16 +261,16 @@ export function ManageUserDialog({
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        {getEnumEntries(UserRole).map((role) => (
-                          <SelectItem
-                            key={role.value}
-                            value={String(role.value)}
-                          >
-                            {t(
-                              `users.baseUserDialog.form.role.${role.key.toLowerCase()}`,
-                            )}
-                          </SelectItem>
-                        ))}
+                        <SelectGroup>
+                          <SelectLabel>
+                            {t("users.baseUserDialog.form.role.label")}
+                          </SelectLabel>
+                          {roleItems.map((role) => (
+                            <SelectItem key={role.value} value={role.value}>
+                              {role.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                     <FieldDescription>

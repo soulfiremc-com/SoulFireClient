@@ -32,7 +32,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -48,6 +50,10 @@ const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 const FILTER_SHORTCUT_KEY = "f";
 const REMOVE_FILTER_SHORTCUTS = ["backspace", "delete"];
+const BOOLEAN_FILTER_ITEMS = [
+  { label: "True", value: "true" },
+  { label: "False", value: "false" },
+] as const;
 
 interface DataTableFilterMenuProps<TData>
   extends React.ComponentProps<typeof PopoverContent> {
@@ -465,23 +471,28 @@ function DataTableFilterItem<TData>({
                   : filter.value,
             });
           }}
+          items={filterOperators}
         >
           <SelectTrigger
+            aria-label={`${column.columnDef.meta?.label} filter operator`}
             aria-controls={operatorListboxId}
             className="h-8 rounded-none border-r-0 px-2.5 lowercase data-size:h-8 [&_svg]:hidden"
           >
             <SelectValue placeholder={filter.operator} />
           </SelectTrigger>
           <SelectContent id={operatorListboxId}>
-            {filterOperators.map((operator) => (
-              <SelectItem
-                key={operator.value}
-                className="lowercase"
-                value={operator.value}
-              >
-                {operator.label}
-              </SelectItem>
-            ))}
+            <SelectGroup>
+              <SelectLabel>Filter operator</SelectLabel>
+              {filterOperators.map((operator) => (
+                <SelectItem
+                  key={operator.value}
+                  className="lowercase"
+                  value={operator.value}
+                >
+                  {operator.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
         {onFilterInputRender({
@@ -676,17 +687,25 @@ function onFilterInputRender<TData>({
               onFilterUpdate(filter.filterId, { value });
             }
           }}
+          items={BOOLEAN_FILTER_ITEMS}
         >
           <SelectTrigger
             id={inputId}
+            aria-label={`${column.columnDef.meta?.label} boolean filter value`}
             aria-controls={inputListboxId}
             className="rounded-none bg-transparent px-1.5 py-0.5 [&_svg]:hidden"
           >
             <SelectValue placeholder={filter.value ? "True" : "False"} />
           </SelectTrigger>
           <SelectContent id={inputListboxId}>
-            <SelectItem value="true">True</SelectItem>
-            <SelectItem value="false">False</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Filter value</SelectLabel>
+              {BOOLEAN_FILTER_ITEMS.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       );

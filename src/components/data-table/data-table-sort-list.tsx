@@ -27,7 +27,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -292,6 +294,7 @@ function DataTableSortItem({
   const [showFieldSelector, setShowFieldSelector] = React.useState(false);
   const [showDirectionSelector, setShowDirectionSelector] =
     React.useState(false);
+  const sortOrderItems = dataTableConfig.sortOrders;
 
   const onItemKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -371,8 +374,10 @@ function DataTableSortItem({
             onSortUpdate(sort.id, { desc: value === "desc" });
           }
         }}
+        items={sortOrderItems}
       >
         <SelectTrigger
+          aria-label={`Sort direction for ${columnLabels.get(sort.id)}`}
           aria-controls={directionListboxId}
           size="sm"
           className="w-24 rounded"
@@ -383,11 +388,14 @@ function DataTableSortItem({
           id={directionListboxId}
           className="min-w-(--anchor-width)"
         >
-          {dataTableConfig.sortOrders.map((order) => (
-            <SelectItem key={order.value} value={order.value}>
-              {order.label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            <SelectLabel>Sort direction</SelectLabel>
+            {sortOrderItems.map((order) => (
+              <SelectItem key={order.value} value={order.value}>
+                {order.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <Button

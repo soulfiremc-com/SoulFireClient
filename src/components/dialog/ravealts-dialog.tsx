@@ -1,5 +1,5 @@
 import { EyeIcon, EyeOffIcon, LoaderIcon } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
@@ -23,7 +23,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
@@ -55,6 +57,7 @@ export default function RavealtsDialog({
   onImportAccounts,
 }: RavealtsDialogProps) {
   const { t } = useTranslation("instance");
+  const accountTypeSelectId = useId();
   const [apiKey, setApiKey] = useState(() => getRavealtsApiKey());
   const [showApiKey, setShowApiKey] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
@@ -69,6 +72,10 @@ export default function RavealtsDialog({
     stock !== null
       ? Object.entries(stock).filter(([, count]) => count > 0)
       : [];
+  const accountTypeItems = availableTypes.map(([type, count]) => ({
+    label: `${formatStockType(type)} (${count})`,
+    value: type,
+  }));
 
   const loadStock = useCallback(async () => {
     setLoadingStock(true);
@@ -243,7 +250,9 @@ export default function RavealtsDialog({
           </Field>
 
           <Field>
-            <FieldLabel>{t("account.ravealts.accountType")}</FieldLabel>
+            <FieldLabel htmlFor={accountTypeSelectId}>
+              {t("account.ravealts.accountType")}
+            </FieldLabel>
             <Select
               value={selectedType}
               onValueChange={(value) => {
@@ -252,16 +261,20 @@ export default function RavealtsDialog({
                 }
               }}
               disabled={availableTypes.length === 0}
+              items={accountTypeItems}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger id={accountTypeSelectId} className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {availableTypes.map(([type, count]) => (
-                  <SelectItem key={type} value={type}>
-                    {formatStockType(type)} ({count})
-                  </SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>{t("account.ravealts.accountType")}</SelectLabel>
+                  {accountTypeItems.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </Field>

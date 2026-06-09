@@ -18,9 +18,9 @@ import {
   PositionScatterChart,
   TickDurationChart,
 } from "@/components/instance-metrics/metrics-charts.tsx";
+import { InstanceStateIndicator } from "@/components/instance-state-indicator.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
 import { InstanceState } from "@/generated/soulfire/instance_pb.ts";
@@ -31,7 +31,6 @@ import {
 } from "@/generated/soulfire/logs_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
-import { translateInstanceState } from "@/lib/types.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/")({
@@ -55,6 +54,12 @@ const OVERVIEW_CHART_SKELETON_IDS = [
   "chart-3",
   "chart-4",
 ] as const;
+const OVERVIEW_CONTROL_SKELETON_IDS = [
+  "control-1",
+  "control-2",
+  "control-3",
+  "control-4",
+] as const;
 
 function OverviewSkeleton() {
   return (
@@ -67,21 +72,18 @@ function OverviewSkeleton() {
         <Skeleton className="h-[calc(75vh-8rem)] w-full rounded-md" />
       </div>
       <div className="flex flex-row gap-2">
-        {Array.from({ length: 4 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
-          <Skeleton key={i} className="h-9 w-20" />
+        {OVERVIEW_CONTROL_SKELETON_IDS.map((id) => (
+          <Skeleton key={id} className="h-9 w-20" />
         ))}
       </div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
-          <Skeleton key={i} className="h-24 w-full rounded-lg" />
+        {OVERVIEW_SUMMARY_SKELETON_IDS.map((id) => (
+          <Skeleton key={id} className="h-24 w-full rounded-lg" />
         ))}
       </div>
       <div className="grid min-w-0 grid-cols-1 gap-2 lg:grid-cols-2">
-        {Array.from({ length: 4 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
-          <Skeleton key={i} className="h-64 w-full rounded-lg" />
+        {OVERVIEW_CHART_SKELETON_IDS.map((id) => (
+          <Skeleton key={id} className="h-64 w-full rounded-lg" />
         ))}
       </div>
     </div>
@@ -134,7 +136,6 @@ function OverviewHeaderSkeleton() {
 }
 
 function OverviewHeaderSection() {
-  const { i18n } = useTranslation("common");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const logScope = useMemo<LogScope>(
@@ -156,9 +157,7 @@ function OverviewHeaderSection() {
         <h2 className="max-w-64 truncate text-xl font-semibold">
           {instanceInfo.friendlyName}
         </h2>
-        <Badge className="uppercase" variant="secondary">
-          {translateInstanceState(i18n, instanceInfo.state)}
-        </Badge>
+        <InstanceStateIndicator state={instanceInfo.state} />
       </div>
       {hasInstancePermission(
         instanceInfo,

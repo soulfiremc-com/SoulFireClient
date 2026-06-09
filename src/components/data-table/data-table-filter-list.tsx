@@ -44,7 +44,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -72,6 +74,10 @@ const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 const FILTER_SHORTCUT_KEY = "f";
 const REMOVE_FILTER_SHORTCUTS = ["backspace", "delete"];
+const BOOLEAN_FILTER_ITEMS = [
+  { label: "True", value: "true" },
+  { label: "False", value: "false" },
+] as const;
 
 interface DataTableFilterListProps<TData>
   extends React.ComponentProps<typeof PopoverContent> {
@@ -392,6 +398,12 @@ function DataTableFilterItem<TData>({
   );
 
   if (!column) return null;
+  const joinOperatorItems = dataTableConfig.joinOperators.map(
+    (joinOperator) => ({
+      label: joinOperator,
+      value: joinOperator,
+    }),
+  );
 
   return (
     <SortableItem
@@ -417,6 +429,7 @@ function DataTableFilterItem<TData>({
                 setJoinOperator(value);
               }
             }}
+            items={joinOperatorItems}
           >
             <SelectTrigger
               aria-label="Select join operator"
@@ -430,11 +443,17 @@ function DataTableFilterItem<TData>({
               id={joinOperatorListboxId}
               className="min-w-(--anchor-width) lowercase"
             >
-              {dataTableConfig.joinOperators.map((joinOperator) => (
-                <SelectItem key={joinOperator} value={joinOperator}>
-                  {joinOperator}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                <SelectLabel>Join operator</SelectLabel>
+                {joinOperatorItems.map((joinOperator) => (
+                  <SelectItem
+                    key={joinOperator.value}
+                    value={joinOperator.value}
+                  >
+                    {joinOperator.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         ) : (
@@ -510,9 +529,11 @@ function DataTableFilterItem<TData>({
               value === "isEmpty" || value === "isNotEmpty" ? "" : filter.value,
           });
         }}
+        items={filterOperators}
       >
         <SelectTrigger
           aria-controls={operatorListboxId}
+          aria-label={`${columnMeta?.label} filter operator`}
           size="sm"
           className="w-32 rounded lowercase"
         >
@@ -521,15 +542,18 @@ function DataTableFilterItem<TData>({
           </div>
         </SelectTrigger>
         <SelectContent id={operatorListboxId}>
-          {filterOperators.map((operator) => (
-            <SelectItem
-              key={operator.value}
-              value={operator.value}
-              className="lowercase"
-            >
-              {operator.label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            <SelectLabel>Filter operator</SelectLabel>
+            {filterOperators.map((operator) => (
+              <SelectItem
+                key={operator.value}
+                value={operator.value}
+                className="lowercase"
+              >
+                {operator.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <div className="min-w-36 max-w-60 flex-1">
@@ -656,6 +680,7 @@ function onFilterInputRender<TData>({
               });
             }
           }}
+          items={BOOLEAN_FILTER_ITEMS}
         >
           <SelectTrigger
             id={inputId}
@@ -667,8 +692,14 @@ function onFilterInputRender<TData>({
             <SelectValue placeholder={filter.value ? "True" : "False"} />
           </SelectTrigger>
           <SelectContent id={inputListboxId}>
-            <SelectItem value="true">True</SelectItem>
-            <SelectItem value="false">False</SelectItem>
+            <SelectGroup>
+              <SelectLabel>Filter value</SelectLabel>
+              {BOOLEAN_FILTER_ITEMS.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       );
