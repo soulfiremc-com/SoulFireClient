@@ -133,6 +133,9 @@ import {
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 
+const BOT_POV_RENDER_WIDTH = 1920;
+const BOT_POV_RENDER_HEIGHT = 1080;
+
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/bot/$botId",
 )({
@@ -870,8 +873,8 @@ function BotPovPanel({
       const result = await botService.renderBotPov({
         instanceId,
         botId,
-        width: 854,
-        height: 480,
+        width: BOT_POV_RENDER_WIDTH,
+        height: BOT_POV_RENDER_HEIGHT,
       });
 
       setPovImage(result.imageBase64);
