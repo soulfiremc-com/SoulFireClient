@@ -136,7 +136,7 @@
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.3",
     "vite": "^8.0.8",
-    "vite-plugin-electron": "^0.29.1",
+    "vite-plugin-electron": "^1.0.0",
     "vite-plugin-svgr": "^5.2.0",
     "yaml": "^2.8.3"
   },
