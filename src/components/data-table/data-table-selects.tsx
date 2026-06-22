@@ -1,8 +1,15 @@
-import { CellContext, HeaderContext } from "@tanstack/react-table";
+import type {
+  CellContext,
+  HeaderContext,
+  RowData,
+} from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 
-export function SelectAllHeader<T>({ table }: HeaderContext<T, unknown>) {
+export function SelectAllHeader<T extends RowData>({
+  table,
+}: HeaderContext<typeof dataTableFeatures, T>) {
   const { t } = useTranslation("common");
   return (
     <div className="flex">
@@ -19,7 +26,9 @@ export function SelectAllHeader<T>({ table }: HeaderContext<T, unknown>) {
   );
 }
 
-export function SelectRowHeader<T>({ row }: CellContext<T, unknown>) {
+export function SelectRowHeader<T extends RowData>({
+  row,
+}: CellContext<typeof dataTableFeatures, T>) {
   const { t } = useTranslation("common");
   return (
     <div className="flex">

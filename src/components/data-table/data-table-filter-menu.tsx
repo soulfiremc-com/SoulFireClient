@@ -1,6 +1,6 @@
 "use client";
 
-import type { Column, Table } from "@tanstack/react-table";
+import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import {
   BadgeCheck,
   CalendarIcon,
@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/select";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 import { getDefaultFilterOperator, getFilterOperators } from "@/lib/data-table";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { formatDate } from "@/lib/format";
 import { generateId } from "@/lib/id";
 import { getFiltersStateParser } from "@/lib/parsers";
@@ -55,16 +56,16 @@ const BOOLEAN_FILTER_ITEMS = [
   { label: "False", value: "false" },
 ] as const;
 
-interface DataTableFilterMenuProps<TData>
+interface DataTableFilterMenuProps<TData extends RowData>
   extends React.ComponentProps<typeof PopoverContent> {
-  table: Table<TData>;
+  table: ReactTable<typeof dataTableFeatures, TData>;
   debounceMs?: number;
   throttleMs?: number;
   shallow?: boolean;
   disabled?: boolean;
 }
 
-export function DataTableFilterMenu<TData>({
+export function DataTableFilterMenu<TData extends RowData>({
   table,
   debounceMs = DEBOUNCE_MS,
   throttleMs = THROTTLE_MS,
@@ -81,8 +82,10 @@ export function DataTableFilterMenu<TData>({
   }, [table]);
 
   const [open, setOpen] = React.useState(false);
-  const [selectedColumn, setSelectedColumn] =
-    React.useState<Column<TData> | null>(null);
+  const [selectedColumn, setSelectedColumn] = React.useState<Column<
+    typeof dataTableFeatures,
+    TData
+  > | null>(null);
   const [inputValue, setInputValue] = React.useState("");
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -125,7 +128,7 @@ export function DataTableFilterMenu<TData>({
   const debouncedSetFilters = useDebouncedCallback(setFilters, debounceMs);
 
   const onFilterAdd = React.useCallback(
-    (column: Column<TData>, value: string) => {
+    (column: Column<typeof dataTableFeatures, TData>, value: string) => {
       if (!value.trim() && column.columnDef.meta?.variant !== "boolean") {
         return;
       }
@@ -330,10 +333,10 @@ export function DataTableFilterMenu<TData>({
   );
 }
 
-interface DataTableFilterItemProps<TData> {
+interface DataTableFilterItemProps<TData extends RowData> {
   filter: ExtendedColumnFilter<TData>;
   filterItemId: string;
-  columns: Column<TData>[];
+  columns: Column<typeof dataTableFeatures, TData>[];
   onFilterUpdate: (
     filterId: string,
     updates: Partial<Omit<ExtendedColumnFilter<TData>, "filterId">>,
@@ -341,7 +344,7 @@ interface DataTableFilterItemProps<TData> {
   onFilterRemove: (filterId: string) => void;
 }
 
-function DataTableFilterItem<TData>({
+function DataTableFilterItem<TData extends RowData>({
   filter,
   filterItemId,
   columns,
@@ -517,13 +520,13 @@ function DataTableFilterItem<TData>({
   }
 }
 
-interface FilterValueSelectorProps<TData> {
-  column: Column<TData>;
+interface FilterValueSelectorProps<TData extends RowData> {
+  column: Column<typeof dataTableFeatures, TData>;
   value: string;
   onSelect: (value: string) => void;
 }
 
-function FilterValueSelector<TData>({
+function FilterValueSelector<TData extends RowData>({
   column,
   value,
   onSelect,
@@ -605,7 +608,7 @@ function FilterValueSelector<TData>({
   }
 }
 
-function onFilterInputRender<TData>({
+function onFilterInputRender<TData extends RowData>({
   filter,
   column,
   inputId,
@@ -614,7 +617,7 @@ function onFilterInputRender<TData>({
   setShowValueSelector,
 }: {
   filter: ExtendedColumnFilter<TData>;
-  column: Column<TData>;
+  column: Column<typeof dataTableFeatures, TData>;
   inputId: string;
   onFilterUpdate: (
     filterId: string,

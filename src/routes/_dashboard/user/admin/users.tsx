@@ -5,11 +5,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import type {
-  ColumnDef,
-  Table as ReactTable,
-  Row,
-} from "@tanstack/react-table";
+import type { ColumnDef, ReactTable, Row } from "@tanstack/react-table";
 import {
   ClipboardCopyIcon,
   LogOutIcon,
@@ -58,6 +54,7 @@ import { UserService } from "@/generated/soulfire/user_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
@@ -89,7 +86,7 @@ const roleToIcon = (type: keyof typeof UserRole) =>
     }
   });
 
-const columns: ColumnDef<UserListResponse_User>[] = [
+const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
   {
     id: "select",
     header: SelectAllHeader,
@@ -201,7 +198,7 @@ const columns: ColumnDef<UserListResponse_User>[] = [
       <SFTimeAgo date={timestampToDate(row.original.createdAt as Timestamp)} />
     ),
     enableGlobalFilter: false,
-    sortingFn: "datetime",
+    sortFn: "datetime",
     meta: {
       get label() {
         return i18n.t("admin:users.table.createdAt");
@@ -230,7 +227,7 @@ const columns: ColumnDef<UserListResponse_User>[] = [
       />
     ),
     enableGlobalFilter: false,
-    sortingFn: "datetime",
+    sortFn: "datetime",
     meta: {
       get label() {
         return i18n.t("admin:users.table.minIssuedAt");
@@ -258,7 +255,9 @@ const columns: ColumnDef<UserListResponse_User>[] = [
   },
 ];
 
-function UpdateUserButton(props: { row: Row<UserListResponse_User> }) {
+function UpdateUserButton(props: {
+  row: Row<typeof dataTableFeatures, UserListResponse_User>;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -281,7 +280,9 @@ function UpdateUserButton(props: { row: Row<UserListResponse_User> }) {
   );
 }
 
-function ImpersonateUserButton(props: { row: Row<UserListResponse_User> }) {
+function ImpersonateUserButton(props: {
+  row: Row<typeof dataTableFeatures, UserListResponse_User>;
+}) {
   const transport = use(TransportContext);
   const navigate = useNavigate();
   return (
@@ -326,7 +327,9 @@ function AddButton() {
   );
 }
 
-function ExtraHeader(props: { table: ReactTable<UserListResponse_User> }) {
+function ExtraHeader(props: {
+  table: ReactTable<typeof dataTableFeatures, UserListResponse_User>;
+}) {
   const { t } = useTranslation("admin");
   const queryClient = useQueryClient();
   const transport = use(TransportContext);

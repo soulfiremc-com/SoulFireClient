@@ -1,6 +1,6 @@
 "use client";
 
-import type { Column, ColumnMeta, Table } from "@tanstack/react-table";
+import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import {
   CalendarIcon,
   Check,
@@ -60,6 +60,7 @@ import {
 import { dataTableConfig } from "@/config/data-table";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 import { getDefaultFilterOperator, getFilterOperators } from "@/lib/data-table";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { formatDate } from "@/lib/format";
 import { generateId } from "@/lib/id";
 import { getFiltersStateParser } from "@/lib/parsers";
@@ -68,6 +69,7 @@ import type {
   ExtendedColumnFilter,
   FilterOperator,
   JoinOperator,
+  TableColumnMeta,
 } from "@/types/data-table";
 
 const DEBOUNCE_MS = 300;
@@ -79,16 +81,16 @@ const BOOLEAN_FILTER_ITEMS = [
   { label: "False", value: "false" },
 ] as const;
 
-interface DataTableFilterListProps<TData>
+interface DataTableFilterListProps<TData extends RowData>
   extends React.ComponentProps<typeof PopoverContent> {
-  table: Table<TData>;
+  table: ReactTable<typeof dataTableFeatures, TData>;
   debounceMs?: number;
   throttleMs?: number;
   shallow?: boolean;
   disabled?: boolean;
 }
 
-export function DataTableFilterList<TData>({
+export function DataTableFilterList<TData extends RowData>({
   table,
   debounceMs = DEBOUNCE_MS,
   throttleMs = THROTTLE_MS,
@@ -332,13 +334,13 @@ export function DataTableFilterList<TData>({
   );
 }
 
-interface DataTableFilterItemProps<TData> {
+interface DataTableFilterItemProps<TData extends RowData> {
   filter: ExtendedColumnFilter<TData>;
   index: number;
   filterItemId: string;
   joinOperator: JoinOperator;
   setJoinOperator: (value: JoinOperator) => void;
-  columns: Column<TData>[];
+  columns: Column<typeof dataTableFeatures, TData>[];
   onFilterUpdate: (
     filterId: string,
     updates: Partial<Omit<ExtendedColumnFilter<TData>, "filterId">>,
@@ -346,7 +348,7 @@ interface DataTableFilterItemProps<TData> {
   onFilterRemove: (filterId: string) => void;
 }
 
-function DataTableFilterItem<TData>({
+function DataTableFilterItem<TData extends RowData>({
   filter,
   index,
   filterItemId,
@@ -587,7 +589,7 @@ function DataTableFilterItem<TData>({
   );
 }
 
-function onFilterInputRender<TData>({
+function onFilterInputRender<TData extends RowData>({
   filter,
   inputId,
   column,
@@ -598,8 +600,8 @@ function onFilterInputRender<TData>({
 }: {
   filter: ExtendedColumnFilter<TData>;
   inputId: string;
-  column: Column<TData>;
-  columnMeta?: ColumnMeta<TData, unknown>;
+  column: Column<typeof dataTableFeatures, TData>;
+  columnMeta?: TableColumnMeta;
   onFilterUpdate: (
     filterId: string,
     updates: Partial<Omit<ExtendedColumnFilter<TData>, "filterId">>,

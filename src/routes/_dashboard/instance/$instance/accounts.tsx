@@ -7,7 +7,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import type { ColumnDef, Table as ReactTable } from "@tanstack/react-table";
+import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import {
   BracesIcon,
   ClipboardCopyIcon,
@@ -99,6 +99,7 @@ import { MCAuthService } from "@/generated/soulfire/mc-auth_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
@@ -328,7 +329,7 @@ function ActionsCell({ account }: { account: ProfileAccount }) {
   );
 }
 
-const columns: ColumnDef<ProfileAccount>[] = [
+const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
   {
     id: "select",
     header: SelectAllHeader,
@@ -1087,7 +1088,9 @@ function AddButton() {
   );
 }
 
-function ExtraHeader(props: { table: ReactTable<ProfileAccount> }) {
+function ExtraHeader(props: {
+  table: ReactTable<typeof dataTableFeatures, ProfileAccount>;
+}) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
   const { instanceInfoQueryOptions } = Route.useRouteContext();

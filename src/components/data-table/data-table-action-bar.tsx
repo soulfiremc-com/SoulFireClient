@@ -1,6 +1,6 @@
 "use client";
 
-import type { Table } from "@tanstack/react-table";
+import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Loader, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
@@ -14,16 +14,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableActionBarProps<TData>
+interface DataTableActionBarProps<TData extends RowData>
   extends React.ComponentProps<typeof motion.div> {
-  table: Table<TData>;
+  table: ReactTable<typeof dataTableFeatures, TData>;
   visible?: boolean;
   container?: Element | DocumentFragment | null;
 }
 
-function DataTableActionBar<TData>({
+function DataTableActionBar<TData extends RowData>({
   table,
   visible: visibleProp,
   container: containerProp,
@@ -53,29 +54,40 @@ function DataTableActionBar<TData>({
 
   if (!container) return null;
 
-  const visible =
-    visibleProp ?? table.getFilteredSelectedRowModel().rows.length > 0;
-
   return ReactDOM.createPortal(
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          role="toolbar"
-          aria-orientation="horizontal"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className={cn(
-            "bg-background text-foreground fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border p-2 shadow-sm",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>,
+    <table.Subscribe
+      selector={(state) => ({
+        columnFilters: state.columnFilters,
+        rowSelection: state.rowSelection,
+      })}
+    >
+      {() => {
+        const visible =
+          visibleProp ?? table.getFilteredSelectedRowModel().rows.length > 0;
+
+        return (
+          <AnimatePresence>
+            {visible && (
+              <motion.div
+                role="toolbar"
+                aria-orientation="horizontal"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className={cn(
+                  "bg-background text-foreground fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border p-2 shadow-sm",
+                  className,
+                )}
+                {...props}
+              >
+                {children}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        );
+      }}
+    </table.Subscribe>,
     container,
   );
 }
@@ -126,11 +138,11 @@ function DataTableActionBarAction({
   );
 }
 
-interface DataTableActionBarSelectionProps<TData> {
-  table: Table<TData>;
+interface DataTableActionBarSelectionProps<TData extends RowData> {
+  table: ReactTable<typeof dataTableFeatures, TData>;
 }
 
-function DataTableActionBarSelection<TData>({
+function DataTableActionBarSelection<TData extends RowData>({
   table,
 }: DataTableActionBarSelectionProps<TData>) {
   const onClearSelection = React.useCallback(() => {
@@ -140,11 +152,20 @@ function DataTableActionBarSelection<TData>({
 
   return (
     <div className="flex h-7 items-center rounded-md border pr-1 pl-2.5">
-      <span className="text-xs whitespace-nowrap">
-        {t("dataTable.selected", {
-          count: table.getFilteredSelectedRowModel().rows.length,
+      <table.Subscribe
+        selector={(state) => ({
+          columnFilters: state.columnFilters,
+          rowSelection: state.rowSelection,
         })}
-      </span>
+      >
+        {() => (
+          <span className="text-xs whitespace-nowrap">
+            {t("dataTable.selected", {
+              count: table.getFilteredSelectedRowModel().rows.length,
+            })}
+          </span>
+        )}
+      </table.Subscribe>
       <Separator
         orientation="vertical"
         className="mr-1 ml-2 data-[orientation=vertical]:h-4"

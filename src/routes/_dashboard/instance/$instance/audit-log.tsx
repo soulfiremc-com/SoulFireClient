@@ -36,6 +36,7 @@ import {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
@@ -141,7 +142,10 @@ const logTypeToIcon = (
     }
   });
 
-const columns: ColumnDef<InstanceAuditLogResponse_AuditLogEntry>[] = [
+const columns: ColumnDef<
+  typeof dataTableFeatures,
+  InstanceAuditLogResponse_AuditLogEntry
+>[] = [
   {
     id: "user",
     accessorFn: (row) => `${row.user?.username} ${row.user?.email}`,
@@ -236,7 +240,7 @@ const columns: ColumnDef<InstanceAuditLogResponse_AuditLogEntry>[] = [
       <SFTimeAgo date={timestampToDate(row.original.timestamp as Timestamp)} />
     ),
     enableGlobalFilter: false,
-    sortingFn: "datetime",
+    sortFn: "datetime",
     meta: {
       get label() {
         return i18n.t("common:auditLog.timestamp");

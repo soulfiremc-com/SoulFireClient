@@ -1,4 +1,4 @@
-import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
+import type { ReactTable, RowData } from "@tanstack/react-table";
 import type * as React from "react";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
@@ -11,15 +11,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getColumnPinningStyle } from "@/lib/data-table";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableProps<TData> extends React.ComponentProps<"div"> {
-  table: TanstackTable<TData>;
+interface DataTableProps<TData extends RowData>
+  extends React.ComponentProps<"div"> {
+  table: ReactTable<typeof dataTableFeatures, TData>;
   actionBar?: React.ReactNode;
   onRowContextMenu?: (e: React.MouseEvent, row: TData) => void;
 }
 
-export function DataTable<TData>({
+export function DataTable<TData extends RowData>({
   table,
   actionBar,
   onRowContextMenu,
@@ -46,12 +48,7 @@ export function DataTable<TData>({
                       ...getColumnPinningStyle({ column: header.column }),
                     }}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                    {header.isPlaceholder ? null : table.FlexRender({ header })}
                   </TableHead>
                 ))}
               </TableRow>
@@ -76,10 +73,7 @@ export function DataTable<TData>({
                         ...getColumnPinningStyle({ column: cell.column }),
                       }}
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      {table.FlexRender({ cell })}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -103,9 +97,20 @@ export function DataTable<TData>({
       </div>
       <div className="flex flex-col gap-2.5">
         <DataTablePagination table={table} />
-        {actionBar &&
-          table.getFilteredSelectedRowModel().rows.length > 0 &&
-          actionBar}
+        {actionBar ? (
+          <table.Subscribe
+            selector={(state) => ({
+              columnFilters: state.columnFilters,
+              rowSelection: state.rowSelection,
+            })}
+          >
+            {() =>
+              table.getFilteredSelectedRowModel().rows.length > 0
+                ? actionBar
+                : null
+            }
+          </table.Subscribe>
+        ) : null}
       </div>
     </div>
   );

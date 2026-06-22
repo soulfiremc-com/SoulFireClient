@@ -1,4 +1,4 @@
-import type { Table } from "@tanstack/react-table";
+import type { ReactTable, RowData } from "@tanstack/react-table";
 import {
   ChevronLeft,
   ChevronRight,
@@ -17,14 +17,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTablePaginationProps<TData> extends React.ComponentProps<"div"> {
-  table: Table<TData>;
+interface DataTablePaginationProps<TData extends RowData>
+  extends React.ComponentProps<"div"> {
+  table: ReactTable<typeof dataTableFeatures, TData>;
   pageSizeOptions?: number[];
 }
 
-export function DataTablePagination<TData>({
+export function DataTablePagination<TData extends RowData>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50],
   className,
@@ -44,47 +46,61 @@ export function DataTablePagination<TData>({
       )}
       {...props}
     >
-      <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+      <table.Subscribe
+        selector={(state) => ({
+          columnFilters: state.columnFilters,
+          rowSelection: state.rowSelection,
+        })}
+      >
+        {() => (
+          <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
+        )}
+      </table.Subscribe>
       <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
-        <div className="flex items-center gap-2">
-          <p
-            id={rowsPerPageLabelId}
-            className="whitespace-nowrap font-medium text-sm"
-          >
-            Rows per page
-          </p>
-          <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-            items={pageSizeItems}
-          >
-            <SelectTrigger
-              aria-labelledby={rowsPerPageLabelId}
-              className="h-8 w-18 data-size:h-8"
-            >
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              <SelectGroup>
-                <SelectLabel>Rows per page</SelectLabel>
-                {pageSizeItems.map((pageSize) => (
-                  <SelectItem key={pageSize.value} value={pageSize.value}>
-                    {pageSize.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center justify-center font-medium text-sm">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </div>
+        <table.Subscribe source={table.atoms.pagination}>
+          {(pagination) => (
+            <>
+              <div className="flex items-center gap-2">
+                <p
+                  id={rowsPerPageLabelId}
+                  className="whitespace-nowrap font-medium text-sm"
+                >
+                  Rows per page
+                </p>
+                <Select
+                  value={`${pagination.pageSize}`}
+                  onValueChange={(value) => {
+                    table.setPageSize(Number(value));
+                  }}
+                  items={pageSizeItems}
+                >
+                  <SelectTrigger
+                    aria-labelledby={rowsPerPageLabelId}
+                    className="h-8 w-18 data-size:h-8"
+                  >
+                    <SelectValue placeholder={pagination.pageSize} />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    <SelectGroup>
+                      <SelectLabel>Rows per page</SelectLabel>
+                      {pageSizeItems.map((pageSize) => (
+                        <SelectItem key={pageSize.value} value={pageSize.value}>
+                          {pageSize.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center justify-center font-medium text-sm">
+                Page {pagination.pageIndex + 1} of {table.getPageCount()}
+              </div>
+            </>
+          )}
+        </table.Subscribe>
         <div className="flex items-center gap-2">
           <Button
             aria-label="Go to first page"

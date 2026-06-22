@@ -1,6 +1,6 @@
 "use client";
 
-import type { Column, Table } from "@tanstack/react-table";
+import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import * as React from "react";
 
@@ -10,20 +10,20 @@ import { DataTableSliderFilter } from "@/components/data-table/data-table-slider
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableToolbarProps<TData> extends React.ComponentProps<"div"> {
-  table: Table<TData>;
+interface DataTableToolbarProps<TData extends RowData>
+  extends React.ComponentProps<"div"> {
+  table: ReactTable<typeof dataTableFeatures, TData>;
 }
 
-export function DataTableToolbar<TData>({
+export function DataTableToolbar<TData extends RowData>({
   table,
   children,
   className,
   ...props
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
-
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
     [table],
@@ -47,18 +47,22 @@ export function DataTableToolbar<TData>({
         {columns.map((column) => (
           <DataTableToolbarFilter key={column.id} column={column} />
         ))}
-        {isFiltered && (
-          <Button
-            aria-label="Reset filters"
-            variant="outline"
-            size="sm"
-            className="border-dashed"
-            onClick={onReset}
-          >
-            <X />
-            Reset
-          </Button>
-        )}
+        <table.Subscribe source={table.atoms.columnFilters}>
+          {(columnFilters) =>
+            columnFilters.length > 0 ? (
+              <Button
+                aria-label="Reset filters"
+                variant="outline"
+                size="sm"
+                className="border-dashed"
+                onClick={onReset}
+              >
+                <X />
+                Reset
+              </Button>
+            ) : null
+          }
+        </table.Subscribe>
       </div>
       <div className="flex items-center gap-2">
         {children}
@@ -67,11 +71,11 @@ export function DataTableToolbar<TData>({
     </div>
   );
 }
-interface DataTableToolbarFilterProps<TData> {
-  column: Column<TData>;
+interface DataTableToolbarFilterProps<TData extends RowData> {
+  column: Column<typeof dataTableFeatures, TData>;
 }
 
-function DataTableToolbarFilter<TData>({
+function DataTableToolbarFilter<TData extends RowData>({
   column,
 }: DataTableToolbarFilterProps<TData>) {
   {

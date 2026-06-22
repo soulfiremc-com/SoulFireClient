@@ -1,6 +1,12 @@
 "use client";
 
-import type { ColumnSort, SortDirection, Table } from "@tanstack/react-table";
+import type {
+  ColumnSort,
+  ReactTable,
+  RowData,
+  SortDirection,
+  SortingState,
+} from "@tanstack/react-table";
 import {
   ArrowDownUp,
   ChevronsUpDown,
@@ -41,29 +47,56 @@ import {
   SortableOverlay,
 } from "@/components/ui/sortable";
 import { dataTableConfig } from "@/config/data-table";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
 const SORT_SHORTCUT_KEY = "s";
 const REMOVE_SORT_SHORTCUTS = ["backspace", "delete"];
 
-interface DataTableSortListProps<TData>
+interface DataTableSortListProps<TData extends RowData>
   extends React.ComponentProps<typeof PopoverContent> {
-  table: Table<TData>;
+  table: ReactTable<typeof dataTableFeatures, TData>;
   disabled?: boolean;
 }
 
-export function DataTableSortList<TData>({
+export function DataTableSortList<TData extends RowData>({
   table,
   disabled,
   ...props
 }: DataTableSortListProps<TData>) {
+  return (
+    <table.Subscribe source={table.atoms.sorting}>
+      {(sorting) => (
+        <DataTableSortListContent
+          table={table}
+          sorting={sorting}
+          disabled={disabled}
+          {...props}
+        />
+      )}
+    </table.Subscribe>
+  );
+}
+
+interface DataTableSortListContentProps<TData extends RowData>
+  extends React.ComponentProps<typeof PopoverContent> {
+  table: ReactTable<typeof dataTableFeatures, TData>;
+  sorting: SortingState;
+  disabled?: boolean;
+}
+
+function DataTableSortListContent<TData extends RowData>({
+  table,
+  sorting,
+  disabled,
+  ...props
+}: DataTableSortListContentProps<TData>) {
   const id = React.useId();
   const labelId = React.useId();
   const descriptionId = React.useId();
   const [open, setOpen] = React.useState(false);
   const addButtonRef = React.useRef<HTMLButtonElement>(null);
 
-  const sorting = table.getState().sorting;
   const onSortingChange = table.setSorting;
 
   const { columnLabels, columns } = React.useMemo(() => {

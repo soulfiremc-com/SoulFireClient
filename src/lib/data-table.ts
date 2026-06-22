@@ -1,16 +1,17 @@
-import type { Column } from "@tanstack/react-table";
+import type { Column, RowData } from "@tanstack/react-table";
 import { dataTableConfig } from "@/config/data-table";
+import type { dataTableFeatures } from "@/lib/data-table-features";
 import type {
   ExtendedColumnFilter,
   FilterOperator,
   FilterVariant,
 } from "@/types/data-table";
 
-export function getColumnPinningStyle<TData>({
+export function getColumnPinningStyle<TData extends RowData>({
   column,
   withBorder = false,
 }: {
-  column: Column<TData>;
+  column: Column<typeof dataTableFeatures, TData>;
   withBorder?: boolean;
 }): React.CSSProperties {
   const isPinned = column.getIsPinned();
