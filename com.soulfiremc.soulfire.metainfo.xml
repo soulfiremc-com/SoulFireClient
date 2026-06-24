@@ -54,6 +54,9 @@
   </screenshots>
 
   <releases>
+    <release version="2.9.0" date="2026-06-24">
+      <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.9.0</url>
+    </release>
     <release version="2.8.8" date="2026-06-09">
       <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.8.8</url>
     </release>
