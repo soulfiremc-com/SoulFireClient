@@ -276,6 +276,50 @@ const accountTypeToIcon = (
     }
   });
 
+function splitAccountCredentialPayloads(
+  text: string,
+  accountType: AccountTypeCredentials,
+) {
+  const trimmed = text.trim();
+  if (trimmed.length === 0) {
+    return [];
+  }
+
+  if (
+    accountType === AccountTypeCredentials.MICROSOFT_JAVA_COOKIES &&
+    (looksLikeCookieJar(trimmed) || looksLikeCookieEditorJson(trimmed))
+  ) {
+    return trimmed
+      .split(/(?:\r?\n){2,}/)
+      .map((payload) => payload.trim())
+      .filter((payload) => payload.length > 0);
+  }
+
+  return text
+    .split(/\r?\n/)
+    .map((payload) => payload.trim())
+    .filter((payload) => payload.length > 0);
+}
+
+function looksLikeCookieJar(input: string) {
+  const hasLiveCookieMarker =
+    input.includes("__Host-MSAAUTHP") ||
+    input.includes("login.live.com") ||
+    input.includes("\tMSPAuth\t") ||
+    input.includes("\tMSPProf\t") ||
+    input.includes("\tPPLState\t");
+  return input.includes("\t") && hasLiveCookieMarker;
+}
+
+function looksLikeCookieEditorJson(input: string) {
+  return (
+    input.startsWith("[") &&
+    input.endsWith("]") &&
+    input.includes('"name"') &&
+    input.includes('"value"')
+  );
+}
+
 function ActionsCell({ account }: { account: ProfileAccount }) {
   const { t } = useTranslation("instance");
   const [configOpen, setConfigOpen] = useState(false);
@@ -611,10 +655,10 @@ function AddButton() {
         return;
       }
 
-      const textSplit = text
-        .split("\n")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
+      const textSplit = splitAccountCredentialPayloads(
+        text,
+        accountTypeCredentialsSelected,
+      );
       const service = createClient(MCAuthService, transport);
 
       const abortController = new AbortController();
