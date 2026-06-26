@@ -1,4 +1,52 @@
 {
+  "overview": {
+    "logsDescription": "Raw instance output is available here when you need to inspect console details.",
+    "summary": {
+      "accounts": "Accounts",
+      "proxies": "Proxies",
+      "configured": "{{count}} configured",
+      "configuredShort": "Configured",
+      "currentRate": "Current rate",
+      "imported": "Imported"
+    },
+    "readiness": {
+      "title": "Setup",
+      "accounts": "Accounts",
+      "accountsValue": "{{count}} imported for {{requested}} requested bots",
+      "proxies": "Proxies",
+      "proxiesValue": "{{count}} configured",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} available"
+    },
+    "activity": {
+      "title": "Activity",
+      "tick": "Tick",
+      "health": "Health",
+      "world": "World",
+      "worldValue": "{{chunks}} chunks, {{entities}} entities",
+      "connections": "Connections",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metrics",
+      "noDataDescription": "No runtime metrics yet."
+    },
+    "metricsUnavailable": {
+      "title": "Metrics",
+      "inactive": "Start the instance to collect live metrics.",
+      "noPermission": "You do not have permission to view bot metrics."
+    },
+    "status": {
+      "ready": "Ready",
+      "attention": "Needs attention",
+      "configured": "Configured",
+      "optional": "Optional",
+      "available": "Available",
+      "none": "None"
+    },
+    "actions": {
+      "manage": "Manage",
+      "open": "Open"
+    }
+  },
   "proxy": {
     "getProxies": "Get Proxies",
     "addProxies": "Add Proxies",

@@ -66,6 +66,10 @@ const TIME_AXIS_PROPS = {
   type: "number" as const,
 };
 
+const TIME_SERIES_CHART_CLASS_NAME = "aspect-auto h-52 min-h-0 w-full";
+const COMPACT_CHART_CLASS_NAME = "aspect-auto h-44 min-h-0 w-full";
+const PIE_CHART_CLASS_NAME = "mx-auto h-44 min-h-0 max-w-44";
+
 function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
   const timeLabel = payload?.[0]?.payload?.timeLabel;
   return typeof timeLabel === "string" ? timeLabel : "";
@@ -74,7 +78,7 @@ function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
 function EmptyMetricCard({ title }: { title: string }) {
   const { t } = useTranslation("instance");
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">{title}</CardTitle>
       </CardHeader>
@@ -176,7 +180,7 @@ export function BotsOnlineChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.botsOnline.title")}
@@ -185,7 +189,7 @@ export function BotsOnlineChart({
       <CardContent>
         <ChartContainer
           config={botsOnlineConfig}
-          className="min-h-[200px] w-full"
+          className={TIME_SERIES_CHART_CLASS_NAME}
         >
           <AreaChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -258,12 +262,15 @@ export function NetworkTrafficChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">{t("metrics.packets.title")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={networkConfig} className="min-h-[200px] w-full">
+        <ChartContainer
+          config={networkConfig}
+          className={TIME_SERIES_CHART_CLASS_NAME}
+        >
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -334,7 +341,7 @@ export function BandwidthChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.bandwidth.title")}
@@ -343,7 +350,7 @@ export function BandwidthChart({
       <CardContent>
         <ChartContainer
           config={bandwidthConfig}
-          className="min-h-[200px] w-full"
+          className={TIME_SERIES_CHART_CLASS_NAME}
         >
           <AreaChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -434,12 +441,15 @@ export function TickDurationChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">{t("metrics.tick.title")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={tickConfig} className="min-h-[200px] w-full">
+        <ChartContainer
+          config={tickConfig}
+          className={TIME_SERIES_CHART_CLASS_NAME}
+        >
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -511,7 +521,7 @@ export function HealthFoodChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.healthFood.title")}
@@ -520,7 +530,7 @@ export function HealthFoodChart({
       <CardContent>
         <ChartContainer
           config={healthFoodConfig}
-          className="min-h-[200px] w-full"
+          className={TIME_SERIES_CHART_CLASS_NAME}
         >
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -595,7 +605,7 @@ export function ChunksEntitiesChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.chunksEntities.title")}
@@ -604,7 +614,7 @@ export function ChunksEntitiesChart({
       <CardContent>
         <ChartContainer
           config={chunksEntitiesConfig}
-          className="min-h-[200px] w-full"
+          className={TIME_SERIES_CHART_CLASS_NAME}
         >
           <AreaChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -683,7 +693,7 @@ export function ConnectionEventsChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.connections.title")}
@@ -692,7 +702,7 @@ export function ConnectionEventsChart({
       <CardContent>
         <ChartContainer
           config={connectionConfig}
-          className="min-h-[200px] w-full"
+          className={TIME_SERIES_CHART_CLASS_NAME}
         >
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -768,7 +778,7 @@ export function HealthDistributionChart({
   );
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.healthDistribution.title")}
@@ -777,7 +787,7 @@ export function HealthDistributionChart({
       <CardContent>
         <ChartContainer
           config={healthDistConfig}
-          className="min-h-[200px] w-full"
+          className={COMPACT_CHART_CLASS_NAME}
         >
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -826,7 +836,7 @@ export function DimensionPieChart({
   }
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.dimensions.title")}
@@ -835,7 +845,7 @@ export function DimensionPieChart({
       <CardContent>
         <ChartContainer
           config={dimensionPieConfig}
-          className="mx-auto aspect-square max-h-[200px]"
+          className={PIE_CHART_CLASS_NAME}
         >
           <PieChart>
             <ChartTooltip
@@ -884,7 +894,7 @@ export function GameModePieChart({
   }
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.gameModes.title")}
@@ -893,7 +903,7 @@ export function GameModePieChart({
       <CardContent>
         <ChartContainer
           config={gameModePieConfig}
-          className="mx-auto aspect-square max-h-[200px]"
+          className={PIE_CHART_CLASS_NAME}
         >
           <PieChart>
             <ChartTooltip
@@ -942,7 +952,7 @@ export function PositionScatterChart({
   }
 
   return (
-    <Card>
+    <Card size="sm">
       <CardHeader>
         <CardTitle className="text-sm">
           {t("metrics.positions.title")}
@@ -951,7 +961,7 @@ export function PositionScatterChart({
       <CardContent>
         <ChartContainer
           config={positionConfig}
-          className="min-h-[200px] w-full"
+          className={COMPACT_CHART_CLASS_NAME}
         >
           <ScatterChart>
             <CartesianGrid strokeDasharray="3 3" />
