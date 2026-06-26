@@ -28,6 +28,17 @@ import {
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -46,6 +57,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog.tsx";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { Field, FieldLabel } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
@@ -64,6 +83,13 @@ const createScriptSchema = z.object({
   name: z.string(),
   description: z.string(),
 });
+
+function generateN(count: number) {
+  return Array.from(
+    { length: Math.max(0, Math.floor(count)) },
+    (_, index) => index + 1,
+  );
+}
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/scripts")({
   beforeLoad: () =>
@@ -95,9 +121,8 @@ function ScriptsPageSkeleton() {
       </div>
       {/* Script cards grid */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
-          <div key={i} className="rounded-lg border p-4">
+        {generateN(3).map((item) => (
+          <div key={item} className="rounded-lg border p-4">
             <div className="flex flex-col gap-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
@@ -176,6 +201,7 @@ function Content() {
   const scripts = scriptsData?.scripts ?? [];
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<ScriptInfo | null>(null);
 
   // Create script mutation
   const createMutation = useMutation({
@@ -296,8 +322,13 @@ function Content() {
     useContextMenu<ScriptInfo>();
   const copyToClipboard = useCopyToClipboard();
 
-  const handleDeleteScript = (scriptId: string) => {
-    deleteMutation.mutate(scriptId);
+  const handleDeleteScript = () => {
+    if (!deleteTarget) {
+      return;
+    }
+
+    deleteMutation.mutate(deleteTarget.id);
+    setDeleteTarget(null);
   };
 
   const handleTogglePaused = (scriptId: string, isPaused: boolean) => {
@@ -331,7 +362,7 @@ function Content() {
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger render={<Button className="gap-2" />}>
-            <PlusIcon className="size-4" />
+            <PlusIcon data-icon="inline-start" />
             {tInstance("scripts.createScript")}
           </DialogTrigger>
           <DialogContent>
@@ -419,26 +450,26 @@ function Content() {
 
       {/* Scripts Grid */}
       {scripts.length === 0 ? (
-        <Card className="mx-auto mt-8 max-w-2xl">
-          <CardHeader className="text-center">
-            <div className="mb-4 flex justify-center">
-              <WorkflowIcon className="size-16 text-muted-foreground" />
-            </div>
-            <CardTitle>{tInstance("scripts.noScripts")}</CardTitle>
-            <CardDescription>
+        <Empty className="mx-auto mt-8 max-w-2xl border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <WorkflowIcon className="size-6" />
+            </EmptyMedia>
+            <EmptyTitle>{tInstance("scripts.noScripts")}</EmptyTitle>
+            <EmptyDescription>
               {tInstance("scripts.noScriptsDescription")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center">
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="gap-2"
             >
-              <PlusIcon className="size-4" />
+              <PlusIcon data-icon="inline-start" />
               {tInstance("scripts.createFirstScript")}
             </Button>
-          </CardContent>
-        </Card>
+          </EmptyContent>
+        </Empty>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {scripts.map((script) => (
@@ -449,7 +480,7 @@ function Content() {
               <ScriptCard
                 script={script}
                 instanceId={instanceInfo.id}
-                onDelete={() => handleDeleteScript(script.id)}
+                onDelete={() => setDeleteTarget(script)}
                 onTogglePaused={(isPaused) =>
                   handleTogglePaused(script.id, isPaused)
                 }
@@ -515,7 +546,7 @@ function Content() {
           <MenuItem
             variant="destructive"
             onClick={() => {
-              handleDeleteScript(contextMenu.data.id);
+              setDeleteTarget(contextMenu.data);
               dismiss();
             }}
           >
@@ -524,6 +555,40 @@ function Content() {
           </MenuItem>
         </ContextMenuPortal>
       )}
+      <AlertDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <Trash2Icon />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete script?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget
+                ? `This will permanently delete "${deleteTarget.name}". This action cannot be undone.`
+                : "This will permanently delete the script. This action cannot be undone."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>
+              {t("cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={handleDeleteScript}
+              disabled={deleteMutation.isPending}
+            >
+              {tInstance("scripts.delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
@@ -549,13 +614,8 @@ function ScriptCardSkeleton({ script }: { script: ScriptInfo }) {
           <span>{formatLastModified(script.updatedAt)}</span>
         </div>
         <div className="mt-3 flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 gap-1.5"
-            disabled
-          >
-            <EditIcon className="size-3.5" />
+          <Button variant="outline" size="sm" className="flex-1" disabled>
+            <EditIcon data-icon="inline-start" />
             {tInstance("scripts.edit")}
           </Button>
           <Button variant="outline" size="icon" disabled>
@@ -635,7 +695,7 @@ function ScriptCard({
               />
             }
           >
-            <EditIcon className="size-3.5" />
+            <EditIcon data-icon="inline-start" />
             {tInstance("scripts.edit")}
           </Button>
           <Button

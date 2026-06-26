@@ -1319,11 +1319,11 @@ function IntegratedMobileMenu({
             }}
             type="button"
           >
-            <ArrowLeftIcon />
+            <ArrowLeftIcon data-icon="inline-start" />
             {t("integrated.mobile.form.back")}
           </Button>
           <Button type="submit">
-            <PlugZapIcon />
+            <PlugZapIcon data-icon="inline-start" />
             {t("integrated.mobile.form.connect")}
           </Button>
         </CardFooter>

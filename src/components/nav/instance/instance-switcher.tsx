@@ -16,13 +16,24 @@ import {
   TrashIcon,
   UploadIcon,
 } from "lucide-react";
-import { Suspense, use, useRef } from "react";
+import { Suspense, use, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -488,6 +499,7 @@ function DeleteInstanceButton() {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const deleteMutation = useMutation({
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
@@ -526,16 +538,43 @@ function DeleteInstanceButton() {
   }
 
   return (
-    <DropdownMenuItem
-      onClick={() => {
-        deleteMutation.mutate(instanceInfo.id);
-        void navigate({
-          to: "/user",
-        });
-      }}
-    >
-      <TrashIcon className="size-4" />
-      {t("instanceSidebar.deleteInstance")}
-    </DropdownMenuItem>
+    <>
+      <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
+        <TrashIcon />
+        {t("instanceSidebar.deleteInstance")}
+      </DropdownMenuItem>
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <TrashIcon />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete instance?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete "{instanceInfo.friendlyName}" and its
+              data. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>
+              {t("dialog.createInstance.form.cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={deleteMutation.isPending}
+              onClick={() => {
+                deleteMutation.mutate(instanceInfo.id);
+                setDeleteOpen(false);
+                void navigate({
+                  to: "/user",
+                });
+              }}
+            >
+              {t("instanceSidebar.deleteInstance")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

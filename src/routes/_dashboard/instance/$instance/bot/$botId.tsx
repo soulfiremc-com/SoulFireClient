@@ -241,6 +241,13 @@ const accountTypeToIcon = (
     }
   });
 
+function generateN(count: number) {
+  return Array.from(
+    { length: Math.max(0, Math.floor(count)) },
+    (_, index) => index + 1,
+  );
+}
+
 function BotDetailSkeleton() {
   return (
     <div className="container flex flex-col gap-4">
@@ -257,9 +264,8 @@ function BotDetailSkeleton() {
       </div>
       {/* Stats cards */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
-          <Skeleton key={i} className="h-24 w-full rounded-lg" />
+        {generateN(4).map((item) => (
+          <Skeleton key={item} className="h-24 w-full rounded-lg" />
         ))}
       </div>
       {/* Terminal */}
@@ -657,7 +663,7 @@ function BotDetailHeader({
           />
         }
       >
-        <ArrowLeftIcon className="mr-2 size-4" />
+        <ArrowLeftIcon data-icon="inline-start" />
         {t("bots.backToBots")}
       </Button>
     </Item>

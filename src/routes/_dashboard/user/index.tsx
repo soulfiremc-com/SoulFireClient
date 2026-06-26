@@ -37,6 +37,17 @@ import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { InstanceStateIndicator } from "@/components/instance-state-indicator.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -302,6 +313,8 @@ function Content() {
     useContextMenu<InstanceListResponse_Instance>();
   const copyToClipboard = useCopyToClipboard();
   const [duplicateSource, setDuplicateSource] =
+    useState<InstanceListResponse_Instance | null>(null);
+  const [deleteTarget, setDeleteTarget] =
     useState<InstanceListResponse_Instance | null>(null);
 
   const stateMutation = useMutation({
@@ -580,7 +593,7 @@ function Content() {
               <MenuItem
                 variant="destructive"
                 onClick={() => {
-                  deleteMutation.mutate(contextMenu.data.id);
+                  setDeleteTarget(contextMenu.data);
                   dismiss();
                 }}
               >
@@ -612,6 +625,47 @@ function Content() {
           });
         }}
       />
+      <AlertDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <TrashIcon />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete instance?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget
+                ? `This will permanently delete "${deleteTarget.friendlyName}" and its data. This action cannot be undone.`
+                : "This will permanently delete this instance and its data. This action cannot be undone."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>
+              {t("dialog.createInstance.form.cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => {
+                if (!deleteTarget) {
+                  return;
+                }
+
+                deleteMutation.mutate(deleteTarget.id);
+                setDeleteTarget(null);
+              }}
+              disabled={deleteMutation.isPending}
+            >
+              {t("contextMenu.instance.deleteInstance")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
@@ -631,7 +685,7 @@ function CreateInstanceButton() {
 
   return (
     <Button onClick={openCreateInstance} variant="outline" className="w-fit">
-      <PlusIcon className="size-4" />
+      <PlusIcon data-icon="inline-start" />
       {t("instanceSidebar.createInstance")}
     </Button>
   );

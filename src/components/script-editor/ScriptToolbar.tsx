@@ -21,6 +21,7 @@ import { ButtonGroup } from "@/components/ui/button-group.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -337,33 +338,39 @@ export function ScriptToolbar({
               <EllipsisVerticalIcon className="size-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleExport}>
-                <DownloadIcon className="size-4" />
-                {t("scripts.editor.toolbar.export")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => fileInputRef.current?.click()}>
-                <UploadIcon className="size-4" />
-                {t("scripts.editor.toolbar.import")}
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleExport}>
+                  <DownloadIcon />
+                  {t("scripts.editor.toolbar.export")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => fileInputRef.current?.click()}>
+                  <UploadIcon />
+                  {t("scripts.editor.toolbar.import")}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onZoomIn}>
-                <ZoomInIcon className="size-4" />
-                {t("scripts.editor.toolbar.zoomIn")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onZoomOut}>
-                <ZoomOutIcon className="size-4" />
-                {t("scripts.editor.toolbar.zoomOut")}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onFitView}>
-                {t("scripts.editor.toolbar.fit")}
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={onZoomIn}>
+                  <ZoomInIcon />
+                  {t("scripts.editor.toolbar.zoomIn")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onZoomOut}>
+                  <ZoomOutIcon />
+                  {t("scripts.editor.toolbar.zoomOut")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onFitView}>
+                  {t("scripts.editor.toolbar.fit")}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
               {onClear && (
                 <>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={onClear}>
-                    <Trash2Icon className="size-4" />
-                    {t("scripts.editor.toolbar.clearCanvas")}
-                  </DropdownMenuItem>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={onClear}>
+                      <Trash2Icon />
+                      {t("scripts.editor.toolbar.clearCanvas")}
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
                 </>
               )}
             </DropdownMenuContent>
