@@ -5,19 +5,19 @@ import { SquareTerminalIcon } from "lucide-react";
 import { type ReactNode, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ControlsMenu from "@/components/controls-menu.tsx";
+import { ActivityTimeline } from "@/components/instance-overview/activity-timeline.tsx";
 import {
-  BandwidthChart,
-  BotsOnlineChart,
-  ChunksEntitiesChart,
-  ConnectionEventsChart,
-  DimensionPieChart,
-  GameModePieChart,
-  HealthDistributionChart,
-  HealthFoodChart,
-  NetworkTrafficChart,
-  PositionScatterChart,
-  TickDurationChart,
-} from "@/components/instance-metrics/metrics-charts.tsx";
+  AutomationSummary,
+  PluginStatsPanel,
+} from "@/components/instance-overview/automation-summary.tsx";
+import {
+  BotCardSkeleton,
+  BotGridPreview,
+} from "@/components/instance-overview/bot-grid.tsx";
+import { DetailedMetrics } from "@/components/instance-overview/detailed-metrics.tsx";
+import { FleetSpotlight } from "@/components/instance-overview/fleet-spotlight.tsx";
+import { KpiStrip } from "@/components/instance-overview/kpi-strip.tsx";
+import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
 import { InstanceStateIndicator } from "@/components/instance-state-indicator.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
@@ -37,7 +37,6 @@ import {
   CredenzaHeader,
   CredenzaTitle,
 } from "@/components/ui/credenza.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
 import { InstanceState } from "@/generated/soulfire/instance_pb.ts";
@@ -64,64 +63,32 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/")({
   component: Overview,
 });
 
-const OVERVIEW_SUMMARY_SKELETON_IDS = [
-  "summary-1",
-  "summary-2",
-  "summary-3",
-  "summary-4",
-] as const;
-const OVERVIEW_CHART_SKELETON_IDS = [
-  "chart-1",
-  "chart-2",
-  "chart-3",
-  "chart-4",
-] as const;
 const OVERVIEW_CONTROL_SKELETON_IDS = [
   "control-1",
   "control-2",
   "control-3",
 ] as const;
-
-function OverviewSkeleton() {
-  return (
-    <div className="flex h-full w-full grow flex-col gap-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-row items-center gap-2">
-          <Skeleton className="h-7 w-40" />
-          <Skeleton className="h-5 w-16" />
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {OVERVIEW_CONTROL_SKELETON_IDS.map((id) => (
-            <Skeleton key={id} className="h-8 w-20 rounded-lg" />
-          ))}
-          <Skeleton className="h-8 w-20 rounded-lg" />
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {OVERVIEW_SUMMARY_SKELETON_IDS.map((id) => (
-          <Skeleton key={id} className="h-20 w-full rounded-lg" />
-        ))}
-      </div>
-      <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2">
-        {OVERVIEW_CHART_SKELETON_IDS.map((id) => (
-          <Skeleton key={id} className="h-56 w-full rounded-lg" />
-        ))}
-      </div>
-    </div>
-  );
-}
+const OVERVIEW_KPI_SKELETON_IDS = [
+  "kpi-1",
+  "kpi-2",
+  "kpi-3",
+  "kpi-4",
+  "kpi-5",
+  "kpi-6",
+] as const;
+const OVERVIEW_BOT_SKELETON_IDS = [
+  "preview-1",
+  "preview-2",
+  "preview-3",
+  "preview-4",
+] as const;
 
 function Overview() {
   const { t } = useTranslation("common");
 
   return (
     <InstancePageLayout
-      extraCrumbs={[
-        {
-          id: "controls",
-          content: t("breadcrumbs.controls"),
-        },
-      ]}
+      extraCrumbs={[{ id: "controls", content: t("breadcrumbs.controls") }]}
       pageName={t("pageName.overview")}
       loadingSkeleton={<OverviewSkeleton />}
     >
@@ -143,6 +110,15 @@ function Content() {
   );
 }
 
+function OverviewSkeleton() {
+  return (
+    <div className="flex h-full w-full grow flex-col gap-3">
+      <OverviewHeaderSkeleton />
+      <OverviewMetricsSkeleton />
+    </div>
+  );
+}
+
 function OverviewHeaderSkeleton() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -157,6 +133,46 @@ function OverviewHeaderSkeleton() {
         <Skeleton className="h-8 w-20 rounded-lg" />
       </div>
     </div>
+  );
+}
+
+function OverviewMetricsSkeleton() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
+        <Skeleton className="h-56 w-full rounded-lg" />
+        <Skeleton className="h-56 w-full rounded-lg" />
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {OVERVIEW_KPI_SKELETON_IDS.map((id) => (
+          <Skeleton key={id} className="h-24 w-full rounded-lg" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SpotlightSkeleton() {
+  return <Skeleton className="h-56 w-full rounded-lg" />;
+}
+
+function BotsPreviewSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {OVERVIEW_BOT_SKELETON_IDS.map((id) => (
+        <BotCardSkeleton key={id} />
+      ))}
+    </div>
+  );
+}
+
+function NoPermissionCard({ message }: { message: string }) {
+  return (
+    <Card size="sm">
+      <CardContent className="text-muted-foreground flex min-h-44 items-center justify-center text-sm">
+        {message}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -223,37 +239,22 @@ function OverviewHeaderSection() {
   );
 }
 
-function OverviewMetricsSkeleton() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {OVERVIEW_SUMMARY_SKELETON_IDS.map((id) => (
-          <Skeleton key={id} className="h-20 w-full rounded-lg" />
-        ))}
-      </div>
-      <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2">
-        <Skeleton className="h-56 w-full rounded-lg" />
-        <Skeleton className="h-56 w-full rounded-lg" />
-      </div>
-      <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-4">
-        {OVERVIEW_CHART_SKELETON_IDS.map((id) => (
-          <Skeleton key={id} className="h-56 w-full rounded-lg" />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function OverviewMetricsSection() {
   const { t } = useTranslation("instance");
   const { instanceInfoQueryOptions, metricsQueryOptions } =
     Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const { data: metricsData } = useSuspenseQuery(metricsQueryOptions);
+
   const hasMetricsPermission = hasInstancePermission(
     instanceInfo,
     InstancePermission.READ_BOT_INFO,
   );
+  const canViewAuditLog = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.READ_INSTANCE_AUDIT_LOGS,
+  );
+
   const isActiveState =
     instanceInfo.state === InstanceState.RUNNING ||
     instanceInfo.state === InstanceState.STARTING ||
@@ -262,119 +263,91 @@ function OverviewMetricsSection() {
   const showMetrics = hasMetricsPermission && (isActiveState || hasSnapshots);
   const latest = getLatestSnapshot(metricsData);
 
+  const configuredBotAmount = getConfiguredBotAmount(instanceInfo);
+  const setupIncomplete =
+    instanceInfo.profile.accounts.length < configuredBotAmount;
+
   return (
     <div className="flex flex-col gap-3">
-      <OverviewSummaryCards instanceInfo={instanceInfo} latest={latest} />
-      <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.7fr)]">
-        <ReadinessCard instanceInfo={instanceInfo} />
-        <ActivityCard
-          latest={latest}
-          hasMetricsPermission={hasMetricsPermission}
+      {setupIncomplete && <ReadinessCard instanceInfo={instanceInfo} />}
+
+      <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
+        {hasMetricsPermission ? (
+          <Suspense fallback={<SpotlightSkeleton />}>
+            <FleetSpotlight instanceInfo={instanceInfo} />
+          </Suspense>
+        ) : (
+          <NoPermissionCard
+            message={t("overview.metricsUnavailable.noPermission")}
+          />
+        )}
+        <LiveFeed
+          instanceId={instanceInfo.id}
+          canWatch={hasMetricsPermission}
         />
       </div>
-      {!showMetrics && (
+
+      {hasMetricsPermission && (
+        <KpiStrip
+          instanceInfo={instanceInfo}
+          metricsData={metricsData}
+          latest={latest}
+        />
+      )}
+
+      {hasMetricsPermission && !showMetrics && (
         <Card size="sm">
-          <CardHeader>
+          <CardContent className="text-muted-foreground py-3 text-sm">
+            {t("overview.metricsUnavailable.inactive")}
+          </CardContent>
+        </Card>
+      )}
+
+      {hasMetricsPermission && (
+        <Card size="sm">
+          <CardHeader className="flex-row items-center justify-between gap-2">
             <CardTitle className="text-sm">
-              {t("overview.metricsUnavailable.title")}
+              {t("overview.bots.title")}
             </CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              nativeButton={false}
+              render={
+                <Link
+                  to="/instance/$instance/bots"
+                  params={{ instance: instanceInfo.id }}
+                />
+              }
+            >
+              {t("overview.bots.viewAllShort")}
+            </Button>
           </CardHeader>
-          <CardContent className="text-muted-foreground text-sm">
-            {hasMetricsPermission
-              ? t("overview.metricsUnavailable.inactive")
-              : t("overview.metricsUnavailable.noPermission")}
+          <CardContent>
+            <Suspense fallback={<BotsPreviewSkeleton />}>
+              <BotGridPreview instanceInfo={instanceInfo} limit={8} />
+            </Suspense>
           </CardContent>
         </Card>
       )}
-      {showMetrics && hasSnapshots && (
+
+      <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-2">
+        <ActivityTimeline
+          instanceId={instanceInfo.id}
+          canView={canViewAuditLog}
+        />
         <div className="flex flex-col gap-3">
-          <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-4">
-            <div className="2xl:col-span-2">
-              <BotsOnlineChart snapshots={metricsData.snapshots} />
-            </div>
-            <NetworkTrafficChart snapshots={metricsData.snapshots} />
-            <TickDurationChart snapshots={metricsData.snapshots} />
-            <BandwidthChart snapshots={metricsData.snapshots} />
-            <HealthFoodChart snapshots={metricsData.snapshots} />
-            <ChunksEntitiesChart snapshots={metricsData.snapshots} />
-            <ConnectionEventsChart snapshots={metricsData.snapshots} />
-          </div>
-          {metricsData.distributions && (
-            <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
-              <HealthDistributionChart
-                histogram={metricsData.distributions.healthHistogram}
-              />
-              <DimensionPieChart
-                dimensionCounts={metricsData.distributions.dimensionCounts}
-              />
-              <GameModePieChart
-                gameModeCounts={metricsData.distributions.gameModeCounts}
-              />
-              <PositionScatterChart
-                positions={metricsData.distributions.botPositions}
-              />
-            </div>
-          )}
+          <AutomationSummary instanceId={instanceInfo.id} />
+          <PluginStatsPanel
+            instanceId={instanceInfo.id}
+            canView={hasMetricsPermission}
+          />
         </div>
+      </div>
+
+      {showMetrics && hasSnapshots && (
+        <DetailedMetrics metricsData={metricsData} />
       )}
-    </div>
-  );
-}
-
-function OverviewSummaryCards({
-  instanceInfo,
-  latest,
-}: {
-  instanceInfo: InstanceInfoQueryData;
-  latest: MetricsSnapshot | null;
-}) {
-  const { t } = useTranslation("instance");
-  const configuredBotAmount = getConfiguredBotAmount(instanceInfo);
-  const totalBots = latest?.botsTotal ?? configuredBotAmount;
-  const items = [
-    {
-      id: "online",
-      label: t("metrics.summary.online"),
-      value: `${latest?.botsOnline ?? 0}/${totalBots}`,
-      detail: t("overview.summary.configured", {
-        count: configuredBotAmount,
-      }),
-    },
-    {
-      id: "accounts",
-      label: t("overview.summary.accounts"),
-      value: formatNumber(instanceInfo.profile.accounts.length),
-      detail: t("overview.summary.imported"),
-    },
-    {
-      id: "proxies",
-      label: t("overview.summary.proxies"),
-      value: formatNumber(instanceInfo.profile.proxies.length),
-      detail: t("overview.summary.configuredShort"),
-    },
-    {
-      id: "traffic",
-      label: t("metrics.summary.traffic"),
-      value: latest
-        ? formatBytes(latest.bytesSentPerSecond + latest.bytesReceivedPerSecond)
-        : "-",
-      detail: t("overview.summary.currentRate"),
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-      {items.map((item) => (
-        <Card key={item.id} size="sm">
-          <CardContent className="flex flex-col gap-1 py-1">
-            <span className="text-muted-foreground text-xs">{item.label}</span>
-            <span className="font-mono text-lg leading-none font-semibold">
-              {item.value}
-            </span>
-            <span className="text-muted-foreground text-xs">{item.detail}</span>
-          </CardContent>
-        </Card>
-      ))}
     </div>
   );
 }
@@ -523,77 +496,6 @@ function ReadinessRow(props: ReadinessRowProps) {
   );
 }
 
-function ActivityCard({
-  latest,
-  hasMetricsPermission,
-}: {
-  latest: MetricsSnapshot | null;
-  hasMetricsPermission: boolean;
-}) {
-  const { t } = useTranslation("instance");
-  const rows = latest
-    ? [
-        {
-          id: "tick",
-          label: t("overview.activity.tick"),
-          value: `${latest.avgTickDurationMs.toFixed(1)}ms`,
-        },
-        {
-          id: "health",
-          label: t("overview.activity.health"),
-          value: latest.avgHealth.toFixed(1),
-        },
-        {
-          id: "world",
-          label: t("overview.activity.world"),
-          value: t("overview.activity.worldValue", {
-            chunks: formatNumber(latest.totalLoadedChunks),
-            entities: formatNumber(latest.totalTrackedEntities),
-          }),
-        },
-        {
-          id: "connections",
-          label: t("overview.activity.connections"),
-          value: t("overview.activity.connectionsValue", {
-            connections: latest.connections,
-            disconnections: latest.disconnections,
-          }),
-        },
-      ]
-    : [
-        {
-          id: "empty",
-          label: t("overview.activity.noDataTitle"),
-          value: hasMetricsPermission
-            ? t("overview.activity.noDataDescription")
-            : t("overview.metricsUnavailable.noPermission"),
-        },
-      ];
-
-  return (
-    <Card size="sm">
-      <CardHeader>
-        <CardTitle className="text-sm">
-          {t("overview.activity.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        {rows.map((row, index) => (
-          <div key={row.id} className="flex flex-col gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-muted-foreground text-sm">{row.label}</span>
-              <span className="text-right font-mono text-sm font-medium">
-                {row.value}
-              </span>
-            </div>
-            {index < rows.length - 1 && <Separator />}
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
 function getLatestSnapshot(
   metricsData: GetInstanceMetricsResponse,
 ): MetricsSnapshot | null {
@@ -611,28 +513,4 @@ function getConfiguredBotAmount(instanceInfo: InstanceInfoQueryData): number {
   }
 
   return Math.max(1, Math.floor(amount));
-}
-
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) {
-    return `${bytes.toFixed(0)} B/s`;
-  }
-
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB/s`;
-  }
-
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB/s`;
-}
-
-function formatNumber(value: number): string {
-  if (value < 1000) {
-    return value.toFixed(0);
-  }
-
-  if (value < 1_000_000) {
-    return `${(value / 1000).toFixed(1)}K`;
-  }
-
-  return `${(value / 1_000_000).toFixed(1)}M`;
 }

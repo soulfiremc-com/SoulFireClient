@@ -45,6 +45,76 @@
     "actions": {
       "manage": "Manage",
       "open": "Open"
+    },
+    "spotlight": {
+      "noBots": "No bots configured yet.",
+      "idle": "Idle, waiting for instructions.",
+      "level": "Lvl {{level}}"
+    },
+    "liveFeed": {
+      "title": "Live feed",
+      "empty": "Waiting for instance activity...",
+      "noPermission": "You do not have permission to view the live feed.",
+      "lifecycle": {
+        "connecting": "is connecting",
+        "connected": "connected",
+        "spawned": "joined the game",
+        "died": "died",
+        "respawned": "respawned",
+        "disconnected": "disconnected",
+        "unknown": "changed state"
+      }
+    },
+    "bots": {
+      "title": "Bots",
+      "viewAll": "View all {{total}} bots",
+      "viewAllShort": "View all"
+    },
+    "timeline": {
+      "title": "Activity",
+      "viewAll": "View all",
+      "empty": "No recorded activity yet.",
+      "noPermission": "You do not have permission to view the audit log.",
+      "types": {
+        "executeCommand": "ran a command: {{data}}",
+        "startSession": "started the instance",
+        "pauseSession": "paused the instance",
+        "resumeSession": "resumed the instance",
+        "stopSession": "stopped the instance",
+        "automationStart": "started automation",
+        "automationPause": "paused automation",
+        "automationResume": "resumed automation",
+        "automationStop": "stopped automation",
+        "automationUpdateSettings": "updated automation settings",
+        "automationApplyPreset": "applied an automation preset",
+        "automationResetMemory": "reset automation memory",
+        "automationResetCoordination": "reset automation coordination",
+        "automationReleaseClaims": "released automation claims",
+        "unknown": "performed an action"
+      }
+    },
+    "automation": {
+      "title": "Automation",
+      "viewAll": "View all",
+      "empty": "No automation running.",
+      "activeBots": "{{count}} active",
+      "goalMode": {
+        "idle": "Idle",
+        "acquire": "Acquire",
+        "beat": "Beat"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "No plugins are reporting stats yet.",
+      "noPermission": "You do not have permission to view plugin stats.",
+      "active": "Active",
+      "activeBots": "{{count}} active bots",
+      "uptime": "up {{time}}"
+    },
+    "detailed": {
+      "title": "Detailed metrics",
+      "composition": "World composition"
     }
   },
   "proxy": {
@@ -294,6 +364,14 @@
     "online": "Online",
     "offline": "Offline",
     "notJoined": "Not Joined",
+    "connectionPhase": {
+      "connecting": "Connecting",
+      "connected": "Connected",
+      "spawned": "Online",
+      "died": "Dead",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
     "backToBots": "Back to Bots",
     "tabs": {
       "overview": "Overview",
