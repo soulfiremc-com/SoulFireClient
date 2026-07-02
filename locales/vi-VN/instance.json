@@ -1,4 +1,122 @@
 {
+  "overview": {
+    "logsDescription": "Kết quả thô của phiên bản sẽ hiển thị tại đây khi bạn cần kiểm tra chi tiết bảng điều khiển.",
+    "summary": {
+      "accounts": "Tài khoản",
+      "proxies": "Proxy",
+      "configured": "Đã cấu hình {{count}}",
+      "configuredShort": "Đã cấu hình",
+      "currentRate": "Tốc độ hiện tại",
+      "imported": "Đã nhập khẩu"
+    },
+    "readiness": {
+      "title": "Thiết lập",
+      "accounts": "Tài khoản",
+      "accountsValue": "Đã nhập {{count}} cho {{requested}} bot được yêu cầu",
+      "proxies": "Proxy",
+      "proxiesValue": "Đã cấu hình {{count}}",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} khả dụng"
+    },
+    "activity": {
+      "title": "Hoạt động",
+      "tick": "Tick",
+      "health": "Máu",
+      "world": "Thế giới",
+      "worldValue": "{{chunks}} vùng, {{entities}} thực thể",
+      "connections": "Kết nối",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Chỉ số",
+      "noDataDescription": "Chưa có chỉ số thời gian thực."
+    },
+    "metricsUnavailable": {
+      "title": "Chỉ số",
+      "inactive": "Hãy khởi động phiên bản để thu thập chỉ số trực tiếp.",
+      "noPermission": "Bạn không có quyền xem chỉ số bot."
+    },
+    "status": {
+      "ready": "Sẵn sàng",
+      "attention": "Cần chú ý",
+      "configured": "Đã cấu hình",
+      "optional": "Tùy chọn",
+      "available": "Có sẵn",
+      "none": "Không có"
+    },
+    "actions": {
+      "manage": "Quản lý",
+      "open": "Mở"
+    },
+    "spotlight": {
+      "noBots": "Chưa có bot nào được cấu hình.",
+      "idle": "Nhàn rỗi, chờ hướng dẫn.",
+      "level": "Cấp {{level}}"
+    },
+    "liveFeed": {
+      "title": "Luồng trực tiếp",
+      "empty": "Đang chờ hoạt động của phiên bản...",
+      "noPermission": "Bạn không có quyền xem luồng trực tiếp.",
+      "lifecycle": {
+        "connecting": "đang kết nối",
+        "connected": "đã kết nối",
+        "spawned": "đã tham gia trò chơi",
+        "died": "đã chết",
+        "respawned": "đã hồi sinh",
+        "disconnected": "đã ngắt kết nối",
+        "unknown": "đã thay đổi trạng thái"
+      }
+    },
+    "bots": {
+      "title": "Bot",
+      "viewAll": "Xem tất cả {{total}} bot",
+      "viewAllShort": "Xem tất cả"
+    },
+    "timeline": {
+      "title": "Hoạt động",
+      "viewAll": "Xem tất cả",
+      "empty": "Chưa có hoạt động nào được ghi nhận.",
+      "noPermission": "Bạn không có quyền xem nhật ký kiểm tra.",
+      "types": {
+        "executeCommand": "đã chạy lệnh: {{data}}",
+        "startSession": "đã khởi động phiên bản",
+        "pauseSession": "đã tạm dừng phiên bản",
+        "resumeSession": "đã tiếp tục phiên bản",
+        "stopSession": "đã dừng phiên bản",
+        "automationStart": "đã bắt đầu tự động hóa",
+        "automationPause": "đã tạm dừng tự động hóa",
+        "automationResume": "đã tiếp tục tự động hóa",
+        "automationStop": "đã dừng tự động hóa",
+        "automationUpdateSettings": "đã cập nhật cài đặt tự động hóa",
+        "automationApplyPreset": "đã áp dụng mẫu thiết lập tự động hóa",
+        "automationResetMemory": "đã đặt lại bộ nhớ tự động hóa",
+        "automationResetCoordination": "đã đặt lại phối hợp tự động hóa",
+        "automationReleaseClaims": "đã giải phóng lượt giữ tự động hóa",
+        "unknown": "đã thực hiện một hành động"
+      }
+    },
+    "automation": {
+      "title": "Tự động hóa",
+      "viewAll": "Xem tất cả",
+      "empty": "Không có tự động hóa nào đang chạy.",
+      "activeBots": "{{count}} đang hoạt động",
+      "goalMode": {
+        "idle": "Nhàn rỗi",
+        "acquire": "Thu thập",
+        "beat": "Đánh bại"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "Chưa có plugin nào báo cáo chỉ số.",
+      "noPermission": "Bạn không có quyền xem chỉ số plugin.",
+      "active": "Đang hoạt động",
+      "activeBots": "{{count}} bot đang hoạt động",
+      "uptime": "lên {{time}}"
+    },
+    "detailed": {
+      "title": "Chỉ số chi tiết",
+      "composition": "Thành phần thế giới"
+    }
+  },
   "proxy": {
     "getProxies": "Lấy Proxy",
     "addProxies": "Thêm Proxy",
@@ -118,6 +236,7 @@
       "microsoftRefreshToken": "Refresh Token Microsoft",
       "microsoftCookies": "Cookie Microsoft",
       "microsoftAccessToken": "Access Token Microsoft",
+      "theAltening": "Mã thông báo TheAltening",
       "altProviders": "Nhà cung cấp thay thế",
       "dialog": {
         "title": "Nhập tài khoản loại {{type}}",
@@ -149,7 +268,21 @@
       "description": "Cấu hình cài đặt riêng cho từng bot cho tài khoản này",
       "openButton": "Cấu hình tài khoản",
       "pageTitle": "{{name}} - Cài đặt {{page}}",
-      "noSettings": "Không có cài đặt nào cho trang này"
+      "noSettings": "Không có cài đặt nào cho trang này",
+      "search": "Cài đặt tìm kiếm",
+      "overrides": "Ghi đè",
+      "allSettings": "Tất cả cài đặt",
+      "noOverrides": "Bot này chưa có bất kỳ ghi đè cụ thể nào.",
+      "noOverridesMatching": "Không có ghi đè nào khớp với tìm kiếm này.",
+      "noOverridesHelp": "Mở Tất cả cài đặt để kế thừa giá trị hoặc tạo ghi đè dành riêng cho bot đầu tiên.",
+      "tryDifferentSearch": "Hãy thử một từ khóa tìm kiếm khác.",
+      "openAllSettings": "Mở tất cả cài đặt",
+      "selectPage": "Chọn một trang cài đặt",
+      "noSearchResults": "Không có cài đặt nào khớp với tìm kiếm này.",
+      "matchesInheritedValue": "Khớp với giá trị kế thừa",
+      "instanceValue": "Giá trị phiên bản",
+      "defaultValue": "Giá trị mặc định",
+      "resetOverride": "Đặt lại ghi đè"
     },
     "deviceCodeConfirmDialog": {
       "title": "Xác thực mã thiết bị",
@@ -231,7 +364,21 @@
     "online": "Trực tuyến",
     "offline": "Ngoại tuyến",
     "notJoined": "Chưa Tham Gia",
+    "connectionPhase": {
+      "connecting": "Đang kết nối",
+      "connected": "Đã kết nối",
+      "spawned": "Trực tuyến",
+      "died": "Đã chết",
+      "disconnected": "Ngoại tuyến",
+      "ping": "{{ms}} ms"
+    },
     "backToBots": "Quay lại Bots",
+    "tabs": {
+      "overview": "Tổng quan",
+      "inventory": "Kho đồ",
+      "controls": "Bảng điều khiển",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Sắp ra mắt",
     "terminalPanel": {
       "title": "Bot Terminal"
@@ -362,6 +509,102 @@
       "offline": "Bot đang ngoại tuyến. Hộp thoại chỉ khả dụng khi bot đang kết nối."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Tìm bot...",
+      "searchClaims": "Tìm kiếm claim...",
+      "noBotsMatchTitle": "Không có bot nào phù hợp với bộ lọc hiện tại.",
+      "noBotsMatchDescription": "Điều chỉnh hoặc xóa bộ lọc hiện tại để xem toàn bộ danh sách bot tự động."
+    },
+    "attention": {
+      "empty": "Hiện không có bot nào bị treo hoặc suy giảm."
+    },
+    "memory": {
+      "noBots": "Không có bot tự động nào khả dụng để kiểm tra bộ nhớ.",
+      "blocks": "Khối",
+      "noBlocks": "Không có khối nào được ghi nhớ trong bản chụp này.",
+      "containers": "Vật chứa",
+      "noContainers": "Không có vật chứa nào được ghi nhớ trong bản chụp này.",
+      "entities": "Thực thể",
+      "noEntities": "Không có thực thể nào được ghi nhớ trong bản chụp này.",
+      "droppedItems": "Vật phẩm bị rơi",
+      "noDroppedItems": "Không có vật phẩm bị rơi nào được ghi nhớ trong bản chụp này.",
+      "unreachablePositions": "Vị trí không thể tới được",
+      "noUnreachablePositions": "Không có vị trí không thể tới được nào trong bản chụp này."
+    },
+    "coordination": {
+      "sharedBlocks": "Khối được chia sẻ",
+      "noBlockHints": "Hiện chưa có gợi ý khối chia sẻ nào.",
+      "eyeSamples": "Mẫu mắt",
+      "noEyeSamples": "Chưa có mẫu mắt nào được ghi nhận."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Không có dữ liệu"
+    },
+    "summary": {
+      "online": "Trực tuyến",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Lưu lượng",
+      "health": "Máu",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots Trực Tuyến",
+      "online": "Trực tuyến",
+      "total": "Tổng cộng"
+    },
+    "packets": {
+      "title": "Gói / giây",
+      "sent": "Đã gửi/giây",
+      "received": "Đã nhận/giây"
+    },
+    "bandwidth": {
+      "title": "Băng thông",
+      "upload": "Tải lên",
+      "download": "Tải xuống"
+    },
+    "tick": {
+      "title": "Thời gian tick",
+      "avg": "Trung bình (ms)",
+      "max": "Tối đa (ms)"
+    },
+    "healthFood": {
+      "title": "Máu / Thức ăn",
+      "health": "Máu trung bình",
+      "food": "Thức ăn trung bình"
+    },
+    "chunksEntities": {
+      "title": "Chunk / Thực thể",
+      "chunks": "Chunk",
+      "entities": "Thực thể"
+    },
+    "connections": {
+      "title": "Sự kiện kết nối",
+      "connections": "Kết nối",
+      "disconnections": "Ngắt kết nối"
+    },
+    "healthDistribution": {
+      "title": "Phân bố máu",
+      "bots": "Bot"
+    },
+    "dimensions": {
+      "title": "Chiều không gian",
+      "bots": "Bot"
+    },
+    "gameModes": {
+      "title": "Chế độ chơi",
+      "bots": "Bot"
+    },
+    "positions": {
+      "title": "Vị trí bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visual Scripts",
     "description": "Tạo script tự động hóa bằng trình chỉnh sửa dạng nút trực quan.",
@@ -430,6 +673,7 @@
         "pause": "Tạm dừng",
         "pauseTooltip": "Tạm dừng thực thi script",
         "unsaved": "Chưa lưu",
+        "unsavedChanges": "Thay đổi chưa lưu",
         "clearCanvas": "Xóa canvas",
         "zoomIn": "Phóng to",
         "zoomOut": "Thu nhỏ",
@@ -461,6 +705,64 @@
         "showPreview": "Hiện bản xem trước",
         "hidePreview": "Ẩn bản xem trước",
         "delete": "Xóa"
+      },
+      "node": {
+        "expand": "Mở rộng nút",
+        "collapse": "Thu gọn nút"
+      },
+      "debug": {
+        "copyValue": "Sao chép giá trị hiện tại",
+        "clearHistory": "Xóa lịch sử"
+      },
+      "edge": {
+        "direction": "Hướng cạnh"
+      },
+      "note": {
+        "placeholder": "Viết ghi chú..."
+      },
+      "complexity": {
+        "title": "Điểm độ phức tạp của script"
+      },
+      "group": {
+        "returnToRoot": "Quay lại gốc (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Trình đơn thêm nhanh nút",
+        "searchPlaceholder": "Tìm kiếm node..."
+      },
+      "diff": {
+        "tooltip": "Xem lại thay đổi"
+      },
+      "dryRun": {
+        "tooltip": "Chạy thử (Dry Run)",
+        "title": "Chạy thử Script",
+        "description": "Chạy script từ một trigger đã chọn với dữ liệu thử nghiệm.",
+        "triggerNode": "Nút kích hoạt",
+        "selectTrigger": "Chọn trigger...",
+        "triggerDescription": "Chọn nút trigger để thực thi với các giá trị thử nghiệm.",
+        "mockInputs": "Dữ liệu thử nghiệm",
+        "valuePlaceholder": "Giá trị {{type}}",
+        "start": "Bắt đầu chạy thử"
+      },
+      "quotas": {
+        "tooltip": "Hạn mức script",
+        "title": "Hạn mức script",
+        "description": "Cấu hình giới hạn tài nguyên cho script này. Những trường để trống sẽ sử dụng mặc định của máy chủ.",
+        "maxExecutionCount": "Số lần thực thi tối đa",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Số lần thực thi node tối đa mỗi lần kích hoạt",
+        "maxExecutionTime": "Thời gian thực thi tối đa (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Thời gian thực thi tổng tối đa cho mỗi lần kích hoạt",
+        "maxConcurrentTriggers": "Số trigger đồng thời tối đa",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Lượt kích hoạt trigger đồng thời tối đa",
+        "maxStateStoreEntries": "Số mục lưu trạng thái tối đa",
+        "maxStateStoreEntriesPlaceholder": "Không giới hạn",
+        "maxStateStoreEntriesDescription": "Số mục tối đa trong kho trạng thái của script",
+        "disableTimeouts": "Tắt giới hạn thời gian",
+        "disableTimeoutsDescription": "Tắt giới hạn thời gian cho từng node và data edge",
+        "save": "Lưu hạn mức"
       }
     }
   }

@@ -1,4 +1,122 @@
 {
+  "overview": {
+    "logsDescription": "當您需要檢查主控台細節時，可在此查看原始實例輸出。",
+    "summary": {
+      "accounts": "帳號",
+      "proxies": "代理伺服器",
+      "configured": "已設定 {{count}} 項",
+      "configuredShort": "已設定",
+      "currentRate": "目前速率",
+      "imported": "已匯入"
+    },
+    "readiness": {
+      "title": "設定",
+      "accounts": "帳號",
+      "accountsValue": "已為 {{requested}} 個請求的機器人匯入 {{count}} 個帳號。",
+      "proxies": "代理伺服器",
+      "proxiesValue": "已設定 {{count}} 項",
+      "plugins": "插件",
+      "pluginsValue": "{{count}} 個可用"
+    },
+    "activity": {
+      "title": "活動",
+      "tick": "Tick",
+      "health": "生命值",
+      "world": "世界",
+      "worldValue": "{{chunks}} 區塊，{{entities}} 實體",
+      "connections": "連線數",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "指標",
+      "noDataDescription": "尚未有執行時指標。"
+    },
+    "metricsUnavailable": {
+      "title": "指標",
+      "inactive": "請啟動實例以收集即時指標。",
+      "noPermission": "你沒有權限查看機器人指標。"
+    },
+    "status": {
+      "ready": "就緒",
+      "attention": "需要注意",
+      "configured": "已設定",
+      "optional": "可選",
+      "available": "可用",
+      "none": "無"
+    },
+    "actions": {
+      "manage": "管理",
+      "open": "開啟"
+    },
+    "spotlight": {
+      "noBots": "尚未設定任何機器人。",
+      "idle": "閒置中，等待指令。",
+      "level": "等級 {{level}}"
+    },
+    "liveFeed": {
+      "title": "即時監控",
+      "empty": "正在等待實例活動...",
+      "noPermission": "你沒有權限查看即時監控。",
+      "lifecycle": {
+        "connecting": "正在連線",
+        "connected": "已連線",
+        "spawned": "已加入遊戲",
+        "died": "已死亡",
+        "respawned": "已重生",
+        "disconnected": "已斷線",
+        "unknown": "狀態已變更"
+      }
+    },
+    "bots": {
+      "title": "機器人群組/機器人列表/機器人",
+      "viewAll": "檢視全部 {{total}} 個機器人",
+      "viewAllShort": "檢視全部"
+    },
+    "timeline": {
+      "title": "活動",
+      "viewAll": "檢視全部",
+      "empty": "尚未有紀錄的活動。",
+      "noPermission": "你沒有權限查看稽核日誌。",
+      "types": {
+        "executeCommand": "執行了一個指令：{{data}}",
+        "startSession": "已啟動此實例",
+        "pauseSession": "已暫停此實例",
+        "resumeSession": "已恢復此實例",
+        "stopSession": "已停止此實例",
+        "automationStart": "已啟動自動化",
+        "automationPause": "已暫停自動化",
+        "automationResume": "已恢復自動化",
+        "automationStop": "已停止自動化",
+        "automationUpdateSettings": "已更新自動化設定",
+        "automationApplyPreset": "已套用自動化預設",
+        "automationResetMemory": "已重設自動化記憶體",
+        "automationResetCoordination": "已重設自動化協調資料",
+        "automationReleaseClaims": "已釋放自動化宣告",
+        "unknown": "執行了一個動作"
+      }
+    },
+    "automation": {
+      "title": "自動化",
+      "viewAll": "檢視全部",
+      "empty": "目前沒有運行中的自動化。",
+      "activeBots": "{{count}} 個啟用中",
+      "goalMode": {
+        "idle": "閒置中",
+        "acquire": "獲取",
+        "beat": "節奏"
+      }
+    },
+    "plugins": {
+      "title": "插件",
+      "empty": "尚未有外掛回報統計。",
+      "noPermission": "你沒有權限查看外掛統計。",
+      "active": "啟用中",
+      "activeBots": "{{count}} 個啟用中的機器人",
+      "uptime": "已運作 {{time}}"
+    },
+    "detailed": {
+      "title": "詳細指標",
+      "composition": "世界組成"
+    }
+  },
   "proxy": {
     "getProxies": "獲取代理伺服器",
     "addProxies": "新增代理伺服器",
@@ -118,6 +236,7 @@
       "microsoftRefreshToken": "Microsoft 重新整理權杖",
       "microsoftCookies": "Microsoft Cookie 檔案",
       "microsoftAccessToken": "Microsoft 存取權杖",
+      "theAltening": "TheAltening 權杖（Token）",
       "altProviders": "替代供應商",
       "dialog": {
         "title": "導入 {{type}} 帳戶",
@@ -149,7 +268,21 @@
       "description": "為此帳號設定每個機器人專屬的設定",
       "openButton": "設定帳號",
       "pageTitle": "{{name}} - {{page}} 設定",
-      "noSettings": "此頁面沒有可用的設定"
+      "noSettings": "此頁面沒有可用的設定",
+      "search": "搜尋設定",
+      "overrides": "覆寫",
+      "allSettings": "所有設定",
+      "noOverrides": "此機器人尚未有任何明確的覆寫。",
+      "noOverridesMatching": "沒有覆寫符合此搜尋。",
+      "noOverridesHelp": "請打開「所有設定」以繼承值或建立第一個只針對機器人的覆寫。",
+      "tryDifferentSearch": "請嘗試其他搜尋詞。",
+      "openAllSettings": "打開所有設定頁面。 ",
+      "selectPage": "選擇設定頁面",
+      "noSearchResults": "沒有相關設定符合此搜尋。",
+      "matchesInheritedValue": "符合繼承值",
+      "instanceValue": "實例值",
+      "defaultValue": "預設值",
+      "resetOverride": "重設覆蓋"
     },
     "deviceCodeConfirmDialog": {
       "title": "裝置代碼驗證",
@@ -231,7 +364,21 @@
     "online": "在線",
     "offline": "離線",
     "notJoined": "未加入",
+    "connectionPhase": {
+      "connecting": "連線中",
+      "connected": "已連線",
+      "spawned": "在線",
+      "died": "死亡",
+      "disconnected": "離線",
+      "ping": "{{ms}} 毫秒"
+    },
     "backToBots": "返回機器人列表",
+    "tabs": {
+      "overview": "總覽",
+      "inventory": "物品欄",
+      "controls": "控制項",
+      "terminal": "終端機"
+    },
     "comingSoon": "即將推出",
     "terminalPanel": {
       "title": "機器人終端機"
@@ -362,6 +509,102 @@
       "offline": "機器人離線。只有當機器人連線時才能顯示對話框。"
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "終界珍珠"
+    },
+    "filters": {
+      "searchBots": "搜尋機器人...",
+      "searchClaims": "搜尋領地...",
+      "noBotsMatchTitle": "目前的篩選條件下沒有符合的機器人。",
+      "noBotsMatchDescription": "請調整或清除目前的篩選條件以檢視所有自動化機器人列表。"
+    },
+    "attention": {
+      "empty": "目前沒有顯示卡住或降級的機器人。"
+    },
+    "memory": {
+      "noBots": "目前沒有可用於記憶體檢查的自動化機器人。",
+      "blocks": "方塊",
+      "noBlocks": "此快照中沒有記憶的方塊。",
+      "containers": "容器",
+      "noContainers": "此快照中沒有記憶的容器。",
+      "entities": "實體",
+      "noEntities": "此快照中沒有記憶的實體。",
+      "droppedItems": "掉落物品",
+      "noDroppedItems": "此快照中沒有記憶的掉落物品。",
+      "unreachablePositions": "無法到達的位置",
+      "noUnreachablePositions": "此快照中沒有無法到達的位置。"
+    },
+    "coordination": {
+      "sharedBlocks": "共享方塊",
+      "noBlockHints": "尚未有共享方塊提示。",
+      "eyeSamples": "視角樣本",
+      "noEyeSamples": "尚未記錄任何視角樣本。"
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "無數據"
+    },
+    "summary": {
+      "online": "在線",
+      "packetsPerSecond": "封包/秒",
+      "traffic": "流量",
+      "health": "生命值",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "線上機器人",
+      "online": "在線",
+      "total": "總計"
+    },
+    "packets": {
+      "title": "封包 / 秒",
+      "sent": "發送/秒",
+      "received": "接收/秒"
+    },
+    "bandwidth": {
+      "title": "頻寬",
+      "upload": "上傳",
+      "download": "下載"
+    },
+    "tick": {
+      "title": "Tick 持續時間",
+      "avg": "平均（毫秒）",
+      "max": "最大（毫秒）"
+    },
+    "healthFood": {
+      "title": "生命值 / 飲食",
+      "health": "平均生命值",
+      "food": "平均飲食值"
+    },
+    "chunksEntities": {
+      "title": "區塊 / 實體",
+      "chunks": "區塊",
+      "entities": "實體"
+    },
+    "connections": {
+      "title": "連線事件",
+      "connections": "連線數",
+      "disconnections": "斷線數"
+    },
+    "healthDistribution": {
+      "title": "生命值分布",
+      "bots": "機器人群組/機器人列表/機器人"
+    },
+    "dimensions": {
+      "title": "維度",
+      "bots": "機器人群組/機器人列表/機器人"
+    },
+    "gameModes": {
+      "title": "遊戲模式",
+      "bots": "機器人群組/機器人列表/機器人"
+    },
+    "positions": {
+      "title": "機器人位置 (XZ)",
+      "bot": "機器人"
+    }
+  },
   "scripts": {
     "title": "視覺腳本",
     "description": "使用可視化節點編輯器建立自動化腳本。",
@@ -430,6 +673,7 @@
         "pause": "暫停",
         "pauseTooltip": "暫停腳本執行",
         "unsaved": "未儲存",
+        "unsavedChanges": "尚未儲存變更",
         "clearCanvas": "清除畫布",
         "zoomIn": "放大",
         "zoomOut": "縮小",
@@ -461,6 +705,64 @@
         "showPreview": "顯示預覽",
         "hidePreview": "隱藏預覽",
         "delete": "刪除"
+      },
+      "node": {
+        "expand": "展開節點",
+        "collapse": "收合節點"
+      },
+      "debug": {
+        "copyValue": "複製目前值",
+        "clearHistory": "清除歷史紀錄"
+      },
+      "edge": {
+        "direction": "邊緣方向"
+      },
+      "note": {
+        "placeholder": "寫個註記..."
+      },
+      "complexity": {
+        "title": "腳本複雜度評分"
+      },
+      "group": {
+        "returnToRoot": "返回根目錄 (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "快速新增節點選單",
+        "searchPlaceholder": "搜尋節點..."
+      },
+      "diff": {
+        "tooltip": "檢視變更"
+      },
+      "dryRun": {
+        "tooltip": "模擬運行",
+        "title": "模擬運行腳本",
+        "description": "以模擬輸入從已選觸發器運行腳本。",
+        "triggerNode": "觸發節點",
+        "selectTrigger": "選擇觸發器...",
+        "triggerDescription": "選擇要以模擬輸入值執行的觸發節點。",
+        "mockInputs": "模擬輸入",
+        "valuePlaceholder": "{{type}}值",
+        "start": "開始模擬運行"
+      },
+      "quotas": {
+        "tooltip": "腳本額度",
+        "title": "腳本額度",
+        "description": "為此腳本配置資源限制。空欄將使用伺服器預設值。",
+        "maxExecutionCount": "最大執行次數",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "每次觸發調用的最大節點執行次數",
+        "maxExecutionTime": "最大執行時間（毫秒）",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "每次觸發執行的最長時鐘時間",
+        "maxConcurrentTriggers": "最大同時觸發數",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "最大同時觸發次數",
+        "maxStateStoreEntries": "最大狀態存儲項目數",
+        "maxStateStoreEntriesPlaceholder": "無限制",
+        "maxStateStoreEntriesDescription": "腳本狀態存儲中的最大項目數",
+        "disableTimeouts": "停用逾時",
+        "disableTimeoutsDescription": "停用每節點及資料邊緣的逾時",
+        "save": "儲存額度"
       }
     }
   }

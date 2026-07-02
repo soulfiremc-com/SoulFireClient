@@ -1,4 +1,122 @@
 {
+  "overview": {
+    "logsDescription": "Ye can spy the raw instance booty here when ye be needin' to inspect the console secrets, arrr!",
+    "summary": {
+      "accounts": "Crew Accounts",
+      "proxies": "Proxy Ships",
+      "configured": "{{count}} rigged for sailin'",
+      "configuredShort": "Rigged",
+      "currentRate": "Flow o' doubloons",
+      "imported": "Plundered"
+    },
+    "readiness": {
+      "title": "Chart the Course",
+      "accounts": "Crew Accounts",
+      "accountsValue": "{{count}} smuggled in fer {{requested}} bots ye asked fer, arrr!",
+      "proxies": "Proxy Ships",
+      "proxiesValue": "{{count}} rigged for sailin'",
+      "plugins": "Pirate Add-ons",
+      "pluginsValue": "{{count}} be at the ready, matey!"
+    },
+    "activity": {
+      "title": "Cap'n's Log",
+      "tick": "Tick o' the Clock",
+      "health": "Vigor",
+      "world": "Seas",
+      "worldValue": "{{chunks}} shipwrecks, {{entities}} beasties",
+      "connections": "Gangplank Crossin's",
+      "connectionsValue": "+{{connections}} scallywags joined / -{{disconnections}} thrown overboard",
+      "noDataTitle": "The Treasure Map",
+      "noDataDescription": "No booty marked on the map yet, ye scalawag."
+    },
+    "metricsUnavailable": {
+      "title": "The Treasure Map",
+      "inactive": "Set sail with the instance to haul in live booty.",
+      "noPermission": "Ye ain't got the rank to gaze at bot treasure logs."
+    },
+    "status": {
+      "ready": "Aye, ready as a sea dog!",
+      "attention": "Needs a lookout in the crow's nest!",
+      "configured": "Rigged",
+      "optional": "Fer those that fancy extra trinkets",
+      "available": "On deck!",
+      "none": "Nay"
+    },
+    "actions": {
+      "manage": "Commandeer",
+      "open": "Hoist Open!"
+    },
+    "spotlight": {
+      "noBots": "No bots on deck, matey.",
+      "idle": "Swingin' in a hammock, waitin' for orders.",
+      "level": "Scallywag Lvl {{level}}"
+    },
+    "liveFeed": {
+      "title": "Spyglass Feed",
+      "empty": "Awaitin' signs of life from yer instance...",
+      "noPermission": "The first mate says ye can't spy the live feed.",
+      "lifecycle": {
+        "connecting": "be battlin' the sea monster to connect",
+        "connected": "boarded the vessel",
+        "spawned": "joined the crew",
+        "died": "went to Davy Jones' locker",
+        "respawned": "washed ashore again",
+        "disconnected": "left the ship",
+        "unknown": "shifted course"
+      }
+    },
+    "bots": {
+      "title": "Crew",
+      "viewAll": "Gaze at all {{total}} bots in the fleet",
+      "viewAllShort": "Show all hands"
+    },
+    "timeline": {
+      "title": "Cap'n's Log",
+      "viewAll": "Show all hands",
+      "empty": "No tales in the log yet, matey.",
+      "noPermission": "Ye lack permission to read the pirate's ledger.",
+      "types": {
+        "executeCommand": "spoke an order: {{data}}",
+        "startSession": "fired up the instance",
+        "pauseSession": "dropped anchor on the instance",
+        "resumeSession": "raised anchor on the instance",
+        "stopSession": "scuttled the instance",
+        "automationStart": "set sail with automation",
+        "automationPause": "threw automation overboard",
+        "automationResume": "put automation back to work",
+        "automationStop": "put an end to the automation",
+        "automationUpdateSettings": "twisted the helm on automation settings",
+        "automationApplyPreset": "slapped on an automation chart",
+        "automationResetMemory": "hosed down the automation memory",
+        "automationResetCoordination": "reset the coordination among the crew",
+        "automationReleaseClaims": "let loose all automation booty claims",
+        "unknown": "pulled a fast one"
+      }
+    },
+    "automation": {
+      "title": "Automatin', yarrr!",
+      "viewAll": "Show all hands",
+      "empty": "No mechanical rumblin's runnin'.",
+      "activeBots": "{{count}} crew members on the job",
+      "goalMode": {
+        "idle": "Swingin' in the hammock",
+        "acquire": "Pillage",
+        "beat": "Swashbuckle"
+      }
+    },
+    "plugins": {
+      "title": "Pirate Add-ons",
+      "empty": "No plugins have sent a parrot squawk yet.",
+      "noPermission": "Ye ain't permitted to eye plugin squawks.",
+      "active": "Active n' sailin'",
+      "activeBots": "{{count}} bots swabbin' the decks",
+      "uptime": "sailing for {{time}}"
+    },
+    "detailed": {
+      "title": "Finer Booty Details",
+      "composition": "Shape o' the Seas"
+    }
+  },
   "proxy": {
     "getProxies": "Fetch Proxies!",
     "addProxies": "Add more proxies t' yer crew!",
@@ -118,6 +236,7 @@
       "microsoftRefreshToken": "Microsoft Rum Token (Refresh)",
       "microsoftCookies": "Microsoft Biscuits",
       "microsoftAccessToken": "Microsoft Booty Access Token",
+      "theAltening": "TheAltenin' Doubloon Token",
       "altProviders": "Alt Providers o' th' Seas",
       "dialog": {
         "title": "Bring in {{type}} accounts, hoist the sails!",
@@ -149,7 +268,21 @@
       "description": "Set per-bot gear fer this account",
       "openButton": "Rig up the account",
       "pageTitle": "{{name}} - {{page}} Ship's Settings",
-      "noSettings": "No ship's settings fer this page, matey"
+      "noSettings": "No ship's settings fer this page, matey",
+      "search": "Search fer settin's",
+      "overrides": "Overrides, arrr",
+      "allSettings": "All me settin's",
+      "noOverrides": "This here bot be lackin' any explicit orders yet, matey.",
+      "noOverridesMatching": "No overrides be matchin' this here search, ye scallywag.",
+      "noOverridesHelp": "Hoist open All settin's t' inherit values or craft the first override fer this bot, arrr!",
+      "tryDifferentSearch": "Try ye a different search term, savvy?",
+      "openAllSettings": "Hoist all sails to settings, matey!",
+      "selectPage": "Pick a settings page, ye scallywag",
+      "noSearchResults": "Nay settings be matchin' this here search.",
+      "matchesInheritedValue": "Aye, this matches yer inherited booty",
+      "instanceValue": "This be the instance value, arrr!",
+      "defaultValue": "This be the default booty, savvy?",
+      "resetOverride": "Scuttle the override and set sail anew!"
     },
     "deviceCodeConfirmDialog": {
       "title": "Device Code Authentication",
@@ -231,7 +364,21 @@
     "online": "Afloat, matey!",
     "offline": "Off th' grid",
     "notJoined": "Yet t' board",
+    "connectionPhase": {
+      "connecting": "Tie down the lines",
+      "connected": "Tied to the mast",
+      "spawned": "Afloat, matey!",
+      "died": "Off the plank!",
+      "disconnected": "Off th' grid",
+      "ping": "{{ms}} ms o' wind in the sails"
+    },
     "backToBots": "Back t' th' Bots!",
+    "tabs": {
+      "overview": "Spyglass View",
+      "inventory": "Cargo Hold",
+      "controls": "Controls o’ the ship",
+      "terminal": "Deck o' Terminals"
+    },
     "comingSoon": "Comin' Soon, prepare yerself!",
     "terminalPanel": {
       "title": "Parrot's Command Window"
@@ -362,6 +509,102 @@
       "offline": "Bot drifted off. Banter's gone silent."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_pearl"
+    },
+    "filters": {
+      "searchBots": "Search bots, arrr...",
+      "searchClaims": "Scour fer booty claims...",
+      "noBotsMatchTitle": "No bots be fitten' the current spyglass filters, matey.",
+      "noBotsMatchDescription": "Swab or abandon the filters if ye wish to peruse the whole automatin' crew roster."
+    },
+    "attention": {
+      "empty": "Nay bots be seemin' stuck or run aground at the moment, arr!"
+    },
+    "memory": {
+      "noBots": "No bots ready fer memory inspectin', by thunder.",
+      "blocks": "Scallywag Blocks",
+      "noBlocks": "No remembered blocks in this here snapshot o' the voyage.",
+      "containers": "Booty Chests",
+      "noContainers": "No stashed chests remembered in this snapshot, matey.",
+      "entities": "Swabbies",
+      "noEntities": "Nay creatures remembered in this snapshot o' the ship's log.",
+      "droppedItems": "Booty Loot Cast Overboard",
+      "noDroppedItems": "No memory of tossed loot in this here snapshot, arrr.",
+      "unreachablePositions": "Unreachable Shores",
+      "noUnreachablePositions": "No uncharted waters in this snapshot, matey."
+    },
+    "coordination": {
+      "sharedBlocks": "Shared Planks",
+      "noBlockHints": "No shared plank hints yet, ye scurvy dog.",
+      "eyeSamples": "Lookout Eye Traces",
+      "noEyeSamples": "No lookout eye records in the captain's log."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Nothin' in the hold"
+    },
+    "summary": {
+      "online": "Afloat, matey!",
+      "packetsPerSecond": "Pkt/s (Packets fer second, ya landlubber!)",
+      "traffic": "Ship's Traffic",
+      "health": "Vigor",
+      "tick": "Tick o' the Clock"
+    },
+    "botsOnline": {
+      "title": "Bots On Deck",
+      "online": "Afloat, matey!",
+      "total": "All Hands On Deck"
+    },
+    "packets": {
+      "title": "Packets / Second",
+      "sent": "Sent per tick",
+      "received": "Received fer each tick"
+    },
+    "bandwidth": {
+      "title": "Bandwidth o' the Seas",
+      "upload": "Heave Ho Uploads",
+      "download": "Plunderin' Downloads"
+    },
+    "tick": {
+      "title": "Tick Time Span",
+      "avg": "Average (ms)",
+      "max": "Maximum (ms)"
+    },
+    "healthFood": {
+      "title": "Health & Vittles",
+      "health": "Average Health o' the Crew",
+      "food": "Average Vittles"
+    },
+    "chunksEntities": {
+      "title": "Chunks & Swabbies",
+      "chunks": "Treasure Chunks",
+      "entities": "Swabbies"
+    },
+    "connections": {
+      "title": "Mast Climbing Events",
+      "connections": "Gangplank Crossin's",
+      "disconnections": "Thrown Overboard"
+    },
+    "healthDistribution": {
+      "title": "Health Spread o' the Crew",
+      "bots": "Crew"
+    },
+    "dimensions": {
+      "title": "Dimensions o' the High Seas",
+      "bots": "Crew"
+    },
+    "gameModes": {
+      "title": "Game Callin's",
+      "bots": "Crew"
+    },
+    "positions": {
+      "title": "Bot Coordinates (East/West)",
+      "bot": "Bot Buccaneer"
+    }
+  },
   "scripts": {
     "title": "Visual Spell Scrolls",
     "description": "Make yer automation with magic node-maps, ye scallywag!",
@@ -430,6 +673,7 @@
         "pause": "Drop anchor",
         "pauseTooltip": "Pause yer spell, drop anchor!",
         "unsaved": "Unbottled",
+        "unsavedChanges": "Changes not stowed!",
         "clearCanvas": "Scrub the canvas clean!",
         "zoomIn": "Zoom in close with yer glass",
         "zoomOut": "Zoom out, see th' broad seas",
@@ -462,6 +706,64 @@
         "showPreview": "Unfurl Preview!",
         "hidePreview": "Hide away the Preview!",
         "delete": "Scuttle it!"
+      },
+      "node": {
+        "expand": "Expand the branch, like openin' a treasure map",
+        "collapse": "Collapse this branch, fold the sails!"
+      },
+      "debug": {
+        "copyValue": "Copy the current booty value",
+        "clearHistory": "Wipe the tale o' history"
+      },
+      "edge": {
+        "direction": "Compass direction o' the edge"
+      },
+      "note": {
+        "placeholder": "Scrawl yer note here..."
+      },
+      "complexity": {
+        "title": "Scribblin' Script Complexity Score"
+      },
+      "group": {
+        "returnToRoot": "Return to the root, like findin' yer way back to port (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Quick plunderin' node menu",
+        "searchPlaceholder": "Scour for nodes..."
+      },
+      "diff": {
+        "tooltip": "Inspect the changes, matey"
+      },
+      "dryRun": {
+        "tooltip": "Dry Run (No cannonballs fired)",
+        "title": "Dry Run o' the Script",
+        "description": "Sail a script from yer chosen trigger with pretend cargo.",
+        "triggerNode": "Fire Trigger Node",
+        "selectTrigger": "Choose ye a trigger...",
+        "triggerDescription": "Pick the trigger node to set sail with pretend loot.",
+        "mockInputs": "Mock Inputs, arrr!",
+        "valuePlaceholder": "{{type}} booty value",
+        "start": "Hoist the Dry Run!"
+      },
+      "quotas": {
+        "tooltip": "Script Rations",
+        "title": "Script Rations",
+        "description": "Set yer resource limits for this parchment. Empty chest means ship defaults.",
+        "maxExecutionCount": "Maximum Voyages Count",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximum ship node runs per trigger fire",
+        "maxExecutionTime": "Max Voyage Time (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Greatest hourglass time per trigger fired",
+        "maxConcurrentTriggers": "Maximum Triggers at Once",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Most simultaneous trigger blazes",
+        "maxStateStoreEntries": "Max Entries in Ship Log",
+        "maxStateStoreEntriesPlaceholder": "No limits in Davy Jones' locker",
+        "maxStateStoreEntriesDescription": "Maximum notches in the ship's state log",
+        "disableTimeouts": "Cut Timeouts loose",
+        "disableTimeoutsDescription": "Disables single-node and data line timeouts, arrr!",
+        "save": "Save the rations, secure the cargo!"
       }
     }
   }

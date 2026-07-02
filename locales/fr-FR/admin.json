@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rôle",
+          "placeholder": "Sélectionnez un rôle",
           "description": "Le rôle de l'utilisateur. Les administrateurs peuvent gérer les utilisateurs et toutes les instances. Les utilisateurs ne peuvent gérer que leurs propres instances.",
           "user": "Utilisateur",
           "admin": "Administrateur"

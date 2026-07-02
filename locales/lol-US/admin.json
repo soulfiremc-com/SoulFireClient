@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Roel",
+          "placeholder": "Pik a r0le",
           "description": "Da roel of da hooman. Adminz kin manaj hoomans n all instansz. Hoomans kin only manaj their own instansz.",
           "user": "Uzer",
           "admin": "Admin"

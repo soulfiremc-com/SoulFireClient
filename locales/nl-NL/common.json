@@ -46,6 +46,13 @@
       },
       "close": "Sluiten"
     },
+    "support": {
+      "title": "Steun SoulFire",
+      "description": "SoulFire is gratis en open-source, gebouwd met liefde door de community.",
+      "body": "Als SoulFire nuttig voor je is geweest, overweeg dan om het project te steunen. Jouw bijdrage helpt de serverkosten te dekken, ontwikkeling te financieren en SoulFire gratis te houden voor iedereen.",
+      "dismiss": "Misschien later",
+      "action": "Steun SoulFire"
+    },
     "createInstance": {
       "title": "Een nieuwe instantie aanmaken",
       "description": "Instanties hebben een vriendelijke naam nodig zodat je ze van elkaar kunt onderscheiden. Dit kan elke naam zijn die je wilt, bijvoorbeeld \"Mijn Minecraft Bot\".",
@@ -65,6 +72,21 @@
         "loading": "Instantie wordt aangemaakt...",
         "success": "Instantie succesvol aangemaakt",
         "error": "Maken van instantie mislukt"
+      }
+    },
+    "duplicateInstance": {
+      "title": "Instantie dupliceren",
+      "description": "Maak een nieuwe instantie aan met het profiel van \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "De naam voor de gedupliceerde instantie."
+        },
+        "duplicate": "Dupliceren"
+      },
+      "duplicateToast": {
+        "loading": "Instantie wordt gedupliceerd...",
+        "success": "Instantie succesvol gedupliceerd",
+        "error": "Dupliceren van instantie mislukt"
       }
     },
     "import": {
@@ -230,6 +252,9 @@
       "add": "Toevoegen",
       "remove": "Verwijderen"
     },
+    "combo": {
+      "searchPlaceholder": "Waarde zoeken..."
+    },
     "invalidNumberToast": {
       "title": "Ongeldig nummer!",
       "description": "De waarde moet tussen {{min}} en {{max}} liggen"
@@ -253,6 +278,23 @@
   },
   "uiSidebar": {
     "toggle": "Zijbalk wisselen"
+  },
+  "window": {
+    "minimize": "Minimaliseren",
+    "minimizeLabel": "Venster minimaliseren",
+    "maximize": "Maximaliseren",
+    "maximizeLabel": "Venster maximaliseren",
+    "restore": "Herstellen",
+    "restoreLabel": "Venster herstellen",
+    "close": "Sluiten",
+    "closeLabel": "Venster sluiten",
+    "back": "Terug",
+    "backLabel": "Ga terug",
+    "forward": "Volgende",
+    "forwardLabel": "Ga vooruit"
+  },
+  "infoButton": {
+    "showInfo": "Toon info"
   },
   "castMenu": {
     "title": "Casten",
@@ -334,6 +376,7 @@
     },
     "configDir": "Config-map",
     "dataDir": "Data-map",
+    "supportSoulFire": "Steun SoulFire",
     "about": "Over",
     "logOut": "Uitloggen",
     "logOutToast": {
@@ -347,7 +390,7 @@
   },
   "sidebar": {
     "documentation": "Documentatie",
-    "supportSoulFire": "Trakteer me op een koffie",
+    "supportSoulFire": "Steun SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -531,6 +574,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Ga naar instantie",
+      "duplicateInstance": "Instatie dupliceren",
       "copyInstanceId": "Instantie-ID kopiëren",
       "copyInstanceName": "Instantienaam kopiëren",
       "deleteInstance": "Instantie verwijderen"

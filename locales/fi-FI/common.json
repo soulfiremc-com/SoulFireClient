@@ -46,6 +46,13 @@
       },
       "close": "Sulje"
     },
+    "support": {
+      "title": "Tue SoulFirea",
+      "description": "SoulFire on ilmainen ja avoimen lähdekoodin sovellus, jonka yhteisö on rakentanut rakkaudella.",
+      "body": "Jos SoulFiresta on ollut sinulle hyötyä, harkitse projektin tukemista. Panoksesi auttaa kattamaan palvelinkustannuksia, rahoittamaan kehitystä ja pitämään SoulFiren ilmaisena kaikille.",
+      "dismiss": "Ehkä myöhemmin",
+      "action": "Tue SoulFirea"
+    },
     "createInstance": {
       "title": "Luo uusi instanssi",
       "description": "Instansseille tarvitaan selkokieliset nimet, jotta voit erottaa ne toisistaan. Voit käyttää mitä tahansa nimeä, esim. \"Oma Minecraft-bottini\".",
@@ -65,6 +72,21 @@
         "loading": "Luodaan instanssia...",
         "success": "Instanssi luotu onnistuneesti",
         "error": "Instanssin luominen epäonnistui"
+      }
+    },
+    "duplicateInstance": {
+      "title": "Luo kopio instanssista",
+      "description": "Luo uusi instanssi käyttämällä profiilia kohteesta \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Kopioidun instanssin nimi."
+        },
+        "duplicate": "Monista"
+      },
+      "duplicateToast": {
+        "loading": "Kopioidaan instanssia...",
+        "success": "Instanssi kopioitu onnistuneesti",
+        "error": "Instanssin kopiointi epäonnistui"
       }
     },
     "import": {
@@ -230,6 +252,9 @@
       "add": "Lisää",
       "remove": "Poista"
     },
+    "combo": {
+      "searchPlaceholder": "Hae arvoa..."
+    },
     "invalidNumberToast": {
       "title": "Virheellinen numero!",
       "description": "Arvon tulee olla välillä {{min}} ja {{max}}"
@@ -253,6 +278,23 @@
   },
   "uiSidebar": {
     "toggle": "Näytä/piilota sivupalkki"
+  },
+  "window": {
+    "minimize": "Pienennä",
+    "minimizeLabel": "Pienennä ikkuna",
+    "maximize": "Suurenna",
+    "maximizeLabel": "Suurenna ikkuna",
+    "restore": "Palauta",
+    "restoreLabel": "Palauta ikkuna",
+    "close": "Sulje",
+    "closeLabel": "Sulje ikkuna",
+    "back": "Takaisin",
+    "backLabel": "Mene takaisin",
+    "forward": "Eteenpäin",
+    "forwardLabel": "Mene eteenpäin"
+  },
+  "infoButton": {
+    "showInfo": "Näytä tiedot"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +376,7 @@
     },
     "configDir": "Asetuskansio",
     "dataDir": "Datakansio",
+    "supportSoulFire": "Tue SoulFirea",
     "about": "Tietoja",
     "logOut": "Kirjaudu ulos",
     "logOutToast": {
@@ -347,7 +390,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentaatio",
-    "supportSoulFire": "Osta minulle kahvi",
+    "supportSoulFire": "Tue SoulFirea",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -531,6 +574,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Siirry instanssiin",
+      "duplicateInstance": "Kopioi instanssi",
       "copyInstanceId": "Kopioi instanssin tunnus",
       "copyInstanceName": "Kopioi instanssin nimi",
       "deleteInstance": "Poista instanssi"
