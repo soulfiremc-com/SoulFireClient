@@ -201,6 +201,17 @@
       "noAccounts": "No accounts to import"
     },
     "unknownError": "Unknown error",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Credentials)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Device Code)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Access Token)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Credentials)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Device Code)"
+    },
     "deviceCodeImportToast": {
       "loading": "Importing account...",
       "success": "Account imported!",

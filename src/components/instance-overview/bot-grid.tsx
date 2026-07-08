@@ -6,16 +6,10 @@ import {
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ClipboardCopyIcon,
-  CookieIcon,
   ExternalLinkIcon,
-  KeyRoundIcon,
   LoaderCircleIcon,
   MapPinIcon,
-  MonitorSmartphoneIcon,
-  RotateCcwKeyIcon,
-  TicketIcon,
   WifiIcon,
-  WifiOffIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,12 +35,12 @@ import {
 import { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfire/common_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
-import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import {
-  getEnumKeyByValue,
-  type InstanceInfoQueryData,
-  mapUnionToValue,
-} from "@/lib/types.ts";
+  accountTypeToIcon,
+  translateAccountType,
+} from "@/lib/account-types.ts";
+import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
 import { cn } from "@/lib/utils.tsx";
 import { MinecraftHead } from "../minecraft/minecraft-head.tsx";
 
@@ -137,52 +131,6 @@ export function ConnectionPhaseBadge({
   );
 }
 
-export const accountTypeToIcon = (
-  type: keyof typeof MinecraftAccountProto_AccountTypeProto,
-) =>
-  mapUnionToValue(type, (key) => {
-    switch (key) {
-      case "OFFLINE":
-        return WifiOffIcon;
-      case "MICROSOFT_JAVA_CREDENTIALS":
-        return KeyRoundIcon;
-      case "MICROSOFT_JAVA_DEVICE_CODE":
-        return MonitorSmartphoneIcon;
-      case "MICROSOFT_JAVA_REFRESH_TOKEN":
-        return RotateCcwKeyIcon;
-      case "MICROSOFT_JAVA_COOKIES":
-        return CookieIcon;
-      case "MICROSOFT_JAVA_ACCESS_TOKEN":
-        return TicketIcon;
-      case "THE_ALTENING":
-        return TicketIcon;
-      case "MICROSOFT_BEDROCK_CREDENTIALS":
-        return KeyRoundIcon;
-      case "MICROSOFT_BEDROCK_DEVICE_CODE":
-        return MonitorSmartphoneIcon;
-    }
-  });
-
-export const accountTypeLabel = (
-  type: keyof typeof MinecraftAccountProto_AccountTypeProto,
-) =>
-  mapUnionToValue(type, (key) => {
-    switch (key) {
-      case "OFFLINE":
-        return "Offline";
-      case "MICROSOFT_JAVA_CREDENTIALS":
-      case "MICROSOFT_JAVA_DEVICE_CODE":
-      case "MICROSOFT_JAVA_REFRESH_TOKEN":
-      case "MICROSOFT_JAVA_COOKIES":
-      case "MICROSOFT_JAVA_ACCESS_TOKEN":
-      case "THE_ALTENING":
-        return "Java";
-      case "MICROSOFT_BEDROCK_CREDENTIALS":
-      case "MICROSOFT_BEDROCK_DEVICE_CODE":
-        return "Bedrock";
-    }
-  });
-
 export function BotCardSkeleton() {
   return (
     <div className="rounded-lg border p-4">
@@ -240,7 +188,8 @@ function BotCard({
     bot.type,
   );
   const Icon = accountTypeToIcon(typeKey);
-  const typeLabel = accountTypeLabel(typeKey);
+  const { i18n } = useTranslation("instance");
+  const typeLabel = translateAccountType(i18n, typeKey);
   const displayName = bot.accountName || bot.lastKnownName;
 
   return (

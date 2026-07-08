@@ -11,18 +11,12 @@ import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import {
   BracesIcon,
   ClipboardCopyIcon,
-  CookieIcon,
-  KeyRoundIcon,
-  MonitorSmartphoneIcon,
   PlusIcon,
-  RotateCcwKeyIcon,
   SettingsIcon,
   ShoppingCartIcon,
   SparklesIcon,
   TextIcon,
-  TicketIcon,
   TrashIcon,
-  WifiOffIcon,
 } from "lucide-react";
 import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -99,6 +93,10 @@ import { MCAuthService } from "@/generated/soulfire/mc-auth_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import {
+  accountTypeToIcon,
+  translateAccountType,
+} from "@/lib/account-types.ts";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
@@ -109,7 +107,6 @@ import {
   getEnumEntries,
   getEnumKeyByValue,
   type InstanceInfoQueryData,
-  mapUnionToValue,
   type ProfileAccount,
 } from "@/lib/types.ts";
 import {
@@ -250,32 +247,6 @@ function _addAndDeduplicate(
     .concat(newAccounts);
 }
 
-const accountTypeToIcon = (
-  type: keyof typeof MinecraftAccountProto_AccountTypeProto,
-) =>
-  mapUnionToValue(type, (key) => {
-    switch (key) {
-      case "OFFLINE":
-        return WifiOffIcon;
-      case "MICROSOFT_JAVA_CREDENTIALS":
-        return KeyRoundIcon;
-      case "MICROSOFT_JAVA_DEVICE_CODE":
-        return MonitorSmartphoneIcon;
-      case "MICROSOFT_JAVA_REFRESH_TOKEN":
-        return RotateCcwKeyIcon;
-      case "MICROSOFT_JAVA_COOKIES":
-        return CookieIcon;
-      case "MICROSOFT_JAVA_ACCESS_TOKEN":
-        return TicketIcon;
-      case "THE_ALTENING":
-        return TicketIcon;
-      case "MICROSOFT_BEDROCK_CREDENTIALS":
-        return KeyRoundIcon;
-      case "MICROSOFT_BEDROCK_DEVICE_CODE":
-        return MonitorSmartphoneIcon;
-    }
-  });
-
 function splitAccountCredentialPayloads(
   text: string,
   accountType: AccountTypeCredentials,
@@ -399,9 +370,9 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
       const Icon = accountTypeToIcon(type);
 
       return (
-        <Badge variant="outline" className="capitalize">
+        <Badge variant="outline">
           <Icon />
-          {type}
+          {translateAccountType(i18n, type)}
         </Badge>
       );
     },
@@ -410,15 +381,17 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
         return i18n.t("instance:account.table.type");
       },
       variant: "multiSelect",
-      options: getEnumEntries(MinecraftAccountProto_AccountTypeProto).map(
-        (type) => {
-          return {
-            label: type.key,
-            value: type.key,
-            icon: accountTypeToIcon(type.key),
-          };
-        },
-      ),
+      get options() {
+        return getEnumEntries(MinecraftAccountProto_AccountTypeProto).map(
+          (type) => {
+            return {
+              label: translateAccountType(i18n, type.key),
+              value: type.key,
+              icon: accountTypeToIcon(type.key),
+            };
+          },
+        );
+      },
     },
     enableColumnFilter: true,
   },

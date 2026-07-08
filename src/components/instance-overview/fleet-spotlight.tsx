@@ -3,11 +3,7 @@ import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { BoxesIcon, GlobeIcon, MapPinIcon, StarIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  accountTypeLabel,
-  accountTypeToIcon,
-  ConnectionPhaseBadge,
-} from "@/components/instance-overview/bot-grid.tsx";
+import { ConnectionPhaseBadge } from "@/components/instance-overview/bot-grid.tsx";
 import { MinecraftHead } from "@/components/minecraft/minecraft-head.tsx";
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -19,6 +15,10 @@ import {
   GameMode,
 } from "@/generated/soulfire/bot_pb.ts";
 import { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfire/common_pb.ts";
+import {
+  accountTypeToIcon,
+  translateAccountType,
+} from "@/lib/account-types.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import {
   getEnumKeyByValue,
@@ -58,7 +58,7 @@ export function FleetSpotlight({
 }: {
   instanceInfo: InstanceInfoQueryData;
 }) {
-  const { t } = useTranslation("instance");
+  const { i18n, t } = useTranslation("instance");
   const { data: botStatus } = useSuspenseQuery(
     botStatusQueryOptions(instanceInfo.id),
   );
@@ -118,6 +118,7 @@ export function FleetSpotlight({
     account.type,
   );
   const TypeIcon = accountTypeToIcon(typeKey);
+  const typeLabel = translateAccountType(i18n, typeKey);
   const automationBot = teamState?.bots.find(
     (bot) => bot.botId === account.profileId,
   );
@@ -143,7 +144,7 @@ export function FleetSpotlight({
               </h3>
               <Badge variant="outline" className="text-xs">
                 <TypeIcon className="mr-1 size-3" />
-                {accountTypeLabel(typeKey)}
+                {typeLabel}
               </Badge>
               <ConnectionPhaseBadge phase={connectionPhase} pingMs={pingMs} />
             </div>

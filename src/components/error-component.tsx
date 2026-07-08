@@ -7,7 +7,7 @@ import {
   LogOutIcon,
   RotateCwIcon,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -27,24 +27,51 @@ import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { runAsync } from "@/lib/utils.tsx";
 import { logOut } from "@/lib/web-rpc.ts";
 
-export function ErrorComponent({ error }: { error: Error }) {
+type ErrorComponentProps = {
+  error: Error;
+  reset?: () => void;
+};
+
+export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const { t } = useTranslation("common");
   const navigate = useNavigate();
   const router = useRouter();
   const queryErrorResetBoundary = useQueryErrorResetBoundary();
+  const mountedRef = useRef(true);
   const [revalidating, setRevalidating] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     queryErrorResetBoundary.reset();
   }, [queryErrorResetBoundary]);
 
-  const revalidate = useCallback(() => {
+  const invalidateRoute = useCallback(async () => {
     setRevalidating(true);
-    void router.invalidate().finally(() => {
-      setRevalidating(false);
-    });
+    try {
+      await router.invalidate();
+    } finally {
+      if (mountedRef.current) {
+        setRevalidating(false);
+      }
+    }
   }, [router]);
+
+  const revalidate = useCallback(() => {
+    void invalidateRoute();
+  }, [invalidateRoute]);
+
+  const reloadPage = useCallback(() => {
+    queryErrorResetBoundary.reset();
+    void invalidateRoute().finally(() => {
+      reset?.();
+    });
+  }, [invalidateRoute, queryErrorResetBoundary, reset]);
 
   useEffect(() => {
     const interval = setInterval(revalidate, 1000 * 5);
@@ -117,7 +144,7 @@ export function ErrorComponent({ error }: { error: Error }) {
             <LogOutIcon />
             {t("error.page.logOut")}
           </Button>
-          <Button onClick={revalidate}>
+          <Button onClick={reloadPage}>
             {revalidating ? (
               <LoaderCircleIcon className="animate-spin" />
             ) : (

@@ -19,29 +19,23 @@ import {
   ChevronUpIcon,
   ClipboardCopyIcon,
   CompassIcon,
-  CookieIcon,
   EyeIcon,
   GamepadIcon,
   HandIcon,
   HeartIcon,
-  KeyRoundIcon,
   LoaderIcon,
   MonitorIcon,
-  MonitorSmartphoneIcon,
   MousePointerClickIcon,
   PackageIcon,
   PauseIcon,
   PencilIcon,
   PlayIcon,
   RefreshCwIcon,
-  RotateCcwKeyIcon,
   ShieldIcon,
   SparklesIcon,
   SquareIcon,
-  TicketIcon,
   Trash2Icon,
   UtensilsIcon,
-  WifiOffIcon,
   XIcon,
 } from "lucide-react";
 import {
@@ -123,13 +117,13 @@ import {
 } from "@/generated/soulfire/logs_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import {
+  accountTypeToIcon,
+  translateAccountType,
+} from "@/lib/account-types.ts";
 import i18n from "@/lib/i18n";
 import { routeChrome } from "@/lib/route-title.ts";
-import {
-  getEnumKeyByValue,
-  mapUnionToValue,
-  type ProfileAccount,
-} from "@/lib/types.ts";
+import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 
@@ -188,58 +182,6 @@ export const Route = createFileRoute(
   },
   component: BotDetail,
 });
-
-const accountTypeLabel = (
-  type: keyof typeof MinecraftAccountProto_AccountTypeProto,
-) =>
-  mapUnionToValue(type, (key) => {
-    switch (key) {
-      case "OFFLINE":
-        return "Offline Account";
-      case "MICROSOFT_JAVA_CREDENTIALS":
-        return "Java (Credentials)";
-      case "MICROSOFT_JAVA_DEVICE_CODE":
-        return "Java (Device Code)";
-      case "MICROSOFT_JAVA_REFRESH_TOKEN":
-        return "Java (Refresh Token)";
-      case "MICROSOFT_JAVA_COOKIES":
-        return "Java (Cookies)";
-      case "MICROSOFT_JAVA_ACCESS_TOKEN":
-        return "Java (Access Token)";
-      case "THE_ALTENING":
-        return "Java (TheAltening)";
-      case "MICROSOFT_BEDROCK_CREDENTIALS":
-        return "Bedrock (Credentials)";
-      case "MICROSOFT_BEDROCK_DEVICE_CODE":
-        return "Bedrock (Device Code)";
-    }
-  });
-
-const accountTypeToIcon = (
-  type: keyof typeof MinecraftAccountProto_AccountTypeProto,
-) =>
-  mapUnionToValue(type, (key) => {
-    switch (key) {
-      case "OFFLINE":
-        return WifiOffIcon;
-      case "MICROSOFT_JAVA_CREDENTIALS":
-        return KeyRoundIcon;
-      case "MICROSOFT_JAVA_DEVICE_CODE":
-        return MonitorSmartphoneIcon;
-      case "MICROSOFT_JAVA_REFRESH_TOKEN":
-        return RotateCcwKeyIcon;
-      case "MICROSOFT_JAVA_COOKIES":
-        return CookieIcon;
-      case "MICROSOFT_JAVA_ACCESS_TOKEN":
-        return TicketIcon;
-      case "THE_ALTENING":
-        return TicketIcon;
-      case "MICROSOFT_BEDROCK_CREDENTIALS":
-        return KeyRoundIcon;
-      case "MICROSOFT_BEDROCK_DEVICE_CODE":
-        return MonitorSmartphoneIcon;
-    }
-  });
 
 function generateN(count: number) {
   return Array.from(
@@ -553,11 +495,12 @@ function BotDetailHeader({
   typeIcon: ReturnType<typeof accountTypeToIcon>;
   onContextMenu: (event: React.MouseEvent, data: null) => void;
 }) {
-  const { t } = useTranslation("instance");
+  const { i18n, t } = useTranslation("instance");
   const { botInfoQueryOptions } = Route.useRouteContext();
   const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
   const isOnline = !!botInfo.liveState;
   const liveState = botInfo.liveState;
+  const typeLabel = translateAccountType(i18n, typeKey);
 
   return (
     <Item
@@ -583,7 +526,7 @@ function BotDetailHeader({
           </span>
           <span className="flex items-center gap-1">
             <TypeIcon className="size-3" />
-            {accountTypeLabel(typeKey)}
+            {typeLabel}
           </span>
           <span className="font-mono text-xs">{account.profileId}</span>
         </ItemDescription>
