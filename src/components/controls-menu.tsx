@@ -38,9 +38,12 @@ type AccountWarningState = {
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
-  const instanceInfoQueryOptions = useRouteContext({
+  const { instanceInfoQueryOptions, metricsQueryOptions } = useRouteContext({
     from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions,
+    select: (context) => ({
+      instanceInfoQueryOptions: context.instanceInfoQueryOptions,
+      metricsQueryOptions: context.metricsQueryOptions,
+    }),
   });
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
@@ -56,6 +59,21 @@ export default function ControlsMenu() {
   const [pendingStartAction, setPendingStartAction] = useState(false);
 
   const isMutating = useIsMutating();
+
+  const invalidateLifecycleQueries = useCallback(async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: instanceInfoQueryOptions.queryKey,
+      }),
+      queryClient.invalidateQueries({
+        queryKey: metricsQueryOptions.queryKey,
+      }),
+    ]);
+  }, [
+    instanceInfoQueryOptions.queryKey,
+    metricsQueryOptions.queryKey,
+    queryClient,
+  ]);
 
   const { mutateAsync: applyGeneratedAccountsMutation } = useMutation({
     mutationKey: ["instance", "accounts", "generate", instanceInfo.id],
@@ -95,7 +113,8 @@ export default function ControlsMenu() {
         id: instanceInfo.id,
         state: InstanceState.RUNNING,
       })
-      .then();
+      .then()
+      .finally(invalidateLifecycleQueries);
     toast.promise(promise, {
       loading: t("controls.startToast.loading"),
       success: t("controls.startToast.success"),
@@ -106,7 +125,7 @@ export default function ControlsMenu() {
     });
 
     return promise;
-  }, [instanceInfo.id, t, transport]);
+  }, [instanceInfo.id, invalidateLifecycleQueries, t, transport]);
 
   const startMutation = useMutation({
     mutationKey: ["instance", "state", "start", instanceInfo.id],
@@ -138,11 +157,6 @@ export default function ControlsMenu() {
 
       // All validations passed, start the attack
       return doStartAttack();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
     },
   });
 
@@ -211,11 +225,7 @@ export default function ControlsMenu() {
 
       return promise;
     },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
+    onSettled: invalidateLifecycleQueries,
   });
   const stopMutation = useMutation({
     mutationKey: ["instance", "state", "stop", instanceInfo.id],
@@ -243,11 +253,7 @@ export default function ControlsMenu() {
 
       return promise;
     },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
+    onSettled: invalidateLifecycleQueries,
   });
 
   return (
