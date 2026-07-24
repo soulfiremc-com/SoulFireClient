@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rol",
+          "placeholder": "Rol seçin",
           "description": "İstifadəçinin rolu. Adminlər istifadəçiləri və bütün instansları idarə edə bilər. İstifadəçilər yalnız öz instanslarını idarə edə bilər.",
           "user": "İstifadəçi",
           "admin": "Admin"

@@ -46,6 +46,13 @@
       },
       "close": "ปิด"
     },
+    "support": {
+      "title": "สนับสนุน SoulFire",
+      "description": "SoulFire เป็นซอฟต์แวร์ฟรีและโอเพ่นซอร์ส พัฒนาอย่างตั้งใจโดยชุมชน",
+      "body": "หาก SoulFire มีประโยชน์สำหรับคุณ กรุณาพิจารณาสนับสนุนโครงการนี้ การสนับสนุนของคุณจะช่วยชำระค่าเซิร์ฟเวอร์ สนับสนุนการพัฒนา และทำให้ SoulFire ฟรีสำหรับทุกคน",
+      "dismiss": "ไว้ทีหลัง",
+      "action": "สนับสนุน SoulFire"
+    },
     "createInstance": {
       "title": "สร้างอินสแตนซ์ใหม่",
       "description": "อินสแตนซ์แต่ละรายการต้องมีชื่อที่จดจำง่ายเพื่อให้คุณแยกแยะได้ อาจตั้งชื่ออะไรก็ได้ เช่น \"My Minecraft Bot\"",
@@ -65,6 +72,21 @@
         "loading": "กำลังสร้างอินสแตนซ์...",
         "success": "สร้างอินสแตนซ์สำเร็จ",
         "error": "สร้างอินสแตนซ์ไม่สำเร็จ"
+      }
+    },
+    "duplicateInstance": {
+      "title": "จำลองอินสแตนซ์ซ้ำใหม่อีกครั้งแล้ว",
+      "description": "สร้างอินสแตนซ์ใหม่โดยใช้โปรไฟล์จาก \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "ชื่อสำหรับอินสแตนซ์ที่ถูกทำซ้ำ"
+        },
+        "duplicate": "ทำซ้ำ"
+      },
+      "duplicateToast": {
+        "loading": "กำลังทำสำเนาอินสแตนซ์...",
+        "success": "ทำสำเนาอินสแตนซ์เรียบร้อยแล้ว",
+        "error": "ไม่สามารถทำสำเนาอินสแตนซ์ได้"
       }
     },
     "import": {
@@ -230,6 +252,9 @@
       "add": "เพิ่ม",
       "remove": "ลบ"
     },
+    "combo": {
+      "searchPlaceholder": "ค้นหาค่า..."
+    },
     "invalidNumberToast": {
       "title": "ตัวเลขไม่ถูกต้อง!",
       "description": "ค่าต้องอยู่ระหว่าง {{min}} ถึง {{max}}"
@@ -253,6 +278,23 @@
   },
   "uiSidebar": {
     "toggle": "สลับแถบด้านข้าง"
+  },
+  "window": {
+    "minimize": "ย่อหน้าต่าง",
+    "minimizeLabel": "ย่อหน้าต่าง",
+    "maximize": "ขยายหน้าต่าง",
+    "maximizeLabel": "ขยายหน้าต่าง",
+    "restore": "คืนค่าหน้าต่าง",
+    "restoreLabel": "คืนค่าหน้าต่าง",
+    "close": "ปิด",
+    "closeLabel": "ปิดหน้าต่าง",
+    "back": "ย้อนกลับ",
+    "backLabel": "ย้อนกลับ",
+    "forward": "ไปข้างหน้า",
+    "forwardLabel": "ไปข้างหน้า"
+  },
+  "infoButton": {
+    "showInfo": "แสดงข้อมูล"
   },
   "castMenu": {
     "title": "Cast",
@@ -334,6 +376,7 @@
     },
     "configDir": "ไดเรกทอรี config",
     "dataDir": "ไดเรกทอรีข้อมูล",
+    "supportSoulFire": "สนับสนุน SoulFire",
     "about": "เกี่ยวกับ",
     "logOut": "ออกจากระบบ",
     "logOutToast": {
@@ -347,7 +390,7 @@
   },
   "sidebar": {
     "documentation": "เอกสารคู่มือ",
-    "supportSoulFire": "Buy me a coffee",
+    "supportSoulFire": "สนับสนุน SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -531,6 +574,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "ไปที่อินสแตนซ์",
+      "duplicateInstance": "ทำสำเนาอินสแตนซ์",
       "copyInstanceId": "คัดลอก Instance ID",
       "copyInstanceName": "คัดลอกชื่อ Instance",
       "deleteInstance": "ลบอินสแตนซ์"

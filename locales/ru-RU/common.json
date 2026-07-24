@@ -46,6 +46,13 @@
       },
       "close": "Закрыть"
     },
+    "support": {
+      "title": "Поддержать SoulFire",
+      "description": "SoulFire — это бесплатный проект с открытым исходным кодом, созданный сообществом с любовью.",
+      "body": "Если SoulFire был полезен вам, пожалуйста, рассмотрите возможность поддержать проект. Ваш вклад помогает покрывать расходы на сервер, финансировать разработку и сохранять SoulFire бесплатным для всех.",
+      "dismiss": "Может быть позже",
+      "action": "Поддержать SoulFire"
+    },
     "createInstance": {
       "title": "Создать новый экземпляр",
       "description": "Для экземпляров нужны дружелюбные имена, чтобы вы могли их различать. Это может быть любое имя, например, «Мой бот Minecraft».",
@@ -65,6 +72,21 @@
         "loading": "Создание экземпляра...",
         "success": "Экземпляр успешно создан",
         "error": "Ошибка создания экземпляра"
+      }
+    },
+    "duplicateInstance": {
+      "title": "Дублировать экземпляр",
+      "description": "Создать новый экземпляр, используя профиль из «{{name}}».",
+      "form": {
+        "friendlyName": {
+          "description": "Имя для дублированного экземпляра."
+        },
+        "duplicate": "Дублировать"
+      },
+      "duplicateToast": {
+        "loading": "Дублирование экземпляра...",
+        "success": "Экземпляр успешно продублирован",
+        "error": "Не удалось продублировать экземпляр"
       }
     },
     "import": {
@@ -230,6 +252,9 @@
       "add": "Добавить",
       "remove": "Удалить"
     },
+    "combo": {
+      "searchPlaceholder": "Поиск значения..."
+    },
     "invalidNumberToast": {
       "title": "Неверное число!",
       "description": "Значение должно быть от {{min}} до {{max}}"
@@ -253,6 +278,23 @@
   },
   "uiSidebar": {
     "toggle": "Переключить боковую панель"
+  },
+  "window": {
+    "minimize": "Свернуть",
+    "minimizeLabel": "Свернуть окно",
+    "maximize": "Развернуть",
+    "maximizeLabel": "Развернуть окно",
+    "restore": "Восстановить",
+    "restoreLabel": "Восстановить окно",
+    "close": "Закрыть",
+    "closeLabel": "Закрыть окно",
+    "back": "Назад",
+    "backLabel": "Назад",
+    "forward": "Вперёд",
+    "forwardLabel": "Вперёд"
+  },
+  "infoButton": {
+    "showInfo": "Показать информацию"
   },
   "castMenu": {
     "title": "Транслировать экран",
@@ -334,6 +376,7 @@
     },
     "configDir": "Каталог с конфигурацией",
     "dataDir": "Каталог с данными",
+    "supportSoulFire": "Поддержать SoulFire",
     "about": "О программе",
     "logOut": "Выйти",
     "logOutToast": {
@@ -347,7 +390,7 @@
   },
   "sidebar": {
     "documentation": "Документация",
-    "supportSoulFire": "Купите мне чашечку кофе",
+    "supportSoulFire": "Поддержать SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -531,6 +574,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Перейти к экземпляру",
+      "duplicateInstance": "Дублировать экземпляр",
       "copyInstanceId": "Скопировать ID экземпляра",
       "copyInstanceName": "Скопировать имя экземпляра",
       "deleteInstance": "Удалить экземпляр"

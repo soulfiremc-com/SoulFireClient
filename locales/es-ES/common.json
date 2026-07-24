@@ -46,6 +46,13 @@
       },
       "close": "Cerrar"
     },
+    "support": {
+      "title": "Apoyar SoulFire",
+      "description": "SoulFire es gratuito y de código abierto, construido con pasión por la comunidad.",
+      "body": "Si SoulFire te ha sido útil, por favor considera apoyar el proyecto. Tu contribución ayuda a cubrir los costos del servidor, financiar el desarrollo y mantener SoulFire gratis para todos.",
+      "dismiss": "Quizás más tarde",
+      "action": "Apoyar SoulFire"
+    },
     "createInstance": {
       "title": "Crear una instancia nueva",
       "description": "",
@@ -65,6 +72,21 @@
         "loading": "Creando instancia...",
         "success": "Instancia creada con éxito",
         "error": "Error al crear la instancia"
+      }
+    },
+    "duplicateInstance": {
+      "title": "Duplicar instancia",
+      "description": "Crea una nueva instancia usando el perfil de \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "El nombre de la instancia duplicada."
+        },
+        "duplicate": "Duplicar"
+      },
+      "duplicateToast": {
+        "loading": "Duplicando instancia...",
+        "success": "Instancia duplicada correctamente",
+        "error": "Error al duplicar la instancia"
       }
     },
     "import": {
@@ -230,6 +252,9 @@
       "add": "Añadir",
       "remove": "Eliminar"
     },
+    "combo": {
+      "searchPlaceholder": "Buscar valor..."
+    },
     "invalidNumberToast": {
       "title": "¡Número inválido!",
       "description": "El valor debe estar entre {{min}} y {{max}}"
@@ -253,6 +278,23 @@
   },
   "uiSidebar": {
     "toggle": "Mostrar/Ocultar barra lateral"
+  },
+  "window": {
+    "minimize": "Minimizar",
+    "minimizeLabel": "Minimizar ventana",
+    "maximize": "Maximizar",
+    "maximizeLabel": "Maximizar ventana",
+    "restore": "Restaurar",
+    "restoreLabel": "Restaurar ventana",
+    "close": "Cerrar",
+    "closeLabel": "Cerrar ventana",
+    "back": "Volver",
+    "backLabel": "Regresar",
+    "forward": "Adelante",
+    "forwardLabel": "Ir adelante"
+  },
+  "infoButton": {
+    "showInfo": "Mostrar info"
   },
   "castMenu": {
     "title": "Emitir",
@@ -334,6 +376,7 @@
     },
     "configDir": "Directorio de configuración",
     "dataDir": "Directorio de datos",
+    "supportSoulFire": "Apoyar SoulFire",
     "about": "Acerca de",
     "logOut": "Cerrar Sesión",
     "logOutToast": {
@@ -347,7 +390,7 @@
   },
   "sidebar": {
     "documentation": "Documentación",
-    "supportSoulFire": "Invítame a un café",
+    "supportSoulFire": "Apoyar SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -531,6 +574,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Ir a la instancia",
+      "duplicateInstance": "Duplicar instancia",
       "copyInstanceId": "Copiar ID de instancia",
       "copyInstanceName": "Copiar nombre de instancia",
       "deleteInstance": "Eliminar instancia"

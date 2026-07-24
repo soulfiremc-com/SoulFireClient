@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rolle",
+          "placeholder": "Rolle auswählen",
           "description": "Die Rolle des Benutzers. Admins können Benutzer und alle Instanzen verwalten. Benutzer können nur ihre eigenen Instanzen verwalten.",
           "user": "Nutzer",
           "admin": "Admin"

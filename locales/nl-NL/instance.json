@@ -1,4 +1,122 @@
 {
+  "overview": {
+    "logsDescription": "Ruwe instantie-uitvoer is hier beschikbaar als je de details van de console wilt inspecteren.",
+    "summary": {
+      "accounts": "Accounts",
+      "proxies": "Proxy's",
+      "configured": "{{count}} geconfigureerd",
+      "configuredShort": "Geconfigureerd",
+      "currentRate": "Huidig tempo",
+      "imported": "Geïmporteerd"
+    },
+    "readiness": {
+      "title": "Setup",
+      "accounts": "Accounts",
+      "accountsValue": "{{count}} geïmporteerd voor {{requested}} aangevraagde bots.",
+      "proxies": "Proxy's",
+      "proxiesValue": "{{count}} geconfigureerd",
+      "plugins": "Plug-ins",
+      "pluginsValue": "{{count}} beschikbaar"
+    },
+    "activity": {
+      "title": "Activiteit",
+      "tick": "Tick",
+      "health": "Gezondheid",
+      "world": "Wereld",
+      "worldValue": "{{chunks}} stukken, {{entities}} entiteiten",
+      "connections": "Verbindingen",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Statistieken",
+      "noDataDescription": "Nog geen runtime-statistieken."
+    },
+    "metricsUnavailable": {
+      "title": "Statistieken",
+      "inactive": "Start de instantie om live statistieken te verzamelen.",
+      "noPermission": "Je hebt geen toestemming om botstatistieken te bekijken."
+    },
+    "status": {
+      "ready": "Gereed",
+      "attention": "Heeft aandacht nodig",
+      "configured": "Geconfigureerd",
+      "optional": "Optioneel",
+      "available": "Beschikbaar",
+      "none": "Geen"
+    },
+    "actions": {
+      "manage": "Beheren",
+      "open": "Openen"
+    },
+    "spotlight": {
+      "noBots": "Nog geen bots geconfigureerd.",
+      "idle": "Inactief, wacht op instructies.",
+      "level": "Lvl {{level}}"
+    },
+    "liveFeed": {
+      "title": "Live feed",
+      "empty": "Wacht op instantie-activiteit...",
+      "noPermission": "Je hebt geen toestemming om de live feed te bekijken.",
+      "lifecycle": {
+        "connecting": "verbindt",
+        "connected": "verbonden",
+        "spawned": "is het spel binnengekomen",
+        "died": "gestorven",
+        "respawned": "herrezen",
+        "disconnected": "verbinding verbroken",
+        "unknown": "heeft de status gewijzigd"
+      }
+    },
+    "bots": {
+      "title": "Bots",
+      "viewAll": "Bekijk alle {{total}} bots",
+      "viewAllShort": "Alles bekijken"
+    },
+    "timeline": {
+      "title": "Activiteit",
+      "viewAll": "Alles bekijken",
+      "empty": "Nog geen geregistreerde activiteit.",
+      "noPermission": "Je hebt geen toestemming om het auditlogboek te bekijken.",
+      "types": {
+        "executeCommand": "voerde een commando uit: {{data}}",
+        "startSession": "de instantie gestart",
+        "pauseSession": "de instantie gepauzeerd",
+        "resumeSession": "de instantie hervat",
+        "stopSession": "de instantie gestopt",
+        "automationStart": "automatisering gestart",
+        "automationPause": "automatisering gepauzeerd",
+        "automationResume": "automatisering hervat",
+        "automationStop": "automatisering gestopt",
+        "automationUpdateSettings": "automatiseringsinstellingen bijgewerkt",
+        "automationApplyPreset": "een automatiseringspreset toegepast",
+        "automationResetMemory": "automatiseringsgeheugen gereset",
+        "automationResetCoordination": "automatiseringscoördinatie gereset",
+        "automationReleaseClaims": "automatiseringsclaims vrijgegeven",
+        "unknown": "een actie uitgevoerd"
+      }
+    },
+    "automation": {
+      "title": "Automatisering",
+      "viewAll": "Alles bekijken",
+      "empty": "Geen automatisering actief.",
+      "activeBots": "{{count}} actief",
+      "goalMode": {
+        "idle": "Inactief",
+        "acquire": "Verkrijgen",
+        "beat": "Verslaan"
+      }
+    },
+    "plugins": {
+      "title": "Plug-ins",
+      "empty": "Nog geen plugins rapporteren statistieken.",
+      "noPermission": "Je hebt geen toestemming om pluginstatistieken te bekijken.",
+      "active": "Actief",
+      "activeBots": "{{count}} actieve bots",
+      "uptime": "up {{time}}"
+    },
+    "detailed": {
+      "title": "Gedetailleerde statistieken",
+      "composition": "Wereldcompositie"
+    }
+  },
   "proxy": {
     "getProxies": "Proxies ophalen",
     "addProxies": "Proxies toevoegen",
@@ -83,6 +201,17 @@
       "noAccounts": "Geen accounts om te importeren"
     },
     "unknownError": "Onbekende fout",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Inloggegevens)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Apparaatcode)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Vernieuwtoken)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Toegangstoken)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Inloggegevens)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Apparaatcode)"
+    },
     "deviceCodeImportToast": {
       "loading": "Account wordt geïmporteerd...",
       "success": "Account geïmporteerd!",
@@ -118,6 +247,7 @@
       "microsoftRefreshToken": "Microsoft-vernieuwingstoken",
       "microsoftCookies": "Microsoft-cookies",
       "microsoftAccessToken": "Microsoft-toegangstoken",
+      "theAltening": "TheAltening-token",
       "altProviders": "Alternatieve providers",
       "dialog": {
         "title": "Importeer {{type}} accounts",
@@ -149,7 +279,21 @@
       "description": "Stel per-bot instellingen in voor dit account",
       "openButton": "Account configureren",
       "pageTitle": "{{name}} - {{page}} Instellingen",
-      "noSettings": "Geen instellingen beschikbaar voor deze pagina"
+      "noSettings": "Geen instellingen beschikbaar voor deze pagina",
+      "search": "Zoekinstellingen",
+      "overrides": "Overschrijvingen",
+      "allSettings": "Alle instellingen",
+      "noOverrides": "Deze bot heeft nog geen expliciete overschrijvingen.",
+      "noOverridesMatching": "Geen overschrijvingen komen overeen met deze zoekopdracht.",
+      "noOverridesHelp": "Open Alle instellingen om waarden te erven of maak de eerste botspecifieke overschrijving aan.",
+      "tryDifferentSearch": "Probeer een andere zoekterm.",
+      "openAllSettings": "Alle instellingen openen",
+      "selectPage": "Selecteer een instellingenpagina",
+      "noSearchResults": "Geen instellingen gevonden voor deze zoekopdracht.",
+      "matchesInheritedValue": "Komt overeen met de geërfde waarde",
+      "instanceValue": "Instantiewaarde",
+      "defaultValue": "Standaardwaarde",
+      "resetOverride": "Overschrijving resetten"
     },
     "deviceCodeConfirmDialog": {
       "title": "Authenticatie met apparaatgecode",
@@ -231,7 +375,21 @@
     "online": "Online",
     "offline": "Offline",
     "notJoined": "Niet Deelnomen",
+    "connectionPhase": {
+      "connecting": "Verbindt",
+      "connected": "Verbonden",
+      "spawned": "Online",
+      "died": "Dood",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
     "backToBots": "Terug naar Bots",
+    "tabs": {
+      "overview": "Overzicht",
+      "inventory": "Inventaris",
+      "controls": "Bediening",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Binnenkort beschikbaar",
     "terminalPanel": {
       "title": "Bot Terminal"
@@ -362,6 +520,102 @@
       "offline": "Bot is offline. Dialogen zijn alleen beschikbaar wanneer de bot is verbonden."
     }
   },
+  "automation": {
+    "acquire": {
+      "targetPlaceholder": "ender_parel"
+    },
+    "filters": {
+      "searchBots": "Bots zoeken...",
+      "searchClaims": "Claims zoeken...",
+      "noBotsMatchTitle": "Geen bots voldoen aan de huidige filters.",
+      "noBotsMatchDescription": "Pas de huidige filters aan of wis ze om het volledige automatiseringsrooster te bekijken."
+    },
+    "attention": {
+      "empty": "Er zijn momenteel geen bots die vastgelopen of traag lijken te zijn."
+    },
+    "memory": {
+      "noBots": "Er zijn geen automatiseringsbots beschikbaar voor geheugensinspectie.",
+      "blocks": "Blokken",
+      "noBlocks": "Geen onthouden blokken in deze momentopname.",
+      "containers": "Containers",
+      "noContainers": "Geen onthouden containers in deze momentopname.",
+      "entities": "Entiteiten",
+      "noEntities": "Geen onthouden entiteiten in deze momentopname.",
+      "droppedItems": "Gedropte items",
+      "noDroppedItems": "Geen onthouden gedropte items in deze momentopname.",
+      "unreachablePositions": "Onbereikbare posities",
+      "noUnreachablePositions": "Geen onbereikbare posities in deze momentopname."
+    },
+    "coordination": {
+      "sharedBlocks": "Gedeelde blokken",
+      "noBlockHints": "Nog geen gedeelde blokken hints.",
+      "eyeSamples": "Oogmonsters",
+      "noEyeSamples": "Geen oogmonsters geregistreerd."
+    }
+  },
+  "metrics": {
+    "empty": {
+      "noData": "Geen gegevens"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Verkeer",
+      "health": "Gezondheid",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots online",
+      "online": "Online",
+      "total": "Totaal"
+    },
+    "packets": {
+      "title": "Pakketten / Seconde",
+      "sent": "Verzonden/s",
+      "received": "Ontvangen/s"
+    },
+    "bandwidth": {
+      "title": "Bandbreedte",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Tickduur",
+      "avg": "Gem. (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Gezondheid / Eten",
+      "health": "Gem. Gezondheid",
+      "food": "Gem. Eten"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entiteiten",
+      "chunks": "Chunks",
+      "entities": "Entiteiten"
+    },
+    "connections": {
+      "title": "Verbindingsgebeurtenissen",
+      "connections": "Verbindingen",
+      "disconnections": "Verbrekingen"
+    },
+    "healthDistribution": {
+      "title": "Gezondheidsverdeling",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensies",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Spelmodi",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Botposities (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visuele scripts",
     "description": "Maak automatiseringsscripts met behulp van een visuele, op knooppunten gebaseerde editor.",
@@ -430,6 +684,7 @@
         "pause": "Pauzeren",
         "pauseTooltip": "Onderbreek scriptexecutie",
         "unsaved": "Niet opgeslagen",
+        "unsavedChanges": "Niet-opgeslagen wijzigingen",
         "clearCanvas": "Canvas wissen",
         "zoomIn": "Inzoomen",
         "zoomOut": "Uitzoomen",
@@ -462,6 +717,64 @@
         "showPreview": "Voorbeeld weergeven",
         "hidePreview": "Voorbeeld verbergen",
         "delete": "Verwijderen"
+      },
+      "node": {
+        "expand": "Node uitvouwen",
+        "collapse": "Node samenvouwen"
+      },
+      "debug": {
+        "copyValue": "Huidige waarde kopiëren",
+        "clearHistory": "Geschiedenis wissen"
+      },
+      "edge": {
+        "direction": "Randrichting"
+      },
+      "note": {
+        "placeholder": "Schrijf een notitie..."
+      },
+      "complexity": {
+        "title": "Scriptcomplexiteitsscore"
+      },
+      "group": {
+        "returnToRoot": "Ga terug naar de root (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Snel toevoegen node menu",
+        "searchPlaceholder": "Zoek knooppunten..."
+      },
+      "diff": {
+        "tooltip": "Wijzigingen bekijken"
+      },
+      "dryRun": {
+        "tooltip": "Proefdraai",
+        "title": "Script proefdraaien",
+        "description": "Voer een script uit vanaf een geselecteerde trigger met gesimuleerde invoer.",
+        "triggerNode": "Trigger-node",
+        "selectTrigger": "Selecteer een trigger...",
+        "triggerDescription": "Kies de trigger-node om uit te voeren met gesimuleerde invoerwaarden.",
+        "mockInputs": "Gesimuleerde invoer",
+        "valuePlaceholder": "{{type}} waarde",
+        "start": "Start proefdraai"
+      },
+      "quotas": {
+        "tooltip": "Script limieten",
+        "title": "Script limieten",
+        "description": "Configureer de limieten voor deze scriptbron. Lege velden gebruiken de standaardwaarden van de server.",
+        "maxExecutionCount": "Maximaal aantal uitvoeringen",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximaal aantal node-uitvoeringen per triggeraanroep",
+        "maxExecutionTime": "Maximale uitvoeringstijd (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximale wandkloktijd per triggeruitvoering",
+        "maxConcurrentTriggers": "Max gelijktijdige triggers",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximaal gelijktijdige triggeruitvoeringen",
+        "maxStateStoreEntries": "Maximaal aantal store-items",
+        "maxStateStoreEntriesPlaceholder": "Onbeperkt",
+        "maxStateStoreEntriesDescription": "Maximum aantal items in de script-statusopslag",
+        "disableTimeouts": "Timeouts uitschakelen",
+        "disableTimeoutsDescription": "Schakelt time-outs per node en data-edge uit",
+        "save": "Quota opslaan"
       }
     }
   }

@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Role",
+          "placeholder": "Wybierz rolę",
           "description": "Rola użytkownika. Administratorzy mogą zarządzać użytkownikami i wszystkimi instancjami. Zwykli użytkownicy mogą zarządzać tylko własnymi instancjami.",
           "user": "Użytkownik",
           "admin": "Administrator"
