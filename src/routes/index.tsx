@@ -86,7 +86,7 @@ import {
   NextAuthFlowResponse_Failure_Reason,
 } from "@/generated/soulfire/login_pb.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
-import { desktop } from "@/lib/desktop.ts";
+import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import type {
   DesktopCustomSoulFireServerJar,
   DesktopIntegratedServerJarSource,
@@ -102,6 +102,8 @@ import {
 } from "@/lib/utils.tsx";
 import {
   createAddressOnlyTransport,
+  getServerType,
+  isAuthenticated,
   setAuthentication,
 } from "@/lib/web-rpc.ts";
 
@@ -224,9 +226,20 @@ function Index() {
   const { t, i18n } = useTranslation("login");
   const navigate = useNavigate();
   const searchParams: Record<string, string> = Route.useSearch();
-  const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
-  const [loginType, setLoginType] = useState<LoginType>(null);
   const systemInfo = use(SystemInfoContext);
+  const hasSavedIntegratedSession =
+    isDesktopApp() &&
+    systemInfo !== null &&
+    !systemInfo.mobile &&
+    isAuthenticated() &&
+    getServerType() === "integrated";
+  const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
+  const [autoStartIntegratedServer, setAutoStartIntegratedServer] = useState(
+    hasSavedIntegratedSession,
+  );
+  const [loginType, setLoginType] = useState<LoginType>(
+    hasSavedIntegratedSession ? "INTEGRATED" : null,
+  );
   const circuitPatternId = useId();
 
   const targetRedirect: TargetRedirectFunction = useCallback(async () => {
@@ -245,39 +258,46 @@ function Index() {
     [targetRedirect],
   );
 
-  const startIntegratedServer = (onError: () => void) => {
-    const startTime = Date.now();
-    toast.promise(
-      (async () => {
-        await desktop.integratedServer.kill();
-        const args = localStorage.getItem(
-          LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-        );
-        const { address, token } = await desktop.integratedServer.run({
-          jarSource: getStoredIntegratedServerJarSource(),
-          jvmArgs:
-            args === null
-              ? DEFAULT_JVM_ARGS
-              : args.split(" ").filter((str) => str !== ""),
-        });
+  const consumeIntegratedServerAutoStart = useCallback(() => {
+    setAutoStartIntegratedServer(false);
+  }, []);
 
-        await redirectWithCredentials("integrated", address, token);
-        return Date.now() - startTime;
-      })(),
-      {
-        loading: t("integrated.toast.loading"),
-        success: (elapsed) =>
-          t("integrated.toast.success", {
-            time: (elapsed / 1000).toFixed(1),
-          }),
-        error: (e) => {
-          onError();
-          console.error(e);
-          return t("integrated.toast.error");
+  const startIntegratedServer = useCallback(
+    (onError: () => void) => {
+      const startTime = Date.now();
+      toast.promise(
+        (async () => {
+          await desktop.integratedServer.kill();
+          const args = localStorage.getItem(
+            LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
+          );
+          const { address, token } = await desktop.integratedServer.run({
+            jarSource: getStoredIntegratedServerJarSource(),
+            jvmArgs:
+              args === null
+                ? DEFAULT_JVM_ARGS
+                : args.split(" ").filter((str) => str !== ""),
+          });
+
+          await redirectWithCredentials("integrated", address, token);
+          return Date.now() - startTime;
+        })(),
+        {
+          loading: t("integrated.toast.loading"),
+          success: (elapsed) =>
+            t("integrated.toast.success", {
+              time: (elapsed / 1000).toFixed(1),
+            }),
+          error: (e) => {
+            onError();
+            console.error(e);
+            return t("integrated.toast.error");
+          },
         },
-      },
-    );
-  };
+      );
+    },
+    [redirectWithCredentials, t],
+  );
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
@@ -327,6 +347,8 @@ function Index() {
             )}
             {loginType === "INTEGRATED" && (
               <IntegratedMenu
+                autoStart={autoStartIntegratedServer}
+                onAutoStart={consumeIntegratedServerAutoStart}
                 setLoginType={setLoginType}
                 redirectWithCredentials={redirectWithCredentials}
                 startIntegratedServer={startIntegratedServer}
@@ -551,17 +573,23 @@ function LoginOptionCard(props: {
 type IntegratedState = "configure" | "loading" | "mobile" | "error";
 
 function IntegratedMenu({
+  autoStart,
+  onAutoStart,
   redirectWithCredentials,
   setLoginType,
   startIntegratedServer,
 }: {
+  autoStart: boolean;
+  onAutoStart: () => void;
   redirectWithCredentials: LoginFunction;
   setLoginType: (type: LoginType) => void;
   startIntegratedServer: (onError: () => void) => void;
 }) {
   const { t } = useTranslation("login");
-  const [integratedState, setIntegratedState] =
-    useState<IntegratedState>("configure");
+  const hasAutoStarted = useRef(false);
+  const [integratedState, setIntegratedState] = useState<IntegratedState>(
+    autoStart ? "loading" : "configure",
+  );
   const [logs, setLogs] = useState<IntegratedLog[]>([
     createIntegratedLog(t("integrated.preparing"), 0),
   ]);
@@ -582,6 +610,16 @@ function IntegratedMenu({
       cancel();
     };
   }, []);
+
+  useEffect(() => {
+    if (!autoStart || hasAutoStarted.current) {
+      return;
+    }
+
+    hasAutoStarted.current = true;
+    onAutoStart();
+    startIntegratedServer(() => setIntegratedState("error"));
+  }, [autoStart, onAutoStart, startIntegratedServer]);
 
   switch (integratedState) {
     case "configure":
