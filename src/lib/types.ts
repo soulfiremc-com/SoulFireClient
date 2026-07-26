@@ -1,5 +1,4 @@
 import { create, type JsonValue } from "@bufbuild/protobuf";
-import type { i18n } from "i18next";
 import type { Value } from "@/generated/google/protobuf/struct_pb.ts";
 import {
   type MinecraftAccountProto,
@@ -16,7 +15,6 @@ import {
   type InstanceConfig,
   InstanceConfigSchema,
   type InstanceInfo,
-  InstanceState,
 } from "@/generated/soulfire/instance_pb.ts";
 import type {
   ServerConfig,
@@ -75,15 +73,6 @@ export function mapUnionToValue<U, V>(
   map: (u: U) => Exclude<V, void>,
 ): V {
   return map(union);
-}
-
-export function translateInstanceState(
-  i18n: i18n,
-  state: InstanceState,
-): string {
-  return i18n.t(
-    `instanceState.${getEnumKeyByValue(InstanceState, state).toLowerCase()}`,
-  );
 }
 
 export type ProfileAccount = {

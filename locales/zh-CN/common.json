@@ -421,13 +421,6 @@
     "success": "已将“{{content}}”复制到剪贴板",
     "error": "复制到剪贴板失败"
   },
-  "instanceState": {
-    "starting": "正在启动",
-    "running": "正在运行",
-    "paused": "已暂停",
-    "stopping": "正在停止",
-    "stopped": "已停止"
-  },
   "userSettings": {
     "avatar": {
       "title": "头像",
@@ -452,10 +445,6 @@
     "searchUsers": "搜索用户...",
     "searchTimestamps": "搜索时间戳...",
     "executedCommand": "执行的命令：{{data}}",
-    "startedSession": "已启动会话",
-    "resumedSession": "已恢复会话",
-    "pausedSession": "已暂停会话",
-    "stoppedSession": "已停止会话",
     "contextMenu": {
       "copyUsername": "复制用户名",
       "copyCommand": "复制命令"

@@ -102,37 +102,25 @@
   },
   "controls": {
     "start": "Hoist anchor",
-    "resume": "Sail onward",
-    "pause": "Drop anchor",
     "stop": "Abandon voyage",
+    "startAll": "Hoist all anchors",
+    "stopAll": "Drop all anchors",
+    "restart": "Sail anew",
+    "startCount": "Crew to launch",
     "startToast": {
-      "loading": "Bootin’ up a scurvy session...",
-      "success": "Session launched like a cannonball!",
-      "error": "Session fouled—the cannon backfired!"
+      "loading": "Launchin’ the bot crew...",
+      "success": "Bot orders delivered!",
+      "error": "The bots refused to sail!"
     },
-    "resumeToast": {
-      "loading": "Hoistin’ an old session...",
-      "success": "Old session’s alive!",
-      "error": "Arrr! Forgotten spell—session stuck in limbo!"
-    },
-    "pauseToast": {
-      "loading": "Lowerin’ the session...\n",
-      "success": "Session’s takin’ a nap!",
-      "error": "Blasted session won’t stay still!"
+    "restartToast": {
+      "loading": "Turnin’ the fleet around...",
+      "success": "The bots be reconnectin’!",
+      "error": "The fleet could not restart!"
     },
     "stopToast": {
-      "loading": "Droppin’ a session o’erboard...",
-      "success": "Session sent ta Davy Jones!",
-      "error": "Session be too rowdy to scuttle!"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "No Buccaneers Registered",
-      "noAccountsDescription": "Import some pirates 'fore ye hoist a session, mate! {{required}} bots be wanted.",
-      "notEnoughTitle": "Short Crew!",
-      "notEnoughDescription": "Ye demanded {{required}} bots, but only {{available}} pirates are aboard.",
-      "hint": "Ye can round up landlubbers offline or smuggle ‘em in from the Account Ship.",
-      "continueWithExisting": "Carry on with {{count}} cards",
-      "generateAccounts": "Be makin' new accounts!"
+      "loading": "Sendin’ bots to Davy Jones...",
+      "success": "The bots be stoppin’!",
+      "error": "The bots be too rowdy to stop!"
     }
   },
   "icon": {
@@ -421,13 +409,6 @@
     "success": "Copied \"{{content}}\" to yer logbook",
     "error": "Clipboard mutinied!"
   },
-  "instanceState": {
-    "starting": "Liftin' anchor",
-    "running": "Aye! Sailin'",
-    "paused": "Ship be idle",
-    "stopping": "Slack off the sails",
-    "stopped": "Ship at rest"
-  },
   "userSettings": {
     "avatar": {
       "title": "Portrait o' thyself",
@@ -452,10 +433,6 @@
     "searchUsers": "Scout a proper pirate...",
     "searchTimestamps": "Scout bell o’ time...",
     "executedCommand": "Decree fired: {{data}}",
-    "startedSession": "Session set sail!",
-    "resumedSession": "Session pulled from the deep!",
-    "pausedSession": "Session put in irons!",
-    "stoppedSession": "Session thrown overboard!",
     "contextMenu": {
       "copyUsername": "Snatch Pirate Name",
       "copyCommand": "Snatch Command"

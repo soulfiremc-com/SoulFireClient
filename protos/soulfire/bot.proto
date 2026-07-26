@@ -52,6 +52,83 @@ message BotListRequest {
   string instance_id = 1 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
 }
 
+// Persistent operator intent for a bot.
+enum BotDesiredState {
+  BOT_DESIRED_STATE_UNSPECIFIED = 0;
+  // The bot should remain disconnected.
+  BOT_DESIRED_STATE_STOPPED = 1;
+  // SoulFire should keep the bot connected according to its reconnect policy.
+  BOT_DESIRED_STATE_RUNNING = 2;
+}
+
+// Current state of SoulFire's per-bot connection controller.
+enum BotRuntimeState {
+  BOT_RUNTIME_STATE_UNSPECIFIED = 0;
+  BOT_RUNTIME_STATE_STOPPED = 1;
+  BOT_RUNTIME_STATE_QUEUED = 2;
+  BOT_RUNTIME_STATE_STARTING = 3;
+  BOT_RUNTIME_STATE_RUNNING = 4;
+  BOT_RUNTIME_STATE_RETRYING = 5;
+  BOT_RUNTIME_STATE_STOPPING = 6;
+  BOT_RUNTIME_STATE_FAILED = 7;
+}
+
+// Durable intent and current controller state for one configured bot.
+message BotStatus {
+  string profile_id = 1 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
+  BotDesiredState desired_state = 2 [(google.api.field_behavior) = REQUIRED];
+  BotRuntimeState runtime_state = 3 [(google.api.field_behavior) = REQUIRED];
+  optional string last_error = 4;
+  google.protobuf.Timestamp updated_at = 5 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Aggregate bot state for an instance.
+message BotFleetSummary {
+  uint32 total_bots = 1 [(google.api.field_behavior) = REQUIRED];
+  uint32 desired_bots = 2 [(google.api.field_behavior) = REQUIRED];
+  uint32 online_bots = 3 [(google.api.field_behavior) = REQUIRED];
+  uint32 starting_bots = 4 [(google.api.field_behavior) = REQUIRED];
+  uint32 retrying_bots = 5 [(google.api.field_behavior) = REQUIRED];
+  uint32 failed_bots = 6 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Changes persistent desired state for a batch of configured bots.
+message SetBotsDesiredStateRequest {
+  string instance_id = 1 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
+  repeated string bot_ids = 2 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
+  BotDesiredState desired_state = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message SetBotsDesiredStateResponse {
+  repeated BotStatus bots = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Reconnects a batch of bots and leaves their desired state set to running.
+message RestartBotsRequest {
+  string instance_id = 1 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
+  repeated string bot_ids = 2 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
+}
+
+message RestartBotsResponse {
+  repeated BotStatus bots = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message WatchBotStatusesRequest {
+  string instance_id = 1 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
+}
+
+message BotStatusSnapshot {
+  repeated BotStatus bots = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message WatchBotStatusesResponse {
+  oneof event {
+    BotStatusSnapshot snapshot = 1;
+    BotStatus update = 2;
+    string removed_bot_id = 3 [(soulfire.v1.api_field).format = "uuid"];
+  }
+}
+
 // Fine-grained connection phase for a bot, more detailed than the is_online
 // boolean. SPAWNED implies the player entity exists and live_state is available.
 enum BotConnectionPhase {
@@ -99,6 +176,9 @@ message BotListEntry {
   // list views without joining against the instance account configuration.
   // Absent if the name is unknown.
   optional string account_name = 6;
+
+  // Persistent desired state and current controller state.
+  BotStatus status = 7 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response containing the list of all bots in an instance.
@@ -239,6 +319,8 @@ message BotInfoResponse {
   // Will be absent if the bot is offline or player data is not available.
   // When present, includes complete inventory slot information.
   optional BotLiveState live_state = 2;
+  // Persistent desired state and current controller state.
+  BotStatus status = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request to update a single configuration entry for a specific bot.
@@ -1317,6 +1399,26 @@ message BotCloseDialogResponse {
 // - FAILED_PRECONDITION: Bot is not online or required game state is unavailable
 // - INTERNAL: Unexpected server errors (check server logs for details)
 service BotService {
+  // Persists whether the selected bots should be running or stopped.
+  rpc SetBotsDesiredState (SetBotsDesiredStateRequest) returns (SetBotsDesiredStateResponse) {
+    option (google.api.http) = {
+      post: "/v1/instances/{instance_id}/bots:setDesiredState"
+      body: "*"
+    };
+  }
+
+  // Forces the selected bots to establish fresh connections.
+  rpc RestartBots (RestartBotsRequest) returns (RestartBotsResponse) {
+    option (google.api.http) = {
+      post: "/v1/instances/{instance_id}/bots:restart"
+      body: "*"
+    };
+  }
+
+  // Streams an initial snapshot followed by desired and runtime state changes.
+  rpc WatchBotStatuses (WatchBotStatusesRequest) returns (stream WatchBotStatusesResponse) {
+  }
+
   // Returns a list of all bots configured in the specified instance.
   // Includes both online and offline bots with their current status.
   // For online bots, includes live state (position, health, etc.) but NOT full inventory data.

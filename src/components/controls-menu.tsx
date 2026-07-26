@@ -1,12 +1,11 @@
 import { createClient } from "@connectrpc/connect";
 import {
-  useIsMutating,
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import { PlayIcon, SquareIcon, TimerIcon, TimerOffIcon } from "lucide-react";
+import { PlayIcon, RefreshCwIcon, SquareIcon } from "lucide-react";
 import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -15,26 +14,30 @@ import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ButtonGroup } from "@/components/ui/button-group.tsx";
 import {
-  Credenza,
-  CredenzaBody,
-  CredenzaContent,
-  CredenzaDescription,
-  CredenzaFooter,
-  CredenzaHeader,
-  CredenzaTitle,
-} from "@/components/ui/credenza.tsx";
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
 import {
-  InstanceService,
-  InstanceState,
-} from "@/generated/soulfire/instance_pb.ts";
+  BotDesiredState,
+  BotService,
+  type BotStatus,
+} from "@/generated/soulfire/bot_pb.ts";
+import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
+import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
-import { applyGeneratedAccounts } from "@/lib/utils.tsx";
+import { applyGeneratedAccounts, hasInstancePermission } from "@/lib/utils.tsx";
 
-type AccountWarningState = {
-  type: "no_accounts" | "not_enough_accounts";
-  requiredAmount: number;
-  availableAmount: number;
-} | null;
+function shuffle<T>(values: T[]): void {
+  for (let index = values.length - 1; index > 0; index -= 1) {
+    const selectedIndex = Math.floor(Math.random() * (index + 1));
+    [values[index], values[selectedIndex]] = [
+      values[selectedIndex] as T,
+      values[index] as T,
+    ];
+  }
+}
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
@@ -48,34 +51,154 @@ export default function ControlsMenu() {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const profile = instanceInfo.profile;
-  const existingUsernames = useMemo(
-    () => new Set(profile.accounts.map((a) => a.lastKnownName)),
-    [profile.accounts],
-  );
-  const [accountWarning, setAccountWarning] =
-    useState<AccountWarningState>(null);
+  const statusQueryOptions = botStatusQueryOptions(instanceInfo.id);
+  const { data: botList } = useSuspenseQuery(statusQueryOptions);
+  const [startCount, setStartCount] = useState(1);
   const [generateDialogOpen, setGenerateDialogOpen] = useState(false);
-  const [pendingStartAction, setPendingStartAction] = useState(false);
+  const [pendingStartCount, setPendingStartCount] = useState<number | null>(
+    null,
+  );
 
-  const isMutating = useIsMutating();
+  const canControl = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.CONTROL_BOTS,
+  );
+  const existingUsernames = useMemo(
+    () =>
+      new Set(
+        instanceInfo.profile.accounts.map((account) => account.lastKnownName),
+      ),
+    [instanceInfo.profile.accounts],
+  );
+  const stoppedCount = botList.bots.filter(
+    (bot) => bot.status?.desiredState !== BotDesiredState.RUNNING,
+  ).length;
+  const desiredBotIds = botList.bots
+    .filter((bot) => bot.status?.desiredState === BotDesiredState.RUNNING)
+    .map((bot) => bot.profileId);
 
-  const invalidateLifecycleQueries = useCallback(async () => {
+  const invalidateBotQueries = useCallback(async () => {
     await Promise.all([
+      queryClient.invalidateQueries({ queryKey: statusQueryOptions.queryKey }),
       queryClient.invalidateQueries({
         queryKey: instanceInfoQueryOptions.queryKey,
       }),
-      queryClient.invalidateQueries({
-        queryKey: metricsQueryOptions.queryKey,
-      }),
+      queryClient.invalidateQueries({ queryKey: metricsQueryOptions.queryKey }),
+      queryClient.invalidateQueries({ queryKey: ["instance-list"] }),
     ]);
   }, [
     instanceInfoQueryOptions.queryKey,
     metricsQueryOptions.queryKey,
     queryClient,
+    statusQueryOptions.queryKey,
   ]);
 
-  const { mutateAsync: applyGeneratedAccountsMutation } = useMutation({
+  const setDesiredState = useCallback(
+    async (
+      botIds: string[],
+      desiredState: BotDesiredState,
+    ): Promise<BotStatus[]> => {
+      if (transport === null || botIds.length === 0) {
+        return [];
+      }
+      const response = await createClient(
+        BotService,
+        transport,
+      ).setBotsDesiredState({
+        instanceId: instanceInfo.id,
+        botIds,
+        desiredState,
+      });
+      return response.bots;
+    },
+    [instanceInfo.id, transport],
+  );
+
+  const startBots = useCallback(
+    async (count?: number) => {
+      if (transport === null) return [];
+      const latest = await createClient(BotService, transport).getBotList({
+        instanceId: instanceInfo.id,
+      });
+      const candidates = latest.bots.filter(
+        (bot) => bot.status?.desiredState !== BotDesiredState.RUNNING,
+      );
+      if (
+        instanceInfo.profile.settings.account?.["shuffle-accounts"] === true
+      ) {
+        shuffle(candidates);
+      }
+      const selected =
+        count === undefined
+          ? candidates
+          : candidates.slice(0, Math.max(0, Math.floor(count)));
+      return setDesiredState(
+        selected.map((bot) => bot.profileId),
+        BotDesiredState.RUNNING,
+      );
+    },
+    [
+      instanceInfo.id,
+      instanceInfo.profile.settings.account,
+      setDesiredState,
+      transport,
+    ],
+  );
+
+  const startMutation = useMutation({
+    mutationKey: ["bots", "start", instanceInfo.id],
+    scope: { id: `bot-state-${instanceInfo.id}` },
+    mutationFn: async (count?: number) => {
+      if (instanceInfo.profile.accounts.length === 0) {
+        setPendingStartCount(count ?? Number.MAX_SAFE_INTEGER);
+        setGenerateDialogOpen(true);
+        return [];
+      }
+      const promise = startBots(count);
+      toast.promise(promise, {
+        loading: t("controls.startToast.loading"),
+        success: t("controls.startToast.success"),
+        error: t("controls.startToast.error"),
+      });
+      return promise;
+    },
+    onSettled: invalidateBotQueries,
+  });
+
+  const restartMutation = useMutation({
+    mutationKey: ["bots", "restart", instanceInfo.id],
+    scope: { id: `bot-state-${instanceInfo.id}` },
+    mutationFn: async () => {
+      if (transport === null || desiredBotIds.length === 0) return [];
+      const promise = createClient(BotService, transport)
+        .restartBots({ instanceId: instanceInfo.id, botIds: desiredBotIds })
+        .then((response) => response.bots);
+      toast.promise(promise, {
+        loading: t("controls.restartToast.loading"),
+        success: t("controls.restartToast.success"),
+        error: t("controls.restartToast.error"),
+      });
+      return promise;
+    },
+    onSettled: invalidateBotQueries,
+  });
+
+  const stopMutation = useMutation({
+    mutationKey: ["bots", "stop", instanceInfo.id],
+    scope: { id: `bot-state-${instanceInfo.id}` },
+    mutationFn: async () => {
+      const promise = setDesiredState(desiredBotIds, BotDesiredState.STOPPED);
+      toast.promise(promise, {
+        loading: t("controls.stopToast.loading"),
+        success: t("controls.stopToast.success"),
+        error: t("controls.stopToast.error"),
+      });
+      return promise;
+    },
+    onSettled: invalidateBotQueries,
+  });
+
+  const applyGeneratedAccountsMutation = useMutation({
     mutationKey: ["instance", "accounts", "generate", instanceInfo.id],
     scope: { id: `instance-accounts-${instanceInfo.id}` },
     mutationFn: async ({
@@ -88,273 +211,100 @@ export default function ControlsMenu() {
       await applyGeneratedAccounts(
         newAccounts,
         mode,
-        profile.accounts,
+        instanceInfo.profile.accounts,
         instanceInfo,
         transport,
         queryClient,
         instanceInfoQueryOptions.queryKey,
       );
+      if (pendingStartCount !== null) {
+        await startBots(
+          pendingStartCount === Number.MAX_SAFE_INTEGER
+            ? undefined
+            : pendingStartCount,
+        );
+      }
     },
     onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
+      setPendingStartCount(null);
+      await invalidateBotQueries();
     },
   });
 
-  const doStartAttack = useCallback(() => {
-    if (transport === null) {
-      return Promise.resolve();
-    }
+  if (!canControl) {
+    return null;
+  }
 
-    const client = createClient(InstanceService, transport);
-    const promise = client
-      .changeInstanceState({
-        id: instanceInfo.id,
-        state: InstanceState.RUNNING,
-      })
-      .then()
-      .finally(invalidateLifecycleQueries);
-    toast.promise(promise, {
-      loading: t("controls.startToast.loading"),
-      success: t("controls.startToast.success"),
-      error: (e) => {
-        console.error(e);
-        return t("controls.startToast.error");
-      },
-    });
-
-    return promise;
-  }, [instanceInfo.id, invalidateLifecycleQueries, t, transport]);
-
-  const startMutation = useMutation({
-    mutationKey: ["instance", "state", "start", instanceInfo.id],
-    scope: { id: `instance-state-${instanceInfo.id}` },
-    mutationFn: async () => {
-      // Get the bot amount from settings (default to 1)
-      const botAmount = (profile.settings?.bot?.amount as number) ?? 1;
-      const accountCount = profile.accounts.length;
-
-      // Validate: must have accounts
-      if (accountCount === 0) {
-        setAccountWarning({
-          type: "no_accounts",
-          requiredAmount: botAmount,
-          availableAmount: 0,
-        });
-        return;
-      }
-
-      // Validate: must have enough accounts
-      if (accountCount < botAmount) {
-        setAccountWarning({
-          type: "not_enough_accounts",
-          requiredAmount: botAmount,
-          availableAmount: accountCount,
-        });
-        return;
-      }
-
-      // All validations passed, start the attack
-      return doStartAttack();
-    },
-  });
-
-  const handleGenerateAccounts = useCallback(
-    async (newAccounts: ProfileAccount[], mode: GenerateAccountsMode) => {
-      await applyGeneratedAccountsMutation({ newAccounts, mode });
-
-      // If we were waiting to start an attack, do it now
-      if (pendingStartAction) {
-        setPendingStartAction(false);
-        await doStartAttack();
-      }
-    },
-    [applyGeneratedAccountsMutation, doStartAttack, pendingStartAction],
+  const isPending =
+    startMutation.isPending ||
+    restartMutation.isPending ||
+    stopMutation.isPending;
+  const normalizedStartCount = Math.max(
+    1,
+    Math.min(stoppedCount || 1, Math.floor(startCount) || 1),
   );
-
-  const handleContinueWithExisting = useCallback(async () => {
-    setAccountWarning(null);
-    await doStartAttack();
-  }, [doStartAttack]);
-
-  const handleGenerateFromWarning = useCallback(() => {
-    setAccountWarning(null);
-    setPendingStartAction(true);
-    setGenerateDialogOpen(true);
-  }, []);
-
-  const toggleMutation = useMutation({
-    mutationKey: ["instance", "state", "toggle", instanceInfo.id],
-    scope: { id: `instance-state-${instanceInfo.id}` },
-    mutationFn: () => {
-      if (transport === null) {
-        return Promise.resolve() as never;
-      }
-
-      const client = createClient(InstanceService, transport);
-      const current = instanceInfo.state;
-      const promise = client
-        .changeInstanceState({
-          id: instanceInfo.id,
-          state:
-            current === InstanceState.PAUSED
-              ? InstanceState.RUNNING
-              : InstanceState.PAUSED,
-        })
-        .then();
-      if (current === InstanceState.PAUSED) {
-        toast.promise(promise, {
-          loading: t("controls.resumeToast.loading"),
-          success: t("controls.resumeToast.success"),
-          error: (e) => {
-            console.error(e);
-            return t("controls.resumeToast.error");
-          },
-        });
-      } else {
-        toast.promise(promise, {
-          loading: t("controls.pauseToast.loading"),
-          success: t("controls.pauseToast.success"),
-          error: (e) => {
-            console.error(e);
-            return t("controls.pauseToast.error");
-          },
-        });
-      }
-
-      return promise;
-    },
-    onSettled: invalidateLifecycleQueries,
-  });
-  const stopMutation = useMutation({
-    mutationKey: ["instance", "state", "stop", instanceInfo.id],
-    scope: { id: `instance-state-${instanceInfo.id}` },
-    mutationFn: () => {
-      if (transport === null) {
-        return Promise.resolve() as never;
-      }
-
-      const client = createClient(InstanceService, transport);
-      const promise = client
-        .changeInstanceState({
-          id: instanceInfo.id,
-          state: InstanceState.STOPPED,
-        })
-        .then();
-      toast.promise(promise, {
-        loading: t("controls.stopToast.loading"),
-        success: t("controls.stopToast.success"),
-        error: (e) => {
-          console.error(e);
-          return t("controls.stopToast.error");
-        },
-      });
-
-      return promise;
-    },
-    onSettled: invalidateLifecycleQueries,
-  });
+  const startUnavailable =
+    instanceInfo.profile.accounts.length > 0 && stoppedCount === 0;
 
   return (
     <>
       <ButtonGroup className="flex-wrap">
+        <InputGroup className="w-36">
+          <InputGroupInput
+            type="number"
+            min={1}
+            max={Math.max(1, stoppedCount)}
+            value={startCount}
+            aria-label={t("controls.startCount")}
+            onChange={(event) => setStartCount(event.target.valueAsNumber)}
+            disabled={isPending || stoppedCount === 0}
+          />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              variant="secondary"
+              onClick={() => startMutation.mutate(normalizedStartCount)}
+              disabled={isPending || startUnavailable}
+            >
+              <PlayIcon />
+              {t("controls.start")}
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
         <Button
           variant="secondary"
-          onClick={() => startMutation.mutate()}
-          disabled={
-            instanceInfo.state !== InstanceState.STOPPED || isMutating > 0
-          }
+          onClick={() => startMutation.mutate(undefined)}
+          disabled={isPending || startUnavailable}
         >
           <PlayIcon />
-          {t("controls.start")}
+          {t("controls.startAll")}
         </Button>
         <Button
           variant="secondary"
-          onClick={() => toggleMutation.mutate()}
-          disabled={
-            instanceInfo.state === InstanceState.STOPPING ||
-            instanceInfo.state === InstanceState.STOPPED
-          }
+          onClick={() => restartMutation.mutate()}
+          disabled={isPending || desiredBotIds.length === 0}
         >
-          {instanceInfo.state === InstanceState.PAUSED ? (
-            <TimerOffIcon />
-          ) : (
-            <TimerIcon />
-          )}
-          {instanceInfo.state === InstanceState.PAUSED
-            ? t("controls.resume")
-            : t("controls.pause")}
+          <RefreshCwIcon />
+          {t("controls.restart")}
         </Button>
         <Button
           variant="secondary"
           onClick={() => stopMutation.mutate()}
-          disabled={
-            instanceInfo.state === InstanceState.STOPPING ||
-            instanceInfo.state === InstanceState.STOPPED
-          }
+          disabled={isPending || desiredBotIds.length === 0}
         >
           <SquareIcon />
-          {t("controls.stop")}
+          {t("controls.stopAll")}
         </Button>
       </ButtonGroup>
 
-      {/* Account Warning Dialog */}
-      <Credenza
-        open={accountWarning !== null}
-        onOpenChange={(open) => !open && setAccountWarning(null)}
-      >
-        <CredenzaContent>
-          <CredenzaHeader>
-            <CredenzaTitle>
-              {accountWarning?.type === "no_accounts"
-                ? t("controls.accountWarning.noAccountsTitle")
-                : t("controls.accountWarning.notEnoughTitle")}
-            </CredenzaTitle>
-            <CredenzaDescription>
-              {accountWarning?.type === "no_accounts"
-                ? t("controls.accountWarning.noAccountsDescription", {
-                    required: accountWarning?.requiredAmount ?? 0,
-                  })
-                : t("controls.accountWarning.notEnoughDescription", {
-                    required: accountWarning?.requiredAmount ?? 0,
-                    available: accountWarning?.availableAmount ?? 0,
-                  })}
-            </CredenzaDescription>
-          </CredenzaHeader>
-          <CredenzaBody className="pb-4 md:pb-0">
-            <p className="text-muted-foreground text-sm">
-              {t("controls.accountWarning.hint")}
-            </p>
-          </CredenzaBody>
-          <CredenzaFooter className="flex flex-col gap-2 sm:flex-row">
-            <Button variant="outline" onClick={() => setAccountWarning(null)}>
-              {t("cancel")}
-            </Button>
-            {accountWarning?.type === "not_enough_accounts" && (
-              <Button variant="secondary" onClick={handleContinueWithExisting}>
-                {t("controls.accountWarning.continueWithExisting", {
-                  count: accountWarning.availableAmount,
-                })}
-              </Button>
-            )}
-            <Button onClick={handleGenerateFromWarning}>
-              {t("controls.accountWarning.generateAccounts")}
-            </Button>
-          </CredenzaFooter>
-        </CredenzaContent>
-      </Credenza>
-
-      {/* Generate Accounts Dialog */}
       <GenerateAccountsDialog
         open={generateDialogOpen}
         onOpenChange={(open) => {
           setGenerateDialogOpen(open);
-          if (!open) {
-            setPendingStartAction(false);
-          }
+          if (!open) setPendingStartCount(null);
         }}
-        onGenerate={handleGenerateAccounts}
+        onGenerate={(newAccounts, mode) =>
+          applyGeneratedAccountsMutation.mutateAsync({ newAccounts, mode })
+        }
         existingUsernames={existingUsernames}
       />
     </>

@@ -421,13 +421,6 @@
     "success": "pɹɐoqdᴉʟ oʇ \"{{content}}\" pǝᴉdoↃ",
     "error": "pɹɐoqdᴉʟ oʇ ʎdoↃ oʇ pǝlᴉɐɟ"
   },
-  "instanceState": {
-    "starting": "ƃuᴉʇɹɐʇS",
-    "running": "ƃuᴉuunᴚ",
-    "paused": "pǝsnsɐԀ",
-    "stopping": "ƃuᴉddo┴S",
-    "stopped": "pǝddo┴S"
-  },
   "userSettings": {
     "avatar": {
       "title": "ɹɐʇɐʌ∀",
@@ -452,10 +445,6 @@
     "searchUsers": "...sɹǝsn ɥɔɹɐǝS",
     "searchTimestamps": "...sǝƃuɐdsǝɯ ɥɔɹɐǝS",
     "executedCommand": "{{data}} :puɐɯɯoɔ pǝʇnɔǝxƎ",
-    "startedSession": "uoᴉssǝs ɐ pǝʇɹɐʇs",
-    "resumedSession": "uoᴉssǝs ɐ pǝɯnsǝɹ",
-    "pausedSession": "uoᴉssǝs ɐ pǝsnsɐԀ",
-    "stoppedSession": "uoᴉssǝs ɐ pǝddo┴S",
     "contextMenu": {
       "copyUsername": "ǝɯɐuǝɯɐu ʎdoↃ",
       "copyCommand": "puɐɯɯoↃ ʎdoↃ"

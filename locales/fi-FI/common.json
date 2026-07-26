@@ -421,13 +421,6 @@
     "success": "Kopioitiin \"{{content}}\" leikepöydälle",
     "error": "Kopiointi leikepöydälle epäonnistui"
   },
-  "instanceState": {
-    "starting": "Käynnistetään",
-    "running": "Käynnissä",
-    "paused": "Tauotettu",
-    "stopping": "Pysäytetään",
-    "stopped": "Pysäytetty"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Etsi käyttäjiä...",
     "searchTimestamps": "Etsi aikaleimoja...",
     "executedCommand": "Suoritettiin komento: {{data}}",
-    "startedSession": "Istunto käynnistetty",
-    "resumedSession": "Istunto jatkettu",
-    "pausedSession": "Istunto keskeytetty",
-    "stoppedSession": "Istunto pysäytetty",
     "contextMenu": {
       "copyUsername": "Kopioi käyttäjätunnus",
       "copyCommand": "Kopioi komento"

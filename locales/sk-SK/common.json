@@ -421,13 +421,6 @@
     "success": "Skopírované \"{{content}}\" do schránky",
     "error": "Kopírovanie do schránky zlyhalo"
   },
-  "instanceState": {
-    "starting": "Spúšťa sa",
-    "running": "Beží",
-    "paused": "Pozastavené",
-    "stopping": "Zastavuje sa",
-    "stopped": "Zastavené"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Hľadať používateľov...",
     "searchTimestamps": "Hľadať časové pečiatky...",
     "executedCommand": "Vykonaný príkaz: {{data}}",
-    "startedSession": "Relácia spustená",
-    "resumedSession": "Relácia obnovená",
-    "pausedSession": "Relácia pozastavená",
-    "stoppedSession": "Relácia zastavená",
     "contextMenu": {
       "copyUsername": "Kopírovať používateľské meno",
       "copyCommand": "Kopírovať príkaz"

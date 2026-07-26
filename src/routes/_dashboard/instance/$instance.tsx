@@ -11,6 +11,7 @@ import {
   demoInstanceSettingsDefinitions,
 } from "@/demo-data.ts";
 import { TimestampSchema } from "@/generated/google/protobuf/timestamp_pb.ts";
+import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb.ts";
 import {
   InstancePermission,
   MinecraftAccountProto_AccountTypeProto,
@@ -24,8 +25,8 @@ import {
   InstanceInfoSchema,
   InstancePermissionStateSchema,
   InstanceService,
-  InstanceState,
 } from "@/generated/soulfire/instance_pb.ts";
+import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
 import { useCastBroadcast } from "@/hooks/use-cast-broadcast.ts";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
@@ -99,7 +100,11 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
             settingsDefinitions: demoInstanceSettingsDefinitions,
             instanceSettings: demoInstanceSettings,
             plugins: [],
-            state: InstanceState.RUNNING,
+            botSummary: create(BotFleetSummarySchema, {
+              totalBots: 1,
+              desiredBots: 1,
+              onlineBots: 1,
+            }),
             lastModified: create(TimestampSchema, {
               seconds: 0n,
               nanos: 0,
@@ -207,6 +212,7 @@ function InstanceLayout() {
     metricsQueryOptions.queryKey,
     instanceInfoQueryOptions.queryKey,
   );
+  useBotStatusStream(Route.useParams().instance);
   const isMobile = useIsMobile();
   const sidebarState = localStorage.getItem("sidebar:state");
   const defaultOpen =

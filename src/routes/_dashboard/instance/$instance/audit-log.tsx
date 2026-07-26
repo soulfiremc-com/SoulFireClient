@@ -6,12 +6,9 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
   BotIcon,
   ClipboardCopyIcon,
-  PlayIcon,
-  SquareIcon,
+  RefreshCwIcon,
   SquareTerminalIcon,
   TextIcon,
-  TimerIcon,
-  TimerOffIcon,
 } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
@@ -101,16 +98,12 @@ export const Route = createFileRoute(
 
 function toI18nKey(type: InstanceAuditLogResponse_AuditLogEntryType) {
   switch (type) {
-    case InstanceAuditLogResponse_AuditLogEntryType.START_SESSION:
-      return "auditLog.startedSession";
-    case InstanceAuditLogResponse_AuditLogEntryType.STOP_SESSION:
-      return "auditLog.stoppedSession";
-    case InstanceAuditLogResponse_AuditLogEntryType.RESUME_SESSION:
-      return "auditLog.resumedSession";
-    case InstanceAuditLogResponse_AuditLogEntryType.PAUSE_SESSION:
-      return "auditLog.pausedSession";
     case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND:
       return "auditLog.executedCommand";
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE:
+      return "auditLog.changedBotDesiredState";
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
+      return "auditLog.restartedBots";
   }
 }
 
@@ -128,17 +121,12 @@ const logTypeToIcon = (
       case "AUTOMATION_RESET_MEMORY":
       case "AUTOMATION_RESET_COORDINATION":
       case "AUTOMATION_RELEASE_CLAIMS":
+      case "BOT_DESIRED_STATE_CHANGE":
         return BotIcon;
+      case "BOT_RESTART":
+        return RefreshCwIcon;
       case "EXECUTE_COMMAND":
         return SquareTerminalIcon;
-      case "START_SESSION":
-        return PlayIcon;
-      case "PAUSE_SESSION":
-        return TimerIcon;
-      case "RESUME_SESSION":
-        return TimerOffIcon;
-      case "STOP_SESSION":
-        return SquareIcon;
     }
   });
 

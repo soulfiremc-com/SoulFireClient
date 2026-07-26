@@ -421,13 +421,6 @@
     "success": "Copied \"{{content}}\" to clipbored",
     "error": "Copyz to clipbored FAILED!"
   },
-  "instanceState": {
-    "starting": "Startin",
-    "running": "Runnin",
-    "paused": "Pawzed",
-    "stopping": "Stopping",
-    "stopped": "Stopped"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatarr",
@@ -452,10 +445,6 @@
     "searchUsers": "Serch usahs...",
     "searchTimestamps": "Serch timez stampz...",
     "executedCommand": "Did command: {{data}}",
-    "startedSession": "Seshun startd!",
-    "resumedSession": "Seshun rezumed!",
-    "pausedSession": "Seshun pawzed!",
-    "stoppedSession": "Seshun stoppd!",
     "contextMenu": {
       "copyUsername": "Copy Usernamez",
       "copyCommand": "Copy Commandz"

@@ -38,13 +38,16 @@ export function KpiStrip({
   const tiles = useMemo<KpiTile[]>(() => {
     const recent = metricsData.snapshots.slice(-SPARK_WINDOW);
     const accountCount = instanceInfo.profile.accounts.length;
-    const totalBots = latest?.botsTotal ?? accountCount;
+    const totalBots =
+      latest?.botsTotal ?? instanceInfo.botSummary?.totalBots ?? accountCount;
+    const onlineBots =
+      latest?.botsOnline ?? instanceInfo.botSummary?.onlineBots ?? 0;
 
     return [
       {
         id: "online",
         label: t("metrics.summary.online"),
-        value: `${latest?.botsOnline ?? 0}/${totalBots}`,
+        value: `${onlineBots}/${totalBots}`,
         series: recent.map((s) => s.botsOnline),
         color: "var(--chart-1)",
       },

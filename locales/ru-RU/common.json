@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" скопирован в буфер обмена",
     "error": "Ошибка копирования в буфер обмена"
   },
-  "instanceState": {
-    "starting": "Запуск",
-    "running": "Запущен",
-    "paused": "Приостановлено",
-    "stopping": "Остановка",
-    "stopped": "Остановлен"
-  },
   "userSettings": {
     "avatar": {
       "title": "Аватар",
@@ -452,10 +445,6 @@
     "searchUsers": "Поиск пользователей...",
     "searchTimestamps": "Поиск по временным меткам...",
     "executedCommand": "Выполнена команда: {{data}}",
-    "startedSession": "Сессия запущена",
-    "resumedSession": "Сессия возобновлена",
-    "pausedSession": "Сессия приостановлена",
-    "stoppedSession": "Сессия остановлена",
     "contextMenu": {
       "copyUsername": "Скопировать имя пользователя",
       "copyCommand": "Скопировать команду"

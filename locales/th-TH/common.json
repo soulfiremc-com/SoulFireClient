@@ -421,13 +421,6 @@
     "success": "คัดลอก \"{{content}}\" ไปยังคลิปบอร์ดแล้ว",
     "error": "คัดลอกไปยังคลิปบอร์ดไม่สำเร็จ"
   },
-  "instanceState": {
-    "starting": "กำลังเริ่มต้น",
-    "running": "กำลังทำงาน",
-    "paused": "หยุดชั่วคราว",
-    "stopping": "กำลังหยุด",
-    "stopped": "หยุดแล้ว"
-  },
   "userSettings": {
     "avatar": {
       "title": "อวตาร",
@@ -452,10 +445,6 @@
     "searchUsers": "ค้นหาผู้ใช้...",
     "searchTimestamps": "ค้นหาวันเวลา...",
     "executedCommand": "ดำเนินการคำสั่ง: {{data}}",
-    "startedSession": "เริ่มเซสชันแล้ว",
-    "resumedSession": "ดำเนินการเซสชันต่อแล้ว",
-    "pausedSession": "หยุดชั่วคราวเซสชันแล้ว",
-    "stoppedSession": "หยุดเซสชันแล้ว",
     "contextMenu": {
       "copyUsername": "คัดลอกชื่อผู้ใช้",
       "copyCommand": "คัดลอกคำสั่ง"

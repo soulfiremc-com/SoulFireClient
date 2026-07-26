@@ -421,13 +421,6 @@
     "success": "Đã sao chép \"{{content}}\" vào bộ nhớ tạm",
     "error": "Sao chép vào bộ nhớ tạm thất bại"
   },
-  "instanceState": {
-    "starting": "Đang bắt đầu",
-    "running": "Đang chạy",
-    "paused": "Đã tạm dừng",
-    "stopping": "Đang dừng",
-    "stopped": "Đã dừng"
-  },
   "userSettings": {
     "avatar": {
       "title": "Ảnh đại diện",
@@ -452,10 +445,6 @@
     "searchUsers": "Tìm kiếm người dùng...",
     "searchTimestamps": "Tìm kiếm dấu thời gian...",
     "executedCommand": "Đã thực thi lệnh: {{data}}",
-    "startedSession": "Đã bắt đầu một phiên",
-    "resumedSession": "Đã tiếp tục một phiên",
-    "pausedSession": "Đã tạm dừng một phiên",
-    "stoppedSession": "Đã dừng một phiên",
     "contextMenu": {
       "copyUsername": "Sao chép Tên người dùng",
       "copyCommand": "Sao chép Lệnh"

@@ -421,13 +421,6 @@
     "success": "\"{{content}}\"(을)를 클립보드에 복사했습니다",
     "error": "클립보드 복사에 실패했습니다"
   },
-  "instanceState": {
-    "starting": "시작 중",
-    "running": "실행 중",
-    "paused": "일시 정지됨",
-    "stopping": "중지 중",
-    "stopped": "중지됨"
-  },
   "userSettings": {
     "avatar": {
       "title": "아바타",
@@ -452,10 +445,6 @@
     "searchUsers": "사용자 검색...",
     "searchTimestamps": "타임스탬프 검색...",
     "executedCommand": "명령 실행됨: {{data}}",
-    "startedSession": "세션을 시작했습니다.",
-    "resumedSession": "세션을 다시 시작했습니다.",
-    "pausedSession": "세션을 일시 정지했습니다.",
-    "stoppedSession": "세션을 중지했습니다.",
     "contextMenu": {
       "copyUsername": "사용자명 복사",
       "copyCommand": "명령어 복사"

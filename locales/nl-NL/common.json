@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" gekopieerd naar klembord",
     "error": "Kopiëren naar klembord mislukt"
   },
-  "instanceState": {
-    "starting": "Starten",
-    "running": "Draait",
-    "paused": "Gepauzeerd",
-    "stopping": "Beëindigen",
-    "stopped": "Gestopt"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Zoek gebruikers...",
     "searchTimestamps": "Zoek tijdstempels...",
     "executedCommand": "Uitgevoerd commando: {{data}}",
-    "startedSession": "Sessie gestart",
-    "resumedSession": "Sessie hervat",
-    "pausedSession": "Sessie gepauzeerd",
-    "stoppedSession": "Sessie gestopt",
     "contextMenu": {
       "copyUsername": "Gebruikersnaam kopiëren",
       "copyCommand": "Kopieer commando"

@@ -5,11 +5,8 @@ import { Link } from "@tanstack/react-router";
 import {
   BotIcon,
   type LucideIcon,
-  PlayIcon,
-  SquareIcon,
+  RefreshCwIcon,
   SquareTerminalIcon,
-  TimerIcon,
-  TimerOffIcon,
 } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { SFTimeAgo } from "@/components/sf-timeago.tsx";
@@ -37,14 +34,8 @@ function entryTypeIcon(
   switch (type) {
     case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND:
       return SquareTerminalIcon;
-    case InstanceAuditLogResponse_AuditLogEntryType.START_SESSION:
-      return PlayIcon;
-    case InstanceAuditLogResponse_AuditLogEntryType.PAUSE_SESSION:
-      return TimerIcon;
-    case InstanceAuditLogResponse_AuditLogEntryType.RESUME_SESSION:
-      return TimerOffIcon;
-    case InstanceAuditLogResponse_AuditLogEntryType.STOP_SESSION:
-      return SquareIcon;
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
+      return RefreshCwIcon;
     default:
       return BotIcon;
   }
@@ -56,14 +47,6 @@ function entryTypeI18nKey(
   switch (type) {
     case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND:
       return "overview.timeline.types.executeCommand";
-    case InstanceAuditLogResponse_AuditLogEntryType.START_SESSION:
-      return "overview.timeline.types.startSession";
-    case InstanceAuditLogResponse_AuditLogEntryType.PAUSE_SESSION:
-      return "overview.timeline.types.pauseSession";
-    case InstanceAuditLogResponse_AuditLogEntryType.RESUME_SESSION:
-      return "overview.timeline.types.resumeSession";
-    case InstanceAuditLogResponse_AuditLogEntryType.STOP_SESSION:
-      return "overview.timeline.types.stopSession";
     case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_START:
       return "overview.timeline.types.automationStart";
     case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_PAUSE:
@@ -82,6 +65,10 @@ function entryTypeI18nKey(
       return "overview.timeline.types.automationResetCoordination";
     case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_RELEASE_CLAIMS:
       return "overview.timeline.types.automationReleaseClaims";
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE:
+      return "overview.timeline.types.botDesiredStateChange";
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
+      return "overview.timeline.types.botRestart";
     default:
       return "overview.timeline.types.unknown";
   }

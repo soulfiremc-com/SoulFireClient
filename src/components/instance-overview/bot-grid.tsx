@@ -1,5 +1,8 @@
+import { createClient } from "@connectrpc/connect";
 import {
   infiniteQueryOptions,
+  useMutation,
+  useQueryClient,
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
@@ -9,9 +12,12 @@ import {
   ExternalLinkIcon,
   LoaderCircleIcon,
   MapPinIcon,
+  PlayIcon,
+  RefreshCwIcon,
+  SquareIcon,
   WifiIcon,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { use, useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
@@ -19,6 +25,7 @@ import {
   MenuSeparator,
 } from "@/components/context-menu-primitives.tsx";
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
+import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -30,9 +37,15 @@ import {
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import {
   BotConnectionPhase,
+  BotDesiredState,
   type BotListEntry,
+  BotRuntimeState,
+  BotService,
 } from "@/generated/soulfire/bot_pb.ts";
-import { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfire/common_pb.ts";
+import {
+  InstancePermission,
+  MinecraftAccountProto_AccountTypeProto,
+} from "@/generated/soulfire/common_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import {
@@ -41,7 +54,7 @@ import {
 } from "@/lib/account-types.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
-import { cn } from "@/lib/utils.tsx";
+import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { MinecraftHead } from "../minecraft/minecraft-head.tsx";
 
 const PAGE_SIZE = 50;
@@ -53,6 +66,7 @@ export type BotWithStatus =
     pingMs?: number;
     accountName?: string;
     liveState?: BotListEntry["liveState"];
+    status?: BotListEntry["status"];
   };
 
 function connectionPhaseMeta(phase: BotConnectionPhase): {
@@ -100,6 +114,60 @@ function connectionPhaseMeta(phase: BotConnectionPhase): {
         showPing: false,
       };
   }
+}
+
+function controllerStateMeta(status: BotListEntry["status"] | undefined) {
+  switch (status?.runtimeState) {
+    case BotRuntimeState.QUEUED:
+    case BotRuntimeState.STARTING:
+      return {
+        labelKey: "bots.runtimeState.starting",
+        className: "border-amber-500/40 text-amber-700 dark:text-amber-400",
+      };
+    case BotRuntimeState.RUNNING:
+      return {
+        labelKey: "bots.runtimeState.running",
+        className:
+          "border-emerald-500/40 text-emerald-700 dark:text-emerald-400",
+      };
+    case BotRuntimeState.RETRYING:
+      return {
+        labelKey: "bots.runtimeState.retrying",
+        className: "border-amber-500/40 text-amber-700 dark:text-amber-400",
+      };
+    case BotRuntimeState.STOPPING:
+      return {
+        labelKey: "bots.runtimeState.stopping",
+        className: "text-muted-foreground",
+      };
+    case BotRuntimeState.FAILED:
+      return {
+        labelKey: "bots.runtimeState.failed",
+        className: "border-destructive/40 text-destructive",
+      };
+    default:
+      return {
+        labelKey:
+          status?.desiredState === BotDesiredState.RUNNING
+            ? "bots.runtimeState.waiting"
+            : "bots.runtimeState.stopped",
+        className: "text-muted-foreground",
+      };
+  }
+}
+
+function ControllerStateBadge({ status }: { status?: BotListEntry["status"] }) {
+  const { t } = useTranslation("instance");
+  const meta = controllerStateMeta(status);
+  return (
+    <Badge
+      variant="outline"
+      className={cn("text-xs", meta.className)}
+      title={status?.lastError}
+    >
+      {t(meta.labelKey)}
+    </Badge>
+  );
 }
 
 /// Status pill for a bot's live connection phase, with optional ping readout.
@@ -170,6 +238,7 @@ function mergeBotStatus(
       pingMs: status?.pingMs,
       accountName: status?.accountName,
       liveState: status?.liveState,
+      status: status?.status,
     };
   });
 }
@@ -219,6 +288,7 @@ function BotCard({
                   phase={bot.connectionPhase}
                   pingMs={bot.pingMs}
                 />
+                <ControllerStateBadge status={bot.status} />
               </div>
             </div>
           </div>
@@ -250,15 +320,53 @@ function BotCard({
 function BotCardsWithMenu({
   instanceId,
   bots,
+  canControl,
 }: {
   instanceId: string;
   bots: BotWithStatus[];
+  canControl: boolean;
 }) {
   const { t: tCommon } = useTranslation("common");
   const navigate = useNavigate();
+  const transport = use(TransportContext);
+  const queryClient = useQueryClient();
   const copyToClipboard = useCopyToClipboard();
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<BotWithStatus>();
+  const botStateMutation = useMutation({
+    mutationKey: ["bots", "desired-state", instanceId],
+    scope: { id: `bot-state-${instanceId}` },
+    mutationFn: async ({
+      botId,
+      action,
+    }: {
+      botId: string;
+      action: "start" | "restart" | "stop";
+    }) => {
+      if (transport === null) return;
+      const client = createClient(BotService, transport);
+      if (action === "restart") {
+        return client.restartBots({ instanceId, botIds: [botId] });
+      }
+      return client.setBotsDesiredState({
+        instanceId,
+        botIds: [botId],
+        desiredState:
+          action === "start"
+            ? BotDesiredState.RUNNING
+            : BotDesiredState.STOPPED,
+      });
+    },
+    onSettled: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
+        queryClient.invalidateQueries({
+          queryKey: ["instance-info", instanceId],
+        }),
+        queryClient.invalidateQueries({ queryKey: ["instance-list"] }),
+      ]);
+    },
+  });
 
   return (
     <>
@@ -293,6 +401,53 @@ function BotCardsWithMenu({
             <ExternalLinkIcon />
             {tCommon("contextMenu.bot.goToBot")}
           </MenuItem>
+          {canControl && (
+            <>
+              <MenuSeparator />
+              {contextMenu.data.status?.desiredState ===
+              BotDesiredState.RUNNING ? (
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      botStateMutation.mutate({
+                        botId: contextMenu.data.profileId,
+                        action: "restart",
+                      });
+                      dismiss();
+                    }}
+                  >
+                    <RefreshCwIcon />
+                    {tCommon("controls.restart")}
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      botStateMutation.mutate({
+                        botId: contextMenu.data.profileId,
+                        action: "stop",
+                      });
+                      dismiss();
+                    }}
+                  >
+                    <SquareIcon />
+                    {tCommon("controls.stop")}
+                  </MenuItem>
+                </>
+              ) : (
+                <MenuItem
+                  onClick={() => {
+                    botStateMutation.mutate({
+                      botId: contextMenu.data.profileId,
+                      action: "start",
+                    });
+                    dismiss();
+                  }}
+                >
+                  <PlayIcon />
+                  {tCommon("controls.start")}
+                </MenuItem>
+              )}
+            </>
+          )}
           <MenuSeparator />
           <MenuItem
             onClick={() => {
@@ -346,7 +501,6 @@ export function OnlineCountBadge({
   const { data: botStatus } = useSuspenseQuery(
     botStatusQueryOptions(instanceInfo.id),
   );
-
   const onlineCount = useMemo(() => {
     const statusMap = buildStatusMap(botStatus.bots);
     return instanceInfo.profile.accounts.filter(
@@ -375,6 +529,10 @@ export function BotGrid({
   const { t } = useTranslation("instance");
   const { data: botStatus } = useSuspenseQuery(
     botStatusQueryOptions(instanceInfo.id),
+  );
+  const canControl = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.CONTROL_BOTS,
   );
 
   const statusMap = useMemo(
@@ -466,7 +624,11 @@ export function BotGrid({
 
   return (
     <>
-      <BotCardsWithMenu instanceId={instanceInfo.id} bots={botsWithStatus} />
+      <BotCardsWithMenu
+        instanceId={instanceInfo.id}
+        bots={botsWithStatus}
+        canControl={canControl}
+      />
       <div ref={loadMoreRef} className="flex justify-center py-4">
         {isFetchingNextPage ? (
           <div className="text-muted-foreground flex items-center gap-2">
@@ -500,6 +662,10 @@ export function BotGridPreview({
   const { data: botStatus } = useSuspenseQuery(
     botStatusQueryOptions(instanceInfo.id),
   );
+  const canControl = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.CONTROL_BOTS,
+  );
 
   const statusMap = useMemo(
     () => buildStatusMap(botStatus.bots),
@@ -525,7 +691,11 @@ export function BotGridPreview({
 
   return (
     <div className="flex flex-col gap-3">
-      <BotCardsWithMenu instanceId={instanceInfo.id} bots={previewBots} />
+      <BotCardsWithMenu
+        instanceId={instanceInfo.id}
+        bots={previewBots}
+        canControl={canControl}
+      />
       {totalCount > previewBots.length && (
         <Button
           variant="ghost"

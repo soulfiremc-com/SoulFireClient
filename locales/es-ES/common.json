@@ -421,13 +421,6 @@
     "success": "Se copió \"{{content}}\" al portapapeles",
     "error": "Error al copiar al portapapeles"
   },
-  "instanceState": {
-    "starting": "Iniciando",
-    "running": "En ejecución",
-    "paused": "Pausado",
-    "stopping": "Deteniendo",
-    "stopped": "Detenido"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Buscar usuarios...",
     "searchTimestamps": "Buscar marcas de tiempo...",
     "executedCommand": "Comando ejecutado: {{data}}",
-    "startedSession": "Se inició una sesión",
-    "resumedSession": "Se reanudó una sesión",
-    "pausedSession": "Se pausó una sesión",
-    "stoppedSession": "Se detuvo una sesión",
     "contextMenu": {
       "copyUsername": "Copiar nombre de usuario",
       "copyCommand": "Copiar comando"

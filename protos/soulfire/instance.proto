@@ -7,6 +7,7 @@ package soulfire.v1;
 
 import "soulfire/common.proto";
 import "soulfire/api_docs.proto";
+import "soulfire/bot.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
@@ -66,27 +67,6 @@ message InstanceDeleteRequest {
 message InstanceDeleteResponse {
 }
 
-// Represents the lifecycle state of an instance session.
-// State transitions follow a specific flow:
-// STOPPED -> STARTING -> RUNNING <-> PAUSED -> STOPPING -> STOPPED
-enum InstanceState {
-  // The instance is currently starting up and initializing bots.
-  // This is a transitional state.
-  STARTING = 0;
-  // The instance is fully running with active bot connections.
-  // Bots are ticking and processing game logic.
-  RUNNING = 1;
-  // The instance is paused. Bots maintain their connections but
-  // stop ticking and processing game logic.
-  PAUSED = 2;
-  // The instance is in the process of stopping.
-  // This is a transitional state while bots disconnect.
-  STOPPING = 3;
-  // The instance is fully stopped with no active bot connections.
-  // This is the initial state for new instances.
-  STOPPED = 4;
-}
-
 // Request to list all instances visible to the current user.
 message InstanceListRequest {
 }
@@ -101,11 +81,11 @@ message InstanceListResponse {
     string friendly_name = 2 [(google.api.field_behavior) = REQUIRED];
     // The icon identifier for the instance (used for UI display).
     string icon = 5 [(google.api.field_behavior) = REQUIRED];
-    // The current lifecycle state of the instance.
-    InstanceState state = 3 [(google.api.field_behavior) = REQUIRED];
     // The permissions the current user has on this instance.
     // Each permission indicates whether a specific action is allowed.
     repeated InstancePermissionState instance_permissions = 4;
+    // Aggregate desired and runtime state for the instance's bots.
+    BotFleetSummary bot_summary = 6 [(google.api.field_behavior) = REQUIRED];
   }
 
   // List of instances the user has READ_INSTANCE permission for.
@@ -141,8 +121,6 @@ message InstanceInfo {
   // The complete configuration of the instance including settings,
   // accounts, and proxies.
   InstanceConfig config = 2 [(google.api.field_behavior) = REQUIRED];
-  // The current lifecycle state of the instance.
-  InstanceState state = 3 [(google.api.field_behavior) = REQUIRED];
   // The permissions the current user has on this instance.
   repeated InstancePermissionState instance_permissions = 4;
   // All available settings definitions that can be rendered by identifier.
@@ -156,6 +134,8 @@ message InstanceInfo {
   // Timestamp of when the configuration was last modified.
   // Used for conditional requests via if_modified_since.
   google.protobuf.Timestamp last_modified = 9 [(google.api.field_behavior) = REQUIRED];
+  // Aggregate desired and runtime state for the instance's bots.
+  BotFleetSummary bot_summary = 10 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Returned when the instance configuration has not changed since
@@ -373,26 +353,6 @@ message InstanceRemoveProxiesBatchRequest {
 message InstanceRemoveProxiesBatchResponse {
 }
 
-// Request to change the lifecycle state of an instance.
-// Used to start, pause, resume, or stop an instance.
-message InstanceStateChangeRequest {
-  // The unique identifier (UUID) of the instance.
-  string id = 1 [(google.api.field_behavior) = REQUIRED, (soulfire.v1.api_field).format = "uuid"];
-  // The target state for the instance. Valid transitions:
-  // - STOPPED -> RUNNING: Starts the instance
-  // - RUNNING -> PAUSED: Pauses bot ticking
-  // - PAUSED -> RUNNING: Resumes bot ticking
-  // - RUNNING/PAUSED -> STOPPED: Stops the instance
-  // The server will handle intermediate states (STARTING, STOPPING) automatically.
-  InstanceState state = 2 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Response after successfully changing instance state.
-// The operation completes when the state transition is finished.
-// Empty response indicates success.
-message InstanceStateChangeResponse {
-}
-
 // Request to retrieve the audit log for an instance.
 message InstanceAuditLogRequest {
   // The unique identifier (UUID) of the instance.
@@ -503,14 +463,6 @@ message InstanceAuditLogResponse {
   enum AuditLogEntryType {
     // A command was executed on the instance.
     EXECUTE_COMMAND = 0;
-    // The instance session was started.
-    START_SESSION = 1;
-    // The instance session was paused.
-    PAUSE_SESSION = 2;
-    // The instance session was resumed from paused state.
-    RESUME_SESSION = 3;
-    // The instance session was stopped.
-    STOP_SESSION = 4;
     // Beat or acquire automation was started.
     AUTOMATION_START = 5;
     // Automation was paused.
@@ -529,6 +481,10 @@ message InstanceAuditLogResponse {
     AUTOMATION_RESET_COORDINATION = 12;
     // Automation claims were manually released.
     AUTOMATION_RELEASE_CLAIMS = 13;
+    // One or more bots had their desired state changed.
+    BOT_DESIRED_STATE_CHANGE = 14;
+    // One or more bots were restarted.
+    BOT_RESTART = 15;
   }
 
   // A single entry in the audit log.
@@ -551,9 +507,8 @@ message InstanceAuditLogResponse {
 }
 
 // Service for managing SoulFire instances.
-// An instance represents a collection of Minecraft bots that can be started,
-// stopped, and configured together. Each instance has its own configuration
-// including settings, Minecraft accounts, and proxies.
+// An instance is a permission and configuration compartment for independently
+// controlled Minecraft bots, settings, accounts, proxies, and automation.
 //
 // All operations require appropriate permissions:
 // - CREATE_INSTANCE (global): Required to create new instances
@@ -561,12 +516,10 @@ message InstanceAuditLogResponse {
 // - UPDATE_INSTANCE_META: Required to change instance name/icon
 // - UPDATE_INSTANCE_CONFIG: Required to modify settings, accounts, and proxies
 // - DELETE_INSTANCE: Required to delete an instance
-// - CHANGE_INSTANCE_STATE: Required to start/stop/pause the instance
 // - READ_INSTANCE_AUDIT_LOGS: Required to view audit logs
 // - READ_BOT_INFO: Required to read account metadata
 service InstanceService {
   // Creates a new instance with the given friendly name.
-  // The instance starts in STOPPED state with default configuration.
   // Requires: CREATE_INSTANCE global permission
   // Returns: The UUID of the newly created instance
   // Errors: INTERNAL if creation fails
@@ -579,12 +532,12 @@ service InstanceService {
       display_name: "Create instance"
       permissions: "CREATE_INSTANCE"
       scope: "instance"
-      side_effects: "Creates a new instance in the stopped state."
+      side_effects: "Creates a new instance with no desired bots."
     };
   }
 
   // Permanently deletes an instance and all its data.
-  // If the instance is running, it will be stopped first.
+  // Connected bots are stopped before the instance is deleted.
   // This operation cannot be undone.
   // Requires: DELETE_INSTANCE permission on the instance
   // Errors: NOT_FOUND if instance does not exist
@@ -824,25 +777,6 @@ service InstanceService {
       display_name: "Batch remove instance proxies"
       permissions: "UPDATE_INSTANCE_CONFIG"
       scope: "instance.proxy"
-    };
-  }
-
-  // Changes the lifecycle state of an instance.
-  // Used to start, pause, resume, or stop bot sessions.
-  // The operation blocks until the state transition is complete.
-  // Requires: CHANGE_INSTANCE_STATE permission on the instance
-  // Errors: NOT_FOUND if instance does not exist
-  rpc ChangeInstanceState (InstanceStateChangeRequest) returns (InstanceStateChangeResponse) {
-    option (google.api.http) = {
-      post: "/v1/instances/{id}:changeState"
-      body: "*"
-    };
-    option (soulfire.v1.api_method) = {
-      display_name: "Change instance state"
-      permissions: "CHANGE_INSTANCE_STATE"
-      scope: "instance"
-      execution: "Blocking until transition completes"
-      side_effects: "Starts, pauses, resumes, or stops the instance."
     };
   }
 

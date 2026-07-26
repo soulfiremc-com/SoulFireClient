@@ -421,13 +421,6 @@
     "success": "„{{content}}“ zkopírováno do schránky",
     "error": "Nepodařilo se zkopírovat do schránky"
   },
-  "instanceState": {
-    "starting": "Spouštění",
-    "running": "Běží",
-    "paused": "Pozastaveno",
-    "stopping": "Zastavování",
-    "stopped": "Zastaveno"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Hledat uživatele...",
     "searchTimestamps": "Hledat časová razítka...",
     "executedCommand": "Proveden příkaz: {{data}}",
-    "startedSession": "Byla spuštěna relace",
-    "resumedSession": "Relace byla obnovena",
-    "pausedSession": "Relace byla pozastavena",
-    "stoppedSession": "Relace byla zastavena",
     "contextMenu": {
       "copyUsername": "Kopírovat uživatelské jméno",
       "copyCommand": "Kopírovat příkaz"

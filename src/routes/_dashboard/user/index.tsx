@@ -15,7 +15,6 @@ import {
   ClipboardCopyIcon,
   CopyPlusIcon,
   ExternalLinkIcon,
-  PauseIcon,
   PlayIcon,
   PlusIcon,
   SearchXIcon,
@@ -27,6 +26,7 @@ import { type ComponentType, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
+import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   MenuItem,
@@ -34,7 +34,6 @@ import {
 } from "@/components/context-menu-primitives.tsx";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
-import { InstanceStateIndicator } from "@/components/instance-state-indicator.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
@@ -83,14 +82,16 @@ import {
 import { Kbd } from "@/components/ui/kbd.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import {
+  BotDesiredState,
+  type BotFleetSummary,
+  BotService,
+} from "@/generated/soulfire/bot_pb.ts";
+import {
   GlobalPermission,
   InstancePermission,
 } from "@/generated/soulfire/common_pb.ts";
 import type { InstanceListResponse_Instance } from "@/generated/soulfire/instance_pb.ts";
-import {
-  InstanceService,
-  InstanceState,
-} from "@/generated/soulfire/instance_pb.ts";
+import { InstanceService } from "@/generated/soulfire/instance_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
@@ -107,8 +108,8 @@ export const Route = createFileRoute("/_dashboard/user/")({
 });
 
 type StateAction = {
-  key: "start" | "pause" | "resume" | "stop";
-  state: InstanceState;
+  key: "start" | "stop";
+  desiredState: BotDesiredState;
   Icon: ComponentType<{ className?: string }>;
 };
 
@@ -134,24 +135,23 @@ function getDuplicateInstanceName(friendlyName: string) {
   return `${baseName.slice(0, maxLength - suffix.length).trimEnd()}${suffix}`;
 }
 
-function getAvailableStateActions(state: InstanceState): StateAction[] {
-  switch (state) {
-    case InstanceState.STOPPED:
-      return [{ key: "start", state: InstanceState.RUNNING, Icon: PlayIcon }];
-    case InstanceState.RUNNING:
-      return [
-        { key: "pause", state: InstanceState.PAUSED, Icon: PauseIcon },
-        { key: "stop", state: InstanceState.STOPPED, Icon: SquareIcon },
-      ];
-    case InstanceState.PAUSED:
-      return [
-        { key: "resume", state: InstanceState.RUNNING, Icon: PlayIcon },
-        { key: "stop", state: InstanceState.STOPPED, Icon: SquareIcon },
-      ];
-    case InstanceState.STARTING:
-    case InstanceState.STOPPING:
-      return [];
+function getAvailableStateActions(summary?: BotFleetSummary): StateAction[] {
+  const actions: StateAction[] = [];
+  if ((summary?.desiredBots ?? 0) < (summary?.totalBots ?? 0)) {
+    actions.push({
+      key: "start",
+      desiredState: BotDesiredState.RUNNING,
+      Icon: PlayIcon,
+    });
   }
+  if ((summary?.desiredBots ?? 0) > 0) {
+    actions.push({
+      key: "stop",
+      desiredState: BotDesiredState.STOPPED,
+      Icon: SquareIcon,
+    });
+  }
+  return actions;
 }
 
 function DuplicateInstanceDialog({
@@ -318,24 +318,27 @@ function Content() {
     useState<InstanceListResponse_Instance | null>(null);
 
   const stateMutation = useMutation({
-    mutationKey: ["instance", "state", "list"],
+    mutationKey: ["bots", "desired-state", "list"],
     mutationFn: async ({
       instanceId,
-      state,
+      desiredState,
       action,
     }: {
       instanceId: string;
-      state: InstanceState;
+      desiredState: BotDesiredState;
       action: StateAction["key"];
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .changeInstanceState({
-          id: instanceId,
-          state,
-        })
-        .then((r) => r);
+      const botService = createClient(BotService, transport);
+      const promise = botService.getBotList({ instanceId }).then((list) =>
+        botService.setBotsDesiredState({
+          instanceId,
+          botIds: list.bots
+            .filter((bot) => bot.status?.desiredState !== desiredState)
+            .map((bot) => bot.profileId),
+          desiredState,
+        }),
+      );
       toast.promise(promise, {
         loading: t(`controls.${action}Toast.loading`),
         success: t(`controls.${action}Toast.success`),
@@ -448,11 +451,8 @@ function Content() {
 
   const contextStateActions =
     contextMenu &&
-    hasInstancePermission(
-      contextMenu.data,
-      InstancePermission.CHANGE_INSTANCE_STATE,
-    )
-      ? getAvailableStateActions(contextMenu.data.state)
+    hasInstancePermission(contextMenu.data, InstancePermission.CONTROL_BOTS)
+      ? getAvailableStateActions(contextMenu.data.botSummary)
       : [];
   const canDeleteContextInstance =
     contextMenu &&
@@ -504,7 +504,7 @@ function Content() {
                       {instance.friendlyName}
                     </ItemTitle>
                     <div data-slot="item-description">
-                      <InstanceStateIndicator state={instance.state} />
+                      <BotFleetSummaryBadge summary={instance.botSummary} />
                     </div>
                   </ItemContent>
                   <div className="ml-auto shrink-0">
@@ -556,7 +556,7 @@ function Content() {
                   onClick={() => {
                     stateMutation.mutate({
                       instanceId: contextMenu.data.id,
-                      state: action.state,
+                      desiredState: action.desiredState,
                       action: action.key,
                     });
                     dismiss();

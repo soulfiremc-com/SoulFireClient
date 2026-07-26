@@ -102,37 +102,25 @@
   },
   "controls": {
     "start": "Starta",
-    "resume": "Återuppta",
-    "pause": "Pausa",
     "stop": "Stoppa",
+    "startAll": "Starta alla",
+    "stopAll": "Stoppa alla",
+    "restart": "Starta om",
+    "startCount": "Antal bottar att starta",
     "startToast": {
-      "loading": "Startar session...",
-      "success": "Sessionen startades framgångsrikt",
-      "error": "Misslyckades med att starta sessionen"
+      "loading": "Startar bottar...",
+      "success": "Bottarnas status uppdaterades",
+      "error": "Misslyckades med att starta bottar"
     },
-    "resumeToast": {
-      "loading": "Återupptar session...",
-      "success": "Sessionen återupptogs framgångsrikt",
-      "error": "Misslyckades med att återuppta sessionen"
-    },
-    "pauseToast": {
-      "loading": "Pausar session...",
-      "success": "Sessionen pausades framgångsrikt.",
-      "error": "Det gick inte att pausa sessionen."
+    "restartToast": {
+      "loading": "Startar om bottar...",
+      "success": "Bottarna ansluter igen",
+      "error": "Misslyckades med att starta om bottar"
     },
     "stopToast": {
-      "loading": "Stoppar session...",
-      "success": "Sessionen stoppades framgångsrikt.",
-      "error": "Det gick inte att stoppa sessionen."
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Inga konton konfigurerade",
-      "noAccountsDescription": "Du måste importera konton innan du startar en session. Du begärde {{required}} botar.",
-      "notEnoughTitle": "För få konton",
-      "notEnoughDescription": "Du begärde {{required}} bottar men har bara {{available}} konton importerade.",
-      "hint": "Du kan generera offlinekonton eller importera konton från sidan för kontoinställningar.",
-      "continueWithExisting": "Fortsätt med {{count}} konton",
-      "generateAccounts": "Generera konton"
+      "loading": "Stoppar bottar...",
+      "success": "Bottarna stoppas",
+      "error": "Det gick inte att stoppa bottarna"
     }
   },
   "icon": {
@@ -421,13 +409,6 @@
     "success": "Kopierade \"{{content}}\" till urklipp",
     "error": "Misslyckades med att kopiera till urklipp"
   },
-  "instanceState": {
-    "starting": "Startar",
-    "running": "Kör",
-    "paused": "Pausad",
-    "stopping": "Stoppar",
-    "stopped": "Stoppad"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +433,6 @@
     "searchUsers": "Sök användare...",
     "searchTimestamps": "Sök tidsstämplar...",
     "executedCommand": "Körde kommando: {{data}}",
-    "startedSession": "Startade en session",
-    "resumedSession": "Återupptog en session",
-    "pausedSession": "Pausade en session",
-    "stoppedSession": "Stoppade en session",
     "contextMenu": {
       "copyUsername": "Kopiera användarnamn",
       "copyCommand": "Kopiera kommando"

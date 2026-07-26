@@ -1,3 +1,12 @@
+import { create } from "@bufbuild/protobuf";
+import { TimestampSchema } from "@/generated/google/protobuf/timestamp_pb.ts";
+import {
+  BotConnectionPhase,
+  BotDesiredState,
+  type BotListResponse,
+  BotListResponseSchema,
+  BotRuntimeState,
+} from "@/generated/soulfire/bot_pb.ts";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb.ts";
 import {
   GlobalPermission,
@@ -27,13 +36,32 @@ export const demoClientData = {
   },
 } as ClientDataResponse;
 
+export const demoBotList = create(BotListResponseSchema, {
+  bots: [
+    {
+      profileId: "607d30e7-115b-3838-914a-e4229c2b985d",
+      isOnline: true,
+      connectionPhase: BotConnectionPhase.SPAWNED,
+      accountName: "Pistonmaster",
+      status: {
+        profileId: "607d30e7-115b-3838-914a-e4229c2b985d",
+        desiredState: BotDesiredState.RUNNING,
+        runtimeState: BotRuntimeState.RUNNING,
+        updatedAt: create(TimestampSchema, {
+          seconds: 0n,
+          nanos: 0,
+        }),
+      },
+    },
+  ],
+}) satisfies BotListResponse;
+
 export const demoInstanceSettings = [
   {
     id: "bot",
     pageName: "Bot Settings",
     entries: [
       { namespace: "bot", key: "address" },
-      { namespace: "bot", key: "amount" },
       { namespace: "bot", key: "join-delay" },
       { namespace: "bot", key: "protocol-version" },
       { namespace: "bot", key: "read-timeout" },
@@ -135,24 +163,6 @@ export const demoInstanceSettingsDefinitions = [
       },
     },
     id: { namespace: "bot", key: "address" },
-  },
-  {
-    scope: 1,
-    type: {
-      case: "int",
-      value: {
-        uiName: "Amount",
-        description: "Amount of bots to connect",
-        def: 1,
-        min: 1,
-        max: 2147483647,
-        step: 1,
-        placeholder: "",
-        thousandSeparator: true,
-        disabled: false,
-      },
-    },
-    id: { namespace: "bot", key: "amount" },
   },
   {
     scope: 1,
@@ -866,13 +876,13 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "concurrent-connects" },
   },
   {
-    scope: 1,
+    scope: 2,
     type: {
       case: "bool",
       value: {
         uiName: "Restore on Reboot",
         description:
-          "Whether the attack should be restored after a reboot of the SoulFire machine.\nIf turned off, the attack will not be restored after a reboot.",
+          "Reconnect this bot when SoulFire starts if it was previously desired to be running.",
         def: true,
         disabled: false,
       },

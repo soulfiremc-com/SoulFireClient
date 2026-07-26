@@ -102,37 +102,25 @@
   },
   "controls": {
     "start": "Avvia",
-    "resume": "Riprendi",
-    "pause": "Pausa",
     "stop": "Ferma",
+    "startAll": "Avvia tutti",
+    "stopAll": "Ferma tutti",
+    "restart": "Riavvia",
+    "startCount": "Numero di bot da avviare",
     "startToast": {
-      "loading": "Avvio della sessione...",
-      "success": "Sessione avviata con successo",
-      "error": "Impossibile avviare la sessione"
+      "loading": "Avvio dei bot...",
+      "success": "Stato dei bot aggiornato",
+      "error": "Impossibile avviare i bot"
     },
-    "resumeToast": {
-      "loading": "Ripresa della sessione...",
-      "success": "Sessione ripresa con successo",
-      "error": "Impossibile riprendere la sessione"
-    },
-    "pauseToast": {
-      "loading": "Pausa della sessione...",
-      "success": "Sessione messa in pausa con successo",
-      "error": "Impossibile mettere in pausa la sessione"
+    "restartToast": {
+      "loading": "Riavvio dei bot...",
+      "success": "I bot si stanno riconnettendo",
+      "error": "Impossibile riavviare i bot"
     },
     "stopToast": {
-      "loading": "Interruzione della sessione in corso...",
-      "success": "Sessione interrotta con successo",
-      "error": "Impossibile interrompere la sessione"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Nessun account configurato",
-      "noAccountsDescription": "Devi importare gli account prima di avviare una sessione. Hai richiesto {{required}} bot.",
-      "notEnoughTitle": "Account insufficienti",
-      "notEnoughDescription": "Hai richiesto {{required}} bot ma hai importato solo {{available}} account.",
-      "hint": "Puoi generare account offline o importarli dalla pagina delle impostazioni account.",
-      "continueWithExisting": "Continua con {{count}} account",
-      "generateAccounts": "Genera Account"
+      "loading": "Arresto dei bot...",
+      "success": "I bot si stanno arrestando",
+      "error": "Impossibile arrestare i bot"
     }
   },
   "icon": {
@@ -421,13 +409,6 @@
     "success": "\"{{content}}\" copiato negli appunti",
     "error": "Impossibile copiare negli appunti"
   },
-  "instanceState": {
-    "starting": "Avvio in corso",
-    "running": "In esecuzione",
-    "paused": "In pausa",
-    "stopping": "Arresto in corso",
-    "stopped": "Arrestato"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +433,6 @@
     "searchUsers": "Cerca utenti...",
     "searchTimestamps": "Cerca timestamp...",
     "executedCommand": "Comando eseguito: {{data}}",
-    "startedSession": "Sessione avviata",
-    "resumedSession": "Sessione ripresa",
-    "pausedSession": "Sessione messa in pausa",
-    "stoppedSession": "Sessione interrotta",
     "contextMenu": {
       "copyUsername": "Copia nome utente",
       "copyCommand": "Copia comando"

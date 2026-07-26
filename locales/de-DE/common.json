@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" wurde in die Zwischenablage kopiert",
     "error": "Kopieren in die Zwischenablage fehlgeschlagen"
   },
-  "instanceState": {
-    "starting": "Starte",
-    "running": "Läuft",
-    "paused": "Pausiert",
-    "stopping": "Stoppt",
-    "stopped": "Gestoppt"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Benutzer suchen...",
     "searchTimestamps": "Zeitstempel suchen...",
     "executedCommand": "Ausgeführter Befehl: {{data}}",
-    "startedSession": "Eine Sitzung gestartet",
-    "resumedSession": "Eine Sitzung fortgesetzt",
-    "pausedSession": "Eine Sitzung pausiert",
-    "stoppedSession": "Eine Sitzung gestoppt",
     "contextMenu": {
       "copyUsername": "Benutzernamen kopieren",
       "copyCommand": "Befehl kopieren"

@@ -19,6 +19,7 @@ import {
 import { Suspense, use, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { formatBotFleetSummary } from "@/components/bot-fleet-summary.tsx";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
@@ -62,7 +63,7 @@ import {
 import { InstanceService } from "@/generated/soulfire/instance_pb.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { formatShortcut } from "@/lib/platform.ts";
-import { type ProfileRoot, translateInstanceState } from "@/lib/types.ts";
+import type { ProfileRoot } from "@/lib/types.ts";
 import {
   data2blob,
   hasGlobalPermission,
@@ -72,21 +73,21 @@ import {
 } from "@/lib/utils.tsx";
 
 function SidebarInstanceButton() {
-  const { i18n } = useTranslation("common");
+  const { t } = useTranslation("common");
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
-  const capitalizedState = translateInstanceState(i18n, instanceInfo.state);
+  const fleetSummary = formatBotFleetSummary(t, instanceInfo.botSummary);
   return (
     <DropdownMenuTrigger
       render={
         <SidebarMenuButton
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-          tooltip={`${instanceInfo.friendlyName} | ${capitalizedState}`}
+          tooltip={`${instanceInfo.friendlyName} | ${fleetSummary}`}
         />
       }
     >
@@ -97,7 +98,7 @@ function SidebarInstanceButton() {
         <span className="max-w-64 truncate font-semibold">
           {instanceInfo.friendlyName}
         </span>
-        <span className="truncate text-xs">{capitalizedState}</span>
+        <span className="truncate text-xs">{fleetSummary}</span>
       </div>
       <ChevronsUpDownIcon className="ml-auto" />
     </DropdownMenuTrigger>

@@ -1,7 +1,6 @@
 import type { QueryKey } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { InstanceState } from "@/generated/soulfire/instance_pb";
 import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb";
 import type {
   CastMetricsSnapshot,
@@ -12,14 +11,6 @@ import type { InstanceInfoQueryData } from "@/lib/types";
 
 const BROADCAST_INTERVAL_MS = 5_000;
 const MAX_POSITIONS = 50;
-
-const STATE_LABELS: Record<number, string> = {
-  [InstanceState.STARTING]: "Starting",
-  [InstanceState.RUNNING]: "Running",
-  [InstanceState.PAUSED]: "Paused",
-  [InstanceState.STOPPING]: "Stopping",
-  [InstanceState.STOPPED]: "Stopped",
-};
 
 export function useCastBroadcast(
   metricsQueryKey: QueryKey,
@@ -90,7 +81,7 @@ export function useCastBroadcast(
         },
         instanceInfo: {
           friendlyName: instanceData.friendlyName,
-          state: STATE_LABELS[instanceData.state] ?? "Unknown",
+          state: `${instanceData.botSummary?.onlineBots ?? 0} online, ${instanceData.botSummary?.desiredBots ?? 0} desired`,
         },
       };
 

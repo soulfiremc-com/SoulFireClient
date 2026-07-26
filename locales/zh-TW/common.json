@@ -421,13 +421,6 @@
     "success": "已將「{{content}}」複製到剪貼簿",
     "error": "複製到剪貼簿失敗"
   },
-  "instanceState": {
-    "starting": "啟動中",
-    "running": "執行中",
-    "paused": "已暫停",
-    "stopping": "停止中",
-    "stopped": "已停止"
-  },
   "userSettings": {
     "avatar": {
       "title": "頭像",
@@ -452,10 +445,6 @@
     "searchUsers": "搜尋使用者...",
     "searchTimestamps": "搜尋時間戳記...",
     "executedCommand": "執行指令：{{data}}",
-    "startedSession": "已啟動會話",
-    "resumedSession": "已恢復會話",
-    "pausedSession": "已暫停會話",
-    "stoppedSession": "已停止會話",
     "contextMenu": {
       "copyUsername": "複製用戶名稱",
       "copyCommand": "複製指令"

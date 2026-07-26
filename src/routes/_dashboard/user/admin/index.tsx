@@ -22,10 +22,7 @@ import {
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserRole } from "@/generated/soulfire/common_pb.ts";
-import {
-  type InstanceListResponse,
-  InstanceState,
-} from "@/generated/soulfire/instance_pb.ts";
+import type { InstanceListResponse } from "@/generated/soulfire/instance_pb.ts";
 import type { UserListResponse } from "@/generated/soulfire/user_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
@@ -169,14 +166,14 @@ export function InstancesChart(props: { instanceList: InstanceListResponse }) {
       {
         state: "active",
         instances: props.instanceList.instances.filter(
-          (instance) => instance.state !== InstanceState.STOPPED,
+          (instance) => (instance.botSummary?.desiredBots ?? 0) > 0,
         ).length,
         fill: "var(--color-active)",
       },
       {
         state: "stopped",
         instances: props.instanceList.instances.filter(
-          (instance) => instance.state === InstanceState.STOPPED,
+          (instance) => (instance.botSummary?.desiredBots ?? 0) === 0,
         ).length,
         fill: "var(--color-stopped)",
       },

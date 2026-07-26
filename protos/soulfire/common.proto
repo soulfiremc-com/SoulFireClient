@@ -348,10 +348,6 @@ enum InstancePermission {
   // Required by InstanceService.DeleteInstance RPC.
   // This is a destructive operation that cannot be undone.
   DELETE_INSTANCE = 4;
-  // Permission to change the instance state (start, stop, pause, resume).
-  // Required by InstanceService.ChangeInstanceState RPC.
-  // Controls the bot session lifecycle.
-  CHANGE_INSTANCE_STATE = 5;
   // Permission to authenticate Minecraft accounts for this instance.
   // Required by MCAuthService RPCs (LoginCredentials, LoginDeviceCode, Refresh).
   // Allows adding new accounts or refreshing existing account tokens.
@@ -383,6 +379,11 @@ enum InstancePermission {
   UPDATE_BOT_CONFIG = 11;
   // Reserved for removed script permissions (16-20)
   reserved 16, 17, 18, 19, 20;
+  // Permission to change which bots should be connected.
+  // Required by BotService.SetBotsDesiredState and RestartBots.
+  CONTROL_BOTS = 21;
+  // Permission to activate, deactivate, and dry-run scripts.
+  EXECUTE_SCRIPTS = 22;
 }
 
 // The role assigned to a user account, determining their base permission level.

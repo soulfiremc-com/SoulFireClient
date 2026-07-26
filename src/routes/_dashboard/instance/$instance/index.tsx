@@ -2,8 +2,9 @@ import { create } from "@bufbuild/protobuf";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SquareTerminalIcon } from "lucide-react";
-import { type ReactNode, Suspense, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import ControlsMenu from "@/components/controls-menu.tsx";
 import { ActivityTimeline } from "@/components/instance-overview/activity-timeline.tsx";
 import {
@@ -18,10 +19,8 @@ import { DetailedMetrics } from "@/components/instance-overview/detailed-metrics
 import { FleetSpotlight } from "@/components/instance-overview/fleet-spotlight.tsx";
 import { KpiStrip } from "@/components/instance-overview/kpi-strip.tsx";
 import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
-import { InstanceStateIndicator } from "@/components/instance-state-indicator.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
@@ -39,7 +38,6 @@ import {
 } from "@/components/ui/credenza.tsx";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
-import { InstanceState } from "@/generated/soulfire/instance_pb.ts";
 import {
   InstanceLogScopeSchema,
   type LogScope,
@@ -51,7 +49,6 @@ import type {
 } from "@/generated/soulfire/metrics_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
-import type { InstanceInfoQueryData } from "@/lib/types.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/")({
@@ -205,7 +202,7 @@ function OverviewHeaderSection() {
         <h2 className="max-w-64 truncate text-xl font-semibold">
           {instanceInfo.friendlyName}
         </h2>
-        <InstanceStateIndicator state={instanceInfo.state} />
+        <BotFleetSummaryBadge summary={instanceInfo.botSummary} />
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <ControlsMenu />
@@ -255,22 +252,13 @@ function OverviewMetricsSection() {
     InstancePermission.READ_INSTANCE_AUDIT_LOGS,
   );
 
-  const isActiveState =
-    instanceInfo.state === InstanceState.RUNNING ||
-    instanceInfo.state === InstanceState.STARTING ||
-    instanceInfo.state === InstanceState.PAUSED;
+  const hasDesiredBots = (instanceInfo.botSummary?.desiredBots ?? 0) > 0;
   const hasSnapshots = metricsData.snapshots.length >= 2;
-  const showMetrics = hasMetricsPermission && (isActiveState || hasSnapshots);
+  const showMetrics = hasMetricsPermission && (hasDesiredBots || hasSnapshots);
   const latest = getLatestSnapshot(metricsData);
-
-  const configuredBotAmount = getConfiguredBotAmount(instanceInfo);
-  const setupIncomplete =
-    instanceInfo.profile.accounts.length < configuredBotAmount;
 
   return (
     <div className="flex flex-col gap-3">
-      {setupIncomplete && <ReadinessCard instanceInfo={instanceInfo} />}
-
       <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
         {hasMetricsPermission ? (
           <Suspense fallback={<SpotlightSkeleton />}>
@@ -352,150 +340,6 @@ function OverviewMetricsSection() {
   );
 }
 
-function ReadinessCard({
-  instanceInfo,
-}: {
-  instanceInfo: InstanceInfoQueryData;
-}) {
-  const { t } = useTranslation("instance");
-  const configuredBotAmount = getConfiguredBotAmount(instanceInfo);
-  const accountCount = instanceInfo.profile.accounts.length;
-  const proxyCount = instanceInfo.profile.proxies.length;
-  const pluginPageCount = instanceInfo.instanceSettings.filter(
-    (page) => page.owningPluginId !== undefined,
-  ).length;
-
-  const rows: ReadinessRowProps[] = [
-    {
-      id: "accounts",
-      label: t("overview.readiness.accounts"),
-      value: t("overview.readiness.accountsValue", {
-        count: accountCount,
-        requested: configuredBotAmount,
-      }),
-      state: accountCount >= configuredBotAmount ? "ready" : "warning",
-      badge:
-        accountCount >= configuredBotAmount
-          ? t("overview.status.ready")
-          : t("overview.status.attention"),
-      action: (
-        <Button
-          variant="ghost"
-          size="sm"
-          nativeButton={false}
-          render={
-            <Link
-              to="/instance/$instance/accounts"
-              params={{ instance: instanceInfo.id }}
-            />
-          }
-        >
-          {t("overview.actions.manage")}
-        </Button>
-      ),
-    },
-    {
-      id: "proxies",
-      label: t("overview.readiness.proxies"),
-      value: t("overview.readiness.proxiesValue", { count: proxyCount }),
-      state: proxyCount > 0 ? "ready" : "neutral",
-      badge:
-        proxyCount > 0
-          ? t("overview.status.configured")
-          : t("overview.status.optional"),
-      action: (
-        <Button
-          variant="ghost"
-          size="sm"
-          nativeButton={false}
-          render={
-            <Link
-              to="/instance/$instance/proxies"
-              params={{ instance: instanceInfo.id }}
-            />
-          }
-        >
-          {t("overview.actions.manage")}
-        </Button>
-      ),
-    },
-    {
-      id: "plugins",
-      label: t("overview.readiness.plugins"),
-      value: t("overview.readiness.pluginsValue", { count: pluginPageCount }),
-      state: pluginPageCount > 0 ? "ready" : "neutral",
-      badge:
-        pluginPageCount > 0
-          ? t("overview.status.available")
-          : t("overview.status.none"),
-      action: (
-        <Button
-          variant="ghost"
-          size="sm"
-          nativeButton={false}
-          render={
-            <Link
-              to="/instance/$instance/discover"
-              params={{ instance: instanceInfo.id }}
-            />
-          }
-        >
-          {t("overview.actions.open")}
-        </Button>
-      ),
-    },
-  ];
-
-  return (
-    <Card size="sm">
-      <CardHeader>
-        <CardTitle className="text-sm">
-          {t("overview.readiness.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        {rows.map((row) => (
-          <ReadinessRow key={row.id} {...row} />
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
-type ReadinessRowProps = {
-  id: string;
-  label: string;
-  value: string;
-  state: "ready" | "warning" | "neutral";
-  badge: string;
-  action: ReactNode;
-};
-
-function ReadinessRow(props: ReadinessRowProps) {
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border px-3 py-2">
-      <div className="min-w-0">
-        <div className="flex items-center gap-2">
-          <p className="truncate text-sm font-medium">{props.label}</p>
-          <Badge
-            variant={
-              props.state === "warning"
-                ? "destructive"
-                : props.state === "ready"
-                  ? "secondary"
-                  : "outline"
-            }
-          >
-            {props.badge}
-          </Badge>
-        </div>
-        <p className="text-muted-foreground text-sm">{props.value}</p>
-      </div>
-      {props.action}
-    </div>
-  );
-}
-
 function getLatestSnapshot(
   metricsData: GetInstanceMetricsResponse,
 ): MetricsSnapshot | null {
@@ -504,13 +348,4 @@ function getLatestSnapshot(
   }
 
   return metricsData.snapshots[metricsData.snapshots.length - 1];
-}
-
-function getConfiguredBotAmount(instanceInfo: InstanceInfoQueryData): number {
-  const amount = instanceInfo.profile.settings.bot?.amount;
-  if (typeof amount !== "number" || !Number.isFinite(amount)) {
-    return 1;
-  }
-
-  return Math.max(1, Math.floor(amount));
 }

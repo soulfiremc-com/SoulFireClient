@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" को क्लिपबोर्ड पर कॉपी किया गया",
     "error": "क्लिपबोर्ड पर कॉपी करने में विफल"
   },
-  "instanceState": {
-    "starting": "प्रारंभ हो रहा है",
-    "running": "चल रहा है",
-    "paused": "रुका हुआ है",
-    "stopping": "बंद हो रहा है",
-    "stopped": "बंद हुआ"
-  },
   "userSettings": {
     "avatar": {
       "title": "अवतार",
@@ -452,10 +445,6 @@
     "searchUsers": "उपयोगकर्ता खोजें...",
     "searchTimestamps": "टाइमस्टैम्प खोजें...",
     "executedCommand": "कमांड निष्पादित: {{data}}",
-    "startedSession": "सत्र शुरू किया गया",
-    "resumedSession": "सत्र फिर से शुरू किया गया",
-    "pausedSession": "सत्र रोक दिया गया",
-    "stoppedSession": "सत्र बंद कर दिया गया",
     "contextMenu": {
       "copyUsername": "यूज़रनेम कॉपी करें",
       "copyCommand": "कमान्ड कॉपी करें"

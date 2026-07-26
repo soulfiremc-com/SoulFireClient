@@ -35,13 +35,13 @@ message MetricsSnapshot {
   // Total number of bots configured in the instance (online + offline).
   uint32 bots_total = 3 [(google.api.field_behavior) = REQUIRED];
 
-  // Cumulative packets sent across all bots since session start.
+  // Cumulative packets sent across all bots since the server started.
   uint64 packets_sent_total = 4 [(google.api.field_behavior) = REQUIRED];
-  // Cumulative packets received across all bots since session start.
+  // Cumulative packets received across all bots since the server started.
   uint64 packets_received_total = 5 [(google.api.field_behavior) = REQUIRED];
-  // Cumulative bytes sent across all bots since session start.
+  // Cumulative bytes sent across all bots since the server started.
   uint64 bytes_sent_total = 6 [(google.api.field_behavior) = REQUIRED];
-  // Cumulative bytes received across all bots since session start.
+  // Cumulative bytes received across all bots since the server started.
   uint64 bytes_received_total = 7 [(google.api.field_behavior) = REQUIRED];
 
   // Current rate of packets sent per second (computed from counter deltas).
@@ -159,8 +159,16 @@ message ServerMetricsSnapshot {
   uint32 total_bots_online = 14 [(google.api.field_behavior) = REQUIRED];
   // Total bots configured across all instances.
   uint32 total_bots_total = 15 [(google.api.field_behavior) = REQUIRED];
-  // Number of active (non-stopped) instances.
-  uint32 active_instances = 16 [(google.api.field_behavior) = REQUIRED];
+  // Total bots desired to be running across all instances.
+  uint32 total_bots_desired = 17 [(google.api.field_behavior) = REQUIRED];
+  // Instances with at least one desired bot.
+  uint32 instances_with_desired_bots = 18 [(google.api.field_behavior) = REQUIRED];
+  // Bots currently queued or starting.
+  uint32 total_bots_starting = 19 [(google.api.field_behavior) = REQUIRED];
+  // Bots waiting for an automatic reconnect.
+  uint32 total_bots_retrying = 20 [(google.api.field_behavior) = REQUIRED];
+  // Desired bots whose latest connection attempt failed.
+  uint32 total_bots_failed = 21 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request to retrieve server-level system metrics.

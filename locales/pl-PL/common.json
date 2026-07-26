@@ -421,13 +421,6 @@
     "success": "Skopiowano \"{{content}}\" do schowka",
     "error": "Nie udało się skopiować do schowka"
   },
-  "instanceState": {
-    "starting": "Uruchamianie",
-    "running": "Uruchomiona",
-    "paused": "Wstrzymana",
-    "stopping": "Zatrzymywanie",
-    "stopped": "Zatrzymana"
-  },
   "userSettings": {
     "avatar": {
       "title": "Awatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Szukaj użytkowników...",
     "searchTimestamps": "Szukaj znaczników czasu...",
     "executedCommand": "Wykonano polecenie: {{data}}",
-    "startedSession": "Rozpoczęto sesję",
-    "resumedSession": "Wznowiono sesję",
-    "pausedSession": "Wstrzymano sesję",
-    "stoppedSession": "Zatrzymano sesję",
     "contextMenu": {
       "copyUsername": "Kopiuj nazwę użytkownika",
       "copyCommand": "Kopiuj polecenie"

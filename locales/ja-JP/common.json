@@ -421,13 +421,6 @@
     "success": "「{{content}}」をクリップボードにコピーしました",
     "error": "クリップボードへのコピーに失敗しました"
   },
-  "instanceState": {
-    "starting": "開始中",
-    "running": "稼働中",
-    "paused": "一時停止中",
-    "stopping": "停止中",
-    "stopped": "停止済み"
-  },
   "userSettings": {
     "avatar": {
       "title": "アバター",
@@ -452,10 +445,6 @@
     "searchUsers": "ユーザーを検索...",
     "searchTimestamps": "タイムスタンプを検索...",
     "executedCommand": "コマンドを実行: {{data}}",
-    "startedSession": "セッションを開始しました。",
-    "resumedSession": "セッションを再開しました。",
-    "pausedSession": "セッションを一時停止しました。",
-    "stoppedSession": "セッションを停止しました。",
     "contextMenu": {
       "copyUsername": "ユーザー名をコピー",
       "copyCommand": "コマンドをコピー"

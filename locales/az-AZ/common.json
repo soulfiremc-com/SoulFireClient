@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" panoya kopyalandı",
     "error": "Panoya kopyalama uğursuz oldu"
   },
-  "instanceState": {
-    "starting": "Başlanır",
-    "running": "İşləyir",
-    "paused": "Dayandırılıb",
-    "stopping": "Dayandırılır",
-    "stopped": "Dayandırılıb"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "İstifadəçilərdə axtarış...",
     "searchTimestamps": "Zaman işarələrində axtarış...",
     "executedCommand": "İcra edilmiş əmr: {{data}}",
-    "startedSession": "Sessiya başladıldı",
-    "resumedSession": "Sessiya davam etdirildi",
-    "pausedSession": "Sessiya dayandırıldı",
-    "stoppedSession": "Sessiya bitirildi",
     "contextMenu": {
       "copyUsername": "İstifadəçi adını kopyala",
       "copyCommand": "Əmri Kopyala"

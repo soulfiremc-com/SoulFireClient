@@ -102,37 +102,25 @@
   },
   "controls": {
     "start": "Démarrer",
-    "resume": "Reprendre",
-    "pause": "Pauser",
     "stop": "Arrêter",
+    "startAll": "Tout démarrer",
+    "stopAll": "Tout arrêter",
+    "restart": "Redémarrer",
+    "startCount": "Nombre de bots à démarrer",
     "startToast": {
-      "loading": "Démarrage de la session...",
-      "success": "La session a démarré avec succès",
-      "error": "Échec du démarrage de la session"
+      "loading": "Démarrage des bots...",
+      "success": "État des bots mis à jour",
+      "error": "Échec du démarrage des bots"
     },
-    "resumeToast": {
-      "loading": "Reprise de la session...",
-      "success": "La session a repris avec succès",
-      "error": "Échec de la reprise de la session"
-    },
-    "pauseToast": {
-      "loading": "Mise en pause de la session...",
-      "success": "Session mise en pause avec succès",
-      "error": "Échec de la mise en pause de la session"
+    "restartToast": {
+      "loading": "Redémarrage des bots...",
+      "success": "Les bots se reconnectent",
+      "error": "Échec du redémarrage des bots"
     },
     "stopToast": {
-      "loading": "Arrêt de la session en cours...",
-      "success": "Session arrêtée avec succès",
-      "error": "Échec de l'arrêt de la session"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Aucun compte configuré",
-      "noAccountsDescription": "Vous devez importer des comptes avant de démarrer une session. Vous avez demandé {{required}} bots.",
-      "notEnoughTitle": "Pas assez de comptes",
-      "notEnoughDescription": "Vous avez demandé {{required}} bots, mais seulement {{available}} comptes sont importés.",
-      "hint": "Vous pouvez générer des comptes hors ligne ou importer des comptes depuis la page de Configuration des comptes.",
-      "continueWithExisting": "Continuer avec {{count}} comptes",
-      "generateAccounts": "Générer des comptes"
+      "loading": "Arrêt des bots...",
+      "success": "Les bots s'arrêtent",
+      "error": "Échec de l'arrêt des bots"
     }
   },
   "icon": {
@@ -421,13 +409,6 @@
     "success": "\"{{content}}\" copié dans le presse-papier",
     "error": "\u0000cchec de la copie dans le presse-papier"
   },
-  "instanceState": {
-    "starting": "Démarrage",
-    "running": "En cours d'exécution",
-    "paused": "Suspendu",
-    "stopping": "Arrêt en cours",
-    "stopped": "Arrêté"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +433,6 @@
     "searchUsers": "Rechercher des utilisateurs...",
     "searchTimestamps": "Rechercher des horodatages...",
     "executedCommand": "Commande exécutée : {{data}}",
-    "startedSession": "Session démarrée",
-    "resumedSession": "Session reprise",
-    "pausedSession": "Session mise en pause",
-    "stoppedSession": "Session arrêtée",
     "contextMenu": {
       "copyUsername": "Copier le nom d'utilisateur",
       "copyCommand": "Copier la commande"

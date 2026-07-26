@@ -421,13 +421,6 @@
     "success": "Скопійовано «{{content}}» у буфер обміну",
     "error": "Не вдалося скопіювати у буфер обміну"
   },
-  "instanceState": {
-    "starting": "Запуск",
-    "running": "Працює",
-    "paused": "Призупинено",
-    "stopping": "Зупинка",
-    "stopped": "Зупинено"
-  },
   "userSettings": {
     "avatar": {
       "title": "Аватар",
@@ -452,10 +445,6 @@
     "searchUsers": "Пошук користувачів...",
     "searchTimestamps": "Пошук часових міток...",
     "executedCommand": "Виконана команда: {{data}}",
-    "startedSession": "Сесію розпочато",
-    "resumedSession": "Сесію відновлено",
-    "pausedSession": "Сесію призупинено",
-    "stoppedSession": "Сесію зупинено",
     "contextMenu": {
       "copyUsername": "Копіювати ім'я користувача",
       "copyCommand": "Скопіювати команду"

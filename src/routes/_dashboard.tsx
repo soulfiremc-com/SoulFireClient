@@ -13,6 +13,7 @@ import { CreateInstanceProvider } from "@/components/dialog/create-instance-dial
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { demoClientData } from "@/demo-data.ts";
+import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb.ts";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb.ts";
 import { ClientService } from "@/generated/soulfire/client_pb.ts";
 import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
@@ -21,7 +22,6 @@ import {
   InstanceListResponseSchema,
   InstancePermissionStateSchema,
   InstanceService,
-  InstanceState,
 } from "@/generated/soulfire/instance_pb.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { smartEntries } from "@/lib/utils.tsx";
@@ -46,7 +46,11 @@ export const Route = createFileRoute("/_dashboard")({
                   id: "demo",
                   friendlyName: "Demo",
                   icon: "pickaxe",
-                  state: InstanceState.RUNNING,
+                  botSummary: create(BotFleetSummarySchema, {
+                    totalBots: 1,
+                    desiredBots: 1,
+                    onlineBots: 1,
+                  }),
                   instancePermissions: smartEntries(InstancePermission).map(
                     (permission) =>
                       create(InstancePermissionStateSchema, {

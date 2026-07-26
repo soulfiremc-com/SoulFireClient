@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" copiado para a área de transferência",
     "error": "Falha ao copiar para a área de transferência"
   },
-  "instanceState": {
-    "starting": "A iniciar",
-    "running": "Em execução",
-    "paused": "Pausado",
-    "stopping": "Interrompendo",
-    "stopped": "Interrompido"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Buscar usuários...",
     "searchTimestamps": "Buscar horários...",
     "executedCommand": "Comando executado: {{data}}",
-    "startedSession": "Sessão iniciada",
-    "resumedSession": "Sessão retomada",
-    "pausedSession": "Sessão pausada",
-    "stoppedSession": "Sessão interrompida",
     "contextMenu": {
       "copyUsername": "Copiar nome de usuário",
       "copyCommand": "Copiar Comando"

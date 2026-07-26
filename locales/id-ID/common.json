@@ -421,13 +421,6 @@
     "success": "\"{{content}}\" berhasil disalin ke clipboard",
     "error": "Gagal menyalin ke clipboard"
   },
-  "instanceState": {
-    "starting": "Memulai",
-    "running": "Berjalan",
-    "paused": "Dijeda",
-    "stopping": "Menghentikan",
-    "stopped": "Dihentikan"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -452,10 +445,6 @@
     "searchUsers": "Cari pengguna...",
     "searchTimestamps": "Cari stempel waktu...",
     "executedCommand": "Perintah dijalankan: {{data}}",
-    "startedSession": "Memulai sesi",
-    "resumedSession": "Melanjutkan sesi",
-    "pausedSession": "Menjeda sesi",
-    "stoppedSession": "Menghentikan sesi",
     "contextMenu": {
       "copyUsername": "Salin Nama Pengguna",
       "copyCommand": "Salin Perintah"

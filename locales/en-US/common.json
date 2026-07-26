@@ -124,39 +124,28 @@
   },
   "controls": {
     "start": "Start",
-    "resume": "Resume",
-    "pause": "Pause",
     "stop": "Stop",
+    "startAll": "Start all",
+    "stopAll": "Stop all",
+    "restart": "Restart",
+    "startCount": "Number of bots to start",
     "startToast": {
-      "loading": "Starting session...",
-      "success": "Session started successfully",
-      "error": "Failed to start session"
+      "loading": "Starting bots...",
+      "success": "Bot state updated",
+      "error": "Failed to start bots"
     },
-    "resumeToast": {
-      "loading": "Resuming session...",
-      "success": "Session resumed successfully",
-      "error": "Failed to resume session"
-    },
-    "pauseToast": {
-      "loading": "Pausing session...",
-      "success": "Session paused successfully",
-      "error": "Failed to pause session"
+    "restartToast": {
+      "loading": "Restarting bots...",
+      "success": "Bots are reconnecting",
+      "error": "Failed to restart bots"
     },
     "stopToast": {
-      "loading": "Stopping session...",
-      "success": "Session stopped successfully",
-      "error": "Failed to stop session"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "No Accounts Configured",
-      "noAccountsDescription": "You need to have accounts imported before starting a session. You requested {{required}} bots.",
-      "notEnoughTitle": "Not Enough Accounts",
-      "notEnoughDescription": "You requested {{required}} bots but only have {{available}} accounts imported.",
-      "hint": "You can generate offline accounts or import accounts from the Account Settings page.",
-      "continueWithExisting": "Continue with {{count}} accounts",
-      "generateAccounts": "Generate Accounts"
+      "loading": "Stopping bots...",
+      "success": "Bots are stopping",
+      "error": "Failed to stop bots"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} desired · {{total}} total",
   "icon": {
     "invalidName": "Invalid icon name: {{name}}"
   },
@@ -464,13 +453,6 @@
     "success": "Copied \"{{content}}\" to clipboard",
     "error": "Failed to copy to clipboard"
   },
-  "instanceState": {
-    "starting": "Starting",
-    "running": "Running",
-    "paused": "Paused",
-    "stopping": "Stopping",
-    "stopped": "Stopped"
-  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -495,10 +477,8 @@
     "searchUsers": "Search users...",
     "searchTimestamps": "Search timestamps...",
     "executedCommand": "Executed command: {{data}}",
-    "startedSession": "Started a session",
-    "resumedSession": "Resumed a session",
-    "pausedSession": "Paused a session",
-    "stoppedSession": "Stopped a session",
+    "changedBotDesiredState": "Changed bot desired state",
+    "restartedBots": "Restarted bots",
     "contextMenu": {
       "copyUsername": "Copy Username",
       "copyCommand": "Copy Command"
