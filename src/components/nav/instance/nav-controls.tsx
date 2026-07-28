@@ -3,7 +3,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import {
-  BotMessageSquareIcon,
   HouseIcon,
   SquareTerminalIcon,
   TextSearchIcon,
@@ -55,14 +54,6 @@ export function NavControls() {
       icon: UsersIcon,
       linkProps: {
         to: "/instance/$instance/bots",
-        params: { instance: instanceInfo.id },
-      },
-    },
-    {
-      title: t("instanceSidebar.automation"),
-      icon: BotMessageSquareIcon,
-      linkProps: {
-        to: "/instance/$instance/automation",
         params: { instance: instanceInfo.id },
       },
     },

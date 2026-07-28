@@ -47,24 +47,6 @@ function entryTypeI18nKey(
   switch (type) {
     case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND:
       return "overview.timeline.types.executeCommand";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_START:
-      return "overview.timeline.types.automationStart";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_PAUSE:
-      return "overview.timeline.types.automationPause";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_RESUME:
-      return "overview.timeline.types.automationResume";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_STOP:
-      return "overview.timeline.types.automationStop";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_UPDATE_SETTINGS:
-      return "overview.timeline.types.automationUpdateSettings";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_APPLY_PRESET:
-      return "overview.timeline.types.automationApplyPreset";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_RESET_MEMORY:
-      return "overview.timeline.types.automationResetMemory";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_RESET_COORDINATION:
-      return "overview.timeline.types.automationResetCoordination";
-    case InstanceAuditLogResponse_AuditLogEntryType.AUTOMATION_RELEASE_CLAIMS:
-      return "overview.timeline.types.automationReleaseClaims";
     case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE:
       return "overview.timeline.types.botDesiredStateChange";
     case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:

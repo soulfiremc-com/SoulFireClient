@@ -112,21 +112,14 @@ const logTypeToIcon = (
 ) =>
   mapUnionToValue(type, (key) => {
     switch (key) {
-      case "AUTOMATION_START":
-      case "AUTOMATION_PAUSE":
-      case "AUTOMATION_RESUME":
-      case "AUTOMATION_STOP":
-      case "AUTOMATION_UPDATE_SETTINGS":
-      case "AUTOMATION_APPLY_PRESET":
-      case "AUTOMATION_RESET_MEMORY":
-      case "AUTOMATION_RESET_COORDINATION":
-      case "AUTOMATION_RELEASE_CLAIMS":
       case "BOT_DESIRED_STATE_CHANGE":
         return BotIcon;
       case "BOT_RESTART":
         return RefreshCwIcon;
       case "EXECUTE_COMMAND":
         return SquareTerminalIcon;
+      default:
+        return BotIcon;
     }
   });
 

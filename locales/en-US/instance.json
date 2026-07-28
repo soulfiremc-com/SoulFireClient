@@ -77,29 +77,9 @@
       "noPermission": "You do not have permission to view the audit log.",
       "types": {
         "executeCommand": "ran a command: {{data}}",
-        "automationStart": "started automation",
-        "automationPause": "paused automation",
-        "automationResume": "resumed automation",
-        "automationStop": "stopped automation",
-        "automationUpdateSettings": "updated automation settings",
-        "automationApplyPreset": "applied an automation preset",
-        "automationResetMemory": "reset automation memory",
-        "automationResetCoordination": "reset automation coordination",
-        "automationReleaseClaims": "released automation claims",
         "botDesiredStateChange": "changed bot desired state",
         "botRestart": "restarted bots",
         "unknown": "performed an action"
-      }
-    },
-    "automation": {
-      "title": "Automation",
-      "viewAll": "View all",
-      "empty": "No automation running.",
-      "activeBots": "{{count}} active",
-      "goalMode": {
-        "idle": "Idle",
-        "acquire": "Acquire",
-        "beat": "Beat"
       }
     },
     "plugins": {
@@ -525,39 +505,6 @@
       "dismiss": "Dismiss",
       "submit": "Submit",
       "offline": "Bot is offline. Dialogs are only available when the bot is connected."
-    }
-  },
-  "automation": {
-    "acquire": {
-      "targetPlaceholder": "ender_pearl"
-    },
-    "filters": {
-      "searchBots": "Search bots...",
-      "searchClaims": "Search claims...",
-      "noBotsMatchTitle": "No bots match the current filters.",
-      "noBotsMatchDescription": "Adjust or clear the current filters to review the full automation roster."
-    },
-    "attention": {
-      "empty": "No bots currently look stalled or degraded."
-    },
-    "memory": {
-      "noBots": "No automation bots are available for memory inspection.",
-      "blocks": "Blocks",
-      "noBlocks": "No remembered blocks in this snapshot.",
-      "containers": "Containers",
-      "noContainers": "No remembered containers in this snapshot.",
-      "entities": "Entities",
-      "noEntities": "No remembered entities in this snapshot.",
-      "droppedItems": "Dropped Items",
-      "noDroppedItems": "No remembered dropped items in this snapshot.",
-      "unreachablePositions": "Unreachable Positions",
-      "noUnreachablePositions": "No unreachable positions in this snapshot."
-    },
-    "coordination": {
-      "sharedBlocks": "Shared Blocks",
-      "noBlockHints": "No shared block hints yet.",
-      "eyeSamples": "Eye Samples",
-      "noEyeSamples": "No eye samples recorded."
     }
   },
   "metrics": {

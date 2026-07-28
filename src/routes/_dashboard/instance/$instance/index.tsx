@@ -18,17 +18,13 @@ import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import ControlsMenu from "@/components/controls-menu.tsx";
 import { ActivityTimeline } from "@/components/instance-overview/activity-timeline.tsx";
 import {
-  AutomationSummary,
-  PluginStatsPanel,
-} from "@/components/instance-overview/automation-summary.tsx";
-import {
   BotCardSkeleton,
   BotGridPreview,
 } from "@/components/instance-overview/bot-grid.tsx";
 import { DetailedMetrics } from "@/components/instance-overview/detailed-metrics.tsx";
-import { FleetSpotlight } from "@/components/instance-overview/fleet-spotlight.tsx";
 import { KpiStrip } from "@/components/instance-overview/kpi-strip.tsx";
 import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
+import { PluginStatsPanel } from "@/components/instance-overview/plugin-stats-panel.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -136,10 +132,7 @@ function OverviewHeaderSkeleton() {
 function OverviewMetricsSkeleton() {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
-        <Skeleton className="h-56 w-full rounded-lg" />
-        <Skeleton className="h-56 w-full rounded-lg" />
-      </div>
+      <Skeleton className="h-56 w-full rounded-lg" />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {OVERVIEW_KPI_SKELETON_IDS.map((id) => (
           <Skeleton key={id} className="h-24 w-full rounded-lg" />
@@ -149,10 +142,6 @@ function OverviewMetricsSkeleton() {
   );
 }
 
-function SpotlightSkeleton() {
-  return <Skeleton className="h-56 w-full rounded-lg" />;
-}
-
 function BotsPreviewSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -160,16 +149,6 @@ function BotsPreviewSkeleton() {
         <BotCardSkeleton key={id} />
       ))}
     </div>
-  );
-}
-
-function NoPermissionCard({ message }: { message: string }) {
-  return (
-    <Card size="sm">
-      <CardContent className="text-muted-foreground flex min-h-44 items-center justify-center text-sm">
-        {message}
-      </CardContent>
-    </Card>
   );
 }
 
@@ -259,21 +238,7 @@ function OverviewMetricsSection() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid min-w-0 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
-        {hasMetricsPermission ? (
-          <Suspense fallback={<SpotlightSkeleton />}>
-            <FleetSpotlight instanceInfo={instanceInfo} />
-          </Suspense>
-        ) : (
-          <NoPermissionCard
-            message={t("overview.metricsUnavailable.noPermission")}
-          />
-        )}
-        <LiveFeed
-          instanceId={instanceInfo.id}
-          canWatch={hasMetricsPermission}
-        />
-      </div>
+      <LiveFeed instanceId={instanceInfo.id} canWatch={hasMetricsPermission} />
 
       {hasMetricsPermission && (
         <KpiStrip
@@ -324,13 +289,10 @@ function OverviewMetricsSection() {
           instanceId={instanceInfo.id}
           canView={canViewAuditLog}
         />
-        <div className="flex flex-col gap-3">
-          <AutomationSummary instanceId={instanceInfo.id} />
-          <PluginStatsPanel
-            instanceId={instanceInfo.id}
-            canView={hasMetricsPermission}
-          />
-        </div>
+        <PluginStatsPanel
+          instanceId={instanceInfo.id}
+          canView={hasMetricsPermission}
+        />
       </div>
 
       {showMetrics && hasSnapshots && (
