@@ -1,10 +1,10 @@
 import { createClient } from "@connectrpc/connect";
-import { queryOptions } from "@tanstack/react-query";
-import { demoBotList } from "@/demo-data.ts";
 import {
   type BotListResponse,
   BotService,
-} from "@/generated/soulfire/bot_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import { queryOptions } from "@tanstack/react-query";
+import { demoBotList } from "@/demo-data.ts";
 import { createTransport } from "@/lib/web-rpc.ts";
 
 /// Shared query options for the live bot status list of an instance.

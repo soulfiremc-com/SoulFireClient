@@ -1,11 +1,11 @@
 import type { Interceptor, Transport } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
+import type { ClientDataResponse } from "@soulfiremc/sdk/generated/soulfire/client_pb";
 import {
   AuthType,
   createClient as createWebDAV,
   type WebDAVClient,
 } from "webdav";
-import type { ClientDataResponse } from "@/generated/soulfire/client_pb.ts";
 import i18n from "@/lib/i18n.ts";
 import type { SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";

@@ -1,5 +1,10 @@
 import { flavorEntries } from "@catppuccin/palette";
 import { createClient } from "@connectrpc/connect";
+import type {
+  LogScope,
+  LogString,
+} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
+import { LogsService } from "@soulfiremc/sdk/generated/soulfire/logs_pb";
 import { stripAnsi } from "fancy-ansi";
 import { AnsiHtml } from "fancy-ansi/react";
 import { ClipboardIcon, CloudUploadIcon } from "lucide-react";
@@ -14,8 +19,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context.tsx";
-import type { LogScope, LogString } from "@/generated/soulfire/logs_pb.ts";
-import { LogsService } from "@/generated/soulfire/logs_pb.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { cn, isDemo, timestampToDate, uploadToMcLogs } from "@/lib/utils.tsx";

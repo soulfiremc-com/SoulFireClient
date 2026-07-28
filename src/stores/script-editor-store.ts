@@ -1,3 +1,4 @@
+import type { ScriptQuotas } from "@soulfiremc/sdk/generated/soulfire/script_pb";
 import {
   addEdge,
   applyEdgeChanges,
@@ -20,7 +21,6 @@ import {
   isTypeCompatible,
   type PortType,
 } from "@/components/script-editor/nodes/types";
-import type { ScriptQuotas } from "@/generated/soulfire/script_pb";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
 
 export type { PortType };

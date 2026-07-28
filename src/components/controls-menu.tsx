@@ -1,5 +1,11 @@
 import { createClient } from "@connectrpc/connect";
 import {
+  BotDesiredState,
+  BotService,
+  type BotStatus,
+} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import { InstancePermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -19,12 +25,6 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
-import {
-  BotDesiredState,
-  BotService,
-  type BotStatus,
-} from "@/generated/soulfire/bot_pb.ts";
-import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { applyGeneratedAccounts, hasInstancePermission } from "@/lib/utils.tsx";

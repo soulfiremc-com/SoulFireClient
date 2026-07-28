@@ -1,4 +1,9 @@
 import { createClient } from "@connectrpc/connect";
+import type {
+  CommandCompletion,
+  CommandScope,
+} from "@soulfiremc/sdk/generated/soulfire/command_pb";
+import { CommandService } from "@soulfiremc/sdk/generated/soulfire/command_pb";
 import {
   type KeyboardEventHandler,
   use,
@@ -13,11 +18,6 @@ import { z } from "zod";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Kbd } from "@/components/ui/kbd";
-import type {
-  CommandCompletion,
-  CommandScope,
-} from "@/generated/soulfire/command_pb.ts";
-import { CommandService } from "@/generated/soulfire/command_pb.ts";
 
 type CompletionState = {
   baseText: string;

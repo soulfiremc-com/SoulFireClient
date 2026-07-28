@@ -1,4 +1,14 @@
 import { create } from "@bufbuild/protobuf";
+import { InstancePermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
+  InstanceLogScopeSchema,
+  type LogScope,
+  LogScopeSchema,
+} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
+import type {
+  GetInstanceMetricsResponse,
+  MetricsSnapshot,
+} from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SquareTerminalIcon } from "lucide-react";
@@ -37,16 +47,6 @@ import {
   CredenzaTitle,
 } from "@/components/ui/credenza.tsx";
 import { Skeleton } from "@/components/ui/skeleton";
-import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
-import {
-  InstanceLogScopeSchema,
-  type LogScope,
-  LogScopeSchema,
-} from "@/generated/soulfire/logs_pb.ts";
-import type {
-  GetInstanceMetricsResponse,
-  MetricsSnapshot,
-} from "@/generated/soulfire/metrics_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";

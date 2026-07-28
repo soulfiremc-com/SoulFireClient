@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import "../App.css";
 import { AptabaseProvider, useAptabase } from "@aptabase/react";
+import type { GetInstanceMetricsResponse } from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import {
   type QueryClient,
@@ -33,7 +34,6 @@ import {
   titlebarClassName,
   WindowTitlebar,
 } from "@/components/window/window-titlebar.tsx";
-import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb.ts";
 import { useCurrentRouteTitle } from "@/hooks/use-current-route-title.ts";
 import { useDiscordPresence } from "@/hooks/use-discord-presence.ts";
 import {

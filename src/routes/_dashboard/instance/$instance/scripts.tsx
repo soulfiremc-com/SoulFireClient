@@ -1,4 +1,6 @@
 import { createClient } from "@connectrpc/connect";
+import type { ScriptInfo } from "@soulfiremc/sdk/generated/soulfire/script_pb";
+import { ScriptService } from "@soulfiremc/sdk/generated/soulfire/script_pb";
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -69,8 +71,6 @@ import { Field, FieldLabel } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import type { ScriptInfo } from "@/generated/soulfire/script_pb";
-import { ScriptService } from "@/generated/soulfire/script_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";

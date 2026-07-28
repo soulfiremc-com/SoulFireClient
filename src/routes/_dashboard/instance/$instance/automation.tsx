@@ -1,5 +1,26 @@
 import { create } from "@bufbuild/protobuf";
+import { TimestampSchema } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
+import {
+  type AutomationBotSettings,
+  AutomationBotSettingsSchema,
+  type AutomationBotState,
+  type AutomationCoordinationClaim,
+  type AutomationCoordinationState,
+  AutomationCoordinationStateSchema,
+  AutomationGoalMode,
+  type AutomationInstanceSettings,
+  AutomationInstanceSettingsSchema,
+  type AutomationMemoryState,
+  AutomationMemoryStateSchema,
+  AutomationPreset,
+  AutomationRolePolicy,
+  AutomationService,
+  AutomationTeamObjective,
+  AutomationTeamRole,
+  type AutomationTeamState,
+  AutomationTeamStateSchema,
+} from "@soulfiremc/sdk/generated/soulfire/automation_pb";
 import {
   queryOptions,
   useMutation,
@@ -79,27 +100,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
-import { TimestampSchema } from "@/generated/google/protobuf/timestamp_pb.ts";
-import {
-  type AutomationBotSettings,
-  AutomationBotSettingsSchema,
-  type AutomationBotState,
-  type AutomationCoordinationClaim,
-  type AutomationCoordinationState,
-  AutomationCoordinationStateSchema,
-  AutomationGoalMode,
-  type AutomationInstanceSettings,
-  AutomationInstanceSettingsSchema,
-  type AutomationMemoryState,
-  AutomationMemoryStateSchema,
-  AutomationPreset,
-  AutomationRolePolicy,
-  AutomationService,
-  AutomationTeamObjective,
-  AutomationTeamRole,
-  type AutomationTeamState,
-  AutomationTeamStateSchema,
-} from "@/generated/soulfire/automation_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { cn, timestampToDate } from "@/lib/utils.tsx";

@@ -1,4 +1,8 @@
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
+import { UserRole } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import type { UserListResponse_User } from "@soulfiremc/sdk/generated/soulfire/user_pb";
+import { UserService } from "@soulfiremc/sdk/generated/soulfire/user_pb";
 import {
   useMutation,
   useQueryClient,
@@ -47,10 +51,6 @@ import { SFTimeAgo } from "@/components/sf-timeago.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
-import type { Timestamp } from "@/generated/google/protobuf/timestamp_pb";
-import { UserRole } from "@/generated/soulfire/common_pb.ts";
-import type { UserListResponse_User } from "@/generated/soulfire/user_pb.ts";
-import { UserService } from "@/generated/soulfire/user_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";

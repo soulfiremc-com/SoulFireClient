@@ -1,13 +1,13 @@
+import type {
+  GetInstanceMetricsResponse,
+  MetricsSnapshot,
+} from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { NetworkIcon, UsersIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Sparkline } from "@/components/instance-overview/sparkline.tsx";
 import { Card, CardContent } from "@/components/ui/card.tsx";
-import type {
-  GetInstanceMetricsResponse,
-  MetricsSnapshot,
-} from "@/generated/soulfire/metrics_pb.ts";
 import { formatBytesPerSecond, formatCompactNumber } from "@/lib/format.ts";
 import type { InstanceInfoQueryData } from "@/lib/types.ts";
 

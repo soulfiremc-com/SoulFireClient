@@ -1,4 +1,4 @@
-import type { Timestamp } from "@/generated/google/protobuf/timestamp_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 
 const INTERVAL_SECONDS = 3;
 const MAX_SNAPSHOTS = 600; // 30 minutes at 3-second intervals

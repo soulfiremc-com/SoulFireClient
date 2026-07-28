@@ -1,4 +1,6 @@
 import { createClient } from "@connectrpc/connect";
+import { AccountTypeCredentials } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import { MCAuthService } from "@soulfiremc/sdk/generated/soulfire/mc-auth_pb";
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -34,8 +36,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { AccountTypeCredentials } from "@/generated/soulfire/common_pb.ts";
-import { MCAuthService } from "@/generated/soulfire/mc-auth_pb.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { runAsync } from "@/lib/utils.tsx";

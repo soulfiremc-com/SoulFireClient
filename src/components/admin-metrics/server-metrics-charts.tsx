@@ -1,3 +1,7 @@
+import type {
+  GetServerMetricsResponse,
+  ServerMetricsSnapshot,
+} from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,10 +23,6 @@ import {
   ChartTooltipContent,
   type CustomTooltipProps,
 } from "@/components/ui/chart";
-import type {
-  GetServerMetricsResponse,
-  ServerMetricsSnapshot,
-} from "@/generated/soulfire/metrics_pb";
 import {
   downsampleTimeSeriesData,
   formatChartAxisTime,

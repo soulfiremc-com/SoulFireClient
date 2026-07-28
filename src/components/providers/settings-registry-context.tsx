@@ -1,8 +1,8 @@
-import { createContext, useContext, useMemo } from "react";
 import type {
   SettingsDefinition,
   SettingsEntryIdentifier,
-} from "@/generated/soulfire/common_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import { createContext, useContext, useMemo } from "react";
 
 export type SettingsRegistry = {
   definitions: SettingsDefinition[];

@@ -1,10 +1,10 @@
+import type { ClientDataResponse } from "@soulfiremc/sdk/generated/soulfire/client_pb";
 import { useQueryClient } from "@tanstack/react-query";
 import { XIcon } from "lucide-react";
 import { createContext, type ReactNode, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import type { ClientDataResponse } from "@/generated/soulfire/client_pb.ts";
 import {
   Credenza,
   CredenzaBody,

@@ -1,5 +1,10 @@
 import { createClient } from "@connectrpc/connect";
 import {
+  GlobalPermission,
+  InstancePermission,
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import { InstanceService } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
+import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -56,11 +61,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import {
-  GlobalPermission,
-  InstancePermission,
-} from "@/generated/soulfire/common_pb.ts";
-import { InstanceService } from "@/generated/soulfire/instance_pb.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { formatShortcut } from "@/lib/platform.ts";
 import type { ProfileRoot } from "@/lib/types.ts";

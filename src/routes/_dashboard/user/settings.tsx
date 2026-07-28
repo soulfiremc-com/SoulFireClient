@@ -1,5 +1,10 @@
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import {
+  GlobalPermission,
+  StringSetting_InputType,
+  StringSettingSchema,
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -23,11 +28,6 @@ import {
 } from "@/components/ui/item.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
-import {
-  GlobalPermission,
-  StringSetting_InputType,
-  StringSettingSchema,
-} from "@/generated/soulfire/common_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {

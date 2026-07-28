@@ -16,7 +16,6 @@
       "!out",
       "!postcss.config.mjs",
       "!src/routeTree.gen.ts",
-      "!protos",
       "!shared-modules",
       "!locales"
     ]
@@ -31,7 +30,6 @@
       "**",
       "!src/components/ui/**",
       "!src/components/data-table/**",
-      "!src/generated/**",
       "!src/routeTree.gen.ts"
     ],
     "enabled": true,

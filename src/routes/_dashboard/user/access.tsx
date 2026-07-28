@@ -1,4 +1,5 @@
 import { createClient } from "@connectrpc/connect";
+import { ClientService } from "@soulfiremc/sdk/generated/soulfire/client_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -31,7 +32,6 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { ClientService } from "@/generated/soulfire/client_pb.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";

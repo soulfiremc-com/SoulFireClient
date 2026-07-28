@@ -1,7 +1,7 @@
+import type { GetInstanceMetricsResponse } from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import type { QueryKey } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb";
 import type {
   CastMetricsSnapshot,
   CastMetricsUpdateMessage,

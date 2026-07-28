@@ -1,4 +1,11 @@
 import { createClient } from "@connectrpc/connect";
+import { AutomationService } from "@soulfiremc/sdk/generated/soulfire/automation_pb";
+import {
+  BotConnectionPhase,
+  type BotListEntry,
+  GameMode,
+} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import { MinecraftAccountProto_AccountTypeProto } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { BoxesIcon, GlobeIcon, MapPinIcon, StarIcon } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -8,13 +15,6 @@ import { MinecraftHead } from "@/components/minecraft/minecraft-head.tsx";
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Card, CardContent } from "@/components/ui/card.tsx";
-import { AutomationService } from "@/generated/soulfire/automation_pb.ts";
-import {
-  BotConnectionPhase,
-  type BotListEntry,
-  GameMode,
-} from "@/generated/soulfire/bot_pb.ts";
-import { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfire/common_pb.ts";
 import {
   accountTypeToIcon,
   translateAccountType,

@@ -1,3 +1,4 @@
+import { InstancePermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -10,7 +11,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
-import { InstancePermission } from "@/generated/soulfire/common_pb.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
 type NavLink = {

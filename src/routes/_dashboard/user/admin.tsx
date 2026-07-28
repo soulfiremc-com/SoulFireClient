@@ -1,24 +1,24 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient } from "@connectrpc/connect";
+import { UserRole } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
+  type ServerConfig,
+  ServerConfigSchema,
+  ServerInfoResponseSchema,
+  ServerService,
+} from "@soulfiremc/sdk/generated/soulfire/server_pb";
+import {
+  type UserListResponse,
+  UserListResponse_UserSchema,
+  UserListResponseSchema,
+  UserService,
+} from "@soulfiremc/sdk/generated/soulfire/user_pb";
 import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   demoServerSettings,
   demoServerSettingsDefinitions,
 } from "@/demo-data.ts";
-import { UserRole } from "@/generated/soulfire/common_pb.ts";
-import {
-  type ServerConfig,
-  ServerConfigSchema,
-  ServerInfoResponseSchema,
-  ServerService,
-} from "@/generated/soulfire/server_pb.ts";
-import {
-  type UserListResponse,
-  UserListResponse_UserSchema,
-  UserListResponseSchema,
-  UserService,
-} from "@/generated/soulfire/user_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { serverMetricsQueryOptions } from "@/lib/server-metrics-query.ts";

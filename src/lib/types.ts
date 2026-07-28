@@ -1,5 +1,5 @@
 import { create, type JsonValue } from "@bufbuild/protobuf";
-import type { Value } from "@/generated/google/protobuf/struct_pb.ts";
+import type { Value } from "@bufbuild/protobuf/wkt";
 import {
   type MinecraftAccountProto,
   type MinecraftAccountProto_AccountTypeProto,
@@ -10,16 +10,16 @@ import {
   type SettingsNamespace,
   SettingsNamespace_SettingsEntrySchema,
   SettingsNamespaceSchema,
-} from "@/generated/soulfire/common_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import {
   type InstanceConfig,
   InstanceConfigSchema,
   type InstanceInfo,
-} from "@/generated/soulfire/instance_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import type {
   ServerConfig,
   ServerInfoResponse,
-} from "@/generated/soulfire/server_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/server_pb";
 import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
 
 export type SFServerType = "integrated" | "dedicated";

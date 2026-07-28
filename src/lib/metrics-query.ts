@@ -1,12 +1,12 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient, type Transport } from "@connectrpc/connect";
-import { type QueryClient, queryOptions } from "@tanstack/react-query";
 import {
   type GetInstanceMetricsResponse,
   GetInstanceMetricsResponseSchema,
   MetricsDistributionsSchema,
   MetricsService,
-} from "@/generated/soulfire/metrics_pb";
+} from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
+import { type QueryClient, queryOptions } from "@tanstack/react-query";
 import { mergeSnapshots } from "@/lib/metrics-utils";
 
 export function instanceMetricsQueryOptions(

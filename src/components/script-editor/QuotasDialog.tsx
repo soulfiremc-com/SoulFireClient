@@ -1,4 +1,8 @@
 import { create } from "@bufbuild/protobuf";
+import {
+  type ScriptQuotas,
+  ScriptQuotasSchema,
+} from "@soulfiremc/sdk/generated/soulfire/script_pb";
 import { Settings2 } from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,10 +19,6 @@ import {
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import {
-  type ScriptQuotas,
-  ScriptQuotasSchema,
-} from "@/generated/soulfire/script_pb";
 import { useScriptEditorStore } from "@/stores/script-editor-store";
 
 function bigintToInput(value: bigint | undefined): string {

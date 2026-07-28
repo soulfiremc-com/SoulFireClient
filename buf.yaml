@@ -1,9 +1,0 @@
-version: v2
-modules:
-  - path: protos
-lint:
-  use:
-    - DEFAULT
-deps:
-  - buf.build/googleapis/googleapis
-  - buf.build/grpc/grpc

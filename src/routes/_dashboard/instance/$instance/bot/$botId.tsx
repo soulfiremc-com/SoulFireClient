@@ -1,6 +1,44 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient } from "@connectrpc/connect";
 import {
+  type BookPage,
+  type BotContainerButtonClickRequest,
+  BotContainerButtonClickRequestSchema,
+  type BotInfoResponse,
+  BotInfoResponseSchema,
+  type BotInventoryClickRequest,
+  BotInventoryClickRequestSchema,
+  type BotInventoryStateResponse,
+  type BotLiveState,
+  type BotMouseClickRequest,
+  BotMouseClickRequestSchema,
+  BotService,
+  type BotSetContainerTextRequest,
+  BotSetContainerTextRequestSchema,
+  ClickType,
+  type ContainerButton,
+  type ContainerTextInput,
+  GameMode,
+  type InventorySlot,
+  MouseButton,
+  type SlotRegion,
+  SlotRegionType,
+} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import {
+  BotCommandScopeSchema,
+  type CommandScope,
+  CommandScopeSchema,
+} from "@soulfiremc/sdk/generated/soulfire/command_pb";
+import {
+  InstancePermission,
+  MinecraftAccountProto_AccountTypeProto,
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
+  BotLogScopeSchema,
+  type LogScope,
+  LogScopeSchema,
+} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
+import {
   queryOptions,
   useMutation,
   useSuspenseQuery,
@@ -77,44 +115,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
-import {
-  type BookPage,
-  type BotContainerButtonClickRequest,
-  BotContainerButtonClickRequestSchema,
-  type BotInfoResponse,
-  BotInfoResponseSchema,
-  type BotInventoryClickRequest,
-  BotInventoryClickRequestSchema,
-  type BotInventoryStateResponse,
-  type BotLiveState,
-  type BotMouseClickRequest,
-  BotMouseClickRequestSchema,
-  BotService,
-  type BotSetContainerTextRequest,
-  BotSetContainerTextRequestSchema,
-  ClickType,
-  type ContainerButton,
-  type ContainerTextInput,
-  GameMode,
-  type InventorySlot,
-  MouseButton,
-  type SlotRegion,
-  SlotRegionType,
-} from "@/generated/soulfire/bot_pb.ts";
-import {
-  BotCommandScopeSchema,
-  type CommandScope,
-  CommandScopeSchema,
-} from "@/generated/soulfire/command_pb.ts";
-import {
-  InstancePermission,
-  MinecraftAccountProto_AccountTypeProto,
-} from "@/generated/soulfire/common_pb.ts";
-import {
-  BotLogScopeSchema,
-  type LogScope,
-  LogScopeSchema,
-} from "@/generated/soulfire/logs_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import {

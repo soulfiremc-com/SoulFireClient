@@ -1,5 +1,11 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient } from "@connectrpc/connect";
+import {
+  type InstanceAuditLogResponse,
+  InstanceAuditLogResponse_AuditLogEntryType,
+  InstanceAuditLogResponseSchema,
+  InstanceService,
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import {
@@ -17,12 +23,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx";
-import {
-  type InstanceAuditLogResponse,
-  InstanceAuditLogResponse_AuditLogEntryType,
-  InstanceAuditLogResponseSchema,
-  InstanceService,
-} from "@/generated/soulfire/instance_pb.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 

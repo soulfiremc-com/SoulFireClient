@@ -1,3 +1,4 @@
+import type { AccountTypeCredentials } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { EyeIcon, EyeOffIcon, LoaderIcon } from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,7 +30,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import type { AccountTypeCredentials } from "@/generated/soulfire/common_pb.ts";
 import {
   fetchKeyInfo,
   fetchStock,

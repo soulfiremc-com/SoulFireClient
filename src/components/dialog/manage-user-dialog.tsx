@@ -1,5 +1,8 @@
 import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
+import { UserRole } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import type { UserListResponse_User } from "@soulfiremc/sdk/generated/soulfire/user_pb";
+import { UserService } from "@soulfiremc/sdk/generated/soulfire/user_pb";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -25,9 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select.tsx";
-import { UserRole } from "@/generated/soulfire/common_pb.ts";
-import type { UserListResponse_User } from "@/generated/soulfire/user_pb.ts";
-import { UserService } from "@/generated/soulfire/user_pb.ts";
 import { getEnumEntries } from "@/lib/types.ts";
 import { TransportContext } from "../providers/transport-context.tsx";
 import {

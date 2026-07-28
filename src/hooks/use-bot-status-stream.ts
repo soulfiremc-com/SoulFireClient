@@ -1,7 +1,5 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient } from "@connectrpc/connect";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import {
   BotDesiredState,
   BotFleetSummarySchema,
@@ -10,11 +8,13 @@ import {
   BotRuntimeState,
   BotService,
   type BotStatus,
-} from "@/generated/soulfire/bot_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
 import {
   type InstanceListResponse,
   InstanceListResponseSchema,
-} from "@/generated/soulfire/instance_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import type { InstanceInfoQueryData } from "@/lib/types.ts";
 import { createTransport } from "@/lib/web-rpc.ts";
 

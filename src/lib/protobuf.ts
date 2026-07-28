@@ -1,9 +1,6 @@
 import { fromJson, type JsonValue, toJson } from "@bufbuild/protobuf";
+import { type Value, ValueSchema } from "@bufbuild/protobuf/wkt";
 import { Code, ConnectError } from "@connectrpc/connect";
-import {
-  type Value,
-  ValueSchema,
-} from "@/generated/google/protobuf/struct_pb.ts";
 
 export function jsonToValue(json: JsonValue): Value {
   return fromJson(ValueSchema, json);

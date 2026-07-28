@@ -1,16 +1,9 @@
 import { create, type JsonValue } from "@bufbuild/protobuf";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { createClient, type Transport } from "@connectrpc/connect";
-import type { QueryClient, QueryKey } from "@tanstack/react-query";
-import { type ClassValue, clsx } from "clsx";
-import type { FlagComponent } from "country-flag-icons/react/1x1";
-import * as Flags from "country-flag-icons/react/3x2";
-import { sha256 } from "js-sha256";
-import type { ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
-import type { Timestamp } from "@/generated/google/protobuf/timestamp_pb.ts";
-import { BotService } from "@/generated/soulfire/bot_pb.ts";
-import type { ClientDataResponse } from "@/generated/soulfire/client_pb.ts";
-import { ClientService } from "@/generated/soulfire/client_pb.ts";
+import { BotService } from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import type { ClientDataResponse } from "@soulfiremc/sdk/generated/soulfire/client_pb";
+import { ClientService } from "@soulfiremc/sdk/generated/soulfire/client_pb";
 import type {
   GlobalPermission,
   InstancePermission,
@@ -18,18 +11,25 @@ import type {
   ProxyProto,
   SettingsDefinition,
   SettingsEntryIdentifier,
-} from "@/generated/soulfire/common_pb.ts";
-import { SettingsNamespace_SettingsEntrySchema } from "@/generated/soulfire/common_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import { SettingsNamespace_SettingsEntrySchema } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import type {
   InstanceInfo,
   InstanceListResponse,
   InstanceListResponse_Instance,
-} from "@/generated/soulfire/instance_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import {
   InstanceListResponseSchema,
   InstanceService,
-} from "@/generated/soulfire/instance_pb.ts";
-import { ServerService } from "@/generated/soulfire/server_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
+import { ServerService } from "@soulfiremc/sdk/generated/soulfire/server_pb";
+import type { QueryClient, QueryKey } from "@tanstack/react-query";
+import { type ClassValue, clsx } from "clsx";
+import type { FlagComponent } from "country-flag-icons/react/1x1";
+import * as Flags from "country-flag-icons/react/3x2";
+import { sha256 } from "js-sha256";
+import type { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 import { desktop } from "@/lib/desktop.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
 import {

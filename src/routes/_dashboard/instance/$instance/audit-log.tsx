@@ -1,5 +1,13 @@
 import { create } from "@bufbuild/protobuf";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
+import {
+  type InstanceAuditLogResponse,
+  type InstanceAuditLogResponse_AuditLogEntry,
+  InstanceAuditLogResponse_AuditLogEntryType,
+  InstanceAuditLogResponseSchema,
+  InstanceService,
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -22,14 +30,6 @@ import InstancePageLayout from "@/components/nav/instance/instance-page-layout.t
 import { SFTimeAgo } from "@/components/sf-timeago.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
-import type { Timestamp } from "@/generated/google/protobuf/timestamp_pb";
-import {
-  type InstanceAuditLogResponse,
-  type InstanceAuditLogResponse_AuditLogEntry,
-  InstanceAuditLogResponse_AuditLogEntryType,
-  InstanceAuditLogResponseSchema,
-  InstanceService,
-} from "@/generated/soulfire/instance_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";

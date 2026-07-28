@@ -1,4 +1,10 @@
 import { create } from "@bufbuild/protobuf";
+import { GlobalPermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
+  GlobalLogScopeSchema,
+  type LogScope,
+  LogScopeSchema,
+} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -6,12 +12,6 @@ import { useTranslation } from "react-i18next";
 import UserPageLayout from "@/components/nav/user/user-page-layout";
 import { TerminalComponent } from "@/components/terminal.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { GlobalPermission } from "@/generated/soulfire/common_pb.ts";
-import {
-  GlobalLogScopeSchema,
-  type LogScope,
-  LogScopeSchema,
-} from "@/generated/soulfire/logs_pb.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission } from "@/lib/utils.tsx";

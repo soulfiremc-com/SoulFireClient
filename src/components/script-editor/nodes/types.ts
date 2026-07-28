@@ -6,7 +6,7 @@ import {
   type PortDefinition as ProtoPortDefinition,
   PortType as ProtoPortType,
   type TypeDescriptor as ProtoTypeDescriptor,
-} from "@/generated/soulfire/script_pb";
+} from "@soulfiremc/sdk/generated/soulfire/script_pb";
 
 export type PortType =
   | "execution"

@@ -1,5 +1,8 @@
 import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
+import type { SettingsPage } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import { ProxyProto_Type } from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import { ProxyCheckService } from "@soulfiremc/sdk/generated/soulfire/proxy-check_pb";
 import {
   type QueryClient,
   useMutation,
@@ -73,9 +76,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import type { SettingsPage } from "@/generated/soulfire/common_pb";
-import { ProxyProto_Type } from "@/generated/soulfire/common_pb.ts";
-import { ProxyCheckService } from "@/generated/soulfire/proxy-check_pb.ts";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";

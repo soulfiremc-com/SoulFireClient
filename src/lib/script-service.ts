@@ -1,13 +1,11 @@
 import { create } from "@bufbuild/protobuf";
-import { createClient, type Transport } from "@connectrpc/connect";
-import { queryOptions } from "@tanstack/react-query";
-import type { Edge, Node } from "@xyflow/react";
-import type { Value } from "@/generated/google/protobuf/struct_pb";
+import type { Value } from "@bufbuild/protobuf/wkt";
 import {
   ListValueSchema,
   StructSchema,
   ValueSchema,
-} from "@/generated/google/protobuf/struct_pb";
+} from "@bufbuild/protobuf/wkt";
+import { createClient, type Transport } from "@connectrpc/connect";
 import {
   EdgeType,
   type GetNodeTypesRequest,
@@ -22,7 +20,9 @@ import {
   type ScriptNode,
   ScriptNodeSchema,
   ScriptService,
-} from "@/generated/soulfire/script_pb";
+} from "@soulfiremc/sdk/generated/soulfire/script_pb";
+import { queryOptions } from "@tanstack/react-query";
+import type { Edge, Node } from "@xyflow/react";
 
 export type {
   GetNodeTypesRequest,

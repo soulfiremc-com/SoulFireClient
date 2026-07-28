@@ -1,5 +1,19 @@
 import type { JsonValue } from "@bufbuild/protobuf";
 import {
+  type BoolSetting,
+  type ComboSetting,
+  type DoubleSetting,
+  type IntSetting,
+  type MinMaxSetting,
+  type MinMaxSetting_Entry,
+  type SettingsDefinition,
+  type SettingsEntryIdentifier,
+  type SettingsPage,
+  type StringListSetting,
+  type StringSetting,
+  StringSetting_InputType,
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -57,20 +71,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
-import {
-  type BoolSetting,
-  type ComboSetting,
-  type DoubleSetting,
-  type IntSetting,
-  type MinMaxSetting,
-  type MinMaxSetting_Entry,
-  type SettingsDefinition,
-  type SettingsEntryIdentifier,
-  type SettingsPage,
-  type StringListSetting,
-  type StringSetting,
-  StringSetting_InputType,
-} from "@/generated/soulfire/common_pb.ts";
 import { useCachedState } from "@/hooks/use-cached-state.ts";
 import { useLocaleNumberFormat } from "@/hooks/use-locale-number-format.tsx";
 import type { BaseSettings } from "@/lib/types.ts";

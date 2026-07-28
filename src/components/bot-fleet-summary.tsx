@@ -1,8 +1,8 @@
+import type { BotFleetSummary } from "@soulfiremc/sdk/generated/soulfire/bot_pb";
 import type { TFunction } from "i18next";
 import { CircleAlertIcon, LoaderCircleIcon, RadioIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge.tsx";
-import type { BotFleetSummary } from "@/generated/soulfire/bot_pb.ts";
 import { cn } from "@/lib/utils.tsx";
 
 export function formatBotFleetSummary(

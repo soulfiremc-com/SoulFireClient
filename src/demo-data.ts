@@ -1,18 +1,18 @@
 import { create } from "@bufbuild/protobuf";
-import { TimestampSchema } from "@/generated/google/protobuf/timestamp_pb.ts";
+import { TimestampSchema } from "@bufbuild/protobuf/wkt";
 import {
   BotConnectionPhase,
   BotDesiredState,
   type BotListResponse,
   BotListResponseSchema,
   BotRuntimeState,
-} from "@/generated/soulfire/bot_pb.ts";
-import type { ClientDataResponse } from "@/generated/soulfire/client_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import type { ClientDataResponse } from "@soulfiremc/sdk/generated/soulfire/client_pb";
 import {
   GlobalPermission,
   type SettingsDefinition,
   type SettingsPage,
-} from "@/generated/soulfire/common_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { smartEntries } from "@/lib/utils.tsx";
 
 export const demoClientData = {

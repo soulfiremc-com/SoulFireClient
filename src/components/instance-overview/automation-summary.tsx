@@ -1,4 +1,9 @@
 import { createClient } from "@connectrpc/connect";
+import {
+  AutomationGoalMode,
+  AutomationService,
+} from "@soulfiremc/sdk/generated/soulfire/automation_pb";
+import type { PluginRuntimeStat } from "@soulfiremc/sdk/generated/soulfire/plugin_stats_pb";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { BlocksIcon, PauseIcon } from "lucide-react";
@@ -11,11 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx";
-import {
-  AutomationGoalMode,
-  AutomationService,
-} from "@/generated/soulfire/automation_pb.ts";
-import type { PluginRuntimeStat } from "@/generated/soulfire/plugin_stats_pb.ts";
 import { formatCompactNumber } from "@/lib/format.ts";
 import { pluginStatsQueryOptions } from "@/lib/plugin-stats-query.ts";
 import { timestampToDate } from "@/lib/utils.tsx";

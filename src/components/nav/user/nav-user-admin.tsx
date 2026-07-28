@@ -1,5 +1,6 @@
 "use client";
 
+import { GlobalPermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import {
@@ -19,7 +20,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
-import { GlobalPermission } from "@/generated/soulfire/common_pb.ts";
 import { hasGlobalPermission } from "@/lib/utils.tsx";
 
 type NavLinks = {

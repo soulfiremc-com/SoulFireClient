@@ -18,7 +18,6 @@ pnpm build:electron:dir   # Build unpacked Electron app
 pnpm typecheck            # TypeScript type checking
 pnpm check                # Run Biome linter
 pnpm fix                  # Run Biome with auto-fix
-pnpm generate-proto       # Regenerate TypeScript from .proto files (requires protoc)
 pnpm generate-routes      # Regenerate TanStack Router route tree
 ```
 
@@ -29,7 +28,7 @@ pnpm generate-routes      # Regenerate TanStack Router route tree
 - **Desktop**: Electron
 - **Routing**: TanStack Router (file-based in `src/routes/`)
 - **State**: Zustand for editor state, TanStack Query for server state
-- **API**: gRPC-Web via Connect RPC (protos in `protos/`, generated to `src/generated/`)
+- **API**: gRPC-Web via Connect RPC using protocol definitions from `@soulfiremc/sdk`
 - **UI**: shadcn/ui components, Radix primitives, Lucide icons
 
 ### Key Directories
@@ -39,7 +38,6 @@ pnpm generate-routes      # Regenerate TanStack Router route tree
 - `src/lib/web-rpc.ts` - gRPC transport setup and auth token management
 - `src/lib/script-service.ts` - Query options and proto↔JS conversion utilities
 - `src/stores/` - Zustand stores (currently just script editor state)
-- `src/generated/` - Auto-generated protobuf types (do not edit manually)
 - `scripts/generate-legacy-updater-assets.mjs` - Legacy updater bridge for already-installed Tauri clients
 
 ### Import Alias
@@ -48,12 +46,12 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 ### Linting
 - Biome handles formatting and linting
 - Pre-commit hook runs lint-staged with Biome
-- Ignored directories: `src/components/ui/`, `src/components/data-table/`, `src/generated/`
+- Ignored directories: `src/components/ui/`, `src/components/data-table/`
 
 ### Proto Generation
 When modifying gRPC API:
-1. Update `.proto` files in `protos/`
-2. Run `pnpm generate-proto`
+Protocol definitions are owned by the SoulFire repository and consumed from
+the official `@soulfiremc/sdk` package. Do not copy or regenerate them here.
 3. Conversion utilities in `src/lib/script-service.ts` may need updates
 
 ### Demo Mode

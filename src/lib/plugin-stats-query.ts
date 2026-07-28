@@ -1,11 +1,11 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient } from "@connectrpc/connect";
-import { queryOptions } from "@tanstack/react-query";
 import {
   type GetInstancePluginStatsResponse,
   GetInstancePluginStatsResponseSchema,
   PluginStatsService,
-} from "@/generated/soulfire/plugin_stats_pb.ts";
+} from "@soulfiremc/sdk/generated/soulfire/plugin_stats_pb";
+import { queryOptions } from "@tanstack/react-query";
 import { createTransport } from "@/lib/web-rpc.ts";
 
 /// Shared query options for an instance's per-plugin runtime statistics.

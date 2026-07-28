@@ -1,4 +1,7 @@
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
+import { BotLifecycleKind } from "@soulfiremc/sdk/generated/soulfire/bot_live_pb";
+import { InstanceLiveService } from "@soulfiremc/sdk/generated/soulfire/instance_live_pb";
 import { RadioTowerIcon } from "lucide-react";
 import { use, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,9 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
-import type { Timestamp } from "@/generated/google/protobuf/timestamp_pb.ts";
-import { BotLifecycleKind } from "@/generated/soulfire/bot_live_pb.ts";
-import { InstanceLiveService } from "@/generated/soulfire/instance_live_pb.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { cn, timestampToDate } from "@/lib/utils.tsx";
 

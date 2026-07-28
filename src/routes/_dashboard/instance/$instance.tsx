@@ -1,5 +1,21 @@
 import { create } from "@bufbuild/protobuf";
+import { TimestampSchema } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
+import { BotFleetSummarySchema } from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+import {
+  InstancePermission,
+  MinecraftAccountProto_AccountTypeProto,
+  MinecraftAccountProto_OfflineJavaDataSchema,
+  ProxyProto_Type,
+  ProxyProtoSchema,
+} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+import {
+  type InstanceConfig,
+  InstanceConfigSchema,
+  InstanceInfoSchema,
+  InstancePermissionStateSchema,
+  InstanceService,
+} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { type QueryClient, queryOptions } from "@tanstack/react-query";
 import { CatchBoundary, createFileRoute, Outlet } from "@tanstack/react-router";
 import { ErrorComponent } from "@/components/error-component.tsx";
@@ -10,22 +26,6 @@ import {
   demoInstanceSettings,
   demoInstanceSettingsDefinitions,
 } from "@/demo-data.ts";
-import { TimestampSchema } from "@/generated/google/protobuf/timestamp_pb.ts";
-import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb.ts";
-import {
-  InstancePermission,
-  MinecraftAccountProto_AccountTypeProto,
-  MinecraftAccountProto_OfflineJavaDataSchema,
-  ProxyProto_Type,
-  ProxyProtoSchema,
-} from "@/generated/soulfire/common_pb.ts";
-import {
-  type InstanceConfig,
-  InstanceConfigSchema,
-  InstanceInfoSchema,
-  InstancePermissionStateSchema,
-  InstanceService,
-} from "@/generated/soulfire/instance_pb.ts";
 import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
 import { useCastBroadcast } from "@/hooks/use-cast-broadcast.ts";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
