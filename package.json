@@ -67,7 +67,7 @@
     "i18next-browser-languagedetector": "^8.2.1",
     "i18next-resources-to-backend": "^1.2.1",
     "input-otp": "^1.4.2",
-    "js-sha256": "^0.11.1",
+    "js-sha256": "^1.0.0",
     "lucide-react": "^1.8.0",
     "lucide-static": "^1.8.0",
     "mime-matcher": "^1.0.5",
