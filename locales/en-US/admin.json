@@ -115,8 +115,8 @@
       "actions": "Actions",
       "searchUsernames": "Search usernames...",
       "searchEmails": "Search emails...",
-      "searchCreatedAts": "Search created ats...",
-      "searchMinIssuedAts": "Search min issued ats..."
+      "searchCreatedAts": "Search creation dates...",
+      "searchMinIssuedAts": "Search minimum login dates..."
     },
     "removeSelectedTooltip": "Remove selected users",
     "logOutSelectedTooltip": "Log out selected users",

@@ -151,8 +151,8 @@
       "deleteProxy": "Delete Proxy"
     },
     "postImportCheckDialog": {
-      "title": "Check Proxies?",
-      "description": "You just imported {{count}} proxies. Would you like to check them now? Invalid proxies will be removed automatically.",
+      "title": "Check imported proxies?",
+      "description": "You imported {{count}} proxies. Check them now? SoulFire removes invalid proxies automatically.",
       "confirm": "Check Proxies",
       "skip": "Skip"
     },
@@ -200,9 +200,9 @@
       "description": "Generate offline Java accounts with a custom name format.",
       "amount": "Amount",
       "nameFormat": "Name Format",
-      "nameFormatHelp": "Use %d as a placeholder for the account number (e.g., Bot_%d becomes Bot_1, Bot_2, etc.)",
+      "nameFormatHelp": "Use %d for the account number. For example, Bot_%d creates names such as Bot_1 and Bot_2.",
       "mode": "Existing Accounts",
-      "modeHelp": "Choose how to handle existing accounts:\n\n• Ignore Existing: Only generates accounts with names that don't already exist. Keeps all existing accounts unchanged.\n\n• Replace Existing: Generates all accounts, replacing any existing accounts that have the same UUID. Other accounts are kept.\n\n• Replace All: Deletes ALL existing accounts and replaces them with the generated accounts.",
+      "modeHelp": "Choose how to handle existing accounts:\n\n• Ignore Existing: Generate only accounts with new names. Keep all existing accounts.\n\n• Replace Existing: Generate all requested accounts. Replace accounts with matching UUIDs. Keep all other accounts.\n\n• Replace All: Remove all existing accounts. Then add the generated accounts.",
       "modeIgnoreExisting": "Ignore Existing",
       "modeReplaceExisting": "Replace Existing",
       "modeReplaceAll": "Replace All",
@@ -305,7 +305,7 @@
       "purchasing": "Purchasing...",
       "purchaseSuccess": "Purchased {{count}} accounts, importing...",
       "purchaseError": "Purchase failed: {{message}}",
-      "networkError": "Could not connect to Ravealts API",
+      "networkError": "Connection to the Ravealts API failed",
       "outOfStock": "Selected type is out of stock",
       "insufficientBalance": "Not enough credits",
       "rateLimited": "Rate limited, try again later"
@@ -574,7 +574,7 @@
     "title": "Visual Scripts",
     "description": "Create automation scripts using a visual node-based editor.",
     "experimentalTitle": "Experimental Feature",
-    "experimentalWarning": "This feature is experimental. There may be breaking changes in the future and existing scripts might break. Use with caution.",
+    "experimentalWarning": "This feature is experimental. Future updates can break existing scripts. Use it with caution.",
     "createScript": "Create Script",
     "createScriptTitle": "Create New Script",
     "createScriptDescription": "Create a new visual script for this instance. Scripts can automate bot actions and respond to events.",

@@ -910,7 +910,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Shuffle accounts",
         description:
-          "Should the accounts order be random when connecting bots?",
+          "This setting randomizes account order before bots connect.",
         def: false,
         disabled: false,
       },
@@ -924,7 +924,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Use proxies for account auth",
         description:
-          "Should the imported proxies be used to authenticate accounts? (Contact Microsoft login, input credentials, etc.)\nOtherwise the SF server will authenticate accounts directly.",
+          "SoulFire uses imported proxies for account authentication.\nOtherwise, the SoulFire server connects directly.",
         def: false,
         disabled: false,
       },
@@ -938,7 +938,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Account import concurrency",
         description:
-          "For credentials-like auth, how many accounts should be imported at once?",
+          "SoulFire imports no more than this number of accounts at the same time when authentication requires credentials.",
         def: 3,
         min: 1,
         max: 2147483647,
@@ -974,7 +974,7 @@ export const demoInstanceSettingsDefinitions = [
       case: "bool",
       value: {
         uiName: "Shuffle proxies",
-        description: "Should the proxy order be random when connecting bots?",
+        description: "This setting randomizes proxy order before bots connect.",
         def: false,
         disabled: false,
       },
@@ -1234,7 +1234,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Disable Pruning",
         description:
-          "Disable periodic pruning of the pathfinding search space (may use more memory)",
+          "This setting disables periodic pruning of the pathfinding search space. It can increase memory use.",
         def: false,
         disabled: false,
       },
@@ -1274,7 +1274,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Deduplicate amount",
         description:
-          "How often should the same message be logged before it will not be logged again? (within 5 seconds)",
+          "SoulFire logs the same message no more than this number of times within five seconds.",
         def: 1,
         min: 1,
         max: 2147483647,
@@ -1306,7 +1306,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Deduplicate amount",
         description:
-          "How often should the same disconnect message be logged before it will not be logged again? (within 5 seconds)",
+          "SoulFire logs the same disconnect message no more than this number of times within five seconds.",
         def: 1,
         min: 1,
         max: 2147483647,
@@ -1463,7 +1463,7 @@ export const demoServerSettingsDefinitions = [
       case: "combo",
       value: {
         uiName: "Email Type",
-        description: "How emails should be delivered.",
+        description: "SoulFire uses this method to deliver emails.",
         options: [
           {
             id: "CONSOLE",

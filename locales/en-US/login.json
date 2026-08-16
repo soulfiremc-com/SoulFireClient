@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "New to SoulFire? We recommend checking out the <a>getting started guide</a>.",
+  "newUser": "New to SoulFire? Read the <a>getting started guide</a>.",
   "connect": {
     "title": "Connect to a SoulFire server",
     "description": "Select which type of SoulFire server to connect to.",
     "integrated": {
       "title": "Integrated server (local)",
-      "description": "Runs a SoulFire server on your computer. The setup is automatic and requires no configuration. (Requires the Desktop/Android app)"
+      "description": "Runs a SoulFire server on this device. Setup is automatic. This option requires the desktop or Android app."
     },
     "dedicated": {
       "title": "Dedicated server (remote)",
-      "description": "Connects to a remote instance of the SoulFire server. You will need to provide the address and token of the server."
+      "description": "Connects to a remote SoulFire server with its address and token."
     },
     "demo": {
       "title": "Demo server",
-      "description": "Simulates a virtual server with demo data. This server is read-only and you cannot make any changes to it."
+      "description": "Provides a read-only server with demo data. SoulFire does not save changes."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire data reset successfully. Try starting again.",
       "error": "Failed to reset SoulFire data"
     },
-    "description": "The integrated server runs locally on your PC. Configure the Java startup arguments below if needed.",
+    "description": "The integrated server runs on your computer. You can change the Java startup arguments below.",
     "form": {
       "jvmArgs": {
         "title": "JVM arguments",
-        "description": "The SoulFire Java VM arguments. To use 4GB of RAM, add <bold>-Xmx4G</bold>. Default is 25% of your RAM.",
+        "description": "Java VM arguments for SoulFire. Add <bold>-Xmx4G</bold> to use 4 GB of RAM. The default is 25% of available RAM.",
         "placeholder": "Your JVM arguments here"
       },
       "back": "Back",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux command",
-          "description": "Install the <a>Termux app</a>, then run this command in Termux to install the SoulFire server. You will then need to run the <copy>generate-token api</copy> command to generate a token. Then enter the token below."
+          "description": "Install the <a>Termux app</a>. Run this command in Termux to install the SoulFire server. Run <copy>generate-token api</copy> to create a token. Then enter the token below."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Put in the address and token of the SoulFire server you want to connect to.",
+    "description": "Enter the address and token of the SoulFire server.",
     "toast": {
       "loading": "Connecting to server...",
       "success": "Connected to server",

@@ -8,7 +8,7 @@
     "noAddressOrToken": "No server address or token found",
     "page": {
       "title": "Error",
-      "description": "An error occurred while trying to load the page. More information can be found in the console.",
+      "description": "The page did not load. Open the console for more information.",
       "logOut": "Log out",
       "reloadPage": "Reload page",
       "showDetails": "Show details"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Not found",
-      "description": "Could not find a page at this location",
+      "description": "There is no page at this address",
       "logOut": "Log out",
       "reloadPage": "Reload page"
     }
@@ -55,7 +55,7 @@
     },
     "createInstance": {
       "title": "Create a new instance",
-      "description": "Instances need friendly names for you to distinguish them. It can be any name you want, for example, \"My Minecraft Bot\".",
+      "description": "Give the instance a name that you can recognize, such as \"My Minecraft Bot\".",
       "form": {
         "friendlyName": {
           "label": "Friendly name",
@@ -93,7 +93,7 @@
       "main": {
         "fromFile": "From file",
         "fromUrl": "From URL",
-        "firstClipboardItem": "You had multiple items in the clipboard, only using first one.",
+        "firstClipboardItem": "The clipboard contains multiple items. SoulFire will use the first item.",
         "fromClipboard": "From clipboard",
         "textarea": {
           "placeholder": "Put text here...",
@@ -101,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Loading from URL will make the SoulFire server make a GET request to the target server and use the response as the data.",
+        "description": "The SoulFire server sends a GET request to this URL and imports the response.",
         "form": {
           "url": {
             "placeholder": "Put URL here...",
@@ -245,12 +245,12 @@
       "searchPlaceholder": "Search value..."
     },
     "invalidNumberToast": {
-      "title": "Invalid number!",
+      "title": "Invalid number",
       "description": "The value must be between {{min}} and {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Looks like there are no logs to display; try running some commands!",
+    "noLogs": "No logs yet. Run a command to create log output.",
     "demo-1": "Welcome to demo mode! 🧪",
     "demo-2": "This is a read-only instance of SoulFire",
     "demo-3": "Check out all the menus and features before deciding to install SoulFire :D",
@@ -410,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV Access",
-      "description": "SoulFire allows you to access instance, script and other files using the WebDAV protocol.",
+      "description": "WebDAV provides access to instance files, scripts, and other files.",
       "publicAddress": "Public WebDAV Address",
       "personalToken": "Personal WebDAV Token",
-      "securityWarning": "Your personal WebDAV Token is very important. Do not share it with anyone. It is used to authenticate you when accessing your files. Use it as your WebDAV password when connecting. Username is not required, if you are prompted for one, you can use any value you want. (e.g. 'soulfire')",
-      "addressDescription": "This is the address you need to use to access your files. Sometimes you need to use dav:// or davs:// instead of http(s)://."
+      "securityWarning": "Keep your personal WebDAV token secret. It grants access to your files. Use the token as your WebDAV password. You do not need a username. If your app requires one, enter any value, such as 'soulfire'.",
+      "addressDescription": "Use this address to access your files. Some clients require dav:// or davs:// instead of http:// or https://."
     },
     "api": {
       "title": "API Access",
-      "description": "SoulFire's gRPC HTTP API allows you to interact with your instances programmatically using web requests.",
+      "description": "The SoulFire gRPC HTTP API manages instances with web requests.",
       "publicAddress": "Public API Address",
       "personalToken": "Personal API Token",
-      "securityWarning": "Your personal API Token is very important. Do not share it with anyone. It is used to authenticate you when accessing the API.",
-      "addressDescription": "This is the address you need to use to access the API."
+      "securityWarning": "Keep your personal API token secret. It grants access to the API.",
+      "addressDescription": "Use this address to access the API."
     },
     "token": {
       "generate": "Generate Token",
@@ -491,20 +491,20 @@
         "scriptName": {
           "min": "Script names must be at least 3 characters",
           "max": "Script names must be at most 32 characters",
-          "regex": "Script names must be lowercase, begin with an alphanumeric character, followed by more alphanumeric characters or dashes, and end with an alphanumeric character.",
+          "regex": "Use lowercase letters, numbers, and dashes. The name must start and end with a letter or number.",
           "label": "Name",
           "placeholder": "My Script",
           "description": "The name of the script."
         },
         "elevatedPermissions": {
           "label": "Elevated Permissions",
-          "description": "Whether the script should run with elevated permissions. Only admins can enable this option."
+          "description": "The script runs with elevated permissions. Only administrators can enable this option."
         }
       }
     },
     "addScriptDialog": {
       "title": "Add a new script",
-      "description": "Scripts are small programs that run on the SoulFire server. They can be used to automate tasks, create custom behaviour, and more.",
+      "description": "Scripts are small programs that automate tasks and other actions on the SoulFire server.",
       "form": {
         "cancel": "Cancel",
         "add": "Add"
