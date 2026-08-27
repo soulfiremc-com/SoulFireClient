@@ -55,7 +55,7 @@ export default defineConfig({
                   lib: {
                     formats: ["cjs"],
                   },
-                  rollupOptions: {
+                  rolldownOptions: {
                     output: {
                       entryFileNames: "[name].cjs",
                     },
