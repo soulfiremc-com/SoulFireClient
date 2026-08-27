@@ -7,6 +7,15 @@
   "main": "dist-electron/main.cjs",
   "type": "module",
   "private": true,
+  "packageManager": "bun@1.4.0",
+  "trustedDependencies": [
+    "@bufbuild/buf",
+    "electron",
+    "electron-winstaller",
+    "esbuild",
+    "msw",
+    "protobufjs"
+  ],
   "scripts": {
     "generate-routes": "tsr generate",
     "watch-routes": "tsr watch",

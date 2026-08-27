@@ -116,14 +116,10 @@ function createMacUpdaterArchive(zipPath, outputName) {
 }
 
 function signArtifact(filePath) {
-  execFileSync(
-    "pnpm",
-    ["dlx", "@tauri-apps/cli@2.10.0", "signer", "sign", filePath],
-    {
-      env: process.env,
-      stdio: "inherit",
-    },
-  );
+  execFileSync("bunx", ["@tauri-apps/cli@2.10.0", "signer", "sign", filePath], {
+    env: process.env,
+    stdio: "inherit",
+  });
 
   const signaturePath = `${filePath}.sig`;
   const signature = readFileSync(signaturePath, "utf8").trim();

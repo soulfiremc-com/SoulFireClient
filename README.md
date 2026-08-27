@@ -37,7 +37,7 @@ See which branches are at which URLs:
 
 ## Building
 
-The client has a lot of dependencies. You'll need pnpm and a current Node.js release installed.
+Install Bun 1.4.0 and a current Node.js release before you build the client.
 Take a look at the scripts in `package.json` to see how to run a dev env locally.
 You can also refer to the GitHub actions workflows to see how production builds are made.
 

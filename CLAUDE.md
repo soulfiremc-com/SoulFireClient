@@ -9,16 +9,16 @@ SoulFireClient is a React/TypeScript frontend for the [SoulFire server](https://
 ## Build Commands
 
 ```bash
-pnpm install              # Install dependencies
-pnpm dev                  # Start Electron dev mode with Vite
-pnpm dev:web              # Start Vite dev server for web only
-pnpm build:web            # Build web bundle
-pnpm build:electron       # Build packaged Electron artifacts
-pnpm build:electron:dir   # Build unpacked Electron app
-pnpm typecheck            # TypeScript type checking
-pnpm check                # Run Biome linter
-pnpm fix                  # Run Biome with auto-fix
-pnpm generate-routes      # Regenerate TanStack Router route tree
+bun install                # Install dependencies
+bun run dev                # Start Electron dev mode with Vite
+bun run dev:web            # Start Vite dev server for web only
+bun run build:web          # Build web bundle
+bun run build:electron     # Build packaged Electron artifacts
+bun run build:electron:dir # Build unpacked Electron app
+bun run typecheck          # TypeScript type checking
+bun run check              # Run Biome linter
+bun run fix                # Run Biome with auto-fix
+bun run generate-routes    # Regenerate TanStack Router route tree
 ```
 
 ## Architecture

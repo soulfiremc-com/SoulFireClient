@@ -1,7 +1,0 @@
-allowBuilds:
-  '@bufbuild/buf': true
-  electron: true
-  electron-winstaller: true
-  esbuild: true
-  msw: true
-  protobufjs: true

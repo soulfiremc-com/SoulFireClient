@@ -36,7 +36,7 @@ function runCommand(command, args, options = {}) {
 test("Electron preload bundle exposes the explicit bridge and no legacy desktop RPC bus", {
   timeout: 120_000,
 }, async () => {
-  const build = await runCommand("pnpm", ["exec", "vite", "build"], {
+  const build = await runCommand("bunx", ["vite", "build"], {
     env: {
       ...process.env,
       SF_ELECTRON: "1",
