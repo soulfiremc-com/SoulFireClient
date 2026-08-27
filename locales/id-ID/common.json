@@ -8,7 +8,7 @@
     "noAddressOrToken": "Alamat server atau token tidak ditemukan",
     "page": {
       "title": "Kesalahan",
-      "description": "Terjadi kesalahan saat mencoba memuat halaman. Informasi lebih lanjut dapat ditemukan di konsol.",
+      "description": "Halaman tidak berhasil dimuat. Buka konsol untuk informasi lebih lanjut.",
       "logOut": "Keluar",
       "reloadPage": "Muat ulang halaman",
       "showDetails": "Tampilkan detail"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Tidak ditemukan",
-      "description": "Tidak dapat menemukan halaman di lokasi ini",
+      "description": "Tidak ada halaman di alamat ini",
       "logOut": "Keluar",
       "reloadPage": "Muat ulang halaman"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Tutup"
     },
+    "support": {
+      "title": "Dukung SoulFire",
+      "description": "SoulFire gratis dan open-source, dibuat dengan penuh cinta oleh komunitas.",
+      "body": "Jika SoulFire bermanfaat untuk Anda, pertimbangkan untuk mendukung proyek ini. Kontribusi Anda membantu menutupi biaya server, mendanai pengembangan, dan menjaga SoulFire tetap gratis untuk semua orang.",
+      "dismiss": "Mungkin nanti",
+      "action": "Dukung SoulFire"
+    },
     "createInstance": {
       "title": "Buat instansi baru",
-      "description": "Tiap instansi memerlukan nama ramah agar dapat dibedakan. Anda bebas memberi nama apapun, misalnya, \"Bot Minecraft Saya\".",
+      "description": "Beri instansi nama yang mudah Anda kenali, seperti \"Bot Minecraft Saya\".",
       "form": {
         "friendlyName": {
           "label": "Nama ramah",
@@ -67,11 +74,26 @@
         "error": "Gagal membuat instansi"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplikat instansi",
+      "description": "Buat instansi baru menggunakan profil dari \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Nama untuk instansi hasil duplikasi."
+        },
+        "duplicate": "Duplikat"
+      },
+      "duplicateToast": {
+        "loading": "Menggandakan instance...",
+        "success": "Instance berhasil digandakan",
+        "error": "Gagal menggandakan instance"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Dari berkas",
         "fromUrl": "Dari URL",
-        "firstClipboardItem": "Terdapat beberapa item di clipboard Anda, hanya menggunakan yang pertama.",
+        "firstClipboardItem": "Clipboard berisi beberapa item. SoulFire akan menggunakan item pertama.",
         "fromClipboard": "Dari clipboard",
         "textarea": {
           "placeholder": "Masukkan teks di sini...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Memuat dari URL akan membuat server SoulFire melakukan permintaan GET ke server tujuan dan menggunakan responnya sebagai data.",
+        "description": "Server SoulFire akan mengirim permintaan GET ke URL ini dan mengimpor responnya.",
         "form": {
           "url": {
             "placeholder": "Masukkan URL di sini...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Mulai",
-    "resume": "Lanjutkan",
-    "pause": "Jeda",
     "stop": "Berhenti",
+    "startAll": "Mulai semua bot.",
+    "stopAll": "Hentikan semua",
+    "restart": "Mulai ulang",
+    "startCount": "Jumlah bot yang akan dijalankan",
     "startToast": {
-      "loading": "Memulai sesi...",
-      "success": "Sesi berhasil dimulai",
-      "error": "Gagal memulai sesi"
+      "loading": "Memulai bot...",
+      "success": "Status bot telah diperbarui",
+      "error": "Gagal memulai bot"
     },
-    "resumeToast": {
-      "loading": "Melanjutkan sesi...",
-      "success": "Sesi berhasil dilanjutkan",
-      "error": "Gagal melanjutkan sesi"
-    },
-    "pauseToast": {
-      "loading": "Menjeda sesi...",
-      "success": "Sesi dijeda dengan sukses",
-      "error": "Gagal menjeda sesi"
+    "restartToast": {
+      "loading": "Memulai ulang bot...",
+      "success": "Bot sedang menyambung ulang",
+      "error": "Gagal memulai ulang bot"
     },
     "stopToast": {
-      "loading": "Menghentikan sesi...",
-      "success": "Sesi telah dihentikan dengan sukses",
-      "error": "Gagal menghentikan sesi"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Tidak Ada Akun yang Dikonfigurasi",
-      "noAccountsDescription": "Anda perlu mengimpor akun sebelum memulai sesi. Anda meminta {{required}} bot.",
-      "notEnoughTitle": "Akun Tidak Cukup",
-      "notEnoughDescription": "Anda meminta {{required}} bot namun hanya memiliki {{available}} akun diimpor.",
-      "hint": "Anda dapat menghasilkan akun offline atau mengimpor akun dari halaman Pengaturan Akun.",
-      "continueWithExisting": "Lanjutkan dengan {{count}} akun",
-      "generateAccounts": "Buat Akun"
+      "loading": "Menghentikan bot...",
+      "success": "Bot sedang dihentikan",
+      "error": "Gagal menghentikan bot"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} diinginkan · {{total}} total",
   "icon": {
     "invalidName": "Nama ikon tidak valid: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Tambah",
       "remove": "Hapus"
     },
+    "combo": {
+      "searchPlaceholder": "Cari nilai..."
+    },
     "invalidNumberToast": {
-      "title": "Nomor tidak valid!",
+      "title": "Nomor tidak valid",
       "description": "Nilai harus antara {{min}} dan {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Sepertinya tidak ada log untuk ditampilkan; coba jalankan beberapa perintah!",
+    "noLogs": "Belum ada log. Jalankan perintah untuk membuat output log.",
     "demo-1": "Selamat datang di mode demo! 🧪",
     "demo-2": "Ini adalah instansi SoulFire hanya-baca",
     "demo-3": "Jelajahi semua menu dan fitur sebelum memutuskan untuk menginstal SoulFire :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Tampilkan/Sembunyikan Sidebar"
+  },
+  "window": {
+    "minimize": "Minimalkan",
+    "minimizeLabel": "Minimalkan jendela",
+    "maximize": "Maksimalkan",
+    "maximizeLabel": "Maksimalkan jendela",
+    "restore": "Pulihkan",
+    "restoreLabel": "Pulihkan jendela",
+    "close": "Tutup",
+    "closeLabel": "Tutup jendela",
+    "back": "Kembali",
+    "backLabel": "Kembali",
+    "forward": "Maju",
+    "forwardLabel": "Lanjutkan ke depan"
+  },
+  "infoButton": {
+    "showInfo": "Tampilkan info"
   },
   "castMenu": {
     "title": "Cast",
@@ -333,6 +364,7 @@
     },
     "configDir": "Direktori konfigurasi",
     "dataDir": "Direktori data",
+    "supportSoulFire": "Dukung SoulFire",
     "about": "Tentang",
     "logOut": "Keluar",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentasi",
-    "supportSoulFire": "Beli saya kopi",
+    "supportSoulFire": "Dukung SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "Akses WebDAV",
-      "description": "SoulFire memungkinkan Anda mengakses file instansi, skrip dan lainnya menggunakan protokol WebDAV.",
+      "description": "WebDAV menyediakan akses ke file instansi, skrip, dan file lainnya.",
       "publicAddress": "Alamat WebDAV Publik",
       "personalToken": "Token WebDAV Pribadi",
-      "securityWarning": "Token WebDAV pribadi Anda sangat penting. Jangan bagikan kepada siapapun. Token ini digunakan untuk mengautentikasi Anda saat mengakses file. Gunakan ini sebagai kata sandi WebDAV saat menghubungkan. Nama pengguna tidak diperlukan, jika diminta Anda bisa menggunakan nilai apapun yang diinginkan. (misal 'soulfire')",
-      "addressDescription": "Ini adalah alamat yang perlu Anda gunakan untuk mengakses file Anda. Terkadang Anda perlu menggunakan dav:// atau davs:// sebagai pengganti http(s)://."
+      "securityWarning": "Jaga token WebDAV pribadi Anda tetap rahasia. Token ini memberikan akses ke file Anda. Gunakan token tersebut sebagai kata sandi WebDAV Anda. Anda tidak perlu nama pengguna. Jika aplikasi Anda memerlukannya, masukkan nilai apa saja, misalnya 'soulfire'.",
+      "addressDescription": "Gunakan alamat ini untuk mengakses file Anda. Beberapa klien membutuhkan dav:// atau davs://, bukan http:// atau https://."
     },
     "api": {
       "title": "Akses API",
-      "description": "gRPC HTTP API SoulFire memungkinkan Anda berinteraksi dengan instansi secara terprogram menggunakan permintaan web.",
+      "description": "API HTTP gRPC SoulFire mengelola instansi menggunakan permintaan web.",
       "publicAddress": "Alamat API Publik",
       "personalToken": "Token API Pribadi",
-      "securityWarning": "Token API pribadi Anda sangat penting. Jangan bagikan kepada siapapun. Token ini digunakan untuk mengautentikasi Anda saat mengakses API.",
-      "addressDescription": "Ini adalah alamat yang perlu Anda gunakan untuk mengakses API."
+      "securityWarning": "Jaga token API pribadi Anda tetap rahasia. Token ini memberikan akses ke API.",
+      "addressDescription": "Gunakan alamat ini untuk mengakses API."
     },
     "token": {
       "generate": "Buat Token",
@@ -443,6 +475,8 @@
     "searchUsers": "Cari pengguna...",
     "searchTimestamps": "Cari stempel waktu...",
     "executedCommand": "Perintah dijalankan: {{data}}",
+    "changedBotDesiredState": "Keadaan bot yang diinginkan telah diubah",
+    "restartedBots": "Bot telah dimulai ulang",
     "contextMenu": {
       "copyUsername": "Salin Nama Pengguna",
       "copyCommand": "Salin Perintah"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Nama skrip minimal 3 karakter",
           "max": "Nama skrip maksimal 32 karakter",
-          "regex": "Nama skrip harus huruf kecil, diawali karakter alfanumerik, diikuti karakter alfanumerik atau tanda hubung, dan diakhiri karakter alfanumerik.",
+          "regex": "Gunakan huruf kecil, angka, dan tanda hubung. Nama harus diawali dan diakhiri dengan huruf atau angka.",
           "label": "Nama",
           "placeholder": "Skrip Saya",
           "description": "Nama skrip."
         },
         "elevatedPermissions": {
           "label": "Izin Tertinggi",
-          "description": "Apakah skrip dijalankan dengan izin tertinggi. Hanya admin yang bisa mengaktifkan opsi ini."
+          "description": "Skrip berjalan dengan izin tingkat lanjut. Hanya administrator yang dapat mengaktifkan opsi ini."
         }
       }
     },
     "addScriptDialog": {
       "title": "Tambah skrip baru",
-      "description": "Skrip adalah program kecil yang berjalan di server SoulFire. Skrip dapat digunakan untuk mengotomasi tugas, membuat perilaku khusus, dan lainnya.",
+      "description": "Skrip adalah program kecil yang mengotomatisasi tugas dan tindakan lain di server SoulFire.",
       "form": {
         "cancel": "Batal",
         "add": "Tambah"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Buka Instance",
+      "duplicateInstance": "Gandakan Instance",
       "copyInstanceId": "Salin ID Instansi",
       "copyInstanceName": "Salin Nama Instansi",
       "deleteInstance": "Hapus Instansi"

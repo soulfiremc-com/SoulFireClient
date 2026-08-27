@@ -8,7 +8,7 @@
     "noAddressOrToken": "Geen serveradres of token gevonden",
     "page": {
       "title": "Fout",
-      "description": "Er is een fout opgetreden bij het laden van de pagina. Meer informatie is te vinden in de console.",
+      "description": "De pagina is niet geladen. Open de console voor meer informatie.",
       "logOut": "Uitloggen",
       "reloadPage": "Pagina herladen",
       "showDetails": "Details weergeven"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Niet gevonden",
-      "description": "Kon geen pagina vinden op deze locatie",
+      "description": "Er is geen pagina op dit adres",
       "logOut": "Uitloggen",
       "reloadPage": "Pagina herladen"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Sluiten"
     },
+    "support": {
+      "title": "Steun SoulFire",
+      "description": "SoulFire is gratis en open-source, gebouwd met liefde door de community.",
+      "body": "Als SoulFire nuttig voor je is geweest, overweeg dan om het project te steunen. Jouw bijdrage helpt de serverkosten te dekken, ontwikkeling te financieren en SoulFire gratis te houden voor iedereen.",
+      "dismiss": "Misschien later",
+      "action": "Steun SoulFire"
+    },
     "createInstance": {
       "title": "Een nieuwe instantie aanmaken",
-      "description": "Instanties hebben een vriendelijke naam nodig zodat je ze van elkaar kunt onderscheiden. Dit kan elke naam zijn die je wilt, bijvoorbeeld \"Mijn Minecraft Bot\".",
+      "description": "Geef de instantie een herkenbare naam, zoals \"Mijn Minecraft Bot\".",
       "form": {
         "friendlyName": {
           "label": "Vriendelijke naam",
@@ -67,11 +74,26 @@
         "error": "Maken van instantie mislukt"
       }
     },
+    "duplicateInstance": {
+      "title": "Instantie dupliceren",
+      "description": "Maak een nieuwe instantie aan met het profiel van \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "De naam voor de gedupliceerde instantie."
+        },
+        "duplicate": "Dupliceren"
+      },
+      "duplicateToast": {
+        "loading": "Instantie wordt gedupliceerd...",
+        "success": "Instantie succesvol gedupliceerd",
+        "error": "Dupliceren van instantie mislukt"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Uit bestand",
         "fromUrl": "Van URL",
-        "firstClipboardItem": "Er stonden meerdere items in het klembord, alleen het eerste wordt gebruikt.",
+        "firstClipboardItem": "Het klembord bevat meerdere items. SoulFire gebruikt het eerste item.",
         "fromClipboard": "Uit klembord",
         "textarea": {
           "placeholder": "Voer hier tekst in...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Laden van een URL zorgt ervoor dat de SoulFire-server een GET-verzoek doet naar de doelserver en de respons gebruikt als data.",
+        "description": "De SoulFire-server stuurt een GET-verzoek naar deze URL en importeert het antwoord.",
         "form": {
           "url": {
             "placeholder": "Voer hier een URL in...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Start",
-    "resume": "Hervatten",
-    "pause": "Pauzeren",
     "stop": "Stoppen",
+    "startAll": "Alles starten",
+    "stopAll": "Alles stoppen",
+    "restart": "Herstarten",
+    "startCount": "Aantal bots om te starten",
     "startToast": {
-      "loading": "Sessie starten...",
-      "success": "Sessie succesvol gestart",
-      "error": "Kon sessie niet starten"
+      "loading": "Bots worden gestart...",
+      "success": "Botstatus bijgewerkt",
+      "error": "Starten van bots mislukt"
     },
-    "resumeToast": {
-      "loading": "Sessie hervatten...",
-      "success": "Sessie succesvol hervat",
-      "error": "Kon sessie niet hervatten"
-    },
-    "pauseToast": {
-      "loading": "Sessie pauzeren...",
-      "success": "Sessie succesvol gepauzeerd",
-      "error": "Pauzeren van sessie mislukt"
+    "restartToast": {
+      "loading": "Bots worden herstart...",
+      "success": "Bots verbinden opnieuw",
+      "error": "Herstarten van bots mislukt"
     },
     "stopToast": {
-      "loading": "Bezig met stoppen van sessie...",
-      "success": "Sessie succesvol gestopt",
-      "error": "Stoppen van sessie mislukt"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Geen accounts geconfigureerd",
-      "noAccountsDescription": "Je moet accounts importeren voordat je een sessie kunt starten. Je hebt {{required}} bots aangevraagd.",
-      "notEnoughTitle": "Niet genoeg accounts",
-      "notEnoughDescription": "Je hebt {{required}} bots aangevraagd maar slechts {{available}} accounts geïmporteerd.",
-      "hint": "Je kunt offline accounts genereren of accounts importeren vanaf de pagina Accountinstellingen.",
-      "continueWithExisting": "Doorgaan met {{count}} accounts",
-      "generateAccounts": "Accounts genereren"
+      "loading": "Bots worden gestopt...",
+      "success": "Bots worden gestopt",
+      "error": "Stoppen van bots mislukt"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} gewenst · {{total}} totaal",
   "icon": {
     "invalidName": "Ongeldige pictogramnaam: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Toevoegen",
       "remove": "Verwijderen"
     },
+    "combo": {
+      "searchPlaceholder": "Waarde zoeken..."
+    },
     "invalidNumberToast": {
-      "title": "Ongeldig nummer!",
+      "title": "Ongeldig getal",
       "description": "De waarde moet tussen {{min}} en {{max}} liggen"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Het lijkt erop dat er geen logs zijn om weer te geven; probeer een paar commando&#39;s uit te voeren!",
+    "noLogs": "Nog geen logs. Voer een commando uit om loguitvoer te genereren.",
     "demo-1": "Welkom in demomodus! 🧪",
     "demo-2": "Dit is een alleen-lezen instantie van SoulFire",
     "demo-3": "Bekijk alle menu's en functies voordat je beslist om SoulFire te installeren :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Zijbalk wisselen"
+  },
+  "window": {
+    "minimize": "Minimaliseren",
+    "minimizeLabel": "Venster minimaliseren",
+    "maximize": "Maximaliseren",
+    "maximizeLabel": "Venster maximaliseren",
+    "restore": "Herstellen",
+    "restoreLabel": "Venster herstellen",
+    "close": "Sluiten",
+    "closeLabel": "Venster sluiten",
+    "back": "Terug",
+    "backLabel": "Ga terug",
+    "forward": "Volgende",
+    "forwardLabel": "Ga vooruit"
+  },
+  "infoButton": {
+    "showInfo": "Toon info"
   },
   "castMenu": {
     "title": "Casten",
@@ -333,6 +364,7 @@
     },
     "configDir": "Config-map",
     "dataDir": "Data-map",
+    "supportSoulFire": "Steun SoulFire",
     "about": "Over",
     "logOut": "Uitloggen",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Documentatie",
-    "supportSoulFire": "Trakteer me op een koffie",
+    "supportSoulFire": "Steun SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV-toegang",
-      "description": "SoulFire geeft je toegang tot instantie-, script- en andere bestanden via het WebDAV-protocol.",
+      "description": "WebDAV biedt toegang tot instantiebestanden, scripts en andere bestanden.",
       "publicAddress": "Openbaar WebDAV-adres",
       "personalToken": "Persoonlijk WebDAV-token",
-      "securityWarning": "Je persoonlijke WebDAV-token is erg belangrijk. Deel deze niet met anderen. Het wordt gebruikt om je te authenticeren bij toegang tot je bestanden. Gebruik het als je WebDAV-wachtwoord bij het verbinden. Een gebruikersnaam is niet vereist, als erom gevraagd wordt kun je elke waarde invullen die je wilt (bijv. 'soulfire').",
-      "addressDescription": "Dit is het adres dat je nodig hebt om toegang te krijgen tot je bestanden. Soms moet je dav:// of davs:// gebruiken in plaats van http(s)://."
+      "securityWarning": "Houd je persoonlijke WebDAV-token geheim. Deze geeft toegang tot je bestanden. Gebruik het token als je WebDAV-wachtwoord. Je hebt geen gebruikersnaam nodig. Als je app er een vereist, vul dan een willekeurige waarde in, zoals 'soulfire'.",
+      "addressDescription": "Gebruik dit adres om toegang te krijgen tot je bestanden. Sommige clients vereisen dav:// of davs:// in plaats van http:// of https://."
     },
     "api": {
       "title": "API-toegang",
-      "description": "SoulFire's gRPC HTTP API laat je programmatisch met je instanties communiceren via web requests.",
+      "description": "De SoulFire gRPC HTTP API beheert instanties via webverzoeken.",
       "publicAddress": "Openbaar API-adres",
       "personalToken": "Persoonlijk API-token",
-      "securityWarning": "Je persoonlijke API-token is erg belangrijk. Deel deze niet met anderen. Het wordt gebruikt om je te authenticeren bij toegang tot de API.",
-      "addressDescription": "Dit is het adres dat je nodig hebt om toegang te krijgen tot de API."
+      "securityWarning": "Houd je persoonlijke API-token geheim. Deze geeft toegang tot de API.",
+      "addressDescription": "Gebruik dit adres om toegang te krijgen tot de API."
     },
     "token": {
       "generate": "Token genereren",
@@ -443,6 +475,8 @@
     "searchUsers": "Zoek gebruikers...",
     "searchTimestamps": "Zoek tijdstempels...",
     "executedCommand": "Uitgevoerd commando: {{data}}",
+    "changedBotDesiredState": "Gewenste botstatus gewijzigd",
+    "restartedBots": "Bots herstart",
     "contextMenu": {
       "copyUsername": "Gebruikersnaam kopiëren",
       "copyCommand": "Kopieer commando"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Scriptnamen moeten minimaal 3 tekens bevatten",
           "max": "Scriptnamen mogen maximaal 32 tekens bevatten",
-          "regex": "Scriptnamen moeten kleine letters zijn, beginnen met een alfanumeriek teken, gevolgd door alfanumerieke tekens of streepjes, en eindigen met een alfanumeriek teken.",
+          "regex": "Gebruik kleine letters, cijfers en streepjes. De naam moet beginnen en eindigen met een letter of een cijfer.",
           "label": "Naam",
           "placeholder": "Mijn Script",
           "description": "De naam van het script."
         },
         "elevatedPermissions": {
           "label": "Verhoogde rechten",
-          "description": "Of het script met verhoogde rechten moet draaien. Alleen beheerders kunnen deze optie inschakelen."
+          "description": "Het script draait met verhoogde machtigingen. Alleen beheerders kunnen deze optie inschakelen."
         }
       }
     },
     "addScriptDialog": {
       "title": "Een nieuw script toevoegen",
-      "description": "Scripts zijn kleine programma&#39;s die op de SoulFire-server draaien. Ze kunnen worden gebruikt om taken te automatiseren, aangepast gedrag te creëren, en meer.",
+      "description": "Scripts zijn kleine programma's die taken en andere acties op de SoulFire-server automatiseren.",
       "form": {
         "cancel": "Annuleren",
         "add": "Toevoegen"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Ga naar instantie",
+      "duplicateInstance": "Instatie dupliceren",
       "copyInstanceId": "Instantie-ID kopiëren",
       "copyInstanceName": "Instantienaam kopiëren",
       "deleteInstance": "Instantie verwijderen"

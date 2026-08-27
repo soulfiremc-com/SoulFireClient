@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Nu to SoulFire? We recommends lookin at teh <a>gettin started guide</a>, kthx!",
+  "newUser": "Nu tu SoulFire? Reed teh <a>gettin startd guide</a>.",
   "connect": {
     "title": "Connect 2 SoulFier servr",
     "description": "Select which tyep ov SoulFier servr 2 connect 2.",
     "integrated": {
       "title": "Integratd servr (local)",
-      "description": "Runz SoulFier servr on ur computr. Teh setup iz super ez an needz no configurz. (U needz Desktop/Android app, kthx)"
+      "description": "Runz a SoulFire servr on dis device. Setzup iz automatik. Dis opshun needz desktop or Android app."
     },
     "dedicated": {
       "title": "Dedicatd servr (remoet)",
-      "description": "Connects 2 remoet instanec ov teh SoulFier servr. Srsly u will ned 2 provied teh addres an token ov teh servr."
+      "description": "Connekts tu a remote SoulFire servr wif itz adress an token."
     },
     "demo": {
       "title": "Deom servr",
-      "description": "Simulates vurtual servr wif deom daat. Dis servr iz read-only an u cannot mak any changez 2 it."
+      "description": "Gibz u read-only servr wif demo data. SoulFire doez not save changez."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire data haz reset, yaaay! Try agin now kthx.",
       "error": "Uh-oh, failed to reset SoulFire dataz :("
     },
-    "description": "Da intigratid server runz local on ur PC. Configur Java start argumints below if u wantz.",
+    "description": "Teh integrated servr runz on ur computr. U kin change teh Java startz-up argumintz below.",
     "form": {
       "jvmArgs": {
         "title": "JVM argumints",
-        "description": "Teh SoulFire Java VM argumints. To use 4GB RAM, add <bold>-Xmx4G</bold>. Default is 25% of ur RAM.",
+        "description": "Java VM argumintz 4 SoulFire. Add <bold>-Xmx4G</bold> 2 use 4 GB ov RAM. By defawlt iz 25% ov available RAM.",
         "placeholder": "Ur JVM argumints herez"
       },
       "back": "Bak",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux kommando",
-          "description": "Inztall teh <a>Termux app</a>, den doez dis kommando in Termux to inztall SoulFire servurr. Den, yoo needz to do teh <copy>generate-token api</copy> kommando to generayt tokenz. Den enterz teh tokenz belowz."
+          "description": "Install teh <a>Termux app</a>. Run dis command in Termux 2 install teh SoulFire servr. Run <copy>generate-token api</copy> 2 makez token. Den enter token below."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Put in teh addres an token ov teh SoulFire servr u wantz 2 connect 2.",
+    "description": "Put in teh adress an token ov teh SoulFire servr.",
     "toast": {
       "loading": "Connekting to serverz...",
       "success": "Connektahed to serverz",

@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Role",
+          "placeholder": "Wybierz rolę",
           "description": "Rola użytkownika. Administratorzy mogą zarządzać użytkownikami i wszystkimi instancjami. Zwykli użytkownicy mogą zarządzać tylko własnymi instancjami.",
           "user": "Użytkownik",
           "admin": "Administrator"
@@ -114,8 +115,8 @@
       "actions": "Akcje",
       "searchUsernames": "Szukaj nazw użytkowników...",
       "searchEmails": "Szukaj adresów e-mail...",
-      "searchCreatedAts": "Szukaj dat utworzenia...",
-      "searchMinIssuedAts": "Szukaj minimalnych dat wydania..."
+      "searchCreatedAts": "Wyszukaj daty utworzenia...",
+      "searchMinIssuedAts": "Wyszukaj minimalne daty logowania..."
     },
     "removeSelectedTooltip": "Usuń wybranych użytkowników",
     "logOutSelectedTooltip": "Wyloguj wybranych użytkowników",

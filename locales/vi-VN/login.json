@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Mới dùng SoulFire? Chúng tôi khuyến nghị bạn xem <a>hướng dẫn bắt đầu</a>.",
+  "newUser": "Mới sử dụng SoulFire? Đọc <a>hướng dẫn bắt đầu</a>.",
   "connect": {
     "title": "Kết nối tới máy chủ SoulFire",
     "description": "Chọn loại máy chủ SoulFire bạn muốn kết nối.",
     "integrated": {
       "title": "Máy chủ tích hợp (cục bộ)",
-      "description": "Chạy máy chủ SoulFire trên máy tính của bạn. Thiết lập hoàn toàn tự động và không cần cấu hình thêm. (Yêu cầu ứng dụng Desktop/Android)"
+      "description": "Chạy máy chủ SoulFire trên thiết bị này. Thiết lập sẽ được thực hiện tự động. Tùy chọn này yêu cầu ứng dụng trên máy tính hoặc Android."
     },
     "dedicated": {
       "title": "Máy chủ riêng (từ xa)",
-      "description": "Kết nối tới một máy chủ SoulFire từ xa. Bạn cần cung cấp địa chỉ và mã token của máy chủ này."
+      "description": "Kết nối đến máy chủ SoulFire từ xa với địa chỉ và token của máy chủ."
     },
     "demo": {
       "title": "Máy chủ demo",
-      "description": "Mô phỏng một máy chủ ảo với dữ liệu demo. Máy chủ này chỉ đọc và bạn không thể thay đổi gì trên đó."
+      "description": "Cung cấp một máy chủ chỉ đọc với dữ liệu demo. SoulFire sẽ không lưu các thay đổi."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Đã đặt lại dữ liệu SoulFire thành công. Hãy thử bắt đầu lại.",
       "error": "Đặt lại dữ liệu SoulFire thất bại"
     },
-    "description": "Máy chủ tích hợp chạy cục bộ trên máy tính của bạn. Nếu cần, hãy cấu hình các tham số khởi động Java ở bên dưới.",
+    "description": "Máy chủ tích hợp chạy trên máy tính của bạn. Bạn có thể thay đổi các tham số khởi động Java ở bên dưới.",
     "form": {
       "jvmArgs": {
         "title": "Tham số JVM",
-        "description": "Tham số máy ảo Java của SoulFire. Để dùng 4GB RAM, hãy thêm <bold>-Xmx4G</bold>. Mặc định là 25% RAM của bạn.",
+        "description": "Tham số Java VM cho SoulFire. Thêm <bold>-Xmx4G</bold> để sử dụng 4 GB RAM. Mặc định là 25% dung lượng RAM khả dụng.",
         "placeholder": "Tham số JVM của bạn tại đây"
       },
       "back": "Quay lại",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Lệnh Termux",
-          "description": "Cài đặt <a>ứng dụng Termux</a>, sau đó chạy lệnh này trong Termux để cài đặt máy chủ SoulFire. Tiếp đến bạn cần chạy lệnh <copy>generate-token api</copy> để tạo mã token. Sau đó nhập mã token bên dưới."
+          "description": "Cài đặt <a>ứng dụng Termux</a>. Chạy lệnh này trong Termux để cài đặt máy chủ SoulFire. Chạy <copy>generate-token api</copy> để tạo token. Sau đó nhập token vào bên dưới."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Nhập địa chỉ và mã token của máy chủ SoulFire bạn muốn kết nối.",
+    "description": "Nhập địa chỉ và token của máy chủ SoulFire.",
     "toast": {
       "loading": "Đang kết nối tới máy chủ...",
       "success": "Đã kết nối tới máy chủ",

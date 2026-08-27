@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "New to SoulFire? Best check the <a>getting started guide</a>, matey!",
+  "newUser": "Be ye new t' SoulFire? Read the <a>guide fer gettin' started</a>, matey!",
   "connect": {
     "title": "Hoist yer sails to a SoulFire server",
     "description": "Choose which kind o' SoulFire vessel ye wish to board, matey.",
     "integrated": {
       "title": "Ship computer (local)",
-      "description": "Runs a SoulFire ship on yer own contraption. All preparations be automatic, no fussin' about needed. (Ye need the Desktop/Android app, aye.)"
+      "description": "Hoist a SoulFire server on this here device. Setup happens automagically. This choice be requirin' the desktop or Android app, arrr."
     },
     "dedicated": {
       "title": "Remote server (yonder)",
-      "description": "Sets yer course to a distant SoulFire outpost. Ye must give the port address and secret code o' the outpost."
+      "description": "Links up t' a faraway SoulFire server usin' its address n' secret token, matey."
     },
     "demo": {
       "title": "Demo schooner",
-      "description": "Simulates a make-believe ship with demo cargo. This ship be but for showin', ye can't be changin' a thing aboard."
+      "description": "Gives ye a read-only server wit' a stash o' demo loot. No changes be saved by SoulFire, savvy?"
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Arrr! SoulFire booty be reset. Give it another go, ye scallywag.",
       "error": "Failed to reset the SoulFire booty, matey!"
     },
-    "description": "The local SoulFire ship runs on yer own deck. Adjust the Java startup riggin' below if need be.",
+    "description": "The integrated server be runnin' on yer own computer, aye. Ye can change the Java startup commands below.",
     "form": {
       "jvmArgs": {
         "title": "Java VM riggin'",
-        "description": "Arguin' with the SoulFire Java engine. To command 4G o' RAM, add <bold>-Xmx4G</bold>. By default, she claims 25% o' yer treasure.",
+        "description": "Java VM arguments fer SoulFire. Add <bold>-Xmx4G</bold> if ye want 4 GB o' memory. The default be 25% o' yer available RAM, arrr.",
         "placeholder": "Drop yer own JVM spells here"
       },
       "back": "Avast",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux spell",
-          "description": "Haul in the <a>Termux app</a>, then run this here command in Termux to set up yer SoulFire ship. Then, hoist the <copy>generate-token api</copy> command to fetch a secret code. Enter yer code below, sailor."
+          "description": "Install the <a>Termux app</a>, matey. Then run this command in Termux t' install the SoulFire server. Run <copy>generate-token api</copy> t' make a new token. After that, toss the token in below, arrr."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Type in the port and secret token o' the SoulFire server ye wish to board.",
+    "description": "Type the address n' token o' the SoulFire server here, ye scallywag.",
     "toast": {
       "loading": "Castin' line to server...",
       "success": "Successfully boarded the server, aye!",

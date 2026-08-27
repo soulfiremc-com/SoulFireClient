@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "角色",
+          "placeholder": "選擇角色",
           "description": "使用者的角色。管理員可以管理使用者及所有實例，一般使用者僅能管理自己的實例。",
           "user": "使用者",
           "admin": "管理員"
@@ -114,8 +115,8 @@
       "actions": "動作",
       "searchUsernames": "搜尋使用者名稱...",
       "searchEmails": "搜尋電子郵件...",
-      "searchCreatedAts": "搜尋建立時間...",
-      "searchMinIssuedAts": "搜尋最小發放時間..."
+      "searchCreatedAts": "搜尋建立日期...",
+      "searchMinIssuedAts": "搜尋最早登入日期..."
     },
     "removeSelectedTooltip": "移除選取的使用者",
     "logOutSelectedTooltip": "登出選取的使用者",

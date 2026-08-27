@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Zde je k dispozici surový výstup instance, když potřebujete zkontrolovat detaily konzole.",
+    "summary": {
+      "accounts": "Účty",
+      "proxies": "Proxy",
+      "configured": "{{count}} nakonfigurováno",
+      "configuredShort": "Nakonfigurováno",
+      "currentRate": "Aktuální sazba",
+      "imported": "Importováno"
+    },
+    "readiness": {
+      "title": "Nastavení",
+      "accounts": "Účty",
+      "accountsValue": "{{count}} importováno pro {{requested}} požadované boty",
+      "proxies": "Proxy",
+      "proxiesValue": "{{count}} nakonfigurováno",
+      "plugins": "Pluginy",
+      "pluginsValue": "{{count}} dostupné"
+    },
+    "activity": {
+      "title": "Aktivita",
+      "tick": "Tick",
+      "health": "Zdraví",
+      "world": "Svět",
+      "worldValue": "{{chunks}} chunků, {{entities}} entit",
+      "connections": "Připojení",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metiky",
+      "noDataDescription": "Zatím žádné runtime metriky."
+    },
+    "metricsUnavailable": {
+      "title": "Metiky",
+      "inactive": "Spusťte bota pro sběr živých metrik.",
+      "noPermission": "Nemáte oprávnění zobrazit metriky botů."
+    },
+    "status": {
+      "ready": "Připraveno",
+      "attention": "Vyžaduje pozornost",
+      "configured": "Nakonfigurováno",
+      "optional": "Volitelné",
+      "available": "Dostupné",
+      "none": "Žádné"
+    },
+    "actions": {
+      "manage": "Spravovat",
+      "open": "Otevřít"
+    },
+    "spotlight": {
+      "noBots": "Zatím nejsou nastaveni žádní boti.",
+      "idle": "Nečinný, čeká na instrukce.",
+      "level": "Úroveň {{level}}"
+    },
+    "liveFeed": {
+      "title": "Živý přenos",
+      "empty": "Čeká se na aktivitu instance...",
+      "noPermission": "Nemáte oprávnění zobrazit živý přenos.",
+      "lifecycle": {
+        "connecting": "se připojuje",
+        "connected": "připojeno",
+        "spawned": "připojil se do hry",
+        "died": "zemřel",
+        "respawned": "znovu oživen",
+        "disconnected": "odpojen",
+        "unknown": "změnil stav"
+      }
+    },
+    "bots": {
+      "title": "Boti",
+      "viewAll": "Zobrazit všechny boti: {{total}}",
+      "viewAllShort": "Zobrazit vše"
+    },
+    "timeline": {
+      "title": "Aktivita",
+      "viewAll": "Zobrazit vše",
+      "empty": "Zatím nebyla zaznamenána žádná aktivita.",
+      "noPermission": "Nemáte oprávnění zobrazit záznam auditu.",
+      "types": {
+        "executeCommand": "spustil příkaz: {{data}}",
+        "botDesiredStateChange": "změněn požadovaný stav bota",
+        "botRestart": "boty byly restartovány",
+        "unknown": "provedl akci"
+      }
+    },
+    "plugins": {
+      "title": "Pluginy",
+      "empty": "Žádný plugin zatím nehlásí statistiky.",
+      "noPermission": "Nemáte oprávnění zobrazit statistiky pluginu.",
+      "active": "Aktivní",
+      "activeBots": "{{count}} aktivních botů",
+      "uptime": "doba běhu {{time}}"
+    },
+    "detailed": {
+      "title": "Podrobné metriky",
+      "composition": "Složení světa"
+    }
+  },
   "proxy": {
     "getProxies": "Získat proxy servery",
     "addProxies": "Přidat proxy servery",
@@ -55,8 +151,8 @@
       "deleteProxy": "Smazat proxy"
     },
     "postImportCheckDialog": {
-      "title": "Zkontrolovat proxy?",
-      "description": "Právě jste importovali {{count}} proxy. Chcete je nyní zkontrolovat? Neplatné proxy budou automaticky odstraněny.",
+      "title": "Zkontrolovat importované proxy?",
+      "description": "Importovali jste {{count}} proxy. Zkontrolovat je nyní? SoulFire automaticky odstraní neplatné proxy.",
       "confirm": "Zkontrolovat proxy servery",
       "skip": "Přeskočit"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Žádné účty k importu"
     },
     "unknownError": "Neznámá chyba",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (přihlašovací údaje)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (kód zařízení)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (obnovovací token)",
+      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (přístupový token)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (přihlašovací údaje)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (kód zařízení)"
+    },
     "deviceCodeImportToast": {
       "loading": "Importuji účet...",
       "success": "Účet importován!",
@@ -93,9 +200,9 @@
       "description": "Vygenerujte offline Java účty s vlastním formátem jména.",
       "amount": "Počet",
       "nameFormat": "Formát jména",
-      "nameFormatHelp": "Použijte %d jako zástupný znak pro číslo účtu (např. Bot_%d se stane Bot_1, Bot_2 atd.)",
+      "nameFormatHelp": "Použijte %d pro číslo účtu. Například Bot_%d vytvoří jména jako Bot_1 a Bot_2.",
       "mode": "Existující účty",
-      "modeHelp": "Zvolte, jak chcete zacházet s existujícími účty:\n\n• Ignorovat existující: Generuje pouze účty se jmény, která zatím neexistují. Všechny existující účty zůstanou beze změny.\n\n• Nahradit existující: Vygeneruje všechny účty a nahradí všechny existující účty, které mají stejné UUID. Ostatní účty zůstanou.\n\n• Nahradit vše: Smaže VŠECHNY existující účty a nahradí je vygenerovanými účty.",
+      "modeHelp": "Vyberte, jak chcete naložit s existujícími účty:\n\n• Ignorovat stávající: Generovat pouze účty s novými jmény. Všechny stávající účty zůstanou zachovány.\n\n• Nahradit stávající: Generovat všechny požadované účty. Nahradit účty se shodnými UUID. Ostatní účty zůstanou zachovány.\n\n• Nahradit vše: Odebrat všechny stávající účty. Poté přidat vygenerované účty.",
       "modeIgnoreExisting": "Ignorovat existující",
       "modeReplaceExisting": "Nahradit existující",
       "modeReplaceAll": "Nahradit vše",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft Refresh Token",
       "microsoftCookies": "Microsoft cookies",
       "microsoftAccessToken": "Microsoft Access Token",
+      "theAltening": "TheAltening token",
       "altProviders": "Alternativní poskytovatelé",
       "dialog": {
         "title": "Importovat účty typu {{type}}",
@@ -149,7 +257,21 @@
       "description": "Nastavit nastavení pro jednotlivé boty tohoto účtu",
       "openButton": "Nastavit účet",
       "pageTitle": "Nastavení {{name}} – {{page}}",
-      "noSettings": "Pro tuto stránku nejsou k dispozici žádná nastavení"
+      "noSettings": "Pro tuto stránku nejsou k dispozici žádná nastavení",
+      "search": "Nastavení hledání",
+      "overrides": "Přepsání",
+      "allSettings": "Všechna nastavení",
+      "noOverrides": "Tento bot zatím nemá žádná explicitní přepsání.",
+      "noOverridesMatching": "Žádné přepsání neodpovídá tomuto hledání.",
+      "noOverridesHelp": "Otevřete Všechna nastavení pro převzetí hodnot nebo vytvořte první přepsání specifické pro bota.",
+      "tryDifferentSearch": "Zkuste jiný vyhledávací výraz.",
+      "openAllSettings": "Otevřít všechna nastavení",
+      "selectPage": "Vyberte stránku nastavení",
+      "noSearchResults": "Žádná nastavení neodpovídají tomuto vyhledávání.",
+      "matchesInheritedValue": "Shoduje se s převzatou hodnotou",
+      "instanceValue": "Hodnota instance",
+      "defaultValue": "Výchozí hodnota",
+      "resetOverride": "Obnovit přepsání"
     },
     "deviceCodeConfirmDialog": {
       "title": "Ověření pomocí kódu zařízení",
@@ -183,7 +305,7 @@
       "purchasing": "Probíhá nákup...",
       "purchaseSuccess": "Zakoupeno {{count}} účtů, importuji...",
       "purchaseError": "Nákup se nezdařil: {{message}}",
-      "networkError": "Nelze se připojit k Ravealts API",
+      "networkError": "Nepodařilo se připojit k API Ravealts",
       "outOfStock": "Vybraný typ není skladem",
       "insufficientBalance": "Nedostatek kreditů",
       "rateLimited": "Příliš mnoho požadavků, zkuste to později"
@@ -231,7 +353,30 @@
     "online": "Online",
     "offline": "Offline",
     "notJoined": "Nepřipojený",
+    "connectionPhase": {
+      "connecting": "Připojování",
+      "connected": "Připojeno",
+      "spawned": "Online",
+      "died": "Mrtvý",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Spouštění",
+      "running": "Běží",
+      "retrying": "Opakování",
+      "stopping": "Zastavování",
+      "failed": "Selhalo",
+      "waiting": "Čekání",
+      "stopped": "Zastaveno"
+    },
     "backToBots": "Zpět na boty",
+    "tabs": {
+      "overview": "Přehled",
+      "inventory": "Inventář",
+      "controls": "Ovládací prvky",
+      "terminal": "Terminál"
+    },
     "comingSoon": "Již brzy",
     "terminalPanel": {
       "title": "Terminál Bota"
@@ -362,11 +507,74 @@
       "offline": "Bot je offline. Dialogy jsou k dispozici pouze když je bot připojen."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Žádná data"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Provoz",
+      "health": "Zdraví",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Boti online",
+      "online": "Online",
+      "total": "Celkem"
+    },
+    "packets": {
+      "title": "Pakety / sekunda",
+      "sent": "Odesláno/s",
+      "received": "Přijato/s"
+    },
+    "bandwidth": {
+      "title": "Šířka pásma",
+      "upload": "Nahrávání",
+      "download": "Stahování"
+    },
+    "tick": {
+      "title": "Doba trvání ticku",
+      "avg": "Prům. (ms)",
+      "max": "Max. (ms)"
+    },
+    "healthFood": {
+      "title": "Zdraví / Jídlo",
+      "health": "Průměrné zdraví",
+      "food": "Průměrné jídlo"
+    },
+    "chunksEntities": {
+      "title": "Chunky / entity",
+      "chunks": "Chunky",
+      "entities": "Entity"
+    },
+    "connections": {
+      "title": "Události připojení",
+      "connections": "Připojení",
+      "disconnections": "Odpojení"
+    },
+    "healthDistribution": {
+      "title": "Distribuce zdraví",
+      "bots": "Boti"
+    },
+    "dimensions": {
+      "title": "Dimenze",
+      "bots": "Boti"
+    },
+    "gameModes": {
+      "title": "Herní módy",
+      "bots": "Boti"
+    },
+    "positions": {
+      "title": "Pozice botů (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Vizuální skripty",
     "description": "Vytvářejte automatizační skripty pomocí vizuálního editoru založeného na uzlech.",
     "experimentalTitle": "Experimentální funkce",
-    "experimentalWarning": "Tato funkce je experimentální. V budoucnu může dojít k nekompatibilním změnám a stávající skripty mohou přestat fungovat. Používejte s opatrností.",
+    "experimentalWarning": "Tato funkce je experimentální. Budoucí aktualizace mohou existující skripty narušit. Používejte ji opatrně.",
     "createScript": "Vytvořit skript",
     "createScriptTitle": "Vytvořit nový skript",
     "createScriptDescription": "Vytvořte nový vizuální skript pro tuto instanci. Skripty mohou automatizovat akce bota a reagovat na události.",
@@ -430,6 +638,7 @@
         "pause": "Pozastavit",
         "pauseTooltip": "Pozastavit vykonávání skriptu",
         "unsaved": "Neuloženo",
+        "unsavedChanges": "Neuložené změny",
         "clearCanvas": "Vymazat plátno",
         "zoomIn": "Přiblížit",
         "zoomOut": "Oddálit",
@@ -464,6 +673,64 @@
         "showPreview": "Zobrazit náhled",
         "hidePreview": "Skrýt náhled",
         "delete": "Smazat"
+      },
+      "node": {
+        "expand": "Rozbalit uzel",
+        "collapse": "Sbalit uzel"
+      },
+      "debug": {
+        "copyValue": "Kopírovat aktuální hodnotu",
+        "clearHistory": "Vymazat historii"
+      },
+      "edge": {
+        "direction": "Směr hrany"
+      },
+      "note": {
+        "placeholder": "Napsat poznámku..."
+      },
+      "complexity": {
+        "title": "Skóre složitosti skriptu"
+      },
+      "group": {
+        "returnToRoot": "Vrátit se na kořen (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Rychlé přidání uzlu – nabídka",
+        "searchPlaceholder": "Hledat uzly..."
+      },
+      "diff": {
+        "tooltip": "Zkontrolovat změny"
+      },
+      "dryRun": {
+        "tooltip": "Suchý běh",
+        "title": "Suchý běh skriptu",
+        "description": "Spusťte skript ze zvoleného spouštěče s testovacími vstupy.",
+        "triggerNode": "Spouštěcí uzel",
+        "selectTrigger": "Vyberte spouštěč...",
+        "triggerDescription": "Vyberte uzel spouštěče, který se má provést s testovacími vstupy.",
+        "mockInputs": "Testovací vstupy",
+        "valuePlaceholder": "Hodnota typu {{type}}",
+        "start": "Spustit suchý běh"
+      },
+      "quotas": {
+        "tooltip": "Limity skriptu",
+        "title": "Limity skriptu",
+        "description": "Nastavte limity zdrojů pro tento skript. Prázdná pole použijí výchozí hodnoty serveru.",
+        "maxExecutionCount": "Maximální počet spuštění",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximální počet spuštění uzlů na jedno spuštění spouštěče",
+        "maxExecutionTime": "Maximální čas spuštění (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximální čas běhu na jedno spuštění spouštěče",
+        "maxConcurrentTriggers": "Maximální počet současně spuštěných spouštěčů",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximální počet souběžně spuštěných spouštěčů",
+        "maxStateStoreEntries": "Maximální počet záznamů ve stavovém úložišti",
+        "maxStateStoreEntriesPlaceholder": "Neomezeno",
+        "maxStateStoreEntriesDescription": "Maximální počet záznamů ve stavovém úložišti skriptu",
+        "disableTimeouts": "Zakázat časové limity",
+        "disableTimeoutsDescription": "Zakáže časové limity pro jednotlivé uzly a datové hrany",
+        "save": "Uložit limity"
       }
     }
   }

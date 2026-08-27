@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Oletko uusi SoulFiressä? Suosittelemme aloittamaan <a>aloitusoppaalla</a>.",
+  "newUser": "Uusi SoulFire-käyttäjä? Lue <a>aloitusopas</a>.",
   "connect": {
     "title": "Yhdistä SoulFire-palvelimeen",
     "description": "Valitse mihin tyyppiseen SoulFire-palvelimeen haluat yhdistää.",
     "integrated": {
       "title": "Integroitu palvelin (paikallinen)",
-      "description": "Ajaa SoulFire-palvelimen tietokoneellasi. Asennus on automaattinen eikä vaadi asetuksia. (Vaatii Desktop- tai Android-sovelluksen)"
+      "description": "Ajaa SoulFire-palvelinta tällä laitteella. Asennus tapahtuu automaattisesti. Tämä vaihtoehto vaatii työpöytä- tai Android-sovelluksen."
     },
     "dedicated": {
       "title": "Oma palvelin (etä)",
-      "description": "Yhdistää SoulFire-palvelimen etäinstanssiin. Sinun täytyy antaa palvelimen osoite ja tunnus."
+      "description": "Yhdistää etä-SoulFire-palvelimeen osoitteen ja tunnisteen avulla."
     },
     "demo": {
       "title": "Demo-palvelin",
-      "description": "Simuloi virtuaalista palvelinta demodatan kanssa. Tämä palvelin on vain luku -etkä voi tehdä muutoksia siihen."
+      "description": "Tarjoaa vain luku -palvelimen demodatan kanssa. SoulFire ei tallenna muutoksia."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire-tiedot palautettu onnistuneesti. Yritä aloittaa uudelleen.",
       "error": "SoulFire-tietojen palautus epäonnistui"
     },
-    "description": "Integroitu palvelin toimii paikallisesti tietokoneellasi. Voit tarvittaessa määrittää Java-käynnistysparametrit alla.",
+    "description": "Integroitu palvelin toimii tietokoneellasi. Voit muuttaa Java-käynnistysparametreja alla.",
     "form": {
       "jvmArgs": {
         "title": "JVM-parametrit",
-        "description": "SoulFire Java VM -parametrit. Käyttääksesi 4 Gt RAM-muistia, lisää <bold>-Xmx4G</bold>. Oletus on 25 % RAMistasi.",
+        "description": "Java VM -parametrit SoulFirelle. Lisää <bold>-Xmx4G</bold> käyttääksesi 4 Gt RAM-muistia. Oletus on 25 % käytettävissä olevasta RAM-muistista.",
         "placeholder": "JVM-parametrisi tähän"
       },
       "back": "Takaisin",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux-komento",
-          "description": "Asenna <a>Termux-sovellus</a> ja suorita tämä komento Termuxissa asentaaksesi SoulFire-palvelin. Sinun tulee sitten suorittaa <copy>generate-token api</copy> -komento tuottaaksesi tunnuksen. Anna tunnus alle."
+          "description": "Asenna <a>Termux-sovellus</a>. Suorita tämä komento Termuxissa asentaaksesi SoulFire-palvelimen. Suorita <copy>generate-token api</copy> luodaksesi tunnisteen. Syötä sitten tunniste alle."
         },
         "token": {
           "title": "Tunnus",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Anna SoulFire-palvelimen osoite ja tunnus, johon haluat yhdistää.",
+    "description": "Anna SoulFire-palvelimen osoite ja tunniste.",
     "toast": {
       "loading": "Yhdistetään palvelimeen...",
       "success": "Yhdistetty palvelimeen",

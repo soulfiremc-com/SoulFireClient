@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "用户类型",
+          "placeholder": "选择角色",
           "description": "用户的角色。管理员可管理所有用户和实例，普通用户只能管理自己的实例。",
           "user": "用户",
           "admin": "管理员"
@@ -114,8 +115,8 @@
       "actions": "操作",
       "searchUsernames": "搜索用户名...",
       "searchEmails": "搜索邮箱...",
-      "searchCreatedAts": "搜索创建时间...",
-      "searchMinIssuedAts": "搜索最小发放时间..."
+      "searchCreatedAts": "搜索创建日期...",
+      "searchMinIssuedAts": "搜索最小登录日期..."
     },
     "removeSelectedTooltip": "移除已选用户",
     "logOutSelectedTooltip": "注销已选用户",

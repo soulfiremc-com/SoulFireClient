@@ -8,7 +8,7 @@
     "noAddressOrToken": "Sunucu adresi veya jeton bulunamadı",
     "page": {
       "title": "Hata",
-      "description": "Sayfa yüklenirken bir hata oluştu. Daha fazla bilgi konsolda bulunabilir.",
+      "description": "Sayfa yüklenmedi. Daha fazla bilgi için konsolu açın.",
       "logOut": "Çıkış Yap",
       "reloadPage": "Sayfayı yeniden yükle",
       "showDetails": "Ayrıntıları göster"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Bulunamadı",
-      "description": "Bu konumda bir sayfa bulunamadı",
+      "description": "Bu adreste bir sayfa yok.",
       "logOut": "Çıkış Yap",
       "reloadPage": "Sayfayı yeniden yükle"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Kapat"
     },
+    "support": {
+      "title": "SoulFire'ı Destekle",
+      "description": "SoulFire ücretsiz ve açık kaynaklıdır; topluluk tarafından sevgiyle geliştirilmiştir.",
+      "body": "SoulFire size faydalı olduysa, lütfen projeyi desteklemeyi düşünün. Katkınız, sunucu masraflarını karşılamaya, geliştirmeye fon sağlamaya ve SoulFire'ın herkes için ücretsiz kalmasına yardımcı olur.",
+      "dismiss": "Belki sonra",
+      "action": "SoulFire'ı Destekle"
+    },
     "createInstance": {
       "title": "Yeni bir örnek oluştur",
-      "description": "Örneklerinizi ayırt edebilmeniz için dostça isimlere ihtiyaç vardır. Bu, \" Benim Botum\" gibi istediğiniz herhangi bir isim olabilir.",
+      "description": "Tanıyabileceğiniz bir isim verin, örneğin \"Minecraft Botum\".",
       "form": {
         "friendlyName": {
           "label": "\"Dostça ad",
@@ -67,11 +74,26 @@
         "error": "Örnek oluşturmada hata oluştu"
       }
     },
+    "duplicateInstance": {
+      "title": "Kopya örnek oluştur",
+      "description": "\"{{name}}\" profilini kullanarak yeni bir örnek oluştur.",
+      "form": {
+        "friendlyName": {
+          "description": "Kopyalanan örnek için ad."
+        },
+        "duplicate": "Çoğalt"
+      },
+      "duplicateToast": {
+        "loading": "Kopya oluşturuluyor...",
+        "success": "Kopya başarıyla oluşturuldu",
+        "error": "Kopya oluşturulamadı"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Dosyadan",
         "fromUrl": "URL'den",
-        "firstClipboardItem": "Pano içinde birden fazla öğeniz vardı, yalnızca ilki kullanılacak.",
+        "firstClipboardItem": "Panoda birden fazla öğe var. SoulFire ilk öğeyi kullanacaktır.",
         "fromClipboard": "Panodan",
         "textarea": {
           "placeholder": "Metni buraya girin...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "URL'den yükleme SoulFire sunucusunun hedef sunucuya bir GET isteği göndermesine ve yanıtı veri olarak kullanmasına neden olur.",
+        "description": "SoulFire sunucusu bu URL'ye bir GET isteği gönderir ve yanıtı içe aktarır.",
         "form": {
           "url": {
             "placeholder": "URL'yi buraya girin...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Başlat",
-    "resume": "Devam et",
-    "pause": "Duraklat",
     "stop": "Durdur",
+    "startAll": "Hepsini başlat",
+    "stopAll": "Hepsini durdur",
+    "restart": "Yeniden başlat",
+    "startCount": "Başlatılacak bot sayısı",
     "startToast": {
-      "loading": "Oturum başlatılıyor...",
-      "success": "Oturum başarıyla başlatıldı",
-      "error": "Oturum başlatılamadı"
+      "loading": "Botlar başlatılıyor...",
+      "success": "Bot durumu güncellendi",
+      "error": "Botlar başlatılamadı"
     },
-    "resumeToast": {
-      "loading": "Oturum devam ettiriliyor...",
-      "success": "Oturum başarıyla devam ettirildi",
-      "error": "Oturum devam ettirilemedi"
-    },
-    "pauseToast": {
-      "loading": "Oturum duraklatılıyor...",
-      "success": "Oturum başarıyla duraklatıldı",
-      "error": "Oturum duraklatılamadı"
+    "restartToast": {
+      "loading": "Botlar yeniden başlatılıyor...",
+      "success": "Botlar tekrar bağlanıyor",
+      "error": "Botlar yeniden başlatılamadı"
     },
     "stopToast": {
-      "loading": "Oturum durduruluyor...",
-      "success": "Oturum başarıyla durduruldu",
-      "error": "Oturum durdurulamadı"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Hiçbir Hesap Yapılandırılmadı",
-      "noAccountsDescription": "Bir oturum başlatmadan önce hesapları içe aktarmanız gerekir. İstediğiniz bot sayısı: {{required}}.",
-      "notEnoughTitle": "Yeterli Hesap Yok",
-      "notEnoughDescription": "{{required}} bot talep ettiniz ama yalnızca {{available}} hesap içe aktardınız.",
-      "hint": "Çevrimdışı hesaplar oluşturabilir veya Hesap Ayarları sayfasından hesapları içe aktarabilirsiniz.",
-      "continueWithExisting": "{{count}} hesap ile devam et",
-      "generateAccounts": "Hesapları Oluştur"
+      "loading": "Botlar durduruluyor...",
+      "success": "Botlar durduruluyor",
+      "error": "Botlar durdurulamadı"
     }
   },
+  "botFleetSummary": "{{online}} çevrimiçi · {{desired}} istenen · {{total}} toplam",
   "icon": {
     "invalidName": "Geçersiz simge adı: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Ekle",
       "remove": "Kaldır"
     },
+    "combo": {
+      "searchPlaceholder": "Değer ara..."
+    },
     "invalidNumberToast": {
-      "title": "Geçersiz sayı!",
+      "title": "Geçersiz sayı",
       "description": "Değer {{min}} ile {{max}} arasında olmalıdır"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Görünüşe göre görüntülenecek günlük yok; birkaç komut çalıştırmayı deneyin!",
+    "noLogs": "Henüz kayıt yok. Kayıt çıktısı oluşturmak için bir komut çalıştırın.",
     "demo-1": "Demo moduna hoş geldiniz! 🧪",
     "demo-2": "Bu, SoulFire'ın salt okunur örneğidir",
     "demo-3": "SoulFire'ı yüklemeye karar vermeden önce tüm menüler ve özelliklere göz atın :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Kenar Çubuğunu Aç / Kapat"
+  },
+  "window": {
+    "minimize": "Küçült",
+    "minimizeLabel": "Pencereyi küçült",
+    "maximize": "Büyüt",
+    "maximizeLabel": "Pencereyi büyüt",
+    "restore": "Geri yükle",
+    "restoreLabel": "Pencereyi geri yükle",
+    "close": "Kapat",
+    "closeLabel": "Pencereyi kapat",
+    "back": "Geri Dön",
+    "backLabel": "Geri git",
+    "forward": "İleri",
+    "forwardLabel": "İleri git"
+  },
+  "infoButton": {
+    "showInfo": "Bilgiyi göster"
   },
   "castMenu": {
     "title": "Yayınla",
@@ -333,6 +364,7 @@
     },
     "configDir": "Yapılandırma dizini",
     "dataDir": "Veri dizini",
+    "supportSoulFire": "SoulFire'ı Destekle",
     "about": "Hakkında",
     "logOut": "Çıkış Yap",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Dokümantasyon",
-    "supportSoulFire": "Bana bir kahve ısmarla",
+    "supportSoulFire": "SoulFire'ı Destekle",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV Erişimi",
-      "description": "SoulFire ile örneklere, betiklere ve diğer dosyalara WebDAV protokolü kullanarak erişebilirsiniz.",
+      "description": "WebDAV, örnek dosyalarına, betiklere ve diğer dosyalara erişim sağlar.",
       "publicAddress": "Genel WebDAV Adresi",
       "personalToken": "Kişisel WebDAV Jetonu",
-      "securityWarning": "Kişisel WebDAV Jetonunuz çok önemlidir. Kimseyle paylaşmayın. Dosyalarınıza erişirken kimlik doğrulama için kullanılır. WebDAV'a bağlanırken şifre olarak kullanın. Kullanıcı adı gerekmez, istenirse istediğiniz bir değeri yazabilirsiniz. (örn. 'soulfire')",
-      "addressDescription": "Bu dosyalarınıza erişmek için kullanmanız gereken adrestir. Bazen http(s):// yerine dav:// veya davs:// kullanmanız gerekebilir."
+      "securityWarning": "Kişisel WebDAV belirtecinizi gizli tutun. Dosyalarınıza erişim sağlar. Belirteci WebDAV şifreniz olarak kullanın. Kullanıcı adına ihtiyacınız yok. Uygulamanız bir kullanıcı adı gerektiriyorsa, 'soulfire' gibi herhangi bir değer girin.",
+      "addressDescription": "Dosyalarınıza erişmek için bu adresi kullanın. Bazı istemciler http:// veya https:// yerine dav:// ya da davs:// ister."
     },
     "api": {
       "title": "API Erişimi",
-      "description": "SoulFire'ın gRPC HTTP API'sı, örneklerle programatik olarak web istekleriyle etkileşime girmenizi sağlar.",
+      "description": "SoulFire gRPC HTTP API'si, web istekleriyle instance'ları yönetir.",
       "publicAddress": "Genel API Adresi",
       "personalToken": "Kişisel API Jetonu",
-      "securityWarning": "Kişisel API Jetonunuz çok önemlidir. Kimseyle paylaşmayın. API'ye erişirken kimlik doğrulama için kullanılır.",
-      "addressDescription": "Bu, API'ye erişmek için kullanmanız gereken adrestir."
+      "securityWarning": "Kişisel API belirtecinizi gizli tutun. API'ye erişim sağlar.",
+      "addressDescription": "API'ye erişmek için bu adresi kullanın."
     },
     "token": {
       "generate": "Jeton Oluştur",
@@ -443,6 +475,8 @@
     "searchUsers": "Kullanıcılarda ara...",
     "searchTimestamps": "Zaman damgalarında ara...",
     "executedCommand": "Çalıştırılan komut: {{data}}",
+    "changedBotDesiredState": "Botun hedef durumu değiştirildi",
+    "restartedBots": "Botlar yeniden başlatıldı",
     "contextMenu": {
       "copyUsername": "Kullanıcı Adını Kopyala",
       "copyCommand": "Komutu Kopyala"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Betik adı en az 3 karakter olmalıdır",
           "max": "Betik adı en fazla 32 karakter olmalıdır",
-          "regex": "Betik adı küçük harf olmalı, alfanümerik karakter ile başlamalı, devamında alfanümerik veya tire olabilir, alfanümerik ile bitmelidir.",
+          "regex": "Küçük harfler, rakamlar ve tireler kullanın. İsim bir harf ya da rakam ile başlamalı ve bitmelidir.",
           "label": "Ad",
           "placeholder": "Benim Betiğim",
           "description": "Betik adı."
         },
         "elevatedPermissions": {
           "label": "Yükseltilmiş Yetkiler",
-          "description": "Betiğin yükseltilmiş yetkilerle çalıştırılıp çalıştırılmayacağı. Sadece yöneticiler bu seçeneği etkinleştirebilir."
+          "description": "Betik, yükseltilmiş izinlerle çalışır. Yalnızca yöneticiler bu seçeneği etkinleştirebilir."
         }
       }
     },
     "addScriptDialog": {
       "title": "Yeni bir betik ekle",
-      "description": "Betikler, SoulFire sunucusunda çalışan küçük programlardır. Görevleri otomatikleştirmek, özel davranışlar oluşturmak gibi amaçlarla kullanılabilirler.",
+      "description": "Betikler, SoulFire sunucusunda görevleri ve diğer eylemleri otomatikleştiren küçük programlardır.",
       "form": {
         "cancel": "İptal",
         "add": "Ekle"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Instansa Git",
+      "duplicateInstance": "Kopyasını Oluştur",
       "copyInstanceId": "Instance Kimliğini Kopyala",
       "copyInstanceName": "Instance Adını Kopyala",
       "deleteInstance": "Örneği Sil"

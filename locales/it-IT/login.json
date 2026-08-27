@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Nuovo su SoulFire? Ti consigliamo di leggere la <a>guida introduttiva</a>.",
+  "newUser": "Nuovo su SoulFire? Leggi la <a>guida introduttiva</a>.",
   "connect": {
     "title": "Connetti a un server SoulFire",
     "description": "Seleziona il tipo di server SoulFire a cui connetterti.",
     "integrated": {
       "title": "Server integrato (locale)",
-      "description": "Esegue un server SoulFire sul tuo computer. La configurazione è automatica e non richiede alcuna impostazione. (Richiede l'app Desktop/Android)"
+      "description": "Esegue un server SoulFire su questo dispositivo. L'installazione è automatica. Questa opzione richiede l'app desktop o Android."
     },
     "dedicated": {
       "title": "Server dedicato (remoto)",
-      "description": "Si connette a un'istanza remota del server SoulFire. Dovrai fornire l'indirizzo e il token del server."
+      "description": "Si connette a un server SoulFire remoto tramite indirizzo e token."
     },
     "demo": {
       "title": "Server demo",
-      "description": "Simula un server virtuale con dati demo. Questo server è in sola lettura e non puoi apportare modifiche."
+      "description": "Fornisce un server di sola lettura con dati demo. SoulFire non salva le modifiche."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Dati di SoulFire reimpostati con successo. Prova a ricominciare.",
       "error": "Impossibile reimpostare i dati di SoulFire"
     },
-    "description": "Il server integrato viene eseguito localmente sul tuo PC. Configura gli argomenti di avvio Java qui sotto se necessario.",
+    "description": "Il server integrato viene eseguito sul tuo computer. Puoi modificare gli argomenti di avvio di Java qui sotto.",
     "form": {
       "jvmArgs": {
         "title": "Argomenti JVM",
-        "description": "Argomenti Java VM di SoulFire. Per usare 4GB di RAM, aggiungi <bold>-Xmx4G</bold>. Il valore predefinito è il 25% della tua RAM.",
+        "description": "Argomenti della Java VM per SoulFire. Aggiungi <bold>-Xmx4G</bold> per usare 4 GB di RAM. Il valore predefinito è il 25% della RAM disponibile.",
         "placeholder": "I tuoi argomenti JVM qui"
       },
       "back": "Indietro",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Comando Termux",
-          "description": "Installa l'<a>app Termux</a>, quindi esegui questo comando in Termux per installare il server SoulFire. Dovrai poi eseguire il comando <copy>generate-token api</copy> per generare un token. Poi inserisci il token qui sotto."
+          "description": "Installa l'<a>app Termux</a>. Esegui questo comando in Termux per installare il server SoulFire. Esegui <copy>generate-token api</copy> per creare un token. Inserisci poi il token qui sotto."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Inserisci l'indirizzo e il token del server SoulFire a cui vuoi collegarti.",
+    "description": "Inserisci l'indirizzo e il token del server SoulFire.",
     "toast": {
       "loading": "Connessione al server...",
       "success": "Connesso al server",

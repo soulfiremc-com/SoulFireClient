@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rooli",
+          "placeholder": "Valitse rooli",
           "description": "Käyttäjän rooli. Ylläpitäjät voivat hallita käyttäjiä ja kaikkia instansseja. Käyttäjät voivat hallita vain omia instanssejaan.",
           "user": "Käyttäjä",
           "admin": "Ylläpitäjä"
@@ -114,8 +115,8 @@
       "actions": "Toiminnot",
       "searchUsernames": "Etsi käyttäjätunnuksia...",
       "searchEmails": "Etsi sähköpostiosoitteita...",
-      "searchCreatedAts": "Etsi luontipäiviä...",
-      "searchMinIssuedAts": "Etsi minimi kirjautumispäiviä..."
+      "searchCreatedAts": "Etsi luontipäivämääriä...",
+      "searchMinIssuedAts": "Etsi vähimmäiskirjautumispäivämääriä..."
     },
     "removeSelectedTooltip": "Poista valitut käyttäjät",
     "logOutSelectedTooltip": "Kirjaa valitut käyttäjät ulos",

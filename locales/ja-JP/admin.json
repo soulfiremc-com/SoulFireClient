@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "役割",
+          "placeholder": "役割を選択してください",
           "description": "ユーザーの役割です。管理者はユーザーや全インスタンスを管理できます。ユーザーは自分のインスタンスのみ管理できます。",
           "user": "ユーザー",
           "admin": "管理者"
@@ -114,8 +115,8 @@
       "actions": "操作",
       "searchUsernames": "ユーザー名で検索...",
       "searchEmails": "メールアドレスで検索...",
-      "searchCreatedAts": "作成日時で検索...",
-      "searchMinIssuedAts": "最小発行日時で検索..."
+      "searchCreatedAts": "作成日の検索...",
+      "searchMinIssuedAts": "最小ログイン日の検索..."
     },
     "removeSelectedTooltip": "選択したユーザーを削除",
     "logOutSelectedTooltip": "選択したユーザーをログアウト",

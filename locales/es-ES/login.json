@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "¿Eres nuevo en SoulFire? Te recomendamos consultar la <a>guía de inicio</a>.",
+  "newUser": "¿Nuevo en SoulFire? Lee la <a>guía de introducción</a>.",
   "connect": {
     "title": "Conectarse a un servidor SoulFire",
     "description": "Seleccione el tipo de servidor de SoulFire al que conectar.",
     "integrated": {
       "title": "Servidor integrado (local)",
-      "description": "Ejecuta un servidor de SoulFire en tu equipo. La configuración es automática y no requiere ninguna configuración. (Requiere la aplicación de escritorio/Android)"
+      "description": "Ejecuta un servidor de SoulFire en este dispositivo. La configuración es automática. Esta opción requiere la aplicación de escritorio o Android."
     },
     "dedicated": {
       "title": "Servidor dedicado (remoto)",
-      "description": "Se conecta a una instancia remota de un servidor de SoulFire. Necesitarás proporcionar la dirección de conexión y el token del servidor."
+      "description": "Se conecta a un servidor remoto de SoulFire con su dirección y token."
     },
     "demo": {
       "title": "Servidor de demostración",
-      "description": "Simula un servidor virtual con datos de demostración. Este servidor es de sólo lectura y no puede hacer ningún cambio en él."
+      "description": "Proporciona un servidor de solo lectura con datos de demostración. SoulFire no guarda los cambios."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Datos de SoulFire restablecidos correctamente. Intenta comenzar de nuevo.",
       "error": "No se pudo restablecer los datos de SoulFire"
     },
-    "description": "El servidor integrado se ejecuta localmente en tu PC. Configura los argumentos de inicio de Java abajo si es necesario.",
+    "description": "El servidor integrado se ejecuta en tu computadora. Puedes cambiar los argumentos de inicio de Java abajo.",
     "form": {
       "jvmArgs": {
         "title": "Argumentos JVM",
-        "description": "Los argumentos de la máquina virtual Java de SoulFire. Para usar 4GB de RAM, añade <bold>-Xmx4G</bold>. El valor predeterminado es el 25% de tu RAM.",
+        "description": "Argumentos de la máquina virtual de Java para SoulFire. Añade <bold>-Xmx4G</bold> para usar 4 GB de RAM. El valor predeterminado es el 25% de la RAM disponible.",
         "placeholder": "Tus argumentos JVM aquí"
       },
       "back": "Volver",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Comando Termux",
-          "description": "Instala la <a>aplicación Termux</a>, luego ejecuta este comando en Termux para instalar el servidor de SoulFire. Después necesitarás ejecutar el comando <copy>generate-token api</copy> para generar un token. Luego, ingresa el token abajo."
+          "description": "Instala la <a>aplicación Termux</a>. Ejecuta este comando en Termux para instalar el servidor SoulFire. Ejecuta <copy>generate-token api</copy> para crear un token. Luego, introduce el token abajo."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Introduzca la dirección de conexión y el token del servidor de SoulFire al que desea conectarse.",
+    "description": "Introduce la dirección y el token del servidor SoulFire.",
     "toast": {
       "loading": "Conectando al servidor...",
       "success": "Conectado al servidor",

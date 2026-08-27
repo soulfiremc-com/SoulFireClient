@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Baru di SoulFire? Kami sarankan melihat <a>panduan memulai</a>.",
+  "newUser": "Baru di SoulFire? Baca <a>panduan memulai</a>.",
   "connect": {
     "title": "Hubungkan ke server SoulFire",
     "description": "Pilih tipe server SoulFire yang ingin Anda hubungkan.",
     "integrated": {
       "title": "Server terintegrasi (lokal)",
-      "description": "Menjalankan server SoulFire di komputer Anda. Pengaturannya otomatis dan tidak memerlukan konfigurasi. (Membutuhkan aplikasi Desktop/Android)"
+      "description": "Menjalankan server SoulFire di perangkat ini. Pengaturan dilakukan secara otomatis. Opsi ini memerlukan aplikasi desktop atau Android."
     },
     "dedicated": {
       "title": "Server khusus (jarak jauh)",
-      "description": "Menghubungkan ke instansi server SoulFire jarak jauh. Anda perlu memasukkan alamat dan token server."
+      "description": "Terhubung ke server SoulFire jarak jauh menggunakan alamat dan tokennya."
     },
     "demo": {
       "title": "Server demo",
-      "description": "Mensimulasikan server virtual dengan data demo. Server ini hanya-baca dan Anda tidak dapat melakukan perubahan apapun."
+      "description": "Menyediakan server hanya-baca dengan data demo. SoulFire tidak menyimpan perubahan."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Data SoulFire berhasil diatur ulang. Coba mulai lagi.",
       "error": "Gagal mengatur ulang data SoulFire"
     },
-    "description": "Server terintegrasi berjalan secara lokal di PC Anda. Konfigurasikan argumen mulai Java di bawah ini jika diperlukan.",
+    "description": "Server terintegrasi berjalan di komputer Anda. Anda dapat mengubah argumen startup Java di bawah ini.",
     "form": {
       "jvmArgs": {
         "title": "Argumen JVM",
-        "description": "Argumen SoulFire Java VM. Untuk menggunakan 4GB RAM, tambahkan <bold>-Xmx4G</bold>. Defaultnya adalah 25% dari RAM Anda.",
+        "description": "Argumen Java VM untuk SoulFire. Tambahkan <bold>-Xmx4G</bold> untuk menggunakan 4 GB RAM. Standarnya adalah 25% dari RAM yang tersedia.",
         "placeholder": "Argumen JVM Anda di sini"
       },
       "back": "Kembali",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Perintah Termux",
-          "description": "Instal <a>aplikasi Termux</a>, lalu jalankan perintah ini di Termux untuk menginstal server SoulFire. Anda kemudian harus menjalankan perintah <copy>generate-token api</copy> untuk menghasilkan token. Setelah itu masukkan token di bawah."
+          "description": "Pasang aplikasi <a>Termux</a>. Jalankan perintah ini di Termux untuk memasang server SoulFire. Jalankan <copy>generate-token api</copy> untuk membuat token. Masukkan token di bawah ini."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Masukkan alamat dan token dari server SoulFire yang ingin Anda hubungkan.",
+    "description": "Masukkan alamat dan token server SoulFire.",
     "toast": {
       "loading": "Menghubungkan ke server...",
       "success": "Berhasil terhubung ke server",

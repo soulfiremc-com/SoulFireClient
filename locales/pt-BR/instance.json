@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "A saída bruta da instância está disponível aqui quando você precisar inspecionar detalhes do console.",
+    "summary": {
+      "accounts": "Contas",
+      "proxies": "Proxies",
+      "configured": "{{count}} configuradas",
+      "configuredShort": "Configurado",
+      "currentRate": "Taxa atual",
+      "imported": "Importado"
+    },
+    "readiness": {
+      "title": "Configuração",
+      "accounts": "Contas",
+      "accountsValue": "{{count}} importados para {{requested}} bots solicitados",
+      "proxies": "Proxies",
+      "proxiesValue": "{{count}} configuradas",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} disponíveis"
+    },
+    "activity": {
+      "title": "Atividade",
+      "tick": "Tick",
+      "health": "Saúde",
+      "world": "Mundo",
+      "worldValue": "{{chunks}} chunks, {{entities}} entidades",
+      "connections": "Conexões",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Métricas",
+      "noDataDescription": "Ainda não há métricas de execução."
+    },
+    "metricsUnavailable": {
+      "title": "Métricas",
+      "inactive": "Inicie um bot para coletar métricas em tempo real.",
+      "noPermission": "Você não tem permissão para ver as métricas dos bots."
+    },
+    "status": {
+      "ready": "Pronto",
+      "attention": "Precisa de atenção",
+      "configured": "Configurado",
+      "optional": "Opcional",
+      "available": "Disponível",
+      "none": "Nenhum"
+    },
+    "actions": {
+      "manage": "Gerenciar",
+      "open": "Abrir"
+    },
+    "spotlight": {
+      "noBots": "Nenhum bot configurado ainda.",
+      "idle": "Ocioso, aguardando instruções.",
+      "level": "Nv {{level}}"
+    },
+    "liveFeed": {
+      "title": "Feed ao vivo",
+      "empty": "Aguardando atividade da instância...",
+      "noPermission": "Você não tem permissão para ver o feed ao vivo.",
+      "lifecycle": {
+        "connecting": "está conectando",
+        "connected": "conectado",
+        "spawned": "entrou no jogo",
+        "died": "morreu",
+        "respawned": "renasceu",
+        "disconnected": "desconectado",
+        "unknown": "alterou o estado"
+      }
+    },
+    "bots": {
+      "title": "Bots",
+      "viewAll": "Ver todos os {{total}} bots",
+      "viewAllShort": "Ver todos"
+    },
+    "timeline": {
+      "title": "Atividade",
+      "viewAll": "Ver todos",
+      "empty": "Nenhuma atividade registrada ainda.",
+      "noPermission": "Você não tem permissão para ver o registro de auditoria.",
+      "types": {
+        "executeCommand": "executou um comando: {{data}}",
+        "botDesiredStateChange": "estado desejado do bot alterado",
+        "botRestart": "bots reiniciados",
+        "unknown": "realizou uma ação"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "Nenhum plugin está reportando estatísticas ainda.",
+      "noPermission": "Você não tem permissão para ver as estatísticas dos plugins.",
+      "active": "Ativo",
+      "activeBots": "{{count}} bots ativos",
+      "uptime": "há {{time}}"
+    },
+    "detailed": {
+      "title": "Métricas detalhadas",
+      "composition": "Composição do mundo"
+    }
+  },
   "proxy": {
     "getProxies": "Obter Proxies",
     "addProxies": "Adicionar Proxies",
@@ -55,8 +151,8 @@
       "deleteProxy": "Excluir Proxy"
     },
     "postImportCheckDialog": {
-      "title": "Verificar proxies?",
-      "description": "Você acabou de importar {{count}} proxies. Gostaria de verificá-los agora? Proxies inválidos serão removidos automaticamente.",
+      "title": "Checar proxies importados?",
+      "description": "Você importou {{count}} proxies. Deseja verificá-los agora? O SoulFire remove proxies inválidos automaticamente.",
       "confirm": "Verificar Proxies",
       "skip": "Pular"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Nenhuma conta para importar"
     },
     "unknownError": "Erro desconhecido",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Credenciais)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Código de Dispositivo)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Token de Atualização)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Token de Acesso)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Credenciais)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Código de Dispositivo)"
+    },
     "deviceCodeImportToast": {
       "loading": "Importando conta...",
       "success": "Conta importada!",
@@ -93,9 +200,9 @@
       "description": "Gerar contas Java offline com um formato de nome personalizado.",
       "amount": "Quantidade",
       "nameFormat": "Formato do Nome",
-      "nameFormatHelp": "Use %d como um espaço reservado para o número da conta (ex.: Bot_%d vira Bot_1, Bot_2, etc.)",
+      "nameFormatHelp": "Use %d para o número da conta. Por exemplo, Bot_%d cria nomes como Bot_1 e Bot_2.",
       "mode": "Contas Existentes",
-      "modeHelp": "Escolha como lidar com as contas existentes:\n\n• Ignorar Existentes: Gera apenas contas com nomes que ainda não existem. Mantém todas as contas existentes inalteradas.\n\n• Substituir Existentes: Gera todas as contas, substituindo quaisquer contas existentes que tenham o mesmo UUID. As outras contas são mantidas.\n\n• Substituir Todas: Exclui TODAS as contas existentes e as substitui pelas contas geradas.",
+      "modeHelp": "Escolha como lidar com contas existentes:\n\n• Ignorar existentes: Gera apenas contas com novos nomes. Mantém todas as contas existentes.\n\n• Substituir existentes: Gera todas as contas solicitadas. Substitui contas com UUIDs correspondentes. Mantém todas as outras contas.\n\n• Substituir todas: Remove todas as contas existentes. Em seguida, adiciona as contas geradas.",
       "modeIgnoreExisting": "Ignorar Existentes",
       "modeReplaceExisting": "Substituir Existentes",
       "modeReplaceAll": "Substituir tudo",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Refresh Token Microsoft",
       "microsoftCookies": "Cookies da Microsoft",
       "microsoftAccessToken": "Token de acesso da Microsoft",
+      "theAltening": "Token TheAltening",
       "altProviders": "Provedores Alternativos",
       "dialog": {
         "title": "Importar contas do tipo {{type}}",
@@ -149,7 +257,21 @@
       "description": "Configurar configurações por bot para esta conta",
       "openButton": "Configurar conta",
       "pageTitle": "Configurações de {{name}} - {{page}}",
-      "noSettings": "Nenhuma configuração disponível para esta página"
+      "noSettings": "Nenhuma configuração disponível para esta página",
+      "search": "Configurações de pesquisa",
+      "overrides": "Substituições",
+      "allSettings": "Todas as configurações",
+      "noOverrides": "Este bot ainda não tem nenhuma substituição explícita.",
+      "noOverridesMatching": "Nenhuma substituição corresponde a esta pesquisa.",
+      "noOverridesHelp": "Abra Todas as configurações para herdar valores ou crie a primeira substituição específica do bot.",
+      "tryDifferentSearch": "Tente outro termo de pesquisa.",
+      "openAllSettings": "Abrir todas as configurações",
+      "selectPage": "Selecione uma página de configurações",
+      "noSearchResults": "Nenhuma configuração corresponde a esta pesquisa.",
+      "matchesInheritedValue": "Corresponde ao valor herdado",
+      "instanceValue": "Valor da instância",
+      "defaultValue": "Valor padrão",
+      "resetOverride": "Redefinir substituição"
     },
     "deviceCodeConfirmDialog": {
       "title": "Autenticação por Código de Dispositivo",
@@ -183,7 +305,7 @@
       "purchasing": "Comprando...",
       "purchaseSuccess": "{{count}} contas compradas, importando...",
       "purchaseError": "Falha na compra: {{message}}",
-      "networkError": "Não foi possível conectar à API da Ravealts",
+      "networkError": "A conexão com a API Ravealts falhou",
       "outOfStock": "O tipo selecionado está fora de estoque",
       "insufficientBalance": "Créditos insuficientes",
       "rateLimited": "Limite de taxa atingido, tente novamente mais tarde"
@@ -231,7 +353,30 @@
     "online": "Online",
     "offline": "Offline",
     "notJoined": "Não entrou ainda",
+    "connectionPhase": {
+      "connecting": "Conectando",
+      "connected": "Conectado",
+      "spawned": "Online",
+      "died": "Morto",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Iniciando",
+      "running": "Em execução",
+      "retrying": "Tentando novamente",
+      "stopping": "Parando",
+      "failed": "Falhou",
+      "waiting": "Aguardando",
+      "stopped": "Interrompido"
+    },
     "backToBots": "Voltar para Bots",
+    "tabs": {
+      "overview": "Visão geral",
+      "inventory": "Inventário",
+      "controls": "Controles",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Em breve",
     "terminalPanel": {
       "title": "Terminal do Bot"
@@ -362,11 +507,74 @@
       "offline": "O bot está offline. Diálogos só estão disponíveis quando o bot está conectado."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Sem dados"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Tráfego",
+      "health": "Saúde",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots Online",
+      "online": "Online",
+      "total": "Total"
+    },
+    "packets": {
+      "title": "Pacotes / Segundo",
+      "sent": "Enviados/s",
+      "received": "Recebidos/s"
+    },
+    "bandwidth": {
+      "title": "Largura de banda",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Duração do Tick",
+      "avg": "Média (ms)",
+      "max": "Máx (ms)"
+    },
+    "healthFood": {
+      "title": "Vida / Comida",
+      "health": "Vida média",
+      "food": "Comida média"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entidades",
+      "chunks": "Chunks",
+      "entities": "Entidades"
+    },
+    "connections": {
+      "title": "Eventos de Conexão",
+      "connections": "Conexões",
+      "disconnections": "Desconexões"
+    },
+    "healthDistribution": {
+      "title": "Distribuição de Vida",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensões",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Modos de Jogo",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Posições dos Bots (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Scripts Visuais",
     "description": "Crie scripts automáticos usando um editor visual baseado em nós.",
     "experimentalTitle": "Recurso Experimental",
-    "experimentalWarning": "Esta funcionalidade é experimental. Mudanças incompatíveis podem ocorrer no futuro e scripts existentes podem deixar de funcionar. Use com cautela.",
+    "experimentalWarning": "Este recurso é experimental. Atualizações futuras podem quebrar scripts existentes. Use com cautela.",
     "createScript": "Criar Script",
     "createScriptTitle": "Criar Novo Script",
     "createScriptDescription": "Crie um novo script visual para esta instância. Scripts podem automatizar ações do bot e responder a eventos.",
@@ -430,6 +638,7 @@
         "pause": "Pausar",
         "pauseTooltip": "Pausar execução do script",
         "unsaved": "Não salvo",
+        "unsavedChanges": "Alterações não salvas",
         "clearCanvas": "Limpar tela",
         "zoomIn": "Aumentar zoom",
         "zoomOut": "Diminuir zoom",
@@ -462,6 +671,64 @@
         "showPreview": "Mostrar prévia",
         "hidePreview": "Ocultar prévia",
         "delete": "Excluir"
+      },
+      "node": {
+        "expand": "Expandir nó",
+        "collapse": "Recolher nó"
+      },
+      "debug": {
+        "copyValue": "Copiar valor atual",
+        "clearHistory": "Limpar histórico"
+      },
+      "edge": {
+        "direction": "Direção da ligação"
+      },
+      "note": {
+        "placeholder": "Escreva uma nota..."
+      },
+      "complexity": {
+        "title": "Pontuação de complexidade do script"
+      },
+      "group": {
+        "returnToRoot": "Retornar à raiz (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu rápido de adicionar nó",
+        "searchPlaceholder": "Pesquisar nós..."
+      },
+      "diff": {
+        "tooltip": "Revisar alterações"
+      },
+      "dryRun": {
+        "tooltip": "Execução Simulada",
+        "title": "Script de Execução Simulada",
+        "description": "Execute um script a partir de um gatilho selecionado com entradas simuladas.",
+        "triggerNode": "Nó de Gatilho",
+        "selectTrigger": "Selecione um gatilho...",
+        "triggerDescription": "Escolha o nó de gatilho para executar com valores de entrada simulados.",
+        "mockInputs": "Entradas simuladas",
+        "valuePlaceholder": "valor {{type}}",
+        "start": "Iniciar Execução Simulada"
+      },
+      "quotas": {
+        "tooltip": "Cotas de Script",
+        "title": "Cotas de Script",
+        "description": "Configure limites de recursos para este script. Campos vazios usam os padrões do servidor.",
+        "maxExecutionCount": "Contagem Máxima de Execuções",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Execuções máximas de nós por ativação de gatilho",
+        "maxExecutionTime": "Tempo Máximo de Execução (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Tempo máximo de execução por ativação do gatilho",
+        "maxConcurrentTriggers": "Gatilhos Concorrentes Máximos",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Ativações máximas de gatilho concorrentes",
+        "maxStateStoreEntries": "Entradas Máximas na Store de Estado",
+        "maxStateStoreEntriesPlaceholder": "Ilimitado",
+        "maxStateStoreEntriesDescription": "Entradas máximas na store de estado do script",
+        "disableTimeouts": "Desativar Timeouts",
+        "disableTimeoutsDescription": "Desativa timeouts por nó e por ligação de dados",
+        "save": "Salvar Cotas"
       }
     }
   }

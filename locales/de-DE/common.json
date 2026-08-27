@@ -8,7 +8,7 @@
     "noAddressOrToken": "Keine Serveradresse oder Token gefunden",
     "page": {
       "title": "Fehler",
-      "description": "Beim Laden der Seite ist ein Fehler aufgetreten. Weitere Informationen finden Sie in der Konsole.",
+      "description": "Die Seite wurde nicht geladen. Öffnen Sie die Konsole für weitere Informationen.",
       "logOut": "Ausloggen",
       "reloadPage": "Seite neu laden",
       "showDetails": "Details anzeigen"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Nicht gefunden",
-      "description": "Konnte an diesem Ort keine Seite finden",
+      "description": "Unter dieser Adresse existiert keine Seite.",
       "logOut": "Ausloggen",
       "reloadPage": "Seite neu laden"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Schließen"
     },
+    "support": {
+      "title": "SoulFire unterstützen",
+      "description": "SoulFire ist kostenlos und Open-Source und wird mit Liebe von der Community entwickelt.",
+      "body": "Wenn SoulFire dir geholfen hat, erwäge bitte, das Projekt zu unterstützen. Dein Beitrag hilft, die Serverkosten zu decken, die Entwicklung zu fördern und SoulFire für alle kostenlos zu halten.",
+      "dismiss": "Vielleicht später",
+      "action": "SoulFire unterstützen"
+    },
     "createInstance": {
       "title": "Neue Instanz erstellen",
-      "description": "Instanzen benötigen Anzeigenamen, um sie zu unterscheiden. Es kann jeder Name sein, den du möchtest, zum Beispiel \"Mein Minecraft-Bot\".",
+      "description": "Geben Sie der Instanz einen Namen, den Sie wiedererkennen, z.&nbsp;B. \"Mein Minecraft-Bot\".",
       "form": {
         "friendlyName": {
           "label": "Anzeigename",
@@ -67,11 +74,26 @@
         "error": "Fehler beim Erstellen der Instanz"
       }
     },
+    "duplicateInstance": {
+      "title": "Instanz duplizieren",
+      "description": "Erstelle eine neue Instanz mit dem Profil von \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Der Name für die duplizierte Instanz."
+        },
+        "duplicate": "Duplizieren"
+      },
+      "duplicateToast": {
+        "loading": "Instanz wird dupliziert...",
+        "success": "Instanz erfolgreich dupliziert",
+        "error": "Fehler beim Duplizieren der Instanz"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Aus Datei",
         "fromUrl": "Von URL",
-        "firstClipboardItem": "Du hast mehrere Elemente in der Zwischenablage gehabt, verwende nur den ersten Eintrag.",
+        "firstClipboardItem": "Die Zwischenablage enthält mehrere Elemente. SoulFire wird das erste Element verwenden.",
         "fromClipboard": "Aus Zwischenablage",
         "textarea": {
           "placeholder": "Text hier eingeben...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Beim Laden von URL wird der SoulFire Server eine GET-Anfrage an den Zielserver senden und die Antwort als die Daten verwenden.",
+        "description": "Der SoulFire-Server sendet eine GET-Anfrage an diese URL und importiert die Antwort.",
         "form": {
           "url": {
             "placeholder": "URL hier eingeben...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Start",
-    "resume": "Fortsetzen",
-    "pause": "Pausieren",
     "stop": "Stopp",
+    "startAll": "Alle starten",
+    "stopAll": "Alle stoppen",
+    "restart": "Neustarten",
+    "startCount": "Anzahl der zu startenden Bots",
     "startToast": {
-      "loading": "Starte Sitzung...",
-      "success": "Sitzung erfolgreich gestartet",
-      "error": "Fehler beim Starten der Sitzung"
+      "loading": "Starte Bots...",
+      "success": "Bot-Status aktualisiert",
+      "error": "Fehler beim Starten der Bots"
     },
-    "resumeToast": {
-      "loading": "Sitzung wird fortgesetzt...",
-      "success": "Sitzung erfolgreich fortgesetzt",
-      "error": "Fehler beim Fortsetzen der Sitzung"
-    },
-    "pauseToast": {
-      "loading": "Sitzung wird pausiert...",
-      "success": "Sitzung erfolgreich pausiert",
-      "error": "Fehler beim Pausieren der Sitzung"
+    "restartToast": {
+      "loading": "Bots werden neu gestartet...",
+      "success": "Bots stellen die Verbindung wieder her",
+      "error": "Fehler beim Neustart der Bots"
     },
     "stopToast": {
-      "loading": "Sitzung wird gestoppt...",
-      "success": "Sitzung erfolgreich gestoppt",
-      "error": "Fehler beim Stoppen der Sitzung"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Keine Konten konfiguriert",
-      "noAccountsDescription": "Sie müssen Konten importieren, bevor Sie eine Sitzung starten. Sie haben {{required}} Bots angefordert.",
-      "notEnoughTitle": "Nicht genügend Konten",
-      "notEnoughDescription": "Sie haben {{required}} Bots angefordert, aber nur {{available}} Konten importiert.",
-      "hint": "Sie können Offline-Konten generieren oder Konten auf der Seite Kontoeinstellungen importieren.",
-      "continueWithExisting": "Mit {{count}} Konten fortfahren",
-      "generateAccounts": "Konten generieren"
+      "loading": "Bots werden gestoppt...",
+      "success": "Bots werden gestoppt",
+      "error": "Fehler beim Stoppen der Bots"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} gewünscht · {{total}} gesamt",
   "icon": {
     "invalidName": "Ungültiger Symbolname: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Hinzufügen",
       "remove": "Entfernen"
     },
+    "combo": {
+      "searchPlaceholder": "Suchwert..."
+    },
     "invalidNumberToast": {
-      "title": "Ungültige Zahl!",
+      "title": "Ungültige Zahl",
       "description": "Der Wert muss zwischen {{min}} und {{max}} liegen"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Es sieht so aus, als gäbe es keine Logs zum Anzeigen; Versuche ein paar Befehle auszuführen!",
+    "noLogs": "Noch keine Protokolle vorhanden. Führen Sie einen Befehl aus, um Protokollausgaben zu erzeugen.",
     "demo-1": "Willkommen im Demo Modus! 🧪",
     "demo-2": "Dies ist eine schreibgeschützte Instanz von SoulFire",
     "demo-3": "Schau dir alle Menüs und Funktionen an, bevor du SoulFire installierst :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Seitenleiste umschalten"
+  },
+  "window": {
+    "minimize": "Minimieren",
+    "minimizeLabel": "Fenster minimieren",
+    "maximize": "Maximieren",
+    "maximizeLabel": "Fenster maximieren",
+    "restore": "Wiederherstellen",
+    "restoreLabel": "Fenster wiederherstellen",
+    "close": "Schließen",
+    "closeLabel": "Fenster schließen",
+    "back": "Zurück",
+    "backLabel": "Zurück",
+    "forward": "Vorwärts",
+    "forwardLabel": "Vorwärts gehen"
+  },
+  "infoButton": {
+    "showInfo": "Info anzeigen"
   },
   "castMenu": {
     "title": "Cast",
@@ -333,6 +364,7 @@
     },
     "configDir": "Konfigverzeichnis",
     "dataDir": "Datenverzeichnis",
+    "supportSoulFire": "SoulFire unterstützen",
     "about": "Über",
     "logOut": "Ausloggen",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentation",
-    "supportSoulFire": "Kauf mir einen Kaffee",
+    "supportSoulFire": "SoulFire unterstützen",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV-Zugriff",
-      "description": "SoulFire ermöglicht dir über das WebDAV-Protokoll den Zugriff auf Instanzen-, Skript- und andere Dateien.",
+      "description": "WebDAV ermöglicht den Zugriff auf Instanzdateien, Skripte und andere Dateien.",
       "publicAddress": "Öffentliche WebDAV-Adresse",
       "personalToken": "Persönliches WebDAV-Token",
-      "securityWarning": "Dein persönliches WebDAV-Token ist sehr wichtig. Gib es niemandem weiter. Es dient zur Authentifizierung beim Zugriff auf deine Dateien. Verwende es als dein WebDAV-Passwort beim Verbinden. Ein Nutzername ist nicht erforderlich; falls einer abgefragt wird, kann ein beliebiger Wert verwendet werden (z.&#x2F;.B. \"soulfire\").",
-      "addressDescription": "Das ist die Adresse, mit der du auf deine Dateien zugreifen kannst. Manchmal ist es nötig, dav:// oder davs:// anstelle von http(s):// zu verwenden."
+      "securityWarning": "Bewahren Sie Ihren persönlichen WebDAV-Token geheim auf. Er gewährt Zugriff auf Ihre Dateien. Verwenden Sie den Token als Ihr WebDAV-Passwort. Ein Benutzername ist nicht erforderlich. Falls Ihre Anwendung dennoch einen benötigt, geben Sie beliebigen Wert ein, z.&nbsp;B. \"soulfire\".",
+      "addressDescription": "Verwenden Sie diese Adresse, um auf Ihre Dateien zuzugreifen. Einige Clients erfordern dav:// oder davs:// anstelle von http:// oder https://."
     },
     "api": {
       "title": "API-Zugriff",
-      "description": "Die gRPC HTTP API von SoulFire ermöglicht es dir, programmgesteuert über Webanfragen mit deinen Instanzen zu interagieren.",
+      "description": "Die SoulFire gRPC HTTP API verwaltet Instanzen über Webanfragen.",
       "publicAddress": "Öffentliche API-Adresse",
       "personalToken": "Persönliches API-Token",
-      "securityWarning": "Dein persönliches API-Token ist sehr wichtig. Gib es niemandem weiter. Es dient zur Authentifizierung beim Zugriff auf die API.",
-      "addressDescription": "Das ist die Adresse, die du für den Zugriff auf die API verwenden musst."
+      "securityWarning": "Bewahren Sie Ihren persönlichen API-Token geheim auf. Er gewährt Zugriff auf die API.",
+      "addressDescription": "Verwenden Sie diese Adresse, um auf die API zuzugreifen."
     },
     "token": {
       "generate": "Token generieren",
@@ -443,6 +475,8 @@
     "searchUsers": "Benutzer suchen...",
     "searchTimestamps": "Zeitstempel suchen...",
     "executedCommand": "Ausgeführter Befehl: {{data}}",
+    "changedBotDesiredState": "Gewünschten Bot-Zustand geändert",
+    "restartedBots": "Bots neu gestartet",
     "contextMenu": {
       "copyUsername": "Benutzernamen kopieren",
       "copyCommand": "Befehl kopieren"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Skriptnamen müssen mindestens 3 Zeichen enthalten",
           "max": "Skriptnamen dürfen höchstens 32 Zeichen enthalten",
-          "regex": "Skriptnamen müssen klein geschrieben, mit einem alphanumerischen Zeichen beginnen, darauf folgende alphanumerische Zeichen oder Bindestriche enthalten und mit einem alphanumerischen Zeichen enden.",
+          "regex": "Verwenden Sie Kleinbuchstaben, Zahlen und Bindestriche. Der Name muss mit einem Buchstaben oder einer Zahl beginnen und enden.",
           "label": "Name",
           "placeholder": "Mein Skript",
           "description": "Der Name des Skripts."
         },
         "elevatedPermissions": {
           "label": "Erhöhte Berechtigungen",
-          "description": "Ob das Skript mit erhöhten Berechtigungen ausgeführt werden soll. Nur Administratoren können diese Option aktivieren."
+          "description": "Das Skript läuft mit erhöhten Berechtigungen. Nur Administratoren können diese Option aktivieren."
         }
       }
     },
     "addScriptDialog": {
       "title": "Neues Skript hinzufügen",
-      "description": "Skripte sind kleine Programme, die auf dem SoulFire-Server ausgeführt werden. Sie können verwendet werden, um Aufgaben zu automatisieren, benutzerdefiniertes Verhalten zu erstellen und mehr.",
+      "description": "Skripte sind kleine Programme, die Aufgaben und andere Aktionen auf dem SoulFire-Server automatisieren.",
       "form": {
         "cancel": "Abbrechen",
         "add": "Hinzufügen"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Zur Instanz gehen",
+      "duplicateInstance": "Instanz duplizieren",
       "copyInstanceId": "Instanz-ID kopieren",
       "copyInstanceName": "Instanznamen kopieren",
       "deleteInstance": "Instanz löschen"

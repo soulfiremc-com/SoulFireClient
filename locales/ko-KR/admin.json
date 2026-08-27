@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "역할",
+          "placeholder": "역할 선택하기",
           "description": "사용자의 역할입니다. 관리자는 사용자를 관리하고 모든 인스턴스를 관리할 수 있습니다. 일반 사용자는 자신의 인스턴스만 관리할 수 있습니다.",
           "user": "사용자",
           "admin": "관리자"
@@ -114,8 +115,8 @@
       "actions": "동작",
       "searchUsernames": "사용자 이름 검색...",
       "searchEmails": "이메일 검색...",
-      "searchCreatedAts": "생성일 검색...",
-      "searchMinIssuedAts": "최소 발급일 검색..."
+      "searchCreatedAts": "생성 날짜 검색...",
+      "searchMinIssuedAts": "최소 로그인 날짜 검색..."
     },
     "removeSelectedTooltip": "선택한 사용자 삭제",
     "logOutSelectedTooltip": "선택한 사용자 로그아웃",

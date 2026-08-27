@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "SoulFireを初めてご利用ですか？<a>はじめてガイド</a>をご覧になることをおすすめします。",
+  "newUser": "SoulFire を初めてご利用ですか？<a>スタートガイド</a>をご覧ください。",
   "connect": {
     "title": "SoulFireサーバーに接続する",
     "description": "接続するSoulFireサーバーの種類を選択してください。",
     "integrated": {
       "title": "統合サーバー（ローカル）",
-      "description": "お使いのコンピューターでSoulFireサーバーを実行します。セットアップは自動で、設定は不要です。（デスクトップ／Androidアプリが必要です）"
+      "description": "このデバイスで SoulFire サーバーを起動します。セットアップは自動で行われます。このオプションはデスクトップまたは Android アプリが必要です。"
     },
     "dedicated": {
       "title": "専用サーバー（リモート）",
-      "description": "SoulFireサーバーのリモートインスタンスに接続します。サーバーのアドレスとトークンを入力する必要があります。"
+      "description": "リモート SoulFire サーバーにアドレスとトークンで接続します。"
     },
     "demo": {
       "title": "デモサーバー",
-      "description": "デモデータを使って仮想サーバーをシミュレートします。このサーバーは閲覧専用で、変更はできません。"
+      "description": "デモデータを使用した読み取り専用サーバーを提供します。SoulFire は変更内容を保存しません。"
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFireのデータが正常にリセットされました。再度開始してください。",
       "error": "SoulFireのデータのリセットに失敗しました"
     },
-    "description": "統合サーバーはご利用のPCでローカルに動作します。必要に応じて下記でJava起動引数を設定してください。",
+    "description": "統合サーバーはお使いのコンピュータで動作します。下記で Java の起動引数を変更できます。",
     "form": {
       "jvmArgs": {
         "title": "JVM引数",
-        "description": "SoulFire Java VMの引数です。4GBのRAMを使用するには <bold>-Xmx4G</bold> を追加してください。デフォルトはRAMの25％です。",
+        "description": "SoulFire 用の Java VM 引数です。<bold>-Xmx4G</bold> を追加すると 4 GB の RAM を使用します。デフォルトは利用可能な RAM の 25% です。",
         "placeholder": "ここにJVM引数を入力"
       },
       "back": "戻る",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termuxコマンド",
-          "description": "<a>Termuxアプリ</a>をインストールし、Termuxでこのコマンドを実行してSoulFireサーバーをインストールしてください。その後で <copy>generate-token api</copy> コマンドを実行してトークンを生成します。そのトークンを下の欄に入力してください。"
+          "description": "<a>Termux アプリ</a>をインストールしてください。Termux でこのコマンドを実行して SoulFire サーバーをインストールします。<copy>generate-token api</copy> を実行してトークンを作成してください。その後、下にトークンを入力してください。"
         },
         "token": {
           "title": "トークン",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "接続したいSoulFireサーバーのアドレスとトークンを入力してください。",
+    "description": "SoulFire サーバーのアドレスとトークンを入力してください。",
     "toast": {
       "loading": "サーバーに接続中...",
       "success": "サーバーに接続しました",

@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Ny på SoulFire? Vi rekommenderar att du kollar in <a>kom igång-guiden</a>.",
+  "newUser": "Ny på SoulFire? Läs <a>kom-igång-guiden</a>.",
   "connect": {
     "title": "Anslut till en SoulFire-server",
     "description": "Välj vilken typ av SoulFire-server du vill ansluta till.",
     "integrated": {
       "title": "Integrerad server (lokal)",
-      "description": "Kör en SoulFire-server på din dator. Installationen är automatisk och kräver ingen konfiguration. (Kräver desktop-/Android-app)"
+      "description": "Kör en SoulFire-server på denna enhet. Installationen sker automatiskt. Det här alternativet kräver desktop- eller Android-appen."
     },
     "dedicated": {
       "title": "Dedikerad server (fjärr)",
-      "description": "Ansluter till en fjärrinstans av SoulFire-servern. Du måste ange serverns adress och token."
+      "description": "Ansluter till en fjärransluten SoulFire-server med dess adress och token."
     },
     "demo": {
       "title": "Demoserver",
-      "description": "Simulerar en virtuell server med demodata. Denna server är skrivskyddad och du kan inte göra några ändringar på den."
+      "description": "Ger en skrivskyddad server med demodata. SoulFire sparar inte några ändringar."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire-data återställdes. Försök starta om.",
       "error": "Det gick inte att återställa SoulFire-data"
     },
-    "description": "Den integrerade servern körs lokalt på din dator. Konfigurera Java-startargumenten nedan om det behövs.",
+    "description": "Den integrerade servern körs på din dator. Du kan ändra Java-startargumenten nedan.",
     "form": {
       "jvmArgs": {
         "title": "JVM-argument",
-        "description": "SoulFire Java VM-argument. För att använda 4 GB RAM, lägg till <bold>-Xmx4G</bold>. Standard är 25 % av ditt RAM.",
+        "description": "Java VM-argument för SoulFire. Lägg till <bold>-Xmx4G</bold> för att använda 4 GB RAM. Standard är 25% av tillgängligt RAM.",
         "placeholder": "Dina JVM-argument här"
       },
       "back": "Tillbaka",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux-kommando",
-          "description": "Installera <a>Termux-appen</a> och kör sedan detta kommando i Termux för att installera SoulFire-servern. Du behöver sedan köra kommandot <copy>generate-token api</copy> för att generera en token. Ange sedan token nedan."
+          "description": "Installera <a>Termux-appen</a>. Kör detta kommando i Termux för att installera SoulFire-servern. Kör <copy>generate-token api</copy> för att skapa en token. Ange sedan token nedan."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Fyll i adressen och token för den SoulFire-server du vill ansluta till.",
+    "description": "Ange adressen och token för SoulFire-servern.",
     "toast": {
       "loading": "Ansluter till server...",
       "success": "Ansluten till server",

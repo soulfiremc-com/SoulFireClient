@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Nieuw bij SoulFire? We raden aan de <a>starthandleiding</a> te bekijken.",
+  "newUser": "Nieuw bij SoulFire? Lees de <a>starthandleiding</a>.",
   "connect": {
     "title": "Verbind met een SoulFire-server",
     "description": "Selecteer met welk type SoulFire-server je wilt verbinden.",
     "integrated": {
       "title": "Geïntegreerde server (lokaal)",
-      "description": "Draait een SoulFire-server op jouw computer. De installatie is automatisch en vereist geen configuratie. (Vereist de Desktop/Android-app)"
+      "description": "Draait een SoulFire-server op dit apparaat. Installatie is automatisch. Deze optie vereist de desktop- of Android-app."
     },
     "dedicated": {
       "title": "Dedicated server (extern)",
-      "description": "Verbindt met een externe instantie van de SoulFire-server. Je moet het adres en de token van de server invullen."
+      "description": "Verbindt met een externe SoulFire-server via het adres en token."
     },
     "demo": {
       "title": "Demo-server",
-      "description": "Simuleert een virtuele server met demogegevens. Deze server is alleen-lezen en je kunt hier geen wijzigingen op aanbrengen."
+      "description": "Biedt een alleen-lezen server met demo-gegevens. SoulFire slaat geen wijzigingen op."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire-gegevens zijn succesvol hersteld. Probeer opnieuw te starten.",
       "error": "Het herstellen van SoulFire-gegevens is mislukt"
     },
-    "description": "De geïntegreerde server draait lokaal op je pc. Stel indien nodig hieronder de Java-opstartargumenten in.",
+    "description": "De geïntegreerde server draait op je computer. Je kunt de Java-opstartargumenten hieronder aanpassen.",
     "form": {
       "jvmArgs": {
         "title": "JVM-argumenten",
-        "description": "De SoulFire Java VM-argumenten. Om 4GB RAM te gebruiken, voeg <bold>-Xmx4G</bold> toe. Standaard is dit 25% van je RAM.",
+        "description": "Java VM-argumenten voor SoulFire. Voeg <bold>-Xmx4G</bold> toe om 4 GB RAM te gebruiken. Standaard is 25% van het beschikbare RAM.",
         "placeholder": "Jouw JVM-argumenten hier"
       },
       "back": "Terug",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux-commando",
-          "description": "Installeer de <a>Termux-app</a> en voer vervolgens dit commando uit in Termux om de SoulFire-server te installeren. Daarna moet je het commando <copy>generate-token api</copy> uitvoeren om een token te genereren. Voer daarna hieronder het token in."
+          "description": "Installeer de <a>Termux-app</a>. Voer dit commando uit in Termux om de SoulFire-server te installeren. Voer <copy>generate-token api</copy> uit om een token aan te maken. Voer daarna het token hieronder in."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Vul het adres en de token in van de SoulFire-server waarmee je wilt verbinden.",
+    "description": "Voer het adres en het token van de SoulFire-server in.",
     "toast": {
       "loading": "Bezig met verbinden met server...",
       "success": "Verbonden met server",

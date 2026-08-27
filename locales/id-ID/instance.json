@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Keluaran instance mentah tersedia di sini saat Anda perlu memeriksa detail konsol.",
+    "summary": {
+      "accounts": "Akun",
+      "proxies": "Proxy",
+      "configured": "{{count}} dikonfigurasi",
+      "configuredShort": "Dikonfigurasi",
+      "currentRate": "Tingkat saat ini",
+      "imported": "Diimpor"
+    },
+    "readiness": {
+      "title": "Pengaturan",
+      "accounts": "Akun",
+      "accountsValue": "{{count}} diimpor untuk {{requested}} bot yang diminta",
+      "proxies": "Proxy",
+      "proxiesValue": "{{count}} dikonfigurasi",
+      "plugins": "Plugin",
+      "pluginsValue": "{{count}} tersedia"
+    },
+    "activity": {
+      "title": "Aktivitas",
+      "tick": "Tick",
+      "health": "Kesehatan",
+      "world": "Dunia",
+      "worldValue": "{{chunks}} chunk, {{entities}} entitas",
+      "connections": "Koneksi",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metrik",
+      "noDataDescription": "Belum ada metrik runtime."
+    },
+    "metricsUnavailable": {
+      "title": "Metrik",
+      "inactive": "Mulai bot untuk mengumpulkan metrik secara langsung.",
+      "noPermission": "Anda tidak memiliki izin untuk melihat metrik bot."
+    },
+    "status": {
+      "ready": "Siap",
+      "attention": "Butuh perhatian",
+      "configured": "Dikonfigurasi",
+      "optional": "Opsional",
+      "available": "Tersedia",
+      "none": "Tidak ada"
+    },
+    "actions": {
+      "manage": "Kelola",
+      "open": "Buka"
+    },
+    "spotlight": {
+      "noBots": "Belum ada bot yang dikonfigurasi.",
+      "idle": "Idle, menunggu instruksi.",
+      "level": "Lvl {{level}}"
+    },
+    "liveFeed": {
+      "title": "Umpan langsung",
+      "empty": "Menunggu aktivitas instance...",
+      "noPermission": "Anda tidak memiliki izin untuk melihat umpan langsung.",
+      "lifecycle": {
+        "connecting": "sedang terhubung",
+        "connected": "terhubung",
+        "spawned": "bergabung ke permainan",
+        "died": "mati",
+        "respawned": "respawn",
+        "disconnected": "terputus",
+        "unknown": "mengubah status"
+      }
+    },
+    "bots": {
+      "title": "Bot",
+      "viewAll": "Lihat semua {{total}} bot",
+      "viewAllShort": "Lihat semua"
+    },
+    "timeline": {
+      "title": "Aktivitas",
+      "viewAll": "Lihat semua",
+      "empty": "Belum ada aktivitas yang tercatat.",
+      "noPermission": "Anda tidak memiliki izin untuk melihat log audit.",
+      "types": {
+        "executeCommand": "menjalankan perintah: {{data}}",
+        "botDesiredStateChange": "mengubah status yang diinginkan bot",
+        "botRestart": "me-restart bot",
+        "unknown": "melakukan sebuah aksi"
+      }
+    },
+    "plugins": {
+      "title": "Plugin",
+      "empty": "Belum ada plugin yang melaporkan statistik.",
+      "noPermission": "Anda tidak memiliki izin untuk melihat statistik plugin.",
+      "active": "Aktif",
+      "activeBots": "{{count}} bot aktif",
+      "uptime": "aktif {{time}}"
+    },
+    "detailed": {
+      "title": "Metrik detail",
+      "composition": "Komposisi dunia"
+    }
+  },
   "proxy": {
     "getProxies": "Dapatkan Proxy",
     "addProxies": "Tambah Proxy",
@@ -55,8 +151,8 @@
       "deleteProxy": "Hapus Proxy"
     },
     "postImportCheckDialog": {
-      "title": "Periksa Proxy?",
-      "description": "Anda baru saja mengimpor {{count}} proxy. Apakah Anda ingin memeriksanya sekarang? Proxy tidak valid akan dihapus secara otomatis.",
+      "title": "Cek proxy yang diimpor?",
+      "description": "Anda telah mengimpor {{count}} proxy. Cek sekarang? SoulFire akan menghapus proxy yang tidak valid secara otomatis.",
       "confirm": "Periksa Proksi",
       "skip": "Lewati"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Tidak ada akun untuk diimpor"
     },
     "unknownError": "Kesalahan tidak diketahui",
+    "types": {
+      "OFFLINE": "Luring",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Kredensial)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Kode Perangkat)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookie)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Token Akses)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Kredensial)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Kode Perangkat)"
+    },
     "deviceCodeImportToast": {
       "loading": "Mengimpor akun...",
       "success": "Akun berhasil diimpor!",
@@ -93,9 +200,9 @@
       "description": "Buat akun Java offline dengan format nama khusus.",
       "amount": "Jumlah",
       "nameFormat": "Format Nama",
-      "nameFormatHelp": "Gunakan %d sebagai penampung nomor akun (misal: Bot_%d menjadi Bot_1, Bot_2, dst.)",
+      "nameFormatHelp": "Gunakan %d untuk nomor akun. Misalnya, Bot_%d akan membuat nama seperti Bot_1 dan Bot_2.",
       "mode": "Akun yang Ada",
-      "modeHelp": "Pilih cara menangani akun yang sudah ada:\n\n• Abaikan yang Ada: Hanya membuat akun dengan nama yang belum ada. Semua akun yang ada tetap tidak berubah.\n\n• Ganti yang Ada: Membuat semua akun, mengganti akun yang sudah ada dengan UUID yang sama. Akun lainnya tetap ada.\n\n• Ganti Semua: Menghapus SEMUA akun yang ada dan menggantinya dengan akun yang dibuat.",
+      "modeHelp": "Pilih cara menangani akun yang sudah ada:\n\n• Abaikan Yang Ada: Hanya buat akun dengan nama baru. Semua akun yang sudah ada tetap disimpan.\n\n• Ganti Yang Ada: Buat semua akun yang diminta. Ganti akun dengan UUID yang sama. Semua akun lainnya tetap disimpan.\n\n• Ganti Semua: Hapus semua akun yang ada. Kemudian tambahkan akun yang telah dibuat.",
       "modeIgnoreExisting": "Abaikan yang Ada",
       "modeReplaceExisting": "Ganti yang Ada",
       "modeReplaceAll": "Ganti Semua",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Token Refresh Microsoft",
       "microsoftCookies": "Cookie Microsoft",
       "microsoftAccessToken": "Token Akses Microsoft",
+      "theAltening": "Token TheAltening",
       "altProviders": "Penyedia Alternatif",
       "dialog": {
         "title": "Impor akun {{type}}",
@@ -149,7 +257,21 @@
       "description": "Atur pengaturan per-bot untuk akun ini",
       "openButton": "Konfigurasi akun",
       "pageTitle": "{{name}} - Pengaturan {{page}}",
-      "noSettings": "Tidak ada pengaturan yang tersedia untuk halaman ini"
+      "noSettings": "Tidak ada pengaturan yang tersedia untuk halaman ini",
+      "search": "Pengaturan pencarian",
+      "overrides": "Penimpaan",
+      "allSettings": "Semua pengaturan",
+      "noOverrides": "Bot ini belum memiliki penimpaan eksplisit.",
+      "noOverridesMatching": "Tidak ada penimpaan yang cocok dengan pencarian ini.",
+      "noOverridesHelp": "Buka Semua pengaturan untuk mewarisi nilai atau buat penimpaan khusus bot pertama.",
+      "tryDifferentSearch": "Coba istilah pencarian lain.",
+      "openAllSettings": "Buka semua pengaturan",
+      "selectPage": "Pilih halaman pengaturan",
+      "noSearchResults": "Tidak ada pengaturan yang cocok dengan pencarian ini.",
+      "matchesInheritedValue": "Cocok dengan nilai turunan",
+      "instanceValue": "Nilai instance",
+      "defaultValue": "Nilai default",
+      "resetOverride": "Atur ulang penggantian"
     },
     "deviceCodeConfirmDialog": {
       "title": "Otentikasi Kode Perangkat",
@@ -183,7 +305,7 @@
       "purchasing": "Membeli...",
       "purchaseSuccess": "Berhasil membeli {{count}} akun, mengimpor...",
       "purchaseError": "Pembelian gagal: {{message}}",
-      "networkError": "Tidak dapat terhubung ke API Ravealts",
+      "networkError": "Koneksi ke API Ravealts gagal",
       "outOfStock": "Tipe yang dipilih tidak tersedia",
       "insufficientBalance": "Kredit tidak cukup",
       "rateLimited": "Batas kecepatan tercapai, coba lagi nanti"
@@ -231,7 +353,30 @@
     "online": "Online",
     "offline": "Luring",
     "notJoined": "Belum Bergabung",
+    "connectionPhase": {
+      "connecting": "Menghubungkan",
+      "connected": "Terhubung",
+      "spawned": "Online",
+      "died": "Mati",
+      "disconnected": "Luring",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Memulai",
+      "running": "Berjalan",
+      "retrying": "Mencoba ulang",
+      "stopping": "Menghentikan",
+      "failed": "Gagal",
+      "waiting": "Menunggu",
+      "stopped": "Dihentikan"
+    },
     "backToBots": "Kembali ke Bot",
+    "tabs": {
+      "overview": "Ikhtisar",
+      "inventory": "Inventaris",
+      "controls": "Kontrol",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Segera Hadir",
     "terminalPanel": {
       "title": "Terminal Bot"
@@ -362,11 +507,74 @@
       "offline": "Bot sedang offline. Dialog hanya tersedia saat bot terhubung."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Tidak ada data"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/d",
+      "traffic": "Lalu lintas",
+      "health": "Kesehatan",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bot Online",
+      "online": "Online",
+      "total": "Total"
+    },
+    "packets": {
+      "title": "Paket / Detik",
+      "sent": "Dikirim/d",
+      "received": "Diterima/d"
+    },
+    "bandwidth": {
+      "title": "Bandwidth",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Durasi Tick",
+      "avg": "Rata-rata (ms)",
+      "max": "Maks (ms)"
+    },
+    "healthFood": {
+      "title": "Kesehatan / Makanan",
+      "health": "Rata-rata Kesehatan",
+      "food": "Rata-rata Makanan"
+    },
+    "chunksEntities": {
+      "title": "Chunk / Entitas",
+      "chunks": "Chunk",
+      "entities": "Entitas"
+    },
+    "connections": {
+      "title": "Peristiwa Koneksi",
+      "connections": "Koneksi",
+      "disconnections": "Diskoneksi"
+    },
+    "healthDistribution": {
+      "title": "Distribusi Kesehatan",
+      "bots": "Bot"
+    },
+    "dimensions": {
+      "title": "Dimensi",
+      "bots": "Bot"
+    },
+    "gameModes": {
+      "title": "Mode Permainan",
+      "bots": "Bot"
+    },
+    "positions": {
+      "title": "Posisi Bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Skrip Visual",
     "description": "Buat skrip otomatisasi menggunakan editor node visual.",
     "experimentalTitle": "Fitur Eksperimental",
-    "experimentalWarning": "Fitur ini masih bersifat eksperimental. Mungkin akan ada perubahan besar di masa depan dan skrip yang ada bisa jadi tidak berfungsi. Gunakan dengan hati-hati.",
+    "experimentalWarning": "Fitur ini masih eksperimental. Pembaruan di masa depan bisa membuat skrip yang ada menjadi rusak. Gunakan dengan hati-hati.",
     "createScript": "Buat Skrip",
     "createScriptTitle": "Buat Skrip Baru",
     "createScriptDescription": "Buat skrip visual baru untuk instance ini. Skrip dapat mengotomatisasi aksi bot dan merespons kejadian.",
@@ -430,6 +638,7 @@
         "pause": "Jeda",
         "pauseTooltip": "Jeda eksekusi skrip",
         "unsaved": "Belum disimpan",
+        "unsavedChanges": "Perubahan belum disimpan",
         "clearCanvas": "Bersihkan kanvas",
         "zoomIn": "Perbesar",
         "zoomOut": "Perkecil",
@@ -461,6 +670,64 @@
         "showPreview": "Tampilkan Pratinjau",
         "hidePreview": "Sembunyikan Pratinjau",
         "delete": "Hapus"
+      },
+      "node": {
+        "expand": "Perluas node",
+        "collapse": "Ciutkan node"
+      },
+      "debug": {
+        "copyValue": "Salin nilai saat ini",
+        "clearHistory": "Bersihkan riwayat"
+      },
+      "edge": {
+        "direction": "Arah edge"
+      },
+      "note": {
+        "placeholder": "Tulis catatan..."
+      },
+      "complexity": {
+        "title": "Skor kompleksitas skrip"
+      },
+      "group": {
+        "returnToRoot": "Kembali ke root (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu tambah node cepat",
+        "searchPlaceholder": "Cari node..."
+      },
+      "diff": {
+        "tooltip": "Tinjau perubahan"
+      },
+      "dryRun": {
+        "tooltip": "Dry Run",
+        "title": "Script Dry Run",
+        "description": "Jalankan skrip dari trigger yang dipilih dengan input tiruan.",
+        "triggerNode": "Node Trigger",
+        "selectTrigger": "Pilih trigger...",
+        "triggerDescription": "Pilih node trigger untuk dieksekusi dengan nilai input tiruan.",
+        "mockInputs": "Input Tiruan",
+        "valuePlaceholder": "nilai {{type}}",
+        "start": "Mulai Dry Run"
+      },
+      "quotas": {
+        "tooltip": "Kuota Skrip",
+        "title": "Kuota Skrip",
+        "description": "Atur batas sumber daya untuk skrip ini. Kolom kosong akan memakai standar server.",
+        "maxExecutionCount": "Jumlah Eksekusi Maksimum",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maksimum eksekusi node per pemanggilan trigger",
+        "maxExecutionTime": "Waktu Eksekusi Maksimum (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Waktu wall-clock maksimum per eksekusi trigger",
+        "maxConcurrentTriggers": "Trigger Bersamaan Maksimum",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Pemanggilan trigger bersamaan maksimum",
+        "maxStateStoreEntries": "Entri State Store Maksimum",
+        "maxStateStoreEntriesPlaceholder": "Tidak terbatas",
+        "maxStateStoreEntriesDescription": "Jumlah entri maksimum di state store skrip",
+        "disableTimeouts": "Nonaktifkan Timeout",
+        "disableTimeoutsDescription": "Menonaktifkan timeout per-node dan data edge",
+        "save": "Simpan Kuota"
       }
     }
   }

@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "SoulFire가 처음이신가요? <a>시작 가이드</a>를 참고하시는 것을 권장합니다.",
+  "newUser": "SoulFire가 처음이신가요? <a>시작 가이드</a>를 읽어보세요.",
   "connect": {
     "title": "SoulFire 서버에 연결하기",
     "description": "연결할 SoulFire 서버의 유형을 선택하세요.",
     "integrated": {
       "title": "통합 서버 (로컬)",
-      "description": "컴퓨터에서 SoulFire 서버를 실행합니다. 설정은 자동으로 이루어지며 별도의 구성은 필요하지 않습니다. (데스크톱/안드로이드 앱 필요)"
+      "description": "이 기기에서 SoulFire 서버를 실행합니다. 설정이 자동으로 진행됩니다. 이 옵션은 데스크톱 또는 Android 앱이 필요합니다."
     },
     "dedicated": {
       "title": "전용 서버 (원격)",
-      "description": "SoulFire 서버의 원격 인스턴스에 연결합니다. 서버의 주소와 토큰을 입력해야 합니다."
+      "description": "원격 SoulFire 서버에 주소와 토큰으로 연결합니다."
     },
     "demo": {
       "title": "데모 서버",
-      "description": "데모 데이터를 사용하여 가상 서버를 시뮬레이션합니다. 이 서버는 읽기 전용이며 변경이 불가능합니다."
+      "description": "읽기 전용 서버와 데모 데이터를 제공합니다. SoulFire는 변경 사항을 저장하지 않습니다."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire 데이터가 성공적으로 초기화되었습니다. 다시 시작해보세요.",
       "error": "SoulFire 데이터 초기화에 실패했습니다."
     },
-    "description": "통합 서버는 PC에서 로컬로 실행됩니다. 필요하다면 아래에서 Java 시작 인수를 설정하세요.",
+    "description": "통합 서버는 컴퓨터에서 실행됩니다. Java 시작 인수를 아래에서 변경할 수 있습니다.",
     "form": {
       "jvmArgs": {
         "title": "JVM 인수",
-        "description": "SoulFire Java VM 인수입니다. 4GB의 RAM을 사용하려면 <bold>-Xmx4G</bold>를 추가하세요. 기본값은 사용 가능한 RAM의 25%입니다.",
+        "description": "SoulFire용 Java VM 인수입니다. 4GB RAM을 사용하려면 <bold>-Xmx4G</bold>를 추가하세요. 기본값은 사용 가능한 RAM의 25%입니다.",
         "placeholder": "여기에 JVM 인수를 입력하세요"
       },
       "back": "뒤로",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux 명령어",
-          "description": "<a>Termux 앱</a>을 설치한 후, Termux에서 아래 명령어를 실행하여 SoulFire 서버를 설치하세요. 이후 <copy>generate-token api</copy> 명령어를 실행해 토큰을 생성해야 합니다. 생성한 토큰을 아래에 입력하세요."
+          "description": "<a>Termux 앱</a>을 설치하세요. Termux에서 이 명령어를 실행하여 SoulFire 서버를 설치하세요. <copy>generate-token api</copy>를 실행하여 토큰을 생성한 후, 아래에 토큰을 입력하세요."
         },
         "token": {
           "title": "토큰",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "연결할 SoulFire 서버의 주소와 토큰을 입력하세요.",
+    "description": "SoulFire 서버의 주소와 토큰을 입력하세요.",
     "toast": {
       "loading": "서버에 연결 중...",
       "success": "서버에 연결됨",

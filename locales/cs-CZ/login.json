@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Jste v SoulFire noví? Doporučujeme podívat se na <a>průvodce začátkem</a>.",
+  "newUser": "Nový v SoulFire? Přečtěte si <a>průvodce začátky</a>.",
   "connect": {
     "title": "Připojit se k serveru SoulFire",
     "description": "Vyberte, ke kterému typu serveru SoulFire se chcete připojit.",
     "integrated": {
       "title": "Integrovaný server (lokální)",
-      "description": "Spustí server SoulFire na vašem počítači. Nastavení je automatické a nevyžaduje žádnou konfiguraci. (Vyžaduje aplikaci pro Desktop/Android)"
+      "description": "Spouští SoulFire server na tomto zařízení. Nastavení je automatické. Tato možnost vyžaduje desktopovou nebo Android aplikaci."
     },
     "dedicated": {
       "title": "Dedikovaný server (vzdálený)",
-      "description": "Připojí se ke vzdálené instanci serveru SoulFire. Je potřeba zadat adresu a token serveru."
+      "description": "Připojí se ke vzdálenému SoulFire serveru pomocí jeho adresy a tokenu."
     },
     "demo": {
       "title": "Demo server",
-      "description": "Simuluje virtuální server s demo daty. Tento server je pouze pro čtení a nelze na něm provádět žádné změny."
+      "description": "Poskytuje server pouze pro čtení s demo daty. SoulFire neukládá změny."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Data SoulFire byla úspěšně resetována. Zkuste to znovu spustit.",
       "error": "Nepodařilo se resetovat data SoulFire"
     },
-    "description": "Integrovaný server běží lokálně na vašem PC. Pokud je třeba, nastavte níže argumenty pro spuštění Javy.",
+    "description": "Integrovaný server běží na vašem počítači. Níže můžete změnit parametry spouštění Javy.",
     "form": {
       "jvmArgs": {
         "title": "JVM argumenty",
-        "description": "Argumenty pro Java VM SoulFire. Pro použití 4GB RAM přidejte <bold>-Xmx4G</bold>. Výchozí hodnota je 25 % vaší RAM.",
+        "description": "Argumenty Java VM pro SoulFire. Přidejte <bold>-Xmx4G</bold> pro použití 4 GB RAM. Výchozí je 25 % dostupné RAM.",
         "placeholder": "Vaše JVM argumenty zde"
       },
       "back": "Zpět",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Příkaz Termux",
-          "description": "Nainstalujte si <a>aplikaci Termux</a>, poté spusťte tento příkaz v Termuxu pro instalaci serveru SoulFire. Následně musíte spustit příkaz <copy>generate-token api</copy> pro vygenerování tokenu. Poté zadejte vygenerovaný token níže."
+          "description": "Nainstalujte si <a>aplikaci Termux</a>. Spusťte tento příkaz v Termuxu pro instalaci SoulFire serveru. Poté spusťte <copy>generate-token api</copy> pro vytvoření tokenu. Token pak zadejte níže."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Zadejte adresu a token serveru SoulFire, ke kterému se chcete připojit.",
+    "description": "Zadejte adresu a token SoulFire serveru.",
     "toast": {
       "loading": "Připojování k serveru...",
       "success": "Připojeno k serveru",

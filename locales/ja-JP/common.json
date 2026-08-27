@@ -8,7 +8,7 @@
     "noAddressOrToken": "サーバーアドレスまたはトークンが見つかりません",
     "page": {
       "title": "エラー",
-      "description": "ページの読み込み中にエラーが発生しました。詳細はコンソールでご確認ください。",
+      "description": "ページの読み込みに失敗しました。詳細はコンソールを開いて確認してください。",
       "logOut": "ログアウト",
       "reloadPage": "ページを再読み込み",
       "showDetails": "詳細を表示する。"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "見つかりません",
-      "description": "この場所にページが見つかりませんでした",
+      "description": "このアドレスにはページが存在しません",
       "logOut": "ログアウト",
       "reloadPage": "ページを再読み込み"
     }
@@ -46,9 +46,16 @@
       },
       "close": "閉じる"
     },
+    "support": {
+      "title": "SoulFireを支援する",
+      "description": "SoulFireは、コミュニティによって愛情を込めて作られた、無料でオープンソースのプロジェクトです。",
+      "body": "もしSoulFireが役に立ったと感じていただけたなら、プロジェクトの支援をご検討ください。ご支援はサーバーの運用費や開発資金となり、SoulFireをすべての人に無料で提供し続ける助けになります。",
+      "dismiss": "後で",
+      "action": "SoulFireを支援する"
+    },
     "createInstance": {
       "title": "新しいインスタンスを作成",
-      "description": "インスタンスを区別するために、わかりやすい名前が必要です。どんな名前でも構いません。例：「マイMinecraftボット」",
+      "description": "インスタンスを認識しやすい名前にしてください（例：「My Minecraft Bot」）。",
       "form": {
         "friendlyName": {
           "label": "わかりやすい名前",
@@ -67,11 +74,26 @@
         "error": "インスタンスの作成に失敗しました"
       }
     },
+    "duplicateInstance": {
+      "title": "インスタンスを複製する​",
+      "description": "「{{name}}」のプロファイルを使って新しいインスタンスを作成します。",
+      "form": {
+        "friendlyName": {
+          "description": "複製されたインスタンスの名前です。"
+        },
+        "duplicate": "複製"
+      },
+      "duplicateToast": {
+        "loading": "インスタンスを複製しています…",
+        "success": "インスタンスの複製に成功しました",
+        "error": "インスタンスの複製に失敗しました"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "ファイルから",
         "fromUrl": "URLから",
-        "firstClipboardItem": "クリップボードに複数のアイテムがありましたが、最初のもののみ使用します。",
+        "firstClipboardItem": "クリップボードに複数の項目があります。SoulFire は最初の項目を使用します。",
         "fromClipboard": "クリップボードから",
         "textarea": {
           "placeholder": "ここにテキストを入力...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "URLからの読み込みは、SoulFireサーバーが対象サーバーにGETリクエストを送り、そのレスポンスをデータとして使用します。",
+        "description": "SoulFire サーバーがこの URL に GET リクエストを送り、レスポンスをインポートします。",
         "form": {
           "url": {
             "placeholder": "ここにURLを入力...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "開始",
-    "resume": "再開",
-    "pause": "一時停止",
     "stop": "停止",
+    "startAll": "すべて開始する",
+    "stopAll": "すべて停止する",
+    "restart": "再起動",
+    "startCount": "起動するボット数",
     "startToast": {
-      "loading": "セッションを開始しています...",
-      "success": "セッションが正常に開始されました",
-      "error": "セッションの開始に失敗しました"
+      "loading": "ボットを起動中...",
+      "success": "ボット状態が更新されました",
+      "error": "ボットの起動に失敗しました"
     },
-    "resumeToast": {
-      "loading": "セッションを再開しています...",
-      "success": "セッションが正常に再開されました",
-      "error": "セッションの再開に失敗しました"
-    },
-    "pauseToast": {
-      "loading": "セッションを一時停止しています...",
-      "success": "セッションが一時停止されました。",
-      "error": "セッションの一時停止に失敗しました。"
+    "restartToast": {
+      "loading": "ボットを再起動中...",
+      "success": "ボットが再接続しています",
+      "error": "ボットの再起動に失敗しました"
     },
     "stopToast": {
-      "loading": "セッションを停止中...",
-      "success": "セッションが停止されました。",
-      "error": "セッションの停止に失敗しました。"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "アカウントが設定されていません",
-      "noAccountsDescription": "セッションを開始する前にアカウントをインポートする必要があります。要求されたボット数: {{required}}",
-      "notEnoughTitle": "アカウントが不足しています",
-      "notEnoughDescription": "{{required}}体のボットをリクエストしましたが、インポート済みアカウントは{{available}}件のみです。",
-      "hint": "オフラインアカウントを生成するか、アカウント設定ページからアカウントをインポートできます。",
-      "continueWithExisting": "{{count}}件のアカウントで続行",
-      "generateAccounts": "アカウントを生成"
+      "loading": "ボットを停止中...",
+      "success": "ボットを停止しています",
+      "error": "ボットの停止に失敗しました"
     }
   },
+  "botFleetSummary": "{{online}}人オンライン · 希望数:{{desired}} · 合計:{{total}}",
   "icon": {
     "invalidName": "無効なアイコン名: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "追加",
       "remove": "削除"
     },
+    "combo": {
+      "searchPlaceholder": "値を検索..."
+    },
     "invalidNumberToast": {
-      "title": "無効な数値です！",
+      "title": "無効な数値です",
       "description": "値は{{min}}〜{{max}}の間である必要があります"
     }
   },
   "terminal": {
-    "noLogs": "🧙 表示できるログがありません。コマンドを実行してみてください！",
+    "noLogs": "まだログがありません。コマンドを実行するとログが出力されます。",
     "demo-1": "デモモードへようこそ！🧪",
     "demo-2": "これはSoulFireの読み取り専用インスタンスです",
     "demo-3": "SoulFireをインストールする前に、すべてのメニューや機能をチェックしましょう :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "サイドバーの切り替え"
+  },
+  "window": {
+    "minimize": "最小化",
+    "minimizeLabel": "ウィンドウを最小化",
+    "maximize": "最大化",
+    "maximizeLabel": "ウィンドウを最大化",
+    "restore": "元に戻す",
+    "restoreLabel": "ウィンドウを元に戻す",
+    "close": "閉じる",
+    "closeLabel": "ウィンドウを閉じる",
+    "back": "戻る",
+    "backLabel": "戻る",
+    "forward": "進む",
+    "forwardLabel": "進む"
+  },
+  "infoButton": {
+    "showInfo": "情報を表示"
   },
   "castMenu": {
     "title": "キャスト",
@@ -333,6 +364,7 @@
     },
     "configDir": "設定ディレクトリ",
     "dataDir": "データディレクトリ",
+    "supportSoulFire": "SoulFireを支援する",
     "about": "情報",
     "logOut": "ログアウト",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "ドキュメント",
-    "supportSoulFire": "コーヒーをおごってください",
+    "supportSoulFire": "SoulFireを支援する",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAVアクセス",
-      "description": "SoulFireはWebDAVプロトコルでインスタンス、スクリプト、その他のファイルにアクセスできます。",
+      "description": "WebDAV により、インスタンスのファイルやスクリプト、その他のファイルにアクセスできます。",
       "publicAddress": "公開WebDAVアドレス",
       "personalToken": "個人用WebDAVトークン",
-      "securityWarning": "あなたの個人用WebDAVトークンは非常に重要です。誰とも共有しないでください。ファイルへアクセスする際の認証に使われます。WebDAVに接続する際にはパスワードとして使ってください。ユーザー名は不要ですが、必要な場合は任意の値（例：「soulfire」）を入力してください。",
-      "addressDescription": "これは自分のファイルにアクセスする際に使用するアドレスです。場合によってはhttp(s)://の代わりにdav://またはdavs://を使う必要があります。"
+      "securityWarning": "個人の WebDAV トークンは秘密にしてください。ファイルにアクセス可能になります。トークンを WebDAV のパスワードとして使用してください。ユーザー名の入力は不要ですが、アプリが必要とする場合は 'soulfire' など、任意の値を入力してください。",
+      "addressDescription": "このアドレスを使用してファイルにアクセスします。一部のクライアントでは、http:// や https:// の代わりに dav:// や davs:// が必要です。"
     },
     "api": {
       "title": "APIアクセス",
-      "description": "SoulFireのgRPC HTTP APIを使うことで、ウェブリクエストでインスタンスをプログラム的に操作できます。",
+      "description": "SoulFire の gRPC HTTP API はウェブリクエストでインスタンスを管理します。",
       "publicAddress": "公開APIアドレス",
       "personalToken": "個人用APIトークン",
-      "securityWarning": "あなたの個人用APIトークンは非常に重要です。誰とも共有しないでください。APIへアクセスする際の認証に使われます。",
-      "addressDescription": "これがAPIへアクセスする際に必要なアドレスです。"
+      "securityWarning": "個人の API トークンは秘密にしてください。このトークンで API にアクセスできます。",
+      "addressDescription": "このアドレスを使って API にアクセスしてください。"
     },
     "token": {
       "generate": "トークンを生成",
@@ -443,6 +475,8 @@
     "searchUsers": "ユーザーを検索...",
     "searchTimestamps": "タイムスタンプを検索...",
     "executedCommand": "コマンドを実行: {{data}}",
+    "changedBotDesiredState": "ボットの希望状態を変更しました",
+    "restartedBots": "ボットを再起動しました",
     "contextMenu": {
       "copyUsername": "ユーザー名をコピー",
       "copyCommand": "コマンドをコピー"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "スクリプト名は3文字以上である必要があります",
           "max": "スクリプト名は最大32文字までです",
-          "regex": "スクリプト名は小文字で始まり、英数字で始まる必要があり、その後は英数字またはハイフン、最後も英数字で終わる必要があります。",
+          "regex": "小文字のアルファベット、数字、ハイフンのみを使用してください。名前は英字または数字で始まり、終わる必要があります。",
           "label": "名前",
           "placeholder": "マイスクリプト",
           "description": "スクリプトの名前です。"
         },
         "elevatedPermissions": {
           "label": "管理者権限",
-          "description": "スクリプトを管理者権限で実行するかどうか。管理者のみこのオプションを有効にできます。"
+          "description": "このスクリプトは管理者権限で実行されます。このオプションは管理者のみ有効にできます。"
         }
       }
     },
     "addScriptDialog": {
       "title": "新しいスクリプトを追加",
-      "description": "スクリプトはSoulFireサーバー上で動作する小さなプログラムです。タスクの自動化やカスタム動作の作成などに使えます。",
+      "description": "スクリプトは、SoulFire サーバー上でタスクや他の操作を自動化するための小さなプログラムです。",
       "form": {
         "cancel": "キャンセル",
         "add": "追加"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "インスタンスへ移動",
+      "duplicateInstance": "インスタンスを複製",
       "copyInstanceId": "インスタンスIDをコピー",
       "copyInstanceName": "インスタンス名をコピー",
       "deleteInstance": "インスタンスを削除"

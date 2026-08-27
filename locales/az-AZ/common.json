@@ -8,7 +8,7 @@
     "noAddressOrToken": "Server ünvanı və ya token tapılmadı",
     "page": {
       "title": "Xəta",
-      "description": "Səhifə yüklənərkən xəta baş verdi. Daha ətraflı məlumat konsolda görünəcək.",
+      "description": "Səhifə yüklənmədi. Əlavə məlumat üçün konsolu açın.",
       "logOut": "Çıxış",
       "reloadPage": "Səhifəni yenilə",
       "showDetails": "Təfərrüatları göstər"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Tapılmadı",
-      "description": "Bu ünvanda səhifə tapılmadı",
+      "description": "Bu ünvanda səhifə yoxdur",
       "logOut": "Çıxış",
       "reloadPage": "Səhifəni yenilə"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Bağla"
     },
+    "support": {
+      "title": "SoulFire-ə dəstək olun",
+      "description": "SoulFire pulsuz və açıq mənbəlidir, icma tərəfindən sevgi ilə hazırlanıb.",
+      "body": "Əgər SoulFire sizə faydalı olubsa, layihəni dəstəkləməyi nəzərdən keçirin. Sizin töhfəniz server xərclərini qarşılamağa, inkişafı maliyyələşdirməyə və SoulFire-nı hamı üçün pulsuz saxlamağa kömək edir.",
+      "dismiss": "Bəlkə sonra",
+      "action": "SoulFire-ə dəstək olun"
+    },
     "createInstance": {
       "title": "Yeni instansiya yaradın",
-      "description": "İnstanları fərqləndirmək üçün onlara dost adlar verməlisiniz. İstədiyiniz adı yaza bilərsiniz, məsələn, \"Mənim Minecraft Botum\".",
+      "description": "İnstansta tanımağa rahat olacağınız bir ad verin, məsələn \"Mənim Minecraft Botum\".",
       "form": {
         "friendlyName": {
           "label": "Dost adı",
@@ -67,11 +74,26 @@
         "error": "İnstanı yaratmaq mümkün olmadı"
       }
     },
+    "duplicateInstance": {
+      "title": "Nüsxə instansiyası",
+      "description": "\"{{name}}\" profilindən istifadə edərək yeni instansiya yaradın.",
+      "form": {
+        "friendlyName": {
+          "description": "Nüsxələnmiş instansiya üçün ad."
+        },
+        "duplicate": "Dublikat"
+      },
+      "duplicateToast": {
+        "loading": "Nüsxə çıxarılır...",
+        "success": "Nüsxə uğurla çıxarıldı",
+        "error": "Nüsxə çıxarmaq alınmadı"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Fayldan",
         "fromUrl": "URL-dən",
-        "firstClipboardItem": "Arxivdə bir neçə element var idi, yalnız birincisi istifadə olunur.",
+        "firstClipboardItem": "Mübadilə buferində bir neçə element var. SoulFire ilk elementi istifadə edəcək.",
         "fromClipboard": "Arxivdən",
         "textarea": {
           "placeholder": "Mətni bura yazın...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "URL-dən yükləyərkən SoulFire serveri hədəf serverə GET sorğusu göndərəcək və cavabı data kimi istifadə edəcək.",
+        "description": "SoulFire serveri bu URL-yə GET sorğusu göndərir və cavabı idxal edir.",
         "form": {
           "url": {
             "placeholder": "URL-i bura əlavə edin...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Başla",
-    "resume": "Davam et",
-    "pause": "Fasilə",
     "stop": "Dayandır",
+    "startAll": "Hamısını başlatın",
+    "stopAll": "Hamısını dayandırın",
+    "restart": "Yenidən başladın",
+    "startCount": "Başlanacaq botların sayı",
     "startToast": {
-      "loading": "Sessiya başlanır...",
-      "success": "Sessiya uğurla başlandı",
-      "error": "Sessiyanı başlatmaq alınmadı"
+      "loading": "Botlar başladılır...",
+      "success": "Bot vəziyyəti yeniləndi",
+      "error": "Botları başlatmaq alınmadı"
     },
-    "resumeToast": {
-      "loading": "Sessiya davam etdirilir...",
-      "success": "Sessiya uğurla davam etdirildi",
-      "error": "Sessiyanı davam etdirmək alınmadı"
-    },
-    "pauseToast": {
-      "loading": "Sessiya dayandırılır...",
-      "success": "Sessiya uğurla dayandırıldı.",
-      "error": "Sessiyanı dayandırmaq alınmadı."
+    "restartToast": {
+      "loading": "Botlar yenidən başladılır...",
+      "success": "Botlar yenidən qoşulur",
+      "error": "Botları yenidən başlatmaq alınmadı"
     },
     "stopToast": {
-      "loading": "Sessiya dayandırılır...",
-      "success": "Sessiya uğurla dayandırıldı.",
-      "error": "Sessiyanı dayandırmaq mümkün olmadı."
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Heç bir hesab qurulmayıb",
-      "noAccountsDescription": "Sessiyaya başlamazdan əvvəl hesabları əlavə etməlisiniz. Siz {{required}} bot tələb etdiniz.",
-      "notEnoughTitle": "Kifayət qədər hesab yoxdur",
-      "notEnoughDescription": "{{required}} bot istədiniz, amma yalnız {{available}} hesab əlavə olunub.",
-      "hint": "Offline hesablar yarada və ya Hesab Ayarları səhifəsindən hesablar əlavə edə bilərsiniz.",
-      "continueWithExisting": "{{count}} hesabla davam et",
-      "generateAccounts": "Hesablar yarat"
+      "loading": "Botlar dayandırılır...",
+      "success": "Botlar dayandırılır",
+      "error": "Botları dayandırmaq alınmadı"
     }
   },
+  "botFleetSummary": "{{online}} onlayn · {{desired}} istənilən · {{total}} cəmi",
   "icon": {
     "invalidName": "Yanlış ikon adı: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Əlavə et",
       "remove": "Sil"
     },
+    "combo": {
+      "searchPlaceholder": "Axtarış dəyəri..."
+    },
     "invalidNumberToast": {
-      "title": "Yanlış say!",
+      "title": "Yanlış ədəd",
       "description": "Dəyər {{min}} və {{max}} arasında olmalıdır"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Görünür göstərmək üçün heç bir log yoxdur; bir neçə əmr icra etməyə çalışın!",
+    "noLogs": "Hələ heç bir log yoxdur. Log çıxışı yaratmaq üçün əmr verin.",
     "demo-1": "Demo rejiminə xoş gəldiniz! 🧪",
     "demo-2": "Bu, SoulFire-in yalnız oxumaq üçün nəzərdə tutulmuş instansiyasıdır",
     "demo-3": "SoulFire-i qurmaq qərarına gəlməzdən əvvəl bütün menyu və funksiyalara baxın :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Yan paneli aç/bağla"
+  },
+  "window": {
+    "minimize": "Minimize et",
+    "minimizeLabel": "Pəncərəni minimallaşdır",
+    "maximize": "Maksimumlaşdır",
+    "maximizeLabel": "Pəncərəni maksimumlaşdır",
+    "restore": "Bərpa et",
+    "restoreLabel": "Pəncərəni bərpa et",
+    "close": "Bağla",
+    "closeLabel": "Pəncərəni bağla",
+    "back": "Geri",
+    "backLabel": "Geriyə get",
+    "forward": "İrəli",
+    "forwardLabel": "İrəli get"
+  },
+  "infoButton": {
+    "showInfo": "Məlumatı göstər"
   },
   "castMenu": {
     "title": "Yayımla",
@@ -333,6 +364,7 @@
     },
     "configDir": "Qovluq konfiqurasiyası",
     "dataDir": "Məlumat qovluğu",
+    "supportSoulFire": "SoulFire-ə dəstək olun",
     "about": "Haqqında",
     "logOut": "Çıxış",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Sənədlər",
-    "supportSoulFire": "Bir kubok al",
+    "supportSoulFire": "SoulFire-ə dəstək olun",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV Girişi",
-      "description": "SoulFire sizə instansiya, skript və digər fayllara WebDAV protokolu vasitəsilə çıxış imkanı verir.",
+      "description": "WebDAV instans fayllarına, skriptlərə və digər fayllara çıxış imkanı yaradır.",
       "publicAddress": "İctimai WebDAV ünvanı",
       "personalToken": "Şəxsi WebDAV Token",
-      "securityWarning": "Şəxsi WebDAV Tokeniniz çox vacibdir. Onu heç kimlə paylaşmayın. Fayllarınıza çıxış etdikdə sizi identifikasiya etmək üçün istifadə olunur. Qoşulanda WebDAV şifrəniz kimi bundan istifadə edin. İstifadəçi adı tələb olunarsa, istədiyinizi yaza bilərsiniz (məs. 'soulfire').",
-      "addressDescription": "Fayllarınıza çıxış üçün istifadə etməli olduğunuz ünvandır. Bəzən http(s):// əvəzinə dav:// və ya davs:// istifadə etməli olursunuz."
+      "securityWarning": "Şəxsi WebDAV tokeninizi gizli saxlayın. O, fayllarınıza çıxış imkanı verir. Tokeni WebDAV parolunuz kimi istifadə edin. İstifadəçi adı lazım deyil. Əgər tətbiqiniz tələb edirsə, məsələn 'soulfire' kimi istənilən dəyəri daxil edin.",
+      "addressDescription": "Fayllarınıza çıxış üçün bu ünvanı istifadə edin. Bəzi müştərilər http:// və ya https:// əvəzinə dav:// və ya davs:// tələb edə bilər."
     },
     "api": {
       "title": "API Girişi",
-      "description": "SoulFire-in gRPC HTTP API-si sizə instansiyalarınızı proqramlaşdırılmış şəkildə web sorğularla idarə etməyə imkan verir.",
+      "description": "SoulFire gRPC HTTP API instansları veb sorğularla idarə edir.",
       "publicAddress": "İctimai API ünvanı",
       "personalToken": "Şəxsi API Token",
-      "securityWarning": "Şəxsi API Tokeniniz çox vacibdir. Onu heç kimlə paylaşmayın. API-yə çıxış edərkən sizi identifikasiya etmək üçün istifadə olunur.",
-      "addressDescription": "API-yə çıxış əldə etmək üçün istifadə etməli olduğunuz ünvandır."
+      "securityWarning": "Şəxsi API tokeninizi gizli saxlayın. O, API-yə çıxış imkanı verir.",
+      "addressDescription": "API-yə çıxış üçün bu ünvanı istifadə edin."
     },
     "token": {
       "generate": "Token yarat",
@@ -443,6 +475,8 @@
     "searchUsers": "İstifadəçilərdə axtarış...",
     "searchTimestamps": "Zaman işarələrində axtarış...",
     "executedCommand": "İcra edilmiş əmr: {{data}}",
+    "changedBotDesiredState": "Botun istənilən vəziyyəti dəyişdi",
+    "restartedBots": "Botlar yenidən başlatıldı",
     "contextMenu": {
       "copyUsername": "İstifadəçi adını kopyala",
       "copyCommand": "Əmri Kopyala"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Skript adı ən azı 3 simvol olmalıdır",
           "max": "Skript adı ən çox 32 simvol olmalıdır",
-          "regex": "Skript adı kiçik hərflə başlamalıdır, ilk hərf və növbəti hərflər və ya tire alfanumerik simvol olmalıdır, sonu da alfanumerik simvolla bitməlidir.",
+          "regex": "Kiçik hərflərdən, rəqəmlərdən və tire işarəsindən istifadə edin. Ad hərf və ya rəqəmlə başlamalı və qurtarmalıdır.",
           "label": "Adı",
           "placeholder": "Mənim Skriptim",
           "description": "Skriptin adı."
         },
         "elevatedPermissions": {
           "label": "Yüksəldilmiş İcazələr",
-          "description": "Skript yüksək hüquqlarla işləsinmi. Yalnız adminlər bu seçimi aktiv edə bilər."
+          "description": "Skript yüksəldilmiş icazələrlə işləyir. Bu seçimi yalnız administratorlar aktiv edə bilər."
         }
       }
     },
     "addScriptDialog": {
       "title": "Yeni skript əlavə et",
-      "description": "Skriptlər SoulFire serverində işləyən kiçik proqramlardır. Onlar tapşırıqların avtomatlaşdırılması, fərdi davranışların yaradılması və daha çox üçün istifadə oluna bilər.",
+      "description": "Skriptlər SoulFire serverində tapşırıqları və digər əməliyyatları avtomatlaşdıran kiçik proqramlardır.",
       "form": {
         "cancel": "Ləğv et",
         "add": "Əlavə et"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "İnstantsa get",
+      "duplicateInstance": "Nüsxəni çıxar",
       "copyInstanceId": "İnstant ID-ni kopyala",
       "copyInstanceName": "İnstant adını kopyala",
       "deleteInstance": "Instansiyanı sil"

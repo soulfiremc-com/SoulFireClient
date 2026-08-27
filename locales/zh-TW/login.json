@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "初次使用 SoulFire？我們建議先閱讀 <a>入門指南</a>。",
+  "newUser": "新手上路？請閱讀<a>入門指南</a>。",
   "connect": {
     "title": "連接到 SoulFire 伺服器",
     "description": "選擇要連接的 SoulFire 伺服器類型。",
     "integrated": {
       "title": "整合式伺服器（本機）",
-      "description": "在您的電腦上運行 SoulFire 伺服器。安裝將自動進行，無需設定。（需要 Desktop/Android 應用程式）"
+      "description": "在此裝置上運行 SoulFire 伺服器。設定會自動進行。此選項需要桌面版或 Android 應用程式。"
     },
     "dedicated": {
       "title": "專用伺服器（遠端）",
-      "description": "連接到遠端的 SoulFire 伺服器實例。您需要提供伺服器的位址和權杖。"
+      "description": "使用位址和權杖連接至遠端 SoulFire 伺服器。"
     },
     "demo": {
       "title": "演示伺服器",
-      "description": "模擬帶有演示資料的虛擬伺服器。此伺服器為唯讀，您無法對其進行任何更改。"
+      "description": "提供僅供閱讀的伺服器與示範資料。SoulFire 不會儲存變更。"
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire 資料重設成功。請重新開始。",
       "error": "無法重設 SoulFire 資料"
     },
-    "description": "整合式伺服器在您的電腦本機運行。如有需要，請在下方設定 Java 啟動參數。",
+    "description": "整合伺服器運行於您的電腦上。您可以在下方更改 Java 啟動參數。",
     "form": {
       "jvmArgs": {
         "title": "JVM 參數",
-        "description": "SoulFire Java 虛擬機參數。要使用 4GB 記憶體，請新增 <bold>-Xmx4G</bold>。預設為您記憶體的 25%。",
+        "description": "SoulFire 的 Java VM 參數。新增 <bold>-Xmx4G</bold> 可使用 4GB 記憶體。預設為可用記憶體的 25%。",
         "placeholder": "在此輸入您的 JVM 參數"
       },
       "back": "返回",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux 命令",
-          "description": "請安裝 <a>Termux 應用程式</a>，然後在 Termux 中執行以下指令以安裝 SoulFire 伺服器。隨後，您需要執行 <copy>generate-token api</copy> 指令來產生權杖。然後在下方輸入權杖。"
+          "description": "請安裝 <a>Termux 應用程式</a>。於 Termux 中執行此指令來安裝 SoulFire 伺服器，然後執行 <copy>generate-token api</copy> 建立權杖。接著於下方輸入該權杖。"
         },
         "token": {
           "title": "權杖",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "請輸入您要連接的 SoulFire 伺服器位址和權杖。",
+    "description": "請輸入 SoulFire 伺服器的位址與權杖。",
     "toast": {
       "loading": "正在連接伺服器...",
       "success": "已連接到伺服器",

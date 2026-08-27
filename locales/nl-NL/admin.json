@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rol",
+          "placeholder": "Selecteer een rol",
           "description": "De rol van de gebruiker. Beheerders kunnen gebruikers en alle instanties beheren. Gebruikers kunnen alleen hun eigen instanties beheren.",
           "user": "Gebruiker",
           "admin": "Beheerder"
@@ -114,8 +115,8 @@
       "actions": "Acties",
       "searchUsernames": "Gebruikersnamen zoeken...",
       "searchEmails": "E-mails zoeken...",
-      "searchCreatedAts": "Aangemaakt op zoeken...",
-      "searchMinIssuedAts": "Min. uitgegeven op zoeken..."
+      "searchCreatedAts": "Zoek aanmaakdatums...",
+      "searchMinIssuedAts": "Zoek minimale inlogdatums..."
     },
     "removeSelectedTooltip": "Geselecteerde gebruikers verwijderen",
     "logOutSelectedTooltip": "Geselecteerde gebruikers uitloggen",

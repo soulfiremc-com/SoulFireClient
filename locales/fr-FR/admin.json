@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rôle",
+          "placeholder": "Sélectionnez un rôle",
           "description": "Le rôle de l'utilisateur. Les administrateurs peuvent gérer les utilisateurs et toutes les instances. Les utilisateurs ne peuvent gérer que leurs propres instances.",
           "user": "Utilisateur",
           "admin": "Administrateur"
@@ -114,8 +115,8 @@
       "actions": "Actions",
       "searchUsernames": "Rechercher des noms d'utilisateur...",
       "searchEmails": "Rechercher des emails...",
-      "searchCreatedAts": "Rechercher les dates de création...",
-      "searchMinIssuedAts": "Rechercher les dates d'émission minimales..."
+      "searchCreatedAts": "Rechercher des dates de création...",
+      "searchMinIssuedAts": "Rechercher des dates de connexion minimales..."
     },
     "removeSelectedTooltip": "Supprimer les utilisateurs sélectionnés",
     "logOutSelectedTooltip": "Déconnecter les utilisateurs sélectionnés",

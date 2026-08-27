@@ -8,7 +8,7 @@
     "noAddressOrToken": "Ingen serveradress eller token hittades",
     "page": {
       "title": "Fel",
-      "description": "Ett fel uppstod när sidan skulle laddas. Mer information finns i konsolen.",
+      "description": "Sidan kunde inte laddas. Öppna konsolen för mer information.",
       "logOut": "Logga ut",
       "reloadPage": "Ladda om sidan",
       "showDetails": "Visa detaljer"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Hittades inte",
-      "description": "Kunde inte hitta en sida på denna plats",
+      "description": "Det finns ingen sida på denna adress",
       "logOut": "Logga ut",
       "reloadPage": "Ladda om sidan"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Stäng"
     },
+    "support": {
+      "title": "Stöd SoulFire",
+      "description": "SoulFire är gratis och öppen källkod, byggd med kärlek av communityn.",
+      "body": "Om SoulFire har varit användbar för dig, överväg gärna att stödja projektet. Ditt bidrag hjälper till att täcka serverkostnader, finansiera utveckling och hålla SoulFire gratis för alla.",
+      "dismiss": "Kanske senare",
+      "action": "Stöd SoulFire"
+    },
     "createInstance": {
       "title": "Skapa en ny instans",
-      "description": "Instanser behöver vänliga namn så du kan särskilja dem. Det kan vara vilket namn som helst, t.ex. \"Min Minecraft-bot\".",
+      "description": "Ge instansen ett namn som du kan känna igen, till exempel \"Min Minecraft-bot\".",
       "form": {
         "friendlyName": {
           "label": "Vänligt namn",
@@ -67,11 +74,26 @@
         "error": "Misslyckades med att skapa instans"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplicera instans.",
+      "description": "Skapa en ny instans med profilen från \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Namnet för den duplicerade instansen."
+        },
+        "duplicate": "Duplicera"
+      },
+      "duplicateToast": {
+        "loading": "Duplicerar instans...",
+        "success": "Instansen duplicerades framgångsrikt",
+        "error": "Misslyckades att duplicera instansen"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Från fil",
         "fromUrl": "Från URL",
-        "firstClipboardItem": "Du hade flera objekt i urklipp, använder endast det första.",
+        "firstClipboardItem": "Urklippet innehåller flera objekt. SoulFire kommer att använda det första objektet.",
         "fromClipboard": "Från urklipp",
         "textarea": {
           "placeholder": "Skriv in text här...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Att läsa från URL gör att SoulFire-servern gör en GET-förfrågan till målservern och använder svaret som data.",
+        "description": "SoulFire-servern skickar en GET-begäran till denna URL och importerar svaret.",
         "form": {
           "url": {
             "placeholder": "Klistra in URL här...",
@@ -106,23 +128,24 @@
     "startAll": "Starta alla",
     "stopAll": "Stoppa alla",
     "restart": "Starta om",
-    "startCount": "Antal bottar att starta",
+    "startCount": "Antal bottar som ska startas",
     "startToast": {
       "loading": "Startar bottar...",
-      "success": "Bottarnas status uppdaterades",
-      "error": "Misslyckades med att starta bottar"
+      "success": "Bottillstånd uppdaterat",
+      "error": "Det gick inte att starta bottarna"
     },
     "restartToast": {
       "loading": "Startar om bottar...",
-      "success": "Bottarna ansluter igen",
-      "error": "Misslyckades med att starta om bottar"
+      "success": "Bottar återansluter",
+      "error": "Det gick inte att starta om bottarna"
     },
     "stopToast": {
       "loading": "Stoppar bottar...",
-      "success": "Bottarna stoppas",
+      "success": "Bottar stoppar",
       "error": "Det gick inte att stoppa bottarna"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} önskade · {{total}} totalt",
   "icon": {
     "invalidName": "Ogiltigt ikon-namn: {{name}}"
   },
@@ -218,13 +241,16 @@
       "add": "Lägg till",
       "remove": "Ta bort"
     },
+    "combo": {
+      "searchPlaceholder": "Sökvärde..."
+    },
     "invalidNumberToast": {
-      "title": "Ogiltigt nummer!",
+      "title": "Ogiltigt nummer",
       "description": "Värdet måste vara mellan {{min}} och {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Det verkar inte finnas några loggar att visa; prova att köra några kommandon!",
+    "noLogs": "Inga loggar än. Kör ett kommando för att skapa loggutdata.",
     "demo-1": "Välkommen till demoläge! 🧪",
     "demo-2": "Det här är en skrivskyddad instans av SoulFire",
     "demo-3": "Utforska alla menyer och funktioner innan du bestämmer dig för att installera SoulFire :D",
@@ -241,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Visa/dölj sidofält"
+  },
+  "window": {
+    "minimize": "Minimera",
+    "minimizeLabel": "Minimera fönster",
+    "maximize": "Maximera",
+    "maximizeLabel": "Maximera fönster",
+    "restore": "Återställ",
+    "restoreLabel": "Återställ fönster",
+    "close": "Stäng",
+    "closeLabel": "Stäng fönster",
+    "back": "Tillbaka",
+    "backLabel": "Gå tillbaka",
+    "forward": "Framåt",
+    "forwardLabel": "Gå framåt"
+  },
+  "infoButton": {
+    "showInfo": "Visa info"
   },
   "castMenu": {
     "title": "Casta",
@@ -321,6 +364,7 @@
     },
     "configDir": "Konfigurationsmapp",
     "dataDir": "Datamapp",
+    "supportSoulFire": "Stöd SoulFire",
     "about": "Om",
     "logOut": "Logga ut",
     "logOutToast": {
@@ -334,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentation",
-    "supportSoulFire": "Bjud på en kaffe",
+    "supportSoulFire": "Stöd SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -366,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV-åtkomst",
-      "description": "SoulFire låter dig komma åt instanser, skript och andra filer via WebDAV-protokollet.",
+      "description": "WebDAV ger åtkomst till instansfiler, skript och andra filer.",
       "publicAddress": "Offentlig WebDAV-adress",
       "personalToken": "Personlig WebDAV-token",
-      "securityWarning": "Din personliga WebDAV-token är mycket viktig. Dela den inte med någon. Den används för att autentisera dig när du kommer åt dina filer. Använd den som WebDAV-lösenord när du ansluter. Användarnamn krävs ej, om du tillfrågas kan du ange vilket värde du vill (t.ex. 'soulfire').",
-      "addressDescription": "Detta är adressen du behöver använda för att komma åt dina filer. Ibland måste du använda dav:// eller davs:// istället för http(s)://."
+      "securityWarning": "Håll din personliga WebDAV-token hemlig. Den ger åtkomst till dina filer. Använd token som ditt WebDAV-lösenord. Du behöver inget användarnamn. Om din app kräver ett, fyll i ett godtyckligt värde, till exempel 'soulfire'.",
+      "addressDescription": "Använd denna adress för att komma åt dina filer. Vissa klienter kräver dav:// eller davs:// istället för http:// eller https://."
     },
     "api": {
       "title": "API-åtkomst",
-      "description": "SoulFires gRPC HTTP API gör att du kan interagera med dina instanser programmatiskt via webbförfrågningar.",
+      "description": "SoulFires gRPC HTTP API hanterar instanser via webbförfrågningar.",
       "publicAddress": "Offentlig API-adress",
       "personalToken": "Personlig API-token",
-      "securityWarning": "Din personliga API-token är mycket viktig. Dela den inte med någon. Den används för att autentisera dig när du använder API:et.",
-      "addressDescription": "Detta är adressen du behöver använda för att komma åt API:et."
+      "securityWarning": "Håll din personliga API-token hemlig. Den ger åtkomst till API:et.",
+      "addressDescription": "Använd denna adress för att komma åt API:et."
     },
     "token": {
       "generate": "Generera token",
@@ -431,6 +475,8 @@
     "searchUsers": "Sök användare...",
     "searchTimestamps": "Sök tidsstämplar...",
     "executedCommand": "Körde kommando: {{data}}",
+    "changedBotDesiredState": "Ändrade önskat tillstånd för bottar",
+    "restartedBots": "Startade om bottar",
     "contextMenu": {
       "copyUsername": "Kopiera användarnamn",
       "copyCommand": "Kopiera kommando"
@@ -445,20 +491,20 @@
         "scriptName": {
           "min": "Skriptnamn måste vara minst 3 tecken",
           "max": "Skriptnamn får vara högst 32 tecken",
-          "regex": "Skriptnamn måste vara gemener, börja med en alfanumerisk tecken, följt av fler alfanumeriska tecken eller bindestreck och avsluta med en alfanumerisk tecken.",
+          "regex": "Använd små bokstäver, siffror och bindestreck. Namnet måste börja och sluta med en bokstav eller siffra.",
           "label": "Namn",
           "placeholder": "Mitt skript",
           "description": "Skriptets namn."
         },
         "elevatedPermissions": {
           "label": "Förhöjda behörigheter",
-          "description": "Om skriptet ska köras med förhöjda behörigheter. Endast administratörer kan aktivera det här alternativet."
+          "description": "Skriptet körs med utökade behörigheter. Endast administratörer kan aktivera detta alternativ."
         }
       }
     },
     "addScriptDialog": {
       "title": "Lägg till ett nytt skript",
-      "description": "Skript är små program som körs på SoulFire-servern. De kan användas för att automatisera uppgifter, skapa anpassat beteende och mer.",
+      "description": "Skript är små program som automatiserar uppgifter och andra åtgärder på SoulFire-servern.",
       "form": {
         "cancel": "Avbryt",
         "add": "Lägg till"
@@ -506,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Gå till instans",
+      "duplicateInstance": "Duplicera instans",
       "copyInstanceId": "Kopiera instans-ID",
       "copyInstanceName": "Kopiera instansnamn",
       "deleteInstance": "Ta bort instans"
