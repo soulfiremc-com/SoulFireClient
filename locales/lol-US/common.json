@@ -8,7 +8,7 @@
     "noAddressOrToken": "No servr addres or token findz",
     "page": {
       "title": "Ewwow",
-      "description": "Error happen when i try give you page. You can see whay in the consol.",
+      "description": "Da page doez not loadz. Opun teh consol fur moar infoz, kthx.",
       "logOut": "Walk out",
       "reloadPage": "Spin paeg",
       "showDetails": "Sho detalez"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Nuh Found",
-      "description": "Ma can't find your page",
+      "description": "Nawt page at dis addrezz, sry.",
       "logOut": "Walk out",
       "reloadPage": "Spin paeg"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Cloes"
     },
+    "support": {
+      "title": "Halp SoulFire plz",
+      "description": "SoulFire iz free an open-soars, bilt wif luv by teh community. ",
+      "body": "If SoulFire has bin useful 2 u, plz consider halping teh projek. Ur contribushun helps payz for servur costz, funds devz, an keepz SoulFire free fur all teh kittehs.",
+      "dismiss": "Maybz latah",
+      "action": "Halp SoulFire plz"
+    },
     "createInstance": {
       "title": "Creaet nu instanec",
-      "description": "Instances ned friendly namez 4 u 2 distinguish dem. Srsly It can bees any naym u wantz, 4 exampel, \"mah Minecraft Bot\".",
+      "description": "Giv da instance a naem u recognizes, liek \"My Minecraft Bot\". Iz easy 2 spot!",
       "form": {
         "friendlyName": {
           "label": "Friendly naym",
@@ -67,11 +74,26 @@
         "error": "Faild 2 creaet instanec"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplikit instansz",
+      "description": "Mak a noo instansz wit da profile frum \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Da name 4 da duplikatid instansz."
+        },
+        "duplicate": "Copy dat"
+      },
+      "duplicateToast": {
+        "loading": "Duplikatin instanec...",
+        "success": "Instanec duplikoted, gud job!",
+        "error": "O noes! Cant duplikaet instanec"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Frum fiel",
         "fromUrl": "Frum URL",
-        "firstClipboardItem": "U had multipel itemz in teh clipboard, only usin furst wan.",
+        "firstClipboardItem": "Clipboard haz lotz ov itemz. SoulFire usin da furst one, kthxbai.",
         "fromClipboard": "Frum clipboard",
         "textarea": {
           "placeholder": "Give taxt here...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Loadin frum URL will mak teh SoulFire servr mak git request 2 teh target servr an ues teh respones as teh daat.",
+        "description": "SoulFire server sendz GET thingy to dis URL and grabz wutz come bak.",
         "form": {
           "url": {
             "placeholder": "Put URL hah...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Strat",
-    "resume": "Resoome",
-    "pause": "Pawse",
     "stop": "Stawp",
+    "startAll": "STAWT ALL TEH BOTZ!",
+    "stopAll": "STAWP ALL TEH BOTZ!",
+    "restart": "RESTART PLZ",
+    "startCount": "How many botz tu stawt",
     "startToast": {
-      "loading": "Startin seshun...",
-      "success": "Seshun strated succesfully!",
-      "error": "Fialed tu strat seshun"
+      "loading": "STAWTIN BOTZ...",
+      "success": "Bot state iz updaited, yay!",
+      "error": "Fialed tu stawt botz :c"
     },
-    "resumeToast": {
-      "loading": "Resoomin seshun...",
-      "success": "Seshun resoomed pawfectly!",
-      "error": "Fialed tu resoom seshun"
-    },
-    "pauseToast": {
-      "loading": "Pawsin seshun...",
-      "success": "Seshun pawzed, gud job!",
-      "error": "Oops, can no pawz seshun :("
+    "restartToast": {
+      "loading": "Restartin botz...",
+      "success": "Botz iz reconectin, brb",
+      "error": "Fialed tu restart botz :<"
     },
     "stopToast": {
-      "loading": "Stoppin seshun...",
-      "success": "Seshun stopped, yaaay!",
-      "error": "Can no stop seshun, halp!"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "No Akownz Setted Up",
-      "noAccountsDescription": "U needz tu import accountz b4 startin seshun. U asked for {{required}} kittehbotz.",
-      "notEnoughTitle": "Not Enuf Akownz",
-      "notEnoughDescription": "U wantd {{required}} botz but hav only {{available}} akownz imported.",
-      "hint": "U can make offlain akownz or import frum teh Akown Settin'z page.",
-      "continueWithExisting": "Continue wif {{count}} akownz",
-      "generateAccounts": "Genurayt Accountz!"
+      "loading": "Stawpin botz...",
+      "success": "Botz iz stawpin nao",
+      "error": "Fialed tu stawp botz >:c"
     }
   },
+  "botFleetSummary": "{{online}} ONLINE · {{desired}} WANTZ · {{total}} TOTUL",
   "icon": {
     "invalidName": "Invalid ikon naym: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Put stuff",
       "remove": "Exit stuff"
     },
+    "combo": {
+      "searchPlaceholder": "SRS VALUE..."
+    },
     "invalidNumberToast": {
-      "title": "Dats Invalid Number!",
+      "title": "Iz Invalid Numberz!",
       "description": "Da valyo must be btw {{min}} an {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 It lookz lyk no logz 2 show; go rayn sum commanz!",
+    "noLogs": "No logz yetz. Run a command an log cheezburger out!",
     "demo-1": "Herro, demo mode! 🧪",
     "demo-2": "Dis iz read-only SoulFire thingy",
     "demo-3": "Check awt all teh menuz an fun stuff befur puttin SoulFire on ur blockz :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Toggle Sidebar"
+  },
+  "window": {
+    "minimize": "minimiez",
+    "minimizeLabel": "minimiez window",
+    "maximize": "maximiez",
+    "maximizeLabel": "maximiez window",
+    "restore": "restorz",
+    "restoreLabel": "restorz window",
+    "close": "Cloes",
+    "closeLabel": "cloz window",
+    "back": "Bak",
+    "backLabel": "go bak",
+    "forward": "fwrd",
+    "forwardLabel": "go fwrd"
+  },
+  "infoButton": {
+    "showInfo": "sho info"
   },
   "castMenu": {
     "title": "Cast",
@@ -333,6 +364,7 @@
     },
     "configDir": "Config direktery",
     "dataDir": "Data direktery",
+    "supportSoulFire": "Halp SoulFire plz",
     "about": "Aboutz",
     "logOut": "Walk out",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Documentashun",
-    "supportSoulFire": "Buy me coffeez",
+    "supportSoulFire": "Halp SoulFire plz",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV Akcess",
-      "description": "SoulFire lets u akcess instance, scriptz an stuff wif WebDAV proto-kol.",
+      "description": "WebDAV lets u sees ur instance filez, skriptz, an teh udder filez!",
       "publicAddress": "Public WebDAV Adress",
       "personalToken": "Pursonal WebDAV Token",
-      "securityWarning": "Ur pursonal WebDAV Token iz srs biznes. Don't gives it 2 anycat. It makez u log in, so yus it as WebDAV passwurd. Username izn't needed, but put whateever (ex. 'soulfire').",
-      "addressDescription": "Dis iz teh adress you need 2 get ur filez. Sometimes u use dav:// or davs:// instead ov http(s)://."
+      "securityWarning": "Hidez ur WebDAV toekn, iz sekrit, openz ur filez! Us up as passwurd, no needz username. If app wantz wun, type anithin, liek 'soulfire'.",
+      "addressDescription": "Uze dis addrezz 2 get ur filez. Sum clientz likes dav:// or davs:// insted ov http:// or https://, lol!"
     },
     "api": {
       "title": "API Akcess",
-      "description": "SoulFire's gRPC HTTP API lets u play wif ur instancez using cheezburgerz... we mean, web reqwests.",
+      "description": "SoulFire gRPC HTTP API can do magik stuf on instancez wit web reqz.",
       "publicAddress": "Public API Adress",
       "personalToken": "Pursonal API Token",
-      "securityWarning": "Ur pursonal API Token iz srs biznes. Don't givz to anycat. Iz for ur API only.",
-      "addressDescription": "Dis iz da adress to yo API."
+      "securityWarning": "Hide ur API toekn! It letz hoomanz use API!",
+      "addressDescription": "Uze dis addrezz for da API, kthx."
     },
     "token": {
       "generate": "Genrate Token",
@@ -443,6 +475,8 @@
     "searchUsers": "Serch usahs...",
     "searchTimestamps": "Serch timez stampz...",
     "executedCommand": "Did command: {{data}}",
+    "changedBotDesiredState": "Changed bot desierd statez",
+    "restartedBots": "Restarted all teh botz",
     "contextMenu": {
       "copyUsername": "Copy Usernamez",
       "copyCommand": "Copy Commandz"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Script naymz need b at leest 3 letturz",
           "max": "Script naymz can be 32 letterz max",
-          "regex": "Script names haz 2 be only smol letterz, start wif one lettur or numb, then letturz/numbz/dashz, an end wif lettur or numb.",
+          "regex": "Use lowercase letturz, numburz an dashz. Name must start an end viz a lettur or numbur, no cheezburgerz.",
           "label": "Naym",
           "placeholder": "Mah Script",
           "description": "Da naym of da script."
         },
         "elevatedPermissions": {
           "label": "Elevatid Permishunz",
-          "description": "If script shud run like boss. Only admins can cheez this."
+          "description": "Skrypt runs wif superpowerz. Only admin catz can turn dizz on."
         }
       }
     },
     "addScriptDialog": {
       "title": "Add new script",
-      "description": "Scriptz r smol codez runnin on da SoulFire servr. U ken do automate stuff, custom fun, much wow.",
+      "description": "Skripts be lil' programz dat do automatey an stuf on SoulFire server. Much wow.",
       "form": {
         "cancel": "cancel k?",
         "add": "Put stuff"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Go tu Instanz",
+      "duplicateInstance": "Duplikate Instanec",
       "copyInstanceId": "Copy Instunce IDZ",
       "copyInstanceName": "Copy Instunce Naym",
       "deleteInstance": "Deleet Instance"

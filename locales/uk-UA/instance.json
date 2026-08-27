@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Сирий вивід інстанції доступний тут, коли потрібно переглянути деталі консолі.",
+    "summary": {
+      "accounts": "Акаунти",
+      "proxies": "Проксі",
+      "configured": "{{count}} налаштовано",
+      "configuredShort": "Налаштовано",
+      "currentRate": "Поточна швидкість",
+      "imported": "Імпортовано"
+    },
+    "readiness": {
+      "title": "Налаштування",
+      "accounts": "Акаунти",
+      "accountsValue": "{{count}} імпортовано для {{requested}} запитаних ботів.",
+      "proxies": "Проксі",
+      "proxiesValue": "{{count}} налаштовано",
+      "plugins": "Плагіни",
+      "pluginsValue": "Доступно: {{count}}"
+    },
+    "activity": {
+      "title": "Активність",
+      "tick": "Тік",
+      "health": "Здоровʼя",
+      "world": "Світ",
+      "worldValue": "{{chunks}} чанків, {{entities}} сутностей",
+      "connections": "Зʼєднання",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Метрики",
+      "noDataDescription": "Поки що немає метрик часу виконання."
+    },
+    "metricsUnavailable": {
+      "title": "Метрики",
+      "inactive": "Запустіть бота, щоб збирати живі метрики.",
+      "noPermission": "У вас немає дозволу переглядати метрики ботів."
+    },
+    "status": {
+      "ready": "Готово",
+      "attention": "Потребує уваги",
+      "configured": "Налаштовано",
+      "optional": "Необовʼязково",
+      "available": "Доступно",
+      "none": "Відсутньо"
+    },
+    "actions": {
+      "manage": "Керувати",
+      "open": "Відкрити"
+    },
+    "spotlight": {
+      "noBots": "Боти ще не налаштовані.",
+      "idle": "Бездiяльний, очікує інструкцій.",
+      "level": "Рівень {{level}}"
+    },
+    "liveFeed": {
+      "title": "Живий стрім",
+      "empty": "Очікування активності інстансу...",
+      "noPermission": "У вас немає дозволу переглядати живу стрічку.",
+      "lifecycle": {
+        "connecting": "з'єднується",
+        "connected": "підключено",
+        "spawned": "приєднався до гри",
+        "died": "загинув",
+        "respawned": "відродився",
+        "disconnected": "відключено",
+        "unknown": "змінив стан"
+      }
+    },
+    "bots": {
+      "title": "Боти",
+      "viewAll": "Переглянути всіх {{total}} ботів",
+      "viewAllShort": "Переглянути все"
+    },
+    "timeline": {
+      "title": "Активність",
+      "viewAll": "Переглянути все",
+      "empty": "Ще немає зафіксованої активності.",
+      "noPermission": "У вас немає дозволу переглядати журнал перевірок.",
+      "types": {
+        "executeCommand": "запустив команду: {{data}}",
+        "botDesiredStateChange": "змінено бажаний стан бота",
+        "botRestart": "перезапущено ботів",
+        "unknown": "виконав дію"
+      }
+    },
+    "plugins": {
+      "title": "Плагіни",
+      "empty": "Плагіни ще не повідомляють статистику.",
+      "noPermission": "У вас немає дозволу переглядати статистику плагінів.",
+      "active": "Активний",
+      "activeBots": "{{count}} активний бот",
+      "uptime": "працює {{time}}"
+    },
+    "detailed": {
+      "title": "Детальна метрика",
+      "composition": "Композиція світу"
+    }
+  },
   "proxy": {
     "getProxies": "Отримати проксі",
     "addProxies": "Додати проксі",
@@ -55,8 +151,8 @@
       "deleteProxy": "Видалити проксі"
     },
     "postImportCheckDialog": {
-      "title": "Перевірити проксі?",
-      "description": "Ви щойно імпортували {{count}} проксі. Бажаєте перевірити їх зараз? Невалідні проксі буде автоматично видалено.",
+      "title": "Перевірити імпортовані проксі?",
+      "description": "Ви імпортували {{count}} проксі. Перевірити їх зараз? SoulFire автоматично видаляє недійсні проксі.",
       "confirm": "Перевірити проксі-сервери",
       "skip": "Пропустити"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Немає акаунтів для імпортування"
     },
     "unknownError": "Невідома помилка",
+    "types": {
+      "OFFLINE": "Офлайн",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Облікові дані)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Код пристрою)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Токен оновлення)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Кукі)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Токен доступу)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Облікові дані)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Код пристрою)"
+    },
     "deviceCodeImportToast": {
       "loading": "Імпорт акаунта...",
       "success": "Акаунт імпортовано!",
@@ -93,9 +200,9 @@
       "description": "Згенеруйте офлайн Java-акаунти з власним форматом імені.",
       "amount": "Кількість",
       "nameFormat": "Формат імені",
-      "nameFormatHelp": "Використовуйте %d як заповнювач для номера акаунта (наприклад, Bot_%d стане Bot_1, Bot_2 тощо)",
+      "nameFormatHelp": "Використовуйте %d для номера акаунта. Наприклад, Bot_%d створить імена як Bot_1 та Bot_2.",
       "mode": "Існуючі акаунти",
-      "modeHelp": "Виберіть, як обробляти існуючі акаунти:\n\n• Ігнорувати існуючі: Генерує лише ті акаунти, імена яких ще не існують. Усі наявні акаунти залишаються без змін.\n\n• Замінити існуючі: Генерує всі акаунти, замінюючи ті, в яких співпадає UUID. Інші акаунти залишаються.\n\n• Замінити всі: Видаляє ВСІ існуючі акаунти та заміняє їх згенерованими.",
+      "modeHelp": "Виберіть, як обробляти існуючі акаунти:\n\n• Ігнорувати існуючі: Генеруються лише акаунти з новими іменами. Всі існуючі акаунти залишаються.\n\n• Замінити існуючі: Генеруються всі запитані акаунти. Акаунти з відповідними UUID будуть замінені. Всі інші залишаються.\n\n• Замінити всі: Всі існуючі акаунти будуть видалені. Потім будуть додані згенеровані акаунти.",
       "modeIgnoreExisting": "Ігнорувати існуючі",
       "modeReplaceExisting": "Замінити існуючі",
       "modeReplaceAll": "Замінити всі",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Токен оновлення Microsoft",
       "microsoftCookies": "Файли cookie Microsoft",
       "microsoftAccessToken": "Токен доступу Microsoft",
+      "theAltening": "Токен TheAltening",
       "altProviders": "Альтернативні провайдери",
       "dialog": {
         "title": "Імпортувати {{type}} акаунти",
@@ -149,7 +257,21 @@
       "description": "Налаштуйте окремі параметри ботів для цього акаунта",
       "openButton": "Налаштувати акаунт",
       "pageTitle": "Налаштування {{name}} — {{page}}",
-      "noSettings": "Немає налаштувань для цієї сторінки"
+      "noSettings": "Немає налаштувань для цієї сторінки",
+      "search": "Пошук налаштувань",
+      "overrides": "Перевизначення",
+      "allSettings": "Всі налаштування",
+      "noOverrides": "Цей бот ще не має жодних явних перевизначень.",
+      "noOverridesMatching": "Немає перевизначень, які відповідають цьому пошуковому запиту.",
+      "noOverridesHelp": "Відкрийте \"Всі налаштування\", щоб успадкувати значення або створити перше перевизначення лише для цього бота.",
+      "tryDifferentSearch": "Спробуйте інший пошуковий запит.",
+      "openAllSettings": "Відкрити всі налаштування",
+      "selectPage": "Оберіть сторінку налаштувань",
+      "noSearchResults": "За пошуком немає жодного співпадіння у налаштуваннях.",
+      "matchesInheritedValue": "Відповідає успадкованому значенню",
+      "instanceValue": "Значення для цього екземпляра",
+      "defaultValue": "Значення за замовчуванням",
+      "resetOverride": "Скинути перевизначення"
     },
     "deviceCodeConfirmDialog": {
       "title": "Аутентифікація за допомогою коду пристрою",
@@ -183,7 +305,7 @@
       "purchasing": "Купуємо...",
       "purchaseSuccess": "Придбано {{count}} облікових записів, імпортуємо...",
       "purchaseError": "Помилка під час покупки: {{message}}",
-      "networkError": "Не вдалося підключитися до API Ravealts",
+      "networkError": "Не вдалося підключитися до Ravealts API",
       "outOfStock": "Обраний тип відсутній у запасі",
       "insufficientBalance": "Недостатньо кредитів",
       "rateLimited": "Перевищено ліміт запитів, спробуйте пізніше"
@@ -231,7 +353,30 @@
     "online": "Онлайн",
     "offline": "Офлайн",
     "notJoined": "Не приєднався",
+    "connectionPhase": {
+      "connecting": "Підключення",
+      "connected": "Підключено",
+      "spawned": "Онлайн",
+      "died": "Мертвий",
+      "disconnected": "Офлайн",
+      "ping": "{{ms}} мс"
+    },
+    "runtimeState": {
+      "starting": "Запуск",
+      "running": "Працює",
+      "retrying": "Повторна спроба",
+      "stopping": "Зупиняється",
+      "failed": "Помилка",
+      "waiting": "Очікування",
+      "stopped": "Зупинено"
+    },
     "backToBots": "Повернутися до ботів",
+    "tabs": {
+      "overview": "Огляд",
+      "inventory": "Інвентар",
+      "controls": "Керування",
+      "terminal": "Термінал"
+    },
     "comingSoon": "Незабаром",
     "terminalPanel": {
       "title": "Термінал бота"
@@ -362,11 +507,74 @@
       "offline": "Бот офлайн. Діалоги доступні лише коли бот підключений."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Немає даних"
+    },
+    "summary": {
+      "online": "Онлайн",
+      "packetsPerSecond": "Пак/с",
+      "traffic": "Трафік",
+      "health": "Здоровʼя",
+      "tick": "Тік"
+    },
+    "botsOnline": {
+      "title": "Боти онлайн",
+      "online": "Онлайн",
+      "total": "Всього"
+    },
+    "packets": {
+      "title": "Пакети / Секунда",
+      "sent": "Відправлено/с",
+      "received": "Отримано/с"
+    },
+    "bandwidth": {
+      "title": "Пропускна здатність",
+      "upload": "Вивантаження",
+      "download": "Завантаження"
+    },
+    "tick": {
+      "title": "Тривалість тіку",
+      "avg": "Сер. (мс)",
+      "max": "Макс. (мс)"
+    },
+    "healthFood": {
+      "title": "Здоровʼя / Їжа",
+      "health": "Сер. здоровʼя",
+      "food": "Сер. їжа"
+    },
+    "chunksEntities": {
+      "title": "Чанки / Сутності",
+      "chunks": "Чанки",
+      "entities": "Сутності"
+    },
+    "connections": {
+      "title": "Події зʼєднання",
+      "connections": "Зʼєднання",
+      "disconnections": "Відʼєднання"
+    },
+    "healthDistribution": {
+      "title": "Розподіл здоровʼя",
+      "bots": "Боти"
+    },
+    "dimensions": {
+      "title": "Виміри",
+      "bots": "Боти"
+    },
+    "gameModes": {
+      "title": "Режими гри",
+      "bots": "Боти"
+    },
+    "positions": {
+      "title": "Позиції бота (XZ)",
+      "bot": "Бот"
+    }
+  },
   "scripts": {
     "title": "Візуальні скрипти",
     "description": "Створюйте автоматизаційні скрипти за допомогою візуального редактора на основі вузлів.",
     "experimentalTitle": "Експериментальна функція",
-    "experimentalWarning": "Ця функція є експериментальною. Можуть бути непередбачені зміни в майбутньому, і наявні скрипти можуть перестати працювати. Використовуйте з обережністю.",
+    "experimentalWarning": "Ця функція є експериментальною. Майбутні оновлення можуть порушити існуючі скрипти. Використовуйте з обережністю.",
     "createScript": "Створити скрипт",
     "createScriptTitle": "Створити новий скрипт",
     "createScriptDescription": "Створіть новий візуальний скрипт для цього екземпляра. Скрипти можуть автоматизувати дії бота та реагувати на події.",
@@ -430,6 +638,7 @@
         "pause": "Призупинити",
         "pauseTooltip": "Призупинити виконання скрипта",
         "unsaved": "Незбережено",
+        "unsavedChanges": "Незбережені зміни",
         "clearCanvas": "Очистити полотно",
         "zoomIn": "Збільшити",
         "zoomOut": "Зменшити",
@@ -464,6 +673,64 @@
         "showPreview": "Показати перегляд",
         "hidePreview": "Сховати перегляд",
         "delete": "Видалити"
+      },
+      "node": {
+        "expand": "Розгорнути вузол",
+        "collapse": "Згорнути вузол"
+      },
+      "debug": {
+        "copyValue": "Копіювати поточне значення",
+        "clearHistory": "Очистити історію"
+      },
+      "edge": {
+        "direction": "Напрямок ребра"
+      },
+      "note": {
+        "placeholder": "Напишіть нотатку..."
+      },
+      "complexity": {
+        "title": "Оцінка складності скрипта"
+      },
+      "group": {
+        "returnToRoot": "Повернутись до кореня (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Меню швидкого додавання вузла",
+        "searchPlaceholder": "Пошук вузлів..."
+      },
+      "diff": {
+        "tooltip": "Переглянути зміни"
+      },
+      "dryRun": {
+        "tooltip": "Суха перевірка",
+        "title": "Скрипт сухої перевірки",
+        "description": "Запустіть скрипт з обраного тригеру з тестовими вхідними даними.",
+        "triggerNode": "Тригерний вузол",
+        "selectTrigger": "Оберіть тригер...",
+        "triggerDescription": "Оберіть вузол-тригер, щоб виконати його з тестовими вхідними значеннями.",
+        "mockInputs": "Тестові вхідні дані",
+        "valuePlaceholder": "Значення {{type}}",
+        "start": "Почати суху перевірку"
+      },
+      "quotas": {
+        "tooltip": "Квоти скрипта",
+        "title": "Квоти скрипта",
+        "description": "Налаштуйте обмеження ресурсів для цього скрипта. Порожні поля використовують стандартні параметри сервера.",
+        "maxExecutionCount": "Максимальна кількість виконань",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Максимальна кількість виконань вузлів на одне спрацювання тригера",
+        "maxExecutionTime": "Максимальний час виконання (мс)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Максимальний реальний час на виконання тригера",
+        "maxConcurrentTriggers": "Максимальна кількість одночасних тригерів",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Максимальна кількість одночасних спрацювань тригера",
+        "maxStateStoreEntries": "Максимальна кількість записів у сховищі стану",
+        "maxStateStoreEntriesPlaceholder": "Необмежено",
+        "maxStateStoreEntriesDescription": "Максимальна кількість записів у сховищі стану скрипта",
+        "disableTimeouts": "Вимкнути тайм-аути",
+        "disableTimeoutsDescription": "Вимикає тайм-аути для окремих вузлів та звʼязків даних",
+        "save": "Зберегти квоти"
       }
     }
   }

@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "Nouveau sur SoulFire\u0000a0? Nous vous recommandons de consulter le <a>guide de d\u0000e9marrage</a>.",
+  "newUser": "Nouveau sur SoulFire ? Lisez le <a>guide de démarrage</a>.",
   "connect": {
     "title": "Connexion à un serveur SoulFire",
     "description": "Sélectionnez le type de serveur SoulFire auquel se connecter.",
     "integrated": {
       "title": "Serveur intégré (local)",
-      "description": "Exécute un serveur SoulFire sur votre ordinateur. La configuration est automatique et ne nécessite aucune intervention. (Nécessite l'application de bureau/Android)"
+      "description": "Exécute un serveur SoulFire sur cet appareil. La configuration est automatique. Cette option nécessite l'application de bureau ou Android."
     },
     "dedicated": {
       "title": "Serveur dédié (distant)",
-      "description": "Se connecte à une instance distante du serveur SoulFire. Vous devrez fournir l'adresse et le token du serveur."
+      "description": "Se connecte à un serveur SoulFire distant en utilisant son adresse et son jeton."
     },
     "demo": {
       "title": "Serveur de démonstration",
-      "description": "Simule un serveur virtuel avec des données de démonstration. Ce serveur est en lecture seule et vous ne pouvez pas y apporter de modification."
+      "description": "Fournit un serveur en lecture seule avec des données de démonstration. SoulFire ne sauvegarde pas les modifications."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "Les données SoulFire ont été réinitialisées avec succès. Essayez de recommencer.",
       "error": "Échec de la réinitialisation des données SoulFire"
     },
-    "description": "Le serveur intégré s'exécute localement sur votre PC. Configurez les arguments de démarrage Java ci-dessous si nécessaire.",
+    "description": "Le serveur intégré s'exécute sur votre ordinateur. Vous pouvez modifier les arguments de démarrage Java ci-dessous.",
     "form": {
       "jvmArgs": {
         "title": "Arguments de la JVM",
-        "description": "Les arguments de la VM SoulFire Java. Pour utiliser 4Go de RAM, ajoutez <bold>-Xmx4G</bold>. La valeur par défaut est 25% de votre RAM.",
+        "description": "Arguments de la machine virtuelle Java pour SoulFire. Ajoutez <bold>-Xmx4G</bold> pour utiliser 4 Go de RAM. Par défaut, 25 % de la RAM disponible sont utilisés.",
         "placeholder": "Vos arguments JVM ici"
       },
       "back": "Retour",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Commande Termux",
-          "description": "Installez l'<a>application Termux</a>, puis exécutez cette commande dans Termux pour installer le serveur SoulFire. Vous devrez ensuite exécuter la commande <copy>generate-token api</copy> pour générer un jeton. Entrez ensuite le jeton ci-dessous."
+          "description": "Installez l'<a>application Termux</a>. Exécutez cette commande dans Termux pour installer le serveur SoulFire. Exécutez <copy>generate-token api</copy> pour créer un jeton. Entrez ensuite le jeton ci-dessous."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Mettez l'adresse et le token du serveur SoulFire auquel vous souhaitez vous connecter.",
+    "description": "Entrez l'adresse et le jeton du serveur SoulFire.",
     "toast": {
       "loading": "Connexion au serveur...",
       "success": "Connecté au serveur",

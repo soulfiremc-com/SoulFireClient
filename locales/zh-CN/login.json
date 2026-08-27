@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "新手？我们建议您查看<a>入门指南</a>。",
+  "newUser": "初次使用 SoulFire？请阅读<a>入门指南</a>。",
   "connect": {
     "title": "连接到一个 SoulFire 服务器",
     "description": "选择连接到哪种类型的 SoulFire 服务器",
     "integrated": {
       "title": "内置集成服务器 (本地)",
-      "description": "在您的计算机上运行一个 SoulFire 服务器。设置过程是自动的，无需手动配置。（需要桌面/Android 应用）"
+      "description": "在此设备上运行 SoulFire 服务器。设置过程自动完成。此选项需使用桌面或 Android 应用。"
     },
     "dedicated": {
       "title": "专用服务器 (远程)",
-      "description": "要连接到一个 SoulFire 服务器的远程实例。您需要提供服务器的地址和令牌。"
+      "description": "使用地址和令牌连接到远程 SoulFire 服务器。"
     },
     "demo": {
       "title": "演示服务器",
-      "description": "模拟一个带有演示数据的虚拟服务器，这个服务器是只读的，您不能对它做任何更改。"
+      "description": "提供只读演示服务器。SoulFire 不会保存更改。"
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire 数据重置成功。请重新开始。",
       "error": "重置 SoulFire 数据失败"
     },
-    "description": "集成服务器在您的电脑本地运行。如有需要，可在下方配置 Java 启动参数。",
+    "description": "集成服务器运行在您的计算机上。您可以在下方更改 Java 启动参数。",
     "form": {
       "jvmArgs": {
         "title": "JVM 参数",
-        "description": "SoulFire Java 虚拟机参数。要使用 4GB 内存，请添加 <bold>-Xmx4G</bold>。默认使用您内存的 25%。",
+        "description": "SoulFire 的 Java 虚拟机参数。添加 <bold>-Xmx4G</bold> 以使用 4GB 内存。默认为可用内存的 25%。",
         "placeholder": "在此输入您的 JVM 参数"
       },
       "back": "返回",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux 命令",
-          "description": "安装 <a>Termux 应用</a>，然后在 Termux 中运行此命令以安装 SoulFire 服务器。安装完成后，你需要运行 <copy>generate-token api</copy> 命令来生成令牌。然后在下方输入该令牌。"
+          "description": "安装<a>Termux 应用</a>。在 Termux 中运行此命令以安装 SoulFire 服务器。运行 <copy>generate-token api</copy> 创建令牌。然后在下方输入令牌。"
         },
         "token": {
           "title": "令牌",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "放入您要连接的 SoulFire 服务器的地址和令牌。",
+    "description": "请输入 SoulFire 服务器的地址和令牌。",
     "toast": {
       "loading": "正在连接到服务器…",
       "success": "已连接到服务器",

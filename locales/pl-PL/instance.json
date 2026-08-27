@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Surowe wyjście instancji jest dostępne tutaj, gdy potrzebujesz sprawdzić szczegóły konsoli.",
+    "summary": {
+      "accounts": "Konta",
+      "proxies": "Proksy",
+      "configured": "Skonfigurowano: {{count}}",
+      "configuredShort": "Skonfigurowano",
+      "currentRate": "Aktualna stawka",
+      "imported": "Zaimportowano"
+    },
+    "readiness": {
+      "title": "Konfiguracja",
+      "accounts": "Konta",
+      "accountsValue": "Zaimportowano {{count}} dla {{requested}} żądanych botów.",
+      "proxies": "Proksy",
+      "proxiesValue": "Skonfigurowano: {{count}}",
+      "plugins": "Wtyczki",
+      "pluginsValue": "{{count}} dostępnych"
+    },
+    "activity": {
+      "title": "Aktywność",
+      "tick": "Tick",
+      "health": "Zdrowie",
+      "world": "Świat",
+      "worldValue": "{{chunks}} chunków, {{entities}} jednostek",
+      "connections": "Połączenia",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metryki",
+      "noDataDescription": "Brak metryk działania."
+    },
+    "metricsUnavailable": {
+      "title": "Metryki",
+      "inactive": "Uruchom bota, aby zbierać aktualne metryki.",
+      "noPermission": "Nie masz uprawnień do przeglądania metryk botów."
+    },
+    "status": {
+      "ready": "Gotowe",
+      "attention": "Wymaga uwagi",
+      "configured": "Skonfigurowano",
+      "optional": "Opcjonalne",
+      "available": "Dostępne",
+      "none": "Brak"
+    },
+    "actions": {
+      "manage": "Zarządzaj",
+      "open": "Otwórz"
+    },
+    "spotlight": {
+      "noBots": "Nie skonfigurowano jeszcze botów.",
+      "idle": "Bezczynny, oczekuje na instrukcje.",
+      "level": "Poziom {{level}}"
+    },
+    "liveFeed": {
+      "title": "Transmisja na żywo",
+      "empty": "Oczekiwanie na aktywność instancji...",
+      "noPermission": "Nie masz uprawnień do wyświetlania transmisji na żywo.",
+      "lifecycle": {
+        "connecting": "łączy się",
+        "connected": "połączono",
+        "spawned": "dołączył do gry",
+        "died": "zginął",
+        "respawned": "odrodził się",
+        "disconnected": "rozłączony",
+        "unknown": "zmienił stan"
+      }
+    },
+    "bots": {
+      "title": "Boty",
+      "viewAll": "Wyświetl wszystkich {{total}} botów",
+      "viewAllShort": "Wyświetl wszystkich"
+    },
+    "timeline": {
+      "title": "Aktywność",
+      "viewAll": "Wyświetl wszystkich",
+      "empty": "Brak zarejestrowanej aktywności.",
+      "noPermission": "Nie masz uprawnień do przeglądania dziennika audytu.",
+      "types": {
+        "executeCommand": "wykonał polecenie: {{data}}",
+        "botDesiredStateChange": "zmieniono żądany stan bota",
+        "botRestart": "zrestartowano boty",
+        "unknown": "wykonał akcję"
+      }
+    },
+    "plugins": {
+      "title": "Wtyczki",
+      "empty": "Brak pluginów raportujących statystyki.",
+      "noPermission": "Nie masz uprawnień do wyświetlania statystyk pluginów.",
+      "active": "Aktywny",
+      "activeBots": "{{count}} aktywnych botów",
+      "uptime": "działa od {{time}}"
+    },
+    "detailed": {
+      "title": "Szczegółowe metryki",
+      "composition": "Skład świata"
+    }
+  },
   "proxy": {
     "getProxies": "Pobierz proxy",
     "addProxies": "Dodaj proxy",
@@ -55,8 +151,8 @@
       "deleteProxy": "Usuń proxy"
     },
     "postImportCheckDialog": {
-      "title": "Sprawdzić serwery pośredniczące?",
-      "description": "Właśnie zaimportowałeś {{count}} proxy. Czy chcesz je teraz sprawdzić? Nieprawidłowe proxy zostaną usunięte automatycznie.",
+      "title": "Sprawdzić zaimportowane serwery proxy?",
+      "description": "Zaimportowano {{count}} serwerów proxy. Sprawdzić je teraz? SoulFire automatycznie usuwa nieprawidłowe serwery proxy.",
       "confirm": "Sprawdź serwery proxy",
       "skip": "Pomiń"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Brak kont do importu"
     },
     "unknownError": "Nieznany błąd",
+    "types": {
+      "OFFLINE": "Niedostępny",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Poświadczenia)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Kod urządzenia)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Token odświeżania)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Ciasteczka)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Token dostępu)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Poświadczenia)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Kod urządzenia)"
+    },
     "deviceCodeImportToast": {
       "loading": "Importowanie konta...",
       "success": "Konto zaimportowane!",
@@ -93,9 +200,9 @@
       "description": "Generuj offline'owe konta Java z własnym formatem nazwy.",
       "amount": "Ilość",
       "nameFormat": "Format nazwy",
-      "nameFormatHelp": "Użyj %d jako symbolu zastępczego dla numeru konta (np. Bot_%d stanie się Bot_1, Bot_2 itd.)",
+      "nameFormatHelp": "Użyj %d jako numeru konta. Na przykład Bot_%d utworzy nazwy takie jak Bot_1 i Bot_2.",
       "mode": "Istniejące konta",
-      "modeHelp": "Wybierz, jak obsłużyć istniejące konta:\n\n• Ignoruj istniejące: Generuje tylko konta z nazwami, które jeszcze nie istnieją. Wszystkie istniejące konta pozostają bez zmian.\n\n• Zastąp istniejące: Generuje wszystkie konta, zastępując wszelkie istniejące konta o tym samym UUID. Pozostałe konta są zachowane.\n\n• Zastąp wszystkie: Usuwa WSZYSTKIE istniejące konta i zastępuje je wygenerowanymi kontami.",
+      "modeHelp": "Wybierz sposób obsługi istniejących kont:\n\n• Ignoruj istniejące: Generuj tylko konta z nowymi nazwami. Zachowaj wszystkie istniejące konta.\n\n• Zamień istniejące: Generuj wszystkie żądane konta. Zamień konta z pasującymi UUID. Zachowaj pozostałe konta.\n\n• Zamień wszystkie: Usuń wszystkie istniejące konta. Następnie dodaj wygenerowane konta.",
       "modeIgnoreExisting": "Ignoruj istniejące",
       "modeReplaceExisting": "Zastąp istniejące",
       "modeReplaceAll": "Zastąp wszystko",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft Refresh Token",
       "microsoftCookies": "Ciasteczka Microsoft",
       "microsoftAccessToken": "Token dostępu Microsoft",
+      "theAltening": "Token TheAltening",
       "altProviders": "Dostawcy kont alternatywnych",
       "dialog": {
         "title": "Importuj konta {{type}}",
@@ -149,7 +257,21 @@
       "description": "Skonfiguruj ustawienia dla tego konta osobno dla każdego bota",
       "openButton": "Skonfiguruj konto",
       "pageTitle": "{{name}} - Ustawienia {{page}}",
-      "noSettings": "Brak dostępnych ustawień dla tej strony"
+      "noSettings": "Brak dostępnych ustawień dla tej strony",
+      "search": "Ustawienia wyszukiwania",
+      "overrides": "Nadpisania",
+      "allSettings": "Wszystkie ustawienia",
+      "noOverrides": "Ten bot nie ma jeszcze żadnych jawnych nadpisań.",
+      "noOverridesMatching": "Brak nadpisań pasujących do tego wyszukiwania.",
+      "noOverridesHelp": "Otwórz Wszystkie ustawienia, aby odziedziczyć wartości lub utwórz pierwsze nadpisanie specyficzne dla bota.",
+      "tryDifferentSearch": "Spróbuj innego hasła wyszukiwania.",
+      "openAllSettings": "Otwórz wszystkie ustawienia",
+      "selectPage": "Wybierz stronę ustawień",
+      "noSearchResults": "Brak ustawień pasujących do tego wyszukiwania.",
+      "matchesInheritedValue": "Pasuje do wartości dziedziczonej",
+      "instanceValue": "Wartość instancji",
+      "defaultValue": "Wartość domyślna",
+      "resetOverride": "Resetuj nadpisanie"
     },
     "deviceCodeConfirmDialog": {
       "title": "Uwierzytelnianie za pomocą kodu urządzenia",
@@ -183,7 +305,7 @@
       "purchasing": "Trwa zakup...",
       "purchaseSuccess": "Zakupiono {{count}} kont, trwa import...",
       "purchaseError": "Zakup nieudany: {{message}}",
-      "networkError": "Nie można połączyć się z API Ravealts",
+      "networkError": "Połączenie z API Ravealts nie powiodło się",
       "outOfStock": "Wybrany typ jest niedostępny",
       "insufficientBalance": "Niewystarczająca liczba środków",
       "rateLimited": "Limit zapytań został osiągnięty, spróbuj ponownie później"
@@ -231,7 +353,30 @@
     "online": "Online",
     "offline": "Niedostępny",
     "notJoined": "Nie dołączono",
+    "connectionPhase": {
+      "connecting": "Łączenie",
+      "connected": "Połączono",
+      "spawned": "Online",
+      "died": "Nieżywy",
+      "disconnected": "Niedostępny",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Uruchamianie",
+      "running": "Uruchomiona",
+      "retrying": "Ponawianie próby",
+      "stopping": "Zatrzymywanie",
+      "failed": "Nie powiodło się",
+      "waiting": "Oczekiwanie",
+      "stopped": "Zatrzymana"
+    },
     "backToBots": "Powrót do botów",
+    "tabs": {
+      "overview": "Przegląd",
+      "inventory": "Ekwipunek",
+      "controls": "Sterowanie",
+      "terminal": "Konsola"
+    },
     "comingSoon": "Wkrótce dostępne",
     "terminalPanel": {
       "title": "Terminal Bota"
@@ -362,11 +507,74 @@
       "offline": "Bot jest offline. Dialogi są dostępne tylko gdy bot jest połączony."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Brak danych"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Ruch sieciowy",
+      "health": "Zdrowie",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Boty online",
+      "online": "Online",
+      "total": "Razem"
+    },
+    "packets": {
+      "title": "Pakiety / Sekunda",
+      "sent": "Wysłane/s",
+      "received": "Odebrane/s"
+    },
+    "bandwidth": {
+      "title": "Przepustowość",
+      "upload": "Wysłane",
+      "download": "Pobrane"
+    },
+    "tick": {
+      "title": "Czas trwania ticka",
+      "avg": "Średnia (ms)",
+      "max": "Maks. (ms)"
+    },
+    "healthFood": {
+      "title": "Zdrowie / Jedzenie",
+      "health": "Średnie zdrowie",
+      "food": "Średnie jedzenie"
+    },
+    "chunksEntities": {
+      "title": "Chunki / Byty",
+      "chunks": "Chunki",
+      "entities": "Byty"
+    },
+    "connections": {
+      "title": "Zdarzenia połączeń",
+      "connections": "Połączenia",
+      "disconnections": "Rozłączenia"
+    },
+    "healthDistribution": {
+      "title": "Rozkład zdrowia",
+      "bots": "Boty"
+    },
+    "dimensions": {
+      "title": "Wymiary",
+      "bots": "Boty"
+    },
+    "gameModes": {
+      "title": "Tryby gry",
+      "bots": "Boty"
+    },
+    "positions": {
+      "title": "Pozycje bota (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Skrypty wizualne",
     "description": "Twórz skrypty automatyzacji za pomocą wizualnego edytora węzłów.",
     "experimentalTitle": "Funkcja eksperymentalna",
-    "experimentalWarning": "Ta funkcja jest eksperymentalna. W przyszłości mogą wystąpić niezgodności, a istniejące skrypty mogą przestać działać. Używaj ostrożnie.",
+    "experimentalWarning": "Ta funkcja jest eksperymentalna. Przyszłe aktualizacje mogą uszkodzić istniejące skrypty. Używaj jej ostrożnie.",
     "createScript": "Utwórz skrypt",
     "createScriptTitle": "Utwórz nowy skrypt",
     "createScriptDescription": "Utwórz nowy skrypt wizualny dla tej instancji. Skrypty mogą automatyzować działania bota i reagować na zdarzenia.",
@@ -430,6 +638,7 @@
         "pause": "Wstrzymaj",
         "pauseTooltip": "Wstrzymaj wykonywanie skryptu",
         "unsaved": "Niezapisane",
+        "unsavedChanges": "Niezapisane zmiany",
         "clearCanvas": "Wyczyść płótno",
         "zoomIn": "Powiększ",
         "zoomOut": "Pomniejsz",
@@ -464,6 +673,64 @@
         "showPreview": "Pokaż podgląd",
         "hidePreview": "Ukryj podgląd",
         "delete": "Usuń"
+      },
+      "node": {
+        "expand": "Rozwiń węzeł",
+        "collapse": "Zwiń węzeł"
+      },
+      "debug": {
+        "copyValue": "Skopiuj bieżącą wartość",
+        "clearHistory": "Wyczyść historię"
+      },
+      "edge": {
+        "direction": "Kierunek krawędzi"
+      },
+      "note": {
+        "placeholder": "Napisz notatkę..."
+      },
+      "complexity": {
+        "title": "Wskaźnik złożoności skryptu"
+      },
+      "group": {
+        "returnToRoot": "Wróć do korzenia (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu szybkiego dodawania węzła",
+        "searchPlaceholder": "Szukaj węzłów..."
+      },
+      "diff": {
+        "tooltip": "Przejrzyj zmiany"
+      },
+      "dryRun": {
+        "tooltip": "Symulacja",
+        "title": "Symuluj skrypt",
+        "description": "Uruchom skrypt z wybranego wyzwalacza z przykładowymi danymi wejściowymi.",
+        "triggerNode": "Węzeł wyzwalacza",
+        "selectTrigger": "Wybierz wyzwalacz...",
+        "triggerDescription": "Wybierz węzeł wyzwalacza do wykonania z przykładowymi wartościami wejściowymi.",
+        "mockInputs": "Przykładowe dane wejściowe",
+        "valuePlaceholder": "Wartość typu {{type}}",
+        "start": "Rozpocznij symulację"
+      },
+      "quotas": {
+        "tooltip": "Limity skryptu",
+        "title": "Limity skryptu",
+        "description": "Skonfiguruj limity zasobów dla tego skryptu. Puste pola użyją domyślnych ustawień serwera.",
+        "maxExecutionCount": "Maks. liczba wykonań",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maksymalna liczba wykonań węzła na jedno wywołanie wyzwalacza",
+        "maxExecutionTime": "Maks. czas wykonania (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maksymalny czas w zegarze rzeczywistym na jedno uruchomienie wyzwalacza",
+        "maxConcurrentTriggers": "Maks. równoczesnych wyzwalaczy",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maksymalna liczba równoczesnych wywołań wyzwalacza",
+        "maxStateStoreEntries": "Maks. wpisów w magazynie stanu",
+        "maxStateStoreEntriesPlaceholder": "Bez limitu",
+        "maxStateStoreEntriesDescription": "Maksymalna liczba wpisów w magazynie stanu skryptu",
+        "disableTimeouts": "Wyłącz limity czasu",
+        "disableTimeoutsDescription": "Wyłącza limity czasu dla poszczególnych węzłów i krawędzi danych",
+        "save": "Zapisz limity"
       }
     }
   }

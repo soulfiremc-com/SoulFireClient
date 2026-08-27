@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Raakatason instanssin tuloste löytyy täältä, kun haluat tarkastella konsolin yksityiskohtia.",
+    "summary": {
+      "accounts": "Tilillä",
+      "proxies": "Välityspalvelimet",
+      "configured": "{{count}} määritetty",
+      "configuredShort": "Määritetty",
+      "currentRate": "Nykyinen nopeus",
+      "imported": "Tuotu"
+    },
+    "readiness": {
+      "title": "Asetukset",
+      "accounts": "Tilillä",
+      "accountsValue": "{{count}} tuotu {{requested}} pyydetylle botti(boteille)",
+      "proxies": "Välityspalvelimet",
+      "proxiesValue": "{{count}} määritetty",
+      "plugins": "Liitännäiset",
+      "pluginsValue": "{{count}} saatavilla"
+    },
+    "activity": {
+      "title": "Toiminta",
+      "tick": "Tick",
+      "health": "Terveys",
+      "world": "Maailma",
+      "worldValue": "{{chunks}} palasta, {{entities}} entityä",
+      "connections": "Yhteydet",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metrikat",
+      "noDataDescription": "Ei vielä ajonaikaisia metriikoita."
+    },
+    "metricsUnavailable": {
+      "title": "Metrikat",
+      "inactive": "Käynnistä botti keräämään reaaliaikaisia mittareita.",
+      "noPermission": "Sinulla ei ole oikeuksia nähdä bottien metriikoita."
+    },
+    "status": {
+      "ready": "Valmis",
+      "attention": "Vaatii huomiota",
+      "configured": "Määritetty",
+      "optional": "Valinnainen",
+      "available": "Saatavilla",
+      "none": "Ei mitään"
+    },
+    "actions": {
+      "manage": "Hallinnoi",
+      "open": "Avaa"
+    },
+    "spotlight": {
+      "noBots": "Botteja ei ole vielä määritetty.",
+      "idle": "Joutilas, odottaa ohjeita.",
+      "level": "Taso {{level}}"
+    },
+    "liveFeed": {
+      "title": "Live-feed",
+      "empty": "Odotetaan instanssiaktiviteettia...",
+      "noPermission": "Sinulla ei ole oikeuksia nähdä live-feediä.",
+      "lifecycle": {
+        "connecting": "yhdistää",
+        "connected": "yhdistetty",
+        "spawned": "liittyi peliin",
+        "died": "kuoli",
+        "respawned": "syntyi uudelleen",
+        "disconnected": "yhteys katkaistu",
+        "unknown": "muutti tilaa"
+      }
+    },
+    "bots": {
+      "title": "Botit",
+      "viewAll": "Näytä kaikki {{total}} bottia",
+      "viewAllShort": "Näytä kaikki"
+    },
+    "timeline": {
+      "title": "Toiminta",
+      "viewAll": "Näytä kaikki",
+      "empty": "Ei vielä tallennettua toimintaa.",
+      "noPermission": "Sinulla ei ole oikeuksia nähdä audit-lokia.",
+      "types": {
+        "executeCommand": "ajoi komennon: {{data}}",
+        "botDesiredStateChange": "vaihdettiin botin toivottu tila",
+        "botRestart": "käynnisti botit uudelleen",
+        "unknown": "suoritti toiminnon"
+      }
+    },
+    "plugins": {
+      "title": "Liitännäiset",
+      "empty": "Yksikään liitännäinen ei raportoi tilastoja vielä.",
+      "noPermission": "Sinulla ei ole oikeuksia nähdä liitännäisten tilastoja.",
+      "active": "Aktiivinen",
+      "activeBots": "{{count}} aktiivista bottia",
+      "uptime": "ylös {{time}}"
+    },
+    "detailed": {
+      "title": "Tarkat metrikat",
+      "composition": "Maailman koostumus"
+    }
+  },
   "proxy": {
     "getProxies": "Hae proxyja",
     "addProxies": "Lisää proxyja",
@@ -55,8 +151,8 @@
       "deleteProxy": "Poista välityspalvelin"
     },
     "postImportCheckDialog": {
-      "title": "Tarkista proxyt?",
-      "description": "Toit juuri sisään {{count}} proxyä. Haluatko tarkistaa ne nyt? Virheelliset proxyt poistetaan automaattisesti.",
+      "title": "Tarkista tuodut proxyt?",
+      "description": "Toit {{count}} proxyä. Tarkistetaanko ne nyt? SoulFire poistaa virheelliset proxyt automaattisesti.",
       "confirm": "Tarkista välityspalvelimet",
       "skip": "Ohita"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Ei tilejä tuotavaksi"
     },
     "unknownError": "Tuntematon virhe",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Tunnukset)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Laitteen koodi)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Virkistysavain)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Evästeet)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Käyttöoikeustunnus)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Tunnukset)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Laitteen koodi)"
+    },
     "deviceCodeImportToast": {
       "loading": "Tiliä tuodaan...",
       "success": "Tili tuotu!",
@@ -93,9 +200,9 @@
       "description": "Luo offline-Java-tilejä omavalintaisella nimi­muodolla.",
       "amount": "Määrä",
       "nameFormat": "Nimimuoto",
-      "nameFormatHelp": "Käytä %d numero­paikkamerkkinä tilin numerolle (esim. Bot_%d → Bot_1, Bot_2 jne.)",
+      "nameFormatHelp": "Käytä %d tilin numeroa varten. Esimerkiksi Bot_%d luo nimiä kuten Bot_1 ja Bot_2.",
       "mode": "Olemassa olevat tilit",
-      "modeHelp": "Valitse, miten olemassa olevat tilit käsitellään:\n\n• Ohita olemassa olevat: Luo vain sellaisia tilejä, joiden nimet eivät ole vielä käytössä. Kaikki olemassa olevat tilit säilyvät muuttumattomina.\n\n• Korvaa olemassa olevat: Luo kaikki tilit ja korvaa olemassa olevat tilit, joilla on sama UUID. Muut tilit säilyvät.\n\n• Korvaa kaikki: Poistaa KAIKKI olemassa olevat tilit ja korvaa ne uusilla luoduilla tileillä.",
+      "modeHelp": "Valitse, kuinka käsittelet olemassa olevia tilejä:\n\n• Ohita olemassa olevat: Luo vain tilejä uusilla nimillä. Säilytä kaikki olemassa olevat tilit.\n\n• Korvaa olemassa olevat: Luo kaikki pyydetyt tilit. Korvaa tilit, joilla on sama UUID. Säilytä muut tilit.\n\n• Korvaa kaikki: Poista kaikki olemassa olevat tilit. Lisää sitten luodut tilit.",
       "modeIgnoreExisting": "Ohita olemassa olevat",
       "modeReplaceExisting": "Korvaa olemassa olevat",
       "modeReplaceAll": "Korvaa kaikki",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft-virkistystunnus",
       "microsoftCookies": "Microsoft-evästeet",
       "microsoftAccessToken": "Microsoft Access Token",
+      "theAltening": "TheAltening-tunnus",
       "altProviders": "Vaihtoehtoiset tarjoajat",
       "dialog": {
         "title": "Tuo {{type}} tilejä",
@@ -149,7 +257,21 @@
       "description": "Määritä tämän tilin bottikohtaiset asetukset",
       "openButton": "Määritä tili",
       "pageTitle": "{{name}} - {{page}} asetukset",
-      "noSettings": "Tälle sivulle ei ole asetuksia saatavilla"
+      "noSettings": "Tälle sivulle ei ole asetuksia saatavilla",
+      "search": "Hakuasetukset",
+      "overrides": "Ohitukset",
+      "allSettings": "Kaikki asetukset",
+      "noOverrides": "Tällä botilla ei ole vielä yhtään määritettyä ohitusta.",
+      "noOverridesMatching": "Yksikään ohitus ei vastaa tätä hakua.",
+      "noOverridesHelp": "Avaa Kaikki asetukset perityksesi arvoja tai luodaksesi ensimmäisen botille tarkoitetun ohituksen.",
+      "tryDifferentSearch": "Kokeile toista hakutermia.",
+      "openAllSettings": "Avaa kaikki asetukset",
+      "selectPage": "Valitse asetus­sivu",
+      "noSearchResults": "Hakusi ei tuottanut tuloksia.",
+      "matchesInheritedValue": "Vastaa perittyä arvoa",
+      "instanceValue": "Instanssin arvo",
+      "defaultValue": "Oletusarvo",
+      "resetOverride": "Palauta ohitus"
     },
     "deviceCodeConfirmDialog": {
       "title": "Laitteen kooditodennus",
@@ -183,7 +305,7 @@
       "purchasing": "Ostetaan...",
       "purchaseSuccess": "Ostettu {{count}} tiliä, tuodaan...",
       "purchaseError": "Osto epäonnistui: {{message}}",
-      "networkError": "Yhteyttä Ravealts API:iin ei voitu muodostaa",
+      "networkError": "Yhteys Ravealts API:iin epäonnistui",
       "outOfStock": "Valittu tyyppi on loppunut varastosta",
       "insufficientBalance": "Ei tarpeeksi krediittejä",
       "rateLimited": "Liikaa pyyntöjä, yritä uudelleen myöhemmin"
@@ -231,7 +353,30 @@
     "online": "Paikalla",
     "offline": "Offline",
     "notJoined": "Ei liittynyt",
+    "connectionPhase": {
+      "connecting": "Yhdistetään",
+      "connected": "Yhdistetty",
+      "spawned": "Paikalla",
+      "died": "Kuollut",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Käynnistetään",
+      "running": "Käynnissä",
+      "retrying": "Yritetään uudelleen",
+      "stopping": "Pysäytetään",
+      "failed": "Epäonnistui",
+      "waiting": "Odottaa",
+      "stopped": "Pysäytetty"
+    },
     "backToBots": "Takaisin botteihin",
+    "tabs": {
+      "overview": "Yleiskatsaus",
+      "inventory": "Inventaario",
+      "controls": "Ohjaimet",
+      "terminal": "Terminaali"
+    },
     "comingSoon": "Tulossa pian",
     "terminalPanel": {
       "title": "Botti-terminaali"
@@ -362,11 +507,74 @@
       "offline": "Botti on offline-tilassa. Dialogit ovat käytettävissä vain, kun botti on yhdistetty."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Ei tietoja"
+    },
+    "summary": {
+      "online": "Paikalla",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Liikenne",
+      "health": "Terveys",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Botit verkossa",
+      "online": "Paikalla",
+      "total": "Yhteensä"
+    },
+    "packets": {
+      "title": "Paketit / sekunti",
+      "sent": "Lähetetty/s",
+      "received": "Vastaanotettu/s"
+    },
+    "bandwidth": {
+      "title": "Kaistanleveys",
+      "upload": "Lähetys",
+      "download": "Lataus"
+    },
+    "tick": {
+      "title": "Tickin kesto",
+      "avg": "Avg (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Terveys / Ruoka",
+      "health": "Keskimääräinen terveys",
+      "food": "Keskimääräinen ruoka"
+    },
+    "chunksEntities": {
+      "title": "Palikat / Entiteetit",
+      "chunks": "Palikat",
+      "entities": "Entiteetit"
+    },
+    "connections": {
+      "title": "Yhteys tapahtumat",
+      "connections": "Yhteydet",
+      "disconnections": "Katkaisut"
+    },
+    "healthDistribution": {
+      "title": "Terveysjakauma",
+      "bots": "Botit"
+    },
+    "dimensions": {
+      "title": "Ulottuvuudet",
+      "bots": "Botit"
+    },
+    "gameModes": {
+      "title": "Pelimuodot",
+      "bots": "Botit"
+    },
+    "positions": {
+      "title": "Botin sijainnit (XZ)",
+      "bot": "Botti"
+    }
+  },
   "scripts": {
     "title": "Visuaaliset skriptit",
     "description": "Luo automaatioskriptejä visuaalisella solmupohjaisella editorilla.",
     "experimentalTitle": "Kokeellinen ominaisuus",
-    "experimentalWarning": "Tämä ominaisuus on kokeellinen. Tulevaisuudessa voi tapahtua muutoksia, jotka rikkovat nykyisen toiminnan, ja olemassa olevat skriptit saattavat lakata toimimasta. Käytä varoen.",
+    "experimentalWarning": "Tämä ominaisuus on kokeellinen. Tulevat päivitykset voivat rikkoa olemassa olevia skriptejä. Käytä varoen.",
     "createScript": "Luo skripti",
     "createScriptTitle": "Luo uusi skripti",
     "createScriptDescription": "Luo uusi visuaalinen skripti tälle instanssille. Skriptit voivat automatisoida botin toimintoja ja reagoida tapahtumiin.",
@@ -430,6 +638,7 @@
         "pause": "Tauota",
         "pauseTooltip": "Keskeytä skriptin suoritus",
         "unsaved": "Tallentamaton",
+        "unsavedChanges": "Tallentamattomat muutokset",
         "clearCanvas": "Tyhjennä työtila",
         "zoomIn": "Lähennä",
         "zoomOut": "Loitonna",
@@ -462,6 +671,64 @@
         "showPreview": "Näytä esikatselu",
         "hidePreview": "Piilota esikatselu",
         "delete": "Poista"
+      },
+      "node": {
+        "expand": "Laajenna solmu",
+        "collapse": "Supista solmu"
+      },
+      "debug": {
+        "copyValue": "Kopioi nykyinen arvo",
+        "clearHistory": "Tyhjennä historia"
+      },
+      "edge": {
+        "direction": "Reunan suunta"
+      },
+      "note": {
+        "placeholder": "Kirjoita muistiinpano..."
+      },
+      "complexity": {
+        "title": "Skriptin monimutkaisuuspisteet"
+      },
+      "group": {
+        "returnToRoot": "Palaa juureen (Välilehti)"
+      },
+      "quickAdd": {
+        "menuLabel": "Pikalisäyssolmun valikko",
+        "searchPlaceholder": "Etsi solmuja..."
+      },
+      "diff": {
+        "tooltip": "Tarkista muutokset"
+      },
+      "dryRun": {
+        "tooltip": "Testiajo",
+        "title": "Testiajo Skripti",
+        "description": "Suorita skripti valitusta laukaisevasta solmusta käyttäen mallisyötteitä.",
+        "triggerNode": "Laukaiseva solmu",
+        "selectTrigger": "Valitse laukaisin...",
+        "triggerDescription": "Valitse laukaiseva solmu, joka suoritetaan malliarvoilla.",
+        "mockInputs": "Mallisyötteet",
+        "valuePlaceholder": "{{type}} arvo",
+        "start": "Aloita testiajo"
+      },
+      "quotas": {
+        "tooltip": "Skriptin kiintiöt",
+        "title": "Skriptin kiintiöt",
+        "description": "Aseta tämän skriptin resurssirajat. Tyhjät kentät käyttävät palvelimen oletuksia.",
+        "maxExecutionCount": "Suurin suorituskertojen määrä",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Suurin solmujen suoritusmäärä yhtä laukaisua kohden",
+        "maxExecutionTime": "Suurin suoritusaika (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Suurin seinäkelloaika yhtä laukaisevaa suoritusta kohden",
+        "maxConcurrentTriggers": "Suurin samanaikaisten laukaisujen määrä",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Suurin samanaikaisten laukaisevien suoritusten määrä",
+        "maxStateStoreEntries": "Suurin tilakaupan merkintöjen määrä",
+        "maxStateStoreEntriesPlaceholder": "Rajoittamaton",
+        "maxStateStoreEntriesDescription": "Suurin määrä merkintöjä skriptin tilakaupassa",
+        "disableTimeouts": "Poista aikakatkaisut käytöstä",
+        "disableTimeoutsDescription": "Poistaa käytöstä solmu- ja datareunasidonnaiset aikakatkaisut",
+        "save": "Tallenna kiintiöt"
       }
     }
   }

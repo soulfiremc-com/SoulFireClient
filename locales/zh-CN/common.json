@@ -8,7 +8,7 @@
     "noAddressOrToken": "未找到服务器地址或令牌",
     "page": {
       "title": "出错",
-      "description": "尝试加载页面时发生错误。更多信息可在控制台中找到。",
+      "description": "页面未加载。请打开控制台查看更多信息。",
       "logOut": "退出登录",
       "reloadPage": "重新载入页面",
       "showDetails": "显示详情"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "未找到",
-      "description": "无法在此位置找到页面",
+      "description": "此地址没有页面",
       "logOut": "退出登录",
       "reloadPage": "重新载入页面"
     }
@@ -46,9 +46,16 @@
       },
       "close": "关闭"
     },
+    "support": {
+      "title": "支持 SoulFire.",
+      "description": "SoulFire 是免费的开源项目，由社区倾心打造。",
+      "body": "如果 SoulFire 对您有帮助，请考虑支持该项目。您的贡献将帮助我们支付服务器费用、资助开发，使 SoulFire 能持续免费提供给所有人。",
+      "dismiss": "稍后再说",
+      "action": "支持 SoulFire."
+    },
     "createInstance": {
       "title": "创建一个新实例",
-      "description": "实例需要一个名字来区分它们，它可以是你想要的任何名字，例如“Minecraft Bot”。",
+      "description": "为实例命名一个你能识别的名称，例如“我的Minecraft机器人”。",
       "form": {
         "friendlyName": {
           "label": "一个友好的名称",
@@ -67,11 +74,26 @@
         "error": "创建实例失败"
       }
     },
+    "duplicateInstance": {
+      "title": "复制实例",
+      "description": "使用“{{name}}”的配置文件创建一个新实例。",
+      "form": {
+        "friendlyName": {
+          "description": "为复制的实例命名。"
+        },
+        "duplicate": "复制"
+      },
+      "duplicateToast": {
+        "loading": "正在复制实例...",
+        "success": "实例已成功复制",
+        "error": "复制实例失败"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "从文件",
         "fromUrl": "从 URL",
-        "firstClipboardItem": "在剪贴板中有多个项目，只使用第一个。",
+        "firstClipboardItem": "剪贴板包含多个项目。SoulFire将使用第一个项目。",
         "fromClipboard": "从剪贴板",
         "textarea": {
           "placeholder": "将文本放在这里...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "从 URL 加载将使 SoulFire 服务器向目标服务器发出GET 请求，并使用响应作为数据。",
+        "description": "SoulFire服务器会向此URL发送GET请求并导入响应。",
         "form": {
           "url": {
             "placeholder": "将 URL 放在这里...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "开始",
-    "resume": "继续",
-    "pause": "暂停",
     "stop": "停止",
+    "startAll": "全部启动",
+    "stopAll": "全部停止",
+    "restart": "重启",
+    "startCount": "要启动的机器人数量",
     "startToast": {
-      "loading": "正在启动会话...",
-      "success": "会话已成功启动",
-      "error": "启动会话失败"
+      "loading": "正在启动机器人...",
+      "success": "机器人状态已更新",
+      "error": "启动机器人失败"
     },
-    "resumeToast": {
-      "loading": "正在恢复会话...",
-      "success": "会话已成功恢复",
-      "error": "恢复会话失败"
-    },
-    "pauseToast": {
-      "loading": "正在暂停会话...",
-      "success": "会话已成功暂停",
-      "error": "暂停会话失败"
+    "restartToast": {
+      "loading": "正在重启机器人...",
+      "success": "机器人正在重新连接",
+      "error": "重启机器人失败"
     },
     "stopToast": {
-      "loading": "正在停止会话...",
-      "success": "会话已成功停止",
-      "error": "停止会话失败"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "未配置账户",
-      "noAccountsDescription": "在开始会话之前，您需要先导入账号。您请求了 {{required}} 个机器人。",
-      "notEnoughTitle": "账户数量不足",
-      "notEnoughDescription": "您请求了 {{required}} 个机器人，但只导入了 {{available}} 个账户。",
-      "hint": "您可以生成离线账户或在账户设置页面导入账户。",
-      "continueWithExisting": "继续使用 {{count}} 个账户",
-      "generateAccounts": "生成账户"
+      "loading": "正在停止机器人...",
+      "success": "机器人正在停止",
+      "error": "停止机器人失败"
     }
   },
+  "botFleetSummary": "{{online}} 在线 · {{desired}} 目标 · {{total}} 总计",
   "icon": {
     "invalidName": "无效的图标名称: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "添加",
       "remove": "删除"
     },
+    "combo": {
+      "searchPlaceholder": "搜索值..."
+    },
     "invalidNumberToast": {
-      "title": "无效数字！",
+      "title": "无效数字",
       "description": "值必须介于 {{min}} 和 {{max}} 之间"
     }
   },
   "terminal": {
-    "noLogs": "🧙 看起来没有日志可以显示，尝试运行一些命令!",
+    "noLogs": "暂时没有日志。运行命令以生成日志输出。",
     "demo-1": "欢迎来到演示模式！🧪",
     "demo-2": "这是一个只读的 SoulFire 实例",
     "demo-3": "在决定安装 SoulFire 之前，请先查看所有菜单和功能",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "切换侧边栏"
+  },
+  "window": {
+    "minimize": "最小化",
+    "minimizeLabel": "最小化窗口",
+    "maximize": "最大化",
+    "maximizeLabel": "最大化窗口",
+    "restore": "还原",
+    "restoreLabel": "还原窗口",
+    "close": "关闭",
+    "closeLabel": "关闭窗口",
+    "back": "返回",
+    "backLabel": "返回",
+    "forward": "前进",
+    "forwardLabel": "前进"
+  },
+  "infoButton": {
+    "showInfo": "显示信息"
   },
   "castMenu": {
     "title": "投放",
@@ -333,6 +364,7 @@
     },
     "configDir": "配置目录",
     "dataDir": "数据目录",
+    "supportSoulFire": "支持 SoulFire.",
     "about": "关于",
     "logOut": "退出登录",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "文档",
-    "supportSoulFire": "捐赠",
+    "supportSoulFire": "支持 SoulFire.",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV 访问",
-      "description": "SoulFire 允许你通过 WebDAV 协议访问实例、脚本和其它文件。",
+      "description": "WebDAV提供对实例文件、脚本和其他文件的访问。",
       "publicAddress": "公共 WebDAV 地址",
       "personalToken": "个人 WebDAV Token",
-      "securityWarning": "你的个人 WebDAV Token 非常重要。请勿与他人分享。它用于你访问文件时的身份验证。在连接时将其用作 WebDAV 密码。不需要用户名，如果系统要求输入，可以填写任意内容（如 \"soulfire\"）。",
-      "addressDescription": "这是你访问文件需要使用的地址。有时你需要将 http(s):// 替换为 dav:// 或 davs://。"
+      "securityWarning": "请保管好你的WebDAV个人令牌。这将授权访问你的文件。使用该令牌作为WebDAV密码，无需用户名。如果程序需要请输入任意值，如“soulfire”。",
+      "addressDescription": "使用此地址访问你的文件。一些客户端需要使用dav://或davs://代替http://或https://。"
     },
     "api": {
       "title": "API 访问",
-      "description": "SoulFire 的 gRPC HTTP API 允许你通过网页请求以编程方式与实例交互。",
+      "description": "SoulFire gRPC HTTP API 可通过Web请求管理实例。",
       "publicAddress": "公共 API 地址",
       "personalToken": "个人 API Token",
-      "securityWarning": "你的个人 API Token 非常重要。请勿与他人分享。它用于你访问 API 时的身份验证。",
-      "addressDescription": "这是你访问 API 需要使用的地址。"
+      "securityWarning": "请保管好你的API个人令牌。这将授权访问API。",
+      "addressDescription": "使用此地址访问API。"
     },
     "token": {
       "generate": "生成 Token",
@@ -443,6 +475,8 @@
     "searchUsers": "搜索用户...",
     "searchTimestamps": "搜索时间戳...",
     "executedCommand": "执行的命令：{{data}}",
+    "changedBotDesiredState": "机器人目标状态已更改",
+    "restartedBots": "已重启机器人",
     "contextMenu": {
       "copyUsername": "复制用户名",
       "copyCommand": "复制命令"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "脚本名称至少需要3个字符",
           "max": "脚本名称最多允许32个字符",
-          "regex": "脚本名称必须为小写，必须以字母或数字开头，其余只能包含字母、数字或短横线，并且以字母或数字结尾。",
+          "regex": "请使用小写字母、数字和短横线。名称必须以字母或数字开头和结尾。",
           "label": "名称",
           "placeholder": "我的脚本",
           "description": "脚本的名称。"
         },
         "elevatedPermissions": {
           "label": "高级权限",
-          "description": "是否让脚本以高级权限运行。只有管理员可以启用此选项。"
+          "description": "脚本将以提升的权限运行。只有管理员可以启用此选项。"
         }
       }
     },
     "addScriptDialog": {
       "title": "添加新脚本",
-      "description": "脚本是在 SoulFire 服务器上运行的小型程序。它们可用于自动化任务、创建自定义行为等。",
+      "description": "脚本是可自动化任务及其他操作的SoulFire服务器小程序。",
       "form": {
         "cancel": "取消",
         "add": "添加"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "前往实例",
+      "duplicateInstance": "复制实例",
       "copyInstanceId": "复制实例 ID",
       "copyInstanceName": "复制实例名称",
       "deleteInstance": "删除实例"

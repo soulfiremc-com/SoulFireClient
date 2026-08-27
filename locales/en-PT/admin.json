@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rank",
+          "placeholder": "Pick a role, matey!",
           "description": "The matey rank. Cap'ns may command all, swabs tend only their own ships.",
           "user": "Buccaneer",
           "admin": "Admiral"
@@ -114,8 +115,8 @@
       "actions": "Duties",
       "searchUsernames": "Seek crew names...",
       "searchEmails": "Seek sea-mails...",
-      "searchCreatedAts": "Search fer float dates...",
-      "searchMinIssuedAts": "Search fer earliest login times..."
+      "searchCreatedAts": "Be huntin' fer creation dates...",
+      "searchMinIssuedAts": "Be huntin' fer minimum login dates..."
     },
     "removeSelectedTooltip": "Send selected crew off the plank",
     "logOutSelectedTooltip": "Make selected crew disembark",

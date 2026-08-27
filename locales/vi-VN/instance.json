@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Kết quả thô của phiên bản sẽ hiển thị tại đây khi bạn cần kiểm tra chi tiết bảng điều khiển.",
+    "summary": {
+      "accounts": "Tài khoản",
+      "proxies": "Proxy",
+      "configured": "Đã cấu hình {{count}}",
+      "configuredShort": "Đã cấu hình",
+      "currentRate": "Tốc độ hiện tại",
+      "imported": "Đã nhập khẩu"
+    },
+    "readiness": {
+      "title": "Thiết lập",
+      "accounts": "Tài khoản",
+      "accountsValue": "Đã nhập {{count}} cho {{requested}} bot được yêu cầu",
+      "proxies": "Proxy",
+      "proxiesValue": "Đã cấu hình {{count}}",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} khả dụng"
+    },
+    "activity": {
+      "title": "Hoạt động",
+      "tick": "Tick",
+      "health": "Máu",
+      "world": "Thế giới",
+      "worldValue": "{{chunks}} vùng, {{entities}} thực thể",
+      "connections": "Kết nối",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Chỉ số",
+      "noDataDescription": "Chưa có chỉ số thời gian thực."
+    },
+    "metricsUnavailable": {
+      "title": "Chỉ số",
+      "inactive": "Khởi động bot để thu thập số liệu trực tiếp.",
+      "noPermission": "Bạn không có quyền xem chỉ số bot."
+    },
+    "status": {
+      "ready": "Sẵn sàng",
+      "attention": "Cần chú ý",
+      "configured": "Đã cấu hình",
+      "optional": "Tùy chọn",
+      "available": "Có sẵn",
+      "none": "Không có"
+    },
+    "actions": {
+      "manage": "Quản lý",
+      "open": "Mở"
+    },
+    "spotlight": {
+      "noBots": "Chưa có bot nào được cấu hình.",
+      "idle": "Nhàn rỗi, chờ hướng dẫn.",
+      "level": "Cấp {{level}}"
+    },
+    "liveFeed": {
+      "title": "Luồng trực tiếp",
+      "empty": "Đang chờ hoạt động của phiên bản...",
+      "noPermission": "Bạn không có quyền xem luồng trực tiếp.",
+      "lifecycle": {
+        "connecting": "đang kết nối",
+        "connected": "đã kết nối",
+        "spawned": "đã tham gia trò chơi",
+        "died": "đã chết",
+        "respawned": "đã hồi sinh",
+        "disconnected": "đã ngắt kết nối",
+        "unknown": "đã thay đổi trạng thái"
+      }
+    },
+    "bots": {
+      "title": "Bot",
+      "viewAll": "Xem tất cả {{total}} bot",
+      "viewAllShort": "Xem tất cả"
+    },
+    "timeline": {
+      "title": "Hoạt động",
+      "viewAll": "Xem tất cả",
+      "empty": "Chưa có hoạt động nào được ghi nhận.",
+      "noPermission": "Bạn không có quyền xem nhật ký kiểm tra.",
+      "types": {
+        "executeCommand": "đã chạy lệnh: {{data}}",
+        "botDesiredStateChange": "đã thay đổi trạng thái mong muốn của bot",
+        "botRestart": "đã khởi động lại bot",
+        "unknown": "đã thực hiện một hành động"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "Chưa có plugin nào báo cáo chỉ số.",
+      "noPermission": "Bạn không có quyền xem chỉ số plugin.",
+      "active": "Đang hoạt động",
+      "activeBots": "{{count}} bot đang hoạt động",
+      "uptime": "lên {{time}}"
+    },
+    "detailed": {
+      "title": "Chỉ số chi tiết",
+      "composition": "Thành phần thế giới"
+    }
+  },
   "proxy": {
     "getProxies": "Lấy Proxy",
     "addProxies": "Thêm Proxy",
@@ -55,8 +151,8 @@
       "deleteProxy": "Xóa Proxy"
     },
     "postImportCheckDialog": {
-      "title": "Kiểm tra proxy?",
-      "description": "Bạn vừa nhập {{count}} proxy. Bạn có muốn kiểm tra chúng ngay bây giờ không? Các proxy không hợp lệ sẽ được tự động loại bỏ.",
+      "title": "Kiểm tra các proxy vừa nhập?",
+      "description": "Bạn đã nhập {{count}} proxy. Kiểm tra ngay bây giờ? SoulFire sẽ tự động loại bỏ các proxy không hợp lệ.",
       "confirm": "Kiểm Tra Proxy",
       "skip": "Bỏ qua"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Không có tài khoản để nhập"
     },
     "unknownError": "Lỗi không xác định",
+    "types": {
+      "OFFLINE": "Ngoại tuyến",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Thông tin đăng nhập)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Mã thiết bị)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Mã làm mới)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookie)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Mã truy cập)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Thông tin đăng nhập)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Mã thiết bị)"
+    },
     "deviceCodeImportToast": {
       "loading": "Đang nhập tài khoản...",
       "success": "Đã nhập tài khoản!",
@@ -93,9 +200,9 @@
       "description": "Tạo tài khoản Java offline với mẫu tên tuỳ chỉnh.",
       "amount": "Số lượng",
       "nameFormat": "Định dạng tên",
-      "nameFormatHelp": "Sử dụng %d như một ký tự đại diện cho số tài khoản (ví dụ: Bot_%d sẽ trở thành Bot_1, Bot_2, v.v.)",
+      "nameFormatHelp": "Sử dụng %d cho số thứ tự tài khoản. Ví dụ, Bot_%d sẽ tạo ra các tên như Bot_1 và Bot_2.",
       "mode": "Tài Khoản Hiện Có",
-      "modeHelp": "Chọn cách xử lý các tài khoản hiện có:\n\n• Bỏ Qua Hiện Có: Chỉ tạo các tài khoản với tên chưa tồn tại. Giữ nguyên tất cả tài khoản hiện có.\n\n• Thay Thế Hiện Có: Tạo tất cả tài khoản, thay thế bất kỳ tài khoản nào có cùng UUID. Các tài khoản khác được giữ nguyên.\n\n• Thay Thế Tất Cả: Xóa TẤT CẢ tài khoản hiện có và thay thế bằng các tài khoản vừa được tạo.",
+      "modeHelp": "Chọn cách xử lý các tài khoản đã tồn tại:\n\n• Bỏ Qua Tài Khoản Cũ: Chỉ tạo tài khoản với tên mới. Giữ lại tất cả tài khoản đã có.\n\n• Thay Thế Tài Khoản Trùng: Tạo tất cả số lượng tài khoản yêu cầu. Thay thế các tài khoản có UUID trùng khớp. Giữ lại các tài khoản khác.\n\n• Thay Thế Tất Cả: Xoá tất cả tài khoản hiện có. Sau đó thêm các tài khoản mới vừa tạo.",
       "modeIgnoreExisting": "Bỏ Qua Hiện Có",
       "modeReplaceExisting": "Thay Thế Hiện Có",
       "modeReplaceAll": "Thay thế tất cả",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Refresh Token Microsoft",
       "microsoftCookies": "Cookie Microsoft",
       "microsoftAccessToken": "Access Token Microsoft",
+      "theAltening": "Mã thông báo TheAltening",
       "altProviders": "Nhà cung cấp thay thế",
       "dialog": {
         "title": "Nhập tài khoản loại {{type}}",
@@ -149,7 +257,21 @@
       "description": "Cấu hình cài đặt riêng cho từng bot cho tài khoản này",
       "openButton": "Cấu hình tài khoản",
       "pageTitle": "{{name}} - Cài đặt {{page}}",
-      "noSettings": "Không có cài đặt nào cho trang này"
+      "noSettings": "Không có cài đặt nào cho trang này",
+      "search": "Cài đặt tìm kiếm",
+      "overrides": "Ghi đè",
+      "allSettings": "Tất cả cài đặt",
+      "noOverrides": "Bot này chưa có bất kỳ ghi đè cụ thể nào.",
+      "noOverridesMatching": "Không có ghi đè nào khớp với tìm kiếm này.",
+      "noOverridesHelp": "Mở Tất cả cài đặt để kế thừa giá trị hoặc tạo ghi đè dành riêng cho bot đầu tiên.",
+      "tryDifferentSearch": "Hãy thử một từ khóa tìm kiếm khác.",
+      "openAllSettings": "Mở tất cả cài đặt",
+      "selectPage": "Chọn một trang cài đặt",
+      "noSearchResults": "Không có cài đặt nào khớp với tìm kiếm này.",
+      "matchesInheritedValue": "Khớp với giá trị kế thừa",
+      "instanceValue": "Giá trị phiên bản",
+      "defaultValue": "Giá trị mặc định",
+      "resetOverride": "Đặt lại ghi đè"
     },
     "deviceCodeConfirmDialog": {
       "title": "Xác thực mã thiết bị",
@@ -183,7 +305,7 @@
       "purchasing": "Đang mua...",
       "purchaseSuccess": "Đã mua {{count}} tài khoản, đang nhập khẩu...",
       "purchaseError": "Mua thất bại: {{message}}",
-      "networkError": "Không thể kết nối với API Ravealts",
+      "networkError": "Kết nối tới API Ravealts thất bại",
       "outOfStock": "Loại đã chọn đã hết hàng",
       "insufficientBalance": "Không đủ số dư",
       "rateLimited": "Đang bị giới hạn tốc độ, hãy thử lại sau"
@@ -231,7 +353,30 @@
     "online": "Trực tuyến",
     "offline": "Ngoại tuyến",
     "notJoined": "Chưa Tham Gia",
+    "connectionPhase": {
+      "connecting": "Đang kết nối",
+      "connected": "Đã kết nối",
+      "spawned": "Trực tuyến",
+      "died": "Đã chết",
+      "disconnected": "Ngoại tuyến",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Đang khởi động",
+      "running": "Đang chạy",
+      "retrying": "Đang thử lại",
+      "stopping": "Đang dừng",
+      "failed": "Thất bại",
+      "waiting": "Đang chờ",
+      "stopped": "Đã dừng"
+    },
     "backToBots": "Quay lại Bots",
+    "tabs": {
+      "overview": "Tổng quan",
+      "inventory": "Kho đồ",
+      "controls": "Bảng điều khiển",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Sắp ra mắt",
     "terminalPanel": {
       "title": "Bot Terminal"
@@ -362,11 +507,74 @@
       "offline": "Bot đang ngoại tuyến. Hộp thoại chỉ khả dụng khi bot đang kết nối."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Không có dữ liệu"
+    },
+    "summary": {
+      "online": "Trực tuyến",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Lưu lượng",
+      "health": "Máu",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots Trực Tuyến",
+      "online": "Trực tuyến",
+      "total": "Tổng cộng"
+    },
+    "packets": {
+      "title": "Gói / giây",
+      "sent": "Đã gửi/giây",
+      "received": "Đã nhận/giây"
+    },
+    "bandwidth": {
+      "title": "Băng thông",
+      "upload": "Tải lên",
+      "download": "Tải xuống"
+    },
+    "tick": {
+      "title": "Thời gian tick",
+      "avg": "Trung bình (ms)",
+      "max": "Tối đa (ms)"
+    },
+    "healthFood": {
+      "title": "Máu / Thức ăn",
+      "health": "Máu trung bình",
+      "food": "Thức ăn trung bình"
+    },
+    "chunksEntities": {
+      "title": "Chunk / Thực thể",
+      "chunks": "Chunk",
+      "entities": "Thực thể"
+    },
+    "connections": {
+      "title": "Sự kiện kết nối",
+      "connections": "Kết nối",
+      "disconnections": "Ngắt kết nối"
+    },
+    "healthDistribution": {
+      "title": "Phân bố máu",
+      "bots": "Bot"
+    },
+    "dimensions": {
+      "title": "Chiều không gian",
+      "bots": "Bot"
+    },
+    "gameModes": {
+      "title": "Chế độ chơi",
+      "bots": "Bot"
+    },
+    "positions": {
+      "title": "Vị trí bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visual Scripts",
     "description": "Tạo script tự động hóa bằng trình chỉnh sửa dạng nút trực quan.",
     "experimentalTitle": "Tính năng thử nghiệm",
-    "experimentalWarning": "Tính năng này đang ở giai đoạn thử nghiệm. Tương lai có thể sẽ có những thay đổi lớn và các script hiện tại có thể bị hỏng. Vui lòng sử dụng cẩn thận.",
+    "experimentalWarning": "Tính năng này đang ở giai đoạn thử nghiệm. Những cập nhật trong tương lai có thể làm hỏng các script hiện tại. Hãy sử dụng một cách thận trọng.",
     "createScript": "Tạo Script",
     "createScriptTitle": "Tạo Script Mới",
     "createScriptDescription": "Tạo một script trực quan mới cho phiên bản này. Script có thể tự động hóa hành động bot và phản hồi các sự kiện.",
@@ -430,6 +638,7 @@
         "pause": "Tạm dừng",
         "pauseTooltip": "Tạm dừng thực thi script",
         "unsaved": "Chưa lưu",
+        "unsavedChanges": "Thay đổi chưa lưu",
         "clearCanvas": "Xóa canvas",
         "zoomIn": "Phóng to",
         "zoomOut": "Thu nhỏ",
@@ -461,6 +670,64 @@
         "showPreview": "Hiện bản xem trước",
         "hidePreview": "Ẩn bản xem trước",
         "delete": "Xóa"
+      },
+      "node": {
+        "expand": "Mở rộng nút",
+        "collapse": "Thu gọn nút"
+      },
+      "debug": {
+        "copyValue": "Sao chép giá trị hiện tại",
+        "clearHistory": "Xóa lịch sử"
+      },
+      "edge": {
+        "direction": "Hướng cạnh"
+      },
+      "note": {
+        "placeholder": "Viết ghi chú..."
+      },
+      "complexity": {
+        "title": "Điểm độ phức tạp của script"
+      },
+      "group": {
+        "returnToRoot": "Quay lại gốc (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Trình đơn thêm nhanh nút",
+        "searchPlaceholder": "Tìm kiếm node..."
+      },
+      "diff": {
+        "tooltip": "Xem lại thay đổi"
+      },
+      "dryRun": {
+        "tooltip": "Chạy thử (Dry Run)",
+        "title": "Chạy thử Script",
+        "description": "Chạy script từ một trigger đã chọn với dữ liệu thử nghiệm.",
+        "triggerNode": "Nút kích hoạt",
+        "selectTrigger": "Chọn trigger...",
+        "triggerDescription": "Chọn nút trigger để thực thi với các giá trị thử nghiệm.",
+        "mockInputs": "Dữ liệu thử nghiệm",
+        "valuePlaceholder": "Giá trị {{type}}",
+        "start": "Bắt đầu chạy thử"
+      },
+      "quotas": {
+        "tooltip": "Hạn mức script",
+        "title": "Hạn mức script",
+        "description": "Cấu hình giới hạn tài nguyên cho script này. Những trường để trống sẽ sử dụng mặc định của máy chủ.",
+        "maxExecutionCount": "Số lần thực thi tối đa",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Số lần thực thi node tối đa mỗi lần kích hoạt",
+        "maxExecutionTime": "Thời gian thực thi tối đa (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Thời gian thực thi tổng tối đa cho mỗi lần kích hoạt",
+        "maxConcurrentTriggers": "Số trigger đồng thời tối đa",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Lượt kích hoạt trigger đồng thời tối đa",
+        "maxStateStoreEntries": "Số mục lưu trạng thái tối đa",
+        "maxStateStoreEntriesPlaceholder": "Không giới hạn",
+        "maxStateStoreEntriesDescription": "Số mục tối đa trong kho trạng thái của script",
+        "disableTimeouts": "Tắt giới hạn thời gian",
+        "disableTimeoutsDescription": "Tắt giới hạn thời gian cho từng node và data edge",
+        "save": "Lưu hạn mức"
       }
     }
   }

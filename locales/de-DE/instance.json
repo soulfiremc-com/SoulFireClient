@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Die Rohdaten der Instanz-Ausgabe sind hier verfügbar, wenn Sie Konsolendetails überprüfen möchten.",
+    "summary": {
+      "accounts": "Konten",
+      "proxies": "Proxys",
+      "configured": "{{count}} konfiguriert",
+      "configuredShort": "Konfiguriert",
+      "currentRate": "Aktuelle Rate",
+      "imported": "Importiert"
+    },
+    "readiness": {
+      "title": "Einrichtung",
+      "accounts": "Konten",
+      "accountsValue": "{{count}} für {{requested}} angeforderte Bots importiert",
+      "proxies": "Proxys",
+      "proxiesValue": "{{count}} konfiguriert",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} verfügbar"
+    },
+    "activity": {
+      "title": "Aktivität",
+      "tick": "Tick",
+      "health": "Gesundheit",
+      "world": "Welt",
+      "worldValue": "{{chunks}} Chunks, {{entities}} Entitäten",
+      "connections": "Verbindungen",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metriken",
+      "noDataDescription": "Noch keine Laufzeitmetriken."
+    },
+    "metricsUnavailable": {
+      "title": "Metriken",
+      "inactive": "Starte einen Bot, um Live-Metriken zu sammeln.",
+      "noPermission": "Du hast keine Berechtigung, um die Bot-Metriken anzusehen."
+    },
+    "status": {
+      "ready": "Bereit",
+      "attention": "Benötigt Aufmerksamkeit",
+      "configured": "Konfiguriert",
+      "optional": "Optional",
+      "available": "Verfügbar",
+      "none": "Keine"
+    },
+    "actions": {
+      "manage": "Verwalten",
+      "open": "Öffnen"
+    },
+    "spotlight": {
+      "noBots": "Noch keine Bots konfiguriert.",
+      "idle": "Untätig, wartet auf Anweisungen.",
+      "level": "Lvl {{level}}"
+    },
+    "liveFeed": {
+      "title": "Live-Feed",
+      "empty": "Warte auf Instanz-Aktivität...",
+      "noPermission": "Du hast keine Berechtigung, um den Live-Feed anzusehen.",
+      "lifecycle": {
+        "connecting": "verbindet gerade",
+        "connected": "verbunden",
+        "spawned": "ist dem Spiel beigetreten",
+        "died": "gestorben",
+        "respawned": "respawned",
+        "disconnected": "getrennt",
+        "unknown": "Status gewechselt"
+      }
+    },
+    "bots": {
+      "title": "Bots",
+      "viewAll": "Alle {{total}} Bots anzeigen",
+      "viewAllShort": "Alle anzeigen"
+    },
+    "timeline": {
+      "title": "Aktivität",
+      "viewAll": "Alle anzeigen",
+      "empty": "Noch keine aufgezeichneten Aktivitäten.",
+      "noPermission": "Du hast keine Berechtigung, das Protokoll einzusehen.",
+      "types": {
+        "executeCommand": "hat einen Befehl ausgeführt: {{data}}",
+        "botDesiredStateChange": "gewünschten Bot-Status geändert",
+        "botRestart": "Bots neu gestartet",
+        "unknown": "eine Aktion ausgeführt"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "Noch keine Plugins melden Statistiken.",
+      "noPermission": "Du hast keine Berechtigung, Plugin-Statistiken einzusehen.",
+      "active": "Aktiv",
+      "activeBots": "{{count}} aktive Bots",
+      "uptime": "seit {{time}} aktiv"
+    },
+    "detailed": {
+      "title": "Detaillierte Metriken",
+      "composition": "Weltzusammensetzung"
+    }
+  },
   "proxy": {
     "getProxies": "Proxies abrufen",
     "addProxies": "Proxies hinzufügen",
@@ -55,8 +151,8 @@
       "deleteProxy": "Proxy löschen"
     },
     "postImportCheckDialog": {
-      "title": "Proxys überprüfen?",
-      "description": "Sie haben gerade {{count}} Proxys importiert. Möchten Sie sie jetzt überprüfen? Ungültige Proxys werden automatisch entfernt.",
+      "title": "Importierte Proxys überprüfen?",
+      "description": "Sie haben {{count}} Proxys importiert. Jetzt überprüfen? SoulFire entfernt ungültige Proxys automatisch.",
       "confirm": "Proxies überprüfen",
       "skip": "Überspringen"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Keine Konten zum Importieren"
     },
     "unknownError": "Unbekannter Fehler",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Zugangsdaten)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Gerätecode)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh-Token)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Access-Token)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Zugangsdaten)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Gerätecode)"
+    },
     "deviceCodeImportToast": {
       "loading": "Konto wird importiert...",
       "success": "Konto importiert!",
@@ -93,9 +200,9 @@
       "description": "Offline-Java-Konten mit einem benutzerdefinierten Namensformat generieren.",
       "amount": "Anzahl",
       "nameFormat": "Namensformat",
-      "nameFormatHelp": "Verwenden Sie %d als Platzhalter für die Kontonummer (z. B. wird aus Bot_%d Bot_1, Bot_2 usw.)",
+      "nameFormatHelp": "Verwenden Sie %d für die Kontonummer. Zum Beispiel erstellt Bot_%d Namen wie Bot_1 und Bot_2.",
       "mode": "Vorhandene Konten",
-      "modeHelp": "Wählen Sie, wie vorhandene Konten behandelt werden sollen:\n\n• Vorhandene ignorieren: Erstellt nur Konten mit Namen, die noch nicht existieren. Belässt alle vorhandenen Konten unverändert.\n\n• Vorhandene ersetzen: Erstellt alle Konten und ersetzt dabei vorhandene Konten mit derselben UUID. Andere Konten werden beibehalten.\n\n• Alle ersetzen: Löscht ALLE vorhandenen Konten und ersetzt sie durch die generierten Konten.",
+      "modeHelp": "Wählen Sie, wie mit vorhandenen Konten umgegangen werden soll:\n\n• Vorhandene ignorieren: Nur Konten mit neuen Namen generieren. Alle vorhandenen Konten behalten.\n\n• Vorhandene ersetzen: Alle angeforderten Konten generieren. Konten mit passenden UUIDs ersetzen. Alle anderen Konten behalten.\n\n• Alle ersetzen: Alle vorhandenen Konten entfernen. Dann die generierten Konten hinzufügen.",
       "modeIgnoreExisting": "Vorhandene ignorieren",
       "modeReplaceExisting": "Vorhandene ersetzen",
       "modeReplaceAll": "Alle ersetzen",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft Aktualisierungstoken",
       "microsoftCookies": "Microsoft-Cookies",
       "microsoftAccessToken": "Microsoft-Zugriffstoken",
+      "theAltening": "TheAltening-Token",
       "altProviders": "Alt-Anbieter",
       "dialog": {
         "title": "Importiere {{type}} Konten",
@@ -149,7 +257,21 @@
       "description": "Pro-Bot-Einstellungen für dieses Konto konfigurieren",
       "openButton": "Konto konfigurieren",
       "pageTitle": "{{name}} - {{page}} Einstellungen",
-      "noSettings": "Für diese Seite sind keine Einstellungen verfügbar"
+      "noSettings": "Für diese Seite sind keine Einstellungen verfügbar",
+      "search": "Sucheinstellungen",
+      "overrides": "Überschreibungen",
+      "allSettings": "Alle Einstellungen",
+      "noOverrides": "Dieser Bot hat noch keine expliziten Überschreibungen.",
+      "noOverridesMatching": "Keine Überschreibungen entsprechen dieser Suche.",
+      "noOverridesHelp": "Öffne \"Alle Einstellungen\", um Werte zu übernehmen oder erstelle die erste bot-spezifische Überschreibung.",
+      "tryDifferentSearch": "Versuche es mit einem anderen Suchbegriff.",
+      "openAllSettings": "Alle Einstellungen öffnen",
+      "selectPage": "Eine Einstellungsseite auswählen",
+      "noSearchResults": "Keine Einstellungen entsprechen dieser Suche.",
+      "matchesInheritedValue": "Entspricht dem geerbten Wert",
+      "instanceValue": "Instanzwert",
+      "defaultValue": "Standardwert",
+      "resetOverride": "Überschreibung zurücksetzen"
     },
     "deviceCodeConfirmDialog": {
       "title": "Gerätecode-Authentifizierung",
@@ -183,7 +305,7 @@
       "purchasing": "Kauf läuft...",
       "purchaseSuccess": "{{count}} Konten gekauft, werden importiert...",
       "purchaseError": "Kauf fehlgeschlagen: {{message}}",
-      "networkError": "Keine Verbindung zur Ravealts-API möglich",
+      "networkError": "Die Verbindung zur Ravealts API ist fehlgeschlagen",
       "outOfStock": "Ausgewählter Typ nicht auf Lager",
       "insufficientBalance": "Nicht genug Guthaben",
       "rateLimited": "Zu viele Anfragen, versuchen Sie es später erneut"
@@ -231,7 +353,30 @@
     "online": "Online",
     "offline": "Offline",
     "notJoined": "Nicht beigetreten",
+    "connectionPhase": {
+      "connecting": "Verbinde",
+      "connected": "Verbunden",
+      "spawned": "Online",
+      "died": "Tot",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Starte",
+      "running": "Läuft",
+      "retrying": "Wiederholen",
+      "stopping": "Stoppt",
+      "failed": "Fehlgeschlagen",
+      "waiting": "Wartend",
+      "stopped": "Gestoppt"
+    },
     "backToBots": "Zurück zu Bots",
+    "tabs": {
+      "overview": "Übersicht",
+      "inventory": "Inventar",
+      "controls": "Steuerung",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Demnächst verfügbar",
     "terminalPanel": {
       "title": "Bot-Terminal"
@@ -362,11 +507,74 @@
       "offline": "Bot ist offline. Dialoge sind nur verfügbar, wenn der Bot verbunden ist."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Keine Daten"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Verkehr",
+      "health": "Gesundheit",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots online",
+      "online": "Online",
+      "total": "Gesamt"
+    },
+    "packets": {
+      "title": "Pakete / Sekunde",
+      "sent": "Gesendet/s",
+      "received": "Empf./s"
+    },
+    "bandwidth": {
+      "title": "Bandbreite",
+      "upload": "Upload",
+      "download": "Download"
+    },
+    "tick": {
+      "title": "Tick-Dauer",
+      "avg": "Durchschn. (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Leben / Nahrung",
+      "health": "Durchschn. Leben",
+      "food": "Durchschn. Nahrung"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entitäten",
+      "chunks": "Chunks",
+      "entities": "Entitäten"
+    },
+    "connections": {
+      "title": "Verbindungsereignisse",
+      "connections": "Verbindungen",
+      "disconnections": "Trennungen"
+    },
+    "healthDistribution": {
+      "title": "Lebenspunkte-Verteilung",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensionen",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Spielmodi",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Bot-Positionen (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visuelle Skripte",
     "description": "Erstellen Sie Automatisierungsskripte mit einem visuellen, node-basierten Editor.",
     "experimentalTitle": "Experimentelles Feature",
-    "experimentalWarning": "Diese Funktion ist experimentell. Zukünftige Änderungen könnten Inkompatibilitäten verursachen und bestehende Skripte könnten nicht mehr funktionieren. Bitte mit Vorsicht verwenden.",
+    "experimentalWarning": "Diese Funktion ist experimentell. Zukünftige Updates können bestehende Skripte beschädigen. Bitte mit Vorsicht verwenden.",
     "createScript": "Skript erstellen",
     "createScriptTitle": "Neues Skript erstellen",
     "createScriptDescription": "Erstellen Sie ein neues visuelles Skript für diese Instanz. Skripte können Botaktionen automatisieren und auf Ereignisse reagieren.",
@@ -430,6 +638,7 @@
         "pause": "Pausieren",
         "pauseTooltip": "Skriptausführung pausieren",
         "unsaved": "Nicht gespeichert",
+        "unsavedChanges": "Ungespeicherte Änderungen",
         "clearCanvas": "Leinwand leeren",
         "zoomIn": "Vergrößern",
         "zoomOut": "Verkleinern",
@@ -462,6 +671,64 @@
         "showPreview": "Vorschau anzeigen",
         "hidePreview": "Vorschau ausblenden",
         "delete": "Löschen"
+      },
+      "node": {
+        "expand": "Knoten erweitern",
+        "collapse": "Knoten reduzieren"
+      },
+      "debug": {
+        "copyValue": "Aktuellen Wert kopieren",
+        "clearHistory": "Verlauf löschen"
+      },
+      "edge": {
+        "direction": "Kantenrichtung"
+      },
+      "note": {
+        "placeholder": "Notiz schreiben..."
+      },
+      "complexity": {
+        "title": "Skript-Komplexitätswert"
+      },
+      "group": {
+        "returnToRoot": "Zur Wurzel zurückkehren (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Schnell hinzufügen - Knotenmenü",
+        "searchPlaceholder": "Knoten suchen..."
+      },
+      "diff": {
+        "tooltip": "Änderungen prüfen"
+      },
+      "dryRun": {
+        "tooltip": "Probelauf",
+        "title": "Probelauf-Skript",
+        "description": "Führen Sie ein Skript von einem ausgewählten Auslöser mit simulierten Eingaben aus.",
+        "triggerNode": "Auslöser-Knoten",
+        "selectTrigger": "Wählen Sie einen Auslöser...",
+        "triggerDescription": "Wählen Sie den Auslöser-Knoten aus, der mit simulierten Eingabewerten ausgeführt werden soll.",
+        "mockInputs": "Simulierte Eingaben",
+        "valuePlaceholder": "{{type}} Wert",
+        "start": "Probelauf starten"
+      },
+      "quotas": {
+        "tooltip": "Skript-Kontingente",
+        "title": "Skript-Kontingente",
+        "description": "Konfigurieren Sie Ressourcengrenzen für dieses Skript. Leere Felder verwenden die Server-Standards.",
+        "maxExecutionCount": "Maximale Ausführungsanzahl",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximale Knotenausführungen pro Auslöser-Aufruf",
+        "maxExecutionTime": "Maximale Ausführungszeit (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximale Echtzeit pro Auslöser-Ausführung",
+        "maxConcurrentTriggers": "Maximal gleichzeitige Auslöser",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximale gleichzeitige Auslöser-Aufrufe",
+        "maxStateStoreEntries": "Maximale State Store-Einträge",
+        "maxStateStoreEntriesPlaceholder": "Unbegrenzt",
+        "maxStateStoreEntriesDescription": "Maximale Einträge im Skript-State Store",
+        "disableTimeouts": "Timeouts deaktivieren",
+        "disableTimeoutsDescription": "Deaktiviert Timeouts pro Knoten und Datenkante",
+        "save": "Kontingente speichern"
       }
     }
   }

@@ -8,7 +8,7 @@
     "noAddressOrToken": "No se ha encontrado ninguna dirección de servidor o token",
     "page": {
       "title": "Error",
-      "description": "Se ha producido un error al intentar cargar la página. Puedes encontrar más información en la consola.",
+      "description": "La página no se cargó. Abre la consola para más información.",
       "logOut": "Cerrar Sesión",
       "reloadPage": "Recargar página",
       "showDetails": "Mostrar detalles"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "No encontrado",
-      "description": "No se pudo encontrar una página en esta ubicación",
+      "description": "No existe una página en esta dirección",
       "logOut": "Cerrar Sesión",
       "reloadPage": "Recargar página"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Cerrar"
     },
+    "support": {
+      "title": "Apoyar SoulFire",
+      "description": "SoulFire es gratuito y de código abierto, construido con pasión por la comunidad.",
+      "body": "Si SoulFire te ha sido útil, por favor considera apoyar el proyecto. Tu contribución ayuda a cubrir los costos del servidor, financiar el desarrollo y mantener SoulFire gratis para todos.",
+      "dismiss": "Quizás más tarde",
+      "action": "Apoyar SoulFire"
+    },
     "createInstance": {
       "title": "Crear una instancia nueva",
-      "description": "",
+      "description": "Dale a la instancia un nombre que puedas reconocer, como \"Mi Bot de Minecraft\".",
       "form": {
         "friendlyName": {
           "label": "Nombre descriptivo",
@@ -67,11 +74,26 @@
         "error": "Error al crear la instancia"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplicar instancia",
+      "description": "Crea una nueva instancia usando el perfil de \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "El nombre de la instancia duplicada."
+        },
+        "duplicate": "Duplicar"
+      },
+      "duplicateToast": {
+        "loading": "Duplicando instancia...",
+        "success": "Instancia duplicada correctamente",
+        "error": "Error al duplicar la instancia"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Desde archivo",
         "fromUrl": "Desde URL",
-        "firstClipboardItem": "Había varios elementos en el portapapeles, solo se usará el primero.",
+        "firstClipboardItem": "El portapapeles contiene varios elementos. SoulFire usará el primer elemento.",
         "fromClipboard": "Desde portapapeles",
         "textarea": {
           "placeholder": "Pon el texto aquí...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Cargar desde URL hará que el servidor SoulFire realice una solicitud GET al servidor objetivo y use la respuesta como datos.",
+        "description": "El servidor SoulFire envía una solicitud GET a esta URL e importa la respuesta.",
         "form": {
           "url": {
             "placeholder": "Pon la URL aquí...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Iniciar",
-    "resume": "Reanudar",
-    "pause": "Pausar",
     "stop": "Detener",
+    "startAll": "Iniciar todo",
+    "stopAll": "Detener todo",
+    "restart": "Reiniciar",
+    "startCount": "Número de bots a iniciar",
     "startToast": {
-      "loading": "Iniciando sesión...",
-      "success": "Sesión iniciada correctamente",
-      "error": "Error al iniciar la sesión"
+      "loading": "Iniciando bots...",
+      "success": "Estado del bot actualizado",
+      "error": "Error al iniciar bots"
     },
-    "resumeToast": {
-      "loading": "Reanudando sesión...",
-      "success": "Sesión reanudada con éxito",
-      "error": "Error al reanudar la sesión"
-    },
-    "pauseToast": {
-      "loading": "Pausando sesión...",
-      "success": "Sesión pausada correctamente.",
-      "error": "Error al pausar la sesión."
+    "restartToast": {
+      "loading": "Reiniciando bots...",
+      "success": "Los bots se están reconectando",
+      "error": "Error al reiniciar bots"
     },
     "stopToast": {
-      "loading": "Deteniendo sesión...",
-      "success": "Sesión detenida correctamente.",
-      "error": "Error al detener la sesión."
-    },
-    "accountWarning": {
-      "noAccountsTitle": "No hay cuentas configuradas",
-      "noAccountsDescription": "Debes importar cuentas antes de iniciar una sesión. Has solicitado {{required}} bots.",
-      "notEnoughTitle": "No hay suficientes cuentas",
-      "notEnoughDescription": "Has solicitado {{required}} bots pero solo tienes {{available}} cuentas importadas.",
-      "hint": "Puedes generar cuentas offline o importar cuentas desde la página de Configuración de Cuenta.",
-      "continueWithExisting": "Continuar con {{count}} cuentas",
-      "generateAccounts": "Generar cuentas"
+      "loading": "Deteniendo bots...",
+      "success": "Los bots se están deteniendo",
+      "error": "Error al detener bots"
     }
   },
+  "botFleetSummary": "{{online}} en línea · {{desired}} deseados · {{total}} total",
   "icon": {
     "invalidName": "Nombre de icono inválido: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Añadir",
       "remove": "Eliminar"
     },
+    "combo": {
+      "searchPlaceholder": "Buscar valor..."
+    },
     "invalidNumberToast": {
-      "title": "¡Número inválido!",
+      "title": "Número inválido",
       "description": "El valor debe estar entre {{min}} y {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Parece que no hay registros para mostrar; ¡prueba a ejecutar algún comando!",
+    "noLogs": "Aún no hay registros. Ejecuta un comando para generar la salida de registro.",
     "demo-1": "¡Bienvenido al modo demo! 🧪",
     "demo-2": "Esta es una instancia de SoulFire de solo lectura",
     "demo-3": "Explora todos los menús y funciones antes de decidir instalar SoulFire :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Mostrar/Ocultar barra lateral"
+  },
+  "window": {
+    "minimize": "Minimizar",
+    "minimizeLabel": "Minimizar ventana",
+    "maximize": "Maximizar",
+    "maximizeLabel": "Maximizar ventana",
+    "restore": "Restaurar",
+    "restoreLabel": "Restaurar ventana",
+    "close": "Cerrar",
+    "closeLabel": "Cerrar ventana",
+    "back": "Volver",
+    "backLabel": "Regresar",
+    "forward": "Adelante",
+    "forwardLabel": "Ir adelante"
+  },
+  "infoButton": {
+    "showInfo": "Mostrar info"
   },
   "castMenu": {
     "title": "Emitir",
@@ -333,6 +364,7 @@
     },
     "configDir": "Directorio de configuración",
     "dataDir": "Directorio de datos",
+    "supportSoulFire": "Apoyar SoulFire",
     "about": "Acerca de",
     "logOut": "Cerrar Sesión",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Documentación",
-    "supportSoulFire": "Invítame a un café",
+    "supportSoulFire": "Apoyar SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "Acceso WebDAV",
-      "description": "SoulFire te permite acceder a archivos de instancia, scripts y otros utilizando el protocolo WebDAV.",
+      "description": "WebDAV proporciona acceso a los archivos de la instancia, scripts y otros archivos.",
       "publicAddress": "Dirección pública WebDAV",
       "personalToken": "Token WebDAV personal",
-      "securityWarning": "Tu token personal de WebDAV es muy importante. No lo compartas con nadie. Se utiliza para autenticarte al acceder a tus archivos. Úsalo como tu contraseña WebDAV al conectarte. El nombre de usuario no es necesario; si se solicita, puedes usar cualquier valor (por ejemplo: 'soulfire').",
-      "addressDescription": "Esta es la dirección que necesitas para acceder a tus archivos. A veces necesitarás usar dav:// o davs:// en vez de http(s)://."
+      "securityWarning": "Mantén tu token personal de WebDAV en secreto. Otorga acceso a tus archivos. Usa el token como tu contraseña de WebDAV. No necesitas un nombre de usuario. Si tu aplicación lo requiere, ingresa cualquier valor, como 'soulfire'.",
+      "addressDescription": "Usa esta dirección para acceder a tus archivos. Algunos clientes requieren dav:// o davs:// en lugar de http:// o https://."
     },
     "api": {
       "title": "Acceso API",
-      "description": "La API HTTP gRPC de SoulFire te permite interactuar programáticamente con tus instancias mediante solicitudes web.",
+      "description": "La API HTTP gRPC de SoulFire gestiona instancias mediante solicitudes web.",
       "publicAddress": "Dirección pública de API",
       "personalToken": "Token de API personal",
-      "securityWarning": "Tu token personal de API es muy importante. No lo compartas con nadie. Se utiliza para autenticarte al acceder a la API.",
-      "addressDescription": "Esta es la dirección que necesitas para acceder a la API."
+      "securityWarning": "Mantén tu token personal de API en secreto. Otorga acceso a la API.",
+      "addressDescription": "Usa esta dirección para acceder a la API."
     },
     "token": {
       "generate": "Generar token",
@@ -443,6 +475,8 @@
     "searchUsers": "Buscar usuarios...",
     "searchTimestamps": "Buscar marcas de tiempo...",
     "executedCommand": "Comando ejecutado: {{data}}",
+    "changedBotDesiredState": "Estado deseado del bot cambiado",
+    "restartedBots": "Bots reiniciados",
     "contextMenu": {
       "copyUsername": "Copiar nombre de usuario",
       "copyCommand": "Copiar comando"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Los nombres de scripts deben tener al menos 3 caracteres",
           "max": "Los nombres de scripts deben tener como máximo 32 caracteres",
-          "regex": "Los nombres de scripts deben estar en minúscula, empezar con un carácter alfanumérico seguido de más caracteres alfanuméricos o guiones, y terminar con un carácter alfanumérico.",
+          "regex": "Usa letras minúsculas, números y guiones. El nombre debe comenzar y terminar con una letra o un número.",
           "label": "Nombre",
           "placeholder": "Mi Script",
           "description": "El nombre del script."
         },
         "elevatedPermissions": {
           "label": "Permisos elevados",
-          "description": "Si el script debe ejecutarse con permisos elevados. Solo los administradores pueden habilitar esta opción."
+          "description": "El script se ejecuta con permisos elevados. Solo los administradores pueden habilitar esta opción."
         }
       }
     },
     "addScriptDialog": {
       "title": "Agregar un nuevo script",
-      "description": "Los scripts son pequeños programas que se ejecutan en el servidor SoulFire. Pueden usarse para automatizar tareas, crear comportamientos personalizados y más.",
+      "description": "Los scripts son pequeños programas que automatizan tareas y otras acciones en el servidor SoulFire.",
       "form": {
         "cancel": "Cancelar",
         "add": "Añadir"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Ir a la instancia",
+      "duplicateInstance": "Duplicar instancia",
       "copyInstanceId": "Copiar ID de instancia",
       "copyInstanceName": "Copiar nombre de instancia",
       "deleteInstance": "Eliminar instancia"

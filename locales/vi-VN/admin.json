@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Vai trò",
+          "placeholder": "Chọn vai trò",
           "description": "Vai trò của người dùng. Quản trị viên có thể quản lý người dùng và tất cả các phiên bản. Người dùng chỉ được phép quản lý phiên bản của riêng mình.",
           "user": "Người dùng",
           "admin": "Quản trị viên"
@@ -114,8 +115,8 @@
       "actions": "Hành động",
       "searchUsernames": "Tìm kiếm tên người dùng...",
       "searchEmails": "Tìm kiếm email...",
-      "searchCreatedAts": "Tìm kiếm ngày tạo...",
-      "searchMinIssuedAts": "Tìm kiếm thời gian cấp phát tối thiểu..."
+      "searchCreatedAts": "Tìm ngày tạo...",
+      "searchMinIssuedAts": "Tìm ngày đăng nhập tối thiểu..."
     },
     "removeSelectedTooltip": "Xóa người dùng đã chọn",
     "logOutSelectedTooltip": "Đăng xuất người dùng đã chọn",

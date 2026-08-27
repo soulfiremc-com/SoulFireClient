@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Rå instansutdata finns tillgänglig här när du behöver inspektera konsoldetaljer.",
+    "summary": {
+      "accounts": "Konton",
+      "proxies": "Proxies",
+      "configured": "{{count}} konfigurerade",
+      "configuredShort": "Konfigurerad",
+      "currentRate": "Aktuell takt",
+      "imported": "Importerad"
+    },
+    "readiness": {
+      "title": "Installation",
+      "accounts": "Konton",
+      "accountsValue": "{{count}} importerade för {{requested}} efterfrågade bottar",
+      "proxies": "Proxies",
+      "proxiesValue": "{{count}} konfigurerade",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} tillgängliga"
+    },
+    "activity": {
+      "title": "Aktivitet",
+      "tick": "Tick",
+      "health": "Hälsa",
+      "world": "Värld",
+      "worldValue": "{{chunks}} regioner, {{entities}} enheter",
+      "connections": "Anslutningar",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Mätvärden",
+      "noDataDescription": "Inga prestandamätningar ännu."
+    },
+    "metricsUnavailable": {
+      "title": "Mätvärden",
+      "inactive": "Starta en bot för att samla in live-mätvärden.",
+      "noPermission": "Du har inte behörighet att visa bott-mätvärden."
+    },
+    "status": {
+      "ready": "Klar",
+      "attention": "Behöver uppmärksamhet",
+      "configured": "Konfigurerad",
+      "optional": "Valfritt",
+      "available": "Tillgänglig",
+      "none": "Ingen"
+    },
+    "actions": {
+      "manage": "Hantera",
+      "open": "Öppna"
+    },
+    "spotlight": {
+      "noBots": "Inga bottar är konfigurerade än.",
+      "idle": "Overksam, väntar på instruktioner.",
+      "level": "Nivå {{level}}"
+    },
+    "liveFeed": {
+      "title": "Liveflöde",
+      "empty": "Väntar på instansaktivitet...",
+      "noPermission": "Du har inte behörighet att visa liveflödet.",
+      "lifecycle": {
+        "connecting": "ansluter",
+        "connected": "ansluten",
+        "spawned": "gick med i spelet",
+        "died": "dog",
+        "respawned": "återuppstod",
+        "disconnected": "frånkopplad",
+        "unknown": "ändrade tillstånd"
+      }
+    },
+    "bots": {
+      "title": "Bottar",
+      "viewAll": "Visa alla {{total}} bottar",
+      "viewAllShort": "Visa alla"
+    },
+    "timeline": {
+      "title": "Aktivitet",
+      "viewAll": "Visa alla",
+      "empty": "Ingen aktivitet har registrerats än.",
+      "noPermission": "Du har inte behörighet att visa granskningsloggen.",
+      "types": {
+        "executeCommand": "körde ett kommando: {{data}}",
+        "botDesiredStateChange": "ändrade önskat tillstånd för bot",
+        "botRestart": "startade om bottar",
+        "unknown": "utförde en åtgärd"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "Inga tillägg rapporterar statistik än.",
+      "noPermission": "Du har inte behörighet att se tilläggsstatistik.",
+      "active": "Aktiv",
+      "activeBots": "{{count}} aktiva bottar",
+      "uptime": "uppe i {{time}}"
+    },
+    "detailed": {
+      "title": "Detaljerade mätvärden",
+      "composition": "Världssammansättning"
+    }
+  },
   "proxy": {
     "getProxies": "Hämta proxies",
     "addProxies": "Lägg till proxies",
@@ -55,8 +151,8 @@
       "deleteProxy": "Ta bort proxy"
     },
     "postImportCheckDialog": {
-      "title": "Kontrollera proxysar?",
-      "description": "Du har just importerat {{count}} proxysar. Vill du kontrollera dem nu? Ogiltiga proxysar tas bort automatiskt.",
+      "title": "Vill du kontrollera importerade proxys?",
+      "description": "Du importerade {{count}} proxys. Vill du kontrollera dem nu? SoulFire tar automatiskt bort ogiltiga proxys.",
       "confirm": "Kontrollera proxysar",
       "skip": "Hoppa över"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Inga konton att importera"
     },
     "unknownError": "Okänt fel",
+    "types": {
+      "OFFLINE": "Offline",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (autentiseringsuppgifter)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (enhetskod)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (uppfriskningstoken)",
+      "MICROSOFT_JAVA_COOKIES": "Java (kakor)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (åtkomsttoken)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (autentiseringsuppgifter)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (enhetskod)"
+    },
     "deviceCodeImportToast": {
       "loading": "Importerar konto...",
       "success": "Konto importerat!",
@@ -93,9 +200,9 @@
       "description": "Generera offline Java-konton med ett anpassat namnmönster.",
       "amount": "Antal",
       "nameFormat": "Namnformat",
-      "nameFormatHelp": "Använd %d som platshållare för kontonumret (t.ex. Bot_%d blir Bot_1, Bot_2, osv.)",
+      "nameFormatHelp": "Använd %d för kontonumret. Till exempel skapar Bot_%d namn som Bot_1 och Bot_2.",
       "mode": "Befintliga konton",
-      "modeHelp": "Välj hur du vill hantera befintliga konton:\n\n• Ignorera befintliga: Skapar endast konton med namn som inte redan finns. Alla befintliga konton lämnas oförändrade.\n\n• Ersätt befintliga: Skapar alla konton och ersätter de befintliga som har samma UUID. Andra konton behålls.\n\n• Ersätt alla: Tar bort ALLA befintliga konton och ersätter dem med de skapade kontona.",
+      "modeHelp": "Välj hur du vill hantera befintliga konton:\n\n• Ignorera befintliga: Generera bara konton med nya namn. Behåll alla befintliga konton.\n\n• Ersätt befintliga: Generera alla efterfrågade konton. Ersätt konton med matchande UUID. Behåll alla andra konton.\n\n• Ersätt alla: Ta bort alla befintliga konton. Lägg sedan till de genererade kontona.",
       "modeIgnoreExisting": "Ignorera befintliga",
       "modeReplaceExisting": "Ersätt befintliga",
       "modeReplaceAll": "Ersätt alla",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft Uppfriskningstoken",
       "microsoftCookies": "Microsoft-cookies.",
       "microsoftAccessToken": "Microsoft-åtkomsttoken",
+      "theAltening": "TheAltening-tokenen",
       "altProviders": "Alternativa leverantörer",
       "dialog": {
         "title": "Importera {{type}} konton",
@@ -149,7 +257,21 @@
       "description": "Konfigurera inställningar per bot för detta konto",
       "openButton": "Konfigurera konto",
       "pageTitle": "{{name}} - {{page}} Inställningar",
-      "noSettings": "Inga inställningar tillgängliga för denna sida"
+      "noSettings": "Inga inställningar tillgängliga för denna sida",
+      "search": "Sökinställningar",
+      "overrides": "Åsidosättningar",
+      "allSettings": "Alla inställningar",
+      "noOverrides": "Den här boten har ännu inga explicita åsidosättningar.",
+      "noOverridesMatching": "Inga åsidosättningar matchar denna sökning.",
+      "noOverridesHelp": "Öppna Alla inställningar för att ärva värden eller skapa den första bot-specifika åsidosättningen.",
+      "tryDifferentSearch": "Försök med ett annat sökord.",
+      "openAllSettings": "Öppna alla inställningar",
+      "selectPage": "Välj en inställningssida",
+      "noSearchResults": "Inga inställningar matchar denna sökning.",
+      "matchesInheritedValue": "Matchar ärvt värde",
+      "instanceValue": "Instansvärde",
+      "defaultValue": "Standardvärde",
+      "resetOverride": "Återställ överskridande"
     },
     "deviceCodeConfirmDialog": {
       "title": "Enhetskodautentisering",
@@ -183,7 +305,7 @@
       "purchasing": "Köper...",
       "purchaseSuccess": "Köpte {{count}} konto(n), importerar...",
       "purchaseError": "Köp misslyckades: {{message}}",
-      "networkError": "Kunde inte ansluta till Ravealts API",
+      "networkError": "Anslutningen till Ravealts API misslyckades",
       "outOfStock": "Vald typ är slut i lager",
       "insufficientBalance": "Inte tillräckligt med krediter",
       "rateLimited": "Hastighetsbegränsad, försök igen senare"
@@ -231,7 +353,30 @@
     "online": "Online",
     "offline": "Offline",
     "notJoined": "Inte ansluten",
+    "connectionPhase": {
+      "connecting": "Ansluter",
+      "connected": "Ansluten",
+      "spawned": "Online",
+      "died": "Död",
+      "disconnected": "Offline",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Startar",
+      "running": "Kör",
+      "retrying": "Försöker igen",
+      "stopping": "Stoppar",
+      "failed": "Misslyckades",
+      "waiting": "Väntar",
+      "stopped": "Stoppad"
+    },
     "backToBots": "Tillbaka till Botar",
+    "tabs": {
+      "overview": "Översikt",
+      "inventory": "Inventory",
+      "controls": "Kontroller",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Kommer snart",
     "terminalPanel": {
       "title": "Botterminal"
@@ -362,11 +507,74 @@
       "offline": "Bot är offline. Dialoger är endast tillgängliga när boten är ansluten."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Ingen data"
+    },
+    "summary": {
+      "online": "Online",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "Trafik",
+      "health": "Hälsa",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots online",
+      "online": "Online",
+      "total": "Totalt"
+    },
+    "packets": {
+      "title": "Pakets / sekund",
+      "sent": "Skickat/s",
+      "received": "Mottaget/s"
+    },
+    "bandwidth": {
+      "title": "Bandbredd",
+      "upload": "Uppladdning",
+      "download": "Nedladdning"
+    },
+    "tick": {
+      "title": "Ticklängd",
+      "avg": "Genomsnitt (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Hälsa / Mat",
+      "health": "Genomsnittlig hälsa",
+      "food": "Genomsnittlig mat"
+    },
+    "chunksEntities": {
+      "title": "Chunker / Enheter",
+      "chunks": "Chunker",
+      "entities": "Enheter"
+    },
+    "connections": {
+      "title": "Anslutningshändelser",
+      "connections": "Anslutningar",
+      "disconnections": "Frånkopplingar"
+    },
+    "healthDistribution": {
+      "title": "Hälsofördelning",
+      "bots": "Bottar"
+    },
+    "dimensions": {
+      "title": "Dimensioner",
+      "bots": "Bottar"
+    },
+    "gameModes": {
+      "title": "Spellägen",
+      "bots": "Bottar"
+    },
+    "positions": {
+      "title": "Bottars positioner (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Visuella skript",
     "description": "Skapa automationsskript med en visuell nodbaserad editor.",
     "experimentalTitle": "Experimentell funktion",
-    "experimentalWarning": "Den här funktionen är experimentell. Det kan komma att ske förändringar som bryter bakåtkompatibilitet i framtiden och befintliga skript kan sluta fungera. Använd med försiktighet.",
+    "experimentalWarning": "Den här funktionen är experimentell. Framtida uppdateringar kan förstöra befintliga skript. Använd med försiktighet.",
     "createScript": "Skapa skript",
     "createScriptTitle": "Skapa nytt skript",
     "createScriptDescription": "Skapa ett nytt visuellt skript för denna instans. Skript kan automatisera bottåtgärder och svara på händelser.",
@@ -430,6 +638,7 @@
         "pause": "Pausa",
         "pauseTooltip": "Pausa skriptkörning",
         "unsaved": "Ej sparad",
+        "unsavedChanges": "Osparade ändringar",
         "clearCanvas": "Rensa arbetsyta",
         "zoomIn": "Zooma in",
         "zoomOut": "Zooma ut",
@@ -462,6 +671,64 @@
         "showPreview": "Visa förhandsgranskning",
         "hidePreview": "Dölj förhandsgranskning",
         "delete": "Ta bort"
+      },
+      "node": {
+        "expand": "Expandera nod",
+        "collapse": "Dra ihop nod"
+      },
+      "debug": {
+        "copyValue": "Kopiera aktuellt värde",
+        "clearHistory": "Rensa historik"
+      },
+      "edge": {
+        "direction": "Kantens riktning"
+      },
+      "note": {
+        "placeholder": "Skriv en anteckning..."
+      },
+      "complexity": {
+        "title": "Skriptkomplexitetspoäng"
+      },
+      "group": {
+        "returnToRoot": "Återgå till rotnivån (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Snabbmeny för att lägga till nod",
+        "searchPlaceholder": "Sök noder..."
+      },
+      "diff": {
+        "tooltip": "Granska ändringar"
+      },
+      "dryRun": {
+        "tooltip": "Testkörning",
+        "title": "Testkör skript",
+        "description": "Kör ett skript från en vald trigger med simulerad indata.",
+        "triggerNode": "Trigger-nod",
+        "selectTrigger": "Välj en trigger...",
+        "triggerDescription": "Välj trigger-noden att köra med simulerade indata.",
+        "mockInputs": "Simulerad indata",
+        "valuePlaceholder": "{{type}}-värde",
+        "start": "Starta testkörning"
+      },
+      "quotas": {
+        "tooltip": "Skriptkvoter",
+        "title": "Skriptkvoter",
+        "description": "Konfigurera resursgränser för detta skript. Tomma fält använder serverns standardvärden.",
+        "maxExecutionCount": "Maximalt antal körningar",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Maximalt antal node-körningar per triggeranrop",
+        "maxExecutionTime": "Maximal körtid (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Maximal verklig tid per triggerkörning",
+        "maxConcurrentTriggers": "Maximalt antal samtidiga triggers",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maximalt antal samtidiga triggeranrop",
+        "maxStateStoreEntries": "Maximalt antal poster i lagringsutrymmet",
+        "maxStateStoreEntriesPlaceholder": "Obegränsad",
+        "maxStateStoreEntriesDescription": "Maximalt antal poster i skriptets lagringsutrymme",
+        "disableTimeouts": "Inaktivera timeout",
+        "disableTimeoutsDescription": "Inaktiverar timeout för varje nod och datakant",
+        "save": "Spara kvoter"
       }
     }
   }

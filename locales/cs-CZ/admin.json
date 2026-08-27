@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Role",
+          "placeholder": "Vyberte roli",
           "description": "Role uživatele. Správci mohou spravovat uživatele a všechny instance. Uživatelé mohou spravovat pouze své vlastní instance.",
           "user": "Uživatel",
           "admin": "Admin"
@@ -114,8 +115,8 @@
       "actions": "Akce",
       "searchUsernames": "Hledat uživatelská jména...",
       "searchEmails": "Hledat e-maily...",
-      "searchCreatedAts": "Hledat datum vytvoření...",
-      "searchMinIssuedAts": "Hledat minimální datum vydání..."
+      "searchCreatedAts": "Hledat data vytvoření...",
+      "searchMinIssuedAts": "Hledat minimální data přihlášení..."
     },
     "removeSelectedTooltip": "Odstranit vybrané uživatele",
     "logOutSelectedTooltip": "Odhlásit vybrané uživatele",

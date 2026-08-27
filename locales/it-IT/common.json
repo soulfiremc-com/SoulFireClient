@@ -8,7 +8,7 @@
     "noAddressOrToken": "Nessun indirizzo server o token trovato",
     "page": {
       "title": "Errore",
-      "description": "Si è verificato un errore durante il caricamento della pagina. Puoi trovare maggiori informazioni nella console.",
+      "description": "La pagina non è stata caricata. Apri la console per maggiori informazioni.",
       "logOut": "Disconnetti",
       "reloadPage": "Ricarica pagina",
       "showDetails": "Mostra dettagli"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Non trovato",
-      "description": "Non è stato possibile trovare una pagina in questa posizione",
+      "description": "Non esiste una pagina a questo indirizzo",
       "logOut": "Disconnetti",
       "reloadPage": "Ricarica pagina"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Chiudi"
     },
+    "support": {
+      "title": "Supporta SoulFire",
+      "description": "SoulFire è gratuito e open-source, creato con amore dalla comunità.",
+      "body": "Se SoulFire ti è stato utile, ti preghiamo di considerare di sostenere il progetto. Il tuo contributo aiuta a coprire i costi dei server, finanziare lo sviluppo e mantenere SoulFire gratuito per tutti.",
+      "dismiss": "Forse più tardi",
+      "action": "Supporta SoulFire"
+    },
     "createInstance": {
       "title": "Crea una nuova istanza",
-      "description": "Le istanze hanno bisogno di nomi descrittivi per distinguerle. Può essere qualsiasi nome, ad esempio, \"Il mio Bot Minecraft\".",
+      "description": "Dai all'istanza un nome che puoi riconoscere, come \"Il mio Bot Minecraft\".",
       "form": {
         "friendlyName": {
           "label": "Nome descrittivo",
@@ -67,11 +74,26 @@
         "error": "Impossibile creare l'istanza"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplica istanza",
+      "description": "Crea una nuova istanza utilizzando il profilo di \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Il nome per l'istanza duplicata."
+        },
+        "duplicate": "Duplica"
+      },
+      "duplicateToast": {
+        "loading": "Duplicazione dell'istanza in corso...",
+        "success": "Istanza duplicata con successo",
+        "error": "Impossibile duplicare l'istanza"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Da file",
         "fromUrl": "Da URL",
-        "firstClipboardItem": "Avevi più elementi negli appunti, verrà utilizzato solo il primo.",
+        "firstClipboardItem": "Gli appunti contengono più elementi. SoulFire utilizzerà il primo elemento.",
         "fromClipboard": "Da appunti",
         "textarea": {
           "placeholder": "Inserisci testo qui...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Caricare da URL farà sì che il server SoulFire effettui una richiesta GET al server di destinazione e utilizzi la risposta come dati.",
+        "description": "Il server SoulFire invia una richiesta GET a questo URL e importa la risposta.",
         "form": {
           "url": {
             "placeholder": "Inserisci URL qui...",
@@ -103,26 +125,27 @@
   "controls": {
     "start": "Avvia",
     "stop": "Ferma",
-    "startAll": "Avvia tutti",
+    "startAll": "Avvia tutti i bot.",
     "stopAll": "Ferma tutti",
     "restart": "Riavvia",
     "startCount": "Numero di bot da avviare",
     "startToast": {
-      "loading": "Avvio dei bot...",
-      "success": "Stato dei bot aggiornato",
+      "loading": "Avvio dei bot in corso...",
+      "success": "Stato del bot aggiornato",
       "error": "Impossibile avviare i bot"
     },
     "restartToast": {
-      "loading": "Riavvio dei bot...",
-      "success": "I bot si stanno riconnettendo",
+      "loading": "Riavvio dei bot in corso...",
+      "success": "I bot si stanno ricollegando",
       "error": "Impossibile riavviare i bot"
     },
     "stopToast": {
-      "loading": "Arresto dei bot...",
-      "success": "I bot si stanno arrestando",
-      "error": "Impossibile arrestare i bot"
+      "loading": "Arresto dei bot in corso...",
+      "success": "I bot si stanno fermando",
+      "error": "Impossibile fermare i bot"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} desiderati · {{total}} totali",
   "icon": {
     "invalidName": "Nome icona non valido: {{name}}"
   },
@@ -218,13 +241,16 @@
       "add": "Aggiungi",
       "remove": "Rimuovi"
     },
+    "combo": {
+      "searchPlaceholder": "Cerca valore..."
+    },
     "invalidNumberToast": {
-      "title": "Numero non valido!",
+      "title": "Numero non valido",
       "description": "Il valore deve essere compreso tra {{min}} e {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Sembra che non ci siano log da mostrare; prova ad eseguire qualche comando!",
+    "noLogs": "Nessun log presente. Esegui un comando per generare l'output del log.",
     "demo-1": "Benvenuto nella modalità demo! 🧪",
     "demo-2": "Questa è un'istanza in sola lettura di SoulFire",
     "demo-3": "Esplora tutti i menu e le funzionalità prima di decidere di installare SoulFire :D",
@@ -241,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Mostra/Nascondi barra laterale"
+  },
+  "window": {
+    "minimize": "Minimizza",
+    "minimizeLabel": "Minimizza finestra",
+    "maximize": "Massimizza",
+    "maximizeLabel": "Massimizza finestra",
+    "restore": "Ripristina",
+    "restoreLabel": "Ripristina finestra",
+    "close": "Chiudi",
+    "closeLabel": "Chiudi finestra",
+    "back": "Indietro",
+    "backLabel": "Torna indietro",
+    "forward": "Avanti",
+    "forwardLabel": "Vai avanti"
+  },
+  "infoButton": {
+    "showInfo": "Mostra info"
   },
   "castMenu": {
     "title": "Trasmetti",
@@ -321,6 +364,7 @@
     },
     "configDir": "Cartella configurazione",
     "dataDir": "Cartella dati",
+    "supportSoulFire": "Supporta SoulFire",
     "about": "Informazioni",
     "logOut": "Disconnetti",
     "logOutToast": {
@@ -334,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Documentazione",
-    "supportSoulFire": "Offrimi un caffè",
+    "supportSoulFire": "Supporta SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -366,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "Accesso WebDAV",
-      "description": "SoulFire ti permette di accedere a file di istanze, script e altri file tramite il protocollo WebDAV.",
+      "description": "WebDAV fornisce l'accesso ai file delle istanze, agli script e ad altri file.",
       "publicAddress": "Indirizzo WebDAV pubblico",
       "personalToken": "Token WebDAV personale",
-      "securityWarning": "Il tuo Token WebDAV personale è molto importante. Non condividerlo con nessuno. Viene utilizzato per autenticarti quando accedi ai tuoi file. Usalo come password WebDAV quando ti connetti. Il nome utente non è richiesto, se ti viene richiesto puoi usare qualsiasi valore (ad es. 'soulfire')",
-      "addressDescription": "Questo è l'indirizzo che devi utilizzare per accedere ai tuoi file. A volte devi usare dav:// o davs:// invece di http(s)://."
+      "securityWarning": "Tieni il token WebDAV personale segreto. Concede l'accesso ai tuoi file. Usa il token come password WebDAV. Non è necessario un nome utente. Se la tua applicazione ne richiede uno, inserisci un valore qualsiasi, ad esempio 'soulfire'.",
+      "addressDescription": "Usa questo indirizzo per accedere ai tuoi file. Alcuni client richiedono dav:// o davs:// invece di http:// o https://."
     },
     "api": {
       "title": "Accesso API",
-      "description": "L'API HTTP gRPC di SoulFire ti consente di interagire con le tue istanze in modo programmato tramite richieste web.",
+      "description": "L'API HTTP gRPC di SoulFire gestisce le istanze tramite richieste web.",
       "publicAddress": "Indirizzo API pubblico",
       "personalToken": "Token API personale",
-      "securityWarning": "Il tuo Token API personale è molto importante. Non condividerlo con nessuno. Viene utilizzato per autenticarti quando accedi all'API.",
-      "addressDescription": "Questo è l'indirizzo che devi utilizzare per accedere all'API."
+      "securityWarning": "Tieni il tuo token API personale segreto. Concede l'accesso all'API.",
+      "addressDescription": "Usa questo indirizzo per accedere all'API."
     },
     "token": {
       "generate": "Genera token",
@@ -431,6 +475,8 @@
     "searchUsers": "Cerca utenti...",
     "searchTimestamps": "Cerca timestamp...",
     "executedCommand": "Comando eseguito: {{data}}",
+    "changedBotDesiredState": "Modificato lo stato desiderato del bot",
+    "restartedBots": "Bot riavviati",
     "contextMenu": {
       "copyUsername": "Copia nome utente",
       "copyCommand": "Copia comando"
@@ -445,20 +491,20 @@
         "scriptName": {
           "min": "I nomi degli script devono essere lunghi almeno 3 caratteri",
           "max": "I nomi degli script devono essere al massimo di 32 caratteri",
-          "regex": "I nomi degli script devono essere in minuscolo, iniziare con un carattere alfanumerico, seguiti da altri caratteri alfanumerici o trattini e terminare con un carattere alfanumerico.",
+          "regex": "Usa lettere minuscole, numeri e trattini. Il nome deve iniziare e terminare con una lettera o un numero.",
           "label": "Nome",
           "placeholder": "Il mio Script",
           "description": "Il nome dello script."
         },
         "elevatedPermissions": {
           "label": "Permessi elevati",
-          "description": "Se lo script deve essere eseguito con permessi elevati. Solo gli admin possono abilitare questa opzione."
+          "description": "Lo script viene eseguito con permessi elevati. Solo gli amministratori possono abilitare questa opzione."
         }
       }
     },
     "addScriptDialog": {
       "title": "Aggiungi un nuovo script",
-      "description": "Gli script sono piccoli programmi che vengono eseguiti sul server SoulFire. Possono essere usati per automatizzare attività, creare comportamenti personalizzati e altro.",
+      "description": "Gli script sono piccoli programmi che automatizzano compiti e altre azioni sul server SoulFire.",
       "form": {
         "cancel": "Annulla",
         "add": "Aggiungi"
@@ -506,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Vai all'istanza",
+      "duplicateInstance": "Duplica istanza",
       "copyInstanceId": "Copia ID istanza",
       "copyInstanceName": "Copia nome istanza",
       "deleteInstance": "Elimina istanza"

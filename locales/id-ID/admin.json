@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Peran",
+          "placeholder": "Pilih peran",
           "description": "Peran pengguna. Admin dapat mengelola pengguna dan semua instansi. Pengguna hanya dapat mengelola instansi mereka sendiri.",
           "user": "Pengguna",
           "admin": "Admin"
@@ -114,8 +115,8 @@
       "actions": "Aksi",
       "searchUsernames": "Cari nama pengguna...",
       "searchEmails": "Cari email...",
-      "searchCreatedAts": "Cari tanggal dibuat...",
-      "searchMinIssuedAts": "Cari tanggal minimum diterbitkan..."
+      "searchCreatedAts": "Cari tanggal pembuatan...",
+      "searchMinIssuedAts": "Cari tanggal login minimum..."
     },
     "removeSelectedTooltip": "Hapus pengguna yang dipilih",
     "logOutSelectedTooltip": "Keluar dari pengguna yang dipilih",

@@ -8,7 +8,7 @@
     "noAddressOrToken": "Palvelimen osoitetta tai tokenia ei löytynyt",
     "page": {
       "title": "Virhe",
-      "description": "Tapahtui virhe ladattaessa sivua. Lisätietoja löytyy konsolista.",
+      "description": "Sivu ei latautunut. Avaa konsoli saadaksesi lisätietoja.",
       "logOut": "Kirjaudu ulos",
       "reloadPage": "Lataa sivu uudelleen",
       "showDetails": "Näytä tiedot"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Ei löytynyt",
-      "description": "Sivua ei löytynyt tästä sijainnista",
+      "description": "Tällä osoitteella ei ole sivua",
       "logOut": "Kirjaudu ulos",
       "reloadPage": "Lataa sivu uudelleen"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Sulje"
     },
+    "support": {
+      "title": "Tue SoulFirea",
+      "description": "SoulFire on ilmainen ja avoimen lähdekoodin sovellus, jonka yhteisö on rakentanut rakkaudella.",
+      "body": "Jos SoulFiresta on ollut sinulle hyötyä, harkitse projektin tukemista. Panoksesi auttaa kattamaan palvelinkustannuksia, rahoittamaan kehitystä ja pitämään SoulFiren ilmaisena kaikille.",
+      "dismiss": "Ehkä myöhemmin",
+      "action": "Tue SoulFirea"
+    },
     "createInstance": {
       "title": "Luo uusi instanssi",
-      "description": "Instansseille tarvitaan selkokieliset nimet, jotta voit erottaa ne toisistaan. Voit käyttää mitä tahansa nimeä, esim. \"Oma Minecraft-bottini\".",
+      "description": "Anna instanssille nimi, jonka tunnistat, esimerkiksi \"Oma Minecraft-botti\".",
       "form": {
         "friendlyName": {
           "label": "Selkokielinen nimi",
@@ -67,11 +74,26 @@
         "error": "Instanssin luominen epäonnistui"
       }
     },
+    "duplicateInstance": {
+      "title": "Luo kopio instanssista",
+      "description": "Luo uusi instanssi käyttämällä profiilia kohteesta \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Kopioidun instanssin nimi."
+        },
+        "duplicate": "Monista"
+      },
+      "duplicateToast": {
+        "loading": "Kopioidaan instanssia...",
+        "success": "Instanssi kopioitu onnistuneesti",
+        "error": "Instanssin kopiointi epäonnistui"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Tiedostosta",
         "fromUrl": "URL-osoitteesta",
-        "firstClipboardItem": "Leikepöydällä oli useita kohteita, käytetään vain ensimmäistä.",
+        "firstClipboardItem": "Leikepöydällä on useita kohteita. SoulFire käyttää ensimmäistä kohdetta.",
         "fromClipboard": "Leikepöydältä",
         "textarea": {
           "placeholder": "Syötä teksti tähän...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Lataus URL-osoitteesta saa SoulFire-palvelimen tekemään GET-pyynnön kohdepalvelimelle ja käyttämään vastausta datana.",
+        "description": "SoulFire-palvelin lähettää GET-pyynnön tähän URL-osoitteeseen ja tuo vastauksen.",
         "form": {
           "url": {
             "placeholder": "Syötä URL-osoite tähän...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Aloita",
-    "resume": "Jatka",
-    "pause": "Tauota",
     "stop": "Pysäytä",
+    "startAll": "Käynnistä kaikki",
+    "stopAll": "Pysäytä kaikki",
+    "restart": "Käynnistä uudelleen",
+    "startCount": "Käynnistettävien bottien määrä",
     "startToast": {
-      "loading": "Istunto käynnistyy...",
-      "success": "Istunto käynnistyi onnistuneesti",
-      "error": "Istunnon käynnistäminen epäonnistui"
+      "loading": "Käynnistetään botteja...",
+      "success": "Botin tila päivitetty",
+      "error": "Bottien käynnistäminen epäonnistui"
     },
-    "resumeToast": {
-      "loading": "Istuntoa jatketaan...",
-      "success": "Istuntoa jatkettiin onnistuneesti",
-      "error": "Istunnon jatkaminen epäonnistui"
-    },
-    "pauseToast": {
-      "loading": "Istunto keskeytetään...",
-      "success": "Istunto keskeytettiin onnistuneesti",
-      "error": "Istunnon keskeyttäminen epäonnistui"
+    "restartToast": {
+      "loading": "Käynnistetään botteja uudelleen...",
+      "success": "Botit yhdistävät uudelleen",
+      "error": "Bottien uudelleenkäynnistys epäonnistui"
     },
     "stopToast": {
-      "loading": "Istuntoa pysäytetään...",
-      "success": "Istunto pysäytetty onnistuneesti",
-      "error": "Istunnon pysäyttäminen epäonnistui"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Yhtään tiliä ei ole asetettu",
-      "noAccountsDescription": "Sinun täytyy tuoda tilejä ennen istunnon aloittamista. Pyysit {{required}} bottia.",
-      "notEnoughTitle": "Tilejä ei tarpeeksi",
-      "notEnoughDescription": "Pyysit {{required}} bottia, mutta vain {{available}} tili(ä) on tuotu.",
-      "hint": "Voit luoda offline-tilejä tai tuoda tilejä Tili-asetukset -sivulta.",
-      "continueWithExisting": "Jatka {{count}} tilillä",
-      "generateAccounts": "Luo tilejä"
+      "loading": "Pysäytetään botteja...",
+      "success": "Botit pysäytetään",
+      "error": "Bottien pysäyttäminen epäonnistui"
     }
   },
+  "botFleetSummary": "{{online}} paikalla · {{desired}} tavoite · {{total}} yhteensä",
   "icon": {
     "invalidName": "Virheellinen kuvakkeen nimi: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Lisää",
       "remove": "Poista"
     },
+    "combo": {
+      "searchPlaceholder": "Hae arvoa..."
+    },
     "invalidNumberToast": {
-      "title": "Virheellinen numero!",
+      "title": "Virheellinen numero",
       "description": "Arvon tulee olla välillä {{min}} ja {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Näyttää siltä, että mitään lokia ei ole näytettävänä; kokeile suorittaa komentoja!",
+    "noLogs": "Ei vielä lokeja. Suorita komento luodaksesi lokitulosteen.",
     "demo-1": "Tervetuloa demotilaan! 🧪",
     "demo-2": "Tämä on SoulFiren vain-luku -instanssi",
     "demo-3": "Tutustu kaikkiin valikoihin ja ominaisuuksiin ennen kuin päätät asentaa SoulFiren :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Näytä/piilota sivupalkki"
+  },
+  "window": {
+    "minimize": "Pienennä",
+    "minimizeLabel": "Pienennä ikkuna",
+    "maximize": "Suurenna",
+    "maximizeLabel": "Suurenna ikkuna",
+    "restore": "Palauta",
+    "restoreLabel": "Palauta ikkuna",
+    "close": "Sulje",
+    "closeLabel": "Sulje ikkuna",
+    "back": "Takaisin",
+    "backLabel": "Mene takaisin",
+    "forward": "Eteenpäin",
+    "forwardLabel": "Mene eteenpäin"
+  },
+  "infoButton": {
+    "showInfo": "Näytä tiedot"
   },
   "castMenu": {
     "title": "Cast",
@@ -333,6 +364,7 @@
     },
     "configDir": "Asetuskansio",
     "dataDir": "Datakansio",
+    "supportSoulFire": "Tue SoulFirea",
     "about": "Tietoja",
     "logOut": "Kirjaudu ulos",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentaatio",
-    "supportSoulFire": "Osta minulle kahvi",
+    "supportSoulFire": "Tue SoulFirea",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV-pääsy",
-      "description": "SoulFire mahdollistaa instanssi-, skripti- ja muiden tiedostojen käytön WebDAV-protokollan avulla.",
+      "description": "WebDAV mahdollistaa pääsyn instanssin tiedostoihin, skripteihin ja muihin tiedostoihin.",
       "publicAddress": "Julkinen WebDAV-osoite",
       "personalToken": "Henkilökohtainen WebDAV-token",
-      "securityWarning": "Henkilökohtainen WebDAV-tokenisi on erittäin tärkeä. Älä jaa sitä kenellekään. Sitä käytetään sinun tunnistamiseen tiedostoihisi käsiksi pääsyssä. Käytä sitä WebDAV-salasananasi yhdistäessäsi. Käyttäjätunnusta ei tarvita, voit käyttää mitä tahansa arvoa jos sitä kysytään. (esim. 'soulfire')",
-      "addressDescription": "Tämä on osoite, jota sinun tulee käyttää tiedostoihisi käsiksi pääsyyn. Joskus sinun täytyy käyttää dav:// tai davs:// http(s):// sijaan."
+      "securityWarning": "Pidä henkilökohtainen WebDAV-tunnuksesi salassa. Se antaa pääsyn tiedostoihisi. Käytä tunnusta WebDAV-salasanana. Et tarvitse käyttäjätunnusta. Jos sovellus vaatii sellaisen, syötä mikä tahansa arvo, kuten 'soulfire'.",
+      "addressDescription": "Käytä tätä osoitetta päästäksesi tiedostoihisi. Jotkut asiakkaat vaativat dav:// tai davs:// http:// tai https:// sijaan."
     },
     "api": {
       "title": "API-pääsy",
-      "description": "SoulFiren gRPC HTTP API:n avulla voit käyttää instanssejasi ohjelmallisesti verkkopyyntöjen avulla.",
+      "description": "SoulFiren gRPC HTTP API hallinnoi instansseja verkkopyyntöjen avulla.",
       "publicAddress": "Julkinen API-osoite",
       "personalToken": "Henkilökohtainen API-token",
-      "securityWarning": "Henkilökohtainen API-tokenisi on erittäin tärkeä. Älä jaa sitä kenellekään. Sitä käytetään tunnistautumiseen API:lle käsiksi pääsyssä.",
-      "addressDescription": "Tämä on osoite, jota tarvitset API:lle käsiksi pääsyyn."
+      "securityWarning": "Pidä henkilökohtainen API-tunnuksesi salassa. Se antaa pääsyn APIin.",
+      "addressDescription": "Käytä tätä osoitetta APIin pääsemiseksi."
     },
     "token": {
       "generate": "Luo token",
@@ -443,6 +475,8 @@
     "searchUsers": "Etsi käyttäjiä...",
     "searchTimestamps": "Etsi aikaleimoja...",
     "executedCommand": "Suoritettiin komento: {{data}}",
+    "changedBotDesiredState": "Bottien tavoitetila muutettu",
+    "restartedBots": "Botit käynnistetty uudelleen",
     "contextMenu": {
       "copyUsername": "Kopioi käyttäjätunnus",
       "copyCommand": "Kopioi komento"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Skriptien nimen on oltava vähintään 3 merkkiä pitkä",
           "max": "Skriptien nimen on oltava enintään 32 merkkiä pitkä",
-          "regex": "Skriptin nimen tulee olla pienaakkosilla, alkaa aakkos- tai numeromerkillä, jonka jälkeen vain aakkos-/numeromerkkejä tai tavuviivoja, ja päättyä aakkos- tai numeromerkkiin.",
+          "regex": "Käytä pienaakkosia, numeroita ja väliviivoja. Nimen tulee alkaa ja päättyä kirjaimeen tai numeroon.",
           "label": "Nimi",
           "placeholder": "Oma skripti",
           "description": "Skriptin nimi."
         },
         "elevatedPermissions": {
           "label": "Korkeat oikeudet",
-          "description": "Suoritetaanko skripti korkein oikeuksin. Vain ylläpitäjät voivat ottaa tämän käyttöön."
+          "description": "Skripti suoritetaan korotetuilla oikeuksilla. Vain ylläpitäjät voivat ottaa tämän valinnan käyttöön."
         }
       }
     },
     "addScriptDialog": {
       "title": "Lisää uusi skripti",
-      "description": "Skriptit ovat pieniä ohjelmia, jotka suoritetaan SoulFire-palvelimella. Niitä voidaan käyttää tehtävien automatisointiin, oman toiminnan luomiseen ja muuhun.",
+      "description": "Skriptit ovat pienohjelmia, jotka automatisoivat tehtäviä ja muita toimintoja SoulFire-palvelimella.",
       "form": {
         "cancel": "Peruuta",
         "add": "Lisää"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Siirry instanssiin",
+      "duplicateInstance": "Kopioi instanssi",
       "copyInstanceId": "Kopioi instanssin tunnus",
       "copyInstanceName": "Kopioi instanssin nimi",
       "deleteInstance": "Poista instanssi"

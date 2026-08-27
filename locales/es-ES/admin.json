@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rol",
+          "placeholder": "Seleccione un rol",
           "description": "El rol del usuario; los administradores pueden administrar usuarios y todas las instancias, los usuarios solo pueden administrar sus propias instancias.",
           "user": "Usuario",
           "admin": "Admin"
@@ -115,7 +116,7 @@
       "searchUsernames": "Buscar nombres de usuario...",
       "searchEmails": "Buscar correos electrónicos...",
       "searchCreatedAts": "Buscar fechas de creación...",
-      "searchMinIssuedAts": "Buscar fechas mínimas de emisión..."
+      "searchMinIssuedAts": "Buscar fechas mínimas de inicio de sesión..."
     },
     "removeSelectedTooltip": "Eliminar usuarios seleccionados",
     "logOutSelectedTooltip": "Cerrar sesión de los usuarios seleccionados",

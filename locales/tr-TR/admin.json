@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rol",
+          "placeholder": "Bir rol seçin",
           "description": "Kullanıcının rolü. Yöneticiler kullanıcıları ve tüm örnekleri yönetebilir. Kullanıcılar yalnızca kendi örneklerini yönetebilir.",
           "user": "Kullanıcı",
           "admin": "Yönetici"
@@ -114,8 +115,8 @@
       "actions": "İşlemler",
       "searchUsernames": "Kullanıcı adlarında ara...",
       "searchEmails": "E-postalarda ara...",
-      "searchCreatedAts": "Oluşturulma tarihlerinde ara...",
-      "searchMinIssuedAts": "Minimum oluşturulma tarihlerinde ara..."
+      "searchCreatedAts": "Oluşturulma tarihlerini ara...",
+      "searchMinIssuedAts": "Minimum giriş tarihlerini ara..."
     },
     "removeSelectedTooltip": "Seçili kullanıcıları kaldır",
     "logOutSelectedTooltip": "Seçili kullanıcıların oturumunu kapat",

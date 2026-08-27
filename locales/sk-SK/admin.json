@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rola",
+          "placeholder": "Vyberte rolu",
           "description": "Rola používateľa. Správcovia môžu spravovať používateľov a všetky inštancie. Používatelia môžu spravovať iba svoje vlastné inštancie.",
           "user": "Používateľ",
           "admin": "Admin"
@@ -115,7 +116,7 @@
       "searchUsernames": "Hľadať používateľské mená...",
       "searchEmails": "Hľadať e‑mailové adresy...",
       "searchCreatedAts": "Hľadať dátumy vytvorenia...",
-      "searchMinIssuedAts": "Hľadať najskorší čas vydania..."
+      "searchMinIssuedAts": "Hľadať minimálne dátumy prihlásenia..."
     },
     "removeSelectedTooltip": "Odstrániť vybraných používateľov",
     "logOutSelectedTooltip": "Odhlásiť vybraných používateľov",

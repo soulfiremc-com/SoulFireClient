@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Ruolo",
+          "placeholder": "Seleziona un ruolo",
           "description": "Il ruolo dell'utente. Gli amministratori possono gestire utenti e tutte le istanze. Gli utenti possono gestire solo le proprie istanze.",
           "user": "Utente",
           "admin": "Admin"
@@ -114,8 +115,8 @@
       "actions": "Azioni",
       "searchUsernames": "Cerca nomi utente...",
       "searchEmails": "Cerca email...",
-      "searchCreatedAts": "Cerca date di creazione...",
-      "searchMinIssuedAts": "Cerca date di emissione minime..."
+      "searchCreatedAts": "Cerca per date di creazione...",
+      "searchMinIssuedAts": "Cerca per date minime di accesso..."
     },
     "removeSelectedTooltip": "Rimuovi utenti selezionati",
     "logOutSelectedTooltip": "Disconnetti utenti selezionati",

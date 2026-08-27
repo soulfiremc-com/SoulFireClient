@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "Konsol ayrıntılarını incelemeniz gerektiğinde ham örnek çıktısı burada mevcuttur.",
+    "summary": {
+      "accounts": "Hesaplar",
+      "proxies": "Proxyler",
+      "configured": "{{count}} yapılandırıldı",
+      "configuredShort": "Yapılandırıldı",
+      "currentRate": "Güncel oran",
+      "imported": "İçe aktarıldı"
+    },
+    "readiness": {
+      "title": "Kurulum",
+      "accounts": "Hesaplar",
+      "accountsValue": "{{requested}} istenen bot için {{count}} içe aktarıldı.",
+      "proxies": "Proxyler",
+      "proxiesValue": "{{count}} yapılandırıldı",
+      "plugins": "Eklentiler",
+      "pluginsValue": "{{count}} mevcut"
+    },
+    "activity": {
+      "title": "Aktivite",
+      "tick": "Tick",
+      "health": "Can",
+      "world": "Dünya",
+      "worldValue": "{{chunks}} parça, {{entities}} varlık",
+      "connections": "Bağlantılar",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Metrikler",
+      "noDataDescription": "Henüz çalışma zamanı metriği yok."
+    },
+    "metricsUnavailable": {
+      "title": "Metrikler",
+      "inactive": "Canlı metrikleri toplamak için bir bot başlatın.",
+      "noPermission": "Bot metriklerini görüntüleme izniniz yok."
+    },
+    "status": {
+      "ready": "Hazır",
+      "attention": "Dikkat gerekli",
+      "configured": "Yapılandırıldı",
+      "optional": "İsteğe bağlı",
+      "available": "Mevcut",
+      "none": "Yok"
+    },
+    "actions": {
+      "manage": "Yönet",
+      "open": "Aç"
+    },
+    "spotlight": {
+      "noBots": "Henüz bot yapılandırılmadı.",
+      "idle": "Boşta, talimat bekleniyor.",
+      "level": "Seviye {{level}}"
+    },
+    "liveFeed": {
+      "title": "Canlı akış",
+      "empty": "Instans etkinliği bekleniyor...",
+      "noPermission": "Canlı yayını görüntüleme izniniz yok.",
+      "lifecycle": {
+        "connecting": "bağlanıyor",
+        "connected": "bağlandı",
+        "spawned": "oyuna katıldı",
+        "died": "öldü",
+        "respawned": "yeniden doğdu",
+        "disconnected": "bağlantı kesildi",
+        "unknown": "durumu değişti"
+      }
+    },
+    "bots": {
+      "title": "Botlar",
+      "viewAll": "Tüm {{total}} botu görüntüle",
+      "viewAllShort": "Tümünü görüntüle"
+    },
+    "timeline": {
+      "title": "Aktivite",
+      "viewAll": "Tümünü görüntüle",
+      "empty": "Henüz kaydedilmiş bir aktivite yok.",
+      "noPermission": "Denetim günlüğünü görüntüleme izniniz yok.",
+      "types": {
+        "executeCommand": "bir komut çalıştırdı: {{data}}",
+        "botDesiredStateChange": "botun istenen durumu değiştirildi",
+        "botRestart": "botlar yeniden başlatıldı",
+        "unknown": "bir işlem gerçekleştirdi"
+      }
+    },
+    "plugins": {
+      "title": "Eklentiler",
+      "empty": "Henüz herhangi bir eklenti istatistik raporlamıyor.",
+      "noPermission": "Eklenti istatistiklerini görüntüleme izniniz yok.",
+      "active": "Aktif",
+      "activeBots": "{{count}} aktif bot",
+      "uptime": "{{time}} açık"
+    },
+    "detailed": {
+      "title": "Ayrıntılı metrikler",
+      "composition": "Dünya bileşimi"
+    }
+  },
   "proxy": {
     "getProxies": "Proxyleri Al",
     "addProxies": "Proxy Ekle",
@@ -55,8 +151,8 @@
       "deleteProxy": "Proxy'yi Sil"
     },
     "postImportCheckDialog": {
-      "title": "Proxy'leri Kontrol Et?",
-      "description": "{{count}} proxy içe aktardınız. Şimdi onları kontrol etmek ister misiniz? Geçersiz proxy'ler otomatik olarak kaldırılacaktır.",
+      "title": "İçe aktarılan proxy'leri kontrol etmek ister misiniz?",
+      "description": "{{count}} proxy içe aktardınız. Şimdi kontrol edilsin mi? SoulFire geçersiz proxy'leri otomatik olarak kaldırır.",
       "confirm": "Proxyleri Kontrol Et",
       "skip": "Atla"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "İçe aktarılacak hesap yok"
     },
     "unknownError": "Bilinmeyen hata",
+    "types": {
+      "OFFLINE": "Çevrimdışı",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Kimlik Bilgileri)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Cihaz Kodu)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Yenileme Jetonu)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Çerezler)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Erişim Jetonu)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Kimlik Bilgileri)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Cihaz Kodu)"
+    },
     "deviceCodeImportToast": {
       "loading": "Hesap içe aktarılıyor...",
       "success": "Hesap içe aktarıldı!",
@@ -93,9 +200,9 @@
       "description": "Özel bir ad formatı ile çevrimdışı Java hesapları oluşturun.",
       "amount": "Miktar",
       "nameFormat": "Ad Formatı",
-      "nameFormatHelp": "Hesap numarası için %d kullanın (örn. Bot_%d, Bot_1, Bot_2 vb. olur)",
+      "nameFormatHelp": "Hesap numarası için %d kullanın. Örneğin, Bot_%d yazarsanız Bot_1 ve Bot_2 gibi isimler oluşturur.",
       "mode": "Mevcut Hesaplar",
-      "modeHelp": "Mevcut hesaplarla nasıl işlem yapılacağını seçin:\n\n• Mevcut Olanları Yoksay: Sadece henüz var olmayan isimlerle hesap oluşturur. Var olan tüm hesaplar olduğu gibi kalır.\n\n• Mevcut Olanları Değiştir: Tüm hesapları oluşturur ve aynı UUID'ye sahip mevcut hesapları değiştirir. Diğer hesaplar korunur.\n\n• Tümünü Değiştir: MEVCUT TÜM hesapları siler ve bunları oluşturulan hesaplarla değiştirir.",
+      "modeHelp": "Mevcut hesaplarla nasıl işlem yapmak istediğinizi seçin:\n\n• Mevcutları Yoksay: Sadece yeni isimli hesaplar oluşturulur. Tüm mevcut hesaplar korunur.\n\n• Mevcutları Değiştir: İstenilen tüm hesaplar oluşturulur. UUID'si eşleşen hesaplar değiştirilir. Diğer tüm hesaplar korunur.\n\n• Tümünü Değiştir: Tüm mevcut hesaplar kaldırılır. Ardından oluşturulan hesaplar eklenir.",
       "modeIgnoreExisting": "Mevcut Olanları Yoksay",
       "modeReplaceExisting": "Mevcut Olanları Değiştir",
       "modeReplaceAll": "Tümünü Değiştir",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft Yenileme Jetonu",
       "microsoftCookies": "Microsoft Çerezleri",
       "microsoftAccessToken": "Microsoft Erişim Anahtarı",
+      "theAltening": "TheAltening Jetonu",
       "altProviders": "Alternatif Sağlayıcılar",
       "dialog": {
         "title": "{{type}} hesapları içe aktar",
@@ -149,7 +257,21 @@
       "description": "Bu hesap için bot başına ayarları yapılandırın",
       "openButton": "Hesabı yapılandır",
       "pageTitle": "{{name}} - {{page}} Ayarları",
-      "noSettings": "Bu sayfa için ayar mevcut değil"
+      "noSettings": "Bu sayfa için ayar mevcut değil",
+      "search": "Arama ayarları",
+      "overrides": "Geçersiz kılmalar",
+      "allSettings": "Tüm ayarlar",
+      "noOverrides": "Bu botun henüz herhangi bir açıkça geçersiz kılması yok.",
+      "noOverridesMatching": "Bu aramayla eşleşen geçersiz kılma bulunamadı.",
+      "noOverridesHelp": "Değerleri devralmak veya ilk bota özel geçersiz kılmayı oluşturmak için Tüm ayarları açın.",
+      "tryDifferentSearch": "Farklı bir arama terimi deneyin.",
+      "openAllSettings": "Tüm ayarları aç",
+      "selectPage": "Bir ayarlar sayfası seçin",
+      "noSearchResults": "Bu aramayla eşleşen bir ayar yok.",
+      "matchesInheritedValue": "Miras alınan değerle eşleşiyor",
+      "instanceValue": "Örnek değeri",
+      "defaultValue": "Varsayılan değer",
+      "resetOverride": "Geçersiz kılmayı sıfırla"
     },
     "deviceCodeConfirmDialog": {
       "title": "Cihaz Kodu Kimlik Doğrulaması",
@@ -183,7 +305,7 @@
       "purchasing": "Satın alınıyor...",
       "purchaseSuccess": "{{count}} hesap satın alındı, içe aktarılıyor...",
       "purchaseError": "Satın alma başarısız: {{message}}",
-      "networkError": "Ravealts API'ına bağlanılamadı",
+      "networkError": "Ravealts API'ye bağlantı başarısız oldu",
       "outOfStock": "Seçilen tür stokta yok",
       "insufficientBalance": "Yeterli kredi yok",
       "rateLimited": "Çok fazla istek, lütfen daha sonra tekrar deneyin"
@@ -231,7 +353,30 @@
     "online": "Çevrim içi",
     "offline": "Çevrimdışı",
     "notJoined": "Katılmadı",
+    "connectionPhase": {
+      "connecting": "Bağlanıyor",
+      "connected": "Bağlandı",
+      "spawned": "Çevrim içi",
+      "died": "Ölü",
+      "disconnected": "Çevrimdışı",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Başlatılıyor",
+      "running": "Çalışıyor",
+      "retrying": "Yeniden deneniyor",
+      "stopping": "Durduruluyor",
+      "failed": "Başarısız oldu",
+      "waiting": "Bekleniyor",
+      "stopped": "Durduruldu"
+    },
     "backToBots": "Botlara Geri Dön",
+    "tabs": {
+      "overview": "Genel Bakış",
+      "inventory": "Envanter",
+      "controls": "Kontroller",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Çok Yakında",
     "terminalPanel": {
       "title": "Bot Terminali"
@@ -362,11 +507,74 @@
       "offline": "Bot çevrimdışı. Diyaloglar yalnızca bot bağlandığında kullanılabilir."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Veri yok"
+    },
+    "summary": {
+      "online": "Çevrim içi",
+      "packetsPerSecond": "Pkt/sn",
+      "traffic": "Trafik",
+      "health": "Can",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Çevrimiçi Botlar",
+      "online": "Çevrim içi",
+      "total": "Toplam"
+    },
+    "packets": {
+      "title": "Paketler / Saniye",
+      "sent": "Gönderilen/sn",
+      "received": "Alınan/sn"
+    },
+    "bandwidth": {
+      "title": "Bant genişliği",
+      "upload": "Yükleme",
+      "download": "İndirme"
+    },
+    "tick": {
+      "title": "Tick Süresi",
+      "avg": "Ort. (ms)",
+      "max": "Maks. (ms)"
+    },
+    "healthFood": {
+      "title": "Can / Yemek",
+      "health": "Ort. Can",
+      "food": "Ort. Yemek"
+    },
+    "chunksEntities": {
+      "title": "Bölütler / Varlıklar",
+      "chunks": "Bölütler",
+      "entities": "Varlıklar"
+    },
+    "connections": {
+      "title": "Bağlantı Olayları",
+      "connections": "Bağlantılar",
+      "disconnections": "Bağlantı Kesilmeleri"
+    },
+    "healthDistribution": {
+      "title": "Can Dağılımı",
+      "bots": "Botlar"
+    },
+    "dimensions": {
+      "title": "Boyutlar",
+      "bots": "Botlar"
+    },
+    "gameModes": {
+      "title": "Oyun Modları",
+      "bots": "Botlar"
+    },
+    "positions": {
+      "title": "Bot Pozisyonları (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Görsel Scriptler",
     "description": "Görsel bir düğüm tabanlı düzenleyici kullanarak otomasyon scriptleri oluşturun.",
     "experimentalTitle": "Deneysel Özellik",
-    "experimentalWarning": "Bu özellik deneyseldir. Gelecekte bozulmalar olabilir ve mevcut scriptler çalışmayabilir. Dikkatli kullanın.",
+    "experimentalWarning": "Bu özellik deneyseldir. Gelecekteki güncellemeler mevcut scriptleri bozabilir. Dikkatli kullanın.",
     "createScript": "Script Oluştur",
     "createScriptTitle": "Yeni Script Oluştur",
     "createScriptDescription": "Bu örnek için yeni bir görsel script oluşturun. Scriptler, botun eylemlerini otomatikleştirebilir ve olaylara yanıt verebilir.",
@@ -430,6 +638,7 @@
         "pause": "Duraklat",
         "pauseTooltip": "Komut dosyası yürütmesini duraklat",
         "unsaved": "Kaydedilmedi",
+        "unsavedChanges": "Kaydedilmemiş değişiklikler",
         "clearCanvas": "Tuvali temizle",
         "zoomIn": "Yakınlaştır",
         "zoomOut": "Uzaklaştır",
@@ -462,6 +671,64 @@
         "showPreview": "Önizlemeyi Göster",
         "hidePreview": "Önizlemeyi Gizle",
         "delete": "Sil"
+      },
+      "node": {
+        "expand": "Düğümü genişlet",
+        "collapse": "Düğümü daralt"
+      },
+      "debug": {
+        "copyValue": "Mevcut değeri kopyala",
+        "clearHistory": "Geçmişi temizle"
+      },
+      "edge": {
+        "direction": "Kenar yönü"
+      },
+      "note": {
+        "placeholder": "Bir not yaz..."
+      },
+      "complexity": {
+        "title": "Script karmaşıklık puanı"
+      },
+      "group": {
+        "returnToRoot": "Kök'e dön (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Hızlı düğüm ekleme menüsü",
+        "searchPlaceholder": "Düğüm ara..."
+      },
+      "diff": {
+        "tooltip": "Değişiklikleri incele"
+      },
+      "dryRun": {
+        "tooltip": "Deneme Çalıştır",
+        "title": "Deneme Çalıştır Script",
+        "description": "Seçili bir tetikleyiciden script çalıştır, sahte girişlerle.",
+        "triggerNode": "Tetikleyici Düğümü",
+        "selectTrigger": "Bir tetikleyici seç...",
+        "triggerDescription": "Sahte giriş değerleriyle çalıştırılacak tetikleyici düğümünü seçin.",
+        "mockInputs": "Sahte Girdiler",
+        "valuePlaceholder": "{{type}} değeri",
+        "start": "Deneme Çalıştır'ı Başlat"
+      },
+      "quotas": {
+        "tooltip": "Script Kotaları",
+        "title": "Script Kotaları",
+        "description": "Bu script için kaynak limitlerini yapılandırın. Boş alanlar sunucu varsayılanlarını kullanır.",
+        "maxExecutionCount": "Maksimum Çalıştırma Sayısı",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Her tetikleyici çağrısı başına maksimum düğüm çalıştırma",
+        "maxExecutionTime": "Maksimum Çalıştırma Süresi (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Her tetikleyici çalıştırma başına maksimum duvar saati süresi",
+        "maxConcurrentTriggers": "Maksimum Eşzamanlı Tetikleyici",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Maksimum eşzamanlı tetikleyici çağrısı",
+        "maxStateStoreEntries": "Maksimum Durum Deposu Girişi",
+        "maxStateStoreEntriesPlaceholder": "Sınırsız",
+        "maxStateStoreEntriesDescription": "Script durum deposundaki maksimum giriş sayısı",
+        "disableTimeouts": "Zaman Aşımını Devre Dışı Bırak",
+        "disableTimeoutsDescription": "Düğüm ve veri kenarı zaman aşımı devre dışı bırakılır",
+        "save": "Kotaları Kaydet"
       }
     }
   }

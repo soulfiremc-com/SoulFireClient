@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Rol",
+          "placeholder": "Rol seçin",
           "description": "İstifadəçinin rolu. Adminlər istifadəçiləri və bütün instansları idarə edə bilər. İstifadəçilər yalnız öz instanslarını idarə edə bilər.",
           "user": "İstifadəçi",
           "admin": "Admin"
@@ -114,8 +115,8 @@
       "actions": "Əməliyyatlar",
       "searchUsernames": "İstifadəçi adlarında axtarış...",
       "searchEmails": "E-poçtlarda axtarış...",
-      "searchCreatedAts": "Yaradılma tarixlərində axtarış...",
-      "searchMinIssuedAts": "Minimum verilən tarixdə axtarış..."
+      "searchCreatedAts": "Yaradılma tarixində axtarış...",
+      "searchMinIssuedAts": "Minimum giriş tarixində axtarış..."
     },
     "removeSelectedTooltip": "Seçilmiş istifadəçiləri sil",
     "logOutSelectedTooltip": "Seçilmiş istifadəçiləri çıxış etdir",

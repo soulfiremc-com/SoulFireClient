@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "जब आपको कंसोल विवरण की जाँच करनी हो, तो कच्चा इंस्टेंस आउटपुट यहाँ उपलब्ध है।",
+    "summary": {
+      "accounts": "खाते",
+      "proxies": "प्रॉक्सी",
+      "configured": "{{count}} कॉन्फ़िगर किए गए",
+      "configuredShort": "कॉन्फ़िगर किया गया",
+      "currentRate": "मौजूदा दर",
+      "imported": "आयातित"
+    },
+    "readiness": {
+      "title": "सेटअप",
+      "accounts": "खाते",
+      "accountsValue": "{{requested}} अनुरोधित बॉट्स के लिए {{count}} आयातित किए गए हैं।",
+      "proxies": "प्रॉक्सी",
+      "proxiesValue": "{{count}} कॉन्फ़िगर किए गए",
+      "plugins": "प्लगइन्स",
+      "pluginsValue": "{{count}} उपलब्ध"
+    },
+    "activity": {
+      "title": "गतिविधि",
+      "tick": "टिक",
+      "health": "स्वास्थ्य",
+      "world": "विश्व",
+      "worldValue": "{{chunks}} चंक्स, {{entities}} इकाइयाँ",
+      "connections": "कनेक्शन्स",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "मेट्रिक्स",
+      "noDataDescription": "अभी तक कोई रनटाइम मेट्रिक्स नहीं हैं।"
+    },
+    "metricsUnavailable": {
+      "title": "मेट्रिक्स",
+      "inactive": "लाइव मेट्रिक्स एकत्र करने के लिए एक बॉट शुरू करें।",
+      "noPermission": "आपको बॉट मेट्रिक्स देखने की अनुमति नहीं है।"
+    },
+    "status": {
+      "ready": "तैयार",
+      "attention": "ध्यान देने की आवश्यकता",
+      "configured": "कॉन्फ़िगर किया गया",
+      "optional": "वैकल्पिक",
+      "available": "उपलब्ध",
+      "none": "कोई नहीं"
+    },
+    "actions": {
+      "manage": "प्रबंधित करें",
+      "open": "खोलें"
+    },
+    "spotlight": {
+      "noBots": "अब तक कोई बॉट्स कॉन्फ़िगर नहीं किए गए हैं।",
+      "idle": "निष्क्रिय, निर्देशों की प्रतीक्षा कर रहा है।",
+      "level": "स्तर {{level}}"
+    },
+    "liveFeed": {
+      "title": "लाइव फीड",
+      "empty": "इंस्टेंस गतिविधि की प्रतीक्षा कर रहा है...",
+      "noPermission": "आपको लाइव फीड देखने की अनुमति नहीं है।",
+      "lifecycle": {
+        "connecting": "कनेक्ट हो रहा है",
+        "connected": "कनेक्टेड",
+        "spawned": "खेल में शामिल हुआ",
+        "died": "मर गया",
+        "respawned": "पुनर्जीवित हुआ",
+        "disconnected": "डिस्कनेक्टेड",
+        "unknown": "अवस्था बदली"
+      }
+    },
+    "bots": {
+      "title": "बॉट्स",
+      "viewAll": "सभी {{total}} बॉट्स देखें",
+      "viewAllShort": "सभी देखें"
+    },
+    "timeline": {
+      "title": "गतिविधि",
+      "viewAll": "सभी देखें",
+      "empty": "अभी तक कोई दर्ज की गई गतिविधि नहीं है।",
+      "noPermission": "आपको ऑडिट लॉग देखने की अनुमति नहीं है।",
+      "types": {
+        "executeCommand": "एक कमांड चलाया: {{data}}",
+        "botDesiredStateChange": "बॉट की इच्छित स्थिति बदली गई",
+        "botRestart": "बॉट्स को पुनः प्रारंभ किया गया",
+        "unknown": "एक क्रिया की गई"
+      }
+    },
+    "plugins": {
+      "title": "प्लगइन्स",
+      "empty": "अब तक कोई प्लगइन्स आँकड़े नहीं बता रहे हैं।",
+      "noPermission": "आपको प्लगइन आँकड़े देखने की अनुमति नहीं है।",
+      "active": "सक्रिय",
+      "activeBots": "{{count}} सक्रिय बॉट्स",
+      "uptime": "{{time}} से चालू है"
+    },
+    "detailed": {
+      "title": "विस्तृत मेट्रिक्स",
+      "composition": "विश्व संरचना"
+    }
+  },
   "proxy": {
     "getProxies": "प्रॉक्सी प्राप्त करें",
     "addProxies": "प्रॉक्सी जोड़ें",
@@ -55,8 +151,8 @@
       "deleteProxy": "प्रॉक्सी हटाएँ"
     },
     "postImportCheckDialog": {
-      "title": "क्या प्रॉक्सी जांचें?",
-      "description": "आपने अभी-अभी {{count}} प्रॉक्सी आयात किए हैं। क्या आप इन्हें अभी जांचना चाहेंगे? अवैध प्रॉक्सी स्वतः ही हटा दिए जाएंगे।",
+      "title": "आयात किए गए प्रॉक्सी जांचें?",
+      "description": "आपने {{count}} प्रॉक्सी आयात किए हैं। क्या आप इन्हें अभी जांचना चाहते हैं? SoulFire अवैध प्रॉक्सियों को स्वचालित रूप से हटा देता है।",
       "confirm": "प्रॉक्सी जांचें",
       "skip": "छोड़ें"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "आयात करने के लिए कोई खाता नहीं है"
     },
     "unknownError": "अज्ञात त्रुटि",
+    "types": {
+      "OFFLINE": "ऑफ़लाइन",
+      "MICROSOFT_JAVA_CREDENTIALS": "जावा (क्रेडेंशियल्स)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "जावा (डिवाइस कोड)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "जावा (रिफ्रेश टोकन)",
+      "MICROSOFT_JAVA_COOKIES": "जावा (कुकीज़)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "जावा (एक्सेस टोकन)",
+      "THE_ALTENING": "जावा (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "बेडरॉक (क्रेडेंशियल्स)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "बेडरॉक (डिवाइस कोड)"
+    },
     "deviceCodeImportToast": {
       "loading": "खाता आयात हो रहा है...",
       "success": "खाता आयात हुआ!",
@@ -93,9 +200,9 @@
       "description": "मनचाहे नाम प्रारूप के साथ ऑफ़लाइन जावा खाते जनरेट करें।",
       "amount": "संख्या",
       "nameFormat": "नाम प्रारूप",
-      "nameFormatHelp": "%d को खाते की संख्या के लिए प्लेसहोल्डर के रूप में प्रयोग करें (उदा., Bot_%d बन जाएगा Bot_1, Bot_2, आदि)",
+      "nameFormatHelp": "खाता संख्या के लिए %d का उपयोग करें। उदाहरण के लिए, Bot_%d नाम जैसे Bot_1 और Bot_2 बनाता है।",
       "mode": "मौजूदा खाते",
-      "modeHelp": "मौजूदा खातों को कैसे संभालना है चुनें:\n\n• मौजूदा को अनदेखा करें: केवल ऐसे खातों को बनाता है जिनके नाम पहले से मौजूद नहीं हैं। सभी मौजूदा खाते अपरिवर्तित रहते हैं।\n\n• मौजूदा को बदलें: सभी खाते बनाता है, और किसी खाते की UUID अगर पहले से मौजूद है तो उसे बदल देता है। अन्य खाते वही रहते हैं।\n\n• सभी बदलें: सभी मौजूदा खातों को हटा देता है और उनकी जगह नए बनाए गए खातों को जोड़ देता है।",
+      "modeHelp": "मौजूदा खातों को संभालने का तरीका चुनें:\n\n• मौजूदा को नजरअंदाज करें: केवल नए नामों से खाते बनाएं। सभी मौजूदा खाते रखें।\n\n• मौजूदा को बदलें: अनुरोधित सभी खाते बनाएं। मेल खाते UUID वाले खातों को बदलें। अन्य सभी खाते रखें।\n\n• सभी को बदलें: सभी मौजूदा खाते हटा दें। फिर नए बनाए गए खाते जोड़ें।",
       "modeIgnoreExisting": "मौजूदा को अनदेखा करें",
       "modeReplaceExisting": "मौजूदा को बदलें",
       "modeReplaceAll": "सभी को बदलें",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Microsoft रिफ्रेश टोकन",
       "microsoftCookies": "माइक्रोसॉफ्ट कुकीज़",
       "microsoftAccessToken": "माइक्रोसॉफ्ट एक्सेस टोकन",
+      "theAltening": "TheAltening टोकन",
       "altProviders": "वैकल्पिक प्रदाता",
       "dialog": {
         "title": "{{type}} खाते आयात करें",
@@ -149,7 +257,21 @@
       "description": "इस खाते के लिए प्रति-बॉट सेटिंग्स कॉन्फ़िगर करें",
       "openButton": "खाता कॉन्फ़िगर करें",
       "pageTitle": "{{name}} - {{page}} सेटिंग्स",
-      "noSettings": "इस पेज के लिए कोई सेटिंग्स उपलब्ध नहीं हैं"
+      "noSettings": "इस पेज के लिए कोई सेटिंग्स उपलब्ध नहीं हैं",
+      "search": "खोज सेटिंग्स",
+      "overrides": "ओवरराइड्स",
+      "allSettings": "सभी सेटिंग्स",
+      "noOverrides": "इस बॉट के पास अभी कोई स्पष्ट ओवरराइड्स नहीं हैं।",
+      "noOverridesMatching": "इस खोज से कोई ओवरराइड मेल नहीं खाते।",
+      "noOverridesHelp": "मूल्य विरासत में लेने या पहले बॉट-विशिष्ट ओवरराइड बनाने के लिए सभी सेटिंग्स खोलें।",
+      "tryDifferentSearch": "कोई अन्य खोज शब्द आज़माएँ।",
+      "openAllSettings": "सभी सेटिंग्स खोलें",
+      "selectPage": "एक सेटिंग्स पेज चुनें",
+      "noSearchResults": "इस खोज से कोई सेटिंग्स मेल नहीं खाती।",
+      "matchesInheritedValue": "इनहेरिटेड मान से मेल खाता है",
+      "instanceValue": "इंस्टेंस मान",
+      "defaultValue": "डिफ़ॉल्ट मान",
+      "resetOverride": "ओवरराइड रीसेट करें"
     },
     "deviceCodeConfirmDialog": {
       "title": "डिवाइस कोड प्रमाणीकरण",
@@ -183,7 +305,7 @@
       "purchasing": "खरीदारी हो रही है...",
       "purchaseSuccess": "{{count}} खाते खरीदे गए, आयात किया जा रहा है...",
       "purchaseError": "खरीदारी विफल: {{message}}",
-      "networkError": "Ravealts API से कनेक्ट नहीं हो सका",
+      "networkError": "Ravealts API से कनेक्शन विफल हुआ",
       "outOfStock": "चयनित प्रकार स्टॉक में नहीं है",
       "insufficientBalance": "पर्याप्त क्रेडिट्स नहीं हैं",
       "rateLimited": "रेट लिमिटेड, बाद में पुनः प्रयास करें"
@@ -231,7 +353,30 @@
     "online": "ऑनलाइन",
     "offline": "ऑफ़लाइन",
     "notJoined": "शामिल नहीं हुआ",
+    "connectionPhase": {
+      "connecting": "कनेक्ट हो रहा है",
+      "connected": "कनेक्टेड",
+      "spawned": "ऑनलाइन",
+      "died": "मृत",
+      "disconnected": "ऑफ़लाइन",
+      "ping": "{{ms}} मि.से."
+    },
+    "runtimeState": {
+      "starting": "प्रारंभ हो रहा है",
+      "running": "चल रहा है",
+      "retrying": "पुनः प्रयास किया जा रहा है",
+      "stopping": "रोकना जारी है",
+      "failed": "असफल",
+      "waiting": "प्रतीक्षा कर रहा है",
+      "stopped": "बंद हुआ"
+    },
     "backToBots": "बॉट्स पर वापस जाएं",
+    "tabs": {
+      "overview": "अवलोकन",
+      "inventory": "इन्वेंटरी",
+      "controls": "नियंत्रण",
+      "terminal": "टर्मिनल"
+    },
     "comingSoon": "जल्द आ रहा है",
     "terminalPanel": {
       "title": "बॉट टर्मिनल"
@@ -362,11 +507,74 @@
       "offline": "बॉट ऑफ़लाइन है। संवाद केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "कोई डेटा नहीं"
+    },
+    "summary": {
+      "online": "ऑनलाइन",
+      "packetsPerSecond": "Pkt/s",
+      "traffic": "ट्रैफिक",
+      "health": "स्वास्थ्य",
+      "tick": "टिक"
+    },
+    "botsOnline": {
+      "title": "बॉट्स ऑनलाइन",
+      "online": "ऑनलाइन",
+      "total": "कुल"
+    },
+    "packets": {
+      "title": "पैकेट्स / सेकंड",
+      "sent": "भेजे गए/सेकंड",
+      "received": "प्राप्त/सेकंड"
+    },
+    "bandwidth": {
+      "title": "बैंडविड्थ",
+      "upload": "अपलोड",
+      "download": "डाउनलोड"
+    },
+    "tick": {
+      "title": "टिक अवधि",
+      "avg": "औसत (मिलीसेकंड)",
+      "max": "अधिकतम (मिलीसेकंड)"
+    },
+    "healthFood": {
+      "title": "स्वास्थ्य / भोजन",
+      "health": "औसत स्वास्थ्य",
+      "food": "औसत भोजन"
+    },
+    "chunksEntities": {
+      "title": "चंक्स / इकाइयाँ",
+      "chunks": "चंक्स",
+      "entities": "इकाइयाँ"
+    },
+    "connections": {
+      "title": "कनेक्शन घटनाएँ",
+      "connections": "कनेक्शन्स",
+      "disconnections": "डिस्कनेक्शन"
+    },
+    "healthDistribution": {
+      "title": "स्वास्थ्य वितरण",
+      "bots": "बॉट्स"
+    },
+    "dimensions": {
+      "title": "आयाम",
+      "bots": "बॉट्स"
+    },
+    "gameModes": {
+      "title": "गेम मोड्स",
+      "bots": "बॉट्स"
+    },
+    "positions": {
+      "title": "बॉट स्थान (XZ)",
+      "bot": "बॉट"
+    }
+  },
   "scripts": {
     "title": "विजुअल स्क्रिप्ट्स",
     "description": "विजुअल नोड-आधारित संपादक का उपयोग करके ऑटोमेशन स्क्रिप्ट्स बनाएँ।",
     "experimentalTitle": "प्रायोगिक सुविधा",
-    "experimentalWarning": "यह सुविधा प्रायोगिक है। भविष्य में इसमें महत्वपूर्ण परिवर्तन हो सकते हैं और मौजूदा स्क्रिप्ट्स काम करना बंद कर सकती हैं। सावधानी के साथ प्रयोग करें।",
+    "experimentalWarning": "यह फीचर प्रयोगात्मक है। भविष्य के अपडेट मौजूदा स्क्रिप्ट को खराब कर सकते हैं। इसे सावधानीपूर्वक उपयोग करें।",
     "createScript": "स्क्रिप्ट बनाएँ",
     "createScriptTitle": "नई स्क्रिप्ट बनाएँ",
     "createScriptDescription": "इस उदाहरण के लिए एक नई विजुअल स्क्रिप्ट बनाएँ। स्क्रिप्ट्स बॉट की क्रियाओं को स्वचालित कर सकती हैं और घटनाओं पर प्रतिक्रिया दे सकती हैं।",
@@ -430,6 +638,7 @@
         "pause": "रोकें",
         "pauseTooltip": "स्क्रिप्ट निष्पादन रोकें",
         "unsaved": "असुरक्षित",
+        "unsavedChanges": "संक्षित बदलाव",
         "clearCanvas": "कैनवास साफ़ करें",
         "zoomIn": "ज़ूम इन",
         "zoomOut": "ज़ूम आउट",
@@ -462,6 +671,64 @@
         "showPreview": "पूर्वावलोकन दिखाएँ",
         "hidePreview": "पूर्वावलोकन छुपाएँ",
         "delete": "हटाएँ"
+      },
+      "node": {
+        "expand": "नोड विस्तार करें",
+        "collapse": "नोड संक्षिप्त करें"
+      },
+      "debug": {
+        "copyValue": "वर्तमान मान कॉपी करें",
+        "clearHistory": "इतिहास साफ़ करें"
+      },
+      "edge": {
+        "direction": "एज दिशा"
+      },
+      "note": {
+        "placeholder": "नोट लिखें..."
+      },
+      "complexity": {
+        "title": "स्क्रिप्ट जटिलता स्कोर"
+      },
+      "group": {
+        "returnToRoot": "रूट पर लौटें (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "त्वरित नोड जोड़ने का मेनू",
+        "searchPlaceholder": "नोड खोजें..."
+      },
+      "diff": {
+        "tooltip": "बदलाव देखें"
+      },
+      "dryRun": {
+        "tooltip": "ड्राई रन",
+        "title": "ड्राई रन स्क्रिप्ट",
+        "description": "चयनित ट्रिगर से स्क्रिप्ट चलाएं, मॉक इनपुट के साथ।",
+        "triggerNode": "ट्रिगर नोड",
+        "selectTrigger": "ट्रिगर चुनें...",
+        "triggerDescription": "मॉक इनपुट मानों के साथ निष्पादित करने के लिए ट्रिगर नोड चुनें।",
+        "mockInputs": "मॉक इनपुट्स",
+        "valuePlaceholder": "{{type}} मान",
+        "start": "ड्राई रन शुरू करें"
+      },
+      "quotas": {
+        "tooltip": "स्क्रिप्ट कोटा",
+        "title": "स्क्रिप्ट कोटा",
+        "description": "इस स्क्रिप्ट के लिए संसाधन सीमाएँ कॉन्फ़िगर करें। खाली फ़ील्ड सर्वर डिफ़ॉल्ट का उपयोग करती हैं।",
+        "maxExecutionCount": "अधिकतम निष्पादन गिनती",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "प्रति ट्रिगर इनवोकेशन अधिकतम नोड निष्पादन",
+        "maxExecutionTime": "अधिकतम निष्पादन समय (मिलीसेकंड)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "प्रति ट्रिगर निष्पादन अधिकतम वॉल-क्लॉक समय",
+        "maxConcurrentTriggers": "अधिकतम समवर्ती ट्रिगर",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "अधिकतम समवर्ती ट्रिगर इनवोकेशन",
+        "maxStateStoreEntries": "अधिकतम स्टेट स्टोर प्रविष्टियाँ",
+        "maxStateStoreEntriesPlaceholder": "असीमित",
+        "maxStateStoreEntriesDescription": "स्क्रिप्ट स्टेट स्टोर में अधिकतम प्रविष्टियाँ",
+        "disableTimeouts": "टाइमआउट अक्षम करें",
+        "disableTimeoutsDescription": "प्रति-नोड और डेटा एज टाइमआउट्स को अक्षम करता है",
+        "save": "कोटा सहेजें"
       }
     }
   }

@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "SoulFire üçün yenisiniz? <a>Başlama bələdçisi</a>nə baxmanızı tövsiyə edirik.",
+  "newUser": "SoulFire-ə yenisiniz? <a>Başlanğıc bələdçəsini</a> oxuyun.",
   "connect": {
     "title": "SoulFire serverinə qoşulun",
     "description": "Qoşulmaq istədiyiniz SoulFire serverinin növünü seçin.",
     "integrated": {
       "title": "İnteqrasiyalı server (lokal)",
-      "description": "SoulFire serverinizi kompüterinizdə işlədər. Quraşdırma avtomatikdir və heç bir ayar tələb etmir. (Desktop/Android proqramı tələb olunur)"
+      "description": "Bu cihazda SoulFire serveri işə salır. Quraşdırma avtomatikdir. Bu seçim masaüstü və ya Android tətbiqini tələb edir."
     },
     "dedicated": {
       "title": "Ayrılmış server (uzaq)",
-      "description": "SoulFire serverinin uzaq instansiyasına qoşulur. Serverin ünvanını və tokenini təqdim etməlisiniz."
+      "description": "Server ünvanı və token ilə uzaq SoulFire serverinə qoşulur."
     },
     "demo": {
       "title": "Demo server",
-      "description": "Demo məlumatlarla virtual bir serveri simulyasiya edir. Bu server yalnız oxumaq üçün nəzərdə tutulur və siz heç bir dəyişiklik edə bilməzsiniz."
+      "description": "Demo məlumatları ilə yalnız oxumaq üçün server təmin edir. SoulFire dəyişiklikləri yadda saxlamır."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire məlumatları uğurla sıfırlandı. Yenidən başlamağa çalışın.",
       "error": "SoulFire məlumatlarını sıfırlamaq mümkün olmadı"
     },
-    "description": "İnteqrasiyalı server kompüterinizdə yerli olaraq işləyir. Lazım olarsa aşağıda Java başladılma arqumentlərini tənzimləyin.",
+    "description": "İnteqrasiya olunmuş server kompüterinizdə işləyir. Aşağıda Java işə salma arqumentlərini dəyişə bilərsiniz.",
     "form": {
       "jvmArgs": {
         "title": "JVM arqumentləri",
-        "description": "SoulFire Java VM arqumentləri. 4GB RAM istifadə etmək üçün <bold>-Xmx4G</bold> əlavə edin. Standart olaraq RAM-ınızın 25%-idir.",
+        "description": "SoulFire üçün Java VM arqumentləri. 4 GB RAM istifadə etmək üçün <bold>-Xmx4G</bold> əlavə edin. Standart olaraq mövcud RAM-ın 25%-i istifadə olunur.",
         "placeholder": "JVM arqumentlərinizi bura yazın"
       },
       "back": "Geri",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux əmri",
-          "description": "<a>Termux proqramını</a> quraşdırın, ardınca isə SoulFire serverini quraşdırmaq üçün bu əmri Termux-da işlədin. Sonra <copy>generate-token api</copy> əmrini işlədərək token yaradın. Daha sonra tokeni aşağıya daxil edin."
+          "description": "<a>Termux tətbiqini</a> quraşdırın. SoulFire serverini quraşdırmaq üçün bu komandadan Termux-da istifadə edin. Token yaratmaq üçün <copy>generate-token api</copy> işlədin. Sonra tokeni aşağıda daxil edin."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "Qoşulmaq istədiyiniz SoulFire serverinin ünvanını və tokenini daxil edin.",
+    "description": "SoulFire serverinin ünvanını və tokenini daxil edin.",
     "toast": {
       "loading": "Serverə qoşulur...",
       "success": "Serverə qoşuldu",

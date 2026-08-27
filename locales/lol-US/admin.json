@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Roel",
+          "placeholder": "Pik a r0le",
           "description": "Da roel of da hooman. Adminz kin manaj hoomans n all instansz. Hoomans kin only manaj their own instansz.",
           "user": "Uzer",
           "admin": "Admin"
@@ -114,8 +115,8 @@
       "actions": "Akshuns",
       "searchUsernames": "Seerch usernams...",
       "searchEmails": "Seerch emailz...",
-      "searchCreatedAts": "Seerch created ats...",
-      "searchMinIssuedAts": "Seerch min issued ats..."
+      "searchCreatedAts": "Serch creashun datez...",
+      "searchMinIssuedAts": "Serch minumum login datez..."
     },
     "removeSelectedTooltip": "Remoov selekted users",
     "logOutSelectedTooltip": "Logz owt selekted users",

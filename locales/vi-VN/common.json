@@ -8,7 +8,7 @@
     "noAddressOrToken": "Không tìm thấy địa chỉ máy chủ hoặc mã thông báo",
     "page": {
       "title": "Lỗi",
-      "description": "Đã xảy ra lỗi khi tải trang. Xem thêm thông tin trong bảng điều khiển.",
+      "description": "Trang không tải được. Mở bảng điều khiển để biết thêm thông tin.",
       "logOut": "Đăng xuất",
       "reloadPage": "Tải lại trang",
       "showDetails": "Hiển thị chi tiết"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Không tìm thấy",
-      "description": "Không tìm thấy trang tại vị trí này",
+      "description": "Không có trang nào tại địa chỉ này",
       "logOut": "Đăng xuất",
       "reloadPage": "Tải lại trang"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Đóng"
     },
+    "support": {
+      "title": "Ủng hộ SoulFire",
+      "description": "SoulFire là phần mềm miễn phí và mã nguồn mở, được xây dựng với niềm đam mê bởi cộng đồng.",
+      "body": "Nếu SoulFire đã hữu ích với bạn, xin hãy cân nhắc ủng hộ dự án. Sự đóng góp của bạn giúp chi trả chi phí máy chủ, tài trợ phát triển, và giữ cho SoulFire miễn phí cho tất cả mọi người.",
+      "dismiss": "Để sau",
+      "action": "Ủng hộ SoulFire"
+    },
     "createInstance": {
       "title": "Tạo một phiên bản mới",
-      "description": "Các phiên bản cần tên thân thiện để bạn phân biệt. Bạn có thể đặt bất kỳ tên nào bạn muốn, ví dụ, \"Bot Minecraft của tôi\".",
+      "description": "Đặt cho phiên bản này một tên mà bạn dễ nhận ra, ví dụ như \"Bot Minecraft Của Tôi\".",
       "form": {
         "friendlyName": {
           "label": "Tên thân thiện",
@@ -67,11 +74,26 @@
         "error": "Tạo phiên bản thất bại"
       }
     },
+    "duplicateInstance": {
+      "title": "Nhân bản phiên bản này",
+      "description": "Tạo một phiên bản mới sử dụng hồ sơ từ \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Tên cho phiên bản được nhân bản."
+        },
+        "duplicate": "Nhân bản"
+      },
+      "duplicateToast": {
+        "loading": "Đang nhân bản phiên bản...",
+        "success": "Nhân bản phiên bản thành công",
+        "error": "Nhân bản phiên bản thất bại"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Từ tệp",
         "fromUrl": "Từ URL",
-        "firstClipboardItem": "Bạn có nhiều mục trong bộ nhớ tạm, chỉ sử dụng mục đầu tiên.",
+        "firstClipboardItem": "Bộ nhớ tạm có chứa nhiều mục. SoulFire sẽ sử dụng mục đầu tiên.",
         "fromClipboard": "Từ bộ nhớ tạm",
         "textarea": {
           "placeholder": "Nhập văn bản tại đây...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Tải từ URL sẽ khiến máy chủ SoulFire gửi yêu cầu GET đến máy chủ đích và dùng phản hồi làm dữ liệu.",
+        "description": "Máy chủ SoulFire sẽ gửi một yêu cầu GET đến URL này và nhập phản hồi.",
         "form": {
           "url": {
             "placeholder": "Nhập URL tại đây...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Bắt đầu",
-    "resume": "Tiếp tục",
-    "pause": "Tạm dừng",
     "stop": "Dừng lại",
+    "startAll": "Khởi động tất cả các bot",
+    "stopAll": "Dừng tất cả các bot",
+    "restart": "Khởi động lại",
+    "startCount": "Số lượng bot cần khởi động",
     "startToast": {
-      "loading": "Đang bắt đầu phiên...",
-      "success": "Phiên đã được bắt đầu thành công",
-      "error": "Không thể bắt đầu phiên"
+      "loading": "Đang khởi động bot...",
+      "success": "Trạng thái bot đã được cập nhật",
+      "error": "Không thể khởi động bot"
     },
-    "resumeToast": {
-      "loading": "Đang tiếp tục phiên...",
-      "success": "Phiên đã được tiếp tục thành công",
-      "error": "Không thể tiếp tục phiên"
-    },
-    "pauseToast": {
-      "loading": "Đang tạm dừng phiên...",
-      "success": "Tạm dừng phiên thành công",
-      "error": "Không thể tạm dừng phiên"
+    "restartToast": {
+      "loading": "Đang khởi động lại bot...",
+      "success": "Các bot đang kết nối lại",
+      "error": "Không thể khởi động lại bot"
     },
     "stopToast": {
-      "loading": "Đang dừng phiên...",
-      "success": "Dừng phiên thành công",
-      "error": "Không thể dừng phiên"
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Chưa cấu hình tài khoản nào cả.",
-      "noAccountsDescription": "Bạn cần nhập tài khoản trước khi bắt đầu phiên. Bạn đã yêu cầu {{required}} bot.",
-      "notEnoughTitle": "Không đủ tài khoản",
-      "notEnoughDescription": "Bạn đã yêu cầu {{required}} bot nhưng chỉ có {{available}} tài khoản được nhập.",
-      "hint": "Bạn có thể tạo tài khoản ngoại tuyến hoặc nhập tài khoản từ trang Cài đặt tài khoản.",
-      "continueWithExisting": "Tiếp tục với {{count}} tài khoản",
-      "generateAccounts": "Tạo Tài khoản"
+      "loading": "Đang dừng bot...",
+      "success": "Các bot đang dừng lại",
+      "error": "Không thể dừng bot"
     }
   },
+  "botFleetSummary": "{{online}} đang online · {{desired}} mong muốn · {{total}} tổng cộng",
   "icon": {
     "invalidName": "Tên biểu tượng không hợp lệ: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Thêm",
       "remove": "Xóa"
     },
+    "combo": {
+      "searchPlaceholder": "Tìm kiếm giá trị..."
+    },
     "invalidNumberToast": {
-      "title": "Số không hợp lệ!",
+      "title": "Số không hợp lệ",
       "description": "Giá trị phải nằm trong khoảng từ {{min}} đến {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Có vẻ như không có nhật ký nào để hiển thị; hãy thử chạy một số lệnh!",
+    "noLogs": "Chưa có nhật ký nào. Hãy chạy một lệnh để tạo đầu ra nhật ký.",
     "demo-1": "Chào mừng đến với chế độ dùng thử! 🧪",
     "demo-2": "Đây là một phiên bản chỉ đọc của SoulFire",
     "demo-3": "Hãy kiểm tra tất cả menu và tính năng trước khi quyết định cài đặt SoulFire :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Bật/Tắt thanh bên"
+  },
+  "window": {
+    "minimize": "Thu nhỏ",
+    "minimizeLabel": "Thu nhỏ cửa sổ",
+    "maximize": "Phóng to",
+    "maximizeLabel": "Phóng to cửa sổ",
+    "restore": "Khôi phục",
+    "restoreLabel": "Khôi phục cửa sổ",
+    "close": "Đóng",
+    "closeLabel": "Đóng cửa sổ",
+    "back": "Quay lại",
+    "backLabel": "Quay lại",
+    "forward": "Tiến tới",
+    "forwardLabel": "Đi tiếp"
+  },
+  "infoButton": {
+    "showInfo": "Hiện thông tin"
   },
   "castMenu": {
     "title": "Truyền",
@@ -333,6 +364,7 @@
     },
     "configDir": "Thư mục cấu hình",
     "dataDir": "Thư mục dữ liệu",
+    "supportSoulFire": "Ủng hộ SoulFire",
     "about": "Giới thiệu",
     "logOut": "Đăng xuất",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Tài liệu hướng dẫn",
-    "supportSoulFire": "Ủng hộ tôi một ly cà phê",
+    "supportSoulFire": "Ủng hộ SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "Truy cập WebDAV",
-      "description": "SoulFire cho phép bạn truy cập các tệp phiên bản, script và tệp khác bằng giao thức WebDAV.",
+      "description": "WebDAV cung cấp quyền truy cập vào các tệp phiên bản, script, và các tệp khác.",
       "publicAddress": "Địa chỉ WebDAV công khai",
       "personalToken": "Mã thông báo WebDAV cá nhân",
-      "securityWarning": "Mã thông báo WebDAV cá nhân của bạn rất quan trọng. Không chia sẻ nó với bất kỳ ai. Nó được dùng để xác thực khi bạn truy cập các tệp của mình. Sử dụng nó làm mật khẩu WebDAV khi kết nối. Không cần tên người dùng, nếu được yêu cầu bạn có thể nhập bất kỳ giá trị nào (ví dụ: 'soulfire')",
-      "addressDescription": "Đây là địa chỉ bạn cần sử dụng để truy cập tệp của mình. Đôi khi bạn cần dùng dav:// hoặc davs:// thay cho http(s)://."
+      "securityWarning": "Giữ bí mật token WebDAV cá nhân của bạn. Nó cấp quyền truy cập vào các tập tin của bạn. Sử dụng token này làm mật khẩu WebDAV. Bạn không cần tên người dùng. Nếu ứng dụng của bạn yêu cầu, nhập bất kỳ giá trị nào, ví dụ như 'soulfire'.",
+      "addressDescription": "Sử dụng địa chỉ này để truy cập các tệp của bạn. Một số ứng dụng yêu cầu sử dụng dav:// hoặc davs:// thay cho http:// hoặc https://."
     },
     "api": {
       "title": "Truy cập API",
-      "description": "API HTTP gRPC của SoulFire cho phép bạn tương tác với các phiên bản của bạn thông qua yêu cầu web.",
+      "description": "API gRPC HTTP của SoulFire quản lý các phiên bản qua các yêu cầu web.",
       "publicAddress": "Địa chỉ API công khai",
       "personalToken": "Mã thông báo API cá nhân",
-      "securityWarning": "Mã thông báo API cá nhân của bạn rất quan trọng. Không chia sẻ nó với bất kỳ ai. Nó được dùng để xác thực khi truy cập API.",
-      "addressDescription": "Đây là địa chỉ bạn cần sử dụng để truy cập API."
+      "securityWarning": "Giữ bí mật token API cá nhân của bạn. Nó cấp quyền truy cập vào API.",
+      "addressDescription": "Sử dụng địa chỉ này để truy cập vào API."
     },
     "token": {
       "generate": "Tạo mã thông báo",
@@ -443,6 +475,8 @@
     "searchUsers": "Tìm kiếm người dùng...",
     "searchTimestamps": "Tìm kiếm dấu thời gian...",
     "executedCommand": "Đã thực thi lệnh: {{data}}",
+    "changedBotDesiredState": "Đã thay đổi trạng thái mong muốn của bot",
+    "restartedBots": "Đã khởi động lại các bot",
     "contextMenu": {
       "copyUsername": "Sao chép Tên người dùng",
       "copyCommand": "Sao chép Lệnh"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Tên script phải có ít nhất 3 ký tự",
           "max": "Tên script phải có tối đa 32 ký tự",
-          "regex": "Tên script phải là chữ thường, bắt đầu và kết thúc bằng ký tự chữ/số, có thể thêm dấu gạch giữa, và không có ký tự đặc biệt khác.",
+          "regex": "Sử dụng chữ cái thường, số và dấu gạch ngang. Tên phải bắt đầu và kết thúc bằng chữ cái hoặc số.",
           "label": "Tên",
           "placeholder": "Script của tôi",
           "description": "Tên của script."
         },
         "elevatedPermissions": {
           "label": "Quyền nâng cao",
-          "description": "Script có nên chạy với quyền nâng cao không. Chỉ quản trị viên mới được bật tùy chọn này."
+          "description": "Script sẽ chạy với quyền nâng cao. Chỉ có quản trị viên mới bật được tùy chọn này."
         }
       }
     },
     "addScriptDialog": {
       "title": "Thêm script mới",
-      "description": "Scripts là các chương trình nhỏ chạy trên máy chủ SoulFire. Chúng có thể dùng để tự động hóa, tạo hành vi tùy chỉnh, và nhiều hơn nữa.",
+      "description": "Script là những chương trình nhỏ giúp tự động hóa tác vụ và các hoạt động khác trên máy chủ SoulFire.",
       "form": {
         "cancel": "Hủy",
         "add": "Thêm"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Đi đến Phiên bản",
+      "duplicateInstance": "Nhân bản phiên bản",
       "copyInstanceId": "Sao chép ID Phiên bản",
       "copyInstanceName": "Sao chép Tên Phiên bản",
       "deleteInstance": "Xóa phiên bản"

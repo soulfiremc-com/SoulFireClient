@@ -63,6 +63,7 @@
         },
         "role": {
           "label": "Roll",
+          "placeholder": "Välj en roll",
           "description": "Användarens roll. Administratörer kan hantera användare och alla instanser. Användare kan endast hantera sina egna instanser.",
           "user": "Användare",
           "admin": "Admin"
@@ -114,8 +115,8 @@
       "actions": "Åtgärder",
       "searchUsernames": "Sök användarnamn...",
       "searchEmails": "Sök e-postadresser...",
-      "searchCreatedAts": "Sök skapelsedatum...",
-      "searchMinIssuedAts": "Sök min. utfärdandedatum..."
+      "searchCreatedAts": "Sök efter skapelsedatum...",
+      "searchMinIssuedAts": "Sök efter minsta inloggningsdatum..."
     },
     "removeSelectedTooltip": "Ta bort valda användare",
     "logOutSelectedTooltip": "Logga ut valda användare",

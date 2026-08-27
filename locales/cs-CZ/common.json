@@ -8,7 +8,7 @@
     "noAddressOrToken": "Nenalezena adresa serveru ani token",
     "page": {
       "title": "Chyba",
-      "description": "Při načítání stránky došlo k chybě. Další informace najdete v konzoli.",
+      "description": "Stránka se nenačetla. Otevřete konzoli pro více informací.",
       "logOut": "Odhlásit se",
       "reloadPage": "Znovu načíst stránku",
       "showDetails": "Zobrazit podrobnosti"
@@ -18,7 +18,7 @@
   "notFound": {
     "page": {
       "title": "Nenalezeno",
-      "description": "Na této adrese nebyla nalezena žádná stránka",
+      "description": "Na této adrese není žádná stránka.",
       "logOut": "Odhlásit se",
       "reloadPage": "Znovu načíst stránku"
     }
@@ -46,9 +46,16 @@
       },
       "close": "Zavřít"
     },
+    "support": {
+      "title": "Podpořte SoulFire",
+      "description": "SoulFire je zdarma a open-source, vytvářený s láskou komunitou.",
+      "body": "Pokud vám SoulFire pomohl, zvažte prosím podporu tohoto projektu. Vaše příspěvky pomáhají pokrýt náklady na servery, financovat vývoj a udržet SoulFire zdarma pro všechny.",
+      "dismiss": "Možná později",
+      "action": "Podpořte SoulFire"
+    },
     "createInstance": {
       "title": "Vytvořit novou instanci",
-      "description": "Instance potřebují přívětivá jména, abyste je mohli rozlišit. Může to být jakékoliv jméno, například: \"Můj Minecraft Bot\".",
+      "description": "Dejte instanci jméno, které poznáte, například \"Můj Minecraft Bot\".",
       "form": {
         "friendlyName": {
           "label": "Přátelské jméno",
@@ -67,11 +74,26 @@
         "error": "Nepodařilo se vytvořit instanci"
       }
     },
+    "duplicateInstance": {
+      "title": "Duplikovat instanci",
+      "description": "Vytvořit novou instanci pomocí profilu z \"{{name}}\".",
+      "form": {
+        "friendlyName": {
+          "description": "Název pro duplikovanou instanci."
+        },
+        "duplicate": "Duplikovat"
+      },
+      "duplicateToast": {
+        "loading": "Duplikuji instanci...",
+        "success": "Instance byla úspěšně duplikována",
+        "error": "Duplikace instance se nezdařila"
+      }
+    },
     "import": {
       "main": {
         "fromFile": "Ze souboru",
         "fromUrl": "Z URL",
-        "firstClipboardItem": "V zásobníku jste měli více položek, bude použita pouze první.",
+        "firstClipboardItem": "Schránka obsahuje více položek. SoulFire použije první položku.",
         "fromClipboard": "Ze schránky",
         "textarea": {
           "placeholder": "Zde vložte text...",
@@ -79,7 +101,7 @@
         }
       },
       "url": {
-        "description": "Načítání z URL způsobí, že SoulFire server odešle GET požadavek na cílový server a použije odpověď jako data.",
+        "description": "Server SoulFire odešle na tuto URL požadavek GET a importuje odpověď.",
         "form": {
           "url": {
             "placeholder": "Sem vložte URL...",
@@ -102,39 +124,28 @@
   },
   "controls": {
     "start": "Spustit",
-    "resume": "Pokračovat",
-    "pause": "Pozastavit",
     "stop": "Zastavit",
+    "startAll": "Spustit vše",
+    "stopAll": "Zastavit vše",
+    "restart": "Restartovat",
+    "startCount": "Počet botů ke spuštění",
     "startToast": {
-      "loading": "Spouštím relaci...",
-      "success": "Relace byla úspěšně spuštěna",
-      "error": "Relaci se nepodařilo spustit"
+      "loading": "Spouštění botů...",
+      "success": "Stav bota byl aktualizován",
+      "error": "Nepodařilo se spustit boty"
     },
-    "resumeToast": {
-      "loading": "Obnovuji relaci...",
-      "success": "Relace byla úspěšně obnovena",
-      "error": "Relaci se nepodařilo obnovit"
-    },
-    "pauseToast": {
-      "loading": "Pozastavuji relaci...",
-      "success": "Relace byla úspěšně pozastavena.",
-      "error": "Nepodařilo se pozastavit relaci."
+    "restartToast": {
+      "loading": "Restartování botů...",
+      "success": "Boti se znovu připojují",
+      "error": "Nepodařilo se restartovat boty"
     },
     "stopToast": {
-      "loading": "Zastavování relace...",
-      "success": "Relace byla úspěšně zastavena.",
-      "error": "Nepodařilo se zastavit relaci."
-    },
-    "accountWarning": {
-      "noAccountsTitle": "Žádné účty nejsou nastaveny",
-      "noAccountsDescription": "Pro zahájení relace musíte nejprve importovat účty. Požadováno: {{required}} botů.",
-      "notEnoughTitle": "Nedostatek účtů",
-      "notEnoughDescription": "Požadovali jste {{required}} botů, ale máte importováno pouze {{available}} účtů.",
-      "hint": "Můžete vygenerovat offline účty nebo importovat účty na stránce Nastavení účtu.",
-      "continueWithExisting": "Pokračovat s {count, plural, one {# účtem} few {# účty} many {# účty} other {# účty}}",
-      "generateAccounts": "Vygenerovat účty"
+      "loading": "Zastavování botů...",
+      "success": "Boti se zastavují",
+      "error": "Nepodařilo se zastavit boty"
     }
   },
+  "botFleetSummary": "{{online}} online · {{desired}} požadováno · {{total}} celkem",
   "icon": {
     "invalidName": "Neplatný název ikony: {{name}}"
   },
@@ -230,13 +241,16 @@
       "add": "Přidat",
       "remove": "Odebrat"
     },
+    "combo": {
+      "searchPlaceholder": "Hodnota vyhledávání..."
+    },
     "invalidNumberToast": {
-      "title": "Neplatné číslo!",
+      "title": "Neplatné číslo",
       "description": "Hodnota musí být mezi {{min}} a {{max}}"
     }
   },
   "terminal": {
-    "noLogs": "🧙 Vypadá to, že zde nejsou žádné logy k zobrazení; zkuste spustit nějaké příkazy!",
+    "noLogs": "Zatím žádné logy. Spusťte příkaz pro vytvoření výstupu logu.",
     "demo-1": "Vítejte v demo režimu! 🧪",
     "demo-2": "Toto je instance SoulFire pouze pro čtení",
     "demo-3": "Vyzkoušejte všechny nabídky a funkce, než se rozhodnete SoulFire nainstalovat :D",
@@ -253,6 +267,23 @@
   },
   "uiSidebar": {
     "toggle": "Přepnout postranní panel"
+  },
+  "window": {
+    "minimize": "Minimalizovat",
+    "minimizeLabel": "Minimalizovat okno",
+    "maximize": "Maximalizovat",
+    "maximizeLabel": "Maximalizovat okno",
+    "restore": "Obnovit",
+    "restoreLabel": "Obnovit okno",
+    "close": "Zavřít",
+    "closeLabel": "Zavřít okno",
+    "back": "Zpět",
+    "backLabel": "Jít zpět",
+    "forward": "Vpřed",
+    "forwardLabel": "Jít vpřed"
+  },
+  "infoButton": {
+    "showInfo": "Zobrazit informace"
   },
   "castMenu": {
     "title": "Přenášet",
@@ -333,6 +364,7 @@
     },
     "configDir": "Konfigurační složka",
     "dataDir": "Složka s daty",
+    "supportSoulFire": "Podpořte SoulFire",
     "about": "O aplikaci",
     "logOut": "Odhlásit se",
     "logOutToast": {
@@ -346,7 +378,7 @@
   },
   "sidebar": {
     "documentation": "Dokumentace",
-    "supportSoulFire": "Kupte mi kávu",
+    "supportSoulFire": "Podpořte SoulFire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -378,19 +410,19 @@
   "access": {
     "webdav": {
       "title": "WebDAV přístup",
-      "description": "SoulFire vám umožňuje přístup k instancím, skriptům a dalším souborům pomocí protokolu WebDAV.",
+      "description": "WebDAV poskytuje přístup k souborům instance, skriptům a dalším souborům.",
       "publicAddress": "Veřejná adresa WebDAV",
       "personalToken": "Osobní WebDAV token",
-      "securityWarning": "Váš osobní WebDAV token je velmi důležitý. Nesdílejte jej s nikým. Slouží k autentizaci při přístupu k vašim souborům. Použijte jej jako heslo pro WebDAV při připojování. Uživatelské jméno není vyžadováno, pokud je po vás požadováno, můžete zadat libovolnou hodnotu (např. 'soulfire').",
-      "addressDescription": "Toto je adresa, kterou potřebujete použít pro přístup ke svým souborům. Někdy je nutné použít dav:// nebo davs:// místo http(s)://."
+      "securityWarning": "Uchovejte svůj osobní WebDAV token v tajnosti. Umožňuje přístup k vašim souborům. Token použijte jako své WebDAV heslo. Uživatelské jméno zadávat nemusíte. Pokud ho vaše aplikace vyžaduje, zadejte libovolnou hodnotu, například 'soulfire'.",
+      "addressDescription": "Pro přístup ke svým souborům použijte tuto adresu. Někteří klienti vyžadují místo http:// nebo https:// formát dav:// nebo davs://."
     },
     "api": {
       "title": "API přístup",
-      "description": "SoulFire gRPC HTTP API vám umožní programově komunikovat s vašimi instancemi pomocí webových požadavků.",
+      "description": "SoulFire gRPC HTTP API spravuje instance pomocí webových požadavků.",
       "publicAddress": "Veřejná API adresa",
       "personalToken": "Osobní API token",
-      "securityWarning": "Váš osobní API token je velmi důležitý. Nesdílejte jej s nikým. Slouží k autentizaci při přístupu k API.",
-      "addressDescription": "Toto je adresa, kterou potřebujete použít pro přístup k API."
+      "securityWarning": "Uchovejte svůj osobní API token v tajnosti. Umožňuje přístup k API.",
+      "addressDescription": "Pro přístup k API použijte tuto adresu."
     },
     "token": {
       "generate": "Vygenerovat token",
@@ -443,6 +475,8 @@
     "searchUsers": "Hledat uživatele...",
     "searchTimestamps": "Hledat časová razítka...",
     "executedCommand": "Proveden příkaz: {{data}}",
+    "changedBotDesiredState": "Změněn požadovaný stav bota",
+    "restartedBots": "Boti byli restartováni",
     "contextMenu": {
       "copyUsername": "Kopírovat uživatelské jméno",
       "copyCommand": "Kopírovat příkaz"
@@ -457,20 +491,20 @@
         "scriptName": {
           "min": "Jméno skriptu musí být alespoň 3 znaky",
           "max": "Jméno skriptu může být nejvýše 32 znaků",
-          "regex": "Jména skriptů musí být malými písmeny, začínat alfanumerickým znakem, následovat alfanumerické znaky nebo pomlčky, a končit alfanumerickým znakem.",
+          "regex": "Používejte malá písmena, číslice a pomlčky. Název musí začínat a končit písmenem nebo číslicí.",
           "label": "Název",
           "placeholder": "Můj skript",
           "description": "Název skriptu."
         },
         "elevatedPermissions": {
           "label": "Zvýšená oprávnění",
-          "description": "Zda má skript běžet se zvýšenými oprávněními. Pouze administrátoři mohou tuto možnost povolit."
+          "description": "Skript běží se zvýšenými oprávněními. Toto nastavení mohou povolit pouze administrátoři."
         }
       }
     },
     "addScriptDialog": {
       "title": "Přidat nový skript",
-      "description": "Skripty jsou malé programy, které běží na serveru SoulFire. Mohou být použity k automatizaci úloh, vytvoření vlastního chování a dalším možnostem.",
+      "description": "Skripty jsou malé programy, které automatizují úlohy a další akce na serveru SoulFire.",
       "form": {
         "cancel": "Zrušit",
         "add": "Přidat"
@@ -518,6 +552,7 @@
   "contextMenu": {
     "instance": {
       "goToInstance": "Přejít na instanci",
+      "duplicateInstance": "Duplikovat instanci",
       "copyInstanceId": "Kopírovat ID instance",
       "copyInstanceName": "Kopírovat název instance",
       "deleteInstance": "Smazat instanci"

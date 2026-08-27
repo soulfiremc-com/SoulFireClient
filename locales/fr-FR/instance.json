@@ -1,4 +1,100 @@
 {
+  "overview": {
+    "logsDescription": "La sortie brute de l'instance est disponible ici si vous avez besoin d'inspecter les détails de la console.",
+    "summary": {
+      "accounts": "Comptes",
+      "proxies": "Proxys",
+      "configured": "{{count}} configuré",
+      "configuredShort": "Configuré",
+      "currentRate": "Taux actuel",
+      "imported": "Importé"
+    },
+    "readiness": {
+      "title": "Configuration",
+      "accounts": "Comptes",
+      "accountsValue": "{{count}} importés pour {{requested}} bots demandés",
+      "proxies": "Proxys",
+      "proxiesValue": "{{count}} configuré",
+      "plugins": "Plugins",
+      "pluginsValue": "{{count}} disponibles"
+    },
+    "activity": {
+      "title": "Activité",
+      "tick": "Tick",
+      "health": "Santé",
+      "world": "Monde",
+      "worldValue": "{{chunks}} chunks, {{entities}} entités",
+      "connections": "Connexions",
+      "connectionsValue": "+{{connections}} / -{{disconnections}}",
+      "noDataTitle": "Métriques",
+      "noDataDescription": "Aucune métrique d'exécution pour l'instant."
+    },
+    "metricsUnavailable": {
+      "title": "Métriques",
+      "inactive": "Démarrez un bot pour collecter des métriques en temps réel.",
+      "noPermission": "Vous n'avez pas la permission de voir les métriques des bots."
+    },
+    "status": {
+      "ready": "Prêt",
+      "attention": "Nécessite une attention",
+      "configured": "Configuré",
+      "optional": "Optionnel",
+      "available": "Disponible",
+      "none": "Aucun"
+    },
+    "actions": {
+      "manage": "Gérer",
+      "open": "Ouvrir"
+    },
+    "spotlight": {
+      "noBots": "Aucun bot configuré pour le moment.",
+      "idle": "Inactif, en attente d'instructions.",
+      "level": "Niv. {{level}}"
+    },
+    "liveFeed": {
+      "title": "Flux en direct",
+      "empty": "En attente d'activité d'instance...",
+      "noPermission": "Vous n'avez pas la permission de voir le flux en direct.",
+      "lifecycle": {
+        "connecting": "se connecte",
+        "connected": "connecté",
+        "spawned": "a rejoint la partie",
+        "died": "est mort",
+        "respawned": "a réapparu",
+        "disconnected": "déconnecté",
+        "unknown": "a changé d'état"
+      }
+    },
+    "bots": {
+      "title": "Bots",
+      "viewAll": "Voir tous les {{total}} bots",
+      "viewAllShort": "Voir tout"
+    },
+    "timeline": {
+      "title": "Activité",
+      "viewAll": "Voir tout",
+      "empty": "Aucune activité enregistrée pour l'instant.",
+      "noPermission": "Vous n'avez pas la permission de voir le journal d'audit.",
+      "types": {
+        "executeCommand": "a exécuté une commande : {{data}}",
+        "botDesiredStateChange": "a changé l’état souhaité du bot",
+        "botRestart": "bots redémarrés",
+        "unknown": "a effectué une action"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "empty": "Aucun plugin ne rapporte encore de statistiques.",
+      "noPermission": "Vous n'avez pas la permission de voir les statistiques du plugin.",
+      "active": "Actif",
+      "activeBots": "{{count}} bot(s) actif(s)",
+      "uptime": "en ligne depuis {{time}}"
+    },
+    "detailed": {
+      "title": "Métriques détaillées",
+      "composition": "Composition du monde"
+    }
+  },
   "proxy": {
     "getProxies": "Obtenir des proxies",
     "addProxies": "Ajouter des proxies",
@@ -55,8 +151,8 @@
       "deleteProxy": "Supprimer le proxy"
     },
     "postImportCheckDialog": {
-      "title": "Vérifier les proxys\u00000?",
-      "description": "Vous venez d'importer {{count}} proxys. Voulez-vous les vérifier maintenant\u00000? Les proxys invalides seront supprimés automatiquement.",
+      "title": "Vérifier les proxies importés ?,",
+      "description": "Vous avez importé {{count}} proxies. Les vérifier maintenant ? SoulFire supprimera automatiquement les proxies invalides.",
       "confirm": "Vérifier les proxys",
       "skip": "Ignorer"
     },
@@ -83,6 +179,17 @@
       "noAccounts": "Aucun compte à importer"
     },
     "unknownError": "Erreur inconnue",
+    "types": {
+      "OFFLINE": "Hors-ligne",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (Identifiants)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Code appareil)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Jeton de rafraîchissement)",
+      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Jeton d'accès)",
+      "THE_ALTENING": "Java (TheAltening)",
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Identifiants)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Code appareil)"
+    },
     "deviceCodeImportToast": {
       "loading": "Importation du compte...",
       "success": "Compte importé !",
@@ -93,9 +200,9 @@
       "description": "Générez des comptes Java hors ligne avec un format de nom personnalisé.",
       "amount": "Quantité",
       "nameFormat": "Format du nom",
-      "nameFormatHelp": "Utilisez %d comme variable de remplacement pour le numéro de compte (par exemple, Bot_%d devient Bot_1, Bot_2, etc.)",
+      "nameFormatHelp": "Utilisez %d pour le numéro de compte. Par exemple, Bot_%d crée des noms comme Bot_1 et Bot_2.",
       "mode": "Comptes existants",
-      "modeHelp": "Choisissez comment gérer les comptes existants :\n\n• Ignorer les existants : Ne génère que des comptes dont les noms n'existent pas déjà. Tous les comptes existants restent inchangés.\n\n• Remplacer les existants : Génère tous les comptes, en remplaçant ceux qui ont le même UUID. Les autres comptes sont conservés.\n\n• Tout remplacer : Supprime TOUS les comptes existants et les remplace par les comptes générés.",
+      "modeHelp": "Choisissez comment gérer les comptes existants :\n\n• Ignorer les existants : Génère uniquement les comptes avec de nouveaux noms. Tous les comptes existants sont conservés.\n\n• Remplacer les existants : Génère tous les comptes demandés. Remplace ceux dont l'UUID correspond. Tous les autres comptes sont conservés.\n\n• Tout remplacer : Supprime tous les comptes existants. Puis ajoute les comptes générés.",
       "modeIgnoreExisting": "Ignorer les existants",
       "modeReplaceExisting": "Remplacer les existants",
       "modeReplaceAll": "Remplacer tout",
@@ -118,6 +225,7 @@
       "microsoftRefreshToken": "Token d'actualisation Microsoft",
       "microsoftCookies": "Cookies Microsoft",
       "microsoftAccessToken": "Jeton d'accès Microsoft",
+      "theAltening": "Jeton TheAltening",
       "altProviders": "Fournisseurs alternatifs",
       "dialog": {
         "title": "Importation des comptes {{type}}",
@@ -149,7 +257,21 @@
       "description": "Configurer les paramètres par bot pour ce compte",
       "openButton": "Configurer le compte",
       "pageTitle": "Paramètres {{name}} - {{page}}",
-      "noSettings": "Aucun paramètre disponible pour cette page"
+      "noSettings": "Aucun paramètre disponible pour cette page",
+      "search": "Paramètres de recherche",
+      "overrides": "Remplacements",
+      "allSettings": "Tous les paramètres",
+      "noOverrides": "Ce bot n'a pas encore de remplacements explicites.",
+      "noOverridesMatching": "Aucun remplacement ne correspond à cette recherche.",
+      "noOverridesHelp": "Ouvrez Tous les paramètres pour hériter des valeurs ou créez le premier remplacement spécifique au bot.",
+      "tryDifferentSearch": "Essayez un autre terme de recherche.",
+      "openAllSettings": "Ouvrir tous les paramètres",
+      "selectPage": "Sélectionnez une page de paramètres",
+      "noSearchResults": "Aucun paramètre ne correspond à cette recherche.",
+      "matchesInheritedValue": "Correspond à la valeur héritée",
+      "instanceValue": "Valeur de l\\'instance",
+      "defaultValue": "Valeur par défaut",
+      "resetOverride": "Réinitialiser l\\'écrasement"
     },
     "deviceCodeConfirmDialog": {
       "title": "Authentification avec le code de l'appareil",
@@ -183,7 +305,7 @@
       "purchasing": "Achat en cours\u000026hellip;",
       "purchaseSuccess": "{{count}} compte(s) achet\u0000e9(s), importation en cours\u0000a0\u0000e2\u000080\u000086",
       "purchaseError": "Achat \u0000e9chou\u0000e9\u0000a0: {{message}}",
-      "networkError": "Impossible de se connecter \u0000e0 l'API Ravealts",
+      "networkError": "Échec de la connexion à l’API Ravealts",
       "outOfStock": "Le type s\u0000e9lectionn\u0000e9 est en rupture de stock",
       "insufficientBalance": "Cr\u0000e9dits insuffisants",
       "rateLimited": "Trop de demandes, veuillez r\u0000e9essayer plus tard"
@@ -231,7 +353,30 @@
     "online": "En ligne",
     "offline": "Hors-ligne",
     "notJoined": "Non rejoint",
+    "connectionPhase": {
+      "connecting": "Connexion",
+      "connected": "Connecté",
+      "spawned": "En ligne",
+      "died": "Mort",
+      "disconnected": "Hors-ligne",
+      "ping": "{{ms}} ms"
+    },
+    "runtimeState": {
+      "starting": "Démarrage",
+      "running": "En cours d'exécution",
+      "retrying": "Nouvelle tentative",
+      "stopping": "Arrêt en cours",
+      "failed": "Échec",
+      "waiting": "En attente",
+      "stopped": "Arrêté"
+    },
     "backToBots": "Retour aux Bots",
+    "tabs": {
+      "overview": "Aperçu",
+      "inventory": "Inventaire",
+      "controls": "Contrôles",
+      "terminal": "Terminal"
+    },
     "comingSoon": "Bientôt disponible",
     "terminalPanel": {
       "title": "Terminal du bot"
@@ -362,11 +507,74 @@
       "offline": "Le bot est hors ligne. Les dialogues sont disponibles uniquement lorsque le bot est connecté."
     }
   },
+  "metrics": {
+    "empty": {
+      "noData": "Aucune donnée"
+    },
+    "summary": {
+      "online": "En ligne",
+      "packetsPerSecond": "Paq/s",
+      "traffic": "Trafic",
+      "health": "Santé",
+      "tick": "Tick"
+    },
+    "botsOnline": {
+      "title": "Bots en ligne",
+      "online": "En ligne",
+      "total": "Total"
+    },
+    "packets": {
+      "title": "Paquets / seconde",
+      "sent": "Envoyé/s",
+      "received": "Reçu/s"
+    },
+    "bandwidth": {
+      "title": "Bande passante",
+      "upload": "Envoi",
+      "download": "Téléchargement"
+    },
+    "tick": {
+      "title": "Durée du tick",
+      "avg": "Moy (ms)",
+      "max": "Max (ms)"
+    },
+    "healthFood": {
+      "title": "Santé / Nourriture",
+      "health": "Santé moyenne",
+      "food": "Nourriture moyenne"
+    },
+    "chunksEntities": {
+      "title": "Chunks / Entités",
+      "chunks": "Chunks",
+      "entities": "Entités"
+    },
+    "connections": {
+      "title": "Événements de connexion",
+      "connections": "Connexions",
+      "disconnections": "Déconnexions"
+    },
+    "healthDistribution": {
+      "title": "Distribution de la santé",
+      "bots": "Bots"
+    },
+    "dimensions": {
+      "title": "Dimensions",
+      "bots": "Bots"
+    },
+    "gameModes": {
+      "title": "Modes de jeu",
+      "bots": "Bots"
+    },
+    "positions": {
+      "title": "Positions du bot (XZ)",
+      "bot": "Bot"
+    }
+  },
   "scripts": {
     "title": "Scripts visuels",
     "description": "Créez des scripts d'automatisation à l'aide d'un éditeur visuel basé sur des nœuds.",
     "experimentalTitle": "Fonctionnalité expérimentale",
-    "experimentalWarning": "Cette fonctionnalité est expérimentale. Des modifications majeures peuvent survenir à l'avenir et les scripts existants pourraient cesser de fonctionner. À utiliser avec précaution.",
+    "experimentalWarning": "Cette fonctionnalité est expérimentale. De futures mises à jour peuvent casser des scripts existants. À utiliser avec précaution.",
     "createScript": "Créer un script",
     "createScriptTitle": "Créer un nouveau script",
     "createScriptDescription": "Créez un nouveau script visuel pour cette instance. Les scripts peuvent automatiser les actions du bot et réagir aux événements.",
@@ -430,6 +638,7 @@
         "pause": "Pauser",
         "pauseTooltip": "Mettre en pause l'exécution du script",
         "unsaved": "Non enregistré",
+        "unsavedChanges": "Modifications non enregistrées",
         "clearCanvas": "Effacer le canevas",
         "zoomIn": "Agrandir",
         "zoomOut": "Rétrécir",
@@ -462,6 +671,64 @@
         "showPreview": "Afficher l'aperçu",
         "hidePreview": "Masquer l'aperçu",
         "delete": "Supprimer"
+      },
+      "node": {
+        "expand": "Développer le nœud",
+        "collapse": "Réduire le nœud"
+      },
+      "debug": {
+        "copyValue": "Copier la valeur actuelle",
+        "clearHistory": "Effacer l'historique"
+      },
+      "edge": {
+        "direction": "Direction de l'arête"
+      },
+      "note": {
+        "placeholder": "Écrire une note..."
+      },
+      "complexity": {
+        "title": "Score de complexité du script"
+      },
+      "group": {
+        "returnToRoot": "Revenir à la racine (Tab)"
+      },
+      "quickAdd": {
+        "menuLabel": "Menu d'ajout rapide de nœud",
+        "searchPlaceholder": "Rechercher des nœuds..."
+      },
+      "diff": {
+        "tooltip": "Revoir les modifications"
+      },
+      "dryRun": {
+        "tooltip": "Exécution à sec",
+        "title": "Script d'exécution à sec",
+        "description": "Exécutez un script à partir d'un déclencheur sélectionné avec des entrées simulées.",
+        "triggerNode": "Nœud de déclenchement",
+        "selectTrigger": "Sélectionnez un déclencheur...",
+        "triggerDescription": "Sélectionnez le nœud de déclenchement à exécuter avec les valeurs d'entrée simulées.",
+        "mockInputs": "Entrées simulées",
+        "valuePlaceholder": "valeur {{type}}",
+        "start": "Démarrer l'exécution à sec"
+      },
+      "quotas": {
+        "tooltip": "Quotas du script",
+        "title": "Quotas du script",
+        "description": "Configurez les limites de ressources pour ce script. Les champs vides utilisent les valeurs par défaut du serveur.",
+        "maxExecutionCount": "Nombre maximal d'exécutions",
+        "maxExecutionCountPlaceholder": "100000",
+        "maxExecutionCountDescription": "Nombre maximal d'exécutions de nœuds par déclencheur",
+        "maxExecutionTime": "Temps d'exécution maximal (ms)",
+        "maxExecutionTimePlaceholder": "30000",
+        "maxExecutionTimeDescription": "Temps maximal en temps réel par exécution de déclencheur",
+        "maxConcurrentTriggers": "Déclencheurs simultanés max",
+        "maxConcurrentTriggersPlaceholder": "1",
+        "maxConcurrentTriggersDescription": "Nombre maximal de déclenchements simultanés",
+        "maxStateStoreEntries": "Nombre maximal d'entrées dans le magasin d'état",
+        "maxStateStoreEntriesPlaceholder": "Illimité",
+        "maxStateStoreEntriesDescription": "Nombre maximal d'entrées dans le magasin d'état du script",
+        "disableTimeouts": "Désactiver les délais d'attente",
+        "disableTimeoutsDescription": "Désactive les délais d'attente par nœud et sur les arêtes de données",
+        "save": "Enregistrer les quotas"
       }
     }
   }

@@ -5,21 +5,21 @@
     },
     "title": "SoulFire"
   },
-  "newUser": "SoulFire'a yeni misiniz? <a>Başlarken rehberine</a> göz atmanızı öneririz.",
+  "newUser": "SoulFire'a yeni misiniz? <a>Başlangıç rehberini</a> okuyun.",
   "connect": {
     "title": "SoulFire Sunucusuna Bağlan",
     "description": "Hangi tür SoulFire sunucusuna bağlanmak istiyorsanız onu seçin.",
     "integrated": {
       "title": "Yerel Sunucu (ev)",
-      "description": "Bilgisayarınızda bir SoulFire sunucusu çalıştırır. Kurulum otomatiktir ve yapılandırma gerektirmez. (Masaüstü/Android uygulaması gerektirir)"
+      "description": "Bu cihazda bir SoulFire sunucusu çalıştırır. Kurulum otomatik olarak yapılır. Bu seçenek masaüstü veya Android uygulaması gerektirir."
     },
     "dedicated": {
       "title": "Dedicated Sunucu (uzaktan bağlantı)",
-      "description": "SoulFire sunucusunun uzak bir örneğine bağlanır. Bağlanmak için sunucu adresini ve token bilgilerini sağlamanız gerekmektedir."
+      "description": "Sunucunun adresi ve token ile uzaktaki bir SoulFire sunucusuna bağlanır."
     },
     "demo": {
       "title": "Örnek Sunucu",
-      "description": "Örnek verileriyle sanal bir sunucu simüle eder. Bu sunucu yalnızca okunabilir olup, üzerinde herhangi bir değişiklik yapamazsınız."
+      "description": "Salt okunur bir sunucuda demo verileri sağlar. SoulFire değişiklikleri kaydetmez."
     }
   },
   "integrated": {
@@ -36,11 +36,11 @@
       "success": "SoulFire verileri başarıyla sıfırlandı. Tekrar başlatmayı deneyin.",
       "error": "SoulFire verileri sıfırlanamadı"
     },
-    "description": "Entegre sunucu bilgisayarınızda yerel olarak çalışır. Gerekirse aşağıdan Java başlatma argümanlarını yapılandırın.",
+    "description": "Entegre sunucu bilgisayarınızda çalışır. Aşağıdan Java başlatma argümanlarını değiştirebilirsiniz.",
     "form": {
       "jvmArgs": {
         "title": "JVM argümanları",
-        "description": "SoulFire Java VM argümanları. 4GB RAM kullanmak için <bold>-Xmx4G</bold> ekleyin. Varsayılan olarak RAM'inizin %25'i kullanılır.",
+        "description": "SoulFire için Java VM argümanları. 4 GB RAM kullanmak için <bold>-Xmx4G</bold> ekleyin. Varsayılan olarak kullanılabilir RAM'in %25'i kullanılır.",
         "placeholder": "JVM argümanlarınızı buraya girin"
       },
       "back": "Geri Dön",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux komutu",
-          "description": "<a>Termux uygulamasını</a> yükleyin, ardından SoulFire sunucusunu yüklemek için bu komutu Termux'ta çalıştırın. Daha sonra bir token oluşturmak için <copy>generate-token api</copy> komutunu çalıştırmanız gerekecek. Ardından aşağıya token'ı girin."
+          "description": "<a>Termux uygulamasını</a> yükleyin. SoulFire sunucusunu kurmak için Termux'ta bu komutu çalıştırın. Token oluşturmak için <copy>generate-token api</copy> komutunu çalıştırın. Sonra aşağıya token'ı girin."
         },
         "token": {
           "title": "Token",
@@ -64,7 +64,7 @@
     }
   },
   "dedicated": {
-    "description": "\"Bağlanmak istediğiniz SoulFire sunucusunun adresini ve token bilgilerini girin.",
+    "description": "SoulFire sunucusunun adresini ve token bilgisini girin.",
     "toast": {
       "loading": "Sunucuya bağlanılıyor...",
       "success": "Sunucuya bağlanıldı",
