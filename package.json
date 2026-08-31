@@ -47,7 +47,7 @@
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
-    "@soulfiremc/sdk": "0.1.1",
+    "@soulfiremc/sdk": "2.10.0",
     "@tanstack/match-sorter-utils": "^9.0.0",
     "@tanstack/query-broadcast-client-experimental": "^5.99.0",
     "@tanstack/react-form": "^1.29.0",
