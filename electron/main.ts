@@ -28,15 +28,23 @@ import { getAppConfigDir, getAppLocalDataDir } from "./native/app-paths";
 import { CastManager } from "./native/cast";
 import { DiscordPresenceManager } from "./native/discord";
 import {
-  createIntegratedServerState,
   getSoulFireServerVersion,
   importCustomSoulFireServerJar,
-  killIntegratedServer,
   listCustomSoulFireServerJars,
   removeCustomSoulFireServerJar,
   resetIntegratedData,
   runIntegratedServer,
 } from "./native/integrated-server";
+import {
+  captureIntegratedThreadDump,
+  getIntegratedDiagnostics,
+  integratedDataDirectory,
+  validateJcmd,
+} from "./native/integrated-server-diagnostics";
+import {
+  createIntegratedServerState,
+  killIntegratedServer,
+} from "./native/integrated-server-process";
 import { trayGuidForPlatform } from "./tray-args";
 import { startUpdater } from "./updater";
 
@@ -665,6 +673,30 @@ function registerIpcHandlers(): void {
     return getSoulFireServerVersion(app, app.getVersion());
   });
 
+  handleIpc("integrated-server:get-diagnostics", async () =>
+    getIntegratedDiagnostics(app, integratedServerState),
+  );
+  handleIpc("integrated-server:open-data-directory", async () => {
+    const directory = integratedDataDirectory(app, integratedServerState);
+    await mkdir(directory, { recursive: true });
+    const error = await shell.openPath(directory);
+    if (error) throw new Error(error);
+  });
+  handleIpc("integrated-server:select-jcmd", async (window) => {
+    const result = await dialog.showOpenDialog(window, {
+      title: "Choose jcmd from JDK 25",
+      properties: ["openFile"],
+    });
+    const executable = result.filePaths[0];
+    if (result.canceled || !executable) return null;
+    await validateJcmd(executable);
+    integratedServerState.jcmdPath = executable;
+    return executable;
+  });
+  handleIpc("integrated-server:capture-thread-dump", async () =>
+    captureIntegratedThreadDump(app, integratedServerState),
+  );
+
   handleIpc("integrated-server:list-custom-jars", async () => {
     return listCustomSoulFireServerJars(app);
   });
@@ -688,6 +720,7 @@ function registerIpcHandlers(): void {
   });
 
   handleIpc("integrated-server:reset-data", async () => {
+    await killIntegratedServer(integratedServerState);
     await resetIntegratedData(app);
   });
 
@@ -715,13 +748,9 @@ function registerIpcHandlers(): void {
           : {
               type: "official",
             },
-        (_event, payload) => {
-          if (_event === "integrated-server-start-log") {
-            sendToMainWindow("integrated-server:start-log", payload);
-          }
-        },
         app.getVersion(),
       ).then((credentials) => {
+        if (credentials === null) return null;
         const [address, token] = credentials.split("\n");
         return {
           address,

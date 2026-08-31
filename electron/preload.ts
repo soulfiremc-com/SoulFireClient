@@ -83,6 +83,12 @@ const desktopApi: SoulFireDesktopApi = {
       invoke("fs:write-text-file", targetPath, contents),
   },
   integratedServer: {
+    getDiagnostics: async () => invoke("integrated-server:get-diagnostics"),
+    openDataDirectory: async () =>
+      invoke("integrated-server:open-data-directory"),
+    selectJcmd: async () => invoke("integrated-server:select-jcmd"),
+    captureThreadDump: async () =>
+      invoke("integrated-server:capture-thread-dump"),
     getVersion: async () => invoke("integrated-server:get-version"),
     importCustomJar: async (sourcePath) =>
       invoke("integrated-server:import-custom-jar", sourcePath),
@@ -90,8 +96,6 @@ const desktopApi: SoulFireDesktopApi = {
       await invoke("integrated-server:kill");
     },
     listCustomJars: async () => invoke("integrated-server:list-custom-jars"),
-    onStartLog: async (callback) =>
-      subscribe("integrated-server:start-log", callback),
     removeCustomJar: async (jarId) =>
       invoke("integrated-server:remove-custom-jar", jarId),
     resetData: async () => {

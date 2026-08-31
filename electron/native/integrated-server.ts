@@ -1,4 +1,4 @@
-import { type ChildProcessWithoutNullStreams, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { createHash, createHmac } from "node:crypto";
 import { createReadStream } from "node:fs";
 import {
@@ -14,17 +14,26 @@ import {
 import { createRequire } from "node:module";
 import net from "node:net";
 import path from "node:path";
-import readline from "node:readline";
 import type { App } from "electron";
 import * as tar from "tar";
 import { getAppLocalDataDir } from "./app-paths";
+import { downloadToFile } from "./integrated-server-download";
+import {
+  appendIntegratedLog,
+  type IntegratedServerState,
+  startIntegratedOperation,
+  waitForIntegratedServerReady,
+} from "./integrated-server-process";
 
 const require = createRequire(__filename);
 const AdmZip = require("adm-zip") as {
   new (
     path: string,
   ): {
-    extractAllTo: (targetPath: string, overwrite?: boolean) => void;
+    extractAllToAsync: (
+      targetPath: string,
+      overwrite?: boolean,
+    ) => Promise<unknown>;
     getEntries: () => Array<{
       entryName: string;
       isDirectory: boolean;
@@ -55,18 +64,6 @@ export type CustomSoulFireServerJar = {
 type CustomSoulFireServerJarIndex = {
   jars: CustomSoulFireServerJar[];
 };
-
-export type IntegratedServerState = {
-  starting: boolean;
-  child: ChildProcessWithoutNullStreams | null;
-};
-
-export function createIntegratedServerState(): IntegratedServerState {
-  return {
-    starting: false,
-    child: null,
-  };
-}
 
 export async function getSoulFireServerVersion(
   app: App,
@@ -100,49 +97,17 @@ export async function resetIntegratedData(app: App): Promise<void> {
   });
 }
 
-export async function killIntegratedServer(
-  state: IntegratedServerState,
-): Promise<void> {
-  const child = state.child;
-  state.child = null;
-  state.starting = false;
-
-  if (child === null || child.killed) {
-    return;
-  }
-
-  child.kill("SIGTERM");
-
-  await new Promise<void>((resolve) => {
-    const timeout = setTimeout(() => {
-      child.kill("SIGKILL");
-      resolve();
-    }, 5_000);
-
-    child.once("exit", () => {
-      clearTimeout(timeout);
-      resolve();
-    });
-  });
-}
-
 export async function runIntegratedServer(
   app: App,
   state: IntegratedServerState,
   jvmArgs: string[],
   jarSource: IntegratedServerJarSource,
-  broadcast: (event: string, payload?: unknown) => void,
   fallbackVersion: string,
-): Promise<string> {
-  if (state.starting) {
-    throw new Error("Server already starting");
-  }
-  if (state.child !== null) {
-    throw new Error("Integrated server is already running");
-  }
-
-  state.starting = true;
-  try {
+): Promise<string | null> {
+  return startIntegratedOperation(state, async (signal) => {
+    const report = (message: string) => {
+      if (!signal.aborted) appendIntegratedLog(state, message);
+    };
     const serverVersion = await getSoulFireServerVersion(app, fallbackVersion);
     const appLocalDataDir = getAppLocalDataDir(app);
     await mkdir(appLocalDataDir, {
@@ -150,7 +115,12 @@ export async function runIntegratedServer(
     });
 
     const jvmDir = path.join(appLocalDataDir, "jvm-25");
-    await ensureJvm(jvmDir, broadcast);
+    state.diagnostics.dataDirectory =
+      jarSource.type === "custom"
+        ? path.join(appLocalDataDir, "soulfire-custom", jarSource.jarId)
+        : path.join(appLocalDataDir, "soulfire");
+    await ensureJvm(jvmDir, report, signal);
+    signal.throwIfAborted();
 
     const { jarPath: soulFireJarPath, runDir: soulFireRunDir } =
       await resolveSoulFireJar(
@@ -158,7 +128,8 @@ export async function runIntegratedServer(
         appLocalDataDir,
         serverVersion,
         jarSource,
-        broadcast,
+        report,
+        signal,
       );
     await mkdir(soulFireRunDir, {
       recursive: true,
@@ -168,7 +139,14 @@ export async function runIntegratedServer(
     const javaExecPath = path.join(javaHomeDir, "bin", getJavaExecutableName());
     const availablePort = await findRandomAvailablePort();
 
-    broadcast("integrated-server-start-log", "Starting SoulFire server...");
+    signal.throwIfAborted();
+    Object.assign(state.diagnostics, {
+      javaPath: javaExecPath,
+      jarPath: soulFireJarPath,
+      dataDirectory: soulFireRunDir,
+      port: availablePort,
+    });
+    report("Starting SoulFire server...");
 
     const child = spawn(
       javaExecPath,
@@ -194,18 +172,15 @@ export async function runIntegratedServer(
       },
     );
 
-    state.child = child;
-
-    await waitForServerReady(child, broadcast, state);
+    await waitForIntegratedServerReady(state, child, signal);
+    signal.throwIfAborted();
 
     const secretKey = await readFile(
       path.join(soulFireRunDir, "secret-key.bin"),
     );
     const token = createRootApiToken(secretKey);
     return `http://127.0.0.1:${availablePort}\n${token}`;
-  } finally {
-    state.starting = false;
-  }
+  });
 }
 
 export async function listCustomSoulFireServerJars(
@@ -298,7 +273,8 @@ async function resolveSoulFireJar(
   appLocalDataDir: string,
   serverVersion: string,
   jarSource: IntegratedServerJarSource,
-  broadcast: (event: string, payload?: unknown) => void,
+  report: (message: string) => void,
+  signal: AbortSignal,
 ): Promise<{
   jarPath: string;
   runDir: string;
@@ -309,10 +285,7 @@ async function resolveSoulFireJar(
       throw new Error("Custom SoulFire server jar is no longer available");
     }
 
-    broadcast(
-      "integrated-server-start-log",
-      `Using custom SoulFire jar: ${jar.originalName}`,
-    );
+    report(`Using custom SoulFire jar: ${jar.originalName}`);
 
     return {
       jarPath: jar.path,
@@ -331,7 +304,8 @@ async function resolveSoulFireJar(
     serverVersion,
     soulFireJarName,
     soulFireJarPath,
-    broadcast,
+    report,
+    signal,
   );
 
   return {
@@ -434,56 +408,18 @@ async function validateJar(jarPath: string): Promise<void> {
   }
 }
 
-async function waitForServerReady(
-  child: ChildProcessWithoutNullStreams,
-  broadcast: (event: string, payload?: unknown) => void,
-  state: IntegratedServerState,
-): Promise<void> {
-  let finishedLoading = false;
-
-  await new Promise<void>((resolve, reject) => {
-    const handleLine = (rawLine: string) => {
-      const line = stripAnsi(rawLine).trim();
-      if (!line) {
-        return;
-      }
-
-      broadcast("integrated-server-start-log", line);
-      if (line.includes("Finished loading!")) {
-        finishedLoading = true;
-        resolve();
-      }
-    };
-
-    const stdout = readline.createInterface({
-      input: child.stdout,
-    });
-    const stderr = readline.createInterface({
-      input: child.stderr,
-    });
-
-    stdout.on("line", handleLine);
-    stderr.on("line", handleLine);
-
-    child.once("exit", () => {
-      state.child = null;
-      if (!finishedLoading) {
-        reject(new Error("SoulFire didn't properly finish loading"));
-      }
-    });
-    child.once("error", (error) => {
-      state.child = null;
-      reject(error);
-    });
-  });
-}
-
 async function ensureJvm(
   jvmDir: string,
-  broadcast: (event: string, payload?: unknown) => void,
+  report: (message: string) => void,
+  signal: AbortSignal,
 ): Promise<void> {
-  if (await exists(jvmDir)) {
-    broadcast("integrated-server-start-log", "JVM detected");
+  signal.throwIfAborted();
+  if (
+    await exists(
+      path.join(getJavaHomeDir(jvmDir), "bin", getJavaExecutableName()),
+    )
+  ) {
+    report("JVM detected");
     return;
   }
 
@@ -491,8 +427,8 @@ async function ensureJvm(
   const adoptiumArch = detectArchitecture();
   const jvmUrl = `https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=${adoptiumArch}&image_type=jre&os=${adoptiumOs}&vendor=eclipse`;
 
-  broadcast("integrated-server-start-log", "Fetching JVM data...");
-  const metadataResponse = await fetch(jvmUrl);
+  report("Fetching JVM data...");
+  const metadataResponse = await fetch(jvmUrl, { signal });
   if (!metadataResponse.ok) {
     throw new Error("Failed to fetch JVM metadata");
   }
@@ -524,69 +460,73 @@ async function ensureJvm(
     recursive: true,
   });
 
-  await downloadToFile(downloadUrl, archiveTmpPath, (percent) => {
-    broadcast("integrated-server-start-log", `Downloading JVM... ${percent}%`);
-  });
-  await verifyFileChecksum(archiveTmpPath, checksum, "JVM");
-
-  broadcast("integrated-server-start-log", "Extracting JVM...");
-  await mkdir(extractTmpRoot, {
-    recursive: true,
-  });
-
-  if (downloadUrl.endsWith(".zip")) {
-    const zip = new AdmZip(archiveTmpPath);
-    zip.extractAllTo(extractTmpRoot, true);
-  } else if (downloadUrl.endsWith(".tar.gz")) {
-    await tar.x({
-      cwd: extractTmpRoot,
-      file: archiveTmpPath,
+  try {
+    await downloadToFile(downloadUrl, archiveTmpPath, signal, (percent) => {
+      report(`Downloading JVM... ${percent}%`);
     });
-  } else {
-    throw new Error("Unsupported JVM archive type");
+    await verifyFileChecksum(archiveTmpPath, checksum, "JVM", signal);
+    signal.throwIfAborted();
+
+    report("Extracting JVM...");
+    await mkdir(extractTmpRoot, {
+      recursive: true,
+    });
+
+    if (downloadUrl.endsWith(".zip")) {
+      const zip = new AdmZip(archiveTmpPath);
+      await zip.extractAllToAsync(extractTmpRoot, true);
+    } else if (downloadUrl.endsWith(".tar.gz")) {
+      await tar.x({
+        cwd: extractTmpRoot,
+        file: archiveTmpPath,
+      });
+    } else {
+      throw new Error("Unsupported JVM archive type");
+    }
+
+    const extractedJvmDir = path.join(extractTmpRoot, `${releaseName}-jre`);
+    const extractedJavaExec = path.join(
+      getJavaHomeDir(extractedJvmDir),
+      "bin",
+      getJavaExecutableName(),
+    );
+    if (!(await exists(extractedJavaExec))) {
+      throw new Error("Extracted JVM is missing the Java executable");
+    }
+
+    signal.throwIfAborted();
+    await atomicReplaceDirectory(extractedJvmDir, jvmDir);
+  } finally {
+    await rm(archiveTmpPath, {
+      force: true,
+    });
+    await rm(extractTmpRoot, {
+      force: true,
+      recursive: true,
+    });
   }
-
-  const extractedJvmDir = path.join(extractTmpRoot, `${releaseName}-jre`);
-  const extractedJavaExec = path.join(
-    getJavaHomeDir(extractedJvmDir),
-    "bin",
-    getJavaExecutableName(),
-  );
-  if (!(await exists(extractedJavaExec))) {
-    throw new Error("Extracted JVM is missing the Java executable");
-  }
-
-  await atomicReplaceDirectory(extractedJvmDir, jvmDir);
-  await rm(archiveTmpPath, {
-    force: true,
-  });
-  await rm(extractTmpRoot, {
-    force: true,
-    recursive: true,
-  });
-
-  broadcast("integrated-server-start-log", "Downloaded JVM");
+  signal.throwIfAborted();
+  report("Downloaded JVM");
 }
 
 async function ensureSoulFireJar(
   version: string,
   jarName: string,
   jarPath: string,
-  broadcast: (event: string, payload?: unknown) => void,
+  report: (message: string) => void,
+  signal: AbortSignal,
 ): Promise<void> {
-  broadcast(
-    "integrated-server-start-log",
-    "Fetching SoulFire checksum metadata...",
-  );
+  report("Fetching SoulFire checksum metadata...");
 
-  const expectedChecksum = await fetchSoulFireJarChecksum(version, jarName);
+  const expectedChecksum = await fetchSoulFireJarChecksum(
+    version,
+    jarName,
+    signal,
+  );
   if (await exists(jarPath)) {
-    const existingChecksum = await sha256FileHex(jarPath);
+    const existingChecksum = await sha256FileHex(jarPath, signal);
     if (existingChecksum.toLowerCase() === expectedChecksum.toLowerCase()) {
-      broadcast(
-        "integrated-server-start-log",
-        "SoulFire already downloaded and verified",
-      );
+      report("SoulFire already downloaded and verified");
       return;
     }
   }
@@ -597,25 +537,34 @@ async function ensureSoulFireJar(
     force: true,
   });
 
-  broadcast("integrated-server-start-log", "Fetching SoulFire data...");
-  await downloadToFile(jarUrl, tempJarPath, (percent) => {
-    broadcast(
-      "integrated-server-start-log",
-      `Downloading SoulFire... ${percent}%`,
+  report("Fetching SoulFire data...");
+  try {
+    await downloadToFile(jarUrl, tempJarPath, signal, (percent) => {
+      report(`Downloading SoulFire... ${percent}%`);
+    });
+    await verifyFileChecksum(
+      tempJarPath,
+      expectedChecksum,
+      "SoulFire jar",
+      signal,
     );
-  });
-  await verifyFileChecksum(tempJarPath, expectedChecksum, "SoulFire jar");
-  await atomicReplaceFile(tempJarPath, jarPath);
-  broadcast("integrated-server-start-log", "Downloaded SoulFire");
+    signal.throwIfAborted();
+    await atomicReplaceFile(tempJarPath, jarPath);
+  } finally {
+    await rm(tempJarPath, { force: true });
+  }
+  report("Downloaded SoulFire");
 }
 
 async function fetchSoulFireJarChecksum(
   version: string,
   jarName: string,
+  signal: AbortSignal,
 ): Promise<string> {
   const response = await fetch(
     `https://api.github.com/repos/soulfiremc-com/SoulFire/releases/tags/${version}`,
     {
+      signal,
       headers: {
         "User-Agent": "SoulFireClient",
       },
@@ -640,53 +589,24 @@ async function fetchSoulFireJarChecksum(
   return digest;
 }
 
-async function downloadToFile(
-  url: string,
-  destinationPath: string,
-  onProgress: (percent: number) => void,
-): Promise<void> {
-  const response = await fetch(url);
-  if (!response.ok || response.body === null) {
-    throw new Error(`Download failed for ${url}`);
-  }
-
-  const contentLengthHeader = response.headers.get("content-length");
-  const totalSize = contentLengthHeader ? Number(contentLengthHeader) : 0;
-  const chunks: Buffer[] = [];
-  let downloaded = 0;
-  let lastPercent = -1;
-
-  for await (const chunk of response.body) {
-    const buffer = Buffer.from(chunk);
-    chunks.push(buffer);
-    downloaded += buffer.length;
-
-    if (totalSize > 0) {
-      const percent = Math.floor((downloaded / totalSize) * 100);
-      if (percent !== lastPercent) {
-        lastPercent = percent;
-        onProgress(percent);
-      }
-    }
-  }
-
-  await writeFile(destinationPath, Buffer.concat(chunks));
-}
-
 async function verifyFileChecksum(
   filePath: string,
   expectedChecksum: string,
   label: string,
+  signal: AbortSignal,
 ): Promise<void> {
-  const actualChecksum = await sha256FileHex(filePath);
+  const actualChecksum = await sha256FileHex(filePath, signal);
   if (actualChecksum.toLowerCase() !== expectedChecksum.toLowerCase()) {
     throw new Error(`${label} checksum verification failed`);
   }
 }
 
-async function sha256FileHex(filePath: string): Promise<string> {
+async function sha256FileHex(
+  filePath: string,
+  signal?: AbortSignal,
+): Promise<string> {
   const hash = createHash("sha256");
-  const stream = createReadStream(filePath);
+  const stream = createReadStream(filePath, { signal });
 
   await new Promise<void>((resolve, reject) => {
     stream.on("data", (chunk) => hash.update(chunk));
@@ -834,12 +754,4 @@ async function exists(targetPath: string): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-function stripAnsi(value: string): string {
-  return value.replace(
-    // biome-ignore lint/suspicious/noControlCharactersInRegex: ANSI control sequence stripping
-    /\u001B\[[0-9;]*[A-Za-z]/g,
-    "",
-  );
 }

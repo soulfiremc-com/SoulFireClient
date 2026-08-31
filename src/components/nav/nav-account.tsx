@@ -4,6 +4,7 @@ import { flavorEntries } from "@catppuccin/palette";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import {
+  ActivityIcon,
   ChevronsUpDown,
   CircleHelpIcon,
   FolderIcon,
@@ -19,11 +20,12 @@ import {
   VenetianMaskIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Suspense, use } from "react";
+import { Suspense, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { AboutContext } from "@/components/dialog/about-dialog.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
+import { IntegratedServerDiagnosticsDialog } from "@/components/IntegratedServerDiagnostics";
 import CastMenuEntry from "@/components/nav/cast-menu-entry.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context.tsx";
@@ -57,7 +59,12 @@ import {
   runAsync,
   setTerminalTheme,
 } from "@/lib/utils.tsx";
-import { isImpersonating, logOut, stopImpersonation } from "@/lib/web-rpc.ts";
+import {
+  getServerType,
+  isImpersonating,
+  logOut,
+  stopImpersonation,
+} from "@/lib/web-rpc.ts";
 
 function SidebarAccountButton() {
   const clientDataQueryOptions = useRouteContext({
@@ -145,6 +152,7 @@ function DropdownAccountHeaderSkeleton() {
 }
 
 export function NavAccount() {
+  const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const { t, i18n } = useTranslation("common");
   const navigate = useNavigate();
   const terminalTheme = use(TerminalThemeContext);
@@ -155,6 +163,10 @@ export function NavAccount() {
 
   return (
     <SidebarMenu>
+      <IntegratedServerDiagnosticsDialog
+        open={diagnosticsOpen}
+        onOpenChange={setDiagnosticsOpen}
+      />
       <SidebarMenuItem>
         <DropdownMenu>
           <Suspense fallback={<SidebarAccountButtonSkeleton />}>
@@ -303,6 +315,31 @@ export function NavAccount() {
                     <FolderIcon />
                     {t("userSidebar.dataDir")}
                   </DropdownMenuItem>
+                  {getServerType() === "integrated" && (
+                    <>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          void desktop.integratedServer
+                            .openDataDirectory()
+                            .catch((error) =>
+                              toast.error(
+                                t("integratedDiagnostics.openDirectoryError"),
+                                { description: String(error) },
+                              ),
+                            );
+                        }}
+                      >
+                        <FolderIcon />
+                        {t("integratedDiagnostics.openDirectory")}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => setDiagnosticsOpen(true)}
+                      >
+                        <ActivityIcon />
+                        {t("integratedDiagnostics.title")}
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
               </>
             )}

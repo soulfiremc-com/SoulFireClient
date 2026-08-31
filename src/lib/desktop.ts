@@ -7,6 +7,7 @@ import type {
   DesktopFsWatchEvent,
   DesktopFsWatchOptions,
   DesktopIntegratedServerCredentials,
+  DesktopIntegratedServerDiagnostics,
   DesktopIntegratedServerJarSource,
   DesktopMkdirOptions,
   DesktopOpenDialogOptions,
@@ -129,6 +130,18 @@ export const desktop = {
     },
   },
   integratedServer: {
+    async getDiagnostics(): Promise<DesktopIntegratedServerDiagnostics> {
+      return requireDesktopRuntime().integratedServer.getDiagnostics();
+    },
+    async openDataDirectory(): Promise<void> {
+      await requireDesktopRuntime().integratedServer.openDataDirectory();
+    },
+    async selectJcmd(): Promise<string | null> {
+      return requireDesktopRuntime().integratedServer.selectJcmd();
+    },
+    async captureThreadDump(): Promise<string> {
+      return requireDesktopRuntime().integratedServer.captureThreadDump();
+    },
     async getVersion(): Promise<string> {
       return requireDesktopRuntime().integratedServer.getVersion();
     },
@@ -145,9 +158,6 @@ export const desktop = {
     async listCustomJars(): Promise<DesktopCustomSoulFireServerJar[]> {
       return requireDesktopRuntime().integratedServer.listCustomJars();
     },
-    async onStartLog(callback: (line: string) => void): Promise<() => void> {
-      return requireDesktopRuntime().integratedServer.onStartLog(callback);
-    },
     async removeCustomJar(jarId: string): Promise<void> {
       await requireDesktopRuntime().integratedServer.removeCustomJar(jarId);
     },
@@ -157,7 +167,7 @@ export const desktop = {
     async run(options: {
       jarSource?: DesktopIntegratedServerJarSource;
       jvmArgs: string[];
-    }): Promise<DesktopIntegratedServerCredentials> {
+    }): Promise<DesktopIntegratedServerCredentials | null> {
       return requireDesktopRuntime().integratedServer.run(options);
     },
   },

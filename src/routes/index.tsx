@@ -24,13 +24,25 @@ import {
   ServerIcon,
   Trash2Icon,
   UploadIcon,
+  XIcon,
 } from "lucide-react";
-import { use, useCallback, useEffect, useId, useRef, useState } from "react";
+import {
+  use,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useStickToBottom } from "use-stick-to-bottom";
 import { z } from "zod";
 import { ExternalLink } from "@/components/external-link.tsx";
+import {
+  IntegratedServerProcessOutput,
+  IntegratedServerSupportActions,
+} from "@/components/IntegratedServerDiagnostics";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -83,7 +95,6 @@ import {
   ItemTitle,
 } from "@/components/ui/item.tsx";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
-import { Scroller } from "@/components/ui/scroller.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
@@ -94,12 +105,7 @@ import type {
 import i18n from "@/lib/i18n";
 import { SOULFIRE_LOGO_ICON, staticRouteChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type SFServerType } from "@/lib/types.ts";
-import {
-  cancellablePromiseDefault,
-  getLanguageName,
-  isDemo,
-  languageEmoji,
-} from "@/lib/utils.tsx";
+import { getLanguageName, isDemo, languageEmoji } from "@/lib/utils.tsx";
 import {
   createAddressOnlyTransport,
   getServerType,
@@ -144,10 +150,6 @@ const mobileIntegratedServerFormSchema = z.object({
 });
 
 type LoginType = "INTEGRATED" | "DEDICATED" | "EMAIL_CODE" | null;
-type IntegratedLog = {
-  id: number;
-  message: string;
-};
 
 type TargetRedirectFunction = () => Promise<void>;
 type LoginFunction = (
@@ -155,10 +157,6 @@ type LoginFunction = (
   address: string,
   token: string,
 ) => Promise<void>;
-
-function createIntegratedLog(message: string, id: number): IntegratedLog {
-  return { id, message };
-}
 
 function getStoredIntegratedServerJarSource(): DesktopIntegratedServerJarSource {
   const jarSource = localStorage.getItem(
@@ -262,42 +260,65 @@ function Index() {
     setAutoStartIntegratedServer(false);
   }, []);
 
+  const startupAttempt = useRef<{
+    cancelled: boolean;
+    done: Promise<void>;
+  } | null>(null);
   const startIntegratedServer = useCallback(
     (onError: () => void) => {
+      if (startupAttempt.current) return;
+      const attempt = { cancelled: false, done: Promise.resolve() };
+      startupAttempt.current = attempt;
       const startTime = Date.now();
-      toast.promise(
-        (async () => {
+      const toastId = toast.loading(t("integrated.toast.loading"));
+      attempt.done = (async () => {
+        try {
           await desktop.integratedServer.kill();
+          if (attempt.cancelled) return;
           const args = localStorage.getItem(
             LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
           );
-          const { address, token } = await desktop.integratedServer.run({
+          const credentials = await desktop.integratedServer.run({
             jarSource: getStoredIntegratedServerJarSource(),
             jvmArgs:
               args === null
                 ? DEFAULT_JVM_ARGS
                 : args.split(" ").filter((str) => str !== ""),
           });
-
-          await redirectWithCredentials("integrated", address, token);
-          return Date.now() - startTime;
-        })(),
-        {
-          loading: t("integrated.toast.loading"),
-          success: (elapsed) =>
+          if (attempt.cancelled || credentials === null) return;
+          await redirectWithCredentials(
+            "integrated",
+            credentials.address,
+            credentials.token,
+          );
+          toast.success(
             t("integrated.toast.success", {
-              time: (elapsed / 1000).toFixed(1),
+              time: ((Date.now() - startTime) / 1000).toFixed(1),
             }),
-          error: (e) => {
+            { id: toastId },
+          );
+        } catch (error) {
+          if (!attempt.cancelled) {
             onError();
-            console.error(e);
-            return t("integrated.toast.error");
-          },
-        },
-      );
+            toast.error(t("integrated.toast.error"), {
+              id: toastId,
+              description: String(error),
+            });
+          }
+        } finally {
+          if (attempt.cancelled) toast.dismiss(toastId);
+          if (startupAttempt.current === attempt) startupAttempt.current = null;
+        }
+      })();
     },
     [redirectWithCredentials, t],
   );
+  const cancelIntegratedStartup = useCallback(async () => {
+    const attempt = startupAttempt.current;
+    if (attempt) attempt.cancelled = true;
+    await desktop.integratedServer.kill();
+    await attempt?.done;
+  }, []);
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
@@ -352,6 +373,7 @@ function Index() {
                 setLoginType={setLoginType}
                 redirectWithCredentials={redirectWithCredentials}
                 startIntegratedServer={startIntegratedServer}
+                cancelIntegratedStartup={cancelIntegratedStartup}
               />
             )}
             {loginType === "DEDICATED" && (
@@ -573,12 +595,14 @@ function LoginOptionCard(props: {
 type IntegratedState = "configure" | "loading" | "mobile" | "error";
 
 function IntegratedMenu({
+  cancelIntegratedStartup,
   autoStart,
   onAutoStart,
   redirectWithCredentials,
   setLoginType,
   startIntegratedServer,
 }: {
+  cancelIntegratedStartup: () => Promise<void>;
   autoStart: boolean;
   onAutoStart: () => void;
   redirectWithCredentials: LoginFunction;
@@ -590,27 +614,6 @@ function IntegratedMenu({
   const [integratedState, setIntegratedState] = useState<IntegratedState>(
     autoStart ? "loading" : "configure",
   );
-  const [logs, setLogs] = useState<IntegratedLog[]>([
-    createIntegratedLog(t("integrated.preparing"), 0),
-  ]);
-
-  useEffect(() => {
-    const cancel = cancellablePromiseDefault(
-      desktop.integratedServer.onStartLog((payload) => {
-        setLogs((prev) => [
-          ...prev,
-          createIntegratedLog(
-            payload as string,
-            (prev[prev.length - 1]?.id ?? 0) + 1,
-          ),
-        ]);
-      }),
-    );
-    return () => {
-      cancel();
-    };
-  }, []);
-
   useEffect(() => {
     if (!autoStart || hasAutoStarted.current) {
       return;
@@ -631,12 +634,17 @@ function IntegratedMenu({
         />
       );
     case "loading":
-      return <IntegratedLoadingMenu logs={logs} />;
+      return (
+        <IntegratedLoadingMenu
+          cancelStartup={async () => {
+            await cancelIntegratedStartup();
+            setIntegratedState("configure");
+          }}
+        />
+      );
     case "error":
       return (
         <IntegratedErrorMenu
-          logs={logs}
-          setLogs={setLogs}
           setLoginType={setLoginType}
           setIntegratedState={setIntegratedState}
           startIntegratedServer={startIntegratedServer}
@@ -1047,6 +1055,7 @@ function IntegratedConfigureMenu({
               )}
             </Field>
           )}
+          <IntegratedServerSupportActions />
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
@@ -1070,75 +1079,59 @@ function IntegratedConfigureMenu({
   );
 }
 
-function useElapsedSeconds() {
-  const [elapsed, setElapsed] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setElapsed((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-  return elapsed;
-}
-
-function IntegratedLoadingMenu({ logs }: { logs: IntegratedLog[] }) {
+function IntegratedLoadingMenu({
+  cancelStartup,
+}: {
+  cancelStartup: () => Promise<void>;
+}) {
   const { t } = useTranslation("login");
-  const elapsed = useElapsedSeconds();
-  const { scrollRef, contentRef, scrollToBottom } = useStickToBottom({
-    initial: "instant",
-    resize: "instant",
-  });
-
-  useEffect(() => {
-    void scrollToBottom({
-      animation: "instant",
-      preserveScrollPosition: true,
-    });
-  }, [scrollToBottom]);
-
+  const [cancelling, startTransition] = useTransition();
   return (
     <Card>
       <CardHeader>
         <LoginCardTitle />
         <CardDescription className="flex items-center justify-center gap-2">
           <LoaderCircleIcon className="size-4 animate-spin" />
-          {t("integrated.toast.loading")}
-          <span className="tabular-nums text-muted-foreground">{elapsed}s</span>
+          {t(cancelling ? "integrated.cancelling" : "integrated.toast.loading")}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Scroller ref={scrollRef} className="h-48" hideScrollbar offset={1}>
-          <div ref={contentRef} className="flex flex-col gap-1">
-            {logs.map((log) => (
-              <p
-                key={log.id}
-                className="select-text rounded-md bg-muted px-3 py-2 font-mono text-xs break-all"
-              >
-                {log.message}
-              </p>
-            ))}
-          </div>
-        </Scroller>
+        <IntegratedServerProcessOutput />
       </CardContent>
+      <CardFooter>
+        <Button
+          variant="outline"
+          disabled={cancelling}
+          onClick={() =>
+            startTransition(async () => {
+              try {
+                await cancelStartup();
+              } catch (error) {
+                toast.error(t("integrated.cancelError"), {
+                  description: String(error),
+                });
+              }
+            })
+          }
+        >
+          <XIcon data-icon="inline-start" />
+          {t(cancelling ? "integrated.cancelling" : "integrated.cancel")}
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
 
 function IntegratedErrorMenu({
-  logs,
-  setLogs,
   setLoginType,
   setIntegratedState,
   startIntegratedServer,
 }: {
-  logs: IntegratedLog[];
-  setLogs: (logs: IntegratedLog[]) => void;
   setLoginType: (type: LoginType) => void;
   setIntegratedState: (state: IntegratedState) => void;
   startIntegratedServer: (onError: () => void) => void;
 }) {
   const { t } = useTranslation("login");
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [resetting, setResetting] = useState(false);
 
   return (
@@ -1150,21 +1143,14 @@ function IntegratedErrorMenu({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Scroller ref={scrollRef} className="h-48" hideScrollbar>
-          <div className="flex flex-col gap-1">
-            {logs.map((log) => (
-              <p
-                key={log.id}
-                className="select-text rounded-md bg-muted px-3 py-2 font-mono text-xs break-all"
-              >
-                {log.message}
-              </p>
-            ))}
-          </div>
-        </Scroller>
+        <IntegratedServerProcessOutput />
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={() => setLoginType(null)}>
+      <CardFooter className="flex flex-wrap justify-between gap-2">
+        <Button
+          variant="outline"
+          disabled={resetting}
+          onClick={() => setLoginType(null)}
+        >
           <ArrowLeftIcon />
           {t("integrated.form.back")}
         </Button>
@@ -1202,8 +1188,8 @@ function IntegratedErrorMenu({
             {t("integrated.reset.button")}
           </Button>
           <Button
+            disabled={resetting}
             onClick={() => {
-              setLogs([createIntegratedLog(t("integrated.preparing"), 0)]);
               setIntegratedState("loading");
               startIntegratedServer(() => setIntegratedState("error"));
             }}

@@ -571,5 +571,42 @@
       "copyVersion": "Copy Version",
       "openWebsite": "Open Website"
     }
+  },
+  "integratedDiagnostics": {
+    "title": "Process diagnostics",
+    "description": "Inspect the local Java process, even when the server cannot connect.",
+    "openDirectory": "Open data directory",
+    "openDirectoryError": "Could not open the data directory",
+    "elapsed": "{{count}}s elapsed",
+    "quiet": "No new output for {{count}} seconds. Startup may still be working. Capture a thread dump to see what Java is doing.",
+    "status": {
+      "idle": "Not started",
+      "preparing": "Preparing Java and server files",
+      "starting": "Waiting for SoulFire to start",
+      "running": "Running",
+      "stopping": "Stopping",
+      "stopped": "Stopped",
+      "failed": "Failed"
+    },
+    "noOutput": "Waiting for process output...",
+    "noMatches": "No matching output.",
+    "java": "Java executable",
+    "jar": "Server JAR",
+    "data": "Data directory",
+    "port": "RPC port",
+    "exit": "Exit code or signal",
+    "unavailable": "Not available",
+    "copy": "Copy report",
+    "copied": "Diagnostic report copied",
+    "save": "Save report",
+    "saved": "Diagnostic report saved",
+    "capture": "Capture thread dump",
+    "chooseJcmd": "Choose JDK 25 jcmd",
+    "dumpHelp": "Captures platform and virtual threads without stopping Java. The request times out after 15 seconds.",
+    "jcmdHelp": "Thread dumps need jcmd from JDK 25. The bundled Java runtime does not include it. Install a JDK 25 and choose jcmd (jcmd.exe on Windows) in its bin directory.",
+    "openDump": "Open thread dump",
+    "filter": "Filter process output",
+    "truncated": "{{count}} older log lines were omitted. Full server logs remain in the data directory.",
+    "privacy": "Reports include local paths and recent logs. Review reports and thread dumps for personal information before sharing. Nothing is uploaded automatically."
   }
 }

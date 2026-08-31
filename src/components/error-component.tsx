@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IntegratedServerSupportActions } from "@/components/IntegratedServerDiagnostics";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
@@ -25,7 +26,7 @@ import {
 } from "@/components/ui/collapsible.tsx";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { runAsync } from "@/lib/utils.tsx";
-import { logOut } from "@/lib/web-rpc.ts";
+import { getServerType, logOut } from "@/lib/web-rpc.ts";
 
 type ErrorComponentProps = {
   error: Error;
@@ -93,7 +94,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
           </CardTitle>
           <CardDescription>{t("error.page.description")}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-4">
           <Collapsible open={expanded} onOpenChange={setExpanded}>
             <div className="flex flex-col gap-2">
               <p className="select-text break-words text-red-500">
@@ -124,6 +125,9 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
               )}
             </div>
           </Collapsible>
+          {isDesktopApp() && getServerType() === "integrated" && (
+            <IntegratedServerSupportActions />
+          )}
         </CardContent>
         <CardFooter className="flex flex-row gap-2">
           <Button

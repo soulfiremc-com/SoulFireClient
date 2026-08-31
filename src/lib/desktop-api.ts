@@ -73,6 +73,38 @@ export type DesktopIntegratedServerCredentials = {
   token: string;
 };
 
+export type DesktopIntegratedServerLog = {
+  id: number;
+  timestamp: number;
+  source: "launcher" | "stdout" | "stderr";
+  message: string;
+};
+
+export type DesktopIntegratedServerDiagnostics = {
+  status:
+    | "idle"
+    | "preparing"
+    | "starting"
+    | "running"
+    | "stopping"
+    | "stopped"
+    | "failed";
+  pid: number | null;
+  startedAt: number | null;
+  processStartedAt: number | null;
+  exitedAt: number | null;
+  exitCode: number | null;
+  exitSignal: string | null;
+  error: string | null;
+  javaPath: string | null;
+  jarPath: string | null;
+  dataDirectory: string;
+  port: number | null;
+  jcmdPath: string | null;
+  logs: DesktopIntegratedServerLog[];
+  droppedLogCount: number;
+};
+
 export type DesktopIntegratedServerJarSource =
   | {
       type: "official";
@@ -137,19 +169,22 @@ export interface SoulFireDesktopApi {
     writeTextFile: (path: string, contents: string) => Promise<void>;
   };
   integratedServer: {
+    getDiagnostics: () => Promise<DesktopIntegratedServerDiagnostics>;
+    openDataDirectory: () => Promise<void>;
+    selectJcmd: () => Promise<string | null>;
+    captureThreadDump: () => Promise<string>;
     getVersion: () => Promise<string>;
     importCustomJar: (
       sourcePath: string,
     ) => Promise<DesktopCustomSoulFireServerJar>;
     kill: () => Promise<void>;
     listCustomJars: () => Promise<DesktopCustomSoulFireServerJar[]>;
-    onStartLog: (callback: (line: string) => void) => Promise<DesktopUnlisten>;
     removeCustomJar: (jarId: string) => Promise<void>;
     resetData: () => Promise<void>;
     run: (options: {
       jarSource?: DesktopIntegratedServerJarSource;
       jvmArgs: string[];
-    }) => Promise<DesktopIntegratedServerCredentials>;
+    }) => Promise<DesktopIntegratedServerCredentials | null>;
   };
   path: {
     appConfigDir: () => Promise<string>;

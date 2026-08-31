@@ -61,7 +61,10 @@
         "back": "Back",
         "connect": "Connect"
       }
-    }
+    },
+    "cancel": "Cancel startup",
+    "cancelling": "Cancelling startup...",
+    "cancelError": "Could not cancel startup"
   },
   "dedicated": {
     "description": "Enter the address and token of the SoulFire server.",
