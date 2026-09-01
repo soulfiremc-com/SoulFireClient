@@ -61,7 +61,10 @@
         "back": "Volver",
         "connect": "Conectarse"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Introduce la dirección y el token del servidor SoulFire.",

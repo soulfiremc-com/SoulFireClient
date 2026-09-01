@@ -61,7 +61,10 @@
         "back": "Indietro",
         "connect": "Connetti"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Inserisci l'indirizzo e il token del server SoulFire.",

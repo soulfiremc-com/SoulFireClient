@@ -61,7 +61,10 @@
         "back": "Retour",
         "connect": "Se connecter"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Entrez l'adresse et le jeton du serveur SoulFire.",

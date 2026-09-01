@@ -61,7 +61,10 @@
         "back": "Kembali",
         "connect": "Hubungkan"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Masukkan alamat dan token server SoulFire.",

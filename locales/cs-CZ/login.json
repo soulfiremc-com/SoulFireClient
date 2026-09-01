@@ -61,7 +61,10 @@
         "back": "Zpět",
         "connect": "Připojit"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Zadejte adresu a token SoulFire serveru.",

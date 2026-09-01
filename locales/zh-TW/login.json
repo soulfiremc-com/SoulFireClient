@@ -61,7 +61,10 @@
         "back": "返回",
         "connect": "連接"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "請輸入 SoulFire 伺服器的位址與權杖。",

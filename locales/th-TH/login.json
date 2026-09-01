@@ -61,7 +61,10 @@
         "back": "ย้อนกลับ",
         "connect": "เชื่อมต่อ"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "กรอกที่อยู่และโทเค็นของเซิร์ฟเวอร์ SoulFire.",

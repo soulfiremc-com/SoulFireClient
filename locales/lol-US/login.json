@@ -61,7 +61,10 @@
         "back": "Bak",
         "connect": "CONEKT"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Put in teh adress an token ov teh SoulFire servr.",

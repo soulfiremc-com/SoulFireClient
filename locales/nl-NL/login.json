@@ -61,7 +61,10 @@
         "back": "Terug",
         "connect": "Verbinden"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Voer het adres en het token van de SoulFire-server in.",
