@@ -61,7 +61,10 @@
         "back": "Geri Dön",
         "connect": "Bağlan"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "SoulFire sunucusunun adresini ve token bilgisini girin.",

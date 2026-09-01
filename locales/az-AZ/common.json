@@ -571,5 +571,42 @@
       "copyVersion": "Versiyanı kopyala",
       "openWebsite": "Saytı aç"
     }
+  },
+  "integratedDiagnostics": {
+    "title": "",
+    "description": "",
+    "openDirectory": "",
+    "openDirectoryError": "",
+    "elapsed": "",
+    "quiet": "",
+    "status": {
+      "idle": "",
+      "preparing": "",
+      "starting": "",
+      "running": "İşləyir",
+      "stopping": "Dayandırılır",
+      "stopped": "Dayandırılıb",
+      "failed": "Uğursuz oldu"
+    },
+    "noOutput": "",
+    "noMatches": "",
+    "java": "",
+    "jar": "",
+    "data": "Məlumat qovluğu",
+    "port": "",
+    "exit": "",
+    "unavailable": "",
+    "copy": "",
+    "copied": "",
+    "save": "",
+    "saved": "",
+    "capture": "",
+    "chooseJcmd": "",
+    "dumpHelp": "",
+    "jcmdHelp": "",
+    "openDump": "",
+    "filter": "",
+    "truncated": "",
+    "privacy": ""
   }
 }

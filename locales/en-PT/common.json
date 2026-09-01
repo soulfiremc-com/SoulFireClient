@@ -571,5 +571,42 @@
       "copyVersion": "Snatch Version",
       "openWebsite": "Chart a course to th' plugin website"
     }
+  },
+  "integratedDiagnostics": {
+    "title": "",
+    "description": "",
+    "openDirectory": "",
+    "openDirectoryError": "",
+    "elapsed": "",
+    "quiet": "",
+    "status": {
+      "idle": "",
+      "preparing": "",
+      "starting": "",
+      "running": "Aye! Sailin'",
+      "stopping": "Droppin' anchor",
+      "stopped": "Ship at rest",
+      "failed": "Scuppered, matey!"
+    },
+    "noOutput": "",
+    "noMatches": "",
+    "java": "",
+    "jar": "",
+    "data": "Treasure Hold",
+    "port": "",
+    "exit": "",
+    "unavailable": "",
+    "copy": "",
+    "copied": "",
+    "save": "",
+    "saved": "",
+    "capture": "",
+    "chooseJcmd": "",
+    "dumpHelp": "",
+    "jcmdHelp": "",
+    "openDump": "",
+    "filter": "",
+    "truncated": "",
+    "privacy": ""
   }
 }

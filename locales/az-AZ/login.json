@@ -61,7 +61,10 @@
         "back": "Geri",
         "connect": "Qoşul"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "SoulFire serverinin ünvanını və tokenini daxil edin.",

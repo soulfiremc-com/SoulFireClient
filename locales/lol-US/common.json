@@ -571,5 +571,42 @@
       "copyVersion": "Copy Verzshun",
       "openWebsite": "Open Websyte"
     }
+  },
+  "integratedDiagnostics": {
+    "title": "",
+    "description": "",
+    "openDirectory": "",
+    "openDirectoryError": "",
+    "elapsed": "",
+    "quiet": "",
+    "status": {
+      "idle": "",
+      "preparing": "",
+      "starting": "",
+      "running": "Runnin",
+      "stopping": "Stoppin",
+      "stopped": "Stopped",
+      "failed": "FAILD"
+    },
+    "noOutput": "",
+    "noMatches": "",
+    "java": "",
+    "jar": "",
+    "data": "Data direktery",
+    "port": "",
+    "exit": "",
+    "unavailable": "",
+    "copy": "",
+    "copied": "",
+    "save": "",
+    "saved": "",
+    "capture": "",
+    "chooseJcmd": "",
+    "dumpHelp": "",
+    "jcmdHelp": "",
+    "openDump": "",
+    "filter": "",
+    "truncated": "",
+    "privacy": ""
   }
 }

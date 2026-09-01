@@ -61,7 +61,10 @@
         "back": "返回",
         "connect": "连接"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "请输入 SoulFire 服务器的地址和令牌。",

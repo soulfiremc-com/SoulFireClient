@@ -571,5 +571,42 @@
       "copyVersion": "Kopírovať verziu",
       "openWebsite": "Otvoriť webstránku"
     }
+  },
+  "integratedDiagnostics": {
+    "title": "",
+    "description": "",
+    "openDirectory": "",
+    "openDirectoryError": "",
+    "elapsed": "",
+    "quiet": "",
+    "status": {
+      "idle": "",
+      "preparing": "",
+      "starting": "",
+      "running": "Beží",
+      "stopping": "Zastavovanie",
+      "stopped": "Zastavené",
+      "failed": "Zlyhalo"
+    },
+    "noOutput": "",
+    "noMatches": "",
+    "java": "",
+    "jar": "",
+    "data": "Adresár s dátami",
+    "port": "",
+    "exit": "",
+    "unavailable": "",
+    "copy": "",
+    "copied": "",
+    "save": "",
+    "saved": "",
+    "capture": "",
+    "chooseJcmd": "",
+    "dumpHelp": "",
+    "jcmdHelp": "",
+    "openDump": "",
+    "filter": "",
+    "truncated": "",
+    "privacy": ""
   }
 }

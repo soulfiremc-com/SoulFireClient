@@ -61,7 +61,10 @@
         "back": "Tillbaka",
         "connect": "Anslut"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Ange adressen och token för SoulFire-servern.",

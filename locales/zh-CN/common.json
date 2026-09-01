@@ -571,5 +571,42 @@
       "copyVersion": "复制版本",
       "openWebsite": "打开网站"
     }
+  },
+  "integratedDiagnostics": {
+    "title": "",
+    "description": "",
+    "openDirectory": "",
+    "openDirectoryError": "",
+    "elapsed": "",
+    "quiet": "",
+    "status": {
+      "idle": "",
+      "preparing": "",
+      "starting": "",
+      "running": "正在运行",
+      "stopping": "正在停止",
+      "stopped": "已停止",
+      "failed": "失败了"
+    },
+    "noOutput": "",
+    "noMatches": "",
+    "java": "",
+    "jar": "",
+    "data": "数据目录",
+    "port": "",
+    "exit": "",
+    "unavailable": "",
+    "copy": "",
+    "copied": "",
+    "save": "",
+    "saved": "",
+    "capture": "",
+    "chooseJcmd": "",
+    "dumpHelp": "",
+    "jcmdHelp": "",
+    "openDump": "",
+    "filter": "",
+    "truncated": "",
+    "privacy": ""
   }
 }

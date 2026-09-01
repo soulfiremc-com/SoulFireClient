@@ -61,7 +61,10 @@
         "back": "ʞɔɐԐ",
         "connect": "ʇɔǝuuoɔ"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": ".ɹǝʌɹǝs ǝɹᴉɟlndoS ǝɥʇ ɟo uǝʞoʇ puɐ sssǝɹpɐ ǝɥʇ ɹǝʇuǝ",

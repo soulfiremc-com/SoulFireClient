@@ -61,7 +61,10 @@
         "back": "Avast",
         "connect": "Set sail!"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Type the address n' token o' the SoulFire server here, ye scallywag.",

@@ -61,7 +61,10 @@
         "back": "Назад",
         "connect": "Підключитися"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Введіть адресу та токен сервера SoulFire.",

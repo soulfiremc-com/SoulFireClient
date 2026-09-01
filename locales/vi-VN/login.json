@@ -61,7 +61,10 @@
         "back": "Quay lại",
         "connect": "Kết nối"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Nhập địa chỉ và token của máy chủ SoulFire.",

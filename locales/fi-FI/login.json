@@ -61,7 +61,10 @@
         "back": "Takaisin",
         "connect": "Yhdistä"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Anna SoulFire-palvelimen osoite ja tunniste.",

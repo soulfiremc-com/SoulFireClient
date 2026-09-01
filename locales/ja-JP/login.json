@@ -61,7 +61,10 @@
         "back": "戻る",
         "connect": "接続"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "SoulFire サーバーのアドレスとトークンを入力してください。",

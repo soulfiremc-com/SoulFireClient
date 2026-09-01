@@ -61,7 +61,10 @@
         "back": "뒤로",
         "connect": "연결"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "SoulFire 서버의 주소와 토큰을 입력하세요.",

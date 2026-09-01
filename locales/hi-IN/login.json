@@ -61,7 +61,10 @@
         "back": "वापस",
         "connect": "कनेक्ट करें"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "SoulFire सर्वर का पता और टोकन दर्ज करें।",

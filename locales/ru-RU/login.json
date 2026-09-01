@@ -61,7 +61,10 @@
         "back": "Назад",
         "connect": "Подключиться"
       }
-    }
+    },
+    "cancel": "",
+    "cancelling": "",
+    "cancelError": ""
   },
   "dedicated": {
     "description": "Введите адрес и токен сервера SoulFire.",
