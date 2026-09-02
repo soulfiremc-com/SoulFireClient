@@ -62,9 +62,9 @@
         "connect": "Verbinden"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Startvorgang abbrechen",
+    "cancelling": "Startvorgang wird abgebrochen...",
+    "cancelError": "Startvorgang konnte nicht abgebrochen werden"
   },
   "dedicated": {
     "description": "Geben Sie die Adresse und das Token des SoulFire-Servers ein.",

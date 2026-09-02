@@ -62,9 +62,9 @@
         "connect": "Yhdistä"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Peru käynnistys",
+    "cancelling": "Peruutetaan käynnistystä...",
+    "cancelError": "Käynnistystä ei voitu perua"
   },
   "dedicated": {
     "description": "Anna SoulFire-palvelimen osoite ja tunniste.",

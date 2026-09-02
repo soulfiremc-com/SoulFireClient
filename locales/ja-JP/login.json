@@ -62,9 +62,9 @@
         "connect": "接続"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "起動をキャンセルする",
+    "cancelling": "起動をキャンセルしています...",
+    "cancelError": "起動のキャンセルに失敗しました"
   },
   "dedicated": {
     "description": "SoulFire サーバーのアドレスとトークンを入力してください。",

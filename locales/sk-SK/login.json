@@ -62,9 +62,9 @@
         "connect": "Pripojiť"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Zrušiť spustenie",
+    "cancelling": "Ruší sa spustenie...",
+    "cancelError": "Spustenie sa nepodarilo zrušiť"
   },
   "dedicated": {
     "description": "Zadajte adresu a token servera SoulFire.",

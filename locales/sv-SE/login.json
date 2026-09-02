@@ -62,9 +62,9 @@
         "connect": "Anslut"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Avbryt start",
+    "cancelling": "Avbryter start...",
+    "cancelError": "Kunde inte avbryta start"
   },
   "dedicated": {
     "description": "Ange adressen och token för SoulFire-servern.",

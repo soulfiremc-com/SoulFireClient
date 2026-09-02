@@ -62,9 +62,9 @@
         "connect": "Bağlan"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Başlatmayı iptal et",
+    "cancelling": "Başlatma iptal ediliyor...",
+    "cancelError": "Başlatma iptal edilemedi"
   },
   "dedicated": {
     "description": "SoulFire sunucusunun adresini ve token bilgisini girin.",

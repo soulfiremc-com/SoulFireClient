@@ -62,9 +62,9 @@
         "connect": "Qoşul"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Başlatmanı ləğv et",
+    "cancelling": "Başlatma ləğv edilir...",
+    "cancelError": "Başlatmanı ləğv etmək mümkün olmadı"
   },
   "dedicated": {
     "description": "SoulFire serverinin ünvanını və tokenini daxil edin.",

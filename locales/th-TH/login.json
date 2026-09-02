@@ -62,9 +62,9 @@
         "connect": "เชื่อมต่อ"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "ยกเลิกการเริ่มต้นระบบแล้ว",
+    "cancelling": "กำลังยกเลิกการเริ่มต้นระบบ...",
+    "cancelError": "ไม่สามารถยกเลิกการเริ่มต้นระบบได้"
   },
   "dedicated": {
     "description": "กรอกที่อยู่และโทเค็นของเซิร์ฟเวอร์ SoulFire.",

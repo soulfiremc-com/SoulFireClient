@@ -62,9 +62,9 @@
         "connect": "Verbinden"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Opstarten annuleren",
+    "cancelling": "Opstarten wordt geannuleerd...",
+    "cancelError": "Kon het opstarten niet annuleren"
   },
   "dedicated": {
     "description": "Voer het adres en het token van de SoulFire-server in.",

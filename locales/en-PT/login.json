@@ -62,9 +62,9 @@
         "connect": "Set sail!"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Call off the startin', matey!",
+    "cancelling": "Be cancellin' the startin'... Arrr!",
+    "cancelError": "Couldn' be cancellin' the startin', ye scallywag!"
   },
   "dedicated": {
     "description": "Type the address n' token o' the SoulFire server here, ye scallywag.",

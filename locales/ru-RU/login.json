@@ -62,9 +62,9 @@
         "connect": "Подключиться"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Отменить запуск},{",
+    "cancelling": "Отмена запуска...",
+    "cancelError": "Не удалось отменить запуск"
   },
   "dedicated": {
     "description": "Введите адрес и токен сервера SoulFire.",
