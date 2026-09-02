@@ -62,9 +62,9 @@
         "connect": "CONEKT"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Cansul teh startin upz",
+    "cancelling": "Cansullin da startin upz...",
+    "cancelError": "Cud not cansul teh startin upz"
   },
   "dedicated": {
     "description": "Put in teh adress an token ov teh SoulFire servr.",

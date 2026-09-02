@@ -62,9 +62,9 @@
         "connect": "Kết nối"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Huỷ khởi động",
+    "cancelling": "Đang huỷ khởi động...",
+    "cancelError": "Không thể huỷ khởi động"
   },
   "dedicated": {
     "description": "Nhập địa chỉ và token của máy chủ SoulFire.",

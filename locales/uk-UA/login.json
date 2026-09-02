@@ -62,9 +62,9 @@
         "connect": "Підключитися"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Скасувати запуск",
+    "cancelling": "Скасовується запуск...",
+    "cancelError": "Не вдалося скасувати запуск"
   },
   "dedicated": {
     "description": "Введіть адресу та токен сервера SoulFire.",

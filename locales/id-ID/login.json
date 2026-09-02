@@ -62,9 +62,9 @@
         "connect": "Hubungkan"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Batalkan permulaan startup",
+    "cancelling": "Membatalkan permulaan startup...",
+    "cancelError": "Tidak dapat membatalkan permulaan startup"
   },
   "dedicated": {
     "description": "Masukkan alamat dan token server SoulFire.",

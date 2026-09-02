@@ -62,9 +62,9 @@
         "connect": "Se connecter"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Annuler le démarrage",
+    "cancelling": "Annulation du démarrage...",
+    "cancelError": "Impossible d'annuler le démarrage"
   },
   "dedicated": {
     "description": "Entrez l'adresse et le jeton du serveur SoulFire.",

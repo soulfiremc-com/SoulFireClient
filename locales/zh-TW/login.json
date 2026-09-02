@@ -62,9 +62,9 @@
         "connect": "連接"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "取消啟動中",
+    "cancelling": "正在取消啟動...",
+    "cancelError": "無法取消啟動"
   },
   "dedicated": {
     "description": "請輸入 SoulFire 伺服器的位址與權杖。",

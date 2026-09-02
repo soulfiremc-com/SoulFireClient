@@ -62,9 +62,9 @@
         "connect": "Połącz"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "Anuluj uruchamianie",
+    "cancelling": "Anulowanie uruchamiania...",
+    "cancelError": "Nie można anulować uruchamiania"
   },
   "dedicated": {
     "description": "Wpisz adres i token serwera SoulFire.",

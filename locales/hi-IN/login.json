@@ -62,9 +62,9 @@
         "connect": "कनेक्ट करें"
       }
     },
-    "cancel": "",
-    "cancelling": "",
-    "cancelError": ""
+    "cancel": "स्टार्टअप रद्द करें",
+    "cancelling": "स्टार्टअप रद्द किया जा रहा है...",
+    "cancelError": "स्टार्टअप रद्द नहीं किया जा सका"
   },
   "dedicated": {
     "description": "SoulFire सर्वर का पता और टोकन दर्ज करें।",
