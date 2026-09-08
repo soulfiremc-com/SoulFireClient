@@ -64,7 +64,11 @@
     },
     "cancel": "Cancel startup",
     "cancelling": "Cancelling startup...",
-    "cancelError": "Could not cancel startup"
+    "cancelError": "Could not cancel startup",
+    "autoStart": {
+      "title": "Start automatically next time",
+      "description": "Skip server selection and use these settings when SoulFire opens."
+    }
   },
   "dedicated": {
     "description": "Enter the address and token of the SoulFire server.",

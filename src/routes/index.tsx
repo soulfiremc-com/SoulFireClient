@@ -95,6 +95,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item.tsx";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
+import { Switch } from "@/components/ui/switch.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
@@ -112,6 +113,8 @@ import {
   isAuthenticated,
   setAuthentication,
 } from "@/lib/web-rpc.ts";
+
+const LOCAL_STORAGE_AUTO_START_INTEGRATED = "auto-start-integrated-server";
 
 const LOCAL_STORAGE_FORM_SERVER_ADDRESS_KEY = "form-server-address";
 const LOCAL_STORAGE_FORM_SERVER_TOKEN_KEY = "form-server-token";
@@ -132,12 +135,12 @@ export const Route = createFileRoute("/")({
 });
 
 const emailFormSchema = z.object({
-  address: z.url(),
+  address: z.string().trim().pipe(z.url()),
   email: z.email(),
 });
 const tokenFormSchema = z.object({
-  address: z.url(),
-  token: z.jwt(),
+  address: z.string().trim().pipe(z.url()),
+  token: z.string().trim().pipe(z.jwt()),
 });
 
 const integratedServerFormSchema = z.object({
@@ -146,7 +149,7 @@ const integratedServerFormSchema = z.object({
   jvmArgs: z.string(),
 });
 const mobileIntegratedServerFormSchema = z.object({
-  token: z.jwt(),
+  token: z.string().trim().pipe(z.jwt()),
 });
 
 type LoginType = "INTEGRATED" | "DEDICATED" | "EMAIL_CODE" | null;
@@ -230,7 +233,8 @@ function Index() {
     systemInfo !== null &&
     !systemInfo.mobile &&
     isAuthenticated() &&
-    getServerType() === "integrated";
+    getServerType() === "integrated" &&
+    localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true";
   const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
   const [autoStartIntegratedServer, setAutoStartIntegratedServer] = useState(
     hasSavedIntegratedSession,
@@ -686,6 +690,10 @@ function IntegratedConfigureMenu({
   const [selectedCustomJarId, setSelectedCustomJarId] =
     useState(initialCustomJarId);
   const [importingCustomJar, setImportingCustomJar] = useState(false);
+  const autoStartId = useId();
+  const [autoStart, setAutoStart] = useState(
+    () => localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true",
+  );
   const form = useForm({
     defaultValues: {
       customJarId: initialCustomJarId,
@@ -876,6 +884,29 @@ function IntegratedConfigureMenu({
           <CardDescription>{t("integrated.description")}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
+          {!systemInfo?.mobile && (
+            <Field orientation="horizontal">
+              <FieldContent>
+                <FieldLabel htmlFor={autoStartId}>
+                  {t("integrated.autoStart.title")}
+                </FieldLabel>
+                <FieldDescription>
+                  {t("integrated.autoStart.description")}
+                </FieldDescription>
+              </FieldContent>
+              <Switch
+                id={autoStartId}
+                checked={autoStart}
+                onCheckedChange={(checked) => {
+                  setAutoStart(checked);
+                  localStorage.setItem(
+                    LOCAL_STORAGE_AUTO_START_INTEGRATED,
+                    String(checked),
+                  );
+                }}
+              />
+            </Field>
+          )}
           <form.Field name="jvmArgs">
             {(field) => {
               const isInvalid =

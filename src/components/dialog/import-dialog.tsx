@@ -115,8 +115,9 @@ function UrlDialog(props: ImportDialogProps) {
 
   return (
     <Credenza open={true} onOpenChange={props.closer}>
-      <CredenzaContent>
+      <CredenzaContent className="min-w-0">
         <form
+          className="min-w-0"
           onSubmit={(e) => {
             e.preventDefault();
             void form.handleSubmit();
@@ -212,8 +213,8 @@ function MainDialog(
 
   return (
     <Credenza open={true} onOpenChange={props.closer}>
-      <CredenzaContent>
-        <div role="dialog" onPaste={handlePaste}>
+      <CredenzaContent className="min-w-0">
+        <div className="min-w-0" onPaste={handlePaste}>
           <CredenzaHeader>
             <CredenzaTitle>{props.title}</CredenzaTitle>
             <CredenzaDescription>{props.description}</CredenzaDescription>
@@ -252,7 +253,7 @@ function MainDialog(
                 )}
                 <Button
                   variant="secondary"
-                  className="flex-auto"
+                  className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
                   onClick={() => {
                     void trackEvent("import_from_file");
                     if (isDesktopApp()) {
@@ -294,7 +295,7 @@ function MainDialog(
                 ) && (
                   <Button
                     variant="secondary"
-                    className="flex-auto"
+                    className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
                     onClick={props.openUrlDialog}
                   >
                     <GlobeIcon />
@@ -303,7 +304,7 @@ function MainDialog(
                 )}
                 <Button
                   variant="secondary"
-                  className="flex-auto"
+                  className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
                   onClick={() => {
                     void trackEvent("import_from_clipboard");
                     runAsync(async () => {
