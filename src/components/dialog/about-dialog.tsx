@@ -190,11 +190,9 @@ function AboutDialog({
           </Table>
         </CredenzaBody>
         <CredenzaFooter>
-          <CredenzaClose asChild>
-            <Button>
-              <XIcon />
-              {t("dialog.about.close")}
-            </Button>
+          <CredenzaClose render={<Button />}>
+            <XIcon />
+            {t("dialog.about.close")}
           </CredenzaClose>
         </CredenzaFooter>
       </CredenzaContent>

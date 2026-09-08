@@ -285,13 +285,11 @@ export function ManageUserDialog({
             </form.Field>
           </CredenzaBody>
           <CredenzaFooter className="justify-between">
-            <CredenzaClose asChild>
-              <Button variant="outline">
-                <XIcon />
-                {props.mode === "add"
-                  ? t("users.addUserDialog.form.cancel")
-                  : t("users.updateUserDialog.form.cancel")}
-              </Button>
+            <CredenzaClose render={<Button variant="outline" />}>
+              <XIcon />
+              {props.mode === "add"
+                ? t("users.addUserDialog.form.cancel")
+                : t("users.updateUserDialog.form.cancel")}
             </CredenzaClose>
             <Button type="submit">
               {props.mode === "add" ? <PlusIcon /> : <PencilIcon />}

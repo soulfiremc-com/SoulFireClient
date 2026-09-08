@@ -94,15 +94,17 @@ export function ScriptDiffDialog() {
 
   return (
     <Credenza>
-      <CredenzaTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          title={t("scripts.editor.diff.tooltip")}
-        >
-          <FileDiff className="h-4 w-4" />
-          <span className="ml-1 text-xs">{totalChanges}</span>
-        </Button>
+      <CredenzaTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            title={t("scripts.editor.diff.tooltip")}
+          />
+        }
+      >
+        <FileDiff className="h-4 w-4" />
+        <span className="ml-1 text-xs">{totalChanges}</span>
       </CredenzaTrigger>
       <CredenzaContent>
         <CredenzaHeader>
