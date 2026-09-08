@@ -272,5 +272,8 @@
         "nsis"
       ]
     }
+  },
+  "overrides": {
+    "node-abi": "^4.35.0"
   }
 }
