@@ -92,7 +92,7 @@ export function LiveFeed({
 
       void observeServerStream(responses, {
         onMessage: (event) => {
-          if (event.event.case === undefined) {
+          if (event.event.case !== "chat" && event.event.case !== "lifecycle") {
             return;
           }
 
