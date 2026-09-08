@@ -86,6 +86,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import CommandInput from "@/components/command-input.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { MenuItem } from "@/components/context-menu-primitives.tsx";
@@ -1727,6 +1728,7 @@ function BotActionsPanel({
       const botService = createClient(BotService, transport);
       return botService.mouseClick(request);
     },
+    onError: (error) => toast.error(error.message),
   });
 
   const handleLeftClick = useCallback(() => {
@@ -1829,6 +1831,10 @@ function BotMovementPanel({
         ...state,
       });
     },
+    onError: (error) => toast.error(error.message),
+    onSuccess: (_response, state) => {
+      setMovementState((previous) => ({ ...previous, ...state }));
+    },
   });
 
   // Mutation for resetting movement
@@ -1843,6 +1849,7 @@ function BotMovementPanel({
       const botService = createClient(BotService, transport);
       return botService.resetMovement({ instanceId, botId });
     },
+    onError: (error) => toast.error(error.message),
     onSuccess: () => {
       setMovementState({
         forward: false,
@@ -1872,12 +1879,12 @@ function BotMovementPanel({
         ...rotation,
       });
     },
+    onError: (error) => toast.error(error.message),
   });
 
   const toggleMovement = useCallback(
     (key: keyof typeof movementState) => {
       const newValue = !movementState[key];
-      setMovementState((prev) => ({ ...prev, [key]: newValue }));
       movementMutation.mutate({ [key]: newValue });
     },
     [movementState, movementMutation],

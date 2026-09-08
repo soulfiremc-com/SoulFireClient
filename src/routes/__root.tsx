@@ -119,11 +119,7 @@ function RootPending() {
       disableTransitionOnChange
     >
       <WindowThemeSyncer />
-      <div
-        vaul-drawer-wrapper=""
-        className="flex h-dvh w-dvw flex-col"
-        style={appShellStyle}
-      >
+      <div className="flex h-dvh w-dvw flex-col" style={appShellStyle}>
         {shouldShowWindowTitlebar && <div className={titlebarClassName} />}
       </div>
     </ThemeProvider>
@@ -353,7 +349,6 @@ function RootLayout() {
                   }}
                 >
                   <div
-                    vaul-drawer-wrapper=""
                     className="flex h-dvh w-dvw flex-col"
                     style={appShellStyle}
                   >

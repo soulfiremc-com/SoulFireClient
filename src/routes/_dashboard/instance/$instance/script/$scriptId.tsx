@@ -883,7 +883,11 @@ function ScriptEditorContent() {
         </Sheet>
 
         {/* Execution Logs Drawer (bottom) */}
-        <Drawer open={executionLogsOpen} onOpenChange={setExecutionLogsOpen}>
+        <Drawer
+          showSwipeHandle
+          open={executionLogsOpen}
+          onOpenChange={setExecutionLogsOpen}
+        >
           <DrawerContent className="max-h-[50vh]">
             <DrawerHeader className="sr-only">
               <DrawerTitle>

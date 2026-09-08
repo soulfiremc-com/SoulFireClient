@@ -53,14 +53,16 @@ export function DryRunDialog() {
 
   return (
     <Credenza>
-      <CredenzaTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          title={t("scripts.editor.dryRun.tooltip")}
-        >
-          <FlaskConical className="h-4 w-4" />
-        </Button>
+      <CredenzaTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            title={t("scripts.editor.dryRun.tooltip")}
+          />
+        }
+      >
+        <FlaskConical className="h-4 w-4" />
       </CredenzaTrigger>
       <CredenzaContent>
         <CredenzaHeader>

@@ -35,7 +35,6 @@ interface RootCredenzaProps extends BaseProps {
 
 interface CredenzaProps extends BaseProps {
   className?: string;
-  asChild?: true;
 }
 
 const CredenzaContext = React.createContext<{ isDesktop: boolean }>({
@@ -58,14 +57,18 @@ const Credenza = ({ children, ...props }: RootCredenzaProps) => {
 
   return (
     <CredenzaContext value={{ isDesktop }}>
-      <Credenza {...props} {...(!isDesktop && { autoFocus: true })}>
+      <Credenza {...props} {...(!isDesktop && { showSwipeHandle: true })}>
         {children}
       </Credenza>
     </CredenzaContext>
   );
 };
 
-const CredenzaTrigger = ({ className, children, ...props }: CredenzaProps) => {
+const CredenzaTrigger = ({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof DialogTrigger>) => {
   const { isDesktop } = useCredenzaContext();
   const CredenzaTrigger = isDesktop ? DialogTrigger : DrawerTrigger;
 
@@ -76,7 +79,11 @@ const CredenzaTrigger = ({ className, children, ...props }: CredenzaProps) => {
   );
 };
 
-const CredenzaClose = ({ className, children, ...props }: CredenzaProps) => {
+const CredenzaClose = ({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof DialogClose>) => {
   const { isDesktop } = useCredenzaContext();
   const CredenzaClose = isDesktop ? DialogClose : DrawerClose;
 
@@ -92,7 +99,13 @@ const CredenzaContent = ({ className, children, ...props }: CredenzaProps) => {
   const CredenzaContent = isDesktop ? DialogContent : DrawerContent;
 
   return (
-    <CredenzaContent className={className} {...props}>
+    <CredenzaContent
+      className={cn(
+        !isDesktop && "[&>[data-slot=drawer-content]]:overflow-y-auto",
+        className,
+      )}
+      {...props}
+    >
       {children}
     </CredenzaContent>
   );
@@ -118,7 +131,7 @@ const CredenzaHeader = ({ className, children, ...props }: CredenzaProps) => {
   const CredenzaHeader = isDesktop ? DialogHeader : DrawerHeader;
 
   return (
-    <CredenzaHeader className={className} {...props}>
+    <CredenzaHeader className={cn(!isDesktop && "pb-4", className)} {...props}>
       {children}
     </CredenzaHeader>
   );
@@ -148,7 +161,7 @@ const CredenzaFooter = ({ className, children, ...props }: CredenzaProps) => {
   const CredenzaFooter = isDesktop ? DialogFooter : DrawerFooter;
 
   return (
-    <CredenzaFooter className={className} {...props}>
+    <CredenzaFooter className={cn(!isDesktop && "pt-4", className)} {...props}>
       {children}
     </CredenzaFooter>
   );

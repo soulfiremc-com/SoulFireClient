@@ -143,7 +143,9 @@
       "loading": "Stopping bots...",
       "success": "Bots are stopping",
       "error": "Failed to stop bots"
-    }
+    },
+    "permissionDenied": "You do not have permission to start or stop bots in this instance.",
+    "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match."
   },
   "botFleetSummary": "{{online}} online · {{desired}} desired · {{total}} total",
   "icon": {

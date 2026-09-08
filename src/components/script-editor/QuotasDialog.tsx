@@ -108,14 +108,16 @@ export function QuotasDialog() {
 
   return (
     <Credenza open={open} onOpenChange={setOpen}>
-      <CredenzaTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          title={t("scripts.editor.quotas.tooltip")}
-        >
-          <Settings2 className="h-4 w-4" />
-        </Button>
+      <CredenzaTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            title={t("scripts.editor.quotas.tooltip")}
+          />
+        }
+      >
+        <Settings2 className="h-4 w-4" />
       </CredenzaTrigger>
       <CredenzaContent>
         <CredenzaHeader>

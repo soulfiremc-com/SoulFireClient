@@ -183,11 +183,9 @@ function CreateInstanceDialog({
             </form.Field>
           </CredenzaBody>
           <CredenzaFooter className="justify-between">
-            <CredenzaClose asChild>
-              <Button variant="outline">
-                <XIcon />
-                {t("dialog.createInstance.form.cancel")}
-              </Button>
+            <CredenzaClose render={<Button variant="outline" />}>
+              <XIcon />
+              {t("dialog.createInstance.form.cancel")}
             </CredenzaClose>
             <Button type="submit">
               <PlusIcon />

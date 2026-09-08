@@ -246,11 +246,11 @@ function DuplicateInstanceDialog({
             </form.Field>
           </CredenzaBody>
           <CredenzaFooter className="justify-between">
-            <CredenzaClose asChild>
-              <Button variant="outline" disabled={pending}>
-                <XIcon />
-                {t("dialog.createInstance.form.cancel")}
-              </Button>
+            <CredenzaClose
+              render={<Button variant="outline" disabled={pending} />}
+            >
+              <XIcon />
+              {t("dialog.createInstance.form.cancel")}
             </CredenzaClose>
             <Button type="submit" disabled={pending || sourceInstance === null}>
               <CopyPlusIcon />

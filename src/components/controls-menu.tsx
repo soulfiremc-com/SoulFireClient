@@ -232,7 +232,19 @@ export default function ControlsMenu() {
   });
 
   if (!canControl) {
-    return null;
+    const supportsBotControls = instanceInfo.instancePermissions.some(
+      (permission) =>
+        permission.instancePermission === InstancePermission.CONTROL_BOTS,
+    );
+    return (
+      <p role="status" className="text-sm text-muted-foreground">
+        {t(
+          supportsBotControls
+            ? "controls.permissionDenied"
+            : "controls.serverUpdateRequired",
+        )}
+      </p>
+    );
   }
 
   const isPending =
