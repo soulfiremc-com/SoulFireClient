@@ -143,7 +143,9 @@
       "loading": "Stawpin botz...",
       "success": "Botz iz stawpin nao",
       "error": "Fialed tu stawp botz >:c"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} ONLINE · {{desired}} WANTZ · {{total}} TOTUL",
   "icon": {

@@ -64,7 +64,11 @@
     },
     "cancel": "स्टार्टअप रद्द करें",
     "cancelling": "स्टार्टअप रद्द किया जा रहा है...",
-    "cancelError": "स्टार्टअप रद्द नहीं किया जा सका"
+    "cancelError": "स्टार्टअप रद्द नहीं किया जा सका",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "SoulFire सर्वर का पता और टोकन दर्ज करें।",

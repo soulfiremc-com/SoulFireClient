@@ -64,7 +64,11 @@
     },
     "cancel": "Başlatmanı ləğv et",
     "cancelling": "Başlatma ləğv edilir...",
-    "cancelError": "Başlatmanı ləğv etmək mümkün olmadı"
+    "cancelError": "Başlatmanı ləğv etmək mümkün olmadı",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "SoulFire serverinin ünvanını və tokenini daxil edin.",

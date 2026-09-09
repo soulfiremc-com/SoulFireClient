@@ -64,7 +64,11 @@
     },
     "cancel": "Anuluj uruchamianie",
     "cancelling": "Anulowanie uruchamiania...",
-    "cancelError": "Nie można anulować uruchamiania"
+    "cancelError": "Nie można anulować uruchamiania",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Wpisz adres i token serwera SoulFire.",

@@ -143,7 +143,9 @@
       "loading": "Arresto dei bot in corso...",
       "success": "I bot si stanno fermando",
       "error": "Impossibile fermare i bot"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} desiderati · {{total}} totali",
   "icon": {

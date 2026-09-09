@@ -64,7 +64,11 @@
     },
     "cancel": "Zrušit spuštění",
     "cancelling": "Rušení spuštění...",
-    "cancelError": "Nelze zrušit spuštění"
+    "cancelError": "Nelze zrušit spuštění",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Zadejte adresu a token SoulFire serveru.",

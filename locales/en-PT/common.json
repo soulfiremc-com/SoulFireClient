@@ -143,7 +143,9 @@
       "loading": "Bots are lowerin' their sails...",
       "success": "Bots be stoppin'",
       "error": "Blast it! The bots don’t want to stop!"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} wanted · {{total}} booty in total",
   "icon": {

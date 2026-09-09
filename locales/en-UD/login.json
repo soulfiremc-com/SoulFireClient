@@ -64,7 +64,11 @@
     },
     "cancel": "dɐnʇnɹʇs lǝlɔuɐↃ",
     "cancelling": "...dɐnʇnɹʇs ƃuıllǝɔuɐↃ",
-    "cancelError": "dɐnʇnɹʇs lǝlɔuɐɔ ʇo puɐɔ ʇou"
+    "cancelError": "dɐnʇnɹʇs lǝlɔuɐɔ ʇo puɐɔ ʇou",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": ".ɹǝʌɹǝs ǝɹᴉɟlndoS ǝɥʇ ɟo uǝʞoʇ puɐ sssǝɹpɐ ǝɥʇ ɹǝʇuǝ",

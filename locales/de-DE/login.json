@@ -64,7 +64,11 @@
     },
     "cancel": "Startvorgang abbrechen",
     "cancelling": "Startvorgang wird abgebrochen...",
-    "cancelError": "Startvorgang konnte nicht abgebrochen werden"
+    "cancelError": "Startvorgang konnte nicht abgebrochen werden",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Geben Sie die Adresse und das Token des SoulFire-Servers ein.",

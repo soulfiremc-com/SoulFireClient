@@ -64,7 +64,11 @@
     },
     "cancel": "Peru käynnistys",
     "cancelling": "Peruutetaan käynnistystä...",
-    "cancelError": "Käynnistystä ei voitu perua"
+    "cancelError": "Käynnistystä ei voitu perua",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Anna SoulFire-palvelimen osoite ja tunniste.",

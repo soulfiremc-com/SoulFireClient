@@ -64,7 +64,11 @@
     },
     "cancel": "Batalkan permulaan startup",
     "cancelling": "Membatalkan permulaan startup...",
-    "cancelError": "Tidak dapat membatalkan permulaan startup"
+    "cancelError": "Tidak dapat membatalkan permulaan startup",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Masukkan alamat dan token server SoulFire.",

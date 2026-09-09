@@ -143,7 +143,9 @@
       "loading": "Zastavování botů...",
       "success": "Boti se zastavují",
       "error": "Nepodařilo se zastavit boty"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} požadováno · {{total}} celkem",
   "icon": {

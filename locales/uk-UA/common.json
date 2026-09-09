@@ -143,7 +143,9 @@
       "loading": "Зупинка ботів...",
       "success": "Боти зупиняються",
       "error": "Не вдалося зупинити ботів"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} бажано · {{total}} всього",
   "icon": {

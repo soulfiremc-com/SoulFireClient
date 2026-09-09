@@ -143,7 +143,9 @@
       "loading": "Pysäytetään botteja...",
       "success": "Botit pysäytetään",
       "error": "Bottien pysäyttäminen epäonnistui"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} paikalla · {{desired}} tavoite · {{total}} yhteensä",
   "icon": {

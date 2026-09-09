@@ -143,7 +143,9 @@
       "loading": "ボットを停止中...",
       "success": "ボットを停止しています",
       "error": "ボットの停止に失敗しました"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}}人オンライン · 希望数:{{desired}} · 合計:{{total}}",
   "icon": {

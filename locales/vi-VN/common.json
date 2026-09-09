@@ -143,7 +143,9 @@
       "loading": "Đang dừng bot...",
       "success": "Các bot đang dừng lại",
       "error": "Không thể dừng bot"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} đang online · {{desired}} mong muốn · {{total}} tổng cộng",
   "icon": {

@@ -64,7 +64,11 @@
     },
     "cancel": "Cancelar inicialização",
     "cancelling": "Cancelando inicialização...",
-    "cancelError": "Não foi possível cancelar a inicialização"
+    "cancelError": "Não foi possível cancelar a inicialização",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Insira o endereço e o token do servidor SoulFire.",

@@ -64,7 +64,11 @@
     },
     "cancel": "Annuler le démarrage",
     "cancelling": "Annulation du démarrage...",
-    "cancelError": "Impossible d'annuler le démarrage"
+    "cancelError": "Impossible d'annuler le démarrage",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Entrez l'adresse et le jeton du serveur SoulFire.",

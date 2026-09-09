@@ -143,7 +143,9 @@
       "loading": "...sʇoԐ ƃuıddoʇS",
       "success": "ƃuıddoʇs ǝɹɐ sʇoԐ",
       "error": "sʇoԐ ddıʇs oʇ pǝlılɐɟ"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "ʇlɐʇ ʇɐl-o {{lɐʇoʇ}} · pǝɹıɹǝp {{pǝɹıɹsǝp}} · ǝuıluo {{ǝuıluo}}",
   "icon": {
