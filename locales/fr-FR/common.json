@@ -143,7 +143,9 @@
       "loading": "Arrêt des bots...",
       "success": "Les bots sont en cours d’arrêt",
       "error": "Échec de l'arrêt des bots"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} en ligne · {{desired}} souhaité(s) · {{total}} au total",
   "icon": {

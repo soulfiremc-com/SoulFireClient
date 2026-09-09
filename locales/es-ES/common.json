@@ -143,7 +143,9 @@
       "loading": "Deteniendo bots...",
       "success": "Los bots se están deteniendo",
       "error": "Error al detener bots"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} en línea · {{desired}} deseados · {{total}} total",
   "icon": {

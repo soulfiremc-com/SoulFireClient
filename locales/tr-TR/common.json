@@ -143,7 +143,9 @@
       "loading": "Botlar durduruluyor...",
       "success": "Botlar durduruluyor",
       "error": "Botlar durdurulamadı"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} çevrimiçi · {{desired}} istenen · {{total}} toplam",
   "icon": {

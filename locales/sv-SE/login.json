@@ -64,7 +64,11 @@
     },
     "cancel": "Avbryt start",
     "cancelling": "Avbryter start...",
-    "cancelError": "Kunde inte avbryta start"
+    "cancelError": "Kunde inte avbryta start",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Ange adressen och token för SoulFire-servern.",

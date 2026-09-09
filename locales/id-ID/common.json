@@ -143,7 +143,9 @@
       "loading": "Menghentikan bot...",
       "success": "Bot sedang dihentikan",
       "error": "Gagal menghentikan bot"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} diinginkan · {{total}} total",
   "icon": {

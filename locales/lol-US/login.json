@@ -64,7 +64,11 @@
     },
     "cancel": "Cansul teh startin upz",
     "cancelling": "Cansullin da startin upz...",
-    "cancelError": "Cud not cansul teh startin upz"
+    "cancelError": "Cud not cansul teh startin upz",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Put in teh adress an token ov teh SoulFire servr.",

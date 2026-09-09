@@ -64,7 +64,11 @@
     },
     "cancel": "Huỷ khởi động",
     "cancelling": "Đang huỷ khởi động...",
-    "cancelError": "Không thể huỷ khởi động"
+    "cancelError": "Không thể huỷ khởi động",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Nhập địa chỉ và token của máy chủ SoulFire.",

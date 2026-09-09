@@ -64,7 +64,11 @@
     },
     "cancel": "시작 취소",
     "cancelling": "시작을 취소하는 중...",
-    "cancelError": "시작을 취소할 수 없습니다"
+    "cancelError": "시작을 취소할 수 없습니다",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "SoulFire 서버의 주소와 토큰을 입력하세요.",

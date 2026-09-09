@@ -143,7 +143,9 @@
       "loading": "Stoppar bottar...",
       "success": "Bottar stoppar",
       "error": "Det gick inte att stoppa bottarna"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} önskade · {{total}} totalt",
   "icon": {

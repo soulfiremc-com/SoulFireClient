@@ -64,7 +64,11 @@
     },
     "cancel": "Скасувати запуск",
     "cancelling": "Скасовується запуск...",
-    "cancelError": "Не вдалося скасувати запуск"
+    "cancelError": "Не вдалося скасувати запуск",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Введіть адресу та токен сервера SoulFire.",

@@ -143,7 +143,9 @@
       "loading": "Parando bots...",
       "success": "Bots estão parando",
       "error": "Falha ao parar bots"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} desejado · {{total}} total",
   "icon": {

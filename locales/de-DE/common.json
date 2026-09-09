@@ -143,7 +143,9 @@
       "loading": "Bots werden gestoppt...",
       "success": "Bots werden gestoppt",
       "error": "Fehler beim Stoppen der Bots"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} gewünscht · {{total}} gesamt",
   "icon": {

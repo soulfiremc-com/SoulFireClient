@@ -64,7 +64,11 @@
     },
     "cancel": "取消启动",
     "cancelling": "正在取消启动...",
-    "cancelError": "无法取消启动"
+    "cancelError": "无法取消启动",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "请输入 SoulFire 服务器的地址和令牌。",

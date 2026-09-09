@@ -143,7 +143,9 @@
       "loading": "Zatrzymywanie botów...",
       "success": "Boty są zatrzymywane",
       "error": "Nie udało się zatrzymać botów"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} żądanych · {{total}} łącznie",
   "icon": {

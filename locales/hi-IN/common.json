@@ -143,7 +143,9 @@
       "loading": "बॉट्स रोक रहे हैं...",
       "success": "बॉट्स रुक रहे हैं",
       "error": "बॉट्स रोकने में विफल"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} ऑनलाइन · {{desired}} इच्छित · {{total}} कुल",
   "icon": {

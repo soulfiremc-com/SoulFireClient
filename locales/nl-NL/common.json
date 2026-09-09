@@ -143,7 +143,9 @@
       "loading": "Bots worden gestopt...",
       "success": "Bots worden gestopt",
       "error": "Stoppen van bots mislukt"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} gewenst · {{total}} totaal",
   "icon": {

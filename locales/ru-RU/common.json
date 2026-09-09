@@ -143,7 +143,9 @@
       "loading": "Остановка ботов...",
       "success": "Боты останавливаются",
       "error": "Не удалось остановить ботов"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} онлайн · {{desired}} требуется · {{total}} всего",
   "icon": {

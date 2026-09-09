@@ -64,7 +64,11 @@
     },
     "cancel": "Zrušiť spustenie",
     "cancelling": "Ruší sa spustenie...",
-    "cancelError": "Spustenie sa nepodarilo zrušiť"
+    "cancelError": "Spustenie sa nepodarilo zrušiť",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Zadajte adresu a token servera SoulFire.",

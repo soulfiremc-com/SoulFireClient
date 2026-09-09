@@ -64,7 +64,11 @@
     },
     "cancel": "Opstarten annuleren",
     "cancelling": "Opstarten wordt geannuleerd...",
-    "cancelError": "Kon het opstarten niet annuleren"
+    "cancelError": "Kon het opstarten niet annuleren",
+    "autoStart": {
+      "title": "",
+      "description": ""
+    }
   },
   "dedicated": {
     "description": "Voer het adres en het token van de SoulFire-server in.",

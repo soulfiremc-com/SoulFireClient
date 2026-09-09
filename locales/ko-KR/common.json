@@ -143,7 +143,9 @@
       "loading": "봇을 중지하는 중...",
       "success": "봇이 중지됩니다.",
       "error": "봇 중지에 실패했습니다."
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "{{online}} 온라인 · {{desired}} 목표 · {{total}} 전체",
   "icon": {

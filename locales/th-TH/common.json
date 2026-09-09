@@ -143,7 +143,9 @@
       "loading": "กำลังหยุดบอท...",
       "success": "บอทกำลังหยุดทำงาน",
       "error": "ไม่สามารถหยุดบอทได้"
-    }
+    },
+    "permissionDenied": "",
+    "serverUpdateRequired": ""
   },
   "botFleetSummary": "ออนไลน์ {{online}} · ที่ต้องการ {{desired}} · ทั้งหมด {{total}}",
   "icon": {
