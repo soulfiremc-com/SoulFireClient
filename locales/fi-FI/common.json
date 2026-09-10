@@ -144,8 +144,8 @@
       "success": "Botit pysäytetään",
       "error": "Bottien pysäyttäminen epäonnistui"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Sinulla ei ole oikeutta käynnistää tai pysäyttää botteja tässä instanssissa.",
+    "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan."
   },
   "botFleetSummary": "{{online}} paikalla · {{desired}} tavoite · {{total}} yhteensä",
   "icon": {

@@ -144,8 +144,8 @@
       "success": "Các bot đang dừng lại",
       "error": "Không thể dừng bot"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Bạn không có quyền để khởi động hoặc dừng bot trong phiên bản này.",
+    "serverUpdateRequired": "Máy chủ không báo cáo quyền kiểm soát bot. Hãy kiểm tra rằng phiên bản máy chủ và phiên bản client của bạn trùng khớp nhau."
   },
   "botFleetSummary": "{{online}} đang online · {{desired}} mong muốn · {{total}} tổng cộng",
   "icon": {

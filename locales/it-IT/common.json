@@ -144,8 +144,8 @@
       "success": "I bot si stanno fermando",
       "error": "Impossibile fermare i bot"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Non hai il permesso di avviare o fermare i bot in questa istanza.",
+    "serverUpdateRequired": "Il server non ha segnalato le autorizzazioni di controllo bot. Verifica che le versioni del tuo server e client corrispondano."
   },
   "botFleetSummary": "{{online}} online · {{desired}} desiderati · {{total}} totali",
   "icon": {

@@ -66,8 +66,8 @@
     "cancelling": "Cancelando inicialização...",
     "cancelError": "Não foi possível cancelar a inicialização",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Iniciar automaticamente na próxima vez.",
+      "description": "Pular a seleção de servidor e usar estas configurações quando o SoulFire for aberto."
     }
   },
   "dedicated": {

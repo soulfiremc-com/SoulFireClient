@@ -66,8 +66,8 @@
     "cancelling": "Avbryter start...",
     "cancelError": "Kunde inte avbryta start",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Starta automatiskt nästa gång.",
+      "description": "Hoppa över servervalet och använd dessa inställningar när SoulFire öppnas."
     }
   },
   "dedicated": {

@@ -66,8 +66,8 @@
     "cancelling": "Annullamento dell'avvio in corso...",
     "cancelError": "Impossibile annullare l'avvio",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Avvia automaticamente la prossima volta.",
+      "description": "Salta la selezione del server e usa queste impostazioni quando SoulFire si avvia."
     }
   },
   "dedicated": {

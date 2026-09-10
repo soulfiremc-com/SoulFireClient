@@ -144,8 +144,8 @@
       "success": "机器人正在停止",
       "error": "停止机器人失败"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "您没有权限在此实例中启动或停止机器人。",
+    "serverUpdateRequired": "服务器未报告机器人控制权限。请检查您的服务器和客户端版本是否匹配。"
   },
   "botFleetSummary": "{{online}} 在线 · {{desired}} 目标 · {{total}} 总计",
   "icon": {

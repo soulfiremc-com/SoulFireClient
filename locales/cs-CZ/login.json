@@ -66,8 +66,8 @@
     "cancelling": "Rušení spuštění...",
     "cancelError": "Nelze zrušit spuštění",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Příště spustit automaticky",
+      "description": "Přeskočit výběr serveru a použít tato nastavení při spuštění SoulFire."
     }
   },
   "dedicated": {

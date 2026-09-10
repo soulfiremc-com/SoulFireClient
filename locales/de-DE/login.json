@@ -66,8 +66,8 @@
     "cancelling": "Startvorgang wird abgebrochen...",
     "cancelError": "Startvorgang konnte nicht abgebrochen werden",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Beim nächsten Mal automatisch starten.",
+      "description": "Serverauswahl überspringen und diese Einstellungen beim Start von SoulFire verwenden."
     }
   },
   "dedicated": {

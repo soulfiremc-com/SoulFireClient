@@ -144,8 +144,8 @@
       "success": "Bots worden gestopt",
       "error": "Stoppen van bots mislukt"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Je hebt geen toestemming om bots in dit exemplaar te starten of te stoppen.",
+    "serverUpdateRequired": "De server heeft de machtigingen voor botbediening niet gerapporteerd. Controleer of de server- en clientversies overeenkomen."
   },
   "botFleetSummary": "{{online}} online · {{desired}} gewenst · {{total}} totaal",
   "icon": {

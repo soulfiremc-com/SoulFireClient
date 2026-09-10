@@ -144,8 +144,8 @@
       "success": "Bots werden gestoppt",
       "error": "Fehler beim Stoppen der Bots"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Sie haben keine Berechtigung, Bots in dieser Instanz zu starten oder zu stoppen.",
+    "serverUpdateRequired": "Der Server hat keine Berechtigungen zur Bot-Steuerung gemeldet. Überprüfen Sie, ob Ihre Server- und Client-Versionen übereinstimmen."
   },
   "botFleetSummary": "{{online}} online · {{desired}} gewünscht · {{total}} gesamt",
   "icon": {

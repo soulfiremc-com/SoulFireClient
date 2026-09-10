@@ -66,8 +66,8 @@
     "cancelling": "Başlatma iptal ediliyor...",
     "cancelError": "Başlatma iptal edilemedi",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Bir dahaki sefere otomatik başlat",
+      "description": "SoulFire açıldığında sunucu seçimini atla ve bu ayarları kullan."
     }
   },
   "dedicated": {

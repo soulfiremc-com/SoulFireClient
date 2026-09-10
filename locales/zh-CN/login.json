@@ -66,8 +66,8 @@
     "cancelling": "正在取消启动...",
     "cancelError": "无法取消启动",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "下次自动启动",
+      "description": "跳过服务器选择，在 SoulFire 启动时使用这些设置。"
     }
   },
   "dedicated": {

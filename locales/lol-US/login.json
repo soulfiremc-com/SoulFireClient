@@ -66,8 +66,8 @@
     "cancelling": "Cansullin da startin upz...",
     "cancelError": "Cud not cansul teh startin upz",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Startz aut O-MATICALLY next tiem",
+      "description": "Skips teh serber selectshun an uzez deez setinz wen SoulFire opens. KTHXBAI"
     }
   },
   "dedicated": {

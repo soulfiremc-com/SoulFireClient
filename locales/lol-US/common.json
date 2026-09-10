@@ -144,8 +144,8 @@
       "success": "Botz iz stawpin nao",
       "error": "Fialed tu stawp botz >:c"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "U haz no pawmission to start or stop teh bots in dis instunce. Sry, kitteh.",
+    "serverUpdateRequired": "Servur didn\\'t say if yu can control bots. Pleez chek if ur servur an client haz same vershun. Meow."
   },
   "botFleetSummary": "{{online}} ONLINE · {{desired}} WANTZ · {{total}} TOTUL",
   "icon": {

@@ -144,8 +144,8 @@
       "success": "Botlar durduruluyor",
       "error": "Botlar durdurulamadı"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Bu örnekte botları başlatmak veya durdurmak için izniniz yok.",
+    "serverUpdateRequired": "Sunucu, bot kontrol izinlerini bildirmedi. Sunucu ve istemci sürümlerinizin eşleştiğinden emin olun."
   },
   "botFleetSummary": "{{online}} çevrimiçi · {{desired}} istenen · {{total}} toplam",
   "icon": {

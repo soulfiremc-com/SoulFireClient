@@ -144,8 +144,8 @@
       "success": "Bot sedang dihentikan",
       "error": "Gagal menghentikan bot"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Anda tidak memiliki izin untuk memulai atau menghentikan bot di instance ini.",
+    "serverUpdateRequired": "Server tidak melaporkan izin kontrol bot. Periksa apakah versi server dan klien Anda sudah cocok."
   },
   "botFleetSummary": "{{online}} online · {{desired}} diinginkan · {{total}} total",
   "icon": {

@@ -66,8 +66,8 @@
     "cancelling": "Opstarten wordt geannuleerd...",
     "cancelError": "Kon het opstarten niet annuleren",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Volgende keer automatisch starten.",
+      "description": "Sla de serverselectie over en gebruik deze instellingen wanneer SoulFire wordt geopend."
     }
   },
   "dedicated": {

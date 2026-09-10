@@ -66,8 +66,8 @@
     "cancelling": "시작을 취소하는 중...",
     "cancelError": "시작을 취소할 수 없습니다",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "다음부터 자동으로 시작하기.",
+      "description": "서버 선택을 건너뛰고 SoulFire를 열 때 이 설정을 사용합니다."
     }
   },
   "dedicated": {

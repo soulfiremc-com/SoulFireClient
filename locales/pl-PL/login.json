@@ -66,8 +66,8 @@
     "cancelling": "Anulowanie uruchamiania...",
     "cancelError": "Nie można anulować uruchamiania",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Uruchom automatycznie następnym razem.",
+      "description": "Pomiń wybór serwera i użyj tych ustawień przy uruchamianiu SoulFire."
     }
   },
   "dedicated": {

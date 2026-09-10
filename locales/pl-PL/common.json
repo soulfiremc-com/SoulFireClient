@@ -144,8 +144,8 @@
       "success": "Boty są zatrzymywane",
       "error": "Nie udało się zatrzymać botów"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Nie masz uprawnień do uruchamiania ani zatrzymywania botów w tej instancji.",
+    "serverUpdateRequired": "Serwer nie zgłosił uprawnień do kontrolowania botów. Sprawdź, czy wersje serwera i klienta są zgodne."
   },
   "botFleetSummary": "{{online}} online · {{desired}} żądanych · {{total}} łącznie",
   "icon": {
