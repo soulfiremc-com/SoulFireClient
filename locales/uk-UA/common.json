@@ -144,8 +144,8 @@
       "success": "Боти зупиняються",
       "error": "Не вдалося зупинити ботів"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "У вас немає дозволу запускати або зупиняти ботів у цьому екземплярі.",
+    "serverUpdateRequired": "Сервер не повідомив про дозволи на керування ботами. Перевірте, чи відповідають версії сервера та клієнта."
   },
   "botFleetSummary": "{{online}} online · {{desired}} бажано · {{total}} всього",
   "icon": {

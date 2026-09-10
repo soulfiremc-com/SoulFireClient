@@ -66,8 +66,8 @@
     "cancelling": "起動をキャンセルしています...",
     "cancelError": "起動のキャンセルに失敗しました",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "次回は自動的に開始する",
+      "description": "サーバー選択をスキップし、SoulFire起動時にこれらの設定を使用します。"
     }
   },
   "dedicated": {

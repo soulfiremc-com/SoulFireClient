@@ -144,8 +144,8 @@
       "success": "機器人正在停止",
       "error": "停止機器人失敗"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "您沒有權限在此實例中啟動或停止機器人。",
+    "serverUpdateRequired": "伺服器未回報機器人控制權限。請檢查您的伺服器與用戶端版本是否一致。"
   },
   "botFleetSummary": "{{online}} 在線 · {{desired}} 目標 · {{total}} 總數",
   "icon": {

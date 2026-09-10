@@ -144,8 +144,8 @@
       "success": "Boti se zastavují",
       "error": "Nepodařilo se zastavit boty"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Nemáte oprávnění spouštět nebo zastavovat boty v této instanci.",
+    "serverUpdateRequired": "Server neohlásil oprávnění pro ovládání botů. Zkontrolujte, zda se verze serveru a klienta shodují."
   },
   "botFleetSummary": "{{online}} online · {{desired}} požadováno · {{total}} celkem",
   "icon": {

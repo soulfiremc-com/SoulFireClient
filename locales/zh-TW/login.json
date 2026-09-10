@@ -66,8 +66,8 @@
     "cancelling": "正在取消啟動...",
     "cancelError": "無法取消啟動",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "下次自動啟動",
+      "description": "略過伺服器選擇，SoulFire 開啟時自動使用這些設定。"
     }
   },
   "dedicated": {

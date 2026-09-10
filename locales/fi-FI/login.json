@@ -66,8 +66,8 @@
     "cancelling": "Peruutetaan käynnistystä...",
     "cancelError": "Käynnistystä ei voitu perua",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Käynnistä automaattisesti seuraavalla kerralla.",
+      "description": "Ohita palvelimen valinta ja käytä näitä asetuksia, kun SoulFire avataan."
     }
   },
   "dedicated": {

@@ -144,8 +144,8 @@
       "success": "Bots estão parando",
       "error": "Falha ao parar bots"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Você não tem permissão para iniciar ou parar bots nesta instância.",
+    "serverUpdateRequired": "O servidor não informou permissões de controle de bots. Verifique se as versões do seu servidor e do cliente correspondem."
   },
   "botFleetSummary": "{{online}} online · {{desired}} desejado · {{total}} total",
   "icon": {

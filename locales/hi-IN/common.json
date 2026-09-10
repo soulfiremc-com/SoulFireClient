@@ -144,8 +144,8 @@
       "success": "बॉट्स रुक रहे हैं",
       "error": "बॉट्स रोकने में विफल"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "आपको इस इंस्टेंस में बोट्स को शुरू या बंद करने की अनुमति नहीं है।",
+    "serverUpdateRequired": "सर्वर ने बोट नियंत्रण की अनुमतियों की रिपोर्ट नहीं दी। कृपया जांचें कि आपके सर्वर और क्लाइंट के संस्करण मेल खाते हैं।"
   },
   "botFleetSummary": "{{online}} ऑनलाइन · {{desired}} इच्छित · {{total}} कुल",
   "icon": {

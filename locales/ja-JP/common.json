@@ -144,8 +144,8 @@
       "success": "ボットを停止しています",
       "error": "ボットの停止に失敗しました"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "このインスタンスでボットの起動または停止を行う権限がありません。",
+    "serverUpdateRequired": "サーバーがボット制御の権限を報告していません。サーバーとクライアントのバージョンが一致していることを確認してください。"
   },
   "botFleetSummary": "{{online}}人オンライン · 希望数:{{desired}} · 合計:{{total}}",
   "icon": {

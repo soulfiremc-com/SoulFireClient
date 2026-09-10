@@ -66,8 +66,8 @@
     "cancelling": "Membatalkan permulaan startup...",
     "cancelError": "Tidak dapat membatalkan permulaan startup",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Mulai secara otomatis lain kali.",
+      "description": "Lewati pemilihan server dan gunakan pengaturan ini saat SoulFire dibuka."
     }
   },
   "dedicated": {

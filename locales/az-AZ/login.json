@@ -66,8 +66,8 @@
     "cancelling": "Başlatma ləğv edilir...",
     "cancelError": "Başlatmanı ləğv etmək mümkün olmadı",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Növbəti açılışda avtomatik başlat",
+      "description": "SoulFire açıldıqda server seçimini keç və bu ayarları istifadə et."
     }
   },
   "dedicated": {

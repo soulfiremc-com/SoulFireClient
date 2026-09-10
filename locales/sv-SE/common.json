@@ -144,8 +144,8 @@
       "success": "Bottar stoppar",
       "error": "Det gick inte att stoppa bottarna"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Du har inte behörighet att starta eller stoppa bottar i denna instans.",
+    "serverUpdateRequired": "Servern rapporterade inte botkontrollsbehörigheter. Kontrollera att din server- och klientversion matchar."
   },
   "botFleetSummary": "{{online}} online · {{desired}} önskade · {{total}} totalt",
   "icon": {

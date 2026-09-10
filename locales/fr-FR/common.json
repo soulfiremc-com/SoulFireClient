@@ -144,8 +144,8 @@
       "success": "Les bots sont en cours d’arrêt",
       "error": "Échec de l'arrêt des bots"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Vous n'avez pas la permission de démarrer ou d'arrêter des bots dans cette instance.",
+    "serverUpdateRequired": "Le serveur n'a pas signalé les autorisations de contrôle des bots. Vérifiez que les versions de votre serveur et de votre client correspondent."
   },
   "botFleetSummary": "{{online}} en ligne · {{desired}} souhaité(s) · {{total}} au total",
   "icon": {

@@ -66,8 +66,8 @@
     "cancelling": "Be cancellin' the startin'... Arrr!",
     "cancelError": "Couldn' be cancellin' the startin', ye scallywag!",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Hoist the sails automatically next time, matey!",
+      "description": "Skip pickin' a ship and use these settings when SoulFire opens, arr!"
     }
   },
   "dedicated": {

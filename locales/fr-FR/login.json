@@ -66,8 +66,8 @@
     "cancelling": "Annulation du démarrage...",
     "cancelError": "Impossible d'annuler le démarrage",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Démarrer automatiquement la prochaine fois.",
+      "description": "Ignorer la sélection du serveur et utiliser ces paramètres au lancement de SoulFire."
     }
   },
   "dedicated": {

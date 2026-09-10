@@ -144,8 +144,8 @@
       "success": "Bots be stoppin'",
       "error": "Blast it! The bots don’t want to stop!"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "Ye lack th' authority to set sail or anchor bots in this here instance, matey!",
+    "serverUpdateRequired": "Th' server gave no account o' bot-control permissions. Be makin' sure yer server an' client be runnin' the same version, arrr!"
   },
   "botFleetSummary": "{{online}} online · {{desired}} wanted · {{total}} booty in total",
   "icon": {

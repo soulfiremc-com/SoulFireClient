@@ -66,8 +66,8 @@
     "cancelling": "Ruší sa spustenie...",
     "cancelError": "Spustenie sa nepodarilo zrušiť",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Automaticky spustiť nabudúce",
+      "description": "Preskočiť výber servera a použiť tieto nastavenia pri spustení SoulFire."
     }
   },
   "dedicated": {

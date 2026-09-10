@@ -66,8 +66,8 @@
     "cancelling": "Đang huỷ khởi động...",
     "cancelError": "Không thể huỷ khởi động",
     "autoStart": {
-      "title": "",
-      "description": ""
+      "title": "Tự động bắt đầu lần sau",
+      "description": "Bỏ qua bước chọn máy chủ và sử dụng các thiết lập này khi SoulFire mở."
     }
   },
   "dedicated": {

@@ -144,8 +144,8 @@
       "success": "Los bots se están deteniendo",
       "error": "Error al detener bots"
     },
-    "permissionDenied": "",
-    "serverUpdateRequired": ""
+    "permissionDenied": "No tienes permiso para iniciar o detener bots en esta instancia.",
+    "serverUpdateRequired": "El servidor no informó los permisos de control de bots. Verifica que las versiones de tu servidor y cliente coincidan."
   },
   "botFleetSummary": "{{online}} en línea · {{desired}} deseados · {{total}} total",
   "icon": {
