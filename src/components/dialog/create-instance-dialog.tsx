@@ -1,4 +1,3 @@
-import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
 import { InstanceService } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { useForm } from "@tanstack/react-form";
@@ -72,7 +71,6 @@ function CreateInstanceDialog({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
-  const { trackEvent } = useAptabase();
   const posthog = usePostHog();
   const { t } = useTranslation("common");
   const formSchema = z.object({
@@ -91,8 +89,6 @@ function CreateInstanceDialog({
       if (transport === null) {
         return;
       }
-
-      void trackEvent("create_instance");
 
       const instanceService = createClient(InstanceService, transport);
       const promise = instanceService

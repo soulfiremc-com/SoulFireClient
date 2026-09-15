@@ -34,7 +34,6 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
-    "@aptabase/react": "^0.4.0",
     "@base-ui/react": "^1.4.0",
     "@bufbuild/protobuf": "^2.13.0",
     "@catppuccin/palette": "^1.8.0",

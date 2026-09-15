@@ -1,4 +1,3 @@
-import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
 import { UserRole } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import type { UserListResponse_User } from "@soulfiremc/sdk/generated/soulfire/user_pb";
@@ -62,7 +61,6 @@ export function ManageUserDialog({
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { t } = useTranslation("admin");
-  const { trackEvent } = useAptabase();
   const formSchema = z.object({
     username: z
       .string()
@@ -85,10 +83,6 @@ export function ManageUserDialog({
       if (transport === null) {
         return;
       }
-
-      void trackEvent(props.mode === "add" ? "create_user" : "update_user", {
-        role: values.role,
-      });
 
       const userService = createClient(UserService, transport);
       const promise: Promise<unknown> =

@@ -5,7 +5,6 @@ import {
   useLocation,
 } from "@tanstack/react-router";
 import "../App.css";
-import { AptabaseProvider, useAptabase } from "@aptabase/react";
 import type { GetInstanceMetricsResponse } from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import {
@@ -142,37 +141,12 @@ function PointerReset() {
   return null;
 }
 
-const AppStartedEvent = memo(() => {
-  const { trackEvent } = useAptabase();
-  const [appLoaded, setAppLoaded] = useState(false);
-
-  useEffect(() => {
-    if (!appLoaded) {
-      void trackEvent("app_loaded");
-      setAppLoaded(true);
-    }
-  }, [appLoaded, trackEvent]);
-
-  return null;
-});
-
 const DocumentTitleSyncer = memo(() => {
   const pageTitle = useCurrentRouteTitle();
 
   useEffect(() => {
     document.title = buildDocumentTitle(pageTitle);
   }, [pageTitle]);
-
-  return null;
-});
-
-const PageChangedEvent = memo(() => {
-  const { trackEvent } = useAptabase();
-  const location = useLocation();
-
-  useEffect(() => {
-    void trackEvent("page_changed", { path: location.pathname });
-  }, [location.pathname, trackEvent]);
 
   return null;
 });
@@ -324,68 +298,58 @@ function RootLayout() {
   return (
     <PostHogProvider client={posthog}>
       <NuqsAdapter>
-        <AptabaseProvider
-          appKey="A-SH-6467566517"
-          options={{
-            apiUrl: "https://aptabase.pistonmaster.net/api/v0/event",
-            appVersion: APP_VERSION,
-          }}
-        >
-          <AppStartedEvent />
-          <PageChangedEvent />
-          <DocumentTitleSyncer />
-          <QueryClientProvider client={queryClient}>
-            <DiscordPresenceUpdater />
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <WindowThemeSyncer />
-              <TooltipProvider delay={500}>
-                <SystemInfoContext value={systemInfoState}>
-                  <TerminalThemeContext
-                    value={{
-                      value: terminalTheme,
-                      setter: setTerminalTheme,
-                    }}
+        <DocumentTitleSyncer />
+        <QueryClientProvider client={queryClient}>
+          <DiscordPresenceUpdater />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <WindowThemeSyncer />
+            <TooltipProvider delay={500}>
+              <SystemInfoContext value={systemInfoState}>
+                <TerminalThemeContext
+                  value={{
+                    value: terminalTheme,
+                    setter: setTerminalTheme,
+                  }}
+                >
+                  <div
+                    className="flex h-dvh w-dvw flex-col"
+                    style={appShellStyle}
                   >
-                    <div
-                      className="flex h-dvh w-dvw flex-col"
-                      style={appShellStyle}
-                    >
-                      <PointerReset />
-                      <CustomContextMenu />
-                      <AboutProvider>
-                        <SupportDialogProvider>
-                          {shouldShowWindowTitlebar && <WindowTitlebar />}
-                          <div className="flex min-h-0 flex-1 flex-col">
-                            <Outlet />
-                          </div>
-                          <TanStackDevtools
-                            plugins={[
-                              {
-                                name: "TanStack Query",
-                                render: <ReactQueryDevtoolsPanel />,
-                              },
-                              {
-                                name: "TanStack Router",
-                                render: <TanStackRouterDevtoolsPanel />,
-                              },
-                            ]}
-                          />
-                        </SupportDialogProvider>
-                      </AboutProvider>
-                    </div>
-                  </TerminalThemeContext>
-                </SystemInfoContext>
-                <Toaster richColors />
-              </TooltipProvider>
-            </ThemeProvider>
-            <TailwindIndicator />
-          </QueryClientProvider>
-        </AptabaseProvider>
+                    <PointerReset />
+                    <CustomContextMenu />
+                    <AboutProvider>
+                      <SupportDialogProvider>
+                        {shouldShowWindowTitlebar && <WindowTitlebar />}
+                        <div className="flex min-h-0 flex-1 flex-col">
+                          <Outlet />
+                        </div>
+                        <TanStackDevtools
+                          plugins={[
+                            {
+                              name: "TanStack Query",
+                              render: <ReactQueryDevtoolsPanel />,
+                            },
+                            {
+                              name: "TanStack Router",
+                              render: <TanStackRouterDevtoolsPanel />,
+                            },
+                          ]}
+                        />
+                      </SupportDialogProvider>
+                    </AboutProvider>
+                  </div>
+                </TerminalThemeContext>
+              </SystemInfoContext>
+              <Toaster richColors />
+            </TooltipProvider>
+          </ThemeProvider>
+          <TailwindIndicator />
+        </QueryClientProvider>
       </NuqsAdapter>
     </PostHogProvider>
   );

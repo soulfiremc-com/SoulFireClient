@@ -18,6 +18,7 @@ if (!isPostHogConfigured) {
 } else {
   posthog.init(projectToken, {
     api_host: host,
+    ui_host: "https://eu.posthog.com",
     capture_exceptions: true,
     debug: import.meta.env.DEV,
     defaults: "2026-01-30",

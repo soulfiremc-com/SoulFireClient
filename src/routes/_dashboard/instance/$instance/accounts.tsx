@@ -1,4 +1,3 @@
-import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
 import type { SettingsPage } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import {
@@ -149,7 +148,6 @@ function GenerateAccountsButton() {
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
-  const { trackEvent } = useAptabase();
   const posthog = usePostHog();
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -187,7 +185,6 @@ function GenerateAccountsButton() {
 
   const handleGenerate = useCallback(
     async (newAccounts: ProfileAccount[], mode: GenerateAccountsMode) => {
-      void trackEvent("generate_accounts", { count: newAccounts.length, mode });
       await applyGeneratedAccountsMutation({ newAccounts, mode });
       if (isPostHogConfigured) {
         posthog.capture("accounts_generated", {
@@ -196,7 +193,7 @@ function GenerateAccountsButton() {
         });
       }
     },
-    [applyGeneratedAccountsMutation, posthog, trackEvent],
+    [applyGeneratedAccountsMutation, posthog],
   );
 
   return (
@@ -467,7 +464,6 @@ function AddButton() {
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
-  const { trackEvent } = useAptabase();
   // Batch add accounts mutation for bulk import
   const { mutateAsync: addAccountsBatchMutation } = useMutation({
     mutationKey: ["instance", "accounts", "add-batch", instanceInfo.id],
@@ -518,11 +514,6 @@ function AddButton() {
   const handleRavealtsImport = useCallback(
     (payload: string[], credentialType: AccountTypeCredentials) => {
       if (transport === null) return;
-
-      void trackEvent("ravealts_purchase", {
-        count: payload.length,
-        type: credentialType,
-      });
 
       const service = createClient(MCAuthService, transport);
       const abortController = new AbortController();
@@ -619,7 +610,7 @@ function AddButton() {
         },
       });
     },
-    [instanceInfo.id, addAccountsBatchMutation, t, transport, trackEvent],
+    [instanceInfo.id, addAccountsBatchMutation, t, transport],
   );
 
   const textSelectedCallback = useCallback(
@@ -850,7 +841,6 @@ function AddButton() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_java_offline");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.OFFLINE,
                 );
@@ -860,7 +850,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_java_credentials");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.MICROSOFT_JAVA_CREDENTIALS,
                 );
@@ -870,7 +859,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_java_device_code");
                 setPendingDeviceCodeType(
                   AccountTypeDeviceCode.MICROSOFT_JAVA_DEVICE_CODE,
                 );
@@ -880,7 +868,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_java_refresh_token");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.MICROSOFT_JAVA_REFRESH_TOKEN,
                 );
@@ -890,7 +877,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_java_cookies");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.MICROSOFT_JAVA_COOKIES,
                 );
@@ -900,7 +886,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_java_access_token");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.MICROSOFT_JAVA_ACCESS_TOKEN,
                 );
@@ -917,7 +902,6 @@ function AddButton() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_ravealts");
                 setRavealtsDialogOpen(true);
               }}
             >
@@ -925,7 +909,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_the_altening");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.THE_ALTENING,
                 );
@@ -942,7 +925,6 @@ function AddButton() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_bedrock_offline");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.OFFLINE,
                 );
@@ -952,7 +934,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_bedrock_credentials");
                 setAccountTypeCredentialsSelected(
                   AccountTypeCredentials.MICROSOFT_BEDROCK_CREDENTIALS,
                 );
@@ -962,7 +943,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_account_microsoft_bedrock_device_code");
                 setPendingDeviceCodeType(
                   AccountTypeDeviceCode.MICROSOFT_BEDROCK_DEVICE_CODE,
                 );
@@ -1122,7 +1102,6 @@ function ExtraHeader(props: {
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const { trackEvent } = useAptabase();
   // Batch remove accounts mutation
   const { mutateAsync: removeAccountsBatchMutation } = useMutation({
     mutationKey: ["instance", "accounts", "remove-batch", instanceInfo.id],
@@ -1148,9 +1127,6 @@ function ExtraHeader(props: {
       <DataTableActionBarAction
         tooltip={t("account.removeSelectedTooltip")}
         onClick={() => {
-          void trackEvent("remove_accounts", {
-            count: props.table.getFilteredSelectedRowModel().rows.length,
-          });
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);

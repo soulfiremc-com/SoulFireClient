@@ -29,7 +29,7 @@ const namespaces = fs
 const isDev = appEnv === "development";
 const isElectron = process.env.SF_ELECTRON === "1";
 const desktopCsp =
-  "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.i.posthog.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; connect-src 'self' https://aptabase.pistonmaster.net https://api.mclo.gs *; font-src 'self'; frame-src 'self'; img-src 'self' data: blob: https://www.gravatar.com https://mc-heads.net https://assets.mcasset.cloud; manifest-src 'self'; media-src 'self'; worker-src 'self' blob:;";
+  "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://tc.soulfiremc.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; connect-src 'self' https://tc.soulfiremc.com https://api.mclo.gs *; font-src 'self'; frame-src 'self'; img-src 'self' data: blob: https://www.gravatar.com https://mc-heads.net https://assets.mcasset.cloud; manifest-src 'self'; media-src 'self'; worker-src 'self' blob:;";
 
 export default defineConfig({
   define: {

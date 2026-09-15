@@ -1,4 +1,3 @@
-import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
 import type { SettingsPage } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { ProxyProto_Type } from "@soulfiremc/sdk/generated/soulfire/common_pb";
@@ -512,7 +511,6 @@ function AddButton() {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [proxyTypeSelected, setProxyTypeSelected] =
     useState<UIProxyType | null>(null);
-  const { trackEvent } = useAptabase();
   const [importedProxies, setImportedProxies] = useState<ProfileProxy[] | null>(
     null,
   );
@@ -620,10 +618,6 @@ function AddButton() {
     const proxiesToCheck = importedProxies;
     setImportedProxies(null);
 
-    void trackEvent("check_proxies", {
-      count: proxiesToCheck.length,
-    });
-
     const abortController = new AbortController();
     const loadingData: ExternalToast = {
       cancel: {
@@ -704,7 +698,6 @@ function AddButton() {
   }, [
     transport,
     importedProxies,
-    trackEvent,
     t,
     instanceInfo.id,
     removeProxiesBatchMutation,
@@ -723,7 +716,6 @@ function AddButton() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_proxies_http");
                 setProxyTypeSelected(UIProxyType.HTTP);
               }}
             >
@@ -731,7 +723,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_proxies_socks4");
                 setProxyTypeSelected(UIProxyType.SOCKS4);
               }}
             >
@@ -739,7 +730,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_proxies_socks5");
                 setProxyTypeSelected(UIProxyType.SOCKS5);
               }}
             >
@@ -747,7 +737,6 @@ function AddButton() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void trackEvent("import_proxies_uri");
                 setProxyTypeSelected(UIProxyType.URI);
               }}
             >
@@ -826,7 +815,6 @@ function ExtraHeader(props: {
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const { trackEvent } = useAptabase();
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   // Batch remove proxies mutation
   const { mutateAsync: removeProxiesBatchMutation } = useMutation({
@@ -857,8 +845,6 @@ function ExtraHeader(props: {
         .getFilteredSelectedRowModel()
         .rows.map((r) => r.original);
 
-      void trackEvent("export_proxies", { mode, count: selectedRows.length });
-
       if (mode === "uri") {
         const lines = selectedRows.map(formatProxyAsURI);
         saveProxyFile(lines.join("\n"), "proxies.txt");
@@ -877,17 +863,13 @@ function ExtraHeader(props: {
         saveProxyFile(lines.join("\n"), `${mode}-proxies.txt`);
       }
     },
-    [props.table, trackEvent, t],
+    [props.table, t],
   );
 
   const performProxyCheck = useCallback(() => {
     if (transport === null) {
       return;
     }
-
-    void trackEvent("check_proxies", {
-      count: selectedProxyCount,
-    });
 
     const selectedRows = props.table
       .getFilteredSelectedRowModel()
@@ -971,15 +953,7 @@ function ExtraHeader(props: {
         });
       },
     });
-  }, [
-    transport,
-    trackEvent,
-    selectedProxyCount,
-    props.table,
-    t,
-    instanceInfo.id,
-    removeProxiesBatchMutation,
-  ]);
+  }, [transport, props.table, t, instanceInfo.id, removeProxiesBatchMutation]);
 
   return (
     <>
@@ -1030,9 +1004,6 @@ function ExtraHeader(props: {
       <DataTableActionBarAction
         tooltip={t("proxy.removeSelectedTooltip")}
         onClick={() => {
-          void trackEvent("remove_proxies", {
-            count: props.table.getFilteredSelectedRowModel().rows.length,
-          });
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);

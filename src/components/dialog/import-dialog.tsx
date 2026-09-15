@@ -1,4 +1,3 @@
-import { useAptabase } from "@aptabase/react";
 import { createClient } from "@connectrpc/connect";
 import { InstancePermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import { DownloadService } from "@soulfiremc/sdk/generated/soulfire/download_pb";
@@ -70,7 +69,6 @@ function UrlDialog(props: ImportDialogProps) {
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const { trackEvent } = useAptabase();
 
   const urlSchema = z.object({
     url: z.string().url(t("dialog.import.url.form.url.empty")),
@@ -84,8 +82,6 @@ function UrlDialog(props: ImportDialogProps) {
       onSubmit: urlSchema,
     },
     onSubmit: async ({ value }) => {
-      void trackEvent("import_from_url");
-
       const download = async () => {
         if (transport === null) {
           return;
@@ -188,7 +184,6 @@ function MainDialog(
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const systemInfo = use(SystemInfoContext);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { trackEvent } = useAptabase();
 
   // Handle Ctrl+V paste - uses native event to avoid permission prompts
   const handlePaste = useCallback(
@@ -204,11 +199,11 @@ function MainDialog(
       const text = event.clipboardData?.getData("text/plain");
       if (text) {
         event.preventDefault();
-        void trackEvent("import_from_clipboard");
+
         props.listener(text);
       }
     },
-    [props, trackEvent],
+    [props],
   );
 
   return (
@@ -255,7 +250,6 @@ function MainDialog(
                   variant="secondary"
                   className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
                   onClick={() => {
-                    void trackEvent("import_from_file");
                     if (isDesktopApp()) {
                       runAsync(async () => {
                         const downloadsDir = await desktop.path.downloadDir();
@@ -306,7 +300,6 @@ function MainDialog(
                   variant="secondary"
                   className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
                   onClick={() => {
-                    void trackEvent("import_from_clipboard");
                     runAsync(async () => {
                       if (isDesktopApp()) {
                         props.listener(
@@ -381,7 +374,6 @@ function TextInput(
 ) {
   const { t } = useTranslation("common");
   const [inputText, setInputText] = useState(props.textInput.defaultValue);
-  const { trackEvent } = useAptabase();
   return (
     <>
       <Separator orientation="horizontal" />
@@ -396,7 +388,6 @@ function TextInput(
           variant="secondary"
           className="w-full"
           onClick={() => {
-            void trackEvent("import_from_text_input");
             props.listener(inputText);
           }}
         >
