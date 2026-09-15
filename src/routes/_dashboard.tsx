@@ -17,6 +17,7 @@ import {
   redirect,
   useNavigate,
 } from "@tanstack/react-router";
+import { usePostHog } from "posthog-js/react";
 import { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateInstanceProvider } from "@/components/dialog/create-instance-dialog.tsx";
@@ -24,6 +25,7 @@ import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { demoClientData } from "@/demo-data.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { smartEntries } from "@/lib/utils.tsx";
 import {
   createTransport,
@@ -196,6 +198,30 @@ function InstanceSwitchKeybinds() {
   return null;
 }
 
+function PostHogIdentity() {
+  const posthog = usePostHog();
+  const { clientDataQueryOptions } = Route.useRouteContext();
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+
+  useEffect(() => {
+    if (!isPostHogConfigured || clientInfo.id === "") return;
+
+    posthog.identify(clientInfo.id, {
+      email: clientInfo.email,
+      role: clientInfo.role,
+      username: clientInfo.username,
+    });
+  }, [
+    clientInfo.email,
+    clientInfo.id,
+    clientInfo.role,
+    clientInfo.username,
+    posthog,
+  ]);
+
+  return null;
+}
+
 function DashboardLayout() {
   const { t } = useTranslation("common");
   const loaderData = Route.useLoaderData();
@@ -206,6 +232,7 @@ function DashboardLayout() {
   return (
     <TransportContext value={loaderData.transport}>
       <Suspense>
+        <PostHogIdentity />
         <InstanceSwitchKeybinds />
       </Suspense>
       {isImpersonating() && (

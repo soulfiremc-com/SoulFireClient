@@ -33,6 +33,7 @@ import {
   TrashIcon,
   XIcon,
 } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import { type ComponentType, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -95,6 +96,7 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
 
@@ -302,6 +304,7 @@ function InstanceSelectPage() {
 
 function Content() {
   const { t } = useTranslation("common");
+  const posthog = usePostHog();
   const { clientDataQueryOptions, instanceListQueryOptions } =
     Route.useRouteContext();
   const { data: instanceList } = useSuspenseQuery(instanceListQueryOptions);
@@ -402,6 +405,9 @@ function Content() {
       toast.promise(promise, {
         loading: t("dialog.duplicateInstance.duplicateToast.loading"),
         success: (created) => {
+          if (isPostHogConfigured) {
+            posthog.capture("instance_duplicated");
+          }
           setDuplicateSource(null);
           void navigate({
             to: "/instance/$instance",
@@ -434,7 +440,12 @@ function Content() {
         .then((r) => r);
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
-        success: t("instanceSidebar.deleteToast.success"),
+        success: () => {
+          if (isPostHogConfigured) {
+            posthog.capture("instance_deleted");
+          }
+          return t("instanceSidebar.deleteToast.success");
+        },
         error: (e) => {
           console.error(e);
           return t("instanceSidebar.deleteToast.error");

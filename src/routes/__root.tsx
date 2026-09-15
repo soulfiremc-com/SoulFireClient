@@ -17,6 +17,7 @@ import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useTheme } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
+import { PostHogProvider } from "posthog-js/react";
 import { type CSSProperties, memo, useEffect, useMemo, useState } from "react";
 import { CustomContextMenu } from "@/components/custom-context-menu.tsx";
 import { AboutProvider } from "@/components/dialog/about-dialog.tsx";
@@ -41,6 +42,7 @@ import {
   WINDOW_TITLEBAR_HEIGHT,
 } from "@/hooks/use-window-titlebar.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import posthog from "@/lib/posthog.ts";
 import { buildDocumentTitle } from "@/lib/route-title.ts";
 import { getTerminalTheme } from "@/lib/utils.tsx";
 
@@ -320,69 +322,71 @@ function RootLayout() {
   }, []);
 
   return (
-    <NuqsAdapter>
-      <AptabaseProvider
-        appKey="A-SH-6467566517"
-        options={{
-          apiUrl: "https://aptabase.pistonmaster.net/api/v0/event",
-          appVersion: APP_VERSION,
-        }}
-      >
-        <AppStartedEvent />
-        <PageChangedEvent />
-        <DocumentTitleSyncer />
-        <QueryClientProvider client={queryClient}>
-          <DiscordPresenceUpdater />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <WindowThemeSyncer />
-            <TooltipProvider delay={500}>
-              <SystemInfoContext value={systemInfoState}>
-                <TerminalThemeContext
-                  value={{
-                    value: terminalTheme,
-                    setter: setTerminalTheme,
-                  }}
-                >
-                  <div
-                    className="flex h-dvh w-dvw flex-col"
-                    style={appShellStyle}
+    <PostHogProvider client={posthog}>
+      <NuqsAdapter>
+        <AptabaseProvider
+          appKey="A-SH-6467566517"
+          options={{
+            apiUrl: "https://aptabase.pistonmaster.net/api/v0/event",
+            appVersion: APP_VERSION,
+          }}
+        >
+          <AppStartedEvent />
+          <PageChangedEvent />
+          <DocumentTitleSyncer />
+          <QueryClientProvider client={queryClient}>
+            <DiscordPresenceUpdater />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <WindowThemeSyncer />
+              <TooltipProvider delay={500}>
+                <SystemInfoContext value={systemInfoState}>
+                  <TerminalThemeContext
+                    value={{
+                      value: terminalTheme,
+                      setter: setTerminalTheme,
+                    }}
                   >
-                    <PointerReset />
-                    <CustomContextMenu />
-                    <AboutProvider>
-                      <SupportDialogProvider>
-                        {shouldShowWindowTitlebar && <WindowTitlebar />}
-                        <div className="flex min-h-0 flex-1 flex-col">
-                          <Outlet />
-                        </div>
-                        <TanStackDevtools
-                          plugins={[
-                            {
-                              name: "TanStack Query",
-                              render: <ReactQueryDevtoolsPanel />,
-                            },
-                            {
-                              name: "TanStack Router",
-                              render: <TanStackRouterDevtoolsPanel />,
-                            },
-                          ]}
-                        />
-                      </SupportDialogProvider>
-                    </AboutProvider>
-                  </div>
-                </TerminalThemeContext>
-              </SystemInfoContext>
-              <Toaster richColors />
-            </TooltipProvider>
-          </ThemeProvider>
-          <TailwindIndicator />
-        </QueryClientProvider>
-      </AptabaseProvider>
-    </NuqsAdapter>
+                    <div
+                      className="flex h-dvh w-dvw flex-col"
+                      style={appShellStyle}
+                    >
+                      <PointerReset />
+                      <CustomContextMenu />
+                      <AboutProvider>
+                        <SupportDialogProvider>
+                          {shouldShowWindowTitlebar && <WindowTitlebar />}
+                          <div className="flex min-h-0 flex-1 flex-col">
+                            <Outlet />
+                          </div>
+                          <TanStackDevtools
+                            plugins={[
+                              {
+                                name: "TanStack Query",
+                                render: <ReactQueryDevtoolsPanel />,
+                              },
+                              {
+                                name: "TanStack Router",
+                                render: <TanStackRouterDevtoolsPanel />,
+                              },
+                            ]}
+                          />
+                        </SupportDialogProvider>
+                      </AboutProvider>
+                    </div>
+                  </TerminalThemeContext>
+                </SystemInfoContext>
+                <Toaster richColors />
+              </TooltipProvider>
+            </ThemeProvider>
+            <TailwindIndicator />
+          </QueryClientProvider>
+        </AptabaseProvider>
+      </NuqsAdapter>
+    </PostHogProvider>
   );
 }

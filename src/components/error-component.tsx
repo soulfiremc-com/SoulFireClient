@@ -25,6 +25,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible.tsx";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
 import { runAsync } from "@/lib/utils.tsx";
 import { getServerType, logOut } from "@/lib/web-rpc.ts";
 
@@ -51,6 +52,12 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   useEffect(() => {
     queryErrorResetBoundary.reset();
   }, [queryErrorResetBoundary]);
+
+  useEffect(() => {
+    if (isPostHogConfigured) {
+      posthog.captureException(error);
+    }
+  }, [error]);
 
   const invalidateRoute = useCallback(async () => {
     setRevalidating(true);

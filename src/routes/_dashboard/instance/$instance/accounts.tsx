@@ -25,6 +25,7 @@ import {
   TextIcon,
   TrashIcon,
 } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
@@ -100,6 +101,7 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
@@ -148,6 +150,7 @@ function GenerateAccountsButton() {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const { trackEvent } = useAptabase();
+  const posthog = usePostHog();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { mutateAsync: applyGeneratedAccountsMutation } = useMutation({
@@ -186,8 +189,14 @@ function GenerateAccountsButton() {
     async (newAccounts: ProfileAccount[], mode: GenerateAccountsMode) => {
       void trackEvent("generate_accounts", { count: newAccounts.length, mode });
       await applyGeneratedAccountsMutation({ newAccounts, mode });
+      if (isPostHogConfigured) {
+        posthog.capture("accounts_generated", {
+          account_count: newAccounts.length,
+          generation_mode: mode,
+        });
+      }
     },
-    [applyGeneratedAccountsMutation, trackEvent],
+    [applyGeneratedAccountsMutation, posthog, trackEvent],
   );
 
   return (

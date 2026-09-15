@@ -7,6 +7,7 @@ import {
   type WebDAVClient,
 } from "webdav";
 import i18n from "@/lib/i18n.ts";
+import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";
 
@@ -69,6 +70,9 @@ export function createWebDAVClient(
 }
 
 export const logOut = () => {
+  if (isPostHogConfigured && isAuthenticated()) {
+    posthog.reset();
+  }
   localStorage.removeItem(LOCAL_STORAGE_SERVER_TYPE_KEY);
   localStorage.removeItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
   localStorage.removeItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
@@ -77,10 +81,16 @@ export const logOut = () => {
 };
 
 export const startImpersonation = (token: string) => {
+  if (isPostHogConfigured) {
+    posthog.reset();
+  }
   localStorage.setItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY, token);
 };
 
 export const stopImpersonation = () => {
+  if (isPostHogConfigured) {
+    posthog.reset();
+  }
   localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
 };
 

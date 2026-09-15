@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { PlayIcon, RefreshCwIcon, SquareIcon } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -26,6 +27,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { applyGeneratedAccounts, hasInstancePermission } from "@/lib/utils.tsx";
 
@@ -41,6 +43,7 @@ function shuffle<T>(values: T[]): void {
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
+  const posthog = usePostHog();
   const { instanceInfoQueryOptions, metricsQueryOptions } = useRouteContext({
     from: "/_dashboard/instance/$instance",
     select: (context) => ({
@@ -162,6 +165,11 @@ export default function ControlsMenu() {
       });
       return promise;
     },
+    onSuccess: (bots) => {
+      if (isPostHogConfigured && bots.length > 0) {
+        posthog.capture("bot_start_completed", { bot_count: bots.length });
+      }
+    },
     onSettled: invalidateBotQueries,
   });
 
@@ -180,6 +188,11 @@ export default function ControlsMenu() {
       });
       return promise;
     },
+    onSuccess: (bots) => {
+      if (isPostHogConfigured && bots.length > 0) {
+        posthog.capture("bot_restart_completed", { bot_count: bots.length });
+      }
+    },
     onSettled: invalidateBotQueries,
   });
 
@@ -194,6 +207,11 @@ export default function ControlsMenu() {
         error: t("controls.stopToast.error"),
       });
       return promise;
+    },
+    onSuccess: (bots) => {
+      if (isPostHogConfigured && bots.length > 0) {
+        posthog.capture("bot_stop_completed", { bot_count: bots.length });
+      }
     },
     onSettled: invalidateBotQueries,
   });

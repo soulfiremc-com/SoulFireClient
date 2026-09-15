@@ -18,6 +18,7 @@ import {
   TriangleAlertIcon,
   WorkflowIcon,
 } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import { Suspense, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -74,6 +75,7 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { scriptListQueryOptions } from "@/lib/script-service.ts";
@@ -187,6 +189,7 @@ function InstanceScripts() {
 function Content() {
   const { t } = useTranslation("common");
   const { t: tInstance } = useTranslation("instance");
+  const posthog = usePostHog();
   const { instance: instanceId } = Route.useParams();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
@@ -220,6 +223,9 @@ function Content() {
       return result;
     },
     onSuccess: (response) => {
+      if (isPostHogConfigured) {
+        posthog.capture("script_created");
+      }
       toast.success(tInstance("scripts.createSuccess"));
       setIsCreateDialogOpen(false);
       if (response.script) {
@@ -260,6 +266,9 @@ function Content() {
       await client.deleteScript({ instanceId, scriptId });
     },
     onSuccess: () => {
+      if (isPostHogConfigured) {
+        posthog.capture("script_deleted");
+      }
       toast.success(tInstance("scripts.deleteSuccess"));
     },
     onError: (error) => {
@@ -287,6 +296,9 @@ function Content() {
       void observeServerStream(responses, {});
     },
     onSuccess: () => {
+      if (isPostHogConfigured) {
+        posthog.capture("script_resumed");
+      }
       toast.success(tInstance("scripts.resumeSuccess"));
     },
     onError: (error) => {
@@ -307,6 +319,9 @@ function Content() {
       await client.deactivateScript({ instanceId, scriptId });
     },
     onSuccess: () => {
+      if (isPostHogConfigured) {
+        posthog.capture("script_paused");
+      }
       toast.success(tInstance("scripts.pauseSuccess"));
     },
     onError: (error) => {

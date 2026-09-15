@@ -5,6 +5,7 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { PlusIcon, XIcon } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import { createContext, type ReactNode, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -17,6 +18,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { TransportContext } from "../providers/transport-context.tsx";
 import {
   Credenza,
@@ -71,6 +73,7 @@ function CreateInstanceDialog({
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { trackEvent } = useAptabase();
+  const posthog = usePostHog();
   const { t } = useTranslation("common");
   const formSchema = z.object({
     friendlyName: z
@@ -100,6 +103,9 @@ function CreateInstanceDialog({
       toast.promise(promise, {
         loading: t("dialog.createInstance.createToast.loading"),
         success: (r) => {
+          if (isPostHogConfigured) {
+            posthog.capture("instance_created");
+          }
           setOpen(false);
           void navigate({
             to: "/instance/$instance",
