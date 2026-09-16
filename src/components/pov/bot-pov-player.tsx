@@ -22,6 +22,7 @@ import {
 } from "@/generated/soulfire/pov_pb";
 import { WINDOW_TITLEBAR_HEIGHT } from "@/hooks/use-window-titlebar";
 import { desktop, isDesktopApp } from "@/lib/desktop";
+import { povCursor } from "@/lib/pov-cursor";
 import {
   inputModifiers,
   isSystemShortcut,
@@ -56,11 +57,10 @@ export function BotPovPlayer({
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const unlockingForScreen = useRef(false);
   const session = useRef<ReturnType<typeof startPovSession> | null>(null);
   const capturedRef = useRef(false);
   const screenOpen = useRef(false);
-  const cursor = useRef({ x: 0.5, y: 0.5 });
 
   const release = useCallback(() => {
     toast.dismiss(captureToastId);
@@ -73,7 +73,6 @@ export function BotPovPlayer({
       | KeyboardCapture
       | undefined;
     navigator?.keyboard?.unlock();
-    if (cursorRef.current) cursorRef.current.hidden = true;
   }, [captureToastId]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Reconnect explicitly replaces the stream even when the bot is unchanged.
@@ -114,10 +113,19 @@ export function BotPovPlayer({
           target
             .getContext("2d", { alpha: false, desynchronized: true })
             ?.drawImage(frame, 0, 0);
+          const screenChanged = screenOpen.current !== metadata.screenOpen;
           screenOpen.current = metadata.screenOpen;
-          if (cursorRef.current)
-            cursorRef.current.hidden =
-              !metadata.screenOpen || !capturedRef.current;
+          target.style.cursor = povCursor(metadata.cursorShape);
+          if (capturedRef.current && screenChanged) {
+            const doc = target.ownerDocument;
+            if (metadata.screenOpen && doc.pointerLockElement === target) {
+              unlockingForScreen.current = true;
+              doc.exitPointerLock();
+            } else if (!metadata.screenOpen) {
+              // Browsers may require another click to regain pointer lock.
+              void target.requestPointerLock().catch(release);
+            }
+          }
           setConnected(true);
         },
         () => session.current?.requestKeyFrame(),
@@ -160,9 +168,20 @@ export function BotPovPlayer({
       session.current?.enqueue(create(PovInputEventSchema, values));
     };
     const locked = () => {
-      if (doc.pointerLockElement !== canvas) {
+      if (doc.pointerLockElement === canvas) {
+        if (!capturedRef.current || screenOpen.current) {
+          unlockingForScreen.current = true;
+          doc.exitPointerLock();
+        }
+        return;
+      }
+      if (unlockingForScreen.current) {
+        unlockingForScreen.current = false;
+        return;
+      }
+      if (capturedRef.current) {
         // Chromium may consume Escape before dispatching a keyboard event.
-        if (capturedRef.current && doc.hasFocus()) session.current?.escape();
+        if (doc.hasFocus()) session.current?.escape();
         release();
       }
     };
@@ -203,23 +222,21 @@ export function BotPovPlayer({
           code: character.codePointAt(0),
         });
     };
+    const heldButtons = new Set<number>();
+    const moveInScreen = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      enqueue({
+        kind: PovInputEvent_Kind.MOVE,
+        x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+        y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),
+      });
+    };
     const move = (event: MouseEvent) => {
-      if (!capturedRef.current || doc.pointerLockElement !== canvas) return;
+      if (!capturedRef.current) return;
       if (screenOpen.current) {
-        cursor.current.x = Math.max(
-          0,
-          Math.min(1, cursor.current.x + event.movementX / canvas.clientWidth),
-        );
-        cursor.current.y = Math.max(
-          0,
-          Math.min(1, cursor.current.y + event.movementY / canvas.clientHeight),
-        );
-        enqueue({ kind: PovInputEvent_Kind.MOVE, ...cursor.current });
-        if (cursorRef.current) {
-          cursorRef.current.style.left = `${cursor.current.x * 100}%`;
-          cursorRef.current.style.top = `${cursor.current.y * 100}%`;
-        }
-      } else {
+        if (event.target === canvas || heldButtons.size > 0)
+          moveInScreen(event);
+      } else if (doc.pointerLockElement === canvas) {
         enqueue({
           kind: PovInputEvent_Kind.MOVE,
           x: event.movementX,
@@ -229,14 +246,22 @@ export function BotPovPlayer({
       }
     };
     const button = (event: MouseEvent) => {
-      if (!capturedRef.current || doc.pointerLockElement !== canvas) return;
+      if (!capturedRef.current) return;
+      const pressed = event.type === "mousedown";
+      if (screenOpen.current) {
+        if (event.target !== canvas && !heldButtons.has(event.button)) {
+          if (pressed) release();
+          return;
+        }
+        moveInScreen(event);
+      } else if (doc.pointerLockElement !== canvas) return;
       event.preventDefault();
-      if (screenOpen.current)
-        enqueue({ kind: PovInputEvent_Kind.MOVE, ...cursor.current });
+      if (pressed) heldButtons.add(event.button);
+      else heldButtons.delete(event.button);
       enqueue({
         kind: PovInputEvent_Kind.BUTTON,
         code: mouseButton(event.button),
-        action: event.type === "mousedown" ? 1 : 0,
+        action: pressed ? 1 : 0,
         modifiers: inputModifiers(event),
       });
     };
@@ -250,7 +275,8 @@ export function BotPovPlayer({
       });
     };
     const context = (event: Event) => {
-      if (capturedRef.current) event.preventDefault();
+      if (capturedRef.current && event.target === canvas)
+        event.preventDefault();
     };
     const fullscreenChange = () =>
       setFullscreen(doc.fullscreenElement === rootRef.current);
@@ -324,7 +350,7 @@ export function BotPovPlayer({
   async function capture() {
     if (!canvas || !connected) return;
     try {
-      await canvas.requestPointerLock();
+      if (!screenOpen.current) await canvas.requestPointerLock();
       capturedRef.current = true;
       setCaptured(true);
       session.current?.capture(true);
@@ -450,11 +476,6 @@ export function BotPovPlayer({
           className="block size-full"
           aria-label="Live Minecraft POV"
         />
-        <div
-          ref={cursorRef}
-          hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 border border-white bg-black/50"
-        />
         {!captured && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
             {error ? (
@@ -491,7 +512,7 @@ export function BotPovPlayer({
       {!immersive && (
         <p className="text-muted-foreground text-xs">
           {captured
-            ? "Keyboard and mouse captured. Press Esc to release."
+            ? "Controlling Minecraft. Press Esc to release."
             : "Play captures your keyboard and mouse. Esc releases control."}
         </p>
       )}
