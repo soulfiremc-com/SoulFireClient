@@ -119,6 +119,7 @@ const LOCAL_STORAGE_AUTO_START_INTEGRATED = "auto-start-integrated-server";
 const LOCAL_STORAGE_FORM_SERVER_ADDRESS_KEY = "form-server-address";
 const LOCAL_STORAGE_FORM_SERVER_TOKEN_KEY = "form-server-token";
 const LOCAL_STORAGE_FORM_SERVER_EMAIL_KEY = "form-server-email";
+const LOCAL_STORAGE_FORM_DEDICATED_TYPE_KEY = "form-dedicated-type";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS =
   "form-integrated-server-jvm-args";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JAR_SOURCE =
@@ -1429,13 +1430,22 @@ function DedicatedMenu({
   setLoginType: (type: LoginType) => void;
   setAuthFlowData: (data: AuthFlowData) => void;
 }) {
-  const [dedicatedType, setDedicatedType] = useState<DedicatedType>("email");
+  const [dedicatedType, setDedicatedType] = useState<DedicatedType>(() =>
+    localStorage.getItem(LOCAL_STORAGE_FORM_DEDICATED_TYPE_KEY) === "token"
+      ? "token"
+      : "email",
+  );
+
+  function handleDedicatedTypeChange(type: DedicatedType) {
+    localStorage.setItem(LOCAL_STORAGE_FORM_DEDICATED_TYPE_KEY, type);
+    setDedicatedType(type);
+  }
 
   return (
     <>
       {dedicatedType === "email" && (
         <EmailForm
-          setDedicatedType={setDedicatedType}
+          setDedicatedType={handleDedicatedTypeChange}
           setLoginType={setLoginType}
           setAuthFlowData={setAuthFlowData}
         />
@@ -1443,7 +1453,7 @@ function DedicatedMenu({
       {dedicatedType === "token" && (
         <TokenForm
           redirectWithCredentials={redirectWithCredentials}
-          setDedicatedType={setDedicatedType}
+          setDedicatedType={handleDedicatedTypeChange}
           setLoginType={setLoginType}
         />
       )}
