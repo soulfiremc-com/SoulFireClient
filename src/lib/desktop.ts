@@ -11,6 +11,7 @@ import type {
   DesktopIntegratedServerJarSource,
   DesktopMkdirOptions,
   DesktopOpenDialogOptions,
+  DesktopPovEscape,
   DesktopSaveDialogOptions,
   DesktopSystemInfo,
   DesktopTheme,
@@ -53,6 +54,12 @@ function windowApi(target?: "pov") {
 }
 
 export const desktop = {
+  pov: {
+    setCaptured: (captured: boolean, target?: "pov") =>
+      requireDesktopRuntime().pov.setCaptured(captured, target),
+    onEscape: (callback: (event: DesktopPovEscape) => void) =>
+      requireDesktopRuntime().pov.onEscape(callback),
+  },
   available(): boolean {
     return getDesktopRuntime() !== null;
   },

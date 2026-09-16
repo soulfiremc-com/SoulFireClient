@@ -123,7 +123,19 @@ export type DesktopCustomSoulFireServerJar = {
   size: number;
 };
 
+export type DesktopPovEscape = {
+  target?: "pov";
+  action: number;
+  modifiers: number;
+};
+
 export interface SoulFireDesktopApi {
+  pov: {
+    setCaptured: (captured: boolean, target?: "pov") => Promise<void>;
+    onEscape: (
+      callback: (event: DesktopPovEscape) => void,
+    ) => Promise<DesktopUnlisten>;
+  };
   app: {
     onOpenUrl: (callback: (url: string) => void) => Promise<DesktopUnlisten>;
     quit: () => Promise<void>;

@@ -11,7 +11,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import {
   titlebarClassName,
@@ -22,10 +22,11 @@ import {
   PovInputEventSchema,
 } from "@/generated/soulfire/pov_pb";
 import { WINDOW_TITLEBAR_HEIGHT } from "@/hooks/use-window-titlebar";
-import { desktop, isDesktopApp } from "@/lib/desktop";
+import { desktop, isDesktopApp, isMac } from "@/lib/desktop";
 import { povCursor } from "@/lib/pov-cursor";
 import {
   inputModifiers,
+  isPovReleaseShortcut,
   isSystemShortcut,
   keyInput,
   mouseButton,
@@ -50,10 +51,15 @@ export function BotPovPlayer({
   isOnline: boolean;
 }) {
   const captureToastId = useId();
+  const releaseShortcut = isMac ? "Cmd+Shift+G" : "Ctrl+Shift+G";
+  const nativeCaptureTarget = useRef<"pov" | undefined>(undefined);
   const [metrics] = useState(() =>
     povDebugEnabled() ? new PovStreamMetrics() : null,
   );
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
+  const [autoStart, setAutoStart] = useState(true);
+  const [capturePending, setCapturePending] = useState(false);
+  const captureAttempt = useRef(0);
   const [captured, setCaptured] = useState(false);
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,12 +75,21 @@ export function BotPovPlayer({
   const screenOpen = useRef(false);
 
   const release = useCallback(() => {
+    captureAttempt.current++;
+    setCapturePending(false);
     toast.dismiss(captureToastId);
     capturedRef.current = false;
     setCaptured(false);
     session.current?.capture(false);
+    if (isDesktopApp())
+      void desktop.pov
+        .setCaptured(false, nativeCaptureTarget.current)
+        .catch(console.error);
     const doc = canvasRef.current?.ownerDocument;
     if (doc?.pointerLockElement) doc.exitPointerLock();
+    if (doc?.fullscreenElement === rootRef.current && doc?.fullscreenElement) {
+      void doc.exitFullscreen().catch(() => {});
+    }
     const navigator = doc?.defaultView?.navigator as
       | KeyboardCapture
       | undefined;
@@ -139,7 +154,10 @@ export function BotPovPlayer({
         () => session.current?.requestKeyFrame(),
         failed,
       );
-      if (metrics) metrics.decoder = () => decoder?.stats;
+      if (metrics) {
+        const activeDecoder = decoder;
+        metrics.decoder = () => activeDecoder.stats;
+      }
       session.current = startPovSession(
         instanceId,
         botId,
@@ -189,6 +207,7 @@ export function BotPovPlayer({
     };
     const locked = () => {
       if (doc.pointerLockElement === canvas) {
+        escapeForwarded = false;
         if (!capturedRef.current || screenOpen.current) {
           unlockingForScreen.current = true;
           doc.exitPointerLock();
@@ -196,28 +215,62 @@ export function BotPovPlayer({
         return;
       }
       if (unlockingForScreen.current) {
+        escapeForwarded = false;
         unlockingForScreen.current = false;
         return;
       }
       if (capturedRef.current) {
         // Chromium may consume Escape before dispatching a keyboard event.
-        if (doc.hasFocus()) session.current?.escape();
+        if (doc.hasFocus() && !escapeForwarded) session.current?.escape();
+        escapeForwarded = false;
         release();
       }
     };
+    let disposed = false;
+    let unlistenEscape: (() => void) | undefined;
+    if (isDesktopApp())
+      void desktop.pov
+        .onEscape((event) => {
+          if (
+            !capturedRef.current ||
+            (event.target === "pov") !== (doc !== document)
+          )
+            return;
+          enqueue({
+            kind: PovInputEvent_Kind.KEY,
+            code: 256,
+            action: event.action,
+            modifiers: event.modifiers,
+          });
+        })
+        .then((unlisten) => {
+          if (disposed) unlisten();
+          else unlistenEscape = unlisten;
+        })
+        .catch(console.error);
     const visibility = () => {
       if (doc.hidden) release();
     };
+    let escapeForwarded = false;
     const key = (event: KeyboardEvent) => {
-      if (!capturedRef.current || isSystemShortcut(event)) return;
+      if (!capturedRef.current) return;
+      if (isPovReleaseShortcut(event, isMac)) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.type === "keydown") release();
+        return;
+      }
+      if (isSystemShortcut(event)) return;
       const pressed = event.type === "keydown";
       const input = keyInput(event, pressed);
       if (!input) return;
       event.preventDefault();
       event.stopPropagation();
       if (event.code === "Escape") {
-        if (pressed) session.current?.escape();
-        release();
+        if (pressed && !event.repeat) {
+          escapeForwarded = true;
+          session.current?.escape();
+        }
         return;
       }
       session.current?.enqueue(input);
@@ -298,8 +351,24 @@ export function BotPovPlayer({
       if (capturedRef.current && event.target === canvas)
         event.preventDefault();
     };
-    const fullscreenChange = () =>
-      setFullscreen(doc.fullscreenElement === rootRef.current);
+    const fullscreenChange = () => {
+      const active = doc.fullscreenElement === rootRef.current;
+      setFullscreen(active);
+      // Keyboard Lock is only available after fullscreen has been entered.
+      if (active && capturedRef.current) {
+        void (win.navigator as KeyboardCapture).keyboard
+          ?.lock([
+            "KeyW",
+            "KeyA",
+            "KeyS",
+            "KeyD",
+            "Tab",
+            "Space",
+            ...(isDesktopApp() ? [] : ["Escape"]),
+          ])
+          .catch(() => {});
+      }
+    };
     doc.addEventListener("pointerlockchange", locked);
     doc.addEventListener("fullscreenchange", fullscreenChange);
     doc.addEventListener("visibilitychange", visibility);
@@ -314,6 +383,8 @@ export function BotPovPlayer({
     win.addEventListener("blur", release);
     win.addEventListener("pagehide", release);
     return () => {
+      disposed = true;
+      unlistenEscape?.();
       release();
       doc.removeEventListener("pointerlockchange", locked);
       doc.removeEventListener("fullscreenchange", fullscreenChange);
@@ -367,29 +438,58 @@ export function BotPovPlayer({
     setCanvas(node);
   }, []);
 
-  async function capture() {
-    if (!canvas || !connected) return;
+  const capture = useCallback(async () => {
+    if (!canvas || !connected || !canvas.ownerDocument.hasFocus()) return;
+    const attempt = ++captureAttempt.current;
+    setCapturePending(true);
     try {
       if (!screenOpen.current) await canvas.requestPointerLock();
+      if (attempt !== captureAttempt.current || canvasRef.current !== canvas)
+        return;
       capturedRef.current = true;
       setCaptured(true);
       session.current?.capture(true);
-      toast.info("Press Esc to release your keyboard and mouse.", {
-        id: captureToastId,
-        toasterId: captureToastId,
-        duration: 4000,
-      });
+      nativeCaptureTarget.current =
+        canvas.ownerDocument === document ? undefined : "pov";
+      if (isDesktopApp())
+        await desktop.pov.setCaptured(true, nativeCaptureTarget.current);
+      if (attempt !== captureAttempt.current) return;
+      toast.info(
+        `Press ${releaseShortcut} to release your keyboard and mouse.`,
+        {
+          id: captureToastId,
+          toasterId: captureToastId,
+          duration: 4000,
+        },
+      );
       const navigator = canvas.ownerDocument.defaultView?.navigator as
         | KeyboardCapture
         | undefined;
-      // Escape stays reserved for leaving control. OS-level shortcuts remain browser-managed.
+      // Where supported, allow Minecraft to receive Escape in fullscreen.
       void navigator?.keyboard
-        ?.lock(["KeyW", "KeyA", "KeyS", "KeyD", "Tab", "Space"])
+        ?.lock([
+          "KeyW",
+          "KeyA",
+          "KeyS",
+          "KeyD",
+          "Tab",
+          "Space",
+          ...(isDesktopApp() ? [] : ["Escape"]),
+        ])
         .catch(() => {});
     } catch {
-      setError("Mouse capture was denied. Click Play to try again.");
+      // A fresh page may require user activation. Keep the full-frame play
+      // button available instead of treating denied pointer lock as a stream error.
+    } finally {
+      if (attempt === captureAttempt.current) setCapturePending(false);
     }
-  }
+  }, [canvas, connected, captureToastId, releaseShortcut]);
+
+  useEffect(() => {
+    if (!autoStart || !connected || !canvas) return;
+    setAutoStart(false);
+    void capture();
+  }, [autoStart, connected, canvas, capture]);
 
   function detach() {
     release();
@@ -455,6 +555,7 @@ export function BotPovPlayer({
             disabled={!isOnline}
             onClick={() => {
               release();
+              if (!playing) setAutoStart(true);
               setPlaying(!playing);
             }}
           >
@@ -468,7 +569,7 @@ export function BotPovPlayer({
           <Button
             size="sm"
             variant="outline"
-            disabled={!isOnline || !connected || !playing}
+            disabled={!isOnline || !connected || !playing || capturePending}
             onClick={capture}
           >
             <Gamepad2Icon data-icon="inline-start" />
@@ -515,17 +616,28 @@ export function BotPovPlayer({
             ) : !isOnline ? (
               <p>Bot is offline</p>
             ) : !playing ? (
-              <Button onClick={() => setPlaying(true)}>
+              <Button
+                onClick={() => {
+                  setAutoStart(true);
+                  setPlaying(true);
+                }}
+              >
                 <PlayIcon data-icon="inline-start" />
                 Watch bot
               </Button>
-            ) : !connected ? (
+            ) : !connected || autoStart || capturePending ? (
               <p>Connecting…</p>
             ) : (
-              <Button onClick={capture}>
-                <Gamepad2Icon data-icon="inline-start" />
-                Click to play
-              </Button>
+              <button
+                type="button"
+                onClick={capture}
+                className="absolute inset-0 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-[-2px]"
+              >
+                <span className={buttonVariants()}>
+                  <Gamepad2Icon data-icon="inline-start" />
+                  Click to play
+                </span>
+              </button>
             )}
           </div>
         )}
@@ -533,8 +645,8 @@ export function BotPovPlayer({
       {!immersive && (
         <p className="text-muted-foreground text-xs">
           {captured
-            ? "Controlling Minecraft. Press Esc to release."
-            : "Play captures your keyboard and mouse. Esc releases control."}
+            ? `Controlling Minecraft. Press ${releaseShortcut} to release.`
+            : `Play captures your keyboard and mouse. ${releaseShortcut} releases control.`}
         </p>
       )}
       <Toaster

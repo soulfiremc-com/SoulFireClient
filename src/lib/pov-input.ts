@@ -105,3 +105,18 @@ export function keyInput(event: KeyboardEvent, pressed: boolean) {
         modifiers: inputModifiers(event),
       });
 }
+
+export function isPovReleaseShortcut(
+  event: Pick<
+    KeyboardEvent,
+    "code" | "shiftKey" | "ctrlKey" | "metaKey" | "altKey"
+  >,
+  mac: boolean,
+): boolean {
+  return (
+    event.code === "KeyG" &&
+    event.shiftKey &&
+    !event.altKey &&
+    (mac ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey)
+  );
+}

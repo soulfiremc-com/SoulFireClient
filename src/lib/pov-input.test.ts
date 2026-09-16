@@ -3,6 +3,7 @@ import { test } from "node:test";
 import {
   glfwKey,
   inputModifiers,
+  isPovReleaseShortcut,
   isSystemShortcut,
   mouseButton,
 } from "./pov-input";
@@ -41,6 +42,35 @@ test("OS shortcuts remain available while Minecraft keys and Escape are forwarde
   assert.equal(isSystemShortcut({ ...event, code: "F4", altKey: true }), true);
   assert.equal(
     isSystemShortcut({ ...event, code: "KeyQ", ctrlKey: true }),
+    false,
+  );
+});
+
+test("release chord is platform-specific and leaves plain gameplay keys alone", () => {
+  const event = {
+    code: "KeyG",
+    shiftKey: true,
+    ctrlKey: true,
+    metaKey: false,
+    altKey: false,
+  };
+  assert.equal(isPovReleaseShortcut(event, false), true);
+  assert.equal(isPovReleaseShortcut(event, true), false);
+  assert.equal(
+    isPovReleaseShortcut({ ...event, ctrlKey: false, metaKey: true }, true),
+    true,
+  );
+  assert.equal(
+    isPovReleaseShortcut({ ...event, ctrlKey: false, metaKey: true }, false),
+    false,
+  );
+  assert.equal(
+    isPovReleaseShortcut({ ...event, shiftKey: false }, false),
+    false,
+  );
+  assert.equal(isPovReleaseShortcut({ ...event, altKey: true }, false), false);
+  assert.equal(
+    isPovReleaseShortcut({ ...event, code: "Escape" }, false),
     false,
   );
 });

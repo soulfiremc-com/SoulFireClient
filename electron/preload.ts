@@ -21,6 +21,11 @@ function subscribe<T>(
 }
 
 const desktopApi: SoulFireDesktopApi = {
+  pov: {
+    setCaptured: (captured, target) =>
+      invoke("pov:set-captured", captured, target),
+    onEscape: (callback) => subscribe("pov:escape", callback),
+  },
   app: {
     onOpenUrl: async (callback) => subscribe("app:open-url", callback),
     quit: async () => {

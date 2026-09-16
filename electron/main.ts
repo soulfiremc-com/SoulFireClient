@@ -119,6 +119,10 @@ const hasSingleInstanceLock =
 
 let mainWindow: BrowserWindow | null = null;
 const povWindows = new Map<number, BrowserWindow>();
+const povInputOwners = new Map<
+  number,
+  { owner: BrowserWindow; target?: "pov" }
+>();
 let nextFsWatchId = 1;
 let pendingOpenUrl = findProtocolUrl(process.argv);
 let tray: Tray | null = null;
@@ -352,6 +356,30 @@ async function registerAppProtocol(): Promise<void> {
 
 function registerSecurityHandlers(): void {
   app.on("web-contents-created", (_event, contents) => {
+    contents.on("before-input-event", (event, input) => {
+      const capture = povInputOwners.get(contents.id);
+      if (
+        !capture ||
+        input.key !== "Escape" ||
+        input.control ||
+        input.alt ||
+        input.meta
+      )
+        return;
+      // Keep Chromium's pointer-lock/fullscreen Escape handling out of the
+      // native gameplay path. Forward only to the trusted owning renderer.
+      event.preventDefault();
+      if (!capture.owner.isDestroyed())
+        capture.owner.webContents.send("pov:escape", {
+          target: capture.target,
+          action: input.type === "keyUp" ? 0 : input.isAutoRepeat ? 2 : 1,
+          modifiers: Number(input.shift),
+        });
+    });
+    contents.on("destroyed", () => povInputOwners.delete(contents.id));
+    contents.on("did-start-navigation", (_event, _url, inPlace, mainFrame) => {
+      if (mainFrame && !inPlace) povInputOwners.delete(contents.id);
+    });
     contents.on("will-attach-webview", (event) => {
       event.preventDefault();
     });
@@ -557,6 +585,22 @@ function windowTarget(sender: BrowserWindow, target?: "pov"): BrowserWindow {
 }
 
 function registerIpcHandlers(): void {
+  handleIpc("pov:set-captured", (owner, captured: boolean, target?: "pov") => {
+    if (
+      typeof captured !== "boolean" ||
+      (target !== undefined && target !== "pov")
+    )
+      throw new Error("Invalid POV capture");
+    if (!captured) {
+      for (const [id, capture] of povInputOwners) {
+        if (capture.owner === owner && capture.target === target)
+          povInputOwners.delete(id);
+      }
+      return;
+    }
+    const window = windowTarget(owner, target);
+    povInputOwners.set(window.webContents.id, { owner, target });
+  });
   handleIpc("app:quit", async () => {
     app.quit();
   });
