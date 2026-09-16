@@ -50,7 +50,6 @@ import {
   ArrowRightIcon,
   ArrowUpIcon,
   BookOpenIcon,
-  CameraIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -65,10 +64,7 @@ import {
   MonitorIcon,
   MousePointerClickIcon,
   PackageIcon,
-  PauseIcon,
   PencilIcon,
-  PlayIcon,
-  RefreshCwIcon,
   ShieldIcon,
   SparklesIcon,
   SquareIcon,
@@ -82,7 +78,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -91,6 +86,7 @@ import CommandInput from "@/components/command-input.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { MenuItem } from "@/components/context-menu-primitives.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
+import { BotPovPlayer } from "@/components/pov/bot-pov-player";
 import { TerminalComponent } from "@/components/terminal.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -127,9 +123,6 @@ import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
-
-const BOT_POV_RENDER_WIDTH = 1920;
-const BOT_POV_RENDER_HEIGHT = 1080;
 
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/bot/$botId",
@@ -635,7 +628,7 @@ function OverviewTab({
     <>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Left: POV panel */}
-        <BotPovPanel
+        <BotPovPlayer
           instanceId={instanceId}
           botId={botId}
           isOnline={isOnline}
@@ -783,163 +776,6 @@ function BotTerminalPanel({
         instanceInfo,
         InstancePermission.INSTANCE_COMMAND_EXECUTION,
       ) && <CommandInput scope={commandScope} />}
-    </div>
-  );
-}
-
-function BotPovPanel({
-  instanceId,
-  botId,
-  isOnline,
-}: {
-  instanceId: string;
-  botId: string;
-  isOnline: boolean;
-}) {
-  const { t } = useTranslation("instance");
-  const [povImage, setPovImage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [autoRefresh, setAutoRefresh] = useState(false);
-  const isLoadingRef = useRef(false);
-
-  const renderPov = useCallback(async () => {
-    // Prevent overlapping requests
-    if (isLoadingRef.current) return;
-
-    isLoadingRef.current = true;
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const transport = createTransport();
-      if (transport === null) {
-        // Demo mode
-        setError("POV rendering not available in demo mode");
-        return;
-      }
-
-      const botService = createClient(BotService, transport);
-      const result = await botService.renderBotPov({
-        instanceId,
-        botId,
-        width: BOT_POV_RENDER_WIDTH,
-        height: BOT_POV_RENDER_HEIGHT,
-      });
-
-      setPovImage(result.imageBase64);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to render POV");
-      // Stop auto-refresh on error
-      setAutoRefresh(false);
-    } finally {
-      setIsLoading(false);
-      isLoadingRef.current = false;
-    }
-  }, [instanceId, botId]);
-
-  // Auto-refresh effect
-  useEffect(() => {
-    if (!autoRefresh || !isOnline) return;
-
-    // Capture immediately when auto-refresh is enabled
-    void renderPov();
-
-    const interval = setInterval(() => {
-      void renderPov();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [autoRefresh, isOnline, renderPov]);
-
-  // Stop auto-refresh when going offline
-  useEffect(() => {
-    if (!isOnline) {
-      setAutoRefresh(false);
-    }
-  }, [isOnline]);
-
-  return (
-    <div>
-      <div className="mb-2 flex items-center gap-2">
-        <h3 className="flex items-center gap-2 text-sm font-medium">
-          <CameraIcon className="size-4" />
-          {t("bots.povPanel.title")}
-        </h3>
-        {isOnline && (
-          <div className="ml-auto flex gap-2">
-            <Toggle
-              variant="outline"
-              size="sm"
-              pressed={autoRefresh}
-              onClick={() => setAutoRefresh(!autoRefresh)}
-              title={
-                autoRefresh
-                  ? t("bots.povPanel.stopAutoRefresh")
-                  : t("bots.povPanel.startAutoRefresh")
-              }
-            >
-              {autoRefresh ? (
-                <PauseIcon className="mr-1 size-4" />
-              ) : (
-                <PlayIcon className="mr-1 size-4" />
-              )}
-              {t("bots.povPanel.auto")}
-            </Toggle>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={renderPov}
-              disabled={isLoading || autoRefresh}
-            >
-              {isLoading ? (
-                <LoaderIcon className="mr-1 size-4 animate-spin" />
-              ) : (
-                <RefreshCwIcon className="mr-1 size-4" />
-              )}
-              {povImage
-                ? t("bots.povPanel.refresh")
-                : t("bots.povPanel.capture")}
-            </Button>
-          </div>
-        )}
-      </div>
-      {isOnline ? (
-        <div className="flex flex-col gap-2">
-          {error && (
-            <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-sm">
-              {error}
-            </div>
-          )}
-          {povImage ? (
-            <div className="overflow-hidden rounded-lg">
-              <img
-                src={`data:image/png;base64,${povImage}`}
-                alt="Bot POV"
-                className="w-full"
-              />
-            </div>
-          ) : (
-            <div className="bg-muted/30 flex aspect-video items-center justify-center rounded-lg">
-              <div className="text-center">
-                <CameraIcon className="text-muted-foreground mx-auto size-12" />
-                <p className="text-muted-foreground mt-2 text-sm">
-                  {t("bots.povPanel.clickToCapture")}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="bg-muted/30 flex aspect-video items-center justify-center rounded-lg">
-          <div className="text-center">
-            <CameraIcon className="text-muted-foreground mx-auto size-12" />
-            <p className="text-muted-foreground mt-2 text-sm">
-              {t("bots.povPanel.offline")}
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

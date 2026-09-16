@@ -361,7 +361,24 @@ function registerSecurityHandlers(): void {
       }
     });
 
-    contents.setWindowOpenHandler(({ url }) => {
+    contents.setWindowOpenHandler(({ url, frameName }) => {
+      if (
+        url === "about:blank" &&
+        frameName === "soulfire-pov" &&
+        isAllowedRendererUrl(contents.getURL())
+      ) {
+        return {
+          action: "allow",
+          overrideBrowserWindowOptions: {
+            autoHideMenuBar: true,
+            webPreferences: {
+              nodeIntegration: false,
+              contextIsolation: true,
+              sandbox: true,
+            },
+          },
+        };
+      }
       if (isSafeExternalUrl(url)) {
         void shell.openExternal(url);
       }

@@ -1,0 +1,481 @@
+import { create } from "@bufbuild/protobuf";
+import {
+  ExpandIcon,
+  ExternalLinkIcon,
+  Gamepad2Icon,
+  PauseIcon,
+  PlayIcon,
+  RefreshCwIcon,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Button } from "@/components/ui/button";
+import {
+  type PovFrame,
+  PovInputEvent_Kind,
+  PovInputEventSchema,
+} from "@/generated/soulfire/pov_pb";
+import { inputModifiers, keyInput, mouseButton } from "@/lib/pov-input";
+import { povRenderSize } from "@/lib/pov-render-size";
+import { startPovSession } from "@/lib/pov-session";
+
+type KeyboardCapture = Navigator & {
+  keyboard?: { lock(keys?: string[]): Promise<void>; unlock(): void };
+};
+
+export function BotPovPlayer({
+  instanceId,
+  botId,
+  isOnline,
+}: {
+  instanceId: string;
+  botId: string;
+  isOnline: boolean;
+}) {
+  const [playing, setPlaying] = useState(false);
+  const [captured, setCaptured] = useState(false);
+  const [connected, setConnected] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [retry, setRetry] = useState(0);
+  const [popup, setPopup] = useState<Window | null>(null);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const session = useRef<ReturnType<typeof startPovSession> | null>(null);
+  const capturedRef = useRef(false);
+  const screenOpen = useRef(false);
+  const cursor = useRef({ x: 0.5, y: 0.5 });
+
+  const release = useCallback(() => {
+    capturedRef.current = false;
+    setCaptured(false);
+    session.current?.capture(false);
+    const doc = canvasRef.current?.ownerDocument;
+    if (doc?.pointerLockElement) doc.exitPointerLock();
+    const navigator = doc?.defaultView?.navigator as
+      | KeyboardCapture
+      | undefined;
+    navigator?.keyboard?.unlock();
+    if (cursorRef.current) cursorRef.current.hidden = true;
+  }, []);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Reconnect explicitly replaces the stream even when the bot is unchanged.
+  useEffect(() => {
+    if (!playing || !isOnline) return;
+    let disposed = false;
+    let pending: PovFrame | null = null;
+    let decoding = false;
+    setError(null);
+    setConnected(false);
+    const dimensions = () => {
+      const current = canvasRef.current;
+      const rect = current?.getBoundingClientRect();
+      return rect
+        ? povRenderSize(
+            rect.width,
+            rect.height,
+            current?.ownerDocument.defaultView?.devicePixelRatio ?? 1,
+          )
+        : null;
+    };
+    async function draw() {
+      if (decoding) return;
+      decoding = true;
+      try {
+        while (pending && !disposed) {
+          const frame: PovFrame = pending;
+          pending = null;
+          const bitmap = await createImageBitmap(
+            new Blob([new Uint8Array(frame.image)], { type: frame.mimeType }),
+          );
+          try {
+            const target = canvasRef.current;
+            if (!target || disposed) continue;
+            if (target.width !== frame.width) target.width = frame.width;
+            if (target.height !== frame.height) target.height = frame.height;
+            target.getContext("2d", { alpha: false })?.drawImage(bitmap, 0, 0);
+            screenOpen.current = frame.screenOpen;
+            if (cursorRef.current)
+              cursorRef.current.hidden =
+                !frame.screenOpen || !capturedRef.current;
+            setConnected(true);
+          } finally {
+            bitmap.close();
+          }
+        }
+      } catch (reason) {
+        if (!disposed) {
+          setError(
+            reason instanceof Error
+              ? reason.message
+              : "Unable to decode POV frames.",
+          );
+          release();
+          session.current?.stop();
+        }
+      } finally {
+        decoding = false;
+      }
+    }
+    try {
+      session.current = startPovSession(
+        instanceId,
+        botId,
+        dimensions,
+        (frame) => {
+          pending = frame;
+          void draw();
+        },
+        (reason) => {
+          setError(reason.message);
+          setConnected(false);
+          release();
+        },
+      );
+    } catch (reason) {
+      setError(
+        reason instanceof Error ? reason.message : "Unable to start POV.",
+      );
+    }
+    return () => {
+      disposed = true;
+      pending = null;
+      release();
+      session.current?.stop();
+      session.current = null;
+    };
+  }, [playing, isOnline, instanceId, botId, retry, release]);
+
+  useEffect(() => {
+    if (!canvas) return;
+    const doc = canvas.ownerDocument;
+    const win = doc.defaultView;
+    if (!win) return;
+    const enqueue = (
+      values: Parameters<typeof create<typeof PovInputEventSchema>>[1],
+    ) => {
+      session.current?.enqueue(create(PovInputEventSchema, values));
+    };
+    const locked = () => {
+      if (doc.pointerLockElement !== canvas) release();
+    };
+    const visibility = () => {
+      if (doc.hidden) release();
+    };
+    const key = (event: KeyboardEvent) => {
+      if (!capturedRef.current) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.code === "Escape") {
+        session.current?.closeScreen();
+        release();
+        return;
+      }
+      const pressed = event.type === "keydown";
+      const input = keyInput(event, pressed);
+      if (input) session.current?.enqueue(input);
+      if (
+        pressed &&
+        !event.isComposing &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        [...event.key].length === 1
+      ) {
+        enqueue({
+          kind: PovInputEvent_Kind.CHARACTER,
+          code: event.key.codePointAt(0),
+        });
+      }
+    };
+    const composition = (event: CompositionEvent) => {
+      if (!capturedRef.current) return;
+      for (const character of event.data)
+        enqueue({
+          kind: PovInputEvent_Kind.CHARACTER,
+          code: character.codePointAt(0),
+        });
+    };
+    const move = (event: MouseEvent) => {
+      if (!capturedRef.current || doc.pointerLockElement !== canvas) return;
+      if (screenOpen.current) {
+        cursor.current.x = Math.max(
+          0,
+          Math.min(1, cursor.current.x + event.movementX / canvas.clientWidth),
+        );
+        cursor.current.y = Math.max(
+          0,
+          Math.min(1, cursor.current.y + event.movementY / canvas.clientHeight),
+        );
+        enqueue({ kind: PovInputEvent_Kind.MOVE, ...cursor.current });
+        if (cursorRef.current) {
+          cursorRef.current.style.left = `${cursor.current.x * 100}%`;
+          cursorRef.current.style.top = `${cursor.current.y * 100}%`;
+        }
+      } else {
+        enqueue({
+          kind: PovInputEvent_Kind.MOVE,
+          x: event.movementX,
+          y: event.movementY,
+          relative: true,
+        });
+      }
+    };
+    const button = (event: MouseEvent) => {
+      if (!capturedRef.current || doc.pointerLockElement !== canvas) return;
+      event.preventDefault();
+      if (screenOpen.current)
+        enqueue({ kind: PovInputEvent_Kind.MOVE, ...cursor.current });
+      enqueue({
+        kind: PovInputEvent_Kind.BUTTON,
+        code: mouseButton(event.button),
+        action: event.type === "mousedown" ? 1 : 0,
+        modifiers: inputModifiers(event),
+      });
+    };
+    const wheel = (event: WheelEvent) => {
+      if (!capturedRef.current) return;
+      event.preventDefault();
+      enqueue({
+        kind: PovInputEvent_Kind.SCROLL,
+        x: -Math.sign(event.deltaX),
+        y: -Math.sign(event.deltaY),
+      });
+    };
+    const context = (event: Event) => {
+      if (capturedRef.current) event.preventDefault();
+    };
+    const fullscreenChange = () =>
+      setFullscreen(doc.fullscreenElement === rootRef.current);
+    doc.addEventListener("pointerlockchange", locked);
+    doc.addEventListener("fullscreenchange", fullscreenChange);
+    doc.addEventListener("visibilitychange", visibility);
+    doc.addEventListener("keydown", key, true);
+    doc.addEventListener("keyup", key, true);
+    doc.addEventListener("compositionend", composition);
+    doc.addEventListener("mousemove", move);
+    doc.addEventListener("mousedown", button);
+    doc.addEventListener("mouseup", button);
+    doc.addEventListener("contextmenu", context);
+    canvas.addEventListener("wheel", wheel, { passive: false });
+    win.addEventListener("blur", release);
+    win.addEventListener("pagehide", release);
+    return () => {
+      release();
+      doc.removeEventListener("pointerlockchange", locked);
+      doc.removeEventListener("fullscreenchange", fullscreenChange);
+      doc.removeEventListener("visibilitychange", visibility);
+      doc.removeEventListener("keydown", key, true);
+      doc.removeEventListener("keyup", key, true);
+      doc.removeEventListener("compositionend", composition);
+      doc.removeEventListener("mousemove", move);
+      doc.removeEventListener("mousedown", button);
+      doc.removeEventListener("mouseup", button);
+      doc.removeEventListener("contextmenu", context);
+      canvas.removeEventListener("wheel", wheel);
+      win.removeEventListener("blur", release);
+      win.removeEventListener("pagehide", release);
+    };
+  }, [canvas, release]);
+
+  useEffect(() => {
+    if (!popup) return;
+    const closed = () => {
+      release();
+      setPopup(null);
+      setFullscreen(false);
+    };
+    popup.addEventListener("pagehide", closed);
+    return () => {
+      popup.removeEventListener("pagehide", closed);
+      popup.close();
+    };
+  }, [popup, release]);
+
+  const attachCanvas = useCallback((node: HTMLCanvasElement | null) => {
+    canvasRef.current = node;
+    setCanvas(node);
+  }, []);
+
+  async function capture() {
+    if (!canvas || !connected) return;
+    try {
+      await canvas.requestPointerLock();
+      capturedRef.current = true;
+      setCaptured(true);
+      session.current?.capture(true);
+      const navigator = canvas.ownerDocument.defaultView?.navigator as
+        | KeyboardCapture
+        | undefined;
+      // Escape stays reserved for leaving control. OS-level shortcuts remain browser-managed.
+      void navigator?.keyboard
+        ?.lock([
+          "KeyW",
+          "KeyA",
+          "KeyS",
+          "KeyD",
+          "Tab",
+          "Space",
+          "AltLeft",
+          "AltRight",
+        ])
+        .catch(() => {});
+    } catch {
+      setError("Mouse capture was denied. Click Play to try again.");
+    }
+  }
+
+  function detach() {
+    release();
+    const child = window.open(
+      "about:blank",
+      "soulfire-pov",
+      "popup,width=1280,height=800",
+    );
+    if (!child) {
+      setError("Allow popups to detach the POV window.");
+      return;
+    }
+    child.document.title = "SoulFire POV";
+    child.document.documentElement.className =
+      document.documentElement.className;
+    for (const style of document.querySelectorAll(
+      'link[rel="stylesheet"], style',
+    ))
+      child.document.head.append(style.cloneNode(true));
+    child.document.body.style.margin = "0";
+    setPopup(child);
+  }
+
+  async function toggleFullscreen() {
+    const root = rootRef.current;
+    if (!root) return;
+    try {
+      if (root.ownerDocument.fullscreenElement)
+        await root.ownerDocument.exitFullscreen();
+      else {
+        if (connected) void capture();
+        await root.requestFullscreen();
+      }
+    } catch {
+      setError("Fullscreen is unavailable in this window.");
+    }
+  }
+
+  const immersive = captured && (fullscreen || popup !== null);
+  const player = (
+    <div
+      ref={rootRef}
+      className={`bg-background flex min-h-0 flex-col gap-2 ${popup || fullscreen ? (immersive ? "h-screen" : "h-screen p-2") : ""}`}
+    >
+      <div
+        className={immersive ? "hidden" : "flex flex-wrap items-center gap-2"}
+      >
+        <h3 className="mr-auto text-sm font-medium">Bot POV</h3>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={!isOnline}
+          onClick={() => {
+            release();
+            setPlaying(!playing);
+          }}
+        >
+          {playing ? (
+            <PauseIcon data-icon="inline-start" />
+          ) : (
+            <PlayIcon data-icon="inline-start" />
+          )}
+          {playing ? "Stop" : "Watch"}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={!isOnline || !connected || !playing}
+          onClick={capture}
+        >
+          <Gamepad2Icon data-icon="inline-start" />
+          Play
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={toggleFullscreen}
+          aria-label="Fullscreen"
+        >
+          <ExpandIcon />
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => (popup ? setPopup(null) : detach())}
+        >
+          <ExternalLinkIcon data-icon="inline-start" />
+          {popup ? "Attach" : "Detach"}
+        </Button>
+      </div>
+      <div
+        className={`relative min-h-0 overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
+      >
+        <canvas
+          ref={attachCanvas}
+          className="block size-full"
+          aria-label="Live Minecraft POV"
+        />
+        <div
+          ref={cursorRef}
+          hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 border border-white bg-black/50"
+        />
+        {!captured && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
+            {error ? (
+              <div className="flex max-w-md flex-col items-center gap-3 p-4 text-center">
+                <p role="alert">{error}</p>
+                <Button
+                  onClick={() => {
+                    setError(null);
+                    setRetry(retry + 1);
+                  }}
+                >
+                  <RefreshCwIcon data-icon="inline-start" />
+                  Reconnect
+                </Button>
+              </div>
+            ) : !isOnline ? (
+              <p>Bot is offline</p>
+            ) : !playing ? (
+              <Button onClick={() => setPlaying(true)}>
+                <PlayIcon data-icon="inline-start" />
+                Watch bot
+              </Button>
+            ) : !connected ? (
+              <p>Connecting…</p>
+            ) : (
+              <Button onClick={capture}>
+                <Gamepad2Icon data-icon="inline-start" />
+                Click to play
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      <p className={immersive ? "hidden" : "text-muted-foreground text-xs"}>
+        {captured
+          ? "Keyboard and mouse captured. Press Esc to release."
+          : "Play captures your keyboard and mouse. Esc releases control."}
+      </p>
+    </div>
+  );
+  return popup ? (
+    <>
+      {createPortal(player, popup.document.body)}
+      <Button variant="outline" onClick={() => popup.focus()}>
+        Show POV window
+      </Button>
+    </>
+  ) : (
+    player
+  );
+}
