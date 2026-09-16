@@ -7,9 +7,11 @@ import {
   PlayIcon,
   RefreshCwIcon,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
 import {
   titlebarClassName,
   WindowControls,
@@ -43,6 +45,7 @@ export function BotPovPlayer({
   botId: string;
   isOnline: boolean;
 }) {
+  const captureToastId = useId();
   const [playing, setPlaying] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -60,6 +63,7 @@ export function BotPovPlayer({
   const cursor = useRef({ x: 0.5, y: 0.5 });
 
   const release = useCallback(() => {
+    toast.dismiss(captureToastId);
     capturedRef.current = false;
     setCaptured(false);
     session.current?.capture(false);
@@ -70,7 +74,7 @@ export function BotPovPlayer({
       | undefined;
     navigator?.keyboard?.unlock();
     if (cursorRef.current) cursorRef.current.hidden = true;
-  }, []);
+  }, [captureToastId]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Reconnect explicitly replaces the stream even when the bot is unchanged.
   useEffect(() => {
@@ -324,6 +328,11 @@ export function BotPovPlayer({
       capturedRef.current = true;
       setCaptured(true);
       session.current?.capture(true);
+      toast.info("Press Esc to release your keyboard and mouse.", {
+        id: captureToastId,
+        toasterId: captureToastId,
+        duration: 4000,
+      });
       const navigator = canvas.ownerDocument.defaultView?.navigator as
         | KeyboardCapture
         | undefined;
@@ -377,11 +386,11 @@ export function BotPovPlayer({
     }
   }
 
-  const immersive = captured && (fullscreen || popup !== null);
+  const immersive = fullscreen || popup !== null;
   const player = (
     <div
       ref={rootRef}
-      className={`bg-background flex min-h-0 flex-col gap-2 ${popup || fullscreen ? "h-screen" : ""}`}
+      className={`bg-background relative flex min-h-0 flex-col ${immersive ? "h-screen" : "gap-2"}`}
     >
       {popup && isDesktopApp() && !fullscreen && (
         <header data-app-drag-region="" className={titlebarClassName}>
@@ -391,52 +400,48 @@ export function BotPovPlayer({
           </div>
         </header>
       )}
-      <div
-        className={immersive ? "hidden" : "flex flex-wrap items-center gap-2"}
-      >
-        <h3 className="mr-auto text-sm font-medium">Bot POV</h3>
-        <Button
-          size="sm"
-          variant="outline"
-          disabled={!isOnline}
-          onClick={() => {
-            release();
-            setPlaying(!playing);
-          }}
-        >
-          {playing ? (
-            <PauseIcon data-icon="inline-start" />
-          ) : (
-            <PlayIcon data-icon="inline-start" />
-          )}
-          {playing ? "Stop" : "Watch"}
-        </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          disabled={!isOnline || !connected || !playing}
-          onClick={capture}
-        >
-          <Gamepad2Icon data-icon="inline-start" />
-          Play
-        </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={toggleFullscreen}
-          aria-label="Fullscreen"
-        >
-          <ExpandIcon />
-        </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => (popup ? setPopup(null) : detach())}
-        >
-          <ExternalLinkIcon data-icon="inline-start" />
-          {popup ? "Attach" : "Detach"}
-        </Button>
-      </div>
+      {!immersive && (
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="mr-auto text-sm font-medium">Bot POV</h3>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={!isOnline}
+            onClick={() => {
+              release();
+              setPlaying(!playing);
+            }}
+          >
+            {playing ? (
+              <PauseIcon data-icon="inline-start" />
+            ) : (
+              <PlayIcon data-icon="inline-start" />
+            )}
+            {playing ? "Stop" : "Watch"}
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={!isOnline || !connected || !playing}
+            onClick={capture}
+          >
+            <Gamepad2Icon data-icon="inline-start" />
+            Play
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={toggleFullscreen}
+            aria-label="Fullscreen"
+          >
+            <ExpandIcon />
+          </Button>
+          <Button size="sm" variant="outline" onClick={detach}>
+            <ExternalLinkIcon data-icon="inline-start" />
+            Detach
+          </Button>
+        </div>
+      )}
       <div
         className={`relative min-h-0 overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
       >
@@ -483,19 +488,31 @@ export function BotPovPlayer({
           </div>
         )}
       </div>
-      <p className={immersive ? "hidden" : "text-muted-foreground text-xs"}>
-        {captured
-          ? "Keyboard and mouse captured. Press Esc to release."
-          : "Play captures your keyboard and mouse. Esc releases control."}
-      </p>
+      {!immersive && (
+        <p className="text-muted-foreground text-xs">
+          {captured
+            ? "Keyboard and mouse captured. Press Esc to release."
+            : "Play captures your keyboard and mouse. Esc releases control."}
+        </p>
+      )}
+      <Toaster
+        id={captureToastId}
+        position="bottom-center"
+        style={{ position: "absolute" }}
+      />
     </div>
   );
   return popup ? (
     <>
       {createPortal(player, popup.document.body)}
-      <Button variant="outline" onClick={() => popup.focus()}>
-        Show POV window
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button variant="outline" onClick={() => popup.focus()}>
+          Show POV window
+        </Button>
+        <Button variant="outline" onClick={() => setPopup(null)}>
+          Attach POV window
+        </Button>
+      </div>
     </>
   ) : (
     player
