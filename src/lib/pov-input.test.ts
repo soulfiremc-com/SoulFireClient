@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { glfwKey, inputModifiers, mouseButton } from "./pov-input";
+import {
+  glfwKey,
+  inputModifiers,
+  isSystemShortcut,
+  mouseButton,
+} from "./pov-input";
 
 test("physical keyboard codes map independently of typed text and include extended keys", () => {
   assert.equal(glfwKey("KeyW"), 87);
@@ -21,5 +26,21 @@ test("browser middle/right buttons and simultaneous modifiers map to GLFW", () =
       metaKey: true,
     }),
     11,
+  );
+});
+
+test("OS shortcuts remain available while Minecraft keys and Escape are forwarded", () => {
+  const event = { code: "KeyW", metaKey: false, altKey: false, ctrlKey: false };
+  assert.equal(isSystemShortcut(event), false);
+  assert.equal(isSystemShortcut({ ...event, code: "Escape" }), false);
+  assert.equal(glfwKey("Escape"), 256);
+  assert.equal(glfwKey("MetaLeft"), undefined);
+  assert.equal(isSystemShortcut({ ...event, code: "MetaLeft" }), true);
+  assert.equal(isSystemShortcut({ ...event, metaKey: true }), true);
+  assert.equal(isSystemShortcut({ ...event, code: "Tab", altKey: true }), true);
+  assert.equal(isSystemShortcut({ ...event, code: "F4", altKey: true }), true);
+  assert.equal(
+    isSystemShortcut({ ...event, code: "KeyQ", ctrlKey: true }),
+    false,
   );
 });

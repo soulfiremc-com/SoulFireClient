@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { useCurrentRouteChrome } from "@/hooks/use-current-route-title.ts";
 import { useShouldShowWindowTitlebar } from "@/hooks/use-window-titlebar.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import type { SoulFireDesktopApi } from "@/lib/desktop-api";
 import { cn } from "@/lib/utils.tsx";
 
 const titlebarClassName =
@@ -79,12 +80,21 @@ function TitlebarExternalLinks() {
   );
 }
 
-function WindowControls() {
+export function WindowControls({
+  windowApi,
+}: {
+  windowApi?: SoulFireDesktopApi["window"] | null;
+}) {
   const { t } = useTranslation("common");
   const desktopApp = isDesktopApp();
   const appWindow = useMemo(
-    () => (desktopApp ? desktop.window : null),
-    [desktopApp],
+    () =>
+      windowApi === undefined
+        ? desktopApp
+          ? desktop.window
+          : null
+        : windowApi,
+    [desktopApp, windowApi],
   );
   const [isMaximized, setIsMaximized] = useState(false);
 
@@ -153,7 +163,7 @@ function WindowControls() {
     void appWindow.close();
   }, [appWindow]);
 
-  if (!desktopApp) {
+  if (!appWindow) {
     return null;
   }
 

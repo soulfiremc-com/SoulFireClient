@@ -40,6 +40,18 @@ function requireDesktopRuntime(): SoulFireDesktopApi {
   return runtime;
 }
 
+function windowApi(target?: "pov") {
+  return {
+    close: () => requireDesktopRuntime().window.close(target),
+    isMaximized: () => requireDesktopRuntime().window.isMaximized(target),
+    maximize: () => requireDesktopRuntime().window.maximize(target),
+    minimize: () => requireDesktopRuntime().window.minimize(target),
+    unmaximize: () => requireDesktopRuntime().window.unmaximize(target),
+    onResized: (callback: () => void) =>
+      requireDesktopRuntime().window.onResized(callback, target),
+  };
+}
+
 export const desktop = {
   available(): boolean {
     return getDesktopRuntime() !== null;
@@ -198,26 +210,8 @@ export const desktop = {
       return requireDesktopRuntime().system.getInfo();
     },
   },
-  window: {
-    async close(): Promise<void> {
-      await requireDesktopRuntime().window.close();
-    },
-    async isMaximized(): Promise<boolean> {
-      return requireDesktopRuntime().window.isMaximized();
-    },
-    async maximize(): Promise<void> {
-      await requireDesktopRuntime().window.maximize();
-    },
-    async minimize(): Promise<void> {
-      await requireDesktopRuntime().window.minimize();
-    },
-    async onResized(callback: () => void): Promise<() => void> {
-      return requireDesktopRuntime().window.onResized(callback);
-    },
-    async unmaximize(): Promise<void> {
-      await requireDesktopRuntime().window.unmaximize();
-    },
-  },
+  window: windowApi(),
+  povWindow: windowApi("pov"),
 };
 
 export function isDesktopApp(): boolean {

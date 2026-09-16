@@ -200,11 +200,14 @@ export interface SoulFireDesktopApi {
     getInfo: () => Promise<DesktopSystemInfo>;
   };
   window: {
-    close: () => Promise<void>;
-    isMaximized: () => Promise<boolean>;
-    maximize: () => Promise<void>;
-    minimize: () => Promise<void>;
-    onResized: (callback: () => void) => Promise<DesktopUnlisten>;
-    unmaximize: () => Promise<void>;
+    close: (target?: "pov") => Promise<void>;
+    isMaximized: (target?: "pov") => Promise<boolean>;
+    maximize: (target?: "pov") => Promise<void>;
+    minimize: (target?: "pov") => Promise<void>;
+    onResized: (
+      callback: () => void,
+      target?: "pov",
+    ) => Promise<DesktopUnlisten>;
+    unmaximize: (target?: "pov") => Promise<void>;
   };
 }

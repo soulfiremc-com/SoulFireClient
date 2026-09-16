@@ -118,6 +118,7 @@ const hasSingleInstanceLock =
   !app.isPackaged || app.requestSingleInstanceLock();
 
 let mainWindow: BrowserWindow | null = null;
+const povWindows = new Map<number, BrowserWindow>();
 let nextFsWatchId = 1;
 let pendingOpenUrl = findProtocolUrl(process.argv);
 let tray: Tray | null = null;
@@ -371,6 +372,8 @@ function registerSecurityHandlers(): void {
           action: "allow",
           overrideBrowserWindowOptions: {
             autoHideMenuBar: true,
+            frame: false,
+            backgroundColor: "#111418",
             webPreferences: {
               nodeIntegration: false,
               contextIsolation: true,
@@ -384,6 +387,24 @@ function registerSecurityHandlers(): void {
       }
 
       return { action: "deny" };
+    });
+
+    contents.on("did-create-window", (child, details) => {
+      if (details.frameName !== "soulfire-pov" || details.url !== "about:blank")
+        return;
+      povWindows.set(contents.id, child);
+      const closeChild = () => {
+        if (!child.isDestroyed()) child.close();
+      };
+      child.on("closed", () => {
+        if (povWindows.get(contents.id) === child)
+          povWindows.delete(contents.id);
+        contents.removeListener("destroyed", closeChild);
+      });
+      child.on("resize", () => {
+        if (!contents.isDestroyed()) contents.send("window:pov-resized");
+      });
+      contents.once("destroyed", closeChild);
     });
 
     contents.on("destroyed", () => {
@@ -525,6 +546,14 @@ function handleIpc<Args extends unknown[], Result>(
     const senderWindow = validateIpcSender(event);
     return handler(senderWindow, ...args);
   });
+}
+
+function windowTarget(sender: BrowserWindow, target?: "pov"): BrowserWindow {
+  if (target === undefined) return sender;
+  if (target !== "pov") throw new Error("Unknown window target");
+  const popup = povWindows.get(sender.webContents.id);
+  if (!popup || popup.isDestroyed()) throw new Error("POV window is closed");
+  return popup;
 }
 
 function registerIpcHandlers(): void {
@@ -818,24 +847,24 @@ function registerIpcHandlers(): void {
     };
   });
 
-  handleIpc("window:close", async (senderWindow) => {
-    senderWindow.close();
+  handleIpc("window:close", async (senderWindow, target?: "pov") => {
+    windowTarget(senderWindow, target).close();
   });
 
-  handleIpc("window:is-maximized", async (senderWindow) => {
-    return senderWindow.isMaximized();
+  handleIpc("window:is-maximized", async (senderWindow, target?: "pov") => {
+    return windowTarget(senderWindow, target).isMaximized();
   });
 
-  handleIpc("window:maximize", async (senderWindow) => {
-    senderWindow.maximize();
+  handleIpc("window:maximize", async (senderWindow, target?: "pov") => {
+    windowTarget(senderWindow, target).maximize();
   });
 
-  handleIpc("window:minimize", async (senderWindow) => {
-    senderWindow.minimize();
+  handleIpc("window:minimize", async (senderWindow, target?: "pov") => {
+    windowTarget(senderWindow, target).minimize();
   });
 
-  handleIpc("window:unmaximize", async (senderWindow) => {
-    senderWindow.unmaximize();
+  handleIpc("window:unmaximize", async (senderWindow, target?: "pov") => {
+    windowTarget(senderWindow, target).unmaximize();
   });
 }
 

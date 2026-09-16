@@ -119,19 +119,23 @@ const desktopApi: SoulFireDesktopApi = {
     getInfo: async () => invoke("system:get-info"),
   },
   window: {
-    close: async () => {
-      await invoke("window:close");
+    close: async (target) => {
+      await invoke("window:close", target);
     },
-    isMaximized: async () => invoke("window:is-maximized"),
-    maximize: async () => {
-      await invoke("window:maximize");
+    isMaximized: async (target) => invoke("window:is-maximized", target),
+    maximize: async (target) => {
+      await invoke("window:maximize", target);
     },
-    minimize: async () => {
-      await invoke("window:minimize");
+    minimize: async (target) => {
+      await invoke("window:minimize", target);
     },
-    onResized: async (callback) => subscribe("window:resized", callback),
-    unmaximize: async () => {
-      await invoke("window:unmaximize");
+    onResized: async (callback, target) =>
+      subscribe(
+        target === "pov" ? "window:pov-resized" : "window:resized",
+        callback,
+      ),
+    unmaximize: async (target) => {
+      await invoke("window:unmaximize", target);
     },
   },
 };

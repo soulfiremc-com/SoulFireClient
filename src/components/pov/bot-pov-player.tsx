@@ -11,11 +11,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import {
+  titlebarClassName,
+  WindowControls,
+} from "@/components/window/window-titlebar";
+import {
   type PovFrame,
   PovInputEvent_Kind,
   PovInputEventSchema,
 } from "@/generated/soulfire/pov_pb";
-import { inputModifiers, keyInput, mouseButton } from "@/lib/pov-input";
+import { WINDOW_TITLEBAR_HEIGHT } from "@/hooks/use-window-titlebar";
+import { desktop, isDesktopApp } from "@/lib/desktop";
+import {
+  inputModifiers,
+  isSystemShortcut,
+  keyInput,
+  mouseButton,
+} from "@/lib/pov-input";
 import { povRenderSize } from "@/lib/pov-render-size";
 import { startPovSession } from "@/lib/pov-session";
 
@@ -133,6 +144,11 @@ export function BotPovPlayer({
           setConnected(false);
           release();
         },
+        () => {
+          pending = null;
+          setConnected(false);
+          release();
+        },
       );
     } catch (reason) {
       setError(
@@ -159,23 +175,28 @@ export function BotPovPlayer({
       session.current?.enqueue(create(PovInputEventSchema, values));
     };
     const locked = () => {
-      if (doc.pointerLockElement !== canvas) release();
+      if (doc.pointerLockElement !== canvas) {
+        // Chromium may consume Escape before dispatching a keyboard event.
+        if (capturedRef.current && doc.hasFocus()) session.current?.escape();
+        release();
+      }
     };
     const visibility = () => {
       if (doc.hidden) release();
     };
     const key = (event: KeyboardEvent) => {
-      if (!capturedRef.current) return;
+      if (!capturedRef.current || isSystemShortcut(event)) return;
+      const pressed = event.type === "keydown";
+      const input = keyInput(event, pressed);
+      if (!input) return;
       event.preventDefault();
       event.stopPropagation();
       if (event.code === "Escape") {
-        session.current?.closeScreen();
+        if (pressed) session.current?.escape();
         release();
         return;
       }
-      const pressed = event.type === "keydown";
-      const input = keyInput(event, pressed);
-      if (input) session.current?.enqueue(input);
+      session.current?.enqueue(input);
       if (
         pressed &&
         !event.isComposing &&
@@ -281,6 +302,22 @@ export function BotPovPlayer({
 
   useEffect(() => {
     if (!popup) return;
+    const syncTheme = () => {
+      const source = document.documentElement;
+      const target = popup.document.documentElement;
+      for (const attribute of ["class", "style", "lang", "dir"]) {
+        const value = source.getAttribute(attribute);
+        if (value === null) target.removeAttribute(attribute);
+        else target.setAttribute(attribute, value);
+      }
+      target.style.setProperty("--titlebar-height", WINDOW_TITLEBAR_HEIGHT);
+    };
+    syncTheme();
+    const themeObserver = new MutationObserver(syncTheme);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style", "lang", "dir"],
+    });
     const closed = () => {
       release();
       setPopup(null);
@@ -288,6 +325,7 @@ export function BotPovPlayer({
     };
     popup.addEventListener("pagehide", closed);
     return () => {
+      themeObserver.disconnect();
       popup.removeEventListener("pagehide", closed);
       popup.close();
     };
@@ -310,16 +348,7 @@ export function BotPovPlayer({
         | undefined;
       // Escape stays reserved for leaving control. OS-level shortcuts remain browser-managed.
       void navigator?.keyboard
-        ?.lock([
-          "KeyW",
-          "KeyA",
-          "KeyS",
-          "KeyD",
-          "Tab",
-          "Space",
-          "AltLeft",
-          "AltRight",
-        ])
+        ?.lock(["KeyW", "KeyA", "KeyS", "KeyD", "Tab", "Space"])
         .catch(() => {});
     } catch {
       setError("Mouse capture was denied. Click Play to try again.");
@@ -345,6 +374,10 @@ export function BotPovPlayer({
     ))
       child.document.head.append(style.cloneNode(true));
     child.document.body.style.margin = "0";
+    child.document.documentElement.style.setProperty(
+      "--titlebar-height",
+      WINDOW_TITLEBAR_HEIGHT,
+    );
     setPopup(child);
   }
 
@@ -367,8 +400,16 @@ export function BotPovPlayer({
   const player = (
     <div
       ref={rootRef}
-      className={`bg-background flex min-h-0 flex-col gap-2 ${popup || fullscreen ? (immersive ? "h-screen" : "h-screen p-2") : ""}`}
+      className={`bg-background flex min-h-0 flex-col gap-2 ${popup || fullscreen ? "h-screen" : ""}`}
     >
+      {popup && isDesktopApp() && !fullscreen && (
+        <header data-app-drag-region="" className={titlebarClassName}>
+          <span className="col-start-2 self-center text-xs">SoulFire POV</span>
+          <div className="window-topbar-no-drag col-start-3 justify-self-end">
+            <WindowControls windowApi={desktop.povWindow} />
+          </div>
+        </header>
+      )}
       <div
         className={immersive ? "hidden" : "flex flex-wrap items-center gap-2"}
       >

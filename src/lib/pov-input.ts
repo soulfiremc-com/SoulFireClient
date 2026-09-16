@@ -46,11 +46,9 @@ const specialKeys: Record<string, number> = {
   ShiftLeft: 340,
   ControlLeft: 341,
   AltLeft: 342,
-  MetaLeft: 343,
   ShiftRight: 344,
   ControlRight: 345,
   AltRight: 346,
-  MetaRight: 347,
   ContextMenu: 348,
 };
 
@@ -80,7 +78,23 @@ export function mouseButton(button: number): number {
   return button === 1 ? 2 : button === 2 ? 1 : button;
 }
 
+export function isSystemShortcut(
+  event: Pick<KeyboardEvent, "code" | "metaKey" | "altKey" | "ctrlKey">,
+): boolean {
+  return (
+    event.metaKey ||
+    event.code === "MetaLeft" ||
+    event.code === "MetaRight" ||
+    (event.altKey &&
+      (event.code === "Tab" ||
+        event.code === "F4" ||
+        event.code === "Escape")) ||
+    (event.ctrlKey && event.code === "Escape")
+  );
+}
+
 export function keyInput(event: KeyboardEvent, pressed: boolean) {
+  if (isSystemShortcut(event)) return null;
   const code = glfwKey(event.code);
   return code === undefined
     ? null
