@@ -10,6 +10,7 @@ export class PovVideoDecoder {
   private lastSequence = 0n;
   private lastKeyRequest = Number.NEGATIVE_INFINITY;
   private failures = 0;
+  private recoveries = 0;
   private closed = false;
   private readonly metadata = new Map<number, PovFrame>();
 
@@ -23,6 +24,15 @@ export class PovVideoDecoder {
         "Live POV requires a browser with WebCodecs video decoding in a secure context.",
       );
     }
+  }
+
+  get stats() {
+    return {
+      recoveries: this.recoveries,
+      queued: this.decoder?.decodeQueueSize ?? 0,
+      pending: this.metadata.size,
+      waitingForKey: this.waitingForKey,
+    };
   }
 
   reset() {
@@ -63,6 +73,7 @@ export class PovVideoDecoder {
       this.metadata.size >= 8 ||
       (this.lastSequence !== 0n && chunk.sequence !== this.lastSequence + 1n)
     ) {
+      this.recoveries++;
       this.reset();
       this.requestKey();
       return;
@@ -90,6 +101,7 @@ export class PovVideoDecoder {
 
   private recover(reason: unknown) {
     if (this.closed) return;
+    this.recoveries++;
     this.reset();
     if (++this.failures > 3) {
       this.error(reason instanceof Error ? reason : new Error(String(reason)));

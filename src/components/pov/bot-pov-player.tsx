@@ -10,6 +10,7 @@ import {
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import {
@@ -31,6 +32,8 @@ import {
 } from "@/lib/pov-input";
 import { povRenderSize } from "@/lib/pov-render-size";
 import { startPovSession } from "@/lib/pov-session";
+import { PovStreamFeedbackTracker } from "@/lib/pov-stream-feedback";
+import { PovStreamMetrics, povDebugEnabled } from "@/lib/pov-stream-metrics";
 import { PovVideoDecoder } from "@/lib/pov-video-decoder";
 
 type KeyboardCapture = Navigator & {
@@ -47,6 +50,9 @@ export function BotPovPlayer({
   isOnline: boolean;
 }) {
   const captureToastId = useId();
+  const [metrics] = useState(() =>
+    povDebugEnabled() ? new PovStreamMetrics() : null,
+  );
   const [playing, setPlaying] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -79,6 +85,7 @@ export function BotPovPlayer({
   useEffect(() => {
     if (!playing || !isOnline) return;
     let disposed = false;
+    const feedback = new PovStreamFeedbackTracker();
     let decoder: PovVideoDecoder | undefined;
     setError(null);
     setConnected(false);
@@ -113,6 +120,7 @@ export function BotPovPlayer({
           target
             .getContext("2d", { alpha: false, desynchronized: true })
             ?.drawImage(frame, 0, 0);
+          metrics?.draw(metadata);
           const screenChanged = screenOpen.current !== metadata.screenOpen;
           screenOpen.current = metadata.screenOpen;
           target.style.cursor = povCursor(metadata.cursorShape);
@@ -131,17 +139,25 @@ export function BotPovPlayer({
         () => session.current?.requestKeyFrame(),
         failed,
       );
+      if (metrics) metrics.decoder = () => decoder?.stats;
       session.current = startPovSession(
         instanceId,
         botId,
         dimensions,
-        (frame) => decoder?.accept(frame),
+        (frame) => {
+          feedback.receive(frame);
+          metrics?.receive(frame);
+          decoder?.accept(frame);
+        },
         failed,
         () => {
+          feedback.reset();
+          metrics?.reconnect();
           decoder?.reset();
           setConnected(false);
           release();
         },
+        () => (decoder ? feedback.sample(decoder.stats) : undefined),
       );
     } catch (reason) {
       setError(
@@ -150,12 +166,16 @@ export function BotPovPlayer({
     }
     return () => {
       disposed = true;
+      if (metrics) {
+        metrics.decoder = null;
+        metrics.reconnect();
+      }
       decoder?.close();
       release();
       session.current?.stop();
       session.current = null;
     };
-  }, [playing, isOnline, instanceId, botId, retry, release]);
+  }, [playing, isOnline, instanceId, botId, retry, release, metrics]);
 
   useEffect(() => {
     if (!canvas) return;
@@ -476,6 +496,7 @@ export function BotPovPlayer({
           className="block size-full"
           aria-label="Live Minecraft POV"
         />
+        {metrics && <PovStreamOverlay metrics={metrics} />}
         {!captured && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
             {error ? (

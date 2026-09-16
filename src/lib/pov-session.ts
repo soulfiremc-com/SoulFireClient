@@ -4,6 +4,7 @@ import {
   type PovInputEvent,
   PovInputEvent_Kind,
   PovService,
+  type PovStreamFeedback,
 } from "@/generated/soulfire/pov_pb";
 import { createTransport } from "@/lib/web-rpc";
 
@@ -15,6 +16,7 @@ export function startPovSession(
   onFrame: (frame: PovFrame) => void,
   onError: (error: Error) => void,
   onReconnecting: () => void,
+  feedback: () => PovStreamFeedback | undefined,
 ) {
   const transport = createTransport();
   if (!transport)
@@ -99,6 +101,7 @@ export function startPovSession(
           requestKeyFrame,
           ...size,
           events: batch,
+          feedback: feedback(),
         },
         { signal: current.abort.signal, timeoutMs: 4000 },
       );
