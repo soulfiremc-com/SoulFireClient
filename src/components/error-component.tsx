@@ -1,4 +1,7 @@
-import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+import {
+  useQueryClient,
+  useQueryErrorResetBoundary,
+} from "@tanstack/react-query";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import {
   BugIcon,
@@ -38,6 +41,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const { t } = useTranslation("common");
   const navigate = useNavigate();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const queryErrorResetBoundary = useQueryErrorResetBoundary();
   const mountedRef = useRef(true);
   const retryingRef = useRef(false);
@@ -68,6 +72,11 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
       setRevalidating(true);
       queryErrorResetBoundary.reset();
       try {
+        // A boundary reset only permits retries; it does not clear cached query
+        // errors. Reset inactive failures too, before the route mounts them again.
+        await queryClient.resetQueries({
+          predicate: (query) => query.state.status === "error",
+        });
         await router.invalidate({ sync: true });
       } finally {
         retryingRef.current = false;
@@ -80,7 +89,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
         }
       }
     });
-  }, [router, queryErrorResetBoundary, reset]);
+  }, [router, queryClient, queryErrorResetBoundary, reset]);
 
   useEffect(() => {
     const interval = setInterval(reloadPage, 1000 * 5);
