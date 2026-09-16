@@ -15,7 +15,6 @@ import {
   WindowControls,
 } from "@/components/window/window-titlebar";
 import {
-  type PovFrame,
   PovInputEvent_Kind,
   PovInputEventSchema,
 } from "@/generated/soulfire/pov_pb";
@@ -29,6 +28,7 @@ import {
 } from "@/lib/pov-input";
 import { povRenderSize } from "@/lib/pov-render-size";
 import { startPovSession } from "@/lib/pov-session";
+import { PovVideoDecoder } from "@/lib/pov-video-decoder";
 
 type KeyboardCapture = Navigator & {
   keyboard?: { lock(keys?: string[]): Promise<void>; unlock(): void };
@@ -76,8 +76,7 @@ export function BotPovPlayer({
   useEffect(() => {
     if (!playing || !isOnline) return;
     let disposed = false;
-    let pending: PovFrame | null = null;
-    let decoding = false;
+    let decoder: PovVideoDecoder | undefined;
     setError(null);
     setConnected(false);
     const dimensions = () => {
@@ -91,61 +90,43 @@ export function BotPovPlayer({
           )
         : null;
     };
-    async function draw() {
-      if (decoding) return;
-      decoding = true;
-      try {
-        while (pending && !disposed) {
-          const frame: PovFrame = pending;
-          pending = null;
-          const bitmap = await createImageBitmap(
-            new Blob([new Uint8Array(frame.image)], { type: frame.mimeType }),
-          );
-          try {
-            const target = canvasRef.current;
-            if (!target || disposed) continue;
-            if (target.width !== frame.width) target.width = frame.width;
-            if (target.height !== frame.height) target.height = frame.height;
-            target.getContext("2d", { alpha: false })?.drawImage(bitmap, 0, 0);
-            screenOpen.current = frame.screenOpen;
-            if (cursorRef.current)
-              cursorRef.current.hidden =
-                !frame.screenOpen || !capturedRef.current;
-            setConnected(true);
-          } finally {
-            bitmap.close();
-          }
-        }
-      } catch (reason) {
-        if (!disposed) {
-          setError(
-            reason instanceof Error
-              ? reason.message
-              : "Unable to decode POV frames.",
-          );
-          release();
-          session.current?.stop();
-        }
-      } finally {
-        decoding = false;
-      }
-    }
+    const failed = (reason: Error) => {
+      if (disposed) return;
+      setError(reason.message);
+      setConnected(false);
+      release();
+      session.current?.stop();
+      decoder?.close();
+    };
     try {
+      decoder = new PovVideoDecoder(
+        (frame, metadata) => {
+          const target = canvasRef.current;
+          if (!target || disposed) return;
+          if (target.width !== frame.displayWidth)
+            target.width = frame.displayWidth;
+          if (target.height !== frame.displayHeight)
+            target.height = frame.displayHeight;
+          target
+            .getContext("2d", { alpha: false, desynchronized: true })
+            ?.drawImage(frame, 0, 0);
+          screenOpen.current = metadata.screenOpen;
+          if (cursorRef.current)
+            cursorRef.current.hidden =
+              !metadata.screenOpen || !capturedRef.current;
+          setConnected(true);
+        },
+        () => session.current?.requestKeyFrame(),
+        failed,
+      );
       session.current = startPovSession(
         instanceId,
         botId,
         dimensions,
-        (frame) => {
-          pending = frame;
-          void draw();
-        },
-        (reason) => {
-          setError(reason.message);
-          setConnected(false);
-          release();
-        },
+        (frame) => decoder?.accept(frame),
+        failed,
         () => {
-          pending = null;
+          decoder?.reset();
           setConnected(false);
           release();
         },
@@ -157,7 +138,7 @@ export function BotPovPlayer({
     }
     return () => {
       disposed = true;
-      pending = null;
+      decoder?.close();
       release();
       session.current?.stop();
       session.current = null;

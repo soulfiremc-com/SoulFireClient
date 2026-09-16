@@ -23,6 +23,7 @@ export function startPovSession(
   let events: PovInputEvent[] = [];
   let captured = false;
   let pendingEscape = false;
+  let pendingKeyFrame = false;
   let ready = false;
   let sequence = 0n;
   let lastSent = 0;
@@ -72,6 +73,7 @@ export function startPovSession(
     if (!ready || !current || current.sending || stopped) return;
     if (
       !pendingEscape &&
+      !pendingKeyFrame &&
       !events.length &&
       captured === lastCaptured &&
       performance.now() - lastSent < 500
@@ -84,6 +86,8 @@ export function startPovSession(
     events = [];
     const batchCaptured = captured;
     const batchEscape = pendingEscape;
+    const requestKeyFrame = pendingKeyFrame;
+    pendingKeyFrame = false;
     pendingEscape = false;
     try {
       await client.input(
@@ -92,6 +96,7 @@ export function startPovSession(
           sequence: ++sequence,
           captured: batchCaptured,
           escape: batchEscape,
+          requestKeyFrame,
           ...size,
           events: batch,
         },
@@ -155,6 +160,10 @@ export function startPovSession(
 
   return {
     stop,
+    requestKeyFrame() {
+      pendingKeyFrame = true;
+      void flush();
+    },
     escape() {
       pendingEscape = true;
     },

@@ -10,7 +10,8 @@ test("POV sizing follows display density and preserves aspect ratio at server li
     [1600, 900, 2, 1920, 1080],
     [2560, 1080, 1, 1920, 810],
     [600, 1000, 2, 648, 1080],
-    [0.25, 0.25, 1, 1, 1],
+    [0.25, 0.25, 1, 2, 2],
+    [641, 361, 1, 642, 362],
   ]) {
     assert.deepEqual(povRenderSize(width, height, dpr), {
       width: expectedWidth,
