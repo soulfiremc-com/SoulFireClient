@@ -40,10 +40,12 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
   const queryErrorResetBoundary = useQueryErrorResetBoundary();
   const mountedRef = useRef(true);
+  const retryingRef = useRef(false);
   const [revalidating, setRevalidating] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
     };
@@ -59,35 +61,31 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
     }
   }, [error]);
 
-  const invalidateRoute = useCallback(async () => {
-    setRevalidating(true);
-    try {
-      await router.invalidate();
-    } finally {
-      if (mountedRef.current) {
-        setRevalidating(false);
-      }
-    }
-  }, [router]);
-
-  const revalidate = useCallback(() => {
-    void invalidateRoute();
-  }, [invalidateRoute]);
-
   const reloadPage = useCallback(() => {
-    queryErrorResetBoundary.reset();
-    void invalidateRoute().finally(() => {
-      reset?.();
+    runAsync(async () => {
+      if (retryingRef.current) return;
+      retryingRef.current = true;
+      setRevalidating(true);
+      queryErrorResetBoundary.reset();
+      try {
+        await router.invalidate({ sync: true });
+      } finally {
+        retryingRef.current = false;
+        if (mountedRef.current) {
+          // Nested CatchBoundary instances are independent of route invalidation.
+          // Allow failed queries to retry when their children mount again.
+          queryErrorResetBoundary.reset();
+          reset?.();
+          setRevalidating(false);
+        }
+      }
     });
-  }, [invalidateRoute, queryErrorResetBoundary, reset]);
+  }, [router, queryErrorResetBoundary, reset]);
 
   useEffect(() => {
-    const interval = setInterval(revalidate, 1000 * 5);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [revalidate]);
+    const interval = setInterval(reloadPage, 1000 * 5);
+    return () => clearInterval(interval);
+  }, [reloadPage]);
 
   const hasStack = error.stack && error.stack !== error.message;
 
@@ -155,7 +153,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
             <LogOutIcon />
             {t("error.page.logOut")}
           </Button>
-          <Button onClick={reloadPage}>
+          <Button onClick={reloadPage} disabled={revalidating}>
             {revalidating ? (
               <LoaderCircleIcon className="animate-spin" />
             ) : (
