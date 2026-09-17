@@ -135,3 +135,11 @@ export const createAddressOnlyTransport = (address: string): Transport => {
     baseUrl: address,
   });
 };
+
+export function povInputUrl(): string {
+  const address = localStorage.getItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
+  if (!address) throw new Error("POV requires a server address.");
+  const url = new URL(`${address.replace(/\/$/, "")}/pov/input`);
+  url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+  return url.toString();
+}

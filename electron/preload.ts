@@ -22,6 +22,7 @@ function subscribe<T>(
 
 const desktopApi: SoulFireDesktopApi = {
   pov: {
+    onReleased: (callback) => subscribe("pov:released", callback),
     setCaptured: (captured, target) =>
       invoke("pov:set-captured", captured, target),
     onEscape: (callback) => subscribe("pov:escape", callback),

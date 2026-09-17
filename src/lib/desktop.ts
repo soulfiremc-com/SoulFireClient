@@ -55,6 +55,8 @@ function windowApi(target?: "pov") {
 
 export const desktop = {
   pov: {
+    onReleased: (callback: (target?: "pov") => void) =>
+      requireDesktopRuntime().pov.onReleased(callback),
     setCaptured: (captured: boolean, target?: "pov") =>
       requireDesktopRuntime().pov.setCaptured(captured, target),
     onEscape: (callback: (event: DesktopPovEscape) => void) =>

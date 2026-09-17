@@ -1,6 +1,6 @@
 import type { PovFrame } from "@/generated/soulfire/pov_pb";
 
-// H.264 delta frames cannot be discarded independently. Reset to a new keyframe
+// Inter-frame video chunks cannot be discarded independently. Reset to a new keyframe
 // whenever decoding falls behind, rather than displaying an ever-older queue.
 export class PovVideoDecoder {
   private decoder: VideoDecoder | null = null;
@@ -124,7 +124,9 @@ export class PovVideoDecoder {
       }
       if (this.closed || generation !== this.generation) return;
       if (!support.supported)
-        throw new Error("This browser cannot decode the POV H.264 stream.");
+        throw new Error(
+          "This browser cannot decode the negotiated POV video stream.",
+        );
       this.decoder = new VideoDecoder({
         output: (frame) => {
           try {

@@ -7,6 +7,7 @@ import {
   app,
   BrowserWindow,
   dialog,
+  globalShortcut,
   type IpcMainInvokeEvent,
   ipcMain,
   Menu,
@@ -354,31 +355,60 @@ async function registerAppProtocol(): Promise<void> {
   });
 }
 
+// Escape is reserved only while the focused window owns POV capture. Chromium
+// handles pointer-lock Escape before DOM input, so intercept it at the native layer.
+function updatePovEscapeShortcut(): void {
+  globalShortcut.unregister("Escape");
+  const focused = BrowserWindow.getFocusedWindow();
+  if (!focused) return;
+  const capture = povInputOwners.get(focused.webContents.id);
+  if (!capture) return;
+  globalShortcut.register("Escape", () => {
+    if (
+      focused.isDestroyed() ||
+      !focused.isFocused() ||
+      capture.owner.isDestroyed()
+    )
+      return;
+    for (const action of [1, 0])
+      capture.owner.webContents.send("pov:escape", {
+        target: capture.target,
+        action,
+        modifiers: 0,
+      });
+  });
+}
+
 function registerSecurityHandlers(): void {
-  app.on("web-contents-created", (_event, contents) => {
-    contents.on("before-input-event", (event, input) => {
-      const capture = povInputOwners.get(contents.id);
+  app.on("browser-window-focus", updatePovEscapeShortcut);
+  app.on("browser-window-blur", (_event, window) => {
+    globalShortcut.unregister("Escape");
+    const capture = povInputOwners.get(window.webContents.id);
+    // Window managers can briefly blur a window while it enters fullscreen.
+    // Drop the shortcut immediately; release gameplay if focus stays elsewhere.
+    setTimeout(() => {
       if (
+        window.isDestroyed() ||
+        window.isFocused() ||
         !capture ||
-        input.key !== "Escape" ||
-        input.control ||
-        input.alt ||
-        input.meta
+        povInputOwners.get(window.webContents.id) !== capture
       )
         return;
-      // Keep Chromium's pointer-lock/fullscreen Escape handling out of the
-      // native gameplay path. Forward only to the trusted owning renderer.
-      event.preventDefault();
+      povInputOwners.delete(window.webContents.id);
       if (!capture.owner.isDestroyed())
-        capture.owner.webContents.send("pov:escape", {
-          target: capture.target,
-          action: input.type === "keyUp" ? 0 : input.isAutoRepeat ? 2 : 1,
-          modifiers: Number(input.shift),
-        });
+        capture.owner.webContents.send("pov:released", capture.target);
+    }, 100);
+  });
+  app.on("web-contents-created", (_event, contents) => {
+    contents.on("destroyed", () => {
+      povInputOwners.delete(contents.id);
+      updatePovEscapeShortcut();
     });
-    contents.on("destroyed", () => povInputOwners.delete(contents.id));
     contents.on("did-start-navigation", (_event, _url, inPlace, mainFrame) => {
-      if (mainFrame && !inPlace) povInputOwners.delete(contents.id);
+      if (mainFrame && !inPlace) {
+        povInputOwners.delete(contents.id);
+        updatePovEscapeShortcut();
+      }
     });
     contents.on("will-attach-webview", (event) => {
       event.preventDefault();
@@ -596,10 +626,18 @@ function registerIpcHandlers(): void {
         if (capture.owner === owner && capture.target === target)
           povInputOwners.delete(id);
       }
+      updatePovEscapeShortcut();
       return;
     }
     const window = windowTarget(owner, target);
     povInputOwners.set(window.webContents.id, { owner, target });
+    updatePovEscapeShortcut();
+    if (window.isFocused() && !globalShortcut.isRegistered("Escape")) {
+      povInputOwners.delete(window.webContents.id);
+      throw new Error(
+        "The desktop could not reserve Escape. Check your desktop shortcut permissions.",
+      );
+    }
   });
   handleIpc("app:quit", async () => {
     app.quit();

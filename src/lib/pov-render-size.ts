@@ -15,7 +15,7 @@ export function povRenderSize(
     return null;
   }
 
-  const scale = Math.min(pixelRatio, 1920 / width, 1080 / height);
+  const scale = Math.min(pixelRatio, 3840 / width, 2160 / height);
   return {
     width: Math.max(2, Math.round((width * scale) / 2) * 2),
     height: Math.max(2, Math.round((height * scale) / 2) * 2),

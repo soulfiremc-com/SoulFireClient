@@ -131,6 +131,9 @@ export type DesktopPovEscape = {
 
 export interface SoulFireDesktopApi {
   pov: {
+    onReleased: (
+      callback: (target?: "pov") => void,
+    ) => Promise<DesktopUnlisten>;
     setCaptured: (captured: boolean, target?: "pov") => Promise<void>;
     onEscape: (
       callback: (event: DesktopPovEscape) => void,
