@@ -23,6 +23,7 @@ export function startPovSession(
   feedback: () => PovStreamFeedback | undefined,
   maxFps?: number,
   onClipboard: (text: string) => void = () => {},
+  onOpenUrl: (url: string) => void = () => {},
 ) {
   const transport = createTransport();
   if (!transport)
@@ -230,13 +231,14 @@ export function startPovSession(
             }
             failures = 0;
             if (
-              clipboardSequence !== 0n &&
-              frame.clipboardSequence === clipboardSequence &&
+              (frame.clipboardSequence === 0n ||
+                frame.clipboardSequence === clipboardSequence) &&
               frame.clipboard !== undefined
             ) {
               clipboardSequence = 0n;
               onClipboard(frame.clipboard);
             }
+            if (frame.openUrl !== undefined) onOpenUrl(frame.openUrl);
             onFrame(frame);
           }
           if (!stopped) reconnect();

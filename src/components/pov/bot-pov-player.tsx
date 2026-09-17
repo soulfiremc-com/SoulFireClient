@@ -212,13 +212,46 @@ export function BotPovPlayer({
         () => (decoder ? feedback.sample(decoder.stats) : undefined),
         undefined,
         (text) => {
-          void navigator.clipboard
-            .writeText(text)
-            .catch(() =>
-              toast.error(
-                "Allow clipboard access to copy text from Minecraft.",
-              ),
-            );
+          void (
+            isDesktopApp()
+              ? desktop.clipboard.writeText(text)
+              : (
+                  canvasRef.current?.ownerDocument.defaultView?.navigator ??
+                  navigator
+                ).clipboard.writeText(text)
+          ).catch(() =>
+            toast.error("Allow clipboard access to copy text from Minecraft."),
+          );
+        },
+        (value) => {
+          let url: URL;
+          try {
+            url = new URL(value);
+          } catch {
+            return;
+          }
+          if (url.protocol !== "https:" && url.protocol !== "http:") return;
+          const win = canvasRef.current?.ownerDocument.defaultView ?? window;
+          release();
+          if (isDesktopApp()) {
+            void desktop.shell
+              .openExternal(url.href)
+              .catch(() => toast.error("Could not open the link."));
+          } else {
+            const opened = win.open("about:blank", "_blank");
+            if (opened) {
+              opened.opener = null;
+              opened.location.href = url.href;
+              return;
+            }
+            toast.info("Your browser blocked the new tab.", {
+              action: {
+                label: "Open link",
+                onClick: () =>
+                  win.open(url.href, "_blank", "noopener,noreferrer"),
+              },
+            });
+          }
         },
       );
     } catch (reason) {
