@@ -537,15 +537,7 @@ export function BotPovPlayer({
       // Keyboard Lock is only available after fullscreen has been entered.
       if (active && capturedRef.current) {
         void (win.navigator as KeyboardCapture).keyboard
-          ?.lock([
-            "KeyW",
-            "KeyA",
-            "KeyS",
-            "KeyD",
-            "Tab",
-            "Space",
-            ...(isDesktopApp() ? [] : ["Escape"]),
-          ])
+          ?.lock(["KeyW", "KeyA", "KeyS", "KeyD", "Tab", "Space", "Escape"])
           .catch(() => {});
       }
     };
@@ -661,15 +653,7 @@ export function BotPovPlayer({
         | undefined;
       // Where supported, allow Minecraft to receive Escape in fullscreen.
       void navigator?.keyboard
-        ?.lock([
-          "KeyW",
-          "KeyA",
-          "KeyS",
-          "KeyD",
-          "Tab",
-          "Space",
-          ...(isDesktopApp() ? [] : ["Escape"]),
-        ])
+        ?.lock(["KeyW", "KeyA", "KeyS", "KeyD", "Tab", "Space", "Escape"])
         .catch(() => {});
     } catch (error) {
       release();

@@ -632,12 +632,8 @@ function registerIpcHandlers(): void {
     const window = windowTarget(owner, target);
     povInputOwners.set(window.webContents.id, { owner, target });
     updatePovEscapeShortcut();
-    if (window.isFocused() && !globalShortcut.isRegistered("Escape")) {
-      povInputOwners.delete(window.webContents.id);
-      throw new Error(
-        "The desktop could not reserve Escape. Check your desktop shortcut permissions.",
-      );
-    }
+    // Native shortcut registration is optional. Some compositors cannot reserve
+    // bare Escape; pointer capture must still work with Chromium's fallback.
   });
   handleIpc("app:quit", async () => {
     app.quit();
