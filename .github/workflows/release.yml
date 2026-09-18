@@ -30,7 +30,7 @@ jobs:
   push-branch:
     needs: set-version
     name: Push Release Branch
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout repository
@@ -168,7 +168,7 @@ jobs:
   publish-release:
     name: Publish Release
     needs: build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout repository
