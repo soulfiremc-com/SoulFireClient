@@ -6,8 +6,8 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Button } from "@/components/ui/button";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
 
 interface RecordedEvent {
   timestamp: number;
@@ -31,9 +31,10 @@ export function ExecutionReplay({
   onStepChange,
   onClose,
 }: ExecutionReplayProps) {
+  const editor = useScriptEditor();
   const [stepIndex, setStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const setActiveNode = useScriptEditorStore((s) => s.setActiveNode);
+  const setActiveNode = editor.actions.setActiveNode;
 
   const nodeEvents = useMemo(
     () => events.filter((e) => e.nodeId != null),

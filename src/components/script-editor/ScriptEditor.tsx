@@ -1,3 +1,4 @@
+import { useSelector } from "@tanstack/react-store";
 import {
   Background,
   BackgroundVariant,
@@ -12,8 +13,8 @@ import {
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
-import { useScriptEditorStore } from "@/stores/script-editor-store.ts";
 import { createConnectionValidator, edgeTypes } from "./edges";
 import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
@@ -31,6 +32,7 @@ interface NodeContextMenuState {
 }
 
 export function ScriptEditor() {
+  const editor = useScriptEditor();
   const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
@@ -40,89 +42,66 @@ export function ScriptEditor() {
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null);
   const { nodeTypes } = useNodeTypes();
 
-  const nodes = useScriptEditorStore((state) => state.nodes);
-  const edges = useScriptEditorStore((state) => state.edges);
-  const onNodesChange = useScriptEditorStore((state) => state.onNodesChange);
-  const onEdgesChange = useScriptEditorStore((state) => state.onEdgesChange);
-  const onConnect = useScriptEditorStore((state) => state.onConnect);
-  const storeOnReconnect = useScriptEditorStore((state) => state.onReconnect);
-  const updateNodeData = useScriptEditorStore((state) => state.updateNodeData);
-  const setSelectedNode = useScriptEditorStore(
-    (state) => state.setSelectedNode,
-  );
-  const deleteSelected = useScriptEditorStore((state) => state.deleteSelected);
+  const nodes = useSelector(editor.document, (state) => state.nodes);
+  const _edges = useSelector(editor.document, (state) => state.edges);
+  const onNodesChange = editor.actions.onNodesChange;
+  const onEdgesChange = editor.actions.onEdgesChange;
+  const onConnect = editor.actions.onConnect;
+  const storeOnReconnect = editor.actions.onReconnect;
+  const updateNodeData = editor.actions.updateNodeData;
+  const setSelectedNode = editor.actions.setSelectedNode;
+  const deleteSelected = editor.actions.deleteSelected;
 
   // Blender-style actions
-  const toggleMute = useScriptEditorStore((state) => state.toggleMute);
-  const toggleCollapse = useScriptEditorStore((state) => state.toggleCollapse);
-  const toggleSocketVisibility = useScriptEditorStore(
-    (state) => state.toggleSocketVisibility,
+  const toggleMute = editor.actions.toggleMute;
+  const toggleCollapse = editor.actions.toggleCollapse;
+  const toggleSocketVisibility = editor.actions.toggleSocketVisibility;
+  const togglePreview = editor.actions.togglePreview;
+  const createFrame = editor.actions.createFrame;
+  const duplicateSelected = editor.actions.duplicateSelected;
+  const openQuickAddMenu = editor.actions.openQuickAddMenu;
+  const selectedNodeId = useSelector(
+    editor.ui,
+    (state) => state.selectedNodeId,
   );
-  const togglePreview = useScriptEditorStore((state) => state.togglePreview);
-  const createFrame = useScriptEditorStore((state) => state.createFrame);
-  const duplicateSelected = useScriptEditorStore(
-    (state) => state.duplicateSelected,
-  );
-  const openQuickAddMenu = useScriptEditorStore(
-    (state) => state.openQuickAddMenu,
-  );
-  const selectedNodeId = useScriptEditorStore((state) => state.selectedNodeId);
 
   // Group actions
-  const groupEditStack = useScriptEditorStore((state) => state.groupEditStack);
-  const enterGroup = useScriptEditorStore((state) => state.enterGroup);
-  const exitGroup = useScriptEditorStore((state) => state.exitGroup);
-  const createGroupFromSelection = useScriptEditorStore(
-    (state) => state.createGroupFromSelection,
+  const groupEditStack = useSelector(
+    editor.ui,
+    (state) => state.groupEditStack,
   );
-  const ungroupSelected = useScriptEditorStore(
-    (state) => state.ungroupSelected,
-  );
-  const getVisibleNodes = useScriptEditorStore(
-    (state) => state.getVisibleNodes,
-  );
-  const getVisibleEdges = useScriptEditorStore(
-    (state) => state.getVisibleEdges,
-  );
+  const enterGroup = editor.actions.enterGroup;
+  const exitGroup = editor.actions.exitGroup;
+  const createGroupFromSelection = editor.actions.createGroupFromSelection;
+  const ungroupSelected = editor.actions.ungroupSelected;
 
   // Reroute action
-  const insertReroute = useScriptEditorStore((state) => state.insertReroute);
+  const insertReroute = editor.actions.insertReroute;
 
   // Selection actions
-  const selectAll = useScriptEditorStore((state) => state.selectAll);
-  const selectLinked = useScriptEditorStore((state) => state.selectLinked);
-  const selectSimilar = useScriptEditorStore((state) => state.selectSimilar);
-  const selectShortestPath = useScriptEditorStore(
-    (state) => state.selectShortestPath,
-  );
+  const selectAll = editor.actions.selectAll;
+  const selectLinked = editor.actions.selectLinked;
+  const selectSimilar = editor.actions.selectSimilar;
+  const selectShortestPath = editor.actions.selectShortestPath;
 
   // Clipboard actions
-  const getSelectedForClipboard = useScriptEditorStore(
-    (state) => state.getSelectedForClipboard,
-  );
-  const pasteClipboardData = useScriptEditorStore(
-    (state) => state.pasteClipboardData,
-  );
+  const getSelectedForClipboard = editor.actions.getSelectedForClipboard;
+  const pasteClipboardData = editor.actions.pasteClipboardData;
 
   // Alignment actions
-  const alignNodes = useScriptEditorStore((state) => state.alignNodes);
-  const distributeNodes = useScriptEditorStore(
-    (state) => state.distributeNodes,
-  );
+  const alignNodes = editor.actions.alignNodes;
+  const distributeNodes = editor.actions.distributeNodes;
 
   // Link cutting
-  const linkCutting = useScriptEditorStore((state) => state.linkCutting);
-  const startLinkCutting = useScriptEditorStore(
-    (state) => state.startLinkCutting,
-  );
-  const updateLinkCutting = useScriptEditorStore(
-    (state) => state.updateLinkCutting,
-  );
-  const endLinkCutting = useScriptEditorStore((state) => state.endLinkCutting);
+  const linkCutting = useSelector(editor.ui, (state) => state.linkCutting);
+  const startLinkCutting = editor.actions.startLinkCutting;
+  const updateLinkCutting = editor.actions.updateLinkCutting;
+  const endLinkCutting = editor.actions.endLinkCutting;
 
   // Node context menu actions
-  const disconnectNode = useScriptEditorStore((state) => state.disconnectNode);
-  const previewEnabledNodes = useScriptEditorStore(
+  const disconnectNode = editor.actions.disconnectNode;
+  const previewEnabledNodes = useSelector(
+    editor.ui,
     (state) => state.previewEnabledNodes,
   );
 
@@ -666,8 +645,8 @@ export function ScriptEditor() {
   }, [linkCutting.active, endLinkCutting]);
 
   // Get visible nodes and edges based on current group context
-  const visibleNodes = groupEditStack.length > 0 ? getVisibleNodes() : nodes;
-  const visibleEdges = groupEditStack.length > 0 ? getVisibleEdges() : edges;
+  const visibleNodes = useSelector(editor.visibleNodes);
+  const visibleEdges = useSelector(editor.visibleEdges);
 
   // Create connection validator with current nodes
   const connectionValidator = useMemo(
@@ -720,7 +699,7 @@ export function ScriptEditor() {
       detachedEdgeRef.current = null;
 
       if (params.handleType === "target" && params.nodeId && params.handleId) {
-        const { edges: currentEdges } = useScriptEditorStore.getState();
+        const { edges: currentEdges } = editor.document.get();
         const existingEdges = currentEdges.filter(
           (e) =>
             e.target === params.nodeId && e.targetHandle === params.handleId,
@@ -732,7 +711,7 @@ export function ScriptEditor() {
         }
       }
     },
-    [onEdgesChange],
+    [onEdgesChange, editor.document.get],
   );
 
   const handleConnect = useCallback(
@@ -748,13 +727,14 @@ export function ScriptEditor() {
     if (detachedEdgeRef.current && !connectionMadeRef.current) {
       // Restore the detached edge since no new connection was made
       const edgeToRestore = detachedEdgeRef.current;
-      useScriptEditorStore.setState((state) => ({
+      editor.document.setState((state) => ({
+        ...state,
         edges: [...state.edges, edgeToRestore],
       }));
     }
     detachedEdgeRef.current = null;
     connectionMadeRef.current = false;
-  }, []);
+  }, [editor.document.setState]);
 
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: ReactFlow canvas wrapper requires keyboard and mouse handling for operations

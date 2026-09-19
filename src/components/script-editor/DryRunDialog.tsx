@@ -1,7 +1,9 @@
+import { useSelector } from "@tanstack/react-store";
 import { FlaskConical } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getNodeDefinition } from "@/components/script-editor/nodes/types";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Button } from "@/components/ui/button";
 import {
   Credenza,
@@ -14,15 +16,15 @@ import {
 } from "@/components/ui/credenza";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
 
 /**
  * Dialog for dry-running a script from a selected trigger with mock inputs.
  * Requires the DryRunScript RPC to be available after proto regeneration.
  */
 export function DryRunDialog() {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
-  const nodes = useScriptEditorStore((s) => s.nodes);
+  const nodes = useSelector(editor.document, (s) => s.nodes);
   const [selectedTrigger, setSelectedTrigger] = useState<string>("");
   const [mockInputs, setMockInputs] = useState<Record<string, string>>({});
 

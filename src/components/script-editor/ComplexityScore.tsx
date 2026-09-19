@@ -1,16 +1,17 @@
+import { useSelector } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { getNodeDefinition } from "@/components/script-editor/nodes/types";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 
 /**
  * Computes and displays a complexity score for the current script.
  * Score: nodeCount * 1 + edgeCount * 0.5 + loopNodes * 3 + maxFanOut * 2
  */
 export function ComplexityScore() {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
-  const nodes = useScriptEditorStore((s) => s.nodes);
-  const edges = useScriptEditorStore((s) => s.edges);
+  const { nodes, edges } = useSelector(editor.validationGraph);
 
   const { score, color } = useMemo(() => {
     let loopNodes = 0;

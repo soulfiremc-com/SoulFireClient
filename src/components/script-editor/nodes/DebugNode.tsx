@@ -1,12 +1,13 @@
+import { useSelector } from "@tanstack/react-store";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { Bug, Copy, Trash2 } from "lucide-react";
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
 import { getPortColor, type PortType } from "./types";
 
 export interface DebugNodeData {
@@ -84,14 +85,18 @@ function formatTime(date: Date): string {
  * Shows live values flowing through the script with history.
  */
 function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const resolvedType = data.resolvedType ?? "any";
   const color = getPortColor(resolvedType);
   const label = data.label ?? "Debug";
 
   // Get debug history from store
-  const history = useScriptEditorStore((s) => s.getDebugHistory(id));
-  const clearDebugValues = useScriptEditorStore((s) => s.clearDebugValues);
+  const history = useSelector(
+    editor.execution,
+    (s) => s.debugNodeValues.get(id) ?? EMPTY_DEBUG_HISTORY,
+  );
+  const clearDebugValues = editor.actions.clearDebugValues;
 
   const currentValue = history.length > 0 ? history[history.length - 1] : null;
 
@@ -241,3 +246,5 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 }
 
 export const DebugNode = memo(DebugNodeComponent);
+
+const EMPTY_DEBUG_HISTORY: Array<{ value: unknown; timestamp: Date }> = [];

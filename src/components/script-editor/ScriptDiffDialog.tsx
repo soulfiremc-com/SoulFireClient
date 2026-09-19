@@ -1,6 +1,8 @@
+import { useSelector } from "@tanstack/react-store";
 import { FileDiff } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Button } from "@/components/ui/button";
 import {
   Credenza,
@@ -11,7 +13,7 @@ import {
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/credenza";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
+import type { ScriptDocumentState } from "@/stores/script-editor-types";
 
 interface DiffResult {
   addedNodes: string[];
@@ -21,8 +23,7 @@ interface DiffResult {
   removedEdges: string[];
 }
 
-function computeDiff(): DiffResult {
-  const state = useScriptEditorStore.getState();
+function computeDiff(state: ScriptDocumentState): DiffResult {
   const { nodes, edges, lastSavedNodes, lastSavedEdges } = state;
 
   const result: DiffResult = {
@@ -75,11 +76,13 @@ function computeDiff(): DiffResult {
 }
 
 export function ScriptDiffDialog() {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
-  const isDirty = useScriptEditorStore((s) => s.isDirty);
-  const lastSavedNodes = useScriptEditorStore((s) => s.lastSavedNodes);
+  const isDirty = useSelector(editor.document, (s) => s.isDirty);
+  const lastSavedNodes = useSelector(editor.document, (s) => s.lastSavedNodes);
 
-  const diff = useMemo(computeDiff, []);
+  const document = useSelector(editor.document);
+  const diff = useMemo(() => computeDiff(document), [document]);
 
   if (!isDirty || !lastSavedNodes) return null;
 

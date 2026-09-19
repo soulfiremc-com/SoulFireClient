@@ -1,19 +1,21 @@
+import { useSelector } from "@tanstack/react-store";
 import { ChevronRight, Home } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
 
 /**
  * GroupBreadcrumb - Blender-style breadcrumb navigation for group editing
  * Shows the path of nested groups when editing inside a group node.
  */
 export function GroupBreadcrumb() {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
-  const nodes = useScriptEditorStore((s) => s.nodes);
-  const groupEditStack = useScriptEditorStore((s) => s.groupEditStack);
-  const exitToRoot = useScriptEditorStore((s) => s.exitToRoot);
-  const exitGroup = useScriptEditorStore((s) => s.exitGroup);
+  const nodes = useSelector(editor.document, (s) => s.nodes);
+  const groupEditStack = useSelector(editor.ui, (s) => s.groupEditStack);
+  const exitToRoot = editor.actions.exitToRoot;
+  const exitGroup = editor.actions.exitGroup;
 
   // Don't show if we're at the root level
   if (groupEditStack.length === 0) return null;

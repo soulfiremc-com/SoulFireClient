@@ -1,10 +1,5 @@
 import { flavorEntries } from "@catppuccin/palette";
-import { createClient } from "@connectrpc/connect";
-import type {
-  LogScope,
-  LogString,
-} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
-import { LogsService } from "@soulfiremc/sdk/generated/soulfire/logs_pb";
+import type { LogScope } from "@soulfiremc/sdk/generated/soulfire/logs_pb";
 import { stripAnsi } from "fancy-ansi";
 import { AnsiHtml } from "fancy-ansi/react";
 import { ClipboardIcon, CloudUploadIcon } from "lucide-react";
@@ -20,13 +15,12 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context.tsx";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
-import { observeServerStream } from "@/lib/protobuf.ts";
+import { useTerminalLogs } from "@/hooks/use-terminal-logs";
 import { cn, isDemo, timestampToDate, uploadToMcLogs } from "@/lib/utils.tsx";
+import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
 import { TransportContext } from "./providers/transport-context.tsx";
 import { Button } from "./ui/button.tsx";
 import { ScrollArea } from "./ui/scroll-area.tsx";
-
-const MAX_TERMINAL_LINES = 500;
 
 // Use full logger name unless if
 // prefixed with com.soulfiremc then use only the last part
@@ -154,87 +148,31 @@ const MemoAnsiHtml = React.memo(
   },
 );
 
-function fnv1aHash(str: string): string {
-  let hash = 0x811c9dc5; // FNV offset basis
-  for (let i = 0; i < str.length; i++) {
-    hash ^= str.charCodeAt(i);
-    hash +=
-      (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
-  }
-  return (hash >>> 0).toString(16);
-}
-
-type LogLineSource = Pick<LogString, "id" | "message" | "personal"> &
-  Partial<
-    Omit<LogString, "$typeName" | "$unknown" | "id" | "message" | "personal">
-  >;
-
-function convertLine(message: LogLineSource): TerminalLine {
-  return {
-    ...message,
-    lines: message.message.split("\n").length,
-    hash: fnv1aHash(message.message),
-  };
-}
-
-function limitLength(lines: TerminalLine[]): TerminalLine[] {
-  // Cut from start until we are <= max lines
-  let linesSum = lines.reduce((acc, curr) => acc + curr.lines, 0);
-  while (linesSum > MAX_TERMINAL_LINES) {
-    linesSum -= lines[0].lines;
-    lines = lines.slice(1);
-  }
-
-  return lines;
-}
-
-function deduplicateConsecutive<T>(
-  arr: T[],
-  getHash: (item: T) => string,
-): T[] {
-  return arr.reduce<T[]>((result, item, index) => {
-    if (index === 0 || getHash(item) !== getHash(arr[index - 1])) {
-      result.push(item);
-    }
-    return result;
-  }, []);
-}
-
-type TerminalLine = LogLineSource & {
-  lines: number;
-  hash: string;
-};
-
 export const TerminalComponent = (props: { scope: LogScope }) => {
   const { t } = useTranslation("common");
-  const [gotPrevious, setGotPrevious] = useState(false);
-  const [entries, setEntries] = useState<TerminalLine[]>(
-    isDemo()
+  const transport = use(TransportContext);
+  const demo = isDemo();
+  const { entries: liveEntries, historyLoaded } = useTerminalLogs(
+    demo ? null : transport,
+    props.scope,
+  );
+  const entries = demo
+    ? [1, 2, 3, 4].map((id) =>
+        toTerminalLine({
+          id: `demo-${id}`,
+          message: t(`terminal.demo-${id}`),
+          personal: false,
+        }),
+      )
+    : liveEntries.length === 0 && historyLoaded
       ? [
-          convertLine({
-            id: "demo-1",
-            message: t("terminal.demo-1"),
-            personal: false,
-          }),
-          convertLine({
-            id: "demo-2",
-            message: t("terminal.demo-2"),
-            personal: false,
-          }),
-          convertLine({
-            id: "demo-3",
-            message: t("terminal.demo-3"),
-            personal: false,
-          }),
-          convertLine({
-            id: "demo-4",
-            message: t("terminal.demo-4"),
+          toTerminalLine({
+            id: "empty",
+            message: t("terminal.noLogs"),
             personal: false,
           }),
         ]
-      : [],
-  );
-  const transport = use(TransportContext);
+      : liveEntries;
   const terminalTheme = use(TerminalThemeContext);
   const paneRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -264,130 +202,6 @@ export const TerminalComponent = (props: { scope: LogScope }) => {
       paneRef.current.scrollTop = paneRef.current.scrollHeight;
     }
   }, [isAtBottom]);
-
-  useEffect(() => {
-    if (gotPrevious) {
-      return;
-    }
-
-    if (transport === null) {
-      return;
-    }
-
-    const abortController = new AbortController();
-    const logsService = createClient(LogsService, transport);
-    void logsService
-      .getPrevious(
-        {
-          scope: props.scope,
-          // Max allowed amount of entries by the server
-          count: 300,
-        },
-        {
-          signal: abortController.signal,
-        },
-      )
-      .then((call) => {
-        if (call.messages.length === 0) {
-          setEntries((prev) => [
-            ...prev,
-            convertLine({
-              id: "empty",
-              message: t("terminal.noLogs"),
-              personal: false,
-            }),
-          ]);
-        }
-
-        for (const message of call.messages) {
-          setEntries((prev) => {
-            return deduplicateConsecutive(
-              limitLength([...prev, convertLine(message)]),
-              (element) => element.hash,
-            );
-          });
-        }
-        setGotPrevious(true);
-      });
-
-    return () => {
-      abortController.abort();
-    };
-  }, [gotPrevious, props.scope, t, transport]);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    function connect() {
-      if (transport === null) {
-        return;
-      }
-
-      console.info("Connecting to logs service");
-      const logsService = createClient(LogsService, transport);
-      const responses = logsService.subscribe(
-        {
-          scope: props.scope,
-        },
-        {
-          signal: abortController.signal,
-        },
-      );
-
-      void observeServerStream(responses, {
-        onError: (error) => {
-          if (abortController.signal.aborted) {
-            return;
-          }
-
-          console.error(error);
-          setTimeout(() => {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            connect();
-          }, 3_000);
-        },
-        onComplete: () => {
-          if (abortController.signal.aborted) {
-            return;
-          }
-
-          console.error("Stream completed");
-          setTimeout(() => {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            connect();
-          }, 1000);
-        },
-        onMessage: (response) => {
-          const message = response.message;
-          if (message === undefined) {
-            return;
-          }
-
-          setEntries((prev) => {
-            return deduplicateConsecutive(
-              limitLength([
-                ...prev.filter((entry) => entry.id !== "empty"),
-                convertLine(message),
-              ]),
-              (element) => element.hash,
-            );
-          });
-        },
-      });
-    }
-
-    connect();
-
-    return () => {
-      abortController.abort();
-    };
-  }, [props.scope, transport]);
 
   return (
     <ScrollArea

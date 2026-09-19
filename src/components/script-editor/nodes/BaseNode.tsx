@@ -1,3 +1,4 @@
+import { useSelector } from "@tanstack/react-store";
 import {
   type Edge,
   Handle,
@@ -8,8 +9,9 @@ import {
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { cn } from "@/lib/utils";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
+import { EMPTY_DIAGNOSTICS } from "@/stores/script-editor-derived";
 import { MultiInputOrderList } from "../MultiInputOrderList";
 import { useNodeEditing } from "../NodeEditingContext";
 import { NodePreview } from "../NodePreview";
@@ -226,10 +228,10 @@ function PortRow({
 }
 
 function ValidationBadges({ nodeId }: { nodeId: string }) {
-  const allDiagnostics = useScriptEditorStore((s) => s.validationDiagnostics);
-  const diagnostics = useMemo(
-    () => allDiagnostics.filter((d) => d.nodeId === nodeId),
-    [allDiagnostics, nodeId],
+  const editor = useScriptEditor();
+  const diagnostics = useSelector(
+    editor.validation,
+    (s) => s.diagnosticsByNode.get(nodeId) ?? EMPTY_DIAGNOSTICS,
   );
   if (diagnostics.length === 0) return null;
 
@@ -259,7 +261,10 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
 }
 
 function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
-  const times = useScriptEditorStore((s) => s.nodeExecutionTimes.get(nodeId));
+  const editor = useScriptEditor();
+  const times = useSelector(editor.execution, (s) =>
+    s.nodeExecutionTimes.get(nodeId),
+  );
   if (!times || times.length === 0) return null;
 
   const avg = times.reduce((a, b) => a + b, 0) / times.length;
@@ -292,11 +297,10 @@ function BaseNodeComponent({
   onDataChange,
   typeBindings,
 }: BaseNodeProps) {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const { inputs, outputs, label, color, supportsMuting } = definition;
-  const reorderMultiInputEdges = useScriptEditorStore(
-    (s) => s.reorderMultiInputEdges,
-  );
+  const reorderMultiInputEdges = editor.actions.reorderMultiInputEdges;
   const { getNode } = useReactFlow();
 
   // Compute resolved port type for a given port using type bindings
@@ -336,10 +340,11 @@ function BaseNodeComponent({
   );
 
   // Preview state from store
-  const previewEnabled = useScriptEditorStore((s) =>
+  const previewEnabled = useSelector(editor.ui, (s) =>
     s.previewEnabledNodes.has(id),
   );
-  const previewValues = useScriptEditorStore(
+  const previewValues = useSelector(
+    editor.execution,
     (s) => s.previewValues.get(id) ?? EMPTY_PREVIEW_VALUES,
   );
 

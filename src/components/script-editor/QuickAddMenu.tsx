@@ -1,3 +1,4 @@
+import { useSelector } from "@tanstack/react-store";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -8,6 +9,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import {
   Empty,
   EmptyDescription,
@@ -17,7 +19,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { useScriptEditorStore } from "@/stores/script-editor-store";
 import { useNodeTypes } from "./NodeTypesContext";
 import { getPortTypeFromDefinition, type NodeDefinition } from "./nodes/types";
 
@@ -26,6 +27,7 @@ import { getPortTypeFromDefinition, type NodeDefinition } from "./nodes/types";
  * A searchable, categorized menu for adding nodes at the cursor position.
  */
 export function QuickAddMenu() {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const inputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState("");
@@ -33,10 +35,10 @@ export function QuickAddMenu() {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
-  const quickAddMenu = useScriptEditorStore((s) => s.quickAddMenu);
-  const closeQuickAddMenu = useScriptEditorStore((s) => s.closeQuickAddMenu);
-  const addNode = useScriptEditorStore((s) => s.addNode);
-  const nodes = useScriptEditorStore((s) => s.nodes);
+  const quickAddMenu = useSelector(editor.ui, (s) => s.quickAddMenu);
+  const closeQuickAddMenu = editor.actions.closeQuickAddMenu;
+  const addNode = editor.actions.addNode;
+  const nodes = useSelector(editor.document, (s) => s.nodes);
 
   const { definitions, categories, getCategoryInfo, createNodeData } =
     useNodeTypes();

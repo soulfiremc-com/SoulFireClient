@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useSelector } from "@tanstack/react-store";
 import {
   ArrowLeftIcon,
   DownloadIcon,
@@ -15,6 +16,7 @@ import {
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ButtonGroup } from "@/components/ui/button-group.tsx";
@@ -35,7 +37,6 @@ import {
 } from "@/components/ui/tooltip.tsx";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { cn } from "@/lib/utils.tsx";
-import { useScriptEditorStore } from "@/stores/script-editor-store.ts";
 import { ComplexityScore } from "./ComplexityScore";
 import { DryRunDialog } from "./DryRunDialog";
 import { QuotasDialog } from "./QuotasDialog";
@@ -66,25 +67,26 @@ export function ScriptToolbar({
   isSaving = false,
   className,
 }: ScriptToolbarProps) {
+  const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const isMobile = useIsMobile();
-  const scriptName = useScriptEditorStore((state) => state.scriptName);
-  const setScriptName = useScriptEditorStore((state) => state.setScriptName);
-  const scriptDescription = useScriptEditorStore(
+  const scriptName = useSelector(editor.document, (state) => state.scriptName);
+  const setScriptName = editor.actions.setScriptName;
+  const scriptDescription = useSelector(
+    editor.document,
     (state) => state.scriptDescription,
   );
-  const isDirty = useScriptEditorStore((state) => state.isDirty);
-  const paused = useScriptEditorStore((state) => state.paused);
-  const quotas = useScriptEditorStore((state) => state.quotas);
-  const nodes = useScriptEditorStore((state) => state.nodes);
-  const edges = useScriptEditorStore((state) => state.edges);
-  const loadScriptData = useScriptEditorStore((state) => state.loadScriptData);
+  const isDirty = useSelector(editor.document, (state) => state.isDirty);
+  const paused = useSelector(editor.document, (state) => state.paused);
+  const quotas = useSelector(editor.document, (state) => state.quotas);
+  const loadScriptData = editor.actions.loadScriptData;
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(scriptName);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExport = () => {
+    const { nodes, edges } = editor.document.get();
     const exportData = {
       version: 1,
       name: scriptName,

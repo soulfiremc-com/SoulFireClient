@@ -10,6 +10,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useSelector } from "@tanstack/react-store";
 import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { PlusIcon, ScrollTextIcon } from "lucide-react";
 import { Suspense, use, useCallback, useEffect, useRef, useState } from "react";
@@ -19,13 +20,17 @@ import { Separator } from "react-resizable-panels";
 import { toast } from "sonner";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { ExecutionLogs } from "@/components/script-editor/ExecutionLogs.tsx";
 import { NodePalette } from "@/components/script-editor/NodePalette.tsx";
 import {
   NodeTypesProvider,
   useNodeTypes,
 } from "@/components/script-editor/NodeTypesContext.tsx";
 import { ScriptEditor } from "@/components/script-editor/ScriptEditor.tsx";
+import {
+  ScriptEditorProvider,
+  useScriptEditor,
+} from "@/components/script-editor/ScriptEditorProvider";
+import { ScriptExecutionLogs } from "@/components/script-editor/ScriptExecutionLogs.tsx";
 import { ScriptToolbar } from "@/components/script-editor/ScriptToolbar.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -59,7 +64,6 @@ import {
 } from "@/lib/script-service.ts";
 import { isDemo, timestampToDate } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
-import { useScriptEditorStore } from "@/stores/script-editor-store.ts";
 
 import "@xyflow/react/dist/style.css";
 
@@ -160,18 +164,22 @@ function ScriptEditorSkeleton() {
 }
 
 function ScriptEditorPage() {
+  const { instance, scriptId } = Route.useParams();
   return (
-    <ReactFlowProvider>
-      <NodeTypesProvider>
-        <Suspense fallback={<ScriptEditorSkeleton />}>
-          <ScriptEditorContent />
-        </Suspense>
-      </NodeTypesProvider>
-    </ReactFlowProvider>
+    <ScriptEditorProvider key={`${instance}:${scriptId}`}>
+      <ReactFlowProvider>
+        <NodeTypesProvider>
+          <Suspense fallback={<ScriptEditorSkeleton />}>
+            <ScriptEditorContent />
+          </Suspense>
+        </NodeTypesProvider>
+      </ReactFlowProvider>
+    </ScriptEditorProvider>
   );
 }
 
 function ScriptEditorContent() {
+  const editor = useScriptEditor();
   const { t: tInstance } = useTranslation("instance");
   const { instance: instanceId, scriptId } = Route.useParams();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
@@ -196,32 +204,25 @@ function ScriptEditorContent() {
   const reactFlowInstance = useReactFlow();
 
   // Script editor store
-  const loadScript = useScriptEditorStore((state) => state.loadScript);
-  const resetEditor = useScriptEditorStore((state) => state.resetEditor);
-  const setDirty = useScriptEditorStore((state) => state.setDirty);
-  const setActive = useScriptEditorStore((state) => state.setActive);
-  const setActiveNode = useScriptEditorStore((state) => state.setActiveNode);
-  const addNode = useScriptEditorStore((state) => state.addNode);
-  const findClosestEdge = useScriptEditorStore(
-    (state) => state.findClosestEdge,
-  );
-  const insertNodeOnEdge = useScriptEditorStore(
-    (state) => state.insertNodeOnEdge,
-  );
-  const getScriptData = useScriptEditorStore((state) => state.getScriptData);
-  const markSaved = useScriptEditorStore((state) => state.markSaved);
-  const addNodeExecutionTime = useScriptEditorStore(
-    (state) => state.addNodeExecutionTime,
-  );
-  const setExecutionStats = useScriptEditorStore(
-    (state) => state.setExecutionStats,
-  );
+  const loadScript = editor.actions.loadScript;
+  const resetEditor = editor.actions.resetEditor;
+  const setDirty = editor.actions.setDirty;
+  const setActive = editor.actions.setActive;
+  const setActiveNode = editor.actions.setActiveNode;
+  const addNode = editor.actions.addNode;
+  const findClosestEdge = editor.actions.findClosestEdge;
+  const insertNodeOnEdge = editor.actions.insertNodeOnEdge;
+  const getScriptData = editor.actions.getScriptData;
+  const markSaved = editor.actions.markSaved;
+  const addNodeExecutionTime = editor.actions.addNodeExecutionTime;
+  const setExecutionStats = editor.actions.setExecutionStats;
 
   const isMobile = useIsMobile();
 
   // Local state
   const [isSaving, setIsSaving] = useState(false);
-  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const { addExecutionLog, prependExecutionLogs, clearExecutionLogs } =
+    editor.actions;
   const [nodePaletteOpen, setNodePaletteOpen] = useState(false);
   const [executionLogsOpen, setExecutionLogsOpen] = useState(false);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -265,6 +266,7 @@ function ScriptEditorContent() {
         { signal: abortController.signal },
       )
       .then((call) => {
+        if (abortController.signal.aborted) return;
         const entries: LogEntry[] = call.messages.map((msg) => {
           const rawLevel = msg.level?.toLowerCase();
           const level: LogEntry["level"] =
@@ -286,58 +288,64 @@ function ScriptEditorContent() {
           };
         });
         if (entries.length > 0) {
-          setLogs((prev) => [...entries, ...prev]);
+          prependExecutionLogs(entries);
         }
       });
 
     return () => {
       abortController.abort();
     };
-  }, [transport, instanceId, scriptId]);
+  }, [transport, instanceId, scriptId, prependExecutionLogs]);
 
-  // Item 25: Debounced live validation
-  const validationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
-  const setValidationDiagnostics = useScriptEditorStore(
-    (state) => state.setValidationDiagnostics,
-  );
-  const nodes = useScriptEditorStore((state) => state.nodes);
-  const edges = useScriptEditorStore((state) => state.edges);
+  const validationGraph = useSelector(editor.validationGraph);
+  const setValidationDiagnostics = editor.actions.setValidationDiagnostics;
 
   useEffect(() => {
     if (!transport || scriptId === "new") return;
-    if (validationTimeoutRef.current) {
-      clearTimeout(validationTimeoutRef.current);
-    }
-    validationTimeoutRef.current = setTimeout(async () => {
+    const controller = new AbortController();
+    const timeout = setTimeout(async () => {
       try {
         const client = createClient(ScriptService, transport);
-        const result = await client.validateScript({
-          instanceId,
-          nodes: nodesToProto(nodes),
-          edges: edgesToProto(edges),
-        });
-        const diagnostics = result.diagnostics.map((d) => ({
-          nodeId: d.nodeId,
-          edgeId: d.edgeId,
-          message: d.message,
-          severity:
-            d.severity === DiagnosticSeverity.DIAGNOSTIC_WARNING
-              ? ("warning" as const)
-              : ("error" as const),
-        }));
-        setValidationDiagnostics(diagnostics);
+        const result = await client.validateScript(
+          {
+            instanceId,
+            nodes: nodesToProto(validationGraph.nodes),
+            edges: edgesToProto(validationGraph.edges),
+          },
+          { signal: controller.signal },
+        );
+        if (
+          controller.signal.aborted ||
+          editor.validationGraph.get() !== validationGraph
+        )
+          return;
+        setValidationDiagnostics(
+          result.diagnostics.map((d) => ({
+            nodeId: d.nodeId,
+            edgeId: d.edgeId,
+            message: d.message,
+            severity:
+              d.severity === DiagnosticSeverity.DIAGNOSTIC_WARNING
+                ? "warning"
+                : "error",
+          })),
+        );
       } catch {
-        // Validation is best-effort, don't show errors
+        // Validation is best-effort. Keep the last successful diagnostics.
       }
     }, 500);
     return () => {
-      if (validationTimeoutRef.current) {
-        clearTimeout(validationTimeoutRef.current);
-      }
+      clearTimeout(timeout);
+      controller.abort();
     };
-  }, [transport, instanceId, scriptId, nodes, edges, setValidationDiagnostics]);
+  }, [
+    transport,
+    instanceId,
+    scriptId,
+    validationGraph,
+    setValidationDiagnostics,
+    editor,
+  ]);
 
   // Create script mutation
   const createMutation = useMutation({
@@ -454,16 +462,13 @@ function ScriptEditorContent() {
 
     setActive(true);
     setActiveNode(null);
-    setLogs((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        timestamp: new Date(),
-        level: "info",
-        nodeId: null,
-        message: tInstance("scripts.activating"),
-      },
-    ]);
+    addExecutionLog({
+      id: crypto.randomUUID(),
+      timestamp: new Date(),
+      level: "info",
+      nodeId: null,
+      message: tInstance("scripts.activating"),
+    });
 
     try {
       const client = createClient(ScriptService, transport);
@@ -471,82 +476,68 @@ function ScriptEditorContent() {
         { instanceId, scriptId },
         { signal: abortController.signal },
       );
-      useScriptEditorStore.setState({ paused: false });
+      editor.document.setState((state) => ({ ...state, paused: false }));
       void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
 
       void observeServerStream(responses, {
         onMessage: (event) => {
+          if (abortController.signal.aborted) return;
           if (event.event.case === "scriptStarted") {
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "info",
-                nodeId: null,
-                message: tInstance("scripts.activated"),
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: "info",
+              nodeId: null,
+              message: tInstance("scripts.activated"),
+            });
             toast.success(tInstance("scripts.activateSuccess"));
           } else if (event.event.case === "nodeStarted") {
             const nodeId = event.event.value.nodeId;
             setActiveNode(nodeId);
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "debug",
-                nodeId,
-                message: tInstance("scripts.nodeStarted", { nodeId }),
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: "debug",
+              nodeId,
+              message: tInstance("scripts.nodeStarted", { nodeId }),
+            });
           } else if (event.event.case === "nodeCompleted") {
             const nodeId = event.event.value.nodeId;
             const execTimeNanos = event.event.value.executionTimeNanos;
             if (execTimeNanos > 0n) {
               addNodeExecutionTime(nodeId, Number(execTimeNanos) / 1_000_000);
             }
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "debug",
-                nodeId,
-                message: tInstance("scripts.nodeCompleted", { nodeId }),
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: "debug",
+              nodeId,
+              message: tInstance("scripts.nodeCompleted", { nodeId }),
+            });
           } else if (event.event.case === "executionStats") {
             const { nodeCount, maxCount } = event.event.value;
             setExecutionStats({
               nodeCount: Number(nodeCount),
               maxCount: Number(maxCount),
             });
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "info",
-                nodeId: null,
-                message: `Execution stats: ${nodeCount}/${maxCount} nodes executed`,
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: "info",
+              nodeId: null,
+              message: `Execution stats: ${nodeCount}/${maxCount} nodes executed`,
+            });
           } else if (event.event.case === "nodeError") {
             const { nodeId, errorMessage } = event.event.value;
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "error",
-                nodeId,
-                message: tInstance("scripts.nodeError", {
-                  error: errorMessage,
-                }),
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: "error",
+              nodeId,
+              message: tInstance("scripts.nodeError", {
+                error: errorMessage,
+              }),
+            });
           } else if (event.event.case === "scriptLog") {
             const { nodeId, level, message } = event.event.value;
             const normalizedLevel = (level?.toLowerCase() || "info") as
@@ -554,32 +545,26 @@ function ScriptEditorContent() {
               | "info"
               | "warn"
               | "error";
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: normalizedLevel,
-                nodeId: nodeId ?? null,
-                message,
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: normalizedLevel,
+              nodeId: nodeId ?? null,
+              message,
+            });
           } else if (event.event.case === "scriptCompleted") {
             const success = event.event.value.success;
             setActive(false);
             setActiveNode(null);
-            setLogs((prev) => [
-              ...prev,
-              {
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: success ? "info" : "warn",
-                nodeId: null,
-                message: success
-                  ? tInstance("scripts.executionCompletedSuccess")
-                  : tInstance("scripts.deactivated"),
-              },
-            ]);
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: success ? "info" : "warn",
+              nodeId: null,
+              message: success
+                ? tInstance("scripts.executionCompletedSuccess")
+                : tInstance("scripts.deactivated"),
+            });
             if (success) {
               toast.success(tInstance("scripts.executionCompleted"));
             }
@@ -592,18 +577,15 @@ function ScriptEditorContent() {
           setActiveNode(null);
           const message =
             error instanceof Error ? error.message : String(error);
-          setLogs((prev) => [
-            ...prev,
-            {
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "error",
-              nodeId: null,
-              message: tInstance("scripts.executionError", {
-                error: message,
-              }),
-            },
-          ]);
+          addExecutionLog({
+            id: crypto.randomUUID(),
+            timestamp: new Date(),
+            level: "error",
+            nodeId: null,
+            message: tInstance("scripts.executionError", {
+              error: message,
+            }),
+          });
           toast.error(tInstance("scripts.executionFailed"));
         },
         onComplete: () => {
@@ -628,6 +610,8 @@ function ScriptEditorContent() {
     queryClient,
     addNodeExecutionTime,
     setExecutionStats,
+    addExecutionLog,
+    editor.document.setState,
   ]);
 
   // Handle script deactivation
@@ -645,18 +629,15 @@ function ScriptEditorContent() {
       await client.deactivateScript({ instanceId, scriptId });
       setActive(false);
       setActiveNode(null);
-      useScriptEditorStore.setState({ paused: true });
+      editor.document.setState((state) => ({ ...state, paused: true }));
       void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
-      setLogs((prev) => [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          timestamp: new Date(),
-          level: "info",
-          nodeId: null,
-          message: tInstance("scripts.deactivatedByUser"),
-        },
-      ]);
+      addExecutionLog({
+        id: crypto.randomUUID(),
+        timestamp: new Date(),
+        level: "info",
+        nodeId: null,
+        message: tInstance("scripts.deactivatedByUser"),
+      });
       toast.success(tInstance("scripts.deactivateSuccess"));
     } catch (error) {
       console.error("Failed to deactivate script:", error);
@@ -672,6 +653,8 @@ function ScriptEditorContent() {
     setActiveNode,
     tInstance,
     queryClient,
+    editor.document.setState,
+    addExecutionLog,
   ]);
 
   // Cleanup on unmount
@@ -698,8 +681,8 @@ function ScriptEditorContent() {
 
   // Handle clear logs
   const handleClearLogs = useCallback(() => {
-    setLogs([]);
-  }, []);
+    clearExecutionLogs();
+  }, [clearExecutionLogs]);
 
   // Handle drag & drop from palette using pointer events instead of HTML5 DnD.
   // This keeps drag behavior consistent across browser and desktop runtimes.
@@ -894,7 +877,7 @@ function ScriptEditorContent() {
                 {tInstance("scripts.editor.logs.title")}
               </DrawerTitle>
             </DrawerHeader>
-            <ExecutionLogs logs={logs} onClearLogs={handleClearLogs} />
+            <ScriptExecutionLogs onClearLogs={handleClearLogs} />
           </DrawerContent>
         </Drawer>
       </div>
@@ -942,7 +925,7 @@ function ScriptEditorContent() {
 
             {/* Bottom - Execution Logs */}
             <ResizablePanel defaultSize={25} minSize="6.25rem" maxSize="25rem">
-              <ExecutionLogs logs={logs} onClearLogs={handleClearLogs} />
+              <ScriptExecutionLogs onClearLogs={handleClearLogs} />
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>
