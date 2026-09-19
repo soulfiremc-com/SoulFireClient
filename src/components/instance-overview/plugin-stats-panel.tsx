@@ -1,4 +1,3 @@
-import type { PluginRuntimeStat } from "@soulfiremc/sdk/generated/soulfire/plugin_stats_pb";
 import { useQuery } from "@tanstack/react-query";
 import { BlocksIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx";
+import type { PluginRuntimeStat } from "@/generated/soulfire/plugin_stats_pb";
 import { formatCompactNumber } from "@/lib/format.ts";
 import { pluginStatsQueryOptions } from "@/lib/plugin-stats-query.ts";
 import { timestampToDate } from "@/lib/utils.tsx";

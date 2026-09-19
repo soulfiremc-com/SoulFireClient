@@ -6,6 +6,8 @@ import {
   ValueSchema,
 } from "@bufbuild/protobuf/wkt";
 import { createClient, type Transport } from "@connectrpc/connect";
+import { queryOptions } from "@tanstack/react-query";
+import type { Edge, Node } from "@xyflow/react";
 import {
   EdgeType,
   type GetNodeTypesRequest,
@@ -20,9 +22,7 @@ import {
   type ScriptNode,
   ScriptNodeSchema,
   ScriptService,
-} from "@soulfiremc/sdk/generated/soulfire/script_pb";
-import { queryOptions } from "@tanstack/react-query";
-import type { Edge, Node } from "@xyflow/react";
+} from "@/generated/soulfire/script_pb";
 
 export type {
   GetNodeTypesRequest,

@@ -1,9 +1,4 @@
 import { createClient } from "@connectrpc/connect";
-import { LogsService } from "@soulfiremc/sdk/generated/soulfire/logs_pb";
-import {
-  DiagnosticSeverity,
-  ScriptService,
-} from "@soulfiremc/sdk/generated/soulfire/script_pb";
 import {
   useMutation,
   useQueryClient,
@@ -52,6 +47,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { LogsService } from "@/generated/soulfire/logs_pb";
+import {
+  DiagnosticSeverity,
+  ScriptService,
+} from "@/generated/soulfire/script_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
 import { observeServerStream } from "@/lib/protobuf.ts";

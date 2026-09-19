@@ -1,4 +1,3 @@
-import type { ScriptQuotas } from "@soulfiremc/sdk/generated/soulfire/script_pb";
 import type {
   Connection,
   Edge,
@@ -9,6 +8,7 @@ import type {
   XYPosition,
 } from "@xyflow/react";
 import type { LogEntry } from "@/components/script-editor/types";
+import type { ScriptQuotas } from "@/generated/soulfire/script_pb";
 
 export interface ScriptDocumentState {
   nodes: Node[];

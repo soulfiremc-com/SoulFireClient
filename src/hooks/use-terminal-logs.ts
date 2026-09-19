@@ -1,11 +1,8 @@
 import { fromJsonString, toJsonString } from "@bufbuild/protobuf";
 import type { Transport } from "@connectrpc/connect";
-import {
-  type LogScope,
-  LogScopeSchema,
-} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
 import { useSelector } from "@tanstack/react-store";
 import { useEffect, useMemo } from "react";
+import { type LogScope, LogScopeSchema } from "@/generated/soulfire/logs_pb";
 import {
   createTerminalLogSession,
   getTerminalLogSession,

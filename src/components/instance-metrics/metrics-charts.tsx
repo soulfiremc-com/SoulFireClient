@@ -1,4 +1,3 @@
-import type { MetricsSnapshot } from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -23,6 +22,7 @@ import {
   type CustomTooltipProps,
 } from "@/components/ui/chart";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import type { MetricsSnapshot } from "@/generated/soulfire/metrics_pb";
 import {
   downsampleTimeSeriesData,
   formatChartAxisTime,

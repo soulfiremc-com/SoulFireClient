@@ -2,3 +2,6 @@
 src-tauri/Cargo.toml text eol=lf
 src-tauri/Cargo.lock text eol=lf
 .gitignore text eol=lf
+
+# Preserve protoc-gen-es output, including its final blank line.
+src/generated/** text eol=lf linguist-generated=true whitespace=-blank-at-eof

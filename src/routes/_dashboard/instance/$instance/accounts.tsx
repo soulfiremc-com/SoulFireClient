@@ -1,11 +1,4 @@
 import { createClient } from "@connectrpc/connect";
-import type { SettingsPage } from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
-  AccountTypeCredentials,
-  AccountTypeDeviceCode,
-  MinecraftAccountProto_AccountTypeProto,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import { MCAuthService } from "@soulfiremc/sdk/generated/soulfire/mc-auth_pb";
 import {
   type QueryClient,
   useMutation,
@@ -90,6 +83,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
+import type { SettingsPage } from "@/generated/soulfire/common_pb";
+import {
+  AccountTypeCredentials,
+  AccountTypeDeviceCode,
+  MinecraftAccountProto_AccountTypeProto,
+} from "@/generated/soulfire/common_pb";
+import { MCAuthService } from "@/generated/soulfire/mc-auth_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";

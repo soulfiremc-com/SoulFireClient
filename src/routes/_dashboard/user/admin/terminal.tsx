@@ -1,15 +1,4 @@
 import { create } from "@bufbuild/protobuf";
-import {
-  type CommandScope,
-  CommandScopeSchema,
-  GlobalCommandScopeSchema,
-} from "@soulfiremc/sdk/generated/soulfire/command_pb";
-import { GlobalPermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
-  type LogScope,
-  LogScopeSchema,
-  PersonalLogScopeSchema,
-} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -18,6 +7,17 @@ import CommandInput from "@/components/command-input.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout";
 import { TerminalComponent } from "@/components/terminal.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import {
+  type CommandScope,
+  CommandScopeSchema,
+  GlobalCommandScopeSchema,
+} from "@/generated/soulfire/command_pb";
+import { GlobalPermission } from "@/generated/soulfire/common_pb";
+import {
+  type LogScope,
+  LogScopeSchema,
+  PersonalLogScopeSchema,
+} from "@/generated/soulfire/logs_pb";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission } from "@/lib/utils.tsx";

@@ -1,16 +1,5 @@
 import { createClient } from "@connectrpc/connect";
 import {
-  BotConnectionPhase,
-  BotDesiredState,
-  type BotListEntry,
-  BotRuntimeState,
-  BotService,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
-import {
-  InstancePermission,
-  MinecraftAccountProto_AccountTypeProto,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
   infiniteQueryOptions,
   useMutation,
   useQueryClient,
@@ -46,6 +35,17 @@ import {
   CardTitle,
 } from "@/components/ui/card.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import {
+  BotConnectionPhase,
+  BotDesiredState,
+  type BotListEntry,
+  BotRuntimeState,
+  BotService,
+} from "@/generated/soulfire/bot_pb";
+import {
+  InstancePermission,
+  MinecraftAccountProto_AccountTypeProto,
+} from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import {

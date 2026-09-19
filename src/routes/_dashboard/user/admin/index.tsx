@@ -1,6 +1,3 @@
-import { UserRole } from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import type { InstanceListResponse } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
-import type { UserListResponse } from "@soulfiremc/sdk/generated/soulfire/user_pb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
@@ -24,6 +21,9 @@ import {
   type CustomTooltipProps,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UserRole } from "@/generated/soulfire/common_pb";
+import type { InstanceListResponse } from "@/generated/soulfire/instance_pb";
+import type { UserListResponse } from "@/generated/soulfire/user_pb";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 

@@ -1,4 +1,3 @@
-import type { MinecraftAccountProto_AccountTypeProto } from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import type { i18n } from "i18next";
 import {
   CookieIcon,
@@ -9,6 +8,7 @@ import {
   TicketIcon,
   WifiOffIcon,
 } from "lucide-react";
+import type { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfire/common_pb";
 
 export type MinecraftAccountTypeKey =
   keyof typeof MinecraftAccountProto_AccountTypeProto;

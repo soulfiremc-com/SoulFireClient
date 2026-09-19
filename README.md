@@ -41,6 +41,27 @@ Install Bun 1.4.0 and a current Node.js release before you build the client.
 Take a look at the scripts in `package.json` to see how to run a dev env locally.
 You can also refer to the GitHub actions workflows to see how production builds are made.
 
+### Update RPC bindings
+
+The client generates its RPC bindings directly from the SoulFire repository with [Buf](https://buf.build/docs/generate/).
+`buf.gen.yaml` pins the source to a full Git commit hash, independent of server and SDK releases.
+The server revision also pins the imported schemas through its `buf.lock`.
+
+1. Push the protocol changes to the SoulFire repository.
+2. Set `inputs[0].ref` in `buf.gen.yaml` to that commit's full hash.
+3. Run `bun run protocol:generate`.
+4. Update affected client code and run `bun run typecheck`, `bun test`, and `bun run build:web`.
+5. Commit the pin, generated bindings, and client changes together.
+
+The generated files in `src/generated/` are checked in. Normal builds do not fetch schemas or require a server checkout.
+CI regenerates the bindings and checks for differences. Generation requires Git and network access to GitHub and the Buf Schema Registry.
+The generator versions are pinned in `package.json` and `bun.lock`.
+
+For local protocol development, run `bun run protocol:generate -- ../SoulFire` to generate from a local server checkout.
+Before committing the client changes, update the remote pin and regenerate without the local path.
+
+New client features must handle older servers that omit optional fields or do not implement new RPC methods.
+
 ## Sponsors
 
 <table>

@@ -1,6 +1,4 @@
 import { createClient } from "@connectrpc/connect";
-import { InstancePermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import { DownloadService } from "@soulfiremc/sdk/generated/soulfire/download_pb";
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -26,6 +24,8 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { DownloadService } from "@/generated/soulfire/download_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { hasInstancePermission, runAsync } from "@/lib/utils.tsx";
 

@@ -3,13 +3,13 @@ import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
 import { create } from "@bufbuild/protobuf";
 import { createRouterTransport } from "@connectrpc/connect";
+import { QueryClient } from "@tanstack/react-query";
 import {
   type BotListResponse,
   BotListResponseSchema,
   BotRuntimeState,
   BotService,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
-import { QueryClient } from "@tanstack/react-query";
+} from "@/generated/soulfire/bot_pb";
 import { watchBotStatuses } from "./watch-bot-statuses.ts";
 
 test("stream reconnects after EOF, refreshes details, and stops on cleanup", async () => {

@@ -1,12 +1,12 @@
 import { toJsonString } from "@bufbuild/protobuf";
 import { type Client, createClient, type Transport } from "@connectrpc/connect";
+import { createStore } from "@tanstack/store";
 import {
   type LogScope,
   LogScopeSchema,
   type LogString,
   LogsService,
-} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
-import { createStore } from "@tanstack/store";
+} from "@/generated/soulfire/logs_pb";
 
 export type TerminalLine = Pick<LogString, "id" | "message" | "personal"> &
   Partial<

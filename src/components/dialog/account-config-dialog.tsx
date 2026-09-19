@@ -2,13 +2,6 @@ import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
 import {
-  type ServerPlugin,
-  type SettingsDefinition,
-  type SettingsEntryIdentifier,
-  type SettingsPage,
-  SettingsPageEntryScopeType,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -52,6 +45,13 @@ import {
 } from "@/components/ui/select.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
+import {
+  type ServerPlugin,
+  type SettingsDefinition,
+  type SettingsEntryIdentifier,
+  type SettingsPage,
+  SettingsPageEntryScopeType,
+} from "@/generated/soulfire/common_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";

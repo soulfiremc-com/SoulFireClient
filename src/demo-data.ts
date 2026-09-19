@@ -6,13 +6,13 @@ import {
   type BotListResponse,
   BotListResponseSchema,
   BotRuntimeState,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
-import type { ClientDataResponse } from "@soulfiremc/sdk/generated/soulfire/client_pb";
+} from "@/generated/soulfire/bot_pb";
+import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import {
   GlobalPermission,
   type SettingsDefinition,
   type SettingsPage,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+} from "@/generated/soulfire/common_pb";
 import { smartEntries } from "@/lib/utils.tsx";
 
 export const demoClientData = {

@@ -1,5 +1,4 @@
 import { createClient } from "@connectrpc/connect";
-import { InstanceService } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
@@ -17,6 +16,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { TransportContext } from "../providers/transport-context.tsx";
 import {

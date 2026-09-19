@@ -1,9 +1,4 @@
 import type { JsonValue } from "@bufbuild/protobuf";
-import type {
-  ServerPlugin,
-  SettingsDefinition,
-  SettingsPage,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
 import {
   useMutation,
   useQueryClient,
@@ -34,6 +29,11 @@ import {
   CardTitle,
 } from "@/components/ui/card.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
+import type {
+  ServerPlugin,
+  SettingsDefinition,
+  SettingsPage,
+} from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import type { BaseSettings } from "@/lib/types.ts";

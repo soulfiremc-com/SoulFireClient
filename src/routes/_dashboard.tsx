@@ -1,15 +1,5 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient, type Transport } from "@connectrpc/connect";
-import { BotFleetSummarySchema } from "@soulfiremc/sdk/generated/soulfire/bot_pb";
-import type { ClientDataResponse } from "@soulfiremc/sdk/generated/soulfire/client_pb";
-import { ClientService } from "@soulfiremc/sdk/generated/soulfire/client_pb";
-import { InstancePermission } from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
-  type InstanceListResponse,
-  InstanceListResponseSchema,
-  InstancePermissionStateSchema,
-  InstanceService,
-} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import {
   createFileRoute,
@@ -24,6 +14,16 @@ import { CreateInstanceProvider } from "@/components/dialog/create-instance-dial
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { demoClientData } from "@/demo-data.ts";
+import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
+import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
+import { ClientService } from "@/generated/soulfire/client_pb";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
+import {
+  type InstanceListResponse,
+  InstanceListResponseSchema,
+  InstancePermissionStateSchema,
+  InstanceService,
+} from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { smartEntries } from "@/lib/utils.tsx";

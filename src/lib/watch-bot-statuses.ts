@@ -4,11 +4,8 @@ import {
   createClient,
   type Transport,
 } from "@connectrpc/connect";
-import {
-  type BotListResponse,
-  BotService,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
 import type { QueryClient } from "@tanstack/react-query";
+import { type BotListResponse, BotService } from "@/generated/soulfire/bot_pb";
 import { reconcileBotStatuses } from "./bot-status-cache.ts";
 
 export function watchBotStatuses(

@@ -28,7 +28,7 @@ bun run generate-routes    # Regenerate TanStack Router route tree
 - **Desktop**: Electron
 - **Routing**: TanStack Router (file-based in `src/routes/`)
 - **State**: TanStack Store for editor, POV control, and terminal log state; TanStack Query for server state
-- **API**: gRPC-Web via Connect RPC using protocol definitions from `@soulfiremc/sdk`
+- **API**: gRPC-Web via Connect RPC using generated bindings in `src/generated/`
 - **UI**: shadcn/ui components, Radix primitives, Lucide icons
 
 ### Key Directories
@@ -49,10 +49,11 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 - Ignored directories: `src/components/ui/`, `src/components/data-table/`
 
 ### Proto Generation
-When modifying gRPC API:
-Protocol definitions are owned by the SoulFire repository and consumed from
-the official `@soulfiremc/sdk` package. Do not copy or regenerate them here.
-3. Conversion utilities in `src/lib/script-service.ts` may need updates
+SoulFire owns the protocol definitions. `buf.gen.yaml` pins their source to a full server commit hash.
+Run `bun run protocol:generate` after changing that pin. Commit the generated files in `src/generated/` with the pin.
+Do not edit generated files by hand. CI regenerates them and checks for differences.
+Normal builds use the checked-in bindings and do not need an SDK release.
+Conversion utilities in `src/lib/script-service.ts` may need updates after protocol changes.
 
 ### Demo Mode
 The app supports a demo mode (no server connection) using fallback data from `src/demo-data.ts`. Check `getTransport()` returning null for demo detection.

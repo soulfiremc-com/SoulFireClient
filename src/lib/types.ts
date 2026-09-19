@@ -10,16 +10,16 @@ import {
   type SettingsNamespace,
   SettingsNamespace_SettingsEntrySchema,
   SettingsNamespaceSchema,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
+} from "@/generated/soulfire/common_pb";
 import {
   type InstanceConfig,
   InstanceConfigSchema,
   type InstanceInfo,
-} from "@soulfiremc/sdk/generated/soulfire/instance_pb";
+} from "@/generated/soulfire/instance_pb";
 import type {
   ServerConfig,
   ServerInfoResponse,
-} from "@soulfiremc/sdk/generated/soulfire/server_pb";
+} from "@/generated/soulfire/server_pb";
 import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
 
 export type SFServerType = "integrated" | "dedicated";

@@ -3,7 +3,7 @@ import {
   type BotListResponse,
   BotListResponseSchema,
   type BotStatus,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+} from "@/generated/soulfire/bot_pb";
 
 // Snapshots define membership. Connection details and fleet counts still come
 // from the server's list queries, since a status event only carries lifecycle data.

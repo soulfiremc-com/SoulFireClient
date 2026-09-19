@@ -17,7 +17,8 @@
       "!postcss.config.mjs",
       "!src/routeTree.gen.ts",
       "!shared-modules",
-      "!locales"
+      "!locales",
+      "!src/generated"
     ]
   },
   "formatter": {

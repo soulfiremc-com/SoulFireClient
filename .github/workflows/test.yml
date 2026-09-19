@@ -32,6 +32,12 @@ jobs:
       - name: Install dependencies
         run: bun ci
 
+      - name: Verify protocol bindings
+        run: |
+          bun run protocol:generate
+          git diff --exit-code -- src/generated
+          test -z "$(git ls-files --others --exclude-standard src/generated)"
+
       - name: Run typecheck
         run: bun run typecheck
 

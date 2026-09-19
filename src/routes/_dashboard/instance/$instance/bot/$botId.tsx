@@ -1,44 +1,6 @@
 import { create } from "@bufbuild/protobuf";
 import { createClient } from "@connectrpc/connect";
 import {
-  type BookPage,
-  type BotContainerButtonClickRequest,
-  BotContainerButtonClickRequestSchema,
-  type BotInfoResponse,
-  BotInfoResponseSchema,
-  type BotInventoryClickRequest,
-  BotInventoryClickRequestSchema,
-  type BotInventoryStateResponse,
-  type BotLiveState,
-  type BotMouseClickRequest,
-  BotMouseClickRequestSchema,
-  BotService,
-  type BotSetContainerTextRequest,
-  BotSetContainerTextRequestSchema,
-  ClickType,
-  type ContainerButton,
-  type ContainerTextInput,
-  GameMode,
-  type InventorySlot,
-  MouseButton,
-  type SlotRegion,
-  SlotRegionType,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
-import {
-  BotCommandScopeSchema,
-  type CommandScope,
-  CommandScopeSchema,
-} from "@soulfiremc/sdk/generated/soulfire/command_pb";
-import {
-  InstancePermission,
-  MinecraftAccountProto_AccountTypeProto,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
-  BotLogScopeSchema,
-  type LogScope,
-  LogScopeSchema,
-} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
-import {
   queryOptions,
   useMutation,
   useSuspenseQuery,
@@ -63,6 +25,7 @@ import {
   LoaderIcon,
   MonitorIcon,
   MousePointerClickIcon,
+  NetworkIcon,
   PackageIcon,
   PencilIcon,
   ShieldIcon,
@@ -112,6 +75,45 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
+import {
+  type BookPage,
+  type BotContainerButtonClickRequest,
+  BotContainerButtonClickRequestSchema,
+  type BotInfoResponse,
+  BotInfoResponseSchema,
+  type BotInventoryClickRequest,
+  BotInventoryClickRequestSchema,
+  type BotInventoryStateResponse,
+  type BotLiveState,
+  type BotMouseClickRequest,
+  BotMouseClickRequestSchema,
+  BotService,
+  type BotSetContainerTextRequest,
+  BotSetContainerTextRequestSchema,
+  ClickType,
+  type ContainerButton,
+  type ContainerTextInput,
+  GameMode,
+  type InventorySlot,
+  MouseButton,
+  type SlotRegion,
+  SlotRegionType,
+} from "@/generated/soulfire/bot_pb";
+import {
+  BotCommandScopeSchema,
+  type CommandScope,
+  CommandScopeSchema,
+} from "@/generated/soulfire/command_pb";
+import {
+  InstancePermission,
+  MinecraftAccountProto_AccountTypeProto,
+  ProxyProto_Type,
+} from "@/generated/soulfire/common_pb";
+import {
+  BotLogScopeSchema,
+  type LogScope,
+  LogScopeSchema,
+} from "@/generated/soulfire/logs_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import {
@@ -640,6 +642,22 @@ function OverviewTab({
           className="flex flex-col gap-6"
           onContextMenu={(e) => handleContextMenu(e, null)}
         >
+          <Item variant="outline" size="sm">
+            <ItemMedia>
+              <NetworkIcon />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>{t("bots.connectionPanel.proxy")}</ItemTitle>
+              <ItemDescription className="select-text break-all">
+                {botInfo.connection
+                  ? botInfo.connection.proxy
+                    ? `${getEnumKeyByValue(ProxyProto_Type, botInfo.connection.proxy.type)} · ${botInfo.connection.proxy.address.replace(/^inet:\/\//, "")}`
+                    : t("bots.connectionPanel.direct")
+                  : t("bots.connectionPanel.unavailable")}
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+
           {/* Position */}
           <div>
             <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">

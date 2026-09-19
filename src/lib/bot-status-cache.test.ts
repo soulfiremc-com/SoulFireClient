@@ -5,7 +5,7 @@ import {
   BotListResponseSchema,
   BotRuntimeState,
   BotStatusSchema,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
+} from "@/generated/soulfire/bot_pb";
 import { reconcileBotStatuses } from "./bot-status-cache.ts";
 
 test("snapshots remove absent bots and preserve live data for known bots", () => {

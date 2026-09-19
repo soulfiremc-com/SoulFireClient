@@ -1,8 +1,4 @@
 import { createClient } from "@connectrpc/connect";
-import {
-  LoginService,
-  NextAuthFlowResponse_Failure_Reason,
-} from "@soulfiremc/sdk/generated/soulfire/login_pb";
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
@@ -97,6 +93,10 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
+import {
+  LoginService,
+  NextAuthFlowResponse_Failure_Reason,
+} from "@/generated/soulfire/login_pb";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import type {

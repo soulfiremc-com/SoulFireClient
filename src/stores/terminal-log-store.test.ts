@@ -7,7 +7,7 @@ import {
   LogScopeSchema,
   LogStringSchema,
   LogsService,
-} from "@soulfiremc/sdk/generated/soulfire/logs_pb";
+} from "@/generated/soulfire/logs_pb";
 import {
   createTerminalLogSession,
   getTerminalLogSession,

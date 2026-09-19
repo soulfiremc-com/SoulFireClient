@@ -1,4 +1,3 @@
-import type { GetInstanceMetricsResponse } from "@soulfiremc/sdk/generated/soulfire/metrics_pb";
 import { ChevronDownIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +26,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible.tsx";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty.tsx";
+import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb";
 import { cn } from "@/lib/utils.tsx";
 
 const PIE_COLORS = [

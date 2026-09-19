@@ -1,15 +1,4 @@
 import { createClient } from "@connectrpc/connect";
-import {
-  BotDesiredState,
-  type BotFleetSummary,
-  BotService,
-} from "@soulfiremc/sdk/generated/soulfire/bot_pb";
-import {
-  GlobalPermission,
-  InstancePermission,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import type { InstanceListResponse_Instance } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
-import { InstanceService } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -93,6 +82,17 @@ import {
 } from "@/components/ui/item.tsx";
 import { Kbd } from "@/components/ui/kbd.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import {
+  BotDesiredState,
+  type BotFleetSummary,
+  BotService,
+} from "@/generated/soulfire/bot_pb";
+import {
+  GlobalPermission,
+  InstancePermission,
+} from "@/generated/soulfire/common_pb";
+import type { InstanceListResponse_Instance } from "@/generated/soulfire/instance_pb";
+import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";

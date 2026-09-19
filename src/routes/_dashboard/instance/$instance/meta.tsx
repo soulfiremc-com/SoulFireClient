@@ -1,14 +1,6 @@
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
-import type { SettingsNamespace } from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import {
-  ComboSettingSchema,
-  InstancePermission,
-  StringSetting_InputType,
-  StringSettingSchema,
-} from "@soulfiremc/sdk/generated/soulfire/common_pb";
-import { InstanceService } from "@soulfiremc/sdk/generated/soulfire/instance_pb";
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -37,6 +29,14 @@ import {
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import type { SettingsNamespace } from "@/generated/soulfire/common_pb";
+import {
+  ComboSettingSchema,
+  InstancePermission,
+  StringSetting_InputType,
+  StringSettingSchema,
+} from "@/generated/soulfire/common_pb";
+import { InstanceService } from "@/generated/soulfire/instance_pb";
 import i18n from "@/lib/i18n";
 import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
