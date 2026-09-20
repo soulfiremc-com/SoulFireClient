@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Bot Terminali"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Konum ve Rotasyon",
       "position": "Konum",

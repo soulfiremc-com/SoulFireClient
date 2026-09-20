@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "봇 터미널"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "위치 및 회전",
       "position": "위치",

@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Terminal du bot"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Position & Rotation",
       "position": "Position",

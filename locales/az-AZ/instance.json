@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Bot Terminalı"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Mövqe & Fırlanma",
       "position": "Mövqe",

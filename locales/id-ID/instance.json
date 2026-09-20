@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Terminal Bot"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Posisi & Rotasi",
       "position": "Posisi",

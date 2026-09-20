@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Terminál Bota"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Pozice a rotace",
       "position": "Pozice",
