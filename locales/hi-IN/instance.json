@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "बॉट टर्मिनल"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "स्थिति और घूर्णन",
       "position": "स्थिति",

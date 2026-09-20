@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Термінал бота"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Позиція та обертання",
       "position": "Позиція",

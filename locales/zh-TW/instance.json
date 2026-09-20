@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "機器人終端機"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "位置與旋轉",
       "position": "位置",

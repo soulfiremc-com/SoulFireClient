@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "เทอร์มินัลบอท"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "ตำแหน่ง & การหมุน",
       "position": "ตำแหน่ง",

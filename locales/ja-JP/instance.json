@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "ボット端末"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "位置 & 回転",
       "position": "位置",

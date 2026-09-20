@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Parrot's Command Window"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Placement & Spin o' th' Ship",
       "position": "Location",

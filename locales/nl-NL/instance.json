@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Bot Terminal"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Positie & Rotatie",
       "position": "Positie",

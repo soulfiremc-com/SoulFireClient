@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "机器人终端"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "位置与朝向",
       "position": "位置",

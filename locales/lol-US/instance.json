@@ -381,6 +381,11 @@
     "terminalPanel": {
       "title": "Bot Termynal"
     },
+    "connectionPanel": {
+      "proxy": "",
+      "direct": "",
+      "unavailable": ""
+    },
     "positionPanel": {
       "title": "Pozishun & Rotashun",
       "position": "Pozishun",
