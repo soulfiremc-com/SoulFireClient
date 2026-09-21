@@ -382,9 +382,9 @@
       "title": "बॉट टर्मिनल"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "प्रॉक्सी",
+      "direct": "सीधा (कोई प्रॉक्सी नहीं)",
+      "unavailable": "उपलब्ध नहीं है"
     },
     "positionPanel": {
       "title": "स्थिति और घूर्णन",

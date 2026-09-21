@@ -382,9 +382,9 @@
       "title": "Botti-terminaali"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "Välityspalvelin​",
+      "direct": "Suora (ei välityspalvelinta)",
+      "unavailable": "Ei käytettävissä"
     },
     "positionPanel": {
       "title": "Sijainti & kääntö",

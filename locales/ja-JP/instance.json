@@ -382,9 +382,9 @@
       "title": "ボット端末"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "プロキシ",
+      "direct": "直接（プロキシなし）",
+      "unavailable": "利用できません"
     },
     "positionPanel": {
       "title": "位置 & 回転",

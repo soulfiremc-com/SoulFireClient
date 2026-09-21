@@ -382,9 +382,9 @@
       "title": "Bot Terminal"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "Proxy",
+      "direct": "Trực tiếp (không dùng proxy)",
+      "unavailable": "Không khả dụng"
     },
     "positionPanel": {
       "title": "Vị trí & Xoay",
