@@ -382,9 +382,9 @@
       "title": "Bot Terminali"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "Proxy Sunucusu",
+      "direct": "Doğrudan (proxy yok)",
+      "unavailable": "Kullanılamıyor"
     },
     "positionPanel": {
       "title": "Konum ve Rotasyon",

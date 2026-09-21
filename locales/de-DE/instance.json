@@ -382,9 +382,9 @@
       "title": "Bot-Terminal"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "Proxy",
+      "direct": "Direkt (kein Proxy)",
+      "unavailable": "Nicht verfügbar"
     },
     "positionPanel": {
       "title": "Position & Rotation",

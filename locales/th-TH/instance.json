@@ -382,9 +382,9 @@
       "title": "เทอร์มินัลบอท"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "พร็อกซี",
+      "direct": "เชื่อมต่อโดยตรง (ไม่ใช้พร็อกซี)",
+      "unavailable": "ไม่พร้อมใช้งาน"
     },
     "positionPanel": {
       "title": "ตำแหน่ง & การหมุน",

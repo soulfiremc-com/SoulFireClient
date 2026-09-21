@@ -382,9 +382,9 @@
       "title": "機器人終端機"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "代理伺服器",
+      "direct": "直接（無代理伺服器）",
+      "unavailable": "無法使用"
     },
     "positionPanel": {
       "title": "位置與旋轉",

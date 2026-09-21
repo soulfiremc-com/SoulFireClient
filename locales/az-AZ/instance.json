@@ -382,9 +382,9 @@
       "title": "Bot Terminalı"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "Proksi",
+      "direct": "Birbaşa (proksisiz)",
+      "unavailable": "Mövcud deyil"
     },
     "positionPanel": {
       "title": "Mövqe & Fırlanma",

@@ -382,9 +382,9 @@
       "title": "봇 터미널"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "프록시",
+      "direct": "직접 연결(프록시 없음)",
+      "unavailable": "사용 불가"
     },
     "positionPanel": {
       "title": "위치 및 회전",

@@ -382,9 +382,9 @@
       "title": "Terminal Bota"
     },
     "connectionPanel": {
-      "proxy": "",
-      "direct": "",
-      "unavailable": ""
+      "proxy": "Proxy",
+      "direct": "Bezpośrednio (bez proxy)",
+      "unavailable": "Niedostępne"
     },
     "positionPanel": {
       "title": "Pozycja i obrót",
