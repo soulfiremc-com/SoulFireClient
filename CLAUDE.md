@@ -52,6 +52,7 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 - `@shadcn/lint` checks unknown classes, raw colors, and arbitrary values as errors.
 - Arbitrary layout values are allowed. All three shadcn rules are off in `src/components/ui/`.
 - Oxlint's other checks still run in `src/components/ui/`.
+- Oxfmt leaves `src/components/ui/` unchanged.
 - Pre-commit hook runs lint-staged with Oxlint and Oxfmt.
 - Generated protocol bindings and the route tree are ignored by Oxlint.
 

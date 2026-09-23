@@ -53,7 +53,8 @@ type ScrollVisibility = {
 };
 
 interface ScrollerProps
-  extends VariantProps<typeof scrollerVariants>, React.ComponentProps<"div"> {
+  extends VariantProps<typeof scrollerVariants>,
+    React.ComponentProps<"div"> {
   size?: number;
   offset?: number;
   asChild?: boolean;

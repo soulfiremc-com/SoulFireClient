@@ -20,6 +20,7 @@
     "out",
     "postcss.config.mjs",
     "src/routeTree.gen.ts",
+    "src/components/ui",
     "shared-modules",
     "locales",
     "src/generated"

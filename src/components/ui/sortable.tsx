@@ -309,7 +309,8 @@ function Sortable<T>(props: SortableProps<T>) {
 const SortableContentContext = React.createContext<boolean>(false);
 
 interface SortableContentProps
-  extends useRender.ComponentProps<"div">, React.ComponentProps<"div"> {
+  extends useRender.ComponentProps<"div">,
+    React.ComponentProps<"div"> {
   strategy?: SortableContextProps["strategy"];
   children: React.ReactNode;
 }
@@ -370,7 +371,8 @@ function useSortableItemContext(consumerName: string) {
 }
 
 interface SortableItemProps
-  extends useRender.ComponentProps<"div">, React.ComponentProps<"div"> {
+  extends useRender.ComponentProps<"div">,
+    React.ComponentProps<"div"> {
   value: UniqueIdentifier;
   asHandle?: boolean;
   disabled?: boolean;
@@ -475,7 +477,8 @@ function SortableItem(props: SortableItemProps) {
 }
 
 interface SortableItemHandleProps
-  extends useRender.ComponentProps<"button">, React.ComponentProps<"button"> {}
+  extends useRender.ComponentProps<"button">,
+    React.ComponentProps<"button"> {}
 
 function SortableItemHandle(props: SortableItemHandleProps) {
   const { render, disabled, className, ref, ...itemHandleProps } = props;
@@ -529,10 +532,8 @@ const dropAnimation: DropAnimation = {
   }),
 };
 
-interface SortableOverlayProps extends Omit<
-  React.ComponentProps<typeof DragOverlay>,
-  "children"
-> {
+interface SortableOverlayProps
+  extends Omit<React.ComponentProps<typeof DragOverlay>, "children"> {
   container?: Element | DocumentFragment | null;
   children?:
     | ((params: { value: UniqueIdentifier }) => React.ReactNode)
