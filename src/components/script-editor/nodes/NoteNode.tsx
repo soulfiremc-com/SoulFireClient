@@ -68,7 +68,7 @@ function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
             nodeId={id}
             value={label}
             onSubmit={handleLabelSubmit}
-            className="text-sm font-semibold text-black/80"
+            variant="note"
           />
         </div>
 

@@ -12,7 +12,7 @@ interface EditableNodeLabelProps {
   nodeId: string;
   value: string;
   onSubmit: (value: string) => void;
-  className?: string;
+  variant?: "default" | "muted" | "frame" | "selectedFrame" | "note";
 }
 
 /**
@@ -24,7 +24,7 @@ function EditableNodeLabelComponent({
   nodeId,
   value,
   onSubmit,
-  className,
+  variant = "default",
 }: EditableNodeLabelProps) {
   const { renamingNodeId, clearRenamingNodeId } = useNodeEditing();
   const [editing, setEditing] = useState(false);
@@ -58,6 +58,14 @@ function EditableNodeLabelComponent({
     [onSubmit],
   );
 
+  const labelClasses = cn(
+    variant !== "note" && "text-sm font-medium",
+    variant === "muted" && "line-through",
+    variant === "frame" && "text-muted-foreground",
+    variant === "selectedFrame" && "text-primary",
+    variant === "note" && "text-sm font-semibold text-black/80",
+  );
+
   return (
     <Editable
       value={value}
@@ -72,13 +80,13 @@ function EditableNodeLabelComponent({
         <EditablePreview
           className={cn(
             "cursor-text truncate border-none px-0 py-0",
-            className,
+            labelClasses,
           )}
         />
         <EditableInput
           className={cn(
             "border-none bg-transparent px-0 py-0 shadow-none focus-visible:ring-0",
-            className,
+            labelClasses,
           )}
         />
       </EditableArea>

@@ -49,8 +49,10 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 ### Linting
 
 - Oxlint checks JavaScript and TypeScript. Oxfmt formats the project.
-- `@shadcn/lint` checks unknown classes, raw colors, and arbitrary values as errors.
-- Arbitrary layout values are allowed. All three shadcn rules are off in `src/components/ui/`.
+- `@shadcn/lint` enforces unknown classes, raw colors, arbitrary values, component restyling, static classes, and inline styles as errors.
+- Arbitrary layout values are allowed. Component restyling uses explicit contracts for existing consumer styling, with broader spacing or typography contracts only where those component parts need them.
+- Inline styles are restricted to the listed properties in specific chart, editor, and positioning files. Three files with dynamic style objects have file-specific exemptions.
+- All six shadcn rules are off in `src/components/ui/`.
 - Oxlint's other checks still run in `src/components/ui/`.
 - Oxfmt leaves `src/components/ui/` unchanged.
 - Pre-commit hook runs lint-staged with Oxlint and Oxfmt.

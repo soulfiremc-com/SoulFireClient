@@ -18,9 +18,483 @@
     "src/routeTree.gen.ts"
   ],
   "rules": {
-    "shadcn/no-unknown-classes": ["error", { "allow": ["nodrag", "nopan"] }],
+    "shadcn/no-unknown-classes": [
+      "error",
+      {
+        "allow": ["nodrag", "nopan"]
+      }
+    ],
     "shadcn/no-raw-colors": "error",
-    "shadcn/no-arbitrary-values": ["error", { "allow": ["layout"] }]
+    "shadcn/no-arbitrary-values": [
+      "error",
+      {
+        "allow": ["layout"]
+      }
+    ],
+    "shadcn/no-restyle": [
+      "error",
+      {
+        "allow": ["layout"],
+        "contracts": [
+          {
+            "pattern": "^Badge$",
+            "allow": [
+              "layout",
+              "bg-success-strong",
+              "border",
+              "border-background/80",
+              "border-destructive/40",
+              "border-success/40",
+              "border-warning/40",
+              "rounded-full",
+              "rounded-sm",
+              "rounded-xs",
+              "shadow-sm",
+              "spacing",
+              "text-destructive",
+              "text-muted-foreground",
+              "text-success-emphasis",
+              "text-warning-emphasis",
+              "typography"
+            ]
+          },
+          {
+            "pattern": "^BreadcrumbItem$",
+            "allow": ["layout", "truncate"]
+          },
+          {
+            "pattern": "^Button$",
+            "allow": [
+              "layout",
+              "active:bg-destructive/90",
+              "bg-secondary/50",
+              "border",
+              "border-dashed",
+              "border-l-0",
+              "border-r-0",
+              "border-secondary",
+              "dark:bg-input/30",
+              "disabled:hover:bg-transparent",
+              "disabled:text-sidebar-foreground/35",
+              "font-normal",
+              "gap-1",
+              "gap-1.5",
+              "gap-2",
+              "hover:bg-destructive",
+              "hover:bg-secondary/70",
+              "hover:bg-sidebar-accent",
+              "hover:text-sidebar-accent-foreground",
+              "hover:text-white",
+              "opacity-50",
+              "p-0",
+              "px-0",
+              "px-1.5",
+              "px-2",
+              "py-0",
+              "rounded",
+              "rounded-full",
+              "rounded-l-md",
+              "rounded-none",
+              "rounded-none!",
+              "rounded-r-md",
+              "shadow-lg",
+              "shadow-none",
+              "text-balance",
+              "text-inherit",
+              "text-muted-foreground",
+              "text-sidebar-foreground/72",
+              "text-sm",
+              "text-xs",
+              "transition-colors"
+            ]
+          },
+          {
+            "pattern": "^Card$",
+            "allow": [
+              "layout",
+              "border-0",
+              "hover:bg-muted/50",
+              "transition-colors"
+            ]
+          },
+          {
+            "pattern": "^CardContent$",
+            "allow": ["layout", "spacing", "text-muted-foreground", "text-sm"]
+          },
+          {
+            "pattern": "^CardDescription$",
+            "allow": ["layout", "gap-2", "line-clamp-2", "text-destructive"]
+          },
+          {
+            "pattern": "^CardFooter$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^CardHeader$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^CardTitle$",
+            "allow": ["layout", "spacing", "typography"]
+          },
+          {
+            "pattern": "^Checkbox$",
+            "allow": ["layout", "nodrag", "nopan"]
+          },
+          {
+            "pattern": "^CollapsibleContent$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^CollapsibleTrigger$",
+            "allow": [
+              "layout",
+              "font-medium",
+              "gap-2",
+              "hover:bg-muted",
+              "hover:bg-muted/50",
+              "px-2",
+              "px-4",
+              "py-1.5",
+              "py-3",
+              "ring-1",
+              "ring-foreground/10",
+              "rounded-md",
+              "rounded-xl",
+              "text-sm",
+              "transition-colors"
+            ]
+          },
+          {
+            "pattern": "^CredenzaBody$",
+            "allow": ["layout", "spacing", "text-sm"]
+          },
+          {
+            "pattern": "^CredenzaContent$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^CredenzaFooter$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^CredenzaTitle$",
+            "allow": ["layout", "gap-2"]
+          },
+          {
+            "pattern": "^DropdownMenuCheckboxItem$",
+            "allow": ["layout", "[&_svg]:text-muted-foreground", "pl-2", "pr-8"]
+          },
+          {
+            "pattern": "^DropdownMenuContent$",
+            "allow": ["layout", "rounded-lg"]
+          },
+          {
+            "pattern": "^DropdownMenuItem$",
+            "allow": ["layout", "[&_svg]:text-muted-foreground", "pl-2"]
+          },
+          {
+            "pattern": "^DropdownMenuLabel$",
+            "allow": [
+              "layout",
+              "font-normal",
+              "p-0",
+              "text-muted-foreground",
+              "text-xs",
+              "truncate"
+            ]
+          },
+          {
+            "pattern": "^DropdownMenuTrigger$",
+            "allow": [
+              "layout",
+              "[&_svg]:text-muted-foreground",
+              "data-[state=open]:bg-accent",
+              "focus:outline-none",
+              "focus:ring-1",
+              "focus:ring-ring",
+              "gap-1.5",
+              "hover:bg-accent",
+              "px-2",
+              "py-1.5",
+              "rounded-md"
+            ]
+          },
+          {
+            "pattern": "^Editable$",
+            "allow": ["layout", "gap-0"]
+          },
+          {
+            "pattern": "^EditableArea$",
+            "allow": ["layout", "nodrag", "nopan"]
+          },
+          {
+            "pattern": "^EditableInput$",
+            "allow": [
+              "layout",
+              "bg-transparent",
+              "border-none",
+              "focus-visible:ring-0",
+              "font-medium",
+              "font-semibold",
+              "line-through",
+              "px-0",
+              "py-0",
+              "shadow-none",
+              "text-black/80",
+              "text-muted-foreground",
+              "text-primary",
+              "text-sm"
+            ]
+          },
+          {
+            "pattern": "^EditablePreview$",
+            "allow": [
+              "layout",
+              "border-none",
+              "font-medium",
+              "font-semibold",
+              "line-through",
+              "px-0",
+              "py-0",
+              "text-black/80",
+              "text-muted-foreground",
+              "text-primary",
+              "text-sm",
+              "truncate"
+            ]
+          },
+          {
+            "pattern": "^Empty$",
+            "allow": [
+              "layout",
+              "bg-card",
+              "border",
+              "border-0",
+              "p-2",
+              "p-3",
+              "p-4",
+              "p-6",
+              "px-0",
+              "px-4",
+              "py-8",
+              "rounded-none",
+              "rounded-xl"
+            ]
+          },
+          {
+            "pattern": "^EmptyHeader$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^EmptyTitle$",
+            "allow": ["layout", "text-muted-foreground", "text-sm", "text-xs"]
+          },
+          {
+            "pattern": "^Field$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^FieldDescription$",
+            "allow": ["layout", "typography"]
+          },
+          {
+            "pattern": "^FieldGroup$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^FieldLabel$",
+            "allow": ["layout", "text-muted-foreground", "text-xs"]
+          },
+          {
+            "pattern": "^FieldSet$",
+            "allow": ["layout", "border", "gap-3", "gap-4", "p-3", "rounded-lg"]
+          },
+          {
+            "pattern": "^FieldTitle$",
+            "allow": ["layout", "truncate"]
+          },
+          {
+            "pattern": "^Input$",
+            "allow": [
+              "layout",
+              "font-medium",
+              "font-mono",
+              "pr-8",
+              "px-1.5",
+              "rounded",
+              "rounded-none",
+              "text-sm"
+            ]
+          },
+          {
+            "pattern": "^Item$",
+            "allow": ["layout", "p-4", "px-6", "py-4", "rounded-lg"]
+          },
+          {
+            "pattern": "^ItemContent$",
+            "allow": ["layout", "leading-tight", "spacing", "text-base"]
+          },
+          {
+            "pattern": "^ItemDescription$",
+            "allow": ["layout", "gap-2", "line-clamp-none", "text-sm"]
+          },
+          {
+            "pattern": "^ItemGroup$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^ItemTitle$",
+            "allow": ["layout", "text-lg", "truncate"]
+          },
+          {
+            "pattern": "^Kbd$",
+            "allow": [
+              "layout",
+              "bg-background",
+              "border",
+              "font-mono",
+              "font-normal",
+              "opacity-60",
+              "px-1.5",
+              "px-2",
+              "shadow-xs",
+              "text-2xs",
+              "text-3xs",
+              "text-foreground",
+              "text-sm",
+              "tracking-widest"
+            ]
+          },
+          {
+            "pattern": "^PopoverContent$",
+            "allow": ["layout", "spacing"]
+          },
+          {
+            "pattern": "^ScrollArea$",
+            "allow": [
+              "layout",
+              "font-mono",
+              "pr-2",
+              "pr-4",
+              "rounded-md",
+              "text-xs"
+            ]
+          },
+          {
+            "pattern": "^SelectContent$",
+            "allow": ["layout", "lowercase"]
+          },
+          {
+            "pattern": "^SelectItem$",
+            "allow": ["layout", "lowercase"]
+          },
+          {
+            "pattern": "^SelectTrigger$",
+            "allow": [
+              "layout",
+              "bg-transparent",
+              "border-r-0",
+              "lowercase",
+              "px-1.5",
+              "px-2.5",
+              "py-0.5",
+              "rounded",
+              "rounded-none"
+            ]
+          },
+          {
+            "pattern": "^Separator$",
+            "allow": [
+              "layout",
+              "bg-border",
+              "focus-visible:outline-none",
+              "focus-visible:ring-1",
+              "focus-visible:ring-offset-1",
+              "focus-visible:ring-ring"
+            ]
+          },
+          {
+            "pattern": "^SheetContent$",
+            "allow": ["layout", "p-0"]
+          },
+          {
+            "pattern": "^SidebarMenuButton$",
+            "allow": [
+              "layout",
+              "data-[state=open]:bg-sidebar-accent",
+              "data-[state=open]:text-sidebar-accent-foreground"
+            ]
+          },
+          {
+            "pattern": "^Skeleton$",
+            "allow": [
+              "layout",
+              "border-dashed",
+              "rounded",
+              "rounded-full",
+              "rounded-lg",
+              "rounded-md"
+            ]
+          },
+          {
+            "pattern": "^SortableContent$",
+            "allow": ["layout", "gap-1.5"]
+          },
+          {
+            "pattern": "^SortableItem$",
+            "allow": ["layout", "nodrag", "nopan"]
+          },
+          {
+            "pattern": "^SortableItemHandle$",
+            "allow": [
+              "layout",
+              "border",
+              "border-border/60",
+              "hover:bg-muted",
+              "hover:text-foreground",
+              "nodrag",
+              "nopan",
+              "rounded",
+              "text-muted-foreground",
+              "transition-colors"
+            ]
+          },
+          {
+            "pattern": "^TableCell$",
+            "allow": ["layout", "p-0"]
+          },
+          {
+            "pattern": "^TableRow$",
+            "allow": ["layout", "hover:bg-transparent"]
+          },
+          {
+            "pattern": "^ToggleGroup$",
+            "allow": ["layout", "border", "p-2", "rounded-lg"]
+          },
+          {
+            "pattern": "^ToggleGroupItem$",
+            "allow": ["layout", "px-2", "py-1", "text-xs"]
+          },
+          {
+            "pattern": "^TooltipContent$",
+            "allow": [
+              "layout",
+              "bg-accent",
+              "border",
+              "dark:bg-card",
+              "font-semibold",
+              "gap-2",
+              "px-2",
+              "py-1",
+              "text-foreground"
+            ]
+          }
+        ]
+      }
+    ],
+    "shadcn/require-static-classes": "error",
+    "shadcn/no-inline-styles": "error"
   },
   "overrides": [
     {
@@ -28,7 +502,304 @@
       "rules": {
         "shadcn/no-unknown-classes": "off",
         "shadcn/no-raw-colors": "off",
-        "shadcn/no-arbitrary-values": "off"
+        "shadcn/no-arbitrary-values": "off",
+        "shadcn/no-restyle": "off",
+        "shadcn/require-static-classes": "off",
+        "shadcn/no-inline-styles": "off"
+      }
+    },
+    {
+      "files": ["src/components/admin-metrics/server-metrics-charts.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["backgroundColor"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/command-input.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["left", "top"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/context-menu-portal.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["left", "top"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/custom-context-menu.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["left", "top"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/data-table/data-table-skeleton.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["minWidth", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/data-table/data-table.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": "off"
+      }
+    },
+    {
+      "files": ["src/components/instance-metrics/metrics-charts.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["backgroundColor"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/minecraft/minecraft-head.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["height", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/minecraft/vitals.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["height", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/pov/bot-pov-player.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["position"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/QuickAddMenu.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["backgroundColor", "left", "maxHeight", "top"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/ScriptEditor.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": [
+              "bottom",
+              "left",
+              "overflow",
+              "position",
+              "right",
+              "top",
+              "zIndex"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/edges/DataEdge.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": [
+              "backgroundColor",
+              "color",
+              "opacity",
+              "stroke",
+              "strokeWidth",
+              "transform"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/edges/ExecutionEdge.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["strokeDasharray", "strokeWidth", "transform"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/BaseNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": "off"
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/DebugNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["background", "border", "borderRadius", "height", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/FrameNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["backgroundColor", "minHeight", "minWidth"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/GroupInputNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["background", "border", "borderRadius", "height", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/GroupNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["background", "border", "borderRadius", "height", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/GroupOutputNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["background", "border", "borderRadius", "height", "width"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/NoteNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["backgroundColor", "minHeight", "minWidth"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/script-editor/nodes/RerouteNode.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["background", "border"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/terminal.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["backgroundColor", "color"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/visually-hidden-input.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": "off"
+      }
+    },
+    {
+      "files": ["src/routes/_dashboard/instance/$instance/bot/$botId.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": [
+              "borderBottomColor",
+              "gridTemplateColumns",
+              "top",
+              "transform",
+              "width"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "src/routes/_dashboard/instance/$instance/script/$scriptId.tsx"
+      ],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          {
+            "allow": ["transform"]
+          }
+        ]
       }
     }
   ],

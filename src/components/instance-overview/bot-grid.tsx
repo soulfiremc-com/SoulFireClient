@@ -69,9 +69,11 @@ export type BotWithStatus =
     status?: BotListEntry["status"];
   };
 
+type StatusTone = "warning" | "success" | "destructive" | "muted";
+
 function connectionPhaseMeta(phase: BotConnectionPhase): {
   labelKey: string;
-  className: string;
+  tone: StatusTone;
   dot: string;
   showPing: boolean;
 } {
@@ -79,68 +81,71 @@ function connectionPhaseMeta(phase: BotConnectionPhase): {
     case BotConnectionPhase.CONNECTING:
       return {
         labelKey: "bots.connectionPhase.connecting",
-        className: "border-warning/40 text-warning-emphasis",
+        tone: "warning",
         dot: "bg-warning",
         showPing: false,
       };
     case BotConnectionPhase.CONNECTED:
       return {
         labelKey: "bots.connectionPhase.connected",
-        className: "border-success/40 text-success-emphasis",
+        tone: "success",
         dot: "bg-success",
         showPing: true,
       };
     case BotConnectionPhase.SPAWNED:
       return {
         labelKey: "bots.connectionPhase.spawned",
-        className: "border-success/40 text-success-emphasis",
+        tone: "success",
         dot: "bg-success",
         showPing: true,
       };
     case BotConnectionPhase.DIED:
       return {
         labelKey: "bots.connectionPhase.died",
-        className: "border-destructive/40 text-destructive",
+        tone: "destructive",
         dot: "bg-destructive",
         showPing: true,
       };
     default:
       return {
         labelKey: "bots.connectionPhase.disconnected",
-        className: "text-muted-foreground",
+        tone: "muted",
         dot: "bg-muted-foreground/50",
         showPing: false,
       };
   }
 }
 
-function controllerStateMeta(status: BotListEntry["status"] | undefined) {
+function controllerStateMeta(status: BotListEntry["status"] | undefined): {
+  labelKey: string;
+  tone: StatusTone;
+} {
   switch (status?.runtimeState) {
     case BotRuntimeState.QUEUED:
     case BotRuntimeState.STARTING:
       return {
         labelKey: "bots.runtimeState.starting",
-        className: "border-warning/40 text-warning-emphasis",
+        tone: "warning",
       };
     case BotRuntimeState.RUNNING:
       return {
         labelKey: "bots.runtimeState.running",
-        className: "border-success/40 text-success-emphasis",
+        tone: "success",
       };
     case BotRuntimeState.RETRYING:
       return {
         labelKey: "bots.runtimeState.retrying",
-        className: "border-warning/40 text-warning-emphasis",
+        tone: "warning",
       };
     case BotRuntimeState.STOPPING:
       return {
         labelKey: "bots.runtimeState.stopping",
-        className: "text-muted-foreground",
+        tone: "muted",
       };
     case BotRuntimeState.FAILED:
       return {
         labelKey: "bots.runtimeState.failed",
-        className: "border-destructive/40 text-destructive",
+        tone: "destructive",
       };
     default:
       return {
@@ -148,7 +153,7 @@ function controllerStateMeta(status: BotListEntry["status"] | undefined) {
           status?.desiredState === BotDesiredState.RUNNING
             ? "bots.runtimeState.waiting"
             : "bots.runtimeState.stopped",
-        className: "text-muted-foreground",
+        tone: "muted",
       };
   }
 }
@@ -159,7 +164,13 @@ function ControllerStateBadge({ status }: { status?: BotListEntry["status"] }) {
   return (
     <Badge
       variant="outline"
-      className={cn("text-xs", meta.className)}
+      className={cn(
+        "text-xs",
+        meta.tone === "warning" && "border-warning/40 text-warning-emphasis",
+        meta.tone === "success" && "border-success/40 text-success-emphasis",
+        meta.tone === "destructive" && "border-destructive/40 text-destructive",
+        meta.tone === "muted" && "text-muted-foreground",
+      )}
       title={status?.lastError}
     >
       {t(meta.labelKey)}
@@ -182,7 +193,14 @@ export function ConnectionPhaseBadge({
   return (
     <Badge
       variant="outline"
-      className={cn("gap-1 text-xs", meta.className, className)}
+      className={cn(
+        "gap-1 text-xs",
+        meta.tone === "warning" && "border-warning/40 text-warning-emphasis",
+        meta.tone === "success" && "border-success/40 text-success-emphasis",
+        meta.tone === "destructive" && "border-destructive/40 text-destructive",
+        meta.tone === "muted" && "text-muted-foreground",
+        className,
+      )}
     >
       <span className={cn("size-1.5 rounded-full", meta.dot)} />
       {t(meta.labelKey)}

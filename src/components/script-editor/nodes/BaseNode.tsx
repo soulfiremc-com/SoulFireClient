@@ -515,7 +515,7 @@ function BaseNodeComponent({
           nodeId={id}
           value={displayLabel}
           onSubmit={handleLabelSubmit}
-          className={cn("text-sm font-medium", isMuted && "line-through")}
+          variant={isMuted ? "muted" : "default"}
         />
         {isMuted && supportsMuting && (
           <span className="text-xs text-muted-foreground">(muted)</span>

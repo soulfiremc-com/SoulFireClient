@@ -73,10 +73,7 @@ function FrameNodeComponent({ id, data, selected }: FrameNodeProps) {
             nodeId={id}
             value={label}
             onSubmit={handleLabelSubmit}
-            className={cn(
-              "text-sm font-medium",
-              selected ? "text-primary" : "text-muted-foreground",
-            )}
+            variant={selected ? "selectedFrame" : "frame"}
           />
           {data.locked && <span className="ml-1 text-xs opacity-50">🔒</span>}
         </div>
