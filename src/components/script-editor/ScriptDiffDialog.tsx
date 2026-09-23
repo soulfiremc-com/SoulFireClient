@@ -118,27 +118,27 @@ export function ScriptDiffDialog() {
         </CredenzaHeader>
         <CredenzaBody className="space-y-2 text-sm">
           {diff.addedNodes.length > 0 && (
-            <div className="text-green-500">
+            <div className="text-success">
               + {diff.addedNodes.length} node(s) added
             </div>
           )}
           {diff.removedNodes.length > 0 && (
-            <div className="text-red-500">
+            <div className="text-destructive">
               - {diff.removedNodes.length} node(s) removed
             </div>
           )}
           {diff.modifiedNodes.length > 0 && (
-            <div className="text-yellow-500">
+            <div className="text-warning-muted">
               ~ {diff.modifiedNodes.length} node(s) modified
             </div>
           )}
           {diff.addedEdges.length > 0 && (
-            <div className="text-green-500">
+            <div className="text-success">
               + {diff.addedEdges.length} edge(s) added
             </div>
           )}
           {diff.removedEdges.length > 0 && (
-            <div className="text-red-500">
+            <div className="text-destructive">
               - {diff.removedEdges.length} edge(s) removed
             </div>
           )}

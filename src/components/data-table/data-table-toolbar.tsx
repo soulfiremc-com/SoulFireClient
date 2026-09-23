@@ -13,8 +13,9 @@ import { Input } from "@/components/ui/input";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableToolbarProps<TData extends RowData>
-  extends React.ComponentProps<"div"> {
+interface DataTableToolbarProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: ReactTable<typeof dataTableFeatures, TData>;
 }
 

@@ -45,7 +45,7 @@ import { formatDate } from "@/lib/format";
 import { generateId } from "@/lib/id";
 import { getFiltersStateParser } from "@/lib/parsers";
 import { cn } from "@/lib/utils";
-import type { ExtendedColumnFilter, FilterOperator } from "@/types/data-table";
+import type { ExtendedColumnFilter } from "@/types/data-table";
 
 const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
@@ -56,8 +56,9 @@ const BOOLEAN_FILTER_ITEMS = [
   { label: "False", value: "false" },
 ] as const;
 
-interface DataTableFilterMenuProps<TData extends RowData>
-  extends React.ComponentProps<typeof PopoverContent> {
+interface DataTableFilterMenuProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   debounceMs?: number;
   throttleMs?: number;

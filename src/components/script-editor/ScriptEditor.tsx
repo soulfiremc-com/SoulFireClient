@@ -737,7 +737,6 @@ export function ScriptEditor() {
   }, [editor.document.setState]);
 
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: ReactFlow canvas wrapper requires keyboard and mouse handling for operations
     <div
       ref={containerRef}
       className="h-full w-full relative outline-none"
@@ -805,8 +804,6 @@ export function ScriptEditor() {
       {nodeContextMenu && (
         <>
           {/* Backdrop - closes menu on click, prevents native context menu on right-click */}
-          {/* biome-ignore lint/a11y/useKeyWithClickEvents: Backdrop dismissal doesn't need keyboard */}
-          {/* biome-ignore lint/a11y/noStaticElementInteractions: Backdrop is not focusable */}
           <div
             className="fixed inset-0 z-[99]"
             onClick={() => setNodeContextMenu(null)}
@@ -899,7 +896,7 @@ export function ScriptEditor() {
                 reactFlowInstance.flowToScreenPosition(linkCutting.endPoint).y -
                 (containerRef.current?.getBoundingClientRect().top ?? 0)
               }
-              stroke="red"
+              stroke="var(--destructive)"
               strokeWidth={2}
               strokeDasharray="5,5"
             />

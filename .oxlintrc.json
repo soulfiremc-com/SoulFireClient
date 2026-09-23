@@ -1,0 +1,39 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "jsPlugins": ["@shadcn/lint"],
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": [
+    "build/**",
+    "dist/**",
+    "dist-electron/**",
+    "locales/**",
+    "out/**",
+    "postcss.config.mjs",
+    "release-artifacts/**",
+    "shared-modules/**",
+    "src/generated/**",
+    "src/routeTree.gen.ts"
+  ],
+  "rules": {
+    "shadcn/no-unknown-classes": [
+      "error",
+      { "allow": ["nodrag", "nopan", "cn-input-otp", "toaster"] }
+    ],
+    "shadcn/no-raw-colors": "error",
+    "shadcn/no-arbitrary-values": ["error", { "allow": ["layout"] }]
+  },
+  "overrides": [
+    {
+      "files": ["src/components/ui/**"],
+      "rules": {
+        "shadcn/no-arbitrary-values": "off"
+      }
+    }
+  ],
+  "env": {
+    "builtin": true
+  }
+}

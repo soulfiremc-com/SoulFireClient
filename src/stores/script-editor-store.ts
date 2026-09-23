@@ -565,7 +565,7 @@ export function createScriptEditorSession() {
         ...state,
         nodes: nodes.map((n) => {
           if (n.id === nodeId) {
-            const { parentFrameId, ...restData } = n.data;
+            const { parentFrameId: _parentFrameId, ...restData } = n.data;
             return { ...n, data: restData };
           }
           if (n.id === frameId && n.data.containedNodes) {

@@ -404,7 +404,7 @@ function Index() {
                       a: (
                         <ExternalLink
                           href="https://soulfiremc.com/demo-video?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-demo-video"
-                          className="text-nowrap text-blue-500"
+                          className="text-nowrap text-info"
                         />
                       ),
                     }}
@@ -420,7 +420,7 @@ function Index() {
                   <>
                     {APP_ENVIRONMENT === "production" && (
                       <a
-                        className="text-blue-500"
+                        className="text-info"
                         href="https://preview.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-preview"
                       >
                         {t("footer.preview")}
@@ -428,7 +428,7 @@ function Index() {
                     )}
                     {APP_ENVIRONMENT === "preview" && (
                       <a
-                        className="text-blue-500"
+                        className="text-info"
                         href="https://app.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-production"
                       >
                         {t("footer.production")}
@@ -614,7 +614,6 @@ function IntegratedMenu({
   setLoginType: (type: LoginType) => void;
   startIntegratedServer: (onError: () => void) => void;
 }) {
-  const { t } = useTranslation("login");
   const hasAutoStarted = useRef(false);
   const [integratedState, setIntegratedState] = useState<IntegratedState>(
     autoStart ? "loading" : "configure",
@@ -1312,13 +1311,13 @@ function IntegratedMobileMenu({
                   a: (
                     <ExternalLink
                       href="https://wiki.termux.com/wiki/Installation"
-                      className="text-nowrap text-blue-500"
+                      className="text-nowrap text-info"
                     />
                   ),
                   copy: (
                     <button
                       type="button"
-                      className="font-bold text-blue-500"
+                      className="font-bold text-info"
                       onClick={() => {
                         copyToClipboard("generate-token api");
                       }}

@@ -12,7 +12,7 @@ export function PovStreamOverlay({ metrics }: { metrics: PovStreamMetrics }) {
 
   return (
     <div
-      className="pointer-events-none absolute top-2 right-2 z-10 rounded bg-black/80 px-2 py-1.5 font-mono text-[11px] leading-4 text-white tabular-nums"
+      className="pointer-events-none absolute top-2 right-2 z-10 rounded bg-black/80 px-2 py-1.5 font-mono text-2xs leading-4 text-white tabular-nums"
       aria-hidden="true"
     >
       <div>{stats?.format ?? "POV stream metrics"}</div>

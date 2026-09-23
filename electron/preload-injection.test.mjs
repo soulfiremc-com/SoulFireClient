@@ -33,25 +33,29 @@ function runCommand(command, args, options = {}) {
   });
 }
 
-test("Electron preload bundle exposes the explicit bridge and no legacy desktop RPC bus", {
-  timeout: 120_000,
-}, async () => {
-  const build = await runCommand("bunx", ["vite", "build"], {
-    env: {
-      ...process.env,
-      SF_ELECTRON: "1",
-    },
-  });
+test(
+  "Electron preload bundle exposes the explicit bridge and no legacy desktop RPC bus",
+  {
+    timeout: 120_000,
+  },
+  async () => {
+    const build = await runCommand("bunx", ["vite", "build"], {
+      env: {
+        ...process.env,
+        SF_ELECTRON: "1",
+      },
+    });
 
-  assert.equal(build.code, 0, build.stderr || build.stdout);
+    assert.equal(build.code, 0, build.stderr || build.stdout);
 
-  const preloadBundle = await readFile(
-    path.join(repoRoot, "dist-electron", "preload.mjs"),
-    "utf8",
-  );
+    const preloadBundle = await readFile(
+      path.join(repoRoot, "dist-electron", "preload.mjs"),
+      "utf8",
+    );
 
-  assert.match(preloadBundle, /soulfireElectron/);
-  assert.doesNotMatch(preloadBundle, /desktop:call/);
-  assert.doesNotMatch(preloadBundle, /desktop:emit/);
-  assert.doesNotMatch(preloadBundle, /sendSync\(/);
-});
+    assert.match(preloadBundle, /soulfireElectron/);
+    assert.doesNotMatch(preloadBundle, /desktop:call/);
+    assert.doesNotMatch(preloadBundle, /desktop:emit/);
+    assert.doesNotMatch(preloadBundle, /sendSync\(/);
+  },
+);

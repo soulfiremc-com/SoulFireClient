@@ -88,7 +88,7 @@ function DataEdge({
           >
             <Badge
               variant={selected ? "default" : "secondary"}
-              className="h-5 min-w-5 rounded-full border border-background/80 px-1 font-mono text-[10px] shadow-sm"
+              className="h-5 min-w-5 rounded-full border border-background/80 px-1 font-mono text-3xs shadow-sm"
               style={{
                 backgroundColor: selected ? color : undefined,
                 color: selected ? "var(--background)" : undefined,

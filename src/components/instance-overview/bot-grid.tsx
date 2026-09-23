@@ -79,31 +79,29 @@ function connectionPhaseMeta(phase: BotConnectionPhase): {
     case BotConnectionPhase.CONNECTING:
       return {
         labelKey: "bots.connectionPhase.connecting",
-        className: "border-amber-500/40 text-amber-600 dark:text-amber-400",
-        dot: "bg-amber-500",
+        className: "border-warning/40 text-warning-emphasis",
+        dot: "bg-warning",
         showPing: false,
       };
     case BotConnectionPhase.CONNECTED:
       return {
         labelKey: "bots.connectionPhase.connected",
-        className:
-          "border-emerald-500/40 text-emerald-600 dark:text-emerald-400",
-        dot: "bg-emerald-500",
+        className: "border-success/40 text-success-emphasis",
+        dot: "bg-success",
         showPing: true,
       };
     case BotConnectionPhase.SPAWNED:
       return {
         labelKey: "bots.connectionPhase.spawned",
-        className:
-          "border-emerald-500/40 text-emerald-600 dark:text-emerald-400",
-        dot: "bg-emerald-500",
+        className: "border-success/40 text-success-emphasis",
+        dot: "bg-success",
         showPing: true,
       };
     case BotConnectionPhase.DIED:
       return {
         labelKey: "bots.connectionPhase.died",
-        className: "border-red-500/40 text-red-600 dark:text-red-400",
-        dot: "bg-red-500",
+        className: "border-destructive/40 text-destructive",
+        dot: "bg-destructive",
         showPing: true,
       };
     default:
@@ -122,18 +120,17 @@ function controllerStateMeta(status: BotListEntry["status"] | undefined) {
     case BotRuntimeState.STARTING:
       return {
         labelKey: "bots.runtimeState.starting",
-        className: "border-amber-500/40 text-amber-700 dark:text-amber-400",
+        className: "border-warning/40 text-warning-emphasis",
       };
     case BotRuntimeState.RUNNING:
       return {
         labelKey: "bots.runtimeState.running",
-        className:
-          "border-emerald-500/40 text-emerald-700 dark:text-emerald-400",
+        className: "border-success/40 text-success-emphasis",
       };
     case BotRuntimeState.RETRYING:
       return {
         labelKey: "bots.runtimeState.retrying",
-        className: "border-amber-500/40 text-amber-700 dark:text-amber-400",
+        className: "border-warning/40 text-warning-emphasis",
       };
     case BotRuntimeState.STOPPING:
       return {

@@ -26,13 +26,13 @@ function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
     <div
       className={cn(
         "min-w-[140px] rounded-lg border-2 bg-card shadow-md",
-        "border-green-500/50",
+        "border-success/50",
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-border/50 bg-green-500/10 px-3 py-2">
-        <ArrowRightFromLine className="h-4 w-4 text-green-500" />
+      <div className="flex items-center gap-2 border-b border-border/50 bg-success/10 px-3 py-2">
+        <ArrowRightFromLine className="h-4 w-4 text-success" />
         <span className="text-sm font-medium">Group Input</span>
       </div>
 

@@ -36,7 +36,7 @@ export function BotFleetSummaryBadge({
         failed > 0
           ? "border-destructive/40 text-destructive"
           : desired > 0
-            ? "border-emerald-500/40 text-emerald-700 dark:text-emerald-400"
+            ? "border-success/40 text-success-emphasis"
             : "text-muted-foreground",
         className,
       )}

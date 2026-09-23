@@ -59,7 +59,6 @@ function DraggableNodeItem({
   }
 
   return (
-    // biome-ignore lint/a11y/useSemanticElements: drag source requires div for proper pointer behavior
     <div
       role="button"
       tabIndex={0}

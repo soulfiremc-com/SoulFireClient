@@ -121,7 +121,6 @@ function BotPovSession({
     navigator?.keyboard?.unlock();
   }, [captureToastId, actions]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Reconnect explicitly replaces the stream even when the bot is unchanged.
   useEffect(() => {
     if (!playing || !isOnline) return;
     let disposed = false;
@@ -923,7 +922,7 @@ function BotPovSession({
               <button
                 type="button"
                 onClick={capture}
-                className="absolute inset-0 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-[-2px]"
+                className="absolute inset-0 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
               >
                 <span className={buttonVariants()}>
                   <Gamepad2Icon data-icon="inline-start" />

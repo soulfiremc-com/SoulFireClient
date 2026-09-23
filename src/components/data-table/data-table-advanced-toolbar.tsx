@@ -7,8 +7,9 @@ import { DataTableViewOptions } from "@/components/data-table/data-table-view-op
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableAdvancedToolbarProps<TData extends RowData>
-  extends React.ComponentProps<"div"> {
+interface DataTableAdvancedToolbarProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: ReactTable<typeof dataTableFeatures, TData>;
 }
 

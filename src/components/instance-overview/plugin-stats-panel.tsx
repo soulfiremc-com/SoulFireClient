@@ -49,7 +49,7 @@ function PluginStatRow({
         {stat.enabled && (
           <Badge
             variant="outline"
-            className="border-emerald-500/40 text-xs text-emerald-600 dark:text-emerald-400"
+            className="border-success/40 text-xs text-success-emphasis"
           >
             {t("overview.plugins.active")}
           </Badge>
@@ -63,7 +63,7 @@ function PluginStatRow({
               title={metric.icon}
               className="bg-muted/40 flex flex-col gap-0.5 rounded-md px-2 py-1"
             >
-              <span className="text-muted-foreground text-[10px] tracking-wide uppercase">
+              <span className="text-muted-foreground text-3xs tracking-wide uppercase">
                 {metric.displayName}
               </span>
               <span className="font-mono text-sm leading-none font-semibold">

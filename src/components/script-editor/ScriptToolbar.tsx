@@ -317,7 +317,7 @@ export function ScriptToolbar({
               </TooltipContent>
             </Tooltip>
             {!isMobile && (
-              <Badge variant="default" className="gap-1.5 bg-green-600">
+              <Badge variant="default" className="gap-1.5 bg-success-strong">
                 <div className="size-2 animate-pulse rounded-full bg-white" />
                 {t("scripts.running")}
               </Badge>

@@ -20,8 +20,9 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTablePaginationProps<TData extends RowData>
-  extends React.ComponentProps<"div"> {
+interface DataTablePaginationProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   pageSizeOptions?: number[];
 }

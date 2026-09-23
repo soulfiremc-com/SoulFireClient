@@ -242,7 +242,7 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
     <div className="flex items-center gap-0.5">
       {errors.length > 0 && (
         <span
-          className="flex items-center justify-center size-4 rounded-full bg-red-500 text-white text-[9px] font-bold"
+          className="flex items-center justify-center size-4 rounded-full bg-destructive text-white text-4xs font-bold"
           title={errors.map((d) => d.message).join("\n")}
         >
           {errors.length}
@@ -250,7 +250,7 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
       )}
       {warnings.length > 0 && (
         <span
-          className="flex items-center justify-center size-4 rounded-full bg-yellow-500 text-white text-[9px] font-bold"
+          className="flex items-center justify-center size-4 rounded-full bg-warning-muted text-white text-4xs font-bold"
           title={warnings.map((d) => d.message).join("\n")}
         >
           {warnings.length}
@@ -271,16 +271,16 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
   const display = avg < 1 ? "<1ms" : `${Math.round(avg)}ms`;
   const colorClass =
     avg < 1
-      ? "text-green-500"
+      ? "text-success"
       : avg < 10
-        ? "text-yellow-500"
+        ? "text-warning-muted"
         : avg < 100
-          ? "text-orange-500"
-          : "text-red-500";
+          ? "text-warning-strong"
+          : "text-destructive";
 
   return (
     <span
-      className={`text-[10px] font-mono ${colorClass} bg-muted/50 px-1 rounded`}
+      className={`text-3xs font-mono ${colorClass} bg-muted/50 px-1 rounded`}
       title={`Avg execution time: ${avg.toFixed(2)}ms (last ${times.length} runs)`}
     >
       {display}
@@ -470,7 +470,7 @@ function BaseNodeComponent({
 
   // Use node color from server, or fall back to default gray
   const borderStyle = color ? { borderLeftColor: color } : undefined;
-  const borderClass = color ? "" : "border-l-gray-500";
+  const borderClass = color ? "" : "border-l-muted-foreground";
 
   return (
     <div
@@ -479,8 +479,7 @@ function BaseNodeComponent({
         "border-l-4",
         borderClass,
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
-        isActive &&
-          "ring-2 ring-green-500 ring-offset-2 ring-offset-background",
+        isActive && "ring-2 ring-success ring-offset-2 ring-offset-background",
         isMuted && "opacity-50 grayscale",
       )}
       style={borderStyle}
@@ -614,7 +613,7 @@ function BaseNodeComponent({
       {/* Muted pass-through indicator */}
       {isMuted && (
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="h-0.5 w-full bg-red-500/50" />
+          <div className="h-0.5 w-full bg-destructive/50" />
         </div>
       )}
     </div>

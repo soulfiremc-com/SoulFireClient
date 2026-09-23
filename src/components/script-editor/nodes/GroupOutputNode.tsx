@@ -26,13 +26,13 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
     <div
       className={cn(
         "min-w-[140px] rounded-lg border-2 bg-card shadow-md",
-        "border-red-500/50",
+        "border-destructive/50",
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-border/50 bg-red-500/10 px-3 py-2">
-        <ArrowLeftFromLine className="h-4 w-4 text-red-500" />
+      <div className="flex items-center gap-2 border-b border-border/50 bg-destructive/10 px-3 py-2">
+        <ArrowLeftFromLine className="h-4 w-4 text-destructive" />
         <span className="text-sm font-medium">Group Output</span>
       </div>
 

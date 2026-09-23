@@ -52,7 +52,6 @@ function DiscoverSkeleton() {
   return (
     <div className="grid h-full w-full grow grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 9 }).map((_, i) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
         <PluginCardSkeleton key={i} />
       ))}
     </div>

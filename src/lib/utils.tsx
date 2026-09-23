@@ -55,7 +55,6 @@ const emojiMap = APP_LOCALES.split(",").reduce<Record<string, FlagComponent>>(
     const countryCode = locale.split("-")[1];
     if (!countryCode) return acc;
 
-    // biome-ignore lint/performance/noDynamicNamespaceImportAccess: we need dynamic access here
     acc[countryCode] = Flags[countryCode as keyof typeof Flags];
     return acc;
   },
@@ -150,12 +149,12 @@ export function getGravatarUrl(email: string) {
 }
 
 export function data2blob(data: string) {
-  const bytes = new Array(data.length);
+  const bytes = new Uint8Array(data.length);
   for (let i = 0; i < data.length; i++) {
     bytes[i] = data.charCodeAt(i);
   }
 
-  return new Blob([new Uint8Array(bytes)]);
+  return new Blob([bytes]);
 }
 
 export function languageEmoji(locale: string): ReactNode {
@@ -210,7 +209,7 @@ export function updateEntry<T extends BaseSettings>(
     settings: {
       ...profile.settings,
       [namespace]: {
-        ...(profile.settings[namespace] || {}),
+        ...profile.settings[namespace],
         [settingKey]: value,
       },
     },

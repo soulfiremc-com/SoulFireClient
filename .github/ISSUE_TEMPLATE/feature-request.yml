@@ -1,6 +1,6 @@
 name: 💡 Feature Request
 description: Request a feature/enhancement
-labels: ['type: :bulb: enhancement']
+labels: ["type: :bulb: enhancement"]
 
 body:
   - type: checkboxes
@@ -17,6 +17,6 @@ body:
     attributes:
       label: Describe your feature request
       description: What do you want added to SoulFire?
-      placeholder: 'I want x feature added to SoulFire'
+      placeholder: "I want x feature added to SoulFire"
     validations:
       required: true

@@ -4,7 +4,6 @@ import type {
   ColumnSort,
   ReactTable,
   RowData,
-  SortDirection,
   SortingState,
 } from "@tanstack/react-table";
 import {
@@ -53,8 +52,9 @@ import { cn } from "@/lib/utils";
 const SORT_SHORTCUT_KEY = "s";
 const REMOVE_SORT_SHORTCUTS = ["backspace", "delete"];
 
-interface DataTableSortListProps<TData extends RowData>
-  extends React.ComponentProps<typeof PopoverContent> {
+interface DataTableSortListProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   disabled?: boolean;
 }
@@ -78,8 +78,9 @@ export function DataTableSortList<TData extends RowData>({
   );
 }
 
-interface DataTableSortListContentProps<TData extends RowData>
-  extends React.ComponentProps<typeof PopoverContent> {
+interface DataTableSortListContentProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   sorting: SortingState;
   disabled?: boolean;
@@ -218,7 +219,7 @@ function DataTableSortListContent<TData extends RowData>({
           {sorting.length > 0 && (
             <Badge
               variant="secondary"
-              className="h-[18.24px] rounded-[3.2px] px-[5.12px] font-mono font-normal text-[10.4px]"
+              className="h-[18.24px] rounded-xs px-1.25 font-mono font-normal text-3xs"
             >
               {sorting.length}
             </Badge>

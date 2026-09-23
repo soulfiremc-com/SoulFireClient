@@ -40,7 +40,6 @@ function RerouteNodeComponent({ data, selected }: RerouteNodeProps) {
       />
 
       {/* Input handle (left) */}
-      {/* biome-ignore lint/correctness/useUniqueElementIds: ReactFlow Handle id is a port identifier, not DOM id */}
       <Handle
         type="target"
         position={Position.Left}
@@ -49,7 +48,6 @@ function RerouteNodeComponent({ data, selected }: RerouteNodeProps) {
       />
 
       {/* Output handle (right) */}
-      {/* biome-ignore lint/correctness/useUniqueElementIds: ReactFlow Handle id is a port identifier, not DOM id */}
       <Handle
         type="source"
         position={Position.Right}

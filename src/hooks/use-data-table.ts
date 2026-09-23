@@ -35,7 +35,8 @@ const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 
 interface UseDataTableProps<TData extends RowData>
-  extends Omit<
+  extends
+    Omit<
       TableOptions<typeof dataTableFeatures, TData>,
       | "features"
       | "state"

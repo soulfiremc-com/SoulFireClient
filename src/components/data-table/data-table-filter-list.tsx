@@ -67,7 +67,6 @@ import { getFiltersStateParser } from "@/lib/parsers";
 import { cn } from "@/lib/utils";
 import type {
   ExtendedColumnFilter,
-  FilterOperator,
   JoinOperator,
   TableColumnMeta,
 } from "@/types/data-table";
@@ -81,8 +80,9 @@ const BOOLEAN_FILTER_ITEMS = [
   { label: "False", value: "false" },
 ] as const;
 
-interface DataTableFilterListProps<TData extends RowData>
-  extends React.ComponentProps<typeof PopoverContent> {
+interface DataTableFilterListProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   debounceMs?: number;
   throttleMs?: number;
@@ -246,7 +246,7 @@ export function DataTableFilterList<TData extends RowData>({
           {filters.length > 0 && (
             <Badge
               variant="secondary"
-              className="h-[18.24px] rounded-[3.2px] px-[5.12px] font-mono font-normal text-[10.4px]"
+              className="h-[18.24px] rounded-xs px-1.25 font-mono font-normal text-3xs"
             >
               {filters.length}
             </Badge>

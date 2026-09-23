@@ -2,7 +2,7 @@ name: Sync Crowdin
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 permissions:
   contents: write
@@ -26,10 +26,10 @@ jobs:
           localization_branch_name: l10n_crowdin_translations
           create_pull_request: true
           pull_request_base_branch_name: main
-          pull_request_title: 'chore(i18n): new crowdin translations'
-          pull_request_body: 'New translations from [SoulFireClient Crowdin](https://crowdin.com/project/soulfireclient)'
+          pull_request_title: "chore(i18n): new crowdin translations"
+          pull_request_body: "New translations from [SoulFireClient Crowdin](https://crowdin.com/project/soulfireclient)"
           pull_request_labels: crowdin
-          commit_message: 'chore(i18n): updated translations from crowdin'
+          commit_message: "chore(i18n): updated translations from crowdin"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}

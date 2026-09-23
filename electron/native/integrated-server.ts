@@ -27,9 +27,7 @@ import {
 
 const require = createRequire(__filename);
 const AdmZip = require("adm-zip") as {
-  new (
-    path: string,
-  ): {
+  new (path: string): {
     extractAllToAsync: (
       targetPath: string,
       overwrite?: boolean,

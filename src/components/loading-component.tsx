@@ -23,7 +23,6 @@ export function LoadingComponent() {
   return (
     <div className="flex size-full grow flex-col gap-4 p-4">
       {Array.from({ length: 10 }).map((_, index) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list, order doesn't matter
         <LoadingSkeleton key={`skeleton-${index}`} />
       ))}
     </div>

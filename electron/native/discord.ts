@@ -2,9 +2,7 @@ import { createRequire } from "node:module";
 
 const require = createRequire(__filename);
 const DiscordRpc = require("@xhayper/discord-rpc") as {
-  Client: new (options: {
-    transport: "ipc";
-  }) => {
+  Client: new (options: { transport: "ipc" }) => {
     login: (options: { clientId: string }) => Promise<void>;
     on: (event: string, handler: () => void) => void;
     setActivity: (activity: Record<string, unknown>) => Promise<void>;

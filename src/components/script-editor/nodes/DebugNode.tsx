@@ -116,13 +116,13 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
     <div
       className={cn(
         "min-w-[200px] rounded-lg border-2 bg-card shadow-md",
-        "border-amber-500/50",
+        "border-warning/50",
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
     >
       {/* Header */}
-      <div className="px-3 py-2 flex items-center gap-2 border-b border-border/50 bg-amber-500/10">
-        <Bug className="h-4 w-4 text-amber-500" />
+      <div className="px-3 py-2 flex items-center gap-2 border-b border-border/50 bg-warning/10">
+        <Bug className="h-4 w-4 text-warning" />
         <span className="text-sm font-medium flex-1">{label}</span>
         <Button
           variant="ghost"
@@ -151,7 +151,6 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
         <div className="flex items-center justify-between">
           {/* Input */}
           <div className="flex items-center gap-2">
-            {/* biome-ignore lint/correctness/useUniqueElementIds: ReactFlow Handle id is a port identifier, not DOM id */}
             <Handle
               type="target"
               position={Position.Left}
@@ -170,7 +169,6 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 
           {/* Output (pass-through) */}
           <div className="flex items-center gap-2 flex-row-reverse">
-            {/* biome-ignore lint/correctness/useUniqueElementIds: ReactFlow Handle id is a port identifier, not DOM id */}
             <Handle
               type="source"
               position={Position.Right}

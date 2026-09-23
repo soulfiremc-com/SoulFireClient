@@ -278,7 +278,7 @@ export function WindowTitlebar() {
           {pageIcon?.kind === "dynamic" && (
             <DynamicIcon
               name={pageIcon.name}
-              className="text-titlebar-foreground/58 size-3.5 shrink-0"
+              className="text-muted-foreground/58 size-3.5 shrink-0"
             />
           )}
           {pageIcon?.kind === "logo" && (
@@ -288,7 +288,7 @@ export function WindowTitlebar() {
               className="size-3.5 shrink-0 rounded-sm object-cover"
             />
           )}
-          <p className="text-titlebar-foreground/58 truncate text-[11px] font-medium tracking-[0.02em]">
+          <p className="text-muted-foreground/58 truncate text-2xs font-medium tracking-wide">
             {pageTitle}
           </p>
         </div>

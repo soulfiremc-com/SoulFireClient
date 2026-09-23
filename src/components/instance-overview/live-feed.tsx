@@ -134,7 +134,6 @@ export function LiveFeed({
     return () => abortController.abort();
   }, [instanceId, transport, canWatch, t]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run to keep the feed pinned to the latest entry
   useEffect(() => {
     const viewport = viewportRef.current;
     if (viewport) {

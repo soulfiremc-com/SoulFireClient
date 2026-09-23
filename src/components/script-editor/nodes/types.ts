@@ -766,18 +766,6 @@ export function protoCategoryToLocal(
 }
 
 /**
- * Get the border color style for a node based on its color property.
- * Falls back to a default gray if no color is specified.
- */
-export function getNodeBorderStyle(color?: string): string {
-  if (!color) {
-    return "border-l-gray-500";
-  }
-  // Use inline style for dynamic colors from server
-  return "";
-}
-
-/**
  * Get inline border color style for a node
  */
 export function getNodeBorderColor(color?: string): React.CSSProperties {

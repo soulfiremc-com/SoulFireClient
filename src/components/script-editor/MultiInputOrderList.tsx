@@ -46,14 +46,14 @@ function ItemCard({
     >
       <Badge
         variant="secondary"
-        className="h-5 min-w-5 rounded-full px-1 font-mono text-[10px]"
+        className="h-5 min-w-5 rounded-full px-1 font-mono text-3xs"
       >
         {item.index}
       </Badge>
       <div className="min-w-0 flex-1">
         <div className="truncate text-foreground">{item.label}</div>
         {item.sublabel && (
-          <div className="truncate text-[11px] text-muted-foreground">
+          <div className="truncate text-2xs text-muted-foreground">
             {item.sublabel}
           </div>
         )}
@@ -81,7 +81,7 @@ export function MultiInputOrderList({
 }: MultiInputOrderListProps) {
   if (items.length === 0) {
     return (
-      <div className="flex items-center gap-1.5 rounded-md border border-dashed border-border/60 bg-muted/20 px-2 py-1 text-[11px] text-muted-foreground">
+      <div className="flex items-center gap-1.5 rounded-md border border-dashed border-border/60 bg-muted/20 px-2 py-1 text-2xs text-muted-foreground">
         <Link2 className="size-3" />
         <span>{emptyLabel}</span>
       </div>

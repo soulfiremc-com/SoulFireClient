@@ -13,7 +13,7 @@ jobs:
 
     runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
-      - name: 'Checkout repository'
+      - name: "Checkout repository"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -42,7 +42,7 @@ jobs:
         run: bun run typecheck
 
       - name: Run check
-        run: bunx biome ci
+        run: bun run check
 
       - name: Run web build
         run: bun run build:web

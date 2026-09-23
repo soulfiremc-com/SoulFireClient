@@ -1,6 +1,6 @@
 name: 🐞 Bug
 description: File a bug/issue report
-labels: ['type: :bug: bug']
+labels: ["type: :bug: bug"]
 
 body:
   - type: checkboxes
@@ -39,20 +39,20 @@ body:
         Replace the links below by a paste of your console logs.
         - https://gist.github.com
         - https://bin.birdflop.com
-      placeholder: '<log url>'
+      placeholder: "<log url>"
     validations:
       required: false
   - type: markdown
     attributes:
-      value: '----'
+      value: "----"
   - type: markdown
     attributes:
-      value: '## Helpful info'
+      value: "## Helpful info"
   - type: input
     id: swversion
     attributes:
       label: SoulFire Version
-      description: 'SoulFire says its version at startup.'
-      placeholder: '1.0.0'
+      description: "SoulFire says its version at startup."
+      placeholder: "1.0.0"
     validations:
       required: true

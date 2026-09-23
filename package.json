@@ -28,8 +28,11 @@
     "build:electron:flatpak": "cross-env SF_ELECTRON=1 vite build && electron-builder --linux flatpak --publish never -c.extraMetadata.desktopName=com.soulfiremc.soulfire.desktop",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "fix": "biome check --write --unsafe",
-    "check": "biome check",
+    "fix": "oxlint --fix . && oxfmt .",
+    "lint": "oxlint .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "check": "bun run lint && bun run format:check",
     "prepare": "husky",
     "pre-commit": "lint-staged",
     "protocol:generate": "buf generate"
@@ -109,10 +112,10 @@
   },
   "devDependencies": {
     "@babel/core": "^8.0.0",
-    "@biomejs/biome": "2.5.14",
     "@bufbuild/buf": "1.72.0",
     "@bufbuild/protoc-gen-es": "2.14.0",
     "@rolldown/plugin-babel": "^0.2.3",
+    "@shadcn/lint": "^0.2.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@tanstack/devtools-vite": "^0.8.0",
     "@tanstack/react-devtools": "^0.10.2",
@@ -139,6 +142,8 @@
     "esbuild": "^0.28.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.0",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
     "postcss": "^8.5.10",
     "react-hooks": "^1.0.1",
     "tailwindcss": "^4.2.2",
@@ -149,8 +154,12 @@
     "yaml": "^2.8.3"
   },
   "lint-staged": {
-    "*": [
-      "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true"
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
+      "oxlint --fix --no-error-on-unmatched-pattern",
+      "oxfmt --no-error-on-unmatched-pattern"
+    ],
+    "*.{json,jsonc,css,md,mdx,yml,yaml}": [
+      "oxfmt --no-error-on-unmatched-pattern"
     ]
   },
   "build": {

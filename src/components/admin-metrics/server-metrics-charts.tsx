@@ -266,7 +266,7 @@ export function MemoryUsageChart({
                   formatter={(value, name, item) => (
                     <>
                       <div
-                        className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+                        className="h-2.5 w-2.5 shrink-0 rounded-xs"
                         style={{ backgroundColor: item.color }}
                       />
                       <div className="flex flex-1 items-center justify-between leading-none">

@@ -34,94 +34,114 @@ test("cancellation waits for preparation cleanup and prevents an overlapping ret
   assert.equal(state.diagnostics.status, "stopped");
 });
 
-test("cancelling a process stuck before readiness releases startup and reaps the child", {
-  timeout: 10_000,
-}, async () => {
-  const state = createIntegratedServerState();
-  const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], {
-    stdio: "pipe",
-  });
-  const operation = startIntegratedOperation(state, async (signal) => {
-    await waitForIntegratedServerReady(state, child, signal);
-    return "";
-  });
-  await killIntegratedServer(state);
-  assert.equal(await operation, null);
-  assert.equal(state.child, null);
-  assert.notEqual(child.exitCode ?? child.signalCode, null);
-  assert.equal(state.diagnostics.error, null);
-});
-
-test("early exit records the exit code and trailing stderr", {
-  timeout: 10_000,
-}, async () => {
-  const state = createIntegratedServerState();
-  const child = spawn(
-    process.execPath,
-    ["-e", "console.error('failure'); process.exitCode = 7"],
-    { stdio: "pipe" },
-  );
-  await assert.rejects(
-    startIntegratedOperation(state, async (signal) => {
+test(
+  "cancelling a process stuck before readiness releases startup and reaps the child",
+  {
+    timeout: 10_000,
+  },
+  async () => {
+    const state = createIntegratedServerState();
+    const child = spawn(
+      process.execPath,
+      ["-e", "setInterval(() => {}, 1000)"],
+      {
+        stdio: "pipe",
+      },
+    );
+    const operation = startIntegratedOperation(state, async (signal) => {
       await waitForIntegratedServerReady(state, child, signal);
       return "";
-    }),
-  );
-  assert.equal(state.diagnostics.exitCode, 7);
-  assert.equal(state.diagnostics.status, "failed");
-  assert.ok(state.diagnostics.logs.some((log) => log.source === "stderr"));
-  assert.equal(state.child, null);
-});
+    });
+    await killIntegratedServer(state);
+    assert.equal(await operation, null);
+    assert.equal(state.child, null);
+    assert.notEqual(child.exitCode ?? child.signalCode, null);
+    assert.equal(state.diagnostics.error, null);
+  },
+);
 
-test("logs and exit status remain available after a ready process crashes", {
-  timeout: 10_000,
-}, async () => {
-  const state = createIntegratedServerState();
-  const child = spawn(
-    process.execPath,
-    [
-      "-e",
-      "console.log('Finished loading!'); process.stdin.once('data', () => { console.error('crash'); process.exitCode = 9; process.stdin.destroy(); });",
-    ],
-    { stdio: "pipe" },
-  );
-  const result = await startIntegratedOperation(state, async (signal) => {
-    await waitForIntegratedServerReady(state, child, signal);
-    return "credentials";
-  });
-  assert.notEqual(result, null);
-  assert.equal(state.diagnostics.status, "running");
-  const closed = once(child, "close");
-  child.stdin.end("exit");
-  await closed;
-  assert.equal(state.diagnostics.exitCode, 9);
-  assert.equal(state.diagnostics.status, "failed");
-  assert.ok(state.diagnostics.logs.some((log) => log.source === "stderr"));
-});
+test(
+  "early exit records the exit code and trailing stderr",
+  {
+    timeout: 10_000,
+  },
+  async () => {
+    const state = createIntegratedServerState();
+    const child = spawn(
+      process.execPath,
+      ["-e", "console.error('failure'); process.exitCode = 7"],
+      { stdio: "pipe" },
+    );
+    await assert.rejects(
+      startIntegratedOperation(state, async (signal) => {
+        await waitForIntegratedServerReady(state, child, signal);
+        return "";
+      }),
+    );
+    assert.equal(state.diagnostics.exitCode, 7);
+    assert.equal(state.diagnostics.status, "failed");
+    assert.ok(state.diagnostics.logs.some((log) => log.source === "stderr"));
+    assert.equal(state.child, null);
+  },
+);
 
-test("shutdown escalates when Java ignores the initial stop signal", {
-  timeout: 10_000,
-  skip: process.platform === "win32",
-}, async () => {
-  const state = createIntegratedServerState();
-  const child = spawn(
-    process.execPath,
-    [
-      "-e",
-      "process.on('SIGTERM', () => {}); console.log('Finished loading!'); setInterval(() => {}, 1000);",
-    ],
-    { stdio: "pipe" },
-  );
-  await waitForIntegratedServerReady(
-    state,
-    child,
-    new AbortController().signal,
-  );
-  state.diagnostics.status = "stopping";
-  await terminateIntegratedProcess(state, 50);
-  assert.equal(child.signalCode, "SIGKILL");
-  assert.equal(state.child, null);
-});
+test(
+  "logs and exit status remain available after a ready process crashes",
+  {
+    timeout: 10_000,
+  },
+  async () => {
+    const state = createIntegratedServerState();
+    const child = spawn(
+      process.execPath,
+      [
+        "-e",
+        "console.log('Finished loading!'); process.stdin.once('data', () => { console.error('crash'); process.exitCode = 9; process.stdin.destroy(); });",
+      ],
+      { stdio: "pipe" },
+    );
+    const result = await startIntegratedOperation(state, async (signal) => {
+      await waitForIntegratedServerReady(state, child, signal);
+      return "credentials";
+    });
+    assert.notEqual(result, null);
+    assert.equal(state.diagnostics.status, "running");
+    const closed = once(child, "close");
+    child.stdin.end("exit");
+    await closed;
+    assert.equal(state.diagnostics.exitCode, 9);
+    assert.equal(state.diagnostics.status, "failed");
+    assert.ok(state.diagnostics.logs.some((log) => log.source === "stderr"));
+  },
+);
+
+test(
+  "shutdown escalates when Java ignores the initial stop signal",
+  {
+    timeout: 10_000,
+    skip: process.platform === "win32",
+  },
+  async () => {
+    const state = createIntegratedServerState();
+    const child = spawn(
+      process.execPath,
+      [
+        "-e",
+        "process.on('SIGTERM', () => {}); console.log('Finished loading!'); setInterval(() => {}, 1000);",
+      ],
+      { stdio: "pipe" },
+    );
+    await waitForIntegratedServerReady(
+      state,
+      child,
+      new AbortController().signal,
+    );
+    state.diagnostics.status = "stopping";
+    await terminateIntegratedProcess(state, 50);
+    assert.equal(child.signalCode, "SIGKILL");
+    assert.equal(state.child, null);
+  },
+);
 
 test("diagnostic output stays bounded while retaining stable log identities", () => {
   const state = createIntegratedServerState();

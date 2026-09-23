@@ -169,8 +169,8 @@ export default function CastMenuEntry() {
                 >
                   <CastIcon
                     className={cn({
-                      "text-green-500": currentDevice.transport_id !== null,
-                      "text-red-500": currentDevice.transport_id === null,
+                      "text-success": currentDevice.transport_id !== null,
+                      "text-destructive": currentDevice.transport_id === null,
                     })}
                   />
                   <span>{currentDevice.info.name}</span>

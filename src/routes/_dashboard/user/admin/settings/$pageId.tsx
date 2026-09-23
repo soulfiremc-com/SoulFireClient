@@ -78,7 +78,6 @@ function SettingsFormSkeleton() {
       <div className="flex h-full grow flex-col gap-4">
         <div className="flex flex-col gap-2">
           {Array.from({ length: 5 }).map((_, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
             <div key={i} className="flex flex-col gap-1">
               <Skeleton className="h-4 w-28" />
               <Skeleton className="h-9 w-full" />

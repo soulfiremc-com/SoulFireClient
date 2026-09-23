@@ -36,7 +36,11 @@ export function ComplexityScore() {
     const s =
       nodes.length * 1 + edges.length * 0.5 + loopNodes * 3 + maxFanOut * 2;
     const c =
-      s < 50 ? "text-green-500" : s < 100 ? "text-yellow-500" : "text-red-500";
+      s < 50
+        ? "text-success"
+        : s < 100
+          ? "text-warning-muted"
+          : "text-destructive";
     return { score: Math.round(s), color: c };
   }, [nodes, edges]);
 

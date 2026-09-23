@@ -146,7 +146,6 @@ function ScriptEditorSkeleton() {
         <div className="flex w-48 flex-col gap-2 border-r p-3">
           <Skeleton className="h-8 w-full" />
           {Array.from({ length: 6 }).map((_, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
             <Skeleton key={i} className="h-8 w-full" />
           ))}
         </div>

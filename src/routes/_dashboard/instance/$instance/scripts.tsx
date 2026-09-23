@@ -683,7 +683,7 @@ function ScriptCard({
               {tInstance("scripts.paused")}
             </Badge>
           ) : (
-            <Badge variant="default" className="gap-1.5 bg-green-600">
+            <Badge variant="default" className="gap-1.5 bg-success-strong">
               <div className="size-2 animate-pulse rounded-full bg-white" />
               {tInstance("scripts.running")}
             </Badge>

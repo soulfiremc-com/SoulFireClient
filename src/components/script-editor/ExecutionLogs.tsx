@@ -24,7 +24,7 @@ function getLogLevelStyles(level: LogLevel): {
     case "info":
       return { badge: "default", text: "text-foreground" };
     case "warn":
-      return { badge: "outline", text: "text-yellow-600 dark:text-yellow-500" };
+      return { badge: "outline", text: "text-warning-emphasis" };
     case "error":
       return { badge: "destructive", text: "text-destructive" };
     default:

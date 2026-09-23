@@ -69,7 +69,7 @@ function SupportDialog({
       <CredenzaContent>
         <CredenzaHeader>
           <CredenzaTitle className="flex items-center gap-2">
-            <HeartIcon className="size-5 text-red-500" />
+            <HeartIcon className="size-5 text-destructive" />
             {t("dialog.support.title")}
           </CredenzaTitle>
           <CredenzaDescription>

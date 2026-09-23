@@ -257,13 +257,11 @@ function AdminOverviewSkeleton() {
       <Skeleton className="mt-4 h-6 w-32" />
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
           <Skeleton key={i} className="h-24 w-full rounded-lg" />
         ))}
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {Array.from({ length: 4 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton list
           <Skeleton key={i} className="h-64 w-full rounded-lg" />
         ))}
       </div>

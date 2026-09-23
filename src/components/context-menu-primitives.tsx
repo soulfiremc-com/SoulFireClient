@@ -42,7 +42,7 @@ export function MenuShortcut({
   return (
     <Kbd
       className={cn(
-        "ml-auto h-4 min-w-0 px-1.5 text-[10px] tracking-widest",
+        "ml-auto h-4 min-w-0 px-1.5 text-3xs tracking-widest",
         className,
       )}
     >
@@ -63,8 +63,6 @@ export function ContextMenuContainer({
   children: React.ReactNode;
 }) {
   return (
-    // biome-ignore lint/a11y/useKeyWithClickEvents: context menu is mouse-triggered
-    // biome-ignore lint/a11y/noStaticElementInteractions: context menu container
     <div
       ref={menuRef}
       style={style}

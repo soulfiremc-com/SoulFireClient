@@ -102,7 +102,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex size-full grow">
       <Card className="m-auto flex max-w-2xl flex-col">
         <CardHeader>
-          <CardTitle className="fle-row flex gap-1 text-2xl font-bold">
+          <CardTitle className="flex-row flex gap-1 text-2xl font-bold">
             <BugIcon className="h-8" />
             {t("error.page.title")}
           </CardTitle>
@@ -111,7 +111,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
         <CardContent className="flex flex-col gap-4">
           <Collapsible open={expanded} onOpenChange={setExpanded}>
             <div className="flex flex-col gap-2">
-              <p className="select-text break-words text-red-500">
+              <p className="select-text break-words text-destructive">
                 {error.message}
               </p>
               {hasStack && (

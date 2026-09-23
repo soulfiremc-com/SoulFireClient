@@ -14,8 +14,9 @@ import { getColumnPinningStyle } from "@/lib/data-table";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableProps<TData extends RowData>
-  extends React.ComponentProps<"div"> {
+interface DataTableProps<
+  TData extends RowData,
+> extends React.ComponentProps<"div"> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   actionBar?: React.ReactNode;
   onRowContextMenu?: (e: React.MouseEvent, row: TData) => void;

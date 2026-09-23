@@ -113,7 +113,7 @@ export function HeartsBar({
       Icon={HeartIcon}
       size={size}
       baseClassName="text-muted-foreground/25"
-      fillClassName="text-red-500"
+      fillClassName="text-destructive"
       idPrefix="heart"
       className={className}
     />
@@ -138,7 +138,7 @@ export function FoodBar({
       Icon={DrumstickIcon}
       size={size}
       baseClassName="text-muted-foreground/25"
-      fillClassName="text-amber-500"
+      fillClassName="text-warning"
       idPrefix="food"
       className={className}
     />

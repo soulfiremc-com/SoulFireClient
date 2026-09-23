@@ -71,7 +71,7 @@ const MemoAnsiHtml = React.memo(
           <span>{content.level}</span>
           {content.timestamp && (
             <>
-              <span>{"\u0020"}</span>
+              <span> </span>
               <span>
                 {timestampToDate(content.timestamp).toLocaleTimeString(
                   i18n.resolvedLanguage,
@@ -81,16 +81,16 @@ const MemoAnsiHtml = React.memo(
           )}
           {content.instanceName && (
             <>
-              <span>{"\u0020"}</span>
+              <span> </span>
               <span>
                 {content.instanceName}
                 {content.botAccountName ? `:${content.botAccountName}` : ""}
               </span>
             </>
           )}
-          <span>{"\u0020"}</span>
+          <span> </span>
           <span>{formatLoggerName(content.loggerName)}</span>
-          <span>{"\u0020"}</span>
+          <span> </span>
         </span>
         <AnsiHtml
           text={
@@ -101,7 +101,7 @@ const MemoAnsiHtml = React.memo(
         />
         {isImportantLog(content.level) && (
           <>
-            <span className="select-none">{"\u0020"}</span>
+            <span className="select-none"> </span>
             <Button
               variant="ghost"
               size="sm"
@@ -113,7 +113,7 @@ const MemoAnsiHtml = React.memo(
             >
               <ClipboardIcon />
             </Button>
-            <span className="select-none">{"\u0020"}</span>
+            <span className="select-none"> </span>
             <Button
               variant="ghost"
               size="sm"

@@ -20,8 +20,9 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableViewOptionsProps<TData extends RowData>
-  extends React.ComponentProps<typeof PopoverContent> {
+interface DataTableViewOptionsProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   disabled?: boolean;
 }

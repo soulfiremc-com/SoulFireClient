@@ -515,9 +515,7 @@ function BotDetailHeader({
       <ItemContent className="gap-1">
         <ItemTitle className="text-lg">{account.lastKnownName}</ItemTitle>
         <ItemDescription className="line-clamp-none flex flex-wrap items-center gap-2 text-sm">
-          <span
-            className={cn("font-medium", isOnline ? "text-emerald-500" : "")}
-          >
+          <span className={cn("font-medium", isOnline ? "text-success" : "")}>
             {isOnline ? t("bots.online") : t("bots.notJoined")}
           </span>
           <span className="flex items-center gap-1">
@@ -533,10 +531,10 @@ function BotDetailHeader({
             <TooltipTrigger
               render={<div className="flex items-center gap-1" />}
             >
-              <HeartIcon className="size-3.5 text-red-500" />
+              <HeartIcon className="size-3.5 text-destructive" />
               <div className="bg-muted h-1.5 w-12 overflow-hidden rounded-full">
                 <div
-                  className="h-full bg-red-500 transition-all"
+                  className="h-full bg-destructive transition-all"
                   style={{
                     width: `${(liveState.health / liveState.maxHealth) * 100}%`,
                   }}
@@ -552,10 +550,10 @@ function BotDetailHeader({
             <TooltipTrigger
               render={<div className="flex items-center gap-1" />}
             >
-              <UtensilsIcon className="size-3.5 text-amber-500" />
+              <UtensilsIcon className="size-3.5 text-warning" />
               <div className="bg-muted h-1.5 w-12 overflow-hidden rounded-full">
                 <div
-                  className="h-full bg-amber-500 transition-all"
+                  className="h-full bg-warning transition-all"
                   style={{
                     width: `${(liveState.foodLevel / 20) * 100}%`,
                   }}
@@ -571,10 +569,10 @@ function BotDetailHeader({
             <TooltipTrigger
               render={<div className="flex items-center gap-1" />}
             >
-              <SparklesIcon className="size-3.5 text-green-500" />
+              <SparklesIcon className="size-3.5 text-success" />
               <div className="bg-muted h-1.5 w-12 overflow-hidden rounded-full">
                 <div
-                  className="h-full bg-green-500 transition-all"
+                  className="h-full bg-success transition-all"
                   style={{
                     width: `${liveState.experienceProgress * 100}%`,
                   }}
@@ -637,7 +635,6 @@ function OverviewTab({
         />
 
         {/* Right: Position + Compass */}
-        {/* biome-ignore lint/a11y/noStaticElementInteractions: context menu on container */}
         <div
           className="flex flex-col gap-6"
           onContextMenu={(e) => handleContextMenu(e, null)}
@@ -926,12 +923,12 @@ function InventorySlotDisplay({
           className="size-full object-contain p-0.5 [image-rendering:pixelated]"
         />
       ) : (
-        <span className="max-w-full truncate px-0.5 text-center text-[10px] leading-tight">
+        <span className="max-w-full truncate px-0.5 text-center text-3xs leading-tight">
           {formatItemId(item.itemId).slice(0, 6)}
         </span>
       )}
       {item.count > 1 && (
-        <span className="absolute bottom-0 right-0.5 text-[9px] font-bold">
+        <span className="absolute bottom-0 right-0.5 text-4xs font-bold">
           {item.count}
         </span>
       )}
@@ -1395,7 +1392,7 @@ function ContainerButtonsPanel({
             title={button.description || undefined}
           >
             {button.iconItemId && (
-              <span className="mr-1 font-mono text-[10px] opacity-60">
+              <span className="mr-1 font-mono text-3xs opacity-60">
                 {formatItemId(button.iconItemId)}
               </span>
             )}

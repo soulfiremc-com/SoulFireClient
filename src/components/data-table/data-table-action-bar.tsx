@@ -17,8 +17,9 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
-interface DataTableActionBarProps<TData extends RowData>
-  extends React.ComponentProps<typeof motion.div> {
+interface DataTableActionBarProps<
+  TData extends RowData,
+> extends React.ComponentProps<typeof motion.div> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   visible?: boolean;
   container?: Element | DocumentFragment | null;
@@ -92,8 +93,9 @@ function DataTableActionBar<TData extends RowData>({
   );
 }
 
-interface DataTableActionBarActionProps
-  extends React.ComponentProps<typeof Button> {
+interface DataTableActionBarActionProps extends React.ComponentProps<
+  typeof Button
+> {
   tooltip?: string;
   isPending?: boolean;
 }
@@ -130,7 +132,7 @@ function DataTableActionBarAction({
       <TooltipTrigger render={trigger} />
       <TooltipContent
         sideOffset={6}
-        className="bg-accent text-foreground border font-semibold dark:bg-zinc-900 [&>span]:hidden"
+        className="bg-accent text-foreground border font-semibold dark:bg-card [&>span]:hidden"
       >
         <p>{tooltip}</p>
       </TooltipContent>
@@ -185,10 +187,10 @@ function DataTableActionBarSelection<TData extends RowData>({
         </TooltipTrigger>
         <TooltipContent
           sideOffset={10}
-          className="bg-accent text-foreground flex items-center gap-2 border px-2 py-1 font-semibold dark:bg-zinc-900 [&>span]:hidden"
+          className="bg-accent text-foreground flex items-center gap-2 border px-2 py-1 font-semibold dark:bg-card [&>span]:hidden"
         >
           <p>{t("dataTable.clearSelection")}</p>
-          <Kbd className="bg-background text-foreground border font-mono text-[0.7rem] font-normal shadow-xs">
+          <Kbd className="bg-background text-foreground border font-mono text-2xs font-normal shadow-xs">
             <abbr title="Escape" className="no-underline">
               {t("dataTable.escape")}
             </abbr>
