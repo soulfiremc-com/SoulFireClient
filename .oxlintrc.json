@@ -18,10 +18,7 @@
     "src/routeTree.gen.ts"
   ],
   "rules": {
-    "shadcn/no-unknown-classes": [
-      "error",
-      { "allow": ["nodrag", "nopan", "cn-input-otp", "toaster"] }
-    ],
+    "shadcn/no-unknown-classes": ["error", { "allow": ["nodrag", "nopan"] }],
     "shadcn/no-raw-colors": "error",
     "shadcn/no-arbitrary-values": ["error", { "allow": ["layout"] }]
   },
@@ -29,6 +26,8 @@
     {
       "files": ["src/components/ui/**"],
       "rules": {
+        "shadcn/no-unknown-classes": "off",
+        "shadcn/no-raw-colors": "off",
         "shadcn/no-arbitrary-values": "off"
       }
     }

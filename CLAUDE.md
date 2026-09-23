@@ -50,8 +50,8 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 
 - Oxlint checks JavaScript and TypeScript. Oxfmt formats the project.
 - `@shadcn/lint` checks unknown classes, raw colors, and arbitrary values as errors.
-- Arbitrary layout values are allowed. The arbitrary-value rule is off in `src/components/ui/` so upstream primitives keep their animation values.
-- Unknown-class and raw-color checks also run in `src/components/ui/`.
+- Arbitrary layout values are allowed. All three shadcn rules are off in `src/components/ui/`.
+- Oxlint's other checks still run in `src/components/ui/`.
 - Pre-commit hook runs lint-staged with Oxlint and Oxfmt.
 - Generated protocol bindings and the route tree are ignored by Oxlint.
 
