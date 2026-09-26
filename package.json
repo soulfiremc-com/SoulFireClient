@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
-    "@bufbuild/protobuf": "2.14.0",
+    "@bufbuild/protobuf": "2.15.0",
     "@catppuccin/palette": "^1.8.0",
     "@connectrpc/connect": "^2.1.2",
     "@connectrpc/connect-web": "^2.1.2",
@@ -54,7 +54,7 @@
     "@tanstack/query-broadcast-client-experimental": "^5.99.0",
     "@tanstack/react-form": "^1.29.0",
     "@tanstack/react-query": "^5.99.0",
-    "@tanstack/react-query-devtools": "5.103.1",
+    "@tanstack/react-query-devtools": "5.104.0",
     "@tanstack/react-store": "^0.11.1",
     "@tanstack/react-table": "9.2.4",
     "@tanstack/router-devtools": "^1.166.13",
@@ -112,8 +112,8 @@
   },
   "devDependencies": {
     "@babel/core": "^8.0.0",
-    "@bufbuild/buf": "1.72.0",
-    "@bufbuild/protoc-gen-es": "2.14.0",
+    "@bufbuild/buf": "1.73.0",
+    "@bufbuild/protoc-gen-es": "2.15.0",
     "@rolldown/plugin-babel": "^0.2.3",
     "@shadcn/lint": "^0.2.0",
     "@tailwindcss/postcss": "^4.2.2",
