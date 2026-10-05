@@ -1,5 +1,14 @@
 blank_issues_enabled: false
 contact_links:
-  - name: AlexProgrammerDE Discord
-    url: https://pistonmaster.net/discord
-    about: For support & help
+  - name: Setup and usage support
+    url: https://soulfiremc.com/discord
+    about: Ask the community about setup, configuration, and usage.
+  - name: Website documentation corrections
+    url: https://github.com/soulfiremc-com/soulfiremc.com/issues/new/choose
+    about: Report problems with guides published on soulfiremc.com.
+  - name: Private security reports
+    url: https://github.com/soulfiremc-com/.github/blob/main/SECURITY.md
+    about: Report vulnerabilities through confidential contacts rather than public issues.
+  - name: Server and SDK issues
+    url: https://github.com/soulfiremc-com/SoulFire/issues/new/choose
+    about: Report backend, bot behavior, protocol, and SDK problems in SoulFire.

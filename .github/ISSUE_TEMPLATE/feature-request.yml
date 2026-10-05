@@ -1,22 +1,44 @@
-name: 💡 Feature Request
-description: Request a feature/enhancement
-labels: ["type: :bulb: enhancement"]
-
+name: Feature request
+description: Propose an improvement to SoulFireClient and explain its use case.
 body:
-  - type: checkboxes
+  - type: markdown
     attributes:
-      label: Is there an existing feature request for this?
-      description: |
-        Please search to see if an feature request like this already exists.
-
-        Tip: You can go to the [GitHub issue tab](https://github.com/soulfiremc-com/SoulFire/labels/type%3A%20%3Abulb%3A%20enhancement) for a list of open feature requests
+      value: Describe the use case before the implementation. For questions and issue routing, read [SUPPORT.md](https://github.com/soulfiremc-com/SoulFireClient/blob/main/SUPPORT.md).
+  - type: checkboxes
+    id: existing-requests
+    attributes:
+      label: Existing proposals
       options:
-        - label: I have searched the existing feature requests
+        - label: I searched open and closed issues for similar proposals.
           required: true
   - type: textarea
+    id: problem
     attributes:
-      label: Describe your feature request
-      description: What do you want added to SoulFire?
-      placeholder: "I want x feature added to SoulFire"
+      label: Problem or use case
+      description: Explain who needs this change, what they want to do, and what prevents them today.
     validations:
       required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the desired result. Include a workflow, command, or API example if useful.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Describe existing features or workarounds you considered and their limits.
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Scope and compatibility
+      description: Name affected components and any effect on existing users, APIs, permissions, or performance.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add references or examples. Mention if you want to help implement or test the proposal.
+labels:
+  - "type: :bulb: enhancement"

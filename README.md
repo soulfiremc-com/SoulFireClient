@@ -37,7 +37,7 @@ See which branches are at which URLs:
 
 ## Building
 
-Install Bun 1.4.0 and a current Node.js release before you build the client.
+Install Bun at the version in `package.json` and the Node.js LTS used by CI before you build the client.
 Take a look at the scripts in `package.json` to see how to run a dev env locally.
 You can also refer to the GitHub actions workflows to see how production builds are made.
 
@@ -72,3 +72,9 @@ New client features must handle older servers that omit optional fields or do no
   </tr>
  </tbody>
 </table>
+
+## Contributing and support
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for local setup and review expectations.
+Use [SUPPORT.md](SUPPORT.md) for questions and issue routing.
+Follow the [community code of conduct](https://github.com/soulfiremc-com/.github/blob/main/CODE_OF_CONDUCT.md) and report vulnerabilities through the [private security contacts](https://github.com/soulfiremc-com/.github/blob/main/SECURITY.md).

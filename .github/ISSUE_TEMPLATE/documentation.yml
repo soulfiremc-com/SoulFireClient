@@ -1,0 +1,37 @@
+name: Documentation improvement
+description: Report missing, unclear, or incorrect documentation or examples.
+body:
+  - type: markdown
+    attributes:
+      value: For usage questions, read [support resources](https://github.com/soulfiremc-com/SoulFireClient/blob/main/SUPPORT.md). Describe the task the documentation needs to help you complete.
+  - type: checkboxes
+    id: existing-issues
+    attributes:
+      label: Existing reports
+      options:
+        - label: I searched open and closed issues for the same documentation problem.
+          required: true
+  - type: input
+    id: location
+    attributes:
+      label: Document, example, or page
+      description: Include a file path or page URL and the section name.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is missing or incorrect?
+      description: Explain what you tried to learn or do, and where the documentation prevented it.
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Suggested improvement
+      description: Describe the correction or example you need. You do not need to supply final wording.
+  - type: textarea
+    id: context
+    attributes:
+      label: Version and context
+      description: For commands or examples that fail, include versions, the command, and its output. Remove credentials first.

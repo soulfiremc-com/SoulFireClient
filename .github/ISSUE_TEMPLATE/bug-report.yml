@@ -1,58 +1,74 @@
-name: 🐞 Bug
-description: File a bug/issue report
-labels: ["type: :bug: bug"]
-
+name: Bug report
+description: Report a reproducible problem with SoulFireClient.
 body:
+  - type: markdown
+    attributes:
+      value: |-
+        Use this form for desktop or browser client. For questions and issue routing, read [support resources](https://github.com/soulfiremc-com/SoulFireClient/blob/main/SUPPORT.md).
+        Report vulnerabilities privately through the [security policy](https://github.com/soulfiremc-com/.github/blob/main/SECURITY.md).
+        Remove tokens, passwords, account data, proxy credentials, and bypass keys from your report and attachments.
   - type: checkboxes
+    id: existing-issues
     attributes:
-      label: Is there an existing issue for this?
-      description: |
-        Please search to see if an issue already exists for the bug you encountered.
-
-        Tip: You can go to the [GitHub issue tab](https://github.com/soulfiremc-com/SoulFire/issues?q=is%3Aopen+is%3Aissue+label%3A%22type%3A+%3Abug%3A+bug%22) for a list of open issues
+      label: Existing reports
       options:
-        - label: I have searched the existing issues
+        - label: I searched open and closed issues for the same problem.
           required: true
-  - type: textarea
+  - type: input
+    id: version
     attributes:
-      label: Describe your issue
-      description: What is the issue?
-      placeholder: "After the update x feature broke. It gives me this message: '...'"
+      label: Versions or revision
+      description: Client version and connected SoulFire server version
     validations:
       required: true
   - type: textarea
+    id: environment
     attributes:
-      label: How can we reproduce what you got?
-      description: Please describe the steps for us to reproduce the issue. Screenshots are also very welcomed.
-      placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. Scroll down to '...'
-        4. See error
-    validations:
-      required: false
-  - type: input
-    id: logs
-    attributes:
-      label: SoulFire/Error Logs
-      description: |
-        Replace the links below by a paste of your console logs.
-        - https://gist.github.com
-        - https://bin.birdflop.com
-      placeholder: "<log url>"
-    validations:
-      required: false
-  - type: markdown
-    attributes:
-      value: "----"
-  - type: markdown
-    attributes:
-      value: "## Helpful info"
-  - type: input
-    id: swversion
-    attributes:
-      label: SoulFire Version
-      description: "SoulFire says its version at startup."
-      placeholder: "1.0.0"
+      label: Environment
+      description: Include the details that apply. Write "unknown" if you cannot determine a value.
+      placeholder: |-
+        OS and CPU architecture:
+        Client version:
+        SoulFire server version:
+        Desktop app or browser (name and version):
+        Installation method:
+        Relevant configuration or plugins:
     validations:
       required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: What happened?
+      description: Describe the problem, including errors and how often it occurs.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: What did you expect?
+      description: Describe the result you expected from the same steps.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include minimal configuration or code. For intermittent problems, describe the conditions you observed.
+      placeholder: |-
+        1. Prepare ...
+        2. Run or open ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs and supporting evidence
+      description: Paste redacted text logs or attach files. Include the full exception and its causes, if available.
+  - type: textarea
+    id: regression
+    attributes:
+      label: Regression and workarounds
+      description: Name a previous working version and any workaround, if known.
+labels:
+  - "type: :bug: bug"
