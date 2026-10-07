@@ -145,7 +145,22 @@
       "error": "Failed to stop bots"
     },
     "permissionDenied": "You do not have permission to start or stop bots in this instance.",
-    "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match."
+    "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match.",
+    "startBots": "Start bots",
+    "moreActions": "More bot actions",
+    "availableCount_one": "{{count}} stopped bot available.",
+    "availableCount_other": "{{count}} stopped bots available.",
+    "generateFirst": "Create accounts to start your first bots.",
+    "startCountHelp": "Starts additional bots. Running bots stay connected.",
+    "startSelected_one": "Start {{count}} bot",
+    "startSelected_other": "Start {{count}} bots",
+    "startAllCount": "Start all {{count}}",
+    "stopCount_one": "Stop {{count}} bot",
+    "stopCount_other": "Stop {{count}} bots",
+    "restartCount_one": "Restart {{count}} bot",
+    "restartCount_other": "Restart {{count}} bots",
+    "validCount": "Enter a whole number between 1 and {{count}}.",
+    "positiveCount": "Enter a whole number of at least 1."
   },
   "botFleetSummary": "{{online}} online · {{desired}} desired · {{total}} total",
   "icon": {

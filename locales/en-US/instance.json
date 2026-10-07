@@ -63,16 +63,34 @@
         "respawned": "respawned",
         "disconnected": "disconnected",
         "unknown": "changed state"
+      },
+      "pause": "Pause",
+      "resume": "Resume",
+      "paused": "Display paused. New activity is still being collected.",
+      "following": "Live updates",
+      "reconnecting": "Reconnecting to the live feed...",
+      "emptyFilter": "No activity matches this filter.",
+      "filterLabel": "Filter live feed",
+      "filters": {
+        "all": "All",
+        "chat": "Chat",
+        "lifecycle": "Events"
+      },
+      "columns": {
+        "time": "Time",
+        "bot": "Bot",
+        "message": "Message"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "View all {{total}} bots",
-      "viewAllShort": "View all"
+      "viewAllShort": "View all",
+      "detailsFor": "Bot details for {{name}}"
     },
     "timeline": {
-      "title": "Activity",
-      "viewAll": "View all",
+      "title": "Recent actions",
+      "viewAll": "View history",
       "empty": "No recorded activity yet.",
       "noPermission": "You do not have permission to view the audit log.",
       "types": {
@@ -93,7 +111,8 @@
     "detailed": {
       "title": "Detailed metrics",
       "composition": "World composition"
-    }
+    },
+    "loadError": "Could not load the latest data."
   },
   "proxy": {
     "transport": {

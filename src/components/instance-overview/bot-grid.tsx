@@ -17,7 +17,14 @@ import {
   SquareIcon,
   WifiIcon,
 } from "lucide-react";
-import { use, useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  type ReactNode,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
@@ -27,7 +34,6 @@ import {
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
-import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
   CardContent,
@@ -71,7 +77,7 @@ export type BotWithStatus =
 
 type StatusTone = "warning" | "success" | "destructive" | "muted";
 
-function connectionPhaseMeta(phase: BotConnectionPhase): {
+export function connectionPhaseMeta(phase: BotConnectionPhase): {
   labelKey: string;
   tone: StatusTone;
   dot: string;
@@ -331,14 +337,16 @@ function BotCard({
   );
 }
 
-/// Renders a grid of bot cards with a shared right-click context menu.
-function BotCardsWithMenu({
+/// Shares bot actions between the card grid and compact overview list.
+export function BotContextMenu({
   instanceId,
-  bots,
+  children,
   canControl,
 }: {
   instanceId: string;
-  bots: BotWithStatus[];
+  children: (
+    onContextMenu: (event: React.MouseEvent, bot: BotWithStatus) => void,
+  ) => ReactNode;
   canControl: boolean;
 }) {
   const { t: tCommon } = useTranslation("common");
@@ -385,16 +393,7 @@ function BotCardsWithMenu({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {bots.map((bot) => (
-          <BotCard
-            key={bot.profileId}
-            bot={bot}
-            instanceId={instanceId}
-            onContextMenu={(e) => handleContextMenu(e, bot)}
-          />
-        ))}
-      </div>
+      {children(handleContextMenu)}
       {contextMenu && (
         <ContextMenuPortal
           x={contextMenu.position.x}
@@ -639,11 +638,20 @@ export function BotGrid({
 
   return (
     <>
-      <BotCardsWithMenu
-        instanceId={instanceInfo.id}
-        bots={botsWithStatus}
-        canControl={canControl}
-      />
+      <BotContextMenu instanceId={instanceInfo.id} canControl={canControl}>
+        {(onContextMenu) => (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {botsWithStatus.map((bot) => (
+              <BotCard
+                key={bot.profileId}
+                bot={bot}
+                instanceId={instanceInfo.id}
+                onContextMenu={(event) => onContextMenu(event, bot)}
+              />
+            ))}
+          </div>
+        )}
+      </BotContextMenu>
       <div ref={loadMoreRef} className="flex justify-center py-4">
         {isFetchingNextPage ? (
           <div className="text-muted-foreground flex items-center gap-2">
@@ -661,72 +669,5 @@ export function BotGrid({
         ) : null}
       </div>
     </>
-  );
-}
-
-/// Compact bot grid for the overview: online bots first, capped to a limit,
-/// with a link to the full bots page.
-export function BotGridPreview({
-  instanceInfo,
-  limit = 8,
-}: {
-  instanceInfo: InstanceInfoQueryData;
-  limit?: number;
-}) {
-  const { t } = useTranslation("instance");
-  const { data: botStatus } = useSuspenseQuery(
-    botStatusQueryOptions(instanceInfo.id),
-  );
-  const canControl = hasInstancePermission(
-    instanceInfo,
-    InstancePermission.CONTROL_BOTS,
-  );
-
-  const statusMap = useMemo(
-    () => buildStatusMap(botStatus.bots),
-    [botStatus.bots],
-  );
-
-  const previewBots = useMemo(() => {
-    const merged = mergeBotStatus(instanceInfo.profile.accounts, statusMap);
-    return [...merged]
-      .sort((a, b) => Number(b.isOnline) - Number(a.isOnline))
-      .slice(0, limit);
-  }, [instanceInfo.profile.accounts, statusMap, limit]);
-
-  const totalCount = instanceInfo.profile.accounts.length;
-
-  if (totalCount === 0) {
-    return (
-      <div className="text-muted-foreground py-6 text-center text-sm">
-        {t("bots.noBots")}
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-3">
-      <BotCardsWithMenu
-        instanceId={instanceInfo.id}
-        bots={previewBots}
-        canControl={canControl}
-      />
-      {totalCount > previewBots.length && (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="self-center"
-          nativeButton={false}
-          render={
-            <Link
-              to="/instance/$instance/bots"
-              params={{ instance: instanceInfo.id }}
-            />
-          }
-        >
-          {t("overview.bots.viewAll", { total: totalCount })}
-        </Button>
-      )}
-    </div>
   );
 }
