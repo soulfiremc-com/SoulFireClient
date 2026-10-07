@@ -96,6 +96,10 @@
     }
   },
   "proxy": {
+    "transport": {
+      "network": "Network address",
+      "unix": "Unix socket"
+    },
     "getProxies": "Get Proxies",
     "addProxies": "Add Proxies",
     "filterPlaceholder": "Filter proxies...",

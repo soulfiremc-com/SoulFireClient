@@ -47,6 +47,7 @@ import ImportDialog from "@/components/dialog/import-dialog.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { ProxyAddress } from "@/components/ProxyAddress.tsx";
 import {
   type DisabledSettingId,
   InstanceSettingFieldByKey,
@@ -83,6 +84,7 @@ import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import i18n from "@/lib/i18n.ts";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
+import { stripAddressPrefix } from "@/lib/proxy-address.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   getEnumEntries,
@@ -301,16 +303,6 @@ function getProxyKey(proxy: ProfileProxy): string {
   }`;
 }
 
-function stripAddressPrefix(address: string): string {
-  if (address.startsWith("inet://")) {
-    return address.slice(7);
-  }
-  if (address.startsWith("unix://")) {
-    return address.slice(7);
-  }
-  return address;
-}
-
 function formatProxyAsURI(proxy: ProfileProxy): string {
   const address = stripAddressPrefix(proxy.address);
   const protocol = getEnumKeyByValue(ProxyProto_Type, proxy.type)
@@ -422,13 +414,14 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileProxy>[] = [
   },
   {
     id: "address",
-    accessorKey: "address",
+    accessorFn: (row) => stripAddressPrefix(row.address),
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         label={i18n.t("instance:proxy.table.address")}
       />
     ),
+    cell: ({ row }) => <ProxyAddress address={row.original.address} />,
     meta: {
       get label() {
         return i18n.t("instance:proxy.table.address");

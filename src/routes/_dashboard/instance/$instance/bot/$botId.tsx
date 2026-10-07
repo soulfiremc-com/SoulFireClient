@@ -50,6 +50,7 @@ import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { MenuItem } from "@/components/context-menu-primitives.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { BotPovPlayer } from "@/components/pov/bot-pov-player";
+import { ProxyAddress } from "@/components/ProxyAddress.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -646,11 +647,24 @@ function OverviewTab({
             <ItemContent>
               <ItemTitle>{t("bots.connectionPanel.proxy")}</ItemTitle>
               <ItemDescription className="select-text break-all">
-                {botInfo.connection
-                  ? botInfo.connection.proxy
-                    ? `${getEnumKeyByValue(ProxyProto_Type, botInfo.connection.proxy.type)} · ${botInfo.connection.proxy.address.replace(/^inet:\/\//, "")}`
-                    : t("bots.connectionPanel.direct")
-                  : t("bots.connectionPanel.unavailable")}
+                {botInfo.connection ? (
+                  botInfo.connection.proxy ? (
+                    <span className="inline-flex items-center gap-2">
+                      {getEnumKeyByValue(
+                        ProxyProto_Type,
+                        botInfo.connection.proxy.type,
+                      )}
+                      <span aria-hidden="true">·</span>
+                      <ProxyAddress
+                        address={botInfo.connection.proxy.address}
+                      />
+                    </span>
+                  ) : (
+                    t("bots.connectionPanel.direct")
+                  )
+                ) : (
+                  t("bots.connectionPanel.unavailable")
+                )}
               </ItemDescription>
             </ItemContent>
           </Item>
