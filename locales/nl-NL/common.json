@@ -145,7 +145,22 @@
       "error": "Stoppen van bots mislukt"
     },
     "permissionDenied": "Je hebt geen toestemming om bots in dit exemplaar te starten of te stoppen.",
-    "serverUpdateRequired": "De server heeft de machtigingen voor botbediening niet gerapporteerd. Controleer of de server- en clientversies overeenkomen."
+    "serverUpdateRequired": "De server heeft de machtigingen voor botbediening niet gerapporteerd. Controleer of de server- en clientversies overeenkomen.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} gewenst · {{total}} totaal",
   "icon": {

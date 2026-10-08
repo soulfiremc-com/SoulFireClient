@@ -63,16 +63,34 @@
         "respawned": "znovu oživen",
         "disconnected": "odpojen",
         "unknown": "změnil stav"
+      },
+      "pause": "Pozastavit",
+      "resume": "Pokračovat",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Boti",
       "viewAll": "Zobrazit všechny boti: {{total}}",
-      "viewAllShort": "Zobrazit vše"
+      "viewAllShort": "Zobrazit vše",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktivita",
-      "viewAll": "Zobrazit vše",
+      "title": "",
+      "viewAll": "",
       "empty": "Zatím nebyla zaznamenána žádná aktivita.",
       "noPermission": "Nemáte oprávnění zobrazit záznam auditu.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Podrobné metriky",
       "composition": "Složení světa"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Získat proxy servery",
     "addProxies": "Přidat proxy servery",
     "filterPlaceholder": "Filtrovat proxy...",

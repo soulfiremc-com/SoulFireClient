@@ -145,7 +145,22 @@
       "error": "Falha ao parar bots"
     },
     "permissionDenied": "Você não tem permissão para iniciar ou parar bots nesta instância.",
-    "serverUpdateRequired": "O servidor não informou permissões de controle de bots. Verifique se as versões do seu servidor e do cliente correspondem."
+    "serverUpdateRequired": "O servidor não informou permissões de controle de bots. Verifique se as versões do seu servidor e do cliente correspondem.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} desejado · {{total}} total",
   "icon": {

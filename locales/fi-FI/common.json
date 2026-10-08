@@ -145,7 +145,22 @@
       "error": "Bottien pysäyttäminen epäonnistui"
     },
     "permissionDenied": "Sinulla ei ole oikeutta käynnistää tai pysäyttää botteja tässä instanssissa.",
-    "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan."
+    "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} paikalla · {{desired}} tavoite · {{total}} yhteensä",
   "icon": {

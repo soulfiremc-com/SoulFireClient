@@ -63,16 +63,34 @@
         "respawned": "已重生",
         "disconnected": "已断开连接",
         "unknown": "状态已更改"
+      },
+      "pause": "暂停",
+      "resume": "继续",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "机器人",
+        "message": ""
       }
     },
     "bots": {
       "title": "机器人",
       "viewAll": "查看全部 {{total}} 个机器人",
-      "viewAllShort": "查看全部"
+      "viewAllShort": "查看全部",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "活动",
-      "viewAll": "查看全部",
+      "title": "",
+      "viewAll": "",
       "empty": "尚无记录的活动。",
       "noPermission": "您没有权限查看审计日志。",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "详细指标",
       "composition": "世界组成"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "获取代理服务器",
     "addProxies": "添加代理服务器",
     "filterPlaceholder": "过滤代理服务器...",

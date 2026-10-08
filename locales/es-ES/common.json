@@ -145,7 +145,22 @@
       "error": "Error al detener bots"
     },
     "permissionDenied": "No tienes permiso para iniciar o detener bots en esta instancia.",
-    "serverUpdateRequired": "El servidor no informó los permisos de control de bots. Verifica que las versiones de tu servidor y cliente coincidan."
+    "serverUpdateRequired": "El servidor no informó los permisos de control de bots. Verifica que las versiones de tu servidor y cliente coincidan.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} en línea · {{desired}} deseados · {{total}} total",
   "icon": {

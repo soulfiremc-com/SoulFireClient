@@ -145,7 +145,22 @@
       "error": "Det gick inte att stoppa bottarna"
     },
     "permissionDenied": "Du har inte behörighet att starta eller stoppa bottar i denna instans.",
-    "serverUpdateRequired": "Servern rapporterade inte botkontrollsbehörigheter. Kontrollera att din server- och klientversion matchar."
+    "serverUpdateRequired": "Servern rapporterade inte botkontrollsbehörigheter. Kontrollera att din server- och klientversion matchar.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} önskade · {{total}} totalt",
   "icon": {

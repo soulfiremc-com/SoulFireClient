@@ -145,7 +145,22 @@
       "error": "Botlar durdurulamadı"
     },
     "permissionDenied": "Bu örnekte botları başlatmak veya durdurmak için izniniz yok.",
-    "serverUpdateRequired": "Sunucu, bot kontrol izinlerini bildirmedi. Sunucu ve istemci sürümlerinizin eşleştiğinden emin olun."
+    "serverUpdateRequired": "Sunucu, bot kontrol izinlerini bildirmedi. Sunucu ve istemci sürümlerinizin eşleştiğinden emin olun.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} çevrimiçi · {{desired}} istenen · {{total}} toplam",
   "icon": {

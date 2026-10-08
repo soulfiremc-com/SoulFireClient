@@ -63,16 +63,34 @@
         "respawned": "RESPAWNZ",
         "disconnected": "catzconnectd",
         "unknown": "changd st8"
+      },
+      "pause": "Pawse",
+      "resume": "Resoome",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Botteh",
+        "message": ""
       }
     },
     "bots": {
       "title": "BOTZ",
       "viewAll": "Seez allz {{total}} bottiez",
-      "viewAllShort": "Seez allz"
+      "viewAllShort": "Seez allz",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktivitee",
-      "viewAll": "Seez allz",
+      "title": "",
+      "viewAll": "",
       "empty": "No aktivitee iz record yetz.",
       "noPermission": "U can no haz permishun 2 seez audit loag.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Detayld metrixxx",
       "composition": "Wurld kompozishun"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Getz Proxyz!",
     "addProxies": "Add Proxyz!",
     "filterPlaceholder": "Findz proxies...",

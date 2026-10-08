@@ -145,7 +145,18 @@
       "error": "Gagal menghentikan bot"
     },
     "permissionDenied": "Anda tidak memiliki izin untuk memulai atau menghentikan bot di instance ini.",
-    "serverUpdateRequired": "Server tidak melaporkan izin kontrol bot. Periksa apakah versi server dan klien Anda sudah cocok."
+    "serverUpdateRequired": "Server tidak melaporkan izin kontrol bot. Periksa apakah versi server dan klien Anda sudah cocok.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} diinginkan · {{total}} total",
   "icon": {

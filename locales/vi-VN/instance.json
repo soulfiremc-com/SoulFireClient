@@ -63,16 +63,34 @@
         "respawned": "đã hồi sinh",
         "disconnected": "đã ngắt kết nối",
         "unknown": "đã thay đổi trạng thái"
+      },
+      "pause": "Tạm dừng",
+      "resume": "Tiếp tục",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bot",
       "viewAll": "Xem tất cả {{total}} bot",
-      "viewAllShort": "Xem tất cả"
+      "viewAllShort": "Xem tất cả",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Hoạt động",
-      "viewAll": "Xem tất cả",
+      "title": "",
+      "viewAll": "",
       "empty": "Chưa có hoạt động nào được ghi nhận.",
       "noPermission": "Bạn không có quyền xem nhật ký kiểm tra.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Chỉ số chi tiết",
       "composition": "Thành phần thế giới"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Lấy Proxy",
     "addProxies": "Thêm Proxy",
     "filterPlaceholder": "Lọc proxy...",

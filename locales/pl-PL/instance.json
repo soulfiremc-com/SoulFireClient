@@ -63,16 +63,34 @@
         "respawned": "odrodził się",
         "disconnected": "rozłączony",
         "unknown": "zmienił stan"
+      },
+      "pause": "Wstrzymaj",
+      "resume": "Wznów",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Boty",
       "viewAll": "Wyświetl wszystkich {{total}} botów",
-      "viewAllShort": "Wyświetl wszystkich"
+      "viewAllShort": "Wyświetl wszystkich",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktywność",
-      "viewAll": "Wyświetl wszystkich",
+      "title": "",
+      "viewAll": "",
       "empty": "Brak zarejestrowanej aktywności.",
       "noPermission": "Nie masz uprawnień do przeglądania dziennika audytu.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Szczegółowe metryki",
       "composition": "Skład świata"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Pobierz proxy",
     "addProxies": "Dodaj proxy",
     "filterPlaceholder": "Filtruj proxy...",

@@ -145,7 +145,18 @@
       "error": "停止機器人失敗"
     },
     "permissionDenied": "您沒有權限在此實例中啟動或停止機器人。",
-    "serverUpdateRequired": "伺服器未回報機器人控制權限。請檢查您的伺服器與用戶端版本是否一致。"
+    "serverUpdateRequired": "伺服器未回報機器人控制權限。請檢查您的伺服器與用戶端版本是否一致。",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} 在線 · {{desired}} 目標 · {{total}} 總數",
   "icon": {

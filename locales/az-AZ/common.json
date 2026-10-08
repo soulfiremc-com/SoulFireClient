@@ -145,7 +145,22 @@
       "error": "Botları dayandırmaq alınmadı"
     },
     "permissionDenied": "Bu instansiyada botları başlatmağa və ya dayandırmağa icazəniz yoxdur.",
-    "serverUpdateRequired": "Server bot idarəetmə icazələri barədə hesabat vermədi. Server və kliyen versiyalarınızın uyğun olduğundan əmin olun."
+    "serverUpdateRequired": "Server bot idarəetmə icazələri barədə hesabat vermədi. Server və kliyen versiyalarınızın uyğun olduğundan əmin olun.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} onlayn · {{desired}} istənilən · {{total}} cəmi",
   "icon": {

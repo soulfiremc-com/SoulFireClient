@@ -63,16 +63,34 @@
         "respawned": "पुनर्जीवित हुआ",
         "disconnected": "डिस्कनेक्टेड",
         "unknown": "अवस्था बदली"
+      },
+      "pause": "रोकें",
+      "resume": "फिर से शुरू करें",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "बॉट",
+        "message": ""
       }
     },
     "bots": {
       "title": "बॉट्स",
       "viewAll": "सभी {{total}} बॉट्स देखें",
-      "viewAllShort": "सभी देखें"
+      "viewAllShort": "सभी देखें",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "गतिविधि",
-      "viewAll": "सभी देखें",
+      "title": "",
+      "viewAll": "",
       "empty": "अभी तक कोई दर्ज की गई गतिविधि नहीं है।",
       "noPermission": "आपको ऑडिट लॉग देखने की अनुमति नहीं है।",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "विस्तृत मेट्रिक्स",
       "composition": "विश्व संरचना"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "प्रॉक्सी प्राप्त करें",
     "addProxies": "प्रॉक्सी जोड़ें",
     "filterPlaceholder": "प्रॉक्सी छाँटें...",

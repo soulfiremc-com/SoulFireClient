@@ -63,16 +63,34 @@
         "respawned": "a réapparu",
         "disconnected": "déconnecté",
         "unknown": "a changé d'état"
+      },
+      "pause": "Pauser",
+      "resume": "Reprendre",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Voir tous les {{total}} bots",
-      "viewAllShort": "Voir tout"
+      "viewAllShort": "Voir tout",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Activité",
-      "viewAll": "Voir tout",
+      "title": "",
+      "viewAll": "",
       "empty": "Aucune activité enregistrée pour l'instant.",
       "noPermission": "Vous n'avez pas la permission de voir le journal d'audit.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Métriques détaillées",
       "composition": "Composition du monde"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Obtenir des proxies",
     "addProxies": "Ajouter des proxies",
     "filterPlaceholder": "Filtrer les proxies...",

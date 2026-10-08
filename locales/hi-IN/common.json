@@ -145,7 +145,22 @@
       "error": "बॉट्स रोकने में विफल"
     },
     "permissionDenied": "आपको इस इंस्टेंस में बोट्स को शुरू या बंद करने की अनुमति नहीं है।",
-    "serverUpdateRequired": "सर्वर ने बोट नियंत्रण की अनुमतियों की रिपोर्ट नहीं दी। कृपया जांचें कि आपके सर्वर और क्लाइंट के संस्करण मेल खाते हैं।"
+    "serverUpdateRequired": "सर्वर ने बोट नियंत्रण की अनुमतियों की रिपोर्ट नहीं दी। कृपया जांचें कि आपके सर्वर और क्लाइंट के संस्करण मेल खाते हैं।",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} ऑनलाइन · {{desired}} इच्छित · {{total}} कुल",
   "icon": {

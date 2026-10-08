@@ -63,16 +63,34 @@
         "respawned": "เกิดใหม่แล้ว",
         "disconnected": "ตัดการเชื่อมต่อแล้ว",
         "unknown": "เปลี่ยนสถานะ"
+      },
+      "pause": "หยุดชั่วคราว",
+      "resume": "ดำเนินการต่อ",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "บอท",
+        "message": ""
       }
     },
     "bots": {
       "title": "บอท",
       "viewAll": "ดูบอททั้งหมด {{total}} ตัว",
-      "viewAllShort": "ดูทั้งหมด"
+      "viewAllShort": "ดูทั้งหมด",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "กิจกรรม",
-      "viewAll": "ดูทั้งหมด",
+      "title": "",
+      "viewAll": "",
       "empty": "ยังไม่มีกิจกรรมบันทึกไว้",
       "noPermission": "คุณไม่มีสิทธิ์ในการดูบันทึกตรวจสอบ",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "เมตริกส์แบบละเอียด",
       "composition": "องค์ประกอบของโลก"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "รับพร็อกซี",
     "addProxies": "เพิ่มพร็อกซี",
     "filterPlaceholder": "กรองพร็อกซี...",
