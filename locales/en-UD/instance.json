@@ -63,16 +63,34 @@
         "respawned": "pǝpɐʍsuǝɹ",
         "disconnected": "pǝʇɔǝuuocsᴉp",
         "unknown": "ǝʇɐʇs pǝƃuɐɥɔ"
+      },
+      "pause": "ǝsnsɐԀ",
+      "resume": "ǝɯnsǝᴚ",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "ʇoq",
+        "message": ""
       }
     },
     "bots": {
       "title": "sʇoԐ",
       "viewAll": "sʇoq {{total}} llɐ ʍǝᴉɅ",
-      "viewAllShort": "llɐ ʍǝᴉɅ"
+      "viewAllShort": "llɐ ʍǝᴉɅ",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "ʎʇᴉʌᴉʇɔɐ",
-      "viewAll": "llɐ ʍǝᴉɅ",
+      "title": "",
+      "viewAll": "",
       "empty": ".ʇǝʎ ʎʇᴉʌᴉʇɔɐ pǝpɐɹɔǝɹ oN",
       "noPermission": ".ƃol ʇᴉpnɐ ǝɥʇ ʍǝᴉʌ oʇ uoᴉssᴉɯɹǝd ǝʌɐɥ ʇou os no⅄",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "sɔᴉʇǝɯ pǝlᴉɐʇǝp",
       "composition": "uoᴉsᴉʇᴉsodɯoɔ plɹoM"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "sǝᴉxɐɹԀ ʇǝƃ",
     "addProxies": "sǝᴉxɐɹԀ pp∀",
     "filterPlaceholder": "...sǝᴉxɐɹd ɹǝʇlᴉℲ",

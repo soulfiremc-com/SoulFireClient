@@ -145,7 +145,18 @@
       "error": "봇 중지에 실패했습니다."
     },
     "permissionDenied": "이 인스턴스에서 봇을 시작하거나 중지할 권한이 없습니다.",
-    "serverUpdateRequired": "서버가 봇 제어 권한을 보고하지 않았습니다. 서버와 클라이언트 버전이 일치하는지 확인하세요."
+    "serverUpdateRequired": "서버가 봇 제어 권한을 보고하지 않았습니다. 서버와 클라이언트 버전이 일치하는지 확인하세요.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} 온라인 · {{desired}} 목표 · {{total}} 전체",
   "icon": {

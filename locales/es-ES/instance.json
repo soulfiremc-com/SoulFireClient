@@ -63,16 +63,34 @@
         "respawned": "resucitó",
         "disconnected": "desconectado",
         "unknown": "cambió de estado"
+      },
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Ver todos los {{total}} bots",
-      "viewAllShort": "Ver todos"
+      "viewAllShort": "Ver todos",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Actividad",
-      "viewAll": "Ver todos",
+      "title": "",
+      "viewAll": "",
       "empty": "Aún no hay actividad registrada.",
       "noPermission": "No tienes permiso para ver el registro de auditoría.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Métricas detalladas",
       "composition": "Composición del mundo"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Obtener proxies",
     "addProxies": "Agregar proxies",
     "filterPlaceholder": "Filtrar proxies...",

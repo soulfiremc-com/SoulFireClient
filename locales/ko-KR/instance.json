@@ -63,16 +63,34 @@
         "respawned": "리스폰됨",
         "disconnected": "연결 해제됨",
         "unknown": "상태 변경됨"
+      },
+      "pause": "일시 정지",
+      "resume": "다시 시작",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "봇",
+        "message": ""
       }
     },
     "bots": {
       "title": "봇들",
       "viewAll": "모든 봇({{total}}개) 보기",
-      "viewAllShort": "모두 보기"
+      "viewAllShort": "모두 보기",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "활동",
-      "viewAll": "모두 보기",
+      "title": "",
+      "viewAll": "",
       "empty": "아직 기록된 활동이 없습니다.",
       "noPermission": "감사 로그를 볼 권한이 없습니다.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "상세 메트릭",
       "composition": "월드 구성"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "프록시 가져오기",
     "addProxies": "프록시 추가",
     "filterPlaceholder": "프록시 필터링...",

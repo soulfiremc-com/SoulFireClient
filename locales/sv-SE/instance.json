@@ -63,16 +63,34 @@
         "respawned": "återuppstod",
         "disconnected": "frånkopplad",
         "unknown": "ändrade tillstånd"
+      },
+      "pause": "Pausa",
+      "resume": "Återuppta",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bottar",
       "viewAll": "Visa alla {{total}} bottar",
-      "viewAllShort": "Visa alla"
+      "viewAllShort": "Visa alla",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktivitet",
-      "viewAll": "Visa alla",
+      "title": "",
+      "viewAll": "",
       "empty": "Ingen aktivitet har registrerats än.",
       "noPermission": "Du har inte behörighet att visa granskningsloggen.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Detaljerade mätvärden",
       "composition": "Världssammansättning"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Hämta proxies",
     "addProxies": "Lägg till proxies",
     "filterPlaceholder": "Filtrera proxies...",

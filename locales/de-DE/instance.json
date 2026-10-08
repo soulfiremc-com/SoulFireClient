@@ -63,16 +63,34 @@
         "respawned": "respawned",
         "disconnected": "getrennt",
         "unknown": "Status gewechselt"
+      },
+      "pause": "Pausieren",
+      "resume": "Fortsetzen",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Alle {{total}} Bots anzeigen",
-      "viewAllShort": "Alle anzeigen"
+      "viewAllShort": "Alle anzeigen",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktivität",
-      "viewAll": "Alle anzeigen",
+      "title": "",
+      "viewAll": "",
       "empty": "Noch keine aufgezeichneten Aktivitäten.",
       "noPermission": "Du hast keine Berechtigung, das Protokoll einzusehen.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Detaillierte Metriken",
       "composition": "Weltzusammensetzung"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Proxies abrufen",
     "addProxies": "Proxies hinzufügen",
     "filterPlaceholder": "Proxies filtern...",

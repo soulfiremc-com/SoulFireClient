@@ -145,7 +145,18 @@
       "error": "停止机器人失败"
     },
     "permissionDenied": "您没有权限在此实例中启动或停止机器人。",
-    "serverUpdateRequired": "服务器未报告机器人控制权限。请检查您的服务器和客户端版本是否匹配。"
+    "serverUpdateRequired": "服务器未报告机器人控制权限。请检查您的服务器和客户端版本是否匹配。",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} 在线 · {{desired}} 目标 · {{total}} 总计",
   "icon": {

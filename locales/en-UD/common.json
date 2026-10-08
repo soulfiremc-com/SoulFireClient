@@ -145,7 +145,22 @@
       "error": "sʇoԐ ddıʇs oʇ pǝlılɐɟ"
     },
     "permissionDenied": "˙ǝɔuɐʇsᴉu sᴉɥʇ uᴉ sʇoq doddns ɹo ʇɐɹʇs oʇ uᴉssᴉɯɹǝdd ǝʌɐɥ ʇo uop ǝnoʎ",
-    "serverUpdateRequired": ".ɯnlǝʌ suoᴉsɹǝʌ ʇuǝᴉlɔ puɐ ɹǝʌɹǝʌɹǝs ɹnoʎ ʇɐɥʇ ʞɔǝɥɔ .suoᴉssᴉɯɹǝdd lɹoʇuoɔ ʇoq ʇɹodǝɹ pᴉp ʇoɔ sɹǝʌɹǝs ǝɥʇ"
+    "serverUpdateRequired": ".ɯnlǝʌ suoᴉsɹǝʌ ʇuǝᴉlɔ puɐ ɹǝʌɹǝʌɹǝs ɹnoʎ ʇɐɥʇ ʞɔǝɥɔ .suoᴉssᴉɯɹǝdd lɹoʇuoɔ ʇoq ʇɹodǝɹ pᴉp ʇoɔ sɹǝʌɹǝs ǝɥʇ",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "ʇlɐʇ ʇɐl-o {{lɐʇoʇ}} · pǝɹıɹǝp {{pǝɹıɹsǝp}} · ǝuıluo {{ǝuıluo}}",
   "icon": {

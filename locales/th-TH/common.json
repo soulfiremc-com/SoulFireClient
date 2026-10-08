@@ -145,7 +145,18 @@
       "error": "ไม่สามารถหยุดบอทได้"
     },
     "permissionDenied": "คุณไม่มีสิทธิ์ในการเริ่มหรือหยุดบอทในอินสแตนซ์นี้.",
-    "serverUpdateRequired": "เซิร์ฟเวอร์ไม่ได้รายงานสิทธิ์ควบคุมบอท โปรดตรวจสอบว่าเวอร์ชันของเซิร์ฟเวอร์และไคลเอนต์ตรงกันหรือไม่."
+    "serverUpdateRequired": "เซิร์ฟเวอร์ไม่ได้รายงานสิทธิ์ควบคุมบอท โปรดตรวจสอบว่าเวอร์ชันของเซิร์ฟเวอร์และไคลเอนต์ตรงกันหรือไม่.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "ออนไลน์ {{online}} · ที่ต้องการ {{desired}} · ทั้งหมด {{total}}",
   "icon": {

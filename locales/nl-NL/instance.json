@@ -63,16 +63,34 @@
         "respawned": "herrezen",
         "disconnected": "verbinding verbroken",
         "unknown": "heeft de status gewijzigd"
+      },
+      "pause": "Pauzeren",
+      "resume": "Hervatten",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Bekijk alle {{total}} bots",
-      "viewAllShort": "Alles bekijken"
+      "viewAllShort": "Alles bekijken",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Activiteit",
-      "viewAll": "Alles bekijken",
+      "title": "",
+      "viewAll": "",
       "empty": "Nog geen geregistreerde activiteit.",
       "noPermission": "Je hebt geen toestemming om het auditlogboek te bekijken.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Gedetailleerde statistieken",
       "composition": "Wereldcompositie"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Proxies ophalen",
     "addProxies": "Proxies toevoegen",
     "filterPlaceholder": "Proxies filteren...",

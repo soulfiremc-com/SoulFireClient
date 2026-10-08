@@ -63,16 +63,34 @@
         "respawned": "respawn",
         "disconnected": "terputus",
         "unknown": "mengubah status"
+      },
+      "pause": "Jeda",
+      "resume": "Lanjutkan",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Bot",
       "viewAll": "Lihat semua {{total}} bot",
-      "viewAllShort": "Lihat semua"
+      "viewAllShort": "Lihat semua",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktivitas",
-      "viewAll": "Lihat semua",
+      "title": "",
+      "viewAll": "",
       "empty": "Belum ada aktivitas yang tercatat.",
       "noPermission": "Anda tidak memiliki izin untuk melihat log audit.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Metrik detail",
       "composition": "Komposisi dunia"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Dapatkan Proxy",
     "addProxies": "Tambah Proxy",
     "filterPlaceholder": "Saring proxy...",

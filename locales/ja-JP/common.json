@@ -145,7 +145,18 @@
       "error": "ボットの停止に失敗しました"
     },
     "permissionDenied": "このインスタンスでボットの起動または停止を行う権限がありません。",
-    "serverUpdateRequired": "サーバーがボット制御の権限を報告していません。サーバーとクライアントのバージョンが一致していることを確認してください。"
+    "serverUpdateRequired": "サーバーがボット制御の権限を報告していません。サーバーとクライアントのバージョンが一致していることを確認してください。",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}}人オンライン · 希望数:{{desired}} · 合計:{{total}}",
   "icon": {

@@ -63,16 +63,34 @@
         "respawned": "відродився",
         "disconnected": "відключено",
         "unknown": "змінив стан"
+      },
+      "pause": "Призупинити",
+      "resume": "Відновити",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Бот",
+        "message": ""
       }
     },
     "bots": {
       "title": "Боти",
       "viewAll": "Переглянути всіх {{total}} ботів",
-      "viewAllShort": "Переглянути все"
+      "viewAllShort": "Переглянути все",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Активність",
-      "viewAll": "Переглянути все",
+      "title": "",
+      "viewAll": "",
       "empty": "Ще немає зафіксованої активності.",
       "noPermission": "У вас немає дозволу переглядати журнал перевірок.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Детальна метрика",
       "composition": "Композиція світу"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Отримати проксі",
     "addProxies": "Додати проксі",
     "filterPlaceholder": "Фільтрувати проксі...",

@@ -145,7 +145,18 @@
       "error": "Không thể dừng bot"
     },
     "permissionDenied": "Bạn không có quyền để khởi động hoặc dừng bot trong phiên bản này.",
-    "serverUpdateRequired": "Máy chủ không báo cáo quyền kiểm soát bot. Hãy kiểm tra rằng phiên bản máy chủ và phiên bản client của bạn trùng khớp nhau."
+    "serverUpdateRequired": "Máy chủ không báo cáo quyền kiểm soát bot. Hãy kiểm tra rằng phiên bản máy chủ và phiên bản client của bạn trùng khớp nhau.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "",
+    "startSelected_other": "",
+    "stopCount_other": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} đang online · {{desired}} mong muốn · {{total}} tổng cộng",
   "icon": {

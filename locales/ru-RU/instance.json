@@ -63,16 +63,34 @@
         "respawned": "воскрес",
         "disconnected": "отключён",
         "unknown": "изменил состояние"
+      },
+      "pause": "Пауза",
+      "resume": "Возобновить",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Бот",
+        "message": ""
       }
     },
     "bots": {
       "title": "Боты",
       "viewAll": "Показать всех {{total}} ботов",
-      "viewAllShort": "Показать всех"
+      "viewAllShort": "Показать всех",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Активность",
-      "viewAll": "Показать всех",
+      "title": "",
+      "viewAll": "",
       "empty": "Активность ещё не записана.",
       "noPermission": "У вас нет разрешения на просмотр журнала аудита.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Подробные метрики",
       "composition": "Состав мира"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Получить прокси",
     "addProxies": "Добавить прокси",
     "filterPlaceholder": "Фильтр прокси...",

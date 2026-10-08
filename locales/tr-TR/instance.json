@@ -63,16 +63,34 @@
         "respawned": "yeniden doğdu",
         "disconnected": "bağlantı kesildi",
         "unknown": "durumu değişti"
+      },
+      "pause": "Duraklat",
+      "resume": "Devam et",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot",
+        "message": ""
       }
     },
     "bots": {
       "title": "Botlar",
       "viewAll": "Tüm {{total}} botu görüntüle",
-      "viewAllShort": "Tümünü görüntüle"
+      "viewAllShort": "Tümünü görüntüle",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Aktivite",
-      "viewAll": "Tümünü görüntüle",
+      "title": "",
+      "viewAll": "",
       "empty": "Henüz kaydedilmiş bir aktivite yok.",
       "noPermission": "Denetim günlüğünü görüntüleme izniniz yok.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Ayrıntılı metrikler",
       "composition": "Dünya bileşimi"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Proxyleri Al",
     "addProxies": "Proxy Ekle",
     "filterPlaceholder": "Proxyleri filtrele...",

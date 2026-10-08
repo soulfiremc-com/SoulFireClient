@@ -145,7 +145,22 @@
       "error": "Impossibile fermare i bot"
     },
     "permissionDenied": "Non hai il permesso di avviare o fermare i bot in questa istanza.",
-    "serverUpdateRequired": "Il server non ha segnalato le autorizzazioni di controllo bot. Verifica che le versioni del tuo server e client corrispondano."
+    "serverUpdateRequired": "Il server non ha segnalato le autorizzazioni di controllo bot. Verifica che le versioni del tuo server e client corrispondano.",
+    "startBots": "",
+    "moreActions": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "startAllCount": "",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "",
+    "availableCount_other": "",
+    "startSelected_one": "",
+    "startSelected_other": "",
+    "stopCount_one": "",
+    "stopCount_other": "",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} desiderati · {{total}} totali",
   "icon": {

@@ -63,16 +63,34 @@
         "respawned": "syntyi uudelleen",
         "disconnected": "yhteys katkaistu",
         "unknown": "muutti tilaa"
+      },
+      "pause": "Tauota",
+      "resume": "Jatka",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Botti",
+        "message": ""
       }
     },
     "bots": {
       "title": "Botit",
       "viewAll": "Näytä kaikki {{total}} bottia",
-      "viewAllShort": "Näytä kaikki"
+      "viewAllShort": "Näytä kaikki",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Toiminta",
-      "viewAll": "Näytä kaikki",
+      "title": "",
+      "viewAll": "",
       "empty": "Ei vielä tallennettua toimintaa.",
       "noPermission": "Sinulla ei ole oikeuksia nähdä audit-lokia.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Tarkat metrikat",
       "composition": "Maailman koostumus"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Hae proxyja",
     "addProxies": "Lisää proxyja",
     "filterPlaceholder": "Suodata proxyt...",

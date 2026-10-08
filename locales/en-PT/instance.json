@@ -63,16 +63,34 @@
         "respawned": "washed ashore again",
         "disconnected": "left the ship",
         "unknown": "shifted course"
+      },
+      "pause": "Drop anchor",
+      "resume": "Sail onward",
+      "paused": "",
+      "following": "",
+      "reconnecting": "",
+      "emptyFilter": "",
+      "filterLabel": "",
+      "filters": {
+        "all": "",
+        "chat": "",
+        "lifecycle": ""
+      },
+      "columns": {
+        "time": "",
+        "bot": "Bot Buccaneer",
+        "message": ""
       }
     },
     "bots": {
       "title": "Crew",
       "viewAll": "Gaze at all {{total}} bots in the fleet",
-      "viewAllShort": "Show all hands"
+      "viewAllShort": "Show all hands",
+      "detailsFor": ""
     },
     "timeline": {
-      "title": "Cap'n's Log",
-      "viewAll": "Show all hands",
+      "title": "",
+      "viewAll": "",
       "empty": "No tales in the log yet, matey.",
       "noPermission": "Ye lack permission to read the pirate's ledger.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Finer Booty Details",
       "composition": "Shape o' the Seas"
-    }
+    },
+    "loadError": ""
   },
   "proxy": {
+    "transport": {
+      "network": "",
+      "unix": ""
+    },
     "getProxies": "Fetch Proxies!",
     "addProxies": "Add more proxies t' yer crew!",
     "filterPlaceholder": "Arr, filter them scallywag proxies...",
