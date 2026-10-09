@@ -66,31 +66,31 @@
       },
       "pause": "Tạm dừng",
       "resume": "Tiếp tục",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Hiển thị đã tạm dừng. Hoạt động mới vẫn đang được thu thập.",
+      "following": "Cập nhật trực tiếp",
+      "reconnecting": "Đang kết nối lại với luồng trực tiếp...",
+      "emptyFilter": "Không có hoạt động nào phù hợp với bộ lọc này.",
+      "filterLabel": "Lọc luồng trực tiếp",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Tất cả",
+        "chat": "Trò chuyện",
+        "lifecycle": "Sự kiện"
       },
       "columns": {
-        "time": "",
+        "time": "Thời gian",
         "bot": "Bot",
-        "message": ""
+        "message": "Tin nhắn"
       }
     },
     "bots": {
       "title": "Bot",
       "viewAll": "Xem tất cả {{total}} bot",
       "viewAllShort": "Xem tất cả",
-      "detailsFor": ""
+      "detailsFor": "Chi tiết bot cho {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Hành động gần đây",
+      "viewAll": "Xem lịch sử",
       "empty": "Chưa có hoạt động nào được ghi nhận.",
       "noPermission": "Bạn không có quyền xem nhật ký kiểm tra.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Chỉ số chi tiết",
       "composition": "Thành phần thế giới"
     },
-    "loadError": ""
+    "loadError": "Không thể tải dữ liệu mới nhất."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Địa chỉ mạng",
+      "unix": "Ổ cắm Unix"
     },
     "getProxies": "Lấy Proxy",
     "addProxies": "Thêm Proxy",

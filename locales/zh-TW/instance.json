@@ -66,31 +66,31 @@
       },
       "pause": "暫停",
       "resume": "繼續",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "顯示已暫停。新活動仍在收集中。",
+      "following": "即時更新",
+      "reconnecting": "正在重新連線到即時訊息流……",
+      "emptyFilter": "沒有符合此篩選條件的活動。",
+      "filterLabel": "篩選即時訊息流",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "全部",
+        "chat": "聊天",
+        "lifecycle": "事件"
       },
       "columns": {
-        "time": "",
+        "time": "時間",
         "bot": "機器人",
-        "message": ""
+        "message": "訊息"
       }
     },
     "bots": {
       "title": "機器人群組/機器人列表/機器人",
       "viewAll": "檢視全部 {{total}} 個機器人",
       "viewAllShort": "檢視全部",
-      "detailsFor": ""
+      "detailsFor": "{{name}} 的機器人詳細資訊"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "近期操作",
+      "viewAll": "檢視歷史",
       "empty": "尚未有紀錄的活動。",
       "noPermission": "你沒有權限查看稽核日誌。",
       "types": {
@@ -112,12 +112,12 @@
       "title": "詳細指標",
       "composition": "世界組成"
     },
-    "loadError": ""
+    "loadError": "無法載入最新資料。"
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "網絡位址",
+      "unix": "Unix 套接字"
     },
     "getProxies": "獲取代理伺服器",
     "addProxies": "新增代理伺服器",

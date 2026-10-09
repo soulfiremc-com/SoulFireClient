@@ -66,31 +66,31 @@
       },
       "pause": "Пауза",
       "resume": "Возобновить",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Отображение приостановлено. Новая активность всё ещё собирается.",
+      "following": "Живое обновление",
+      "reconnecting": "Переподключение к живой ленте...",
+      "emptyFilter": "Нет активности, соответствующей этому фильтру.",
+      "filterLabel": "Фильтр живой ленты",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Все",
+        "chat": "Чат",
+        "lifecycle": "События"
       },
       "columns": {
-        "time": "",
+        "time": "Время",
         "bot": "Бот",
-        "message": ""
+        "message": "Сообщение"
       }
     },
     "bots": {
       "title": "Боты",
       "viewAll": "Показать всех {{total}} ботов",
       "viewAllShort": "Показать всех",
-      "detailsFor": ""
+      "detailsFor": "Детали бота для {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Последние действия",
+      "viewAll": "Просмотреть историю",
       "empty": "Активность ещё не записана.",
       "noPermission": "У вас нет разрешения на просмотр журнала аудита.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Подробные метрики",
       "composition": "Состав мира"
     },
-    "loadError": ""
+    "loadError": "Не удалось загрузить последние данные."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Сетевой адрес",
+      "unix": "Юникс-сокет"
     },
     "getProxies": "Получить прокси",
     "addProxies": "Добавить прокси",

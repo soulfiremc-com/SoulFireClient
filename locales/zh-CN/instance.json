@@ -66,31 +66,31 @@
       },
       "pause": "暂停",
       "resume": "继续",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "显示已暂停。新活动仍在收集中。",
+      "following": "实时更新",
+      "reconnecting": "正在重新连接到实时推送……",
+      "emptyFilter": "没有与此筛选条件匹配的活动。",
+      "filterLabel": "筛选实时推送",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "全部",
+        "chat": "聊天",
+        "lifecycle": "事件"
       },
       "columns": {
-        "time": "",
+        "time": "时间",
         "bot": "机器人",
-        "message": ""
+        "message": "消息"
       }
     },
     "bots": {
       "title": "机器人",
       "viewAll": "查看全部 {{total}} 个机器人",
       "viewAllShort": "查看全部",
-      "detailsFor": ""
+      "detailsFor": "{{name}} 的机器人详情"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "最近操作",
+      "viewAll": "查看历史记录",
       "empty": "尚无记录的活动。",
       "noPermission": "您没有权限查看审计日志。",
       "types": {
@@ -112,12 +112,12 @@
       "title": "详细指标",
       "composition": "世界组成"
     },
-    "loadError": ""
+    "loadError": "无法加载最新数据。"
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "网络地址",
+      "unix": "Unix 套接字"
     },
     "getProxies": "获取代理服务器",
     "addProxies": "添加代理服务器",

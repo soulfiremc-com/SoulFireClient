@@ -66,31 +66,31 @@
       },
       "pause": "一時停止",
       "resume": "再開",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "表示が一時停止中です。新しいアクティビティは引き続き収集されています。",
+      "following": "ライブ更新",
+      "reconnecting": "ライブフィードに再接続中…",
+      "emptyFilter": "このフィルターに一致するアクティビティはありません。",
+      "filterLabel": "ライブフィードをフィルター",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "すべて",
+        "chat": "チャット",
+        "lifecycle": "イベント"
       },
       "columns": {
-        "time": "",
+        "time": "時間",
         "bot": "ボット",
-        "message": ""
+        "message": "メッセージ"
       }
     },
     "bots": {
       "title": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
       "viewAll": "全{{total}}体のボットを表示",
       "viewAllShort": "すべて表示",
-      "detailsFor": ""
+      "detailsFor": "{{name}} のボット詳細"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "最近の操作",
+      "viewAll": "履歴を表示",
       "empty": "記録されたアクティビティはまだありません。",
       "noPermission": "監査ログを表示する権限がありません。",
       "types": {
@@ -112,12 +112,12 @@
       "title": "詳細メトリクス",
       "composition": "ワールド構成"
     },
-    "loadError": ""
+    "loadError": "最新データを読み込めませんでした。"
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "ネットワークアドレス",
+      "unix": "Unixソケット"
     },
     "getProxies": "プロキシを取得",
     "addProxies": "プロキシを追加",

@@ -66,31 +66,31 @@
       },
       "pause": "Pauzeren",
       "resume": "Hervatten",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Weergave gepauzeerd. Nieuwe activiteit wordt nog steeds verzameld.",
+      "following": "Live-updates",
+      "reconnecting": "Bezig met opnieuw verbinden met de livefeed...",
+      "emptyFilter": "Geen activiteit komt overeen met dit filter.",
+      "filterLabel": "Filter livefeed",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Alles",
+        "chat": "Chatberichten",
+        "lifecycle": "Gebeurtenissen"
       },
       "columns": {
-        "time": "",
+        "time": "Tijd",
         "bot": "Bot",
-        "message": ""
+        "message": "Bericht"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Bekijk alle {{total}} bots",
       "viewAllShort": "Alles bekijken",
-      "detailsFor": ""
+      "detailsFor": "Botdetails voor {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Recente acties",
+      "viewAll": "Bekijk geschiedenis",
       "empty": "Nog geen geregistreerde activiteit.",
       "noPermission": "Je hebt geen toestemming om het auditlogboek te bekijken.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Gedetailleerde statistieken",
       "composition": "Wereldcompositie"
     },
-    "loadError": ""
+    "loadError": "Kan de nieuwste gegevens niet laden."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Netwerkadres",
+      "unix": "Unix-socket"
     },
     "getProxies": "Proxies ophalen",
     "addProxies": "Proxies toevoegen",

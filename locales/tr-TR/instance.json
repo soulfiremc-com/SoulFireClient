@@ -66,31 +66,31 @@
       },
       "pause": "Duraklat",
       "resume": "Devam et",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Görüntüleme duraklatıldı. Yeni etkinlikler toplanmaya devam ediyor.",
+      "following": "Canlı güncellemeler",
+      "reconnecting": "Canlı yayına yeniden bağlanılıyor...",
+      "emptyFilter": "Bu filtreyle eşleşen etkinlik yok.",
+      "filterLabel": "Canlı yayını filtrele",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Tümü",
+        "chat": "Sohbet",
+        "lifecycle": "Olaylar"
       },
       "columns": {
-        "time": "",
+        "time": "Zaman",
         "bot": "Bot",
-        "message": ""
+        "message": "Mesaj"
       }
     },
     "bots": {
       "title": "Botlar",
       "viewAll": "Tüm {{total}} botu görüntüle",
       "viewAllShort": "Tümünü görüntüle",
-      "detailsFor": ""
+      "detailsFor": "{{name}} için bot ayrıntıları"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Son işlemler",
+      "viewAll": "Geçmişi görüntüle",
       "empty": "Henüz kaydedilmiş bir aktivite yok.",
       "noPermission": "Denetim günlüğünü görüntüleme izniniz yok.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Ayrıntılı metrikler",
       "composition": "Dünya bileşimi"
     },
-    "loadError": ""
+    "loadError": "En son veriler yüklenemedi."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Ağ adresi",
+      "unix": "Unix soketi"
     },
     "getProxies": "Proxyleri Al",
     "addProxies": "Proxy Ekle",

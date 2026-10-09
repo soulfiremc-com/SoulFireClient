@@ -66,31 +66,31 @@
       },
       "pause": "Jeda",
       "resume": "Lanjutkan",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Tampilan dijeda. Aktivitas baru tetap dikumpulkan.",
+      "following": "Pembaruan langsung",
+      "reconnecting": "Menyambungkan kembali ke umpan langsung...",
+      "emptyFilter": "Tidak ada aktivitas yang cocok dengan filter ini.",
+      "filterLabel": "Filter umpan langsung",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Semua",
+        "chat": "Obrolan",
+        "lifecycle": "Peristiwa"
       },
       "columns": {
-        "time": "",
+        "time": "Waktu",
         "bot": "Bot",
-        "message": ""
+        "message": "Pesan"
       }
     },
     "bots": {
       "title": "Bot",
       "viewAll": "Lihat semua {{total}} bot",
       "viewAllShort": "Lihat semua",
-      "detailsFor": ""
+      "detailsFor": "Detail bot untuk {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Aksi terbaru",
+      "viewAll": "Lihat riwayat",
       "empty": "Belum ada aktivitas yang tercatat.",
       "noPermission": "Anda tidak memiliki izin untuk melihat log audit.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Metrik detail",
       "composition": "Komposisi dunia"
     },
-    "loadError": ""
+    "loadError": "Tidak dapat memuat data terbaru."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Alamat jaringan",
+      "unix": "Socket unix"
     },
     "getProxies": "Dapatkan Proxy",
     "addProxies": "Tambah Proxy",

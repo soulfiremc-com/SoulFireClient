@@ -66,31 +66,31 @@
       },
       "pause": "Pausieren",
       "resume": "Fortsetzen",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Anzeige pausiert. Neue Aktivitäten werden weiterhin gesammelt.",
+      "following": "Live-Aktualisierungen",
+      "reconnecting": "Stelle Verbindung zum Live-Feed wieder her...",
+      "emptyFilter": "Keine Aktivität entspricht diesem Filter.",
+      "filterLabel": "Live-Feed filtern",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Alle",
+        "chat": "Chat",
+        "lifecycle": "Ereignisse"
       },
       "columns": {
-        "time": "",
+        "time": "Zeit",
         "bot": "Bot",
-        "message": ""
+        "message": "Nachricht"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Alle {{total}} Bots anzeigen",
       "viewAllShort": "Alle anzeigen",
-      "detailsFor": ""
+      "detailsFor": "Bot-Details für {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Letzte Aktionen",
+      "viewAll": "Verlauf anzeigen",
       "empty": "Noch keine aufgezeichneten Aktivitäten.",
       "noPermission": "Du hast keine Berechtigung, das Protokoll einzusehen.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Detaillierte Metriken",
       "composition": "Weltzusammensetzung"
     },
-    "loadError": ""
+    "loadError": "Die neuesten Daten konnten nicht geladen werden."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Netzwerkadresse",
+      "unix": "Unix-Socket"
     },
     "getProxies": "Proxies abrufen",
     "addProxies": "Proxies hinzufügen",
