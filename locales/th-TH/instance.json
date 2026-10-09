@@ -66,31 +66,31 @@
       },
       "pause": "หยุดชั่วคราว",
       "resume": "ดำเนินการต่อ",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "การแสดงผลถูกหยุดชั่วคราว กิจกรรมใหม่ยังคงถูกรวบรวมอยู่ต่อไป.",
+      "following": "อัปเดตสด",
+      "reconnecting": "กำลังเชื่อมต่อกับฟีดสดอีกครั้ง...",
+      "emptyFilter": "ไม่พบกิจกรรมที่ตรงกับตัวกรองนี้.",
+      "filterLabel": "กรองฟีดสด",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "ทั้งหมด",
+        "chat": "แชท",
+        "lifecycle": "เหตุการณ์"
       },
       "columns": {
-        "time": "",
+        "time": "เวลา",
         "bot": "บอท",
-        "message": ""
+        "message": "ข้อความ"
       }
     },
     "bots": {
       "title": "บอท",
       "viewAll": "ดูบอททั้งหมด {{total}} ตัว",
       "viewAllShort": "ดูทั้งหมด",
-      "detailsFor": ""
+      "detailsFor": "รายละเอียดบอทสำหรับ {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "การกระทำล่าสุด",
+      "viewAll": "ดูประวัติทั้งหมด",
       "empty": "ยังไม่มีกิจกรรมบันทึกไว้",
       "noPermission": "คุณไม่มีสิทธิ์ในการดูบันทึกตรวจสอบ",
       "types": {
@@ -112,12 +112,12 @@
       "title": "เมตริกส์แบบละเอียด",
       "composition": "องค์ประกอบของโลก"
     },
-    "loadError": ""
+    "loadError": "ไม่สามารถโหลดข้อมูลล่าสุดได้."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "ที่อยู่เครือข่าย",
+      "unix": "ซ็อกเก็ต Unix"
     },
     "getProxies": "รับพร็อกซี",
     "addProxies": "เพิ่มพร็อกซี",

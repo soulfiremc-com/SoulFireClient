@@ -66,31 +66,31 @@
       },
       "pause": "Призупинити",
       "resume": "Відновити",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Відображення призупинене. Нова активність все ще збирається.",
+      "following": "Живі оновлення",
+      "reconnecting": "Повторне підключення до живої стрічки...",
+      "emptyFilter": "Немає активності, що відповідає цьому фільтру.",
+      "filterLabel": "Фільтрувати живу стрічку",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Усе",
+        "chat": "Чат",
+        "lifecycle": "Події"
       },
       "columns": {
-        "time": "",
+        "time": "Час",
         "bot": "Бот",
-        "message": ""
+        "message": "Повідомлення"
       }
     },
     "bots": {
       "title": "Боти",
       "viewAll": "Переглянути всіх {{total}} ботів",
       "viewAllShort": "Переглянути все",
-      "detailsFor": ""
+      "detailsFor": "Деталі бота для {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Останні дії",
+      "viewAll": "Переглянути історію",
       "empty": "Ще немає зафіксованої активності.",
       "noPermission": "У вас немає дозволу переглядати журнал перевірок.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Детальна метрика",
       "composition": "Композиція світу"
     },
-    "loadError": ""
+    "loadError": "Не вдалося завантажити найновіші дані."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Мережева адреса",
+      "unix": "Unix-сокет"
     },
     "getProxies": "Отримати проксі",
     "addProxies": "Додати проксі",

@@ -66,31 +66,31 @@
       },
       "pause": "Drop anchor",
       "resume": "Sail onward",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Display be paused, matey. New happenings still be gathered below decks.",
+      "following": "Live updates, arrr",
+      "reconnecting": "Tryin' to reconnect to the live feed, ye scallywag...",
+      "emptyFilter": "No activity matches this here filter, ye landlubber.",
+      "filterLabel": "Filter the live feed, savvy",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "All hands",
+        "chat": "Parley",
+        "lifecycle": "Happenings"
       },
       "columns": {
-        "time": "",
+        "time": "Hourglass",
         "bot": "Bot Buccaneer",
-        "message": ""
+        "message": "Message in a bottle"
       }
     },
     "bots": {
       "title": "Crew",
       "viewAll": "Gaze at all {{total}} bots in the fleet",
       "viewAllShort": "Show all hands",
-      "detailsFor": ""
+      "detailsFor": "Details o' the bot fer {{name}}, aye"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Recent deeds & mischief",
+      "viewAll": "View the ol' logs, matey",
       "empty": "No tales in the log yet, matey.",
       "noPermission": "Ye lack permission to read the pirate's ledger.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Finer Booty Details",
       "composition": "Shape o' the Seas"
     },
-    "loadError": ""
+    "loadError": "Arrr, could not fish up the latest booty."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Netwurk address, me heartie",
+      "unix": "Unix socket, yarrr"
     },
     "getProxies": "Fetch Proxies!",
     "addProxies": "Add more proxies t' yer crew!",

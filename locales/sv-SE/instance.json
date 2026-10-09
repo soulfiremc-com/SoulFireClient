@@ -66,31 +66,31 @@
       },
       "pause": "Pausa",
       "resume": "Återuppta",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Visning pausad. Ny aktivitet samlas fortfarande in.",
+      "following": "Liveuppdateringar",
+      "reconnecting": "Ansluter på nytt till liveflödet...",
+      "emptyFilter": "Ingen aktivitet matchar det här filtret.",
+      "filterLabel": "Filtrera liveflöde",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Alla",
+        "chat": "Chatt",
+        "lifecycle": "Händelser"
       },
       "columns": {
-        "time": "",
+        "time": "Tid",
         "bot": "Bot",
-        "message": ""
+        "message": "Meddelande"
       }
     },
     "bots": {
       "title": "Bottar",
       "viewAll": "Visa alla {{total}} bottar",
       "viewAllShort": "Visa alla",
-      "detailsFor": ""
+      "detailsFor": "Botdetaljer för {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Senaste åtgärder",
+      "viewAll": "Visa historik",
       "empty": "Ingen aktivitet har registrerats än.",
       "noPermission": "Du har inte behörighet att visa granskningsloggen.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Detaljerade mätvärden",
       "composition": "Världssammansättning"
     },
-    "loadError": ""
+    "loadError": "Det gick inte att ladda de senaste uppgifterna."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Nätverksadress",
+      "unix": "Unix-socket"
     },
     "getProxies": "Hämta proxies",
     "addProxies": "Lägg till proxies",

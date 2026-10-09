@@ -66,31 +66,31 @@
       },
       "pause": "रोकें",
       "resume": "फिर से शुरू करें",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "प्रदर्शन रोक दिया गया है। नई गतिविधि अभी भी एकत्र की जा रही है।",
+      "following": "सीधे अपडेट्स",
+      "reconnecting": "लाइव फीड से फिर से कनेक्ट किया जा रहा है...",
+      "emptyFilter": "इस फ़िल्टर से कोई गतिविधि मेल नहीं खाती।",
+      "filterLabel": "लाइव फीड फ़िल्टर करें",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "सभी",
+        "chat": "चैट",
+        "lifecycle": "इवेंट्स"
       },
       "columns": {
-        "time": "",
+        "time": "समय",
         "bot": "बॉट",
-        "message": ""
+        "message": "संदेश"
       }
     },
     "bots": {
       "title": "बॉट्स",
       "viewAll": "सभी {{total}} बॉट्स देखें",
       "viewAllShort": "सभी देखें",
-      "detailsFor": ""
+      "detailsFor": "{{name}} के लिए बोट विवरण"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "हाल की क्रियाएँ",
+      "viewAll": "इतिहास देखें",
       "empty": "अभी तक कोई दर्ज की गई गतिविधि नहीं है।",
       "noPermission": "आपको ऑडिट लॉग देखने की अनुमति नहीं है।",
       "types": {
@@ -112,12 +112,12 @@
       "title": "विस्तृत मेट्रिक्स",
       "composition": "विश्व संरचना"
     },
-    "loadError": ""
+    "loadError": "नवीनतम जानकारी लोड नहीं हो सकी।"
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "नेटवर्क पता",
+      "unix": "यूनिक्स सॉकेट"
     },
     "getProxies": "प्रॉक्सी प्राप्त करें",
     "addProxies": "प्रॉक्सी जोड़ें",

@@ -66,31 +66,31 @@
       },
       "pause": "Wstrzymaj",
       "resume": "Wznów",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Wyświetlanie wstrzymane. Nowa aktywność jest nadal gromadzona.",
+      "following": "Aktualizacje na żywo",
+      "reconnecting": "Ponowne łączenie z transmisją na żywo...",
+      "emptyFilter": "Brak aktywności pasujących do tego filtra.",
+      "filterLabel": "Filtruj transmisję na żywo",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Wszystko",
+        "chat": "Czat",
+        "lifecycle": "Wydarzenia"
       },
       "columns": {
-        "time": "",
+        "time": "Czas",
         "bot": "Bot",
-        "message": ""
+        "message": "Wiadomość"
       }
     },
     "bots": {
       "title": "Boty",
       "viewAll": "Wyświetl wszystkich {{total}} botów",
       "viewAllShort": "Wyświetl wszystkich",
-      "detailsFor": ""
+      "detailsFor": "Szczegóły bota dla {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Ostatnie akcje",
+      "viewAll": "Zobacz historię",
       "empty": "Brak zarejestrowanej aktywności.",
       "noPermission": "Nie masz uprawnień do przeglądania dziennika audytu.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Szczegółowe metryki",
       "composition": "Skład świata"
     },
-    "loadError": ""
+    "loadError": "Nie udało się załadować najnowszych danych."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Adres sieciowy",
+      "unix": "Gniazdo Unix"
     },
     "getProxies": "Pobierz proxy",
     "addProxies": "Dodaj proxy",

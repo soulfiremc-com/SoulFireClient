@@ -66,31 +66,31 @@
       },
       "pause": "ǝsnsɐԀ",
       "resume": "ǝɯnsǝᴚ",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "˙˙˙pᴉlǝʇɔǝlloɔ ǝq llᴉʇs sᴉ ʎʇᴉʌᴉʇɔɐ ʍǝN ˙pǝsɐns pǝʎɐl sᴉ ʎɐlɐdsᴉp",
+      "following": "sǝʇɐpɒpl ǝʌᴉl",
+      "reconnecting": "˙˙˙pǝǝɟ ǝʌᴉl ǝɥʇ oʇ ƃuᴉʇɔǝuuoɔǝɹ",
+      "emptyFilter": "˙ɹǝʇlᴉɟ sᴉɥʇ sǝɥɔɐɯ ʎʇᴉʌᴉʇɔɐ oN",
+      "filterLabel": "ɹǝʇlᴉɟ pǝǝɟ ǝʌᴉl",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "ll∀",
+        "chat": "ʇɐɥↃ",
+        "lifecycle": "sʇuǝʌƎ"
       },
       "columns": {
-        "time": "",
+        "time": "ǝɯᴉ⟘",
         "bot": "ʇoq",
-        "message": ""
+        "message": "ǝƃɐssǝW"
       }
     },
     "bots": {
       "title": "sʇoԐ",
       "viewAll": "sʇoq {{total}} llɐ ʍǝᴉɅ",
       "viewAllShort": "llɐ ʍǝᴉɅ",
-      "detailsFor": ""
+      "detailsFor": "{{name}} ɹoɟ sʅᴉɐʇǝp ʇoԐ"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "suoᴉʇɔɐ ʇuǝɔǝɹ",
+      "viewAll": "ʎɹoɹᴉɥ ʍǝᴉɅ",
       "empty": ".ʇǝʎ ʎʇᴉʌᴉʇɔɐ pǝpɐɹɔǝɹ oN",
       "noPermission": ".ƃol ʇᴉpnɐ ǝɥʇ ʍǝᴉʌ oʇ uoᴉssᴉɯɹǝd ǝʌɐɥ ʇou os no⅄",
       "types": {
@@ -112,12 +112,12 @@
       "title": "sɔᴉʇǝɯ pǝlᴉɐʇǝp",
       "composition": "uoᴉsᴉʇᴉsodɯoɔ plɹoM"
     },
-    "loadError": ""
+    "loadError": "˙ɐʇɐp ʇsǝʇɐʅ ǝɥʇ pɐoʅ ʇo uɐɔ"
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "ssǝɹpppɐ ʞɹoʷʇǝu ʞɹoʷʇǝN",
+      "unix": "ʇǝʞɔoS xᴉun∩"
     },
     "getProxies": "sǝᴉxɐɹԀ ʇǝƃ",
     "addProxies": "sǝᴉxɐɹԀ pp∀",

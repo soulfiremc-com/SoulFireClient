@@ -66,31 +66,31 @@
       },
       "pause": "Pauser",
       "resume": "Reprendre",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Affichage en pause. La nouvelle activité est toujours collectée.",
+      "following": "Mises à jour en direct",
+      "reconnecting": "Reconnexion au flux en direct...",
+      "emptyFilter": "Aucune activité ne correspond à ce filtre.",
+      "filterLabel": "Filtrer le flux en direct",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Tout",
+        "chat": "Discussion",
+        "lifecycle": "Événements"
       },
       "columns": {
-        "time": "",
+        "time": "Heure",
         "bot": "Bot",
-        "message": ""
+        "message": "Message"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Voir tous les {{total}} bots",
       "viewAllShort": "Voir tout",
-      "detailsFor": ""
+      "detailsFor": "Détails du bot pour {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Actions récentes",
+      "viewAll": "Voir l'historique",
       "empty": "Aucune activité enregistrée pour l'instant.",
       "noPermission": "Vous n'avez pas la permission de voir le journal d'audit.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Métriques détaillées",
       "composition": "Composition du monde"
     },
-    "loadError": ""
+    "loadError": "Impossible de charger les dernières données."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Adresse réseau",
+      "unix": "Socket Unix"
     },
     "getProxies": "Obtenir des proxies",
     "addProxies": "Ajouter des proxies",

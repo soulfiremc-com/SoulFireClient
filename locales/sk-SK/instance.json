@@ -66,31 +66,31 @@
       },
       "pause": "Pozastaviť",
       "resume": "Pokračovať",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Zobrazenie je pozastavené. Nová aktivita sa stále zaznamenáva.",
+      "following": "Živé aktualizácie",
+      "reconnecting": "Opätovné pripájanie k živému kanálu...",
+      "emptyFilter": "Žiadna aktivita nezodpovedá tomuto filtru.",
+      "filterLabel": "Filtrovať živý kanál",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Všetko",
+        "chat": "Chatovanie",
+        "lifecycle": "Udalosti"
       },
       "columns": {
-        "time": "",
+        "time": "Čas",
         "bot": "Bot",
-        "message": ""
+        "message": "Správa"
       }
     },
     "bots": {
       "title": "Boti",
       "viewAll": "Zobraziť všetkych {{total}} botov",
       "viewAllShort": "Zobraziť všetkých",
-      "detailsFor": ""
+      "detailsFor": "Podrobnosti bota pre {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Nedávne akcie",
+      "viewAll": "Zobraziť históriu",
       "empty": "Zatiaľ nie je zaznamenaná žiadna aktivita.",
       "noPermission": "Nemáte povolenie na zobrazenie audit logu.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Podrobné metriky",
       "composition": "Zloženie sveta"
     },
-    "loadError": ""
+    "loadError": "Najnovšie údaje sa nepodarilo načítať."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Sieťová adresa",
+      "unix": "Unixový socket"
     },
     "getProxies": "Získať proxy servery",
     "addProxies": "Pridať proxy servery",

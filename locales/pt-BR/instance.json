@@ -66,31 +66,31 @@
       },
       "pause": "Pausar",
       "resume": "Continuar",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Exibição pausada. Novas atividades ainda estão sendo coletadas.",
+      "following": "Atualizações ao vivo",
+      "reconnecting": "Reconectando ao feed ao vivo...",
+      "emptyFilter": "Nenhuma atividade corresponde a este filtro.",
+      "filterLabel": "Filtrar feed ao vivo",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Tudo",
+        "chat": "Bate-papo",
+        "lifecycle": "Eventos"
       },
       "columns": {
-        "time": "",
+        "time": "Horário",
         "bot": "Bot",
-        "message": ""
+        "message": "Mensagem"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Ver todos os {{total}} bots",
       "viewAllShort": "Ver todos",
-      "detailsFor": ""
+      "detailsFor": "Detalhes do bot para {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Ações recentes",
+      "viewAll": "Ver histórico",
       "empty": "Nenhuma atividade registrada ainda.",
       "noPermission": "Você não tem permissão para ver o registro de auditoria.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Métricas detalhadas",
       "composition": "Composição do mundo"
     },
-    "loadError": ""
+    "loadError": "Não foi possível carregar os dados mais recentes."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Endereço de rede",
+      "unix": "Socket Unix"
     },
     "getProxies": "Obter Proxies",
     "addProxies": "Adicionar Proxies",

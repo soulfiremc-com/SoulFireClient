@@ -66,31 +66,31 @@
       },
       "pause": "Fasilə",
       "resume": "Davam et",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Görüntüləmə dayandırılıb. Yeni fəaliyyət hələ də toplanır.",
+      "following": "Canlı yeniləmələr",
+      "reconnecting": "Canlı yayımə yenidən qoşulur...",
+      "emptyFilter": "Bu filtrə uyğun heç bir fəaliyyət yoxdur.",
+      "filterLabel": "Canlı yayıma filtr tətbiq edin",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Hamısı",
+        "chat": "Söhbət",
+        "lifecycle": "Hadisələr"
       },
       "columns": {
-        "time": "",
+        "time": "Vaxt",
         "bot": "Bot",
-        "message": ""
+        "message": "Mesaj"
       }
     },
     "bots": {
       "title": "Botlar",
       "viewAll": "Bütün {{total}} botlara bax",
       "viewAllShort": "Hamısına bax",
-      "detailsFor": ""
+      "detailsFor": "{{name}} üçün bot detalları"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Son hərəkətlər",
+      "viewAll": "Tarixçəyə bax",
       "empty": "Hələ heç bir qeyd olunmuş fəaliyyət yoxdur.",
       "noPermission": "Audit jurnalına baxmaq icazəniz yoxdur.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Ətraflı metriklər",
       "composition": "Dünya tərkibi"
     },
-    "loadError": ""
+    "loadError": "Ən son məlumatları yükləmək mümkün olmadı."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Şəbəkə ünvanı",
+      "unix": "Unix soketi"
     },
     "getProxies": "Proksi əldə et",
     "addProxies": "Proksi əlavə et",

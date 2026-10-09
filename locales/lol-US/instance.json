@@ -66,31 +66,31 @@
       },
       "pause": "Pawse",
       "resume": "Resoome",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Displai pausd. New fun stuff still bein' ketched, kthx.",
+      "following": "Live Updaitz",
+      "reconnecting": "Reconectin to teh live feed...",
+      "emptyFilter": "No activiteh match dis filturr.",
+      "filterLabel": "Filtr live feed",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "ALL teh thingz",
+        "chat": "Chatz",
+        "lifecycle": "Eventz"
       },
       "columns": {
-        "time": "",
+        "time": "Tiem",
         "bot": "Botteh",
-        "message": ""
+        "message": "Mezage"
       }
     },
     "bots": {
       "title": "BOTZ",
       "viewAll": "Seez allz {{total}} bottiez",
       "viewAllShort": "Seez allz",
-      "detailsFor": ""
+      "detailsFor": "Bot deetz for {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Reecent Akshunz",
+      "viewAll": "Show historeh",
       "empty": "No aktivitee iz record yetz.",
       "noPermission": "U can no haz permishun 2 seez audit loag.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Detayld metrixxx",
       "composition": "Wurld kompozishun"
     },
-    "loadError": ""
+    "loadError": "Culd not load teh latest datuh."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Netwurk adres",
+      "unix": "Unix soxket"
     },
     "getProxies": "Getz Proxyz!",
     "addProxies": "Add Proxyz!",

@@ -66,31 +66,31 @@
       },
       "pause": "일시 정지",
       "resume": "다시 시작",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "표시가 일시 중지되었습니다. 새로운 활동은 계속 수집되고 있습니다.",
+      "following": "실시간 업데이트",
+      "reconnecting": "실시간 피드에 다시 연결하는 중...",
+      "emptyFilter": "이 필터에 일치하는 활동이 없습니다.",
+      "filterLabel": "실시간 피드 필터",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "전체",
+        "chat": "채팅",
+        "lifecycle": "이벤트"
       },
       "columns": {
-        "time": "",
+        "time": "시간",
         "bot": "봇",
-        "message": ""
+        "message": "메시지"
       }
     },
     "bots": {
       "title": "봇들",
       "viewAll": "모든 봇({{total}}개) 보기",
       "viewAllShort": "모두 보기",
-      "detailsFor": ""
+      "detailsFor": "{{name}} 봇 세부 정보"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "최근 작업",
+      "viewAll": "히스토리 보기",
       "empty": "아직 기록된 활동이 없습니다.",
       "noPermission": "감사 로그를 볼 권한이 없습니다.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "상세 메트릭",
       "composition": "월드 구성"
     },
-    "loadError": ""
+    "loadError": "최신 데이터를 불러올 수 없습니다."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "네트워크 주소",
+      "unix": "유닉스 소켓"
     },
     "getProxies": "프록시 가져오기",
     "addProxies": "프록시 추가",

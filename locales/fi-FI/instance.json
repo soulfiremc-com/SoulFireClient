@@ -66,31 +66,31 @@
       },
       "pause": "Tauota",
       "resume": "Jatka",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Näyttö keskeytetty. Uutta aktiivisuutta kerätään silti.",
+      "following": "Live-päivitykset",
+      "reconnecting": "Yhdistetään uudelleen live-syötteeseen...",
+      "emptyFilter": "Yksikään tapahtuma ei täsmää tähän suodattimeen.",
+      "filterLabel": "Suodata live-syöte",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Kaikki",
+        "chat": "Keskustelu",
+        "lifecycle": "Tapahtumat"
       },
       "columns": {
-        "time": "",
+        "time": "Aika",
         "bot": "Botti",
-        "message": ""
+        "message": "Viesti"
       }
     },
     "bots": {
       "title": "Botit",
       "viewAll": "Näytä kaikki {{total}} bottia",
       "viewAllShort": "Näytä kaikki",
-      "detailsFor": ""
+      "detailsFor": "Botin tiedot {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Viimeisimmät toiminnot",
+      "viewAll": "Näytä historia",
       "empty": "Ei vielä tallennettua toimintaa.",
       "noPermission": "Sinulla ei ole oikeuksia nähdä audit-lokia.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Tarkat metrikat",
       "composition": "Maailman koostumus"
     },
-    "loadError": ""
+    "loadError": "Tietojen lataus epäonnistui."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Verkko-osoite",
+      "unix": "Unix-pistoke"
     },
     "getProxies": "Hae proxyja",
     "addProxies": "Lisää proxyja",

@@ -66,31 +66,31 @@
       },
       "pause": "Pozastavit",
       "resume": "Pokračovat",
-      "paused": "",
-      "following": "",
-      "reconnecting": "",
-      "emptyFilter": "",
-      "filterLabel": "",
+      "paused": "Zobrazení je pozastaveno. Nová aktivita se stále zaznamenává.",
+      "following": "Živé aktualizace",
+      "reconnecting": "Znovu se připojuji k živému přenosu...",
+      "emptyFilter": "Žádná aktivita neodpovídá tomuto filtru.",
+      "filterLabel": "Filtrovat živý přenos",
       "filters": {
-        "all": "",
-        "chat": "",
-        "lifecycle": ""
+        "all": "Vše",
+        "chat": "Chatovací místnost",
+        "lifecycle": "Události"
       },
       "columns": {
-        "time": "",
+        "time": "Čas",
         "bot": "Bot",
-        "message": ""
+        "message": "Zpráva"
       }
     },
     "bots": {
       "title": "Boti",
       "viewAll": "Zobrazit všechny boti: {{total}}",
       "viewAllShort": "Zobrazit vše",
-      "detailsFor": ""
+      "detailsFor": "Detaily bota pro {{name}}"
     },
     "timeline": {
-      "title": "",
-      "viewAll": "",
+      "title": "Nedávné akce",
+      "viewAll": "Zobrazit historii",
       "empty": "Zatím nebyla zaznamenána žádná aktivita.",
       "noPermission": "Nemáte oprávnění zobrazit záznam auditu.",
       "types": {
@@ -112,12 +112,12 @@
       "title": "Podrobné metriky",
       "composition": "Složení světa"
     },
-    "loadError": ""
+    "loadError": "Nelze načíst nejnovější data."
   },
   "proxy": {
     "transport": {
-      "network": "",
-      "unix": ""
+      "network": "Síťová adresa",
+      "unix": "Unixový socket"
     },
     "getProxies": "Získat proxy servery",
     "addProxies": "Přidat proxy servery",
