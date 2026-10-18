@@ -29,7 +29,7 @@
   "dialog": {
     "about": {
       "title": "關於 SoulFire",
-      "description": "您正在執行 SoulFire 客戶端的版本 {{version}}。",
+      "description": "您正在執行 SoulFire 用戶端的版本 {{version}}。",
       "type": "類型",
       "value": "數值",
       "fields": {
