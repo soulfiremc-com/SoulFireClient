@@ -14,7 +14,7 @@
         "title": "CPU 使用率 (%)"
       },
       "memoryUsage": {
-        "title": "堆記憶體 (MB)"
+        "title": "堆積記憶體 (MB)"
       },
       "threadCount": {
         "title": "執行緒數量"
