@@ -658,6 +658,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "Script actions",
         "backToScripts": "Back to Scripts",
         "save": "Save",
         "saveTooltip": "Save script",

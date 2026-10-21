@@ -222,7 +222,7 @@ function InstanceLayout() {
     <SidebarProvider defaultOpen={defaultOpen} className="min-h-0 flex-1">
       <InstanceSidebar />
       <TooltipProvider delay={500}>
-        <SidebarInset>
+        <SidebarInset className="min-w-0">
           <CatchBoundary
             getResetKey={() => "instance-layout"}
             errorComponent={ErrorComponent}

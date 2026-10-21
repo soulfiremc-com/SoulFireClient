@@ -170,7 +170,8 @@ export function ScriptToolbar({
   return (
     <div
       className={cn(
-        "flex h-12 items-center gap-2 border-b border-border bg-card px-3",
+        "flex min-w-0 shrink-0 items-center gap-2 border-b border-border bg-card px-3",
+        isMobile ? "h-12" : "min-h-12 flex-wrap py-2",
         className,
       )}
     >
@@ -213,19 +214,20 @@ export function ScriptToolbar({
         ) : (
           <button
             type="button"
+            title={scriptName}
             onClick={() => {
               setIsEditingName(true);
               setEditedName(scriptName);
             }}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-sm font-medium transition-colors hover:bg-muted",
-              isMobile && "max-w-24",
+              "flex min-w-0 items-center gap-1 rounded px-2 py-1 text-sm font-medium transition-colors hover:bg-muted",
+              isMobile ? "max-w-24" : "max-w-48",
             )}
           >
-            <span className={cn(isMobile && "truncate")}>{scriptName}</span>
+            <span className="truncate">{scriptName}</span>
             {isDirty && (
               <span
-                className="text-muted-foreground"
+                className="shrink-0 text-muted-foreground"
                 title={t("scripts.editor.toolbar.unsavedChanges")}
               >
                 *
@@ -253,6 +255,7 @@ export function ScriptToolbar({
             <Button
               variant="outline"
               size={isMobile ? "icon" : "sm"}
+              aria-label={t("scripts.editor.toolbar.save")}
               onClick={onSave}
               disabled={isSaving || !isDirty}
               className={cn(!isMobile && "gap-1.5")}
@@ -284,6 +287,7 @@ export function ScriptToolbar({
                 <Button
                   variant="outline"
                   size={isMobile ? "icon" : "sm"}
+                  aria-label={t("scripts.editor.toolbar.resume")}
                   onClick={onStart}
                   className={cn(!isMobile && "gap-1.5")}
                 />
@@ -304,6 +308,7 @@ export function ScriptToolbar({
                   <Button
                     variant="outline"
                     size={isMobile ? "icon" : "sm"}
+                    aria-label={t("scripts.editor.toolbar.pause")}
                     onClick={onStop}
                     className={cn(!isMobile && "gap-1.5")}
                   />
@@ -335,7 +340,13 @@ export function ScriptToolbar({
         <>
           <DropdownMenu>
             <DropdownMenuTrigger
-              render={<Button variant="ghost" size="icon" />}
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={t("scripts.editor.toolbar.actions")}
+                />
+              }
             >
               <EllipsisVerticalIcon className="size-4" />
             </DropdownMenuTrigger>
@@ -393,7 +404,12 @@ export function ScriptToolbar({
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Button variant="ghost" size="icon" onClick={handleExport} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t("scripts.editor.toolbar.export")}
+                    onClick={handleExport}
+                  />
                 }
               >
                 <DownloadIcon className="size-4" />
@@ -408,6 +424,7 @@ export function ScriptToolbar({
                   <Button
                     variant="ghost"
                     size="icon"
+                    aria-label={t("scripts.editor.toolbar.import")}
                     onClick={() => fileInputRef.current?.click()}
                   />
                 }
@@ -435,7 +452,12 @@ export function ScriptToolbar({
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <Button variant="ghost" size="icon" onClick={onClear} />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={t("scripts.editor.toolbar.clearCanvas")}
+                      onClick={onClear}
+                    />
                   }
                 >
                   <Trash2Icon className="size-4" />
