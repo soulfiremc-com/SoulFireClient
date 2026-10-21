@@ -133,6 +133,11 @@ import {
   accountTypeToIcon,
   translateAccountType,
 } from "@/lib/account-types.ts";
+import {
+  createContainerTextDraft,
+  editContainerTextDraft,
+  syncContainerTextDraft,
+} from "@/lib/container-text-draft";
 import i18n from "@/lib/i18n";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
@@ -1126,8 +1131,8 @@ function BotInventoryPanel({
       const botService = createClient(BotService, transport);
       return botService.setContainerText(request);
     },
-    onSuccess: () => {
-      void refetch();
+    onSuccess: async () => {
+      await refetch();
     },
   });
 
@@ -1304,6 +1309,7 @@ function BotInventoryPanel({
                 layout.containerType,
                 anvilInputItem?.itemId,
                 anvilInputItem?.count,
+                anvilInputItem?.displayName,
               ])}
               textInputs={textInputs}
               containerType={layout.containerType}
@@ -1467,7 +1473,7 @@ function ContainerTextInputPanel({
         <FieldGroup className="gap-2">
           {textInputs.map((input) => (
             <ContainerTextInputField
-              key={JSON.stringify([input.id, input.currentValue])}
+              key={input.id}
               input={input}
               onSetText={onSetText}
               isPending={isPending}
@@ -1490,16 +1496,20 @@ function ContainerTextInputField({
 }) {
   const { t } = useTranslation("common");
   const id = useId();
-  const [value, setValue] = useState(input.currentValue);
+  const [draft, setDraft] = useState(() =>
+    createContainerTextDraft(input.currentValue),
+  );
+  const current = syncContainerTextDraft(draft, input.currentValue);
+  if (current !== draft) setDraft(current);
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        if (!isPending) onSetText(input.id, value);
+        if (!isPending) onSetText(input.id, current.value);
       }}
     >
-      <Field data-disabled={isPending}>
+      <Field>
         <FieldLabel htmlFor={id} className="sr-only">
           {input.label}
         </FieldLabel>
@@ -1507,10 +1517,13 @@ function ContainerTextInputField({
           <InputGroupInput
             id={id}
             placeholder={input.placeholder || input.label}
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
+            value={current.value}
+            onChange={(event) =>
+              setDraft(
+                editContainerTextDraft(current, event.target.value, isPending),
+              )
+            }
             maxLength={input.maxLength > 0 ? input.maxLength : undefined}
-            disabled={isPending}
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton
