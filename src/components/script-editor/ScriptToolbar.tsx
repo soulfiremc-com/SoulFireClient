@@ -329,7 +329,7 @@ export function ScriptToolbar({
             )}
           </>
         )}
-        {!isMobile && <DryRunDialog />}
+        <DryRunDialog instanceId={instanceId} />
         {!isMobile && <QuotasDialog />}
       </div>
 

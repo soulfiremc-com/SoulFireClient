@@ -729,6 +729,18 @@
         "tooltip": "Review changes"
       },
       "dryRun": {
+        "saveFirst": "Save your changes before starting a dry run.",
+        "unavailable": "Select a trigger and connect to the server.",
+        "inputHint": "Use plain text for strings and JSON for other values. Leave a field empty to use its default.",
+        "invalidInput": "Enter a valid {{type}} value for {{name}}.",
+        "running": "Running...",
+        "cancel": "Cancel run",
+        "completed": "Dry run completed.",
+        "failed": "Dry run failed. Check the error details.",
+        "cancelled": "Dry run cancelled.",
+        "incomplete": "The connection ended before the dry run completed.",
+        "stats_one": "{{count}} node executed",
+        "stats_other": "{{count}} nodes executed",
         "tooltip": "Dry Run",
         "title": "Dry Run Script",
         "description": "Run a script from a selected trigger with mock inputs.",

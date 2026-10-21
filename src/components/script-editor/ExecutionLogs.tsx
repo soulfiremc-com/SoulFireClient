@@ -52,7 +52,7 @@ function LogEntryRow({ entry }: LogEntryRowProps) {
   return (
     <div
       className={cn(
-        "flex items-start gap-2 border-b border-border/50 px-3 py-2 font-mono text-xs last:border-0",
+        "grid grid-cols-[auto_auto_minmax(0,1fr)] items-start gap-x-2 gap-y-1 border-b border-border/50 px-3 py-2 font-mono text-xs last:border-0",
         styles.text,
       )}
     >
@@ -63,9 +63,16 @@ function LogEntryRow({ entry }: LogEntryRowProps) {
         {entry.level}
       </Badge>
       {entry.nodeId && (
-        <span className="shrink-0 text-muted-foreground">[{entry.nodeId}]</span>
+        <span
+          className="min-w-0 truncate text-muted-foreground"
+          title={entry.nodeId}
+        >
+          [{entry.nodeId}]
+        </span>
       )}
-      <span className="flex-1 break-all">{entry.message}</span>
+      <span className="col-span-full min-w-0 break-all whitespace-pre-wrap">
+        {entry.message}
+      </span>
     </div>
   );
 }
@@ -78,6 +85,7 @@ export function ExecutionLogs({
 }: ExecutionLogsProps) {
   const { t } = useTranslation("instance");
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+  const lastLogId = logs[logs.length - 1]?.id;
 
   // Auto-scroll to bottom when new logs are added
   useEffect(() => {
@@ -85,7 +93,7 @@ export function ExecutionLogs({
       scrollViewportRef.current.scrollTop =
         scrollViewportRef.current.scrollHeight;
     }
-  }, [autoScroll]);
+  }, [autoScroll, lastLogId]);
 
   return (
     <div
