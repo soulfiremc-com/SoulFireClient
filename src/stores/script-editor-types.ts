@@ -151,7 +151,7 @@ export interface ScriptEditorActions {
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;
   addExecutionLog: (log: LogEntry) => void;
-  prependExecutionLogs: (logs: LogEntry[]) => void;
+  addExecutionLogs: (logs: LogEntry[]) => void;
   clearExecutionLogs: () => void;
   loadScript: (data: {
     id: string;

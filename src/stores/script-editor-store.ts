@@ -17,6 +17,7 @@ import {
   isTypeCompatible,
   type PortType,
 } from "@/components/script-editor/nodes/types";
+import { mergeExecutionLogs } from "@/lib/script-logs";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
 import {
   cloneSubgraph,
@@ -1675,11 +1676,13 @@ export function createScriptEditorSession() {
         ...state,
         executionLogs: [...state.executionLogs, log].slice(-500),
       })),
-    prependExecutionLogs: (logs) =>
-      execution.setState((state) => ({
-        ...state,
-        executionLogs: [...logs, ...state.executionLogs].slice(-500),
-      })),
+    addExecutionLogs: (logs) =>
+      execution.setState((state) => {
+        const executionLogs = mergeExecutionLogs(state.executionLogs, logs);
+        return executionLogs === state.executionLogs
+          ? state
+          : { ...state, executionLogs };
+      }),
     clearExecutionLogs: () =>
       execution.setState((state) => ({ ...state, executionLogs: [] })),
     loadScript: (data) =>

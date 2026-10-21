@@ -47,7 +47,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { LogsService } from "@/generated/soulfire/logs_pb";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
 import {
   DiagnosticSeverity,
   ScriptService,
@@ -62,7 +62,8 @@ import {
   scriptDataToStore,
   scriptQueryOptions,
 } from "@/lib/script-service.ts";
-import { isDemo, timestampToDate } from "@/lib/utils.tsx";
+import { hasInstancePermission, isDemo } from "@/lib/utils.tsx";
+import { scriptLogLevel, watchScriptLogs } from "@/lib/script-logs";
 import { createTransport } from "@/lib/web-rpc.ts";
 
 import "@xyflow/react/dist/style.css";
@@ -78,14 +79,6 @@ function HorizontalResizableHandle() {
       <div className="bg-border h-6 w-1 rounded-lg z-10 flex shrink-0 rotate-90" />
     </Separator>
   );
-}
-
-interface LogEntry {
-  id: string;
-  timestamp: Date;
-  level: "debug" | "info" | "warn" | "error";
-  nodeId: string | null;
-  message: string;
 }
 
 export const Route = createFileRoute(
@@ -187,8 +180,11 @@ function ScriptEditorContent() {
   const transport = use(TransportContext);
   const { getDefinition } = useNodeTypes();
 
-  // Required for route context validation
-  useSuspenseQuery(instanceInfoQueryOptions);
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const canViewLogs = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.INSTANCE_SUBSCRIBE_LOGS,
+  );
 
   // Fetch script data from server (skip for new scripts)
   const { data: serverScriptData } = useSuspenseQuery({
@@ -220,7 +216,7 @@ function ScriptEditorContent() {
 
   // Local state
   const [isSaving, setIsSaving] = useState(false);
-  const { addExecutionLog, prependExecutionLogs, clearExecutionLogs } =
+  const { addExecutionLog, addExecutionLogs, clearExecutionLogs } =
     editor.actions;
   const [nodePaletteOpen, setNodePaletteOpen] = useState(false);
   const [executionLogsOpen, setExecutionLogsOpen] = useState(false);
@@ -245,56 +241,10 @@ function ScriptEditorContent() {
     }
   }, [scriptId, serverScriptData, loadScript, resetEditor]);
 
-  // Load previous execution logs on mount
   useEffect(() => {
-    if (scriptId === "new" || !transport || isDemo()) return;
-
-    const abortController = new AbortController();
-    const logsService = createClient(LogsService, transport);
-    void logsService
-      .getPrevious(
-        {
-          scope: {
-            scope: {
-              case: "instanceScript",
-              value: { instanceId, scriptId },
-            },
-          },
-          count: 300,
-        },
-        { signal: abortController.signal },
-      )
-      .then((call) => {
-        if (abortController.signal.aborted) return;
-        const entries: LogEntry[] = call.messages.map((msg) => {
-          const rawLevel = msg.level?.toLowerCase();
-          const level: LogEntry["level"] =
-            rawLevel === "info"
-              ? "info"
-              : rawLevel === "warn" || rawLevel === "warning"
-                ? "warn"
-                : rawLevel === "error" || rawLevel === "fatal"
-                  ? "error"
-                  : "debug";
-          return {
-            id: msg.id,
-            timestamp: msg.timestamp
-              ? timestampToDate(msg.timestamp)
-              : new Date(),
-            level,
-            nodeId: null,
-            message: msg.message,
-          };
-        });
-        if (entries.length > 0) {
-          prependExecutionLogs(entries);
-        }
-      });
-
-    return () => {
-      abortController.abort();
-    };
-  }, [transport, instanceId, scriptId, prependExecutionLogs]);
+    if (scriptId === "new" || !transport || !canViewLogs || isDemo()) return;
+    return watchScriptLogs(transport, instanceId, scriptId, addExecutionLogs);
+  }, [transport, instanceId, scriptId, addExecutionLogs, canViewLogs]);
 
   const validationGraph = useSelector(editor.validationGraph);
   const setValidationDiagnostics = editor.actions.setValidationDiagnostics;
@@ -526,7 +476,7 @@ function ScriptEditorContent() {
               nodeId: null,
               message: `Execution stats: ${nodeCount}/${maxCount} nodes executed`,
             });
-          } else if (event.event.case === "nodeError") {
+          } else if (event.event.case === "nodeError" && !canViewLogs) {
             const { nodeId, errorMessage } = event.event.value;
             addExecutionLog({
               id: crypto.randomUUID(),
@@ -537,17 +487,12 @@ function ScriptEditorContent() {
                 error: errorMessage,
               }),
             });
-          } else if (event.event.case === "scriptLog") {
+          } else if (event.event.case === "scriptLog" && !canViewLogs) {
             const { nodeId, level, message } = event.event.value;
-            const normalizedLevel = (level?.toLowerCase() || "info") as
-              | "debug"
-              | "info"
-              | "warn"
-              | "error";
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
-              level: normalizedLevel,
+              level: scriptLogLevel(level),
               nodeId: nodeId ?? null,
               message,
             });
@@ -611,6 +556,7 @@ function ScriptEditorContent() {
     setExecutionStats,
     addExecutionLog,
     editor.document.setState,
+    canViewLogs,
   ]);
 
   // Handle script deactivation
