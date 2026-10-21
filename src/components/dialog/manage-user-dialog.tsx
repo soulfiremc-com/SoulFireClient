@@ -1,4 +1,4 @@
-import { createClient } from "@connectrpc/connect";
+import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -108,6 +108,9 @@ export function ManageUserDialog({
             : t("users.updateToast.success");
         },
         error: (e) => {
+          if (ConnectError.from(e).code === Code.AlreadyExists) {
+            return t("users.profileConflict");
+          }
           console.error(e);
           return props.mode === "add"
             ? t("users.addToast.error")

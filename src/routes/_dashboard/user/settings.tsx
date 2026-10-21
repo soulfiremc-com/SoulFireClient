@@ -1,3 +1,4 @@
+import { Code, ConnectError } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -236,8 +237,12 @@ function ProfileField({
         formApi.reset({ value: fields.value });
         toast.success(t("userSettings.saved", { field: label }));
       } catch (error) {
-        console.error(error);
-        toast.error(t("userSettings.saveError", { field: label }));
+        if (ConnectError.from(error).code === Code.AlreadyExists) {
+          toast.error(t("userSettings.conflict", { field: label }));
+        } else {
+          console.error(error);
+          toast.error(t("userSettings.saveError", { field: label }));
+        }
       }
     },
   });

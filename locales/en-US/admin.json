@@ -86,6 +86,7 @@
         "update": "Update User"
       }
     },
+    "profileConflict": "That username or email is already in use. Choose another.",
     "addToast": {
       "loading": "Adding user...",
       "success": "Added user!",

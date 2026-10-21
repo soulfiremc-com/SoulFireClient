@@ -485,6 +485,7 @@
       "description": "Your email is used for login and notifications."
     },
     "saved": "{{field}} updated",
+    "conflict": "{{field}} is already in use. Choose another.",
     "saveError": "Failed to update {{field}}",
     "saveField": "Save {{field}}"
   },
