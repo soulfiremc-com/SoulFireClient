@@ -38,7 +38,7 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import i18n from "@/lib/i18n";
-import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
+import { jsonToValue, parseJsonValue, valueToJson } from "@/lib/protobuf.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
   formatIconName,
@@ -80,14 +80,6 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
     }
   }
   return entries;
-}
-
-function parseJsonValue(value: string): JsonValue | null {
-  try {
-    return JSON.parse(value) as JsonValue;
-  } catch {
-    return null;
-  }
 }
 
 function MetaSettingsSkeleton() {
@@ -397,7 +389,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
           .string()
           .min(1, t("instanceMetadata.valuePlaceholder"))
           .refine(
-            (v) => parseJsonValue(v) !== null,
+            (v) => parseJsonValue(v) !== undefined,
             t("instanceMetadata.invalidJson"),
           ),
       }),
@@ -418,7 +410,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       const key = value.key.trim();
       const parsedValue = parseJsonValue(value.value);
 
-      if (parsedValue === null) return;
+      if (parsedValue === undefined) return;
 
       if (isDuplicate(namespace, key)) {
         toast.error(t("instanceMetadata.duplicateError"));
@@ -456,7 +448,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       const updatedEntry = { ...entry, [field]: newFieldValue };
 
       const parsedValue = parseJsonValue(updatedEntry.value);
-      if (parsedValue === null) {
+      if (parsedValue === undefined) {
         setEntries(
           (prev) => prev?.map((e) => (e.id === id ? updatedEntry : e)) ?? [],
         );
@@ -677,7 +669,7 @@ function MetadataEntryRow({
   const [originalValue] = useState(entry.value);
 
   const isValidJson = useMemo(
-    () => parseJsonValue(entry.value) !== null,
+    () => parseJsonValue(entry.value) !== undefined,
     [entry.value],
   );
 

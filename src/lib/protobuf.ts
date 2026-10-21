@@ -2,6 +2,14 @@ import { fromJson, type JsonValue, toJson } from "@bufbuild/protobuf";
 import { type Value, ValueSchema } from "@bufbuild/protobuf/wkt";
 import { Code, ConnectError } from "@connectrpc/connect";
 
+export function parseJsonValue(value: string): JsonValue | undefined {
+  try {
+    return JSON.parse(value) as JsonValue;
+  } catch {
+    return undefined;
+  }
+}
+
 export function jsonToValue(json: JsonValue): Value {
   return fromJson(ValueSchema, json);
 }

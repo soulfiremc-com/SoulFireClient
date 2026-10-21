@@ -40,7 +40,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { SettingsNamespace } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
-import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
+import { jsonToValue, parseJsonValue, valueToJson } from "@/lib/protobuf.ts";
 import type { ProfileAccount } from "@/lib/types.ts";
 
 interface MetadataEntry {
@@ -67,14 +67,6 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
     }
   }
   return entries;
-}
-
-function parseJsonValue(value: string): JsonValue | null {
-  try {
-    return JSON.parse(value) as JsonValue;
-  } catch {
-    return null;
-  }
 }
 
 type AccountMetadataDialogProps = {
@@ -301,7 +293,7 @@ function DialogContentInner({
           .string()
           .min(1, t("account.metadata.valuePlaceholder"))
           .refine(
-            (v) => parseJsonValue(v) !== null,
+            (v) => parseJsonValue(v) !== undefined,
             t("account.metadata.invalidJson"),
           ),
       }),
@@ -322,7 +314,7 @@ function DialogContentInner({
       const key = value.key.trim();
       const parsedValue = parseJsonValue(value.value);
 
-      if (parsedValue === null) return;
+      if (parsedValue === undefined) return;
 
       if (isDuplicate(namespace, key)) {
         toast.error(t("account.metadata.duplicateError"));
@@ -365,7 +357,7 @@ function DialogContentInner({
 
       // Validate
       const parsedValue = parseJsonValue(updatedEntry.value);
-      if (parsedValue === null) {
+      if (parsedValue === undefined) {
         // Invalid JSON, just update local state for editing
         setEntries(
           (prev) => prev?.map((e) => (e.id === id ? updatedEntry : e)) ?? [],
@@ -596,7 +588,7 @@ function EntryRow({
 
   // Validate JSON
   const isValidJson = useMemo(
-    () => parseJsonValue(entry.value) !== null,
+    () => parseJsonValue(entry.value) !== undefined,
     [entry.value],
   );
 
