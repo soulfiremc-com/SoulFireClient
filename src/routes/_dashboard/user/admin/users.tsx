@@ -182,6 +182,7 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         };
       }),
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {

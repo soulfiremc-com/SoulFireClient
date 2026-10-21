@@ -205,6 +205,7 @@ const columns: ColumnDef<
         },
       ),
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {

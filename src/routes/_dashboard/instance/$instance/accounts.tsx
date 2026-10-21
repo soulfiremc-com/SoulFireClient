@@ -399,6 +399,7 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
         );
       },
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {

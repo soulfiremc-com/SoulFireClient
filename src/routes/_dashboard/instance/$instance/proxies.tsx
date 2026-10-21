@@ -410,6 +410,7 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileProxy>[] = [
         };
       }),
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {
