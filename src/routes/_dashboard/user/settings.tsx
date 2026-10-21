@@ -1,19 +1,31 @@
-import { create, type JsonValue } from "@bufbuild/protobuf";
+import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { use } from "react";
+import { use, useId } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { ComponentTitle } from "@/components/settings-page.tsx";
 import {
-  ComponentTitle,
-  SettingTypeRenderer,
-} from "@/components/settings-page.tsx";
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
 import {
   Item,
   ItemContent,
@@ -23,11 +35,8 @@ import {
 } from "@/components/ui/item.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
-import {
-  GlobalPermission,
-  StringSetting_InputType,
-  StringSettingSchema,
-} from "@/generated/soulfire/common_pb";
+import { GlobalPermission } from "@/generated/soulfire/common_pb";
+import { createUsernameSchema, userEmailSchema } from "@/lib/user-profile.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
@@ -91,7 +100,7 @@ function UserSettings() {
 }
 
 function Content() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(["common", "admin"]);
   const { clientDataQueryOptions } = Route.useRouteContext();
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
@@ -99,9 +108,9 @@ function Content() {
   const setUsernameMutation = useMutation({
     mutationKey: ["user", "self", "username"],
     scope: { id: "user-self-username" },
-    mutationFn: async (value: JsonValue) => {
+    mutationFn: async (value: string) => {
       await setSelfUsername(
-        value as string,
+        value,
         transport,
         queryClient,
         clientDataQueryOptions.queryKey,
@@ -116,9 +125,9 @@ function Content() {
   const setEmailMutation = useMutation({
     mutationKey: ["user", "self", "email"],
     scope: { id: "user-self-email" },
-    mutationFn: async (value: JsonValue) => {
+    mutationFn: async (value: string) => {
       await setSelfEmail(
-        value as string,
+        value,
         transport,
         queryClient,
         clientDataQueryOptions.queryKey,
@@ -164,49 +173,138 @@ function Content() {
             </ItemContent>
           </Item>
         </div>
-        <SettingTypeRenderer
-          settingType={{
-            case: "string",
-            value: create(StringSettingSchema, {
-              uiName: t("userSettings.username.uiName"),
-              description: t("userSettings.username.description"),
-              def: "",
-              inputType: StringSetting_InputType.TEXT,
-              placeholder: "username",
-              minLength: 3,
-              maxLength: 32,
-              pattern: "[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-              disabled: !hasGlobalPermission(
-                clientInfo,
-                GlobalPermission.UPDATE_SELF_USERNAME,
-              ),
-            }),
-          }}
+        <ProfileField
+          name="username"
+          label={t("userSettings.username.uiName")}
+          description={t("userSettings.username.description")}
           value={clientInfo.username}
-          changeCallback={setUsernameMutation.mutate}
+          schema={createUsernameSchema({
+            min: t("admin:users.baseUserDialog.form.username.min"),
+            max: t("admin:users.baseUserDialog.form.username.max"),
+            pattern: t("admin:users.baseUserDialog.form.username.regex"),
+          })}
+          disabled={
+            !hasGlobalPermission(
+              clientInfo,
+              GlobalPermission.UPDATE_SELF_USERNAME,
+            )
+          }
+          onSave={setUsernameMutation.mutateAsync}
         />
-        <SettingTypeRenderer
-          settingType={{
-            case: "string",
-            value: create(StringSettingSchema, {
-              uiName: t("userSettings.email.uiName"),
-              description: t("userSettings.email.description"),
-              def: "",
-              inputType: StringSetting_InputType.EMAIL,
-              placeholder: "root@soulfiremc.com",
-              minLength: 3,
-              maxLength: 255,
-              pattern: ".*",
-              disabled: !hasGlobalPermission(
-                clientInfo,
-                GlobalPermission.UPDATE_SELF_EMAIL,
-              ),
-            }),
-          }}
+        <ProfileField
+          name="email"
+          label={t("userSettings.email.uiName")}
+          description={t("userSettings.email.description")}
           value={clientInfo.email}
-          changeCallback={setEmailMutation.mutate}
+          schema={userEmailSchema}
+          disabled={
+            !hasGlobalPermission(clientInfo, GlobalPermission.UPDATE_SELF_EMAIL)
+          }
+          onSave={setEmailMutation.mutateAsync}
         />
       </div>
     </div>
+  );
+}
+
+function ProfileField({
+  name,
+  label,
+  description,
+  value,
+  schema,
+  disabled,
+  onSave,
+}: {
+  name: "username" | "email";
+  label: string;
+  description: string;
+  value: string;
+  schema: z.ZodType<string, string>;
+  disabled: boolean;
+  onSave: (value: string) => Promise<void>;
+}) {
+  const { t } = useTranslation("common");
+  const id = useId();
+  const form = useForm({
+    defaultValues: { value },
+    validators: { onSubmit: z.object({ value: schema }) },
+    onSubmit: async ({ value: fields, formApi }) => {
+      if (fields.value === value) return;
+      try {
+        await onSave(fields.value);
+        formApi.reset({ value: fields.value });
+        toast.success(t("userSettings.saved", { field: label }));
+      } catch (error) {
+        console.error(error);
+        toast.error(t("userSettings.saveError", { field: label }));
+      }
+    },
+  });
+
+  return (
+    <form
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <form.Subscribe selector={(state) => state.isSubmitting}>
+        {(isSubmitting) => (
+          <FieldGroup>
+            <form.Field name="value">
+              {(field) => {
+                const invalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field
+                    data-invalid={invalid}
+                    data-disabled={disabled || isSubmitting}
+                  >
+                    <FieldLabel htmlFor={id}>{label}</FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={id}
+                        name={name}
+                        type={name === "email" ? "email" : "text"}
+                        autoComplete={name}
+                        value={field.state.value}
+                        maxLength={name === "username" ? 32 : 255}
+                        onChange={(event) =>
+                          field.handleChange(event.currentTarget.value)
+                        }
+                        onBlur={field.handleBlur}
+                        disabled={disabled || isSubmitting}
+                        aria-invalid={invalid}
+                        aria-describedby={`${id}-description`}
+                      />
+                      <InputGroupAddon align="inline-end">
+                        <InputGroupButton
+                          type="submit"
+                          disabled={disabled || isSubmitting}
+                          aria-busy={isSubmitting}
+                          aria-label={t("userSettings.saveField", {
+                            field: label,
+                          })}
+                        >
+                          {t(isSubmitting ? "saving" : "save")}
+                        </InputGroupButton>
+                      </InputGroupAddon>
+                    </InputGroup>
+                    <FieldDescription id={`${id}-description`}>
+                      {description}
+                    </FieldDescription>
+                    {invalid ? (
+                      <FieldError errors={field.state.meta.errors} />
+                    ) : null}
+                  </Field>
+                );
+              }}
+            </form.Field>
+          </FieldGroup>
+        )}
+      </form.Subscribe>
+    </form>
   );
 }

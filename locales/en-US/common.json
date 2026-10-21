@@ -483,7 +483,10 @@
     "email": {
       "uiName": "Email",
       "description": "Your email is used for login and notifications."
-    }
+    },
+    "saved": "{{field}} updated",
+    "saveError": "Failed to update {{field}}",
+    "saveField": "Save {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logs...",

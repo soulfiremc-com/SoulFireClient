@@ -27,6 +27,7 @@ import {
 import { UserRole } from "@/generated/soulfire/common_pb";
 import type { UserListResponse_User } from "@/generated/soulfire/user_pb";
 import { UserService } from "@/generated/soulfire/user_pb";
+import { createUsernameSchema, userEmailSchema } from "@/lib/user-profile.ts";
 import { getEnumEntries } from "@/lib/types.ts";
 import { TransportContext } from "../providers/transport-context.tsx";
 import {
@@ -62,15 +63,12 @@ export function ManageUserDialog({
   const transport = use(TransportContext);
   const { t } = useTranslation("admin");
   const formSchema = z.object({
-    username: z
-      .string()
-      .min(3, t("users.baseUserDialog.form.username.min"))
-      .max(32, t("users.baseUserDialog.form.username.max"))
-      .regex(
-        /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-        t("users.baseUserDialog.form.username.regex"),
-      ),
-    email: z.email(),
+    username: createUsernameSchema({
+      min: t("users.baseUserDialog.form.username.min"),
+      max: t("users.baseUserDialog.form.username.max"),
+      pattern: t("users.baseUserDialog.form.username.regex"),
+    }),
+    email: userEmailSchema,
     role: z.enum(UserRole),
   });
   const submitMutation = useMutation({
