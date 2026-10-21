@@ -256,6 +256,10 @@
   "settingsPage": {
     "namespacesNotFound": "Settings namespaces not found",
     "stringList": {
+      "newEntry": "New {{name}} entry",
+      "entry": "{{name}} entry {{number}}",
+      "removeEntry": "Remove {{name}} entry {{number}}",
+      "saveError": "Failed to save {{name}}",
       "placeholder": "Add a new entry...",
       "add": "Add",
       "remove": "Remove"

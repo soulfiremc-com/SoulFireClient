@@ -347,7 +347,11 @@ function BotSettingRow(props: {
         <SettingTypeRenderer
           settingType={props.row.definition.type}
           value={props.row.effectiveValue}
-          changeCallback={valueMutation.mutate}
+          changeCallback={
+            props.row.definition.type.case === "stringList"
+              ? valueMutation.mutateAsync
+              : valueMutation.mutate
+          }
         />
       </div>
 

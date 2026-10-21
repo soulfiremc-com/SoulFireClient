@@ -73,6 +73,11 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { useCachedState } from "@/hooks/use-cached-state.ts";
 import { useLocaleNumberFormat } from "@/hooks/use-locale-number-format.tsx";
+import {
+  createStringListEntry,
+  reconcileStringListEntries,
+  type StringListEntry,
+} from "@/lib/string-list-entries.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   cn,
@@ -414,44 +419,61 @@ function ComboComponent(props: {
   );
 }
 
-type IdValue<T> = { id: string; value: T };
-
-function makeIdValueArray<T>(values: T[]): IdValue<T>[] {
-  return values.map((value) => makeIdValueSingle(value));
-}
-
-function makeIdValueSingle<T>(value: T): IdValue<T> {
-  const randomId = Math.random().toString(36).substring(7);
-  return { id: randomId, value };
-}
-
 function StringListComponent(props: {
   setting: StringListSetting;
   value: string[];
-  changeCallback: (value: string[]) => void;
+  changeCallback: (value: string[]) => void | Promise<void>;
 }) {
   const { t } = useTranslation("common");
-  const idValueArray = useMemo(
-    () => makeIdValueArray(props.value),
-    [props.value],
-  );
+  const [list, setList] = useState<{
+    entries: StringListEntry[];
+    source: string[] | undefined;
+    pending: number;
+  }>(() => ({
+    entries: props.value.map(createStringListEntry),
+    source: props.value,
+    pending: 0,
+  }));
+  if (list.pending === 0 && list.source !== props.value) {
+    setList({
+      ...list,
+      entries: reconcileStringListEntries(list.entries, props.value),
+      source: props.value,
+    });
+  }
   const [newEntryInput, setNewEntryInput] = useState("");
 
-  const insertValue = (newValue: string) => {
-    const resultArray = [...idValueArray, makeIdValueSingle(newValue)];
-    props.changeCallback(resultArray.map((i) => i.value));
+  const saveEntries = (entries: StringListEntry[]) => {
+    setList((current) => ({
+      entries,
+      source: undefined,
+      pending: current.pending + 1,
+    }));
+    void Promise.resolve()
+      .then(() => props.changeCallback(entries.map((entry) => entry.value)))
+      .catch(() => {
+        toast.error(
+          t("settingsPage.stringList.saveError", {
+            name: props.setting.uiName,
+          }),
+        );
+      })
+      .finally(() => {
+        setList((current) => ({ ...current, pending: current.pending - 1 }));
+      });
   };
-  const updateId = (id: string, newValue: string) => {
-    const resultArray = [...idValueArray];
-    const index = resultArray.findIndex((item) => item.id === id);
-    resultArray[index] = { id, value: newValue };
-    props.changeCallback(resultArray.map((i) => i.value));
+  const insertValue = (value: string) => {
+    saveEntries([...list.entries, createStringListEntry(value)]);
+  };
+  const updateId = (id: string, value: string) => {
+    saveEntries(
+      list.entries.map((entry) =>
+        entry.id === id ? { ...entry, value } : entry,
+      ),
+    );
   };
   const deleteId = (id: string) => {
-    const resultArray = [...idValueArray];
-    const index = resultArray.findIndex((item) => item.id === id);
-    resultArray.splice(index, 1);
-    props.changeCallback(resultArray.map((i) => i.value));
+    saveEntries(list.entries.filter((entry) => entry.id !== id));
   };
 
   return (
@@ -461,6 +483,9 @@ function StringListComponent(props: {
           <InputGroupInput
             type="text"
             value={newEntryInput}
+            aria-label={t("settingsPage.stringList.newEntry", {
+              name: props.setting.uiName,
+            })}
             onChange={(e) => {
               setNewEntryInput(e.currentTarget.value);
             }}
@@ -468,6 +493,7 @@ function StringListComponent(props: {
             disabled={props.setting.disabled}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
+                e.preventDefault();
                 insertValue(newEntryInput);
                 setNewEntryInput("");
               }
@@ -486,11 +512,15 @@ function StringListComponent(props: {
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
-        {idValueArray.map((item) => (
+        {list.entries.map((item, index) => (
           <InputGroup key={item.id}>
             <InputGroupInput
               type="text"
-              defaultValue={item.value}
+              value={item.value}
+              aria-label={t("settingsPage.stringList.entry", {
+                name: props.setting.uiName,
+                number: index + 1,
+              })}
               onChange={(e) => {
                 updateId(item.id, e.currentTarget.value);
               }}
@@ -501,6 +531,10 @@ function StringListComponent(props: {
                 onClick={() => {
                   deleteId(item.id);
                 }}
+                aria-label={t("settingsPage.stringList.removeEntry", {
+                  name: props.setting.uiName,
+                  number: index + 1,
+                })}
                 disabled={props.setting.disabled}
               >
                 <TrashIcon />
@@ -573,7 +607,7 @@ function MinMaxComponent(props: {
 export function SettingTypeRenderer(props: {
   settingType: SettingsDefinition["type"];
   value: JsonValue;
-  changeCallback: (value: JsonValue) => void;
+  changeCallback: (value: JsonValue) => void | Promise<void>;
 }) {
   if (!props.settingType || props.value === undefined) {
     return null;
@@ -763,7 +797,11 @@ function SettingField<T extends BaseSettings>(props: {
     <SettingTypeRenderer
       settingType={definition.type}
       value={value}
-      changeCallback={setValueMutation.mutate}
+      changeCallback={
+        definition.type.case === "stringList"
+          ? setValueMutation.mutateAsync
+          : setValueMutation.mutate
+      }
     />
   );
 }
@@ -838,7 +876,11 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     <SettingTypeRenderer
       settingType={definition.type}
       value={value}
-      changeCallback={setValueMutation.mutate}
+      changeCallback={
+        definition.type.case === "stringList"
+          ? setValueMutation.mutateAsync
+          : setValueMutation.mutate
+      }
     />
   );
 }
