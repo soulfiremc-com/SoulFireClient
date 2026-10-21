@@ -1,5 +1,5 @@
 import { TrashIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -32,12 +32,14 @@ function getLogLevelStyles(level: LogLevel): {
   }
 }
 
+const timeFormatter = new Intl.DateTimeFormat(undefined, {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
+
 function formatTimestamp(date: Date): string {
-  const timeStr = date.toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const timeStr = timeFormatter.format(date);
   const ms = date.getMilliseconds().toString().padStart(3, "0");
   return `${timeStr}.${ms}`;
 }
@@ -46,7 +48,7 @@ interface LogEntryRowProps {
   entry: LogEntry;
 }
 
-function LogEntryRow({ entry }: LogEntryRowProps) {
+const LogEntryRow = memo(function LogEntryRow({ entry }: LogEntryRowProps) {
   const styles = getLogLevelStyles(entry.level);
 
   return (
@@ -75,7 +77,7 @@ function LogEntryRow({ entry }: LogEntryRowProps) {
       </span>
     </div>
   );
-}
+});
 
 export function ExecutionLogs({
   logs,
