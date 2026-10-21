@@ -40,6 +40,7 @@ import {
   Suspense,
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useState,
 } from "react";
@@ -60,7 +61,13 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
-import { Input } from "@/components/ui/input.tsx";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
 import {
   Item,
   ItemContent,
@@ -1207,6 +1214,8 @@ function BotInventoryPanel({
   const isPlayerInventory = layout?.title === "Inventory";
   const buttons = layout?.buttons ?? [];
   const textInputs = layout?.textInputs ?? [];
+  const anvilInputItem =
+    layout?.containerType === "anvil" ? slotByIndex.get(0) : undefined;
   const bookPages = layout?.bookPages ?? [];
   const currentBookPage = layout?.currentBookPage ?? 0;
 
@@ -1282,6 +1291,11 @@ function BotInventoryPanel({
           {/* Text inputs (anvil rename, etc.) */}
           {textInputs.length > 0 && (
             <ContainerTextInputPanel
+              key={JSON.stringify([
+                layout.containerType,
+                anvilInputItem?.itemId,
+                anvilInputItem?.count,
+              ])}
               textInputs={textInputs}
               containerType={layout.containerType}
               onSetText={handleSetText}
@@ -1431,26 +1445,6 @@ function ContainerTextInputPanel({
   isPending: boolean;
 }) {
   const { t } = useTranslation("instance");
-  const [localValues, setLocalValues] = useState<Record<string, string>>({});
-
-  // Initialize local values from textInputs
-  useEffect(() => {
-    const initial: Record<string, string> = {};
-    for (const input of textInputs) {
-      if (!(input.id in localValues)) {
-        initial[input.id] = input.currentValue;
-      }
-    }
-    if (Object.keys(initial).length > 0) {
-      setLocalValues((prev) => ({ ...prev, ...initial }));
-    }
-  }, [textInputs, localValues]);
-
-  const handleSubmit = (fieldId: string) => {
-    const value = localValues[fieldId] ?? "";
-    onSetText(fieldId, value);
-  };
-
   // Get title based on container type
   const title =
     containerType === "anvil"
@@ -1460,39 +1454,69 @@ function ContainerTextInputPanel({
   return (
     <div className="flex flex-col gap-2">
       <div className="text-muted-foreground text-sm font-medium">{title}</div>
-      <div className="flex flex-col gap-2 rounded-lg border p-2">
-        {textInputs.map((input) => (
-          <div key={input.id} className="flex items-center gap-2">
-            <Input
-              placeholder={input.placeholder || input.label}
-              value={localValues[input.id] ?? input.currentValue}
-              onChange={(e) =>
-                setLocalValues((prev) => ({
-                  ...prev,
-                  [input.id]: e.target.value,
-                }))
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSubmit(input.id);
-                }
-              }}
-              maxLength={input.maxLength > 0 ? input.maxLength : undefined}
-              className="h-8 text-sm"
-              disabled={isPending}
+      <div className="rounded-lg border p-2">
+        <FieldGroup className="gap-2">
+          {textInputs.map((input) => (
+            <ContainerTextInputField
+              key={JSON.stringify([input.id, input.currentValue])}
+              input={input}
+              onSetText={onSetText}
+              isPending={isPending}
             />
-            <Button
-              size="sm"
-              onClick={() => handleSubmit(input.id)}
-              disabled={isPending}
-              className="h-8"
-            >
-              <PencilIcon className="size-3" />
-            </Button>
-          </div>
-        ))}
+          ))}
+        </FieldGroup>
       </div>
     </div>
+  );
+}
+
+function ContainerTextInputField({
+  input,
+  onSetText,
+  isPending,
+}: {
+  input: ContainerTextInput;
+  onSetText: (fieldId: string, text: string) => void;
+  isPending: boolean;
+}) {
+  const { t } = useTranslation("common");
+  const id = useId();
+  const [value, setValue] = useState(input.currentValue);
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!isPending) onSetText(input.id, value);
+      }}
+    >
+      <Field data-disabled={isPending}>
+        <FieldLabel htmlFor={id} className="sr-only">
+          {input.label}
+        </FieldLabel>
+        <InputGroup>
+          <InputGroupInput
+            id={id}
+            placeholder={input.placeholder || input.label}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            maxLength={input.maxLength > 0 ? input.maxLength : undefined}
+            disabled={isPending}
+          />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              type="submit"
+              size="icon-xs"
+              disabled={isPending}
+              aria-label={t("save")}
+              title={t("save")}
+            >
+              <PencilIcon />
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+      </Field>
+    </form>
   );
 }
 
