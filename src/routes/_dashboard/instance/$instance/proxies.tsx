@@ -23,7 +23,6 @@ import {
 import { use, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
-import URI from "urijs";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   MenuItem,
@@ -85,6 +84,12 @@ import i18n from "@/lib/i18n.ts";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
+import {
+  formatProxyAsFlat,
+  formatProxyAsURI,
+  parseNormalProxy,
+  parseURIProxy,
+} from "@/lib/proxy-format.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   getEnumEntries,
@@ -229,105 +234,10 @@ function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
   }
 }
 
-function parseNormalProxy(line: string, type: SimpleProxyType): ProfileProxy {
-  // Support user:pass@host:port format
-  const atIndex = line.lastIndexOf("@");
-  if (atIndex !== -1) {
-    const userInfo = line.substring(0, atIndex);
-    const hostPort = line.substring(atIndex + 1);
-    const hostPortParts = hostPort.split(":");
-    if (hostPortParts.length < 2) {
-      throw new Error(i18n.t("instance:proxy.invalidFormat"));
-    }
-
-    const host = `${hostPortParts[0]}:${hostPortParts[1]}`;
-    const userInfoParts = userInfo.split(":");
-    return {
-      type: uiProxyTypeToProto(type),
-      address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
-      username: userInfoParts[0],
-      password: userInfoParts[1],
-    };
-  }
-
-  // Standard host:port:user:pass format
-  const parts = line.split(":");
-  if (parts.length < 2) {
-    throw new Error(i18n.t("instance:proxy.invalidFormat"));
-  }
-
-  // Fill username and password with undefined if not present
-  parts.length = 4;
-
-  const host = `${parts[0]}:${parts[1]}`;
-  return {
-    type: uiProxyTypeToProto(type),
-    address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
-    username: parts[2],
-    password: parts[3],
-  };
-}
-
-function parseRawTypeToProto(rawType: string): ProxyProto_Type | null {
-  switch (rawType) {
-    case "http":
-      return ProxyProto_Type.HTTP;
-    case "socks4":
-      return ProxyProto_Type.SOCKS4;
-    case "socks5":
-      return ProxyProto_Type.SOCKS5;
-    default:
-      return null;
-  }
-}
-
-function parseURIProxy(line: string): ProfileProxy | null {
-  const uri = new URI(line);
-  const host = uri.host();
-  const type = parseRawTypeToProto(uri.protocol());
-  if (type === null) {
-    return null;
-  }
-
-  return {
-    type,
-    address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
-    username: uri.username() === "" ? undefined : uri.username(),
-    password: uri.password() === "" ? undefined : uri.password(),
-  };
-}
-
 function getProxyKey(proxy: ProfileProxy): string {
   return `${proxy.type}-${proxy.address}-${proxy.username ?? ""}-${
     proxy.password ?? ""
   }`;
-}
-
-function formatProxyAsURI(proxy: ProfileProxy): string {
-  const address = stripAddressPrefix(proxy.address);
-  const protocol = getEnumKeyByValue(ProxyProto_Type, proxy.type)
-    .toString()
-    .toLowerCase();
-
-  if (proxy.username && proxy.password) {
-    return `${protocol}://${proxy.username}:${proxy.password}@${address}`;
-  }
-  if (proxy.username) {
-    return `${protocol}://${proxy.username}@${address}`;
-  }
-  return `${protocol}://${address}`;
-}
-
-function formatProxyAsFlat(proxy: ProfileProxy): string {
-  const address = stripAddressPrefix(proxy.address);
-
-  if (proxy.username && proxy.password) {
-    return `${address}:${proxy.username}:${proxy.password}`;
-  }
-  if (proxy.username) {
-    return `${address}:${proxy.username}`;
-  }
-  return address;
 }
 
 function saveProxyFile(content: string, filename: string) {
@@ -571,7 +481,10 @@ function AddButton() {
               case UIProxyType.HTTP:
               case UIProxyType.SOCKS4:
               case UIProxyType.SOCKS5:
-                proxy = parseNormalProxy(line, proxyTypeSelected);
+                proxy = parseNormalProxy(
+                  line,
+                  uiProxyTypeToProto(proxyTypeSelected),
+                );
                 break;
               case UIProxyType.URI:
                 proxy = parseURIProxy(line);
