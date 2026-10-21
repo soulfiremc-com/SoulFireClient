@@ -773,5 +773,9 @@
         "save": "Save Quotas"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "Use lowercase letters, digits, underscores, periods, or hyphens.",
+    "invalidKey": "Use lowercase letters, digits, underscores, periods, hyphens, or slashes."
   }
 }

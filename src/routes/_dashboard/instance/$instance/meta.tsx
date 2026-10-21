@@ -38,6 +38,11 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import i18n from "@/lib/i18n";
+import {
+  metadataKeyPattern,
+  metadataNamespacePattern,
+  updateMetadataEntry,
+} from "@/lib/metadata.ts";
 import { jsonToValue, parseJsonValue, valueToJson } from "@/lib/protobuf.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
@@ -305,7 +310,6 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.addSuccess"));
-      void loadMetadata();
     },
     onError: (e) => {
       console.error(e);
@@ -327,26 +331,21 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       if (transport === null) return;
       const instanceService = createClient(InstanceService, transport);
 
-      if (
-        entry.oldNamespace !== entry.namespace ||
-        entry.oldKey !== entry.key
-      ) {
-        await instanceService.deleteInstanceMetadataEntry({
-          instanceId,
-          namespace: entry.oldNamespace,
-          key: entry.oldKey,
-        });
-      }
+      await updateMetadataEntry(entry, {
+        setEntry: (replacement) =>
+          instanceService.setInstanceMetadataEntry({
+            instanceId,
 
-      await instanceService.setInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-        value: jsonToValue(entry.value),
+            ...replacement,
+            value: jsonToValue(replacement.value),
+          }),
+        deleteEntry: (original) =>
+          instanceService.deleteInstanceMetadataEntry({
+            instanceId,
+
+            ...original,
+          }),
       });
-    },
-    onSuccess: () => {
-      void loadMetadata();
     },
     onError: (e) => {
       console.error(e);
@@ -369,7 +368,6 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.deleteSuccess"));
-      void loadMetadata();
     },
     onError: (e) => {
       console.error(e);
@@ -383,8 +381,15 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       z.object({
         namespace: z
           .string()
-          .min(1, t("instanceMetadata.namespacePlaceholder")),
-        key: z.string().min(1, t("instanceMetadata.keyPlaceholder")),
+          .trim()
+          .regex(
+            metadataNamespacePattern,
+            t("metadataValidation.invalidNamespace"),
+          ),
+        key: z
+          .string()
+          .trim()
+          .regex(metadataKeyPattern, t("metadataValidation.invalidKey")),
         value: z
           .string()
           .min(1, t("instanceMetadata.valuePlaceholder"))
@@ -448,12 +453,12 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       const updatedEntry = { ...entry, [field]: newFieldValue };
 
       const parsedValue = parseJsonValue(updatedEntry.value);
-      if (parsedValue === undefined) {
-        setEntries(
-          (prev) => prev?.map((e) => (e.id === id ? updatedEntry : e)) ?? [],
-        );
+      if (
+        parsedValue === undefined ||
+        !metadataNamespacePattern.test(updatedEntry.namespace) ||
+        !metadataKeyPattern.test(updatedEntry.key)
+      )
         return;
-      }
 
       if (
         (field === "namespace" || field === "key") &&
@@ -643,6 +648,9 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                 handleDeleteEntry(entry.id, entry.namespace, entry.key)
               }
               isDeleting={deleteEntryMutation.isPending}
+              isUpdating={
+                updateEntryMutation.isPending || addEntryMutation.isPending
+              }
             />
           ))}
         </CardContent>
@@ -656,22 +664,36 @@ function MetadataEntryRow({
   onUpdate,
   onDelete,
   isDeleting,
+  isUpdating,
 }: {
   entry: MetadataEntry;
   onUpdate: (field: "namespace" | "key" | "value", value: string) => void;
   onDelete: () => void;
   isDeleting: boolean;
+  isUpdating: boolean;
 }) {
   const { t } = useTranslation("instance");
 
-  const [originalNamespace] = useState(entry.namespace);
-  const [originalKey] = useState(entry.key);
-  const [originalValue] = useState(entry.value);
-
-  const isValidJson = useMemo(
-    () => parseJsonValue(entry.value) !== undefined,
-    [entry.value],
+  const [draft, setDraft] = useState(entry);
+  const isValidNamespace = metadataNamespacePattern.test(
+    draft.namespace.trim(),
   );
+  const isValidKey = metadataKeyPattern.test(draft.key.trim());
+  const isValidJson = parseJsonValue(draft.value) !== undefined;
+
+  const saveField = (field: "namespace" | "key" | "value") => {
+    const value = field === "value" ? draft[field] : draft[field].trim();
+    const valid =
+      field === "namespace"
+        ? isValidNamespace
+        : field === "key"
+          ? isValidKey
+          : isValidJson;
+    if (valid && value !== entry[field]) {
+      setDraft((current) => ({ ...current, [field]: value }));
+      onUpdate(field, value);
+    }
+  };
 
   return (
     <FieldSet className="gap-3 rounded-lg border p-3">
@@ -681,7 +703,7 @@ function MetadataEntryRow({
         })}
       </FieldLegend>
       <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
-        <Field className="gap-2">
+        <Field data-invalid={!isValidNamespace} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-namespace`}>
             {t("instanceMetadata.namespaceLabel", {
               defaultValue: "Namespace",
@@ -690,17 +712,20 @@ function MetadataEntryRow({
           <Input
             id={`${entry.id}-namespace`}
             type="text"
-            value={entry.namespace}
-            onChange={(e) => onUpdate("namespace", e.currentTarget.value)}
-            onBlur={(e) => {
-              if (e.currentTarget.value !== originalNamespace) {
-                onUpdate("namespace", e.currentTarget.value);
-              }
-            }}
+            value={draft.namespace}
+            onChange={(e) =>
+              setDraft({ ...draft, namespace: e.currentTarget.value })
+            }
+            onBlur={() => saveField("namespace")}
+            disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.namespacePlaceholder")}
+            aria-invalid={!isValidNamespace}
           />
+          {!isValidNamespace ? (
+            <FieldError>{t("metadataValidation.invalidNamespace")}</FieldError>
+          ) : null}
         </Field>
-        <Field className="gap-2">
+        <Field data-invalid={!isValidKey} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-key`}>
             {t("instanceMetadata.keyLabel", {
               defaultValue: "Key",
@@ -709,15 +734,16 @@ function MetadataEntryRow({
           <Input
             id={`${entry.id}-key`}
             type="text"
-            value={entry.key}
-            onChange={(e) => onUpdate("key", e.currentTarget.value)}
-            onBlur={(e) => {
-              if (e.currentTarget.value !== originalKey) {
-                onUpdate("key", e.currentTarget.value);
-              }
-            }}
+            value={draft.key}
+            onChange={(e) => setDraft({ ...draft, key: e.currentTarget.value })}
+            onBlur={() => saveField("key")}
+            disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.keyPlaceholder")}
+            aria-invalid={!isValidKey}
           />
+          {!isValidKey ? (
+            <FieldError>{t("metadataValidation.invalidKey")}</FieldError>
+          ) : null}
         </Field>
         <Field data-invalid={!isValidJson} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-value`}>
@@ -728,13 +754,12 @@ function MetadataEntryRow({
           <Input
             id={`${entry.id}-value`}
             type="text"
-            value={entry.value}
-            onChange={(e) => onUpdate("value", e.currentTarget.value)}
-            onBlur={(e) => {
-              if (e.currentTarget.value !== originalValue) {
-                onUpdate("value", e.currentTarget.value);
-              }
-            }}
+            value={draft.value}
+            onChange={(e) =>
+              setDraft({ ...draft, value: e.currentTarget.value })
+            }
+            onBlur={() => saveField("value")}
+            disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.valuePlaceholder")}
             className="font-mono"
             aria-invalid={!isValidJson}
@@ -744,7 +769,11 @@ function MetadataEntryRow({
           ) : null}
         </Field>
         <div className="md:self-end">
-          <Button variant="outline" onClick={onDelete} disabled={isDeleting}>
+          <Button
+            variant="outline"
+            onClick={onDelete}
+            disabled={isDeleting || isUpdating}
+          >
             <TrashIcon data-icon="inline-start" />
             {t("instanceMetadata.removeEntryButton", {
               defaultValue: "Remove",
