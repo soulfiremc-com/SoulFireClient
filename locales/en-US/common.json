@@ -112,7 +112,9 @@
         "toast": {
           "loading": "Downloading data...",
           "success": "Data loaded!",
-          "error": "Failed to download data"
+          "error": "Failed to download data",
+          "httpError": "The URL returned HTTP {{status}}. Check the link and try again.",
+          "empty": "The URL returned no data to import."
         }
       }
     }

@@ -5,7 +5,7 @@ import { useRouteContext } from "@tanstack/react-router";
 import { ClipboardIcon, FileIcon, GlobeIcon, TextIcon } from "lucide-react";
 import MimeMatcher from "mime-matcher";
 import type { ReactNode } from "react";
-import { use, useCallback, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { DownloadService } from "@/generated/soulfire/download_pb";
+import { decodeTextDownload, DownloadHttpError } from "@/lib/download.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { hasInstancePermission, runAsync } from "@/lib/utils.tsx";
 
@@ -70,6 +71,21 @@ function UrlDialog(props: ImportDialogProps) {
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
+  const activeDownload = useRef<{
+    controller: AbortController;
+    toastId: string | number;
+  } | null>(null);
+  useEffect(
+    () => () => {
+      const download = activeDownload.current;
+      if (download) {
+        download.controller.abort();
+        toast.dismiss(download.toastId);
+      }
+    },
+    [],
+  );
+
   const urlSchema = z.object({
     url: z.string().url(t("dialog.import.url.form.url.empty")),
   });
@@ -82,30 +98,44 @@ function UrlDialog(props: ImportDialogProps) {
       onSubmit: urlSchema,
     },
     onSubmit: async ({ value }) => {
-      const download = async () => {
-        if (transport === null) {
+      if (transport === null) return;
+      const controller = new AbortController();
+      const toastId = toast.loading(t("dialog.import.url.toast.loading"));
+      activeDownload.current = { controller, toastId };
+      try {
+        const service = createClient(DownloadService, transport);
+        const response = await service.download(
+          {
+            instanceId: instanceInfo.id,
+            uri: value.url,
+            headers: [],
+          },
+          { signal: controller.signal },
+        );
+        const text = decodeTextDownload(response);
+        if (!text.trim()) {
+          toast.error(t("dialog.import.url.toast.empty"), { id: toastId });
           return;
         }
-
-        const service = createClient(DownloadService, transport);
-        const response = await service.download({
-          instanceId: instanceInfo.id,
-          uri: value.url,
-          headers: [],
-        });
-
-        const decoder = new TextDecoder();
-        props.listener(decoder.decode(response.data));
-      };
-
-      toast.promise(download(), {
-        loading: t("dialog.import.url.toast.loading"),
-        success: t("dialog.import.url.toast.success"),
-        error: (e) => {
-          console.error(e);
-          return t("dialog.import.url.toast.error");
-        },
-      });
+        props.listener(text);
+        toast.success(t("dialog.import.url.toast.success"), { id: toastId });
+      } catch (error) {
+        if (controller.signal.aborted) {
+          toast.dismiss(toastId);
+          return;
+        }
+        console.error(error);
+        toast.error(
+          error instanceof DownloadHttpError
+            ? t("dialog.import.url.toast.httpError", {
+                status: error.statusCode,
+              })
+            : t("dialog.import.url.toast.error"),
+          { id: toastId },
+        );
+      } finally {
+        activeDownload.current = null;
+      }
     },
   });
 
@@ -159,10 +189,26 @@ function UrlDialog(props: ImportDialogProps) {
                   );
                 }}
               </form.Field>
-              <Button type="submit" variant="secondary" className="w-full">
-                <GlobeIcon />
-                <span>{t("dialog.import.url.submit")}</span>
-              </Button>
+              <form.Subscribe selector={(state) => state.isSubmitting}>
+                {(isSubmitting) => (
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className="w-full"
+                    disabled={isSubmitting}
+                    aria-busy={isSubmitting}
+                  >
+                    <GlobeIcon />
+                    <span>
+                      {t(
+                        isSubmitting
+                          ? "dialog.import.url.toast.loading"
+                          : "dialog.import.url.submit",
+                      )}
+                    </span>
+                  </Button>
+                )}
+              </form.Subscribe>
             </div>
           </CredenzaBody>
         </form>
