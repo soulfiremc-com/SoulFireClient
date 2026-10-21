@@ -134,10 +134,10 @@ import {
   translateAccountType,
 } from "@/lib/account-types.ts";
 import {
-  createContainerTextDraft,
-  editContainerTextDraft,
-  syncContainerTextDraft,
-} from "@/lib/container-text-draft";
+  createServerInputDraft,
+  editServerInputDraft,
+  syncServerInputDraft,
+} from "@/lib/server-input-draft";
 import i18n from "@/lib/i18n";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
@@ -1497,9 +1497,9 @@ function ContainerTextInputField({
   const { t } = useTranslation("common");
   const id = useId();
   const [draft, setDraft] = useState(() =>
-    createContainerTextDraft(input.currentValue),
+    createServerInputDraft(input.currentValue),
   );
-  const current = syncContainerTextDraft(draft, input.currentValue);
+  const current = syncServerInputDraft(draft, input.currentValue);
   if (current !== draft) setDraft(current);
 
   return (
@@ -1520,7 +1520,7 @@ function ContainerTextInputField({
             value={current.value}
             onChange={(event) =>
               setDraft(
-                editContainerTextDraft(current, event.target.value, isPending),
+                editServerInputDraft(current, event.target.value, isPending),
               )
             }
             maxLength={input.maxLength > 0 ? input.maxLength : undefined}
@@ -2044,7 +2044,8 @@ function BotDialogPanel({
     }) => {
       const transport = createTransport();
       if (transport === null) throw new Error("Not connected");
-      const result = await createClient(BotService, transport).submitDialog({
+      const service = createClient(BotService, transport);
+      const result = await service.submitDialog({
         instanceId,
         botId,
         buttonIndex,
@@ -2052,17 +2053,24 @@ function BotDialogPanel({
       });
       if (!result.success)
         throw new Error(result.error || "The dialog action failed.");
-      return result;
-    },
-    onSuccess: (result) => {
       if (result.clipboard !== undefined) copyMinecraftText(result.clipboard);
       if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
+      // A failed refresh must not turn an accepted action into a retryable failure.
+      return service.getDialog({ instanceId, botId }).catch(() => undefined);
+    },
+    onSuccess: async (state) => {
+      if (state) {
+        await queryClient.cancelQueries({
+          queryKey: dialogQueryOptions.queryKey,
+        });
+        queryClient.setQueryData(dialogQueryOptions.queryKey, state);
+      } else {
+        void queryClient.invalidateQueries({
+          queryKey: dialogQueryOptions.queryKey,
+        });
+      }
     },
     onError: (error) => toast.error(error.message),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: ["bot-dialog", instanceId, botId],
-      }),
   });
 
   const getDialogTypeName = (type: number) => {
@@ -2119,9 +2127,13 @@ function BotDialogPanel({
             key={`${instanceId}:${botId}:${dialog.screenId}`}
             dialog={dialog}
             pending={submitMutation.isPending}
-            onSubmit={(buttonIndex, inputValues) =>
-              submitMutation.mutate({ buttonIndex, inputValues })
-            }
+            onSubmit={async (buttonIndex, inputValues) => {
+              const state = await submitMutation.mutateAsync({
+                buttonIndex,
+                inputValues,
+              });
+              return state?.dialog;
+            }}
           />
         </div>
       ) : (

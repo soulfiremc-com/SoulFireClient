@@ -15,6 +15,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { DialogInput, ServerDialog } from "@/generated/soulfire/bot_pb";
 import { getNumericSettingValue } from "@/lib/numeric-setting-value";
+import {
+  acknowledgeServerInputDraft,
+  createServerInputDraft,
+  editServerInputDraft,
+  type ServerInputDraft,
+  syncServerInputDraft,
+} from "@/lib/server-input-draft";
 import { cn } from "@/lib/utils";
 
 function inputValue(input: DialogInput["input"]): string {
@@ -39,13 +46,14 @@ export function BotDialogForm({
 }: {
   dialog: ServerDialog;
   pending: boolean;
-  onSubmit: (buttonIndex: number, inputValues: Record<string, string>) => void;
+  onSubmit: (
+    buttonIndex: number,
+    inputValues: Record<string, string>,
+  ) => Promise<ServerDialog | undefined>;
 }) {
   const { t } = useTranslation("instance");
   const id = useId();
-  const [drafts, setDrafts] = useState<
-    Record<string, { source: string; value: string }>
-  >({});
+  const [drafts, setDrafts] = useState<Record<string, ServerInputDraft>>({});
   const [actions] = useState(() =>
     dialog.actions.map((button, index) => ({
       button,
@@ -59,27 +67,37 @@ export function BotDialogForm({
       id: crypto.randomUUID(),
     })),
   );
+  const currentDrafts = { ...drafts };
+  let changed = false;
+  for (const { input } of dialog.inputs) {
+    if (!input.case) continue;
+    const key = input.value.key;
+    const draft = drafts[key];
+    const current = draft
+      ? syncServerInputDraft(draft, inputValue(input))
+      : createServerInputDraft(inputValue(input));
+    currentDrafts[key] = current;
+    changed ||= current !== draft;
+  }
+  if (changed) setDrafts(currentDrafts);
   const values = Object.fromEntries(
-    dialog.inputs.flatMap(({ input }) => {
-      if (!input.case) return [];
-      const source = inputValue(input);
-      const draft = drafts[input.value.key];
-      return [
-        [input.value.key, draft?.source === source ? draft.value : source],
-      ];
-    }),
+    Object.entries(currentDrafts).map(([key, draft]) => [key, draft.value]),
   );
   const update = (input: DialogInput["input"], value: string) => {
     if (!input.case) return;
     setDrafts((current) => ({
       ...current,
-      [input.value.key]: { source: inputValue(input), value },
+      [input.value.key]: editServerInputDraft(
+        current[input.value.key] ?? createServerInputDraft(inputValue(input)),
+        value,
+        pending,
+      ),
     }));
   };
 
   return (
     <form
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         const submitter = event.nativeEvent.submitter;
         const index =
@@ -105,7 +123,31 @@ export function BotDialogForm({
             }
           }
         }
-        onSubmit(index, inputValues);
+        let updated: ServerDialog | undefined;
+        try {
+          updated = await onSubmit(index, inputValues);
+        } catch {
+          // The mutation reports the error. Keep all local drafts for a retry.
+          return;
+        }
+        if (updated?.screenId !== dialog.screenId) return;
+        setDrafts((current) => {
+          const next = { ...current };
+          for (const { input } of updated.inputs) {
+            if (!input.case) continue;
+            const key = input.value.key;
+            const draft = current[key];
+            const submitted = inputValues[key];
+            if (draft && submitted !== undefined) {
+              next[key] = acknowledgeServerInputDraft(
+                draft,
+                submitted,
+                inputValue(input),
+              );
+            }
+          }
+          return next;
+        });
       }}
       className="flex flex-col gap-4"
     >
@@ -135,18 +177,13 @@ export function BotDialogForm({
             const value = values[control.key] ?? "";
             if (input.case === "boolean")
               return (
-                <Field
-                  key={control.key}
-                  orientation="horizontal"
-                  data-disabled={pending}
-                >
+                <Field key={control.key} orientation="horizontal">
                   <Checkbox
                     id={fieldId}
                     checked={value === "true"}
                     onCheckedChange={(checked) =>
                       update(input, String(checked))
                     }
-                    disabled={pending}
                   />
                   <FieldLabel htmlFor={fieldId}>
                     {control.label || control.key}
@@ -154,7 +191,13 @@ export function BotDialogForm({
                 </Field>
               );
             return (
-              <Field key={control.key} data-disabled={pending}>
+              <Field
+                key={control.key}
+                data-disabled={
+                  input.case === "numberRange" &&
+                  input.value.start === input.value.end
+                }
+              >
                 <FieldLabel
                   htmlFor={fieldId}
                   className={cn(
@@ -173,7 +216,6 @@ export function BotDialogForm({
                       maxLength={input.value.maxLength}
                       rows={Math.min(input.value.multilineMaxLines || 3, 10)}
                       onChange={(event) => update(input, event.target.value)}
-                      disabled={pending}
                     />
                   ) : (
                     <Input
@@ -181,7 +223,6 @@ export function BotDialogForm({
                       value={value}
                       maxLength={input.value.maxLength}
                       onChange={(event) => update(input, event.target.value)}
-                      disabled={pending}
                     />
                   ))}
                 {input.case === "singleOption" && (
@@ -190,7 +231,6 @@ export function BotDialogForm({
                     onValueChange={(value) => {
                       if (value !== null) update(input, value);
                     }}
-                    disabled={pending}
                     items={input.value.options.map((option) => ({
                       value: option.id,
                       label: option.display,
@@ -220,7 +260,7 @@ export function BotDialogForm({
                     step="any"
                     required
                     onChange={(event) => update(input, event.target.value)}
-                    disabled={pending || input.value.start === input.value.end}
+                    disabled={input.value.start === input.value.end}
                   />
                 )}
               </Field>
