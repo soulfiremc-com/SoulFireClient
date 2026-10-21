@@ -76,7 +76,7 @@ import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
-import { observeServerStream } from "@/lib/protobuf.ts";
+import { resumeScript } from "@/lib/resume-script.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { scriptListQueryOptions } from "@/lib/script-service.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
@@ -285,15 +285,7 @@ function Content() {
     mutationKey: ["script", "resume", instanceId],
     mutationFn: async (scriptId: string) => {
       if (!transport) throw new Error("No transport available");
-      const client = createClient(ScriptService, transport);
-      // Resume the script - we don't need to track the stream here
-      // since that's handled in the editor view
-      const responses = client.activateScript({
-        instanceId,
-        scriptId,
-      });
-      // Consume the stream in the background
-      void observeServerStream(responses, {});
+      await resumeScript(transport, instanceId, scriptId);
     },
     onSuccess: () => {
       if (isPostHogConfigured) {
