@@ -469,17 +469,22 @@
         "beaconEffects": "Beacon Effects",
         "crafterSlots": "Slot Controls",
         "lecternControls": "Book Controls",
-        "actions": "Actions"
+        "actions": "Actions",
+        "creativeTabs": "Creative Tabs"
       },
       "textInput": {
         "title": "Text Input",
-        "anvilRename": "Rename Item"
+        "anvilRename": "Rename Item",
+        "creativeSearch": "Search Items"
       },
       "bookPages": {
         "title": "Book Content",
         "emptyPage": "(Empty page)",
         "pageIndicator": "Page {{current}} of {{total}}"
-      }
+      },
+      "creativeCatalogHint": "Catalog: click to copy one, Shift+click or middle click to copy a stack. Click the same item to add one, or right click to remove one from the cursor.",
+      "creativeTrashHint": "Click: destroy carried items | Shift+click: clear the entire inventory",
+      "destroyItem": "Destroy Item"
     },
     "visualPanel": {
       "title": "Bot View",

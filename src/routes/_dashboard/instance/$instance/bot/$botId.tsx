@@ -867,6 +867,24 @@ function InventorySlotDisplay({
   hotbarIndex?: number;
   slotIndex?: number;
 }) {
+  const { t } = useTranslation("instance");
+  const isCreativeCatalog =
+    containerType === "creative" && regionId === "creative_catalog";
+  const isCreativeTrash =
+    containerType === "creative" && regionId === "destroy_item";
+  const clickHints = isCreativeCatalog
+    ? [t("bots.inventoryPanel.creativeCatalogHint")]
+    : isCreativeTrash
+      ? [t("bots.inventoryPanel.creativeTrashHint")]
+      : [
+          "Left click: Pick up/place",
+          "Right click: Pick up half/place one",
+          "Shift+click: Quick move",
+        ];
+  if (onMiddleClick && !isCreativeCatalog) {
+    clickHints.push("Middle click: Select as active slot");
+  }
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (e.shiftKey && onShiftClick) {
@@ -904,8 +922,11 @@ function InventorySlotDisplay({
   if (hotbarIndex !== undefined) devInfoParts.push(`Hotbar: ${hotbarIndex}`);
 
   if (!item) {
-    const description =
-      devInfoParts.length > 0 ? devInfoParts.join("\n") : undefined;
+    const description = [
+      ...(isCreativeTrash ? [t("bots.inventoryPanel.destroyItem")] : []),
+      ...devInfoParts,
+      ...(isClickable ? ["", ...clickHints] : []),
+    ].join("\n");
     return (
       <button
         type="button"
@@ -917,8 +938,12 @@ function InventorySlotDisplay({
         aria-label={description}
         title={description}
       >
-        {slotNumber !== undefined && (
-          <span className="text-muted-foreground/30">{slotNumber}</span>
+        {isCreativeTrash ? (
+          <Trash2Icon className="text-muted-foreground size-4" />
+        ) : (
+          slotNumber !== undefined && (
+            <span className="text-muted-foreground/30">{slotNumber}</span>
+          )
         )}
       </button>
     );
@@ -934,12 +959,7 @@ function InventorySlotDisplay({
     titleParts.push("", ...devInfoParts);
   }
   if (isClickable) {
-    titleParts.push("", "Left click: Pick up/place");
-    titleParts.push("Right click: Pick up half/place one");
-    titleParts.push("Shift+click: Quick move");
-  }
-  if (onMiddleClick) {
-    titleParts.push("Middle click: Select as active slot");
+    titleParts.push("", ...clickHints);
   }
 
   return (
@@ -1023,9 +1043,11 @@ function SlotRegionGrid({
                 onSlotClick(slotIndex, ClickType.SHIFT_LEFT_CLICK)
               }
               onMiddleClick={
-                isHotbar && onHotbarSlotSelect
-                  ? () => onHotbarSlotSelect(i)
-                  : undefined
+                containerType === "creative" && region.id === "creative_catalog"
+                  ? () => onSlotClick(slotIndex, ClickType.MIDDLE_CLICK)
+                  : isHotbar && onHotbarSlotSelect
+                    ? () => onHotbarSlotSelect(i)
+                    : undefined
               }
               containerType={containerType}
               regionId={region.id}
@@ -1363,7 +1385,10 @@ function BotInventoryPanel({
 
           {/* Click instructions */}
           <p className="text-muted-foreground text-center text-xs">
-            {t("bots.inventoryPanel.clickHint")}
+            {layout.containerType === "creative" &&
+            layout.regions.some((region) => region.id === "creative_catalog")
+              ? t("bots.inventoryPanel.creativeCatalogHint")
+              : t("bots.inventoryPanel.clickHint")}
           </p>
         </div>
       ) : (
@@ -1393,6 +1418,8 @@ function ContainerButtonsPanel({
   // Get title based on container type
   const title = (() => {
     switch (containerType) {
+      case "creative":
+        return t("bots.inventoryPanel.buttons.creativeTabs");
       case "stonecutter":
         return t("bots.inventoryPanel.buttons.stonecutterRecipes");
       case "enchanting":
@@ -1444,7 +1471,7 @@ function ContainerButtonsPanel({
             disabled={isPending || button.disabled}
             title={button.description || undefined}
           >
-            {button.iconItemId && (
+            {button.iconItemId && containerType !== "creative" && (
               <span className="mr-1 font-mono text-3xs opacity-60">
                 {formatItemId(button.iconItemId)}
               </span>
@@ -1473,7 +1500,9 @@ function ContainerTextInputPanel({
   const title =
     containerType === "anvil"
       ? t("bots.inventoryPanel.textInput.anvilRename")
-      : t("bots.inventoryPanel.textInput.title");
+      : containerType === "creative"
+        ? t("bots.inventoryPanel.textInput.creativeSearch")
+        : t("bots.inventoryPanel.textInput.title");
 
   return (
     <div className="flex flex-col gap-2">
