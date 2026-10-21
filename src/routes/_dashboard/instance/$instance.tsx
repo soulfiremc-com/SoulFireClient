@@ -1,6 +1,5 @@
 import { create } from "@bufbuild/protobuf";
 import { TimestampSchema } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
 import { type QueryClient, queryOptions } from "@tanstack/react-query";
 import { CatchBoundary, createFileRoute, Outlet } from "@tanstack/react-router";
 import { ErrorComponent } from "@/components/error-component.tsx";
@@ -24,12 +23,12 @@ import {
   InstanceConfigSchema,
   InstanceInfoSchema,
   InstancePermissionStateSchema,
-  InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
 import { useCastBroadcast } from "@/hooks/use-cast-broadcast.ts";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
+import { fetchInstanceInfo } from "@/lib/instance-info-query.ts";
 import { instanceMetricsQueryOptions } from "@/lib/metrics-query.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
@@ -117,41 +116,12 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
           };
         }
 
-        // Get previous cached data to use for if-modified-since check
-        const previousData = props.client.getQueryData<InstanceInfoQueryData>([
-          "instance-info",
+        return fetchInstanceInfo(
+          transport,
           instance,
-        ]);
-
-        const instanceService = createClient(InstanceService, transport);
-        const result = await instanceService.getInstanceInfo(
-          {
-            id: instance,
-            ifModifiedSince: previousData?.lastModified,
-          },
-          {
-            signal: props.signal,
-          },
+          props.client,
+          props.signal,
         );
-
-        if (result.result.case === "notModified") {
-          // Return previous data if not modified
-          if (previousData) {
-            return previousData;
-          }
-          throw new Error("No cached data available");
-        }
-
-        if (result.result.case !== "info") {
-          throw new Error("Unexpected response type");
-        }
-
-        const info = result.result.value;
-        return {
-          id: instance,
-          profile: convertFromInstanceProto(info.config),
-          ...info,
-        };
       },
       refetchInterval: 3_000,
     });
