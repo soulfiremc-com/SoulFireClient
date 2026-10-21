@@ -24,6 +24,10 @@ import {
   PovInputEventSchema,
 } from "@/generated/soulfire/pov_pb";
 import { WINDOW_TITLEBAR_HEIGHT } from "@/hooks/use-window-titlebar";
+import {
+  copyMinecraftText,
+  openMinecraftUrl,
+} from "@/lib/minecraft-client-actions";
 import { desktop, isDesktopApp, isMac } from "@/lib/desktop";
 import { povCursor } from "@/lib/pov-cursor";
 import { povDisplayFps } from "@/lib/pov-display";
@@ -217,48 +221,17 @@ function BotPovSession({
         },
         () => (decoder ? feedback.sample(decoder.stats) : undefined),
         undefined,
-        (text) => {
-          void (
-            isDesktopApp()
-              ? desktop.clipboard.writeText(text)
-              : (
-                  canvasRef.current?.ownerDocument.defaultView?.navigator ??
-                  navigator
-                ).clipboard.writeText(text)
-          ).catch(() =>
-            toast.error("Allow clipboard access to copy text from Minecraft."),
-          );
-        },
-        (value) => {
-          let url: URL;
-          try {
-            url = new URL(value);
-          } catch {
-            return;
-          }
-          if (url.protocol !== "https:" && url.protocol !== "http:") return;
-          const win = canvasRef.current?.ownerDocument.defaultView ?? window;
-          release();
-          if (isDesktopApp()) {
-            void desktop.shell
-              .openExternal(url.href)
-              .catch(() => toast.error("Could not open the link."));
-          } else {
-            const opened = win.open("about:blank", "_blank");
-            if (opened) {
-              opened.opener = null;
-              opened.location.href = url.href;
-              return;
-            }
-            toast.info("Your browser blocked the new tab.", {
-              action: {
-                label: "Open link",
-                onClick: () =>
-                  win.open(url.href, "_blank", "noopener,noreferrer"),
-              },
-            });
-          }
-        },
+        (text) =>
+          copyMinecraftText(
+            text,
+            canvasRef.current?.ownerDocument.defaultView ?? window,
+          ),
+        (value) =>
+          openMinecraftUrl(
+            value,
+            canvasRef.current?.ownerDocument.defaultView ?? window,
+            release,
+          ),
       );
     } catch (reason) {
       actions.setError(

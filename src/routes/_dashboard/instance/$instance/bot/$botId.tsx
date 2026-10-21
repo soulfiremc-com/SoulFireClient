@@ -46,6 +46,11 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { BotDialogForm } from "@/components/bot-dialog-form";
+import {
+  copyMinecraftText,
+  openMinecraftUrl,
+} from "@/lib/minecraft-client-actions";
 import CommandInput from "@/components/command-input.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { MenuItem } from "@/components/context-menu-primitives.tsx";
@@ -2015,22 +2020,36 @@ function BotDialogPanel({
   const { data: dialogData } = useSuspenseQuery(dialogQueryOptions);
   const dialog = dialogData?.dialog;
 
-  // Mutation for dismissing dialog
-  const dismissMutation = useMutation({
-    mutationKey: ["bot", "dialog", "dismiss", instanceId, botId],
-    mutationFn: async () => {
+  const submitMutation = useMutation({
+    mutationKey: ["bot", "dialog", "submit", instanceId, botId],
+    mutationFn: async ({
+      buttonIndex,
+      inputValues,
+    }: {
+      buttonIndex: number;
+      inputValues: Record<string, string>;
+    }) => {
       const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createClient(BotService, transport);
-      return botService.closeDialog({ instanceId, botId });
+      if (transport === null) throw new Error("Not connected");
+      const result = await createClient(BotService, transport).submitDialog({
+        instanceId,
+        botId,
+        buttonIndex,
+        inputValues,
+      });
+      if (!result.success)
+        throw new Error(result.error || "The dialog action failed.");
+      return result;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
+      if (result.clipboard !== undefined) copyMinecraftText(result.clipboard);
+      if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
+    },
+    onError: (error) => toast.error(error.message),
+    onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: ["bot-dialog", instanceId, botId],
-      });
-    },
+      }),
   });
 
   const getDialogTypeName = (type: number) => {
@@ -2082,27 +2101,15 @@ function BotDialogPanel({
                 </code>
               </div>
             )}
-            {dialog.title && (
-              <div className="bg-muted/30 rounded-lg p-4">
-                <p className="font-medium">{dialog.title}</p>
-              </div>
-            )}
           </div>
-
-          {/* Dismiss button */}
-          <Button
-            variant="outline"
-            onClick={() => dismissMutation.mutate()}
-            disabled={dismissMutation.isPending}
-            className="w-full"
-          >
-            {dismissMutation.isPending ? (
-              <LoaderIcon className="mr-2 size-4 animate-spin" />
-            ) : (
-              <XIcon className="mr-2 size-4" />
-            )}
-            {t("bots.dialogPanel.dismiss")}
-          </Button>
+          <BotDialogForm
+            key={`${instanceId}:${botId}:${dialog.screenId}`}
+            dialog={dialog}
+            pending={submitMutation.isPending}
+            onSubmit={(buttonIndex, inputValues) =>
+              submitMutation.mutate({ buttonIndex, inputValues })
+            }
+          />
         </div>
       ) : (
         <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
