@@ -45,6 +45,33 @@ test("history merges with live messages by ID and retains a bounded buffer", () 
   assert.equal(Number(bounded[499].id), 599);
 });
 
+test("multiline messages retain the newest lines across buffer boundaries", () => {
+  const large = toTerminalLine({
+    ...message(1),
+    message: Array.from({ length: 600 }, (_, line) => String(line)).join("\n"),
+  });
+  const bounded = mergeTerminalLines([toTerminalLine(message(0))], [large]);
+  assert.equal(bounded.length, 1);
+  assert.equal(bounded[0].id, large.id);
+  assert.equal(bounded[0].lines, 500);
+  assert.deepEqual(
+    bounded[0].message.split("\n").map(Number),
+    Array.from({ length: 500 }, (_, line) => line + 100),
+  );
+  assert.equal(mergeTerminalLines(bounded, [large]), bounded);
+
+  const latest = toTerminalLine(message(2));
+  const updated = mergeTerminalLines(bounded, [latest]);
+  assert.equal(updated.length, 2);
+  assert.equal(updated[0].lines, 499);
+  assert.equal(Number(updated[0].message.split("\n")[0]), 101);
+  assert.equal(updated[1], latest);
+  assert.equal(
+    updated.reduce((total, entry) => total + entry.lines, 0),
+    500,
+  );
+});
+
 test("same connection and scope share one stream until the last consumer leaves", async () => {
   let subscriptions = 0;
   let cancellations = 0;

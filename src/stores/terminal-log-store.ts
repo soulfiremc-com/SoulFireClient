@@ -40,10 +40,19 @@ export function mergeTerminalLines(
   }
   let lines = 0;
   let first = merged.length;
-  while (first > 0 && lines + merged[first - 1].lines <= MAX_LINES) {
+  while (first > 0 && lines < MAX_LINES) {
     lines += merged[--first].lines;
   }
   const bounded = merged.slice(first);
+  if (lines > MAX_LINES) {
+    const oldest = bounded[0];
+    const retainedLines = oldest.lines - (lines - MAX_LINES);
+    bounded[0] = {
+      ...oldest,
+      message: oldest.message.split("\n").slice(-retainedLines).join("\n"),
+      lines: retainedLines,
+    };
+  }
   return bounded.length === previous.length &&
     bounded.every((entry, i) => entry === previous[i])
     ? previous
