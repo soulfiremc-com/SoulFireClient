@@ -251,6 +251,7 @@
     "website": "Website"
   },
   "settingsPage": {
+    "saveError": "Failed to save {{name}}",
     "namespacesNotFound": "Settings namespaces not found",
     "stringList": {
       "newEntry": "New {{name}} entry",

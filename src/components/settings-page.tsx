@@ -5,19 +5,19 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import type { TFunction } from "i18next";
 import { Check, ChevronsUpDown, PlusIcon, TrashIcon } from "lucide-react";
 import {
   type ChangeEvent,
   type HTMLInputTypeAttribute,
   type ReactNode,
   use,
+  useId,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { NumericFormat } from "react-number-format";
-import type { NumberFormatValues } from "react-number-format/types/types";
 import { toast } from "sonner";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { TextInfoButton } from "@/components/info-buttons.tsx";
@@ -40,6 +40,8 @@ import {
 } from "@/components/ui/command.tsx";
 import {
   Field,
+  FieldError,
+  FieldLabel,
   FieldGroup,
   FieldLegend,
   FieldSet,
@@ -78,6 +80,11 @@ import {
   reconcileStringListEntries,
   type StringListEntry,
 } from "@/lib/string-list-entries.ts";
+import {
+  getNumericSettingValue,
+  updateNumericRange,
+  type NumericRange,
+} from "@/lib/numeric-setting-value.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   cn,
@@ -88,56 +95,33 @@ import {
   updateServerConfigEntry,
 } from "@/lib/utils.tsx";
 
-function isAllowedValidator(
-  t: TFunction,
-  min: number,
-  max: number,
-  parseFunc: (value: string) => number,
-) {
-  return (values: NumberFormatValues) => {
-    const currentValue = parseFunc(values.value);
-
-    if (!Number.isFinite(currentValue)) {
-      return false;
-    }
-
-    if (currentValue >= min && currentValue <= max) {
-      return true;
-    } else {
-      toast.warning(t("settingsPage.invalidNumberToast.title"), {
-        id: "invalid-number",
-        description: t("settingsPage.invalidNumberToast.title", {
-          min,
-          max,
-        }),
-      });
-      return false;
-    }
-  };
-}
-
 export function ComponentTitle(props: {
   title: ReactNode;
   description: ReactNode;
   onClick?: () => void;
+  inputId?: string;
 }) {
   return (
     <div className="flex w-fit flex-row items-center gap-2">
-      <p
-        onClick={props.onClick}
-        onKeyDown={(e) => {
-          if ((e.key === "Enter" || e.key === " ") && props.onClick) {
-            e.preventDefault();
-            props.onClick();
-          }
-        }}
-        tabIndex={props.onClick ? 0 : undefined}
-        className={cn({
-          "cursor-pointer": props.onClick !== undefined,
-        })}
-      >
-        {props.title}
-      </p>
+      {props.inputId ? (
+        <FieldLabel htmlFor={props.inputId}>{props.title}</FieldLabel>
+      ) : (
+        <p
+          onClick={props.onClick}
+          onKeyDown={(e) => {
+            if ((e.key === "Enter" || e.key === " ") && props.onClick) {
+              e.preventDefault();
+              props.onClick();
+            }
+          }}
+          tabIndex={props.onClick ? 0 : undefined}
+          className={cn({
+            "cursor-pointer": props.onClick !== undefined,
+          })}
+        >
+          {props.title}
+        </p>
+      )}
       <TextInfoButton value={props.description} />
     </div>
   );
@@ -211,108 +195,150 @@ function StringComponent(props: {
   }
 }
 
-function IntComponent(props: {
-  setting: IntSetting;
+function NumericSettingField(props: {
+  setting: IntSetting | DoubleSetting | MinMaxSetting;
+  entry: Pick<IntSetting, "uiName" | "description" | "placeholder">;
   value: number;
-  changeCallback: (value: number) => void;
+  changeCallback: (value: number) => void | Promise<void>;
+  onFocus?: () => void;
 }) {
   const { t } = useTranslation("common");
+  const id = useId();
   const localeNumberFormat = useLocaleNumberFormat();
   const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useCachedState(props.value, {
-    shouldSync: !isFocused,
+  const [pendingWrites, setPendingWrites] = useState(0);
+  const [draft, setDraft] = useCachedState<string | number>(props.value, {
+    shouldSync: !isFocused && pendingWrites === 0,
   });
+  const decimalScale =
+    "decimalScale" in props.setting ? props.setting.decimalScale : 0;
+  const invalid =
+    getNumericSettingValue(
+      draft,
+      props.setting.min,
+      props.setting.max,
+      decimalScale === 0,
+    ) === undefined;
+  const errorId = `${id}-error`;
+  const saveValue = async (value: number) => {
+    setPendingWrites((count) => count + 1);
+    try {
+      await props.changeCallback(value);
+    } catch {
+      // The mutation reports the failure and reloads the stored value.
+    } finally {
+      setPendingWrites((count) => count - 1);
+    }
+  };
 
   return (
-    <NumericFormat
-      value={inputValue}
-      thousandSeparator={
-        props.setting.thousandSeparator
-          ? localeNumberFormat.thousandSeparator
-          : undefined
-      }
-      decimalSeparator={localeNumberFormat.decimalSeparator}
-      allowNegative={props.setting.min < 0}
-      decimalScale={0}
-      isAllowed={isAllowedValidator(
-        t,
-        props.setting.min,
-        props.setting.max,
-        parseInt,
-      )}
-      onValueChange={(values) => {
-        const currentValue = parseInt(values.value, 10);
-
-        if (!Number.isFinite(currentValue)) {
-          return;
+    <Field
+      className="max-w-xl"
+      data-invalid={invalid}
+      data-disabled={props.setting.disabled}
+      aria-busy={pendingWrites > 0}
+    >
+      <ComponentTitle
+        inputId={id}
+        title={props.entry.uiName}
+        description={props.entry.description}
+      />
+      <NumericFormat
+        id={id}
+        value={draft}
+        valueIsNumericString
+        thousandSeparator={
+          props.setting.thousandSeparator
+            ? localeNumberFormat.thousandSeparator
+            : undefined
         }
-
-        setInputValue(currentValue);
-        props.changeCallback(currentValue);
-      }}
-      placeholder={props.setting.placeholder}
-      inputMode="numeric"
-      min={props.setting.min}
-      max={props.setting.max}
-      step={props.setting.step}
-      disabled={props.setting.disabled}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      customInput={Input}
-    />
+        decimalSeparator={localeNumberFormat.decimalSeparator}
+        allowNegative={props.setting.min < 0}
+        decimalScale={decimalScale}
+        fixedDecimalScale={
+          "fixedDecimalScale" in props.setting &&
+          props.setting.fixedDecimalScale
+        }
+        onValueChange={(values, sourceInfo) => {
+          if (sourceInfo.source !== "event") return;
+          setDraft(values.value);
+          const value = getNumericSettingValue(
+            values.value,
+            props.setting.min,
+            props.setting.max,
+            decimalScale === 0,
+          );
+          if (value !== undefined) void saveValue(value);
+        }}
+        placeholder={props.entry.placeholder}
+        inputMode={decimalScale === 0 ? "numeric" : "decimal"}
+        min={props.setting.min}
+        max={props.setting.max}
+        step={props.setting.step}
+        disabled={props.setting.disabled}
+        aria-invalid={invalid}
+        aria-describedby={invalid ? errorId : undefined}
+        onFocus={() => {
+          props.onFocus?.();
+          setIsFocused(true);
+        }}
+        onBlur={() => setIsFocused(false)}
+        customInput={Input}
+      />
+      {invalid && (
+        <FieldError id={errorId}>
+          {t("settingsPage.invalidNumberToast.description", {
+            min: props.setting.min,
+            max: props.setting.max,
+          })}
+        </FieldError>
+      )}
+    </Field>
   );
 }
 
-function DoubleComponent(props: {
-  setting: DoubleSetting;
-  value: number;
-  changeCallback: (value: number) => void;
+function MinMaxSettingField(props: {
+  setting: MinMaxSetting;
+  value: NumericRange;
+  changeCallback: (value: NumericRange) => void | Promise<void>;
 }) {
-  const { t } = useTranslation("common");
-  const localeNumberFormat = useLocaleNumberFormat();
-  const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useCachedState(props.value, {
-    shouldSync: !isFocused,
-  });
-
+  const baseline = useRef(props.value);
+  const startEdit = () => {
+    // Preserve the opposite bound across prefixes and corrections in one edit.
+    baseline.current = props.value;
+  };
   return (
-    <NumericFormat
-      value={inputValue}
-      thousandSeparator={
-        props.setting.thousandSeparator
-          ? localeNumberFormat.thousandSeparator
-          : undefined
-      }
-      decimalSeparator={localeNumberFormat.decimalSeparator}
-      allowNegative={props.setting.min < 0}
-      decimalScale={props.setting.decimalScale}
-      fixedDecimalScale={props.setting.fixedDecimalScale}
-      isAllowed={isAllowedValidator(
-        t,
-        props.setting.min,
-        props.setting.max,
-        parseFloat,
-      )}
-      onValueChange={(values) => {
-        const currentValue = parseFloat(values.value);
-
-        if (!Number.isFinite(currentValue)) {
-          return;
-        }
-
-        setInputValue(currentValue);
-        props.changeCallback(currentValue);
-      }}
-      placeholder={props.setting.placeholder}
-      inputMode="decimal"
-      min={props.setting.min}
-      max={props.setting.max}
-      step={props.setting.step}
-      disabled={props.setting.disabled}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      customInput={Input}
-    />
+    <FieldSet className="max-w-xl gap-4">
+      <FieldLegend className="sr-only">
+        {props.setting.minEntry?.uiName ??
+          props.setting.maxEntry?.uiName ??
+          "Minimum and maximum settings"}
+      </FieldLegend>
+      <FieldGroup className="gap-4">
+        <NumericSettingField
+          setting={props.setting}
+          entry={props.setting.minEntry as MinMaxSetting_Entry}
+          value={props.value.min}
+          onFocus={startEdit}
+          changeCallback={(value) =>
+            props.changeCallback(
+              updateNumericRange(baseline.current, "min", value),
+            )
+          }
+        />
+        <NumericSettingField
+          setting={props.setting}
+          entry={props.setting.maxEntry as MinMaxSetting_Entry}
+          value={props.value.max}
+          onFocus={startEdit}
+          changeCallback={(value) =>
+            props.changeCallback(
+              updateNumericRange(baseline.current, "max", value),
+            )
+          }
+        />
+      </FieldGroup>
+    </FieldSet>
   );
 }
 
@@ -548,58 +574,6 @@ function StringListComponent(props: {
   );
 }
 
-function MinMaxComponent(props: {
-  setting: MinMaxSetting;
-  entry: MinMaxSetting_Entry;
-  value: number;
-  changeCallback: (value: number) => void;
-}) {
-  const { t } = useTranslation("common");
-  const localeNumberFormat = useLocaleNumberFormat();
-  const [isFocused, setIsFocused] = useState(false);
-  const [inputValue] = useCachedState(props.value, {
-    shouldSync: !isFocused,
-  });
-
-  return (
-    <NumericFormat
-      value={inputValue}
-      thousandSeparator={
-        props.setting.thousandSeparator
-          ? localeNumberFormat.thousandSeparator
-          : undefined
-      }
-      decimalSeparator={localeNumberFormat.decimalSeparator}
-      allowNegative={props.setting.min < 0}
-      decimalScale={0}
-      isAllowed={isAllowedValidator(
-        t,
-        props.setting.min,
-        props.setting.max,
-        parseInt,
-      )}
-      onValueChange={(values) => {
-        const currentValue = parseInt(values.value, 10);
-
-        if (!Number.isFinite(currentValue)) {
-          return;
-        }
-
-        props.changeCallback(currentValue);
-      }}
-      placeholder={props.entry.placeholder}
-      disabled={props.setting.disabled}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      inputMode="numeric"
-      min={props.setting.min}
-      max={props.setting.max}
-      step={props.setting.step}
-      customInput={Input}
-    />
-  );
-}
-
 /**
  * Renders a setting type (the UI input component) with its value and change callback.
  * This is a pure presentation component that takes a setting type definition and renders it.
@@ -631,17 +605,12 @@ export function SettingTypeRenderer(props: {
     }
     case "int": {
       return (
-        <Field className="max-w-xl">
-          <ComponentTitle
-            title={props.settingType.value.uiName}
-            description={props.settingType.value.description}
-          />
-          <IntComponent
-            setting={props.settingType.value}
-            value={props.value as number}
-            changeCallback={props.changeCallback}
-          />
-        </Field>
+        <NumericSettingField
+          setting={props.settingType.value}
+          entry={props.settingType.value}
+          value={props.value as number}
+          changeCallback={props.changeCallback}
+        />
       );
     }
     case "bool": {
@@ -659,17 +628,12 @@ export function SettingTypeRenderer(props: {
     }
     case "double": {
       return (
-        <Field className="max-w-xl">
-          <ComponentTitle
-            title={props.settingType.value.uiName}
-            description={props.settingType.value.description}
-          />
-          <DoubleComponent
-            setting={props.settingType.value}
-            value={props.value as number}
-            changeCallback={props.changeCallback}
-          />
-        </Field>
+        <NumericSettingField
+          setting={props.settingType.value}
+          entry={props.settingType.value}
+          value={props.value as number}
+          changeCallback={props.changeCallback}
+        />
       );
     }
     case "combo": {
@@ -703,57 +667,36 @@ export function SettingTypeRenderer(props: {
       );
     }
     case "minMax": {
-      const castValue = props.value as {
-        min: number;
-        max: number;
-      };
       return (
-        <FieldSet className="max-w-xl gap-4">
-          <FieldLegend className="sr-only">
-            {props.settingType.value.minEntry?.uiName ??
-              props.settingType.value.maxEntry?.uiName ??
-              "Minimum and maximum settings"}
-          </FieldLegend>
-          <FieldGroup className="gap-4">
-            <Field>
-              <ComponentTitle
-                title={props.settingType.value.minEntry?.uiName}
-                description={props.settingType.value.minEntry?.description}
-              />
-              <MinMaxComponent
-                setting={props.settingType.value}
-                entry={props.settingType.value.minEntry as MinMaxSetting_Entry}
-                value={castValue.min}
-                changeCallback={(v) => {
-                  props.changeCallback({
-                    max: Math.max(castValue.max, v),
-                    min: v,
-                  });
-                }}
-              />
-            </Field>
-            <Field>
-              <ComponentTitle
-                title={props.settingType.value.maxEntry?.uiName}
-                description={props.settingType.value.maxEntry?.description}
-              />
-              <MinMaxComponent
-                setting={props.settingType.value}
-                entry={props.settingType.value.maxEntry as MinMaxSetting_Entry}
-                value={castValue.max}
-                changeCallback={(v) => {
-                  props.changeCallback({
-                    max: v,
-                    min: Math.min(castValue.min, v),
-                  });
-                }}
-              />
-            </Field>
-          </FieldGroup>
-        </FieldSet>
+        <MinMaxSettingField
+          setting={props.settingType.value}
+          value={props.value as NumericRange}
+          changeCallback={props.changeCallback}
+        />
       );
     }
   }
+}
+
+function useSettingSaveError(
+  definition: SettingsDefinition | undefined,
+  identifier: string,
+) {
+  const { t } = useTranslation("common");
+  return () => {
+    // List inputs report failures from their awaited saves.
+    if (definition?.type.case === "stringList") return;
+    const type = definition?.type;
+    const name =
+      type?.case === "minMax"
+        ? [type.value.minEntry?.uiName, type.value.maxEntry?.uiName]
+            .filter(Boolean)
+            .join(" / ")
+        : type?.value?.uiName;
+    toast.error(t("settingsPage.saveError", { name: name || identifier }), {
+      id: `setting-save:${identifier}`,
+    });
+  };
 }
 
 /**
@@ -774,6 +717,7 @@ function SettingField<T extends BaseSettings>(props: {
   const definition = useSettingsDefinition(props.settingId);
   const namespace = props.settingId.namespace;
   const key = props.settingId.key;
+  const onSaveError = useSettingSaveError(definition, `${namespace}:${key}`);
   const value = useMemo(
     () => getSettingValue(props.config, definition),
     [props.config, definition],
@@ -784,6 +728,7 @@ function SettingField<T extends BaseSettings>(props: {
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(namespace, key, value);
     },
+    onError: onSaveError,
     onSettled: async () => {
       await props.invalidateQuery();
     },
@@ -798,7 +743,10 @@ function SettingField<T extends BaseSettings>(props: {
       settingType={definition.type}
       value={value}
       changeCallback={
-        definition.type.case === "stringList"
+        definition.type.case === "stringList" ||
+        definition.type.case === "int" ||
+        definition.type.case === "double" ||
+        definition.type.case === "minMax"
           ? setValueMutation.mutateAsync
           : setValueMutation.mutate
       }
@@ -853,6 +801,10 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     props.namespace,
     props.settingKey,
   );
+  const onSaveError = useSettingSaveError(
+    definition,
+    `${props.namespace}:${props.settingKey}`,
+  );
   const value = useMemo(
     () => getSettingValue(props.config, definition),
     [props.config, definition],
@@ -863,6 +815,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(props.namespace, props.settingKey, value);
     },
+    onError: onSaveError,
     onSettled: async () => {
       await props.invalidateQuery();
     },
@@ -877,7 +830,10 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
       settingType={definition.type}
       value={value}
       changeCallback={
-        definition.type.case === "stringList"
+        definition.type.case === "stringList" ||
+        definition.type.case === "int" ||
+        definition.type.case === "double" ||
+        definition.type.case === "minMax"
           ? setValueMutation.mutateAsync
           : setValueMutation.mutate
       }
