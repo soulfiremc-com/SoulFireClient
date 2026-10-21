@@ -19,6 +19,11 @@ import {
 } from "@/components/script-editor/nodes/types";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
 import {
+  cloneSubgraph,
+  selectedSubgraph,
+  subgraphRoots,
+} from "@/lib/script-subgraph";
+import {
   createEditorDerivedStores,
   indexDiagnostics,
 } from "./script-editor-derived";
@@ -357,14 +362,19 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Only delete nodes in the current view
-      const nodesToDelete = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
+      const { nodes: nodesToDelete } = selectedSubgraph(
+        nodes,
+        edges,
+        currentGroupId,
+      );
       const nodeIdsToDelete = new Set(nodesToDelete.map((n) => n.id));
+      const visibleIds = new Set(
+        nodes
+          .filter(
+            (node) => (node.data.parentGroupId ?? null) === currentGroupId,
+          )
+          .map((node) => node.id),
+      );
 
       document.setState((state) => ({
         ...state,
@@ -373,7 +383,11 @@ export function createScriptEditorSession() {
           nodes,
           edges.filter(
             (edge) =>
-              !edge.selected &&
+              !(
+                edge.selected &&
+                visibleIds.has(edge.source) &&
+                visibleIds.has(edge.target)
+              ) &&
               !nodeIdsToDelete.has(edge.source) &&
               !nodeIdsToDelete.has(edge.target),
           ),
@@ -646,45 +660,18 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Only duplicate nodes in the current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length === 0) return;
-
-      // Create mapping from old IDs to new IDs
-      const idMap = new Map<string, string>();
-      for (const node of selectedNodes) {
-        idMap.set(node.id, generateId());
-      }
-
-      // Duplicate nodes with offset
-      const offset = { x: 50, y: 50 };
-      const newNodes: Node[] = selectedNodes.map((node) => ({
-        ...node,
-        id: idMap.get(node.id) ?? generateId(),
-        position: {
-          x: node.position.x + offset.x,
-          y: node.position.y + offset.y,
-        },
-        selected: true,
-      }));
-
-      // Duplicate edges between selected nodes
-      const newEdges: Edge[] = edges
-        .filter((edge) => idMap.has(edge.source) && idMap.has(edge.target))
-        .map((edge) => ({
-          ...edge,
-          id: generateId(),
-          source: idMap.get(edge.source) ?? edge.source,
-          target: idMap.get(edge.target) ?? edge.target,
-        }));
+      const selected = selectedSubgraph(nodes, edges, currentGroupId);
+      if (selected.nodes.length === 0) return;
+      const { nodes: newNodes, edges: newEdges } = cloneSubgraph(
+        selected,
+        currentGroupId,
+        { x: 50, y: 50 },
+      );
 
       // Deselect original nodes
-      const updatedNodes = nodes.map((n) => ({ ...n, selected: false }));
+      const updatedNodes = nodes.map((n) =>
+        n.selected ? { ...n, selected: false } : n,
+      );
 
       document.setState((state) => ({
         ...state,
@@ -1358,25 +1345,11 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Get selected nodes in current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length === 0) return null;
-
-      const selectedIds = new Set(selectedNodes.map((n) => n.id));
-
-      // Get edges between selected nodes
-      const selectedEdges = edges.filter(
-        (e) => selectedIds.has(e.source) && selectedIds.has(e.target),
-      );
+      const selected = selectedSubgraph(nodes, edges, currentGroupId);
+      if (selected.nodes.length === 0) return null;
 
       return {
-        nodes: selectedNodes,
-        edges: selectedEdges,
+        ...selected,
         sourceScriptId: scriptId,
       };
     },
@@ -1388,45 +1361,24 @@ export function createScriptEditorSession() {
 
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Calculate centroid of copied nodes
+      const roots = subgraphRoots(clipboardData.nodes);
+      if (roots.length === 0) return;
+
+      // Child positions belong to separate group canvases, not the paste target.
       const centerX =
-        clipboardData.nodes.reduce((sum, n) => sum + n.position.x, 0) /
-        clipboardData.nodes.length;
+        roots.reduce((sum, n) => sum + n.position.x, 0) / roots.length;
       const centerY =
-        clipboardData.nodes.reduce((sum, n) => sum + n.position.y, 0) /
-        clipboardData.nodes.length;
-
-      // Create ID mapping
-      const idMap = new Map<string, string>();
-      for (const node of clipboardData.nodes) {
-        idMap.set(node.id, generateId());
-      }
-
-      // Create new nodes at target position
-      const newNodes: Node[] = clipboardData.nodes.map((node) => ({
-        ...node,
-        id: idMap.get(node.id) ?? generateId(),
-        position: {
-          x: position.x + (node.position.x - centerX),
-          y: position.y + (node.position.y - centerY),
-        },
-        data: {
-          ...node.data,
-          parentGroupId: currentGroupId ?? undefined,
-        },
-        selected: true,
-      }));
-
-      // Create new edges with remapped IDs
-      const newEdges: Edge[] = clipboardData.edges.map((edge) => ({
-        ...edge,
-        id: generateId(),
-        source: idMap.get(edge.source) ?? edge.source,
-        target: idMap.get(edge.target) ?? edge.target,
-      }));
+        roots.reduce((sum, n) => sum + n.position.y, 0) / roots.length;
+      const { nodes: newNodes, edges: newEdges } = cloneSubgraph(
+        clipboardData,
+        currentGroupId,
+        { x: position.x - centerX, y: position.y - centerY },
+      );
 
       // Deselect existing nodes
-      const updatedNodes = nodes.map((n) => ({ ...n, selected: false }));
+      const updatedNodes = nodes.map((n) =>
+        n.selected ? { ...n, selected: false } : n,
+      );
 
       document.setState((state) => ({
         ...state,

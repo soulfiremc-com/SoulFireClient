@@ -50,16 +50,18 @@ export function createEditorDerivedStores(
   const visibleNodes = createStore(() => {
     const currentGroup = groupId.get();
     const all = nodes.get();
-    return currentGroup === undefined
-      ? all
-      : all.filter((node) => node.data.parentGroupId === currentGroup);
+    const visible = all.filter(
+      (node) => (node.data.parentGroupId ?? undefined) === currentGroup,
+    );
+    return visible.length === all.length ? all : visible;
   });
   const visibleEdges = createStore(() => {
-    const currentGroup = groupId.get();
     const all = edges.get();
-    if (currentGroup === undefined) return all;
     const ids = new Set(visibleNodes.get().map((node) => node.id));
-    return all.filter((edge) => ids.has(edge.source) && ids.has(edge.target));
+    const visible = all.filter(
+      (edge) => ids.has(edge.source) && ids.has(edge.target),
+    );
+    return visible.length === all.length ? all : visible;
   });
   const validationGraph = createStore<{ nodes: Node[]; edges: Edge[] }>(
     (previous) => {

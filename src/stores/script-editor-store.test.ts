@@ -69,7 +69,225 @@ test("group views cache their results and update with graph membership", () => {
   session.actions.updateDebugValue(child, 42);
   assert.equal(session.visibleNodes.get(), visible);
   session.actions.exitToRoot();
-  assert.equal(session.visibleNodes.get(), session.document.get().nodes);
+  assert.deepEqual(
+    session.visibleNodes.get().map((node) => node.id),
+    [group],
+  );
+});
+
+function nestedGraph() {
+  const session = createScriptEditorSession();
+  const group = session.actions.addNode("layout.group", { x: 100, y: 200 });
+  const outside = session.actions.addNode("value", { x: 300, y: 400 });
+  session.actions.enterGroup(group);
+  const frame = session.actions.addNode("layout.frame", { x: -20, y: -30 });
+  const child = session.actions.addNode(
+    "value",
+    { x: 10, y: 20 },
+    {
+      parentFrameId: frame,
+    },
+  );
+  session.actions.updateNodeData(frame, { containedNodes: [child] });
+  const nested = session.actions.addNode("layout.group", { x: 70, y: 80 });
+  session.actions.onConnect({
+    source: child,
+    target: nested,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  session.actions.enterGroup(nested);
+  const first = session.actions.addNode("value", { x: -100, y: 40 });
+  const second = session.actions.addNode("value", { x: 60, y: -50 });
+  session.actions.onConnect({
+    source: first,
+    target: second,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  session.actions.exitToRoot();
+  session.actions.onConnect({
+    source: group,
+    target: outside,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  session.actions.onNodesChange([
+    { type: "select", id: group, selected: true },
+  ]);
+  return { session, group, outside, nested, first };
+}
+
+test("each group view shows only its direct nodes and connections", () => {
+  const { session, group, outside, nested, first } = nestedGraph();
+  assert.deepEqual(
+    session.visibleNodes.get().map((node) => node.id),
+    [group, outside],
+  );
+  assert.equal(session.visibleEdges.get().length, 1);
+  assert.equal(session.visibleEdges.get()[0].source, group);
+  session.actions.enterGroup(group);
+  assert.equal(session.visibleNodes.get().length, 3);
+  assert.equal(session.visibleEdges.get().length, 1);
+  assert.equal(session.visibleEdges.get()[0].target, nested);
+  session.actions.enterGroup(nested);
+  assert.equal(session.visibleNodes.get().length, 2);
+  assert.equal(session.visibleEdges.get()[0].source, first);
+});
+
+test("duplicating a group clones its nested graph and internal frame references", () => {
+  const { session, outside } = nestedGraph();
+  session.actions.markSaved();
+  const before = session.document.get();
+  const originals = before.nodes.filter((node) => node.id !== outside);
+  session.actions.duplicateSelected();
+  const after = session.document.get();
+  const copies = after.nodes.slice(before.nodes.length);
+  assert.equal(copies.length, originals.length);
+  const ids = new Map(
+    originals.map((node, index) => [node.id, copies[index].id]),
+  );
+  for (const [index, original] of originals.entries()) {
+    const copy = copies[index];
+    assert.equal(
+      before.nodes.some((node) => node.id === copy.id),
+      false,
+    );
+    assert.equal(
+      copy.data.parentGroupId,
+      ids.get(original.data.parentGroupId as string),
+    );
+    assert.equal(
+      copy.data.parentFrameId,
+      ids.get(original.data.parentFrameId as string),
+    );
+    if (Array.isArray(original.data.containedNodes)) {
+      assert.deepEqual(
+        copy.data.containedNodes,
+        original.data.containedNodes.map((id: string) => ids.get(id)),
+      );
+    }
+    assert.deepEqual(
+      copy.position,
+      original.data.parentGroupId
+        ? original.position
+        : { x: original.position.x + 50, y: original.position.y + 50 },
+    );
+    assert.equal(copy.selected, !original.data.parentGroupId);
+  }
+  const copiedEdges = after.edges.slice(before.edges.length);
+  assert.equal(copiedEdges.length, 2);
+  for (const edge of copiedEdges) {
+    assert.equal([...ids.values()].includes(edge.source), true);
+    assert.equal([...ids.values()].includes(edge.target), true);
+    assert.equal(
+      before.edges.some((original) => original.id === edge.id),
+      false,
+    );
+  }
+  assert.equal(after.lastSavedNodes, before.lastSavedNodes);
+  assert.equal(before.nodes[0].selected, true);
+  assert.equal(
+    after.nodes.slice(0, before.nodes.length).some((node) => node.selected),
+    false,
+  );
+});
+
+test("pasting groups into another group retains hierarchy and offsets only root nodes", () => {
+  const { session: source, outside } = nestedGraph();
+  source.actions.onNodesChange([
+    { type: "select", id: outside, selected: true },
+  ]);
+  const clipboard = source.actions.getSelectedForClipboard();
+  assert.ok(clipboard);
+  assert.equal(clipboard.nodes.length, source.document.get().nodes.length);
+  assert.equal(clipboard.edges.length, 3);
+  const target = createScriptEditorSession();
+  const parent = target.actions.addNode("layout.group", { x: 0, y: 0 });
+  target.actions.enterGroup(parent);
+  target.actions.pasteClipboardData(clipboard, { x: 500, y: 600 });
+  const copies = target.document.get().nodes.slice(1);
+  assert.equal(copies.length, clipboard.nodes.length);
+  const ids = new Map(
+    clipboard.nodes.map((node, index) => [node.id, copies[index].id]),
+  );
+  for (const [index, original] of clipboard.nodes.entries()) {
+    const copy = copies[index];
+    assert.equal(
+      copy.data.parentGroupId,
+      ids.get(original.data.parentGroupId as string) ?? parent,
+    );
+    assert.equal(
+      copy.data.parentFrameId,
+      ids.get(original.data.parentFrameId as string),
+    );
+    assert.deepEqual(
+      copy.position,
+      original.data.parentGroupId
+        ? original.position
+        : { x: original.position.x + 300, y: original.position.y + 300 },
+    );
+    assert.equal(copy.selected, !original.data.parentGroupId);
+  }
+  assert.equal(target.visibleNodes.get().length, 2);
+  assert.equal(target.visibleEdges.get().length, 1);
+  for (const edge of target.document.get().edges) {
+    assert.equal([...ids.values()].includes(edge.source), true);
+    assert.equal([...ids.values()].includes(edge.target), true);
+  }
+});
+
+test("deleting a group removes descendants and their edges without leaving orphans", () => {
+  const { session, outside } = nestedGraph();
+  session.actions.deleteSelected();
+  assert.deepEqual(
+    session.document.get().nodes.map((node) => node.id),
+    [outside],
+  );
+  assert.deepEqual(session.document.get().edges, []);
+});
+
+test("copying from inside a group rebases roots without retaining the source parent", () => {
+  const { session, group } = nestedGraph();
+  const container = session.actions.addNode("layout.group", { x: 0, y: 0 });
+  session.actions.updateNodeData(group, { parentGroupId: container });
+  session.actions.enterGroup(container);
+  const clipboard = session.actions.getSelectedForClipboard();
+  assert.ok(clipboard);
+  const target = createScriptEditorSession();
+  target.actions.pasteClipboardData(clipboard, { x: 0, y: 0 });
+  assert.equal(target.visibleNodes.get().length, 1);
+  const root = target.visibleNodes.get()[0];
+  assert.equal(root.data.parentGroupId, undefined);
+  assert.deepEqual(root.position, { x: 0, y: 0 });
+  assert.equal(
+    target.document
+      .get()
+      .nodes.some((node) => node.data.parentGroupId === container),
+    false,
+  );
+});
+
+test("deleting a visible selection preserves selected edges in hidden groups", () => {
+  const { session, group } = nestedGraph();
+  session.actions.onNodesChange([
+    { type: "select", id: group, selected: false },
+  ]);
+  const hiddenEdge = session.document.get().edges[0];
+  session.actions.onEdgesChange([
+    { type: "select", id: hiddenEdge.id, selected: true },
+  ]);
+  const visibleEdge = session.visibleEdges.get()[0];
+  session.actions.onEdgesChange([
+    { type: "select", id: visibleEdge.id, selected: true },
+  ]);
+  session.actions.deleteSelected();
+  assert.equal(session.document.get().nodes.length, 7);
+  assert.equal(
+    session.document.get().edges.some((edge) => edge.id === hiddenEdge.id),
+    true,
+  );
+  assert.equal(session.visibleEdges.get().length, 0);
 });
 
 test("diagnostics retain unaffected node results and reset with the editor", () => {
