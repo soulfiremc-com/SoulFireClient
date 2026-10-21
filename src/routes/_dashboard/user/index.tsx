@@ -364,38 +364,13 @@ function Content() {
       friendlyName: string;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      const promise = (async () => {
-        const sourceResponse = await instanceService.getInstanceInfo({
-          id: sourceInstance.id,
-        });
-        if (
-          sourceResponse.result.case !== "info" ||
-          sourceResponse.result.value.config === undefined
-        ) {
-          throw new Error("Source instance profile is unavailable");
-        }
-
-        const sourceInfo = sourceResponse.result.value;
-        const created = await instanceService.createInstance({
-          friendlyName,
-        });
-        await instanceService.updateInstanceConfig({
-          id: created.id,
-          config: sourceInfo.config,
-        });
-        if (sourceInfo.icon !== "") {
-          await instanceService.updateInstanceMeta({
-            id: created.id,
-            meta: {
-              case: "icon",
-              value: sourceInfo.icon,
-            },
-          });
-        }
-
-        return created;
-      })();
+      const promise = createClient(
+        InstanceService,
+        transport,
+      ).duplicateInstance({
+        id: sourceInstance.id,
+        friendlyName,
+      });
 
       toast.promise(promise, {
         loading: t("dialog.duplicateInstance.duplicateToast.loading"),
