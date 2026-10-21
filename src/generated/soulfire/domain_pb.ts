@@ -598,6 +598,9 @@ export type EntitySnapshot = Message<"soulfire.v1.EntitySnapshot"> & {
   metadata?: JsonObject | undefined;
 
   /**
+   * For ageable mobs, as the client sees it: -1 for a baby, 1 for an adult.
+   * The real age and the breeding cooldown are only known to the server.
+   *
    * @generated from field: optional int32 age_ticks = 24;
    */
   ageTicks?: number | undefined;

@@ -502,6 +502,7 @@
       "offline": "Bot is offline. Actions are only available when the bot is connected."
     },
     "movementPanel": {
+      "updateServer": "Update SoulFire to synchronize movement controls.",
       "title": "Movement Control",
       "movement": "Movement (WASD)",
       "forward": "Move Forward (W)",

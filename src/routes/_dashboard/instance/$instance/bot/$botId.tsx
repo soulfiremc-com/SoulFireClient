@@ -770,6 +770,7 @@ function ControlsTab({
           instanceId={instanceId}
           botId={botId}
           liveState={liveState}
+          movementState={botInfo.movementState}
         />
       </div>
       <div className="flex flex-col gap-6">
@@ -1658,27 +1659,32 @@ function BotActionsPanel({
   );
 }
 
+const EMPTY_MOVEMENT_STATE = {
+  forward: false,
+  backward: false,
+  left: false,
+  right: false,
+  jump: false,
+  sneak: false,
+  sprint: false,
+};
+
 function BotMovementPanel({
   isOnline,
   instanceId,
   botId,
   liveState,
+  movementState: currentMovementState,
 }: {
   isOnline: boolean;
   instanceId: string;
   botId: string;
   liveState?: BotLiveState;
+  movementState?: typeof EMPTY_MOVEMENT_STATE;
 }) {
   const { t } = useTranslation("instance");
-  const [movementState, setMovementState] = useState({
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
-    jump: false,
-    sneak: false,
-    sprint: false,
-  });
+  const { queryClient, botInfoQueryOptions } = Route.useRouteContext();
+  const movementState = currentMovementState ?? EMPTY_MOVEMENT_STATE;
 
   // Mutation for setting movement state
   const movementMutation = useMutation({
@@ -1697,9 +1703,10 @@ function BotMovementPanel({
       });
     },
     onError: (error) => toast.error(error.message),
-    onSuccess: (_response, state) => {
-      setMovementState((previous) => ({ ...previous, ...state }));
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: botInfoQueryOptions.queryKey,
+      }),
   });
 
   // Mutation for resetting movement
@@ -1715,17 +1722,10 @@ function BotMovementPanel({
       return botService.resetMovement({ instanceId, botId });
     },
     onError: (error) => toast.error(error.message),
-    onSuccess: () => {
-      setMovementState({
-        forward: false,
-        backward: false,
-        left: false,
-        right: false,
-        jump: false,
-        sneak: false,
-        sprint: false,
-      });
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: botInfoQueryOptions.queryKey,
+      }),
   });
 
   // Mutation for setting rotation
@@ -1785,6 +1785,11 @@ function BotMovementPanel({
             <p className="text-muted-foreground mb-2 text-xs font-medium">
               {t("bots.movementPanel.movement")}
             </p>
+            {!currentMovementState && (
+              <p className="mb-2 text-xs text-muted-foreground">
+                {t("bots.movementPanel.updateServer")}
+              </p>
+            )}
             <div className="flex flex-col items-center gap-1">
               {/* Forward */}
               <Toggle
@@ -1793,7 +1798,7 @@ function BotMovementPanel({
                 size="sm"
                 className="size-10"
                 onPressedChange={() => toggleMovement("forward")}
-                disabled={isPending}
+                disabled={isPending || !currentMovementState}
                 title={t("bots.movementPanel.forward")}
               >
                 <ArrowUpIcon />
@@ -1806,7 +1811,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onPressedChange={() => toggleMovement("left")}
-                  disabled={isPending}
+                  disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.left")}
                 >
                   <ArrowLeftIcon />
@@ -1817,7 +1822,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onPressedChange={() => toggleMovement("backward")}
-                  disabled={isPending}
+                  disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.backward")}
                 >
                   <ArrowDownIcon />
@@ -1828,7 +1833,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onPressedChange={() => toggleMovement("right")}
-                  disabled={isPending}
+                  disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.right")}
                 >
                   <ArrowRightIcon />
@@ -1855,13 +1860,22 @@ function BotMovementPanel({
             spacing={2}
             className="flex-wrap"
           >
-            <ToggleGroupItem value="jump" disabled={isPending}>
+            <ToggleGroupItem
+              value="jump"
+              disabled={isPending || !currentMovementState}
+            >
               {t("bots.movementPanel.jump")}
             </ToggleGroupItem>
-            <ToggleGroupItem value="sneak" disabled={isPending}>
+            <ToggleGroupItem
+              value="sneak"
+              disabled={isPending || !currentMovementState}
+            >
               {t("bots.movementPanel.sneak")}
             </ToggleGroupItem>
-            <ToggleGroupItem value="sprint" disabled={isPending}>
+            <ToggleGroupItem
+              value="sprint"
+              disabled={isPending || !currentMovementState}
+            >
               {t("bots.movementPanel.sprint")}
             </ToggleGroupItem>
             <Button
