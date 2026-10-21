@@ -22,6 +22,11 @@ import {
 import * as React from "react";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 import { dataTableFeatures } from "@/lib/data-table-features";
+import {
+  getTableColumnFilters,
+  getTablePagination,
+  getValidPageIndex,
+} from "@/lib/data-table-state";
 import { getSortingStateParser } from "@/lib/parsers";
 import type { ExtendedColumnSort, QueryKeys } from "@/types/data-table";
 
@@ -127,12 +132,10 @@ export function useDataTable<TData extends RowData>(
       .withDefault(initialState?.pagination?.pageSize ?? 10),
   );
 
-  const pagination: PaginationState = React.useMemo(() => {
-    return {
-      pageIndex: page - 1, // zero-based index -> one-based index
-      pageSize: perPage,
-    };
-  }, [page, perPage]);
+  const pagination = React.useMemo(
+    () => getTablePagination(page, perPage, initialState?.pagination?.pageSize),
+    [page, perPage, initialState?.pagination?.pageSize],
+  );
 
   const onPaginationChange = React.useCallback(
     (updaterOrValue: Updater<PaginationState>) => {
@@ -210,25 +213,8 @@ export function useDataTable<TData extends RowData>(
   const initialColumnFilters: ColumnFiltersState = React.useMemo(() => {
     if (enableAdvancedFilter) return [];
 
-    return Object.entries(filterValues).reduce<ColumnFiltersState>(
-      (filters, [key, value]) => {
-        if (value !== null) {
-          const processedValue = Array.isArray(value)
-            ? value
-            : typeof value === "string" && /[^a-zA-Z0-9]/.test(value)
-              ? value.split(/[^a-zA-Z0-9]+/).filter(Boolean)
-              : [value];
-
-          filters.push({
-            id: key,
-            value: processedValue,
-          });
-        }
-        return filters;
-      },
-      [],
-    );
-  }, [filterValues, enableAdvancedFilter]);
+    return getTableColumnFilters(filterValues, filterableColumns);
+  }, [filterValues, filterableColumns, enableAdvancedFilter]);
 
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>(initialColumnFilters);
@@ -301,6 +287,15 @@ export function useDataTable<TData extends RowData>(
       },
     },
   });
+
+  const validPageIndex = getValidPageIndex(
+    pagination.pageIndex,
+    table.getPageCount(),
+  );
+  React.useEffect(() => {
+    if (page !== validPageIndex + 1) void setPage(validPageIndex + 1);
+    if (perPage !== pagination.pageSize) void setPerPage(pagination.pageSize);
+  }, [page, perPage, validPageIndex, pagination.pageSize, setPage, setPerPage]);
 
   return React.useMemo(
     () => ({ table, shallow, debounceMs, throttleMs }),
