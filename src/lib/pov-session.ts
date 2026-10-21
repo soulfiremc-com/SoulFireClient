@@ -32,6 +32,8 @@ export function startPovSession(
   let events: PovInputEvent[] = [];
   const sources = new PovInputSources();
   let captured = false;
+  let audioEnabled = false;
+  let lastAudioEnabled = false;
   let pendingEscape = false;
   let pendingKeyFrame = false;
   let ready = false;
@@ -116,6 +118,7 @@ export function startPovSession(
       !pendingKeyFrame &&
       !events.length &&
       captured === lastCaptured &&
+      audioEnabled === lastAudioEnabled &&
       performance.now() - lastSent < 500
     )
       return;
@@ -137,6 +140,7 @@ export function startPovSession(
             inputToken: current.token,
             sequence: ++sequence,
             captured: batchCaptured,
+            audioEnabled,
             escape: batchEscape,
             requestKeyFrame,
             ...size,
@@ -152,6 +156,7 @@ export function startPovSession(
       clipboard = undefined;
       lastSent = performance.now();
       lastCaptured = batchCaptured;
+      lastAudioEnabled = audioEnabled;
     } catch (error) {
       if (attempt === current && !current.abort.signal.aborted)
         reconnect(error);
@@ -181,6 +186,7 @@ export function startPovSession(
         sequence = 0n;
         lastSent = 0;
         lastCaptured = false;
+        lastAudioEnabled = false;
         try {
           for await (const frame of client.watch(
             {
@@ -261,6 +267,10 @@ export function startPovSession(
 
   return {
     stop,
+    audio(value: boolean) {
+      audioEnabled = value;
+      flush();
+    },
     requestKeyFrame() {
       pendingKeyFrame = true;
       void flush();

@@ -7,6 +7,8 @@ import {
   PauseIcon,
   PlayIcon,
   RefreshCwIcon,
+  Volume2Icon,
+  VolumeXIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -14,6 +16,8 @@ import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
 import { PovTouchControls } from "@/components/pov/pov-touch-controls";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Slider } from "@/components/ui/slider";
 import { Toaster } from "@/components/ui/sonner";
 import {
   titlebarClassName,
@@ -29,6 +33,7 @@ import {
   openMinecraftUrl,
 } from "@/lib/minecraft-client-actions";
 import { desktop, isDesktopApp, isMac } from "@/lib/desktop";
+import { PovAudioPlayer } from "@/lib/pov-audio-player";
 import { povCursor } from "@/lib/pov-cursor";
 import { povDisplayFps } from "@/lib/pov-display";
 import { PovGamepad } from "@/lib/pov-gamepad";
@@ -104,6 +109,64 @@ function BotPovSession({
   const rootRef = useRef<HTMLDivElement>(null);
   const unlockingForScreen = useRef(false);
   const session = useRef<ReturnType<typeof startPovSession> | null>(null);
+  const audioRef = useRef<PovAudioPlayer | null>(null);
+  const audioGeneration = useRef(0);
+  const audioStartingAbort = useRef<AbortController | null>(null);
+  const volumeLabelId = useId();
+  const audioSupportedRef = useRef(false);
+  const [audioSupported, setAudioSupported] = useState(false);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [audioStarting, setAudioStarting] = useState(false);
+  const [volume, setVolume] = useState(80);
+  const muteAudio = useCallback(() => {
+    audioGeneration.current++;
+    audioStartingAbort.current?.abort();
+    audioStartingAbort.current = null;
+    audioRef.current?.close();
+    audioRef.current = null;
+    setAudioEnabled(false);
+    setAudioStarting(false);
+    session.current?.audio(false);
+  }, []);
+
+  async function toggleAudio() {
+    if (audioRef.current || audioStarting) {
+      muteAudio();
+      return;
+    }
+    const generation = ++audioGeneration.current;
+    setAudioStarting(true);
+    const abort = new AbortController();
+    audioStartingAbort.current = abort;
+    try {
+      const audio = await PovAudioPlayer.create(
+        volume / 100,
+        (reason) => {
+          if (generation !== audioGeneration.current) return;
+          muteAudio();
+          toast.error(reason.message);
+        },
+        abort.signal,
+      );
+      if (generation !== audioGeneration.current || !session.current) {
+        audio.close();
+        return;
+      }
+      audioRef.current = audio;
+      setAudioEnabled(true);
+      session.current.audio(true);
+    } catch (reason) {
+      if (generation === audioGeneration.current)
+        toast.error(
+          reason instanceof Error ? reason.message : "Unable to start audio.",
+        );
+    } finally {
+      if (generation === audioGeneration.current) {
+        audioStartingAbort.current = null;
+        setAudioStarting(false);
+      }
+    }
+  }
 
   const release = useCallback(() => {
     actions.releaseCapture();
@@ -147,6 +210,7 @@ function BotPovSession({
       actions.disconnected();
       release();
       session.current?.stop();
+      muteAudio();
       decoder?.close();
     };
     let presentationWindow = window;
@@ -209,6 +273,15 @@ function BotPovSession({
         (frame) => {
           feedback.receive(frame);
           metrics?.receive(frame);
+          if (!audioSupportedRef.current && frame.audioEnabled !== undefined) {
+            audioSupportedRef.current = true;
+            setAudioSupported(true);
+          }
+          if (frame.audioError && audioRef.current) {
+            muteAudio();
+            toast.error(frame.audioError);
+          }
+          audioRef.current?.accept(frame.audio);
           decoder?.accept(frame);
         },
         failed,
@@ -217,6 +290,9 @@ function BotPovSession({
           metrics?.reconnect();
           decoder?.reset();
           presenter.reset();
+          audioRef.current?.reset();
+          audioSupportedRef.current = false;
+          setAudioSupported(false);
           actions.disconnected();
         },
         () => (decoder ? feedback.sample(decoder.stats) : undefined),
@@ -240,6 +316,7 @@ function BotPovSession({
     }
     return () => {
       disposed = true;
+      muteAudio();
       actions.disconnected();
       if (metrics) {
         metrics.decoder = null;
@@ -263,6 +340,7 @@ function BotPovSession({
     touch,
     actions,
     playerStore,
+    muteAudio,
   ]);
 
   useEffect(() => {
@@ -757,6 +835,49 @@ function BotPovSession({
   }
 
   const immersive = fullscreen || popup !== null;
+  const audioControls = (
+    <div className="flex items-center gap-2">
+      <Button
+        size="sm"
+        variant="outline"
+        disabled={!isOnline || !connected || !playing || !audioSupported}
+        title={
+          audioSupported ? undefined : "Update the server to use POV audio."
+        }
+        aria-label={audioEnabled ? "Mute audio" : "Unmute audio"}
+        aria-pressed={audioEnabled}
+        onClick={() => void toggleAudio()}
+      >
+        {audioEnabled ? <Volume2Icon /> : <VolumeXIcon />}
+        {audioStarting
+          ? "Starting audio…"
+          : audioEnabled
+            ? "Mute"
+            : audioSupported
+              ? "Unmute"
+              : "Audio unavailable"}
+      </Button>
+      {audioEnabled && (
+        <Field className="w-24">
+          <FieldLabel id={volumeLabelId} className="sr-only">
+            POV volume
+          </FieldLabel>
+          <Slider
+            aria-labelledby={volumeLabelId}
+            min={0}
+            max={100}
+            value={[volume]}
+            onValueChange={(value) => {
+              const next = Array.isArray(value) ? value[0] : value;
+              if (next === undefined) return;
+              setVolume(next);
+              audioRef.current?.volume(next / 100);
+            }}
+          />
+        </Field>
+      )}
+    </div>
+  );
   const player = (
     <div
       ref={rootRef}
@@ -798,6 +919,7 @@ function BotPovSession({
             <Gamepad2Icon data-icon="inline-start" />
             Play
           </Button>
+          {audioControls}
           <Button
             size="sm"
             variant="outline"
@@ -904,6 +1026,9 @@ function BotPovSession({
           </div>
         )}
       </div>
+      {immersive && !captured && (
+        <div className="flex items-center gap-2 p-2">{audioControls}</div>
+      )}
       {!immersive && (
         <p className="text-muted-foreground text-xs">
           {captured
