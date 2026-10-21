@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Friendly name",
           "placeholder": "My Minecraft Bot",
-          "description": "The name you want to give to this instance.",
-          "min": "The friendly name must be at least 3 characters long.",
-          "max": "The friendly name must be at most 32 characters long.",
-          "regex": "Friendly name must contain only letters, numbers, and spaces"
+          "description": "The name you want to give to this instance."
         },
         "cancel": "Cancel",
         "create": "Create"
@@ -473,6 +470,14 @@
     "loading": "Copying to clipboard...",
     "success": "Copied \"{{content}}\" to clipboard",
     "error": "Failed to copy to clipboard"
+  },
+  "instanceName": {
+    "required": "Enter an instance name.",
+    "max": "Instance names must be 32 characters or fewer.",
+    "singleLine": "Use one line without control characters.",
+    "save": "Save instance name",
+    "saved": "Instance name updated",
+    "saveError": "Failed to update instance name"
   },
   "userSettings": {
     "avatar": {

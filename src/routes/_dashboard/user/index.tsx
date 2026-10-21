@@ -96,6 +96,10 @@ import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
+import {
+  createInstanceNameSchema,
+  getDuplicateInstanceName,
+} from "@/lib/instance-name.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
@@ -124,17 +128,6 @@ function generateN(count: number) {
     { length: Math.max(0, Math.floor(count)) },
     (_, index) => index + 1,
   );
-}
-
-function getDuplicateInstanceName(friendlyName: string) {
-  const suffix = " Copy";
-  const maxLength = 32;
-  const baseName = friendlyName.trim();
-  if (baseName.length + suffix.length <= maxLength) {
-    return `${baseName}${suffix}`;
-  }
-
-  return `${baseName.slice(0, maxLength - suffix.length).trimEnd()}${suffix}`;
 }
 
 function getAvailableStateActions(summary?: BotFleetSummary): StateAction[] {
@@ -166,19 +159,16 @@ function DuplicateInstanceDialog({
   sourceInstance: InstanceListResponse_Instance | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onDuplicate: (value: DuplicateInstanceForm) => void;
+  onDuplicate: (value: DuplicateInstanceForm) => Promise<void>;
   pending: boolean;
 }) {
   const { t } = useTranslation("common");
   const formSchema = z.object({
-    friendlyName: z
-      .string()
-      .min(3, t("dialog.createInstance.form.friendlyName.min"))
-      .max(32, t("dialog.createInstance.form.friendlyName.max"))
-      .regex(
-        /^[a-zA-Z0-9 ]+$/,
-        t("dialog.createInstance.form.friendlyName.regex"),
-      ),
+    friendlyName: createInstanceNameSchema({
+      required: t("instanceName.required"),
+      max: t("instanceName.max"),
+      singleLine: t("instanceName.singleLine"),
+    }),
   });
   const form = useForm({
     defaultValues: {
@@ -190,7 +180,11 @@ function DuplicateInstanceDialog({
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      onDuplicate(value);
+      try {
+        await onDuplicate(formSchema.parse(value));
+      } catch {
+        // The mutation reports errors and keeps the draft available for corrections.
+      }
     },
   });
 
@@ -226,6 +220,7 @@ function DuplicateInstanceDialog({
                       id={field.name}
                       name={field.name}
                       autoFocus
+                      disabled={pending}
                       placeholder={t(
                         "dialog.createInstance.form.friendlyName.placeholder",
                       )}
@@ -625,12 +620,12 @@ function Content() {
           }
         }}
         pending={duplicateMutation.isPending}
-        onDuplicate={(value) => {
+        onDuplicate={async (value) => {
           if (duplicateSource === null) {
             return;
           }
 
-          duplicateMutation.mutate({
+          await duplicateMutation.mutateAsync({
             sourceInstance: duplicateSource,
             friendlyName: value.friendlyName,
           });

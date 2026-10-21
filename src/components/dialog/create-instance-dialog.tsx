@@ -2,7 +2,7 @@ import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
-import { PlusIcon, XIcon } from "lucide-react";
+import { LoaderCircleIcon, PlusIcon, XIcon } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
 import { createContext, type ReactNode, use, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { createInstanceNameSchema } from "@/lib/instance-name.ts";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { TransportContext } from "../providers/transport-context.tsx";
@@ -74,14 +75,11 @@ function CreateInstanceDialog({
   const posthog = usePostHog();
   const { t } = useTranslation("common");
   const formSchema = z.object({
-    friendlyName: z
-      .string()
-      .min(3, t("dialog.createInstance.form.friendlyName.min"))
-      .max(32, t("dialog.createInstance.form.friendlyName.max"))
-      .regex(
-        /^[a-zA-Z0-9 ]+$/,
-        t("dialog.createInstance.form.friendlyName.regex"),
-      ),
+    friendlyName: createInstanceNameSchema({
+      required: t("instanceName.required"),
+      max: t("instanceName.max"),
+      singleLine: t("instanceName.singleLine"),
+    }),
   });
   const addMutation = useMutation({
     mutationKey: ["instance", "create"],
@@ -93,7 +91,7 @@ function CreateInstanceDialog({
       const instanceService = createClient(InstanceService, transport);
       const promise = instanceService
         .createInstance({
-          friendlyName: values.friendlyName,
+          friendlyName: formSchema.parse(values).friendlyName,
         })
         .then((r) => r);
       toast.promise(promise, {
@@ -130,8 +128,13 @@ function CreateInstanceDialog({
     validators: {
       onSubmit: formSchema,
     },
-    onSubmit: async ({ value }) => {
-      addMutation.mutate(value);
+    onSubmit: async ({ value, formApi }) => {
+      try {
+        await addMutation.mutateAsync(value);
+        formApi.reset();
+      } catch {
+        // The mutation reports errors and keeps the draft available for corrections.
+      }
     },
   });
 
@@ -151,49 +154,69 @@ function CreateInstanceDialog({
               {t("dialog.createInstance.description")}
             </CredenzaDescription>
           </CredenzaHeader>
-          <CredenzaBody>
-            <form.Field name="friendlyName">
-              {(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-                return (
-                  <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>
-                      {t("dialog.createInstance.form.friendlyName.label")}
-                    </FieldLabel>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      autoFocus
-                      placeholder={t(
-                        "dialog.createInstance.form.friendlyName.placeholder",
-                      )}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                    />
-                    <FieldDescription>
-                      {t("dialog.createInstance.form.friendlyName.description")}
-                    </FieldDescription>
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+          <form.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <>
+                <CredenzaBody>
+                  <form.Field name="friendlyName">
+                    {(field) => {
+                      const isInvalid =
+                        field.state.meta.isTouched && !field.state.meta.isValid;
+                      return (
+                        <Field data-invalid={isInvalid}>
+                          <FieldLabel htmlFor={field.name}>
+                            {t("dialog.createInstance.form.friendlyName.label")}
+                          </FieldLabel>
+                          <Input
+                            id={field.name}
+                            name={field.name}
+                            autoFocus
+                            disabled={isSubmitting}
+                            placeholder={t(
+                              "dialog.createInstance.form.friendlyName.placeholder",
+                            )}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            aria-invalid={isInvalid}
+                          />
+                          <FieldDescription>
+                            {t(
+                              "dialog.createInstance.form.friendlyName.description",
+                            )}
+                          </FieldDescription>
+                          {isInvalid && (
+                            <FieldError errors={field.state.meta.errors} />
+                          )}
+                        </Field>
+                      );
+                    }}
+                  </form.Field>
+                </CredenzaBody>
+                <CredenzaFooter className="justify-between">
+                  <CredenzaClose
+                    render={
+                      <Button variant="outline" disabled={isSubmitting} />
+                    }
+                  >
+                    <XIcon />
+                    {t("dialog.createInstance.form.cancel")}
+                  </CredenzaClose>
+                  <Button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <LoaderCircleIcon
+                        className="animate-spin"
+                        data-icon="inline-start"
+                      />
+                    ) : (
+                      <PlusIcon data-icon="inline-start" />
                     )}
-                  </Field>
-                );
-              }}
-            </form.Field>
-          </CredenzaBody>
-          <CredenzaFooter className="justify-between">
-            <CredenzaClose render={<Button variant="outline" />}>
-              <XIcon />
-              {t("dialog.createInstance.form.cancel")}
-            </CredenzaClose>
-            <Button type="submit">
-              <PlusIcon />
-              {t("dialog.createInstance.form.create")}
-            </Button>
-          </CredenzaFooter>
+                    {t("dialog.createInstance.form.create")}
+                  </Button>
+                </CredenzaFooter>
+              </>
+            )}
+          </form.Subscribe>
         </form>
       </CredenzaContent>
     </Credenza>

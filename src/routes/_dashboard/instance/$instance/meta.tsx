@@ -8,8 +8,8 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { PlusIcon, TrashIcon } from "lucide-react";
-import { use, useCallback, useEffect, useMemo, useState } from "react";
+import { LoaderCircleIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { use, useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -22,22 +22,28 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import {
   Field,
   FieldError,
+  FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { SettingsNamespace } from "@/generated/soulfire/common_pb";
 import {
   ComboSettingSchema,
   InstancePermission,
-  StringSetting_InputType,
-  StringSettingSchema,
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import i18n from "@/lib/i18n";
+import { createInstanceNameSchema } from "@/lib/instance-name.ts";
 import {
   metadataKeyPattern,
   metadataNamespacePattern,
@@ -138,6 +144,106 @@ function MetaSettings() {
   );
 }
 
+function InstanceNameField({
+  value,
+  disabled,
+  onSave,
+}: {
+  value: string;
+  disabled: boolean;
+  onSave: (name: string) => Promise<void>;
+}) {
+  const { t } = useTranslation("common");
+  const id = useId();
+  const schema = createInstanceNameSchema({
+    required: t("instanceName.required"),
+    max: t("instanceName.max"),
+    singleLine: t("instanceName.singleLine"),
+  });
+  const form = useForm({
+    defaultValues: { name: value },
+    validators: { onSubmit: z.object({ name: schema }) },
+    onSubmit: async ({ value: fields, formApi }) => {
+      const name = schema.parse(fields.name);
+      if (name === value) return;
+      try {
+        await onSave(name);
+        formApi.reset({ name });
+        toast.success(t("instanceName.saved"));
+      } catch (error) {
+        console.error(error);
+        toast.error(t("instanceName.saveError"));
+      }
+    },
+  });
+  return (
+    <form
+      className="max-w-xl"
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <form.Subscribe selector={(state) => state.isSubmitting}>
+        {(isSubmitting) => (
+          <form.Field name="name">
+            {(field) => {
+              const invalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <Field
+                  data-invalid={invalid}
+                  data-disabled={disabled || isSubmitting}
+                >
+                  <FieldLabel htmlFor={id}>
+                    {t("dialog.createInstance.form.friendlyName.label")}
+                  </FieldLabel>
+                  <InputGroup>
+                    <InputGroupInput
+                      id={id}
+                      name="friendlyName"
+                      value={field.state.value}
+                      placeholder={t(
+                        "dialog.createInstance.form.friendlyName.placeholder",
+                      )}
+                      aria-invalid={invalid}
+                      disabled={disabled || isSubmitting}
+                      onChange={(event) =>
+                        field.handleChange(event.currentTarget.value)
+                      }
+                      onBlur={field.handleBlur}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        type="submit"
+                        aria-label={t("instanceName.save")}
+                        disabled={disabled || isSubmitting}
+                      >
+                        {isSubmitting && (
+                          <LoaderCircleIcon
+                            className="animate-spin"
+                            data-icon="inline-start"
+                          />
+                        )}
+                        {t("save")}
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <FieldDescription>
+                    {t("dialog.createInstance.form.friendlyName.description")}
+                  </FieldDescription>
+                  {invalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+        )}
+      </form.Subscribe>
+    </form>
+  );
+}
+
 function Content() {
   const { instanceInfoQueryOptions, instanceListQueryOptions } =
     Route.useRouteContext();
@@ -147,9 +253,9 @@ function Content() {
   const setFriendlyNameMutation = useMutation({
     mutationKey: ["instance", "meta", "friendlyName", instanceInfo.id],
     scope: { id: `instance-meta-friendlyName-${instanceInfo.id}` },
-    mutationFn: async (value: JsonValue) => {
+    mutationFn: async (value: string) => {
       await setInstanceFriendlyName(
-        value as string,
+        value,
         instanceInfo,
         transport,
         queryClient,
@@ -201,24 +307,11 @@ function Content() {
   return (
     <div className="container flex h-full w-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <SettingTypeRenderer
-          settingType={{
-            case: "string",
-            value: create(StringSettingSchema, {
-              uiName: "Friendly Name",
-              description:
-                "The name of the instance that will be displayed in the UI.",
-              def: "",
-              inputType: StringSetting_InputType.TEXT,
-              placeholder: "My Instance",
-              minLength: 3,
-              maxLength: 32,
-              pattern: "[a-zA-Z0-9 ]+",
-              disabled: !canEditMeta,
-            }),
-          }}
+        <InstanceNameField
+          key={instanceInfo.id}
           value={instanceInfo.friendlyName}
-          changeCallback={setFriendlyNameMutation.mutate}
+          disabled={!canEditMeta}
+          onSave={setFriendlyNameMutation.mutateAsync}
         />
         <SettingTypeRenderer
           settingType={{
