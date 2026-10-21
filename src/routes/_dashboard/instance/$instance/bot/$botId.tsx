@@ -894,6 +894,8 @@ function InventorySlotDisplay({
   if (hotbarIndex !== undefined) devInfoParts.push(`Hotbar: ${hotbarIndex}`);
 
   if (!item) {
+    const description =
+      devInfoParts.length > 0 ? devInfoParts.join("\n") : undefined;
     return (
       <button
         type="button"
@@ -902,7 +904,8 @@ function InventorySlotDisplay({
         onContextMenu={handleContextMenu}
         onMouseDown={handleMouseDown}
         disabled={!isClickable}
-        title={devInfoParts.length > 0 ? devInfoParts.join("\n") : undefined}
+        aria-label={description}
+        title={description}
       >
         {slotNumber !== undefined && (
           <span className="text-muted-foreground/30">{slotNumber}</span>
@@ -934,6 +937,7 @@ function InventorySlotDisplay({
       onClick={handleClick}
       onContextMenu={handleContextMenu}
       onMouseDown={handleMouseDown}
+      aria-label={titleParts.join("\n")}
       title={titleParts.join("\n")}
       disabled={!isClickable}
     >
