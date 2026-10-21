@@ -78,7 +78,6 @@ function BotPovSession({
     povDebugEnabled() ? new PovStreamMetrics() : null,
   );
   const playing = useSelector(playerStore, (state) => state.playing);
-  const autoStart = useSelector(playerStore, (state) => state.autoStart);
   const capturePending = useSelector(
     playerStore,
     (state) => state.capture === "pending",
@@ -743,12 +742,6 @@ function BotPovSession({
     playerStore,
   ]);
 
-  useEffect(() => {
-    if (!autoStart || !connected || !canvas) return;
-    actions.consumeAutoStart();
-    void capture();
-  }, [autoStart, connected, canvas, capture, actions]);
-
   function detach() {
     release();
     const child = window.open(
@@ -916,7 +909,7 @@ function BotPovSession({
                 <PlayIcon data-icon="inline-start" />
                 Watch bot
               </Button>
-            ) : !connected || autoStart || capturePending ? (
+            ) : !connected || capturePending ? (
               <p>Connecting…</p>
             ) : (
               <button
