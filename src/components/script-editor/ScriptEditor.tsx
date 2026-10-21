@@ -109,9 +109,22 @@ export function ScriptEditor() {
     setReactFlowInstance(instance);
   }, []);
 
+  const getCanvasCenter = useCallback(() => {
+    if (!reactFlowInstance || !containerRef.current) return null;
+    const rect = containerRef.current.getBoundingClientRect();
+    const screenPosition = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+    return {
+      screenPosition,
+      flowPosition: reactFlowInstance.screenToFlowPosition(screenPosition),
+    };
+  }, [reactFlowInstance]);
+
   // Auto-focus the container so keyboard shortcuts work immediately
   useEffect(() => {
-    containerRef.current?.focus();
+    containerRef.current?.focus({ preventScroll: true });
   }, []);
 
   const handleSelectionChange = useCallback(
@@ -223,14 +236,17 @@ export function ScriptEditor() {
 
       // Tab - Enter/Exit group
       if (event.key === "Tab") {
-        event.preventDefault();
+        if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey)
+          return;
         if (groupEditStack.length > 0) {
+          event.preventDefault();
           // If inside a group, exit
           exitGroup();
         } else if (selectedNodeId) {
           // If a group node is selected, enter it
           const selectedNode = nodes.find((n) => n.id === selectedNodeId);
           if (selectedNode?.type === "layout.group") {
+            event.preventDefault();
             enterGroup(selectedNodeId);
           }
         }
@@ -245,19 +261,9 @@ export function ScriptEditor() {
         !event.metaKey
       ) {
         event.preventDefault();
-        if (reactFlowInstance && containerRef.current) {
-          const rect = containerRef.current.getBoundingClientRect();
-          // Get mouse position relative to viewport, or center of canvas
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          const flowPosition = reactFlowInstance.screenToFlowPosition({
-            x: centerX,
-            y: centerY,
-          });
-          openQuickAddMenu(flowPosition, {
-            x: rect.left + centerX,
-            y: rect.top + centerY,
-          });
+        const center = getCanvasCenter();
+        if (center) {
+          openQuickAddMenu(center.flowPosition, center.screenPosition);
         }
         return;
       }
@@ -319,7 +325,8 @@ export function ScriptEditor() {
       if (
         event.key === "g" &&
         (event.ctrlKey || event.metaKey) &&
-        !event.shiftKey
+        !event.shiftKey &&
+        !event.altKey
       ) {
         event.preventDefault();
         if (selectedNodes.length > 0) {
@@ -458,7 +465,7 @@ export function ScriptEditor() {
       nodes,
       onNodesChange,
       deleteSelected,
-      reactFlowInstance,
+      getCanvasCenter,
       openQuickAddMenu,
       selectedNodeId,
       toggleMute,
@@ -511,18 +518,12 @@ export function ScriptEditor() {
       }
 
       const clipboardData = handleNativePaste(event.nativeEvent);
-      if (clipboardData && reactFlowInstance && containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const flowPosition = reactFlowInstance.screenToFlowPosition({
-          x: centerX,
-          y: centerY,
-        });
-        pasteClipboardData(clipboardData, flowPosition);
+      const center = getCanvasCenter();
+      if (clipboardData && center) {
+        pasteClipboardData(clipboardData, center.flowPosition);
       }
     },
-    [reactFlowInstance, pasteClipboardData],
+    [getCanvasCenter, pasteClipboardData],
   );
 
   // Handle right-click on canvas for quick add menu
@@ -604,6 +605,7 @@ export function ScriptEditor() {
   // Close node context menu on pane click
   const handlePaneClick = useCallback(() => {
     setNodeContextMenu(null);
+    containerRef.current?.focus({ preventScroll: true });
   }, []);
 
   // Handle pointer down for link cutting (Alt+drag)
@@ -739,6 +741,7 @@ export function ScriptEditor() {
   return (
     <div
       ref={containerRef}
+      tabIndex={0}
       className="h-full w-full relative outline-none"
       onKeyDown={handleKeyDown}
       onCopy={handleCopy}
