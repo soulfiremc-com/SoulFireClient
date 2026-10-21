@@ -258,11 +258,13 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
 function UpdateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
+  const { t } = useTranslation("admin");
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Button
+        aria-label={t("users.contextMenu.editUser")}
         disabled={!props.row.getCanSelect()}
         variant="secondary"
         size="sm"
@@ -283,10 +285,12 @@ function UpdateUserButton(props: {
 function ImpersonateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
+  const { t } = useTranslation("admin");
   const transport = use(TransportContext);
   const navigate = useNavigate();
   return (
     <Button
+      aria-label={t("users.contextMenu.impersonate")}
       disabled={!props.row.getCanSelect()}
       variant="secondary"
       size="sm"
@@ -315,11 +319,17 @@ function ImpersonateUserButton(props: {
 }
 
 function AddButton() {
+  const { t } = useTranslation("admin");
   const [createOpen, setCreateOpen] = useState(false);
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        aria-label={t("users.addUserDialog.title")}
+        onClick={() => setCreateOpen(true)}
+      >
         <PlusIcon />
       </Button>
       <ManageUserDialog mode="add" open={createOpen} setOpen={setCreateOpen} />

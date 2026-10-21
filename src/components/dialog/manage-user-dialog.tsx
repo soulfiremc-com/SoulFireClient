@@ -134,8 +134,13 @@ export function ManageUserDialog({
     validators: {
       onSubmit: formSchema,
     },
-    onSubmit: async ({ value }) => {
-      submitMutation.mutate(value);
+    onSubmit: async ({ value, formApi }) => {
+      try {
+        await submitMutation.mutateAsync(value);
+        if (props.mode === "add") formApi.reset();
+      } catch {
+        // The mutation reports the failure and keeps the form available for corrections.
+      }
     },
   });
 
@@ -182,6 +187,7 @@ export function ManageUserDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      disabled={submitMutation.isPending}
                     />
                     <FieldDescription>
                       {t("users.baseUserDialog.form.username.description")}
@@ -212,6 +218,7 @@ export function ManageUserDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      disabled={submitMutation.isPending}
                     />
                     <FieldDescription>
                       {t("users.baseUserDialog.form.email.description")}
@@ -240,6 +247,7 @@ export function ManageUserDialog({
                       {t("users.baseUserDialog.form.role.label")}
                     </FieldLabel>
                     <Select
+                      disabled={submitMutation.isPending}
                       name={field.name}
                       value={String(field.state.value)}
                       onValueChange={(value) =>
@@ -285,7 +293,11 @@ export function ManageUserDialog({
                 ? t("users.addUserDialog.form.cancel")
                 : t("users.updateUserDialog.form.cancel")}
             </CredenzaClose>
-            <Button type="submit">
+            <Button
+              type="submit"
+              disabled={submitMutation.isPending}
+              aria-busy={submitMutation.isPending}
+            >
               {props.mode === "add" ? <PlusIcon /> : <PencilIcon />}
               {props.mode === "add"
                 ? t("users.addUserDialog.form.add")
