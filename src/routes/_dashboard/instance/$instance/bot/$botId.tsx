@@ -924,8 +924,10 @@ function InventorySlotDisplay({
     );
   }
 
+  const [tooltipName, ...tooltipDetails] = item.tooltipLines;
   const titleParts = [
-    `${item.displayName || formatItemId(item.itemId)} x${item.count}`,
+    `${tooltipName || item.displayName || formatItemId(item.itemId)} x${item.count}`,
+    ...tooltipDetails,
   ];
   const itemImageSrc = inventoryItemImageSrc(item);
   if (devInfoParts.length > 0) {
@@ -1242,7 +1244,11 @@ function BotInventoryPanel({
         </h3>
         <div className="ml-auto flex items-center gap-2">
           {carriedItem && (
-            <Badge variant="default" className="gap-1">
+            <Badge
+              variant="default"
+              className="gap-1"
+              title={carriedItem.tooltipLines.join("\n") || undefined}
+            >
               <HandIcon className="size-3" />
               {carriedItemImageSrc && (
                 <img
@@ -1252,7 +1258,10 @@ function BotInventoryPanel({
                   className="size-4 object-contain [image-rendering:pixelated]"
                 />
               )}
-              {formatItemId(carriedItem.itemId)} x{carriedItem.count}
+              {carriedItem.tooltipLines[0] ||
+                carriedItem.displayName ||
+                formatItemId(carriedItem.itemId)}{" "}
+              x{carriedItem.count}
             </Badge>
           )}
           {slots.length > 0 && (
