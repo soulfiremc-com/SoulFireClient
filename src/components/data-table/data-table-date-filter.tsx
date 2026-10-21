@@ -6,6 +6,7 @@ import * as React from "react";
 import type { DateRange } from "react-day-picker";
 
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -62,6 +63,7 @@ export function DataTableDateFilter<TData extends RowData>({
   title,
   multiple,
 }: DataTableDateFilterProps<TData>) {
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
   const columnFilterValue = column.getFilterValue();
 
   const selectedDates = React.useMemo<DateSelection>(() => {
@@ -100,13 +102,10 @@ export function DataTableDateFilter<TData extends RowData>({
     [column, multiple],
   );
 
-  const onReset = React.useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation();
-      column.setFilterValue(undefined);
-    },
-    [column],
-  );
+  const onReset = React.useCallback(() => {
+    column.setFilterValue(undefined);
+    triggerRef.current?.focus();
+  }, [column]);
 
   const hasValue = React.useMemo(() => {
     if (multiple) {
@@ -175,30 +174,33 @@ export function DataTableDateFilter<TData extends RowData>({
 
   return (
     <Popover>
-      <PopoverTrigger
-        render={
+      <ButtonGroup aria-label={title}>
+        {hasValue && (
           <Button
+            type="button"
             variant="outline"
-            size="sm"
-            className="border-dashed font-normal"
-          />
-        }
-      >
-        {hasValue ? (
-          <div
-            role="button"
+            size="icon-sm"
             aria-label={`Clear ${title} filter`}
-            tabIndex={0}
+            className="border-dashed"
             onClick={onReset}
-            className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <XCircle />
-          </div>
-        ) : (
-          <CalendarIcon />
+          </Button>
         )}
-        {label}
-      </PopoverTrigger>
+        <PopoverTrigger
+          render={
+            <Button
+              ref={triggerRef}
+              variant="outline"
+              size="sm"
+              className="border-dashed font-normal"
+            />
+          }
+        >
+          {!hasValue && <CalendarIcon />}
+          {label}
+        </PopoverTrigger>
+      </ButtonGroup>
       <PopoverContent className="w-auto p-0" align="start">
         {multiple ? (
           <Calendar
