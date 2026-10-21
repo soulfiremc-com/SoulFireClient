@@ -149,7 +149,7 @@ export function BotDialogForm({
           return next;
         });
       }}
-      className="flex flex-col gap-4"
+      className="flex min-w-0 flex-col gap-4 wrap-anywhere"
     >
       <p className="font-medium">{dialog.title}</p>
       {body.map(({ element, id }) => {
@@ -275,6 +275,7 @@ export function BotDialogForm({
             type="submit"
             value={index}
             variant="outline"
+            className="h-auto min-h-8 max-w-full whitespace-normal"
             title={button.tooltip}
             disabled={pending}
           >
