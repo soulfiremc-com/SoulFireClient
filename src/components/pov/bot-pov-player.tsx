@@ -801,7 +801,9 @@ function BotPovSession({
       "popup,width=1280,height=800",
     );
     if (!child) {
-      actions.setError("Allow popups to detach the POV window.");
+      toast.error("Allow popups to detach the POV window.", {
+        toasterId: captureToastId,
+      });
       return;
     }
     child.document.title = "SoulFire POV";
@@ -830,7 +832,9 @@ function BotPovSession({
         await root.requestFullscreen();
       }
     } catch {
-      actions.setError("Fullscreen is unavailable in this window.");
+      toast.error("Fullscreen is unavailable in this window.", {
+        toasterId: captureToastId,
+      });
     }
   }
 
