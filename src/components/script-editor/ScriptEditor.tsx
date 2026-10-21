@@ -10,6 +10,7 @@ import {
   type Node,
   ReactFlow,
   type ReactFlowInstance,
+  useNodesInitialized,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -37,6 +38,8 @@ export function ScriptEditor() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
+  const nodesInitialized = useNodesInitialized();
+  const initialFitDone = useRef(false);
   const [nodeContextMenu, setNodeContextMenu] =
     useState<NodeContextMenuState | null>(null);
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null);
@@ -108,6 +111,14 @@ export function ScriptEditor() {
   const handleInit = useCallback((instance: ReactFlowInstance) => {
     setReactFlowInstance(instance);
   }, []);
+
+  // Saved dimensions can trigger an eager fit before panel constraints settle.
+  useEffect(() => {
+    if (!reactFlowInstance || !nodesInitialized || initialFitDone.current)
+      return;
+    initialFitDone.current = true;
+    void reactFlowInstance.fitView();
+  }, [nodesInitialized, reactFlowInstance]);
 
   const getCanvasCenter = useCallback(() => {
     if (!reactFlowInstance || !containerRef.current) return null;
@@ -780,7 +791,6 @@ export function ScriptEditor() {
           onReconnect={handleReconnect}
           onReconnectEnd={handleReconnectEnd}
           colorMode={(resolvedTheme as ColorMode) ?? "dark"}
-          fitView
           minZoom={0.1}
           snapToGrid
           snapGrid={[16, 16]}

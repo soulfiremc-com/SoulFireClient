@@ -900,17 +900,17 @@ function ScriptEditorContent() {
       {/* Main content area */}
       <ResizablePanelGroup orientation="horizontal" className="flex-1">
         {/* Left sidebar - Node Palette */}
-        <ResizablePanel defaultSize={20} minSize="12.5rem" maxSize="25rem">
+        <ResizablePanel defaultSize="20%" minSize="12.5rem" maxSize="25rem">
           <NodePalette onNodeDragStart={handleNodeDragStart} />
         </ResizablePanel>
 
         <ResizableHandle withHandle />
 
         {/* Center - Script Editor & Logs */}
-        <ResizablePanel defaultSize={80} minSize="18.75rem">
+        <ResizablePanel defaultSize="80%" minSize="18.75rem">
           <ResizablePanelGroup orientation="vertical">
             {/* Canvas */}
-            <ResizablePanel defaultSize={75} minSize="12.5rem">
+            <ResizablePanel defaultSize="75%" minSize="12.5rem">
               <div
                 role="application"
                 ref={reactFlowWrapper}
@@ -923,7 +923,7 @@ function ScriptEditorContent() {
             <HorizontalResizableHandle />
 
             {/* Bottom - Execution Logs */}
-            <ResizablePanel defaultSize={25} minSize="6.25rem" maxSize="25rem">
+            <ResizablePanel defaultSize="25%" minSize="6.25rem" maxSize="25rem">
               <ScriptExecutionLogs onClearLogs={handleClearLogs} />
             </ResizablePanel>
           </ResizablePanelGroup>
