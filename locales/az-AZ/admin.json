@@ -86,6 +86,7 @@
         "update": "İstifadəçini yenilə"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "İstifadəçi əlavə olunur...",
       "success": "İstifadəçi əlavə edildi!",

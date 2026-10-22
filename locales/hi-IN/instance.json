@@ -469,17 +469,22 @@
         "beaconEffects": "बीकन इफेक्ट्स",
         "crafterSlots": "स्लॉट नियंत्रण",
         "lecternControls": "पुस्तक नियंत्रण",
-        "actions": "क्रियाएँ"
+        "actions": "क्रियाएँ",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "पाठ इनपुट",
-        "anvilRename": "आइटम का नाम बदलें"
+        "anvilRename": "आइटम का नाम बदलें",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "पुस्तक सामग्री",
         "emptyPage": "(खाली पृष्ठ)",
         "pageIndicator": "पृष्ठ {{current}} में से {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "बॉट दृश्य",
@@ -502,6 +507,7 @@
       "offline": "बॉट ऑफ़लाइन है। क्रियाएँ केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "गतिविधि नियंत्रण",
       "movement": "गतिविधि (WASD)",
       "forward": "आगे बढ़ें (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "स्क्रिप्ट्स पर वापस जाएँ",
         "save": "सहेजें",
         "saveTooltip": "स्क्रिप्ट सहेजें",
@@ -728,6 +735,16 @@
         "tooltip": "बदलाव देखें"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "ड्राई रन",
         "title": "ड्राई रन स्क्रिप्ट",
         "description": "चयनित ट्रिगर से स्क्रिप्ट चलाएं, मॉक इनपुट के साथ।",
@@ -736,7 +753,9 @@
         "triggerDescription": "मॉक इनपुट मानों के साथ निष्पादित करने के लिए ट्रिगर नोड चुनें।",
         "mockInputs": "मॉक इनपुट्स",
         "valuePlaceholder": "{{type}} मान",
-        "start": "ड्राई रन शुरू करें"
+        "start": "ड्राई रन शुरू करें",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "स्क्रिप्ट कोटा",
@@ -759,5 +778,9 @@
         "save": "कोटा सहेजें"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

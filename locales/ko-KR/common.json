@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "친근한 이름",
           "placeholder": "내 마인크래프트 봇",
-          "description": "이 인스턴스에 부여할 이름입니다.",
-          "min": "친근한 이름은 최소 3자 이상이어야 합니다.",
-          "max": "친근한 이름은 최대 32자까지 사용할 수 있습니다.",
-          "regex": "친근한 이름은 영문자, 숫자, 공백만 사용할 수 있습니다"
+          "description": "이 인스턴스에 부여할 이름입니다."
         },
         "cancel": "취소",
         "create": "생성"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "데이터 다운로드 중...",
           "success": "데이터가 불러와졌습니다!",
-          "error": "데이터 다운로드에 실패했습니다"
+          "error": "데이터 다운로드에 실패했습니다",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "웹사이트"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "설정 네임스페이스를 찾을 수 없습니다",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "새 항목 추가...",
       "add": "추가",
       "remove": "제거"
@@ -464,6 +468,14 @@
     "success": "\"{{content}}\"(을)를 클립보드에 복사했습니다",
     "error": "클립보드 복사에 실패했습니다"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "아바타",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "이메일",
       "description": "이메일은 로그인과 알림에 사용됩니다."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "감사 로그 필터...",

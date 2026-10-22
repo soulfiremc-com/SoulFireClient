@@ -469,17 +469,22 @@
         "beaconEffects": "Effetti del Faro",
         "crafterSlots": "Controlli Slot",
         "lecternControls": "Controlli Libro",
-        "actions": "Azioni"
+        "actions": "Azioni",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Input di Testo",
-        "anvilRename": "Rinomina Oggetto"
+        "anvilRename": "Rinomina Oggetto",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Contenuto del Libro",
         "emptyPage": "(Pagina vuota)",
         "pageIndicator": "Pagina {{current}} di {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Vista Bot",
@@ -502,6 +507,7 @@
       "offline": "Il bot è offline. Le azioni sono disponibili solo quando il bot è connesso."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Controllo Movimento",
       "movement": "Movimento (WASD)",
       "forward": "Avanti (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Torna agli Script",
         "save": "Salva",
         "saveTooltip": "Salva script",
@@ -728,6 +735,16 @@
         "tooltip": "Revisiona modifiche"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Esecuzione di prova",
         "title": "Script di prova",
         "description": "Esegui uno script da un trigger selezionato con input di prova.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Scegli il nodo trigger da eseguire con valori di input di prova.",
         "mockInputs": "Input di prova",
         "valuePlaceholder": "Valore {{type}}",
-        "start": "Avvia esecuzione di prova"
+        "start": "Avvia esecuzione di prova",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Quote script",
@@ -759,5 +778,9 @@
         "save": "Salva quote"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

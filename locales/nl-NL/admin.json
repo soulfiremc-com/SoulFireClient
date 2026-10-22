@@ -86,6 +86,7 @@
         "update": "Gebruiker bijwerken"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Gebruiker wordt toegevoegd...",
       "success": "Gebruiker toegevoegd!",

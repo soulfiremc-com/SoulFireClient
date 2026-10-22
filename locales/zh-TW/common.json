@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "顯示名稱",
           "placeholder": "我的 Minecraft Bot",
-          "description": "您想給這個實例設定的名稱。",
-          "min": "顯示名稱必須至少 3 個字元。",
-          "max": "顯示名稱最多只能有 32 個字元。",
-          "regex": "顯示名稱只能包含字母、數字和空格"
+          "description": "您想給這個實例設定的名稱。"
         },
         "cancel": "取消",
         "create": "建立"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "正在從網址下載資料...",
           "success": "資料載入完成！",
-          "error": "下載資料失敗"
+          "error": "下載資料失敗",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "網站"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "未找到設定命名空間",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "新增項目...",
       "add": "新增",
       "remove": "移除"
@@ -464,6 +468,14 @@
     "success": "已將「{{content}}」複製到剪貼簿",
     "error": "複製到剪貼簿失敗"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "頭像",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "電子郵件",
       "description": "您的電子郵件將用於登入與通知。"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "篩選稽核日誌...",

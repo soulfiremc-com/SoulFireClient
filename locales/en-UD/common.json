@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "ǝlɐqǝ˥ ǝɯɐu puᴉlǝuᴉɹɟ",
           "placeholder": "ʇoԐ ʇɐɹɔɐuǝᴉɯ ʎW",
-          "description": ".ǝɔuɐʇsᴉ sᴉɥʇ oʇ ǝʌᴉƃ oʇ ʇuɐʍ noʎ ǝɯɐu ǝɥ┴",
-          "min": ".ƃuo˥ sɹǝʇɔɐɹɐɥɔ 3 ʇsɐǝ˥ ǝq ʇsᴉ ʇsnɯ ǝɯɐu ʎlpuᴉɹɟ ǝɥ┴",
-          "max": ".ƃuo˥ sɹǝʇɔɐɹɐɥɔ 23 ʇsɐǝ˥ ǝq ʇsᴉ ʇsnɯ ǝɯɐu ʎlpuᴉɹɟ ǝɥ┴",
-          "regex": "sǝɔɐds puɐ sɹǝqɯnu ,sɹǝʇʇǝl ʎluno 'ʎlpuᴉɹɟ ǝɯɐu ʎlƃuᴉuɐʇuoɔ"
+          "description": ".ǝɔuɐʇsᴉ sᴉɥʇ oʇ ǝʌᴉƃ oʇ ʇuɐʍ noʎ ǝɯɐu ǝɥ┴"
         },
         "cancel": "˥˥ǝɔuɐↃ",
         "create": "ǝʇɐɹɔ"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "...ɐʇɐp ƃuᴉpɐo˥",
           "success": "!pǝpɐo˥ ɐʇɐp",
-          "error": "ɐʇɐp pɐo˥ oʇ pǝlᴉɐɟ"
+          "error": "ɐʇɐp pɐo˥ oʇ pǝlᴉɐɟ",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "ǝʇᴉsqǝM"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "punoɟ ʇoN sǝɯɐu sǝƃuᴉʇʇǝS",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "...ʎɹʇuǝ ʍǝu ɐ ppp∀",
       "add": "pp∀",
       "remove": "ǝʌoɯǝᴚ"
@@ -468,6 +472,14 @@
     "success": "pɹɐoqdᴉʟ oʇ \"{{content}}\" pǝᴉdoↃ",
     "error": "pɹɐoqdᴉʟ oʇ ʎdoↃ oʇ pǝlᴉɐɟ"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "ɹɐʇɐʌ∀",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "lᴉɐɯǝ",
       "description": ".suoᴉʇɐɔᴉɟᴉɟᴉʇoN puɐ uᴉƃo˥ ɹoɟ sᴉ ʅᴉɐɯǝ ɹno⅄"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "...sƃo˥ ʇᴉp∩∀ ɹǝʇlᴉℲ",

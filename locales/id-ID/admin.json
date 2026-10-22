@@ -86,6 +86,7 @@
         "update": "Perbarui Pengguna"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Menambah pengguna...",
       "success": "Pengguna berhasil ditambahkan!",

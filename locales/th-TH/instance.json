@@ -469,17 +469,22 @@
         "beaconEffects": "เอฟเฟกต์บีคอน",
         "crafterSlots": "ควบคุมช่อง",
         "lecternControls": "ควบคุมหนังสือ",
-        "actions": "การดำเนินการ"
+        "actions": "การดำเนินการ",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "กรอกข้อความ",
-        "anvilRename": "เปลี่ยนชื่อไอเทม"
+        "anvilRename": "เปลี่ยนชื่อไอเทม",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "เนื้อหาหนังสือ",
         "emptyPage": "(หน้าว่าง)",
         "pageIndicator": "หน้า {{current}} จาก {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "มุมมองบอท",
@@ -502,6 +507,7 @@
       "offline": "บอทออฟไลน์ การกระทำจะใช้ได้ต่อเมื่อบอทเชื่อมต่ออยู่เท่านั้น"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "การควบคุมการเคลื่อนไหว",
       "movement": "การเคลื่อนไหว (WASD)",
       "forward": "เดินหน้า (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "กลับไปที่สคริปต์",
         "save": "บันทึก",
         "saveTooltip": "บันทึกสคริปต์",
@@ -727,6 +734,16 @@
         "tooltip": "ตรวจสอบการเปลี่ยนแปลง"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "ทดสอบจำลอง (Dry Run)",
         "title": "ทดสอบจำลองสคริปต์",
         "description": "รันสคริปต์จากทริกเกอร์ที่เลือกด้วยอินพุตจำลอง",
@@ -735,7 +752,8 @@
         "triggerDescription": "เลือกโหนดทริกเกอร์เพื่อรันด้วยค่าจำลองอินพุต",
         "mockInputs": "อินพุตจำลอง",
         "valuePlaceholder": "ค่าประเภท {{type}}",
-        "start": "เริ่มทดสอบจำลอง"
+        "start": "เริ่มทดสอบจำลอง",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "โควต้าสคริปต์",
@@ -758,5 +776,9 @@
         "save": "บันทึกโควต้า"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

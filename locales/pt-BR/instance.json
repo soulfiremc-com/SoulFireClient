@@ -469,17 +469,22 @@
         "beaconEffects": "Efeitos do Farol",
         "crafterSlots": "Controles de Slots",
         "lecternControls": "Controles do Livro",
-        "actions": "Ações"
+        "actions": "Ações",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Entrada de Texto",
-        "anvilRename": "Renomear Item"
+        "anvilRename": "Renomear Item",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Conteúdo do Livro",
         "emptyPage": "(Página vazia)",
         "pageIndicator": "Página {{current}} de {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Visualização do Bot",
@@ -502,6 +507,7 @@
       "offline": "O bot está offline. Ações só estão disponíveis quando o bot está conectado."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Controle de Movimento",
       "movement": "Movimento (WASD)",
       "forward": "Mover para Frente (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Voltar para Scripts",
         "save": "Salvar",
         "saveTooltip": "Salvar script",
@@ -728,6 +735,16 @@
         "tooltip": "Revisar alterações"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Execução Simulada",
         "title": "Script de Execução Simulada",
         "description": "Execute um script a partir de um gatilho selecionado com entradas simuladas.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Escolha o nó de gatilho para executar com valores de entrada simulados.",
         "mockInputs": "Entradas simuladas",
         "valuePlaceholder": "valor {{type}}",
-        "start": "Iniciar Execução Simulada"
+        "start": "Iniciar Execução Simulada",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Cotas de Script",
@@ -759,5 +778,9 @@
         "save": "Salvar Cotas"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

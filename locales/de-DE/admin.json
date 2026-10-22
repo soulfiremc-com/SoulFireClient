@@ -86,6 +86,7 @@
         "update": "Benutzer aktualisieren"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Benutzer wird hinzugefügt...",
       "success": "Benutzer hinzugefügt!",

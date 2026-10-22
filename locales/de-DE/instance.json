@@ -469,17 +469,22 @@
         "beaconEffects": "Leuchtturm-Effekte",
         "crafterSlots": "Slot-Steuerung",
         "lecternControls": "Buch-Steuerung",
-        "actions": "Aktionen"
+        "actions": "Aktionen",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Texteingabe",
-        "anvilRename": "Gegenstand umbenennen"
+        "anvilRename": "Gegenstand umbenennen",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Buchinhalt",
         "emptyPage": "(Leere Seite)",
         "pageIndicator": "Seite {{current}} von {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot-Ansicht",
@@ -502,6 +507,7 @@
       "offline": "Bot ist offline. Aktionen sind nur verfügbar, wenn der Bot verbunden ist."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Bewegungssteuerung",
       "movement": "Bewegung (WASD)",
       "forward": "Vorwärts bewegen (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Zurück zu den Skripten",
         "save": "Speichern",
         "saveTooltip": "Skript speichern",
@@ -728,6 +735,16 @@
         "tooltip": "Änderungen prüfen"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Probelauf",
         "title": "Probelauf-Skript",
         "description": "Führen Sie ein Skript von einem ausgewählten Auslöser mit simulierten Eingaben aus.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Wählen Sie den Auslöser-Knoten aus, der mit simulierten Eingabewerten ausgeführt werden soll.",
         "mockInputs": "Simulierte Eingaben",
         "valuePlaceholder": "{{type}} Wert",
-        "start": "Probelauf starten"
+        "start": "Probelauf starten",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skript-Kontingente",
@@ -759,5 +778,9 @@
         "save": "Kontingente speichern"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

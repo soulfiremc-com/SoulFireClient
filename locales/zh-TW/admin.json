@@ -86,6 +86,7 @@
         "update": "更新使用者"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "正在新增使用者...",
       "success": "成功新增使用者！",

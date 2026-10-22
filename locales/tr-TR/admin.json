@@ -86,6 +86,7 @@
         "update": "Kullanıcıyı Güncelle"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Kullanıcı ekleniyor...",
       "success": "Kullanıcı eklendi!",

@@ -469,17 +469,22 @@
         "beaconEffects": "Efekty latarni",
         "crafterSlots": "Sterowanie slotami",
         "lecternControls": "Sterowanie książką",
-        "actions": "Akcje"
+        "actions": "Akcje",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Pole tekstowe",
-        "anvilRename": "Zmień nazwę przedmiotu"
+        "anvilRename": "Zmień nazwę przedmiotu",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Treść książki",
         "emptyPage": "(Pusta strona)",
         "pageIndicator": "Strona {{current}} z {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Widok bota",
@@ -502,6 +507,7 @@
       "offline": "Bot jest offline. Akcje są dostępne tylko gdy bot jest połączony."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Sterowanie ruchem",
       "movement": "Ruch (WASD)",
       "forward": "Idź do przodu (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Powrót do skryptów",
         "save": "Zapisz",
         "saveTooltip": "Zapisz skrypt",
@@ -730,6 +737,16 @@
         "tooltip": "Przejrzyj zmiany"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Symulacja",
         "title": "Symuluj skrypt",
         "description": "Uruchom skrypt z wybranego wyzwalacza z przykładowymi danymi wejściowymi.",
@@ -738,7 +755,11 @@
         "triggerDescription": "Wybierz węzeł wyzwalacza do wykonania z przykładowymi wartościami wejściowymi.",
         "mockInputs": "Przykładowe dane wejściowe",
         "valuePlaceholder": "Wartość typu {{type}}",
-        "start": "Rozpocznij symulację"
+        "start": "Rozpocznij symulację",
+        "stats_one": "",
+        "stats_few": "",
+        "stats_many": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Limity skryptu",
@@ -761,5 +782,9 @@
         "save": "Zapisz limity"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

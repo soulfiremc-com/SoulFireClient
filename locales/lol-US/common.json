@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Friendly naym",
           "placeholder": "Mah Minecraft Bot",
-          "description": "Teh naym u wantz 2 giv 2 dis instanec.",
-          "min": "Teh friendly naym must bees at least 3 characterz long.",
-          "max": "Teh friendly naym must bees at most 32 characterz long.",
-          "regex": "Friendly naym only haz letterz, numberz, an spacez, kthx"
+          "description": "Teh naym u wantz 2 giv 2 dis instanec."
         },
         "cancel": "cancel k?",
         "create": "Makee Makee"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Dawnloadin data...",
           "success": "Data lodaded!",
-          "error": "Teh download failed"
+          "error": "Teh download failed",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Website"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Settingz naymespaces not finded",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Add new entry...",
       "add": "Put stuff",
       "remove": "Exit stuff"
@@ -468,6 +472,14 @@
     "success": "Copied \"{{content}}\" to clipbored",
     "error": "Copyz to clipbored FAILED!"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatarr",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "EMAYL",
       "description": "Ur email iz used 4 login an notifikashunz."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logz...",

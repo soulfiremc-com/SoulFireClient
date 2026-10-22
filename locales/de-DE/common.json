@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Anzeigename",
           "placeholder": "Mein Minecraft-Bot",
-          "description": "Der Name, den Sie dieser Instanz geben möchten.",
-          "min": "Der Name muss mindestens 3 Zeichen lang sein.",
-          "max": "Der Name darf höchstens 32 Zeichen lang sein.",
-          "regex": "Der Anzeigename kann nur Buchstaben, Zahlen und Leerzeichen enthalten"
+          "description": "Der Name, den Sie dieser Instanz geben möchten."
         },
         "cancel": "Abbrechen",
         "create": "Erstellen"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Daten werden heruntergeladen...",
           "success": "Daten geladen!",
-          "error": "Fehler beim Herunterladen der Daten"
+          "error": "Fehler beim Herunterladen der Daten",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Webseite"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Einstellungs-Namensräume nicht gefunden",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Neuen Eintrag hinzufügen...",
       "add": "Hinzufügen",
       "remove": "Entfernen"
@@ -468,6 +472,14 @@
     "success": "\"{{content}}\" wurde in die Zwischenablage kopiert",
     "error": "Kopieren in die Zwischenablage fehlgeschlagen"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "E-Mail",
       "description": "Ihre E-Mail wird für die Anmeldung und Benachrichtigungen verwendet."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Audit-Logs filtern...",

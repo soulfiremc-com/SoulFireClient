@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Vänligt namn",
           "placeholder": "Min Minecraft-bot",
-          "description": "Namnet du vill ge den här instansen.",
-          "min": "Det vänliga namnet måste vara minst 3 tecken.",
-          "max": "Det vänliga namnet får vara högst 32 tecken.",
-          "regex": "Vänligt namn får endast innehålla bokstäver, siffror och mellanslag"
+          "description": "Namnet du vill ge den här instansen."
         },
         "cancel": "Avbryt",
         "create": "Skapa"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Laddar data från URL...",
           "success": "Data inläst!",
-          "error": "Misslyckades med att ladda ner data"
+          "error": "Misslyckades med att ladda ner data",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Webbplats"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Inställningsnamnrymder hittades inte",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Lägg till en ny post...",
       "add": "Lägg till",
       "remove": "Ta bort"
@@ -468,6 +472,14 @@
     "success": "Kopierade \"{{content}}\" till urklipp",
     "error": "Misslyckades med att kopiera till urklipp"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "E-post",
       "description": "Din e-postadress används för inloggning och aviseringar."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrera granskningsloggar...",

@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Jolly moniker",
           "placeholder": "Me Minecraft Matey",
-          "description": "The moniker ye wish to name this vessel.",
-          "min": "Yarr, th' jolly moniker needs at least 3 markings (characters).",
-          "max": "Moniker can’t be longer than 32 marks, matey.",
-          "regex": "Jolly moniker must use only letters, numerics, and blank air between!"
+          "description": "The moniker ye wish to name this vessel."
         },
         "cancel": "Lower anchor",
         "create": "Set sail!"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Snaggin' loot from the bottle...",
           "success": "Booty be found!",
-          "error": "Blimey! Couldn't fetch the loot!"
+          "error": "Blimey! Couldn't fetch the loot!",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Shanty Site"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "No map findin' for settings!",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Jot a new entry, matey...",
       "add": "Chart course",
       "remove": "Scuttle"
@@ -468,6 +472,14 @@
     "success": "Copied \"{{content}}\" to yer logbook",
     "error": "Clipboard mutinied!"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Portrait o' thyself",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "Parrot mail",
       "description": "Yer mail be used fer settin' sail an' messages, arrr."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter the captain's log...",

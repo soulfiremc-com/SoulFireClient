@@ -469,17 +469,22 @@
         "beaconEffects": "ビーコン効果",
         "crafterSlots": "スロット操作",
         "lecternControls": "本の操作",
-        "actions": "操作"
+        "actions": "操作",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "テキスト入力",
-        "anvilRename": "アイテム名を変更"
+        "anvilRename": "アイテム名を変更",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "本の内容",
         "emptyPage": "（空のページ）",
         "pageIndicator": "{{total}}ページ中{{current}}ページ"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "ボットビュ―",
@@ -502,6 +507,7 @@
       "offline": "ボットはオフラインです。アクションはボットが接続されている時のみ可能です。"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "移動コントロール",
       "movement": "移動（WASD）",
       "forward": "前進（W）",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "スクリプトへ戻る",
         "save": "保存する",
         "saveTooltip": "スクリプトを保存",
@@ -727,6 +734,16 @@
         "tooltip": "変更を確認"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "ドライラン",
         "title": "ドライランスクリプト",
         "description": "選択したトリガーからスクリプトをモック入力で実行します。",
@@ -735,7 +752,8 @@
         "triggerDescription": "モック入力値で実行するトリガーノードを選択してください。",
         "mockInputs": "モック入力",
         "valuePlaceholder": "{{type}}の値",
-        "start": "ドライラン開始"
+        "start": "ドライラン開始",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "スクリプトクォータ",
@@ -758,5 +776,9 @@
         "save": "クォータを保存"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

@@ -469,17 +469,22 @@
         "beaconEffects": "Mayak Effektləri",
         "crafterSlots": "Slot İdarəetməsi",
         "lecternControls": "Kitab İdarəetməsi",
-        "actions": "Əməliyyatlar"
+        "actions": "Əməliyyatlar",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Mətn Girişi",
-        "anvilRename": "Əşyaya ad ver"
+        "anvilRename": "Əşyaya ad ver",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Kitab Məzmunu",
         "emptyPage": "(Boş səhifə)",
         "pageIndicator": "Səhifə {{current}} / {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot Görünüşü",
@@ -502,6 +507,7 @@
       "offline": "Bot oflayndır. Fəaliyyətlər yalnız bot qoşulu olduqda mövcuddur."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Hərəkət İdarəetməsi",
       "movement": "Hərəkət (WASD)",
       "forward": "İrəli Hərəkət et (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Skriptlərə Qayıt",
         "save": "Yadda saxla",
         "saveTooltip": "Skripti yadda saxla",
@@ -728,6 +735,16 @@
         "tooltip": "Dəyişiklikləri nəzərdən keçir"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Quru İcra",
         "title": "Quru İcra Skripti",
         "description": "Seçilmiş tetikçidən skript işlədin, saxta girişlərdən istifadə edin.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Saxta giriş dəyərləri ilə işlədiləcək tetikçi qovşağı seçin.",
         "mockInputs": "Saxta Girişlər",
         "valuePlaceholder": "{{type}} dəyər",
-        "start": "Quru İcranı Başlat"
+        "start": "Quru İcranı Başlat",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skript Kotası",
@@ -759,5 +778,9 @@
         "save": "Kotaları yadda saxla"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

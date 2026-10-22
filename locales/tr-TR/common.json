@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "\"Dostça ad",
           "placeholder": "Benim Botum",
-          "description": "Bu örneğe vermek istediğiniz isim.",
-          "min": "Takma ad en az 3 karakter uzunluğunda olmalıdır.",
-          "max": "Takma ad en fazla 32 karakter uzunluğunda olmalıdır.",
-          "regex": "Takma ad yalnızca harf, rakam ve boşluk içermelidir"
+          "description": "Bu örneğe vermek istediğiniz isim."
         },
         "cancel": "İptal",
         "create": "Oluştur"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Veri indiriliyor...",
           "success": "Veri yüklendi!",
-          "error": "Veri indirilemedi"
+          "error": "Veri indirilemedi",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Web sitesi"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Ayar ad alanları bulunamadı",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Yeni bir giriş ekle...",
       "add": "Ekle",
       "remove": "Kaldır"
@@ -468,6 +472,14 @@
     "success": "\"{{content}}\" panoya kopyalandı",
     "error": "Panoya kopyalama başarısız oldu"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "Mail Adresi",
       "description": "E-posta adresiniz giriş ve bildirimler için kullanılır."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Denetim günlüklerini filtrele...",

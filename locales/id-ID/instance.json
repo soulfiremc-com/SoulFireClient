@@ -469,17 +469,22 @@
         "beaconEffects": "Efek Suar",
         "crafterSlots": "Kontrol Slot",
         "lecternControls": "Kontrol Buku",
-        "actions": "Aksi"
+        "actions": "Aksi",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Input Teks",
-        "anvilRename": "Ganti Nama Item"
+        "anvilRename": "Ganti Nama Item",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Isi Buku",
         "emptyPage": "(Halaman kosong)",
         "pageIndicator": "Halaman {{current}} dari {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Tampilan Bot",
@@ -502,6 +507,7 @@
       "offline": "Bot sedang offline. Aksi hanya tersedia saat bot terhubung."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Kontrol Gerakan",
       "movement": "Gerakan (WASD)",
       "forward": "Maju (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Kembali ke Skrip",
         "save": "Simpan",
         "saveTooltip": "Simpan skrip",
@@ -727,6 +734,16 @@
         "tooltip": "Tinjau perubahan"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Dry Run",
         "title": "Script Dry Run",
         "description": "Jalankan skrip dari trigger yang dipilih dengan input tiruan.",
@@ -735,7 +752,8 @@
         "triggerDescription": "Pilih node trigger untuk dieksekusi dengan nilai input tiruan.",
         "mockInputs": "Input Tiruan",
         "valuePlaceholder": "nilai {{type}}",
-        "start": "Mulai Dry Run"
+        "start": "Mulai Dry Run",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Kuota Skrip",
@@ -758,5 +776,9 @@
         "save": "Simpan Kuota"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

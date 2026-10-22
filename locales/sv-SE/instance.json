@@ -469,17 +469,22 @@
         "beaconEffects": "Fyrkanseffekter",
         "crafterSlots": "Slotkontroller",
         "lecternControls": "Bokkontroller",
-        "actions": "Åtgärder"
+        "actions": "Åtgärder",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Textinmatning",
-        "anvilRename": "Byt namn på föremål"
+        "anvilRename": "Byt namn på föremål",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Bokinnehåll",
         "emptyPage": "(Tom sida)",
         "pageIndicator": "Sida {{current}} av {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Botvy",
@@ -502,6 +507,7 @@
       "offline": "Bot är offline. Åtgärder är endast tillgängliga när boten är ansluten."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Rörelsekontroll",
       "movement": "Rörelse (WASD)",
       "forward": "Gå framåt (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Tillbaka till skript",
         "save": "Spara",
         "saveTooltip": "Spara skriptet",
@@ -728,6 +735,16 @@
         "tooltip": "Granska ändringar"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Testkörning",
         "title": "Testkör skript",
         "description": "Kör ett skript från en vald trigger med simulerad indata.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Välj trigger-noden att köra med simulerade indata.",
         "mockInputs": "Simulerad indata",
         "valuePlaceholder": "{{type}}-värde",
-        "start": "Starta testkörning"
+        "start": "Starta testkörning",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skriptkvoter",
@@ -759,5 +778,9 @@
         "save": "Spara kvoter"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

@@ -469,17 +469,22 @@
         "beaconEffects": "Effets de balise",
         "crafterSlots": "Contrôles des emplacements",
         "lecternControls": "Contrôles du livre",
-        "actions": "Actions"
+        "actions": "Actions",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Saisie de texte",
-        "anvilRename": "Renommer l\\'objet"
+        "anvilRename": "Renommer l\\'objet",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Contenu du livre",
         "emptyPage": "(Page vide)",
         "pageIndicator": "Page {{current}} sur {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Vue du bot",
@@ -502,6 +507,7 @@
       "offline": "Le bot est hors ligne. Les actions sont disponibles uniquement lorsque le bot est connecté."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Contrôle du mouvement",
       "movement": "Déplacement (WASD)",
       "forward": "Avancer (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Retour aux scripts",
         "save": "Enregistrer",
         "saveTooltip": "Enregistrer le script",
@@ -728,6 +735,16 @@
         "tooltip": "Revoir les modifications"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Exécution à sec",
         "title": "Script d'exécution à sec",
         "description": "Exécutez un script à partir d'un déclencheur sélectionné avec des entrées simulées.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Sélectionnez le nœud de déclenchement à exécuter avec les valeurs d'entrée simulées.",
         "mockInputs": "Entrées simulées",
         "valuePlaceholder": "valeur {{type}}",
-        "start": "Démarrer l'exécution à sec"
+        "start": "Démarrer l'exécution à sec",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Quotas du script",
@@ -759,5 +778,9 @@
         "save": "Enregistrer les quotas"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

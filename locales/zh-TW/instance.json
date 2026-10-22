@@ -469,17 +469,22 @@
         "beaconEffects": "燈塔效果",
         "crafterSlots": "格控",
         "lecternControls": "書本控制",
-        "actions": "動作"
+        "actions": "動作",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "文字輸入",
-        "anvilRename": "重新命名物品"
+        "anvilRename": "重新命名物品",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "書本內容",
         "emptyPage": "（空白頁）",
         "pageIndicator": "第 {{current}} / {{total}} 頁"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "機器人視圖",
@@ -502,6 +507,7 @@
       "offline": "機器人離線。只有當機器人連線時才能操作。"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "移動控制",
       "movement": "移動（WASD）",
       "forward": "前進（W）",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "返回腳本",
         "save": "儲存",
         "saveTooltip": "儲存腳本",
@@ -727,6 +734,16 @@
         "tooltip": "檢視變更"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "模擬運行",
         "title": "模擬運行腳本",
         "description": "以模擬輸入從已選觸發器運行腳本。",
@@ -735,7 +752,8 @@
         "triggerDescription": "選擇要以模擬輸入值執行的觸發節點。",
         "mockInputs": "模擬輸入",
         "valuePlaceholder": "{{type}}值",
-        "start": "開始模擬運行"
+        "start": "開始模擬運行",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "腳本額度",
@@ -758,5 +776,9 @@
         "save": "儲存額度"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

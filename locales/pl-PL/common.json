@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Przyjazna nazwa",
           "placeholder": "Mój bot Minecraft",
-          "description": "Nazwa, którą chcesz nadać tej instancji.",
-          "min": "Przyjazna nazwa musi mieć co najmniej 3 znaki.",
-          "max": "Przyjazna nazwa musi mieć nie więcej niż 32 znaki.",
-          "regex": "Przyjazna nazwa może zawierać tylko litery, cyfry i spacje"
+          "description": "Nazwa, którą chcesz nadać tej instancji."
         },
         "cancel": "Anuluj",
         "create": "Utwórz"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Pobieranie danych...",
           "success": "Dane załadowane!",
-          "error": "Nie udało się pobrać danych"
+          "error": "Nie udało się pobrać danych",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -260,8 +259,13 @@
     "website": "Strona Internetowa"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Nie znaleziono przestrzeni nazw w ustawieniach",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Dodaj nowy wpis...",
       "add": "Dodaj",
       "remove": "Usuń"
@@ -476,6 +480,14 @@
     "success": "Skopiowano \"{{content}}\" do schowka",
     "error": "Nie udało się skopiować do schowka"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Awatar",
@@ -489,7 +501,11 @@
     "email": {
       "uiName": "E-mail",
       "description": "Twój e-mail jest używany do logowania i powiadomień."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtruj dzienniki audytu...",

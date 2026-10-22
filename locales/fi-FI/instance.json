@@ -469,17 +469,22 @@
         "beaconEffects": "Majakan efektit",
         "crafterSlots": "Paikkaohjaimet",
         "lecternControls": "Kirjaohjaimet",
-        "actions": "Toiminnot"
+        "actions": "Toiminnot",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Tekstisyöte",
-        "anvilRename": "Nimeä esine uudelleen"
+        "anvilRename": "Nimeä esine uudelleen",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Kirjan sisältö",
         "emptyPage": "(Tyhjä sivu)",
         "pageIndicator": "Sivu {{current}} / {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Botin näkymä",
@@ -502,6 +507,7 @@
       "offline": "Botti on offline-tilassa. Toiminnot ovat käytettävissä vain, kun botti on yhdistetty."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Liikeohjaus",
       "movement": "Liikkuminen (WASD)",
       "forward": "Liiku eteenpäin (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Takaisin skripteihin",
         "save": "Tallenna",
         "saveTooltip": "Tallenna skripti",
@@ -728,6 +735,16 @@
         "tooltip": "Tarkista muutokset"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Testiajo",
         "title": "Testiajo Skripti",
         "description": "Suorita skripti valitusta laukaisevasta solmusta käyttäen mallisyötteitä.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Valitse laukaiseva solmu, joka suoritetaan malliarvoilla.",
         "mockInputs": "Mallisyötteet",
         "valuePlaceholder": "{{type}} arvo",
-        "start": "Aloita testiajo"
+        "start": "Aloita testiajo",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skriptin kiintiöt",
@@ -759,5 +778,9 @@
         "save": "Tallenna kiintiöt"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

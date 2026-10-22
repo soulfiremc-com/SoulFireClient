@@ -469,17 +469,22 @@
         "beaconEffects": "Beacon Buffs",
         "crafterSlots": "Slot Commands",
         "lecternControls": "Book o' Orders",
-        "actions": "Duties"
+        "actions": "Duties",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Text Parley",
-        "anvilRename": "Rename Yer Loot"
+        "anvilRename": "Rename Yer Loot",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Book Scribblin's",
         "emptyPage": "(Blank page, matey)",
         "pageIndicator": "Page {{current}} of {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot's View",
@@ -502,6 +507,7 @@
       "offline": "Bot's off deck. Actions be cut off till it returns."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Movement O' the Ship",
       "movement": "Ship Movements (WASD)",
       "forward": "Surge Ahead (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Back t' Spells!",
         "save": "Tuck it away",
         "saveTooltip": "Be savin' yer script, matey!",
@@ -728,6 +735,16 @@
         "tooltip": "Inspect the changes, matey"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Dry Run (No cannonballs fired)",
         "title": "Dry Run o' the Script",
         "description": "Sail a script from yer chosen trigger with pretend cargo.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Pick the trigger node to set sail with pretend loot.",
         "mockInputs": "Mock Inputs, arrr!",
         "valuePlaceholder": "{{type}} booty value",
-        "start": "Hoist the Dry Run!"
+        "start": "Hoist the Dry Run!",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script Rations",
@@ -759,5 +778,9 @@
         "save": "Save the rations, secure the cargo!"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

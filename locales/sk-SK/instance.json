@@ -469,17 +469,22 @@
         "beaconEffects": "Efekty majáka",
         "crafterSlots": "Ovládanie slotov",
         "lecternControls": "Ovládanie knihy",
-        "actions": "Akcie"
+        "actions": "Akcie",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Textové pole",
-        "anvilRename": "Premenovať predmet"
+        "anvilRename": "Premenovať predmet",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Obsah knihy",
         "emptyPage": "(Prázdna stránka)",
         "pageIndicator": "Strana {{current}} z {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Zobrazenie bota",
@@ -502,6 +507,7 @@
       "offline": "Bot je offline. Akcie sú dostupné len keď je bot pripojený."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Ovládanie pohybu",
       "movement": "Pohyb (WASD)",
       "forward": "Pohyb vpred (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Späť na skripty",
         "save": "Uložiť",
         "saveTooltip": "Uložiť skript",
@@ -730,6 +737,16 @@
         "tooltip": "Skontrolovať zmeny"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Testovací beh nasucho",
         "title": "Skript testovacieho behu nasucho",
         "description": "Spustite skript zo zvoleného spúšťača so simulovanými vstupmi.",
@@ -738,7 +755,11 @@
         "triggerDescription": "Vyberte spúšťací uzol, ktorý sa má vykonať so simulovanými vstupnými hodnotami.",
         "mockInputs": "Simulované vstupy",
         "valuePlaceholder": "{{type}} hodnota",
-        "start": "Začať testovací beh nasucho"
+        "start": "Začať testovací beh nasucho",
+        "stats_one": "",
+        "stats_few": "",
+        "stats_many": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Kvóty skriptov",
@@ -761,5 +782,9 @@
         "save": "Uložiť kvóty"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

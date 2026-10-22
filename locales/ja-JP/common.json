@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "わかりやすい名前",
           "placeholder": "マイMinecraftボット",
-          "description": "このインスタンスに付けたい名前です。",
-          "min": "わかりやすい名前は3文字以上である必要があります。",
-          "max": "わかりやすい名前は最大32文字である必要があります。",
-          "regex": "わかりやすい名前は、文字・数字・スペースのみ使用できます"
+          "description": "このインスタンスに付けたい名前です。"
         },
         "cancel": "キャンセル",
         "create": "作成"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "データをダウンロード中...",
           "success": "データを読み込みました！",
-          "error": "データのダウンロードに失敗しました"
+          "error": "データのダウンロードに失敗しました",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "ウェブサイト"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "設定のネームスペースが見つかりません",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "新しいエントリを追加...",
       "add": "追加",
       "remove": "削除"
@@ -464,6 +468,14 @@
     "success": "「{{content}}」をクリップボードにコピーしました",
     "error": "クリップボードへのコピーに失敗しました"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "アバター",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "メールアドレス",
       "description": "メールアドレスは、ログインや通知のために使用されます。"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "監査ログを絞り込み...",

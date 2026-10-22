@@ -469,17 +469,22 @@
         "beaconEffects": "비콘 효과",
         "crafterSlots": "슬롯 컨트롤",
         "lecternControls": "책 컨트롤",
-        "actions": "동작"
+        "actions": "동작",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "텍스트 입력",
-        "anvilRename": "아이템 이름 변경"
+        "anvilRename": "아이템 이름 변경",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "책 내용",
         "emptyPage": "(빈 페이지)",
         "pageIndicator": "{{total}}페이지 중 {{current}}페이지"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "봇 뷰",
@@ -502,6 +507,7 @@
       "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 액션을 사용할 수 있습니다."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "이동 조작",
       "movement": "이동 (WASD)",
       "forward": "전진 (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "스크립트 목록으로 돌아가기",
         "save": "저장",
         "saveTooltip": "스크립트 저장하기",
@@ -727,6 +734,16 @@
         "tooltip": "변경 사항 검토"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "드라이 런",
         "title": "드라이 런 스크립트",
         "description": "선택한 트리거에서 스크립트를 모의 입력값과 함께 실행합니다.",
@@ -735,7 +752,8 @@
         "triggerDescription": "모의 입력값으로 실행할 트리거 노드를 선택하세요.",
         "mockInputs": "모의 입력값",
         "valuePlaceholder": "{{type}} 값",
-        "start": "드라이 런 시작"
+        "start": "드라이 런 시작",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "스크립트 할당량",
@@ -758,5 +776,9 @@
         "save": "할당량 저장"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

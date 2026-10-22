@@ -469,17 +469,22 @@
         "beaconEffects": "Beykon Etkileri",
         "crafterSlots": "Slot Kontrolleri",
         "lecternControls": "Kitap Kontrolleri",
-        "actions": "İşlemler"
+        "actions": "İşlemler",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Metin Girişi",
-        "anvilRename": "Eşyayı Yeniden Adlandır"
+        "anvilRename": "Eşyayı Yeniden Adlandır",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Kitap İçeriği",
         "emptyPage": "(Boş sayfa)",
         "pageIndicator": "Sayfa {{current}} / {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot Görünümü",
@@ -502,6 +507,7 @@
       "offline": "Bot çevrimdışı. Eylemler yalnızca bot bağlandığında kullanılabilir."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Hareket Kontrolü",
       "movement": "Hareket (WASD)",
       "forward": "İleri Hareket Et (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Scriptlere Geri Dön",
         "save": "Kaydet",
         "saveTooltip": "Scripti kaydet.",
@@ -728,6 +735,16 @@
         "tooltip": "Değişiklikleri incele"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Deneme Çalıştır",
         "title": "Deneme Çalıştır Script",
         "description": "Seçili bir tetikleyiciden script çalıştır, sahte girişlerle.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Sahte giriş değerleriyle çalıştırılacak tetikleyici düğümünü seçin.",
         "mockInputs": "Sahte Girdiler",
         "valuePlaceholder": "{{type}} değeri",
-        "start": "Deneme Çalıştır'ı Başlat"
+        "start": "Deneme Çalıştır'ı Başlat",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script Kotaları",
@@ -759,5 +778,9 @@
         "save": "Kotaları Kaydet"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }
