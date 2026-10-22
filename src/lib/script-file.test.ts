@@ -110,3 +110,38 @@ test("invalid quota files fail before they can replace an editor document", () =
     assert.deepEqual(target.actions.getScriptData(), before);
   }
 });
+
+test("older exported node sizes are normalized without losing frame sizes or other styles", () => {
+  const session = createScriptEditorSession();
+  const ordinary = {
+    id: crypto.randomUUID(),
+    type: "action.print",
+    position: { x: 10, y: 20 },
+    data: {},
+    width: 180,
+    height: 126,
+    style: { width: 180, height: 126, opacity: 0.5 },
+  };
+  const frame = {
+    id: crypto.randomUUID(),
+    type: "layout.frame",
+    position: { x: 0, y: 0 },
+    data: {},
+    width: 300,
+    height: 200,
+  };
+  session.actions.loadScriptData({
+    nodes: [ordinary, frame],
+    edges: [],
+    quotas: undefined,
+  });
+  const imported = parseScriptFile(
+    serializeScriptFile(session.actions.getScriptData()),
+  );
+  assert.equal(imported.nodes[0].width, undefined);
+  assert.equal(imported.nodes[0].height, undefined);
+  assert.deepEqual(imported.nodes[0].style, { opacity: 0.5 });
+  assert.deepEqual(imported.nodes[1], frame);
+  assert.equal(ordinary.width, 180);
+  assert.equal(ordinary.style.height, 126);
+});

@@ -506,3 +506,24 @@ test("acknowledgement detects node values and edge rewiring without metadata cha
   assert.equal(session.document.get().lastSavedEdges?.[0].source, first);
   assert.equal(session.document.get().edges[0].source, second);
 });
+
+test("framing selected nodes creates explicit dimensions for saving and resizing", () => {
+  const session = createScriptEditorSession();
+  const id = session.actions.addNode("constant.string", { x: 10, y: 20 });
+  session.actions.onNodesChange([
+    { type: "dimensions", id, dimensions: { width: 160, height: 100 } },
+  ]);
+  session.actions.createFrame([id]);
+  const frame = session.document
+    .get()
+    .nodes.find((node) => node.type === "layout.frame");
+  assert.ok(frame);
+  assert.deepEqual(frame.position, { x: -30, y: -20 });
+  assert.equal(frame.width, 240);
+  assert.equal(frame.height, 180);
+  assert.equal(
+    session.document.get().nodes.find((node) => node.id === id)?.data
+      .parentFrameId,
+    frame.id,
+  );
+});

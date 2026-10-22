@@ -550,10 +550,8 @@ export function createScriptEditorSession() {
           containedNodes: nodeIds,
           ...(currentGroupId && { parentGroupId: currentGroupId }),
         },
-        style: {
-          width: maxX - minX,
-          height: maxY - minY,
-        },
+        width: maxX - minX,
+        height: maxY - minY,
         // Frames should be behind other nodes
         zIndex: -1,
       };

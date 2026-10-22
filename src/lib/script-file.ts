@@ -1,5 +1,6 @@
 import { fromJson, type JsonValue, toJson } from "@bufbuild/protobuf";
 import { ScriptQuotasSchema } from "@/generated/soulfire/script_pb";
+import { normalizeScriptNodeDimensions } from "@/lib/script-node-layout";
 import type { ScriptDocumentData } from "@/stores/script-editor-types";
 
 type ImportedScript = Pick<ScriptDocumentData, "nodes" | "edges" | "quotas"> &
@@ -35,7 +36,7 @@ export function parseScriptFile(content: string): ImportedScript {
     delete data.quotas.$typeName;
 
   return {
-    nodes: data.nodes,
+    nodes: data.nodes.map(normalizeScriptNodeDimensions),
     edges: data.edges,
     name: data.name,
     description: data.description,

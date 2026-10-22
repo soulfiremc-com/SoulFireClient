@@ -8,6 +8,7 @@ import {
 import { createClient, type Transport } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import type { Edge, Node } from "@xyflow/react";
+import { persistedNodeDimensions } from "@/lib/script-node-layout";
 import {
   localPortTypeToProto,
   protoPortTypeToLocal,
@@ -297,8 +298,7 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
       label: (nodeData?.label as string) ?? "",
       containedNodes: (nodeData?.containedNodes as string[]) ?? [],
       parentFrameId: (nodeData?.parentFrameId as string) ?? "",
-      width: node.width ?? node.measured?.width,
-      height: node.height ?? node.measured?.height,
+      ...persistedNodeDimensions(node),
       resolvedType:
         nodeData?.resolvedType === undefined
           ? undefined
@@ -335,8 +335,7 @@ export function protoToNodes(nodes: ScriptNode[]): Node[] {
         y: node.position?.y ?? 0,
       },
       data,
-      ...(node.width != null && { width: node.width }),
-      ...(node.height != null && { height: node.height }),
+      ...persistedNodeDimensions(node),
       // Frames must render behind other nodes
       ...(node.type === "layout.frame" && { zIndex: -1 }),
     };

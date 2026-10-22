@@ -28,12 +28,8 @@ export function sameScriptDocument(
   )
     return false;
   if (first.nodes === second.nodes && first.edges === second.edges) return true;
-  const firstNodes = nodesToProto(
-    first.nodes.map((node) => ({ ...node, measured: undefined })),
-  );
-  const secondNodes = nodesToProto(
-    second.nodes.map((node) => ({ ...node, measured: undefined })),
-  );
+  const firstNodes = nodesToProto(first.nodes);
+  const secondNodes = nodesToProto(second.nodes);
   const firstEdges = edgesToProto(first.edges);
   const secondEdges = edgesToProto(second.edges);
   return (
