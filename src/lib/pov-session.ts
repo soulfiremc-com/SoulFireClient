@@ -275,6 +275,8 @@ export function startPovSession(
       pendingEscape = true;
     },
     capture(value: boolean) {
+      // Deliver the last edit or click before the server releases held inputs.
+      if (captured && !value) flush();
       captured = value;
       if (!value) {
         inputs.reset();
