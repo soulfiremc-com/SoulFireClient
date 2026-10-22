@@ -225,6 +225,7 @@ function ScriptEditorContent() {
   const addNodeExecutionTime = editor.actions.addNodeExecutionTime;
   const setExecutionStats = editor.actions.setExecutionStats;
   const [isControlling, setIsControlling] = useState(false);
+  const [hasExecutionStream, setHasExecutionStream] = useState(false);
   const statusOptions = scriptStatusQueryOptions(
     transport,
     instanceId,
@@ -238,8 +239,14 @@ function ScriptEditorContent() {
 
   useEffect(() => {
     if (scriptStatus && !isControlling)
-      editor.actions.syncScriptStatus(scriptStatus);
-  }, [scriptStatus, isControlling, currentScriptId, editor]);
+      editor.actions.syncScriptStatus(scriptStatus, hasExecutionStream);
+  }, [
+    scriptStatus,
+    isControlling,
+    currentScriptId,
+    hasExecutionStream,
+    editor,
+  ]);
 
   const acknowledgePause = useCallback(
     (paused: boolean) => {
@@ -420,6 +427,7 @@ function ScriptEditorContent() {
     }
 
     setIsControlling(true);
+    setHasExecutionStream(true);
     await queryClient.cancelQueries({
       queryKey: ["script-status", instanceId, scriptId],
     });
@@ -545,6 +553,7 @@ function ScriptEditorContent() {
         onError: (error) => {
           if (abortController.signal.aborted) return;
           console.error("Script execution error:", error);
+          setHasExecutionStream(false);
           setActive(false);
           setActiveNode(null);
           setIsControlling(false);
@@ -566,6 +575,7 @@ function ScriptEditorContent() {
         },
         onComplete: () => {
           if (abortController.signal.aborted) return;
+          setHasExecutionStream(false);
           setActive(false);
           setActiveNode(null);
           setIsControlling(false);
@@ -574,6 +584,7 @@ function ScriptEditorContent() {
     } catch (error) {
       if (abortController.signal.aborted) return;
       console.error("Failed to activate script:", error);
+      setHasExecutionStream(false);
       setActive(false);
       setIsControlling(false);
       toast.error(tInstance("scripts.activateError"));
@@ -597,6 +608,7 @@ function ScriptEditorContent() {
 
   // Handle script deactivation
   const handleStop = useCallback(async () => {
+    setHasExecutionStream(false);
     // Abort the streaming connection
     if (executionAbortRef.current) {
       executionAbortRef.current.abort();

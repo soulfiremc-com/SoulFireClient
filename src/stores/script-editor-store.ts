@@ -1670,7 +1670,7 @@ export function createScriptEditorSession() {
         paused,
         lastSavedPaused: paused,
       })),
-    syncScriptStatus: (status) => {
+    syncScriptStatus: (status, preserveActiveNode = false) => {
       if (document.get().scriptId !== status.scriptId) return;
       batch(() => {
         if (status.paused !== undefined) {
@@ -1691,7 +1691,11 @@ export function createScriptEditorSession() {
         execution.setState((state) => ({
           ...state,
           isActive: status.isActive,
-          activeNodeId: status.isActive ? state.activeNodeId : null,
+          activeNodeId: status.isActive
+            ? preserveActiveNode
+              ? state.activeNodeId
+              : (status.activeNodeId ?? null)
+            : null,
         }));
       });
     },

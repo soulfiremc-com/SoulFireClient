@@ -162,7 +162,10 @@ export interface ScriptEditorActions {
   setScriptDescription: (description: string) => void;
   setPaused: (paused: boolean) => void;
   setSavedPaused: (paused: boolean) => void;
-  syncScriptStatus: (status: ScriptStatus) => void;
+  syncScriptStatus: (
+    status: ScriptStatus,
+    preserveActiveNode?: boolean,
+  ) => void;
   setQuotas: (quotas: ScriptQuotas | undefined) => void;
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;

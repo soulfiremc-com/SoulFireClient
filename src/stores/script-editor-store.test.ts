@@ -7,6 +7,29 @@ import {
 } from "@/generated/soulfire/script_pb";
 import { createScriptEditorSession } from "./script-editor-store";
 
+test("polled nodes restore observation without replacing fresher streaming highlights", () => {
+  const editor = createScriptEditorSession();
+  editor.actions.markSaved(editor.actions.getScriptData(), "script");
+  const document = editor.document.get();
+  const status = create(ScriptStatusSchema, {
+    scriptId: "script",
+    isActive: true,
+    activeNodeId: "waiting",
+    paused: false,
+  });
+  editor.actions.syncScriptStatus(status);
+  assert.equal(editor.execution.get().activeNodeId, "waiting");
+  editor.actions.setActiveNode("newer");
+  editor.actions.syncScriptStatus(status, true);
+  assert.equal(editor.execution.get().activeNodeId, "newer");
+  editor.actions.syncScriptStatus({ ...status, activeNodeId: undefined });
+  assert.equal(editor.execution.get().activeNodeId, null);
+  editor.actions.setActiveNode("streaming");
+  editor.actions.syncScriptStatus({ ...status, isActive: false }, true);
+  assert.equal(editor.execution.get().activeNodeId, null);
+  assert.equal(editor.document.get(), document);
+});
+
 test("canonical documents retain selection and newer drafts until remote content changes", () => {
   const editor = createScriptEditorSession();
   const id = editor.actions.addNode(
