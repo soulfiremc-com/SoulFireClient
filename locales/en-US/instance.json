@@ -484,6 +484,8 @@
       "bookPages": {
         "title": "Book Content",
         "emptyPage": "(Empty page)",
+        "previousPage": "Previous page",
+        "nextPage": "Next page",
         "pageIndicator": "Page {{current}} of {{total}}"
       },
       "creativeCatalogHint": "Catalog: click to copy one, Shift+click or middle click to copy a stack. Click the same item to add one, or right click to remove one from the cursor.",

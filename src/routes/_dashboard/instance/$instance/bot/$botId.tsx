@@ -1287,7 +1287,7 @@ function BotInventoryPanel({
     ? inventoryItemImageSrc(carriedItem)
     : undefined;
   const selectedHotbarSlot = inventoryState?.selectedHotbarSlot ?? 0;
-  const isPlayerInventory = layout?.title === "Inventory";
+  const isPlayerInventory = layout?.containerType === "inventory";
   const buttons = layout?.buttons ?? [];
   const textInputs = layout?.textInputs ?? [];
   const anvilInputItem =
@@ -1671,6 +1671,7 @@ function BookPagesPanel({
           <Button
             variant="outline"
             size="sm"
+            aria-label={t("bots.inventoryPanel.bookPages.previousPage")}
             onClick={handlePrevPage}
             disabled={displayPage <= 0}
           >
@@ -1685,6 +1686,7 @@ function BookPagesPanel({
           <Button
             variant="outline"
             size="sm"
+            aria-label={t("bots.inventoryPanel.bookPages.nextPage")}
             onClick={handleNextPage}
             disabled={displayPage >= totalPages - 1}
           >
