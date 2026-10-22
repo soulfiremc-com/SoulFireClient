@@ -907,7 +907,9 @@ function InventorySlotDisplay({
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (onRightClick) {
+    if (e.shiftKey && onShiftClick) {
+      onShiftClick();
+    } else if (onRightClick) {
       onRightClick();
     }
   };
