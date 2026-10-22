@@ -85,6 +85,7 @@ import i18n from "@/lib/i18n.ts";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
+import { getProxyKey } from "@/lib/proxy-selection.ts";
 import {
   formatProxyAsFlat,
   formatProxyAsURI,
@@ -101,7 +102,7 @@ import {
 } from "@/lib/types.ts";
 import {
   addInstanceProxiesBatch,
-  removeInstanceProxiesBatch,
+  removeInstanceProxyEntries,
   runAsync,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
@@ -232,12 +233,6 @@ function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
     case UIProxyType.SOCKS5:
       return ProxyProto_Type.SOCKS5;
   }
-}
-
-function getProxyKey(proxy: ProfileProxy): string {
-  return `${proxy.type}-${proxy.address}-${proxy.username ?? ""}-${
-    proxy.password ?? ""
-  }`;
 }
 
 function saveProxyFile(content: string, filename: string) {
@@ -439,12 +434,12 @@ function AddButton() {
     },
   });
   // Batch remove proxies mutation (for post-import check)
-  const { mutateAsync: removeProxiesBatchMutation } = useMutation({
+  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (addresses: string[]) => {
-      await removeInstanceProxiesBatch(
-        addresses,
+    mutationFn: async (proxies: ProfileProxy[]) => {
+      await removeInstanceProxyEntries(
+        proxies,
         instanceInfo,
         transport,
         queryClient,
@@ -582,7 +577,7 @@ function AddButton() {
               failed++;
               const proxyToRemove = data.value.proxy;
               if (proxyToRemove) {
-                await removeProxiesBatchMutation([proxyToRemove.address]);
+                await removeProxyEntriesMutation([proxyToRemove]);
               }
             }
 
@@ -607,7 +602,7 @@ function AddButton() {
     importedProxies,
     t,
     instanceInfo.id,
-    removeProxiesBatchMutation,
+    removeProxyEntriesMutation,
   ]);
 
   return (
@@ -724,12 +719,12 @@ function ExtraHeader(props: {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   // Batch remove proxies mutation
-  const { mutateAsync: removeProxiesBatchMutation } = useMutation({
+  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (addresses: string[]) => {
-      await removeInstanceProxiesBatch(
-        addresses,
+    mutationFn: async (proxies: ProfileProxy[]) => {
+      await removeInstanceProxyEntries(
+        proxies,
         instanceInfo,
         transport,
         queryClient,
@@ -837,10 +832,10 @@ function ExtraHeader(props: {
               success++;
             } else {
               failed++;
-              // Remove the invalid proxy by address
+              // Remove only the failed entry, preserving its endpoint neighbors.
               const proxyToRemove = data.value.proxy;
               if (proxyToRemove) {
-                await removeProxiesBatchMutation([proxyToRemove.address]);
+                await removeProxyEntriesMutation([proxyToRemove]);
               }
             }
 
@@ -860,7 +855,7 @@ function ExtraHeader(props: {
         });
       },
     });
-  }, [transport, props.table, t, instanceInfo.id, removeProxiesBatchMutation]);
+  }, [transport, props.table, t, instanceInfo.id, removeProxyEntriesMutation]);
 
   return (
     <>
@@ -915,19 +910,16 @@ function ExtraHeader(props: {
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
 
-          toast.promise(
-            removeProxiesBatchMutation(selectedRows.map((r) => r.address)),
-            {
-              loading: t("proxy.removeToast.loading"),
-              success: t("proxy.removeToast.success", {
-                count: selectedRows.length,
-              }),
-              error: (e) => {
-                console.error(e);
-                return t("proxy.removeToast.error");
-              },
+          toast.promise(removeProxyEntriesMutation(selectedRows), {
+            loading: t("proxy.removeToast.loading"),
+            success: t("proxy.removeToast.success", {
+              count: selectedRows.length,
+            }),
+            error: (e) => {
+              console.error(e);
+              return t("proxy.removeToast.error");
             },
-          );
+          });
         }}
       >
         <TrashIcon />
@@ -993,9 +985,9 @@ function Content() {
   const { mutate: removeProxyMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-single", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (address: string) => {
-      await removeInstanceProxiesBatch(
-        [address],
+    mutationFn: async (proxy: ProfileProxy) => {
+      await removeInstanceProxyEntries(
+        [proxy],
         instanceInfo,
         transport,
         queryClient,
@@ -1084,7 +1076,7 @@ function Content() {
           <MenuItem
             variant="destructive"
             onClick={() => {
-              removeProxyMutation(contextMenu.data.address);
+              removeProxyMutation(contextMenu.data);
               dismiss();
             }}
           >

@@ -32,6 +32,7 @@ import {
 import { ServerService } from "@/generated/soulfire/server_pb";
 import { desktop } from "@/lib/desktop.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
+import { removeProxyEntries } from "@/lib/proxy-selection.ts";
 import {
   type BaseSettings,
   convertToInstanceProto,
@@ -936,8 +937,8 @@ export async function addInstanceProxiesBatch(
   });
 }
 
-export async function removeInstanceProxiesBatch(
-  addresses: string[],
+export async function removeInstanceProxyEntries(
+  proxies: ProfileProxy[],
   instanceInfo: {
     id: string;
   },
@@ -948,8 +949,6 @@ export async function removeInstanceProxiesBatch(
   if (transport === null) {
     return;
   }
-
-  const addressSet = new Set(addresses);
 
   await queryClient.cancelQueries({
     queryKey: instanceInfoQueryKey,
@@ -966,18 +965,16 @@ export async function removeInstanceProxiesBatch(
         ...old,
         profile: {
           ...old.profile,
-          proxies: old.profile.proxies.filter(
-            (p) => !addressSet.has(p.address),
-          ),
+          proxies: removeProxyEntries(old.profile.proxies, proxies),
         },
       };
     },
   );
 
   const instanceService = createClient(InstanceService, transport);
-  await instanceService.removeInstanceProxiesBatch({
+  await instanceService.removeInstanceProxyEntries({
     id: instanceInfo.id,
-    addresses: addresses,
+    proxies: proxies.map(toProxyProto),
   });
 }
 
