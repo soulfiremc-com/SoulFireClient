@@ -9,6 +9,7 @@ import {
   InstanceInfoSchema,
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
 import {
   convertFromInstanceProto,
   type InstanceInfoQueryData,
@@ -85,6 +86,51 @@ test("an uncached instance fetch loads its profile", async () => {
     assert.equal(result.id, id);
     assert.deepEqual(result.profile.settings, cached.profile.settings);
     assert.deepEqual(conditionalRequests, [false]);
+  } finally {
+    client.clear();
+  }
+});
+
+test("conditional polling refreshes permissions and bot counts while preserving the profile", async () => {
+  const client = new QueryClient();
+  const permission = InstancePermission.UPDATE_INSTANCE_META;
+  let granted = false;
+  let onlineBots = 1;
+  const transport = createRouterTransport((router) => {
+    router.service(InstanceService, {
+      getInstanceInfo(request) {
+        assert.deepEqual(request.ifModifiedSince, stamp);
+        return {
+          result: {
+            case: "notModified",
+            value: {
+              lastModified: stamp,
+              instancePermissions: [
+                { instancePermission: permission, granted },
+              ],
+              botSummary: { totalBots: 2, desiredBots: 2, onlineBots },
+            },
+          },
+        };
+      },
+    });
+  });
+  client.setQueryData(queryKey, {
+    ...cached,
+    instancePermissions: [{ instancePermission: permission, granted: true }],
+  });
+  try {
+    for (const expected of [false, true]) {
+      granted = expected;
+      const result = await fetchInstanceInfo(transport, id, client);
+      assert.equal(result.instancePermissions[0].granted, expected);
+      assert.equal(result.botSummary?.onlineBots, onlineBots);
+      assert.equal(result.profile, cached.profile);
+      assert.equal(result.config, cached.config);
+      assert.deepEqual(result.lastModified, stamp);
+      client.setQueryData(queryKey, result);
+      onlineBots = 2;
+    }
   } finally {
     client.clear();
   }

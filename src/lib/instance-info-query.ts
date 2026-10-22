@@ -24,8 +24,20 @@ export async function fetchInstanceInfo(
   );
 
   if (result.result.case === "notModified") {
-    if (previousData) return previousData;
-    throw new Error("No cached data available");
+    if (!previousData) throw new Error("No cached data available");
+    const unchanged = result.result.value;
+    if (!unchanged.botSummary && unchanged.instancePermissions.length === 0) {
+      return previousData;
+    }
+    return {
+      ...previousData,
+      lastModified: unchanged.lastModified ?? previousData.lastModified,
+      instancePermissions:
+        unchanged.instancePermissions.length > 0
+          ? unchanged.instancePermissions
+          : previousData.instancePermissions,
+      botSummary: unchanged.botSummary ?? previousData.botSummary,
+    };
   }
   if (result.result.case !== "info") {
     throw new Error("Unexpected response type");
