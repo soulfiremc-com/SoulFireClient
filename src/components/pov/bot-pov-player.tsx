@@ -114,8 +114,8 @@ function BotPovSession({
   const audioGeneration = useRef(0);
   const audioStartingAbort = useRef<AbortController | null>(null);
   const volumeLabelId = useId();
-  const audioSupportedRef = useRef(false);
-  const [audioSupported, setAudioSupported] = useState(false);
+  const audioSupportedRef = useRef<boolean | null>(null);
+  const [audioSupported, setAudioSupported] = useState<boolean | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [audioStarting, setAudioStarting] = useState(false);
   const [volume, setVolume] = useState(80);
@@ -195,6 +195,8 @@ function BotPovSession({
     const feedback = new PovStreamFeedbackTracker();
     let decoder: PovVideoDecoder | undefined;
     actions.connecting();
+    audioSupportedRef.current = null;
+    setAudioSupported(null);
     const dimensions = () => {
       const current = canvasRef.current;
       const rect = current?.getBoundingClientRect();
@@ -275,9 +277,10 @@ function BotPovSession({
         (frame) => {
           feedback.receive(frame);
           metrics?.receive(frame);
-          if (!audioSupportedRef.current && frame.audioEnabled !== undefined) {
-            audioSupportedRef.current = true;
-            setAudioSupported(true);
+          if (audioSupportedRef.current === null) {
+            const supported = frame.audioEnabled !== undefined;
+            audioSupportedRef.current = supported;
+            setAudioSupported(supported);
           }
           if (frame.audioError && audioRef.current) {
             muteAudio();
@@ -293,8 +296,8 @@ function BotPovSession({
           decoder?.reset();
           presenter.reset();
           audioRef.current?.reset();
-          audioSupportedRef.current = false;
-          setAudioSupported(false);
+          audioSupportedRef.current = null;
+          setAudioSupported(null);
           actions.disconnected();
         },
         () => (decoder ? feedback.sample(decoder.stats) : undefined),
@@ -856,9 +859,17 @@ function BotPovSession({
       <Button
         size="sm"
         variant="outline"
-        disabled={!isOnline || !connected || !playing || !audioSupported}
+        disabled={
+          !isOnline || !connected || !playing || audioSupported !== true
+        }
         title={
-          audioSupported ? undefined : "Update the server to use POV audio."
+          audioSupported === null
+            ? playing
+              ? "Waiting for POV to connect."
+              : "Watch the bot to use audio."
+            : audioSupported
+              ? undefined
+              : "Update the server to use POV audio."
         }
         aria-label={audioEnabled ? "Mute audio" : "Unmute audio"}
         aria-pressed={audioEnabled}
@@ -869,9 +880,11 @@ function BotPovSession({
           ? "Starting audio…"
           : audioEnabled
             ? "Mute"
-            : audioSupported
-              ? "Unmute"
-              : "Audio unavailable"}
+            : audioSupported === null
+              ? "Audio"
+              : audioSupported
+                ? "Unmute"
+                : "Audio unavailable"}
       </Button>
       {audioEnabled && (
         <Field className="w-24">
