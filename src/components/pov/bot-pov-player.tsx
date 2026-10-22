@@ -731,6 +731,9 @@ function BotPovSession({
       themeObserver.disconnect();
       popup.removeEventListener("pagehide", closed);
       popup.close();
+      // Activity retains state while disconnecting this effect's window.
+      setPopup((current) => (current === popup ? null : current));
+      actions.setFullscreen(false);
     };
   }, [popup, release, actions.setFullscreen]);
 
