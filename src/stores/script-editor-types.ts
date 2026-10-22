@@ -8,7 +8,10 @@ import type {
   XYPosition,
 } from "@xyflow/react";
 import type { LogEntry } from "@/components/script-editor/types";
-import type { ScriptQuotas } from "@/generated/soulfire/script_pb";
+import type {
+  ScriptQuotas,
+  ScriptStatus,
+} from "@/generated/soulfire/script_pb";
 
 export interface ScriptDocumentData {
   nodes: Node[];
@@ -28,6 +31,7 @@ export interface ScriptDocumentState {
   paused: boolean;
   quotas: ScriptQuotas | undefined;
   isDirty: boolean;
+  lastSavedPaused: boolean;
   lastSavedNodes: Node[] | null;
   lastSavedEdges: Edge[] | null;
 }
@@ -155,6 +159,8 @@ export interface ScriptEditorActions {
   setScriptName: (name: string) => void;
   setScriptDescription: (description: string) => void;
   setPaused: (paused: boolean) => void;
+  setSavedPaused: (paused: boolean) => void;
+  syncScriptStatus: (status: ScriptStatus) => void;
   setQuotas: (quotas: ScriptQuotas | undefined) => void;
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;
@@ -190,5 +196,9 @@ export interface ScriptEditorActions {
   ) => void;
   addNodeExecutionTime: (nodeId: string, timeNanos: number) => void;
   setExecutionStats: (stats: { nodeCount: number; maxCount: number }) => void;
-  markSaved: (data: ScriptDocumentData, scriptId?: string) => void;
+  markSaved: (
+    data: ScriptDocumentData,
+    scriptId?: string,
+    paused?: boolean,
+  ) => void;
 }

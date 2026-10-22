@@ -53,6 +53,7 @@ interface ScriptToolbarProps {
   onFitView?: () => void;
   onClear?: () => void;
   isSaving?: boolean;
+  isControlling?: boolean;
   className?: string;
 }
 
@@ -66,6 +67,7 @@ export function ScriptToolbar({
   onFitView,
   onClear,
   isSaving = false,
+  isControlling = false,
   className,
 }: ScriptToolbarProps) {
   const editor = useScriptEditor();
@@ -276,6 +278,7 @@ export function ScriptToolbar({
                   size={isMobile ? "icon" : "sm"}
                   aria-label={t("scripts.editor.toolbar.resume")}
                   onClick={onStart}
+                  disabled={isControlling}
                   className={cn(!isMobile && "gap-1.5")}
                 />
               }
@@ -297,6 +300,7 @@ export function ScriptToolbar({
                     size={isMobile ? "icon" : "sm"}
                     aria-label={t("scripts.editor.toolbar.pause")}
                     onClick={onStop}
+                    disabled={isControlling}
                     className={cn(!isMobile && "gap-1.5")}
                   />
                 }

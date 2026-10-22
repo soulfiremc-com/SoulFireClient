@@ -1,6 +1,7 @@
 import { createClient } from "@connectrpc/connect";
 import {
   useMutation,
+  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
@@ -62,6 +63,7 @@ import {
   nodesToProto,
   scriptDataToStore,
   scriptQueryOptions,
+  scriptStatusQueryOptions,
 } from "@/lib/script-service.ts";
 import { hasInstancePermission, isDemo } from "@/lib/utils.tsx";
 import { scriptLogLevel, watchScriptLogs } from "@/lib/script-logs";
@@ -215,6 +217,38 @@ function ScriptEditorContent() {
   const insertNodeOnEdge = editor.actions.insertNodeOnEdge;
   const addNodeExecutionTime = editor.actions.addNodeExecutionTime;
   const setExecutionStats = editor.actions.setExecutionStats;
+  const [isControlling, setIsControlling] = useState(false);
+  const statusOptions = scriptStatusQueryOptions(
+    transport,
+    instanceId,
+    scriptId,
+  );
+  const { data: scriptStatus } = useQuery(statusOptions);
+  const currentScriptId = useSelector(
+    editor.document,
+    (state) => state.scriptId,
+  );
+
+  useEffect(() => {
+    if (scriptStatus && !isControlling)
+      editor.actions.syncScriptStatus(scriptStatus);
+  }, [scriptStatus, isControlling, currentScriptId, editor]);
+
+  const acknowledgePause = useCallback(
+    (paused: boolean) => {
+      editor.actions.setSavedPaused(paused);
+      queryClient.setQueryData(
+        scriptStatusQueryOptions(transport, instanceId, scriptId).queryKey,
+        (current) =>
+          current ? { ...current, paused, isActive: !paused } : current,
+      );
+      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
+      void queryClient.invalidateQueries({
+        queryKey: ["script-status", instanceId, scriptId],
+      });
+    },
+    [editor, queryClient, transport, instanceId, scriptId],
+  );
 
   const isMobile = useIsMobile();
 
@@ -323,6 +357,20 @@ function ScriptEditorContent() {
       );
     },
     onSuccess: (script) => {
+      queryClient.setQueryData(
+        scriptStatusQueryOptions(transport, instanceId, script.id).queryKey,
+        (current) =>
+          current
+            ? {
+                ...current,
+                paused: script.paused,
+                isActive: script.paused ? false : current.isActive,
+              }
+            : current,
+      );
+      void queryClient.invalidateQueries({
+        queryKey: ["script-status", instanceId, script.id],
+      });
       toast.success(tInstance("scripts.saveSuccess"));
       if (scriptId === "new" && mounted.current) {
         // The create response already contains the canonical document. Avoid
@@ -359,6 +407,11 @@ function ScriptEditorContent() {
       return;
     }
 
+    setIsControlling(true);
+    await queryClient.cancelQueries({
+      queryKey: ["script-status", instanceId, scriptId],
+    });
+
     // Abort any existing execution
     if (executionAbortRef.current) {
       executionAbortRef.current.abort();
@@ -387,10 +440,8 @@ function ScriptEditorContent() {
         onMessage: (event) => {
           if (abortController.signal.aborted) return;
           if (event.event.case === "scriptStarted") {
-            editor.document.setState((state) => ({ ...state, paused: false }));
-            void queryClient.invalidateQueries({
-              queryKey: ["scripts", instanceId],
-            });
+            acknowledgePause(false);
+            setIsControlling(false);
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -459,6 +510,9 @@ function ScriptEditorContent() {
             const success = event.event.value.success;
             setActive(false);
             setActiveNode(null);
+            void queryClient.invalidateQueries({
+              queryKey: ["script-status", instanceId, scriptId],
+            });
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -478,6 +532,10 @@ function ScriptEditorContent() {
           console.error("Script execution error:", error);
           setActive(false);
           setActiveNode(null);
+          setIsControlling(false);
+          void queryClient.invalidateQueries({
+            queryKey: ["script-status", instanceId, scriptId],
+          });
           const message =
             error instanceof Error ? error.message : String(error);
           addExecutionLog({
@@ -495,12 +553,14 @@ function ScriptEditorContent() {
           if (abortController.signal.aborted) return;
           setActive(false);
           setActiveNode(null);
+          setIsControlling(false);
         },
       });
     } catch (error) {
       if (abortController.signal.aborted) return;
       console.error("Failed to activate script:", error);
       setActive(false);
+      setIsControlling(false);
       toast.error(tInstance("scripts.activateError"));
     }
   }, [
@@ -516,6 +576,7 @@ function ScriptEditorContent() {
     addExecutionLog,
     editor.document.setState,
     canViewLogs,
+    acknowledgePause,
   ]);
 
   // Handle script deactivation
@@ -535,6 +596,10 @@ function ScriptEditorContent() {
     }
     if (!transport) return;
 
+    setIsControlling(true);
+    await queryClient.cancelQueries({
+      queryKey: ["script-status", instanceId, scriptId],
+    });
     try {
       const client = createClient(ScriptService, transport);
       await client.deactivateScript({
@@ -543,8 +608,7 @@ function ScriptEditorContent() {
       });
       setActive(false);
       setActiveNode(null);
-      editor.document.setState((state) => ({ ...state, paused: true }));
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
+      acknowledgePause(true);
       addExecutionLog({
         id: crypto.randomUUID(),
         timestamp: new Date(),
@@ -555,9 +619,12 @@ function ScriptEditorContent() {
       toast.success(tInstance("scripts.deactivateSuccess"));
     } catch (error) {
       console.error("Failed to deactivate script:", error);
-      // Even if the RPC fails, mark as deactivated locally
-      setActive(false);
-      setActiveNode(null);
+      toast.error(tInstance("scripts.pauseError"));
+      void queryClient.invalidateQueries({
+        queryKey: ["script-status", instanceId, scriptId],
+      });
+    } finally {
+      setIsControlling(false);
     }
   }, [
     transport,
@@ -569,6 +636,7 @@ function ScriptEditorContent() {
     queryClient,
     editor,
     addExecutionLog,
+    acknowledgePause,
   ]);
 
   // Cleanup on unmount
@@ -718,6 +786,7 @@ function ScriptEditorContent() {
       <div className="flex h-full w-full flex-col">
         {/* Compact Toolbar */}
         <ScriptToolbar
+          isControlling={isControlling}
           instanceId={instanceId}
           onSave={handleSave}
           onStart={handleStart}
@@ -802,6 +871,7 @@ function ScriptEditorContent() {
     <div className="flex h-full w-full flex-col">
       {/* Toolbar */}
       <ScriptToolbar
+        isControlling={isControlling}
         instanceId={instanceId}
         onSave={handleSave}
         onStart={handleStart}

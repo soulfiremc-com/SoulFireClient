@@ -210,6 +210,7 @@ export function createScriptEditorSession() {
     paused: false,
     quotas: undefined,
     isDirty: false,
+    lastSavedPaused: false,
     lastSavedNodes: null,
     lastSavedEdges: null,
   });
@@ -1663,6 +1664,37 @@ export function createScriptEditorSession() {
       })),
     setPaused: (paused) =>
       document.setState((state) => ({ ...state, paused, isDirty: true })),
+    setSavedPaused: (paused) =>
+      document.setState((state) => ({
+        ...state,
+        paused,
+        lastSavedPaused: paused,
+      })),
+    syncScriptStatus: (status) => {
+      if (document.get().scriptId !== status.scriptId) return;
+      batch(() => {
+        if (status.paused !== undefined) {
+          const paused = status.paused;
+          document.setState((state) =>
+            state.lastSavedPaused === paused
+              ? state
+              : {
+                  ...state,
+                  paused:
+                    state.paused === state.lastSavedPaused
+                      ? paused
+                      : state.paused,
+                  lastSavedPaused: paused,
+                },
+          );
+        }
+        execution.setState((state) => ({
+          ...state,
+          isActive: status.isActive,
+          activeNodeId: status.isActive ? state.activeNodeId : null,
+        }));
+      });
+    },
     setQuotas: (quotas) =>
       document.setState((state) => ({ ...state, quotas, isDirty: true })),
     setActive: (active) =>
@@ -1691,6 +1723,7 @@ export function createScriptEditorSession() {
           scriptName: data.name,
           scriptDescription: data.description,
           paused: data.paused,
+          lastSavedPaused: data.paused,
           quotas: data.quotas,
           nodes: data.nodes,
           edges: normalizeMultiInputEdgeOrders(data.nodes, data.edges),
@@ -1752,6 +1785,7 @@ export function createScriptEditorSession() {
           scriptName: "Untitled Script",
           scriptDescription: "",
           paused: false,
+          lastSavedPaused: false,
           quotas: undefined,
           isDirty: false,
           lastSavedNodes: null,
@@ -1816,14 +1850,23 @@ export function createScriptEditorSession() {
       }),
     setExecutionStats: (stats) =>
       execution.setState((state) => ({ ...state, lastExecutionStats: stats })),
-    markSaved: (data, scriptId) =>
-      document.setState((state) => ({
-        ...state,
-        scriptId: scriptId ?? state.scriptId,
-        lastSavedNodes: data.nodes,
-        lastSavedEdges: data.edges,
-        isDirty: !sameScriptDocument(actions.getScriptData(), data),
-      })),
+    markSaved: (data, scriptId, savedPaused = data.paused) =>
+      document.setState((state) => {
+        const paused =
+          state.paused === data.paused ? savedPaused : state.paused;
+        return {
+          ...state,
+          scriptId: scriptId ?? state.scriptId,
+          paused,
+          lastSavedPaused: savedPaused,
+          lastSavedNodes: data.nodes,
+          lastSavedEdges: data.edges,
+          isDirty: !sameScriptDocument(
+            { ...actions.getScriptData(), paused },
+            { ...data, paused: savedPaused },
+          ),
+        };
+      }),
   };
   return {
     document,

@@ -5,6 +5,51 @@ import { ScriptService } from "@/generated/soulfire/script_pb";
 import { getScriptEditorRouteSession } from "@/stores/script-editor-route-session";
 import { saveScript } from "./save-script";
 
+test("saving graph edits preserves an unseen server pause and accepts its canonical value", async () => {
+  const editor = getScriptEditorRouteSession(
+    undefined,
+    "instance",
+    "script",
+  ).editor;
+  editor.actions.markSaved(editor.actions.getScriptData(), "script");
+  editor.actions.addNode("constant.number", { x: 10, y: 20 }, { value: 2 });
+  const transport = createRouterTransport((router) => {
+    router.service(ScriptService, {
+      updateScript(request) {
+        assert.equal(request.paused, undefined);
+        return { script: { id: request.scriptId, paused: true } };
+      },
+    });
+  });
+  await saveScript(transport, "instance", editor, "Untitled");
+  assert.equal(editor.document.get().paused, true);
+  assert.equal(editor.document.get().lastSavedPaused, true);
+  assert.equal(editor.document.get().isDirty, false);
+});
+
+test("saving an explicit pause edit retains a newer pause draft during acknowledgement", async () => {
+  const editor = getScriptEditorRouteSession(
+    undefined,
+    "instance",
+    "script",
+  ).editor;
+  editor.actions.markSaved(editor.actions.getScriptData(), "script");
+  editor.actions.setPaused(true);
+  const transport = createRouterTransport((router) => {
+    router.service(ScriptService, {
+      updateScript(request) {
+        assert.equal(request.paused, true);
+        editor.actions.setPaused(false);
+        return { script: { id: request.scriptId, paused: true } };
+      },
+    });
+  });
+  await saveScript(transport, "instance", editor, "Untitled");
+  assert.equal(editor.document.get().paused, false);
+  assert.equal(editor.document.get().lastSavedPaused, true);
+  assert.equal(editor.document.get().isDirty, true);
+});
+
 test("a second save updates the assigned ID before canonical navigation finishes", async () => {
   const session = getScriptEditorRouteSession(undefined, "instance", "new");
   const editor = session.editor;

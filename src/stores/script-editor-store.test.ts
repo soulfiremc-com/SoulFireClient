@@ -1,8 +1,78 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create } from "@bufbuild/protobuf";
-import { ScriptQuotasSchema } from "@/generated/soulfire/script_pb";
+import {
+  ScriptQuotasSchema,
+  ScriptStatusSchema,
+} from "@/generated/soulfire/script_pb";
 import { createScriptEditorSession } from "./script-editor-store";
+
+test("status updates pause controls without replacing unsaved graph edits", () => {
+  const editor = createScriptEditorSession();
+  editor.actions.markSaved(editor.actions.getScriptData(), "script");
+  const node = editor.actions.addNode(
+    "constant.number",
+    { x: 10, y: 20 },
+    { value: 2 },
+  );
+  editor.actions.setActiveNode(node);
+  const before = editor.document.get();
+  editor.actions.syncScriptStatus(
+    create(ScriptStatusSchema, {
+      scriptId: "script",
+      paused: true,
+      isActive: false,
+    }),
+  );
+  const paused = editor.document.get();
+  assert.equal(paused.paused, true);
+  assert.equal(paused.lastSavedPaused, true);
+  assert.equal(paused.nodes, before.nodes);
+  assert.equal(paused.lastSavedNodes, before.lastSavedNodes);
+  assert.equal(paused.isDirty, true);
+  assert.equal(editor.execution.get().activeNodeId, null);
+  editor.actions.syncScriptStatus(
+    create(ScriptStatusSchema, {
+      scriptId: "script",
+      paused: false,
+      isActive: true,
+    }),
+  );
+  assert.equal(editor.document.get().paused, false);
+  assert.equal(editor.execution.get().isActive, true);
+});
+
+test("status preserves local pause intent and ignores other scripts and unknown pause settings", () => {
+  const editor = createScriptEditorSession();
+  editor.actions.markSaved(editor.actions.getScriptData(), "script");
+  editor.actions.setPaused(true);
+  editor.actions.syncScriptStatus(
+    create(ScriptStatusSchema, {
+      scriptId: "script",
+      paused: false,
+      isActive: true,
+    }),
+  );
+  const local = editor.document.get();
+  assert.equal(local.paused, true);
+  assert.equal(local.lastSavedPaused, false);
+  editor.actions.syncScriptStatus(
+    create(ScriptStatusSchema, {
+      scriptId: "script",
+      isActive: false,
+    }),
+  );
+  assert.equal(editor.document.get(), local);
+  editor.actions.syncScriptStatus(
+    create(ScriptStatusSchema, {
+      scriptId: "other",
+      paused: true,
+      isActive: true,
+    }),
+  );
+  assert.equal(editor.document.get(), local);
+  assert.equal(editor.execution.get().isActive, false);
+});
 
 test("editor sessions isolate document, UI, and execution updates", () => {
   const first = createScriptEditorSession();

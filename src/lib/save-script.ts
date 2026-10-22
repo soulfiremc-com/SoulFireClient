@@ -9,7 +9,7 @@ export async function saveScript(
   editor: ReturnType<typeof createScriptEditorSession>,
   defaultName: string,
 ) {
-  const scriptId = editor.document.get().scriptId;
+  const { scriptId, lastSavedPaused } = editor.document.get();
   const snapshot = editor.actions.getScriptData();
   const client = createClient(ScriptService, transport);
   const content = {
@@ -18,7 +18,11 @@ export async function saveScript(
     description: snapshot.description,
     nodes: nodesToProto(snapshot.nodes),
     edges: edgesToProto(snapshot.edges),
-    paused: snapshot.paused,
+    // Graph edits must not resume a script paused by another client.
+    paused:
+      scriptId && snapshot.paused === lastSavedPaused
+        ? undefined
+        : snapshot.paused,
     quotas: snapshot.quotas,
   };
   const result = scriptId
@@ -32,6 +36,6 @@ export async function saveScript(
     : await client.createScript(content);
   if (!result.script)
     throw new Error("The server did not return the saved script.");
-  editor.actions.markSaved(snapshot, result.script.id);
+  editor.actions.markSaved(snapshot, result.script.id, result.script.paused);
   return result.script;
 }
