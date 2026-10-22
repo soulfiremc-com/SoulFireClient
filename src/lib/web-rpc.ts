@@ -8,6 +8,7 @@ import {
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import i18n from "@/lib/i18n.ts";
 import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
+import { resetQuerySession } from "@/lib/query-session.ts";
 import type { SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";
 
@@ -17,6 +18,24 @@ const LOCAL_STORAGE_SERVER_TOKEN_KEY = "server-token";
 const LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY = "server-webdav-token";
 const LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY =
   "server-impersonation-token";
+
+const AUTHENTICATION_KEYS = [
+  LOCAL_STORAGE_SERVER_TYPE_KEY,
+  LOCAL_STORAGE_SERVER_ADDRESS_KEY,
+  LOCAL_STORAGE_SERVER_TOKEN_KEY,
+  LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY,
+];
+
+function updateAuthentication(update: () => void) {
+  const previous = AUTHENTICATION_KEYS.map((key) => localStorage.getItem(key));
+  update();
+  if (
+    AUTHENTICATION_KEYS.some(
+      (key, index) => localStorage.getItem(key) !== previous[index],
+    )
+  )
+    resetQuerySession();
+}
 
 export const isAuthenticated = () => {
   if (isDemo()) return true;
@@ -33,9 +52,11 @@ export const setAuthentication = (
   address: string,
   token: string,
 ) => {
-  localStorage.setItem(LOCAL_STORAGE_SERVER_TYPE_KEY, type);
-  localStorage.setItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY, address);
-  localStorage.setItem(LOCAL_STORAGE_SERVER_TOKEN_KEY, token);
+  updateAuthentication(() => {
+    localStorage.setItem(LOCAL_STORAGE_SERVER_TYPE_KEY, type);
+    localStorage.setItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY, address);
+    localStorage.setItem(LOCAL_STORAGE_SERVER_TOKEN_KEY, token);
+  });
 };
 
 export const getServerType = () => {
@@ -73,25 +94,31 @@ export const logOut = () => {
   if (isPostHogConfigured && isAuthenticated()) {
     posthog.reset();
   }
-  localStorage.removeItem(LOCAL_STORAGE_SERVER_TYPE_KEY);
-  localStorage.removeItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
-  localStorage.removeItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
-  localStorage.removeItem(LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY);
-  localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
+  updateAuthentication(() => {
+    localStorage.removeItem(LOCAL_STORAGE_SERVER_TYPE_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
+  });
 };
 
 export const startImpersonation = (token: string) => {
   if (isPostHogConfigured) {
     posthog.reset();
   }
-  localStorage.setItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY, token);
+  updateAuthentication(() => {
+    localStorage.setItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY, token);
+  });
 };
 
 export const stopImpersonation = () => {
   if (isPostHogConfigured) {
     posthog.reset();
   }
-  localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
+  updateAuthentication(() => {
+    localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
+  });
 };
 
 export const isImpersonating = () => {
