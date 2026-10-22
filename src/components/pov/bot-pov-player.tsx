@@ -108,6 +108,7 @@ function BotPovSession({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const unlockingForScreen = useRef(false);
+  const heldMouseButtons = useRef(new Set<number>());
   const session = useRef<ReturnType<typeof startPovSession> | null>(null);
   const audioRef = useRef<PovAudioPlayer | null>(null);
   const audioGeneration = useRef(0);
@@ -169,6 +170,7 @@ function BotPovSession({
   }
 
   const release = useCallback(() => {
+    heldMouseButtons.current.clear();
     actions.releaseCapture();
     toast.dismiss(captureToastId);
     session.current?.capture(false);
@@ -593,7 +595,7 @@ function BotPovSession({
     canvas.addEventListener("pointermove", touchMove);
     canvas.addEventListener("pointerup", touchEnd);
     canvas.addEventListener("pointercancel", touchEnd);
-    const heldButtons = new Set<number>();
+    const heldButtons = heldMouseButtons.current;
     const moveInScreen = (event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       enqueue({
