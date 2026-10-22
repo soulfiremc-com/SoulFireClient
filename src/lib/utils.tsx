@@ -148,15 +148,6 @@ export function getGravatarUrl(email: string) {
   return `https://www.gravatar.com/avatar/${sha256(email)}?d=404`;
 }
 
-export function data2blob(data: string) {
-  const bytes = new Uint8Array(data.length);
-  for (let i = 0; i < data.length; i++) {
-    bytes[i] = data.charCodeAt(i);
-  }
-
-  return new Blob([bytes]);
-}
-
 export function languageEmoji(locale: string): ReactNode {
   if (locale === "lol-US") {
     return "🐱";

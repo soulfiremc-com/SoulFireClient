@@ -80,6 +80,7 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { createTextBlob } from "@/lib/download.ts";
 import i18n from "@/lib/i18n.ts";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
@@ -100,7 +101,6 @@ import {
 } from "@/lib/types.ts";
 import {
   addInstanceProxiesBatch,
-  data2blob,
   removeInstanceProxiesBatch,
   runAsync,
   updateInstanceConfigEntry,
@@ -261,7 +261,7 @@ function saveProxyFile(content: string, filename: string) {
       }
     });
   } else {
-    saveAs(data2blob(content), filename);
+    saveAs(createTextBlob(content), filename);
   }
 }
 

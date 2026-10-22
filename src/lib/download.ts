@@ -1,5 +1,12 @@
 import type { DownloadResponse } from "@/generated/soulfire/download_pb";
 
+export function createTextBlob(
+  text: string,
+  type = "text/plain;charset=utf-8",
+) {
+  return new Blob([text], { type });
+}
+
 export class DownloadHttpError extends Error {
   constructor(readonly statusCode: number) {
     super(`Download returned HTTP ${statusCode}`);

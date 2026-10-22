@@ -62,10 +62,10 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { createTextBlob } from "@/lib/download.ts";
 import { formatShortcut } from "@/lib/platform.ts";
 import type { ProfileRoot } from "@/lib/types.ts";
 import {
-  data2blob,
   hasGlobalPermission,
   hasInstancePermission,
   runAsync,
@@ -388,7 +388,7 @@ function InstanceActionButtons() {
                 }
               });
             } else {
-              saveAs(data2blob(data), "profile.json");
+              saveAs(createTextBlob(data, "application/json"), "profile.json");
             }
 
             toast.success(t("instanceSidebar.profileSaved"));
