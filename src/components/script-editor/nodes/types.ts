@@ -302,6 +302,27 @@ export interface CategoryInfo {
   sortOrder: number;
 }
 
+const localPortTypes: Record<PortType, ProtoPortType> = {
+  any: ProtoPortType.ANY,
+  number: ProtoPortType.NUMBER,
+  string: ProtoPortType.STRING,
+  boolean: ProtoPortType.BOOLEAN,
+  vector3: ProtoPortType.VECTOR3,
+  bot: ProtoPortType.BOT,
+  list: ProtoPortType.LIST,
+  execution: ProtoPortType.EXEC,
+  block: ProtoPortType.BLOCK,
+  entity: ProtoPortType.ENTITY,
+  item: ProtoPortType.ITEM,
+  map: ProtoPortType.MAP,
+  set: ProtoPortType.SET,
+  collection: ProtoPortType.COLLECTION,
+};
+
+export function localPortTypeToProto(type: PortType): ProtoPortType {
+  return localPortTypes[type];
+}
+
 /**
  * Convert proto PortType enum to local string type
  */

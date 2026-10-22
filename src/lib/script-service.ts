@@ -9,6 +9,11 @@ import { createClient, type Transport } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import type { Edge, Node } from "@xyflow/react";
 import {
+  localPortTypeToProto,
+  protoPortTypeToLocal,
+  type PortType as LocalPortType,
+} from "@/components/script-editor/nodes/types";
+import {
   EdgeType,
   type GetNodeTypesRequest,
   type GetNodeTypesResponse,
@@ -294,7 +299,10 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
       parentFrameId: (nodeData?.parentFrameId as string) ?? "",
       width: node.width ?? node.measured?.width,
       height: node.height ?? node.measured?.height,
-      resolvedType: nodeData?.resolvedType as PortType | undefined,
+      resolvedType:
+        nodeData?.resolvedType === undefined
+          ? undefined
+          : localPortTypeToProto(nodeData.resolvedType as LocalPortType),
     });
   });
 }
@@ -317,7 +325,8 @@ export function protoToNodes(nodes: ScriptNode[]): Node[] {
     if (node.containedNodes.length > 0)
       data.containedNodes = node.containedNodes;
     if (node.parentFrameId) data.parentFrameId = node.parentFrameId;
-    if (node.resolvedType !== undefined) data.resolvedType = node.resolvedType;
+    if (node.resolvedType !== undefined)
+      data.resolvedType = protoPortTypeToLocal(node.resolvedType);
     return {
       id: node.id,
       type: node.type,

@@ -250,7 +250,8 @@ export function createScriptEditorSession() {
           change.type === "position" ||
           change.type === "remove" ||
           change.type === "add" ||
-          change.type === "replace",
+          change.type === "replace" ||
+          (change.type === "dimensions" && !!change.setAttributes),
       );
       document.setState((state) => ({
         ...state,

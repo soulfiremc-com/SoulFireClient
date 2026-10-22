@@ -391,6 +391,65 @@ test("canvas selection and measurement do not make an acknowledged save dirty", 
   assert.equal(session.document.get().nodes[0].measured?.height, 100);
 });
 
+test("explicit frame resizes change the saved document while measurements stay clean", () => {
+  const session = createScriptEditorSession();
+  const id = crypto.randomUUID();
+  session.actions.loadScript({
+    id: crypto.randomUUID(),
+    name: "Frame",
+    description: "",
+    paused: true,
+    quotas: undefined,
+    nodes: [
+      {
+        id,
+        type: "layout.frame",
+        position: { x: 0, y: 0 },
+        width: 300,
+        height: 160,
+        data: {},
+      },
+    ],
+    edges: [],
+  });
+  session.actions.onNodesChange([
+    { type: "dimensions", id, dimensions: { width: 300, height: 160 } },
+  ]);
+  assert.equal(session.document.get().isDirty, false);
+  for (const [setAttributes, width, height] of [
+    [true, 348, 192],
+    ["width", 384, 192],
+    ["height", 384, 224],
+  ] as const) {
+    session.actions.onNodesChange([
+      {
+        type: "dimensions",
+        id,
+        dimensions: { width, height },
+        resizing: true,
+        setAttributes,
+      },
+    ]);
+    assert.equal(session.document.get().isDirty, true);
+    if (setAttributes === true) {
+      assert.equal(session.document.get().lastSavedNodes?.[0].width, 300);
+      assert.equal(session.document.get().lastSavedNodes?.[0].height, 160);
+    }
+    session.actions.markSaved(session.actions.getScriptData());
+    session.actions.onNodesChange([
+      {
+        type: "dimensions",
+        id,
+        dimensions: { width, height },
+        resizing: false,
+      },
+    ]);
+    assert.equal(session.document.get().isDirty, false);
+  }
+  assert.equal(session.document.get().nodes[0].width, 384);
+  assert.equal(session.document.get().nodes[0].height, 224);
+});
+
 test("acknowledgement compares quota values without losing bigint precision", () => {
   const session = createScriptEditorSession();
   session.actions.setQuotas(
