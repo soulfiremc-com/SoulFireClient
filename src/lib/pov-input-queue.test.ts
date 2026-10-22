@@ -6,6 +6,7 @@ import {
   PovInputEventSchema,
 } from "@/generated/soulfire/pov_pb";
 import { PovInputQueue } from "./pov-input-queue";
+import { keyInput } from "./pov-input";
 
 const move = (x: number, y = 0, relative = false) =>
   create(PovInputEventSchema, { kind: Kind.MOVE, x, y, relative });
@@ -95,4 +96,65 @@ test("input stays bounded and can reset after overflow", () => {
   queue.reset();
   assert.equal(queue.enqueue(event(), "keyboard"), true);
   assert.equal(queue.drain().length, 1);
+});
+
+test("modifier changes still release keys that the keyboard owns", () => {
+  const queue = new PovInputQueue();
+  const event = {
+    code: "KeyW",
+    ctrlKey: false,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  const down = keyInput(event, true, false);
+  assert.ok(down);
+  queue.enqueue(down, "keyboard");
+  queue.drain();
+  const up = keyInput({ ...event, metaKey: true }, false, false);
+  if (up) queue.enqueue(up, "keyboard");
+  const batch = queue.drain();
+  assert.deepEqual(
+    batch.map(({ code, action }) => [code, action]),
+    [[87, 0]],
+  );
+});
+
+test("system key releases neither invent ownership nor cancel another device", () => {
+  const queue = new PovInputQueue();
+  const event = {
+    code: "KeyW",
+    ctrlKey: false,
+    metaKey: true,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  assert.equal(keyInput(event, true, false), null);
+  const orphan = keyInput(event, false, false);
+  if (orphan) queue.enqueue(orphan, "keyboard");
+  assert.equal(queue.length, 0);
+  queue.enqueue(
+    create(PovInputEventSchema, { kind: Kind.KEY, code: 87, action: 1 }),
+    "gamepad",
+  );
+  queue.drain();
+  const down = keyInput({ ...event, metaKey: false }, true, false);
+  assert.ok(down);
+  queue.enqueue(down, "keyboard");
+  const up = keyInput(event, false, false);
+  assert.ok(up);
+  queue.enqueue(up, "keyboard");
+  assert.equal(queue.length, 0);
+  queue.enqueue(
+    create(PovInputEventSchema, { kind: Kind.KEY, code: 87, action: 0 }),
+    "gamepad",
+  );
+  assert.deepEqual(
+    queue.drain().map(({ code, action }) => [code, action]),
+    [[87, 0]],
+  );
 });

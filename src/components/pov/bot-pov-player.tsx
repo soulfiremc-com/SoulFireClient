@@ -437,24 +437,34 @@ function BotPovSession({
     let escapeForwarded = false;
     const key = (event: KeyboardEvent) => {
       if (playerStore.get().capture !== "captured") return;
-      if (isPovReleaseShortcut(event, isMac)) {
+      const pressed = event.type === "keydown";
+      if (pressed && isPovReleaseShortcut(event, isMac)) {
         event.preventDefault();
         event.stopPropagation();
-        if (event.type === "keydown") release();
+        release();
         return;
       }
-      if (event.isComposing || event.code === "Process") return;
       const typing =
         playerStore.get().screenOpen && event.target === textInputRef.current;
-      if (typing && (event.ctrlKey || event.metaKey) && event.code === "KeyV")
+      if (
+        pressed &&
+        typing &&
+        (event.ctrlKey || event.metaKey) &&
+        event.code === "KeyV"
+      )
         return;
+      const input = keyInput(event, pressed, typing);
+      if (!input) return;
+      if (!pressed) {
+        // A modifier or IME change must not strand a previously pressed key.
+        // Input ownership suppresses releases for keys this keyboard never sent.
+        session.current?.enqueue(input);
+        return;
+      }
       const copying =
         typing &&
         isTextEditingShortcut(event) &&
         (event.code === "KeyC" || event.code === "KeyX");
-      const pressed = event.type === "keydown";
-      const input = keyInput(event, pressed, typing);
-      if (!input) return;
       if (
         !(
           typing &&
@@ -466,18 +476,16 @@ function BotPovSession({
         event.preventDefault();
       event.stopPropagation();
       if (event.code === "Escape") {
-        if (pressed && !event.repeat) {
+        if (!event.repeat) {
           escapeForwarded = true;
           session.current?.escape();
         }
         return;
       }
       session.current?.enqueue(input);
-      if (copying && pressed) session.current?.copy();
+      if (copying) session.current?.copy();
       if (
-        pressed &&
         !typing &&
-        !event.isComposing &&
         !event.ctrlKey &&
         !event.metaKey &&
         [...event.key].length === 1

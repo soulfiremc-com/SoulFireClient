@@ -108,12 +108,13 @@ export function isTextEditingShortcut(event: TextShortcutEvent): boolean {
 }
 
 export function keyInput(
-  event: TextShortcutEvent & Pick<KeyboardEvent, "repeat">,
+  event: TextShortcutEvent & Pick<KeyboardEvent, "repeat" | "isComposing">,
   pressed: boolean,
   typing: boolean,
 ) {
   const editing = typing && isTextEditingShortcut(event);
-  if (isSystemShortcut(event) && !editing) return null;
+  if (pressed && (event.isComposing || (isSystemShortcut(event) && !editing)))
+    return null;
   const code = glfwKey(event.code);
   return code === undefined
     ? null

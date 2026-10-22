@@ -86,6 +86,7 @@ test("Command editing shortcuts reach native text fields as Control shortcuts", 
       altKey: false,
       shiftKey: false,
       repeat: false,
+      isComposing: false,
     };
     const pressed = keyInput(event, true, true);
     const released = keyInput(event, false, true);
@@ -106,6 +107,7 @@ test("native text editing leaves system shortcuts and browser paste available", 
     altKey: false,
     shiftKey: false,
     repeat: false,
+    isComposing: false,
   };
   for (const code of ["KeyR", "KeyQ", "KeyT", "KeyV", "Tab"])
     assert.equal(keyInput({ ...event, code }, true, true), null);
@@ -127,6 +129,7 @@ test("Control editing shortcuts preserve modified game key combinations", () => 
     altKey: false,
     shiftKey: false,
     repeat: false,
+    isComposing: false,
   };
   assert.equal(isTextEditingShortcut(event), true);
   assert.equal(keyInput(event, true, true)?.modifiers, 2);
@@ -134,4 +137,20 @@ test("Control editing shortcuts preserve modified game key combinations", () => 
   assert.equal(isTextEditingShortcut(shifted), false);
   assert.equal(keyInput(shifted, true, true)?.modifiers, 3);
   assert.equal(keyInput({ ...event, repeat: true }, true, true)?.action, 2);
+});
+
+test("composition filters key presses without losing physical key releases", () => {
+  const event = {
+    code: "KeyW",
+    ctrlKey: false,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: true,
+  };
+  assert.equal(keyInput(event, true, false), null);
+  const release = keyInput(event, false, false);
+  assert.equal(release?.code, 87);
+  assert.equal(release?.action, 0);
 });
