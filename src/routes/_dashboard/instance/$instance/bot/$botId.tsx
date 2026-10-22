@@ -1103,14 +1103,17 @@ function BotInventoryPanel({
     }),
   );
 
-  const handleContainerError = useCallback(
-    (error: Error) => {
-      toast.error(error.message);
-      if (error instanceof ConnectError && error.code === Code.Aborted)
-        void refetch();
-    },
-    [refetch],
-  );
+  const requireSuccess = <T extends { success: boolean; error?: string }>(
+    result: T,
+  ): T => {
+    if (!result.success)
+      throw new Error(result.error || t("bots.inventoryPanel.actionRejected"));
+    return result;
+  };
+
+  const handleContainerError = useCallback((error: Error) => {
+    toast.error(error.message);
+  }, []);
 
   // Mutation for clicking inventory slots
   const clickMutation = useMutation({
@@ -1122,10 +1125,10 @@ function BotInventoryPanel({
         throw new Error("Not connected");
       }
       const botService = createClient(BotService, transport);
-      return botService.clickInventorySlot(request);
+      return requireSuccess(await botService.clickInventorySlot(request));
     },
     onError: handleContainerError,
-    onSuccess: () => {
+    onSettled: () => {
       void refetch();
     },
   });
@@ -1140,10 +1143,12 @@ function BotInventoryPanel({
         throw new Error("Not connected");
       }
       const botService = createClient(BotService, transport);
-      return botService.closeContainer({ instanceId, botId, expectedMenuId });
+      return requireSuccess(
+        await botService.closeContainer({ instanceId, botId, expectedMenuId }),
+      );
     },
     onError: handleContainerError,
-    onSuccess: () => {
+    onSettled: () => {
       void refetch();
     },
   });
@@ -1158,10 +1163,10 @@ function BotInventoryPanel({
         throw new Error("Not connected");
       }
       const botService = createClient(BotService, transport);
-      return botService.clickContainerButton(request);
+      return requireSuccess(await botService.clickContainerButton(request));
     },
     onError: handleContainerError,
-    onSuccess: () => {
+    onSettled: () => {
       void refetch();
     },
   });
@@ -1176,10 +1181,10 @@ function BotInventoryPanel({
         throw new Error("Not connected");
       }
       const botService = createClient(BotService, transport);
-      return botService.setContainerText(request);
+      return requireSuccess(await botService.setContainerText(request));
     },
     onError: handleContainerError,
-    onSuccess: async () => {
+    onSettled: async () => {
       await refetch();
     },
   });
@@ -1194,9 +1199,12 @@ function BotInventoryPanel({
         throw new Error("Not connected");
       }
       const botService = createClient(BotService, transport);
-      return botService.setHotbarSlot({ instanceId, botId, slot });
+      return requireSuccess(
+        await botService.setHotbarSlot({ instanceId, botId, slot }),
+      );
     },
-    onSuccess: () => {
+    onError: handleContainerError,
+    onSettled: () => {
       void refetch();
     },
   });

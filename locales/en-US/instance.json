@@ -455,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventory",
+      "actionRejected": "The inventory action was rejected.",
       "hotbar": "Hotbar",
       "main": "Main Inventory",
       "items": "items",
