@@ -469,17 +469,22 @@
         "beaconEffects": "Beacon Effecktz",
         "crafterSlots": "Slot Kontrolz",
         "lecternControls": "Buk Kontrolz",
-        "actions": "Akshuns"
+        "actions": "Akshuns",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Text Inpoot",
-        "anvilRename": "Rename Itum"
+        "anvilRename": "Rename Itum",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Buk Kontentz",
         "emptyPage": "(Emptiez page)",
         "pageIndicator": "Page {{current}} uv {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot Viewz",
@@ -502,6 +507,7 @@
       "offline": "Bot iz offline. Actshunz only avaylbul wen bot iz connectd."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Moovmunt Kontrol",
       "movement": "Moovmunt (WASD)",
       "forward": "Moov Forward (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Bak to Skriptz",
         "save": "SAEV",
         "saveTooltip": "Saev skriptz!",
@@ -728,6 +735,16 @@
         "tooltip": "Look at cheenz!"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Dry Ploy",
         "title": "Dry Ploy Scriptz",
         "description": "Runn a script from a pikd triggur wif cheez inputs.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Pik teh triggur nodeh to use wif cheez inputz.",
         "mockInputs": "Mock Inputz",
         "valuePlaceholder": "{{type}} valu",
-        "start": "START DRY PLOY!"
+        "start": "START DRY PLOY!",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script Quotas",
@@ -759,5 +778,9 @@
         "save": "Savez da Quota"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

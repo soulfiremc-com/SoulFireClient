@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Nombre descriptivo",
           "placeholder": "Mi Bot de Minecraft",
-          "description": "El nombre que quieres dar a esta instancia.",
-          "min": "El nombre descriptivo debe tener al menos 3 caracteres.",
-          "max": "El nombre descriptivo debe tener como máximo 32 caracteres.",
-          "regex": "El nombre descriptivo solo debe contener letras, números y espacios"
+          "description": "El nombre que quieres dar a esta instancia."
         },
         "cancel": "Cancelar",
         "create": "Crear"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Descargando datos...",
           "success": "¡Datos cargados!",
-          "error": "Error al descargar los datos"
+          "error": "Error al descargar los datos",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Sitio web"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Espacios de configuración no encontrados",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Agregar una entrada nueva...",
       "add": "Añadir",
       "remove": "Eliminar"
@@ -468,6 +472,14 @@
     "success": "Se copió \"{{content}}\" al portapapeles",
     "error": "Error al copiar al portapapeles"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "Correo electrónico",
       "description": "Tu correo electrónico se usa para iniciar sesión y para notificaciones."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrar registros de auditoría...",

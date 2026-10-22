@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Nom convivial",
           "placeholder": "Mon Bot Minecraft",
-          "description": "Le nom que vous voulez donner a cette instance.",
-          "min": "Le nom doit contenir d'au moins 3 caractères.",
-          "max": "Le nom convivial doit comporter au maximum 32 caractères.",
-          "regex": "Le nom ne doit contenir que des lettres, des chiffres et des espaces"
+          "description": "Le nom que vous voulez donner a cette instance."
         },
         "cancel": "Annuler",
         "create": "Créer"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Téléchargement des données...",
           "success": "Données chargées !",
-          "error": "Échec du téléchargement des données"
+          "error": "Échec du téléchargement des données",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Site Internet"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Noms des paramètres introuvables",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Ajouter une nouvelle entrée...",
       "add": "Ajouter",
       "remove": "Retirer"
@@ -468,6 +472,14 @@
     "success": "\"{{content}}\" copié dans le presse-papier",
     "error": "\u0000cchec de la copie dans le presse-papier"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "Email",
       "description": "Votre adresse e-mail est utilisée pour la connexion et les notifications."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrer les journaux d'audit...",

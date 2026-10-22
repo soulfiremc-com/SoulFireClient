@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Priateľské meno",
           "placeholder": "Môj Minecraft Bot",
-          "description": "Názov, ktorý chcete dať tejto inštancii.",
-          "min": "Priateľské meno musí mať aspoň 3 znaky.",
-          "max": "Priateľské meno môže mať najviac 32 znakov.",
-          "regex": "Priateľské meno môže obsahovať iba písmená, čísla a medzery"
+          "description": "Názov, ktorý chcete dať tejto inštancii."
         },
         "cancel": "Zrušiť",
         "create": "Vytvoriť"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Sťahovanie dát...",
           "success": "Dáta načítané!",
-          "error": "Nepodarilo sa stiahnuť dáta"
+          "error": "Nepodarilo sa stiahnuť dáta",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -260,8 +259,13 @@
     "website": "Webstránka"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Mená nastavení neboli nájdené",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Pridať novú položku...",
       "add": "Pridať",
       "remove": "Odstrániť"
@@ -476,6 +480,14 @@
     "success": "Skopírované \"{{content}}\" do schránky",
     "error": "Kopírovanie do schránky zlyhalo"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -489,7 +501,11 @@
     "email": {
       "uiName": "E-mail",
       "description": "Váš e-mail sa používa na prihlásenie a oznámenia."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrovať audity...",

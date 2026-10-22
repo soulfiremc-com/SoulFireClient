@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Дружнє ім'я",
           "placeholder": "Мій бот Minecraft",
-          "description": "Ім'я, яке ви хочете дати цьому екземпляру.",
-          "min": "Дружнє ім'я має містити щонайменше 3 символи.",
-          "max": "Дружнє ім'я має бути максимум з 32 символів.",
-          "regex": "Дружнє ім'я має містити лише літери, цифри і пробіли"
+          "description": "Ім'я, яке ви хочете дати цьому екземпляру."
         },
         "cancel": "Скасувати",
         "create": "Створити"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Завантаження даних...",
           "success": "Дані завантажено!",
-          "error": "Не вдалося завантажити дані"
+          "error": "Не вдалося завантажити дані",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -260,8 +259,13 @@
     "website": "Вебсайт"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Простори назв налаштувань не знайдено",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Додати новий запис...",
       "add": "Додати",
       "remove": "Видалити"
@@ -476,6 +480,14 @@
     "success": "Скопійовано «{{content}}» у буфер обміну",
     "error": "Не вдалося скопіювати у буфер обміну"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Аватар",
@@ -489,7 +501,11 @@
     "email": {
       "uiName": "Електронна пошта",
       "description": "Ваша електронна адреса використовується для входу та сповіщень."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Фільтрувати аудит-логи...",

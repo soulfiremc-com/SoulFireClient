@@ -469,17 +469,22 @@
         "beaconEffects": "Efekty majáku",
         "crafterSlots": "Ovládání slotů",
         "lecternControls": "Ovládání knihy",
-        "actions": "Akce"
+        "actions": "Akce",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Textové pole",
-        "anvilRename": "Přejmenovat předmět"
+        "anvilRename": "Přejmenovat předmět",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Obsah knihy",
         "emptyPage": "(Prázdná stránka)",
         "pageIndicator": "Stránka {{current}} z {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Pohled bota",
@@ -502,6 +507,7 @@
       "offline": "Bot je offline. Akce jsou k dispozici pouze když je bot připojen."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Ovládání pohybu",
       "movement": "Pohyb (WASD)",
       "forward": "Pohyb vpřed (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Zpět na Skripty",
         "save": "Uložit",
         "saveTooltip": "Uložit skript",
@@ -730,6 +737,16 @@
         "tooltip": "Zkontrolovat změny"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Suchý běh",
         "title": "Suchý běh skriptu",
         "description": "Spusťte skript ze zvoleného spouštěče s testovacími vstupy.",
@@ -738,7 +755,11 @@
         "triggerDescription": "Vyberte uzel spouštěče, který se má provést s testovacími vstupy.",
         "mockInputs": "Testovací vstupy",
         "valuePlaceholder": "Hodnota typu {{type}}",
-        "start": "Spustit suchý běh"
+        "start": "Spustit suchý běh",
+        "stats_one": "",
+        "stats_few": "",
+        "stats_many": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Limity skriptu",
@@ -761,5 +782,9 @@
         "save": "Uložit limity"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

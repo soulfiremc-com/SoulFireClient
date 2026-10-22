@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Дружелюбное имя",
           "placeholder": "Мой бот Minecraft",
-          "description": "Имя, которое вы хотите дать этому экземпляру.",
-          "min": "Дружелюбное имя должно содержать не менее 3 символов.",
-          "max": "Дружелюбное имя должно содержать не более 32 символов.",
-          "regex": "Дружелюбное имя может содержать только буквы, цифры и пробелы"
+          "description": "Имя, которое вы хотите дать этому экземпляру."
         },
         "cancel": "Отмена",
         "create": "Создать"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Загрузка данных...",
           "success": "Данные загружены!",
-          "error": "Не удалось загрузить данные"
+          "error": "Не удалось загрузить данные",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -260,8 +259,13 @@
     "website": "Сайт"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Настройки пространства имен не найдены",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Добавить новую запись...",
       "add": "Добавить",
       "remove": "Удалить"
@@ -476,6 +480,14 @@
     "success": "\"{{content}}\" скопирован в буфер обмена",
     "error": "Ошибка копирования в буфер обмена"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Аватар",
@@ -489,7 +501,11 @@
     "email": {
       "uiName": "E-mail",
       "description": "Ваш email используется для входа и уведомлений."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Фильтровать журнал аудита...",

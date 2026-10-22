@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Nama ramah",
           "placeholder": "Bot Minecraft Saya",
-          "description": "Nama yang ingin Anda berikan untuk instansi ini.",
-          "min": "Nama ramah harus memiliki minimal 3 karakter.",
-          "max": "Nama ramah harus maksimal 32 karakter.",
-          "regex": "Nama ramah hanya boleh berisi huruf, angka, dan spasi"
+          "description": "Nama yang ingin Anda berikan untuk instansi ini."
         },
         "cancel": "Batal",
         "create": "Buat"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Mengunduh data...",
           "success": "Data berhasil dimuat!",
-          "error": "Gagal mengunduh data"
+          "error": "Gagal mengunduh data",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "Situs web"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Namespace pengaturan tidak ditemukan",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Tambahkan entri baru...",
       "add": "Tambah",
       "remove": "Hapus"
@@ -464,6 +468,14 @@
     "success": "\"{{content}}\" berhasil disalin ke clipboard",
     "error": "Gagal menyalin ke clipboard"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "Email",
       "description": "Email Anda digunakan untuk login dan notifikasi."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter log audit...",

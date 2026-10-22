@@ -469,17 +469,22 @@
         "beaconEffects": "Hiệu ứng beacon",
         "crafterSlots": "Điều khiển ô",
         "lecternControls": "Điều khiển sách",
-        "actions": "Hành động"
+        "actions": "Hành động",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Nhập văn bản",
-        "anvilRename": "Đổi tên vật phẩm"
+        "anvilRename": "Đổi tên vật phẩm",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Nội dung sách",
         "emptyPage": "(Trang trống)",
         "pageIndicator": "Trang {{current}} trên tổng số {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Giao diện Bot",
@@ -502,6 +507,7 @@
       "offline": "Bot đang ngoại tuyến. Các hành động chỉ khả dụng khi bot đang kết nối."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Điều khiển di chuyển",
       "movement": "Di chuyển (WASD)",
       "forward": "Tiến lên (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Quay lại Scripts",
         "save": "Lưu",
         "saveTooltip": "Lưu script",
@@ -727,6 +734,16 @@
         "tooltip": "Xem lại thay đổi"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Chạy thử (Dry Run)",
         "title": "Chạy thử Script",
         "description": "Chạy script từ một trigger đã chọn với dữ liệu thử nghiệm.",
@@ -735,7 +752,8 @@
         "triggerDescription": "Chọn nút trigger để thực thi với các giá trị thử nghiệm.",
         "mockInputs": "Dữ liệu thử nghiệm",
         "valuePlaceholder": "Giá trị {{type}}",
-        "start": "Bắt đầu chạy thử"
+        "start": "Bắt đầu chạy thử",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Hạn mức script",
@@ -758,5 +776,9 @@
         "save": "Lưu hạn mức"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

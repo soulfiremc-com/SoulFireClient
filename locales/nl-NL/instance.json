@@ -469,17 +469,22 @@
         "beaconEffects": "Baken-effecten",
         "crafterSlots": "Slotbediening",
         "lecternControls": "Boekbediening",
-        "actions": "Acties"
+        "actions": "Acties",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Tekstinvoer",
-        "anvilRename": "Item hernoemen"
+        "anvilRename": "Item hernoemen",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Boekinhoud",
         "emptyPage": "(Lege pagina)",
         "pageIndicator": "Pagina {{current}} van {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Botweergave",
@@ -502,6 +507,7 @@
       "offline": "Bot is offline. Acties zijn alleen beschikbaar wanneer de bot is verbonden."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Bewegingsbediening",
       "movement": "Beweging (WASD)",
       "forward": "Vooruit gaan (W)",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Terug naar scripts",
         "save": "Opslaan",
         "saveTooltip": "Script opslaan",
@@ -728,6 +735,16 @@
         "tooltip": "Wijzigingen bekijken"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Proefdraai",
         "title": "Script proefdraaien",
         "description": "Voer een script uit vanaf een geselecteerde trigger met gesimuleerde invoer.",
@@ -736,7 +753,9 @@
         "triggerDescription": "Kies de trigger-node om uit te voeren met gesimuleerde invoerwaarden.",
         "mockInputs": "Gesimuleerde invoer",
         "valuePlaceholder": "{{type}} waarde",
-        "start": "Start proefdraai"
+        "start": "Start proefdraai",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script limieten",
@@ -759,5 +778,9 @@
         "save": "Quota opslaan"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

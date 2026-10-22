@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "一个友好的名称",
           "placeholder": "我的 Minecraft 机器人",
-          "description": "您想要赋予此实例的名称",
-          "min": "名称至少需要3个字符",
-          "max": "名称最多允许32个字符",
-          "regex": "名称只能包含字母、数字和空格"
+          "description": "您想要赋予此实例的名称"
         },
         "cancel": "取消",
         "create": "创建"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "正在下载数据...",
           "success": "数据已加载！",
-          "error": "下载数据失败"
+          "error": "下载数据失败",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "网站"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "未找到设置命名空间",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "添加新条目...",
       "add": "添加",
       "remove": "删除"
@@ -464,6 +468,14 @@
     "success": "已将“{{content}}”复制到剪贴板",
     "error": "复制到剪贴板失败"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "头像",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "电子邮箱",
       "description": "您的邮箱用于登录和通知。"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "筛选审计日志...",

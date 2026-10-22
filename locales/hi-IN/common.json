@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "मित्रवत नाम",
           "placeholder": "मेरा Minecraft बॉट",
-          "description": "इस इंस्टेंस को आप कौन सा नाम देना चाहते हैं।",
-          "min": "मित्रवत नाम कम से कम 3 अक्षर लंबा होना चाहिए।",
-          "max": "मित्रवत नाम अधिकतम 32 अक्षर लंबा हो सकता है।",
-          "regex": "मित्रवत नाम में केवल अक्षर, संख्याएँ और स्पेस हो सकते हैं"
+          "description": "इस इंस्टेंस को आप कौन सा नाम देना चाहते हैं।"
         },
         "cancel": "रद्द करें",
         "create": "बनाएँ"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "डेटा डाउनलोड हो रहा है...",
           "success": "डेटा लोड हो गया!",
-          "error": "डेटा डाउनलोड करने में विफल"
+          "error": "डेटा डाउनलोड करने में विफल",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "वेबसाइट"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "सेटिंग्स नामस्पेस नहीं मिला",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "नया प्रविष्टि जोड़ें...",
       "add": "जोड़ें",
       "remove": "हटाएँ"
@@ -468,6 +472,14 @@
     "success": "\"{{content}}\" को क्लिपबोर्ड पर कॉपी किया गया",
     "error": "क्लिपबोर्ड पर कॉपी करने में विफल"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "अवतार",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "ईमेल",
       "description": "आपका ईमेल लॉगिन और सूचनाओं के लिए उपयोग किया जाता है।"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "ऑडिट लॉग छाँटें...",

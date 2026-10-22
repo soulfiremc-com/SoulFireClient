@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Selkokielinen nimi",
           "placeholder": "Oma Minecraft-bottini",
-          "description": "Nimi, jonka haluat antaa tälle instanssille.",
-          "min": "Selkokielisen nimen on oltava vähintään 3 merkkiä pitkä.",
-          "max": "Selkokielisen nimen on oltava enintään 32 merkkiä pitkä.",
-          "regex": "Selkokielinen nimi saa sisältää vain kirjaimia, numeroita ja välilyöntejä"
+          "description": "Nimi, jonka haluat antaa tälle instanssille."
         },
         "cancel": "Peruuta",
         "create": "Luo"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Ladataan tietoja...",
           "success": "Tiedot ladattu!",
-          "error": "Tietojen lataus epäonnistui"
+          "error": "Tietojen lataus epäonnistui",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Sivusto"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Asetusten nimiavaruuksia ei löytynyt",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Lisää uusi merkintä...",
       "add": "Lisää",
       "remove": "Poista"
@@ -468,6 +472,14 @@
     "success": "Kopioitiin \"{{content}}\" leikepöydälle",
     "error": "Kopiointi leikepöydälle epäonnistui"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "Sähköposti",
       "description": "Sähköpostiasi käytetään kirjautumiseen ja ilmoituksiin."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Suodata audit-lokia...",

@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Tên thân thiện",
           "placeholder": "Bot Minecraft của tôi",
-          "description": "Tên bạn muốn đặt cho phiên bản này.",
-          "min": "Tên thân thiện phải có ít nhất 3 ký tự.",
-          "max": "Tên thân thiện phải có tối đa 32 ký tự.",
-          "regex": "Tên thân thiện chỉ được chứa chữ cái, số và khoảng trắng"
+          "description": "Tên bạn muốn đặt cho phiên bản này."
         },
         "cancel": "Hủy",
         "create": "Tạo"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Đang tải dữ liệu...",
           "success": "Dữ liệu đã được tải!",
-          "error": "Không tải được dữ liệu"
+          "error": "Không tải được dữ liệu",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "Website"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Không tìm thấy không gian cài đặt",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Thêm mục mới...",
       "add": "Thêm",
       "remove": "Xóa"
@@ -464,6 +468,14 @@
     "success": "Đã sao chép \"{{content}}\" vào bộ nhớ tạm",
     "error": "Sao chép vào bộ nhớ tạm thất bại"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Ảnh đại diện",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "Email",
       "description": "Email của bạn được dùng để đăng nhập và nhận thông báo."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Lọc nhật ký kiểm toán...",

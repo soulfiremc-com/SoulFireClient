@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Dost adı",
           "placeholder": "Mənim Minecraft Botum",
-          "description": "Bu instansiyaya vermək istədiyiniz ad.",
-          "min": "Dost adı ən azı 3 simvol uzunluğunda olmalıdır.",
-          "max": "Dost adı maksimum 32 simvol olmalıdır.",
-          "regex": "Dost ad yalnız hərflərdən, rəqəmlərdən və boşluqlardan ibarət olmalıdır"
+          "description": "Bu instansiyaya vermək istədiyiniz ad."
         },
         "cancel": "Ləğv et",
         "create": "Yarat"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Məlumatlar yüklənir...",
           "success": "Məlumatlar yükləndi!",
-          "error": "Məlumatları yükləmək alınmadı"
+          "error": "Məlumatları yükləmək alınmadı",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Vebsayt"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Tənzimləmə bölmələri tapılmadı",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Yeni daxil əlavə edin...",
       "add": "Əlavə et",
       "remove": "Sil"
@@ -468,6 +472,14 @@
     "success": "\"{{content}}\" panoya kopyalandı",
     "error": "Panoya kopyalama uğursuz oldu"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "Email",
       "description": "E-poçt ünvanınız daxil olmaq və bildirişlər üçün istifadə olunur."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Audit loglarını filtr edin...",

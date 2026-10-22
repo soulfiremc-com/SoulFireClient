@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "ชื่อที่จดจำง่าย",
           "placeholder": "My Minecraft Bot",
-          "description": "ชื่อที่คุณต้องการตั้งให้กับอินสแตนซ์นี้",
-          "min": "ชื่อที่จดจำง่ายต้องมีอย่างน้อย 3 ตัวอักษร",
-          "max": "ชื่อที่จดจำง่ายต้องมีไม่เกิน 32 ตัวอักษร",
-          "regex": "ชื่อที่จดจำง่ายต้องมีเฉพาะตัวเลข ตัวอักษร และช่องว่างเท่านั้น"
+          "description": "ชื่อที่คุณต้องการตั้งให้กับอินสแตนซ์นี้"
         },
         "cancel": "ยกเลิก",
         "create": "สร้าง"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "กำลังดาวน์โหลดข้อมูล...",
           "success": "โหลดข้อมูลเรียบร้อย!",
-          "error": "ดาวน์โหลดข้อมูลไม่สำเร็จ"
+          "error": "ดาวน์โหลดข้อมูลไม่สำเร็จ",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -248,8 +247,13 @@
     "website": "เว็บไซต์"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "ไม่พบ namespaces ของการตั้งค่า",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "เพิ่มรายการใหม่...",
       "add": "เพิ่ม",
       "remove": "ลบ"
@@ -464,6 +468,14 @@
     "success": "คัดลอก \"{{content}}\" ไปยังคลิปบอร์ดแล้ว",
     "error": "คัดลอกไปยังคลิปบอร์ดไม่สำเร็จ"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "อวตาร",
@@ -477,7 +489,11 @@
     "email": {
       "uiName": "อีเมล",
       "description": "อีเมลของคุณจะใช้สำหรับเข้าสู่ระบบและการแจ้งเตือน"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "กรองบันทึกการตรวจสอบ...",

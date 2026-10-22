@@ -60,10 +60,7 @@
         "friendlyName": {
           "label": "Vriendelijke naam",
           "placeholder": "Mijn Minecraft Bot",
-          "description": "De naam die je aan deze instantie wilt geven.",
-          "min": "De vriendelijke naam moet minimaal 3 tekens lang zijn.",
-          "max": "De vriendelijke naam mag maximaal 32 tekens lang zijn.",
-          "regex": "De vriendelijke naam mag alleen letters, cijfers en spaties bevatten"
+          "description": "De naam die je aan deze instantie wilt geven."
         },
         "cancel": "Annuleren",
         "create": "Aanmaken"
@@ -112,7 +109,9 @@
         "toast": {
           "loading": "Data wordt gedownload...",
           "success": "Data geladen!",
-          "error": "Downloaden van data mislukt"
+          "error": "Downloaden van data mislukt",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -252,8 +251,13 @@
     "website": "Website"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Instelling-namespaces niet gevonden",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Een nieuw item toevoegen...",
       "add": "Toevoegen",
       "remove": "Verwijderen"
@@ -468,6 +472,14 @@
     "success": "\"{{content}}\" gekopieerd naar klembord",
     "error": "Kopiëren naar klembord mislukt"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -481,7 +493,11 @@
     "email": {
       "uiName": "E-mailadres",
       "description": "Je e-mailadres wordt gebruikt voor inloggen en meldingen."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter auditlogs...",

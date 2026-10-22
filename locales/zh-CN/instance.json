@@ -469,17 +469,22 @@
         "beaconEffects": "信标效果",
         "crafterSlots": "槽位控制",
         "lecternControls": "书本控制",
-        "actions": "操作"
+        "actions": "操作",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "文本输入",
-        "anvilRename": "重命名物品"
+        "anvilRename": "重命名物品",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "书本内容",
         "emptyPage": "（空白页）",
         "pageIndicator": "第 {{current}} 页，共 {{total}} 页"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot视图",
@@ -502,6 +507,7 @@
       "offline": "机器人离线。仅在机器人连接时可用操作。"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "移动控制",
       "movement": "移动（WASD）",
       "forward": "前进（W）",
@@ -658,6 +664,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "返回脚本",
         "save": "保存",
         "saveTooltip": "保存脚本",
@@ -727,6 +734,16 @@
         "tooltip": "查看更改"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "模拟运行",
         "title": "模拟运行脚本",
         "description": "从选定触发器用模拟输入运行脚本。",
@@ -735,7 +752,8 @@
         "triggerDescription": "选择用于模拟输入值执行的触发节点。",
         "mockInputs": "模拟输入",
         "valuePlaceholder": "{{type}}值",
-        "start": "开始模拟运行"
+        "start": "开始模拟运行",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "脚本配额",
@@ -758,5 +776,9 @@
         "save": "保存配额"
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }
