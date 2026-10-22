@@ -226,6 +226,7 @@ const DEFAULT_MOBILE_JVM_ARGS_STRING = DEFAULT_MOBILE_JVM_ARGS.join(" ");
 
 function Index() {
   const { t, i18n } = useTranslation("login");
+  const { queryClient } = Route.useRouteContext();
   const navigate = useNavigate();
   const searchParams: Record<string, string> = Route.useSearch();
   const systemInfo = use(SystemInfoContext);
@@ -254,11 +255,12 @@ function Index() {
 
   const redirectWithCredentials: LoginFunction = useCallback(
     async (type: SFServerType, address: string, token: string) => {
+      queryClient.clear();
       setAuthentication(type, address.trim(), token.trim());
 
       await targetRedirect();
     },
-    [targetRedirect],
+    [queryClient, targetRedirect],
   );
 
   const consumeIntegratedServerAutoStart = useCallback(() => {
