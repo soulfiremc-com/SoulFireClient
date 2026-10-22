@@ -30,6 +30,7 @@ import {
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { ServerService } from "@/generated/soulfire/server_pb";
+import { mergeAccounts } from "@/lib/account-list.ts";
 import { desktop } from "@/lib/desktop.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
 import { removeProxyEntries } from "@/lib/proxy-selection.ts";
@@ -719,7 +720,7 @@ export async function addInstanceAccount(
         ...old,
         profile: {
           ...old.profile,
-          accounts: [...old.profile.accounts, account],
+          accounts: mergeAccounts(old.profile.accounts, [account]),
         },
       };
     },
@@ -765,7 +766,7 @@ export async function addInstanceAccountsBatch(
         ...old,
         profile: {
           ...old.profile,
-          accounts: [...old.profile.accounts, ...accounts],
+          accounts: mergeAccounts(old.profile.accounts, accounts),
         },
       };
     },

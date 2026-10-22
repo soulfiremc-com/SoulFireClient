@@ -243,16 +243,6 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
   },
 );
 
-function _addAndDeduplicate(
-  accounts: ProfileAccount[],
-  newAccounts: ProfileAccount[],
-) {
-  const newAccountsSet = new Set(newAccounts.map((a) => a.profileId));
-  return accounts
-    .filter((a) => !newAccountsSet.has(a.profileId))
-    .concat(newAccounts);
-}
-
 function splitAccountCredentialPayloads(
   text: string,
   accountType: AccountTypeCredentials,
