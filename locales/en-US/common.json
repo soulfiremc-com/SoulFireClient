@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Connection to the SoulFire server failed."
   },
+  "queryStatus": {
+    "failed": "Refresh failed",
+    "retry": "Retry failed refreshes",
+    "stale": "Some displayed values may be out of date. Retrying automatically. Click to retry now."
+  },
   "notFound": {
     "page": {
       "title": "Not found",
