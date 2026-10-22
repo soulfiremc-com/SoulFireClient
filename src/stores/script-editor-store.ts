@@ -229,6 +229,7 @@ export function createScriptEditorSession() {
   const execution = createStore<ScriptExecutionState>({
     isActive: false,
     activeNodeId: null,
+    activeNodeExecutions: new Map(),
     executionLogs: [],
     previewValues: new Map<string, Record<string, unknown>>(),
     debugNodeValues: new Map<
@@ -1696,6 +1697,10 @@ export function createScriptEditorSession() {
               ? state.activeNodeId
               : (status.activeNodeId ?? null)
             : null,
+          activeNodeExecutions:
+            status.isActive && preserveActiveNode
+              ? state.activeNodeExecutions
+              : new Map(),
         }));
       });
     },
@@ -1704,13 +1709,37 @@ export function createScriptEditorSession() {
     setActive: (active) =>
       execution.setState((state) => ({ ...state, isActive: active })),
     setActiveNode: (nodeId) =>
-      execution.setState((state) => ({ ...state, activeNodeId: nodeId })),
-    completeNode: (nodeId) =>
-      execution.setState((state) =>
-        state.activeNodeId === nodeId
-          ? { ...state, activeNodeId: null }
-          : state,
-      ),
+      execution.setState((state) => ({
+        ...state,
+        activeNodeId: nodeId,
+        activeNodeExecutions: new Map(),
+      })),
+    startNode: (nodeId, executionId) =>
+      execution.setState((state) => {
+        if (!executionId) return { ...state, activeNodeId: nodeId };
+        if (state.activeNodeExecutions.has(executionId)) return state;
+        const activeNodeExecutions = new Map(state.activeNodeExecutions);
+        activeNodeExecutions.set(executionId, nodeId);
+        return { ...state, activeNodeId: nodeId, activeNodeExecutions };
+      }),
+    completeNode: (nodeId, executionId) =>
+      execution.setState((state) => {
+        if (!executionId) {
+          return state.activeNodeExecutions.size === 0 &&
+            state.activeNodeId === nodeId
+            ? { ...state, activeNodeId: null }
+            : state;
+        }
+        if (state.activeNodeExecutions.get(executionId) !== nodeId)
+          return state;
+        const activeNodeExecutions = new Map(state.activeNodeExecutions);
+        activeNodeExecutions.delete(executionId);
+        return {
+          ...state,
+          activeNodeExecutions,
+          activeNodeId: Array.from(activeNodeExecutions.values()).pop() ?? null,
+        };
+      }),
     addExecutionLog: (log) =>
       execution.setState((state) => ({
         ...state,
@@ -1814,6 +1843,7 @@ export function createScriptEditorSession() {
           ...state,
           isActive: false,
           activeNodeId: null,
+          activeNodeExecutions: new Map(),
           executionLogs: [],
           previewValues: new Map<string, Record<string, unknown>>(),
           debugNodeValues: new Map<

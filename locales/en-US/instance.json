@@ -655,6 +655,8 @@
     "deactivatedByUser": "Script deactivated by user",
     "executionFailed": "Script execution failed",
     "executionError": "Execution error: {{error}}",
+    "monitoringError": "Monitoring connection error: {{error}}",
+    "monitoringDisconnected": "Lost the script monitoring connection. The script may still be running.",
     "nodeStarted": "Node started: {{nodeId}}",
     "nodeCompleted": "Node completed: {{nodeId}}",
     "nodeError": "Node error: {{error}}",

@@ -7,6 +7,48 @@ import {
 } from "@/generated/soulfire/script_pb";
 import { createScriptEditorSession } from "./script-editor-store";
 
+test("identified completions retain overlapping invocations and return to older running nodes", () => {
+  const editor = createScriptEditorSession();
+  const document = editor.document.get();
+  editor.actions.startNode("shared", 1n);
+  editor.actions.startNode("shared", 2n);
+  editor.actions.completeNode("shared", 1n);
+  assert.equal(editor.execution.get().activeNodeId, "shared");
+  assert.equal(editor.execution.get().activeNodeExecutions.size, 1);
+  editor.actions.startNode("newer", 3n);
+  editor.actions.completeNode("newer", 3n);
+  assert.equal(editor.execution.get().activeNodeId, "shared");
+  editor.actions.completeNode("shared", 2n);
+  assert.equal(editor.execution.get().activeNodeId, null);
+  assert.equal(editor.execution.get().activeNodeExecutions.size, 0);
+  assert.equal(editor.document.get(), document);
+});
+
+test("duplicate starts and unmatched or unidentified completions cannot cancel tracked work", () => {
+  const editor = createScriptEditorSession();
+  editor.actions.markSaved(editor.actions.getScriptData(), "script");
+  editor.actions.startNode("active", 1n);
+  const active = editor.execution.get();
+  editor.actions.startNode("active", 1n);
+  editor.actions.completeNode("active");
+  editor.actions.completeNode("active", 2n);
+  editor.actions.completeNode("other", 1n);
+  assert.equal(editor.execution.get(), active);
+  editor.actions.syncScriptStatus(
+    create(ScriptStatusSchema, {
+      scriptId: "script",
+      isActive: false,
+      paused: true,
+    }),
+    true,
+  );
+  assert.equal(editor.execution.get().activeNodeId, null);
+  assert.equal(editor.execution.get().activeNodeExecutions.size, 0);
+  editor.actions.startNode("active", 1n);
+  editor.actions.setActiveNode(null);
+  assert.equal(editor.execution.get().activeNodeExecutions.size, 0);
+});
+
 test("polled nodes restore observation without replacing fresher streaming highlights", () => {
   const editor = createScriptEditorSession();
   editor.actions.markSaved(editor.actions.getScriptData(), "script");
@@ -68,8 +110,8 @@ test("canonical documents retain selection and newer drafts until remote content
 test("node completion clears its own highlight without clearing a newer execution", () => {
   const editor = createScriptEditorSession();
   const document = editor.document.get();
-  editor.actions.setActiveNode("first");
-  editor.actions.setActiveNode("second");
+  editor.actions.startNode("first");
+  editor.actions.startNode("second");
   const running = editor.execution.get();
   editor.actions.completeNode("first");
   assert.equal(editor.execution.get(), running);

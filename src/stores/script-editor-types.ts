@@ -62,6 +62,7 @@ export interface ScriptEditorUIState {
 export interface ScriptExecutionState {
   isActive: boolean;
   activeNodeId: string | null;
+  activeNodeExecutions: Map<bigint, string>;
   executionLogs: LogEntry[];
   previewValues: Map<string, Record<string, unknown>>;
   debugNodeValues: Map<string, Array<{ value: unknown; timestamp: Date }>>;
@@ -169,7 +170,8 @@ export interface ScriptEditorActions {
   setQuotas: (quotas: ScriptQuotas | undefined) => void;
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;
-  completeNode: (nodeId: string) => void;
+  startNode: (nodeId: string, executionId?: bigint) => void;
+  completeNode: (nodeId: string, executionId?: bigint) => void;
   addExecutionLog: (log: LogEntry) => void;
   addExecutionLogs: (logs: LogEntry[]) => void;
   clearExecutionLogs: () => void;

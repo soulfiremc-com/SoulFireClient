@@ -2,7 +2,7 @@ version: v2
 clean: true
 inputs:
   - git_repo: https://github.com/soulfiremc-com/SoulFire.git
-    ref: 75a0d2f80d967ee0e50c17c64c2cd3bfd7236286
+    ref: 26c976c211abb37e62e0e3717b1eb2f5abaabf49
     depth: 1
 plugins:
   - local: protoc-gen-es

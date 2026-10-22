@@ -218,6 +218,7 @@ function ScriptEditorContent() {
   const resetEditor = editor.actions.resetEditor;
   const setActive = editor.actions.setActive;
   const setActiveNode = editor.actions.setActiveNode;
+  const startNode = editor.actions.startNode;
   const completeNode = editor.actions.completeNode;
   const addNode = editor.actions.addNode;
   const findClosestEdge = editor.actions.findClosestEdge;
@@ -456,10 +457,12 @@ function ScriptEditorContent() {
         { instanceId, scriptId },
         { signal: abortController.signal },
       );
+      let started = false;
       void observeServerStream(responses, {
         onMessage: (event) => {
           if (abortController.signal.aborted) return;
           if (event.event.case === "scriptStarted") {
+            started = true;
             acknowledgePause(false);
             setIsControlling(false);
             addExecutionLog({
@@ -472,7 +475,7 @@ function ScriptEditorContent() {
             toast.success(tInstance("scripts.activateSuccess"));
           } else if (event.event.case === "nodeStarted") {
             const nodeId = event.event.value.nodeId;
-            setActiveNode(nodeId);
+            startNode(nodeId, event.event.value.executionId);
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -482,7 +485,7 @@ function ScriptEditorContent() {
             });
           } else if (event.event.case === "nodeCompleted") {
             const nodeId = event.event.value.nodeId;
-            completeNode(nodeId);
+            completeNode(nodeId, event.event.value.executionId);
             const execTimeNanos = event.event.value.executionTimeNanos;
             if (execTimeNanos > 0n) {
               addNodeExecutionTime(nodeId, Number(execTimeNanos) / 1_000_000);
@@ -509,7 +512,7 @@ function ScriptEditorContent() {
             });
           } else if (event.event.case === "nodeError") {
             const { nodeId, errorMessage } = event.event.value;
-            completeNode(nodeId);
+            completeNode(nodeId, event.event.value.executionId);
             if (!canViewLogs)
               addExecutionLog({
                 id: crypto.randomUUID(),
@@ -552,7 +555,7 @@ function ScriptEditorContent() {
         },
         onError: (error) => {
           if (abortController.signal.aborted) return;
-          console.error("Script execution error:", error);
+          console.error("Script monitoring stream error:", error);
           setHasExecutionStream(false);
           setActive(false);
           setActiveNode(null);
@@ -565,13 +568,18 @@ function ScriptEditorContent() {
           addExecutionLog({
             id: crypto.randomUUID(),
             timestamp: new Date(),
-            level: "error",
+            level: started ? "warn" : "error",
             nodeId: null,
-            message: tInstance("scripts.executionError", {
-              error: message,
-            }),
+            message: tInstance(
+              started ? "scripts.monitoringError" : "scripts.executionError",
+              {
+                error: message,
+              },
+            ),
           });
-          toast.error(tInstance("scripts.executionFailed"));
+          if (started)
+            toast.warning(tInstance("scripts.monitoringDisconnected"));
+          else toast.error(tInstance("scripts.activateError"));
         },
         onComplete: () => {
           if (abortController.signal.aborted) return;
@@ -595,6 +603,7 @@ function ScriptEditorContent() {
     scriptId,
     setActive,
     setActiveNode,
+    startNode,
     completeNode,
     tInstance,
     queryClient,
