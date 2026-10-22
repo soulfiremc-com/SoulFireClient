@@ -7,6 +7,55 @@ import {
 } from "@/generated/soulfire/script_pb";
 import { createScriptEditorSession } from "./script-editor-store";
 
+test("canonical documents retain selection and newer drafts until remote content changes", () => {
+  const editor = createScriptEditorSession();
+  const id = editor.actions.addNode(
+    "constant.number",
+    { x: 10, y: 20 },
+    { value: 1 },
+  );
+  const saved = { ...editor.actions.getScriptData(), id: "script" };
+  editor.actions.markSaved(saved, saved.id);
+  editor.actions.onNodesChange([{ type: "select", id, selected: true }]);
+  editor.actions.setSelectedNode(id);
+  const selected = editor.document.get();
+
+  editor.actions.syncScriptDocument(structuredClone(saved));
+  assert.equal(editor.document.get(), selected);
+  assert.equal(editor.ui.get().selectedNodeId, id);
+  assert.equal(editor.document.get().nodes[0].selected, true);
+
+  editor.actions.updateNodeData(id, { value: 3 });
+  const draft = editor.document.get();
+  const remote = {
+    ...saved,
+    nodes: saved.nodes.map((node) => ({ ...node, data: { value: 2 } })),
+  };
+  editor.actions.syncScriptDocument(remote);
+  assert.equal(editor.document.get(), draft);
+  assert.equal(editor.document.get().nodes[0].data.value, 3);
+
+  editor.actions.markSaved(editor.actions.getScriptData());
+  editor.actions.syncScriptDocument(remote);
+  assert.equal(editor.document.get().nodes[0].data.value, 2);
+  assert.equal(editor.ui.get().selectedNodeId, null);
+  assert.equal(editor.document.get().isDirty, false);
+});
+
+test("node completion clears its own highlight without clearing a newer execution", () => {
+  const editor = createScriptEditorSession();
+  const document = editor.document.get();
+  editor.actions.setActiveNode("first");
+  editor.actions.setActiveNode("second");
+  const running = editor.execution.get();
+  editor.actions.completeNode("first");
+  assert.equal(editor.execution.get(), running);
+  assert.equal(editor.execution.get().activeNodeId, "second");
+  editor.actions.completeNode("second");
+  assert.equal(editor.execution.get().activeNodeId, null);
+  assert.equal(editor.document.get(), document);
+});
+
 test("status updates pause controls without replacing unsaved graph edits", () => {
   const editor = createScriptEditorSession();
   editor.actions.markSaved(editor.actions.getScriptData(), "script");

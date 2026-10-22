@@ -5,7 +5,11 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { PlusIcon, ScrollTextIcon } from "lucide-react";
@@ -68,6 +72,7 @@ import {
 import { hasInstancePermission, isDemo } from "@/lib/utils.tsx";
 import { scriptLogLevel, watchScriptLogs } from "@/lib/script-logs";
 import { createTransport } from "@/lib/web-rpc.ts";
+import { getQuerySessionId } from "@/lib/query-session.ts";
 import { getScriptEditorRouteSession } from "@/stores/script-editor-route-session";
 
 import "@xyflow/react/dist/style.css";
@@ -185,6 +190,7 @@ function ScriptEditorContent() {
   const { instance: instanceId, scriptId } = Route.useParams();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const navigate = useNavigate();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { getDefinition } = useNodeTypes();
@@ -208,10 +214,11 @@ function ScriptEditorContent() {
   const reactFlowInstance = useReactFlow();
 
   // Script editor store
-  const loadScript = editor.actions.loadScript;
+  const syncScriptDocument = editor.actions.syncScriptDocument;
   const resetEditor = editor.actions.resetEditor;
   const setActive = editor.actions.setActive;
   const setActiveNode = editor.actions.setActiveNode;
+  const completeNode = editor.actions.completeNode;
   const addNode = editor.actions.addNode;
   const findClosestEdge = editor.actions.findClosestEdge;
   const insertNodeOnEdge = editor.actions.insertNodeOnEdge;
@@ -281,14 +288,10 @@ function ScriptEditorContent() {
   useEffect(() => {
     if (scriptId === "new") {
       resetEditor();
-    } else if (
-      serverScriptData &&
-      (editor.document.get().scriptId !== scriptId ||
-        !editor.document.get().isDirty)
-    ) {
-      loadScript(scriptDataToStore(serverScriptData));
+    } else if (serverScriptData) {
+      syncScriptDocument(scriptDataToStore(serverScriptData));
     }
-  }, [scriptId, serverScriptData, loadScript, resetEditor, editor]);
+  }, [scriptId, serverScriptData, syncScriptDocument, resetEditor, editor]);
 
   useEffect(() => {
     if (scriptId === "new" || !transport || !canViewLogs || isDemo()) return;
@@ -347,6 +350,7 @@ function ScriptEditorContent() {
 
   const saveMutation = useMutation({
     mutationKey: ["script", "save", instanceId],
+    onMutate: () => getQuerySessionId(),
     mutationFn: async () => {
       if (!transport) throw new Error("No transport available");
       return saveScript(
@@ -356,7 +360,12 @@ function ScriptEditorContent() {
         tInstance("scripts.untitledScript"),
       );
     },
-    onSuccess: (script) => {
+    onSuccess: (script, _, sessionId) => {
+      if (sessionId !== getQuerySessionId()) return;
+      queryClient.setQueryData(
+        scriptQueryOptions(transport, instanceId, script.id).queryKey,
+        script,
+      );
       queryClient.setQueryData(
         scriptStatusQueryOptions(transport, instanceId, script.id).queryKey,
         (current) =>
@@ -375,14 +384,17 @@ function ScriptEditorContent() {
       if (scriptId === "new" && mounted.current) {
         // The create response already contains the canonical document. Avoid
         // waiting for another read before switching the editor to its saved URL.
-        queryClient.setQueryData(
-          scriptQueryOptions(transport, instanceId, script.id).queryKey,
-          script,
-        );
         void navigate({
           to: "/instance/$instance/script/$scriptId",
           params: { instance: instanceId, scriptId: script.id },
           replace: true,
+        });
+      } else {
+        void router.invalidate({
+          filter: (match) =>
+            match.routeId === Route.id &&
+            match.params.instance === instanceId &&
+            match.params.scriptId === script.id,
         });
       }
     },
@@ -462,6 +474,7 @@ function ScriptEditorContent() {
             });
           } else if (event.event.case === "nodeCompleted") {
             const nodeId = event.event.value.nodeId;
+            completeNode(nodeId);
             const execTimeNanos = event.event.value.executionTimeNanos;
             if (execTimeNanos > 0n) {
               addNodeExecutionTime(nodeId, Number(execTimeNanos) / 1_000_000);
@@ -486,17 +499,19 @@ function ScriptEditorContent() {
               nodeId: null,
               message: `Execution stats: ${nodeCount}/${maxCount} nodes executed`,
             });
-          } else if (event.event.case === "nodeError" && !canViewLogs) {
+          } else if (event.event.case === "nodeError") {
             const { nodeId, errorMessage } = event.event.value;
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "error",
-              nodeId,
-              message: tInstance("scripts.nodeError", {
-                error: errorMessage,
-              }),
-            });
+            completeNode(nodeId);
+            if (!canViewLogs)
+              addExecutionLog({
+                id: crypto.randomUUID(),
+                timestamp: new Date(),
+                level: "error",
+                nodeId,
+                message: tInstance("scripts.nodeError", {
+                  error: errorMessage,
+                }),
+              });
           } else if (event.event.case === "scriptLog" && !canViewLogs) {
             const { nodeId, level, message } = event.event.value;
             addExecutionLog({
@@ -569,6 +584,7 @@ function ScriptEditorContent() {
     scriptId,
     setActive,
     setActiveNode,
+    completeNode,
     tInstance,
     queryClient,
     addNodeExecutionTime,

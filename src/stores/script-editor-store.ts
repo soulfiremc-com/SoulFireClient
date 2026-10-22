@@ -1701,6 +1701,12 @@ export function createScriptEditorSession() {
       execution.setState((state) => ({ ...state, isActive: active })),
     setActiveNode: (nodeId) =>
       execution.setState((state) => ({ ...state, activeNodeId: nodeId })),
+    completeNode: (nodeId) =>
+      execution.setState((state) =>
+        state.activeNodeId === nodeId
+          ? { ...state, activeNodeId: null }
+          : state,
+      ),
     addExecutionLog: (log) =>
       execution.setState((state) => ({
         ...state,
@@ -1715,6 +1721,15 @@ export function createScriptEditorSession() {
       }),
     clearExecutionLogs: () =>
       execution.setState((state) => ({ ...state, executionLogs: [] })),
+    syncScriptDocument: (data) => {
+      const current = document.get();
+      if (
+        current.scriptId !== data.id ||
+        (!current.isDirty && !sameScriptDocument(actions.getScriptData(), data))
+      ) {
+        actions.loadScript(data);
+      }
+    },
     loadScript: (data) =>
       batch(() => {
         document.setState((state) => ({

@@ -22,6 +22,8 @@ export interface ScriptDocumentData {
   quotas: ScriptQuotas | undefined;
 }
 
+export type SavedScriptDocument = ScriptDocumentData & { id: string };
+
 export interface ScriptDocumentState {
   nodes: Node[];
   edges: Edge[];
@@ -164,18 +166,12 @@ export interface ScriptEditorActions {
   setQuotas: (quotas: ScriptQuotas | undefined) => void;
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;
+  completeNode: (nodeId: string) => void;
   addExecutionLog: (log: LogEntry) => void;
   addExecutionLogs: (logs: LogEntry[]) => void;
   clearExecutionLogs: () => void;
-  loadScript: (data: {
-    id: string;
-    name: string;
-    description: string;
-    paused: boolean;
-    quotas: ScriptQuotas | undefined;
-    nodes: Node[];
-    edges: Edge[];
-  }) => void;
+  loadScript: (data: SavedScriptDocument) => void;
+  syncScriptDocument: (data: SavedScriptDocument) => void;
   loadScriptData: (data: {
     nodes: Node[];
     edges: Edge[];
