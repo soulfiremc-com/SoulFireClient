@@ -843,7 +843,9 @@ function BotPovSession({
       if (root.ownerDocument.fullscreenElement)
         await root.ownerDocument.exitFullscreen();
       else {
-        if (connected) void capture();
+        // Raw pointer input may need an asynchronous fallback. Finish capture
+        // before fullscreen consumes the gesture needed by that retry.
+        if (connected) await capture();
         await root.requestFullscreen();
       }
     } catch {
