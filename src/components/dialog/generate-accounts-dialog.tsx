@@ -38,12 +38,14 @@ import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import { MCAuthService } from "@/generated/soulfire/mc-auth_pb";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
-import { runAsync } from "@/lib/utils.tsx";
 
 export type GenerateAccountsDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onGenerate: (accounts: ProfileAccount[], mode: GenerateAccountsMode) => void;
+  onGenerate: (
+    accounts: ProfileAccount[],
+    mode: GenerateAccountsMode,
+  ) => Promise<void>;
   existingUsernames: Set<string>;
 };
 
@@ -134,62 +136,64 @@ export default function GenerateAccountsDialog({
     );
 
     void observeServerStream(responses, {
-      onMessage: (r) => {
-        runAsync(async () => {
-          const data = r.data;
-          switch (data.case) {
-            case "oneSuccess": {
-              if (abortController.signal.aborted) {
-                return;
-              }
-
-              if (data.value.account) {
-                accountsToAdd.push(data.value.account);
-              }
-              success++;
-              toast.loading(loadingReport(), {
-                id: toastId,
-                ...loadingData,
-              });
-              break;
+      onMessage: async (r) => {
+        const data = r.data;
+        switch (data.case) {
+          case "oneSuccess": {
+            if (abortController.signal.aborted) {
+              return;
             }
-            case "oneFailure": {
-              if (abortController.signal.aborted) {
-                return;
-              }
 
-              failed++;
-              toast.loading(loadingReport(), {
-                id: toastId,
-                ...loadingData,
-              });
-              break;
+            if (data.value.account) {
+              accountsToAdd.push(data.value.account);
             }
-            case "end": {
+            success++;
+            toast.loading(loadingReport(), {
+              id: toastId,
+              ...loadingData,
+            });
+            break;
+          }
+          case "oneFailure": {
+            if (abortController.signal.aborted) {
+              return;
+            }
+
+            failed++;
+            toast.loading(loadingReport(), {
+              id: toastId,
+              ...loadingData,
+            });
+            break;
+          }
+          case "end": {
+            if (accountsToAdd.length === 0) {
               setIsGenerating(false);
-
-              if (accountsToAdd.length === 0) {
-                toast.error(t("account.generate.allFailed"), {
+              toast.error(t("account.generate.allFailed"), {
+                id: toastId,
+                cancel: undefined,
+              });
+            } else {
+              toast.loading(loadingReport(), {
+                id: toastId,
+                cancel: undefined,
+              });
+              await onGenerate(accountsToAdd, value.mode);
+              setIsGenerating(false);
+              onOpenChange(false);
+              toast.success(
+                t("account.generate.success", {
+                  count: accountsToAdd.length,
+                }),
+                {
                   id: toastId,
                   cancel: undefined,
-                });
-              } else {
-                onGenerate(accountsToAdd, value.mode);
-                onOpenChange(false);
-                toast.success(
-                  t("account.generate.success", {
-                    count: accountsToAdd.length,
-                  }),
-                  {
-                    id: toastId,
-                    cancel: undefined,
-                  },
-                );
-              }
-              break;
+                },
+              );
             }
+            break;
           }
-        });
+        }
       },
       onError: (e) => {
         console.error(e);
