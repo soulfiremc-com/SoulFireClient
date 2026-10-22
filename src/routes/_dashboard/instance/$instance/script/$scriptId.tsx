@@ -56,6 +56,7 @@ import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
+import { saveScript } from "@/lib/save-script";
 import {
   edgesToProto,
   nodesToProto,
@@ -212,15 +213,12 @@ function ScriptEditorContent() {
   const addNode = editor.actions.addNode;
   const findClosestEdge = editor.actions.findClosestEdge;
   const insertNodeOnEdge = editor.actions.insertNodeOnEdge;
-  const getScriptData = editor.actions.getScriptData;
-  const markSaved = editor.actions.markSaved;
   const addNodeExecutionTime = editor.actions.addNodeExecutionTime;
   const setExecutionStats = editor.actions.setExecutionStats;
 
   const isMobile = useIsMobile();
 
   // Local state
-  const [isSaving, setIsSaving] = useState(false);
   const { addExecutionLog, addExecutionLogs, clearExecutionLogs } =
     editor.actions;
   const [nodePaletteOpen, setNodePaletteOpen] = useState(false);
@@ -313,32 +311,26 @@ function ScriptEditorContent() {
     editor,
   ]);
 
-  // Create script mutation
-  const createMutation = useMutation({
-    mutationKey: ["script", "create", instanceId],
+  const saveMutation = useMutation({
+    mutationKey: ["script", "save", instanceId],
     mutationFn: async () => {
       if (!transport) throw new Error("No transport available");
-      // Read fresh from the store to avoid stale closure issues
-      const scriptData = getScriptData();
-      const client = createClient(ScriptService, transport);
-      const result = await client.createScript({
+      return saveScript(
+        transport,
         instanceId,
-        name: scriptData.name || tInstance("scripts.untitledScript"),
-        description: scriptData.description,
-        nodes: nodesToProto(scriptData.nodes),
-        edges: edgesToProto(scriptData.edges),
-        paused: scriptData.paused,
-        quotas: scriptData.quotas,
-      });
-      if (!result.script)
-        throw new Error("The server did not return the saved script.");
-      return { script: result.script, snapshot: scriptData };
+        editor,
+        tInstance("scripts.untitledScript"),
+      );
     },
-    onSuccess: ({ script, snapshot }) => {
-      markSaved(snapshot, script.id);
+    onSuccess: (script) => {
       toast.success(tInstance("scripts.saveSuccess"));
-      // Navigate to the real script ID
-      if (mounted.current) {
+      if (scriptId === "new" && mounted.current) {
+        // The create response already contains the canonical document. Avoid
+        // waiting for another read before switching the editor to its saved URL.
+        queryClient.setQueryData(
+          scriptQueryOptions(transport, instanceId, script.id).queryKey,
+          script,
+        );
         void navigate({
           to: "/instance/$instance/script/$scriptId",
           params: { instance: instanceId, scriptId: script.id },
@@ -347,73 +339,18 @@ function ScriptEditorContent() {
       }
     },
     onError: (error) => {
-      console.error("Failed to create script:", error);
+      console.error("Failed to save script:", error);
       toast.error(tInstance("scripts.saveError"));
     },
     onSettled: () => {
+      // Refresh the list without reloading the document over local edits.
       void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
     },
   });
 
-  // Update script mutation
-  const updateMutation = useMutation({
-    mutationKey: ["script", "update", instanceId, scriptId],
-    mutationFn: async () => {
-      if (!transport) throw new Error("No transport available");
-      // Read fresh from the store to avoid stale closure issues
-      const scriptData = getScriptData();
-      const client = createClient(ScriptService, transport);
-      const result = await client.updateScript({
-        instanceId,
-        scriptId,
-        name: scriptData.name,
-        description: scriptData.description,
-        nodes: nodesToProto(scriptData.nodes),
-        edges: edgesToProto(scriptData.edges),
-        updateNodes: true,
-        updateEdges: true,
-        paused: scriptData.paused,
-        quotas: scriptData.quotas,
-        updateQuotas: true,
-      });
-      if (!result.script)
-        throw new Error("The server did not return the saved script.");
-      return scriptData;
-    },
-    onSuccess: (snapshot) => {
-      markSaved(snapshot);
-      toast.success(tInstance("scripts.saveSuccess"));
-    },
-    onError: (error) => {
-      console.error("Failed to update script:", error);
-      toast.error(tInstance("scripts.saveError"));
-    },
-    onSettled: () => {
-      // Only invalidate the script list (for sidebar updates), not the
-      // individual script query.  Re-fetching the individual script would
-      // call loadScript and overwrite the local store, which can race with
-      // the server and revert changes the user just made (e.g. node labels).
-      void queryClient.invalidateQueries({
-        queryKey: ["scripts", instanceId],
-      });
-    },
-  });
-
-  // Handle save
-  const handleSave = useCallback(async () => {
-    setIsSaving(true);
-    try {
-      if (scriptId === "new") {
-        await createMutation.mutateAsync();
-      } else {
-        await updateMutation.mutateAsync();
-      }
-    } catch {
-      // The mutation reports failures and keeps the document available for retry.
-    } finally {
-      setIsSaving(false);
-    }
-  }, [scriptId, createMutation, updateMutation]);
+  const handleSave = useCallback(() => {
+    saveMutation.mutate();
+  }, [saveMutation]);
 
   // Handle script activation
   const handleStart = useCallback(async () => {
@@ -777,7 +714,7 @@ function ScriptEditorContent() {
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onFitView={handleFitView}
-          isSaving={isSaving}
+          isSaving={saveMutation.isPending}
         />
 
         {/* Full-screen canvas */}
@@ -861,7 +798,7 @@ function ScriptEditorContent() {
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onFitView={handleFitView}
-        isSaving={isSaving}
+        isSaving={saveMutation.isPending}
       />
 
       {/* Main content area */}
