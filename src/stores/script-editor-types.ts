@@ -176,7 +176,7 @@ export interface ScriptEditorActions {
     name?: string;
     description?: string;
     paused?: boolean;
-    quotas?: ScriptQuotas;
+    quotas: ScriptQuotas | undefined;
   }) => void;
   resetEditor: () => void;
   getScriptData: () => ScriptDocumentData;

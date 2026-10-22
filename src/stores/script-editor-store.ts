@@ -1724,7 +1724,7 @@ export function createScriptEditorSession() {
           scriptName: data.name ?? current.scriptName,
           scriptDescription: data.description ?? current.scriptDescription,
           paused: data.paused ?? current.paused,
-          quotas: data.quotas ?? current.quotas,
+          quotas: data.quotas,
           isDirty: true,
         }));
         ui.setState((state) => ({

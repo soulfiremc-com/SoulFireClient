@@ -36,6 +36,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
+import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { cn } from "@/lib/utils.tsx";
 import { ComplexityScore } from "./ComplexityScore";
 import { DryRunDialog } from "./DryRunDialog";
@@ -78,7 +79,6 @@ export function ScriptToolbar({
   );
   const isDirty = useSelector(editor.document, (state) => state.isDirty);
   const paused = useSelector(editor.document, (state) => state.paused);
-  const quotas = useSelector(editor.document, (state) => state.quotas);
   const loadScriptData = editor.actions.loadScriptData;
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -86,21 +86,12 @@ export function ScriptToolbar({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExport = () => {
-    const { nodes, edges } = editor.document.get();
-    const exportData = {
-      version: 1,
-      name: scriptName,
-      description: scriptDescription,
-      paused,
-      quotas,
-      nodes,
-      edges,
-      exportedAt: new Date().toISOString(),
-    };
-
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json",
-    });
+    const blob = new Blob(
+      [serializeScriptFile(editor.actions.getScriptData())],
+      {
+        type: "application/json",
+      },
+    );
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -121,11 +112,7 @@ export function ScriptToolbar({
     reader.onload = (e) => {
       try {
         const content = e.target?.result as string;
-        const importData = JSON.parse(content);
-
-        if (!importData.nodes || !importData.edges) {
-          throw new Error("Invalid script file format");
-        }
+        const importData = parseScriptFile(content);
 
         loadScriptData({
           nodes: importData.nodes,
