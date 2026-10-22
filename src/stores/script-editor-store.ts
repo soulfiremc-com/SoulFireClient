@@ -19,6 +19,7 @@ import {
 } from "@/components/script-editor/nodes/types";
 import { mergeExecutionLogs } from "@/lib/script-logs";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
+import { sameScriptDocument } from "@/lib/script-document";
 import {
   cloneSubgraph,
   selectedSubgraph,
@@ -1665,8 +1666,6 @@ export function createScriptEditorSession() {
       document.setState((state) => ({ ...state, paused, isDirty: true })),
     setQuotas: (quotas) =>
       document.setState((state) => ({ ...state, quotas, isDirty: true })),
-    setDirty: (dirty) =>
-      document.setState((state) => ({ ...state, isDirty: dirty })),
     setActive: (active) =>
       execution.setState((state) => ({ ...state, isActive: active })),
     setActiveNode: (nodeId) =>
@@ -1818,12 +1817,13 @@ export function createScriptEditorSession() {
       }),
     setExecutionStats: (stats) =>
       execution.setState((state) => ({ ...state, lastExecutionStats: stats })),
-    markSaved: () =>
+    markSaved: (data, scriptId) =>
       document.setState((state) => ({
         ...state,
-        lastSavedNodes: [...state.nodes],
-        lastSavedEdges: [...state.edges],
-        isDirty: false,
+        scriptId: scriptId ?? state.scriptId,
+        lastSavedNodes: data.nodes,
+        lastSavedEdges: data.edges,
+        isDirty: !sameScriptDocument(actions.getScriptData(), data),
       })),
   };
   return {

@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { create } from "@bufbuild/protobuf";
+import { ScriptQuotasSchema } from "@/generated/soulfire/script_pb";
 import { createScriptEditorSession } from "./script-editor-store";
 
 test("editor sessions isolate document, UI, and execution updates", () => {
@@ -137,7 +139,7 @@ test("each group view shows only its direct nodes and connections", () => {
 
 test("duplicating a group clones its nested graph and internal frame references", () => {
   const { session, outside } = nestedGraph();
-  session.actions.markSaved();
+  session.actions.markSaved(session.actions.getScriptData());
   const before = session.document.get();
   const originals = before.nodes.filter((node) => node.id !== outside);
   session.actions.duplicateSelected();
@@ -316,7 +318,7 @@ test("React Flow changes preserve untouched node identities and saved graphs", (
   const session = createScriptEditorSession();
   const first = session.actions.addNode("value", { x: 0, y: 0 });
   session.actions.addNode("value", { x: 1, y: 1 });
-  session.actions.markSaved();
+  session.actions.markSaved(session.actions.getScriptData());
   const before = session.document.get();
   session.actions.onNodesChange([
     { type: "position", id: first, position: { x: 2, y: 2 } },
@@ -326,4 +328,122 @@ test("React Flow changes preserve untouched node identities and saved graphs", (
   assert.notEqual(after.nodes[0], before.nodes[0]);
   assert.deepEqual(after.lastSavedNodes?.[0].position, { x: 0, y: 0 });
   assert.equal(after.isDirty, true);
+});
+
+test("save acknowledgement retains newer graph edits and their submitted baseline", () => {
+  const session = createScriptEditorSession();
+  session.actions.setScriptName("Submitted");
+  const first = session.actions.addNode("value", { x: 0, y: 0 }, { value: 1 });
+  const second = session.actions.addNode("value", { x: 100, y: 0 });
+  session.actions.onConnect({
+    source: first,
+    target: second,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  const submitted = session.actions.getScriptData();
+  session.actions.setScriptName("Newer edit");
+  session.actions.updateNodeData(first, { value: 2 });
+  const third = session.actions.addNode("value", { x: 200, y: 0 });
+  session.actions.onConnect({
+    source: second,
+    target: third,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  session.actions.markSaved(submitted, "created-id");
+  const acknowledged = session.document.get();
+  assert.equal(acknowledged.scriptId, "created-id");
+  assert.equal(acknowledged.scriptName, "Newer edit");
+  assert.equal(acknowledged.nodes[0].data.value, 2);
+  assert.equal(acknowledged.nodes.length, 3);
+  assert.equal(acknowledged.edges.length, 2);
+  assert.equal(acknowledged.lastSavedNodes?.[0].data.value, 1);
+  assert.equal(acknowledged.lastSavedNodes?.length, 2);
+  assert.equal(acknowledged.lastSavedEdges?.length, 1);
+  assert.equal(acknowledged.isDirty, true);
+  session.actions.markSaved(session.actions.getScriptData());
+  assert.equal(session.document.get().isDirty, false);
+  assert.equal(session.document.get().lastSavedNodes?.length, 3);
+});
+
+test("canvas selection and measurement do not make an acknowledged save dirty", () => {
+  const session = createScriptEditorSession();
+  const first = session.actions.addNode("value", { x: 0, y: 0 });
+  const second = session.actions.addNode("value", { x: 100, y: 0 });
+  session.actions.onConnect({
+    source: first,
+    target: second,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  const submitted = session.actions.getScriptData();
+  session.actions.onNodesChange([
+    { type: "select", id: first, selected: true },
+    { type: "dimensions", id: first, dimensions: { width: 160, height: 100 } },
+  ]);
+  session.actions.onEdgesChange([
+    { type: "select", id: submitted.edges[0].id, selected: true },
+  ]);
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, false);
+  assert.equal(session.document.get().nodes[0].selected, true);
+  assert.equal(session.document.get().nodes[0].measured?.height, 100);
+});
+
+test("acknowledgement compares quota values without losing bigint precision", () => {
+  const session = createScriptEditorSession();
+  session.actions.setQuotas(
+    create(ScriptQuotasSchema, { maxExecutionCount: 9_007_199_254_740_993n }),
+  );
+  const submitted = session.actions.getScriptData();
+  session.actions.setQuotas(
+    create(ScriptQuotasSchema, { maxExecutionCount: 9_007_199_254_740_993n }),
+  );
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, false);
+  session.actions.setQuotas(
+    create(ScriptQuotasSchema, { maxExecutionCount: 9_007_199_254_740_994n }),
+  );
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, true);
+  session.actions.setQuotas(submitted.quotas);
+  session.actions.setScriptDescription("New description");
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, true);
+  session.actions.setScriptDescription(submitted.description);
+  session.actions.setPaused(!submitted.paused);
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, true);
+});
+
+test("acknowledgement detects node values and edge rewiring without metadata changes", () => {
+  const session = createScriptEditorSession();
+  const first = session.actions.addNode("value", { x: 0, y: 0 }, { value: 1 });
+  const second = session.actions.addNode("value", { x: 100, y: 0 });
+  session.actions.onConnect({
+    source: first,
+    target: second,
+    sourceHandle: null,
+    targetHandle: null,
+  });
+  const submitted = session.actions.getScriptData();
+  session.actions.updateNodeData(first, { value: 2 });
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, true);
+  session.actions.updateNodeData(first, { value: 1 });
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, false);
+  const edge = submitted.edges[0];
+  session.actions.onEdgesChange([
+    {
+      type: "replace",
+      id: edge.id,
+      item: { ...edge, source: second, target: first },
+    },
+  ]);
+  session.actions.markSaved(submitted);
+  assert.equal(session.document.get().isDirty, true);
+  assert.equal(session.document.get().lastSavedEdges?.[0].source, first);
+  assert.equal(session.document.get().edges[0].source, second);
 });

@@ -10,6 +10,15 @@ import type {
 import type { LogEntry } from "@/components/script-editor/types";
 import type { ScriptQuotas } from "@/generated/soulfire/script_pb";
 
+export interface ScriptDocumentData {
+  nodes: Node[];
+  edges: Edge[];
+  name: string;
+  description: string;
+  paused: boolean;
+  quotas: ScriptQuotas | undefined;
+}
+
 export interface ScriptDocumentState {
   nodes: Node[];
   edges: Edge[];
@@ -147,7 +156,6 @@ export interface ScriptEditorActions {
   setScriptDescription: (description: string) => void;
   setPaused: (paused: boolean) => void;
   setQuotas: (quotas: ScriptQuotas | undefined) => void;
-  setDirty: (dirty: boolean) => void;
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;
   addExecutionLog: (log: LogEntry) => void;
@@ -171,14 +179,7 @@ export interface ScriptEditorActions {
     quotas?: ScriptQuotas;
   }) => void;
   resetEditor: () => void;
-  getScriptData: () => {
-    nodes: Node[];
-    edges: Edge[];
-    name: string;
-    description: string;
-    paused: boolean;
-    quotas: ScriptQuotas | undefined;
-  };
+  getScriptData: () => ScriptDocumentData;
   setValidationDiagnostics: (
     diagnostics: Array<{
       nodeId: string;
@@ -189,5 +190,5 @@ export interface ScriptEditorActions {
   ) => void;
   addNodeExecutionTime: (nodeId: string, timeNanos: number) => void;
   setExecutionStats: (stats: { nodeCount: number; maxCount: number }) => void;
-  markSaved: () => void;
+  markSaved: (data: ScriptDocumentData, scriptId?: string) => void;
 }

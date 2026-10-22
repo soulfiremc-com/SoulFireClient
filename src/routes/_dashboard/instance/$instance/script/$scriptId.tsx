@@ -65,6 +65,7 @@ import {
 import { hasInstancePermission, isDemo } from "@/lib/utils.tsx";
 import { scriptLogLevel, watchScriptLogs } from "@/lib/script-logs";
 import { createTransport } from "@/lib/web-rpc.ts";
+import { getScriptEditorRouteSession } from "@/stores/script-editor-route-session";
 
 import "@xyflow/react/dist/style.css";
 
@@ -157,8 +158,13 @@ function ScriptEditorSkeleton() {
 
 function ScriptEditorPage() {
   const { instance, scriptId } = Route.useParams();
+  const [session, setSession] = useState(() =>
+    getScriptEditorRouteSession(undefined, instance, scriptId),
+  );
+  const current = getScriptEditorRouteSession(session, instance, scriptId);
+  if (current !== session) setSession(current);
   return (
-    <ScriptEditorProvider key={`${instance}:${scriptId}`}>
+    <ScriptEditorProvider key={current.key} session={current.editor}>
       <ReactFlowProvider>
         <NodeTypesProvider>
           <Suspense fallback={<ScriptEditorSkeleton />}>
@@ -201,7 +207,6 @@ function ScriptEditorContent() {
   // Script editor store
   const loadScript = editor.actions.loadScript;
   const resetEditor = editor.actions.resetEditor;
-  const setDirty = editor.actions.setDirty;
   const setActive = editor.actions.setActive;
   const setActiveNode = editor.actions.setActiveNode;
   const addNode = editor.actions.addNode;
@@ -222,6 +227,7 @@ function ScriptEditorContent() {
   const [executionLogsOpen, setExecutionLogsOpen] = useState(false);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const executionAbortRef = useRef<AbortController | null>(null);
+  const mounted = useRef(true);
   // Pointer-based drag state (replaces HTML5 DnD which is broken in WebView2)
   const draggedNodeTypeRef = useRef<string | null>(null);
   const dragPreviewRef = useRef<HTMLDivElement>(null);
@@ -232,14 +238,25 @@ function ScriptEditorContent() {
     startY: number;
   } | null>(null);
 
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   // Load script into store when data changes
   useEffect(() => {
     if (scriptId === "new") {
       resetEditor();
-    } else if (serverScriptData) {
+    } else if (
+      serverScriptData &&
+      (editor.document.get().scriptId !== scriptId ||
+        !editor.document.get().isDirty)
+    ) {
       loadScript(scriptDataToStore(serverScriptData));
     }
-  }, [scriptId, serverScriptData, loadScript, resetEditor]);
+  }, [scriptId, serverScriptData, loadScript, resetEditor, editor]);
 
   useEffect(() => {
     if (scriptId === "new" || !transport || !canViewLogs || isDemo()) return;
@@ -313,17 +330,18 @@ function ScriptEditorContent() {
         paused: scriptData.paused,
         quotas: scriptData.quotas,
       });
-      return result;
+      if (!result.script)
+        throw new Error("The server did not return the saved script.");
+      return { script: result.script, snapshot: scriptData };
     },
-    onSuccess: (response) => {
-      setDirty(false);
-      markSaved();
+    onSuccess: ({ script, snapshot }) => {
+      markSaved(snapshot, script.id);
       toast.success(tInstance("scripts.saveSuccess"));
       // Navigate to the real script ID
-      if (response.script) {
+      if (mounted.current) {
         void navigate({
           to: "/instance/$instance/script/$scriptId",
-          params: { instance: instanceId, scriptId: response.script.id },
+          params: { instance: instanceId, scriptId: script.id },
           replace: true,
         });
       }
@@ -358,11 +376,12 @@ function ScriptEditorContent() {
         quotas: scriptData.quotas,
         updateQuotas: true,
       });
-      return result;
+      if (!result.script)
+        throw new Error("The server did not return the saved script.");
+      return scriptData;
     },
-    onSuccess: () => {
-      setDirty(false);
-      markSaved();
+    onSuccess: (snapshot) => {
+      markSaved(snapshot);
       toast.success(tInstance("scripts.saveSuccess"));
     },
     onError: (error) => {
@@ -389,6 +408,8 @@ function ScriptEditorContent() {
       } else {
         await updateMutation.mutateAsync();
       }
+    } catch {
+      // The mutation reports failures and keeps the document available for retry.
     } finally {
       setIsSaving(false);
     }

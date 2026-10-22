@@ -1,13 +1,15 @@
-import { createContext, type ReactNode, use, useState } from "react";
-import {
-  createScriptEditorSession,
-  type ScriptEditorSession,
-} from "@/stores/script-editor-store";
+import { createContext, type ReactNode, use } from "react";
+import type { ScriptEditorSession } from "@/stores/script-editor-store";
 
 const ScriptEditorContext = createContext<ScriptEditorSession | null>(null);
 
-export function ScriptEditorProvider({ children }: { children: ReactNode }) {
-  const [session] = useState(createScriptEditorSession);
+export function ScriptEditorProvider({
+  children,
+  session,
+}: {
+  children: ReactNode;
+  session: ScriptEditorSession;
+}) {
   return <ScriptEditorContext value={session}>{children}</ScriptEditorContext>;
 }
 
