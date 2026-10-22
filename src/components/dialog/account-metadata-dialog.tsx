@@ -375,10 +375,10 @@ function DialogContentInner({
       field: "namespace" | "key" | "value",
       newFieldValue: string,
     ) => {
-      if (!isMetadataReady || !entries) return;
+      if (!isMetadataReady || !entries) return false;
 
       const entry = entries.find((e) => e.id === id);
-      if (!entry) return;
+      if (!entry) return false;
 
       const updatedEntry = { ...entry, [field]: newFieldValue };
 
@@ -389,7 +389,7 @@ function DialogContentInner({
         !metadataNamespacePattern.test(updatedEntry.namespace) ||
         !metadataKeyPattern.test(updatedEntry.key)
       )
-        return;
+        return false;
 
       // Check for duplicates (only if namespace or key changed)
       if (
@@ -397,7 +397,7 @@ function DialogContentInner({
         isDuplicate(updatedEntry.namespace, updatedEntry.key, id)
       ) {
         toast.error(t("account.metadata.duplicateError"));
-        return;
+        return false;
       }
 
       // Update local state
@@ -413,6 +413,7 @@ function DialogContentInner({
         key: updatedEntry.key,
         value: parsedValue,
       });
+      return true;
     },
     [entries, isMetadataReady, isDuplicate, t, updateEntryMutation],
   );
@@ -630,7 +631,7 @@ function EntryRow({
   isUpdating,
 }: {
   entry: MetadataEntry;
-  onUpdate: (field: "namespace" | "key" | "value", value: string) => void;
+  onUpdate: (field: "namespace" | "key" | "value", value: string) => boolean;
   onDelete: () => void;
   isDeleting: boolean;
   isUpdating: boolean;
@@ -653,8 +654,11 @@ function EntryRow({
           ? isValidKey
           : isValidJson;
     if (valid && value !== entry[field]) {
-      setDraft((current) => ({ ...current, [field]: value }));
-      onUpdate(field, value);
+      const accepted = onUpdate(field, value);
+      setDraft((current) => ({
+        ...current,
+        [field]: accepted ? value : entry[field],
+      }));
     }
   };
 
