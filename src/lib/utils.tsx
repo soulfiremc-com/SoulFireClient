@@ -827,7 +827,6 @@ export async function removeInstanceAccountsBatch(
 export async function applyGeneratedAccounts(
   newAccounts: ProfileAccount[],
   mode: GenerateAccountsMode,
-  existingAccounts: ProfileAccount[],
   instanceInfo: {
     id: string;
   },
@@ -835,63 +834,36 @@ export async function applyGeneratedAccounts(
   queryClient: QueryClient,
   instanceInfoQueryKey: QueryKey,
 ) {
-  switch (mode) {
-    case "IGNORE_EXISTING":
-      // Just append new accounts (duplicates already filtered during generation)
-      await addInstanceAccountsBatch(
-        newAccounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryKey,
-      );
-      break;
-    case "REPLACE_EXISTING": {
-      // Remove accounts with colliding UUIDs, then add new accounts
-      const newProfileIds = new Set(newAccounts.map((a) => a.profileId));
-      const existingToRemove = existingAccounts
-        .filter((a) => newProfileIds.has(a.profileId))
-        .map((a) => a.profileId);
-      if (existingToRemove.length > 0) {
-        await removeInstanceAccountsBatch(
-          existingToRemove,
-          instanceInfo,
-          transport,
-          queryClient,
-          instanceInfoQueryKey,
-        );
-      }
-      await addInstanceAccountsBatch(
-        newAccounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryKey,
-      );
-      break;
-    }
-    case "REPLACE_ALL": {
-      // Delete all existing accounts and replace with generated ones
-      const allExistingIds = existingAccounts.map((a) => a.profileId);
-      if (allExistingIds.length > 0) {
-        await removeInstanceAccountsBatch(
-          allExistingIds,
-          instanceInfo,
-          transport,
-          queryClient,
-          instanceInfoQueryKey,
-        );
-      }
-      await addInstanceAccountsBatch(
-        newAccounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryKey,
-      );
-      break;
-    }
+  if (mode !== "REPLACE_ALL") {
+    await addInstanceAccountsBatch(
+      newAccounts,
+      instanceInfo,
+      transport,
+      queryClient,
+      instanceInfoQueryKey,
+    );
+    return;
   }
+  if (transport === null) return;
+
+  await queryClient.cancelQueries({ queryKey: instanceInfoQueryKey });
+  queryClient.setQueryData<InstanceInfoQueryData>(
+    instanceInfoQueryKey,
+    (old) =>
+      old
+        ? {
+            ...old,
+            profile: {
+              ...old.profile,
+              accounts: mergeAccounts([], newAccounts),
+            },
+          }
+        : old,
+  );
+  await createClient(InstanceService, transport).replaceInstanceAccounts({
+    id: instanceInfo.id,
+    accounts: newAccounts.map(toMinecraftAccountProto),
+  });
 }
 
 // Batch proxy operations

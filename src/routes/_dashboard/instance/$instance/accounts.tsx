@@ -164,7 +164,6 @@ function GenerateAccountsButton() {
       await applyGeneratedAccounts(
         newAccounts,
         mode,
-        profile.accounts,
         instanceInfo,
         transport,
         queryClient,

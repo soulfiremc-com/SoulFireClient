@@ -253,7 +253,6 @@ export default function ControlsMenu() {
       await applyGeneratedAccounts(
         newAccounts,
         mode,
-        instanceInfo.profile.accounts,
         instanceInfo,
         transport,
         queryClient,
