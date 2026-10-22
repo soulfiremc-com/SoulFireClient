@@ -641,5 +641,13 @@
     "filter": "Filter process output",
     "truncated": "{{count}} older log lines were omitted. Full server logs remain in the data directory.",
     "privacy": "Reports include local paths and recent logs. Review reports and thread dumps for personal information before sharing. Nothing is uploaded automatically."
+  },
+  "instanceUnavailable": {
+    "title": "Instance unavailable",
+    "description": "This instance was deleted or you no longer have access to it."
+  },
+  "botUnavailable": {
+    "title": "Bot unavailable",
+    "description": "This bot was removed or you no longer have access to it."
   }
 }

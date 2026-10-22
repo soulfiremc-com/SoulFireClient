@@ -71,6 +71,7 @@ export function startPovSession(
     if (
       reason instanceof ConnectError &&
       [
+        Code.NotFound,
         Code.PermissionDenied,
         Code.Unauthenticated,
         Code.InvalidArgument,

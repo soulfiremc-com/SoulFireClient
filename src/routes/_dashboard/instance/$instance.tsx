@@ -1,9 +1,29 @@
 import { create } from "@bufbuild/protobuf";
 import { TimestampSchema } from "@bufbuild/protobuf/wkt";
-import { type QueryClient, queryOptions } from "@tanstack/react-query";
-import { CatchBoundary, createFileRoute, Outlet } from "@tanstack/react-router";
+import {
+  type QueryClient,
+  queryOptions,
+  useQuery,
+} from "@tanstack/react-query";
+import {
+  CatchBoundary,
+  createFileRoute,
+  Link,
+  Outlet,
+} from "@tanstack/react-router";
+import { ArrowLeftIcon } from "lucide-react";
+import type { ComponentProps } from "react";
+import { useTranslation } from "react-i18next";
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { InstanceSidebar } from "@/components/nav/instance/instance-sidebar.tsx";
+import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 import {
@@ -30,6 +50,7 @@ import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
 import { fetchInstanceInfo } from "@/lib/instance-info-query.ts";
 import { instanceMetricsQueryOptions } from "@/lib/metrics-query.ts";
+import { isResourceUnavailable } from "@/lib/resource-errors";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   convertFromInstanceProto,
@@ -173,9 +194,55 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
     );
   },
   component: InstanceLayout,
+  errorComponent: InstanceErrorComponent,
 });
 
+function UnavailableInstance() {
+  const { t } = useTranslation("common");
+  return (
+    <main className="flex flex-1 p-4">
+      <Empty className="m-auto max-w-md bg-card">
+        <EmptyHeader>
+          <EmptyTitle>{t("instanceUnavailable.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("instanceUnavailable.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link to="/user" />}
+          >
+            <ArrowLeftIcon data-icon="inline-start" />
+            {t("instanceSidebar.backToDashboard")}
+          </Button>
+        </EmptyContent>
+      </Empty>
+    </main>
+  );
+}
+
+function InstanceErrorComponent(props: ComponentProps<typeof ErrorComponent>) {
+  return isResourceUnavailable(props.error) ? (
+    <UnavailableInstance />
+  ) : (
+    <ErrorComponent {...props} />
+  );
+}
+
 function InstanceLayout() {
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  // Observe errors without adding another polling timer or suspending the layout.
+  const { error } = useQuery({
+    ...instanceInfoQueryOptions,
+    refetchInterval: false,
+  });
+  if (isResourceUnavailable(error)) return <UnavailableInstance />;
+  return <InstanceLayoutContent />;
+}
+
+function InstanceLayoutContent() {
   const { metricsQueryOptions, instanceInfoQueryOptions } =
     Route.useRouteContext();
   useCastBroadcast(

@@ -66,8 +66,12 @@ export function watchBotStatuses(
       }
     } catch (error) {
       if (controller.signal.aborted) return;
-      console.error("Bot status stream ended", error);
       const code = ConnectError.from(error).code;
+      if (code === Code.NotFound) {
+        refresh();
+        return;
+      }
+      console.error("Bot status stream ended", error);
       if (
         [
           Code.PermissionDenied,

@@ -3,6 +3,7 @@ import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import {
   queryOptions,
   useMutation,
+  useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -63,6 +64,7 @@ import { Button } from "@/components/ui/button.tsx";
 import {
   Empty,
   EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
@@ -139,6 +141,7 @@ import {
   syncServerInputDraft,
 } from "@/lib/server-input-draft";
 import i18n from "@/lib/i18n";
+import { isResourceUnavailable } from "@/lib/resource-errors";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
@@ -234,8 +237,13 @@ function BotDetailSkeleton() {
 
 function BotDetail() {
   const { t } = useTranslation("common");
-  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  const { instanceInfoQueryOptions, botInfoQueryOptions } =
+    Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const { error: botInfoError } = useQuery({
+    ...botInfoQueryOptions,
+    refetchInterval: false,
+  });
   const { botId } = Route.useParams();
 
   // Find the account
@@ -244,7 +252,7 @@ function BotDetail() {
     [instanceInfo.profile.accounts, botId],
   );
 
-  if (!account) {
+  if (!account || isResourceUnavailable(botInfoError)) {
     return (
       <InstancePageLayout
         extraCrumbs={[
@@ -256,7 +264,10 @@ function BotDetail() {
         <div className="container flex py-8">
           <Empty className="mx-auto max-w-md bg-card">
             <EmptyHeader>
-              <EmptyTitle>Bot not found</EmptyTitle>
+              <EmptyTitle>{t("botUnavailable.title")}</EmptyTitle>
+              <EmptyDescription>
+                {t("botUnavailable.description")}
+              </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button
