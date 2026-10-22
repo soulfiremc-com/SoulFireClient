@@ -4,7 +4,12 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Link, useNavigate, useRouteContext } from "@tanstack/react-router";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useRouteContext,
+} from "@tanstack/react-router";
 import { saveAs } from "file-saver";
 import {
   ChevronsUpDownIcon,
@@ -16,7 +21,7 @@ import {
   TrashIcon,
   UploadIcon,
 } from "lucide-react";
-import { Suspense, use, useRef, useState } from "react";
+import { type RefObject, Suspense, use, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { formatBotFleetSummary } from "@/components/bot-fleet-summary.tsx";
@@ -166,8 +171,7 @@ function InstanceListSkeleton() {
   );
 }
 
-function InstanceActionButtons() {
-  const { t } = useTranslation("common");
+function useProfileImport() {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const instanceInfoQueryOptions = useRouteContext({
@@ -175,10 +179,6 @@ function InstanceActionButtons() {
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const profile = instanceInfo.profile;
-  const systemInfo = use(SystemInfoContext);
-  const instanceProfileInputRef = useRef<HTMLInputElement>(null);
-  // Using setInstanceConfigFull for profile import
   const setProfileMutation = useMutation({
     mutationKey: ["instance", "profile", "import", instanceInfo.id],
     scope: { id: `instance-profile-${instanceInfo.id}` },
@@ -197,6 +197,57 @@ function InstanceActionButtons() {
       });
     },
   });
+
+  return { instanceInfo, importProfile: setProfileMutation.mutateAsync };
+}
+
+function InstanceProfileFileInput({
+  inputRef,
+}: {
+  inputRef: RefObject<HTMLInputElement | null>;
+}) {
+  const { t } = useTranslation("common");
+  const { importProfile } = useProfileImport();
+
+  return (
+    <input
+      ref={inputRef}
+      type="file"
+      accept=".json"
+      className="hidden"
+      onChange={(event) => {
+        const file = event.currentTarget.files?.item(0);
+        event.currentTarget.value = "";
+        if (!file) return;
+
+        toast.promise(
+          (async () => {
+            const data = await file.text();
+            await importProfile(JSON.parse(data) as ProfileRoot);
+          })(),
+          {
+            loading: t("instanceSidebar.loadProfileToast.loading"),
+            success: t("instanceSidebar.loadProfileToast.success"),
+            error: (error) => {
+              console.error(error);
+              return t("instanceSidebar.loadProfileToast.error");
+            },
+          },
+        );
+      }}
+    />
+  );
+}
+
+function InstanceActionButtons({
+  onLoadProfile,
+}: {
+  onLoadProfile: () => void;
+}) {
+  const { t } = useTranslation("common");
+  const { instanceInfo, importProfile } = useProfileImport();
+  const profile = instanceInfo.profile;
+  const systemInfo = use(SystemInfoContext);
 
   return (
     <>
@@ -229,7 +280,7 @@ function InstanceActionButtons() {
                               ),
                             );
 
-                            await setProfileMutation.mutateAsync(
+                            await importProfile(
                               JSON.parse(data) as ProfileRoot,
                             );
                           };
@@ -287,7 +338,7 @@ function InstanceActionButtons() {
                         const data = await desktop.fs.readTextFile(selected);
                         toast.promise(
                           (async () => {
-                            await setProfileMutation.mutateAsync(
+                            await importProfile(
                               JSON.parse(data) as ProfileRoot,
                             );
                           })(),
@@ -317,45 +368,10 @@ function InstanceActionButtons() {
             </DropdownMenuPortal>
           </DropdownMenuSub>
         ) : (
-          <>
-            <input
-              ref={instanceProfileInputRef}
-              type="file"
-              accept=".json"
-              className="hidden"
-              onInput={(e) => {
-                const file = (e.target as HTMLInputElement).files?.item(0);
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const data = reader.result as string;
-                  toast.promise(
-                    setProfileMutation.mutateAsync(
-                      JSON.parse(data) as ProfileRoot,
-                    ),
-                    {
-                      loading: t("instanceSidebar.loadProfileToast.loading"),
-                      success: t("instanceSidebar.loadProfileToast.success"),
-                      error: (e) => {
-                        console.error(e);
-                        return t("instanceSidebar.loadProfileToast.error");
-                      },
-                    },
-                  );
-                };
-                reader.readAsText(file);
-              }}
-            />
-            <DropdownMenuItem
-              onClick={() => {
-                instanceProfileInputRef.current?.click();
-              }}
-            >
-              <UploadIcon className="size-4" />
-              {t("instanceSidebar.loadProfile")}
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem onClick={onLoadProfile}>
+            <UploadIcon className="size-4" />
+            {t("instanceSidebar.loadProfile")}
+          </DropdownMenuItem>
         )}
         <DropdownMenuItem
           onClick={() => {
@@ -421,10 +437,20 @@ function InstanceActionButtonsSkeleton() {
 export function InstanceSwitcher() {
   const { t } = useTranslation("common");
   const { isMobile } = useSidebar();
+  const { instance } = useParams({ from: "/_dashboard/instance/$instance" });
+  const instanceProfileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
+        {!isDesktopApp() && (
+          <Suspense>
+            <InstanceProfileFileInput
+              key={instance}
+              inputRef={instanceProfileInputRef}
+            />
+          </Suspense>
+        )}
         <DropdownMenu>
           <Suspense fallback={<SidebarInstanceButtonSkeleton />}>
             <SidebarInstanceButton />
@@ -453,7 +479,9 @@ export function InstanceSwitcher() {
             </Suspense>
             <DropdownMenuSeparator />
             <Suspense fallback={<InstanceActionButtonsSkeleton />}>
-              <InstanceActionButtons />
+              <InstanceActionButtons
+                onLoadProfile={() => instanceProfileInputRef.current?.click()}
+              />
             </Suspense>
             <Suspense>
               <DeleteInstanceButton />
