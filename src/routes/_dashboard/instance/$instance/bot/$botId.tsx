@@ -1,5 +1,5 @@
 import { create } from "@bufbuild/protobuf";
-import { createClient } from "@connectrpc/connect";
+import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import {
   queryOptions,
   useMutation,
@@ -2076,9 +2076,11 @@ function BotDialogPanel({
     mutationFn: async ({
       buttonIndex,
       inputValues,
+      expectedScreenId,
     }: {
       buttonIndex: number;
       inputValues: Record<string, string>;
+      expectedScreenId: string;
     }) => {
       const transport = createTransport();
       if (transport === null) throw new Error("Not connected");
@@ -2088,6 +2090,7 @@ function BotDialogPanel({
         botId,
         buttonIndex,
         inputValues,
+        expectedScreenId,
       });
       if (!result.success)
         throw new Error(result.error || "The dialog action failed.");
@@ -2108,7 +2111,13 @@ function BotDialogPanel({
         });
       }
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toast.error(error.message);
+      if (error instanceof ConnectError && error.code === Code.Aborted)
+        void queryClient.invalidateQueries({
+          queryKey: dialogQueryOptions.queryKey,
+        });
+    },
   });
 
   const getDialogTypeName = (type: number) => {
@@ -2169,6 +2178,7 @@ function BotDialogPanel({
               const state = await submitMutation.mutateAsync({
                 buttonIndex,
                 inputValues,
+                expectedScreenId: dialog.screenId,
               });
               return state?.dialog;
             }}
