@@ -9,6 +9,18 @@ export function getProxyKey(proxy: ProfileProxy): string {
   ]);
 }
 
+export type ProxyTableRow = ProfileProxy & { rowId: string };
+
+export function getProxyRows(proxies: ProfileProxy[]): ProxyTableRow[] {
+  const occurrences = new Map<string, number>();
+  return proxies.map((proxy) => {
+    const key = getProxyKey(proxy);
+    const occurrence = (occurrences.get(key) ?? 0) + 1;
+    occurrences.set(key, occurrence);
+    return { ...proxy, rowId: JSON.stringify([key, occurrence]) };
+  });
+}
+
 export function removeProxyEntries(
   proxies: ProfileProxy[],
   selected: ProfileProxy[],

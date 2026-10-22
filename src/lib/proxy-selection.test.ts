@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import type { ProfileProxy } from "@/lib/types.ts";
-import { getProxyKey, removeProxyEntries } from "./proxy-selection.ts";
+import {
+  getProxyKey,
+  getProxyRows,
+  removeProxyEntries,
+} from "./proxy-selection.ts";
 
 const proxy = (overrides: Partial<ProfileProxy> = {}): ProfileProxy => ({
   type: ProxyProto_Type.HTTP,
@@ -41,4 +45,22 @@ test("each selected occurrence removes one entry without mutating the inputs", (
   assert.deepEqual(removeProxyEntries(proxies, selected), [second, first]);
   assert.equal(proxies.length, 4);
   assert.equal(selected.length, 2);
+});
+
+test("identical proxies have separate occurrence identities across reordering", () => {
+  const first = proxy();
+  const other = proxy({ username: "other" });
+  const rows = getProxyRows([first, first, other]);
+  assert.equal(new Set(rows.map((row) => row.rowId)).size, 3);
+  const reordered = getProxyRows([{ ...other }, { ...first }, { ...first }]);
+  assert.deepEqual(
+    reordered.map((row) => row.rowId),
+    [rows[2].rowId, rows[0].rowId, rows[1].rowId],
+  );
+  const withoutOther = getProxyRows([first, first]);
+  assert.deepEqual(
+    withoutOther.map((row) => row.rowId),
+    rows.slice(0, 2).map((row) => row.rowId),
+  );
+  assert.equal("rowId" in first, false);
 });

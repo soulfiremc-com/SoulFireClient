@@ -20,7 +20,7 @@ import {
   TrashIcon,
   Wand2Icon,
 } from "lucide-react";
-import { use, useCallback, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
@@ -85,7 +85,7 @@ import i18n from "@/lib/i18n.ts";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
-import { getProxyKey } from "@/lib/proxy-selection.ts";
+import { getProxyRows, type ProxyTableRow } from "@/lib/proxy-selection.ts";
 import {
   formatProxyAsFlat,
   formatProxyAsURI,
@@ -272,7 +272,7 @@ const proxyTypeToIcon = (type: keyof typeof ProxyProto_Type) =>
     }
   });
 
-const columns: ColumnDef<typeof dataTableFeatures, ProfileProxy>[] = [
+const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
   {
     id: "select",
     header: SelectAllHeader,
@@ -402,7 +402,7 @@ function GetProxiesButton() {
   );
 }
 
-function AddButton() {
+function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
@@ -437,6 +437,7 @@ function AddButton() {
   const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
+    onMutate: onBeforeRemove,
     mutationFn: async (proxies: ProfileProxy[]) => {
       await removeInstanceProxyEntries(
         proxies,
@@ -710,7 +711,7 @@ function AddButton() {
 }
 
 function ExtraHeader(props: {
-  table: ReactTable<typeof dataTableFeatures, ProfileProxy>;
+  table: ReactTable<typeof dataTableFeatures, ProxyTableRow>;
 }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
@@ -722,6 +723,7 @@ function ExtraHeader(props: {
   const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
+    onMutate: () => props.table.resetRowSelection(),
     mutationFn: async (proxies: ProfileProxy[]) => {
       await removeInstanceProxyEntries(
         proxies,
@@ -973,10 +975,14 @@ function Content() {
   const profile = instanceInfo.profile;
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
+  const proxyRows = useMemo(
+    () => getProxyRows(profile.proxies),
+    [profile.proxies],
+  );
   const { table } = useDataTable({
-    data: profile.proxies,
+    data: proxyRows,
     columns,
-    getRowId: (row) => getProxyKey(row),
+    getRowId: (row) => row.rowId,
   });
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<ProfileProxy>();
@@ -985,6 +991,7 @@ function Content() {
   const { mutate: removeProxyMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-single", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
+    onMutate: () => table.resetRowSelection(),
     mutationFn: async (proxy: ProfileProxy) => {
       await removeInstanceProxyEntries(
         [proxy],
@@ -1032,7 +1039,7 @@ function Content() {
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
           <GetProxiesButton />
-          <AddButton />
+          <AddButton onBeforeRemove={() => table.resetRowSelection()} />
         </DataTableToolbar>
       </DataTable>
       {contextMenu && (
