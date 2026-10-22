@@ -1192,11 +1192,15 @@ function Content() {
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<ProfileAccount>();
   const copyToClipboard = useCopyToClipboard();
-  const [configAccount, setConfigAccount] = useState<ProfileAccount | null>(
+  const [configAccountId, setConfigAccountId] = useState<string | null>(null);
+  const [metadataAccountId, setMetadataAccountId] = useState<string | null>(
     null,
   );
-  const [metadataAccount, setMetadataAccount] = useState<ProfileAccount | null>(
-    null,
+  const configAccount = profile.accounts.find(
+    (account) => account.profileId === configAccountId,
+  );
+  const metadataAccount = profile.accounts.find(
+    (account) => account.profileId === metadataAccountId,
   );
 
   return (
@@ -1235,7 +1239,7 @@ function Content() {
         >
           <MenuItem
             onClick={() => {
-              setConfigAccount(contextMenu.data);
+              setConfigAccountId(contextMenu.data.profileId);
               dismiss();
             }}
           >
@@ -1244,7 +1248,7 @@ function Content() {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              setMetadataAccount(contextMenu.data);
+              setMetadataAccountId(contextMenu.data.profileId);
               dismiss();
             }}
           >
@@ -1277,7 +1281,7 @@ function Content() {
           account={configAccount}
           open={true}
           onOpenChange={(open) => {
-            if (!open) setConfigAccount(null);
+            if (!open) setConfigAccountId(null);
           }}
         />
       )}
@@ -1286,7 +1290,7 @@ function Content() {
           account={metadataAccount}
           open={true}
           onOpenChange={(open) => {
-            if (!open) setMetadataAccount(null);
+            if (!open) setMetadataAccountId(null);
           }}
         />
       )}
