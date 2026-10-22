@@ -93,8 +93,27 @@ export function isSystemShortcut(
   );
 }
 
-export function keyInput(event: KeyboardEvent, pressed: boolean) {
-  if (isSystemShortcut(event)) return null;
+type TextShortcutEvent = Pick<
+  KeyboardEvent,
+  "code" | "ctrlKey" | "metaKey" | "altKey" | "shiftKey"
+>;
+
+export function isTextEditingShortcut(event: TextShortcutEvent): boolean {
+  return (
+    (event.ctrlKey || event.metaKey) &&
+    !event.altKey &&
+    !event.shiftKey &&
+    (event.code === "KeyA" || event.code === "KeyC" || event.code === "KeyX")
+  );
+}
+
+export function keyInput(
+  event: TextShortcutEvent & Pick<KeyboardEvent, "repeat">,
+  pressed: boolean,
+  typing: boolean,
+) {
+  const editing = typing && isTextEditingShortcut(event);
+  if (isSystemShortcut(event) && !editing) return null;
   const code = glfwKey(event.code);
   return code === undefined
     ? null
@@ -102,7 +121,7 @@ export function keyInput(event: KeyboardEvent, pressed: boolean) {
         kind: PovInputEvent_Kind.KEY,
         code,
         action: pressed ? (event.repeat ? 2 : 1) : 0,
-        modifiers: inputModifiers(event),
+        modifiers: editing ? 2 : inputModifiers(event),
       });
 }
 

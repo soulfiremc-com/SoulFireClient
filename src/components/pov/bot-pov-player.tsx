@@ -40,7 +40,7 @@ import { PovGamepad } from "@/lib/pov-gamepad";
 import {
   inputModifiers,
   isPovReleaseShortcut,
-  isSystemShortcut,
+  isTextEditingShortcut,
   keyInput,
   mouseButton,
 } from "@/lib/pov-input";
@@ -444,16 +444,16 @@ function BotPovSession({
         return;
       }
       if (event.isComposing || event.code === "Process") return;
-      const typing = event.target === textInputRef.current;
+      const typing =
+        playerStore.get().screenOpen && event.target === textInputRef.current;
       if (typing && (event.ctrlKey || event.metaKey) && event.code === "KeyV")
         return;
       const copying =
         typing &&
-        (event.ctrlKey || event.metaKey) &&
+        isTextEditingShortcut(event) &&
         (event.code === "KeyC" || event.code === "KeyX");
-      if (isSystemShortcut(event) && !copying) return;
       const pressed = event.type === "keydown";
-      const input = keyInput(event, pressed);
+      const input = keyInput(event, pressed, typing);
       if (!input) return;
       if (
         !(
@@ -472,7 +472,6 @@ function BotPovSession({
         }
         return;
       }
-      if (copying) input.modifiers = 2;
       session.current?.enqueue(input);
       if (copying && pressed) session.current?.copy();
       if (

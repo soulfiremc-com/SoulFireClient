@@ -3,8 +3,10 @@ import { test } from "node:test";
 import {
   glfwKey,
   inputModifiers,
+  keyInput,
   isPovReleaseShortcut,
   isSystemShortcut,
+  isTextEditingShortcut,
   mouseButton,
 } from "./pov-input";
 
@@ -73,4 +75,63 @@ test("release chord is platform-specific and leaves plain gameplay keys alone", 
     isPovReleaseShortcut({ ...event, code: "Escape" }, false),
     false,
   );
+});
+
+test("Command editing shortcuts reach native text fields as Control shortcuts", () => {
+  for (const code of ["KeyA", "KeyC", "KeyX"]) {
+    const event = {
+      code,
+      ctrlKey: false,
+      metaKey: true,
+      altKey: false,
+      shiftKey: false,
+      repeat: false,
+    };
+    const pressed = keyInput(event, true, true);
+    const released = keyInput(event, false, true);
+    assert.equal(pressed?.code, glfwKey(code));
+    assert.equal(pressed?.modifiers, 2);
+    assert.equal(pressed?.action, 1);
+    assert.equal(released?.modifiers, 2);
+    assert.equal(released?.action, 0);
+    assert.equal(keyInput(event, true, false), null);
+  }
+});
+
+test("native text editing leaves system shortcuts and browser paste available", () => {
+  const event = {
+    code: "KeyR",
+    ctrlKey: false,
+    metaKey: true,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+  };
+  for (const code of ["KeyR", "KeyQ", "KeyT", "KeyV", "Tab"])
+    assert.equal(keyInput({ ...event, code }, true, true), null);
+  assert.equal(
+    keyInput({ ...event, code: "KeyC", shiftKey: true }, true, true),
+    null,
+  );
+  assert.equal(
+    keyInput({ ...event, code: "KeyC", altKey: true }, true, true),
+    null,
+  );
+});
+
+test("Control editing shortcuts preserve modified game key combinations", () => {
+  const event = {
+    code: "KeyC",
+    ctrlKey: true,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+  };
+  assert.equal(isTextEditingShortcut(event), true);
+  assert.equal(keyInput(event, true, true)?.modifiers, 2);
+  const shifted = { ...event, shiftKey: true };
+  assert.equal(isTextEditingShortcut(shifted), false);
+  assert.equal(keyInput(shifted, true, true)?.modifiers, 3);
+  assert.equal(keyInput({ ...event, repeat: true }, true, true)?.action, 2);
 });
