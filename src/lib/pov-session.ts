@@ -3,13 +3,12 @@ import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import {
   type PovFrame,
   type PovInputEvent,
-  PovInputEvent_Kind,
   PovInputRequestSchema,
   PovService,
   type PovStreamFeedback,
 } from "@/generated/soulfire/pov_pb";
 import { povCodecs, povDisplayFps } from "@/lib/pov-display";
-import { PovInputSources } from "@/lib/pov-input-sources";
+import { PovInputQueue } from "@/lib/pov-input-queue";
 import { createTransport, povInputUrl } from "@/lib/web-rpc";
 
 // Bound both input and frame queues. A replacement stream always gets a fresh lease and sequence.
@@ -29,8 +28,7 @@ export function startPovSession(
   if (!transport)
     throw new Error("Interactive POV requires a connected server.");
   const client = createClient(PovService, transport);
-  let events: PovInputEvent[] = [];
-  const sources = new PovInputSources();
+  const inputs = new PovInputQueue();
   let captured = false;
   let audioEnabled = false;
   let lastAudioEnabled = false;
@@ -61,8 +59,7 @@ export function startPovSession(
     wakeRetry?.();
     attempt?.abort.abort();
     attempt?.socket?.close();
-    events = [];
-    sources.reset();
+    inputs.reset();
   }
   function fail(reason: unknown) {
     if (stopped) return;
@@ -85,8 +82,7 @@ export function startPovSession(
     }
     ready = false;
     captured = false;
-    events = [];
-    sources.reset();
+    inputs.reset();
     pendingEscape = false;
     clipboard = undefined;
     readClipboard = false;
@@ -116,7 +112,7 @@ export function startPovSession(
       clipboard === undefined &&
       !pendingEscape &&
       !pendingKeyFrame &&
-      !events.length &&
+      !inputs.length &&
       captured === lastCaptured &&
       audioEnabled === lastAudioEnabled &&
       performance.now() - lastSent < 500
@@ -124,8 +120,7 @@ export function startPovSession(
       return;
     const size = dimensions();
     if (!size) return;
-    const batch = events;
-    events = [];
+    const batch = inputs.drain();
     const batchCaptured = captured;
     const batchEscape = pendingEscape;
     const requestKeyFrame = pendingKeyFrame;
@@ -281,8 +276,7 @@ export function startPovSession(
     capture(value: boolean) {
       captured = value;
       if (!value) {
-        events = [];
-        sources.reset();
+        inputs.reset();
         clipboard = undefined;
         readClipboard = false;
         clipboardSequence = 0n;
@@ -302,23 +296,7 @@ export function startPovSession(
     },
     enqueue(event: PovInputEvent, source = "keyboard") {
       if (!captured || stopped || !ready) return;
-      if (!sources.accept(event, source)) return;
-      const previous = events[events.length - 1];
-      if (
-        previous &&
-        event.kind === PovInputEvent_Kind.MOVE &&
-        previous.kind === PovInputEvent_Kind.MOVE &&
-        previous.relative === event.relative
-      ) {
-        previous.x = event.relative ? previous.x + event.x : event.x;
-        previous.y = event.relative ? previous.y + event.y : event.y;
-        return;
-      }
-      if (events.length >= 128) {
-        reconnect();
-        return;
-      }
-      events.push(event);
+      if (!inputs.enqueue(event, source)) reconnect();
     },
   };
 }
