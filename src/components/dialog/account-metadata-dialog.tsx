@@ -2,7 +2,7 @@ import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import {
@@ -11,12 +11,14 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import {
@@ -86,6 +88,10 @@ export function AccountMetadataDialog({
   onOpenChange,
 }: AccountMetadataDialogProps) {
   const { t } = useTranslation("instance");
+  const instanceId = useRouteContext({
+    from: "/_dashboard/instance/$instance",
+    select: (context) => context.instanceInfoQueryOptions.queryKey[1] as string,
+  });
 
   return (
     <Credenza open={open} onOpenChange={onOpenChange}>
@@ -101,6 +107,8 @@ export function AccountMetadataDialog({
         <CredenzaBody>
           <Suspense fallback={<DialogSkeleton />}>
             <DialogContentInner
+              key={`${instanceId}:${account.profileId}`}
+              instanceId={instanceId}
               account={account}
               open={open}
               onOpenChange={onOpenChange}
@@ -124,52 +132,69 @@ function DialogSkeleton() {
 }
 
 function DialogContentInner({
+  instanceId,
   account,
   open,
   onOpenChange,
 }: {
+  instanceId: string;
   account: ProfileAccount;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   const { t } = useTranslation("instance");
   const transport = use(TransportContext);
-  const _queryClient = useQueryClient();
-  const instanceInfoQueryOptions = useRouteContext({
-    from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions,
-  });
-  const instanceId = instanceInfoQueryOptions.queryKey[1] as string;
 
   const [entries, setEntries] = useState<MetadataEntry[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const activeLoad = useRef<AbortController | null>(null);
+  const activeView = useRef(false);
+  const isMetadataReady = !isLoading && !loadError && entries !== null;
 
-  // Load metadata on mount
   const loadMetadata = useCallback(async () => {
+    if (!activeView.current) return;
+    activeLoad.current?.abort();
+    const controller = new AbortController();
+    activeLoad.current = controller;
     setIsLoading(true);
-    if (transport === null) {
-      setEntries([]);
-      setIsLoading(false);
-      return;
-    }
-
-    const instanceService = createClient(InstanceService, transport);
+    setLoadError(false);
     try {
-      const result = await instanceService.getAccountMetadata({
-        instanceId,
-        accountId: account.profileId,
-      });
+      if (transport === null) {
+        setEntries([]);
+        return;
+      }
+      const result = await createClient(
+        InstanceService,
+        transport,
+      ).getAccountMetadata(
+        { instanceId, accountId: account.profileId },
+        { signal: controller.signal },
+      );
+      if (controller.signal.aborted || activeLoad.current !== controller)
+        return;
       setEntries(convertProtoToEntries(result.metadata));
-    } catch (e) {
-      console.error("Failed to load metadata:", e);
-      setEntries([]);
+    } catch (error) {
+      if (controller.signal.aborted || activeLoad.current !== controller)
+        return;
+      console.error("Failed to load metadata:", error);
+      setLoadError(true);
+    } finally {
+      if (activeLoad.current === controller) {
+        activeLoad.current = null;
+        setIsLoading(false);
+      }
     }
-    setIsLoading(false);
   }, [transport, instanceId, account.profileId]);
 
   useEffect(() => {
-    if (!open) return;
-    void loadMetadata();
+    activeView.current = open;
+    if (open) void loadMetadata();
+    return () => {
+      activeView.current = false;
+      activeLoad.current?.abort();
+      activeLoad.current = null;
+    };
   }, [open, loadMetadata]);
 
   // Check for duplicate namespace+key
@@ -311,6 +336,7 @@ function DialogContentInner({
       onSubmit: addEntrySchema,
     },
     onSubmit: async ({ value }) => {
+      if (!isMetadataReady) return;
       const namespace = value.namespace.trim();
       const key = value.key.trim();
       const parsedValue = parseJsonValue(value.value);
@@ -349,7 +375,7 @@ function DialogContentInner({
       field: "namespace" | "key" | "value",
       newFieldValue: string,
     ) => {
-      if (!entries) return;
+      if (!isMetadataReady || !entries) return;
 
       const entry = entries.find((e) => e.id === id);
       if (!entry) return;
@@ -388,23 +414,20 @@ function DialogContentInner({
         value: parsedValue,
       });
     },
-    [entries, isDuplicate, t, updateEntryMutation],
+    [entries, isMetadataReady, isDuplicate, t, updateEntryMutation],
   );
 
   const handleDeleteEntry = useCallback(
     (id: string, namespace: string, key: string) => {
+      if (!isMetadataReady) return;
       // Remove from local state
       setEntries((prev) => prev?.filter((e) => e.id !== id) ?? []);
 
       // Send to server
       deleteEntryMutation.mutate({ namespace, key });
     },
-    [deleteEntryMutation],
+    [isMetadataReady, deleteEntryMutation],
   );
-
-  if (isLoading) {
-    return <DialogSkeleton />;
-  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -520,7 +543,7 @@ function DialogContentInner({
                   <Button
                     type="submit"
                     variant="outline"
-                    disabled={addEntryMutation.isPending}
+                    disabled={!isMetadataReady || addEntryMutation.isPending}
                   >
                     <PlusIcon data-icon="inline-start" />
                     {t("account.metadata.addEntryButton", {
@@ -532,8 +555,34 @@ function DialogContentInner({
             </FieldSet>
           </form>
         </CardHeader>
-        <CardContent className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0">
-          {entries && entries.length === 0 && (
+        <CardContent
+          className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0"
+          aria-busy={isLoading}
+        >
+          {loadError && (
+            <Alert variant="destructive">
+              <AlertTitle>{t("account.metadata.loadError")}</AlertTitle>
+              <AlertDescription>
+                <div className="flex flex-col items-start gap-2">
+                  <p>{t("account.metadata.loadErrorDescription")}</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void loadMetadata()}
+                  >
+                    {t("account.metadata.retryLoad")}
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+          {isLoading && entries === null && (
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+          )}
+          {isMetadataReady && entries.length === 0 && (
             <p className="text-muted-foreground text-center text-sm py-4">
               {t("account.metadata.noEntries")}
             </p>
@@ -556,7 +605,9 @@ function DialogContentInner({
               }
               isDeleting={deleteEntryMutation.isPending}
               isUpdating={
-                updateEntryMutation.isPending || addEntryMutation.isPending
+                !isMetadataReady ||
+                updateEntryMutation.isPending ||
+                addEntryMutation.isPending
               }
             />
           ))}
