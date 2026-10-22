@@ -1092,6 +1092,15 @@ function BotInventoryPanel({
     }),
   );
 
+  const handleContainerError = useCallback(
+    (error: Error) => {
+      toast.error(error.message);
+      if (error instanceof ConnectError && error.code === Code.Aborted)
+        void refetch();
+    },
+    [refetch],
+  );
+
   // Mutation for clicking inventory slots
   const clickMutation = useMutation({
     mutationKey: ["bot", "inventory", "click", instanceId, botId],
@@ -1104,6 +1113,7 @@ function BotInventoryPanel({
       const botService = createClient(BotService, transport);
       return botService.clickInventorySlot(request);
     },
+    onError: handleContainerError,
     onSuccess: () => {
       void refetch();
     },
@@ -1113,14 +1123,15 @@ function BotInventoryPanel({
   const closeContainerMutation = useMutation({
     mutationKey: ["bot", "container", "close", instanceId, botId],
     scope: { id: `bot-container-${instanceId}-${botId}` },
-    mutationFn: async () => {
+    mutationFn: async (expectedMenuId: string | undefined) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
       const botService = createClient(BotService, transport);
-      return botService.closeContainer({ instanceId, botId });
+      return botService.closeContainer({ instanceId, botId, expectedMenuId });
     },
+    onError: handleContainerError,
     onSuccess: () => {
       void refetch();
     },
@@ -1138,6 +1149,7 @@ function BotInventoryPanel({
       const botService = createClient(BotService, transport);
       return botService.clickContainerButton(request);
     },
+    onError: handleContainerError,
     onSuccess: () => {
       void refetch();
     },
@@ -1155,6 +1167,7 @@ function BotInventoryPanel({
       const botService = createClient(BotService, transport);
       return botService.setContainerText(request);
     },
+    onError: handleContainerError,
     onSuccess: async () => {
       await refetch();
     },
@@ -1183,12 +1196,13 @@ function BotInventoryPanel({
         create(BotSetContainerTextRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           fieldId,
           text,
         }),
       );
     },
-    [setTextMutation, instanceId, botId],
+    [setTextMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleButtonClick = useCallback(
@@ -1197,11 +1211,12 @@ function BotInventoryPanel({
         create(BotContainerButtonClickRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           buttonId,
         }),
       );
     },
-    [buttonClickMutation, instanceId, botId],
+    [buttonClickMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleSlotClick = useCallback(
@@ -1210,13 +1225,14 @@ function BotInventoryPanel({
         create(BotInventoryClickRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           slot: slotIndex,
           clickType,
           hotbarSlot: 0,
         }),
       );
     },
-    [clickMutation, instanceId, botId],
+    [clickMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleDropOutside = useCallback(
@@ -1225,13 +1241,14 @@ function BotInventoryPanel({
         create(BotInventoryClickRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           slot: -999, // Outside slot for dropping
           clickType: dropAll ? ClickType.LEFT_CLICK : ClickType.RIGHT_CLICK,
           hotbarSlot: 0,
         }),
       );
     },
-    [clickMutation, instanceId, botId],
+    [clickMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleHotbarSlotSelect = useCallback(
@@ -1301,7 +1318,9 @@ function BotInventoryPanel({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => closeContainerMutation.mutate()}
+                onClick={() =>
+                  closeContainerMutation.mutate(inventoryState?.menuId)
+                }
                 disabled={closeContainerMutation.isPending}
               >
                 <XIcon className="mr-1 size-4" />
@@ -1337,6 +1356,7 @@ function BotInventoryPanel({
           {textInputs.length > 0 && (
             <ContainerTextInputPanel
               key={JSON.stringify([
+                inventoryState?.menuId,
                 layout.containerType,
                 anvilInputItem?.itemId,
                 anvilInputItem?.count,
