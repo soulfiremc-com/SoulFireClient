@@ -2,7 +2,7 @@ import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import { use, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
 import { z } from "zod";
@@ -49,6 +49,14 @@ export type GenerateAccountsDialogProps = {
   existingUsernames: Set<string>;
 };
 
+type GenerationPhase = "generating" | "saving";
+
+type GenerationJob = {
+  controller: AbortController;
+  toastId: string | number;
+  phase: GenerationPhase;
+};
+
 export default function GenerateAccountsDialog({
   open,
   onOpenChange,
@@ -62,7 +70,28 @@ export default function GenerateAccountsDialog({
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [phase, setPhase] = useState<GenerationPhase | "idle">("idle");
+  const activeJob = useRef<GenerationJob | null>(null);
+  const cancelGeneration = useCallback((job = activeJob.current) => {
+    if (!job || activeJob.current !== job) return;
+    activeJob.current = null;
+    job.controller.abort();
+    toast.dismiss(job.toastId);
+    setPhase("idle");
+  }, []);
+
+  useEffect(
+    () => () => cancelGeneration(),
+    [instanceInfo.id, cancelGeneration],
+  );
+  useEffect(() => {
+    if (!open && activeJob.current?.phase !== "saving") cancelGeneration();
+  }, [open, cancelGeneration]);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen && activeJob.current?.phase !== "saving") cancelGeneration();
+    onOpenChange(nextOpen);
+  };
 
   const formSchema = z.object({
     amount: z.number().min(1, t("account.generate.invalidAmount")),
@@ -76,11 +105,7 @@ export default function GenerateAccountsDialog({
   });
 
   const handleGenerate = (value: z.infer<typeof formSchema>) => {
-    if (transport === null) {
-      return;
-    }
-
-    setIsGenerating(true);
+    if (transport === null || !open || activeJob.current) return;
 
     // Generate usernames based on format
     const usernames: string[] = [];
@@ -94,7 +119,6 @@ export default function GenerateAccountsDialog({
     }
 
     if (usernames.length === 0) {
-      setIsGenerating(false);
       toast.error(t("account.generate.allExist"));
       return;
     }
@@ -106,8 +130,7 @@ export default function GenerateAccountsDialog({
       cancel: {
         label: t("common:cancel"),
         onClick: () => {
-          abortController.abort();
-          setIsGenerating(false);
+          if (job.phase === "generating") cancelGeneration(job);
         },
       },
     };
@@ -123,6 +146,13 @@ export default function GenerateAccountsDialog({
         failed,
       });
     const toastId = toast.loading(loadingReport(), loadingData);
+    const job: GenerationJob = {
+      controller: abortController,
+      toastId,
+      phase: "generating",
+    };
+    activeJob.current = job;
+    setPhase("generating");
 
     const responses = service.loginCredentials(
       {
@@ -137,13 +167,10 @@ export default function GenerateAccountsDialog({
 
     void observeServerStream(responses, {
       onMessage: async (r) => {
+        if (activeJob.current !== job || abortController.signal.aborted) return;
         const data = r.data;
         switch (data.case) {
           case "oneSuccess": {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
             if (data.value.account) {
               accountsToAdd.push(data.value.account);
             }
@@ -155,10 +182,6 @@ export default function GenerateAccountsDialog({
             break;
           }
           case "oneFailure": {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
             failed++;
             toast.loading(loadingReport(), {
               id: toastId,
@@ -168,18 +191,23 @@ export default function GenerateAccountsDialog({
           }
           case "end": {
             if (accountsToAdd.length === 0) {
-              setIsGenerating(false);
+              activeJob.current = null;
+              setPhase("idle");
               toast.error(t("account.generate.allFailed"), {
                 id: toastId,
                 cancel: undefined,
               });
             } else {
+              job.phase = "saving";
+              setPhase("saving");
               toast.loading(loadingReport(), {
                 id: toastId,
                 cancel: undefined,
               });
               await onGenerate(accountsToAdd, value.mode);
-              setIsGenerating(false);
+              if (activeJob.current !== job) return;
+              activeJob.current = null;
+              setPhase("idle");
               onOpenChange(false);
               toast.success(
                 t("account.generate.success", {
@@ -196,8 +224,10 @@ export default function GenerateAccountsDialog({
         }
       },
       onError: (e) => {
+        if (activeJob.current !== job || abortController.signal.aborted) return;
+        activeJob.current = null;
         console.error(e);
-        setIsGenerating(false);
+        setPhase("idle");
         toast.error(t("account.generate.error"), {
           id: toastId,
           cancel: undefined,
@@ -221,7 +251,7 @@ export default function GenerateAccountsDialog({
   });
 
   return (
-    <Credenza open={open} onOpenChange={onOpenChange}>
+    <Credenza open={open} onOpenChange={handleOpenChange}>
       <CredenzaContent>
         <form
           onSubmit={(e) => {
@@ -352,12 +382,12 @@ export default function GenerateAccountsDialog({
             <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => handleOpenChange(false)}
             >
-              {t("common:cancel")}
+              {t(phase === "saving" ? "common:close" : "common:cancel")}
             </Button>
-            <Button type="submit" disabled={isGenerating}>
-              {isGenerating
+            <Button type="submit" disabled={phase !== "idle"}>
+              {phase !== "idle"
                 ? t("account.generate.generating")
                 : t("account.generate.submit")}
             </Button>
