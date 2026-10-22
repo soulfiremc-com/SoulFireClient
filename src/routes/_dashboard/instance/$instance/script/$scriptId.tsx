@@ -526,11 +526,21 @@ function ScriptEditorContent() {
       executionAbortRef.current = null;
     }
 
-    if (!transport || scriptId === "new") return;
+    const currentScriptId = editor.document.get().scriptId;
+    if (scriptId === "new" && !currentScriptId) {
+      editor.actions.setPaused(true);
+      setActive(false);
+      setActiveNode(null);
+      return;
+    }
+    if (!transport) return;
 
     try {
       const client = createClient(ScriptService, transport);
-      await client.deactivateScript({ instanceId, scriptId });
+      await client.deactivateScript({
+        instanceId,
+        scriptId: currentScriptId ?? scriptId,
+      });
       setActive(false);
       setActiveNode(null);
       editor.document.setState((state) => ({ ...state, paused: true }));
@@ -557,7 +567,7 @@ function ScriptEditorContent() {
     setActiveNode,
     tInstance,
     queryClient,
-    editor.document.setState,
+    editor,
     addExecutionLog,
   ]);
 
