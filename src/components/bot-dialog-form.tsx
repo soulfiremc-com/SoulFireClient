@@ -53,7 +53,9 @@ export function BotDialogForm({
 }) {
   const { t } = useTranslation("instance");
   const id = useId();
-  const [drafts, setDrafts] = useState<Record<string, ServerInputDraft>>({});
+  const [drafts, setDrafts] = useState(
+    () => new Map<string, ServerInputDraft>(),
+  );
   const [actions] = useState(() =>
     dialog.actions.map((button, index) => ({
       button,
@@ -67,32 +69,35 @@ export function BotDialogForm({
       id: crypto.randomUUID(),
     })),
   );
-  const currentDrafts = { ...drafts };
+  const currentDrafts = new Map(drafts);
   let changed = false;
   for (const { input } of dialog.inputs) {
     if (!input.case) continue;
     const key = input.value.key;
-    const draft = drafts[key];
+    const draft = drafts.get(key);
     const current = draft
       ? syncServerInputDraft(draft, inputValue(input))
       : createServerInputDraft(inputValue(input));
-    currentDrafts[key] = current;
+    currentDrafts.set(key, current);
     changed ||= current !== draft;
   }
   if (changed) setDrafts(currentDrafts);
   const values = Object.fromEntries(
-    Object.entries(currentDrafts).map(([key, draft]) => [key, draft.value]),
+    Array.from(currentDrafts, ([key, draft]) => [key, draft.value]),
   );
   const update = (input: DialogInput["input"], value: string) => {
     if (!input.case) return;
-    setDrafts((current) => ({
-      ...current,
-      [input.value.key]: editServerInputDraft(
-        current[input.value.key] ?? createServerInputDraft(inputValue(input)),
-        value,
-        pending,
+    setDrafts((current) =>
+      new Map(current).set(
+        input.value.key,
+        editServerInputDraft(
+          current.get(input.value.key) ??
+            createServerInputDraft(inputValue(input)),
+          value,
+          pending,
+        ),
       ),
-    }));
+    );
   };
 
   return (
@@ -132,17 +137,20 @@ export function BotDialogForm({
         }
         if (updated?.screenId !== dialog.screenId) return;
         setDrafts((current) => {
-          const next = { ...current };
+          const next = new Map(current);
           for (const { input } of updated.inputs) {
             if (!input.case) continue;
             const key = input.value.key;
-            const draft = current[key];
+            const draft = current.get(key);
             const submitted = inputValues[key];
             if (draft && submitted !== undefined) {
-              next[key] = acknowledgeServerInputDraft(
-                draft,
-                submitted,
-                inputValue(input),
+              next.set(
+                key,
+                acknowledgeServerInputDraft(
+                  draft,
+                  submitted,
+                  inputValue(input),
+                ),
               );
             }
           }
