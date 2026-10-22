@@ -383,13 +383,14 @@ function ScriptEditorContent() {
         { instanceId, scriptId },
         { signal: abortController.signal },
       );
-      editor.document.setState((state) => ({ ...state, paused: false }));
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
-
       void observeServerStream(responses, {
         onMessage: (event) => {
           if (abortController.signal.aborted) return;
           if (event.event.case === "scriptStarted") {
+            editor.document.setState((state) => ({ ...state, paused: false }));
+            void queryClient.invalidateQueries({
+              queryKey: ["scripts", instanceId],
+            });
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
