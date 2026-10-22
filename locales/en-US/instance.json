@@ -779,7 +779,8 @@
         "maxStateStoreEntriesDescription": "Maximum entries in the script state store",
         "disableTimeouts": "Disable Timeouts",
         "disableTimeoutsDescription": "Disables per-node and data edge timeouts",
-        "save": "Save Quotas"
+        "save": "Save Quotas",
+        "invalidInteger": "Enter a whole number between {{min}} and {{max}}."
       }
     }
   },
