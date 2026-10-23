@@ -776,6 +776,7 @@ function BotPovSession({
             id: captureToastId,
             toasterId: captureToastId,
             duration: 4000,
+            style: { pointerEvents: "none" },
           },
         );
       const navigator = canvas.ownerDocument.defaultView?.navigator as
