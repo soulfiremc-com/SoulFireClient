@@ -179,6 +179,11 @@ function BotPovSession({
     actions.releaseCapture();
     toast.dismiss(captureToastId);
     session.current?.capture(false);
+    const textInput = textInputRef.current;
+    if (textInput) {
+      textInput.value = "";
+      textInput.blur();
+    }
     if (isDesktopApp())
       void desktop.pov
         .setCaptured(false, nativeCaptureTarget.current)
@@ -509,12 +514,16 @@ function BotPovSession({
       for (const input of edits) session.current?.enqueue(input);
     };
     const text = (event: Event) => {
+      if (!textInput) return;
       if (
         playerStore.get().capture !== "captured" ||
-        !textInput ||
-        (event as InputEvent).isComposing
-      )
+        !playerStore.get().screenOpen
+      ) {
+        // A late IME commit after release must not enter the next capture.
+        textInput.value = "";
         return;
+      }
+      if ((event as InputEvent).isComposing) return;
       for (const input of textInputEvents(textInput.value))
         session.current?.enqueue(input);
       textInput.value = "";
