@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { z } from "zod";
 import { toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -20,6 +19,13 @@ import type {
 } from "@/generated/soulfire/command_pb";
 import { CommandService } from "@/generated/soulfire/command_pb";
 import { CommandCompletionRequest } from "@/lib/command-completion-request";
+import {
+  appendCommandHistory,
+  readCommandHistory,
+  saveCommandHistory,
+  navigateCommandHistory,
+  type CommandHistoryPosition,
+} from "@/lib/command-history";
 
 type CompletionState = {
   baseText: string;
@@ -30,11 +36,6 @@ type CompletionState = {
 };
 
 const COMPLETION_DEBOUNCE_MS = 120;
-
-const SF_COMMAND_HISTORY_KEY = "sf-command-history";
-const SF_COMMAND_HISTORY_LENGTH = 100;
-
-const historySchema = z.string().array();
 
 const WHITESPACE_REGEX = /\s/;
 
@@ -65,12 +66,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
     setInputValueState(value);
   }, []);
   const [cursorPosition, setCursorPosition] = useState(0);
-  const [commandHistory, setCommandHistory] = useState<string[]>(
-    historySchema.parse(
-      JSON.parse(localStorage.getItem(SF_COMMAND_HISTORY_KEY) ?? "[]"),
-    ),
-  );
-  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const [commandHistory, setCommandHistory] = useState(readCommandHistory);
+  const [historyPosition, setHistoryPosition] =
+    useState<CommandHistoryPosition>({ index: -1, draft: "" });
   const [completionState, setCompletionState] = useState<CompletionState>({
     baseText: "",
     cursor: 0,
@@ -197,6 +195,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const newCursor = before.length + suggestion.length;
         const newRange = { start: before.length, end: newCursor };
 
+        setHistoryPosition({ index: -1, draft: "" });
         setInputValue(newValue);
         pendingCaret.current = newCursor;
         setCursorPosition(newCursor);
@@ -414,6 +413,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const newCursor = before.length + suggestion.length;
         const newRange = { start: before.length, end: newCursor };
 
+        setHistoryPosition({ index: -1, draft: "" });
         setInputValue(newValue);
         pendingCaret.current = newCursor;
         setCursorPosition(newCursor);
@@ -456,6 +456,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
     const hasCyclableSuggestions =
       showSuggestions &&
       hasSuggestions &&
+      inputValue !== "" &&
+      historyPosition.index === -1 &&
       !e.ctrlKey &&
       !e.metaKey &&
       !e.altKey;
@@ -482,23 +484,12 @@ export default function CommandInput(props: { scope: CommandScope }) {
         return;
       }
 
-      setCommandHistory((prev) => {
-        if (prev[prev.length - 1] !== currentVal) {
-          while (prev.length >= SF_COMMAND_HISTORY_LENGTH) {
-            prev.shift();
-          }
-
-          const newHistory = [...prev, currentVal];
-          localStorage.setItem(
-            SF_COMMAND_HISTORY_KEY,
-            JSON.stringify(newHistory),
-          );
-          return newHistory;
-        }
-
-        return prev;
-      });
-      setHistoryIndex(-1);
+      const nextHistory = appendCommandHistory(commandHistory, currentVal);
+      if (nextHistory !== commandHistory) {
+        setCommandHistory(nextHistory);
+        saveCommandHistory(nextHistory);
+      }
+      setHistoryPosition({ index: -1, draft: "" });
 
       const commandService = createClient(CommandService, transport);
       void commandService
@@ -554,80 +545,27 @@ export default function CommandInput(props: { scope: CommandScope }) {
       return;
     }
 
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
       e.preventDefault();
-
-      if (commandHistory.length === 0) {
-        return;
-      }
-
-      if (historyIndex === -1) {
-        setHistoryIndex(commandHistory.length - 1);
-        const newValue = commandHistory[commandHistory.length - 1];
-        setInputValue(newValue);
-        setCompletionState({
-          baseText: newValue,
-          cursor: newValue.length,
-          receivedCompletions: null,
-          index: null,
-          replacementRange: null,
-        });
-        pendingCaret.current = newValue.length;
-        setCursorPosition(newValue.length);
-        scheduleCompletionFetch(newValue, newValue.length);
-      } else if (historyIndex > 0) {
-        setHistoryIndex(historyIndex - 1);
-        const newValue = commandHistory[historyIndex - 1];
-        setInputValue(newValue);
-        setCompletionState({
-          baseText: newValue,
-          cursor: newValue.length,
-          receivedCompletions: null,
-          index: null,
-          replacementRange: null,
-        });
-        pendingCaret.current = newValue.length;
-        setCursorPosition(newValue.length);
-        scheduleCompletionFetch(newValue, newValue.length);
-      }
-      return;
-    }
-
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-
-      if (commandHistory.length === 0) {
-        return;
-      }
-
-      if (historyIndex === commandHistory.length - 1) {
-        setHistoryIndex(-1);
-        setInputValue("");
-        setCompletionState({
-          baseText: "",
-          cursor: 0,
-          receivedCompletions: null,
-          index: null,
-          replacementRange: null,
-        });
-        pendingCaret.current = 0;
-        setCursorPosition(0);
-        scheduleCompletionFetch("", 0);
-      } else if (historyIndex >= 0) {
-        setHistoryIndex(historyIndex + 1);
-        const newValue = commandHistory[historyIndex + 1];
-        setInputValue(newValue);
-        setCompletionState({
-          baseText: newValue,
-          cursor: newValue.length,
-          receivedCompletions: null,
-          index: null,
-          replacementRange: null,
-        });
-        pendingCaret.current = newValue.length;
-        setCursorPosition(newValue.length);
-        scheduleCompletionFetch(newValue, newValue.length);
-      }
+      const next = navigateCommandHistory(
+        commandHistory,
+        historyPosition,
+        currentTarget.value,
+        e.key === "ArrowUp" ? -1 : 1,
+      );
+      if (!next) return;
+      setHistoryPosition(next.position);
+      setInputValue(next.value);
+      setCompletionState({
+        baseText: next.value,
+        cursor: next.value.length,
+        receivedCompletions: null,
+        index: null,
+        replacementRange: null,
+      });
+      pendingCaret.current = next.value.length;
+      setCursorPosition(next.value.length);
+      scheduleCompletionFetch(next.value, next.value.length);
     }
   };
 
@@ -656,6 +594,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         onChange={(e) => {
           const { value, selectionStart } = e.currentTarget;
           pendingCaret.current = null;
+          setHistoryPosition({ index: -1, draft: "" });
           setInputValue(value);
           const cursor = selectionStart ?? value.length;
           setCursorPosition(cursor);
