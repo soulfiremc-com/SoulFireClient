@@ -9,7 +9,15 @@ import {
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { LoaderCircleIcon, PlusIcon, TrashIcon } from "lucide-react";
-import { use, useCallback, useEffect, useId, useMemo, useState } from "react";
+import {
+  use,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -17,6 +25,7 @@ import { getAllIconTags } from "@/components/dynamic-icon.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { SettingTypeRenderer } from "@/components/settings-page.tsx";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import {
@@ -334,7 +343,12 @@ function Content() {
           changeCallback={setIconMutation.mutate}
         />
       </div>
-      {canEditMeta && <InstanceMetadataEditor instanceId={instanceInfo.id} />}
+      {canEditMeta && (
+        <InstanceMetadataEditor
+          key={instanceInfo.id}
+          instanceId={instanceInfo.id}
+        />
+      )}
     </div>
   );
 }
@@ -345,30 +359,51 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   const [entries, setEntries] = useState<MetadataEntry[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const activeLoad = useRef<AbortController | null>(null);
+  const activeView = useRef(false);
+  const isMetadataReady = !isLoading && !loadError && entries !== null;
 
   const loadMetadata = useCallback(async () => {
+    if (!activeView.current) return;
+    activeLoad.current?.abort();
+    const controller = new AbortController();
+    activeLoad.current = controller;
     setIsLoading(true);
-    if (transport === null) {
-      setEntries([]);
-      setIsLoading(false);
-      return;
-    }
-
-    const instanceService = createClient(InstanceService, transport);
+    setLoadError(false);
     try {
-      const result = await instanceService.getInstanceMetadata({
-        instanceId,
-      });
+      if (transport === null) {
+        setLoadError(true);
+        return;
+      }
+      const result = await createClient(
+        InstanceService,
+        transport,
+      ).getInstanceMetadata({ instanceId }, { signal: controller.signal });
+      if (controller.signal.aborted || activeLoad.current !== controller)
+        return;
       setEntries(convertProtoToEntries(result.metadata));
     } catch (e) {
+      if (controller.signal.aborted || activeLoad.current !== controller)
+        return;
       console.error("Failed to load instance metadata:", e);
-      setEntries([]);
+      setLoadError(true);
+    } finally {
+      if (activeLoad.current === controller) {
+        activeLoad.current = null;
+        setIsLoading(false);
+      }
     }
-    setIsLoading(false);
   }, [transport, instanceId]);
 
   useEffect(() => {
+    activeView.current = true;
     void loadMetadata();
+    return () => {
+      activeView.current = false;
+      activeLoad.current?.abort();
+      activeLoad.current = null;
+    };
   }, [loadMetadata]);
 
   const isDuplicate = useCallback(
@@ -504,6 +539,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       onSubmit: addEntrySchema,
     },
     onSubmit: async ({ value, formApi }) => {
+      if (!isMetadataReady) return;
       const submitted = { ...value };
       const namespace = submitted.namespace.trim();
       const key = submitted.key.trim();
@@ -555,7 +591,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       field: "namespace" | "key" | "value",
       newFieldValue: string,
     ) => {
-      if (!entries) return;
+      if (!isMetadataReady) return;
 
       const entry = entries.find((e) => e.id === id);
       if (!entry) return;
@@ -590,20 +626,17 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
         value: parsedValue,
       });
     },
-    [entries, isDuplicate, t, updateEntryMutation],
+    [entries, isDuplicate, isMetadataReady, t, updateEntryMutation],
   );
 
   const handleDeleteEntry = useCallback(
     (id: string, namespace: string, key: string) => {
+      if (!isMetadataReady) return;
       setEntries((prev) => prev?.filter((e) => e.id !== id) ?? []);
       deleteEntryMutation.mutate({ namespace, key });
     },
-    [deleteEntryMutation],
+    [deleteEntryMutation, isMetadataReady],
   );
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -723,7 +756,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                   <Button
                     type="submit"
                     variant="outline"
-                    disabled={addEntryMutation.isPending}
+                    disabled={!isMetadataReady || addEntryMutation.isPending}
                   >
                     <PlusIcon data-icon="inline-start" />
                     {t("instanceMetadata.addEntryButton", {
@@ -735,8 +768,34 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
             </FieldSet>
           </form>
         </CardHeader>
-        <CardContent className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0">
-          {entries && entries.length === 0 && (
+        <CardContent
+          className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0"
+          aria-busy={isLoading}
+        >
+          {loadError && (
+            <Alert variant="destructive">
+              <AlertTitle>{t("instanceMetadata.loadError")}</AlertTitle>
+              <AlertDescription>
+                <div className="flex flex-col items-start gap-2">
+                  <p>{t("instanceMetadata.loadErrorDescription")}</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void loadMetadata()}
+                  >
+                    {t("instanceMetadata.retryLoad")}
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+          {isLoading && entries === null && (
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+          )}
+          {isMetadataReady && entries.length === 0 && (
             <p className="text-muted-foreground text-center text-sm py-4">
               {t("instanceMetadata.noEntries")}
             </p>
@@ -759,7 +818,9 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
               }
               isDeleting={deleteEntryMutation.isPending}
               isUpdating={
-                updateEntryMutation.isPending || addEntryMutation.isPending
+                !isMetadataReady ||
+                updateEntryMutation.isPending ||
+                addEntryMutation.isPending
               }
             />
           ))}
