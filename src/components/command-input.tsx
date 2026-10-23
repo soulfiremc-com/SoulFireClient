@@ -231,9 +231,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const suggestion = suggestionsList[activeIndex]?.suggestion ?? "";
 
         const before = completionStateNew.baseText.slice(0, range.start);
-        const after = completionStateNew.baseText.slice(
-          completionStateNew.cursor,
-        );
+        const after = completionStateNew.baseText.slice(range.end);
         const newValue = `${before}${suggestion}${after}`;
         const newCursor = before.length + suggestion.length;
         const newRange = { start: before.length, end: newCursor };
@@ -451,7 +449,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           prev.replacementRange ?? getTokenRange(prev.baseText, prev.cursor);
         const suggestion = prev.receivedCompletions[normalizedIndex].suggestion;
         const before = prev.baseText.slice(0, range.start);
-        const after = prev.baseText.slice(prev.cursor);
+        const after = prev.baseText.slice(range.end);
         const newValue = `${before}${suggestion}${after}`;
         const newCursor = before.length + suggestion.length;
         const newRange = { start: before.length, end: newCursor };
