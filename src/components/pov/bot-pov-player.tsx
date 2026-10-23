@@ -47,6 +47,7 @@ import {
   isTextInputKey,
   keyInput,
   mouseButton,
+  textShortcutKey,
 } from "@/lib/pov-input";
 import { textEditEvents, textInputEvents } from "@/lib/pov-text-input";
 import { lockPovPointer } from "@/lib/pov-pointer-lock";
@@ -459,11 +460,12 @@ function BotPovSession({
       }
       const typing =
         playerStore.get().screenOpen && event.target === textInputRef.current;
+      const shortcutKey = textShortcutKey(event);
       if (
         pressed &&
         typing &&
         (event.ctrlKey || event.metaKey) &&
-        event.code === "KeyV"
+        shortcutKey === "v"
       )
         return;
       const input = keyInput(event, pressed, typing);
@@ -477,7 +479,7 @@ function BotPovSession({
       const copying =
         typing &&
         isTextEditingShortcut(event) &&
-        (event.code === "KeyC" || event.code === "KeyX");
+        (shortcutKey === "c" || shortcutKey === "x");
       if (!(typing && isTextInputKey(event))) event.preventDefault();
       event.stopPropagation();
       if (event.code === "Escape") {

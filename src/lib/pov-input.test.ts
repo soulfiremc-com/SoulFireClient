@@ -9,6 +9,7 @@ import {
   isTextEditingShortcut,
   isTextInputKey,
   mouseButton,
+  textShortcutKey,
 } from "./pov-input";
 
 test("physical keyboard codes map independently of typed text and include extended keys", () => {
@@ -82,6 +83,7 @@ test("Command editing shortcuts reach native text fields as Control shortcuts", 
   for (const code of ["KeyA", "KeyC", "KeyX"]) {
     const event = {
       code,
+      key: code.slice(-1).toLowerCase(),
       ctrlKey: false,
       metaKey: true,
       altKey: false,
@@ -103,6 +105,7 @@ test("Command editing shortcuts reach native text fields as Control shortcuts", 
 test("native text editing leaves system shortcuts and browser paste available", () => {
   const event = {
     code: "KeyR",
+    key: "r",
     ctrlKey: false,
     metaKey: true,
     altKey: false,
@@ -125,6 +128,7 @@ test("native text editing leaves system shortcuts and browser paste available", 
 test("Control editing shortcuts preserve modified game key combinations", () => {
   const event = {
     code: "KeyC",
+    key: "c",
     ctrlKey: true,
     metaKey: false,
     altKey: false,
@@ -140,9 +144,45 @@ test("Control editing shortcuts preserve modified game key combinations", () => 
   assert.equal(keyInput({ ...event, repeat: true }, true, true)?.action, 2);
 });
 
+test("layout shortcuts retain physical identity and follow the logical letter", () => {
+  const event = {
+    code: "KeyQ",
+    key: "a",
+    ctrlKey: false,
+    metaKey: true,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  assert.equal(isTextEditingShortcut(event), true);
+  const press = keyInput(event, true, true);
+  assert.equal(press?.code, 81);
+  assert.equal(press?.key, "a");
+  assert.equal(press?.modifiers, 2);
+  const release = keyInput(
+    { ...event, key: "A", metaKey: false, shiftKey: true },
+    false,
+    true,
+  );
+  assert.equal(release?.code, press?.code);
+  assert.equal(release?.action, 0);
+  assert.equal(
+    isTextEditingShortcut({ ...event, code: "KeyA", key: "q" }),
+    false,
+  );
+  assert.equal(
+    isTextEditingShortcut({ ...event, code: "KeyA", key: "ф" }),
+    true,
+  );
+  assert.equal(textShortcutKey({ code: "KeyK", key: "v" }), "v");
+  assert.equal(textShortcutKey({ code: "KeyV", key: "м" }), "v");
+});
+
 test("composition filters key presses without losing physical key releases", () => {
   const event = {
     code: "KeyW",
+    key: "w",
     ctrlKey: false,
     metaKey: false,
     altKey: false,

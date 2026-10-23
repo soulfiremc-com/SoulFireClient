@@ -104,6 +104,7 @@ test("modifier changes still release keys that the keyboard owns", () => {
   const queue = new PovInputQueue();
   const event = {
     code: "KeyW",
+    key: "w",
     ctrlKey: false,
     metaKey: false,
     altKey: false,
@@ -128,6 +129,7 @@ test("system key releases neither invent ownership nor cancel another device", (
   const queue = new PovInputQueue();
   const event = {
     code: "KeyW",
+    key: "w",
     ctrlKey: false,
     metaKey: true,
     altKey: false,

@@ -95,15 +95,30 @@ export function isSystemShortcut(
 
 type TextShortcutEvent = Pick<
   KeyboardEvent,
-  "code" | "ctrlKey" | "metaKey" | "altKey" | "shiftKey"
+  "code" | "key" | "ctrlKey" | "metaKey" | "altKey" | "shiftKey"
 >;
+
+export function textShortcutKey(
+  event: Pick<KeyboardEvent, "code" | "key">,
+): string {
+  if (
+    event.key.length === 1 &&
+    event.key.charCodeAt(0) >= 32 &&
+    event.key.charCodeAt(0) <= 126
+  )
+    return event.key.toLowerCase();
+  // Match SDL's Latin shortcut fallback on non-Latin layouts.
+  return /^Key[A-Z]$/.test(event.code)
+    ? event.code.slice(3).toLowerCase()
+    : event.key;
+}
 
 export function isTextEditingShortcut(event: TextShortcutEvent): boolean {
   return (
     (event.ctrlKey || event.metaKey) &&
     !event.altKey &&
     !event.shiftKey &&
-    (event.code === "KeyA" || event.code === "KeyC" || event.code === "KeyX")
+    ["a", "c", "x"].includes(textShortcutKey(event))
   );
 }
 
@@ -132,6 +147,7 @@ export function keyInput(
     : create(PovInputEventSchema, {
         kind: PovInputEvent_Kind.KEY,
         code,
+        key: event.key,
         action: pressed ? (event.repeat ? 2 : 1) : 0,
         modifiers: editing ? 2 : inputModifiers(event),
       });
