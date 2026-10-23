@@ -341,6 +341,9 @@
       "keyPlaceholder": "Nyckel",
       "valuePlaceholder": "Värde (JSON)",
       "noEntries": "Inga metadata-poster. Lägg till en ovan.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Försök igen",
       "addSuccess": "Post tillagd",
       "addError": "Misslyckades med att lägga till posten",
       "updateError": "Misslyckades med att uppdatera posten",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventory",
+      "actionRejected": "",
       "hotbar": "Verktygsrad",
       "main": "Huvudinventarie",
       "items": "föremål",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Bokinnehåll",
         "emptyPage": "(Tom sida)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Sida {{current}} av {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Skript avaktiverat av användaren",
     "executionFailed": "Skriptkörning misslyckades",
     "executionError": "Körningsfel: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nod startad: {{nodeId}}",
     "nodeCompleted": "Nod slutförd: {{nodeId}}",
     "nodeError": "Nodfel: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Maximalt antal poster i skriptets lagringsutrymme",
         "disableTimeouts": "Inaktivera timeout",
         "disableTimeoutsDescription": "Inaktiverar timeout för varje nod och datakant",
-        "save": "Spara kvoter"
+        "save": "Spara kvoter",
+        "invalidInteger": ""
       }
     }
   },

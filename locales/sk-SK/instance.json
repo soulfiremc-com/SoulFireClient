@@ -341,6 +341,9 @@
       "keyPlaceholder": "Kľúč",
       "valuePlaceholder": "Hodnota (JSON)",
       "noEntries": "Žiadne záznamy metaúdajov. Pridajte jeden vyššie.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Opakovať",
       "addSuccess": "Záznam pridaný",
       "addError": "Záznam sa nepodarilo pridať",
       "updateError": "Záznam sa nepodarilo aktualizovať",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventár",
+      "actionRejected": "",
       "hotbar": "Rýchla lišta",
       "main": "Hlavný inventár",
       "items": "položky",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Obsah knihy",
         "emptyPage": "(Prázdna stránka)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Strana {{current}} z {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Skript deaktivovaný používateľom",
     "executionFailed": "Skript zlyhal pri vykonávaní",
     "executionError": "Chyba vykonania: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Uzol spustený: {{nodeId}}",
     "nodeCompleted": "Uzol dokončený: {{nodeId}}",
     "nodeError": "Chyba uzla: {{error}}",
@@ -779,7 +787,8 @@
         "maxStateStoreEntriesDescription": "Maximálny počet položiek v úložisku stavu skriptu",
         "disableTimeouts": "Vypnúť časové limity",
         "disableTimeoutsDescription": "Zakazuje časové limity pre jednotlivé uzly a dátové hrany",
-        "save": "Uložiť kvóty"
+        "save": "Uložiť kvóty",
+        "invalidInteger": ""
       }
     }
   },

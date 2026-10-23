@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Verbindung zum SoulFire-Server fehlgeschlagen."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Nicht gefunden",
@@ -641,5 +646,13 @@
     "filter": "Prozessaussgabe filtern",
     "truncated": "{{count}} ältere Protokollzeilen wurden ausgelassen. Die vollständigen Server-Logs befinden sich weiterhin im Datenverzeichnis.",
     "privacy": "Berichte enthalten lokale Pfade und aktuelle Protokolle. Überprüfe Berichte und Thread-Dumps auf persönliche Informationen, bevor du sie weitergibst. Es wird nichts automatisch hochgeladen."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

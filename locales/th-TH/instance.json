@@ -341,6 +341,9 @@
       "keyPlaceholder": "คีย์",
       "valuePlaceholder": "ค่า (JSON)",
       "noEntries": "ไม่มีรายการข้อมูลเมตา กรุณาเพิ่มรายการด้านบน",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "ลองใหม่อีกครั้ง",
       "addSuccess": "เพิ่มรายการแล้ว",
       "addError": "ไม่สามารถเพิ่มรายการได้",
       "updateError": "ไม่สามารถอัปเดตรายการได้",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "อินเวนทอรี",
+      "actionRejected": "",
       "hotbar": "แถบร้อน",
       "main": "ช่องเก็บของหลัก",
       "items": "ไอเทม",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "เนื้อหาหนังสือ",
         "emptyPage": "(หน้าว่าง)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "หน้า {{current}} จาก {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "สคริปต์ถูกปิดใช้งานโดยผู้ใช้",
     "executionFailed": "การทำงานของสคริปต์ล้มเหลว",
     "executionError": "ข้อผิดพลาดขณะรัน: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "เริ่มโหนด: {{nodeId}}",
     "nodeCompleted": "โหนดเสร็จสิ้น: {{nodeId}}",
     "nodeError": "ข้อผิดพลาดโหนด: {{error}}",
@@ -773,7 +781,8 @@
         "maxStateStoreEntriesDescription": "จำนวนรายการสูงสุดใน State Store ของสคริปต์",
         "disableTimeouts": "ปิดใช้งานการหมดเวลา",
         "disableTimeoutsDescription": "ปิดใช้งานการตั้งเวลาหมดเวลาในแต่ละโหนดและ edge ข้อมูล",
-        "save": "บันทึกโควต้า"
+        "save": "บันทึกโควต้า",
+        "invalidInteger": ""
       }
     }
   },

@@ -341,6 +341,9 @@
       "keyPlaceholder": "键",
       "valuePlaceholder": "值（JSON）",
       "noEntries": "没有元数据条目。请在上方添加。",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "重试",
       "addSuccess": "条目已添加",
       "addError": "添加条目失败",
       "updateError": "更新条目失败",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "背包",
+      "actionRejected": "",
       "hotbar": "快捷栏",
       "main": "主物品栏",
       "items": "物品",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "书本内容",
         "emptyPage": "（空白页）",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "第 {{current}} 页，共 {{total}} 页"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "脚本已被用户停用",
     "executionFailed": "脚本执行失败",
     "executionError": "执行错误：{{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "节点已启动：{{nodeId}}",
     "nodeCompleted": "节点已完成：{{nodeId}}",
     "nodeError": "节点错误：{{error}}",
@@ -773,7 +781,8 @@
         "maxStateStoreEntriesDescription": "脚本状态存储中的最大条目数",
         "disableTimeouts": "禁用超时",
         "disableTimeoutsDescription": "禁用每节点和数据边的超时时间",
-        "save": "保存配额"
+        "save": "保存配额",
+        "invalidInteger": ""
       }
     }
   },

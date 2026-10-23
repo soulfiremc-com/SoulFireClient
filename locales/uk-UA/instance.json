@@ -341,6 +341,9 @@
       "keyPlaceholder": "Ключ",
       "valuePlaceholder": "Значення (JSON)",
       "noEntries": "Немає записів метаданих. Додайте один вище.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Повторити спробу",
       "addSuccess": "Запис додано",
       "addError": "Не вдалося додати запис",
       "updateError": "Не вдалося оновити запис",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Інвентар",
+      "actionRejected": "",
       "hotbar": "Гаряча панель",
       "main": "Основний інвентар",
       "items": "предмети",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Вміст книги",
         "emptyPage": "(Порожня сторінка)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Сторінка {{current}} з {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Скрипт деактивовано користувачем",
     "executionFailed": "Помилка виконання скрипта",
     "executionError": "Помилка виконання: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Вузол запущено: {{nodeId}}",
     "nodeCompleted": "Вузол завершено: {{nodeId}}",
     "nodeError": "Помилка вузла: {{error}}",
@@ -779,7 +787,8 @@
         "maxStateStoreEntriesDescription": "Максимальна кількість записів у сховищі стану скрипта",
         "disableTimeouts": "Вимкнути тайм-аути",
         "disableTimeoutsDescription": "Вимикає тайм-аути для окремих вузлів та звʼязків даних",
-        "save": "Зберегти квоти"
+        "save": "Зберегти квоти",
+        "invalidInteger": ""
       }
     }
   },

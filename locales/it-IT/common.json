@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Connessione al server SoulFire non riuscita."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Non trovato",
@@ -641,5 +646,13 @@
     "filter": "Filtra l'output del processo",
     "truncated": "{{count}} righe di log più vecchie sono state omesse. I log completi del server restano nella cartella dei dati.",
     "privacy": "I rapporti includono percorsi locali e log recenti. Esamina i rapporti e i thread dump per informazioni personali prima di condividerli. Niente viene caricato automaticamente."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

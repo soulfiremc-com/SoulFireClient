@@ -341,6 +341,9 @@
       "keyPlaceholder": "Clé",
       "valuePlaceholder": "Valeur (JSON)",
       "noEntries": "Aucune entrée de métadonnée. Ajoutez-en une ci-dessus.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Réessayer",
       "addSuccess": "Entrée ajoutée",
       "addError": "Impossible d'ajouter l'entrée",
       "updateError": "Impossible de mettre à jour l'entrée",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaire",
+      "actionRejected": "",
       "hotbar": "Barre rapide",
       "main": "Inventaire principal",
       "items": "objets",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Contenu du livre",
         "emptyPage": "(Page vide)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Page {{current}} sur {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Script désactivé par l'utilisateur",
     "executionFailed": "Échec de l'exécution du script",
     "executionError": "Erreur d'exécution\u0000a0: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nœud démarré\u0000a0: {{nodeId}}",
     "nodeCompleted": "Nœud terminé\u0000a0: {{nodeId}}",
     "nodeError": "Erreur du nœud\u0000a0: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Nombre maximal d'entrées dans le magasin d'état du script",
         "disableTimeouts": "Désactiver les délais d'attente",
         "disableTimeoutsDescription": "Désactive les délais d'attente par nœud et sur les arêtes de données",
-        "save": "Enregistrer les quotas"
+        "save": "Enregistrer les quotas",
+        "invalidInteger": ""
       }
     }
   },

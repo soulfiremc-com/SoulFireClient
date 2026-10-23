@@ -341,6 +341,9 @@
       "keyPlaceholder": "Kunci",
       "valuePlaceholder": "Nilai (JSON)",
       "noEntries": "Tidak ada entri metadata. Tambahkan satu di atas.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Coba Lagi",
       "addSuccess": "Entri berhasil ditambahkan",
       "addError": "Gagal menambahkan entri",
       "updateError": "Gagal memperbarui entri",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaris",
+      "actionRejected": "",
       "hotbar": "Hotbar",
       "main": "Inventaris Utama",
       "items": "item",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Isi Buku",
         "emptyPage": "(Halaman kosong)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Halaman {{current}} dari {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Skrip dinonaktifkan oleh pengguna",
     "executionFailed": "Eksekusi skrip gagal",
     "executionError": "Kesalahan eksekusi: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node dimulai: {{nodeId}}",
     "nodeCompleted": "Node selesai: {{nodeId}}",
     "nodeError": "Kesalahan node: {{error}}",
@@ -773,7 +781,8 @@
         "maxStateStoreEntriesDescription": "Jumlah entri maksimum di state store skrip",
         "disableTimeouts": "Nonaktifkan Timeout",
         "disableTimeoutsDescription": "Menonaktifkan timeout per-node dan data edge",
-        "save": "Simpan Kuota"
+        "save": "Simpan Kuota",
+        "invalidInteger": ""
       }
     }
   },

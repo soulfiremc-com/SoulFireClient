@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Yhteys SoulFire-palvelimeen epäonnistui."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Ei löytynyt",
@@ -641,5 +646,13 @@
     "filter": "Suodata prosessin tuloste",
     "truncated": "{{count}} vanhempaa lokiriviä jätettiin pois. Kaikki palvelimen lokit löytyvät datakansiosta.",
     "privacy": "Raportit sisältävät paikalliset polut ja viimeaikaiset lokit. Tarkista raportit ja thread dumpit henkilötietojen varalta ennen jakamista. Mitään ei ladata automaattisesti."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

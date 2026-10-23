@@ -15,6 +15,11 @@
     },
     "connectionFailed": ".pǝlᴉɐɟ ɹǝʌɹǝs ǝɹᴉɟ˥noS ǝɥʇ oʇ uoᴉʇɔǝuuoↃ"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "puoɟ ʇoN",
@@ -641,5 +646,13 @@
     "filter": "ʇndʇno sǝssǝɔoɹd ɹǝʇlᴉɟ",
     "truncated": ".ʎɹoʇɔǝɹᴉp ɐʇɐp ǝɥʇ uᴉ sƃol ɹǝʌɹǝs llnɟ .pǝʇʇᴉɯo ǝɹǝʍ sǝuᴉl ƃol ɹǝp˥o {{count}}",
     "privacy": ".ʎlᴉʇɐɯoʇnɐ  pǝpɐolpu sᴉ ƃuᴉɥʇou  .ƃuᴉɹɐɥs ǝɹoɟ ǝɹoɟ  spɯud pɐǝɥɹɐǝɥʇ puɐ sʇɹod ʍǝᴉʌǝɹ  .sƃol ʇuǝɔǝɹ pɐ puɐ sɥʇɐd lɐɔo˥ ǝpnᴉ˥ sʇɹodǝɹ"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

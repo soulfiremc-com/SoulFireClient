@@ -341,6 +341,9 @@
       "keyPlaceholder": "Avain",
       "valuePlaceholder": "Arvo (JSON)",
       "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Yritä uudelleen",
       "addSuccess": "Merkintä lisätty",
       "addError": "Kirjauksen lisääminen epäonnistui",
       "updateError": "Kirjauksen päivittäminen epäonnistui",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaario",
+      "actionRejected": "",
       "hotbar": "Pikavalikko",
       "main": "Päätavarasto",
       "items": "esineet",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Kirjan sisältö",
         "emptyPage": "(Tyhjä sivu)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Sivu {{current}} / {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Käyttäjä poisti skriptin käytöstä",
     "executionFailed": "Skriptin suoritus epäonnistui",
     "executionError": "Suoritusvirhe: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Solmu käynnistetty: {{nodeId}}",
     "nodeCompleted": "Solmu valmis: {{nodeId}}",
     "nodeError": "Solmun virhe: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Suurin määrä merkintöjä skriptin tilakaupassa",
         "disableTimeouts": "Poista aikakatkaisut käytöstä",
         "disableTimeoutsDescription": "Poistaa käytöstä solmu- ja datareunasidonnaiset aikakatkaisut",
-        "save": "Tallenna kiintiöt"
+        "save": "Tallenna kiintiöt",
+        "invalidInteger": ""
       }
     }
   },

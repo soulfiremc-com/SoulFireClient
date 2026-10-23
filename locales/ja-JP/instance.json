@@ -341,6 +341,9 @@
       "keyPlaceholder": "キー",
       "valuePlaceholder": "値（JSON）",
       "noEntries": "メタデータエントリがありません。上で追加してください。",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "再試行する",
       "addSuccess": "エントリが追加されました",
       "addError": "エントリの追加に失敗しました",
       "updateError": "エントリの更新に失敗しました",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "インベントリ",
+      "actionRejected": "",
       "hotbar": "ホットバー",
       "main": "メインインベントリー",
       "items": "アイテム",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "本の内容",
         "emptyPage": "（空のページ）",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "{{total}}ページ中{{current}}ページ"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "ユーザーによってスクリプトが無効化されました",
     "executionFailed": "スクリプト実行に失敗しました",
     "executionError": "実行エラー: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "ノード開始: {{nodeId}}",
     "nodeCompleted": "ノード完了: {{nodeId}}",
     "nodeError": "ノードエラー: {{error}}",
@@ -773,7 +781,8 @@
         "maxStateStoreEntriesDescription": "スクリプト状態ストア内の最大エントリ数",
         "disableTimeouts": "タイムアウト無効",
         "disableTimeoutsDescription": "ノードごとおよびデータエッジごとのタイムアウトを無効化します",
-        "save": "クォータを保存"
+        "save": "クォータを保存",
+        "invalidInteger": ""
       }
     }
   },

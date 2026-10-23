@@ -341,6 +341,9 @@
       "keyPlaceholder": "ʎǝ⋊",
       "valuePlaceholder": ")NOႧ( ǝnlɐʌ",
       "noEntries": "..ǝʌoɯɐ ǝuo ppp∀ .sǝᴉɹʇuǝ ɐʇɐpɐʇǝɯ oN",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "ʎɹʇǝɹ",
       "addSuccess": "pǝpp∀ ʎɹʇuƎ",
       "addError": "ʎɹʇuǝ  ppA oʇ pǝlᴉɐℲ",
       "updateError": "ʎɹʇuǝ ǝʇɐpdnl pǝlᴉɐℲ",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "ʎɹoʇuǝʌuI",
+      "actionRejected": "",
       "hotbar": "ɹɐqʇoH",
       "main": "ʎɹoʇuǝʌuᴉ  uᴉɐW",
       "items": "sɯǝʇᴉ",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "ǝlᴉʇǝɯ ʞooԐ",
         "emptyPage": ")ǝƃɐd ʎʇdɯƎ(",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "ɹoʇɐl ɟo ʎɹɹǝnɔ ǝƃɐd {{current}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "ɹǝns ʎq pǝʇɐʌᴉʇɔɐ pǝʇdıɹɔS",
     "executionFailed": "pǝlᴉɐℲ uoᴉʇnɔǝxǝ ʇdıɹɔS",
     "executionError": "}}error{{ :ɹoɹɹǝ uoᴉʇnɔǝxǝ",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "}}nodeId{{ :pǝʇɹɐʇs ǝpoN",
     "nodeCompleted": "}}nodeId{{ :pǝʇǝlǝdoɔ ǝpoN",
     "nodeError": "}}error{{ :ɹoɹɹǝ ǝpoN",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "ǝɹoʇs ǝʇɐʇs ʇdᴉɹɔs ǝɥʇ uᴉ sǝᴉɹʇuǝ ɯnᴉɯxɐW",
         "disableTimeouts": "snoǝʇnoɯɐᴉʇ ǝןqɐsᴉᗡ",
         "disableTimeoutsDescription": ".snoǝʇnoɯɐᴉʇ ǝᗡ ɐʇɐp puɐ ǝpou-ɹǝd sǝlqɐsᴉᗡ",
-        "save": "sɐʇonbᴉn ǝʌɐS"
+        "save": "sɐʇonbᴉn ǝʌɐS",
+        "invalidInteger": ""
       }
     }
   },

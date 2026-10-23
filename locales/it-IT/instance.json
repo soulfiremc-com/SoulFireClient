@@ -341,6 +341,9 @@
       "keyPlaceholder": "Chiave",
       "valuePlaceholder": "Valore (JSON)",
       "noEntries": "Nessuna voce di metadati. Aggiungine una sopra.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Riprova",
       "addSuccess": "Voce aggiunta",
       "addError": "Impossibile aggiungere la voce",
       "updateError": "Impossibile aggiornare la voce",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventario",
+      "actionRejected": "",
       "hotbar": "Hotbar",
       "main": "Inventario principale",
       "items": "oggetti",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Contenuto del Libro",
         "emptyPage": "(Pagina vuota)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Pagina {{current}} di {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Script disattivato dall'utente",
     "executionFailed": "Esecuzione script fallita",
     "executionError": "Errore di esecuzione: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nodo avviato: {{nodeId}}",
     "nodeCompleted": "Nodo completato: {{nodeId}}",
     "nodeError": "Errore nodo: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Numero massimo di voci nello stato dello script",
         "disableTimeouts": "Disabilita timeout",
         "disableTimeoutsDescription": "Disabilita i timeout per singoli nodi e per i collegamenti di dati",
-        "save": "Salva quote"
+        "save": "Salva quote",
+        "invalidInteger": ""
       }
     }
   },

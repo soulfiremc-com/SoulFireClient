@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Échec de la connexion au serveur SoulFire.."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Introuvable",
@@ -641,5 +646,13 @@
     "filter": "Filtrer la sortie du processus",
     "truncated": "{{count}} lignes de journal plus anciennes ont été omises. Les journaux complets du serveur demeurent dans le dossier des données.",
     "privacy": "Les rapports incluent les chemins locaux et les journaux récents. Vérifiez les rapports et vidages des threads pour toute information personnelle avant de partager. Rien n'est envoyé automatiquement."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

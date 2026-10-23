@@ -341,6 +341,9 @@
       "keyPlaceholder": "Klucz",
       "valuePlaceholder": "Wartość (JSON)",
       "noEntries": "Brak wpisów metadanych. Dodaj jeden powyżej.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Ponów próbę",
       "addSuccess": "Wpis dodany",
       "addError": "Nie udało się dodać wpisu",
       "updateError": "Nie udało się zaktualizować wpisu",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Ekwipunek",
+      "actionRejected": "",
       "hotbar": "Pasek szybkiego wyboru",
       "main": "Główny ekwipunek",
       "items": "przedmiotów",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Treść książki",
         "emptyPage": "(Pusta strona)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Strona {{current}} z {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Skrypt dezaktywowany przez użytkownika",
     "executionFailed": "Wykonywanie skryptu nie powiodło się",
     "executionError": "Błąd wykonania: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Węzeł rozpoczęty: {{nodeId}}",
     "nodeCompleted": "Węzeł zakończony: {{nodeId}}",
     "nodeError": "Błąd węzła: {{error}}",
@@ -779,7 +787,8 @@
         "maxStateStoreEntriesDescription": "Maksymalna liczba wpisów w magazynie stanu skryptu",
         "disableTimeouts": "Wyłącz limity czasu",
         "disableTimeoutsDescription": "Wyłącza limity czasu dla poszczególnych węzłów i krawędzi danych",
-        "save": "Zapisz limity"
+        "save": "Zapisz limity",
+        "invalidInteger": ""
       }
     }
   },

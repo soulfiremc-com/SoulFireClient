@@ -341,6 +341,9 @@
       "keyPlaceholder": "कुंजी",
       "valuePlaceholder": "मान (JSON)",
       "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "पुनः प्रयास करें",
       "addSuccess": "प्रविष्टि जोड़ी गई",
       "addError": "प्रविष्टि जोड़ने में विफल",
       "updateError": "प्रविष्टि अपडेट करने में विफल",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "इन्वेंटरी",
+      "actionRejected": "",
       "hotbar": "हॉटबार",
       "main": "मुख्य इन्वेंटरी",
       "items": "आइटम",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "पुस्तक सामग्री",
         "emptyPage": "(खाली पृष्ठ)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "पृष्ठ {{current}} में से {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "उपयोगकर्ता द्वारा स्क्रिप्ट निष्क्रिय की गई",
     "executionFailed": "स्क्रिप्ट निष्पादन विफल हुआ",
     "executionError": "निष्पादन त्रुटि: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "नोड शुरू: {{nodeId}}",
     "nodeCompleted": "नोड पूर्ण: {{nodeId}}",
     "nodeError": "नोड त्रुटि: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "स्क्रिप्ट स्टेट स्टोर में अधिकतम प्रविष्टियाँ",
         "disableTimeouts": "टाइमआउट अक्षम करें",
         "disableTimeoutsDescription": "प्रति-नोड और डेटा एज टाइमआउट्स को अक्षम करता है",
-        "save": "कोटा सहेजें"
+        "save": "कोटा सहेजें",
+        "invalidInteger": ""
       }
     }
   },
