@@ -37,6 +37,48 @@ type CompletionState = {
 
 const COMPLETION_DEBOUNCE_MS = 120;
 
+const INTERACTIVE_SELECTOR = [
+  "input",
+  "textarea",
+  "select",
+  "button",
+  "a[href]",
+  "summary",
+  "dialog",
+  "audio[controls]",
+  "video[controls]",
+  ...[
+    "alertdialog",
+    "button",
+    "checkbox",
+    "combobox",
+    "dialog",
+    "grid",
+    "gridcell",
+    "link",
+    "listbox",
+    "menu",
+    "menubar",
+    "menuitem",
+    "menuitemcheckbox",
+    "menuitemradio",
+    "option",
+    "radio",
+    "radiogroup",
+    "scrollbar",
+    "searchbox",
+    "slider",
+    "spinbutton",
+    "switch",
+    "tab",
+    "tablist",
+    "textbox",
+    "tree",
+    "treegrid",
+    "treeitem",
+  ].map((role) => `[role~="${role}"]`),
+].join(",");
+
 const WHITESPACE_REGEX = /\s/;
 
 function getTokenRange(
@@ -101,14 +143,15 @@ export default function CommandInput(props: { scope: CommandScope }) {
       const activeEl = document.activeElement as HTMLElement | null;
       if (
         inputRef.current &&
+        !event.defaultPrevented &&
+        !event.isComposing &&
         !event.ctrlKey &&
         !event.metaKey &&
         !event.altKey &&
         event.key.length === 1 &&
         /[a-zA-Z0-9!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~ ]/.test(event.key) &&
         (activeEl === null ||
-          (activeEl.tagName !== "INPUT" &&
-            activeEl.tagName !== "TEXTAREA" &&
+          (!activeEl.closest(INTERACTIVE_SELECTOR) &&
             !activeEl.isContentEditable))
       ) {
         inputRef.current.focus();
