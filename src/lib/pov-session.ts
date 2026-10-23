@@ -3,6 +3,8 @@ import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import {
   type PovFrame,
   type PovInputEvent,
+  PovInputEvent_Kind,
+  PovInputEventSchema,
   PovInputRequestSchema,
   PovService,
   type PovStreamFeedback,
@@ -32,7 +34,6 @@ export function startPovSession(
   let captured = false;
   let audioEnabled = false;
   let lastAudioEnabled = false;
-  let pendingEscape = false;
   let pendingKeyFrame = false;
   let ready = false;
   let sequence = 0n;
@@ -84,7 +85,6 @@ export function startPovSession(
     ready = false;
     captured = false;
     inputs.reset();
-    pendingEscape = false;
     clipboard = undefined;
     readClipboard = false;
     clipboardSequence = 0n;
@@ -111,7 +111,6 @@ export function startPovSession(
     if (
       !readClipboard &&
       clipboard === undefined &&
-      !pendingEscape &&
       !pendingKeyFrame &&
       !inputs.length &&
       captured === lastCaptured &&
@@ -123,10 +122,8 @@ export function startPovSession(
     if (!size) return;
     const batch = inputs.drain();
     const batchCaptured = captured;
-    const batchEscape = pendingEscape;
     const requestKeyFrame = pendingKeyFrame;
     pendingKeyFrame = false;
-    pendingEscape = false;
     try {
       current.socket.send(
         toBinary(
@@ -137,7 +134,6 @@ export function startPovSession(
             sequence: ++sequence,
             captured: batchCaptured,
             audioEnabled,
-            escape: batchEscape,
             requestKeyFrame,
             ...size,
             events: batch,
@@ -261,6 +257,11 @@ export function startPovSession(
     }
   })();
 
+  function enqueue(event: PovInputEvent, source = "keyboard") {
+    if (!captured || stopped || !ready) return;
+    if (!inputs.enqueue(event, source)) reconnect();
+  }
+
   return {
     stop,
     audio(value: boolean) {
@@ -272,7 +273,16 @@ export function startPovSession(
       void flush();
     },
     escape() {
-      pendingEscape = true;
+      // The server handles its escape flag before events. Keep this key ordered
+      // with earlier clicks and text, including when the browser consumes it.
+      for (const action of [1, 0])
+        enqueue(
+          create(PovInputEventSchema, {
+            kind: PovInputEvent_Kind.KEY,
+            code: 256,
+            action,
+          }),
+        );
     },
     capture(value: boolean) {
       // Deliver the last edit or click before the server releases held inputs.
@@ -297,9 +307,6 @@ export function startPovSession(
       clipboard = text.slice(0, 16_384);
       flush();
     },
-    enqueue(event: PovInputEvent, source = "keyboard") {
-      if (!captured || stopped || !ready) return;
-      if (!inputs.enqueue(event, source)) reconnect();
-    },
+    enqueue,
   };
 }
