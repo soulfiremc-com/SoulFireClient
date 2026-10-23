@@ -97,6 +97,8 @@
         "fromUrl": "From URL",
         "firstClipboardItem": "The clipboard contains multiple items. SoulFire will use the first item.",
         "fromClipboard": "From clipboard",
+        "clipboardError": "Failed to read the clipboard. Allow clipboard access or paste the text directly.",
+        "fileError": "Failed to read the selected files. Check file access and try again.",
         "textarea": {
           "placeholder": "Put text here...",
           "submit": "Load from text"

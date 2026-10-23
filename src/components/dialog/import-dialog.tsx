@@ -4,7 +4,14 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { ClipboardIcon, FileIcon, GlobeIcon, TextIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import {
+  use,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -27,7 +34,8 @@ import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { DownloadService } from "@/generated/soulfire/download_pb";
 import { decodeTextDownload, DownloadHttpError } from "@/lib/download.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
-import { hasInstancePermission, runAsync } from "@/lib/utils.tsx";
+import { ImportReadSession, readImportFile } from "@/lib/import-read.ts";
+import { hasInstancePermission } from "@/lib/utils.tsx";
 
 export type TextInput = {
   defaultValue: string;
@@ -71,20 +79,8 @@ function UrlDialog(props: ImportDialogProps) {
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
-  const activeDownload = useRef<{
-    controller: AbortController;
-    toastId: string | number;
-  } | null>(null);
-  useEffect(
-    () => () => {
-      const download = activeDownload.current;
-      if (download) {
-        download.controller.abort();
-        toast.dismiss(download.toastId);
-      }
-    },
-    [],
-  );
+  const activeDownload = useRef<AbortController | null>(null);
+  useEffect(() => () => activeDownload.current?.abort(), []);
 
   const urlSchema = z.object({
     url: z.string().url(t("dialog.import.url.form.url.empty")),
@@ -100,8 +96,7 @@ function UrlDialog(props: ImportDialogProps) {
     onSubmit: async ({ value }) => {
       if (transport === null) return;
       const controller = new AbortController();
-      const toastId = toast.loading(t("dialog.import.url.toast.loading"));
-      activeDownload.current = { controller, toastId };
+      activeDownload.current = controller;
       try {
         const service = createClient(DownloadService, transport);
         const response = await service.download(
@@ -114,16 +109,13 @@ function UrlDialog(props: ImportDialogProps) {
         );
         const text = decodeTextDownload(response);
         if (!text.trim()) {
-          toast.error(t("dialog.import.url.toast.empty"), { id: toastId });
+          toast.error(t("dialog.import.url.toast.empty"));
           return;
         }
         props.listener(text);
-        toast.success(t("dialog.import.url.toast.success"), { id: toastId });
+        toast.success(t("dialog.import.url.toast.success"));
       } catch (error) {
-        if (controller.signal.aborted) {
-          toast.dismiss(toastId);
-          return;
-        }
+        if (controller.signal.aborted) return;
         console.error(error);
         toast.error(
           error instanceof DownloadHttpError
@@ -131,7 +123,6 @@ function UrlDialog(props: ImportDialogProps) {
                 status: error.statusCode,
               })
             : t("dialog.import.url.toast.error"),
-          { id: toastId },
         );
       } finally {
         activeDownload.current = null;
@@ -231,11 +222,33 @@ function MainDialog(
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const systemInfo = use(SystemInfoContext);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [readSession] = useState(() => new ImportReadSession());
+  const [isReading, startReading] = useTransition();
+  const isPending = props.isPending || isReading;
+  useEffect(() => () => readSession.cancel(), [readSession]);
+
+  const read = (
+    load: (signal: AbortSignal) => Promise<readonly string[]>,
+    errorKey:
+      | "dialog.import.main.fileError"
+      | "dialog.import.main.clipboardError",
+  ) => {
+    startReading(async () => {
+      try {
+        await readSession.run(load, (texts) => {
+          if (texts.length) props.listener(texts.join("\n"));
+        });
+      } catch (error) {
+        console.error(error);
+        toast.error(t(errorKey));
+      }
+    });
+  };
 
   // Handle Ctrl+V paste - uses native event to avoid permission prompts
   const handlePaste = useCallback(
     (event: React.ClipboardEvent) => {
-      if (props.isPending) return;
+      if (isPending) return;
       // Ignore if typing in an input or textarea
       if (
         event.target instanceof HTMLInputElement ||
@@ -251,11 +264,17 @@ function MainDialog(
         props.listener(text);
       }
     },
-    [props],
+    [props, isPending],
   );
 
   return (
-    <Credenza open={true} onOpenChange={props.closer}>
+    <Credenza
+      open={true}
+      onOpenChange={() => {
+        readSession.cancel();
+        props.closer();
+      }}
+    >
       <CredenzaContent className="min-w-0">
         <div className="min-w-0" onPaste={handlePaste}>
           <CredenzaHeader>
@@ -272,7 +291,7 @@ function MainDialog(
                     accept={props.filters.map((f) => f.mimeType).join(",")}
                     multiple={props.allowMultiple}
                     className="hidden"
-                    disabled={props.isPending}
+                    disabled={isPending}
                     onChange={(e) => {
                       const target = e.target as HTMLInputElement;
                       if (!target.files) {
@@ -281,25 +300,26 @@ function MainDialog(
 
                       const files = Array.from(target.files);
                       target.value = "";
-                      for (const file of files) {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                          const data = reader.result as string;
-                          props.listener(data);
-                        };
-                        reader.readAsText(file);
-                      }
+                      if (!files.length || isPending) return;
+                      read(
+                        (signal) =>
+                          Promise.all(
+                            files.map((file) => readImportFile(file, signal)),
+                          ),
+                        "dialog.import.main.fileError",
+                      );
                     }}
                   />
                 )}
                 <Button
                   variant="secondary"
                   className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
-                  disabled={props.isPending}
+                  disabled={isPending}
                   onClick={() => {
                     if (isDesktopApp()) {
-                      runAsync(async () => {
+                      read(async (signal) => {
                         const downloadsDir = await desktop.path.downloadDir();
+                        signal.throwIfAborted();
                         const input = await desktop.dialog.open({
                           title: props.title,
                           filters: systemInfo?.mobile
@@ -309,19 +329,19 @@ function MainDialog(
                           multiple: props.allowMultiple,
                           directory: false,
                         });
-                        if (input === null) {
-                          return;
-                        }
+                        signal.throwIfAborted();
+                        if (input === null) return [];
 
                         const toParse: string[] = Array.isArray(input)
                           ? input
                           : [input];
+                        const texts: string[] = [];
                         for (const file of toParse) {
-                          const data = await desktop.fs.readTextFile(file);
-
-                          props.listener(data);
+                          texts.push(await desktop.fs.readTextFile(file));
+                          signal.throwIfAborted();
                         }
-                      });
+                        return texts;
+                      }, "dialog.import.main.fileError");
                     } else {
                       fileInputRef.current?.click();
                     }
@@ -337,8 +357,11 @@ function MainDialog(
                   <Button
                     variant="secondary"
                     className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
-                    disabled={props.isPending}
-                    onClick={props.openUrlDialog}
+                    disabled={isPending}
+                    onClick={() => {
+                      readSession.cancel();
+                      props.openUrlDialog();
+                    }}
                   >
                     <GlobeIcon />
                     <span>{t("dialog.import.main.fromUrl")}</span>
@@ -347,13 +370,11 @@ function MainDialog(
                 <Button
                   variant="secondary"
                   className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
-                  disabled={props.isPending}
+                  disabled={isPending}
                   onClick={() => {
-                    runAsync(async () => {
+                    read(async (signal) => {
                       if (isDesktopApp()) {
-                        props.listener(
-                          (await desktop.clipboard.readText()) ?? "",
-                        );
+                        return [(await desktop.clipboard.readText()) ?? ""];
                       } else {
                         const mimeTypes = props.filters.map((f) => f.mimeType);
                         let clipboardEntries = (
@@ -374,6 +395,7 @@ function MainDialog(
                               return e.firstSupportedType !== undefined;
                             },
                           );
+                        signal.throwIfAborted();
                         if (
                           !props.allowMultiple &&
                           clipboardEntries.length > 1
@@ -384,14 +406,18 @@ function MainDialog(
                           clipboardEntries = [clipboardEntries[0]];
                         }
 
+                        const texts: string[] = [];
                         for (const entry of clipboardEntries) {
                           const blob = await entry.item.getType(
                             entry.firstSupportedType,
                           );
-                          props.listener(await blob.text());
+                          signal.throwIfAborted();
+                          texts.push(await blob.text());
+                          signal.throwIfAborted();
                         }
+                        return texts;
                       }
-                    });
+                    }, "dialog.import.main.clipboardError");
                   }}
                 >
                   <ClipboardIcon />
@@ -399,7 +425,11 @@ function MainDialog(
                 </Button>
               </div>
               {props.textInput !== null && (
-                <TextInput {...props} textInput={props.textInput} />
+                <TextInput
+                  {...props}
+                  isPending={isPending}
+                  textInput={props.textInput}
+                />
               )}
               {props.extraContent && (
                 <>
