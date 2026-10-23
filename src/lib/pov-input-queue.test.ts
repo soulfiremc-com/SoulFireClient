@@ -91,9 +91,11 @@ test("input stays bounded and can reset after overflow", () => {
     create(PovInputEventSchema, { kind: Kind.CHARACTER, code: 65 });
   for (let i = 0; i < 128; i++)
     assert.equal(queue.enqueue(event(), "keyboard"), true);
+  assert.equal(queue.isFull, true);
   assert.equal(queue.enqueue(event(), "keyboard"), false);
   assert.equal(queue.length, 128);
   queue.reset();
+  assert.equal(queue.isFull, false);
   assert.equal(queue.enqueue(event(), "keyboard"), true);
   assert.equal(queue.drain().length, 1);
 });

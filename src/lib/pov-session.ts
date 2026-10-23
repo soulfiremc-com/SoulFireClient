@@ -259,6 +259,10 @@ export function startPovSession(
 
   function enqueue(event: PovInputEvent, source = "keyboard") {
     if (!captured || stopped || !ready) return;
+    // One browser text commit can fill multiple native input packets. Flush
+    // before accepting the next event so held-input ownership stays ordered.
+    if (inputs.isFull) flush();
+    if (!captured || stopped || !ready) return;
     if (!inputs.enqueue(event, source)) reconnect();
   }
 

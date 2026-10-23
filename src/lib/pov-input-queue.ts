@@ -12,6 +12,10 @@ export class PovInputQueue {
     return this.events.length;
   }
 
+  get isFull(): boolean {
+    return this.events.length >= 128;
+  }
+
   enqueue(event: PovInputEvent, source: string): boolean {
     if (!this.sources.accept(event, source)) return true;
     const previous = this.events[this.events.length - 1];
@@ -27,7 +31,7 @@ export class PovInputQueue {
       previous.y = event.relative ? previous.y + event.y : event.y;
       return true;
     }
-    if (this.events.length >= 128) return false;
+    if (this.isFull) return false;
     this.events.push(event);
     return true;
   }
