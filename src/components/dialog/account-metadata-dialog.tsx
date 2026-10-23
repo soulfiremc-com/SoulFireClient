@@ -2,7 +2,7 @@ import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useIsMutating, useMutation } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import {
@@ -150,7 +150,15 @@ function DialogContentInner({
   const [loadError, setLoadError] = useState(false);
   const activeLoad = useRef<AbortController | null>(null);
   const activeView = useRef(false);
-  const isMetadataReady = !isLoading && !loadError && entries !== null;
+  const metadataMutationKey = [
+    "account",
+    "metadata",
+    instanceId,
+    account.profileId,
+  ];
+  const pendingMutations = useIsMutating({ mutationKey: metadataMutationKey });
+  const isMetadataReady =
+    pendingMutations === 0 && !isLoading && !loadError && entries !== null;
 
   const loadMetadata = useCallback(async () => {
     if (!activeView.current) return;
@@ -189,13 +197,13 @@ function DialogContentInner({
 
   useEffect(() => {
     activeView.current = open;
-    if (open) void loadMetadata();
+    if (open && pendingMutations === 0) void loadMetadata();
     return () => {
       activeView.current = false;
       activeLoad.current?.abort();
       activeLoad.current = null;
     };
-  }, [open, loadMetadata]);
+  }, [open, loadMetadata, pendingMutations]);
 
   // Check for duplicate namespace+key
   const isDuplicate = useCallback(
@@ -213,8 +221,8 @@ function DialogContentInner({
 
   // Add entry mutation
   const addEntryMutation = useMutation({
-    mutationKey: ["account", "metadata", "add", account.profileId],
-    scope: { id: `account-metadata-${account.profileId}` },
+    mutationKey: [...metadataMutationKey, "add"],
+    scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
     mutationFn: async (entry: {
       namespace: string;
       key: string;
@@ -236,14 +244,13 @@ function DialogContentInner({
     onError: (e) => {
       console.error(e);
       toast.error(t("account.metadata.addError"));
-      void loadMetadata();
     },
   });
 
   // Update entry mutation
   const updateEntryMutation = useMutation({
-    mutationKey: ["account", "metadata", "update", account.profileId],
-    scope: { id: `account-metadata-${account.profileId}` },
+    mutationKey: [...metadataMutationKey, "update"],
+    scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
     mutationFn: async (entry: {
       oldNamespace: string;
       oldKey: string;
@@ -273,14 +280,13 @@ function DialogContentInner({
     onError: (e) => {
       console.error(e);
       toast.error(t("account.metadata.updateError"));
-      void loadMetadata();
     },
   });
 
   // Delete entry mutation
   const deleteEntryMutation = useMutation({
-    mutationKey: ["account", "metadata", "delete", account.profileId],
-    scope: { id: `account-metadata-${account.profileId}` },
+    mutationKey: [...metadataMutationKey, "delete"],
+    scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
     mutationFn: async (entry: { namespace: string; key: string }) => {
       if (transport === null) return;
       const instanceService = createClient(InstanceService, transport);
@@ -297,7 +303,6 @@ function DialogContentInner({
     onError: (e) => {
       console.error(e);
       toast.error(t("account.metadata.deleteError"));
-      void loadMetadata();
     },
   });
 
