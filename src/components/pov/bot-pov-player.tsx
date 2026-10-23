@@ -48,6 +48,7 @@ import {
   keyInput,
   mouseButton,
 } from "@/lib/pov-input";
+import { textEditEvents, textInputEvents } from "@/lib/pov-text-input";
 import { lockPovPointer } from "@/lib/pov-pointer-lock";
 import { PovPresenter } from "@/lib/pov-presenter";
 import { povRenderSize } from "@/lib/pov-render-size";
@@ -496,6 +497,17 @@ function BotPovSession({
       }
     };
     const textInput = textInputRef.current;
+    const beforeText = (event: InputEvent) => {
+      if (
+        playerStore.get().capture !== "captured" ||
+        !playerStore.get().screenOpen
+      )
+        return;
+      const edits = textEditEvents(event);
+      if (!edits.length) return;
+      event.preventDefault();
+      for (const input of edits) session.current?.enqueue(input);
+    };
     const text = (event: Event) => {
       if (
         playerStore.get().capture !== "captured" ||
@@ -503,11 +515,8 @@ function BotPovSession({
         (event as InputEvent).isComposing
       )
         return;
-      for (const character of textInput.value)
-        enqueue({
-          kind: PovInputEvent_Kind.CHARACTER,
-          code: character.codePointAt(0),
-        });
+      for (const input of textInputEvents(textInput.value))
+        session.current?.enqueue(input);
       textInput.value = "";
     };
     const paste = (event: ClipboardEvent) => {
@@ -519,6 +528,7 @@ function BotPovSession({
       event.preventDefault();
       session.current?.paste(event.clipboardData?.getData("text/plain") ?? "");
     };
+    textInput?.addEventListener("beforeinput", beforeText);
     textInput?.addEventListener("input", text);
     textInput?.addEventListener("compositionend", text);
     textInput?.addEventListener("paste", paste);
@@ -687,6 +697,7 @@ function BotPovSession({
       canvas.removeEventListener("pointermove", touchMove);
       canvas.removeEventListener("pointerup", touchEnd);
       canvas.removeEventListener("pointercancel", touchEnd);
+      textInput?.removeEventListener("beforeinput", beforeText);
       textInput?.removeEventListener("input", text);
       textInput?.removeEventListener("compositionend", text);
       textInput?.removeEventListener("paste", paste);
