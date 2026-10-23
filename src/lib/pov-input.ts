@@ -78,6 +78,19 @@ export function mouseButton(button: number): number {
   return button === 1 ? 2 : button === 2 ? 1 : button;
 }
 
+export function scrollInput(
+  event: Pick<WheelEvent, "deltaMode" | "deltaX" | "deltaY">,
+) {
+  // Sensitivity: 100 pixels, 3 lines, or 1 page per native wheel unit.
+  // Keep fractions so Minecraft can accumulate smooth trackpad gestures.
+  const units = event.deltaMode === 1 ? 3 : event.deltaMode === 2 ? 1 : 100;
+  return create(PovInputEventSchema, {
+    kind: PovInputEvent_Kind.SCROLL,
+    x: -event.deltaX / units,
+    y: -event.deltaY / units,
+  });
+}
+
 export function isSystemShortcut(
   event: Pick<KeyboardEvent, "code" | "metaKey" | "altKey" | "ctrlKey">,
 ): boolean {

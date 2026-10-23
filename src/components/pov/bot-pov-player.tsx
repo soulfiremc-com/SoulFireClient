@@ -47,6 +47,7 @@ import {
   isTextInputKey,
   keyInput,
   mouseButton,
+  scrollInput,
   textShortcutKey,
 } from "@/lib/pov-input";
 import { textEditEvents, textInputEvents } from "@/lib/pov-text-input";
@@ -668,11 +669,7 @@ function BotPovSession({
     const wheel = (event: WheelEvent) => {
       if (playerStore.get().capture !== "captured") return;
       event.preventDefault();
-      enqueue({
-        kind: PovInputEvent_Kind.SCROLL,
-        x: -Math.sign(event.deltaX),
-        y: -Math.sign(event.deltaY),
-      });
+      enqueue(scrollInput(event));
     };
     const context = (event: Event) => {
       if (playerStore.get().capture === "captured" && event.target === canvas)

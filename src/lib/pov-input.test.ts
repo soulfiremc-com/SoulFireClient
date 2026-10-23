@@ -9,6 +9,7 @@ import {
   isTextEditingShortcut,
   isTextInputKey,
   mouseButton,
+  scrollInput,
   textShortcutKey,
 } from "./pov-input";
 
@@ -32,6 +33,39 @@ test("browser middle/right buttons and simultaneous modifiers map to GLFW", () =
     }),
     11,
   );
+});
+
+test("splitting a wheel gesture preserves its native distance in every delta mode", () => {
+  for (const [deltaMode, distance] of [
+    [0, 100],
+    [1, 3],
+    [2, 1],
+  ]) {
+    const whole = scrollInput({
+      deltaMode,
+      deltaX: -distance,
+      deltaY: distance,
+    });
+    const part = scrollInput({
+      deltaMode,
+      deltaX: -distance / 8,
+      deltaY: distance / 8,
+    });
+    assert.equal(whole.x, 1);
+    assert.equal(whole.y, -1);
+    assert.equal(part.x * 8, whole.x);
+    assert.equal(part.y * 8, whole.y);
+    assert.equal(part.kind, whole.kind);
+  }
+});
+
+test("wheel input preserves acceleration and reverses each axis independently", () => {
+  const input = scrollInput({ deltaMode: 0, deltaX: 250, deltaY: -12.5 });
+  const reversed = scrollInput({ deltaMode: 0, deltaX: -250, deltaY: 12.5 });
+  assert.equal(input.x, -2.5);
+  assert.equal(input.y, 0.125);
+  assert.equal(reversed.x, -input.x);
+  assert.equal(reversed.y, -input.y);
 });
 
 test("OS shortcuts remain available while Minecraft keys and Escape are forwarded", () => {
