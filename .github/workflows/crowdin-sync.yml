@@ -37,7 +37,7 @@ jobs:
 
       - name: Enable auto-merge for the PR
         if: steps.crowdin-download.outputs.pull_request_url
-        run: gh pr --repo $GITHUB_REPOSITORY merge ${STEPS_CROWDIN_DOWNLOAD_OUTPUTS_PULL_REQUEST_URL} --auto --merge
+        run: gh pr --repo "$GITHUB_REPOSITORY" merge "$STEPS_CROWDIN_DOWNLOAD_OUTPUTS_PULL_REQUEST_URL" --auto --merge
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          STEPS_CROWDIN_DOWNLOAD_OUTPUTS_PULL_REQUEST_URL: ${{ fromJson(steps.crowdin-download.outputs.pull_request_url) }}
+          STEPS_CROWDIN_DOWNLOAD_OUTPUTS_PULL_REQUEST_URL: ${{ steps.crowdin-download.outputs.pull_request_url }}
