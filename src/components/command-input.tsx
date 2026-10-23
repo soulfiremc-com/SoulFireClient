@@ -1,4 +1,4 @@
-import { createClient } from "@connectrpc/connect";
+import { ConnectError, createClient } from "@connectrpc/connect";
 import {
   type KeyboardEventHandler,
   use,
@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import { toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Kbd } from "@/components/ui/kbd";
@@ -57,7 +58,12 @@ function getTokenRange(
 export default function CommandInput(props: { scope: CommandScope }) {
   const { t } = useTranslation("common");
   const transport = use(TransportContext);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValueState] = useState("");
+  const inputRevision = useRef(0);
+  const setInputValue = useCallback((value: string) => {
+    inputRevision.current++;
+    setInputValueState(value);
+  }, []);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [commandHistory, setCommandHistory] = useState<string[]>(
     historySchema.parse(
@@ -324,6 +330,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       replacementRange: null,
     }));
     return () => {
+      inputRevision.current++;
       resetCompletionFetchDebounce();
       completionRequest.cancel();
     };
@@ -420,7 +427,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         };
       });
     },
-    [completionRequest, resetCompletionFetchDebounce],
+    [completionRequest, resetCompletionFetchDebounce, setInputValue],
   );
 
   const cycleSuggestion = useCallback(
@@ -456,8 +463,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      const currentVal = currentTarget.value.trim();
+      const submittedText = currentTarget.value;
+      const currentVal = submittedText.trim();
       setInputValue("");
+      const submittedRevision = inputRevision.current;
       setCompletionState({
         baseText: "",
         cursor: 0,
@@ -492,10 +501,35 @@ export default function CommandInput(props: { scope: CommandScope }) {
       setHistoryIndex(-1);
 
       const commandService = createClient(CommandService, transport);
-      void commandService.executeCommand({
-        scope: props.scope,
-        command: currentVal,
-      });
+      void commandService
+        .executeCommand({
+          scope: props.scope,
+          command: currentVal,
+        })
+        .catch((error: unknown) => {
+          toast.error(ConnectError.from(error).message);
+          // A failed request must not replace a newer draft or another view.
+          if (
+            inputRevision.current !== submittedRevision ||
+            inputRef.current !== currentTarget ||
+            !currentTarget.isConnected
+          )
+            return;
+          resetCompletionFetchDebounce();
+          completionRequest.cancel();
+          setInputValue(submittedText);
+          pendingCaret.current = submittedText.length;
+          setCursorPosition(submittedText.length);
+          setCompletionState({
+            baseText: submittedText,
+            cursor: submittedText.length,
+            receivedCompletions: null,
+            index: null,
+            replacementRange: null,
+          });
+          if (currentTarget.ownerDocument.activeElement === currentTarget)
+            scheduleCompletionFetch(submittedText, submittedText.length);
+        });
       return;
     }
 
