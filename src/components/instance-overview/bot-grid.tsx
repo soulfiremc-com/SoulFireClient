@@ -26,6 +26,7 @@ import {
   useRef,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   MenuItem,
@@ -380,6 +381,7 @@ export function BotContextMenu({
             : BotDesiredState.STOPPED,
       });
     },
+    onError: (error) => toast.error(error.message),
     onSettled: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
