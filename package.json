@@ -83,7 +83,7 @@
     "js-sha256": "^1.0.0",
     "lucide-react": "^1.8.0",
     "lucide-static": "^1.8.0",
-    "motion": "^13.0.0",
+    "motion": "^14.0.0",
     "nanoid": "^6.0.0",
     "next-themes": "^0.4.6",
     "node-addon-api": "^8.7.0",
