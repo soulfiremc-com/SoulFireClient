@@ -35,14 +35,21 @@ export function useContextMenu<T>() {
       }
     }
 
+    function onScroll(e: Event) {
+      if (e.target instanceof Node && menuRef.current?.contains(e.target)) {
+        return;
+      }
+      dismiss();
+    }
+
     window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("scroll", dismiss, true);
+    window.addEventListener("scroll", onScroll, true);
     window.addEventListener("blur", dismiss);
     document.addEventListener("mousedown", onMouseDown);
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("scroll", dismiss, true);
+      window.removeEventListener("scroll", onScroll, true);
       window.removeEventListener("blur", dismiss);
       document.removeEventListener("mousedown", onMouseDown);
     };
