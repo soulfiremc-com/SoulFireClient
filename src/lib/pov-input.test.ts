@@ -7,6 +7,7 @@ import {
   isPovReleaseShortcut,
   isSystemShortcut,
   isTextEditingShortcut,
+  isTextInputKey,
   mouseButton,
 } from "./pov-input";
 
@@ -153,4 +154,31 @@ test("composition filters key presses without losing physical key releases", () 
   const release = keyInput(event, false, false);
   assert.equal(release?.code, 87);
   assert.equal(release?.action, 0);
+});
+
+test("browser text input accepts dead keys and AltGr characters without consuming shortcuts", () => {
+  const event = { key: "a", ctrlKey: false, altKey: false, metaKey: false };
+  for (const key of ["a", "é", "😀", "Dead"])
+    assert.equal(isTextInputKey({ ...event, key }), true);
+  assert.equal(
+    isTextInputKey({ ...event, key: "@", ctrlKey: true, altKey: true }),
+    true,
+  );
+  assert.equal(isTextInputKey({ ...event, key: "Dead", altKey: true }), true);
+  for (const key of [
+    "Enter",
+    "Tab",
+    "ArrowLeft",
+    "Backspace",
+    "",
+    "Unidentified",
+  ])
+    assert.equal(isTextInputKey({ ...event, key }), false);
+  assert.equal(isTextInputKey({ ...event, ctrlKey: true }), false);
+  assert.equal(isTextInputKey({ ...event, metaKey: true }), false);
+  assert.equal(isTextInputKey({ ...event, key: "Dead", ctrlKey: true }), false);
+  assert.equal(
+    isTextInputKey({ ...event, ctrlKey: true, altKey: true, metaKey: true }),
+    false,
+  );
 });

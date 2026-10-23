@@ -41,6 +41,7 @@ import {
   inputModifiers,
   isPovReleaseShortcut,
   isTextEditingShortcut,
+  isTextInputKey,
   keyInput,
   mouseButton,
 } from "@/lib/pov-input";
@@ -468,15 +469,7 @@ function BotPovSession({
         typing &&
         isTextEditingShortcut(event) &&
         (event.code === "KeyC" || event.code === "KeyX");
-      if (
-        !(
-          typing &&
-          !event.ctrlKey &&
-          !event.metaKey &&
-          [...event.key].length === 1
-        )
-      )
-        event.preventDefault();
+      if (!(typing && isTextInputKey(event))) event.preventDefault();
       event.stopPropagation();
       if (event.code === "Escape") {
         if (!event.repeat) {

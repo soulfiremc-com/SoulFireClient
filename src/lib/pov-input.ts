@@ -107,6 +107,17 @@ export function isTextEditingShortcut(event: TextShortcutEvent): boolean {
   );
 }
 
+export function isTextInputKey(
+  event: Pick<KeyboardEvent, "key" | "ctrlKey" | "altKey" | "metaKey">,
+): boolean {
+  // AltGr can report Control+Alt. Dead keys must start browser composition.
+  return (
+    !event.metaKey &&
+    (!event.ctrlKey || event.altKey) &&
+    (event.key === "Dead" || [...event.key].length === 1)
+  );
+}
+
 export function keyInput(
   event: TextShortcutEvent & Pick<KeyboardEvent, "repeat" | "isComposing">,
   pressed: boolean,
