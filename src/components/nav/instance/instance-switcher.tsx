@@ -69,6 +69,7 @@ import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { createTextBlob } from "@/lib/download.ts";
 import { formatShortcut } from "@/lib/platform.ts";
+import { parseProfileFile, serializeProfileFile } from "@/lib/profile-file.ts";
 import type { ProfileRoot } from "@/lib/types.ts";
 import {
   hasGlobalPermission,
@@ -223,7 +224,7 @@ function InstanceProfileFileInput({
         toast.promise(
           (async () => {
             const data = await file.text();
-            await importProfile(JSON.parse(data) as ProfileRoot);
+            await importProfile(parseProfileFile(data));
           })(),
           {
             loading: t("instanceSidebar.loadProfileToast.loading"),
@@ -280,9 +281,7 @@ function InstanceActionButtons({
                               ),
                             );
 
-                            await importProfile(
-                              JSON.parse(data) as ProfileRoot,
-                            );
+                            await importProfile(parseProfileFile(data));
                           };
                           toast.promise(loadProfile(), {
                             loading: t(
@@ -338,9 +337,7 @@ function InstanceActionButtons({
                         const data = await desktop.fs.readTextFile(selected);
                         toast.promise(
                           (async () => {
-                            await importProfile(
-                              JSON.parse(data) as ProfileRoot,
-                            );
+                            await importProfile(parseProfileFile(data));
                           })(),
                           {
                             loading: t(
@@ -375,7 +372,7 @@ function InstanceActionButtons({
         )}
         <DropdownMenuItem
           onClick={() => {
-            const data = JSON.stringify(profile, null, 2);
+            const data = serializeProfileFile(profile);
             if (isDesktopApp()) {
               runAsync(async () => {
                 const profileDir = await desktop.path.resolve(
