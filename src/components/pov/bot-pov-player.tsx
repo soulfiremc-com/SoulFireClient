@@ -14,7 +14,10 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
-import { PovTouchControls } from "@/components/pov/pov-touch-controls";
+import {
+  PovTouchControls,
+  PovTouchToolbar,
+} from "@/components/pov/pov-touch-controls";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Slider } from "@/components/ui/slider";
@@ -766,14 +769,15 @@ function BotPovSession({
       }
       session.current?.capture(true);
       if (!actions.isCurrentCapture(attempt)) return;
-      toast.info(
-        `Press ${releaseShortcut} to release your keyboard and mouse.`,
-        {
-          id: captureToastId,
-          toasterId: captureToastId,
-          duration: 4000,
-        },
-      );
+      if (!touch)
+        toast.info(
+          `Press ${releaseShortcut} to release your keyboard and mouse.`,
+          {
+            id: captureToastId,
+            toasterId: captureToastId,
+            duration: 4000,
+          },
+        );
       const navigator = canvas.ownerDocument.defaultView?.navigator as
         | KeyboardCapture
         | undefined;
@@ -958,8 +962,16 @@ function BotPovSession({
           </Button>
         </div>
       )}
+      {touch && captured && (
+        <PovTouchToolbar
+          screenOpen={guiOpen}
+          keyboard={() => textInputRef.current?.focus()}
+          closeMenu={() => session.current?.escape()}
+          release={release}
+        />
+      )}
       <div
-        className={`relative min-h-0 overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
+        className={`relative ${touch && captured && !immersive ? "min-h-60" : "min-h-0"} overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
       >
         <textarea
           ref={textInputRef}
@@ -998,9 +1010,7 @@ function BotPovSession({
                 "touch",
               )
             }
-            release={release}
             screenOpen={guiOpen}
-            keyboard={() => textInputRef.current?.focus()}
           />
         )}
         {!captured && (
@@ -1055,9 +1065,13 @@ function BotPovSession({
       )}
       {!immersive && (
         <p className="text-muted-foreground text-xs">
-          {captured
-            ? `Controlling Minecraft. Press ${releaseShortcut} to release.`
-            : `Play captures your keyboard and mouse. ${releaseShortcut} releases control.`}
+          {touch
+            ? captured
+              ? "Controlling Minecraft. Use Leave control to stop."
+              : "Play enables touch controls."
+            : captured
+              ? `Controlling Minecraft. Press ${releaseShortcut} to release.`
+              : `Play captures your keyboard and mouse. ${releaseShortcut} releases control.`}
         </p>
       )}
       <Toaster
