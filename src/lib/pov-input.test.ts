@@ -50,9 +50,10 @@ test("OS shortcuts remain available while Minecraft keys and Escape are forwarde
   );
 });
 
-test("release chord is platform-specific and leaves plain gameplay keys alone", () => {
+test("release chord follows the keyboard layout and platform modifiers", () => {
   const event = {
     code: "KeyG",
+    key: "G",
     shiftKey: true,
     ctrlKey: true,
     metaKey: false,
@@ -74,9 +75,18 @@ test("release chord is platform-specific and leaves plain gameplay keys alone", 
   );
   assert.equal(isPovReleaseShortcut({ ...event, altKey: true }, false), false);
   assert.equal(
-    isPovReleaseShortcut({ ...event, code: "Escape" }, false),
+    isPovReleaseShortcut({ ...event, code: "Escape", key: "Escape" }, false),
     false,
   );
+  for (const mac of [false, true]) {
+    const modifiers = { ...event, ctrlKey: !mac, metaKey: mac };
+    assert.equal(
+      isPovReleaseShortcut({ ...modifiers, code: "KeyI" }, mac),
+      true,
+    );
+    assert.equal(isPovReleaseShortcut({ ...modifiers, key: "I" }, mac), false);
+    assert.equal(isPovReleaseShortcut({ ...modifiers, key: "П" }, mac), true);
+  }
 });
 
 test("Command editing shortcuts reach native text fields as Control shortcuts", () => {

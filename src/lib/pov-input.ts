@@ -156,12 +156,12 @@ export function keyInput(
 export function isPovReleaseShortcut(
   event: Pick<
     KeyboardEvent,
-    "code" | "shiftKey" | "ctrlKey" | "metaKey" | "altKey"
+    "code" | "key" | "shiftKey" | "ctrlKey" | "metaKey" | "altKey"
   >,
   mac: boolean,
 ): boolean {
   return (
-    event.code === "KeyG" &&
+    textShortcutKey(event) === "g" &&
     event.shiftKey &&
     !event.altKey &&
     (mac ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey)
