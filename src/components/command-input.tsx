@@ -18,6 +18,7 @@ import type {
   CommandScope,
 } from "@/generated/soulfire/command_pb";
 import { CommandService } from "@/generated/soulfire/command_pb";
+import { CommandCompletionRequest } from "@/lib/command-completion-request";
 
 type CompletionState = {
   baseText: string;
@@ -72,6 +73,13 @@ export default function CommandInput(props: { scope: CommandScope }) {
     replacementRange: null,
   });
   const inputRef = useRef<HTMLInputElement>(null);
+  const pendingCaret = useRef<number | null>(null);
+  const [completionRequest] = useState(() => new CommandCompletionRequest());
+  useLayoutEffect(() => {
+    const cursor = pendingCaret.current;
+    pendingCaret.current = null;
+    if (cursor !== null) inputRef.current?.setSelectionRange(cursor, cursor);
+  }, [inputValue, cursorPosition]);
   const completionFetchTimeout = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [caretPositionStyle, setCaretPositionStyle] = useState<{
@@ -117,28 +125,45 @@ export default function CommandInput(props: { scope: CommandScope }) {
   }, []);
 
   const fetchCompletions = useCallback(
-    async (text: string, cursor: number) => {
-      if (transport === null) {
-        return;
+    async (
+      text: string,
+      cursor: number,
+      accept: (state: CompletionState) => void = setCompletionState,
+    ) => {
+      if (transport === null) return;
+      try {
+        const result = await completionRequest.run(async (signal) => {
+          const response = await createClient(
+            CommandService,
+            transport,
+          ).tabCompleteCommand(
+            { scope: props.scope, command: text, cursor },
+            { signal },
+          );
+          return response.suggestions;
+        });
+        const input = inputRef.current;
+        if (
+          !result ||
+          result.signal.aborted ||
+          !input ||
+          input.ownerDocument.activeElement !== input ||
+          input.value !== text ||
+          input.selectionStart !== cursor
+        )
+          return;
+        accept({
+          baseText: text,
+          cursor,
+          receivedCompletions: result.suggestions,
+          index: null,
+          replacementRange: getTokenRange(text, cursor),
+        });
+      } catch (error) {
+        console.error("Could not load command completions", error);
       }
-
-      const commandService = createClient(CommandService, transport);
-      const response = await commandService.tabCompleteCommand({
-        scope: props.scope,
-        command: text,
-        cursor,
-      });
-
-      const range = getTokenRange(text, cursor);
-      setCompletionState({
-        baseText: text,
-        cursor,
-        receivedCompletions: response.suggestions,
-        index: null,
-        replacementRange: range,
-      });
     },
-    [props.scope, transport],
+    [completionRequest, props.scope, transport],
   );
 
   const handleTabPress = async (
@@ -147,6 +172,49 @@ export default function CommandInput(props: { scope: CommandScope }) {
     element: HTMLInputElement,
     direction: 1 | -1,
   ) => {
+    resetCompletionFetchDebounce();
+    completionRequest.cancel();
+    const applyCompletions = (completionStateNew: CompletionState) => {
+      const suggestionsList = completionStateNew.receivedCompletions ?? [];
+      if (suggestionsList.length > 0) {
+        const activeIndex = completionStateNew.index ?? 0;
+        const range =
+          completionStateNew.replacementRange ??
+          getTokenRange(completionStateNew.baseText, completionStateNew.cursor);
+        const suggestion = suggestionsList[activeIndex]?.suggestion ?? "";
+
+        const before = completionStateNew.baseText.slice(0, range.start);
+        const after = completionStateNew.baseText.slice(
+          completionStateNew.cursor,
+        );
+        const newValue = `${before}${suggestion}${after}`;
+        const newCursor = before.length + suggestion.length;
+        const newRange = { start: before.length, end: newCursor };
+
+        setInputValue(newValue);
+        pendingCaret.current = newCursor;
+        setCursorPosition(newCursor);
+
+        completionStateNew = {
+          ...completionStateNew,
+          baseText: newValue,
+          cursor: newCursor,
+          index: activeIndex,
+          replacementRange: newRange,
+        };
+      } else {
+        completionStateNew = {
+          ...completionStateNew,
+          baseText: text,
+          cursor,
+          replacementRange:
+            completionStateNew.replacementRange ?? getTokenRange(text, cursor),
+        };
+      }
+
+      setCompletionState(completionStateNew);
+    };
+
     if (transport === null) {
       return;
     }
@@ -157,28 +225,14 @@ export default function CommandInput(props: { scope: CommandScope }) {
       completionState.baseText !== text ||
       completionState.cursor !== cursor
     ) {
-      const response = await createClient(
-        CommandService,
-        transport,
-      ).tabCompleteCommand({
-        scope: props.scope,
-        command: text,
-        cursor,
+      await fetchCompletions(text, cursor, (state) => {
+        const count = state.receivedCompletions?.length ?? 0;
+        applyCompletions({
+          ...state,
+          index: count > 0 ? (direction > 0 ? 0 : count - 1) : null,
+        });
       });
-
-      const range = getTokenRange(text, cursor);
-      completionStateNew = {
-        baseText: text,
-        cursor,
-        receivedCompletions: response.suggestions,
-        index:
-          response.suggestions.length > 0
-            ? direction > 0
-              ? 0
-              : response.suggestions.length - 1
-            : null,
-        replacementRange: range,
-      };
+      return;
     } else if (completionState.receivedCompletions.length > 0) {
       const newIndex =
         completionState.index === null
@@ -206,56 +260,18 @@ export default function CommandInput(props: { scope: CommandScope }) {
       };
     }
 
-    const suggestionsList = completionStateNew.receivedCompletions ?? [];
-    if (suggestionsList.length > 0) {
-      const activeIndex = completionStateNew.index ?? 0;
-      const range =
-        completionStateNew.replacementRange ??
-        getTokenRange(completionStateNew.baseText, completionStateNew.cursor);
-      const suggestion = suggestionsList[activeIndex]?.suggestion ?? "";
-
-      const before = completionStateNew.baseText.slice(0, range.start);
-      const after = completionStateNew.baseText.slice(
-        completionStateNew.cursor,
-      );
-      const newValue = `${before}${suggestion}${after}`;
-      const newCursor = before.length + suggestion.length;
-      const newRange = { start: before.length, end: newCursor };
-
-      setInputValue(newValue);
-      requestAnimationFrame(() => {
-        element.selectionStart = element.selectionEnd = newCursor;
-        setCursorPosition(newCursor);
-      });
-
-      completionStateNew = {
-        ...completionStateNew,
-        baseText: newValue,
-        cursor: newCursor,
-        index: activeIndex,
-        replacementRange: newRange,
-      };
-    } else {
-      completionStateNew = {
-        ...completionStateNew,
-        baseText: text,
-        cursor,
-        replacementRange:
-          completionStateNew.replacementRange ?? getTokenRange(text, cursor),
-      };
-    }
-
-    setCompletionState(completionStateNew);
+    applyCompletions(completionStateNew);
   };
 
   const scheduleCompletionFetch = useCallback(
     (text: string, cursor: number) => {
       resetCompletionFetchDebounce();
+      completionRequest.cancel();
       completionFetchTimeout.current = window.setTimeout(() => {
         void fetchCompletions(text, cursor);
       }, COMPLETION_DEBOUNCE_MS);
     },
-    [fetchCompletions, resetCompletionFetchDebounce],
+    [completionRequest, fetchCompletions, resetCompletionFetchDebounce],
   );
 
   const replacementRangeStart = completionState.replacementRange?.start ?? null;
@@ -300,11 +316,18 @@ export default function CommandInput(props: { scope: CommandScope }) {
     });
   }, [cursorPosition, replacementRangeStart]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setCompletionState((current) => ({
+      ...current,
+      receivedCompletions: null,
+      index: null,
+      replacementRange: null,
+    }));
     return () => {
       resetCompletionFetchDebounce();
+      completionRequest.cancel();
     };
-  }, [resetCompletionFetchDebounce]);
+  }, [completionRequest, props.scope, transport, resetCompletionFetchDebounce]);
 
   useLayoutEffect(() => {
     if (!isFocused) {
@@ -337,7 +360,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
   const highlightedIndex = completionState.index ?? 0;
   const showSuggestions =
     isFocused &&
-    (inputValue === "" || completionState.receivedCompletions !== null);
+    (inputValue === "" ||
+      (completionState.receivedCompletions !== null &&
+        completionState.baseText === inputValue &&
+        completionState.cursor === cursorPosition));
 
   useEffect(() => {
     if (!showSuggestions || !hasSuggestions) {
@@ -351,45 +377,51 @@ export default function CommandInput(props: { scope: CommandScope }) {
     }
   }, [showSuggestions, hasSuggestions]);
 
-  const acceptCompletion = useCallback((index: number) => {
-    const element = inputRef.current;
-    if (!element) {
-      return;
-    }
-
-    setCompletionState((prev) => {
-      if (!prev.receivedCompletions || prev.receivedCompletions.length === 0) {
-        return prev;
+  const acceptCompletion = useCallback(
+    (index: number) => {
+      resetCompletionFetchDebounce();
+      completionRequest.cancel();
+      const element = inputRef.current;
+      if (!element) {
+        return;
       }
 
-      const normalizedIndex =
-        ((index % prev.receivedCompletions.length) +
-          prev.receivedCompletions.length) %
-        prev.receivedCompletions.length;
-      const range =
-        prev.replacementRange ?? getTokenRange(prev.baseText, prev.cursor);
-      const suggestion = prev.receivedCompletions[normalizedIndex].suggestion;
-      const before = prev.baseText.slice(0, range.start);
-      const after = prev.baseText.slice(prev.cursor);
-      const newValue = `${before}${suggestion}${after}`;
-      const newCursor = before.length + suggestion.length;
-      const newRange = { start: before.length, end: newCursor };
+      setCompletionState((prev) => {
+        if (
+          !prev.receivedCompletions ||
+          prev.receivedCompletions.length === 0
+        ) {
+          return prev;
+        }
 
-      setInputValue(newValue);
-      requestAnimationFrame(() => {
-        element.selectionStart = element.selectionEnd = newCursor;
+        const normalizedIndex =
+          ((index % prev.receivedCompletions.length) +
+            prev.receivedCompletions.length) %
+          prev.receivedCompletions.length;
+        const range =
+          prev.replacementRange ?? getTokenRange(prev.baseText, prev.cursor);
+        const suggestion = prev.receivedCompletions[normalizedIndex].suggestion;
+        const before = prev.baseText.slice(0, range.start);
+        const after = prev.baseText.slice(prev.cursor);
+        const newValue = `${before}${suggestion}${after}`;
+        const newCursor = before.length + suggestion.length;
+        const newRange = { start: before.length, end: newCursor };
+
+        setInputValue(newValue);
+        pendingCaret.current = newCursor;
         setCursorPosition(newCursor);
-      });
 
-      return {
-        ...prev,
-        baseText: newValue,
-        cursor: newCursor,
-        index: normalizedIndex,
-        replacementRange: newRange,
-      };
-    });
-  }, []);
+        return {
+          ...prev,
+          baseText: newValue,
+          cursor: newCursor,
+          index: normalizedIndex,
+          replacementRange: newRange,
+        };
+      });
+    },
+    [completionRequest, resetCompletionFetchDebounce],
+  );
 
   const cycleSuggestion = useCallback(
     (delta: number) => {
@@ -433,11 +465,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
         index: null,
         replacementRange: null,
       });
-      requestAnimationFrame(() => {
-        currentTarget.selectionStart = currentTarget.selectionEnd = 0;
-        setCursorPosition(0);
-        scheduleCompletionFetch("", 0);
-      });
+      pendingCaret.current = 0;
+      setCursorPosition(0);
+      scheduleCompletionFetch("", 0);
 
       if (transport === null || currentVal === "") {
         return;
@@ -508,12 +538,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
           index: null,
           replacementRange: null,
         });
-        requestAnimationFrame(() => {
-          currentTarget.selectionStart = currentTarget.selectionEnd =
-            newValue.length;
-          setCursorPosition(newValue.length);
-          scheduleCompletionFetch(newValue, newValue.length);
-        });
+        pendingCaret.current = newValue.length;
+        setCursorPosition(newValue.length);
+        scheduleCompletionFetch(newValue, newValue.length);
       } else if (historyIndex > 0) {
         setHistoryIndex(historyIndex - 1);
         const newValue = commandHistory[historyIndex - 1];
@@ -525,12 +552,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
           index: null,
           replacementRange: null,
         });
-        requestAnimationFrame(() => {
-          currentTarget.selectionStart = currentTarget.selectionEnd =
-            newValue.length;
-          setCursorPosition(newValue.length);
-          scheduleCompletionFetch(newValue, newValue.length);
-        });
+        pendingCaret.current = newValue.length;
+        setCursorPosition(newValue.length);
+        scheduleCompletionFetch(newValue, newValue.length);
       }
       return;
     }
@@ -552,11 +576,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
           index: null,
           replacementRange: null,
         });
-        requestAnimationFrame(() => {
-          currentTarget.selectionStart = currentTarget.selectionEnd = 0;
-          setCursorPosition(0);
-          scheduleCompletionFetch("", 0);
-        });
+        pendingCaret.current = 0;
+        setCursorPosition(0);
+        scheduleCompletionFetch("", 0);
       } else if (historyIndex >= 0) {
         setHistoryIndex(historyIndex + 1);
         const newValue = commandHistory[historyIndex + 1];
@@ -568,14 +590,25 @@ export default function CommandInput(props: { scope: CommandScope }) {
           index: null,
           replacementRange: null,
         });
-        requestAnimationFrame(() => {
-          currentTarget.selectionStart = currentTarget.selectionEnd =
-            newValue.length;
-          setCursorPosition(newValue.length);
-          scheduleCompletionFetch(newValue, newValue.length);
-        });
+        pendingCaret.current = newValue.length;
+        setCursorPosition(newValue.length);
+        scheduleCompletionFetch(newValue, newValue.length);
       }
     }
+  };
+
+  const updateCursor = (input: HTMLInputElement) => {
+    const position = input.selectionStart ?? input.value.length;
+    if (position === cursorPosition) return;
+    setCursorPosition(position);
+    setCompletionState({
+      baseText: input.value,
+      cursor: position,
+      receivedCompletions: null,
+      index: null,
+      replacementRange: null,
+    });
+    scheduleCompletionFetch(input.value, position);
   };
 
   return (
@@ -588,6 +621,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         onKeyDown={handleKeyDown}
         onChange={(e) => {
           const { value, selectionStart } = e.currentTarget;
+          pendingCaret.current = null;
           setInputValue(value);
           const cursor = selectionStart ?? value.length;
           setCursorPosition(cursor);
@@ -600,18 +634,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
             replacementRange: null,
           });
         }}
-        onKeyUp={(event) => {
-          const position =
-            event.currentTarget.selectionStart ??
-            event.currentTarget.value.length;
-          setCursorPosition(position);
-        }}
-        onClick={(event) => {
-          const position =
-            event.currentTarget.selectionStart ??
-            event.currentTarget.value.length;
-          setCursorPosition(position);
-        }}
+        onKeyUp={(event) => updateCursor(event.currentTarget)}
+        onClick={(event) => updateCursor(event.currentTarget)}
         onFocus={(event) => {
           const value = event.currentTarget.value;
           const position = event.currentTarget.selectionStart ?? value.length;
@@ -625,6 +649,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
           }
         }}
         onBlur={() => {
+          resetCompletionFetchDebounce();
+          completionRequest.cancel();
           setIsFocused(false);
         }}
       />
