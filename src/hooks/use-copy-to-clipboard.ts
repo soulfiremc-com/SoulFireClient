@@ -1,10 +1,14 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { desktop } from "@/lib/desktop.ts";
+import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 
-function copyToClipboard(text: string): Promise<void> {
-  return desktop.clipboard.writeText(text);
+async function copyToClipboard(text: string): Promise<void> {
+  if (isDesktopApp()) {
+    await desktop.clipboard.writeText(text);
+  } else {
+    await navigator.clipboard.writeText(text);
+  }
 }
 
 function truncate(text: string, maxLength: number): string {
