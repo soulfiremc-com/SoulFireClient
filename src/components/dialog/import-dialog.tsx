@@ -3,7 +3,6 @@ import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { ClipboardIcon, FileIcon, GlobeIcon, TextIcon } from "lucide-react";
-import MimeMatcher from "mime-matcher";
 import type { ReactNode } from "react";
 import { use, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,6 +38,7 @@ export type ImportDialogProps = {
   description: string;
   closer: () => void;
   listener: (data: string) => void;
+  isPending?: boolean;
   filters: {
     name: string;
     mimeType: string;
@@ -180,6 +180,7 @@ function UrlDialog(props: ImportDialogProps) {
                         }
                         type="url"
                         inputMode="url"
+                        disabled={props.isPending}
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -195,8 +196,8 @@ function UrlDialog(props: ImportDialogProps) {
                     type="submit"
                     variant="secondary"
                     className="w-full"
-                    disabled={isSubmitting}
-                    aria-busy={isSubmitting}
+                    disabled={isSubmitting || props.isPending}
+                    aria-busy={isSubmitting || props.isPending}
                   >
                     <GlobeIcon />
                     <span>
@@ -234,6 +235,7 @@ function MainDialog(
   // Handle Ctrl+V paste - uses native event to avoid permission prompts
   const handlePaste = useCallback(
     (event: React.ClipboardEvent) => {
+      if (props.isPending) return;
       // Ignore if typing in an input or textarea
       if (
         event.target instanceof HTMLInputElement ||
@@ -270,18 +272,16 @@ function MainDialog(
                     accept={props.filters.map((f) => f.mimeType).join(",")}
                     multiple={props.allowMultiple}
                     className="hidden"
+                    disabled={props.isPending}
                     onChange={(e) => {
                       const target = e.target as HTMLInputElement;
                       if (!target.files) {
                         return;
                       }
 
-                      for (let i = 0; i < target.files.length; i++) {
-                        const file = target.files.item(i);
-                        if (!file) {
-                          continue;
-                        }
-
+                      const files = Array.from(target.files);
+                      target.value = "";
+                      for (const file of files) {
                         const reader = new FileReader();
                         reader.onload = () => {
                           const data = reader.result as string;
@@ -295,6 +295,7 @@ function MainDialog(
                 <Button
                   variant="secondary"
                   className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
+                  disabled={props.isPending}
                   onClick={() => {
                     if (isDesktopApp()) {
                       runAsync(async () => {
@@ -336,6 +337,7 @@ function MainDialog(
                   <Button
                     variant="secondary"
                     className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
+                    disabled={props.isPending}
                     onClick={props.openUrlDialog}
                   >
                     <GlobeIcon />
@@ -345,6 +347,7 @@ function MainDialog(
                 <Button
                   variant="secondary"
                   className="h-auto min-w-0 flex-1 basis-40 whitespace-normal"
+                  disabled={props.isPending}
                   onClick={() => {
                     runAsync(async () => {
                       if (isDesktopApp()) {
@@ -353,14 +356,13 @@ function MainDialog(
                         );
                       } else {
                         const mimeTypes = props.filters.map((f) => f.mimeType);
-                        const matcher = new MimeMatcher(...mimeTypes);
                         let clipboardEntries = (
                           await navigator.clipboard.read()
                         )
                           .map((item) => ({
                             item,
                             firstSupportedType: item.types.find((t) =>
-                              matcher.match(t),
+                              mimeTypes.includes(t),
                             ),
                           }))
                           .filter(
@@ -426,6 +428,7 @@ function TextInput(
       <div className="flex flex-col gap-4">
         <Textarea
           autoFocus
+          disabled={props.isPending}
           placeholder={t("dialog.import.main.textarea.placeholder")}
           defaultValue={inputText}
           onChange={(e) => setInputText(e.currentTarget.value)}
@@ -433,6 +436,8 @@ function TextInput(
         <Button
           variant="secondary"
           className="w-full"
+          disabled={props.isPending}
+          aria-busy={props.isPending}
           onClick={() => {
             props.listener(inputText);
           }}

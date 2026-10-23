@@ -607,7 +607,11 @@ function AddButton() {
     (text: string) => {
       if (accountTypeCredentialsSelected === null) return;
 
-      if (text.length === 0) {
+      const textSplit = splitAccountCredentialPayloads(
+        text,
+        accountTypeCredentialsSelected,
+      );
+      if (textSplit.length === 0) {
         toast.error(t("account.listImportToast.noAccounts"));
         return;
       }
@@ -618,10 +622,6 @@ function AddButton() {
         return;
       }
 
-      const textSplit = splitAccountCredentialPayloads(
-        text,
-        accountTypeCredentialsSelected,
-      );
       const service = createClient(MCAuthService, transport);
 
       const abortController = new AbortController();

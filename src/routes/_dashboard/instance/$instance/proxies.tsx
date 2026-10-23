@@ -415,24 +415,25 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   );
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   // Batch add proxies mutation
-  const { mutateAsync: addProxiesBatchMutation } = useMutation({
-    mutationKey: ["instance", "proxies", "add-batch", instanceInfo.id],
-    scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (proxies: ProfileProxy[]) => {
-      await addInstanceProxiesBatch(
-        proxies,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
+  const { mutateAsync: addProxiesBatchMutation, isPending: isImporting } =
+    useMutation({
+      mutationKey: ["instance", "proxies", "add-batch", instanceInfo.id],
+      scope: { id: `instance-proxies-${instanceInfo.id}` },
+      mutationFn: async (proxies: ProfileProxy[]) => {
+        await addInstanceProxiesBatch(
+          proxies,
+          instanceInfo,
+          transport,
+          queryClient,
+          instanceInfoQueryOptions.queryKey,
+        );
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: instanceInfoQueryOptions.queryKey,
+        });
+      },
+    });
   // Batch remove proxies mutation (for post-import check)
   const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
@@ -458,12 +459,11 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
     (text: string) => {
       if (proxyTypeSelected === null) return;
 
-      if (text.length === 0) {
+      if (!text.trim()) {
         toast.error(t("proxy.listImportToast.noProxies"));
         return;
       }
 
-      setProxyTypeSelected(null);
       const textSplit = text
         .split("\n")
         .map((t) => t.trim())
@@ -494,10 +494,13 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
             proxiesToAdd.push(proxy);
           }
 
-          await addProxiesBatchMutation(proxiesToAdd);
-          if (proxiesToAdd.length > 0) {
-            setImportedProxies(proxiesToAdd);
+          if (proxiesToAdd.length === 0) {
+            throw new Error("No supported proxies found");
           }
+
+          await addProxiesBatchMutation(proxiesToAdd);
+          setProxyTypeSelected(null);
+          setImportedProxies(proxiesToAdd);
           return proxiesToAdd.length;
         })(),
         {
@@ -609,7 +612,10 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+        <DropdownMenuTrigger
+          disabled={isImporting}
+          render={<Button variant="outline" size="sm" />}
+        >
           <PlusIcon />
           {t("proxy.addProxies")}
         </DropdownMenuTrigger>
@@ -656,6 +662,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           description={t("proxy.import.dialog.description")}
           closer={() => setProxyTypeSelected(null)}
           listener={textSelectedCallback}
+          isPending={isImporting}
           filters={[
             {
               name: "Text File",

@@ -50,7 +50,6 @@
         "js-sha256": "^1.0.0",
         "lucide-react": "^1.8.0",
         "lucide-static": "^1.8.0",
-        "mime-matcher": "^1.0.5",
         "motion": "^13.0.0",
         "nanoid": "^6.0.0",
         "next-themes": "^0.4.6",
@@ -1745,8 +1744,6 @@
     "mime": ["mime@2.6.0", "", { "bin": { "mime": "cli.js" } }, "sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg=="],
 
     "mime-db": ["mime-db@1.54.0", "", {}, "sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ=="],
-
-    "mime-matcher": ["mime-matcher@1.0.5", "", {}, "sha512-a7pOrNMfuCXHhw2gZ7el3sGsxbquOxM4n7zy2n3N3hbcZICE5keAdXvC4gGSfz5Wpxn+Meh2Y3bhvs9tmw1cmQ=="],
 
     "mime-types": ["mime-types@3.0.2", "", { "dependencies": { "mime-db": "1.54.0" } }, "sha512-Lbgzdk0h4juoQ9fCKXW4by0UJqj+nOOrI9MJ1sSj4nI8aI2eo1qmvQEie4VD1glsS250n15LsWsYtCugiStS5A=="],
 
