@@ -503,10 +503,11 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     validators: {
       onSubmit: addEntrySchema,
     },
-    onSubmit: async ({ value }) => {
-      const namespace = value.namespace.trim();
-      const key = value.key.trim();
-      const parsedValue = parseJsonValue(value.value);
+    onSubmit: async ({ value, formApi }) => {
+      const submitted = { ...value };
+      const namespace = submitted.namespace.trim();
+      const key = submitted.key.trim();
+      const parsedValue = parseJsonValue(submitted.value);
 
       if (parsedValue === undefined) return;
 
@@ -521,12 +522,28 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
           id: generateId(),
           namespace,
           key,
-          value: value.value,
+          value: submitted.value,
         },
       ]);
 
-      addEntryForm.reset();
-      addEntryMutation.mutate({ namespace, key, value: parsedValue });
+      try {
+        await addEntryMutation.mutateAsync({
+          namespace,
+          key,
+          value: parsedValue,
+        });
+      } catch {
+        // The mutation reports the error. Keep the current draft for a retry.
+        return;
+      }
+      const current = formApi.state.values;
+      if (
+        current.namespace === submitted.namespace &&
+        current.key === submitted.key &&
+        current.value === submitted.value
+      ) {
+        formApi.reset();
+      }
     },
   });
 
