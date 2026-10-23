@@ -111,6 +111,84 @@ test("invalid quota files fail before they can replace an editor document", () =
   }
 });
 
+test("malformed graph elements cannot replace an existing draft", () => {
+  const target = createScriptEditorSession();
+  target.actions.addNode("constant.number", { x: 0, y: 0 }, { value: 42 });
+  const before = target.actions.getScriptData();
+  const node = {
+    id: "imported",
+    type: "constant.number",
+    position: { x: 1, y: 2 },
+    data: { value: 1 },
+  };
+  const edge = { id: "edge", source: node.id, target: node.id };
+  for (const graph of [
+    ...[
+      null,
+      42,
+      {},
+      { ...node, position: null },
+      { ...node, position: { x: "1", y: 2 } },
+      { ...node, position: { x: 1 } },
+      { ...node, data: null },
+      { ...node, data: [] },
+      { ...node, id: "" },
+      { ...node, type: 42 },
+    ].map((invalid) => ({ nodes: [invalid], edges: [] })),
+    ...[
+      null,
+      42,
+      {},
+      { ...edge, id: "" },
+      { ...edge, source: 42 },
+      { ...edge, target: null },
+      { ...edge, sourceHandle: 42 },
+      { ...edge, data: [] },
+    ].map((invalid) => ({ nodes: [node], edges: [invalid] })),
+    { nodes: [node, node], edges: [] },
+    { nodes: [node], edges: [edge, edge] },
+  ]) {
+    assert.throws(() =>
+      target.actions.loadScriptData(parseScriptFile(JSON.stringify(graph))),
+    );
+    assert.deepEqual(target.actions.getScriptData(), before);
+  }
+  assert.throws(() =>
+    parseScriptFile(
+      '{"nodes":[{"id":"overflow","position":{"x":1e999,"y":0},"data":{}}],"edges":[]}',
+    ),
+  );
+});
+
+test("graph imports preserve unknown node types and extension data", () => {
+  const graph = {
+    nodes: [
+      {
+        id: "custom",
+        type: "extension.custom",
+        position: { x: -1, y: 2 },
+        data: { nested: { items: [1, "世界", null] } },
+        style: { opacity: 0.5 },
+        extension: { revision: 2 },
+      },
+    ],
+    edges: [
+      {
+        id: "self",
+        source: "custom",
+        target: "custom",
+        sourceHandle: null,
+        targetHandle: "input",
+        data: { order: 3 },
+        animated: true,
+      },
+    ],
+  };
+  const imported = parseScriptFile(JSON.stringify(graph));
+  assert.deepEqual(imported.nodes, graph.nodes);
+  assert.deepEqual(imported.edges, graph.edges);
+});
+
 test("older exported node sizes are normalized without losing frame sizes or other styles", () => {
   const session = createScriptEditorSession();
   const ordinary = {
