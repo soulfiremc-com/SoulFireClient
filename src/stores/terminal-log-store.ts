@@ -23,6 +23,21 @@ export function toTerminalLine(
   return { ...message, lines: message.message.split("\n").length };
 }
 
+function compareTerminalLines(left: TerminalLine, right: TerminalLine): number {
+  const a = left.timestamp;
+  const b = right.timestamp;
+  if (!a || !b) return 0;
+  if (a.seconds !== b.seconds) return a.seconds < b.seconds ? -1 : 1;
+  if (a.nanos !== b.nanos) return a.nanos - b.nanos;
+  // Published log IDs include a numeric sequence for equal timestamps.
+  // Personal messages use UUIDs and keep their arrival order on a tie.
+  const leftSequence = /^\d+-(-?\d+)$/.exec(left.id)?.[1];
+  const rightSequence = /^\d+-(-?\d+)$/.exec(right.id)?.[1];
+  return leftSequence !== undefined && rightSequence !== undefined
+    ? Number(leftSequence) - Number(rightSequence)
+    : 0;
+}
+
 export function mergeTerminalLines(
   previous: TerminalLine[],
   incoming: TerminalLine[],
@@ -38,6 +53,8 @@ export function mergeTerminalLines(
     seen.add(entry.id);
     merged.push(existing.get(entry.id) ?? entry);
   }
+  // A history snapshot can be newer than the oldest cached messages.
+  merged.sort(compareTerminalLines);
   let lines = 0;
   let first = merged.length;
   while (first > 0 && lines < MAX_LINES) {
@@ -98,27 +115,49 @@ export function createTerminalLogSession(
     const activeClient = client;
     const abort = new AbortController();
     controller = abort;
-    void activeClient
-      .getPrevious({ scope, count: 300 }, { signal: abort.signal })
-      .then((response) => {
-        if (abort.signal.aborted) return;
-        flush();
-        state.setState((current) => ({
-          entries: mergeTerminalLines(
-            current.entries,
-            response.messages.map(toTerminalLine),
-            true,
-          ),
-          historyLoaded: true,
-        }));
-      })
-      .catch((error) => {
-        if (abort.signal.aborted) return;
-        console.error("Could not load previous logs", error);
-        state.setState((current) => ({ ...current, historyLoaded: true }));
-      });
+    let historyLoading = false;
+    let historyRequested = false;
+    function loadHistory() {
+      if (historyLoading) {
+        historyRequested = true;
+        return;
+      }
+      historyLoading = true;
+      historyRequested = false;
+      void activeClient
+        .getPrevious({ scope, count: 300 }, { signal: abort.signal })
+        .then((response) => {
+          if (abort.signal.aborted) return;
+          flush();
+          state.setState((current) => {
+            const entries = mergeTerminalLines(
+              current.entries,
+              response.messages.map(toTerminalLine),
+              true,
+            );
+            return entries === current.entries && current.historyLoaded
+              ? current
+              : { entries, historyLoaded: true };
+          });
+        })
+        .catch((error) => {
+          if (abort.signal.aborted) return;
+          console.error("Could not load previous logs", error);
+          state.setState((current) =>
+            current.historyLoaded
+              ? current
+              : { ...current, historyLoaded: true },
+          );
+        })
+        .finally(() => {
+          historyLoading = false;
+          if (historyRequested && !abort.signal.aborted) loadHistory();
+        });
+    }
 
     async function watch() {
+      loadHistory();
+      let firstResponse = true;
       let delay = 1000;
       try {
         for await (const response of activeClient.subscribe(
@@ -126,6 +165,11 @@ export function createTerminalLogSession(
           { signal: abort.signal },
         )) {
           if (abort.signal.aborted) return;
+          if (firstResponse) {
+            firstResponse = false;
+            // Catch messages emitted between the snapshot and live registration.
+            loadHistory();
+          }
           if (!response.message) continue;
           // Bound the pending batch too, even when the main thread is busy.
           pending = mergeTerminalLines(pending, [
