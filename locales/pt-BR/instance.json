@@ -341,6 +341,9 @@
       "keyPlaceholder": "Chave",
       "valuePlaceholder": "Valor (JSON)",
       "noEntries": "Nenhuma entrada de metadados. Adicione uma acima.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Tentar novamente",
       "addSuccess": "Entrada adicionada",
       "addError": "Falha ao adicionar entrada",
       "updateError": "Falha ao atualizar entrada",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventário",
+      "actionRejected": "",
       "hotbar": "Barra Rápida",
       "main": "Inventário Principal",
       "items": "itens",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Conteúdo do Livro",
         "emptyPage": "(Página vazia)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Página {{current}} de {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Script desativado pelo usuário",
     "executionFailed": "Falha na execução do script",
     "executionError": "Erro de execução: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nó iniciado: {{nodeId}}",
     "nodeCompleted": "Nó concluído: {{nodeId}}",
     "nodeError": "Erro no nó: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Entradas máximas na store de estado do script",
         "disableTimeouts": "Desativar Timeouts",
         "disableTimeoutsDescription": "Desativa timeouts por nó e por ligação de dados",
-        "save": "Salvar Cotas"
+        "save": "Salvar Cotas",
+        "invalidInteger": ""
       }
     }
   },

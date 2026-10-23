@@ -341,6 +341,9 @@
       "keyPlaceholder": "Anahtar",
       "valuePlaceholder": "Değer (JSON)",
       "noEntries": "Metadata girişi yok. Yukarıdan bir tane ekleyin.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Yeniden Dene",
       "addSuccess": "Giriş eklendi",
       "addError": "Giriş eklenemedi",
       "updateError": "Giriş güncellenemedi",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Envanter",
+      "actionRejected": "",
       "hotbar": "Kısayol Çubuğu",
       "main": "Ana Envanter",
       "items": "öğeler",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Kitap İçeriği",
         "emptyPage": "(Boş sayfa)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Sayfa {{current}} / {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Komut dosyası kullanıcı tarafından devre dışı bırakıldı",
     "executionFailed": "Script yürütme başarısız oldu",
     "executionError": "Yürütme hatası: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Düğüm başlatıldı: {{nodeId}}",
     "nodeCompleted": "Düğüm tamamlandı: {{nodeId}}",
     "nodeError": "Düğüm hatası: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Script durum deposundaki maksimum giriş sayısı",
         "disableTimeouts": "Zaman Aşımını Devre Dışı Bırak",
         "disableTimeoutsDescription": "Düğüm ve veri kenarı zaman aşımı devre dışı bırakılır",
-        "save": "Kotaları Kaydet"
+        "save": "Kotaları Kaydet",
+        "invalidInteger": ""
       }
     }
   },

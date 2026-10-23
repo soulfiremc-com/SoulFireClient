@@ -341,6 +341,9 @@
       "keyPlaceholder": "Clave",
       "valuePlaceholder": "Valor (JSON)",
       "noEntries": "No hay entradas de metadatos. Agregue una arriba.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Reintentar",
       "addSuccess": "Entrada añadida",
       "addError": "Error al añadir la entrada",
       "updateError": "Error al actualizar la entrada",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventario",
+      "actionRejected": "",
       "hotbar": "Barra rápida",
       "main": "Inventario principal",
       "items": "objetos",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Contenido del libro",
         "emptyPage": "(Página vacía)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Página {{current}} de {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Script desactivado por el usuario",
     "executionFailed": "Error en la ejecución del script",
     "executionError": "Error de ejecución: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nodo iniciado: {{nodeId}}",
     "nodeCompleted": "Nodo completado: {{nodeId}}",
     "nodeError": "Error en el nodo: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Máximo de entradas en el almacenamiento de estado del script",
         "disableTimeouts": "Desactivar tiempos límite",
         "disableTimeoutsDescription": "Desactiva los tiempos límite por nodo y por conexión de datos",
-        "save": "Guardar cuotas"
+        "save": "Guardar cuotas",
+        "invalidInteger": ""
       }
     }
   },

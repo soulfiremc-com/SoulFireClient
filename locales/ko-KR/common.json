@@ -15,6 +15,11 @@
     },
     "connectionFailed": "SoulFire 서버 연결에 실패했습니다."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "찾을 수 없음",
@@ -637,5 +642,13 @@
     "filter": "프로세스 출력 필터링",
     "truncated": "{{count}}개의 이전 로그 줄이 생략되었습니다. 전체 서버 로그는 데이터 디렉터리에 남아 있습니다.",
     "privacy": "보고서에는 로컬 경로와 최근 로그가 포함됩니다. 공유 전에 보고서와 스레드 덤프를 검토하여 개인정보가 포함되지 않았는지 확인하세요. 아무 것도 자동으로 업로드되지 않습니다."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Conexión con el servidor SoulFire fallida."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "No encontrado",
@@ -641,5 +646,13 @@
     "filter": "Filtrar salida del proceso",
     "truncated": "Se omitieron {{count}} líneas de registro más antiguas. Los registros completos del servidor permanecen en el directorio de datos.",
     "privacy": "Los informes incluyen rutas locales y registros recientes. Revisa los informes y volcados de hilos en busca de información personal antes de compartirlos. Nada se sube automáticamente."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

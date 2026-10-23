@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Не удалось подключиться к серверу SoulFire."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Не найдено",
@@ -649,5 +654,13 @@
     "filter": "Фильтровать вывод процесса",
     "truncated": "",
     "privacy": "Отчёты содержат локальные пути и последние логи. Перед отправкой убедитесь, что в отчётах и дампах потоков нет личной информации. Ничего не отправляется автоматически."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

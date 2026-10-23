@@ -341,6 +341,9 @@
       "keyPlaceholder": "Khóa",
       "valuePlaceholder": "Giá trị (JSON)",
       "noEntries": "Không có mục siêu dữ liệu nào. Thêm một mục ở trên.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Thử lại",
       "addSuccess": "Đã thêm mục",
       "addError": "Không thể thêm mục",
       "updateError": "Không thể cập nhật mục",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Kho đồ",
+      "actionRejected": "",
       "hotbar": "Thanh nhanh",
       "main": "Kho chính",
       "items": "vật phẩm",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Nội dung sách",
         "emptyPage": "(Trang trống)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Trang {{current}} trên tổng số {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Script đã bị người dùng vô hiệu hóa",
     "executionFailed": "Thực thi script thất bại",
     "executionError": "Lỗi thực thi: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node đã bắt đầu: {{nodeId}}",
     "nodeCompleted": "Node đã hoàn thành: {{nodeId}}",
     "nodeError": "Lỗi Node: {{error}}",
@@ -773,7 +781,8 @@
         "maxStateStoreEntriesDescription": "Số mục tối đa trong kho trạng thái của script",
         "disableTimeouts": "Tắt giới hạn thời gian",
         "disableTimeoutsDescription": "Tắt giới hạn thời gian cho từng node và data edge",
-        "save": "Lưu hạn mức"
+        "save": "Lưu hạn mức",
+        "invalidInteger": ""
       }
     }
   },

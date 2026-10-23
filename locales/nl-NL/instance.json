@@ -341,6 +341,9 @@
       "keyPlaceholder": "Sleutel",
       "valuePlaceholder": "Waarde (JSON)",
       "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Opnieuw proberen",
       "addSuccess": "Item toegevoegd",
       "addError": "Toevoegen van item mislukt",
       "updateError": "Bijwerken van item mislukt",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaris",
+      "actionRejected": "",
       "hotbar": "Snelle balk",
       "main": "Hoofd Inventaris",
       "items": "items",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Boekinhoud",
         "emptyPage": "(Lege pagina)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Pagina {{current}} van {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Script gedeactiveerd door gebruiker",
     "executionFailed": "Scriptuitvoering mislukt",
     "executionError": "Uitvoeringsfout: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Knooppunt gestart: {{nodeId}}",
     "nodeCompleted": "Knooppunt voltooid: {{nodeId}}",
     "nodeError": "Knooppuntfout: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Maximum aantal items in de script-statusopslag",
         "disableTimeouts": "Timeouts uitschakelen",
         "disableTimeoutsDescription": "Schakelt time-outs per node en data-edge uit",
-        "save": "Quota opslaan"
+        "save": "Quota opslaan",
+        "invalidInteger": ""
       }
     }
   },

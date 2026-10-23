@@ -15,6 +15,11 @@
     },
     "connectionFailed": "SoulFire sunucusuna bağlantı başarısız oldu."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Bulunamadı",
@@ -641,5 +646,13 @@
     "filter": "Süreç çıktısını filtrele",
     "truncated": "{{count}} eski günlük satırı atlandı. Tam sunucu günlükleri veri dizininde kalır.",
     "privacy": "Raporlar yerel yolları ve son günlükleri içerir. Kişisel bilgi için raporları ve iz dökümlerini paylaşmadan önce gözden geçirin. Hiçbir şey otomatik olarak yüklenmez."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

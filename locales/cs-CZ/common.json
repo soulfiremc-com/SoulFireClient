@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Připojení k serveru SoulFire selhalo."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Nenalezeno",
@@ -649,5 +654,13 @@
     "filter": "Filtrovat výstup procesu",
     "truncated": "{{count}} starších řádků logu bylo vynecháno. Kompletní serverové logy zůstávají v datovém adresáři.",
     "privacy": "Zprávy obsahují lokální cesty a nedávné logy. Před sdílením zkontrolujte zprávy a výpisy vláken kvůli osobním údajům. Nic se automaticky neodesílá."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

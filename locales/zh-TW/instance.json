@@ -341,6 +341,9 @@
       "keyPlaceholder": "鍵",
       "valuePlaceholder": "值（JSON）",
       "noEntries": "沒有中繼資料條目。請在上方新增一個。",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "重試",
       "addSuccess": "已新增條目",
       "addError": "新增條目失敗",
       "updateError": "更新條目失敗",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "物品欄",
+      "actionRejected": "",
       "hotbar": "快捷欄",
       "main": "主背包",
       "items": "物品",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "書本內容",
         "emptyPage": "（空白頁）",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "第 {{current}} / {{total}} 頁"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "腳本已由使用者停用",
     "executionFailed": "腳本執行失敗",
     "executionError": "執行錯誤：{{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "節點已啟動：{{nodeId}}",
     "nodeCompleted": "節點完成：{{nodeId}}",
     "nodeError": "節點錯誤：{{error}}",
@@ -773,7 +781,8 @@
         "maxStateStoreEntriesDescription": "腳本狀態存儲中的最大項目數",
         "disableTimeouts": "停用逾時",
         "disableTimeoutsDescription": "停用每節點及資料邊緣的逾時",
-        "save": "儲存額度"
+        "save": "儲存額度",
+        "invalidInteger": ""
       }
     }
   },

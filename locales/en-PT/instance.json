@@ -341,6 +341,9 @@
       "keyPlaceholder": "Key to the chest",
       "valuePlaceholder": "Booty Value (JSON)",
       "noEntries": "No metadata trinkets. Add one up top!",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Try again, matey!",
       "addSuccess": "Entry stashed!",
       "addError": "Failed to stash the loot!",
       "updateError": "Couldn't update that trinket, arrr!",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Cargo Hold",
+      "actionRejected": "",
       "hotbar": "Armory",
       "main": "Main Cargo",
       "items": "bits o' loot",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Book Scribblin's",
         "emptyPage": "(Blank page, matey)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Page {{current}} of {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Spell sunk by yer own hand!",
     "executionFailed": "Spell failed t'run!",
     "executionError": "Execution mishap: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node let loose: {{nodeId}}",
     "nodeCompleted": "Node tied off: {{nodeId}}",
     "nodeError": "Node got cursed: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Maximum notches in the ship's state log",
         "disableTimeouts": "Cut Timeouts loose",
         "disableTimeoutsDescription": "Disables single-node and data line timeouts, arrr!",
-        "save": "Save the rations, secure the cargo!"
+        "save": "Save the rations, secure the cargo!",
+        "invalidInteger": ""
       }
     }
   },

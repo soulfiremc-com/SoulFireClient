@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Anslutning till SoulFire-servern misslyckades."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Hittades inte",
@@ -641,5 +646,13 @@
     "filter": "Filtrera processutdata",
     "truncated": "{{count}} äldre loggrader utelämnades. Fullständiga serverloggar finns kvar i datamappen.",
     "privacy": "Rapporter inkluderar lokala sökvägar och senaste loggar. Granska rapporter och tråddumpar för personlig information innan du delar. Ingenting laddas upp automatiskt."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

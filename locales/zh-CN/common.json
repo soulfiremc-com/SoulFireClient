@@ -15,6 +15,11 @@
     },
     "connectionFailed": "连接 SoulFire 服务器失败。"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "未找到",
@@ -637,5 +642,13 @@
     "filter": "过滤进程输出",
     "truncated": "已省略 {{count}} 条较旧的日志行。完整的服务器日志仍保存在数据目录中。",
     "privacy": "报告包括本地路径和最近的日志。分享前请仔细检查报告和线程转储中是否有个人信息。不自动上传任何内容。"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

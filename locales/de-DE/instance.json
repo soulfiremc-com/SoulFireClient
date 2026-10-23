@@ -341,6 +341,9 @@
       "keyPlaceholder": "Schlüssel",
       "valuePlaceholder": "Wert (JSON)",
       "noEntries": "Keine Metadaten-Einträge. Fügen Sie oben einen hinzu.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Erneut versuchen",
       "addSuccess": "Eintrag hinzugefügt",
       "addError": "Eintrag konnte nicht hinzugefügt werden",
       "updateError": "Eintrag konnte nicht aktualisiert werden",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventar",
+      "actionRejected": "",
       "hotbar": "Schnellzugriffsleiste",
       "main": "Hauptinventar",
       "items": "Gegenstände",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Buchinhalt",
         "emptyPage": "(Leere Seite)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Seite {{current}} von {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Skript wurde vom Benutzer deaktiviert",
     "executionFailed": "Skriptausführung fehlgeschlagen",
     "executionError": "Ausführungsfehler: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Knoten gestartet: {{nodeId}}",
     "nodeCompleted": "Knoten abgeschlossen: {{nodeId}}",
     "nodeError": "Knotenfehler: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Maximale Einträge im Skript-State Store",
         "disableTimeouts": "Timeouts deaktivieren",
         "disableTimeoutsDescription": "Deaktiviert Timeouts pro Knoten und Datenkante",
-        "save": "Kontingente speichern"
+        "save": "Kontingente speichern",
+        "invalidInteger": ""
       }
     }
   },

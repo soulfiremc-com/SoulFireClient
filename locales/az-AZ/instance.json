@@ -341,6 +341,9 @@
       "keyPlaceholder": "Açar",
       "valuePlaceholder": "Dəyər (JSON)",
       "noEntries": "Heç bir metadata girişi yoxdur. Yuxarıdan birini əlavə edin.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Təkrar cəhd et",
       "addSuccess": "Giriş əlavə olundu",
       "addError": "Girişi əlavə etmək mümkün olmadı",
       "updateError": "Girişi yeniləmək mümkün olmadı",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "İnventar",
+      "actionRejected": "",
       "hotbar": "Qısa Panel",
       "main": "Əsas Ehtiyat",
       "items": "əşyalar",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Kitab Məzmunu",
         "emptyPage": "(Boş səhifə)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Səhifə {{current}} / {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Skript istifadəçi tərəfindən deaktiv edildi",
     "executionFailed": "Skriptin icrası uğursuz oldu",
     "executionError": "İcra xətası: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Düyün başlandı: {{nodeId}}",
     "nodeCompleted": "Düyün tamamlandı: {{nodeId}}",
     "nodeError": "Düyün xətası: {{error}}",
@@ -775,7 +783,8 @@
         "maxStateStoreEntriesDescription": "Skript hal mağazasında maksimum qeyd sayı",
         "disableTimeouts": "Timeoutları söndür",
         "disableTimeoutsDescription": "Qovşaq və məlumat kənarı zamanı timeoutlar söndürüləcək",
-        "save": "Kotaları yadda saxla"
+        "save": "Kotaları yadda saxla",
+        "invalidInteger": ""
       }
     }
   },

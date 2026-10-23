@@ -15,6 +15,11 @@
     },
     "connectionFailed": "SoulFireサーバーへの接続に失敗しました。"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "見つかりません",
@@ -637,5 +642,13 @@
     "filter": "プロセス出力をフィルター",
     "truncated": "{{count}} 行分の古いログは表示を省略しました。完全なサーバーログはデータディレクトリに残っています。",
     "privacy": "レポートにはローカルパスや最近のログが含まれます。個人情報が含まれていないか確認してからレポートやスレッドダンプを共有してください。自動でアップロードされることはありません。"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

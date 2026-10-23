@@ -341,6 +341,9 @@
       "keyPlaceholder": "Ключ",
       "valuePlaceholder": "Значение (JSON)",
       "noEntries": "Нет метаданных. Добавьте запись выше.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Повторить",
       "addSuccess": "Запись добавлена",
       "addError": "Ошибка добавления записи",
       "updateError": "Ошибка обновления записи",
@@ -452,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Инвентарь",
+      "actionRejected": "",
       "hotbar": "Быстрый доступ",
       "main": "Основной инвентарь",
       "items": "предметы",
@@ -480,6 +484,8 @@
       "bookPages": {
         "title": "Содержимое книги",
         "emptyPage": "(Пустая страница)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Страница {{current}} из {{total}}"
       },
       "creativeCatalogHint": "",
@@ -651,6 +657,8 @@
     "deactivatedByUser": "Скрипт деактивирован пользователем",
     "executionFailed": "Ошибка выполнения скрипта",
     "executionError": "Ошибка выполнения: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Узел запущен: {{nodeId}}",
     "nodeCompleted": "Узел завершён: {{nodeId}}",
     "nodeError": "Ошибка узла: {{error}}",
@@ -779,7 +787,8 @@
         "maxStateStoreEntriesDescription": "Максимальное количество записей в хранилище состояния скрипта",
         "disableTimeouts": "Отключить тайм-ауты",
         "disableTimeoutsDescription": "Отключить тайм-ауты для каждого узла и передачи данных по ребру",
-        "save": "Сохранить квоты"
+        "save": "Сохранить квоты",
+        "invalidInteger": ""
       }
     }
   },

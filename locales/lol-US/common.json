@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Cunnection unsuccessful."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Nuh Found",
@@ -641,5 +646,13 @@
     "filter": "Filter proccess spamz for moar win",
     "truncated": "{{count}} older log pawprints hid. All server logz stil in litter box.",
     "privacy": "Reportz gotz local pawths an recent spamz. Check reportz an thred dumpz for ur own private kitteh info befur sharing. Nothin uploads by itself, so chill."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

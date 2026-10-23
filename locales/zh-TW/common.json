@@ -15,6 +15,11 @@
     },
     "connectionFailed": "連接 SoulFire 伺服器失敗。"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "找不到",
@@ -637,5 +642,13 @@
     "filter": "篩選程序輸出",
     "truncated": "已略過 {{count}} 行較舊日誌。完整伺服器日誌仍保留於資料目錄內。",
     "privacy": "報告內含本機路徑及最新日誌。在分享前請檢查報告及執行緒轉儲是否包含個人資訊。不會自動上傳任何資料。"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }
