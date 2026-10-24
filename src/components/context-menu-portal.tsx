@@ -1,7 +1,6 @@
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { type ReactNode, type RefObject, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { contextMenuClassName } from "@/components/context-menu-primitives.tsx";
 import {
   DropdownMenu,
   DropdownMenuGroup,
@@ -57,11 +56,12 @@ export function ContextMenuPortal({
             ref={menuRef}
             aria-label={t("contextMenu.actions")}
             className={cn(
-              contextMenuClassName,
+              "animate-in fade-in-0 zoom-in-95 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-md p-1 shadow-md ring-1",
               "max-h-[calc(100dvh-1rem)] max-w-[calc(100dvw-1rem)] overflow-y-auto outline-none",
             )}
             onContextMenu={(event) => event.preventDefault()}
             onKeyDown={(event) => {
+              event.stopPropagation();
               if (event.key === "Tab") {
                 event.preventDefault();
                 onClose();

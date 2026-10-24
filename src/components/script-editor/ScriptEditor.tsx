@@ -15,7 +15,9 @@ import {
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
 import { ScriptGroupViewports } from "@/lib/script-group-viewports";
 import { createConnectionValidator, edgeTypes } from "./edges";
@@ -24,15 +26,6 @@ import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
 import { useNodeTypes } from "./NodeTypesContext";
 import { QuickAddMenu } from "./QuickAddMenu";
-
-// State for node context menu (React Flow idiomatic pattern)
-interface NodeContextMenuState {
-  nodeId: string;
-  top?: number | false;
-  left?: number | false;
-  right?: number | false;
-  bottom?: number | false;
-}
 
 export function ScriptEditor() {
   const editor = useScriptEditor();
@@ -46,8 +39,12 @@ export function ScriptEditor() {
     (state) => state.width >= 640 && state.height >= 400,
   );
   const [groupViewports] = useState(() => new ScriptGroupViewports());
-  const [nodeContextMenu, setNodeContextMenu] =
-    useState<NodeContextMenuState | null>(null);
+  const {
+    contextMenu: nodeContextMenu,
+    handleContextMenu: openNodeContextMenu,
+    dismiss: dismissNodeContextMenu,
+    menuRef: nodeMenuRef,
+  } = useContextMenu<string>();
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null);
   const { nodeTypes } = useNodeTypes();
 
@@ -611,10 +608,6 @@ export function ScriptEditor() {
   // Handle right-click on node (React Flow idiomatic pattern)
   const handleNodeContextMenu = useCallback(
     (event: React.MouseEvent, node: Node) => {
-      event.preventDefault();
-
-      if (!containerRef.current) return;
-
       // Select the right-clicked node if it isn't already selected
       if (!node.selected) {
         onNodesChange([
@@ -631,28 +624,16 @@ export function ScriptEditor() {
         ]);
       }
 
-      // Calculate position, ensuring menu stays within bounds
-      const pane = containerRef.current.getBoundingClientRect();
-      setNodeContextMenu({
-        nodeId: node.id,
-        top: event.clientY < pane.height - 200 && event.clientY - pane.top,
-        left: event.clientX < pane.width - 200 && event.clientX - pane.left,
-        right:
-          event.clientX >= pane.width - 200 &&
-          pane.width - (event.clientX - pane.left),
-        bottom:
-          event.clientY >= pane.height - 200 &&
-          pane.height - (event.clientY - pane.top),
-      });
+      openNodeContextMenu(event, node.id);
     },
-    [nodes, onNodesChange],
+    [nodes, onNodesChange, openNodeContextMenu],
   );
 
   // Close node context menu on pane click
   const handlePaneClick = useCallback(() => {
-    setNodeContextMenu(null);
+    dismissNodeContextMenu();
     containerRef.current?.focus({ preventScroll: true });
-  }, []);
+  }, [dismissNodeContextMenu]);
 
   // Handle pointer down for link cutting (Alt+drag)
   // Uses pointer events instead of mouse events to support touch/stylus
@@ -844,72 +825,37 @@ export function ScriptEditor() {
 
       <QuickAddMenu />
 
-      {/* Node context menu (React Flow idiomatic pattern) */}
       {nodeContextMenu && (
-        <>
-          {/* Backdrop - closes menu on click, prevents native context menu on right-click */}
-          <div
-            className="fixed inset-0 z-[99]"
-            onClick={() => setNodeContextMenu(null)}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              setNodeContextMenu(null);
-            }}
-          />
+        <ContextMenuPortal
+          x={nodeContextMenu.position.x}
+          y={nodeContextMenu.position.y}
+          menuRef={nodeMenuRef}
+          onClose={dismissNodeContextMenu}
+        >
           <NodeContextMenu
-            nodeId={nodeContextMenu.nodeId}
+            nodeId={nodeContextMenu.data}
             isMuted={
               (
-                visibleNodes.find((n) => n.id === nodeContextMenu.nodeId)
+                visibleNodes.find((n) => n.id === nodeContextMenu.data)
                   ?.data as { muted?: boolean } | undefined
               )?.muted ?? false
             }
             isCollapsed={
               (
-                visibleNodes.find((n) => n.id === nodeContextMenu.nodeId)
+                visibleNodes.find((n) => n.id === nodeContextMenu.data)
                   ?.data as { collapsed?: boolean } | undefined
               )?.collapsed ?? false
             }
-            previewEnabled={previewEnabledNodes.has(nodeContextMenu.nodeId)}
-            onRename={(nodeId) => {
-              setRenamingNodeId(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onDelete={() => {
-              deleteSelected();
-              setNodeContextMenu(null);
-            }}
-            onDuplicate={() => {
-              duplicateSelected();
-              setNodeContextMenu(null);
-            }}
-            onDisconnectAll={(nodeId) => {
-              disconnectNode(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onToggleMute={(nodeId) => {
-              toggleMute(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onToggleCollapse={(nodeId) => {
-              toggleCollapse(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onTogglePreview={(nodeId) => {
-              togglePreview(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onClose={() => setNodeContextMenu(null)}
-            style={{
-              position: "absolute",
-              top: nodeContextMenu.top || undefined,
-              left: nodeContextMenu.left || undefined,
-              right: nodeContextMenu.right || undefined,
-              bottom: nodeContextMenu.bottom || undefined,
-              zIndex: 100,
-            }}
+            previewEnabled={previewEnabledNodes.has(nodeContextMenu.data)}
+            onRename={setRenamingNodeId}
+            onDelete={deleteSelected}
+            onDuplicate={duplicateSelected}
+            onDisconnectAll={disconnectNode}
+            onToggleMute={toggleMute}
+            onToggleCollapse={toggleCollapse}
+            onTogglePreview={togglePreview}
           />
-        </>
+        </ContextMenuPortal>
       )}
 
       {/* Link cutting visual indicator */}

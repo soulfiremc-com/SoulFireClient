@@ -11,12 +11,17 @@ export function useContextMenu<T>() {
   );
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleContextMenu = useCallback((e: React.MouseEvent, data: T) => {
-    e.preventDefault();
-    e.stopPropagation();
-    Object.assign(e.nativeEvent, { __entityContextMenu: true });
-    setContextMenu({ position: { x: e.clientX, y: e.clientY }, data });
-  }, []);
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent | MouseEvent, data: T) => {
+      e.preventDefault();
+      e.stopPropagation();
+      Object.assign("nativeEvent" in e ? e.nativeEvent : e, {
+        __entityContextMenu: true,
+      });
+      setContextMenu({ position: { x: e.clientX, y: e.clientY }, data });
+    },
+    [],
+  );
 
   const dismiss = useCallback(() => setContextMenu(null), []);
 

@@ -10,15 +10,13 @@ import {
   VolumeIcon,
   VolumeOffIcon,
 } from "lucide-react";
-import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  ContextMenuContainer,
-  MenuItem,
-  MenuSeparator,
-  MenuShortcut,
-} from "@/components/context-menu-primitives.tsx";
-import { cn } from "@/lib/utils.tsx";
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+} from "@/components/ui/dropdown-menu.tsx";
 
 interface NodeContextMenuProps {
   nodeId: string;
@@ -34,9 +32,6 @@ interface NodeContextMenuProps {
   onToggleMute?: (nodeId: string) => void;
   onToggleCollapse?: (nodeId: string) => void;
   onTogglePreview?: (nodeId: string) => void;
-  onClose?: () => void;
-  style?: CSSProperties;
-  className?: string;
 }
 
 export function NodeContextMenu({
@@ -53,102 +48,92 @@ export function NodeContextMenu({
   onToggleMute,
   onToggleCollapse,
   onTogglePreview,
-  onClose,
-  style,
-  className,
 }: NodeContextMenuProps) {
   const { t } = useTranslation("instance");
 
   return (
-    <ContextMenuContainer style={style} className={cn(className)}>
-      <div>
-        <MenuItem
+    <>
+      <DropdownMenuGroup>
+        <DropdownMenuItem
           onClick={() => {
             onDuplicate?.(nodeId);
-            onClose?.();
           }}
         >
           <CopyIcon />
           {t("scripts.editor.contextMenu.duplicate")}
-          <MenuShortcut>Shift+D</MenuShortcut>
-        </MenuItem>
-        <MenuItem
+          <DropdownMenuShortcut>Shift+D</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem
           onClick={() => {
             onRename?.(nodeId);
-            onClose?.();
           }}
         >
           <PencilIcon />
           {t("scripts.editor.contextMenu.rename")}
-          <MenuShortcut>F2</MenuShortcut>
-        </MenuItem>
-        <MenuItem
+          <DropdownMenuShortcut>F2</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem
           onClick={() => {
             onDisconnectAll?.(nodeId);
-            onClose?.();
           }}
         >
           <UnplugIcon />
           {t("scripts.editor.contextMenu.disconnectAll")}
-        </MenuItem>
-      </div>
-      <MenuSeparator />
-      <div>
-        <MenuItem
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem
           onClick={() => {
             onToggleCollapse?.(nodeId);
-            onClose?.();
           }}
         >
           {isCollapsed ? <ChevronDownIcon /> : <ChevronRightIcon />}
           {isCollapsed
             ? t("scripts.editor.contextMenu.expand")
             : t("scripts.editor.contextMenu.collapse")}
-          <MenuShortcut>H</MenuShortcut>
-        </MenuItem>
+          <DropdownMenuShortcut>H</DropdownMenuShortcut>
+        </DropdownMenuItem>
         {supportsMuting && (
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               onToggleMute?.(nodeId);
-              onClose?.();
             }}
           >
             {isMuted ? <VolumeIcon /> : <VolumeOffIcon />}
             {isMuted
               ? t("scripts.editor.contextMenu.unmute")
               : t("scripts.editor.contextMenu.mute")}
-            <MenuShortcut>M</MenuShortcut>
-          </MenuItem>
+            <DropdownMenuShortcut>M</DropdownMenuShortcut>
+          </DropdownMenuItem>
         )}
         {supportsPreview && (
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               onTogglePreview?.(nodeId);
-              onClose?.();
             }}
           >
             {previewEnabled ? <EyeOffIcon /> : <EyeIcon />}
             {previewEnabled
               ? t("scripts.editor.contextMenu.hidePreview")
               : t("scripts.editor.contextMenu.showPreview")}
-            <MenuShortcut>Shift+H</MenuShortcut>
-          </MenuItem>
+            <DropdownMenuShortcut>Shift+H</DropdownMenuShortcut>
+          </DropdownMenuItem>
         )}
-      </div>
-      <MenuSeparator />
-      <div>
-        <MenuItem
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem
           variant="destructive"
           onClick={() => {
             onDelete?.(nodeId);
-            onClose?.();
           }}
         >
           <TrashIcon />
           {t("scripts.editor.contextMenu.delete")}
-          <MenuShortcut>Del / X</MenuShortcut>
-        </MenuItem>
-      </div>
-    </ContextMenuContainer>
+          <DropdownMenuShortcut>Del / X</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+    </>
   );
 }

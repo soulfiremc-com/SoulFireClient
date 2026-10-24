@@ -1,20 +1,12 @@
 import { ClipboardCopyIcon, CloudUploadIcon, SearchIcon } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import {
-  ContextMenuContainer,
-  MenuItem,
-} from "@/components/context-menu-primitives.tsx";
+import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
+import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { openExternalUrl, uploadToMcLogs } from "@/lib/utils.tsx";
-
-interface MenuPosition {
-  x: number;
-  y: number;
-  text: string;
-}
 
 function hasSelectTextAncestor(element: Element | null): boolean {
   let current = element;
@@ -28,12 +20,14 @@ function hasSelectTextAncestor(element: Element | null): boolean {
 }
 
 export function CustomContextMenu() {
-  const [menu, setMenu] = useState<MenuPosition | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const {
+    contextMenu: menu,
+    handleContextMenu,
+    dismiss,
+    menuRef,
+  } = useContextMenu<string>();
   const copyToClipboard = useCopyToClipboard();
   const { t } = useTranslation("common");
-
-  const dismiss = useCallback(() => setMenu(null), []);
 
   useEffect(() => {
     function onContextMenu(e: MouseEvent) {
@@ -48,78 +42,46 @@ export function CustomContextMenu() {
 
       const target = e.target as Element | null;
       if (!target || !hasSelectTextAncestor(target)) {
-        setMenu(null);
+        dismiss();
         return;
       }
 
       const selection = window.getSelection();
       const selectedText = selection?.toString() ?? "";
       if (selectedText.length === 0) {
-        setMenu(null);
+        dismiss();
         return;
       }
 
-      setMenu({ x: e.clientX, y: e.clientY, text: selectedText });
+      handleContextMenu(e, selectedText);
     }
 
     document.addEventListener("contextmenu", onContextMenu);
     return () => document.removeEventListener("contextmenu", onContextMenu);
-  }, []);
-
-  useEffect(() => {
-    if (!menu) return;
-
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        dismiss();
-      }
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("scroll", dismiss, true);
-    window.addEventListener("blur", dismiss);
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("scroll", dismiss, true);
-      window.removeEventListener("blur", dismiss);
-    };
-  }, [menu, dismiss]);
-
-  useEffect(() => {
-    if (!menu) return;
-
-    function onMouseDown(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        dismiss();
-      }
-    }
-
-    document.addEventListener("mousedown", onMouseDown);
-    return () => document.removeEventListener("mousedown", onMouseDown);
-  }, [menu, dismiss]);
+  }, [dismiss, handleContextMenu]);
 
   if (!menu) return null;
 
-  return createPortal(
-    <ContextMenuContainer
+  return (
+    <ContextMenuPortal
       menuRef={menuRef}
-      className="fixed z-50 duration-100"
-      style={{ left: menu.x, top: menu.y }}
+      x={menu.position.x}
+      y={menu.position.y}
+      onClose={dismiss}
     >
-      <MenuItem
+      <DropdownMenuItem
         onClick={() => {
-          copyToClipboard(menu.text);
+          copyToClipboard(menu.data);
           dismiss();
         }}
       >
-        <ClipboardCopyIcon className="size-4" />
+        <ClipboardCopyIcon />
         {t("copyToClipboard")}
-      </MenuItem>
-      <MenuItem
+      </DropdownMenuItem>
+      <DropdownMenuItem
         onClick={() => {
           toast.promise(
-            uploadToMcLogs(menu.text).then((response) => {
+            uploadToMcLogs(menu.data).then((response) => {
               if (response.success) {
                 copyToClipboard(response.url);
                 return response.url;
@@ -135,21 +97,20 @@ export function CustomContextMenu() {
           dismiss();
         }}
       >
-        <CloudUploadIcon className="size-4" />
+        <CloudUploadIcon />
         {t("uploadToMcLogs")}
-      </MenuItem>
-      <MenuItem
+      </DropdownMenuItem>
+      <DropdownMenuItem
         onClick={() => {
           openExternalUrl(
-            `https://www.google.com/search?q=${encodeURIComponent(menu.text)}`,
+            `https://www.google.com/search?q=${encodeURIComponent(menu.data)}`,
           );
           dismiss();
         }}
       >
-        <SearchIcon className="size-4" />
+        <SearchIcon />
         {t("searchWithGoogle")}
-      </MenuItem>
-    </ContextMenuContainer>,
-    document.body,
+      </DropdownMenuItem>
+    </ContextMenuPortal>
   );
 }
