@@ -7,6 +7,8 @@ import React, {
   use,
   useCallback,
   useEffect,
+  useEffectEvent,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -197,11 +199,23 @@ export const TerminalComponent = (props: { scope: LogScope }) => {
     }
   }, [handleScroll]);
 
-  useEffect(() => {
+  const followLatest = useEffectEvent(() => {
     if (isAtBottom && paneRef.current) {
       paneRef.current.scrollTop = paneRef.current.scrollHeight;
     }
-  }, [isAtBottom]);
+  });
+
+  useLayoutEffect(() => {
+    followLatest();
+  }, [entries, isAtBottom]);
+
+  useEffect(() => {
+    const pane = paneRef.current;
+    if (!pane) return;
+    const observer = new ResizeObserver(() => followLatest());
+    observer.observe(pane);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <ScrollArea
@@ -242,21 +256,9 @@ export const TerminalComponent = (props: { scope: LogScope }) => {
       }
     >
       <p className="h-full flex flex-col min-h-[calc(75vh-8rem)] cursor-text py-0.5 pl-0.5 break-all whitespace-pre-wrap select-text selection:bg-(--terminal-selection-bg)/25">
-        {entries.map((entry) => {
-          return (
-            <MemoAnsiHtml
-              key={entry.id}
-              content={{
-                message: entry.message,
-                level: entry.level,
-                timestamp: entry.timestamp,
-                loggerName: entry.loggerName,
-                instanceName: entry.instanceName,
-                botAccountName: entry.botAccountName,
-              }}
-            />
-          );
-        })}
+        {entries.map((entry) => (
+          <MemoAnsiHtml key={entry.id} content={entry} />
+        ))}
       </p>
     </ScrollArea>
   );
