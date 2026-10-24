@@ -23,9 +23,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
   DataTableActionBar,
@@ -500,11 +500,12 @@ function Content() {
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               setEditUser(contextMenu.data);
               dismiss();
@@ -512,8 +513,8 @@ function Content() {
           >
             <PencilIcon />
             {t("users.contextMenu.editUser")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               runAsync(async () => {
                 if (transport === null) return;
@@ -533,9 +534,9 @@ function Content() {
           >
             <VenetianMaskIcon />
             {t("users.contextMenu.impersonate")}
-          </MenuItem>
-          <MenuSeparator />
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.id);
               dismiss();
@@ -543,7 +544,7 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("users.contextMenu.copyUserId")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
       {editUser && (

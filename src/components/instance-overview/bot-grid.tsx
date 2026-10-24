@@ -29,9 +29,9 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -398,11 +398,12 @@ export function BotContextMenu({
       {children(handleContextMenu)}
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               void navigate({
                 to: "/instance/$instance/bot/$botId",
@@ -416,14 +417,14 @@ export function BotContextMenu({
           >
             <ExternalLinkIcon />
             {tCommon("contextMenu.bot.goToBot")}
-          </MenuItem>
+          </DropdownMenuItem>
           {canControl && (
             <>
-              <MenuSeparator />
+              <DropdownMenuSeparator />
               {contextMenu.data.status?.desiredState ===
               BotDesiredState.RUNNING ? (
                 <>
-                  <MenuItem
+                  <DropdownMenuItem
                     onClick={() => {
                       botStateMutation.mutate({
                         botId: contextMenu.data.profileId,
@@ -434,8 +435,8 @@ export function BotContextMenu({
                   >
                     <RefreshCwIcon />
                     {tCommon("controls.restart")}
-                  </MenuItem>
-                  <MenuItem
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
                     onClick={() => {
                       botStateMutation.mutate({
                         botId: contextMenu.data.profileId,
@@ -446,10 +447,10 @@ export function BotContextMenu({
                   >
                     <SquareIcon />
                     {tCommon("controls.stop")}
-                  </MenuItem>
+                  </DropdownMenuItem>
                 </>
               ) : (
-                <MenuItem
+                <DropdownMenuItem
                   onClick={() => {
                     botStateMutation.mutate({
                       botId: contextMenu.data.profileId,
@@ -460,12 +461,12 @@ export function BotContextMenu({
                 >
                   <PlayIcon />
                   {tCommon("controls.start")}
-                </MenuItem>
+                </DropdownMenuItem>
               )}
             </>
           )}
-          <MenuSeparator />
-          <MenuItem
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(
                 contextMenu.data.accountName || contextMenu.data.lastKnownName,
@@ -475,8 +476,8 @@ export function BotContextMenu({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyUsername")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.profileId);
               dismiss();
@@ -484,9 +485,9 @@ export function BotContextMenu({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyUuid")}
-          </MenuItem>
+          </DropdownMenuItem>
           {contextMenu.data.isOnline && contextMenu.data.liveState && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 const { x, y, z } = contextMenu.data.liveState ?? {
                   x: 0,
@@ -501,7 +502,7 @@ export function BotContextMenu({
             >
               <ClipboardCopyIcon />
               {tCommon("contextMenu.bot.copyCoordinates")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
         </ContextMenuPortal>
       )}
@@ -561,7 +562,7 @@ export function BotGrid({
   const filteredAccounts = useMemo(() => {
     const accounts = instanceInfo.profile.accounts;
     if (!search.trim()) return accounts;
-    const searchLower = search.toLowerCase();
+    const searchLower = search.trim().toLowerCase();
     return accounts.filter((account) =>
       account.lastKnownName.toLowerCase().includes(searchLower),
     );

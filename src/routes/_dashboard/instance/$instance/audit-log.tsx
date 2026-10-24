@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import { MenuItem } from "@/components/context-menu-primitives.tsx";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header.tsx";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton.tsx";
@@ -290,12 +290,13 @@ function Content() {
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
           {contextMenu.data.user?.username && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 copyToClipboard(contextMenu.data.user?.username ?? "");
                 dismiss();
@@ -303,12 +304,12 @@ function Content() {
             >
               <ClipboardCopyIcon />
               {t("auditLog.contextMenu.copyUsername")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
           {contextMenu.data.type ===
             InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND &&
             contextMenu.data.data && (
-              <MenuItem
+              <DropdownMenuItem
                 onClick={() => {
                   copyToClipboard(contextMenu.data.data);
                   dismiss();
@@ -316,7 +317,7 @@ function Content() {
               >
                 <ClipboardCopyIcon />
                 {t("auditLog.contextMenu.copyCommand")}
-              </MenuItem>
+              </DropdownMenuItem>
             )}
         </ContextMenuPortal>
       )}

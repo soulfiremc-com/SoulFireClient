@@ -24,10 +24,6 @@ import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
   DataTableActionBar,
@@ -1051,11 +1047,12 @@ function Content() {
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.address);
               dismiss();
@@ -1063,9 +1060,9 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("proxy.contextMenu.copyAddress")}
-          </MenuItem>
+          </DropdownMenuItem>
           {contextMenu.data.username && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 copyToClipboard(contextMenu.data.username ?? "");
                 dismiss();
@@ -1073,10 +1070,10 @@ function Content() {
             >
               <ClipboardCopyIcon />
               {t("proxy.contextMenu.copyUsername")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
           {contextMenu.data.password && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 copyToClipboard(contextMenu.data.password ?? "");
                 dismiss();
@@ -1084,10 +1081,10 @@ function Content() {
             >
               <ClipboardCopyIcon />
               {t("proxy.contextMenu.copyPassword")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
-          <MenuSeparator />
-          <MenuItem
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             variant="destructive"
             onClick={() => {
               removeProxyMutation(contextMenu.data);
@@ -1096,7 +1093,7 @@ function Content() {
           >
             <TrashIcon />
             {t("proxy.contextMenu.deleteProxy")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
     </div>

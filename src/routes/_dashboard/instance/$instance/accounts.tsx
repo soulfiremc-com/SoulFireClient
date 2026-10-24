@@ -22,10 +22,6 @@ import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
   DataTableActionBar,
@@ -1233,11 +1229,12 @@ function Content() {
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               setConfigAccountId(contextMenu.data.profileId);
               dismiss();
@@ -1245,8 +1242,8 @@ function Content() {
           >
             <SettingsIcon />
             {t("account.contextMenu.openConfig")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               setMetadataAccountId(contextMenu.data.profileId);
               dismiss();
@@ -1254,9 +1251,9 @@ function Content() {
           >
             <BracesIcon />
             {t("account.contextMenu.openMetadata")}
-          </MenuItem>
-          <MenuSeparator />
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.profileId);
               dismiss();
@@ -1264,8 +1261,8 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("account.contextMenu.copyProfileId")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.lastKnownName);
               dismiss();
@@ -1273,7 +1270,7 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("account.contextMenu.copyUsername")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
       {configAccount && (

@@ -56,7 +56,7 @@ import {
 } from "@/lib/minecraft-client-actions";
 import CommandInput from "@/components/command-input.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import { MenuItem } from "@/components/context-menu-primitives.tsx";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { BotPovPlayer } from "@/components/pov/bot-pov-player";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
@@ -398,11 +398,12 @@ function BotDetailContent({
 
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(account.lastKnownName);
               dismiss();
@@ -410,8 +411,8 @@ function BotDetailContent({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyUsername")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(account.profileId);
               dismiss();
@@ -419,7 +420,7 @@ function BotDetailContent({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyUuid")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
 
@@ -762,11 +763,12 @@ function OverviewTab({
       {/* Context menu for position copy */}
       {contextMenu && isOnline && liveState && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(
                 `${liveState.x.toFixed(2)}, ${liveState.y.toFixed(2)}, ${liveState.z.toFixed(2)}`,
@@ -776,7 +778,7 @@ function OverviewTab({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyCoordinates")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
     </>

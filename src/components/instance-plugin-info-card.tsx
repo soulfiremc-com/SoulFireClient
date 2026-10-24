@@ -16,9 +16,9 @@ import { use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -112,11 +112,12 @@ function PluginInfoCardContent(props: {
       </Card>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               props.onEnabledChange(!props.enabledValue);
               dismiss();
@@ -126,11 +127,11 @@ function PluginInfoCardContent(props: {
             {props.enabledValue
               ? t("contextMenu.plugin.disable")
               : t("contextMenu.plugin.enable")}
-          </MenuItem>
-          <MenuSeparator />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           {props.settingsUrl && (
             <>
-              <MenuItem
+              <DropdownMenuItem
                 onClick={() => {
                   void navigate({ to: props.settingsUrl });
                   dismiss();
@@ -138,11 +139,11 @@ function PluginInfoCardContent(props: {
               >
                 <ExternalLinkIcon />
                 {t("contextMenu.plugin.openSettings")}
-              </MenuItem>
-              <MenuSeparator />
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
             </>
           )}
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(props.settingsEntry.pageName);
               dismiss();
@@ -150,8 +151,8 @@ function PluginInfoCardContent(props: {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.plugin.copyPluginName")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(props.plugin.version);
               dismiss();
@@ -159,9 +160,9 @@ function PluginInfoCardContent(props: {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.plugin.copyVersion")}
-          </MenuItem>
+          </DropdownMenuItem>
           {props.plugin.website && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 openExternalUrl(props.plugin.website);
                 dismiss();
@@ -169,7 +170,7 @@ function PluginInfoCardContent(props: {
             >
               <GlobeIcon />
               {t("contextMenu.plugin.openWebsite")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
         </ContextMenuPortal>
       )}

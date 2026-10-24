@@ -2,6 +2,9 @@ import type React from "react";
 import { Kbd } from "@/components/ui/kbd.tsx";
 import { cn } from "@/lib/utils.tsx";
 
+export const contextMenuClassName =
+  "animate-in fade-in-0 zoom-in-95 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-md p-1 shadow-md ring-1";
+
 export function MenuItem({
   className,
   variant = "default",
@@ -66,10 +69,7 @@ export function ContextMenuContainer({
     <div
       ref={menuRef}
       style={style}
-      className={cn(
-        "animate-in fade-in-0 zoom-in-95 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-md p-1 shadow-md ring-1",
-        className,
-      )}
+      className={cn(contextMenuClassName, className)}
       onClick={(e) => e.stopPropagation()}
       onContextMenu={(e) => e.preventDefault()}
     >

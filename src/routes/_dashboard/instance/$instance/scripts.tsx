@@ -23,9 +23,9 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
@@ -500,11 +500,12 @@ function Content() {
       )}
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               void navigate({
                 to: "/instance/$instance/script/$scriptId",
@@ -518,8 +519,8 @@ function Content() {
           >
             <EditIcon />
             {tInstance("scripts.contextMenu.edit")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               handleTogglePaused(contextMenu.data.id, contextMenu.data.paused);
               dismiss();
@@ -529,9 +530,9 @@ function Content() {
             {contextMenu.data.paused
               ? tInstance("scripts.contextMenu.resume")
               : tInstance("scripts.contextMenu.pause")}
-          </MenuItem>
-          <MenuSeparator />
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.name);
               dismiss();
@@ -539,8 +540,8 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {tInstance("scripts.contextMenu.copyScriptName")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.id);
               dismiss();
@@ -548,9 +549,9 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {tInstance("scripts.contextMenu.copyScriptId")}
-          </MenuItem>
-          <MenuSeparator />
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             variant="destructive"
             onClick={() => {
               setDeleteTarget(contextMenu.data);
@@ -559,7 +560,7 @@ function Content() {
           >
             <Trash2Icon />
             {tInstance("scripts.contextMenu.delete")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
       <AlertDialog

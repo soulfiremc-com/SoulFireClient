@@ -590,6 +590,7 @@
     "instanceScript": "Instance"
   },
   "contextMenu": {
+    "actions": "Actions",
     "instance": {
       "goToInstance": "Go to Instance",
       "duplicateInstance": "Duplicate Instance",

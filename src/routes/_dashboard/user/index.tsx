@@ -30,9 +30,9 @@ import { z } from "zod";
 import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
@@ -501,11 +501,12 @@ function Content() {
       )}
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               void navigate({
                 to: "/instance/$instance",
@@ -516,9 +517,9 @@ function Content() {
           >
             <ExternalLinkIcon />
             {t("contextMenu.instance.goToInstance")}
-          </MenuItem>
+          </DropdownMenuItem>
           {canCreateInstance && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 setDuplicateSource(contextMenu.data);
                 dismiss();
@@ -526,13 +527,13 @@ function Content() {
             >
               <CopyPlusIcon />
               {t("contextMenu.instance.duplicateInstance")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
           {contextStateActions.length > 0 && (
             <>
-              <MenuSeparator />
+              <DropdownMenuSeparator />
               {contextStateActions.map((action) => (
-                <MenuItem
+                <DropdownMenuItem
                   key={action.key}
                   onClick={() => {
                     stateMutation.mutate({
@@ -545,12 +546,12 @@ function Content() {
                 >
                   <action.Icon />
                   {t(`controls.${action.key}`)}
-                </MenuItem>
+                </DropdownMenuItem>
               ))}
             </>
           )}
-          <MenuSeparator />
-          <MenuItem
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.friendlyName);
               dismiss();
@@ -558,8 +559,8 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.instance.copyInstanceName")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.id);
               dismiss();
@@ -567,11 +568,11 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.instance.copyInstanceId")}
-          </MenuItem>
+          </DropdownMenuItem>
           {canDeleteContextInstance && (
             <>
-              <MenuSeparator />
-              <MenuItem
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
                 variant="destructive"
                 onClick={() => {
                   setDeleteTarget(contextMenu.data);
@@ -580,7 +581,7 @@ function Content() {
               >
                 <TrashIcon />
                 {t("contextMenu.instance.deleteInstance")}
-              </MenuItem>
+              </DropdownMenuItem>
             </>
           )}
         </ContextMenuPortal>
