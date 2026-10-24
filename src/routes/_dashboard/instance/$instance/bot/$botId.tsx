@@ -140,6 +140,7 @@ import {
   editServerInputDraft,
   syncServerInputDraft,
 } from "@/lib/server-input-draft";
+import { editBoxValue } from "@/lib/minecraft-edit-box";
 import i18n from "@/lib/i18n";
 import { containerMutationOptions } from "@/lib/container-mutation-options";
 import { isResourceUnavailable } from "@/lib/resource-errors";
@@ -1617,10 +1618,13 @@ function ContainerTextInputField({
             value={current.value}
             onChange={(event) =>
               setDraft(
-                editServerInputDraft(current, event.target.value, isPending),
+                editServerInputDraft(
+                  current,
+                  editBoxValue(event.target.value, input.maxLength),
+                  isPending,
+                ),
               )
             }
-            maxLength={input.maxLength > 0 ? input.maxLength : undefined}
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton
