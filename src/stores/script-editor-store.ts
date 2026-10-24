@@ -822,13 +822,13 @@ export function createScriptEditorSession() {
       // Update selected nodes to be inside group
       const updatedNodes = nodes.map((n) => {
         if (selectedIds.has(n.id)) {
-          // Adjust position relative to group center
+          // Store positions relative to the group origin so ungrouping restores them.
           return {
             ...n,
             data: { ...n.data, parentGroupId: groupId },
             position: {
-              x: n.position.x - centerX,
-              y: n.position.y - centerY,
+              x: n.position.x - groupNode.position.x,
+              y: n.position.y - groupNode.position.y,
             },
             selected: false,
           };
@@ -959,38 +959,39 @@ export function createScriptEditorSession() {
       const edgesToGroup = edges.filter((e) => e.target === groupId);
       const edgesFromGroup = edges.filter((e) => e.source === groupId);
 
-      // Find internal edges from GroupInput and to GroupOutput
-      const edgesFromGroupInput = edges.filter(
-        (e) => e.source === groupInputNode?.id,
-      );
-      const edgesToGroupOutput = edges.filter(
-        (e) => e.target === groupOutputNode?.id,
-      );
-
-      // Rewire external edges
-      const rewiredEdges: Edge[] = [];
+      let rewiredEdges = [...edges];
 
       for (const externalEdge of edgesToGroup) {
-        // Find the internal edge from GroupInput with matching handle
-        const internalEdge = edgesFromGroupInput.find(
-          (e) => e.sourceHandle === externalEdge.targetHandle,
+        const internalEdges = edges.filter(
+          (e) =>
+            e.source === groupInputNode?.id &&
+            e.sourceHandle === externalEdge.targetHandle,
         );
-        if (internalEdge) {
+        for (const internalEdge of internalEdges) {
           rewiredEdges.push({
             ...externalEdge,
             id: generateId(),
             target: internalEdge.target,
             targetHandle: internalEdge.targetHandle,
+            data: internalEdge.data,
           });
         }
       }
 
+      // Pass-through wires now have real upstream sources. Resolve outputs
+      // after removing the input interface's original edges.
+      rewiredEdges = rewiredEdges.filter(
+        (e) =>
+          e.source !== groupInputNode?.id && e.target !== groupInputNode?.id,
+      );
+
       for (const externalEdge of edgesFromGroup) {
-        // Find the internal edge to GroupOutput with matching handle
-        const internalEdge = edgesToGroupOutput.find(
-          (e) => e.targetHandle === externalEdge.sourceHandle,
+        const internalEdges = rewiredEdges.filter(
+          (e) =>
+            e.target === groupOutputNode?.id &&
+            e.targetHandle === externalEdge.sourceHandle,
         );
-        if (internalEdge) {
+        for (const internalEdge of internalEdges) {
           rewiredEdges.push({
             ...externalEdge,
             id: generateId(),
@@ -1000,26 +1001,11 @@ export function createScriptEditorSession() {
         }
       }
 
-      // Internal edges between regular nodes (not GroupInput/GroupOutput)
-      const innerEdges = edges.filter(
-        (e) =>
-          e.source !== groupInputNode?.id &&
-          e.target !== groupOutputNode?.id &&
-          innerNodes.some((n) => n.id === e.source) &&
-          innerNodes.some((n) => n.id === e.target),
-      );
-
       // Remove group node and its special nodes, remove edges to/from them
       const nodesToRemove = new Set([
         groupId,
         groupInputNode?.id,
         groupOutputNode?.id,
-      ]);
-      const edgesToRemove = new Set([
-        ...edgesToGroup.map((e) => e.id),
-        ...edgesFromGroup.map((e) => e.id),
-        ...edgesFromGroupInput.map((e) => e.id),
-        ...edgesToGroupOutput.map((e) => e.id),
       ]);
 
       batch(() => {
@@ -1032,11 +1018,9 @@ export function createScriptEditorSession() {
             ),
             ...nodesFromGroup,
           ],
-          edges: [
-            ...edges.filter((e) => !edgesToRemove.has(e.id)),
-            ...rewiredEdges,
-            ...innerEdges,
-          ],
+          edges: rewiredEdges.filter(
+            (e) => !nodesToRemove.has(e.source) && !nodesToRemove.has(e.target),
+          ),
           isDirty: true,
         }));
         ui.setState((state) => ({ ...state, selectedNodeId: null }));
