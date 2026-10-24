@@ -6,6 +6,7 @@ import {
   ScriptStatusSchema,
 } from "@/generated/soulfire/script_pb";
 import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
+import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import { createScriptEditorSession } from "./script-editor-store";
 
 test("identified completions retain overlapping invocations and return to older running nodes", () => {
@@ -711,6 +712,44 @@ test("framing selected nodes creates explicit dimensions for saving and resizing
       .parentFrameId,
     frame.id,
   );
+});
+
+test("new group interfaces sit outside all selected content bounds", () => {
+  for (const measured of [false, true]) {
+    const editor = createScriptEditorSession();
+    const first = editor.actions.addNode("action.print", { x: -600, y: -500 });
+    const second = editor.actions.addNode("action.print", { x: 850, y: 700 });
+    editor.actions.addNode("action.print", { x: 10000, y: 0 });
+    if (measured) {
+      editor.actions.onNodesChange([
+        {
+          id: first,
+          type: "dimensions",
+          dimensions: { width: 520, height: 240 },
+        },
+        {
+          id: second,
+          type: "dimensions",
+          dimensions: { width: 3500, height: 100 },
+        },
+      ]);
+    }
+    editor.actions.onNodesChange(
+      [first, second].map((id) => ({ id, type: "select", selected: true })),
+    );
+    editor.actions.createGroupFromSelection();
+    const nodes = editor.document.get().nodes;
+    const group = nodes.find((n) => n.type === "layout.group")!;
+    const input = nodes.find((n) => n.type === "layout.group_input")!;
+    const output = nodes.find((n) => n.type === "layout.group_output")!;
+    assert.ok(
+      input.position.x + group.position.x + GROUP_INTERFACE_NODE_WIDTH < -600,
+    );
+    assert.ok(
+      output.position.x + group.position.x > 850 + (measured ? 3500 : 160),
+    );
+    assert.ok(output.position.x + group.position.x < 10000);
+  }
 });
 
 test("grouping preserves unique nodes through nesting, export, and clipboard cloning", () => {

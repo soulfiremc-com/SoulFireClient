@@ -3,6 +3,7 @@ import { ArrowRightFromLine } from "lucide-react";
 import { memo } from "react";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { cn } from "@/lib/utils";
+import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import { getHandleShape, getPortColor, type PortType } from "./types";
 
 export interface GroupInputNodeData {
@@ -25,10 +26,11 @@ function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
   return (
     <div
       className={cn(
-        "min-w-[140px] rounded-lg border-2 bg-card shadow-md",
+        "rounded-lg border-2 bg-card shadow-md",
         "border-success/50",
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
+      style={{ width: GROUP_INTERFACE_NODE_WIDTH }}
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border/50 bg-success/10 px-3 py-2">
@@ -48,14 +50,17 @@ function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
                 key={output.id}
                 className="flex items-center justify-end gap-2 py-1 pl-4"
               >
-                <span className="text-xs text-muted-foreground">
+                <span
+                  className="min-w-0 truncate text-xs text-muted-foreground"
+                  title={output.label}
+                >
                   {output.label}
                 </span>
                 <Handle
                   type="source"
                   position={Position.Right}
                   id={output.id}
-                  className="!relative !top-0 !transform-none transition-transform hover:scale-125"
+                  className="!relative !top-0 !transform-none shrink-0 transition-transform hover:scale-125"
                   style={{
                     background: getPortColor(output.type),
                     width: isSquareOrDiamond ? 10 : 8,

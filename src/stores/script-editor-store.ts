@@ -20,6 +20,7 @@ import {
 import { mergeExecutionLogs } from "@/lib/script-logs";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
 import { sameScriptDocument } from "@/lib/script-document";
+import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import {
   cloneSubgraph,
   selectedSubgraph,
@@ -790,11 +791,30 @@ export function createScriptEditorSession() {
         },
       };
 
+      // Keep interfaces outside the contents, including wide or spread-out nodes.
+      const contentLeft = Math.min(...selectedNodes.map((n) => n.position.x));
+      const contentRight = Math.max(
+        ...selectedNodes.map(
+          (n) =>
+            n.position.x +
+            (n.measured?.width ?? n.width ?? n.initialWidth ?? 160),
+        ),
+      );
+      const contentTop = Math.min(...selectedNodes.map((n) => n.position.y));
+      const interfaceGap = 80;
+
       // Create GroupInput and GroupOutput nodes inside the group
       const groupInputNode: Node = {
         id: generateId(),
         type: "layout.group_input",
-        position: { x: -200, y: 0 },
+        position: {
+          x:
+            contentLeft -
+            groupNode.position.x -
+            GROUP_INTERFACE_NODE_WIDTH -
+            interfaceGap,
+          y: contentTop - groupNode.position.y,
+        },
         data: {
           parentGroupId: groupId,
           outputs: groupInputs.map((i) => ({
@@ -808,7 +828,10 @@ export function createScriptEditorSession() {
       const groupOutputNode: Node = {
         id: generateId(),
         type: "layout.group_output",
-        position: { x: 200, y: 0 },
+        position: {
+          x: contentRight - groupNode.position.x + interfaceGap,
+          y: contentTop - groupNode.position.y,
+        },
         data: {
           parentGroupId: groupId,
           inputs: groupOutputs.map((o) => ({
