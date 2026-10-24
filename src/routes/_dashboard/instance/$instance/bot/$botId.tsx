@@ -2155,7 +2155,8 @@ function BotDialogPanel({
       });
       if (!result.success)
         throw new Error(result.error || "The dialog action failed.");
-      if (result.clipboard !== undefined) copyMinecraftText(result.clipboard);
+      if (result.clipboard !== undefined)
+        void copyMinecraftText(result.clipboard);
       if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
       // A failed refresh must not turn an accepted action into a retryable failure.
       return service.getDialog({ instanceId, botId }).catch(() => undefined);

@@ -1,14 +1,14 @@
 import { toast } from "sonner";
 import { desktop, isDesktopApp } from "@/lib/desktop";
 
-export function copyMinecraftText(text: string, win: Window = window) {
-  void (
-    isDesktopApp()
+export async function copyMinecraftText(text: string, win: Window = window) {
+  try {
+    await (isDesktopApp()
       ? desktop.clipboard.writeText(text)
-      : win.navigator.clipboard.writeText(text)
-  ).catch(() =>
-    toast.error("Allow clipboard access to copy text from Minecraft."),
-  );
+      : win.navigator.clipboard.writeText(text));
+  } catch {
+    toast.error("Could not copy text. Use HTTPS or allow clipboard access.");
+  }
 }
 
 export function openMinecraftUrl(

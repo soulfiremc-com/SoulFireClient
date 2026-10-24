@@ -315,7 +315,7 @@ function BotPovSession({
         () => (decoder ? feedback.sample(decoder.stats) : undefined),
         undefined,
         (text) =>
-          copyMinecraftText(
+          void copyMinecraftText(
             text,
             canvasRef.current?.ownerDocument.defaultView ?? window,
           ),
