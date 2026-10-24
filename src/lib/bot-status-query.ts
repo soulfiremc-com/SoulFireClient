@@ -3,6 +3,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { demoBotList } from "@/demo-data.ts";
 import { type BotListResponse, BotService } from "@/generated/soulfire/bot_pb";
 import { createTransport } from "@/lib/web-rpc.ts";
+import { shareBotListData } from "./bot-status-cache.ts";
 
 /// Shared query options for the live bot status list of an instance.
 /// Polled every 3 seconds and keyed so the overview and bots pages share
@@ -10,6 +11,7 @@ import { createTransport } from "@/lib/web-rpc.ts";
 export function botStatusQueryOptions(instanceId: string) {
   return queryOptions({
     queryKey: ["bot-status", instanceId],
+    structuralSharing: shareBotListData,
     queryFn: async ({ signal }): Promise<BotListResponse> => {
       const transport = createTransport();
       if (transport === null) {
