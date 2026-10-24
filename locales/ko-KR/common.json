@@ -97,6 +97,8 @@
         "fromUrl": "URL에서",
         "firstClipboardItem": "클립보드에 여러 항목이 있습니다. SoulFire는 첫 번째 항목을 사용합니다.",
         "fromClipboard": "클립보드에서",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "여기에 텍스트를 입력하세요...",
           "submit": "텍스트에서 불러오기"

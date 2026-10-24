@@ -97,6 +97,8 @@
         "fromUrl": "URL'den",
         "firstClipboardItem": "Panoda birden fazla öğe var. SoulFire ilk öğeyi kullanacaktır.",
         "fromClipboard": "Panodan",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Metni buraya girin...",
           "submit": "Metinden yükle"

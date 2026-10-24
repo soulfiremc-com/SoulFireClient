@@ -97,6 +97,8 @@
         "fromUrl": "Từ URL",
         "firstClipboardItem": "Bộ nhớ tạm có chứa nhiều mục. SoulFire sẽ sử dụng mục đầu tiên.",
         "fromClipboard": "Từ bộ nhớ tạm",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Nhập văn bản tại đây...",
           "submit": "Tải từ văn bản"

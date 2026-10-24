@@ -97,6 +97,8 @@
         "fromUrl": "From the bottle at sea",
         "firstClipboardItem": "The clipboard holds a whole booty o' loot. SoulFire will take the first piece o' treasure.",
         "fromClipboard": "From the chest o' clippin's",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Scrawl yer words here...",
           "submit": "Heave from th' writin'"

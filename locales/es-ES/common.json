@@ -97,6 +97,8 @@
         "fromUrl": "Desde URL",
         "firstClipboardItem": "El portapapeles contiene varios elementos. SoulFire usará el primer elemento.",
         "fromClipboard": "Desde portapapeles",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Pon el texto aquí...",
           "submit": "Cargar desde texto"

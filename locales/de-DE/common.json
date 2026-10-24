@@ -97,6 +97,8 @@
         "fromUrl": "Von URL",
         "firstClipboardItem": "Die Zwischenablage enthält mehrere Elemente. SoulFire wird das erste Element verwenden.",
         "fromClipboard": "Aus Zwischenablage",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Text hier eingeben...",
           "submit": "Von Text laden"

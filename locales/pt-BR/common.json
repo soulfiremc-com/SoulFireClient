@@ -97,6 +97,8 @@
         "fromUrl": "Da URL",
         "firstClipboardItem": "A área de transferência contém vários itens. O SoulFire usará o primeiro item.",
         "fromClipboard": "Da área de transferência",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Coloque o texto aqui...",
           "submit": "Carregar do texto"

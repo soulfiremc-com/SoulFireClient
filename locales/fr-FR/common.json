@@ -97,6 +97,8 @@
         "fromUrl": "Depuis une URL",
         "firstClipboardItem": "Le presse-papiers contient plusieurs éléments. SoulFire utilisera le premier élément.",
         "fromClipboard": "Depuis le presse-papier",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Insérez du texte ici...",
           "submit": "Charger depuis du texte"

@@ -97,6 +97,8 @@
         "fromUrl": "从 URL",
         "firstClipboardItem": "剪贴板包含多个项目。SoulFire将使用第一个项目。",
         "fromClipboard": "从剪贴板",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "将文本放在这里...",
           "submit": "从文本加载"

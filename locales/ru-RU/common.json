@@ -97,6 +97,8 @@
         "fromUrl": "Из URL-адреса",
         "firstClipboardItem": "В буфере обмена несколько элементов. SoulFire использует первый элемент.",
         "fromClipboard": "Из буфера обмена",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Вставьте текст сюда...",
           "submit": "Загрузить из текста"

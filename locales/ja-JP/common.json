@@ -97,6 +97,8 @@
         "fromUrl": "URLから",
         "firstClipboardItem": "クリップボードに複数の項目があります。SoulFire は最初の項目を使用します。",
         "fromClipboard": "クリップボードから",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "ここにテキストを入力...",
           "submit": "テキストから読み込む"

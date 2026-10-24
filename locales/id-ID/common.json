@@ -97,6 +97,8 @@
         "fromUrl": "Dari URL",
         "firstClipboardItem": "Clipboard berisi beberapa item. SoulFire akan menggunakan item pertama.",
         "fromClipboard": "Dari clipboard",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Masukkan teks di sini...",
           "submit": "Muat dari teks"
