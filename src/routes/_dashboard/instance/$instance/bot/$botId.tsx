@@ -1597,6 +1597,12 @@ function ContainerTextInputField({
   const { t } = useTranslation("common");
   const id = useId();
   const fieldRef = useRef<HTMLInputElement>(null);
+  const composition = useRef<{
+    value: string;
+    start: number;
+    end: number;
+    direction: "forward" | "backward" | "none";
+  } | null>(null);
   const [draft, setDraft] = useState(() =>
     createServerInputDraft(input.currentValue),
   );
@@ -1622,6 +1628,7 @@ function ContainerTextInputField({
     if (
       !element ||
       !event.cancelable ||
+      composition.current ||
       event.isComposing ||
       event.data === null
     )
@@ -1652,7 +1659,8 @@ function ContainerTextInputField({
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        if (!isPending) onSetText(input.id, current.value);
+        if (!isPending && !composition.current)
+          onSetText(input.id, current.value);
       }}
     >
       <Field>
@@ -1666,6 +1674,35 @@ function ContainerTextInputField({
             placeholder={input.placeholder || input.label}
             value={current.value}
             maxLength={input.maxLength > 0 ? input.maxLength : undefined}
+            onCompositionStart={(event) => {
+              const element = event.currentTarget;
+              const start = element.selectionStart ?? element.value.length;
+              composition.current = {
+                value: element.value,
+                start,
+                end: element.selectionEnd ?? start,
+                direction: element.selectionDirection ?? "none",
+              };
+            }}
+            onCompositionEnd={(event) => {
+              const before = composition.current;
+              composition.current = null;
+              if (!before) return;
+              const element = event.currentTarget;
+              // A browser can clip the commit but leave the caret after the
+              // full preedit. Apply the native insertion to its original range.
+              element.value = before.value;
+              element.setSelectionRange(
+                before.start,
+                before.end,
+                before.direction,
+              );
+              if (event.data) insertText(element, event.data);
+              else
+                setDraft(
+                  editServerInputDraft(current, before.value, isPending),
+                );
+            }}
             onPaste={(event) => {
               event.preventDefault();
               insertText(
@@ -1677,7 +1714,9 @@ function ContainerTextInputField({
               setDraft(
                 editServerInputDraft(
                   current,
-                  editBoxValue(event.target.value, 0),
+                  composition.current
+                    ? event.target.value
+                    : editBoxValue(event.target.value, 0),
                   isPending,
                 ),
               )
