@@ -117,3 +117,27 @@ test("malformed flat endpoints and invalid ports fail instead of truncating", ()
   }
   assert.equal(parseURIProxy("https://127.0.0.1:1080"), null);
 });
+
+test("URI imports round-trip Unix socket paths and credentials", () => {
+  const filename = encodeURIComponent("sf space#?%日本.sock");
+  for (const address of ["unix:///tmp/sf-qa.sock", `unix:///tmp/${filename}`]) {
+    for (const type of [
+      ProxyProto_Type.HTTP,
+      ProxyProto_Type.SOCKS4,
+      ProxyProto_Type.SOCKS5,
+    ]) {
+      for (const authenticated of [false, true]) {
+        const proxy = {
+          type,
+          address,
+          username: authenticated ? "qa:u@/#?%" : undefined,
+          password:
+            authenticated && type !== ProxyProto_Type.SOCKS4
+              ? "qa:#?%/"
+              : undefined,
+        };
+        assert.deepEqual(parseURIProxy(formatProxyAsURI(proxy)), proxy);
+      }
+    }
+  }
+});

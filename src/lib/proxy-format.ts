@@ -45,10 +45,13 @@ export function parseURIProxy(line: string): ProfileProxy | null {
   const uri = new URI(line);
   const type = URI_PROXY_TYPES.get(uri.protocol());
   if (type === undefined) return null;
+  // URI.js normalizes hostless HTTP URLs; read Unix socket paths from the input.
+  const unixPath = /^[^:]+:\/\/(?:[^/]*@)?(\/[^?#]*)/.exec(line)?.[1];
   const host = uri.host();
+  if (!unixPath && !host) throw new Error("Invalid proxy address");
   return {
     type,
-    address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
+    address: unixPath ? `unix://${unixPath}` : `inet://${host}`,
     username: uri.username() === "" ? undefined : uri.username(),
     password: uri.password() === "" ? undefined : uri.password(),
   };
