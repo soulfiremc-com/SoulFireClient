@@ -97,6 +97,8 @@
         "fromUrl": "從網址匯入",
         "firstClipboardItem": "剪貼簿中包含多個項目。SoulFire 會使用第一個項目。",
         "fromClipboard": "從剪貼簿",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "請在此輸入文本...",
           "submit": "從文本載入"

@@ -97,6 +97,8 @@
         "fromUrl": "Frum URL",
         "firstClipboardItem": "Clipboard haz lotz ov itemz. SoulFire usin da furst one, kthxbai.",
         "fromClipboard": "Frum clipboard",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Give taxt here...",
           "submit": "Load form taxt"

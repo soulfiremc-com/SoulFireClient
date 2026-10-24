@@ -97,6 +97,8 @@
         "fromUrl": "Da URL",
         "firstClipboardItem": "Gli appunti contengono più elementi. SoulFire utilizzerà il primo elemento.",
         "fromClipboard": "Da appunti",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Inserisci testo qui...",
           "submit": "Carica da testo"

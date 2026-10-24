@@ -97,6 +97,8 @@
         "fromUrl": "Z URL adresy",
         "firstClipboardItem": "Schránka obsahuje viacero položiek. SoulFire použije prvú položku.",
         "fromClipboard": "Zo schránky",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Zadajte text sem...",
           "submit": "Načítať z textu"

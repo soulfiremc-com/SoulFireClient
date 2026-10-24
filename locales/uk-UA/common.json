@@ -97,6 +97,8 @@
         "fromUrl": "За URL-адресою",
         "firstClipboardItem": "Буфер обміну містить кілька елементів. SoulFire використає перший елемент.",
         "fromClipboard": "З буфера обміну",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Введіть текст тут...",
           "submit": "Завантажити з тексту"

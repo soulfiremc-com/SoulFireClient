@@ -97,6 +97,8 @@
         "fromUrl": "˥ɹn ɯoɹɟ",
         "firstClipboardItem": "˙ɯǝʇᴉ ʇsɹᴉɟ ǝɥʇ ǝs∩ ˙ǝɯǝʇᴉ lᴉdlɐʇᴉlpɐ ǝlʇndᴉlnd lᴉdɐʇuoɔ pɐɹʇuuoɔ ǝɥʇ",
         "fromClipboard": "pɹɐoqdᴉʟ ɯoɹɟ",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "...ǝɹǝɥ ʇxǝʇ ʇnԀ",
           "submit": "ʇxǝʇ ɯoɹɟ pɐo˥"

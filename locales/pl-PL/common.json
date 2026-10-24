@@ -97,6 +97,8 @@
         "fromUrl": "Z adresu URL",
         "firstClipboardItem": "Schowek zawiera kilka elementów. SoulFire użyje pierwszego z nich.",
         "fromClipboard": "Ze schowka",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Umieść tekst tutaj...",
           "submit": "Wczytaj z tekstu"

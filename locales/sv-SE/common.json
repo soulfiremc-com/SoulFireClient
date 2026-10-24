@@ -97,6 +97,8 @@
         "fromUrl": "Från URL",
         "firstClipboardItem": "Urklippet innehåller flera objekt. SoulFire kommer att använda det första objektet.",
         "fromClipboard": "Från urklipp",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Skriv in text här...",
           "submit": "Ladda från text"

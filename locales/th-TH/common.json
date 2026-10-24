@@ -97,6 +97,8 @@
         "fromUrl": "จาก URL",
         "firstClipboardItem": "คลิปบอร์ดมีหลายรายการ SoulFire จะใช้รายการแรก",
         "fromClipboard": "จากคลิปบอร์ด",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "ใส่ข้อความที่นี่...",
           "submit": "โหลดจากข้อความ"
