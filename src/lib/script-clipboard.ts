@@ -1,8 +1,13 @@
 import type { Edge, Node } from "@xyflow/react";
+import { z } from "zod";
 import { desktop, isDesktopApp } from "@/lib/desktop";
+import { scriptGraphSchema } from "@/lib/script-graph";
 
 const CLIPBOARD_PREFIX = "SOULFIRE_SCRIPT_CLIPBOARD:";
 const LOCAL_STORAGE_KEY = "script-editor-clipboard";
+const clipboardSchema = scriptGraphSchema.extend({
+  sourceScriptId: z.string().nullable().optional().default(null),
+});
 
 export interface ScriptClipboardData {
   nodes: Node[];
@@ -20,19 +25,26 @@ function serializeClipboardData(data: ScriptClipboardData): string {
 /**
  * Parse clipboard text into ScriptClipboardData if valid.
  */
-function parseClipboardText(text: string): ScriptClipboardData | null {
-  if (!text.startsWith(CLIPBOARD_PREFIX)) return null;
-
+function parseClipboardJson(text: string): ScriptClipboardData | null {
   try {
-    const jsonData = text.slice(CLIPBOARD_PREFIX.length);
-    const parsed = JSON.parse(jsonData) as ScriptClipboardData;
-    if (parsed.nodes && parsed.edges) {
-      return parsed;
-    }
+    return clipboardSchema.parse(JSON.parse(text));
   } catch {
-    // Invalid JSON
+    return null;
   }
-  return null;
+}
+
+function parseClipboardText(text: string): ScriptClipboardData | null {
+  return text.startsWith(CLIPBOARD_PREFIX)
+    ? parseClipboardJson(text.slice(CLIPBOARD_PREFIX.length))
+    : null;
+}
+
+function readStoredClipboard(): ScriptClipboardData | null {
+  try {
+    return parseClipboardJson(localStorage.getItem(LOCAL_STORAGE_KEY) ?? "");
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -62,28 +74,11 @@ export function handleNativePaste(
 ): ScriptClipboardData | null {
   const text = event.clipboardData?.getData("text/plain") ?? "";
 
-  // Try to parse from clipboard
-  const fromClipboard = parseClipboardText(text);
-  if (fromClipboard) {
-    event.preventDefault();
-    return fromClipboard;
-  }
-
-  // Fallback to localStorage
-  const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored) as ScriptClipboardData;
-      if (parsed.nodes && parsed.edges) {
-        event.preventDefault();
-        return parsed;
-      }
-    } catch {
-      // Invalid localStorage data
-    }
-  }
-
-  return null;
+  // Supplied text takes precedence, even when invalid or unrelated to a script.
+  // Only fall back when the browser cannot provide clipboard text.
+  const data = text ? parseClipboardText(text) : readStoredClipboard();
+  if (data) event.preventDefault();
+  return data;
 }
 
 /**
@@ -113,56 +108,23 @@ export async function readFromDesktopClipboard(): Promise<ScriptClipboardData | 
   if (!isDesktopApp()) {
     // For browser, read from localStorage - actual clipboard read
     // should happen via handleNativePaste in a paste event
-    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored) as ScriptClipboardData;
-        if (parsed.nodes && parsed.edges) {
-          return parsed;
-        }
-      } catch {
-        // Invalid data
-      }
-    }
-    return null;
+    return readStoredClipboard();
   }
 
   try {
     const text = await desktop.clipboard.readText();
-    const fromClipboard = parseClipboardText(text);
-    if (fromClipboard) return fromClipboard;
+    if (text) return parseClipboardText(text);
   } catch {
     // Clipboard read failed
   }
 
   // Fallback to localStorage
-  const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored) as ScriptClipboardData;
-      if (parsed.nodes && parsed.edges) {
-        return parsed;
-      }
-    } catch {
-      // Invalid data
-    }
-  }
-
-  return null;
+  return readStoredClipboard();
 }
 
 /**
  * Check if there's valid script data available (localStorage check only).
  */
 export function hasScriptClipboardData(): boolean {
-  const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored) as ScriptClipboardData;
-      return parsed?.nodes?.length > 0;
-    } catch {
-      return false;
-    }
-  }
-  return false;
+  return (readStoredClipboard()?.nodes.length ?? 0) > 0;
 }

@@ -223,3 +223,81 @@ test("older exported node sizes are normalized without losing frame sizes or oth
   assert.equal(ordinary.width, 180);
   assert.equal(ordinary.style.height, 126);
 });
+
+test("invalid editor metadata cannot replace an existing script draft", () => {
+  const session = createScriptEditorSession();
+  session.actions.addNode("constant.number", { x: 0, y: 0 }, { value: 42 });
+  const before = session.actions.getScriptData();
+  for (const [type, data] of [
+    ["constant.number", { hiddenSockets: 42 }],
+    ["constant.number", { hiddenSockets: [null] }],
+    ["constant.number", { label: { text: "invalid" } }],
+    ["constant.number", { parentGroupId: [] }],
+    ["constant.number", { parentFrameId: 42 }],
+    ["constant.number", { containedNodes: [42] }],
+    ["constant.number", { collapsed: "false" }],
+    ["constant.number", { muted: "false" }],
+    ["layout.reroute", { resolvedType: {} }],
+    ["layout.note", { content: [] }],
+    ["layout.frame", { color: {} }],
+    ["layout.group_input", { outputs: "invalid" }],
+    ["layout.group_output", { inputs: [null] }],
+    ["layout.group", { inputs: [{ id: "port", type: 42, label: "Input" }] }],
+    ["layout.group", { outputs: [{ id: "port", type: "number", label: {} }] }],
+  ] as const) {
+    assert.throws(() =>
+      session.actions.loadScriptData(
+        parseScriptFile(
+          JSON.stringify({
+            nodes: [{ id: "imported", type, position: { x: 0, y: 0 }, data }],
+            edges: [],
+          }),
+        ),
+      ),
+    );
+    assert.deepEqual(session.actions.getScriptData(), before);
+  }
+});
+
+test("editor metadata validation preserves layout ports and unrelated node parameters", () => {
+  const graph = {
+    nodes: [
+      {
+        id: "group",
+        type: "layout.group",
+        position: { x: 10, y: 20 },
+        data: {
+          label: "Group",
+          inputs: [{ id: "in", label: "Input", type: "number" }],
+          outputs: [{ id: "out", label: "Output", type: "extension.future" }],
+          collapsed: false,
+        },
+      },
+      {
+        id: "custom",
+        type: "extension.custom",
+        position: { x: 1, y: 2 },
+        data: {
+          parentGroupId: "group",
+          parentFrameId: null,
+          hiddenSockets: ["__hide_unconnected__", "out"],
+          inputs: { nested: [1, "世界", null] },
+          outputs: "parameter",
+          label: null,
+          muted: false,
+          resolvedType: "extension.future",
+        },
+      },
+      {
+        id: "frame",
+        type: "layout.frame",
+        position: { x: 0, y: 0 },
+        width: 300,
+        height: 200,
+        data: { containedNodes: ["group"], color: "#ffcc00" },
+      },
+    ],
+    edges: [],
+  };
+  assert.deepEqual(parseScriptFile(JSON.stringify(graph)).nodes, graph.nodes);
+});

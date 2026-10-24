@@ -1,40 +1,13 @@
 import { fromJson, type JsonValue, toJson } from "@bufbuild/protobuf";
 import { z } from "zod";
 import { ScriptQuotasSchema } from "@/generated/soulfire/script_pb";
-import { normalizeScriptNodeDimensions } from "@/lib/script-node-layout";
+import { scriptGraphSchema } from "@/lib/script-graph";
 import type { ScriptDocumentData } from "@/stores/script-editor-types";
 
 type ImportedScript = Pick<ScriptDocumentData, "nodes" | "edges" | "quotas"> &
   Partial<Pick<ScriptDocumentData, "name" | "description" | "paused">>;
 
-const idSchema = z.string().min(1);
-const nodeSchema = z.looseObject({
-  id: idSchema,
-  type: z.string().min(1).optional(),
-  position: z.object({ x: z.number(), y: z.number() }),
-  data: z.record(z.string(), z.unknown()),
-});
-const edgeSchema = z.looseObject({
-  id: idSchema,
-  source: idSchema,
-  target: idSchema,
-  sourceHandle: z.string().nullable().optional(),
-  targetHandle: z.string().nullable().optional(),
-  data: z.record(z.string(), z.unknown()).optional(),
-});
-const scriptFileSchema = z.object({
-  nodes: z
-    .array(nodeSchema)
-    .refine(
-      (nodes) => new Set(nodes.map((node) => node.id)).size === nodes.length,
-      "Duplicate node IDs",
-    ),
-  edges: z
-    .array(edgeSchema)
-    .refine(
-      (edges) => new Set(edges.map((edge) => edge.id)).size === edges.length,
-      "Duplicate edge IDs",
-    ),
+const scriptFileSchema = scriptGraphSchema.extend({
   name: z.string().optional(),
   description: z.string().optional(),
   paused: z.boolean().optional(),
@@ -62,7 +35,7 @@ export function parseScriptFile(content: string): ImportedScript {
     delete data.quotas.$typeName;
 
   return {
-    nodes: data.nodes.map(normalizeScriptNodeDimensions),
+    nodes: data.nodes,
     edges: data.edges,
     name: data.name,
     description: data.description,
