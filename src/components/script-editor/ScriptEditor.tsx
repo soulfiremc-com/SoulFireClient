@@ -17,6 +17,7 @@ import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
+import { ScriptGroupViewports } from "@/lib/script-group-viewports";
 import { createConnectionValidator, edgeTypes } from "./edges";
 import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
@@ -44,7 +45,7 @@ export function ScriptEditor() {
   const showMiniMap = useStore(
     (state) => state.width >= 640 && state.height >= 400,
   );
-  const initialFitDone = useRef(false);
+  const [groupViewports] = useState(() => new ScriptGroupViewports());
   const [nodeContextMenu, setNodeContextMenu] =
     useState<NodeContextMenuState | null>(null);
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null);
@@ -78,6 +79,9 @@ export function ScriptEditor() {
     editor.ui,
     (state) => state.groupEditStack,
   );
+  const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+  const visibleNodes = useSelector(editor.visibleNodes);
+  const visibleEdges = useSelector(editor.visibleEdges);
   const enterGroup = editor.actions.enterGroup;
   const exitGroup = editor.actions.exitGroup;
   const createGroupFromSelection = editor.actions.createGroupFromSelection;
@@ -117,13 +121,39 @@ export function ScriptEditor() {
     setReactFlowInstance(instance);
   }, []);
 
-  // Saved dimensions can trigger an eager fit before panel constraints settle.
+  // Keep the first fit behind measurement; later fits are queued for the new group's nodes.
   useEffect(() => {
-    if (!reactFlowInstance || !nodesInitialized || initialFitDone.current)
+    if (
+      !reactFlowInstance ||
+      (!nodesInitialized && !groupViewports.initialized)
+    )
       return;
-    initialFitDone.current = true;
-    void reactFlowInstance.fitView();
-  }, [nodesInitialized, reactFlowInstance]);
+    const navigating = groupViewports.initialized;
+    const change = groupViewports.enter(
+      currentGroupId,
+      reactFlowInstance.getViewport(),
+    );
+    if (change.type === "unchanged") return;
+    if (navigating) containerRef.current?.focus({ preventScroll: true });
+    if (change.type === "restore") {
+      void reactFlowInstance.setViewport(change.viewport);
+    } else if (change.type === "fit") {
+      const fitted = visibleNodes.length
+        ? reactFlowInstance.fitView({
+            nodes: visibleNodes.map(({ id }) => ({ id })),
+          })
+        : reactFlowInstance.setViewport({ x: 0, y: 0, zoom: 1 });
+      void fitted.then((success) => {
+        if (success) groupViewports.completeFit(currentGroupId);
+      });
+    }
+  }, [
+    currentGroupId,
+    groupViewports,
+    nodesInitialized,
+    reactFlowInstance,
+    visibleNodes,
+  ]);
 
   const getCanvasCenter = useCallback(() => {
     if (!reactFlowInstance || !containerRef.current) return null;
@@ -661,10 +691,6 @@ export function ScriptEditor() {
       endLinkCutting();
     }
   }, [linkCutting.active, endLinkCutting]);
-
-  // Get visible nodes and edges based on current group context
-  const visibleNodes = useSelector(editor.visibleNodes);
-  const visibleEdges = useSelector(editor.visibleEdges);
 
   // Create connection validator with current nodes
   const connectionValidator = useMemo(
