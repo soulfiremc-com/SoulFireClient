@@ -467,7 +467,9 @@ export function BotContextMenu({
           <MenuSeparator />
           <MenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.lastKnownName);
+              copyToClipboard(
+                contextMenu.data.accountName || contextMenu.data.lastKnownName,
+              );
               dismiss();
             }}
           >
@@ -569,18 +571,18 @@ export function BotGrid({
     () =>
       infiniteQueryOptions({
         queryKey: [
-          "bots-paginated",
+          "bot-account-pages",
           instanceInfo.id,
           filteredAccounts.map((a) => a.profileId).join(","),
         ],
         queryFn: ({ pageParam }) => {
           const start = pageParam * PAGE_SIZE;
           const end = start + PAGE_SIZE;
-          const pageAccounts = filteredAccounts.slice(start, end);
           return {
-            accounts: pageAccounts,
+            profileIds: filteredAccounts
+              .slice(start, end)
+              .map((account) => account.profileId),
             nextPage: end < filteredAccounts.length ? pageParam + 1 : undefined,
-            totalCount: filteredAccounts.length,
           };
         },
         initialPageParam: 0,
@@ -592,13 +594,16 @@ export function BotGrid({
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSuspenseInfiniteQuery(botsInfiniteQueryOptions);
 
+  const visibleAccounts = useMemo(() => {
+    const visibleIds = new Set(data.pages.flatMap((page) => page.profileIds));
+    return filteredAccounts.filter((account) =>
+      visibleIds.has(account.profileId),
+    );
+  }, [data.pages, filteredAccounts]);
+
   const botsWithStatus = useMemo(
-    () =>
-      mergeBotStatus(
-        data.pages.flatMap((page) => page.accounts),
-        statusMap,
-      ),
-    [data.pages, statusMap],
+    () => mergeBotStatus(visibleAccounts, statusMap),
+    [visibleAccounts, statusMap],
   );
 
   const totalCount = filteredAccounts.length;
