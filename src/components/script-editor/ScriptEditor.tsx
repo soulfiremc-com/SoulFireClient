@@ -11,6 +11,7 @@ import {
   ReactFlow,
   type ReactFlowInstance,
   useNodesInitialized,
+  useStore,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -39,6 +40,10 @@ export function ScriptEditor() {
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
   const nodesInitialized = useNodesInitialized();
+  // The 200x150 overview needs room beside the graph and its navigation controls.
+  const showMiniMap = useStore(
+    (state) => state.width >= 640 && state.height >= 400,
+  );
   const initialFitDone = useRef(false);
   const [nodeContextMenu, setNodeContextMenu] =
     useState<NodeContextMenuState | null>(null);
@@ -804,7 +809,7 @@ export function ScriptEditor() {
             color="var(--muted-foreground)"
           />
           <Controls />
-          <MiniMap zoomable pannable />
+          {showMiniMap && <MiniMap zoomable pannable />}
         </ReactFlow>
       </NodeEditingProvider>
 
