@@ -142,6 +142,7 @@ import {
 } from "@/lib/server-input-draft";
 import i18n from "@/lib/i18n";
 import { isResourceUnavailable } from "@/lib/resource-errors";
+import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
@@ -2142,18 +2143,13 @@ function BotDialogPanel({
       // A failed refresh must not turn an accepted action into a retryable failure.
       return service.getDialog({ instanceId, botId }).catch(() => undefined);
     },
-    onSuccess: async (state) => {
-      if (state) {
-        await queryClient.cancelQueries({
-          queryKey: dialogQueryOptions.queryKey,
-        });
-        queryClient.setQueryData(dialogQueryOptions.queryKey, state);
-      } else {
-        void queryClient.invalidateQueries({
-          queryKey: dialogQueryOptions.queryKey,
-        });
-      }
-    },
+    onSuccess: (state, { expectedScreenId }) =>
+      applyServerDialogRefresh(
+        queryClient,
+        dialogQueryOptions.queryKey,
+        expectedScreenId,
+        state,
+      ),
     onError: (error) => {
       toast.error(error.message);
       if (error instanceof ConnectError && error.code === Code.Aborted)
@@ -2216,7 +2212,10 @@ function BotDialogPanel({
           <BotDialogForm
             key={`${instanceId}:${botId}:${dialog.screenId}`}
             dialog={dialog}
-            pending={submitMutation.isPending}
+            pending={
+              submitMutation.isPending &&
+              submitMutation.variables?.expectedScreenId === dialog.screenId
+            }
             onSubmit={async (buttonIndex, inputValues) => {
               const state = await submitMutation.mutateAsync({
                 buttonIndex,
