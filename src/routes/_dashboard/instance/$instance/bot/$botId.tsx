@@ -41,8 +41,10 @@ import {
   Suspense,
   useCallback,
   useEffect,
+  useEffectEvent,
   useId,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -140,7 +142,7 @@ import {
   editServerInputDraft,
   syncServerInputDraft,
 } from "@/lib/server-input-draft";
-import { editBoxValue } from "@/lib/minecraft-edit-box";
+import { editBoxInsertion, editBoxValue } from "@/lib/minecraft-edit-box";
 import i18n from "@/lib/i18n";
 import { containerMutationOptions } from "@/lib/container-mutation-options";
 import { isResourceUnavailable } from "@/lib/resource-errors";
@@ -1594,11 +1596,57 @@ function ContainerTextInputField({
 }) {
   const { t } = useTranslation("common");
   const id = useId();
+  const fieldRef = useRef<HTMLInputElement>(null);
   const [draft, setDraft] = useState(() =>
     createServerInputDraft(input.currentValue),
   );
   const current = syncServerInputDraft(draft, input.currentValue);
   if (current !== draft) setDraft(current);
+
+  const insertText = (element: HTMLInputElement, text: string) => {
+    const start = element.selectionStart ?? element.value.length;
+    const end = element.selectionEnd ?? start;
+    const insertion = editBoxInsertion(
+      element.value,
+      text,
+      start,
+      end,
+      input.maxLength,
+    );
+    element.setRangeText(insertion, start, end, "end");
+    setDraft(editServerInputDraft(current, element.value, isPending));
+  };
+
+  const handleBeforeInput = useEffectEvent((event: InputEvent) => {
+    const element = fieldRef.current;
+    if (
+      !element ||
+      !event.cancelable ||
+      event.isComposing ||
+      event.data === null
+    )
+      return;
+    const start = element.selectionStart ?? element.value.length;
+    const end = element.selectionEnd ?? start;
+    const insertion = editBoxInsertion(
+      element.value,
+      event.data,
+      start,
+      end,
+      input.maxLength,
+    );
+    if (insertion === event.data) return;
+    event.preventDefault();
+    if (editBoxValue(event.data, 0)) insertText(element, event.data);
+  });
+
+  useEffect(() => {
+    const element = fieldRef.current;
+    if (!element) return;
+    const beforeInput = (event: InputEvent) => handleBeforeInput(event);
+    element.addEventListener("beforeinput", beforeInput);
+    return () => element.removeEventListener("beforeinput", beforeInput);
+  }, []);
 
   return (
     <form
@@ -1613,14 +1661,23 @@ function ContainerTextInputField({
         </FieldLabel>
         <InputGroup>
           <InputGroupInput
+            ref={fieldRef}
             id={id}
             placeholder={input.placeholder || input.label}
             value={current.value}
+            maxLength={input.maxLength > 0 ? input.maxLength : undefined}
+            onPaste={(event) => {
+              event.preventDefault();
+              insertText(
+                event.currentTarget,
+                event.clipboardData.getData("text/plain"),
+              );
+            }}
             onChange={(event) =>
               setDraft(
                 editServerInputDraft(
                   current,
-                  editBoxValue(event.target.value, input.maxLength),
+                  editBoxValue(event.target.value, 0),
                   isPending,
                 ),
               )

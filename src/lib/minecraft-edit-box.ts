@@ -15,3 +15,15 @@ export function editBoxValue(value: string, maxLength: number): string {
   }
   return filtered;
 }
+
+export function editBoxInsertion(
+  value: string,
+  text: string,
+  start: number,
+  end: number,
+  maxLength: number,
+): string {
+  if (maxLength <= 0) return editBoxValue(text, 0);
+  const available = maxLength - value.length + end - start;
+  return available <= 0 ? "" : editBoxValue(text, available);
+}
