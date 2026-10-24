@@ -13,7 +13,7 @@ import {
   ZoomInIcon,
   ZoomOutIcon,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
@@ -36,6 +36,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
+import { ImportReadSession, readImportFile } from "@/lib/import-read";
 import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { cn } from "@/lib/utils.tsx";
 import { ComplexityScore } from "./ComplexityScore";
@@ -75,10 +76,6 @@ export function ScriptToolbar({
   const isMobile = useIsMobile();
   const scriptName = useSelector(editor.document, (state) => state.scriptName);
   const setScriptName = editor.actions.setScriptName;
-  const scriptDescription = useSelector(
-    editor.document,
-    (state) => state.scriptDescription,
-  );
   const isDirty = useSelector(editor.document, (state) => state.isDirty);
   const paused = useSelector(editor.document, (state) => state.paused);
   const loadScriptData = editor.actions.loadScriptData;
@@ -86,6 +83,8 @@ export function ScriptToolbar({
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(scriptName);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [readSession] = useState(() => new ImportReadSession());
+  useEffect(() => () => readSession.cancel(), [readSession]);
 
   const handleExport = () => {
     const blob = new Blob(
@@ -106,35 +105,30 @@ export function ScriptToolbar({
     toast.success(t("scripts.editor.toolbar.exportSuccess"));
   };
 
-  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    event.currentTarget.value = "";
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const content = e.target?.result as string;
-        const importData = parseScriptFile(content);
-
-        loadScriptData({
-          nodes: importData.nodes,
-          edges: importData.edges,
-          name: importData.name ?? scriptName,
-          description: importData.description ?? scriptDescription,
-          paused: importData.paused ?? false,
-          quotas: importData.quotas,
-        });
-
-        toast.success(t("scripts.editor.toolbar.importSuccess"));
-      } catch {
-        toast.error(t("scripts.editor.toolbar.importError"));
-      }
-    };
-    reader.readAsText(file);
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    try {
+      await readSession.run(
+        async (signal) => [await readImportFile(file, signal)],
+        ([content]) => {
+          const importData = parseScriptFile(content);
+          const current = editor.document.get();
+          loadScriptData({
+            nodes: importData.nodes,
+            edges: importData.edges,
+            name: importData.name ?? current.scriptName,
+            description: importData.description ?? current.scriptDescription,
+            paused: importData.paused ?? false,
+            quotas: importData.quotas,
+          });
+          toast.success(t("scripts.editor.toolbar.importSuccess"));
+        },
+      );
+    } catch {
+      toast.error(t("scripts.editor.toolbar.importError"));
     }
   };
 
