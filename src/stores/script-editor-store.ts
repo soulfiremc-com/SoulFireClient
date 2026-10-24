@@ -901,23 +901,7 @@ export function createScriptEditorSession() {
 
       document.setState((state) => ({
         ...state,
-        nodes: [
-          ...updatedNodes.filter(
-            (n) => !selectedIds.has(n.id) || n.data.parentGroupId === groupId,
-          ),
-          ...selectedNodes.map((n) => ({
-            ...n,
-            data: { ...n.data, parentGroupId: groupId },
-            position: {
-              x: n.position.x - centerX,
-              y: n.position.y - centerY,
-            },
-            selected: false,
-          })),
-          groupNode,
-          groupInputNode,
-          groupOutputNode,
-        ],
+        nodes: [...updatedNodes, groupNode, groupInputNode, groupOutputNode],
         edges: [
           ...edges.filter((e) => !edgesToRemove.has(e.id)),
           ...newExternalEdges,

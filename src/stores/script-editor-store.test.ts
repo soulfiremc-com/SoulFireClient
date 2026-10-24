@@ -5,6 +5,7 @@ import {
   ScriptQuotasSchema,
   ScriptStatusSchema,
 } from "@/generated/soulfire/script_pb";
+import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { createScriptEditorSession } from "./script-editor-store";
 
 test("identified completions retain overlapping invocations and return to older running nodes", () => {
@@ -709,5 +710,100 @@ test("framing selected nodes creates explicit dimensions for saving and resizing
     session.document.get().nodes.find((node) => node.id === id)?.data
       .parentFrameId,
     frame.id,
+  );
+});
+
+test("grouping preserves unique nodes through nesting, export, and clipboard cloning", () => {
+  const editor = createScriptEditorSession();
+  const source = editor.actions.addNode("trigger.on_join", { x: 0, y: 0 });
+  const first = editor.actions.addNode(
+    "action.print",
+    { x: 300, y: 100 },
+    { message: 11 },
+  );
+  const second = editor.actions.addNode(
+    "action.print",
+    { x: 500, y: 100 },
+    { message: 22 },
+  );
+  const after = editor.actions.addNode(
+    "action.print",
+    { x: 800, y: 100 },
+    { message: 33 },
+  );
+  for (const [from, to] of [
+    [source, first],
+    [first, second],
+    [second, after],
+  ]) {
+    editor.actions.onConnect({
+      source: from,
+      sourceHandle: "out",
+      target: to,
+      targetHandle: "in",
+    });
+  }
+  let selection = [first, second];
+  for (let depth = 0; depth < 2; depth++) {
+    editor.actions.deselectAll();
+    editor.actions.onNodesChange(
+      selection.map((id) => ({ type: "select", id, selected: true })),
+    );
+    const before = editor.actions.getScriptData();
+    const oldIds = new Set(before.nodes.map((node) => node.id));
+    editor.actions.createGroupFromSelection();
+    const grouped = editor.actions.getScriptData();
+    assert.equal(grouped.nodes.length, before.nodes.length + 3);
+    assert.equal(
+      new Set(grouped.nodes.map((node) => node.id)).size,
+      grouped.nodes.length,
+    );
+    assert.ok(
+      grouped.edges.every(
+        (edge) =>
+          grouped.nodes.some((node) => node.id === edge.source) &&
+          grouped.nodes.some((node) => node.id === edge.target),
+      ),
+    );
+    const group = grouped.nodes.find(
+      (node) => node.type === "layout.group" && !oldIds.has(node.id),
+    )!;
+    assert.ok(
+      selection.every(
+        (id) =>
+          grouped.nodes.find((node) => node.id === id)?.data.parentGroupId ===
+          group.id,
+      ),
+    );
+    assert.equal(
+      parseScriptFile(serializeScriptFile(grouped)).nodes.length,
+      grouped.nodes.length,
+    );
+    selection = [group.id, after];
+  }
+  editor.actions.deselectAll();
+  editor.actions.onNodesChange([
+    { type: "select", id: selection[0], selected: true },
+  ]);
+  const copied = editor.actions.getSelectedForClipboard()!;
+  assert.equal(copied.nodes.length, 9);
+  assert.equal(
+    new Set(copied.nodes.map((node) => node.id)).size,
+    copied.nodes.length,
+  );
+  const beforePaste = editor.actions.getScriptData();
+  editor.actions.pasteClipboardData(copied, { x: 1000, y: 500 });
+  const pasted = editor.actions.getScriptData();
+  assert.equal(
+    pasted.nodes.length,
+    beforePaste.nodes.length + copied.nodes.length,
+  );
+  assert.equal(
+    new Set(pasted.nodes.map((node) => node.id)).size,
+    pasted.nodes.length,
+  );
+  assert.equal(
+    parseScriptFile(serializeScriptFile(pasted)).nodes.length,
+    pasted.nodes.length,
   );
 });
