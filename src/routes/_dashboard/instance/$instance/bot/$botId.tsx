@@ -141,6 +141,7 @@ import {
   syncServerInputDraft,
 } from "@/lib/server-input-draft";
 import i18n from "@/lib/i18n";
+import { containerMutationOptions } from "@/lib/container-mutation-options";
 import { isResourceUnavailable } from "@/lib/resource-errors";
 import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -1120,8 +1121,12 @@ function BotInventoryPanel({
 
   // Mutation for clicking inventory slots
   const clickMutation = useMutation({
-    mutationKey: ["bot", "inventory", "click", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "click",
+    ),
     mutationFn: async (request: BotInventoryClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1138,8 +1143,12 @@ function BotInventoryPanel({
 
   // Mutation for closing container
   const closeContainerMutation = useMutation({
-    mutationKey: ["bot", "container", "close", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "close",
+    ),
     mutationFn: async (expectedMenuId: string | undefined) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1158,8 +1167,12 @@ function BotInventoryPanel({
 
   // Mutation for clicking container buttons (stonecutter recipes, etc.)
   const buttonClickMutation = useMutation({
-    mutationKey: ["bot", "container", "button", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "button",
+    ),
     mutationFn: async (request: BotContainerButtonClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1176,8 +1189,12 @@ function BotInventoryPanel({
 
   // Mutation for setting container text (anvil rename, etc.)
   const setTextMutation = useMutation({
-    mutationKey: ["bot", "container", "text", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "text",
+    ),
     mutationFn: async (request: BotSetContainerTextRequest) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1192,7 +1209,7 @@ function BotInventoryPanel({
     },
   });
 
-  // Mutation for setting hotbar slot
+  // Hotbar selection is bot-wide, so it keeps its own queue across menu changes.
   const setHotbarSlotMutation = useMutation({
     mutationKey: ["bot", "hotbar", "slot", instanceId, botId],
     scope: { id: `bot-container-${instanceId}-${botId}` },
