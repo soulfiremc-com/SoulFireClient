@@ -54,7 +54,7 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
-import { botSettingMutationOptions } from "@/lib/bot-setting-mutation-options.ts";
+import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";
 import {
@@ -270,9 +270,8 @@ function BotSettingRow(props: {
     `${props.row.identifier.namespace}:${props.row.identifier.key}`,
   );
   const valueMutation = useMutation({
-    ...botSettingMutationOptions(
-      props.instanceId,
-      props.botId,
+    ...settingMutationOptions(
+      { type: "bot", instanceId: props.instanceId, botId: props.botId },
       props.row.identifier.namespace,
       props.row.identifier.key,
       "value",
@@ -297,9 +296,8 @@ function BotSettingRow(props: {
     },
   });
   const resetMutation = useMutation({
-    ...botSettingMutationOptions(
-      props.instanceId,
-      props.botId,
+    ...settingMutationOptions(
+      { type: "bot", instanceId: props.instanceId, botId: props.botId },
       props.row.identifier.namespace,
       props.row.identifier.key,
       "reset",

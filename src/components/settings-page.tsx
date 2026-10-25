@@ -86,10 +86,13 @@ import {
   updateNumericRange,
   type NumericRange,
 } from "@/lib/numeric-setting-value.ts";
+import {
+  settingMutationOptions,
+  type SettingMutationTarget,
+} from "@/lib/setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   cn,
-  getSettingIdentifierKey,
   getSettingValue,
   updateBotConfigEntry,
   updateInstanceConfigEntry,
@@ -716,6 +719,7 @@ function SettingField<T extends BaseSettings>(props: {
     value: JsonValue,
   ) => Promise<void>;
   config: T;
+  mutationTarget: SettingMutationTarget;
 }) {
   const definition = useSettingsDefinition(props.settingId);
   const namespace = props.settingId.namespace;
@@ -726,8 +730,7 @@ function SettingField<T extends BaseSettings>(props: {
     [props.config, definition],
   );
   const setValueMutation = useMutation({
-    mutationKey: ["setting", namespace, key],
-    scope: { id: `setting-${namespace}-${key}` },
+    ...settingMutationOptions(props.mutationTarget, namespace, key, "value"),
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(namespace, key, value);
     },
@@ -781,7 +784,18 @@ export function InstanceSettingFieldByKey<T extends BaseSettings>(props: {
 
   return (
     <SettingsRegistryContext.Provider value={settingsRegistry}>
-      <SettingFieldByKey {...props} />
+      <SettingFieldByKey
+        key={
+          settingMutationOptions(
+            { type: "instance", instanceId: instanceInfo.id },
+            props.namespace,
+            props.settingKey,
+            "value",
+          ).scope.id
+        }
+        {...props}
+        mutationTarget={{ type: "instance", instanceId: instanceInfo.id }}
+      />
     </SettingsRegistryContext.Provider>
   );
 }
@@ -800,6 +814,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     value: JsonValue,
   ) => Promise<void>;
   config: T;
+  mutationTarget: SettingMutationTarget;
 }) {
   const definition = useSettingsDefinitionByKey(
     props.namespace,
@@ -814,8 +829,12 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     [props.config, definition],
   );
   const setValueMutation = useMutation({
-    mutationKey: ["setting", props.namespace, props.settingKey],
-    scope: { id: `setting-${props.namespace}-${props.settingKey}` },
+    ...settingMutationOptions(
+      props.mutationTarget,
+      props.namespace,
+      props.settingKey,
+      "value",
+    ),
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(props.namespace, props.settingKey, value);
     },
@@ -856,6 +875,7 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
   invalidateQuery,
   updateConfigEntry,
   config,
+  mutationTarget,
   disabledIds = [],
 }: {
   data: SettingsPage;
@@ -866,6 +886,7 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
     value: JsonValue,
   ) => Promise<void>;
   config: T;
+  mutationTarget: SettingMutationTarget;
   disabledIds?: DisabledSettingId[];
 }) {
   const enabledIdentifier = data.enabledIdentifier;
@@ -889,8 +910,16 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
         )
         .map((entryId) => (
           <SettingField
-            key={getSettingIdentifierKey(entryId)}
+            key={
+              settingMutationOptions(
+                mutationTarget,
+                entryId.namespace,
+                entryId.key,
+                "value",
+              ).scope.id
+            }
             settingId={entryId}
+            mutationTarget={mutationTarget}
             updateConfigEntry={updateConfigEntry}
             invalidateQuery={invalidateQuery}
             config={config}
@@ -923,6 +952,7 @@ export function InstanceSettingsPageComponent({
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
         data={data}
+        mutationTarget={{ type: "instance", instanceId: instanceInfo.id }}
         updateConfigEntry={async (namespace, key, value) =>
           await updateInstanceConfigEntry(
             namespace,
@@ -963,6 +993,7 @@ export function AdminSettingsPageComponent({ data }: { data: SettingsPage }) {
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
         data={data}
+        mutationTarget={{ type: "server" }}
         updateConfigEntry={async (namespace, key, value) =>
           await updateServerConfigEntry(
             namespace,
@@ -1008,6 +1039,7 @@ export function BotSettingsPageComponent({
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
         data={data}
+        mutationTarget={{ type: "bot", instanceId: instanceInfo.id, botId }}
         updateConfigEntry={async (namespace, key, value) =>
           await updateBotConfigEntry(
             namespace,

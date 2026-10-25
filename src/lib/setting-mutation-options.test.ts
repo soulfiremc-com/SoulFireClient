@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { MutationObserver, QueryClient } from "@tanstack/react-query";
-import { botSettingMutationOptions } from "./bot-setting-mutation-options";
+import { settingMutationOptions } from "./setting-mutation-options";
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
@@ -11,12 +11,108 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
+const instanceA = {
+  type: "instance",
+  instanceId: crypto.randomUUID(),
+} as const;
+const instanceB = {
+  type: "instance",
+  instanceId: crypto.randomUUID(),
+} as const;
+const client = () =>
+  new QueryClient({ defaultOptions: { mutations: { gcTime: 0 } } });
+
+test("a pending instance save does not block other configuration targets", async () => {
+  const cache = client();
+  const held = deferred<void>();
+  const started = deferred<void>();
+  const first = new MutationObserver(cache, {
+    ...settingMutationOptions(instanceA, "plugin", "value", "value"),
+    mutationFn: async () => {
+      started.resolve();
+      await held.promise;
+    },
+  });
+  const pending = first.mutate();
+  const independent: Promise<void>[] = [];
+  try {
+    await started.promise;
+    for (const target of [
+      instanceB,
+      { type: "server" } as const,
+      {
+        type: "bot",
+        instanceId: instanceA.instanceId,
+        botId: crypto.randomUUID(),
+      } as const,
+    ]) {
+      const other = new MutationObserver(cache, {
+        ...settingMutationOptions(target, "plugin", "value", "value"),
+        mutationFn: async () => {},
+      });
+      independent.push(other.mutate());
+      assert.equal(other.getCurrentResult().isPaused, false);
+    }
+    await Promise.all(independent);
+    assert.equal(first.getCurrentResult().isPending, true);
+  } finally {
+    held.resolve();
+    await Promise.allSettled([pending, ...independent]);
+    cache.clear();
+  }
+});
+
+test("switching instances detaches a queued save without retargeting it", async () => {
+  const cache = client();
+  const held = deferred<void>();
+  const started = deferred<void>();
+  const writes: string[] = [];
+  const observer = new MutationObserver(cache, {
+    ...settingMutationOptions(instanceA, "plugin", "value", "value"),
+    mutationFn: async (value: string) => {
+      writes.push(`a:${value}`);
+      if (writes.length === 1) {
+        started.resolve();
+        await held.promise;
+      }
+    },
+  });
+  const first = observer.mutate("first");
+  let queued: Promise<void> | undefined;
+  let replacement: Promise<void> | undefined;
+  try {
+    await started.promise;
+    queued = observer.mutate("last");
+    assert.equal(observer.getCurrentResult().isPaused, true);
+    observer.setOptions({
+      ...settingMutationOptions(instanceB, "plugin", "value", "value"),
+      mutationFn: async (value: string) => {
+        writes.push(`b:${value}`);
+      },
+    });
+    assert.equal(observer.getCurrentResult().isIdle, true);
+    replacement = observer.mutate("only");
+    assert.equal(observer.getCurrentResult().isPaused, false);
+    await replacement;
+    held.resolve();
+    await Promise.all([first, queued]);
+    assert.deepEqual(writes, ["a:first", "b:only", "a:last"]);
+  } finally {
+    held.resolve();
+    await Promise.allSettled([first, queued, replacement]);
+    cache.clear();
+  }
+});
+
 const instanceId = crypto.randomUUID();
 const botId = crypto.randomUUID();
 const options = (action: "value" | "reset" | "toggle") =>
-  botSettingMutationOptions(instanceId, botId, "plugin", "enabled", action);
-const client = () =>
-  new QueryClient({ defaultOptions: { mutations: { gcTime: 0 } } });
+  settingMutationOptions(
+    { type: "bot", instanceId, botId },
+    "plugin",
+    "enabled",
+    action,
+  );
 
 test("reset runs after every previously queued edit to the setting", async () => {
   const cache = client();
@@ -128,9 +224,8 @@ test("other instances, bots and entries can save while one setting is pending", 
       [instanceId, botId, "plugin", "other"],
     ]) {
       const other = new MutationObserver(cache, {
-        ...botSettingMutationOptions(
-          instance!,
-          bot!,
+        ...settingMutationOptions(
+          { type: "bot", instanceId: instance!, botId: bot! },
           namespace!,
           key!,
           "reset",

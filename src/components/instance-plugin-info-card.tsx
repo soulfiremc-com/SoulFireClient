@@ -37,7 +37,7 @@ import type {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
-import { botSettingMutationOptions } from "@/lib/bot-setting-mutation-options.ts";
+import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   getSettingValue,
@@ -242,16 +242,12 @@ export function InstancePluginInfoCard(props: {
     );
 
   const setEnabledMutation = useMutation({
-    mutationKey: [
-      "instance",
-      "plugin",
-      "enabled",
-      instanceInfo.id,
-      props.settingsEntry.id,
-    ],
-    scope: {
-      id: `instance-plugin-${instanceInfo.id}-${props.settingsEntry.id}`,
-    },
+    ...settingMutationOptions(
+      { type: "instance", instanceId: instanceInfo.id },
+      enabledIdentifier?.namespace ?? props.settingsEntry.id,
+      enabledIdentifier?.key ?? "enabled",
+      "toggle",
+    ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
       await updateInstanceConfigEntry(
@@ -316,9 +312,8 @@ export function BotPluginInfoCard(props: {
     );
 
   const setEnabledMutation = useMutation({
-    ...botSettingMutationOptions(
-      props.instanceId,
-      props.botId,
+    ...settingMutationOptions(
+      { type: "bot", instanceId: props.instanceId, botId: props.botId },
       enabledIdentifier?.namespace ?? props.settingsEntry.id,
       enabledIdentifier?.key ?? "enabled",
       "toggle",
@@ -377,8 +372,12 @@ export function ServerPluginInfoCard(props: {
     );
 
   const setEnabledMutation = useMutation({
-    mutationKey: ["server", "plugin", "enabled", props.settingsEntry.id],
-    scope: { id: `server-plugin-${props.settingsEntry.id}` },
+    ...settingMutationOptions(
+      { type: "server" },
+      enabledIdentifier?.namespace ?? props.settingsEntry.id,
+      enabledIdentifier?.key ?? "enabled",
+      "toggle",
+    ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
       await updateServerConfigEntry(
