@@ -145,6 +145,7 @@ import {
 import { editBoxInsertion, editBoxValue } from "@/lib/minecraft-edit-box";
 import i18n from "@/lib/i18n";
 import { containerMutationOptions } from "@/lib/container-mutation-options";
+import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
 import { isResourceUnavailable } from "@/lib/resource-errors";
 import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -1932,11 +1933,13 @@ function BotMovementPanel({
   const { t } = useTranslation("instance");
   const { queryClient, botInfoQueryOptions } = Route.useRouteContext();
   const movementState = currentMovementState ?? EMPTY_MOVEMENT_STATE;
+  const mutationScopeId = `bot-movement-${instanceId}-${botId}`;
+  const isPending = useMutationScopePending(mutationScopeId);
 
   // Mutation for setting movement state
   const movementMutation = useMutation({
     mutationKey: ["bot", "movement", "state", instanceId, botId],
-    scope: { id: `bot-movement-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async (state: Partial<typeof movementState>) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1959,7 +1962,7 @@ function BotMovementPanel({
   // Mutation for resetting movement
   const resetMutation = useMutation({
     mutationKey: ["bot", "movement", "reset", instanceId, botId],
-    scope: { id: `bot-movement-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async () => {
       const transport = createTransport();
       if (transport === null) {
@@ -1978,7 +1981,7 @@ function BotMovementPanel({
   // Mutation for setting rotation
   const rotationMutation = useMutation({
     mutationKey: ["bot", "rotation", instanceId, botId],
-    scope: { id: `bot-movement-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async (rotation: { yaw: number; pitch: number }) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1992,6 +1995,10 @@ function BotMovementPanel({
       });
     },
     onError: (error) => toast.error(error.message),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: botInfoQueryOptions.queryKey,
+      }),
   });
 
   const toggleMovement = useCallback(
@@ -2013,11 +2020,6 @@ function BotMovementPanel({
     },
     [liveState, rotationMutation],
   );
-
-  const isPending =
-    movementMutation.isPending ||
-    resetMutation.isPending ||
-    rotationMutation.isPending;
 
   return (
     <div>
