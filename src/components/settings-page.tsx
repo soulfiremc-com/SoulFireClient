@@ -81,9 +81,9 @@ import {
   reconcileStringListEntries,
   type StringListEntry,
 } from "@/lib/string-list-entries.ts";
+import { NumericRangeEditor } from "@/lib/numeric-range-editor.ts";
 import {
   getNumericSettingValue,
-  updateNumericRange,
   type NumericRange,
 } from "@/lib/numeric-setting-value.ts";
 import {
@@ -294,7 +294,8 @@ function NumericSettingField(props: {
         disabled={props.setting.disabled}
         aria-invalid={invalid}
         aria-describedby={invalid ? errorId : undefined}
-        onFocus={() => {
+        onFocusCapture={() => {
+          // NumericFormat defers onFocus, so capture the baseline before a change.
           props.onFocus?.();
           setIsFocused(true);
         }}
@@ -318,11 +319,8 @@ function MinMaxSettingField(props: {
   value: NumericRange;
   changeCallback: (value: NumericRange) => void | Promise<void>;
 }) {
-  const baseline = useRef(props.value);
-  const startEdit = () => {
-    // Preserve the opposite bound across prefixes and corrections in one edit.
-    baseline.current = props.value;
-  };
+  const [editor] = useState(() => new NumericRangeEditor(props.value));
+  const startEdit = () => editor.startEdit(props.value);
   return (
     <FieldSet className="max-w-xl gap-4">
       <FieldLegend className="sr-only">
@@ -337,9 +335,7 @@ function MinMaxSettingField(props: {
           value={props.value.min}
           onFocus={startEdit}
           changeCallback={(value) =>
-            props.changeCallback(
-              updateNumericRange(baseline.current, "min", value),
-            )
+            editor.save("min", value, props.changeCallback)
           }
         />
         <NumericSettingField
@@ -348,9 +344,7 @@ function MinMaxSettingField(props: {
           value={props.value.max}
           onFocus={startEdit}
           changeCallback={(value) =>
-            props.changeCallback(
-              updateNumericRange(baseline.current, "max", value),
-            )
+            editor.save("max", value, props.changeCallback)
           }
         />
       </FieldGroup>
