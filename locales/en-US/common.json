@@ -124,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "Command",
+    "suggestions": "Command suggestions",
     "placeholder": "Enter command (type 'help' for list)",
     "emptySuggestions": "Type to request suggestions or press Tab.",
     "noSuggestions": "No suggestions available."

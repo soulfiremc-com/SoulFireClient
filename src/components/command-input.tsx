@@ -1,9 +1,12 @@
 import { ConnectError, createClient } from "@connectrpc/connect";
 import {
   type KeyboardEventHandler,
+  type CSSProperties,
   use,
   useCallback,
   useEffect,
+  useEffectEvent,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -19,6 +22,7 @@ import type {
 } from "@/generated/soulfire/command_pb";
 import { CommandService } from "@/generated/soulfire/command_pb";
 import { getCommandTokenRange } from "@/lib/command-token";
+import { getCommandSuggestionsPosition } from "@/lib/command-suggestions-position";
 import { CommandCompletionRequest } from "@/lib/command-completion-request";
 import {
   appendCommandHistory,
@@ -110,11 +114,12 @@ export default function CommandInput(props: { scope: CommandScope }) {
   }, [inputValue, cursorPosition]);
   const completionFetchTimeout = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [caretPositionStyle, setCaretPositionStyle] = useState<{
-    left: number;
-    top: number;
-    inputBottom: number;
-  } | null>(null);
+  const [suggestionsDismissed, setSuggestionsDismissed] = useState(false);
+  const suggestionsId = useId();
+  const suggestionStatusId = useId();
+  const [caretPositionStyle, setCaretPositionStyle] = useState<ReturnType<
+    typeof getCommandSuggestionsPosition
+  > | null>(null);
   const activeSuggestionRef = useRef<HTMLLIElement | null>(null);
   const setActiveSuggestionNode = useCallback((node: HTMLLIElement | null) => {
     activeSuggestionRef.current = node;
@@ -297,6 +302,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
   const scheduleCompletionFetch = useCallback(
     (text: string, cursor: number) => {
+      setSuggestionsDismissed(false);
       resetCompletionFetchDebounce();
       completionRequest.cancel();
       completionFetchTimeout.current = window.setTimeout(() => {
@@ -339,14 +345,14 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
     const paddingLeft = parseFloat(styles.paddingLeft) || 0;
     const rawLeft = rect.left + paddingLeft + textWidth - input.scrollLeft;
-    const clampedLeft = Math.min(Math.max(rawLeft, 8), window.innerWidth - 16);
-
-    setCaretPositionStyle({
-      left: clampedLeft,
-      top: rect.top,
-      inputBottom: rect.top + rect.height,
-    });
+    setCaretPositionStyle(
+      getCommandSuggestionsPosition(
+        { left: rawLeft, top: rect.top, bottom: rect.bottom },
+        { width: window.innerWidth, height: window.innerHeight },
+      ),
+    );
   }, [cursorPosition, replacementRangeStart]);
+  const repositionFromEvent = useEffectEvent(updateCaretPosition);
 
   useLayoutEffect(() => {
     setCompletionState((current) => ({
@@ -375,31 +381,43 @@ export default function CommandInput(props: { scope: CommandScope }) {
       return;
     }
 
+    let frame: number | null = null;
     const handleWindowEvent = () => {
-      updateCaretPosition();
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = null;
+        repositionFromEvent();
+      });
     };
+    const observer = new ResizeObserver(handleWindowEvent);
+    if (inputRef.current) observer.observe(inputRef.current);
 
     window.addEventListener("resize", handleWindowEvent);
     window.addEventListener("scroll", handleWindowEvent, true);
 
     return () => {
+      observer.disconnect();
+      if (frame !== null) window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", handleWindowEvent);
       window.removeEventListener("scroll", handleWindowEvent, true);
     };
-  }, [isFocused, updateCaretPosition]);
+  }, [isFocused]);
 
   const suggestions = completionState.receivedCompletions ?? [];
   const hasSuggestions = suggestions.length > 0;
   const highlightedIndex = completionState.index ?? 0;
   const showSuggestions =
     isFocused &&
+    !suggestionsDismissed &&
     (inputValue === "" ||
       (completionState.receivedCompletions !== null &&
         completionState.baseText === inputValue &&
         completionState.cursor === cursorPosition));
+  const popupVisible = showSuggestions && caretPositionStyle !== null;
+  const listboxVisible = popupVisible && hasSuggestions;
 
   useEffect(() => {
-    if (!showSuggestions || !hasSuggestions) {
+    if (!popupVisible || !hasSuggestions) {
       activeSuggestionRef.current = null;
       return;
     }
@@ -408,7 +426,13 @@ export default function CommandInput(props: { scope: CommandScope }) {
     if (node) {
       node.scrollIntoView({ block: "nearest" });
     }
-  }, [showSuggestions, hasSuggestions]);
+  }, [
+    popupVisible,
+    hasSuggestions,
+    highlightedIndex,
+    caretPositionStyle?.maxHeight,
+    caretPositionStyle?.width,
+  ]);
 
   const acceptCompletion = useCallback(
     (index: number) => {
@@ -490,6 +514,15 @@ export default function CommandInput(props: { scope: CommandScope }) {
       !e.metaKey &&
       !e.altKey;
 
+    if (e.key === "Escape" && !suggestionsDismissed) {
+      e.preventDefault();
+      e.stopPropagation();
+      resetCompletionFetchDebounce();
+      completionRequest.cancel();
+      setSuggestionsDismissed(true);
+      return;
+    }
+
     if (e.key === "Enter") {
       e.preventDefault();
 
@@ -553,6 +586,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
     }
 
     if (e.key === "Tab") {
+      if (suggestionsDismissed) return;
       e.preventDefault();
       const direction: 1 | -1 = e.shiftKey ? -1 : 1;
       void handleTabPress(
@@ -616,6 +650,19 @@ export default function CommandInput(props: { scope: CommandScope }) {
       <Input
         ref={inputRef}
         autoFocus
+        role="combobox"
+        aria-label={t("commandInput.label")}
+        aria-autocomplete="list"
+        aria-expanded={listboxVisible}
+        aria-controls={listboxVisible ? suggestionsId : undefined}
+        aria-activedescendant={
+          listboxVisible
+            ? `${suggestionsId}-option-${highlightedIndex}`
+            : undefined
+        }
+        aria-describedby={
+          popupVisible && !hasSuggestions ? suggestionStatusId : undefined
+        }
         placeholder={t("commandInput.placeholder")}
         value={inputValue}
         onKeyDown={handleKeyDown}
@@ -642,6 +689,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           const position = event.currentTarget.selectionStart ?? value.length;
           setCursorPosition(position);
           setIsFocused(true);
+          setSuggestionsDismissed(false);
           if (value === "") {
             resetCompletionFetchDebounce();
             void fetchCompletions(value, position);
@@ -655,26 +703,38 @@ export default function CommandInput(props: { scope: CommandScope }) {
           setIsFocused(false);
         }}
       />
-      {showSuggestions && caretPositionStyle && (
+      {popupVisible && caretPositionStyle && (
         <div
-          className="border-border bg-popover text-popover-foreground fixed z-50 w-64 max-w-[min(18rem,calc(100vw-2rem))] rounded-md border shadow-md"
-          style={{
-            left: caretPositionStyle.left,
-            top: caretPositionStyle.inputBottom + 8,
-          }}
-          role="listbox"
+          className="border-border bg-popover text-popover-foreground fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border shadow-md data-[side=top]:-translate-y-full"
+          data-side={caretPositionStyle.above ? "top" : "bottom"}
+          style={
+            {
+              left: caretPositionStyle.left,
+              top: caretPositionStyle.top,
+              "--suggestions-width": `${caretPositionStyle.width}px`,
+              "--suggestions-max-height": `${caretPositionStyle.maxHeight}px`,
+            } as CSSProperties
+          }
           onMouseDown={(event) => {
             event.preventDefault();
             inputRef.current?.focus();
           }}
         >
           {suggestions.length > 0 ? (
-            <ul className="max-h-60 overflow-auto py-1 text-sm">
+            <ul
+              id={suggestionsId}
+              role="listbox"
+              aria-label={t("commandInput.suggestions")}
+              className="py-1 text-sm"
+            >
               {suggestions.map((suggestion, index) => {
                 const isActive = index === highlightedIndex;
                 return (
                   <li
                     key={`${suggestion.suggestion}-${suggestion.tooltip ?? ""}`}
+                    id={`${suggestionsId}-option-${index}`}
+                    role="option"
+                    aria-selected={isActive}
                     className={`cursor-pointer px-3 py-2 transition-colors ${
                       isActive
                         ? "bg-accent text-accent-foreground"
@@ -711,7 +771,11 @@ export default function CommandInput(props: { scope: CommandScope }) {
               })}
             </ul>
           ) : (
-            <div className="text-muted-foreground px-3 py-2 text-sm">
+            <div
+              id={suggestionStatusId}
+              role="status"
+              className="text-muted-foreground px-3 py-2 text-sm"
+            >
               {inputValue === "" ? (
                 <>
                   {t("commandInput.emptySuggestionsPrefix", {
