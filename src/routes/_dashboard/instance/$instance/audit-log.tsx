@@ -33,6 +33,7 @@ import {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import { calendarDateRangeFilter } from "@/lib/calendar-date-range-filter";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
@@ -232,7 +233,7 @@ const columns: ColumnDef<
       },
       variant: "dateRange",
     },
-    filterFn: "inNumberRange",
+    filterFn: calendarDateRangeFilter,
     enableColumnFilter: true,
   },
 ];
