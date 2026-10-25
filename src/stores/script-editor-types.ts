@@ -39,6 +39,7 @@ export interface ScriptDocumentState {
 }
 
 export interface ScriptEditorUIState {
+  canvasRevision: number;
   selectedNodeId: string | null;
   quickAddMenu: {
     position: XYPosition;

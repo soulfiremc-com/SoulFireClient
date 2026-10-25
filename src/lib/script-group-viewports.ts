@@ -9,12 +9,27 @@ export class ScriptGroupViewports {
   private readonly views = new Map<string | null, Viewport>();
   private currentGroup: string | null | undefined;
   private settled = false;
+  private canvasRevision: number | undefined;
 
   get initialized() {
     return this.currentGroup !== undefined;
   }
 
-  enter(groupId: string | null, viewport: Viewport): ViewChange {
+  isInitialized(canvasRevision: number) {
+    return this.canvasRevision === canvasRevision && this.initialized;
+  }
+
+  enter(
+    groupId: string | null,
+    viewport: Viewport,
+    canvasRevision: number,
+  ): ViewChange {
+    if (canvasRevision !== this.canvasRevision) {
+      this.views.clear();
+      this.currentGroup = undefined;
+      this.settled = false;
+      this.canvasRevision = canvasRevision;
+    }
     if (groupId === this.currentGroup) return { type: "unchanged" };
     if (this.currentGroup !== undefined && this.settled)
       this.views.set(this.currentGroup, { ...viewport });
@@ -27,7 +42,8 @@ export class ScriptGroupViewports {
       : { type: "fit" };
   }
 
-  completeFit(groupId: string | null) {
-    if (groupId === this.currentGroup) this.settled = true;
+  completeFit(groupId: string | null, canvasRevision: number) {
+    if (canvasRevision === this.canvasRevision && groupId === this.currentGroup)
+      this.settled = true;
   }
 }

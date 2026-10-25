@@ -216,6 +216,7 @@ export function createScriptEditorSession() {
     lastSavedEdges: null,
   });
   const ui = createStore<ScriptEditorUIState>({
+    canvasRevision: 0,
     selectedNodeId: null,
     quickAddMenu: null,
     groupEditStack: [],
@@ -1774,6 +1775,7 @@ export function createScriptEditorSession() {
           ...state,
           selectedNodeId: null,
           groupEditStack: [],
+          canvasRevision: state.canvasRevision + 1,
           previewEnabledNodes: new Set<string>(),
         }));
         execution.setState((state) => ({
@@ -1802,6 +1804,7 @@ export function createScriptEditorSession() {
           ...state,
           selectedNodeId: null,
           groupEditStack: [],
+          canvasRevision: state.canvasRevision + 1,
           previewEnabledNodes: new Set<string>(),
         }));
         execution.setState((state) => ({
@@ -1849,6 +1852,7 @@ export function createScriptEditorSession() {
           selectedNodeId: null,
           quickAddMenu: null,
           groupEditStack: [],
+          canvasRevision: state.canvasRevision + 1,
           previewEnabledNodes: new Set<string>(),
 
           linkCutting: {

@@ -77,6 +77,10 @@ export function ScriptEditor() {
     (state) => state.groupEditStack,
   );
   const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+  const canvasRevision = useSelector(
+    editor.ui,
+    (state) => state.canvasRevision,
+  );
   const visibleNodes = useSelector(editor.visibleNodes);
   const visibleEdges = useSelector(editor.visibleEdges);
   const enterGroup = editor.actions.enterGroup;
@@ -122,13 +126,14 @@ export function ScriptEditor() {
   useEffect(() => {
     if (
       !reactFlowInstance ||
-      (!nodesInitialized && !groupViewports.initialized)
+      (!nodesInitialized && !groupViewports.isInitialized(canvasRevision))
     )
       return;
-    const navigating = groupViewports.initialized;
+    const navigating = groupViewports.isInitialized(canvasRevision);
     const change = groupViewports.enter(
       currentGroupId,
       reactFlowInstance.getViewport(),
+      canvasRevision,
     );
     if (change.type === "unchanged") return;
     if (navigating) containerRef.current?.focus({ preventScroll: true });
@@ -141,10 +146,11 @@ export function ScriptEditor() {
           })
         : reactFlowInstance.setViewport({ x: 0, y: 0, zoom: 1 });
       void fitted.then((success) => {
-        if (success) groupViewports.completeFit(currentGroupId);
+        if (success) groupViewports.completeFit(currentGroupId, canvasRevision);
       });
     }
   }, [
+    canvasRevision,
     currentGroupId,
     groupViewports,
     nodesInitialized,

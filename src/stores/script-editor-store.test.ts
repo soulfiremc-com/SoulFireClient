@@ -846,3 +846,29 @@ test("grouping preserves unique nodes through nesting, export, and clipboard clo
     pasted.nodes.length,
   );
 });
+
+test("canvas revisions follow document replacement independently of edits and navigation", () => {
+  const editor = createScriptEditorSession();
+  const initial = editor.ui.get().canvasRevision;
+  editor.actions.loadScript({
+    id: "script",
+    ...editor.actions.getScriptData(),
+  });
+  const loaded = editor.ui.get().canvasRevision;
+  assert.notEqual(loaded, initial);
+  const group = editor.actions.addNode("layout.group", { x: 0, y: 0 });
+  editor.actions.enterGroup(group);
+  editor.actions.exitToRoot();
+  editor.actions.markSaved(editor.actions.getScriptData());
+  editor.actions.syncScriptDocument({
+    id: "script",
+    ...editor.actions.getScriptData(),
+  });
+  assert.equal(editor.ui.get().canvasRevision, loaded);
+
+  editor.actions.loadScriptData(editor.actions.getScriptData());
+  const imported = editor.ui.get().canvasRevision;
+  assert.notEqual(imported, loaded);
+  editor.actions.resetEditor();
+  assert.notEqual(editor.ui.get().canvasRevision, imported);
+});
