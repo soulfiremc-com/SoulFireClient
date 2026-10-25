@@ -149,6 +149,7 @@ import {
   containerMutationScopeId,
 } from "@/lib/container-mutation-options";
 import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
+import { dialogMutationOptions } from "@/lib/dialog-mutation-options";
 import { isResourceUnavailable } from "@/lib/resource-errors";
 import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -2246,8 +2247,15 @@ function BotDialogPanel({
   const { data: dialogData } = useSuspenseQuery(dialogQueryOptions);
   const dialog = dialogData?.dialog;
 
+  const mutationOptions = dialogMutationOptions(
+    instanceId,
+    botId,
+    dialog?.screenId,
+  );
+  const isPending = useMutationScopePending(mutationOptions.scope.id);
+
   const submitMutation = useMutation({
-    mutationKey: ["bot", "dialog", "submit", instanceId, botId],
+    ...mutationOptions,
     mutationFn: async ({
       buttonIndex,
       inputValues,
@@ -2344,10 +2352,7 @@ function BotDialogPanel({
           <BotDialogForm
             key={`${instanceId}:${botId}:${dialog.screenId}`}
             dialog={dialog}
-            pending={
-              submitMutation.isPending &&
-              submitMutation.variables?.expectedScreenId === dialog.screenId
-            }
+            pending={isPending}
             onSubmit={async (buttonIndex, inputValues) => {
               const state = await submitMutation.mutateAsync({
                 buttonIndex,
