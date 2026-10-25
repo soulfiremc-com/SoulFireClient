@@ -144,7 +144,10 @@ import {
 } from "@/lib/server-input-draft";
 import { editBoxInsertion, editBoxValue } from "@/lib/minecraft-edit-box";
 import i18n from "@/lib/i18n";
-import { containerMutationOptions } from "@/lib/container-mutation-options";
+import {
+  containerMutationOptions,
+  containerMutationScopeId,
+} from "@/lib/container-mutation-options";
 import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
 import { isResourceUnavailable } from "@/lib/resource-errors";
 import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
@@ -1113,6 +1116,10 @@ function BotInventoryPanel({
     }),
   );
 
+  const isPending = useMutationScopePending(
+    containerMutationScopeId(instanceId, botId, inventoryState?.menuId),
+  );
+
   const requireSuccess = <T extends { success: boolean; error?: string }>(
     result: T,
   ): T => {
@@ -1366,7 +1373,7 @@ function BotInventoryPanel({
                 onClick={() =>
                   closeContainerMutation.mutate(inventoryState?.menuId)
                 }
-                disabled={closeContainerMutation.isPending}
+                disabled={isPending}
               >
                 <XIcon className="mr-1 size-4" />
                 {t("bots.inventoryPanel.closeContainer")}
@@ -1393,7 +1400,7 @@ function BotInventoryPanel({
               buttons={buttons}
               containerType={layout.containerType}
               onButtonClick={handleButtonClick}
-              isPending={buttonClickMutation.isPending}
+              isPending={isPending}
             />
           )}
 
@@ -1410,7 +1417,7 @@ function BotInventoryPanel({
               textInputs={textInputs}
               containerType={layout.containerType}
               onSetText={handleSetText}
-              isPending={setTextMutation.isPending}
+              isPending={isPending}
             />
           )}
 
@@ -1830,10 +1837,13 @@ function BotActionsPanel({
 }) {
   const { t } = useTranslation("instance");
 
+  const mutationScopeId = `bot-mouse-${instanceId}-${botId}`;
+  const isPending = useMutationScopePending(mutationScopeId);
+
   // Mutation for mouse click actions
   const clickMutation = useMutation({
     mutationKey: ["bot", "mouse", "click", instanceId, botId],
-    scope: { id: `bot-mouse-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async (request: BotMouseClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
@@ -1876,10 +1886,10 @@ function BotActionsPanel({
           <Button
             variant="outline"
             onClick={handleLeftClick}
-            disabled={clickMutation.isPending}
+            disabled={isPending}
             title={t("bots.actionsPanel.leftClickDescription")}
           >
-            {clickMutation.isPending ? (
+            {isPending ? (
               <LoaderIcon className="mr-2 size-4 animate-spin" />
             ) : null}
             {t("bots.actionsPanel.leftClick")}
@@ -1887,10 +1897,10 @@ function BotActionsPanel({
           <Button
             variant="outline"
             onClick={handleRightClick}
-            disabled={clickMutation.isPending}
+            disabled={isPending}
             title={t("bots.actionsPanel.rightClickDescription")}
           >
-            {clickMutation.isPending ? (
+            {isPending ? (
               <LoaderIcon className="mr-2 size-4 animate-spin" />
             ) : null}
             {t("bots.actionsPanel.rightClick")}
