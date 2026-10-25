@@ -146,7 +146,13 @@ export function ManageUserDialog({
   });
 
   return (
-    <Credenza open={open} onOpenChange={setOpen}>
+    <Credenza
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) form.reset();
+        setOpen(nextOpen);
+      }}
+    >
       <CredenzaContent className="pb-4">
         <form
           className="flex flex-col gap-4"
