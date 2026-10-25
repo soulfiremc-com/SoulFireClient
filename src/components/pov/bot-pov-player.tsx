@@ -244,6 +244,12 @@ function BotPovSession({
         metrics?.draw(metadata);
         const screenChanged = actions.framePresented(metadata.screenOpen);
         target.style.cursor = povCursor(metadata.cursorShape);
+        const textInput = textInputRef.current;
+        if (screenChanged && !metadata.screenOpen && textInput) {
+          // Discard unfinished composition before returning to gameplay.
+          textInput.value = "";
+          textInput.blur();
+        }
         if (playerStore.get().capture === "captured" && screenChanged) {
           const doc = target.ownerDocument;
           if (metadata.screenOpen && doc.pointerLockElement === target) {
