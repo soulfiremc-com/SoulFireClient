@@ -72,6 +72,7 @@ function PluginInfoCardContent(props: {
           <div className="flex flex-row items-center justify-between gap-2">
             {props.link}
             <Switch
+              aria-label={props.settingsEntry.pageName}
               checked={props.enabledValue}
               onCheckedChange={props.onEnabledChange}
             />

@@ -352,6 +352,7 @@ function BoolComponent(props: {
   return (
     <>
       <Checkbox
+        aria-label={props.title}
         className="my-auto"
         checked={props.value}
         disabled={props.setting.disabled}
@@ -396,6 +397,7 @@ function ComboComponent(props: {
           <Button
             variant="outline"
             role="combobox"
+            aria-label={props.setting.uiName}
             aria-expanded={open}
             className="w-72 justify-between"
             disabled={props.setting.disabled}
