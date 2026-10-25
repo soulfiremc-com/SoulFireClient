@@ -27,6 +27,22 @@ export function PovTouchControls({
   useEffect(() => () => releaseHeld(), [screenOpen]);
   const reset = (event: React.PointerEvent<HTMLElement>) =>
     send(input.release(event.pointerId));
+  const move = (event: React.PointerEvent<HTMLFieldSetElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    const keys: number[] = [];
+    if (x < -0.15) keys.push(65);
+    if (x > 0.15) keys.push(68);
+    if (y < -0.15) keys.push(87);
+    if (y > 0.15) keys.push(83);
+    send(
+      input.update(
+        event.pointerId,
+        keys.map((code) => ({ code })),
+      ),
+    );
+  };
   const action = (
     event: React.PointerEvent<HTMLButtonElement>,
     pressed: boolean,
@@ -54,23 +70,11 @@ export function PovTouchControls({
         onPointerDown={(event) => {
           event.preventDefault();
           event.currentTarget.setPointerCapture(event.pointerId);
+          move(event);
         }}
         onPointerMove={(event) => {
           if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          const rect = event.currentTarget.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width - 0.5;
-          const y = (event.clientY - rect.top) / rect.height - 0.5;
-          const keys: number[] = [];
-          if (x < -0.15) keys.push(65);
-          if (x > 0.15) keys.push(68);
-          if (y < -0.15) keys.push(87);
-          if (y > 0.15) keys.push(83);
-          send(
-            input.update(
-              event.pointerId,
-              keys.map((code) => ({ code })),
-            ),
-          );
+          move(event);
         }}
         onPointerUp={reset}
         onPointerCancel={reset}
