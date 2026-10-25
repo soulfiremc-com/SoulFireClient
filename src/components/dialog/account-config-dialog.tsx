@@ -54,6 +54,7 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { botSettingMutationOptions } from "@/lib/bot-setting-mutation-options.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";
 import {
@@ -269,15 +270,13 @@ function BotSettingRow(props: {
     `${props.row.identifier.namespace}:${props.row.identifier.key}`,
   );
   const valueMutation = useMutation({
-    mutationKey: [
-      "bot-setting",
+    ...botSettingMutationOptions(
+      props.instanceId,
       props.botId,
       props.row.identifier.namespace,
       props.row.identifier.key,
-    ],
-    scope: {
-      id: `bot-setting-${props.botId}-${props.row.identifier.namespace}-${props.row.identifier.key}`,
-    },
+      "value",
+    ),
     mutationFn: async (value: JsonValue) =>
       await updateBotConfigEntry(
         props.row.identifier.namespace,
@@ -298,15 +297,13 @@ function BotSettingRow(props: {
     },
   });
   const resetMutation = useMutation({
-    mutationKey: [
-      "bot-setting-reset",
+    ...botSettingMutationOptions(
+      props.instanceId,
       props.botId,
       props.row.identifier.namespace,
       props.row.identifier.key,
-    ],
-    scope: {
-      id: `bot-setting-reset-${props.botId}-${props.row.identifier.namespace}-${props.row.identifier.key}`,
-    },
+      "reset",
+    ),
     mutationFn: async () =>
       await removeBotConfigEntry(
         props.row.identifier.namespace,

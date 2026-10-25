@@ -37,6 +37,7 @@ import type {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { botSettingMutationOptions } from "@/lib/bot-setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   getSettingValue,
@@ -315,17 +316,13 @@ export function BotPluginInfoCard(props: {
     );
 
   const setEnabledMutation = useMutation({
-    mutationKey: [
-      "bot",
-      "plugin",
-      "enabled",
+    ...botSettingMutationOptions(
       props.instanceId,
       props.botId,
-      props.settingsEntry.id,
-    ],
-    scope: {
-      id: `bot-plugin-${props.instanceId}-${props.botId}-${props.settingsEntry.id}`,
-    },
+      enabledIdentifier?.namespace ?? props.settingsEntry.id,
+      enabledIdentifier?.key ?? "enabled",
+      "toggle",
+    ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
       await updateBotConfigEntry(

@@ -624,8 +624,6 @@ export async function removeBotConfigEntry(
     return;
   }
 
-  let updatedAccount: ProfileAccount | null = null;
-
   await queryClient.cancelQueries({
     queryKey: instanceInfoQueryKey,
   });
@@ -660,7 +658,7 @@ export async function removeBotConfigEntry(
         })
         .filter((settingsNamespace) => settingsNamespace.entries.length > 0);
 
-      updatedAccount = {
+      const updatedAccount = {
         ...account,
         config: nextConfig,
       };
@@ -678,14 +676,12 @@ export async function removeBotConfigEntry(
     },
   );
 
-  if (updatedAccount === null) {
-    return;
-  }
-
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceAccount({
-    id: instanceId,
-    account: toMinecraftAccountProto(updatedAccount),
+  const botService = createClient(BotService, transport);
+  await botService.deleteBotConfigEntry({
+    instanceId,
+    botId,
+    namespace,
+    key,
   });
 }
 
