@@ -9,6 +9,7 @@ import {
   LoaderCircleIcon,
   LogOutIcon,
   RotateCwIcon,
+  VenetianMaskIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +31,12 @@ import {
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
 import { runAsync } from "@/lib/utils.tsx";
-import { getServerType, logOut } from "@/lib/web-rpc.ts";
+import {
+  getServerType,
+  isImpersonating,
+  logOut,
+  stopImpersonation,
+} from "@/lib/web-rpc.ts";
 
 type ErrorComponentProps = {
   error: Error;
@@ -143,7 +149,22 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
             <IntegratedServerSupportActions />
           )}
         </CardContent>
-        <CardFooter className="flex flex-row gap-2">
+        <CardFooter className="flex flex-wrap gap-2">
+          {isImpersonating() && (
+            <Button
+              onClick={() => {
+                stopImpersonation();
+                void navigate({
+                  to: "/user",
+                  replace: true,
+                  reloadDocument: true,
+                });
+              }}
+            >
+              <VenetianMaskIcon />
+              {t("userSidebar.stopImpersonating")}
+            </Button>
+          )}
           <Button
             className="w-fit"
             onClick={() =>
