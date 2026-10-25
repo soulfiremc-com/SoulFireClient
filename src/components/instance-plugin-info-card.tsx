@@ -36,6 +36,7 @@ import type {
 } from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   getSettingValue,
@@ -210,7 +211,13 @@ function usePluginEnabledState(
     () => getSettingValue(profile, enabledDefinition) === true,
     [profile, enabledDefinition],
   );
-  return { enabledIdentifier, enabledValue };
+  const onSaveError = useSettingSaveError(
+    enabledDefinition,
+    enabledIdentifier
+      ? `${enabledIdentifier.namespace}:${enabledIdentifier.key}`
+      : settingsEntry.id,
+  );
+  return { enabledIdentifier, enabledValue, onSaveError };
 }
 
 export function InstancePluginInfoCard(props: {
@@ -226,11 +233,12 @@ export function InstancePluginInfoCard(props: {
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
-  const { enabledIdentifier, enabledValue } = usePluginEnabledState(
-    props.settingsEntry,
-    profile,
-    instanceInfo.settingsDefinitions,
-  );
+  const { enabledIdentifier, enabledValue, onSaveError } =
+    usePluginEnabledState(
+      props.settingsEntry,
+      profile,
+      instanceInfo.settingsDefinitions,
+    );
 
   const setEnabledMutation = useMutation({
     mutationKey: [
@@ -255,6 +263,7 @@ export function InstancePluginInfoCard(props: {
         instanceInfoQueryOptions.queryKey,
       );
     },
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: instanceInfoQueryOptions.queryKey,
@@ -298,11 +307,12 @@ export function BotPluginInfoCard(props: {
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
-  const { enabledIdentifier, enabledValue } = usePluginEnabledState(
-    props.settingsEntry,
-    props.botConfig,
-    props.settingsDefinitions,
-  );
+  const { enabledIdentifier, enabledValue, onSaveError } =
+    usePluginEnabledState(
+      props.settingsEntry,
+      props.botConfig,
+      props.settingsDefinitions,
+    );
 
   const setEnabledMutation = useMutation({
     mutationKey: [
@@ -329,6 +339,7 @@ export function BotPluginInfoCard(props: {
         props.instanceInfoQueryKey,
       );
     },
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -361,11 +372,12 @@ export function ServerPluginInfoCard(props: {
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
-  const { enabledIdentifier, enabledValue } = usePluginEnabledState(
-    props.settingsEntry,
-    profile,
-    serverInfo.settingsDefinitions,
-  );
+  const { enabledIdentifier, enabledValue, onSaveError } =
+    usePluginEnabledState(
+      props.settingsEntry,
+      profile,
+      serverInfo.settingsDefinitions,
+    );
 
   const setEnabledMutation = useMutation({
     mutationKey: ["server", "plugin", "enabled", props.settingsEntry.id],
@@ -381,6 +393,7 @@ export function ServerPluginInfoCard(props: {
         serverInfoQueryOptions.queryKey,
       );
     },
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: serverInfoQueryOptions.queryKey,

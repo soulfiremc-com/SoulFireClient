@@ -74,6 +74,7 @@ import {
   StringSetting_InputType,
 } from "@/generated/soulfire/common_pb";
 import { useCachedState } from "@/hooks/use-cached-state.ts";
+import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
 import { useLocaleNumberFormat } from "@/hooks/use-locale-number-format.tsx";
 import {
   createStringListEntry,
@@ -482,38 +483,48 @@ function StringListComponent(props: {
     });
   }
   const [newEntryInput, setNewEntryInput] = useState("");
+  const draftRevision = useRef(0);
 
-  const saveEntries = (entries: StringListEntry[]) => {
+  const saveEntries = async (entries: StringListEntry[]) => {
     setList((current) => ({
       entries,
       source: undefined,
       pending: current.pending + 1,
     }));
-    void Promise.resolve()
-      .then(() => props.changeCallback(entries.map((entry) => entry.value)))
-      .catch(() => {
-        toast.error(
-          t("settingsPage.stringList.saveError", {
-            name: props.setting.uiName,
-          }),
-        );
-      })
-      .finally(() => {
-        setList((current) => ({ ...current, pending: current.pending - 1 }));
-      });
+    try {
+      await props.changeCallback(entries.map((entry) => entry.value));
+      return true;
+    } catch {
+      toast.error(
+        t("settingsPage.stringList.saveError", {
+          name: props.setting.uiName,
+        }),
+      );
+      return false;
+    } finally {
+      setList((current) => ({ ...current, pending: current.pending - 1 }));
+    }
   };
-  const insertValue = (value: string) => {
-    saveEntries([...list.entries, createStringListEntry(value)]);
+  const insertValue = async (value: string) => {
+    const revision = ++draftRevision.current;
+    setNewEntryInput("");
+    const saved = await saveEntries([
+      ...list.entries,
+      createStringListEntry(value),
+    ]);
+    if (!saved && draftRevision.current === revision) {
+      setNewEntryInput(value);
+    }
   };
   const updateId = (id: string, value: string) => {
-    saveEntries(
+    void saveEntries(
       list.entries.map((entry) =>
         entry.id === id ? { ...entry, value } : entry,
       ),
     );
   };
   const deleteId = (id: string) => {
-    saveEntries(list.entries.filter((entry) => entry.id !== id));
+    void saveEntries(list.entries.filter((entry) => entry.id !== id));
   };
 
   return (
@@ -527,6 +538,7 @@ function StringListComponent(props: {
               name: props.setting.uiName,
             })}
             onChange={(e) => {
+              draftRevision.current++;
               setNewEntryInput(e.currentTarget.value);
             }}
             placeholder={t("settingsPage.stringList.placeholder")}
@@ -534,16 +546,14 @@ function StringListComponent(props: {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
-                insertValue(newEntryInput);
-                setNewEntryInput("");
+                void insertValue(newEntryInput);
               }
             }}
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton
               onClick={() => {
-                insertValue(newEntryInput);
-                setNewEntryInput("");
+                void insertValue(newEntryInput);
               }}
               disabled={props.setting.disabled}
             >
@@ -692,27 +702,6 @@ export function SettingTypeRenderer(props: {
   }
 }
 
-export function useSettingSaveError(
-  definition: SettingsDefinition | undefined,
-  identifier: string,
-) {
-  const { t } = useTranslation("common");
-  return () => {
-    // List inputs report failures from their awaited saves.
-    if (definition?.type.case === "stringList") return;
-    const type = definition?.type;
-    const name =
-      type?.case === "minMax"
-        ? [type.value.minEntry?.uiName, type.value.maxEntry?.uiName]
-            .filter(Boolean)
-            .join(" / ")
-        : type?.value?.uiName;
-    toast.error(t("settingsPage.saveError", { name: name || identifier }), {
-      id: `setting-save:${identifier}`,
-    });
-  };
-}
-
 /**
  * Component that renders a setting field by its identifier.
  * This is the main component for mounting settings anywhere in the UI.
@@ -742,7 +731,7 @@ function SettingField<T extends BaseSettings>(props: {
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(namespace, key, value);
     },
-    onError: onSaveError,
+    onError: definition?.type.case === "stringList" ? undefined : onSaveError,
     onSettled: async () => {
       await props.invalidateQuery();
     },
@@ -830,7 +819,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(props.namespace, props.settingKey, value);
     },
-    onError: onSaveError,
+    onError: definition?.type.case === "stringList" ? undefined : onSaveError,
     onSettled: async () => {
       await props.invalidateQuery();
     },

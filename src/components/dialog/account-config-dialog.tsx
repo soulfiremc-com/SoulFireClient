@@ -13,10 +13,7 @@ import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { BotPluginInfoCard } from "@/components/instance-plugin-info-card.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import {
-  SettingTypeRenderer,
-  useSettingSaveError,
-} from "@/components/settings-page.tsx";
+import { SettingTypeRenderer } from "@/components/settings-page.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -56,6 +53,7 @@ import {
   SettingsPageEntryScopeType,
 } from "@/generated/soulfire/common_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
+import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";
 import {
@@ -291,7 +289,8 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
-    onError: onSaveError,
+    onError:
+      props.row.definition.type.case === "stringList" ? undefined : onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -318,6 +317,7 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
