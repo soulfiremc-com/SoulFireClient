@@ -13,6 +13,7 @@ import { ErrorComponent } from "@/components/error-component.tsx";
 import { LoadingComponent } from "@/components/loading-component.tsx";
 import { NotFoundComponent } from "@/components/not-found-component.tsx";
 import { synchronizeQuerySession } from "@/lib/query-session.ts";
+import { parseUrlSearch, stringifyUrlSearch } from "@/lib/router-search.ts";
 import { getServerType, isAuthenticated } from "@/lib/web-rpc.ts";
 import { routeTree } from "./routeTree.gen";
 
@@ -54,6 +55,8 @@ import.meta.hot?.dispose(stopQuerySessionSync);
 const router = createRouter({
   routeTree,
   history: createBrowserHistory(),
+  parseSearch: parseUrlSearch,
+  stringifySearch: stringifyUrlSearch,
   defaultPreload: "intent",
   // Since we're using React Query, we don't want loader calls to ever be stale
   // This will ensure that the loader is always called when the route is preloaded or visited
