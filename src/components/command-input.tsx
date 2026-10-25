@@ -18,6 +18,7 @@ import type {
   CommandScope,
 } from "@/generated/soulfire/command_pb";
 import { CommandService } from "@/generated/soulfire/command_pb";
+import { getCommandTokenRange } from "@/lib/command-token";
 import { CommandCompletionRequest } from "@/lib/command-completion-request";
 import {
   appendCommandHistory,
@@ -78,25 +79,6 @@ const INTERACTIVE_SELECTOR = [
     "treeitem",
   ].map((role) => `[role~="${role}"]`),
 ].join(",");
-
-const WHITESPACE_REGEX = /\s/;
-
-function getTokenRange(
-  text: string,
-  cursor: number,
-): { start: number; end: number } {
-  let start = cursor;
-  while (start > 0 && !WHITESPACE_REGEX.test(text[start - 1] ?? "")) {
-    start -= 1;
-  }
-
-  let end = cursor;
-  while (end < text.length && !WHITESPACE_REGEX.test(text[end] ?? "")) {
-    end += 1;
-  }
-
-  return { start, end };
-}
 
 export default function CommandInput(props: { scope: CommandScope }) {
   const { t } = useTranslation("common");
@@ -204,7 +186,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           cursor,
           receivedCompletions: result.suggestions,
           index: null,
-          replacementRange: getTokenRange(text, cursor),
+          replacementRange: getCommandTokenRange(text, cursor),
         });
       } catch (error) {
         console.error("Could not load command completions", error);
@@ -227,7 +209,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const activeIndex = completionStateNew.index ?? 0;
         const range =
           completionStateNew.replacementRange ??
-          getTokenRange(completionStateNew.baseText, completionStateNew.cursor);
+          getCommandTokenRange(
+            completionStateNew.baseText,
+            completionStateNew.cursor,
+          );
         const suggestion = suggestionsList[activeIndex]?.suggestion ?? "";
 
         const before = completionStateNew.baseText.slice(0, range.start);
@@ -254,7 +239,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
           baseText: text,
           cursor,
           replacementRange:
-            completionStateNew.replacementRange ?? getTokenRange(text, cursor),
+            completionStateNew.replacementRange ??
+            getCommandTokenRange(text, cursor),
         };
       }
 
@@ -302,7 +288,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         cursor,
         receivedCompletions: [],
         index: null,
-        replacementRange: getTokenRange(text, cursor),
+        replacementRange: getCommandTokenRange(text, cursor),
       };
     }
 
@@ -446,7 +432,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
             prev.receivedCompletions.length) %
           prev.receivedCompletions.length;
         const range =
-          prev.replacementRange ?? getTokenRange(prev.baseText, prev.cursor);
+          prev.replacementRange ??
+          getCommandTokenRange(prev.baseText, prev.cursor);
         const suggestion = prev.receivedCompletions[normalizedIndex].suggestion;
         const before = prev.baseText.slice(0, range.start);
         const after = prev.baseText.slice(range.end);
