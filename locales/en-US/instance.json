@@ -97,6 +97,7 @@
         "executeCommand": "ran a command: {{data}}",
         "botDesiredStateChange": "changed bot desired state",
         "botRestart": "restarted bots",
+        "pluginRpc": "called a plugin RPC",
         "unknown": "performed an action"
       }
     },

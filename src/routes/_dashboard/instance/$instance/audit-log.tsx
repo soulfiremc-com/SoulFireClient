@@ -7,6 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
   BotIcon,
   ClipboardCopyIcon,
+  PlugIcon,
   RefreshCwIcon,
   SquareTerminalIcon,
   TextIcon,
@@ -105,6 +106,8 @@ function toI18nKey(type: InstanceAuditLogResponse_AuditLogEntryType) {
       return "auditLog.changedBotDesiredState";
     case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
       return "auditLog.restartedBots";
+    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC:
+      return "auditLog.calledPluginRpc";
   }
 }
 
@@ -119,6 +122,8 @@ const logTypeToIcon = (
         return RefreshCwIcon;
       case "EXECUTE_COMMAND":
         return SquareTerminalIcon;
+      case "PLUGIN_RPC":
+        return PlugIcon;
       default:
         return BotIcon;
     }

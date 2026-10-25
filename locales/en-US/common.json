@@ -517,6 +517,7 @@
     "executedCommand": "Executed command: {{data}}",
     "changedBotDesiredState": "Changed bot desired state",
     "restartedBots": "Restarted bots",
+    "calledPluginRpc": "Called plugin RPC",
     "contextMenu": {
       "copyUsername": "Copy Username",
       "copyCommand": "Copy Command"

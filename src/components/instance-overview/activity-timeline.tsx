@@ -28,6 +28,8 @@ function entryTypeI18nKey(
       return "overview.timeline.types.botDesiredStateChange";
     case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
       return "overview.timeline.types.botRestart";
+    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC:
+      return "overview.timeline.types.pluginRpc";
     default:
       return "overview.timeline.types.unknown";
   }
