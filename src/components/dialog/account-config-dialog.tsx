@@ -13,7 +13,10 @@ import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { BotPluginInfoCard } from "@/components/instance-plugin-info-card.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { SettingTypeRenderer } from "@/components/settings-page.tsx";
+import {
+  SettingTypeRenderer,
+  useSettingSaveError,
+} from "@/components/settings-page.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -263,6 +266,10 @@ function BotSettingRow(props: {
 }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
+  const onSaveError = useSettingSaveError(
+    props.row.definition,
+    `${props.row.identifier.namespace}:${props.row.identifier.key}`,
+  );
   const valueMutation = useMutation({
     mutationKey: [
       "bot-setting",
@@ -284,6 +291,7 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -348,7 +356,11 @@ function BotSettingRow(props: {
           settingType={props.row.definition.type}
           value={props.row.effectiveValue}
           changeCallback={
-            props.row.definition.type.case === "stringList"
+            props.row.definition.type.case === "stringList" ||
+            props.row.definition.type.case === "string" ||
+            props.row.definition.type.case === "int" ||
+            props.row.definition.type.case === "double" ||
+            props.row.definition.type.case === "minMax"
               ? valueMutation.mutateAsync
               : valueMutation.mutate
           }

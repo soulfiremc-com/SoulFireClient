@@ -149,24 +149,34 @@ function inputTypeToHtml(
 function StringComponent(props: {
   setting: StringSetting;
   value: string;
-  changeCallback: (value: string) => void;
+  changeCallback: (value: string) => void | Promise<void>;
 }) {
   const [isFocused, setIsFocused] = useState(false);
+  const [pendingWrites, setPendingWrites] = useState(0);
   const [inputValue, setInputValue] = useCachedState(props.value, {
-    shouldSync: !isFocused,
+    shouldSync: !isFocused && pendingWrites === 0,
   });
 
-  const onChangeHandler = (
+  const onChangeHandler = async (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const newValue = e.currentTarget.value;
     setInputValue(newValue);
-    props.changeCallback(newValue);
+    setPendingWrites((count) => count + 1);
+    try {
+      await props.changeCallback(newValue);
+    } catch {
+      // The mutation reports the failure and reloads the stored value.
+    } finally {
+      setPendingWrites((count) => count - 1);
+    }
   };
 
   if (props.setting.inputType === StringSetting_InputType.TEXTAREA) {
     return (
       <Textarea
+        aria-label={props.setting.uiName}
+        aria-busy={pendingWrites > 0}
         value={inputValue}
         placeholder={props.setting.placeholder}
         minLength={props.setting.minLength}
@@ -180,6 +190,8 @@ function StringComponent(props: {
   } else {
     return (
       <Input
+        aria-label={props.setting.uiName}
+        aria-busy={pendingWrites > 0}
         value={inputValue}
         type={inputTypeToHtml(props.setting.inputType)}
         placeholder={props.setting.placeholder}
@@ -680,7 +692,7 @@ export function SettingTypeRenderer(props: {
   }
 }
 
-function useSettingSaveError(
+export function useSettingSaveError(
   definition: SettingsDefinition | undefined,
   identifier: string,
 ) {
@@ -746,6 +758,7 @@ function SettingField<T extends BaseSettings>(props: {
       value={value}
       changeCallback={
         definition.type.case === "stringList" ||
+        definition.type.case === "string" ||
         definition.type.case === "int" ||
         definition.type.case === "double" ||
         definition.type.case === "minMax"
@@ -833,6 +846,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
       value={value}
       changeCallback={
         definition.type.case === "stringList" ||
+        definition.type.case === "string" ||
         definition.type.case === "int" ||
         definition.type.case === "double" ||
         definition.type.case === "minMax"
