@@ -48,6 +48,7 @@ import {
   type BotStatus,
 } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
@@ -272,6 +273,8 @@ export default function ControlsMenu() {
     },
   });
 
+  const isPending = useMutationScopePending(`bot-state-${instanceInfo.id}`);
+
   if (!canControl) {
     const supportsBotControls = instanceInfo.instancePermissions.some(
       (permission) =>
@@ -288,10 +291,6 @@ export default function ControlsMenu() {
     );
   }
 
-  const isPending =
-    startMutation.isPending ||
-    restartMutation.isPending ||
-    stopMutation.isPending;
   const requestedStartCount = Number(startCount);
   const hasAccounts = instanceInfo.profile.accounts.length > 0;
   const startUnavailable = hasAccounts && stoppedCount === 0;
