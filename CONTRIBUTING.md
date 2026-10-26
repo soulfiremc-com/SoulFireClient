@@ -26,6 +26,39 @@ A browser preview covers the web UI. Native integration needs an Electron sessio
 Use a local SoulFire server for connected workflows. The client also has demo data for disconnected views.
 Do not share development tokens or modify production accounts while reproducing a bug.
 
+### Develop components with Storybook
+
+Run `bun run storybook` and open `http://localhost:6006`.
+Storybook shows application components without Electron or a SoulFire server.
+The initial stories cover fleet summaries, health and food meters, and server dialogs.
+Use the theme toolbar to switch between light and dark mode.
+Controls change component props. The Accessibility panel reports problems in the current story.
+
+Place each story beside its component in a `PascalCase.stories.tsx` file.
+Import `Meta` and `StoryObj` from `@storybook/react-vite` for typed stories.
+Use real application components and representative fixtures for meaningful states.
+Create Protobuf fixtures with `create()` and the generated message schema.
+Add a `play` function for interactions that need regression checks.
+Import assertions and spies from `storybook/test`.
+
+The shared preview loads application styles, English translations, and the tooltip provider.
+Add query, router, or transport providers in decorators for stories that need them.
+Use local fixtures or mocked transports to keep stories independent of live services.
+Storybook uses its own Vite configuration to avoid Electron startup, route generation, and application devtools.
+
+Install Chromium once before running the component tests:
+
+```bash
+bunx playwright install chromium
+bun run test:storybook
+```
+
+These tests render every story in Chromium and run its interactions and accessibility checks.
+The server dialog stories cover submission, pending actions, dismissal with an invalid number, and drafts after failed submissions.
+Existing unit tests still run with `bun test`.
+Run `bun run build:storybook` to create a static preview in `storybook-static/`.
+CI builds Storybook and runs its component tests.
+
 ## Find the relevant code
 
 | Location          | Purpose                                                      |

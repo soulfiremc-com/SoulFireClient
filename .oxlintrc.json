@@ -14,6 +14,8 @@
     "postcss.config.mjs",
     "release-artifacts/**",
     "shared-modules/**",
+    "storybook-static/**",
+    "test-results/**",
     "src/generated/**",
     "src/routeTree.gen.ts"
   ],

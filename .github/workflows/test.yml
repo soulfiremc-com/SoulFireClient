@@ -46,3 +46,12 @@ jobs:
 
       - name: Run web build
         run: bun run build:web
+
+      - name: Build Storybook
+        run: bun run build:storybook
+
+      - name: Install Chromium for component tests
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run Storybook component tests
+        run: bun run test:storybook

@@ -16,6 +16,8 @@
     "index.html",
     "node_modules",
     "dist",
+    "storybook-static",
+    "test-results",
     "build",
     "out",
     "postcss.config.mjs",

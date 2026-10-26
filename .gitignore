@@ -30,3 +30,5 @@ repo/
 .tanstack/
 dist-electron/
 release-artifacts/
+storybook-static/
+test-results/
