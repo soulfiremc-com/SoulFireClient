@@ -97,6 +97,7 @@
         "executeCommand": "bir komut çalıştırdı: {{data}}",
         "botDesiredStateChange": "botun istenen durumu değiştirildi",
         "botRestart": "botlar yeniden başlatıldı",
+        "pluginRpc": "",
         "unknown": "bir işlem gerçekleştirdi"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Anahtar",
     "valuePlaceholder": "Değer (JSON)",
     "noEntries": "Metadata girişi yok. Yukarıdan bir tane ekleyin.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Yeniden Dene",
     "addSuccess": "Giriş eklendi",
     "addError": "Giriş eklenemedi",
     "updateError": "Giriş güncellenemedi",

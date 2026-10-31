@@ -97,6 +97,7 @@
         "executeCommand": "đã chạy lệnh: {{data}}",
         "botDesiredStateChange": "đã thay đổi trạng thái mong muốn của bot",
         "botRestart": "đã khởi động lại bot",
+        "pluginRpc": "",
         "unknown": "đã thực hiện một hành động"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Khóa",
     "valuePlaceholder": "Giá trị (JSON)",
     "noEntries": "Không có mục siêu dữ liệu nào. Thêm một mục ở trên.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Thử lại",
     "addSuccess": "Đã thêm mục",
     "addError": "Không thể thêm mục",
     "updateError": "Không thể cập nhật mục",

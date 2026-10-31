@@ -97,6 +97,8 @@
         "fromUrl": "Från URL",
         "firstClipboardItem": "Urklippet innehåller flera objekt. SoulFire kommer att använda det första objektet.",
         "fromClipboard": "Från urklipp",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Skriv in text här...",
           "submit": "Ladda från text"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Skriv kommando (\"help\" visar lista)",
     "emptySuggestions": "Skriv för att be om förslag eller tryck på Tab.",
     "noSuggestions": "Inga förslag tillgängliga."
@@ -515,6 +519,7 @@
     "executedCommand": "Körde kommando: {{data}}",
     "changedBotDesiredState": "Ändrade önskat tillstånd för bottar",
     "restartedBots": "Startade om bottar",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Kopiera användarnamn",
       "copyCommand": "Kopiera kommando"
@@ -588,6 +593,7 @@
     "instanceScript": "Instans"
   },
   "contextMenu": {
+    "actions": "Åtgärder",
     "instance": {
       "goToInstance": "Gå till instans",
       "duplicateInstance": "Duplicera instans",

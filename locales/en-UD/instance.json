@@ -97,6 +97,7 @@
         "executeCommand": " :{{data}} puɐɯɯoɔ ɐ pɐu",
         "botDesiredStateChange": "ǝƃuɐɥɔ ǝʇɐʇs pǝɹᴉɹǝs pʇoq pǝƃuɐɥɔ",
         "botRestart": "sʇoq pǝʇɐɹʇsǝɹ",
+        "pluginRpc": "",
         "unknown": "uoᴉʇɔɐ  uɐ pǝɯɹoɟɹǝd"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "ʎǝ⋊",
     "valuePlaceholder": ")NOႧ( ǝnlɐʌ",
     "noEntries": "..ǝʌoɯɐ ǝuo ppp∀ .sǝᴉɹʇuǝ ɐʇɐpɐʇǝɯ oN",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "ʎɹʇǝɹ",
     "addSuccess": "pǝpp∀ ʎɹʇuƎ",
     "addError": "ʎɹʇuǝ  ppA oʇ pǝlᴉɐℲ",
     "updateError": "ʎɹʇuǝ ǝʇɐpdnl pǝlᴉɐℲ",

@@ -97,6 +97,8 @@
         "fromUrl": "За URL-адресою",
         "firstClipboardItem": "Буфер обміну містить кілька елементів. SoulFire використає перший елемент.",
         "fromClipboard": "З буфера обміну",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Введіть текст тут...",
           "submit": "Завантажити з тексту"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Введіть команду (введіть 'help' для списку)",
     "emptySuggestions": "Введіть текст для отримання підказок або натисніть Tab.",
     "noSuggestions": "Підказки відсутні."
@@ -523,6 +527,7 @@
     "executedCommand": "Виконана команда: {{data}}",
     "changedBotDesiredState": "Змінено бажаний стан бота",
     "restartedBots": "Ботів перезапущено",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Копіювати ім'я користувача",
       "copyCommand": "Скопіювати команду"
@@ -596,6 +601,7 @@
     "instanceScript": "Екземпляр"
   },
   "contextMenu": {
+    "actions": "Дії",
     "instance": {
       "goToInstance": "Перейти до інстансу",
       "duplicateInstance": "Дублювати інстанцію",

@@ -97,6 +97,7 @@
         "executeCommand": "runned a commandz: {{data}}",
         "botDesiredStateChange": "bot desird st8 haz cheenged",
         "botRestart": "botz haz been restartd",
+        "pluginRpc": "",
         "unknown": "didz sumthang"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Valoo (JSON)",
     "noEntries": "No metadata enturiez. Addz one up dere.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Try agin? kthx!",
     "addSuccess": "Entury addzored",
     "addError": "No can add entury, oh noes!",
     "updateError": "No can updait entury, sry!",

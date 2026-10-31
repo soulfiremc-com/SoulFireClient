@@ -97,6 +97,8 @@
         "fromUrl": "From the bottle at sea",
         "firstClipboardItem": "The clipboard holds a whole booty o' loot. SoulFire will take the first piece o' treasure.",
         "fromClipboard": "From the chest o' clippin's",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Scrawl yer words here...",
           "submit": "Heave from th' writin'"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Enter yer decree! (Type 'help' to spy the legend)",
     "emptySuggestions": "Type to beg for ideas or whack Tab, matey.",
     "noSuggestions": "No pirate ideas showed up, arrr."
@@ -515,6 +519,7 @@
     "executedCommand": "Decree fired: {{data}}",
     "changedBotDesiredState": "Changed what the bots be yearnin' fer",
     "restartedBots": "Sent the bots back to the depths!",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Snatch Pirate Name",
       "copyCommand": "Snatch Command"
@@ -588,6 +593,7 @@
     "instanceScript": "This hull only"
   },
   "contextMenu": {
+    "actions": "Duties",
     "instance": {
       "goToInstance": "Sail t' Fleet",
       "duplicateInstance": "Make a Copy o' Instance",

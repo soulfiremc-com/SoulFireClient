@@ -97,6 +97,7 @@
         "executeCommand": "wykonał polecenie: {{data}}",
         "botDesiredStateChange": "zmieniono żądany stan bota",
         "botRestart": "zrestartowano boty",
+        "pluginRpc": "",
         "unknown": "wykonał akcję"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Klucz",
     "valuePlaceholder": "Wartość (JSON)",
     "noEntries": "Brak wpisów metadanych. Dodaj jeden powyżej.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Ponów próbę",
     "addSuccess": "Wpis dodany",
     "addError": "Nie udało się dodać wpisu",
     "updateError": "Nie udało się zaktualizować wpisu",

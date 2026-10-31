@@ -97,6 +97,8 @@
         "fromUrl": "Von URL",
         "firstClipboardItem": "Die Zwischenablage enthält mehrere Elemente. SoulFire wird das erste Element verwenden.",
         "fromClipboard": "Aus Zwischenablage",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Text hier eingeben...",
           "submit": "Von Text laden"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Befehl eingeben (\"help\" für Liste tippen)",
     "emptySuggestions": "Tippen Sie, um Vorschläge anzufordern, oder drücken Sie die Tabulatortaste.",
     "noSuggestions": "Keine Vorschläge verfügbar."
@@ -515,6 +519,7 @@
     "executedCommand": "Ausgeführter Befehl: {{data}}",
     "changedBotDesiredState": "Gewünschten Bot-Zustand geändert",
     "restartedBots": "Bots neu gestartet",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Benutzernamen kopieren",
       "copyCommand": "Befehl kopieren"
@@ -588,6 +593,7 @@
     "instanceScript": "Instanz"
   },
   "contextMenu": {
+    "actions": "Aktionen",
     "instance": {
       "goToInstance": "Zur Instanz gehen",
       "duplicateInstance": "Instanz duplizieren",

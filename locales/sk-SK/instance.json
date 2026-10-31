@@ -97,6 +97,7 @@
         "executeCommand": "spustil príkaz: {{data}}",
         "botDesiredStateChange": "zmenený požadovaný stav bota",
         "botRestart": "boty boli reštartované",
+        "pluginRpc": "",
         "unknown": "vykonal akciu"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Kľúč",
     "valuePlaceholder": "Hodnota (JSON)",
     "noEntries": "Žiadne záznamy metaúdajov. Pridajte jeden vyššie.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opakovať",
     "addSuccess": "Záznam pridaný",
     "addError": "Záznam sa nepodarilo pridať",
     "updateError": "Záznam sa nepodarilo aktualizovať",

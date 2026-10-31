@@ -97,6 +97,7 @@
         "executeCommand": "एक कमांड चलाया: {{data}}",
         "botDesiredStateChange": "बॉट की इच्छित स्थिति बदली गई",
         "botRestart": "बॉट्स को पुनः प्रारंभ किया गया",
+        "pluginRpc": "",
         "unknown": "एक क्रिया की गई"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "कुंजी",
     "valuePlaceholder": "मान (JSON)",
     "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "पुनः प्रयास करें",
     "addSuccess": "प्रविष्टि जोड़ी गई",
     "addError": "प्रविष्टि जोड़ने में विफल",
     "updateError": "प्रविष्टि अपडेट करने में विफल",

@@ -97,6 +97,8 @@
         "fromUrl": "Da URL",
         "firstClipboardItem": "A área de transferência contém vários itens. O SoulFire usará o primeiro item.",
         "fromClipboard": "Da área de transferência",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Coloque o texto aqui...",
           "submit": "Carregar do texto"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Digite o comando (digite 'help' para a lista)",
     "emptySuggestions": "Digite para solicitar sugestões ou pressione Tab.",
     "noSuggestions": "Nenhuma sugestão disponível."
@@ -515,6 +519,7 @@
     "executedCommand": "Comando executado: {{data}}",
     "changedBotDesiredState": "Estado desejado do bot alterado",
     "restartedBots": "Bots reiniciados",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Copiar nome de usuário",
       "copyCommand": "Copiar Comando"
@@ -588,6 +593,7 @@
     "instanceScript": "Instância"
   },
   "contextMenu": {
+    "actions": "Ações",
     "instance": {
       "goToInstance": "Ir para Instância",
       "duplicateInstance": "Duplicar instância",

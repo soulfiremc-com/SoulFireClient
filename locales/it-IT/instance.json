@@ -97,6 +97,7 @@
         "executeCommand": "ha eseguito un comando: {{data}}",
         "botDesiredStateChange": "stato desiderato del bot modificato",
         "botRestart": "bot riavviati",
+        "pluginRpc": "",
         "unknown": "ha eseguito un'azione"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Chiave",
     "valuePlaceholder": "Valore (JSON)",
     "noEntries": "Nessuna voce di metadati. Aggiungine una sopra.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Riprova",
     "addSuccess": "Voce aggiunta",
     "addError": "Impossibile aggiungere la voce",
     "updateError": "Impossibile aggiornare la voce",

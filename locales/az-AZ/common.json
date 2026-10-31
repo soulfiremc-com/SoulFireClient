@@ -97,6 +97,8 @@
         "fromUrl": "URL-dən",
         "firstClipboardItem": "Mübadilə buferində bir neçə element var. SoulFire ilk elementi istifadə edəcək.",
         "fromClipboard": "Arxivdən",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Mətni bura yazın...",
           "submit": "Mətndən yüklə"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Əmr daxil edin ('help' yazın siyahı üçün)",
     "emptySuggestions": "Təkliflər üçün yazmağa başlayın və ya Tab düyməsini basın.",
     "noSuggestions": "Heç bir təklif mövcud deyil."
@@ -515,6 +519,7 @@
     "executedCommand": "İcra edilmiş əmr: {{data}}",
     "changedBotDesiredState": "Botun istənilən vəziyyəti dəyişdi",
     "restartedBots": "Botlar yenidən başlatıldı",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "İstifadəçi adını kopyala",
       "copyCommand": "Əmri Kopyala"
@@ -588,6 +593,7 @@
     "instanceScript": "Instansiya"
   },
   "contextMenu": {
+    "actions": "Əməliyyatlar",
     "instance": {
       "goToInstance": "İnstantsa get",
       "duplicateInstance": "Nüsxəni çıxar",

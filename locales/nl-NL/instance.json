@@ -97,6 +97,7 @@
         "executeCommand": "voerde een commando uit: {{data}}",
         "botDesiredStateChange": "gewenste botstatus gewijzigd",
         "botRestart": "bots opnieuw gestart",
+        "pluginRpc": "",
         "unknown": "een actie uitgevoerd"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Sleutel",
     "valuePlaceholder": "Waarde (JSON)",
     "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opnieuw proberen",
     "addSuccess": "Item toegevoegd",
     "addError": "Toevoegen van item mislukt",
     "updateError": "Bijwerken van item mislukt",

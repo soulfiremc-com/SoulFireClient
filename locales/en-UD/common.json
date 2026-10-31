@@ -97,6 +97,8 @@
         "fromUrl": "˥ɹn ɯoɹɟ",
         "firstClipboardItem": "˙ɯǝʇᴉ ʇsɹᴉɟ ǝɥʇ ǝs∩ ˙ǝɯǝʇᴉ lᴉdlɐʇᴉlpɐ ǝlʇndᴉlnd lᴉdɐʇuoɔ pɐɹʇuuoɔ ǝɥʇ",
         "fromClipboard": "pɹɐoqdᴉʟ ɯoɹɟ",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "...ǝɹǝɥ ʇxǝʇ ʇnԀ",
           "submit": "ʇxǝʇ ɯoɹɟ pɐo˥"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "˙)ʇsᴉl ɹoɟ dlǝɥ( 'dlɥǝ ǝdʎʇ pouɐɯɯoƆ ɹǝʇuƎ",
     "emptySuggestions": ".ǝqɹᴉsǝp o┴ ɹoɟ qǝd oʇ suoᴉʇɔǝƃƃns ʇsǝnbǝɹ do sǝʇsǝnbǝɹ ǝʇɐpd oʇ ǝdʎ┴",
     "noSuggestions": ".ǝlqɐlᴉɐʌ sǝlʇɔǝlǝS oN"
@@ -515,6 +519,7 @@
     "executedCommand": "{{data}} :puɐɯɯoɔ pǝʇnɔǝxƎ",
     "changedBotDesiredState": "pǝʇɐʇs puǝɹǝpuǝ pǝƃuɐɥɔ",
     "restartedBots": "sʇoԐ pǝʇɹɐʇsǝɹ",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "ǝɯɐuǝɯɐu ʎdoↃ",
       "copyCommand": "puɐɯɯoↃ ʎdoↃ"
@@ -588,6 +593,7 @@
     "instanceScript": "ǝɔuɐʇsᴉuI"
   },
   "contextMenu": {
+    "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
     "instance": {
       "goToInstance": "ǝɔuɐʇsᴉ I oʇ oƃ",
       "duplicateInstance": "ǝɔuɐʇsᴉ ǝʇɐɔᴉl уд",

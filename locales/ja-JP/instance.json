@@ -97,6 +97,7 @@
         "executeCommand": "コマンドを実行しました: {{data}}",
         "botDesiredStateChange": "ボットの望ましい状態が変更されました",
         "botRestart": "ボットが再起動されました",
+        "pluginRpc": "",
         "unknown": "アクションを実行しました"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "キー",
     "valuePlaceholder": "値（JSON）",
     "noEntries": "メタデータエントリがありません。上で追加してください。",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "再試行する",
     "addSuccess": "エントリが追加されました",
     "addError": "エントリの追加に失敗しました",
     "updateError": "エントリの更新に失敗しました",

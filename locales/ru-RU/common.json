@@ -97,6 +97,8 @@
         "fromUrl": "Из URL-адреса",
         "firstClipboardItem": "В буфере обмена несколько элементов. SoulFire использует первый элемент.",
         "fromClipboard": "Из буфера обмена",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Вставьте текст сюда...",
           "submit": "Загрузить из текста"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Введите команду (введите 'help' для списка)",
     "emptySuggestions": "Начните вводить для получения подсказок или нажмите Tab.",
     "noSuggestions": "Подсказки отсутствуют."
@@ -523,6 +527,7 @@
     "executedCommand": "Выполнена команда: {{data}}",
     "changedBotDesiredState": "Изменено требуемое состояние бота",
     "restartedBots": "Боты перезапущены",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Скопировать имя пользователя",
       "copyCommand": "Скопировать команду"
@@ -596,6 +601,7 @@
     "instanceScript": "Экземпляр"
   },
   "contextMenu": {
+    "actions": "Действия",
     "instance": {
       "goToInstance": "Перейти к экземпляру",
       "duplicateInstance": "Дублировать экземпляр",

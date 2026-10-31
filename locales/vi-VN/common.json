@@ -97,6 +97,8 @@
         "fromUrl": "Từ URL",
         "firstClipboardItem": "Bộ nhớ tạm có chứa nhiều mục. SoulFire sẽ sử dụng mục đầu tiên.",
         "fromClipboard": "Từ bộ nhớ tạm",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Nhập văn bản tại đây...",
           "submit": "Tải từ văn bản"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Nhập lệnh (gõ 'help' để xem danh sách)",
     "emptySuggestions": "Nhập để yêu cầu gợi ý hoặc nhấn Tab.",
     "noSuggestions": "Không có gợi ý nào."
@@ -511,6 +515,7 @@
     "executedCommand": "Đã thực thi lệnh: {{data}}",
     "changedBotDesiredState": "Đã thay đổi trạng thái mong muốn của bot",
     "restartedBots": "Đã khởi động lại các bot",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Sao chép Tên người dùng",
       "copyCommand": "Sao chép Lệnh"
@@ -584,6 +589,7 @@
     "instanceScript": "Phiên bản"
   },
   "contextMenu": {
+    "actions": "Hành động",
     "instance": {
       "goToInstance": "Đi đến Phiên bản",
       "duplicateInstance": "Nhân bản phiên bản",

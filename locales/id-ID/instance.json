@@ -97,6 +97,7 @@
         "executeCommand": "menjalankan perintah: {{data}}",
         "botDesiredStateChange": "mengubah status yang diinginkan bot",
         "botRestart": "me-restart bot",
+        "pluginRpc": "",
         "unknown": "melakukan sebuah aksi"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Kunci",
     "valuePlaceholder": "Nilai (JSON)",
     "noEntries": "Tidak ada entri metadata. Tambahkan satu di atas.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Coba Lagi",
     "addSuccess": "Entri berhasil ditambahkan",
     "addError": "Gagal menambahkan entri",
     "updateError": "Gagal memperbarui entri",

@@ -97,6 +97,8 @@
         "fromUrl": "จาก URL",
         "firstClipboardItem": "คลิปบอร์ดมีหลายรายการ SoulFire จะใช้รายการแรก",
         "fromClipboard": "จากคลิปบอร์ด",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "ใส่ข้อความที่นี่...",
           "submit": "โหลดจากข้อความ"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "ใส่คำสั่ง (พิมพ์ 'help' เพื่อดูรายการ)",
     "emptySuggestions": "พิมพ์เพื่อขอรับคำแนะนำหรือกด Tab",
     "noSuggestions": "ไม่มีคำแนะนำที่พร้อมใช้งาน"
@@ -511,6 +515,7 @@
     "executedCommand": "ดำเนินการคำสั่ง: {{data}}",
     "changedBotDesiredState": "เปลี่ยนสถานะที่ต้องการของบอทแล้ว",
     "restartedBots": "รีสตาร์ทบอทแล้ว",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "คัดลอกชื่อผู้ใช้",
       "copyCommand": "คัดลอกคำสั่ง"
@@ -584,6 +589,7 @@
     "instanceScript": "อินสแตนซ์"
   },
   "contextMenu": {
+    "actions": "การดำเนินการ",
     "instance": {
       "goToInstance": "ไปที่อินสแตนซ์",
       "duplicateInstance": "ทำสำเนาอินสแตนซ์",
