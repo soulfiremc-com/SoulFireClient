@@ -97,6 +97,8 @@
         "fromUrl": "从 URL",
         "firstClipboardItem": "剪贴板包含多个项目。SoulFire将使用第一个项目。",
         "fromClipboard": "从剪贴板",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "将文本放在这里...",
           "submit": "从文本加载"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "输入命令（输入“help”查看列表）",
     "emptySuggestions": "输入以请求建议或按 Tab 键。",
     "noSuggestions": "暂无可用建议。"
@@ -511,6 +515,7 @@
     "executedCommand": "执行的命令：{{data}}",
     "changedBotDesiredState": "机器人目标状态已更改",
     "restartedBots": "已重启机器人",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "复制用户名",
       "copyCommand": "复制命令"
@@ -584,6 +589,7 @@
     "instanceScript": "实例"
   },
   "contextMenu": {
+    "actions": "操作",
     "instance": {
       "goToInstance": "前往实例",
       "duplicateInstance": "复制实例",

@@ -97,6 +97,7 @@
         "executeCommand": "执行了命令：{{data}}",
         "botDesiredStateChange": "更改了机器人期望状态",
         "botRestart": "已重启机器人",
+        "pluginRpc": "",
         "unknown": "执行了一个操作"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "键",
     "valuePlaceholder": "值（JSON）",
     "noEntries": "没有元数据条目。请在上方添加。",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "重试",
     "addSuccess": "条目已添加",
     "addError": "添加条目失败",
     "updateError": "更新条目失败",

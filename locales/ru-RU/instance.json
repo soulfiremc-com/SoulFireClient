@@ -97,6 +97,7 @@
         "executeCommand": "выполнил команду: {{data}}",
         "botDesiredStateChange": "изменено желаемое состояние бота",
         "botRestart": "боты перезапущены",
+        "pluginRpc": "",
         "unknown": "выполнил действие"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Ключ",
     "valuePlaceholder": "Значение (JSON)",
     "noEntries": "Нет метаданных. Добавьте запись выше.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Повторить",
     "addSuccess": "Запись добавлена",
     "addError": "Ошибка добавления записи",
     "updateError": "Ошибка обновления записи",

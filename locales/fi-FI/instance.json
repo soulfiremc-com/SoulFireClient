@@ -97,6 +97,7 @@
         "executeCommand": "ajoi komennon: {{data}}",
         "botDesiredStateChange": "vaihdettiin botin toivottu tila",
         "botRestart": "käynnisti botit uudelleen",
+        "pluginRpc": "",
         "unknown": "suoritti toiminnon"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Avain",
     "valuePlaceholder": "Arvo (JSON)",
     "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Yritä uudelleen",
     "addSuccess": "Merkintä lisätty",
     "addError": "Kirjauksen lisääminen epäonnistui",
     "updateError": "Kirjauksen päivittäminen epäonnistui",

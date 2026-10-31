@@ -97,6 +97,8 @@
         "fromUrl": "URL से",
         "firstClipboardItem": "क्लिपबोर्ड में एक से अधिक आइटम हैं। SoulFire पहला आइटम उपयोग करेगा।",
         "fromClipboard": "क्लिपबोर्ड से",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "यहाँ पाठ डालें...",
           "submit": "पाठ से लोड करें"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "कमान्ड दर्ज करें (सूची के लिए 'help' टाइप करें)",
     "emptySuggestions": "सुझाव प्राप्त करने के लिए टाइप करें या Tab दबाएँ।",
     "noSuggestions": "कोई सुझाव उपलब्ध नहीं हैं।"
@@ -515,6 +519,7 @@
     "executedCommand": "कमांड निष्पादित: {{data}}",
     "changedBotDesiredState": "बॉट की इच्छित अवस्था बदली गई",
     "restartedBots": "बॉट्स को पुनः प्रारंभ किया गया",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "यूज़रनेम कॉपी करें",
       "copyCommand": "कमान्ड कॉपी करें"
@@ -588,6 +593,7 @@
     "instanceScript": "इंस्टेंस"
   },
   "contextMenu": {
+    "actions": "क्रियाएँ",
     "instance": {
       "goToInstance": "इंस्टेंस पर जाएँ",
       "duplicateInstance": "इंस्टेंस डुप्लिकेट करें",

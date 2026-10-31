@@ -97,6 +97,8 @@
         "fromUrl": "Frum URL",
         "firstClipboardItem": "Clipboard haz lotz ov itemz. SoulFire usin da furst one, kthxbai.",
         "fromClipboard": "Frum clipboard",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Give taxt here...",
           "submit": "Load form taxt"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Entah teh command (type 'help' if yar confoosed)",
     "emptySuggestions": "Typz to get sugjestshunz or smash Tab, kthx.",
     "noSuggestions": "No sugjestshunz r here, sry."
@@ -515,6 +519,7 @@
     "executedCommand": "Did command: {{data}}",
     "changedBotDesiredState": "Changed bot desierd statez",
     "restartedBots": "Restarted all teh botz",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Copy Usernamez",
       "copyCommand": "Copy Commandz"
@@ -588,6 +593,7 @@
     "instanceScript": "Inztanz"
   },
   "contextMenu": {
+    "actions": "Akshuns",
     "instance": {
       "goToInstance": "Go tu Instanz",
       "duplicateInstance": "Duplikate Instanec",

@@ -97,6 +97,7 @@
         "executeCommand": "執行了一個指令：{{data}}",
         "botDesiredStateChange": "已更改機器人目標狀態",
         "botRestart": "已重新啟動機器人",
+        "pluginRpc": "",
         "unknown": "執行了一個動作"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "鍵",
     "valuePlaceholder": "值（JSON）",
     "noEntries": "沒有中繼資料條目。請在上方新增一個。",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "重試",
     "addSuccess": "已新增條目",
     "addError": "新增條目失敗",
     "updateError": "更新條目失敗",

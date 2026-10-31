@@ -97,6 +97,7 @@
         "executeCommand": "ejecutó un comando: {{data}}",
         "botDesiredStateChange": "cambió el estado deseado del bot",
         "botRestart": "reinició los bots",
+        "pluginRpc": "",
         "unknown": "realizó una acción"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Clave",
     "valuePlaceholder": "Valor (JSON)",
     "noEntries": "No hay entradas de metadatos. Agregue una arriba.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Reintentar",
     "addSuccess": "Entrada añadida",
     "addError": "Error al añadir la entrada",
     "updateError": "Error al actualizar la entrada",

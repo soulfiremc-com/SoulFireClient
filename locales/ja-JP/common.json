@@ -97,6 +97,8 @@
         "fromUrl": "URLから",
         "firstClipboardItem": "クリップボードに複数の項目があります。SoulFire は最初の項目を使用します。",
         "fromClipboard": "クリップボードから",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "ここにテキストを入力...",
           "submit": "テキストから読み込む"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "コマンドを入力 (一覧は「help」と入力)",
     "emptySuggestions": "提案をリクエストするには入力するか、Tabキーを押してください。",
     "noSuggestions": "利用可能な提案はありません。"
@@ -511,6 +515,7 @@
     "executedCommand": "コマンドを実行: {{data}}",
     "changedBotDesiredState": "ボットの希望状態を変更しました",
     "restartedBots": "ボットを再起動しました",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "ユーザー名をコピー",
       "copyCommand": "コマンドをコピー"
@@ -584,6 +589,7 @@
     "instanceScript": "インスタンス"
   },
   "contextMenu": {
+    "actions": "操作",
     "instance": {
       "goToInstance": "インスタンスへ移動",
       "duplicateInstance": "インスタンスを複製",

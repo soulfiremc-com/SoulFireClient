@@ -97,6 +97,7 @@
         "executeCommand": "spoke an order: {{data}}",
         "botDesiredStateChange": "changed th' bot's wantin' state, arrr",
         "botRestart": "lashed the bots to th' mainmast and restarted 'em, aye!",
+        "pluginRpc": "",
         "unknown": "pulled a fast one"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Key to the chest",
     "valuePlaceholder": "Booty Value (JSON)",
     "noEntries": "No metadata trinkets. Add one up top!",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Try again, matey!",
     "addSuccess": "Entry stashed!",
     "addError": "Failed to stash the loot!",
     "updateError": "Couldn't update that trinket, arrr!",

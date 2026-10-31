@@ -97,6 +97,7 @@
         "executeCommand": "əmr icra etdi: {{data}}",
         "botDesiredStateChange": "botun istənilən vəziyyətini dəyişdi",
         "botRestart": "botları yenidən başladıb",
+        "pluginRpc": "",
         "unknown": "hərəkət icra etdi"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Açar",
     "valuePlaceholder": "Dəyər (JSON)",
     "noEntries": "Heç bir metadata girişi yoxdur. Yuxarıdan birini əlavə edin.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Təkrar cəhd et",
     "addSuccess": "Giriş əlavə olundu",
     "addError": "Girişi əlavə etmək mümkün olmadı",
     "updateError": "Girişi yeniləmək mümkün olmadı",

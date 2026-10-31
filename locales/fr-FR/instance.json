@@ -97,6 +97,7 @@
         "executeCommand": "a exécuté une commande : {{data}}",
         "botDesiredStateChange": "a changé l’état souhaité du bot",
         "botRestart": "bots redémarrés",
+        "pluginRpc": "",
         "unknown": "a effectué une action"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Clé",
     "valuePlaceholder": "Valeur (JSON)",
     "noEntries": "Aucune entrée de métadonnée. Ajoutez-en une ci-dessus.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Réessayer",
     "addSuccess": "Entrée ajoutée",
     "addError": "Impossible d'ajouter l'entrée",
     "updateError": "Impossible de mettre à jour l'entrée",

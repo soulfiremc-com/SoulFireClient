@@ -97,6 +97,7 @@
         "executeCommand": "spustil příkaz: {{data}}",
         "botDesiredStateChange": "změněn požadovaný stav bota",
         "botRestart": "boty byly restartovány",
+        "pluginRpc": "",
         "unknown": "provedl akci"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Klíč",
     "valuePlaceholder": "Hodnota (JSON)",
     "noEntries": "Žádné položky metadat. Přidejte jednu výše.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opakovat",
     "addSuccess": "Položka byla přidána",
     "addError": "Nepodařilo se přidat položku",
     "updateError": "Nepodařilo se aktualizovat položku",

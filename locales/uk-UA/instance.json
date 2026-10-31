@@ -97,6 +97,7 @@
         "executeCommand": "запустив команду: {{data}}",
         "botDesiredStateChange": "змінено бажаний стан бота",
         "botRestart": "перезапущено ботів",
+        "pluginRpc": "",
         "unknown": "виконав дію"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Ключ",
     "valuePlaceholder": "Значення (JSON)",
     "noEntries": "Немає записів метаданих. Додайте один вище.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Повторити спробу",
     "addSuccess": "Запис додано",
     "addError": "Не вдалося додати запис",
     "updateError": "Не вдалося оновити запис",

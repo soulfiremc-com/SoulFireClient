@@ -97,6 +97,8 @@
         "fromUrl": "URL에서",
         "firstClipboardItem": "클립보드에 여러 항목이 있습니다. SoulFire는 첫 번째 항목을 사용합니다.",
         "fromClipboard": "클립보드에서",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "여기에 텍스트를 입력하세요...",
           "submit": "텍스트에서 불러오기"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "명령 입력 (목록이 필요하면 'help' 입력)",
     "emptySuggestions": "제안을 요청하려면 입력하거나 Tab 키를 누르세요.",
     "noSuggestions": "사용 가능한 제안이 없습니다."
@@ -511,6 +515,7 @@
     "executedCommand": "명령 실행됨: {{data}}",
     "changedBotDesiredState": "봇의 목표 상태를 변경함",
     "restartedBots": "봇 다시 시작함",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "사용자명 복사",
       "copyCommand": "명령어 복사"
@@ -584,6 +589,7 @@
     "instanceScript": "인스턴스"
   },
   "contextMenu": {
+    "actions": "동작",
     "instance": {
       "goToInstance": "인스턴스로 이동",
       "duplicateInstance": "인스턴스 복제",

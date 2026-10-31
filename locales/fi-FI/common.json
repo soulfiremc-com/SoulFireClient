@@ -97,6 +97,8 @@
         "fromUrl": "URL-osoitteesta",
         "firstClipboardItem": "Leikepöydällä on useita kohteita. SoulFire käyttää ensimmäistä kohdetta.",
         "fromClipboard": "Leikepöydältä",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Syötä teksti tähän...",
           "submit": "Lataa tekstistä"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Syötä komento (kirjoita 'help' nähdäksesi luettelon)",
     "emptySuggestions": "Kirjoita pyytääksesi ehdotuksia tai paina Tabulaattoria.",
     "noSuggestions": "Ei ehdotuksia saatavilla."
@@ -515,6 +519,7 @@
     "executedCommand": "Suoritettiin komento: {{data}}",
     "changedBotDesiredState": "Bottien tavoitetila muutettu",
     "restartedBots": "Botit käynnistetty uudelleen",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Kopioi käyttäjätunnus",
       "copyCommand": "Kopioi komento"
@@ -588,6 +593,7 @@
     "instanceScript": "Instanssi"
   },
   "contextMenu": {
+    "actions": "Toiminnot",
     "instance": {
       "goToInstance": "Siirry instanssiin",
       "duplicateInstance": "Kopioi instanssi",

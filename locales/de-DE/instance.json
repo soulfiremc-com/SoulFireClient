@@ -97,6 +97,7 @@
         "executeCommand": "hat einen Befehl ausgeführt: {{data}}",
         "botDesiredStateChange": "gewünschten Bot-Status geändert",
         "botRestart": "Bots neu gestartet",
+        "pluginRpc": "",
         "unknown": "eine Aktion ausgeführt"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Schlüssel",
     "valuePlaceholder": "Wert (JSON)",
     "noEntries": "Keine Metadaten-Einträge. Fügen Sie oben einen hinzu.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Erneut versuchen",
     "addSuccess": "Eintrag hinzugefügt",
     "addError": "Eintrag konnte nicht hinzugefügt werden",
     "updateError": "Eintrag konnte nicht aktualisiert werden",

@@ -97,6 +97,8 @@
         "fromUrl": "Z URL adresy",
         "firstClipboardItem": "Schránka obsahuje viacero položiek. SoulFire použije prvú položku.",
         "fromClipboard": "Zo schránky",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Zadajte text sem...",
           "submit": "Načítať z textu"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Zadajte príkaz (napíšte \"help\" pre zoznam)",
     "emptySuggestions": "Začnite písať pre návrhy alebo stlačte Tabulátor.",
     "noSuggestions": "Žiadne návrhy nie sú k dispozícii."
@@ -523,6 +527,7 @@
     "executedCommand": "Vykonaný príkaz: {{data}}",
     "changedBotDesiredState": "Zmenený požadovaný stav bota",
     "restartedBots": "Boty boli reštartované",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Kopírovať používateľské meno",
       "copyCommand": "Kopírovať príkaz"
@@ -596,6 +601,7 @@
     "instanceScript": "Inštancia"
   },
   "contextMenu": {
+    "actions": "Akcie",
     "instance": {
       "goToInstance": "Prejsť na inštanciu",
       "duplicateInstance": "Duplikovať inštanciu",

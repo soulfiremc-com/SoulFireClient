@@ -97,6 +97,7 @@
         "executeCommand": "körde ett kommando: {{data}}",
         "botDesiredStateChange": "ändrade önskat tillstånd för bot",
         "botRestart": "startade om bottar",
+        "pluginRpc": "",
         "unknown": "utförde en åtgärd"
       }
     },
@@ -360,6 +361,9 @@
     "keyPlaceholder": "Nyckel",
     "valuePlaceholder": "Värde (JSON)",
     "noEntries": "Inga metadata-poster. Lägg till en ovan.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Försök igen",
     "addSuccess": "Post tillagd",
     "addError": "Misslyckades med att lägga till posten",
     "updateError": "Misslyckades med att uppdatera posten",

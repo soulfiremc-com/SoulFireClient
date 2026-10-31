@@ -97,6 +97,8 @@
         "fromUrl": "Van URL",
         "firstClipboardItem": "Het klembord bevat meerdere items. SoulFire gebruikt het eerste item.",
         "fromClipboard": "Uit klembord",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Voer hier tekst in...",
           "submit": "Laden vanaf tekst"
@@ -122,6 +124,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Voer commando in (typ 'help' voor lijst)",
     "emptySuggestions": "Typ om suggesties aan te vragen of druk op Tab.",
     "noSuggestions": "Geen suggesties beschikbaar."
@@ -515,6 +519,7 @@
     "executedCommand": "Uitgevoerd commando: {{data}}",
     "changedBotDesiredState": "Gewenste botstatus gewijzigd",
     "restartedBots": "Bots herstart",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Gebruikersnaam kopiëren",
       "copyCommand": "Kopieer commando"
@@ -588,6 +593,7 @@
     "instanceScript": "Instantie"
   },
   "contextMenu": {
+    "actions": "Acties",
     "instance": {
       "goToInstance": "Ga naar instantie",
       "duplicateInstance": "Instatie dupliceren",
