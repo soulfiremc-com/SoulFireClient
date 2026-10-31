@@ -163,9 +163,11 @@ export async function runIntegratedServer(
     const child = spawn(
       javaExecPath,
       [
-        // Match Minecraft's native requirements, including saved JVM argument presets.
+        // Match Minecraft's JVM defaults, including saved argument presets.
         "-XX:StackShadowPages=32",
         "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED",
+        "-XX:+UseStringDeduplication",
+        ...(process.platform === "darwin" ? ["-XstartOnFirstThread"] : []),
         ...jvmArgs,
         ...(forceSoftwareRendering ? ["-Dsf.vulkan.software=true"] : []),
         `-Dsf.grpc.port=${availablePort}`,
