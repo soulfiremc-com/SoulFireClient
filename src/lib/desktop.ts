@@ -186,6 +186,7 @@ export const desktop = {
       await requireDesktopRuntime().integratedServer.resetData();
     },
     async run(options: {
+      forceSoftwareRendering?: boolean;
       jarSource?: DesktopIntegratedServerJarSource;
       jvmArgs: string[];
     }): Promise<DesktopIntegratedServerCredentials | null> {

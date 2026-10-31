@@ -101,12 +101,23 @@ export async function runIntegratedServer(
   jvmArgs: string[],
   jarSource: IntegratedServerJarSource,
   fallbackVersion: string,
+  forceSoftwareRendering = false,
 ): Promise<string | null> {
   return startIntegratedOperation(state, async (signal) => {
     const report = (message: string) => {
       if (!signal.aborted) appendIntegratedLog(state, message);
     };
     const serverVersion = await getSoulFireServerVersion(app, fallbackVersion);
+    if (
+      forceSoftwareRendering &&
+      jarSource.type === "official" &&
+      Number(serverVersion.split(".")[0]) === 2 &&
+      Number(serverVersion.split(".")[1]) < 11
+    ) {
+      throw new Error(
+        "Software rendering requires SoulFire server 2.11 or newer. Import an updated server jar or turn off software rendering.",
+      );
+    }
     const appLocalDataDir = getAppLocalDataDir(app);
     await mkdir(appLocalDataDir, {
       recursive: true,
@@ -145,10 +156,22 @@ export async function runIntegratedServer(
       port: availablePort,
     });
     report("Starting SoulFire server...");
+    if (forceSoftwareRendering) {
+      report("Forcing software rendering for the integrated server.");
+    }
 
     const child = spawn(
       javaExecPath,
-      [...jvmArgs, `-Dsf.grpc.port=${availablePort}`, "-jar", soulFireJarPath],
+      [
+        // Match Minecraft's native requirements, including saved JVM argument presets.
+        "-XX:StackShadowPages=32",
+        "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED",
+        ...jvmArgs,
+        ...(forceSoftwareRendering ? ["-Dsf.vulkan.software=true"] : []),
+        `-Dsf.grpc.port=${availablePort}`,
+        "-jar",
+        soulFireJarPath,
+      ],
       {
         cwd: soulFireRunDir,
         env: {

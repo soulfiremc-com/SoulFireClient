@@ -197,6 +197,7 @@ export interface SoulFireDesktopApi {
     removeCustomJar: (jarId: string) => Promise<void>;
     resetData: () => Promise<void>;
     run: (options: {
+      forceSoftwareRendering?: boolean;
       jarSource?: DesktopIntegratedServerJarSource;
       jvmArgs: string[];
     }) => Promise<DesktopIntegratedServerCredentials | null>;

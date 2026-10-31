@@ -853,6 +853,7 @@ function registerIpcHandlers(): void {
     async (
       _window,
       options: {
+        forceSoftwareRendering?: boolean;
         jarSource?: {
           jarId?: string;
           type: "custom" | "official";
@@ -873,6 +874,7 @@ function registerIpcHandlers(): void {
               type: "official",
             },
         app.getVersion(),
+        options.forceSoftwareRendering === true,
       ).then((credentials) => {
         if (credentials === null) return null;
         const [address, token] = credentials.split("\n");

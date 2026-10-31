@@ -35,6 +35,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
 import { ExternalLink } from "@/components/external-link.tsx";
+import { TextInfoButton } from "@/components/info-buttons.tsx";
 import {
   IntegratedServerProcessOutput,
   IntegratedServerSupportActions,
@@ -122,6 +123,7 @@ const LOCAL_STORAGE_FORM_SERVER_EMAIL_KEY = "form-server-email";
 const LOCAL_STORAGE_FORM_DEDICATED_TYPE_KEY = "form-dedicated-type";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS =
   "form-integrated-server-jvm-args";
+const LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING = "force-software-rendering";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JAR_SOURCE =
   "form-integrated-server-jar-source";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_CUSTOM_JAR_ID =
@@ -285,6 +287,9 @@ function Index() {
             LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
           );
           const credentials = await desktop.integratedServer.run({
+            forceSoftwareRendering:
+              localStorage.getItem(LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING) ===
+              "true",
             jarSource: getStoredIntegratedServerJarSource(),
             jvmArgs:
               args === null
@@ -692,6 +697,11 @@ function IntegratedConfigureMenu({
     useState(initialCustomJarId);
   const [importingCustomJar, setImportingCustomJar] = useState(false);
   const autoStartId = useId();
+  const softwareRenderingId = useId();
+  const [forceSoftwareRendering, setForceSoftwareRendering] = useState(
+    () =>
+      localStorage.getItem(LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING) === "true",
+  );
   const [autoStart, setAutoStart] = useState(
     () => localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true",
   );
@@ -902,6 +912,31 @@ function IntegratedConfigureMenu({
                   setAutoStart(checked);
                   localStorage.setItem(
                     LOCAL_STORAGE_AUTO_START_INTEGRATED,
+                    String(checked),
+                  );
+                }}
+              />
+            </Field>
+          )}
+          {!systemInfo?.mobile && (
+            <Field orientation="horizontal">
+              <FieldContent>
+                <div className="flex items-center gap-2">
+                  <FieldLabel htmlFor={softwareRenderingId}>
+                    {t("integrated.softwareRendering.title")}
+                  </FieldLabel>
+                  <TextInfoButton
+                    value={t("integrated.softwareRendering.description")}
+                  />
+                </div>
+              </FieldContent>
+              <Switch
+                id={softwareRenderingId}
+                checked={forceSoftwareRendering}
+                onCheckedChange={(checked) => {
+                  setForceSoftwareRendering(checked);
+                  localStorage.setItem(
+                    LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING,
                     String(checked),
                   );
                 }}

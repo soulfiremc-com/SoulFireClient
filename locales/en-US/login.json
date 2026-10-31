@@ -68,6 +68,10 @@
     "autoStart": {
       "title": "Start automatically next time",
       "description": "Skip server selection and use these settings when SoulFire opens."
+    },
+    "softwareRendering": {
+      "title": "Force software rendering",
+      "description": "Uses bundled software rendering and does not try to use system Vulkan drivers. This may help with driver-related crashes. Can be slower and use more CPU. Requires SoulFire server 2.11 or newer."
     }
   },
   "dedicated": {
