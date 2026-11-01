@@ -119,7 +119,7 @@ export const SubmitEditedInputs: Story = {
     await userEvent.click(canvas.getByRole("combobox"));
     // Select options render in a portal outside the story's canvas.
     await userEvent.click(
-      within(canvasElement.ownerDocument.body).getByRole("option", {
+      await within(canvasElement.ownerDocument.body).findByRole("option", {
         name: "Creative",
       }),
     );

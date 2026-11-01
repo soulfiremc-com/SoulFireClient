@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, mocked, within, waitFor } from "storybook/test";
+import { expect, fn, mocked, waitFor } from "storybook/test";
+
+type UserEvent = ReturnType<typeof import("storybook/test").userEvent.setup>;
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import ProxyProvidersDialog from "./proxy-providers-dialog.tsx";
+import { settledDialog } from "./provider-story-helpers.ts";
 
 const requests: { url: string; body?: string }[] = [];
 const meta = {
@@ -13,7 +16,7 @@ const meta = {
     onOpenChange: fn(),
     onImport: fn().mockResolvedValue(undefined),
   },
-  beforeEach: () => {
+  beforeEach: ({ parameters }) => {
     const original = globalThis.fetch;
     requests.length = 0;
     globalThis.fetch = async (input, options) => {
@@ -38,7 +41,11 @@ const meta = {
         if (url.endsWith("/order/calc"))
           return Response.json({
             status: "success",
-            data: { total: 1.8, balance: 40, currency: "USD" },
+            data: {
+              total: 1.8,
+              balance: parameters.sellerBalance ?? 40,
+              currency: "USD",
+            },
           });
         if (url.endsWith("/order/make"))
           return Response.json({
@@ -71,22 +78,39 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+async function openProvider(
+  canvasElement: HTMLElement,
+  userEvent: { click: UserEvent["click"] },
+  name: string,
+  action: string,
+) {
+  const dialog = await settledDialog(canvasElement);
+  await userEvent.click(dialog.getByRole("radio", { name: new RegExp(name) }));
+  await userEvent.click(dialog.getByRole("button", { name: action }));
+  return dialog;
+}
+
 export const ImportExisting: Story = {
   play: async ({ args, canvasElement, userEvent }) => {
-    const page = within(canvasElement.ownerDocument.body);
-    const dialog = within(await page.findByRole("dialog"));
-    await waitFor(() =>
-      expect(dialog.getByRole("combobox", { name: "Provider" })).toHaveFocus(),
+    const dialog = await openProvider(
+      canvasElement,
+      userEvent,
+      "Webshare",
+      "Connect Webshare",
     );
-    const load = dialog.getByRole("button", { name: "Load proxies" });
-    await expect(load).toBeDisabled();
+    const next = dialog.getByRole("button", { name: "Continue" });
+    await expect(next).toBeDisabled();
     await userEvent.type(dialog.getByLabelText("API key"), "test-key");
-    await userEvent.click(load);
+    await userEvent.click(next);
+    await expect(requests).toHaveLength(0);
+    await userEvent.click(dialog.getByRole("button", { name: "Load proxies" }));
     await expect(
       await dialog.findByText(
         "1 proxy is ready to import. Existing entries will be skipped.",
       ),
     ).toBeVisible();
+    await expect(dialog.getByText("192.0.2.1:1080")).toBeVisible();
+    await expect(dialog.queryByText("test-password")).not.toBeInTheDocument();
     await expect(args.onImport).not.toHaveBeenCalled();
     await userEvent.click(
       dialog.getByRole("button", { name: "Import 1 proxy" }),
@@ -105,33 +129,34 @@ export const ImportExisting: Story = {
 
 export const PurchaseWithAffiliate: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const page = within(canvasElement.ownerDocument.body);
-    const dialog = within(await page.findByRole("dialog"));
+    const dialog = await openProvider(
+      canvasElement,
+      userEvent,
+      "Proxy-Seller",
+      "Buy with Proxy-Seller",
+    );
+    await userEvent.type(dialog.getByLabelText("API key"), "test-key");
     await waitFor(() =>
-      expect(dialog.getByRole("combobox", { name: "Provider" })).toHaveFocus(),
+      expect(dialog.getByRole("button", { name: "Continue" })).toBeEnabled(),
     );
-    await userEvent.click(dialog.getByRole("combobox", { name: "Provider" }));
-    await userEvent.click(
-      await page.findByRole("option", { name: "Proxy-Seller" }),
-    );
-    await userEvent.click(dialog.getByRole("combobox", { name: "Action" }));
-    await userEvent.click(
-      await page.findByRole("option", { name: "Buy with provider balance" }),
-    );
+    await userEvent.click(dialog.getByRole("button", { name: "Continue" }));
+    await expect(
+      dialog.getByRole("button", { name: "Buy with provider balance" }),
+    ).toHaveAttribute("aria-pressed", "true");
     await expect(
       dialog.getByLabelText("Affiliate or discount code"),
     ).toHaveValue("SOULFIREMC");
-    await userEvent.type(dialog.getByLabelText("API key"), "test-key");
     await userEvent.click(dialog.getByRole("button", { name: "Check price" }));
     const purchase = await dialog.findByRole("button", {
       name: "Purchase for 1.8 USD",
     });
+    await expect(dialog.getByText("38.2 USD")).toBeVisible();
     await expect(
       requests.some((entry) => entry.url.endsWith("/order/make")),
     ).toBe(false);
     await userEvent.click(purchase);
     await expect(
-      await dialog.findByText(/Order order-456 was created/),
+      await dialog.findByText("Order order-456 created"),
     ).toBeVisible();
     const made = requests.filter((entry) => entry.url.endsWith("/order/make"));
     await expect(made).toHaveLength(1);
@@ -149,29 +174,106 @@ export const PurchaseWithAffiliate: Story = {
   },
 };
 
+export const InsufficientBalanceOffersTopUp: Story = {
+  parameters: { sellerBalance: 1 },
+  play: async ({ canvasElement, userEvent }) => {
+    const dialog = await openProvider(
+      canvasElement,
+      userEvent,
+      "Proxy-Seller",
+      "Buy with Proxy-Seller",
+    );
+    await userEvent.type(dialog.getByLabelText("API key"), "test-key");
+    await waitFor(() =>
+      expect(dialog.getByRole("button", { name: "Continue" })).toBeEnabled(),
+    );
+    await userEvent.click(dialog.getByRole("button", { name: "Continue" }));
+    await expect(
+      dialog.getByRole("button", { name: "Buy with provider balance" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(dialog.getByRole("button", { name: "Check price" }));
+    await expect(
+      await dialog.findByRole("button", { name: "Purchase for 1.8 USD" }),
+    ).toBeDisabled();
+    await expect(
+      dialog.getByRole("button", { name: "Add funds at Proxy-Seller" }),
+    ).toHaveAttribute(
+      "href",
+      expect.stringContaining("partner=GRJY71PA3XWPPP"),
+    );
+  },
+};
+
+export const CheckoutOnlyProvider: Story = {
+  play: async ({ canvasElement, userEvent }) => {
+    const dialog = await settledDialog(canvasElement);
+    await userEvent.click(
+      dialog.getByRole("button", { name: /Checkout only/ }),
+    );
+    await expect(dialog.queryByRole("radio", { name: /Webshare/ })).toBeNull();
+    await userEvent.click(dialog.getByRole("radio", { name: /FlameProxies/ }));
+    await expect(
+      dialog.getByRole("button", { name: "Open FlameProxies checkout" }),
+    ).toHaveAttribute("href", expect.stringContaining("referral=42M1SH76"));
+    await expect(
+      dialog.queryByRole("button", { name: /Connect|Buy with/ }),
+    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(dialog.getByText(/Buy on the provider's site/)).toBeVisible(),
+    );
+  },
+};
+
+export const ChangeProviderClearsCredentials: Story = {
+  play: async ({ canvasElement, userEvent }) => {
+    const dialog = await openProvider(
+      canvasElement,
+      userEvent,
+      "Webshare",
+      "Connect Webshare",
+    );
+    await userEvent.type(dialog.getByLabelText("API key"), "test-key");
+    await userEvent.click(
+      dialog.getByRole("button", { name: "All providers" }),
+    );
+    await userEvent.click(dialog.getByRole("radio", { name: /Thordata/ }));
+    await expect(dialog.getByText("THORDATA")).toBeVisible();
+    await userEvent.click(
+      dialog.getByRole("button", { name: "Connect Thordata" }),
+    );
+    await expect(dialog.getByLabelText("API key")).toHaveValue("");
+    await expect(dialog.getByLabelText("Account sign")).toBeVisible();
+  },
+};
+
 export const DemoMode: Story = {
   args: { canImport: false },
   play: async ({ canvasElement, userEvent }) => {
-    const page = within(canvasElement.ownerDocument.body);
-    const dialog = within(await page.findByRole("dialog"));
+    const dialog = await settledDialog(canvasElement);
     await waitFor(() =>
-      expect(dialog.getByRole("combobox", { name: "Provider" })).toHaveFocus(),
+      expect(
+        dialog.getByText(
+          "Connect to a SoulFire server to purchase or import resources.",
+        ),
+      ).toBeVisible(),
     );
-    await userEvent.type(dialog.getByLabelText("API key"), "test-key");
     await expect(
-      dialog.getByRole("button", { name: "Load proxies" }),
-    ).toBeDisabled();
-    await expect(
-      dialog.getByText(
-        "Connect to a SoulFire server to purchase or import resources.",
-      ),
-    ).toBeVisible();
-    await expect(
-      dialog.getByRole("button", { name: "Open Webshare" }),
+      dialog.getByRole("button", { name: "Create a Webshare account" }),
     ).toHaveAttribute(
       "href",
       expect.stringContaining("referral_code=36gneippfiwt"),
     );
+    await userEvent.click(
+      dialog.getByRole("button", { name: "Connect Webshare" }),
+    );
+    await userEvent.type(dialog.getByLabelText("API key"), "test-key");
+    await waitFor(() =>
+      expect(dialog.getByRole("button", { name: "Continue" })).toBeEnabled(),
+    );
+    await userEvent.click(dialog.getByRole("button", { name: "Continue" }));
+    await expect(
+      dialog.getByRole("button", { name: "Load proxies" }),
+    ).toBeDisabled();
     await expect(requests).toHaveLength(0);
   },
 };
@@ -182,12 +284,17 @@ export const FailedSaveRetainsLoadedProxies: Story = {
     mocked(args.onImport).mockRejectedValueOnce(
       new Error("Server disconnected"),
     );
-    const page = within(canvasElement.ownerDocument.body);
-    const dialog = within(await page.findByRole("dialog"));
-    await waitFor(() =>
-      expect(dialog.getByRole("combobox", { name: "Provider" })).toHaveFocus(),
+    const dialog = await openProvider(
+      canvasElement,
+      userEvent,
+      "Webshare",
+      "Connect Webshare",
     );
     await userEvent.type(dialog.getByLabelText("API key"), "test-key");
+    await waitFor(() =>
+      expect(dialog.getByRole("button", { name: "Continue" })).toBeEnabled(),
+    );
+    await userEvent.click(dialog.getByRole("button", { name: "Continue" }));
     await userEvent.click(dialog.getByRole("button", { name: "Load proxies" }));
     const importButton = await dialog.findByRole("button", {
       name: "Import 1 proxy",

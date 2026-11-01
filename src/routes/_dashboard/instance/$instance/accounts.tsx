@@ -44,10 +44,7 @@ import {
 } from "@/components/dialog/device-code-dialog.tsx";
 import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
-import RavealtsDialog from "@/components/dialog/ravealts-dialog.tsx";
 import AccountProvidersDialog from "@/components/dialog/account-providers-dialog.tsx";
-import LocaltsDialog from "@/components/dialog/localts-dialog.tsx";
-import FernanDialog from "@/components/dialog/fernan-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
@@ -490,10 +487,14 @@ function AddButton() {
   );
   const [pendingDeviceCodeType, setPendingDeviceCodeType] =
     useState<AccountTypeDeviceCode | null>(null);
-  const [ravealtsDialogOpen, setRavealtsDialogOpen] = useState(false);
   const [providerDialogOpen, setProviderDialogOpen] = useState(false);
-  const [localtsDialogOpen, setLocaltsDialogOpen] = useState(false);
-  const [fernanDialogOpen, setFernanDialogOpen] = useState(false);
+  const [initialProviderId, setInitialProviderId] = useState<
+    string | undefined
+  >();
+  const openProviderDialog = (providerId?: string) => {
+    setInitialProviderId(providerId);
+    setProviderDialogOpen(true);
+  };
 
   const handleProviderAccountImport = useCallback(
     (payload: string[], credentialType: AccountTypeCredentials) => {
@@ -812,14 +813,14 @@ function AddButton() {
 
   return (
     <>
-      <GetAccountsButton onClick={() => setProviderDialogOpen(true)} />
+      <GetAccountsButton onClick={() => openProviderDialog()} />
       <GenerateAccountsButton />
       <AccountProvidersDialog
         open={providerDialogOpen}
         onOpenChange={setProviderDialogOpen}
-        onRavealts={() => setRavealtsDialogOpen(true)}
-        onLocalts={() => setLocaltsDialogOpen(true)}
-        onFernan={() => setFernanDialogOpen(true)}
+        initialProviderId={initialProviderId}
+        onImport={handleProviderAccountImport}
+        canPurchase={transport !== null}
       />
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
@@ -895,15 +896,15 @@ function AddButton() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                setRavealtsDialogOpen(true);
+                openProviderDialog("ravealts");
               }}
             >
               {t("account.ravealts.button")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLocaltsDialogOpen(true)}>
+            <DropdownMenuItem onClick={() => openProviderDialog("localts")}>
               Localts
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setFernanDialogOpen(true)}>
+            <DropdownMenuItem onClick={() => openProviderDialog("fernan")}>
               Fernan's Club
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -1082,26 +1083,6 @@ function AddButton() {
               />
             </div>
           }
-        />
-      )}
-      <RavealtsDialog
-        open={ravealtsDialogOpen}
-        onOpenChange={setRavealtsDialogOpen}
-        onImportAccounts={handleProviderAccountImport}
-        canPurchase={transport !== null}
-      />
-      {localtsDialogOpen && (
-        <LocaltsDialog
-          onClose={() => setLocaltsDialogOpen(false)}
-          onImport={handleProviderAccountImport}
-          canPurchase={transport !== null}
-        />
-      )}
-      {fernanDialogOpen && (
-        <FernanDialog
-          onClose={() => setFernanDialogOpen(false)}
-          onImport={handleProviderAccountImport}
-          canPurchase={transport !== null}
         />
       )}
     </>

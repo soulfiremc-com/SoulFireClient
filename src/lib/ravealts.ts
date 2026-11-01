@@ -63,6 +63,7 @@ async function ravealtsRequest<T>(
     method: "GET",
     ...options,
   });
+  if (response.status >= 500) throw new ProviderApiError("response");
   let data: unknown;
   try {
     data = JSON.parse(response.body) as unknown;

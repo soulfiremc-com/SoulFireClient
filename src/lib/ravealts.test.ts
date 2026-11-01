@@ -59,3 +59,28 @@ test("Ravealts rejects invalid purchase quantities before calling its API", asyn
       purchaseAccounts("api-key", "hypixel_unbanned", amount),
     );
 });
+
+test("Ravealts server failures leave the purchase outcome uncertain", async () => {
+  const original = globalThis.fetch;
+  let attempts = 0;
+  globalThis.fetch = async () => {
+    attempts++;
+    return Response.json(
+      {
+        status: "error",
+        error_type: "server_error",
+        message: "private details",
+      },
+      { status: 502 },
+    );
+  };
+  try {
+    await assert.rejects(purchaseAccounts("api-key", "hypixel_unbanned", 1), {
+      reason: "response",
+      message: "Provider request failed: response",
+    });
+    assert.equal(attempts, 1);
+  } finally {
+    globalThis.fetch = original;
+  }
+});

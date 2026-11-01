@@ -1,95 +1,99 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ProviderLinks } from "@/components/providers/provider-links.tsx";
-import { ProviderSelect } from "@/components/providers/provider-select.tsx";
-import { ExternalLink } from "@/components/external-link.tsx";
-import { Button } from "@/components/ui/button.tsx";
 import {
-  Credenza,
-  CredenzaBody,
-  CredenzaContent,
-  CredenzaDescription,
-  CredenzaFooter,
-  CredenzaHeader,
-  CredenzaTitle,
-} from "@/components/ui/credenza.tsx";
-import { FieldDescription, FieldGroup } from "@/components/ui/field.tsx";
+  type AccountImport,
+  FernanFlow,
+} from "@/components/providers/flows/fernan-flow.tsx";
+import { LocaltsFlow } from "@/components/providers/flows/localts-flow.tsx";
+import { RavealtsFlow } from "@/components/providers/flows/ravealts-flow.tsx";
+import { ProviderGallery } from "@/components/providers/provider-gallery.tsx";
+import { Credenza, CredenzaContent } from "@/components/ui/credenza.tsx";
 import { ACCOUNT_PROVIDERS } from "@/lib/resource-providers.ts";
+
+const FLOWS: Partial<Record<string, typeof FernanFlow>> = {
+  fernan: FernanFlow,
+  localts: LocaltsFlow,
+  ravealts: RavealtsFlow,
+};
 
 export default function AccountProvidersDialog({
   open,
   onOpenChange,
-  onRavealts,
-  onLocalts,
-  onFernan,
+  onImport,
+  canPurchase,
+  initialProviderId,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onRavealts: () => void;
-  onLocalts: () => void;
-  onFernan: () => void;
+  onImport: AccountImport;
+  canPurchase: boolean;
+  initialProviderId?: string;
 }) {
-  const { t } = useTranslation("instance");
-  const [providerId, setProviderId] = useState("ravealts");
-  const provider = ACCOUNT_PROVIDERS.find((entry) => entry.id === providerId)!;
-  const integrations: Partial<Record<string, () => void>> = {
-    ravealts: onRavealts,
-    localts: onLocalts,
-    fernan: onFernan,
-  };
-  const openIntegration = integrations[providerId];
+  const [busy, setBusy] = useState(false);
   return (
-    <Credenza open={open} onOpenChange={onOpenChange}>
-      <CredenzaContent>
-        <CredenzaHeader>
-          <CredenzaTitle>{t("account.getAccounts")}</CredenzaTitle>
-          <CredenzaDescription>
-            {t("providers.accountsDescription")}
-          </CredenzaDescription>
-        </CredenzaHeader>
-        <CredenzaBody>
-          <FieldGroup>
-            <ProviderSelect
-              label={t("providers.provider")}
-              value={providerId}
-              onChange={setProviderId}
-              items={ACCOUNT_PROVIDERS.map((entry) => ({
-                value: entry.id,
-                label: entry.name,
-              }))}
-            />
-            <ProviderLinks provider={provider} />
-            <FieldDescription>
-              {t(
-                openIntegration
-                  ? "providers.ravealtsImport"
-                  : "providers.accountFileImport",
-              )}
-            </FieldDescription>
-          </FieldGroup>
-        </CredenzaBody>
-        <CredenzaFooter>
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={
-              <ExternalLink href="https://soulfiremc.com/get-accounts?utm_source=soulfire-client" />
-            }
-          >
-            {t("providers.allProviders")}
-          </Button>
-          {openIntegration && (
-            <Button
-              onClick={() => {
-                onOpenChange(false);
-                openIntegration();
-              }}
-            >
-              {t("account.ravealts.purchase")}
-            </Button>
-          )}
-        </CredenzaFooter>
+    <Credenza
+      open={open}
+      onOpenChange={(next) => {
+        if (!busy) onOpenChange(next);
+      }}
+    >
+      <CredenzaContent className="gap-0 overflow-hidden p-0 sm:max-w-4xl">
+        <AccountProvidersContent
+          canPurchase={canPurchase}
+          initialProviderId={initialProviderId}
+          onBusyChange={setBusy}
+          onClose={() => onOpenChange(false)}
+          onImport={onImport}
+        />
       </CredenzaContent>
     </Credenza>
+  );
+}
+
+// Mounted only while the dialog is open, so closing it clears session keys.
+function AccountProvidersContent({
+  canPurchase,
+  initialProviderId,
+  onBusyChange,
+  onClose,
+  onImport,
+}: {
+  canPurchase: boolean;
+  initialProviderId?: string;
+  onBusyChange: (busy: boolean) => void;
+  onClose: () => void;
+  onImport: AccountImport;
+}) {
+  const { t } = useTranslation("instance");
+  const [selectedId, setSelectedId] = useState(
+    initialProviderId ?? ACCOUNT_PROVIDERS[0].id,
+  );
+  const [activeId, setActiveId] = useState(initialProviderId ?? null);
+  const active = ACCOUNT_PROVIDERS.find((entry) => entry.id === activeId);
+  const Flow = active && FLOWS[active.id];
+  if (active && Flow)
+    return (
+      <Flow
+        key={active.id}
+        provider={active}
+        canWrite={canPurchase}
+        onBack={() => setActiveId(null)}
+        onBusyChange={onBusyChange}
+        onClose={onClose}
+        onImport={onImport}
+      />
+    );
+  return (
+    <ProviderGallery
+      title={t("account.getAccounts")}
+      description={t("providers.accountsDescription")}
+      providers={ACCOUNT_PROVIDERS}
+      selectedId={selectedId}
+      resource="accounts"
+      canWrite={canPurchase}
+      compareUrl="https://soulfiremc.com/get-accounts?utm_source=soulfire-client"
+      onSelect={setSelectedId}
+      onConnect={(provider) => setActiveId(provider.id)}
+    />
   );
 }

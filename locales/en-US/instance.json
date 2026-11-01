@@ -312,23 +312,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Purchase Accounts via Ravealts",
       "description": "Buy Minecraft accounts using your Ravealts API key.",
-      "apiKeyLabel": "API Key",
       "apiKeyPlaceholder": "Enter your Ravealts API key",
-      "validate": "Validate",
-      "validating": "Validating...",
-      "keyValid": "Key validated",
-      "keyInvalid": "Invalid API key",
-      "credits": "Credits: {{credits}}",
-      "stockTitle": "Available Stock",
       "noStock": "No accounts in stock",
       "accountType": "Account Type",
-      "amount": "Amount (1-10)",
-      "purchase": "Purchase & Import",
-      "purchasing": "Purchasing...",
-      "purchaseSuccess": "Purchased {{count}} accounts, importing...",
-      "purchaseError": "Purchase failed: {{message}}",
       "networkError": "Connection to the Ravealts API failed",
       "outOfStock": "Selected type is out of stock",
       "insufficientBalance": "Not enough credits",
@@ -801,17 +788,171 @@
     "action": "Action",
     "product": "Product",
     "protocol": "Protocol",
+    "progress": "Progress",
     "openShop": "Open {{provider}}",
     "connectionHelp": "Connection help",
-    "checkoutCode": "Use {{code}} at checkout.",
+    "openCheckout": "Open {{provider}} checkout",
+    "createAccount": "Create a {{provider}} account",
+    "connectBuy": "Buy with {{provider}}",
+    "connectImport": "Connect {{provider}}",
+    "connect": "Connect",
+    "back": "Back",
+    "allProvidersBack": "All providers",
+    "reviewOrder": "Review order",
+    "refresh": "Refresh stock",
+    "done": "Done",
+    "buyMore": "Buy more",
     "affiliateDisclosure": "Purchases through these links or codes may support SoulFire at no extra cost to you.",
-    "accountsDescription": "Buy Minecraft accounts from a provider and add them to this instance.",
-    "proxiesDescription": "Buy proxies from a provider or connect an existing subscription.",
-    "ravealtsImport": "You can purchase and import accounts from this provider directly with your API key.",
-    "accountFileImport": "After purchase, use Add accounts to import the account file supplied by the provider.",
-    "proxyFileImport": "After purchase, use Add proxies to import the proxy list supplied by the provider.",
+    "accountsDescription": "Compare providers, then buy and import Minecraft accounts here or check out on their site.",
+    "proxiesDescription": "Compare providers, then import your proxies here or check out on their site.",
+    "accountFileImport": "Buy on the provider's site, then use Add accounts to import the account file.",
+    "proxyFileImport": "Buy on the provider's site, then use Add proxies to import the proxy list.",
     "allProviders": "Compare all providers",
     "demo": "Connect to a SoulFire server to purchase or import resources.",
+    "filterLabel": "Filter providers",
+    "filters": {
+      "all": "All",
+      "buy": "Buy here",
+      "import": "Import",
+      "checkout": "Checkout only"
+    },
+    "capabilityShort": {
+      "buy": "Buy here",
+      "import": "Import",
+      "recover": "Order recovery",
+      "checkout": "Checkout only"
+    },
+    "capability": {
+      "buy": "Buy with your provider balance after a review step",
+      "import": "Import directly to this instance",
+      "recover": "Reload earlier orders and import them"
+    },
+    "inSoulFire": "What you can do in SoulFire",
+    "youNeed": "What you need",
+    "requirement": {
+      "apiKey": "A {{provider}} API key",
+      "proxyLogin": "Your proxy username and password",
+      "accountSign": "Your account sign value",
+      "orderId": "An order or list ID",
+      "subaccountId": "A subaccount ID",
+      "balance": "Balance on your {{provider}} account to buy"
+    },
+    "listedOffer": "Listed offer",
+    "tags": {
+      "residential": "Residential",
+      "datacenter": "Datacenter",
+      "isp": "ISP",
+      "ipv6": "IPv6",
+      "mobile": "Mobile",
+      "freeTier": "Free tier",
+      "cookieAccounts": "Cookie accounts",
+      "fullAccess": "Full access",
+      "instantDelivery": "Instant delivery"
+    },
+    "catalog": {
+      "webshare": {
+        "summary": "Residential and datacenter proxies, with 10 free proxies to get started."
+      },
+      "proxy-seller": {
+        "summary": "Dedicated datacenter, ISP and IPv6 proxies you can order right here.",
+        "offer": "15% off IPv4, IPv6 and ISP proxies with this code. The price check shows your final total."
+      },
+      "proxyscrape": {
+        "summary": "Shared and dedicated datacenter proxies through your subaccount, plus residential plans."
+      },
+      "iproyal": {
+        "summary": "Import ISP and datacenter orders by ID. Residential plans are also on sale."
+      },
+      "decodo": {
+        "summary": "Generate sticky residential HTTP endpoints from your proxy login."
+      },
+      "oxylabs": {
+        "summary": "Import enterprise dedicated datacenter lists by ID."
+      },
+      "thordata": {
+        "summary": "Import the static ISP proxies on your account.",
+        "offer": "20% off at Thordata checkout with this code."
+      },
+      "bright-data": {
+        "summary": "Residential, datacenter and mobile networks for larger deployments."
+      },
+      "legionproxy": {
+        "summary": "Residential, static ISP, datacenter and IPv6 proxies."
+      },
+      "plainproxies": {
+        "summary": "Datacenter and residential proxies from a German provider."
+      },
+      "flameproxies": {
+        "summary": "Pay-as-you-go residential, mobile, datacenter and ISP proxies."
+      },
+      "flashproxy": {
+        "summary": "Pay-as-you-go residential, datacenter, ISP, mobile and IPv6 proxies."
+      },
+      "ravealts": {
+        "summary": "Spend your credits here, and purchased accounts import right away.",
+        "offer": "10% off with this code when you buy credits at Ravealts checkout."
+      },
+      "fernan": {
+        "summary": "Cookie and full-access accounts with live stock, cooldowns and order recovery.",
+        "offer": "10% off with this referral code. SoulFire sends it with your order, and you can change or remove it."
+      },
+      "localts": {
+        "summary": "Cookie and full-access accounts with live stock, volume discounts and order recovery.",
+        "offer": "5% off checkout when you register through this link. Localts purchases made here do not send a code."
+      },
+      "alts-fast": {
+        "summary": "Full-access accounts, pre-checked before delivery.",
+        "offer": "10% off at checkout when you register through this link."
+      },
+      "kynoselling": {
+        "summary": "Budget cookie accounts and full-access accounts with automated delivery.",
+        "offer": "10% off at KynoSelling checkout with this code."
+      }
+    },
+    "steps": {
+      "connect": "Connect",
+      "choose": "Choose",
+      "review": "Review",
+      "import": "Import"
+    },
+    "noAccountTitle": "New to {{provider}}?",
+    "noAccountBody": "Create an account or add funds on the provider's site, then come back with your API details.",
+    "modeBuy": "Buy new",
+    "modeRecover": "Use an earlier order",
+    "recentOrders": "Recent orders",
+    "noRecentOrders": "No recent orders found. Enter an order ID below.",
+    "orderId": "Order ID",
+    "loadOrder": "Load order",
+    "importFormat": "Account format",
+    "importAccounts_one": "Import {{count}} account",
+    "importAccounts_other": "Import {{count}} accounts",
+    "checkDelivery": "Check delivery",
+    "balance": "Balance",
+    "balanceAfter": "Balance after purchase",
+    "total": "Total",
+    "unitPrice": "Price per account",
+    "inStock_one": "{{count}} in stock",
+    "inStock_other": "{{count}} in stock",
+    "outOfStock": "Out of stock",
+    "onCooldown": "On cooldown",
+    "noProducts": "No products are available right now. Check the shop or refresh later.",
+    "liveCatalog": "Available now",
+    "lowBalanceTitle": "Add funds to continue",
+    "lowBalanceBody": "Your balance does not cover this order. Add funds on the provider's site, then refresh.",
+    "addFunds": "Add funds at {{provider}}",
+    "purchaseComplete": "Purchase complete",
+    "orderLoaded": "Order loaded",
+    "placedRefresh": "Order placed. Refresh stock before you place another order.",
+    "uncertainTitle": "Check your orders before buying again",
+    "checkOrders": "Check recent orders",
+    "referralCode": "Referral code",
+    "noCode": "None",
+    "removeCode": "Remove code",
+    "showValue": "Show value",
+    "hideValue": "Hide value",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "copyLabel": "Copy {{value}}",
     "importExisting": "Import existing proxies",
     "buyWithBalance": "Buy with provider balance",
     "direct": "Datacenter / ISP",
@@ -842,16 +983,21 @@
       "oxylabs": "Imports enterprise dedicated datacenter HTTP proxies. These endpoints do not support Bedrock UDP.",
       "thordata": "Imports the available static ISP proxies from your account."
     },
+    "continue": "Continue",
     "loadProxies": "Load proxies",
     "alreadyImported": "These proxies are already in this instance.",
     "orderCountry": "Country (3-letter code)",
     "quantity": "Quantity",
     "coupon": "Affiliate or discount code",
-    "sellerPurchaseHelp": "Purchase a one-month plan using your Proxy-Seller balance. Review the total before purchasing. You can change or remove the code.",
+    "sellerPurchaseHelp": "You buy a one-month plan using your Proxy-Seller balance. You can change or remove the code.",
     "checkPrice": "Check price",
-    "quote": "Total: {{total}} {{currency}}. Available balance: {{balance}} {{currency}}.",
     "purchase": "Purchase for {{total}} {{currency}}",
-    "orderCreated": "Order {{orderId}} was created. Activation can take a minute. Load the proxies to import this order.",
+    "period": "Plan length",
+    "oneMonth": "1 month",
+    "orderCreatedTitle": "Order {{orderId}} created",
+    "orderCreated": "Activation can take a minute. Load the proxies when you are ready to import this order.",
+    "optionalOrderId": "Order ID (optional)",
+    "optionalOrderHelp": "Load only one order, for example after a purchase.",
     "purchaseUncertain": "The purchase result could not be confirmed. Check your provider orders before placing another order.",
     "keyPrivacy": "Connection credentials stay in memory while this dialog is open. Requests go directly to the provider.",
     "errors": {
@@ -864,41 +1010,117 @@
       "priceChanged": "The price changed or the balance is insufficient. Check the price again before purchasing.",
       "save": "Could not save proxies to this instance. Try importing the loaded proxies again."
     },
-    "localts": {
-      "title": "Localts accounts",
-      "description": "Buy accounts with Localts credits or import a previous order.",
-      "connect": "Connect and load recent orders",
-      "balance": "Available balance: {{balance}} credits",
-      "total": "Total: {{total}} credits",
-      "purchase": "Purchase for {{total}} credits",
-      "purchased": "Order {{orderId}} was created. Load the order after packaging finishes.",
-      "recentOrders": "Recent orders",
-      "orderId": "Order ID",
-      "loadOrder": "Load order",
-      "importFormat": "Account format",
-      "cookieTokens": "Localts MSAAUTH cookie tokens",
-      "formatHelp": "Choose the format delivered by the product. Localts cookie values are converted to Microsoft login cookies.",
-      "importAccounts": "Import delivered accounts",
-      "orderStatus_one": "Order status: {{status}}. {{count}} delivered item.",
-      "orderStatus_other": "Order status: {{status}}. {{count}} delivered items.",
-      "quantityHelp": "Use a whole number between 1 and 1,000 accounts."
+    "proxy": {
+      "stage": {
+        "connect": "Connect your account",
+        "choose": "Choose what to import",
+        "review": "Review your proxies"
+      },
+      "stageHelp": {
+        "connect": "Enter the login details from your provider dashboard.",
+        "choose": "Pick the proxies to load. Nothing is added until you confirm.",
+        "review": "Check the list, then add it to this instance."
+      }
     },
+    "sellerBuy": {
+      "stage": {
+        "connect": "Connect your account",
+        "choose": "Choose your proxies",
+        "review": "Review your order",
+        "import": "Order placed"
+      },
+      "stageHelp": {
+        "connect": "Enter the API key from your Proxy-Seller dashboard.",
+        "choose": "Pick a product, country and quantity. You see the exact total before paying.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "Load the new proxies and import them."
+      }
+    },
+    "previewMore_one": "And {{count}} more",
+    "previewMore_other": "And {{count}} more",
     "preview_one": "{{count}} proxy is ready to import. Existing entries will be skipped.",
     "preview_other": "{{count}} proxies are ready to import. Existing entries will be skipped.",
     "importProxies_one": "Import {{count}} proxy",
     "importProxies_other": "Import {{count}} proxies",
+    "localts": {
+      "description": "Buy accounts with Localts credits or import an earlier order.",
+      "stage": {
+        "connect": "Connect Localts",
+        "choose": "Choose your accounts",
+        "review": "Review your order",
+        "import": "Import your accounts"
+      },
+      "stageHelp": {
+        "connect": "Your API key loads your credits and recent orders.",
+        "choose": "Pick a product, or reload an earlier order.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "Choose the format the product delivers. Localts cookie values are converted to Microsoft login cookies."
+      },
+      "keyHelp": "Find your API key in your Localts account.",
+      "credits": "{{balance}} credits",
+      "priceStock": "{{price}} credits, {{stock}} in stock",
+      "perAccount": "{{price}} credits each",
+      "discountTier": "{{percent}}% off from {{quantity}}",
+      "reviewNote": "Volume discounts are included in the total. SoulFire checks the price, stock and balance again before it charges you.",
+      "purchase": "Pay {{total}} credits",
+      "purchased": "Delivery can take a moment while Localts packages your order.",
+      "cookieTokens": "Localts MSAAUTH cookie tokens",
+      "packagingTitle": "Your order is still being packaged",
+      "packagingBody": "You were not charged again. Check delivery in a moment, or come back later with the order ID.",
+      "refundedTitle": "This order was refunded",
+      "refundedBody": "It has no accounts to import.",
+      "orderStatus_one": "Order status: {{status}}. {{count}} delivered item.",
+      "orderStatus_other": "Order status: {{status}}. {{count}} delivered items.",
+      "quantityHelp": "Use a whole number between 1 and 1,000 accounts."
+    },
     "fernan": {
-      "title": "Fernan's Club accounts",
       "description": "Buy accounts using your Fernan balance or import an earlier purchase.",
-      "balance": "Fernan balance: {{balance}}",
+      "stage": {
+        "connect": "Connect Fernan's Club",
+        "choose": "Choose your accounts",
+        "review": "Review your order",
+        "import": "Import your accounts"
+      },
+      "stageHelp": {
+        "connect": "Your API key loads your balance, stock, cooldowns and recent purchases.",
+        "choose": "Pick a product, or reload an earlier order.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "Choose how SoulFire should log in to these accounts."
+      },
+      "keyHelp": "Find your API key in your Fernan's Club account.",
+      "perAccount": "{{price}} each",
+      "listedTotal": "Listed total",
       "limit_one": "You can purchase {{count}} account now. Reconnect to refresh stock and cooldowns.",
       "limit_other": "You can purchase {{count}} accounts now. Reconnect to refresh stock and cooldowns.",
-      "total": "Listed total before referral discount: {{total}}. The provider applies any referral discount when you purchase.",
-      "purchase_one": "Purchase {{count}} account",
-      "purchase_other": "Purchase {{count}} accounts",
+      "referralHelp": "3 to 16 letters or numbers. Leave it empty to order without a code.",
+      "total": "This total is before any referral discount. Fernan's Club applies the discount when you buy, and the next step shows what you paid.",
+      "purchase_one": "Buy {{count}} account",
+      "purchase_other": "Buy {{count}} accounts",
       "delivered_one": "{{count}} account delivered.",
       "delivered_other": "{{count}} accounts delivered.",
       "paid": "Paid: {{total}} from your Fernan balance."
-    }
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "Connect Ravealts",
+        "choose": "Choose your accounts",
+        "review": "Review your order",
+        "import": "Accounts on the way"
+      },
+      "stageHelp": {
+        "connect": "Your API key loads your available credits.",
+        "choose": "Pick an account type and quantity.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "SoulFire is logging in to the accounts now."
+      },
+      "keyHelp": "SoulFire saves this key on this device so you do not need to enter it again.",
+      "quantityHelp": "Ravealts allows up to 10 accounts per order.",
+      "priceNote": "Ravealts charges your credits when you buy and does not report the price beforehand. Check the current price at your Ravealts dashboard if you are unsure.",
+      "purchase_one": "Buy {{count}} account",
+      "purchase_other": "Buy {{count}} accounts",
+      "importing_one": "{{count}} account was delivered and sent to import. The progress notice shows the result.",
+      "importing_other": "{{count}} accounts were delivered and sent to import. The progress notice shows the result."
+    },
+    "keyPrivacySaved": "SoulFire saves this API key on this device after it connects. Requests go directly to the provider."
   }
 }
