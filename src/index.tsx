@@ -1,3 +1,4 @@
+import { startCastClient } from "@/lib/cast-client";
 import { Code, ConnectError } from "@connectrpc/connect";
 import {
   createBrowserHistory,
@@ -48,6 +49,8 @@ const queryClient = new QueryClient({
   },
 });
 
+const stopCastClient = startCastClient();
+import.meta.hot?.dispose(stopCastClient);
 const stopQuerySessionSync = synchronizeQuerySession(queryClient);
 import.meta.hot?.dispose(stopQuerySessionSync);
 

@@ -45,7 +45,6 @@ import {
   InstancePermissionStateSchema,
 } from "@/generated/soulfire/instance_pb";
 import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
-import { useCastBroadcast } from "@/hooks/use-cast-broadcast.ts";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
 import { fetchInstanceInfo } from "@/lib/instance-info-query.ts";
@@ -243,12 +242,6 @@ function InstanceLayout() {
 }
 
 function InstanceLayoutContent() {
-  const { metricsQueryOptions, instanceInfoQueryOptions } =
-    Route.useRouteContext();
-  useCastBroadcast(
-    metricsQueryOptions.queryKey,
-    instanceInfoQueryOptions.queryKey,
-  );
   useBotStatusStream(Route.useParams().instance);
   const isMobile = useIsMobile();
   const sidebarState = localStorage.getItem("sidebar:state");

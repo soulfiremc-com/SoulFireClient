@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardUserRouteImport } from './routes/_dashboard/user'
+import { Route as DashboardCastRouteImport } from './routes/_dashboard/cast'
 import { Route as DashboardUserIndexRouteImport } from './routes/_dashboard/user/index'
 import { Route as DashboardUserSettingsRouteImport } from './routes/_dashboard/user/settings'
 import { Route as DashboardUserAdminRouteImport } from './routes/_dashboard/user/admin'
@@ -47,6 +48,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardUserRoute = DashboardUserRouteImport.update({
   id: '/user',
   path: '/user',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardCastRoute = DashboardCastRouteImport.update({
+  id: '/cast',
+  path: '/cast',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardUserIndexRoute = DashboardUserIndexRouteImport.update({
@@ -177,6 +183,7 @@ const DashboardInstanceInstanceBotBotIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cast': typeof DashboardCastRoute
   '/user': typeof DashboardUserRouteWithChildren
   '/instance/$instance': typeof DashboardInstanceInstanceRouteWithChildren
   '/user/access': typeof DashboardUserAccessRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cast': typeof DashboardCastRoute
   '/user/access': typeof DashboardUserAccessRoute
   '/user/settings': typeof DashboardUserSettingsRoute
   '/user': typeof DashboardUserIndexRoute
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/cast': typeof DashboardCastRoute
   '/_dashboard/user': typeof DashboardUserRouteWithChildren
   '/_dashboard/instance/$instance': typeof DashboardInstanceInstanceRouteWithChildren
   '/_dashboard/user/access': typeof DashboardUserAccessRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cast'
     | '/user'
     | '/instance/$instance'
     | '/user/access'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cast'
     | '/user/access'
     | '/user/settings'
     | '/user'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_dashboard'
+    | '/_dashboard/cast'
     | '/_dashboard/user'
     | '/_dashboard/instance/$instance'
     | '/_dashboard/user/access'
@@ -357,6 +369,13 @@ declare module '@tanstack/react-router' {
       path: '/user'
       fullPath: '/user'
       preLoaderRoute: typeof DashboardUserRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/cast': {
+      id: '/_dashboard/cast'
+      path: '/cast'
+      fullPath: '/cast'
+      preLoaderRoute: typeof DashboardCastRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/_dashboard/user/': {
@@ -599,11 +618,13 @@ const DashboardInstanceInstanceRouteWithChildren =
   )
 
 interface DashboardRouteChildren {
+  DashboardCastRoute: typeof DashboardCastRoute
   DashboardUserRoute: typeof DashboardUserRouteWithChildren
   DashboardInstanceInstanceRoute: typeof DashboardInstanceInstanceRouteWithChildren
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardCastRoute: DashboardCastRoute,
   DashboardUserRoute: DashboardUserRouteWithChildren,
   DashboardInstanceInstanceRoute: DashboardInstanceInstanceRouteWithChildren,
 }

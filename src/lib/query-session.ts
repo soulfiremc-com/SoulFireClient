@@ -1,3 +1,4 @@
+import { desktop, isDesktopApp } from "@/lib/desktop";
 import { broadcastQueryClient } from "@tanstack/query-broadcast-client-experimental";
 import type { QueryClient } from "@tanstack/react-query";
 
@@ -33,6 +34,7 @@ export function synchronizeQuerySession(queryClient: QueryClient) {
     sessionId = current;
     disconnect();
     queryClient.clear();
+    if (isDesktopApp()) void desktop.cast.stopAll().catch(console.error);
     return true;
   };
   const onLocalChange = () => {

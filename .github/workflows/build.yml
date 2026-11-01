@@ -54,6 +54,9 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
+      - name: Cast regression tests
+        run: bun run test:cast
+
       - name: Build unpacked Electron app
         run: bun run build:electron:dir -- --${{ matrix.arch }}
 

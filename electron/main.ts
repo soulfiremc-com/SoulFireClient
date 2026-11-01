@@ -26,7 +26,14 @@ import type {
   DesktopTheme,
 } from "../src/lib/desktop-api";
 import { getAppConfigDir, getAppLocalDataDir } from "./native/app-paths";
-import { CastManager } from "./native/cast";
+import { CastSessionManager } from "./cast/session-manager";
+import {
+  CastDevice,
+  CastSource,
+  DEFAULT_SETTINGS,
+  DisplaySettings,
+} from "@soulfiremc/cast-protocol";
+import { Option, Schema } from "effect";
 import { DiscordPresenceManager } from "./native/discord";
 import {
   getSoulFireServerVersion,
@@ -93,22 +100,15 @@ const windowStateStore = new Store<{
   name: "window-state",
 });
 
+const castSettingsStore = new Store<{ display: typeof DisplaySettings.Type }>({
+  name: "cast-display",
+  defaults: { display: DEFAULT_SETTINGS },
+});
+
 const integratedServerState = createIntegratedServerState();
 const discordPresence = new DiscordPresenceManager();
-const castManager = new CastManager((event, payload) => {
-  switch (event) {
-    case "cast-device-disconnected":
-      sendToMainWindow("cast:device-disconnected", payload);
-      return;
-    case "cast-device-discovered":
-      sendToMainWindow("cast:device-discovered", payload);
-      return;
-    case "cast-device-removed":
-      sendToMainWindow("cast:device-removed", payload);
-      return;
-    default:
-      return;
-  }
+const castManager = new CastSessionManager((state) => {
+  sendToMainWindow("cast:state", state);
 });
 
 const fsWatchers = new Map<number, FsWatchRegistration>();
@@ -643,29 +643,33 @@ function registerIpcHandlers(): void {
     setThemeSource(theme);
   });
 
-  handleIpc("cast:broadcast", async (_window, payload?: unknown) => {
-    castManager.broadcastMessage(payload);
-  });
-
   handleIpc(
     "cast:connect",
     async (
       _window,
-      options: {
-        address: string;
-        port: number;
-      },
+      options: { device: unknown; source: unknown; relaunch?: boolean },
     ) => {
-      return castManager.connect(options.address, options.port);
+      return castManager.connect(
+        Schema.decodeUnknownSync(CastDevice)(options.device),
+        Schema.decodeUnknownSync(CastSource)(options.source),
+        options.relaunch === true,
+      );
     },
   );
-
   handleIpc("cast:discover", async () => {
     castManager.discover();
   });
-
-  handleIpc("cast:get-devices", async () => {
-    return castManager.getCasts();
+  handleIpc("cast:get-state", async () => castManager.getState());
+  handleIpc("cast:stop", async (_window, id: string) => {
+    await castManager.stop(id);
+  });
+  handleIpc("cast:stop-all", async () => {
+    await castManager.stopAll();
+  });
+  handleIpc("cast:settings", async (_window, settings: unknown) => {
+    const next = Schema.decodeUnknownSync(DisplaySettings)(settings);
+    castSettingsStore.set("display", next);
+    castManager.setSettings(next);
   });
 
   handleIpc(
@@ -1040,10 +1044,25 @@ async function bootstrap(): Promise<void> {
   applyApplicationIcon();
   registerSecurityHandlers();
   registerIpcHandlers();
+  castManager.setSettings(
+    Schema.decodeUnknownOption(DisplaySettings)(
+      castSettingsStore.get("display"),
+    ).pipe(Option.getOrElse(() => DEFAULT_SETTINGS)),
+  );
   await registerAppProtocol();
 
-  app.on("before-quit", () => {
-    castManager.dispose();
+  let castCleanupComplete = false;
+  app.on("before-quit", (event) => {
+    if (castCleanupComplete) return;
+    event.preventDefault();
+    const finish = () => {
+      castCleanupComplete = true;
+      app.quit();
+    };
+    void castManager.dispose().then(finish, (error: unknown) => {
+      console.error("Could not finish Cast cleanup", error);
+      finish();
+    });
     void killIntegratedServer(integratedServerState);
   });
 

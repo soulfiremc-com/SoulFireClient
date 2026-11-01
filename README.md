@@ -27,6 +27,10 @@ For installing SoulFire, please refer to the [installation guide](https://soulfi
 <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
 </a>
 
+## Cast displays
+
+The desktop app can show instance metrics on Chromecast and Cast-enabled TVs. Read the [casting guide](docs/casting.md) for controls, recovery, and development.
+
 ## Deployments
 
 See which branches are at which URLs:

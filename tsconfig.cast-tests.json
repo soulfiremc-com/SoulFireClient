@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["DOM", "ES2022"],
+    "types": ["node", "bun"]
+  },
+  "include": ["electron/cast"],
+  "exclude": []
+}

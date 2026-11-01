@@ -170,3 +170,12 @@ export function povInputUrl(): string {
   url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
   return url.toString();
 }
+
+export function getCastSource(instanceId: string) {
+  if (isDemo()) return null;
+  const address = localStorage.getItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
+  const token =
+    localStorage.getItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY) ??
+    localStorage.getItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
+  return address && token ? { address, token, instanceId } : null;
+}
