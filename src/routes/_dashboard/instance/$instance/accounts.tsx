@@ -45,7 +45,9 @@ import {
 import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
 import RavealtsDialog from "@/components/dialog/ravealts-dialog.tsx";
-import { ExternalLink } from "@/components/external-link.tsx";
+import AccountProvidersDialog from "@/components/dialog/account-providers-dialog.tsx";
+import LocaltsDialog from "@/components/dialog/localts-dialog.tsx";
+import FernanDialog from "@/components/dialog/fernan-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
@@ -119,18 +121,11 @@ const ACCOUNT_SETTINGS_DISABLED_IDS: DisabledSettingId[] = [
   { namespace: "account", key: "use-proxies-for-account-auth" },
 ];
 
-function GetAccountsButton() {
+function GetAccountsButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      nativeButton={false}
-      render={
-        <ExternalLink href="https://soulfiremc.com/get-accounts?utm_source=soulfire-client&utm_medium=app&utm_campaign=accounts-get" />
-      }
-    >
+    <Button variant="outline" size="sm" onClick={onClick}>
       <ShoppingCartIcon />
       {t("account.getAccounts")}
     </Button>
@@ -496,8 +491,11 @@ function AddButton() {
   const [pendingDeviceCodeType, setPendingDeviceCodeType] =
     useState<AccountTypeDeviceCode | null>(null);
   const [ravealtsDialogOpen, setRavealtsDialogOpen] = useState(false);
+  const [providerDialogOpen, setProviderDialogOpen] = useState(false);
+  const [localtsDialogOpen, setLocaltsDialogOpen] = useState(false);
+  const [fernanDialogOpen, setFernanDialogOpen] = useState(false);
 
-  const handleRavealtsImport = useCallback(
+  const handleProviderAccountImport = useCallback(
     (payload: string[], credentialType: AccountTypeCredentials) => {
       if (transport === null) return;
 
@@ -814,6 +812,15 @@ function AddButton() {
 
   return (
     <>
+      <GetAccountsButton onClick={() => setProviderDialogOpen(true)} />
+      <GenerateAccountsButton />
+      <AccountProvidersDialog
+        open={providerDialogOpen}
+        onOpenChange={setProviderDialogOpen}
+        onRavealts={() => setRavealtsDialogOpen(true)}
+        onLocalts={() => setLocaltsDialogOpen(true)}
+        onFernan={() => setFernanDialogOpen(true)}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
           <PlusIcon />
@@ -892,6 +899,12 @@ function AddButton() {
               }}
             >
               {t("account.ravealts.button")}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLocaltsDialogOpen(true)}>
+              Localts
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFernanDialogOpen(true)}>
+              Fernan's Club
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -1074,8 +1087,23 @@ function AddButton() {
       <RavealtsDialog
         open={ravealtsDialogOpen}
         onOpenChange={setRavealtsDialogOpen}
-        onImportAccounts={handleRavealtsImport}
+        onImportAccounts={handleProviderAccountImport}
+        canPurchase={transport !== null}
       />
+      {localtsDialogOpen && (
+        <LocaltsDialog
+          onClose={() => setLocaltsDialogOpen(false)}
+          onImport={handleProviderAccountImport}
+          canPurchase={transport !== null}
+        />
+      )}
+      {fernanDialogOpen && (
+        <FernanDialog
+          onClose={() => setFernanDialogOpen(false)}
+          onImport={handleProviderAccountImport}
+          canPurchase={transport !== null}
+        />
+      )}
     </>
   );
 }
@@ -1222,8 +1250,6 @@ function Content() {
       >
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
-          <GetAccountsButton />
-          <GenerateAccountsButton />
           <AddButton />
         </DataTableToolbar>
       </DataTable>

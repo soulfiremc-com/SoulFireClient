@@ -1,4 +1,5 @@
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
+import { ProviderApiError, requestProvider } from "@/lib/provider-request.ts";
 
 const RAVEALTS_BASE_URL = "https://api.ravealts.com";
 const LOCAL_STORAGE_RAVEALTS_API_KEY = "ravealts-api-key";
@@ -51,13 +52,28 @@ function isRavealtsError(data: unknown): data is RavealtsErrorResponse {
 
 async function ravealtsRequest<T>(
   path: string,
-  options?: RequestInit,
+  options?: {
+    method?: "GET" | "POST";
+    headers?: Record<string, string>;
+    body?: string;
+  },
 ): Promise<T> {
-  const response = await fetch(`${RAVEALTS_BASE_URL}${path}`, options);
-  const data = await response.json();
+  const response = await requestProvider({
+    url: `${RAVEALTS_BASE_URL}${path}`,
+    method: "GET",
+    ...options,
+  });
+  let data: unknown;
+  try {
+    data = JSON.parse(response.body) as unknown;
+  } catch {
+    throw new ProviderApiError("response");
+  }
   if (isRavealtsError(data)) {
     throw new RavealtsApiError(data.error_type, data.message);
   }
+  if (response.status < 200 || response.status >= 300)
+    throw new ProviderApiError("rejected");
   return data as T;
 }
 
@@ -88,6 +104,15 @@ export async function purchaseAccounts(
   accountType: string,
   amount: number,
 ): Promise<RavealtsPurchaseResponse> {
+  if (
+    !Number.isInteger(amount) ||
+    amount < 1 ||
+    amount > 10 ||
+    !apiKey.trim() ||
+    !accountType.trim()
+  ) {
+    throw new Error("Invalid Ravealts purchase");
+  }
   return ravealtsRequest<RavealtsPurchaseResponse>("/alts/purchase", {
     method: "POST",
     headers: {

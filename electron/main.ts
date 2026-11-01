@@ -26,6 +26,10 @@ import type {
   DesktopTheme,
 } from "../src/lib/desktop-api";
 import { getAppConfigDir, getAppLocalDataDir } from "./native/app-paths";
+import {
+  executeProviderRequest,
+  type ProviderRequest,
+} from "../src/lib/provider-request-policy";
 import { CastSessionManager } from "./cast/session-manager";
 import {
   CastDevice,
@@ -615,6 +619,9 @@ function windowTarget(sender: BrowserWindow, target?: "pov"): BrowserWindow {
 }
 
 function registerIpcHandlers(): void {
+  handleIpc("providers:request", async (_window, request: ProviderRequest) => {
+    return executeProviderRequest(request, net.fetch);
+  });
   handleIpc("pov:set-captured", (owner, captured: boolean, target?: "pov") => {
     if (
       typeof captured !== "boolean" ||

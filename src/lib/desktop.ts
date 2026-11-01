@@ -57,6 +57,11 @@ function windowApi(target?: "pov") {
 }
 
 export const desktop = {
+  providers: {
+    request: (
+      request: Parameters<SoulFireDesktopApi["providers"]["request"]>[0],
+    ) => requireDesktopRuntime().providers.request(request),
+  },
   pov: {
     onReleased: (callback: (target?: "pov") => void) =>
       requireDesktopRuntime().pov.onReleased(callback),

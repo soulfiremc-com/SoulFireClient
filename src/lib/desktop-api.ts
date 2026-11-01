@@ -4,6 +4,10 @@ import type {
   CastState,
   DisplaySettings,
 } from "@soulfiremc/cast-protocol";
+import type {
+  ProviderRequest,
+  ProviderResponse,
+} from "./provider-request-policy";
 
 export type DesktopTheme = "dark" | "light" | null;
 
@@ -121,6 +125,9 @@ export type DesktopPovEscape = {
 };
 
 export interface SoulFireDesktopApi {
+  providers: {
+    request: (request: ProviderRequest) => Promise<ProviderResponse>;
+  };
   pov: {
     onReleased: (
       callback: (target?: "pov") => void,

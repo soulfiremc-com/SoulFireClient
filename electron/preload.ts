@@ -21,6 +21,9 @@ function subscribe<T>(
 }
 
 const desktopApi: SoulFireDesktopApi = {
+  providers: {
+    request: (request) => invoke("providers:request", request),
+  },
   pov: {
     onReleased: (callback) => subscribe("pov:released", callback),
     setCaptured: (captured, target) =>

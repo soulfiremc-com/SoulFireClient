@@ -39,7 +39,7 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton.t
 import { DataTableSortList } from "@/components/data-table/data-table-sort-list.tsx";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
-import { ExternalLink } from "@/components/external-link.tsx";
+import ProxyProvidersDialog from "@/components/dialog/proxy-providers-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
@@ -81,6 +81,7 @@ import i18n from "@/lib/i18n.ts";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
+import { newProviderProxies } from "@/lib/proxy-providers.ts";
 import { getProxyRows, type ProxyTableRow } from "@/lib/proxy-selection.ts";
 import {
   formatProxyAsFlat,
@@ -380,18 +381,11 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
   },
 ];
 
-function GetProxiesButton() {
+function GetProxiesButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      nativeButton={false}
-      render={
-        <ExternalLink href="https://soulfiremc.com/get-proxies?utm_source=soulfire-client&utm_medium=app&utm_campaign=proxies-get" />
-      }
-    >
+    <Button variant="outline" size="sm" onClick={onClick}>
       <ShoppingCartIcon />
       {t("proxy.getProxies")}
     </Button>
@@ -410,6 +404,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
     null,
   );
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
+  const [providerDialogOpen, setProviderDialogOpen] = useState(false);
   // Batch add proxies mutation
   const { mutateAsync: addProxiesBatchMutation, isPending: isImporting } =
     useMutation({
@@ -607,6 +602,31 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
 
   return (
     <>
+      <GetProxiesButton onClick={() => setProviderDialogOpen(true)} />
+      <ProxyProvidersDialog
+        open={providerDialogOpen}
+        onOpenChange={setProviderDialogOpen}
+        canImport={transport !== null}
+        onImport={async (proxies) => {
+          if (transport === null) throw new Error("Server connection required");
+          const current = queryClient.getQueryData<InstanceInfoQueryData>(
+            instanceInfoQueryOptions.queryKey,
+          );
+          const additions = newProviderProxies(
+            proxies,
+            current?.profile.proxies ?? [],
+          );
+          if (!additions.length) {
+            toast.info(t("providers.alreadyImported"));
+            return;
+          }
+          await addProxiesBatchMutation(additions);
+          setImportedProxies(additions);
+          toast.success(
+            t("proxy.listImportToast.success", { count: additions.length }),
+          );
+        }}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger
           disabled={isImporting}
@@ -1041,7 +1061,6 @@ function Content() {
       >
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
-          <GetProxiesButton />
           <AddButton onBeforeRemove={() => table.resetRowSelection()} />
         </DataTableToolbar>
       </DataTable>

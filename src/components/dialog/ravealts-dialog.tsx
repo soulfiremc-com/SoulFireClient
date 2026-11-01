@@ -2,6 +2,8 @@ import { EyeIcon, EyeOffIcon, LoaderIcon } from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { ProviderLinks } from "@/components/providers/provider-links.tsx";
+import { ACCOUNT_PROVIDERS } from "@/lib/resource-providers.ts";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -49,12 +51,14 @@ export type RavealtsDialogProps = {
     payload: string[],
     credentialType: AccountTypeCredentials,
   ) => void;
+  canPurchase: boolean;
 };
 
 export default function RavealtsDialog({
   open,
   onOpenChange,
   onImportAccounts,
+  canPurchase,
 }: RavealtsDialogProps) {
   const { t } = useTranslation("instance");
   const accountTypeSelectId = useId();
@@ -117,7 +121,8 @@ export default function RavealtsDialog({
   };
 
   const handlePurchase = async () => {
-    if (selectedType === "" || credits === null) return;
+    if (selectedType === "" || credits === null || !canPurchase || purchasing)
+      return;
 
     setPurchasing(true);
     try {
@@ -170,7 +175,12 @@ export default function RavealtsDialog({
   };
 
   return (
-    <Credenza open={open} onOpenChange={onOpenChange}>
+    <Credenza
+      open={open}
+      onOpenChange={(next) => {
+        if (!purchasing && !validating) onOpenChange(next);
+      }}
+    >
       <CredenzaContent>
         <CredenzaHeader>
           <CredenzaTitle>{t("account.ravealts.title")}</CredenzaTitle>
@@ -179,6 +189,7 @@ export default function RavealtsDialog({
           </CredenzaDescription>
         </CredenzaHeader>
         <CredenzaBody className="flex flex-col gap-4 pb-4 md:pb-0">
+          <ProviderLinks provider={ACCOUNT_PROVIDERS[0]} />
           <Field>
             <FieldLabel>{t("account.ravealts.apiKeyLabel")}</FieldLabel>
             <div className="flex gap-2">
@@ -187,7 +198,11 @@ export default function RavealtsDialog({
                   type={showApiKey ? "text" : "password"}
                   placeholder={t("account.ravealts.apiKeyPlaceholder")}
                   value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
+                  disabled={validating || purchasing}
+                  onChange={(e) => {
+                    setApiKey(e.target.value);
+                    setCredits(null);
+                  }}
                 />
                 <InputGroupAddon align="inline-end">
                   <InputGroupButton
@@ -206,7 +221,9 @@ export default function RavealtsDialog({
                 size="sm"
                 variant="outline"
                 onClick={() => void handleValidate()}
-                disabled={validating || apiKey.trim().length === 0}
+                disabled={
+                  validating || purchasing || apiKey.trim().length === 0
+                }
               >
                 {validating ? (
                   <>
@@ -260,7 +277,7 @@ export default function RavealtsDialog({
                   setSelectedType(value);
                 }
               }}
-              disabled={availableTypes.length === 0}
+              disabled={purchasing || availableTypes.length === 0}
               items={accountTypeItems}
             >
               <SelectTrigger id={accountTypeSelectId} className="w-full">
@@ -283,6 +300,7 @@ export default function RavealtsDialog({
             <FieldLabel>{t("account.ravealts.amount")}</FieldLabel>
             <Input
               type="number"
+              disabled={purchasing}
               min={1}
               max={10}
               value={amount}
@@ -301,6 +319,7 @@ export default function RavealtsDialog({
           <Button
             type="button"
             variant="outline"
+            disabled={purchasing || validating}
             onClick={() => onOpenChange(false)}
           >
             {t("common:cancel")}
@@ -309,6 +328,7 @@ export default function RavealtsDialog({
             onClick={() => void handlePurchase()}
             disabled={
               purchasing ||
+              !canPurchase ||
               selectedType === "" ||
               credits === null ||
               amount < 1 ||
