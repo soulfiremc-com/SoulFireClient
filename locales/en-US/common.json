@@ -502,7 +502,8 @@
   "clipboardCopy": {
     "loading": "Copying to clipboard...",
     "success": "Copied \"{{content}}\" to clipboard",
-    "error": "Failed to copy to clipboard"
+    "error": "Failed to copy to clipboard",
+    "sensitiveSuccess": "Copied to clipboard"
   },
   "instanceName": {
     "required": "Enter an instance name.",
@@ -701,5 +702,97 @@
     },
     "enabledHeading": "On",
     "availableHeading": "Available"
+  },
+  "sdk": {
+    "title": "SDK quickstart",
+    "description": "Write a local script that connects to this SoulFire server. Use the examples below with your current instance and bots.",
+    "docs": "SDK guide",
+    "connectionTitle": "1. Connect to your server",
+    "connectionDescription": "Use the same SoulFire server that this app connects to.",
+    "serverUrl": "SoulFire API address",
+    "serverUrlHelp": "This is the SoulFire API, separate from the Minecraft server address.",
+    "noUrl": "No server address available",
+    "copyUrl": "Copy server address",
+    "token": "Personal API token",
+    "tokenPlaceholder": "Generate a token below",
+    "copyToken": "Copy API token",
+    "tokenHelp": "Keep this token private. It grants your user permissions. This page keeps the generated token in memory until you leave.",
+    "generateToken": "Generate personal token",
+    "generating": "Generating token...",
+    "tokenReady": "Token ready to copy",
+    "tokenPermission": "Ask your administrator for a personal API token if you cannot generate one. Paste it into your terminal command.",
+    "tokenError": "Could not generate a token",
+    "tokenRetry": "Try again or ask your administrator for API access.",
+    "demoTitle": "Explore the examples in demo mode",
+    "demoBody": "The demo has no SoulFire server to connect to. Connect to a real server to get its address, IDs, and a personal token.",
+    "demoBadge": "Demo",
+    "localBadge": "Local connection",
+    "remoteBadge": "Remote connection",
+    "unavailableBadge": "Address unavailable",
+    "missingUrlHelp": "Reconnect to your SoulFire server to get a usable API address.",
+    "localHelp": "Run the script on the same computer as this app. A localhost address points to the computer running the script.",
+    "remoteHelp": "Your script connects to this remote server. It needs network access to the API address above.",
+    "integratedHelp": "Keep SoulFire and its local server running while you use the SDK.",
+    "targetTitle": "Your current instance",
+    "instanceId": "Instance ID",
+    "copyInstanceId": "Copy instance ID",
+    "targetHelp": "These examples use this instance. Switch instances in the sidebar to work with another one.",
+    "openBots": "Open bots",
+    "openAccounts": "Open accounts",
+    "exampleTitle": "2. Choose your first action",
+    "exampleDescription": "Pick a language and an example. The code uses the instance and bot IDs from this app.",
+    "language": "SDK language",
+    "recipe": "Example action",
+    "bot": "Bot",
+    "noBotsTitle": "Add an account to choose a bot",
+    "noBotsBody": "You can list bots now. Add an account to this instance before you read a bot state or send chat.",
+    "stoppedTitle": "This bot is not connected",
+    "stoppedBody": "Start it from the Bots page before you run the chat example.",
+    "copyScript": "Copy script",
+    "saveScript": "Save this code as {{filename}} in a new folder. The script reads your token from SOULFIRE_TOKEN.",
+    "runTitle": "3. Run it in your terminal",
+    "pythonRequirement": "Requires Python 3.14 or newer. These commands create a virtual environment in your script folder.",
+    "typescriptRequirement": "Requires Bun. Open a terminal in your script folder, then install the SDK.",
+    "shell": "Terminal platform",
+    "install": "Install dependencies",
+    "run": "Set the token and run",
+    "copyInstall": "Copy install commands",
+    "copyRun": "Copy run commands",
+    "replaceToken": "Replace PASTE_YOUR_API_TOKEN with your personal token from step 1. Run both commands in the same terminal.",
+    "version": "Examples use SDK {{version}} and its scoped runtime. The script closes its API connection when it finishes.",
+    "recipes": {
+      "list-bots": {
+        "title": "List bots",
+        "description": "Read the names, IDs, and connection states of the bots in this instance.",
+        "expected": "Expect a list of bots in your terminal. An empty instance returns an empty list."
+      },
+      "read-state": {
+        "title": "Read state",
+        "description": "Read the latest live state for one bot. A disconnected bot can have no live state.",
+        "expected": "Expect the selected bot's live state in your terminal. This example does not start the bot."
+      },
+      "send-chat": {
+        "title": "Send chat",
+        "description": "Send one public message as a connected bot when you run this script. Requires permission to send chat.",
+        "expected": "Expect “Hello from the SoulFire SDK!” in Minecraft chat, then “Message sent.” in your terminal."
+      }
+    },
+    "helpTitle": "If the script cannot connect",
+    "help": {
+      "connection": {
+        "title": "Connection refused or timed out",
+        "body": "Keep the SoulFire server running. Use its API address. For a local address, run your script on the same computer. Check remote network access."
+      },
+      "authentication": {
+        "title": "Authentication or permission denied",
+        "body": "Use a personal API token generated for this SoulFire server. The token keeps your user permissions. Ask the administrator for any missing access."
+      },
+      "compatibility": {
+        "title": "SDK or API version mismatch",
+        "body": "The SDK checks compatibility when it connects. Use a compatible SoulFire server and SDK release. Follow the version guidance in the SDK guide."
+      }
+    },
+    "reference": "API reference",
+    "moreExamples": "More examples"
   }
 }

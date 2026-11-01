@@ -24,6 +24,7 @@ import { Route as DashboardUserAdminUsersRouteImport } from './routes/_dashboard
 import { Route as DashboardUserAdminTerminalRouteImport } from './routes/_dashboard/user/admin/terminal'
 import { Route as DashboardUserAdminLogsRouteImport } from './routes/_dashboard/user/admin/logs'
 import { Route as DashboardInstanceInstanceTerminalRouteImport } from './routes/_dashboard/instance/$instance/terminal'
+import { Route as DashboardInstanceInstanceSdkRouteImport } from './routes/_dashboard/instance/$instance/sdk'
 import { Route as DashboardInstanceInstanceScriptsRouteImport } from './routes/_dashboard/instance/$instance/scripts'
 import { Route as DashboardInstanceInstanceProxiesRouteImport } from './routes/_dashboard/instance/$instance/proxies'
 import { Route as DashboardInstanceInstanceMetaRouteImport } from './routes/_dashboard/instance/$instance/meta'
@@ -114,6 +115,12 @@ const DashboardInstanceInstanceTerminalRoute =
     path: '/terminal',
     getParentRoute: () => DashboardInstanceInstanceRoute,
   } as any)
+const DashboardInstanceInstanceSdkRoute =
+  DashboardInstanceInstanceSdkRouteImport.update({
+    id: '/sdk',
+    path: '/sdk',
+    getParentRoute: () => DashboardInstanceInstanceRoute,
+  } as any)
 const DashboardInstanceInstanceScriptsRoute =
   DashboardInstanceInstanceScriptsRouteImport.update({
     id: '/scripts',
@@ -197,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/instance/$instance/meta': typeof DashboardInstanceInstanceMetaRoute
   '/instance/$instance/proxies': typeof DashboardInstanceInstanceProxiesRoute
   '/instance/$instance/scripts': typeof DashboardInstanceInstanceScriptsRoute
+  '/instance/$instance/sdk': typeof DashboardInstanceInstanceSdkRoute
   '/instance/$instance/terminal': typeof DashboardInstanceInstanceTerminalRoute
   '/user/admin/logs': typeof DashboardUserAdminLogsRoute
   '/user/admin/terminal': typeof DashboardUserAdminTerminalRoute
@@ -221,6 +229,7 @@ export interface FileRoutesByTo {
   '/instance/$instance/meta': typeof DashboardInstanceInstanceMetaRoute
   '/instance/$instance/proxies': typeof DashboardInstanceInstanceProxiesRoute
   '/instance/$instance/scripts': typeof DashboardInstanceInstanceScriptsRoute
+  '/instance/$instance/sdk': typeof DashboardInstanceInstanceSdkRoute
   '/instance/$instance/terminal': typeof DashboardInstanceInstanceTerminalRoute
   '/user/admin/logs': typeof DashboardUserAdminLogsRoute
   '/user/admin/terminal': typeof DashboardUserAdminTerminalRoute
@@ -250,6 +259,7 @@ export interface FileRoutesById {
   '/_dashboard/instance/$instance/meta': typeof DashboardInstanceInstanceMetaRoute
   '/_dashboard/instance/$instance/proxies': typeof DashboardInstanceInstanceProxiesRoute
   '/_dashboard/instance/$instance/scripts': typeof DashboardInstanceInstanceScriptsRoute
+  '/_dashboard/instance/$instance/sdk': typeof DashboardInstanceInstanceSdkRoute
   '/_dashboard/instance/$instance/terminal': typeof DashboardInstanceInstanceTerminalRoute
   '/_dashboard/user/admin/logs': typeof DashboardUserAdminLogsRoute
   '/_dashboard/user/admin/terminal': typeof DashboardUserAdminTerminalRoute
@@ -279,6 +289,7 @@ export interface FileRouteTypes {
     | '/instance/$instance/meta'
     | '/instance/$instance/proxies'
     | '/instance/$instance/scripts'
+    | '/instance/$instance/sdk'
     | '/instance/$instance/terminal'
     | '/user/admin/logs'
     | '/user/admin/terminal'
@@ -303,6 +314,7 @@ export interface FileRouteTypes {
     | '/instance/$instance/meta'
     | '/instance/$instance/proxies'
     | '/instance/$instance/scripts'
+    | '/instance/$instance/sdk'
     | '/instance/$instance/terminal'
     | '/user/admin/logs'
     | '/user/admin/terminal'
@@ -331,6 +343,7 @@ export interface FileRouteTypes {
     | '/_dashboard/instance/$instance/meta'
     | '/_dashboard/instance/$instance/proxies'
     | '/_dashboard/instance/$instance/scripts'
+    | '/_dashboard/instance/$instance/sdk'
     | '/_dashboard/instance/$instance/terminal'
     | '/_dashboard/user/admin/logs'
     | '/_dashboard/user/admin/terminal'
@@ -453,6 +466,13 @@ declare module '@tanstack/react-router' {
       path: '/terminal'
       fullPath: '/instance/$instance/terminal'
       preLoaderRoute: typeof DashboardInstanceInstanceTerminalRouteImport
+      parentRoute: typeof DashboardInstanceInstanceRoute
+    }
+    '/_dashboard/instance/$instance/sdk': {
+      id: '/_dashboard/instance/$instance/sdk'
+      path: '/sdk'
+      fullPath: '/instance/$instance/sdk'
+      preLoaderRoute: typeof DashboardInstanceInstanceSdkRouteImport
       parentRoute: typeof DashboardInstanceInstanceRoute
     }
     '/_dashboard/instance/$instance/scripts': {
@@ -580,6 +600,7 @@ interface DashboardInstanceInstanceRouteChildren {
   DashboardInstanceInstanceMetaRoute: typeof DashboardInstanceInstanceMetaRoute
   DashboardInstanceInstanceProxiesRoute: typeof DashboardInstanceInstanceProxiesRoute
   DashboardInstanceInstanceScriptsRoute: typeof DashboardInstanceInstanceScriptsRoute
+  DashboardInstanceInstanceSdkRoute: typeof DashboardInstanceInstanceSdkRoute
   DashboardInstanceInstanceTerminalRoute: typeof DashboardInstanceInstanceTerminalRoute
   DashboardInstanceInstanceIndexRoute: typeof DashboardInstanceInstanceIndexRoute
   DashboardInstanceInstanceBotBotIdRoute: typeof DashboardInstanceInstanceBotBotIdRoute
@@ -601,6 +622,7 @@ const DashboardInstanceInstanceRouteChildren: DashboardInstanceInstanceRouteChil
       DashboardInstanceInstanceProxiesRoute,
     DashboardInstanceInstanceScriptsRoute:
       DashboardInstanceInstanceScriptsRoute,
+    DashboardInstanceInstanceSdkRoute: DashboardInstanceInstanceSdkRoute,
     DashboardInstanceInstanceTerminalRoute:
       DashboardInstanceInstanceTerminalRoute,
     DashboardInstanceInstanceIndexRoute: DashboardInstanceInstanceIndexRoute,

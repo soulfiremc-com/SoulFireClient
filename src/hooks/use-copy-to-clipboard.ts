@@ -19,17 +19,20 @@ function truncate(text: string, maxLength: number): string {
   }
 }
 
-export function useCopyToClipboard() {
+export function useCopyToClipboard(options?: { sensitive?: boolean }) {
   const { t } = useTranslation("common");
+  const sensitive = options?.sensitive ?? false;
 
   return useCallback<(text: string) => void>(
     (text) => {
       toast.promise(copyToClipboard(text), {
         loading: t("clipboardCopy.loading"),
-        success: t("clipboardCopy.success", { content: truncate(text, 50) }),
+        success: sensitive
+          ? t("clipboardCopy.sensitiveSuccess")
+          : t("clipboardCopy.success", { content: truncate(text, 50) }),
         error: t("clipboardCopy.error"),
       });
     },
-    [t],
+    [t, sensitive],
   );
 }

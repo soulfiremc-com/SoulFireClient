@@ -65,6 +65,9 @@ export const getServerType = () => {
   ) as SFServerType | null;
 };
 
+export const getServerAddress = () =>
+  localStorage.getItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
+
 export const getOrGenerateWebDAVToken = (generator: () => string): string => {
   let token = localStorage.getItem(LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY);
   if (!token) {

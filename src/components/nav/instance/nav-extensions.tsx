@@ -5,7 +5,12 @@ import {
   useParams,
   useRouteContext,
 } from "@tanstack/react-router";
-import { BlocksIcon, ChevronRightIcon, ScrollTextIcon } from "lucide-react";
+import {
+  BlocksIcon,
+  ChevronRightIcon,
+  CodeXmlIcon,
+  ScrollTextIcon,
+} from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
@@ -75,6 +80,14 @@ export function NavExtensions() {
       icon: ScrollTextIcon,
       linkProps: {
         to: "/instance/$instance/scripts",
+        params: { instance: instanceInfo.id },
+      },
+    },
+    {
+      title: t("sdk.title"),
+      icon: CodeXmlIcon,
+      linkProps: {
+        to: "/instance/$instance/sdk",
         params: { instance: instanceInfo.id },
       },
     },
