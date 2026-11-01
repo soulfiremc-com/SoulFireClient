@@ -10,6 +10,7 @@ import {
   ExternalLinkIcon,
   GlobeIcon,
   PowerIcon,
+  SlidersHorizontalIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { use, useMemo } from "react";
@@ -21,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
   CardDescription,
@@ -66,15 +67,16 @@ function PluginInfoCardContent(props: {
   return (
     <>
       <Card
-        className="container"
         size={props.cardSize}
         onContextMenu={(e) => handleContextMenu(e, null)}
       >
         <CardHeader>
-          <div className="flex flex-row items-center justify-between gap-2">
+          <div className="flex flex-row items-start justify-between gap-3">
             {props.link}
             <Switch
-              aria-label={props.settingsEntry.pageName}
+              aria-label={t("pluginCard.enable", {
+                name: props.settingsEntry.pageName,
+              })}
               checked={props.enabledValue}
               onCheckedChange={props.onEnabledChange}
             />
@@ -82,35 +84,39 @@ function PluginInfoCardContent(props: {
           <CardDescription className="whitespace-pre-line">
             {props.plugin.description}
           </CardDescription>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <Badge variant="secondary" className="select-text">
-              {t("pluginCard.version", {
-                version: props.plugin.version,
-              })}
-            </Badge>
-            <Badge variant="secondary" className="select-text">
-              {t("pluginCard.author", {
-                author: props.plugin.author,
-              })}
-            </Badge>
-            <Badge variant="secondary" className="select-text">
-              {t("pluginCard.license", {
-                license: props.plugin.license,
-              })}
-            </Badge>
+          <p className="text-muted-foreground mt-1 text-xs select-text">
+            {t("pluginCard.meta", {
+              version: props.plugin.version,
+              author: props.plugin.author,
+              license: props.plugin.license,
+            })}
             {props.plugin.website && (
-              <ExternalLink
-                href={props.plugin.website}
-                className="inline-flex items-center"
-              >
-                <Badge variant="secondary">
+              <>
+                {" "}
+                <ExternalLink
+                  href={props.plugin.website}
+                  className="inline-flex items-center underline underline-offset-3"
+                >
                   {t("pluginCard.website", {
                     website: props.plugin.website,
                   })}
-                </Badge>
-              </ExternalLink>
+                </ExternalLink>
+              </>
             )}
-          </div>
+          </p>
+          {props.settingsUrl && props.enabledValue && (
+            <Button
+              className="mt-2 w-fit"
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                void navigate({ to: props.settingsUrl });
+              }}
+            >
+              <SlidersHorizontalIcon data-icon="inline-start" />
+              {t("pluginCard.configure")}
+            </Button>
+          )}
         </CardHeader>
       </Card>
       {contextMenu && (
@@ -183,9 +189,9 @@ function PluginInfoCardContent(props: {
 
 function PluginCardTitle(props: { settingsEntry: SettingsPage }) {
   return (
-    <CardTitle className="flex flex-row items-center gap-2 text-xl">
+    <CardTitle className="flex flex-row items-center gap-2 text-base">
       <DynamicIcon
-        className="size-6 shrink-0"
+        className="size-5 shrink-0"
         name={props.settingsEntry.iconId}
       />
       {props.settingsEntry.pageName}

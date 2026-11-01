@@ -204,7 +204,7 @@
     },
     "unknownError": "Unknown error",
     "types": {
-      "OFFLINE": "Offline",
+      "OFFLINE": "Offline account",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Credentials)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Device Code)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
@@ -362,7 +362,7 @@
   "bots": {
     "searchPlaceholder": "Search bots...",
     "onlineCount": "{{online}} online / {{total}} total",
-    "noBots": "No bots configured. Add accounts from the Account Settings page.",
+    "noBots": "No bots yet. Each account in this instance becomes one bot.",
     "noBotsFound": "No bots match your search.",
     "loadingMore": "Loading more...",
     "showingCount": "Showing {{loaded}} of {{total}}",
@@ -387,12 +387,12 @@
       "waiting": "Waiting",
       "stopped": "Stopped"
     },
-    "backToBots": "Back to Bots",
+    "backToBots": "All bots",
     "tabs": {
-      "overview": "Overview",
+      "overview": "Live view",
       "inventory": "Inventory",
-      "controls": "Controls",
-      "terminal": "Terminal"
+      "controls": "Controls and dialogs",
+      "terminal": "Logs and commands"
     },
     "comingSoon": "Coming Soon",
     "terminalPanel": {
@@ -410,8 +410,15 @@
       "offline": "Bot is offline. Position data is only available when the bot is connected."
     },
     "chatPanel": {
-      "title": "Chat Messages",
-      "description": "Chat messages from this bot will appear here in a future update."
+      "title": "Chat and events",
+      "description": "Chat messages from this bot will appear here in a future update.",
+      "label": "Send as this bot",
+      "placeholder": "Type a message, or /command",
+      "send": "Send",
+      "help": "Everyone on the Minecraft server can see public chat. Start with / to run a command.",
+      "offlineHint": "The bot must be connected to send chat.",
+      "demo": "The demo does not send chat.",
+      "sendError": "Could not send the message"
     },
     "commandPanel": {
       "title": "Bot Commands",
@@ -536,6 +543,49 @@
       "dismiss": "Dismiss",
       "submit": "Submit",
       "offline": "Bot is offline. Dialogs are only available when the bot is connected."
+    },
+    "addFirst": "Add accounts",
+    "filterLabel": "Filter by status",
+    "filterAll": "All",
+    "noBotsInState": "No bots have this status right now.",
+    "runningHint": "Should run, not connected yet",
+    "displayState": {
+      "connected": "Connected",
+      "starting": "Starting",
+      "retrying": "Retrying",
+      "failed": "Failed",
+      "stopping": "Stopping",
+      "stopped": "Stopped"
+    },
+    "detailsToggle": "More details",
+    "profileId": "Profile ID",
+    "notice": {
+      "starting": "This bot should run and is connecting to the Minecraft server.",
+      "stopped": "This bot is stopped. Start it to join the Minecraft server.",
+      "failed": "This bot should run, but its connection failed",
+      "retrying": "This bot should run and is trying to reconnect",
+      "dialogOpen": {
+        "title": "The server opened a dialog",
+        "description": "The bot waits until someone answers it.",
+        "action": "Answer dialog"
+      }
+    },
+    "pov": {
+      "title": "Live view",
+      "watch": "Watch",
+      "stopWatching": "Stop watching",
+      "watchBot": "Watch this bot",
+      "takeControl": "Take control",
+      "release": "Release control",
+      "fullscreen": "Fullscreen",
+      "detach": "Detach",
+      "offline": "Bot is not connected",
+      "connecting": "Connecting to the live view...",
+      "idle": "Watch shows what the bot sees. It does not control the bot.",
+      "watching": "View only. Take control to send your keyboard and mouse to this bot. {{shortcut}} gives them back.",
+      "controlling": "You control this bot. Your keyboard and mouse go to Minecraft. Press {{shortcut}} to release.",
+      "touchHint": "Take control to show touch controls.",
+      "touchControlling": "You control this bot. Use Leave control to stop."
     }
   },
   "metrics": {
@@ -603,12 +653,12 @@
   },
   "scripts": {
     "title": "Visual Scripts",
-    "description": "Create automation scripts using a visual node-based editor.",
+    "description": "Scripts make your bots react to events. Build them by connecting nodes.",
     "experimentalTitle": "Experimental Feature",
     "experimentalWarning": "This feature is experimental. Future updates can break existing scripts. Use it with caution.",
-    "createScript": "Create Script",
-    "createScriptTitle": "Create New Script",
-    "createScriptDescription": "Create a new visual script for this instance. Scripts can automate bot actions and respond to events.",
+    "createScript": "New blank script",
+    "createScriptTitle": "New blank script",
+    "createScriptDescription": "Give the script a name. You add a trigger and actions in the editor. New scripts start off.",
     "scriptName": "Script Name",
     "scriptNamePlaceholder": "Enter script name...",
     "scriptDescription": "Description",
@@ -616,36 +666,36 @@
     "create": "Create",
     "createSuccess": "Script created successfully",
     "createError": "Failed to create script",
-    "noScripts": "No Scripts Yet",
-    "noScriptsDescription": "Create your first script to automate bot actions using the visual node-based editor.",
-    "createFirstScript": "Create Your First Script",
-    "running": "Running",
-    "paused": "Paused",
+    "noScripts": "Start with a template",
+    "noScriptsDescription": "Each template is a working script that you can change. Templates start off, so nothing runs until you turn them on.",
+    "createFirstScript": "Start from a blank script",
+    "running": "On",
+    "paused": "Off",
     "nodes": "nodes",
     "noDescription": "No description",
     "edit": "Edit",
-    "pause": "Pause",
-    "pauseSuccess": "Script paused",
-    "pauseError": "Failed to pause script",
-    "resume": "Resume",
-    "resumeSuccess": "Script resumed",
-    "resumeError": "Failed to resume script",
+    "pause": "Turn off",
+    "pauseSuccess": "Script turned off",
+    "pauseError": "Could not turn off the script",
+    "resume": "Turn on",
+    "resumeSuccess": "Script turned on",
+    "resumeError": "Could not turn on the script",
     "delete": "Delete",
     "deleteSuccess": "Script deleted successfully",
     "deleteError": "Failed to delete script",
     "saveSuccess": "Script saved successfully",
     "saveError": "Failed to save script",
-    "activateSuccess": "Script activated",
-    "activateError": "Failed to activate script",
-    "deactivateSuccess": "Script deactivated",
+    "activateSuccess": "Script turned on",
+    "activateError": "Could not turn on the script",
+    "deactivateSuccess": "Script turned off",
     "untitledScript": "Untitled Script",
-    "saveFirstBeforeActivating": "Save the script first before activating",
-    "activating": "Activating script...",
-    "activated": "Script activated",
+    "saveFirstBeforeActivating": "Save the script before you turn it on",
+    "activating": "Turning on script...",
+    "activated": "Script turned on",
     "executionCompleted": "Script completed",
     "executionCompletedSuccess": "Script completed successfully",
-    "deactivated": "Script deactivated",
-    "deactivatedByUser": "Script deactivated by user",
+    "deactivated": "Script turned off",
+    "deactivatedByUser": "Script turned off by user",
     "executionFailed": "Script execution failed",
     "executionError": "Execution error: {{error}}",
     "monitoringError": "Monitoring connection error: {{error}}",
@@ -655,8 +705,8 @@
     "nodeError": "Node error: {{error}}",
     "contextMenu": {
       "edit": "Edit Script",
-      "pause": "Pause",
-      "resume": "Resume",
+      "pause": "Turn off",
+      "resume": "Turn on",
       "delete": "Delete Script",
       "copyScriptName": "Copy Script Name",
       "copyScriptId": "Copy Script ID"
@@ -666,11 +716,11 @@
         "actions": "Script actions",
         "backToScripts": "Back to Scripts",
         "save": "Save",
-        "saveTooltip": "Save script",
-        "resume": "Resume",
-        "resumeTooltip": "Resume script execution",
-        "pause": "Pause",
-        "pauseTooltip": "Pause script execution",
+        "saveTooltip": "Save this version on the server",
+        "resume": "Turn on",
+        "resumeTooltip": "Listen for this script's triggers",
+        "pause": "Turn off",
+        "pauseTooltip": "Stop listening for triggers. The script stays saved.",
         "unsaved": "Unsaved",
         "unsavedChanges": "Unsaved changes",
         "clearCanvas": "Clear canvas",
@@ -681,16 +731,17 @@
         "import": "Import script",
         "exportSuccess": "Script exported successfully",
         "importSuccess": "Script imported successfully",
-        "importError": "Failed to import script"
+        "importError": "Failed to import script",
+        "resumeBlocked": "Fix the errors in the script check first"
       },
       "palette": {
-        "title": "Node Palette",
+        "title": "Nodes",
         "search": "Search nodes..."
       },
       "logs": {
-        "title": "Execution Logs",
+        "title": "Run logs",
         "clearTitle": "Clear logs",
-        "noLogs": "No logs yet. Run the script to see execution logs.",
+        "noLogs": "No runs yet. Logs appear when a trigger fires while the script is on, or during a test run.",
         "entries_one": "{{count}} entry",
         "entries_other": "{{count}} entries"
       },
@@ -734,27 +785,28 @@
         "tooltip": "Review changes"
       },
       "dryRun": {
-        "saveFirst": "Save your changes before starting a dry run.",
+        "saveFirst": "Save your changes before you start a test run.",
         "unavailable": "Select a trigger and connect to the server.",
         "inputHint": "Use plain text for strings and JSON for other values. Leave a field empty to use its default.",
         "invalidInput": "Enter a valid {{type}} value for {{name}}.",
         "running": "Running...",
         "cancel": "Cancel run",
-        "completed": "Dry run completed.",
-        "failed": "Dry run failed. Check the error details.",
-        "cancelled": "Dry run cancelled.",
-        "incomplete": "The connection ended before the dry run completed.",
+        "completed": "Test run completed.",
+        "failed": "Test run failed. Check the error details.",
+        "cancelled": "Test run cancelled.",
+        "incomplete": "The connection ended before the test run completed.",
         "stats_one": "{{count}} node executed",
         "stats_other": "{{count}} nodes executed",
-        "tooltip": "Dry Run",
-        "title": "Dry Run Script",
-        "description": "Run a script from a selected trigger with mock inputs.",
+        "tooltip": "Run one trigger with test values",
+        "title": "Test run",
+        "description": "Runs this script once from a trigger with values that you enter. The script does not need to be on.",
         "triggerNode": "Trigger Node",
         "selectTrigger": "Select a trigger...",
-        "triggerDescription": "Pick the trigger node to execute with mock input values.",
-        "mockInputs": "Mock Inputs",
+        "triggerDescription": "Pick the trigger to run with these test values.",
+        "mockInputs": "Test values",
         "valuePlaceholder": "{{type}} value",
-        "start": "Start Dry Run"
+        "start": "Start test run",
+        "button": "Test run"
       },
       "quotas": {
         "tooltip": "Script Quotas",
@@ -776,6 +828,62 @@
         "disableTimeoutsDescription": "Disables per-node and data edge timeouts",
         "save": "Save Quotas",
         "invalidInteger": "Enter a whole number between {{min}} and {{max}}."
+      }
+    },
+    "lifecycle": {
+      "title": "How scripts work",
+      "saved": {
+        "term": "Saved",
+        "description": "The server stores this version. Saving a script that is on applies the change right away."
+      },
+      "on": {
+        "term": "On",
+        "description": "The server listens for the script's triggers. Off means that nothing listens, and the script stays saved."
+      },
+      "run": {
+        "term": "Run",
+        "description": "One trigger firing and its connected nodes executing. Logs show each run."
+      },
+      "test": {
+        "term": "Test run",
+        "description": "Runs one trigger with values that you enter, without turning the script on. Save first."
+      }
+    },
+    "firstUse": {
+      "title": "This script is empty",
+      "description": "Every script starts with a trigger: the event that makes it run. Add one, or start from a template.",
+      "trigger": "Add a trigger",
+      "browse": "All nodes",
+      "template": "Or use a template",
+      "connectHint": "Next, drag from a port to add a connected node, or open the node menu with"
+    },
+    "health": {
+      "title": "Script check",
+      "description": "The SoulFire server checks your graph as you edit. Select a problem to go to its node.",
+      "empty": "Empty",
+      "ok": "No problems",
+      "errors_one": "{{count}} error",
+      "errors_other": "{{count}} errors",
+      "warnings_one": "{{count}} warning",
+      "warnings_other": "{{count}} warnings",
+      "noProblems": "The server found no problems."
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "Greet after joining",
+        "description": "Each bot waits two seconds after it joins the server, then says hello."
+      },
+      "respawn-on-death": {
+        "title": "Respawn after death",
+        "description": "Each bot respawns one second after it dies."
+      },
+      "reply-to-chat": {
+        "title": "Reply to a chat keyword",
+        "description": "When a bot sees !hello in chat, it replies. Change the keyword and the reply."
+      },
+      "health-report": {
+        "title": "Log bot health every minute",
+        "description": "Every minute, writes the health of each connected bot to the script logs."
       }
     }
   },
@@ -1122,5 +1230,144 @@
       "importing_other": "{{count}} accounts were delivered and sent to import. The progress notice shows the result."
     },
     "keyPrivacySaved": "SoulFire saves this API key on this device after it connects. Requests go directly to the provider."
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "{{count}} bot is ready. None are running.",
+      "noneRunning_other": "{{count}} bots are ready. None are running.",
+      "allConnected_one": "{{count}} bot is connected",
+      "allConnected_other": "All {{count}} running bots are connected",
+      "partial_one": "{{connected}} of {{count}} running bot is connected",
+      "partial_other": "{{connected}} of {{count}} running bots are connected"
+    },
+    "state": {
+      "connected": "connected",
+      "starting": "starting",
+      "retrying": "retrying",
+      "failed": "failed",
+      "stopping": "stopping",
+      "stopped": "stopped"
+    },
+    "attention": "Bots that need attention",
+    "groupTitle": {
+      "failed_one": "{{count}} bot failed:",
+      "failed_other": "{{count}} bots failed:",
+      "retrying_one": "{{count}} bot is retrying:",
+      "retrying_other": "{{count}} bots are retrying:"
+    },
+    "kind": {
+      "unreachable": {
+        "title": "cannot reach the Minecraft server",
+        "description": "Check that the Minecraft server is online and that the address in Bot Settings is correct."
+      },
+      "account": {
+        "title": "account login rejected",
+        "description": "The Minecraft server did not accept these accounts. Check that the server supports this account type, or refresh the accounts."
+      },
+      "throttled": {
+        "title": "the server limits connections",
+        "description": "Bots keep retrying on their own. A longer join delay can help."
+      },
+      "version": {
+        "title": "Minecraft version mismatch",
+        "description": "Choose the Minecraft version that the server runs in Bot Settings."
+      },
+      "proxy": {
+        "title": "proxy connection problem",
+        "description": "Check these proxies, or remove the proxies that do not work."
+      },
+      "other": {
+        "title": "see the reported error",
+        "description": "SoulFire has no specific fix for this error. Open the bot or the logs for details."
+      }
+    },
+    "fix": {
+      "checkServer": "Check server settings",
+      "slowDown": "Change join delay",
+      "accounts": "Open accounts",
+      "proxies": "Open proxies"
+    },
+    "restartGroup_one": "Restart {{count}} bot",
+    "restartGroup_other": "Restart {{count}} bots",
+    "restartError": "Could not restart bots",
+    "namesMore": "{{names}} and {{count}} more",
+    "startHint": "Use Start bots to connect them to the Minecraft server.",
+    "startHintNoPermission": "You can view these bots, but you do not have permission to start them."
+  },
+  "setup": {
+    "title": "Connect your first bot",
+    "description": "Four short steps. You can change everything later.",
+    "later": "Set up later",
+    "optional": "Optional",
+    "continue": "Continue",
+    "stepDone": "Done",
+    "noPermission": "You do not have permission to change this. Ask the instance owner for access.",
+    "expert": "Already know what you want?",
+    "expertLink": "Open all settings",
+    "server": {
+      "title": "Choose the Minecraft server",
+      "description": "This is the server your bots join. Enter its address and the Minecraft edition and version it runs.",
+      "summary": "{{address}}, {{version}}",
+      "versionHint": "The version list includes Java and Bedrock versions. Your accounts must match the edition."
+    },
+    "accounts": {
+      "title": "Add bot accounts",
+      "description": "Each bot uses one account. Choose how to get accounts for this instance.",
+      "summary_one": "{{count}} account ready",
+      "summary_other": "{{count}} accounts ready",
+      "summaryEmpty": "No accounts yet",
+      "offline": {
+        "title": "Create offline accounts",
+        "description": "Free and instant. These work only on servers that allow offline mode, such as your own test server.",
+        "action": "Create accounts"
+      },
+      "existing": {
+        "title": "Use accounts that you have",
+        "description": "Sign in with Microsoft or import a list of accounts.",
+        "action": "Add or import"
+      },
+      "provider": {
+        "title": "Get accounts from a provider",
+        "description": "Optional. For servers that need Microsoft accounts when you do not have enough of your own.",
+        "action": "Compare providers"
+      }
+    },
+    "proxies": {
+      "title": "Add proxies",
+      "description": "Bots can connect from this server's IP address, so you can skip this. Add proxies if the Minecraft server limits connections per IP address.",
+      "summary_one": "{{count}} proxy",
+      "summary_other": "{{count}} proxies",
+      "summaryNone": "No proxies. Bots use the SoulFire server's IP address.",
+      "skip": "Continue without proxies",
+      "add": "Add my proxies",
+      "provider": "Compare providers"
+    },
+    "start": {
+      "title": "Review and start",
+      "summary": "Start your bots and watch them connect",
+      "reviewServer": "Minecraft server",
+      "reviewVersion": "Version",
+      "reviewAccounts": "Accounts",
+      "reviewProxies": "Proxies",
+      "defaultAddress": "Bots will join {{address}}, the default address. That is correct only if the Minecraft server runs on the same machine as the SoulFire server.",
+      "needAccounts": "Add accounts first",
+      "count": "Bots to start",
+      "action_one": "Start {{count}} bot",
+      "action_other": "Start {{count}} bots",
+      "help": "Starting one bot first is a quick way to test the connection.",
+      "error": "Could not start bots"
+    },
+    "connecting": {
+      "title": "Connecting to the Minecraft server",
+      "description": "This usually takes a few seconds. The bot retries by itself if the server does not respond.",
+      "seeStatus": "See bot status"
+    },
+    "connected": {
+      "title": "{{name}} is connected",
+      "description": "Watch what the bot sees, take control, or start more bots from the overview.",
+      "open": "Open bot view",
+      "done": "Go to overview"
+    },
+    "backToSetup": "Back to setup"
   }
 }

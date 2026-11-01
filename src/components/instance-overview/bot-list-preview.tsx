@@ -9,6 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   BotContextMenu,
+  BotStateBadge,
   connectionPhaseMeta,
 } from "@/components/instance-overview/bot-grid.tsx";
 import { MinecraftHead } from "@/components/minecraft/minecraft-head.tsx";
@@ -26,7 +27,7 @@ import { BotConnectionPhase } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import type { InstanceInfoQueryData } from "@/lib/types.ts";
-import { cn, hasInstancePermission } from "@/lib/utils.tsx";
+import { hasInstancePermission } from "@/lib/utils.tsx";
 
 export function BotListPreview({
   instanceInfo,
@@ -137,24 +138,15 @@ export function BotListPreview({
                               {t("overview.loadError")}
                             </span>
                           ) : (
-                            <span
-                              className={cn(
-                                "flex items-center gap-1 text-xs",
-                                phase.tone === "success" &&
-                                  "text-success-emphasis",
-                                phase.tone === "warning" &&
-                                  "text-warning-emphasis",
-                                phase.tone === "destructive" &&
-                                  "text-destructive",
-                                phase.tone === "muted" &&
-                                  "text-muted-foreground",
-                              )}
-                            >
-                              <span
-                                className={cn("size-1 rounded-full", phase.dot)}
-                              />
-                              {t(phase.labelKey)}
-                            </span>
+                            <BotStateBadge
+                              bot={{
+                                isOnline: bot?.isOnline ?? false,
+                                connectionPhase:
+                                  bot?.connectionPhase ??
+                                  BotConnectionPhase.DISCONNECTED,
+                                status: bot?.status,
+                              }}
+                            />
                           )}
                         </div>
                         <div className="text-muted-foreground flex flex-wrap gap-x-3 gap-y-1 text-xs tabular-nums">

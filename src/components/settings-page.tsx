@@ -4,8 +4,19 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useRouteContext } from "@tanstack/react-router";
-import { Check, ChevronsUpDown, PlusIcon, TrashIcon } from "lucide-react";
+import { Link, useRouteContext } from "@tanstack/react-router";
+import {
+  Check,
+  CheckIcon,
+  ChevronRightIcon,
+  ChevronsUpDown,
+  CircleAlertIcon,
+  LoaderCircleIcon,
+  PlusIcon,
+  RotateCcwIcon,
+  SearchIcon,
+  TrashIcon,
+} from "lucide-react";
 import {
   type ChangeEvent,
   type HTMLInputTypeAttribute,
@@ -20,7 +31,6 @@ import { useTranslation } from "react-i18next";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
-import { TextInfoButton } from "@/components/info-buttons.tsx";
 import {
   createSettingsRegistry,
   SettingsRegistryContext,
@@ -28,7 +38,14 @@ import {
   useSettingsDefinitionByKey,
 } from "@/components/providers/settings-registry-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { Alert, AlertDescription } from "@/components/ui/alert.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible.tsx";
 import { Card, CardContent } from "@/components/ui/card.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import {
@@ -40,6 +57,7 @@ import {
 } from "@/components/ui/command.tsx";
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldLabel,
   FieldGroup,
@@ -90,6 +108,11 @@ import {
   settingMutationOptions,
   type SettingMutationTarget,
 } from "@/lib/setting-mutation-options.ts";
+import {
+  filterSettingsEntries,
+  findSettingsOnOtherPages,
+  splitSettingsEntries,
+} from "@/lib/settings-discovery.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   cn,
@@ -106,7 +129,7 @@ export function ComponentTitle(props: {
   inputId?: string;
 }) {
   return (
-    <div className="flex w-fit flex-row items-center gap-2">
+    <div className="flex flex-col gap-0.5">
       {props.inputId ? (
         <FieldLabel htmlFor={props.inputId}>{props.title}</FieldLabel>
       ) : (
@@ -119,14 +142,16 @@ export function ComponentTitle(props: {
             }
           }}
           tabIndex={props.onClick ? 0 : undefined}
-          className={cn({
+          className={cn("text-sm font-medium", {
             "cursor-pointer": props.onClick !== undefined,
           })}
         >
           {props.title}
         </p>
       )}
-      <TextInfoButton value={props.description} />
+      {props.description && (
+        <FieldDescription>{props.description}</FieldDescription>
+      )}
     </div>
   );
 }
@@ -363,7 +388,7 @@ function BoolComponent(props: {
     <>
       <Checkbox
         aria-label={props.title}
-        className="my-auto"
+        className="mt-0.5"
         checked={props.value}
         disabled={props.setting.disabled}
         onCheckedChange={(value) => {
@@ -699,6 +724,89 @@ export function SettingTypeRenderer(props: {
   }
 }
 
+function getSettingDefaultValue(
+  definition: SettingsDefinition,
+): JsonValue | undefined {
+  const type = definition.type;
+  switch (type.case) {
+    case "string":
+    case "int":
+    case "double":
+    case "bool":
+    case "combo":
+      return type.value.def as JsonValue;
+    default:
+      return undefined;
+  }
+}
+
+function formatDefault(value: JsonValue, definition: SettingsDefinition) {
+  if (definition.type.case === "combo") {
+    return definition.type.value.options.find((option) => option.id === value)
+      ?.displayName;
+  }
+  return typeof value === "boolean" || value === "" ? undefined : String(value);
+}
+
+/** Reports the save result next to the setting that changed. */
+function SettingStatusRow(props: {
+  definition: SettingsDefinition;
+  value: JsonValue;
+  status: "idle" | "pending" | "success" | "error";
+  persisted: boolean;
+  overridden: boolean;
+  onReset: (value: JsonValue) => void;
+}) {
+  const { t } = useTranslation("common");
+  const defaultValue = getSettingDefaultValue(props.definition);
+  const label =
+    defaultValue === undefined
+      ? undefined
+      : formatDefault(defaultValue, props.definition);
+  const isDefault = defaultValue === undefined || props.value === defaultValue;
+  return (
+    <div className="text-muted-foreground flex min-h-6 max-w-xl flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+      {props.overridden && (
+        <Badge variant="secondary">{t("settingsPage.overridden")}</Badge>
+      )}
+      {label !== undefined && (
+        <span>{t("settingsPage.defaultValue", { value: label })}</span>
+      )}
+      {!isDefault && !props.definition.type.value?.disabled && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          onClick={() => props.onReset(defaultValue as JsonValue)}
+        >
+          <RotateCcwIcon data-icon="inline-start" />
+          {t("settingsPage.resetToDefault")}
+        </Button>
+      )}
+      <span aria-live="polite" className="inline-flex items-center gap-1">
+        {props.persisted && props.status === "pending" && (
+          <>
+            <LoaderCircleIcon className="size-3 animate-spin" />
+            {t("settingsPage.saving")}
+          </>
+        )}
+        {props.persisted && props.status === "success" && (
+          <span className="text-success-emphasis inline-flex items-center gap-1">
+            <CheckIcon className="size-3" />
+            {t("settingsPage.saved")}
+          </span>
+        )}
+        {props.status === "error" && (
+          <span className="text-destructive inline-flex items-center gap-1">
+            <CircleAlertIcon className="size-3" />
+            {t("settingsPage.notSaved")}
+          </span>
+        )}
+      </span>
+    </div>
+  );
+}
+
 /**
  * Component that renders a setting field by its identifier.
  * This is the main component for mounting settings anywhere in the UI.
@@ -714,6 +822,7 @@ function SettingField<T extends BaseSettings>(props: {
   ) => Promise<void>;
   config: T;
   mutationTarget: SettingMutationTarget;
+  persisted: boolean;
 }) {
   const definition = useSettingsDefinition(props.settingId);
   const namespace = props.settingId.namespace;
@@ -739,19 +848,32 @@ function SettingField<T extends BaseSettings>(props: {
   }
 
   return (
-    <SettingTypeRenderer
-      settingType={definition.type}
-      value={value}
-      changeCallback={
-        definition.type.case === "stringList" ||
-        definition.type.case === "string" ||
-        definition.type.case === "int" ||
-        definition.type.case === "double" ||
-        definition.type.case === "minMax"
-          ? setValueMutation.mutateAsync
-          : setValueMutation.mutate
-      }
-    />
+    <div className="flex flex-col gap-1">
+      <SettingTypeRenderer
+        settingType={definition.type}
+        value={value}
+        changeCallback={
+          definition.type.case === "stringList" ||
+          definition.type.case === "string" ||
+          definition.type.case === "int" ||
+          definition.type.case === "double" ||
+          definition.type.case === "minMax"
+            ? setValueMutation.mutateAsync
+            : setValueMutation.mutate
+        }
+      />
+      <SettingStatusRow
+        definition={definition}
+        value={value}
+        status={setValueMutation.status}
+        persisted={props.persisted}
+        overridden={
+          props.mutationTarget.type === "bot" &&
+          props.config.settings[namespace]?.[key] !== undefined
+        }
+        onReset={setValueMutation.mutate}
+      />
+    </div>
   );
 }
 
@@ -843,19 +965,29 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
   }
 
   return (
-    <SettingTypeRenderer
-      settingType={definition.type}
-      value={value}
-      changeCallback={
-        definition.type.case === "stringList" ||
-        definition.type.case === "string" ||
-        definition.type.case === "int" ||
-        definition.type.case === "double" ||
-        definition.type.case === "minMax"
-          ? setValueMutation.mutateAsync
-          : setValueMutation.mutate
-      }
-    />
+    <div className="flex flex-col gap-1">
+      <SettingTypeRenderer
+        settingType={definition.type}
+        value={value}
+        changeCallback={
+          definition.type.case === "stringList" ||
+          definition.type.case === "string" ||
+          definition.type.case === "int" ||
+          definition.type.case === "double" ||
+          definition.type.case === "minMax"
+            ? setValueMutation.mutateAsync
+            : setValueMutation.mutate
+        }
+      />
+      <SettingStatusRow
+        definition={definition}
+        value={value}
+        status={setValueMutation.status}
+        persisted
+        overridden={false}
+        onReset={setValueMutation.mutate}
+      />
+    </div>
   );
 }
 
@@ -871,6 +1003,10 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
   config,
   mutationTarget,
   disabledIds = [],
+  definitions,
+  allPages,
+  persisted,
+  linkToPage,
 }: {
   data: SettingsPage;
   invalidateQuery: () => Promise<void>;
@@ -882,44 +1018,126 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
   config: T;
   mutationTarget: SettingMutationTarget;
   disabledIds?: DisabledSettingId[];
+  definitions: readonly SettingsDefinition[];
+  allPages?: readonly SettingsPage[];
+  persisted: boolean;
+  linkToPage?: (page: SettingsPage, label: ReactNode) => ReactNode;
 }) {
+  const { t } = useTranslation("common");
+  const [query, setQuery] = useState("");
   const enabledIdentifier = data.enabledIdentifier;
-  const allDisabledIds = useMemo(() => {
-    const result = [...disabledIds];
-    if (enabledIdentifier) {
-      result.push(enabledIdentifier);
-    }
-    return result;
-  }, [disabledIds, enabledIdentifier]);
+  const visibleEntries = useMemo(() => {
+    const hidden = [...disabledIds];
+    if (enabledIdentifier) hidden.push(enabledIdentifier);
+    return data.entries.filter(
+      (entryId) =>
+        !hidden.some(
+          (id) => entryId.namespace === id.namespace && entryId.key === id.key,
+        ),
+    );
+  }, [data.entries, disabledIds, enabledIdentifier]);
+  const matches = useMemo(
+    () => filterSettingsEntries(visibleEntries, definitions, query),
+    [visibleEntries, definitions, query],
+  );
+  const { common, advanced } = useMemo(
+    () => splitSettingsEntries(data.id, matches),
+    [data.id, matches],
+  );
+  const otherPages = useMemo(
+    () =>
+      allPages
+        ? findSettingsOnOtherPages(data.id, allPages, definitions, query)
+        : [],
+    [allPages, data.id, definitions, query],
+  );
+  const searching = query.trim() !== "";
+  const renderEntry = (entryId: SettingsEntryIdentifier) => (
+    <SettingField
+      key={
+        settingMutationOptions(
+          mutationTarget,
+          entryId.namespace,
+          entryId.key,
+          "value",
+        ).scope.id
+      }
+      settingId={entryId}
+      mutationTarget={mutationTarget}
+      updateConfigEntry={updateConfigEntry}
+      invalidateQuery={invalidateQuery}
+      config={config}
+      persisted={persisted}
+    />
+  );
 
   return (
-    <>
-      {data.entries
-        .filter(
-          (entryId) =>
-            !allDisabledIds.some(
-              (id) =>
-                entryId.namespace === id.namespace && entryId.key === id.key,
-            ),
-        )
-        .map((entryId) => (
-          <SettingField
-            key={
-              settingMutationOptions(
-                mutationTarget,
-                entryId.namespace,
-                entryId.key,
-                "value",
-              ).scope.id
-            }
-            settingId={entryId}
-            mutationTarget={mutationTarget}
-            updateConfigEntry={updateConfigEntry}
-            invalidateQuery={invalidateQuery}
-            config={config}
+    <div className="flex max-w-2xl flex-col gap-5">
+      <Alert>
+        <AlertDescription>
+          {t(`settingsPage.scope.${mutationTarget.type}`)}
+          {!persisted && <> {t("settingsPage.demoNotSaved")}</>}
+        </AlertDescription>
+      </Alert>
+      {visibleEntries.length > 4 && (
+        <InputGroup className="max-w-xl">
+          <InputGroupAddon>
+            <SearchIcon />
+          </InputGroupAddon>
+          <InputGroupInput
+            type="search"
+            aria-label={t("settingsPage.search")}
+            placeholder={t("settingsPage.search")}
+            value={query}
+            onChange={(event) => setQuery(event.currentTarget.value)}
           />
+        </InputGroup>
+      )}
+      {matches.length === 0 && searching && (
+        <p className="text-muted-foreground text-sm" role="status">
+          {t("settingsPage.noMatches", { query: query.trim() })}
+        </p>
+      )}
+      {otherPages.length > 0 && linkToPage && (
+        <p className="text-muted-foreground text-sm">
+          {t("settingsPage.otherPages")}{" "}
+          {otherPages.map(({ page, count }, index) => (
+            <span key={page.id}>
+              {index > 0 && ", "}
+              {linkToPage(page, `${page.pageName} (${count})`)}
+            </span>
+          ))}
+        </p>
+      )}
+      {common.length > 0 && (
+        <div className="flex flex-col gap-5">{common.map(renderEntry)}</div>
+      )}
+      {advanced.length > 0 &&
+        (searching ? (
+          <div className="flex flex-col gap-5">{advanced.map(renderEntry)}</div>
+        ) : (
+          <Collapsible>
+            <CollapsibleTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="group/advanced w-fit"
+                />
+              }
+            >
+              <ChevronRightIcon
+                data-icon="inline-start"
+                className="group-data-[panel-open]/advanced:rotate-90"
+              />
+              {t("settingsPage.advanced", { count: advanced.length })}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-4 flex flex-col gap-5">
+              {advanced.map(renderEntry)}
+            </CollapsibleContent>
+          </Collapsible>
         ))}
-    </>
+    </div>
   );
 }
 
@@ -965,6 +1183,18 @@ export function InstanceSettingsPageComponent({
         }}
         config={profile}
         disabledIds={disabledIds}
+        definitions={instanceInfo.settingsDefinitions}
+        allPages={instanceInfo.instanceSettings}
+        persisted={transport !== null}
+        linkToPage={(page, label) => (
+          <Link
+            className="underline underline-offset-3"
+            to="/instance/$instance/settings/$pageId"
+            params={{ instance: instanceInfo.id, pageId: page.id }}
+          >
+            {label}
+          </Link>
+        )}
       />
     </SettingsRegistryContext.Provider>
   );
@@ -1004,6 +1234,8 @@ export function AdminSettingsPageComponent({ data }: { data: SettingsPage }) {
           });
         }}
         config={serverConfig}
+        definitions={serverInfo.settingsDefinitions}
+        persisted={transport !== null}
       />
     </SettingsRegistryContext.Provider>
   );
@@ -1052,6 +1284,8 @@ export function BotSettingsPageComponent({
           });
         }}
         config={botConfig}
+        definitions={instanceInfo.settingsDefinitions}
+        persisted={transport !== null}
       />
     </SettingsRegistryContext.Provider>
   );

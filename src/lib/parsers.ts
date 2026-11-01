@@ -134,6 +134,18 @@ export const dataTableValidateSearch = createStandardSchemaV1(
 );
 
 /**
+ * Table routes that the first-bot guide links to. "guide" offers a way back to
+ * the guide, and "providers" also opens the provider dialog.
+ */
+export const guidedTableValidateSearch = createStandardSchemaV1(
+  {
+    ...dataTableSearchParams,
+    guide: parseAsStringLiteral(["setup", "providers"]),
+  },
+  { partialOutput: true },
+);
+
+/**
  * Search params definition for simple search input routes.
  */
 export const simpleSearchParams = {
@@ -143,6 +155,21 @@ export const simpleSearchParams = {
 /**
  * Standard Schema validator for simple search params.
  */
+export const botListValidateSearch = createStandardSchemaV1(
+  {
+    ...simpleSearchParams,
+    status: parseAsStringLiteral([
+      "connected",
+      "starting",
+      "retrying",
+      "failed",
+      "stopping",
+      "stopped",
+    ]),
+  },
+  { partialOutput: true },
+);
+
 export const simpleSearchValidateSearch = createStandardSchemaV1(
   simpleSearchParams,
   {

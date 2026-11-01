@@ -49,20 +49,11 @@ import {
 } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
+import { selectBotsToStart } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { applyGeneratedAccounts, hasInstancePermission } from "@/lib/utils.tsx";
-
-function shuffle<T>(values: T[]): void {
-  for (let index = values.length - 1; index > 0; index -= 1) {
-    const selectedIndex = Math.floor(Math.random() * (index + 1));
-    [values[index], values[selectedIndex]] = [
-      values[selectedIndex] as T,
-      values[index] as T,
-    ];
-  }
-}
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
@@ -148,20 +139,12 @@ export default function ControlsMenu() {
       const latest = await createClient(BotService, transport).getBotList({
         instanceId: instanceInfo.id,
       });
-      const candidates = latest.bots.filter(
-        (bot) => bot.status?.desiredState !== BotDesiredState.RUNNING,
-      );
-      if (
-        instanceInfo.profile.settings.account?.["shuffle-accounts"] === true
-      ) {
-        shuffle(candidates);
-      }
-      const selected =
-        count === undefined
-          ? candidates
-          : candidates.slice(0, Math.max(0, Math.floor(count)));
       return setDesiredState(
-        selected.map((bot) => bot.profileId),
+        selectBotsToStart(
+          latest.bots,
+          count,
+          instanceInfo.profile.settings.account?.["shuffle-accounts"] === true,
+        ),
         BotDesiredState.RUNNING,
       );
     },

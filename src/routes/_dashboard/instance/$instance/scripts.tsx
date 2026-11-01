@@ -3,6 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
   useQueryClient,
+  useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
@@ -13,11 +14,11 @@ import {
   PlusIcon,
   SquareIcon,
   Trash2Icon,
-  TriangleAlertIcon,
   WorkflowIcon,
+  ZapIcon,
 } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
-import { Suspense, use, useState } from "react";
+import { Suspense, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -28,7 +29,6 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -58,27 +58,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog.tsx";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty.tsx";
 import { Field, FieldLabel } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import type { ScriptInfo } from "@/generated/soulfire/script_pb";
 import { ScriptService } from "@/generated/soulfire/script_pb";
+import { ScriptTemplatePicker } from "@/components/script-editor/ScriptTemplatePicker.tsx";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { resumeScript } from "@/lib/resume-script.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
-import { scriptListQueryOptions } from "@/lib/script-service.ts";
+import {
+  nodeTypesQueryOptions,
+  scriptListQueryOptions,
+} from "@/lib/script-service.ts";
+import {
+  isTemplateSupported,
+  SCRIPT_TEMPLATES,
+  type ScriptTemplate,
+  scriptTemplateToProto,
+} from "@/lib/script-templates.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
 
 const createScriptSchema = z.object({
@@ -218,7 +220,7 @@ function Content() {
         description: value.description.trim(),
         nodes: [],
         edges: [],
-        paused: false,
+        paused: true,
       });
       return result;
     },
@@ -243,6 +245,48 @@ function Content() {
       void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
     },
   });
+
+  // A template starts off so that nothing happens before the user reviews it.
+  const templateMutation = useMutation({
+    mutationKey: ["script", "create-template", instanceId],
+    mutationFn: async (template: ScriptTemplate) => {
+      if (!transport) throw new Error("No transport available");
+      return createClient(ScriptService, transport).createScript({
+        instanceId,
+        name: tInstance(`scripts.templates.${template.id}.title`),
+        description: tInstance(`scripts.templates.${template.id}.description`),
+        ...scriptTemplateToProto(template),
+        paused: true,
+      });
+    },
+    onSuccess: (response) => {
+      if (isPostHogConfigured) {
+        posthog.capture("script_created", { source: "template" });
+      }
+      toast.success(tInstance("scripts.createSuccess"));
+      if (response.script) {
+        void navigate({
+          to: "/instance/$instance/script/$scriptId",
+          params: { instance: instanceId, scriptId: response.script.id },
+        });
+      }
+    },
+    onError: (error) => {
+      console.error("Failed to create script:", error);
+      toast.error(tInstance("scripts.createError"));
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
+    },
+  });
+  const { data: nodeTypesData } = useQuery(nodeTypesQueryOptions(transport));
+  const templates = useMemo(
+    () =>
+      SCRIPT_TEMPLATES.filter((template) =>
+        isTemplateSupported(template, nodeTypesData?.nodeTypes ?? []),
+      ),
+    [nodeTypesData?.nodeTypes],
+  );
 
   const form = useForm({
     defaultValues: {
@@ -348,15 +392,6 @@ function Content() {
 
   return (
     <div className="container flex h-full w-full grow flex-col gap-4 py-4">
-      {/* Experimental Warning */}
-      <Alert>
-        <TriangleAlertIcon />
-        <AlertTitle>{tInstance("scripts.experimentalTitle")}</AlertTitle>
-        <AlertDescription>
-          {tInstance("scripts.experimentalWarning")}
-        </AlertDescription>
-      </Alert>
-
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
@@ -455,28 +490,49 @@ function Content() {
         </Dialog>
       </div>
 
+      <dl className="grid max-w-5xl gap-3 text-sm sm:grid-cols-3">
+        {(["saved", "on", "run"] as const).map((term) => (
+          <div key={term}>
+            <dt className="font-medium">
+              {tInstance(`scripts.lifecycle.${term}.term`)}
+            </dt>
+            <dd className="text-muted-foreground">
+              {tInstance(`scripts.lifecycle.${term}.description`)}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
       {/* Scripts Grid */}
       {scripts.length === 0 ? (
-        <Empty className="mx-auto mt-8 max-w-2xl border">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <WorkflowIcon className="size-6" />
-            </EmptyMedia>
-            <EmptyTitle>{tInstance("scripts.noScripts")}</EmptyTitle>
-            <EmptyDescription>
+        <section
+          aria-labelledby="script-first-use-title"
+          className="flex max-w-3xl flex-col gap-3"
+        >
+          <div className="flex flex-col gap-1">
+            <h2 id="script-first-use-title" className="text-base font-semibold">
+              {tInstance("scripts.noScripts")}
+            </h2>
+            <p className="text-muted-foreground text-sm">
               {tInstance("scripts.noScriptsDescription")}
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Button
-              onClick={() => setIsCreateDialogOpen(true)}
-              className="gap-2"
-            >
-              <PlusIcon data-icon="inline-start" />
-              {tInstance("scripts.createFirstScript")}
-            </Button>
-          </EmptyContent>
-        </Empty>
+            </p>
+          </div>
+          {templates.length > 0 && (
+            <ScriptTemplatePicker
+              templates={templates}
+              disabled={templateMutation.isPending}
+              onPick={(template) => templateMutation.mutate(template)}
+            />
+          )}
+          <Button
+            variant="outline"
+            className="w-fit"
+            onClick={() => setIsCreateDialogOpen(true)}
+          >
+            <PlusIcon data-icon="inline-start" />
+            {tInstance("scripts.createFirstScript")}
+          </Button>
+        </section>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {scripts.map((script) => (
@@ -672,12 +728,13 @@ function ScriptCard({
             <CardTitle className="text-base">{script.name}</CardTitle>
           </div>
           {isPaused ? (
-            <Badge variant="secondary" className="gap-1.5">
-              {tInstance("scripts.paused")}
-            </Badge>
+            <Badge variant="secondary">{tInstance("scripts.paused")}</Badge>
           ) : (
-            <Badge variant="default" className="gap-1.5 bg-success-strong">
-              <div className="size-2 animate-pulse rounded-full bg-white" />
+            <Badge
+              variant="outline"
+              className="border-success/40 text-success-emphasis gap-1.5"
+            >
+              <ZapIcon aria-hidden="true" className="size-3" />
               {tInstance("scripts.running")}
             </Badge>
           )}
@@ -715,6 +772,11 @@ function ScriptCard({
                 ? tInstance("scripts.resume")
                 : tInstance("scripts.pause")
             }
+            aria-label={
+              isPaused
+                ? tInstance("scripts.resume")
+                : tInstance("scripts.pause")
+            }
           >
             {isPaused ? (
               <PlayIcon className="size-4" />
@@ -728,6 +790,7 @@ function ScriptCard({
             onClick={onDelete}
             disabled={isDeleting}
             title={tInstance("scripts.delete")}
+            aria-label={tInstance("scripts.delete")}
           >
             <Trash2Icon className="size-4" />
           </Button>

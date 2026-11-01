@@ -3,6 +3,7 @@ import { useSelector } from "@tanstack/react-store";
 import {
   ExpandIcon,
   ExternalLinkIcon,
+  EyeIcon,
   Gamepad2Icon,
   PauseIcon,
   PlayIcon,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
 import {
@@ -83,6 +85,7 @@ function BotPovSession({
   botId: string;
   isOnline: boolean;
 }) {
+  const { t } = useTranslation("instance");
   const [playerStore] = useState(createPovPlayerStore);
   const actions = playerStore.actions;
   const captureToastId = useId();
@@ -947,7 +950,7 @@ function BotPovSession({
       )}
       {!immersive && (
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="mr-auto text-sm font-medium">Bot POV</h3>
+          <h3 className="mr-auto text-sm font-medium">{t("bots.pov.title")}</h3>
           <Button
             size="sm"
             variant="outline"
@@ -962,29 +965,32 @@ function BotPovSession({
             ) : (
               <PlayIcon data-icon="inline-start" />
             )}
-            {playing ? "Stop" : "Watch"}
+            {playing ? t("bots.pov.stopWatching") : t("bots.pov.watch")}
           </Button>
           <Button
             size="sm"
-            variant="outline"
-            disabled={!isOnline || !connected || !playing || capturePending}
-            onClick={capture}
+            variant={captured ? "outline" : "default"}
+            disabled={
+              !isOnline ||
+              (!captured && (!connected || !playing || capturePending))
+            }
+            onClick={captured ? release : capture}
           >
             <Gamepad2Icon data-icon="inline-start" />
-            Play
+            {captured ? t("bots.pov.release") : t("bots.pov.takeControl")}
           </Button>
           {audioControls}
           <Button
             size="sm"
-            variant="outline"
+            variant="ghost"
             onClick={toggleFullscreen}
-            aria-label="Fullscreen"
+            aria-label={t("bots.pov.fullscreen")}
           >
             <ExpandIcon />
           </Button>
-          <Button size="sm" variant="outline" onClick={detach}>
+          <Button size="sm" variant="ghost" onClick={detach}>
             <ExternalLinkIcon data-icon="inline-start" />
-            Detach
+            {t("bots.pov.detach")}
           </Button>
         </div>
       )}
@@ -997,7 +1003,7 @@ function BotPovSession({
         />
       )}
       <div
-        className={`relative ${touch && captured && !immersive ? "min-h-60" : "min-h-0"} overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
+        className={`relative ${touch && captured && !immersive ? "min-h-60" : "min-h-0"} overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${captured && !immersive ? "outline-primary outline-2 outline-offset-2" : ""} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
       >
         <textarea
           ref={textInputRef}
@@ -1054,7 +1060,7 @@ function BotPovSession({
                 </Button>
               </div>
             ) : !isOnline ? (
-              <p>Bot is offline</p>
+              <p>{t("bots.pov.offline")}</p>
             ) : !playing ? (
               <Button
                 onClick={() => {
@@ -1062,10 +1068,10 @@ function BotPovSession({
                 }}
               >
                 <PlayIcon data-icon="inline-start" />
-                Watch bot
+                {t("bots.pov.watchBot")}
               </Button>
             ) : !connected || capturePending ? (
-              <p>Connecting…</p>
+              <p>{t("bots.pov.connecting")}</p>
             ) : (
               <button
                 type="button"
@@ -1074,7 +1080,7 @@ function BotPovSession({
               >
                 <span className={buttonVariants()}>
                   <Gamepad2Icon data-icon="inline-start" />
-                  Click to play
+                  {t("bots.pov.takeControl")}
                 </span>
                 {captureError && (
                   <span className="absolute inset-x-4 bottom-4 text-center text-sm text-muted-foreground">
@@ -1090,14 +1096,26 @@ function BotPovSession({
         <div className="flex items-center gap-2 p-2">{audioControls}</div>
       )}
       {!immersive && (
-        <p className="text-muted-foreground text-xs">
-          {touch
-            ? captured
-              ? "Controlling Minecraft. Use Leave control to stop."
-              : "Play enables touch controls."
-            : captured
-              ? `Controlling Minecraft. Press ${releaseShortcut} to release.`
-              : `Play captures your keyboard and mouse. ${releaseShortcut} releases control.`}
+        <p
+          role="status"
+          className={`flex items-center gap-2 text-xs ${captured ? "font-medium" : "text-muted-foreground"}`}
+        >
+          {captured ? (
+            <Gamepad2Icon aria-hidden="true" className="size-3.5 shrink-0" />
+          ) : (
+            <EyeIcon aria-hidden="true" className="size-3.5 shrink-0" />
+          )}
+          <span>
+            {touch
+              ? captured
+                ? t("bots.pov.touchControlling")
+                : t("bots.pov.touchHint")
+              : captured
+                ? t("bots.pov.controlling", { shortcut: releaseShortcut })
+                : playing && connected
+                  ? t("bots.pov.watching", { shortcut: releaseShortcut })
+                  : t("bots.pov.idle")}
+          </span>
         </p>
       )}
       <Toaster

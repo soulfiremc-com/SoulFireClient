@@ -229,12 +229,12 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
           <Button
             variant="ghost"
             size="sm"
-            aria-label={t("scripts.editor.dryRun.tooltip")}
             title={t("scripts.editor.dryRun.tooltip")}
           />
         }
       >
-        <FlaskConical className="size-4" />
+        <FlaskConical data-icon="inline-start" />
+        {t("scripts.editor.dryRun.button")}
       </CredenzaTrigger>
       <CredenzaContent className="max-h-[90dvh] overflow-y-auto">
         <CredenzaHeader>

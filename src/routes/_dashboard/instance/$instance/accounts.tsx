@@ -5,9 +5,10 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import {
+  ArrowLeftIcon,
   BracesIcon,
   ClipboardCopyIcon,
   PlusIcon,
@@ -94,7 +95,7 @@ import {
 } from "@/lib/account-types.ts";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
-import { dataTableValidateSearch } from "@/lib/parsers.ts";
+import { guidedTableValidateSearch } from "@/lib/parsers.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -201,7 +202,7 @@ function GenerateAccountsButton() {
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
   {
-    validateSearch: dataTableValidateSearch,
+    validateSearch: guidedTableValidateSearch,
     beforeLoad: () =>
       routeChrome({
         getTitle: () => i18n.t("common:pageName.accountSettings"),
@@ -487,7 +488,10 @@ function AddButton() {
   );
   const [pendingDeviceCodeType, setPendingDeviceCodeType] =
     useState<AccountTypeDeviceCode | null>(null);
-  const [providerDialogOpen, setProviderDialogOpen] = useState(false);
+  const guide = Route.useSearch({ select: (search) => search.guide });
+  const [providerDialogOpen, setProviderDialogOpen] = useState(
+    guide === "providers",
+  );
   const [initialProviderId, setInitialProviderId] = useState<
     string | undefined
   >();
@@ -813,6 +817,22 @@ function AddButton() {
 
   return (
     <>
+      {guide && (
+        <Button
+          variant="secondary"
+          size="sm"
+          nativeButton={false}
+          render={
+            <Link
+              to="/instance/$instance"
+              params={{ instance: instanceInfo.id }}
+            />
+          }
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("setup.backToSetup")}
+        </Button>
+      )}
       <GetAccountsButton onClick={() => openProviderDialog()} />
       <GenerateAccountsButton />
       <AccountProvidersDialog

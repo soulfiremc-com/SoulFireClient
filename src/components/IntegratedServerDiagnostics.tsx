@@ -34,7 +34,7 @@ import type {
   DesktopIntegratedServerLog,
 } from "@/lib/desktop-api";
 
-function useIntegratedDiagnostics() {
+export function useIntegratedDiagnostics() {
   return useQuery({
     queryKey: ["integrated-server-diagnostics"],
     queryFn: () => desktop.integratedServer.getDiagnostics(),

@@ -5,10 +5,11 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import { saveAs } from "file-saver";
 import {
+  ArrowLeftIcon,
   ClipboardCopyIcon,
   Dice4Icon,
   Dice5Icon,
@@ -78,7 +79,7 @@ import type { dataTableFeatures } from "@/lib/data-table-features";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { createTextBlob } from "@/lib/download.ts";
 import i18n from "@/lib/i18n.ts";
-import { dataTableValidateSearch } from "@/lib/parsers.ts";
+import { guidedTableValidateSearch } from "@/lib/parsers.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
 import { newProviderProxies } from "@/lib/proxy-providers.ts";
@@ -181,7 +182,7 @@ function ProxyCheckDialog({
 }
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/proxies")({
-  validateSearch: dataTableValidateSearch,
+  validateSearch: guidedTableValidateSearch,
   beforeLoad: () =>
     routeChrome({
       getTitle: () => i18n.t("common:pageName.proxySettings"),
@@ -404,7 +405,10 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
     null,
   );
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
-  const [providerDialogOpen, setProviderDialogOpen] = useState(false);
+  const guide = Route.useSearch({ select: (search) => search.guide });
+  const [providerDialogOpen, setProviderDialogOpen] = useState(
+    guide === "providers",
+  );
   // Batch add proxies mutation
   const { mutateAsync: addProxiesBatchMutation, isPending: isImporting } =
     useMutation({
@@ -602,6 +606,22 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
 
   return (
     <>
+      {guide && (
+        <Button
+          variant="secondary"
+          size="sm"
+          nativeButton={false}
+          render={
+            <Link
+              to="/instance/$instance"
+              params={{ instance: instanceInfo.id }}
+            />
+          }
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("setup.backToSetup")}
+        </Button>
+      )}
       <GetProxiesButton onClick={() => setProviderDialogOpen(true)} />
       <ProxyProvidersDialog
         open={providerDialogOpen}

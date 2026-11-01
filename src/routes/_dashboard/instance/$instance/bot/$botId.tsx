@@ -12,14 +12,17 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   ArrowUpIcon,
+  BackpackIcon,
   BookOpenIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronUpIcon,
+  CircleAlertIcon,
   ClipboardCopyIcon,
   CompassIcon,
   EyeIcon,
+  Gamepad2Icon,
   GamepadIcon,
   HandIcon,
   HeartIcon,
@@ -29,9 +32,12 @@ import {
   NetworkIcon,
   PackageIcon,
   PencilIcon,
+  PlayIcon,
+  RefreshCwIcon,
   ShieldIcon,
   SparklesIcon,
   SquareIcon,
+  SquareTerminalIcon,
   Trash2Icon,
   UtensilsIcon,
   XIcon,
@@ -39,6 +45,7 @@ import {
 import {
   Activity,
   Suspense,
+  use,
   useCallback,
   useEffect,
   useEffectEvent,
@@ -50,6 +57,22 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { BotDialogForm } from "@/components/bot-dialog-form";
+import { BotChatBox } from "@/components/bot-view/bot-chat-box.tsx";
+import { BotStateBadge } from "@/components/instance-overview/bot-grid.tsx";
+import { getFailureFix } from "@/components/instance-overview/fleet-status.tsx";
+import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
+import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible.tsx";
+import {
+  type BotDisplayState,
+  classifyBotFailure,
+  getBotDisplayState,
+} from "@/lib/bot-fleet.ts";
 import {
   copyMinecraftText,
   openMinecraftUrl,
@@ -104,6 +127,8 @@ import {
   type BotLiveState,
   type BotMouseClickRequest,
   BotMouseClickRequestSchema,
+  BotConnectionPhase,
+  BotDesiredState,
   BotService,
   type BotSetContainerTextRequest,
   BotSetContainerTextRequestSchema,
@@ -429,8 +454,16 @@ function BotDetailContent({
         </ContextMenuPortal>
       )}
 
+      <Suspense fallback={null}>
+        <BotStateNotice
+          instanceId={instanceId}
+          botId={account.profileId}
+          onOpenControls={() => setActiveTab("controls")}
+        />
+      </Suspense>
+
       <div className="rounded-lg border">
-        <div className="border-b px-4 py-3">
+        <div className="overflow-x-auto border-b px-4 py-3">
           <ToggleGroup
             value={[activeTab]}
             onValueChange={(value) => {
@@ -443,15 +476,19 @@ function BotDetailContent({
             size="sm"
           >
             <ToggleGroupItem value="overview">
+              <EyeIcon data-icon="inline-start" />
               {t("bots.tabs.overview")}
             </ToggleGroupItem>
             <ToggleGroupItem value="inventory">
+              <BackpackIcon data-icon="inline-start" />
               {t("bots.tabs.inventory")}
             </ToggleGroupItem>
             <ToggleGroupItem value="controls">
+              <Gamepad2Icon data-icon="inline-start" />
               {t("bots.tabs.controls")}
             </ToggleGroupItem>
             <ToggleGroupItem value="terminal">
+              <SquareTerminalIcon data-icon="inline-start" />
               {t("bots.tabs.terminal")}
             </ToggleGroupItem>
           </ToggleGroup>
@@ -459,7 +496,11 @@ function BotDetailContent({
         <div className="p-4">
           <Activity mode={activeTab === "overview" ? "visible" : "hidden"}>
             <Suspense fallback={<TabPanelSkeleton />}>
-              <OverviewTab instanceId={instanceId} botId={account.profileId} />
+              <OverviewTab
+                instanceId={instanceId}
+                botId={account.profileId}
+                botName={account.lastKnownName}
+              />
             </Suspense>
           </Activity>
           <Activity mode={activeTab === "inventory" ? "visible" : "hidden"}>
@@ -555,14 +596,19 @@ function BotDetailHeader({
       <ItemContent className="gap-1">
         <ItemTitle className="text-lg">{account.lastKnownName}</ItemTitle>
         <ItemDescription className="line-clamp-none flex flex-wrap items-center gap-2 text-sm">
-          <span className={cn("font-medium", isOnline ? "text-success" : "")}>
-            {isOnline ? t("bots.online") : t("bots.notJoined")}
-          </span>
+          <BotStateBadge
+            bot={{
+              isOnline,
+              connectionPhase: isOnline
+                ? BotConnectionPhase.SPAWNED
+                : BotConnectionPhase.DISCONNECTED,
+              status: botInfo.status,
+            }}
+          />
           <span className="flex items-center gap-1">
             <TypeIcon className="size-3" />
             {typeLabel}
           </span>
-          <span className="font-mono text-xs">{account.profileId}</span>
         </ItemDescription>
       </ItemContent>
       {isOnline && liveState && (
@@ -629,30 +675,205 @@ function BotDetailHeader({
           </span>
         </div>
       )}
-      <Button
-        variant="ghost"
-        size="sm"
-        nativeButton={false}
-        render={
-          <Link
-            to="/instance/$instance/bots"
-            params={{ instance: instanceId }}
-          />
-        }
-      >
-        <ArrowLeftIcon data-icon="inline-start" />
-        {t("bots.backToBots")}
-      </Button>
+      <div className="flex flex-wrap items-center gap-2">
+        <BotPowerActions
+          instanceId={instanceId}
+          botId={account.profileId}
+          state={getBotDisplayState({
+            isOnline,
+            status: botInfo.status,
+          })}
+        />
+        <Button
+          variant="ghost"
+          size="sm"
+          nativeButton={false}
+          render={
+            <Link
+              to="/instance/$instance/bots"
+              params={{ instance: instanceId }}
+            />
+          }
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("bots.backToBots")}
+        </Button>
+      </div>
     </Item>
+  );
+}
+
+/** Start, restart, and stop change what this bot should do, not its view. */
+function BotPowerActions({
+  instanceId,
+  botId,
+  state,
+}: {
+  instanceId: string;
+  botId: string;
+  state: BotDisplayState;
+}) {
+  const { t } = useTranslation("common");
+  const { botInfoQueryOptions, instanceInfoQueryOptions, queryClient } =
+    Route.useRouteContext();
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const transport = use(TransportContext);
+  const change = useMutation({
+    mutationKey: ["bots", "single-state", instanceId, botId],
+    scope: { id: `bot-state-${instanceId}` },
+    mutationFn: async (action: "start" | "restart" | "stop") => {
+      if (transport === null) return;
+      const client = createClient(BotService, transport);
+      if (action === "restart") {
+        await client.restartBots({ instanceId, botIds: [botId] });
+        return;
+      }
+      await client.setBotsDesiredState({
+        instanceId,
+        botIds: [botId],
+        desiredState:
+          action === "start"
+            ? BotDesiredState.RUNNING
+            : BotDesiredState.STOPPED,
+      });
+    },
+    onError: (error) => toast.error(error.message),
+    onSettled: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
+        queryClient.invalidateQueries({
+          queryKey: botInfoQueryOptions.queryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["instance-info", instanceId],
+        }),
+      ]),
+  });
+  if (!hasInstancePermission(instanceInfo, InstancePermission.CONTROL_BOTS)) {
+    return null;
+  }
+  if (state === "stopped") {
+    return (
+      <Button
+        size="sm"
+        disabled={change.isPending}
+        onClick={() => change.mutate("start")}
+      >
+        <PlayIcon data-icon="inline-start" />
+        {t("controls.start")}
+      </Button>
+    );
+  }
+  return (
+    <>
+      <Button
+        size="sm"
+        variant={state === "failed" ? "default" : "outline"}
+        disabled={change.isPending || state === "stopping"}
+        onClick={() => change.mutate("restart")}
+      >
+        <RefreshCwIcon data-icon="inline-start" />
+        {t("controls.restart")}
+      </Button>
+      <Button
+        size="sm"
+        variant="outline"
+        disabled={change.isPending || state === "stopping"}
+        onClick={() => change.mutate("stop")}
+      >
+        <SquareIcon data-icon="inline-start" />
+        {t("controls.stop")}
+      </Button>
+    </>
+  );
+}
+
+/** Says what a disconnected bot is doing and points to the next step. */
+function BotStateNotice({
+  instanceId,
+  botId,
+  onOpenControls,
+}: {
+  instanceId: string;
+  botId: string;
+  onOpenControls: () => void;
+}) {
+  const { t } = useTranslation("instance");
+  const { botInfoQueryOptions } = Route.useRouteContext();
+  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
+  const isOnline = !!botInfo.liveState;
+  const state = getBotDisplayState({ isOnline, status: botInfo.status });
+  const { data: dialogData } = useQuery(
+    botDialogQueryOptions(instanceId, botId, isOnline),
+  );
+  if (isOnline && dialogData?.dialog) {
+    return (
+      <Alert role="status">
+        <MonitorIcon />
+        <AlertTitle>{t("bots.notice.dialogOpen.title")}</AlertTitle>
+        <AlertDescription>
+          <div className="flex flex-wrap items-center gap-2">
+            {t("bots.notice.dialogOpen.description")}
+            <Button size="sm" variant="outline" onClick={onOpenControls}>
+              {t("bots.notice.dialogOpen.action")}
+            </Button>
+          </div>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+  if (state === "connected" || state === "stopping") return null;
+  const lastError = botInfo.status?.lastError;
+  if (state === "failed" || state === "retrying") {
+    const kind = lastError ? classifyBotFailure(lastError) : "other";
+    const fix = getFailureFix(kind, instanceId);
+    return (
+      <Alert role="alert">
+        <CircleAlertIcon
+          className={
+            state === "failed" ? "text-destructive" : "text-warning-emphasis"
+          }
+        />
+        <AlertTitle>{t(`bots.notice.${state}`)}</AlertTitle>
+        <AlertDescription>
+          <div className="flex flex-col gap-2">
+            <span>{t(`fleet.kind.${kind}.description`)}</span>
+            {lastError && (
+              <span className="font-mono text-xs break-words select-text">
+                {lastError}
+              </span>
+            )}
+            {fix && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-fit"
+                nativeButton={false}
+                render={<Link {...fix.link} />}
+              >
+                {t(fix.labelKey)}
+              </Button>
+            )}
+          </div>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+  return (
+    <p className="text-muted-foreground text-sm" role="status">
+      {t(`bots.notice.${state}`)}
+    </p>
   );
 }
 
 function OverviewTab({
   instanceId,
   botId,
+  botName,
 }: {
   instanceId: string;
   botId: string;
+  botName: string;
 }) {
   const { botInfoQueryOptions } = Route.useRouteContext();
   const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
@@ -661,22 +882,44 @@ function OverviewTab({
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<null>();
   const copyToClipboard = useCopyToClipboard();
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const canWatchFeed = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.READ_BOT_INFO,
+  );
   const isOnline = !!botInfo.liveState;
   const liveState = botInfo.liveState;
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Left: POV panel */}
-        <BotPovPlayer
-          instanceId={instanceId}
-          botId={botId}
-          isOnline={isOnline}
-        />
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]">
+        {/* Main: watch and control, with this bot's chat below. */}
+        <div className="flex min-w-0 flex-col gap-6">
+          <BotPovPlayer
+            instanceId={instanceId}
+            botId={botId}
+            isOnline={isOnline}
+          />
+          <BotChatBox
+            key={`${instanceId}:${botId}`}
+            instanceId={instanceId}
+            botId={botId}
+            disabledReason={
+              isOnline ? undefined : t("bots.chatPanel.offlineHint")
+            }
+          />
+          <LiveFeed
+            instanceId={instanceId}
+            canWatch={canWatchFeed}
+            botName={botName}
+            title={t("bots.chatPanel.title")}
+          />
+        </div>
 
-        {/* Right: Position + Compass */}
+        {/* Side: status first, details on request. */}
         <div
-          className="flex flex-col gap-6"
+          className="flex min-w-0 flex-col gap-6"
           onContextMenu={(e) => handleContextMenu(e, null)}
         >
           <Item variant="outline" size="sm">
@@ -715,9 +958,9 @@ function OverviewTab({
               {t("bots.positionPanel.title")}
             </h3>
             {isOnline && liveState ? (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-3">
                 <div>
-                  <p className="text-muted-foreground text-xs font-medium uppercase">
+                  <p className="text-muted-foreground text-xs">
                     {t("bots.positionPanel.position")}
                   </p>
                   <div className="mt-1 grid select-text grid-cols-3 gap-2 font-mono text-sm">
@@ -736,7 +979,7 @@ function OverviewTab({
                   </div>
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-xs font-medium uppercase">
+                  <p className="text-muted-foreground text-xs">
                     {t("bots.positionPanel.rotation")}
                   </p>
                   <div className="mt-1 grid select-text grid-cols-2 gap-2 font-mono text-sm">
@@ -760,8 +1003,35 @@ function OverviewTab({
             )}
           </div>
 
-          {/* Compass + Look direction */}
-          <BotVisualPanel liveState={liveState} isOnline={isOnline} />
+          <Collapsible>
+            <CollapsibleTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="group/details w-fit"
+                />
+              }
+            >
+              <ChevronRightIcon
+                data-icon="inline-start"
+                className="group-data-[panel-open]/details:rotate-90"
+              />
+              {t("bots.detailsToggle")}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-3 flex flex-col gap-4">
+              <dl className="text-sm">
+                <dt className="text-muted-foreground text-xs">
+                  {t("bots.profileId")}
+                </dt>
+                <dd className="font-mono text-xs break-all select-text">
+                  {botId}
+                </dd>
+              </dl>
+              <BotVisualPanel liveState={liveState} isOnline={isOnline} />
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
 
@@ -2213,20 +2483,12 @@ function BotMovementPanel({
   );
 }
 
-function BotDialogPanel({
-  isOnline,
-  instanceId,
-  botId,
-}: {
-  isOnline: boolean;
-  instanceId: string;
-  botId: string;
-}) {
-  const { t } = useTranslation("instance");
-  const queryClient = Route.useRouteContext().queryClient;
-
-  // Query for dialog state
-  const dialogQueryOptions = queryOptions({
+function botDialogQueryOptions(
+  instanceId: string,
+  botId: string,
+  isOnline: boolean,
+) {
+  return queryOptions({
     queryKey: ["bot-dialog", instanceId, botId],
     queryFn: async (queryProps) => {
       const transport = createTransport();
@@ -2243,6 +2505,21 @@ function BotDialogPanel({
     refetchInterval: 2_000, // Poll for dialog updates
     enabled: isOnline,
   });
+}
+
+function BotDialogPanel({
+  isOnline,
+  instanceId,
+  botId,
+}: {
+  isOnline: boolean;
+  instanceId: string;
+  botId: string;
+}) {
+  const { t } = useTranslation("instance");
+  const queryClient = Route.useRouteContext().queryClient;
+
+  const dialogQueryOptions = botDialogQueryOptions(instanceId, botId, isOnline);
 
   const { data: dialogData } = useSuspenseQuery(dialogQueryOptions);
   const dialog = dialogData?.dialog;

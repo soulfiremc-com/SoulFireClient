@@ -26,6 +26,7 @@ import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
 import { useNodeTypes } from "./NodeTypesContext";
 import { QuickAddMenu } from "./QuickAddMenu";
+import { ScriptFirstUse } from "./ScriptFirstUse";
 
 export function ScriptEditor() {
   const editor = useScriptEditor();
@@ -823,6 +824,7 @@ export function ScriptEditor() {
           />
           <Controls />
           {showMiniMap && <MiniMap zoomable pannable />}
+          {groupEditStack.length === 0 && <ScriptFirstUse />}
         </ReactFlow>
       </NodeEditingProvider>
 

@@ -66,9 +66,14 @@ function lifecycleText(
 export function LiveFeed({
   instanceId,
   canWatch,
+  botName,
+  title,
 }: {
   instanceId: string;
   canWatch: boolean;
+  /** Shows only this bot's events, for the bot detail page. */
+  botName?: string;
+  title?: string;
 }) {
   const { t, i18n } = useTranslation("instance");
   const transport = use(TransportContext);
@@ -93,6 +98,7 @@ export function LiveFeed({
   const receiveEvent = useEffectEvent((event: InstanceEvent) => {
     setReconnecting(false);
     if (event.event.case !== "chat" && event.event.case !== "lifecycle") return;
+    if (botName !== undefined && event.botName !== botName) return;
     const timestamp =
       event.event.case === "chat" && event.event.value.receivedAt
         ? timestampToDate(event.event.value.receivedAt)
@@ -160,7 +166,7 @@ export function LiveFeed({
     >
       <div className="flex items-center justify-between gap-2">
         <h3 id="overview-feed-title" className="text-sm font-medium">
-          {t("overview.liveFeed.title")}
+          {title ?? t("overview.liveFeed.title")}
         </h3>
         {canWatch && (
           <Button
@@ -225,7 +231,11 @@ export function LiveFeed({
         <ScrollArea
           viewportRef={viewportRef}
           className={cn(
-            displayedEntries.length > 0 ? "h-80 sm:h-96 xl:h-[26rem]" : "h-48",
+            displayedEntries.length > 0
+              ? botName === undefined
+                ? "h-80 sm:h-96 xl:h-[26rem]"
+                : "h-64"
+              : "h-48",
           )}
           onScrollCapture={() => {
             const viewport = viewportRef.current;

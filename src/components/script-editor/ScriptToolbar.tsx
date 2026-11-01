@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import {
   ArrowLeftIcon,
+  CircleHelpIcon,
   DownloadIcon,
   EllipsisVerticalIcon,
   LoaderCircleIcon,
@@ -10,9 +11,18 @@ import {
   SaveIcon,
   Trash2Icon,
   UploadIcon,
+  ZapIcon,
   ZoomInIcon,
   ZoomOutIcon,
 } from "lucide-react";
+import { ScriptHealthButton } from "./ScriptHealthButton";
+import {
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover.tsx";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -43,6 +53,42 @@ import { ComplexityScore } from "./ComplexityScore";
 import { DryRunDialog } from "./DryRunDialog";
 import { QuotasDialog } from "./QuotasDialog";
 import { ScriptDiffDialog } from "./ScriptDiffDialog";
+
+function ScriptLifecycleHelp() {
+  const { t } = useTranslation("instance");
+  return (
+    <Popover>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={t("scripts.lifecycle.title")}
+          />
+        }
+      >
+        <CircleHelpIcon />
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-96">
+        <PopoverHeader>
+          <PopoverTitle>{t("scripts.lifecycle.title")}</PopoverTitle>
+        </PopoverHeader>
+        <dl className="flex flex-col gap-2 text-sm">
+          {(["saved", "on", "run", "test"] as const).map((term) => (
+            <div key={term}>
+              <dt className="font-medium">
+                {t(`scripts.lifecycle.${term}.term`)}
+              </dt>
+              <dd className="text-muted-foreground">
+                {t(`scripts.lifecycle.${term}.description`)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 interface ScriptToolbarProps {
   instanceId: string;
@@ -79,6 +125,10 @@ export function ScriptToolbar({
   const isDirty = useSelector(editor.document, (state) => state.isDirty);
   const paused = useSelector(editor.document, (state) => state.paused);
   const loadScriptData = editor.actions.loadScriptData;
+  const nodeCount = useSelector(editor.document, (state) => state.nodes.length);
+  const hasErrors = useSelector(editor.validation, (state) =>
+    state.validationDiagnostics.some((item) => item.severity === "error"),
+  );
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(scriptName);
@@ -261,27 +311,30 @@ export function ScriptToolbar({
         <Separator orientation="vertical" className="h-6 my-auto" />
       )}
 
-      {/* Execution Controls */}
+      {/* A saved script only reacts to triggers while it is on. */}
       <div className="flex items-center gap-1">
+        {!isMobile && <ScriptHealthButton />}
         {paused ? (
           <Tooltip>
             <TooltipTrigger
               render={
                 <Button
-                  variant="outline"
                   size={isMobile ? "icon" : "sm"}
                   aria-label={t("scripts.editor.toolbar.resume")}
                   onClick={onStart}
-                  disabled={isControlling}
-                  className={cn(!isMobile && "gap-1.5")}
+                  disabled={isControlling || hasErrors || nodeCount === 0}
                 />
               }
             >
-              <PlayIcon className="size-4" />
+              <PlayIcon data-icon="inline-start" />
               {!isMobile && t("scripts.editor.toolbar.resume")}
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t("scripts.editor.toolbar.resumeTooltip")}</p>
+              <p>
+                {hasErrors
+                  ? t("scripts.editor.toolbar.resumeBlocked")
+                  : t("scripts.editor.toolbar.resumeTooltip")}
+              </p>
             </TooltipContent>
           </Tooltip>
         ) : (
@@ -295,11 +348,10 @@ export function ScriptToolbar({
                     aria-label={t("scripts.editor.toolbar.pause")}
                     onClick={onStop}
                     disabled={isControlling}
-                    className={cn(!isMobile && "gap-1.5")}
                   />
                 }
               >
-                <PauseIcon className="size-4" />
+                <PauseIcon data-icon="inline-start" />
                 {!isMobile && t("scripts.editor.toolbar.pause")}
               </TooltipTrigger>
               <TooltipContent>
@@ -307,13 +359,17 @@ export function ScriptToolbar({
               </TooltipContent>
             </Tooltip>
             {!isMobile && (
-              <Badge variant="default" className="gap-1.5 bg-success-strong">
-                <div className="size-2 animate-pulse rounded-full bg-white" />
+              <Badge
+                variant="outline"
+                className="border-success/40 text-success-emphasis gap-1.5"
+              >
+                <ZapIcon aria-hidden="true" className="size-3" />
                 {t("scripts.running")}
               </Badge>
             )}
           </>
         )}
+        {!isMobile && <ScriptLifecycleHelp />}
         <DryRunDialog instanceId={instanceId} />
         {!isMobile && <QuotasDialog />}
       </div>

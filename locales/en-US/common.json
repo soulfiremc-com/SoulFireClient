@@ -59,16 +59,16 @@
       "action": "Support SoulFire"
     },
     "createInstance": {
-      "title": "Create a new instance",
-      "description": "Give the instance a name that you can recognize, such as \"My Minecraft Bot\".",
+      "title": "Create an instance",
+      "description": "An instance is one group of bots with its own accounts, proxies, and settings. Next, you choose the Minecraft server.",
       "form": {
         "friendlyName": {
-          "label": "Friendly name",
-          "placeholder": "My Minecraft Bot",
-          "description": "The name you want to give to this instance."
+          "label": "Instance name",
+          "placeholder": "My survival test",
+          "description": "Use a name that you recognize later. You can change it at any time."
         },
         "cancel": "Cancel",
-        "create": "Create"
+        "create": "Create and continue"
       },
       "createToast": {
         "loading": "Creating instance...",
@@ -158,8 +158,8 @@
     "moreActions": "More bot actions",
     "availableCount_one": "{{count}} stopped bot available.",
     "availableCount_other": "{{count}} stopped bots available.",
-    "generateFirst": "Create accounts to start your first bots.",
-    "startCountHelp": "Starts additional bots. Running bots stay connected.",
+    "generateFirst": "This instance has no accounts yet. Create offline accounts to start, or add other accounts on the Accounts page.",
+    "startCountHelp": "Starts stopped bots. Bots that already run stay connected.",
     "startSelected_one": "Start {{count}} bot",
     "startSelected_other": "Start {{count}} bots",
     "startAllCount": "Start all {{count}}",
@@ -257,7 +257,12 @@
     "version": "Version: {{version}}",
     "author": "Author: {{author}}",
     "license": "License: {{license}}",
-    "website": "Website"
+    "website": "Website",
+    "meta": "Version {{version}}, by {{author}}, {{license}} license",
+    "configure": "Configure",
+    "enabled": "On",
+    "disabled": "Off",
+    "enable": "Turn on {{name}}"
   },
   "settingsPage": {
     "saveError": "Failed to save {{name}}",
@@ -277,6 +282,24 @@
     "invalidNumberToast": {
       "title": "Invalid number",
       "description": "The value must be between {{min}} and {{max}}"
+    },
+    "saving": "Saving...",
+    "saved": "Saved",
+    "notSaved": "Not saved",
+    "defaultValue": "Default: {{value}}",
+    "resetToDefault": "Reset to default",
+    "overridden": "Set for this bot",
+    "search": "Search settings",
+    "noMatches": "No settings on this page match \"{{query}}\".",
+    "otherPages": "Also found on:",
+    "advanced_one": "Advanced ({{count}} setting)",
+    "advanced_other": "Advanced ({{count}} settings)",
+    "advanced": "Advanced",
+    "demoNotSaved": "The demo does not save changes.",
+    "scope": {
+      "instance": "Instance default. Applies to every bot in this instance unless a bot has its own value.",
+      "bot": "This bot only. Values here override the instance default for this bot.",
+      "server": "Server setting. Applies to the whole SoulFire server and every instance on it."
     }
   },
   "terminal": {
@@ -660,5 +683,23 @@
   "botUnavailable": {
     "title": "Bot unavailable",
     "description": "This bot was removed or you no longer have access to it."
+  },
+  "discover": {
+    "noPluginsTitle": "No plugins available",
+    "noPluginsDescription": "This SoulFire server does not offer any plugins for this instance.",
+    "search": "Search plugins",
+    "noMatches": "No plugins match your search.",
+    "filterLabel": "Filter plugins by task",
+    "scope": "Plugins add behavior to every bot in this instance. Turning one on takes effect for bots right away.",
+    "tasks": {
+      "all": "All",
+      "connect": "Connect and stay connected",
+      "survive": "Keep bots alive",
+      "chat": "Chat and dialogs",
+      "diagnose": "Logs and diagnostics",
+      "other": "Other"
+    },
+    "enabledHeading": "On",
+    "availableHeading": "Available"
   }
 }

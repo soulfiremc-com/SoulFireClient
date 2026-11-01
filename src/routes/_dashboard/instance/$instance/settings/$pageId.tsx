@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
+import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { InstancePluginInfoCard } from "@/components/instance-plugin-info-card.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { NotFoundComponent } from "@/components/not-found-component.tsx";
@@ -154,6 +155,15 @@ function Content() {
     >
       <div className="flex h-full w-full grow flex-row gap-2">
         <div className="flex h-full grow flex-col gap-4">
+          {!plugin && (
+            <h2 className="flex items-center gap-2 text-xl font-semibold">
+              <DynamicIcon
+                name={settingsEntry.iconId}
+                className="size-5 shrink-0"
+              />
+              {settingsEntry.pageName}
+            </h2>
+          )}
           {plugin && (
             <InstancePluginInfoCard
               settingsEntry={settingsEntry}

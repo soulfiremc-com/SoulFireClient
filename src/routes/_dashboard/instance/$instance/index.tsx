@@ -8,6 +8,8 @@ import ControlsMenu from "@/components/controls-menu.tsx";
 import { ActivityTimeline } from "@/components/instance-overview/activity-timeline.tsx";
 import { BotListPreview } from "@/components/instance-overview/bot-list-preview.tsx";
 import { DetailedMetrics } from "@/components/instance-overview/detailed-metrics.tsx";
+import { FleetStatus } from "@/components/instance-overview/fleet-status.tsx";
+import { FirstBotSetup } from "@/components/instance-setup/first-bot-setup.tsx";
 import { OverviewSummary } from "@/components/instance-overview/overview-summary.tsx";
 import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
 import { PluginStatsPanel } from "@/components/instance-overview/plugin-stats-panel.tsx";
@@ -31,6 +33,13 @@ import {
 } from "@/generated/soulfire/logs_pb";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
+import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import {
+  isFirstBotSetupDismissed,
+  isFirstBotSetupStarted,
+  markFirstBotSetupStarted,
+  shouldShowFirstBotSetup,
+} from "@/lib/first-bot-setup.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/")({
@@ -62,13 +71,14 @@ function Overview() {
 }
 
 function Content() {
+  const { instance } = Route.useParams();
   return (
     <div className="flex w-full flex-col gap-5 py-2 xl:px-2">
       <Suspense fallback={<OverviewHeaderSkeleton />}>
         <OverviewHeaderSection />
       </Suspense>
       <Suspense fallback={<OverviewContentSkeleton />}>
-        <OverviewContentSection />
+        <OverviewContentSection key={instance} />
       </Suspense>
     </div>
   );
@@ -220,10 +230,34 @@ function OverviewContentSection() {
     enabled: canReadBots,
   });
   const latest = metricsData?.snapshots[metricsData.snapshots.length - 1];
+  const { data: botStatus, isPending: botStatusPending } = useQuery({
+    ...botStatusQueryOptions(instanceInfo.id),
+    enabled: canReadBots,
+  });
+  const [setupDismissed, setSetupDismissed] = useState(() =>
+    isFirstBotSetupDismissed(instanceInfo.id),
+  );
+  const shouldOfferSetup =
+    !botStatusPending &&
+    shouldShowFirstBotSetup({
+      accountCount: instanceInfo.profile.accounts.length,
+      desiredCount: instanceInfo.botSummary?.desiredBots ?? 0,
+      onlineCount: botStatus?.bots.filter((bot) => bot.isOnline).length ?? 0,
+      dismissed: setupDismissed,
+      started: isFirstBotSetupStarted(instanceInfo.id),
+    });
+  // Keep the guide mounted after Start so it can report the connection result.
+  const [setupActive, setSetupActive] = useState(false);
+  if (shouldOfferSetup && !setupActive) {
+    markFirstBotSetupStarted(instanceInfo.id);
+    setSetupActive(true);
+  }
+  const showSetup = setupActive && !setupDismissed;
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      {canReadBots && (
+      {canReadBots && !showSetup && <FleetStatus instanceInfo={instanceInfo} />}
+      {canReadBots && !showSetup && (
         <OverviewSummary
           instanceInfo={instanceInfo}
           latest={latest}
@@ -231,11 +265,18 @@ function OverviewContentSection() {
         />
       )}
       <div className="grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_16rem] xl:grid-cols-[minmax(0,1fr)_18rem] 2xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <LiveFeed
-          key={instanceInfo.id}
-          instanceId={instanceInfo.id}
-          canWatch={canReadBots}
-        />
+        {showSetup ? (
+          <FirstBotSetup
+            instanceInfo={instanceInfo}
+            onDismiss={() => setSetupDismissed(true)}
+          />
+        ) : (
+          <LiveFeed
+            key={instanceInfo.id}
+            instanceId={instanceInfo.id}
+            canWatch={canReadBots}
+          />
+        )}
         {(canReadBots || canViewAuditLog) && (
           <div className="flex min-w-0 flex-col gap-7">
             {canReadBots && <BotListPreview instanceInfo={instanceInfo} />}
