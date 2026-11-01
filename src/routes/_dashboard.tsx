@@ -18,6 +18,7 @@ import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import { ClientService } from "@/generated/soulfire/client_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { useProductActivation } from "@/hooks/use-product-activation";
 import {
   type InstanceListResponse,
   InstanceListResponseSchema,
@@ -218,6 +219,8 @@ function PostHogIdentity() {
     clientInfo.username,
     posthog,
   ]);
+
+  useProductActivation(clientInfo.id, !isImpersonating());
 
   return null;
 }
