@@ -91,3 +91,10 @@ The app supports a demo mode (no server connection) using fallback data from `sr
 ## Design skills
 
 - For visual design work, use `frontend-design` and `uncodixfy`.
+
+## Branding and product language
+
+Before naming features or changing user-facing text and visuals, read the [SoulFire brand guidance](https://github.com/soulfiremc-com/brand).
+Use its terminology, naming, writing, and visual identity guides.
+Keep proposed renames separate from accepted guidance.
+Preserve public identifiers until the owning repository approves a migration.
