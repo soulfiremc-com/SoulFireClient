@@ -1,4 +1,3 @@
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
 import {
   useMutation,
@@ -188,7 +187,8 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
   },
   {
     id: "createdAt",
-    accessorFn: (row) => timestampToDate(row.createdAt as Timestamp),
+    accessorFn: (row) =>
+      row.createdAt ? timestampToDate(row.createdAt) : undefined,
     accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -196,9 +196,10 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         label={i18n.t("admin:users.table.createdAt")}
       />
     ),
-    cell: ({ row }) => (
-      <SFTimeAgo date={timestampToDate(row.original.createdAt as Timestamp)} />
-    ),
+    cell: ({ row }) =>
+      row.original.createdAt ? (
+        <SFTimeAgo date={timestampToDate(row.original.createdAt)} />
+      ) : null,
     enableGlobalFilter: false,
     sortFn: "datetime",
     meta: {
@@ -215,7 +216,8 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
   },
   {
     id: "minIssuedAt",
-    accessorFn: (row) => timestampToDate(row.minIssuedAt as Timestamp),
+    accessorFn: (row) =>
+      row.minIssuedAt ? timestampToDate(row.minIssuedAt) : undefined,
     accessorKey: "minIssuedAt",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -223,11 +225,10 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         label={i18n.t("admin:users.table.minIssuedAt")}
       />
     ),
-    cell: ({ row }) => (
-      <SFTimeAgo
-        date={timestampToDate(row.original.minIssuedAt as Timestamp)}
-      />
-    ),
+    cell: ({ row }) =>
+      row.original.minIssuedAt ? (
+        <SFTimeAgo date={timestampToDate(row.original.minIssuedAt)} />
+      ) : null,
     enableGlobalFilter: false,
     sortFn: "datetime",
     meta: {
