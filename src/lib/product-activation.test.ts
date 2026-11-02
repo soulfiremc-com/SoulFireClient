@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { QueryClient } from "@tanstack/react-query";
 import { BotConnectionPhase } from "@/generated/soulfire/bot_pb";
+import { getAnalyticsIdentity } from "./analytics-identity";
 import {
   createProductActivationTracker,
   watchProductActivation,
@@ -108,6 +109,35 @@ test("storage failures preserve activation and in-memory deduplication", () => {
   assert.equal(tracker.observe("user", [spawned]), true);
   assert.equal(tracker.observe("user", [spawned]), false);
   assert.equal(captures, 2);
+});
+
+test("root activation is independent per installation and ignores legacy deduplication", () => {
+  const root = "00000000-0000-0000-0000-000000000000";
+  const saved = new Map([[`soulfire-product-activated-v1:${root}`, "1"]]);
+  let activations = 0;
+  const tracker = createProductActivationTracker({
+    surface: "desktop",
+    storage: {
+      getItem: (key) => saved.get(key) ?? null,
+      setItem: (key, value) => void saved.set(key, value),
+    },
+    capture: (event) => {
+      if (event === "product_activated") activations++;
+      return true;
+    },
+  });
+  const first = getAnalyticsIdentity(
+    "00000000-0000-4000-8000-000000000001",
+    root,
+  )!;
+  const second = getAnalyticsIdentity(
+    "00000000-0000-4000-8000-000000000002",
+    root,
+  )!;
+  assert.equal(tracker.observe(first, [spawned]), true);
+  assert.equal(tracker.observe(first, [spawned]), false);
+  assert.equal(tracker.observe(second, [spawned]), true);
+  assert.equal(activations, 2);
 });
 
 test("fresh bot-status results activate once and unsubscribe stops observation", () => {

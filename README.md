@@ -64,6 +64,11 @@ Acceptance enables analytics cookies, user identification, and per-user activati
 Rejection enables limited cookieless analytics without user identification or activation storage.
 Users can change their choice through **Cookie preferences** on the login screen or in the account menu.
 
+Servers store a persistent installation UUID in the database and return it through `ServerInfo.installation_id`.
+After consent, the client identifies each user with `soulfire:<installation UUID>:<user UUID>`.
+This keeps root accounts from different installations separate. Database copies preserve the installation UUID.
+The client resets legacy analytics identities without changing consent. Older servers without this field keep anonymous analytics.
+
 For each client PostHog project, enable **Settings > Project > Web analytics > Enable cookieless tracking**.
 PostHog drops cookieless events if this setting is disabled.
 

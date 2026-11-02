@@ -3,6 +3,7 @@ import {
   analyticsConsentConfig,
   createAnalyticsConsent,
 } from "@/lib/analytics-consent";
+import { resetLegacyAnalyticsIdentity } from "@/lib/analytics-identity";
 
 const projectToken = import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN;
 const host = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
@@ -31,7 +32,12 @@ if (!isPostHogConfigured) {
     capture_exceptions: true,
     debug: import.meta.env.DEV,
     defaults: "2026-01-30",
-    loaded: () => analyticsConsent.synchronize(),
+    loaded: (client) => {
+      resetLegacyAnalyticsIdentity(client, () =>
+        analyticsConsent.resetIdentity(true),
+      );
+      analyticsConsent.synchronize();
+    },
   });
 }
 

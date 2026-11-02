@@ -8,7 +8,7 @@ import {
   useNavigate,
 } from "@tanstack/react-router";
 import { usePostHog } from "posthog-js/react";
-import { Suspense, useEffect } from "react";
+import { Suspense, use, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateInstanceProvider } from "@/components/dialog/create-instance-dialog.tsx";
 import { ErrorComponent } from "@/components/error-component.tsx";
@@ -26,7 +26,11 @@ import {
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
-import { isPostHogConfigured } from "@/lib/posthog.ts";
+import {
+  getAnalyticsIdentity,
+  syncAnalyticsIdentity,
+} from "@/lib/analytics-identity";
+import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
 import { useSupportReminderUsage } from "@/hooks/use-support-reminder-usage";
 import { smartEntries } from "@/lib/utils.tsx";
@@ -204,28 +208,41 @@ function InstanceSwitchKeybinds() {
 function ClientSession() {
   const posthog = usePostHog();
   const consent = useAnalyticsConsent();
+  const transport = use(TransportContext);
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  const installationId = clientInfo.serverInfo?.installationId;
+  const identity =
+    transport && !isImpersonating()
+      ? getAnalyticsIdentity(installationId, clientInfo.id)
+      : null;
 
   useEffect(() => {
-    if (!isPostHogConfigured || consent !== "granted" || clientInfo.id === "")
-      return;
+    if (!isPostHogConfigured || consent !== "granted") return;
 
-    posthog.identify(clientInfo.id, {
-      email: clientInfo.email,
-      role: clientInfo.role,
-      username: clientInfo.username,
-    });
+    syncAnalyticsIdentity(
+      posthog,
+      identity,
+      {
+        email: clientInfo.email,
+        role: clientInfo.role,
+        username: clientInfo.username,
+        installation_id: installationId ?? "",
+        analytics_identity_version: 2,
+      },
+      () => analyticsConsent.resetIdentity(true),
+    );
   }, [
     clientInfo.email,
-    clientInfo.id,
     clientInfo.role,
     clientInfo.username,
+    identity,
+    installationId,
     posthog,
     consent,
   ]);
 
-  useProductActivation(clientInfo.id, !isImpersonating());
+  useProductActivation(identity ?? "", identity !== null);
   useSupportReminderUsage(clientInfo.id, !isImpersonating());
 
   return null;
