@@ -30,6 +30,7 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
     "test:storybook": "vitest run --project storybook",
+    "test:terminal": "bun test src/lib/terminal*.test.ts src/lib/command*.test.ts src/stores/terminal-log-store.test.ts",
     "test:deployment": "bun test src/lib/app-deployment.test.ts src/lib/build-environment.test.ts src/demo-data.test.ts",
     "ci:pages": "bun run typecheck && bun run check && bun run test:deployment && bun run build:web",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.cast-tests.json --noEmit",

@@ -47,6 +47,9 @@ jobs:
       - name: Run deployment tests
         run: bun run test:deployment
 
+      - name: Run terminal tests
+        run: bun run test:terminal
+
       - name: Run web build
         run: bun run build:web
 

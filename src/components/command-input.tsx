@@ -13,6 +13,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { TerminalCommandContext } from "@/components/terminal-command-context";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
   InputGroup,
@@ -507,6 +508,55 @@ export default function CommandInput(props: { scope: CommandScope }) {
     [acceptCompletion, completionState],
   );
 
+  const terminalCommands = use(TerminalCommandContext);
+  const executeCommand = (value: string) => {
+    const nextHistory = appendCommandHistory(commandHistory, value);
+    if (nextHistory !== commandHistory) {
+      setCommandHistory(nextHistory);
+      saveCommandHistory(nextHistory);
+    }
+    if (!transport) return Promise.resolve();
+    return createClient(CommandService, transport).executeCommand({
+      scope: props.scope,
+      command: value,
+    });
+  };
+
+  useLayoutEffect(() => {
+    if (!terminalCommands) return;
+    const handler: NonNullable<typeof terminalCommands.current> = (
+      action,
+      value,
+    ) => {
+      if (action === "run_command") {
+        if (!transport || !value.trim()) return;
+        void executeCommand(value.trim()).catch((error: unknown) =>
+          toast.error(ConnectError.from(error).message),
+        );
+        return;
+      }
+      resetCompletionFetchDebounce();
+      completionRequest.cancel();
+      setInputValue(value);
+      pendingCaret.current = value.length;
+      setCursorPosition(value.length);
+      setHistoryPosition({ index: -1, draft: "" });
+      setCompletionState({
+        baseText: value,
+        cursor: value.length,
+        receivedCompletions: null,
+        index: null,
+        replacementRange: null,
+      });
+      inputRef.current?.focus({ preventScroll: true });
+      scheduleCompletionFetch(value, value.length);
+    };
+    terminalCommands.current = handler;
+    return () => {
+      if (terminalCommands.current === handler) terminalCommands.current = null;
+    };
+  });
+
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (composing.current || e.nativeEvent.isComposing) return;
     const currentTarget = e.currentTarget;
@@ -578,43 +628,31 @@ export default function CommandInput(props: { scope: CommandScope }) {
         return;
       }
 
-      const nextHistory = appendCommandHistory(commandHistory, currentVal);
-      if (nextHistory !== commandHistory) {
-        setCommandHistory(nextHistory);
-        saveCommandHistory(nextHistory);
-      }
       setHistoryPosition({ index: -1, draft: "" });
-
-      const commandService = createClient(CommandService, transport);
-      void commandService
-        .executeCommand({
-          scope: props.scope,
-          command: currentVal,
-        })
-        .catch((error: unknown) => {
-          toast.error(ConnectError.from(error).message);
-          // A failed request must not replace a newer draft or another view.
-          if (
-            inputRevision.current !== submittedRevision ||
-            inputRef.current !== currentTarget ||
-            !currentTarget.isConnected
-          )
-            return;
-          resetCompletionFetchDebounce();
-          completionRequest.cancel();
-          setInputValue(submittedText);
-          pendingCaret.current = submittedText.length;
-          setCursorPosition(submittedText.length);
-          setCompletionState({
-            baseText: submittedText,
-            cursor: submittedText.length,
-            receivedCompletions: null,
-            index: null,
-            replacementRange: null,
-          });
-          if (currentTarget.ownerDocument.activeElement === currentTarget)
-            scheduleCompletionFetch(submittedText, submittedText.length);
+      void executeCommand(currentVal).catch((error: unknown) => {
+        toast.error(ConnectError.from(error).message);
+        // A failed request must not replace a newer draft or another view.
+        if (
+          inputRevision.current !== submittedRevision ||
+          inputRef.current !== currentTarget ||
+          !currentTarget.isConnected
+        )
+          return;
+        resetCompletionFetchDebounce();
+        completionRequest.cancel();
+        setInputValue(submittedText);
+        pendingCaret.current = submittedText.length;
+        setCursorPosition(submittedText.length);
+        setCompletionState({
+          baseText: submittedText,
+          cursor: submittedText.length,
+          receivedCompletions: null,
+          index: null,
+          replacementRange: null,
         });
+        if (currentTarget.ownerDocument.activeElement === currentTarget)
+          scheduleCompletionFetch(submittedText, submittedText.length);
+      });
       return;
     }
 

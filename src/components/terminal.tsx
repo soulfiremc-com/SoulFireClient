@@ -7,6 +7,7 @@ import {
   use,
   useEffect,
   useEffectEvent,
+  useId,
   useRef,
   useState,
 } from "react";
@@ -16,13 +17,29 @@ import { SelectedTextActions } from "@/components/custom-context-menu";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
 import { TransportContext } from "@/components/providers/transport-context";
 import type { LogScope } from "@/generated/soulfire/logs_pb";
+import {
+  TerminalCommandContext,
+  type TerminalCommandHandler,
+} from "@/components/terminal-command-context";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import {
+  terminalInteractionAt,
+  visibleTerminalInteractions,
+  type TerminalInteractionRun,
+} from "@/lib/terminal-interaction-cells";
+import type { TerminalInteraction } from "@/lib/terminal-interactions";
 import { useContextMenu } from "@/hooks/use-context-menu";
 import { useTerminalLogs } from "@/hooks/use-terminal-logs";
 import {
   createTerminalOutput,
   formatTerminalLine,
 } from "@/lib/terminal-output";
-import { isDemo } from "@/lib/utils";
+import { isDemo, openExternalUrl } from "@/lib/utils";
 import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
 
 export function TerminalView({
@@ -40,6 +57,66 @@ export function TerminalView({
   const outputRef = useRef<ReturnType<typeof createTerminalOutput> | null>(
     null,
   );
+  const interactionId = useId();
+  const commandHandler = useRef<TerminalCommandHandler | null>(null);
+  const copy = useCopyToClipboard();
+  const [runs, setRuns] = useState<TerminalInteractionRun[]>([]);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [focused, setFocused] = useState<string | null>(null);
+  const pointerDown = useRef<{ x: number; y: number; uri?: string } | null>(
+    null,
+  );
+  const interactionFrame = useRef(0);
+  const metrics = useRef({ width: 0, height: 0, top: 0, left: 0 });
+
+  const updateInteractions = useEffectEvent(() => {
+    const host = hostRef.current;
+    const core = terminalRef.current?.bridge;
+    const registry = outputRef.current?.interactions;
+    if (!host || !core || !registry) return;
+    const style = getComputedStyle(host);
+    const width = parseFloat(style.getPropertyValue("--term-cell-width"));
+    const height = parseFloat(style.getPropertyValue("--term-row-height"));
+    const top = parseFloat(style.paddingTop) || 0;
+    const left = parseFloat(style.paddingLeft) || 0;
+    if (!(width > 0 && height > 0)) return;
+    metrics.current = { width, height, top, left };
+    const first = Math.floor((host.scrollTop - top) / height);
+    setRuns(
+      visibleTerminalInteractions(
+        core,
+        registry,
+        first,
+        Math.ceil((host.scrollTop + host.clientHeight - top) / height),
+      ),
+    );
+  });
+  const scheduleInteractions = () => {
+    cancelAnimationFrame(interactionFrame.current);
+    interactionFrame.current = requestAnimationFrame(() =>
+      updateInteractions(),
+    );
+  };
+  const interactionAt = (x: number, y: number) => {
+    const host = hostRef.current;
+    const core = terminalRef.current?.bridge;
+    if (!host || !core) return undefined;
+    const rect = host.getBoundingClientRect();
+    const { width, height, top, left } = metrics.current;
+    if (!width || !height) return undefined;
+    return terminalInteractionAt(
+      core,
+      Math.floor((y - rect.top + host.scrollTop - top) / height),
+      Math.floor((x - rect.left + host.scrollLeft - left) / width),
+    );
+  };
+  const activate = (metadata: TerminalInteraction) => {
+    const click = metadata.click;
+    if (!click) return;
+    if (click.action === "copy_to_clipboard") copy(click.value);
+    else if (click.action === "open_url") openExternalUrl(click.value);
+    else commandHandler.current?.(click.action, click.value);
+  };
   const scrollFrame = useRef(0);
   const [failed, setFailed] = useState(false);
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
@@ -83,6 +160,8 @@ export function TerminalView({
     const top = host.scrollTop;
     const atBottom = top + host.clientHeight >= host.scrollHeight - 1;
     const update = output.sync(entries, i18n.resolvedLanguage, resized);
+    setHovered(null);
+    scheduleInteractions();
     if (update.reset && !atBottom) {
       const rowHeight = Number.parseFloat(
         getComputedStyle(host).getPropertyValue("--term-row-height"),
@@ -90,6 +169,7 @@ export function TerminalView({
       cancelAnimationFrame(scrollFrame.current);
       scrollFrame.current = requestAnimationFrame(() => {
         host.scrollTop = Math.max(0, top + update.rowShift * rowHeight);
+        scheduleInteractions();
       });
     }
   });
@@ -137,6 +217,7 @@ export function TerminalView({
     return () => {
       disposed = true;
       cancelAnimationFrame(scrollFrame.current);
+      cancelAnimationFrame(interactionFrame.current);
       outputRef.current = null;
       terminalRef.current = null;
       terminal.destroy();
@@ -152,7 +233,7 @@ export function TerminalView({
   }, [selectedTheme]);
 
   return (
-    <>
+    <TerminalCommandContext value={commandHandler}>
       <div
         data-terminal-output
         className="flex h-[calc(75vh-8rem)] flex-col overflow-hidden rounded-md focus-within:ring-1 focus-within:ring-(--terminal-border)"
@@ -170,7 +251,65 @@ export function TerminalView({
         }
       >
         <div
-          className="min-h-0 flex-1"
+          className="relative min-h-0 flex-1 overflow-hidden"
+          onPointerDownCapture={(event) => {
+            pointerDown.current = {
+              x: event.clientX,
+              y: event.clientY,
+              uri: interactionAt(event.clientX, event.clientY),
+            };
+          }}
+          onPointerMove={(event) => {
+            const uri = event.buttons
+              ? undefined
+              : interactionAt(event.clientX, event.clientY);
+            const host = hostRef.current;
+            const row = host
+              ? Math.floor(
+                  (event.clientY -
+                    host.getBoundingClientRect().top +
+                    host.scrollTop -
+                    metrics.current.top) /
+                    metrics.current.height,
+                )
+              : -1;
+            setHovered(
+              runs.find((run) => run.uri === uri && run.row === row)?.key ??
+                null,
+            );
+          }}
+          onPointerLeave={() => setHovered(null)}
+          onClickCapture={(event) => {
+            if (
+              !event.detail ||
+              event.detail > 1 ||
+              event.button !== 0 ||
+              event.ctrlKey ||
+              event.metaKey ||
+              event.altKey ||
+              event.shiftKey ||
+              terminalRef.current?.getSelectionText() ||
+              hostRef.current?.ownerDocument.getSelection()?.isCollapsed ===
+                false
+            )
+              return;
+            const down = pointerDown.current;
+            pointerDown.current = null;
+            const uri = interactionAt(event.clientX, event.clientY);
+            const metadata = uri
+              ? outputRef.current?.interactions.get(uri)
+              : undefined;
+            if (
+              !metadata?.click ||
+              !down ||
+              down.uri !== uri ||
+              Math.hypot(down.x - event.clientX, down.y - event.clientY) > 5
+            )
+              return;
+            event.preventDefault();
+            event.stopPropagation();
+            activate(metadata);
+          }}
           onClick={(event) => {
             if (
               !children ||
@@ -178,7 +317,9 @@ export function TerminalView({
               event.ctrlKey ||
               event.metaKey ||
               event.altKey ||
-              terminalRef.current?.getSelectionText()
+              terminalRef.current?.getSelectionText() ||
+              hostRef.current?.ownerDocument.getSelection()?.isCollapsed ===
+                false
             )
               return;
             event.currentTarget.parentElement
@@ -194,7 +335,12 @@ export function TerminalView({
               event.preventDefault();
           }}
           onKeyDownCapture={(event) => {
-            if (failed) return;
+            if (
+              failed ||
+              (event.target instanceof HTMLElement &&
+                event.target.closest("[data-terminal-interaction]"))
+            )
+              return;
             const terminal = terminalRef.current;
             const host = hostRef.current;
             if (!terminal || !host) return;
@@ -206,6 +352,8 @@ export function TerminalView({
               void terminal.selectAll();
             } else if (event.key === "Escape") {
               terminal.clearSelection();
+              setHovered(null);
+              setFocused(null);
             } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
               const delta = {
                 ArrowUp: -16,
@@ -234,10 +382,91 @@ export function TerminalView({
             <div
               ref={hostRef}
               data-terminal-viewport
-              className="select-text"
+              className={hovered ? "cursor-pointer select-text" : "select-text"}
               aria-label={t("pageName.terminal")}
+              onScroll={() => {
+                setHovered(null);
+                scheduleInteractions();
+              }}
             />
           )}
+          {!failed &&
+            runs.map((run) => {
+              const click = run.metadata.click;
+              const command =
+                click?.action === "run_command" ||
+                click?.action === "suggest_command";
+              const description = click
+                ? t(`terminal.actions.${click.action}`, { value: click.value })
+                : "";
+              const tooltip = [
+                run.metadata.hover,
+                description,
+                command && !children ? t("terminal.actions.unavailable") : "",
+              ]
+                .filter(Boolean)
+                .join("\n");
+              return (
+                <Tooltip
+                  key={run.key}
+                  triggerId={`${interactionId}-${run.key}`}
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      setHovered(null);
+                      setFocused(null);
+                    }
+                  }}
+                  open={(hovered ?? focused) === run.key}
+                >
+                  <TooltipTrigger
+                    render={<button type="button" />}
+                    data-terminal-interaction
+                    id={`${interactionId}-${run.key}`}
+                    className="pointer-events-none absolute top-(--interaction-top) left-(--interaction-left) h-(--term-row-height) w-(--interaction-width) focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-(--terminal-prompt)"
+                    style={
+                      {
+                        "--interaction-top": `${metrics.current.top + run.row * metrics.current.height - (hostRef.current?.scrollTop ?? 0)}px`,
+                        "--interaction-left": `${metrics.current.left + run.col * metrics.current.width - (hostRef.current?.scrollLeft ?? 0)}px`,
+                        "--interaction-width": `${run.width * metrics.current.width}px`,
+                        "--term-row-height": `${metrics.current.height}px`,
+                      } as CSSProperties
+                    }
+                    aria-label={[run.text, description]
+                      .filter(Boolean)
+                      .join(". ")}
+                    aria-describedby={
+                      (hovered ?? focused) === run.key
+                        ? `${interactionId}-${run.key}-tooltip`
+                        : undefined
+                    }
+                    aria-disabled={
+                      !click || (command && !children) ? true : undefined
+                    }
+                    onFocus={() => setFocused(run.key)}
+                    onBlur={() => setFocused(null)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") {
+                        setFocused(null);
+                        setHovered(null);
+                      }
+                    }}
+                    onClick={(event) => {
+                      if (event.detail === 0) activate(run.metadata);
+                    }}
+                  >
+                    <span className="sr-only">{run.text}</span>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    role="tooltip"
+                    id={`${interactionId}-${run.key}-tooltip`}
+                  >
+                    <span className="whitespace-pre-wrap break-all">
+                      {tooltip}
+                    </span>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
         </div>
         {children && (
           <div data-terminal-command className="shrink-0 px-1 py-1">
@@ -255,7 +484,7 @@ export function TerminalView({
           <SelectedTextActions text={contextMenu.data} onClose={dismiss} />
         </ContextMenuPortal>
       )}
-    </>
+    </TerminalCommandContext>
   );
 }
 
