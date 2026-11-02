@@ -434,7 +434,7 @@ export function SdkQuickstart({
                     <SelectTrigger id={`${id}-bot`} className="w-full">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent listProps={{ "aria-label": t("sdk.bot") }}>
                       <SelectGroup>
                         {bots.map((entry) => (
                           <SelectItem key={entry.id} value={entry.id}>
@@ -511,7 +511,7 @@ export function SdkQuickstart({
                   <SelectTrigger id={`${id}-shell`}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent listProps={{ "aria-label": t("sdk.shell") }}>
                     <SelectGroup>
                       <SelectItem value="posix">macOS / Linux</SelectItem>
                       <SelectItem value="powershell">
