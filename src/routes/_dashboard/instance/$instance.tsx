@@ -27,12 +27,13 @@ import {
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 import {
+  demoInstancePermissions,
+  demoInstancePlugins,
   demoInstanceSettings,
   demoInstanceSettingsDefinitions,
 } from "@/demo-data.ts";
 import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
 import {
-  InstancePermission,
   MinecraftAccountProto_AccountTypeProto,
   MinecraftAccountProto_OfflineJavaDataSchema,
   ProxyProto_Type,
@@ -42,7 +43,6 @@ import {
   type InstanceConfig,
   InstanceConfigSchema,
   InstanceInfoSchema,
-  InstancePermissionStateSchema,
 } from "@/generated/soulfire/instance_pb";
 import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
@@ -55,7 +55,6 @@ import {
   convertFromInstanceProto,
   type InstanceInfoQueryData,
 } from "@/lib/types.ts";
-import { smartEntries } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance")({
@@ -108,17 +107,11 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
           const instanceInfo = create(InstanceInfoSchema, {
             friendlyName: "Demo",
             icon: "pickaxe",
-            instancePermissions: smartEntries(InstancePermission).map(
-              (permission) =>
-                create(InstancePermissionStateSchema, {
-                  instancePermission: permission[1],
-                  granted: true,
-                }),
-            ),
+            instancePermissions: demoInstancePermissions,
             config: instanceConfig,
             settingsDefinitions: demoInstanceSettingsDefinitions,
             instanceSettings: demoInstanceSettings,
-            plugins: [],
+            plugins: demoInstancePlugins,
             botSummary: create(BotFleetSummarySchema, {
               totalBots: 1,
               desiredBots: 1,

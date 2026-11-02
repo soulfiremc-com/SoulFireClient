@@ -13,16 +13,14 @@ import { useTranslation } from "react-i18next";
 import { CreateInstanceProvider } from "@/components/dialog/create-instance-dialog.tsx";
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { demoClientData } from "@/demo-data.ts";
+import { demoClientData, demoInstancePermissions } from "@/demo-data.ts";
 import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import { ClientService } from "@/generated/soulfire/client_pb";
-import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { useProductActivation } from "@/hooks/use-product-activation";
 import {
   type InstanceListResponse,
   InstanceListResponseSchema,
-  InstancePermissionStateSchema,
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
@@ -33,7 +31,6 @@ import {
 import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
 import { useSupportReminderUsage } from "@/hooks/use-support-reminder-usage";
-import { smartEntries } from "@/lib/utils.tsx";
 import {
   createTransport,
   isAuthenticated,
@@ -60,13 +57,7 @@ export const Route = createFileRoute("/_dashboard")({
                     desiredBots: 1,
                     onlineBots: 1,
                   }),
-                  instancePermissions: smartEntries(InstancePermission).map(
-                    (permission) =>
-                      create(InstancePermissionStateSchema, {
-                        instancePermission: permission[1],
-                        granted: true,
-                      }),
-                  ),
+                  instancePermissions: demoInstancePermissions,
                 },
               ],
             });

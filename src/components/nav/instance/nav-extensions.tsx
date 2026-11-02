@@ -11,7 +11,7 @@ import {
   CodeXmlIcon,
   ScrollTextIcon,
 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import {
@@ -64,6 +64,12 @@ export function NavExtensions() {
   const [pluginCollapsibleOpen, setPluginCollapsibleOpen] = useState(
     settingsEntry !== undefined && settingsEntry.owningPluginId !== undefined,
   );
+  const pluginPageId = settingsEntry?.owningPluginId
+    ? settingsEntry.id
+    : undefined;
+  useEffect(() => {
+    if (pluginPageId !== undefined) setPluginCollapsibleOpen(true);
+  }, [pluginPageId]);
 
   const navLinks: NavLinks = [
     {
