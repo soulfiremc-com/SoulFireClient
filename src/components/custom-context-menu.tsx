@@ -26,8 +26,6 @@ export function CustomContextMenu() {
     dismiss,
     menuRef,
   } = useContextMenu<string>();
-  const copyToClipboard = useCopyToClipboard();
-  const { t } = useTranslation("common");
 
   useEffect(() => {
     function onContextMenu(e: MouseEvent) {
@@ -69,10 +67,27 @@ export function CustomContextMenu() {
       y={menu.position.y}
       onClose={dismiss}
     >
+      <SelectedTextActions text={menu.data} onClose={dismiss} />
+    </ContextMenuPortal>
+  );
+}
+
+export function SelectedTextActions({
+  text,
+  onClose,
+}: {
+  text: string;
+  onClose: () => void;
+}) {
+  const copyToClipboard = useCopyToClipboard();
+  const { t } = useTranslation("common");
+
+  return (
+    <>
       <DropdownMenuItem
         onClick={() => {
-          copyToClipboard(menu.data);
-          dismiss();
+          copyToClipboard(text);
+          onClose();
         }}
       >
         <ClipboardCopyIcon />
@@ -81,7 +96,7 @@ export function CustomContextMenu() {
       <DropdownMenuItem
         onClick={() => {
           toast.promise(
-            uploadToMcLogs(menu.data).then((response) => {
+            uploadToMcLogs(text).then((response) => {
               if (response.success) {
                 copyToClipboard(response.url);
                 return response.url;
@@ -94,7 +109,7 @@ export function CustomContextMenu() {
               error: t("mcLogsUpload.error"),
             },
           );
-          dismiss();
+          onClose();
         }}
       >
         <CloudUploadIcon />
@@ -103,14 +118,14 @@ export function CustomContextMenu() {
       <DropdownMenuItem
         onClick={() => {
           openExternalUrl(
-            `https://www.google.com/search?q=${encodeURIComponent(menu.data)}`,
+            `https://www.google.com/search?q=${encodeURIComponent(text)}`,
           );
-          dismiss();
+          onClose();
         }}
       >
         <SearchIcon />
         {t("searchWithGoogle")}
       </DropdownMenuItem>
-    </ContextMenuPortal>
+    </>
   );
 }

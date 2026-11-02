@@ -1,162 +1,240 @@
 import { flavorEntries } from "@catppuccin/palette";
+import { WTerm } from "@wterm/dom";
 import { stripAnsi } from "fancy-ansi";
-import { AnsiHtml } from "fancy-ansi/react";
-import { ClipboardIcon, CloudUploadIcon } from "lucide-react";
-import React, {
+import {
   type CSSProperties,
   use,
-  useCallback,
   useEffect,
   useEffectEvent,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import { TerminalThemeContext } from "@/components/providers/terminal-theme-context.tsx";
+import { ContextMenuPortal } from "@/components/context-menu-portal";
+import { SelectedTextActions } from "@/components/custom-context-menu";
+import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
+import { TransportContext } from "@/components/providers/transport-context";
 import type { LogScope } from "@/generated/soulfire/logs_pb";
-import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import { useContextMenu } from "@/hooks/use-context-menu";
 import { useTerminalLogs } from "@/hooks/use-terminal-logs";
-import { cn, isDemo, timestampToDate, uploadToMcLogs } from "@/lib/utils.tsx";
+import {
+  createTerminalOutput,
+  formatTerminalLine,
+} from "@/lib/terminal-output";
+import { isDemo } from "@/lib/utils";
 import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
-import { TransportContext } from "./providers/transport-context.tsx";
-import { Button } from "./ui/button.tsx";
-import { ScrollArea } from "./ui/scroll-area.tsx";
 
-// Use full logger name unless if
-// prefixed with com.soulfiremc then use only the last part
-function formatLoggerName(name: string | undefined): string | undefined {
-  if (name?.startsWith("com.soulfiremc.")) {
-    const parts = name.split(".");
-    return parts[parts.length - 1];
-  } else {
-    return name;
-  }
-}
+export function TerminalView({
+  entries,
+  theme,
+}: {
+  entries: readonly TerminalLine[];
+  theme: string;
+}) {
+  const { t, i18n } = useTranslation("common");
+  const hostRef = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<WTerm | null>(null);
+  const outputRef = useRef<ReturnType<typeof createTerminalOutput> | null>(
+    null,
+  );
+  const scrollFrame = useRef(0);
+  const [failed, setFailed] = useState(false);
+  const { contextMenu, handleContextMenu, dismiss, menuRef } =
+    useContextMenu<string>();
+  const selectedTheme =
+    flavorEntries.find(([name]) => name === theme)?.[1] ?? flavorEntries[0][1];
+  const { colors, dark } = selectedTheme;
 
-function isImportantLog(level: string | undefined): boolean {
-  if (level === undefined) {
-    return false;
-  }
+  const applyTheme = useEffectEvent(() => {
+    const rgb = (hex: string) => Number.parseInt(hex.slice(1), 16);
+    const palette = [
+      dark ? colors.surface1 : colors.subtext1,
+      colors.red,
+      colors.green,
+      colors.yellow,
+      colors.blue,
+      colors.pink,
+      colors.teal,
+      dark ? colors.subtext0 : colors.surface2,
+      dark ? colors.surface2 : colors.subtext0,
+      colors.red,
+      colors.green,
+      colors.yellow,
+      colors.blue,
+      colors.pink,
+      colors.teal,
+      dark ? colors.subtext1 : colors.surface1,
+    ];
+    terminalRef.current?.setThemeColors({
+      foreground: rgb(colors.text.hex),
+      background: rgb(colors.base.hex),
+      cursor: rgb(colors.text.hex),
+      palette: palette.map((color) => rgb(color.hex)),
+    });
+  });
 
-  const importantLevels = ["ERROR", "WARN", "FATAL"];
-  return importantLevels.includes(level.toUpperCase());
-}
+  const syncOutput = useEffectEvent((resized = false) => {
+    const host = hostRef.current;
+    const output = outputRef.current;
+    if (!host || !output) return;
+    const top = host.scrollTop;
+    const atBottom = top + host.clientHeight >= host.scrollHeight - 1;
+    const update = output.sync(entries, i18n.resolvedLanguage, resized);
+    if (update.reset && !atBottom) {
+      const rowHeight = Number.parseFloat(
+        getComputedStyle(host).getPropertyValue("--term-row-height"),
+      );
+      cancelAnimationFrame(scrollFrame.current);
+      scrollFrame.current = requestAnimationFrame(() => {
+        host.scrollTop = Math.max(0, top + update.rowShift * rowHeight);
+      });
+    }
+  });
 
-const MemoAnsiHtml = React.memo(
-  ({
-    content,
-  }: {
-    content: Pick<
-      TerminalLine,
-      | "message"
-      | "level"
-      | "timestamp"
-      | "loggerName"
-      | "instanceName"
-      | "botAccountName"
-    >;
-  }) => {
-    const copyToClipboard = useCopyToClipboard();
-    const { t, i18n } = useTranslation();
-
-    return (
-      <span className="w-full hover:bg-(--terminal-selection-bg)/25">
-        <span
-          className={cn({
-            "text-(--ansi-yellow)": content.level === "WARN",
-            "text-(--ansi-red)":
-              content.level === "ERROR" || content.level === "FATAL",
-          })}
-        >
-          <span>{content.level}</span>
-          {content.timestamp && (
-            <>
-              <span> </span>
-              <span>
-                {timestampToDate(content.timestamp).toLocaleTimeString(
-                  i18n.resolvedLanguage,
-                )}
-              </span>
-            </>
-          )}
-          {content.instanceName && (
-            <>
-              <span> </span>
-              <span>
-                {content.instanceName}
-                {content.botAccountName ? `:${content.botAccountName}` : ""}
-              </span>
-            </>
-          )}
-          <span> </span>
-          <span>{formatLoggerName(content.loggerName)}</span>
-          <span> </span>
-        </span>
-        <AnsiHtml
-          text={
-            stripAnsi(content.message).endsWith("\n")
-              ? content.message
-              : `${content.message}\n`
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    let disposed = false;
+    const previouslyFocused = document.activeElement;
+    const terminal = new WTerm(host, {
+      cursorBlink: false,
+      // Commands continue to use CommandInput and its permission checks.
+      onData: () => {},
+      onResize: () => {
+        if (outputRef.current) syncOutput(true);
+      },
+    });
+    terminalRef.current = terminal;
+    applyTheme();
+    void terminal.init().then(
+      () => {
+        if (disposed) return;
+        const input = host.querySelector("textarea");
+        if (input) {
+          input.readOnly = true;
+          // WTerm focuses its input during init. Opening a log view should keep
+          // focus on the command field or navigation that opened it.
+          if (document.activeElement === input) {
+            input.blur();
+            if (previouslyFocused instanceof HTMLElement)
+              previouslyFocused.focus({ preventScroll: true });
           }
-        />
-        {isImportantLog(content.level) && (
-          <>
-            <span className="select-none"> </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-fit px-0 select-none size-3"
-              onClick={() => {
-                copyToClipboard(stripAnsi(content.message));
-              }}
-              title={t("copyToClipboard")}
-            >
-              <ClipboardIcon />
-            </Button>
-            <span className="select-none"> </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-fit px-0 select-none size-3"
-              onClick={() => {
-                toast.promise(
-                  uploadToMcLogs(stripAnsi(content.message)).then(
-                    (response) => {
-                      if (response.success) {
-                        copyToClipboard(response.url);
-                        return response.url;
-                      } else {
-                        throw new Error(`Upload failed: ${response.error}`);
-                      }
-                    },
-                  ),
-                  {
-                    loading: t("mcLogsUpload.loading"),
-                    success: (url) => t("mcLogsUpload.success", { url }),
-                    error: t("mcLogsUpload.error"),
-                  },
-                );
-              }}
-              title={t("uploadToMcLogs")}
-            >
-              <CloudUploadIcon />
-            </Button>
-          </>
-        )}
-      </span>
+        }
+        outputRef.current = createTerminalOutput(terminal);
+        syncOutput();
+      },
+      (error: unknown) => {
+        if (disposed) return;
+        console.error("Could not initialize terminal", error);
+        terminal.destroy();
+        terminalRef.current = null;
+        setFailed(true);
+      },
     );
-  },
-);
+    return () => {
+      disposed = true;
+      cancelAnimationFrame(scrollFrame.current);
+      outputRef.current = null;
+      terminalRef.current = null;
+      terminal.destroy();
+    };
+  }, []);
 
-export const TerminalComponent = (props: { scope: LogScope }) => {
+  useEffect(() => {
+    syncOutput();
+  }, [entries, i18n.resolvedLanguage]);
+
+  useEffect(() => {
+    applyTheme();
+  }, [selectedTheme]);
+
+  return (
+    <>
+      <div
+        data-terminal-output
+        className="h-[calc(75vh-8rem)] overflow-hidden rounded-md"
+        style={
+          {
+            backgroundColor: colors.base.hex,
+            color: colors.text.hex,
+            "--term-selection-bg": `${colors.overlay2.hex}80`,
+          } as CSSProperties
+        }
+        onContextMenu={(event) => {
+          const text = terminalRef.current?.getSelectionText();
+          if (text) handleContextMenu(event, text);
+        }}
+        onMouseDownCapture={(event) => {
+          if (event.button === 2 && terminalRef.current?.getSelectionText())
+            event.preventDefault();
+        }}
+        onKeyDownCapture={(event) => {
+          if (failed) return;
+          const terminal = terminalRef.current;
+          const host = hostRef.current;
+          if (!terminal || !host) return;
+          const key = event.key.toLowerCase();
+          if ((event.ctrlKey || event.metaKey) && key === "c") return;
+          event.stopPropagation();
+          if ((event.ctrlKey || event.metaKey) && key === "a") {
+            event.preventDefault();
+            void terminal.selectAll();
+          } else if (event.key === "Escape") {
+            terminal.clearSelection();
+          } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+            const delta = {
+              ArrowUp: -16,
+              ArrowDown: 16,
+              PageUp: -host.clientHeight,
+              PageDown: host.clientHeight,
+              Home: -host.scrollHeight,
+              End: host.scrollHeight,
+            }[event.key];
+            if (delta !== undefined) {
+              event.preventDefault();
+              host.scrollTop += delta;
+            }
+          }
+        }}
+      >
+        {failed ? (
+          <pre className="h-full overflow-auto p-1 font-mono text-xs whitespace-pre-wrap break-all select-text">
+            {entries
+              .map((entry) =>
+                stripAnsi(formatTerminalLine(entry, i18n.resolvedLanguage)),
+              )
+              .join("")}
+          </pre>
+        ) : (
+          <div
+            ref={hostRef}
+            data-terminal-viewport
+            className="select-text"
+            aria-label={t("pageName.terminal")}
+          />
+        )}
+      </div>
+      {contextMenu && (
+        <ContextMenuPortal
+          menuRef={menuRef}
+          x={contextMenu.position.x}
+          y={contextMenu.position.y}
+          onClose={dismiss}
+        >
+          <SelectedTextActions text={contextMenu.data} onClose={dismiss} />
+        </ContextMenuPortal>
+      )}
+    </>
+  );
+}
+
+export function TerminalComponent({ scope }: { scope: LogScope }) {
   const { t } = useTranslation("common");
   const transport = use(TransportContext);
   const demo = isDemo();
   const { entries: liveEntries, historyLoaded } = useTerminalLogs(
     demo ? null : transport,
-    props.scope,
+    scope,
   );
   const entries = demo
     ? [1, 2, 3, 4].map((id) =>
@@ -176,90 +254,6 @@ export const TerminalComponent = (props: { scope: LogScope }) => {
         ]
       : liveEntries;
   const terminalTheme = use(TerminalThemeContext);
-  const paneRef = useRef<HTMLDivElement>(null);
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const selectedTheme =
-    flavorEntries.find((entry) => entry[0] === terminalTheme.value)?.[1] ||
-    flavorEntries[0][1];
 
-  const handleScroll = useCallback(() => {
-    if (paneRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = paneRef.current;
-      setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 1);
-    }
-  }, []);
-
-  useEffect(() => {
-    const pane = paneRef.current;
-    if (pane) {
-      pane.addEventListener("scroll", handleScroll);
-      return () => {
-        pane.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [handleScroll]);
-
-  const followLatest = useEffectEvent(() => {
-    if (isAtBottom && paneRef.current) {
-      paneRef.current.scrollTop = paneRef.current.scrollHeight;
-    }
-  });
-
-  useLayoutEffect(() => {
-    followLatest();
-  }, [entries, isAtBottom]);
-
-  useEffect(() => {
-    const pane = paneRef.current;
-    if (!pane) return;
-    const observer = new ResizeObserver(() => followLatest());
-    observer.observe(pane);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <ScrollArea
-      viewportRef={paneRef}
-      viewportClassName="overscroll-contain"
-      className="h-[calc(75vh-8rem)] rounded-md pr-4 font-mono text-xs"
-      style={
-        {
-          backgroundColor: selectedTheme.colors.base.hex,
-          color: selectedTheme.colors.text.hex,
-          "--color-border": `${selectedTheme.colors.surface2.hex}80`, // Add 50% opacity
-          "--ansi-black": selectedTheme.dark
-            ? selectedTheme.colors.surface1.hex
-            : selectedTheme.colors.subtext1.hex,
-          "--ansi-red": selectedTheme.colors.red.hex,
-          "--ansi-green": selectedTheme.colors.green.hex,
-          "--ansi-yellow": selectedTheme.colors.yellow.hex,
-          "--ansi-blue": selectedTheme.colors.blue.hex,
-          "--ansi-magenta": selectedTheme.colors.pink.hex,
-          "--ansi-cyan": selectedTheme.colors.teal.hex,
-          "--ansi-white": selectedTheme.dark
-            ? selectedTheme.colors.subtext0.hex
-            : selectedTheme.colors.surface2.hex,
-          "--ansi-bright-black": selectedTheme.dark
-            ? selectedTheme.colors.surface2.hex
-            : selectedTheme.colors.subtext0.hex,
-          "--ansi-bright-red": selectedTheme.colors.red.hex,
-          "--ansi-bright-green": selectedTheme.colors.green.hex,
-          "--ansi-bright-yellow": selectedTheme.colors.yellow.hex,
-          "--ansi-bright-blue": selectedTheme.colors.blue.hex,
-          "--ansi-bright-magenta": selectedTheme.colors.pink.hex,
-          "--ansi-bright-cyan": selectedTheme.colors.teal.hex,
-          "--ansi-bright-white": selectedTheme.dark
-            ? selectedTheme.colors.subtext1.hex
-            : selectedTheme.colors.surface1.hex,
-          "--terminal-selection-bg": selectedTheme.colors.overlay2.hex,
-        } as CSSProperties
-      }
-    >
-      <p className="h-full flex flex-col min-h-[calc(75vh-8rem)] cursor-text py-0.5 pl-0.5 break-all whitespace-pre-wrap select-text selection:bg-(--terminal-selection-bg)/25">
-        {entries.map((entry) => (
-          <MemoAnsiHtml key={entry.id} content={entry} />
-        ))}
-      </p>
-    </ScrollArea>
-  );
-};
+  return <TerminalView entries={entries} theme={terminalTheme.value} />;
+}

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@wterm/dom/css" layer(components);
 
 @custom-variant dark (&:is(.dark *));
 
@@ -238,5 +239,22 @@
   [data-app-drag-region] {
     app-region: drag;
     -webkit-app-region: drag;
+  }
+}
+
+@layer components {
+  .wterm[data-terminal-viewport] {
+    --term-font-family: var(--font-mono);
+    --term-font-size: 12px;
+    --term-line-height: 1.4;
+    height: 100%;
+    padding: 2px;
+    border-radius: 0;
+    box-shadow: none;
+    overscroll-behavior: contain;
+  }
+
+  [data-terminal-viewport] ::selection {
+    background: var(--term-selection-bg);
   }
 }
