@@ -44,10 +44,10 @@ export function createAnalyticsConsent(
     synchronize();
   }
 
-  function resetIdentity() {
+  function resetIdentity(resetDeviceId = false) {
     if (!configured) return;
     const status = getStatus();
-    client.reset();
+    client.reset(resetDeviceId);
     // The SDK clears consent on reset. Keep the browser's choice across logins.
     if (status === "pending") synchronize();
     else setConsent(status === "granted");
