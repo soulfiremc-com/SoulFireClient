@@ -1,6 +1,7 @@
 import { TrashIcon } from "lucide-react";
 import { memo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { TerminalMessage } from "@/components/terminal-message";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
@@ -15,7 +16,7 @@ interface ExecutionLogsProps {
 }
 
 function getLogLevelStyles(level: LogLevel): {
-  badge: "default" | "secondary" | "destructive" | "outline";
+  badge: "default" | "secondary" | "outline";
   text: string;
 } {
   switch (level) {
@@ -26,7 +27,7 @@ function getLogLevelStyles(level: LogLevel): {
     case "warn":
       return { badge: "outline", text: "text-warning-emphasis" };
     case "error":
-      return { badge: "destructive", text: "text-destructive" };
+      return { badge: "outline", text: "text-destructive" };
     default:
       return { badge: "default", text: "text-foreground" };
   }
@@ -61,7 +62,13 @@ const LogEntryRow = memo(function LogEntryRow({ entry }: LogEntryRowProps) {
       <span className="shrink-0 text-muted-foreground">
         {formatTimestamp(entry.timestamp)}
       </span>
-      <Badge variant={styles.badge} className="shrink-0 uppercase">
+      <Badge
+        variant={styles.badge}
+        className={cn(
+          "shrink-0 uppercase",
+          entry.level === "error" && "border-destructive/40 text-destructive",
+        )}
+      >
         {entry.level}
       </Badge>
       {entry.nodeId && (
@@ -73,7 +80,7 @@ const LogEntryRow = memo(function LogEntryRow({ entry }: LogEntryRowProps) {
         </span>
       )}
       <span className="col-span-full min-w-0 break-all whitespace-pre-wrap">
-        {entry.message}
+        <TerminalMessage entry={entry} />
       </span>
     </div>
   );

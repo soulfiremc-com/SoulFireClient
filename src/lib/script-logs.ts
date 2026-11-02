@@ -1,7 +1,7 @@
 import { create } from "@bufbuild/protobuf";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { createClient, type Transport } from "@connectrpc/connect";
-import { stripAnsi } from "fancy-ansi";
+import { terminalLogText } from "@/lib/terminal-interactions";
 import type { LogEntry } from "@/components/script-editor/types";
 import { LogScopeSchema, LogsService } from "@/generated/soulfire/logs_pb";
 import { createTerminalLogSession } from "@/stores/terminal-log-store";
@@ -64,7 +64,14 @@ export function watchScriptLogs(
             : new Date(),
           level: scriptLogLevel(entry.level),
           nodeId: null,
-          message: stripAnsi(entry.message),
+          // Preserve metadata only with the original independent provenance flags.
+          // Frontend events and untrusted script output remain inert text.
+          personal: entry.personal,
+          terminalInteractions: entry.terminalInteractions === true,
+          message:
+            entry.personal && entry.terminalInteractions
+              ? entry.message
+              : terminalLogText(entry.message, false),
         };
       }),
     );

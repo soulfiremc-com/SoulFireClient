@@ -107,3 +107,92 @@ test("script log feed reconciles history and live messages and retains repeated 
   }
   assert.equal(signal?.aborted, true);
 });
+
+test("script feed retains independent provenance and strips untrusted interaction strings", async () => {
+  const { encodeTerminalInteraction: marker, parseTerminalText } =
+    await import("./terminal-interactions");
+  const text =
+    marker({
+      hover: "Details",
+      click: { action: "copy_to_clipboard", value: "fixture-token" },
+    }) +
+    "Copy token" +
+    marker(null);
+  const messages = [
+    {
+      id: "trusted",
+      personal: true,
+      terminalInteractions: true,
+      message: text,
+    },
+    {
+      id: "raw-personal",
+      personal: true,
+      terminalInteractions: false,
+      message: text,
+    },
+    {
+      id: "nonpersonal",
+      personal: false,
+      terminalInteractions: true,
+      message: text,
+    },
+    {
+      id: "legacy",
+      personal: false,
+      message: "\x1b[31mLegacy\x1b[0m\x1b]777;soulfire;1;unfinished",
+    },
+  ];
+  let release = () => {};
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const transport = createRouterTransport((router) =>
+    router.service(LogsService, {
+      getPrevious: () => ({ messages }),
+      async *subscribe() {
+        yield { message: messages[0] };
+        await pending;
+      },
+    }),
+  );
+  let logs: LogEntry[] = [];
+  let ready = () => {};
+  const received = new Promise<void>((resolve) => {
+    ready = resolve;
+  });
+  const stop = watchScriptLogs(transport, "instance", "script", (incoming) => {
+    logs = mergeExecutionLogs(logs, incoming);
+    if (logs.length === 4) ready();
+  });
+  try {
+    await Promise.race([
+      received,
+      delay(2000).then(() => {
+        throw new Error("Log snapshot did not arrive");
+      }),
+    ]);
+    const trusted = logs.find((log) => log.id === "trusted")!;
+    assert.equal(trusted.personal, true);
+    assert.equal(trusted.terminalInteractions, true);
+    assert.equal(trusted.message, text);
+    assert.equal(
+      parseTerminalText(trusted)[0].interaction?.click?.value,
+      "fixture-token",
+    );
+    for (const id of ["raw-personal", "nonpersonal"]) {
+      const log = logs.find((log) => log.id === id)!;
+      assert.equal(log.message, "Copy token");
+      assert.ok(parseTerminalText(log).every((span) => !span.interaction));
+    }
+    assert.equal(logs.find((log) => log.id === "nonpersonal")!.personal, false);
+    assert.equal(
+      logs.find((log) => log.id === "nonpersonal")!.terminalInteractions,
+      true,
+    );
+    assert.equal(logs.find((log) => log.id === "legacy")!.message, "Legacy");
+  } finally {
+    stop();
+    release();
+  }
+});
