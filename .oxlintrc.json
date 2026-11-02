@@ -500,6 +500,15 @@
   },
   "overrides": [
     {
+      "files": ["src/components/developer/code-sample.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          { "allow": ["--syntax-light", "--syntax-dark"] }
+        ]
+      }
+    },
+    {
       "files": ["src/components/ui/**"],
       "rules": {
         "shadcn/no-unknown-classes": "off",

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, waitFor, within } from "storybook/test";
 import { Toaster, toast } from "sonner";
+import { useState, type ComponentProps } from "react";
 import { SdkQuickstart } from "./sdk-quickstart.tsx";
 
 const token = "test-api-token-not-a-secret";
@@ -65,6 +66,7 @@ export const LocalServer: Story = {
     await expect(canvas.getByLabelText("example.py")).toHaveTextContent(
       "yield from instance.bots()",
     );
+    await userEvent.click(canvas.getByRole("button", { name: "Run locally" }));
     await userEvent.click(
       canvas.getByRole("combobox", { name: "Terminal platform" }),
     );
@@ -82,7 +84,7 @@ export const LocalServer: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Read state" }));
     await userEvent.click(canvas.getByRole("combobox", { name: "Bot" }));
     await userEvent.click(
-      await within(document.body).findByRole("option", { name: "Miner" }),
+      await within(document.body).findByRole("option", { name: /Miner/ }),
     );
     await expect(canvas.getByLabelText("example.py")).toHaveTextContent(
       'instance.bot("33333333-3333-4333-8333-333333333333")',
@@ -103,12 +105,13 @@ export const PrivateToken: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Generate personal token" }),
     );
-    const input = canvas.getByLabelText("Personal API token");
+    const input = await canvas.findByLabelText("Personal API token");
     await waitFor(() => expect(input).toHaveValue(token));
     await expect(input).toHaveAttribute("type", "password");
     await expect(canvas.getByLabelText("example.ts")).not.toHaveTextContent(
       token,
     );
+    await userEvent.click(canvas.getByRole("button", { name: "Run locally" }));
     await expect(
       canvas.getByLabelText("Set the token and run"),
     ).not.toHaveTextContent(token);
@@ -122,6 +125,15 @@ export const PrivateToken: Story = {
       ).toBeVisible(),
     );
     await expect(document.body).not.toHaveTextContent(token);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Copy agent prompt" }),
+    );
+    await waitFor(() => {
+      const prompt =
+        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0];
+      expect(prompt).toContain("SOULFIRE_TOKEN");
+      expect(prompt).not.toContain(token);
+    });
   },
 };
 
@@ -138,6 +150,18 @@ export const EmptyInstance: Story = {
     await expect(
       canvas.getByRole("button", { name: "Copy script" }),
     ).toBeDisabled();
+    await userEvent.click(canvas.getByRole("button", { name: "Run locally" }));
+    await expect(
+      canvas.getByRole("button", { name: "Copy run commands" }),
+    ).toBeEnabled();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Copy agent prompt" }),
+    );
+    await waitFor(() =>
+      expect(
+        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0],
+      ).toContain("Ask me for a bot profile ID"),
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Open accounts" }),
     );
@@ -153,8 +177,8 @@ export const RestrictedUser: Story = {
   args: { generateToken: undefined },
   play: async ({ canvas }) => {
     await expect(
-      canvas.getByRole("button", { name: "Generate personal token" }),
-    ).toBeDisabled();
+      canvas.queryByRole("button", { name: "Generate personal token" }),
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByText(/Ask your administrator for a personal API token/),
     ).toBeVisible();
@@ -165,23 +189,43 @@ export const RestrictedUser: Story = {
 };
 
 export const Demo: Story = {
-  args: { demo: true, serverUrl: null, integrated: false },
-  play: async ({ canvas, args }) => {
+  args: {
+    demo: true,
+    serverUrl: null,
+    integrated: false,
+    instanceId: "demo",
+    instanceName: "Demo",
+  },
+  play: async ({ canvas, args, userEvent }) => {
     await expect(
-      canvas.getByText("Explore the examples in demo mode"),
+      canvas.getByText(/Demo values are shown in the examples/),
     ).toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Generate personal token" }),
-    ).toBeDisabled();
+      canvas.queryByRole("button", { name: "Generate personal token" }),
+    ).not.toBeInTheDocument();
     await expect(
       canvas.getByRole("button", { name: "Copy script" }),
-    ).toBeDisabled();
+    ).toBeEnabled();
     await expect(args.generateToken).not.toHaveBeenCalled();
     await expect(canvas.getByLabelText("example.ts")).toHaveTextContent(
       "YOUR_SOULFIRE_SERVER_URL",
     );
     await expect(canvas.getByLabelText("example.ts")).toHaveTextContent(
-      "YOUR_INSTANCE_ID",
+      'client.instance("demo")',
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Copy script" }));
+    await waitFor(() =>
+      expect(writeClipboard).toHaveBeenCalledWith(
+        canvas.getByLabelText("example.ts").textContent,
+      ),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Copy agent prompt" }),
+    );
+    await waitFor(() =>
+      expect(
+        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0],
+      ).toContain("All target values are samples"),
     );
   },
 };
@@ -202,7 +246,9 @@ export const TokenFailure: Story = {
     await expect(
       canvas.getByRole("button", { name: "Generate personal token" }),
     ).toBeEnabled();
-    await expect(canvas.getByLabelText("Personal API token")).toHaveValue("");
+    await expect(
+      canvas.queryByLabelText("Personal API token"),
+    ).not.toBeInTheDocument();
     await expect(document.body).not.toHaveTextContent(
       "A private upstream response",
     );
@@ -223,4 +269,90 @@ export const RemoteServer: Story = {
 
 export const DarkServer: Story = {
   globals: { theme: "dark" },
+  play: async ({ canvas }) => {
+    const code = canvas.getByLabelText("example.ts");
+    await waitFor(() =>
+      expect(code).toHaveAttribute("data-highlighted", "true"),
+    );
+    const tokens = code.querySelectorAll<HTMLElement>("[data-syntax-token]");
+    await expect(tokens.length).toBeGreaterThan(1);
+    await expect(
+      new Set(Array.from(tokens, (token) => getComputedStyle(token).color))
+        .size,
+    ).toBeGreaterThan(1);
+  },
+};
+
+function InstanceSelectionExample(args: ComponentProps<typeof SdkQuickstart>) {
+  const [instanceId, setInstanceId] = useState(args.instanceId);
+  const instance = args.instances?.find((entry) => entry.id === instanceId);
+  return (
+    <SdkQuickstart
+      {...args}
+      instanceId={instanceId}
+      instanceName={instance?.name ?? args.instanceName}
+      onInstanceChange={(next) => {
+        args.onInstanceChange?.(next);
+        setInstanceId(next);
+      }}
+    />
+  );
+}
+
+export const InstanceSelection: Story = {
+  args: {
+    instances: [
+      {
+        id: "11111111-1111-4111-8111-111111111111",
+        name: "Development server",
+      },
+      { id: "44444444-4444-4444-8444-444444444444", name: "Test fleet" },
+    ],
+    onInstanceChange: fn(),
+  },
+  render: (args) => <InstanceSelectionExample {...args} />,
+  play: async ({ canvas, userEvent, args }) => {
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Generate personal token" }),
+    );
+    await expect(
+      await canvas.findByLabelText("Personal API token"),
+    ).toHaveValue(token);
+    await userEvent.click(canvas.getByRole("button", { name: "Python" }));
+    await userEvent.click(canvas.getByRole("combobox", { name: "Instance" }));
+    await userEvent.click(
+      await within(document.body).findByRole("option", { name: "Test fleet" }),
+    );
+    await expect(args.onInstanceChange).toHaveBeenCalledWith(
+      "44444444-4444-4444-8444-444444444444",
+    );
+    await expect(canvas.getByLabelText("example.py")).toHaveTextContent(
+      'client.instance("44444444-4444-4444-8444-444444444444")',
+    );
+    await expect(canvas.getByLabelText("Personal API token")).toHaveValue(
+      token,
+    );
+    await expect(args.generateToken).toHaveBeenCalledTimes(1);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Copy agent prompt" }),
+    );
+    await waitFor(() =>
+      expect(
+        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0],
+      ).toContain("44444444-4444-4444-8444-444444444444"),
+    );
+  },
+};
+
+export const Impersonating: Story = {
+  args: { impersonating: true },
+  play: async ({ canvas, args }) => {
+    await expect(
+      canvas.queryByRole("button", { name: "Generate personal token" }),
+    ).not.toBeInTheDocument();
+    await expect(
+      canvas.getByText(/Stop impersonating to generate your own API token/),
+    ).toBeVisible();
+    await expect(args.generateToken).not.toHaveBeenCalled();
+  },
 };

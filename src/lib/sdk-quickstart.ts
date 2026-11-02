@@ -37,14 +37,17 @@ export function isLocalSdkServer(address: string): boolean {
   );
 }
 
-export function buildSdkQuickstart(options: {
+export type SdkQuickstartOptions = {
   language: SdkLanguage;
   recipe: SdkRecipe;
   shell: SdkShell;
   serverUrl: string;
   instanceId: string;
   botId?: string;
-}) {
+  demo?: boolean;
+};
+
+export function buildSdkQuickstart(options: SdkQuickstartOptions) {
   const { language, recipe, shell, serverUrl, instanceId } = options;
   const url = JSON.stringify(
     sdkServerUrl(serverUrl) ?? "YOUR_SOULFIRE_SERVER_URL",
@@ -55,6 +58,9 @@ export function buildSdkQuickstart(options: {
     shell === "powershell"
       ? "$env:SOULFIRE_TOKEN = 'PASTE_YOUR_API_TOKEN'"
       : "export SOULFIRE_TOKEN='PASTE_YOUR_API_TOKEN'";
+  const demoComment = options.demo
+    ? "Demo sample. Replace the server URL and target IDs before running.\n\n"
+    : "";
 
   if (language === "typescript") {
     const operation =
@@ -69,7 +75,7 @@ export function buildSdkQuickstart(options: {
       filename: "example.ts",
       install: `bun add @soulfiremc/sdk@${SDK_EXAMPLE_VERSION} "effect@^4"`,
       run: `${setToken}\nbun run example.ts`,
-      script: `import { Effect } from "effect";
+      script: `${demoComment ? `// ${demoComment}` : ""}import { Effect } from "effect";
 import { SoulFire } from "@soulfiremc/sdk/bun";
 
 const token = process.env.SOULFIRE_TOKEN;
@@ -109,18 +115,22 @@ await Effect.runPromise(program);
     filename: "example.py",
     install: `${createVenv}\n${executable} -m pip install soulfire==${SDK_EXAMPLE_VERSION}`,
     run: `${setToken}\n${executable} example.py`,
-    script: `import asyncio
+    script: `${demoComment ? `# ${demoComment}` : ""}import asyncio
 import os
 
 from effect_py import EffectGen, Scope, gen, run_async, scoped
 from soulfire import SoulFire, SoulFireOperationError
+
+token = os.environ.get("SOULFIRE_TOKEN")
+if not token:
+    raise SystemExit("Set SOULFIRE_TOKEN before running.")
 
 
 @gen
 def program() -> EffectGen[None, SoulFireOperationError, Scope]:
     client = yield from SoulFire.connect(
         ${url},
-        token=os.environ["SOULFIRE_TOKEN"],
+        token=token,
     )
     instance = client.instance(${instance})
 ${operation}
@@ -129,4 +139,69 @@ ${operation}
 asyncio.run(run_async(scoped(program).or_die()))
 `,
   };
+}
+
+const AGENT_GOALS: Record<SdkRecipe, string> = {
+  "list-bots":
+    "list the names, profile IDs, and connection states of every bot in the selected instance",
+  "read-state":
+    "read and print the latest live state of the selected bot without starting it",
+  "send-chat":
+    "send one public chat message as the selected bot, only when I run the script",
+};
+
+export function buildSdkAgentPrompt(
+  options: SdkQuickstartOptions & {
+    instanceName: string;
+    botName?: string;
+  },
+) {
+  const example = buildSdkQuickstart(options);
+  const url = sdkServerUrl(options.serverUrl);
+  const target = [
+    `SoulFire API base URL: ${url ?? "ask me for the real SoulFire API address before running"}`,
+    `Instance: ${JSON.stringify(options.instanceName)} (ID: ${JSON.stringify(options.instanceId)})`,
+    ...(options.recipe !== "list-bots"
+      ? [
+          `Bot profile ID: ${JSON.stringify(options.botId || "YOUR_BOT_ID")}${options.botName ? ` (${JSON.stringify(options.botName)})` : ""}`,
+        ]
+      : []),
+  ];
+  return [
+    `Write a ${options.language === "python" ? "Python 3.14+" : "TypeScript / Bun"} script using the SoulFire SDK to ${AGENT_GOALS[options.recipe]}.`,
+    ...(options.demo
+      ? [
+          "This prompt was copied from demo mode. All target values are samples. Ask me for my real server address, instance ID, and bot ID before running anything.",
+        ]
+      : []),
+    "",
+    ...target,
+    ...(options.recipe !== "list-bots" && !options.botId
+      ? [
+          "No bot is selected. Ask me for a bot profile ID from this instance before running the bot-specific example.",
+        ]
+      : []),
+    `Terminal: ${options.shell === "powershell" ? "Windows PowerShell" : "macOS / Linux"}`,
+    "",
+    `Use SDK ${SDK_EXAMPLE_VERSION}. Install dependencies with:`,
+    example.install,
+    "",
+    "Read the personal API token from SOULFIRE_TOKEN. Never hard-code or print it, and do not ask me to paste it into this conversation. I will set it locally in my terminal.",
+    ...(url && isLocalSdkServer(url)
+      ? [
+          "This API address is local. Run the script on the same computer as the SoulFire server.",
+        ]
+      : []),
+    "",
+    "Start from this verified example and preserve its scoped connection cleanup:",
+    `\`\`\`${options.language}`,
+    example.script.trimEnd(),
+    "```",
+    "",
+    "Run commands (replace the token placeholder locally):",
+    example.run,
+    "",
+    "SDK guide: https://soulfiremc.com/docs/sdk",
+    `API reference: ${options.language === "python" ? "https://py.soulfiremc.com/" : "https://ts.soulfiremc.com/"}`,
+  ].join("\n");
 }

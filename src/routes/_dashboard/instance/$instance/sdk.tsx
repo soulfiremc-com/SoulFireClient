@@ -16,7 +16,11 @@ import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { sdkServerUrl } from "@/lib/sdk-quickstart.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
-import { getServerAddress, getServerType } from "@/lib/web-rpc.ts";
+import {
+  getServerAddress,
+  getServerType,
+  isImpersonating,
+} from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/sdk")({
   beforeLoad: () =>
@@ -40,10 +44,14 @@ function SdkPage() {
 }
 
 function Content() {
-  const { instanceInfoQueryOptions, clientDataQueryOptions } =
-    Route.useRouteContext();
+  const {
+    instanceInfoQueryOptions,
+    clientDataQueryOptions,
+    instanceListQueryOptions,
+  } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  const { data: instanceList } = useQuery(instanceListQueryOptions);
   const transport = use(TransportContext);
   const navigate = useNavigate();
   const { data: statuses } = useQuery({
@@ -57,6 +65,7 @@ function Content() {
     statuses?.bots.map((bot) => [bot.profileId, bot.isOnline]),
   );
   const demo = transport === null;
+  const impersonating = !demo && isImpersonating();
   const serverUrl = demo
     ? null
     : (sdkServerUrl(getServerAddress()) ??
@@ -64,19 +73,31 @@ function Content() {
 
   return (
     <SdkQuickstart
-      key={`${instanceInfo.id}:${serverUrl}`}
+      key={`${serverUrl}:${impersonating}`}
       serverUrl={serverUrl}
       instanceId={instanceInfo.id}
       instanceName={instanceInfo.friendlyName}
+      instances={instanceList?.instances.map((instance) => ({
+        id: instance.id,
+        name: instance.friendlyName,
+      }))}
+      onInstanceChange={(instance) =>
+        void navigate({
+          to: "/instance/$instance/sdk",
+          params: { instance },
+        })
+      }
       bots={instanceInfo.profile.accounts.map((account) => ({
         id: account.profileId,
         name: account.lastKnownName,
         online: onlineById.get(account.profileId),
       }))}
       demo={demo}
+      impersonating={impersonating}
       integrated={!demo && getServerType() === "integrated"}
       generateToken={
         !demo &&
+        !impersonating &&
         hasGlobalPermission(clientInfo, GlobalPermission.GENERATE_API_TOKEN)
           ? async (signal) =>
               (

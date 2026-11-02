@@ -5,6 +5,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+[data-slot="sdk-code-sample"] [data-syntax-token] {
+  color: var(--syntax-light);
+}
+
+.dark [data-slot="sdk-code-sample"] [data-syntax-token] {
+  color: var(--syntax-dark);
+}
+
 :root {
   --provider-accent: var(--primary);
   --provider-tile: #ffffff;

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import {
   buildSdkQuickstart,
+  buildSdkAgentPrompt,
   isLocalSdkServer,
   SDK_RECIPES,
   sdkServerUrl,
@@ -51,6 +52,82 @@ describe("SDK connection addresses", () => {
       "invalid",
     ])
       assert.equal(isLocalSdkServer(url), false);
+  });
+});
+
+describe("agent prompts", () => {
+  const target = {
+    language: "typescript" as const,
+    recipe: "list-bots" as const,
+    shell: "posix" as const,
+    serverUrl:
+      "https://server.example.test/api?token=private-query#private-fragment",
+    instanceId: "instance-current",
+    instanceName: "Current instance",
+    botId: "bot-current",
+    botName: "Builder",
+    token: "generated-token-must-stay-private",
+  };
+  test("uses the current connection, verified example and exact installation commands", () => {
+    const prompt = buildSdkAgentPrompt(target);
+    const example = buildSdkQuickstart(target);
+    assert.ok(prompt.includes("https://server.example.test/api"));
+    assert.ok(prompt.includes(target.instanceId));
+    assert.ok(prompt.includes(example.install));
+    assert.ok(prompt.includes(example.script.trimEnd()));
+    assert.ok(prompt.includes("SOULFIRE_TOKEN"));
+    assert.ok(prompt.includes("https://ts.soulfiremc.com/"));
+    assert.ok(!prompt.includes(target.token));
+    assert.ok(!prompt.includes("private-query"));
+    assert.ok(!prompt.includes("private-fragment"));
+    assert.ok(!prompt.includes(target.botId));
+  });
+  test("bot actions include the selected bot and terminal platform", () => {
+    const prompt = buildSdkAgentPrompt({
+      ...target,
+      language: "python",
+      recipe: "send-chat",
+      shell: "powershell",
+    });
+    assert.ok(prompt.includes(target.botId));
+    assert.ok(prompt.includes(target.botName));
+    assert.ok(prompt.includes("Windows PowerShell"));
+    assert.ok(prompt.includes("py -3.14 -m venv .venv"));
+    assert.ok(prompt.includes("https://py.soulfiremc.com/"));
+    assert.ok(prompt.includes("only when I run the script"));
+  });
+  test("demo samples match the displayed target and ask for real connection details", () => {
+    const options = {
+      ...target,
+      demo: true,
+      serverUrl: "",
+      instanceId: "demo",
+      recipe: "read-state" as const,
+    };
+    const example = buildSdkQuickstart(options);
+    const prompt = buildSdkAgentPrompt(options);
+    assert.ok(example.script.startsWith("// Demo sample."));
+    assert.ok(example.script.includes('client.instance("demo")'));
+    assert.ok(example.script.includes(target.botId));
+    assert.ok(prompt.includes("All target values are samples"));
+    assert.ok(prompt.includes("Ask me for my real server address"));
+    assert.ok(!prompt.includes("demo.soulfiremc.com"));
+  });
+  test("credentialed addresses cannot enter prompts", () => {
+    const prompt = buildSdkAgentPrompt({
+      ...target,
+      serverUrl: "https://user:secret-password@server.example.test",
+    });
+    assert.ok(!prompt.includes("secret-password"));
+    assert.ok(prompt.includes("ask me for the real SoulFire API address"));
+  });
+  test("bot-specific prompts request a missing bot ID", () => {
+    const prompt = buildSdkAgentPrompt({
+      ...target,
+      recipe: "read-state",
+      botId: undefined,
+    });
+    assert.ok(prompt.includes("Ask me for a bot profile ID"));
   });
 });
 
@@ -110,6 +187,26 @@ describe("SDK starter projects", () => {
     assert.equal(
       result.run,
       "export SOULFIRE_TOKEN='PASTE_YOUR_API_TOKEN'\n.venv/bin/python example.py",
+    );
+  });
+  test("Python reports a missing API token before connecting", () => {
+    const example = buildSdkQuickstart({
+      ...target,
+      language: "python",
+      recipe: "list-bots",
+      shell: "posix",
+    });
+    assert.ok(
+      example.script.includes('token = os.environ.get("SOULFIRE_TOKEN")'),
+    );
+    assert.ok(
+      example.script.includes(
+        'raise SystemExit("Set SOULFIRE_TOKEN before running.")',
+      ),
+    );
+    assert.ok(
+      example.script.indexOf("raise SystemExit") <
+        example.script.indexOf("SoulFire.connect"),
     );
   });
   test("missing targets use explicit placeholders", () => {

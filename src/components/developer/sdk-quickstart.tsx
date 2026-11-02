@@ -1,7 +1,7 @@
 import {
   ArrowUpRightIcon,
   BookOpenTextIcon,
-  CheckIcon,
+  ChevronDownIcon,
   ClipboardIcon,
   CodeXmlIcon,
   KeyRoundIcon,
@@ -9,12 +9,13 @@ import {
   LoaderCircleIcon,
   MessageSquareIcon,
   MonitorIcon,
-  ServerIcon,
+  SparklesIcon,
   SquareTerminalIcon,
   UnplugIcon,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CodeSample } from "@/components/developer/code-sample.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -22,11 +23,14 @@ import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible.tsx";
 import {
   Field,
   FieldDescription,
@@ -51,6 +55,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import {
+  buildSdkAgentPrompt,
   buildSdkQuickstart,
   isLocalSdkServer,
   SDK_EXAMPLE_VERSION,
@@ -59,60 +64,23 @@ import {
   type SdkShell,
 } from "@/lib/sdk-quickstart.ts";
 
-export type SdkQuickstartBot = {
-  id: string;
-  name: string;
-  online?: boolean;
-};
+export type SdkQuickstartBot = { id: string; name: string; online?: boolean };
+export type SdkQuickstartInstance = { id: string; name: string };
 
 type Props = {
   serverUrl: string | null;
   instanceId: string;
   instanceName: string;
+  instances?: SdkQuickstartInstance[];
+  onInstanceChange?: (instanceId: string) => void;
   bots: SdkQuickstartBot[];
   demo?: boolean;
   integrated?: boolean;
+  impersonating?: boolean;
   generateToken?: (signal: AbortSignal) => Promise<string>;
   onOpenAccounts: () => void;
   onOpenBots: () => void;
 };
-
-function CodeSample({
-  title,
-  code,
-  copyLabel,
-  disabled = false,
-}: {
-  title: string;
-  code: string;
-  copyLabel: string;
-  disabled?: boolean;
-}) {
-  const copy = useCopyToClipboard({ sensitive: true });
-  return (
-    <figure className="min-w-0 overflow-hidden rounded-lg border">
-      <figcaption className="flex items-center justify-between gap-3 border-b px-3 py-2">
-        <span className="truncate font-mono text-xs">{title}</span>
-        <Button
-          variant="ghost"
-          size="sm"
-          disabled={disabled}
-          onClick={() => copy(code)}
-        >
-          <ClipboardIcon data-icon="inline-start" />
-          {copyLabel}
-        </Button>
-      </figcaption>
-      <pre
-        className="overflow-x-auto bg-muted/40 p-4 text-xs leading-relaxed"
-        tabIndex={0}
-        aria-label={title}
-      >
-        <code>{code}</code>
-      </pre>
-    </figure>
-  );
-}
 
 const recipes = [
   { id: "list-bots", Icon: ListIcon },
@@ -124,9 +92,12 @@ export function SdkQuickstart({
   serverUrl,
   instanceId,
   instanceName,
+  instances = [],
+  onInstanceChange,
   bots,
   demo = false,
   integrated = false,
+  impersonating = false,
   generateToken,
   onOpenAccounts,
   onOpenBots,
@@ -145,21 +116,43 @@ export function SdkQuickstart({
   const [tokenError, setTokenError] = useState(false);
   const pending = useRef<AbortController | null>(null);
   useEffect(() => () => pending.current?.abort(), []);
-  const bot = bots.find((entry) => entry.id === botId) ?? bots[0];
+  const bot =
+    bots.find((entry) => entry.id === botId) ??
+    bots.find((entry) => entry.online) ??
+    bots[0];
   const needsBot = recipe !== "list-bots";
-  const example = buildSdkQuickstart({
+  const options = {
     language,
     recipe,
     shell,
     serverUrl: serverUrl ?? "",
-    instanceId: demo ? "YOUR_INSTANCE_ID" : instanceId,
-    botId: demo ? undefined : bot?.id,
+    instanceId,
+    botId: bot?.id,
+    demo,
+  };
+  const example = buildSdkQuickstart(options);
+  const agentPrompt = buildSdkAgentPrompt({
+    ...options,
+    instanceName,
+    botName: bot?.name,
   });
-  const copyDisabled = !serverUrl || (needsBot && !bot);
+  const copyDisabled = needsBot && !bot;
   const local = !!serverUrl && isLocalSdkServer(serverUrl);
+  const terminalLanguage =
+    shell === "powershell" ? "powershell" : "shellscript";
+  const availableInstances = instances.some((entry) => entry.id === instanceId)
+    ? instances
+    : [{ id: instanceId, name: instanceName }, ...instances];
 
   async function createToken() {
-    if (!generateToken || pending.current || demo || !serverUrl) return;
+    if (
+      !generateToken ||
+      pending.current ||
+      demo ||
+      impersonating ||
+      !serverUrl
+    )
+      return;
     const controller = new AbortController();
     pending.current = controller;
     setGenerating(true);
@@ -188,65 +181,132 @@ export function SdkQuickstart({
             {t("sdk.description")}
           </p>
         </div>
-        <Button
-          variant="outline"
-          nativeButton={false}
-          render={<ExternalLink href="https://soulfiremc.com/docs/sdk" />}
-        >
-          <BookOpenTextIcon data-icon="inline-start" />
-          {t("sdk.docs")}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={() => copy(agentPrompt)}>
+            <SparklesIcon data-icon="inline-start" />
+            {t("sdk.copyAgentPrompt")}
+          </Button>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<ExternalLink href="https://soulfiremc.com/docs/sdk" />}
+          >
+            <BookOpenTextIcon data-icon="inline-start" />
+            {t("sdk.docs")}
+          </Button>
+        </div>
       </div>
 
-      {demo && (
-        <Alert>
-          <UnplugIcon />
-          <AlertTitle>{t("sdk.demoTitle")}</AlertTitle>
-          <AlertDescription>{t("sdk.demoBody")}</AlertDescription>
-        </Alert>
-      )}
-
-      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-        <div className="flex min-w-0 flex-col gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                <h2>{t("sdk.connectionTitle")}</h2>
-              </CardTitle>
-              <CardDescription>
-                {t("sdk.connectionDescription")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <FieldGroup>
-                <Field>
-                  <FieldLabel htmlFor={`${id}-url`}>
-                    <ServerIcon />
-                    {t("sdk.serverUrl")}
-                  </FieldLabel>
+      <Card>
+        <CardHeader>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <CardTitle>
+              <h2>{t("sdk.connectionTitle")}</h2>
+            </CardTitle>
+            <Badge variant="outline">
+              {t(
+                demo
+                  ? "sdk.demoBadge"
+                  : !serverUrl
+                    ? "sdk.unavailableBadge"
+                    : local
+                      ? "sdk.localBadge"
+                      : "sdk.remoteBadge",
+              )}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <FieldGroup className="grid gap-4 md:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor={`${id}-url`}>
+                {t("sdk.serverUrl")}
+              </FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id={`${id}-url`}
+                  readOnly
+                  value={serverUrl ?? ""}
+                  placeholder={
+                    demo ? "YOUR_SOULFIRE_SERVER_URL" : t("sdk.noUrl")
+                  }
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    size="icon-xs"
+                    aria-label={t("sdk.copyUrl")}
+                    disabled={!serverUrl}
+                    onClick={() => serverUrl && copy(serverUrl)}
+                  >
+                    <ClipboardIcon />
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+              <FieldDescription>
+                {t(demo ? "sdk.demoBody" : "sdk.connectionDescription")}
+              </FieldDescription>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`${id}-instance`}>
+                {t("sdk.targetTitle")}
+              </FieldLabel>
+              <div className="flex items-center gap-2">
+                {availableInstances.length > 1 && onInstanceChange ? (
+                  <Select
+                    value={instanceId}
+                    onValueChange={(value) => {
+                      if (value && value !== instanceId)
+                        onInstanceChange(value);
+                    }}
+                    items={availableInstances.map((entry) => ({
+                      value: entry.id,
+                      label: entry.name,
+                    }))}
+                  >
+                    <SelectTrigger id={`${id}-instance`} className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent
+                      listProps={{ "aria-label": t("sdk.targetTitle") }}
+                    >
+                      <SelectGroup>
+                        {availableInstances.map((entry) => (
+                          <SelectItem key={entry.id} value={entry.id}>
+                            {entry.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                ) : (
                   <InputGroup>
                     <InputGroupInput
-                      id={`${id}-url`}
+                      id={`${id}-instance`}
                       readOnly
-                      value={serverUrl ?? ""}
-                      placeholder={t("sdk.noUrl")}
+                      value={instanceName}
                     />
-                    <InputGroupAddon align="inline-end">
-                      <InputGroupButton
-                        size="icon-xs"
-                        aria-label={t("sdk.copyUrl")}
-                        disabled={!serverUrl}
-                        onClick={() => serverUrl && copy(serverUrl)}
-                      >
-                        <ClipboardIcon />
-                      </InputGroupButton>
-                    </InputGroupAddon>
                   </InputGroup>
-                  <FieldDescription>{t("sdk.serverUrlHelp")}</FieldDescription>
-                </Field>
+                )}
+                <Button
+                  size="icon"
+                  variant="outline"
+                  aria-label={t("sdk.copyInstanceId")}
+                  onClick={() => copy(instanceId)}
+                >
+                  <ClipboardIcon />
+                </Button>
+              </div>
+              <FieldDescription>
+                <code>{instanceId}</code>
+              </FieldDescription>
+            </Field>
+          </FieldGroup>
+          {!demo && (
+            <>
+              <Separator />
+              {token ? (
                 <Field>
                   <FieldLabel htmlFor={`${id}-token`}>
-                    <KeyRoundIcon />
                     {t("sdk.token")}
                   </FieldLabel>
                   <InputGroup>
@@ -256,13 +316,11 @@ export function SdkQuickstart({
                       autoComplete="off"
                       readOnly
                       value={token}
-                      placeholder={t("sdk.tokenPlaceholder")}
                     />
                     <InputGroupAddon align="inline-end">
                       <InputGroupButton
                         size="icon-xs"
                         aria-label={t("sdk.copyToken")}
-                        disabled={!token}
                         onClick={() => copy(token)}
                       >
                         <ClipboardIcon />
@@ -271,229 +329,188 @@ export function SdkQuickstart({
                   </InputGroup>
                   <FieldDescription>{t("sdk.tokenHelp")}</FieldDescription>
                 </Field>
-                <Button
-                  disabled={
-                    !generateToken ||
-                    generating ||
-                    demo ||
-                    !serverUrl ||
-                    !!token
-                  }
-                  onClick={() => void createToken()}
-                >
-                  {generating ? (
-                    <LoaderCircleIcon
-                      className="animate-spin"
-                      data-icon="inline-start"
-                    />
-                  ) : token ? (
-                    <CheckIcon data-icon="inline-start" />
-                  ) : (
-                    <KeyRoundIcon data-icon="inline-start" />
+              ) : (
+                <div className="flex flex-wrap items-center gap-3">
+                  {generateToken && !impersonating && serverUrl && (
+                    <Button
+                      variant="outline"
+                      disabled={generating}
+                      onClick={() => void createToken()}
+                    >
+                      {generating ? (
+                        <LoaderCircleIcon
+                          className="animate-spin"
+                          data-icon="inline-start"
+                        />
+                      ) : (
+                        <KeyRoundIcon data-icon="inline-start" />
+                      )}
+                      {t(generating ? "sdk.generating" : "sdk.generateToken")}
+                    </Button>
                   )}
-                  {t(
-                    generating
-                      ? "sdk.generating"
-                      : token
-                        ? "sdk.tokenReady"
-                        : "sdk.generateToken",
-                  )}
-                </Button>
-                {!demo && !generateToken && (
-                  <p className="text-sm text-muted-foreground">
-                    {t("sdk.tokenPermission")}
+                  <p className="max-w-2xl text-xs text-muted-foreground">
+                    {t(
+                      impersonating
+                        ? "sdk.impersonatingHelp"
+                        : !serverUrl
+                          ? "sdk.missingUrlHelp"
+                          : !generateToken
+                            ? "sdk.tokenPermission"
+                            : "sdk.tokenSetupHelp",
+                    )}
                   </p>
-                )}
-                {tokenError && (
-                  <Alert>
-                    <AlertTitle>{t("sdk.tokenError")}</AlertTitle>
-                    <AlertDescription>{t("sdk.tokenRetry")}</AlertDescription>
-                  </Alert>
-                )}
-              </FieldGroup>
-            </CardContent>
-            <CardFooter className="flex flex-col items-start gap-2">
-              <Badge variant="outline">
-                {t(
-                  demo
-                    ? "sdk.demoBadge"
-                    : !serverUrl
-                      ? "sdk.unavailableBadge"
-                      : local
-                        ? "sdk.localBadge"
-                        : "sdk.remoteBadge",
-                )}
-              </Badge>
-              <p className="text-xs text-foreground/70">
-                {t(
-                  demo
-                    ? "sdk.demoBody"
-                    : !serverUrl
-                      ? "sdk.missingUrlHelp"
-                      : local
-                        ? "sdk.localHelp"
-                        : "sdk.remoteHelp",
-                )}
-              </p>
-              {integrated && (
-                <p className="text-xs text-foreground/70">
-                  {t("sdk.integratedHelp")}
+                </div>
+              )}
+              {tokenError && (
+                <Alert>
+                  <AlertTitle>{t("sdk.tokenError")}</AlertTitle>
+                  <AlertDescription>{t("sdk.tokenRetry")}</AlertDescription>
+                </Alert>
+              )}
+              {serverUrl && local && (
+                <p className="text-xs text-muted-foreground">
+                  {t(integrated ? "sdk.integratedHelp" : "sdk.localHelp")}
                 </p>
               )}
-            </CardFooter>
-          </Card>
+            </>
+          )}
+        </CardContent>
+      </Card>
 
-          <section
-            className="flex flex-col gap-3 px-1"
-            aria-labelledby={`${id}-target`}
+      <section
+        className="flex min-w-0 flex-col gap-4"
+        aria-labelledby={`${id}-example`}
+      >
+        <h2 id={`${id}-example`} className="text-lg font-semibold">
+          {t("sdk.exampleTitle")}
+        </h2>
+        <div className="flex flex-wrap items-center gap-3">
+          <ToggleGroup
+            aria-orientation={undefined}
+            variant="outline"
+            aria-label={t("sdk.language")}
+            value={[language]}
+            onValueChange={(value) => {
+              if (value[0]) setLanguage(value[0] as SdkLanguage);
+            }}
           >
-            <h2 id={`${id}-target`} className="font-medium">
-              {t("sdk.targetTitle")}
-            </h2>
-            <p className="text-sm">{instanceName}</p>
-            <InputGroup>
-              <InputGroupInput
-                aria-label={t("sdk.instanceId")}
-                value={instanceId}
-                readOnly
-              />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  size="icon-xs"
-                  aria-label={t("sdk.copyInstanceId")}
-                  onClick={() => copy(instanceId)}
-                >
-                  <ClipboardIcon />
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-            <p className="text-xs text-foreground/70">{t("sdk.targetHelp")}</p>
-            <Button variant="outline" onClick={onOpenBots}>
-              {t("sdk.openBots")}
-              <ArrowUpRightIcon data-icon="inline-end" />
+            <ToggleGroupItem value="typescript">
+              TypeScript / Bun
+            </ToggleGroupItem>
+            <ToggleGroupItem value="python">Python</ToggleGroupItem>
+          </ToggleGroup>
+          <ToggleGroup
+            aria-orientation={undefined}
+            variant="outline"
+            className="flex-wrap"
+            aria-label={t("sdk.recipe")}
+            value={[recipe]}
+            onValueChange={(value) => {
+              if (value[0]) setRecipe(value[0] as SdkRecipe);
+            }}
+          >
+            {recipes.map(({ id: recipeId, Icon }) => (
+              <ToggleGroupItem key={recipeId} value={recipeId}>
+                <Icon data-icon="inline-start" />
+                {t(`sdk.recipes.${recipeId}.title`)}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {t(`sdk.recipes.${recipe}.description`)}
+        </p>
+        {needsBot && bot && (
+          <Field>
+            <FieldLabel htmlFor={`${id}-bot`}>{t("sdk.bot")}</FieldLabel>
+            <div className="flex flex-wrap items-center gap-2">
+              <Select
+                value={bot.id}
+                onValueChange={(value) => {
+                  if (value) setBotId(value);
+                }}
+                items={bots.map((entry) => ({
+                  value: entry.id,
+                  label: entry.name,
+                }))}
+              >
+                <SelectTrigger id={`${id}-bot`} className="w-full sm:max-w-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent listProps={{ "aria-label": t("sdk.bot") }}>
+                  <SelectGroup>
+                    {bots.map((entry) => (
+                      <SelectItem key={entry.id} value={entry.id}>
+                        {entry.name}
+                        {entry.online !== undefined && (
+                          <span className="text-muted-foreground">
+                            {" "}
+                            ·{" "}
+                            {t(
+                              entry.online ? "sdk.botOnline" : "sdk.botOffline",
+                            )}
+                          </span>
+                        )}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Button variant="ghost" size="sm" onClick={onOpenBots}>
+                {t("sdk.openBots")}
+                <ArrowUpRightIcon data-icon="inline-end" />
+              </Button>
+            </div>
+            {bot.online !== undefined && (
+              <FieldDescription>
+                {t(bot.online ? "sdk.botOnline" : "sdk.botOffline")}
+              </FieldDescription>
+            )}
+          </Field>
+        )}
+        {needsBot && !bot && (
+          <Alert>
+            <UnplugIcon />
+            <AlertTitle>{t("sdk.noBotsTitle")}</AlertTitle>
+            <AlertDescription>{t("sdk.noBotsBody")}</AlertDescription>
+            <Button variant="outline" className="mt-2" onClick={onOpenAccounts}>
+              {t("sdk.openAccounts")}
             </Button>
-          </section>
+          </Alert>
+        )}
+        {recipe === "send-chat" && bot?.online === false && (
+          <Alert>
+            <AlertTitle>{t("sdk.stoppedTitle")}</AlertTitle>
+            <AlertDescription>{t("sdk.stoppedBody")}</AlertDescription>
+          </Alert>
+        )}
+        <CodeSample
+          title={example.filename}
+          code={example.script}
+          language={language}
+          copyLabel={t("sdk.copyScript")}
+          disabled={copyDisabled}
+        />
+        <div className="flex items-start gap-2 text-sm">
+          <SquareTerminalIcon className="mt-0.5 size-4 shrink-0" />
+          <p>{t(`sdk.recipes.${recipe}.expected`)}</p>
         </div>
 
-        <div className="flex min-w-0 flex-col gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                <h2>{t("sdk.exampleTitle")}</h2>
-              </CardTitle>
-              <CardDescription>{t("sdk.exampleDescription")}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex min-w-0 flex-col gap-4">
-              <ToggleGroup
-                aria-orientation={undefined}
-                variant="outline"
-                aria-label={t("sdk.language")}
-                value={[language]}
-                onValueChange={(value) => {
-                  if (value[0]) setLanguage(value[0] as SdkLanguage);
-                }}
-              >
-                <ToggleGroupItem value="typescript">
-                  TypeScript / Bun
-                </ToggleGroupItem>
-                <ToggleGroupItem value="python">Python</ToggleGroupItem>
-              </ToggleGroup>
-              <ToggleGroup
-                aria-orientation={undefined}
-                variant="outline"
-                className="flex-wrap"
-                aria-label={t("sdk.recipe")}
-                value={[recipe]}
-                onValueChange={(value) => {
-                  if (value[0]) setRecipe(value[0] as SdkRecipe);
-                }}
-              >
-                {recipes.map(({ id: recipeId, Icon }) => (
-                  <ToggleGroupItem key={recipeId} value={recipeId}>
-                    <Icon data-icon="inline-start" />
-                    {t(`sdk.recipes.${recipeId}.title`)}
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
+        <Collapsible>
+          <CollapsibleTrigger render={<Button variant="outline" />}>
+            <SquareTerminalIcon data-icon="inline-start" />
+            {t("sdk.runTitle")}
+            <ChevronDownIcon data-icon="inline-end" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="flex min-w-0 flex-col gap-4 pt-4">
               <p className="text-sm text-muted-foreground">
-                {t(`sdk.recipes.${recipe}.description`)}
-              </p>
-              {needsBot && bot && (
-                <Field>
-                  <FieldLabel htmlFor={`${id}-bot`}>{t("sdk.bot")}</FieldLabel>
-                  <Select
-                    value={bot.id}
-                    onValueChange={(value) => {
-                      if (value) setBotId(value);
-                    }}
-                    items={bots.map((entry) => ({
-                      value: entry.id,
-                      label: entry.name,
-                    }))}
-                  >
-                    <SelectTrigger id={`${id}-bot`} className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {bots.map((entry) => (
-                          <SelectItem key={entry.id} value={entry.id}>
-                            {entry.name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </Field>
-              )}
-              {needsBot && !bot && (
-                <Alert>
-                  <UnplugIcon />
-                  <AlertTitle>{t("sdk.noBotsTitle")}</AlertTitle>
-                  <AlertDescription>{t("sdk.noBotsBody")}</AlertDescription>
-                  <Button
-                    variant="outline"
-                    className="mt-2"
-                    onClick={onOpenAccounts}
-                  >
-                    {t("sdk.openAccounts")}
-                  </Button>
-                </Alert>
-              )}
-              {recipe === "send-chat" && bot?.online === false && (
-                <Alert>
-                  <AlertTitle>{t("sdk.stoppedTitle")}</AlertTitle>
-                  <AlertDescription>{t("sdk.stoppedBody")}</AlertDescription>
-                </Alert>
-              )}
-              <CodeSample
-                title={example.filename}
-                code={example.script}
-                copyLabel={t("sdk.copyScript")}
-                disabled={copyDisabled}
-              />
-            </CardContent>
-            <CardFooter>
-              <p className="text-xs text-foreground/70">
-                {t("sdk.saveScript", { filename: example.filename })}
-              </p>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                <h2>{t("sdk.runTitle")}</h2>
-              </CardTitle>
-              <CardDescription>
                 {t(
                   language === "python"
                     ? "sdk.pythonRequirement"
                     : "sdk.typescriptRequirement",
                 )}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex min-w-0 flex-col gap-4">
+              </p>
               <Field>
                 <FieldLabel htmlFor={`${id}-shell`}>
                   {t("sdk.shell")}
@@ -508,10 +525,13 @@ export function SdkQuickstart({
                     { value: "powershell", label: "Windows PowerShell" },
                   ]}
                 >
-                  <SelectTrigger id={`${id}-shell`}>
+                  <SelectTrigger
+                    id={`${id}-shell`}
+                    className="w-full sm:max-w-sm"
+                  >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent listProps={{ "aria-label": t("sdk.shell") }}>
                     <SelectGroup>
                       <SelectItem value="posix">macOS / Linux</SelectItem>
                       <SelectItem value="powershell">
@@ -521,53 +541,50 @@ export function SdkQuickstart({
                   </SelectContent>
                 </Select>
               </Field>
+              <p className="text-xs text-muted-foreground">
+                {t("sdk.saveScript", { filename: example.filename })}
+              </p>
               <CodeSample
                 title={t("sdk.install")}
                 code={example.install}
+                language={terminalLanguage}
                 copyLabel={t("sdk.copyInstall")}
               />
               <CodeSample
                 title={t("sdk.run")}
                 code={example.run}
+                language={terminalLanguage}
                 copyLabel={t("sdk.copyRun")}
-                disabled={copyDisabled}
               />
               <p className="text-sm text-muted-foreground">
                 {t("sdk.replaceToken")}
               </p>
-              <div className="flex items-start gap-2 text-sm">
-                <SquareTerminalIcon className="mt-0.5 size-4 shrink-0" />
-                <p>{t(`sdk.recipes.${recipe}.expected`)}</p>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <p className="text-xs text-foreground/70">
-                {t("sdk.version", { version: SDK_EXAMPLE_VERSION })}
-              </p>
-            </CardFooter>
-          </Card>
-        </div>
-      </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+
+        <Collapsible>
+          <CollapsibleTrigger render={<Button variant="ghost" size="sm" />}>
+            {t("sdk.previewAgentPrompt")}
+            <ChevronDownIcon data-icon="inline-end" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <pre
+              className="mt-3 overflow-x-auto whitespace-pre-wrap break-words rounded-lg border bg-muted/40 p-4 text-xs leading-relaxed"
+              tabIndex={0}
+              aria-label={t("sdk.agentPrompt")}
+            >
+              {agentPrompt}
+            </pre>
+          </CollapsibleContent>
+        </Collapsible>
+      </section>
 
       <Separator />
-      <section className="flex flex-col gap-3" aria-labelledby={`${id}-help`}>
-        <h2 id={`${id}-help`} className="text-lg font-semibold">
-          {t("sdk.helpTitle")}
-        </h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          {(["connection", "authentication", "compatibility"] as const).map(
-            (topic) => (
-              <div key={topic} className="flex flex-col gap-1">
-                <h3 className="text-sm font-medium">
-                  {t(`sdk.help.${topic}.title`)}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {t(`sdk.help.${topic}.body`)}
-                </p>
-              </div>
-            ),
-          )}
-        </div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs text-muted-foreground">
+          {t("sdk.version", { version: SDK_EXAMPLE_VERSION })}
+        </p>
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
@@ -598,7 +615,31 @@ export function SdkQuickstart({
             <ArrowUpRightIcon data-icon="inline-end" />
           </Button>
         </div>
-      </section>
+      </div>
+      <Collapsible>
+        <CollapsibleTrigger
+          render={<Button variant="ghost" className="w-fit" />}
+        >
+          {t("sdk.helpTitle")}
+          <ChevronDownIcon data-icon="inline-end" />
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="grid gap-4 pt-4 md:grid-cols-3">
+            {(["connection", "authentication", "compatibility"] as const).map(
+              (topic) => (
+                <div key={topic} className="flex flex-col gap-1">
+                  <h3 className="text-sm font-medium">
+                    {t(`sdk.help.${topic}.title`)}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t(`sdk.help.${topic}.body`)}
+                  </p>
+                </div>
+              ),
+            )}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }
