@@ -66,7 +66,10 @@
       "description": "SoulFire is free and open-source, built with love by the community.",
       "body": "If SoulFire has been useful to you, please consider supporting the project. Your contribution helps cover server costs, fund development, and keep SoulFire free for everyone.",
       "dismiss": "Maybe later",
-      "action": "Support SoulFire"
+      "action": "Support SoulFire",
+      "alreadySupport": "I already support SoulFire",
+      "neverRemind": "Don't remind me again",
+      "reminderFrequency": "We won't remind you again for six months. You can always support SoulFire from the account menu."
     },
     "createInstance": {
       "title": "Create an instance",
