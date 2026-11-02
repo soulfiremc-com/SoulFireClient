@@ -535,6 +535,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         );
         return;
       }
+      inputRef.current?.focus({ preventScroll: true });
       resetCompletionFetchDebounce();
       completionRequest.cancel();
       setInputValue(value);
@@ -548,7 +549,6 @@ export default function CommandInput(props: { scope: CommandScope }) {
         index: null,
         replacementRange: null,
       });
-      inputRef.current?.focus({ preventScroll: true });
       scheduleCompletionFetch(value, value.length);
     };
     terminalCommands.current = handler;

@@ -452,7 +452,9 @@ export function TerminalView({
                       }
                     }}
                     onClick={(event) => {
-                      if (event.detail === 0) activate(run.metadata);
+                      if (event.detail !== 0) return;
+                      event.stopPropagation();
+                      activate(run.metadata);
                     }}
                   >
                     <span className="sr-only">{run.text}</span>

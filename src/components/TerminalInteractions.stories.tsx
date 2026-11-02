@@ -123,7 +123,17 @@ function Example({
             throw new ConnectError("Command rejected");
           return { code: 1 };
         },
-        tabCompleteCommand: () => ({ suggestions: [] }),
+        tabCompleteCommand: (request) => ({
+          suggestions:
+            request.command === "status"
+              ? [
+                  {
+                    suggestion: "status-detail",
+                    tooltip: "Show detailed status",
+                  },
+                ]
+              : [],
+        }),
       }),
     ),
   );
@@ -183,6 +193,7 @@ export const HoverAndKeyboardActions: Story = {
     await expect(commands.mock.calls[0][0].scope).toEqual(scope);
     await expect(commands.mock.calls[0][0].command).toBe("help");
     await expect(canvas.getByRole("combobox")).toHaveValue("draft");
+    await expect(run).toHaveFocus();
     canvas.getByRole("button", { name: /Insert status/ }).focus();
     await userEvent.keyboard(" ");
     await expect(canvas.getByRole("combobox")).toHaveFocus();
@@ -190,9 +201,19 @@ export const HoverAndKeyboardActions: Story = {
     canvas.getByRole("button", { name: /Copy text/ }).focus();
     await userEvent.keyboard("{Enter}");
     await expect(copy).toHaveBeenCalledWith("Héllo 🌍");
+    await expect(
+      canvas.getByRole("button", { name: /Copy text/ }),
+    ).toHaveFocus();
     canvas.getByRole("button", { name: /Open website/ }).focus();
     await userEvent.keyboard("{Enter}");
-    await expect(open).toHaveBeenCalledWith("https://soulfiremc.com", "_blank");
+    await expect(open).toHaveBeenCalledWith(
+      "https://soulfiremc.com",
+      "_blank",
+      "noopener,noreferrer",
+    );
+    await expect(
+      canvas.getByRole("button", { name: /Open website/ }),
+    ).toHaveFocus();
     canvas.getByRole("button", { name: /Run failure/ }).focus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() =>
@@ -316,5 +337,51 @@ export const HistoryWrapAndResize: Story = {
         canvas.queryByRole("button", { name: /Run command: wrapped/ }),
       ).not.toBeInTheDocument(),
     );
+  },
+};
+
+export const SuggestionsFromBlurredDraft: Story = {
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const suggest = await canvas.findByRole("button", {
+      name: /Insert status/,
+    });
+    const input = canvas.getByRole("combobox") as HTMLInputElement;
+    await userEvent.type(input, "older draft");
+    input.setSelectionRange(1, 1);
+    suggest.focus();
+    const host = canvasElement.querySelector<HTMLElement>(
+      "[data-terminal-viewport]",
+    )!;
+    const rect = suggest.getBoundingClientRect();
+    await userEvent.pointer({
+      target: host,
+      coords: {
+        clientX: rect.left + rect.width / 2,
+        clientY: rect.top + rect.height / 2,
+      },
+      keys: "[MouseLeft]",
+    });
+    await expect(input).toHaveFocus();
+    await expect(input).toHaveValue("status");
+    await expect(input.selectionStart).toBe(6);
+    await expect(input.selectionEnd).toBe(6);
+    await expect(
+      await canvas.findByRole("option", { name: /status-detail/ }),
+    ).toBeVisible();
+    await expect(commands).not.toHaveBeenCalled();
+  },
+};
+
+export const IsolatedUrlWindow: Story = {
+  play: async ({ canvas, userEvent }) => {
+    const link = await canvas.findByRole("button", { name: /Open website/ });
+    link.focus();
+    await userEvent.keyboard("{Enter}");
+    await expect(open).toHaveBeenCalledWith(
+      "https://soulfiremc.com",
+      "_blank",
+      "noopener,noreferrer",
+    );
+    await expect(link).toHaveFocus();
   },
 };
