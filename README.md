@@ -16,6 +16,18 @@ Built using latest web tech to consistently work on both web, desktop and mobile
 The client is the GUI for the SoulFire server, but it uses the official SoulFire gRPC API.
 Anything that can be done using the SF client can also be done using gRPC HTTP API calls directly.
 
+## Support reminders
+
+The app offers a support reminder on a later instance overview visit after 14 days, three active days, and a successful bot spawn.
+It waits during loading, bot startup, errors, other dialogs, and cookie consent.
+The reminder leaves the overview usable and appears at most once every six months.
+**Don't remind me again** and **I already support SoulFire** disable automatic reminders.
+The account menu always includes a support link.
+
+Eligibility and preferences stay in local storage without user or bot identifiers and do not depend on PostHog consent.
+Only three active dates are retained.
+Existing users start the new usage criteria when they first use this version. Previous dismissals retain a six-month cooldown.
+
 ## Installation
 
 > [!TIP]

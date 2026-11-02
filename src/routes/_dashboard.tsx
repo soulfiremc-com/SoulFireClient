@@ -32,6 +32,7 @@ import {
 } from "@/lib/analytics-identity";
 import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
+import { useSupportReminderUsage } from "@/hooks/use-support-reminder-usage";
 import { smartEntries } from "@/lib/utils.tsx";
 import {
   createTransport,
@@ -204,7 +205,7 @@ function InstanceSwitchKeybinds() {
   return null;
 }
 
-function PostHogIdentity() {
+function ClientSession() {
   const posthog = usePostHog();
   const consent = useAnalyticsConsent();
   const transport = use(TransportContext);
@@ -242,6 +243,7 @@ function PostHogIdentity() {
   ]);
 
   useProductActivation(identity ?? "", identity !== null);
+  useSupportReminderUsage(clientInfo.id, !isImpersonating());
 
   return null;
 }
@@ -256,7 +258,7 @@ function DashboardLayout() {
   return (
     <TransportContext value={loaderData.transport}>
       <Suspense>
-        <PostHogIdentity />
+        <ClientSession />
         <InstanceSwitchKeybinds />
       </Suspense>
       {isImpersonating() && (

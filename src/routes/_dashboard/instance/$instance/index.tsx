@@ -1,8 +1,12 @@
 import { create } from "@bufbuild/protobuf";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useIsMutating,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { SquareTerminalIcon } from "lucide-react";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ControlsMenu from "@/components/controls-menu.tsx";
 import { ActivityTimeline } from "@/components/instance-overview/activity-timeline.tsx";
@@ -15,6 +19,8 @@ import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
 import { PluginStatsPanel } from "@/components/instance-overview/plugin-stats-panel.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
+import { TransportContext } from "@/components/providers/transport-context";
+import { SupportReminder } from "@/components/support-reminder";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -34,6 +40,8 @@ import {
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { getBotDisplayState } from "@/lib/bot-fleet";
+import { isImpersonating } from "@/lib/web-rpc";
 import {
   isFirstBotSetupDismissed,
   isFirstBotSetupStarted,
@@ -214,6 +222,8 @@ function OverviewHeaderSection() {
 }
 
 function OverviewContentSection() {
+  const transport = use(TransportContext);
+  const mutationsPending = useIsMutating() > 0;
   const { instanceInfoQueryOptions, metricsQueryOptions } =
     Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
@@ -225,12 +235,20 @@ function OverviewContentSection() {
     instanceInfo,
     InstancePermission.READ_INSTANCE_AUDIT_LOGS,
   );
-  const { data: metricsData, isPending } = useQuery({
+  const {
+    data: metricsData,
+    isPending,
+    isError: metricsError,
+  } = useQuery({
     ...metricsQueryOptions,
     enabled: canReadBots,
   });
   const latest = metricsData?.snapshots[metricsData.snapshots.length - 1];
-  const { data: botStatus, isPending: botStatusPending } = useQuery({
+  const {
+    data: botStatus,
+    isPending: botStatusPending,
+    isError: botStatusError,
+  } = useQuery({
     ...botStatusQueryOptions(instanceInfo.id),
     enabled: canReadBots,
   });
@@ -262,6 +280,24 @@ function OverviewContentSection() {
           instanceInfo={instanceInfo}
           latest={latest}
           metricsPending={isPending}
+        />
+      )}
+      {transport && !isImpersonating() && (
+        <SupportReminder
+          ready={
+            canReadBots &&
+            !showSetup &&
+            !isPending &&
+            !botStatusPending &&
+            !metricsError &&
+            !botStatusError &&
+            !mutationsPending &&
+            !botStatus?.bots.some((bot) =>
+              ["starting", "stopping", "failed", "retrying"].includes(
+                getBotDisplayState(bot),
+              ),
+            )
+          }
         />
       )}
       <div className="grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_16rem] xl:grid-cols-[minmax(0,1fr)_18rem] 2xl:grid-cols-[minmax(0,1fr)_20rem]">

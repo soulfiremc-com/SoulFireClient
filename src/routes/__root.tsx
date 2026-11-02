@@ -19,7 +19,6 @@ import { PostHogProvider } from "posthog-js/react";
 import { type CSSProperties, memo, useEffect, useMemo, useState } from "react";
 import { CustomContextMenu } from "@/components/custom-context-menu.tsx";
 import { AboutProvider } from "@/components/dialog/about-dialog.tsx";
-import { SupportDialogProvider } from "@/components/dialog/support-dialog.tsx";
 import {
   type SystemInfo,
   SystemInfoContext,
@@ -325,24 +324,22 @@ function RootLayout() {
                     <CustomContextMenu />
                     <CookieConsentProvider>
                       <AboutProvider>
-                        <SupportDialogProvider>
-                          {shouldShowWindowTitlebar && <WindowTitlebar />}
-                          <div className="flex min-h-0 flex-1 flex-col">
-                            <Outlet />
-                          </div>
-                          <TanStackDevtools
-                            plugins={[
-                              {
-                                name: "TanStack Query",
-                                render: <ReactQueryDevtoolsPanel />,
-                              },
-                              {
-                                name: "TanStack Router",
-                                render: <TanStackRouterDevtoolsPanel />,
-                              },
-                            ]}
-                          />
-                        </SupportDialogProvider>
+                        {shouldShowWindowTitlebar && <WindowTitlebar />}
+                        <div className="flex min-h-0 flex-1 flex-col">
+                          <Outlet />
+                        </div>
+                        <TanStackDevtools
+                          plugins={[
+                            {
+                              name: "TanStack Query",
+                              render: <ReactQueryDevtoolsPanel />,
+                            },
+                            {
+                              name: "TanStack Router",
+                              render: <TanStackRouterDevtoolsPanel />,
+                            },
+                          ]}
+                        />
                       </AboutProvider>
                     </CookieConsentProvider>
                   </div>
