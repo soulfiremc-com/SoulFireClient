@@ -70,6 +70,11 @@ export const LocalServer: Story = {
     await userEvent.click(
       canvas.getByRole("combobox", { name: "Terminal platform" }),
     );
+    await expect(
+      await within(document.body).findByRole("listbox", {
+        name: "Terminal platform",
+      }),
+    ).toBeVisible();
     await userEvent.click(
       await within(document.body).findByRole("option", {
         name: "Windows PowerShell",
@@ -83,6 +88,9 @@ export const LocalServer: Story = {
     ).toHaveTextContent("$env:SOULFIRE_TOKEN");
     await userEvent.click(canvas.getByRole("button", { name: "Read state" }));
     await userEvent.click(canvas.getByRole("combobox", { name: "Bot" }));
+    await expect(
+      await within(document.body).findByRole("listbox", { name: "Bot" }),
+    ).toBeVisible();
     await userEvent.click(
       await within(document.body).findByRole("option", { name: /Miner/ }),
     );

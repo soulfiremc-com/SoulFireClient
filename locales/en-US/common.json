@@ -316,6 +316,13 @@
     }
   },
   "terminal": {
+    "actions": {
+      "run_command": "Run command: {{value}}",
+      "suggest_command": "Insert command: {{value}}",
+      "copy_to_clipboard": "Copy to clipboard",
+      "open_url": "Open: {{value}}",
+      "unavailable": "Command input is unavailable in this view."
+    },
     "noLogs": "No logs yet. Run a command to create log output.",
     "demo-1": "Welcome to demo mode! 🧪",
     "demo-2": "This is a read-only instance of SoulFire",

@@ -80,7 +80,7 @@ export function openExternalUrl(url: string) {
   if (desktop.available()) {
     void desktop.shell.openExternal(url);
   } else {
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 }
 
