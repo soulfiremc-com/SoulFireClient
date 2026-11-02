@@ -235,6 +235,7 @@ export function TerminalView({
               ref={hostRef}
               data-terminal-viewport
               className="select-text"
+              role="region"
               aria-label={t("pageName.terminal")}
             />
           )}

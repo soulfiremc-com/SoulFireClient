@@ -98,7 +98,10 @@ export const ScrollAndReconcile: Story = {
     const host = canvasElement.querySelector<HTMLElement>(
       "[data-terminal-viewport]",
     )!;
-    await waitFor(() => expect(host).toHaveTextContent("Last log"));
+    // Allow the terminal's WASM core to initialize alongside other stories.
+    await waitFor(() => expect(host).toHaveTextContent("Last log"), {
+      timeout: 5000,
+    });
     await waitFor(() => expect(host.scrollTop).toBeGreaterThan(0));
     host.scrollTop = 300;
     host.dispatchEvent(new Event("scroll"));
