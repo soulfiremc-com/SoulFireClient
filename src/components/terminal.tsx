@@ -3,6 +3,7 @@ import { WTerm } from "@wterm/dom";
 import { stripAnsi } from "fancy-ansi";
 import {
   type CSSProperties,
+  type ReactNode,
   use,
   useEffect,
   useEffectEvent,
@@ -27,9 +28,11 @@ import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
 export function TerminalView({
   entries,
   theme,
+  children,
 }: {
   entries: readonly TerminalLine[];
   theme: string;
+  children?: ReactNode;
 }) {
   const { t, i18n } = useTranslation("common");
   const hostRef = useRef<HTMLDivElement>(null);
@@ -152,66 +155,94 @@ export function TerminalView({
     <>
       <div
         data-terminal-output
-        className="h-[calc(75vh-8rem)] overflow-hidden rounded-md"
+        className="flex h-[calc(75vh-8rem)] flex-col overflow-hidden rounded-md focus-within:ring-1 focus-within:ring-(--terminal-border)"
         style={
           {
             backgroundColor: colors.base.hex,
             color: colors.text.hex,
             "--term-selection-bg": `${colors.overlay2.hex}80`,
+            "--terminal-prompt": dark ? colors.green.hex : colors.text.hex,
+            "--terminal-muted": colors.subtext1.hex,
+            "--terminal-popup": colors.mantle.hex,
+            "--terminal-active": dark ? colors.surface0.hex : colors.base.hex,
+            "--terminal-border": colors.surface2.hex,
           } as CSSProperties
         }
-        onContextMenu={(event) => {
-          const text = terminalRef.current?.getSelectionText();
-          if (text) handleContextMenu(event, text);
-        }}
-        onMouseDownCapture={(event) => {
-          if (event.button === 2 && terminalRef.current?.getSelectionText())
-            event.preventDefault();
-        }}
-        onKeyDownCapture={(event) => {
-          if (failed) return;
-          const terminal = terminalRef.current;
-          const host = hostRef.current;
-          if (!terminal || !host) return;
-          const key = event.key.toLowerCase();
-          if ((event.ctrlKey || event.metaKey) && key === "c") return;
-          event.stopPropagation();
-          if ((event.ctrlKey || event.metaKey) && key === "a") {
-            event.preventDefault();
-            void terminal.selectAll();
-          } else if (event.key === "Escape") {
-            terminal.clearSelection();
-          } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
-            const delta = {
-              ArrowUp: -16,
-              ArrowDown: 16,
-              PageUp: -host.clientHeight,
-              PageDown: host.clientHeight,
-              Home: -host.scrollHeight,
-              End: host.scrollHeight,
-            }[event.key];
-            if (delta !== undefined) {
-              event.preventDefault();
-              host.scrollTop += delta;
-            }
-          }
-        }}
       >
-        {failed ? (
-          <pre className="h-full overflow-auto p-1 font-mono text-xs whitespace-pre-wrap break-all select-text">
-            {entries
-              .map((entry) =>
-                stripAnsi(formatTerminalLine(entry, i18n.resolvedLanguage)),
-              )
-              .join("")}
-          </pre>
-        ) : (
-          <div
-            ref={hostRef}
-            data-terminal-viewport
-            className="select-text"
-            aria-label={t("pageName.terminal")}
-          />
+        <div
+          className="min-h-0 flex-1"
+          onClick={(event) => {
+            if (
+              !children ||
+              event.detail > 1 ||
+              event.ctrlKey ||
+              event.metaKey ||
+              event.altKey ||
+              terminalRef.current?.getSelectionText()
+            )
+              return;
+            event.currentTarget.parentElement
+              ?.querySelector<HTMLInputElement>("[data-terminal-command] input")
+              ?.focus({ preventScroll: true });
+          }}
+          onContextMenu={(event) => {
+            const text = terminalRef.current?.getSelectionText();
+            if (text) handleContextMenu(event, text);
+          }}
+          onMouseDownCapture={(event) => {
+            if (event.button === 2 && terminalRef.current?.getSelectionText())
+              event.preventDefault();
+          }}
+          onKeyDownCapture={(event) => {
+            if (failed) return;
+            const terminal = terminalRef.current;
+            const host = hostRef.current;
+            if (!terminal || !host) return;
+            const key = event.key.toLowerCase();
+            if ((event.ctrlKey || event.metaKey) && key === "c") return;
+            event.stopPropagation();
+            if ((event.ctrlKey || event.metaKey) && key === "a") {
+              event.preventDefault();
+              void terminal.selectAll();
+            } else if (event.key === "Escape") {
+              terminal.clearSelection();
+            } else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
+              const delta = {
+                ArrowUp: -16,
+                ArrowDown: 16,
+                PageUp: -host.clientHeight,
+                PageDown: host.clientHeight,
+                Home: -host.scrollHeight,
+                End: host.scrollHeight,
+              }[event.key];
+              if (delta !== undefined) {
+                event.preventDefault();
+                host.scrollTop += delta;
+              }
+            }
+          }}
+        >
+          {failed ? (
+            <pre className="h-full overflow-auto p-1 font-mono text-xs whitespace-pre-wrap break-all select-text">
+              {entries
+                .map((entry) =>
+                  stripAnsi(formatTerminalLine(entry, i18n.resolvedLanguage)),
+                )
+                .join("")}
+            </pre>
+          ) : (
+            <div
+              ref={hostRef}
+              data-terminal-viewport
+              className="select-text"
+              aria-label={t("pageName.terminal")}
+            />
+          )}
+        </div>
+        {children && (
+          <div data-terminal-command className="shrink-0 px-1 py-1">
+            {children}
+          </div>
         )}
       </div>
       {contextMenu && (
@@ -228,7 +259,13 @@ export function TerminalView({
   );
 }
 
-export function TerminalComponent({ scope }: { scope: LogScope }) {
+export function TerminalComponent({
+  scope,
+  children,
+}: {
+  scope: LogScope;
+  children?: ReactNode;
+}) {
   const { t } = useTranslation("common");
   const transport = use(TransportContext);
   const demo = isDemo();
@@ -255,5 +292,9 @@ export function TerminalComponent({ scope }: { scope: LogScope }) {
       : liveEntries;
   const terminalTheme = use(TerminalThemeContext);
 
-  return <TerminalView entries={entries} theme={terminalTheme.value} />;
+  return (
+    <TerminalView entries={entries} theme={terminalTheme.value}>
+      {children}
+    </TerminalView>
+  );
 }

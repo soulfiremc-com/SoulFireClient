@@ -24,6 +24,15 @@ test("a high command field keeps suggestions below when there is room", () => {
   assert.equal(position.left, 100);
 });
 
+test("a shell prompt prefers suggestions above when both sides have room", () => {
+  const position = getCommandSuggestionsPosition(
+    { left: 100, top: 400, bottom: 432 },
+    { width: 1200, height: 900 },
+  );
+  assert.equal(position.above, true);
+  assert.equal(position.width, 448);
+});
+
 test("a narrow and short viewport constrains the popup on its available side", () => {
   const position = getCommandSuggestionsPosition(
     { left: 190, top: 40, bottom: 72 },

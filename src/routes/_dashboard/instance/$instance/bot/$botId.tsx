@@ -1110,13 +1110,12 @@ function BotTerminalPanel({
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
   return (
-    <div className="flex flex-col gap-2">
-      <TerminalComponent scope={logScope} />
+    <TerminalComponent scope={logScope}>
       {hasInstancePermission(
         instanceInfo,
         InstancePermission.INSTANCE_COMMAND_EXECUTION,
       ) && <CommandInput scope={commandScope} />}
-    </div>
+    </TerminalComponent>
   );
 }
 

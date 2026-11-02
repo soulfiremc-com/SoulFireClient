@@ -14,7 +14,11 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Input } from "@/components/ui/input.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Kbd } from "@/components/ui/kbd";
 import type {
   CommandCompletion,
@@ -24,6 +28,7 @@ import { CommandService } from "@/generated/soulfire/command_pb";
 import { getCommandTokenRange } from "@/lib/command-token";
 import { getCommandSuggestionsPosition } from "@/lib/command-suggestions-position";
 import { CommandCompletionRequest } from "@/lib/command-completion-request";
+import { cn } from "@/lib/utils";
 import {
   appendCommandHistory,
   readCommandHistory,
@@ -114,6 +119,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
   }, [inputValue, cursorPosition]);
   const completionFetchTimeout = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const composing = useRef(false);
   const [suggestionsDismissed, setSuggestionsDismissed] = useState(false);
   const suggestionsId = useId();
   const suggestionStatusId = useId();
@@ -502,6 +508,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
   );
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (composing.current || e.nativeEvent.isComposing) return;
     const currentTarget = e.currentTarget;
     const caretPosition =
       currentTarget.selectionStart ?? currentTarget.value.length;
@@ -510,9 +517,35 @@ export default function CommandInput(props: { scope: CommandScope }) {
       hasSuggestions &&
       inputValue !== "" &&
       historyPosition.index === -1 &&
+      completionState.index !== null &&
       !e.ctrlKey &&
       !e.metaKey &&
       !e.altKey;
+
+    if (
+      e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      e.key.toLowerCase() === "c" &&
+      currentTarget.selectionStart === currentTarget.selectionEnd
+    ) {
+      e.preventDefault();
+      resetCompletionFetchDebounce();
+      completionRequest.cancel();
+      setInputValue("");
+      pendingCaret.current = 0;
+      setCursorPosition(0);
+      setHistoryPosition({ index: -1, draft: "" });
+      setCompletionState({
+        baseText: "",
+        cursor: 0,
+        receivedCompletions: null,
+        index: null,
+        replacementRange: null,
+      });
+      setSuggestionsDismissed(true);
+      return;
+    }
 
     if (e.key === "Escape" && !suggestionsDismissed) {
       e.preventDefault();
@@ -632,6 +665,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
   };
 
   const updateCursor = (input: HTMLInputElement) => {
+    if (composing.current) return;
     const position = input.selectionStart ?? input.value.length;
     if (position === cursorPosition) return;
     setCursorPosition(position);
@@ -647,65 +681,83 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
   return (
     <div className="relative">
-      <Input
-        ref={inputRef}
-        autoFocus
-        role="combobox"
-        aria-label={t("commandInput.label")}
-        aria-autocomplete="list"
-        aria-expanded={listboxVisible}
-        aria-controls={listboxVisible ? suggestionsId : undefined}
-        aria-activedescendant={
-          listboxVisible
-            ? `${suggestionsId}-option-${highlightedIndex}`
-            : undefined
-        }
-        aria-describedby={
-          popupVisible && !hasSuggestions ? suggestionStatusId : undefined
-        }
-        placeholder={t("commandInput.placeholder")}
-        value={inputValue}
-        onKeyDown={handleKeyDown}
-        onChange={(e) => {
-          const { value, selectionStart } = e.currentTarget;
-          pendingCaret.current = null;
-          setHistoryPosition({ index: -1, draft: "" });
-          setInputValue(value);
-          const cursor = selectionStart ?? value.length;
-          setCursorPosition(cursor);
-          scheduleCompletionFetch(value, cursor);
-          setCompletionState({
-            baseText: value,
-            cursor,
-            receivedCompletions: null,
-            index: null,
-            replacementRange: null,
-          });
-        }}
-        onKeyUp={(event) => updateCursor(event.currentTarget)}
-        onClick={(event) => updateCursor(event.currentTarget)}
-        onFocus={(event) => {
-          const value = event.currentTarget.value;
-          const position = event.currentTarget.selectionStart ?? value.length;
-          setCursorPosition(position);
-          setIsFocused(true);
-          setSuggestionsDismissed(false);
-          if (value === "") {
-            resetCompletionFetchDebounce();
-            void fetchCompletions(value, position);
-          } else {
-            scheduleCompletionFetch(value, position);
+      <InputGroup variant="terminal">
+        <InputGroupAddon aria-hidden="true">&gt;</InputGroupAddon>
+        <InputGroupInput
+          ref={inputRef}
+          autoFocus
+          role="combobox"
+          aria-label={t("commandInput.label")}
+          aria-autocomplete="list"
+          aria-expanded={listboxVisible}
+          aria-controls={listboxVisible ? suggestionsId : undefined}
+          aria-activedescendant={
+            listboxVisible
+              ? `${suggestionsId}-option-${highlightedIndex}`
+              : undefined
           }
-        }}
-        onBlur={() => {
-          resetCompletionFetchDebounce();
-          completionRequest.cancel();
-          setIsFocused(false);
-        }}
-      />
+          aria-describedby={
+            popupVisible && !hasSuggestions ? suggestionStatusId : undefined
+          }
+          placeholder={t("commandInput.placeholder")}
+          value={inputValue}
+          onKeyDown={handleKeyDown}
+          onChange={(e) => {
+            const { value, selectionStart } = e.currentTarget;
+            pendingCaret.current = null;
+            setHistoryPosition({ index: -1, draft: "" });
+            setInputValue(value);
+            const cursor = selectionStart ?? value.length;
+            setCursorPosition(cursor);
+            if (!composing.current) scheduleCompletionFetch(value, cursor);
+            setCompletionState({
+              baseText: value,
+              cursor,
+              receivedCompletions: null,
+              index: null,
+              replacementRange: null,
+            });
+          }}
+          onKeyUp={(event) => updateCursor(event.currentTarget)}
+          onClick={(event) => updateCursor(event.currentTarget)}
+          onScroll={updateCaretPosition}
+          onCompositionStart={() => {
+            composing.current = true;
+            resetCompletionFetchDebounce();
+            completionRequest.cancel();
+            setSuggestionsDismissed(true);
+          }}
+          onCompositionEnd={(event) => {
+            composing.current = false;
+            const input = event.currentTarget;
+            scheduleCompletionFetch(
+              input.value,
+              input.selectionStart ?? input.value.length,
+            );
+          }}
+          onFocus={(event) => {
+            const value = event.currentTarget.value;
+            const position = event.currentTarget.selectionStart ?? value.length;
+            setCursorPosition(position);
+            setIsFocused(true);
+            setSuggestionsDismissed(false);
+            if (value === "") {
+              resetCompletionFetchDebounce();
+              void fetchCompletions(value, position);
+            } else {
+              scheduleCompletionFetch(value, position);
+            }
+          }}
+          onBlur={() => {
+            resetCompletionFetchDebounce();
+            completionRequest.cancel();
+            setIsFocused(false);
+          }}
+        />
+      </InputGroup>
       {popupVisible && caretPositionStyle && (
         <div
-          className="border-border bg-popover text-popover-foreground fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border shadow-md data-[side=top]:-translate-y-full"
+          className="border-(--terminal-border) bg-(--terminal-popup) text-inherit fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border shadow-md data-[side=top]:-translate-y-full"
           data-side={caretPositionStyle.above ? "top" : "bottom"}
           style={
             {
@@ -725,7 +777,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
               id={suggestionsId}
               role="listbox"
               aria-label={t("commandInput.suggestions")}
-              className="py-1 text-sm"
+              className="py-1 font-mono text-xs"
             >
               {suggestions.map((suggestion, index) => {
                 const isActive = index === highlightedIndex;
@@ -735,11 +787,12 @@ export default function CommandInput(props: { scope: CommandScope }) {
                     id={`${suggestionsId}-option-${index}`}
                     role="option"
                     aria-selected={isActive}
-                    className={`cursor-pointer px-3 py-2 transition-colors ${
+                    className={cn(
+                      "flex cursor-pointer flex-col gap-1 px-3 py-2 sm:flex-row sm:items-baseline sm:gap-4",
                       isActive
-                        ? "bg-accent text-accent-foreground"
-                        : "hover:bg-muted"
-                    }`}
+                        ? "bg-(--terminal-active)"
+                        : "hover:bg-(--terminal-active)/50",
+                    )}
                     ref={isActive ? setActiveSuggestionNode : undefined}
                     onMouseEnter={() => {
                       setCompletionState((prev) => {
@@ -760,9 +813,11 @@ export default function CommandInput(props: { scope: CommandScope }) {
                       acceptCompletion(index);
                     }}
                   >
-                    <div className="font-medium">{suggestion.suggestion}</div>
+                    <div className="shrink-0 font-medium">
+                      {suggestion.suggestion}
+                    </div>
                     {suggestion.tooltip && (
-                      <div className="text-muted-foreground text-xs">
+                      <div className="text-(--terminal-muted) min-w-0 break-words">
                         {suggestion.tooltip}
                       </div>
                     )}
@@ -774,7 +829,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
             <div
               id={suggestionStatusId}
               role="status"
-              className="text-muted-foreground px-3 py-2 text-sm"
+              className="text-(--terminal-muted) px-3 py-2 font-mono text-xs"
             >
               {inputValue === "" ? (
                 <>
