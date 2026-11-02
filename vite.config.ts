@@ -5,14 +5,9 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import electron from "vite-plugin-electron/simple";
 import svgr from "vite-plugin-svgr";
+import { getBuildEnvironment } from "./src/lib/build-environment.ts";
 
-const baseEnv = process.env.VERCEL_ENV ?? process.env.NODE_ENV;
-const appEnv =
-  baseEnv === "production"
-    ? "production"
-    : baseEnv === "preview"
-      ? "preview"
-      : "development";
+const appEnv = getBuildEnvironment(process.env);
 
 const locales = fs
   .readdirSync("./locales", { withFileTypes: true })

@@ -51,6 +51,36 @@ See which branches are at which URLs:
 - [`main`](https://preview.soulfiremc.com) -> preview.soulfiremc.com
 - [`demo`](https://demo.soulfiremc.com) -> demo.soulfiremc.com
 
+The preview demo uses `preview-demo.soulfiremc.com` as another domain for the `main` deployment.
+The hostname enables demo mode, so it needs no separate branch or build.
+Demo links on preview builds open the preview demo. The preview and production links preserve demo mode.
+
+To enable the preview demo, add `preview-demo.soulfiremc.com` under **Custom domains** in the Cloudflare Pages project that serves `preview.soulfiremc.com`.
+Point its proxied DNS CNAME to `main.soulfire-client.pages.dev`, the same branch alias as `preview.soulfiremc.com`.
+See [Cloudflare's branch domain instructions](https://developers.cloudflare.com/pages/how-to/custom-branch-aliases/).
+Domain assignments and DNS records are managed outside this repository.
+
+Cloudflare builds use `CF_PAGES_BRANCH` to select the app environment: `release` and `demo` use production, and other branches use preview.
+
+The checked-in `wrangler.toml` targets the existing `soulfire-client` Pages project and its account.
+The project uses Git integration for automatic deployments. You can also prepare a build and upload it with Wrangler:
+
+```bash
+# Authenticate if needed.
+bunx wrangler@4.156.2 login
+
+# Prepare the main branch preview bundle.
+CF_PAGES=1 CF_PAGES_BRANCH=main bun run build:web
+
+# Publish the prepared bundle to the main branch alias.
+bunx wrangler@4.156.2 pages deploy dist --branch main
+```
+
+Use the same branch name for `CF_PAGES_BRANCH` and `--branch`.
+An upload with `--branch main` updates the shared preview. Use your feature branch name for a separate preview deployment.
+Wrangler uploads the existing `dist` directory, so rebuild it after code changes.
+Pages supplies the SPA route fallback automatically because this app has no top-level `404.html`.
+
 ## Building
 
 Install Bun at the version in `package.json` and the Node.js LTS used by CI before you build the client.

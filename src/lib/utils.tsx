@@ -31,6 +31,7 @@ import {
 } from "@/generated/soulfire/instance_pb";
 import { ServerService } from "@/generated/soulfire/server_pb";
 import { mergeAccounts } from "@/lib/account-list.ts";
+import { isDemoHostname } from "@/lib/app-deployment.ts";
 import { desktop } from "@/lib/desktop.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
 import { removeProxyEntries } from "@/lib/proxy-selection.ts";
@@ -85,7 +86,7 @@ export function openExternalUrl(url: string) {
 
 export function isDemo() {
   return (
-    document.location.host === "demo.soulfiremc.com" ||
+    isDemoHostname(document.location.hostname) ||
     localStorage.getItem(LOCAL_STORAGE_DEMO_MODE_KEY) === "true"
   );
 }

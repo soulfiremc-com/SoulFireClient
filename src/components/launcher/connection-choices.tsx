@@ -28,6 +28,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item.tsx";
+import { getAppUrl } from "@/lib/app-deployment.ts";
 import { cn } from "@/lib/utils.tsx";
 
 /** Shows where the SoulFire server sits between this app and Minecraft. */
@@ -184,7 +185,9 @@ export function ConnectionChoices(props: {
                 variant="outline"
                 className="hover:bg-muted rounded-lg"
                 render={
-                  <ExternalLink href="https://demo.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-demo" />
+                  <ExternalLink
+                    href={`${getAppUrl(APP_ENVIRONMENT, true)}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-demo`}
+                  />
                 }
               >
                 <ItemMedia variant="icon">

@@ -130,6 +130,7 @@ import {
 } from "@/lib/launcher-startup.ts";
 import { SOULFIRE_LOGO_ICON, staticRouteChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type SFServerType } from "@/lib/types.ts";
+import { getAppUrl } from "@/lib/app-deployment.ts";
 import { getLanguageName, isDemo, languageEmoji } from "@/lib/utils.tsx";
 import {
   createAddressOnlyTransport,
@@ -446,7 +447,7 @@ function Index() {
                     {APP_ENVIRONMENT === "production" && (
                       <a
                         className="text-info"
-                        href="https://preview.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-preview"
+                        href={`${getAppUrl("preview", isDemo())}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-preview`}
                       >
                         {t("footer.preview")}
                       </a>
@@ -454,7 +455,7 @@ function Index() {
                     {APP_ENVIRONMENT === "preview" && (
                       <a
                         className="text-info"
-                        href="https://app.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-production"
+                        href={`${getAppUrl("production", isDemo())}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-production`}
                       >
                         {t("footer.production")}
                       </a>
