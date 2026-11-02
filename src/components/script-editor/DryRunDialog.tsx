@@ -34,6 +34,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -268,11 +269,13 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {triggerItems.map((item) => (
-                    <SelectItem key={item.value} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup>
+                    {triggerItems.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
               <FieldDescription>
