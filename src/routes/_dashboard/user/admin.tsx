@@ -1,4 +1,5 @@
 import { create } from "@bufbuild/protobuf";
+import { timestampFromDate } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -78,6 +79,10 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
                 username: "root",
                 email: "root@soulfiremc.com",
                 role: UserRole.ADMIN,
+                createdAt: timestampFromDate(new Date("2025-01-01T00:00:00Z")),
+                minIssuedAt: timestampFromDate(
+                  new Date("2025-01-01T00:00:00Z"),
+                ),
               }),
             ],
           });
