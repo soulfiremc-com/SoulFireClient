@@ -27,6 +27,7 @@ import {
 } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
+import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
 import { smartEntries } from "@/lib/utils.tsx";
 import {
   createTransport,
@@ -201,11 +202,13 @@ function InstanceSwitchKeybinds() {
 
 function PostHogIdentity() {
   const posthog = usePostHog();
+  const consent = useAnalyticsConsent();
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
 
   useEffect(() => {
-    if (!isPostHogConfigured || clientInfo.id === "") return;
+    if (!isPostHogConfigured || consent !== "granted" || clientInfo.id === "")
+      return;
 
     posthog.identify(clientInfo.id, {
       email: clientInfo.email,
@@ -218,6 +221,7 @@ function PostHogIdentity() {
     clientInfo.role,
     clientInfo.username,
     posthog,
+    consent,
   ]);
 
   useProductActivation(clientInfo.id, !isImpersonating());

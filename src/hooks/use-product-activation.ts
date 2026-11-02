@@ -2,7 +2,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { use, useEffect } from "react";
 import { TransportContext } from "@/components/providers/transport-context";
 import { isDesktopApp } from "@/lib/desktop";
-import posthog, { isPostHogConfigured } from "@/lib/posthog";
+import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
+import posthog, { analyticsConsent, isPostHogConfigured } from "@/lib/posthog";
 import {
   createProductActivationTracker,
   watchProductActivation,
@@ -11,10 +12,18 @@ import {
 export function useProductActivation(userId: string, enabled: boolean) {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
+  const consent = useAnalyticsConsent();
 
   useEffect(() => {
     // Demo fleets and impersonated users must never generate activation events.
-    if (!enabled || !transport || !userId || !isPostHogConfigured) return;
+    if (
+      !enabled ||
+      !transport ||
+      !userId ||
+      !isPostHogConfigured ||
+      consent !== "granted"
+    )
+      return;
 
     let storage: Storage | undefined;
     try {
@@ -27,6 +36,7 @@ export function useProductActivation(userId: string, enabled: boolean) {
       surface: isDesktopApp() ? "desktop" : "web",
       storage,
       capture: (event, properties) => {
+        if (analyticsConsent.getStatus() !== "granted") return false;
         try {
           return posthog.capture(event, properties) !== undefined;
         } catch {
@@ -37,5 +47,5 @@ export function useProductActivation(userId: string, enabled: boolean) {
     tracker.start(userId);
 
     return watchProductActivation(queryClient, userId, tracker);
-  }, [enabled, queryClient, transport, userId]);
+  }, [consent, enabled, queryClient, transport, userId]);
 }

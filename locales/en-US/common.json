@@ -4,6 +4,16 @@
   "cancel": "Cancel",
   "save": "Save",
   "saving": "Saving...",
+  "analyticsConsent": {
+    "title": "Analytics cookies",
+    "description": "We use analytics cookies to understand how you use SoulFire and improve the app. Accepting links usage to your SoulFire user account.",
+    "cookieless": "If you decline, we collect limited usage statistics without analytics cookies or your account identity. You can change your choice in Cookie preferences.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "preferences": "Cookie preferences",
+    "privacyPolicy": "Privacy policy",
+    "cookiePolicy": "Cookie policy"
+  },
   "error": {
     "noAddressOrToken": "No server address or token found",
     "page": {

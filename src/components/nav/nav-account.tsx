@@ -7,6 +7,7 @@ import {
   ActivityIcon,
   ChevronsUpDown,
   CircleHelpIcon,
+  CookieIcon,
   FolderIcon,
   HeartHandshakeIcon,
   LanguagesIcon,
@@ -24,6 +25,7 @@ import { Suspense, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { AboutContext } from "@/components/dialog/about-dialog.tsx";
+import { CookieConsentContext } from "@/components/providers/cookie-consent-provider";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { IntegratedServerDiagnosticsDialog } from "@/components/IntegratedServerDiagnostics";
 import CastMenuEntry from "@/components/nav/cast-menu-entry.tsx";
@@ -53,6 +55,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { isPostHogConfigured } from "@/lib/posthog";
 import {
   getLanguageName,
   languageEmoji,
@@ -157,6 +160,7 @@ export function NavAccount() {
   const navigate = useNavigate();
   const terminalTheme = use(TerminalThemeContext);
   const { openAbout } = use(AboutContext);
+  const { openCookiePreferences } = use(CookieConsentContext);
   const systemInfo = use(SystemInfoContext);
   const { theme, setTheme } = useTheme();
   const { isMobile } = useSidebar();
@@ -357,6 +361,12 @@ export function NavAccount() {
                 <CircleHelpIcon />
                 {t("userSidebar.about")}
               </DropdownMenuItem>
+              {isPostHogConfigured && (
+                <DropdownMenuItem onClick={openCookiePreferences}>
+                  <CookieIcon />
+                  {t("analyticsConsent.preferences")}
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

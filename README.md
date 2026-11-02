@@ -45,6 +45,16 @@ Install Bun at the version in `package.json` and the Node.js LTS used by CI befo
 Take a look at the scripts in `package.json` to see how to run a dev env locally.
 You can also refer to the GitHub actions workflows to see how production builds are made.
 
+### Analytics consent
+
+PostHog waits for a choice in the cookie banner before it captures events.
+Acceptance enables analytics cookies, user identification, and per-user activation tracking.
+Rejection enables limited cookieless analytics without user identification or activation storage.
+Users can change their choice through **Cookie preferences** on the login screen or in the account menu.
+
+For each client PostHog project, enable **Settings > Project > Web analytics > Enable cookieless tracking**.
+PostHog drops cookieless events if this setting is disabled.
+
 ### Update RPC bindings
 
 The client generates its RPC bindings directly from the SoulFire repository with [Buf](https://buf.build/docs/generate/).

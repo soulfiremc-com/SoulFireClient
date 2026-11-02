@@ -1,9 +1,17 @@
 import posthog from "posthog-js";
+import {
+  analyticsConsentConfig,
+  createAnalyticsConsent,
+} from "@/lib/analytics-consent";
 
 const projectToken = import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN;
 const host = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
 
 export const isPostHogConfigured = Boolean(projectToken && host);
+export const analyticsConsent = createAnalyticsConsent(
+  posthog,
+  isPostHogConfigured,
+);
 
 if (!isPostHogConfigured) {
   if (import.meta.env.DEV) {
@@ -17,11 +25,13 @@ if (!isPostHogConfigured) {
   }
 } else {
   posthog.init(projectToken, {
+    ...analyticsConsentConfig,
     api_host: host,
     ui_host: "https://eu.posthog.com",
     capture_exceptions: true,
     debug: import.meta.env.DEV,
     defaults: "2026-01-30",
+    loaded: () => analyticsConsent.synchronize(),
   });
 }
 

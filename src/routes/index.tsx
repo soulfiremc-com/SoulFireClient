@@ -49,6 +49,8 @@ import {
   StartupProgress,
 } from "@/components/launcher/startup-status.tsx";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
+import { CookieConsentContext } from "@/components/providers/cookie-consent-provider";
+import { isPostHogConfigured } from "@/lib/posthog";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import {
   AlertDialog,
@@ -248,6 +250,7 @@ const DEFAULT_MOBILE_JVM_ARGS = [
 const DEFAULT_MOBILE_JVM_ARGS_STRING = DEFAULT_MOBILE_JVM_ARGS.join(" ");
 
 function Index() {
+  const { openCookiePreferences } = use(CookieConsentContext);
   const { t, i18n } = useTranslation("login");
   const navigate = useNavigate();
   const searchParams: Record<string, string> = Route.useSearch();
@@ -518,6 +521,17 @@ function Index() {
                 </DropdownMenu>
                 <ModeToggle />
               </div>
+              {isPostHogConfigured && (
+                <div className="flex justify-center">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    onClick={openCookiePreferences}
+                  >
+                    {t("common:analyticsConsent.preferences")}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </main>

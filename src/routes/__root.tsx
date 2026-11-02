@@ -24,6 +24,7 @@ import {
   type SystemInfo,
   SystemInfoContext,
 } from "@/components/providers/system-info-context.tsx";
+import { CookieConsentProvider } from "@/components/providers/cookie-consent-provider";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
 import { ThemeProvider } from "@/components/providers/theme-provider.tsx";
 import { TailwindIndicator } from "@/components/tailwind-indicator.tsx";
@@ -322,26 +323,28 @@ function RootLayout() {
                   >
                     <PointerReset />
                     <CustomContextMenu />
-                    <AboutProvider>
-                      <SupportDialogProvider>
-                        {shouldShowWindowTitlebar && <WindowTitlebar />}
-                        <div className="flex min-h-0 flex-1 flex-col">
-                          <Outlet />
-                        </div>
-                        <TanStackDevtools
-                          plugins={[
-                            {
-                              name: "TanStack Query",
-                              render: <ReactQueryDevtoolsPanel />,
-                            },
-                            {
-                              name: "TanStack Router",
-                              render: <TanStackRouterDevtoolsPanel />,
-                            },
-                          ]}
-                        />
-                      </SupportDialogProvider>
-                    </AboutProvider>
+                    <CookieConsentProvider>
+                      <AboutProvider>
+                        <SupportDialogProvider>
+                          {shouldShowWindowTitlebar && <WindowTitlebar />}
+                          <div className="flex min-h-0 flex-1 flex-col">
+                            <Outlet />
+                          </div>
+                          <TanStackDevtools
+                            plugins={[
+                              {
+                                name: "TanStack Query",
+                                render: <ReactQueryDevtoolsPanel />,
+                              },
+                              {
+                                name: "TanStack Router",
+                                render: <TanStackRouterDevtoolsPanel />,
+                              },
+                            ]}
+                          />
+                        </SupportDialogProvider>
+                      </AboutProvider>
+                    </CookieConsentProvider>
                   </div>
                 </TerminalThemeContext>
               </SystemInfoContext>

@@ -7,7 +7,7 @@ import {
 } from "webdav";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import i18n from "@/lib/i18n.ts";
-import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
+import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { resetQuerySession } from "@/lib/query-session.ts";
 import type { SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";
@@ -95,7 +95,7 @@ export function createWebDAVClient(
 
 export const logOut = () => {
   if (isPostHogConfigured && isAuthenticated()) {
-    posthog.reset();
+    analyticsConsent.resetIdentity();
   }
   updateAuthentication(() => {
     localStorage.removeItem(LOCAL_STORAGE_SERVER_TYPE_KEY);
@@ -108,7 +108,7 @@ export const logOut = () => {
 
 export const startImpersonation = (token: string) => {
   if (isPostHogConfigured) {
-    posthog.reset();
+    analyticsConsent.resetIdentity();
   }
   updateAuthentication(() => {
     localStorage.setItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY, token);
@@ -117,7 +117,7 @@ export const startImpersonation = (token: string) => {
 
 export const stopImpersonation = () => {
   if (isPostHogConfigured) {
-    posthog.reset();
+    analyticsConsent.resetIdentity();
   }
   updateAuthentication(() => {
     localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);

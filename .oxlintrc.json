@@ -23,7 +23,7 @@
     "shadcn/no-unknown-classes": [
       "error",
       {
-        "allow": ["nodrag", "nopan"]
+        "allow": ["nodrag", "nopan", "ph-no-capture"]
       }
     ],
     "shadcn/no-raw-colors": "error",
