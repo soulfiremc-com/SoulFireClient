@@ -319,7 +319,7 @@
     "actions": {
       "run_command": "Run command: {{value}}",
       "suggest_command": "Insert command: {{value}}",
-      "copy_to_clipboard": "Copy: {{value}}",
+      "copy_to_clipboard": "Copy to clipboard",
       "open_url": "Open: {{value}}",
       "unavailable": "Command input is unavailable in this view."
     },

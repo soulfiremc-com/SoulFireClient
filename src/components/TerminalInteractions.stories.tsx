@@ -17,6 +17,7 @@ import { toTerminalLine } from "@/stores/terminal-log-store";
 import CommandInput from "./command-input";
 import { TerminalView } from "./terminal";
 
+const copyToken = "terminal-test-token-not-a-secret";
 const commands = fn();
 const copy = fn(async (_text: string) => {});
 const open = fn();
@@ -52,6 +53,15 @@ const entries = [
     message: span("Copy text", {
       action: "copy_to_clipboard",
       value: "Héllo 🌍",
+    }),
+  }),
+  toTerminalLine({
+    id: "token",
+    personal: true,
+    terminalInteractions: true,
+    message: span("Copy token", {
+      action: "copy_to_clipboard",
+      value: copyToken,
     }),
   }),
   toTerminalLine({
@@ -383,5 +393,27 @@ export const IsolatedUrlWindow: Story = {
       "noopener,noreferrer",
     );
     await expect(link).toHaveFocus();
+  },
+};
+
+export const SensitiveCopyValue: Story = {
+  play: async ({ canvas, userEvent }) => {
+    const button = await canvas.findByRole("button", { name: /^Copy token/ });
+    await expect(button).toHaveAccessibleName("Copy token. Copy to clipboard");
+    button.focus();
+    const tooltip = await within(document.body).findByRole("tooltip");
+    await expect(tooltip).toHaveTextContent("Copy to clipboard");
+    await expect(tooltip).not.toHaveTextContent(copyToken);
+    await expect(document.body).not.toHaveTextContent(copyToken);
+    await expect(copy).not.toHaveBeenCalled();
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(copy).toHaveBeenCalledWith(copyToken));
+    await waitFor(() =>
+      expect(
+        within(document.body).getByText("Copied to clipboard", { exact: true }),
+      ).toBeVisible(),
+    );
+    await expect(document.body).not.toHaveTextContent(copyToken);
+    await expect(button).toHaveAccessibleName("Copy token. Copy to clipboard");
   },
 };

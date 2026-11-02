@@ -59,7 +59,7 @@ export function TerminalView({
   );
   const interactionId = useId();
   const commandHandler = useRef<TerminalCommandHandler | null>(null);
-  const copy = useCopyToClipboard();
+  const copy = useCopyToClipboard({ sensitive: true });
   const [runs, setRuns] = useState<TerminalInteractionRun[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
@@ -398,7 +398,11 @@ export function TerminalView({
                 click?.action === "run_command" ||
                 click?.action === "suggest_command";
               const description = click
-                ? t(`terminal.actions.${click.action}`, { value: click.value })
+                ? click.action === "copy_to_clipboard"
+                  ? t("terminal.actions.copy_to_clipboard")
+                  : t(`terminal.actions.${click.action}`, {
+                      value: click.value,
+                    })
                 : "";
               const tooltip = [
                 run.metadata.hover,
