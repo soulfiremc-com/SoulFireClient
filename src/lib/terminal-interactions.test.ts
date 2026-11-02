@@ -10,6 +10,7 @@ import {
 import {
   encodeTerminalInteraction as marker,
   terminalLogText,
+  parseTerminalText,
   type TerminalInteraction,
 } from "./terminal-interactions";
 
@@ -165,4 +166,65 @@ test("span count is bounded without dropping visible text", () => {
   );
   assert.equal(registrations, 64);
   assert.equal((text.match(/x/g) ?? []).length, 70);
+});
+
+test("renderer-independent spans require both provenance flags and retain Unicode text", () => {
+  const message =
+    "before " + marker(metadata) + "A界é\nline" + marker(null) + " after";
+  const spans = parseTerminalText({
+    message,
+    personal: true,
+    terminalInteractions: true,
+  });
+  assert.deepEqual(
+    spans.map(({ text, interaction }) => ({ text, interaction })),
+    [
+      { text: "before ", interaction: undefined },
+      { text: "A界é\nline", interaction: metadata },
+      { text: " after", interaction: undefined },
+    ],
+  );
+  assert.equal(new Set(spans.map((span) => span.start)).size, 3);
+  for (const [personal, terminalInteractions] of [
+    [undefined, undefined],
+    [true, undefined],
+    [false, true],
+    [true, false],
+  ]) {
+    const plain = parseTerminalText({
+      message,
+      personal,
+      terminalInteractions,
+    });
+    assert.equal(
+      plain.map((span) => span.text).join(""),
+      "before A界é\nline after",
+    );
+    assert.ok(plain.every((span) => !span.interaction));
+  }
+});
+
+test("React spans remove ANSI styling and unknown controls without losing boundaries", () => {
+  const input = {
+    message:
+      "\x1b[31mplain\x1b[0m " +
+      marker(metadata) +
+      "\x1b[1mstyled\x1b[0m" +
+      "\x1b]777;soulfire;2;unknown\x1b\\ordinary\x1b]52;c;payload\x07",
+    personal: true,
+    terminalInteractions: true,
+  };
+  const spans = parseTerminalText(input);
+  assert.deepEqual(
+    spans.map((span) => span.text),
+    ["plain ", "styled", "ordinary"],
+  );
+  assert.deepEqual(spans[1].interaction, metadata);
+  assert.equal(spans[2].interaction, undefined);
+  assert.equal(
+    parseTerminalText(input, true)
+      .map((span) => span.text)
+      .join(""),
+    "\x1b[31mplain\x1b[0m \x1b[1mstyled\x1b[0mordinary",
+  );
 });

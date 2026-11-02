@@ -1,6 +1,5 @@
 import { flavorEntries } from "@catppuccin/palette";
 import { WTerm } from "@wterm/dom";
-import { stripAnsi } from "fancy-ansi";
 import {
   type CSSProperties,
   type ReactNode,
@@ -12,6 +11,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { PlainTerminalOutput } from "@/components/plain-terminal-output";
 import { ContextMenuPortal } from "@/components/context-menu-portal";
 import { SelectedTextActions } from "@/components/custom-context-menu";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
@@ -26,20 +26,16 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { useTerminalInteractionActions } from "@/hooks/use-terminal-interaction-actions";
 import {
   terminalInteractionAt,
   visibleTerminalInteractions,
   type TerminalInteractionRun,
 } from "@/lib/terminal-interaction-cells";
-import type { TerminalInteraction } from "@/lib/terminal-interactions";
 import { useContextMenu } from "@/hooks/use-context-menu";
 import { useTerminalLogs } from "@/hooks/use-terminal-logs";
-import {
-  createTerminalOutput,
-  formatTerminalLine,
-} from "@/lib/terminal-output";
-import { isDemo, openExternalUrl } from "@/lib/utils";
+import { createTerminalOutput } from "@/lib/terminal-output";
+import { isDemo } from "@/lib/utils";
 import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
 
 export function TerminalView({
@@ -59,7 +55,10 @@ export function TerminalView({
   );
   const interactionId = useId();
   const commandHandler = useRef<TerminalCommandHandler | null>(null);
-  const copy = useCopyToClipboard({ sensitive: true });
+  const onCommand: TerminalCommandHandler | undefined = children
+    ? (action, value) => commandHandler.current?.(action, value)
+    : undefined;
+  const actions = useTerminalInteractionActions(onCommand);
   const [runs, setRuns] = useState<TerminalInteractionRun[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
@@ -109,13 +108,6 @@ export function TerminalView({
       Math.floor((y - rect.top + host.scrollTop - top) / height),
       Math.floor((x - rect.left + host.scrollLeft - left) / width),
     );
-  };
-  const activate = (metadata: TerminalInteraction) => {
-    const click = metadata.click;
-    if (!click) return;
-    if (click.action === "copy_to_clipboard") copy(click.value);
-    else if (click.action === "open_url") openExternalUrl(click.value);
-    else commandHandler.current?.(click.action, click.value);
   };
   const scrollFrame = useRef(0);
   const [failed, setFailed] = useState(false);
@@ -308,7 +300,7 @@ export function TerminalView({
               return;
             event.preventDefault();
             event.stopPropagation();
-            activate(metadata);
+            actions.activate(metadata);
           }}
           onClick={(event) => {
             if (
@@ -371,13 +363,11 @@ export function TerminalView({
           }}
         >
           {failed ? (
-            <pre className="h-full overflow-auto p-1 font-mono text-xs whitespace-pre-wrap break-all select-text">
-              {entries
-                .map((entry) =>
-                  stripAnsi(formatTerminalLine(entry, i18n.resolvedLanguage)),
-                )
-                .join("")}
-            </pre>
+            <PlainTerminalOutput
+              entries={entries}
+              locale={i18n.resolvedLanguage}
+              onCommand={onCommand}
+            />
           ) : (
             <div
               ref={hostRef}
@@ -393,24 +383,8 @@ export function TerminalView({
           )}
           {!failed &&
             runs.map((run) => {
-              const click = run.metadata.click;
-              const command =
-                click?.action === "run_command" ||
-                click?.action === "suggest_command";
-              const description = click
-                ? click.action === "copy_to_clipboard"
-                  ? t("terminal.actions.copy_to_clipboard")
-                  : t(`terminal.actions.${click.action}`, {
-                      value: click.value,
-                    })
-                : "";
-              const tooltip = [
-                run.metadata.hover,
-                description,
-                command && !children ? t("terminal.actions.unavailable") : "",
-              ]
-                .filter(Boolean)
-                .join("\n");
+              const description = actions.description(run.metadata.click);
+              const tooltip = actions.tooltip(run.metadata);
               return (
                 <Tooltip
                   key={run.key}
@@ -445,7 +419,7 @@ export function TerminalView({
                         : undefined
                     }
                     aria-disabled={
-                      !click || (command && !children) ? true : undefined
+                      actions.disabled(run.metadata.click) ? true : undefined
                     }
                     onFocus={() => setFocused(run.key)}
                     onBlur={() => setFocused(null)}
@@ -458,7 +432,7 @@ export function TerminalView({
                     onClick={(event) => {
                       if (event.detail !== 0) return;
                       event.stopPropagation();
-                      activate(run.metadata);
+                      actions.activate(run.metadata);
                     }}
                   >
                     <span className="sr-only">{run.text}</span>
