@@ -62,8 +62,13 @@ Domain assignments and DNS records are managed outside this repository.
 
 Cloudflare builds use `CF_PAGES_BRANCH` to select the app environment: `release` and `demo` use production, and other branches use preview.
 
-The checked-in `wrangler.toml` targets the existing `soulfire-client` Pages project and its account.
-The project uses Git integration for automatic deployments. You can also prepare a build and upload it with Wrangler:
+The checked-in `wrangler.toml` targets the existing `soulfire-client` Pages project.
+Cloudflare's Git integration builds each pushed branch with `bun ci && bun run ci:pages`.
+The `ci:pages` script runs typecheck, lint, formatting, deployment tests, and the web build before Pages publishes the result.
+The `release` branch deploys to production. Other branches receive preview deployments, including the `main` and `demo` domain aliases above.
+GitHub Actions also runs the deployment tests as part of the Test workflow.
+
+You can also prepare a build and upload it with Wrangler:
 
 ```bash
 # Authenticate if needed.
@@ -73,7 +78,7 @@ bunx wrangler@4.156.2 login
 CF_PAGES=1 CF_PAGES_BRANCH=main bun run build:web
 
 # Publish the prepared bundle to the main branch alias.
-bunx wrangler@4.156.2 pages deploy dist --branch main
+CLOUDFLARE_ACCOUNT_ID=4dd0e72d7bf89402be905fb40cdb230a bunx wrangler@4.156.2 pages deploy dist --branch main
 ```
 
 Use the same branch name for `CF_PAGES_BRANCH` and `--branch`.
