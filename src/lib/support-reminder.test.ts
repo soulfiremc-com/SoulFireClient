@@ -95,9 +95,16 @@ test("eligibility survives reloads and does not store user or bot identifiers", 
   const f = fixture();
   f.qualify();
   assert.equal(f.makeReminder().isEligible(), true);
+  const localDate = new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
   assert.deepEqual(JSON.parse(f.storage.getItem(SUPPORT_REMINDER_KEY)!), {
     firstUsedAt: FIRST_USE,
-    activeDays: ["2026-01-01", "2026-01-02", "2026-01-15"],
+    activeDays: [0, 1, 14].map((offset) =>
+      localDate.format(FIRST_USE + offset * DAY),
+    ),
     hasSpawnedBot: true,
     lastShownAt: null,
     disabled: null,
