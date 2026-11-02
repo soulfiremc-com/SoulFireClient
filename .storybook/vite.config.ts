@@ -29,6 +29,7 @@ export default defineConfig({
       "shiki/langs/powershell.mjs",
       "shiki/themes/github-light-high-contrast.mjs",
       "shiki/themes/github-dark-high-contrast.mjs",
+      "use-stick-to-bottom",
     ],
   },
   plugins: [svgr()],

@@ -155,3 +155,20 @@ test("diagnostic output stays bounded while retaining stable log identities", ()
     state.diagnostics.logs.length,
   );
 });
+
+test("process diagnostics strip interaction controls and retain token redaction", () => {
+  const state = createIntegratedServerState();
+  const payload = Buffer.from(
+    JSON.stringify({
+      click: { action: "copy_to_clipboard", value: "hidden-token" },
+    }),
+  ).toString("base64url");
+  const message = appendIntegratedLog(
+    state,
+    `\x1b]777;soulfire;1;${payload}\x1b\\Copy token\x1b]777;soulfire;1;-\x1b\\ \x1b[31mtext\x1b[0m Bearer visible-token`,
+    "stdout",
+  );
+  assert.equal(message, "Copy token text Bearer [redacted]");
+  assert.equal(state.diagnostics.logs[0].message, message);
+  assert.equal(state.diagnostics.logs[0].source, "stdout");
+});

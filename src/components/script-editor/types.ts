@@ -1,3 +1,5 @@
+import type { TerminalLogContent } from "@/lib/terminal-interactions";
+
 // Types for the script editor node-based system
 
 export type PortType = "number" | "string" | "boolean" | "any" | "trigger";
@@ -51,12 +53,11 @@ export interface Script {
 
 export type LogLevel = "debug" | "info" | "warn" | "error";
 
-export interface LogEntry {
+export interface LogEntry extends TerminalLogContent {
   id: string;
   timestamp: Date;
   level: LogLevel;
   nodeId: string | null;
-  message: string;
 }
 
 // Node definitions registry
