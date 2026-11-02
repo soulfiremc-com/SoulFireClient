@@ -132,7 +132,20 @@ export const CompletionAndHistory: Story = {
       name: "Command",
     }) as HTMLInputElement;
     await userEvent.type(input, "h");
-    await canvas.findByRole("option", { name: "help List available commands" });
+    const firstOption = await canvas.findByRole("option", {
+      name: "help List available commands",
+    });
+    const menu = canvas.getByRole("listbox");
+    const lastOption = canvas.getByRole("option", {
+      name: "history Show recent commands",
+    });
+    const menuBounds = menu.getBoundingClientRect();
+    const firstBounds = firstOption.getBoundingClientRect();
+    const lastBounds = lastOption.getBoundingClientRect();
+    expect(firstBounds.left - menuBounds.left).toBeCloseTo(4, 0);
+    expect(menuBounds.right - firstBounds.right).toBeCloseTo(4, 0);
+    expect(firstBounds.top - menuBounds.top).toBeCloseTo(4, 0);
+    expect(menuBounds.bottom - lastBounds.bottom).toBeCloseTo(4, 0);
     await userEvent.keyboard("{Tab}");
     await expect(input).toHaveValue("help");
     await userEvent.keyboard("{Tab}");

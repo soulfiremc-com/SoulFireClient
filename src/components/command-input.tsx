@@ -777,7 +777,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
               id={suggestionsId}
               role="listbox"
               aria-label={t("commandInput.suggestions")}
-              className="py-1 font-mono text-xs"
+              className="p-1 font-mono text-xs"
             >
               {suggestions.map((suggestion, index) => {
                 const isActive = index === highlightedIndex;
@@ -788,7 +788,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
                     role="option"
                     aria-selected={isActive}
                     className={cn(
-                      "flex cursor-pointer flex-col gap-1 px-3 py-2 sm:flex-row sm:items-baseline sm:gap-4",
+                      "flex cursor-pointer flex-col gap-1 rounded-sm px-2 py-1.5 sm:flex-row sm:items-baseline sm:gap-4",
                       isActive
                         ? "bg-(--terminal-active)"
                         : "hover:bg-(--terminal-active)/50",
