@@ -28,6 +28,7 @@ import {
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
+import { useSupportReminderUsage } from "@/hooks/use-support-reminder-usage";
 import { smartEntries } from "@/lib/utils.tsx";
 import {
   createTransport,
@@ -200,7 +201,7 @@ function InstanceSwitchKeybinds() {
   return null;
 }
 
-function PostHogIdentity() {
+function ClientSession() {
   const posthog = usePostHog();
   const consent = useAnalyticsConsent();
   const { clientDataQueryOptions } = Route.useRouteContext();
@@ -225,6 +226,7 @@ function PostHogIdentity() {
   ]);
 
   useProductActivation(clientInfo.id, !isImpersonating());
+  useSupportReminderUsage(clientInfo.id, !isImpersonating());
 
   return null;
 }
@@ -239,7 +241,7 @@ function DashboardLayout() {
   return (
     <TransportContext value={loaderData.transport}>
       <Suspense>
-        <PostHogIdentity />
+        <ClientSession />
         <InstanceSwitchKeybinds />
       </Suspense>
       {isImpersonating() && (

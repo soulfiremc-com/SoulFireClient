@@ -27,6 +27,7 @@ export function CookieConsentBanner({
 
   return (
     <section
+      data-cookie-consent-banner=""
       aria-labelledby={titleId}
       className="ph-no-capture fixed inset-x-3 bottom-3 z-50 max-h-[calc(100dvh-6rem)] overflow-y-auto sm:right-auto sm:bottom-4 sm:left-4 sm:w-96"
     >
