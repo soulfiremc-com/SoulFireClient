@@ -383,6 +383,7 @@ export function TerminalView({
               ref={hostRef}
               data-terminal-viewport
               className={hovered ? "cursor-pointer select-text" : "select-text"}
+              role="region"
               aria-label={t("pageName.terminal")}
               onScroll={() => {
                 setHovered(null);

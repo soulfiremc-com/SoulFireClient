@@ -10,6 +10,27 @@ const namespaces = readdirSync(new URL("../locales/en-US", import.meta.url))
 
 // Keep Electron, route generation, and application devtools out of Storybook.
 export default defineConfig({
+  optimizeDeps: {
+    include: [
+      "@base-ui/react/popover",
+      "@base-ui/react/scroll-area",
+      "@dnd-kit/core",
+      "@dnd-kit/modifiers",
+      "@dnd-kit/sortable",
+      "@dnd-kit/utilities",
+      "@xyflow/react",
+      "radix-ui",
+      "react-dom",
+      "shiki/core",
+      "shiki/engine/javascript",
+      "shiki/langs/typescript.mjs",
+      "shiki/langs/python.mjs",
+      "shiki/langs/shellscript.mjs",
+      "shiki/langs/powershell.mjs",
+      "shiki/themes/github-light-high-contrast.mjs",
+      "shiki/themes/github-dark-high-contrast.mjs",
+    ],
+  },
   plugins: [svgr()],
   resolve: {
     alias: { "@": fileURLToPath(new URL("../src", import.meta.url)) },
