@@ -9,15 +9,14 @@ import type { TerminalLine } from "@/stores/terminal-log-store";
 
 const RESET = "\x1b[0m\x1b[3J\x1b[2J\x1b[H\x1b[?25l";
 
-export function formatTerminalLine(
+export function formatTerminalPrefix(
   entry: TerminalLine,
   locale?: string,
-  register?: (metadata: TerminalInteraction) => string,
 ): string {
   const logger = entry.loggerName?.startsWith("com.soulfiremc.")
     ? entry.loggerName.slice(entry.loggerName.lastIndexOf(".") + 1)
     : entry.loggerName;
-  const prefix = [
+  return [
     entry.level,
     entry.timestamp &&
       new Date(
@@ -30,6 +29,14 @@ export function formatTerminalLine(
     .filter(Boolean)
     .map((part) => logText(part!, false).replace(/\n/g, " "))
     .join(" ");
+}
+
+export function formatTerminalLine(
+  entry: TerminalLine,
+  locale?: string,
+  register?: (metadata: TerminalInteraction) => string,
+): string {
+  const prefix = formatTerminalPrefix(entry, locale);
   const level = entry.level?.toUpperCase();
   const color =
     level === "WARN"

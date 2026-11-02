@@ -19,8 +19,22 @@ function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
   return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
-function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+function TooltipTrigger({
+  variant = "default",
+  className,
+  ...props
+}: TooltipPrimitive.Trigger.Props & { variant?: "default" | "inline" }) {
+  return (
+    <TooltipPrimitive.Trigger
+      data-slot="tooltip-trigger"
+      className={cn(
+        variant === "inline" &&
+          "inline cursor-pointer text-left align-baseline underline decoration-dotted underline-offset-2 select-text focus-visible:outline-1 focus-visible:outline-offset-2",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 function TooltipContent({

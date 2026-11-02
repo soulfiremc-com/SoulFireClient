@@ -80,36 +80,82 @@ export function encodeTerminalInteraction(
   return PRIVATE_PREFIX + payload + TERMINATOR;
 }
 
-// All controls except SGR are removed. Only a trusted, versioned private OSC can
-// introduce generated OSC 8 identities; raw OSC 8 links and OSC 52 never pass.
+export type TerminalLogContent = {
+  message: string;
+  personal?: boolean;
+  terminalInteractions?: boolean;
+};
+
+export type TerminalTextSpan = {
+  // Source offset identifies a span within an immutable log message.
+  start: number;
+  text: string;
+  interaction?: TerminalInteraction;
+};
+
+// Decode once for both React text and wterm. Stream provenance, not a control
+// string, grants trust; unknown controls never reach either renderer.
+export function parseTerminalText(
+  entry: TerminalLogContent,
+  colors = false,
+): TerminalTextSpan[] {
+  const trusted =
+    entry.personal === true && entry.terminalInteractions === true;
+  const result: TerminalTextSpan[] = [];
+  let active: TerminalInteraction | undefined;
+  let spans = 0;
+  let offset = 0;
+  const append = (text: string, start: number) => {
+    if (!text) return;
+    const previous = result[result.length - 1];
+    if (previous && previous.interaction === active) previous.text += text;
+    else result.push({ start, text, interaction: active });
+  };
+  const appendText = (text: string, start: number) =>
+    append(
+      text
+        .replace(/\r\n?/g, "\n")
+        .replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, ""),
+      start,
+    );
+  for (const match of entry.message.matchAll(controlStrings)) {
+    appendText(entry.message.slice(offset, match.index), offset);
+    const sequence = match[0];
+    offset = match.index + sequence.length;
+    if (colors && /^\x1b\[[\d;:]*m$/.test(sequence))
+      append(sequence, match.index);
+    else if (trusted && sequence.startsWith("\x1b]777;soulfire;")) {
+      active = undefined;
+      if (
+        !sequence.startsWith(PRIVATE_PREFIX) ||
+        !sequence.endsWith(TERMINATOR)
+      )
+        continue;
+      const metadata = parseMetadata(
+        sequence.slice(PRIVATE_PREFIX.length, -TERMINATOR.length),
+      );
+      if (metadata && spans++ < 64) active = metadata;
+    }
+  }
+  appendText(entry.message.slice(offset), offset);
+  return result;
+}
+
+// The wterm adapter supplies only generated opaque OSC 8 identities. Raw OSC 8
+// links and clipboard OSC 52 requests are removed by the shared decoder.
 export function terminalLogText(
   value: string,
   colors = true,
   register?: (metadata: TerminalInteraction) => string,
 ): string {
-  let active = false;
-  let spans = 0;
-  const text = value
-    .replace(controlStrings, (sequence) => {
-      if (colors && /^\x1b\[[\d;:]*m$/.test(sequence)) return sequence;
-      if (!register || !sequence.startsWith("\x1b]777;soulfire;")) return "";
-      const close = active ? CLOSE_LINK : "";
-      active = false;
-      if (
-        !sequence.startsWith(PRIVATE_PREFIX) ||
-        !sequence.endsWith(TERMINATOR)
-      )
-        return close;
-      const metadata = parseMetadata(
-        sequence.slice(PRIVATE_PREFIX.length, -TERMINATOR.length),
-      );
-      if (!metadata || spans++ >= 64) return close;
-      active = true;
-      return close + `\x1b]8;;${register(metadata)}\x1b\\`;
-    })
-    .replace(/\r\n?/g, "\n")
-    .replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, (control) =>
-      control === "\x1b" ? control : "",
-    );
-  return text + (active ? CLOSE_LINK : "");
+  return parseTerminalText(
+    { message: value, personal: !!register, terminalInteractions: !!register },
+    colors,
+  )
+    .map((span) =>
+      span.interaction && register
+        ? `\x1b]8;;${register(span.interaction)}\x1b\\${span.text}${CLOSE_LINK}`
+        : span.text,
+    )
+    .join("");
 }
