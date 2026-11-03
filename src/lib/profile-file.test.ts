@@ -114,9 +114,8 @@ test("configuration export retains credentials and account metadata, but omits p
   source.persistentMetadata = [
     create(SettingsNamespaceSchema, { namespace: "project-metadata" }),
   ];
-  const exported = parseProfileFile(
-    serializeProfileFile(convertFromInstanceProto(source)),
-  );
+  const serialized = serializeProfileFile(convertFromInstanceProto(source));
+  const exported = parseProfileFile(serialized);
 
   assert.deepEqual(
     exported.accounts[0].accountData,
@@ -127,5 +126,11 @@ test("configuration export retains credentials and account metadata, but omits p
     source.accounts[0].persistentMetadata,
   );
   assert.equal(exported.proxies[0].password, "qa-test-password");
-  assert.deepEqual(convertToInstanceProto(exported).persistentMetadata, []);
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(
+      JSON.parse(serialized),
+      "persistentMetadata",
+    ),
+    false,
+  );
 });
