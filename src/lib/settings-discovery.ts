@@ -18,6 +18,54 @@ function identifierKey(id: SettingsEntryIdentifier): string {
   return `${id.namespace}:${id.key}`;
 }
 
+const SETTINGS_SECTIONS: Readonly<
+  Record<string, readonly { id: string; keys: readonly string[] }[]>
+> = {
+  ai: [
+    { id: "provider", keys: ["api-base-url", "api-key"] },
+    { id: "requests", keys: ["api-request-timeout", "api-max-retries"] },
+  ],
+  pathfinding: [
+    {
+      id: "movement",
+      keys: [
+        "allow-breaking-undiggable",
+        "avoid-diagonal-squeeze",
+        "avoid-harmful-entities",
+      ],
+    },
+    {
+      id: "costs",
+      keys: ["max-enemy-penalty", "break-block-penalty", "place-block-penalty"],
+    },
+    { id: "search", keys: ["expire-timeout", "disable-pruning"] },
+  ],
+};
+
+/** Group known fields by purpose and retain every new server-provided field. */
+export function groupSettingsEntries(
+  pageId: string,
+  entries: readonly SettingsEntryIdentifier[],
+) {
+  const sections = SETTINGS_SECTIONS[pageId];
+  if (!sections) return [{ id: "other", entries: [...entries] }];
+  const assigned = new Set<string>();
+  const groups = sections.map((section) => ({
+    id: section.id,
+    entries: entries.filter((entry) => {
+      const matches =
+        entry.namespace === pageId && section.keys.includes(entry.key);
+      if (matches) assigned.add(identifierKey(entry));
+      return matches;
+    }),
+  }));
+  groups.push({
+    id: "other",
+    entries: entries.filter((entry) => !assigned.has(identifierKey(entry))),
+  });
+  return groups.filter((group) => group.entries.length > 0);
+}
+
 export function splitSettingsEntries(
   pageId: string,
   entries: readonly SettingsEntryIdentifier[],

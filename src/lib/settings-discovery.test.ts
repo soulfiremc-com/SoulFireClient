@@ -11,6 +11,7 @@ import {
   findSettingsOnOtherPages,
   getPluginSearchText,
   splitSettingsEntries,
+  groupSettingsEntries,
 } from "./settings-discovery.ts";
 
 const id = (namespace: string, key: string) => ({ namespace, key });
@@ -44,6 +45,27 @@ test("pages without a curated list show everything", () => {
   const split = splitSettingsEntries("my-plugin", list);
   assert.equal(split.common.length, 2);
   assert.equal(split.advanced.length, 0);
+});
+
+test("content sections retain unknown fields and respect namespaces", () => {
+  const entries = [
+    id("ai", "api-key"),
+    id("ai", "api-max-retries"),
+    id("ai", "future"),
+    id("extension", "api-key"),
+  ] as never[];
+  const groups = groupSettingsEntries("ai", entries);
+  assert.deepEqual(
+    groups.map((group) => group.id),
+    ["provider", "requests", "other"],
+  );
+  assert.deepEqual(
+    groups.flatMap((group) => group.entries),
+    entries,
+  );
+  assert.deepEqual(groupSettingsEntries("custom", entries), [
+    { id: "other", entries },
+  ]);
 });
 
 test("search matches names and descriptions from server definitions", () => {

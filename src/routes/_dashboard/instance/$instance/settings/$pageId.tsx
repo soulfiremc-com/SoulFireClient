@@ -153,27 +153,23 @@ function Content() {
       ]}
       pageName={settingsEntry.pageName}
     >
-      <div className="flex h-full w-full grow flex-row gap-2">
-        <div className="flex h-full grow flex-col gap-4">
-          {!plugin && (
-            <h2 className="flex items-center gap-2 text-xl font-semibold">
-              <DynamicIcon
-                name={settingsEntry.iconId}
-                className="size-5 shrink-0"
-              />
-              {settingsEntry.pageName}
-            </h2>
-          )}
-          {plugin && (
-            <InstancePluginInfoCard
-              settingsEntry={settingsEntry}
-              plugin={plugin}
+      <div className="flex w-full flex-col gap-5">
+        {!plugin && (
+          <h2 className="flex items-center gap-2 text-xl font-semibold">
+            <DynamicIcon
+              name={settingsEntry.iconId}
+              className="size-5 shrink-0"
             />
-          )}
-          <div className="flex flex-col gap-2">
-            <InstanceSettingsPageComponent data={settingsEntry} />
-          </div>
-        </div>
+            {settingsEntry.pageName}
+          </h2>
+        )}
+        {plugin && (
+          <InstancePluginInfoCard
+            settingsEntry={settingsEntry}
+            plugin={plugin}
+          />
+        )}
+        <InstanceSettingsPageComponent data={settingsEntry} />
       </div>
     </InstancePageLayout>
   );

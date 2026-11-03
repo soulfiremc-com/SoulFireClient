@@ -11,6 +11,7 @@ import {
   ChevronRightIcon,
   ChevronsUpDown,
   CircleAlertIcon,
+  InfoIcon,
   LoaderCircleIcon,
   PlusIcon,
   RotateCcwIcon,
@@ -38,7 +39,6 @@ import {
   useSettingsDefinitionByKey,
 } from "@/components/providers/settings-registry-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Alert, AlertDescription } from "@/components/ui/alert.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -47,7 +47,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible.tsx";
 import { Card, CardContent } from "@/components/ui/card.tsx";
-import { Checkbox } from "@/components/ui/checkbox.tsx";
 import {
   Command,
   CommandGroup,
@@ -58,6 +57,7 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldContent,
   FieldError,
   FieldLabel,
   FieldGroup,
@@ -77,6 +77,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { Switch } from "@/components/ui/switch.tsx";
 import {
   type BoolSetting,
   type ComboSetting,
@@ -112,6 +113,7 @@ import {
   filterSettingsEntries,
   findSettingsOnOtherPages,
   splitSettingsEntries,
+  groupSettingsEntries,
 } from "@/lib/settings-discovery.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
@@ -122,10 +124,29 @@ import {
   updateServerConfigEntry,
 } from "@/lib/utils.tsx";
 
+function SettingInputLayout(props: {
+  title: ReactNode;
+  children: ReactNode;
+  invalid?: boolean;
+  disabled?: boolean;
+  busy?: boolean;
+}) {
+  return (
+    <Field
+      className="min-w-0 max-w-3xl"
+      data-invalid={props.invalid}
+      data-disabled={props.disabled}
+      aria-busy={props.busy}
+    >
+      {props.title}
+      <div className="flex min-w-0 flex-col gap-2">{props.children}</div>
+    </Field>
+  );
+}
+
 export function ComponentTitle(props: {
   title: ReactNode;
   description: ReactNode;
-  onClick?: () => void;
   inputId?: string;
 }) {
   return (
@@ -133,21 +154,7 @@ export function ComponentTitle(props: {
       {props.inputId ? (
         <FieldLabel htmlFor={props.inputId}>{props.title}</FieldLabel>
       ) : (
-        <p
-          onClick={props.onClick}
-          onKeyDown={(e) => {
-            if ((e.key === "Enter" || e.key === " ") && props.onClick) {
-              e.preventDefault();
-              props.onClick();
-            }
-          }}
-          tabIndex={props.onClick ? 0 : undefined}
-          className={cn("text-sm font-medium", {
-            "cursor-pointer": props.onClick !== undefined,
-          })}
-        >
-          {props.title}
-        </p>
+        <p className="text-sm font-medium">{props.title}</p>
       )}
       {props.description && (
         <FieldDescription>{props.description}</FieldDescription>
@@ -176,6 +183,7 @@ function inputTypeToHtml(
 }
 
 function StringComponent(props: {
+  id: string;
   setting: StringSetting;
   value: string;
   changeCallback: (value: string) => void | Promise<void>;
@@ -204,6 +212,7 @@ function StringComponent(props: {
   if (props.setting.inputType === StringSetting_InputType.TEXTAREA) {
     return (
       <Textarea
+        id={props.id}
         aria-label={props.setting.uiName}
         aria-busy={pendingWrites > 0}
         value={inputValue}
@@ -219,6 +228,8 @@ function StringComponent(props: {
   } else {
     return (
       <Input
+        id={props.id}
+        appearance="settings"
         aria-label={props.setting.uiName}
         aria-busy={pendingWrites > 0}
         value={inputValue}
@@ -273,18 +284,20 @@ function NumericSettingField(props: {
   };
 
   return (
-    <Field
-      className="max-w-xl"
-      data-invalid={invalid}
-      data-disabled={props.setting.disabled}
-      aria-busy={pendingWrites > 0}
+    <SettingInputLayout
+      invalid={invalid}
+      disabled={props.setting.disabled}
+      busy={pendingWrites > 0}
+      title={
+        <ComponentTitle
+          inputId={id}
+          title={props.entry.uiName}
+          description={props.entry.description}
+        />
+      }
     >
-      <ComponentTitle
-        inputId={id}
-        title={props.entry.uiName}
-        description={props.entry.description}
-      />
       <NumericFormat
+        appearance="settings"
         id={id}
         value={draft}
         valueIsNumericString
@@ -335,7 +348,7 @@ function NumericSettingField(props: {
           })}
         </FieldError>
       )}
-    </Field>
+    </SettingInputLayout>
   );
 }
 
@@ -347,7 +360,7 @@ function MinMaxSettingField(props: {
   const [editor] = useState(() => new NumericRangeEditor(props.value));
   const startEdit = () => editor.startEdit(props.value);
   return (
-    <FieldSet className="max-w-xl gap-4">
+    <FieldSet className="min-w-0 gap-4">
       <FieldLegend className="sr-only">
         {props.setting.minEntry?.uiName ??
           props.setting.maxEntry?.uiName ??
@@ -384,33 +397,40 @@ function BoolComponent(props: {
   title: string;
   description: string;
 }) {
+  const { t } = useTranslation("common");
+  const id = useId();
   return (
     <>
-      <Checkbox
-        aria-label={props.title}
-        className="mt-0.5"
-        checked={props.value}
-        disabled={props.setting.disabled}
-        onCheckedChange={(value) => {
-          props.changeCallback(value);
-        }}
-      />
-      <ComponentTitle
-        title={props.title}
-        description={props.description}
-        onClick={
-          props.setting.disabled
-            ? undefined
-            : () => {
-                props.changeCallback(!props.value);
-              }
-        }
-      />
+      <FieldContent>
+        <FieldLabel htmlFor={id}>{props.title}</FieldLabel>
+        {props.description && (
+          <FieldDescription id={`${id}-description`}>
+            {props.description}
+          </FieldDescription>
+        )}
+      </FieldContent>
+      <div>
+        <div className="bg-muted/50 inline-flex items-center gap-3 rounded-md border px-3 py-2">
+          <span className="text-sm">
+            {t(props.value ? "pluginCard.enabled" : "pluginCard.disabled")}
+          </span>
+          <Switch
+            id={id}
+            aria-describedby={
+              props.description ? `${id}-description` : undefined
+            }
+            checked={props.value}
+            disabled={props.setting.disabled}
+            onCheckedChange={props.changeCallback}
+          />
+        </div>
+      </div>
     </>
   );
 }
 
 function ComboComponent(props: {
+  id: string;
   setting: ComboSetting;
   value: string;
   changeCallback: (value: string) => void;
@@ -430,16 +450,17 @@ function ComboComponent(props: {
       <PopoverTrigger
         render={
           <Button
+            id={props.id}
             variant="outline"
             role="combobox"
             aria-label={props.setting.uiName}
             aria-expanded={open}
-            className="w-72 justify-between"
+            className="w-full justify-between"
             disabled={props.setting.disabled}
           />
         }
       >
-        <div className="inline-flex flex-row items-center justify-center gap-2">
+        <div className="inline-flex min-w-0 flex-row items-center gap-2">
           {selectedOption.iconId && (
             <DynamicIcon name={selectedOption.iconId} />
           )}
@@ -447,7 +468,7 @@ function ComboComponent(props: {
         </div>
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </PopoverTrigger>
-      <PopoverContent className="w-72 p-0">
+      <PopoverContent className="w-(--anchor-width) p-0">
         <Command>
           <CommandInput
             placeholder={t("settingsPage.combo.searchPlaceholder")}
@@ -629,6 +650,7 @@ export function SettingTypeRenderer(props: {
   value: JsonValue;
   changeCallback: (value: JsonValue) => void | Promise<void>;
 }) {
+  const inputId = useId();
   if (!props.settingType || props.value === undefined) {
     return null;
   }
@@ -636,17 +658,23 @@ export function SettingTypeRenderer(props: {
   switch (props.settingType.case) {
     case "string": {
       return (
-        <Field className="max-w-xl">
-          <ComponentTitle
-            title={props.settingType.value.uiName}
-            description={props.settingType.value.description}
-          />
+        <SettingInputLayout
+          disabled={props.settingType.value.disabled}
+          title={
+            <ComponentTitle
+              inputId={inputId}
+              title={props.settingType.value.uiName}
+              description={props.settingType.value.description}
+            />
+          }
+        >
           <StringComponent
+            id={inputId}
             setting={props.settingType.value}
             value={props.value as string}
             changeCallback={props.changeCallback}
           />
-        </Field>
+        </SettingInputLayout>
       );
     }
     case "int": {
@@ -661,7 +689,10 @@ export function SettingTypeRenderer(props: {
     }
     case "bool": {
       return (
-        <Field orientation="horizontal" className="max-w-xl items-start">
+        <Field
+          className="max-w-3xl"
+          data-disabled={props.settingType.value.disabled}
+        >
           <BoolComponent
             setting={props.settingType.value}
             value={props.value as boolean}
@@ -684,32 +715,42 @@ export function SettingTypeRenderer(props: {
     }
     case "combo": {
       return (
-        <Field className="max-w-xl">
-          <ComponentTitle
-            title={props.settingType.value.uiName}
-            description={props.settingType.value.description}
-          />
+        <SettingInputLayout
+          disabled={props.settingType.value.disabled}
+          title={
+            <ComponentTitle
+              inputId={inputId}
+              title={props.settingType.value.uiName}
+              description={props.settingType.value.description}
+            />
+          }
+        >
           <ComboComponent
+            id={inputId}
             setting={props.settingType.value}
             value={props.value as string}
             changeCallback={props.changeCallback}
           />
-        </Field>
+        </SettingInputLayout>
       );
     }
     case "stringList": {
       return (
-        <Field className="max-w-xl">
-          <ComponentTitle
-            title={props.settingType.value.uiName}
-            description={props.settingType.value.description}
-          />
+        <SettingInputLayout
+          disabled={props.settingType.value.disabled}
+          title={
+            <ComponentTitle
+              title={props.settingType.value.uiName}
+              description={props.settingType.value.description}
+            />
+          }
+        >
           <StringListComponent
             setting={props.settingType.value}
             value={props.value as string[]}
             changeCallback={props.changeCallback}
           />
-        </Field>
+        </SettingInputLayout>
       );
     }
     case "minMax": {
@@ -764,15 +805,24 @@ function SettingStatusRow(props: {
       ? undefined
       : formatDefault(defaultValue, props.definition);
   const isDefault = defaultValue === undefined || props.value === defaultValue;
+  const canReset = !isDefault && !props.definition.type.value?.disabled;
+  const showStatus =
+    props.status === "error" || (props.persisted && props.status !== "idle");
+  if (!props.overridden && label === undefined && !canReset && !showStatus) {
+    return null;
+  }
   return (
-    <div className="text-muted-foreground flex min-h-6 max-w-xl flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+    <div
+      data-slot="setting-status"
+      className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"
+    >
       {props.overridden && (
         <Badge variant="secondary">{t("settingsPage.overridden")}</Badge>
       )}
       {label !== undefined && (
         <span>{t("settingsPage.defaultValue", { value: label })}</span>
       )}
-      {!isDefault && !props.definition.type.value?.disabled && (
+      {canReset && (
         <Button
           type="button"
           variant="ghost"
@@ -848,7 +898,7 @@ function SettingField<T extends BaseSettings>(props: {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex min-w-0 max-w-3xl flex-col has-[>[data-slot=setting-status]]:gap-2">
       <SettingTypeRenderer
         settingType={definition.type}
         value={value}
@@ -996,7 +1046,7 @@ export type DisabledSettingId = {
   key: string;
 };
 
-function ClientSettingsPageComponent<T extends BaseSettings>({
+export function ClientSettingsPageComponent<T extends BaseSettings>({
   data,
   invalidateQuery,
   updateConfigEntry,
@@ -1071,28 +1121,39 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
     />
   );
 
+  const renderEntries = (entries: SettingsEntryIdentifier[]) => (
+    <FieldGroup className="gap-6">{entries.map(renderEntry)}</FieldGroup>
+  );
+
+  const sections = groupSettingsEntries(data.id, common);
+
   return (
-    <div className="flex max-w-2xl flex-col gap-5">
-      <Alert>
-        <AlertDescription>
+    <div className="flex w-full flex-col gap-6">
+      <div className="flex max-w-3xl flex-col gap-3">
+        <p className="text-muted-foreground text-sm">
           {t(`settingsPage.scope.${mutationTarget.type}`)}
-          {!persisted && <> {t("settingsPage.demoNotSaved")}</>}
-        </AlertDescription>
-      </Alert>
-      {visibleEntries.length > 4 && (
-        <InputGroup className="max-w-xl">
-          <InputGroupAddon>
-            <SearchIcon />
-          </InputGroupAddon>
-          <InputGroupInput
-            type="search"
-            aria-label={t("settingsPage.search")}
-            placeholder={t("settingsPage.search")}
-            value={query}
-            onChange={(event) => setQuery(event.currentTarget.value)}
-          />
-        </InputGroup>
-      )}
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <InputGroup className="w-full sm:max-w-xs">
+            <InputGroupAddon>
+              <SearchIcon />
+            </InputGroupAddon>
+            <InputGroupInput
+              type="search"
+              aria-label={t("settingsPage.search")}
+              placeholder={t("settingsPage.search")}
+              value={query}
+              onChange={(event) => setQuery(event.currentTarget.value)}
+            />
+          </InputGroup>
+          <p className="text-muted-foreground inline-flex items-center gap-2 text-xs">
+            <InfoIcon className="size-3.5 shrink-0" />
+            {t(
+              persisted ? "settingsPage.autoSave" : "settingsPage.demoNotSaved",
+            )}
+          </p>
+        </div>
+      </div>
       {matches.length === 0 && searching && (
         <p className="text-muted-foreground text-sm" role="status">
           {t("settingsPage.noMatches", { query: query.trim() })}
@@ -1110,19 +1171,43 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
         </p>
       )}
       {common.length > 0 && (
-        <div className="flex flex-col gap-5">{common.map(renderEntry)}</div>
+        <div className="flex flex-col gap-10">
+          {sections.map((section) => (
+            <section
+              key={section.id}
+              className="flex flex-col gap-5"
+              aria-label={
+                section.id === "other"
+                  ? undefined
+                  : t(`settingsPage.sections.${section.id}.title`)
+              }
+            >
+              {section.id !== "other" && (
+                <div className="flex max-w-3xl flex-col gap-1">
+                  <h3 className="text-base font-semibold">
+                    {t(`settingsPage.sections.${section.id}.title`)}
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {t(`settingsPage.sections.${section.id}.description`)}
+                  </p>
+                </div>
+              )}
+              {renderEntries(section.entries)}
+            </section>
+          ))}
+        </div>
       )}
       {advanced.length > 0 &&
         (searching ? (
-          <div className="flex flex-col gap-5">{advanced.map(renderEntry)}</div>
+          renderEntries(advanced)
         ) : (
           <Collapsible>
             <CollapsibleTrigger
               render={
                 <Button
                   type="button"
-                  variant="outline"
-                  className="group/advanced w-fit"
+                  variant="ghost"
+                  className="group/advanced"
                 />
               }
             >
@@ -1132,8 +1217,8 @@ function ClientSettingsPageComponent<T extends BaseSettings>({
               />
               {t("settingsPage.advanced", { count: advanced.length })}
             </CollapsibleTrigger>
-            <CollapsibleContent className="mt-4 flex flex-col gap-5">
-              {advanced.map(renderEntry)}
+            <CollapsibleContent className="pt-6">
+              {renderEntries(advanced)}
             </CollapsibleContent>
           </Collapsible>
         ))}

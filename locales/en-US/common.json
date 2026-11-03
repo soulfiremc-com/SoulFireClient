@@ -278,6 +278,14 @@
     "enable": "Turn on {{name}}"
   },
   "settingsPage": {
+    "sections": {
+      "provider": { "title": "AI provider", "description": "Choose the API endpoint and credentials for AI requests." },
+      "requests": { "title": "Request handling", "description": "Set the timeout and retry limit for AI requests." },
+      "movement": { "title": "Movement rules", "description": "Choose which obstacles and hazards bots consider when finding a path." },
+      "costs": { "title": "Path costs", "description": "Adjust how strongly bots avoid enemies, breaking blocks, and placing blocks." },
+      "search": { "title": "Search limits", "description": "Control how long pathfinding runs and how it manages the search space." }
+    },
+    "autoSave": "Changes save automatically.",
     "saveError": "Failed to save {{name}}",
     "namespacesNotFound": "Settings namespaces not found",
     "stringList": {
