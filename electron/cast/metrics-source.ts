@@ -90,7 +90,7 @@ export const makeMetricsSource = (
                 }),
               ]);
               if (info.result.case !== "info")
-                throw new Error("The instance is unavailable.");
+                throw new Error("The project is unavailable.");
               snapshots = mergeSnapshots(
                 snapshots,
                 response.snapshots.flatMap((snapshot) =>

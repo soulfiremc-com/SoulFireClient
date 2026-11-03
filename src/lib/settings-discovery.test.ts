@@ -101,7 +101,7 @@ test("renamed plugins remain searchable by familiar names and stable IDs", () =>
     assert.ok(text.includes(displayName.toLowerCase()));
     assert.ok(text.includes(id));
     assert.ok(text.includes(legacyName.toLowerCase()));
-    assert.ok(text.includes(id.replaceAll("-", "")));
+    assert.ok(text.includes(id.replace(/-/g, "")));
     assert.ok(text.includes("server-provided behavior description"));
   }
 });

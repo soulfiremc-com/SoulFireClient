@@ -110,8 +110,8 @@ export function getPluginSearchText(
   return [
     pageName,
     plugin.id,
-    plugin.id.replaceAll("-", " "),
-    plugin.id.replaceAll("-", ""),
+    plugin.id.replace(/-/g, " "),
+    plugin.id.replace(/-/g, ""),
     plugin.description,
   ]
     .join(" ")
