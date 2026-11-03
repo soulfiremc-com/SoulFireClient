@@ -303,7 +303,7 @@ export const FailedSaveRetainsLoadedProxies: Story = {
     await userEvent.click(importButton);
     await expect(args.onImport).toHaveBeenCalledTimes(1);
     await expect(await dialog.findByRole("alert")).toHaveTextContent(
-      "Could not save proxies to this instance.",
+      "Could not save proxies to this project.",
     );
     await expect(
       dialog.getByRole("button", { name: "Import 1 proxy" }),
