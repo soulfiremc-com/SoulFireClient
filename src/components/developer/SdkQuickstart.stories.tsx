@@ -327,7 +327,7 @@ export const InstanceSelection: Story = {
       await canvas.findByLabelText("Personal API token"),
     ).toHaveValue(token);
     await userEvent.click(canvas.getByRole("button", { name: "Python" }));
-    await userEvent.click(canvas.getByRole("combobox", { name: "Instance" }));
+    await userEvent.click(canvas.getByRole("combobox", { name: "Project" }));
     await userEvent.click(
       await within(document.body).findByRole("option", { name: "Test fleet" }),
     );

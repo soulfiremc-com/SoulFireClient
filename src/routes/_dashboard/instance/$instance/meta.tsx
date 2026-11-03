@@ -327,8 +327,7 @@ function Content() {
             case: "combo",
             value: create(ComboSettingSchema, {
               uiName: "Icon",
-              description:
-                "The icon of the instance that will be displayed in the UI.",
+              description: "The project icon shown in the app.",
               options: getAllIconTags().map((iconName) => ({
                 id: iconName[0],
                 displayName: formatIconName(iconName[0]),

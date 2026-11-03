@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Raw instance output is available here when you need to inspect console details.",
+    "logsDescription": "Raw project output is available here when you need to inspect console details.",
     "summary": {
       "accounts": "Accounts",
       "proxies": "Proxies",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Live feed",
-      "empty": "Waiting for instance activity...",
+      "empty": "Waiting for project activity...",
       "noPermission": "You do not have permission to view the live feed.",
       "lifecycle": {
         "connecting": "is connecting",
@@ -273,7 +273,7 @@
     "contextMenu": {
       "openConfig": "Open Config",
       "openMetadata": "Open Metadata",
-      "copyProfileId": "Copy Profile ID",
+      "copyProfileId": "Copy profile ID",
       "copyUsername": "Copy Username"
     },
     "config": {
@@ -293,7 +293,7 @@
       "selectPage": "Select a settings page",
       "noSearchResults": "No settings match this search.",
       "matchesInheritedValue": "Matches inherited value",
-      "instanceValue": "Instance value",
+      "instanceValue": "Project value",
       "defaultValue": "Default value",
       "resetOverride": "Reset override"
     },
@@ -342,8 +342,8 @@
     }
   },
   "instanceMetadata": {
-    "title": "Instance Metadata",
-    "description": "Manage persistent metadata entries for this instance. Each entry has a namespace, key, and JSON value.",
+    "title": "Project metadata",
+    "description": "Manage persistent metadata entries for this project. Each entry has a namespace, key, and JSON value.",
     "namespacePlaceholder": "Namespace",
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Value (JSON)",
@@ -362,7 +362,7 @@
   "bots": {
     "searchPlaceholder": "Search bots...",
     "onlineCount": "{{online}} online / {{total}} total",
-    "noBots": "No bots yet. Each account in this instance becomes one bot.",
+    "noBots": "No bots yet. Each account in this project becomes one bot.",
     "noBotsFound": "No bots match your search.",
     "loadingMore": "Loading more...",
     "showingCount": "Showing {{loaded}} of {{total}}",
@@ -426,14 +426,14 @@
       "description": "Bot-scoped commands will be available in a future update."
     },
     "povPanel": {
-      "title": "Bot POV",
+      "title": "Bot view",
       "capture": "Capture",
       "refresh": "Refresh",
       "auto": "Auto",
       "startAutoRefresh": "Start auto-refresh (1 second interval)",
       "stopAutoRefresh": "Stop auto-refresh",
       "clickToCapture": "Click Capture to render the bot's point of view",
-      "offline": "Bot is offline. POV rendering is only available when the bot is connected."
+      "offline": "The bot is disconnected. Bot view is available when the bot connects."
     },
     "statsPanel": {
       "title": "Bot Stats",
@@ -932,7 +932,7 @@
     },
     "capability": {
       "buy": "Buy with your provider balance after a review step",
-      "import": "Import directly to this instance",
+      "import": "Import directly to this project",
       "recover": "Reload earlier orders and import them"
     },
     "inSoulFire": "What you can do in SoulFire",
@@ -1093,7 +1093,7 @@
     },
     "continue": "Continue",
     "loadProxies": "Load proxies",
-    "alreadyImported": "These proxies are already in this instance.",
+    "alreadyImported": "These proxies are already in this project.",
     "orderCountry": "Country (3-letter code)",
     "quantity": "Quantity",
     "coupon": "Affiliate or discount code",
@@ -1116,7 +1116,7 @@
       "empty": "No items are available. Check stock or wait for order activation.",
       "limit": "Use a whole number between 1 and 10,000 proxies.",
       "priceChanged": "The price changed or the balance is insufficient. Check the price again before purchasing.",
-      "save": "Could not save proxies to this instance. Try importing the loaded proxies again."
+      "save": "Could not save proxies to this project. Try importing the loaded proxies again."
     },
     "proxy": {
       "stage": {
@@ -1127,7 +1127,7 @@
       "stageHelp": {
         "connect": "Enter the login details from your provider dashboard.",
         "choose": "Pick the proxies to load. Nothing is added until you confirm.",
-        "review": "Check the list, then add it to this instance."
+        "review": "Check the list, then add it to this project."
       }
     },
     "sellerBuy": {
@@ -1301,7 +1301,7 @@
     "optional": "Optional",
     "continue": "Continue",
     "stepDone": "Done",
-    "noPermission": "You do not have permission to change this. Ask the instance owner for access.",
+    "noPermission": "You do not have permission to change this. Ask the project owner for access.",
     "expert": "Already know what you want?",
     "expertLink": "Open all settings",
     "server": {
@@ -1312,7 +1312,7 @@
     },
     "accounts": {
       "title": "Add bot accounts",
-      "description": "Each bot uses one account. Choose how to get accounts for this instance.",
+      "description": "Each bot uses one account. Choose how to get accounts for this project.",
       "summary_one": "{{count}} account ready",
       "summary_other": "{{count}} accounts ready",
       "summaryEmpty": "No accounts yet",

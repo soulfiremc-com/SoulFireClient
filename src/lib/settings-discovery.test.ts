@@ -9,6 +9,7 @@ import {
   classifyPluginTask,
   filterSettingsEntries,
   findSettingsOnOtherPages,
+  getPluginSearchText,
   splitSettingsEntries,
 } from "./settings-discovery.ts";
 
@@ -83,4 +84,24 @@ test("plugins group by task and unknown plugins stay available", () => {
   assert.equal(classifyPluginTask("Auto Reconnect"), "connect");
   assert.equal(classifyPluginTask("AI Chat Bot"), "chat");
   assert.equal(classifyPluginTask("Something else"), "other");
+});
+
+test("renamed plugins remain searchable by familiar names and stable IDs", () => {
+  for (const [id, displayName, legacyName] of [
+    ["kill-aura", "Auto attack", "Kill Aura"],
+    ["server-list-bypass", "Ping before join", "Server List Bypass"],
+    ["fake-virtual-host", "Handshake host override", "Fake Virtual Host"],
+    ["forwarding-bypass", "Player forwarding", "Forwarding Bypass"],
+    ["ai-chat-bot", "AI chat", "AI Chat Bot"],
+  ]) {
+    const text = getPluginSearchText(displayName, {
+      id,
+      description: "Server-provided behavior description",
+    });
+    assert.ok(text.includes(displayName.toLowerCase()));
+    assert.ok(text.includes(id));
+    assert.ok(text.includes(legacyName.toLowerCase()));
+    assert.ok(text.includes(id.replace(/-/g, "")));
+    assert.ok(text.includes("server-provided behavior description"));
+  }
 });

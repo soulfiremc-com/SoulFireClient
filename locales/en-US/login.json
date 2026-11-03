@@ -37,10 +37,10 @@
     }
   },
   "integrated": {
-    "preparing": "Preparing to start integrated server...",
+    "preparing": "Preparing to start the local SoulFire server...",
     "toast": {
       "loading": "Starting your local SoulFire server",
-      "success": "Integrated server started in {{time}}s",
+      "success": "Local SoulFire server started in {{time}}s",
       "error": "The local SoulFire server did not start"
     },
     "retry": "Try again",
@@ -50,7 +50,7 @@
       "success": "SoulFire data reset successfully. Try starting again.",
       "error": "Failed to reset SoulFire data",
       "confirmTitle": "Reset local SoulFire data?",
-      "confirmDescription": "This permanently deletes the data of the local SoulFire server on this computer, including its instances, accounts, proxies, and scripts.",
+      "confirmDescription": "This permanently deletes the data of the local SoulFire server on this computer, including its projects, accounts, proxies, and scripts.",
       "keep": "Keep my data"
     },
     "description": "SoulFire manages a local server for you. It stays on this computer and stops when you close the app.",
@@ -65,7 +65,7 @@
       "start": "Start local server"
     },
     "mobile": {
-      "description": "To run the integrated server on mobile, you need to complete a few manual steps.",
+      "description": "To run the SoulFire server on this device, you need to complete a few manual steps.",
       "form": {
         "termuxCommand": {
           "title": "Termux command",

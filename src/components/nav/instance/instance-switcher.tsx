@@ -321,7 +321,9 @@ function InstanceActionButtons({
                           ? undefined
                           : [
                               {
-                                name: "SoulFire JSON Profile",
+                                name: t(
+                                  "instanceSidebar.configurationFileType",
+                                ),
                                 extensions: ["json"],
                               },
                             ],
@@ -385,11 +387,14 @@ function InstanceActionButtons({
                   title: t("instanceSidebar.saveProfile"),
                   filters: [
                     {
-                      name: "SoulFire JSON Profile",
+                      name: t("instanceSidebar.configurationFileType"),
                       extensions: ["json"],
                     },
                   ],
-                  defaultPath: profileDir,
+                  defaultPath: await desktop.path.resolve(
+                    profileDir,
+                    "soulfire-configuration.json",
+                  ),
                 });
 
                 if (selected) {
@@ -401,14 +406,22 @@ function InstanceActionButtons({
                 }
               });
             } else {
-              saveAs(createTextBlob(data, "application/json"), "profile.json");
+              saveAs(
+                createTextBlob(data, "application/json"),
+                "soulfire-configuration.json",
+              );
             }
 
             toast.success(t("instanceSidebar.profileSaved"));
           }}
         >
           <DownloadIcon className="size-4" />
-          {t("instanceSidebar.saveProfile")}
+          <span className="flex max-w-64 flex-col gap-1">
+            <span>{t("instanceSidebar.saveProfile")}</span>
+            <span className="text-muted-foreground text-xs whitespace-normal">
+              {t("instanceSidebar.exportWarning")}
+            </span>
+          </span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />

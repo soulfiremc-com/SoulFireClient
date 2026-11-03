@@ -5,9 +5,14 @@ import {
   MinecraftAccountProto_AccountTypeProto,
   MinecraftAccountProtoSchema,
   ProxyProto_Type,
+  SettingsNamespaceSchema,
 } from "@/generated/soulfire/common_pb";
 import { InstanceConfigSchema } from "@/generated/soulfire/instance_pb";
-import { convertToInstanceProto, type ProfileRoot } from "@/lib/types";
+import {
+  convertFromInstanceProto,
+  convertToInstanceProto,
+  type ProfileRoot,
+} from "@/lib/types";
 import { parseProfileFile, serializeProfileFile } from "./profile-file";
 
 function profile(expireTimeMs: bigint): ProfileRoot {
@@ -102,4 +107,30 @@ test("invalid token expiries fail before a profile can be submitted", () => {
     invalid.accounts[0].accountData.value.expireTimeMs = expiry;
     assert.throws(() => parseProfileFile(JSON.stringify(invalid)));
   }
+});
+
+test("configuration export retains credentials and account metadata, but omits project metadata", () => {
+  const source = convertToInstanceProto(profile(123n));
+  source.persistentMetadata = [
+    create(SettingsNamespaceSchema, { namespace: "project-metadata" }),
+  ];
+  const serialized = serializeProfileFile(convertFromInstanceProto(source));
+  const exported = parseProfileFile(serialized);
+
+  assert.deepEqual(
+    exported.accounts[0].accountData,
+    source.accounts[0].accountData,
+  );
+  assert.deepEqual(
+    exported.accounts[0].persistentMetadata,
+    source.accounts[0].persistentMetadata,
+  );
+  assert.equal(exported.proxies[0].password, "qa-test-password");
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(
+      JSON.parse(serialized),
+      "persistentMetadata",
+    ),
+    false,
+  );
 });

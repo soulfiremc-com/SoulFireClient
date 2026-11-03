@@ -1,4 +1,5 @@
 import type {
+  ServerPlugin,
   SettingsDefinition,
   SettingsEntryIdentifier,
   SettingsPage,
@@ -99,6 +100,22 @@ export function findSettingsOnOtherPages(
     ).length;
     return count > 0 ? [{ page, count }] : [];
   });
+}
+
+/** Keep familiar names searchable after display-name changes, using stable IDs. */
+export function getPluginSearchText(
+  pageName: string,
+  plugin: Pick<ServerPlugin, "id" | "description">,
+): string {
+  return [
+    pageName,
+    plugin.id,
+    plugin.id.replace(/-/g, " "),
+    plugin.id.replace(/-/g, ""),
+    plugin.description,
+  ]
+    .join(" ")
+    .toLowerCase();
 }
 
 export type PluginTask = "chat" | "survive" | "connect" | "diagnose" | "other";

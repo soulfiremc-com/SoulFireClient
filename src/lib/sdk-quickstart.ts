@@ -143,7 +143,7 @@ asyncio.run(run_async(scoped(program).or_die()))
 
 const AGENT_GOALS: Record<SdkRecipe, string> = {
   "list-bots":
-    "list the names, profile IDs, and connection states of every bot in the selected instance",
+    "list the names, profile IDs, and connection states of every bot in the selected project",
   "read-state":
     "read and print the latest live state of the selected bot without starting it",
   "send-chat":
@@ -160,7 +160,8 @@ export function buildSdkAgentPrompt(
   const url = sdkServerUrl(options.serverUrl);
   const target = [
     `SoulFire API base URL: ${url ?? "ask me for the real SoulFire API address before running"}`,
-    `Instance: ${JSON.stringify(options.instanceName)} (ID: ${JSON.stringify(options.instanceId)})`,
+    `Project: ${JSON.stringify(options.instanceName)} (ID: ${JSON.stringify(options.instanceId)})`,
+    "Projects use the SDK instance API: keep client.instance(), instanceId, and instance_id unchanged.",
     ...(options.recipe !== "list-bots"
       ? [
           `Bot profile ID: ${JSON.stringify(options.botId || "YOUR_BOT_ID")}${options.botName ? ` (${JSON.stringify(options.botName)})` : ""}`,
@@ -171,14 +172,14 @@ export function buildSdkAgentPrompt(
     `Write a ${options.language === "python" ? "Python 3.14+" : "TypeScript / Bun"} script using the SoulFire SDK to ${AGENT_GOALS[options.recipe]}.`,
     ...(options.demo
       ? [
-          "This prompt was copied from demo mode. All target values are samples. Ask me for my real server address, instance ID, and bot ID before running anything.",
+          "This prompt was copied from demo mode. All target values are samples. Ask me for my real server address, project ID, and bot ID before running anything.",
         ]
       : []),
     "",
     ...target,
     ...(options.recipe !== "list-bots" && !options.botId
       ? [
-          "No bot is selected. Ask me for a bot profile ID from this instance before running the bot-specific example.",
+          "No bot is selected. Ask me for a bot profile ID from this project before running the bot-specific example.",
         ]
       : []),
     `Terminal: ${options.shell === "powershell" ? "Windows PowerShell" : "macOS / Linux"}`,

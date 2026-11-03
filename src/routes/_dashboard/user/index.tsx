@@ -624,7 +624,7 @@ function Content() {
             <AlertDialogDescription>
               {deleteTarget
                 ? `This will permanently delete "${deleteTarget.friendlyName}" and its data. This action cannot be undone.`
-                : "This will permanently delete this instance and its data. This action cannot be undone."}
+                : "This will permanently delete this project and its data. This action cannot be undone."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
