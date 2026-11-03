@@ -73,6 +73,8 @@ describe("agent prompts", () => {
     const example = buildSdkQuickstart(target);
     assert.ok(prompt.includes("https://server.example.test/api"));
     assert.ok(prompt.includes(target.instanceId));
+    assert.ok(prompt.includes("Project:"));
+    assert.ok(prompt.includes("client.instance()"));
     assert.ok(prompt.includes(example.install));
     assert.ok(prompt.includes(example.script.trimEnd()));
     assert.ok(prompt.includes("SOULFIRE_TOKEN"));

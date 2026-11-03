@@ -192,7 +192,7 @@ function getPresenceForPath(
     if (subPage.startsWith("settings"))
       return { state: "Configuring settings", details: botInfo };
 
-    return { state: "Viewing instance overview", details: botInfo };
+    return { state: "Viewing project overview", details: botInfo };
   }
 
   if (pathname.includes("/user/admin"))

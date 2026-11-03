@@ -27,6 +27,7 @@ import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
   classifyPluginTask,
+  getPluginSearchText,
   PLUGIN_TASKS,
   type PluginTask,
 } from "@/lib/settings-discovery.ts";
@@ -130,7 +131,7 @@ function Content() {
           (p) => p.id === settings.owningPluginId,
         );
         if (!plugin) return [];
-        const text = `${settings.pageName} ${plugin.id} ${plugin.description}`;
+        const text = getPluginSearchText(settings.pageName, plugin);
         const enabledId = settings.enabledIdentifier;
         const enabledDefinition = instanceInfo.settingsDefinitions.find(
           (d) =>
@@ -141,7 +142,7 @@ function Content() {
           {
             settings,
             plugin,
-            text: text.toLowerCase(),
+            text,
             task: classifyPluginTask(text),
             enabled:
               getSettingValue(instanceInfo.profile, enabledDefinition) === true,

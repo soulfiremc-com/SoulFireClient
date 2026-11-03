@@ -249,7 +249,7 @@ function sourceLabel(source: ResolvedBotSetting["source"]): string {
     case "bot":
       return "Bot override";
     case "instance":
-      return "Inherited from instance";
+      return "Inherited from project";
     case "default":
       return "Using default";
   }
@@ -369,7 +369,7 @@ function BotSettingRow(props: {
               <>
                 {props.row.inheritedSource === "instance"
                   ? t("account.config.instanceValue", {
-                      defaultValue: "Instance value",
+                      defaultValue: "Project value",
                     })
                   : t("account.config.defaultValue", {
                       defaultValue: "Default value",
@@ -383,7 +383,7 @@ function BotSettingRow(props: {
             ) : props.row.source === "instance" ? (
               <>
                 {t("account.config.instanceValue", {
-                  defaultValue: "Instance value",
+                  defaultValue: "Project value",
                 })}
                 :{" "}
                 {formatSettingValue(

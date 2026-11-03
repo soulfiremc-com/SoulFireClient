@@ -20,12 +20,12 @@
         "title": "Thread Count"
       },
       "aggregateBots": {
-        "title": "Bots Online (All Instances)"
+        "title": "Bots Online (All Projects)"
       }
     },
     "instancesChart": {
-      "title": "Total instances on this server",
-      "instances": "Instances",
+      "title": "Total projects on this server",
+      "instances": "Projects",
       "label": {
         "state": "State",
         "active": "Active",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Role",
           "placeholder": "Select a role",
-          "description": "The role of the user. Admins can manage users and all instances. Users can only manage their own instances.",
+          "description": "The role of the user. Admins can manage users and all projects. Users can only manage their own projects.",
           "user": "User",
           "admin": "Admin"
         }
