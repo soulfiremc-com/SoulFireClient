@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire-logotyp"
+      "alt": "Soulfire-logotyp"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Ny på SoulFire? Läs <a>kom-igång-guiden</a>.",
+  "newUser": "Ny på Soulfire? Läs <a>kom-igång-guiden</a>.",
   "connect": {
-    "title": "Anslut till en SoulFire-server",
-    "description": "Välj vilken typ av SoulFire-server du vill ansluta till.",
+    "title": "Anslut till en Soulfire-server",
+    "description": "Välj vilken typ av Soulfire-server du vill ansluta till.",
     "integrated": {
       "title": "Integrerad server (lokal)",
-      "description": "Kör en SoulFire-server på denna enhet. Installationen sker automatiskt. Det här alternativet kräver desktop- eller Android-appen."
+      "description": "Kör en Soulfire-server på denna enhet. Installationen sker automatiskt. Det här alternativet kräver desktop- eller Android-appen."
     },
     "dedicated": {
       "title": "Dedikerad server (fjärr)",
-      "description": "Ansluter till en fjärransluten SoulFire-server med dess adress och token."
+      "description": "Ansluter till en fjärransluten Soulfire-server med dess adress och token."
     },
     "demo": {
       "title": "Demoserver",
-      "description": "Ger en skrivskyddad server med demodata. SoulFire sparar inte några ändringar."
+      "description": "Ger en skrivskyddad server med demodata. Soulfire sparar inte några ändringar."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Försök igen",
     "reset": {
       "button": "Återställ data",
-      "loading": "Återställer SoulFire-data...",
-      "success": "SoulFire-data återställdes. Försök starta om.",
-      "error": "Det gick inte att återställa SoulFire-data"
+      "loading": "Återställer Soulfire-data...",
+      "success": "Soulfire-data återställdes. Försök starta om.",
+      "error": "Det gick inte att återställa Soulfire-data"
     },
     "description": "Den integrerade servern körs på din dator. Du kan ändra Java-startargumenten nedan.",
     "form": {
       "jvmArgs": {
         "title": "JVM-argument",
-        "description": "Java VM-argument för SoulFire. Lägg till <bold>-Xmx4G</bold> för att använda 4 GB RAM. Standard är 25% av tillgängligt RAM.",
+        "description": "Java VM-argument för Soulfire. Lägg till <bold>-Xmx4G</bold> för att använda 4 GB RAM. Standard är 25% av tillgängligt RAM.",
         "placeholder": "Dina JVM-argument här"
       },
       "back": "Tillbaka",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux-kommando",
-          "description": "Installera <a>Termux-appen</a>. Kör detta kommando i Termux för att installera SoulFire-servern. Kör <copy>generate-token api</copy> för att skapa en token. Ange sedan token nedan."
+          "description": "Installera <a>Termux-appen</a>. Kör detta kommando i Termux för att installera Soulfire-servern. Kör <copy>generate-token api</copy> för att skapa en token. Ange sedan token nedan."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Kunde inte avbryta start",
     "autoStart": {
       "title": "Starta automatiskt nästa gång.",
-      "description": "Hoppa över servervalet och använd dessa inställningar när SoulFire öppnas."
+      "description": "Hoppa över servervalet och använd dessa inställningar när Soulfire öppnas."
     }
   },
   "dedicated": {
-    "description": "Ange adressen och token för SoulFire-servern.",
+    "description": "Ange adressen och token för Soulfire-servern.",
     "toast": {
       "loading": "Ansluter till server...",
       "success": "Ansluten till server",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Adress",
-        "description": "Adress till din SoulFire-server.",
+        "description": "Adress till din Soulfire-server.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "E-post",
         "placeholder": "root@soulfiremc.com",
-        "description": "E-post till ditt SoulFire-konto."
+        "description": "E-post till ditt Soulfire-konto."
       },
       "back": "Tillbaka",
       "useToken": "Använd token",
@@ -109,9 +109,9 @@
     "back": "Tillbaka"
   },
   "footer": {
-    "version": "SoulFire-klient {{version}} – {{environment}}",
+    "version": "Soulfire-klient {{version}} – {{environment}}",
     "preview": "Letar du efter förhandsvisning?",
     "production": "Letar du efter produktion?",
-    "helpTranslate": "Översätt SoulFire"
+    "helpTranslate": "Översätt Soulfire"
   }
 }

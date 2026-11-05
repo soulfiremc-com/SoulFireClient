@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Vérifier les proxies importés ?,",
-      "description": "Vous avez importé {{count}} proxies. Les vérifier maintenant ? SoulFire supprimera automatiquement les proxies invalides.",
+      "description": "Vous avez importé {{count}} proxies. Les vérifier maintenant ? Soulfire supprimera automatiquement les proxies invalides.",
       "confirm": "Vérifier les proxys",
       "skip": "Ignorer"
     },

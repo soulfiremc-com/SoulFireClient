@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Kiểm tra các proxy vừa nhập?",
-      "description": "Bạn đã nhập {{count}} proxy. Kiểm tra ngay bây giờ? SoulFire sẽ tự động loại bỏ các proxy không hợp lệ.",
+      "description": "Bạn đã nhập {{count}} proxy. Kiểm tra ngay bây giờ? Soulfire sẽ tự động loại bỏ các proxy không hợp lệ.",
       "confirm": "Kiểm Tra Proxy",
       "skip": "Bỏ qua"
     },

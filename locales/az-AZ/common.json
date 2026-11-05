@@ -13,7 +13,7 @@
       "reloadPage": "Səhifəni yenilə",
       "showDetails": "Təfərrüatları göstər"
     },
-    "connectionFailed": "SoulFire serveri ilə əlaqə alınmadı."
+    "connectionFailed": "Soulfire serveri ilə əlaqə alınmadı."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "SoulFire haqqında",
-      "description": "SoulFire müştərisinin {{version}} versiyasını işlədirsiniz.",
+      "title": "Soulfire haqqında",
+      "description": "Soulfire müştərisinin {{version}} versiyasını işlədirsiniz.",
       "type": "Növ",
       "value": "Dəyər",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Bağla"
     },
     "support": {
-      "title": "SoulFire-ə dəstək olun",
-      "description": "SoulFire pulsuz və açıq mənbəlidir, icma tərəfindən sevgi ilə hazırlanıb.",
-      "body": "Əgər SoulFire sizə faydalı olubsa, layihəni dəstəkləməyi nəzərdən keçirin. Sizin töhfəniz server xərclərini qarşılamağa, inkişafı maliyyələşdirməyə və SoulFire-nı hamı üçün pulsuz saxlamağa kömək edir.",
+      "title": "Soulfire-ə dəstək olun",
+      "description": "Soulfire pulsuz və açıq mənbəlidir, icma tərəfindən sevgi ilə hazırlanıb.",
+      "body": "Əgər Soulfire sizə faydalı olubsa, layihəni dəstəkləməyi nəzərdən keçirin. Sizin töhfəniz server xərclərini qarşılamağa, inkişafı maliyyələşdirməyə və Soulfire-nı hamı üçün pulsuz saxlamağa kömək edir.",
       "dismiss": "Bəlkə sonra",
-      "action": "SoulFire-ə dəstək olun"
+      "action": "Soulfire-ə dəstək olun"
     },
     "createInstance": {
       "title": "Yeni instansiya yaradın",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Fayldan",
         "fromUrl": "URL-dən",
-        "firstClipboardItem": "Mübadilə buferində bir neçə element var. SoulFire ilk elementi istifadə edəcək.",
+        "firstClipboardItem": "Mübadilə buferində bir neçə element var. Soulfire ilk elementi istifadə edəcək.",
         "fromClipboard": "Arxivdən",
         "textarea": {
           "placeholder": "Mətni bura yazın...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire serveri bu URL-yə GET sorğusu göndərir və cavabı idxal edir.",
+        "description": "Soulfire serveri bu URL-yə GET sorğusu göndərir və cavabı idxal edir.",
         "form": {
           "url": {
             "placeholder": "URL-i bura əlavə edin...",
@@ -278,8 +278,8 @@
   "terminal": {
     "noLogs": "Hələ heç bir log yoxdur. Log çıxışı yaratmaq üçün əmr verin.",
     "demo-1": "Demo rejiminə xoş gəldiniz! 🧪",
-    "demo-2": "Bu, SoulFire-in yalnız oxumaq üçün nəzərdə tutulmuş instansiyasıdır",
-    "demo-3": "SoulFire-i qurmaq qərarına gəlməzdən əvvəl bütün menyu və funksiyalara baxın :D",
+    "demo-2": "Bu, Soulfire-in yalnız oxumaq üçün nəzərdə tutulmuş instansiyasıdır",
+    "demo-3": "Soulfire-i qurmaq qərarına gəlməzdən əvvəl bütün menyu və funksiyalara baxın :D",
     "demo-4": "Bizim Discord serverə qoşulmaqdan çəkinməyin: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -390,7 +390,7 @@
     },
     "configDir": "Qovluq konfiqurasiyası",
     "dataDir": "Məlumat qovluğu",
-    "supportSoulFire": "SoulFire-ə dəstək olun",
+    "supportSoulFire": "Soulfire-ə dəstək olun",
     "about": "Haqqında",
     "logOut": "Çıxış",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "Çıxış",
     "stopImpersonating": "İmzası dayandır",
-    "helpTranslate": "SoulFire tərcümə et"
+    "helpTranslate": "Soulfire tərcümə et"
   },
   "sidebar": {
     "documentation": "Sənədlər",
-    "supportSoulFire": "SoulFire-ə dəstək olun",
+    "supportSoulFire": "Soulfire-ə dəstək olun",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API Girişi",
-      "description": "SoulFire gRPC HTTP API instansları veb sorğularla idarə edir.",
+      "description": "Soulfire gRPC HTTP API instansları veb sorğularla idarə edir.",
       "publicAddress": "İctimai API ünvanı",
       "personalToken": "Şəxsi API Token",
       "securityWarning": "Şəxsi API tokeninizi gizli saxlayın. O, API-yə çıxış imkanı verir.",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "Yeni skript əlavə et",
-      "description": "Skriptlər SoulFire serverində tapşırıqları və digər əməliyyatları avtomatlaşdıran kiçik proqramlardır.",
+      "description": "Skriptlər Soulfire serverində tapşırıqları və digər əməliyyatları avtomatlaşdıran kiçik proqramlardır.",
       "form": {
         "cancel": "Ləğv et",
         "add": "Əlavə et"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "Başlanmayıb",
       "preparing": "Java və server faylları hazırlanır",
-      "starting": "SoulFire-in başlamasını gözləyir",
+      "starting": "Soulfire-in başlamasını gözləyir",
       "running": "İşləyir",
       "stopping": "Dayandırılır",
       "stopped": "Dayandırılıb",

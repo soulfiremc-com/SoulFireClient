@@ -13,7 +13,7 @@
       "reloadPage": "Obnoviť stránku",
       "showDetails": "Zobraziť podrobnosti"
     },
-    "connectionFailed": "Nepodarilo sa pripojiť k serveru SoulFire."
+    "connectionFailed": "Nepodarilo sa pripojiť k serveru Soulfire."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "O aplikácii SoulFire",
-      "description": "Používate verziu {{version}} klienta SoulFire.",
+      "title": "O aplikácii Soulfire",
+      "description": "Používate verziu {{version}} klienta Soulfire.",
       "type": "Typ",
       "value": "Hodnota",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Zavrieť"
     },
     "support": {
-      "title": "Podporte SoulFire",
-      "description": "SoulFire je zadarmo a open-source, vytvorený s láskou komunitou.",
-      "body": "Ak vám SoulFire bol užitočný, zvážte, prosím, podporu tohto projektu. Váš príspevok pomáha pokryť náklady na servery, financovať vývoj a udržiavať SoulFire zadarmo pre všetkých.",
+      "title": "Podporte Soulfire",
+      "description": "Soulfire je zadarmo a open-source, vytvorený s láskou komunitou.",
+      "body": "Ak vám Soulfire bol užitočný, zvážte, prosím, podporu tohto projektu. Váš príspevok pomáha pokryť náklady na servery, financovať vývoj a udržiavať Soulfire zadarmo pre všetkých.",
       "dismiss": "Možno neskôr",
-      "action": "Podporte SoulFire"
+      "action": "Podporte Soulfire"
     },
     "createInstance": {
       "title": "Vytvoriť novú inštanciu",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Zo súboru",
         "fromUrl": "Z URL adresy",
-        "firstClipboardItem": "Schránka obsahuje viacero položiek. SoulFire použije prvú položku.",
+        "firstClipboardItem": "Schránka obsahuje viacero položiek. Soulfire použije prvú položku.",
         "fromClipboard": "Zo schránky",
         "textarea": {
           "placeholder": "Zadajte text sem...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire server odošle GET požiadavku na túto URL adresu a importuje odpoveď.",
+        "description": "Soulfire server odošle GET požiadavku na túto URL adresu a importuje odpoveď.",
         "form": {
           "url": {
             "placeholder": "Zadajte URL sem...",
@@ -286,8 +286,8 @@
   "terminal": {
     "noLogs": "Zatiaľ žiadne logy. Spustite príkaz na vytvorenie log výstupu.",
     "demo-1": "Vitajte v demo móde! 🧪",
-    "demo-2": "Toto je iba na čítanie inštancia SoulFire",
-    "demo-3": "Preskúmajte všetky menu a funkcie, než sa rozhodnete nainštalovať SoulFire :D",
+    "demo-2": "Toto je iba na čítanie inštancia Soulfire",
+    "demo-3": "Preskúmajte všetky menu a funkcie, než sa rozhodnete nainštalovať Soulfire :D",
     "demo-4": "Ak sa na nás chcete obrátiť, pokojne sa pripojte na náš Discord: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -398,7 +398,7 @@
     },
     "configDir": "Konfiguračný adresár",
     "dataDir": "Adresár s dátami",
-    "supportSoulFire": "Podporte SoulFire",
+    "supportSoulFire": "Podporte Soulfire",
     "about": "O aplikácii",
     "logOut": "Odhlásiť sa",
     "logOutToast": {
@@ -408,11 +408,11 @@
     },
     "exit": "Ukončiť",
     "stopImpersonating": "Ukončiť predstieranie",
-    "helpTranslate": "Preložiť SoulFire"
+    "helpTranslate": "Preložiť Soulfire"
   },
   "sidebar": {
     "documentation": "Dokumentácia",
-    "supportSoulFire": "Podporte SoulFire",
+    "supportSoulFire": "Podporte Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -452,7 +452,7 @@
     },
     "api": {
       "title": "API prístup",
-      "description": "SoulFire gRPC HTTP API spravuje inštancie pomocou webových požiadaviek.",
+      "description": "Soulfire gRPC HTTP API spravuje inštancie pomocou webových požiadaviek.",
       "publicAddress": "Verejná adresa API",
       "personalToken": "Osobný API token",
       "securityWarning": "Svoj osobný API token uchovávajte v tajnosti. Udeľuje prístup k API.",
@@ -550,7 +550,7 @@
     },
     "addScriptDialog": {
       "title": "Pridať nový skript",
-      "description": "Skripty sú malé programy, ktoré automatizujú úlohy a iné činnosti na SoulFire serveri.",
+      "description": "Skripty sú malé programy, ktoré automatizujú úlohy a iné činnosti na Soulfire serveri.",
       "form": {
         "cancel": "Zrušiť",
         "add": "Pridať"
@@ -628,7 +628,7 @@
     "status": {
       "idle": "Nespustené",
       "preparing": "Pripravujú sa súbory Java a servera",
-      "starting": "Čaká sa na spustenie SoulFire",
+      "starting": "Čaká sa na spustenie Soulfire",
       "running": "Beží",
       "stopping": "Zastavovanie",
       "stopped": "Zastavené",

@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "Logo SoulFire"
+      "alt": "Logo Soulfire"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Baru di SoulFire? Baca <a>panduan memulai</a>.",
+  "newUser": "Baru di Soulfire? Baca <a>panduan memulai</a>.",
   "connect": {
-    "title": "Hubungkan ke server SoulFire",
-    "description": "Pilih tipe server SoulFire yang ingin Anda hubungkan.",
+    "title": "Hubungkan ke server Soulfire",
+    "description": "Pilih tipe server Soulfire yang ingin Anda hubungkan.",
     "integrated": {
       "title": "Server terintegrasi (lokal)",
-      "description": "Menjalankan server SoulFire di perangkat ini. Pengaturan dilakukan secara otomatis. Opsi ini memerlukan aplikasi desktop atau Android."
+      "description": "Menjalankan server Soulfire di perangkat ini. Pengaturan dilakukan secara otomatis. Opsi ini memerlukan aplikasi desktop atau Android."
     },
     "dedicated": {
       "title": "Server khusus (jarak jauh)",
-      "description": "Terhubung ke server SoulFire jarak jauh menggunakan alamat dan tokennya."
+      "description": "Terhubung ke server Soulfire jarak jauh menggunakan alamat dan tokennya."
     },
     "demo": {
       "title": "Server demo",
-      "description": "Menyediakan server hanya-baca dengan data demo. SoulFire tidak menyimpan perubahan."
+      "description": "Menyediakan server hanya-baca dengan data demo. Soulfire tidak menyimpan perubahan."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Coba Lagi",
     "reset": {
       "button": "Atur Ulang Data",
-      "loading": "Mengatur ulang data SoulFire...",
-      "success": "Data SoulFire berhasil diatur ulang. Coba mulai lagi.",
-      "error": "Gagal mengatur ulang data SoulFire"
+      "loading": "Mengatur ulang data Soulfire...",
+      "success": "Data Soulfire berhasil diatur ulang. Coba mulai lagi.",
+      "error": "Gagal mengatur ulang data Soulfire"
     },
     "description": "Server terintegrasi berjalan di komputer Anda. Anda dapat mengubah argumen startup Java di bawah ini.",
     "form": {
       "jvmArgs": {
         "title": "Argumen JVM",
-        "description": "Argumen Java VM untuk SoulFire. Tambahkan <bold>-Xmx4G</bold> untuk menggunakan 4 GB RAM. Standarnya adalah 25% dari RAM yang tersedia.",
+        "description": "Argumen Java VM untuk Soulfire. Tambahkan <bold>-Xmx4G</bold> untuk menggunakan 4 GB RAM. Standarnya adalah 25% dari RAM yang tersedia.",
         "placeholder": "Argumen JVM Anda di sini"
       },
       "back": "Kembali",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Perintah Termux",
-          "description": "Pasang aplikasi <a>Termux</a>. Jalankan perintah ini di Termux untuk memasang server SoulFire. Jalankan <copy>generate-token api</copy> untuk membuat token. Masukkan token di bawah ini."
+          "description": "Pasang aplikasi <a>Termux</a>. Jalankan perintah ini di Termux untuk memasang server Soulfire. Jalankan <copy>generate-token api</copy> untuk membuat token. Masukkan token di bawah ini."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Tidak dapat membatalkan permulaan startup",
     "autoStart": {
       "title": "Mulai secara otomatis lain kali.",
-      "description": "Lewati pemilihan server dan gunakan pengaturan ini saat SoulFire dibuka."
+      "description": "Lewati pemilihan server dan gunakan pengaturan ini saat Soulfire dibuka."
     }
   },
   "dedicated": {
-    "description": "Masukkan alamat dan token server SoulFire.",
+    "description": "Masukkan alamat dan token server Soulfire.",
     "toast": {
       "loading": "Menghubungkan ke server...",
       "success": "Berhasil terhubung ke server",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Alamat",
-        "description": "Alamat server SoulFire Anda.",
+        "description": "Alamat server Soulfire Anda.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "Email",
         "placeholder": "root@soulfiremc.com",
-        "description": "Email akun SoulFire Anda."
+        "description": "Email akun Soulfire Anda."
       },
       "back": "Kembali",
       "useToken": "Gunakan token",
@@ -109,9 +109,9 @@
     "back": "Kembali"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Mencari pratinjau?",
     "production": "Mencari produksi?",
-    "helpTranslate": "Terjemahkan SoulFire"
+    "helpTranslate": "Terjemahkan Soulfire"
   }
 }

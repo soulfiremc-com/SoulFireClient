@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "Logo SoulFire"
+      "alt": "Logo Soulfire"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Mới sử dụng SoulFire? Đọc <a>hướng dẫn bắt đầu</a>.",
+  "newUser": "Mới sử dụng Soulfire? Đọc <a>hướng dẫn bắt đầu</a>.",
   "connect": {
-    "title": "Kết nối tới máy chủ SoulFire",
-    "description": "Chọn loại máy chủ SoulFire bạn muốn kết nối.",
+    "title": "Kết nối tới máy chủ Soulfire",
+    "description": "Chọn loại máy chủ Soulfire bạn muốn kết nối.",
     "integrated": {
       "title": "Máy chủ tích hợp (cục bộ)",
-      "description": "Chạy máy chủ SoulFire trên thiết bị này. Thiết lập sẽ được thực hiện tự động. Tùy chọn này yêu cầu ứng dụng trên máy tính hoặc Android."
+      "description": "Chạy máy chủ Soulfire trên thiết bị này. Thiết lập sẽ được thực hiện tự động. Tùy chọn này yêu cầu ứng dụng trên máy tính hoặc Android."
     },
     "dedicated": {
       "title": "Máy chủ riêng (từ xa)",
-      "description": "Kết nối đến máy chủ SoulFire từ xa với địa chỉ và token của máy chủ."
+      "description": "Kết nối đến máy chủ Soulfire từ xa với địa chỉ và token của máy chủ."
     },
     "demo": {
       "title": "Máy chủ demo",
-      "description": "Cung cấp một máy chủ chỉ đọc với dữ liệu demo. SoulFire sẽ không lưu các thay đổi."
+      "description": "Cung cấp một máy chủ chỉ đọc với dữ liệu demo. Soulfire sẽ không lưu các thay đổi."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Thử lại",
     "reset": {
       "button": "Đặt lại dữ liệu",
-      "loading": "Đang đặt lại dữ liệu SoulFire...",
-      "success": "Đã đặt lại dữ liệu SoulFire thành công. Hãy thử bắt đầu lại.",
-      "error": "Đặt lại dữ liệu SoulFire thất bại"
+      "loading": "Đang đặt lại dữ liệu Soulfire...",
+      "success": "Đã đặt lại dữ liệu Soulfire thành công. Hãy thử bắt đầu lại.",
+      "error": "Đặt lại dữ liệu Soulfire thất bại"
     },
     "description": "Máy chủ tích hợp chạy trên máy tính của bạn. Bạn có thể thay đổi các tham số khởi động Java ở bên dưới.",
     "form": {
       "jvmArgs": {
         "title": "Tham số JVM",
-        "description": "Tham số Java VM cho SoulFire. Thêm <bold>-Xmx4G</bold> để sử dụng 4 GB RAM. Mặc định là 25% dung lượng RAM khả dụng.",
+        "description": "Tham số Java VM cho Soulfire. Thêm <bold>-Xmx4G</bold> để sử dụng 4 GB RAM. Mặc định là 25% dung lượng RAM khả dụng.",
         "placeholder": "Tham số JVM của bạn tại đây"
       },
       "back": "Quay lại",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Lệnh Termux",
-          "description": "Cài đặt <a>ứng dụng Termux</a>. Chạy lệnh này trong Termux để cài đặt máy chủ SoulFire. Chạy <copy>generate-token api</copy> để tạo token. Sau đó nhập token vào bên dưới."
+          "description": "Cài đặt <a>ứng dụng Termux</a>. Chạy lệnh này trong Termux để cài đặt máy chủ Soulfire. Chạy <copy>generate-token api</copy> để tạo token. Sau đó nhập token vào bên dưới."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Không thể huỷ khởi động",
     "autoStart": {
       "title": "Tự động bắt đầu lần sau",
-      "description": "Bỏ qua bước chọn máy chủ và sử dụng các thiết lập này khi SoulFire mở."
+      "description": "Bỏ qua bước chọn máy chủ và sử dụng các thiết lập này khi Soulfire mở."
     }
   },
   "dedicated": {
-    "description": "Nhập địa chỉ và token của máy chủ SoulFire.",
+    "description": "Nhập địa chỉ và token của máy chủ Soulfire.",
     "toast": {
       "loading": "Đang kết nối tới máy chủ...",
       "success": "Đã kết nối tới máy chủ",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Địa chỉ",
-        "description": "Địa chỉ máy chủ SoulFire của bạn.",
+        "description": "Địa chỉ máy chủ Soulfire của bạn.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "Email",
         "placeholder": "root@soulfiremc.com",
-        "description": "Email tài khoản SoulFire của bạn."
+        "description": "Email tài khoản Soulfire của bạn."
       },
       "back": "Quay lại",
       "useToken": "Dùng token",
@@ -109,9 +109,9 @@
     "back": "Quay lại"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Bạn muốn xem bản xem trước?",
     "production": "Bạn muốn truy cập bản sản xuất?",
-    "helpTranslate": "Dịch SoulFire"
+    "helpTranslate": "Dịch Soulfire"
   }
 }

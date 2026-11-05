@@ -121,7 +121,7 @@ describe("agent prompts", () => {
       serverUrl: "https://user:secret-password@server.example.test",
     });
     assert.ok(!prompt.includes("secret-password"));
-    assert.ok(prompt.includes("ask me for the real SoulFire API address"));
+    assert.ok(prompt.includes("ask me for the real Soulfire API address"));
   });
   test("bot-specific prompts request a missing bot ID", () => {
     const prompt = buildSdkAgentPrompt({

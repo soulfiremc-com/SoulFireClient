@@ -13,7 +13,7 @@
       "reloadPage": "पृष्ठ पुनः लोड करें",
       "showDetails": "विवरण दिखाएँ"
     },
-    "connectionFailed": "SoulFire सर्वर से कनेक्शन विफल रहा।"
+    "connectionFailed": "Soulfire सर्वर से कनेक्शन विफल रहा।"
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "SoulFire के बारे में",
-      "description": "आप SoulFire क्लाइंट का संस्करण {{version}} चला रहे हैं।",
+      "title": "Soulfire के बारे में",
+      "description": "आप Soulfire क्लाइंट का संस्करण {{version}} चला रहे हैं।",
       "type": "प्रकार",
       "value": "मान",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "बंद करें"
     },
     "support": {
-      "title": "SoulFire का समर्थन करें",
-      "description": "SoulFire मुफ्त और ओपन-सोर्स है, जो समुदाय द्वारा प्रेम से बनाया गया है।",
-      "body": "यदि SoulFire आपके लिए उपयोगी रहा है, तो कृपया परियोजना का समर्थन करने पर विचार करें। आपका योगदान सर्वर लागतों को कवर करने, विकास को वित्तपोषित करने और SoulFire को सभी के लिए मुफ्त बनाए रखने में मदद करता है।",
+      "title": "Soulfire का समर्थन करें",
+      "description": "Soulfire मुफ्त और ओपन-सोर्स है, जो समुदाय द्वारा प्रेम से बनाया गया है।",
+      "body": "यदि Soulfire आपके लिए उपयोगी रहा है, तो कृपया परियोजना का समर्थन करने पर विचार करें। आपका योगदान सर्वर लागतों को कवर करने, विकास को वित्तपोषित करने और Soulfire को सभी के लिए मुफ्त बनाए रखने में मदद करता है।",
       "dismiss": "शायद बाद में",
-      "action": "SoulFire का समर्थन करें"
+      "action": "Soulfire का समर्थन करें"
     },
     "createInstance": {
       "title": "नई इंस्टेंस बनाएँ",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "फ़ाइल से",
         "fromUrl": "URL से",
-        "firstClipboardItem": "क्लिपबोर्ड में एक से अधिक आइटम हैं। SoulFire पहला आइटम उपयोग करेगा।",
+        "firstClipboardItem": "क्लिपबोर्ड में एक से अधिक आइटम हैं। Soulfire पहला आइटम उपयोग करेगा।",
         "fromClipboard": "क्लिपबोर्ड से",
         "textarea": {
           "placeholder": "यहाँ पाठ डालें...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire सर्वर इस URL पर GET अनुरोध भेजता है और उत्तर को आयात करता है।",
+        "description": "Soulfire सर्वर इस URL पर GET अनुरोध भेजता है और उत्तर को आयात करता है।",
         "form": {
           "url": {
             "placeholder": "यहाँ URL डालें...",
@@ -278,7 +278,7 @@
   "terminal": {
     "noLogs": "अभी तक कोई लॉग नहीं हैं। लॉग आउटपुट बनाने के लिए कोई कमांड चलाएँ।",
     "demo-1": "डेमो मोड में स्वागत है! 🧪",
-    "demo-2": "यह SoulFire का केवल-पढ़ने के लिए इंस्टेंस है",
+    "demo-2": "यह Soulfire का केवल-पढ़ने के लिए इंस्टेंस है",
     "demo-3": "स्थापित करने से पहले सभी मेनू और फ़ीचर देख लें :D",
     "demo-4": "अगर आप हमसे जुड़ना चाहते हैं, तो हमारे Discord सर्वर से जुड़े: https://soulfiremc.com/discord"
   },
@@ -390,7 +390,7 @@
     },
     "configDir": "कॉन्फ़िग डायरेक्टरी",
     "dataDir": "डाटा डायरेक्टरी",
-    "supportSoulFire": "SoulFire का समर्थन करें",
+    "supportSoulFire": "Soulfire का समर्थन करें",
     "about": "के बारे में",
     "logOut": "लॉग आउट करें",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "बाहर निकलें",
     "stopImpersonating": "प्रतिरूपण रोकें",
-    "helpTranslate": "SoulFire का अनुवाद करें"
+    "helpTranslate": "Soulfire का अनुवाद करें"
   },
   "sidebar": {
     "documentation": "दस्तावेज़ीकरण",
-    "supportSoulFire": "SoulFire का समर्थन करें",
+    "supportSoulFire": "Soulfire का समर्थन करें",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API एक्सेस",
-      "description": "SoulFire gRPC HTTP API वेब अनुरोधों के साथ इंस्टेंस प्रबंधित करता है।",
+      "description": "Soulfire gRPC HTTP API वेब अनुरोधों के साथ इंस्टेंस प्रबंधित करता है।",
       "publicAddress": "सार्वजनिक API पता",
       "personalToken": "व्यक्तिगत API टोकन",
       "securityWarning": "अपने व्यक्तिगत API टोकन को गुप्त रखें। यह API तक पहुँच के लिए अनुमति देता है।",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "नई स्क्रिप्ट जोड़ें",
-      "description": "स्क्रिप्ट्स छोटे प्रोग्राम होते हैं जो SoulFire सर्वर पर कार्यों और अन्य क्रियाओं का स्वचालन करते हैं।",
+      "description": "स्क्रिप्ट्स छोटे प्रोग्राम होते हैं जो Soulfire सर्वर पर कार्यों और अन्य क्रियाओं का स्वचालन करते हैं।",
       "form": {
         "cancel": "रद्द करें",
         "add": "जोड़ें"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "चालू नहीं हुआ",
       "preparing": "Java और सर्वर फाइल्स तैयार की जा रही हैं",
-      "starting": "SoulFire के शुरू होने की प्रतीक्षा हो रही है",
+      "starting": "Soulfire के शुरू होने की प्रतीक्षा हो रही है",
       "running": "चल रहा है",
       "stopping": "रोकना जारी है",
       "stopped": "बंद हुआ",

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "가져온 프록시를 확인하시겠습니까?",
-      "description": "{{count}}개의 프록시를 가져왔습니다. 지금 확인하시겠습니까? SoulFire는 유효하지 않은 프록시를 자동으로 제거합니다.",
+      "description": "{{count}}개의 프록시를 가져왔습니다. 지금 확인하시겠습니까? Soulfire는 유효하지 않은 프록시를 자동으로 제거합니다.",
       "confirm": "프록시 확인하기",
       "skip": "건너뛰기"
     },

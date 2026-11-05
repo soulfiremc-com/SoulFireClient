@@ -13,7 +13,7 @@
       "reloadPage": "Reload th' deck",
       "showDetails": "Show piratey details"
     },
-    "connectionFailed": "Link with the SoulFire ship’s hub failed, arrr."
+    "connectionFailed": "Link with the Soulfire ship’s hub failed, arrr."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "About SoulFire",
-      "description": "Ye be runnin' version {{version}} o' the SoulFire crew client.",
+      "title": "About Soulfire",
+      "description": "Ye be runnin' version {{version}} o' the Soulfire crew client.",
       "type": "Cargo Type",
       "value": "Worth",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Batten down!"
     },
     "support": {
-      "title": "Be Supportin' SoulFire, matey!",
-      "description": "SoulFire be a free 'n open-source treasure, forged with love by the crew.",
-      "body": "If SoulFire's been worth its weight in gold to ye, consider throwin' a coin to the project. Yer booty helps keep the ship sailin', pays fer more grog and code, an' keeps SoulFire free fer all hands.",
+      "title": "Be Supportin' Soulfire, matey!",
+      "description": "Soulfire be a free 'n open-source treasure, forged with love by the crew.",
+      "body": "If Soulfire's been worth its weight in gold to ye, consider throwin' a coin to the project. Yer booty helps keep the ship sailin', pays fer more grog and code, an' keeps Soulfire free fer all hands.",
       "dismiss": "Maybe another tide",
-      "action": "Be Supportin' SoulFire, matey!"
+      "action": "Be Supportin' Soulfire, matey!"
     },
     "createInstance": {
       "title": "Raise a new hull",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "From th' captain's log",
         "fromUrl": "From the bottle at sea",
-        "firstClipboardItem": "The clipboard holds a whole booty o' loot. SoulFire will take the first piece o' treasure.",
+        "firstClipboardItem": "The clipboard holds a whole booty o' loot. Soulfire will take the first piece o' treasure.",
         "fromClipboard": "From the chest o' clippin's",
         "textarea": {
           "placeholder": "Scrawl yer words here...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "The SoulFire server be sendin' a GET request to this here URL and importin' whate’er comes back.",
+        "description": "The Soulfire server be sendin' a GET request to this here URL and importin' whate’er comes back.",
         "form": {
           "url": {
             "placeholder": "Paste yer bottle's route here...",
@@ -278,8 +278,8 @@
   "terminal": {
     "noLogs": "No logs yet, ye landlubber. Run a command to see some logs roll out.",
     "demo-1": "Welcome t' sailin' in demo waters! 🧪",
-    "demo-2": "This be a read-only hull in SoulFire.",
-    "demo-3": "Give all th' menus and tools a look before pipin' SoulFire into yer own fleet :D",
+    "demo-2": "This be a read-only hull in Soulfire.",
+    "demo-3": "Give all th' menus and tools a look before pipin' Soulfire into yer own fleet :D",
     "demo-4": "Join our crew in Discord if ye wish to parley: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -390,7 +390,7 @@
     },
     "configDir": "Map Folder",
     "dataDir": "Treasure Hold",
-    "supportSoulFire": "Be Supportin' SoulFire, matey!",
+    "supportSoulFire": "Be Supportin' Soulfire, matey!",
     "about": "This Page o' Lore",
     "logOut": "Abandon Ship",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "Abandon hull",
     "stopImpersonating": "Drop that disguise, ye rogue!",
-    "helpTranslate": "Help translate SoulFire, matey!"
+    "helpTranslate": "Help translate Soulfire, matey!"
   },
   "sidebar": {
     "documentation": "The Captain's Log",
-    "supportSoulFire": "Be Supportin' SoulFire, matey!",
+    "supportSoulFire": "Be Supportin' Soulfire, matey!",
     "discord": "Discord’s Cove"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API Gangway",
-      "description": "The SoulFire gRPC HTTP API lets ye command yer instances with web requests, aye.",
+      "description": "The Soulfire gRPC HTTP API lets ye command yer instances with web requests, aye.",
       "publicAddress": "Charted API Port",
       "personalToken": "Yer own API Treasure Map (Token)",
       "securityWarning": "Keep yer API token buried, else someone steals yer wind and sails yer ship!",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "Add new scroll to the chest",
-      "description": "Scripts be tiny programs that automate yer ship-work and other actions on the SoulFire server, arrr.",
+      "description": "Scripts be tiny programs that automate yer ship-work and other actions on the Soulfire server, arrr.",
       "form": {
         "cancel": "Lower anchor",
         "add": "Chart course"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "Not yet hoisted, matey",
       "preparing": "Stowin' Java an' ship's files for voyage",
-      "starting": "Waitin' fer SoulFire t'hoist anchor",
+      "starting": "Waitin' fer Soulfire t'hoist anchor",
       "running": "Aye! Sailin'",
       "stopping": "Droppin' anchor",
       "stopped": "Ship at rest",

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "İçe aktarılan proxy'leri kontrol etmek ister misiniz?",
-      "description": "{{count}} proxy içe aktardınız. Şimdi kontrol edilsin mi? SoulFire geçersiz proxy'leri otomatik olarak kaldırır.",
+      "description": "{{count}} proxy içe aktardınız. Şimdi kontrol edilsin mi? Soulfire geçersiz proxy'leri otomatik olarak kaldırır.",
       "confirm": "Proxyleri Kontrol Et",
       "skip": "Atla"
     },

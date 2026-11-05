@@ -2,7 +2,7 @@
 
 ## Questions and reports
 
-Start with the [SoulFire documentation](https://soulfiremc.com/docs).
+Start with the [Soulfire documentation](https://soulfiremc.com/docs).
 For setup and usage questions, ask in the [Discord community](https://soulfiremc.com/discord).
 For contribution setup, builds, and checks, read [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -16,7 +16,7 @@ Otherwise, use the [issue chooser](https://github.com/soulfiremc-com/SoulFireCli
 ## Find the right project
 
 Use this repository for desktop or browser client.
-Use [SoulFire](https://github.com/soulfiremc-com/SoulFire/issues) for server, bot, protocol, or SDK problems.
+Use [Soulfire](https://github.com/soulfiremc-com/SoulFire/issues) for server, bot, protocol, or SDK problems.
 Use [SoulFireClient](https://github.com/soulfiremc-com/SoulFireClient/issues) for desktop and browser client problems.
 Use [soulfiremc.com](https://github.com/soulfiremc-com/soulfiremc.com/issues) for published documentation and website problems.
 The [organization support directory](https://github.com/soulfiremc-com/.github/blob/main/SUPPORT.md) lists every project.

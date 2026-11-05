@@ -33,5 +33,5 @@ fi
 mkdir -p ~/soulfire/rundir
 cd ~/soulfire/rundir
 
-# Run SoulFire
+# Run Soulfire
 java $2 -jar ~/soulfire/jars/$JAR_NAME

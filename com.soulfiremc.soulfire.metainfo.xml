@@ -2,7 +2,7 @@
 <component type="desktop-application">
   <id>com.soulfiremc.soulfire</id>
 
-  <name>SoulFire</name>
+  <name>Soulfire</name>
   <summary>Advanced Minecraft Bot Tool</summary>
 
   <metadata_license>FSFAP</metadata_license>
@@ -45,11 +45,11 @@
   <screenshots>
     <screenshot type="default">
       <image>https://github.com/soulfiremc-com/SoulFireClient/blob/main/images/controls.png?raw=true</image>
-      <caption>SoulFire instance controls</caption>
+      <caption>Soulfire instance controls</caption>
     </screenshot>
     <screenshot>
       <image>https://github.com/soulfiremc-com/SoulFireClient/blob/main/images/instances.png?raw=true</image>
-      <caption>SoulFire instance overview</caption>
+      <caption>Soulfire instance overview</caption>
     </screenshot>
   </screenshots>
 

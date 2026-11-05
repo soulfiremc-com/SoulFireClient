@@ -915,7 +915,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Restore on Reboot",
         description:
-          "Reconnect this bot when SoulFire starts if it was previously desired to be running.",
+          "Reconnect this bot when Soulfire starts if it was previously desired to be running.",
         def: true,
         disabled: false,
       },
@@ -929,7 +929,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Ignore Packet Handling Errors",
         description:
-          'Sometimes a bot fails to process a packet. When that happens it disconnects due to "packet errors".\nWhen this option is turned on, SoulFire will ignore errors during the packet handling process and keep bots connected.\nThis might cause bots to have inconsistent world state though, so it could be detected by the server.',
+          'Sometimes a bot fails to process a packet. When that happens it disconnects due to "packet errors".\nWhen this option is turned on, Soulfire will ignore errors during the packet handling process and keep bots connected.\nThis might cause bots to have inconsistent world state though, so it could be detected by the server.',
         def: true,
         disabled: false,
       },
@@ -957,7 +957,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Use proxies for account auth",
         description:
-          "SoulFire uses imported proxies for account authentication.\nOtherwise, the SoulFire server connects directly.",
+          "Soulfire uses imported proxies for account authentication.\nOtherwise, the Soulfire server connects directly.",
         def: false,
         disabled: false,
       },
@@ -971,7 +971,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Account import concurrency",
         description:
-          "SoulFire imports no more than this number of accounts at the same time when authentication requires credentials.",
+          "Soulfire imports no more than this number of accounts at the same time when authentication requires credentials.",
         def: 3,
         min: 1,
         max: 2147483647,
@@ -1307,7 +1307,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Deduplicate amount",
         description:
-          "SoulFire logs the same message no more than this number of times within five seconds.",
+          "Soulfire logs the same message no more than this number of times within five seconds.",
         def: 1,
         min: 1,
         max: 2147483647,
@@ -1339,7 +1339,7 @@ export const demoInstanceSettingsDefinitions = [
       value: {
         uiName: "Deduplicate amount",
         description:
-          "SoulFire logs the same disconnect message no more than this number of times within five seconds.",
+          "Soulfire logs the same disconnect message no more than this number of times within five seconds.",
         def: 1,
         min: 1,
         max: 2147483647,
@@ -1397,7 +1397,7 @@ export const demoServerSettingsDefinitions = [
       value: {
         uiName: "Public address",
         description:
-          "The address clients on the internet use to connect to this SoulFire server.\nUsed for links in E-Mails and WebDAV.",
+          "The address clients on the internet use to connect to this Soulfire server.\nUsed for links in E-Mails and WebDAV.",
         def: "http://127.0.0.1:38765",
         inputType: 0,
         placeholder: "",
@@ -1481,7 +1481,7 @@ export const demoServerSettingsDefinitions = [
       case: "combo",
       value: {
         uiName: "Email Type",
-        description: "SoulFire uses this method to deliver emails.",
+        description: "Soulfire uses this method to deliver emails.",
         options: [
           {
             id: "CONSOLE",
@@ -1625,8 +1625,8 @@ export const demoServerSettingsDefinitions = [
     type: {
       case: "bool",
       value: {
-        uiName: "SoulFire debug",
-        description: "Enable SoulFire debug logging",
+        uiName: "Soulfire debug",
+        description: "Enable Soulfire debug logging",
         def: false,
         disabled: false,
       },

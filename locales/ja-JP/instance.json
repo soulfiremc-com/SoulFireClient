@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "インポートしたプロキシをチェックしますか？​​",
-      "description": "{{count}}個のプロキシをインポートしました。今すぐチェックしますか？SoulFireは無効なプロキシを自動的に削除します。",
+      "description": "{{count}}個のプロキシをインポートしました。今すぐチェックしますか？Soulfireは無効なプロキシを自動的に削除します。",
       "confirm": "プロキシの確認",
       "skip": "スキップ"
     },

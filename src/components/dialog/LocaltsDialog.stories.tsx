@@ -201,7 +201,7 @@ export const DemoModeCannotPurchase: Story = {
     ).toBeDisabled();
     await expect(
       dialog.getByText(
-        "Connect to a SoulFire server to purchase or import resources.",
+        "Connect to a Soulfire server to purchase or import resources.",
       ),
     ).toBeVisible();
     await expect(purchases).toHaveLength(0);

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Be wantin' to check the imported proxies, matey?",
-      "description": "Ye brought aboard {{count}} proxies. Be wantin' to check 'em now? SoulFire'll toss the no-good proxies o'erboard fer ye!",
+      "description": "Ye brought aboard {{count}} proxies. Be wantin' to check 'em now? Soulfire'll toss the no-good proxies o'erboard fer ye!",
       "confirm": "Check Proxies, hoist the lantern!",
       "skip": "Skip, avast!"
     },

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "要檢查已匯入的代理伺服器嗎？",
-      "description": "您已匯入 {{count}} 個代理伺服器。現在要檢查它們嗎？SoulFire 會自動移除無效的代理伺服器。",
+      "description": "您已匯入 {{count}} 個代理伺服器。現在要檢查它們嗎？Soulfire 會自動移除無效的代理伺服器。",
       "confirm": "檢查代理伺服器",
       "skip": "略過"
     },

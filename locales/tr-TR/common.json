@@ -13,7 +13,7 @@
       "reloadPage": "Sayfayı yeniden yükle",
       "showDetails": "Ayrıntıları göster"
     },
-    "connectionFailed": "SoulFire sunucusuna bağlantı başarısız oldu."
+    "connectionFailed": "Soulfire sunucusuna bağlantı başarısız oldu."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "SoulFire Hakkında",
-      "description": "SoulFire clientinin {{version}} sürümünü kullanıyorsunuz.",
+      "title": "Soulfire Hakkında",
+      "description": "Soulfire clientinin {{version}} sürümünü kullanıyorsunuz.",
       "type": "Tip",
       "value": "Değer",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Kapat"
     },
     "support": {
-      "title": "SoulFire'ı Destekle",
-      "description": "SoulFire ücretsiz ve açık kaynaklıdır; topluluk tarafından sevgiyle geliştirilmiştir.",
-      "body": "SoulFire size faydalı olduysa, lütfen projeyi desteklemeyi düşünün. Katkınız, sunucu masraflarını karşılamaya, geliştirmeye fon sağlamaya ve SoulFire'ın herkes için ücretsiz kalmasına yardımcı olur.",
+      "title": "Soulfire'ı Destekle",
+      "description": "Soulfire ücretsiz ve açık kaynaklıdır; topluluk tarafından sevgiyle geliştirilmiştir.",
+      "body": "Soulfire size faydalı olduysa, lütfen projeyi desteklemeyi düşünün. Katkınız, sunucu masraflarını karşılamaya, geliştirmeye fon sağlamaya ve Soulfire'ın herkes için ücretsiz kalmasına yardımcı olur.",
       "dismiss": "Belki sonra",
-      "action": "SoulFire'ı Destekle"
+      "action": "Soulfire'ı Destekle"
     },
     "createInstance": {
       "title": "Yeni bir örnek oluştur",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Dosyadan",
         "fromUrl": "URL'den",
-        "firstClipboardItem": "Panoda birden fazla öğe var. SoulFire ilk öğeyi kullanacaktır.",
+        "firstClipboardItem": "Panoda birden fazla öğe var. Soulfire ilk öğeyi kullanacaktır.",
         "fromClipboard": "Panodan",
         "textarea": {
           "placeholder": "Metni buraya girin...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire sunucusu bu URL'ye bir GET isteği gönderir ve yanıtı içe aktarır.",
+        "description": "Soulfire sunucusu bu URL'ye bir GET isteği gönderir ve yanıtı içe aktarır.",
         "form": {
           "url": {
             "placeholder": "URL'yi buraya girin...",
@@ -278,8 +278,8 @@
   "terminal": {
     "noLogs": "Henüz kayıt yok. Kayıt çıktısı oluşturmak için bir komut çalıştırın.",
     "demo-1": "Demo moduna hoş geldiniz! 🧪",
-    "demo-2": "Bu, SoulFire'ın salt okunur örneğidir",
-    "demo-3": "SoulFire'ı yüklemeye karar vermeden önce tüm menüler ve özelliklere göz atın :D",
+    "demo-2": "Bu, Soulfire'ın salt okunur örneğidir",
+    "demo-3": "Soulfire'ı yüklemeye karar vermeden önce tüm menüler ve özelliklere göz atın :D",
     "demo-4": "Bizimle iletişime geçmek isterseniz Discord sunucumuza katılmaktan çekinmeyin: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -390,7 +390,7 @@
     },
     "configDir": "Yapılandırma dizini",
     "dataDir": "Veri dizini",
-    "supportSoulFire": "SoulFire'ı Destekle",
+    "supportSoulFire": "Soulfire'ı Destekle",
     "about": "Hakkında",
     "logOut": "Çıkış Yap",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "Çıkış",
     "stopImpersonating": "Kimliğe bürünmeyi bırak",
-    "helpTranslate": "SoulFire'ı Çevirin"
+    "helpTranslate": "Soulfire'ı Çevirin"
   },
   "sidebar": {
     "documentation": "Dokümantasyon",
-    "supportSoulFire": "SoulFire'ı Destekle",
+    "supportSoulFire": "Soulfire'ı Destekle",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API Erişimi",
-      "description": "SoulFire gRPC HTTP API'si, web istekleriyle instance'ları yönetir.",
+      "description": "Soulfire gRPC HTTP API'si, web istekleriyle instance'ları yönetir.",
       "publicAddress": "Genel API Adresi",
       "personalToken": "Kişisel API Jetonu",
       "securityWarning": "Kişisel API belirtecinizi gizli tutun. API'ye erişim sağlar.",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "Yeni bir betik ekle",
-      "description": "Betikler, SoulFire sunucusunda görevleri ve diğer eylemleri otomatikleştiren küçük programlardır.",
+      "description": "Betikler, Soulfire sunucusunda görevleri ve diğer eylemleri otomatikleştiren küçük programlardır.",
       "form": {
         "cancel": "İptal",
         "add": "Ekle"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "Başlatılmadı",
       "preparing": "Java ve sunucu dosyaları hazırlanıyor",
-      "starting": "SoulFire'ın başlaması bekleniyor",
+      "starting": "Soulfire'ın başlaması bekleniyor",
       "running": "Çalışıyor",
       "stopping": "Durduruluyor",
       "stopped": "Durduruldu",

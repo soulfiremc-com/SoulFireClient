@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "Логотип SoulFire"
+      "alt": "Логотип Soulfire"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Вы новичок в SoulFire? Прочитайте <a>руководство для начинающих</a>.",
+  "newUser": "Вы новичок в Soulfire? Прочитайте <a>руководство для начинающих</a>.",
   "connect": {
-    "title": "Подключение к серверу SoulFire",
-    "description": "Выберите тип подключения к SoulFire серверу.",
+    "title": "Подключение к серверу Soulfire",
+    "description": "Выберите тип подключения к Soulfire серверу.",
     "integrated": {
       "title": "Встроенный сервер (локально)",
-      "description": "Запускает сервер SoulFire на этом устройстве. Настройка происходит автоматически. Эта опция требует приложение для ПК или Android."
+      "description": "Запускает сервер Soulfire на этом устройстве. Настройка происходит автоматически. Эта опция требует приложение для ПК или Android."
     },
     "dedicated": {
       "title": "Выделенный сервер (удаленный)",
-      "description": "Подключается к удалённому серверу SoulFire по адресу и токену."
+      "description": "Подключается к удалённому серверу Soulfire по адресу и токену."
     },
     "demo": {
       "title": "Демонстративный сервер",
-      "description": "Предоставляет сервер только для чтения с демонстрационными данными. SoulFire не сохраняет изменения."
+      "description": "Предоставляет сервер только для чтения с демонстрационными данными. Soulfire не сохраняет изменения."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Повторить",
     "reset": {
       "button": "Сбросить данные",
-      "loading": "Сброс данных SoulFire...",
-      "success": "Данные SoulFire успешно сброшены. Попробуйте начать снова.",
-      "error": "Не удалось сбросить данные SoulFire"
+      "loading": "Сброс данных Soulfire...",
+      "success": "Данные Soulfire успешно сброшены. Попробуйте начать снова.",
+      "error": "Не удалось сбросить данные Soulfire"
     },
     "description": "Интегрированный сервер работает на вашем компьютере. Ниже вы можете изменить аргументы запуска Java.",
     "form": {
       "jvmArgs": {
         "title": "JVM аргументы",
-        "description": "Аргументы Java VM для SoulFire. Добавьте <bold>-Xmx4G</bold>, чтобы использовать 4 ГБ оперативной памяти. По умолчанию используется 25% доступной памяти.",
+        "description": "Аргументы Java VM для Soulfire. Добавьте <bold>-Xmx4G</bold>, чтобы использовать 4 ГБ оперативной памяти. По умолчанию используется 25% доступной памяти.",
         "placeholder": "Ваши JVM аргументы"
       },
       "back": "Назад",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Команда Termux",
-          "description": "Установите <a>приложение Termux</a>. Выполните эту команду в Termux для установки сервера SoulFire. Выполните <copy>generate-token api</copy> для создания токена. Затем введите токен ниже."
+          "description": "Установите <a>приложение Termux</a>. Выполните эту команду в Termux для установки сервера Soulfire. Выполните <copy>generate-token api</copy> для создания токена. Затем введите токен ниже."
         },
         "token": {
           "title": "Токен",
@@ -67,11 +67,11 @@
     "cancelError": "Не удалось отменить запуск",
     "autoStart": {
       "title": "Запускать автоматически в следующий раз.",
-      "description": "Пропустить выбор сервера и использовать эти настройки при запуске SoulFire."
+      "description": "Пропустить выбор сервера и использовать эти настройки при запуске Soulfire."
     }
   },
   "dedicated": {
-    "description": "Введите адрес и токен сервера SoulFire.",
+    "description": "Введите адрес и токен сервера Soulfire.",
     "toast": {
       "loading": "Подключение к серверу...",
       "success": "Подключен к серверу",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Адрес",
-        "description": "Адрес вашего сервера SoulFire.",
+        "description": "Адрес вашего сервера Soulfire.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "E-mail",
         "placeholder": "root@soulfiremc.com",
-        "description": "Email вашего аккаунта SoulFire."
+        "description": "Email вашего аккаунта Soulfire."
       },
       "back": "Назад",
       "useToken": "Использовать токен",
@@ -109,9 +109,9 @@
     "back": "Назад"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Ищете предпросмотр будущей версии?",
     "production": "Ищете релиз версию?",
-    "helpTranslate": "Перевести SoulFire"
+    "helpTranslate": "Перевести Soulfire"
   }
 }

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Tarkista tuodut proxyt?",
-      "description": "Toit {{count}} proxyä. Tarkistetaanko ne nyt? SoulFire poistaa virheelliset proxyt automaattisesti.",
+      "description": "Toit {{count}} proxyä. Tarkistetaanko ne nyt? Soulfire poistaa virheelliset proxyt automaattisesti.",
       "confirm": "Tarkista välityspalvelimet",
       "skip": "Ohita"
     },

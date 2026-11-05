@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "İdxal edilmiş proksiləri yoxlamaq istəyirsiniz?",
-      "description": "{{count}} proksi idxal etdiniz. İndi onları yoxlayasınız? SoulFire etibarsız proksiləri avtomatik olaraq silir.",
+      "description": "{{count}} proksi idxal etdiniz. İndi onları yoxlayasınız? Soulfire etibarsız proksiləri avtomatik olaraq silir.",
       "confirm": "Proksiləri Yoxla",
       "skip": "Keç"
     },

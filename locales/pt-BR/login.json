@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "Logo SoulFire"
+      "alt": "Logo Soulfire"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Novo no SoulFire? Leia o <a>guia de introdução</a>.",
+  "newUser": "Novo no Soulfire? Leia o <a>guia de introdução</a>.",
   "connect": {
-    "title": "Conecte-se a um servidor SoulFire",
-    "description": "Selecione o tipo de servidor do SoulFire para se conectar.",
+    "title": "Conecte-se a um servidor Soulfire",
+    "description": "Selecione o tipo de servidor do Soulfire para se conectar.",
     "integrated": {
       "title": "Servidor integrado (local)",
-      "description": "Executa um servidor SoulFire neste dispositivo. A configuração é automática. Esta opção requer o aplicativo para desktop ou Android."
+      "description": "Executa um servidor Soulfire neste dispositivo. A configuração é automática. Esta opção requer o aplicativo para desktop ou Android."
     },
     "dedicated": {
       "title": "Servidor dedicado (remoto)",
-      "description": "Conecta a um servidor SoulFire remoto usando o endereço e o token."
+      "description": "Conecta a um servidor Soulfire remoto usando o endereço e o token."
     },
     "demo": {
       "title": "Servidor de demonstração",
-      "description": "Fornece um servidor somente leitura com dados de demonstração. O SoulFire não salva alterações."
+      "description": "Fornece um servidor somente leitura com dados de demonstração. O Soulfire não salva alterações."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Tentar novamente",
     "reset": {
       "button": "Redefinir dados",
-      "loading": "Redefinindo os dados do SoulFire...",
-      "success": "Dados do SoulFire redefinidos com sucesso. Tente começar novamente.",
-      "error": "Falha ao redefinir os dados do SoulFire"
+      "loading": "Redefinindo os dados do Soulfire...",
+      "success": "Dados do Soulfire redefinidos com sucesso. Tente começar novamente.",
+      "error": "Falha ao redefinir os dados do Soulfire"
     },
     "description": "O servidor integrado roda no seu computador. Você pode alterar os argumentos de inicialização do Java abaixo.",
     "form": {
       "jvmArgs": {
         "title": "Argumentos JVM",
-        "description": "Argumentos da máquina virtual Java para o SoulFire. Adicione <bold>-Xmx4G</bold> para usar 4 GB de RAM. O padrão é 25% da RAM disponível.",
+        "description": "Argumentos da máquina virtual Java para o Soulfire. Adicione <bold>-Xmx4G</bold> para usar 4 GB de RAM. O padrão é 25% da RAM disponível.",
         "placeholder": "Seus argumentos JVM aqui"
       },
       "back": "Voltar",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Comando Termux",
-          "description": "Instale o <a>aplicativo Termux</a>. Execute este comando no Termux para instalar o servidor SoulFire. Execute <copy>generate-token api</copy> para criar um token. Depois, insira o token abaixo."
+          "description": "Instale o <a>aplicativo Termux</a>. Execute este comando no Termux para instalar o servidor Soulfire. Execute <copy>generate-token api</copy> para criar um token. Depois, insira o token abaixo."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Não foi possível cancelar a inicialização",
     "autoStart": {
       "title": "Iniciar automaticamente na próxima vez.",
-      "description": "Pular a seleção de servidor e usar estas configurações quando o SoulFire for aberto."
+      "description": "Pular a seleção de servidor e usar estas configurações quando o Soulfire for aberto."
     }
   },
   "dedicated": {
-    "description": "Insira o endereço e o token do servidor SoulFire.",
+    "description": "Insira o endereço e o token do servidor Soulfire.",
     "toast": {
       "loading": "Conectando ao servidor...",
       "success": "Conectado ao servidor",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Endereço",
-        "description": "Endereço do seu servidor SoulFire.",
+        "description": "Endereço do seu servidor Soulfire.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "E-mail",
         "placeholder": "root@soulfiremc.com",
-        "description": "E-mail da sua conta SoulFire."
+        "description": "E-mail da sua conta Soulfire."
       },
       "back": "Voltar",
       "useToken": "Usar token",
@@ -109,9 +109,9 @@
     "back": "Voltar"
   },
   "footer": {
-    "version": "Cliente SoulFire {{version}} - {{environment}}",
+    "version": "Cliente Soulfire {{version}} - {{environment}}",
     "preview": "Procurando uma visualização?",
     "production": "Procurando produção?",
-    "helpTranslate": "Ajude a traduzir o SoulFire"
+    "helpTranslate": "Ajude a traduzir o Soulfire"
   }
 }

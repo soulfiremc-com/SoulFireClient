@@ -1,4 +1,4 @@
-const APP_TITLE = "SoulFire";
+const APP_TITLE = "Soulfire";
 
 type RouteTitleMatch = {
   context: unknown;
@@ -26,7 +26,7 @@ export type RouteIconResolver = (
 const SOULFIRE_LOGO_ICON: RouteIcon = {
   kind: "logo",
   src: "/logo.png",
-  alt: "SoulFire logo",
+  alt: "Soulfire logo",
 };
 
 export function buildDocumentTitle(pageTitle?: null | string) {

@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire 標誌"
+      "alt": "Soulfire 標誌"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
   "newUser": "新手上路？請閱讀<a>入門指南</a>。",
   "connect": {
-    "title": "連接到 SoulFire 伺服器",
-    "description": "選擇要連接的 SoulFire 伺服器類型。",
+    "title": "連接到 Soulfire 伺服器",
+    "description": "選擇要連接的 Soulfire 伺服器類型。",
     "integrated": {
       "title": "整合式伺服器（本機）",
-      "description": "在此裝置上運行 SoulFire 伺服器。設定會自動進行。此選項需要桌面版或 Android 應用程式。"
+      "description": "在此裝置上運行 Soulfire 伺服器。設定會自動進行。此選項需要桌面版或 Android 應用程式。"
     },
     "dedicated": {
       "title": "專用伺服器（遠端）",
-      "description": "使用位址和權杖連接至遠端 SoulFire 伺服器。"
+      "description": "使用位址和權杖連接至遠端 Soulfire 伺服器。"
     },
     "demo": {
       "title": "演示伺服器",
-      "description": "提供僅供閱讀的伺服器與示範資料。SoulFire 不會儲存變更。"
+      "description": "提供僅供閱讀的伺服器與示範資料。Soulfire 不會儲存變更。"
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "重試",
     "reset": {
       "button": "重設資料",
-      "loading": "正在重設 SoulFire 資料...",
-      "success": "SoulFire 資料重設成功。請重新開始。",
-      "error": "無法重設 SoulFire 資料"
+      "loading": "正在重設 Soulfire 資料...",
+      "success": "Soulfire 資料重設成功。請重新開始。",
+      "error": "無法重設 Soulfire 資料"
     },
     "description": "整合伺服器運行於您的電腦上。您可以在下方更改 Java 啟動參數。",
     "form": {
       "jvmArgs": {
         "title": "JVM 參數",
-        "description": "SoulFire 的 Java VM 參數。新增 <bold>-Xmx4G</bold> 可使用 4GB 記憶體。預設為可用記憶體的 25%。",
+        "description": "Soulfire 的 Java VM 參數。新增 <bold>-Xmx4G</bold> 可使用 4GB 記憶體。預設為可用記憶體的 25%。",
         "placeholder": "在此輸入您的 JVM 參數"
       },
       "back": "返回",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux 命令",
-          "description": "請安裝 <a>Termux 應用程式</a>。於 Termux 中執行此指令來安裝 SoulFire 伺服器，然後執行 <copy>generate-token api</copy> 建立權杖。接著於下方輸入該權杖。"
+          "description": "請安裝 <a>Termux 應用程式</a>。於 Termux 中執行此指令來安裝 Soulfire 伺服器，然後執行 <copy>generate-token api</copy> 建立權杖。接著於下方輸入該權杖。"
         },
         "token": {
           "title": "權杖",
@@ -67,11 +67,11 @@
     "cancelError": "無法取消啟動",
     "autoStart": {
       "title": "下次自動啟動",
-      "description": "略過伺服器選擇，SoulFire 開啟時自動使用這些設定。"
+      "description": "略過伺服器選擇，Soulfire 開啟時自動使用這些設定。"
     }
   },
   "dedicated": {
-    "description": "請輸入 SoulFire 伺服器的位址與權杖。",
+    "description": "請輸入 Soulfire 伺服器的位址與權杖。",
     "toast": {
       "loading": "正在連接伺服器...",
       "success": "已連接到伺服器",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "位址",
-        "description": "您的 SoulFire 伺服器位址。",
+        "description": "您的 Soulfire 伺服器位址。",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "電子郵件",
         "placeholder": "root@soulfiremc.com",
-        "description": "您的 SoulFire 帳戶電子郵件信箱。"
+        "description": "您的 Soulfire 帳戶電子郵件信箱。"
       },
       "back": "返回",
       "useToken": "使用權杖",
@@ -109,9 +109,9 @@
     "back": "返回"
   },
   "footer": {
-    "version": "SoulFire 用戶端 {{version}} - {{environment}}",
+    "version": "Soulfire 用戶端 {{version}} - {{environment}}",
     "preview": "正在尋找預覽版本？",
     "production": "正在尋找正式版本？",
-    "helpTranslate": "協助翻譯 SoulFire"
+    "helpTranslate": "協助翻譯 Soulfire"
   }
 }

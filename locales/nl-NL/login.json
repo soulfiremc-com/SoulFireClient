@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire-logo"
+      "alt": "Soulfire-logo"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Nieuw bij SoulFire? Lees de <a>starthandleiding</a>.",
+  "newUser": "Nieuw bij Soulfire? Lees de <a>starthandleiding</a>.",
   "connect": {
-    "title": "Verbind met een SoulFire-server",
-    "description": "Selecteer met welk type SoulFire-server je wilt verbinden.",
+    "title": "Verbind met een Soulfire-server",
+    "description": "Selecteer met welk type Soulfire-server je wilt verbinden.",
     "integrated": {
       "title": "Geïntegreerde server (lokaal)",
-      "description": "Draait een SoulFire-server op dit apparaat. Installatie is automatisch. Deze optie vereist de desktop- of Android-app."
+      "description": "Draait een Soulfire-server op dit apparaat. Installatie is automatisch. Deze optie vereist de desktop- of Android-app."
     },
     "dedicated": {
       "title": "Dedicated server (extern)",
-      "description": "Verbindt met een externe SoulFire-server via het adres en token."
+      "description": "Verbindt met een externe Soulfire-server via het adres en token."
     },
     "demo": {
       "title": "Demo-server",
-      "description": "Biedt een alleen-lezen server met demo-gegevens. SoulFire slaat geen wijzigingen op."
+      "description": "Biedt een alleen-lezen server met demo-gegevens. Soulfire slaat geen wijzigingen op."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Opnieuw proberen",
     "reset": {
       "button": "Gegevens herstellen",
-      "loading": "SoulFire-gegevens worden hersteld...",
-      "success": "SoulFire-gegevens zijn succesvol hersteld. Probeer opnieuw te starten.",
-      "error": "Het herstellen van SoulFire-gegevens is mislukt"
+      "loading": "Soulfire-gegevens worden hersteld...",
+      "success": "Soulfire-gegevens zijn succesvol hersteld. Probeer opnieuw te starten.",
+      "error": "Het herstellen van Soulfire-gegevens is mislukt"
     },
     "description": "De geïntegreerde server draait op je computer. Je kunt de Java-opstartargumenten hieronder aanpassen.",
     "form": {
       "jvmArgs": {
         "title": "JVM-argumenten",
-        "description": "Java VM-argumenten voor SoulFire. Voeg <bold>-Xmx4G</bold> toe om 4 GB RAM te gebruiken. Standaard is 25% van het beschikbare RAM.",
+        "description": "Java VM-argumenten voor Soulfire. Voeg <bold>-Xmx4G</bold> toe om 4 GB RAM te gebruiken. Standaard is 25% van het beschikbare RAM.",
         "placeholder": "Jouw JVM-argumenten hier"
       },
       "back": "Terug",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux-commando",
-          "description": "Installeer de <a>Termux-app</a>. Voer dit commando uit in Termux om de SoulFire-server te installeren. Voer <copy>generate-token api</copy> uit om een token aan te maken. Voer daarna het token hieronder in."
+          "description": "Installeer de <a>Termux-app</a>. Voer dit commando uit in Termux om de Soulfire-server te installeren. Voer <copy>generate-token api</copy> uit om een token aan te maken. Voer daarna het token hieronder in."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Kon het opstarten niet annuleren",
     "autoStart": {
       "title": "Volgende keer automatisch starten.",
-      "description": "Sla de serverselectie over en gebruik deze instellingen wanneer SoulFire wordt geopend."
+      "description": "Sla de serverselectie over en gebruik deze instellingen wanneer Soulfire wordt geopend."
     }
   },
   "dedicated": {
-    "description": "Voer het adres en het token van de SoulFire-server in.",
+    "description": "Voer het adres en het token van de Soulfire-server in.",
     "toast": {
       "loading": "Bezig met verbinden met server...",
       "success": "Verbonden met server",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Adres",
-        "description": "Adres van jouw SoulFire-server.",
+        "description": "Adres van jouw Soulfire-server.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "E-mailadres",
         "placeholder": "root@soulfiremc.com",
-        "description": "E-mailadres van jouw SoulFire-account."
+        "description": "E-mailadres van jouw Soulfire-account."
       },
       "back": "Terug",
       "useToken": "Gebruik token",
@@ -109,9 +109,9 @@
     "back": "Terug"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Op zoek naar preview?",
     "production": "Op zoek naar productie?",
-    "helpTranslate": "Vertaal SoulFire"
+    "helpTranslate": "Vertaal Soulfire"
   }
 }

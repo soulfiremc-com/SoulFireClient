@@ -1,7 +1,7 @@
 {
   "name": "soulfire",
   "version": "2.10.7",
-  "description": "Frontend client for SoulFire.",
+  "description": "Frontend client for Soulfire.",
   "author": "Pistonmaster",
   "desktopName": "soulfire.desktop",
   "main": "dist-electron/main.cjs",
@@ -31,7 +31,7 @@
     "build:storybook": "storybook build",
     "test:storybook": "vitest run --project storybook",
     "test:terminal": "bun test src/lib/terminal*.test.ts src/lib/command*.test.ts src/stores/terminal-log-store.test.ts src/lib/script-logs.test.ts electron/native/integrated-server-process.test.ts",
-    "test:deployment": "bun test src/lib/app-deployment.test.ts src/lib/build-environment.test.ts src/demo-data.test.ts src/lib/sdk-quickstart.test.ts src/lib/code-highlighter.test.ts",
+    "test:deployment": "bun test src/lib/app-deployment.test.ts src/lib/build-environment.test.ts src/demo-data.test.ts src/lib/sdk-quickstart.test.ts src/lib/code-highlighter.test.ts electron/native/app-paths.test.ts",
     "ci:pages": "bun run typecheck && bun run check && bun run test:deployment && bun run build:web",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.cast-tests.json --noEmit",
     "fix": "oxlint --fix . && oxfmt .",
@@ -187,7 +187,7 @@
   },
   "build": {
     "appId": "com.soulfiremc.soulfire",
-    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "artifactName": "SoulFire-${version}-${arch}.${ext}",
     "asar": true,
     "electronFuses": {
       "runAsNode": false,
@@ -227,7 +227,7 @@
       },
       "executableName": "soulfire",
       "icon": "build/icons/icon.png",
-      "maintainer": "SoulFire <security@soulfiremc.com>",
+      "maintainer": "Soulfire <security@soulfiremc.com>",
       "synopsis": "Advanced Minecraft bot tool",
       "target": [
         "AppImage",
@@ -235,7 +235,7 @@
         "rpm",
         "pacman"
       ],
-      "vendor": "SoulFire"
+      "vendor": "Soulfire"
     },
     "appImage": {
       "license": "LICENSE"
@@ -280,6 +280,7 @@
       "useWaylandFlags": true
     },
     "mac": {
+      "executableName": "SoulFire",
       "category": "public.app-category.developer-tools",
       "identity": "-",
       "icon": "build/icons/icon.icns",
@@ -292,16 +293,17 @@
       "oneClick": true,
       "perMachine": false
     },
-    "productName": "SoulFire",
+    "productName": "Soulfire",
     "protocols": [
       {
-        "name": "SoulFire",
+        "name": "Soulfire",
         "schemes": [
           "soulfire"
         ]
       }
     ],
     "win": {
+      "executableName": "SoulFire",
       "icon": "build/icons/icon.ico",
       "target": [
         "nsis"

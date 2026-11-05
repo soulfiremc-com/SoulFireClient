@@ -2,7 +2,7 @@
 
 Open **Cast** from the account menu in the desktop app. Choose an instance, then connect to a display. Device discovery requires access to the local network. Manual connection accepts a hostname, IPv4 address, or IPv6 address and a Cast port.
 
-**Show on TV** restarts the SoulFire receiver and restores recent metrics and display settings. Use this action after pressing Home on the TV. It does not install an Android TV application. Receiver readiness and visibility are separate states, and some devices report visibility as unknown.
+**Show on TV** restarts the Soulfire receiver and restores recent metrics and display settings. Use this action after pressing Home on the TV. It does not install an Android TV application. Receiver readiness and visibility are separate states, and some devices report visibility as unknown.
 
 **Reconnect** restores a failed connection. **Stop casting** stops the receiver and releases its resources. Selecting another instance does not change the current broadcast. **Cast selected instance** makes that change explicitly.
 
@@ -12,7 +12,7 @@ Display settings apply to every active display and survive desktop app restarts.
 
 The Electron main process owns Cast discovery, sockets, connection workflows, and metrics acquisition through Effect v4 services. Each connection attempt has a generation identifier. Old callbacks cannot change a replacement connection.
 
-A Cast session owns an independent query cache and polling worker. Desktop navigation and renderer focus do not suspend this worker. Metrics requests use the existing SoulFire gRPC-Web API and the current user's credentials. Authentication changes cancel all Cast sessions and clear their instance state.
+A Cast session owns an independent query cache and polling worker. Desktop navigation and renderer focus do not suspend this worker. Metrics requests use the existing Soulfire gRPC-Web API and the current user's credentials. Authentication changes cancel all Cast sessions and clear their instance state.
 
 TanStack Query caches RPC results. Effect owns polling, cancellation, transport recovery, and resource cleanup. The renderer uses TanStack Store to observe main-process status. TanStack Router owns the selected instance in the Cast page URL. Form, Table, Hotkeys, and Pacer handle settings, device rows, scoped shortcuts, and debounced input.
 

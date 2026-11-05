@@ -25,7 +25,11 @@ import type {
   DesktopSaveDialogOptions,
   DesktopTheme,
 } from "../src/lib/desktop-api";
-import { getAppConfigDir, getAppLocalDataDir } from "./native/app-paths";
+import {
+  getAppConfigDir,
+  getAppLocalDataDir,
+  preserveLegacyAppPaths,
+} from "./native/app-paths";
 import {
   executeProviderRequest,
   type ProviderRequest,
@@ -66,6 +70,7 @@ const APP_PROTOCOL_HOST = "soulfire";
 const DEEP_LINK_PREFIX = "soulfire://";
 const DEFAULT_WINDOW_HEIGHT = 675;
 const DEFAULT_WINDOW_WIDTH = 1200;
+preserveLegacyAppPaths(app);
 protocol.registerSchemesAsPrivileged([
   {
     scheme: APP_PROTOCOL,
@@ -493,7 +498,7 @@ async function createMainWindow(): Promise<BrowserWindow> {
     minHeight: 500,
     minWidth: 940,
     show: false,
-    title: "SoulFire",
+    title: "Soulfire",
     webPreferences: {
       contextIsolation: true,
       preload: preloadPath(),
@@ -575,14 +580,14 @@ function createAppTray(): void {
   }
   const trayGuid = trayGuidForPlatform(process.platform);
   tray = trayGuid === null ? new Tray(image) : new Tray(image, trayGuid);
-  tray.setToolTip("SoulFire");
+  tray.setToolTip("Soulfire");
   tray.setContextMenu(
     Menu.buildFromTemplate([
       {
         click: () => {
           focusMainWindow();
         },
-        label: "Open SoulFire",
+        label: "Open Soulfire",
       },
       {
         click: () => {

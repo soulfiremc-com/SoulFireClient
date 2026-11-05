@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Skontrolovať importované proxy?",
-      "description": "Importovali ste {{count}} proxy serverov. Skontrolovať ich teraz? SoulFire automaticky odstráni neplatné proxy.",
+      "description": "Importovali ste {{count}} proxy serverov. Skontrolovať ich teraz? Soulfire automaticky odstráni neplatné proxy.",
       "confirm": "Skontrolovať proxy servery",
       "skip": "Preskočiť"
     },

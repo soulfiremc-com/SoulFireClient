@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "Logo SoulFire"
+      "alt": "Logo Soulfire"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Nový v SoulFire? Přečtěte si <a>průvodce začátky</a>.",
+  "newUser": "Nový v Soulfire? Přečtěte si <a>průvodce začátky</a>.",
   "connect": {
-    "title": "Připojit se k serveru SoulFire",
-    "description": "Vyberte, ke kterému typu serveru SoulFire se chcete připojit.",
+    "title": "Připojit se k serveru Soulfire",
+    "description": "Vyberte, ke kterému typu serveru Soulfire se chcete připojit.",
     "integrated": {
       "title": "Integrovaný server (lokální)",
-      "description": "Spouští SoulFire server na tomto zařízení. Nastavení je automatické. Tato možnost vyžaduje desktopovou nebo Android aplikaci."
+      "description": "Spouští Soulfire server na tomto zařízení. Nastavení je automatické. Tato možnost vyžaduje desktopovou nebo Android aplikaci."
     },
     "dedicated": {
       "title": "Dedikovaný server (vzdálený)",
-      "description": "Připojí se ke vzdálenému SoulFire serveru pomocí jeho adresy a tokenu."
+      "description": "Připojí se ke vzdálenému Soulfire serveru pomocí jeho adresy a tokenu."
     },
     "demo": {
       "title": "Demo server",
-      "description": "Poskytuje server pouze pro čtení s demo daty. SoulFire neukládá změny."
+      "description": "Poskytuje server pouze pro čtení s demo daty. Soulfire neukládá změny."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Opakovat",
     "reset": {
       "button": "Resetovat data",
-      "loading": "Probíhá resetování dat SoulFire...",
-      "success": "Data SoulFire byla úspěšně resetována. Zkuste to znovu spustit.",
-      "error": "Nepodařilo se resetovat data SoulFire"
+      "loading": "Probíhá resetování dat Soulfire...",
+      "success": "Data Soulfire byla úspěšně resetována. Zkuste to znovu spustit.",
+      "error": "Nepodařilo se resetovat data Soulfire"
     },
     "description": "Integrovaný server běží na vašem počítači. Níže můžete změnit parametry spouštění Javy.",
     "form": {
       "jvmArgs": {
         "title": "JVM argumenty",
-        "description": "Argumenty Java VM pro SoulFire. Přidejte <bold>-Xmx4G</bold> pro použití 4 GB RAM. Výchozí je 25 % dostupné RAM.",
+        "description": "Argumenty Java VM pro Soulfire. Přidejte <bold>-Xmx4G</bold> pro použití 4 GB RAM. Výchozí je 25 % dostupné RAM.",
         "placeholder": "Vaše JVM argumenty zde"
       },
       "back": "Zpět",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Příkaz Termux",
-          "description": "Nainstalujte si <a>aplikaci Termux</a>. Spusťte tento příkaz v Termuxu pro instalaci SoulFire serveru. Poté spusťte <copy>generate-token api</copy> pro vytvoření tokenu. Token pak zadejte níže."
+          "description": "Nainstalujte si <a>aplikaci Termux</a>. Spusťte tento příkaz v Termuxu pro instalaci Soulfire serveru. Poté spusťte <copy>generate-token api</copy> pro vytvoření tokenu. Token pak zadejte níže."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Nelze zrušit spuštění",
     "autoStart": {
       "title": "Příště spustit automaticky",
-      "description": "Přeskočit výběr serveru a použít tato nastavení při spuštění SoulFire."
+      "description": "Přeskočit výběr serveru a použít tato nastavení při spuštění Soulfire."
     }
   },
   "dedicated": {
-    "description": "Zadejte adresu a token SoulFire serveru.",
+    "description": "Zadejte adresu a token Soulfire serveru.",
     "toast": {
       "loading": "Připojování k serveru...",
       "success": "Připojeno k serveru",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Adresa",
-        "description": "Adresa vašeho serveru SoulFire.",
+        "description": "Adresa vašeho serveru Soulfire.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "Email",
         "placeholder": "root@soulfiremc.com",
-        "description": "Email vašeho účtu SoulFire."
+        "description": "Email vašeho účtu Soulfire."
       },
       "back": "Zpět",
       "useToken": "Použít token",
@@ -109,9 +109,9 @@
     "back": "Zpět"
   },
   "footer": {
-    "version": "SoulFire klient {{version}} – {{environment}}",
+    "version": "Soulfire klient {{version}} – {{environment}}",
     "preview": "Hledáte náhled?",
     "production": "Hledáte produkci?",
-    "helpTranslate": "Přeložit SoulFire"
+    "helpTranslate": "Přeložit Soulfire"
   }
 }

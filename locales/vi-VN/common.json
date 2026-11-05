@@ -13,7 +13,7 @@
       "reloadPage": "Tải lại trang",
       "showDetails": "Hiển thị chi tiết"
     },
-    "connectionFailed": "Kết nối đến máy chủ SoulFire thất bại."
+    "connectionFailed": "Kết nối đến máy chủ Soulfire thất bại."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "Giới thiệu SoulFire",
-      "description": "Bạn đang chạy phiên bản {{version}} của ứng dụng SoulFire.",
+      "title": "Giới thiệu Soulfire",
+      "description": "Bạn đang chạy phiên bản {{version}} của ứng dụng Soulfire.",
       "type": "Loại",
       "value": "Giá trị",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Đóng"
     },
     "support": {
-      "title": "Ủng hộ SoulFire",
-      "description": "SoulFire là phần mềm miễn phí và mã nguồn mở, được xây dựng với niềm đam mê bởi cộng đồng.",
-      "body": "Nếu SoulFire đã hữu ích với bạn, xin hãy cân nhắc ủng hộ dự án. Sự đóng góp của bạn giúp chi trả chi phí máy chủ, tài trợ phát triển, và giữ cho SoulFire miễn phí cho tất cả mọi người.",
+      "title": "Ủng hộ Soulfire",
+      "description": "Soulfire là phần mềm miễn phí và mã nguồn mở, được xây dựng với niềm đam mê bởi cộng đồng.",
+      "body": "Nếu Soulfire đã hữu ích với bạn, xin hãy cân nhắc ủng hộ dự án. Sự đóng góp của bạn giúp chi trả chi phí máy chủ, tài trợ phát triển, và giữ cho Soulfire miễn phí cho tất cả mọi người.",
       "dismiss": "Để sau",
-      "action": "Ủng hộ SoulFire"
+      "action": "Ủng hộ Soulfire"
     },
     "createInstance": {
       "title": "Tạo một phiên bản mới",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Từ tệp",
         "fromUrl": "Từ URL",
-        "firstClipboardItem": "Bộ nhớ tạm có chứa nhiều mục. SoulFire sẽ sử dụng mục đầu tiên.",
+        "firstClipboardItem": "Bộ nhớ tạm có chứa nhiều mục. Soulfire sẽ sử dụng mục đầu tiên.",
         "fromClipboard": "Từ bộ nhớ tạm",
         "textarea": {
           "placeholder": "Nhập văn bản tại đây...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "Máy chủ SoulFire sẽ gửi một yêu cầu GET đến URL này và nhập phản hồi.",
+        "description": "Máy chủ Soulfire sẽ gửi một yêu cầu GET đến URL này và nhập phản hồi.",
         "form": {
           "url": {
             "placeholder": "Nhập URL tại đây...",
@@ -274,8 +274,8 @@
   "terminal": {
     "noLogs": "Chưa có nhật ký nào. Hãy chạy một lệnh để tạo đầu ra nhật ký.",
     "demo-1": "Chào mừng đến với chế độ dùng thử! 🧪",
-    "demo-2": "Đây là một phiên bản chỉ đọc của SoulFire",
-    "demo-3": "Hãy kiểm tra tất cả menu và tính năng trước khi quyết định cài đặt SoulFire :D",
+    "demo-2": "Đây là một phiên bản chỉ đọc của Soulfire",
+    "demo-3": "Hãy kiểm tra tất cả menu và tính năng trước khi quyết định cài đặt Soulfire :D",
     "demo-4": "Bạn có thể tham gia máy chủ Discord của chúng tôi nếu muốn liên hệ: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -386,7 +386,7 @@
     },
     "configDir": "Thư mục cấu hình",
     "dataDir": "Thư mục dữ liệu",
-    "supportSoulFire": "Ủng hộ SoulFire",
+    "supportSoulFire": "Ủng hộ Soulfire",
     "about": "Giới thiệu",
     "logOut": "Đăng xuất",
     "logOutToast": {
@@ -396,11 +396,11 @@
     },
     "exit": "Thoát",
     "stopImpersonating": "Dừng giả lập",
-    "helpTranslate": "Dịch SoulFire"
+    "helpTranslate": "Dịch Soulfire"
   },
   "sidebar": {
     "documentation": "Tài liệu hướng dẫn",
-    "supportSoulFire": "Ủng hộ SoulFire",
+    "supportSoulFire": "Ủng hộ Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -440,7 +440,7 @@
     },
     "api": {
       "title": "Truy cập API",
-      "description": "API gRPC HTTP của SoulFire quản lý các phiên bản qua các yêu cầu web.",
+      "description": "API gRPC HTTP của Soulfire quản lý các phiên bản qua các yêu cầu web.",
       "publicAddress": "Địa chỉ API công khai",
       "personalToken": "Mã thông báo API cá nhân",
       "securityWarning": "Giữ bí mật token API cá nhân của bạn. Nó cấp quyền truy cập vào API.",
@@ -538,7 +538,7 @@
     },
     "addScriptDialog": {
       "title": "Thêm script mới",
-      "description": "Script là những chương trình nhỏ giúp tự động hóa tác vụ và các hoạt động khác trên máy chủ SoulFire.",
+      "description": "Script là những chương trình nhỏ giúp tự động hóa tác vụ và các hoạt động khác trên máy chủ Soulfire.",
       "form": {
         "cancel": "Hủy",
         "add": "Thêm"
@@ -616,7 +616,7 @@
     "status": {
       "idle": "Chưa bắt đầu",
       "preparing": "Đang chuẩn bị Java và các tệp máy chủ",
-      "starting": "Đang chờ SoulFire khởi động",
+      "starting": "Đang chờ Soulfire khởi động",
       "running": "Đang chạy",
       "stopping": "Đang dừng",
       "stopped": "Đã dừng",

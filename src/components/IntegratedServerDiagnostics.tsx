@@ -242,7 +242,7 @@ export function IntegratedServerProcessOutput() {
 function createReport(data: DesktopIntegratedServerDiagnostics): string {
   const { logs, ...details } = data;
   return [
-    "SoulFire integrated server diagnostics",
+    "Soulfire integrated server diagnostics",
     `Client: ${APP_VERSION}`,
     `Captured: ${new Date().toISOString()}`,
     JSON.stringify(details, null, 2),

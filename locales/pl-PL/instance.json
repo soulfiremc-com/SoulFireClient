@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Sprawdzić zaimportowane serwery proxy?",
-      "description": "Zaimportowano {{count}} serwerów proxy. Sprawdzić je teraz? SoulFire automatycznie usuwa nieprawidłowe serwery proxy.",
+      "description": "Zaimportowano {{count}} serwerów proxy. Sprawdzić je teraz? Soulfire automatycznie usuwa nieprawidłowe serwery proxy.",
       "confirm": "Sprawdź serwery proxy",
       "skip": "Pomiń"
     },

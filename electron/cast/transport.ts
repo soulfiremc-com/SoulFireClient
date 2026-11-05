@@ -198,7 +198,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                       Effect.fail(
                         castError(
                           error?.message ??
-                            `Could not launch SoulFire: ${response?.reason ?? "no receiver session"}.`,
+                            `Could not launch Soulfire: ${response?.reason ?? "no receiver session"}.`,
                         ),
                       ),
                     );
@@ -302,7 +302,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
         ) {
           return yield* Effect.fail(
             castError(
-              "Update both SoulFire and the Cast receiver to compatible versions.",
+              "Update both Soulfire and the Cast receiver to compatible versions.",
               false,
             ),
           );

@@ -847,7 +847,7 @@ function BotPovSession({
       });
       return;
     }
-    child.document.title = "SoulFire POV";
+    child.document.title = "Soulfire POV";
     child.document.documentElement.className =
       document.documentElement.className;
     for (const style of document.querySelectorAll(
@@ -942,7 +942,7 @@ function BotPovSession({
     >
       {popup && isDesktopApp() && !fullscreen && (
         <header data-app-drag-region="" className={titlebarClassName}>
-          <span className="col-start-2 self-center text-xs">SoulFire POV</span>
+          <span className="col-start-2 self-center text-xs">Soulfire POV</span>
           <div className="window-topbar-no-drag col-start-3 justify-self-end">
             <WindowControls windowApi={desktop.povWindow} />
           </div>

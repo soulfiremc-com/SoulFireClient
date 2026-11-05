@@ -18,7 +18,7 @@ body:
     id: version
     attributes:
       label: Versions or revision
-      description: Client version and connected SoulFire server version
+      description: Client version and connected Soulfire server version
     validations:
       required: true
   - type: textarea
@@ -29,7 +29,7 @@ body:
       placeholder: |-
         OS and CPU architecture:
         Client version:
-        SoulFire server version:
+        Soulfire server version:
         Desktop app or browser (name and version):
         Installation method:
         Relevant configuration or plugins:

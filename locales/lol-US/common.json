@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "Who SoulFire",
-      "description": "I zee vawiant {{version}} of SoulFire cwient.",
+      "title": "Who Soulfire",
+      "description": "I zee vawiant {{version}} of Soulfire cwient.",
       "type": "Tyep",
       "value": "Value",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Cloes"
     },
     "support": {
-      "title": "Halp SoulFire plz",
-      "description": "SoulFire iz free an open-soars, bilt wif luv by teh community. ",
-      "body": "If SoulFire has bin useful 2 u, plz consider halping teh projek. Ur contribushun helps payz for servur costz, funds devz, an keepz SoulFire free fur all teh kittehs.",
+      "title": "Halp Soulfire plz",
+      "description": "Soulfire iz free an open-soars, bilt wif luv by teh community. ",
+      "body": "If Soulfire has bin useful 2 u, plz consider halping teh projek. Ur contribushun helps payz for servur costz, funds devz, an keepz Soulfire free fur all teh kittehs.",
       "dismiss": "Maybz latah",
-      "action": "Halp SoulFire plz"
+      "action": "Halp Soulfire plz"
     },
     "createInstance": {
       "title": "Creaet nu instanec",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Frum fiel",
         "fromUrl": "Frum URL",
-        "firstClipboardItem": "Clipboard haz lotz ov itemz. SoulFire usin da furst one, kthxbai.",
+        "firstClipboardItem": "Clipboard haz lotz ov itemz. Soulfire usin da furst one, kthxbai.",
         "fromClipboard": "Frum clipboard",
         "textarea": {
           "placeholder": "Give taxt here...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire server sendz GET thingy to dis URL and grabz wutz come bak.",
+        "description": "Soulfire server sendz GET thingy to dis URL and grabz wutz come bak.",
         "form": {
           "url": {
             "placeholder": "Put URL hah...",
@@ -278,8 +278,8 @@
   "terminal": {
     "noLogs": "No logz yetz. Run a command an log cheezburger out!",
     "demo-1": "Herro, demo mode! 🧪",
-    "demo-2": "Dis iz read-only SoulFire thingy",
-    "demo-3": "Check awt all teh menuz an fun stuff befur puttin SoulFire on ur blockz :D",
+    "demo-2": "Dis iz read-only Soulfire thingy",
+    "demo-3": "Check awt all teh menuz an fun stuff befur puttin Soulfire on ur blockz :D",
     "demo-4": "If u wanna meow, hopz on our Discord: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -390,7 +390,7 @@
     },
     "configDir": "Config direktery",
     "dataDir": "Data direktery",
-    "supportSoulFire": "Halp SoulFire plz",
+    "supportSoulFire": "Halp Soulfire plz",
     "about": "Aboutz",
     "logOut": "Walk out",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "Exitz",
     "stopImpersonating": "Stop im-pur-sonatin",
-    "helpTranslate": "Halp translayt SoulFire"
+    "helpTranslate": "Halp translayt Soulfire"
   },
   "sidebar": {
     "documentation": "Documentashun",
-    "supportSoulFire": "Halp SoulFire plz",
+    "supportSoulFire": "Halp Soulfire plz",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API Akcess",
-      "description": "SoulFire gRPC HTTP API can do magik stuf on instancez wit web reqz.",
+      "description": "Soulfire gRPC HTTP API can do magik stuf on instancez wit web reqz.",
       "publicAddress": "Public API Adress",
       "personalToken": "Pursonal API Token",
       "securityWarning": "Hide ur API toekn! It letz hoomanz use API!",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "Add new script",
-      "description": "Skripts be lil' programz dat do automatey an stuf on SoulFire server. Much wow.",
+      "description": "Skripts be lil' programz dat do automatey an stuf on Soulfire server. Much wow.",
       "form": {
         "cancel": "cancel k?",
         "add": "Put stuff"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "Not begunz yet",
       "preparing": "Prep awl Java an servur fylez... wait 4 it...",
-      "starting": "Waitin for SoulFire to beginz!",
+      "starting": "Waitin for Soulfire to beginz!",
       "running": "Runnin",
       "stopping": "Stoppin",
       "stopped": "Stopped",

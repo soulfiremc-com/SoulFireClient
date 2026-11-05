@@ -11,4 +11,4 @@ contact_links:
     about: Report vulnerabilities through confidential contacts rather than public issues.
   - name: Server and SDK issues
     url: https://github.com/soulfiremc-com/SoulFire/issues/new/choose
-    about: Report backend, bot behavior, protocol, and SDK problems in SoulFire.
+    about: Report backend, bot behavior, protocol, and SDK problems in Soulfire.

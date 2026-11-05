@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const Desktop: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    // The SoulFire server stays distinct from the Minecraft server.
+    // The Soulfire server stays distinct from the Minecraft server.
     await expect(
       canvas.getByText("Minecraft server (you pick it later)"),
     ).toBeVisible();
@@ -33,7 +33,7 @@ export const Desktop: Story = {
     );
     await expect(args.onRunLocally).toHaveBeenCalled();
     await userEvent.click(
-      canvas.getByRole("button", { name: /Connect to a SoulFire server/ }),
+      canvas.getByRole("button", { name: /Connect to a Soulfire server/ }),
     );
     await expect(args.onConnectExisting).toHaveBeenCalled();
   },
@@ -47,7 +47,7 @@ export const Web: Story = {
       canvas.getByRole("button", { name: /Run on this computer/ }),
     ).toBeDisabled();
     await expect(
-      canvas.getByText(/Needs the SoulFire desktop app/),
+      canvas.getByText(/Needs the Soulfire desktop app/),
     ).toBeVisible();
     await expect(
       canvas.getByRole("link", { name: /Try the demo/ }),
@@ -60,7 +60,7 @@ export const DemoMode: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      canvas.getByRole("button", { name: /Connect to a SoulFire server/ }),
+      canvas.getByRole("button", { name: /Connect to a Soulfire server/ }),
     ).toBeDisabled();
     await userEvent.click(canvas.getByRole("button", { name: /Try the demo/ }));
     await expect(args.onEnterDemo).toHaveBeenCalled();

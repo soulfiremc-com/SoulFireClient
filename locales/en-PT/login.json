@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire Jolly Roger"
+      "alt": "Soulfire Jolly Roger"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Be ye new t' SoulFire? Read the <a>guide fer gettin' started</a>, matey!",
+  "newUser": "Be ye new t' Soulfire? Read the <a>guide fer gettin' started</a>, matey!",
   "connect": {
-    "title": "Hoist yer sails to a SoulFire server",
-    "description": "Choose which kind o' SoulFire vessel ye wish to board, matey.",
+    "title": "Hoist yer sails to a Soulfire server",
+    "description": "Choose which kind o' Soulfire vessel ye wish to board, matey.",
     "integrated": {
       "title": "Ship computer (local)",
-      "description": "Hoist a SoulFire server on this here device. Setup happens automagically. This choice be requirin' the desktop or Android app, arrr."
+      "description": "Hoist a Soulfire server on this here device. Setup happens automagically. This choice be requirin' the desktop or Android app, arrr."
     },
     "dedicated": {
       "title": "Remote server (yonder)",
-      "description": "Links up t' a faraway SoulFire server usin' its address n' secret token, matey."
+      "description": "Links up t' a faraway Soulfire server usin' its address n' secret token, matey."
     },
     "demo": {
       "title": "Demo schooner",
-      "description": "Gives ye a read-only server wit' a stash o' demo loot. No changes be saved by SoulFire, savvy?"
+      "description": "Gives ye a read-only server wit' a stash o' demo loot. No changes be saved by Soulfire, savvy?"
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Try again, matey!",
     "reset": {
       "button": "Blast the Data Back to Start",
-      "loading": "Resetting the SoulFire loot...",
-      "success": "Arrr! SoulFire booty be reset. Give it another go, ye scallywag.",
-      "error": "Failed to reset the SoulFire booty, matey!"
+      "loading": "Resetting the Soulfire loot...",
+      "success": "Arrr! Soulfire booty be reset. Give it another go, ye scallywag.",
+      "error": "Failed to reset the Soulfire booty, matey!"
     },
     "description": "The integrated server be runnin' on yer own computer, aye. Ye can change the Java startup commands below.",
     "form": {
       "jvmArgs": {
         "title": "Java VM riggin'",
-        "description": "Java VM arguments fer SoulFire. Add <bold>-Xmx4G</bold> if ye want 4 GB o' memory. The default be 25% o' yer available RAM, arrr.",
+        "description": "Java VM arguments fer Soulfire. Add <bold>-Xmx4G</bold> if ye want 4 GB o' memory. The default be 25% o' yer available RAM, arrr.",
         "placeholder": "Drop yer own JVM spells here"
       },
       "back": "Avast",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux spell",
-          "description": "Install the <a>Termux app</a>, matey. Then run this command in Termux t' install the SoulFire server. Run <copy>generate-token api</copy> t' make a new token. After that, toss the token in below, arrr."
+          "description": "Install the <a>Termux app</a>, matey. Then run this command in Termux t' install the Soulfire server. Run <copy>generate-token api</copy> t' make a new token. After that, toss the token in below, arrr."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Couldn' be cancellin' the startin', ye scallywag!",
     "autoStart": {
       "title": "Hoist the sails automatically next time, matey!",
-      "description": "Skip pickin' a ship and use these settings when SoulFire opens, arr!"
+      "description": "Skip pickin' a ship and use these settings when Soulfire opens, arr!"
     }
   },
   "dedicated": {
-    "description": "Type the address n' token o' the SoulFire server here, ye scallywag.",
+    "description": "Type the address n' token o' the Soulfire server here, ye scallywag.",
     "toast": {
       "loading": "Castin' line to server...",
       "success": "Successfully boarded the server, aye!",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Port",
-        "description": "Port o' yer SoulFire outpost.",
+        "description": "Port o' yer Soulfire outpost.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "Parrot mail",
         "placeholder": "root@soulfiremc.com",
-        "description": "The parrot mail of yer SoulFire account."
+        "description": "The parrot mail of yer Soulfire account."
       },
       "back": "Avast",
       "useToken": "Use secret code",
@@ -109,9 +109,9 @@
     "back": "Avast"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Seekin' the preview version, are ye?",
     "production": "Want to cast off to production waters, do ye?",
-    "helpTranslate": "Help translate SoulFire, matey!"
+    "helpTranslate": "Help translate Soulfire, matey!"
   }
 }

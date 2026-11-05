@@ -747,7 +747,7 @@ function IntegratedConfigureMenu({
         },
       ],
       title: t("integrated.form.jar.dialog.title", {
-        defaultValue: "Select SoulFire server jar",
+        defaultValue: "Select Soulfire server jar",
       }),
     });
     if (typeof selectedPath !== "string") {
@@ -783,7 +783,7 @@ function IntegratedConfigureMenu({
         error instanceof Error
           ? error.message
           : t("integrated.form.jar.importError", {
-              defaultValue: "Failed to import custom SoulFire jar",
+              defaultValue: "Failed to import custom Soulfire jar",
             }),
       );
     } finally {
@@ -1067,7 +1067,7 @@ function IntegratedConfigureMenu({
                                   defaultValue: "Custom server jar",
                                 })
                               : t("integrated.form.jar.officialTitle", {
-                                  defaultValue: "Official SoulFire server",
+                                  defaultValue: "Official Soulfire server",
                                 })}
                           </p>
                           <p className="text-muted-foreground text-xs">
@@ -1078,7 +1078,7 @@ function IntegratedConfigureMenu({
                                 })
                               : t("integrated.form.jar.officialDescription", {
                                   defaultValue:
-                                    "Downloads and verifies the matching SoulFire release.",
+                                    "Downloads and verifies the matching Soulfire release.",
                                 })}
                           </p>
                         </div>

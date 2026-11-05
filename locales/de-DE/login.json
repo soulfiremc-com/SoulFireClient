@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire Logo"
+      "alt": "Soulfire Logo"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Neu bei SoulFire? Lies die <a>Erste Schritte-Anleitung</a>.",
+  "newUser": "Neu bei Soulfire? Lies die <a>Erste Schritte-Anleitung</a>.",
   "connect": {
-    "title": "Verbinde dich mit einem SoulFire Server",
-    "description": "Wähle den Typ des SoulFire Servers, mit dem du dich verbinden möchtest.",
+    "title": "Verbinde dich mit einem Soulfire Server",
+    "description": "Wähle den Typ des Soulfire Servers, mit dem du dich verbinden möchtest.",
     "integrated": {
       "title": "Integrierter Server (lokal)",
-      "description": "Startet einen SoulFire-Server auf diesem Gerät. Die Einrichtung erfolgt automatisch. Diese Option erfordert die Desktop- oder Android-App."
+      "description": "Startet einen Soulfire-Server auf diesem Gerät. Die Einrichtung erfolgt automatisch. Diese Option erfordert die Desktop- oder Android-App."
     },
     "dedicated": {
       "title": "Dedizierter Server (Remote)",
-      "description": "Stellt eine Verbindung zu einem entfernten SoulFire-Server über dessen Adresse und Token her."
+      "description": "Stellt eine Verbindung zu einem entfernten Soulfire-Server über dessen Adresse und Token her."
     },
     "demo": {
       "title": "Demo Server",
-      "description": "Stellt einen schreibgeschützten Server mit Demodaten bereit. SoulFire speichert keine Änderungen."
+      "description": "Stellt einen schreibgeschützten Server mit Demodaten bereit. Soulfire speichert keine Änderungen."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Erneut versuchen",
     "reset": {
       "button": "Daten zurücksetzen",
-      "loading": "SoulFire-Daten werden zurückgesetzt...",
-      "success": "SoulFire-Daten wurden erfolgreich zurückgesetzt. Versuchen Sie, erneut zu starten.",
-      "error": "Fehler beim Zurücksetzen der SoulFire-Daten"
+      "loading": "Soulfire-Daten werden zurückgesetzt...",
+      "success": "Soulfire-Daten wurden erfolgreich zurückgesetzt. Versuchen Sie, erneut zu starten.",
+      "error": "Fehler beim Zurücksetzen der Soulfire-Daten"
     },
     "description": "Der integrierte Server läuft auf Ihrem Computer. Sie können unten die Java-Startargumente ändern.",
     "form": {
       "jvmArgs": {
         "title": "JVM-Argumente",
-        "description": "Java-VM-Argumente für SoulFire. Fügen Sie <bold>-Xmx4G</bold> hinzu, um 4 GB RAM zu verwenden. Standardmäßig werden 25 % des verfügbaren Arbeitsspeichers genutzt.",
+        "description": "Java-VM-Argumente für Soulfire. Fügen Sie <bold>-Xmx4G</bold> hinzu, um 4 GB RAM zu verwenden. Standardmäßig werden 25 % des verfügbaren Arbeitsspeichers genutzt.",
         "placeholder": "Deine JVM-Argumente hier"
       },
       "back": "Zurück",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux-Befehl",
-          "description": "Installiere die <a>Termux-App</a>. Führe diesen Befehl in Termux aus, um den SoulFire-Server zu installieren. Führe <copy>generate-token api</copy> aus, um ein Token zu erstellen. Gib anschließend das Token unten ein."
+          "description": "Installiere die <a>Termux-App</a>. Führe diesen Befehl in Termux aus, um den Soulfire-Server zu installieren. Führe <copy>generate-token api</copy> aus, um ein Token zu erstellen. Gib anschließend das Token unten ein."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Startvorgang konnte nicht abgebrochen werden",
     "autoStart": {
       "title": "Beim nächsten Mal automatisch starten.",
-      "description": "Serverauswahl überspringen und diese Einstellungen beim Start von SoulFire verwenden."
+      "description": "Serverauswahl überspringen und diese Einstellungen beim Start von Soulfire verwenden."
     }
   },
   "dedicated": {
-    "description": "Geben Sie die Adresse und das Token des SoulFire-Servers ein.",
+    "description": "Geben Sie die Adresse und das Token des Soulfire-Servers ein.",
     "toast": {
       "loading": "Verbinde mit Server...",
       "success": "Mit Server verbunden",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Adresse",
-        "description": "Adresse deines SoulFire-Servers.",
+        "description": "Adresse deines Soulfire-Servers.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "E-Mail",
         "placeholder": "root@soulfiremc.com",
-        "description": "E-Mail deines SoulFire-Kontos."
+        "description": "E-Mail deines Soulfire-Kontos."
       },
       "back": "Zurück",
       "useToken": "Token verwenden",
@@ -109,9 +109,9 @@
     "back": "Zurück"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Suchst du Vorschau?",
     "production": "Suchst du Produktion?",
-    "helpTranslate": "SoulFire übersetzen"
+    "helpTranslate": "Soulfire übersetzen"
   }
 }

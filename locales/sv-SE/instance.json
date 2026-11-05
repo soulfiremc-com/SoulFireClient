@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Vill du kontrollera importerade proxys?",
-      "description": "Du importerade {{count}} proxys. Vill du kontrollera dem nu? SoulFire tar automatiskt bort ogiltiga proxys.",
+      "description": "Du importerade {{count}} proxys. Vill du kontrollera dem nu? Soulfire tar automatiskt bort ogiltiga proxys.",
       "confirm": "Kontrollera proxysar",
       "skip": "Hoppa över"
     },

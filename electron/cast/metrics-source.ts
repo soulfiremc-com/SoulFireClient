@@ -140,7 +140,7 @@ export const makeMetricsSource = (
             catch: (error) => {
               const code = ConnectError.from(error).code;
               return castError(
-                "Could not fetch Cast metrics from the SoulFire server.",
+                "Could not fetch Cast metrics from the Soulfire server.",
                 ![
                   Code.Unauthenticated,
                   Code.PermissionDenied,

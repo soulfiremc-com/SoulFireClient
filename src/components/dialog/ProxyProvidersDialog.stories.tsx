@@ -253,7 +253,7 @@ export const DemoMode: Story = {
     await waitFor(() =>
       expect(
         dialog.getByText(
-          "Connect to a SoulFire server to purchase or import resources.",
+          "Connect to a Soulfire server to purchase or import resources.",
         ),
       ).toBeVisible(),
     );

@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire लोगो"
+      "alt": "Soulfire लोगो"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "SoulFire में नए हैं? <a>शुरुआती गाइड</a> पढ़ें।",
+  "newUser": "Soulfire में नए हैं? <a>शुरुआती गाइड</a> पढ़ें।",
   "connect": {
-    "title": "SoulFire सर्वर से कनेक्ट करें",
-    "description": "चुनें कि आप किस प्रकार के SoulFire सर्वर से कनेक्ट करना चाहते हैं।",
+    "title": "Soulfire सर्वर से कनेक्ट करें",
+    "description": "चुनें कि आप किस प्रकार के Soulfire सर्वर से कनेक्ट करना चाहते हैं।",
     "integrated": {
       "title": "इंटीग्रेटेड सर्वर (स्थानीय)",
-      "description": "यह विकल्प इस डिवाइस पर SoulFire सर्वर चलाता है। सेटअप स्वचालित है। इस विकल्प के लिए डेस्कटॉप या Android ऐप की आवश्यकता होती है।"
+      "description": "यह विकल्प इस डिवाइस पर Soulfire सर्वर चलाता है। सेटअप स्वचालित है। इस विकल्प के लिए डेस्कटॉप या Android ऐप की आवश्यकता होती है।"
     },
     "dedicated": {
       "title": "डेडिकेटेड सर्वर (रिमोट)",
-      "description": "यह एक दूरस्थ SoulFire सर्वर से उसके पते और टोकन के साथ जुड़ता है।"
+      "description": "यह एक दूरस्थ Soulfire सर्वर से उसके पते और टोकन के साथ जुड़ता है।"
     },
     "demo": {
       "title": "डेमो सर्वर",
-      "description": "यह केवल-पढ़ने योग्य सर्वर डेमो डेटा के साथ प्रदान करता है। SoulFire परिवर्तनों को सहेजता नहीं है।"
+      "description": "यह केवल-पढ़ने योग्य सर्वर डेमो डेटा के साथ प्रदान करता है। Soulfire परिवर्तनों को सहेजता नहीं है।"
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "पुनः प्रयास करें",
     "reset": {
       "button": "डेटा रीसेट करें",
-      "loading": "SoulFire डेटा रीसेट किया जा रहा है...",
-      "success": "SoulFire डेटा सफलतापूर्वक रीसेट हो गया। पुनः प्रारंभ करने का प्रयास करें।",
-      "error": "SoulFire डेटा रीसेट करने में विफल हुआ"
+      "loading": "Soulfire डेटा रीसेट किया जा रहा है...",
+      "success": "Soulfire डेटा सफलतापूर्वक रीसेट हो गया। पुनः प्रारंभ करने का प्रयास करें।",
+      "error": "Soulfire डेटा रीसेट करने में विफल हुआ"
     },
     "description": "इंटीग्रेटेड सर्वर आपके कंप्यूटर पर चलता है। आप नीचे दिए गए Java स्टार्टअप आर्ग्यूमेंट्स बदल सकते हैं।",
     "form": {
       "jvmArgs": {
         "title": "JVM आर्गुमेंट्स",
-        "description": "SoulFire के लिए Java VM आर्ग्यूमेंट्स। 4 जीबी RAM उपयोग करने के लिए <bold>-Xmx4G</bold> जोड़ें। डिफ़ॉल्ट रूप से उपलब्ध RAM का 25% उपयोग होगा।",
+        "description": "Soulfire के लिए Java VM आर्ग्यूमेंट्स। 4 जीबी RAM उपयोग करने के लिए <bold>-Xmx4G</bold> जोड़ें। डिफ़ॉल्ट रूप से उपलब्ध RAM का 25% उपयोग होगा।",
         "placeholder": "यहाँ अपने JVM आर्गुमेंट्स डालें"
       },
       "back": "वापस",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux कमांड",
-          "description": "<a>Termux ऐप</a> इंस्टॉल करें। SoulFire सर्वर स्थापित करने के लिए Termux में यह कमांड चलाएँ। टोकन बनाने के लिए <copy>generate-token api</copy> चलाएँ। फिर नीचे टोकन दर्ज करें।"
+          "description": "<a>Termux ऐप</a> इंस्टॉल करें। Soulfire सर्वर स्थापित करने के लिए Termux में यह कमांड चलाएँ। टोकन बनाने के लिए <copy>generate-token api</copy> चलाएँ। फिर नीचे टोकन दर्ज करें।"
         },
         "token": {
           "title": "टोकन",
@@ -67,11 +67,11 @@
     "cancelError": "स्टार्टअप रद्द नहीं किया जा सका",
     "autoStart": {
       "title": "अगली बार स्वचालित रूप से प्रारंभ करें",
-      "description": "सर्वर चयन छोड़ें और SoulFire खोलते समय इन सेटिंग्स का उपयोग करें।"
+      "description": "सर्वर चयन छोड़ें और Soulfire खोलते समय इन सेटिंग्स का उपयोग करें।"
     }
   },
   "dedicated": {
-    "description": "SoulFire सर्वर का पता और टोकन दर्ज करें।",
+    "description": "Soulfire सर्वर का पता और टोकन दर्ज करें।",
     "toast": {
       "loading": "सर्वर से कनेक्ट किया जा रहा है...",
       "success": "सर्वर से कनेक्ट हो गया",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "पता",
-        "description": "आपके SoulFire सर्वर का पता।",
+        "description": "आपके Soulfire सर्वर का पता।",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "ईमेल",
         "placeholder": "root@soulfiremc.com",
-        "description": "आपके SoulFire खाते का ईमेल।"
+        "description": "आपके Soulfire खाते का ईमेल।"
       },
       "back": "वापस",
       "useToken": "टोकन उपयोग करें",
@@ -109,9 +109,9 @@
     "back": "वापस"
   },
   "footer": {
-    "version": "SoulFire क्लाइंट {{version}} - {{environment}}",
+    "version": "Soulfire क्लाइंट {{version}} - {{environment}}",
     "preview": "पूर्वावलोकन देख रहे हैं?",
     "production": "प्रोडक्शन देख रहे हैं?",
-    "helpTranslate": "SoulFire का अनुवाद करें"
+    "helpTranslate": "Soulfire का अनुवाद करें"
   }
 }
