@@ -10,9 +10,11 @@ import { AdminSettingsPageComponent } from "@/components/settings-page.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import i18n from "@/lib/i18n";
 import { routeChrome } from "@/lib/route-title.ts";
+import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
 export const Route = createFileRoute("/_dashboard/user/admin/settings/$pageId")(
   {
+    validateSearch: parseSettingFocusSearch,
     beforeLoad: () =>
       routeChrome({
         getTitle: (match) => {
@@ -117,6 +119,7 @@ function ContentSkeleton() {
 function Content() {
   const { t } = useTranslation("common");
   const { pageId } = Route.useParams();
+  const { focusNamespace, focusKey } = Route.useSearch();
   const { serverInfoQueryOptions } = Route.useRouteContext();
   const { data: serverInfo } = useSuspenseQuery(serverInfoQueryOptions);
   const settingsEntry = serverInfo.serverSettings.find((s) => s.id === pageId);
@@ -161,7 +164,14 @@ function Content() {
         {plugin && (
           <ServerPluginInfoCard settingsEntry={settingsEntry} plugin={plugin} />
         )}
-        <AdminSettingsPageComponent data={settingsEntry} />
+        <AdminSettingsPageComponent
+          data={settingsEntry}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
+        />
       </div>
     </UserPageLayout>
   );

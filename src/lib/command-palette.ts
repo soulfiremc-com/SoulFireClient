@@ -1,4 +1,4 @@
-import { rankItem } from "@tanstack/match-sorter-utils";
+import { rankItem, rankings } from "@tanstack/match-sorter-utils";
 import type { LinkOptions } from "@tanstack/react-router";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import {
@@ -10,9 +10,18 @@ import {
   InstancePermission,
 } from "@/generated/soulfire/common_pb";
 import type { InstanceListResponse_Instance } from "@/generated/soulfire/instance_pb";
+import type {
+  ServerPlugin,
+  SettingsDefinition,
+  SettingsPage,
+} from "@/generated/soulfire/common_pb";
 import type { ScriptInfo } from "@/generated/soulfire/script_pb";
-import type { InstanceInfoQueryData } from "@/lib/types";
+import type { InstanceInfoQueryData, ServerInfoQueryData } from "@/lib/types";
 import { getBotDisplayState } from "@/lib/bot-fleet";
+import {
+  getSettingSearchTerms,
+  PAGE_HIDDEN_SETTINGS,
+} from "@/lib/settings-discovery";
 import { getSettingLabel, isFocusedSetting } from "@/lib/settings-focus";
 
 export type PaletteOperation =
@@ -44,7 +53,8 @@ export type PaletteAction =
   | "theme-dark"
   | "theme-system"
   | "clear-recents"
-  | "browse-project";
+  | "browse-project"
+  | "browse-all";
 export type PaletteGroup =
   | "navigation"
   | "currentProject"
@@ -65,21 +75,160 @@ export type PaletteCommand = {
   icon: string;
   group: PaletteGroup;
   keywords?: readonly string[];
+  /** Long server-provided text, such as descriptions. Matches contiguous text. */
+  details?: readonly string[];
+  /** Only shown for a search or type filter, so the default list stays short. */
+  searchOnly?: boolean;
 } & (
   | { destination: LinkOptions; action?: never; operation?: never }
   | { destination?: never; action: PaletteAction; operation?: never }
   | { destination?: never; action?: never; operation: PaletteOperation }
 );
 
+/** Metadata for a project outside the live context, read for global search. */
+export type IndexedProject = {
+  project: InstanceInfoQueryData;
+  scripts?: readonly ScriptInfo[];
+};
+
 type CatalogOptions = {
   t: (key: string, options?: Record<string, string | number>) => string;
   client?: ClientDataResponse;
   instances: InstanceListResponse_Instance[];
+  /** The project in context. Only this project gets live statuses and operations. */
   current?: InstanceInfoQueryData;
-  scripts?: ScriptInfo[];
+  scripts?: readonly ScriptInfo[];
   bots?: readonly BotListEntry[];
+  indexed?: readonly IndexedProject[];
+  server?: Pick<
+    ServerInfoQueryData,
+    "serverSettings" | "settingsDefinitions" | "plugins"
+  >;
   demo?: boolean;
 };
+
+type SettingsTarget =
+  | { kind: "project"; id: string; name: string }
+  | { kind: "server"; name: string };
+
+/** Admin pages with their own fixed commands. */
+const STATIC_SERVER_PAGES = new Set(["server", "dev"]);
+
+function settingDestination(
+  target: SettingsTarget,
+  pageId: string,
+  focus?: { focusNamespace: string; focusKey: string },
+): LinkOptions {
+  if (target.kind === "server")
+    return {
+      to: "/user/admin/settings/$pageId",
+      params: { pageId },
+      search: focus,
+    };
+  const params = { instance: target.id };
+  // Account and proxy settings live above their tables, not on a settings page.
+  if (pageId === "account")
+    return { to: "/instance/$instance/accounts", params, search: focus };
+  if (pageId === "proxy")
+    return { to: "/instance/$instance/proxies", params, search: focus };
+  return {
+    to: "/instance/$instance/settings/$pageId",
+    params: { ...params, pageId },
+    search: focus,
+  };
+}
+
+/**
+ * Page and field results for one settings source. Indexes server-provided
+ * names, descriptions, and option labels. Never reads configured values.
+ */
+function settingsCommands(
+  target: SettingsTarget,
+  pages: readonly SettingsPage[],
+  definitionList: readonly SettingsDefinition[],
+  plugins: readonly Pick<ServerPlugin, "id" | "description">[],
+  searchOnlyPages: boolean,
+): PaletteCommand[] {
+  const commands: PaletteCommand[] = [];
+  const definitions = new Map(
+    definitionList
+      .filter((definition) => definition.id)
+      .map((definition) => [
+        `${definition.id!.namespace}:${definition.id!.key}`,
+        definition,
+      ]),
+  );
+  const scope =
+    target.kind === "project"
+      ? { context: target.name, projectId: target.id }
+      : { context: target.name };
+  const prefix = target.kind === "project" ? target.id : "server";
+  for (const page of pages) {
+    const plugin = plugins.find((entry) => entry.id === page.owningPluginId);
+    const hidden = PAGE_HIDDEN_SETTINGS[page.id] ?? [];
+    const entries = page.entries.flatMap((entry) => {
+      if (
+        isFocusedSetting(entry, page.enabledIdentifier) ||
+        hidden.some((id) => isFocusedSetting(entry, id))
+      )
+        return [];
+      const definition = definitions.get(`${entry.namespace}:${entry.key}`);
+      return definition?.type.case ? [{ entry, definition }] : [];
+    });
+    const pageHasCommand =
+      target.kind === "project"
+        ? page.id !== "account" && page.id !== "proxy"
+        : !STATIC_SERVER_PAGES.has(page.id);
+    if (pageHasCommand)
+      commands.push({
+        ...scope,
+        id:
+          target.kind === "project"
+            ? `settings:${prefix}:${page.id}`
+            : `server-settings:${page.id}`,
+        label: page.pageName,
+        icon: page.iconId || "settings-2",
+        group: "settings",
+        searchOnly: searchOnlyPages,
+        keywords: [
+          page.id,
+          page.owningPluginId ?? "",
+          ...entries.map(({ definition }) => getSettingLabel(definition)),
+        ],
+        details: plugin?.description ? [plugin.description] : undefined,
+        destination: settingDestination(target, page.id),
+      });
+    for (const { entry, definition } of entries) {
+      const label = getSettingLabel(definition);
+      commands.push({
+        ...scope,
+        id:
+          target.kind === "project"
+            ? `setting:${prefix}:${JSON.stringify([page.id, entry.namespace, entry.key])}`
+            : `server-setting:${JSON.stringify([page.id, entry.namespace, entry.key])}`,
+        label,
+        description: page.pageName,
+        icon: page.iconId || "settings-2",
+        group: "settings",
+        searchOnly: true,
+        keywords: [
+          entry.namespace,
+          entry.key,
+          page.id,
+          page.owningPluginId ?? "",
+        ],
+        details: getSettingSearchTerms(definition).filter(
+          (text) => text !== label && text !== entry.key,
+        ),
+        destination: settingDestination(target, page.id, {
+          focusNamespace: entry.namespace,
+          focusKey: entry.key,
+        }),
+      });
+    }
+  }
+  return commands;
+}
 
 function paletteBotStatus(
   bot: BotListEntry | undefined,
@@ -106,6 +255,8 @@ export function createPaletteCommands({
   current,
   scripts = [],
   bots,
+  indexed = [],
+  server,
   demo = false,
 }: CatalogOptions): PaletteCommand[] {
   const commands: PaletteCommand[] = [];
@@ -283,76 +434,15 @@ export function createPaletteCommands({
     instances.some((instance) => instance.id === current.id) &&
     canInstance(current, InstancePermission.READ_INSTANCE)
   ) {
-    const definitions = new Map(
-      current.settingsDefinitions
-        .filter((definition) => definition.id)
-        .map((definition) => [
-          `${definition.id!.namespace}:${definition.id!.key}`,
-          definition,
-        ]),
+    commands.push(
+      ...settingsCommands(
+        { kind: "project", id: current.id, name: current.friendlyName },
+        current.instanceSettings,
+        current.settingsDefinitions,
+        current.plugins,
+        false,
+      ),
     );
-    for (const page of current.instanceSettings) {
-      if (page.id === "account" || page.id === "proxy") continue;
-      const plugin = current.plugins.find(
-        (entry) => entry.id === page.owningPluginId,
-      );
-      // Index setting names and identifiers, never configured values or credentials.
-      const keywords = page.entries.flatMap((entry) => {
-        const definition = definitions.get(`${entry.namespace}:${entry.key}`);
-        const setting = definition?.type.value;
-        const names =
-          definition?.type.case === "minMax"
-            ? [
-                definition.type.value.minEntry?.uiName ?? "",
-                definition.type.value.maxEntry?.uiName ?? "",
-              ]
-            : [setting && "uiName" in setting ? setting.uiName : ""];
-        return [entry.namespace, entry.key, ...names];
-      });
-      add({
-        id: `settings:${current.id}:${page.id}`,
-        label: page.pageName,
-        context: current.friendlyName,
-        projectId: current.id,
-        icon: page.iconId || "settings-2",
-        group: "settings",
-        keywords: [
-          page.id,
-          page.owningPluginId ?? "",
-          plugin?.description ?? "",
-          ...keywords,
-        ],
-        destination: {
-          to: "/instance/$instance/settings/$pageId",
-          params: { instance: current.id, pageId: page.id },
-        },
-      });
-      for (const entry of page.entries) {
-        if (isFocusedSetting(entry, page.enabledIdentifier)) continue;
-        const definition = definitions.get(`${entry.namespace}:${entry.key}`);
-        if (!definition || !definition.type.case) continue;
-        add({
-          id: `setting:${current.id}:${JSON.stringify([page.id, entry.namespace, entry.key])}`,
-          label: getSettingLabel(definition),
-          description: page.pageName,
-          context: current.friendlyName,
-          projectId: current.id,
-          icon: page.iconId || "settings-2",
-          group: "settings",
-          keywords: [
-            entry.namespace,
-            entry.key,
-            page.id,
-            page.owningPluginId ?? "",
-          ],
-          destination: {
-            to: "/instance/$instance/settings/$pageId",
-            params: { instance: current.id, pageId: page.id },
-            search: { focusNamespace: entry.namespace, focusKey: entry.key },
-          },
-        });
-      }
-    }
     const botSnapshot = canInstance(current, InstancePermission.READ_BOT_INFO)
       ? bots
       : undefined;
@@ -391,7 +481,8 @@ export function createPaletteCommands({
         },
         icon: "scroll-text",
         group: "scripts",
-        keywords: ["script", "automation", script.id, script.description],
+        keywords: ["script", "automation", script.id],
+        details: script.description ? [script.description] : undefined,
         destination: {
           to: "/instance/$instance/script/$scriptId",
           params: { instance: current.id, scriptId: script.id },
@@ -533,6 +624,68 @@ export function createPaletteCommands({
     });
   }
 
+  // Other projects come from the global index. They get destinations only:
+  // no live status and no operations, because those need the project in context.
+  const listed = new Map(instances.map((instance) => [instance.id, instance]));
+  for (const { project, scripts: projectScripts } of indexed) {
+    const entry = listed.get(project.id);
+    if (
+      project.id === current?.id ||
+      !entry ||
+      !canInstance(entry, InstancePermission.READ_INSTANCE) ||
+      !canInstance(project, InstancePermission.READ_INSTANCE)
+    )
+      continue;
+    const context = entry.friendlyName;
+    commands.push(
+      ...settingsCommands(
+        { kind: "project", id: project.id, name: context },
+        project.instanceSettings,
+        project.settingsDefinitions,
+        project.plugins,
+        true,
+      ),
+    );
+    if (
+      canInstance(entry, InstancePermission.READ_BOT_INFO) &&
+      canInstance(project, InstancePermission.READ_BOT_INFO)
+    ) {
+      for (const account of project.profile.accounts) {
+        add({
+          id: `bot:${project.id}:${account.profileId}`,
+          label: account.lastKnownName || account.profileId,
+          context,
+          projectId: project.id,
+          icon: "bot",
+          group: "bots",
+          searchOnly: true,
+          keywords: ["bot", "player", account.profileId],
+          destination: {
+            to: "/instance/$instance/bot/$botId",
+            params: { instance: project.id, botId: account.profileId },
+          },
+        });
+      }
+    }
+    for (const script of projectScripts ?? []) {
+      add({
+        id: `script:${project.id}:${script.id}`,
+        label: script.name,
+        context,
+        projectId: project.id,
+        icon: "scroll-text",
+        group: "scripts",
+        searchOnly: true,
+        keywords: ["script", "automation", script.id],
+        details: script.description ? [script.description] : undefined,
+        destination: {
+          to: "/instance/$instance/script/$scriptId",
+          params: { instance: project.id, scriptId: script.id },
+        },
+      });
+    }
+  }
+
   if (canGlobal(GlobalPermission.READ_SERVER_CONFIG)) {
     add({
       id: "admin-overview",
@@ -561,6 +714,16 @@ export function createPaletteCommands({
         params: { pageId: "dev" },
       },
     });
+    if (server)
+      commands.push(
+        ...settingsCommands(
+          { kind: "server", name: t("commandPalette.serverContext") },
+          server.serverSettings,
+          server.settingsDefinitions,
+          server.plugins,
+          false,
+        ),
+      );
     if (canGlobal(GlobalPermission.GLOBAL_SUBSCRIBE_LOGS))
       add({
         id: "admin-logs",
@@ -649,15 +812,31 @@ export function searchPaletteCommands(
   return commands
     .map((command) => {
       const sources = [
-        { text: command.label, weight: 8 },
-        { text: command.context ?? "", weight: 3 },
-        { text: command.description ?? "", weight: 2 },
-        ...(command.keywords ?? []).map((text) => ({ text, weight: 1.5 })),
+        { text: command.label, weight: 8, strict: false },
+        { text: command.context ?? "", weight: 3, strict: false },
+        { text: command.description ?? "", weight: 2, strict: false },
+        ...(command.keywords ?? []).map((text) => ({
+          text,
+          weight: 1.5,
+          strict: false,
+        })),
+        // Scattered letters match almost any long description, so require substrings.
+        ...(command.details ?? []).map((text) => ({
+          text,
+          weight: 1,
+          strict: true,
+        })),
       ];
+      const passes = (source: (typeof sources)[number], token: string) =>
+        rankItem(
+          source.text,
+          token,
+          source.strict ? { threshold: rankings.CONTAINS } : undefined,
+        );
       const ranks = tokens.map((token) =>
         Math.max(
           ...sources.map((source) => {
-            const rank = rankItem(source.text, token);
+            const rank = passes(source, token);
             return rank.passed ? rank.rank * source.weight : 0;
           }),
         ),
@@ -675,14 +854,24 @@ export function searchPaletteCommands(
         const recentIndex = options.recentIds?.indexOf(command.id) ?? -1;
         if (recentIndex >= 0) score += Math.max(0, 2 - recentIndex * 0.25);
       }
-      const matchedText = tokens.some(
-        (token) => !rankItem(command.label, token).passed,
-      )
-        ? [command.description, ...(command.keywords ?? [])].find(
-            (text) =>
-              text && tokens.some((token) => rankItem(text, token).passed),
-          )
-        : undefined;
+      // Explain a match the label does not show, preferring readable words.
+      const reasons = sources.slice(2).filter((source) => source.text);
+      const matchedText =
+        score && tokens.some((token) => !rankItem(command.label, token).passed)
+          ? (
+              reasons.find((source) =>
+                tokens.some(
+                  (token) =>
+                    rankItem(source.text, token, {
+                      threshold: rankings.CONTAINS,
+                    }).passed,
+                ),
+              ) ??
+              reasons.find((source) =>
+                tokens.some((token) => passes(source, token).passed),
+              )
+            )?.text
+          : undefined;
       return {
         command: matchedText ? { ...command, matchedText } : command,
         score,

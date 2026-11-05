@@ -133,6 +133,9 @@ export const AI: Story = {
     const row = key.closest('[data-slot="field"]')!.parentElement!;
     // An empty password default must not leave a blank status row behind.
     await expect(row.querySelector('[data-slot="setting-status"]')).toBeNull();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Filter this page" }),
+    );
     await userEvent.type(canvas.getByRole("searchbox"), "retries");
     await expect(
       canvas.getByRole("textbox", { name: "API Max Retries" }),
@@ -172,6 +175,9 @@ export const AdvancedSettings: Story = {
     await expect(
       canvas.getByRole("switch", { name: "Resolve SRV" }),
     ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Filter this page" }),
+    );
     await userEvent.type(canvas.getByRole("searchbox"), "read timeout");
     await expect(
       canvas.getByRole("textbox", { name: "Read Timeout" }),
@@ -189,8 +195,58 @@ export const FocusedAdvancedSetting: Story = {
       canvas.getByRole("group", { name: "Read Timeout" }),
     ).toHaveAttribute("data-setting-focused", "true");
     await expect(args.onSave).not.toHaveBeenCalled();
-    await userEvent.click(canvas.getByRole("searchbox"));
-    await expect(canvas.getByRole("searchbox")).toHaveFocus();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Filter this page" }),
+    );
+    await expect(
+      canvas.getByRole("searchbox", { name: "Filter this page" }),
+    ).toHaveFocus();
+  },
+};
+
+export const OptionalPageFilter: Story = {
+  play: async ({ canvas, userEvent }) => {
+    // The page opens without a filter field, and every setting is shown.
+    await expect(canvas.queryByRole("searchbox")).not.toBeInTheDocument();
+    await expect(canvas.getByText("Changes save automatically.")).toBeVisible();
+    const open = canvas.getByRole("button", { name: "Filter this page" });
+    await userEvent.click(open);
+    const input = canvas.getByRole("searchbox", { name: "Filter this page" });
+    await expect(input).toHaveFocus();
+    // Descriptions match as well as names.
+    await userEvent.type(input, "hostile mobs");
+    await expect(
+      canvas.getByRole("switch", { name: "Avoid Harmful Entities" }),
+    ).toBeVisible();
+    await expect(
+      canvas.queryByRole("switch", { name: "Disable Pruning" }),
+    ).not.toBeInTheDocument();
+    // Escape clears the text first and keeps the field open.
+    await userEvent.keyboard("{Escape}");
+    await expect(input).toHaveValue("");
+    await expect(input).toBeVisible();
+    await expect(
+      canvas.getByRole("switch", { name: "Disable Pruning" }),
+    ).toBeVisible();
+    await userEvent.type(input, "harmful");
+    // Closing the filter also clears it, so no setting stays hidden.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Clear and close filter" }),
+    );
+    await expect(canvas.queryByRole("searchbox")).not.toBeInTheDocument();
+    await expect(
+      canvas.getByRole("switch", { name: "Disable Pruning" }),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("button", { name: "Filter this page" }),
+      ).toHaveFocus(),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Filter this page" }),
+    );
+    await userEvent.keyboard("{Escape}");
+    await expect(canvas.queryByRole("searchbox")).not.toBeInTheDocument();
   },
 };
 

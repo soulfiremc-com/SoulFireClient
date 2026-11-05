@@ -4,6 +4,7 @@ import type {
   SettingsEntryIdentifier,
   SettingsPage,
 } from "@/generated/soulfire/common_pb";
+import type { SettingFocus } from "@/lib/settings-focus";
 
 /**
  * Settings most people need first on built-in pages. The server still owns all
@@ -81,8 +82,13 @@ export function splitSettingsEntries(
   };
 }
 
-/** All text a person might search for, as provided by the server. */
-export function getSettingSearchText(definition: SettingsDefinition): string {
+/**
+ * Server-provided names, descriptions, and option labels for one setting.
+ * Never includes configured values or defaults, so it is safe to index.
+ */
+export function getSettingSearchTerms(
+  definition: SettingsDefinition,
+): string[] {
   const type = definition.type;
   const parts: string[] = [definition.id?.key ?? ""];
   switch (type.case) {
@@ -106,8 +112,31 @@ export function getSettingSearchText(definition: SettingsDefinition): string {
     default:
       parts.push(type.value.uiName, type.value.description);
   }
-  return parts.join(" ").toLowerCase();
+  return parts.filter(Boolean);
 }
+
+/** All text a person might search for, as provided by the server. */
+export function getSettingSearchText(definition: SettingsDefinition): string {
+  return getSettingSearchTerms(definition).join(" ").toLowerCase();
+}
+
+/**
+ * Settings that a page edits in a dialog instead of its settings section.
+ * Search must not link to these fields on the page, because they are not shown there.
+ */
+export const PAGE_HIDDEN_SETTINGS: Readonly<
+  Record<string, readonly SettingFocus[]>
+> = {
+  account: [
+    { namespace: "account", key: "account-import-concurrency" },
+    { namespace: "account", key: "use-proxies-for-account-auth" },
+  ],
+  proxy: [
+    { namespace: "proxy", key: "proxy-check-concurrency" },
+    { namespace: "proxy", key: "proxy-check-address" },
+    { namespace: "proxy", key: "proxy-check-timeout" },
+  ],
+};
 
 export function filterSettingsEntries(
   entries: readonly SettingsEntryIdentifier[],

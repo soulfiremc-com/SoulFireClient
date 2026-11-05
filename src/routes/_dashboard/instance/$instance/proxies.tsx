@@ -45,7 +45,6 @@ import InstancePageLayout from "@/components/nav/instance/instance-page-layout.t
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
 import {
-  type DisabledSettingId,
   InstanceSettingFieldByKey,
   InstanceSettingsPageComponent,
 } from "@/components/settings-page.tsx";
@@ -80,6 +79,7 @@ import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { createTextBlob } from "@/lib/download.ts";
 import i18n from "@/lib/i18n.ts";
 import { guidedTableValidateSearch } from "@/lib/parsers.ts";
+import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
 import { newProviderProxies } from "@/lib/proxy-providers.ts";
@@ -104,12 +104,6 @@ import {
   runAsync,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
-
-const PROXY_SETTINGS_DISABLED_IDS: DisabledSettingId[] = [
-  { namespace: "proxy", key: "proxy-check-concurrency" },
-  { namespace: "proxy", key: "proxy-check-address" },
-  { namespace: "proxy", key: "proxy-check-timeout" },
-];
 
 const PROXY_CHECK_SETTING_KEYS = [
   "proxy-check-address",
@@ -1014,6 +1008,11 @@ function ProxySettings() {
 function Content() {
   const { t } = useTranslation("instance");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
+  // Exact setting links come from search and keep the table params intact.
+  const focusNamespace = Route.useSearch({
+    select: (search) => search.focusNamespace,
+  });
+  const focusKey = Route.useSearch({ select: (search) => search.focusKey });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const transport = use(TransportContext);
@@ -1067,7 +1066,12 @@ function Content() {
               (s) => s.id === "proxy",
             ) as SettingsPage
           }
-          disabledIds={PROXY_SETTINGS_DISABLED_IDS}
+          disabledIds={PAGE_HIDDEN_SETTINGS.proxy}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
         />
       </div>
       <DataTable
