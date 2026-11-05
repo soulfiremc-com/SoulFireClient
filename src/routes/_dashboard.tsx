@@ -10,6 +10,7 @@ import {
 import { usePostHog } from "posthog-js/react";
 import { Suspense, use, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { CommandPaletteProvider } from "@/components/command-palette";
 import { CreateInstanceProvider } from "@/components/dialog/create-instance-dialog.tsx";
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -256,7 +257,9 @@ function DashboardLayout() {
         <div className="border-sidebar-primary pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-30 overflow-hidden border-4" />
       )}
       <CreateInstanceProvider>
-        <Outlet />
+        <CommandPaletteProvider>
+          <Outlet />
+        </CommandPaletteProvider>
       </CreateInstanceProvider>
     </TransportContext>
   );

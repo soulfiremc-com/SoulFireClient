@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { Suspense } from "react";
+import { CommandPaletteTrigger } from "@/components/command-palette";
 import { NavAccount } from "@/components/nav/nav-account.tsx";
 import { NavDefaultSkeleton } from "@/components/nav/nav-default-skeleton.tsx";
 import { NavUserAdmin } from "@/components/nav/user/nav-user-admin.tsx";
@@ -23,6 +24,7 @@ export function UserSidebar({
     >
       <ScrollArea className="min-h-0 flex-1 w-full pr-2">
         <SidebarContent className="min-h-full">
+          <CommandPaletteTrigger />
           <Suspense fallback={<NavDefaultSkeleton />}>
             <NavUserOptions />
             <NavUserAdmin />

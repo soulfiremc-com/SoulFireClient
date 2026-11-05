@@ -383,6 +383,49 @@
       "error": "Failed to broadcast message"
     }
   },
+  "commandPalette": {
+    "title": "Command menu",
+    "trigger": "Search and commands",
+    "triggerLabel": "Search and commands {{shortcut}}",
+    "shortcutHint": "Open command menu with {{shortcut}} or press Shift twice.",
+    "description": "Jump to a page or run an action.",
+    "placeholder": "Search projects, bots, scripts, settings, and actions...",
+    "emptyTitle": "No matching results",
+    "emptyHint": "Try a project name, page, setting, bot, or action.",
+    "loading": "Loading more commands",
+    "moreResults_one": "{{count}} more result. Refine your search.",
+    "moreResults_other": "{{count}} more results. Refine your search.",
+    "loadError": "Some results could not load.",
+    "retry": "Retry",
+    "copyProjectId": "Copy project ID",
+    "copyUrl": "Copy page link",
+    "copied": "Copied to clipboard",
+    "refresh": "Refresh data",
+    "clearRecents": "Clear recent destinations",
+    "actionError": "Could not complete the action. Try again.",
+    "serverOverview": "SoulFire server overview",
+    "theme": {
+      "light": "Use light theme",
+      "dark": "Use dark theme",
+      "system": "Use system theme"
+    },
+    "keys": {
+      "navigate": "Navigate",
+      "select": "Select",
+      "close": "Close"
+    },
+    "groups": {
+      "recent": "Recent destinations",
+      "navigation": "Navigation",
+      "currentProject": "Current project",
+      "projects": "Projects",
+      "settings": "Project and plugin settings",
+      "bots": "Bots in this project",
+      "scripts": "Scripts in this project",
+      "admin": "Administration",
+      "actions": "Actions"
+    }
+  },
   "instanceSidebar": {
     "readDocumentation": "Read documentation",
     "backToDashboard": "Back to dashboard",

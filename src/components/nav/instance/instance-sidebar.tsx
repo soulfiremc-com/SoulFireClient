@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { Suspense } from "react";
+import { CommandPaletteTrigger } from "@/components/command-palette";
 import { InstanceSwitcher } from "@/components/nav/instance/instance-switcher.tsx";
 import { NavControls } from "@/components/nav/instance/nav-controls.tsx";
 import { NavExtensions } from "@/components/nav/instance/nav-extensions.tsx";
@@ -27,6 +28,7 @@ export function InstanceSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <ScrollArea className="min-h-0 flex-1 w-full pr-2">
         <SidebarContent className="min-h-full">
+          <CommandPaletteTrigger />
           <Suspense fallback={<NavDefaultSkeleton />}>
             <NavControls />
             <NavSettings />

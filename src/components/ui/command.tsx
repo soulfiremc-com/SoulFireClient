@@ -33,27 +33,30 @@ function CommandDialog({
   children,
   className,
   showCloseButton = false,
+  finalFocus,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   title?: string;
   description?: string;
   className?: string;
   showCloseButton?: boolean;
+  finalFocus?: React.ComponentProps<typeof DialogContent>["finalFocus"];
   children: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
       <DialogContent
         className={cn(
           "top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0",
           className,
         )}
         showCloseButton={showCloseButton}
+        finalFocus={finalFocus}
       >
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
         {children}
       </DialogContent>
     </Dialog>
@@ -62,21 +65,42 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  /** `palette` renders a borderless, full-width search header for dialogs. */
+  variant?: "default" | "palette";
+}) {
+  const palette = variant === "palette";
   return (
-    <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+    <div
+      data-slot="command-input-wrapper"
+      data-variant={variant}
+      className={cn(palette ? "min-w-0 flex-1" : "p-1 pb-0")}
+    >
+      <InputGroup
+        className={cn(
+          palette
+            ? "h-12! rounded-none! border-0 bg-transparent! shadow-none! *:data-[slot=input-group-addon]:pl-3! dark:bg-transparent!"
+            : "h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!",
+        )}
+      >
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
-            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            "w-full outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            palette ? "text-base placeholder:text-muted-foreground" : "text-sm",
             className,
           )}
           {...props}
         />
         <InputGroupAddon>
-          <SearchIcon className="size-4 shrink-0 opacity-50" />
+          <SearchIcon
+            className={cn(
+              "shrink-0",
+              palette ? "size-5 text-muted-foreground" : "size-4 opacity-50",
+            )}
+          />
         </InputGroupAddon>
       </InputGroup>
     </div>
