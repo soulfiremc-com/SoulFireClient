@@ -545,3 +545,226 @@ test("type filters overlap by meaning and every readable project can be browsed"
   assert(ids("settings").every((id) => id.startsWith("setting")));
   assert.equal(ids("all").length, commands.length);
 });
+
+const otherProject = (
+  id: string,
+  permissions: InstancePermission[] = [
+    InstancePermission.READ_INSTANCE,
+    InstancePermission.READ_BOT_INFO,
+  ],
+): InstanceInfoQueryData => ({
+  ...create(InstanceInfoSchema, {
+    friendlyName: `Server copy ${id}`,
+    instancePermissions: permissions.map((instancePermission) => ({
+      instancePermission,
+      granted: true,
+    })),
+    instanceSettings: [
+      create(SettingsPageSchema, {
+        id: "bot",
+        pageName: "Bot settings",
+        entries: [{ namespace: "bot", key: "protocol" }],
+      }),
+      create(SettingsPageSchema, {
+        id: "account",
+        pageName: "Account settings",
+        entries: [
+          { namespace: "account", key: "shuffle-accounts" },
+          { namespace: "account", key: "account-import-concurrency" },
+        ],
+      }),
+      create(SettingsPageSchema, {
+        id: "proxy",
+        pageName: "Proxy settings",
+        entries: [{ namespace: "proxy", key: "proxy-check-address" }],
+      }),
+    ],
+    settingsDefinitions: [
+      create(SettingsDefinitionSchema, {
+        id: { namespace: "bot", key: "protocol" },
+        type: {
+          case: "combo",
+          value: {
+            uiName: "Game version",
+            description: "Version used to join the Minecraft server",
+            options: [{ id: "v1", displayName: "Java Edition 1.21.4" }],
+            def: "v1",
+          },
+        },
+      }),
+      create(SettingsDefinitionSchema, {
+        id: { namespace: "account", key: "shuffle-accounts" },
+        type: { case: "bool", value: { uiName: "Shuffle accounts" } },
+      }),
+      create(SettingsDefinitionSchema, {
+        id: { namespace: "account", key: "account-import-concurrency" },
+        type: { case: "int", value: { uiName: "Import concurrency" } },
+      }),
+      create(SettingsDefinitionSchema, {
+        id: { namespace: "proxy", key: "proxy-check-address" },
+        type: { case: "string", value: { uiName: "Check address" } },
+      }),
+    ],
+  }),
+  id,
+  profile: {
+    settings: { bot: { protocol: "secret-value" } },
+    proxies: [],
+    accounts: [
+      {
+        profileId: `${id}-bot`,
+        lastKnownName: "FarBot",
+        type: 0,
+        accountData: { case: undefined },
+        config: [],
+        persistentMetadata: [],
+      },
+    ],
+  },
+});
+
+test("global search covers each indexed project's own fields, descriptions, and options", () => {
+  const commands = createPaletteCommands({
+    t,
+    instances: [project(current.id), project("far")],
+    current,
+    indexed: [{ project: otherProject("far") }],
+  });
+  const option = searchPaletteCommands(commands, "java edition")[0];
+  assert.equal(option.id, 'setting:far:["bot","bot","protocol"]');
+  assert.equal(option.context, "Test farm");
+  assert.equal(option.matchedText, "Java Edition 1.21.4");
+  assert.equal(option.searchOnly, true);
+  assert.equal(
+    searchPaletteCommands(commands, "minecraft server")[0]?.id,
+    option.id,
+  );
+  // One project's schema is never copied to another project.
+  assert(
+    !commands.some((command) => command.id.startsWith('setting:farm-1:["bot"')),
+  );
+  assert(
+    !commands.some((command) =>
+      command.id.startsWith('setting:far:["anti-afk"'),
+    ),
+  );
+  assert.equal(searchPaletteCommands(commands, "secret-value").length, 0);
+  // Other projects have destinations only: no live status and no operations.
+  const bot = commands.find((command) => command.id === "bot:far:far-bot");
+  assert.equal(bot?.status, undefined);
+  assert(!commands.some((command) => command.operation?.instanceId === "far"));
+});
+
+test("indexed projects need list access and their own read permission", () => {
+  for (const [instances, info] of [
+    [[project(current.id)], otherProject("far")],
+    [[project(current.id), project("far", [])], otherProject("far")],
+    [[project(current.id), project("far")], otherProject("far", [])],
+  ] as const) {
+    const commands = createPaletteCommands({
+      t,
+      instances: [...instances],
+      current,
+      indexed: [{ project: info }],
+    });
+    assert(!commands.some((command) => command.id.includes(":far:")));
+  }
+});
+
+test("indexed bot names respect refreshed list permissions over cached detail", () => {
+  const info = otherProject("far");
+  for (const granted of [true, false]) {
+    const commands = createPaletteCommands({
+      t,
+      instances: [
+        project("far", [
+          InstancePermission.READ_INSTANCE,
+          ...(granted ? [InstancePermission.READ_BOT_INFO] : []),
+        ]),
+      ],
+      indexed: [{ project: info }],
+    });
+    assert.equal(
+      commands.some((command) => command.id === "bot:far:far-bot"),
+      granted,
+    );
+  }
+});
+
+test("account and proxy fields open above their tables, except fields edited in dialogs", () => {
+  const commands = createPaletteCommands({
+    t,
+    instances: [project("far")],
+    indexed: [{ project: otherProject("far") }],
+  });
+  assert.deepEqual(
+    searchPaletteCommands(commands, "shuffle accounts")[0]?.destination,
+    {
+      to: "/instance/$instance/accounts",
+      params: { instance: "far" },
+      search: { focusNamespace: "account", focusKey: "shuffle-accounts" },
+    },
+  );
+  for (const hidden of ["account-import-concurrency", "proxy-check-address"])
+    assert(!commands.some((command) => command.id.includes(hidden)));
+  assert(!commands.some((command) => command.id === "settings:far:account"));
+});
+
+test("server fields need READ_SERVER_CONFIG and link to the exact admin field", () => {
+  const server = {
+    serverSettings: [
+      create(SettingsPageSchema, {
+        id: "server",
+        pageName: "Server settings",
+        entries: [{ namespace: "server", key: "public-address" }],
+      }),
+    ],
+    settingsDefinitions: [
+      create(SettingsDefinitionSchema, {
+        id: { namespace: "server", key: "public-address" },
+        type: {
+          case: "string",
+          value: { uiName: "Public address", description: "Reachable URL" },
+        },
+      }),
+    ],
+    plugins: [],
+  };
+  const denied = createPaletteCommands({
+    t,
+    instances: [],
+    client: client([]),
+    server,
+  });
+  assert(!denied.some((command) => command.id.startsWith("server-setting")));
+  const allowed = createPaletteCommands({
+    t,
+    instances: [],
+    client: client([GlobalPermission.READ_SERVER_CONFIG]),
+    server,
+  });
+  const field = searchPaletteCommands(allowed, "reachable url")[0];
+  assert.equal(field?.context, "SoulFire server");
+  assert.deepEqual(field?.destination, {
+    to: "/user/admin/settings/$pageId",
+    params: { pageId: "server" },
+    search: { focusNamespace: "server", focusKey: "public-address" },
+  });
+  // The fixed server settings command already covers the page itself.
+  assert(!allowed.some((command) => command.id === "server-settings:server"));
+});
+
+test("long descriptions match contiguous text, not scattered letters", () => {
+  const base = createPaletteCommands({ t, instances: [] })[0];
+  const command = {
+    ...base,
+    id: "described",
+    label: "Read timeout",
+    details: ["Seconds to wait for a server response before reconnecting"],
+  };
+  assert.equal(searchPaletteCommands([command], "stwfr").length, 0);
+  assert.equal(
+    searchPaletteCommands([command], "server response")[0]?.matchedText,
+    command.details[0],
+  );
+});

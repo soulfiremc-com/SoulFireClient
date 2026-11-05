@@ -133,14 +133,23 @@ export const dataTableValidateSearch = createStandardSchemaV1(
   },
 );
 
+/** One part of an exact setting link. Matches parseSettingFocusSearch limits. */
+const settingFocusPart = createParser({
+  parse: (value) => (value.length > 0 && value.length <= 256 ? value : null),
+  serialize: (value: string) => value,
+});
+
 /**
  * Table routes that the first-bot guide links to. "guide" offers a way back to
- * the guide, and "providers" also opens the provider dialog.
+ * the guide, and "providers" also opens the provider dialog. The focus params
+ * open one field in the page's settings section without changing table state.
  */
 export const guidedTableValidateSearch = createStandardSchemaV1(
   {
     ...dataTableSearchParams,
     guide: parseAsStringLiteral(["setup", "providers"]),
+    focusNamespace: settingFocusPart,
+    focusKey: settingFocusPart,
   },
   { partialOutput: true },
 );

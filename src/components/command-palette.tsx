@@ -16,7 +16,8 @@ import {
   ChevronsUpDownIcon,
   CircleAlertIcon,
   CornerDownLeftIcon,
-  FolderSearchIcon,
+  LayersIcon,
+  LoaderCircleIcon,
   PinIcon,
   PinOffIcon,
   SearchIcon,
@@ -25,7 +26,6 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
-  createContext,
   Fragment,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
@@ -40,6 +40,10 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import {
+  CommandPaletteContext,
+  type OpenCommandPalette,
+} from "@/components/command-palette-context";
 import { AboutContext } from "@/components/dialog/about-dialog";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog";
 import DynamicIcon from "@/components/dynamic-icon";
@@ -63,15 +67,13 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { InstancePermission } from "@/generated/soulfire/common_pb";
+import {
+  GlobalPermission,
+  InstancePermission,
+} from "@/generated/soulfire/common_pb";
+import { usePaletteSearchIndex } from "@/hooks/use-palette-search-index";
 import { botStatusRpcQueryOptions } from "@/lib/bot-status-query";
 import {
   createPaletteCommands,
@@ -88,6 +90,7 @@ import {
   type PaletteFilter,
   type PaletteGroup,
 } from "@/lib/command-palette";
+import { isPaletteIndexComplete } from "@/lib/command-palette-index";
 import {
   isPaletteOperationPending,
   isPaletteOperationAvailable,
@@ -108,10 +111,9 @@ import { desktop, formatShortcut, isDesktopApp } from "@/lib/desktop";
 import { fetchInstanceInfo } from "@/lib/instance-info-query";
 import { scriptListQueryOptions } from "@/lib/script-service";
 import type { InstanceInfoQueryData } from "@/lib/types";
-import { cn, hasInstancePermission } from "@/lib/utils";
+import { cn, hasGlobalPermission, hasInstancePermission } from "@/lib/utils";
 import { getServerAddress } from "@/lib/web-rpc";
 
-const CommandPaletteContext = createContext<(() => void) | null>(null);
 const DEFAULT_GROUP_ORDER: PaletteGroup[] = [
   "navigation",
   "currentProject",
@@ -143,7 +145,9 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const escapeHandler = useRef<EscapeHandler | null>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
   const restorePreviousFocus = useRef(true);
-  const show = useCallback(() => {
+  const [initialSearch, setInitialSearch] = useState("");
+  const show = useCallback<OpenCommandPalette>((options) => {
+    setInitialSearch(options?.search ?? "");
     restorePreviousFocus.current = true;
     previousFocus.current =
       document.activeElement instanceof HTMLElement
@@ -253,6 +257,7 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
       >
         {open && (
           <CommandPaletteContent
+            initialSearch={initialSearch}
             recentCache={recentCache.current}
             pinCache={pinCache.current}
             escapeHandler={escapeHandler}
@@ -267,38 +272,34 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/** The visible search entry in page headers. Icon only on narrow screens. */
 export function CommandPaletteTrigger() {
   const show = use(CommandPaletteContext);
   const { t } = useTranslation("common");
-  const { isMobile, setOpenMobile } = useSidebar();
   if (!show) return null;
+  const shortcut = formatShortcut("Ctrl+K");
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <SidebarMenuButton
-          tooltip={t("commandPalette.shortcutHint", {
-            shortcut: formatShortcut("Ctrl+K"),
-          })}
-          aria-label={t("commandPalette.triggerLabel", {
-            shortcut: formatShortcut("Ctrl+K"),
-          })}
-          aria-keyshortcuts="Control+k Meta+k"
-          onClick={() => {
-            if (isMobile) setOpenMobile(false);
-            show();
-          }}
-        >
-          <SearchIcon />
-          <span>{t("commandPalette.trigger")}</span>{" "}
-          <Kbd
-            aria-hidden="true"
-            className="ml-auto text-foreground group-data-[collapsible=icon]:hidden"
-          >
-            {formatShortcut("Ctrl+K")}
-          </Kbd>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    </SidebarMenu>
+    <Button
+      variant="outline"
+      size="sm"
+      className="w-8 justify-center px-2 font-normal text-muted-foreground sm:w-40 sm:justify-start lg:w-56"
+      title={t("commandPalette.shortcutHint", { shortcut })}
+      aria-label={t("commandPalette.triggerLabel", { shortcut })}
+      aria-keyshortcuts="Control+k Meta+k"
+      onClick={() => show()}
+    >
+      <SearchIcon data-icon="inline-start" />
+      <span className="hidden min-w-0 truncate sm:inline">
+        {t("commandPalette.trigger")}
+      </span>{" "}
+      {/* The space keeps the visible text inside the accessible name. */}
+      <Kbd
+        aria-hidden="true"
+        className="ml-auto hidden text-foreground sm:inline-flex"
+      >
+        {shortcut}
+      </Kbd>
+    </Button>
   );
 }
 
@@ -319,18 +320,20 @@ function readPins(key: string) {
 }
 
 function CommandPaletteContent({
+  initialSearch,
   onClose,
   recentCache,
   pinCache,
   escapeHandler,
 }: {
+  initialSearch: string;
   onClose: (restoreFocus?: boolean) => void;
   recentCache: Map<string, string[]>;
   pinCache: Map<string, PalettePin[]>;
   escapeHandler: RefObject<EscapeHandler | null>;
 }) {
   const { t } = useTranslation("common");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
   const [filter, setFilter] = useState<PaletteFilter>("all");
   const [browseId, setBrowseId] = useState<string | null>(null);
   const [picking, setPicking] = useState(false);
@@ -375,6 +378,8 @@ function CommandPaletteContent({
   );
   const browsing = browseRevoked ? null : browseId;
   const routeId = instanceMatch?.params.instance;
+  // Search covers every project unless the user picks one. The route project
+  // stays in context for live bot status, operations, and ranking.
   const scopeId = browsing ?? routeId;
   const routeInfoFn =
     scopeId === routeId
@@ -423,6 +428,43 @@ function CommandPaletteContent({
     enabled: canReadBots,
     refetchInterval: 5_000,
   });
+  const demo = transport === null;
+  const canReadServer = Boolean(
+    client.data &&
+    !client.isError &&
+    (demo ||
+      hasGlobalPermission(client.data, GlobalPermission.READ_SERVER_CONFIG)),
+  );
+  const indexIds = useMemo(
+    () =>
+      instances.isError
+        ? []
+        : (instances.data?.instances ?? [])
+            .filter(
+              (instance) =>
+                instance.id !== scopeId &&
+                hasInstancePermission(
+                  instance,
+                  InstancePermission.READ_INSTANCE,
+                ),
+            )
+            .map((instance) => instance.id),
+    [instances.data, instances.isError, scopeId],
+  );
+  // Global search reads other projects only once someone searches or filters.
+  const wantsIndex =
+    !browsing && !picking && (search.trim() !== "" || filter !== "all");
+  const [indexRequested, setIndexRequested] = useState(wantsIndex);
+  if (wantsIndex && !indexRequested) setIndexRequested(true);
+  if (browsing && indexRequested) setIndexRequested(false);
+  const indexing = indexRequested && !browsing;
+  const index = usePaletteSearchIndex({
+    active: indexing,
+    projectIds: indexIds,
+    includeServer: canReadServer,
+    transport,
+  });
+  const indexComplete = isPaletteIndexComplete(index.progress);
   const commands = useMemo(
     () =>
       createPaletteCommands({
@@ -432,7 +474,9 @@ function CommandPaletteContent({
         current: scopeProject,
         scripts: scripts.isError ? [] : scripts.data?.scripts,
         bots: canReadBots && !bots.isError ? bots.data?.bots : undefined,
-        demo: transport === null,
+        indexed: browsing ? [] : index.projects,
+        server: canReadServer && !browsing ? index.server : undefined,
+        demo,
       }),
     [
       t,
@@ -446,30 +490,63 @@ function CommandPaletteContent({
       canReadBots,
       bots.data,
       bots.isError,
-      transport,
+      browsing,
+      index.projects,
+      index.server,
+      canReadServer,
+      demo,
     ],
   );
 
   const recentKey = `sf-palette-recents:${JSON.stringify([getServerAddress(), client.data?.id])}`;
-  const recentIds = recentCache.get(recentKey) ?? readRecents(recentKey);
+  // Recents change only when a destination opens, which also closes the menu.
+  const recentIds = useMemo(
+    () => recentCache.get(recentKey) ?? readRecents(recentKey),
+    [recentCache, recentKey],
+  );
   const pinKey = palettePinKey(getServerAddress(), client.data?.id ?? "");
   const pins = pinCache.get(pinKey) ?? readPins(pinKey);
 
   const query = search.trim();
-  const pool = picking
-    ? commands.filter((command) => command.action === "browse-project")
-    : commands.filter(
-        (command) =>
-          matchesPaletteFilter(command, filter) &&
-          (!browsing ||
-            (command.projectId === browsing &&
-              command.action !== "browse-project")),
-      );
-  const poolIds = new Set(pool.map((command) => command.id));
-  const matches = searchPaletteCommands(pool, search, {
-    currentProjectId: scopeProject?.id,
-    recentIds,
-  });
+  const scoped = useMemo(
+    () =>
+      picking
+        ? [
+            {
+              id: "browse-all",
+              label: t("commandPalette.allProjects"),
+              icon: "layers",
+              group: "projects",
+              action: "browse-all",
+            } satisfies PaletteCommand,
+            ...commands.filter(
+              (command) => command.action === "browse-project",
+            ),
+          ]
+        : commands.filter(
+            (command) =>
+              matchesPaletteFilter(command, filter) &&
+              (!browsing ||
+                (command.projectId === browsing &&
+                  command.action !== "browse-project")),
+          ),
+    [picking, commands, filter, browsing, t],
+  );
+  // Field settings and other projects' results wait for a search or filter.
+  const listAll = query !== "" || filter !== "all" || picking;
+  const pool = useMemo(
+    () => (listAll ? scoped : scoped.filter((command) => !command.searchOnly)),
+    [listAll, scoped],
+  );
+  const scopedIds = new Set(scoped.map((command) => command.id));
+  const matches = useMemo(
+    () =>
+      searchPaletteCommands(pool, search, {
+        currentProjectId: scopeId,
+        recentIds,
+      }),
+    [pool, search, scopeId, recentIds],
+  );
   const groups = new Map<GroupKey, PaletteCommand[]>();
   if (query) {
     // Keep one ranked list so a weaker match never appears above a better one.
@@ -478,10 +555,10 @@ function CommandPaletteContent({
     if (matches.length) groups.set("projects", matches.slice(0, RESULT_LIMIT));
   } else {
     const pinned = resolvePalettePins(commands, pins).filter((command) =>
-      poolIds.has(command.id),
+      scopedIds.has(command.id),
     );
     const shown = new Set(pinned.map((command) => command.id));
-    const recents = resolvePaletteRecents(pool, recentIds).filter(
+    const recents = resolvePaletteRecents(scoped, recentIds).filter(
       (command) => !shown.has(command.id),
     );
     for (const command of recents) shown.add(command.id);
@@ -513,7 +590,10 @@ function CommandPaletteContent({
   const selectedPinned = Boolean(
     selectedCommand && isPalettePinned(pins, selectedCommand.id),
   );
-  const hiddenCount = Math.max(0, matches.length - visible.length);
+  const visibleIds = new Set(visible.map((command) => command.id));
+  const hiddenCount = matches.filter(
+    (command) => !visibleIds.has(command.id),
+  ).length;
 
   const focusInput = () =>
     requestAnimationFrame(() => inputRef.current?.focus());
@@ -616,6 +696,10 @@ function CommandPaletteContent({
       browseProject(command.projectId);
       return;
     }
+    if (command.action === "browse-all") {
+      leaveProject();
+      return;
+    }
     if (command.operation) {
       if (needsPaletteConfirmation(command)) setConfirming(command);
       else runOperation(command);
@@ -625,7 +709,20 @@ function CommandPaletteContent({
     try {
       if (command.destination) {
         saveRecents(rememberPaletteCommand(recentIds, command.id));
-        await navigate(command.destination);
+        const destination = command.destination;
+        const search = destination.search;
+        // Jumping to a field on this page must not reset its table filters.
+        if (
+          search &&
+          typeof search === "object" &&
+          router.buildLocation(destination).pathname ===
+            router.state.location.pathname
+        )
+          await navigate({
+            ...destination,
+            search: (previous) => ({ ...previous, ...search }),
+          });
+        else await navigate(destination);
         return;
       }
       switch (command.action) {
@@ -689,6 +786,28 @@ function CommandPaletteContent({
     scopeProject?.friendlyName ??
     instances.data?.instances.find((instance) => instance.id === scopeId)
       ?.friendlyName;
+  const scopeName =
+    browsing && projectName ? projectName : t("commandPalette.allProjects");
+  // Progress shows until every source settles. Failures then offer a retry.
+  const indexStatus = !indexing
+    ? undefined
+    : !indexComplete
+      ? index.progress.loaded + index.progress.failed < index.progress.total
+        ? t("commandPalette.index.progress", {
+            done: index.progress.loaded + index.progress.failed,
+            total: index.progress.total,
+          })
+        : t("commandPalette.index.server")
+      : index.progress.server === "failed"
+        ? index.progress.failed
+          ? t("commandPalette.index.failedWithServer", {
+              count: index.progress.failed,
+            })
+          : t("commandPalette.index.serverFailed")
+        : index.progress.failed
+          ? t("commandPalette.index.failed", { count: index.progress.failed })
+          : undefined;
+  const indexFailed = Boolean(indexStatus && indexComplete);
   const headingFor = (group: GroupKey) =>
     group === "currentProject" && browsing && browsing !== routeId
       ? t("commandPalette.groups.projectPages")
@@ -751,49 +870,12 @@ function CommandPaletteContent({
             }
           }}
         />
-        {scopeId && projectName ? (
-          <div className="flex shrink-0 items-center gap-1">
-            <Button
-              variant="outline"
-              size="sm"
-              className="max-w-32 font-normal sm:max-w-48"
-              aria-label={t("commandPalette.changeProject", {
-                name: projectName,
-              })}
-              aria-pressed={picking}
-              onKeyDown={keepListKeys}
-              onClick={() => {
-                setPicking(!picking);
-                setSearch("");
-                focusInput();
-              }}
-            >
-              <DynamicIcon
-                name={scopeProject?.icon || "folder"}
-                aria-hidden="true"
-                data-icon="inline-start"
-              />
-              <span className="min-w-0 truncate">{projectName}</span>
-              <ChevronsUpDownIcon aria-hidden="true" data-icon="inline-end" />
-            </Button>
-            {browseId && (
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={t("commandPalette.exitProject")}
-                onKeyDown={keepListKeys}
-                onClick={leaveProject}
-              >
-                <XIcon aria-hidden="true" />
-              </Button>
-            )}
-          </div>
-        ) : (
+        <div className="flex shrink-0 items-center gap-1">
           <Button
             variant="outline"
-            size="icon-sm"
-            className="shrink-0"
-            aria-label={t("commandPalette.chooseProject")}
+            size="sm"
+            className="max-w-32 font-normal sm:max-w-48"
+            aria-label={t("commandPalette.changeScope", { name: scopeName })}
             aria-pressed={picking}
             onKeyDown={keepListKeys}
             onClick={() => {
@@ -802,9 +884,30 @@ function CommandPaletteContent({
               focusInput();
             }}
           >
-            <FolderSearchIcon aria-hidden="true" />
+            {browsing ? (
+              <DynamicIcon
+                name={scopeProject?.icon || "folder"}
+                aria-hidden="true"
+                data-icon="inline-start"
+              />
+            ) : (
+              <LayersIcon aria-hidden="true" data-icon="inline-start" />
+            )}
+            <span className="min-w-0 truncate">{scopeName}</span>
+            <ChevronsUpDownIcon aria-hidden="true" data-icon="inline-end" />
           </Button>
-        )}
+          {browseId && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label={t("commandPalette.searchAllProjects")}
+              onKeyDown={keepListKeys}
+              onClick={leaveProject}
+            >
+              <XIcon aria-hidden="true" />
+            </Button>
+          )}
+        </div>
       </div>
       {!picking && !confirming && (
         <div className="-mx-1 shrink-0 overflow-x-auto border-b px-2 py-1.5">
@@ -869,6 +972,38 @@ function CommandPaletteContent({
           </Button>
         </div>
       )}
+      {indexStatus && !picking && !confirming && (
+        <div
+          role="status"
+          className={cn(
+            "-mx-1 flex shrink-0 items-center gap-2 border-b px-3 py-2",
+            indexFailed ? "text-sm" : "text-xs text-muted-foreground",
+          )}
+        >
+          {indexFailed ? (
+            <CircleAlertIcon
+              aria-hidden="true"
+              className="size-4 shrink-0 text-destructive"
+            />
+          ) : (
+            <LoaderCircleIcon
+              aria-hidden="true"
+              className="size-3.5 shrink-0 motion-safe:animate-spin"
+            />
+          )}
+          <span className="min-w-0 flex-1">{indexStatus}</span>
+          {indexFailed && (
+            <Button
+              variant="outline"
+              size="sm"
+              onKeyDown={keepListKeys}
+              onClick={index.retry}
+            >
+              {t("commandPalette.retry")}
+            </Button>
+          )}
+        </div>
+      )}
       {confirming?.operation?.kind === "bot" ? (
         <OperationConfirmation
           key={confirming.id}
@@ -889,9 +1024,19 @@ function CommandPaletteContent({
                 <EmptyMedia variant="icon">
                   <SearchXIcon aria-hidden="true" />
                 </EmptyMedia>
-                <EmptyTitle>{t("commandPalette.emptyTitle")}</EmptyTitle>
+                <EmptyTitle>
+                  {t(
+                    indexing && !indexComplete
+                      ? "commandPalette.emptyTitlePartial"
+                      : "commandPalette.emptyTitle",
+                  )}
+                </EmptyTitle>
                 <EmptyDescription>
-                  {t("commandPalette.emptyHint")}
+                  {t(
+                    indexing && !indexComplete
+                      ? "commandPalette.emptyHintPartial"
+                      : "commandPalette.emptyHint",
+                  )}
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>
@@ -905,10 +1050,9 @@ function CommandPaletteContent({
                   search={query}
                   showContext={
                     picking ||
-                    Boolean(
-                      command.projectId &&
-                      command.projectId !== scopeProject?.id,
-                    )
+                    (command.projectId
+                      ? command.projectId !== browsing
+                      : Boolean(command.context))
                   }
                   onSelect={() => {
                     void execute(command);
@@ -1155,7 +1299,7 @@ function PaletteRow({
                 <Highlighted text={command.context} search={search} />
               </span>
             ) : (
-              // The header shows the project in scope, so keep its name for screen readers only.
+              // A scoped search already names this project in the header.
               <span className="sr-only">, {command.context}</span>
             ))}
         </span>

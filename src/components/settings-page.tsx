@@ -12,11 +12,13 @@ import {
   ChevronsUpDown,
   CircleAlertIcon,
   InfoIcon,
+  ListFilterIcon,
   LoaderCircleIcon,
   PlusIcon,
   RotateCcwIcon,
   SearchIcon,
   TrashIcon,
+  XIcon,
 } from "lucide-react";
 import {
   type ChangeEvent,
@@ -32,6 +34,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
+import { useCommandPalette } from "@/components/command-palette-context.ts";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import {
   createSettingsRegistry,
@@ -1095,7 +1098,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
   ) => Promise<void>;
   config: T;
   mutationTarget: SettingMutationTarget;
-  disabledIds?: DisabledSettingId[];
+  disabledIds?: readonly DisabledSettingId[];
   definitions: readonly SettingsDefinition[];
   allPages?: readonly SettingsPage[];
   persisted: boolean;
@@ -1103,7 +1106,22 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
   focusSetting?: SettingFocus;
 }) {
   const { t } = useTranslation("common");
+  const openCommandPalette = useCommandPalette();
   const [query, setQuery] = useState("");
+  // The filter stays visible while it has text, so no field is hidden silently.
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreFilterFocus = useRef(false);
+  useEffect(() => {
+    if (filterOpen || !restoreFilterFocus.current) return;
+    restoreFilterFocus.current = false;
+    filterButtonRef.current?.focus();
+  }, [filterOpen]);
+  const closeFilter = () => {
+    restoreFilterFocus.current = true;
+    setQuery("");
+    setFilterOpen(false);
+  };
   const enabledIdentifier = data.enabledIdentifier;
   const visibleEntries = useMemo(() => {
     const hidden = [...disabledIds];
@@ -1164,18 +1182,51 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
           {t(`settingsPage.scope.${mutationTarget.type}`)}
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          <InputGroup className="w-full sm:max-w-xs">
-            <InputGroupAddon>
-              <SearchIcon />
-            </InputGroupAddon>
-            <InputGroupInput
-              type="search"
-              aria-label={t("settingsPage.search")}
-              placeholder={t("settingsPage.search")}
-              value={query}
-              onChange={(event) => setQuery(event.currentTarget.value)}
-            />
-          </InputGroup>
+          {filterOpen ? (
+            <InputGroup className="w-full sm:max-w-xs">
+              <InputGroupAddon>
+                <ListFilterIcon />
+              </InputGroupAddon>
+              <InputGroupInput
+                // A search input adds its own clear button next to ours.
+                role="searchbox"
+                autoFocus
+                aria-label={t("settingsPage.filter")}
+                placeholder={t("settingsPage.filterPlaceholder")}
+                value={query}
+                onChange={(event) => setQuery(event.currentTarget.value)}
+                onKeyDown={(event) => {
+                  if (event.key !== "Escape" || event.nativeEvent.isComposing)
+                    return;
+                  // Escape clears the text first, then closes the filter.
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (query) setQuery("");
+                  else closeFilter();
+                }}
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  size="icon-xs"
+                  aria-label={t("settingsPage.closeFilter")}
+                  onClick={closeFilter}
+                >
+                  <XIcon />
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          ) : (
+            <Button
+              ref={filterButtonRef}
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setFilterOpen(true)}
+            >
+              <ListFilterIcon data-icon="inline-start" />
+              {t("settingsPage.filter")}
+            </Button>
+          )}
           <p className="text-muted-foreground inline-flex items-center gap-2 text-xs">
             <InfoIcon className="size-3.5 shrink-0" />
             {t(
@@ -1185,9 +1236,22 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
         </div>
       </div>
       {matches.length === 0 && searching && (
-        <p className="text-muted-foreground text-sm" role="status">
-          {t("settingsPage.noMatches", { query: query.trim() })}
-        </p>
+        <div className="flex max-w-3xl flex-wrap items-center gap-3">
+          <p className="text-muted-foreground text-sm" role="status">
+            {t("settingsPage.noMatches", { query: query.trim() })}
+          </p>
+          {openCommandPalette && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => openCommandPalette({ search: query.trim() })}
+            >
+              <SearchIcon data-icon="inline-start" />
+              {t("settingsPage.searchEverywhere")}
+            </Button>
+          )}
+        </div>
       )}
       {otherPages.length > 0 && linkToPage && (
         <p className="text-muted-foreground text-sm">
@@ -1263,7 +1327,7 @@ export function InstanceSettingsPageComponent({
   focusSetting,
 }: {
   data: SettingsPage;
-  disabledIds?: DisabledSettingId[];
+  disabledIds?: readonly DisabledSettingId[];
   focusSetting?: SettingFocus;
 }) {
   const queryClient = useQueryClient();
@@ -1325,7 +1389,13 @@ export function InstanceSettingsPageComponent({
   );
 }
 
-export function AdminSettingsPageComponent({ data }: { data: SettingsPage }) {
+export function AdminSettingsPageComponent({
+  data,
+  focusSetting,
+}: {
+  data: SettingsPage;
+  focusSetting?: SettingFocus;
+}) {
   const queryClient = useQueryClient();
   const serverInfoQueryOptions = useRouteContext({
     from: "/_dashboard/user/admin",
@@ -1341,7 +1411,13 @@ export function AdminSettingsPageComponent({ data }: { data: SettingsPage }) {
   return (
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
+        key={JSON.stringify([
+          data.id,
+          focusSetting?.namespace,
+          focusSetting?.key,
+        ])}
         data={data}
+        focusSetting={focusSetting}
         mutationTarget={{ type: "server" }}
         updateConfigEntry={async (namespace, key, value) =>
           await updateServerConfigEntry(
@@ -1360,7 +1436,17 @@ export function AdminSettingsPageComponent({ data }: { data: SettingsPage }) {
         }}
         config={serverConfig}
         definitions={serverInfo.settingsDefinitions}
+        allPages={serverInfo.serverSettings}
         persisted={transport !== null}
+        linkToPage={(page, label) => (
+          <Link
+            className="underline underline-offset-3"
+            to="/user/admin/settings/$pageId"
+            params={{ pageId: page.id }}
+          >
+            {label}
+          </Link>
+        )}
       />
     </SettingsRegistryContext.Provider>
   );

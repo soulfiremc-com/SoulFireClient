@@ -49,7 +49,6 @@ import AccountProvidersDialog from "@/components/dialog/account-providers-dialog
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
-  type DisabledSettingId,
   InstanceSettingFieldByKey,
   InstanceSettingsPageComponent,
 } from "@/components/settings-page.tsx";
@@ -96,6 +95,7 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { guidedTableValidateSearch } from "@/lib/parsers.ts";
+import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -113,11 +113,6 @@ import {
   removeInstanceAccountsBatch,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
-
-const ACCOUNT_SETTINGS_DISABLED_IDS: DisabledSettingId[] = [
-  { namespace: "account", key: "account-import-concurrency" },
-  { namespace: "account", key: "use-proxies-for-account-auth" },
-];
 
 function GetAccountsButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
@@ -1207,6 +1202,11 @@ function AccountSettings() {
 function Content() {
   const { t } = useTranslation("instance");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
+  // Exact setting links come from search and keep the table params intact.
+  const focusNamespace = Route.useSearch({
+    select: (search) => search.focusNamespace,
+  });
+  const focusKey = Route.useSearch({ select: (search) => search.focusKey });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const { table } = useDataTable({
@@ -1237,7 +1237,12 @@ function Content() {
               (s) => s.id === "account",
             ) as SettingsPage
           }
-          disabledIds={ACCOUNT_SETTINGS_DISABLED_IDS}
+          disabledIds={PAGE_HIDDEN_SETTINGS.account}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
         />
       </div>
       <DataTable
