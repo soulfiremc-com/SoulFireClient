@@ -2,7 +2,7 @@ import type { JsonValue } from "@bufbuild/protobuf";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState } from "react";
-import { expect, fn, within } from "storybook/test";
+import { expect, fn, waitFor, within } from "storybook/test";
 import {
   createSettingsRegistry,
   SettingsRegistryContext,
@@ -22,6 +22,7 @@ function SettingsFormExample({
   failSave,
   disabled,
   onSave,
+  focusKey,
 }: {
   pageId: string;
   compact: boolean;
@@ -29,6 +30,7 @@ function SettingsFormExample({
   failSave: boolean;
   disabled: boolean;
   onSave: (namespace: string, key: string, value: JsonValue) => void;
+  focusKey?: string;
 }) {
   const [queryClient] = useState(
     () => new QueryClient({ defaultOptions: { queries: { retry: false } } }),
@@ -57,6 +59,9 @@ function SettingsFormExample({
             config={config}
             mutationTarget={{ type: "instance", instanceId: "settings-story" }}
             persisted={persisted}
+            focusSetting={
+              focusKey ? { namespace: pageId, key: focusKey } : undefined
+            }
             invalidateQuery={async () => {}}
             updateConfigEntry={async (namespace, key, value) => {
               onSave(namespace, key, value);
@@ -171,6 +176,21 @@ export const AdvancedSettings: Story = {
     await expect(
       canvas.getByRole("textbox", { name: "Read Timeout" }),
     ).toBeVisible();
+  },
+};
+
+export const FocusedAdvancedSetting: Story = {
+  args: { pageId: "bot", focusKey: "read-timeout" },
+  play: async ({ args, canvas, userEvent }) => {
+    const control = canvas.getByRole("textbox", { name: "Read Timeout" });
+    await expect(control).toBeVisible();
+    await waitFor(() => expect(control).toHaveFocus());
+    await expect(
+      canvas.getByRole("group", { name: "Read Timeout" }),
+    ).toHaveAttribute("data-setting-focused", "true");
+    await expect(args.onSave).not.toHaveBeenCalled();
+    await userEvent.click(canvas.getByRole("searchbox"));
+    await expect(canvas.getByRole("searchbox")).toHaveFocus();
   },
 };
 

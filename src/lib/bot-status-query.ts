@@ -1,4 +1,4 @@
-import { createClient } from "@connectrpc/connect";
+import { createClient, type Transport } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import { demoBotList } from "@/demo-data.ts";
 import { type BotListResponse, BotService } from "@/generated/soulfire/bot_pb";
@@ -22,5 +22,24 @@ export function botStatusQueryOptions(instanceId: string) {
       return botService.getBotList({ instanceId }, { signal });
     },
     refetchInterval: 3_000,
+  });
+}
+
+/// Reads the same cache entry through a supplied transport without polling.
+/// The command menu uses this while it is open.
+export function botStatusRpcQueryOptions(
+  transport: Transport | null,
+  instanceId: string,
+) {
+  return queryOptions({
+    queryKey: ["bot-status", instanceId],
+    structuralSharing: shareBotListData,
+    queryFn: async ({ signal }): Promise<BotListResponse> =>
+      transport === null
+        ? demoBotList
+        : createClient(BotService, transport).getBotList(
+            { instanceId },
+            { signal },
+          ),
   });
 }

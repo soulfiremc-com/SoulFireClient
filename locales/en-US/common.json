@@ -404,6 +404,97 @@
     "clearRecents": "Clear recent destinations",
     "actionError": "Could not complete the action. Try again.",
     "serverOverview": "SoulFire server overview",
+    "browseProject": "Browse project",
+    "changeProject": "Browse another project, current: {{name}}",
+    "chooseProject": "Browse a project",
+    "pickProjectPlaceholder": "Search projects...",
+    "browsingPlaceholder": "Search in {{name}}...",
+    "exitProject": "Show all results",
+    "projectUnavailable": "That project is no longer available. Showing all results.",
+    "matchedBy": "Matches {{text}}",
+    "filterLabel": "Result type",
+    "filters": {
+      "all": "All",
+      "projects": "Projects",
+      "bots": "Bots",
+      "scripts": "Scripts",
+      "settings": "Settings",
+      "actions": "Actions"
+    },
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "pinLabel": "Pin {{name}}",
+    "unpinLabel": "Unpin {{name}}",
+    "pinLimit": "You can pin up to {{count}} commands. Unpin one first.",
+    "confirm": {
+      "start_one": "Start {{count}} bot in {{project}}?",
+      "start_other": "Start {{count}} bots in {{project}}?",
+      "stop_one": "Stop {{count}} bot in {{project}}?",
+      "stop_other": "Stop {{count}} bots in {{project}}?",
+      "restart_one": "Restart {{count}} failed bot in {{project}}?",
+      "restart_other": "Restart {{count}} failed bots in {{project}}?",
+      "description": "The request includes only the bots listed when you chose this action. Other bots in the project do not change.",
+      "confirmStart": "Start bots",
+      "confirmStop": "Stop bots",
+      "confirmRestart": "Restart bots",
+      "cancel": "Cancel",
+      "unavailable": "This action is no longer available. Its project, bots, or your permissions changed."
+    },
+    "feedback": {
+      "start": {
+        "loading": "Requesting bot start...",
+        "success_one": "Start requested for {{count}} bot.",
+        "success_other": "Start requested for {{count}} bots.",
+        "error": "Could not request bot start. Try again."
+      },
+      "stop": {
+        "loading": "Requesting bot stop...",
+        "success_one": "Stop requested for {{count}} bot.",
+        "success_other": "Stop requested for {{count}} bots.",
+        "error": "Could not request bot stop. Try again."
+      },
+      "restart": {
+        "loading": "Requesting bot restart...",
+        "success_one": "Restart requested for {{count}} bot.",
+        "success_other": "Restart requested for {{count}} bots.",
+        "error": "Could not request bot restart. Try again."
+      },
+      "activate": {
+        "loading": "Activating script...",
+        "success": "Script activated.",
+        "error": "Could not activate the script. Try again."
+      },
+      "deactivate": {
+        "loading": "Deactivating script...",
+        "success": "Script deactivated.",
+        "error": "Could not deactivate the script. Try again."
+      },
+      "busy": "A request for this target is still running. Try again when it finishes.",
+      "demo": "Demo mode does not save changes. Connect to a SoulFire server to control bots and scripts."
+    },
+    "operations": {
+      "startBot": "Start bot {{name}}",
+      "stopBot": "Stop bot {{name}}",
+      "restartBot": "Restart bot {{name}}",
+      "startBots_one": "Start {{count}} bot",
+      "startBots_other": "Start {{count}} bots",
+      "stopBots_one": "Stop {{count}} bot",
+      "stopBots_other": "Stop {{count}} bots",
+      "retryBots_one": "Retry {{count}} failed bot",
+      "retryBots_other": "Retry {{count}} failed bots",
+      "activateScript": "Activate script {{name}}",
+      "deactivateScript": "Deactivate script {{name}}"
+    },
+    "status": {
+      "connected": "Connected",
+      "starting": "Starting",
+      "retrying": "Retrying",
+      "failed": "Failed",
+      "stopping": "Stopping",
+      "stopped": "Stopped",
+      "active": "Active",
+      "paused": "Paused"
+    },
     "theme": {
       "light": "Use light theme",
       "dark": "Use dark theme",
@@ -412,9 +503,12 @@
     "keys": {
       "navigate": "Navigate",
       "select": "Select",
-      "close": "Close"
+      "close": "Close",
+      "pin": "Pin",
+      "back": "Back"
     },
     "groups": {
+      "pinned": "Pinned",
       "recent": "Recent destinations",
       "navigation": "Navigation",
       "currentProject": "Current project",
@@ -423,7 +517,9 @@
       "bots": "Bots in this project",
       "scripts": "Scripts in this project",
       "admin": "Administration",
-      "actions": "Actions"
+      "actions": "Actions",
+      "results": "Best matches",
+      "projectPages": "Project pages"
     }
   },
   "instanceSidebar": {

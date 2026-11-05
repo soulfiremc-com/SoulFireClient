@@ -23,6 +23,7 @@ import {
   type HTMLInputTypeAttribute,
   type ReactNode,
   use,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -101,6 +102,12 @@ import {
   type StringListEntry,
 } from "@/lib/string-list-entries.ts";
 import { NumericRangeEditor } from "@/lib/numeric-range-editor.ts";
+import {
+  focusSettingElement,
+  getSettingLabel,
+  isFocusedSetting,
+  type SettingFocus,
+} from "@/lib/settings-focus";
 import {
   getNumericSettingValue,
   type NumericRange,
@@ -873,8 +880,18 @@ function SettingField<T extends BaseSettings>(props: {
   config: T;
   mutationTarget: SettingMutationTarget;
   persisted: boolean;
+  focused?: boolean;
 }) {
   const definition = useSettingsDefinition(props.settingId);
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const didFocus = useRef(false);
+  useEffect(() => {
+    if (props.focused && definition && fieldRef.current && !didFocus.current) {
+      return focusSettingElement(fieldRef.current, () => {
+        didFocus.current = true;
+      });
+    }
+  }, [props.focused, definition]);
   const namespace = props.settingId.namespace;
   const key = props.settingId.key;
   const onSaveError = useSettingSaveError(definition, `${namespace}:${key}`);
@@ -898,7 +915,17 @@ function SettingField<T extends BaseSettings>(props: {
   }
 
   return (
-    <div className="flex min-w-0 max-w-3xl flex-col has-[>[data-slot=setting-status]]:gap-2">
+    <div
+      ref={fieldRef}
+      tabIndex={props.focused ? -1 : undefined}
+      role={props.focused ? "group" : undefined}
+      aria-label={props.focused ? getSettingLabel(definition) : undefined}
+      data-setting-focused={props.focused || undefined}
+      className={cn(
+        "flex min-w-0 max-w-3xl flex-col has-[>[data-slot=setting-status]]:gap-2",
+        props.focused && "scroll-mt-4 rounded-lg p-3 ring-2 ring-ring",
+      )}
+    >
       <SettingTypeRenderer
         settingType={definition.type}
         value={value}
@@ -1057,6 +1084,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
   allPages,
   persisted,
   linkToPage,
+  focusSetting,
 }: {
   data: SettingsPage;
   invalidateQuery: () => Promise<void>;
@@ -1072,6 +1100,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
   allPages?: readonly SettingsPage[];
   persisted: boolean;
   linkToPage?: (page: SettingsPage, label: ReactNode) => ReactNode;
+  focusSetting?: SettingFocus;
 }) {
   const { t } = useTranslation("common");
   const [query, setQuery] = useState("");
@@ -1118,6 +1147,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
       invalidateQuery={invalidateQuery}
       config={config}
       persisted={persisted}
+      focused={isFocusedSetting(entryId, focusSetting)}
     />
   );
 
@@ -1198,7 +1228,8 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
         </div>
       )}
       {advanced.length > 0 &&
-        (searching ? (
+        (searching ||
+        advanced.some((entry) => isFocusedSetting(entry, focusSetting)) ? (
           renderEntries(advanced)
         ) : (
           <Collapsible>
@@ -1229,9 +1260,11 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
 export function InstanceSettingsPageComponent({
   data,
   disabledIds,
+  focusSetting,
 }: {
   data: SettingsPage;
   disabledIds?: DisabledSettingId[];
+  focusSetting?: SettingFocus;
 }) {
   const queryClient = useQueryClient();
   const instanceInfoQueryOptions = useRouteContext({
@@ -1248,7 +1281,14 @@ export function InstanceSettingsPageComponent({
   return (
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
+        key={JSON.stringify([
+          instanceInfo.id,
+          data.id,
+          focusSetting?.namespace,
+          focusSetting?.key,
+        ])}
         data={data}
+        focusSetting={focusSetting}
         mutationTarget={{ type: "instance", instanceId: instanceInfo.id }}
         updateConfigEntry={async (namespace, key, value) =>
           await updateInstanceConfigEntry(

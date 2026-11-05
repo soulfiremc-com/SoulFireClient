@@ -10,6 +10,7 @@ import { InstanceSettingsPageComponent } from "@/components/settings-page.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import i18n from "@/lib/i18n";
 import { routeChrome } from "@/lib/route-title.ts";
+import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
 function getSettingsPageFallbackIcon(pageId: string) {
   switch (pageId) {
@@ -31,6 +32,7 @@ function getSettingsPageFallbackIcon(pageId: string) {
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/settings/$pageId",
 )({
+  validateSearch: parseSettingFocusSearch,
   beforeLoad: () =>
     routeChrome({
       getTitle: (match) => {
@@ -125,6 +127,7 @@ function ContentSkeleton() {
 function Content() {
   const { t } = useTranslation("common");
   const { pageId } = Route.useParams();
+  const { focusNamespace, focusKey } = Route.useSearch();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const settingsEntry = instanceInfo.instanceSettings.find(
@@ -169,7 +172,14 @@ function Content() {
             plugin={plugin}
           />
         )}
-        <InstanceSettingsPageComponent data={settingsEntry} />
+        <InstanceSettingsPageComponent
+          data={settingsEntry}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
+        />
       </div>
     </InstancePageLayout>
   );

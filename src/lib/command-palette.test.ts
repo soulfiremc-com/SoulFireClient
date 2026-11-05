@@ -5,6 +5,11 @@ import { createInstance } from "i18next";
 import common from "../../locales/en-US/common.json";
 import { ClientDataResponseSchema } from "@/generated/soulfire/client_pb";
 import {
+  BotDesiredState,
+  BotListEntrySchema,
+  BotRuntimeState,
+} from "@/generated/soulfire/bot_pb";
+import {
   GlobalPermission,
   InstancePermission,
   SettingsDefinitionSchema,
@@ -18,10 +23,12 @@ import { ScriptInfoSchema } from "@/generated/soulfire/script_pb";
 import {
   createPaletteCommands,
   isPaletteShortcut,
+  matchesPaletteFilter,
   readPaletteRecents,
   rememberPaletteCommand,
   resolvePaletteRecents,
   searchPaletteCommands,
+  paletteMatchSegments,
 } from "./command-palette";
 import type { InstanceInfoQueryData } from "./types";
 
@@ -32,7 +39,8 @@ void i18n.init({
   defaultNS: "common",
   initAsync: false,
 });
-const t = (key: string) => i18n.t(key);
+const t = (key: string, options?: Record<string, string | number>) =>
+  i18n.t(key, options);
 const project = (
   id: string,
   permissions: InstancePermission[] = [InstancePermission.READ_INSTANCE],
@@ -171,7 +179,7 @@ test("current project indexes bot identities, scripts, and setting labels withou
   });
   assert.equal(
     searchPaletteCommands(commands, "movement interval")[0]?.id,
-    "settings:farm-1:anti-afk",
+    'setting:farm-1:["anti-afk","anti-afk","interval"]',
   );
   assert.equal(
     searchPaletteCommands(commands, "idle-plugin")[0]?.id,
@@ -298,4 +306,242 @@ test("the global shortcut accepts Ctrl or Command and ignores composition, repea
       isPaletteShortcut({ ...event, ctrlKey: true, [modifier]: true }),
       false,
     );
+});
+
+test("individual setting results link to an exact field rather than only its page", () => {
+  const commands = createPaletteCommands({
+    t,
+    instances: [project(current.id)],
+    current,
+  });
+  const result = searchPaletteCommands(commands, "movement interval")[0];
+  assert.equal(result.label, "Movement interval");
+  assert.equal(result.description, "Prevent idle kicks");
+  assert.deepEqual(result.destination, {
+    to: "/instance/$instance/settings/$pageId",
+    params: { instance: current.id, pageId: "anti-afk" },
+    search: { focusNamespace: "anti-afk", focusKey: "interval" },
+  });
+});
+
+test("exact names outrank aliases and context, with current project and recency breaking ties", () => {
+  const base = createPaletteCommands({ t, instances: [] })[0];
+  const alias = {
+    ...base,
+    id: "alias",
+    label: "Logs",
+    keywords: ["Terminal"],
+    projectId: "current",
+  };
+  const exact = {
+    ...base,
+    id: "exact",
+    label: "Terminal",
+    projectId: "elsewhere",
+  };
+  assert.equal(
+    searchPaletteCommands([alias, exact], "terminal", {
+      currentProjectId: "current",
+      recentIds: ["alias"],
+    })[0].id,
+    "exact",
+  );
+  assert.equal(
+    searchPaletteCommands([alias], "terminal")[0].matchedText,
+    "Terminal",
+  );
+  const duplicate = { ...exact, id: "other", projectId: "current" };
+  assert.equal(
+    searchPaletteCommands([exact, duplicate], "terminal", {
+      currentProjectId: "current",
+    })[0].id,
+    "other",
+  );
+  assert.equal(
+    searchPaletteCommands([exact, { ...exact, id: "recent" }], "terminal", {
+      recentIds: ["recent"],
+    })[0].id,
+    "recent",
+  );
+});
+
+test("highlight spans preserve accents, Unicode, and literal text", () => {
+  assert.deepEqual(paletteMatchSegments("Café settings", "cafe"), [
+    { text: "Café", matched: true },
+    { text: " settings", matched: false },
+  ]);
+  for (const text of [
+    "Cafe\u0301 settings",
+    "Bot 🧪",
+    "<script>alert(1)</script>",
+  ]) {
+    const segments = paletteMatchSegments(text, "bot");
+    assert.equal(segments.map((segment) => segment.text).join(""), text);
+  }
+  assert.deepEqual(
+    paletteMatchSegments("Terminal", "trmnl")
+      .filter((segment) => segment.matched)
+      .map((segment) => segment.text)
+      .join(""),
+    "Trmnl",
+  );
+});
+
+test("bot and script operations require control permissions and never include empty targets", () => {
+  const denied = createPaletteCommands({
+    t,
+    instances: [project(current.id)],
+    current,
+  });
+  assert(!denied.some((command) => command.operation));
+  const authorized = {
+    ...current,
+    instancePermissions: [
+      ...current.instancePermissions,
+      ...[
+        InstancePermission.CONTROL_BOTS,
+        InstancePermission.EXECUTE_SCRIPTS,
+      ].map((instancePermission) => ({
+        $typeName: "soulfire.v1.InstancePermissionState" as const,
+        instancePermission,
+        granted: true,
+      })),
+    ],
+    profile: {
+      ...current.profile,
+      accounts: [
+        ...current.profile.accounts,
+        {
+          ...current.profile.accounts[0],
+          profileId: "stopped",
+          lastKnownName: "Stopped",
+        },
+        {
+          ...current.profile.accounts[0],
+          profileId: "failed",
+          lastKnownName: "Failed",
+        },
+      ],
+    },
+  };
+  const commands = createPaletteCommands({
+    t,
+    instances: [project(current.id)],
+    current: authorized,
+    bots: [
+      create(BotListEntrySchema, {
+        profileId: "bot-id",
+        isOnline: true,
+        status: { desiredState: BotDesiredState.RUNNING },
+      }),
+      create(BotListEntrySchema, {
+        profileId: "failed",
+        status: {
+          desiredState: BotDesiredState.RUNNING,
+          runtimeState: BotRuntimeState.FAILED,
+        },
+      }),
+    ],
+    scripts: [
+      create(ScriptInfoSchema, {
+        id: "script-1",
+        name: "Recover",
+        paused: true,
+      }),
+    ],
+  });
+  assert.deepEqual(
+    commands.find((command) => command.id === `start-bots:${current.id}`)
+      ?.operation,
+    {
+      kind: "bot",
+      action: "start",
+      instanceId: current.id,
+      botIds: ["stopped"],
+    },
+  );
+  assert.deepEqual(
+    commands.find((command) => command.id === `retry-bots:${current.id}`)
+      ?.operation,
+    {
+      kind: "bot",
+      action: "restart",
+      instanceId: current.id,
+      botIds: ["failed"],
+    },
+  );
+  assert.equal(
+    commands.find((command) => command.id === `start-bots:${current.id}`)
+      ?.label,
+    "Start 1 bot",
+  );
+  assert.deepEqual(
+    commands.find(
+      (command) => command.id === `activate-script:${current.id}:script-1`,
+    )?.operation,
+    {
+      kind: "script",
+      action: "activate",
+      instanceId: current.id,
+      scriptId: "script-1",
+    },
+  );
+  assert.equal(
+    commands.find((command) => command.id === `bot:${current.id}:bot-id`)
+      ?.status?.label,
+    "Connected",
+  );
+  assert.equal(
+    commands.find((command) => command.id === `script:${current.id}:script-1`)
+      ?.status?.label,
+    "Paused",
+  );
+  assert(
+    !commands.some(
+      (command) =>
+        command.operation?.kind === "bot" &&
+        command.operation.botIds.length === 0,
+    ),
+  );
+});
+
+test("type filters overlap by meaning and every readable project can be browsed", () => {
+  const commands = createPaletteCommands({
+    t,
+    client: client([]),
+    instances: [project(current.id), project("farm-2"), project("hidden", [])],
+    current: {
+      ...current,
+      instancePermissions: [
+        ...current.instancePermissions,
+        {
+          $typeName: "soulfire.v1.InstancePermissionState" as const,
+          instancePermission: InstancePermission.CONTROL_BOTS,
+          granted: true,
+        },
+      ],
+    },
+  });
+  const ids = (filter: Parameters<typeof matchesPaletteFilter>[1]) =>
+    commands
+      .filter((command) => matchesPaletteFilter(command, filter))
+      .map((command) => command.id);
+  assert.deepEqual(
+    commands
+      .filter((command) => command.action === "browse-project")
+      .map((command) => [command.id, command.projectId]),
+    [
+      [`browse-project:${current.id}`, current.id],
+      ["browse-project:farm-2", "farm-2"],
+    ],
+  );
+  assert(ids("bots").includes(`bot:${current.id}:bot-id`));
+  assert(ids("bots").includes(`stop-bot:${current.id}:bot-id`));
+  assert(ids("actions").includes(`stop-bot:${current.id}:bot-id`));
+  assert(!ids("actions").includes(`bot:${current.id}:bot-id`));
+  assert(ids("projects").includes("browse-project:farm-2"));
+  assert(ids("projects").includes("project:farm-2"));
+  assert(!ids("projects").includes("theme-dark"));
+  assert(ids("settings").every((id) => id.startsWith("setting")));
+  assert.equal(ids("all").length, commands.length);
 });

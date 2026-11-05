@@ -1,4 +1,9 @@
-import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  type QueryFunction,
+  skipToken,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   useMatch,
   useNavigate,
@@ -8,18 +13,27 @@ import {
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  ChevronsUpDownIcon,
   CircleAlertIcon,
   CornerDownLeftIcon,
+  FolderSearchIcon,
+  PinIcon,
+  PinOffIcon,
   SearchIcon,
   SearchXIcon,
+  XIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
   createContext,
-  useCallback,
+  Fragment,
+  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
+  type RefObject,
   use,
+  useCallback,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -30,6 +44,7 @@ import { AboutContext } from "@/components/dialog/about-dialog";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog";
 import DynamicIcon from "@/components/dynamic-icon";
 import { TransportContext } from "@/components/providers/transport-context";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -55,21 +70,45 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { botStatusRpcQueryOptions } from "@/lib/bot-status-query";
 import {
   createPaletteCommands,
   isPaletteShortcut,
   isPaletteTypingTarget,
+  matchesPaletteFilter,
+  PALETTE_FILTERS,
+  paletteMatchSegments,
   readPaletteRecents,
   rememberPaletteCommand,
   resolvePaletteRecents,
   searchPaletteCommands,
   type PaletteCommand,
+  type PaletteFilter,
   type PaletteGroup,
 } from "@/lib/command-palette";
+import {
+  isPaletteOperationPending,
+  isPaletteOperationAvailable,
+  needsPaletteConfirmation,
+  startPaletteOperation,
+} from "@/lib/command-palette-operations";
+import {
+  isPalettePinned,
+  PIN_LIMIT,
+  type PalettePin,
+  palettePinKey,
+  prunePalettePins,
+  readPalettePins,
+  resolvePalettePins,
+  togglePalettePin,
+} from "@/lib/command-palette-pins";
 import { desktop, formatShortcut, isDesktopApp } from "@/lib/desktop";
+import { fetchInstanceInfo } from "@/lib/instance-info-query";
 import { scriptListQueryOptions } from "@/lib/script-service";
-import { hasInstancePermission } from "@/lib/utils";
+import type { InstanceInfoQueryData } from "@/lib/types";
+import { cn, hasInstancePermission } from "@/lib/utils";
 import { getServerAddress } from "@/lib/web-rpc";
 
 const CommandPaletteContext = createContext<(() => void) | null>(null);
@@ -84,12 +123,15 @@ const DEFAULT_GROUP_ORDER: PaletteGroup[] = [
   "projects",
 ];
 const RESULT_LIMIT = 80;
-// Only these groups mix projects. Other rows with a project context belong to
-// the current project, which the search header already shows.
-const PROJECT_CONTEXT_GROUPS = new Set<PaletteGroup | "recent">([
-  "recent",
-  "projects",
-]);
+// cmdk handles these keys anywhere in the menu. Buttons keep them for themselves.
+const LIST_KEYS = new Set(["Enter", "ArrowUp", "ArrowDown", "Home", "End"]);
+
+type GroupKey = PaletteGroup | "pinned" | "recent" | "results";
+type EscapeHandler = () => boolean;
+
+function keepListKeys(event: ReactKeyboardEvent) {
+  if (LIST_KEYS.has(event.key)) event.stopPropagation();
+}
 
 export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation("common");
@@ -97,8 +139,12 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const lastShift = useRef<number | null>(null);
   const shiftPressedAt = useRef<number | null>(null);
   const recentCache = useRef(new Map<string, string[]>());
+  const pinCache = useRef(new Map<string, PalettePin[]>());
+  const escapeHandler = useRef<EscapeHandler | null>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
+  const restorePreviousFocus = useRef(true);
   const show = useCallback(() => {
+    restorePreviousFocus.current = true;
     previousFocus.current =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
@@ -188,16 +234,32 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
       {children}
       <CommandDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(next, details) => {
+          // Escape first leaves a confirmation, the project picker, or a browsed project.
+          if (
+            !next &&
+            details.reason === "escape-key" &&
+            escapeHandler.current?.()
+          )
+            return;
+          setOpen(next);
+        }}
         title={t("commandPalette.title")}
         description={t("commandPalette.description")}
-        finalFocus={previousFocus}
-        className="top-[15dvh] max-h-[75dvh] sm:max-w-2xl"
+        finalFocus={() =>
+          restorePreviousFocus.current ? previousFocus.current : false
+        }
+        className="top-[15dvh] flex max-h-[75dvh] flex-col sm:max-w-2xl"
       >
         {open && (
           <CommandPaletteContent
             recentCache={recentCache.current}
-            onClose={() => setOpen(false)}
+            pinCache={pinCache.current}
+            escapeHandler={escapeHandler}
+            onClose={(restoreFocus = true) => {
+              restorePreviousFocus.current = restoreFocus;
+              setOpen(false);
+            }}
           />
         )}
       </CommandDialog>
@@ -248,15 +310,34 @@ function readRecents(key: string) {
   }
 }
 
+function readPins(key: string) {
+  try {
+    return readPalettePins(localStorage, key);
+  } catch {
+    return [];
+  }
+}
+
 function CommandPaletteContent({
   onClose,
   recentCache,
+  pinCache,
+  escapeHandler,
 }: {
-  onClose: () => void;
+  onClose: (restoreFocus?: boolean) => void;
   recentCache: Map<string, string[]>;
+  pinCache: Map<string, PalettePin[]>;
+  escapeHandler: RefObject<EscapeHandler | null>;
 }) {
   const { t } = useTranslation("common");
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<PaletteFilter>("all");
+  const [browseId, setBrowseId] = useState<string | null>(null);
+  const [picking, setPicking] = useState(false);
+  const [confirming, setConfirming] = useState<PaletteCommand | null>(null);
+  const [selected, setSelected] = useState("");
+  const [, setPinRevision] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
   const transport = use(TransportContext);
   const navigate = useNavigate();
   const router = useRouter();
@@ -279,39 +360,78 @@ function CommandPaletteContent({
     ...instanceListQueryOptions,
     refetchInterval: false,
   });
-  const current = useQuery({
-    ...instanceMatch?.context.instanceInfoQueryOptions,
-    queryKey: ["instance-info", instanceMatch?.params.instance ?? ""],
-    queryFn:
-      instanceMatch?.context.instanceInfoQueryOptions.queryFn ?? skipToken,
-    enabled: Boolean(instanceMatch),
+  const accessibleIds = useMemo(
+    () =>
+      new Set(
+        instances.isError
+          ? []
+          : (instances.data?.instances.map((instance) => instance.id) ?? []),
+      ),
+    [instances.data, instances.isError],
+  );
+  // A browsed project can be deleted or revoked while the menu is open.
+  const browseRevoked = Boolean(
+    browseId && instances.isSuccess && !accessibleIds.has(browseId),
+  );
+  const browsing = browseRevoked ? null : browseId;
+  const routeId = instanceMatch?.params.instance;
+  const scopeId = browsing ?? routeId;
+  const routeInfoFn =
+    scopeId === routeId
+      ? instanceMatch?.context.instanceInfoQueryOptions.queryFn
+      : undefined;
+  const infoFn:
+    | QueryFunction<InstanceInfoQueryData, string[]>
+    | typeof skipToken = !scopeId
+    ? skipToken
+    : (routeInfoFn ??
+      (transport
+        ? ({ signal }) =>
+            fetchInstanceInfo(transport, scopeId, queryClient, signal)
+        : skipToken));
+  const info = useQuery({
+    queryKey: ["instance-info", scopeId ?? ""],
+    queryFn: infoFn,
     refetchInterval: false,
   });
-  const currentProject =
-    !current.isError &&
-    !instances.isError &&
-    instances.data?.instances.some(
-      (instance) => instance.id === current.data?.id,
-    )
-      ? current.data
+  const infoEnabled = infoFn !== skipToken;
+  const scopeProject =
+    !info.isError &&
+    info.data?.id === scopeId &&
+    scopeId &&
+    accessibleIds.has(scopeId)
+      ? info.data
       : undefined;
-  const canReadCurrent = Boolean(
-    currentProject &&
-    hasInstancePermission(currentProject, InstancePermission.READ_INSTANCE),
+  const canReadScope = Boolean(
+    scopeProject &&
+    hasInstancePermission(scopeProject, InstancePermission.READ_INSTANCE),
+  );
+  const canReadBots = Boolean(
+    canReadScope &&
+    scopeProject &&
+    scopeProject.profile.accounts.length > 0 &&
+    hasInstancePermission(scopeProject, InstancePermission.READ_BOT_INFO),
   );
   const scripts = useQuery({
-    ...scriptListQueryOptions(transport, currentProject?.id ?? ""),
-    enabled: canReadCurrent,
+    ...scriptListQueryOptions(transport, scopeProject?.id ?? ""),
+    enabled: canReadScope,
     refetchInterval: false,
+  });
+  // One list query per open menu keeps bot status current without per-bot requests.
+  const bots = useQuery({
+    ...botStatusRpcQueryOptions(transport, scopeProject?.id ?? ""),
+    enabled: canReadBots,
+    refetchInterval: 5_000,
   });
   const commands = useMemo(
     () =>
       createPaletteCommands({
-        t: (key) => t(key),
+        t: (key, options) => t(key, options),
         client: client.isError ? undefined : client.data,
         instances: instances.isError ? [] : (instances.data?.instances ?? []),
-        current: currentProject,
+        current: scopeProject,
         scripts: scripts.isError ? [] : scripts.data?.scripts,
+        bots: canReadBots && !bots.isError ? bots.data?.bots : undefined,
         demo: transport === null,
       }),
     [
@@ -320,36 +440,83 @@ function CommandPaletteContent({
       client.isError,
       instances.data,
       instances.isError,
-      currentProject,
+      scopeProject,
       scripts.data,
       scripts.isError,
+      canReadBots,
+      bots.data,
+      bots.isError,
       transport,
     ],
   );
+
   const recentKey = `sf-palette-recents:${JSON.stringify([getServerAddress(), client.data?.id])}`;
   const recentIds = recentCache.get(recentKey) ?? readRecents(recentKey);
-  const recents = resolvePaletteRecents(commands, recentIds);
-  const matches = searchPaletteCommands(commands, search);
-  const orderedResults = search.trim()
-    ? matches
-    : [...matches].sort(
+  const pinKey = palettePinKey(getServerAddress(), client.data?.id ?? "");
+  const pins = pinCache.get(pinKey) ?? readPins(pinKey);
+
+  const query = search.trim();
+  const pool = picking
+    ? commands.filter((command) => command.action === "browse-project")
+    : commands.filter(
+        (command) =>
+          matchesPaletteFilter(command, filter) &&
+          (!browsing ||
+            (command.projectId === browsing &&
+              command.action !== "browse-project")),
+      );
+  const poolIds = new Set(pool.map((command) => command.id));
+  const matches = searchPaletteCommands(pool, search, {
+    currentProjectId: scopeProject?.id,
+    recentIds,
+  });
+  const groups = new Map<GroupKey, PaletteCommand[]>();
+  if (query) {
+    // Keep one ranked list so a weaker match never appears above a better one.
+    if (matches.length) groups.set("results", matches.slice(0, RESULT_LIMIT));
+  } else if (picking) {
+    if (matches.length) groups.set("projects", matches.slice(0, RESULT_LIMIT));
+  } else {
+    const pinned = resolvePalettePins(commands, pins).filter((command) =>
+      poolIds.has(command.id),
+    );
+    const shown = new Set(pinned.map((command) => command.id));
+    const recents = resolvePaletteRecents(pool, recentIds).filter(
+      (command) => !shown.has(command.id),
+    );
+    for (const command of recents) shown.add(command.id);
+    if (pinned.length) groups.set("pinned", pinned);
+    if (recents.length) groups.set("recent", recents);
+    const rest = matches
+      .filter((command) => !shown.has(command.id))
+      .sort(
         (a, b) =>
           DEFAULT_GROUP_ORDER.indexOf(a.group) -
           DEFAULT_GROUP_ORDER.indexOf(b.group),
-      );
-  const results = orderedResults.slice(0, RESULT_LIMIT);
-  const groups = new Map<PaletteGroup | "recent", PaletteCommand[]>();
-  if (!search.trim() && recents.length) groups.set("recent", recents);
-  const recentSet = new Set(
-    !search.trim() ? recents.map((command) => command.id) : [],
-  );
-  for (const command of results) {
-    if (recentSet.has(command.id)) continue;
-    const group = groups.get(command.group) ?? [];
-    group.push(command);
-    groups.set(command.group, group);
+      )
+      .slice(0, Math.max(0, RESULT_LIMIT - pinned.length - recents.length));
+    for (const command of rest) {
+      const group = groups.get(command.group) ?? [];
+      group.push(command);
+      groups.set(command.group, group);
+    }
   }
+  const visible = [...groups.values()].flat();
+  const firstVisibleId = visible[0]?.id ?? "";
+  const selectedVisible = visible.some((command) => command.id === selected);
+  useEffect(() => {
+    if (!confirming && !selectedVisible) setSelected(firstVisibleId);
+  }, [confirming, selected, selectedVisible, firstVisibleId]);
+  const selectedCommand = confirming
+    ? undefined
+    : visible.find((command) => command.id === selected);
+  const selectedPinned = Boolean(
+    selectedCommand && isPalettePinned(pins, selectedCommand.id),
+  );
+  const hiddenCount = Math.max(0, matches.length - visible.length);
 
+  const focusInput = () =>
+    requestAnimationFrame(() => inputRef.current?.focus());
   const saveRecents = (ids: string[]) => {
     recentCache.set(recentKey, ids);
     if (!client.data) return;
@@ -359,8 +526,102 @@ function CommandPaletteContent({
       // Keep this session's history when browser storage is unavailable.
     }
   };
-  const execute = async (command: PaletteCommand) => {
+  const savePins = (next: PalettePin[]) => {
+    pinCache.set(pinKey, next);
+    setPinRevision((revision) => revision + 1);
+    if (!client.data) return;
+    try {
+      localStorage.setItem(pinKey, JSON.stringify(next));
+    } catch {
+      // Keep this session's pins when browser storage is unavailable.
+    }
+  };
+  const togglePin = (command: PaletteCommand) => {
+    // Pins for deleted or revoked projects free their slots here.
+    const current = instances.isSuccess
+      ? prunePalettePins(pins, accessibleIds)
+      : pins;
+    const next = togglePalettePin(current, command);
+    if (!next) {
+      toast.info(t("commandPalette.pinLimit", { count: PIN_LIMIT }));
+      return;
+    }
+    savePins(next);
+  };
+  const browseProject = (projectId: string) => {
+    setBrowseId(projectId);
+    setPicking(false);
+    setSearch("");
+    focusInput();
+  };
+  const leaveProject = () => {
+    setBrowseId(null);
+    setPicking(false);
+    setSearch("");
+    focusInput();
+  };
+  const goBack = (): boolean => {
+    if (confirming) {
+      setConfirming(null);
+      focusInput();
+      return true;
+    }
+    if (picking) {
+      setPicking(false);
+      setSearch("");
+      focusInput();
+      return true;
+    }
+    if (browseId) {
+      leaveProject();
+      return true;
+    }
+    return false;
+  };
+  useEffect(() => {
+    escapeHandler.current = goBack;
+    return () => {
+      escapeHandler.current = null;
+    };
+  });
+
+  const runOperation = (command: PaletteCommand) => {
+    const operation = command.operation;
+    if (!operation) return;
+    if (!isPaletteOperationAvailable(command, commands, scopeProject)) {
+      toast.info(t("commandPalette.confirm.unavailable"));
+      return;
+    }
+    if (!transport) {
+      onClose();
+      toast.info(t("commandPalette.feedback.demo"));
+      return;
+    }
+    if (isPaletteOperationPending(queryClient, operation)) {
+      toast.info(t("commandPalette.feedback.busy"));
+      return;
+    }
     onClose();
+    const feedback = `commandPalette.feedback.${operation.action}`;
+    const promise = startPaletteOperation(queryClient, transport, operation);
+    toast.promise(promise, {
+      loading: t(`${feedback}.loading`),
+      success: (count) => t(`${feedback}.success`, { count }),
+      error: t(`${feedback}.error`),
+    });
+    promise.catch((error: unknown) => console.error(error));
+  };
+  const execute = async (command: PaletteCommand) => {
+    if (command.action === "browse-project" && command.projectId) {
+      browseProject(command.projectId);
+      return;
+    }
+    if (command.operation) {
+      if (needsPaletteConfirmation(command)) setConfirming(command);
+      else runOperation(command);
+      return;
+    }
+    onClose(!command.destination);
     try {
       if (command.destination) {
         saveRecents(rememberPaletteCommand(recentIds, command.id));
@@ -398,7 +659,7 @@ function CommandPaletteContent({
           const value =
             command.action === "copy-url"
               ? window.location.href
-              : currentProject?.id;
+              : command.projectId;
           if (!value) return;
           if (isDesktopApp()) await desktop.clipboard.writeText(value);
           else await navigator.clipboard.writeText(value);
@@ -411,16 +672,27 @@ function CommandPaletteContent({
       toast.error(t("commandPalette.actionError"));
     }
   };
+
   const loading =
     client.isPending ||
     instances.isPending ||
-    (instanceMatch && current.isPending) ||
-    (canReadCurrent && scripts.isPending);
+    (infoEnabled && info.isPending) ||
+    (canReadScope && scripts.isPending) ||
+    (canReadBots && bots.isPending);
   const failed =
     client.isError ||
     instances.isError ||
-    (instanceMatch && current.isError) ||
-    (canReadCurrent && scripts.isError);
+    (infoEnabled && info.isError) ||
+    (canReadScope && scripts.isError) ||
+    (canReadBots && bots.isError);
+  const projectName =
+    scopeProject?.friendlyName ??
+    instances.data?.instances.find((instance) => instance.id === scopeId)
+      ?.friendlyName;
+  const headingFor = (group: GroupKey) =>
+    group === "currentProject" && browsing && browsing !== routeId
+      ? t("commandPalette.groups.projectPages")
+      : t(`commandPalette.groups.${group}`);
 
   return (
     <Command
@@ -428,33 +700,147 @@ function CommandPaletteContent({
       shouldFilter={false}
       vimBindings={false}
       loop
+      value={selected}
+      onValueChange={setSelected}
+      className="min-h-0 flex-1"
+      onKeyDown={(event) => {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          !event.altKey &&
+          !event.shiftKey &&
+          !event.repeat &&
+          !event.nativeEvent.isComposing &&
+          event.key.toLowerCase() === "p" &&
+          selectedCommand
+        ) {
+          event.preventDefault();
+          togglePin(selectedCommand);
+        }
+      }}
     >
       {/* Negative margins let the header and footer rules span the padded Command root. */}
-      <div className="-mx-1 -mt-1 flex items-center gap-2 border-b pr-3">
+      <div className="-mx-1 -mt-1 flex shrink-0 items-center gap-2 border-b pr-3">
         <CommandInput
+          ref={inputRef}
           variant="palette"
           autoFocus
           aria-label={t("commandPalette.title")}
-          placeholder={t("commandPalette.placeholder")}
+          placeholder={
+            picking
+              ? t("commandPalette.pickProjectPlaceholder")
+              : browsing && projectName
+                ? t("commandPalette.browsingPlaceholder", {
+                    name: projectName,
+                  })
+                : t("commandPalette.placeholder")
+          }
           value={search}
-          onValueChange={setSearch}
+          onValueChange={(value) => {
+            setSearch(value);
+            if (browseRevoked) setBrowseId(null);
+          }}
+          onKeyDown={(event) => {
+            if (
+              event.key === "Backspace" &&
+              !search &&
+              (picking || browseId) &&
+              !event.repeat
+            ) {
+              event.preventDefault();
+              goBack();
+            }
+          }}
         />
-        {currentProject && (
-          <span className="flex max-w-32 shrink-0 items-center gap-1.5 rounded-md border bg-muted px-2 py-1 text-xs font-medium text-foreground sm:max-w-48">
-            <DynamicIcon
-              name={currentProject.icon || "folder"}
-              aria-hidden="true"
-              className="size-3.5 shrink-0"
-            />
-            <span className="sr-only">
-              {t("commandPalette.groups.currentProject")}:{" "}
-            </span>
-            <span className="min-w-0 truncate">
-              {currentProject.friendlyName}
-            </span>
-          </span>
+        {scopeId && projectName ? (
+          <div className="flex shrink-0 items-center gap-1">
+            <Button
+              variant="outline"
+              size="sm"
+              className="max-w-32 font-normal sm:max-w-48"
+              aria-label={t("commandPalette.changeProject", {
+                name: projectName,
+              })}
+              aria-pressed={picking}
+              onKeyDown={keepListKeys}
+              onClick={() => {
+                setPicking(!picking);
+                setSearch("");
+                focusInput();
+              }}
+            >
+              <DynamicIcon
+                name={scopeProject?.icon || "folder"}
+                aria-hidden="true"
+                data-icon="inline-start"
+              />
+              <span className="min-w-0 truncate">{projectName}</span>
+              <ChevronsUpDownIcon aria-hidden="true" data-icon="inline-end" />
+            </Button>
+            {browseId && (
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label={t("commandPalette.exitProject")}
+                onKeyDown={keepListKeys}
+                onClick={leaveProject}
+              >
+                <XIcon aria-hidden="true" />
+              </Button>
+            )}
+          </div>
+        ) : (
+          <Button
+            variant="outline"
+            size="icon-sm"
+            className="shrink-0"
+            aria-label={t("commandPalette.chooseProject")}
+            aria-pressed={picking}
+            onKeyDown={keepListKeys}
+            onClick={() => {
+              setPicking(!picking);
+              setSearch("");
+              focusInput();
+            }}
+          >
+            <FolderSearchIcon aria-hidden="true" />
+          </Button>
         )}
       </div>
+      {!picking && !confirming && (
+        <div className="-mx-1 shrink-0 overflow-x-auto border-b px-2 py-1.5">
+          <ToggleGroup
+            size="sm"
+            spacing={1}
+            value={[filter]}
+            aria-label={t("commandPalette.filterLabel")}
+            aria-orientation={undefined}
+            onKeyDown={keepListKeys}
+            onValueChange={(values) => {
+              const next = PALETTE_FILTERS.find((entry) => entry === values[0]);
+              if (next) setFilter(next);
+              focusInput();
+            }}
+          >
+            {PALETTE_FILTERS.map((entry) => (
+              <ToggleGroupItem key={entry} value={entry} className="text-xs">
+                {t(`commandPalette.filters.${entry}`)}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
+      )}
+      {browseRevoked && (
+        <p
+          role="status"
+          className="-mx-1 flex items-center gap-2 border-b px-3 py-2 text-sm"
+        >
+          <CircleAlertIcon
+            aria-hidden="true"
+            className="size-4 shrink-0 text-destructive"
+          />
+          {t("commandPalette.projectUnavailable")}
+        </p>
+      )}
       {failed && (
         <div
           role="status"
@@ -470,50 +856,70 @@ function CommandPaletteContent({
           <Button
             variant="outline"
             size="sm"
+            onKeyDown={keepListKeys}
             onClick={() => {
               if (client.isError) void client.refetch();
               if (instances.isError) void instances.refetch();
-              if (instanceMatch && current.isError) void current.refetch();
-              if (canReadCurrent && scripts.isError) void scripts.refetch();
+              if (infoEnabled && info.isError) void info.refetch();
+              if (canReadScope && scripts.isError) void scripts.refetch();
+              if (canReadBots && bots.isError) void bots.refetch();
             }}
           >
             {t("commandPalette.retry")}
           </Button>
         </div>
       )}
-      <CommandList className="max-h-[min(28rem,55dvh)]">
-        <CommandEmpty>
-          <Empty className="p-2">
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <SearchXIcon aria-hidden="true" />
-              </EmptyMedia>
-              <EmptyTitle>{t("commandPalette.emptyTitle")}</EmptyTitle>
-              <EmptyDescription>
-                {t("commandPalette.emptyHint")}
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </CommandEmpty>
-        {[...groups].map(([group, entries]) => (
-          <CommandGroup
-            key={group}
-            heading={t(`commandPalette.groups.${group}`)}
-          >
-            {entries.map((command) => (
-              <PaletteRow
-                key={command.id}
-                command={command}
-                showContext={PROJECT_CONTEXT_GROUPS.has(group)}
-                onSelect={() => {
-                  void execute(command);
-                }}
-              />
-            ))}
-          </CommandGroup>
-        ))}
-      </CommandList>
-      {loading && (
+      {confirming?.operation?.kind === "bot" ? (
+        <OperationConfirmation
+          key={confirming.id}
+          command={confirming}
+          valid={isPaletteOperationAvailable(
+            confirming,
+            commands,
+            scopeProject,
+          )}
+          onCancel={goBack}
+          onConfirm={() => runOperation(confirming)}
+        />
+      ) : (
+        <CommandList className="min-h-0 max-h-[min(28rem,55dvh)]">
+          <CommandEmpty>
+            <Empty className="p-2">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <SearchXIcon aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyTitle>{t("commandPalette.emptyTitle")}</EmptyTitle>
+                <EmptyDescription>
+                  {t("commandPalette.emptyHint")}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </CommandEmpty>
+          {[...groups].map(([group, entries]) => (
+            <CommandGroup key={group} heading={headingFor(group)}>
+              {entries.map((command) => (
+                <PaletteRow
+                  key={command.id}
+                  command={command}
+                  search={query}
+                  showContext={
+                    picking ||
+                    Boolean(
+                      command.projectId &&
+                      command.projectId !== scopeProject?.id,
+                    )
+                  }
+                  onSelect={() => {
+                    void execute(command);
+                  }}
+                />
+              ))}
+            </CommandGroup>
+          ))}
+        </CommandList>
+      )}
+      {loading && !confirming && (
         <div
           role="status"
           aria-label={t("commandPalette.loading")}
@@ -529,12 +935,42 @@ function CommandPaletteContent({
           </div>
         </div>
       )}
-      <div className="-mx-1 -mb-1 flex items-center gap-3 border-t px-3 py-2 text-xs text-muted-foreground">
+      <div className="-mx-1 -mb-1 flex min-h-11 shrink-0 items-center gap-3 border-t px-3 py-2 text-xs text-muted-foreground">
+        {selectedCommand && (
+          <span className="flex shrink-0 items-center gap-1.5">
+            <Button
+              variant="ghost"
+              size="xs"
+              className="shrink-0"
+              aria-label={t(
+                selectedPinned
+                  ? "commandPalette.unpinLabel"
+                  : "commandPalette.pinLabel",
+                { name: selectedCommand.label },
+              )}
+              aria-keyshortcuts="Control+p Meta+p"
+              // Keep focus in the search field so the selected result stays active.
+              onMouseDown={(event) => event.preventDefault()}
+              onKeyDown={keepListKeys}
+              onClick={() => togglePin(selectedCommand)}
+            >
+              {selectedPinned ? (
+                <PinOffIcon aria-hidden="true" data-icon="inline-start" />
+              ) : (
+                <PinIcon aria-hidden="true" data-icon="inline-start" />
+              )}
+              {t(
+                selectedPinned ? "commandPalette.unpin" : "commandPalette.pin",
+              )}
+            </Button>
+            <Kbd aria-hidden="true" className="hidden text-foreground sm:flex">
+              {formatShortcut("Ctrl+P")}
+            </Kbd>
+          </span>
+        )}
         <span className="min-w-0 flex-1 truncate">
-          {matches.length > RESULT_LIMIT
-            ? t("commandPalette.moreResults", {
-                count: matches.length - RESULT_LIMIT,
-              })
+          {hiddenCount > 0
+            ? t("commandPalette.moreResults", { count: hiddenCount })
             : t("commandPalette.description")}
         </span>
         {/* Screen readers announce listbox navigation, so this legend is visual only. */}
@@ -561,7 +997,11 @@ function CommandPaletteContent({
           </span>
           <span className="flex items-center gap-1.5">
             <Kbd className="text-foreground">Esc</Kbd>
-            {t("commandPalette.keys.close")}
+            {t(
+              confirming || picking || browseId
+                ? "commandPalette.keys.back"
+                : "commandPalette.keys.close",
+            )}
           </span>
         </div>
       </div>
@@ -569,39 +1009,191 @@ function CommandPaletteContent({
   );
 }
 
+function OperationConfirmation({
+  command,
+  valid,
+  onCancel,
+  onConfirm,
+}: {
+  command: PaletteCommand;
+  valid: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const { t } = useTranslation("common");
+  const titleId = useId();
+  const descriptionId = useId();
+  const [submitted, setSubmitted] = useState(false);
+  const operation = command.operation;
+  if (operation?.kind !== "bot") return null;
+  const action = operation.action;
+  return (
+    <div
+      role="group"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      className="flex min-h-0 flex-col gap-4 overflow-y-auto p-3"
+    >
+      <div className="flex items-start gap-3">
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-md border bg-background text-foreground">
+          <DynamicIcon name={command.icon} aria-hidden="true" />
+        </span>
+        <div className="flex min-w-0 flex-col gap-1">
+          <p id={titleId} className="text-sm font-medium">
+            {t(`commandPalette.confirm.${action}`, {
+              count: operation.botIds.length,
+              project: command.context ?? operation.instanceId,
+            })}
+          </p>
+          <p id={descriptionId} className="text-sm text-muted-foreground">
+            {t("commandPalette.confirm.description")}
+          </p>
+        </div>
+      </div>
+      {!valid && (
+        <p role="alert" className="text-sm text-destructive">
+          {t("commandPalette.confirm.unavailable")}
+        </p>
+      )}
+      <div className="flex justify-end gap-2">
+        <Button
+          variant="outline"
+          autoFocus
+          onKeyDown={keepListKeys}
+          onClick={onCancel}
+        >
+          {t("commandPalette.confirm.cancel")}
+        </Button>
+        <Button
+          variant={action === "stop" ? "destructive" : "default"}
+          disabled={!valid || submitted}
+          onKeyDown={keepListKeys}
+          onClick={() => {
+            // The menu closes after this, but a fast second activation must not resend.
+            if (submitted) return;
+            setSubmitted(true);
+            onConfirm();
+          }}
+        >
+          {t(
+            action === "start"
+              ? "commandPalette.confirm.confirmStart"
+              : action === "stop"
+                ? "commandPalette.confirm.confirmStop"
+                : "commandPalette.confirm.confirmRestart",
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function Highlighted({ text, search }: { text: string; search: string }) {
+  if (!search) return text;
+  let offset = 0;
+  return paletteMatchSegments(text, search).map((segment) => {
+    const start = offset;
+    offset += segment.text.length;
+    return segment.matched ? (
+      <mark
+        key={start}
+        className="bg-transparent font-semibold text-foreground underline underline-offset-2"
+      >
+        {segment.text}
+      </mark>
+    ) : (
+      <Fragment key={start}>{segment.text}</Fragment>
+    );
+  });
+}
+
+function MatchReason({ text, search }: { text: string; search: string }) {
+  const { t } = useTranslation("common");
+  // Split around a placeholder so translations can place the match anywhere.
+  const marker = "\u0000";
+  const [before, after = ""] = t("commandPalette.matchedBy", {
+    text: marker,
+  }).split(marker);
+  return (
+    <>
+      {before}
+      <Highlighted text={text} search={search} />
+      {after}
+    </>
+  );
+}
+
 function PaletteRow({
   command,
+  search,
   showContext,
   onSelect,
 }: {
   command: PaletteCommand;
+  search: string;
   showContext: boolean;
   onSelect: () => void;
 }) {
+  const reason =
+    command.matchedText && command.matchedText !== command.description
+      ? command.matchedText
+      : undefined;
   return (
     <CommandItem value={command.id} onSelect={onSelect}>
       <span className="flex size-7 shrink-0 items-center justify-center rounded-md border bg-background text-muted-foreground group-data-selected/command-item:text-foreground">
         <DynamicIcon name={command.icon} aria-hidden="true" />
       </span>
-      <span className="flex min-w-0 flex-1 items-baseline gap-2">
-        <span className="max-w-full min-w-0 shrink-0 truncate">
-          {command.label}
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="flex min-w-0 items-baseline gap-2">
+          <span className="max-w-full min-w-0 shrink-0 truncate">
+            <Highlighted text={command.label} search={search} />
+          </span>
+          {command.context &&
+            (showContext ? (
+              <span className="min-w-0 truncate text-xs text-muted-foreground group-data-selected/command-item:text-foreground">
+                <span className="sr-only">, </span>
+                <Highlighted text={command.context} search={search} />
+              </span>
+            ) : (
+              // The header shows the project in scope, so keep its name for screen readers only.
+              <span className="sr-only">, {command.context}</span>
+            ))}
         </span>
-        {command.context &&
-          (showContext ? (
-            <span className="min-w-0 truncate text-xs text-muted-foreground group-data-selected/command-item:text-foreground">
-              <span className="sr-only">, </span>
-              {command.context}
-            </span>
-          ) : (
-            // The header chip shows the current project, so keep its name for screen readers only.
-            <span className="sr-only">, {command.context}</span>
-          ))}
+        {(command.description || reason) && (
+          <span className="min-w-0 truncate text-xs text-muted-foreground group-data-selected/command-item:text-foreground">
+            <span className="sr-only">, </span>
+            {command.description && (
+              <Highlighted text={command.description} search={search} />
+            )}
+            {command.description && reason && " · "}
+            {reason && <MatchReason text={reason} search={search} />}
+          </span>
+        )}
       </span>
+      {command.status && (
+        <Badge
+          variant="outline"
+          className={cn(
+            "font-normal",
+            command.status.tone === "success" &&
+              "border-success/40 text-success-emphasis",
+            command.status.tone === "warning" &&
+              "border-warning/40 text-warning-emphasis",
+            command.status.tone === "destructive" &&
+              "border-destructive/40 text-destructive",
+          )}
+        >
+          <span className="sr-only">, </span>
+          {command.status.label}
+        </Badge>
+      )}
       <span
         data-slot="command-shortcut"
         aria-hidden="true"
-        className="ml-auto hidden shrink-0 group-data-selected/command-item:flex"
+        className={cn(
+          "hidden shrink-0 group-data-selected/command-item:flex",
+          !command.status && "ml-auto",
+        )}
       >
         <Kbd className="bg-background text-foreground">
           <CornerDownLeftIcon className="size-3" />
