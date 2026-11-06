@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "检查已导入的代理？",
-      "description": "您已导入 {{count}} 个代理。现在要检查它们吗？SoulFire 会自动移除无效的代理。",
+      "description": "您已导入 {{count}} 个代理。现在要检查它们吗？Soulfire 会自动移除无效的代理。",
       "confirm": "检查代理服务器",
       "skip": "跳过"
     },

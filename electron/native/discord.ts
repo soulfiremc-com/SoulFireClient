@@ -34,7 +34,7 @@ export class DiscordPresenceManager {
         details: details ?? undefined,
         startTimestamp: this.startedAt,
         largeImageKey: "logo",
-        largeImageText: "SoulFire \uD83E\uDDD9",
+        largeImageText: "Soulfire \uD83E\uDDD9",
         buttons: [
           {
             label: "Learn more",

@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire loqosu"
+      "alt": "Soulfire loqosu"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "SoulFire-ə yenisiniz? <a>Başlanğıc bələdçəsini</a> oxuyun.",
+  "newUser": "Soulfire-ə yenisiniz? <a>Başlanğıc bələdçəsini</a> oxuyun.",
   "connect": {
-    "title": "SoulFire serverinə qoşulun",
-    "description": "Qoşulmaq istədiyiniz SoulFire serverinin növünü seçin.",
+    "title": "Soulfire serverinə qoşulun",
+    "description": "Qoşulmaq istədiyiniz Soulfire serverinin növünü seçin.",
     "integrated": {
       "title": "İnteqrasiyalı server (lokal)",
-      "description": "Bu cihazda SoulFire serveri işə salır. Quraşdırma avtomatikdir. Bu seçim masaüstü və ya Android tətbiqini tələb edir."
+      "description": "Bu cihazda Soulfire serveri işə salır. Quraşdırma avtomatikdir. Bu seçim masaüstü və ya Android tətbiqini tələb edir."
     },
     "dedicated": {
       "title": "Ayrılmış server (uzaq)",
-      "description": "Server ünvanı və token ilə uzaq SoulFire serverinə qoşulur."
+      "description": "Server ünvanı və token ilə uzaq Soulfire serverinə qoşulur."
     },
     "demo": {
       "title": "Demo server",
-      "description": "Demo məlumatları ilə yalnız oxumaq üçün server təmin edir. SoulFire dəyişiklikləri yadda saxlamır."
+      "description": "Demo məlumatları ilə yalnız oxumaq üçün server təmin edir. Soulfire dəyişiklikləri yadda saxlamır."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Təkrar cəhd et",
     "reset": {
       "button": "Məlumatları sıfırla",
-      "loading": "SoulFire məlumatları sıfırlanır...",
-      "success": "SoulFire məlumatları uğurla sıfırlandı. Yenidən başlamağa çalışın.",
-      "error": "SoulFire məlumatlarını sıfırlamaq mümkün olmadı"
+      "loading": "Soulfire məlumatları sıfırlanır...",
+      "success": "Soulfire məlumatları uğurla sıfırlandı. Yenidən başlamağa çalışın.",
+      "error": "Soulfire məlumatlarını sıfırlamaq mümkün olmadı"
     },
     "description": "İnteqrasiya olunmuş server kompüterinizdə işləyir. Aşağıda Java işə salma arqumentlərini dəyişə bilərsiniz.",
     "form": {
       "jvmArgs": {
         "title": "JVM arqumentləri",
-        "description": "SoulFire üçün Java VM arqumentləri. 4 GB RAM istifadə etmək üçün <bold>-Xmx4G</bold> əlavə edin. Standart olaraq mövcud RAM-ın 25%-i istifadə olunur.",
+        "description": "Soulfire üçün Java VM arqumentləri. 4 GB RAM istifadə etmək üçün <bold>-Xmx4G</bold> əlavə edin. Standart olaraq mövcud RAM-ın 25%-i istifadə olunur.",
         "placeholder": "JVM arqumentlərinizi bura yazın"
       },
       "back": "Geri",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux əmri",
-          "description": "<a>Termux tətbiqini</a> quraşdırın. SoulFire serverini quraşdırmaq üçün bu komandadan Termux-da istifadə edin. Token yaratmaq üçün <copy>generate-token api</copy> işlədin. Sonra tokeni aşağıda daxil edin."
+          "description": "<a>Termux tətbiqini</a> quraşdırın. Soulfire serverini quraşdırmaq üçün bu komandadan Termux-da istifadə edin. Token yaratmaq üçün <copy>generate-token api</copy> işlədin. Sonra tokeni aşağıda daxil edin."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Başlatmanı ləğv etmək mümkün olmadı",
     "autoStart": {
       "title": "Növbəti açılışda avtomatik başlat",
-      "description": "SoulFire açıldıqda server seçimini keç və bu ayarları istifadə et."
+      "description": "Soulfire açıldıqda server seçimini keç və bu ayarları istifadə et."
     }
   },
   "dedicated": {
-    "description": "SoulFire serverinin ünvanını və tokenini daxil edin.",
+    "description": "Soulfire serverinin ünvanını və tokenini daxil edin.",
     "toast": {
       "loading": "Serverə qoşulur...",
       "success": "Serverə qoşuldu",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Ünvan",
-        "description": "SoulFire serverinizin ünvanı.",
+        "description": "Soulfire serverinizin ünvanı.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "Email",
         "placeholder": "root@soulfiremc.com",
-        "description": "SoulFire hesabınızın email ünvanı."
+        "description": "Soulfire hesabınızın email ünvanı."
       },
       "back": "Geri",
       "useToken": "Token istifadə et",
@@ -109,9 +109,9 @@
     "back": "Geri"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Ön izləmə axtarırsınız?",
     "production": "İstehsalat üçün baxırsınız?",
-    "helpTranslate": "SoulFire tərcümə et"
+    "helpTranslate": "Soulfire tərcümə et"
   }
 }

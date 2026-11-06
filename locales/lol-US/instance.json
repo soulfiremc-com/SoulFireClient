@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Chek da ported proxeez, k?",
-      "description": "U imported {{count}} proxeez. Chek dem now? SoulFire be deletin' bad proxeez automagically.",
+      "description": "U imported {{count}} proxeez. Chek dem now? Soulfire be deletin' bad proxeez automagically.",
       "confirm": "Chek Proxyz",
       "skip": "SKIPZ"
     },

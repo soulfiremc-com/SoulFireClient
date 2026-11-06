@@ -193,7 +193,7 @@
     },
     "postImportCheckDialog": {
       "title": "Check imported proxies?",
-      "description": "You imported {{count}} proxies. Check them now? SoulFire removes invalid proxies automatically.",
+      "description": "You imported {{count}} proxies. Check them now? Soulfire removes invalid proxies automatically.",
       "confirm": "Check Proxies",
       "skip": "Skip"
     },
@@ -528,7 +528,7 @@
       "offline": "Bot is offline. Actions are only available when the bot is connected."
     },
     "movementPanel": {
-      "updateServer": "Update SoulFire to synchronize movement controls.",
+      "updateServer": "Update Soulfire to synchronize movement controls.",
       "title": "Movement Control",
       "movement": "Movement (WASD)",
       "forward": "Move Forward (W)",
@@ -876,7 +876,7 @@
     },
     "health": {
       "title": "Script check",
-      "description": "The SoulFire server checks your graph as you edit. Select a problem to go to its node.",
+      "description": "The Soulfire server checks your graph as you edit. Select a problem to go to its node.",
       "empty": "Empty",
       "ok": "No problems",
       "errors_one": "{{count}} error",
@@ -927,13 +927,13 @@
     "refresh": "Refresh stock",
     "done": "Done",
     "buyMore": "Buy more",
-    "affiliateDisclosure": "Purchases through these links or codes may support SoulFire at no extra cost to you.",
+    "affiliateDisclosure": "Purchases through these links or codes may support Soulfire at no extra cost to you.",
     "accountsDescription": "Compare providers, then buy and import Minecraft accounts here or check out on their site.",
     "proxiesDescription": "Compare providers, then import your proxies here or check out on their site.",
     "accountFileImport": "Buy on the provider's site, then use Add accounts to import the account file.",
     "proxyFileImport": "Buy on the provider's site, then use Add proxies to import the proxy list.",
     "allProviders": "Compare all providers",
-    "demo": "Connect to a SoulFire server to purchase or import resources.",
+    "demo": "Connect to a Soulfire server to purchase or import resources.",
     "filterLabel": "Filter providers",
     "filters": {
       "all": "All",
@@ -952,7 +952,7 @@
       "import": "Import directly to this project",
       "recover": "Reload earlier orders and import them"
     },
-    "inSoulFire": "What you can do in SoulFire",
+    "inSoulFire": "What you can do in Soulfire",
     "youNeed": "What you need",
     "requirement": {
       "apiKey": "A {{provider}} API key",
@@ -1019,7 +1019,7 @@
       },
       "fernan": {
         "summary": "Cookie and full-access accounts with live stock, cooldowns and order recovery.",
-        "offer": "10% off with this referral code. SoulFire sends it with your order, and you can change or remove it."
+        "offer": "10% off with this referral code. Soulfire sends it with your order, and you can change or remove it."
       },
       "localts": {
         "summary": "Cookie and full-access accounts with live stock, volume discounts and order recovery.",
@@ -1186,7 +1186,7 @@
       "priceStock": "{{price}} credits, {{stock}} in stock",
       "perAccount": "{{price}} credits each",
       "discountTier": "{{percent}}% off from {{quantity}}",
-      "reviewNote": "Volume discounts are included in the total. SoulFire checks the price, stock and balance again before it charges you.",
+      "reviewNote": "Volume discounts are included in the total. Soulfire checks the price, stock and balance again before it charges you.",
       "purchase": "Pay {{total}} credits",
       "purchased": "Delivery can take a moment while Localts packages your order.",
       "cookieTokens": "Localts MSAAUTH cookie tokens",
@@ -1210,7 +1210,7 @@
         "connect": "Your API key loads your balance, stock, cooldowns and recent purchases.",
         "choose": "Pick a product, or reload an earlier order.",
         "review": "Nothing is charged until you confirm.",
-        "import": "Choose how SoulFire should log in to these accounts."
+        "import": "Choose how Soulfire should log in to these accounts."
       },
       "keyHelp": "Find your API key in your Fernan's Club account.",
       "perAccount": "{{price}} each",
@@ -1236,9 +1236,9 @@
         "connect": "Your API key loads your available credits.",
         "choose": "Pick an account type and quantity.",
         "review": "Nothing is charged until you confirm.",
-        "import": "SoulFire is logging in to the accounts now."
+        "import": "Soulfire is logging in to the accounts now."
       },
-      "keyHelp": "SoulFire saves this key on this device so you do not need to enter it again.",
+      "keyHelp": "Soulfire saves this key on this device so you do not need to enter it again.",
       "quantityHelp": "Ravealts allows up to 10 accounts per order.",
       "priceNote": "Ravealts charges your credits when you buy and does not report the price beforehand. Check the current price at your Ravealts dashboard if you are unsure.",
       "purchase_one": "Buy {{count}} account",
@@ -1246,7 +1246,7 @@
       "importing_one": "{{count}} account was delivered and sent to import. The progress notice shows the result.",
       "importing_other": "{{count}} accounts were delivered and sent to import. The progress notice shows the result."
     },
-    "keyPrivacySaved": "SoulFire saves this API key on this device after it connects. Requests go directly to the provider."
+    "keyPrivacySaved": "Soulfire saves this API key on this device after it connects. Requests go directly to the provider."
   },
   "fleet": {
     "headline": {
@@ -1295,7 +1295,7 @@
       },
       "other": {
         "title": "see the reported error",
-        "description": "SoulFire has no specific fix for this error. Open the bot or the logs for details."
+        "description": "Soulfire has no specific fix for this error. Open the bot or the logs for details."
       }
     },
     "fix": {
@@ -1354,7 +1354,7 @@
       "description": "Bots can connect from this server's IP address, so you can skip this. Add proxies if the Minecraft server limits connections per IP address.",
       "summary_one": "{{count}} proxy",
       "summary_other": "{{count}} proxies",
-      "summaryNone": "No proxies. Bots use the SoulFire server's IP address.",
+      "summaryNone": "No proxies. Bots use the Soulfire server's IP address.",
       "skip": "Continue without proxies",
       "add": "Add my proxies",
       "provider": "Compare providers"
@@ -1366,7 +1366,7 @@
       "reviewVersion": "Version",
       "reviewAccounts": "Accounts",
       "reviewProxies": "Proxies",
-      "defaultAddress": "Bots will join {{address}}, the default address. That is correct only if the Minecraft server runs on the same machine as the SoulFire server.",
+      "defaultAddress": "Bots will join {{address}}, the default address. That is correct only if the Minecraft server runs on the same machine as the Soulfire server.",
       "needAccounts": "Add accounts first",
       "count": "Bots to start",
       "action_one": "Start {{count}} bot",

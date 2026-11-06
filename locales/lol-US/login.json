@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire loog"
+      "alt": "Soulfire loog"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "Nu tu SoulFire? Reed teh <a>gettin startd guide</a>.",
+  "newUser": "Nu tu Soulfire? Reed teh <a>gettin startd guide</a>.",
   "connect": {
     "title": "Connect 2 SoulFier servr",
     "description": "Select which tyep ov SoulFier servr 2 connect 2.",
     "integrated": {
       "title": "Integratd servr (local)",
-      "description": "Runz a SoulFire servr on dis device. Setzup iz automatik. Dis opshun needz desktop or Android app."
+      "description": "Runz a Soulfire servr on dis device. Setzup iz automatik. Dis opshun needz desktop or Android app."
     },
     "dedicated": {
       "title": "Dedicatd servr (remoet)",
-      "description": "Connekts tu a remote SoulFire servr wif itz adress an token."
+      "description": "Connekts tu a remote Soulfire servr wif itz adress an token."
     },
     "demo": {
       "title": "Deom servr",
-      "description": "Gibz u read-only servr wif demo data. SoulFire doez not save changez."
+      "description": "Gibz u read-only servr wif demo data. Soulfire doez not save changez."
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "Try agin? kthx!",
     "reset": {
       "button": "ZOMGWTF RESET DATAZ",
-      "loading": "Resettin SoulFire data... hang onz plz",
-      "success": "SoulFire data haz reset, yaaay! Try agin now kthx.",
-      "error": "Uh-oh, failed to reset SoulFire dataz :("
+      "loading": "Resettin Soulfire data... hang onz plz",
+      "success": "Soulfire data haz reset, yaaay! Try agin now kthx.",
+      "error": "Uh-oh, failed to reset Soulfire dataz :("
     },
     "description": "Teh integrated servr runz on ur computr. U kin change teh Java startz-up argumintz below.",
     "form": {
       "jvmArgs": {
         "title": "JVM argumints",
-        "description": "Java VM argumintz 4 SoulFire. Add <bold>-Xmx4G</bold> 2 use 4 GB ov RAM. By defawlt iz 25% ov available RAM.",
+        "description": "Java VM argumintz 4 Soulfire. Add <bold>-Xmx4G</bold> 2 use 4 GB ov RAM. By defawlt iz 25% ov available RAM.",
         "placeholder": "Ur JVM argumints herez"
       },
       "back": "Bak",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termux kommando",
-          "description": "Install teh <a>Termux app</a>. Run dis command in Termux 2 install teh SoulFire servr. Run <copy>generate-token api</copy> 2 makez token. Den enter token below."
+          "description": "Install teh <a>Termux app</a>. Run dis command in Termux 2 install teh Soulfire servr. Run <copy>generate-token api</copy> 2 makez token. Den enter token below."
         },
         "token": {
           "title": "Token",
@@ -67,11 +67,11 @@
     "cancelError": "Cud not cansul teh startin upz",
     "autoStart": {
       "title": "Startz aut O-MATICALLY next tiem",
-      "description": "Skips teh serber selectshun an uzez deez setinz wen SoulFire opens. KTHXBAI"
+      "description": "Skips teh serber selectshun an uzez deez setinz wen Soulfire opens. KTHXBAI"
     }
   },
   "dedicated": {
-    "description": "Put in teh adress an token ov teh SoulFire servr.",
+    "description": "Put in teh adress an token ov teh Soulfire servr.",
     "toast": {
       "loading": "Connekting to serverz...",
       "success": "Connektahed to serverz",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "Addres",
-        "description": "Adresz uf ur SoulFire serverz.",
+        "description": "Adresz uf ur Soulfire serverz.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "EMAYL",
         "placeholder": "root@soulfiremc.com",
-        "description": "Emayl uf ur SoulFire akkountz."
+        "description": "Emayl uf ur Soulfire akkountz."
       },
       "back": "Bak",
       "useToken": "Useh tokenz",
@@ -109,9 +109,9 @@
     "back": "Bak"
   },
   "footer": {
-    "version": "SoulFire Client {{version}} - {{environment}}",
+    "version": "Soulfire Client {{version}} - {{environment}}",
     "preview": "Lukingz 4 preview?",
     "production": "Lukingz 4 producshun?",
-    "helpTranslate": "Halp translayt SoulFire"
+    "helpTranslate": "Halp translayt Soulfire"
   }
 }

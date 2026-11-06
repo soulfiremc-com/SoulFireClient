@@ -1,25 +1,25 @@
 {
   "header": {
     "image": {
-      "alt": "SoulFire ロゴ"
+      "alt": "Soulfire ロゴ"
     },
-    "title": "SoulFire"
+    "title": "Soulfire"
   },
-  "newUser": "SoulFire を初めてご利用ですか？<a>スタートガイド</a>をご覧ください。",
+  "newUser": "Soulfire を初めてご利用ですか？<a>スタートガイド</a>をご覧ください。",
   "connect": {
-    "title": "SoulFireサーバーに接続する",
-    "description": "接続するSoulFireサーバーの種類を選択してください。",
+    "title": "Soulfireサーバーに接続する",
+    "description": "接続するSoulfireサーバーの種類を選択してください。",
     "integrated": {
       "title": "統合サーバー（ローカル）",
-      "description": "このデバイスで SoulFire サーバーを起動します。セットアップは自動で行われます。このオプションはデスクトップまたは Android アプリが必要です。"
+      "description": "このデバイスで Soulfire サーバーを起動します。セットアップは自動で行われます。このオプションはデスクトップまたは Android アプリが必要です。"
     },
     "dedicated": {
       "title": "専用サーバー（リモート）",
-      "description": "リモート SoulFire サーバーにアドレスとトークンで接続します。"
+      "description": "リモート Soulfire サーバーにアドレスとトークンで接続します。"
     },
     "demo": {
       "title": "デモサーバー",
-      "description": "デモデータを使用した読み取り専用サーバーを提供します。SoulFire は変更内容を保存しません。"
+      "description": "デモデータを使用した読み取り専用サーバーを提供します。Soulfire は変更内容を保存しません。"
     }
   },
   "integrated": {
@@ -32,15 +32,15 @@
     "retry": "再試行する",
     "reset": {
       "button": "データをリセット",
-      "loading": "SoulFireのデータをリセットしています...",
-      "success": "SoulFireのデータが正常にリセットされました。再度開始してください。",
-      "error": "SoulFireのデータのリセットに失敗しました"
+      "loading": "Soulfireのデータをリセットしています...",
+      "success": "Soulfireのデータが正常にリセットされました。再度開始してください。",
+      "error": "Soulfireのデータのリセットに失敗しました"
     },
     "description": "統合サーバーはお使いのコンピュータで動作します。下記で Java の起動引数を変更できます。",
     "form": {
       "jvmArgs": {
         "title": "JVM引数",
-        "description": "SoulFire 用の Java VM 引数です。<bold>-Xmx4G</bold> を追加すると 4 GB の RAM を使用します。デフォルトは利用可能な RAM の 25% です。",
+        "description": "Soulfire 用の Java VM 引数です。<bold>-Xmx4G</bold> を追加すると 4 GB の RAM を使用します。デフォルトは利用可能な RAM の 25% です。",
         "placeholder": "ここにJVM引数を入力"
       },
       "back": "戻る",
@@ -51,7 +51,7 @@
       "form": {
         "termuxCommand": {
           "title": "Termuxコマンド",
-          "description": "<a>Termux アプリ</a>をインストールしてください。Termux でこのコマンドを実行して SoulFire サーバーをインストールします。<copy>generate-token api</copy> を実行してトークンを作成してください。その後、下にトークンを入力してください。"
+          "description": "<a>Termux アプリ</a>をインストールしてください。Termux でこのコマンドを実行して Soulfire サーバーをインストールします。<copy>generate-token api</copy> を実行してトークンを作成してください。その後、下にトークンを入力してください。"
         },
         "token": {
           "title": "トークン",
@@ -67,11 +67,11 @@
     "cancelError": "起動のキャンセルに失敗しました",
     "autoStart": {
       "title": "次回は自動的に開始する",
-      "description": "サーバー選択をスキップし、SoulFire起動時にこれらの設定を使用します。"
+      "description": "サーバー選択をスキップし、Soulfire起動時にこれらの設定を使用します。"
     }
   },
   "dedicated": {
-    "description": "SoulFire サーバーのアドレスとトークンを入力してください。",
+    "description": "Soulfire サーバーのアドレスとトークンを入力してください。",
     "toast": {
       "loading": "サーバーに接続中...",
       "success": "サーバーに接続しました",
@@ -80,7 +80,7 @@
     "form": {
       "address": {
         "title": "アドレス",
-        "description": "SoulFireサーバーのアドレスです。",
+        "description": "Soulfireサーバーのアドレスです。",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -91,7 +91,7 @@
       "email": {
         "title": "メールアドレス",
         "placeholder": "root@soulfiremc.com",
-        "description": "SoulFireアカウントのメールアドレスです。"
+        "description": "Soulfireアカウントのメールアドレスです。"
       },
       "back": "戻る",
       "useToken": "トークンを使用",
@@ -109,9 +109,9 @@
     "back": "戻る"
   },
   "footer": {
-    "version": "SoulFireクライアント {{version}} - {{environment}}",
+    "version": "Soulfireクライアント {{version}} - {{environment}}",
     "preview": "プレビューをお探しですか？",
     "production": "本番環境をお探しですか？",
-    "helpTranslate": "SoulFireの翻訳を手伝う"
+    "helpTranslate": "Soulfireの翻訳を手伝う"
   }
 }

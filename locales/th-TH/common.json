@@ -13,7 +13,7 @@
       "reloadPage": "โหลดหน้านี้ใหม่",
       "showDetails": "แสดงรายละเอียด"
     },
-    "connectionFailed": "เชื่อมต่อกับเซิร์ฟเวอร์ SoulFire ไม่สำเร็จ"
+    "connectionFailed": "เชื่อมต่อกับเซิร์ฟเวอร์ Soulfire ไม่สำเร็จ"
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "เกี่ยวกับ SoulFire",
-      "description": "คุณกำลังใช้งาน SoulFire client เวอร์ชัน {{version}}.",
+      "title": "เกี่ยวกับ Soulfire",
+      "description": "คุณกำลังใช้งาน Soulfire client เวอร์ชัน {{version}}.",
       "type": "ประเภท",
       "value": "ค่า",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "ปิด"
     },
     "support": {
-      "title": "สนับสนุน SoulFire",
-      "description": "SoulFire เป็นซอฟต์แวร์ฟรีและโอเพ่นซอร์ส พัฒนาอย่างตั้งใจโดยชุมชน",
-      "body": "หาก SoulFire มีประโยชน์สำหรับคุณ กรุณาพิจารณาสนับสนุนโครงการนี้ การสนับสนุนของคุณจะช่วยชำระค่าเซิร์ฟเวอร์ สนับสนุนการพัฒนา และทำให้ SoulFire ฟรีสำหรับทุกคน",
+      "title": "สนับสนุน Soulfire",
+      "description": "Soulfire เป็นซอฟต์แวร์ฟรีและโอเพ่นซอร์ส พัฒนาอย่างตั้งใจโดยชุมชน",
+      "body": "หาก Soulfire มีประโยชน์สำหรับคุณ กรุณาพิจารณาสนับสนุนโครงการนี้ การสนับสนุนของคุณจะช่วยชำระค่าเซิร์ฟเวอร์ สนับสนุนการพัฒนา และทำให้ Soulfire ฟรีสำหรับทุกคน",
       "dismiss": "ไว้ทีหลัง",
-      "action": "สนับสนุน SoulFire"
+      "action": "สนับสนุน Soulfire"
     },
     "createInstance": {
       "title": "สร้างอินสแตนซ์ใหม่",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "จากไฟล์",
         "fromUrl": "จาก URL",
-        "firstClipboardItem": "คลิปบอร์ดมีหลายรายการ SoulFire จะใช้รายการแรก",
+        "firstClipboardItem": "คลิปบอร์ดมีหลายรายการ Soulfire จะใช้รายการแรก",
         "fromClipboard": "จากคลิปบอร์ด",
         "textarea": {
           "placeholder": "ใส่ข้อความที่นี่...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "เซิร์ฟเวอร์ SoulFire จะส่งคำขอ GET ไปยัง URL นี้และนำเข้าผลลัพธ์ที่ได้รับกลับมา",
+        "description": "เซิร์ฟเวอร์ Soulfire จะส่งคำขอ GET ไปยัง URL นี้และนำเข้าผลลัพธ์ที่ได้รับกลับมา",
         "form": {
           "url": {
             "placeholder": "ใส่ URL ที่นี่...",
@@ -274,8 +274,8 @@
   "terminal": {
     "noLogs": "ยังไม่มีล็อก รันคำสั่งเพื่อสร้างผลลัพธ์ล็อก",
     "demo-1": "ยินดีต้อนรับสู่โหมดทดลอง! 🧪",
-    "demo-2": "นี่คืออินสแตนซ์ SoulFire แบบอ่านอย่างเดียว",
-    "demo-3": "ลองดูทุกเมนูและฟีเจอร์ก่อนจะตัดสินใจติดตั้ง SoulFire :D",
+    "demo-2": "นี่คืออินสแตนซ์ Soulfire แบบอ่านอย่างเดียว",
+    "demo-3": "ลองดูทุกเมนูและฟีเจอร์ก่อนจะตัดสินใจติดตั้ง Soulfire :D",
     "demo-4": "สามารถเข้าร่วม Discord ของเราได้ หากต้องการติดต่อ: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -386,7 +386,7 @@
     },
     "configDir": "ไดเรกทอรี config",
     "dataDir": "ไดเรกทอรีข้อมูล",
-    "supportSoulFire": "สนับสนุน SoulFire",
+    "supportSoulFire": "สนับสนุน Soulfire",
     "about": "เกี่ยวกับ",
     "logOut": "ออกจากระบบ",
     "logOutToast": {
@@ -396,11 +396,11 @@
     },
     "exit": "ออก",
     "stopImpersonating": "หยุดเลียนแบบ",
-    "helpTranslate": "แปล SoulFire"
+    "helpTranslate": "แปล Soulfire"
   },
   "sidebar": {
     "documentation": "เอกสารคู่มือ",
-    "supportSoulFire": "สนับสนุน SoulFire",
+    "supportSoulFire": "สนับสนุน Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -440,7 +440,7 @@
     },
     "api": {
       "title": "เข้าถึง API",
-      "description": "SoulFire gRPC HTTP API ใช้จัดการอินสแตนซ์ผ่านเว็บรีเควสต์",
+      "description": "Soulfire gRPC HTTP API ใช้จัดการอินสแตนซ์ผ่านเว็บรีเควสต์",
       "publicAddress": "ที่อยู่ API สาธารณะ",
       "personalToken": "โทเค็น API ส่วนตัว",
       "securityWarning": "เก็บ Token API ส่วนตัวของคุณเป็นความลับ เพราะมันให้สิทธิ์เข้าถึง API ได้",
@@ -538,7 +538,7 @@
     },
     "addScriptDialog": {
       "title": "เพิ่มสคริปต์ใหม่",
-      "description": "สคริปต์คือโปรแกรมขนาดเล็กที่ใช้ในการอัตโนมัติและดำเนินการต่าง ๆ บนเซิร์ฟเวอร์ SoulFire",
+      "description": "สคริปต์คือโปรแกรมขนาดเล็กที่ใช้ในการอัตโนมัติและดำเนินการต่าง ๆ บนเซิร์ฟเวอร์ Soulfire",
       "form": {
         "cancel": "ยกเลิก",
         "add": "เพิ่ม"
@@ -616,7 +616,7 @@
     "status": {
       "idle": "ยังไม่เริ่มทำงาน",
       "preparing": "กำลังเตรียมไฟล์ Java และไฟล์เซิร์ฟเวอร์",
-      "starting": "กำลังรอให้ SoulFire เริ่มทำงาน",
+      "starting": "กำลังรอให้ Soulfire เริ่มทำงาน",
       "running": "กำลังทำงาน",
       "stopping": "กำลังหยุด",
       "stopped": "หยุดแล้ว",

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Geïmporteerde proxies controleren?",
-      "description": "Je hebt {{count}} proxies geïmporteerd. Nu controleren? SoulFire verwijdert automatisch ongeldige proxies.",
+      "description": "Je hebt {{count}} proxies geïmporteerd. Nu controleren? Soulfire verwijdert automatisch ongeldige proxies.",
       "confirm": "Proxies controleren",
       "skip": "Overslaan"
     },

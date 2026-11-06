@@ -13,7 +13,7 @@
       "reloadPage": "Odśwież stronę",
       "showDetails": "Pokaż szczegóły"
     },
-    "connectionFailed": "Połączenie do serwera SoulFire nieudane."
+    "connectionFailed": "Połączenie do serwera Soulfire nieudane."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "O SoulFire",
-      "description": "Używasz wersji {{version}} klienta SoulFire.",
+      "title": "O Soulfire",
+      "description": "Używasz wersji {{version}} klienta Soulfire.",
       "type": "Typ",
       "value": "Wartość",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Zamknij"
     },
     "support": {
-      "title": "Wesprzyj SoulFire",
-      "description": "SoulFire jest darmowy i open-source, stworzony z pasją przez społeczność.",
-      "body": "Jeśli SoulFire okazał się dla Ciebie przydatny, rozważ wsparcie projektu. Twoja pomoc pokryje koszty serwera, finansuje rozwój i pozwala utrzymać SoulFire darmowym dla wszystkich.",
+      "title": "Wesprzyj Soulfire",
+      "description": "Soulfire jest darmowy i open-source, stworzony z pasją przez społeczność.",
+      "body": "Jeśli Soulfire okazał się dla Ciebie przydatny, rozważ wsparcie projektu. Twoja pomoc pokryje koszty serwera, finansuje rozwój i pozwala utrzymać Soulfire darmowym dla wszystkich.",
       "dismiss": "Może później",
-      "action": "Wesprzyj SoulFire"
+      "action": "Wesprzyj Soulfire"
     },
     "createInstance": {
       "title": "Stwórz nową instancję",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Z pliku",
         "fromUrl": "Z adresu URL",
-        "firstClipboardItem": "Schowek zawiera kilka elementów. SoulFire użyje pierwszego z nich.",
+        "firstClipboardItem": "Schowek zawiera kilka elementów. Soulfire użyje pierwszego z nich.",
         "fromClipboard": "Ze schowka",
         "textarea": {
           "placeholder": "Umieść tekst tutaj...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "Serwer SoulFire wysyła żądanie GET do tego adresu URL i importuje odpowiedź.",
+        "description": "Serwer Soulfire wysyła żądanie GET do tego adresu URL i importuje odpowiedź.",
         "form": {
           "url": {
             "placeholder": "Umieść tutaj adres URL...",
@@ -286,8 +286,8 @@
   "terminal": {
     "noLogs": "Brak logów. Uruchom polecenie, aby wygenerować logi.",
     "demo-1": "Witamy w trybie demonstracyjnym! 🧪",
-    "demo-2": "To jest instancja SoulFire tylko do odczytu",
-    "demo-3": "Sprawdź wszystkie menu i funkcje przed podjęciem decyzji o instalacji SoulFire :D",
+    "demo-2": "To jest instancja Soulfire tylko do odczytu",
+    "demo-3": "Sprawdź wszystkie menu i funkcje przed podjęciem decyzji o instalacji Soulfire :D",
     "demo-4": "Dołącz do naszego serwera Discord, jeśli chcesz się skontaktować: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -398,7 +398,7 @@
     },
     "configDir": "Katalog konfiguracji",
     "dataDir": "Katalog danych",
-    "supportSoulFire": "Wesprzyj SoulFire",
+    "supportSoulFire": "Wesprzyj Soulfire",
     "about": "O programie",
     "logOut": "Wyloguj się",
     "logOutToast": {
@@ -408,11 +408,11 @@
     },
     "exit": "Wyjdź",
     "stopImpersonating": "Przestań podszywać się",
-    "helpTranslate": "Przetłumacz SoulFire"
+    "helpTranslate": "Przetłumacz Soulfire"
   },
   "sidebar": {
     "documentation": "Dokumentacja",
-    "supportSoulFire": "Wesprzyj SoulFire",
+    "supportSoulFire": "Wesprzyj Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -452,7 +452,7 @@
     },
     "api": {
       "title": "Dostęp API",
-      "description": "Interfejs API SoulFire gRPC HTTP zarządza instancjami za pomocą żądań internetowych.",
+      "description": "Interfejs API Soulfire gRPC HTTP zarządza instancjami za pomocą żądań internetowych.",
       "publicAddress": "Publiczny adres API",
       "personalToken": "Osobisty token API",
       "securityWarning": "Trzymaj swój osobisty token API w tajemnicy. Umożliwia on dostęp do API.",
@@ -550,7 +550,7 @@
     },
     "addScriptDialog": {
       "title": "Dodaj nowy skrypt",
-      "description": "Skrypty to małe programy, które automatyzują zadania i inne działania na serwerze SoulFire.",
+      "description": "Skrypty to małe programy, które automatyzują zadania i inne działania na serwerze Soulfire.",
       "form": {
         "cancel": "Anuluj",
         "add": "Dodaj"
@@ -628,7 +628,7 @@
     "status": {
       "idle": "Nieuruchomiony",
       "preparing": "Przygotowywanie plików Java i serwera",
-      "starting": "Oczekiwanie na uruchomienie SoulFire",
+      "starting": "Oczekiwanie na uruchomienie Soulfire",
       "running": "Uruchomiona",
       "stopping": "Zatrzymywanie",
       "stopped": "Zatrzymana",

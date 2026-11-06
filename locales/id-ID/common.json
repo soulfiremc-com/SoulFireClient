@@ -13,7 +13,7 @@
       "reloadPage": "Muat ulang halaman",
       "showDetails": "Tampilkan detail"
     },
-    "connectionFailed": "Koneksi ke server SoulFire gagal."
+    "connectionFailed": "Koneksi ke server Soulfire gagal."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "Tentang SoulFire",
-      "description": "Anda menjalankan SoulFire client versi {{version}}.",
+      "title": "Tentang Soulfire",
+      "description": "Anda menjalankan Soulfire client versi {{version}}.",
       "type": "Tipe",
       "value": "Nilai",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Tutup"
     },
     "support": {
-      "title": "Dukung SoulFire",
-      "description": "SoulFire gratis dan open-source, dibuat dengan penuh cinta oleh komunitas.",
-      "body": "Jika SoulFire bermanfaat untuk Anda, pertimbangkan untuk mendukung proyek ini. Kontribusi Anda membantu menutupi biaya server, mendanai pengembangan, dan menjaga SoulFire tetap gratis untuk semua orang.",
+      "title": "Dukung Soulfire",
+      "description": "Soulfire gratis dan open-source, dibuat dengan penuh cinta oleh komunitas.",
+      "body": "Jika Soulfire bermanfaat untuk Anda, pertimbangkan untuk mendukung proyek ini. Kontribusi Anda membantu menutupi biaya server, mendanai pengembangan, dan menjaga Soulfire tetap gratis untuk semua orang.",
       "dismiss": "Mungkin nanti",
-      "action": "Dukung SoulFire"
+      "action": "Dukung Soulfire"
     },
     "createInstance": {
       "title": "Buat instansi baru",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Dari berkas",
         "fromUrl": "Dari URL",
-        "firstClipboardItem": "Clipboard berisi beberapa item. SoulFire akan menggunakan item pertama.",
+        "firstClipboardItem": "Clipboard berisi beberapa item. Soulfire akan menggunakan item pertama.",
         "fromClipboard": "Dari clipboard",
         "textarea": {
           "placeholder": "Masukkan teks di sini...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "Server SoulFire akan mengirim permintaan GET ke URL ini dan mengimpor responnya.",
+        "description": "Server Soulfire akan mengirim permintaan GET ke URL ini dan mengimpor responnya.",
         "form": {
           "url": {
             "placeholder": "Masukkan URL di sini...",
@@ -274,8 +274,8 @@
   "terminal": {
     "noLogs": "Belum ada log. Jalankan perintah untuk membuat output log.",
     "demo-1": "Selamat datang di mode demo! 🧪",
-    "demo-2": "Ini adalah instansi SoulFire hanya-baca",
-    "demo-3": "Jelajahi semua menu dan fitur sebelum memutuskan untuk menginstal SoulFire :D",
+    "demo-2": "Ini adalah instansi Soulfire hanya-baca",
+    "demo-3": "Jelajahi semua menu dan fitur sebelum memutuskan untuk menginstal Soulfire :D",
     "demo-4": "Silakan bergabung dengan server Discord kami jika ingin menghubungi: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -386,7 +386,7 @@
     },
     "configDir": "Direktori konfigurasi",
     "dataDir": "Direktori data",
-    "supportSoulFire": "Dukung SoulFire",
+    "supportSoulFire": "Dukung Soulfire",
     "about": "Tentang",
     "logOut": "Keluar",
     "logOutToast": {
@@ -396,11 +396,11 @@
     },
     "exit": "Keluar",
     "stopImpersonating": "Berhenti menyamar",
-    "helpTranslate": "Terjemahkan SoulFire"
+    "helpTranslate": "Terjemahkan Soulfire"
   },
   "sidebar": {
     "documentation": "Dokumentasi",
-    "supportSoulFire": "Dukung SoulFire",
+    "supportSoulFire": "Dukung Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -440,7 +440,7 @@
     },
     "api": {
       "title": "Akses API",
-      "description": "API HTTP gRPC SoulFire mengelola instansi menggunakan permintaan web.",
+      "description": "API HTTP gRPC Soulfire mengelola instansi menggunakan permintaan web.",
       "publicAddress": "Alamat API Publik",
       "personalToken": "Token API Pribadi",
       "securityWarning": "Jaga token API pribadi Anda tetap rahasia. Token ini memberikan akses ke API.",
@@ -538,7 +538,7 @@
     },
     "addScriptDialog": {
       "title": "Tambah skrip baru",
-      "description": "Skrip adalah program kecil yang mengotomatisasi tugas dan tindakan lain di server SoulFire.",
+      "description": "Skrip adalah program kecil yang mengotomatisasi tugas dan tindakan lain di server Soulfire.",
       "form": {
         "cancel": "Batal",
         "add": "Tambah"
@@ -616,7 +616,7 @@
     "status": {
       "idle": "Belum dimulai",
       "preparing": "Menyiapkan file Java dan server",
-      "starting": "Menunggu SoulFire untuk mulai",
+      "starting": "Menunggu Soulfire untuk mulai",
       "running": "Berjalan",
       "stopping": "Menghentikan",
       "stopped": "Dihentikan",

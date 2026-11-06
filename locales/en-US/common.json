@@ -6,7 +6,7 @@
   "saving": "Saving...",
   "analyticsConsent": {
     "title": "Analytics cookies",
-    "description": "We use analytics cookies to understand how you use SoulFire and improve the app. Accepting links usage to your SoulFire user account.",
+    "description": "We use analytics cookies to understand how you use Soulfire and improve the app. Accepting links usage to your Soulfire user account.",
     "cookieless": "If you decline, we collect limited usage statistics without analytics cookies or your account identity. You can change your choice in Cookie preferences.",
     "accept": "Accept",
     "decline": "Decline",
@@ -31,7 +31,7 @@
         "unexpected": "The page could not load. Retry once, or share the error details when reporting the problem."
       }
     },
-    "connectionFailed": "Connection to the SoulFire server failed."
+    "connectionFailed": "Connection to the Soulfire server failed."
   },
   "queryStatus": {
     "failed": "Refresh failed",
@@ -51,8 +51,8 @@
   },
   "dialog": {
     "about": {
-      "title": "About SoulFire",
-      "description": "You are running version {{version}} of the SoulFire client.",
+      "title": "About Soulfire",
+      "description": "You are running version {{version}} of the Soulfire client.",
       "type": "Type",
       "value": "Value",
       "fields": {
@@ -70,14 +70,14 @@
       "close": "Close"
     },
     "support": {
-      "title": "Support SoulFire",
-      "description": "SoulFire is free and open-source, built with love by the community.",
-      "body": "If SoulFire has been useful to you, please consider supporting SoulFire. Your contribution helps cover server costs, fund development, and keep SoulFire free for everyone.",
+      "title": "Support Soulfire",
+      "description": "Soulfire is free and open-source, built with love by the community.",
+      "body": "If Soulfire has been useful to you, please consider supporting Soulfire. Your contribution helps cover server costs, fund development, and keep Soulfire free for everyone.",
       "dismiss": "Maybe later",
-      "action": "Support SoulFire",
-      "alreadySupport": "I already support SoulFire",
+      "action": "Support Soulfire",
+      "alreadySupport": "I already support Soulfire",
       "neverRemind": "Don't remind me again",
-      "reminderFrequency": "We won't remind you again for six months. You can always support SoulFire from the account menu."
+      "reminderFrequency": "We won't remind you again for six months. You can always support Soulfire from the account menu."
     },
     "createInstance": {
       "title": "Create a project",
@@ -116,7 +116,7 @@
       "main": {
         "fromFile": "From file",
         "fromUrl": "From URL",
-        "firstClipboardItem": "The clipboard contains multiple items. SoulFire will use the first item.",
+        "firstClipboardItem": "The clipboard contains multiple items. Soulfire will use the first item.",
         "fromClipboard": "From clipboard",
         "clipboardError": "Failed to read the clipboard. Allow clipboard access or paste the text directly.",
         "fileError": "Failed to read the selected files. Check file access and try again.",
@@ -126,7 +126,7 @@
         }
       },
       "url": {
-        "description": "The SoulFire server sends a GET request to this URL and imports the response.",
+        "description": "The Soulfire server sends a GET request to this URL and imports the response.",
         "form": {
           "url": {
             "placeholder": "Put URL here...",
@@ -332,7 +332,7 @@
     "scope": {
       "instance": "Project default. Applies to every bot in this project unless a bot has its own value.",
       "bot": "This bot only. Values here override the project default for this bot.",
-      "server": "Server setting. Applies to the whole SoulFire server and every project on it."
+      "server": "Server setting. Applies to the whole Soulfire server and every project on it."
     }
   },
   "terminal": {
@@ -345,8 +345,8 @@
     },
     "noLogs": "No logs yet. Run a command to create log output.",
     "demo-1": "Welcome to demo mode! 🧪",
-    "demo-2": "This is a read-only demo of SoulFire",
-    "demo-3": "Check out all the menus and features before deciding to install SoulFire :D",
+    "demo-2": "This is a read-only demo of Soulfire",
+    "demo-3": "Check out all the menus and features before deciding to install Soulfire :D",
     "demo-4": "Feel free to join our Discord server if you would like to reach out: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -426,8 +426,8 @@
     "refresh": "Refresh data",
     "clearRecents": "Clear recent destinations",
     "actionError": "Could not complete the action. Try again.",
-    "serverOverview": "SoulFire server overview",
-    "serverContext": "SoulFire server",
+    "serverOverview": "Soulfire server overview",
+    "serverContext": "Soulfire server",
     "browseProject": "Browse project",
     "allProjects": "All projects",
     "changeScope": "Change search scope, current: {{name}}",
@@ -494,7 +494,7 @@
         "error": "Could not deactivate the script. Try again."
       },
       "busy": "A request for this target is still running. Try again when it finishes.",
-      "demo": "Demo mode does not save changes. Connect to a SoulFire server to control bots and scripts."
+      "demo": "Demo mode does not save changes. Connect to a Soulfire server to control bots and scripts."
     },
     "operations": {
       "startBot": "Start bot {{name}}",
@@ -581,7 +581,7 @@
     "pathfindingSettings": "Pathfinding Settings",
     "discoverPlugins": "Plugins",
     "instanceScripts": "Scripts",
-    "configurationFileType": "SoulFire configuration (JSON)",
+    "configurationFileType": "Soulfire configuration (JSON)",
     "exportWarning": "Exported files include account and proxy credentials. Keep them private."
   },
   "userSidebar": {
@@ -610,7 +610,7 @@
     },
     "configDir": "Config directory",
     "dataDir": "Data directory",
-    "supportSoulFire": "Support SoulFire",
+    "supportSoulFire": "Support Soulfire",
     "about": "About",
     "logOut": "Log out",
     "logOutToast": {
@@ -620,11 +620,11 @@
     },
     "exit": "Exit",
     "stopImpersonating": "Stop impersonating",
-    "helpTranslate": "Translate SoulFire"
+    "helpTranslate": "Translate Soulfire"
   },
   "sidebar": {
     "documentation": "Documentation",
-    "supportSoulFire": "Support SoulFire",
+    "supportSoulFire": "Support Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -664,7 +664,7 @@
     },
     "api": {
       "title": "API Access",
-      "description": "The SoulFire gRPC HTTP API manages projects with web requests.",
+      "description": "The Soulfire gRPC HTTP API manages projects with web requests.",
       "publicAddress": "Public API Address",
       "personalToken": "Personal API Token",
       "securityWarning": "Keep your personal API token secret. It grants access to the API.",
@@ -764,7 +764,7 @@
     },
     "addScriptDialog": {
       "title": "Add a new script",
-      "description": "Scripts are small programs that automate tasks and other actions on the SoulFire server.",
+      "description": "Scripts are small programs that automate tasks and other actions on the Soulfire server.",
       "form": {
         "cancel": "Cancel",
         "add": "Add"
@@ -843,7 +843,7 @@
     "status": {
       "idle": "Not started",
       "preparing": "Preparing Java and server files",
-      "starting": "Waiting for SoulFire to start",
+      "starting": "Waiting for Soulfire to start",
       "running": "Running",
       "stopping": "Stopping",
       "stopped": "Stopped",
@@ -880,7 +880,7 @@
   },
   "discover": {
     "noPluginsTitle": "No plugins available",
-    "noPluginsDescription": "This SoulFire server does not offer any plugins for this project.",
+    "noPluginsDescription": "This Soulfire server does not offer any plugins for this project.",
     "search": "Search plugins",
     "noMatches": "No plugins match your search.",
     "filterLabel": "Filter plugins by task",
@@ -901,8 +901,8 @@
     "description": "Use this connection and project in a local script, or copy a prompt for your coding agent.",
     "docs": "SDK guide",
     "connectionTitle": "Current connection",
-    "connectionDescription": "Uses the SoulFire API address this app is connected to.",
-    "serverUrl": "SoulFire API address",
+    "connectionDescription": "Uses the Soulfire API address this app is connected to.",
+    "serverUrl": "Soulfire API address",
     "noUrl": "No server address available",
     "copyUrl": "Copy server address",
     "token": "Personal API token",
@@ -920,9 +920,9 @@
     "localBadge": "Local connection",
     "remoteBadge": "Remote connection",
     "unavailableBadge": "Address unavailable",
-    "missingUrlHelp": "Reconnect to your SoulFire server to get a usable API address.",
+    "missingUrlHelp": "Reconnect to your Soulfire server to get a usable API address.",
     "localHelp": "Run the script on the same computer as this app. A localhost address points to the computer running the script.",
-    "integratedHelp": "Keep SoulFire and its local server running while you use the SDK.",
+    "integratedHelp": "Keep Soulfire and its local server running while you use the SDK.",
     "targetTitle": "Project",
     "copyInstanceId": "Copy project ID",
     "openBots": "Open bots",
@@ -966,22 +966,22 @@
       "send-chat": {
         "title": "Send chat",
         "description": "Send one public message as a connected bot when you run this script. Requires permission to send chat.",
-        "expected": "Expect “Hello from the SoulFire SDK!” in Minecraft chat, then “Message sent.” in your terminal."
+        "expected": "Expect “Hello from the Soulfire SDK!” in Minecraft chat, then “Message sent.” in your terminal."
       }
     },
     "helpTitle": "If the script cannot connect",
     "help": {
       "connection": {
         "title": "Connection refused or timed out",
-        "body": "Keep the SoulFire server running. Use its API address. For a local address, run your script on the same computer. Check remote network access."
+        "body": "Keep the Soulfire server running. Use its API address. For a local address, run your script on the same computer. Check remote network access."
       },
       "authentication": {
         "title": "Authentication or permission denied",
-        "body": "Use a personal API token generated for this SoulFire server. The token keeps your user permissions. Ask the administrator for any missing access."
+        "body": "Use a personal API token generated for this Soulfire server. The token keeps your user permissions. Ask the administrator for any missing access."
       },
       "compatibility": {
         "title": "SDK or API version mismatch",
-        "body": "The SDK checks compatibility when it connects. Use a compatible SoulFire server and SDK release. Follow the version guidance in the SDK guide."
+        "body": "The SDK checks compatibility when it connects. Use a compatible Soulfire server and SDK release. Follow the version guidance in the SDK guide."
       }
     },
     "reference": "API reference",

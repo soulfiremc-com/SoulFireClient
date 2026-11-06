@@ -744,7 +744,7 @@ test("server fields need READ_SERVER_CONFIG and link to the exact admin field", 
     server,
   });
   const field = searchPaletteCommands(allowed, "reachable url")[0];
-  assert.equal(field?.context, "SoulFire server");
+  assert.equal(field?.context, "Soulfire server");
   assert.deepEqual(field?.destination, {
     to: "/user/admin/settings/$pageId",
     params: { pageId: "server" },

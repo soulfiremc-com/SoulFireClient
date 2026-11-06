@@ -13,7 +13,7 @@
       "reloadPage": "Перезавантажити сторінку",
       "showDetails": "Показати подробиці"
     },
-    "connectionFailed": "Не вдалося підключитися до сервера SoulFire."
+    "connectionFailed": "Не вдалося підключитися до сервера Soulfire."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "Про SoulFire",
-      "description": "Ви використовуєте версію {{version}} клієнта SoulFire.",
+      "title": "Про Soulfire",
+      "description": "Ви використовуєте версію {{version}} клієнта Soulfire.",
       "type": "Тип",
       "value": "Значення",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Закрити"
     },
     "support": {
-      "title": "Підтримати SoulFire",
-      "description": "SoulFire безкоштовний і з відкритим кодом, створений з любовʼю спільнотою.",
-      "body": "Якщо SoulFire був для вас корисний, будь ласка, розгляньте можливість підтримати проєкт. Ваш внесок допомагає покривати витрати на сервери, фінансувати розробку й залишати SoulFire безкоштовним для всіх.",
+      "title": "Підтримати Soulfire",
+      "description": "Soulfire безкоштовний і з відкритим кодом, створений з любовʼю спільнотою.",
+      "body": "Якщо Soulfire був для вас корисний, будь ласка, розгляньте можливість підтримати проєкт. Ваш внесок допомагає покривати витрати на сервери, фінансувати розробку й залишати Soulfire безкоштовним для всіх.",
       "dismiss": "Можливо, пізніше",
-      "action": "Підтримати SoulFire"
+      "action": "Підтримати Soulfire"
     },
     "createInstance": {
       "title": "Створити новий екземпляр",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "З файлу",
         "fromUrl": "За URL-адресою",
-        "firstClipboardItem": "Буфер обміну містить кілька елементів. SoulFire використає перший елемент.",
+        "firstClipboardItem": "Буфер обміну містить кілька елементів. Soulfire використає перший елемент.",
         "fromClipboard": "З буфера обміну",
         "textarea": {
           "placeholder": "Введіть текст тут...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "Сервер SoulFire надсилає GET-запит за цим URL-адресою та імпортує відповідь.",
+        "description": "Сервер Soulfire надсилає GET-запит за цим URL-адресою та імпортує відповідь.",
         "form": {
           "url": {
             "placeholder": "Вставте URL тут...",
@@ -286,8 +286,8 @@
   "terminal": {
     "noLogs": "Журналів ще немає. Виконайте команду, щоб створити вивід журналу.",
     "demo-1": "Ласкаво просимо в демо-режим! 🧪",
-    "demo-2": "Це екземпляр SoulFire лише для читання",
-    "demo-3": "Ознайомтеся з усіма меню та функціями перед встановленням SoulFire :D",
+    "demo-2": "Це екземпляр Soulfire лише для читання",
+    "demo-3": "Ознайомтеся з усіма меню та функціями перед встановленням Soulfire :D",
     "demo-4": "Не соромтеся приєднуватися до нашого серверу Discord, якщо хочете зв'язатися: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -398,7 +398,7 @@
     },
     "configDir": "Директорія конфігурації",
     "dataDir": "Директорія даних",
-    "supportSoulFire": "Підтримати SoulFire",
+    "supportSoulFire": "Підтримати Soulfire",
     "about": "Про",
     "logOut": "Вийти",
     "logOutToast": {
@@ -408,11 +408,11 @@
     },
     "exit": "Вийти",
     "stopImpersonating": "Зупинити імітацію",
-    "helpTranslate": "Перекласти SoulFire"
+    "helpTranslate": "Перекласти Soulfire"
   },
   "sidebar": {
     "documentation": "Документація",
-    "supportSoulFire": "Підтримати SoulFire",
+    "supportSoulFire": "Підтримати Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -452,7 +452,7 @@
     },
     "api": {
       "title": "API-доступ",
-      "description": "SoulFire gRPC HTTP API керує екземплярами через веб-запити.",
+      "description": "Soulfire gRPC HTTP API керує екземплярами через веб-запити.",
       "publicAddress": "Публічна адреса API",
       "personalToken": "Особистий API токен",
       "securityWarning": "Зберігайте ваш персональний API-токен у секреті. Він надає доступ до API.",
@@ -550,7 +550,7 @@
     },
     "addScriptDialog": {
       "title": "Додати новий скрипт",
-      "description": "Скрипти — це невеликі програми, які автоматизують завдання та інші дії на сервері SoulFire.",
+      "description": "Скрипти — це невеликі програми, які автоматизують завдання та інші дії на сервері Soulfire.",
       "form": {
         "cancel": "Скасувати",
         "add": "Додати"
@@ -628,7 +628,7 @@
     "status": {
       "idle": "Не запущено",
       "preparing": "Підготовка Java та серверних файлів",
-      "starting": "Очікується запуск SoulFire",
+      "starting": "Очікується запуск Soulfire",
       "running": "Працює",
       "stopping": "Зупиняється",
       "stopped": "Зупинено",

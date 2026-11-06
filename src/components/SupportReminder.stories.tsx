@@ -99,13 +99,13 @@ export const NoticeAndSnooze: Story = {
   play: async ({ canvas, userEvent }) => {
     await waitFor(() =>
       expect(
-        canvas.getByRole("region", { name: "Support SoulFire" }),
+        canvas.getByRole("region", { name: "Support Soulfire" }),
       ).toBeVisible(),
     );
     await expect(canvas.queryByRole("dialog")).toBeNull();
     await expect(reminder.getSnapshot().lastShownAt).toBe(now);
     await expect(
-      canvas.getByRole("button", { name: "Support SoulFire" }),
+      canvas.getByRole("button", { name: "Support Soulfire" }),
     ).toHaveAttribute(
       "href",
       "https://soulfiremc.com/pricing?utm_source=soulfire-client&utm_medium=app&utm_campaign=support-dialog",
@@ -115,7 +115,7 @@ export const NoticeAndSnooze: Story = {
       canvas.getByRole("button", { name: "Revisit overview" }),
     );
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().disabled).toBeNull();
   },
@@ -125,7 +125,7 @@ export const FirstUse: Story = {
   parameters: { firstUse: true },
   play: async ({ canvas }) => {
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().lastShownAt).toBeNull();
   },
@@ -139,7 +139,7 @@ export const WaitsForLaterVisit: Story = {
     );
     await expect(reminder.isEligible()).toBe(true);
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().lastShownAt).toBeNull();
     await userEvent.click(
@@ -147,7 +147,7 @@ export const WaitsForLaterVisit: Story = {
     );
     await waitFor(() =>
       expect(
-        canvas.getByRole("region", { name: "Support SoulFire" }),
+        canvas.getByRole("region", { name: "Support Soulfire" }),
       ).toBeVisible(),
     );
   },
@@ -157,7 +157,7 @@ export const DefersUntilReady: Story = {
   args: { loading: true },
   play: async ({ canvas, userEvent }) => {
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().lastShownAt).toBeNull();
     await userEvent.click(
@@ -165,7 +165,7 @@ export const DefersUntilReady: Story = {
     );
     await waitFor(() =>
       expect(
-        canvas.getByRole("region", { name: "Support SoulFire" }),
+        canvas.getByRole("region", { name: "Support Soulfire" }),
       ).toBeVisible(),
     );
   },
@@ -178,13 +178,13 @@ export const DefersForCookieChoice: Story = {
       canvas.getByRole("region", { name: "Analytics cookies" }),
     ).toBeVisible();
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().lastShownAt).toBeNull();
     await userEvent.click(canvas.getByRole("button", { name: "Decline" }));
     await waitFor(() =>
       expect(
-        canvas.getByRole("region", { name: "Support SoulFire" }),
+        canvas.getByRole("region", { name: "Support Soulfire" }),
       ).toBeVisible(),
     );
   },
@@ -198,18 +198,18 @@ export const DefersForOtherDialog: Story = {
       expect(page.getByRole("dialog", { name: "Another task" })).toBeVisible(),
     );
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().lastShownAt).toBeNull();
     await userEvent.click(page.getByRole("button", { name: "Finish task" }));
     await waitFor(() =>
       expect(
-        canvas.getByRole("region", { name: "Support SoulFire" }),
+        canvas.getByRole("region", { name: "Support Soulfire" }),
       ).toBeVisible(),
     );
     await userEvent.click(canvas.getByRole("button", { name: "Open dialog" }));
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
   },
 };
@@ -229,7 +229,7 @@ export const NeverRemind: Story = {
       canvas.getByRole("button", { name: "Revisit overview" }),
     );
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().disabled).toBe("never");
   },
@@ -239,18 +239,18 @@ export const ExistingSupporter: Story = {
   play: async ({ canvas, userEvent }) => {
     await waitFor(() =>
       expect(
-        canvas.getByRole("button", { name: "I already support SoulFire" }),
+        canvas.getByRole("button", { name: "I already support Soulfire" }),
       ).toBeVisible(),
     );
     await userEvent.click(
-      canvas.getByRole("button", { name: "I already support SoulFire" }),
+      canvas.getByRole("button", { name: "I already support Soulfire" }),
     );
     now += 1000 * day;
     await userEvent.click(
       canvas.getByRole("button", { name: "Revisit overview" }),
     );
     await expect(
-      canvas.queryByRole("region", { name: "Support SoulFire" }),
+      canvas.queryByRole("region", { name: "Support Soulfire" }),
     ).toBeNull();
     await expect(reminder.getSnapshot().disabled).toBe("supporter");
   },

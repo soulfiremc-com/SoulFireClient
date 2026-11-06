@@ -1,7 +1,7 @@
 # SoulFireClient security policy
 
 Do not open a public issue or pull request for a vulnerability.
-Email [security@soulfiremc.com](mailto:security@soulfiremc.com) or privately message `pistonmaster` through the [SoulFire community](https://soulfiremc.com/discord).
+Email [security@soulfiremc.com](mailto:security@soulfiremc.com) or privately message `pistonmaster` through the [Soulfire community](https://soulfiremc.com/discord).
 
 Include the client version, connected server version, OS, architecture, and installation method.
 Describe reproduction steps, expected and actual behavior, potential impact, and required permissions.

@@ -13,7 +13,7 @@
       "reloadPage": "重新载入页面",
       "showDetails": "显示详情"
     },
-    "connectionFailed": "连接 SoulFire 服务器失败。"
+    "connectionFailed": "连接 Soulfire 服务器失败。"
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "关于 SoulFire",
-      "description": "正在运行 {{version}} 版本的 SoulFire 客户端",
+      "title": "关于 Soulfire",
+      "description": "正在运行 {{version}} 版本的 Soulfire 客户端",
       "type": "类型",
       "value": "值",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "关闭"
     },
     "support": {
-      "title": "支持 SoulFire.",
-      "description": "SoulFire 是免费的开源项目，由社区倾心打造。",
-      "body": "如果 SoulFire 对您有帮助，请考虑支持该项目。您的贡献将帮助我们支付服务器费用、资助开发，使 SoulFire 能持续免费提供给所有人。",
+      "title": "支持 Soulfire.",
+      "description": "Soulfire 是免费的开源项目，由社区倾心打造。",
+      "body": "如果 Soulfire 对您有帮助，请考虑支持该项目。您的贡献将帮助我们支付服务器费用、资助开发，使 Soulfire 能持续免费提供给所有人。",
       "dismiss": "稍后再说",
-      "action": "支持 SoulFire."
+      "action": "支持 Soulfire."
     },
     "createInstance": {
       "title": "创建一个新实例",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "从文件",
         "fromUrl": "从 URL",
-        "firstClipboardItem": "剪贴板包含多个项目。SoulFire将使用第一个项目。",
+        "firstClipboardItem": "剪贴板包含多个项目。Soulfire将使用第一个项目。",
         "fromClipboard": "从剪贴板",
         "textarea": {
           "placeholder": "将文本放在这里...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire服务器会向此URL发送GET请求并导入响应。",
+        "description": "Soulfire服务器会向此URL发送GET请求并导入响应。",
         "form": {
           "url": {
             "placeholder": "将 URL 放在这里...",
@@ -274,8 +274,8 @@
   "terminal": {
     "noLogs": "暂时没有日志。运行命令以生成日志输出。",
     "demo-1": "欢迎来到演示模式！🧪",
-    "demo-2": "这是一个只读的 SoulFire 实例",
-    "demo-3": "在决定安装 SoulFire 之前，请先查看所有菜单和功能",
+    "demo-2": "这是一个只读的 Soulfire 实例",
+    "demo-3": "在决定安装 Soulfire 之前，请先查看所有菜单和功能",
     "demo-4": "如果您想要加入我们的Discord服务器，请访问： https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -386,7 +386,7 @@
     },
     "configDir": "配置目录",
     "dataDir": "数据目录",
-    "supportSoulFire": "支持 SoulFire.",
+    "supportSoulFire": "支持 Soulfire.",
     "about": "关于",
     "logOut": "退出登录",
     "logOutToast": {
@@ -396,11 +396,11 @@
     },
     "exit": "退出",
     "stopImpersonating": "",
-    "helpTranslate": "协助翻译 SoulFire"
+    "helpTranslate": "协助翻译 Soulfire"
   },
   "sidebar": {
     "documentation": "文档",
-    "supportSoulFire": "支持 SoulFire.",
+    "supportSoulFire": "支持 Soulfire.",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -440,7 +440,7 @@
     },
     "api": {
       "title": "API 访问",
-      "description": "SoulFire gRPC HTTP API 可通过Web请求管理实例。",
+      "description": "Soulfire gRPC HTTP API 可通过Web请求管理实例。",
       "publicAddress": "公共 API 地址",
       "personalToken": "个人 API Token",
       "securityWarning": "请保管好你的API个人令牌。这将授权访问API。",
@@ -538,7 +538,7 @@
     },
     "addScriptDialog": {
       "title": "添加新脚本",
-      "description": "脚本是可自动化任务及其他操作的SoulFire服务器小程序。",
+      "description": "脚本是可自动化任务及其他操作的Soulfire服务器小程序。",
       "form": {
         "cancel": "取消",
         "add": "添加"
@@ -616,7 +616,7 @@
     "status": {
       "idle": "未启动",
       "preparing": "正在准备 Java 和服务器文件",
-      "starting": "正在等待 SoulFire 启动",
+      "starting": "正在等待 Soulfire 启动",
       "running": "正在运行",
       "stopping": "正在停止",
       "stopped": "已停止",

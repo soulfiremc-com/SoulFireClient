@@ -43,7 +43,7 @@ const data = (
 ): TemplateEdge => ({ from, fromPort, to, toPort, kind: "data" });
 
 /**
- * Starter graphs built only from nodes that the SoulFire server registers.
+ * Starter graphs built only from nodes that the Soulfire server registers.
  * Triggers with a bot pass it on through a data edge. On Interval has no bot,
  * so that template gets its bots from Get Bots and For Each Bot.
  */

@@ -13,7 +13,7 @@
       "reloadPage": "Pagina herladen",
       "showDetails": "Details weergeven"
     },
-    "connectionFailed": "Verbinding met de SoulFire-server mislukt."
+    "connectionFailed": "Verbinding met de Soulfire-server mislukt."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "Over SoulFire",
-      "description": "U gebruikt versie {{version}} van de SoulFire-client.",
+      "title": "Over Soulfire",
+      "description": "U gebruikt versie {{version}} van de Soulfire-client.",
       "type": "Type",
       "value": "Waarde",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Sluiten"
     },
     "support": {
-      "title": "Steun SoulFire",
-      "description": "SoulFire is gratis en open-source, gebouwd met liefde door de community.",
-      "body": "Als SoulFire nuttig voor je is geweest, overweeg dan om het project te steunen. Jouw bijdrage helpt de serverkosten te dekken, ontwikkeling te financieren en SoulFire gratis te houden voor iedereen.",
+      "title": "Steun Soulfire",
+      "description": "Soulfire is gratis en open-source, gebouwd met liefde door de community.",
+      "body": "Als Soulfire nuttig voor je is geweest, overweeg dan om het project te steunen. Jouw bijdrage helpt de serverkosten te dekken, ontwikkeling te financieren en Soulfire gratis te houden voor iedereen.",
       "dismiss": "Misschien later",
-      "action": "Steun SoulFire"
+      "action": "Steun Soulfire"
     },
     "createInstance": {
       "title": "Een nieuwe instantie aanmaken",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Uit bestand",
         "fromUrl": "Van URL",
-        "firstClipboardItem": "Het klembord bevat meerdere items. SoulFire gebruikt het eerste item.",
+        "firstClipboardItem": "Het klembord bevat meerdere items. Soulfire gebruikt het eerste item.",
         "fromClipboard": "Uit klembord",
         "textarea": {
           "placeholder": "Voer hier tekst in...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "De SoulFire-server stuurt een GET-verzoek naar deze URL en importeert het antwoord.",
+        "description": "De Soulfire-server stuurt een GET-verzoek naar deze URL en importeert het antwoord.",
         "form": {
           "url": {
             "placeholder": "Voer hier een URL in...",
@@ -278,8 +278,8 @@
   "terminal": {
     "noLogs": "Nog geen logs. Voer een commando uit om loguitvoer te genereren.",
     "demo-1": "Welkom in demomodus! 🧪",
-    "demo-2": "Dit is een alleen-lezen instantie van SoulFire",
-    "demo-3": "Bekijk alle menu's en functies voordat je beslist om SoulFire te installeren :D",
+    "demo-2": "Dit is een alleen-lezen instantie van Soulfire",
+    "demo-3": "Bekijk alle menu's en functies voordat je beslist om Soulfire te installeren :D",
     "demo-4": "Voel je vrij om lid te worden van onze Discord-server als je contact wilt opnemen: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -390,7 +390,7 @@
     },
     "configDir": "Config-map",
     "dataDir": "Data-map",
-    "supportSoulFire": "Steun SoulFire",
+    "supportSoulFire": "Steun Soulfire",
     "about": "Over",
     "logOut": "Uitloggen",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "Afsluiten",
     "stopImpersonating": "Imiteren stoppen",
-    "helpTranslate": "Vertaal SoulFire"
+    "helpTranslate": "Vertaal Soulfire"
   },
   "sidebar": {
     "documentation": "Documentatie",
-    "supportSoulFire": "Steun SoulFire",
+    "supportSoulFire": "Steun Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API-toegang",
-      "description": "De SoulFire gRPC HTTP API beheert instanties via webverzoeken.",
+      "description": "De Soulfire gRPC HTTP API beheert instanties via webverzoeken.",
       "publicAddress": "Openbaar API-adres",
       "personalToken": "Persoonlijk API-token",
       "securityWarning": "Houd je persoonlijke API-token geheim. Deze geeft toegang tot de API.",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "Een nieuw script toevoegen",
-      "description": "Scripts zijn kleine programma's die taken en andere acties op de SoulFire-server automatiseren.",
+      "description": "Scripts zijn kleine programma's die taken en andere acties op de Soulfire-server automatiseren.",
       "form": {
         "cancel": "Annuleren",
         "add": "Toevoegen"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "Niet gestart",
       "preparing": "Java en serverbestanden voorbereiden",
-      "starting": "Wachten tot SoulFire is gestart",
+      "starting": "Wachten tot Soulfire is gestart",
       "running": "Draait",
       "stopping": "Stoppen",
       "stopped": "Gestopt",

@@ -4,7 +4,7 @@ These instructions apply to coding agents working in this repository.
 
 ## Project Overview
 
-SoulFireClient is a React/TypeScript frontend for the [SoulFire server](https://github.com/soulfiremc-com/SoulFire). It runs on the web and as a desktop app on Windows, macOS, and Linux through Electron.
+SoulFireClient is a React/TypeScript frontend for the [Soulfire server](https://github.com/soulfiremc-com/SoulFire). It runs on the web and as a desktop app on Windows, macOS, and Linux through Electron.
 
 ## Build Commands
 
@@ -60,7 +60,7 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 
 ### Proto Generation
 
-SoulFire owns the protocol definitions. `buf.gen.yaml` pins their source to a full server commit hash.
+Soulfire owns the protocol definitions. `buf.gen.yaml` pins their source to a full server commit hash.
 Run `bun run protocol:generate` after changing that pin. Commit the generated files in `src/generated/` with the pin.
 Do not edit generated files by hand. CI regenerates them and checks for differences.
 Normal builds use the checked-in bindings and do not need an SDK release.
@@ -94,7 +94,7 @@ The app supports a demo mode (no server connection) using fallback data from `sr
 
 ## Branding and product language
 
-Before naming features or changing user-facing text and visuals, read the [SoulFire brand guidance](https://github.com/soulfiremc-com/brand).
+Before naming features or changing user-facing text and visuals, read the [Soulfire brand guidance](https://github.com/soulfiremc-com/brand).
 Use its terminology, naming, writing, and visual identity guides.
 Keep proposed renames separate from accepted guidance.
 Preserve public identifiers until the owning repository approves a migration.

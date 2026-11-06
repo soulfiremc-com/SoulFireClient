@@ -1,6 +1,6 @@
 # Contributing to SoulFireClient
 
-SoulFireClient provides the browser UI and Electron desktop app for SoulFire.
+SoulFireClient provides the browser UI and Electron desktop app for Soulfire.
 This guide covers local development, validation, and pull requests.
 
 ## Before you start
@@ -23,13 +23,13 @@ bun run dev:web
 
 Use `bun run dev` for Electron development on a desktop host.
 A browser preview covers the web UI. Native integration needs an Electron session.
-Use a local SoulFire server for connected workflows. The client also has demo data for disconnected views.
+Use a local Soulfire server for connected workflows. The client also has demo data for disconnected views.
 Do not share development tokens or modify production accounts while reproducing a bug.
 
 ### Develop components with Storybook
 
 Run `bun run storybook` and open `http://localhost:6006`.
-Storybook shows application components without Electron or a SoulFire server.
+Storybook shows application components without Electron or a Soulfire server.
 The initial stories cover fleet summaries, health and food meters, and server dialogs.
 Use the theme toolbar to switch between light and dark mode.
 Controls change component props. The Accessibility panel reports problems in the current story.

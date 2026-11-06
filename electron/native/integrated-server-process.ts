@@ -107,7 +107,7 @@ export function startIntegratedOperation(
         state.child.exitCode !== null ||
         state.child.signalCode !== null
       )
-        throw new Error("SoulFire exited before startup completed");
+        throw new Error("Soulfire exited before startup completed");
       state.diagnostics.status = "running";
       return credentials;
     } catch (error) {
@@ -228,7 +228,7 @@ export function waitForIntegratedServerReady(
       state.diagnostics.exitSignal = exitSignal;
       if (state.diagnostics.status !== "stopping") {
         state.diagnostics.status = "failed";
-        state.diagnostics.error ??= `Java exited with ${exitSignal ? `signal ${exitSignal}` : `code ${code}`}${ready ? "" : " before SoulFire finished loading"}.`;
+        state.diagnostics.error ??= `Java exited with ${exitSignal ? `signal ${exitSignal}` : `code ${code}`}${ready ? "" : " before Soulfire finished loading"}.`;
       }
       appendIntegratedLog(
         state,
@@ -244,7 +244,7 @@ export function waitForIntegratedServerReady(
         reject(
           new Error(
             state.diagnostics.error ??
-              "SoulFire stopped before it finished loading",
+              "Soulfire stopped before it finished loading",
           ),
         );
     });

@@ -175,7 +175,7 @@
     },
     "postImportCheckDialog": {
       "title": "Cek proxy yang diimpor?",
-      "description": "Anda telah mengimpor {{count}} proxy. Cek sekarang? SoulFire akan menghapus proxy yang tidak valid secara otomatis.",
+      "description": "Anda telah mengimpor {{count}} proxy. Cek sekarang? Soulfire akan menghapus proxy yang tidak valid secara otomatis.",
       "confirm": "Periksa Proksi",
       "skip": "Lewati"
     },

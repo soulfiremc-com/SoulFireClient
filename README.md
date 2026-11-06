@@ -2,18 +2,20 @@
 
 [![discord](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-singular_vector.svg)](https://discord.gg/vHgRd6YZmH) [![kofi](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/donate/kofi-singular_vector.svg)](https://ko-fi.com/alexprogrammerde)
 
-# SoulFireClient
+# Soulfire app
 
-This is a frontend for the [SoulFire server](https://github.com/soulfiremc-com/SoulFire).
-It is now packaged as a desktop app with Electron while still using the official SoulFire gRPC API.
+Soulfire is the display name. Repository names, SDK exports, release filenames, executable names, and existing profile paths retain their compatible identifiers.
+
+This is a frontend for the [Soulfire server](https://github.com/soulfiremc-com/SoulFire).
+It is now packaged as a desktop app with Electron while still using the official Soulfire gRPC API.
 
 > [!NOTE]
-> For more info about SoulFire, take a look at the main [SoulFire repository](https://github.com/soulfiremc-com/SoulFire).
+> For more info about Soulfire, take a look at the main [Soulfire repository](https://github.com/soulfiremc-com/SoulFire).
 
 ## About the client
 
 Built using latest web tech to consistently work on both web, desktop and mobile.
-The client is the GUI for the SoulFire server, but it uses the official SoulFire gRPC API.
+The client is the GUI for the Soulfire server, but it uses the official Soulfire gRPC API.
 Anything that can be done using the SF client can also be done using gRPC HTTP API calls directly.
 
 ## Support reminders
@@ -21,7 +23,7 @@ Anything that can be done using the SF client can also be done using gRPC HTTP A
 The app offers a support reminder on a later instance overview visit after 14 days, three active days, and a successful bot spawn.
 It waits during loading, bot startup, errors, other dialogs, and cookie consent.
 The reminder leaves the overview usable and appears at most once every six months.
-**Don't remind me again** and **I already support SoulFire** disable automatic reminders.
+**Don't remind me again** and **I already support Soulfire** disable automatic reminders.
 The account menu always includes a support link.
 
 Eligibility and preferences stay in local storage without user or bot identifiers and do not depend on PostHog consent.
@@ -31,9 +33,9 @@ Existing users start the new usage criteria when they first use this version. Pr
 ## Installation
 
 > [!TIP]
-> Want to check out how SoulFire looks before installing it? Take a look at the official [demo page](https://demo.soulfiremc.com).
+> Want to check out how Soulfire looks before installing it? Take a look at the official [demo page](https://demo.soulfiremc.com).
 
-For installing SoulFire, please refer to the [installation guide](https://soulfiremc.com/docs/installation).
+For installing Soulfire, please refer to the [installation guide](https://soulfiremc.com/docs/installation).
 
 <a href='https://flathub.org/apps/com.soulfiremc.soulfire'>
 <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
@@ -109,11 +111,11 @@ PostHog drops cookieless events if this setting is disabled.
 
 ### Update RPC bindings
 
-The client generates its RPC bindings directly from the SoulFire repository with [Buf](https://buf.build/docs/generate/).
+The client generates its RPC bindings directly from the Soulfire repository with [Buf](https://buf.build/docs/generate/).
 `buf.gen.yaml` pins the source to a full Git commit hash, independent of server and SDK releases.
 The server revision also pins the imported schemas through its `buf.lock`.
 
-1. Push the protocol changes to the SoulFire repository.
+1. Push the protocol changes to the Soulfire repository.
 2. Set `inputs[0].ref` in `buf.gen.yaml` to that commit's full hash.
 3. Run `bun run protocol:generate`.
 4. Update affected client code and run `bun run typecheck`, `bun test`, and `bun run build:web`.

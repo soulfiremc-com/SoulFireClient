@@ -13,7 +13,7 @@
       "reloadPage": "Ladda om sidan",
       "showDetails": "Visa detaljer"
     },
-    "connectionFailed": "Anslutning till SoulFire-servern misslyckades."
+    "connectionFailed": "Anslutning till Soulfire-servern misslyckades."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "Om SoulFire",
-      "description": "Du kör version {{version}} av SoulFire-klienten.",
+      "title": "Om Soulfire",
+      "description": "Du kör version {{version}} av Soulfire-klienten.",
       "type": "Typ",
       "value": "Värde",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "Stäng"
     },
     "support": {
-      "title": "Stöd SoulFire",
-      "description": "SoulFire är gratis och öppen källkod, byggd med kärlek av communityn.",
-      "body": "Om SoulFire har varit användbar för dig, överväg gärna att stödja projektet. Ditt bidrag hjälper till att täcka serverkostnader, finansiera utveckling och hålla SoulFire gratis för alla.",
+      "title": "Stöd Soulfire",
+      "description": "Soulfire är gratis och öppen källkod, byggd med kärlek av communityn.",
+      "body": "Om Soulfire har varit användbar för dig, överväg gärna att stödja projektet. Ditt bidrag hjälper till att täcka serverkostnader, finansiera utveckling och hålla Soulfire gratis för alla.",
       "dismiss": "Kanske senare",
-      "action": "Stöd SoulFire"
+      "action": "Stöd Soulfire"
     },
     "createInstance": {
       "title": "Skapa en ny instans",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "Från fil",
         "fromUrl": "Från URL",
-        "firstClipboardItem": "Urklippet innehåller flera objekt. SoulFire kommer att använda det första objektet.",
+        "firstClipboardItem": "Urklippet innehåller flera objekt. Soulfire kommer att använda det första objektet.",
         "fromClipboard": "Från urklipp",
         "textarea": {
           "placeholder": "Skriv in text här...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire-servern skickar en GET-begäran till denna URL och importerar svaret.",
+        "description": "Soulfire-servern skickar en GET-begäran till denna URL och importerar svaret.",
         "form": {
           "url": {
             "placeholder": "Klistra in URL här...",
@@ -278,8 +278,8 @@
   "terminal": {
     "noLogs": "Inga loggar än. Kör ett kommando för att skapa loggutdata.",
     "demo-1": "Välkommen till demoläge! 🧪",
-    "demo-2": "Det här är en skrivskyddad instans av SoulFire",
-    "demo-3": "Utforska alla menyer och funktioner innan du bestämmer dig för att installera SoulFire :D",
+    "demo-2": "Det här är en skrivskyddad instans av Soulfire",
+    "demo-3": "Utforska alla menyer och funktioner innan du bestämmer dig för att installera Soulfire :D",
     "demo-4": "Gå gärna med i vår Discord-server om du vill kontakta oss: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -390,7 +390,7 @@
     },
     "configDir": "Konfigurationsmapp",
     "dataDir": "Datamapp",
-    "supportSoulFire": "Stöd SoulFire",
+    "supportSoulFire": "Stöd Soulfire",
     "about": "Om",
     "logOut": "Logga ut",
     "logOutToast": {
@@ -400,11 +400,11 @@
     },
     "exit": "Avsluta",
     "stopImpersonating": "Sluta imitera",
-    "helpTranslate": "Översätt SoulFire"
+    "helpTranslate": "Översätt Soulfire"
   },
   "sidebar": {
     "documentation": "Dokumentation",
-    "supportSoulFire": "Stöd SoulFire",
+    "supportSoulFire": "Stöd Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -444,7 +444,7 @@
     },
     "api": {
       "title": "API-åtkomst",
-      "description": "SoulFires gRPC HTTP API hanterar instanser via webbförfrågningar.",
+      "description": "Soulfires gRPC HTTP API hanterar instanser via webbförfrågningar.",
       "publicAddress": "Offentlig API-adress",
       "personalToken": "Personlig API-token",
       "securityWarning": "Håll din personliga API-token hemlig. Den ger åtkomst till API:et.",
@@ -542,7 +542,7 @@
     },
     "addScriptDialog": {
       "title": "Lägg till ett nytt skript",
-      "description": "Skript är små program som automatiserar uppgifter och andra åtgärder på SoulFire-servern.",
+      "description": "Skript är små program som automatiserar uppgifter och andra åtgärder på Soulfire-servern.",
       "form": {
         "cancel": "Avbryt",
         "add": "Lägg till"
@@ -620,7 +620,7 @@
     "status": {
       "idle": "Ej startad",
       "preparing": "Förbereder Java och serverfiler",
-      "starting": "Väntar på att SoulFire ska starta",
+      "starting": "Väntar på att Soulfire ska starta",
       "running": "Kör",
       "stopping": "Stoppar",
       "stopped": "Stoppad",

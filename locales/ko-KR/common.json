@@ -13,7 +13,7 @@
       "reloadPage": "페이지 새로고침",
       "showDetails": "자세히 보기"
     },
-    "connectionFailed": "SoulFire 서버 연결에 실패했습니다."
+    "connectionFailed": "Soulfire 서버 연결에 실패했습니다."
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "SoulFire 정보",
-      "description": "현재 SoulFire 클라이언트 버전 {{version}}을(를) 사용 중입니다.",
+      "title": "Soulfire 정보",
+      "description": "현재 Soulfire 클라이언트 버전 {{version}}을(를) 사용 중입니다.",
       "type": "종류",
       "value": "값",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "닫기"
     },
     "support": {
-      "title": "SoulFire를 지원하기",
-      "description": "SoulFire는 커뮤니티가 사랑으로 만든 무료 오픈 소스입니다.",
-      "body": "SoulFire가 도움이 되었다면 프로젝트를 지원하는 것을 고려해 주세요. 여러분의 기여는 서버 비용을 충당하고, 개발을 지원하며, 모든 사람에게 SoulFire를 무료로 제공하는 데 도움이 됩니다.",
+      "title": "Soulfire를 지원하기",
+      "description": "Soulfire는 커뮤니티가 사랑으로 만든 무료 오픈 소스입니다.",
+      "body": "Soulfire가 도움이 되었다면 프로젝트를 지원하는 것을 고려해 주세요. 여러분의 기여는 서버 비용을 충당하고, 개발을 지원하며, 모든 사람에게 Soulfire를 무료로 제공하는 데 도움이 됩니다.",
       "dismiss": "나중에 할게요",
-      "action": "SoulFire를 지원하기"
+      "action": "Soulfire를 지원하기"
     },
     "createInstance": {
       "title": "새 인스턴스 만들기",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "파일에서",
         "fromUrl": "URL에서",
-        "firstClipboardItem": "클립보드에 여러 항목이 있습니다. SoulFire는 첫 번째 항목을 사용합니다.",
+        "firstClipboardItem": "클립보드에 여러 항목이 있습니다. Soulfire는 첫 번째 항목을 사용합니다.",
         "fromClipboard": "클립보드에서",
         "textarea": {
           "placeholder": "여기에 텍스트를 입력하세요...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire 서버가 이 URL로 GET 요청을 보낸 뒤, 응답을 가져와서 가져옵니다.",
+        "description": "Soulfire 서버가 이 URL로 GET 요청을 보낸 뒤, 응답을 가져와서 가져옵니다.",
         "form": {
           "url": {
             "placeholder": "여기에 URL을 입력하세요...",
@@ -274,8 +274,8 @@
   "terminal": {
     "noLogs": "아직 로그가 없습니다. 명령어를 실행하면 로그 출력이 생성됩니다.",
     "demo-1": "데모 모드에 오신 것을 환영합니다! 🧪",
-    "demo-2": "이것은 SoulFire의 읽기 전용 인스턴스입니다",
-    "demo-3": "SoulFire를 설치하기 전에 모든 메뉴와 기능을 확인해 보세요 :D",
+    "demo-2": "이것은 Soulfire의 읽기 전용 인스턴스입니다",
+    "demo-3": "Soulfire를 설치하기 전에 모든 메뉴와 기능을 확인해 보세요 :D",
     "demo-4": "문의가 있으시면 언제든지 Discord 서버에 참여해 주세요: https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -386,7 +386,7 @@
     },
     "configDir": "설정 디렉터리",
     "dataDir": "데이터 디렉터리",
-    "supportSoulFire": "SoulFire를 지원하기",
+    "supportSoulFire": "Soulfire를 지원하기",
     "about": "정보",
     "logOut": "로그아웃",
     "logOutToast": {
@@ -396,11 +396,11 @@
     },
     "exit": "종료",
     "stopImpersonating": "가상화 중지",
-    "helpTranslate": "SoulFire 번역 참여"
+    "helpTranslate": "Soulfire 번역 참여"
   },
   "sidebar": {
     "documentation": "문서",
-    "supportSoulFire": "SoulFire를 지원하기",
+    "supportSoulFire": "Soulfire를 지원하기",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -440,7 +440,7 @@
     },
     "api": {
       "title": "API 접근",
-      "description": "SoulFire gRPC HTTP API는 웹 요청을 통해 인스턴스를 관리합니다.",
+      "description": "Soulfire gRPC HTTP API는 웹 요청을 통해 인스턴스를 관리합니다.",
       "publicAddress": "공용 API 주소",
       "personalToken": "개인 API 토큰",
       "securityWarning": "개인 API 토큰은 비공개로 보관하세요. API 접근 권한을 제공합니다.",
@@ -538,7 +538,7 @@
     },
     "addScriptDialog": {
       "title": "새 스크립트 추가",
-      "description": "스크립트는 SoulFire 서버에서 작업을 자동화하거나 다양한 동작을 수행하는 작은 프로그램입니다.",
+      "description": "스크립트는 Soulfire 서버에서 작업을 자동화하거나 다양한 동작을 수행하는 작은 프로그램입니다.",
       "form": {
         "cancel": "취소",
         "add": "추가"
@@ -616,7 +616,7 @@
     "status": {
       "idle": "시작되지 않음",
       "preparing": "Java 및 서버 파일 준비 중",
-      "starting": "SoulFire가 시작될 때까지 대기 중",
+      "starting": "Soulfire가 시작될 때까지 대기 중",
       "running": "실행 중",
       "stopping": "중지 중",
       "stopped": "중지됨",

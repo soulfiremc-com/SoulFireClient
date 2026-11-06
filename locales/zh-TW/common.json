@@ -13,7 +13,7 @@
       "reloadPage": "重新載入頁面",
       "showDetails": "顯示詳細資料"
     },
-    "connectionFailed": "連接 SoulFire 伺服器失敗。"
+    "connectionFailed": "連接 Soulfire 伺服器失敗。"
   },
   "queryStatus": {
     "failed": "",
@@ -33,8 +33,8 @@
   },
   "dialog": {
     "about": {
-      "title": "關於 SoulFire",
-      "description": "您正在執行 SoulFire 用戶端的版本 {{version}}。",
+      "title": "關於 Soulfire",
+      "description": "您正在執行 Soulfire 用戶端的版本 {{version}}。",
       "type": "類型",
       "value": "數值",
       "fields": {
@@ -52,11 +52,11 @@
       "close": "關閉"
     },
     "support": {
-      "title": "支持 SoulFire",
-      "description": "SoulFire 是由社群用心打造的免費開源方案。",
-      "body": "如果你覺得 SoulFire 對你有幫助，請考慮支持本專案。你的貢獻將協助支付伺服器費用、資助開發並讓 SoulFire 持續對所有人免費開放。",
+      "title": "支持 Soulfire",
+      "description": "Soulfire 是由社群用心打造的免費開源方案。",
+      "body": "如果你覺得 Soulfire 對你有幫助，請考慮支持本專案。你的貢獻將協助支付伺服器費用、資助開發並讓 Soulfire 持續對所有人免費開放。",
       "dismiss": "稍後再說",
-      "action": "支持 SoulFire"
+      "action": "支持 Soulfire"
     },
     "createInstance": {
       "title": "建立新實例",
@@ -95,7 +95,7 @@
       "main": {
         "fromFile": "從檔案匯入",
         "fromUrl": "從網址匯入",
-        "firstClipboardItem": "剪貼簿中包含多個項目。SoulFire 會使用第一個項目。",
+        "firstClipboardItem": "剪貼簿中包含多個項目。Soulfire 會使用第一個項目。",
         "fromClipboard": "從剪貼簿",
         "textarea": {
           "placeholder": "請在此輸入文本...",
@@ -103,7 +103,7 @@
         }
       },
       "url": {
-        "description": "SoulFire 伺服器會向此 URL 發送 GET 請求並匯入回應內容。",
+        "description": "Soulfire 伺服器會向此 URL 發送 GET 請求並匯入回應內容。",
         "form": {
           "url": {
             "placeholder": "請在此輸入網址...",
@@ -274,8 +274,8 @@
   "terminal": {
     "noLogs": "尚無日誌。請執行指令以產生日誌輸出。",
     "demo-1": "歡迎來到演示模式！🧪",
-    "demo-2": "這是一個只讀的 SoulFire 實例",
-    "demo-3": "在決定安裝 SoulFire 之前，請盡情瀏覽所有選單和功能 :D",
+    "demo-2": "這是一個只讀的 Soulfire 實例",
+    "demo-3": "在決定安裝 Soulfire 之前，請盡情瀏覽所有選單和功能 :D",
     "demo-4": "如果您想聯絡我們，歡迎加入 Discord 伺服器：https://soulfiremc.com/discord"
   },
   "uiBreadcrumb": {
@@ -386,7 +386,7 @@
     },
     "configDir": "設定目錄",
     "dataDir": "資料目錄",
-    "supportSoulFire": "支持 SoulFire",
+    "supportSoulFire": "支持 Soulfire",
     "about": "關於",
     "logOut": "登出",
     "logOutToast": {
@@ -396,11 +396,11 @@
     },
     "exit": "退出",
     "stopImpersonating": "停止模擬",
-    "helpTranslate": "協助翻譯 SoulFire"
+    "helpTranslate": "協助翻譯 Soulfire"
   },
   "sidebar": {
     "documentation": "文件",
-    "supportSoulFire": "支持 SoulFire",
+    "supportSoulFire": "支持 Soulfire",
     "discord": "Discord"
   },
   "breadcrumbs": {
@@ -440,7 +440,7 @@
     },
     "api": {
       "title": "API 存取",
-      "description": "SoulFire gRPC HTTP API 透過網路請求管理實例。",
+      "description": "Soulfire gRPC HTTP API 透過網路請求管理實例。",
       "publicAddress": "公開 API 位址",
       "personalToken": "個人 API 權杖",
       "securityWarning": "請妥善保管您的個人 API 權杖。它可存取 API。",
@@ -538,7 +538,7 @@
     },
     "addScriptDialog": {
       "title": "新增腳本",
-      "description": "腳本是可在 SoulFire 伺服器上自動化任務和其他操作的小型程式。",
+      "description": "腳本是可在 Soulfire 伺服器上自動化任務和其他操作的小型程式。",
       "form": {
         "cancel": "取消",
         "add": "新增"
@@ -616,7 +616,7 @@
     "status": {
       "idle": "尚未啟動",
       "preparing": "正在準備 Java 與伺服器檔案",
-      "starting": "正在等待 SoulFire 啟動",
+      "starting": "正在等待 Soulfire 啟動",
       "running": "執行中",
       "stopping": "正在停止",
       "stopped": "已停止",

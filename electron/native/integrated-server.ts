@@ -115,7 +115,7 @@ export async function runIntegratedServer(
       Number(serverVersion.split(".")[1]) < 11
     ) {
       throw new Error(
-        "Software rendering requires SoulFire server 2.11 or newer. Import an updated server jar or turn off software rendering.",
+        "Software rendering requires Soulfire server 2.11 or newer. Import an updated server jar or turn off software rendering.",
       );
     }
     const appLocalDataDir = getAppLocalDataDir(app);
@@ -155,7 +155,7 @@ export async function runIntegratedServer(
       dataDirectory: soulFireRunDir,
       port: availablePort,
     });
-    report("Starting SoulFire server...");
+    report("Starting Soulfire server...");
     if (forceSoftwareRendering) {
       report("Forcing software rendering for the integrated server.");
     }
@@ -232,14 +232,14 @@ export async function importCustomSoulFireServerJar(
   sourcePath: string,
 ): Promise<CustomSoulFireServerJar> {
   if (path.extname(sourcePath).toLowerCase() !== ".jar") {
-    throw new Error("Custom SoulFire server file must be a jar");
+    throw new Error("Custom Soulfire server file must be a jar");
   }
 
   await validateJar(sourcePath);
 
   const fileStat = await stat(sourcePath);
   if (!fileStat.isFile()) {
-    throw new Error("Custom SoulFire server jar path is not a file");
+    throw new Error("Custom Soulfire server jar path is not a file");
   }
 
   const sha256 = await sha256FileHex(sourcePath);
@@ -305,10 +305,10 @@ async function resolveSoulFireJar(
   if (jarSource.type === "custom") {
     const jar = await findCustomSoulFireServerJar(app, jarSource.jarId);
     if (jar === null || !(await exists(jar.path))) {
-      throw new Error("Custom SoulFire server jar is no longer available");
+      throw new Error("Custom Soulfire server jar is no longer available");
     }
 
-    report(`Using custom SoulFire jar: ${jar.originalName}`);
+    report(`Using custom Soulfire jar: ${jar.originalName}`);
 
     return {
       jarPath: jar.path,
@@ -416,7 +416,7 @@ async function validateJar(jarPath: string): Promise<void> {
   try {
     zip = new AdmZip(jarPath);
   } catch {
-    throw new Error("Custom SoulFire server jar is not a valid jar file");
+    throw new Error("Custom Soulfire server jar is not a valid jar file");
   }
 
   const hasManifest = zip
@@ -427,7 +427,7 @@ async function validateJar(jarPath: string): Promise<void> {
         entry.entryName.toUpperCase() === "META-INF/MANIFEST.MF",
     );
   if (!hasManifest) {
-    throw new Error("Custom SoulFire server jar is missing a manifest");
+    throw new Error("Custom Soulfire server jar is missing a manifest");
   }
 }
 
@@ -539,7 +539,7 @@ async function ensureSoulFireJar(
   report: (message: string) => void,
   signal: AbortSignal,
 ): Promise<void> {
-  report("Fetching SoulFire checksum metadata...");
+  report("Fetching Soulfire checksum metadata...");
 
   const expectedChecksum = await fetchSoulFireJarChecksum(
     version,
@@ -549,7 +549,7 @@ async function ensureSoulFireJar(
   if (await exists(jarPath)) {
     const existingChecksum = await sha256FileHex(jarPath, signal);
     if (existingChecksum.toLowerCase() === expectedChecksum.toLowerCase()) {
-      report("SoulFire already downloaded and verified");
+      report("Soulfire already downloaded and verified");
       return;
     }
   }
@@ -560,15 +560,15 @@ async function ensureSoulFireJar(
     force: true,
   });
 
-  report("Fetching SoulFire data...");
+  report("Fetching Soulfire data...");
   try {
     await downloadToFile(jarUrl, tempJarPath, signal, (percent) => {
-      report(`Downloading SoulFire... ${percent}%`);
+      report(`Downloading Soulfire... ${percent}%`);
     });
     await verifyFileChecksum(
       tempJarPath,
       expectedChecksum,
-      "SoulFire jar",
+      "Soulfire jar",
       signal,
     );
     signal.throwIfAborted();
@@ -576,7 +576,7 @@ async function ensureSoulFireJar(
   } finally {
     await rm(tempJarPath, { force: true });
   }
-  report("Downloaded SoulFire");
+  report("Downloaded Soulfire");
 }
 
 async function fetchSoulFireJarChecksum(
@@ -594,7 +594,7 @@ async function fetchSoulFireJarChecksum(
     },
   );
   if (!response.ok) {
-    throw new Error("Failed to fetch SoulFire release metadata");
+    throw new Error("Failed to fetch Soulfire release metadata");
   }
 
   const release = (await response.json()) as {
@@ -606,7 +606,7 @@ async function fetchSoulFireJarChecksum(
   const asset = release.assets?.find((entry) => entry.name === jarName);
   const digest = asset?.digest?.replace(/^sha256:/, "");
   if (!digest) {
-    throw new Error("SoulFire release metadata did not include a checksum");
+    throw new Error("Soulfire release metadata did not include a checksum");
   }
 
   return digest;

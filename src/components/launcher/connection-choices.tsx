@@ -31,7 +31,7 @@ import {
 import { getAppUrl } from "@/lib/app-deployment.ts";
 import { cn } from "@/lib/utils.tsx";
 
-/** Shows where the SoulFire server sits between this app and Minecraft. */
+/** Shows where the Soulfire server sits between this app and Minecraft. */
 function ConnectionPath() {
   const { t } = useTranslation("login");
   const stops = [
@@ -112,7 +112,7 @@ function ChoiceButton(props: {
   );
 }
 
-/** The first decision: where the SoulFire server runs. */
+/** The first decision: where the Soulfire server runs. */
 export function ConnectionChoices(props: {
   demoMode: boolean;
   canRunLocally: boolean;

@@ -353,7 +353,7 @@ function Shell({ transport }: { transport: StoryTransport }) {
           </CreateInstanceContext>
           <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
             <DialogContent>
-              <DialogTitle>About SoulFire</DialogTitle>
+              <DialogTitle>About Soulfire</DialogTitle>
               <DialogDescription>
                 Another dialog for testing focus and shortcuts.
               </DialogDescription>
@@ -695,7 +695,7 @@ export const ShortcutsAndActions: Story = {
     dialog = await page.findByRole("dialog", { name: "Command menu" });
     await userEvent.type(within(dialog).getByRole("combobox"), "about");
     await userEvent.keyboard("{Enter}");
-    const about = await page.findByRole("dialog", { name: "About SoulFire" });
+    const about = await page.findByRole("dialog", { name: "About Soulfire" });
     await waitFor(() =>
       expect(about.contains(document.activeElement)).toBe(true),
     );
@@ -1307,7 +1307,7 @@ export const ServerSettingsWithPermission: Story = {
     );
     await context.userEvent.click(
       await menu.findByRole("option", {
-        name: new RegExp(`^${label}.*SoulFire server.*Server settings`),
+        name: new RegExp(`^${label}.*Soulfire server.*Server settings`),
       }),
     );
     await closed();

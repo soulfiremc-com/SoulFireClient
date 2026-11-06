@@ -69,7 +69,7 @@ export function buildSdkQuickstart(options: SdkQuickstartOptions) {
         : `    const bot = instance.bot(${bot});\n${
             recipe === "read-state"
               ? "    const info = yield* bot.info();\n    console.log(info.liveState);"
-              : '    yield* bot.chat.send("Hello from the SoulFire SDK!");\n    console.log("Message sent.");'
+              : '    yield* bot.chat.send("Hello from the Soulfire SDK!");\n    console.log("Message sent.");'
           }`;
     return {
       filename: "example.ts",
@@ -109,7 +109,7 @@ await Effect.runPromise(program);
       : `    bot = instance.bot(${bot})\n${
           recipe === "read-state"
             ? "    info = yield from bot.info()\n    print(info.live_state)"
-            : '    yield from bot.chat.send("Hello from the SoulFire SDK!")\n    print("Message sent.")'
+            : '    yield from bot.chat.send("Hello from the Soulfire SDK!")\n    print("Message sent.")'
         }`;
   return {
     filename: "example.py",
@@ -159,7 +159,7 @@ export function buildSdkAgentPrompt(
   const example = buildSdkQuickstart(options);
   const url = sdkServerUrl(options.serverUrl);
   const target = [
-    `SoulFire API base URL: ${url ?? "ask me for the real SoulFire API address before running"}`,
+    `Soulfire API base URL: ${url ?? "ask me for the real Soulfire API address before running"}`,
     `Project: ${JSON.stringify(options.instanceName)} (ID: ${JSON.stringify(options.instanceId)})`,
     "Projects use the SDK instance API: keep client.instance(), instanceId, and instance_id unchanged.",
     ...(options.recipe !== "list-bots"
@@ -169,7 +169,7 @@ export function buildSdkAgentPrompt(
       : []),
   ];
   return [
-    `Write a ${options.language === "python" ? "Python 3.14+" : "TypeScript / Bun"} script using the SoulFire SDK to ${AGENT_GOALS[options.recipe]}.`,
+    `Write a ${options.language === "python" ? "Python 3.14+" : "TypeScript / Bun"} script using the Soulfire SDK to ${AGENT_GOALS[options.recipe]}.`,
     ...(options.demo
       ? [
           "This prompt was copied from demo mode. All target values are samples. Ask me for my real server address, project ID, and bot ID before running anything.",
@@ -190,7 +190,7 @@ export function buildSdkAgentPrompt(
     "Read the personal API token from SOULFIRE_TOKEN. Never hard-code or print it, and do not ask me to paste it into this conversation. I will set it locally in my terminal.",
     ...(url && isLocalSdkServer(url)
       ? [
-          "This API address is local. Run the script on the same computer as the SoulFire server.",
+          "This API address is local. Run the script on the same computer as the Soulfire server.",
         ]
       : []),
     "",
