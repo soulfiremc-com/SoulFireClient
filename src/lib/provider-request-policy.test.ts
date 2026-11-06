@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { Clock, Effect, Exit, Fiber, Scope } from "effect";
+import { TestClock } from "effect/testing";
 import {
   executeProviderRequest,
+  executeProviderRequestEffect,
   type ProviderRequest,
   validateProviderRequest,
 } from "./provider-request-policy.ts";
@@ -96,4 +99,66 @@ test("requests do not reach the network for invalid endpoints", async () => {
     executeProviderRequest({ ...request, url: "https://evil.test" }, fetcher),
   );
   assert.equal(calls, 0);
+});
+
+test("provider deadlines abort the HTTP request and hide transport details", async () => {
+  const scope = Scope.makeUnsafe();
+  const clock = await Effect.runPromise(
+    TestClock.make().pipe(Effect.provideService(Scope.Scope, scope)),
+  );
+  let requestSignal: AbortSignal | undefined;
+  let started!: () => void;
+  const ready = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  const fetcher: typeof fetch = (_url, options) =>
+    new Promise((_resolve, reject) => {
+      requestSignal = options!.signal!;
+      requestSignal.addEventListener(
+        "abort",
+        () => reject(new Error("secret URL and token")),
+        { once: true },
+      );
+      started();
+    });
+  const fiber = Effect.runFork(
+    executeProviderRequestEffect(request, fetcher).pipe(
+      Effect.provideService(Clock.Clock, clock),
+    ),
+  );
+  try {
+    await ready;
+    await Effect.runPromise(clock.adjust("30 seconds"));
+    await assert.rejects(Effect.runPromise(Fiber.join(fiber)), {
+      message: "Provider connection failed",
+    });
+    assert.equal(requestSignal?.aborted, true);
+  } finally {
+    await Effect.runPromise(Fiber.interrupt(fiber));
+    await Effect.runPromise(Scope.close(scope, Exit.void));
+  }
+});
+
+test("caller cancellation aborts a provider HTTP request", async () => {
+  const controller = new AbortController();
+  let requestSignal: AbortSignal | undefined;
+  let started!: () => void;
+  const ready = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  const fetcher: typeof fetch = (_url, options) =>
+    new Promise((_resolve, reject) => {
+      requestSignal = options!.signal!;
+      requestSignal.addEventListener(
+        "abort",
+        () => reject(new Error("private credentials")),
+        { once: true },
+      );
+      started();
+    });
+  const pending = executeProviderRequest(request, fetcher, controller.signal);
+  await ready;
+  controller.abort();
+  await assert.rejects(pending, { message: "Provider connection failed" });
+  assert.equal(requestSignal?.aborted, true);
 });

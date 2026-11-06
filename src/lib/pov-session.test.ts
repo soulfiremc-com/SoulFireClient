@@ -1,7 +1,8 @@
 /// <reference types="bun-types/test" />
 import { afterEach, beforeEach, expect, jest, test } from "bun:test";
+import { fromBinary } from "@bufbuild/protobuf";
 import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
-import { PovService } from "@/generated/soulfire/pov_pb";
+import { PovInputRequestSchema, PovService } from "@/generated/soulfire/pov_pb";
 import { startPovSession } from "./pov-session";
 
 class Socket {
@@ -16,7 +17,10 @@ class Socket {
   constructor() {
     Socket.instances.push(this);
   }
-  send() {}
+  sent: Uint8Array[] = [];
+  send(data: Uint8Array) {
+    this.sent.push(data);
+  }
   close() {
     this.readyState = 3;
     this.onclose?.();
@@ -154,4 +158,61 @@ test("transient stream failures still reconnect with a fresh attempt", async () 
   expect(state.errors).toHaveLength(0);
   Socket.instances[0].open();
   state.session.stop();
+});
+
+test("stopping during reconnect backoff prevents another RPC attempt", async () => {
+  const state = fixture("transient");
+  await settle();
+  state.session.stop();
+  jest.advanceTimersByTime(60_000);
+  await settle();
+  expect(state.calls()).toBe(1);
+  expect(state.errors).toHaveLength(0);
+});
+
+test("reconnecting releases the old socket and ignores its late callbacks", async () => {
+  const state = fixture("frame");
+  await settle();
+  const first = Socket.instances[0];
+  first.open();
+  state.session.requestKeyFrame();
+  const staleClose = first.onclose!;
+  const staleOpen = first.onopen!;
+  const firstInput = fromBinary(PovInputRequestSchema, first.sent[0]);
+  first.onmessage!({ data: "9999" });
+  const sentBeforeReconnect = first.sent.length;
+  staleOpen();
+  state.session.requestKeyFrame();
+  expect(first.sent).toHaveLength(sentBeforeReconnect);
+  await settle();
+  expect(first.readyState).toBe(3);
+  expect(first.onmessage).toBeNull();
+  jest.advanceTimersByTime(500);
+  await settle();
+  expect(state.calls()).toBe(2);
+  const second = Socket.instances[1];
+  second.open();
+  state.session.requestKeyFrame();
+  const secondInput = fromBinary(PovInputRequestSchema, second.sent[0]);
+  expect(secondInput.sessionId).not.toBe(firstInput.sessionId);
+  expect(secondInput.sequence).toBe(1n);
+  expect(secondInput.captured).toBe(false);
+  staleClose();
+  await settle();
+  jest.advanceTimersByTime(1_000);
+  await settle();
+  expect(state.calls()).toBe(2);
+  expect(second.readyState).toBe(Socket.OPEN);
+  expect(state.errors).toHaveLength(0);
+});
+
+test("stopping before codec discovery finishes never opens a connection", async () => {
+  const state = fixture("frame");
+  state.session.stop();
+  await settle();
+  jest.advanceTimersByTime(60_000);
+  await settle();
+  expect(state.calls()).toBe(0);
+  expect(Socket.instances).toHaveLength(0);
+  expect(state.errors).toHaveLength(0);
 });

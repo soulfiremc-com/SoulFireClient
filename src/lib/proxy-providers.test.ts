@@ -403,3 +403,24 @@ test("HTTP and JSON errors do not expose provider secrets", async () => {
     );
   }
 });
+
+test("Proxy-Seller never retries an uncertain purchase", async () => {
+  for (const failure of ["network", "server"] as const) {
+    let purchases = 0;
+    const fetcher: ProviderFetch = async (request) => {
+      if (request.url.endsWith("/order/calc"))
+        return { status: 200, body: JSON.stringify(sellerQuoteResponse) };
+      purchases++;
+      if (failure === "network")
+        throw new Error("private-key in network error");
+      return { status: 502, body: "private account details" };
+    };
+    await assert.rejects(
+      purchaseSellerOrder(values.apiKey, order, quote, undefined, fetcher),
+      {
+        reason: failure === "network" ? "network" : "response",
+      },
+    );
+    assert.equal(purchases, 1);
+  }
+});

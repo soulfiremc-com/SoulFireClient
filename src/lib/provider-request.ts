@@ -1,6 +1,7 @@
+import { Context, Effect } from "effect";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import {
-  executeProviderRequest,
+  executeProviderRequestEffect,
   type ProviderRequest,
   type ProviderResponse,
   validateProviderRequest,
@@ -27,49 +28,104 @@ export class ProviderApiError extends Error {
   }
 }
 
-export const requestProvider: ProviderFetch = async (request, signal) => {
-  validateProviderRequest(request);
-  signal?.throwIfAborted();
-  try {
-    let result: ProviderResponse;
-    if (isDesktopApp()) {
-      result = await desktop.providers.request(request);
-    } else {
-      result = await executeProviderRequest(request, fetch, signal);
-    }
-    signal?.throwIfAborted();
-    return result;
-  } catch {
-    signal?.throwIfAborted();
-    // Never expose vendor response bodies or URLs, which can contain credentials.
-    throw new ProviderApiError("network");
+export class ProviderHttp extends Context.Service<
+  ProviderHttp,
+  {
+    readonly request: (
+      request: ProviderRequest,
+    ) => Effect.Effect<ProviderResponse, ProviderApiError>;
   }
+>()("soulfire/ProviderHttp") {}
+
+const providerHttp: Context.Service.Shape<typeof ProviderHttp> = {
+  request: (request) =>
+    Effect.gen(function* () {
+      yield* Effect.try({
+        try: () => validateProviderRequest(request),
+        catch: () => new ProviderApiError("network"),
+      });
+      if (isDesktopApp())
+        return yield* Effect.tryPromise({
+          try: () => desktop.providers.request(request),
+          catch: () => new ProviderApiError("network"),
+        });
+      return yield* executeProviderRequestEffect(request).pipe(
+        Effect.mapError(() => new ProviderApiError("network")),
+      );
+    }),
 };
 
-export async function providerText(
-  request: ProviderRequest,
+export async function runProviderEffect<A, E>(
+  effect: Effect.Effect<A, E, ProviderHttp>,
   signal?: AbortSignal,
-  fetcher: ProviderFetch = requestProvider,
-): Promise<string> {
-  const result = await fetcher(request, signal);
-  if (result.status === 401 || result.status === 403)
-    throw new ProviderApiError("authentication");
-  // A server failure can happen after a purchase was accepted.
-  if (result.status >= 500) throw new ProviderApiError("response");
-  if (result.status < 200 || result.status >= 300)
-    throw new ProviderApiError("rejected");
-  return result.body;
+  fetcher?: ProviderFetch,
+): Promise<A> {
+  signal?.throwIfAborted();
+  const service = fetcher
+    ? {
+        request: (request: ProviderRequest) =>
+          Effect.tryPromise({
+            try: (signal) => fetcher(request, signal),
+            catch: (error) =>
+              error instanceof ProviderApiError
+                ? error
+                : new ProviderApiError("network"),
+          }),
+      }
+    : providerHttp;
+  try {
+    const result = await Effect.runPromise(
+      Effect.provideService(effect, ProviderHttp, service),
+      { signal },
+    );
+    signal?.throwIfAborted();
+    return result;
+  } catch (error) {
+    signal?.throwIfAborted();
+    throw error;
+  }
 }
 
-export async function providerJson(
+export const providerResponseEffect = (request: ProviderRequest) =>
+  Effect.flatMap(ProviderHttp, (service) => service.request(request));
+
+export const providerTextEffect = (request: ProviderRequest) =>
+  Effect.flatMap(providerResponseEffect(request), (result) => {
+    if (result.status === 401 || result.status === 403)
+      return Effect.fail(new ProviderApiError("authentication"));
+    // A server failure can happen after a purchase was accepted. Never retry it.
+    if (result.status >= 500)
+      return Effect.fail(new ProviderApiError("response"));
+    if (result.status < 200 || result.status >= 300)
+      return Effect.fail(new ProviderApiError("rejected"));
+    return Effect.succeed(result.body);
+  });
+
+export const providerJsonEffect = (request: ProviderRequest) =>
+  Effect.flatMap(providerTextEffect(request), (text) =>
+    Effect.try({
+      try: () => JSON.parse(text) as unknown,
+      catch: () => new ProviderApiError("response"),
+    }),
+  );
+
+export const requestProvider: ProviderFetch = async (request, signal) => {
+  validateProviderRequest(request);
+  return runProviderEffect(providerResponseEffect(request), signal);
+};
+
+export function providerText(
+  request: ProviderRequest,
+  signal?: AbortSignal,
+  fetcher?: ProviderFetch,
+): Promise<string> {
+  return runProviderEffect(providerTextEffect(request), signal, fetcher);
+}
+
+export function providerJson(
   request: ProviderRequest,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<unknown> {
-  const text = await providerText(request, signal, fetcher);
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    throw new ProviderApiError("response");
-  }
+  return runProviderEffect(providerJsonEffect(request), signal, fetcher);
 }

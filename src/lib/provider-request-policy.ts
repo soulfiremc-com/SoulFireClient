@@ -1,3 +1,5 @@
+import { Effect } from "effect";
+
 export type ProviderRequest = {
   url: string;
   method: "GET" | "POST";
@@ -7,6 +9,43 @@ export type ProviderRequest = {
 
 export type ProviderResponse = { status: number; body: string };
 
+export function executeProviderRequestEffect(
+  request: ProviderRequest,
+  fetcher: (input: string, init?: RequestInit) => Promise<Response> = fetch,
+): Effect.Effect<ProviderResponse, Error> {
+  return Effect.gen(function* () {
+    yield* Effect.try({
+      try: () => validateProviderRequest(request),
+      catch: (error) =>
+        error instanceof Error ? error : new Error("Invalid provider request"),
+    });
+    return yield* Effect.tryPromise({
+      try: async (signal) => {
+        const response = await fetcher(request.url, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          credentials: "omit",
+          redirect: "error",
+          referrerPolicy: "no-referrer",
+          signal,
+        });
+        const body = await response.text();
+        if (body.length > 8_000_000)
+          throw new Error("Provider response too large");
+        return { status: response.status, body };
+      },
+      // Fetch errors can include the credential-bearing request URL.
+      catch: () => new Error("Provider connection failed"),
+    }).pipe(
+      Effect.timeoutOrElse({
+        duration: "30 seconds",
+        orElse: () => Effect.fail(new Error("Provider connection failed")),
+      }),
+    );
+  });
+}
+
 export async function executeProviderRequest(
   request: ProviderRequest,
   fetcher: (input: string, init?: RequestInit) => Promise<Response> = fetch,
@@ -14,22 +53,11 @@ export async function executeProviderRequest(
 ): Promise<ProviderResponse> {
   validateProviderRequest(request);
   try {
-    const response = await fetcher(request.url, {
-      method: request.method,
-      headers: request.headers,
-      body: request.body,
-      credentials: "omit",
-      redirect: "error",
-      referrerPolicy: "no-referrer",
-      signal: signal
-        ? AbortSignal.any([signal, AbortSignal.timeout(30_000)])
-        : AbortSignal.timeout(30_000),
-    });
-    const body = await response.text();
-    if (body.length > 8_000_000) throw new Error("Provider response too large");
-    return { status: response.status, body };
+    return await Effect.runPromise(
+      executeProviderRequestEffect(request, fetcher),
+      { signal },
+    );
   } catch {
-    // A runtime's fetch error can include the credential-bearing request URL.
     throw new Error("Provider connection failed");
   }
 }

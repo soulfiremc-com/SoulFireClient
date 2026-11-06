@@ -1,8 +1,10 @@
+import { Effect } from "effect";
 import { z } from "zod";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import {
   ProviderApiError,
-  providerJson,
+  providerJsonEffect,
+  runProviderEffect,
   type ProviderFetch,
 } from "@/lib/provider-request.ts";
 
@@ -34,53 +36,57 @@ const localtsOrderSchema = z.object({
 });
 export type LocaltsOrder = z.infer<typeof localtsOrderSchema>;
 
-function parse<T>(schema: z.ZodType<T>, value: unknown): T {
-  const result = schema.safeParse(value);
-  if (!result.success) throw new ProviderApiError("response");
-  return result.data;
+function parse<T>(schema: z.ZodType<T>, value: unknown) {
+  return Effect.try({
+    try: () => schema.parse(value),
+    catch: () => new ProviderApiError("response"),
+  });
 }
 
-async function request(
-  path: string,
-  key: string,
-  method: "GET" | "POST",
-  signal?: AbortSignal,
-  fetcher?: ProviderFetch,
-): Promise<unknown> {
-  const response = await providerJson(
-    {
+function request(path: string, key: string, method: "GET" | "POST") {
+  return Effect.gen(function* () {
+    const response = yield* providerJsonEffect({
       url: `${base}${path}`,
       method,
       headers: key ? { "X-API-Key": key.trim() } : undefined,
-    },
-    signal,
-    fetcher,
-  );
-  const result = parse(z.object({ success: z.boolean() }), response);
-  if (!result.success) throw new ProviderApiError("rejected");
-  return response;
+    });
+    const result = yield* parse(z.object({ success: z.boolean() }), response);
+    if (!result.success)
+      return yield* Effect.fail(new ProviderApiError("rejected"));
+    return response;
+  });
 }
 
-export async function fetchLocaltsProducts(
+const productsEffect = () =>
+  Effect.gen(function* () {
+    return (yield* parse(
+      z.object({ products: z.array(productSchema) }),
+      yield* request("/products", "", "GET"),
+    )).products;
+  });
+const balanceEffect = (key: string) =>
+  Effect.gen(function* () {
+    if (!key.trim())
+      return yield* Effect.fail(new ProviderApiError("authentication"));
+    return (yield* parse(
+      z.object({ balance: z.number().nonnegative().finite() }),
+      yield* request("/me", key, "GET"),
+    )).balance;
+  });
+
+export function fetchLocaltsProducts(
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<LocaltsProduct[]> {
-  return parse(
-    z.object({ products: z.array(productSchema) }),
-    await request("/products", "", "GET", signal, fetcher),
-  ).products;
+  return runProviderEffect(productsEffect(), signal, fetcher);
 }
 
-export async function fetchLocaltsBalance(
+export function fetchLocaltsBalance(
   key: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<number> {
-  if (!key.trim()) throw new ProviderApiError("authentication");
-  return parse(
-    z.object({ balance: z.number().nonnegative().finite() }),
-    await request("/me", key, "GET", signal, fetcher),
-  ).balance;
+  return runProviderEffect(balanceEffect(key), signal, fetcher);
 }
 
 export function localtsPrice(product: LocaltsProduct, amount: number): number {
@@ -94,7 +100,7 @@ export function localtsPrice(product: LocaltsProduct, amount: number): number {
   );
 }
 
-export async function purchaseLocaltsAccounts(
+export function purchaseLocaltsAccounts(
   key: string,
   product: LocaltsProduct,
   amount: number,
@@ -102,59 +108,79 @@ export async function purchaseLocaltsAccounts(
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<string> {
-  localtsPrice(product, amount);
-  const [products, balance] = await Promise.all([
-    fetchLocaltsProducts(signal, fetcher),
-    fetchLocaltsBalance(key, signal, fetcher),
-  ]);
-  const current = products.find((entry) => entry.id === product.id);
-  if (!current || current.stock < amount) throw new ProviderApiError("empty");
-  if (
-    localtsPrice(current, amount) !== expectedTotal ||
-    balance < expectedTotal
-  )
-    throw new ProviderApiError("priceChanged");
-  const result = await request(
-    `/products/${current.id}/purchase?amount=${amount}`,
-    key,
-    "POST",
+  return runProviderEffect(
+    Effect.gen(function* () {
+      yield* Effect.try({
+        try: () => localtsPrice(product, amount),
+        catch: () => new ProviderApiError("limit"),
+      });
+      const [products, balance] = yield* Effect.all(
+        [productsEffect(), balanceEffect(key)],
+        { concurrency: "unbounded" },
+      );
+      const current = products.find((entry) => entry.id === product.id);
+      if (!current || current.stock < amount)
+        return yield* Effect.fail(new ProviderApiError("empty"));
+      if (
+        localtsPrice(current, amount) !== expectedTotal ||
+        balance < expectedTotal
+      )
+        return yield* Effect.fail(new ProviderApiError("priceChanged"));
+      const result = yield* request(
+        `/products/${current.id}/purchase?amount=${amount}`,
+        key,
+        "POST",
+      );
+      return (yield* parse(z.object({ orderId: z.string().min(1) }), result))
+        .orderId;
+    }),
     signal,
     fetcher,
   );
-  return parse(z.object({ orderId: z.string().min(1) }), result).orderId;
 }
 
-export async function fetchLocaltsOrder(
+export function fetchLocaltsOrder(
   key: string,
   id: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<LocaltsOrder> {
-  const order = parse(
-    localtsOrderSchema,
-    await request(
-      `/orders/get-order?${new URLSearchParams({ id })}`,
-      key,
-      "GET",
-      signal,
-      fetcher,
-    ),
+  return runProviderEffect(
+    Effect.gen(function* () {
+      const order = yield* parse(
+        localtsOrderSchema,
+        yield* request(
+          `/orders/get-order?${new URLSearchParams({ id })}`,
+          key,
+          "GET",
+        ),
+      );
+      if (order["order-id"] !== id)
+        return yield* Effect.fail(new ProviderApiError("response"));
+      return order;
+    }),
+    signal,
+    fetcher,
   );
-  if (order["order-id"] !== id) throw new ProviderApiError("response");
-  return order;
 }
 
-export async function fetchLocaltsOrders(
+export function fetchLocaltsOrders(
   key: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<{ id: string; productId: string }[]> {
-  return parse(
-    z.object({
-      orders: z.array(z.object({ id: z.string(), productId: z.string() })),
+  return runProviderEffect(
+    Effect.gen(function* () {
+      return (yield* parse(
+        z.object({
+          orders: z.array(z.object({ id: z.string(), productId: z.string() })),
+        }),
+        yield* request("/orders?page=0&size=25", key, "GET"),
+      )).orders;
     }),
-    await request("/orders?page=0&size=25", key, "GET", signal, fetcher),
-  ).orders;
+    signal,
+    fetcher,
+  );
 }
 
 export type LocaltsImportFormat =
