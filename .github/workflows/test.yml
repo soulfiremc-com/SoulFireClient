@@ -51,6 +51,8 @@ jobs:
         run: bun run test:terminal
 
       - name: Run web build
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ github.event_name == 'push' && secrets.POSTHOG_PERSONAL_API_KEY || '' }}
         run: bun run build:web
 
       - name: Build Storybook

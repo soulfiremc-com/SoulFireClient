@@ -10,6 +10,7 @@
   "packageManager": "bun@1.4.2",
   "trustedDependencies": [
     "@bufbuild/buf",
+    "@posthog/cli",
     "electron",
     "electron-winstaller",
     "esbuild",
@@ -127,6 +128,7 @@
     "@babel/core": "^8.0.0",
     "@bufbuild/buf": "1.72.0",
     "@bufbuild/protoc-gen-es": "2.14.0",
+    "@posthog/rollup-plugin": "^1.6.2",
     "@rolldown/plugin-babel": "^0.2.3",
     "@shadcn/lint": "^0.2.0",
     "@storybook/addon-a11y": "^10.6.3",

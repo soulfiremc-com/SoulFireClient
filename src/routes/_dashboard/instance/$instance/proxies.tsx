@@ -40,6 +40,7 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton.t
 import { DataTableSortList } from "@/components/data-table/data-table-sort-list.tsx";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
+import { ProxyImportReview } from "@/components/dialog/proxy-import-review";
 import ProxyProvidersDialog from "@/components/dialog/proxy-providers-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -84,12 +85,7 @@ import { observeServerStream } from "@/lib/protobuf.ts";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
 import { newProviderProxies } from "@/lib/proxy-providers.ts";
 import { getProxyRows, type ProxyTableRow } from "@/lib/proxy-selection.ts";
-import {
-  formatProxyAsFlat,
-  formatProxyAsURI,
-  parseNormalProxy,
-  parseURIProxy,
-} from "@/lib/proxy-format.ts";
+import { formatProxyAsFlat, formatProxyAsURI } from "@/lib/proxy-format.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   getEnumEntries,
@@ -398,6 +394,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   const [importedProxies, setImportedProxies] = useState<ProfileProxy[] | null>(
     null,
   );
+  const [importDraft, setImportDraft] = useState<string | null>(null);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   const guide = Route.useSearch({ select: (search) => search.guide });
   const [providerDialogOpen, setProviderDialogOpen] = useState(
@@ -443,67 +440,6 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
       });
     },
   });
-
-  const textSelectedCallback = useCallback(
-    (text: string) => {
-      if (proxyTypeSelected === null) return;
-
-      if (!text.trim()) {
-        toast.error(t("proxy.listImportToast.noProxies"));
-        return;
-      }
-
-      const textSplit = text
-        .split("\n")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-      toast.promise(
-        (async () => {
-          const proxiesToAdd: ProfileProxy[] = [];
-          for (const line of textSplit) {
-            let proxy: ProfileProxy | null;
-            switch (proxyTypeSelected) {
-              case UIProxyType.HTTP:
-              case UIProxyType.SOCKS4:
-              case UIProxyType.SOCKS5:
-                proxy = parseNormalProxy(
-                  line,
-                  uiProxyTypeToProto(proxyTypeSelected),
-                );
-                break;
-              case UIProxyType.URI:
-                proxy = parseURIProxy(line);
-                break;
-            }
-
-            if (proxy === null) {
-              continue;
-            }
-
-            proxiesToAdd.push(proxy);
-          }
-
-          if (proxiesToAdd.length === 0) {
-            throw new Error("No supported proxies found");
-          }
-
-          await addProxiesBatchMutation(proxiesToAdd);
-          setProxyTypeSelected(null);
-          setImportedProxies(proxiesToAdd);
-          return proxiesToAdd.length;
-        })(),
-        {
-          loading: t("proxy.listImportToast.loading"),
-          success: (r) => t("proxy.listImportToast.success", { count: r }),
-          error: (e) => {
-            console.error(e);
-            return t("proxy.listImportToast.error");
-          },
-        },
-      );
-    },
-    [proxyTypeSelected, addProxiesBatchMutation, t],
-  );
 
   const performProxyCheck = useCallback(() => {
     if (transport === null || importedProxies === null) {
@@ -684,14 +620,14 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      {proxyTypeSelected !== null && (
+      {proxyTypeSelected !== null && importDraft === null && (
         <ImportDialog
           title={t("proxy.import.dialog.title", {
             type: getEnumKeyByValue(UIProxyType, proxyTypeSelected),
           })}
           description={t("proxy.import.dialog.description")}
           closer={() => setProxyTypeSelected(null)}
-          listener={textSelectedCallback}
+          listener={setImportDraft}
           isPending={isImporting}
           filters={[
             {
@@ -706,6 +642,27 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           }}
         />
       )}
+      {proxyTypeSelected !== null && importDraft !== null && (
+        <ProxyImportReview
+          text={importDraft}
+          type={
+            proxyTypeSelected === UIProxyType.URI
+              ? "uri"
+              : uiProxyTypeToProto(proxyTypeSelected)
+          }
+          onBack={() => setImportDraft(null)}
+          onImport={async (proxies) => {
+            await addProxiesBatchMutation(proxies);
+            setImportedProxies(proxies);
+            setImportDraft(null);
+            setProxyTypeSelected(null);
+            toast.success(
+              t("proxy.listImportToast.success", { count: proxies.length }),
+            );
+          }}
+        />
+      )}
+
       <Dialog
         open={importedProxies !== null && !checkDialogOpen}
         onOpenChange={(open) => {

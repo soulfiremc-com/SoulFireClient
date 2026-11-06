@@ -448,12 +448,9 @@ function ComboComponent(props: {
   const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
 
-  const selectedOption =
-    props.setting.options.find((option) => option.id === props.value) ??
-    props.setting.options[0];
-  if (selectedOption.id !== props.value) {
-    props.changeCallback(selectedOption.id);
-  }
+  const selectedOption = props.setting.options.find(
+    (option) => option.id === props.value,
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -466,19 +463,27 @@ function ComboComponent(props: {
             aria-label={props.setting.uiName}
             aria-expanded={open}
             className="w-full justify-between"
-            disabled={props.setting.disabled}
+            disabled={
+              props.setting.disabled || props.setting.options.length === 0
+            }
           />
         }
       >
         <div className="inline-flex min-w-0 flex-row items-center gap-2">
-          {selectedOption.iconId && (
+          {selectedOption?.iconId && (
             <DynamicIcon name={selectedOption.iconId} />
           )}
-          <span className="truncate">{selectedOption.displayName}</span>
+          <span className="truncate">
+            {selectedOption?.displayName ??
+              t("settingsPage.combo.selectPlaceholder")}
+          </span>
         </div>
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </PopoverTrigger>
-      <PopoverContent className="w-(--anchor-width) p-0">
+      <PopoverContent
+        aria-label={props.setting.uiName}
+        className="w-(--anchor-width) p-0"
+      >
         <Command>
           <CommandInput
             placeholder={t("settingsPage.combo.searchPlaceholder")}

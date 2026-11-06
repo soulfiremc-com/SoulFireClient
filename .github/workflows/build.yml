@@ -58,6 +58,8 @@ jobs:
         run: bun run test:cast
 
       - name: Build unpacked Electron app
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
         run: bun run build:electron:dir -- --${{ matrix.arch }}
 
       - name: Upload artifacts

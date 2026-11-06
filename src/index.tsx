@@ -1,5 +1,5 @@
+import { getConnectionRetryDelay } from "@/lib/connection-errors";
 import { startCastClient } from "@/lib/cast-client";
-import { Code, ConnectError } from "@connectrpc/connect";
 import {
   createBrowserHistory,
   createRouter,
@@ -25,24 +25,10 @@ window.addEventListener("vite:preloadError", () => {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Retries on an initial load failure
-      retry: (failureCount, error) => {
-        const code = ConnectError.from(error).code;
-        if (
-          code === Code.Unauthenticated ||
-          code === Code.PermissionDenied ||
-          code === Code.FailedPrecondition ||
-          code === Code.NotFound ||
-          code === Code.AlreadyExists ||
-          code === Code.InvalidArgument ||
-          code === Code.Unimplemented ||
-          code === Code.OutOfRange ||
-          code === Code.DataLoss
-        ) {
-          return false;
-        }
-        return failureCount < 5;
-      },
+      retry: (failureCount, error) =>
+        getConnectionRetryDelay(error, failureCount) !== null,
+      retryDelay: (failureCount, error) =>
+        getConnectionRetryDelay(error, failureCount) ?? 0,
       structuralSharing: (prev: unknown, next: unknown) =>
         deepEqual(prev, next) ? prev : next,
     },

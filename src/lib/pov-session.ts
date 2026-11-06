@@ -1,5 +1,10 @@
 import { create, toBinary } from "@bufbuild/protobuf";
-import { Code, ConnectError, createClient } from "@connectrpc/connect";
+import {
+  Code,
+  ConnectError,
+  createClient,
+  type Transport,
+} from "@connectrpc/connect";
 import {
   type PovFrame,
   type PovInputEvent,
@@ -11,10 +16,13 @@ import {
 } from "@/generated/soulfire/pov_pb";
 import { povCodecs, povDisplayFps } from "@/lib/pov-display";
 import { PovInputQueue } from "@/lib/pov-input-queue";
-import { createTransport, povInputUrl } from "@/lib/web-rpc";
+
+const CONNECTION_TIMEOUT_MS = 15_000;
 
 // Bound both input and frame queues. A replacement stream always gets a fresh lease and sequence.
 export function startPovSession(
+  transport: Transport,
+  inputUrl: string,
   instanceId: string,
   botId: string,
   dimensions: () => { width: number; height: number; maxFps?: number } | null,
@@ -26,9 +34,6 @@ export function startPovSession(
   onClipboard: (text: string) => void = () => {},
   onOpenUrl: (url: string) => void = () => {},
 ) {
-  const transport = createTransport();
-  if (!transport)
-    throw new Error("Interactive POV requires a connected server.");
   const client = createClient(PovService, transport);
   const inputs = new PovInputQueue();
   let captured = false;
@@ -49,6 +54,7 @@ export function startPovSession(
     socket: WebSocket | null;
     token: string;
     acknowledged: bigint;
+    connectTimer: ReturnType<typeof setTimeout> | undefined;
   } | null = null;
   let retryTimer: ReturnType<typeof setTimeout> | undefined;
   let wakeRetry: (() => void) | undefined;
@@ -60,6 +66,7 @@ export function startPovSession(
     wakeRetry?.();
     attempt?.abort.abort();
     attempt?.socket?.close();
+    clearTimeout(attempt?.connectTimer);
     inputs.reset();
   }
   function fail(reason: unknown) {
@@ -77,6 +84,7 @@ export function startPovSession(
         Code.Unauthenticated,
         Code.InvalidArgument,
         Code.Unimplemented,
+        Code.FailedPrecondition,
       ].includes(reason.code)
     ) {
       fail(reason);
@@ -90,6 +98,7 @@ export function startPovSession(
     clipboardSequence = 0n;
     attempt?.abort.abort();
     attempt?.socket?.close();
+    clearTimeout(attempt?.connectTimer);
     onReconnecting();
   }
   function flush() {
@@ -173,12 +182,23 @@ export function startPovSession(
           socket: null as WebSocket | null,
           token: "",
           acknowledged: 0n,
+          connectTimer: undefined as ReturnType<typeof setTimeout> | undefined,
         };
         attempt = current;
         sequence = 0n;
         lastSent = 0;
         lastCaptured = false;
         lastAudioEnabled = false;
+        current.connectTimer = setTimeout(() => {
+          if (attempt === current && !current.abort.signal.aborted) {
+            fail(
+              new ConnectError(
+                "Bot view did not connect within 15 seconds. Check that the bot is online and try again.",
+                Code.DeadlineExceeded,
+              ),
+            );
+          }
+        }, CONNECTION_TIMEOUT_MS);
         try {
           for await (const frame of client.watch(
             {
@@ -199,10 +219,15 @@ export function startPovSession(
                   "Update the server to use the POV input channel.",
                   Code.Unimplemented,
                 );
-              const socket = new WebSocket(povInputUrl());
+              const socket = new WebSocket(inputUrl);
               current.socket = socket;
               socket.onopen = () => {
-                if (attempt === current) {
+                if (
+                  attempt === current &&
+                  !stopped &&
+                  !current.abort.signal.aborted
+                ) {
+                  clearTimeout(current.connectTimer);
                   ready = true;
                   flush();
                 }
@@ -255,7 +280,7 @@ export function startPovSession(
       });
       wakeRetry = undefined;
     }
-  })();
+  })().catch(fail);
 
   function enqueue(event: PovInputEvent, source = "keyboard") {
     if (!captured || stopped || !ready) return;

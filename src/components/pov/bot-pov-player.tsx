@@ -1,4 +1,6 @@
 import { create } from "@bufbuild/protobuf";
+import { Code, ConnectError } from "@connectrpc/connect";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import {
   ExpandIcon,
@@ -61,6 +63,7 @@ import { PovStreamFeedbackTracker } from "@/lib/pov-stream-feedback";
 import { PovStreamMetrics, povDebugEnabled } from "@/lib/pov-stream-metrics";
 import { PovVideoDecoder } from "@/lib/pov-video-decoder";
 import { createPovPlayerStore } from "@/stores/pov-player-store";
+import { createTransport, povInputUrl } from "@/lib/web-rpc";
 
 type KeyboardCapture = Navigator & {
   keyboard?: { lock(keys?: string[]): Promise<void>; unlock(): void };
@@ -85,6 +88,7 @@ function BotPovSession({
   botId: string;
   isOnline: boolean;
 }) {
+  const queryClient = useQueryClient();
   const { t } = useTranslation("instance");
   const [playerStore] = useState(createPovPlayerStore);
   const actions = playerStore.actions;
@@ -225,6 +229,17 @@ function BotPovSession({
     };
     const failed = (reason: Error) => {
       if (disposed) return;
+      if (
+        reason instanceof ConnectError &&
+        reason.code === Code.FailedPrecondition
+      ) {
+        void queryClient.invalidateQueries({
+          queryKey: ["bot-info", instanceId, botId],
+        });
+        void queryClient.invalidateQueries({
+          queryKey: ["bot-status", instanceId],
+        });
+      }
       actions.setError(reason.message);
       actions.disconnected();
       release();
@@ -291,7 +306,12 @@ function BotPovSession({
         const activeDecoder = decoder;
         metrics.decoder = () => activeDecoder.stats;
       }
+      const transport = createTransport();
+      if (!transport)
+        throw new Error("Interactive POV requires a connected server.");
       session.current = startPovSession(
+        transport,
+        povInputUrl(),
         instanceId,
         botId,
         dimensions,
@@ -356,6 +376,7 @@ function BotPovSession({
       session.current = null;
     };
   }, [
+    queryClient,
     playing,
     isOnline,
     instanceId,

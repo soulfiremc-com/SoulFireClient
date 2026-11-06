@@ -44,6 +44,7 @@ import {
   useIntegratedDiagnostics,
 } from "@/components/IntegratedServerDiagnostics";
 import { ConnectionChoices } from "@/components/launcher/connection-choices.tsx";
+import { ConnectionFailure } from "@/components/launcher/connection-failure";
 import {
   StartupFailureNotice,
   StartupProgress,
@@ -118,6 +119,7 @@ import {
   NextAuthFlowResponse_Failure_Reason,
 } from "@/generated/soulfire/login_pb";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import { useServerConnection } from "@/hooks/use-server-connection";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import type {
   DesktopCustomSoulFireServerJar,
@@ -257,12 +259,14 @@ function Index() {
   const searchParams: Record<string, string> = Route.useSearch();
   const systemInfo = use(SystemInfoContext);
   const hasSavedIntegratedSession =
+    searchParams.configure !== "true" &&
     isDesktopApp() &&
     systemInfo !== null &&
     !systemInfo.mobile &&
     isAuthenticated() &&
     getServerType() === "integrated" &&
-    localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true";
+    (searchParams.startLocal === "true" ||
+      localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true");
   const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
   const [autoStartIntegratedServer, setAutoStartIntegratedServer] = useState(
     hasSavedIntegratedSession,
@@ -1413,6 +1417,9 @@ function IntegratedMobileMenu({
   const copyToClipboard = useCopyToClipboard();
   const systemInfo = use(SystemInfoContext);
   const { t } = useTranslation("login");
+  const connection = useServerConnection((address, token) =>
+    redirectWithCredentials("integrated", address, token),
+  );
   const runCommand = `bash <(curl -s https://raw.githubusercontent.com/soulfiremc-com/SoulFireClient/refs/heads/main/scripts/termux_setup.sh) ${systemInfo?.sfServerVersion} "${localStorage.getItem(LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS)}"`;
   const form = useForm({
     defaultValues: {
@@ -1426,11 +1433,7 @@ function IntegratedMobileMenu({
     },
     onSubmit: async ({ value }) => {
       const token = value.token.trim();
-      void redirectWithCredentials(
-        "integrated",
-        "http://localhost:38765",
-        token,
-      );
+      await connection.connect("http://localhost:38765", token);
     },
   });
 
@@ -1533,6 +1536,7 @@ function IntegratedMobileMenu({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={connection.error} />
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
@@ -1546,9 +1550,17 @@ function IntegratedMobileMenu({
             <ArrowLeftIcon data-icon="inline-start" />
             {t("integrated.mobile.form.back")}
           </Button>
-          <Button type="submit">
+          <Button
+            type="submit"
+            disabled={connection.connecting}
+            aria-busy={connection.connecting}
+          >
             <PlugZapIcon data-icon="inline-start" />
-            {t("integrated.mobile.form.connect")}
+            {t(
+              connection.connecting
+                ? "connection.checking"
+                : "integrated.mobile.form.connect",
+            )}
           </Button>
         </CardFooter>
       </Card>
@@ -1800,6 +1812,9 @@ function TokenForm({
   setDedicatedType: (type: DedicatedType) => void;
 }) {
   const { t } = useTranslation("login");
+  const connection = useServerConnection((address, token) =>
+    redirectWithCredentials("dedicated", address, token),
+  );
   const form = useForm({
     defaultValues: {
       address:
@@ -1812,7 +1827,7 @@ function TokenForm({
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const token = value.token.trim();
-      void redirectWithCredentials("dedicated", address, token);
+      await connection.connect(address, token);
     },
   });
 
@@ -1897,6 +1912,7 @@ function TokenForm({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={connection.error} />
         </CardContent>
         <CardFooter className="flex flex-col gap-2 max-md:items-stretch md:flex-row">
           <div className="flex grow flex-col justify-between gap-2 max-md:items-stretch md:flex-row">
@@ -1916,9 +1932,17 @@ function TokenForm({
               onValueChange={setDedicatedType}
             />
           </div>
-          <Button type="submit">
+          <Button
+            type="submit"
+            disabled={connection.connecting}
+            aria-busy={connection.connecting}
+          >
             <LogInIcon />
-            {t("dedicated.form.login")}
+            {t(
+              connection.connecting
+                ? "connection.checking"
+                : "dedicated.form.login",
+            )}
           </Button>
         </CardFooter>
       </Card>
