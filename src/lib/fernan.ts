@@ -1,5 +1,4 @@
-import { Effect } from "effect";
-import { z } from "zod";
+import { Effect, Schema } from "effect";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import {
   ProviderApiError,
@@ -10,32 +9,48 @@ import {
 
 // Contract: https://fernan.club/api (authenticated documentation).
 const base = "https://api.fernan.club/api/v1";
-const stockSchema = z.object({
-  product_id: z.number().int().positive(),
-  product_name: z.string(),
-  category: z.string(),
-  count: z.number().int().nonnegative(),
-  price: z.number().nonnegative().finite(),
-  purchase_limit: z.number().int().nonnegative(),
+const stockSchema = Schema.Struct({
+  product_id: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThan(0),
+  ),
+  product_name: Schema.String,
+  category: Schema.String,
+  count: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
+  price: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+    Schema.isFinite(),
+  ),
+  purchase_limit: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
 });
-const cooldownSchema = z.object({
-  product_id: z.number().int().positive(),
-  remaining_allowed: z.number().int().nonnegative(),
-  on_cooldown: z.boolean(),
+const cooldownSchema = Schema.Struct({
+  product_id: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThan(0),
+  ),
+  remaining_allowed: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
+  on_cooldown: Schema.Boolean,
 });
-const itemSchema = z.object({
-  data: z.string(),
-  access_token: z.string().nullish(),
+const itemSchema = Schema.Struct({
+  data: Schema.String,
+  access_token: Schema.optional(Schema.NullOr(Schema.String)),
 });
-const purchaseSchema = z.object({
-  purchase_id: z.string().uuid(),
-  products: z.array(itemSchema),
-  total_cost: z.number().nonnegative().optional(),
-  balance_after: z.number().nonnegative().optional(),
+const purchaseSchema = Schema.Struct({
+  purchase_id: Schema.String.check(Schema.isUUID()),
+  products: Schema.mutable(Schema.Array(itemSchema)),
+  total_cost: Schema.optional(
+    Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)),
+  ),
+  balance_after: Schema.optional(
+    Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)),
+  ),
 });
-export type FernanProduct = z.infer<typeof stockSchema>;
-export type FernanCooldown = z.infer<typeof cooldownSchema>;
-export type FernanPurchase = z.infer<typeof purchaseSchema>;
+export type FernanProduct = (typeof stockSchema)["Type"];
+export type FernanCooldown = (typeof cooldownSchema)["Type"];
+export type FernanPurchase = (typeof purchaseSchema)["Type"];
 export type FernanImportFormat = "access-token" | "cookies" | "credentials";
 export type FernanAccount = {
   balance: number;
@@ -44,11 +59,10 @@ export type FernanAccount = {
   purchases: { purchase_id: string; product_name: string }[];
 };
 
-function parse<T>(schema: z.ZodType<T>, data: unknown) {
-  return Effect.try({
-    try: () => schema.parse(data),
-    catch: () => new ProviderApiError("response"),
-  });
+function parse<T>(schema: Schema.ConstraintDecoder<T>, data: unknown) {
+  return Schema.decodeUnknownEffect(schema, { errors: "all" })(data).pipe(
+    Effect.mapError(() => new ProviderApiError("response")),
+  );
 }
 
 function request(path: string, key: string, body?: Record<string, unknown>) {
@@ -56,7 +70,7 @@ function request(path: string, key: string, body?: Record<string, unknown>) {
     if (!key.trim())
       return yield* Effect.fail(new ProviderApiError("authentication"));
     const result = yield* parse(
-      z.object({ success: z.boolean(), data: z.unknown() }),
+      Schema.Struct({ success: Schema.Boolean, data: Schema.Unknown }),
       yield* providerJsonEffect({
         url: `${base}${path}`,
         method: body ? "POST" : "GET",
@@ -86,22 +100,32 @@ function accountEffect(key: string) {
     );
     return {
       balance: (yield* parse(
-        z.object({ balance: z.number().nonnegative().finite() }),
+        Schema.Struct({
+          balance: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+            Schema.isFinite(),
+          ),
+        }),
         user,
       )).balance,
-      stock: (yield* parse(z.object({ stock: z.array(stockSchema) }), stock))
-        .stock,
+      stock: (yield* parse(
+        Schema.Struct({ stock: Schema.mutable(Schema.Array(stockSchema)) }),
+        stock,
+      )).stock,
       cooldowns: (yield* parse(
-        z.object({ cooldowns: z.array(cooldownSchema) }),
+        Schema.Struct({
+          cooldowns: Schema.mutable(Schema.Array(cooldownSchema)),
+        }),
         cooldowns,
       )).cooldowns,
       purchases: (yield* parse(
-        z.object({
-          purchases: z.array(
-            z.object({
-              purchase_id: z.string().uuid(),
-              product_name: z.string(),
-            }),
+        Schema.Struct({
+          purchases: Schema.mutable(
+            Schema.Array(
+              Schema.Struct({
+                purchase_id: Schema.String.check(Schema.isUUID()),
+                product_name: Schema.String,
+              }),
+            ),
           ),
         }),
         history,
@@ -185,9 +209,9 @@ export function fetchFernanPurchase(
 ): Promise<FernanPurchase> {
   return runProviderEffect(
     Effect.gen(function* () {
-      const parsedId = yield* parse(z.string().uuid(), id);
+      const parsedId = yield* parse(Schema.String.check(Schema.isUUID()), id);
       const purchase = (yield* parse(
-        z.object({ purchase: purchaseSchema }),
+        Schema.Struct({ purchase: purchaseSchema }),
         yield* request(`/store/purchases/${parsedId}`, key),
       )).purchase;
       if (purchase.purchase_id !== parsedId)

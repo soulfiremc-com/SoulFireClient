@@ -98,3 +98,7 @@ Before naming features or changing user-facing text and visuals, read the [SoulF
 Use its terminology, naming, writing, and visual identity guides.
 Keep proposed renames separate from accepted guidance.
 Preserve public identifiers until the owning repository approves a migration.
+
+## Validation
+
+Use Effect v4 Schema for provider responses, script imports, and stored application data. Keep the existing Zod form schemas while their localized error messages use Zod locales. Preserve those messages during future form migrations.

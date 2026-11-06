@@ -1,5 +1,4 @@
-import { Effect } from "effect";
-import { z } from "zod";
+import { Effect, Schema, SchemaGetter, SchemaIssue, Result } from "effect";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { parseNormalProxy, parseURIProxy } from "@/lib/proxy-format.ts";
 import { getProxyKey } from "@/lib/proxy-selection.ts";
@@ -45,17 +44,30 @@ export const CONNECTION_FIELDS: Record<ProxyProviderId, ConnectionField[]> = {
 };
 
 export const MAX_PROVIDER_PROXIES = 10_000;
-const port = z.coerce.number().int().min(1).max(65535);
-const host = z
-  .string()
-  .min(1)
-  .refine((value) => !/[\s/@?#]/.test(value));
-const optionalCredential = z.string().nullish();
+const port = Schema.Unknown.pipe(
+  Schema.decodeTo(Schema.Finite, {
+    decode: SchemaGetter.transformEffect((value) =>
+      Effect.try({
+        try: () => Number(value),
+        catch: () =>
+          new SchemaIssue.InvalidValue({ message: "Invalid number" }),
+      }),
+    ),
+    encode: SchemaGetter.passthrough(),
+  }),
+)
+  .check(Schema.isInt())
+  .check(Schema.isGreaterThanOrEqualTo(1))
+  .check(Schema.isLessThanOrEqualTo(65535));
+const host = Schema.String.check(Schema.isMinLength(1)).check(
+  Schema.makeFilter((value) => !/[\s/@?#]/.test(value)),
+);
+const optionalCredential = Schema.optional(Schema.NullOr(Schema.String));
 
-function parse<T>(schema: z.ZodType<T>, value: unknown): T {
-  const result = schema.safeParse(value);
-  if (!result.success) throw new ProviderApiError("response");
-  return result.data;
+function parse<T>(schema: Schema.ConstraintDecoder<T>, value: unknown): T {
+  const result = Schema.decodeUnknownResult(schema, { errors: "all" })(value);
+  if (!Result.isSuccess(result)) throw new ProviderApiError("response");
+  return result.success;
 }
 
 function proxy(
@@ -92,7 +104,10 @@ function sellerBase(key: string): string {
   return `https://proxy-seller.com/personal/api/v2/${resource(required(key))}`;
 }
 
-const sellerResponse = z.object({ status: z.string(), data: z.unknown() });
+const sellerResponse = Schema.Struct({
+  status: Schema.String,
+  data: Schema.Unknown,
+});
 function sellerData(value: unknown): unknown {
   const result = parse(sellerResponse, value);
   if (result.status !== "success") throw new ProviderApiError("rejected");
@@ -173,16 +188,18 @@ export function loadProviderProxies(
               throw new ProviderApiError("response");
             visited.add(target.href);
             const page = parse(
-              z.object({
-                next: z.string().nullable(),
-                results: z.array(
-                  z.object({
-                    proxy_address: host.nullable(),
-                    port,
-                    username: z.string(),
-                    password: z.string(),
-                    valid: z.boolean(),
-                  }),
+              Schema.Struct({
+                next: Schema.NullOr(Schema.String),
+                results: Schema.mutable(
+                  Schema.Array(
+                    Schema.Struct({
+                      proxy_address: Schema.NullOr(host),
+                      port,
+                      username: Schema.String,
+                      password: Schema.String,
+                      valid: Schema.Boolean,
+                    }),
+                  ),
                 ),
               }),
               yield* json(target.href, {
@@ -216,15 +233,17 @@ export function loadProviderProxies(
             ? `?orderId=${encodeURIComponent(values.resourceId)}`
             : "";
           const data = parse(
-            z.object({
-              items: z.array(
-                z.object({
-                  ip: host,
-                  port_socks: port,
-                  port_http: port,
-                  login: optionalCredential,
-                  password: optionalCredential,
-                }),
+            Schema.Struct({
+              items: Schema.mutable(
+                Schema.Array(
+                  Schema.Struct({
+                    ip: host,
+                    port_socks: port,
+                    port_http: port,
+                    login: optionalCredential,
+                    password: optionalCredential,
+                  }),
+                ),
               ),
             }),
             sellerData(
@@ -275,18 +294,20 @@ export function loadProviderProxies(
           if (!/^\d+$/.test(values.resourceId))
             throw new ProviderApiError("response");
           const data = parse(
-            z.object({
-              proxy_data: z.object({
-                ports: z.object({ socks5: port, "http|https": port }),
-                proxies: z.array(
-                  z.union([
-                    z.string(),
-                    z.object({
-                      ip: host,
-                      username: z.string(),
-                      password: z.string(),
-                    }),
-                  ]),
+            Schema.Struct({
+              proxy_data: Schema.Struct({
+                ports: Schema.Struct({ socks5: port, "http|https": port }),
+                proxies: Schema.mutable(
+                  Schema.Array(
+                    Schema.Union([
+                      Schema.String,
+                      Schema.Struct({
+                        ip: host,
+                        username: Schema.String,
+                        password: Schema.String,
+                      }),
+                    ]),
+                  ),
                 ),
               }),
             }),
@@ -347,7 +368,7 @@ export function loadProviderProxies(
             {},
           );
           const lines = parse(
-            z.array(z.string()),
+            Schema.mutable(Schema.Array(Schema.String)),
             typeof result === "string" ? parseJsonString(result) : result,
           );
           proxies = textProxies(lines.join("\n"));
@@ -363,7 +384,7 @@ export function loadProviderProxies(
             Array.from(bytes, (byte) => String.fromCharCode(byte)).join(""),
           );
           const data = parse(
-            z.array(z.object({ ip: host, port })),
+            Schema.mutable(Schema.Array(Schema.Struct({ ip: host, port }))),
             yield* json(
               `https://api.oxylabs.io/v1/proxies/lists/${resource(values.resourceId)}`,
               { Authorization: `Basic ${auth}` },
@@ -387,13 +408,20 @@ export function loadProviderProxies(
             "POST",
           );
           const envelope = parse(
-            z.object({ code: z.number(), data: z.unknown() }),
+            Schema.Struct({ code: Schema.Finite, data: Schema.Unknown }),
             result,
           );
           if (envelope.code !== 200) throw new ProviderApiError("rejected");
           const data = parse(
-            z.array(
-              z.object({ ip: host, port, user: z.string(), pwd: z.string() }),
+            Schema.mutable(
+              Schema.Array(
+                Schema.Struct({
+                  ip: host,
+                  port,
+                  user: Schema.String,
+                  pwd: Schema.String,
+                }),
+              ),
             ),
             envelope.data,
           );
@@ -467,10 +495,14 @@ function sellerQuoteEffect(key: string, order: SellerOrder) {
       body: JSON.stringify(sellerOrderBody(order)),
     });
     return parse(
-      z.object({
-        total: z.number().nonnegative().finite(),
-        balance: z.number().nonnegative().finite(),
-        currency: z.string().min(1),
+      Schema.Struct({
+        total: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+          Schema.isFinite(),
+        ),
+        balance: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+          Schema.isFinite(),
+        ),
+        currency: Schema.String.check(Schema.isMinLength(1)),
       }),
       sellerData(result),
     );
@@ -509,8 +541,13 @@ export function purchaseSellerOrder(
         body: JSON.stringify(sellerOrderBody(order)),
       });
       return parse(
-        z.object({
-          orderId: z.union([z.string(), z.number()]).transform(String),
+        Schema.Struct({
+          orderId: Schema.Union([Schema.String, Schema.Finite]).pipe(
+            Schema.decodeTo(Schema.String, {
+              decode: SchemaGetter.transform(String),
+              encode: SchemaGetter.passthrough(),
+            }),
+          ),
         }),
         sellerData(result),
       ).orderId;

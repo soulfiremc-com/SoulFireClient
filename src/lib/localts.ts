@@ -1,5 +1,4 @@
-import { Effect } from "effect";
-import { z } from "zod";
+import { Effect, Schema } from "effect";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import {
   ProviderApiError,
@@ -10,37 +9,51 @@ import {
 
 // Contract: https://localts.store/api-docs (authenticated documentation).
 const base = "https://localts.store/v1";
-const productSchema = z.object({
-  id: z.string().regex(/^[\w-]+$/),
-  name: z.string(),
-  category: z.string(),
-  priceInCredits: z.number().nonnegative().finite(),
-  stock: z.number().int().nonnegative(),
-  type: z.string(),
-  quantityDiscounts: z
-    .record(z.string().regex(/^[1-9]\d*$/), z.number().min(0).max(100))
-    .optional(),
+const productSchema = Schema.Struct({
+  id: Schema.String.check(Schema.isPattern(/^[\w-]+$/)),
+  name: Schema.String,
+  category: Schema.String,
+  priceInCredits: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+    Schema.isFinite(),
+  ),
+  stock: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
+  type: Schema.String,
+  quantityDiscounts: Schema.optional(
+    Schema.Record(
+      Schema.String.check(Schema.isPattern(/^[1-9]\d*$/)),
+      Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+        Schema.isLessThanOrEqualTo(100),
+      ),
+    ),
+  ),
 });
-export type LocaltsProduct = z.infer<typeof productSchema>;
-const localtsOrderSchema = z.object({
-  "order-id": z.string(),
-  status: z.enum(["PENDING", "PACKAGING", "PACKAGED"]),
-  "order-status": z.enum([
+export type LocaltsProduct = (typeof productSchema)["Type"];
+const localtsOrderSchema = Schema.Struct({
+  "order-id": Schema.String,
+  status: Schema.Literals(["PENDING", "PACKAGING", "PACKAGED"]),
+  "order-status": Schema.Literals([
     "PENDING",
     "PROCESSING",
     "COMPLETE",
     "PARTIALLY_REFUNDED",
     "REFUNDED",
   ]),
-  items: z.array(z.object({ id: z.string(), content: z.string() })).optional(),
+  items: Schema.optional(
+    Schema.mutable(
+      Schema.Array(
+        Schema.Struct({ id: Schema.String, content: Schema.String }),
+      ),
+    ),
+  ),
 });
-export type LocaltsOrder = z.infer<typeof localtsOrderSchema>;
+export type LocaltsOrder = (typeof localtsOrderSchema)["Type"];
 
-function parse<T>(schema: z.ZodType<T>, value: unknown) {
-  return Effect.try({
-    try: () => schema.parse(value),
-    catch: () => new ProviderApiError("response"),
-  });
+function parse<T>(schema: Schema.ConstraintDecoder<T>, value: unknown) {
+  return Schema.decodeUnknownEffect(schema, { errors: "all" })(value).pipe(
+    Effect.mapError(() => new ProviderApiError("response")),
+  );
 }
 
 function request(path: string, key: string, method: "GET" | "POST") {
@@ -50,7 +63,10 @@ function request(path: string, key: string, method: "GET" | "POST") {
       method,
       headers: key ? { "X-API-Key": key.trim() } : undefined,
     });
-    const result = yield* parse(z.object({ success: z.boolean() }), response);
+    const result = yield* parse(
+      Schema.Struct({ success: Schema.Boolean }),
+      response,
+    );
     if (!result.success)
       return yield* Effect.fail(new ProviderApiError("rejected"));
     return response;
@@ -60,7 +76,7 @@ function request(path: string, key: string, method: "GET" | "POST") {
 const productsEffect = () =>
   Effect.gen(function* () {
     return (yield* parse(
-      z.object({ products: z.array(productSchema) }),
+      Schema.Struct({ products: Schema.mutable(Schema.Array(productSchema)) }),
       yield* request("/products", "", "GET"),
     )).products;
   });
@@ -69,7 +85,11 @@ const balanceEffect = (key: string) =>
     if (!key.trim())
       return yield* Effect.fail(new ProviderApiError("authentication"));
     return (yield* parse(
-      z.object({ balance: z.number().nonnegative().finite() }),
+      Schema.Struct({
+        balance: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+          Schema.isFinite(),
+        ),
+      }),
       yield* request("/me", key, "GET"),
     )).balance;
   });
@@ -131,8 +151,10 @@ export function purchaseLocaltsAccounts(
         key,
         "POST",
       );
-      return (yield* parse(z.object({ orderId: z.string().min(1) }), result))
-        .orderId;
+      return (yield* parse(
+        Schema.Struct({ orderId: Schema.String.check(Schema.isMinLength(1)) }),
+        result,
+      )).orderId;
     }),
     signal,
     fetcher,
@@ -172,8 +194,12 @@ export function fetchLocaltsOrders(
   return runProviderEffect(
     Effect.gen(function* () {
       return (yield* parse(
-        z.object({
-          orders: z.array(z.object({ id: z.string(), productId: z.string() })),
+        Schema.Struct({
+          orders: Schema.mutable(
+            Schema.Array(
+              Schema.Struct({ id: Schema.String, productId: Schema.String }),
+            ),
+          ),
         }),
         yield* request("/orders?page=0&size=25", key, "GET"),
       )).orders;
