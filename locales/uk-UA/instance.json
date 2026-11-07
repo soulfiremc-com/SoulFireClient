@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Сирий вивід інстанції доступний тут, коли потрібно переглянути деталі консолі.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Акаунти",
       "proxies": "Проксі",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Живий стрім",
-      "empty": "Очікування активності інстансу...",
+      "empty": "",
       "noPermission": "У вас немає дозволу переглядати живу стрічку.",
       "lifecycle": {
         "connecting": "з'єднується",
@@ -97,6 +97,7 @@
         "executeCommand": "запустив команду: {{data}}",
         "botDesiredStateChange": "змінено бажаний стан бота",
         "botRestart": "перезапущено ботів",
+        "pluginRpc": "",
         "unknown": "виконав дію"
       }
     },
@@ -129,6 +130,27 @@
       "noProxies": "Немає проксі для імпортування"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Імпортування проксі...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_few": "",
+        "accepted_many": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_few": "",
+        "rejected_many": "",
+        "rejected_other": ""
+      },
       "proxyType": "Тип проксі",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +225,7 @@
     },
     "unknownError": "Невідома помилка",
     "types": {
-      "OFFLINE": "Офлайн",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Облікові дані)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Код пристрою)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Токен оновлення)",
@@ -272,7 +294,7 @@
     "contextMenu": {
       "openConfig": "Відкрити конфігурацію",
       "openMetadata": "Відкрити метадані",
-      "copyProfileId": "Скопіювати ID профілю",
+      "copyProfileId": "",
       "copyUsername": "Копіювати ім'я користувача"
     },
     "config": {
@@ -292,7 +314,7 @@
       "selectPage": "Оберіть сторінку налаштувань",
       "noSearchResults": "За пошуком немає жодного співпадіння у налаштуваннях.",
       "matchesInheritedValue": "Відповідає успадкованому значенню",
-      "instanceValue": "Значення для цього екземпляра",
+      "instanceValue": "",
       "defaultValue": "Значення за замовчуванням",
       "resetOverride": "Скинути перевизначення"
     },
@@ -311,23 +333,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Придбати акаунти через Ravealts",
       "description": "Купуйте акаунти Minecraft, використовуючи свій API-ключ Ravealts.",
-      "apiKeyLabel": "API ключ",
       "apiKeyPlaceholder": "Введіть ваш API ключ Ravealts",
-      "validate": "Перевірити",
-      "validating": "Перевіряємо...",
-      "keyValid": "Ключ підтверджено",
-      "keyInvalid": "Недійсний API ключ",
-      "credits": "Кредитів: {{credits}}",
-      "stockTitle": "Доступний запас",
       "noStock": "Немає облікових записів у наявності",
       "accountType": "Тип облікового запису",
-      "amount": "Кількість (1-10)",
-      "purchase": "Купити й імпортувати",
-      "purchasing": "Купуємо...",
-      "purchaseSuccess": "Придбано {{count}} облікових записів, імпортуємо...",
-      "purchaseError": "Помилка під час покупки: {{message}}",
       "networkError": "Не вдалося підключитися до Ravealts API",
       "outOfStock": "Обраний тип відсутній у запасі",
       "insufficientBalance": "Недостатньо кредитів",
@@ -354,12 +363,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Мета-дані екземпляра",
-    "description": "Керуйте постійними метаданими цього екземпляра. Кожен запис має простір імен, ключ і значення у форматі JSON.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Простір імен",
     "keyPlaceholder": "Ключ",
     "valuePlaceholder": "Значення (JSON)",
     "noEntries": "Немає записів метаданих. Додайте один вище.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Повторити спробу",
     "addSuccess": "Запис додано",
     "addError": "Не вдалося додати запис",
     "updateError": "Не вдалося оновити запис",
@@ -371,7 +383,7 @@
   "bots": {
     "searchPlaceholder": "Пошук ботів...",
     "onlineCount": "{{online}} онлайн / {{total}} всього",
-    "noBots": "Ботів не налаштовано. Додайте облікові записи на сторінці налаштувань акаунтів.",
+    "noBots": "",
     "noBotsFound": "Жоден бот не відповідає вашому запиту.",
     "loadingMore": "Завантаження ще...",
     "showingCount": "Показано {{loaded}} із {{total}}",
@@ -396,12 +408,12 @@
       "waiting": "Очікування",
       "stopped": "Зупинено"
     },
-    "backToBots": "Повернутися до ботів",
+    "backToBots": "",
     "tabs": {
-      "overview": "Огляд",
+      "overview": "",
       "inventory": "Інвентар",
-      "controls": "Керування",
-      "terminal": "Термінал"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Незабаром",
     "terminalPanel": {
@@ -419,8 +431,15 @@
       "offline": "Бот офлайн. Дані про позицію доступні лише коли бот підключений."
     },
     "chatPanel": {
-      "title": "Чат-повідомлення",
-      "description": "Чат-повідомлення від цього бота з’являться тут у майбутньому оновленні."
+      "title": "",
+      "description": "Чат-повідомлення від цього бота з’являться тут у майбутньому оновленні.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Команди бота",
@@ -428,14 +447,14 @@
       "description": "Команди з обмеженим доступом до бота будуть доступні у майбутньому оновленні."
     },
     "povPanel": {
-      "title": "POV бота",
+      "title": "",
       "capture": "Захопити",
       "refresh": "Оновити",
       "auto": "Авто",
       "startAutoRefresh": "Запустити автооновлення (інтервал 1 секунда)",
       "stopAutoRefresh": "Зупинити автооновлення",
       "clickToCapture": "Натисніть \"Захопити\", щоб відобразити точку зору бота",
-      "offline": "Бот офлайн. Відображення POV доступне тільки коли бот підключений."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Статистика бота",
@@ -545,6 +564,49 @@
       "dismiss": "Закрити",
       "submit": "Відправити",
       "offline": "Бот офлайн. Діалоги доступні лише коли бот підключений."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Усе",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Підключено",
+      "starting": "Запуск",
+      "retrying": "Повторна спроба",
+      "failed": "Помилка",
+      "stopping": "Зупиняється",
+      "stopped": "Зупинено"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +674,12 @@
   },
   "scripts": {
     "title": "Візуальні скрипти",
-    "description": "Створюйте автоматизаційні скрипти за допомогою візуального редактора на основі вузлів.",
+    "description": "",
     "experimentalTitle": "Експериментальна функція",
     "experimentalWarning": "Ця функція є експериментальною. Майбутні оновлення можуть порушити існуючі скрипти. Використовуйте з обережністю.",
-    "createScript": "Створити скрипт",
-    "createScriptTitle": "Створити новий скрипт",
-    "createScriptDescription": "Створіть новий візуальний скрипт для цього екземпляра. Скрипти можуть автоматизувати дії бота та реагувати на події.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Назва скрипта",
     "scriptNamePlaceholder": "Введіть назву скрипта...",
     "scriptDescription": "Опис",
@@ -625,36 +687,36 @@
     "create": "Створити",
     "createSuccess": "Скрипт успішно створено",
     "createError": "Не вдалося створити скрипт",
-    "noScripts": "Скриптів ще немає",
-    "noScriptsDescription": "Створіть свій перший скрипт для автоматизації дій бота за допомогою візуального редактора на основі вузлів.",
-    "createFirstScript": "Створіть свій перший скрипт",
-    "running": "Працює",
-    "paused": "Призупинено",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "вузли",
     "noDescription": "Немає опису",
     "edit": "Редагувати",
-    "pause": "Призупинити",
-    "pauseSuccess": "Скрипт призупинено",
-    "pauseError": "Не вдалося призупинити скрипт",
-    "resume": "Відновити",
-    "resumeSuccess": "Скрипт відновлено",
-    "resumeError": "Не вдалося відновити скрипт",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Видалити",
     "deleteSuccess": "Скрипт успішно видалено",
     "deleteError": "Не вдалося видалити скрипт",
     "saveSuccess": "Скрипт успішно збережено",
     "saveError": "Не вдалося зберегти скрипт",
-    "activateSuccess": "Скрипт активовано",
-    "activateError": "Не вдалося активувати скрипт",
-    "deactivateSuccess": "Скрипт деактивовано",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Скрипт без назви",
-    "saveFirstBeforeActivating": "Спочатку збережіть скрипт перед активацією",
-    "activating": "Активується скрипт...",
-    "activated": "Скрипт активовано",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Скрипт завершено",
     "executionCompletedSuccess": "Скрипт успішно завершено",
-    "deactivated": "Скрипт деактивовано",
-    "deactivatedByUser": "Скрипт деактивовано користувачем",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Помилка виконання скрипта",
     "executionError": "Помилка виконання: {{error}}",
     "monitoringError": "",
@@ -664,8 +726,8 @@
     "nodeError": "Помилка вузла: {{error}}",
     "contextMenu": {
       "edit": "Редагувати скрипт",
-      "pause": "Призупинити",
-      "resume": "Відновити",
+      "pause": "",
+      "resume": "",
       "delete": "Видалити скрипт",
       "copyScriptName": "Скопіювати назву скрипта",
       "copyScriptId": "Скопіювати ID скрипта"
@@ -675,11 +737,11 @@
         "actions": "",
         "backToScripts": "Повернутися до скриптів",
         "save": "Зберегти",
-        "saveTooltip": "Зберегти скрипт",
-        "resume": "Відновити",
-        "resumeTooltip": "Відновити виконання скрипту",
-        "pause": "Призупинити",
-        "pauseTooltip": "Призупинити виконання скрипта",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Незбережено",
         "unsavedChanges": "Незбережені зміни",
         "clearCanvas": "Очистити полотно",
@@ -690,16 +752,17 @@
         "import": "Імпортувати скрипт",
         "exportSuccess": "Скрипт успішно експортовано",
         "importSuccess": "Скрипт успішно імпортовано",
-        "importError": "Не вдалося імпортувати скрипт"
+        "importError": "Не вдалося імпортувати скрипт",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Палітра вузлів",
+        "title": "",
         "search": "Пошук вузлів..."
       },
       "logs": {
-        "title": "Логи виконання",
+        "title": "",
         "clearTitle": "Очистити логи",
-        "noLogs": "Логів ще немає. Запустіть скрипт, щоб побачити логи виконання.",
+        "noLogs": "",
         "entries_one": "{{count}} запис",
         "entries_few": "{{count}} записи",
         "entries_many": "{{count}} записів",
@@ -755,15 +818,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Суха перевірка",
-        "title": "Скрипт сухої перевірки",
-        "description": "Запустіть скрипт з обраного тригеру з тестовими вхідними даними.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Тригерний вузол",
         "selectTrigger": "Оберіть тригер...",
-        "triggerDescription": "Оберіть вузол-тригер, щоб виконати його з тестовими вхідними значеннями.",
-        "mockInputs": "Тестові вхідні дані",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "Значення {{type}}",
-        "start": "Почати суху перевірку",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_few": "",
         "stats_many": "",
@@ -790,10 +854,589 @@
         "save": "Зберегти квоти",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_few": "",
+      "errors_many": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_few": "",
+      "warnings_many": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Дія",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Підключитися",
+    "back": "Назад",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Усе",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Підключитися",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Всього",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Відсутньо",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_few": "",
+      "orderStatus_many": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_few": "",
+      "limit_many": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_few": "",
+      "delivered_many": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_few": "",
+      "importing_many": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_few": "",
+    "importAccounts_many": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_few": "",
+    "inStock_many": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_few": "",
+    "previewMore_many": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_few": "",
+    "preview_many": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_few": "",
+    "importProxies_many": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_few": "",
+      "noneRunning_many": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_few": "",
+      "allConnected_many": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_few": "",
+      "partial_many": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "підключено",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_few": "",
+      "retrying_many": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_few": "",
+    "restartGroup_many": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Необовʼязково",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Відкрити всі налаштування",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Акаунти",
+      "reviewProxies": "Проксі",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Запустити {{count}} бота",
+      "action_few": "Запустити {{count}} боти",
+      "action_many": "Запустити {{count}} ботів",
+      "action_other": "Запустити {{count}} ботів"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

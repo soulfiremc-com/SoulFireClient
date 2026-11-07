@@ -4,6 +4,16 @@
   "cancel": "˥˥ǝɔuɐↃ",
   "save": "ǝʌɐS",
   "saving": "...ƃuᴉʌɐS",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "puoɟ puoᴉɟ oʞoʇ ɹo  ssǝɹpɐ ɹǝʌɹǝs oN",
     "page": {
@@ -11,7 +21,15 @@
       "description": "˙uoıʇɐɯɹoɟ ǝɹoɯ ǝɹoɯ oɟ ǝlᴉɐʇǝp 'ǝloɐ pᴉp ʇou ǝƃɐd ǝɥʇ ˙",
       "logOut": "ʇno ƃo˥",
       "reloadPage": "ǝƃɐd pɐo˥ǝᴚ",
-      "showDetails": "slɐᴉʇǝp ʍoɥS"
+      "showDetails": "slɐᴉʇǝp ʍoɥS",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": ".pǝlᴉɐɟ ɹǝʌɹǝs ǝɹᴉɟ˥noS ǝɥʇ oʇ uoᴉʇɔǝuuoↃ"
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "ǝɹᴉɟlnoS ʇɹoddoS",
       "description": ".ʎʇᴉunɯɯoɔ ǝɥʇ ʎq ǝʌoʅ ɥʇᴉʍ ʇʅᴉnb ǝɔɹnos-uodǝ puɐ ǝǝɹɟ sᴉ ǝɹᴉɟlnoS",
-      "body": ".ǝuoʎǝɹʎǝuoɹǝʌǝɹ ɹoɟ ǝǝɹɟ ɹᴉɟlnoS dǝǝʞ puɐ ‚ʇuǝɯdoʅǝʌǝp puɐ sʇsod ɹǝʌɹǝs ɹǝʌoɔ sǝdlɥ uoᴉʇnᴉɹʇuoɔ ɹnoʎ ˙ʇɔǝɾoɹd ǝɥʇ ƃuᴉʇɹoddns ɹǝpᴉsuoɔ ǝsɐǝʅd ‚noʎ oʇ ʅnɟǝsq ǝɐɥ sɐɥ ǝɹᴉɟlnoS ɟI",
+      "body": "",
       "dismiss": "ɹǝʇɐʅ ǝqɐʎɯ",
-      "action": "ǝɹᴉɟlnoS ʇɹoddoS"
+      "action": "ǝɹᴉɟlnoS ʇɹoddoS",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "ǝɔuɐʇsᴉ uǝʍ ɐ ǝʇɐɹɔ",
-      "description": "˙\"ʇoԀ ʇɐɥɔɐɹʇɔɐɯ ʇɥƃᴉl ʎW ʎɯ\" sɐ ɥɔnS 'ǝzᴉƃouɉǝɹ ɐ noʎ uɐɔ ʇɐɥʇ ǝɯɐu ɐ ǝɔuɐʇsᴉ uǝʌᴉƃ",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "ǝlɐqǝ˥ ǝɯɐu puᴉlǝuᴉɹɟ",
-          "placeholder": "ʇoԐ ʇɐɹɔɐuǝᴉɯ ʎW",
-          "description": ".ǝɔuɐʇsᴉ sᴉɥʇ oʇ ǝʌᴉƃ oʇ ʇuɐʍ noʎ ǝɯɐu ǝɥ┴"
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "˥˥ǝɔuɐↃ",
-        "create": "ǝʇɐɹɔ"
+        "create": ""
       },
       "createToast": {
-        "loading": "...ǝɔuɐʇsᴉ ƃuᴉʇɐǝɹɔ",
-        "success": "ʎllnɟssǝɔɔn sǝɔuɐʇsᴉ pǝʇɐǝɹɔ",
-        "error": "ǝɔuɐʇsᴉ ǝʇɐǝɹɔ oʇ pǝʇlᴉɐɟ"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "ǝɔuɐʇsᴉ uǝʇɐɔᴉʇndnᗡ",
-      "description": ".\"{{name}}\" ɯoɹɟ ǝlᴉɟoɹd ǝɥʇ ƃuᴉnsn ǝɔuɐʇsᴉ ʍǝu ɐ ǝʇɐǝɹƆ",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": ".pǝʇɐɔᴉʇndn ǝɔuɐʇsᴉ ǝɥʇ ɹoɟ ǝɯɐu ǝɥʇ"
+          "description": ""
         },
-        "duplicate": "ǝʇɐɔᴉlndnᗡ"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "˙ƃuᴉɔuɐʇsᴉ uƃuᴉʇɐʇlᴉdəpoᴉl ˙˙˙",
-        "success": "ʎlᴉlᴉɐɔɔns pǝʇɐɔᴉl уд сǝlʇɐuᴉ uǝɔuɐʇsᴉ",
-        "error": "ǝɔuɐʇsᴉ ǝʇɐɔᴉl уд pǝlᴉɐɟ"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "˥ɹn ɯoɹɟ",
         "firstClipboardItem": "˙ɯǝʇᴉ ʇsɹᴉɟ ǝɥʇ ǝs∩ ˙ǝɯǝʇᴉ lᴉdlɐʇᴉlpɐ ǝlʇndᴉlnd lᴉdɐʇuoɔ pɐɹʇuuoɔ ǝɥʇ",
         "fromClipboard": "pɹɐoqdᴉʟ ɯoɹɟ",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "...ǝɹǝɥ ʇxǝʇ ʇnԀ",
           "submit": "ʇxǝʇ ɯoɹɟ pɐo˥"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "˙)ʇsᴉl ɹoɟ dlǝɥ( 'dlɥǝ ǝdʎʇ pouɐɯɯoƆ ɹǝʇuƎ",
     "emptySuggestions": ".ǝqɹᴉsǝp o┴ ɹoɟ qǝd oʇ suoᴉʇɔǝƃƃns ʇsǝnbǝɹ do sǝʇsǝnbǝɹ ǝʇɐpd oʇ ǝdʎ┴",
     "noSuggestions": ".ǝlqɐlᴉɐʌ sǝlʇɔǝlǝS oN"
@@ -148,12 +173,12 @@
       "success": "ƃuıddoʇs ǝɹɐ sʇoԐ",
       "error": "sʇoԐ ddıʇs oʇ pǝlılɐɟ"
     },
-    "permissionDenied": "˙ǝɔuɐʇsᴉu sᴉɥʇ uᴉ sʇoq doddns ɹo ʇɐɹʇs oʇ uᴉssᴉɯɹǝdd ǝʌɐɥ ʇo uop ǝnoʎ",
+    "permissionDenied": "",
     "serverUpdateRequired": ".ɯnlǝʌ suoᴉsɹǝʌ ʇuǝᴉlɔ puɐ ɹǝʌɹǝʌɹǝs ɹnoʎ ʇɐɥʇ ʞɔǝɥɔ .suoᴉssᴉɯɹǝdd lɹoʇuoɔ ʇoq ʇɹodǝɹ pᴉp ʇoɔ sɹǝʌɹǝs ǝɥʇ",
     "startBots": "sʇoq ʇɐɹʇS",
     "moreActions": "suoᴉʇɔɐ ʇoq ǝɹoɯ",
-    "generateFirst": "sʇunoɔɔɐ ǝʇɐǝɹɔ oʇ sʇoq ʇsɹᴉɟ ɹnoʎ ʇɐɹʇs.",
-    "startCountHelp": "sʇoq lɐuoᴉʇᴉppɐ sʇɹɐʇs. sʇoq ƃuᴉuuɐɹ ʎɐʇs pǝʇɔǝuuoɔ.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "{{count}} llɐ ʇɹɐʇS",
     "validCount": ".{{count}} puɐ puɐ 1 uǝʍǝʇǝq ɹǝqɯnu ǝloɥʍ ɐ ɹǝʇuǝƎ ",
     "positiveCount": ".1 tsael ta fo rebmun elohw a retnƎ",
@@ -253,9 +278,37 @@
     "version": "{{version}} :uoᴉsɹǝΛ",
     "author": "{{author}} :ɹoɥʇn∀",
     "license": "{{license}} :ǝsɔuǝɔᴉ˥",
-    "website": "ǝʇᴉsqǝM"
+    "website": "ǝʇᴉsqǝM",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "punoɟ ʇoN sǝɯɐu sǝƃuᴉʇʇǝS",
     "stringList": {
@@ -268,17 +321,45 @@
       "remove": "ǝʌoɯǝᴚ"
     },
     "combo": {
-      "searchPlaceholder": "˙˙˙ǝnlɐʌ ɥɔɹɐǝS"
+      "searchPlaceholder": "˙˙˙ǝnlɐʌ ɥɔɹɐǝS",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "ɹǝqɯnu pᴉlɐʌuI",
       "description": "{{max}} puɐ {{min}} uǝǝʇʍǝq ǝq ʇsnɯ ǝnlɐʌ ǝɥ┴"
-    }
+    },
+    "saving": "...ƃuᴉʌɐS",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "pɹɐoqdᴉʟ oʇ ʎdoↃ",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "˙ʇndʇno ƃo lƃo lǝʇɐǝɹɔ oʇ pɐɯɯoɔ ɐ uɹn ˙ʇǝʎ sƃol ou",
     "demo-1": "!🧪 ǝpoɯ oɯǝp ǝɯoפ o┴ oɯoɔןǝM",
-    "demo-2": "ɹǝɹᴉɟ˥noS ɟo ǝɔuɐʇsᴉ uoʎluo ʎlᴉuʎ ɐ sᴉ sᴉɥ┴",
+    "demo-2": "",
     "demo-3": ":ᗡ ɹǝɹᴉɟ˥noS ןןɐʇsni oʇ ƃuᴉpǝpᴉɔǝp ǝɹoɟǝq sǝɹnʇɐǝɟ puɐ snǝunɯ ʒlןɐ ɗnoʎ ʇno ʞɔǝɥↃ",
     "demo-4": ";pɹɐoɔsᴉᗡ ɹno uoɾ oʇ ǝʞᴉl plnoʍ noʎ ɟᴉ ɹǝʌɹǝs pɹɐoɔsᴉᗡ ɹno ƃuᴉuoɾ oʇ ǝǝɹɟ ʅǝǝℲ"
   },
@@ -328,26 +409,177 @@
       "error": "ǝƃɐssǝɯ ʇsɐpodɐoɹp oʇ pǝlᴉɐɟ"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "ʎɹʇǝɹ",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ll∀",
+      "projects": "",
+      "bots": "sʇoԐ",
+      "scripts": "sʇdᴉɹɔS",
+      "settings": "sƃuᴉʇʇǝS",
+      "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "sʇoq ʇɐɹʇS",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "˥˥ǝɔuɐↃ",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "ʇoq {{count}} ʇɐɹʇS",
+      "startBots_other": "sʇoq {{count}} ʇɐɹʇS",
+      "stopBots_one": "ʇoq {{count}} doʇS",
+      "stopBots_other": "sʇoq {{count}} doʇS",
+      "retryBots_one": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "pǝʇɔǝuuoɔ",
+      "starting": "ƃuᴉʇɹɐʇS",
+      "retrying": "ƃuᴉʎɹʇǝᴚ",
+      "failed": "pǝlᴉɐℲ",
+      "stopping": "ƃuᴉddodS",
+      "stopped": "pǝddo┴S",
+      "active": "\u00065\u00076\u00069\u00074\u00063\u00041",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "ǝsolↃ",
+      "pin": "",
+      "back": "ʞɔɐԐ"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "sƃuᴉʇʇǝS",
+      "bots": "sʇoԐ",
+      "scripts": "sʇdᴉɹɔS",
+      "admin": "",
+      "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "uoᴉʇɐʇuǝɯnɔoᗡ pɐǝᴚ",
     "backToDashboard": "pɹɐoqɥsɐp ʇo ʞɔɐq",
     "deleteToast": {
-      "loading": "...ǝɔuɐʇsᴉ ƃuᴉʇǝlǝp",
-      "success": "pǝʇǝlǝp ǝɔuɐʇsᴉ",
-      "error": "ǝɔuɐʇsᴉ ǝʇǝlǝp oʇ pǝlᴉɐɟ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "sǝɔuɐʇsᴉ",
-    "createInstance": "ǝɔuɐʇsᴉ ǝʇɐǝɹↃ",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "...ǝlᴉɟ ɯoɹɟ ƃuᴉpɐo˥",
-      "success": "pǝpɐo˥ ǝlᴉɟoɹԀ",
-      "error": "ǝlᴉɟoɹԀ pɐo˥ oʇ pǝlᴉɐɟ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "ǝlᴉɟoɹԀ pɐo˥",
+    "loadProfile": "",
     "loadFromFile": "ǝlᴉɟ ɯoɹɟ pɐo˥",
-    "profileSaved": "pǝʌɐs ǝlᴉɟoɹԀ",
-    "saveProfile": "ǝlᴉɟoɹԀ ǝʌɐS",
-    "deleteInstance": "ǝɔuɐʇsᴉ ǝʇǝlǝpǝᗡ",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "sdoɹʇuoↃ",
     "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
     "terminal": "ןɐuᴉɯɹǝ┴",
@@ -357,19 +589,21 @@
     "extensionsGroup": "sᴎoᴉsᴎɐᴉʇxƎ",
     "botSettings": "sƃuᴉʇʇǝS ʇoԐ",
     "accountSettings": "sƃuᴉʇʇǝS ʇunoɔɔ∀",
-    "metaSettings": "sƃuᴉʇʇǝS ǝɔuɐʇsᴉ",
+    "metaSettings": "",
     "proxySettings": "sƃuᴉʇʇǝS ʎxoɹԀ",
     "aiSettings": "sƃuᴉʇʇǝS I∀",
     "pathfindingSettings": "sƃuᴉʇʇǝS ƃuᴉpunɟɥʇɐԀ",
     "discoverPlugins": "sƃuᴉƃnlԀ",
-    "instanceScripts": "sʇdᴉɹɔS"
+    "instanceScripts": "sʇdᴉɹɔS",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "uoᴉʇɐʇuǝɯnɔoᗡ pɐǝᴚ",
     "userGroup": "ɹǝs∩",
-    "instances": "sǝɔuɐʇsᴉ",
+    "instances": "",
     "access": "ssǝɔɔ∀",
-    "createInstance": "ǝɔuɐʇsᴉ ǝʇɐǝɹↃ",
+    "createInstance": "",
     "settings": "sƃuᴉʇʇǝS",
     "adminGroup": "uᴉɯp∀",
     "adminOverview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
@@ -414,21 +648,21 @@
     "extensions": "sᴎoᴉsᴎɐᴉʇxƎ",
     "bots": "sʇoԐ"
   },
-  "noInstancesFound": "punoɟ sǝɔuɐʇsᴉ oN",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "ןɐuᴉɯɹǝ┴",
     "logs": "sƃo˥",
     "audit-log": "ƃo˥-ʇᴉp∩∀ ƃo˥-ʇᴉp∩∀",
     "bots": "sʇoԐ",
     "botDetail": "ןᴉɐʇǝᗡ ʇoԐ",
-    "instances": "sǝɔuɐʇsᴉ",
+    "instances": "",
     "access": "ssǝɔɔ∀",
     "settings": "sƃuᴉʇʇǝS",
     "proxySettings": "sƃuᴉʇʇǝS ʎxoɹԀ",
     "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
     "users": "\u00073\u00072\u00065\u00073",
     "accountSettings": "sƃuᴉʇʇǝS ʇunoɔɔ∀",
-    "metaSettings": "sƃuᴉʇʇǝS ǝɔuɐʇsᴉ",
+    "metaSettings": "",
     "discoverPlugins": "sƃuᴉƃnlԀ",
     "adminScripts": "sʇdᴉɹɔS",
     "instanceScripts": "sʇdᴉɹɔS"
@@ -436,7 +670,7 @@
   "access": {
     "webdav": {
       "title": "ssǝɔɔ∀ ɯɐqpǝMႨ",
-      "description": "˙sǝlᴉɟ ɹǝɥʇo puɐ sʇdᴉɹɔs 'sǝlᴉɟ ǝɔuɐʇsᴉ oʇ sssǝɔɔɐ sǝpᴉɹʌ ɥɐʌpǝM",
+      "description": "",
       "publicAddress": "ssǝɹpp∀ ɯɐqpǝM ɔᴉʇlᴉqnԀ",
       "personalToken": "uǝʞo┴ lɐuoɹǝԀ ɯɐqpǝM",
       "securityWarning": "˙ǝɯɐuɹnoʎ uɐ sɐ ǝnlɐʇ ǝɥʇ ǝs∩ ˙sǝlᴉɟ ɹnoʎ oʇ sssǝɔɔɐ sʇuɐɹƃ ʇᴉ ˙ʇǝɹɔǝs uǝʞoʇ ʌpɐqǝM lɐuosɹǝd ɹnoʎ dǝǝʞ ˙ʎuɐɹoʍ ʎʇᴉɹnɔǝs sᴉɥʇ sI ˙uǝɯɐu ɐ pǝǝu uoɐ ʇou op noʎ ˙'.ǝɹᴉɟlons' ɐ sɐ ǝnlɐʌ ʎuɐ ɹǝʇuǝ  ,ǝuo ǝɹᴉnbǝɹ ppɐ sddɐ ɹnoʎ ɟI",
@@ -444,7 +678,7 @@
     },
     "api": {
       "title": "ǝlᴉʇᴉ┴ IԀ∀",
-      "description": "˙sʇsǝnbǝɹ sʇsǝnbǝɹ ɥʇᴉʍ sǝɔuɐʇsᴉ ǝƃɐuɐɯ IԀ∀ ʇdsɧɥ ᴉɔɹdƃ lǝɹᴉɟlnoS ǝɥʇ",
+      "description": "",
       "publicAddress": "ssǝɹpp∀ IԀ∀ ɔᴉʇlᴉqnԀ",
       "personalToken": "uǝʞo┴ IԀ∀ lɐuoɹǝԀ",
       "securityWarning": "˙IԀ∀ ǝɥʇ oʇ sssǝɔɔɐ sʇuɐɹƃ ʇᴉ ˙ʇǝɹɔǝs uǝʞoʇ IԀ∀ lɐuosɹǝd ɹnoʎ dǝǝʞ",
@@ -475,7 +709,8 @@
   "clipboardCopy": {
     "loading": "...pɹɐoqdᴉʟ oʇ ƃuᴉʎdoↃ",
     "success": "pɹɐoqdᴉʟ oʇ \"{{content}}\" pǝᴉdoↃ",
-    "error": "pɹɐoqdᴉʟ oʇ ʎdoↃ oʇ pǝlᴉɐɟ"
+    "error": "pɹɐoqdᴉʟ oʇ ʎdoↃ oʇ pǝlᴉɐɟ",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -515,6 +750,7 @@
     "executedCommand": "{{data}} :puɐɯɯoɔ pǝʇnɔǝxƎ",
     "changedBotDesiredState": "pǝʇɐʇs puǝɹǝpuǝ pǝƃuɐɥɔ",
     "restartedBots": "sʇoԐ pǝʇɹɐʇsǝɹ",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "ǝɯɐuǝɯɐu ʎdoↃ",
       "copyCommand": "puɐɯɯoↃ ʎdoↃ"
@@ -585,15 +821,16 @@
       "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072"
     },
     "globalScript": "lɐqol⅁",
-    "instanceScript": "ǝɔuɐʇsᴉuI"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
     "instance": {
-      "goToInstance": "ǝɔuɐʇsᴉ I oʇ oƃ",
-      "duplicateInstance": "ǝɔuɐʇsᴉ ǝʇɐɔᴉl уд",
-      "copyInstanceId": "pᴉpnI ǝɔuɐʇsᴉ ʎdoↃ",
-      "copyInstanceName": "ǝɯɐN ǝɔuɐʇsᴉ ʎdoↃ",
-      "deleteInstance": "ǝɔuɐʇsᴉ ǝʇǝlǝpǝᗡ"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "ʇoԐ oʇ oƃ",
@@ -654,5 +891,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "ll∀",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "\u00072\u00065\u00068\u00065\u00072"
+    },
+    "enabledHeading": "",
+    "availableHeading": "ǝlqɐlᴉlɐʌ∀"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "...uǝʞo┴ ƃuᴉʇɐɹǝuǝ⅁",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "ʇoq",
+    "botOnline": "ǝuᴉlO",
+    "botOffline": "ǝuᴉlɟɟO",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

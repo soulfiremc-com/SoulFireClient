@@ -20,12 +20,12 @@
         "title": "线程数"
       },
       "aggregateBots": {
-        "title": "机器人在线（所有实例）"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "服务器上的实例总数",
-      "instances": "实例",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "状态",
         "active": "活跃",
@@ -64,7 +64,7 @@
         "role": {
           "label": "用户类型",
           "placeholder": "选择角色",
-          "description": "用户的角色。管理员可管理所有用户和实例，普通用户只能管理自己的实例。",
+          "description": "",
           "user": "用户",
           "admin": "管理员"
         }

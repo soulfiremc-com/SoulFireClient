@@ -4,6 +4,16 @@
   "cancel": "रद्द करें",
   "save": "सहेजें",
   "saving": "सहेजा जा रहा है...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "कोई सर्वर पता या टोकन नहीं मिला",
     "page": {
@@ -11,7 +21,15 @@
       "description": "पृष्ठ लोड नहीं हुआ। अधिक जानकारी के लिए कंसोल खोलें।",
       "logOut": "लॉग आउट करें",
       "reloadPage": "पृष्ठ पुनः लोड करें",
-      "showDetails": "विवरण दिखाएँ"
+      "showDetails": "विवरण दिखाएँ",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "SoulFire सर्वर से कनेक्शन विफल रहा।"
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "SoulFire का समर्थन करें",
       "description": "SoulFire मुफ्त और ओपन-सोर्स है, जो समुदाय द्वारा प्रेम से बनाया गया है।",
-      "body": "यदि SoulFire आपके लिए उपयोगी रहा है, तो कृपया परियोजना का समर्थन करने पर विचार करें। आपका योगदान सर्वर लागतों को कवर करने, विकास को वित्तपोषित करने और SoulFire को सभी के लिए मुफ्त बनाए रखने में मदद करता है।",
+      "body": "",
       "dismiss": "शायद बाद में",
-      "action": "SoulFire का समर्थन करें"
+      "action": "SoulFire का समर्थन करें",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "नई इंस्टेंस बनाएँ",
-      "description": "इंस्टेंस को पहचानने योग्य नाम दें, जैसे \"मेरा Minecraft बॉट\"।",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "मित्रवत नाम",
-          "placeholder": "मेरा Minecraft बॉट",
-          "description": "इस इंस्टेंस को आप कौन सा नाम देना चाहते हैं।"
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "रद्द करें",
-        "create": "बनाएँ"
+        "create": ""
       },
       "createToast": {
-        "loading": "इंस्टेंस बन रहा है...",
-        "success": "इंस्टेंस सफलतापूर्वक बनाया गया",
-        "error": "इंस्टेंस बनाना विफल"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "इंस्टेंस डुप्लिकेट करें",
-      "description": "\"{{name}}\" की प्रोफाइल से एक नई इंस्टेंस बनाएं।",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "डुप्लिकेट की गई इंस्टेंस के लिए नाम।"
+          "description": ""
         },
-        "duplicate": "डुप्लिकेट करें"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "इंस्टेंस की नकल बना रहे हैं...",
-        "success": "इंस्टेंस सफलतापूर्वक डुप्लिकेट किया गया",
-        "error": "इंस्टेंस को डुप्लिकेट करने में विफल"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "URL से",
         "firstClipboardItem": "क्लिपबोर्ड में एक से अधिक आइटम हैं। SoulFire पहला आइटम उपयोग करेगा।",
         "fromClipboard": "क्लिपबोर्ड से",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "यहाँ पाठ डालें...",
           "submit": "पाठ से लोड करें"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "कमान्ड दर्ज करें (सूची के लिए 'help' टाइप करें)",
     "emptySuggestions": "सुझाव प्राप्त करने के लिए टाइप करें या Tab दबाएँ।",
     "noSuggestions": "कोई सुझाव उपलब्ध नहीं हैं।"
@@ -148,12 +173,12 @@
       "success": "बॉट्स रुक रहे हैं",
       "error": "बॉट्स रोकने में विफल"
     },
-    "permissionDenied": "आपको इस इंस्टेंस में बोट्स को शुरू या बंद करने की अनुमति नहीं है।",
+    "permissionDenied": "",
     "serverUpdateRequired": "सर्वर ने बोट नियंत्रण की अनुमतियों की रिपोर्ट नहीं दी। कृपया जांचें कि आपके सर्वर और क्लाइंट के संस्करण मेल खाते हैं।",
     "startBots": "बॉट शुरू करें",
     "moreActions": "अधिक बॉट कार्रवाइयाँ",
-    "generateFirst": "अपने पहले बॉट्स शुरू करने के लिए खाते बनाएं।",
-    "startCountHelp": "अतिरिक्त बॉट्स प्रारंभ करता है। चालू बॉट्स जुड़े रहते हैं।",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "सभी {{count}} शुरू करें",
     "validCount": "",
     "positiveCount": "",
@@ -253,9 +278,37 @@
     "version": "संस्करण: {{version}}",
     "author": "लेखक: {{author}}",
     "license": "लाइसेंस: {{license}}",
-    "website": "वेबसाइट"
+    "website": "वेबसाइट",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "सेटिंग्स नामस्पेस नहीं मिला",
     "stringList": {
@@ -268,17 +321,45 @@
       "remove": "हटाएँ"
     },
     "combo": {
-      "searchPlaceholder": "खोज मूल्य..."
+      "searchPlaceholder": "खोज मूल्य...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "अमान्य संख्या",
       "description": "मान {{min}} से {{max}} के बीच होना चाहिए"
-    }
+    },
+    "saving": "सहेजा जा रहा है...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "क्लिपबोर्ड पर कॉपी करें",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "अभी तक कोई लॉग नहीं हैं। लॉग आउटपुट बनाने के लिए कोई कमांड चलाएँ।",
     "demo-1": "डेमो मोड में स्वागत है! 🧪",
-    "demo-2": "यह SoulFire का केवल-पढ़ने के लिए इंस्टेंस है",
+    "demo-2": "",
     "demo-3": "स्थापित करने से पहले सभी मेनू और फ़ीचर देख लें :D",
     "demo-4": "अगर आप हमसे जुड़ना चाहते हैं, तो हमारे Discord सर्वर से जुड़े: https://soulfiremc.com/discord"
   },
@@ -328,26 +409,177 @@
       "error": "संदेश प्रसारित करने में विफल"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "पुनः प्रयास करें",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "सभी",
+      "projects": "",
+      "bots": "बॉट्स",
+      "scripts": "स्क्रिप्ट्स",
+      "settings": "सेटिंग्स",
+      "actions": "क्रियाएँ"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "बॉट शुरू करें",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "रद्द करें",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "{{count}} बॉट शुरू करें",
+      "startBots_other": "{{count}} बॉट्स शुरू करें",
+      "stopBots_one": "{{count}} बॉट बंद करें",
+      "stopBots_other": "{{count}} बॉट्स बंद करें",
+      "retryBots_one": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "कनेक्टेड",
+      "starting": "प्रारंभ हो रहा है",
+      "retrying": "पुनः प्रयास किया जा रहा है",
+      "failed": "असफल",
+      "stopping": "रोकना जारी है",
+      "stopped": "बंद हुआ",
+      "active": "सक्रिय",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "बंद करें",
+      "pin": "",
+      "back": "वापस"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "सेटिंग्स",
+      "bots": "बॉट्स",
+      "scripts": "स्क्रिप्ट्स",
+      "admin": "",
+      "actions": "क्रियाएँ",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "दस्तावेज़ पढ़ें",
     "backToDashboard": "डैशबोर्ड पर वापस जाएँ",
     "deleteToast": {
-      "loading": "इंस्टेंस हटाई जा रही है...",
-      "success": "इंस्टेंस हटाई गई",
-      "error": "इंस्टेंस हटाने में विफल"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "इंस्टेंस",
-    "createInstance": "इंस्टेंस बनाएँ",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "प्रोफ़ाइल लोड हो रहा है...",
-      "success": "प्रोफ़ाइल लोड हुआ",
-      "error": "प्रोफ़ाइल लोड करने में विफल"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "प्रोफ़ाइल लोड करें",
+    "loadProfile": "",
     "loadFromFile": "फ़ाइल से लोड करें",
-    "profileSaved": "प्रोफ़ाइल सहेजी गई",
-    "saveProfile": "प्रोफ़ाइल सहेजें",
-    "deleteInstance": "इंस्टेंस हटाएँ",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "नियंत्रण",
     "overview": "अवलोकन",
     "terminal": "टर्मिनल",
@@ -357,19 +589,21 @@
     "extensionsGroup": "एक्सटेंशनस्",
     "botSettings": "बॉट सेटिंग्स",
     "accountSettings": "अकाउंट सेटिंग्स",
-    "metaSettings": "इंस्टेंस सेटिंग्स",
+    "metaSettings": "",
     "proxySettings": "प्रॉक्सी सेटिंग्स",
     "aiSettings": "एआई सेटिंग्स",
     "pathfindingSettings": "पाथफाइंडिंग सेटिंग्स",
     "discoverPlugins": "प्लगइन्स",
-    "instanceScripts": "स्क्रिप्ट्स"
+    "instanceScripts": "स्क्रिप्ट्स",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "दस्तावेज़ पढ़ें",
     "userGroup": "उपयोगकर्ता",
-    "instances": "इंस्टेंस",
+    "instances": "",
     "access": "पहुँच",
-    "createInstance": "इंस्टेंस बनाएँ",
+    "createInstance": "",
     "settings": "सेटिंग्स",
     "adminGroup": "प्रशासक",
     "adminOverview": "अवलोकन",
@@ -414,21 +648,21 @@
     "extensions": "एक्सटेंशनस्",
     "bots": "बॉट्स"
   },
-  "noInstancesFound": "कोई इंस्टेंस नहीं मिला",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "टर्मिनल",
     "logs": "लॉग्स",
     "audit-log": "ऑडिट लॉग",
     "bots": "बॉट्स",
     "botDetail": "बॉट विवरण",
-    "instances": "इंस्टेंस",
+    "instances": "",
     "access": "पहुँच",
     "settings": "सेटिंग्स",
     "proxySettings": "प्रॉक्सी सेटिंग्स",
     "overview": "अवलोकन",
     "users": "उपयोगकर्ता",
     "accountSettings": "अकाउंट सेटिंग्स",
-    "metaSettings": "इंस्टेंस सेटिंग्स",
+    "metaSettings": "",
     "discoverPlugins": "प्लगइन्स",
     "adminScripts": "स्क्रिप्ट्स",
     "instanceScripts": "स्क्रिप्ट्स"
@@ -436,7 +670,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV एक्सेस",
-      "description": "WebDAV इंस्टेंस फाइलें, स्क्रिप्ट्स और अन्य फाइलों तक पहुँच प्रदान करता है।",
+      "description": "",
       "publicAddress": "सार्वजनिक WebDAV पता",
       "personalToken": "व्यक्तिगत WebDAV टोकन",
       "securityWarning": "अपने व्यक्तिगत WebDAV टोकन को गुप्त रखें। यह आपकी फाइलों तक पहुँच के लिए अनुमति देता है। टोकन को अपना WebDAV पासवर्ड रूप में इस्तेमाल करें। आपको उपयोगकर्ता नाम की आवश्यकता नहीं है। यदि आपके ऐप को चाहिए, तो कोई भी मान दर्ज करें, जैसे 'soulfire'।",
@@ -444,7 +678,7 @@
     },
     "api": {
       "title": "API एक्सेस",
-      "description": "SoulFire gRPC HTTP API वेब अनुरोधों के साथ इंस्टेंस प्रबंधित करता है।",
+      "description": "",
       "publicAddress": "सार्वजनिक API पता",
       "personalToken": "व्यक्तिगत API टोकन",
       "securityWarning": "अपने व्यक्तिगत API टोकन को गुप्त रखें। यह API तक पहुँच के लिए अनुमति देता है।",
@@ -475,7 +709,8 @@
   "clipboardCopy": {
     "loading": "क्लिपबोर्ड पर कॉपी हो रहा है...",
     "success": "\"{{content}}\" को क्लिपबोर्ड पर कॉपी किया गया",
-    "error": "क्लिपबोर्ड पर कॉपी करने में विफल"
+    "error": "क्लिपबोर्ड पर कॉपी करने में विफल",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -515,6 +750,7 @@
     "executedCommand": "कमांड निष्पादित: {{data}}",
     "changedBotDesiredState": "बॉट की इच्छित अवस्था बदली गई",
     "restartedBots": "बॉट्स को पुनः प्रारंभ किया गया",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "यूज़रनेम कॉपी करें",
       "copyCommand": "कमान्ड कॉपी करें"
@@ -585,15 +821,16 @@
       "actions": "क्रियाएँ"
     },
     "globalScript": "वैश्विक",
-    "instanceScript": "इंस्टेंस"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "क्रियाएँ",
     "instance": {
-      "goToInstance": "इंस्टेंस पर जाएँ",
-      "duplicateInstance": "इंस्टेंस डुप्लिकेट करें",
-      "copyInstanceId": "इंस्टेंस आईडी कॉपी करें",
-      "copyInstanceName": "इंस्टेंस नाम कॉपी करें",
-      "deleteInstance": "इंस्टेंस हटाएँ"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "बोट पर जाएँ",
@@ -654,5 +891,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "सभी",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "अन्य"
+    },
+    "enabledHeading": "",
+    "availableHeading": "उपलब्ध"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "टोकन जेनरेट किया जा रहा है...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "बॉट",
+    "botOnline": "ऑनलाइन",
+    "botOffline": "ऑफ़लाइन",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

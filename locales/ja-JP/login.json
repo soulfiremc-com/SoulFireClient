@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire ロゴ"
@@ -7,47 +14,65 @@
   },
   "newUser": "SoulFire を初めてご利用ですか？<a>スタートガイド</a>をご覧ください。",
   "connect": {
-    "title": "SoulFireサーバーに接続する",
-    "description": "接続するSoulFireサーバーの種類を選択してください。",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "統合サーバー（ローカル）",
-      "description": "このデバイスで SoulFire サーバーを起動します。セットアップは自動で行われます。このオプションはデスクトップまたは Android アプリが必要です。"
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "専用サーバー（リモート）",
-      "description": "リモート SoulFire サーバーにアドレスとトークンで接続します。"
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "デモサーバー",
-      "description": "デモデータを使用した読み取り専用サーバーを提供します。SoulFire は変更内容を保存しません。"
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "統合サーバーの起動準備中...",
+    "preparing": "",
     "toast": {
-      "loading": "統合サーバーを起動中...",
-      "success": "統合サーバーが {{time}} 秒で起動しました",
-      "error": "統合サーバーの起動に失敗しました"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "再試行する",
+    "retry": "",
     "reset": {
-      "button": "データをリセット",
+      "button": "",
       "loading": "SoulFireのデータをリセットしています...",
       "success": "SoulFireのデータが正常にリセットされました。再度開始してください。",
-      "error": "SoulFireのデータのリセットに失敗しました"
+      "error": "SoulFireのデータのリセットに失敗しました",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "統合サーバーはお使いのコンピュータで動作します。下記で Java の起動引数を変更できます。",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM引数",
         "description": "SoulFire 用の Java VM 引数です。<bold>-Xmx4G</bold> を追加すると 4 GB の RAM を使用します。デフォルトは利用可能な RAM の 25% です。",
-        "placeholder": "ここにJVM引数を入力"
+        "placeholder": "ここにJVM引数を入力",
+        "reset": ""
       },
       "back": "戻る",
-      "start": "開始"
+      "start": ""
     },
     "mobile": {
-      "description": "モバイルで統合サーバーを実行するには、いくつか手動の手順を行う必要があります。",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termuxコマンド",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "次回は自動的に開始する",
       "description": "サーバー選択をスキップし、SoulFire起動時にこれらの設定を使用します。"
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "SoulFire サーバーのアドレスとトークンを入力してください。",
+    "description": "",
     "toast": {
       "loading": "サーバーに接続中...",
       "success": "サーバーに接続しました",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "アドレス",
-        "description": "SoulFireサーバーのアドレスです。",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "トークン",
         "placeholder": "シークレットトークン",
-        "description": "サーバー認証用のトークンです。"
+        "description": ""
       },
       "email": {
         "title": "メールアドレス",
@@ -96,7 +180,7 @@
       "back": "戻る",
       "useToken": "トークンを使用",
       "useEmail": "メールを使用",
-      "login": "ログイン"
+      "login": ""
     }
   },
   "emailCode": {

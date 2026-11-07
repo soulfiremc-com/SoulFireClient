@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Ruwe instantie-uitvoer is hier beschikbaar als je de details van de console wilt inspecteren.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Accounts",
       "proxies": "Proxy's",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Live feed",
-      "empty": "Wacht op instantie-activiteit...",
+      "empty": "",
       "noPermission": "Je hebt geen toestemming om de live feed te bekijken.",
       "lifecycle": {
         "connecting": "verbindt",
@@ -97,6 +97,7 @@
         "executeCommand": "voerde een commando uit: {{data}}",
         "botDesiredStateChange": "gewenste botstatus gewijzigd",
         "botRestart": "bots opnieuw gestart",
+        "pluginRpc": "",
         "unknown": "een actie uitgevoerd"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "Geen proxies om te importeren"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Proxies importeren...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "Proxytype",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +221,7 @@
     },
     "unknownError": "Onbekende fout",
     "types": {
-      "OFFLINE": "Offline",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Inloggegevens)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Apparaatcode)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Vernieuwtoken)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "Config openen",
       "openMetadata": "Metadata openen",
-      "copyProfileId": "Profiel-ID kopiëren",
+      "copyProfileId": "",
       "copyUsername": "Gebruikersnaam kopiëren"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "Selecteer een instellingenpagina",
       "noSearchResults": "Geen instellingen gevonden voor deze zoekopdracht.",
       "matchesInheritedValue": "Komt overeen met de geërfde waarde",
-      "instanceValue": "Instantiewaarde",
+      "instanceValue": "",
       "defaultValue": "Standaardwaarde",
       "resetOverride": "Overschrijving resetten"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Koop accounts via Ravealts",
       "description": "Koop Minecraft-accounts met je Ravealts API-sleutel.",
-      "apiKeyLabel": "API-sleutel",
       "apiKeyPlaceholder": "Voer je Ravealts API-sleutel in",
-      "validate": "Valideren",
-      "validating": "Bezig met valideren...",
-      "keyValid": "Sleutel gevalideerd",
-      "keyInvalid": "Ongeldige API-sleutel",
-      "credits": "Credits: {{credits}}",
-      "stockTitle": "Beschikbare voorraad",
       "noStock": "Geen accounts op voorraad",
       "accountType": "Accounttype",
-      "amount": "Aantal (1-10)",
-      "purchase": "Kopen & Importeren",
-      "purchasing": "Bezig met kopen...",
-      "purchaseSuccess": "{{count}} accounts gekocht, aan het importeren...",
-      "purchaseError": "Aankoop mislukt: {{message}}",
       "networkError": "Verbinding met de Ravealts API mislukt",
       "outOfStock": "Geselecteerd type is niet op voorraad",
       "insufficientBalance": "Onvoldoende credits",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Instance Metadata",
-    "description": "Beheer permanente metadata-items voor deze instantie. Elk item heeft een namespace, sleutel en JSON-waarde.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Namespace",
     "keyPlaceholder": "Sleutel",
     "valuePlaceholder": "Waarde (JSON)",
     "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opnieuw proberen",
     "addSuccess": "Item toegevoegd",
     "addError": "Toevoegen van item mislukt",
     "updateError": "Bijwerken van item mislukt",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "Bots zoeken...",
     "onlineCount": "{{online}} online / {{total}} totaal",
-    "noBots": "Geen bots geconfigureerd. Voeg accounts toe via de pagina Accountinstellingen.",
+    "noBots": "",
     "noBotsFound": "Geen bots gevonden die overeenkomen met je zoekopdracht.",
     "loadingMore": "Meer laden...",
     "showingCount": "Toont {{loaded}} van {{total}}",
@@ -396,12 +404,12 @@
       "waiting": "Wachten",
       "stopped": "Gestopt"
     },
-    "backToBots": "Terug naar Bots",
+    "backToBots": "",
     "tabs": {
-      "overview": "Overzicht",
+      "overview": "",
       "inventory": "Inventaris",
-      "controls": "Bediening",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Binnenkort beschikbaar",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": "Bot is offline. Positiegegevens zijn alleen beschikbaar wanneer de bot is verbonden."
     },
     "chatPanel": {
-      "title": "Chatberichten",
-      "description": "Chatberichten van deze bot verschijnen hier in een toekomstige update."
+      "title": "",
+      "description": "Chatberichten van deze bot verschijnen hier in een toekomstige update.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Botcommando's",
@@ -428,14 +443,14 @@
       "description": "Bot-specifieke commando's zullen beschikbaar zijn in een toekomstige update."
     },
     "povPanel": {
-      "title": "Bot POV",
+      "title": "",
       "capture": "Vastleggen",
       "refresh": "Vernieuwen",
       "auto": "Auto",
       "startAutoRefresh": "Automatisch vernieuwen starten (interval van 1 seconde)",
       "stopAutoRefresh": "Automatisch vernieuwen stoppen",
       "clickToCapture": "Klik op Vastleggen om het perspectief van de bot weer te geven",
-      "offline": "Bot is offline. POV-weergave is alleen beschikbaar wanneer de bot is verbonden."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Botstatistieken",
@@ -545,6 +560,49 @@
       "dismiss": "Sluiten",
       "submit": "Verzenden",
       "offline": "Bot is offline. Dialogen zijn alleen beschikbaar wanneer de bot is verbonden."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Alles",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Verbonden",
+      "starting": "Starten",
+      "retrying": "Opnieuw proberen",
+      "failed": "Mislukt",
+      "stopping": "Stoppen",
+      "stopped": "Gestopt"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "Visuele scripts",
-    "description": "Maak automatiseringsscripts met behulp van een visuele, op knooppunten gebaseerde editor.",
+    "description": "",
     "experimentalTitle": "Experimentele functie",
     "experimentalWarning": "Deze functie is experimenteel. Toekomstige updates kunnen bestaande scripts breken. Gebruik dit met voorzichtigheid.",
-    "createScript": "Script aanmaken",
-    "createScriptTitle": "Nieuw script aanmaken",
-    "createScriptDescription": "Maak een nieuw visueel script voor deze instantie. Scripts kunnen botacties automatiseren en reageren op gebeurtenissen.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Scriptnaam",
     "scriptNamePlaceholder": "Voer scriptnaam in...",
     "scriptDescription": "Beschrijving",
@@ -625,36 +683,36 @@
     "create": "Aanmaken",
     "createSuccess": "Script succesvol aangemaakt",
     "createError": "Aanmaken van script mislukt",
-    "noScripts": "Nog geen scripts",
-    "noScriptsDescription": "Maak je eerste script om botacties te automatiseren met de visuele knooppunteneditor.",
-    "createFirstScript": "Maak je eerste script",
-    "running": "Draait",
-    "paused": "Gepauzeerd",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "knooppunten",
     "noDescription": "Geen beschrijving",
     "edit": "Bewerken",
-    "pause": "Pauzeren",
-    "pauseSuccess": "Script gepauzeerd",
-    "pauseError": "Pauzeren van script mislukt",
-    "resume": "Hervatten",
-    "resumeSuccess": "Script hervat",
-    "resumeError": "Hervatten van script mislukt",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Verwijderen",
     "deleteSuccess": "Script succesvol verwijderd",
     "deleteError": "Verwijderen van script mislukt",
     "saveSuccess": "Script succesvol opgeslagen",
     "saveError": "Opslaan van script mislukt",
-    "activateSuccess": "Script geactiveerd",
-    "activateError": "Script activeren mislukt",
-    "deactivateSuccess": "Script gedeactiveerd",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Naamloos script",
-    "saveFirstBeforeActivating": "Sla het script eerst op voordat je het activeert",
-    "activating": "Script wordt geactiveerd...",
-    "activated": "Script geactiveerd",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Script voltooid",
     "executionCompletedSuccess": "Script succesvol voltooid",
-    "deactivated": "Script gedeactiveerd",
-    "deactivatedByUser": "Script gedeactiveerd door gebruiker",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Scriptuitvoering mislukt",
     "executionError": "Uitvoeringsfout: {{error}}",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "Knooppuntfout: {{error}}",
     "contextMenu": {
       "edit": "Script bewerken",
-      "pause": "Pauzeren",
-      "resume": "Hervatten",
+      "pause": "",
+      "resume": "",
       "delete": "Script verwijderen",
       "copyScriptName": "Scriptnaam kopiëren",
       "copyScriptId": "Script-ID kopiëren"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "Terug naar scripts",
         "save": "Opslaan",
-        "saveTooltip": "Script opslaan",
-        "resume": "Hervatten",
-        "resumeTooltip": "Hervat uitvoer van script",
-        "pause": "Pauzeren",
-        "pauseTooltip": "Onderbreek scriptexecutie",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Niet opgeslagen",
         "unsavedChanges": "Niet-opgeslagen wijzigingen",
         "clearCanvas": "Canvas wissen",
@@ -690,16 +748,17 @@
         "import": "Script importeren",
         "exportSuccess": "Script succesvol geëxporteerd",
         "importSuccess": "Script succesvol geïmporteerd",
-        "importError": "Importeren van script mislukt"
+        "importError": "Importeren van script mislukt",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Knooppuntpalet",
+        "title": "",
         "search": "Zoek knooppunten..."
       },
       "logs": {
-        "title": "Uitvoeringslogboeken",
+        "title": "",
         "clearTitle": "Logboeken wissen",
-        "noLogs": "Nog geen logboeken. Voer het script uit om uitvoeringslogboeken te zien.",
+        "noLogs": "",
         "entries_one": "{{count}} item",
         "entries_other": "{{count}} items"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Proefdraai",
-        "title": "Script proefdraaien",
-        "description": "Voer een script uit vanaf een geselecteerde trigger met gesimuleerde invoer.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Trigger-node",
         "selectTrigger": "Selecteer een trigger...",
-        "triggerDescription": "Kies de trigger-node om uit te voeren met gesimuleerde invoerwaarden.",
-        "mockInputs": "Gesimuleerde invoer",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} waarde",
-        "start": "Start proefdraai",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "Quota opslaan",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Actie",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Verbinden",
+    "back": "Terug",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alles",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Verbinden",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Totaal",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Geen",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "verbonden",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "Herstart {{count}} bot",
+    "restartGroup_other": "Herstart {{count}} bots"
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Optioneel",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Alle instellingen openen",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Accounts",
+      "reviewProxies": "Proxy's",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Start {{count}} bot",
+      "action_other": "Start {{count}} bots"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

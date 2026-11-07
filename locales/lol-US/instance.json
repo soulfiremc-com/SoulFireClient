@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Raw instanz output be rite heer if u haz inspectin teh consoel detalehz. kthx.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Akkountz",
       "proxies": "Proxiez",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "LIV FEEDZ",
-      "empty": "Waitin 4 instance aktivitee...",
+      "empty": "",
       "noPermission": "U can no has permishun 2 seez live feedz.",
       "lifecycle": {
         "connecting": "iz catwalking",
@@ -97,6 +97,7 @@
         "executeCommand": "runned a commandz: {{data}}",
         "botDesiredStateChange": "bot desird st8 haz cheenged",
         "botRestart": "botz haz been restartd",
+        "pluginRpc": "",
         "unknown": "didz sumthang"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "No proxyz here for importin, sry."
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Importin proxyz... waitz plz!",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "Proxy Typz",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +221,7 @@
     },
     "unknownError": "I dunno wut went wrongz",
     "types": {
-      "OFFLINE": "Offlyne",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Cheezburgerz)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Devize Kodz)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Toekn)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "OPN CONFIG, YAY!",
       "openMetadata": "OPN METADEETA, WOW!",
-      "copyProfileId": "COPY PROFILE ID, SRSLY",
+      "copyProfileId": "",
       "copyUsername": "Copy Usernamez"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "Pickz a settinz page, mebbe?",
       "noSearchResults": "No settinz match dis search. Oh noes!",
       "matchesInheritedValue": "Iz matchin' inherited valu, so fancy!",
-      "instanceValue": "Instance valu here, kitteh seez.",
+      "instanceValue": "",
       "defaultValue": "Defawlt valu! Naow u kno.",
       "resetOverride": "Reset teh overraide, kthxbai!"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealtz",
-      "title": "Purchez Accownts via Ravealtz",
       "description": "Buy Minecraft accowntz usin ur Ravealtz API kitteh key.",
-      "apiKeyLabel": "API Keyzorz",
       "apiKeyPlaceholder": "Enters ur Ravealts API keyzorz",
-      "validate": "Chekz!",
-      "validating": "Chekkin...",
-      "keyValid": "Keyzorz iz validz!",
-      "keyInvalid": "Dats invalid API keyzorz",
-      "credits": "Creditz: {{credits}}",
-      "stockTitle": "Stockz Availabul",
       "noStock": "No accowntz in stockz",
       "accountType": "Accownt Typez",
-      "amount": "Amownt (1-10)",
-      "purchase": "Buyz & Importz",
-      "purchasing": "Buyinz...",
-      "purchaseSuccess": "Buyed {{count}} accowntz, importin...",
-      "purchaseError": "Buy failz: {{message}}",
       "networkError": "Cunectshun tu da Ravealts API haz failed, oh noes!",
       "outOfStock": "Dis type iz out of stockz",
       "insufficientBalance": "No haz enuff creditz",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Instanz MetaDataz",
-    "description": "Manaj persiztent metadata entriez fur dis instanz. Each entry haz a namespaze, key, an JSON valu.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Namspace",
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Valoo (JSON)",
     "noEntries": "No metadata enturiez. Addz one up dere.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Try agin? kthx!",
     "addSuccess": "Entury addzored",
     "addError": "No can add entury, oh noes!",
     "updateError": "No can updait entury, sry!",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "Serch bots...",
     "onlineCount": "{{online}} kittehs onlien / {{total}} totl kittehs",
-    "noBots": "No botz configgerd. Add acountz frum da Account Settin Page.",
+    "noBots": "",
     "noBotsFound": "No botz match ur search, kthx.",
     "loadingMore": "Loadin moar...",
     "showingCount": "Showin {{loaded}} uv {{total}}",
@@ -396,12 +404,12 @@
       "waiting": "WAITZ",
       "stopped": "Stopped"
     },
-    "backToBots": "Bak 2 Botz",
+    "backToBots": "",
     "tabs": {
-      "overview": "Ovarview",
+      "overview": "",
       "inventory": "Inventoryz",
-      "controls": "Controlz",
-      "terminal": "Termenawl"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "CUHMIN SOONZ",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": "Bot iz offlien. Pozishun data only availbul wen bot iz connekkted."
     },
     "chatPanel": {
-      "title": "Chat Meowsajes",
-      "description": "Chat meowsajes frum dis bot will appear heer in teh fuchur updat."
+      "title": "",
+      "description": "Chat meowsajes frum dis bot will appear heer in teh fuchur updat.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Bot Commandses",
@@ -428,14 +443,14 @@
       "description": "Bot-skoped commandz will b availbul in a fuchur updat."
     },
     "povPanel": {
-      "title": "Bot POW!",
+      "title": "",
       "capture": "CAPTURZ!",
       "refresh": "REFRESH PLZ",
       "auto": "Auto",
       "startAutoRefresh": "Start auto-refresh (1 sekond interval)",
       "stopAutoRefresh": "Stop auto-refresh",
       "clickToCapture": "Klik CAPTURZ tu see bot'z point ov viewz",
-      "offline": "Bot iz offlinez. U c'n only see POW when bot iz connekktid, kthx."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Bot Statzz",
@@ -545,6 +560,49 @@
       "dismiss": "Dismizz",
       "submit": "Submitz",
       "offline": "Bot iz offline. Dialogz only avaylbul wen bot iz connectd."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "ALL teh thingz",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Catnectd",
+      "starting": "Strat-in",
+      "retrying": "Tryz agin",
+      "failed": "FAILD",
+      "stopping": "Stoppin",
+      "stopped": "Stopped"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "Vizhul Skriptz",
-    "description": "Mak awtomaet skript using funneh nodez editor, kthx.",
+    "description": "",
     "experimentalTitle": "XPERIMENTAL FEETURZ!!1!1!",
     "experimentalWarning": "Dis feechur iz xperimentul. Futur updaets mite bork ur skripts. Proceed wif care, kthx.",
-    "createScript": "Make Skript",
-    "createScriptTitle": "Make Nu Skript",
-    "createScriptDescription": "Mak nub vizhul skript 4 diz instanz. Skriptz do teh bot stuf an respawn to evnts.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Skript Naym",
     "scriptNamePlaceholder": "Type skript naym heer...",
     "scriptDescription": "Deskripshun",
@@ -625,36 +683,36 @@
     "create": "Makee Makee",
     "createSuccess": "Skript creatd, so gud!",
     "createError": "Failyure. Skript not created ;_;",
-    "noScripts": "No Skriptz Yetz",
-    "noScriptsDescription": "Mak ur first skript 2 automate bot stuf wit vizhul nodez editorz!",
-    "createFirstScript": "Make Ur First Skript",
-    "running": "Runnin",
-    "paused": "Pawzed",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "nodez",
     "noDescription": "No has deskripshun",
     "edit": "Editsie",
-    "pause": "Pawse",
-    "pauseSuccess": "Skript iz pausd, kthx!",
-    "pauseError": "Oh noez, faild tu paus skript!",
-    "resume": "Resoome",
-    "resumeSuccess": "Skript iz bak in accionz!",
-    "resumeError": "Oh noez, skript cant resoom!",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "DELEET",
     "deleteSuccess": "Skript get deletd suksessleh, YAY!",
     "deleteError": "NOOO! Skript not deletd!",
     "saveSuccess": "Skript be saved, awesumz!",
     "saveError": "Sadness. Skript didn save :(",
-    "activateSuccess": "Skript activ8d",
-    "activateError": "Oh noes, kan haz aktivaet skript",
-    "deactivateSuccess": "Skript deactiv8d",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Untitled Skriptz",
-    "saveFirstBeforeActivating": "Save teh skript furst b4 aktivaetin",
-    "activating": "Aktivatin scripty...",
-    "activated": "Skript activ8d",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skript finished!",
     "executionCompletedSuccess": "Skript finishd suksessfulleh! YUS!",
-    "deactivated": "Skript deactiv8d",
-    "deactivatedByUser": "Script waz deactivated by hooman",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Skript explodid, did not werk D;",
     "executionError": "Oh noes: {{error}}",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "Node fail: {{error}}",
     "contextMenu": {
       "edit": "EDIT SCRIPT, LETZ GO!",
-      "pause": "Pawse",
-      "resume": "Resoome",
+      "pause": "",
+      "resume": "",
       "delete": "DELET SCRIPT, KTHXBYE!",
       "copyScriptName": "Coppy Skript Naym!",
       "copyScriptId": "Coppy Skript ID!"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "Bak to Skriptz",
         "save": "SAEV",
-        "saveTooltip": "Saev skriptz!",
-        "resume": "Resoome",
-        "resumeTooltip": "Resoom skript doin stufs",
-        "pause": "Pawse",
-        "pauseTooltip": "PAWZ skript runnin'",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "UNSAVEZ",
         "unsavedChanges": "Unsaved cheengez",
         "clearCanvas": "Cleer doodle pad",
@@ -690,16 +748,17 @@
         "import": "IMPORT SKRIPT!",
         "exportSuccess": "Skript has bin xported, kthx!",
         "importSuccess": "Skript has bin importd, kthx!",
-        "importError": "Oh noes, failed 2 import skript!"
+        "importError": "Oh noes, failed 2 import skript!",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Node Kitteh",
+        "title": "",
         "search": "Sersch nodez..."
       },
       "logs": {
-        "title": "Execushun Logz",
+        "title": "",
         "clearTitle": "Cleer logz",
-        "noLogs": "No logz yet! Run skript 2 sees what happuns.",
+        "noLogs": "",
         "entries_one": "{{count}} entry",
         "entries_other": "{{count}} entriez"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Dry Ploy",
-        "title": "Dry Ploy Scriptz",
-        "description": "Runn a script from a pikd triggur wif cheez inputs.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Triggur Nodeh",
         "selectTrigger": "Selekt a triggur...",
-        "triggerDescription": "Pik teh triggur nodeh to use wif cheez inputz.",
-        "mockInputs": "Mock Inputz",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} valu",
-        "start": "START DRY PLOY!",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "Savez da Quota",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Akshun",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "CONEKT",
+    "back": "Bak",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ALL teh thingz",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "CONEKT",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Totalz",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "NUN",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "catnectd",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Optionalz",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Opun ALL teh settinz, kthx!",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Akkountz",
+      "reviewProxies": "Proxiez",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Stawt {{count}} bot",
+      "action_other": "Stawt {{count}} bots"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

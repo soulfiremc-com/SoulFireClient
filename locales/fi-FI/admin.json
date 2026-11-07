@@ -20,12 +20,12 @@
         "title": "Säikeiden määrä"
       },
       "aggregateBots": {
-        "title": "Botit verkossa (kaikissa instansseissa)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Instanssien kokonaismäärä tällä palvelimella",
-      "instances": "Instanssit",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Tila",
         "active": "Aktiivinen",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rooli",
           "placeholder": "Valitse rooli",
-          "description": "Käyttäjän rooli. Ylläpitäjät voivat hallita käyttäjiä ja kaikkia instansseja. Käyttäjät voivat hallita vain omia instanssejaan.",
+          "description": "",
           "user": "Käyttäjä",
           "admin": "Ylläpitäjä"
         }

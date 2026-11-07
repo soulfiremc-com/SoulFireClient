@@ -20,12 +20,12 @@
         "title": "Contagem de Threads"
       },
       "aggregateBots": {
-        "title": "Bots Online (Todas as Instâncias)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Total de instâncias neste servidor",
-      "instances": "Instâncias",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Estado",
         "active": "Ativo",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Função",
           "placeholder": "Selecione um cargo",
-          "description": "O papel do usuário. Administradores podem gerenciar usuários e todas as instâncias. Usuários podem gerenciar apenas suas próprias instâncias.",
+          "description": "",
           "user": "Usuário",
           "admin": "Administrador"
         }

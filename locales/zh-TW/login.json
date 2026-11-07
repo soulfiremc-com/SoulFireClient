@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire 標誌"
@@ -7,47 +14,65 @@
   },
   "newUser": "新手上路？請閱讀<a>入門指南</a>。",
   "connect": {
-    "title": "連接到 SoulFire 伺服器",
-    "description": "選擇要連接的 SoulFire 伺服器類型。",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "整合式伺服器（本機）",
-      "description": "在此裝置上運行 SoulFire 伺服器。設定會自動進行。此選項需要桌面版或 Android 應用程式。"
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "專用伺服器（遠端）",
-      "description": "使用位址和權杖連接至遠端 SoulFire 伺服器。"
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "演示伺服器",
-      "description": "提供僅供閱讀的伺服器與示範資料。SoulFire 不會儲存變更。"
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "正在準備啟動整合式伺服器...",
+    "preparing": "",
     "toast": {
-      "loading": "正在啟動整合式伺服器...",
-      "success": "整合伺服器已於 {{time}} 秒內啟動",
-      "error": "啟動整合式伺服器失敗"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "重試",
+    "retry": "",
     "reset": {
-      "button": "重設資料",
+      "button": "",
       "loading": "正在重設 SoulFire 資料...",
       "success": "SoulFire 資料重設成功。請重新開始。",
-      "error": "無法重設 SoulFire 資料"
+      "error": "無法重設 SoulFire 資料",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "整合伺服器運行於您的電腦上。您可以在下方更改 Java 啟動參數。",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM 參數",
         "description": "SoulFire 的 Java VM 參數。新增 <bold>-Xmx4G</bold> 可使用 4GB 記憶體。預設為可用記憶體的 25%。",
-        "placeholder": "在此輸入您的 JVM 參數"
+        "placeholder": "在此輸入您的 JVM 參數",
+        "reset": ""
       },
       "back": "返回",
-      "start": "開始"
+      "start": ""
     },
     "mobile": {
-      "description": "如要在行動裝置上執行整合式伺服器，您需要完成幾個手動步驟。",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux 命令",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "下次自動啟動",
       "description": "略過伺服器選擇，SoulFire 開啟時自動使用這些設定。"
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "請輸入 SoulFire 伺服器的位址與權杖。",
+    "description": "",
     "toast": {
       "loading": "正在連接伺服器...",
       "success": "已連接到伺服器",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "位址",
-        "description": "您的 SoulFire 伺服器位址。",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "權杖",
         "placeholder": "密碼權杖",
-        "description": "用於驗證伺服器的權杖。"
+        "description": ""
       },
       "email": {
         "title": "電子郵件",
@@ -96,7 +180,7 @@
       "back": "返回",
       "useToken": "使用權杖",
       "useEmail": "使用電子郵件",
-      "login": "登入"
+      "login": ""
     }
   },
   "emailCode": {

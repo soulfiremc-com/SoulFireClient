@@ -20,12 +20,12 @@
         "title": "İş Parçacığı Sayısı"
       },
       "aggregateBots": {
-        "title": "Botlar Çevrimiçi (Tüm Sunucular)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Bu sunucudaki toplam Olay sayısı",
-      "instances": "Örnekler",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Durum",
         "active": "Aktif",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rol",
           "placeholder": "Bir rol seçin",
-          "description": "Kullanıcının rolü. Yöneticiler kullanıcıları ve tüm örnekleri yönetebilir. Kullanıcılar yalnızca kendi örneklerini yönetebilir.",
+          "description": "",
           "user": "Kullanıcı",
           "admin": "Yönetici"
         }

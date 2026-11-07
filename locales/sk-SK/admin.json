@@ -20,12 +20,12 @@
         "title": "Počet vlákien"
       },
       "aggregateBots": {
-        "title": "Boti online (všetky inštancie)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Celkový počet inštancií na tomto serveri",
-      "instances": "Inštancie",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Stav",
         "active": "Aktívne",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rola",
           "placeholder": "Vyberte rolu",
-          "description": "Rola používateľa. Správcovia môžu spravovať používateľov a všetky inštancie. Používatelia môžu spravovať iba svoje vlastné inštancie.",
+          "description": "",
           "user": "Používateľ",
           "admin": "Admin"
         }

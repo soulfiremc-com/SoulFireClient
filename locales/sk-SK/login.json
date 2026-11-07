@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "Logo SoulFire"
@@ -7,47 +14,65 @@
   },
   "newUser": "Nový v SoulFire? Prečítajte si <a>príručku pre začiatočníkov</a>.",
   "connect": {
-    "title": "Pripojte sa k serveru SoulFire",
-    "description": "Vyberte typ servera SoulFire, ku ktorému sa chcete pripojiť.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Integrovaný server (lokálny)",
-      "description": "Spustí server SoulFire na tomto zariadení. Nastavenie prebieha automaticky. Táto možnosť vyžaduje desktopovú alebo Android aplikáciu."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Dedikovaný server (vzdialený)",
-      "description": "Pripojí sa k vzdialenému serveru SoulFire pomocou jeho adresy a tokenu."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Demo server",
-      "description": "Poskytuje server iba na čítanie s ukážkovými údajmi. SoulFire neukladá žiadne zmeny."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Nepodarilo sa spustiť integrovaný server…...",
+    "preparing": "",
     "toast": {
-      "loading": "...Spustenie integrovaného servera…...",
-      "success": "Integrovaný server spustený za {{time}}s",
-      "error": "Nepodarilo sa spustiť integrovaný server"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Opakovať",
+    "retry": "",
     "reset": {
-      "button": "Resetovať dáta",
+      "button": "",
       "loading": "Prebieha resetovanie údajov SoulFire...",
       "success": "Údaje SoulFire boli úspešne resetované. Skúste začať znova.",
-      "error": "Nepodarilo sa resetovať údaje SoulFire"
+      "error": "Nepodarilo sa resetovať údaje SoulFire",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Integrovaný server beží na vašom počítači. Nižšie môžete zmeniť spúšťacie argumenty Java.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "Argumenty JVM",
         "description": "Java VM argumenty pre SoulFire. Pridajte <bold>-Xmx4G</bold> pre použitie 4 GB RAM. Predvolená hodnota je 25 % dostupnej pamäte RAM.",
-        "placeholder": "Tu sú vaše argumenty JVM"
+        "placeholder": "Tu sú vaše argumenty JVM",
+        "reset": ""
       },
       "back": "Späť",
-      "start": "Spustiť"
+      "start": ""
     },
     "mobile": {
-      "description": "Na spustenie integrovaného servera na mobile je potrebné vykonať niekoľko manuálnych krokov.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Príkaz pre Termux",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Automaticky spustiť nabudúce",
       "description": "Preskočiť výber servera a použiť tieto nastavenia pri spustení SoulFire."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "Zadajte adresu a token servera SoulFire.",
+    "description": "",
     "toast": {
       "loading": "Pripája sa k serveru…",
       "success": "Pripojené k serveru",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Adresa",
-        "description": "Adresa vášho servera SoulFire.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Tajný token",
-        "description": "Token na autentifikáciu so serverom."
+        "description": ""
       },
       "email": {
         "title": "E-mail",
@@ -96,7 +180,7 @@
       "back": "Späť",
       "useToken": "Použite token",
       "useEmail": "Použite e-mail",
-      "login": "Prihlásiť sa"
+      "login": ""
     }
   },
   "emailCode": {

@@ -20,12 +20,12 @@
         "title": "Thread Sayı"
       },
       "aggregateBots": {
-        "title": "Botlar Onlinedır (Bütün İnstansiyalar)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Bu serverdəki ümumi instanslar",
-      "instances": "Instansiyalar",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Vəziyyət",
         "active": "Aktiv",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rol",
           "placeholder": "Rol seçin",
-          "description": "İstifadəçinin rolu. Adminlər istifadəçiləri və bütün instansları idarə edə bilər. İstifadəçilər yalnız öz instanslarını idarə edə bilər.",
+          "description": "",
           "user": "İstifadəçi",
           "admin": "Admin"
         }

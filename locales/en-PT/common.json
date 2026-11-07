@@ -4,6 +4,16 @@
   "cancel": "Lower anchor",
   "save": "Tuck it away",
   "saving": "Stashin' yer changes...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "No ship address nor treasure map (token) found, matey!",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Arrr, the page didn’t load, matey! Crack open the console for more clues, savvy?",
       "logOut": "Abandon Ship",
       "reloadPage": "Reload th' deck",
-      "showDetails": "Show piratey details"
+      "showDetails": "Show piratey details",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Link with the SoulFire ship’s hub failed, arrr."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "Be Supportin' SoulFire, matey!",
       "description": "SoulFire be a free 'n open-source treasure, forged with love by the crew.",
-      "body": "If SoulFire's been worth its weight in gold to ye, consider throwin' a coin to the project. Yer booty helps keep the ship sailin', pays fer more grog and code, an' keeps SoulFire free fer all hands.",
+      "body": "",
       "dismiss": "Maybe another tide",
-      "action": "Be Supportin' SoulFire, matey!"
+      "action": "Be Supportin' SoulFire, matey!",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Raise a new hull",
-      "description": "Give the instance a moniker ye can spot easy, like \"Me Minecraft Bot\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Jolly moniker",
-          "placeholder": "Me Minecraft Matey",
-          "description": "The moniker ye wish to name this vessel."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Lower anchor",
-        "create": "Set sail!"
+        "create": ""
       },
       "createToast": {
-        "loading": "Raisin' the hull...",
-        "success": "Hull lifted from the briny deep!",
-        "error": "Blasted barnacles! Couldn’t raise the hull!"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Clone yer instance, matey!",
-      "description": "Make a fresh instance usin' the profile from \"{{name}}\", arr!",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "The moniker for the cloned instance, yarrr."
+          "description": ""
         },
-        "duplicate": "Clone this, arrr!"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Be makin' a copy o' th' instance...",
-        "success": "Instance be copied, aye!",
-        "error": "Arrr, failed t' make a copy o' th' instance!"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "From the bottle at sea",
         "firstClipboardItem": "The clipboard holds a whole booty o' loot. SoulFire will take the first piece o' treasure.",
         "fromClipboard": "From the chest o' clippin's",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Scrawl yer words here...",
           "submit": "Heave from th' writin'"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Enter yer decree! (Type 'help' to spy the legend)",
     "emptySuggestions": "Type to beg for ideas or whack Tab, matey.",
     "noSuggestions": "No pirate ideas showed up, arrr."
@@ -148,12 +173,12 @@
       "success": "Bots be stoppin'",
       "error": "Blast it! The bots don’t want to stop!"
     },
-    "permissionDenied": "Ye lack th' authority to set sail or anchor bots in this here instance, matey!",
+    "permissionDenied": "",
     "serverUpdateRequired": "Th' server gave no account o' bot-control permissions. Be makin' sure yer server an' client be runnin' the same version, arrr!",
     "startBots": "Hoist the bots",
     "moreActions": "More bot booty actions",
-    "generateFirst": "Create accounts t’ send yer first bots sailin’.",
-    "startCountHelp": "Sets more bots a-sailin’. Runny bots keep holdin’ their course.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Hoist all {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -253,9 +278,37 @@
     "version": "Manifest ver. {{version}}",
     "author": "Captain: {{author}}",
     "license": "Seafarer's code: {{license}}",
-    "website": "Shanty Site"
+    "website": "Shanty Site",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "No map findin' for settings!",
     "stringList": {
@@ -268,17 +321,45 @@
       "remove": "Scuttle"
     },
     "combo": {
-      "searchPlaceholder": "Be searchin' fer booty..."
+      "searchPlaceholder": "Be searchin' fer booty...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "That be not a proper number, matey!",
       "description": "Yarrr! Value should be between {{min}} and {{max}}, no more and no less!"
-    }
+    },
+    "saving": "Stashin' yer changes...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Copy for yer logbook",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "No logs yet, ye landlubber. Run a command to see some logs roll out.",
     "demo-1": "Welcome t' sailin' in demo waters! 🧪",
-    "demo-2": "This be a read-only hull in SoulFire.",
+    "demo-2": "",
     "demo-3": "Give all th' menus and tools a look before pipin' SoulFire into yer own fleet :D",
     "demo-4": "Join our crew in Discord if ye wish to parley: https://soulfiremc.com/discord"
   },
@@ -328,26 +409,177 @@
       "error": "Couldn’t fire off the message, mate!"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Try again, matey!",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "All hands",
+      "projects": "",
+      "bots": "Crew",
+      "scripts": "Script Scrolls",
+      "settings": "Chart Room",
+      "actions": "Duties"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Hoist the bots",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Lower anchor",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Hoist {{count}} bot",
+      "startBots_other": "Hoist {{count}} bots",
+      "stopBots_one": "Drop anchor fer {{count}} bot",
+      "stopBots_other": "Drop anchor fer {{count}} bots",
+      "retryBots_one": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Tied to the mast",
+      "starting": "Hoistin' the sails",
+      "retrying": "Tryin' again, ye scallywag!",
+      "failed": "Scuppered, matey!",
+      "stopping": "Droppin' anchor",
+      "stopped": "Ship at rest",
+      "active": "Active n' sailin'",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Batten down!",
+      "pin": "",
+      "back": "Avast"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Chart Room",
+      "bots": "Crew",
+      "scripts": "Script Scrolls",
+      "admin": "",
+      "actions": "Duties",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Read the captain's map",
     "backToDashboard": "Back t' the main deck",
     "deleteToast": {
-      "loading": "Castin' off instance...",
-      "success": "Hull cast adrift",
-      "error": "Storm ahead! Could not scuttle hull."
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Fleets",
-    "createInstance": "Raise a hull",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Fetchin’ yer profile...",
-      "success": "Profile's aboard",
-      "error": "Grog-soaked code! Couldn't fetch the profile."
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Fetch Profile",
+    "loadProfile": "",
     "loadFromFile": "Fetch from logbook",
-    "profileSaved": "Profile stashed",
-    "saveProfile": "Stash Profile",
-    "deleteInstance": "Scuttle Hull",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Controls o’ the ship",
     "overview": "Spyglass View",
     "terminal": "Deck o' Terminals",
@@ -357,19 +589,21 @@
     "extensionsGroup": "Add-ons 'n Trinkets",
     "botSettings": "Bot Shimmy",
     "accountSettings": "Matey Account",
-    "metaSettings": "Fleet Chartin'",
+    "metaSettings": "",
     "proxySettings": "Proxy Tides",
     "aiSettings": "Artificial Matey (AI)",
     "pathfindingSettings": "Pathfindin’ Charts",
     "discoverPlugins": "Pirate Add-ons",
-    "instanceScripts": "Script Scrolls"
+    "instanceScripts": "Script Scrolls",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Read the captain's map",
     "userGroup": "Buccaneer",
-    "instances": "Fleets",
+    "instances": "",
     "access": "Boardin’ Rights",
-    "createInstance": "Raise a hull",
+    "createInstance": "",
     "settings": "Chart Room",
     "adminGroup": "Admiral",
     "adminOverview": "Spyglass View",
@@ -414,21 +648,21 @@
     "extensions": "Add-ons 'n Trinkets",
     "bots": "Crew"
   },
-  "noInstancesFound": "No hulls found drifting",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Deck o' Terminals",
     "logs": "Captain’s Logs",
     "audit-log": "Captain’s Chronicle",
     "bots": "Crew",
     "botDetail": "Bot Manifest",
-    "instances": "Fleets",
+    "instances": "",
     "access": "Boardin’ Rights",
     "settings": "Chart Room",
     "proxySettings": "Proxy Tides",
     "overview": "Spyglass View",
     "users": "Crewmates",
     "accountSettings": "Matey Account",
-    "metaSettings": "Fleet Chartin'",
+    "metaSettings": "",
     "discoverPlugins": "Pirate Add-ons",
     "adminScripts": "Script Scrolls",
     "instanceScripts": "Script Scrolls"
@@ -436,7 +670,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV Gangway",
-      "description": "WebDAV gives ye a way to plunder instance files, scripts, an’ other booty.",
+      "description": "",
       "publicAddress": "Charted WebDAV Port",
       "personalToken": "Yer own WebDAV Treasure Map (Token)",
       "securityWarning": "Keep yer personal WebDAV token buried deep—'tis yer key to the treasure! Use the token as yer WebDAV secret. No need fer a username, but if ye must, toss in any word, like 'soulfire'.",
@@ -444,7 +678,7 @@
     },
     "api": {
       "title": "API Gangway",
-      "description": "The SoulFire gRPC HTTP API lets ye command yer instances with web requests, aye.",
+      "description": "",
       "publicAddress": "Charted API Port",
       "personalToken": "Yer own API Treasure Map (Token)",
       "securityWarning": "Keep yer API token buried, else someone steals yer wind and sails yer ship!",
@@ -475,7 +709,8 @@
   "clipboardCopy": {
     "loading": "Logbook’s fetchin’...",
     "success": "Copied \"{{content}}\" to yer logbook",
-    "error": "Clipboard mutinied!"
+    "error": "Clipboard mutinied!",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -515,6 +750,7 @@
     "executedCommand": "Decree fired: {{data}}",
     "changedBotDesiredState": "Changed what the bots be yearnin' fer",
     "restartedBots": "Sent the bots back to the depths!",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Snatch Pirate Name",
       "copyCommand": "Snatch Command"
@@ -585,15 +821,16 @@
       "actions": "Duties"
     },
     "globalScript": "Worldly",
-    "instanceScript": "This hull only"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Duties",
     "instance": {
-      "goToInstance": "Sail t' Fleet",
-      "duplicateInstance": "Make a Copy o' Instance",
-      "copyInstanceId": "Snatch Fleet ID",
-      "copyInstanceName": "Snatch Fleet’s Moniker",
-      "deleteInstance": "Scuttle Hull"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Sail t' Bot",
@@ -654,5 +891,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "All hands",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "The rest o' 'em"
+    },
+    "enabledHeading": "",
+    "availableHeading": "On deck!"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Drawin' treasure map...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot Buccaneer",
+    "botOnline": "Afloat, matey!",
+    "botOffline": "Off th' grid",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

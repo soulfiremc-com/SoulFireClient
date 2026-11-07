@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "oƃo˥ ǝɹᴉɟ˥noS"
@@ -7,47 +14,65 @@
   },
   "newUser": "¿ǝpᴉnp ǝpuᴉpʇɹɐʇs ƃuᴉʇʇǝƃ uɐ ǝpɐǝɹ ¿ɹǝɟᴉlndoS oʇ ǝnlǝN",
   "connect": {
-    "title": "ʇǝuuuoɔ ʇo ɐ ǝɹʌɹǝs ǝɹᴉɟ˥noS",
-    "description": "˙oʇ ʇɔǝuuoɔ oʇ ǝdoʇ ɥɔᴉɥʍ ʇɔǝlǝS .ǝɹʌɹǝs ǝɹᴉɟ˥noS ɟo ǝdoʇ ɥɔᴉɥʍ ʇɔǝlǝs",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "(lɐɔol) ɹǝʌɹǝs pǝʇɐɹƃǝʇuI",
-      "description": ".ddᴉɐoɹpu∀ ɹo ʞʇodʞsǝp ɹǝɥʇɪɹoɟ sǝɹᴉnbǝɹ sɐǝɹbɐ ɹǝɥʇᴉɐɹɥ sǝlᴉɹɐnbɐ pᴉɐq sᴉɥʇ uo ɹǝʌɹǝs ǝɹᴉɟlndoS ɐ spuɐɹ noɹ ɹǝʌɹǝs ǝɹᴉɟlndoS ɐ snuɹ"
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "(ǝʇoɯǝɹ) ɹǝʌɹǝs pǝʇɐʇɔᴉpǝpǝp",
-      "description": "˙uǝʞoʇ puɐ sssǝɹpɐ sᴉ ɥʇᴉʍ ɹǝʌɹǝs ǝɹᴉɟlndoS ǝʇoɯǝɹ ɐ oʇ sʇɔǝuuoƆ"
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "ɹǝʌɹǝs oɯǝp",
-      "description": ".sǝƃuᴉɥɔ ǝʌɐs ʇoN sǝop ǝɹᴉɟlndoS ˙ɐʇɐp oɯǝp ɥʇᴉʍ ɹǝʌɹǝs ʎluo-ʇɐǝp pᴉ uʍo pǝpsᴉʌoɹԀ"
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": ". . .ɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ʇɹɐʇs oʇ ƃuᴉɹɐɹǝԀ",
+    "preparing": "",
     "toast": {
-      "loading": ". . .ɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ƃuᴉʇɹɐʇS",
-      "success": "{{s}}ǝɯᴉʇ uᴉ pǝʇɐɹʇs ɹǝʌɹǝs pǝʇɐɹƃǝʇuI",
-      "error": "ɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ʇɹɐʇs oʇ pǝlᴉɐlℲ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "ʎɹʇǝɹ",
+    "retry": "",
     "reset": {
-      "button": "ɐʇɐᗡ ʇǝsǝᴚ",
+      "button": "",
       "loading": "˙˙˙ɐɹǝɟlnoS ⅁uᴉʇʇǝs ɐʇɐᗡ",
       "success": "˙uᴉɐƃɐ ǝuᴉʇɹɐʇs ʎɹ⊥ ˙ʎllnɟsǝɔɔns ʇǝsǝɹ ɐʇɐᗡ ⅁uᴉɟlnoS",
-      "error": "ɐʇɐᗡ ⅁uᴉɟlnoS ʇǝsǝɹ oʇ pǝlᴉɐɟ"
+      "error": "ɐʇɐᗡ ⅁uᴉɟlnoS ʇǝsǝɹ oʇ pǝlᴉɐɟ",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": ".sʇuǝɯnlɐʌɐ ɟo %52 sᴉ ʇlᴉɟɐnlp ǝɥʇ .Wɯɐɥ ɟo ∀4-xW ˙sƃɹɐ ʍddɯɐʌɾ ǝƃuɐɹʇs puɐ sʇuǝɹbɐ puǝƃuᴉʇsᴉlɪuɐ sɐ sɐ spnɾ uo ɹǝʇndoɔ no  sᴉ sɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ǝɥʇ",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "sʎɐƃɐɯɹʌ ɯʌɾ",
         "description": ".Wɯɐɥ ɟo ∀4-xW puɐ <bold>slɐʌɐl ɹoɟ sʇuǝƃɹɐ Wɯ ɐʌɐɾ> <.)spɐolq(< ddɐ <.Wɯɐɥ ɟo %52 sᴉ ʇlᴉɟɐnlp ǝɥʇ",
-        "placeholder": "ǝɹǝɥ sʎɐƃɐɯɹʌ ɯʌɾ ɹnoʎ"
+        "placeholder": "ǝɹǝɥ sʎɐƃɐɯɹʌ ɯʌɾ ɹnoʎ",
+        "reset": ""
       },
       "back": "ʞɔɐԐ",
-      "start": "ʇɹɐ┴S"
+      "start": ""
     },
     "mobile": {
-      "description": "˙sǝdǝʇs lɐnuɐɯ ʍǝɟ ɐ ǝʇǝldoɯ uo ɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ǝɥʇ uɐ ɹnu oʇ pǝǝu noʎ 'ǝlᴉqoɯ uo",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "puɐɯɯoɔ xnuɹǝʇ",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "ǝɯıɐʇ ʇxǝʇ ʎlʇɐɔıɯoʇn ʇɹɐʇS",
       "description": ".sǝuɐʇʇǝs ǝsǝɥʇ ǝsno puɐ uoıʇɔǝlǝs ɹǝʌɹǝs dıʞS .sǝɹǝɥd ǝɹıɟ˥noS uǝɥʍ sǝuǝdo sǝɹıɟ˥noS"
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": ".ɹǝʌɹǝs ǝɹᴉɟlndoS ǝɥʇ ɟo uǝʞoʇ puɐ sssǝɹpɐ ǝɥʇ ɹǝʇuǝ",
+    "description": "",
     "toast": {
       "loading": ". . .ɹǝʌɹǝs oʇ ƃuᴉʞɔǝuuoɔ",
       "success": "ɹǝʌɹǝs oʇ pǝʇɔǝuuoɔ",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "ssǝɹpɐ",
-        "description": "˙ɹǝʌɹǝs ǝɹᴉɟ˥noS ɹnoʎ ɟo ssǝɹpɐ",
+        "description": "",
         "placeholder": "56076:5180ɥʇ//:dɐolɔɐlo"
       },
       "token": {
         "title": "uǝʞoʇ",
         "placeholder": "uǝʞoʇ ʇǝɹɔǝS",
-        "description": "˙ɹǝʌɹǝs ǝɥʇ ɥʇᴉʍ ǝʇɐɔᴉʇuǝɥʇnɐ oʇ uǝʞoʇ"
+        "description": ""
       },
       "email": {
         "title": "lᴉɐɯǝ",
@@ -96,7 +180,7 @@
       "back": "ʞɔɐԐ",
       "useToken": "uǝʞoʇ ǝsn",
       "useEmail": "lᴉɐɯǝ ǝsn",
-      "login": "uᴉƃo˥"
+      "login": ""
     }
   },
   "emailCode": {

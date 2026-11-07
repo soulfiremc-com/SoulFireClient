@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "जब आपको कंसोल विवरण की जाँच करनी हो, तो कच्चा इंस्टेंस आउटपुट यहाँ उपलब्ध है।",
+    "logsDescription": "",
     "summary": {
       "accounts": "खाते",
       "proxies": "प्रॉक्सी",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "लाइव फीड",
-      "empty": "इंस्टेंस गतिविधि की प्रतीक्षा कर रहा है...",
+      "empty": "",
       "noPermission": "आपको लाइव फीड देखने की अनुमति नहीं है।",
       "lifecycle": {
         "connecting": "कनेक्ट हो रहा है",
@@ -97,6 +97,7 @@
         "executeCommand": "एक कमांड चलाया: {{data}}",
         "botDesiredStateChange": "बॉट की इच्छित स्थिति बदली गई",
         "botRestart": "बॉट्स को पुनः प्रारंभ किया गया",
+        "pluginRpc": "",
         "unknown": "एक क्रिया की गई"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "आयात करने के लिए कोई प्रॉक्सी नहीं है"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "प्रॉक्सी आयात हो रही हैं...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "प्रॉक्सी प्रकार",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +221,7 @@
     },
     "unknownError": "अज्ञात त्रुटि",
     "types": {
-      "OFFLINE": "ऑफ़लाइन",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "जावा (क्रेडेंशियल्स)",
       "MICROSOFT_JAVA_DEVICE_CODE": "जावा (डिवाइस कोड)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "जावा (रिफ्रेश टोकन)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "कॉन्फ़िग खोलें",
       "openMetadata": "मेटाडाटा खोलें",
-      "copyProfileId": "प्रोफ़ाइल आईडी कॉपी करें",
+      "copyProfileId": "",
       "copyUsername": "यूज़रनेम कॉपी करें"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "एक सेटिंग्स पेज चुनें",
       "noSearchResults": "इस खोज से कोई सेटिंग्स मेल नहीं खाती।",
       "matchesInheritedValue": "इनहेरिटेड मान से मेल खाता है",
-      "instanceValue": "इंस्टेंस मान",
+      "instanceValue": "",
       "defaultValue": "डिफ़ॉल्ट मान",
       "resetOverride": "ओवरराइड रीसेट करें"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Ravealts के माध्यम से खाते खरीदें",
       "description": "अपने Ravealts API कुंजी का उपयोग करते हुए Minecraft खाते खरीदें।",
-      "apiKeyLabel": "एपीआई कुंजी",
       "apiKeyPlaceholder": "अपनी Ravealts एपीआई कुंजी दर्ज करें",
-      "validate": "सत्यापित करें",
-      "validating": "सत्यापन हो रहा है...",
-      "keyValid": "कुंजी सत्यापित हो गई",
-      "keyInvalid": "अमान्य एपीआई कुंजी",
-      "credits": "क्रेडिट्स: {{credits}}",
-      "stockTitle": "उपलब्ध स्टॉक",
       "noStock": "स्टॉक में कोई खाता नहीं है",
       "accountType": "खाता प्रकार",
-      "amount": "संख्या (1-10)",
-      "purchase": "खरीदें और आयात करें",
-      "purchasing": "खरीदारी हो रही है...",
-      "purchaseSuccess": "{{count}} खाते खरीदे गए, आयात किया जा रहा है...",
-      "purchaseError": "खरीदारी विफल: {{message}}",
       "networkError": "Ravealts API से कनेक्शन विफल हुआ",
       "outOfStock": "चयनित प्रकार स्टॉक में नहीं है",
       "insufficientBalance": "पर्याप्त क्रेडिट्स नहीं हैं",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "इंस्टेंस मेटाडेटा",
-    "description": "इस इंस्टेंस के लिए स्थायी मेटाडेटा प्रविष्टियाँ प्रबंधित करें। प्रत्येक प्रविष्टि में एक नेमस्पेस, कुंजी, और JSON मान होता है।",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "नेमस्पेस",
     "keyPlaceholder": "कुंजी",
     "valuePlaceholder": "मान (JSON)",
     "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "पुनः प्रयास करें",
     "addSuccess": "प्रविष्टि जोड़ी गई",
     "addError": "प्रविष्टि जोड़ने में विफल",
     "updateError": "प्रविष्टि अपडेट करने में विफल",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "बॉट्स खोजें...",
     "onlineCount": "{{online}} ऑनलाइन / {{total}} कुल",
-    "noBots": "कोई बॉट कॉन्फ़िगर नहीं है। खाते जोड़ने के लिए खाता सेटिंग्स पृष्ठ पर जाएँ।",
+    "noBots": "",
     "noBotsFound": "आपकी खोज से कोई बॉट नहीं मिला।",
     "loadingMore": "अधिक लोड हो रहा है...",
     "showingCount": "{{loaded}} में से {{total}} दिखा रहे हैं",
@@ -396,12 +404,12 @@
       "waiting": "प्रतीक्षा कर रहा है",
       "stopped": "बंद हुआ"
     },
-    "backToBots": "बॉट्स पर वापस जाएं",
+    "backToBots": "",
     "tabs": {
-      "overview": "अवलोकन",
+      "overview": "",
       "inventory": "इन्वेंटरी",
-      "controls": "नियंत्रण",
-      "terminal": "टर्मिनल"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "जल्द आ रहा है",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": "बॉट ऑफलाइन है। स्थिति डेटा केवल तब उपलब्ध होता है जब बॉट जुड़ा होता है।"
     },
     "chatPanel": {
-      "title": "चैट संदेश",
-      "description": "इस बॉट से चैट संदेश भविष्य के अपडेट में यहाँ दिखेंगे।"
+      "title": "",
+      "description": "इस बॉट से चैट संदेश भविष्य के अपडेट में यहाँ दिखेंगे।",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "बॉट कमांड्स",
@@ -428,14 +443,14 @@
       "description": "बॉट-स्कोप्ड कमांड्स भविष्य के अपडेट में उपलब्ध होंगे।"
     },
     "povPanel": {
-      "title": "बॉट दृष्टिकोण",
+      "title": "",
       "capture": "कैप्चर करें",
       "refresh": "रीफ्रेश करें",
       "auto": "ऑटो",
       "startAutoRefresh": "ऑटो-रीफ्रेश प्रारंभ करें (1 सेकंड का अंतराल)",
       "stopAutoRefresh": "ऑटो-रीफ्रेश रोकें",
       "clickToCapture": "बॉट का दृष्टिकोण देखने के लिए कैप्चर पर क्लिक करें",
-      "offline": "बॉट ऑफलाइन है। दृष्टिकोण रेंडरिंग केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।"
+      "offline": ""
     },
     "statsPanel": {
       "title": "बॉट की जानकारी",
@@ -545,6 +560,49 @@
       "dismiss": "निरस्त करें",
       "submit": "प्रस्तुत करें",
       "offline": "बॉट ऑफ़लाइन है। संवाद केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "सभी",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "कनेक्टेड",
+      "starting": "प्रारंभ हो रहा है",
+      "retrying": "पुनः प्रयास किया जा रहा है",
+      "failed": "असफल",
+      "stopping": "रोकना जारी है",
+      "stopped": "बंद हुआ"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "विजुअल स्क्रिप्ट्स",
-    "description": "विजुअल नोड-आधारित संपादक का उपयोग करके ऑटोमेशन स्क्रिप्ट्स बनाएँ।",
+    "description": "",
     "experimentalTitle": "प्रायोगिक सुविधा",
     "experimentalWarning": "यह फीचर प्रयोगात्मक है। भविष्य के अपडेट मौजूदा स्क्रिप्ट को खराब कर सकते हैं। इसे सावधानीपूर्वक उपयोग करें।",
-    "createScript": "स्क्रिप्ट बनाएँ",
-    "createScriptTitle": "नई स्क्रिप्ट बनाएँ",
-    "createScriptDescription": "इस उदाहरण के लिए एक नई विजुअल स्क्रिप्ट बनाएँ। स्क्रिप्ट्स बॉट की क्रियाओं को स्वचालित कर सकती हैं और घटनाओं पर प्रतिक्रिया दे सकती हैं।",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "स्क्रिप्ट का नाम",
     "scriptNamePlaceholder": "स्क्रिप्ट का नाम दर्ज करें...",
     "scriptDescription": "विवरण",
@@ -625,36 +683,36 @@
     "create": "बनाएँ",
     "createSuccess": "स्क्रिप्ट सफलतापूर्वक बनाई गई",
     "createError": "स्क्रिप्ट बनाने में विफल",
-    "noScripts": "अभी तक कोई स्क्रिप्ट नहीं",
-    "noScriptsDescription": "विजुअल नोड-आधारित संपादक का उपयोग कर अपने पहले बॉट ऑटोमेशन के लिए स्क्रिप्ट बनाएँ।",
-    "createFirstScript": "अपनी पहली स्क्रिप्ट बनाएँ",
-    "running": "चल रहा है",
-    "paused": "रुका हुआ है",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "नोड्स",
     "noDescription": "कोई विवरण नहीं",
     "edit": "संपादित करें",
-    "pause": "रोकें",
-    "pauseSuccess": "स्क्रिप्ट रोक दी गई है",
-    "pauseError": "स्क्रिप्ट को रोकने में विफल रहा",
-    "resume": "फिर से शुरू करें",
-    "resumeSuccess": "स्क्रिप्ट फिर से शुरू की गई",
-    "resumeError": "स्क्रिप्ट को फिर से शुरू करने में विफल रहा",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "हटाएँ",
     "deleteSuccess": "स्क्रिप्ट सफलतापूर्वक हटाई गई",
     "deleteError": "स्क्रिप्ट हटाने में विफल",
     "saveSuccess": "स्क्रिप्ट सफलतापूर्वक सेव की गई",
     "saveError": "स्क्रिप्ट सेव करने में विफल",
-    "activateSuccess": "स्क्रिप्ट सक्रिय की गई",
-    "activateError": "स्क्रिप्ट को सक्रिय करने में विफल रहा",
-    "deactivateSuccess": "स्क्रिप्ट निष्क्रिय की गई",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "शीर्षकहीन स्क्रिप्ट",
-    "saveFirstBeforeActivating": "सक्रिय करने से पहले पहले स्क्रिप्ट सहेजें",
-    "activating": "स्क्रिप्ट सक्रिय की जा रही है...",
-    "activated": "स्क्रिप्ट सक्रिय की गई",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "स्क्रिप्ट पूर्ण",
     "executionCompletedSuccess": "स्क्रिप्ट सफलतापूर्वक पूर्ण हुई",
-    "deactivated": "स्क्रिप्ट निष्क्रिय की गई",
-    "deactivatedByUser": "उपयोगकर्ता द्वारा स्क्रिप्ट निष्क्रिय की गई",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "स्क्रिप्ट निष्पादन विफल हुआ",
     "executionError": "निष्पादन त्रुटि: {{error}}",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "नोड त्रुटि: {{error}}",
     "contextMenu": {
       "edit": "स्क्रिप्ट संपादित करें",
-      "pause": "रोकें",
-      "resume": "फिर से शुरू करें",
+      "pause": "",
+      "resume": "",
       "delete": "स्क्रिप्ट हटाएँ",
       "copyScriptName": "स्क्रिप्ट नाम कॉपी करें",
       "copyScriptId": "स्क्रिप्ट आईडी कॉपी करें"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "स्क्रिप्ट्स पर वापस जाएँ",
         "save": "सहेजें",
-        "saveTooltip": "स्क्रिप्ट सहेजें",
-        "resume": "फिर से शुरू करें",
-        "resumeTooltip": "स्क्रिप्ट निष्पादन फिर से प्रारंभ करें",
-        "pause": "रोकें",
-        "pauseTooltip": "स्क्रिप्ट निष्पादन रोकें",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "असुरक्षित",
         "unsavedChanges": "संक्षित बदलाव",
         "clearCanvas": "कैनवास साफ़ करें",
@@ -690,16 +748,17 @@
         "import": "स्क्रिप्ट आयात करें",
         "exportSuccess": "स्क्रिप्ट सफलतापूर्वक निर्यात हुई",
         "importSuccess": "स्क्रिप्ट सफलतापूर्वक आयात हुई",
-        "importError": "स्क्रिप्ट आयात करने में विफल"
+        "importError": "स्क्रिप्ट आयात करने में विफल",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "नोड पैलेट",
+        "title": "",
         "search": "नोड खोजें..."
       },
       "logs": {
-        "title": "निष्पादन लॉग्स",
+        "title": "",
         "clearTitle": "लॉग्स साफ़ करें",
-        "noLogs": "अभी तक कोई लॉग नहीं। निष्पादन लॉग्स देखने के लिए स्क्रिप्ट चलाएँ।",
+        "noLogs": "",
         "entries_one": "{{count}} प्रविष्टि",
         "entries_other": "{{count}} प्रविष्टियाँ"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "ड्राई रन",
-        "title": "ड्राई रन स्क्रिप्ट",
-        "description": "चयनित ट्रिगर से स्क्रिप्ट चलाएं, मॉक इनपुट के साथ।",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "ट्रिगर नोड",
         "selectTrigger": "ट्रिगर चुनें...",
-        "triggerDescription": "मॉक इनपुट मानों के साथ निष्पादित करने के लिए ट्रिगर नोड चुनें।",
-        "mockInputs": "मॉक इनपुट्स",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} मान",
-        "start": "ड्राई रन शुरू करें",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "कोटा सहेजें",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "क्रिया",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "कनेक्ट करें",
+    "back": "वापस",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "सभी",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "कनेक्ट करें",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "कुल",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "कोई नहीं",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "कनेक्टेड",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "वैकल्पिक",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "सभी सेटिंग्स खोलें",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "खाते",
+      "reviewProxies": "प्रॉक्सी",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "{{count}} बॉट शुरू करें",
+      "action_other": "{{count}} बॉट्स शुरू करें"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

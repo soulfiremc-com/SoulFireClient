@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Kết quả thô của phiên bản sẽ hiển thị tại đây khi bạn cần kiểm tra chi tiết bảng điều khiển.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Tài khoản",
       "proxies": "Proxy",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Luồng trực tiếp",
-      "empty": "Đang chờ hoạt động của phiên bản...",
+      "empty": "",
       "noPermission": "Bạn không có quyền xem luồng trực tiếp.",
       "lifecycle": {
         "connecting": "đang kết nối",
@@ -97,6 +97,7 @@
         "executeCommand": "đã chạy lệnh: {{data}}",
         "botDesiredStateChange": "đã thay đổi trạng thái mong muốn của bot",
         "botRestart": "đã khởi động lại bot",
+        "pluginRpc": "",
         "unknown": "đã thực hiện một hành động"
       }
     },
@@ -129,6 +130,21 @@
       "noProxies": "Không có proxy để nhập"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Đang nhập proxy...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "rejected_other": ""
+      },
       "proxyType": "Loại Proxy",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +219,7 @@
     },
     "unknownError": "Lỗi không xác định",
     "types": {
-      "OFFLINE": "Ngoại tuyến",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Thông tin đăng nhập)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Mã thiết bị)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Mã làm mới)",
@@ -272,7 +288,7 @@
     "contextMenu": {
       "openConfig": "Mở Cấu Hình",
       "openMetadata": "Mở Metadata",
-      "copyProfileId": "Sao Chép ID Hồ Sơ",
+      "copyProfileId": "",
       "copyUsername": "Sao chép Tên người dùng"
     },
     "config": {
@@ -292,7 +308,7 @@
       "selectPage": "Chọn một trang cài đặt",
       "noSearchResults": "Không có cài đặt nào khớp với tìm kiếm này.",
       "matchesInheritedValue": "Khớp với giá trị kế thừa",
-      "instanceValue": "Giá trị phiên bản",
+      "instanceValue": "",
       "defaultValue": "Giá trị mặc định",
       "resetOverride": "Đặt lại ghi đè"
     },
@@ -311,23 +327,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Mua tài khoản qua Ravealts",
       "description": "Mua tài khoản Minecraft bằng khóa API Ravealts của bạn.",
-      "apiKeyLabel": "Khóa API",
       "apiKeyPlaceholder": "Nhập khóa API Ravealts của bạn",
-      "validate": "Xác thực",
-      "validating": "Đang xác thực...",
-      "keyValid": "Khóa đã được xác thực",
-      "keyInvalid": "Khóa API không hợp lệ",
-      "credits": "Số dư: {{credits}}",
-      "stockTitle": "Hàng có sẵn",
       "noStock": "Không có tài khoản nào trong kho",
       "accountType": "Loại tài khoản",
-      "amount": "Số lượng (1-10)",
-      "purchase": "Mua & Nhập khẩu",
-      "purchasing": "Đang mua...",
-      "purchaseSuccess": "Đã mua {{count}} tài khoản, đang nhập khẩu...",
-      "purchaseError": "Mua thất bại: {{message}}",
       "networkError": "Kết nối tới API Ravealts thất bại",
       "outOfStock": "Loại đã chọn đã hết hàng",
       "insufficientBalance": "Không đủ số dư",
@@ -354,12 +357,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Siêu dữ liệu Phiên bản",
-    "description": "Quản lý các mục siêu dữ liệu lưu trữ cho phiên bản này. Mỗi mục bao gồm một không gian tên, khoá và giá trị JSON.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Không gian tên",
     "keyPlaceholder": "Khóa",
     "valuePlaceholder": "Giá trị (JSON)",
     "noEntries": "Không có mục siêu dữ liệu nào. Thêm một mục ở trên.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Thử lại",
     "addSuccess": "Đã thêm mục",
     "addError": "Không thể thêm mục",
     "updateError": "Không thể cập nhật mục",
@@ -371,7 +377,7 @@
   "bots": {
     "searchPlaceholder": "Tìm bot...",
     "onlineCount": "{{online}} trực tuyến / {{total}} tổng cộng",
-    "noBots": "Chưa cấu hình bot nào. Thêm tài khoản từ trang Cài đặt Tài khoản.",
+    "noBots": "",
     "noBotsFound": "Không có bot nào khớp với tìm kiếm của bạn.",
     "loadingMore": "Đang tải thêm...",
     "showingCount": "Đang hiển thị {{loaded}} trên tổng số {{total}}.",
@@ -396,12 +402,12 @@
       "waiting": "Đang chờ",
       "stopped": "Đã dừng"
     },
-    "backToBots": "Quay lại Bots",
+    "backToBots": "",
     "tabs": {
-      "overview": "Tổng quan",
+      "overview": "",
       "inventory": "Kho đồ",
-      "controls": "Bảng điều khiển",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Sắp ra mắt",
     "terminalPanel": {
@@ -419,8 +425,15 @@
       "offline": "Bot đang ngoại tuyến. Dữ liệu vị trí chỉ khả dụng khi bot được kết nối."
     },
     "chatPanel": {
-      "title": "Tin nhắn trò chuyện",
-      "description": "Tin nhắn trò chuyện từ bot này sẽ xuất hiện ở đây trong bản cập nhật sắp tới."
+      "title": "",
+      "description": "Tin nhắn trò chuyện từ bot này sẽ xuất hiện ở đây trong bản cập nhật sắp tới.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Lệnh Bot",
@@ -428,14 +441,14 @@
       "description": "Các lệnh dành riêng cho bot sẽ có trong bản cập nhật sắp tới."
     },
     "povPanel": {
-      "title": "Góc nhìn Bot",
+      "title": "",
       "capture": "Chụp ảnh",
       "refresh": "Làm mới",
       "auto": "Tự động",
       "startAutoRefresh": "Bắt đầu tự động làm mới (khoảng thời gian 1 giây)",
       "stopAutoRefresh": "Dừng tự động làm mới",
       "clickToCapture": "Nhấn Chụp ảnh để hiển thị góc nhìn của bot",
-      "offline": "Bot đang ngoại tuyến. Hiển thị góc nhìn chỉ khả dụng khi bot đã kết nối."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Chỉ số Bot",
@@ -545,6 +558,49 @@
       "dismiss": "Tắt",
       "submit": "Gửi",
       "offline": "Bot đang ngoại tuyến. Hộp thoại chỉ khả dụng khi bot đang kết nối."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Tất cả",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Đã kết nối",
+      "starting": "Đang khởi động",
+      "retrying": "Đang thử lại",
+      "failed": "Thất bại",
+      "stopping": "Đang dừng",
+      "stopped": "Đã dừng"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +668,12 @@
   },
   "scripts": {
     "title": "Visual Scripts",
-    "description": "Tạo script tự động hóa bằng trình chỉnh sửa dạng nút trực quan.",
+    "description": "",
     "experimentalTitle": "Tính năng thử nghiệm",
     "experimentalWarning": "Tính năng này đang ở giai đoạn thử nghiệm. Những cập nhật trong tương lai có thể làm hỏng các script hiện tại. Hãy sử dụng một cách thận trọng.",
-    "createScript": "Tạo Script",
-    "createScriptTitle": "Tạo Script Mới",
-    "createScriptDescription": "Tạo một script trực quan mới cho phiên bản này. Script có thể tự động hóa hành động bot và phản hồi các sự kiện.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Tên Script",
     "scriptNamePlaceholder": "Nhập tên script...",
     "scriptDescription": "Mô tả",
@@ -625,36 +681,36 @@
     "create": "Tạo",
     "createSuccess": "Tạo script thành công",
     "createError": "Tạo script thất bại",
-    "noScripts": "Chưa có Script nào",
-    "noScriptsDescription": "Tạo script đầu tiên của bạn để tự động hóa hành động bot bằng trình chỉnh sửa dạng nút trực quan.",
-    "createFirstScript": "Tạo Script Đầu Tiên Của Bạn",
-    "running": "Đang chạy",
-    "paused": "Đã tạm dừng",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "nút",
     "noDescription": "Không có mô tả",
     "edit": "Chỉnh sửa",
-    "pause": "Tạm dừng",
-    "pauseSuccess": "Tạm dừng script",
-    "pauseError": "Không thể tạm dừng script",
-    "resume": "Tiếp tục",
-    "resumeSuccess": "Đã tiếp tục script",
-    "resumeError": "Không thể tiếp tục script",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Xóa",
     "deleteSuccess": "Xóa script thành công",
     "deleteError": "Xóa script thất bại",
     "saveSuccess": "Lưu script thành công",
     "saveError": "Lưu script thất bại",
-    "activateSuccess": "Đã kích hoạt script",
-    "activateError": "Kích hoạt script thất bại",
-    "deactivateSuccess": "Đã hủy kích hoạt script",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Script chưa đặt tên",
-    "saveFirstBeforeActivating": "Hãy lưu script trước khi kích hoạt",
-    "activating": "Đang kích hoạt script...",
-    "activated": "Đã kích hoạt script",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Script đã hoàn thành",
     "executionCompletedSuccess": "Script hoàn thành thành công",
-    "deactivated": "Đã hủy kích hoạt script",
-    "deactivatedByUser": "Script đã bị người dùng vô hiệu hóa",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Thực thi script thất bại",
     "executionError": "Lỗi thực thi: {{error}}",
     "monitoringError": "",
@@ -664,8 +720,8 @@
     "nodeError": "Lỗi Node: {{error}}",
     "contextMenu": {
       "edit": "Chỉnh Sửa Script",
-      "pause": "Tạm dừng",
-      "resume": "Tiếp tục",
+      "pause": "",
+      "resume": "",
       "delete": "Xóa Script",
       "copyScriptName": "Sao chép Tên Script",
       "copyScriptId": "Sao chép ID Script"
@@ -675,11 +731,11 @@
         "actions": "",
         "backToScripts": "Quay lại Scripts",
         "save": "Lưu",
-        "saveTooltip": "Lưu script",
-        "resume": "Tiếp tục",
-        "resumeTooltip": "Tiếp tục thực thi script",
-        "pause": "Tạm dừng",
-        "pauseTooltip": "Tạm dừng thực thi script",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Chưa lưu",
         "unsavedChanges": "Thay đổi chưa lưu",
         "clearCanvas": "Xóa canvas",
@@ -690,16 +746,17 @@
         "import": "Nhập tập lệnh",
         "exportSuccess": "Xuất tập lệnh thành công",
         "importSuccess": "Nhập tập lệnh thành công",
-        "importError": "Nhập tập lệnh thất bại"
+        "importError": "Nhập tập lệnh thất bại",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Bảng Node",
+        "title": "",
         "search": "Tìm kiếm node..."
       },
       "logs": {
-        "title": "Nhật ký thực thi",
+        "title": "",
         "clearTitle": "Xóa nhật ký",
-        "noLogs": "Chưa có nhật ký. Chạy script để xem nhật ký thực thi.",
+        "noLogs": "",
         "entries_other": "{{count}} mục ghi"
       },
       "contextMenu": {
@@ -752,15 +809,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Chạy thử (Dry Run)",
-        "title": "Chạy thử Script",
-        "description": "Chạy script từ một trigger đã chọn với dữ liệu thử nghiệm.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Nút kích hoạt",
         "selectTrigger": "Chọn trigger...",
-        "triggerDescription": "Chọn nút trigger để thực thi với các giá trị thử nghiệm.",
-        "mockInputs": "Dữ liệu thử nghiệm",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "Giá trị {{type}}",
-        "start": "Bắt đầu chạy thử",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
@@ -784,10 +842,523 @@
         "save": "Lưu hạn mức",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Hành động",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Kết nối",
+    "back": "Quay lại",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Tất cả",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Kết nối",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Tổng cộng",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Không có",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_other": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "đã kết nối",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Tùy chọn",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Mở tất cả cài đặt",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Tài khoản",
+      "reviewProxies": "Proxy",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_other": "Khởi động {{count}} bot"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

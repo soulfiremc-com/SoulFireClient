@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire loqosu"
@@ -7,47 +14,65 @@
   },
   "newUser": "SoulFire-ə yenisiniz? <a>Başlanğıc bələdçəsini</a> oxuyun.",
   "connect": {
-    "title": "SoulFire serverinə qoşulun",
-    "description": "Qoşulmaq istədiyiniz SoulFire serverinin növünü seçin.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "İnteqrasiyalı server (lokal)",
-      "description": "Bu cihazda SoulFire serveri işə salır. Quraşdırma avtomatikdir. Bu seçim masaüstü və ya Android tətbiqini tələb edir."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Ayrılmış server (uzaq)",
-      "description": "Server ünvanı və token ilə uzaq SoulFire serverinə qoşulur."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Demo server",
-      "description": "Demo məlumatları ilə yalnız oxumaq üçün server təmin edir. SoulFire dəyişiklikləri yadda saxlamır."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "İnteqrasiyalı serverin başlatmasına hazırlıq...",
+    "preparing": "",
     "toast": {
-      "loading": "İnteqrasiyalı server başladılır...",
-      "success": "Inteqrasiya olunmuş server {{time}} saniyəyə başladıldı",
-      "error": "İnteqrasiyalı serveri başlatmaq mümkün olmadı"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Təkrar cəhd et",
+    "retry": "",
     "reset": {
-      "button": "Məlumatları sıfırla",
+      "button": "",
       "loading": "SoulFire məlumatları sıfırlanır...",
       "success": "SoulFire məlumatları uğurla sıfırlandı. Yenidən başlamağa çalışın.",
-      "error": "SoulFire məlumatlarını sıfırlamaq mümkün olmadı"
+      "error": "SoulFire məlumatlarını sıfırlamaq mümkün olmadı",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "İnteqrasiya olunmuş server kompüterinizdə işləyir. Aşağıda Java işə salma arqumentlərini dəyişə bilərsiniz.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM arqumentləri",
         "description": "SoulFire üçün Java VM arqumentləri. 4 GB RAM istifadə etmək üçün <bold>-Xmx4G</bold> əlavə edin. Standart olaraq mövcud RAM-ın 25%-i istifadə olunur.",
-        "placeholder": "JVM arqumentlərinizi bura yazın"
+        "placeholder": "JVM arqumentlərinizi bura yazın",
+        "reset": ""
       },
       "back": "Geri",
-      "start": "Başla"
+      "start": ""
     },
     "mobile": {
-      "description": "İnteqrasiyalı serveri mobil cihazda işlətmək üçün bir neçə əl addımını tamamlamağınız lazımdır.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux əmri",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Növbəti açılışda avtomatik başlat",
       "description": "SoulFire açıldıqda server seçimini keç və bu ayarları istifadə et."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "SoulFire serverinin ünvanını və tokenini daxil edin.",
+    "description": "",
     "toast": {
       "loading": "Serverə qoşulur...",
       "success": "Serverə qoşuldu",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Ünvan",
-        "description": "SoulFire serverinizin ünvanı.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Gizli token",
-        "description": "Serverdə autentifikasiya üçün token."
+        "description": ""
       },
       "email": {
         "title": "Email",
@@ -96,7 +180,7 @@
       "back": "Geri",
       "useToken": "Token istifadə et",
       "useEmail": "Email istifadə et",
-      "login": "Daxil ol"
+      "login": ""
     }
   },
   "emailCode": {

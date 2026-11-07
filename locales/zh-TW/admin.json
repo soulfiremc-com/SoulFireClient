@@ -20,12 +20,12 @@
         "title": "執行緒數量"
       },
       "aggregateBots": {
-        "title": "線上機器人數（所有實例）"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "此伺服器上的實例總數",
-      "instances": "實例清單",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "狀態",
         "active": "啟用中",
@@ -64,7 +64,7 @@
         "role": {
           "label": "角色",
           "placeholder": "選擇角色",
-          "description": "使用者的角色。管理員可以管理使用者及所有實例，一般使用者僅能管理自己的實例。",
+          "description": "",
           "user": "使用者",
           "admin": "管理員"
         }
