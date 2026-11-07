@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
@@ -16,7 +18,6 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -308,25 +309,28 @@ function DialogContentInner({
 
   const addEntrySchema = useMemo(
     () =>
-      z.object({
-        namespace: z
-          .string()
-          .trim()
-          .regex(
-            metadataNamespacePattern,
-            t("metadataValidation.invalidNamespace"),
+      Schema.Struct({
+        namespace: Schema.Trim.check(
+          Schema.isPattern(metadataNamespacePattern, {
+            message: t("metadataValidation.invalidNamespace"),
+          }),
+        ),
+        key: Schema.Trim.check(
+          Schema.isPattern(metadataKeyPattern, {
+            message: t("metadataValidation.invalidKey"),
+          }),
+        ),
+        value: Schema.String.check(
+          Schema.isMinLength(1, {
+            message: t("account.metadata.valuePlaceholder"),
+          }),
+        ).check(
+          Schema.makeFilter(
+            (value) =>
+              parseJsonValue(value) !== undefined ||
+              t("account.metadata.invalidJson"),
           ),
-        key: z
-          .string()
-          .trim()
-          .regex(metadataKeyPattern, t("metadataValidation.invalidKey")),
-        value: z
-          .string()
-          .min(1, t("account.metadata.valuePlaceholder"))
-          .refine(
-            (v) => parseJsonValue(v) !== undefined,
-            t("account.metadata.invalidJson"),
-          ),
+        ),
       }),
     [t],
   );
@@ -338,7 +342,7 @@ function DialogContentInner({
       value: "",
     },
     validators: {
-      onSubmit: addEntrySchema,
+      onSubmit: toFormSchema(addEntrySchema),
     },
     onSubmit: async ({ value, formApi }) => {
       if (!isMetadataReady) return;

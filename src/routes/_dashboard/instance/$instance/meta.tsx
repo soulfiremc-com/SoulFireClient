@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import { createClient } from "@connectrpc/connect";
@@ -20,7 +22,6 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { getAllIconTags } from "@/components/dynamic-icon.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -171,9 +172,9 @@ function InstanceNameField({
   });
   const form = useForm({
     defaultValues: { name: value },
-    validators: { onSubmit: z.object({ name: schema }) },
+    validators: { onSubmit: toFormSchema(Schema.Struct({ name: schema })) },
     onSubmit: async ({ value: fields, formApi }) => {
-      const name = schema.parse(fields.name);
+      const name = Schema.decodeUnknownSync(schema)(fields.name);
       if (name === value) return;
       try {
         await onSave(name);
@@ -505,25 +506,28 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   const addEntrySchema = useMemo(
     () =>
-      z.object({
-        namespace: z
-          .string()
-          .trim()
-          .regex(
-            metadataNamespacePattern,
-            t("metadataValidation.invalidNamespace"),
+      Schema.Struct({
+        namespace: Schema.Trim.check(
+          Schema.isPattern(metadataNamespacePattern, {
+            message: t("metadataValidation.invalidNamespace"),
+          }),
+        ),
+        key: Schema.Trim.check(
+          Schema.isPattern(metadataKeyPattern, {
+            message: t("metadataValidation.invalidKey"),
+          }),
+        ),
+        value: Schema.String.check(
+          Schema.isMinLength(1, {
+            message: t("instanceMetadata.valuePlaceholder"),
+          }),
+        ).check(
+          Schema.makeFilter(
+            (value) =>
+              parseJsonValue(value) !== undefined ||
+              t("instanceMetadata.invalidJson"),
           ),
-        key: z
-          .string()
-          .trim()
-          .regex(metadataKeyPattern, t("metadataValidation.invalidKey")),
-        value: z
-          .string()
-          .min(1, t("instanceMetadata.valuePlaceholder"))
-          .refine(
-            (v) => parseJsonValue(v) !== undefined,
-            t("instanceMetadata.invalidJson"),
-          ),
+        ),
       }),
     [t],
   );
@@ -535,7 +539,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: "",
     },
     validators: {
-      onSubmit: addEntrySchema,
+      onSubmit: toFormSchema(addEntrySchema),
     },
     onSubmit: async ({ value, formApi }) => {
       if (!isMetadataReady) return;

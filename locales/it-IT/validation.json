@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "Input non valido: atteso string, ricevuto undefined",
+    "null": "Input non valido: atteso string, ricevuto null",
+    "number": "Input non valido: atteso string, ricevuto numero",
+    "boolean": "Input non valido: atteso string, ricevuto boolean",
+    "array": "Input non valido: atteso string, ricevuto vettore",
+    "object": "Input non valido: atteso string, ricevuto object",
+    "nan": "Input non valido: atteso string, ricevuto NaN",
+    "infinity": "Input non valido: atteso string, ricevuto numero"
+  },
+  "number": {
+    "undefined": "Input non valido: atteso numero, ricevuto undefined",
+    "null": "Input non valido: atteso numero, ricevuto null",
+    "string": "Input non valido: atteso numero, ricevuto string",
+    "boolean": "Input non valido: atteso numero, ricevuto boolean",
+    "array": "Input non valido: atteso numero, ricevuto vettore",
+    "object": "Input non valido: atteso numero, ricevuto object",
+    "nan": "Input non valido: atteso numero, ricevuto NaN",
+    "infinity": "Input non valido: atteso numero, ricevuto numero"
+  },
+  "object": {
+    "undefined": "Input non valido: atteso object, ricevuto undefined",
+    "null": "Input non valido: atteso object, ricevuto null",
+    "number": "Input non valido: atteso object, ricevuto numero",
+    "string": "Input non valido: atteso object, ricevuto string",
+    "boolean": "Input non valido: atteso object, ricevuto boolean",
+    "array": "Input non valido: atteso object, ricevuto vettore",
+    "nan": "Input non valido: atteso object, ricevuto NaN",
+    "infinity": "Input non valido: atteso object, ricevuto numero"
+  },
+  "email": "Input non valido: indirizzo email",
+  "url": "Input non valido: URL",
+  "jwt": "Input non valido: JWT",
+  "emailTooLong": "Troppo grande: string deve avere <=255 caratteri",
+  "jarSource": "Opzione non valida: atteso uno tra \"official\"|\"custom\"",
+  "generationMode": "Opzione non valida: atteso uno tra \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
+  "userRole": "Opzione non valida: atteso uno tra 0|1"
+}

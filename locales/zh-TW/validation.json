@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "無效的輸入值：預期為 string，但收到 undefined",
+    "null": "無效的輸入值：預期為 string，但收到 null",
+    "number": "無效的輸入值：預期為 string，但收到 number",
+    "boolean": "無效的輸入值：預期為 string，但收到 boolean",
+    "array": "無效的輸入值：預期為 string，但收到 array",
+    "object": "無效的輸入值：預期為 string，但收到 object",
+    "nan": "無效的輸入值：預期為 string，但收到 NaN",
+    "infinity": "無效的輸入值：預期為 string，但收到 number"
+  },
+  "number": {
+    "undefined": "無效的輸入值：預期為 number，但收到 undefined",
+    "null": "無效的輸入值：預期為 number，但收到 null",
+    "string": "無效的輸入值：預期為 number，但收到 string",
+    "boolean": "無效的輸入值：預期為 number，但收到 boolean",
+    "array": "無效的輸入值：預期為 number，但收到 array",
+    "object": "無效的輸入值：預期為 number，但收到 object",
+    "nan": "無效的輸入值：預期為 number，但收到 NaN",
+    "infinity": "無效的輸入值：預期為 number，但收到 number"
+  },
+  "object": {
+    "undefined": "無效的輸入值：預期為 object，但收到 undefined",
+    "null": "無效的輸入值：預期為 object，但收到 null",
+    "number": "無效的輸入值：預期為 object，但收到 number",
+    "string": "無效的輸入值：預期為 object，但收到 string",
+    "boolean": "無效的輸入值：預期為 object，但收到 boolean",
+    "array": "無效的輸入值：預期為 object，但收到 array",
+    "nan": "無效的輸入值：預期為 object，但收到 NaN",
+    "infinity": "無效的輸入值：預期為 object，但收到 number"
+  },
+  "email": "無效的 郵件地址",
+  "url": "無效的 URL",
+  "jwt": "無效的 JWT",
+  "emailTooLong": "數值過大：預期 string 應為 <=255 字元",
+  "jarSource": "無效的選項：預期為以下其中之一 \"official\"|\"custom\"",
+  "generationMode": "無效的選項：預期為以下其中之一 \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
+  "userRole": "無效的選項：預期為以下其中之一 0|1"
+}

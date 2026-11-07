@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { Code, ConnectError } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import {
@@ -8,7 +10,6 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { use, useId } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
@@ -221,7 +222,7 @@ function ProfileField({
   label: string;
   description: string;
   value: string;
-  schema: z.ZodType<string, string>;
+  schema: Schema.Codec<string, string>;
   disabled: boolean;
   onSave: (value: string) => Promise<void>;
 }) {
@@ -229,7 +230,7 @@ function ProfileField({
   const id = useId();
   const form = useForm({
     defaultValues: { value },
-    validators: { onSubmit: z.object({ value: schema }) },
+    validators: { onSubmit: toFormSchema(Schema.Struct({ value: schema })) },
     onSubmit: async ({ value: fields, formApi }) => {
       if (fields.value === value) return;
       try {

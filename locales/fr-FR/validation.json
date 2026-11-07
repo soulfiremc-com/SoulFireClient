@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "Entrée invalide : chaîne attendu, indéfini reçu",
+    "null": "Entrée invalide : chaîne attendu, null reçu",
+    "number": "Entrée invalide : chaîne attendu, nombre reçu",
+    "boolean": "Entrée invalide : chaîne attendu, booléen reçu",
+    "array": "Entrée invalide : chaîne attendu, tableau reçu",
+    "object": "Entrée invalide : chaîne attendu, objet reçu",
+    "nan": "Entrée invalide : chaîne attendu, NaN reçu",
+    "infinity": "Entrée invalide : chaîne attendu, nombre reçu"
+  },
+  "number": {
+    "undefined": "Entrée invalide : nombre attendu, indéfini reçu",
+    "null": "Entrée invalide : nombre attendu, null reçu",
+    "string": "Entrée invalide : nombre attendu, chaîne reçu",
+    "boolean": "Entrée invalide : nombre attendu, booléen reçu",
+    "array": "Entrée invalide : nombre attendu, tableau reçu",
+    "object": "Entrée invalide : nombre attendu, objet reçu",
+    "nan": "Entrée invalide : nombre attendu, NaN reçu",
+    "infinity": "Entrée invalide : nombre attendu, nombre reçu"
+  },
+  "object": {
+    "undefined": "Entrée invalide : objet attendu, indéfini reçu",
+    "null": "Entrée invalide : objet attendu, null reçu",
+    "number": "Entrée invalide : objet attendu, nombre reçu",
+    "string": "Entrée invalide : objet attendu, chaîne reçu",
+    "boolean": "Entrée invalide : objet attendu, booléen reçu",
+    "array": "Entrée invalide : objet attendu, tableau reçu",
+    "nan": "Entrée invalide : objet attendu, NaN reçu",
+    "infinity": "Entrée invalide : objet attendu, nombre reçu"
+  },
+  "email": "adresse e-mail invalide",
+  "url": "URL invalide",
+  "jwt": "JWT invalide",
+  "emailTooLong": "Trop grand : chaîne doit avoir <=255 caractères",
+  "jarSource": "Option invalide : une valeur parmi \"official\"|\"custom\" attendue",
+  "generationMode": "Option invalide : une valeur parmi \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\" attendue",
+  "userRole": "Option invalide : une valeur parmi 0|1 attendue"
+}

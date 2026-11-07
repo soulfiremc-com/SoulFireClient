@@ -1,3 +1,5 @@
+import { formNumber, toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -5,7 +7,6 @@ import { useRouteContext } from "@tanstack/react-router";
 import { use, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
-import { z } from "zod";
 import { TextInfoButton } from "@/components/info-buttons.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -93,18 +94,28 @@ export default function GenerateAccountsDialog({
     onOpenChange(nextOpen);
   };
 
-  const formSchema = z.object({
-    amount: z.number().min(1, t("account.generate.invalidAmount")),
-    nameFormat: z
-      .string()
-      .refine(
-        (v) => v.includes("%d"),
-        t("account.generate.missingPlaceholder"),
+  const formSchema = Schema.Struct({
+    amount: formNumber.check(
+      Schema.isGreaterThanOrEqualTo(1, {
+        message: t("account.generate.invalidAmount"),
+      }),
+    ),
+    nameFormat: Schema.String.check(
+      Schema.makeFilter(
+        (value) =>
+          value.includes("%d") || t("account.generate.missingPlaceholder"),
       ),
-    mode: z.enum(["IGNORE_EXISTING", "REPLACE_EXISTING", "REPLACE_ALL"]),
+    ),
+    mode: Schema.Literals([
+      "IGNORE_EXISTING",
+      "REPLACE_EXISTING",
+      "REPLACE_ALL",
+    ])
+      .annotate({ message: "validation:generationMode" })
+      .annotateKey({ messageMissingKey: "validation:generationMode" }),
   });
 
-  const handleGenerate = (value: z.infer<typeof formSchema>) => {
+  const handleGenerate = (value: (typeof formSchema)["Type"]) => {
     if (transport === null || !open || activeJob.current) return;
 
     // Generate usernames based on format
@@ -243,7 +254,7 @@ export default function GenerateAccountsDialog({
       mode: "IGNORE_EXISTING" as GenerateAccountsMode,
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value }) => {
       handleGenerate(value);
