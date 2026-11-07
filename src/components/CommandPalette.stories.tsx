@@ -979,7 +979,7 @@ export const PinnedCommandsAndSingleOperations: Story = {
     await opened.menu.findByRole("button", {
       name: "Unpin Use dark theme",
     });
-    await expect(opened.input).toHaveFocus();
+    await waitFor(() => expect(opened.input).toHaveFocus());
     await userEvent.keyboard("{Escape}");
     await closed();
 

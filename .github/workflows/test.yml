@@ -62,4 +62,6 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Run Storybook component tests
-        run: bun run test:storybook
+        run: |
+          bun run test:storybook -- --shard=1/2
+          bun run test:storybook -- --shard=2/2
