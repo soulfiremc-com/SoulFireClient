@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Raakatason instanssin tuloste löytyy täältä, kun haluat tarkastella konsolin yksityiskohtia.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Tilillä",
       "proxies": "Välityspalvelimet",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Live-feed",
-      "empty": "Odotetaan instanssiaktiviteettia...",
+      "empty": "",
       "noPermission": "Sinulla ei ole oikeuksia nähdä live-feediä.",
       "lifecycle": {
         "connecting": "yhdistää",
@@ -97,6 +97,7 @@
         "executeCommand": "ajoi komennon: {{data}}",
         "botDesiredStateChange": "vaihdettiin botin toivottu tila",
         "botRestart": "käynnisti botit uudelleen",
+        "pluginRpc": "",
         "unknown": "suoritti toiminnon"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "Ei proxyja tuotavaksi"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Tuodaan proxyja...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "Proxy-tyyppi",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +221,7 @@
     },
     "unknownError": "Tuntematon virhe",
     "types": {
-      "OFFLINE": "Offline",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Tunnukset)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Laitteen koodi)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Virkistysavain)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "Avaa asetukset",
       "openMetadata": "Avaa metatiedot",
-      "copyProfileId": "Kopioi profiilin tunniste",
+      "copyProfileId": "",
       "copyUsername": "Kopioi käyttäjätunnus"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "Valitse asetus­sivu",
       "noSearchResults": "Hakusi ei tuottanut tuloksia.",
       "matchesInheritedValue": "Vastaa perittyä arvoa",
-      "instanceValue": "Instanssin arvo",
+      "instanceValue": "",
       "defaultValue": "Oletusarvo",
       "resetOverride": "Palauta ohitus"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Osta tilejä Ravealtsin kautta",
       "description": "Osta Minecraft-tilejä käyttämällä Ravealts API -avaintasi.",
-      "apiKeyLabel": "API-avain",
       "apiKeyPlaceholder": "Syötä Ravealts API-avaimesi",
-      "validate": "Vahvista",
-      "validating": "Vahvistetaan...",
-      "keyValid": "Avain vahvistettu",
-      "keyInvalid": "Virheellinen API-avain",
-      "credits": "Krediitit: {{credits}}",
-      "stockTitle": "Saatavilla oleva varasto",
       "noStock": "Ei tilejä varastossa",
       "accountType": "Tilin tyyppi",
-      "amount": "Määrä (1-10)",
-      "purchase": "Osta & Tuo",
-      "purchasing": "Ostetaan...",
-      "purchaseSuccess": "Ostettu {{count}} tiliä, tuodaan...",
-      "purchaseError": "Osto epäonnistui: {{message}}",
       "networkError": "Yhteys Ravealts API:iin epäonnistui",
       "outOfStock": "Valittu tyyppi on loppunut varastosta",
       "insufficientBalance": "Ei tarpeeksi krediittejä",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Instanssin metatiedot",
-    "description": "Hallinnoi tämän instanssin pysyviä metatietomerkintöjä. Jokaisella merkinnällä on nimiavaruus, avain ja JSON-arvo.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Nimiavaruus",
     "keyPlaceholder": "Avain",
     "valuePlaceholder": "Arvo (JSON)",
     "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Yritä uudelleen",
     "addSuccess": "Merkintä lisätty",
     "addError": "Kirjauksen lisääminen epäonnistui",
     "updateError": "Kirjauksen päivittäminen epäonnistui",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "Hae botteja...",
     "onlineCount": "{{online}} online / {{total}} yhteensä",
-    "noBots": "Ei yhtään bottia asetettu. Lisää tilejä Tiliasetukset-sivulta.",
+    "noBots": "",
     "noBotsFound": "Hakusi ei vastannut yhtään bottia.",
     "loadingMore": "Ladataan lisää...",
     "showingCount": "Näytetään {{loaded}} / {{total}}:sta",
@@ -396,12 +404,12 @@
       "waiting": "Odottaa",
       "stopped": "Pysäytetty"
     },
-    "backToBots": "Takaisin botteihin",
+    "backToBots": "",
     "tabs": {
-      "overview": "Yleiskatsaus",
+      "overview": "",
       "inventory": "Inventaario",
-      "controls": "Ohjaimet",
-      "terminal": "Terminaali"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Tulossa pian",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": "Botti on offline-tilassa. Sijaintitiedot saatavilla vain, kun botti on yhdistetty."
     },
     "chatPanel": {
-      "title": "Viestit chatissa",
-      "description": "Tämän botin chat-viestit näkyvät täällä tulevassa päivityksessä."
+      "title": "",
+      "description": "Tämän botin chat-viestit näkyvät täällä tulevassa päivityksessä.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Bottikomennot",
@@ -428,14 +443,14 @@
       "description": "Bottikohtaiset komennot ovat saatavilla tulevassa päivityksessä."
     },
     "povPanel": {
-      "title": "Botin näkymä",
+      "title": "",
       "capture": "Kaappaa",
       "refresh": "Päivitä",
       "auto": "Auto",
       "startAutoRefresh": "Aloita automaattinen päivitys (1 sekunnin välein)",
       "stopAutoRefresh": "Lopeta automaattinen päivitys",
       "clickToCapture": "Napsauta Kaappaa nähdäksesi botin näkymän",
-      "offline": "Botti on offline-tilassa. Näkymän renderöinti on käytettävissä vain, kun botti on yhdistettynä."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Botin tilastot",
@@ -545,6 +560,49 @@
       "dismiss": "Hylkää",
       "submit": "Lähetä",
       "offline": "Botti on offline-tilassa. Dialogit ovat käytettävissä vain, kun botti on yhdistetty."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Kaikki",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Yhdistetty",
+      "starting": "Käynnistetään",
+      "retrying": "Yritetään uudelleen",
+      "failed": "Epäonnistui",
+      "stopping": "Pysäytetään",
+      "stopped": "Pysäytetty"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "Visuaaliset skriptit",
-    "description": "Luo automaatioskriptejä visuaalisella solmupohjaisella editorilla.",
+    "description": "",
     "experimentalTitle": "Kokeellinen ominaisuus",
     "experimentalWarning": "Tämä ominaisuus on kokeellinen. Tulevat päivitykset voivat rikkoa olemassa olevia skriptejä. Käytä varoen.",
-    "createScript": "Luo skripti",
-    "createScriptTitle": "Luo uusi skripti",
-    "createScriptDescription": "Luo uusi visuaalinen skripti tälle instanssille. Skriptit voivat automatisoida botin toimintoja ja reagoida tapahtumiin.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Skriptin nimi",
     "scriptNamePlaceholder": "Syötä skriptin nimi...",
     "scriptDescription": "Kuvaus",
@@ -625,36 +683,36 @@
     "create": "Luo",
     "createSuccess": "Skripti luotu onnistuneesti",
     "createError": "Skriptin luonti epäonnistui",
-    "noScripts": "Ei vielä skriptejä",
-    "noScriptsDescription": "Luo ensimmäinen skriptisi automatisoidaksesi botin toimintoja visuaalisella solmupohjaisella editorilla.",
-    "createFirstScript": "Luo ensimmäinen skriptisi",
-    "running": "Käynnissä",
-    "paused": "Tauotettu",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "solmut",
     "noDescription": "Ei kuvausta",
     "edit": "Muokkaa",
-    "pause": "Tauota",
-    "pauseSuccess": "Skripti keskeytetty",
-    "pauseError": "Skriptin keskeyttäminen epäonnistui",
-    "resume": "Jatka",
-    "resumeSuccess": "Skripti jatkettu",
-    "resumeError": "Skriptin jatkaminen epäonnistui",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Poista",
     "deleteSuccess": "Skripti poistettiin onnistuneesti",
     "deleteError": "Skriptin poisto epäonnistui",
     "saveSuccess": "Skripti tallennettiin onnistuneesti",
     "saveError": "Skriptin tallennus epäonnistui",
-    "activateSuccess": "Skripti aktivoitu",
-    "activateError": "Skriptin aktivointi epäonnistui",
-    "deactivateSuccess": "Skripti deaktivoitu",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Nimetön skripti",
-    "saveFirstBeforeActivating": "Tallenna skripti ennen aktivointia",
-    "activating": "Skripti aktivoidaan...",
-    "activated": "Skripti aktivoitu",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skripti suoritettu",
     "executionCompletedSuccess": "Skripti suoritettu onnistuneesti",
-    "deactivated": "Skripti deaktivoitu",
-    "deactivatedByUser": "Käyttäjä poisti skriptin käytöstä",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Skriptin suoritus epäonnistui",
     "executionError": "Suoritusvirhe: {{error}}",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "Solmun virhe: {{error}}",
     "contextMenu": {
       "edit": "Muokkaa skriptiä",
-      "pause": "Tauota",
-      "resume": "Jatka",
+      "pause": "",
+      "resume": "",
       "delete": "Poista skripti",
       "copyScriptName": "Kopioi skriptin nimi",
       "copyScriptId": "Kopioi skriptin tunniste"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "Takaisin skripteihin",
         "save": "Tallenna",
-        "saveTooltip": "Tallenna skripti",
-        "resume": "Jatka",
-        "resumeTooltip": "Jatka skriptin suorittamista",
-        "pause": "Tauota",
-        "pauseTooltip": "Keskeytä skriptin suoritus",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Tallentamaton",
         "unsavedChanges": "Tallentamattomat muutokset",
         "clearCanvas": "Tyhjennä työtila",
@@ -690,16 +748,17 @@
         "import": "Tuo skripti",
         "exportSuccess": "Skripti viety onnistuneesti",
         "importSuccess": "Skripti tuotu onnistuneesti",
-        "importError": "Skriptin tuonti epäonnistui"
+        "importError": "Skriptin tuonti epäonnistui",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Solmupaletti",
+        "title": "",
         "search": "Etsi solmuja..."
       },
       "logs": {
-        "title": "Suorituksen lokit",
+        "title": "",
         "clearTitle": "Tyhjennä lokit",
-        "noLogs": "Ei vielä lokia. Suorita skripti nähdäksesi suorituksen lokit.",
+        "noLogs": "",
         "entries_one": "{{count}} merkintä",
         "entries_other": "{{count}} merkintää"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Testiajo",
-        "title": "Testiajo Skripti",
-        "description": "Suorita skripti valitusta laukaisevasta solmusta käyttäen mallisyötteitä.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Laukaiseva solmu",
         "selectTrigger": "Valitse laukaisin...",
-        "triggerDescription": "Valitse laukaiseva solmu, joka suoritetaan malliarvoilla.",
-        "mockInputs": "Mallisyötteet",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} arvo",
-        "start": "Aloita testiajo",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "Tallenna kiintiöt",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Toiminto",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Yhdistä",
+    "back": "Takaisin",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Kaikki",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Yhdistä",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Yhteensä",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Ei mitään",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "yhdistetty",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "Käynnistä {{count}} botti uudelleen",
+    "restartGroup_other": "Käynnistä {{count}} bottia uudelleen"
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Valinnainen",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Avaa kaikki asetukset",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Tilillä",
+      "reviewProxies": "Välityspalvelimet",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Käynnistä {{count}} botti",
+      "action_other": "Käynnistä {{count}} bottia"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

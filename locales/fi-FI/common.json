@@ -4,6 +4,16 @@
   "cancel": "Peruuta",
   "save": "Tallenna",
   "saving": "Tallennetaan...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Palvelimen osoitetta tai tokenia ei löytynyt",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Sivu ei latautunut. Avaa konsoli saadaksesi lisätietoja.",
       "logOut": "Kirjaudu ulos",
       "reloadPage": "Lataa sivu uudelleen",
-      "showDetails": "Näytä tiedot"
+      "showDetails": "Näytä tiedot",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Yhteys SoulFire-palvelimeen epäonnistui."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "Tue SoulFirea",
       "description": "SoulFire on ilmainen ja avoimen lähdekoodin sovellus, jonka yhteisö on rakentanut rakkaudella.",
-      "body": "Jos SoulFiresta on ollut sinulle hyötyä, harkitse projektin tukemista. Panoksesi auttaa kattamaan palvelinkustannuksia, rahoittamaan kehitystä ja pitämään SoulFiren ilmaisena kaikille.",
+      "body": "",
       "dismiss": "Ehkä myöhemmin",
-      "action": "Tue SoulFirea"
+      "action": "Tue SoulFirea",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Luo uusi instanssi",
-      "description": "Anna instanssille nimi, jonka tunnistat, esimerkiksi \"Oma Minecraft-botti\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Selkokielinen nimi",
-          "placeholder": "Oma Minecraft-bottini",
-          "description": "Nimi, jonka haluat antaa tälle instanssille."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Peruuta",
-        "create": "Luo"
+        "create": ""
       },
       "createToast": {
-        "loading": "Luodaan instanssia...",
-        "success": "Instanssi luotu onnistuneesti",
-        "error": "Instanssin luominen epäonnistui"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Luo kopio instanssista",
-      "description": "Luo uusi instanssi käyttämällä profiilia kohteesta \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Kopioidun instanssin nimi."
+          "description": ""
         },
-        "duplicate": "Monista"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Kopioidaan instanssia...",
-        "success": "Instanssi kopioitu onnistuneesti",
-        "error": "Instanssin kopiointi epäonnistui"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "URL-osoitteesta",
         "firstClipboardItem": "Leikepöydällä on useita kohteita. SoulFire käyttää ensimmäistä kohdetta.",
         "fromClipboard": "Leikepöydältä",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Syötä teksti tähän...",
           "submit": "Lataa tekstistä"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Syötä komento (kirjoita 'help' nähdäksesi luettelon)",
     "emptySuggestions": "Kirjoita pyytääksesi ehdotuksia tai paina Tabulaattoria.",
     "noSuggestions": "Ei ehdotuksia saatavilla."
@@ -148,12 +173,12 @@
       "success": "Botit pysäytetään",
       "error": "Bottien pysäyttäminen epäonnistui"
     },
-    "permissionDenied": "Sinulla ei ole oikeutta käynnistää tai pysäyttää botteja tässä instanssissa.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan.",
     "startBots": "Käynnistä botit",
     "moreActions": "Lisää bottitoimintoja",
-    "generateFirst": "Luo tilejä aloittaaksesi ensimmäiset bottisi.",
-    "startCountHelp": "Käynnistää lisää botteja. Käynnissä olevat botit pysyvät yhdistettynä.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Käynnistä kaikki {{count}}",
     "validCount": "Anna kokonaisluku välillä 1–{{count}}.",
     "positiveCount": "Anna kokonaisluku, joka on vähintään 1.",
@@ -253,9 +278,37 @@
     "version": "Versio: {{version}}",
     "author": "Tekijä: {{author}}",
     "license": "Lisenssi: {{license}}",
-    "website": "Sivusto"
+    "website": "Sivusto",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "Asetusten nimiavaruuksia ei löytynyt",
     "stringList": {
@@ -268,17 +321,45 @@
       "remove": "Poista"
     },
     "combo": {
-      "searchPlaceholder": "Hae arvoa..."
+      "searchPlaceholder": "Hae arvoa...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "Virheellinen numero",
       "description": "Arvon tulee olla välillä {{min}} ja {{max}}"
-    }
+    },
+    "saving": "Tallennetaan...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Kopioi leikepöydälle",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Ei vielä lokeja. Suorita komento luodaksesi lokitulosteen.",
     "demo-1": "Tervetuloa demotilaan! 🧪",
-    "demo-2": "Tämä on SoulFiren vain-luku -instanssi",
+    "demo-2": "",
     "demo-3": "Tutustu kaikkiin valikoihin ja ominaisuuksiin ennen kuin päätät asentaa SoulFiren :D",
     "demo-4": "Liity rohkeasti Discord-serverillemme, jos haluat ottaa yhteyttä: https://soulfiremc.com/discord"
   },
@@ -328,26 +409,177 @@
       "error": "Viestin lähetys epäonnistui"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Yritä uudelleen",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Kaikki",
+      "projects": "",
+      "bots": "Botit",
+      "scripts": "Skriptit",
+      "settings": "Asetukset",
+      "actions": "Toiminnot"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Käynnistä botit",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Peruuta",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Käynnistä {{count}} botti",
+      "startBots_other": "Käynnistä {{count}} bottia",
+      "stopBots_one": "Pysäytä {{count}} botti",
+      "stopBots_other": "Pysäytä {{count}} bottia",
+      "retryBots_one": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Yhdistetty",
+      "starting": "Käynnistetään",
+      "retrying": "Yritetään uudelleen",
+      "failed": "Epäonnistui",
+      "stopping": "Pysäytetään",
+      "stopped": "Pysäytetty",
+      "active": "Aktiivinen",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Sulje",
+      "pin": "",
+      "back": "Takaisin"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Asetukset",
+      "bots": "Botit",
+      "scripts": "Skriptit",
+      "admin": "",
+      "actions": "Toiminnot",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Lue dokumentaatio",
     "backToDashboard": "Takaisin hallintapaneeliin",
     "deleteToast": {
-      "loading": "Poistetaan instanssia...",
-      "success": "Instanssi poistettu",
-      "error": "Instanssin poistaminen epäonnistui"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instanssit",
-    "createInstance": "Luo instanssi",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Ladataan profiilia...",
-      "success": "Profiili ladattu",
-      "error": "Profiilin lataus epäonnistui"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Lataa profiili",
+    "loadProfile": "",
     "loadFromFile": "Lataa tiedostosta",
-    "profileSaved": "Profiili tallennettu",
-    "saveProfile": "Tallenna profiili",
-    "deleteInstance": "Poista instanssi",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Ohjaimet",
     "overview": "Yleiskatsaus",
     "terminal": "Terminaali",
@@ -357,19 +589,21 @@
     "extensionsGroup": "Laajennukset",
     "botSettings": "Botti-asetukset",
     "accountSettings": "Tilin asetukset",
-    "metaSettings": "Instanssin asetukset",
+    "metaSettings": "",
     "proxySettings": "Välityspalvelimen asetukset",
     "aiSettings": "AI-asetukset",
     "pathfindingSettings": "Polunhakuasetukset",
     "discoverPlugins": "Liitännäiset",
-    "instanceScripts": "Skriptit"
+    "instanceScripts": "Skriptit",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Lue dokumentaatio",
     "userGroup": "Käyttäjä",
-    "instances": "Instanssit",
+    "instances": "",
     "access": "Pääsy",
-    "createInstance": "Luo instanssi",
+    "createInstance": "",
     "settings": "Asetukset",
     "adminGroup": "Ylläpitäjä",
     "adminOverview": "Yleiskatsaus",
@@ -414,21 +648,21 @@
     "extensions": "Laajennukset",
     "bots": "Botit"
   },
-  "noInstancesFound": "Yhtään instanssia ei löytynyt",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Terminaali",
     "logs": "Lokit",
     "audit-log": "Audit-loki",
     "bots": "Botit",
     "botDetail": "Botin tiedot",
-    "instances": "Instanssit",
+    "instances": "",
     "access": "Pääsy",
     "settings": "Asetukset",
     "proxySettings": "Välityspalvelimen asetukset",
     "overview": "Yleiskatsaus",
     "users": "Käyttäjät",
     "accountSettings": "Tilin asetukset",
-    "metaSettings": "Instanssin asetukset",
+    "metaSettings": "",
     "discoverPlugins": "Liitännäiset",
     "adminScripts": "Skriptit",
     "instanceScripts": "Skriptit"
@@ -436,7 +670,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV-pääsy",
-      "description": "WebDAV mahdollistaa pääsyn instanssin tiedostoihin, skripteihin ja muihin tiedostoihin.",
+      "description": "",
       "publicAddress": "Julkinen WebDAV-osoite",
       "personalToken": "Henkilökohtainen WebDAV-token",
       "securityWarning": "Pidä henkilökohtainen WebDAV-tunnuksesi salassa. Se antaa pääsyn tiedostoihisi. Käytä tunnusta WebDAV-salasanana. Et tarvitse käyttäjätunnusta. Jos sovellus vaatii sellaisen, syötä mikä tahansa arvo, kuten 'soulfire'.",
@@ -444,7 +678,7 @@
     },
     "api": {
       "title": "API-pääsy",
-      "description": "SoulFiren gRPC HTTP API hallinnoi instansseja verkkopyyntöjen avulla.",
+      "description": "",
       "publicAddress": "Julkinen API-osoite",
       "personalToken": "Henkilökohtainen API-token",
       "securityWarning": "Pidä henkilökohtainen API-tunnuksesi salassa. Se antaa pääsyn APIin.",
@@ -475,7 +709,8 @@
   "clipboardCopy": {
     "loading": "Kopioidaan leikepöydälle...",
     "success": "Kopioitiin \"{{content}}\" leikepöydälle",
-    "error": "Kopiointi leikepöydälle epäonnistui"
+    "error": "Kopiointi leikepöydälle epäonnistui",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -515,6 +750,7 @@
     "executedCommand": "Suoritettiin komento: {{data}}",
     "changedBotDesiredState": "Bottien tavoitetila muutettu",
     "restartedBots": "Botit käynnistetty uudelleen",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Kopioi käyttäjätunnus",
       "copyCommand": "Kopioi komento"
@@ -585,15 +821,16 @@
       "actions": "Toiminnot"
     },
     "globalScript": "Globaali",
-    "instanceScript": "Instanssi"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Toiminnot",
     "instance": {
-      "goToInstance": "Siirry instanssiin",
-      "duplicateInstance": "Kopioi instanssi",
-      "copyInstanceId": "Kopioi instanssin tunnus",
-      "copyInstanceName": "Kopioi instanssin nimi",
-      "deleteInstance": "Poista instanssi"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Siirry bottiin",
@@ -654,5 +891,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Kaikki",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Muu"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Saatavilla"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Luodaan tokenia...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Botti",
+    "botOnline": "Paikalla",
+    "botOffline": "Offline",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

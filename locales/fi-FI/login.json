@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire-logo"
@@ -7,47 +14,65 @@
   },
   "newUser": "Uusi SoulFire-käyttäjä? Lue <a>aloitusopas</a>.",
   "connect": {
-    "title": "Yhdistä SoulFire-palvelimeen",
-    "description": "Valitse mihin tyyppiseen SoulFire-palvelimeen haluat yhdistää.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Integroitu palvelin (paikallinen)",
-      "description": "Ajaa SoulFire-palvelinta tällä laitteella. Asennus tapahtuu automaattisesti. Tämä vaihtoehto vaatii työpöytä- tai Android-sovelluksen."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Oma palvelin (etä)",
-      "description": "Yhdistää etä-SoulFire-palvelimeen osoitteen ja tunnisteen avulla."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Demo-palvelin",
-      "description": "Tarjoaa vain luku -palvelimen demodatan kanssa. SoulFire ei tallenna muutoksia."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Valmistellaan integroidun palvelimen käynnistystä...",
+    "preparing": "",
     "toast": {
-      "loading": "Käynnistetään integroitu palvelin...",
-      "success": "Integroitu palvelin käynnistyi {{time}} sekunnissa",
-      "error": "Integroitu palvelin ei käynnistynyt"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Yritä uudelleen",
+    "retry": "",
     "reset": {
-      "button": "Palauta tiedot",
+      "button": "",
       "loading": "Palautetaan SoulFire-tietoja...",
       "success": "SoulFire-tiedot palautettu onnistuneesti. Yritä aloittaa uudelleen.",
-      "error": "SoulFire-tietojen palautus epäonnistui"
+      "error": "SoulFire-tietojen palautus epäonnistui",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Integroitu palvelin toimii tietokoneellasi. Voit muuttaa Java-käynnistysparametreja alla.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM-parametrit",
         "description": "Java VM -parametrit SoulFirelle. Lisää <bold>-Xmx4G</bold> käyttääksesi 4 Gt RAM-muistia. Oletus on 25 % käytettävissä olevasta RAM-muistista.",
-        "placeholder": "JVM-parametrisi tähän"
+        "placeholder": "JVM-parametrisi tähän",
+        "reset": ""
       },
       "back": "Takaisin",
-      "start": "Aloita"
+      "start": ""
     },
     "mobile": {
-      "description": "Jos haluat ajaa integroitua palvelinta mobiililla, sinun tulee suorittaa muutama manuaalinen vaihe.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux-komento",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Käynnistä automaattisesti seuraavalla kerralla.",
       "description": "Ohita palvelimen valinta ja käytä näitä asetuksia, kun SoulFire avataan."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "Anna SoulFire-palvelimen osoite ja tunniste.",
+    "description": "",
     "toast": {
       "loading": "Yhdistetään palvelimeen...",
       "success": "Yhdistetty palvelimeen",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Osoite",
-        "description": "SoulFire-palvelimesi osoite.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Tunnus",
         "placeholder": "Salainen tunnus",
-        "description": "Tunnus palvelimelle tunnistautumista varten."
+        "description": ""
       },
       "email": {
         "title": "Sähköposti",
@@ -96,7 +180,7 @@
       "back": "Takaisin",
       "useToken": "Käytä tunnusta",
       "useEmail": "Käytä sähköpostia",
-      "login": "Kirjaudu sisään"
+      "login": ""
     }
   },
   "emailCode": {

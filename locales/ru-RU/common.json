@@ -4,6 +4,16 @@
   "cancel": "Отмена",
   "save": "Сохранить",
   "saving": "Сохраняется...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Адрес сервера или токен не найдены",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Страница не загрузилась. Откройте консоль для получения дополнительной информации.",
       "logOut": "Выйти",
       "reloadPage": "Перезагрузить страницу",
-      "showDetails": "Показать детали"
+      "showDetails": "Показать детали",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Не удалось подключиться к серверу SoulFire."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "Поддержать SoulFire",
       "description": "SoulFire — это бесплатный проект с открытым исходным кодом, созданный сообществом с любовью.",
-      "body": "Если SoulFire был полезен вам, пожалуйста, рассмотрите возможность поддержать проект. Ваш вклад помогает покрывать расходы на сервер, финансировать разработку и сохранять SoulFire бесплатным для всех.",
+      "body": "",
       "dismiss": "Может быть позже",
-      "action": "Поддержать SoulFire"
+      "action": "Поддержать SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Создать новый экземпляр",
-      "description": "Дайте экземпляру узнаваемое имя, например, \\\"Мой Minecraft Bot\\\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Дружелюбное имя",
-          "placeholder": "Мой бот Minecraft",
-          "description": "Имя, которое вы хотите дать этому экземпляру."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Отмена",
-        "create": "Создать"
+        "create": ""
       },
       "createToast": {
-        "loading": "Создание экземпляра...",
-        "success": "Экземпляр успешно создан",
-        "error": "Ошибка создания экземпляра"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Дублировать экземпляр",
-      "description": "Создать новый экземпляр, используя профиль из «{{name}}».",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Имя для дублированного экземпляра."
+          "description": ""
         },
-        "duplicate": "Дублировать"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Дублирование экземпляра...",
-        "success": "Экземпляр успешно продублирован",
-        "error": "Не удалось продублировать экземпляр"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "Из URL-адреса",
         "firstClipboardItem": "В буфере обмена несколько элементов. SoulFire использует первый элемент.",
         "fromClipboard": "Из буфера обмена",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Вставьте текст сюда...",
           "submit": "Загрузить из текста"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Введите команду (введите 'help' для списка)",
     "emptySuggestions": "Начните вводить для получения подсказок или нажмите Tab.",
     "noSuggestions": "Подсказки отсутствуют."
@@ -148,12 +173,12 @@
       "success": "Боты останавливаются",
       "error": "Не удалось остановить ботов"
     },
-    "permissionDenied": "У вас нет разрешения на запуск или остановку ботов в этом экземпляре.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Сервер не сообщил о разрешениях на управление ботами. Проверьте, совпадают ли версии вашего сервера и клиента.",
     "startBots": "Запустить ботов",
     "moreActions": "Другие действия с ботами",
-    "generateFirst": "Создайте аккаунты, чтобы запустить своих первых ботов.",
-    "startCountHelp": "Запускает дополнительных ботов. Уже работающие боты останутся подключёнными.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Запустить все {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -261,9 +286,37 @@
     "version": "Версия: {{version}}",
     "author": "Автор: {{author}}",
     "license": "Лицензия: {{license}}",
-    "website": "Сайт"
+    "website": "Сайт",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "Настройки пространства имен не найдены",
     "stringList": {
@@ -276,17 +329,47 @@
       "remove": "Удалить"
     },
     "combo": {
-      "searchPlaceholder": "Поиск значения..."
+      "searchPlaceholder": "Поиск значения...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "Неверное число",
       "description": "Значение должно быть от {{min}} до {{max}}"
-    }
+    },
+    "saving": "Сохраняется...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_few": "",
+    "advanced_many": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Скопировать в буфер обмена",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Пока нет логов. Выполните команду для вывода логов.",
     "demo-1": "Добро пожаловать в демонстрационный режим! 🧪",
-    "demo-2": "Это экземпляр SoulFire только для чтения",
+    "demo-2": "",
     "demo-3": "Ознакомьтесь со всеми меню и функциями перед установкой SoulFire :D",
     "demo-4": "Не стесняйтесь присоединиться к нашему серверу Discord: https://soulfiremc.com/discord"
   },
@@ -336,26 +419,201 @@
       "error": "Не удалось отправить сообщение"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Повторить",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_few": "",
+      "failedWithServer_many": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Все",
+      "projects": "",
+      "bots": "Боты",
+      "scripts": "Скрипты",
+      "settings": "Настройки",
+      "actions": "Действия"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Запустить ботов",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Отмена",
+      "unavailable": "",
+      "start_one": "",
+      "start_few": "",
+      "start_many": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_few": "",
+      "stop_many": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_few": "",
+      "restart_many": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Запустить {{count}} бота",
+      "startBots_few": "Запустить {{count}} бота",
+      "startBots_many": "Запустить {{count}} ботов",
+      "startBots_other": "Запустить {{count}} ботов",
+      "stopBots_one": "Остановить {{count}} бота",
+      "stopBots_few": "Остановить {{count}} бота",
+      "stopBots_many": "Остановить {{count}} ботов",
+      "stopBots_other": "Остановить {{count}} ботов",
+      "retryBots_one": "",
+      "retryBots_few": "",
+      "retryBots_many": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Подключён",
+      "starting": "Запуск",
+      "retrying": "Повторная попытка",
+      "failed": "Не удалось",
+      "stopping": "Остановка",
+      "stopped": "Остановлен",
+      "active": "Активен",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Закрыть",
+      "pin": "",
+      "back": "Назад"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Настройки",
+      "bots": "Боты",
+      "scripts": "Скрипты",
+      "admin": "",
+      "actions": "Действия",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_few": "",
+    "moreResults_many": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Прочитать документацию",
     "backToDashboard": "Назад на главную панель",
     "deleteToast": {
-      "loading": "Удаление экземпляра...",
-      "success": "Экземпляр удален",
-      "error": "Не удалось удалить экземпляр"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Экземпляры",
-    "createInstance": "Создать экземпляр",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Загрузка профиля...",
-      "success": "Профиль загружен",
-      "error": "Не удалось загрузить профиль"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Загрузить профиль",
+    "loadProfile": "",
     "loadFromFile": "Загрузить из файла",
-    "profileSaved": "Профиль сохранён",
-    "saveProfile": "Сохранить профиль",
-    "deleteInstance": "Удалить экземпляр",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Управление",
     "overview": "Обзор",
     "terminal": "Терминал",
@@ -365,19 +623,21 @@
     "extensionsGroup": "Расширения",
     "botSettings": "Настройки ботов",
     "accountSettings": "Настройки аккаунтов",
-    "metaSettings": "Настройки экземпляра",
+    "metaSettings": "",
     "proxySettings": "Настройки прокси",
     "aiSettings": "Настройки ИИ",
     "pathfindingSettings": "Настройки поиска пути",
     "discoverPlugins": "Плагины",
-    "instanceScripts": "Скрипты"
+    "instanceScripts": "Скрипты",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Прочитать документацию",
     "userGroup": "Пользователь",
-    "instances": "Экземпляры",
+    "instances": "",
     "access": "Доступ",
-    "createInstance": "Создать экземпляр",
+    "createInstance": "",
     "settings": "Настройки",
     "adminGroup": "Администратор",
     "adminOverview": "Обзор",
@@ -422,21 +682,21 @@
     "extensions": "Расширения",
     "bots": "Боты"
   },
-  "noInstancesFound": "Экземпляры не найдены",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Терминал",
     "logs": "Логи",
     "audit-log": "Журнал аудита",
     "bots": "Боты",
     "botDetail": "Детали бота",
-    "instances": "Экземпляры",
+    "instances": "",
     "access": "Доступ",
     "settings": "Настройки",
     "proxySettings": "Настройки прокси",
     "overview": "Обзор",
     "users": "Пользователи",
     "accountSettings": "Настройки аккаунтов",
-    "metaSettings": "Настройки экземпляра",
+    "metaSettings": "",
     "discoverPlugins": "Плагины",
     "adminScripts": "Скрипты",
     "instanceScripts": "Скрипты"
@@ -444,7 +704,7 @@
   "access": {
     "webdav": {
       "title": "Доступ через WebDAV",
-      "description": "WebDAV предоставляет доступ к файлам экземпляра, скриптам и другим файлам.",
+      "description": "",
       "publicAddress": "Публичный WebDAV адрес",
       "personalToken": "Персональный токен WebDAV",
       "securityWarning": "Держите личный WebDAV-токен в секрете. Он дает доступ к вашим файлам. Используйте токен как свой WebDAV-пароль. Имя пользователя не требуется. Если приложение требует его, введите любое значение, например, \\\"soulfire\\\".",
@@ -452,7 +712,7 @@
     },
     "api": {
       "title": "Доступ через API",
-      "description": "SoulFire gRPC HTTP API управляет экземплярами через веб-запросы.",
+      "description": "",
       "publicAddress": "Публичный API адрес",
       "personalToken": "Персональный токен API",
       "securityWarning": "Держите свой персональный API-токен в секрете. Он предоставляет доступ к API.",
@@ -483,7 +743,8 @@
   "clipboardCopy": {
     "loading": "Копирование в буфер обмена...",
     "success": "\"{{content}}\" скопирован в буфер обмена",
-    "error": "Ошибка копирования в буфер обмена"
+    "error": "Ошибка копирования в буфер обмена",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -523,6 +784,7 @@
     "executedCommand": "Выполнена команда: {{data}}",
     "changedBotDesiredState": "Изменено требуемое состояние бота",
     "restartedBots": "Боты перезапущены",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Скопировать имя пользователя",
       "copyCommand": "Скопировать команду"
@@ -593,15 +855,16 @@
       "actions": "Действия"
     },
     "globalScript": "Глобальный",
-    "instanceScript": "Экземпляр"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Действия",
     "instance": {
-      "goToInstance": "Перейти к экземпляру",
-      "duplicateInstance": "Дублировать экземпляр",
-      "copyInstanceId": "Скопировать ID экземпляра",
-      "copyInstanceName": "Скопировать имя экземпляра",
-      "deleteInstance": "Удалить экземпляр"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Перейти к боту",
@@ -662,5 +925,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Все",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Другое"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Доступно"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Генерация токена...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Бот",
+    "botOnline": "В сети",
+    "botOffline": "Офлайн",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

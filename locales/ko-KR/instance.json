@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "콘솔 세부 정보를 확인해야 할 때 여기에서 원시 인스턴스 출력을 확인할 수 있습니다.",
+    "logsDescription": "",
     "summary": {
       "accounts": "계정",
       "proxies": "프록시",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "실시간 피드",
-      "empty": "인스턴스 활동을 기다리는 중...",
+      "empty": "",
       "noPermission": "실시간 피드를 볼 권한이 없습니다.",
       "lifecycle": {
         "connecting": "연결 중",
@@ -97,6 +97,7 @@
         "executeCommand": "명령 실행: {{data}}",
         "botDesiredStateChange": "봇의 원하는 상태가 변경되었습니다.",
         "botRestart": "봇이 다시 시작되었습니다.",
+        "pluginRpc": "",
         "unknown": "동작 수행함"
       }
     },
@@ -129,6 +130,21 @@
       "noProxies": "가져올 프록시가 없습니다."
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "프록시 가져오는 중...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "rejected_other": ""
+      },
       "proxyType": "프록시 유형",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +219,7 @@
     },
     "unknownError": "알 수 없는 오류",
     "types": {
-      "OFFLINE": "오프라인",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (자격 증명)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (디바이스 코드)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (리프레시 토큰)",
@@ -272,7 +288,7 @@
     "contextMenu": {
       "openConfig": "설정 열기",
       "openMetadata": "메타데이터 열기",
-      "copyProfileId": "프로필 ID 복사",
+      "copyProfileId": "",
       "copyUsername": "사용자명 복사"
     },
     "config": {
@@ -292,7 +308,7 @@
       "selectPage": "설정 페이지 선택",
       "noSearchResults": "이 검색어와 일치하는 설정이 없습니다.",
       "matchesInheritedValue": "상속된 값과 일치함",
-      "instanceValue": "인스턴스 값",
+      "instanceValue": "",
       "defaultValue": "기본값",
       "resetOverride": "재정의 초기화"
     },
@@ -311,23 +327,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Ravealts를 통해 계정 구매",
       "description": "Ravealts API 키를 사용하여 마인크래프트 계정을 구매하세요.",
-      "apiKeyLabel": "API 키",
       "apiKeyPlaceholder": "Ravealts API 키를 입력하세요",
-      "validate": "검증",
-      "validating": "검증 중...",
-      "keyValid": "키가 검증되었습니다",
-      "keyInvalid": "잘못된 API 키입니다",
-      "credits": "크레딧: {{credits}}",
-      "stockTitle": "사용 가능한 재고",
       "noStock": "재고에 계정이 없습니다",
       "accountType": "계정 유형",
-      "amount": "수량 (1-10)",
-      "purchase": "구매 및 가져오기",
-      "purchasing": "구매 중...",
-      "purchaseSuccess": "{{count}}개의 계정을 구매하여 가져오는 중...",
-      "purchaseError": "구매 실패: {{message}}",
       "networkError": "Ravealts API에 연결하지 못했습니다.",
       "outOfStock": "선택한 유형이 재고에 없습니다",
       "insufficientBalance": "크레딧이 부족합니다",
@@ -354,12 +357,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "인스턴스 메타데이터",
-    "description": "이 인스턴스에 대한 영구 메타데이터 항목을 관리합니다. 각 항목에는 네임스페이스, 키, 그리고 JSON 값이 있습니다.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "네임스페이스",
     "keyPlaceholder": "키",
     "valuePlaceholder": "값 (JSON)",
     "noEntries": "메타데이터 항목이 없습니다. 위에서 하나 추가하세요.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "다시 시도하기",
     "addSuccess": "항목이 추가되었습니다",
     "addError": "항목 추가에 실패하였습니다",
     "updateError": "항목 수정에 실패하였습니다",
@@ -371,7 +377,7 @@
   "bots": {
     "searchPlaceholder": "봇 검색...",
     "onlineCount": "{{online}}명 온라인 / 총 {{total}}명",
-    "noBots": "설정된 봇이 없습니다. 계정 설정 페이지에서 계정을 추가하세요.",
+    "noBots": "",
     "noBotsFound": "검색 결과에 맞는 봇이 없습니다.",
     "loadingMore": "더 불러오는 중...",
     "showingCount": "{{total}}개 중 {{loaded}}개 표시 중",
@@ -396,12 +402,12 @@
       "waiting": "대기 중",
       "stopped": "중지됨"
     },
-    "backToBots": "봇 목록으로 돌아가기",
+    "backToBots": "",
     "tabs": {
-      "overview": "개요",
+      "overview": "",
       "inventory": "인벤토리",
-      "controls": "컨트롤",
-      "terminal": "터미널"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "곧 출시 예정",
     "terminalPanel": {
@@ -419,8 +425,15 @@
       "offline": "봇이 오프라인입니다. 위치 데이터는 봇이 연결되어 있을 때만 볼 수 있습니다."
     },
     "chatPanel": {
-      "title": "채팅 메시지",
-      "description": "이 봇의 채팅 메시지는 향후 업데이트에서 여기 표시됩니다."
+      "title": "",
+      "description": "이 봇의 채팅 메시지는 향후 업데이트에서 여기 표시됩니다.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "봇 명령어",
@@ -428,14 +441,14 @@
       "description": "봇 전용 명령어는 다음 업데이트에서 제공될 예정입니다."
     },
     "povPanel": {
-      "title": "봇 시점",
+      "title": "",
       "capture": "캡처",
       "refresh": "새로고침",
       "auto": "자동",
       "startAutoRefresh": "자동 새로고침 시작 (1초 간격)",
       "stopAutoRefresh": "자동 새로고침 중지",
       "clickToCapture": "캡처를 클릭하면 봇의 시점을 렌더링합니다",
-      "offline": "봇이 오프라인입니다. 시점 렌더링은 봇이 연결되어 있을 때만 사용할 수 있습니다."
+      "offline": ""
     },
     "statsPanel": {
       "title": "봇 통계",
@@ -545,6 +558,49 @@
       "dismiss": "닫기",
       "submit": "제출",
       "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 대화상자를 사용할 수 있습니다."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "전체",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "연결됨",
+      "starting": "시작 중",
+      "retrying": "재시도 중",
+      "failed": "실패함",
+      "stopping": "중지 중",
+      "stopped": "중지됨"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +668,12 @@
   },
   "scripts": {
     "title": "비주얼 스크립트",
-    "description": "비주얼 노드 기반 에디터로 자동화 스크립트를 만들 수 있습니다.",
+    "description": "",
     "experimentalTitle": "실험적 기능",
     "experimentalWarning": "이 기능은 실험적입니다. 향후 업데이트로 인해 기존 스크립트가 동작하지 않을 수 있습니다. 주의해서 사용하세요.",
-    "createScript": "스크립트 생성",
-    "createScriptTitle": "새 스크립트 만들기",
-    "createScriptDescription": "이 인스턴스를 위한 새로운 비주얼 스크립트를 만드세요. 스크립트는 봇의 동작을 자동화하고 이벤트에 대응할 수 있습니다.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "스크립트 이름",
     "scriptNamePlaceholder": "스크립트 이름을 입력하세요...",
     "scriptDescription": "설명",
@@ -625,36 +681,36 @@
     "create": "생성",
     "createSuccess": "스크립트가 성공적으로 생성되었습니다.",
     "createError": "스크립트 생성에 실패했습니다.",
-    "noScripts": "아직 스크립트가 없습니다.",
-    "noScriptsDescription": "비주얼 노드 기반 에디터로 첫 번째 스크립트를 만들어 봇의 동작을 자동화하세요.",
-    "createFirstScript": "첫 번째 스크립트 만들기",
-    "running": "실행 중",
-    "paused": "일시 정지됨",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "노드",
     "noDescription": "설명 없음",
     "edit": "편집",
-    "pause": "일시 정지",
-    "pauseSuccess": "스크립트가 일시 중지됨",
-    "pauseError": "스크립트 일시 중지에 실패함",
-    "resume": "다시 시작",
-    "resumeSuccess": "스크립트가 다시 시작됨",
-    "resumeError": "스크립트 재개에 실패함",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "삭제",
     "deleteSuccess": "스크립트가 성공적으로 삭제되었습니다.",
     "deleteError": "스크립트 삭제에 실패했습니다.",
     "saveSuccess": "스크립트가 성공적으로 저장되었습니다.",
     "saveError": "스크립트 저장에 실패했습니다.",
-    "activateSuccess": "스크립트가 활성화되었습니다",
-    "activateError": "스크립트 활성화에 실패했습니다",
-    "deactivateSuccess": "스크립트가 비활성화되었습니다",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "제목 없음 스크립트",
-    "saveFirstBeforeActivating": "활성화하기 전에 먼저 스크립트를 저장하세요",
-    "activating": "스크립트 활성화 중...",
-    "activated": "스크립트가 활성화되었습니다",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "스크립트가 완료되었습니다.",
     "executionCompletedSuccess": "스크립트가 성공적으로 완료되었습니다.",
-    "deactivated": "스크립트가 비활성화되었습니다",
-    "deactivatedByUser": "사용자에 의해 스크립트가 비활성화되었습니다.",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "스크립트 실행에 실패했습니다.",
     "executionError": "실행 오류: {{error}}",
     "monitoringError": "",
@@ -664,8 +720,8 @@
     "nodeError": "노드 오류: {{error}}",
     "contextMenu": {
       "edit": "스크립트 편집",
-      "pause": "일시 정지",
-      "resume": "다시 시작",
+      "pause": "",
+      "resume": "",
       "delete": "스크립트 삭제",
       "copyScriptName": "스크립트 이름 복사하기",
       "copyScriptId": "스크립트 ID 복사하기"
@@ -675,11 +731,11 @@
         "actions": "",
         "backToScripts": "스크립트 목록으로 돌아가기",
         "save": "저장",
-        "saveTooltip": "스크립트 저장하기",
-        "resume": "다시 시작",
-        "resumeTooltip": "스크립트 실행 재개",
-        "pause": "일시 정지",
-        "pauseTooltip": "스크립트 실행 일시 중지하기",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "저장되지 않음",
         "unsavedChanges": "저장되지 않은 변경 사항",
         "clearCanvas": "캔버스 지우기",
@@ -690,16 +746,17 @@
         "import": "스크립트 가져오기",
         "exportSuccess": "스크립트가 성공적으로 내보내졌습니다",
         "importSuccess": "스크립트가 성공적으로 가져와졌습니다",
-        "importError": "스크립트 가져오기에 실패했습니다"
+        "importError": "스크립트 가져오기에 실패했습니다",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "노드 팔레트",
+        "title": "",
         "search": "노드 검색..."
       },
       "logs": {
-        "title": "실행 로그",
+        "title": "",
         "clearTitle": "로그 지우기",
-        "noLogs": "아직 로그가 없습니다. 스크립트를 실행하면 로그가 표시됩니다.",
+        "noLogs": "",
         "entries_other": "{{count}}개 항목"
       },
       "contextMenu": {
@@ -752,15 +809,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "드라이 런",
-        "title": "드라이 런 스크립트",
-        "description": "선택한 트리거에서 스크립트를 모의 입력값과 함께 실행합니다.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "트리거 노드",
         "selectTrigger": "트리거 선택...",
-        "triggerDescription": "모의 입력값으로 실행할 트리거 노드를 선택하세요.",
-        "mockInputs": "모의 입력값",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} 값",
-        "start": "드라이 런 시작",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
@@ -784,10 +842,523 @@
         "save": "할당량 저장",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "동작",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "연결",
+    "back": "뒤로",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "전체",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "연결",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "전체",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "없음",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_other": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "연결됨",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "선택 사항",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "모든 설정 열기",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "계정",
+      "reviewProxies": "프록시",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_other": "{{count}}개의 봇 시작"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

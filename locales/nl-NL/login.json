@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire-logo"
@@ -7,47 +14,65 @@
   },
   "newUser": "Nieuw bij SoulFire? Lees de <a>starthandleiding</a>.",
   "connect": {
-    "title": "Verbind met een SoulFire-server",
-    "description": "Selecteer met welk type SoulFire-server je wilt verbinden.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Geïntegreerde server (lokaal)",
-      "description": "Draait een SoulFire-server op dit apparaat. Installatie is automatisch. Deze optie vereist de desktop- of Android-app."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Dedicated server (extern)",
-      "description": "Verbindt met een externe SoulFire-server via het adres en token."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Demo-server",
-      "description": "Biedt een alleen-lezen server met demo-gegevens. SoulFire slaat geen wijzigingen op."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Bezig met voorbereiden om geïntegreerde server te starten...",
+    "preparing": "",
     "toast": {
-      "loading": "Geïntegreerde server wordt gestart...",
-      "success": "Geïntegreerde server gestart in {{time}}s",
-      "error": "Kan geïntegreerde server niet starten"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Opnieuw proberen",
+    "retry": "",
     "reset": {
-      "button": "Gegevens herstellen",
+      "button": "",
       "loading": "SoulFire-gegevens worden hersteld...",
       "success": "SoulFire-gegevens zijn succesvol hersteld. Probeer opnieuw te starten.",
-      "error": "Het herstellen van SoulFire-gegevens is mislukt"
+      "error": "Het herstellen van SoulFire-gegevens is mislukt",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "De geïntegreerde server draait op je computer. Je kunt de Java-opstartargumenten hieronder aanpassen.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM-argumenten",
         "description": "Java VM-argumenten voor SoulFire. Voeg <bold>-Xmx4G</bold> toe om 4 GB RAM te gebruiken. Standaard is 25% van het beschikbare RAM.",
-        "placeholder": "Jouw JVM-argumenten hier"
+        "placeholder": "Jouw JVM-argumenten hier",
+        "reset": ""
       },
       "back": "Terug",
-      "start": "Start"
+      "start": ""
     },
     "mobile": {
-      "description": "Om de geïntegreerde server op mobiel te draaien, moet je enkele handmatige stappen uitvoeren.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux-commando",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Volgende keer automatisch starten.",
       "description": "Sla de serverselectie over en gebruik deze instellingen wanneer SoulFire wordt geopend."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "Voer het adres en het token van de SoulFire-server in.",
+    "description": "",
     "toast": {
       "loading": "Bezig met verbinden met server...",
       "success": "Verbonden met server",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Adres",
-        "description": "Adres van jouw SoulFire-server.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Geheime token",
-        "description": "Token om mee te authenticeren bij de server."
+        "description": ""
       },
       "email": {
         "title": "E-mailadres",
@@ -96,7 +180,7 @@
       "back": "Terug",
       "useToken": "Gebruik token",
       "useEmail": "Gebruik e-mail",
-      "login": "Inloggen"
+      "login": ""
     }
   },
   "emailCode": {

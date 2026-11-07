@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire 图标"
@@ -7,47 +14,65 @@
   },
   "newUser": "初次使用 SoulFire？请阅读<a>入门指南</a>。",
   "connect": {
-    "title": "连接到一个 SoulFire 服务器",
-    "description": "选择连接到哪种类型的 SoulFire 服务器",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "内置集成服务器 (本地)",
-      "description": "在此设备上运行 SoulFire 服务器。设置过程自动完成。此选项需使用桌面或 Android 应用。"
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "专用服务器 (远程)",
-      "description": "使用地址和令牌连接到远程 SoulFire 服务器。"
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "演示服务器",
-      "description": "提供只读演示服务器。SoulFire 不会保存更改。"
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "正在准备启动集成服务器...",
+    "preparing": "",
     "toast": {
-      "loading": "正在启动集成服务器...",
-      "success": "集成服务器已在{{time}}秒内启动成功",
-      "error": "启动集成服务器失败"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "重试",
+    "retry": "",
     "reset": {
-      "button": "重置数据",
+      "button": "",
       "loading": "正在重置 SoulFire 数据...",
       "success": "SoulFire 数据重置成功。请重新开始。",
-      "error": "重置 SoulFire 数据失败"
+      "error": "重置 SoulFire 数据失败",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "集成服务器运行在您的计算机上。您可以在下方更改 Java 启动参数。",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM 参数",
         "description": "SoulFire 的 Java 虚拟机参数。添加 <bold>-Xmx4G</bold> 以使用 4GB 内存。默认为可用内存的 25%。",
-        "placeholder": "在此输入您的 JVM 参数"
+        "placeholder": "在此输入您的 JVM 参数",
+        "reset": ""
       },
       "back": "返回",
-      "start": "开始"
+      "start": ""
     },
     "mobile": {
-      "description": "要在手机上运行集成服务器，您需要手动完成几个步骤。",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux 命令",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "下次自动启动",
       "description": "跳过服务器选择，在 SoulFire 启动时使用这些设置。"
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "请输入 SoulFire 服务器的地址和令牌。",
+    "description": "",
     "toast": {
       "loading": "正在连接到服务器…",
       "success": "已连接到服务器",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "地址",
-        "description": "您的 SoulFire 服务器的地址。",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "令牌",
         "placeholder": "保密令牌",
-        "description": "验证服务器的令牌"
+        "description": ""
       },
       "email": {
         "title": "电子邮箱",
@@ -96,7 +180,7 @@
       "back": "返回",
       "useToken": "使用令牌",
       "useEmail": "使用电子邮箱",
-      "login": "登录"
+      "login": ""
     }
   },
   "emailCode": {

@@ -20,12 +20,12 @@
         "title": "Trådantal"
       },
       "aggregateBots": {
-        "title": "Botar online (alla instanser)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Totalt antal instanser på den här servern",
-      "instances": "Instanser",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Status",
         "active": "Aktiv",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Roll",
           "placeholder": "Välj en roll",
-          "description": "Användarens roll. Administratörer kan hantera användare och alla instanser. Användare kan endast hantera sina egna instanser.",
+          "description": "",
           "user": "Användare",
           "admin": "Admin"
         }

@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "โลโก้ SoulFire"
@@ -7,47 +14,65 @@
   },
   "newUser": "ใหม่กับ SoulFire ใช่ไหม? อ่าน <a>คู่มือเริ่มต้น</a> ได้ที่นี่.",
   "connect": {
-    "title": "เชื่อมต่อกับเซิร์ฟเวอร์ SoulFire",
-    "description": "เลือกประเภทเซิร์ฟเวอร์ SoulFire ที่ต้องการเชื่อมต่อ",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "เซิร์ฟเวอร์ฝังตัว (ในเครื่อง)",
-      "description": "รันเซิร์ฟเวอร์ SoulFire บนอุปกรณ์นี้ การตั้งค่าจะเป็นอัตโนมัติ ตัวเลือกนี้ต้องใช้แอปเดสก์ท็อปหรือ Android."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "เซิร์ฟเวอร์เฉพาะ (ระยะไกล)",
-      "description": "เชื่อมต่อกับเซิร์ฟเวอร์ SoulFire ระยะไกลโดยใช้ที่อยู่และโทเค็น."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "เซิร์ฟเวอร์สาธิต",
-      "description": "ให้บริการเซิร์ฟเวอร์เฉพาะอ่านอย่างเดียวพร้อมข้อมูลตัวอย่าง SoulFire จะไม่บันทึกการเปลี่ยนแปลงใดๆ."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "กำลังเตรียมเริ่มต้นเซิร์ฟเวอร์ฝังตัว...",
+    "preparing": "",
     "toast": {
-      "loading": "กำลังเริ่มเซิร์ฟเวอร์ฝังตัว...",
-      "success": "เซิร์ฟเวอร์แบบรวมเริ่มทำงานใน {{time}} วินาที",
-      "error": "ไม่สามารถเริ่มเซิร์ฟเวอร์ฝังตัวได้"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "ลองใหม่อีกครั้ง",
+    "retry": "",
     "reset": {
-      "button": "รีเซ็ตข้อมูล",
+      "button": "",
       "loading": "กำลังรีเซ็ตข้อมูล SoulFire...",
       "success": "รีเซ็ตข้อมูล SoulFire สำเร็จ กรุณาเริ่มต้นใหม่อีกครั้ง",
-      "error": "รีเซ็ตข้อมูล SoulFire ไม่สำเร็จ"
+      "error": "รีเซ็ตข้อมูล SoulFire ไม่สำเร็จ",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "เซิร์ฟเวอร์แบบรวมจะรันบนคอมพิวเตอร์ของคุณ คุณสามารถเปลี่ยนพารามิเตอร์การเริ่มต้น Java ด้านล่างนี้ได้.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "อาร์กิวเมนต์ JVM",
         "description": "อาร์กิวเมนต์ Java VM สำหรับ SoulFire เพิ่ม <bold>-Xmx4G</bold> เพื่อใช้ RAM 4 GB ค่าเริ่มต้นคือ 25% ของ RAM ทั้งหมด.",
-        "placeholder": "ใส่อาร์กิวเมนต์ JVM ของคุณที่นี่"
+        "placeholder": "ใส่อาร์กิวเมนต์ JVM ของคุณที่นี่",
+        "reset": ""
       },
       "back": "ย้อนกลับ",
-      "start": "เริ่มต้น"
+      "start": ""
     },
     "mobile": {
-      "description": "หากต้องการรันเซิร์ฟเวอร์ฝังตัวบนมือถือ คุณต้องทำตามขั้นตอนด้วยตนเองเล็กน้อย",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "คำสั่ง Termux",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "เริ่มต้นโดยอัตโนมัติในครั้งถัดไป",
       "description": "ข้ามการเลือกเซิร์ฟเวอร์และใช้การตั้งค่าเหล่านี้เมื่อเปิด SoulFire."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "กรอกที่อยู่และโทเค็นของเซิร์ฟเวอร์ SoulFire.",
+    "description": "",
     "toast": {
       "loading": "กำลังเชื่อมต่อกับเซิร์ฟเวอร์...",
       "success": "เชื่อมต่อกับเซิร์ฟเวอร์แล้ว",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "ที่อยู่",
-        "description": "ที่อยู่ของเซิร์ฟเวอร์ SoulFire ของคุณ",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "โทเค็น",
         "placeholder": "โทเค็นลับ",
-        "description": "โทเค็นสำหรับยืนยันตัวตนกับเซิร์ฟเวอร์"
+        "description": ""
       },
       "email": {
         "title": "อีเมล",
@@ -96,7 +180,7 @@
       "back": "ย้อนกลับ",
       "useToken": "ใช้โทเค็น",
       "useEmail": "ใช้อีเมล",
-      "login": "เข้าสู่ระบบ"
+      "login": ""
     }
   },
   "emailCode": {
