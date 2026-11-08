@@ -62,4 +62,8 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: Run Storybook component tests
+        env:
+          # Reclaim removed iframe heaps between files on the CI browser worker.
+          # https://github.com/vitest-dev/vitest/pull/10912
+          VITEST_CHROMIUM_GC_DISK_THRESHOLD_GB: 1024
         run: bun run test:storybook
