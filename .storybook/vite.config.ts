@@ -19,7 +19,6 @@ export default defineConfig({
       "@dnd-kit/sortable",
       "@dnd-kit/utilities",
       "@xyflow/react",
-      "radix-ui",
       "react-dom",
       "shiki/core",
       "shiki/engine/javascript",

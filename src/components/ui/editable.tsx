@@ -1,9 +1,9 @@
 "use client";
 
-import {
-  Direction as DirectionPrimitive,
-  Slot as SlotPrimitive,
-} from "radix-ui";
+import { useDirection } from "@base-ui/react/direction-provider";
+import { useRender } from "@base-ui/react/use-render";
+import { mergeProps } from "@base-ui/react/merge-props";
+
 import * as React from "react";
 import { VisuallyHiddenInput } from "@/components/visually-hidden-input";
 import { useAsRef } from "@/hooks/use-as-ref";
@@ -24,14 +24,12 @@ const SUBMIT_NAME = "EditableSubmit";
 
 type Direction = "ltr" | "rtl";
 
-interface DivProps extends React.ComponentProps<"div"> {
-  asChild?: boolean;
-}
+type DivProps = useRender.ComponentProps<"div">;
 
 type RootElement = React.ComponentRef<typeof Editable>;
 type PreviewElement = React.ComponentRef<typeof EditablePreview>;
 type SubmitElement = React.ComponentRef<typeof EditableSubmit>;
-type InputElement = React.ComponentRef<typeof EditableInput>;
+type InputElement = HTMLInputElement;
 
 interface StoreState {
   value: string;
@@ -149,7 +147,7 @@ function Editable(props: EditableProps) {
     name,
     placeholder,
     triggerMode = "click",
-    asChild,
+    render,
     autosize = false,
     disabled,
     required,
@@ -167,7 +165,8 @@ function Editable(props: EditableProps) {
   const inputId = React.useId();
   const labelId = React.useId();
 
-  const dir = DirectionPrimitive.useDirection(dirProp);
+  const direction = useDirection();
+  const dir = dirProp ?? direction;
 
   const previousValueRef = React.useRef(defaultValue);
 
@@ -303,18 +302,20 @@ function Editable(props: EditableProps) {
     ],
   );
 
-  const RootPrimitive = asChild ? SlotPrimitive.Slot : "div";
+  const element = useRender({
+    defaultTagName: "div",
+    render,
+    ref: composedRef,
+    props: mergeProps({ "data-slot": "editable", dir }, rootProps, {
+      id,
+      className: cn("flex min-w-0 flex-col gap-2", className),
+    }),
+  });
 
   return (
     <StoreContext.Provider value={store}>
       <EditableContext.Provider value={contextValue}>
-        <RootPrimitive
-          data-slot="editable"
-          {...rootProps}
-          id={id}
-          ref={composedRef}
-          className={cn("flex min-w-0 flex-col gap-2", className)}
-        />
+        {element}
         {isFormControl && (
           <VisuallyHiddenInput
             type="hidden"
@@ -331,67 +332,72 @@ function Editable(props: EditableProps) {
   );
 }
 
-interface EditableLabelProps extends React.ComponentProps<"label"> {
-  asChild?: boolean;
-}
+type EditableLabelProps = useRender.ComponentProps<"label">;
 
 function EditableLabel(props: EditableLabelProps) {
-  const { asChild, className, children, ref, ...labelProps } = props;
+  const { render, className, children, ref, ...labelProps } = props;
   const context = useEditableContext(LABEL_NAME);
 
-  const LabelPrimitive = asChild ? SlotPrimitive.Slot : "label";
+  const element = useRender({
+    defaultTagName: "label",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        "data-disabled": context.disabled ? "" : undefined,
+        "data-invalid": context.invalid ? "" : undefined,
+        "data-required": context.required ? "" : undefined,
+        "data-slot": "editable-label",
+      },
+      labelProps,
+      {
+        id: context.labelId,
+        htmlFor: context.inputId,
+        className: cn(
+          "font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-required:after:ml-0.5 data-required:after:text-destructive data-required:after:content-['*']",
+          className,
+        ),
+        children: children,
+      },
+    ),
+  });
 
-  return (
-    <LabelPrimitive
-      data-disabled={context.disabled ? "" : undefined}
-      data-invalid={context.invalid ? "" : undefined}
-      data-required={context.required ? "" : undefined}
-      data-slot="editable-label"
-      {...labelProps}
-      ref={ref}
-      id={context.labelId}
-      htmlFor={context.inputId}
-      className={cn(
-        "font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-required:after:ml-0.5 data-required:after:text-destructive data-required:after:content-['*']",
-        className,
-      )}
-    >
-      {children}
-    </LabelPrimitive>
-  );
+  return element;
 }
 
-interface EditableAreaProps extends React.ComponentProps<"div"> {
-  asChild?: boolean;
-}
+type EditableAreaProps = useRender.ComponentProps<"div">;
 
 function EditableArea(props: EditableAreaProps) {
-  const { asChild, className, ref, ...areaProps } = props;
+  const { render, className, ref, ...areaProps } = props;
   const context = useEditableContext(AREA_NAME);
   const editing = useStore((state) => state.editing);
 
-  const AreaPrimitive = asChild ? SlotPrimitive.Slot : "div";
+  const element = useRender({
+    defaultTagName: "div",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        role: "group",
+        "data-disabled": context.disabled ? "" : undefined,
+        "data-editing": editing ? "" : undefined,
+        "data-slot": "editable-area",
+        dir: context.dir,
+      },
+      areaProps,
+      {
+        className: cn(
+          "relative inline-block min-w-0 data-disabled:cursor-not-allowed data-disabled:opacity-50",
+          className,
+        ),
+      },
+    ),
+  });
 
-  return (
-    <AreaPrimitive
-      role="group"
-      data-disabled={context.disabled ? "" : undefined}
-      data-editing={editing ? "" : undefined}
-      data-slot="editable-area"
-      dir={context.dir}
-      {...areaProps}
-      ref={ref}
-      className={cn(
-        "relative inline-block min-w-0 data-disabled:cursor-not-allowed data-disabled:opacity-50",
-        className,
-      )}
-    />
-  );
+  return element;
 }
 
-interface EditablePreviewProps extends React.ComponentProps<"div"> {
-  asChild?: boolean;
-}
+type EditablePreviewProps = useRender.ComponentProps<"div">;
 
 function EditablePreview(props: EditablePreviewProps) {
   const {
@@ -399,7 +405,7 @@ function EditablePreview(props: EditablePreviewProps) {
     onDoubleClick: onDoubleClickProp,
     onFocus: onFocusProp,
     onKeyDown: onKeyDownProp,
-    asChild,
+    render,
     className,
     ref,
     ...previewProps
@@ -468,37 +474,39 @@ function EditablePreview(props: EditablePreviewProps) {
     [propsRef, onTrigger, context.onEnterKeyDown],
   );
 
-  const PreviewPrimitive = asChild ? SlotPrimitive.Slot : "div";
-
+  const element = useRender({
+    defaultTagName: "div",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        role: "button",
+        "aria-disabled": context.disabled || context.readOnly,
+        "data-empty": !value ? "" : undefined,
+        "data-disabled": context.disabled ? "" : undefined,
+        "data-readonly": context.readOnly ? "" : undefined,
+        "data-slot": "editable-preview",
+        tabIndex: context.disabled || context.readOnly ? undefined : 0,
+      },
+      previewProps,
+      {
+        onClick,
+        onDoubleClick,
+        onFocus,
+        onKeyDown,
+        className: cn(
+          "cursor-text truncate rounded-sm border border-transparent py-1 text-base focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring data-disabled:cursor-not-allowed data-readonly:cursor-default data-empty:text-muted-foreground data-disabled:opacity-50 md:text-sm",
+          className,
+        ),
+        children: value || context.placeholder,
+      },
+    ),
+  });
   if (editing || context.readOnly) return null;
-
-  return (
-    <PreviewPrimitive
-      role="button"
-      aria-disabled={context.disabled || context.readOnly}
-      data-empty={!value ? "" : undefined}
-      data-disabled={context.disabled ? "" : undefined}
-      data-readonly={context.readOnly ? "" : undefined}
-      data-slot="editable-preview"
-      tabIndex={context.disabled || context.readOnly ? undefined : 0}
-      {...previewProps}
-      ref={ref}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      onFocus={onFocus}
-      onKeyDown={onKeyDown}
-      className={cn(
-        "cursor-text truncate rounded-sm border border-transparent py-1 text-base focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring data-disabled:cursor-not-allowed data-readonly:cursor-default data-empty:text-muted-foreground data-disabled:opacity-50 md:text-sm",
-        className,
-      )}
-    >
-      {value || context.placeholder}
-    </PreviewPrimitive>
-  );
+  return element;
 }
 
-interface EditableInputProps extends React.ComponentProps<"input"> {
-  asChild?: boolean;
+interface EditableInputProps extends useRender.ComponentProps<"input"> {
   maxLength?: number;
 }
 
@@ -507,7 +515,7 @@ function EditableInput(props: EditableInputProps) {
     onBlur: onBlurProp,
     onChange: onChangeProp,
     onKeyDown: onKeyDownProp,
-    asChild,
+    render,
     className,
     disabled,
     readOnly,
@@ -628,45 +636,48 @@ function EditableInput(props: EditableInputProps) {
     };
   }, [editing, onAutosize, isDisabled, isReadOnly]);
 
-  const InputPrimitive = asChild ? SlotPrimitive.Slot : "input";
-
+  const element = useRender({
+    defaultTagName: "input",
+    render,
+    ref: composedRef,
+    props: mergeProps(
+      {
+        "aria-required": isRequired,
+        "aria-invalid": context.invalid,
+        "data-slot": "editable-input",
+        dir: context.dir,
+        disabled: isDisabled,
+        readOnly: isReadOnly,
+        required: isRequired,
+      },
+      inputProps,
+      {
+        id: context.inputId,
+        "aria-labelledby": context.labelId,
+        maxLength: maxLength,
+        placeholder: context.placeholder,
+        value: value,
+        onBlur,
+        onChange,
+        onKeyDown,
+        className: cn(
+          "flex rounded-sm border border-input bg-transparent py-1 text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          context.autosize ? "w-auto" : "w-full",
+          className,
+        ),
+      },
+    ),
+  });
   if (!editing && !isReadOnly) return null;
-
-  return (
-    <InputPrimitive
-      aria-required={isRequired}
-      aria-invalid={context.invalid}
-      data-slot="editable-input"
-      dir={context.dir}
-      disabled={isDisabled}
-      readOnly={isReadOnly}
-      required={isRequired}
-      {...inputProps}
-      id={context.inputId}
-      aria-labelledby={context.labelId}
-      ref={composedRef}
-      maxLength={maxLength}
-      placeholder={context.placeholder}
-      value={value}
-      onBlur={onBlur}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      className={cn(
-        "flex rounded-sm border border-input bg-transparent py-1 text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-        context.autosize ? "w-auto" : "w-full",
-        className,
-      )}
-    />
-  );
+  return element;
 }
 
-interface EditableTriggerProps extends React.ComponentProps<"button"> {
-  asChild?: boolean;
+interface EditableTriggerProps extends useRender.ComponentProps<"button"> {
   forceMount?: boolean;
 }
 
 function EditableTrigger(props: EditableTriggerProps) {
-  const { asChild, forceMount = false, ref, ...triggerProps } = props;
+  const { render, forceMount = false, ref, ...triggerProps } = props;
   const context = useEditableContext(TRIGGER_NAME);
   const editing = useStore((state) => state.editing);
 
@@ -675,34 +686,38 @@ function EditableTrigger(props: EditableTriggerProps) {
     context.onEdit();
   }, [context.disabled, context.readOnly, context.onEdit]);
 
-  const TriggerPrimitive = asChild ? SlotPrimitive.Slot : "button";
-
+  const element = useRender({
+    defaultTagName: "button",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        type: "button",
+        "aria-controls": context.rootId,
+        "aria-disabled": context.disabled || context.readOnly,
+        "data-disabled": context.disabled ? "" : undefined,
+        "data-readonly": context.readOnly ? "" : undefined,
+        "data-slot": "editable-trigger",
+      },
+      triggerProps,
+      {
+        onClick: context.triggerMode === "click" ? onTrigger : undefined,
+        onDoubleClick:
+          context.triggerMode === "dblclick" ? onTrigger : undefined,
+      },
+    ),
+  });
   if (!forceMount && (editing || context.readOnly)) return null;
-
-  return (
-    <TriggerPrimitive
-      type="button"
-      aria-controls={context.rootId}
-      aria-disabled={context.disabled || context.readOnly}
-      data-disabled={context.disabled ? "" : undefined}
-      data-readonly={context.readOnly ? "" : undefined}
-      data-slot="editable-trigger"
-      {...triggerProps}
-      ref={ref}
-      onClick={context.triggerMode === "click" ? onTrigger : undefined}
-      onDoubleClick={context.triggerMode === "dblclick" ? onTrigger : undefined}
-    />
-  );
+  return element;
 }
 
-interface EditableToolbarProps extends React.ComponentProps<"div"> {
-  asChild?: boolean;
+interface EditableToolbarProps extends useRender.ComponentProps<"div"> {
   orientation?: "horizontal" | "vertical";
 }
 
 function EditableToolbar(props: EditableToolbarProps) {
   const {
-    asChild,
+    render,
     className,
     orientation = "horizontal",
     ref,
@@ -710,32 +725,36 @@ function EditableToolbar(props: EditableToolbarProps) {
   } = props;
   const context = useEditableContext(TOOLBAR_NAME);
 
-  const ToolbarPrimitive = asChild ? SlotPrimitive.Slot : "div";
+  const element = useRender({
+    defaultTagName: "div",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        role: "toolbar",
+        "aria-controls": context.rootId,
+        "aria-orientation": orientation,
+        "data-slot": "editable-toolbar",
+        dir: context.dir,
+      },
+      toolbarProps,
+      {
+        className: cn(
+          "flex items-center gap-2",
+          orientation === "vertical" && "flex-col",
+          className,
+        ),
+      },
+    ),
+  });
 
-  return (
-    <ToolbarPrimitive
-      role="toolbar"
-      aria-controls={context.rootId}
-      aria-orientation={orientation}
-      data-slot="editable-toolbar"
-      dir={context.dir}
-      {...toolbarProps}
-      ref={ref}
-      className={cn(
-        "flex items-center gap-2",
-        orientation === "vertical" && "flex-col",
-        className,
-      )}
-    />
-  );
+  return element;
 }
 
-interface EditableCancelProps extends React.ComponentProps<"button"> {
-  asChild?: boolean;
-}
+type EditableCancelProps = useRender.ComponentProps<"button">;
 
 function EditableCancel(props: EditableCancelProps) {
-  const { onClick: onClickProp, asChild, ref, ...cancelProps } = props;
+  const { onClick: onClickProp, render, ref, ...cancelProps } = props;
   const context = useEditableContext(CANCEL_NAME);
   const editing = useStore((state) => state.editing);
 
@@ -755,28 +774,28 @@ function EditableCancel(props: EditableCancelProps) {
     [propsRef, context.onCancel, context.disabled, context.readOnly],
   );
 
-  const CancelPrimitive = asChild ? SlotPrimitive.Slot : "button";
-
+  const element = useRender({
+    defaultTagName: "button",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        type: "button",
+        "aria-controls": context.rootId,
+        "data-slot": "editable-cancel",
+      },
+      cancelProps,
+      { onClick },
+    ),
+  });
   if (!editing && !context.readOnly) return null;
-
-  return (
-    <CancelPrimitive
-      type="button"
-      aria-controls={context.rootId}
-      data-slot="editable-cancel"
-      {...cancelProps}
-      onClick={onClick}
-      ref={ref}
-    />
-  );
+  return element;
 }
 
-interface EditableSubmitProps extends React.ComponentProps<"button"> {
-  asChild?: boolean;
-}
+type EditableSubmitProps = useRender.ComponentProps<"button">;
 
 function EditableSubmit(props: EditableSubmitProps) {
-  const { onClick: onClickProp, asChild, ref, ...submitProps } = props;
+  const { onClick: onClickProp, render, ref, ...submitProps } = props;
   const context = useEditableContext(SUBMIT_NAME);
   const value = useStore((state) => state.value);
   const editing = useStore((state) => state.editing);
@@ -797,20 +816,22 @@ function EditableSubmit(props: EditableSubmitProps) {
     [propsRef, context.onSubmit, value, context.disabled, context.readOnly],
   );
 
-  const SubmitPrimitive = asChild ? SlotPrimitive.Slot : "button";
-
+  const element = useRender({
+    defaultTagName: "button",
+    render,
+    ref,
+    props: mergeProps(
+      {
+        type: "button",
+        "aria-controls": context.rootId,
+        "data-slot": "editable-submit",
+      },
+      submitProps,
+      { onClick },
+    ),
+  });
   if (!editing && !context.readOnly) return null;
-
-  return (
-    <SubmitPrimitive
-      type="button"
-      aria-controls={context.rootId}
-      data-slot="editable-submit"
-      {...submitProps}
-      ref={ref}
-      onClick={onClick}
-    />
-  );
+  return element;
 }
 
 export {
