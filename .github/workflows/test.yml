@@ -50,6 +50,9 @@ jobs:
       - name: Run terminal tests
         run: bun run test:terminal
 
+      - name: Run proxy-check regression tests
+        run: bun test src/lib/proxy-check.test.ts
+
       - name: Run web build
         env:
           POSTHOG_PERSONAL_API_KEY: ${{ github.event_name == 'push' && secrets.POSTHOG_PERSONAL_API_KEY || '' }}
