@@ -1,4 +1,5 @@
 import * as fs from "node:fs";
+import { resolve } from "node:path";
 import { devtools } from "@tanstack/devtools-vite";
 import posthog from "@posthog/rollup-plugin";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -78,6 +79,11 @@ export default defineConfig({
             personalApiKey: process.env.POSTHOG_PERSONAL_API_KEY,
             projectId: "274904",
             host: "https://eu.posthog.com",
+            // Bun creates an executable shim on Windows instead of a .cmd shim.
+            cliBinaryPath:
+              process.platform === "win32"
+                ? resolve("node_modules/.bin/posthog-cli.exe")
+                : undefined,
             sourcemaps: {
               enabled: true,
               releaseName: "SoulFireClient",
