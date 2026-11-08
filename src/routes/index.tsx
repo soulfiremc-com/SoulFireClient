@@ -1,3 +1,10 @@
+import {
+  emailFormSchema,
+  tokenFormSchema,
+  integratedServerFormSchema,
+  mobileIntegratedServerFormSchema,
+} from "@/lib/login-validation";
+import { toFormSchema } from "@/lib/form-validation";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -35,7 +42,6 @@ import {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { TextInfoButton } from "@/components/info-buttons.tsx";
 import {
@@ -161,24 +167,6 @@ export const Route = createFileRoute("/")({
   beforeLoad: () =>
     staticRouteChrome(() => i18n.t("login:connect.title"), SOULFIRE_LOGO_ICON),
   component: Index,
-});
-
-const emailFormSchema = z.object({
-  address: z.string().trim().pipe(z.url()),
-  email: z.email(),
-});
-const tokenFormSchema = z.object({
-  address: z.string().trim().pipe(z.url()),
-  token: z.string().trim().pipe(z.jwt()),
-});
-
-const integratedServerFormSchema = z.object({
-  customJarId: z.string(),
-  jarSource: z.enum(["official", "custom"]),
-  jvmArgs: z.string(),
-});
-const mobileIntegratedServerFormSchema = z.object({
-  token: z.string().trim().pipe(z.jwt()),
 });
 
 type LoginType = "INTEGRATED" | "DEDICATED" | "EMAIL_CODE" | null;
@@ -695,7 +683,7 @@ function IntegratedConfigureMenu({
           : DEFAULT_JVM_ARGS_STRING),
     },
     validators: {
-      onSubmit: integratedServerFormSchema,
+      onSubmit: toFormSchema(integratedServerFormSchema),
     },
     onSubmit: async ({ value }) => {
       if (
@@ -1429,7 +1417,7 @@ function IntegratedMobileMenu({
         ) ?? "",
     },
     validators: {
-      onSubmit: mobileIntegratedServerFormSchema,
+      onSubmit: toFormSchema(mobileIntegratedServerFormSchema),
     },
     onSubmit: async ({ value }) => {
       const token = value.token.trim();
@@ -1658,7 +1646,7 @@ function EmailForm({
       email: localStorage.getItem(LOCAL_STORAGE_FORM_SERVER_EMAIL_KEY) ?? "",
     },
     validators: {
-      onSubmit: emailFormSchema,
+      onSubmit: toFormSchema(emailFormSchema),
     },
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
@@ -1822,7 +1810,7 @@ function TokenForm({
       token: localStorage.getItem(LOCAL_STORAGE_FORM_SERVER_TOKEN_KEY) ?? "",
     },
     validators: {
-      onSubmit: tokenFormSchema,
+      onSubmit: toFormSchema(tokenFormSchema),
     },
     onSubmit: async ({ value }) => {
       const address = value.address.trim();

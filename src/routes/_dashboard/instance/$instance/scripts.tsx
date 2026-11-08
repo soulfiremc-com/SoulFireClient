@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import {
@@ -21,7 +23,6 @@ import { usePostHog } from "posthog-js/react";
 import { Suspense, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   DropdownMenuItem,
@@ -83,9 +84,9 @@ import {
 } from "@/lib/script-templates.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
 
-const createScriptSchema = z.object({
-  name: z.string(),
-  description: z.string(),
+const createScriptSchema = Schema.Struct({
+  name: Schema.String,
+  description: Schema.String,
 });
 
 function generateN(count: number) {
@@ -211,7 +212,7 @@ function Content() {
   // Create script mutation
   const createMutation = useMutation({
     mutationKey: ["script", "create", instanceId],
-    mutationFn: async (value: z.infer<typeof createScriptSchema>) => {
+    mutationFn: async (value: (typeof createScriptSchema)["Type"]) => {
       if (!transport) throw new Error("No transport available");
       const client = createClient(ScriptService, transport);
       const result = await client.createScript({
@@ -294,7 +295,7 @@ function Content() {
       description: "",
     },
     validators: {
-      onSubmit: createScriptSchema,
+      onSubmit: toFormSchema(createScriptSchema),
     },
     onSubmit: async ({ value }) => {
       createMutation.mutate(value);

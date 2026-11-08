@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import {
@@ -26,7 +28,6 @@ import { usePostHog } from "posthog-js/react";
 import { type ComponentType, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
@@ -163,7 +164,7 @@ function DuplicateInstanceDialog({
   pending: boolean;
 }) {
   const { t } = useTranslation("common");
-  const formSchema = z.object({
+  const formSchema = Schema.Struct({
     friendlyName: createInstanceNameSchema({
       required: t("instanceName.required"),
       max: t("instanceName.max"),
@@ -177,11 +178,11 @@ function DuplicateInstanceDialog({
         : "",
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value }) => {
       try {
-        await onDuplicate(formSchema.parse(value));
+        await onDuplicate(Schema.decodeUnknownSync(formSchema)(value));
       } catch {
         // The mutation reports errors and keeps the draft available for corrections.
       }

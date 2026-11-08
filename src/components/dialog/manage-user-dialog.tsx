@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { Code, ConnectError, createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +8,6 @@ import { PencilIcon, PlusIcon, XIcon } from "lucide-react";
 import { use } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Field,
@@ -62,14 +63,16 @@ export function ManageUserDialog({
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { t } = useTranslation("admin");
-  const formSchema = z.object({
+  const formSchema = Schema.Struct({
     username: createUsernameSchema({
       min: t("users.baseUserDialog.form.username.min"),
       max: t("users.baseUserDialog.form.username.max"),
       pattern: t("users.baseUserDialog.form.username.regex"),
     }),
     email: userEmailSchema,
-    role: z.enum(UserRole),
+    role: Schema.Enum(UserRole)
+      .annotate({ message: "validation:userRole" })
+      .annotateKey({ messageMissingKey: "validation:userRole" }),
   });
   const submitMutation = useMutation({
     mutationKey: [
@@ -133,7 +136,7 @@ export function ManageUserDialog({
       role: props.mode === "edit" ? props.user.role : UserRole.USER,
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value, formApi }) => {
       try {

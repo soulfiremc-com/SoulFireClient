@@ -1,3 +1,5 @@
+import { toFormSchema } from "@/lib/form-validation";
+import { Schema } from "effect";
 import { createClient } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,7 +9,6 @@ import { usePostHog } from "posthog-js/react";
 import { createContext, type ReactNode, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Field,
@@ -74,7 +75,7 @@ function CreateInstanceDialog({
   const transport = use(TransportContext);
   const posthog = usePostHog();
   const { t } = useTranslation("common");
-  const formSchema = z.object({
+  const formSchema = Schema.Struct({
     friendlyName: createInstanceNameSchema({
       required: t("instanceName.required"),
       max: t("instanceName.max"),
@@ -91,7 +92,8 @@ function CreateInstanceDialog({
       const instanceService = createClient(InstanceService, transport);
       const promise = instanceService
         .createInstance({
-          friendlyName: formSchema.parse(values).friendlyName,
+          friendlyName:
+            Schema.decodeUnknownSync(formSchema)(values).friendlyName,
         })
         .then((r) => r);
       toast.promise(promise, {
@@ -126,7 +128,7 @@ function CreateInstanceDialog({
       friendlyName: "",
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value, formApi }) => {
       try {
