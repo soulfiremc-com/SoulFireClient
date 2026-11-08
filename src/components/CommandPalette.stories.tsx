@@ -658,6 +658,7 @@ export const ShortcutsAndActions: Story = {
     await userEvent.type(within(dialog).getByRole("combobox"), "dark theme");
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(document.documentElement).toHaveClass("dark"));
+    await closed();
     await userEvent.click(
       canvas.getByRole("heading", { name: "Command menu test" }),
     );
@@ -746,7 +747,10 @@ async function openMenu({ canvasElement, userEvent }: PlayContext) {
   });
   const menu = within(dialog);
   const input = menu.getByRole("combobox", { name: "Command menu" });
-  await waitFor(() => expect(input).toHaveFocus());
+  await waitFor(() => {
+    expect(dialog).toBeVisible();
+    expect(input).toHaveFocus();
+  });
   return { dialog, menu, input };
 }
 
