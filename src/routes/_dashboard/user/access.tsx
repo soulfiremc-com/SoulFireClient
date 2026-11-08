@@ -1,4 +1,4 @@
-import { createClient } from "@connectrpc/connect";
+import { ConnectError, createClient } from "@connectrpc/connect";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -198,7 +198,10 @@ function Content() {
                   success: t("access.token.success"),
                   error: (error) => {
                     console.error(error);
-                    return t("access.token.error");
+                    return {
+                      message: t("access.token.error"),
+                      description: ConnectError.from(error).rawMessage,
+                    };
                   },
                 },
               );
@@ -304,7 +307,10 @@ function Content() {
                   success: t("access.token.success"),
                   error: (error) => {
                     console.error(error);
-                    return t("access.token.error");
+                    return {
+                      message: t("access.token.error"),
+                      description: ConnectError.from(error).rawMessage,
+                    };
                   },
                 },
               );
