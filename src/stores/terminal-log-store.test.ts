@@ -168,6 +168,55 @@ test("batches stream updates and rejects history that completes after disposal",
   }
 });
 
+test("restarted sessions reject an older snapshot that ignored cancellation", async () => {
+  let finishOld!: () => void;
+  const oldGate = new Promise<void>((resolve) => {
+    finishOld = resolve;
+  });
+  let requests = 0;
+  const transport = createRouterTransport((router) =>
+    router.service(LogsService, {
+      async getPrevious() {
+        if (++requests === 1) {
+          await oldGate;
+          return { messages: [message(0)] };
+        }
+        return { messages: [message(20)] };
+      },
+      async *subscribe(_, context) {
+        yield { message: message(10) };
+        await new Promise<void>((resolve) =>
+          context.signal.addEventListener("abort", () => resolve(), {
+            once: true,
+          }),
+        );
+      },
+    }),
+  );
+  const session = createTerminalLogSession(
+    createClient(LogsService, transport),
+    scope(),
+  );
+  const stopOld = session.retain();
+  await delay(10);
+  stopOld();
+  const stopNew = session.retain();
+  try {
+    await delay(90);
+    finishOld();
+    await delay(10);
+    assert.deepEqual(
+      session.lines.get().map((entry) => Number(entry.id)),
+      [10, 20],
+    );
+    assert.equal(session.state.get().historyLoaded, true);
+  } finally {
+    finishOld();
+    stopOld();
+    stopNew();
+  }
+});
+
 test("streams reconnect after completion and stop retrying when released", async () => {
   let subscriptions = 0;
   const transport = createRouterTransport((router) => {
