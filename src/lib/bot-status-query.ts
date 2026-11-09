@@ -1,4 +1,6 @@
-import { createClient, type Transport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import type { Transport } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import { demoBotList } from "@/demo-data.ts";
 import { type BotListResponse, BotService } from "@/generated/soulfire/bot_pb";
@@ -18,8 +20,10 @@ export function botStatusQueryOptions(instanceId: string) {
         return demoBotList;
       }
 
-      const botService = createClient(BotService, transport);
-      return botService.getBotList({ instanceId }, { signal });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(
+        botService.getBotList({ instanceId }, { signal }),
+      );
     },
     refetchInterval: 3_000,
   });
@@ -37,9 +41,11 @@ export function botStatusRpcQueryOptions(
     queryFn: async ({ signal }): Promise<BotListResponse> =>
       transport === null
         ? demoBotList
-        : createClient(BotService, transport).getBotList(
-            { instanceId },
-            { signal },
+        : Effect.runPromise(
+            createRpcClient(BotService, transport).getBotList(
+              { instanceId },
+              { signal },
+            ),
           ),
   });
 }

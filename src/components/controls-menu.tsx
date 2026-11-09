@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQueryClient,
@@ -120,14 +122,13 @@ export default function ControlsMenu() {
       if (transport === null || botIds.length === 0) {
         return [];
       }
-      const response = await createClient(
-        BotService,
-        transport,
-      ).setBotsDesiredState({
-        instanceId: instanceInfo.id,
-        botIds,
-        desiredState,
-      });
+      const response = await Effect.runPromise(
+        createRpcClient(BotService, transport).setBotsDesiredState({
+          instanceId: instanceInfo.id,
+          botIds,
+          desiredState,
+        }),
+      );
       return response.bots;
     },
     [instanceInfo.id, transport],
@@ -136,9 +137,11 @@ export default function ControlsMenu() {
   const startBots = useCallback(
     async (count?: number) => {
       if (transport === null) return [];
-      const latest = await createClient(BotService, transport).getBotList({
-        instanceId: instanceInfo.id,
-      });
+      const latest = await Effect.runPromise(
+        createRpcClient(BotService, transport).getBotList({
+          instanceId: instanceInfo.id,
+        }),
+      );
       return setDesiredState(
         selectBotsToStart(
           latest.bots,
@@ -186,9 +189,12 @@ export default function ControlsMenu() {
     scope: { id: `bot-state-${instanceInfo.id}` },
     mutationFn: async () => {
       if (transport === null || desiredBotIds.length === 0) return [];
-      const promise = createClient(BotService, transport)
-        .restartBots({ instanceId: instanceInfo.id, botIds: desiredBotIds })
-        .then((response) => response.bots);
+      const promise = Effect.runPromise(
+        createRpcClient(BotService, transport).restartBots({
+          instanceId: instanceInfo.id,
+          botIds: desiredBotIds,
+        }),
+      ).then((response) => response.bots);
       toast.promise(promise, {
         loading: t("controls.restartToast.loading"),
         success: t("controls.restartToast.success"),

@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { create } from "@bufbuild/protobuf";
 import { ProxyCheckResponseSchema } from "@/generated/soulfire/proxy-check_pb";
 import { checkProxies } from "./proxy-check";
+import { rpcStream } from "./rpc";
 
 const failed = (address: string) =>
   create(ProxyCheckResponseSchema, {
@@ -23,7 +24,7 @@ test("consumes progress before removing failed proxies in one batch", async () =
     yield end();
   }
   const result = await checkProxies(
-    responses(),
+    rpcStream("Test.Check", () => responses()),
     new AbortController().signal,
     async (proxies) => {
       events.push(`remove ${proxies.map((p) => p.address).join(",")}`);
@@ -52,7 +53,7 @@ test("cancellation does not remove partially checked proxies", async () => {
   }
   await assert.rejects(
     checkProxies(
-      responses(),
+      rpcStream("Test.Check", () => responses()),
       abort.signal,
       async () => {
         removals++;
@@ -70,7 +71,7 @@ test("an incomplete stream or failed settings write cannot report success", asyn
   }
   await assert.rejects(
     checkProxies(
-      incomplete(),
+      rpcStream("Test.Check", () => incomplete()),
       new AbortController().signal,
       async () => {},
       () => {},
@@ -83,7 +84,7 @@ test("an incomplete stream or failed settings write cannot report success", asyn
   }
   await assert.rejects(
     checkProxies(
-      complete(),
+      rpcStream("Test.Check", () => complete()),
       new AbortController().signal,
       async () => {
         throw new Error("write failed");

@@ -1,4 +1,5 @@
-import { createClient, type Transport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import type { Transport } from "@connectrpc/connect";
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -49,7 +50,7 @@ export function useProxyCheck(
       current.current = { abort, toastId };
       const run = async () => {
         try {
-          const responses = createClient(ProxyCheckService, transport).check(
+          const responses = createRpcClient(ProxyCheckService, transport).check(
             { instanceId, proxy: proxies },
             { signal: abort.signal },
           );

@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
-import { Code, ConnectError, createClient } from "@connectrpc/connect";
+import { Effect, Schema } from "effect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -85,20 +86,24 @@ export function ManageUserDialog({
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       const promise: Promise<unknown> =
         props.mode === "add"
-          ? userService.createUser({
-              username: values.username,
-              email: values.email,
-              role: values.role,
-            })
-          : userService.updateUser({
-              id: props.user.id,
-              username: values.username,
-              email: values.email,
-              role: values.role,
-            });
+          ? Effect.runPromise(
+              userService.createUser({
+                username: values.username,
+                email: values.email,
+                role: values.role,
+              }),
+            )
+          : Effect.runPromise(
+              userService.updateUser({
+                id: props.user.id,
+                username: values.username,
+                email: values.email,
+                role: values.role,
+              }),
+            );
       toast.promise(promise, {
         loading:
           props.mode === "add"

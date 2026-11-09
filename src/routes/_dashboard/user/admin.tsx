@@ -1,6 +1,8 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
 import { timestampFromDate } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { UserRole } from "@/generated/soulfire/common_pb";
@@ -40,12 +42,14 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
           });
         }
 
-        const userService = createClient(UserService, transport);
-        const result = await userService.listUsers(
-          {},
-          {
-            signal: props.signal,
-          },
+        const userService = createRpcClient(UserService, transport);
+        const result = await Effect.runPromise(
+          userService.listUsers(
+            {},
+            {
+              signal: props.signal,
+            },
+          ),
         );
 
         return result;

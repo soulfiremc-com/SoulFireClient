@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
-import { createClient } from "@connectrpc/connect";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -103,14 +104,16 @@ function UrlDialog(props: ImportDialogProps) {
       const controller = new AbortController();
       activeDownload.current = controller;
       try {
-        const service = createClient(DownloadService, transport);
-        const response = await service.download(
-          {
-            instanceId: instanceInfo.id,
-            uri: value.url,
-            headers: [],
-          },
-          { signal: controller.signal },
+        const service = createRpcClient(DownloadService, transport);
+        const response = await Effect.runPromise(
+          service.download(
+            {
+              instanceId: instanceInfo.id,
+              uri: value.url,
+              headers: [],
+            },
+            { signal: controller.signal },
+          ),
         );
         const text = decodeTextDownload(response);
         if (!text.trim()) {

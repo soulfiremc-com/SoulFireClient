@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
 import { create } from "@bufbuild/protobuf";
-import { createClient, createRouterTransport } from "@connectrpc/connect";
+import { createRouterTransport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
 import {
   LogScopeSchema,
   LogStringSchema,
@@ -146,7 +147,7 @@ test("batches stream updates and rejects history that completes after disposal",
     });
   });
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope(),
   );
   let updates = 0;
@@ -194,7 +195,7 @@ test("restarted sessions reject an older snapshot that ignored cancellation", as
     }),
   );
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope(),
   );
   const stopOld = session.retain();
@@ -229,7 +230,7 @@ test("streams reconnect after completion and stop retrying when released", async
     });
   });
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope(),
   );
   const stop = session.retain();
@@ -301,7 +302,7 @@ test("reconnecting catches up retained history without duplicating live entries"
     });
   });
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope(),
   );
   const stop = session.retain();
@@ -366,7 +367,7 @@ test("the first live response queues catch-up behind an in-flight snapshot", asy
     });
   });
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope(),
   );
   const stop = session.retain();

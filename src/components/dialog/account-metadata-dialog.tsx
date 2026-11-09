@@ -1,8 +1,9 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
+import { Effect, Schema } from "effect";
 import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { useForm } from "@tanstack/react-form";
 import { useIsMutating, useMutation } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -173,12 +174,11 @@ function DialogContentInner({
         setEntries([]);
         return;
       }
-      const result = await createClient(
-        InstanceService,
-        transport,
-      ).getAccountMetadata(
-        { instanceId, accountId: account.profileId },
-        { signal: controller.signal },
+      const result = await Effect.runPromise(
+        createRpcClient(InstanceService, transport).getAccountMetadata(
+          { instanceId, accountId: account.profileId },
+          { signal: controller.signal },
+        ),
       );
       if (controller.signal.aborted || activeLoad.current !== controller)
         return;
@@ -230,14 +230,16 @@ function DialogContentInner({
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.setAccountMetadataEntry({
-        instanceId,
-        accountId: account.profileId,
-        namespace: entry.namespace,
-        key: entry.key,
-        value: jsonToValue(entry.value),
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.setAccountMetadataEntry({
+          instanceId,
+          accountId: account.profileId,
+          namespace: entry.namespace,
+          key: entry.key,
+          value: jsonToValue(entry.value),
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("account.metadata.addSuccess"));
@@ -260,22 +262,26 @@ function DialogContentInner({
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
+      const instanceService = createRpcClient(InstanceService, transport);
 
       await updateMetadataEntry(entry, {
         setEntry: (replacement) =>
-          instanceService.setAccountMetadataEntry({
-            instanceId,
-            accountId: account.profileId,
-            ...replacement,
-            value: jsonToValue(replacement.value),
-          }),
+          Effect.runPromise(
+            instanceService.setAccountMetadataEntry({
+              instanceId,
+              accountId: account.profileId,
+              ...replacement,
+              value: jsonToValue(replacement.value),
+            }),
+          ),
         deleteEntry: (original) =>
-          instanceService.deleteAccountMetadataEntry({
-            instanceId,
-            accountId: account.profileId,
-            ...original,
-          }),
+          Effect.runPromise(
+            instanceService.deleteAccountMetadataEntry({
+              instanceId,
+              accountId: account.profileId,
+              ...original,
+            }),
+          ),
       });
     },
     onError: (e) => {
@@ -290,13 +296,15 @@ function DialogContentInner({
     scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
     mutationFn: async (entry: { namespace: string; key: string }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.deleteAccountMetadataEntry({
-        instanceId,
-        accountId: account.profileId,
-        namespace: entry.namespace,
-        key: entry.key,
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.deleteAccountMetadataEntry({
+          instanceId,
+          accountId: account.profileId,
+          namespace: entry.namespace,
+          key: entry.key,
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("account.metadata.deleteSuccess"));

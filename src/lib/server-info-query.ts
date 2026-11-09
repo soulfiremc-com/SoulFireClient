@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import {
   demoServerSettings,
@@ -39,9 +41,8 @@ export function serverInfoQueryOptions(transport: Transport | null) {
           profile: convertFromServerProto(serverConfig),
         };
       }
-      const result = await createClient(ServerService, transport).getServerInfo(
-        {},
-        { signal },
+      const result = await Effect.runPromise(
+        createRpcClient(ServerService, transport).getServerInfo({}, { signal }),
       );
       return {
         ...result,

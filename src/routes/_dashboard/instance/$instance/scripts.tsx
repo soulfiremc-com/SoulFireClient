@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
-import { createClient } from "@connectrpc/connect";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -214,15 +215,17 @@ function Content() {
     mutationKey: ["script", "create", instanceId],
     mutationFn: async (value: (typeof createScriptSchema)["Type"]) => {
       if (!transport) throw new Error("No transport available");
-      const client = createClient(ScriptService, transport);
-      const result = await client.createScript({
-        instanceId,
-        name: value.name.trim() || tInstance("scripts.untitledScript"),
-        description: value.description.trim(),
-        nodes: [],
-        edges: [],
-        paused: true,
-      });
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.createScript({
+          instanceId,
+          name: value.name.trim() || tInstance("scripts.untitledScript"),
+          description: value.description.trim(),
+          nodes: [],
+          edges: [],
+          paused: true,
+        }),
+      );
       return result;
     },
     onSuccess: (response) => {
@@ -252,13 +255,17 @@ function Content() {
     mutationKey: ["script", "create-template", instanceId],
     mutationFn: async (template: ScriptTemplate) => {
       if (!transport) throw new Error("No transport available");
-      return createClient(ScriptService, transport).createScript({
-        instanceId,
-        name: tInstance(`scripts.templates.${template.id}.title`),
-        description: tInstance(`scripts.templates.${template.id}.description`),
-        ...scriptTemplateToProto(template),
-        paused: true,
-      });
+      return Effect.runPromise(
+        createRpcClient(ScriptService, transport).createScript({
+          instanceId,
+          name: tInstance(`scripts.templates.${template.id}.title`),
+          description: tInstance(
+            `scripts.templates.${template.id}.description`,
+          ),
+          ...scriptTemplateToProto(template),
+          paused: true,
+        }),
+      );
     },
     onSuccess: (response) => {
       if (isPostHogConfigured) {
@@ -307,8 +314,8 @@ function Content() {
     mutationKey: ["script", "delete", instanceId],
     mutationFn: async (scriptId: string) => {
       if (!transport) throw new Error("No transport available");
-      const client = createClient(ScriptService, transport);
-      await client.deleteScript({ instanceId, scriptId });
+      const client = createRpcClient(ScriptService, transport);
+      await Effect.runPromise(client.deleteScript({ instanceId, scriptId }));
     },
     onSuccess: () => {
       if (isPostHogConfigured) {
@@ -352,8 +359,10 @@ function Content() {
     mutationKey: ["script", "pause", instanceId],
     mutationFn: async (scriptId: string) => {
       if (!transport) throw new Error("No transport available");
-      const client = createClient(ScriptService, transport);
-      await client.deactivateScript({ instanceId, scriptId });
+      const client = createRpcClient(ScriptService, transport);
+      await Effect.runPromise(
+        client.deactivateScript({ instanceId, scriptId }),
+      );
     },
     onSuccess: () => {
       if (isPostHogConfigured) {

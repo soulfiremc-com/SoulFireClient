@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create } from "@bufbuild/protobuf";
-import { createClient, createRouterTransport } from "@connectrpc/connect";
+import { createRouterTransport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
 import { Effect, Stream } from "effect";
 import {
   LogScopeSchema,
@@ -36,7 +37,10 @@ test("a finite stream consumer aborts the underlying Connect subscription", asyn
       },
     }),
   );
-  const layer = terminalLogsLayer(createClient(LogsService, transport), scope);
+  const layer = terminalLogsLayer(
+    createRpcClient(LogsService, transport),
+    scope,
+  );
   await Effect.runPromise(
     Effect.gen(function* () {
       const logs = yield* TerminalLogs;
@@ -58,7 +62,7 @@ test("history failures retain a typed operation at the RPC adapter", async () =>
     Effect.result(
       Effect.flatMap(TerminalLogs, (logs) => logs.history).pipe(
         Effect.provide(
-          terminalLogsLayer(createClient(LogsService, transport), scope),
+          terminalLogsLayer(createRpcClient(LogsService, transport), scope),
         ),
       ),
     ),

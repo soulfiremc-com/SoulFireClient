@@ -1,10 +1,5 @@
 import { create, toBinary } from "@bufbuild/protobuf";
-import {
-  Code,
-  ConnectError,
-  createClient,
-  type Transport,
-} from "@connectrpc/connect";
+import { Code, ConnectError, type Transport } from "@connectrpc/connect";
 import {
   type PovFrame,
   type PovInputEvent,
@@ -14,9 +9,10 @@ import {
   PovService,
   type PovStreamFeedback,
 } from "@/generated/soulfire/pov_pb";
-import { Cause, Deferred, Effect, Fiber, Result } from "effect";
+import { Cause, Deferred, Effect, Fiber, Result, Stream } from "effect";
 import { povCodecs, povDisplayFps } from "@/lib/pov-display";
 import { PovInputQueue } from "@/lib/pov-input-queue";
+import { createRpcClient } from "@/lib/rpc";
 
 const CONNECTION_TIMEOUT_MS = 15_000;
 
@@ -35,7 +31,7 @@ export function startPovSession(
   onClipboard: (text: string) => void = () => {},
   onOpenUrl: (url: string) => void = () => {},
 ) {
-  const client = createClient(PovService, transport);
+  const client = createRpcClient(PovService, transport);
   const inputs = new PovInputQueue();
   let captured = false;
   let audioEnabled = false;
@@ -213,85 +209,90 @@ export function startPovSession(
                   lastSent = 0;
                   lastCaptured = false;
                   lastAudioEnabled = false;
-                  const watch = Effect.tryPromise({
-                    try: async (signal) => {
-                      for await (const frame of client.watch(
-                        {
-                          instanceId,
-                          botId,
-                          sessionId: current.id,
-                          ...size,
-                          maxFps: size.maxFps ?? displayFps,
-                          codecs,
-                        },
-                        {
-                          signal: AbortSignal.any([
-                            signal,
-                            current.abort.signal,
-                          ]),
-                        },
-                      )) {
-                        if (stopped || current.abort.signal.aborted) break;
-                        if (!current.socket) {
-                          current.token = frame.inputToken;
-                          if (!current.token)
-                            throw new ConnectError(
-                              "Update the server to use the POV input channel.",
-                              Code.Unimplemented,
-                            );
-                          const socket = new WebSocket(inputUrl);
-                          current.socket = socket;
-                          socket.onopen = () => {
-                            if (
-                              attempt === current &&
-                              !stopped &&
-                              !current.abort.signal.aborted
-                            ) {
-                              Deferred.doneUnsafe(
-                                current.connected,
-                                Effect.void,
-                              );
-                              ready = true;
-                              flush();
-                            }
-                          };
-                          socket.onmessage = (event) => {
-                            if (attempt !== current) return;
-                            try {
-                              const ack = BigInt(event.data);
-                              if (ack < current.acknowledged || ack > sequence)
-                                throw new Error(
-                                  "Invalid input acknowledgement",
+                  const watch = client
+                    .watch(
+                      {
+                        instanceId,
+                        botId,
+                        sessionId: current.id,
+                        ...size,
+                        maxFps: size.maxFps ?? displayFps,
+                        codecs,
+                      },
+                      { signal: current.abort.signal },
+                    )
+                    .pipe(
+                      Stream.takeWhile(
+                        () => !stopped && !current.abort.signal.aborted,
+                      ),
+                      Stream.runForEach((frame) =>
+                        Effect.try({
+                          try: () => {
+                            if (!current.socket) {
+                              current.token = frame.inputToken;
+                              if (!current.token)
+                                throw new ConnectError(
+                                  "Update the server to use the POV input channel.",
+                                  Code.Unimplemented,
                                 );
-                              current.acknowledged = ack;
-                            } catch (error) {
-                              reconnect(error);
+                              const socket = new WebSocket(inputUrl);
+                              current.socket = socket;
+                              socket.onopen = () => {
+                                if (
+                                  attempt === current &&
+                                  !stopped &&
+                                  !current.abort.signal.aborted
+                                ) {
+                                  Deferred.doneUnsafe(
+                                    current.connected,
+                                    Effect.void,
+                                  );
+                                  ready = true;
+                                  flush();
+                                }
+                              };
+                              socket.onmessage = (event) => {
+                                if (attempt !== current) return;
+                                try {
+                                  const ack = BigInt(event.data);
+                                  if (
+                                    ack < current.acknowledged ||
+                                    ack > sequence
+                                  )
+                                    throw new Error(
+                                      "Invalid input acknowledgement",
+                                    );
+                                  current.acknowledged = ack;
+                                } catch (error) {
+                                  reconnect(error);
+                                }
+                              };
+                              socket.onerror = socket.onclose = () => {
+                                if (
+                                  attempt === current &&
+                                  !current.abort.signal.aborted
+                                )
+                                  reconnect();
+                              };
                             }
-                          };
-                          socket.onerror = socket.onclose = () => {
+                            failures = 0;
                             if (
-                              attempt === current &&
-                              !current.abort.signal.aborted
-                            )
-                              reconnect();
-                          };
-                        }
-                        failures = 0;
-                        if (
-                          (frame.clipboardSequence === 0n ||
-                            frame.clipboardSequence === clipboardSequence) &&
-                          frame.clipboard !== undefined
-                        ) {
-                          clipboardSequence = 0n;
-                          onClipboard(frame.clipboard);
-                        }
-                        if (frame.openUrl !== undefined)
-                          onOpenUrl(frame.openUrl);
-                        onFrame(frame);
-                      }
-                    },
-                    catch: (error) => error,
-                  });
+                              (frame.clipboardSequence === 0n ||
+                                frame.clipboardSequence ===
+                                  clipboardSequence) &&
+                              frame.clipboard !== undefined
+                            ) {
+                              clipboardSequence = 0n;
+                              onClipboard(frame.clipboard);
+                            }
+                            if (frame.openUrl !== undefined)
+                              onOpenUrl(frame.openUrl);
+                            onFrame(frame);
+                          },
+                          catch: (error) => error,
+                        }),
+                      ),
+                    );
                   const deadline = Deferred.await(current.connected).pipe(
                     Effect.timeoutOrElse({
                       duration: CONNECTION_TIMEOUT_MS,

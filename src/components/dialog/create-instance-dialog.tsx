@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
-import { createClient } from "@connectrpc/connect";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
@@ -89,13 +90,13 @@ function CreateInstanceDialog({
         return;
       }
 
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .createInstance({
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.createInstance({
           friendlyName:
             Schema.decodeUnknownSync(formSchema)(values).friendlyName,
-        })
-        .then((r) => r);
+        }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("dialog.createInstance.createToast.loading"),
         success: (r) => {

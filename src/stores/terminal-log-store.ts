@@ -1,5 +1,6 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toJsonString } from "@bufbuild/protobuf";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { createStore } from "@tanstack/store";
 import { Effect, Fiber, Queue, Ref, Schedule, Stream } from "effect";
 import {
@@ -247,7 +248,7 @@ export function getTerminalLogSession(transport: Transport, scope: LogScope) {
     }
   }
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope,
     (active) => {
       entry.idleSince = active ? Number.POSITIVE_INFINITY : Date.now();

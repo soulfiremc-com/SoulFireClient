@@ -1,4 +1,6 @@
-import { createClient, type Transport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import type { Transport } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { ClientService } from "@/generated/soulfire/client_pb";
 
@@ -25,7 +27,7 @@ export async function verifyServerConnection(
   transport?: Transport,
 ) {
   const normalizedAddress = normalizeServerAddress(address);
-  const client = createClient(
+  const client = createRpcClient(
     ClientService,
     transport ??
       createGrpcWebTransport({
@@ -38,6 +40,8 @@ export async function verifyServerConnection(
         ],
       }),
   );
-  await client.getClientData({}, { signal, timeoutMs: 15_000 });
+  await Effect.runPromise(
+    client.getClientData({}, { signal, timeoutMs: 15_000 }),
+  );
   return normalizedAddress;
 }

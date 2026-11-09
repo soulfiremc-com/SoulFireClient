@@ -1,8 +1,9 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
+import { Effect, Schema } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -376,10 +377,12 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
         setLoadError(true);
         return;
       }
-      const result = await createClient(
-        InstanceService,
-        transport,
-      ).getInstanceMetadata({ instanceId }, { signal: controller.signal });
+      const result = await Effect.runPromise(
+        createRpcClient(InstanceService, transport).getInstanceMetadata(
+          { instanceId },
+          { signal: controller.signal },
+        ),
+      );
       if (controller.signal.aborted || activeLoad.current !== controller)
         return;
       setEntries(convertProtoToEntries(result.metadata));
@@ -428,13 +431,15 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.setInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-        value: jsonToValue(entry.value),
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.setInstanceMetadataEntry({
+          instanceId,
+          namespace: entry.namespace,
+          key: entry.key,
+          value: jsonToValue(entry.value),
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.addSuccess"));
@@ -457,22 +462,26 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
+      const instanceService = createRpcClient(InstanceService, transport);
 
       await updateMetadataEntry(entry, {
         setEntry: (replacement) =>
-          instanceService.setInstanceMetadataEntry({
-            instanceId,
+          Effect.runPromise(
+            instanceService.setInstanceMetadataEntry({
+              instanceId,
 
-            ...replacement,
-            value: jsonToValue(replacement.value),
-          }),
+              ...replacement,
+              value: jsonToValue(replacement.value),
+            }),
+          ),
         deleteEntry: (original) =>
-          instanceService.deleteInstanceMetadataEntry({
-            instanceId,
+          Effect.runPromise(
+            instanceService.deleteInstanceMetadataEntry({
+              instanceId,
 
-            ...original,
-          }),
+              ...original,
+            }),
+          ),
       });
     },
     onError: (e) => {
@@ -487,12 +496,14 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     scope: { id: `instance-metadata-${instanceId}` },
     mutationFn: async (entry: { namespace: string; key: string }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.deleteInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.deleteInstanceMetadataEntry({
+          instanceId,
+          namespace: entry.namespace,
+          key: entry.key,
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.deleteSuccess"));
