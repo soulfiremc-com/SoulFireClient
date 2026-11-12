@@ -40,10 +40,11 @@
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "check": "bun run lint && bun run format:check",
-    "prepare": "husky",
-    "pre-commit": "lint-staged",
+    "prepare": "node scripts/install-hooks.mjs",
+    "pre-commit": "lefthook run pre-commit",
     "protocol:generate": "buf generate",
-    "test:cast": "bun test electron/cast src/lib/query-session.test.ts"
+    "test:cast": "bun test electron/cast src/lib/query-session.test.ts",
+    "test:hooks": "node --test scripts/install-hooks.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
@@ -158,8 +159,7 @@
     "electron": "^44.0.0",
     "electron-builder": "^26.8.1",
     "esbuild": "^0.28.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^17.0.0",
+    "lefthook": "2.2.2",
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",
     "playwright": "^1.64.1",
@@ -173,15 +173,6 @@
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^5.0.5",
     "yaml": "^2.8.3"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
-      "oxlint --fix --no-error-on-unmatched-pattern",
-      "oxfmt --no-error-on-unmatched-pattern"
-    ],
-    "*.{json,jsonc,css,md,mdx,yml,yaml}": [
-      "oxfmt --no-error-on-unmatched-pattern"
-    ]
   },
   "build": {
     "appId": "com.soulfiremc.soulfire",
