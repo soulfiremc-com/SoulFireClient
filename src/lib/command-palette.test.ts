@@ -40,7 +40,7 @@ void i18n.init({
   initAsync: false,
 });
 const t = (key: string, options?: Record<string, string | number>) =>
-  i18n.t(key, options);
+  i18n.t(key, options ?? {});
 const project = (
   id: string,
   permissions: InstancePermission[] = [InstancePermission.READ_INSTANCE],
