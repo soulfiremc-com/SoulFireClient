@@ -63,16 +63,34 @@
         "respawned": "відродився",
         "disconnected": "відключено",
         "unknown": "змінив стан"
+      },
+      "pause": "Призупинити",
+      "resume": "Відновити",
+      "paused": "Відображення призупинене. Нова активність все ще збирається.",
+      "following": "Живі оновлення",
+      "reconnecting": "Повторне підключення до живої стрічки...",
+      "emptyFilter": "Немає активності, що відповідає цьому фільтру.",
+      "filterLabel": "Фільтрувати живу стрічку",
+      "filters": {
+        "all": "Усе",
+        "chat": "Чат",
+        "lifecycle": "Події"
+      },
+      "columns": {
+        "time": "Час",
+        "bot": "Бот",
+        "message": "Повідомлення"
       }
     },
     "bots": {
       "title": "Боти",
       "viewAll": "Переглянути всіх {{total}} ботів",
-      "viewAllShort": "Переглянути все"
+      "viewAllShort": "Переглянути все",
+      "detailsFor": "Деталі бота для {{name}}"
     },
     "timeline": {
-      "title": "Активність",
-      "viewAll": "Переглянути все",
+      "title": "Останні дії",
+      "viewAll": "Переглянути історію",
       "empty": "Ще немає зафіксованої активності.",
       "noPermission": "У вас немає дозволу переглядати журнал перевірок.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Детальна метрика",
       "composition": "Композиція світу"
-    }
+    },
+    "loadError": "Не вдалося завантажити найновіші дані."
   },
   "proxy": {
+    "transport": {
+      "network": "Мережева адреса",
+      "unix": "Unix-сокет"
+    },
     "getProxies": "Отримати проксі",
     "addProxies": "Додати проксі",
     "filterPlaceholder": "Фільтрувати проксі...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Ключ",
       "valuePlaceholder": "Значення (JSON)",
       "noEntries": "Немає записів метаданих. Додайте один вище.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Повторити спробу",
       "addSuccess": "Запис додано",
       "addError": "Не вдалося додати запис",
       "updateError": "Не вдалося оновити запис",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Інвентар",
+      "actionRejected": "",
       "hotbar": "Гаряча панель",
       "main": "Основний інвентар",
       "items": "предмети",
@@ -446,17 +473,24 @@
         "beaconEffects": "Ефекти маяка",
         "crafterSlots": "Управління слотами",
         "lecternControls": "Управління книгою",
-        "actions": "Дії"
+        "actions": "Дії",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Ввід тексту",
-        "anvilRename": "Перейменувати предмет"
+        "anvilRename": "Перейменувати предмет",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Вміст книги",
         "emptyPage": "(Порожня сторінка)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Сторінка {{current}} з {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Вигляд бота",
@@ -479,6 +513,7 @@
       "offline": "Бот офлайн. Дії доступні лише коли бот підключений."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Управління рухом",
       "movement": "Рух (WASD)",
       "forward": "Рухатися вперед (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Скрипт деактивовано користувачем",
     "executionFailed": "Помилка виконання скрипта",
     "executionError": "Помилка виконання: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Вузол запущено: {{nodeId}}",
     "nodeCompleted": "Вузол завершено: {{nodeId}}",
     "nodeError": "Помилка вузла: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Повернутися до скриптів",
         "save": "Зберегти",
         "saveTooltip": "Зберегти скрипт",
@@ -707,6 +745,16 @@
         "tooltip": "Переглянути зміни"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Суха перевірка",
         "title": "Скрипт сухої перевірки",
         "description": "Запустіть скрипт з обраного тригеру з тестовими вхідними даними.",
@@ -715,7 +763,11 @@
         "triggerDescription": "Оберіть вузол-тригер, щоб виконати його з тестовими вхідними значеннями.",
         "mockInputs": "Тестові вхідні дані",
         "valuePlaceholder": "Значення {{type}}",
-        "start": "Почати суху перевірку"
+        "start": "Почати суху перевірку",
+        "stats_one": "",
+        "stats_few": "",
+        "stats_many": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Квоти скрипта",
@@ -735,8 +787,13 @@
         "maxStateStoreEntriesDescription": "Максимальна кількість записів у сховищі стану скрипта",
         "disableTimeouts": "Вимкнути тайм-аути",
         "disableTimeoutsDescription": "Вимикає тайм-аути для окремих вузлів та звʼязків даних",
-        "save": "Зберегти квоти"
+        "save": "Зберегти квоти",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

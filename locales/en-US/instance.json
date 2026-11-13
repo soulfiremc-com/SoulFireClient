@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Raw instance output is available here when you need to inspect console details.",
+    "logsDescription": "Raw project output is available here when you need to inspect console details.",
     "summary": {
       "accounts": "Accounts",
       "proxies": "Proxies",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Live feed",
-      "empty": "Waiting for instance activity...",
+      "empty": "Waiting for project activity...",
       "noPermission": "You do not have permission to view the live feed.",
       "lifecycle": {
         "connecting": "is connecting",
@@ -63,22 +63,41 @@
         "respawned": "respawned",
         "disconnected": "disconnected",
         "unknown": "changed state"
+      },
+      "pause": "Pause",
+      "resume": "Resume",
+      "paused": "Display paused. New activity is still being collected.",
+      "following": "Live updates",
+      "reconnecting": "Reconnecting to the live feed...",
+      "emptyFilter": "No activity matches this filter.",
+      "filterLabel": "Filter live feed",
+      "filters": {
+        "all": "All",
+        "chat": "Chat",
+        "lifecycle": "Events"
+      },
+      "columns": {
+        "time": "Time",
+        "bot": "Bot",
+        "message": "Message"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "View all {{total}} bots",
-      "viewAllShort": "View all"
+      "viewAllShort": "View all",
+      "detailsFor": "Bot details for {{name}}"
     },
     "timeline": {
-      "title": "Activity",
-      "viewAll": "View all",
+      "title": "Recent actions",
+      "viewAll": "View history",
       "empty": "No recorded activity yet.",
       "noPermission": "You do not have permission to view the audit log.",
       "types": {
         "executeCommand": "ran a command: {{data}}",
         "botDesiredStateChange": "changed bot desired state",
         "botRestart": "restarted bots",
+        "pluginRpc": "called a plugin RPC",
         "unknown": "performed an action"
       }
     },
@@ -93,7 +112,8 @@
     "detailed": {
       "title": "Detailed metrics",
       "composition": "World composition"
-    }
+    },
+    "loadError": "Could not load the latest data."
   },
   "proxy": {
     "transport": {
@@ -110,6 +130,23 @@
       "noProxies": "No proxies to import"
     },
     "import": {
+      "review": {
+        "title": "Review proxy import",
+        "description": "Check the proxies before importing. Correct rejected lines so no entries are discarded.",
+        "input": "Proxy list",
+        "accepted_one": "{{count}} proxy ready to import.",
+        "accepted_other": "{{count}} proxies ready to import.",
+        "rejected_one": "{{count}} line could not be parsed. Correct line {{lines}} or choose another import format.",
+        "rejected_other": "{{count}} lines could not be parsed. Correct lines {{lines}} or choose another import format.",
+        "confirm": "Import proxies",
+        "importing": "Importing proxies...",
+        "error": {
+          "connection": "Could not reach the SoulFire server. Your list is still here. Check the connection and try again.",
+          "authentication": "Your token was rejected or has expired. Sign in again, then retry the import.",
+          "permission": "You do not have permission to import proxies in this project.",
+          "unexpected": "Could not import the proxies. Check the addresses and credentials, then try again. Your list is still here."
+        }
+      },
       "proxyType": "Proxy Type",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -184,7 +221,7 @@
     },
     "unknownError": "Unknown error",
     "types": {
-      "OFFLINE": "Offline",
+      "OFFLINE": "Offline account",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Credentials)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Device Code)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
@@ -253,7 +290,7 @@
     "contextMenu": {
       "openConfig": "Open Config",
       "openMetadata": "Open Metadata",
-      "copyProfileId": "Copy Profile ID",
+      "copyProfileId": "Copy profile ID",
       "copyUsername": "Copy Username"
     },
     "config": {
@@ -273,7 +310,7 @@
       "selectPage": "Select a settings page",
       "noSearchResults": "No settings match this search.",
       "matchesInheritedValue": "Matches inherited value",
-      "instanceValue": "Instance value",
+      "instanceValue": "Project value",
       "defaultValue": "Default value",
       "resetOverride": "Reset override"
     },
@@ -292,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Purchase Accounts via Ravealts",
       "description": "Buy Minecraft accounts using your Ravealts API key.",
-      "apiKeyLabel": "API Key",
       "apiKeyPlaceholder": "Enter your Ravealts API key",
-      "validate": "Validate",
-      "validating": "Validating...",
-      "keyValid": "Key validated",
-      "keyInvalid": "Invalid API key",
-      "credits": "Credits: {{credits}}",
-      "stockTitle": "Available Stock",
       "noStock": "No accounts in stock",
       "accountType": "Account Type",
-      "amount": "Amount (1-10)",
-      "purchase": "Purchase & Import",
-      "purchasing": "Purchasing...",
-      "purchaseSuccess": "Purchased {{count}} accounts, importing...",
-      "purchaseError": "Purchase failed: {{message}}",
       "networkError": "Connection to the Ravealts API failed",
       "outOfStock": "Selected type is out of stock",
       "insufficientBalance": "Not enough credits",
@@ -322,6 +346,9 @@
       "keyPlaceholder": "Key",
       "valuePlaceholder": "Value (JSON)",
       "noEntries": "No metadata entries. Add one above.",
+      "loadError": "Failed to load metadata",
+      "loadErrorDescription": "Retry before adding or changing entries.",
+      "retryLoad": "Retry",
       "addSuccess": "Entry added",
       "addError": "Failed to add entry",
       "updateError": "Failed to update entry",
@@ -332,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Instance Metadata",
-    "description": "Manage persistent metadata entries for this instance. Each entry has a namespace, key, and JSON value.",
+    "title": "Project metadata",
+    "description": "Manage persistent metadata entries for this project. Each entry has a namespace, key, and JSON value.",
     "namespacePlaceholder": "Namespace",
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Value (JSON)",
     "noEntries": "No metadata entries. Add one above.",
+    "loadError": "Failed to load metadata",
+    "loadErrorDescription": "Retry before adding or changing entries.",
+    "retryLoad": "Retry",
     "addSuccess": "Entry added",
     "addError": "Failed to add entry",
     "updateError": "Failed to update entry",
@@ -349,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "Search bots...",
     "onlineCount": "{{online}} online / {{total}} total",
-    "noBots": "No bots configured. Add accounts from the Account Settings page.",
+    "noBots": "No bots yet. Each account in this project becomes one bot.",
     "noBotsFound": "No bots match your search.",
     "loadingMore": "Loading more...",
     "showingCount": "Showing {{loaded}} of {{total}}",
@@ -374,12 +404,12 @@
       "waiting": "Waiting",
       "stopped": "Stopped"
     },
-    "backToBots": "Back to Bots",
+    "backToBots": "All bots",
     "tabs": {
-      "overview": "Overview",
+      "overview": "Live view",
       "inventory": "Inventory",
-      "controls": "Controls",
-      "terminal": "Terminal"
+      "controls": "Controls and dialogs",
+      "terminal": "Logs and commands"
     },
     "comingSoon": "Coming Soon",
     "terminalPanel": {
@@ -397,8 +427,15 @@
       "offline": "Bot is offline. Position data is only available when the bot is connected."
     },
     "chatPanel": {
-      "title": "Chat Messages",
-      "description": "Chat messages from this bot will appear here in a future update."
+      "title": "Chat and events",
+      "description": "Chat messages from this bot will appear here in a future update.",
+      "label": "Send as this bot",
+      "placeholder": "Type a message, or /command",
+      "send": "Send",
+      "help": "Everyone on the Minecraft server can see public chat. Start with / to run a command.",
+      "offlineHint": "The bot must be connected to send chat.",
+      "demo": "The demo does not send chat.",
+      "sendError": "Could not send the message"
     },
     "commandPanel": {
       "title": "Bot Commands",
@@ -406,14 +443,14 @@
       "description": "Bot-scoped commands will be available in a future update."
     },
     "povPanel": {
-      "title": "Bot POV",
+      "title": "Bot view",
       "capture": "Capture",
       "refresh": "Refresh",
       "auto": "Auto",
       "startAutoRefresh": "Start auto-refresh (1 second interval)",
       "stopAutoRefresh": "Stop auto-refresh",
       "clickToCapture": "Click Capture to render the bot's point of view",
-      "offline": "Bot is offline. POV rendering is only available when the bot is connected."
+      "offline": "The bot is disconnected. Bot view is available when the bot connects."
     },
     "statsPanel": {
       "title": "Bot Stats",
@@ -433,6 +470,7 @@
     },
     "inventoryPanel": {
       "title": "Inventory",
+      "actionRejected": "The inventory action was rejected.",
       "hotbar": "Hotbar",
       "main": "Main Inventory",
       "items": "items",
@@ -450,17 +488,24 @@
         "beaconEffects": "Beacon Effects",
         "crafterSlots": "Slot Controls",
         "lecternControls": "Book Controls",
-        "actions": "Actions"
+        "actions": "Actions",
+        "creativeTabs": "Creative Tabs"
       },
       "textInput": {
         "title": "Text Input",
-        "anvilRename": "Rename Item"
+        "anvilRename": "Rename Item",
+        "creativeSearch": "Search Items"
       },
       "bookPages": {
         "title": "Book Content",
         "emptyPage": "(Empty page)",
+        "previousPage": "Previous page",
+        "nextPage": "Next page",
         "pageIndicator": "Page {{current}} of {{total}}"
-      }
+      },
+      "creativeCatalogHint": "Catalog: click to copy one, Shift+click or middle click to copy a stack. Click the same item to add one, or right click to remove one from the cursor.",
+      "creativeTrashHint": "Click: destroy carried items | Shift+click: clear the entire inventory",
+      "destroyItem": "Destroy Item"
     },
     "visualPanel": {
       "title": "Bot View",
@@ -483,6 +528,7 @@
       "offline": "Bot is offline. Actions are only available when the bot is connected."
     },
     "movementPanel": {
+      "updateServer": "Update SoulFire to synchronize movement controls.",
       "title": "Movement Control",
       "movement": "Movement (WASD)",
       "forward": "Move Forward (W)",
@@ -514,6 +560,49 @@
       "dismiss": "Dismiss",
       "submit": "Submit",
       "offline": "Bot is offline. Dialogs are only available when the bot is connected."
+    },
+    "addFirst": "Add accounts",
+    "filterLabel": "Filter by status",
+    "filterAll": "All",
+    "noBotsInState": "No bots have this status right now.",
+    "runningHint": "Should run, not connected yet",
+    "displayState": {
+      "connected": "Connected",
+      "starting": "Starting",
+      "retrying": "Retrying",
+      "failed": "Failed",
+      "stopping": "Stopping",
+      "stopped": "Stopped"
+    },
+    "detailsToggle": "More details",
+    "profileId": "Profile ID",
+    "notice": {
+      "starting": "This bot should run and is connecting to the Minecraft server.",
+      "stopped": "This bot is stopped. Start it to join the Minecraft server.",
+      "failed": "This bot should run, but its connection failed",
+      "retrying": "This bot should run and is trying to reconnect",
+      "dialogOpen": {
+        "title": "The server opened a dialog",
+        "description": "The bot waits until someone answers it.",
+        "action": "Answer dialog"
+      }
+    },
+    "pov": {
+      "title": "Live view",
+      "watch": "Watch",
+      "stopWatching": "Stop watching",
+      "watchBot": "Watch this bot",
+      "takeControl": "Take control",
+      "release": "Release control",
+      "fullscreen": "Fullscreen",
+      "detach": "Detach",
+      "offline": "Bot is not connected",
+      "connecting": "Connecting to the live view...",
+      "idle": "Watch shows what the bot sees. It does not control the bot.",
+      "watching": "View only. Take control to send your keyboard and mouse to this bot. {{shortcut}} gives them back.",
+      "controlling": "You control this bot. Your keyboard and mouse go to Minecraft. Press {{shortcut}} to release.",
+      "touchHint": "Take control to show touch controls.",
+      "touchControlling": "You control this bot. Use Leave control to stop."
     }
   },
   "metrics": {
@@ -581,12 +670,12 @@
   },
   "scripts": {
     "title": "Visual Scripts",
-    "description": "Create automation scripts using a visual node-based editor.",
+    "description": "Scripts make your bots react to events. Build them by connecting nodes.",
     "experimentalTitle": "Experimental Feature",
     "experimentalWarning": "This feature is experimental. Future updates can break existing scripts. Use it with caution.",
-    "createScript": "Create Script",
-    "createScriptTitle": "Create New Script",
-    "createScriptDescription": "Create a new visual script for this instance. Scripts can automate bot actions and respond to events.",
+    "createScript": "New blank script",
+    "createScriptTitle": "New blank script",
+    "createScriptDescription": "Give the script a name. You add a trigger and actions in the editor. New scripts start off.",
     "scriptName": "Script Name",
     "scriptNamePlaceholder": "Enter script name...",
     "scriptDescription": "Description",
@@ -594,58 +683,61 @@
     "create": "Create",
     "createSuccess": "Script created successfully",
     "createError": "Failed to create script",
-    "noScripts": "No Scripts Yet",
-    "noScriptsDescription": "Create your first script to automate bot actions using the visual node-based editor.",
-    "createFirstScript": "Create Your First Script",
-    "running": "Running",
-    "paused": "Paused",
+    "noScripts": "Start with a template",
+    "noScriptsDescription": "Each template is a working script that you can change. Templates start off, so nothing runs until you turn them on.",
+    "createFirstScript": "Start from a blank script",
+    "running": "On",
+    "paused": "Off",
     "nodes": "nodes",
     "noDescription": "No description",
     "edit": "Edit",
-    "pause": "Pause",
-    "pauseSuccess": "Script paused",
-    "pauseError": "Failed to pause script",
-    "resume": "Resume",
-    "resumeSuccess": "Script resumed",
-    "resumeError": "Failed to resume script",
+    "pause": "Turn off",
+    "pauseSuccess": "Script turned off",
+    "pauseError": "Could not turn off the script",
+    "resume": "Turn on",
+    "resumeSuccess": "Script turned on",
+    "resumeError": "Could not turn on the script",
     "delete": "Delete",
     "deleteSuccess": "Script deleted successfully",
     "deleteError": "Failed to delete script",
     "saveSuccess": "Script saved successfully",
     "saveError": "Failed to save script",
-    "activateSuccess": "Script activated",
-    "activateError": "Failed to activate script",
-    "deactivateSuccess": "Script deactivated",
+    "activateSuccess": "Script turned on",
+    "activateError": "Could not turn on the script",
+    "deactivateSuccess": "Script turned off",
     "untitledScript": "Untitled Script",
-    "saveFirstBeforeActivating": "Save the script first before activating",
-    "activating": "Activating script...",
-    "activated": "Script activated",
+    "saveFirstBeforeActivating": "Save the script before you turn it on",
+    "activating": "Turning on script...",
+    "activated": "Script turned on",
     "executionCompleted": "Script completed",
     "executionCompletedSuccess": "Script completed successfully",
-    "deactivated": "Script deactivated",
-    "deactivatedByUser": "Script deactivated by user",
+    "deactivated": "Script turned off",
+    "deactivatedByUser": "Script turned off by user",
     "executionFailed": "Script execution failed",
     "executionError": "Execution error: {{error}}",
+    "monitoringError": "Monitoring connection error: {{error}}",
+    "monitoringDisconnected": "Lost the script monitoring connection. The script may still be running.",
     "nodeStarted": "Node started: {{nodeId}}",
     "nodeCompleted": "Node completed: {{nodeId}}",
     "nodeError": "Node error: {{error}}",
     "contextMenu": {
       "edit": "Edit Script",
-      "pause": "Pause",
-      "resume": "Resume",
+      "pause": "Turn off",
+      "resume": "Turn on",
       "delete": "Delete Script",
       "copyScriptName": "Copy Script Name",
       "copyScriptId": "Copy Script ID"
     },
     "editor": {
       "toolbar": {
+        "actions": "Script actions",
         "backToScripts": "Back to Scripts",
         "save": "Save",
-        "saveTooltip": "Save script",
-        "resume": "Resume",
-        "resumeTooltip": "Resume script execution",
-        "pause": "Pause",
-        "pauseTooltip": "Pause script execution",
+        "saveTooltip": "Save this version on the server",
+        "resume": "Turn on",
+        "resumeTooltip": "Listen for this script's triggers",
+        "pause": "Turn off",
+        "pauseTooltip": "Stop listening for triggers. The script stays saved.",
         "unsaved": "Unsaved",
         "unsavedChanges": "Unsaved changes",
         "clearCanvas": "Clear canvas",
@@ -656,16 +748,17 @@
         "import": "Import script",
         "exportSuccess": "Script exported successfully",
         "importSuccess": "Script imported successfully",
-        "importError": "Failed to import script"
+        "importError": "Failed to import script",
+        "resumeBlocked": "Fix the errors in the script check first"
       },
       "palette": {
-        "title": "Node Palette",
+        "title": "Nodes",
         "search": "Search nodes..."
       },
       "logs": {
-        "title": "Execution Logs",
+        "title": "Run logs",
         "clearTitle": "Clear logs",
-        "noLogs": "No logs yet. Run the script to see execution logs.",
+        "noLogs": "No runs yet. Logs appear when a trigger fires while the script is on, or during a test run.",
         "entries_one": "{{count}} entry",
         "entries_other": "{{count}} entries"
       },
@@ -709,15 +802,28 @@
         "tooltip": "Review changes"
       },
       "dryRun": {
-        "tooltip": "Dry Run",
-        "title": "Dry Run Script",
-        "description": "Run a script from a selected trigger with mock inputs.",
+        "saveFirst": "Save your changes before you start a test run.",
+        "unavailable": "Select a trigger and connect to the server.",
+        "inputHint": "Use plain text for strings and JSON for other values. Leave a field empty to use its default.",
+        "invalidInput": "Enter a valid {{type}} value for {{name}}.",
+        "running": "Running...",
+        "cancel": "Cancel run",
+        "completed": "Test run completed.",
+        "failed": "Test run failed. Check the error details.",
+        "cancelled": "Test run cancelled.",
+        "incomplete": "The connection ended before the test run completed.",
+        "stats_one": "{{count}} node executed",
+        "stats_other": "{{count}} nodes executed",
+        "tooltip": "Run one trigger with test values",
+        "title": "Test run",
+        "description": "Runs this script once from a trigger with values that you enter. The script does not need to be on.",
         "triggerNode": "Trigger Node",
         "selectTrigger": "Select a trigger...",
-        "triggerDescription": "Pick the trigger node to execute with mock input values.",
-        "mockInputs": "Mock Inputs",
+        "triggerDescription": "Pick the trigger to run with these test values.",
+        "mockInputs": "Test values",
         "valuePlaceholder": "{{type}} value",
-        "start": "Start Dry Run"
+        "start": "Start test run",
+        "button": "Test run"
       },
       "quotas": {
         "tooltip": "Script Quotas",
@@ -737,8 +843,548 @@
         "maxStateStoreEntriesDescription": "Maximum entries in the script state store",
         "disableTimeouts": "Disable Timeouts",
         "disableTimeoutsDescription": "Disables per-node and data edge timeouts",
-        "save": "Save Quotas"
+        "save": "Save Quotas",
+        "invalidInteger": "Enter a whole number between {{min}} and {{max}}."
+      }
+    },
+    "lifecycle": {
+      "title": "How scripts work",
+      "saved": {
+        "term": "Saved",
+        "description": "The server stores this version. Saving a script that is on applies the change right away."
+      },
+      "on": {
+        "term": "On",
+        "description": "The server listens for the script's triggers. Off means that nothing listens, and the script stays saved."
+      },
+      "run": {
+        "term": "Run",
+        "description": "One trigger firing and its connected nodes executing. Logs show each run."
+      },
+      "test": {
+        "term": "Test run",
+        "description": "Runs one trigger with values that you enter, without turning the script on. Save first."
+      }
+    },
+    "firstUse": {
+      "title": "This script is empty",
+      "description": "Every script starts with a trigger: the event that makes it run. Add one, or start from a template.",
+      "trigger": "Add a trigger",
+      "browse": "All nodes",
+      "template": "Or use a template",
+      "connectHint": "Next, drag from a port to add a connected node, or open the node menu with"
+    },
+    "health": {
+      "title": "Script check",
+      "description": "The SoulFire server checks your graph as you edit. Select a problem to go to its node.",
+      "empty": "Empty",
+      "ok": "No problems",
+      "errors_one": "{{count}} error",
+      "errors_other": "{{count}} errors",
+      "warnings_one": "{{count}} warning",
+      "warnings_other": "{{count}} warnings",
+      "noProblems": "The server found no problems."
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "Greet after joining",
+        "description": "Each bot waits two seconds after it joins the server, then says hello."
+      },
+      "respawn-on-death": {
+        "title": "Respawn after death",
+        "description": "Each bot respawns one second after it dies."
+      },
+      "reply-to-chat": {
+        "title": "Reply to a chat keyword",
+        "description": "When a bot sees !hello in chat, it replies. Change the keyword and the reply."
+      },
+      "health-report": {
+        "title": "Log bot health every minute",
+        "description": "Every minute, writes the health of each connected bot to the script logs."
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "Use lowercase letters, digits, underscores, periods, or hyphens.",
+    "invalidKey": "Use lowercase letters, digits, underscores, periods, hyphens, or slashes."
+  },
+  "providers": {
+    "provider": "Provider",
+    "action": "Action",
+    "product": "Product",
+    "protocol": "Protocol",
+    "progress": "Progress",
+    "openShop": "Open {{provider}}",
+    "connectionHelp": "Connection help",
+    "openCheckout": "Open {{provider}} checkout",
+    "createAccount": "Create a {{provider}} account",
+    "connectBuy": "Buy with {{provider}}",
+    "connectImport": "Connect {{provider}}",
+    "connect": "Connect",
+    "back": "Back",
+    "allProvidersBack": "All providers",
+    "reviewOrder": "Review order",
+    "refresh": "Refresh stock",
+    "done": "Done",
+    "buyMore": "Buy more",
+    "affiliateDisclosure": "Purchases through these links or codes may support SoulFire at no extra cost to you.",
+    "accountsDescription": "Compare providers, then buy and import Minecraft accounts here or check out on their site.",
+    "proxiesDescription": "Compare providers, then import your proxies here or check out on their site.",
+    "accountFileImport": "Buy on the provider's site, then use Add accounts to import the account file.",
+    "proxyFileImport": "Buy on the provider's site, then use Add proxies to import the proxy list.",
+    "allProviders": "Compare all providers",
+    "demo": "Connect to a SoulFire server to purchase or import resources.",
+    "filterLabel": "Filter providers",
+    "filters": {
+      "all": "All",
+      "buy": "Buy here",
+      "import": "Import",
+      "checkout": "Checkout only"
+    },
+    "capabilityShort": {
+      "buy": "Buy here",
+      "import": "Import",
+      "recover": "Order recovery",
+      "checkout": "Checkout only"
+    },
+    "capability": {
+      "buy": "Buy with your provider balance after a review step",
+      "import": "Import directly to this project",
+      "recover": "Reload earlier orders and import them"
+    },
+    "inSoulFire": "What you can do in SoulFire",
+    "youNeed": "What you need",
+    "requirement": {
+      "apiKey": "A {{provider}} API key",
+      "proxyLogin": "Your proxy username and password",
+      "accountSign": "Your account sign value",
+      "orderId": "An order or list ID",
+      "subaccountId": "A subaccount ID",
+      "balance": "Balance on your {{provider}} account to buy"
+    },
+    "listedOffer": "Listed offer",
+    "tags": {
+      "residential": "Residential",
+      "datacenter": "Datacenter",
+      "isp": "ISP",
+      "ipv6": "IPv6",
+      "mobile": "Mobile",
+      "freeTier": "Free tier",
+      "cookieAccounts": "Cookie accounts",
+      "fullAccess": "Full access",
+      "instantDelivery": "Instant delivery"
+    },
+    "catalog": {
+      "webshare": {
+        "summary": "Residential and datacenter proxies, with 10 free proxies to get started."
+      },
+      "proxy-seller": {
+        "summary": "Dedicated datacenter, ISP and IPv6 proxies you can order right here.",
+        "offer": "15% off IPv4, IPv6 and ISP proxies with this code. The price check shows your final total."
+      },
+      "proxyscrape": {
+        "summary": "Shared and dedicated datacenter proxies through your subaccount, plus residential plans."
+      },
+      "iproyal": {
+        "summary": "Import ISP and datacenter orders by ID. Residential plans are also on sale."
+      },
+      "decodo": {
+        "summary": "Generate sticky residential HTTP endpoints from your proxy login."
+      },
+      "oxylabs": {
+        "summary": "Import enterprise dedicated datacenter lists by ID."
+      },
+      "thordata": {
+        "summary": "Import the static ISP proxies on your account.",
+        "offer": "20% off at Thordata checkout with this code."
+      },
+      "bright-data": {
+        "summary": "Residential, datacenter and mobile networks for larger deployments."
+      },
+      "legionproxy": {
+        "summary": "Residential, static ISP, datacenter and IPv6 proxies."
+      },
+      "plainproxies": {
+        "summary": "Datacenter and residential proxies from a German provider."
+      },
+      "flameproxies": {
+        "summary": "Pay-as-you-go residential, mobile, datacenter and ISP proxies."
+      },
+      "flashproxy": {
+        "summary": "Pay-as-you-go residential, datacenter, ISP, mobile and IPv6 proxies."
+      },
+      "ravealts": {
+        "summary": "Spend your credits here, and purchased accounts import right away.",
+        "offer": "10% off with this code when you buy credits at Ravealts checkout."
+      },
+      "fernan": {
+        "summary": "Cookie and full-access accounts with live stock, cooldowns and order recovery.",
+        "offer": "10% off with this referral code. SoulFire sends it with your order, and you can change or remove it."
+      },
+      "localts": {
+        "summary": "Cookie and full-access accounts with live stock, volume discounts and order recovery.",
+        "offer": "5% off checkout when you register through this link. Localts purchases made here do not send a code."
+      },
+      "alts-fast": {
+        "summary": "Full-access accounts, pre-checked before delivery.",
+        "offer": "10% off at checkout when you register through this link."
+      },
+      "kynoselling": {
+        "summary": "Budget cookie accounts and full-access accounts with automated delivery.",
+        "offer": "10% off at KynoSelling checkout with this code."
+      }
+    },
+    "steps": {
+      "connect": "Connect",
+      "choose": "Choose",
+      "review": "Review",
+      "import": "Import"
+    },
+    "noAccountTitle": "New to {{provider}}?",
+    "noAccountBody": "Create an account or add funds on the provider's site, then come back with your API details.",
+    "modeBuy": "Buy new",
+    "modeRecover": "Use an earlier order",
+    "recentOrders": "Recent orders",
+    "noRecentOrders": "No recent orders found. Enter an order ID below.",
+    "orderId": "Order ID",
+    "loadOrder": "Load order",
+    "importFormat": "Account format",
+    "importAccounts_one": "Import {{count}} account",
+    "importAccounts_other": "Import {{count}} accounts",
+    "checkDelivery": "Check delivery",
+    "balance": "Balance",
+    "balanceAfter": "Balance after purchase",
+    "total": "Total",
+    "unitPrice": "Price per account",
+    "inStock_one": "{{count}} in stock",
+    "inStock_other": "{{count}} in stock",
+    "outOfStock": "Out of stock",
+    "onCooldown": "On cooldown",
+    "noProducts": "No products are available right now. Check the shop or refresh later.",
+    "liveCatalog": "Available now",
+    "lowBalanceTitle": "Add funds to continue",
+    "lowBalanceBody": "Your balance does not cover this order. Add funds on the provider's site, then refresh.",
+    "addFunds": "Add funds at {{provider}}",
+    "purchaseComplete": "Purchase complete",
+    "orderLoaded": "Order loaded",
+    "placedRefresh": "Order placed. Refresh stock before you place another order.",
+    "uncertainTitle": "Check your orders before buying again",
+    "checkOrders": "Check recent orders",
+    "referralCode": "Referral code",
+    "noCode": "None",
+    "removeCode": "Remove code",
+    "showValue": "Show value",
+    "hideValue": "Hide value",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "copyLabel": "Copy {{value}}",
+    "importExisting": "Import existing proxies",
+    "buyWithBalance": "Buy with provider balance",
+    "direct": "Datacenter / ISP",
+    "backbone": "Residential backbone",
+    "sharedDatacenter": "Shared datacenter",
+    "dedicatedDatacenter": "Dedicated datacenter",
+    "proxyscrapeCredentials": "Enable proxy credential authentication in ProxyScrape before loading proxies.",
+    "fields": {
+      "apiKey": "API key",
+      "username": "Proxy username",
+      "password": "Proxy password",
+      "resourceId": "Order or list ID",
+      "sign": "Account sign",
+      "limit": "Maximum proxies",
+      "country": "Country (2-letter code, optional)"
+    },
+    "resourceHelp": {
+      "proxyscrape": "Copy the subaccount ID from your ProxyScrape dashboard.",
+      "iproyal": "Enter the numeric ID of an ISP or datacenter order.",
+      "oxylabs": "Enter the UUID of an enterprise dedicated datacenter proxy list."
+    },
+    "scope": {
+      "webshare": "Imports active proxies from the selected Webshare proxy pool.",
+      "proxy-seller": "Imports active IPv4, IPv6 or ISP proxies with their protocol-specific ports.",
+      "proxyscrape": "Imports datacenter proxies using your subaccount credentials.",
+      "iproyal": "Imports proxies from an ISP or datacenter order using its protocol-specific ports.",
+      "decodo": "Generates residential HTTP proxies with sticky sessions. These endpoints do not support Bedrock UDP.",
+      "oxylabs": "Imports enterprise dedicated datacenter HTTP proxies. These endpoints do not support Bedrock UDP.",
+      "thordata": "Imports the available static ISP proxies from your account."
+    },
+    "continue": "Continue",
+    "loadProxies": "Load proxies",
+    "alreadyImported": "These proxies are already in this project.",
+    "orderCountry": "Country (3-letter code)",
+    "quantity": "Quantity",
+    "coupon": "Affiliate or discount code",
+    "sellerPurchaseHelp": "You buy a one-month plan using your Proxy-Seller balance. You can change or remove the code.",
+    "checkPrice": "Check price",
+    "purchase": "Purchase for {{total}} {{currency}}",
+    "period": "Plan length",
+    "oneMonth": "1 month",
+    "orderCreatedTitle": "Order {{orderId}} created",
+    "orderCreated": "Activation can take a minute. Load the proxies when you are ready to import this order.",
+    "optionalOrderId": "Order ID (optional)",
+    "optionalOrderHelp": "Load only one order, for example after a purchase.",
+    "purchaseUncertain": "The purchase result could not be confirmed. Check your provider orders before placing another order.",
+    "keyPrivacy": "Connection credentials stay in memory while this dialog is open. Requests go directly to the provider.",
+    "errors": {
+      "network": "Could not reach the provider. Try the desktop app if your browser blocks the connection.",
+      "authentication": "The provider rejected your credentials or API permissions. Check your connection settings.",
+      "rejected": "The provider rejected the request. Check your plan, available balance and API permissions.",
+      "response": "The provider returned an unsupported response. Check the connection settings or import its exported file.",
+      "empty": "No items are available. Check stock or wait for order activation.",
+      "limit": "Use a whole number between 1 and 10,000 proxies.",
+      "priceChanged": "The price changed or the balance is insufficient. Check the price again before purchasing.",
+      "save": "Could not save proxies to this project. Try importing the loaded proxies again."
+    },
+    "proxy": {
+      "stage": {
+        "connect": "Connect your account",
+        "choose": "Choose what to import",
+        "review": "Review your proxies"
+      },
+      "stageHelp": {
+        "connect": "Enter the login details from your provider dashboard.",
+        "choose": "Pick the proxies to load. Nothing is added until you confirm.",
+        "review": "Check the list, then add it to this project."
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "Connect your account",
+        "choose": "Choose your proxies",
+        "review": "Review your order",
+        "import": "Order placed"
+      },
+      "stageHelp": {
+        "connect": "Enter the API key from your Proxy-Seller dashboard.",
+        "choose": "Pick a product, country and quantity. You see the exact total before paying.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "Load the new proxies and import them."
+      }
+    },
+    "previewMore_one": "And {{count}} more",
+    "previewMore_other": "And {{count}} more",
+    "preview_one": "{{count}} proxy is ready to import. Existing entries will be skipped.",
+    "preview_other": "{{count}} proxies are ready to import. Existing entries will be skipped.",
+    "importProxies_one": "Import {{count}} proxy",
+    "importProxies_other": "Import {{count}} proxies",
+    "localts": {
+      "description": "Buy accounts with Localts credits or import an earlier order.",
+      "stage": {
+        "connect": "Connect Localts",
+        "choose": "Choose your accounts",
+        "review": "Review your order",
+        "import": "Import your accounts"
+      },
+      "stageHelp": {
+        "connect": "Your API key loads your credits and recent orders.",
+        "choose": "Pick a product, or reload an earlier order.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "Choose the format the product delivers. Localts cookie values are converted to Microsoft login cookies."
+      },
+      "keyHelp": "Find your API key in your Localts account.",
+      "credits": "{{balance}} credits",
+      "priceStock": "{{price}} credits, {{stock}} in stock",
+      "perAccount": "{{price}} credits each",
+      "discountTier": "{{percent}}% off from {{quantity}}",
+      "reviewNote": "Volume discounts are included in the total. SoulFire checks the price, stock and balance again before it charges you.",
+      "purchase": "Pay {{total}} credits",
+      "purchased": "Delivery can take a moment while Localts packages your order.",
+      "cookieTokens": "Localts MSAAUTH cookie tokens",
+      "packagingTitle": "Your order is still being packaged",
+      "packagingBody": "You were not charged again. Check delivery in a moment, or come back later with the order ID.",
+      "refundedTitle": "This order was refunded",
+      "refundedBody": "It has no accounts to import.",
+      "orderStatus_one": "Order status: {{status}}. {{count}} delivered item.",
+      "orderStatus_other": "Order status: {{status}}. {{count}} delivered items.",
+      "quantityHelp": "Use a whole number between 1 and 1,000 accounts."
+    },
+    "fernan": {
+      "description": "Buy accounts using your Fernan balance or import an earlier purchase.",
+      "stage": {
+        "connect": "Connect Fernan's Club",
+        "choose": "Choose your accounts",
+        "review": "Review your order",
+        "import": "Import your accounts"
+      },
+      "stageHelp": {
+        "connect": "Your API key loads your balance, stock, cooldowns and recent purchases.",
+        "choose": "Pick a product, or reload an earlier order.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "Choose how SoulFire should log in to these accounts."
+      },
+      "keyHelp": "Find your API key in your Fernan's Club account.",
+      "perAccount": "{{price}} each",
+      "listedTotal": "Listed total",
+      "limit_one": "You can purchase {{count}} account now. Reconnect to refresh stock and cooldowns.",
+      "limit_other": "You can purchase {{count}} accounts now. Reconnect to refresh stock and cooldowns.",
+      "referralHelp": "3 to 16 letters or numbers. Leave it empty to order without a code.",
+      "total": "This total is before any referral discount. Fernan's Club applies the discount when you buy, and the next step shows what you paid.",
+      "purchase_one": "Buy {{count}} account",
+      "purchase_other": "Buy {{count}} accounts",
+      "delivered_one": "{{count}} account delivered.",
+      "delivered_other": "{{count}} accounts delivered.",
+      "paid": "Paid: {{total}} from your Fernan balance."
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "Connect Ravealts",
+        "choose": "Choose your accounts",
+        "review": "Review your order",
+        "import": "Accounts on the way"
+      },
+      "stageHelp": {
+        "connect": "Your API key loads your available credits.",
+        "choose": "Pick an account type and quantity.",
+        "review": "Nothing is charged until you confirm.",
+        "import": "SoulFire is logging in to the accounts now."
+      },
+      "keyHelp": "SoulFire saves this key on this device so you do not need to enter it again.",
+      "quantityHelp": "Ravealts allows up to 10 accounts per order.",
+      "priceNote": "Ravealts charges your credits when you buy and does not report the price beforehand. Check the current price at your Ravealts dashboard if you are unsure.",
+      "purchase_one": "Buy {{count}} account",
+      "purchase_other": "Buy {{count}} accounts",
+      "importing_one": "{{count}} account was delivered and sent to import. The progress notice shows the result.",
+      "importing_other": "{{count}} accounts were delivered and sent to import. The progress notice shows the result."
+    },
+    "keyPrivacySaved": "SoulFire saves this API key on this device after it connects. Requests go directly to the provider."
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "{{count}} bot is ready. None are running.",
+      "noneRunning_other": "{{count}} bots are ready. None are running.",
+      "allConnected_one": "{{count}} bot is connected",
+      "allConnected_other": "All {{count}} running bots are connected",
+      "partial_one": "{{connected}} of {{count}} running bot is connected",
+      "partial_other": "{{connected}} of {{count}} running bots are connected"
+    },
+    "state": {
+      "connected": "connected",
+      "starting": "starting",
+      "retrying": "retrying",
+      "failed": "failed",
+      "stopping": "stopping",
+      "stopped": "stopped"
+    },
+    "attention": "Bots that need attention",
+    "groupTitle": {
+      "failed_one": "{{count}} bot failed:",
+      "failed_other": "{{count}} bots failed:",
+      "retrying_one": "{{count}} bot is retrying:",
+      "retrying_other": "{{count}} bots are retrying:"
+    },
+    "kind": {
+      "unreachable": {
+        "title": "cannot reach the Minecraft server",
+        "description": "Check that the Minecraft server is online and that the address in Bot Settings is correct."
+      },
+      "account": {
+        "title": "account login rejected",
+        "description": "The Minecraft server did not accept these accounts. Check that the server supports this account type, or refresh the accounts."
+      },
+      "throttled": {
+        "title": "the server limits connections",
+        "description": "Bots keep retrying on their own. A longer join delay can help."
+      },
+      "version": {
+        "title": "Minecraft version mismatch",
+        "description": "Choose the Minecraft version that the server runs in Bot Settings."
+      },
+      "proxy": {
+        "title": "proxy connection problem",
+        "description": "Check these proxies, or remove the proxies that do not work."
+      },
+      "other": {
+        "title": "see the reported error",
+        "description": "SoulFire has no specific fix for this error. Open the bot or the logs for details."
+      }
+    },
+    "fix": {
+      "checkServer": "Check server settings",
+      "slowDown": "Change join delay",
+      "accounts": "Open accounts",
+      "proxies": "Open proxies"
+    },
+    "restartGroup_one": "Restart {{count}} bot",
+    "restartGroup_other": "Restart {{count}} bots",
+    "restartError": "Could not restart bots",
+    "namesMore": "{{names}} and {{count}} more",
+    "startHint": "Use Start bots to connect them to the Minecraft server.",
+    "startHintNoPermission": "You can view these bots, but you do not have permission to start them."
+  },
+  "setup": {
+    "title": "Connect your first bot",
+    "description": "Four short steps. You can change everything later.",
+    "later": "Set up later",
+    "optional": "Optional",
+    "continue": "Continue",
+    "stepDone": "Done",
+    "noPermission": "You do not have permission to change this. Ask the project owner for access.",
+    "expert": "Already know what you want?",
+    "expertLink": "Open all settings",
+    "server": {
+      "title": "Choose the Minecraft server",
+      "description": "This is the server your bots join. Enter its address and the Minecraft edition and version it runs.",
+      "summary": "{{address}}, {{version}}",
+      "versionHint": "The version list includes Java and Bedrock versions. Your accounts must match the edition."
+    },
+    "accounts": {
+      "title": "Add bot accounts",
+      "description": "Each bot uses one account. Choose how to get accounts for this project.",
+      "summary_one": "{{count}} account ready",
+      "summary_other": "{{count}} accounts ready",
+      "summaryEmpty": "No accounts yet",
+      "offline": {
+        "title": "Create offline accounts",
+        "description": "Free and instant. These work only on servers that allow offline mode, such as your own test server.",
+        "action": "Create accounts"
+      },
+      "existing": {
+        "title": "Use accounts that you have",
+        "description": "Sign in with Microsoft or import a list of accounts.",
+        "action": "Add or import"
+      },
+      "provider": {
+        "title": "Get accounts from a provider",
+        "description": "Optional. For servers that need Microsoft accounts when you do not have enough of your own.",
+        "action": "Compare providers"
+      }
+    },
+    "proxies": {
+      "title": "Add proxies",
+      "description": "Bots can connect from this server's IP address, so you can skip this. Add proxies if the Minecraft server limits connections per IP address.",
+      "summary_one": "{{count}} proxy",
+      "summary_other": "{{count}} proxies",
+      "summaryNone": "No proxies. Bots use the SoulFire server's IP address.",
+      "skip": "Continue without proxies",
+      "add": "Add my proxies",
+      "provider": "Compare providers"
+    },
+    "start": {
+      "title": "Review and start",
+      "summary": "Start your bots and watch them connect",
+      "reviewServer": "Minecraft server",
+      "reviewVersion": "Version",
+      "reviewAccounts": "Accounts",
+      "reviewProxies": "Proxies",
+      "defaultAddress": "Bots will join {{address}}, the default address. That is correct only if the Minecraft server runs on the same machine as the SoulFire server.",
+      "needAccounts": "Add accounts first",
+      "count": "Bots to start",
+      "action_one": "Start {{count}} bot",
+      "action_other": "Start {{count}} bots",
+      "help": "Starting one bot first is a quick way to test the connection.",
+      "error": "Could not start bots"
+    },
+    "connecting": {
+      "title": "Connecting to the Minecraft server",
+      "description": "This usually takes a few seconds. The bot retries by itself if the server does not respond.",
+      "seeStatus": "See bot status"
+    },
+    "connected": {
+      "title": "{{name}} is connected",
+      "description": "Watch what the bot sees, take control, or start more bots from the overview.",
+      "open": "Open bot view",
+      "done": "Go to overview"
+    },
+    "backToSetup": "Back to setup"
   }
 }

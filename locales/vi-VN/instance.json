@@ -63,16 +63,34 @@
         "respawned": "đã hồi sinh",
         "disconnected": "đã ngắt kết nối",
         "unknown": "đã thay đổi trạng thái"
+      },
+      "pause": "Tạm dừng",
+      "resume": "Tiếp tục",
+      "paused": "Hiển thị đã tạm dừng. Hoạt động mới vẫn đang được thu thập.",
+      "following": "Cập nhật trực tiếp",
+      "reconnecting": "Đang kết nối lại với luồng trực tiếp...",
+      "emptyFilter": "Không có hoạt động nào phù hợp với bộ lọc này.",
+      "filterLabel": "Lọc luồng trực tiếp",
+      "filters": {
+        "all": "Tất cả",
+        "chat": "Trò chuyện",
+        "lifecycle": "Sự kiện"
+      },
+      "columns": {
+        "time": "Thời gian",
+        "bot": "Bot",
+        "message": "Tin nhắn"
       }
     },
     "bots": {
       "title": "Bot",
       "viewAll": "Xem tất cả {{total}} bot",
-      "viewAllShort": "Xem tất cả"
+      "viewAllShort": "Xem tất cả",
+      "detailsFor": "Chi tiết bot cho {{name}}"
     },
     "timeline": {
-      "title": "Hoạt động",
-      "viewAll": "Xem tất cả",
+      "title": "Hành động gần đây",
+      "viewAll": "Xem lịch sử",
       "empty": "Chưa có hoạt động nào được ghi nhận.",
       "noPermission": "Bạn không có quyền xem nhật ký kiểm tra.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Chỉ số chi tiết",
       "composition": "Thành phần thế giới"
-    }
+    },
+    "loadError": "Không thể tải dữ liệu mới nhất."
   },
   "proxy": {
+    "transport": {
+      "network": "Địa chỉ mạng",
+      "unix": "Ổ cắm Unix"
+    },
     "getProxies": "Lấy Proxy",
     "addProxies": "Thêm Proxy",
     "filterPlaceholder": "Lọc proxy...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Khóa",
       "valuePlaceholder": "Giá trị (JSON)",
       "noEntries": "Không có mục siêu dữ liệu nào. Thêm một mục ở trên.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Thử lại",
       "addSuccess": "Đã thêm mục",
       "addError": "Không thể thêm mục",
       "updateError": "Không thể cập nhật mục",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Kho đồ",
+      "actionRejected": "",
       "hotbar": "Thanh nhanh",
       "main": "Kho chính",
       "items": "vật phẩm",
@@ -446,17 +473,24 @@
         "beaconEffects": "Hiệu ứng beacon",
         "crafterSlots": "Điều khiển ô",
         "lecternControls": "Điều khiển sách",
-        "actions": "Hành động"
+        "actions": "Hành động",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Nhập văn bản",
-        "anvilRename": "Đổi tên vật phẩm"
+        "anvilRename": "Đổi tên vật phẩm",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Nội dung sách",
         "emptyPage": "(Trang trống)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Trang {{current}} trên tổng số {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Giao diện Bot",
@@ -479,6 +513,7 @@
       "offline": "Bot đang ngoại tuyến. Các hành động chỉ khả dụng khi bot đang kết nối."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Điều khiển di chuyển",
       "movement": "Di chuyển (WASD)",
       "forward": "Tiến lên (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Script đã bị người dùng vô hiệu hóa",
     "executionFailed": "Thực thi script thất bại",
     "executionError": "Lỗi thực thi: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node đã bắt đầu: {{nodeId}}",
     "nodeCompleted": "Node đã hoàn thành: {{nodeId}}",
     "nodeError": "Lỗi Node: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Quay lại Scripts",
         "save": "Lưu",
         "saveTooltip": "Lưu script",
@@ -704,6 +742,16 @@
         "tooltip": "Xem lại thay đổi"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Chạy thử (Dry Run)",
         "title": "Chạy thử Script",
         "description": "Chạy script từ một trigger đã chọn với dữ liệu thử nghiệm.",
@@ -712,7 +760,8 @@
         "triggerDescription": "Chọn nút trigger để thực thi với các giá trị thử nghiệm.",
         "mockInputs": "Dữ liệu thử nghiệm",
         "valuePlaceholder": "Giá trị {{type}}",
-        "start": "Bắt đầu chạy thử"
+        "start": "Bắt đầu chạy thử",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Hạn mức script",
@@ -732,8 +781,13 @@
         "maxStateStoreEntriesDescription": "Số mục tối đa trong kho trạng thái của script",
         "disableTimeouts": "Tắt giới hạn thời gian",
         "disableTimeoutsDescription": "Tắt giới hạn thời gian cho từng node và data edge",
-        "save": "Lưu hạn mức"
+        "save": "Lưu hạn mức",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

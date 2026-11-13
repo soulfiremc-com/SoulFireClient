@@ -63,16 +63,34 @@
         "respawned": "เกิดใหม่แล้ว",
         "disconnected": "ตัดการเชื่อมต่อแล้ว",
         "unknown": "เปลี่ยนสถานะ"
+      },
+      "pause": "หยุดชั่วคราว",
+      "resume": "ดำเนินการต่อ",
+      "paused": "การแสดงผลถูกหยุดชั่วคราว กิจกรรมใหม่ยังคงถูกรวบรวมอยู่ต่อไป.",
+      "following": "อัปเดตสด",
+      "reconnecting": "กำลังเชื่อมต่อกับฟีดสดอีกครั้ง...",
+      "emptyFilter": "ไม่พบกิจกรรมที่ตรงกับตัวกรองนี้.",
+      "filterLabel": "กรองฟีดสด",
+      "filters": {
+        "all": "ทั้งหมด",
+        "chat": "แชท",
+        "lifecycle": "เหตุการณ์"
+      },
+      "columns": {
+        "time": "เวลา",
+        "bot": "บอท",
+        "message": "ข้อความ"
       }
     },
     "bots": {
       "title": "บอท",
       "viewAll": "ดูบอททั้งหมด {{total}} ตัว",
-      "viewAllShort": "ดูทั้งหมด"
+      "viewAllShort": "ดูทั้งหมด",
+      "detailsFor": "รายละเอียดบอทสำหรับ {{name}}"
     },
     "timeline": {
-      "title": "กิจกรรม",
-      "viewAll": "ดูทั้งหมด",
+      "title": "การกระทำล่าสุด",
+      "viewAll": "ดูประวัติทั้งหมด",
       "empty": "ยังไม่มีกิจกรรมบันทึกไว้",
       "noPermission": "คุณไม่มีสิทธิ์ในการดูบันทึกตรวจสอบ",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "เมตริกส์แบบละเอียด",
       "composition": "องค์ประกอบของโลก"
-    }
+    },
+    "loadError": "ไม่สามารถโหลดข้อมูลล่าสุดได้."
   },
   "proxy": {
+    "transport": {
+      "network": "ที่อยู่เครือข่าย",
+      "unix": "ซ็อกเก็ต Unix"
+    },
     "getProxies": "รับพร็อกซี",
     "addProxies": "เพิ่มพร็อกซี",
     "filterPlaceholder": "กรองพร็อกซี...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "คีย์",
       "valuePlaceholder": "ค่า (JSON)",
       "noEntries": "ไม่มีรายการข้อมูลเมตา กรุณาเพิ่มรายการด้านบน",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "ลองใหม่อีกครั้ง",
       "addSuccess": "เพิ่มรายการแล้ว",
       "addError": "ไม่สามารถเพิ่มรายการได้",
       "updateError": "ไม่สามารถอัปเดตรายการได้",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "อินเวนทอรี",
+      "actionRejected": "",
       "hotbar": "แถบร้อน",
       "main": "ช่องเก็บของหลัก",
       "items": "ไอเทม",
@@ -446,17 +473,24 @@
         "beaconEffects": "เอฟเฟกต์บีคอน",
         "crafterSlots": "ควบคุมช่อง",
         "lecternControls": "ควบคุมหนังสือ",
-        "actions": "การดำเนินการ"
+        "actions": "การดำเนินการ",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "กรอกข้อความ",
-        "anvilRename": "เปลี่ยนชื่อไอเทม"
+        "anvilRename": "เปลี่ยนชื่อไอเทม",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "เนื้อหาหนังสือ",
         "emptyPage": "(หน้าว่าง)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "หน้า {{current}} จาก {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "มุมมองบอท",
@@ -479,6 +513,7 @@
       "offline": "บอทออฟไลน์ การกระทำจะใช้ได้ต่อเมื่อบอทเชื่อมต่ออยู่เท่านั้น"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "การควบคุมการเคลื่อนไหว",
       "movement": "การเคลื่อนไหว (WASD)",
       "forward": "เดินหน้า (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "สคริปต์ถูกปิดใช้งานโดยผู้ใช้",
     "executionFailed": "การทำงานของสคริปต์ล้มเหลว",
     "executionError": "ข้อผิดพลาดขณะรัน: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "เริ่มโหนด: {{nodeId}}",
     "nodeCompleted": "โหนดเสร็จสิ้น: {{nodeId}}",
     "nodeError": "ข้อผิดพลาดโหนด: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "กลับไปที่สคริปต์",
         "save": "บันทึก",
         "saveTooltip": "บันทึกสคริปต์",
@@ -704,6 +742,16 @@
         "tooltip": "ตรวจสอบการเปลี่ยนแปลง"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "ทดสอบจำลอง (Dry Run)",
         "title": "ทดสอบจำลองสคริปต์",
         "description": "รันสคริปต์จากทริกเกอร์ที่เลือกด้วยอินพุตจำลอง",
@@ -712,7 +760,8 @@
         "triggerDescription": "เลือกโหนดทริกเกอร์เพื่อรันด้วยค่าจำลองอินพุต",
         "mockInputs": "อินพุตจำลอง",
         "valuePlaceholder": "ค่าประเภท {{type}}",
-        "start": "เริ่มทดสอบจำลอง"
+        "start": "เริ่มทดสอบจำลอง",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "โควต้าสคริปต์",
@@ -732,8 +781,13 @@
         "maxStateStoreEntriesDescription": "จำนวนรายการสูงสุดใน State Store ของสคริปต์",
         "disableTimeouts": "ปิดใช้งานการหมดเวลา",
         "disableTimeoutsDescription": "ปิดใช้งานการตั้งเวลาหมดเวลาในแต่ละโหนดและ edge ข้อมูล",
-        "save": "บันทึกโควต้า"
+        "save": "บันทึกโควต้า",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

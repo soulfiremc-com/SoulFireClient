@@ -63,16 +63,34 @@
         "respawned": "воскрес",
         "disconnected": "отключён",
         "unknown": "изменил состояние"
+      },
+      "pause": "Пауза",
+      "resume": "Возобновить",
+      "paused": "Отображение приостановлено. Новая активность всё ещё собирается.",
+      "following": "Живое обновление",
+      "reconnecting": "Переподключение к живой ленте...",
+      "emptyFilter": "Нет активности, соответствующей этому фильтру.",
+      "filterLabel": "Фильтр живой ленты",
+      "filters": {
+        "all": "Все",
+        "chat": "Чат",
+        "lifecycle": "События"
+      },
+      "columns": {
+        "time": "Время",
+        "bot": "Бот",
+        "message": "Сообщение"
       }
     },
     "bots": {
       "title": "Боты",
       "viewAll": "Показать всех {{total}} ботов",
-      "viewAllShort": "Показать всех"
+      "viewAllShort": "Показать всех",
+      "detailsFor": "Детали бота для {{name}}"
     },
     "timeline": {
-      "title": "Активность",
-      "viewAll": "Показать всех",
+      "title": "Последние действия",
+      "viewAll": "Просмотреть историю",
       "empty": "Активность ещё не записана.",
       "noPermission": "У вас нет разрешения на просмотр журнала аудита.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Подробные метрики",
       "composition": "Состав мира"
-    }
+    },
+    "loadError": "Не удалось загрузить последние данные."
   },
   "proxy": {
+    "transport": {
+      "network": "Сетевой адрес",
+      "unix": "Юникс-сокет"
+    },
     "getProxies": "Получить прокси",
     "addProxies": "Добавить прокси",
     "filterPlaceholder": "Фильтр прокси...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Ключ",
       "valuePlaceholder": "Значение (JSON)",
       "noEntries": "Нет метаданных. Добавьте запись выше.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Повторить",
       "addSuccess": "Запись добавлена",
       "addError": "Ошибка добавления записи",
       "updateError": "Ошибка обновления записи",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Инвентарь",
+      "actionRejected": "",
       "hotbar": "Быстрый доступ",
       "main": "Основной инвентарь",
       "items": "предметы",
@@ -446,17 +473,24 @@
         "beaconEffects": "Эффекты маяка",
         "crafterSlots": "Управление слотами",
         "lecternControls": "Управление книгой",
-        "actions": "Действия"
+        "actions": "Действия",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Ввод текста",
-        "anvilRename": "Переименовать предмет"
+        "anvilRename": "Переименовать предмет",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Содержимое книги",
         "emptyPage": "(Пустая страница)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Страница {{current}} из {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Вид от бота",
@@ -479,6 +513,7 @@
       "offline": "Бот офлайн. Действия доступны только при подключении бота."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Управление движением",
       "movement": "Движение (WASD)",
       "forward": "Двигаться вперед (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Скрипт деактивирован пользователем",
     "executionFailed": "Ошибка выполнения скрипта",
     "executionError": "Ошибка выполнения: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Узел запущен: {{nodeId}}",
     "nodeCompleted": "Узел завершён: {{nodeId}}",
     "nodeError": "Ошибка узла: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Назад к скриптам",
         "save": "Сохранить",
         "saveTooltip": "Сохранить скрипт",
@@ -707,6 +745,16 @@
         "tooltip": "Просмотреть изменения"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Пробный запуск",
         "title": "Скрипт пробного запуска",
         "description": "Запустите скрипт от выбранного триггера с имитацией входных данных.",
@@ -715,7 +763,11 @@
         "triggerDescription": "Выберите триггер-узел для выполнения с тестовыми входными значениями.",
         "mockInputs": "Тестовые входные данные",
         "valuePlaceholder": "Значение {{type}}",
-        "start": "Запустить пробный запуск"
+        "start": "Запустить пробный запуск",
+        "stats_one": "",
+        "stats_few": "",
+        "stats_many": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Квоты скрипта",
@@ -735,8 +787,13 @@
         "maxStateStoreEntriesDescription": "Максимальное количество записей в хранилище состояния скрипта",
         "disableTimeouts": "Отключить тайм-ауты",
         "disableTimeoutsDescription": "Отключить тайм-ауты для каждого узла и передачи данных по ребру",
-        "save": "Сохранить квоты"
+        "save": "Сохранить квоты",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

@@ -15,6 +15,11 @@
     },
     "connectionFailed": "SoulFire 서버 연결에 실패했습니다."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "찾을 수 없음",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "친근한 이름",
           "placeholder": "내 마인크래프트 봇",
-          "description": "이 인스턴스에 부여할 이름입니다.",
-          "min": "친근한 이름은 최소 3자 이상이어야 합니다.",
-          "max": "친근한 이름은 최대 32자까지 사용할 수 있습니다.",
-          "regex": "친근한 이름은 영문자, 숫자, 공백만 사용할 수 있습니다"
+          "description": "이 인스턴스에 부여할 이름입니다."
         },
         "cancel": "취소",
         "create": "생성"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "데이터 다운로드 중...",
           "success": "데이터가 불러와졌습니다!",
-          "error": "데이터 다운로드에 실패했습니다"
+          "error": "데이터 다운로드에 실패했습니다",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,18 @@
       "error": "봇 중지에 실패했습니다."
     },
     "permissionDenied": "이 인스턴스에서 봇을 시작하거나 중지할 권한이 없습니다.",
-    "serverUpdateRequired": "서버가 봇 제어 권한을 보고하지 않았습니다. 서버와 클라이언트 버전이 일치하는지 확인하세요."
+    "serverUpdateRequired": "서버가 봇 제어 권한을 보고하지 않았습니다. 서버와 클라이언트 버전이 일치하는지 확인하세요.",
+    "startBots": "봇 시작하기.",
+    "moreActions": "더 많은 봇 작업",
+    "generateFirst": "계정을 생성하여 첫 번째 봇을 시작하세요.",
+    "startCountHelp": "추가 봇을 시작합니다. 실행 중인 봇은 계속 연결됩니다.",
+    "startAllCount": "{{count}}개 모두 시작",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "중지된 봇 {{count}}개가 있습니다.",
+    "startSelected_other": "{{count}}개의 봇 시작",
+    "stopCount_other": "{{count}}개의 봇 중지",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} 온라인 · {{desired}} 목표 · {{total}} 전체",
   "icon": {
@@ -237,8 +252,13 @@
     "website": "웹사이트"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "설정 네임스페이스를 찾을 수 없습니다",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "새 항목 추가...",
       "add": "추가",
       "remove": "제거"
@@ -453,6 +473,14 @@
     "success": "\"{{content}}\"(을)를 클립보드에 복사했습니다",
     "error": "클립보드 복사에 실패했습니다"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "아바타",
@@ -466,7 +494,11 @@
     "email": {
       "uiName": "이메일",
       "description": "이메일은 로그인과 알림에 사용됩니다."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "감사 로그 필터...",
@@ -610,5 +642,13 @@
     "filter": "프로세스 출력 필터링",
     "truncated": "{{count}}개의 이전 로그 줄이 생략되었습니다. 전체 서버 로그는 데이터 디렉터리에 남아 있습니다.",
     "privacy": "보고서에는 로컬 경로와 최근 로그가 포함됩니다. 공유 전에 보고서와 스레드 덤프를 검토하여 개인정보가 포함되지 않았는지 확인하세요. 아무 것도 자동으로 업로드되지 않습니다."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

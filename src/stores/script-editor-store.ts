@@ -17,7 +17,15 @@ import {
   isTypeCompatible,
   type PortType,
 } from "@/components/script-editor/nodes/types";
+import { mergeExecutionLogs } from "@/lib/script-logs";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
+import { sameScriptDocument } from "@/lib/script-document";
+import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
+import {
+  cloneSubgraph,
+  selectedSubgraph,
+  subgraphRoots,
+} from "@/lib/script-subgraph";
 import {
   createEditorDerivedStores,
   indexDiagnostics,
@@ -203,10 +211,12 @@ export function createScriptEditorSession() {
     paused: false,
     quotas: undefined,
     isDirty: false,
+    lastSavedPaused: false,
     lastSavedNodes: null,
     lastSavedEdges: null,
   });
   const ui = createStore<ScriptEditorUIState>({
+    canvasRevision: 0,
     selectedNodeId: null,
     quickAddMenu: null,
     groupEditStack: [],
@@ -221,6 +231,7 @@ export function createScriptEditorSession() {
   const execution = createStore<ScriptExecutionState>({
     isActive: false,
     activeNodeId: null,
+    activeNodeExecutions: new Map(),
     executionLogs: [],
     previewValues: new Map<string, Record<string, unknown>>(),
     debugNodeValues: new Map<
@@ -243,7 +254,8 @@ export function createScriptEditorSession() {
           change.type === "position" ||
           change.type === "remove" ||
           change.type === "add" ||
-          change.type === "replace",
+          change.type === "replace" ||
+          (change.type === "dimensions" && !!change.setAttributes),
       );
       document.setState((state) => ({
         ...state,
@@ -357,14 +369,19 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Only delete nodes in the current view
-      const nodesToDelete = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
+      const { nodes: nodesToDelete } = selectedSubgraph(
+        nodes,
+        edges,
+        currentGroupId,
+      );
       const nodeIdsToDelete = new Set(nodesToDelete.map((n) => n.id));
+      const visibleIds = new Set(
+        nodes
+          .filter(
+            (node) => (node.data.parentGroupId ?? null) === currentGroupId,
+          )
+          .map((node) => node.id),
+      );
 
       document.setState((state) => ({
         ...state,
@@ -373,7 +390,11 @@ export function createScriptEditorSession() {
           nodes,
           edges.filter(
             (edge) =>
-              !edge.selected &&
+              !(
+                edge.selected &&
+                visibleIds.has(edge.source) &&
+                visibleIds.has(edge.target)
+              ) &&
               !nodeIdsToDelete.has(edge.source) &&
               !nodeIdsToDelete.has(edge.target),
           ),
@@ -533,10 +554,8 @@ export function createScriptEditorSession() {
           containedNodes: nodeIds,
           ...(currentGroupId && { parentGroupId: currentGroupId }),
         },
-        style: {
-          width: maxX - minX,
-          height: maxY - minY,
-        },
+        width: maxX - minX,
+        height: maxY - minY,
         // Frames should be behind other nodes
         zIndex: -1,
       };
@@ -646,45 +665,18 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Only duplicate nodes in the current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length === 0) return;
-
-      // Create mapping from old IDs to new IDs
-      const idMap = new Map<string, string>();
-      for (const node of selectedNodes) {
-        idMap.set(node.id, generateId());
-      }
-
-      // Duplicate nodes with offset
-      const offset = { x: 50, y: 50 };
-      const newNodes: Node[] = selectedNodes.map((node) => ({
-        ...node,
-        id: idMap.get(node.id) ?? generateId(),
-        position: {
-          x: node.position.x + offset.x,
-          y: node.position.y + offset.y,
-        },
-        selected: true,
-      }));
-
-      // Duplicate edges between selected nodes
-      const newEdges: Edge[] = edges
-        .filter((edge) => idMap.has(edge.source) && idMap.has(edge.target))
-        .map((edge) => ({
-          ...edge,
-          id: generateId(),
-          source: idMap.get(edge.source) ?? edge.source,
-          target: idMap.get(edge.target) ?? edge.target,
-        }));
+      const selected = selectedSubgraph(nodes, edges, currentGroupId);
+      if (selected.nodes.length === 0) return;
+      const { nodes: newNodes, edges: newEdges } = cloneSubgraph(
+        selected,
+        currentGroupId,
+        { x: 50, y: 50 },
+      );
 
       // Deselect original nodes
-      const updatedNodes = nodes.map((n) => ({ ...n, selected: false }));
+      const updatedNodes = nodes.map((n) =>
+        n.selected ? { ...n, selected: false } : n,
+      );
 
       document.setState((state) => ({
         ...state,
@@ -800,11 +792,30 @@ export function createScriptEditorSession() {
         },
       };
 
+      // Keep interfaces outside the contents, including wide or spread-out nodes.
+      const contentLeft = Math.min(...selectedNodes.map((n) => n.position.x));
+      const contentRight = Math.max(
+        ...selectedNodes.map(
+          (n) =>
+            n.position.x +
+            (n.measured?.width ?? n.width ?? n.initialWidth ?? 160),
+        ),
+      );
+      const contentTop = Math.min(...selectedNodes.map((n) => n.position.y));
+      const interfaceGap = 80;
+
       // Create GroupInput and GroupOutput nodes inside the group
       const groupInputNode: Node = {
         id: generateId(),
         type: "layout.group_input",
-        position: { x: -200, y: 0 },
+        position: {
+          x:
+            contentLeft -
+            groupNode.position.x -
+            GROUP_INTERFACE_NODE_WIDTH -
+            interfaceGap,
+          y: contentTop - groupNode.position.y,
+        },
         data: {
           parentGroupId: groupId,
           outputs: groupInputs.map((i) => ({
@@ -818,7 +829,10 @@ export function createScriptEditorSession() {
       const groupOutputNode: Node = {
         id: generateId(),
         type: "layout.group_output",
-        position: { x: 200, y: 0 },
+        position: {
+          x: contentRight - groupNode.position.x + interfaceGap,
+          y: contentTop - groupNode.position.y,
+        },
         data: {
           parentGroupId: groupId,
           inputs: groupOutputs.map((o) => ({
@@ -832,13 +846,13 @@ export function createScriptEditorSession() {
       // Update selected nodes to be inside group
       const updatedNodes = nodes.map((n) => {
         if (selectedIds.has(n.id)) {
-          // Adjust position relative to group center
+          // Store positions relative to the group origin so ungrouping restores them.
           return {
             ...n,
             data: { ...n.data, parentGroupId: groupId },
             position: {
-              x: n.position.x - centerX,
-              y: n.position.y - centerY,
+              x: n.position.x - groupNode.position.x,
+              y: n.position.y - groupNode.position.y,
             },
             selected: false,
           };
@@ -911,23 +925,7 @@ export function createScriptEditorSession() {
 
       document.setState((state) => ({
         ...state,
-        nodes: [
-          ...updatedNodes.filter(
-            (n) => !selectedIds.has(n.id) || n.data.parentGroupId === groupId,
-          ),
-          ...selectedNodes.map((n) => ({
-            ...n,
-            data: { ...n.data, parentGroupId: groupId },
-            position: {
-              x: n.position.x - centerX,
-              y: n.position.y - centerY,
-            },
-            selected: false,
-          })),
-          groupNode,
-          groupInputNode,
-          groupOutputNode,
-        ],
+        nodes: [...updatedNodes, groupNode, groupInputNode, groupOutputNode],
         edges: [
           ...edges.filter((e) => !edgesToRemove.has(e.id)),
           ...newExternalEdges,
@@ -985,38 +983,39 @@ export function createScriptEditorSession() {
       const edgesToGroup = edges.filter((e) => e.target === groupId);
       const edgesFromGroup = edges.filter((e) => e.source === groupId);
 
-      // Find internal edges from GroupInput and to GroupOutput
-      const edgesFromGroupInput = edges.filter(
-        (e) => e.source === groupInputNode?.id,
-      );
-      const edgesToGroupOutput = edges.filter(
-        (e) => e.target === groupOutputNode?.id,
-      );
-
-      // Rewire external edges
-      const rewiredEdges: Edge[] = [];
+      let rewiredEdges = [...edges];
 
       for (const externalEdge of edgesToGroup) {
-        // Find the internal edge from GroupInput with matching handle
-        const internalEdge = edgesFromGroupInput.find(
-          (e) => e.sourceHandle === externalEdge.targetHandle,
+        const internalEdges = edges.filter(
+          (e) =>
+            e.source === groupInputNode?.id &&
+            e.sourceHandle === externalEdge.targetHandle,
         );
-        if (internalEdge) {
+        for (const internalEdge of internalEdges) {
           rewiredEdges.push({
             ...externalEdge,
             id: generateId(),
             target: internalEdge.target,
             targetHandle: internalEdge.targetHandle,
+            data: internalEdge.data,
           });
         }
       }
 
+      // Pass-through wires now have real upstream sources. Resolve outputs
+      // after removing the input interface's original edges.
+      rewiredEdges = rewiredEdges.filter(
+        (e) =>
+          e.source !== groupInputNode?.id && e.target !== groupInputNode?.id,
+      );
+
       for (const externalEdge of edgesFromGroup) {
-        // Find the internal edge to GroupOutput with matching handle
-        const internalEdge = edgesToGroupOutput.find(
-          (e) => e.targetHandle === externalEdge.sourceHandle,
+        const internalEdges = rewiredEdges.filter(
+          (e) =>
+            e.target === groupOutputNode?.id &&
+            e.targetHandle === externalEdge.sourceHandle,
         );
-        if (internalEdge) {
+        for (const internalEdge of internalEdges) {
           rewiredEdges.push({
             ...externalEdge,
             id: generateId(),
@@ -1026,26 +1025,11 @@ export function createScriptEditorSession() {
         }
       }
 
-      // Internal edges between regular nodes (not GroupInput/GroupOutput)
-      const innerEdges = edges.filter(
-        (e) =>
-          e.source !== groupInputNode?.id &&
-          e.target !== groupOutputNode?.id &&
-          innerNodes.some((n) => n.id === e.source) &&
-          innerNodes.some((n) => n.id === e.target),
-      );
-
       // Remove group node and its special nodes, remove edges to/from them
       const nodesToRemove = new Set([
         groupId,
         groupInputNode?.id,
         groupOutputNode?.id,
-      ]);
-      const edgesToRemove = new Set([
-        ...edgesToGroup.map((e) => e.id),
-        ...edgesFromGroup.map((e) => e.id),
-        ...edgesFromGroupInput.map((e) => e.id),
-        ...edgesToGroupOutput.map((e) => e.id),
       ]);
 
       batch(() => {
@@ -1058,11 +1042,9 @@ export function createScriptEditorSession() {
             ),
             ...nodesFromGroup,
           ],
-          edges: [
-            ...edges.filter((e) => !edgesToRemove.has(e.id)),
-            ...rewiredEdges,
-            ...innerEdges,
-          ],
+          edges: rewiredEdges.filter(
+            (e) => !nodesToRemove.has(e.source) && !nodesToRemove.has(e.target),
+          ),
           isDirty: true,
         }));
         ui.setState((state) => ({ ...state, selectedNodeId: null }));
@@ -1358,25 +1340,11 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Get selected nodes in current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length === 0) return null;
-
-      const selectedIds = new Set(selectedNodes.map((n) => n.id));
-
-      // Get edges between selected nodes
-      const selectedEdges = edges.filter(
-        (e) => selectedIds.has(e.source) && selectedIds.has(e.target),
-      );
+      const selected = selectedSubgraph(nodes, edges, currentGroupId);
+      if (selected.nodes.length === 0) return null;
 
       return {
-        nodes: selectedNodes,
-        edges: selectedEdges,
+        ...selected,
         sourceScriptId: scriptId,
       };
     },
@@ -1388,45 +1356,24 @@ export function createScriptEditorSession() {
 
       const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
 
-      // Calculate centroid of copied nodes
+      const roots = subgraphRoots(clipboardData.nodes);
+      if (roots.length === 0) return;
+
+      // Child positions belong to separate group canvases, not the paste target.
       const centerX =
-        clipboardData.nodes.reduce((sum, n) => sum + n.position.x, 0) /
-        clipboardData.nodes.length;
+        roots.reduce((sum, n) => sum + n.position.x, 0) / roots.length;
       const centerY =
-        clipboardData.nodes.reduce((sum, n) => sum + n.position.y, 0) /
-        clipboardData.nodes.length;
-
-      // Create ID mapping
-      const idMap = new Map<string, string>();
-      for (const node of clipboardData.nodes) {
-        idMap.set(node.id, generateId());
-      }
-
-      // Create new nodes at target position
-      const newNodes: Node[] = clipboardData.nodes.map((node) => ({
-        ...node,
-        id: idMap.get(node.id) ?? generateId(),
-        position: {
-          x: position.x + (node.position.x - centerX),
-          y: position.y + (node.position.y - centerY),
-        },
-        data: {
-          ...node.data,
-          parentGroupId: currentGroupId ?? undefined,
-        },
-        selected: true,
-      }));
-
-      // Create new edges with remapped IDs
-      const newEdges: Edge[] = clipboardData.edges.map((edge) => ({
-        ...edge,
-        id: generateId(),
-        source: idMap.get(edge.source) ?? edge.source,
-        target: idMap.get(edge.target) ?? edge.target,
-      }));
+        roots.reduce((sum, n) => sum + n.position.y, 0) / roots.length;
+      const { nodes: newNodes, edges: newEdges } = cloneSubgraph(
+        clipboardData,
+        currentGroupId,
+        { x: position.x - centerX, y: position.y - centerY },
+      );
 
       // Deselect existing nodes
-      const updatedNodes = nodes.map((n) => ({ ...n, selected: false }));
+      const updatedNodes = nodes.map((n) =>
+        n.selected ? { ...n, selected: false } : n,
+      );
 
       document.setState((state) => ({
         ...state,
@@ -1710,26 +1657,104 @@ export function createScriptEditorSession() {
       })),
     setPaused: (paused) =>
       document.setState((state) => ({ ...state, paused, isDirty: true })),
+    setSavedPaused: (paused) =>
+      document.setState((state) => ({
+        ...state,
+        paused,
+        lastSavedPaused: paused,
+      })),
+    syncScriptStatus: (status, preserveActiveNode = false) => {
+      if (document.get().scriptId !== status.scriptId) return;
+      batch(() => {
+        if (status.paused !== undefined) {
+          const paused = status.paused;
+          document.setState((state) =>
+            state.lastSavedPaused === paused
+              ? state
+              : {
+                  ...state,
+                  paused:
+                    state.paused === state.lastSavedPaused
+                      ? paused
+                      : state.paused,
+                  lastSavedPaused: paused,
+                },
+          );
+        }
+        execution.setState((state) => ({
+          ...state,
+          isActive: status.isActive,
+          activeNodeId: status.isActive
+            ? preserveActiveNode
+              ? state.activeNodeId
+              : (status.activeNodeId ?? null)
+            : null,
+          activeNodeExecutions:
+            status.isActive && preserveActiveNode
+              ? state.activeNodeExecutions
+              : new Map(),
+        }));
+      });
+    },
     setQuotas: (quotas) =>
       document.setState((state) => ({ ...state, quotas, isDirty: true })),
-    setDirty: (dirty) =>
-      document.setState((state) => ({ ...state, isDirty: dirty })),
     setActive: (active) =>
       execution.setState((state) => ({ ...state, isActive: active })),
     setActiveNode: (nodeId) =>
-      execution.setState((state) => ({ ...state, activeNodeId: nodeId })),
+      execution.setState((state) => ({
+        ...state,
+        activeNodeId: nodeId,
+        activeNodeExecutions: new Map(),
+      })),
+    startNode: (nodeId, executionId) =>
+      execution.setState((state) => {
+        if (!executionId) return { ...state, activeNodeId: nodeId };
+        if (state.activeNodeExecutions.has(executionId)) return state;
+        const activeNodeExecutions = new Map(state.activeNodeExecutions);
+        activeNodeExecutions.set(executionId, nodeId);
+        return { ...state, activeNodeId: nodeId, activeNodeExecutions };
+      }),
+    completeNode: (nodeId, executionId) =>
+      execution.setState((state) => {
+        if (!executionId) {
+          return state.activeNodeExecutions.size === 0 &&
+            state.activeNodeId === nodeId
+            ? { ...state, activeNodeId: null }
+            : state;
+        }
+        if (state.activeNodeExecutions.get(executionId) !== nodeId)
+          return state;
+        const activeNodeExecutions = new Map(state.activeNodeExecutions);
+        activeNodeExecutions.delete(executionId);
+        return {
+          ...state,
+          activeNodeExecutions,
+          activeNodeId: Array.from(activeNodeExecutions.values()).pop() ?? null,
+        };
+      }),
     addExecutionLog: (log) =>
       execution.setState((state) => ({
         ...state,
         executionLogs: [...state.executionLogs, log].slice(-500),
       })),
-    prependExecutionLogs: (logs) =>
-      execution.setState((state) => ({
-        ...state,
-        executionLogs: [...logs, ...state.executionLogs].slice(-500),
-      })),
+    addExecutionLogs: (logs) =>
+      execution.setState((state) => {
+        const executionLogs = mergeExecutionLogs(state.executionLogs, logs);
+        return executionLogs === state.executionLogs
+          ? state
+          : { ...state, executionLogs };
+      }),
     clearExecutionLogs: () =>
       execution.setState((state) => ({ ...state, executionLogs: [] })),
+    syncScriptDocument: (data) => {
+      const current = document.get();
+      if (
+        current.scriptId !== data.id ||
+        (!current.isDirty && !sameScriptDocument(actions.getScriptData(), data))
+      ) {
+        actions.loadScript(data);
+      }
+    },
     loadScript: (data) =>
       batch(() => {
         document.setState((state) => ({
@@ -1738,6 +1763,7 @@ export function createScriptEditorSession() {
           scriptName: data.name,
           scriptDescription: data.description,
           paused: data.paused,
+          lastSavedPaused: data.paused,
           quotas: data.quotas,
           nodes: data.nodes,
           edges: normalizeMultiInputEdgeOrders(data.nodes, data.edges),
@@ -1749,6 +1775,7 @@ export function createScriptEditorSession() {
           ...state,
           selectedNodeId: null,
           groupEditStack: [],
+          canvasRevision: state.canvasRevision + 1,
           previewEnabledNodes: new Set<string>(),
         }));
         execution.setState((state) => ({
@@ -1770,13 +1797,14 @@ export function createScriptEditorSession() {
           scriptName: data.name ?? current.scriptName,
           scriptDescription: data.description ?? current.scriptDescription,
           paused: data.paused ?? current.paused,
-          quotas: data.quotas ?? current.quotas,
+          quotas: data.quotas,
           isDirty: true,
         }));
         ui.setState((state) => ({
           ...state,
           selectedNodeId: null,
           groupEditStack: [],
+          canvasRevision: state.canvasRevision + 1,
           previewEnabledNodes: new Set<string>(),
         }));
         execution.setState((state) => ({
@@ -1799,6 +1827,7 @@ export function createScriptEditorSession() {
           scriptName: "Untitled Script",
           scriptDescription: "",
           paused: false,
+          lastSavedPaused: false,
           quotas: undefined,
           isDirty: false,
           lastSavedNodes: null,
@@ -1808,6 +1837,7 @@ export function createScriptEditorSession() {
           ...state,
           isActive: false,
           activeNodeId: null,
+          activeNodeExecutions: new Map(),
           executionLogs: [],
           previewValues: new Map<string, Record<string, unknown>>(),
           debugNodeValues: new Map<
@@ -1822,6 +1852,7 @@ export function createScriptEditorSession() {
           selectedNodeId: null,
           quickAddMenu: null,
           groupEditStack: [],
+          canvasRevision: state.canvasRevision + 1,
           previewEnabledNodes: new Set<string>(),
 
           linkCutting: {
@@ -1863,13 +1894,23 @@ export function createScriptEditorSession() {
       }),
     setExecutionStats: (stats) =>
       execution.setState((state) => ({ ...state, lastExecutionStats: stats })),
-    markSaved: () =>
-      document.setState((state) => ({
-        ...state,
-        lastSavedNodes: [...state.nodes],
-        lastSavedEdges: [...state.edges],
-        isDirty: false,
-      })),
+    markSaved: (data, scriptId, savedPaused = data.paused) =>
+      document.setState((state) => {
+        const paused =
+          state.paused === data.paused ? savedPaused : state.paused;
+        return {
+          ...state,
+          scriptId: scriptId ?? state.scriptId,
+          paused,
+          lastSavedPaused: savedPaused,
+          lastSavedNodes: data.nodes,
+          lastSavedEdges: data.edges,
+          isDirty: !sameScriptDocument(
+            { ...actions.getScriptData(), paused },
+            { ...data, paused: savedPaused },
+          ),
+        };
+      }),
   };
   return {
     document,

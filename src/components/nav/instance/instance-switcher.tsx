@@ -1,10 +1,17 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Link, useNavigate, useRouteContext } from "@tanstack/react-router";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useRouteContext,
+} from "@tanstack/react-router";
 import { saveAs } from "file-saver";
 import {
   ChevronsUpDownIcon,
@@ -16,7 +23,7 @@ import {
   TrashIcon,
   UploadIcon,
 } from "lucide-react";
-import { Suspense, use, useRef, useState } from "react";
+import { type RefObject, Suspense, use, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { formatBotFleetSummary } from "@/components/bot-fleet-summary.tsx";
@@ -62,10 +69,11 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { createTextBlob } from "@/lib/download.ts";
 import { formatShortcut } from "@/lib/platform.ts";
+import { parseProfileFile, serializeProfileFile } from "@/lib/profile-file.ts";
 import type { ProfileRoot } from "@/lib/types.ts";
 import {
-  data2blob,
   hasGlobalPermission,
   hasInstancePermission,
   runAsync,
@@ -166,8 +174,7 @@ function InstanceListSkeleton() {
   );
 }
 
-function InstanceActionButtons() {
-  const { t } = useTranslation("common");
+function useProfileImport() {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const instanceInfoQueryOptions = useRouteContext({
@@ -175,10 +182,6 @@ function InstanceActionButtons() {
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const profile = instanceInfo.profile;
-  const systemInfo = use(SystemInfoContext);
-  const instanceProfileInputRef = useRef<HTMLInputElement>(null);
-  // Using setInstanceConfigFull for profile import
   const setProfileMutation = useMutation({
     mutationKey: ["instance", "profile", "import", instanceInfo.id],
     scope: { id: `instance-profile-${instanceInfo.id}` },
@@ -197,6 +200,57 @@ function InstanceActionButtons() {
       });
     },
   });
+
+  return { instanceInfo, importProfile: setProfileMutation.mutateAsync };
+}
+
+function InstanceProfileFileInput({
+  inputRef,
+}: {
+  inputRef: RefObject<HTMLInputElement | null>;
+}) {
+  const { t } = useTranslation("common");
+  const { importProfile } = useProfileImport();
+
+  return (
+    <input
+      ref={inputRef}
+      type="file"
+      accept=".json"
+      className="hidden"
+      onChange={(event) => {
+        const file = event.currentTarget.files?.item(0);
+        event.currentTarget.value = "";
+        if (!file) return;
+
+        toast.promise(
+          (async () => {
+            const data = await file.text();
+            await importProfile(parseProfileFile(data));
+          })(),
+          {
+            loading: t("instanceSidebar.loadProfileToast.loading"),
+            success: t("instanceSidebar.loadProfileToast.success"),
+            error: (error) => {
+              console.error(error);
+              return t("instanceSidebar.loadProfileToast.error");
+            },
+          },
+        );
+      }}
+    />
+  );
+}
+
+function InstanceActionButtons({
+  onLoadProfile,
+}: {
+  onLoadProfile: () => void;
+}) {
+  const { t } = useTranslation("common");
+  const { instanceInfo, importProfile } = useProfileImport();
+  const profile = instanceInfo.profile;
+  const systemInfo = use(SystemInfoContext);
 
   return (
     <>
@@ -229,9 +283,7 @@ function InstanceActionButtons() {
                               ),
                             );
 
-                            await setProfileMutation.mutateAsync(
-                              JSON.parse(data) as ProfileRoot,
-                            );
+                            await importProfile(parseProfileFile(data));
                           };
                           toast.promise(loadProfile(), {
                             loading: t(
@@ -271,7 +323,9 @@ function InstanceActionButtons() {
                           ? undefined
                           : [
                               {
-                                name: "SoulFire JSON Profile",
+                                name: t(
+                                  "instanceSidebar.configurationFileType",
+                                ),
                                 extensions: ["json"],
                               },
                             ],
@@ -287,9 +341,7 @@ function InstanceActionButtons() {
                         const data = await desktop.fs.readTextFile(selected);
                         toast.promise(
                           (async () => {
-                            await setProfileMutation.mutateAsync(
-                              JSON.parse(data) as ProfileRoot,
-                            );
+                            await importProfile(parseProfileFile(data));
                           })(),
                           {
                             loading: t(
@@ -317,49 +369,14 @@ function InstanceActionButtons() {
             </DropdownMenuPortal>
           </DropdownMenuSub>
         ) : (
-          <>
-            <input
-              ref={instanceProfileInputRef}
-              type="file"
-              accept=".json"
-              className="hidden"
-              onInput={(e) => {
-                const file = (e.target as HTMLInputElement).files?.item(0);
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const data = reader.result as string;
-                  toast.promise(
-                    setProfileMutation.mutateAsync(
-                      JSON.parse(data) as ProfileRoot,
-                    ),
-                    {
-                      loading: t("instanceSidebar.loadProfileToast.loading"),
-                      success: t("instanceSidebar.loadProfileToast.success"),
-                      error: (e) => {
-                        console.error(e);
-                        return t("instanceSidebar.loadProfileToast.error");
-                      },
-                    },
-                  );
-                };
-                reader.readAsText(file);
-              }}
-            />
-            <DropdownMenuItem
-              onClick={() => {
-                instanceProfileInputRef.current?.click();
-              }}
-            >
-              <UploadIcon className="size-4" />
-              {t("instanceSidebar.loadProfile")}
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem onClick={onLoadProfile}>
+            <UploadIcon className="size-4" />
+            {t("instanceSidebar.loadProfile")}
+          </DropdownMenuItem>
         )}
         <DropdownMenuItem
           onClick={() => {
-            const data = JSON.stringify(profile, null, 2);
+            const data = serializeProfileFile(profile);
             if (isDesktopApp()) {
               runAsync(async () => {
                 const profileDir = await desktop.path.resolve(
@@ -372,11 +389,14 @@ function InstanceActionButtons() {
                   title: t("instanceSidebar.saveProfile"),
                   filters: [
                     {
-                      name: "SoulFire JSON Profile",
+                      name: t("instanceSidebar.configurationFileType"),
                       extensions: ["json"],
                     },
                   ],
-                  defaultPath: profileDir,
+                  defaultPath: await desktop.path.resolve(
+                    profileDir,
+                    "soulfire-configuration.json",
+                  ),
                 });
 
                 if (selected) {
@@ -388,14 +408,22 @@ function InstanceActionButtons() {
                 }
               });
             } else {
-              saveAs(data2blob(data), "profile.json");
+              saveAs(
+                createTextBlob(data, "application/json"),
+                "soulfire-configuration.json",
+              );
             }
 
             toast.success(t("instanceSidebar.profileSaved"));
           }}
         >
           <DownloadIcon className="size-4" />
-          {t("instanceSidebar.saveProfile")}
+          <span className="flex max-w-64 flex-col gap-1">
+            <span>{t("instanceSidebar.saveProfile")}</span>
+            <span className="text-muted-foreground text-xs whitespace-normal">
+              {t("instanceSidebar.exportWarning")}
+            </span>
+          </span>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
@@ -421,10 +449,20 @@ function InstanceActionButtonsSkeleton() {
 export function InstanceSwitcher() {
   const { t } = useTranslation("common");
   const { isMobile } = useSidebar();
+  const { instance } = useParams({ from: "/_dashboard/instance/$instance" });
+  const instanceProfileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
+        {!isDesktopApp() && (
+          <Suspense>
+            <InstanceProfileFileInput
+              key={instance}
+              inputRef={instanceProfileInputRef}
+            />
+          </Suspense>
+        )}
         <DropdownMenu>
           <Suspense fallback={<SidebarInstanceButtonSkeleton />}>
             <SidebarInstanceButton />
@@ -453,7 +491,9 @@ export function InstanceSwitcher() {
             </Suspense>
             <DropdownMenuSeparator />
             <Suspense fallback={<InstanceActionButtonsSkeleton />}>
-              <InstanceActionButtons />
+              <InstanceActionButtons
+                onLoadProfile={() => instanceProfileInputRef.current?.click()}
+              />
             </Suspense>
             <Suspense>
               <DeleteInstanceButton />
@@ -508,12 +548,12 @@ function DeleteInstanceButton() {
         return;
       }
 
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .deleteInstance({
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.deleteInstance({
           id: instanceId,
-        })
-        .then((r) => r);
+        }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: t("instanceSidebar.deleteToast.success"),

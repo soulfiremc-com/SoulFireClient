@@ -10,18 +10,19 @@ import {
   ExternalLinkIcon,
   GlobeIcon,
   PowerIcon,
+  SlidersHorizontalIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
   CardDescription,
@@ -36,6 +37,8 @@ import type {
 } from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   getSettingValue,
@@ -64,14 +67,16 @@ function PluginInfoCardContent(props: {
   return (
     <>
       <Card
-        className="container"
         size={props.cardSize}
         onContextMenu={(e) => handleContextMenu(e, null)}
       >
         <CardHeader>
-          <div className="flex flex-row items-center justify-between gap-2">
+          <div className="flex flex-row items-start justify-between gap-3">
             {props.link}
             <Switch
+              aria-label={t("pluginCard.enable", {
+                name: props.settingsEntry.pageName,
+              })}
               checked={props.enabledValue}
               onCheckedChange={props.onEnabledChange}
             />
@@ -79,44 +84,49 @@ function PluginInfoCardContent(props: {
           <CardDescription className="whitespace-pre-line">
             {props.plugin.description}
           </CardDescription>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <Badge variant="secondary" className="select-text">
-              {t("pluginCard.version", {
-                version: props.plugin.version,
-              })}
-            </Badge>
-            <Badge variant="secondary" className="select-text">
-              {t("pluginCard.author", {
-                author: props.plugin.author,
-              })}
-            </Badge>
-            <Badge variant="secondary" className="select-text">
-              {t("pluginCard.license", {
-                license: props.plugin.license,
-              })}
-            </Badge>
+          <p className="text-muted-foreground mt-1 text-xs select-text">
+            {t("pluginCard.meta", {
+              version: props.plugin.version,
+              author: props.plugin.author,
+              license: props.plugin.license,
+            })}
             {props.plugin.website && (
-              <ExternalLink
-                href={props.plugin.website}
-                className="inline-flex items-center"
-              >
-                <Badge variant="secondary">
+              <>
+                {" "}
+                <ExternalLink
+                  href={props.plugin.website}
+                  className="inline-flex items-center underline underline-offset-3"
+                >
                   {t("pluginCard.website", {
                     website: props.plugin.website,
                   })}
-                </Badge>
-              </ExternalLink>
+                </ExternalLink>
+              </>
             )}
-          </div>
+          </p>
+          {props.settingsUrl && props.enabledValue && (
+            <Button
+              className="mt-2 w-fit"
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                void navigate({ to: props.settingsUrl });
+              }}
+            >
+              <SlidersHorizontalIcon data-icon="inline-start" />
+              {t("pluginCard.configure")}
+            </Button>
+          )}
         </CardHeader>
       </Card>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               props.onEnabledChange(!props.enabledValue);
               dismiss();
@@ -126,11 +136,11 @@ function PluginInfoCardContent(props: {
             {props.enabledValue
               ? t("contextMenu.plugin.disable")
               : t("contextMenu.plugin.enable")}
-          </MenuItem>
-          <MenuSeparator />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           {props.settingsUrl && (
             <>
-              <MenuItem
+              <DropdownMenuItem
                 onClick={() => {
                   void navigate({ to: props.settingsUrl });
                   dismiss();
@@ -138,11 +148,11 @@ function PluginInfoCardContent(props: {
               >
                 <ExternalLinkIcon />
                 {t("contextMenu.plugin.openSettings")}
-              </MenuItem>
-              <MenuSeparator />
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
             </>
           )}
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(props.settingsEntry.pageName);
               dismiss();
@@ -150,8 +160,8 @@ function PluginInfoCardContent(props: {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.plugin.copyPluginName")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(props.plugin.version);
               dismiss();
@@ -159,9 +169,9 @@ function PluginInfoCardContent(props: {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.plugin.copyVersion")}
-          </MenuItem>
+          </DropdownMenuItem>
           {props.plugin.website && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 openExternalUrl(props.plugin.website);
                 dismiss();
@@ -169,7 +179,7 @@ function PluginInfoCardContent(props: {
             >
               <GlobeIcon />
               {t("contextMenu.plugin.openWebsite")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
         </ContextMenuPortal>
       )}
@@ -179,9 +189,9 @@ function PluginInfoCardContent(props: {
 
 function PluginCardTitle(props: { settingsEntry: SettingsPage }) {
   return (
-    <CardTitle className="flex flex-row items-center gap-2 text-xl">
+    <CardTitle className="flex flex-row items-center gap-2 text-base">
       <DynamicIcon
-        className="size-6 shrink-0"
+        className="size-5 shrink-0"
         name={props.settingsEntry.iconId}
       />
       {props.settingsEntry.pageName}
@@ -208,7 +218,13 @@ function usePluginEnabledState(
     () => getSettingValue(profile, enabledDefinition) === true,
     [profile, enabledDefinition],
   );
-  return { enabledIdentifier, enabledValue };
+  const onSaveError = useSettingSaveError(
+    enabledDefinition,
+    enabledIdentifier
+      ? `${enabledIdentifier.namespace}:${enabledIdentifier.key}`
+      : settingsEntry.id,
+  );
+  return { enabledIdentifier, enabledValue, onSaveError };
 }
 
 export function InstancePluginInfoCard(props: {
@@ -224,23 +240,20 @@ export function InstancePluginInfoCard(props: {
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
-  const { enabledIdentifier, enabledValue } = usePluginEnabledState(
-    props.settingsEntry,
-    profile,
-    instanceInfo.settingsDefinitions,
-  );
+  const { enabledIdentifier, enabledValue, onSaveError } =
+    usePluginEnabledState(
+      props.settingsEntry,
+      profile,
+      instanceInfo.settingsDefinitions,
+    );
 
   const setEnabledMutation = useMutation({
-    mutationKey: [
-      "instance",
-      "plugin",
-      "enabled",
-      instanceInfo.id,
-      props.settingsEntry.id,
-    ],
-    scope: {
-      id: `instance-plugin-${instanceInfo.id}-${props.settingsEntry.id}`,
-    },
+    ...settingMutationOptions(
+      { type: "instance", instanceId: instanceInfo.id },
+      enabledIdentifier?.namespace ?? props.settingsEntry.id,
+      enabledIdentifier?.key ?? "enabled",
+      "toggle",
+    ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
       await updateInstanceConfigEntry(
@@ -253,6 +266,7 @@ export function InstancePluginInfoCard(props: {
         instanceInfoQueryOptions.queryKey,
       );
     },
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: instanceInfoQueryOptions.queryKey,
@@ -296,24 +310,20 @@ export function BotPluginInfoCard(props: {
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
-  const { enabledIdentifier, enabledValue } = usePluginEnabledState(
-    props.settingsEntry,
-    props.botConfig,
-    props.settingsDefinitions,
-  );
+  const { enabledIdentifier, enabledValue, onSaveError } =
+    usePluginEnabledState(
+      props.settingsEntry,
+      props.botConfig,
+      props.settingsDefinitions,
+    );
 
   const setEnabledMutation = useMutation({
-    mutationKey: [
-      "bot",
-      "plugin",
-      "enabled",
-      props.instanceId,
-      props.botId,
-      props.settingsEntry.id,
-    ],
-    scope: {
-      id: `bot-plugin-${props.instanceId}-${props.botId}-${props.settingsEntry.id}`,
-    },
+    ...settingMutationOptions(
+      { type: "bot", instanceId: props.instanceId, botId: props.botId },
+      enabledIdentifier?.namespace ?? props.settingsEntry.id,
+      enabledIdentifier?.key ?? "enabled",
+      "toggle",
+    ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
       await updateBotConfigEntry(
@@ -327,6 +337,7 @@ export function BotPluginInfoCard(props: {
         props.instanceInfoQueryKey,
       );
     },
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -359,15 +370,20 @@ export function ServerPluginInfoCard(props: {
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
-  const { enabledIdentifier, enabledValue } = usePluginEnabledState(
-    props.settingsEntry,
-    profile,
-    serverInfo.settingsDefinitions,
-  );
+  const { enabledIdentifier, enabledValue, onSaveError } =
+    usePluginEnabledState(
+      props.settingsEntry,
+      profile,
+      serverInfo.settingsDefinitions,
+    );
 
   const setEnabledMutation = useMutation({
-    mutationKey: ["server", "plugin", "enabled", props.settingsEntry.id],
-    scope: { id: `server-plugin-${props.settingsEntry.id}` },
+    ...settingMutationOptions(
+      { type: "server" },
+      enabledIdentifier?.namespace ?? props.settingsEntry.id,
+      enabledIdentifier?.key ?? "enabled",
+      "toggle",
+    ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
       await updateServerConfigEntry(
@@ -379,6 +395,7 @@ export function ServerPluginInfoCard(props: {
         serverInfoQueryOptions.queryKey,
       );
     },
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: serverInfoQueryOptions.queryKey,

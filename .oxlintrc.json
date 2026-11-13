@@ -14,6 +14,8 @@
     "postcss.config.mjs",
     "release-artifacts/**",
     "shared-modules/**",
+    "storybook-static/**",
+    "test-results/**",
     "src/generated/**",
     "src/routeTree.gen.ts"
   ],
@@ -21,7 +23,7 @@
     "shadcn/no-unknown-classes": [
       "error",
       {
-        "allow": ["nodrag", "nopan"]
+        "allow": ["nodrag", "nopan", "ph-no-capture"]
       }
     ],
     "shadcn/no-raw-colors": "error",
@@ -497,6 +499,15 @@
     "shadcn/no-inline-styles": "error"
   },
   "overrides": [
+    {
+      "files": ["src/components/developer/code-sample.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": [
+          "error",
+          { "allow": ["--syntax-light", "--syntax-dark"] }
+        ]
+      }
+    },
     {
       "files": ["src/components/ui/**"],
       "rules": {

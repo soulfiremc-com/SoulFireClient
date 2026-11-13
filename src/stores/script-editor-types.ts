@@ -8,7 +8,21 @@ import type {
   XYPosition,
 } from "@xyflow/react";
 import type { LogEntry } from "@/components/script-editor/types";
-import type { ScriptQuotas } from "@/generated/soulfire/script_pb";
+import type {
+  ScriptQuotas,
+  ScriptStatus,
+} from "@/generated/soulfire/script_pb";
+
+export interface ScriptDocumentData {
+  nodes: Node[];
+  edges: Edge[];
+  name: string;
+  description: string;
+  paused: boolean;
+  quotas: ScriptQuotas | undefined;
+}
+
+export type SavedScriptDocument = ScriptDocumentData & { id: string };
 
 export interface ScriptDocumentState {
   nodes: Node[];
@@ -19,11 +33,13 @@ export interface ScriptDocumentState {
   paused: boolean;
   quotas: ScriptQuotas | undefined;
   isDirty: boolean;
+  lastSavedPaused: boolean;
   lastSavedNodes: Node[] | null;
   lastSavedEdges: Edge[] | null;
 }
 
 export interface ScriptEditorUIState {
+  canvasRevision: number;
   selectedNodeId: string | null;
   quickAddMenu: {
     position: XYPosition;
@@ -47,6 +63,7 @@ export interface ScriptEditorUIState {
 export interface ScriptExecutionState {
   isActive: boolean;
   activeNodeId: string | null;
+  activeNodeExecutions: Map<bigint, string>;
   executionLogs: LogEntry[];
   previewValues: Map<string, Record<string, unknown>>;
   debugNodeValues: Map<string, Array<{ value: unknown; timestamp: Date }>>;
@@ -146,39 +163,31 @@ export interface ScriptEditorActions {
   setScriptName: (name: string) => void;
   setScriptDescription: (description: string) => void;
   setPaused: (paused: boolean) => void;
+  setSavedPaused: (paused: boolean) => void;
+  syncScriptStatus: (
+    status: ScriptStatus,
+    preserveActiveNode?: boolean,
+  ) => void;
   setQuotas: (quotas: ScriptQuotas | undefined) => void;
-  setDirty: (dirty: boolean) => void;
   setActive: (active: boolean) => void;
   setActiveNode: (nodeId: string | null) => void;
+  startNode: (nodeId: string, executionId?: bigint) => void;
+  completeNode: (nodeId: string, executionId?: bigint) => void;
   addExecutionLog: (log: LogEntry) => void;
-  prependExecutionLogs: (logs: LogEntry[]) => void;
+  addExecutionLogs: (logs: LogEntry[]) => void;
   clearExecutionLogs: () => void;
-  loadScript: (data: {
-    id: string;
-    name: string;
-    description: string;
-    paused: boolean;
-    quotas: ScriptQuotas | undefined;
-    nodes: Node[];
-    edges: Edge[];
-  }) => void;
+  loadScript: (data: SavedScriptDocument) => void;
+  syncScriptDocument: (data: SavedScriptDocument) => void;
   loadScriptData: (data: {
     nodes: Node[];
     edges: Edge[];
     name?: string;
     description?: string;
     paused?: boolean;
-    quotas?: ScriptQuotas;
+    quotas: ScriptQuotas | undefined;
   }) => void;
   resetEditor: () => void;
-  getScriptData: () => {
-    nodes: Node[];
-    edges: Edge[];
-    name: string;
-    description: string;
-    paused: boolean;
-    quotas: ScriptQuotas | undefined;
-  };
+  getScriptData: () => ScriptDocumentData;
   setValidationDiagnostics: (
     diagnostics: Array<{
       nodeId: string;
@@ -189,5 +198,9 @@ export interface ScriptEditorActions {
   ) => void;
   addNodeExecutionTime: (nodeId: string, timeNanos: number) => void;
   setExecutionStats: (stats: { nodeCount: number; maxCount: number }) => void;
-  markSaved: () => void;
+  markSaved: (
+    data: ScriptDocumentData,
+    scriptId?: string,
+    paused?: boolean,
+  ) => void;
 }

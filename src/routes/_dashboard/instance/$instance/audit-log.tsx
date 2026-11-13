@@ -1,19 +1,22 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
   BotIcon,
   ClipboardCopyIcon,
+  PlugIcon,
   RefreshCwIcon,
   SquareTerminalIcon,
   TextIcon,
 } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import { MenuItem } from "@/components/context-menu-primitives.tsx";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header.tsx";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton.tsx";
@@ -33,6 +36,7 @@ import {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import { calendarDateRangeFilter } from "@/lib/calendar-date-range-filter";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
@@ -61,14 +65,16 @@ export const Route = createFileRoute(
           });
         }
 
-        const instanceService = createClient(InstanceService, transport);
-        const result = await instanceService.getAuditLog(
-          {
-            id: instance,
-          },
-          {
-            signal: props.signal,
-          },
+        const instanceService = createRpcClient(InstanceService, transport);
+        const result = await Effect.runPromise(
+          instanceService.getAuditLog(
+            {
+              id: instance,
+            },
+            {
+              signal: props.signal,
+            },
+          ),
         );
 
         return result;
@@ -104,6 +110,8 @@ function toI18nKey(type: InstanceAuditLogResponse_AuditLogEntryType) {
       return "auditLog.changedBotDesiredState";
     case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
       return "auditLog.restartedBots";
+    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC:
+      return "auditLog.calledPluginRpc";
   }
 }
 
@@ -118,6 +126,8 @@ const logTypeToIcon = (
         return RefreshCwIcon;
       case "EXECUTE_COMMAND":
         return SquareTerminalIcon;
+      case "PLUGIN_RPC":
+        return PlugIcon;
       default:
         return BotIcon;
     }
@@ -205,6 +215,7 @@ const columns: ColumnDef<
         },
       ),
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {
@@ -231,7 +242,7 @@ const columns: ColumnDef<
       },
       variant: "dateRange",
     },
-    filterFn: "inNumberRange",
+    filterFn: calendarDateRangeFilter,
     enableColumnFilter: true,
   },
 ];
@@ -289,12 +300,13 @@ function Content() {
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
           {contextMenu.data.user?.username && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 copyToClipboard(contextMenu.data.user?.username ?? "");
                 dismiss();
@@ -302,12 +314,12 @@ function Content() {
             >
               <ClipboardCopyIcon />
               {t("auditLog.contextMenu.copyUsername")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
           {contextMenu.data.type ===
             InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND &&
             contextMenu.data.data && (
-              <MenuItem
+              <DropdownMenuItem
                 onClick={() => {
                   copyToClipboard(contextMenu.data.data);
                   dismiss();
@@ -315,7 +327,7 @@ function Content() {
               >
                 <ClipboardCopyIcon />
                 {t("auditLog.contextMenu.copyCommand")}
-              </MenuItem>
+              </DropdownMenuItem>
             )}
         </ContextMenuPortal>
       )}

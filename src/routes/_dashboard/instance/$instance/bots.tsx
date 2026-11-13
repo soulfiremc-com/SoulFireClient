@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { SearchIcon } from "lucide-react";
-import { parseAsString, useQueryState } from "nuqs";
+import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/components/instance-overview/bot-grid.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import {
   InputGroup,
   InputGroupAddon,
@@ -18,7 +19,8 @@ import {
 } from "@/components/ui/input-group.tsx";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import i18n from "@/lib/i18n";
-import { simpleSearchValidateSearch } from "@/lib/parsers.ts";
+import { BOT_DISPLAY_STATES, type BotDisplayState } from "@/lib/bot-fleet.ts";
+import { botListValidateSearch } from "@/lib/parsers.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 
 const BOT_SKELETON_IDS = [
@@ -33,7 +35,7 @@ const BOT_SKELETON_IDS = [
 ] as const;
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/bots")({
-  validateSearch: simpleSearchValidateSearch,
+  validateSearch: botListValidateSearch,
   beforeLoad: (props) => {
     const { instance } = props.params;
     return {
@@ -91,9 +93,14 @@ function Content() {
     }),
   );
 
+  const [status, setStatus] = useQueryState(
+    "status",
+    parseAsStringLiteral(BOT_DISPLAY_STATES).withOptions({ shallow: true }),
+  );
+
   return (
     <div className="container flex h-full w-full grow flex-col gap-4 py-4">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <InputGroup className="max-w-sm flex-1">
           <InputGroupAddon>
             <SearchIcon className="text-muted-foreground" />
@@ -104,6 +111,28 @@ function Content() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </InputGroup>
+        <ToggleGroup
+          aria-label={t("bots.filterLabel")}
+          variant="outline"
+          size="sm"
+          className="flex-wrap"
+          value={[status ?? "all"]}
+          onValueChange={(value) => {
+            const next = value[0];
+            if (next) {
+              void setStatus(next === "all" ? null : (next as BotDisplayState));
+            }
+          }}
+        >
+          <ToggleGroupItem value="all">{t("bots.filterAll")}</ToggleGroupItem>
+          {BOT_DISPLAY_STATES.filter((state) => state !== "stopping").map(
+            (state) => (
+              <ToggleGroupItem key={state} value={state}>
+                {t(`bots.displayState.${state}`)}
+              </ToggleGroupItem>
+            ),
+          )}
+        </ToggleGroup>
         <Suspense
           fallback={
             <Badge variant="outline" className="w-fit">
@@ -116,7 +145,7 @@ function Content() {
       </div>
 
       <Suspense fallback={<BotGridSkeleton />}>
-        <BotGridContainer search={search} />
+        <BotGridContainer search={search} status={status} />
       </Suspense>
     </div>
   );
@@ -128,8 +157,16 @@ function OnlineCountBadgeContainer() {
   return <OnlineCountBadge instanceInfo={instanceInfo} />;
 }
 
-function BotGridContainer({ search }: { search: string }) {
+function BotGridContainer({
+  search,
+  status,
+}: {
+  search: string;
+  status: BotDisplayState | null;
+}) {
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  return <BotGrid instanceInfo={instanceInfo} search={search} />;
+  return (
+    <BotGrid instanceInfo={instanceInfo} search={search} status={status} />
+  );
 }

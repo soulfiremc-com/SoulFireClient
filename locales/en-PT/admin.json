@@ -86,6 +86,7 @@
         "update": "Update Matey"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Addin' matey...",
       "success": "Matey be added!",

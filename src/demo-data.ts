@@ -10,18 +10,29 @@ import {
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import {
   GlobalPermission,
+  InstancePermission,
+  ServerPluginSchema,
   type SettingsDefinition,
   type SettingsPage,
 } from "@/generated/soulfire/common_pb";
-import { smartEntries } from "@/lib/utils.tsx";
+import { InstancePermissionStateSchema } from "@/generated/soulfire/instance_pb";
+import { getEnumEntries } from "@/lib/types.ts";
+
+export const demoInstancePermissions = getEnumEntries(InstancePermission).map(
+  ({ value }) =>
+    create(InstancePermissionStateSchema, {
+      instancePermission: value,
+      granted: true,
+    }),
+);
 
 export const demoClientData = {
   id: "00000000-0000-0000-0000-000000000000",
   username: "root",
   role: 0,
   email: "root@soulfiremc.com",
-  serverPermissions: smartEntries(GlobalPermission).map((permission) => ({
-    globalPermission: permission[1],
+  serverPermissions: getEnumEntries(GlobalPermission).map((permission) => ({
+    globalPermission: permission.value,
     granted: true,
   })),
   serverInfo: {
@@ -56,6 +67,27 @@ export const demoBotList = create(BotListResponseSchema, {
   ],
 }) satisfies BotListResponse;
 
+export const demoInstancePlugins = [
+  create(ServerPluginSchema, {
+    id: "chat-logger",
+    version: "1.0.0",
+    description:
+      "Logs all received chat messages to the terminal\nIncludes deduplication to prevent spamming the same message too often",
+    author: "AlexProgrammerDE",
+    license: "AGPL-3.0",
+    website: "https://soulfiremc.com",
+  }),
+  create(ServerPluginSchema, {
+    id: "disconnect-logger",
+    version: "1.0.0",
+    description:
+      "Logs all bot disconnects to the terminal\nIncludes deduplication to prevent spamming the same disconnect message too often",
+    author: "AlexProgrammerDE",
+    license: "AGPL-3.0",
+    website: "https://soulfiremc.com",
+  }),
+];
+
 export const demoInstanceSettings = [
   {
     id: "bot",
@@ -72,7 +104,7 @@ export const demoInstanceSettings = [
       { namespace: "bot", key: "restore-on-reboot" },
       { namespace: "bot", key: "ignore-packet-handling-errors" },
     ],
-    iconId: "triangle-alert",
+    iconId: "bot",
   },
   {
     id: "account",
@@ -82,7 +114,7 @@ export const demoInstanceSettings = [
       { namespace: "account", key: "use-proxies-for-account-auth" },
       { namespace: "account", key: "account-import-concurrency" },
     ],
-    iconId: "triangle-alert",
+    iconId: "users",
   },
   {
     id: "proxy",
@@ -92,8 +124,9 @@ export const demoInstanceSettings = [
       { namespace: "proxy", key: "shuffle-proxies" },
       { namespace: "proxy", key: "proxy-check-address" },
       { namespace: "proxy", key: "proxy-check-concurrency" },
+      { namespace: "proxy", key: "proxy-check-timeout" },
     ],
-    iconId: "triangle-alert",
+    iconId: "waypoints",
   },
   {
     id: "ai",
@@ -104,7 +137,7 @@ export const demoInstanceSettings = [
       { namespace: "ai", key: "api-request-timeout" },
       { namespace: "ai", key: "api-max-retries" },
     ],
-    iconId: "triangle-alert",
+    iconId: "sparkles",
   },
   {
     id: "pathfinding",
@@ -119,11 +152,11 @@ export const demoInstanceSettings = [
       { namespace: "pathfinding", key: "expire-timeout" },
       { namespace: "pathfinding", key: "disable-pruning" },
     ],
-    iconId: "triangle-alert",
+    iconId: "route",
   },
   {
     id: "chat-logger",
-    pageName: "Chat Logger",
+    pageName: "Chat logger",
     entries: [
       { namespace: "chat-logger", key: "enabled" },
       { namespace: "chat-logger", key: "log-death-messages" },
@@ -135,7 +168,7 @@ export const demoInstanceSettings = [
   },
   {
     id: "disconnect-logger",
-    pageName: "Disconnect Logger",
+    pageName: "Disconnect logger",
     entries: [
       { namespace: "disconnect-logger", key: "enabled" },
       { namespace: "disconnect-logger", key: "deduplicate-amount" },
@@ -1331,7 +1364,6 @@ export const demoServerSettings = [
       { namespace: "server", key: "allow-updating-self-email" },
       { namespace: "server", key: "allow-deleting-instances" },
       { namespace: "server", key: "allow-changing-instance-meta" },
-      { namespace: "server", key: "allow-instance-scripts" },
       { namespace: "server", key: "email-type" },
       { namespace: "server", key: "smtp-host" },
       { namespace: "server", key: "smtp-port" },
@@ -1340,7 +1372,7 @@ export const demoServerSettings = [
       { namespace: "server", key: "smtp-type" },
       { namespace: "server", key: "smtp-from" },
     ],
-    iconId: "triangle-alert",
+    iconId: "server",
   },
   {
     id: "dev",
@@ -1354,7 +1386,7 @@ export const demoServerSettings = [
       { namespace: "dev", key: "via-debug" },
       { namespace: "dev", key: "other-debug" },
     ],
-    iconId: "triangle-alert",
+    iconId: "code",
   },
 ] as SettingsPage[];
 export const demoServerSettingsDefinitions = [
@@ -1365,7 +1397,7 @@ export const demoServerSettingsDefinitions = [
       value: {
         uiName: "Public address",
         description:
-          "The address clients on the internet use to connect to this SoulFire instance.\nUsed for links in E-Mails and WebDAV.",
+          "The address clients on the internet use to connect to this SoulFire server.\nUsed for links in E-Mails and WebDAV.",
         def: "http://127.0.0.1:38765",
         inputType: 0,
         placeholder: "",
@@ -1382,8 +1414,8 @@ export const demoServerSettingsDefinitions = [
     type: {
       case: "bool",
       value: {
-        uiName: "Allow creating instances",
-        description: "Allow (non-admin) users to create instances.",
+        uiName: "Allow creating projects",
+        description: "Allow (non-admin) users to create projects.",
         def: true,
         disabled: false,
       },
@@ -1421,8 +1453,8 @@ export const demoServerSettingsDefinitions = [
     type: {
       case: "bool",
       value: {
-        uiName: "Allow deleting instances",
-        description: "Allow the owner of an instance to delete it.",
+        uiName: "Allow deleting projects",
+        description: "Allow the owner of a project to delete it.",
         def: true,
         disabled: false,
       },
@@ -1434,28 +1466,14 @@ export const demoServerSettingsDefinitions = [
     type: {
       case: "bool",
       value: {
-        uiName: "Allow changing instance meta",
+        uiName: "Allow changing project details",
         description:
-          "Allow the owner of an instance to change meta like instance name and icon.",
+          "Allow the owner of a project to change the project name and icon.",
         def: true,
         disabled: false,
       },
     },
     id: { namespace: "server", key: "allow-changing-instance-meta" },
-  },
-  {
-    scope: 0,
-    type: {
-      case: "bool",
-      value: {
-        uiName: "Allow instance scripts",
-        description:
-          "Allow users of instances to create custom instance-level scripts.",
-        def: true,
-        disabled: false,
-      },
-    },
-    id: { namespace: "server", key: "allow-instance-scripts" },
   },
   {
     scope: 0,

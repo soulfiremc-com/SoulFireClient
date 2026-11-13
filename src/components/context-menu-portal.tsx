@@ -1,26 +1,77 @@
-import type React from "react";
-import { createPortal } from "react-dom";
-import { ContextMenuContainer } from "@/components/context-menu-primitives.tsx";
+import { Menu as MenuPrimitive } from "@base-ui/react/menu";
+import { type ReactNode, type RefObject, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  DropdownMenu,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+} from "@/components/ui/dropdown-menu.tsx";
+import { cn } from "@/lib/utils.tsx";
 
 export function ContextMenuPortal({
   x,
   y,
   menuRef,
+  onClose,
   children,
 }: {
   x: number;
   y: number;
-  menuRef: React.Ref<HTMLDivElement>;
-  children: React.ReactNode;
+  menuRef: RefObject<HTMLDivElement | null>;
+  onClose: () => void;
+  children: ReactNode;
 }) {
-  return createPortal(
-    <ContextMenuContainer
-      menuRef={menuRef}
-      className="fixed z-50"
-      style={{ left: x, top: y }}
+  const { t } = useTranslation("common");
+  const anchor = useMemo(
+    () => ({
+      getBoundingClientRect: () =>
+        DOMRect.fromRect({ x, y, width: 0, height: 0 }),
+    }),
+    [x, y],
+  );
+
+  return (
+    <DropdownMenu
+      open
+      modal={false}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
     >
-      {children}
-    </ContextMenuContainer>,
-    document.body,
+      <DropdownMenuPortal>
+        <MenuPrimitive.Positioner
+          anchor={anchor}
+          positionMethod="fixed"
+          side="bottom"
+          align="start"
+          collisionPadding={8}
+          collisionAvoidance={{
+            side: "shift",
+            align: "shift",
+            fallbackAxisSide: "none",
+          }}
+          className="z-50 outline-none"
+        >
+          <MenuPrimitive.Popup
+            ref={menuRef}
+            aria-label={t("contextMenu.actions")}
+            className={cn(
+              "animate-in fade-in-0 zoom-in-95 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-md p-1 shadow-md ring-1",
+              "max-h-[calc(100dvh-1rem)] max-w-[calc(100dvw-1rem)] overflow-y-auto outline-none",
+            )}
+            onContextMenu={(event) => event.preventDefault()}
+            onKeyDown={(event) => {
+              event.stopPropagation();
+              if (event.key === "Tab") {
+                event.preventDefault();
+                onClose();
+              }
+            }}
+          >
+            <DropdownMenuGroup>{children}</DropdownMenuGroup>
+          </MenuPrimitive.Popup>
+        </MenuPrimitive.Positioner>
+      </DropdownMenuPortal>
+    </DropdownMenu>
   );
 }

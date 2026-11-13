@@ -44,5 +44,35 @@ jobs:
       - name: Run check
         run: bun run check
 
+      - name: Run deployment tests
+        run: bun run test:deployment
+
+      - name: Run terminal tests
+        run: bun run test:terminal
+
+      - name: Run file-watch regression tests
+        run: bun run test:fs-watch
+
+      - name: Run settings persistence tests
+        run: bun run test:settings
+
+      - name: Run proxy-check regression tests
+        run: bun test src/lib/proxy-check.test.ts
+
       - name: Run web build
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ github.event_name == 'push' && secrets.POSTHOG_PERSONAL_API_KEY || '' }}
         run: bun run build:web
+
+      - name: Build Storybook
+        run: bun run build:storybook
+
+      - name: Install Chromium for component tests
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run Storybook component tests
+        env:
+          # Reclaim removed iframe heaps between files on the CI browser worker.
+          # https://github.com/vitest-dev/vitest/pull/10912
+          VITEST_CHROMIUM_GC_DISK_THRESHOLD_GB: 1024
+        run: bun run test:storybook

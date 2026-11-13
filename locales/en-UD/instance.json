@@ -63,16 +63,34 @@
         "respawned": "pǝpɐʍsuǝɹ",
         "disconnected": "pǝʇɔǝuuocsᴉp",
         "unknown": "ǝʇɐʇs pǝƃuɐɥɔ"
+      },
+      "pause": "ǝsnsɐԀ",
+      "resume": "ǝɯnsǝᴚ",
+      "paused": "˙˙˙pᴉlǝʇɔǝlloɔ ǝq llᴉʇs sᴉ ʎʇᴉʌᴉʇɔɐ ʍǝN ˙pǝsɐns pǝʎɐl sᴉ ʎɐlɐdsᴉp",
+      "following": "sǝʇɐpɒpl ǝʌᴉl",
+      "reconnecting": "˙˙˙pǝǝɟ ǝʌᴉl ǝɥʇ oʇ ƃuᴉʇɔǝuuoɔǝɹ",
+      "emptyFilter": "˙ɹǝʇlᴉɟ sᴉɥʇ sǝɥɔɐɯ ʎʇᴉʌᴉʇɔɐ oN",
+      "filterLabel": "ɹǝʇlᴉɟ pǝǝɟ ǝʌᴉl",
+      "filters": {
+        "all": "ll∀",
+        "chat": "ʇɐɥↃ",
+        "lifecycle": "sʇuǝʌƎ"
+      },
+      "columns": {
+        "time": "ǝɯᴉ⟘",
+        "bot": "ʇoq",
+        "message": "ǝƃɐssǝW"
       }
     },
     "bots": {
       "title": "sʇoԐ",
       "viewAll": "sʇoq {{total}} llɐ ʍǝᴉɅ",
-      "viewAllShort": "llɐ ʍǝᴉɅ"
+      "viewAllShort": "llɐ ʍǝᴉɅ",
+      "detailsFor": "{{name}} ɹoɟ sʅᴉɐʇǝp ʇoԐ"
     },
     "timeline": {
-      "title": "ʎʇᴉʌᴉʇɔɐ",
-      "viewAll": "llɐ ʍǝᴉɅ",
+      "title": "suoᴉʇɔɐ ʇuǝɔǝɹ",
+      "viewAll": "ʎɹoɹᴉɥ ʍǝᴉɅ",
       "empty": ".ʇǝʎ ʎʇᴉʌᴉʇɔɐ pǝpɐɹɔǝɹ oN",
       "noPermission": ".ƃol ʇᴉpnɐ ǝɥʇ ʍǝᴉʌ oʇ uoᴉssᴉɯɹǝd ǝʌɐɥ ʇou os no⅄",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "sɔᴉʇǝɯ pǝlᴉɐʇǝp",
       "composition": "uoᴉsᴉʇᴉsodɯoɔ plɹoM"
-    }
+    },
+    "loadError": "˙ɐʇɐp ʇsǝʇɐʅ ǝɥʇ pɐoʅ ʇo uɐɔ"
   },
   "proxy": {
+    "transport": {
+      "network": "ssǝɹpppɐ ʞɹoʷʇǝu ʞɹoʷʇǝN",
+      "unix": "ʇǝʞɔoS xᴉun∩"
+    },
     "getProxies": "sǝᴉxɐɹԀ ʇǝƃ",
     "addProxies": "sǝᴉxɐɹԀ pp∀",
     "filterPlaceholder": "...sǝᴉxɐɹd ɹǝʇlᴉℲ",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "ʎǝ⋊",
       "valuePlaceholder": ")NOႧ( ǝnlɐʌ",
       "noEntries": "..ǝʌoɯɐ ǝuo ppp∀ .sǝᴉɹʇuǝ ɐʇɐpɐʇǝɯ oN",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "ʎɹʇǝɹ",
       "addSuccess": "pǝpp∀ ʎɹʇuƎ",
       "addError": "ʎɹʇuǝ  ppA oʇ pǝlᴉɐℲ",
       "updateError": "ʎɹʇuǝ ǝʇɐpdnl pǝlᴉɐℲ",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "ʎɹoʇuǝʌuI",
+      "actionRejected": "",
       "hotbar": "ɹɐqʇoH",
       "main": "ʎɹoʇuǝʌuᴉ  uᴉɐW",
       "items": "sɯǝʇᴉ",
@@ -446,17 +473,24 @@
         "beaconEffects": "sʇɔǝɟɟǝ ƃuoɔɐǝԐ",
         "crafterSlots": "sloS ɹolʇuoↃ",
         "lecternControls": "slɐʇuoↃ ʞooԐ",
-        "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072"
+        "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "ʇnoddn ʇxǝ┴",
-        "anvilRename": "ǝɯɐuǝᴚ ɯǝ⊥"
+        "anvilRename": "ǝɯɐuǝᴚ ɯǝ⊥",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "ǝlᴉʇǝɯ ʞooԐ",
         "emptyPage": ")ǝƃɐd ʎʇdɯƎ(",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "ɹoʇɐl ɟo ʎɹɹǝnɔ ǝƃɐd {{current}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "ʍǝᴉɅ ʇoq",
@@ -479,6 +513,7 @@
       "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ llɐ ǝlqɐlᴉɐʌ sᴉ suoᴉʇɔ∀ .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "lɔoɹʇuoↃ ʇuǝɯǝʌoW",
       "movement": ")pspʍ( ʇuǝɯǝʌoW",
       "forward": ")M( pɹɐʍɹoℲ ǝʌoW",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "ɹǝns ʎq pǝʇɐʌᴉʇɔɐ pǝʇdıɹɔS",
     "executionFailed": "pǝlᴉɐℲ uoᴉʇnɔǝxǝ ʇdıɹɔS",
     "executionError": "}}error{{ :ɹoɹɹǝ uoᴉʇnɔǝxǝ",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "}}nodeId{{ :pǝʇɹɐʇs ǝpoN",
     "nodeCompleted": "}}nodeId{{ :pǝʇǝlǝdoɔ ǝpoN",
     "nodeError": "}}error{{ :ɹoɹɹǝ ǝpoN",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "sʇdıɹɔS oʇ ʞɔɐq",
         "save": "ǝʌɐS",
         "saveTooltip": "ʇdᴉɹɔs ǝʌɐS",
@@ -705,6 +743,16 @@
         "tooltip": "sǝᵷuɐɥɔ ʍǝᴉʌǝᴚ"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "uɐᴚ ʎɹᗡ",
         "title": "ʇdᴉɹɔS uɐᴚ ʎɹᗡ",
         "description": ".sʇnɾuᴉ uʞɔoɯ ɥʇᴉʍ ɹǝᵷɡᴉɹʇ dǝʇɔǝlǝs ɐ ɯoɹɟ ʇdᴉɹɔs ɐ nɹ uɐ",
@@ -713,7 +761,9 @@
         "triggerDescription": ".sǝnlɐʌ ʇnᴉdnᴉ ʞɔoɯ ɥʇᴉʍ ǝʇnɔǝxǝ oʇ ǝpou ɹǝᵷɡᴉɹ⟘ ǝɥʇ ʞɔᴉd",
         "mockInputs": "sʇnduᴉ ʞɔoW",
         "valuePlaceholder": "ǝnlɐǝnlԀ {{ʎdǝʇ}}",
-        "start": "uɐᴚ ʎɹᗡ ʇɹɐʇS"
+        "start": "uɐᴚ ʎɹᗡ ʇɹɐʇS",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "sɐʇonbᴉn ʇdᴉɹɔS",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "ǝɹoʇs ǝʇɐʇs ʇdᴉɹɔs ǝɥʇ uᴉ sǝᴉɹʇuǝ ɯnᴉɯxɐW",
         "disableTimeouts": "snoǝʇnoɯɐᴉʇ ǝןqɐsᴉᗡ",
         "disableTimeoutsDescription": ".snoǝʇnoɯɐᴉʇ ǝᗡ ɐʇɐp puɐ ǝpou-ɹǝd sǝlqɐsᴉᗡ",
-        "save": "sɐʇonbᴉn ǝʌɐS"
+        "save": "sɐʇonbᴉn ǝʌɐS",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

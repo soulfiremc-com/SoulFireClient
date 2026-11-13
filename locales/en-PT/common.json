@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Link with the SoulFire ship’s hub failed, arrr."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Missin’ at sea!",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Jolly moniker",
           "placeholder": "Me Minecraft Matey",
-          "description": "The moniker ye wish to name this vessel.",
-          "min": "Yarr, th' jolly moniker needs at least 3 markings (characters).",
-          "max": "Moniker can’t be longer than 32 marks, matey.",
-          "regex": "Jolly moniker must use only letters, numerics, and blank air between!"
+          "description": "The moniker ye wish to name this vessel."
         },
         "cancel": "Lower anchor",
         "create": "Set sail!"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Snaggin' loot from the bottle...",
           "success": "Booty be found!",
-          "error": "Blimey! Couldn't fetch the loot!"
+          "error": "Blimey! Couldn't fetch the loot!",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,22 @@
       "error": "Blast it! The bots don’t want to stop!"
     },
     "permissionDenied": "Ye lack th' authority to set sail or anchor bots in this here instance, matey!",
-    "serverUpdateRequired": "Th' server gave no account o' bot-control permissions. Be makin' sure yer server an' client be runnin' the same version, arrr!"
+    "serverUpdateRequired": "Th' server gave no account o' bot-control permissions. Be makin' sure yer server an' client be runnin' the same version, arrr!",
+    "startBots": "Hoist the bots",
+    "moreActions": "More bot booty actions",
+    "generateFirst": "Create accounts t’ send yer first bots sailin’.",
+    "startCountHelp": "Sets more bots a-sailin’. Runny bots keep holdin’ their course.",
+    "startAllCount": "Hoist all {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "{{count}} stopped bot be available, matey.",
+    "availableCount_other": "{{count}} stopped bots be available, mateys.",
+    "startSelected_one": "Hoist {{count}} bot",
+    "startSelected_other": "Hoist {{count}} bots",
+    "stopCount_one": "Drop anchor fer {{count}} bot",
+    "stopCount_other": "Drop anchor fer {{count}} bots",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} wanted · {{total}} booty in total",
   "icon": {
@@ -237,8 +256,13 @@
     "website": "Shanty Site"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "No map findin' for settings!",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Jot a new entry, matey...",
       "add": "Chart course",
       "remove": "Scuttle"
@@ -453,6 +477,14 @@
     "success": "Copied \"{{content}}\" to yer logbook",
     "error": "Clipboard mutinied!"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Portrait o' thyself",
@@ -466,7 +498,11 @@
     "email": {
       "uiName": "Parrot mail",
       "description": "Yer mail be used fer settin' sail an' messages, arrr."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter the captain's log...",
@@ -610,5 +646,13 @@
     "filter": "Filter th' process bellowin's (output)",
     "truncated": "{{count}} old log lines be buried. Ye can find all in the data trove.",
     "privacy": "Reports do carry local trails an' last logs. Peer o'er 'em reports an' thread dumps fer secrets before sharin'. Nothin' leaves the ship 'less ye say so."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

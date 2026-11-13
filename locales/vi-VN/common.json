@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Kết nối đến máy chủ SoulFire thất bại."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Không tìm thấy",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Tên thân thiện",
           "placeholder": "Bot Minecraft của tôi",
-          "description": "Tên bạn muốn đặt cho phiên bản này.",
-          "min": "Tên thân thiện phải có ít nhất 3 ký tự.",
-          "max": "Tên thân thiện phải có tối đa 32 ký tự.",
-          "regex": "Tên thân thiện chỉ được chứa chữ cái, số và khoảng trắng"
+          "description": "Tên bạn muốn đặt cho phiên bản này."
         },
         "cancel": "Hủy",
         "create": "Tạo"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Đang tải dữ liệu...",
           "success": "Dữ liệu đã được tải!",
-          "error": "Không tải được dữ liệu"
+          "error": "Không tải được dữ liệu",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,18 @@
       "error": "Không thể dừng bot"
     },
     "permissionDenied": "Bạn không có quyền để khởi động hoặc dừng bot trong phiên bản này.",
-    "serverUpdateRequired": "Máy chủ không báo cáo quyền kiểm soát bot. Hãy kiểm tra rằng phiên bản máy chủ và phiên bản client của bạn trùng khớp nhau."
+    "serverUpdateRequired": "Máy chủ không báo cáo quyền kiểm soát bot. Hãy kiểm tra rằng phiên bản máy chủ và phiên bản client của bạn trùng khớp nhau.",
+    "startBots": "Khởi động bot",
+    "moreActions": "Thêm hành động bot",
+    "generateFirst": "Tạo tài khoản để bắt đầu bot đầu tiên của bạn.",
+    "startCountHelp": "Khởi động thêm bot. Các bot đang chạy sẽ vẫn kết nối.",
+    "startAllCount": "Khởi động tất cả {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "Có {{count}} bot đã dừng sẵn sàng.",
+    "startSelected_other": "Khởi động {{count}} bot",
+    "stopCount_other": "Dừng {{count}} bot",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} đang online · {{desired}} mong muốn · {{total}} tổng cộng",
   "icon": {
@@ -237,8 +252,13 @@
     "website": "Website"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Không tìm thấy không gian cài đặt",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Thêm mục mới...",
       "add": "Thêm",
       "remove": "Xóa"
@@ -453,6 +473,14 @@
     "success": "Đã sao chép \"{{content}}\" vào bộ nhớ tạm",
     "error": "Sao chép vào bộ nhớ tạm thất bại"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Ảnh đại diện",
@@ -466,7 +494,11 @@
     "email": {
       "uiName": "Email",
       "description": "Email của bạn được dùng để đăng nhập và nhận thông báo."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Lọc nhật ký kiểm toán...",
@@ -610,5 +642,13 @@
     "filter": "Lọc đầu ra tiến trình",
     "truncated": "",
     "privacy": "Báo cáo bao gồm đường dẫn cục bộ và các nhật ký gần đây. Vui lòng kiểm tra kỹ báo cáo và thread dump để tránh lộ thông tin cá nhân trước khi chia sẻ. Không có gì được tải lên tự động."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

@@ -1,18 +1,11 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient } from "@connectrpc/connect";
+import { timestampFromDate } from "@bufbuild/protobuf/wkt";
+
 import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  demoServerSettings,
-  demoServerSettingsDefinitions,
-} from "@/demo-data.ts";
 import { UserRole } from "@/generated/soulfire/common_pb";
-import {
-  type ServerConfig,
-  ServerConfigSchema,
-  ServerInfoResponseSchema,
-  ServerService,
-} from "@/generated/soulfire/server_pb";
 import {
   type UserListResponse,
   UserListResponse_UserSchema,
@@ -22,50 +15,12 @@ import {
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { serverMetricsQueryOptions } from "@/lib/server-metrics-query.ts";
-import {
-  convertFromServerProto,
-  type ServerInfoQueryData,
-} from "@/lib/types.ts";
+import { serverInfoQueryOptions } from "@/lib/server-info-query.ts";
 import { createTransport } from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard/user/admin")({
   beforeLoad: (props) => {
-    const serverInfoQueryOptions = queryOptions({
-      queryKey: ["server-info"],
-      queryFn: async (props): Promise<ServerInfoQueryData> => {
-        const transport = createTransport();
-        if (transport === null) {
-          const serverConfig: ServerConfig = create(ServerConfigSchema, {
-            settings: [],
-          });
-          return {
-            ...create(ServerInfoResponseSchema, {
-              config: serverConfig,
-              settingsDefinitions: demoServerSettingsDefinitions,
-              serverSettings: demoServerSettings,
-              plugins: [],
-            }),
-            config: serverConfig,
-            profile: convertFromServerProto(serverConfig),
-          };
-        }
-
-        const serverService = createClient(ServerService, transport);
-        const result = await serverService.getServerInfo(
-          {},
-          {
-            signal: props.signal,
-          },
-        );
-
-        // console.log(JSON.stringify(result.serverSettings))
-        return {
-          ...result,
-          profile: convertFromServerProto(result.config as ServerConfig),
-        };
-      },
-      refetchInterval: 3_000,
-    });
+    const serverInfoOptions = serverInfoQueryOptions(createTransport());
     const usersQueryOptions = queryOptions({
       queryKey: ["users"],
       queryFn: async (props): Promise<UserListResponse> => {
@@ -78,17 +33,23 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
                 username: "root",
                 email: "root@soulfiremc.com",
                 role: UserRole.ADMIN,
+                createdAt: timestampFromDate(new Date("2025-01-01T00:00:00Z")),
+                minIssuedAt: timestampFromDate(
+                  new Date("2025-01-01T00:00:00Z"),
+                ),
               }),
             ],
           });
         }
 
-        const userService = createClient(UserService, transport);
-        const result = await userService.listUsers(
-          {},
-          {
-            signal: props.signal,
-          },
+        const userService = createRpcClient(UserService, transport);
+        const result = await Effect.runPromise(
+          userService.listUsers(
+            {},
+            {
+              signal: props.signal,
+            },
+          ),
         );
 
         return result;
@@ -101,7 +62,7 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
     );
     props.abortController.signal.addEventListener("abort", () => {
       void props.context.queryClient.cancelQueries({
-        queryKey: serverInfoQueryOptions.queryKey,
+        queryKey: serverInfoOptions.queryKey,
       });
     });
     props.abortController.signal.addEventListener("abort", () => {
@@ -115,7 +76,7 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
       });
     });
     return {
-      serverInfoQueryOptions,
+      serverInfoQueryOptions: serverInfoOptions,
       usersQueryOptions,
       serverMetricsOptions,
       ...staticRouteChrome(() => i18n.t("common:breadcrumbs.admin"), {

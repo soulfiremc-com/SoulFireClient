@@ -63,16 +63,34 @@
         "respawned": "已重生",
         "disconnected": "已断开连接",
         "unknown": "状态已更改"
+      },
+      "pause": "暂停",
+      "resume": "继续",
+      "paused": "显示已暂停。新活动仍在收集中。",
+      "following": "实时更新",
+      "reconnecting": "正在重新连接到实时推送……",
+      "emptyFilter": "没有与此筛选条件匹配的活动。",
+      "filterLabel": "筛选实时推送",
+      "filters": {
+        "all": "全部",
+        "chat": "聊天",
+        "lifecycle": "事件"
+      },
+      "columns": {
+        "time": "时间",
+        "bot": "机器人",
+        "message": "消息"
       }
     },
     "bots": {
       "title": "机器人",
       "viewAll": "查看全部 {{total}} 个机器人",
-      "viewAllShort": "查看全部"
+      "viewAllShort": "查看全部",
+      "detailsFor": "{{name}} 的机器人详情"
     },
     "timeline": {
-      "title": "活动",
-      "viewAll": "查看全部",
+      "title": "最近操作",
+      "viewAll": "查看历史记录",
       "empty": "尚无记录的活动。",
       "noPermission": "您没有权限查看审计日志。",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "详细指标",
       "composition": "世界组成"
-    }
+    },
+    "loadError": "无法加载最新数据。"
   },
   "proxy": {
+    "transport": {
+      "network": "网络地址",
+      "unix": "Unix 套接字"
+    },
     "getProxies": "获取代理服务器",
     "addProxies": "添加代理服务器",
     "filterPlaceholder": "过滤代理服务器...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "键",
       "valuePlaceholder": "值（JSON）",
       "noEntries": "没有元数据条目。请在上方添加。",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "重试",
       "addSuccess": "条目已添加",
       "addError": "添加条目失败",
       "updateError": "更新条目失败",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "背包",
+      "actionRejected": "",
       "hotbar": "快捷栏",
       "main": "主物品栏",
       "items": "物品",
@@ -446,17 +473,24 @@
         "beaconEffects": "信标效果",
         "crafterSlots": "槽位控制",
         "lecternControls": "书本控制",
-        "actions": "操作"
+        "actions": "操作",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "文本输入",
-        "anvilRename": "重命名物品"
+        "anvilRename": "重命名物品",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "书本内容",
         "emptyPage": "（空白页）",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "第 {{current}} 页，共 {{total}} 页"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot视图",
@@ -479,6 +513,7 @@
       "offline": "机器人离线。仅在机器人连接时可用操作。"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "移动控制",
       "movement": "移动（WASD）",
       "forward": "前进（W）",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "脚本已被用户停用",
     "executionFailed": "脚本执行失败",
     "executionError": "执行错误：{{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "节点已启动：{{nodeId}}",
     "nodeCompleted": "节点已完成：{{nodeId}}",
     "nodeError": "节点错误：{{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "返回脚本",
         "save": "保存",
         "saveTooltip": "保存脚本",
@@ -704,6 +742,16 @@
         "tooltip": "查看更改"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "模拟运行",
         "title": "模拟运行脚本",
         "description": "从选定触发器用模拟输入运行脚本。",
@@ -712,7 +760,8 @@
         "triggerDescription": "选择用于模拟输入值执行的触发节点。",
         "mockInputs": "模拟输入",
         "valuePlaceholder": "{{type}}值",
-        "start": "开始模拟运行"
+        "start": "开始模拟运行",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "脚本配额",
@@ -732,8 +781,13 @@
         "maxStateStoreEntriesDescription": "脚本状态存储中的最大条目数",
         "disableTimeouts": "禁用超时",
         "disableTimeoutsDescription": "禁用每节点和数据边的超时时间",
-        "save": "保存配额"
+        "save": "保存配额",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

@@ -15,6 +15,11 @@
     },
     "connectionFailed": "SoulFire sunucusuna bağlantı başarısız oldu."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Bulunamadı",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "\"Dostça ad",
           "placeholder": "Benim Botum",
-          "description": "Bu örneğe vermek istediğiniz isim.",
-          "min": "Takma ad en az 3 karakter uzunluğunda olmalıdır.",
-          "max": "Takma ad en fazla 32 karakter uzunluğunda olmalıdır.",
-          "regex": "Takma ad yalnızca harf, rakam ve boşluk içermelidir"
+          "description": "Bu örneğe vermek istediğiniz isim."
         },
         "cancel": "İptal",
         "create": "Oluştur"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Veri indiriliyor...",
           "success": "Veri yüklendi!",
-          "error": "Veri indirilemedi"
+          "error": "Veri indirilemedi",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,22 @@
       "error": "Botlar durdurulamadı"
     },
     "permissionDenied": "Bu örnekte botları başlatmak veya durdurmak için izniniz yok.",
-    "serverUpdateRequired": "Sunucu, bot kontrol izinlerini bildirmedi. Sunucu ve istemci sürümlerinizin eşleştiğinden emin olun."
+    "serverUpdateRequired": "Sunucu, bot kontrol izinlerini bildirmedi. Sunucu ve istemci sürümlerinizin eşleştiğinden emin olun.",
+    "startBots": "Botları başlat",
+    "moreActions": "Daha fazla bot işlemi",
+    "generateFirst": "İlk botlarınızı başlatmak için hesaplar oluşturun.",
+    "startCountHelp": "Ek botları başlatır. Çalışan botlar bağlı kalır.",
+    "startAllCount": "Toplam {{count}}'i başlat",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "{{count}} durdurulmuş bot mevcut.",
+    "availableCount_other": "{{count}} durdurulmuş bot mevcut.",
+    "startSelected_one": "{{count}} botu başlat",
+    "startSelected_other": "{{count}} botu başlat",
+    "stopCount_one": "{{count}} botu durdur",
+    "stopCount_other": "{{count}} botu durdur",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} çevrimiçi · {{desired}} istenen · {{total}} toplam",
   "icon": {
@@ -237,8 +256,13 @@
     "website": "Web sitesi"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Ayar ad alanları bulunamadı",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Yeni bir giriş ekle...",
       "add": "Ekle",
       "remove": "Kaldır"
@@ -453,6 +477,14 @@
     "success": "\"{{content}}\" panoya kopyalandı",
     "error": "Panoya kopyalama başarısız oldu"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +498,11 @@
     "email": {
       "uiName": "Mail Adresi",
       "description": "E-posta adresiniz giriş ve bildirimler için kullanılır."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Denetim günlüklerini filtrele...",
@@ -610,5 +646,13 @@
     "filter": "Süreç çıktısını filtrele",
     "truncated": "{{count}} eski günlük satırı atlandı. Tam sunucu günlükleri veri dizininde kalır.",
     "privacy": "Raporlar yerel yolları ve son günlükleri içerir. Kişisel bilgi için raporları ve iz dökümlerini paylaşmadan önce gözden geçirin. Hiçbir şey otomatik olarak yüklenmez."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

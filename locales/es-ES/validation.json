@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "Entrada inválida: se esperaba texto, recibido indefinido",
+    "null": "Entrada inválida: se esperaba texto, recibido nulo",
+    "number": "Entrada inválida: se esperaba texto, recibido número",
+    "boolean": "Entrada inválida: se esperaba texto, recibido booleano",
+    "array": "Entrada inválida: se esperaba texto, recibido arreglo",
+    "object": "Entrada inválida: se esperaba texto, recibido objeto",
+    "nan": "Entrada inválida: se esperaba texto, recibido NaN",
+    "infinity": "Entrada inválida: se esperaba texto, recibido número"
+  },
+  "number": {
+    "undefined": "Entrada inválida: se esperaba número, recibido indefinido",
+    "null": "Entrada inválida: se esperaba número, recibido nulo",
+    "string": "Entrada inválida: se esperaba número, recibido texto",
+    "boolean": "Entrada inválida: se esperaba número, recibido booleano",
+    "array": "Entrada inválida: se esperaba número, recibido arreglo",
+    "object": "Entrada inválida: se esperaba número, recibido objeto",
+    "nan": "Entrada inválida: se esperaba número, recibido NaN",
+    "infinity": "Entrada inválida: se esperaba número, recibido número"
+  },
+  "object": {
+    "undefined": "Entrada inválida: se esperaba objeto, recibido indefinido",
+    "null": "Entrada inválida: se esperaba objeto, recibido nulo",
+    "number": "Entrada inválida: se esperaba objeto, recibido número",
+    "string": "Entrada inválida: se esperaba objeto, recibido texto",
+    "boolean": "Entrada inválida: se esperaba objeto, recibido booleano",
+    "array": "Entrada inválida: se esperaba objeto, recibido arreglo",
+    "nan": "Entrada inválida: se esperaba objeto, recibido NaN",
+    "infinity": "Entrada inválida: se esperaba objeto, recibido número"
+  },
+  "email": "Inválido dirección de correo electrónico",
+  "url": "Inválido URL",
+  "jwt": "Inválido JWT",
+  "emailTooLong": "Demasiado grande: se esperaba que texto tuviera <=255 caracteres",
+  "jarSource": "Opción inválida: se esperaba una de \"official\"|\"custom\"",
+  "generationMode": "Opción inválida: se esperaba una de \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
+  "userRole": "Opción inválida: se esperaba una de 0|1"
+}

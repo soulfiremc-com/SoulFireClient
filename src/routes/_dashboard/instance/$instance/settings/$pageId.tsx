@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
+import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { InstancePluginInfoCard } from "@/components/instance-plugin-info-card.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { NotFoundComponent } from "@/components/not-found-component.tsx";
@@ -9,6 +10,7 @@ import { InstanceSettingsPageComponent } from "@/components/settings-page.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import i18n from "@/lib/i18n";
 import { routeChrome } from "@/lib/route-title.ts";
+import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
 function getSettingsPageFallbackIcon(pageId: string) {
   switch (pageId) {
@@ -30,6 +32,7 @@ function getSettingsPageFallbackIcon(pageId: string) {
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/settings/$pageId",
 )({
+  validateSearch: parseSettingFocusSearch,
   beforeLoad: () =>
     routeChrome({
       getTitle: (match) => {
@@ -124,6 +127,7 @@ function ContentSkeleton() {
 function Content() {
   const { t } = useTranslation("common");
   const { pageId } = Route.useParams();
+  const { focusNamespace, focusKey } = Route.useSearch();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const settingsEntry = instanceInfo.instanceSettings.find(
@@ -152,18 +156,30 @@ function Content() {
       ]}
       pageName={settingsEntry.pageName}
     >
-      <div className="flex h-full w-full grow flex-row gap-2">
-        <div className="flex h-full grow flex-col gap-4">
-          {plugin && (
-            <InstancePluginInfoCard
-              settingsEntry={settingsEntry}
-              plugin={plugin}
+      <div className="flex w-full flex-col gap-5">
+        {!plugin && (
+          <h2 className="flex items-center gap-2 text-xl font-semibold">
+            <DynamicIcon
+              name={settingsEntry.iconId}
+              className="size-5 shrink-0"
             />
-          )}
-          <div className="flex flex-col gap-2">
-            <InstanceSettingsPageComponent data={settingsEntry} />
-          </div>
-        </div>
+            {settingsEntry.pageName}
+          </h2>
+        )}
+        {plugin && (
+          <InstancePluginInfoCard
+            settingsEntry={settingsEntry}
+            plugin={plugin}
+          />
+        )}
+        <InstanceSettingsPageComponent
+          data={settingsEntry}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
+        />
       </div>
     </InstancePageLayout>
   );

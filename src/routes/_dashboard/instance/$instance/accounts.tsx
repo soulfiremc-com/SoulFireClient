@@ -1,13 +1,15 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+
 import {
   type QueryClient,
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import {
+  ArrowLeftIcon,
   BracesIcon,
   ClipboardCopyIcon,
   PlusIcon,
@@ -22,10 +24,6 @@ import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
   DataTableActionBar,
@@ -48,12 +46,10 @@ import {
 } from "@/components/dialog/device-code-dialog.tsx";
 import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
-import RavealtsDialog from "@/components/dialog/ravealts-dialog.tsx";
-import { ExternalLink } from "@/components/external-link.tsx";
+import AccountProvidersDialog from "@/components/dialog/account-providers-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
-  type DisabledSettingId,
   InstanceSettingFieldByKey,
   InstanceSettingsPageComponent,
 } from "@/components/settings-page.tsx";
@@ -99,7 +95,8 @@ import {
 } from "@/lib/account-types.ts";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
-import { dataTableValidateSearch } from "@/lib/parsers.ts";
+import { guidedTableValidateSearch } from "@/lib/parsers.ts";
+import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -118,23 +115,11 @@ import {
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
 
-const ACCOUNT_SETTINGS_DISABLED_IDS: DisabledSettingId[] = [
-  { namespace: "account", key: "account-import-concurrency" },
-  { namespace: "account", key: "use-proxies-for-account-auth" },
-];
-
-function GetAccountsButton() {
+function GetAccountsButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      nativeButton={false}
-      render={
-        <ExternalLink href="https://soulfiremc.com/get-accounts?utm_source=soulfire-client&utm_medium=app&utm_campaign=accounts-get" />
-      }
-    >
+    <Button variant="outline" size="sm" onClick={onClick}>
       <ShoppingCartIcon />
       {t("account.getAccounts")}
     </Button>
@@ -164,7 +149,6 @@ function GenerateAccountsButton() {
       await applyGeneratedAccounts(
         newAccounts,
         mode,
-        profile.accounts,
         instanceInfo,
         transport,
         queryClient,
@@ -214,7 +198,7 @@ function GenerateAccountsButton() {
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
   {
-    validateSearch: dataTableValidateSearch,
+    validateSearch: guidedTableValidateSearch,
     beforeLoad: () =>
       routeChrome({
         getTitle: () => i18n.t("common:pageName.accountSettings"),
@@ -242,16 +226,6 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
     component: AccountSettings,
   },
 );
-
-function _addAndDeduplicate(
-  accounts: ProfileAccount[],
-  newAccounts: ProfileAccount[],
-) {
-  const newAccountsSet = new Set(newAccounts.map((a) => a.profileId));
-  return accounts
-    .filter((a) => !newAccountsSet.has(a.profileId))
-    .concat(newAccounts);
-}
 
 function splitAccountCredentialPayloads(
   text: string,
@@ -399,6 +373,7 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
         );
       },
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {
@@ -509,13 +484,23 @@ function AddButton() {
   );
   const [pendingDeviceCodeType, setPendingDeviceCodeType] =
     useState<AccountTypeDeviceCode | null>(null);
-  const [ravealtsDialogOpen, setRavealtsDialogOpen] = useState(false);
+  const guide = Route.useSearch({ select: (search) => search.guide });
+  const [providerDialogOpen, setProviderDialogOpen] = useState(
+    guide === "providers",
+  );
+  const [initialProviderId, setInitialProviderId] = useState<
+    string | undefined
+  >();
+  const openProviderDialog = (providerId?: string) => {
+    setInitialProviderId(providerId);
+    setProviderDialogOpen(true);
+  };
 
-  const handleRavealtsImport = useCallback(
+  const handleProviderAccountImport = useCallback(
     (payload: string[], credentialType: AccountTypeCredentials) => {
       if (transport === null) return;
 
-      const service = createClient(MCAuthService, transport);
+      const service = createRpcClient(MCAuthService, transport);
       const abortController = new AbortController();
       const loadingData: ExternalToast = {
         cancel: {
@@ -617,7 +602,11 @@ function AddButton() {
     (text: string) => {
       if (accountTypeCredentialsSelected === null) return;
 
-      if (text.length === 0) {
+      const textSplit = splitAccountCredentialPayloads(
+        text,
+        accountTypeCredentialsSelected,
+      );
+      if (textSplit.length === 0) {
         toast.error(t("account.listImportToast.noAccounts"));
         return;
       }
@@ -628,11 +617,7 @@ function AddButton() {
         return;
       }
 
-      const textSplit = splitAccountCredentialPayloads(
-        text,
-        accountTypeCredentialsSelected,
-      );
-      const service = createClient(MCAuthService, transport);
+      const service = createRpcClient(MCAuthService, transport);
 
       const abortController = new AbortController();
       const loadingData: ExternalToast = {
@@ -757,7 +742,7 @@ function AddButton() {
       }
 
       const abortController = new AbortController();
-      const service = createClient(MCAuthService, transport);
+      const service = createRpcClient(MCAuthService, transport);
       toast.promise(
         (async () => {
           const promise = new Promise<ProfileAccount>((resolve, reject) => {
@@ -828,6 +813,31 @@ function AddButton() {
 
   return (
     <>
+      {guide && (
+        <Button
+          variant="secondary"
+          size="sm"
+          nativeButton={false}
+          render={
+            <Link
+              to="/instance/$instance"
+              params={{ instance: instanceInfo.id }}
+            />
+          }
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("setup.backToSetup")}
+        </Button>
+      )}
+      <GetAccountsButton onClick={() => openProviderDialog()} />
+      <GenerateAccountsButton />
+      <AccountProvidersDialog
+        open={providerDialogOpen}
+        onOpenChange={setProviderDialogOpen}
+        initialProviderId={initialProviderId}
+        onImport={handleProviderAccountImport}
+        canPurchase={transport !== null}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
           <PlusIcon />
@@ -902,10 +912,16 @@ function AddButton() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                setRavealtsDialogOpen(true);
+                openProviderDialog("ravealts");
               }}
             >
               {t("account.ravealts.button")}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => openProviderDialog("localts")}>
+              Localts
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => openProviderDialog("fernan")}>
+              Fernan's Club
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -1085,11 +1101,6 @@ function AddButton() {
           }
         />
       )}
-      <RavealtsDialog
-        open={ravealtsDialogOpen}
-        onOpenChange={setRavealtsDialogOpen}
-        onImportAccounts={handleRavealtsImport}
-      />
     </>
   );
 }
@@ -1192,6 +1203,11 @@ function AccountSettings() {
 function Content() {
   const { t } = useTranslation("instance");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
+  // Exact setting links come from search and keep the table params intact.
+  const focusNamespace = Route.useSearch({
+    select: (search) => search.focusNamespace,
+  });
+  const focusKey = Route.useSearch({ select: (search) => search.focusKey });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const { table } = useDataTable({
@@ -1202,11 +1218,15 @@ function Content() {
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<ProfileAccount>();
   const copyToClipboard = useCopyToClipboard();
-  const [configAccount, setConfigAccount] = useState<ProfileAccount | null>(
+  const [configAccountId, setConfigAccountId] = useState<string | null>(null);
+  const [metadataAccountId, setMetadataAccountId] = useState<string | null>(
     null,
   );
-  const [metadataAccount, setMetadataAccount] = useState<ProfileAccount | null>(
-    null,
+  const configAccount = profile.accounts.find(
+    (account) => account.profileId === configAccountId,
+  );
+  const metadataAccount = profile.accounts.find(
+    (account) => account.profileId === metadataAccountId,
   );
 
   return (
@@ -1218,7 +1238,12 @@ function Content() {
               (s) => s.id === "account",
             ) as SettingsPage
           }
-          disabledIds={ACCOUNT_SETTINGS_DISABLED_IDS}
+          disabledIds={PAGE_HIDDEN_SETTINGS.account}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
         />
       </div>
       <DataTable
@@ -1232,37 +1257,36 @@ function Content() {
       >
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
-          <GetAccountsButton />
-          <GenerateAccountsButton />
           <AddButton />
         </DataTableToolbar>
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
-              setConfigAccount(contextMenu.data);
+              setConfigAccountId(contextMenu.data.profileId);
               dismiss();
             }}
           >
             <SettingsIcon />
             {t("account.contextMenu.openConfig")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
-              setMetadataAccount(contextMenu.data);
+              setMetadataAccountId(contextMenu.data.profileId);
               dismiss();
             }}
           >
             <BracesIcon />
             {t("account.contextMenu.openMetadata")}
-          </MenuItem>
-          <MenuSeparator />
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.profileId);
               dismiss();
@@ -1270,8 +1294,8 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("account.contextMenu.copyProfileId")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.lastKnownName);
               dismiss();
@@ -1279,7 +1303,7 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("account.contextMenu.copyUsername")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
       {configAccount && (
@@ -1287,7 +1311,7 @@ function Content() {
           account={configAccount}
           open={true}
           onOpenChange={(open) => {
-            if (!open) setConfigAccount(null);
+            if (!open) setConfigAccountId(null);
           }}
         />
       )}
@@ -1296,7 +1320,7 @@ function Content() {
           account={metadataAccount}
           open={true}
           onOpenChange={(open) => {
-            if (!open) setMetadataAccount(null);
+            if (!open) setMetadataAccountId(null);
           }}
         />
       )}

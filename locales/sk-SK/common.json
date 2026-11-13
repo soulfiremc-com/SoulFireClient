@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Nepodarilo sa pripojiť k serveru SoulFire."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Nenašlo sa",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Priateľské meno",
           "placeholder": "Môj Minecraft Bot",
-          "description": "Názov, ktorý chcete dať tejto inštancii.",
-          "min": "Priateľské meno musí mať aspoň 3 znaky.",
-          "max": "Priateľské meno môže mať najviac 32 znakov.",
-          "regex": "Priateľské meno môže obsahovať iba písmená, čísla a medzery"
+          "description": "Názov, ktorý chcete dať tejto inštancii."
         },
         "cancel": "Zrušiť",
         "create": "Vytvoriť"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Sťahovanie dát...",
           "success": "Dáta načítané!",
-          "error": "Nepodarilo sa stiahnuť dáta"
+          "error": "Nepodarilo sa stiahnuť dáta",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,30 @@
       "error": "Nepodarilo sa zastaviť botov"
     },
     "permissionDenied": "Nemáte oprávnenie spustiť alebo zastaviť botov v tejto inštancii.",
-    "serverUpdateRequired": "Server nehlásil oprávnenia na ovládanie botov. Skontrolujte, či sa verzie vášho servera a klienta zhodujú."
+    "serverUpdateRequired": "Server nehlásil oprávnenia na ovládanie botov. Skontrolujte, či sa verzie vášho servera a klienta zhodujú.",
+    "startBots": "Spustiť botov",
+    "moreActions": "Ďalšie akcie bota",
+    "generateFirst": "Vytvorte účty, aby ste mohli spustiť svoje prvé boty.",
+    "startCountHelp": "Spustí ďalších botov. Bežiaci boti zostanú pripojení.",
+    "startAllCount": "Spustiť všetko {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "{{count}} zastavený bot k dispozícii.",
+    "availableCount_few": "{{count}} zastavené boty k dispozícii.",
+    "availableCount_many": "{{count}} zastavených botov k dispozícii.",
+    "availableCount_other": "{{count}} zastavených botov k dispozícii.",
+    "startSelected_one": "Spustiť {{count}} bota",
+    "startSelected_few": "Spustiť {{count}} boty",
+    "startSelected_many": "Spustiť {{count}} botov",
+    "startSelected_other": "Spustiť {{count}} botov",
+    "stopCount_one": "Zastaviť {{count}} bota",
+    "stopCount_few": "Zastaviť {{count}} boty",
+    "stopCount_many": "Zastaviť {{count}} botov",
+    "stopCount_other": "Zastaviť {{count}} botov",
+    "restartCount_one": "",
+    "restartCount_few": "",
+    "restartCount_many": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} požadovaní · {{total}} spolu",
   "icon": {
@@ -237,8 +264,13 @@
     "website": "Webstránka"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Mená nastavení neboli nájdené",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Pridať novú položku...",
       "add": "Pridať",
       "remove": "Odstrániť"
@@ -453,6 +485,14 @@
     "success": "Skopírované \"{{content}}\" do schránky",
     "error": "Kopírovanie do schránky zlyhalo"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +506,11 @@
     "email": {
       "uiName": "E-mail",
       "description": "Váš e-mail sa používa na prihlásenie a oznámenia."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrovať audity...",
@@ -610,5 +654,13 @@
     "filter": "Filtrovať výstup procesu",
     "truncated": "{{count}} starších riadkov logu bolo vynechaných. Kompletné serverové logy zostávajú v priečinku s dátami.",
     "privacy": "Správy obsahujú lokálne cesty a nedávne logy. Pred zdieľaním si skontrolujte správy a výpisy vlákien na osobné údaje. Nič sa neodosiela automaticky."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

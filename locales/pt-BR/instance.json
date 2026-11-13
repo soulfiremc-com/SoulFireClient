@@ -63,16 +63,34 @@
         "respawned": "renasceu",
         "disconnected": "desconectado",
         "unknown": "alterou o estado"
+      },
+      "pause": "Pausar",
+      "resume": "Continuar",
+      "paused": "Exibição pausada. Novas atividades ainda estão sendo coletadas.",
+      "following": "Atualizações ao vivo",
+      "reconnecting": "Reconectando ao feed ao vivo...",
+      "emptyFilter": "Nenhuma atividade corresponde a este filtro.",
+      "filterLabel": "Filtrar feed ao vivo",
+      "filters": {
+        "all": "Tudo",
+        "chat": "Bate-papo",
+        "lifecycle": "Eventos"
+      },
+      "columns": {
+        "time": "Horário",
+        "bot": "Bot",
+        "message": "Mensagem"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Ver todos os {{total}} bots",
-      "viewAllShort": "Ver todos"
+      "viewAllShort": "Ver todos",
+      "detailsFor": "Detalhes do bot para {{name}}"
     },
     "timeline": {
-      "title": "Atividade",
-      "viewAll": "Ver todos",
+      "title": "Ações recentes",
+      "viewAll": "Ver histórico",
       "empty": "Nenhuma atividade registrada ainda.",
       "noPermission": "Você não tem permissão para ver o registro de auditoria.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Métricas detalhadas",
       "composition": "Composição do mundo"
-    }
+    },
+    "loadError": "Não foi possível carregar os dados mais recentes."
   },
   "proxy": {
+    "transport": {
+      "network": "Endereço de rede",
+      "unix": "Socket Unix"
+    },
     "getProxies": "Obter Proxies",
     "addProxies": "Adicionar Proxies",
     "filterPlaceholder": "Filtrar proxies...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Chave",
       "valuePlaceholder": "Valor (JSON)",
       "noEntries": "Nenhuma entrada de metadados. Adicione uma acima.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Tentar novamente",
       "addSuccess": "Entrada adicionada",
       "addError": "Falha ao adicionar entrada",
       "updateError": "Falha ao atualizar entrada",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventário",
+      "actionRejected": "",
       "hotbar": "Barra Rápida",
       "main": "Inventário Principal",
       "items": "itens",
@@ -446,17 +473,24 @@
         "beaconEffects": "Efeitos do Farol",
         "crafterSlots": "Controles de Slots",
         "lecternControls": "Controles do Livro",
-        "actions": "Ações"
+        "actions": "Ações",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Entrada de Texto",
-        "anvilRename": "Renomear Item"
+        "anvilRename": "Renomear Item",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Conteúdo do Livro",
         "emptyPage": "(Página vazia)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Página {{current}} de {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Visualização do Bot",
@@ -479,6 +513,7 @@
       "offline": "O bot está offline. Ações só estão disponíveis quando o bot está conectado."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Controle de Movimento",
       "movement": "Movimento (WASD)",
       "forward": "Mover para Frente (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Script desativado pelo usuário",
     "executionFailed": "Falha na execução do script",
     "executionError": "Erro de execução: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nó iniciado: {{nodeId}}",
     "nodeCompleted": "Nó concluído: {{nodeId}}",
     "nodeError": "Erro no nó: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Voltar para Scripts",
         "save": "Salvar",
         "saveTooltip": "Salvar script",
@@ -705,6 +743,16 @@
         "tooltip": "Revisar alterações"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Execução Simulada",
         "title": "Script de Execução Simulada",
         "description": "Execute um script a partir de um gatilho selecionado com entradas simuladas.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Escolha o nó de gatilho para executar com valores de entrada simulados.",
         "mockInputs": "Entradas simuladas",
         "valuePlaceholder": "valor {{type}}",
-        "start": "Iniciar Execução Simulada"
+        "start": "Iniciar Execução Simulada",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Cotas de Script",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Entradas máximas na store de estado do script",
         "disableTimeouts": "Desativar Timeouts",
         "disableTimeoutsDescription": "Desativa timeouts por nó e por ligação de dados",
-        "save": "Salvar Cotas"
+        "save": "Salvar Cotas",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

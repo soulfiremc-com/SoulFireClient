@@ -63,16 +63,34 @@
         "respawned": "リスポーンしました",
         "disconnected": "切断されました",
         "unknown": "状態が変更されました"
+      },
+      "pause": "一時停止",
+      "resume": "再開",
+      "paused": "表示が一時停止中です。新しいアクティビティは引き続き収集されています。",
+      "following": "ライブ更新",
+      "reconnecting": "ライブフィードに再接続中…",
+      "emptyFilter": "このフィルターに一致するアクティビティはありません。",
+      "filterLabel": "ライブフィードをフィルター",
+      "filters": {
+        "all": "すべて",
+        "chat": "チャット",
+        "lifecycle": "イベント"
+      },
+      "columns": {
+        "time": "時間",
+        "bot": "ボット",
+        "message": "メッセージ"
       }
     },
     "bots": {
       "title": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
       "viewAll": "全{{total}}体のボットを表示",
-      "viewAllShort": "すべて表示"
+      "viewAllShort": "すべて表示",
+      "detailsFor": "{{name}} のボット詳細"
     },
     "timeline": {
-      "title": "アクティビティ",
-      "viewAll": "すべて表示",
+      "title": "最近の操作",
+      "viewAll": "履歴を表示",
       "empty": "記録されたアクティビティはまだありません。",
       "noPermission": "監査ログを表示する権限がありません。",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "詳細メトリクス",
       "composition": "ワールド構成"
-    }
+    },
+    "loadError": "最新データを読み込めませんでした。"
   },
   "proxy": {
+    "transport": {
+      "network": "ネットワークアドレス",
+      "unix": "Unixソケット"
+    },
     "getProxies": "プロキシを取得",
     "addProxies": "プロキシを追加",
     "filterPlaceholder": "プロキシをフィルター...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "キー",
       "valuePlaceholder": "値（JSON）",
       "noEntries": "メタデータエントリがありません。上で追加してください。",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "再試行する",
       "addSuccess": "エントリが追加されました",
       "addError": "エントリの追加に失敗しました",
       "updateError": "エントリの更新に失敗しました",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "インベントリ",
+      "actionRejected": "",
       "hotbar": "ホットバー",
       "main": "メインインベントリー",
       "items": "アイテム",
@@ -446,17 +473,24 @@
         "beaconEffects": "ビーコン効果",
         "crafterSlots": "スロット操作",
         "lecternControls": "本の操作",
-        "actions": "操作"
+        "actions": "操作",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "テキスト入力",
-        "anvilRename": "アイテム名を変更"
+        "anvilRename": "アイテム名を変更",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "本の内容",
         "emptyPage": "（空のページ）",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "{{total}}ページ中{{current}}ページ"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "ボットビュ―",
@@ -479,6 +513,7 @@
       "offline": "ボットはオフラインです。アクションはボットが接続されている時のみ可能です。"
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "移動コントロール",
       "movement": "移動（WASD）",
       "forward": "前進（W）",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "ユーザーによってスクリプトが無効化されました",
     "executionFailed": "スクリプト実行に失敗しました",
     "executionError": "実行エラー: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "ノード開始: {{nodeId}}",
     "nodeCompleted": "ノード完了: {{nodeId}}",
     "nodeError": "ノードエラー: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "スクリプトへ戻る",
         "save": "保存する",
         "saveTooltip": "スクリプトを保存",
@@ -704,6 +742,16 @@
         "tooltip": "変更を確認"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "ドライラン",
         "title": "ドライランスクリプト",
         "description": "選択したトリガーからスクリプトをモック入力で実行します。",
@@ -712,7 +760,8 @@
         "triggerDescription": "モック入力値で実行するトリガーノードを選択してください。",
         "mockInputs": "モック入力",
         "valuePlaceholder": "{{type}}の値",
-        "start": "ドライラン開始"
+        "start": "ドライラン開始",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "スクリプトクォータ",
@@ -732,8 +781,13 @@
         "maxStateStoreEntriesDescription": "スクリプト状態ストア内の最大エントリ数",
         "disableTimeouts": "タイムアウト無効",
         "disableTimeoutsDescription": "ノードごとおよびデータエッジごとのタイムアウトを無効化します",
-        "save": "クォータを保存"
+        "save": "クォータを保存",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

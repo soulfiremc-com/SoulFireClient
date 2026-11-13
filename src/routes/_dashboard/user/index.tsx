@@ -1,4 +1,7 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -26,13 +29,12 @@ import { usePostHog } from "posthog-js/react";
 import { type ComponentType, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
@@ -96,6 +98,10 @@ import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
+import {
+  createInstanceNameSchema,
+  getDuplicateInstanceName,
+} from "@/lib/instance-name.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
@@ -124,17 +130,6 @@ function generateN(count: number) {
     { length: Math.max(0, Math.floor(count)) },
     (_, index) => index + 1,
   );
-}
-
-function getDuplicateInstanceName(friendlyName: string) {
-  const suffix = " Copy";
-  const maxLength = 32;
-  const baseName = friendlyName.trim();
-  if (baseName.length + suffix.length <= maxLength) {
-    return `${baseName}${suffix}`;
-  }
-
-  return `${baseName.slice(0, maxLength - suffix.length).trimEnd()}${suffix}`;
 }
 
 function getAvailableStateActions(summary?: BotFleetSummary): StateAction[] {
@@ -166,19 +161,16 @@ function DuplicateInstanceDialog({
   sourceInstance: InstanceListResponse_Instance | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onDuplicate: (value: DuplicateInstanceForm) => void;
+  onDuplicate: (value: DuplicateInstanceForm) => Promise<void>;
   pending: boolean;
 }) {
   const { t } = useTranslation("common");
-  const formSchema = z.object({
-    friendlyName: z
-      .string()
-      .min(3, t("dialog.createInstance.form.friendlyName.min"))
-      .max(32, t("dialog.createInstance.form.friendlyName.max"))
-      .regex(
-        /^[a-zA-Z0-9 ]+$/,
-        t("dialog.createInstance.form.friendlyName.regex"),
-      ),
+  const formSchema = Schema.Struct({
+    friendlyName: createInstanceNameSchema({
+      required: t("instanceName.required"),
+      max: t("instanceName.max"),
+      singleLine: t("instanceName.singleLine"),
+    }),
   });
   const form = useForm({
     defaultValues: {
@@ -187,10 +179,14 @@ function DuplicateInstanceDialog({
         : "",
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value }) => {
-      onDuplicate(value);
+      try {
+        await onDuplicate(Schema.decodeUnknownSync(formSchema)(value));
+      } catch {
+        // The mutation reports errors and keeps the draft available for corrections.
+      }
     },
   });
 
@@ -226,6 +222,7 @@ function DuplicateInstanceDialog({
                       id={field.name}
                       name={field.name}
                       autoFocus
+                      disabled={pending}
                       placeholder={t(
                         "dialog.createInstance.form.friendlyName.placeholder",
                       )}
@@ -332,15 +329,19 @@ function Content() {
       action: StateAction["key"];
     }) => {
       if (transport === null) return;
-      const botService = createClient(BotService, transport);
-      const promise = botService.getBotList({ instanceId }).then((list) =>
-        botService.setBotsDesiredState({
-          instanceId,
-          botIds: list.bots
-            .filter((bot) => bot.status?.desiredState !== desiredState)
-            .map((bot) => bot.profileId),
-          desiredState,
-        }),
+      const botService = createRpcClient(BotService, transport);
+      const promise = Effect.runPromise(
+        botService.getBotList({ instanceId }),
+      ).then((list) =>
+        Effect.runPromise(
+          botService.setBotsDesiredState({
+            instanceId,
+            botIds: list.bots
+              .filter((bot) => bot.status?.desiredState !== desiredState)
+              .map((bot) => bot.profileId),
+            desiredState,
+          }),
+        ),
       );
       toast.promise(promise, {
         loading: t(`controls.${action}Toast.loading`),
@@ -369,38 +370,12 @@ function Content() {
       friendlyName: string;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      const promise = (async () => {
-        const sourceResponse = await instanceService.getInstanceInfo({
+      const promise = Effect.runPromise(
+        createRpcClient(InstanceService, transport).duplicateInstance({
           id: sourceInstance.id,
-        });
-        if (
-          sourceResponse.result.case !== "info" ||
-          sourceResponse.result.value.config === undefined
-        ) {
-          throw new Error("Source instance profile is unavailable");
-        }
-
-        const sourceInfo = sourceResponse.result.value;
-        const created = await instanceService.createInstance({
           friendlyName,
-        });
-        await instanceService.updateInstanceConfig({
-          id: created.id,
-          config: sourceInfo.config,
-        });
-        if (sourceInfo.icon !== "") {
-          await instanceService.updateInstanceMeta({
-            id: created.id,
-            meta: {
-              case: "icon",
-              value: sourceInfo.icon,
-            },
-          });
-        }
-
-        return created;
-      })();
+        }),
+      );
 
       toast.promise(promise, {
         loading: t("dialog.duplicateInstance.duplicateToast.loading"),
@@ -434,10 +409,10 @@ function Content() {
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .deleteInstance({ id: instanceId })
-        .then((r) => r);
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.deleteInstance({ id: instanceId }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: () => {
@@ -531,11 +506,12 @@ function Content() {
       )}
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               void navigate({
                 to: "/instance/$instance",
@@ -546,9 +522,9 @@ function Content() {
           >
             <ExternalLinkIcon />
             {t("contextMenu.instance.goToInstance")}
-          </MenuItem>
+          </DropdownMenuItem>
           {canCreateInstance && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 setDuplicateSource(contextMenu.data);
                 dismiss();
@@ -556,13 +532,13 @@ function Content() {
             >
               <CopyPlusIcon />
               {t("contextMenu.instance.duplicateInstance")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
           {contextStateActions.length > 0 && (
             <>
-              <MenuSeparator />
+              <DropdownMenuSeparator />
               {contextStateActions.map((action) => (
-                <MenuItem
+                <DropdownMenuItem
                   key={action.key}
                   onClick={() => {
                     stateMutation.mutate({
@@ -575,12 +551,12 @@ function Content() {
                 >
                   <action.Icon />
                   {t(`controls.${action.key}`)}
-                </MenuItem>
+                </DropdownMenuItem>
               ))}
             </>
           )}
-          <MenuSeparator />
-          <MenuItem
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.friendlyName);
               dismiss();
@@ -588,8 +564,8 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.instance.copyInstanceName")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.id);
               dismiss();
@@ -597,11 +573,11 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("contextMenu.instance.copyInstanceId")}
-          </MenuItem>
+          </DropdownMenuItem>
           {canDeleteContextInstance && (
             <>
-              <MenuSeparator />
-              <MenuItem
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
                 variant="destructive"
                 onClick={() => {
                   setDeleteTarget(contextMenu.data);
@@ -610,7 +586,7 @@ function Content() {
               >
                 <TrashIcon />
                 {t("contextMenu.instance.deleteInstance")}
-              </MenuItem>
+              </DropdownMenuItem>
             </>
           )}
         </ContextMenuPortal>
@@ -625,12 +601,12 @@ function Content() {
           }
         }}
         pending={duplicateMutation.isPending}
-        onDuplicate={(value) => {
+        onDuplicate={async (value) => {
           if (duplicateSource === null) {
             return;
           }
 
-          duplicateMutation.mutate({
+          await duplicateMutation.mutateAsync({
             sourceInstance: duplicateSource,
             friendlyName: value.friendlyName,
           });
@@ -653,7 +629,7 @@ function Content() {
             <AlertDialogDescription>
               {deleteTarget
                 ? `This will permanently delete "${deleteTarget.friendlyName}" and its data. This action cannot be undone.`
-                : "This will permanently delete this instance and its data. This action cannot be undone."}
+                : "This will permanently delete this project and its data. This action cannot be undone."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

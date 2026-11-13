@@ -15,6 +15,11 @@
     },
     "connectionFailed": "A conexão com o servidor SoulFire falhou."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Não encontrado",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Nome amigável",
           "placeholder": "Meu Bot de Minecraft",
-          "description": "O nome que quer dar para esta instância.",
-          "min": "O nome amigável deve ter pelo menos 3 caracteres.",
-          "max": "O nome amigável deve ter no máximo 32 caracteres.",
-          "regex": "Nome amigável só pode conter letras, números e espaços"
+          "description": "O nome que quer dar para esta instância."
         },
         "cancel": "Cancelar",
         "create": "Criar"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Baixando dados...",
           "success": "Dados carregados!",
-          "error": "Falha ao baixar dados"
+          "error": "Falha ao baixar dados",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,22 @@
       "error": "Falha ao parar bots"
     },
     "permissionDenied": "Você não tem permissão para iniciar ou parar bots nesta instância.",
-    "serverUpdateRequired": "O servidor não informou permissões de controle de bots. Verifique se as versões do seu servidor e do cliente correspondem."
+    "serverUpdateRequired": "O servidor não informou permissões de controle de bots. Verifique se as versões do seu servidor e do cliente correspondem.",
+    "startBots": "Iniciar bots",
+    "moreActions": "Mais ações de bot",
+    "generateFirst": "Crie contas para iniciar seus primeiros bots.",
+    "startCountHelp": "Inicia bots adicionais. Bots em execução permanecem conectados.",
+    "startAllCount": "Iniciar todos os {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "{{count}} bot parado disponível.",
+    "availableCount_other": "{{count}} bots parados disponíveis.",
+    "startSelected_one": "Iniciar {{count}} bot",
+    "startSelected_other": "Iniciar {{count}} bots",
+    "stopCount_one": "Parar {{count}} bot",
+    "stopCount_other": "Parar {{count}} bots",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} desejado · {{total}} total",
   "icon": {
@@ -237,8 +256,13 @@
     "website": "Site"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Namespaces de configurações não encontrados",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Adicionar uma nova entrada...",
       "add": "Adicionar",
       "remove": "Remover"
@@ -453,6 +477,14 @@
     "success": "\"{{content}}\" copiado para a área de transferência",
     "error": "Falha ao copiar para a área de transferência"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +498,11 @@
     "email": {
       "uiName": "E-mail",
       "description": "Seu e-mail é usado para login e notificações."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrar logs de auditoria...",
@@ -610,5 +646,13 @@
     "filter": "Filtrar saída do processo",
     "truncated": "{{count}} linhas de logs antigas foram omitidas. Os logs completos do servidor permanecem no diretório de dados.",
     "privacy": "Os relatórios incluem caminhos locais e logs recentes. Revise relatórios e thread dumps para dados pessoais antes de compartilhar. Nada é enviado automaticamente."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

@@ -11,12 +11,17 @@ export function useContextMenu<T>() {
   );
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleContextMenu = useCallback((e: React.MouseEvent, data: T) => {
-    e.preventDefault();
-    e.stopPropagation();
-    Object.assign(e.nativeEvent, { __entityContextMenu: true });
-    setContextMenu({ position: { x: e.clientX, y: e.clientY }, data });
-  }, []);
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent | MouseEvent, data: T) => {
+      e.preventDefault();
+      e.stopPropagation();
+      Object.assign("nativeEvent" in e ? e.nativeEvent : e, {
+        __entityContextMenu: true,
+      });
+      setContextMenu({ position: { x: e.clientX, y: e.clientY }, data });
+    },
+    [],
+  );
 
   const dismiss = useCallback(() => setContextMenu(null), []);
 
@@ -35,14 +40,21 @@ export function useContextMenu<T>() {
       }
     }
 
+    function onScroll(e: Event) {
+      if (e.target instanceof Node && menuRef.current?.contains(e.target)) {
+        return;
+      }
+      dismiss();
+    }
+
     window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("scroll", dismiss, true);
+    window.addEventListener("scroll", onScroll, true);
     window.addEventListener("blur", dismiss);
     document.addEventListener("mousedown", onMouseDown);
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("scroll", dismiss, true);
+      window.removeEventListener("scroll", onScroll, true);
       window.removeEventListener("blur", dismiss);
       document.removeEventListener("mousedown", onMouseDown);
     };

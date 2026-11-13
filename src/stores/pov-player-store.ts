@@ -2,7 +2,6 @@ import { createStore } from "@tanstack/store";
 
 interface PovPlayerState {
   playing: boolean;
-  autoStart: boolean;
   connected: boolean;
   screenOpen: boolean;
   capture: "idle" | "pending" | "captured";
@@ -17,7 +16,6 @@ export function createPovPlayerStore() {
   return createStore(
     {
       playing: true,
-      autoStart: true,
       connected: false,
       screenOpen: false,
       capture: "idle",
@@ -28,10 +26,7 @@ export function createPovPlayerStore() {
     } as PovPlayerState,
     (store) => ({
       setPlaying(playing: boolean) {
-        store.setState((state) => ({ ...state, playing, autoStart: playing }));
-      },
-      consumeAutoStart() {
-        store.setState((state) => ({ ...state, autoStart: false }));
+        store.setState((state) => ({ ...state, playing }));
       },
       connecting() {
         store.setState((state) => ({

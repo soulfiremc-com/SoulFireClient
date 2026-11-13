@@ -1,10 +1,17 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
+  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { PlusIcon, ScrollTextIcon } from "lucide-react";
@@ -47,7 +54,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { LogsService } from "@/generated/soulfire/logs_pb";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
 import {
   DiagnosticSeverity,
   ScriptService,
@@ -56,14 +63,19 @@ import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
+import { saveScript } from "@/lib/save-script";
 import {
   edgesToProto,
   nodesToProto,
   scriptDataToStore,
   scriptQueryOptions,
+  scriptStatusQueryOptions,
 } from "@/lib/script-service.ts";
-import { isDemo, timestampToDate } from "@/lib/utils.tsx";
+import { hasInstancePermission, isDemo } from "@/lib/utils.tsx";
+import { scriptLogLevel, watchScriptLogs } from "@/lib/script-logs";
 import { createTransport } from "@/lib/web-rpc.ts";
+import { getQuerySessionId } from "@/lib/query-session.ts";
+import { getScriptEditorRouteSession } from "@/stores/script-editor-route-session";
 
 import "@xyflow/react/dist/style.css";
 
@@ -78,14 +90,6 @@ function HorizontalResizableHandle() {
       <div className="bg-border h-6 w-1 rounded-lg z-10 flex shrink-0 rotate-90" />
     </Separator>
   );
-}
-
-interface LogEntry {
-  id: string;
-  timestamp: Date;
-  level: "debug" | "info" | "warn" | "error";
-  nodeId: string | null;
-  message: string;
 }
 
 export const Route = createFileRoute(
@@ -164,8 +168,13 @@ function ScriptEditorSkeleton() {
 
 function ScriptEditorPage() {
   const { instance, scriptId } = Route.useParams();
+  const [session, setSession] = useState(() =>
+    getScriptEditorRouteSession(undefined, instance, scriptId),
+  );
+  const current = getScriptEditorRouteSession(session, instance, scriptId);
+  if (current !== session) setSession(current);
   return (
-    <ScriptEditorProvider key={`${instance}:${scriptId}`}>
+    <ScriptEditorProvider key={current.key} session={current.editor}>
       <ReactFlowProvider>
         <NodeTypesProvider>
           <Suspense fallback={<ScriptEditorSkeleton />}>
@@ -183,12 +192,16 @@ function ScriptEditorContent() {
   const { instance: instanceId, scriptId } = Route.useParams();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const navigate = useNavigate();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { getDefinition } = useNodeTypes();
 
-  // Required for route context validation
-  useSuspenseQuery(instanceInfoQueryOptions);
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const canViewLogs = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.INSTANCE_SUBSCRIBE_LOGS,
+  );
 
   // Fetch script data from server (skip for new scripts)
   const { data: serverScriptData } = useSuspenseQuery({
@@ -203,29 +216,67 @@ function ScriptEditorContent() {
   const reactFlowInstance = useReactFlow();
 
   // Script editor store
-  const loadScript = editor.actions.loadScript;
+  const syncScriptDocument = editor.actions.syncScriptDocument;
   const resetEditor = editor.actions.resetEditor;
-  const setDirty = editor.actions.setDirty;
   const setActive = editor.actions.setActive;
   const setActiveNode = editor.actions.setActiveNode;
+  const startNode = editor.actions.startNode;
+  const completeNode = editor.actions.completeNode;
   const addNode = editor.actions.addNode;
   const findClosestEdge = editor.actions.findClosestEdge;
   const insertNodeOnEdge = editor.actions.insertNodeOnEdge;
-  const getScriptData = editor.actions.getScriptData;
-  const markSaved = editor.actions.markSaved;
   const addNodeExecutionTime = editor.actions.addNodeExecutionTime;
   const setExecutionStats = editor.actions.setExecutionStats;
+  const [isControlling, setIsControlling] = useState(false);
+  const [hasExecutionStream, setHasExecutionStream] = useState(false);
+  const statusOptions = scriptStatusQueryOptions(
+    transport,
+    instanceId,
+    scriptId,
+  );
+  const { data: scriptStatus } = useQuery(statusOptions);
+  const currentScriptId = useSelector(
+    editor.document,
+    (state) => state.scriptId,
+  );
+
+  useEffect(() => {
+    if (scriptStatus && !isControlling)
+      editor.actions.syncScriptStatus(scriptStatus, hasExecutionStream);
+  }, [
+    scriptStatus,
+    isControlling,
+    currentScriptId,
+    hasExecutionStream,
+    editor,
+  ]);
+
+  const acknowledgePause = useCallback(
+    (paused: boolean) => {
+      editor.actions.setSavedPaused(paused);
+      queryClient.setQueryData(
+        scriptStatusQueryOptions(transport, instanceId, scriptId).queryKey,
+        (current) =>
+          current ? { ...current, paused, isActive: !paused } : current,
+      );
+      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
+      void queryClient.invalidateQueries({
+        queryKey: ["script-status", instanceId, scriptId],
+      });
+    },
+    [editor, queryClient, transport, instanceId, scriptId],
+  );
 
   const isMobile = useIsMobile();
 
   // Local state
-  const [isSaving, setIsSaving] = useState(false);
-  const { addExecutionLog, prependExecutionLogs, clearExecutionLogs } =
+  const { addExecutionLog, addExecutionLogs, clearExecutionLogs } =
     editor.actions;
   const [nodePaletteOpen, setNodePaletteOpen] = useState(false);
   const [executionLogsOpen, setExecutionLogsOpen] = useState(false);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const executionAbortRef = useRef<AbortController | null>(null);
+  const mounted = useRef(true);
   // Pointer-based drag state (replaces HTML5 DnD which is broken in WebView2)
   const draggedNodeTypeRef = useRef<string | null>(null);
   const dragPreviewRef = useRef<HTMLDivElement>(null);
@@ -236,65 +287,26 @@ function ScriptEditorContent() {
     startY: number;
   } | null>(null);
 
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   // Load script into store when data changes
   useEffect(() => {
     if (scriptId === "new") {
       resetEditor();
     } else if (serverScriptData) {
-      loadScript(scriptDataToStore(serverScriptData));
+      syncScriptDocument(scriptDataToStore(serverScriptData));
     }
-  }, [scriptId, serverScriptData, loadScript, resetEditor]);
+  }, [scriptId, serverScriptData, syncScriptDocument, resetEditor, editor]);
 
-  // Load previous execution logs on mount
   useEffect(() => {
-    if (scriptId === "new" || !transport || isDemo()) return;
-
-    const abortController = new AbortController();
-    const logsService = createClient(LogsService, transport);
-    void logsService
-      .getPrevious(
-        {
-          scope: {
-            scope: {
-              case: "instanceScript",
-              value: { instanceId, scriptId },
-            },
-          },
-          count: 300,
-        },
-        { signal: abortController.signal },
-      )
-      .then((call) => {
-        if (abortController.signal.aborted) return;
-        const entries: LogEntry[] = call.messages.map((msg) => {
-          const rawLevel = msg.level?.toLowerCase();
-          const level: LogEntry["level"] =
-            rawLevel === "info"
-              ? "info"
-              : rawLevel === "warn" || rawLevel === "warning"
-                ? "warn"
-                : rawLevel === "error" || rawLevel === "fatal"
-                  ? "error"
-                  : "debug";
-          return {
-            id: msg.id,
-            timestamp: msg.timestamp
-              ? timestampToDate(msg.timestamp)
-              : new Date(),
-            level,
-            nodeId: null,
-            message: msg.message,
-          };
-        });
-        if (entries.length > 0) {
-          prependExecutionLogs(entries);
-        }
-      });
-
-    return () => {
-      abortController.abort();
-    };
-  }, [transport, instanceId, scriptId, prependExecutionLogs]);
+    if (scriptId === "new" || !transport || !canViewLogs || isDemo()) return;
+    return watchScriptLogs(transport, instanceId, scriptId, addExecutionLogs);
+  }, [transport, instanceId, scriptId, addExecutionLogs, canViewLogs]);
 
   const validationGraph = useSelector(editor.validationGraph);
   const setValidationDiagnostics = editor.actions.setValidationDiagnostics;
@@ -304,14 +316,16 @@ function ScriptEditorContent() {
     const controller = new AbortController();
     const timeout = setTimeout(async () => {
       try {
-        const client = createClient(ScriptService, transport);
-        const result = await client.validateScript(
-          {
-            instanceId,
-            nodes: nodesToProto(validationGraph.nodes),
-            edges: edgesToProto(validationGraph.edges),
-          },
-          { signal: controller.signal },
+        const client = createRpcClient(ScriptService, transport);
+        const result = await Effect.runPromise(
+          client.validateScript(
+            {
+              instanceId,
+              nodes: nodesToProto(validationGraph.nodes),
+              edges: edgesToProto(validationGraph.edges),
+            },
+            { signal: controller.signal },
+          ),
         );
         if (
           controller.signal.aborted ||
@@ -346,103 +360,69 @@ function ScriptEditorContent() {
     editor,
   ]);
 
-  // Create script mutation
-  const createMutation = useMutation({
-    mutationKey: ["script", "create", instanceId],
+  const saveMutation = useMutation({
+    mutationKey: ["script", "save", instanceId],
+    onMutate: () => getQuerySessionId(),
     mutationFn: async () => {
       if (!transport) throw new Error("No transport available");
-      // Read fresh from the store to avoid stale closure issues
-      const scriptData = getScriptData();
-      const client = createClient(ScriptService, transport);
-      const result = await client.createScript({
+      return saveScript(
+        transport,
         instanceId,
-        name: scriptData.name || tInstance("scripts.untitledScript"),
-        description: scriptData.description,
-        nodes: nodesToProto(scriptData.nodes),
-        edges: edgesToProto(scriptData.edges),
-        paused: scriptData.paused,
-        quotas: scriptData.quotas,
-      });
-      return result;
+        editor,
+        tInstance("scripts.untitledScript"),
+      );
     },
-    onSuccess: (response) => {
-      setDirty(false);
-      markSaved();
+    onSuccess: (script, _, sessionId) => {
+      if (sessionId !== getQuerySessionId()) return;
+      queryClient.setQueryData(
+        scriptQueryOptions(transport, instanceId, script.id).queryKey,
+        script,
+      );
+      queryClient.setQueryData(
+        scriptStatusQueryOptions(transport, instanceId, script.id).queryKey,
+        (current) =>
+          current
+            ? {
+                ...current,
+                paused: script.paused,
+                isActive: script.paused ? false : current.isActive,
+              }
+            : current,
+      );
+      void queryClient.invalidateQueries({
+        queryKey: ["script-status", instanceId, script.id],
+      });
       toast.success(tInstance("scripts.saveSuccess"));
-      // Navigate to the real script ID
-      if (response.script) {
+      if (scriptId === "new" && mounted.current) {
+        // The create response already contains the canonical document. Avoid
+        // waiting for another read before switching the editor to its saved URL.
         void navigate({
           to: "/instance/$instance/script/$scriptId",
-          params: { instance: instanceId, scriptId: response.script.id },
+          params: { instance: instanceId, scriptId: script.id },
           replace: true,
+        });
+      } else {
+        void router.invalidate({
+          filter: (match) =>
+            match.routeId === Route.id &&
+            match.params.instance === instanceId &&
+            match.params.scriptId === script.id,
         });
       }
     },
     onError: (error) => {
-      console.error("Failed to create script:", error);
+      console.error("Failed to save script:", error);
       toast.error(tInstance("scripts.saveError"));
     },
     onSettled: () => {
+      // Refresh the list without reloading the document over local edits.
       void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
     },
   });
 
-  // Update script mutation
-  const updateMutation = useMutation({
-    mutationKey: ["script", "update", instanceId, scriptId],
-    mutationFn: async () => {
-      if (!transport) throw new Error("No transport available");
-      // Read fresh from the store to avoid stale closure issues
-      const scriptData = getScriptData();
-      const client = createClient(ScriptService, transport);
-      const result = await client.updateScript({
-        instanceId,
-        scriptId,
-        name: scriptData.name,
-        description: scriptData.description,
-        nodes: nodesToProto(scriptData.nodes),
-        edges: edgesToProto(scriptData.edges),
-        updateNodes: true,
-        updateEdges: true,
-        paused: scriptData.paused,
-        quotas: scriptData.quotas,
-        updateQuotas: true,
-      });
-      return result;
-    },
-    onSuccess: () => {
-      setDirty(false);
-      markSaved();
-      toast.success(tInstance("scripts.saveSuccess"));
-    },
-    onError: (error) => {
-      console.error("Failed to update script:", error);
-      toast.error(tInstance("scripts.saveError"));
-    },
-    onSettled: () => {
-      // Only invalidate the script list (for sidebar updates), not the
-      // individual script query.  Re-fetching the individual script would
-      // call loadScript and overwrite the local store, which can race with
-      // the server and revert changes the user just made (e.g. node labels).
-      void queryClient.invalidateQueries({
-        queryKey: ["scripts", instanceId],
-      });
-    },
-  });
-
-  // Handle save
-  const handleSave = useCallback(async () => {
-    setIsSaving(true);
-    try {
-      if (scriptId === "new") {
-        await createMutation.mutateAsync();
-      } else {
-        await updateMutation.mutateAsync();
-      }
-    } finally {
-      setIsSaving(false);
-    }
-  }, [scriptId, createMutation, updateMutation]);
+  const handleSave = useCallback(() => {
+    saveMutation.mutate();
+  }, [saveMutation]);
 
   // Handle script activation
   const handleStart = useCallback(async () => {
@@ -450,6 +430,12 @@ function ScriptEditorContent() {
       toast.error(tInstance("scripts.saveFirstBeforeActivating"));
       return;
     }
+
+    setIsControlling(true);
+    setHasExecutionStream(true);
+    await queryClient.cancelQueries({
+      queryKey: ["script-status", instanceId, scriptId],
+    });
 
     // Abort any existing execution
     if (executionAbortRef.current) {
@@ -470,18 +456,19 @@ function ScriptEditorContent() {
     });
 
     try {
-      const client = createClient(ScriptService, transport);
+      const client = createRpcClient(ScriptService, transport);
       const responses = client.activateScript(
         { instanceId, scriptId },
         { signal: abortController.signal },
       );
-      editor.document.setState((state) => ({ ...state, paused: false }));
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
-
+      let started = false;
       void observeServerStream(responses, {
         onMessage: (event) => {
           if (abortController.signal.aborted) return;
           if (event.event.case === "scriptStarted") {
+            started = true;
+            acknowledgePause(false);
+            setIsControlling(false);
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -492,7 +479,7 @@ function ScriptEditorContent() {
             toast.success(tInstance("scripts.activateSuccess"));
           } else if (event.event.case === "nodeStarted") {
             const nodeId = event.event.value.nodeId;
-            setActiveNode(nodeId);
+            startNode(nodeId, event.event.value.executionId);
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -502,6 +489,7 @@ function ScriptEditorContent() {
             });
           } else if (event.event.case === "nodeCompleted") {
             const nodeId = event.event.value.nodeId;
+            completeNode(nodeId, event.event.value.executionId);
             const execTimeNanos = event.event.value.executionTimeNanos;
             if (execTimeNanos > 0n) {
               addNodeExecutionTime(nodeId, Number(execTimeNanos) / 1_000_000);
@@ -528,26 +516,23 @@ function ScriptEditorContent() {
             });
           } else if (event.event.case === "nodeError") {
             const { nodeId, errorMessage } = event.event.value;
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "error",
-              nodeId,
-              message: tInstance("scripts.nodeError", {
-                error: errorMessage,
-              }),
-            });
-          } else if (event.event.case === "scriptLog") {
+            completeNode(nodeId, event.event.value.executionId);
+            if (!canViewLogs)
+              addExecutionLog({
+                id: crypto.randomUUID(),
+                timestamp: new Date(),
+                level: "error",
+                nodeId,
+                message: tInstance("scripts.nodeError", {
+                  error: errorMessage,
+                }),
+              });
+          } else if (event.event.case === "scriptLog" && !canViewLogs) {
             const { nodeId, level, message } = event.event.value;
-            const normalizedLevel = (level?.toLowerCase() || "info") as
-              | "debug"
-              | "info"
-              | "warn"
-              | "error";
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
-              level: normalizedLevel,
+              level: scriptLogLevel(level),
               nodeId: nodeId ?? null,
               message,
             });
@@ -555,6 +540,9 @@ function ScriptEditorContent() {
             const success = event.event.value.success;
             setActive(false);
             setActiveNode(null);
+            void queryClient.invalidateQueries({
+              queryKey: ["script-status", instanceId, scriptId],
+            });
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -571,32 +559,46 @@ function ScriptEditorContent() {
         },
         onError: (error) => {
           if (abortController.signal.aborted) return;
-          console.error("Script execution error:", error);
+          console.error("Script monitoring stream error:", error);
+          setHasExecutionStream(false);
           setActive(false);
           setActiveNode(null);
+          setIsControlling(false);
+          void queryClient.invalidateQueries({
+            queryKey: ["script-status", instanceId, scriptId],
+          });
           const message =
             error instanceof Error ? error.message : String(error);
           addExecutionLog({
             id: crypto.randomUUID(),
             timestamp: new Date(),
-            level: "error",
+            level: started ? "warn" : "error",
             nodeId: null,
-            message: tInstance("scripts.executionError", {
-              error: message,
-            }),
+            message: tInstance(
+              started ? "scripts.monitoringError" : "scripts.executionError",
+              {
+                error: message,
+              },
+            ),
           });
-          toast.error(tInstance("scripts.executionFailed"));
+          if (started)
+            toast.warning(tInstance("scripts.monitoringDisconnected"));
+          else toast.error(tInstance("scripts.activateError"));
         },
         onComplete: () => {
           if (abortController.signal.aborted) return;
+          setHasExecutionStream(false);
           setActive(false);
           setActiveNode(null);
+          setIsControlling(false);
         },
       });
     } catch (error) {
       if (abortController.signal.aborted) return;
       console.error("Failed to activate script:", error);
+      setHasExecutionStream(false);
       setActive(false);
+      setIsControlling(false);
       toast.error(tInstance("scripts.activateError"));
     }
   }, [
@@ -605,31 +607,51 @@ function ScriptEditorContent() {
     scriptId,
     setActive,
     setActiveNode,
+    startNode,
+    completeNode,
     tInstance,
     queryClient,
     addNodeExecutionTime,
     setExecutionStats,
     addExecutionLog,
     editor.document.setState,
+    canViewLogs,
+    acknowledgePause,
   ]);
 
   // Handle script deactivation
   const handleStop = useCallback(async () => {
+    setHasExecutionStream(false);
     // Abort the streaming connection
     if (executionAbortRef.current) {
       executionAbortRef.current.abort();
       executionAbortRef.current = null;
     }
 
-    if (!transport || scriptId === "new") return;
-
-    try {
-      const client = createClient(ScriptService, transport);
-      await client.deactivateScript({ instanceId, scriptId });
+    const currentScriptId = editor.document.get().scriptId;
+    if (scriptId === "new" && !currentScriptId) {
+      editor.actions.setPaused(true);
       setActive(false);
       setActiveNode(null);
-      editor.document.setState((state) => ({ ...state, paused: true }));
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
+      return;
+    }
+    if (!transport) return;
+
+    setIsControlling(true);
+    await queryClient.cancelQueries({
+      queryKey: ["script-status", instanceId, scriptId],
+    });
+    try {
+      const client = createRpcClient(ScriptService, transport);
+      await Effect.runPromise(
+        client.deactivateScript({
+          instanceId,
+          scriptId: currentScriptId ?? scriptId,
+        }),
+      );
+      setActive(false);
+      setActiveNode(null);
+      acknowledgePause(true);
       addExecutionLog({
         id: crypto.randomUUID(),
         timestamp: new Date(),
@@ -640,9 +662,12 @@ function ScriptEditorContent() {
       toast.success(tInstance("scripts.deactivateSuccess"));
     } catch (error) {
       console.error("Failed to deactivate script:", error);
-      // Even if the RPC fails, mark as deactivated locally
-      setActive(false);
-      setActiveNode(null);
+      toast.error(tInstance("scripts.pauseError"));
+      void queryClient.invalidateQueries({
+        queryKey: ["script-status", instanceId, scriptId],
+      });
+    } finally {
+      setIsControlling(false);
     }
   }, [
     transport,
@@ -652,8 +677,9 @@ function ScriptEditorContent() {
     setActiveNode,
     tInstance,
     queryClient,
-    editor.document.setState,
+    editor,
     addExecutionLog,
+    acknowledgePause,
   ]);
 
   // Cleanup on unmount
@@ -803,6 +829,7 @@ function ScriptEditorContent() {
       <div className="flex h-full w-full flex-col">
         {/* Compact Toolbar */}
         <ScriptToolbar
+          isControlling={isControlling}
           instanceId={instanceId}
           onSave={handleSave}
           onStart={handleStart}
@@ -810,7 +837,7 @@ function ScriptEditorContent() {
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onFitView={handleFitView}
-          isSaving={isSaving}
+          isSaving={saveMutation.isPending}
         />
 
         {/* Full-screen canvas */}
@@ -887,6 +914,7 @@ function ScriptEditorContent() {
     <div className="flex h-full w-full flex-col">
       {/* Toolbar */}
       <ScriptToolbar
+        isControlling={isControlling}
         instanceId={instanceId}
         onSave={handleSave}
         onStart={handleStart}
@@ -894,23 +922,23 @@ function ScriptEditorContent() {
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onFitView={handleFitView}
-        isSaving={isSaving}
+        isSaving={saveMutation.isPending}
       />
 
       {/* Main content area */}
       <ResizablePanelGroup orientation="horizontal" className="flex-1">
         {/* Left sidebar - Node Palette */}
-        <ResizablePanel defaultSize={20} minSize="12.5rem" maxSize="25rem">
+        <ResizablePanel defaultSize="20%" minSize="12.5rem" maxSize="25rem">
           <NodePalette onNodeDragStart={handleNodeDragStart} />
         </ResizablePanel>
 
         <ResizableHandle withHandle />
 
         {/* Center - Script Editor & Logs */}
-        <ResizablePanel defaultSize={80} minSize="18.75rem">
+        <ResizablePanel defaultSize="80%" minSize="18.75rem">
           <ResizablePanelGroup orientation="vertical">
             {/* Canvas */}
-            <ResizablePanel defaultSize={75} minSize="12.5rem">
+            <ResizablePanel defaultSize="75%" minSize="12.5rem">
               <div
                 role="application"
                 ref={reactFlowWrapper}
@@ -923,7 +951,7 @@ function ScriptEditorContent() {
             <HorizontalResizableHandle />
 
             {/* Bottom - Execution Logs */}
-            <ResizablePanel defaultSize={25} minSize="6.25rem" maxSize="25rem">
+            <ResizablePanel defaultSize="25%" minSize="6.25rem" maxSize="25rem">
               <ScriptExecutionLogs onClearLogs={handleClearLogs} />
             </ResizablePanel>
           </ResizablePanelGroup>

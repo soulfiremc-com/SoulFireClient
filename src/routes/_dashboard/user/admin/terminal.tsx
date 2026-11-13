@@ -85,12 +85,11 @@ function Content() {
   );
 
   return (
-    <div className="flex flex-col gap-2">
-      <TerminalComponent scope={logScope} />
+    <TerminalComponent scope={logScope}>
       {hasGlobalPermission(
         clientData,
         GlobalPermission.GLOBAL_COMMAND_EXECUTION,
       ) && <CommandInput scope={commandScope} />}
-    </div>
+    </TerminalComponent>
   );
 }

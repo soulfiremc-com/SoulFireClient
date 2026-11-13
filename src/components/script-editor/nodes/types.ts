@@ -129,6 +129,7 @@ export function hasTypeVariables(td: TypeDescriptor): boolean {
 export function resolveTypeDescriptor(
   td: TypeDescriptor,
   bindings: Map<string, TypeDescriptor>,
+  resolving: ReadonlySet<string> = new Set(),
 ): TypeDescriptor {
   switch (td.kind) {
     case "simple":
@@ -137,16 +138,30 @@ export function resolveTypeDescriptor(
       return {
         kind: "parameterized",
         base: td.base,
-        params: td.params.map((p) => resolveTypeDescriptor(p, bindings)),
+        params: td.params.map((p) =>
+          resolveTypeDescriptor(p, bindings, resolving),
+        ),
       };
     case "type_variable": {
       const bound = bindings.get(td.name);
-      if (bound) {
-        return resolveTypeDescriptor(bound, bindings);
+      if (bound && !resolving.has(td.name)) {
+        return resolveTypeDescriptor(
+          bound,
+          bindings,
+          new Set([...resolving, td.name]),
+        );
       }
       return td;
     }
   }
+}
+
+function containsTypeVariable(td: TypeDescriptor, name: string): boolean {
+  if (td.kind === "type_variable") return td.name === name;
+  return (
+    td.kind === "parameterized" &&
+    td.params.some((param) => containsTypeVariable(param, name))
+  );
 }
 
 /**
@@ -161,12 +176,23 @@ export function unifyTypes(
   const resolvedA = resolveTypeDescriptor(a, bindings);
   const resolvedB = resolveTypeDescriptor(b, bindings);
 
-  // TypeVariable on either side: bind it
+  // Connecting two unresolved ports with the same variable adds no constraint.
+  if (
+    resolvedA.kind === "type_variable" &&
+    resolvedB.kind === "type_variable" &&
+    resolvedA.name === resolvedB.name
+  ) {
+    return true;
+  }
+
+  // Reject recursive bindings such as T = List<T>.
   if (resolvedA.kind === "type_variable") {
+    if (containsTypeVariable(resolvedB, resolvedA.name)) return false;
     bindings.set(resolvedA.name, resolvedB);
     return true;
   }
   if (resolvedB.kind === "type_variable") {
+    if (containsTypeVariable(resolvedA, resolvedB.name)) return false;
     bindings.set(resolvedB.name, resolvedA);
     return true;
   }
@@ -300,6 +326,27 @@ export interface CategoryInfo {
   icon: string;
   description?: string;
   sortOrder: number;
+}
+
+const localPortTypes: Record<PortType, ProtoPortType> = {
+  any: ProtoPortType.ANY,
+  number: ProtoPortType.NUMBER,
+  string: ProtoPortType.STRING,
+  boolean: ProtoPortType.BOOLEAN,
+  vector3: ProtoPortType.VECTOR3,
+  bot: ProtoPortType.BOT,
+  list: ProtoPortType.LIST,
+  execution: ProtoPortType.EXEC,
+  block: ProtoPortType.BLOCK,
+  entity: ProtoPortType.ENTITY,
+  item: ProtoPortType.ITEM,
+  map: ProtoPortType.MAP,
+  set: ProtoPortType.SET,
+  collection: ProtoPortType.COLLECTION,
+};
+
+export function localPortTypeToProto(type: PortType): ProtoPortType {
+  return localPortTypes[type];
 }
 
 /**

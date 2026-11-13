@@ -53,6 +53,8 @@ import {
   SettingsPageEntryScopeType,
 } from "@/generated/soulfire/common_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
+import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";
 import {
@@ -247,7 +249,7 @@ function sourceLabel(source: ResolvedBotSetting["source"]): string {
     case "bot":
       return "Bot override";
     case "instance":
-      return "Inherited from instance";
+      return "Inherited from project";
     case "default":
       return "Using default";
   }
@@ -263,16 +265,17 @@ function BotSettingRow(props: {
 }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
+  const onSaveError = useSettingSaveError(
+    props.row.definition,
+    `${props.row.identifier.namespace}:${props.row.identifier.key}`,
+  );
   const valueMutation = useMutation({
-    mutationKey: [
-      "bot-setting",
-      props.botId,
+    ...settingMutationOptions(
+      { type: "bot", instanceId: props.instanceId, botId: props.botId },
       props.row.identifier.namespace,
       props.row.identifier.key,
-    ],
-    scope: {
-      id: `bot-setting-${props.botId}-${props.row.identifier.namespace}-${props.row.identifier.key}`,
-    },
+      "value",
+    ),
     mutationFn: async (value: JsonValue) =>
       await updateBotConfigEntry(
         props.row.identifier.namespace,
@@ -284,6 +287,8 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
+    onError:
+      props.row.definition.type.case === "stringList" ? undefined : onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -291,15 +296,12 @@ function BotSettingRow(props: {
     },
   });
   const resetMutation = useMutation({
-    mutationKey: [
-      "bot-setting-reset",
-      props.botId,
+    ...settingMutationOptions(
+      { type: "bot", instanceId: props.instanceId, botId: props.botId },
       props.row.identifier.namespace,
       props.row.identifier.key,
-    ],
-    scope: {
-      id: `bot-setting-reset-${props.botId}-${props.row.identifier.namespace}-${props.row.identifier.key}`,
-    },
+      "reset",
+    ),
     mutationFn: async () =>
       await removeBotConfigEntry(
         props.row.identifier.namespace,
@@ -310,6 +312,7 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
+    onError: onSaveError,
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -347,7 +350,15 @@ function BotSettingRow(props: {
         <SettingTypeRenderer
           settingType={props.row.definition.type}
           value={props.row.effectiveValue}
-          changeCallback={valueMutation.mutate}
+          changeCallback={
+            props.row.definition.type.case === "stringList" ||
+            props.row.definition.type.case === "string" ||
+            props.row.definition.type.case === "int" ||
+            props.row.definition.type.case === "double" ||
+            props.row.definition.type.case === "minMax"
+              ? valueMutation.mutateAsync
+              : valueMutation.mutate
+          }
         />
       </div>
 
@@ -358,7 +369,7 @@ function BotSettingRow(props: {
               <>
                 {props.row.inheritedSource === "instance"
                   ? t("account.config.instanceValue", {
-                      defaultValue: "Instance value",
+                      defaultValue: "Project value",
                     })
                   : t("account.config.defaultValue", {
                       defaultValue: "Default value",
@@ -372,7 +383,7 @@ function BotSettingRow(props: {
             ) : props.row.source === "instance" ? (
               <>
                 {t("account.config.instanceValue", {
-                  defaultValue: "Instance value",
+                  defaultValue: "Project value",
                 })}
                 :{" "}
                 {formatSettingValue(

@@ -5,8 +5,13 @@ import {
   useParams,
   useRouteContext,
 } from "@tanstack/react-router";
-import { BlocksIcon, ChevronRightIcon, ScrollTextIcon } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import {
+  BlocksIcon,
+  ChevronRightIcon,
+  CodeXmlIcon,
+  ScrollTextIcon,
+} from "lucide-react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import {
@@ -59,6 +64,12 @@ export function NavExtensions() {
   const [pluginCollapsibleOpen, setPluginCollapsibleOpen] = useState(
     settingsEntry !== undefined && settingsEntry.owningPluginId !== undefined,
   );
+  const pluginPageId = settingsEntry?.owningPluginId
+    ? settingsEntry.id
+    : undefined;
+  useEffect(() => {
+    if (pluginPageId !== undefined) setPluginCollapsibleOpen(true);
+  }, [pluginPageId]);
 
   const navLinks: NavLinks = [
     {
@@ -75,6 +86,14 @@ export function NavExtensions() {
       icon: ScrollTextIcon,
       linkProps: {
         to: "/instance/$instance/scripts",
+        params: { instance: instanceInfo.id },
+      },
+    },
+    {
+      title: t("sdk.title"),
+      icon: CodeXmlIcon,
+      linkProps: {
+        to: "/instance/$instance/sdk",
         params: { instance: instanceInfo.id },
       },
     },

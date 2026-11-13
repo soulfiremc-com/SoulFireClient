@@ -1,23 +1,34 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import {
+  emailFormSchema,
+  tokenFormSchema,
+  integratedServerFormSchema,
+  mobileIntegratedServerFormSchema,
+} from "@/lib/login-validation";
+import { toFormSchema } from "@/lib/form-validation";
+
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import {
   ArrowLeftIcon,
+  BoxIcon,
+  CheckIcon,
+  ChevronRightIcon,
   ClipboardIcon,
   FileArchiveIcon,
-  FlaskConicalIcon,
   HeartHandshakeIcon,
   KeyRoundIcon,
-  LaptopMinimalIcon,
   LoaderCircleIcon,
   LogInIcon,
   MailIcon,
   PlayIcon,
   PlugZapIcon,
   RotateCcwIcon,
-  SatelliteDishIcon,
   ServerIcon,
+  SlidersHorizontalIcon,
+  TriangleAlertIcon,
   Trash2Icon,
   UploadIcon,
   XIcon,
@@ -33,15 +44,41 @@ import {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { ExternalLink } from "@/components/external-link.tsx";
+import { TextInfoButton } from "@/components/info-buttons.tsx";
 import {
   IntegratedServerProcessOutput,
   IntegratedServerSupportActions,
+  useIntegratedDiagnostics,
 } from "@/components/IntegratedServerDiagnostics";
+import { ConnectionChoices } from "@/components/launcher/connection-choices.tsx";
+import { ConnectionFailure } from "@/components/launcher/connection-failure";
+import {
+  StartupFailureNotice,
+  StartupProgress,
+} from "@/components/launcher/startup-status.tsx";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
+import { CookieConsentContext } from "@/components/providers/cookie-consent-provider";
+import { isPostHogConfigured } from "@/lib/posthog";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog.tsx";
+import { Alert, AlertDescription } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible.tsx";
 import {
   Card,
   CardContent,
@@ -82,14 +119,6 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from "@/components/ui/item.tsx";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
@@ -98,14 +127,20 @@ import {
   NextAuthFlowResponse_Failure_Reason,
 } from "@/generated/soulfire/login_pb";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import { useServerConnection } from "@/hooks/use-server-connection";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import type {
   DesktopCustomSoulFireServerJar,
   DesktopIntegratedServerJarSource,
 } from "@/lib/desktop-api.ts";
 import i18n from "@/lib/i18n";
+import {
+  diagnoseLauncherFailure,
+  getLauncherStartupStage,
+} from "@/lib/launcher-startup.ts";
 import { SOULFIRE_LOGO_ICON, staticRouteChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type SFServerType } from "@/lib/types.ts";
+import { getAppUrl } from "@/lib/app-deployment.ts";
 import { getLanguageName, isDemo, languageEmoji } from "@/lib/utils.tsx";
 import {
   createAddressOnlyTransport,
@@ -122,6 +157,7 @@ const LOCAL_STORAGE_FORM_SERVER_EMAIL_KEY = "form-server-email";
 const LOCAL_STORAGE_FORM_DEDICATED_TYPE_KEY = "form-dedicated-type";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS =
   "form-integrated-server-jvm-args";
+const LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING = "force-software-rendering";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JAR_SOURCE =
   "form-integrated-server-jar-source";
 const LOCAL_STORAGE_FORM_INTEGRATED_SERVER_CUSTOM_JAR_ID =
@@ -133,24 +169,6 @@ export const Route = createFileRoute("/")({
   beforeLoad: () =>
     staticRouteChrome(() => i18n.t("login:connect.title"), SOULFIRE_LOGO_ICON),
   component: Index,
-});
-
-const emailFormSchema = z.object({
-  address: z.string().trim().pipe(z.url()),
-  email: z.email(),
-});
-const tokenFormSchema = z.object({
-  address: z.string().trim().pipe(z.url()),
-  token: z.string().trim().pipe(z.jwt()),
-});
-
-const integratedServerFormSchema = z.object({
-  customJarId: z.string(),
-  jarSource: z.enum(["official", "custom"]),
-  jvmArgs: z.string(),
-});
-const mobileIntegratedServerFormSchema = z.object({
-  token: z.string().trim().pipe(z.jwt()),
 });
 
 type LoginType = "INTEGRATED" | "DEDICATED" | "EMAIL_CODE" | null;
@@ -225,17 +243,20 @@ const DEFAULT_MOBILE_JVM_ARGS = [
 const DEFAULT_MOBILE_JVM_ARGS_STRING = DEFAULT_MOBILE_JVM_ARGS.join(" ");
 
 function Index() {
+  const { openCookiePreferences } = use(CookieConsentContext);
   const { t, i18n } = useTranslation("login");
   const navigate = useNavigate();
   const searchParams: Record<string, string> = Route.useSearch();
   const systemInfo = use(SystemInfoContext);
   const hasSavedIntegratedSession =
+    searchParams.configure !== "true" &&
     isDesktopApp() &&
     systemInfo !== null &&
     !systemInfo.mobile &&
     isAuthenticated() &&
     getServerType() === "integrated" &&
-    localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true";
+    (searchParams.startLocal === "true" ||
+      localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true");
   const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
   const [autoStartIntegratedServer, setAutoStartIntegratedServer] = useState(
     hasSavedIntegratedSession,
@@ -249,6 +270,7 @@ function Index() {
     await navigate({
       to: searchParams.redirect ?? "/user",
       replace: true,
+      reloadDocument: true,
     });
   }, [navigate, searchParams.redirect]);
 
@@ -275,7 +297,6 @@ function Index() {
       const attempt = { cancelled: false, done: Promise.resolve() };
       startupAttempt.current = attempt;
       const startTime = Date.now();
-      const toastId = toast.loading(t("integrated.toast.loading"));
       attempt.done = (async () => {
         try {
           await desktop.integratedServer.kill();
@@ -284,6 +305,9 @@ function Index() {
             LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
           );
           const credentials = await desktop.integratedServer.run({
+            forceSoftwareRendering:
+              localStorage.getItem(LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING) ===
+              "true",
             jarSource: getStoredIntegratedServerJarSource(),
             jvmArgs:
               args === null
@@ -300,18 +324,14 @@ function Index() {
             t("integrated.toast.success", {
               time: ((Date.now() - startTime) / 1000).toFixed(1),
             }),
-            { id: toastId },
           );
         } catch (error) {
           if (!attempt.cancelled) {
+            // The failure card explains this, with recovery actions.
+            console.error(error);
             onError();
-            toast.error(t("integrated.toast.error"), {
-              id: toastId,
-              description: String(error),
-            });
           }
         } finally {
-          if (attempt.cancelled) toast.dismiss(toastId);
           if (startupAttempt.current === attempt) startupAttempt.current = null;
         }
       })();
@@ -351,7 +371,7 @@ function Index() {
       </svg>
       <div className="relative min-h-0 flex-1 overflow-y-auto px-4">
         <main className="flex min-h-full w-full flex-col">
-          <div className="m-auto flex w-full max-w-lg flex-col gap-4 py-6">
+          <div className="m-auto flex w-full max-w-2xl flex-col gap-4 py-6">
             <ExternalLink
               href="https://soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-logo"
               className="flex flex-row items-center justify-center gap-2 text-center"
@@ -421,7 +441,7 @@ function Index() {
                     {APP_ENVIRONMENT === "production" && (
                       <a
                         className="text-info"
-                        href="https://preview.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-preview"
+                        href={`${getAppUrl("preview", isDemo())}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-preview`}
                       >
                         {t("footer.preview")}
                       </a>
@@ -429,7 +449,7 @@ function Index() {
                     {APP_ENVIRONMENT === "preview" && (
                       <a
                         className="text-info"
-                        href="https://app.soulfiremc.com?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-production"
+                        href={`${getAppUrl("production", isDemo())}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-production`}
                       >
                         {t("footer.production")}
                       </a>
@@ -496,6 +516,17 @@ function Index() {
                 </DropdownMenu>
                 <ModeToggle />
               </div>
+              {isPostHogConfigured && (
+                <div className="flex justify-center">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    onClick={openCookiePreferences}
+                  >
+                    {t("common:analyticsConsent.preferences")}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </main>
@@ -504,13 +535,10 @@ function Index() {
   );
 }
 
-function LoginCardTitle() {
+function LoginCardTitle({ title }: { title?: string }) {
   const { t } = useTranslation("login");
   return (
-    <CardTitle className="mx-auto flex flex-row items-center gap-2 text-xl">
-      <SatelliteDishIcon />
-      {t("connect.title")}
-    </CardTitle>
+    <CardTitle className="text-xl">{title ?? t("connect.title")}</CardTitle>
   );
 }
 
@@ -518,82 +546,29 @@ function DefaultMenu(props: {
   setLoginType: (type: LoginType) => void;
   demoLogin: TargetRedirectFunction;
 }) {
-  const { t } = useTranslation("login");
   const systemInfo = use(SystemInfoContext);
-  const integratedDisabled = isDemo() || !systemInfo;
+  const demo = isDemo();
+  const hasSavedServer =
+    !demo && isAuthenticated() && getServerType() === "dedicated";
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <LoginCardTitle />
-        <CardDescription>{t("connect.description")}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ItemGroup className="gap-3">
-          <LoginOptionCard
-            autoFocus
-            disabled={integratedDisabled}
-            icon={LaptopMinimalIcon}
-            title={t("connect.integrated.title")}
-            description={t("connect.integrated.description")}
-            onSelect={() => props.setLoginType("INTEGRATED")}
-          />
-          <LoginOptionCard
-            autoFocus={integratedDisabled}
-            disabled={isDemo()}
-            icon={ServerIcon}
-            title={t("connect.dedicated.title")}
-            description={t("connect.dedicated.description")}
-            onSelect={() => props.setLoginType("DEDICATED")}
-          />
-          {isDemo() && (
-            <LoginOptionCard
-              autoFocus
-              icon={FlaskConicalIcon}
-              title={t("connect.demo.title")}
-              description={t("connect.demo.description")}
-              onSelect={() => {
-                void props.demoLogin();
-              }}
-            />
-          )}
-        </ItemGroup>
-      </CardContent>
-    </Card>
-  );
-}
-
-function LoginOptionCard(props: {
-  autoFocus?: boolean;
-  disabled?: boolean;
-  icon: typeof LaptopMinimalIcon;
-  title: string;
-  description: string;
-  onSelect: () => void;
-}) {
-  const Icon = props.icon;
-
-  return (
-    <Item
-      render={
-        <button
-          type="button"
-          disabled={props.disabled}
-          onClick={props.onSelect}
-        />
+    <ConnectionChoices
+      demoMode={demo}
+      canRunLocally={!demo && systemInfo !== null}
+      isDesktop={systemInfo !== null}
+      savedServer={
+        hasSavedServer
+          ? { address: localStorage.getItem("server-address") }
+          : null
       }
-      variant="outline"
-      className="w-full cursor-pointer rounded-lg text-left hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-    >
-      <ItemMedia variant="icon">
-        <Icon />
-      </ItemMedia>
-      <ItemContent>
-        <ItemTitle>{props.title}</ItemTitle>
-        <ItemDescription className="line-clamp-none">
-          {props.description}
-        </ItemDescription>
-      </ItemContent>
-    </Item>
+      onContinueSaved={() => {
+        void props.demoLogin();
+      }}
+      onEnterDemo={() => {
+        void props.demoLogin();
+      }}
+      onRunLocally={() => props.setLoginType("INTEGRATED")}
+      onConnectExisting={() => props.setLoginType("DEDICATED")}
+    />
   );
 }
 
@@ -691,6 +666,11 @@ function IntegratedConfigureMenu({
     useState(initialCustomJarId);
   const [importingCustomJar, setImportingCustomJar] = useState(false);
   const autoStartId = useId();
+  const softwareRenderingId = useId();
+  const [forceSoftwareRendering, setForceSoftwareRendering] = useState(
+    () =>
+      localStorage.getItem(LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING) === "true",
+  );
   const [autoStart, setAutoStart] = useState(
     () => localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true",
   );
@@ -705,7 +685,7 @@ function IntegratedConfigureMenu({
           : DEFAULT_JVM_ARGS_STRING),
     },
     validators: {
-      onSubmit: integratedServerFormSchema,
+      onSubmit: toFormSchema(integratedServerFormSchema),
     },
     onSubmit: async ({ value }) => {
       if (
@@ -879,214 +859,317 @@ function IntegratedConfigureMenu({
       }}
     >
       <Card>
-        <CardHeader className="text-center">
-          <LoginCardTitle />
+        <CardHeader>
+          <LoginCardTitle title={t("integrated.title")} />
           <CardDescription>{t("integrated.description")}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {!systemInfo?.mobile && (
-            <Field orientation="horizontal">
-              <FieldContent>
-                <FieldLabel htmlFor={autoStartId}>
-                  {t("integrated.autoStart.title")}
-                </FieldLabel>
-                <FieldDescription>
-                  {t("integrated.autoStart.description")}
-                </FieldDescription>
-              </FieldContent>
-              <Switch
-                id={autoStartId}
-                checked={autoStart}
-                onCheckedChange={(checked) => {
-                  setAutoStart(checked);
-                  localStorage.setItem(
-                    LOCAL_STORAGE_AUTO_START_INTEGRATED,
-                    String(checked),
-                  );
-                }}
-              />
-            </Field>
-          )}
-          <form.Field name="jvmArgs">
-            {(field) => {
-              const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid;
-              return (
-                <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>
-                    {t("integrated.form.jvmArgs.title")}
+            <>
+              <ol className="flex flex-col gap-2 text-sm">
+                {(["prepare", "start", "connect"] as const).map((step) => (
+                  <li key={step} className="flex items-start gap-2">
+                    <CheckIcon
+                      aria-hidden="true"
+                      className="text-muted-foreground mt-0.5 size-4 shrink-0"
+                    />
+                    {t(`integrated.plan.${step}`)}
+                  </li>
+                ))}
+              </ol>
+              <Field orientation="horizontal">
+                <FieldContent>
+                  <FieldLabel htmlFor={autoStartId}>
+                    {t("integrated.autoStart.title")}
                   </FieldLabel>
-                  <div className="flex flex-row gap-2">
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      autoFocus
-                      type="text"
-                      inputMode="text"
-                      placeholder={t("integrated.form.jvmArgs.placeholder")}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => {
-                        field.handleChange(e.target.value);
-                        localStorage.setItem(
-                          LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-                          e.target.value,
-                        );
-                      }}
-                      aria-invalid={isInvalid}
-                    />
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      disabled={field.state.value === DEFAULT_JVM_ARGS_STRING}
-                      onClick={() => {
-                        field.handleChange(DEFAULT_JVM_ARGS_STRING);
-                        localStorage.setItem(
-                          LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-                          DEFAULT_JVM_ARGS_STRING,
-                        );
-                      }}
-                    >
-                      <RotateCcwIcon />
-                    </Button>
-                  </div>
                   <FieldDescription>
-                    <Trans
-                      i18nKey="login:integrated.form.jvmArgs.description"
-                      components={{ bold: <strong className="text-nowrap" /> }}
-                    />
+                    {t("integrated.autoStart.description")}
                   </FieldDescription>
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                </Field>
-              );
-            }}
-          </form.Field>
-          {!systemInfo?.mobile && (
-            <Field>
-              <FieldLabel>
-                {t("integrated.form.jar.title", {
-                  defaultValue: "Server jar",
-                })}
-              </FieldLabel>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  type="button"
-                  variant={
-                    selectedJarSource === "official" ? "secondary" : "outline"
-                  }
-                  onClick={selectOfficialJarSource}
-                >
-                  <ServerIcon />
-                  {t("integrated.form.jar.official", {
-                    defaultValue: "Official",
-                  })}
-                </Button>
-                <Button
-                  type="button"
-                  variant={
-                    selectedJarSource === "custom" ? "secondary" : "outline"
-                  }
-                  onClick={selectCustomJarSource}
-                >
-                  <FileArchiveIcon />
-                  {t("integrated.form.jar.custom", {
-                    defaultValue: "Custom",
-                  })}
-                </Button>
-              </div>
-              <div className="flex flex-col gap-2 rounded-md border p-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="font-medium text-sm">
-                      {selectedJarSource === "custom"
-                        ? t("integrated.form.jar.customTitle", {
-                            defaultValue: "Custom server jar",
-                          })
-                        : t("integrated.form.jar.officialTitle", {
-                            defaultValue: "Official SoulFire server",
-                          })}
-                    </p>
-                    <p className="text-muted-foreground text-xs">
-                      {selectedJarSource === "custom"
-                        ? t("integrated.form.jar.customDescription", {
-                            defaultValue:
-                              "Runs an imported jar. It is not verified or auto-updated.",
-                          })
-                        : t("integrated.form.jar.officialDescription", {
-                            defaultValue:
-                              "Downloads and verifies the matching SoulFire release.",
-                          })}
-                    </p>
-                  </div>
-                  {selectedJarSource === "custom" && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={importingCustomJar}
-                      onClick={() => {
-                        void importCustomJar();
-                      }}
-                    >
-                      {importingCustomJar ? (
-                        <LoaderCircleIcon className="animate-spin" />
-                      ) : (
-                        <UploadIcon />
-                      )}
-                      {t("integrated.form.jar.import", {
-                        defaultValue: "Import jar",
-                      })}
-                    </Button>
-                  )}
-                </div>
-                {selectedJarSource === "custom" && customJars.length > 0 && (
-                  <RadioGroup
-                    value={selectedCustomJarId}
-                    onValueChange={selectCustomJar}
-                  >
-                    {customJars.map((jar) => (
-                      <div key={jar.id} className="flex items-center gap-2">
-                        <FieldLabel className="min-w-0 flex-1" htmlFor={jar.id}>
-                          <Field orientation="horizontal">
-                            <RadioGroupItem id={jar.id} value={jar.id} />
-                            <FieldContent>
-                              <FieldTitle className="truncate">
-                                {jar.originalName}
-                              </FieldTitle>
-                              <FieldDescription className="truncate text-xs">
-                                {formatFileSize(jar.size)} -{" "}
-                                {jar.sha256.slice(0, 12)}
-                              </FieldDescription>
-                            </FieldContent>
-                            <Button
-                              type="button"
-                              size="icon"
-                              variant="ghost"
-                              onClick={(event) => {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                void removeCustomJar(jar.id);
-                              }}
-                            >
-                              <Trash2Icon />
-                            </Button>
-                          </Field>
-                        </FieldLabel>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                )}
-              </div>
-              {selectedJarSource === "custom" && !hasSelectedCustomJar && (
-                <FieldDescription>
-                  {t("integrated.form.jar.selectCustomFirst", {
-                    defaultValue:
-                      "Import and select a custom jar before starting.",
-                  })}
-                </FieldDescription>
-              )}
-            </Field>
+                </FieldContent>
+                <Switch
+                  id={autoStartId}
+                  checked={autoStart}
+                  onCheckedChange={(checked) => {
+                    setAutoStart(checked);
+                    localStorage.setItem(
+                      LOCAL_STORAGE_AUTO_START_INTEGRATED,
+                      String(checked),
+                    );
+                  }}
+                />
+              </Field>
+            </>
           )}
-          <IntegratedServerSupportActions />
+          <Collapsible
+            defaultOpen={
+              Boolean(systemInfo?.mobile) || selectedJarSource === "custom"
+            }
+          >
+            <CollapsibleTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="group/advanced w-fit"
+                />
+              }
+            >
+              <SlidersHorizontalIcon data-icon="inline-start" />
+              {t("integrated.advanced.title")}
+              <ChevronRightIcon
+                data-icon="inline-end"
+                className="group-data-[panel-open]/advanced:rotate-90"
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="mt-3 flex flex-col gap-4 rounded-lg border p-3">
+                <p className="text-muted-foreground text-sm">
+                  {t("integrated.advanced.description")}
+                </p>
+                {!systemInfo?.mobile && (
+                  <Field orientation="horizontal">
+                    <FieldContent>
+                      <div className="flex items-center gap-2">
+                        <FieldLabel htmlFor={softwareRenderingId}>
+                          {t("integrated.softwareRendering.title")}
+                        </FieldLabel>
+                        <TextInfoButton
+                          value={t("integrated.softwareRendering.description")}
+                        />
+                      </div>
+                    </FieldContent>
+                    <Switch
+                      id={softwareRenderingId}
+                      checked={forceSoftwareRendering}
+                      onCheckedChange={(checked) => {
+                        setForceSoftwareRendering(checked);
+                        localStorage.setItem(
+                          LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING,
+                          String(checked),
+                        );
+                      }}
+                    />
+                  </Field>
+                )}
+                <form.Field name="jvmArgs">
+                  {(field) => {
+                    const isInvalid =
+                      field.state.meta.isTouched && !field.state.meta.isValid;
+                    return (
+                      <Field data-invalid={isInvalid}>
+                        <FieldLabel htmlFor={field.name}>
+                          {t("integrated.form.jvmArgs.title")}
+                        </FieldLabel>
+                        <div className="flex flex-row gap-2">
+                          <Input
+                            id={field.name}
+                            name={field.name}
+                            type="text"
+                            inputMode="text"
+                            placeholder={t(
+                              "integrated.form.jvmArgs.placeholder",
+                            )}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => {
+                              field.handleChange(e.target.value);
+                              localStorage.setItem(
+                                LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
+                                e.target.value,
+                              );
+                            }}
+                            aria-invalid={isInvalid}
+                          />
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            disabled={
+                              field.state.value === DEFAULT_JVM_ARGS_STRING
+                            }
+                            onClick={() => {
+                              field.handleChange(DEFAULT_JVM_ARGS_STRING);
+                              localStorage.setItem(
+                                LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
+                                DEFAULT_JVM_ARGS_STRING,
+                              );
+                            }}
+                          >
+                            <RotateCcwIcon />
+                            <span className="sr-only">
+                              {t("integrated.form.jvmArgs.reset")}
+                            </span>
+                          </Button>
+                        </div>
+                        <FieldDescription>
+                          <Trans
+                            i18nKey="login:integrated.form.jvmArgs.description"
+                            components={{
+                              bold: <strong className="text-nowrap" />,
+                            }}
+                          />
+                        </FieldDescription>
+                        {isInvalid && (
+                          <FieldError errors={field.state.meta.errors} />
+                        )}
+                      </Field>
+                    );
+                  }}
+                </form.Field>
+                {!systemInfo?.mobile && (
+                  <Field>
+                    <FieldLabel>
+                      {t("integrated.form.jar.title", {
+                        defaultValue: "Server jar",
+                      })}
+                    </FieldLabel>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        type="button"
+                        variant={
+                          selectedJarSource === "official"
+                            ? "secondary"
+                            : "outline"
+                        }
+                        onClick={selectOfficialJarSource}
+                      >
+                        <ServerIcon />
+                        {t("integrated.form.jar.official", {
+                          defaultValue: "Official",
+                        })}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={
+                          selectedJarSource === "custom"
+                            ? "secondary"
+                            : "outline"
+                        }
+                        onClick={selectCustomJarSource}
+                      >
+                        <FileArchiveIcon />
+                        {t("integrated.form.jar.custom", {
+                          defaultValue: "Custom",
+                        })}
+                      </Button>
+                    </div>
+                    <div className="flex flex-col gap-2 rounded-md border p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-medium text-sm">
+                            {selectedJarSource === "custom"
+                              ? t("integrated.form.jar.customTitle", {
+                                  defaultValue: "Custom server jar",
+                                })
+                              : t("integrated.form.jar.officialTitle", {
+                                  defaultValue: "Official SoulFire server",
+                                })}
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            {selectedJarSource === "custom"
+                              ? t("integrated.form.jar.customDescription", {
+                                  defaultValue:
+                                    "Runs an imported jar. It is not verified or auto-updated.",
+                                })
+                              : t("integrated.form.jar.officialDescription", {
+                                  defaultValue:
+                                    "Downloads and verifies the matching SoulFire release.",
+                                })}
+                          </p>
+                        </div>
+                        {selectedJarSource === "custom" && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            disabled={importingCustomJar}
+                            onClick={() => {
+                              void importCustomJar();
+                            }}
+                          >
+                            {importingCustomJar ? (
+                              <LoaderCircleIcon className="animate-spin" />
+                            ) : (
+                              <UploadIcon />
+                            )}
+                            {t("integrated.form.jar.import", {
+                              defaultValue: "Import jar",
+                            })}
+                          </Button>
+                        )}
+                      </div>
+                      {selectedJarSource === "custom" &&
+                        customJars.length > 0 && (
+                          <RadioGroup
+                            value={selectedCustomJarId}
+                            onValueChange={selectCustomJar}
+                          >
+                            {customJars.map((jar) => (
+                              <div
+                                key={jar.id}
+                                className="flex items-center gap-2"
+                              >
+                                <FieldLabel
+                                  className="min-w-0 flex-1"
+                                  htmlFor={jar.id}
+                                >
+                                  <Field orientation="horizontal">
+                                    <RadioGroupItem
+                                      id={jar.id}
+                                      value={jar.id}
+                                    />
+                                    <FieldContent>
+                                      <FieldTitle className="truncate">
+                                        {jar.originalName}
+                                      </FieldTitle>
+                                      <FieldDescription className="truncate text-xs">
+                                        {formatFileSize(jar.size)} -{" "}
+                                        {jar.sha256.slice(0, 12)}
+                                      </FieldDescription>
+                                    </FieldContent>
+                                    <Button
+                                      type="button"
+                                      size="icon"
+                                      variant="ghost"
+                                      onClick={(event) => {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        void removeCustomJar(jar.id);
+                                      }}
+                                    >
+                                      <Trash2Icon />
+                                    </Button>
+                                  </Field>
+                                </FieldLabel>
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        )}
+                    </div>
+                    {selectedJarSource === "custom" &&
+                      !hasSelectedCustomJar && (
+                        <FieldDescription>
+                          {t("integrated.form.jar.selectCustomFirst", {
+                            defaultValue:
+                              "Import and select a custom jar before starting.",
+                          })}
+                        </FieldDescription>
+                      )}
+                  </Field>
+                )}
+                <IntegratedServerSupportActions />
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+          {isCustomJarStartBlocked && (
+            <Alert variant="destructive">
+              <TriangleAlertIcon />
+              <AlertDescription>
+                {t("integrated.form.jar.selectCustomFirst", {
+                  defaultValue:
+                    "Import and select a custom jar before starting.",
+                })}
+              </AlertDescription>
+            </Alert>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
@@ -1101,12 +1184,40 @@ function IntegratedConfigureMenu({
             {t("integrated.form.back")}
           </Button>
           <Button type="submit" disabled={isCustomJarStartBlocked}>
-            <PlayIcon />
+            <PlayIcon data-icon="inline-start" />
             {t("integrated.form.start")}
           </Button>
         </CardFooter>
       </Card>
     </form>
+  );
+}
+
+function ProcessDetails({ defaultOpen }: { defaultOpen?: boolean }) {
+  const { t } = useTranslation("login");
+  return (
+    <Collapsible defaultOpen={defaultOpen}>
+      <CollapsibleTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="group/details w-fit"
+          />
+        }
+      >
+        <BoxIcon data-icon="inline-start" />
+        {t("integrated.details")}
+        <ChevronRightIcon
+          data-icon="inline-end"
+          className="group-data-[panel-open]/details:rotate-90"
+        />
+      </CollapsibleTrigger>
+      <CollapsibleContent className="mt-3">
+        <IntegratedServerProcessOutput />
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
 
@@ -1117,17 +1228,24 @@ function IntegratedLoadingMenu({
 }) {
   const { t } = useTranslation("login");
   const [cancelling, startTransition] = useTransition();
+  const { data } = useIntegratedDiagnostics();
   return (
     <Card>
       <CardHeader>
-        <LoginCardTitle />
-        <CardDescription className="flex items-center justify-center gap-2">
-          <LoaderCircleIcon className="size-4 animate-spin" />
-          {t(cancelling ? "integrated.cancelling" : "integrated.toast.loading")}
+        <LoginCardTitle
+          title={t(
+            cancelling ? "integrated.cancelling" : "integrated.toast.loading",
+          )}
+        />
+        <CardDescription>
+          {t("integrated.progress.description")}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <IntegratedServerProcessOutput />
+      <CardContent className="flex flex-col gap-4">
+        <div aria-live="polite">
+          <StartupProgress stage={getLauncherStartupStage(data)} />
+        </div>
+        <ProcessDetails />
       </CardContent>
       <CardFooter>
         <Button
@@ -1164,60 +1282,39 @@ function IntegratedErrorMenu({
 }) {
   const { t } = useTranslation("login");
   const [resetting, setResetting] = useState(false);
+  const [confirmResetOpen, setConfirmResetOpen] = useState(false);
+  const { data } = useIntegratedDiagnostics();
+  const failure = diagnoseLauncherFailure(data);
+  const resetData = () => {
+    setResetting(true);
+    toast.promise(
+      (async () => {
+        await desktop.integratedServer.kill();
+        await desktop.integratedServer.resetData();
+      })(),
+      {
+        loading: t("integrated.reset.loading"),
+        success: () => {
+          setResetting(false);
+          return t("integrated.reset.success");
+        },
+        error: (e) => {
+          setResetting(false);
+          console.error(e);
+          return t("integrated.reset.error");
+        },
+      },
+    );
+  };
 
   return (
     <Card>
       <CardHeader>
-        <LoginCardTitle />
-        <CardDescription className="text-destructive">
-          {t("integrated.toast.error")}
-        </CardDescription>
+        <LoginCardTitle title={t("integrated.toast.error")} />
       </CardHeader>
-      <CardContent>
-        <IntegratedServerProcessOutput />
-      </CardContent>
-      <CardFooter className="flex flex-wrap justify-between gap-2">
-        <Button
-          variant="outline"
-          disabled={resetting}
-          onClick={() => setLoginType(null)}
-        >
-          <ArrowLeftIcon />
-          {t("integrated.form.back")}
-        </Button>
-        <div className="flex gap-2">
-          <Button
-            variant="destructive"
-            disabled={resetting}
-            onClick={() => {
-              setResetting(true);
-              toast.promise(
-                (async () => {
-                  await desktop.integratedServer.kill();
-                  await desktop.integratedServer.resetData();
-                })(),
-                {
-                  loading: t("integrated.reset.loading"),
-                  success: () => {
-                    setResetting(false);
-                    return t("integrated.reset.success");
-                  },
-                  error: (e) => {
-                    setResetting(false);
-                    console.error(e);
-                    return t("integrated.reset.error");
-                  },
-                },
-              );
-            }}
-          >
-            {resetting ? (
-              <LoaderCircleIcon className="animate-spin" />
-            ) : (
-              <RotateCcwIcon />
-            )}
-            {t("integrated.reset.button")}
-          </Button>
+      <CardContent className="flex flex-col gap-4">
+        <StartupFailureNotice failure={failure} />
+        <div className="flex flex-wrap gap-2">
           <Button
             disabled={resetting}
             onClick={() => {
@@ -1225,10 +1322,76 @@ function IntegratedErrorMenu({
               startIntegratedServer(() => setIntegratedState("error"));
             }}
           >
-            <PlayIcon />
+            <PlayIcon data-icon="inline-start" />
             {t("integrated.retry")}
           </Button>
+          <Button
+            variant="outline"
+            disabled={resetting}
+            onClick={() => setIntegratedState("configure")}
+          >
+            <SlidersHorizontalIcon data-icon="inline-start" />
+            {t("integrated.changeSettings")}
+          </Button>
+          <Button
+            variant="outline"
+            disabled={resetting}
+            onClick={() => setLoginType("DEDICATED")}
+          >
+            <ServerIcon data-icon="inline-start" />
+            {t("integrated.useExisting")}
+          </Button>
         </div>
+        <ProcessDetails defaultOpen />
+      </CardContent>
+      <CardFooter className="flex flex-wrap justify-between gap-2">
+        <Button
+          variant="ghost"
+          disabled={resetting}
+          onClick={() => setLoginType(null)}
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("integrated.form.back")}
+        </Button>
+        <AlertDialog open={confirmResetOpen} onOpenChange={setConfirmResetOpen}>
+          <AlertDialogTrigger
+            render={<Button variant="ghost" disabled={resetting} />}
+          >
+            {resetting ? (
+              <LoaderCircleIcon
+                className="animate-spin"
+                data-icon="inline-start"
+              />
+            ) : (
+              <RotateCcwIcon data-icon="inline-start" />
+            )}
+            {t("integrated.reset.button")}
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {t("integrated.reset.confirmTitle")}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("integrated.reset.confirmDescription")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>
+                {t("integrated.reset.keep")}
+              </AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                onClick={() => {
+                  setConfirmResetOpen(false);
+                  resetData();
+                }}
+              >
+                {t("integrated.reset.button")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardFooter>
     </Card>
   );
@@ -1244,6 +1407,9 @@ function IntegratedMobileMenu({
   const copyToClipboard = useCopyToClipboard();
   const systemInfo = use(SystemInfoContext);
   const { t } = useTranslation("login");
+  const connection = useServerConnection((address, token) =>
+    redirectWithCredentials("integrated", address, token),
+  );
   const runCommand = `bash <(curl -s https://raw.githubusercontent.com/soulfiremc-com/SoulFireClient/refs/heads/main/scripts/termux_setup.sh) ${systemInfo?.sfServerVersion} "${localStorage.getItem(LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS)}"`;
   const form = useForm({
     defaultValues: {
@@ -1253,15 +1419,11 @@ function IntegratedMobileMenu({
         ) ?? "",
     },
     validators: {
-      onSubmit: mobileIntegratedServerFormSchema,
+      onSubmit: toFormSchema(mobileIntegratedServerFormSchema),
     },
     onSubmit: async ({ value }) => {
       const token = value.token.trim();
-      void redirectWithCredentials(
-        "integrated",
-        "http://localhost:38765",
-        token,
-      );
+      await connection.connect("http://localhost:38765", token);
     },
   });
 
@@ -1273,8 +1435,8 @@ function IntegratedMobileMenu({
       }}
     >
       <Card>
-        <CardHeader className="text-center">
-          <LoginCardTitle />
+        <CardHeader>
+          <LoginCardTitle title={t("connect.dedicated.title")} />
           <CardDescription>
             {t("integrated.mobile.description")}
           </CardDescription>
@@ -1364,6 +1526,7 @@ function IntegratedMobileMenu({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={connection.error} />
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
@@ -1377,9 +1540,17 @@ function IntegratedMobileMenu({
             <ArrowLeftIcon data-icon="inline-start" />
             {t("integrated.mobile.form.back")}
           </Button>
-          <Button type="submit">
+          <Button
+            type="submit"
+            disabled={connection.connecting}
+            aria-busy={connection.connecting}
+          >
             <PlugZapIcon data-icon="inline-start" />
-            {t("integrated.mobile.form.connect")}
+            {t(
+              connection.connecting
+                ? "connection.checking"
+                : "integrated.mobile.form.connect",
+            )}
           </Button>
         </CardFooter>
       </Card>
@@ -1477,28 +1648,28 @@ function EmailForm({
       email: localStorage.getItem(LOCAL_STORAGE_FORM_SERVER_EMAIL_KEY) ?? "",
     },
     validators: {
-      onSubmit: emailFormSchema,
+      onSubmit: toFormSchema(emailFormSchema),
     },
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const email = value.email.trim();
-      const loginService = createClient(
+      const loginService = createRpcClient(
         LoginService,
         createAddressOnlyTransport(address),
       );
       toast.promise(
-        loginService
-          .login({
+        Effect.runPromise(
+          loginService.login({
             email: email,
-          })
-          .then((response) => {
-            setAuthFlowData({
-              email: email,
-              flowToken: response.authFlowToken,
-              address: address,
-            });
-            setLoginType("EMAIL_CODE");
           }),
+        ).then((response) => {
+          setAuthFlowData({
+            email: email,
+            flowToken: response.authFlowToken,
+            address: address,
+          });
+          setLoginType("EMAIL_CODE");
+        }),
         {
           loading: t("dedicated.toast.loading"),
           success: t("dedicated.toast.success"),
@@ -1519,8 +1690,8 @@ function EmailForm({
       }}
     >
       <Card>
-        <CardHeader className="text-center">
-          <LoginCardTitle />
+        <CardHeader>
+          <LoginCardTitle title={t("connect.dedicated.title")} />
           <CardDescription>{t("dedicated.description")}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -1631,6 +1802,9 @@ function TokenForm({
   setDedicatedType: (type: DedicatedType) => void;
 }) {
   const { t } = useTranslation("login");
+  const connection = useServerConnection((address, token) =>
+    redirectWithCredentials("dedicated", address, token),
+  );
   const form = useForm({
     defaultValues: {
       address:
@@ -1638,12 +1812,12 @@ function TokenForm({
       token: localStorage.getItem(LOCAL_STORAGE_FORM_SERVER_TOKEN_KEY) ?? "",
     },
     validators: {
-      onSubmit: tokenFormSchema,
+      onSubmit: toFormSchema(tokenFormSchema),
     },
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const token = value.token.trim();
-      void redirectWithCredentials("dedicated", address, token);
+      await connection.connect(address, token);
     },
   });
 
@@ -1655,8 +1829,8 @@ function TokenForm({
       }}
     >
       <Card>
-        <CardHeader className="text-center">
-          <LoginCardTitle />
+        <CardHeader>
+          <LoginCardTitle title={t("connect.dedicated.title")} />
           <CardDescription>{t("dedicated.description")}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -1728,6 +1902,7 @@ function TokenForm({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={connection.error} />
         </CardContent>
         <CardFooter className="flex flex-col gap-2 max-md:items-stretch md:flex-row">
           <div className="flex grow flex-col justify-between gap-2 max-md:items-stretch md:flex-row">
@@ -1747,9 +1922,17 @@ function TokenForm({
               onValueChange={setDedicatedType}
             />
           </div>
-          <Button type="submit">
+          <Button
+            type="submit"
+            disabled={connection.connecting}
+            aria-busy={connection.connecting}
+          >
             <LogInIcon />
-            {t("dedicated.form.login")}
+            {t(
+              connection.connecting
+                ? "connection.checking"
+                : "dedicated.form.login",
+            )}
           </Button>
         </CardFooter>
       </Card>
@@ -1775,36 +1958,36 @@ function EmailCodeMenu(props: {
 
     setInputDisabled(true);
     toast.promise(
-      createClient(
-        LoginService,
-        createAddressOnlyTransport(props.authFlowData.address),
-      )
-        .emailCode({
+      Effect.runPromise(
+        createRpcClient(
+          LoginService,
+          createAddressOnlyTransport(props.authFlowData.address),
+        ).emailCode({
           code: code,
           authFlowToken: props.authFlowData.flowToken,
-        })
-        .then((response) => {
-          if (response.next.case === "success") {
-            void props.redirectWithCredentials(
-              "dedicated",
-              props.authFlowData.address,
-              response.next.value.token,
-            );
-          } else if (response.next.case === "failure") {
-            setInputDisabled(false);
-            setCodeValue("");
-            throw new Error(
-              getEnumKeyByValue(
-                NextAuthFlowResponse_Failure_Reason,
-                response.next.value.reason,
-              ),
-            );
-          } else {
-            setInputDisabled(false);
-            setCodeValue("");
-            throw new Error("Unknown response type");
-          }
         }),
+      ).then((response) => {
+        if (response.next.case === "success") {
+          void props.redirectWithCredentials(
+            "dedicated",
+            props.authFlowData.address,
+            response.next.value.token,
+          );
+        } else if (response.next.case === "failure") {
+          setInputDisabled(false);
+          setCodeValue("");
+          throw new Error(
+            getEnumKeyByValue(
+              NextAuthFlowResponse_Failure_Reason,
+              response.next.value.reason,
+            ),
+          );
+        } else {
+          setInputDisabled(false);
+          setCodeValue("");
+          throw new Error("Unknown response type");
+        }
+      }),
       {
         loading: t("emailCode.toast.loading"),
         success: t("emailCode.toast.success"),
@@ -1820,8 +2003,8 @@ function EmailCodeMenu(props: {
 
   return (
     <Card>
-      <CardHeader className="text-center">
-        <LoginCardTitle />
+      <CardHeader>
+        <LoginCardTitle title={t("connect.dedicated.title")} />
         <CardDescription>
           <Trans
             t={t}

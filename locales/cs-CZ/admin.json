@@ -86,6 +86,7 @@
         "update": "Aktualizovat uživatele"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Přidávání uživatele...",
       "success": "Uživatel přidán!",

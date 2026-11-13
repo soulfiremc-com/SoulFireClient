@@ -1,4 +1,7 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -6,7 +9,6 @@ import { PencilIcon, PlusIcon, XIcon } from "lucide-react";
 import { use } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Field,
@@ -27,6 +29,7 @@ import {
 import { UserRole } from "@/generated/soulfire/common_pb";
 import type { UserListResponse_User } from "@/generated/soulfire/user_pb";
 import { UserService } from "@/generated/soulfire/user_pb";
+import { createUsernameSchema, userEmailSchema } from "@/lib/user-profile.ts";
 import { getEnumEntries } from "@/lib/types.ts";
 import { TransportContext } from "../providers/transport-context.tsx";
 import {
@@ -61,17 +64,16 @@ export function ManageUserDialog({
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { t } = useTranslation("admin");
-  const formSchema = z.object({
-    username: z
-      .string()
-      .min(3, t("users.baseUserDialog.form.username.min"))
-      .max(32, t("users.baseUserDialog.form.username.max"))
-      .regex(
-        /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-        t("users.baseUserDialog.form.username.regex"),
-      ),
-    email: z.email(),
-    role: z.enum(UserRole),
+  const formSchema = Schema.Struct({
+    username: createUsernameSchema({
+      min: t("users.baseUserDialog.form.username.min"),
+      max: t("users.baseUserDialog.form.username.max"),
+      pattern: t("users.baseUserDialog.form.username.regex"),
+    }),
+    email: userEmailSchema,
+    role: Schema.Enum(UserRole)
+      .annotate({ message: "validation:userRole" })
+      .annotateKey({ messageMissingKey: "validation:userRole" }),
   });
   const submitMutation = useMutation({
     mutationKey: [
@@ -84,20 +86,24 @@ export function ManageUserDialog({
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       const promise: Promise<unknown> =
         props.mode === "add"
-          ? userService.createUser({
-              username: values.username,
-              email: values.email,
-              role: values.role,
-            })
-          : userService.updateUser({
-              id: props.user.id,
-              username: values.username,
-              email: values.email,
-              role: values.role,
-            });
+          ? Effect.runPromise(
+              userService.createUser({
+                username: values.username,
+                email: values.email,
+                role: values.role,
+              }),
+            )
+          : Effect.runPromise(
+              userService.updateUser({
+                id: props.user.id,
+                username: values.username,
+                email: values.email,
+                role: values.role,
+              }),
+            );
       toast.promise(promise, {
         loading:
           props.mode === "add"
@@ -110,6 +116,9 @@ export function ManageUserDialog({
             : t("users.updateToast.success");
         },
         error: (e) => {
+          if (ConnectError.from(e).code === Code.AlreadyExists) {
+            return t("users.profileConflict");
+          }
           console.error(e);
           return props.mode === "add"
             ? t("users.addToast.error")
@@ -132,15 +141,26 @@ export function ManageUserDialog({
       role: props.mode === "edit" ? props.user.role : UserRole.USER,
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
-    onSubmit: async ({ value }) => {
-      submitMutation.mutate(value);
+    onSubmit: async ({ value, formApi }) => {
+      try {
+        await submitMutation.mutateAsync(value);
+        if (props.mode === "add") formApi.reset();
+      } catch {
+        // The mutation reports the failure and keeps the form available for corrections.
+      }
     },
   });
 
   return (
-    <Credenza open={open} onOpenChange={setOpen}>
+    <Credenza
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) form.reset();
+        setOpen(nextOpen);
+      }}
+    >
       <CredenzaContent className="pb-4">
         <form
           className="flex flex-col gap-4"
@@ -182,6 +202,7 @@ export function ManageUserDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      disabled={submitMutation.isPending}
                     />
                     <FieldDescription>
                       {t("users.baseUserDialog.form.username.description")}
@@ -212,6 +233,7 @@ export function ManageUserDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      disabled={submitMutation.isPending}
                     />
                     <FieldDescription>
                       {t("users.baseUserDialog.form.email.description")}
@@ -240,6 +262,7 @@ export function ManageUserDialog({
                       {t("users.baseUserDialog.form.role.label")}
                     </FieldLabel>
                     <Select
+                      disabled={submitMutation.isPending}
                       name={field.name}
                       value={String(field.state.value)}
                       onValueChange={(value) =>
@@ -285,7 +308,11 @@ export function ManageUserDialog({
                 ? t("users.addUserDialog.form.cancel")
                 : t("users.updateUserDialog.form.cancel")}
             </CredenzaClose>
-            <Button type="submit">
+            <Button
+              type="submit"
+              disabled={submitMutation.isPending}
+              aria-busy={submitMutation.isPending}
+            >
               {props.mode === "add" ? <PlusIcon /> : <PencilIcon />}
               {props.mode === "add"
                 ? t("users.addUserDialog.form.add")

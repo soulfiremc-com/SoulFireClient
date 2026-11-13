@@ -1,6 +1,7 @@
 import { TrashIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { TerminalMessage } from "@/components/terminal-message";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
@@ -15,7 +16,7 @@ interface ExecutionLogsProps {
 }
 
 function getLogLevelStyles(level: LogLevel): {
-  badge: "default" | "secondary" | "destructive" | "outline";
+  badge: "default" | "secondary" | "outline";
   text: string;
 } {
   switch (level) {
@@ -26,18 +27,20 @@ function getLogLevelStyles(level: LogLevel): {
     case "warn":
       return { badge: "outline", text: "text-warning-emphasis" };
     case "error":
-      return { badge: "destructive", text: "text-destructive" };
+      return { badge: "outline", text: "text-destructive" };
     default:
       return { badge: "default", text: "text-foreground" };
   }
 }
 
+const timeFormatter = new Intl.DateTimeFormat(undefined, {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
+
 function formatTimestamp(date: Date): string {
-  const timeStr = date.toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const timeStr = timeFormatter.format(date);
   const ms = date.getMilliseconds().toString().padStart(3, "0");
   return `${timeStr}.${ms}`;
 }
@@ -46,29 +49,42 @@ interface LogEntryRowProps {
   entry: LogEntry;
 }
 
-function LogEntryRow({ entry }: LogEntryRowProps) {
+const LogEntryRow = memo(function LogEntryRow({ entry }: LogEntryRowProps) {
   const styles = getLogLevelStyles(entry.level);
 
   return (
     <div
       className={cn(
-        "flex items-start gap-2 border-b border-border/50 px-3 py-2 font-mono text-xs last:border-0",
+        "grid grid-cols-[auto_auto_minmax(0,1fr)] items-start gap-x-2 gap-y-1 border-b border-border/50 px-3 py-2 font-mono text-xs last:border-0",
         styles.text,
       )}
     >
       <span className="shrink-0 text-muted-foreground">
         {formatTimestamp(entry.timestamp)}
       </span>
-      <Badge variant={styles.badge} className="shrink-0 uppercase">
+      <Badge
+        variant={styles.badge}
+        className={cn(
+          "shrink-0 uppercase",
+          entry.level === "error" && "border-destructive/40 text-destructive",
+        )}
+      >
         {entry.level}
       </Badge>
       {entry.nodeId && (
-        <span className="shrink-0 text-muted-foreground">[{entry.nodeId}]</span>
+        <span
+          className="min-w-0 truncate text-muted-foreground"
+          title={entry.nodeId}
+        >
+          [{entry.nodeId}]
+        </span>
       )}
-      <span className="flex-1 break-all">{entry.message}</span>
+      <span className="col-span-full min-w-0 break-all whitespace-pre-wrap">
+        <TerminalMessage entry={entry} />
+      </span>
     </div>
   );
-}
+});
 
 export function ExecutionLogs({
   logs,
@@ -78,6 +94,7 @@ export function ExecutionLogs({
 }: ExecutionLogsProps) {
   const { t } = useTranslation("instance");
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+  const lastLogId = logs[logs.length - 1]?.id;
 
   // Auto-scroll to bottom when new logs are added
   useEffect(() => {
@@ -85,7 +102,7 @@ export function ExecutionLogs({
       scrollViewportRef.current.scrollTop =
         scrollViewportRef.current.scrollHeight;
     }
-  }, [autoScroll]);
+  }, [autoScroll, lastLogId]);
 
   return (
     <div

@@ -7,7 +7,14 @@ import {
   SearchIcon,
   XIcon,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import {
@@ -30,6 +37,10 @@ export function QuickAddMenu() {
   const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const inputRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const selectedItemRef = useRef<HTMLButtonElement>(null);
+  const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
   const [search, setSearch] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
@@ -42,6 +53,38 @@ export function QuickAddMenu() {
 
   const { definitions, categories, getCategoryInfo, createNodeData } =
     useNodeTypes();
+
+  useLayoutEffect(() => {
+    const menu = menuRef.current;
+    if (!quickAddMenu || !menu || isMobile) return;
+    const reposition = () => {
+      const bounds = menu.getBoundingClientRect();
+      setMenuPosition({
+        left: Math.max(
+          8,
+          Math.min(
+            quickAddMenu.screenPosition.x,
+            innerWidth - bounds.width - 8,
+          ),
+        ),
+        top: Math.max(
+          8,
+          Math.min(
+            quickAddMenu.screenPosition.y,
+            innerHeight - bounds.height - 8,
+          ),
+        ),
+      });
+    };
+    reposition();
+    const observer = new ResizeObserver(reposition);
+    observer.observe(menu);
+    window.addEventListener("resize", reposition);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", reposition);
+    };
+  }, [quickAddMenu, isMobile]);
 
   // Focus input when menu opens
   useEffect(() => {
@@ -144,6 +187,24 @@ export function QuickAddMenu() {
     return list;
   }, [categories, nodesByCategory, expandedCategory, search]);
 
+  useLayoutEffect(() => {
+    setSelectedIndex((index) =>
+      Math.min(index, Math.max(0, flatList.length - 1)),
+    );
+  }, [flatList.length]);
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const item = selectedItemRef.current;
+    if (!viewport || !item) return;
+    const visible = viewport.getBoundingClientRect();
+    const selected = item.getBoundingClientRect();
+    if (selected.top < visible.top)
+      viewport.scrollTop += selected.top - visible.top;
+    else if (selected.bottom > visible.bottom)
+      viewport.scrollTop += selected.bottom - visible.bottom;
+  }, [selectedIndex, flatList]);
+
   // Handle node selection
   const selectNode = useCallback(
     (nodeDef: NodeDefinition) => {
@@ -169,7 +230,9 @@ export function QuickAddMenu() {
           break;
         case "ArrowDown":
           e.preventDefault();
-          setSelectedIndex((i) => Math.min(i + 1, flatList.length - 1));
+          setSelectedIndex((i) =>
+            Math.min(i + 1, Math.max(0, flatList.length - 1)),
+          );
           break;
         case "ArrowUp":
           e.preventDefault();
@@ -220,17 +283,18 @@ export function QuickAddMenu() {
 
       {/* Menu */}
       <div
+        ref={menuRef}
         className={cn(
-          "fixed z-50 rounded-lg border bg-popover shadow-lg",
+          "fixed z-50 flex max-w-[calc(100dvw-1rem)] flex-col overflow-hidden rounded-lg border bg-popover shadow-lg",
           isMobile ? "inset-x-4 bottom-4" : "w-72",
         )}
         style={
           isMobile
-            ? { maxHeight: "50vh" }
+            ? { maxHeight: "min(50dvh, calc(100dvh - 2rem))" }
             : {
-                left: quickAddMenu.screenPosition.x,
-                top: quickAddMenu.screenPosition.y,
-                maxHeight: "400px",
+                left: menuPosition.left,
+                top: menuPosition.top,
+                maxHeight: "min(400px, calc(100dvh - 1rem))",
               }
         }
         onKeyDown={handleKeyDown}
@@ -238,7 +302,7 @@ export function QuickAddMenu() {
         aria-label={t("scripts.editor.quickAdd.menuLabel")}
       >
         {/* Search input */}
-        <div className="flex items-center gap-2 p-2">
+        <div className="flex shrink-0 items-center gap-2 p-2">
           <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
@@ -248,11 +312,13 @@ export function QuickAddMenu() {
               setSelectedIndex(0);
             }}
             placeholder={t("scripts.editor.quickAdd.searchPlaceholder")}
-            className="h-6 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            aria-label={t("scripts.editor.quickAdd.searchPlaceholder")}
+            className="h-6 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           <button
             type="button"
             onClick={closeQuickAddMenu}
+            aria-label={t("common:uiDialog.close")}
             className="rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <XIcon className="size-4" />
@@ -260,7 +326,10 @@ export function QuickAddMenu() {
         </div>
 
         {/* Node list */}
-        <ScrollArea className={isMobile ? "max-h-[40vh]" : "h-[300px]"}>
+        <ScrollArea
+          viewportRef={viewportRef}
+          className={cn("min-h-0 shrink", isMobile ? "h-[40dvh]" : "h-75")}
+        >
           <div className="p-1">
             {flatList.length === 0 ? (
               <Empty className="border-0 p-4">
@@ -279,6 +348,9 @@ export function QuickAddMenu() {
                     expandedCategory === item.id || search.trim();
                   return (
                     <button
+                      ref={
+                        index === selectedIndex ? selectedItemRef : undefined
+                      }
                       key={`cat-${item.id}`}
                       type="button"
                       title={info.description}
@@ -298,7 +370,14 @@ export function QuickAddMenu() {
                         <ChevronRightIcon className="size-4" />
                       )}
                       <span>{info.name}</span>
-                      <span className="ml-auto text-xs text-muted-foreground">
+                      <span
+                        className={cn(
+                          "ml-auto text-xs",
+                          index === selectedIndex
+                            ? "text-accent-foreground"
+                            : "text-muted-foreground",
+                        )}
+                      >
                         {nodesByCategory[item.id]?.length ?? 0}
                       </span>
                     </button>
@@ -306,6 +385,9 @@ export function QuickAddMenu() {
                 } else if (item.node) {
                   return (
                     <button
+                      ref={
+                        index === selectedIndex ? selectedItemRef : undefined
+                      }
                       key={`node-${item.id}`}
                       type="button"
                       title={item.node.description}
@@ -334,7 +416,7 @@ export function QuickAddMenu() {
         </ScrollArea>
 
         {/* Footer hint */}
-        <div className="flex items-center gap-1 border-t px-2 py-1.5 text-xs text-muted-foreground">
+        <div className="flex shrink-0 items-center gap-1 border-t px-2 py-1.5 text-xs text-muted-foreground">
           <ArrowUpIcon className="size-3" />
           <ArrowDownIcon className="size-3" />
           <span>Navigate</span>

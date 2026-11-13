@@ -43,7 +43,6 @@ const EMPTY_MULTI_INPUT_ITEMS: Array<{
 
 export interface BaseNodeData {
   label?: string;
-  isActive?: boolean;
   /** Whether this node is muted (bypassed during execution) */
   muted?: boolean;
   /** Whether this node is collapsed (showing only header) */
@@ -350,7 +349,10 @@ function BaseNodeComponent({
 
   // Use data.label override or server-provided label
   const displayLabel = data.label ?? label;
-  const isActive = data.isActive ?? false;
+  const isActive = useSelector(
+    editor.execution,
+    (state) => state.activeNodeId === id,
+  );
   const isMuted = data.muted ?? false;
   const isCollapsed = data.collapsed ?? false;
   const hiddenSockets = data.hiddenSockets ?? [];

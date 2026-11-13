@@ -1,3 +1,14 @@
+import type {
+  CastDevice,
+  CastSource,
+  CastState,
+  DisplaySettings,
+} from "@soulfiremc/cast-protocol";
+import type {
+  ProviderRequest,
+  ProviderResponse,
+} from "./provider-request-policy";
+
 export type DesktopTheme = "dark" | "light" | null;
 
 export type DesktopFsEntry = {
@@ -50,22 +61,6 @@ export type DesktopSystemInfo = {
     type: string;
     version: string;
   };
-};
-
-export type DesktopCastDevice = {
-  address: string;
-  full_name: string;
-  id: string;
-  name: string;
-  port: number;
-};
-
-export type DesktopCastDisconnectedEvent = {
-  transport_id: string;
-};
-
-export type DesktopCastRemovedEvent = {
-  full_name: string;
 };
 
 export type DesktopIntegratedServerCredentials = {
@@ -130,6 +125,9 @@ export type DesktopPovEscape = {
 };
 
 export interface SoulFireDesktopApi {
+  providers: {
+    request: (request: ProviderRequest) => Promise<ProviderResponse>;
+  };
   pov: {
     onReleased: (
       callback: (target?: "pov") => void,
@@ -145,19 +143,17 @@ export interface SoulFireDesktopApi {
     setTheme: (theme: DesktopTheme) => Promise<void>;
   };
   cast: {
-    broadcast: (payload?: unknown) => Promise<void>;
-    connect: (address: string, port: number) => Promise<string>;
+    connect: (
+      device: CastDevice,
+      source: CastSource,
+      relaunch?: boolean,
+    ) => Promise<void>;
     discover: () => Promise<void>;
-    getDevices: () => Promise<DesktopCastDevice[]>;
-    onDisconnected: (
-      callback: (payload: DesktopCastDisconnectedEvent) => void,
-    ) => Promise<DesktopUnlisten>;
-    onDiscovered: (
-      callback: (device: DesktopCastDevice) => void,
-    ) => Promise<DesktopUnlisten>;
-    onRemoved: (
-      callback: (payload: DesktopCastRemovedEvent) => void,
-    ) => Promise<DesktopUnlisten>;
+    getState: () => Promise<CastState>;
+    stop: (id: string) => Promise<void>;
+    stopAll: () => Promise<void>;
+    setSettings: (settings: DisplaySettings) => Promise<void>;
+    onState: (callback: (state: CastState) => void) => Promise<DesktopUnlisten>;
   };
   clipboard: {
     readText: () => Promise<string>;
@@ -197,6 +193,7 @@ export interface SoulFireDesktopApi {
     removeCustomJar: (jarId: string) => Promise<void>;
     resetData: () => Promise<void>;
     run: (options: {
+      forceSoftwareRendering?: boolean;
       jarSource?: DesktopIntegratedServerJarSource;
       jvmArgs: string[];
     }) => Promise<DesktopIntegratedServerCredentials | null>;

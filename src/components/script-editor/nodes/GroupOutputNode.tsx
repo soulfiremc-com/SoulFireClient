@@ -3,6 +3,7 @@ import { ArrowLeftFromLine } from "lucide-react";
 import { memo } from "react";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { cn } from "@/lib/utils";
+import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import { getHandleShape, getPortColor, type PortType } from "./types";
 
 export interface GroupOutputNodeData {
@@ -25,10 +26,11 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
   return (
     <div
       className={cn(
-        "min-w-[140px] rounded-lg border-2 bg-card shadow-md",
+        "rounded-lg border-2 bg-card shadow-md",
         "border-destructive/50",
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
+      style={{ width: GROUP_INTERFACE_NODE_WIDTH }}
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border/50 bg-destructive/10 px-3 py-2">
@@ -49,7 +51,7 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
                   type="target"
                   position={Position.Left}
                   id={input.id}
-                  className="!relative !top-0 !transform-none transition-transform hover:scale-125"
+                  className="!relative !top-0 !transform-none shrink-0 transition-transform hover:scale-125"
                   style={{
                     background: getPortColor(input.type),
                     width: isSquareOrDiamond ? 10 : 8,
@@ -58,7 +60,10 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
                     borderRadius: isSquareOrDiamond ? 2 : "50%",
                   }}
                 />
-                <span className="text-xs text-muted-foreground">
+                <span
+                  className="min-w-0 truncate text-xs text-muted-foreground"
+                  title={input.label}
+                >
                   {input.label}
                 </span>
               </div>

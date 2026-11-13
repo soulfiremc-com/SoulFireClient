@@ -4,6 +4,16 @@
   "cancel": "Cancel",
   "save": "Save",
   "saving": "Saving...",
+  "analyticsConsent": {
+    "title": "Analytics cookies",
+    "description": "We use analytics cookies to understand how you use SoulFire and improve the app. Accepting links usage to your SoulFire user account.",
+    "cookieless": "If you decline, we collect limited usage statistics without analytics cookies or your account identity. You can change your choice in Cookie preferences.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "preferences": "Cookie preferences",
+    "privacyPolicy": "Privacy policy",
+    "cookiePolicy": "Cookie policy"
+  },
   "error": {
     "noAddressOrToken": "No server address or token found",
     "page": {
@@ -11,9 +21,22 @@
       "description": "The page did not load. Open the console for more information.",
       "logOut": "Log out",
       "reloadPage": "Reload page",
-      "showDetails": "Show details"
+      "showDetails": "Show details",
+      "connectionSettings": "Connection settings",
+      "restartLocalServer": "Restart local server",
+      "recovery": {
+        "connection": "Could not reach the SoulFire server. Check that it is running and retry, or open connection settings.",
+        "authentication": "Your token was rejected or has expired. Open connection settings to sign in again.",
+        "permission": "You do not have permission to open this page. Sign in with another account or ask the server administrator for access.",
+        "unexpected": "The page could not load. Retry once, or share the error details when reporting the problem."
+      }
     },
     "connectionFailed": "Connection to the SoulFire server failed."
+  },
+  "queryStatus": {
+    "failed": "Refresh failed",
+    "retry": "Retry failed refreshes",
+    "stale": "Some displayed values may be out of date. Retrying automatically. Click to retry now."
   },
   "notFound": {
     "page": {
@@ -49,44 +72,44 @@
     "support": {
       "title": "Support SoulFire",
       "description": "SoulFire is free and open-source, built with love by the community.",
-      "body": "If SoulFire has been useful to you, please consider supporting the project. Your contribution helps cover server costs, fund development, and keep SoulFire free for everyone.",
+      "body": "If SoulFire has been useful to you, please consider supporting SoulFire. Your contribution helps cover server costs, fund development, and keep SoulFire free for everyone.",
       "dismiss": "Maybe later",
-      "action": "Support SoulFire"
+      "action": "Support SoulFire",
+      "alreadySupport": "I already support SoulFire",
+      "neverRemind": "Don't remind me again",
+      "reminderFrequency": "We won't remind you again for six months. You can always support SoulFire from the account menu."
     },
     "createInstance": {
-      "title": "Create a new instance",
-      "description": "Give the instance a name that you can recognize, such as \"My Minecraft Bot\".",
+      "title": "Create a project",
+      "description": "A project is one group of bots with its own accounts, proxies, and settings. Next, you choose the Minecraft server.",
       "form": {
         "friendlyName": {
-          "label": "Friendly name",
-          "placeholder": "My Minecraft Bot",
-          "description": "The name you want to give to this instance.",
-          "min": "The friendly name must be at least 3 characters long.",
-          "max": "The friendly name must be at most 32 characters long.",
-          "regex": "Friendly name must contain only letters, numbers, and spaces"
+          "label": "Project name",
+          "placeholder": "My survival test",
+          "description": "Use a name that you recognize later. You can change it at any time."
         },
         "cancel": "Cancel",
-        "create": "Create"
+        "create": "Create and continue"
       },
       "createToast": {
-        "loading": "Creating instance...",
-        "success": "Instance created successfully",
-        "error": "Failed to create instance"
+        "loading": "Creating project...",
+        "success": "Project created successfully",
+        "error": "Failed to create project"
       }
     },
     "duplicateInstance": {
-      "title": "Duplicate instance",
-      "description": "Create a new instance using the profile from \"{{name}}\".",
+      "title": "Create from configuration",
+      "description": "Create a project from \"{{name}}\". This copies settings, accounts and their credentials, proxies, persistent metadata, and the icon. Scripts, files, permissions, and history are not copied.",
       "form": {
         "friendlyName": {
-          "description": "The name for the duplicated instance."
+          "description": "The name for the new project."
         },
-        "duplicate": "Duplicate"
+        "duplicate": "Create project"
       },
       "duplicateToast": {
-        "loading": "Duplicating instance...",
-        "success": "Instance duplicated successfully",
-        "error": "Failed to duplicate instance"
+        "loading": "Creating project from configuration...",
+        "success": "Project created from configuration",
+        "error": "Could not create project from configuration"
       }
     },
     "import": {
@@ -95,6 +118,8 @@
         "fromUrl": "From URL",
         "firstClipboardItem": "The clipboard contains multiple items. SoulFire will use the first item.",
         "fromClipboard": "From clipboard",
+        "clipboardError": "Failed to read the clipboard. Allow clipboard access or paste the text directly.",
+        "fileError": "Failed to read the selected files. Check file access and try again.",
         "textarea": {
           "placeholder": "Put text here...",
           "submit": "Load from text"
@@ -112,12 +137,16 @@
         "toast": {
           "loading": "Downloading data...",
           "success": "Data loaded!",
-          "error": "Failed to download data"
+          "error": "Failed to download data",
+          "httpError": "The URL returned HTTP {{status}}. Check the link and try again.",
+          "empty": "The URL returned no data to import."
         }
       }
     }
   },
   "commandInput": {
+    "label": "Command",
+    "suggestions": "Command suggestions",
     "placeholder": "Enter command (type 'help' for list)",
     "emptySuggestions": "Type to request suggestions or press Tab.",
     "noSuggestions": "No suggestions available."
@@ -144,8 +173,23 @@
       "success": "Bots are stopping",
       "error": "Failed to stop bots"
     },
-    "permissionDenied": "You do not have permission to start or stop bots in this instance.",
-    "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match."
+    "permissionDenied": "You do not have permission to start or stop bots in this project.",
+    "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match.",
+    "startBots": "Start bots",
+    "moreActions": "More bot actions",
+    "availableCount_one": "{{count}} stopped bot available.",
+    "availableCount_other": "{{count}} stopped bots available.",
+    "generateFirst": "This project has no accounts yet. Create offline accounts to start, or add other accounts on the Accounts page.",
+    "startCountHelp": "Starts stopped bots. Bots that already run stay connected.",
+    "startSelected_one": "Start {{count}} bot",
+    "startSelected_other": "Start {{count}} bots",
+    "startAllCount": "Start all {{count}}",
+    "stopCount_one": "Stop {{count}} bot",
+    "stopCount_other": "Stop {{count}} bots",
+    "restartCount_one": "Restart {{count}} bot",
+    "restartCount_other": "Restart {{count}} bots",
+    "validCount": "Enter a whole number between 1 and {{count}}.",
+    "positiveCount": "Enter a whole number of at least 1."
   },
   "botFleetSummary": "{{online}} online · {{desired}} desired · {{total}} total",
   "icon": {
@@ -234,27 +278,74 @@
     "version": "Version: {{version}}",
     "author": "Author: {{author}}",
     "license": "License: {{license}}",
-    "website": "Website"
+    "website": "Website",
+    "meta": "Version {{version}}, by {{author}}, {{license}} license",
+    "configure": "Configure",
+    "enabled": "On",
+    "disabled": "Off",
+    "enable": "Turn on {{name}}"
   },
   "settingsPage": {
+    "sections": {
+      "provider": { "title": "AI provider", "description": "Choose the API endpoint and credentials for AI requests." },
+      "requests": { "title": "Request handling", "description": "Set the timeout and retry limit for AI requests." },
+      "movement": { "title": "Movement rules", "description": "Choose which obstacles and hazards bots consider when finding a path." },
+      "costs": { "title": "Path costs", "description": "Adjust how strongly bots avoid enemies, breaking blocks, and placing blocks." },
+      "search": { "title": "Search limits", "description": "Control how long pathfinding runs and how it manages the search space." }
+    },
+    "autoSave": "Changes save automatically.",
+    "saveError": "Failed to save {{name}}",
     "namespacesNotFound": "Settings namespaces not found",
     "stringList": {
+      "newEntry": "New {{name}} entry",
+      "entry": "{{name}} entry {{number}}",
+      "removeEntry": "Remove {{name}} entry {{number}}",
+      "saveError": "Failed to save {{name}}",
       "placeholder": "Add a new entry...",
       "add": "Add",
       "remove": "Remove"
     },
     "combo": {
-      "searchPlaceholder": "Search value..."
+      "searchPlaceholder": "Search value...",
+      "selectPlaceholder": "Select an option"
     },
     "invalidNumberToast": {
       "title": "Invalid number",
       "description": "The value must be between {{min}} and {{max}}"
+    },
+    "saving": "Saving...",
+    "saved": "Saved",
+    "notSaved": "Not saved",
+    "defaultValue": "Default: {{value}}",
+    "resetToDefault": "Reset to default",
+    "overridden": "Set for this bot",
+    "filter": "Filter this page",
+    "filterPlaceholder": "Filter by name, description, or option",
+    "closeFilter": "Clear and close filter",
+    "searchEverywhere": "Search everywhere",
+    "noMatches": "No settings on this page match \"{{query}}\".",
+    "otherPages": "Also found on:",
+    "advanced_one": "Advanced ({{count}} setting)",
+    "advanced_other": "Advanced ({{count}} settings)",
+    "advanced": "Advanced",
+    "demoNotSaved": "The demo does not save changes.",
+    "scope": {
+      "instance": "Project default. Applies to every bot in this project unless a bot has its own value.",
+      "bot": "This bot only. Values here override the project default for this bot.",
+      "server": "Server setting. Applies to the whole SoulFire server and every project on it."
     }
   },
   "terminal": {
+    "actions": {
+      "run_command": "Run command: {{value}}",
+      "suggest_command": "Insert command: {{value}}",
+      "copy_to_clipboard": "Copy to clipboard",
+      "open_url": "Open: {{value}}",
+      "unavailable": "Command input is unavailable in this view."
+    },
     "noLogs": "No logs yet. Run a command to create log output.",
     "demo-1": "Welcome to demo mode! 🧪",
-    "demo-2": "This is a read-only instance of SoulFire",
+    "demo-2": "This is a read-only demo of SoulFire",
     "demo-3": "Check out all the menus and features before deciding to install SoulFire :D",
     "demo-4": "Feel free to join our Discord server if you would like to reach out: https://soulfiremc.com/discord"
   },
@@ -304,26 +395,177 @@
       "error": "Failed to broadcast message"
     }
   },
+  "commandPalette": {
+    "title": "Command menu",
+    "trigger": "Search",
+    "triggerLabel": "Search {{shortcut}}",
+    "shortcutHint": "Open command menu with {{shortcut}} or press Shift twice.",
+    "description": "Jump to a page or run an action.",
+    "placeholder": "Search all projects, bots, scripts, settings, and actions...",
+    "emptyTitle": "No matching results",
+    "emptyHint": "Try a project name, page, setting, bot, or action.",
+    "emptyTitlePartial": "No matching results yet",
+    "emptyHintPartial": "Other projects are still loading. Results appear as they load.",
+    "loading": "Loading more commands",
+    "moreResults_one": "{{count}} more result. Refine your search.",
+    "moreResults_other": "{{count}} more results. Refine your search.",
+    "loadError": "Some results could not load.",
+    "retry": "Retry",
+    "index": {
+      "progress": "Searching all projects ({{done}} of {{total}}). Results may be incomplete.",
+      "server": "Loading server settings. Results may be incomplete.",
+      "failed_one": "{{count}} project could not be searched. Results are incomplete.",
+      "failed_other": "{{count}} projects could not be searched. Results are incomplete.",
+      "serverFailed": "Server settings could not be searched. Results are incomplete.",
+      "failedWithServer_one": "{{count}} project and the server settings could not be searched. Results are incomplete.",
+      "failedWithServer_other": "{{count}} projects and the server settings could not be searched. Results are incomplete."
+    },
+    "copyProjectId": "Copy project ID",
+    "copyUrl": "Copy page link",
+    "copied": "Copied to clipboard",
+    "refresh": "Refresh data",
+    "clearRecents": "Clear recent destinations",
+    "actionError": "Could not complete the action. Try again.",
+    "serverOverview": "SoulFire server overview",
+    "serverContext": "SoulFire server",
+    "browseProject": "Browse project",
+    "allProjects": "All projects",
+    "changeScope": "Change search scope, current: {{name}}",
+    "searchAllProjects": "Search all projects",
+    "pickProjectPlaceholder": "Search projects...",
+    "browsingPlaceholder": "Search in {{name}}...",
+    "projectUnavailable": "That project is no longer available. Searching all projects.",
+    "matchedBy": "Matches {{text}}",
+    "filterLabel": "Result type",
+    "filters": {
+      "all": "All",
+      "projects": "Projects",
+      "bots": "Bots",
+      "scripts": "Scripts",
+      "settings": "Settings",
+      "actions": "Actions"
+    },
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "pinLabel": "Pin {{name}}",
+    "unpinLabel": "Unpin {{name}}",
+    "pinLimit": "You can pin up to {{count}} commands. Unpin one first.",
+    "confirm": {
+      "start_one": "Start {{count}} bot in {{project}}?",
+      "start_other": "Start {{count}} bots in {{project}}?",
+      "stop_one": "Stop {{count}} bot in {{project}}?",
+      "stop_other": "Stop {{count}} bots in {{project}}?",
+      "restart_one": "Restart {{count}} failed bot in {{project}}?",
+      "restart_other": "Restart {{count}} failed bots in {{project}}?",
+      "description": "The request includes only the bots listed when you chose this action. Other bots in the project do not change.",
+      "confirmStart": "Start bots",
+      "confirmStop": "Stop bots",
+      "confirmRestart": "Restart bots",
+      "cancel": "Cancel",
+      "unavailable": "This action is no longer available. Its project, bots, or your permissions changed."
+    },
+    "feedback": {
+      "start": {
+        "loading": "Requesting bot start...",
+        "success_one": "Start requested for {{count}} bot.",
+        "success_other": "Start requested for {{count}} bots.",
+        "error": "Could not request bot start. Try again."
+      },
+      "stop": {
+        "loading": "Requesting bot stop...",
+        "success_one": "Stop requested for {{count}} bot.",
+        "success_other": "Stop requested for {{count}} bots.",
+        "error": "Could not request bot stop. Try again."
+      },
+      "restart": {
+        "loading": "Requesting bot restart...",
+        "success_one": "Restart requested for {{count}} bot.",
+        "success_other": "Restart requested for {{count}} bots.",
+        "error": "Could not request bot restart. Try again."
+      },
+      "activate": {
+        "loading": "Activating script...",
+        "success": "Script activated.",
+        "error": "Could not activate the script. Try again."
+      },
+      "deactivate": {
+        "loading": "Deactivating script...",
+        "success": "Script deactivated.",
+        "error": "Could not deactivate the script. Try again."
+      },
+      "busy": "A request for this target is still running. Try again when it finishes.",
+      "demo": "Demo mode does not save changes. Connect to a SoulFire server to control bots and scripts."
+    },
+    "operations": {
+      "startBot": "Start bot {{name}}",
+      "stopBot": "Stop bot {{name}}",
+      "restartBot": "Restart bot {{name}}",
+      "startBots_one": "Start {{count}} bot",
+      "startBots_other": "Start {{count}} bots",
+      "stopBots_one": "Stop {{count}} bot",
+      "stopBots_other": "Stop {{count}} bots",
+      "retryBots_one": "Retry {{count}} failed bot",
+      "retryBots_other": "Retry {{count}} failed bots",
+      "activateScript": "Activate script {{name}}",
+      "deactivateScript": "Deactivate script {{name}}"
+    },
+    "status": {
+      "connected": "Connected",
+      "starting": "Starting",
+      "retrying": "Retrying",
+      "failed": "Failed",
+      "stopping": "Stopping",
+      "stopped": "Stopped",
+      "active": "Active",
+      "paused": "Paused"
+    },
+    "theme": {
+      "light": "Use light theme",
+      "dark": "Use dark theme",
+      "system": "Use system theme"
+    },
+    "keys": {
+      "navigate": "Navigate",
+      "select": "Select",
+      "close": "Close",
+      "pin": "Pin",
+      "back": "Back"
+    },
+    "groups": {
+      "pinned": "Pinned",
+      "recent": "Recent destinations",
+      "navigation": "Navigation",
+      "currentProject": "Current project",
+      "projects": "Projects",
+      "settings": "Settings",
+      "bots": "Bots",
+      "scripts": "Scripts",
+      "admin": "Administration",
+      "actions": "Actions",
+      "results": "Best matches",
+      "projectPages": "Project pages"
+    }
+  },
   "instanceSidebar": {
     "readDocumentation": "Read documentation",
     "backToDashboard": "Back to dashboard",
     "deleteToast": {
-      "loading": "Deleting instance...",
-      "success": "Instance deleted",
-      "error": "Failed to delete instance"
+      "loading": "Deleting project...",
+      "success": "Project deleted",
+      "error": "Failed to delete project"
     },
-    "instancesGroup": "Instances",
-    "createInstance": "Create Instance",
+    "instancesGroup": "Projects",
+    "createInstance": "Create project",
     "loadProfileToast": {
-      "loading": "Loading profile...",
-      "success": "Profile loaded",
-      "error": "Failed to load profile"
+      "loading": "Importing configuration...",
+      "success": "Configuration imported",
+      "error": "Could not import configuration"
     },
-    "loadProfile": "Load Profile",
+    "loadProfile": "Import configuration",
     "loadFromFile": "Load from file",
-    "profileSaved": "Profile saved",
-    "saveProfile": "Save Profile",
-    "deleteInstance": "Delete Instance",
+    "profileSaved": "Configuration exported",
+    "saveProfile": "Export configuration",
+    "deleteInstance": "Delete project",
     "controlsGroup": "Controls",
     "overview": "Overview",
     "terminal": "Terminal",
@@ -333,19 +575,21 @@
     "extensionsGroup": "Extensions",
     "botSettings": "Bot Settings",
     "accountSettings": "Account Settings",
-    "metaSettings": "Instance Settings",
+    "metaSettings": "Project settings",
     "proxySettings": "Proxy Settings",
     "aiSettings": "AI Settings",
     "pathfindingSettings": "Pathfinding Settings",
     "discoverPlugins": "Plugins",
-    "instanceScripts": "Scripts"
+    "instanceScripts": "Scripts",
+    "configurationFileType": "SoulFire configuration (JSON)",
+    "exportWarning": "Exported files include account and proxy credentials. Keep them private."
   },
   "userSidebar": {
     "readDocumentation": "Read documentation",
     "userGroup": "User",
-    "instances": "Instances",
+    "instances": "Projects",
     "access": "Access",
-    "createInstance": "Create Instance",
+    "createInstance": "Create project",
     "settings": "Settings",
     "adminGroup": "Admin",
     "adminOverview": "Overview",
@@ -390,21 +634,21 @@
     "extensions": "Extensions",
     "bots": "Bots"
   },
-  "noInstancesFound": "No instances found",
+  "noInstancesFound": "No projects found",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Logs",
     "audit-log": "Audit Log",
     "bots": "Bots",
     "botDetail": "Bot Details",
-    "instances": "Instances",
+    "instances": "Projects",
     "access": "Access",
     "settings": "Settings",
     "proxySettings": "Proxy Settings",
     "overview": "Overview",
     "users": "Users",
     "accountSettings": "Account Settings",
-    "metaSettings": "Instance Settings",
+    "metaSettings": "Project settings",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scripts",
     "instanceScripts": "Scripts"
@@ -412,7 +656,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV Access",
-      "description": "WebDAV provides access to instance files, scripts, and other files.",
+      "description": "WebDAV provides access to project files, scripts, and other files.",
       "publicAddress": "Public WebDAV Address",
       "personalToken": "Personal WebDAV Token",
       "securityWarning": "Keep your personal WebDAV token secret. It grants access to your files. Use the token as your WebDAV password. You do not need a username. If your app requires one, enter any value, such as 'soulfire'.",
@@ -420,7 +664,7 @@
     },
     "api": {
       "title": "API Access",
-      "description": "The SoulFire gRPC HTTP API manages instances with web requests.",
+      "description": "The SoulFire gRPC HTTP API manages projects with web requests.",
       "publicAddress": "Public API Address",
       "personalToken": "Personal API Token",
       "securityWarning": "Keep your personal API token secret. It grants access to the API.",
@@ -451,7 +695,16 @@
   "clipboardCopy": {
     "loading": "Copying to clipboard...",
     "success": "Copied \"{{content}}\" to clipboard",
-    "error": "Failed to copy to clipboard"
+    "error": "Failed to copy to clipboard",
+    "sensitiveSuccess": "Copied to clipboard"
+  },
+  "instanceName": {
+    "required": "Enter a project name.",
+    "max": "Project names must be 32 characters or fewer.",
+    "singleLine": "Use one line without control characters.",
+    "save": "Save project name",
+    "saved": "Project name updated",
+    "saveError": "Failed to update project name"
   },
   "userSettings": {
     "avatar": {
@@ -466,7 +719,11 @@
     "email": {
       "uiName": "Email",
       "description": "Your email is used for login and notifications."
-    }
+    },
+    "saved": "{{field}} updated",
+    "conflict": "{{field}} is already in use. Choose another.",
+    "saveError": "Failed to update {{field}}",
+    "saveField": "Save {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logs...",
@@ -479,6 +736,7 @@
     "executedCommand": "Executed command: {{data}}",
     "changedBotDesiredState": "Changed bot desired state",
     "restartedBots": "Restarted bots",
+    "calledPluginRpc": "Called plugin RPC",
     "contextMenu": {
       "copyUsername": "Copy Username",
       "copyCommand": "Copy Command"
@@ -549,15 +807,16 @@
       "actions": "Actions"
     },
     "globalScript": "Global",
-    "instanceScript": "Instance"
+    "instanceScript": "Project"
   },
   "contextMenu": {
+    "actions": "Actions",
     "instance": {
-      "goToInstance": "Go to Instance",
-      "duplicateInstance": "Duplicate Instance",
-      "copyInstanceId": "Copy Instance ID",
-      "copyInstanceName": "Copy Instance Name",
-      "deleteInstance": "Delete Instance"
+      "goToInstance": "Go to project",
+      "duplicateInstance": "Create from configuration",
+      "copyInstanceId": "Copy project ID",
+      "copyInstanceName": "Copy project name",
+      "deleteInstance": "Delete project"
     },
     "bot": {
       "goToBot": "Go to Bot",
@@ -610,5 +869,122 @@
     "filter": "Filter process output",
     "truncated": "{{count}} older log lines were omitted. Full server logs remain in the data directory.",
     "privacy": "Reports include local paths and recent logs. Review reports and thread dumps for personal information before sharing. Nothing is uploaded automatically."
+  },
+  "instanceUnavailable": {
+    "title": "Project unavailable",
+    "description": "This project was deleted or you no longer have access to it."
+  },
+  "botUnavailable": {
+    "title": "Bot unavailable",
+    "description": "This bot was removed or you no longer have access to it."
+  },
+  "discover": {
+    "noPluginsTitle": "No plugins available",
+    "noPluginsDescription": "This SoulFire server does not offer any plugins for this project.",
+    "search": "Search plugins",
+    "noMatches": "No plugins match your search.",
+    "filterLabel": "Filter plugins by task",
+    "scope": "Plugins add behavior to every bot in this project. Turning one on takes effect for bots right away.",
+    "tasks": {
+      "all": "All",
+      "connect": "Connect and stay connected",
+      "survive": "Keep bots alive",
+      "chat": "Chat and dialogs",
+      "diagnose": "Logs and diagnostics",
+      "other": "Other"
+    },
+    "enabledHeading": "On",
+    "availableHeading": "Available"
+  },
+  "sdk": {
+    "title": "SDK quickstart",
+    "description": "Use this connection and project in a local script, or copy a prompt for your coding agent.",
+    "docs": "SDK guide",
+    "connectionTitle": "Current connection",
+    "connectionDescription": "Uses the SoulFire API address this app is connected to.",
+    "serverUrl": "SoulFire API address",
+    "noUrl": "No server address available",
+    "copyUrl": "Copy server address",
+    "token": "Personal API token",
+    "copyToken": "Copy API token",
+    "tokenHelp": "Keep this token private. It grants your user permissions. This page keeps the generated token in memory until you leave.",
+    "tokenSetupHelp": "Generate a personal API token to run locally. Examples and agent prompts read it from SOULFIRE_TOKEN.",
+    "impersonatingHelp": "Stop impersonating to generate your own API token. You can still copy examples and agent prompts.",
+    "generateToken": "Generate personal token",
+    "generating": "Generating token...",
+    "tokenPermission": "Ask your administrator for a personal API token if you cannot generate one. Paste it into your terminal command.",
+    "tokenError": "Could not generate a token",
+    "tokenRetry": "Try again or ask your administrator for API access.",
+    "demoBody": "Demo values are shown in the examples. Replace the server URL and target IDs to run them.",
+    "demoBadge": "Demo",
+    "localBadge": "Local connection",
+    "remoteBadge": "Remote connection",
+    "unavailableBadge": "Address unavailable",
+    "missingUrlHelp": "Reconnect to your SoulFire server to get a usable API address.",
+    "localHelp": "Run the script on the same computer as this app. A localhost address points to the computer running the script.",
+    "integratedHelp": "Keep SoulFire and its local server running while you use the SDK.",
+    "targetTitle": "Project",
+    "copyInstanceId": "Copy project ID",
+    "openBots": "Open bots",
+    "openAccounts": "Open accounts",
+    "exampleTitle": "Choose an action",
+    "language": "SDK language",
+    "recipe": "Example action",
+    "bot": "Bot",
+    "botOnline": "Online",
+    "botOffline": "Offline",
+    "noBotsTitle": "Add an account to choose a bot",
+    "noBotsBody": "You can list bots now. Add an account to this project before you read a bot state or send chat.",
+    "stoppedTitle": "This bot is not connected",
+    "stoppedBody": "Start it from the Bots page before you run the chat example.",
+    "copyScript": "Copy script",
+    "copyAgentPrompt": "Copy agent prompt",
+    "previewAgentPrompt": "Preview agent prompt",
+    "agentPrompt": "Agent prompt",
+    "saveScript": "Save this code as {{filename}} in a new folder. The script reads your token from SOULFIRE_TOKEN.",
+    "runTitle": "Run locally",
+    "pythonRequirement": "Requires Python 3.14 or newer. These commands create a virtual environment in your script folder.",
+    "typescriptRequirement": "Requires Bun. Open a terminal in your script folder, then install the SDK.",
+    "shell": "Terminal platform",
+    "install": "Install dependencies",
+    "run": "Set the token and run",
+    "copyInstall": "Copy install commands",
+    "copyRun": "Copy run commands",
+    "replaceToken": "Replace PASTE_YOUR_API_TOKEN with your personal token. Run both commands in the same terminal.",
+    "version": "SDK {{version}}. Examples close their API connection when finished.",
+    "recipes": {
+      "list-bots": {
+        "title": "List bots",
+        "description": "Read the names, IDs, and connection states of the bots in this project.",
+        "expected": "Expect a list of bots in your terminal. An empty project returns an empty list."
+      },
+      "read-state": {
+        "title": "Read state",
+        "description": "Read the latest live state for one bot. A disconnected bot can have no live state.",
+        "expected": "Expect the selected bot's live state in your terminal. This example does not start the bot."
+      },
+      "send-chat": {
+        "title": "Send chat",
+        "description": "Send one public message as a connected bot when you run this script. Requires permission to send chat.",
+        "expected": "Expect “Hello from the SoulFire SDK!” in Minecraft chat, then “Message sent.” in your terminal."
+      }
+    },
+    "helpTitle": "If the script cannot connect",
+    "help": {
+      "connection": {
+        "title": "Connection refused or timed out",
+        "body": "Keep the SoulFire server running. Use its API address. For a local address, run your script on the same computer. Check remote network access."
+      },
+      "authentication": {
+        "title": "Authentication or permission denied",
+        "body": "Use a personal API token generated for this SoulFire server. The token keeps your user permissions. Ask the administrator for any missing access."
+      },
+      "compatibility": {
+        "title": "SDK or API version mismatch",
+        "body": "The SDK checks compatibility when it connects. Use a compatible SoulFire server and SDK release. Follow the version guidance in the SDK guide."
+      }
+    },
+    "reference": "API reference",
+    "moreExamples": "More examples"
   }
 }

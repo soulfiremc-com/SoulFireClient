@@ -7,6 +7,7 @@ import {
   PositionScatterChart,
   TickDurationChart,
 } from "@/components/instance-metrics/metrics-charts.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
   CardContent,
@@ -160,14 +161,12 @@ export function DetailedMetrics({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="hover:bg-muted/50 ring-foreground/10 flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium ring-1 transition-colors">
-        {t("overview.detailed.title")}
+      <CollapsibleTrigger render={<Button variant="ghost" size="sm" />}>
         <ChevronDownIcon
-          className={cn(
-            "text-muted-foreground size-4 transition-transform",
-            open && "rotate-180",
-          )}
+          data-icon="inline-start"
+          className={cn("transition-transform", open && "rotate-180")}
         />
+        {t("overview.detailed.title")}
       </CollapsibleTrigger>
       <CollapsibleContent className="pt-3">
         <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-4">

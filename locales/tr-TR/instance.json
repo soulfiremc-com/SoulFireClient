@@ -63,16 +63,34 @@
         "respawned": "yeniden doğdu",
         "disconnected": "bağlantı kesildi",
         "unknown": "durumu değişti"
+      },
+      "pause": "Duraklat",
+      "resume": "Devam et",
+      "paused": "Görüntüleme duraklatıldı. Yeni etkinlikler toplanmaya devam ediyor.",
+      "following": "Canlı güncellemeler",
+      "reconnecting": "Canlı yayına yeniden bağlanılıyor...",
+      "emptyFilter": "Bu filtreyle eşleşen etkinlik yok.",
+      "filterLabel": "Canlı yayını filtrele",
+      "filters": {
+        "all": "Tümü",
+        "chat": "Sohbet",
+        "lifecycle": "Olaylar"
+      },
+      "columns": {
+        "time": "Zaman",
+        "bot": "Bot",
+        "message": "Mesaj"
       }
     },
     "bots": {
       "title": "Botlar",
       "viewAll": "Tüm {{total}} botu görüntüle",
-      "viewAllShort": "Tümünü görüntüle"
+      "viewAllShort": "Tümünü görüntüle",
+      "detailsFor": "{{name}} için bot ayrıntıları"
     },
     "timeline": {
-      "title": "Aktivite",
-      "viewAll": "Tümünü görüntüle",
+      "title": "Son işlemler",
+      "viewAll": "Geçmişi görüntüle",
       "empty": "Henüz kaydedilmiş bir aktivite yok.",
       "noPermission": "Denetim günlüğünü görüntüleme izniniz yok.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Ayrıntılı metrikler",
       "composition": "Dünya bileşimi"
-    }
+    },
+    "loadError": "En son veriler yüklenemedi."
   },
   "proxy": {
+    "transport": {
+      "network": "Ağ adresi",
+      "unix": "Unix soketi"
+    },
     "getProxies": "Proxyleri Al",
     "addProxies": "Proxy Ekle",
     "filterPlaceholder": "Proxyleri filtrele...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Anahtar",
       "valuePlaceholder": "Değer (JSON)",
       "noEntries": "Metadata girişi yok. Yukarıdan bir tane ekleyin.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Yeniden Dene",
       "addSuccess": "Giriş eklendi",
       "addError": "Giriş eklenemedi",
       "updateError": "Giriş güncellenemedi",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Envanter",
+      "actionRejected": "",
       "hotbar": "Kısayol Çubuğu",
       "main": "Ana Envanter",
       "items": "öğeler",
@@ -446,17 +473,24 @@
         "beaconEffects": "Beykon Etkileri",
         "crafterSlots": "Slot Kontrolleri",
         "lecternControls": "Kitap Kontrolleri",
-        "actions": "İşlemler"
+        "actions": "İşlemler",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Metin Girişi",
-        "anvilRename": "Eşyayı Yeniden Adlandır"
+        "anvilRename": "Eşyayı Yeniden Adlandır",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Kitap İçeriği",
         "emptyPage": "(Boş sayfa)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Sayfa {{current}} / {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot Görünümü",
@@ -479,6 +513,7 @@
       "offline": "Bot çevrimdışı. Eylemler yalnızca bot bağlandığında kullanılabilir."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Hareket Kontrolü",
       "movement": "Hareket (WASD)",
       "forward": "İleri Hareket Et (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Komut dosyası kullanıcı tarafından devre dışı bırakıldı",
     "executionFailed": "Script yürütme başarısız oldu",
     "executionError": "Yürütme hatası: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Düğüm başlatıldı: {{nodeId}}",
     "nodeCompleted": "Düğüm tamamlandı: {{nodeId}}",
     "nodeError": "Düğüm hatası: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Scriptlere Geri Dön",
         "save": "Kaydet",
         "saveTooltip": "Scripti kaydet.",
@@ -705,6 +743,16 @@
         "tooltip": "Değişiklikleri incele"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Deneme Çalıştır",
         "title": "Deneme Çalıştır Script",
         "description": "Seçili bir tetikleyiciden script çalıştır, sahte girişlerle.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Sahte giriş değerleriyle çalıştırılacak tetikleyici düğümünü seçin.",
         "mockInputs": "Sahte Girdiler",
         "valuePlaceholder": "{{type}} değeri",
-        "start": "Deneme Çalıştır'ı Başlat"
+        "start": "Deneme Çalıştır'ı Başlat",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script Kotaları",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Script durum deposundaki maksimum giriş sayısı",
         "disableTimeouts": "Zaman Aşımını Devre Dışı Bırak",
         "disableTimeoutsDescription": "Düğüm ve veri kenarı zaman aşımı devre dışı bırakılır",
-        "save": "Kotaları Kaydet"
+        "save": "Kotaları Kaydet",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

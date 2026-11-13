@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { EventEmitter, once } from "node:events";
 import { test } from "node:test";
+import { Effect } from "effect";
 import {
   appendIntegratedLog,
   createIntegratedServerState,
@@ -154,4 +155,77 @@ test("diagnostic output stays bounded while retaining stable log identities", ()
     new Set(state.diagnostics.logs.map((log) => log.id)).size,
     state.diagnostics.logs.length,
   );
+});
+
+test("process diagnostics strip interaction controls and retain token redaction", () => {
+  const state = createIntegratedServerState();
+  const payload = Buffer.from(
+    JSON.stringify({
+      click: { action: "copy_to_clipboard", value: "hidden-token" },
+    }),
+  ).toString("base64url");
+  const message = appendIntegratedLog(
+    state,
+    `\x1b]777;soulfire;1;${payload}\x1b\\Copy token\x1b]777;soulfire;1;-\x1b\\ \x1b[31mtext\x1b[0m Bearer visible-token`,
+    "stdout",
+  );
+  assert.equal(message, "Copy token text Bearer [redacted]");
+  assert.equal(state.diagnostics.logs[0].message, message);
+  assert.equal(state.diagnostics.logs[0].source, "stdout");
+});
+
+test("cancelling Effect preparation awaits scoped finalizers before allowing another startup", async () => {
+  const state = createIntegratedServerState();
+  const cleanup = new EventEmitter();
+  const cleanupDone = once(cleanup, "done");
+  let releasing = false;
+  const operation = startIntegratedOperation(state, () =>
+    Effect.gen(function* () {
+      yield* Effect.addFinalizer(() =>
+        Effect.promise(async () => {
+          releasing = true;
+          await cleanupDone;
+        }),
+      );
+      return yield* Effect.never;
+    }),
+  );
+  const stopping = killIntegratedServer(state);
+  await assert.rejects(
+    startIntegratedOperation(state, async () => ""),
+    {
+      message:
+        "The integrated server is already starting, running, or stopping",
+    },
+  );
+  assert.equal(releasing, true);
+  assert.notEqual(state.startup, null);
+  cleanup.emit("done");
+  await stopping;
+  assert.equal(await operation, null);
+  assert.equal(state.startup, null);
+  assert.equal(state.diagnostics.status, "stopped");
+});
+
+test("failed Effect preparation releases its scope and preserves the original error", async () => {
+  const state = createIntegratedServerState();
+  const error = new Error("JVM extraction failed");
+  let released = false;
+  await assert.rejects(
+    startIntegratedOperation(state, () =>
+      Effect.gen(function* () {
+        yield* Effect.addFinalizer(() =>
+          Effect.sync(() => {
+            released = true;
+          }),
+        );
+        return yield* Effect.fail(error);
+      }),
+    ),
+    (cause) => cause === error,
+  );
+  assert.equal(released, true);
+  assert.equal(state.diagnostics.status, "failed");
+  assert.equal(state.diagnostics.error, error.message);
+  assert.equal(state.startup, null);
 });

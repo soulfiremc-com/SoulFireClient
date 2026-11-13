@@ -63,16 +63,34 @@
         "respawned": "återuppstod",
         "disconnected": "frånkopplad",
         "unknown": "ändrade tillstånd"
+      },
+      "pause": "Pausa",
+      "resume": "Återuppta",
+      "paused": "Visning pausad. Ny aktivitet samlas fortfarande in.",
+      "following": "Liveuppdateringar",
+      "reconnecting": "Ansluter på nytt till liveflödet...",
+      "emptyFilter": "Ingen aktivitet matchar det här filtret.",
+      "filterLabel": "Filtrera liveflöde",
+      "filters": {
+        "all": "Alla",
+        "chat": "Chatt",
+        "lifecycle": "Händelser"
+      },
+      "columns": {
+        "time": "Tid",
+        "bot": "Bot",
+        "message": "Meddelande"
       }
     },
     "bots": {
       "title": "Bottar",
       "viewAll": "Visa alla {{total}} bottar",
-      "viewAllShort": "Visa alla"
+      "viewAllShort": "Visa alla",
+      "detailsFor": "Botdetaljer för {{name}}"
     },
     "timeline": {
-      "title": "Aktivitet",
-      "viewAll": "Visa alla",
+      "title": "Senaste åtgärder",
+      "viewAll": "Visa historik",
       "empty": "Ingen aktivitet har registrerats än.",
       "noPermission": "Du har inte behörighet att visa granskningsloggen.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Detaljerade mätvärden",
       "composition": "Världssammansättning"
-    }
+    },
+    "loadError": "Det gick inte att ladda de senaste uppgifterna."
   },
   "proxy": {
+    "transport": {
+      "network": "Nätverksadress",
+      "unix": "Unix-socket"
+    },
     "getProxies": "Hämta proxies",
     "addProxies": "Lägg till proxies",
     "filterPlaceholder": "Filtrera proxies...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Nyckel",
       "valuePlaceholder": "Värde (JSON)",
       "noEntries": "Inga metadata-poster. Lägg till en ovan.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Försök igen",
       "addSuccess": "Post tillagd",
       "addError": "Misslyckades med att lägga till posten",
       "updateError": "Misslyckades med att uppdatera posten",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventory",
+      "actionRejected": "",
       "hotbar": "Verktygsrad",
       "main": "Huvudinventarie",
       "items": "föremål",
@@ -446,17 +473,24 @@
         "beaconEffects": "Fyrkanseffekter",
         "crafterSlots": "Slotkontroller",
         "lecternControls": "Bokkontroller",
-        "actions": "Åtgärder"
+        "actions": "Åtgärder",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Textinmatning",
-        "anvilRename": "Byt namn på föremål"
+        "anvilRename": "Byt namn på föremål",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Bokinnehåll",
         "emptyPage": "(Tom sida)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Sida {{current}} av {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Botvy",
@@ -479,6 +513,7 @@
       "offline": "Bot är offline. Åtgärder är endast tillgängliga när boten är ansluten."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Rörelsekontroll",
       "movement": "Rörelse (WASD)",
       "forward": "Gå framåt (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Skript avaktiverat av användaren",
     "executionFailed": "Skriptkörning misslyckades",
     "executionError": "Körningsfel: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Nod startad: {{nodeId}}",
     "nodeCompleted": "Nod slutförd: {{nodeId}}",
     "nodeError": "Nodfel: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Tillbaka till skript",
         "save": "Spara",
         "saveTooltip": "Spara skriptet",
@@ -705,6 +743,16 @@
         "tooltip": "Granska ändringar"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Testkörning",
         "title": "Testkör skript",
         "description": "Kör ett skript från en vald trigger med simulerad indata.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Välj trigger-noden att köra med simulerade indata.",
         "mockInputs": "Simulerad indata",
         "valuePlaceholder": "{{type}}-värde",
-        "start": "Starta testkörning"
+        "start": "Starta testkörning",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skriptkvoter",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Maximalt antal poster i skriptets lagringsutrymme",
         "disableTimeouts": "Inaktivera timeout",
         "disableTimeoutsDescription": "Inaktiverar timeout för varje nod och datakant",
-        "save": "Spara kvoter"
+        "save": "Spara kvoter",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

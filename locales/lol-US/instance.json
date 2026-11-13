@@ -63,16 +63,34 @@
         "respawned": "RESPAWNZ",
         "disconnected": "catzconnectd",
         "unknown": "changd st8"
+      },
+      "pause": "Pawse",
+      "resume": "Resoome",
+      "paused": "Displai pausd. New fun stuff still bein' ketched, kthx.",
+      "following": "Live Updaitz",
+      "reconnecting": "Reconectin to teh live feed...",
+      "emptyFilter": "No activiteh match dis filturr.",
+      "filterLabel": "Filtr live feed",
+      "filters": {
+        "all": "ALL teh thingz",
+        "chat": "Chatz",
+        "lifecycle": "Eventz"
+      },
+      "columns": {
+        "time": "Tiem",
+        "bot": "Botteh",
+        "message": "Mezage"
       }
     },
     "bots": {
       "title": "BOTZ",
       "viewAll": "Seez allz {{total}} bottiez",
-      "viewAllShort": "Seez allz"
+      "viewAllShort": "Seez allz",
+      "detailsFor": "Bot deetz for {{name}}"
     },
     "timeline": {
-      "title": "Aktivitee",
-      "viewAll": "Seez allz",
+      "title": "Reecent Akshunz",
+      "viewAll": "Show historeh",
       "empty": "No aktivitee iz record yetz.",
       "noPermission": "U can no haz permishun 2 seez audit loag.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Detayld metrixxx",
       "composition": "Wurld kompozishun"
-    }
+    },
+    "loadError": "Culd not load teh latest datuh."
   },
   "proxy": {
+    "transport": {
+      "network": "Netwurk adres",
+      "unix": "Unix soxket"
+    },
     "getProxies": "Getz Proxyz!",
     "addProxies": "Add Proxyz!",
     "filterPlaceholder": "Findz proxies...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Key",
       "valuePlaceholder": "Valoo (JSON)",
       "noEntries": "No metadata enturiez. Addz one up dere.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Try agin? kthx!",
       "addSuccess": "Entury addzored",
       "addError": "No can add entury, oh noes!",
       "updateError": "No can updait entury, sry!",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventoryz",
+      "actionRejected": "",
       "hotbar": "Hotbar (Iz Hot!)",
       "main": "Main Inventoree",
       "items": "itemz",
@@ -446,17 +473,24 @@
         "beaconEffects": "Beacon Effecktz",
         "crafterSlots": "Slot Kontrolz",
         "lecternControls": "Buk Kontrolz",
-        "actions": "Akshuns"
+        "actions": "Akshuns",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Text Inpoot",
-        "anvilRename": "Rename Itum"
+        "anvilRename": "Rename Itum",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Buk Kontentz",
         "emptyPage": "(Emptiez page)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Page {{current}} uv {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot Viewz",
@@ -479,6 +513,7 @@
       "offline": "Bot iz offline. Actshunz only avaylbul wen bot iz connectd."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Moovmunt Kontrol",
       "movement": "Moovmunt (WASD)",
       "forward": "Moov Forward (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Script waz deactivated by hooman",
     "executionFailed": "Skript explodid, did not werk D;",
     "executionError": "Oh noes: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node begun: {{nodeId}}",
     "nodeCompleted": "Node completid: {{nodeId}}",
     "nodeError": "Node fail: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Bak to Skriptz",
         "save": "SAEV",
         "saveTooltip": "Saev skriptz!",
@@ -705,6 +743,16 @@
         "tooltip": "Look at cheenz!"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Dry Ploy",
         "title": "Dry Ploy Scriptz",
         "description": "Runn a script from a pikd triggur wif cheez inputs.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Pik teh triggur nodeh to use wif cheez inputz.",
         "mockInputs": "Mock Inputz",
         "valuePlaceholder": "{{type}} valu",
-        "start": "START DRY PLOY!"
+        "start": "START DRY PLOY!",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script Quotas",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Biggest thingz in teh script stash box",
         "disableTimeouts": "No Tiem Owtz",
         "disableTimeoutsDescription": "Stopz tiem owtz for nodez and edgez",
-        "save": "Savez da Quota"
+        "save": "Savez da Quota",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

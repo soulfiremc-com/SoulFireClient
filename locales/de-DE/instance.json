@@ -63,16 +63,34 @@
         "respawned": "respawned",
         "disconnected": "getrennt",
         "unknown": "Status gewechselt"
+      },
+      "pause": "Pausieren",
+      "resume": "Fortsetzen",
+      "paused": "Anzeige pausiert. Neue Aktivitäten werden weiterhin gesammelt.",
+      "following": "Live-Aktualisierungen",
+      "reconnecting": "Stelle Verbindung zum Live-Feed wieder her...",
+      "emptyFilter": "Keine Aktivität entspricht diesem Filter.",
+      "filterLabel": "Live-Feed filtern",
+      "filters": {
+        "all": "Alle",
+        "chat": "Chat",
+        "lifecycle": "Ereignisse"
+      },
+      "columns": {
+        "time": "Zeit",
+        "bot": "Bot",
+        "message": "Nachricht"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Alle {{total}} Bots anzeigen",
-      "viewAllShort": "Alle anzeigen"
+      "viewAllShort": "Alle anzeigen",
+      "detailsFor": "Bot-Details für {{name}}"
     },
     "timeline": {
-      "title": "Aktivität",
-      "viewAll": "Alle anzeigen",
+      "title": "Letzte Aktionen",
+      "viewAll": "Verlauf anzeigen",
       "empty": "Noch keine aufgezeichneten Aktivitäten.",
       "noPermission": "Du hast keine Berechtigung, das Protokoll einzusehen.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Detaillierte Metriken",
       "composition": "Weltzusammensetzung"
-    }
+    },
+    "loadError": "Die neuesten Daten konnten nicht geladen werden."
   },
   "proxy": {
+    "transport": {
+      "network": "Netzwerkadresse",
+      "unix": "Unix-Socket"
+    },
     "getProxies": "Proxies abrufen",
     "addProxies": "Proxies hinzufügen",
     "filterPlaceholder": "Proxies filtern...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Schlüssel",
       "valuePlaceholder": "Wert (JSON)",
       "noEntries": "Keine Metadaten-Einträge. Fügen Sie oben einen hinzu.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Erneut versuchen",
       "addSuccess": "Eintrag hinzugefügt",
       "addError": "Eintrag konnte nicht hinzugefügt werden",
       "updateError": "Eintrag konnte nicht aktualisiert werden",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventar",
+      "actionRejected": "",
       "hotbar": "Schnellzugriffsleiste",
       "main": "Hauptinventar",
       "items": "Gegenstände",
@@ -446,17 +473,24 @@
         "beaconEffects": "Leuchtturm-Effekte",
         "crafterSlots": "Slot-Steuerung",
         "lecternControls": "Buch-Steuerung",
-        "actions": "Aktionen"
+        "actions": "Aktionen",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Texteingabe",
-        "anvilRename": "Gegenstand umbenennen"
+        "anvilRename": "Gegenstand umbenennen",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Buchinhalt",
         "emptyPage": "(Leere Seite)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Seite {{current}} von {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot-Ansicht",
@@ -479,6 +513,7 @@
       "offline": "Bot ist offline. Aktionen sind nur verfügbar, wenn der Bot verbunden ist."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Bewegungssteuerung",
       "movement": "Bewegung (WASD)",
       "forward": "Vorwärts bewegen (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Skript wurde vom Benutzer deaktiviert",
     "executionFailed": "Skriptausführung fehlgeschlagen",
     "executionError": "Ausführungsfehler: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Knoten gestartet: {{nodeId}}",
     "nodeCompleted": "Knoten abgeschlossen: {{nodeId}}",
     "nodeError": "Knotenfehler: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Zurück zu den Skripten",
         "save": "Speichern",
         "saveTooltip": "Skript speichern",
@@ -705,6 +743,16 @@
         "tooltip": "Änderungen prüfen"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Probelauf",
         "title": "Probelauf-Skript",
         "description": "Führen Sie ein Skript von einem ausgewählten Auslöser mit simulierten Eingaben aus.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Wählen Sie den Auslöser-Knoten aus, der mit simulierten Eingabewerten ausgeführt werden soll.",
         "mockInputs": "Simulierte Eingaben",
         "valuePlaceholder": "{{type}} Wert",
-        "start": "Probelauf starten"
+        "start": "Probelauf starten",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skript-Kontingente",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Maximale Einträge im Skript-State Store",
         "disableTimeouts": "Timeouts deaktivieren",
         "disableTimeoutsDescription": "Deaktiviert Timeouts pro Knoten und Datenkante",
-        "save": "Kontingente speichern"
+        "save": "Kontingente speichern",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

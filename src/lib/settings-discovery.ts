@@ -1,0 +1,228 @@
+import type {
+  ServerPlugin,
+  SettingsDefinition,
+  SettingsEntryIdentifier,
+  SettingsPage,
+} from "@/generated/soulfire/common_pb";
+import type { SettingFocus } from "@/lib/settings-focus";
+
+/**
+ * Settings most people need first on built-in pages. The server still owns all
+ * definitions. Anything not listed, including new server settings, stays
+ * reachable under Advanced. Pages that are not listed show every setting.
+ */
+const COMMON_SETTINGS: Readonly<Record<string, readonly string[]>> = {
+  bot: ["address", "protocol-version", "join-delay", "concurrent-connects"],
+};
+
+function identifierKey(id: SettingsEntryIdentifier): string {
+  return `${id.namespace}:${id.key}`;
+}
+
+const SETTINGS_SECTIONS: Readonly<
+  Record<string, readonly { id: string; keys: readonly string[] }[]>
+> = {
+  ai: [
+    { id: "provider", keys: ["api-base-url", "api-key"] },
+    { id: "requests", keys: ["api-request-timeout", "api-max-retries"] },
+  ],
+  pathfinding: [
+    {
+      id: "movement",
+      keys: [
+        "allow-breaking-undiggable",
+        "avoid-diagonal-squeeze",
+        "avoid-harmful-entities",
+      ],
+    },
+    {
+      id: "costs",
+      keys: ["max-enemy-penalty", "break-block-penalty", "place-block-penalty"],
+    },
+    { id: "search", keys: ["expire-timeout", "disable-pruning"] },
+  ],
+};
+
+/** Group known fields by purpose and retain every new server-provided field. */
+export function groupSettingsEntries(
+  pageId: string,
+  entries: readonly SettingsEntryIdentifier[],
+) {
+  const sections = SETTINGS_SECTIONS[pageId];
+  if (!sections) return [{ id: "other", entries: [...entries] }];
+  const assigned = new Set<string>();
+  const groups = sections.map((section) => ({
+    id: section.id,
+    entries: entries.filter((entry) => {
+      const matches =
+        entry.namespace === pageId && section.keys.includes(entry.key);
+      if (matches) assigned.add(identifierKey(entry));
+      return matches;
+    }),
+  }));
+  groups.push({
+    id: "other",
+    entries: entries.filter((entry) => !assigned.has(identifierKey(entry))),
+  });
+  return groups.filter((group) => group.entries.length > 0);
+}
+
+export function splitSettingsEntries(
+  pageId: string,
+  entries: readonly SettingsEntryIdentifier[],
+): {
+  common: SettingsEntryIdentifier[];
+  advanced: SettingsEntryIdentifier[];
+} {
+  const commonKeys = COMMON_SETTINGS[pageId];
+  if (!commonKeys) return { common: [...entries], advanced: [] };
+  return {
+    common: entries.filter((entry) => commonKeys.includes(entry.key)),
+    advanced: entries.filter((entry) => !commonKeys.includes(entry.key)),
+  };
+}
+
+/**
+ * Server-provided names, descriptions, and option labels for one setting.
+ * Never includes configured values or defaults, so it is safe to index.
+ */
+export function getSettingSearchTerms(
+  definition: SettingsDefinition,
+): string[] {
+  const type = definition.type;
+  const parts: string[] = [definition.id?.key ?? ""];
+  switch (type.case) {
+    case "minMax":
+      parts.push(
+        type.value.minEntry?.uiName ?? "",
+        type.value.minEntry?.description ?? "",
+        type.value.maxEntry?.uiName ?? "",
+        type.value.maxEntry?.description ?? "",
+      );
+      break;
+    case "combo":
+      parts.push(
+        type.value.uiName,
+        type.value.description,
+        ...type.value.options.map((option) => option.displayName),
+      );
+      break;
+    case undefined:
+      break;
+    default:
+      parts.push(type.value.uiName, type.value.description);
+  }
+  return parts.filter(Boolean);
+}
+
+/** All text a person might search for, as provided by the server. */
+export function getSettingSearchText(definition: SettingsDefinition): string {
+  return getSettingSearchTerms(definition).join(" ").toLowerCase();
+}
+
+/**
+ * Settings that a page edits in a dialog instead of its settings section.
+ * Search must not link to these fields on the page, because they are not shown there.
+ */
+export const PAGE_HIDDEN_SETTINGS: Readonly<
+  Record<string, readonly SettingFocus[]>
+> = {
+  account: [
+    { namespace: "account", key: "account-import-concurrency" },
+    { namespace: "account", key: "use-proxies-for-account-auth" },
+  ],
+  proxy: [
+    { namespace: "proxy", key: "proxy-check-concurrency" },
+    { namespace: "proxy", key: "proxy-check-address" },
+    { namespace: "proxy", key: "proxy-check-timeout" },
+  ],
+};
+
+export function filterSettingsEntries(
+  entries: readonly SettingsEntryIdentifier[],
+  definitions: readonly SettingsDefinition[],
+  query: string,
+): SettingsEntryIdentifier[] {
+  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (terms.length === 0) return [...entries];
+  const byId = new Map(
+    definitions.flatMap((definition) =>
+      definition.id
+        ? [[identifierKey(definition.id), definition] as const]
+        : [],
+    ),
+  );
+  return entries.filter((entry) => {
+    const definition = byId.get(identifierKey(entry));
+    if (!definition) return false;
+    const text = getSettingSearchText(definition);
+    return terms.every((term) => text.includes(term));
+  });
+}
+
+/** Finds other settings pages with matches, so search works across pages. */
+export function findSettingsOnOtherPages(
+  currentPageId: string,
+  pages: readonly SettingsPage[],
+  definitions: readonly SettingsDefinition[],
+  query: string,
+): { page: SettingsPage; count: number }[] {
+  if (query.trim() === "") return [];
+  return pages.flatMap((page) => {
+    if (page.id === currentPageId) return [];
+    const count = filterSettingsEntries(
+      page.entries,
+      definitions,
+      query,
+    ).length;
+    return count > 0 ? [{ page, count }] : [];
+  });
+}
+
+/** Keep familiar names searchable after display-name changes, using stable IDs. */
+export function getPluginSearchText(
+  pageName: string,
+  plugin: Pick<ServerPlugin, "id" | "description">,
+): string {
+  return [
+    pageName,
+    plugin.id,
+    plugin.id.replace(/-/g, " "),
+    plugin.id.replace(/-/g, ""),
+    plugin.description,
+  ]
+    .join(" ")
+    .toLowerCase();
+}
+
+export type PluginTask = "chat" | "survive" | "connect" | "diagnose" | "other";
+
+export const PLUGIN_TASKS: readonly PluginTask[] = [
+  "connect",
+  "survive",
+  "chat",
+  "diagnose",
+  "other",
+];
+
+// Logging comes first because a chat logger is a diagnostic tool, not chat.
+const PLUGIN_TASK_PATTERNS: readonly (readonly [PluginTask, RegExp])[] = [
+  ["diagnose", /\blog(s|ger|ging)?\b/i],
+  ["chat", /\bchat|message|dialog|\bai\b/i],
+  [
+    "survive",
+    /eat|food|armor|totem|respawn|attack|aura|afk|jump|combat|health/i,
+  ],
+  [
+    "connect",
+    /reconnect|register|captcha|bypass|virtual host|forwarding|client brand|client settings|connect|login|join/i,
+  ],
+];
+
+/** Sorts plugins by the job they help with, from their server-provided text. */
+export function classifyPluginTask(text: string): PluginTask {
+  return (
+    PLUGIN_TASK_PATTERNS.find(([, pattern]) => pattern.test(text))?.[0] ??
+    "other"
+  );
+}

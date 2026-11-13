@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Не вдалося підключитися до сервера SoulFire."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Не знайдено",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Дружнє ім'я",
           "placeholder": "Мій бот Minecraft",
-          "description": "Ім'я, яке ви хочете дати цьому екземпляру.",
-          "min": "Дружнє ім'я має містити щонайменше 3 символи.",
-          "max": "Дружнє ім'я має бути максимум з 32 символів.",
-          "regex": "Дружнє ім'я має містити лише літери, цифри і пробіли"
+          "description": "Ім'я, яке ви хочете дати цьому екземпляру."
         },
         "cancel": "Скасувати",
         "create": "Створити"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Завантаження даних...",
           "success": "Дані завантажено!",
-          "error": "Не вдалося завантажити дані"
+          "error": "Не вдалося завантажити дані",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,30 @@
       "error": "Не вдалося зупинити ботів"
     },
     "permissionDenied": "У вас немає дозволу запускати або зупиняти ботів у цьому екземплярі.",
-    "serverUpdateRequired": "Сервер не повідомив про дозволи на керування ботами. Перевірте, чи відповідають версії сервера та клієнта."
+    "serverUpdateRequired": "Сервер не повідомив про дозволи на керування ботами. Перевірте, чи відповідають версії сервера та клієнта.",
+    "startBots": "Запустити ботів",
+    "moreActions": "Більше дій з ботами",
+    "generateFirst": "Створіть акаунти, щоб запустити свої перші боти.",
+    "startCountHelp": "Запускає додаткових ботів. Запущені боти залишаються підключеними.",
+    "startAllCount": "Запустити всі {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "Доступний {{count}} зупинений бот.",
+    "availableCount_few": "Доступні {{count}} зупинених боти.",
+    "availableCount_many": "Доступно {{count}} зупинених ботів.",
+    "availableCount_other": "Доступно {{count}} зупинених ботів.",
+    "startSelected_one": "Запустити {{count}} бота",
+    "startSelected_few": "Запустити {{count}} боти",
+    "startSelected_many": "Запустити {{count}} ботів",
+    "startSelected_other": "Запустити {{count}} ботів",
+    "stopCount_one": "Зупинити {{count}} бота",
+    "stopCount_few": "Зупинити {{count}} боти",
+    "stopCount_many": "Зупинити {{count}} ботів",
+    "stopCount_other": "Зупинити {{count}} ботів",
+    "restartCount_one": "",
+    "restartCount_few": "",
+    "restartCount_many": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} бажано · {{total}} всього",
   "icon": {
@@ -237,8 +264,13 @@
     "website": "Вебсайт"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Простори назв налаштувань не знайдено",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Додати новий запис...",
       "add": "Додати",
       "remove": "Видалити"
@@ -453,6 +485,14 @@
     "success": "Скопійовано «{{content}}» у буфер обміну",
     "error": "Не вдалося скопіювати у буфер обміну"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Аватар",
@@ -466,7 +506,11 @@
     "email": {
       "uiName": "Електронна пошта",
       "description": "Ваша електронна адреса використовується для входу та сповіщень."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Фільтрувати аудит-логи...",
@@ -610,5 +654,13 @@
     "filter": "Фільтрувати вивід процесу",
     "truncated": "{{count}} старих рядків журналу було пропущено. Повний журнал сервера залишається у теці з даними.",
     "privacy": "Звіти містять локальні шляхи та нещодавні журнали. Перевіряйте звіти та дампи потоків щодо особистої інформації перед тим, як ділитися ними. Нічого не завантажується автоматично."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

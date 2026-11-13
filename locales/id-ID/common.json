@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Koneksi ke server SoulFire gagal."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Tidak ditemukan",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Nama ramah",
           "placeholder": "Bot Minecraft Saya",
-          "description": "Nama yang ingin Anda berikan untuk instansi ini.",
-          "min": "Nama ramah harus memiliki minimal 3 karakter.",
-          "max": "Nama ramah harus maksimal 32 karakter.",
-          "regex": "Nama ramah hanya boleh berisi huruf, angka, dan spasi"
+          "description": "Nama yang ingin Anda berikan untuk instansi ini."
         },
         "cancel": "Batal",
         "create": "Buat"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Mengunduh data...",
           "success": "Data berhasil dimuat!",
-          "error": "Gagal mengunduh data"
+          "error": "Gagal mengunduh data",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,18 @@
       "error": "Gagal menghentikan bot"
     },
     "permissionDenied": "Anda tidak memiliki izin untuk memulai atau menghentikan bot di instance ini.",
-    "serverUpdateRequired": "Server tidak melaporkan izin kontrol bot. Periksa apakah versi server dan klien Anda sudah cocok."
+    "serverUpdateRequired": "Server tidak melaporkan izin kontrol bot. Periksa apakah versi server dan klien Anda sudah cocok.",
+    "startBots": "Mulai bot",
+    "moreActions": "Aksi bot lainnya",
+    "generateFirst": "Buat akun untuk memulai bot pertamamu.",
+    "startCountHelp": "Menjalankan bot tambahan. Bot yang sedang berjalan akan tetap terhubung.",
+    "startAllCount": "Mulai semua {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "{{count}} bot yang dihentikan tersedia.",
+    "startSelected_other": "Mulai {{count}} bot",
+    "stopCount_other": "Hentikan {{count}} bot",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} diinginkan · {{total}} total",
   "icon": {
@@ -237,8 +252,13 @@
     "website": "Situs web"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Namespace pengaturan tidak ditemukan",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Tambahkan entri baru...",
       "add": "Tambah",
       "remove": "Hapus"
@@ -453,6 +473,14 @@
     "success": "\"{{content}}\" berhasil disalin ke clipboard",
     "error": "Gagal menyalin ke clipboard"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +494,11 @@
     "email": {
       "uiName": "Email",
       "description": "Email Anda digunakan untuk login dan notifikasi."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter log audit...",
@@ -610,5 +642,13 @@
     "filter": "Filter output proses",
     "truncated": "{{count}} baris log lama dihilangkan. Log server lengkap tetap ada di direktori data.",
     "privacy": "Laporan berisi path lokal dan log terbaru. Tinjau laporan serta thread dump untuk data pribadi sebelum membagikannya. Tidak ada yang diunggah secara otomatis."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

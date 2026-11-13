@@ -21,6 +21,9 @@ function subscribe<T>(
 }
 
 const desktopApi: SoulFireDesktopApi = {
+  providers: {
+    request: (request) => invoke("providers:request", request),
+  },
   pov: {
     onReleased: (callback) => subscribe("pov:released", callback),
     setCaptured: (captured, target) =>
@@ -37,24 +40,14 @@ const desktopApi: SoulFireDesktopApi = {
     },
   },
   cast: {
-    broadcast: async (payload) => {
-      await invoke("cast:broadcast", payload);
-    },
-    connect: async (address, port) => {
-      return invoke("cast:connect", {
-        address,
-        port,
-      });
-    },
-    discover: async () => {
-      await invoke("cast:discover");
-    },
-    getDevices: async () => invoke("cast:get-devices"),
-    onDisconnected: async (callback) =>
-      subscribe("cast:device-disconnected", callback),
-    onDiscovered: async (callback) =>
-      subscribe("cast:device-discovered", callback),
-    onRemoved: async (callback) => subscribe("cast:device-removed", callback),
+    connect: (device, source, relaunch = false) =>
+      invoke("cast:connect", { device, source, relaunch }),
+    discover: () => invoke("cast:discover"),
+    getState: () => invoke("cast:get-state"),
+    stop: (id) => invoke("cast:stop", id),
+    stopAll: () => invoke("cast:stop-all"),
+    setSettings: (settings) => invoke("cast:settings", settings),
+    onState: (callback) => subscribe("cast:state", callback),
   },
   clipboard: {
     readText: async () => clipboard.readText(),

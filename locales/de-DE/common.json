@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Verbindung zum SoulFire-Server fehlgeschlagen."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Nicht gefunden",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Anzeigename",
           "placeholder": "Mein Minecraft-Bot",
-          "description": "Der Name, den Sie dieser Instanz geben möchten.",
-          "min": "Der Name muss mindestens 3 Zeichen lang sein.",
-          "max": "Der Name darf höchstens 32 Zeichen lang sein.",
-          "regex": "Der Anzeigename kann nur Buchstaben, Zahlen und Leerzeichen enthalten"
+          "description": "Der Name, den Sie dieser Instanz geben möchten."
         },
         "cancel": "Abbrechen",
         "create": "Erstellen"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Daten werden heruntergeladen...",
           "success": "Daten geladen!",
-          "error": "Fehler beim Herunterladen der Daten"
+          "error": "Fehler beim Herunterladen der Daten",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,22 @@
       "error": "Fehler beim Stoppen der Bots"
     },
     "permissionDenied": "Sie haben keine Berechtigung, Bots in dieser Instanz zu starten oder zu stoppen.",
-    "serverUpdateRequired": "Der Server hat keine Berechtigungen zur Bot-Steuerung gemeldet. Überprüfen Sie, ob Ihre Server- und Client-Versionen übereinstimmen."
+    "serverUpdateRequired": "Der Server hat keine Berechtigungen zur Bot-Steuerung gemeldet. Überprüfen Sie, ob Ihre Server- und Client-Versionen übereinstimmen.",
+    "startBots": "Bots starten",
+    "moreActions": "Weitere Bot-Aktionen",
+    "generateFirst": "Erstellen Sie Konten, um Ihre ersten Bots zu starten.",
+    "startCountHelp": "Startet zusätzliche Bots. Laufende Bots bleiben verbunden.",
+    "startAllCount": "Alle {{count}} starten",
+    "validCount": "Geben Sie eine ganze Zahl zwischen 1 und {{count}} ein.",
+    "positiveCount": "Geben Sie eine ganze Zahl von mindestens 1 ein.",
+    "availableCount_one": "{{count}} gestoppter Bot verfügbar.",
+    "availableCount_other": "{{count}} gestoppte Bots verfügbar.",
+    "startSelected_one": "{{count}} Bot starten",
+    "startSelected_other": "{{count}} Bots starten",
+    "stopCount_one": "{{count}} Bot stoppen",
+    "stopCount_other": "{{count}} Bots stoppen",
+    "restartCount_one": "Starte {{count}} Bot neu",
+    "restartCount_other": "Starte {{count}} Bots neu"
   },
   "botFleetSummary": "{{online}} online · {{desired}} gewünscht · {{total}} gesamt",
   "icon": {
@@ -237,8 +256,13 @@
     "website": "Webseite"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Einstellungs-Namensräume nicht gefunden",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Neuen Eintrag hinzufügen...",
       "add": "Hinzufügen",
       "remove": "Entfernen"
@@ -453,6 +477,14 @@
     "success": "\"{{content}}\" wurde in die Zwischenablage kopiert",
     "error": "Kopieren in die Zwischenablage fehlgeschlagen"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +498,11 @@
     "email": {
       "uiName": "E-Mail",
       "description": "Ihre E-Mail wird für die Anmeldung und Benachrichtigungen verwendet."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Audit-Logs filtern...",
@@ -610,5 +646,13 @@
     "filter": "Prozessaussgabe filtern",
     "truncated": "{{count}} ältere Protokollzeilen wurden ausgelassen. Die vollständigen Server-Logs befinden sich weiterhin im Datenverzeichnis.",
     "privacy": "Berichte enthalten lokale Pfade und aktuelle Protokolle. Überprüfe Berichte und Thread-Dumps auf persönliche Informationen, bevor du sie weitergibst. Es wird nichts automatisch hochgeladen."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

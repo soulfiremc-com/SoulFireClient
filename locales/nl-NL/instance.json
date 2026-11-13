@@ -63,16 +63,34 @@
         "respawned": "herrezen",
         "disconnected": "verbinding verbroken",
         "unknown": "heeft de status gewijzigd"
+      },
+      "pause": "Pauzeren",
+      "resume": "Hervatten",
+      "paused": "Weergave gepauzeerd. Nieuwe activiteit wordt nog steeds verzameld.",
+      "following": "Live-updates",
+      "reconnecting": "Bezig met opnieuw verbinden met de livefeed...",
+      "emptyFilter": "Geen activiteit komt overeen met dit filter.",
+      "filterLabel": "Filter livefeed",
+      "filters": {
+        "all": "Alles",
+        "chat": "Chatberichten",
+        "lifecycle": "Gebeurtenissen"
+      },
+      "columns": {
+        "time": "Tijd",
+        "bot": "Bot",
+        "message": "Bericht"
       }
     },
     "bots": {
       "title": "Bots",
       "viewAll": "Bekijk alle {{total}} bots",
-      "viewAllShort": "Alles bekijken"
+      "viewAllShort": "Alles bekijken",
+      "detailsFor": "Botdetails voor {{name}}"
     },
     "timeline": {
-      "title": "Activiteit",
-      "viewAll": "Alles bekijken",
+      "title": "Recente acties",
+      "viewAll": "Bekijk geschiedenis",
       "empty": "Nog geen geregistreerde activiteit.",
       "noPermission": "Je hebt geen toestemming om het auditlogboek te bekijken.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Gedetailleerde statistieken",
       "composition": "Wereldcompositie"
-    }
+    },
+    "loadError": "Kan de nieuwste gegevens niet laden."
   },
   "proxy": {
+    "transport": {
+      "network": "Netwerkadres",
+      "unix": "Unix-socket"
+    },
     "getProxies": "Proxies ophalen",
     "addProxies": "Proxies toevoegen",
     "filterPlaceholder": "Proxies filteren...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Sleutel",
       "valuePlaceholder": "Waarde (JSON)",
       "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Opnieuw proberen",
       "addSuccess": "Item toegevoegd",
       "addError": "Toevoegen van item mislukt",
       "updateError": "Bijwerken van item mislukt",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaris",
+      "actionRejected": "",
       "hotbar": "Snelle balk",
       "main": "Hoofd Inventaris",
       "items": "items",
@@ -446,17 +473,24 @@
         "beaconEffects": "Baken-effecten",
         "crafterSlots": "Slotbediening",
         "lecternControls": "Boekbediening",
-        "actions": "Acties"
+        "actions": "Acties",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Tekstinvoer",
-        "anvilRename": "Item hernoemen"
+        "anvilRename": "Item hernoemen",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Boekinhoud",
         "emptyPage": "(Lege pagina)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Pagina {{current}} van {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Botweergave",
@@ -479,6 +513,7 @@
       "offline": "Bot is offline. Acties zijn alleen beschikbaar wanneer de bot is verbonden."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Bewegingsbediening",
       "movement": "Beweging (WASD)",
       "forward": "Vooruit gaan (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Script gedeactiveerd door gebruiker",
     "executionFailed": "Scriptuitvoering mislukt",
     "executionError": "Uitvoeringsfout: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Knooppunt gestart: {{nodeId}}",
     "nodeCompleted": "Knooppunt voltooid: {{nodeId}}",
     "nodeError": "Knooppuntfout: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Terug naar scripts",
         "save": "Opslaan",
         "saveTooltip": "Script opslaan",
@@ -705,6 +743,16 @@
         "tooltip": "Wijzigingen bekijken"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Proefdraai",
         "title": "Script proefdraaien",
         "description": "Voer een script uit vanaf een geselecteerde trigger met gesimuleerde invoer.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Kies de trigger-node om uit te voeren met gesimuleerde invoerwaarden.",
         "mockInputs": "Gesimuleerde invoer",
         "valuePlaceholder": "{{type}} waarde",
-        "start": "Start proefdraai"
+        "start": "Start proefdraai",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script limieten",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Maximum aantal items in de script-statusopslag",
         "disableTimeouts": "Timeouts uitschakelen",
         "disableTimeoutsDescription": "Schakelt time-outs per node en data-edge uit",
-        "save": "Quota opslaan"
+        "save": "Quota opslaan",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

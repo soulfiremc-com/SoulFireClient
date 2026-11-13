@@ -12,6 +12,7 @@ import { useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useStickToBottom } from "use-stick-to-bottom";
+import { TerminalMessage } from "@/components/terminal-message";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,7 +35,7 @@ import type {
   DesktopIntegratedServerLog,
 } from "@/lib/desktop-api";
 
-function useIntegratedDiagnostics() {
+export function useIntegratedDiagnostics() {
   return useQuery({
     queryKey: ["integrated-server-diagnostics"],
     queryFn: () => desktop.integratedServer.getDiagnostics(),
@@ -175,7 +176,7 @@ function ProcessSummary({
   );
 }
 
-function ProcessOutput({
+export function ProcessOutput({
   logs,
   filter = "",
 }: {
@@ -212,8 +213,8 @@ function ProcessOutput({
               key={log.id}
               className="select-text whitespace-pre-wrap break-all"
             >
-              <span className="text-muted-foreground">[{log.source}] </span>
-              {log.message}
+              <span>[{log.source}] </span>
+              <TerminalMessage entry={{ message: log.message }} />
             </p>
           ))
         )}

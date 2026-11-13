@@ -54,6 +54,18 @@
   </screenshots>
 
   <releases>
+    <release version="2.10.7" date="2026-11-02">
+      <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.10.7</url>
+    </release>
+    <release version="2.10.6" date="2026-10-26">
+      <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.10.6</url>
+    </release>
+    <release version="2.10.5" date="2026-10-25">
+      <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.10.5</url>
+    </release>
+    <release version="2.10.4" date="2026-10-08">
+      <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.10.4</url>
+    </release>
     <release version="2.10.1" date="2026-09-08">
       <url type="details">https://github.com/soulfiremc-com/SoulFireClient/releases/tag/2.10.1</url>
     </release>

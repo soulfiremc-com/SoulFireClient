@@ -119,6 +119,7 @@ function DataTableActionBarAction({
         className,
       )}
       disabled={disabled || isPending}
+      aria-label={tooltip}
       {...props}
     >
       {isPending ? <Loader className="animate-spin" /> : children}
@@ -179,6 +180,8 @@ function DataTableActionBarSelection<TData extends RowData>({
               variant="ghost"
               size="icon"
               className="size-5"
+              aria-label={t("dataTable.clearSelection")}
+              aria-keyshortcuts="Escape"
               onClick={onClearSelection}
             />
           }

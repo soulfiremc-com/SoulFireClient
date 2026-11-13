@@ -63,16 +63,34 @@
         "respawned": "respawn",
         "disconnected": "terputus",
         "unknown": "mengubah status"
+      },
+      "pause": "Jeda",
+      "resume": "Lanjutkan",
+      "paused": "Tampilan dijeda. Aktivitas baru tetap dikumpulkan.",
+      "following": "Pembaruan langsung",
+      "reconnecting": "Menyambungkan kembali ke umpan langsung...",
+      "emptyFilter": "Tidak ada aktivitas yang cocok dengan filter ini.",
+      "filterLabel": "Filter umpan langsung",
+      "filters": {
+        "all": "Semua",
+        "chat": "Obrolan",
+        "lifecycle": "Peristiwa"
+      },
+      "columns": {
+        "time": "Waktu",
+        "bot": "Bot",
+        "message": "Pesan"
       }
     },
     "bots": {
       "title": "Bot",
       "viewAll": "Lihat semua {{total}} bot",
-      "viewAllShort": "Lihat semua"
+      "viewAllShort": "Lihat semua",
+      "detailsFor": "Detail bot untuk {{name}}"
     },
     "timeline": {
-      "title": "Aktivitas",
-      "viewAll": "Lihat semua",
+      "title": "Aksi terbaru",
+      "viewAll": "Lihat riwayat",
       "empty": "Belum ada aktivitas yang tercatat.",
       "noPermission": "Anda tidak memiliki izin untuk melihat log audit.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Metrik detail",
       "composition": "Komposisi dunia"
-    }
+    },
+    "loadError": "Tidak dapat memuat data terbaru."
   },
   "proxy": {
+    "transport": {
+      "network": "Alamat jaringan",
+      "unix": "Socket unix"
+    },
     "getProxies": "Dapatkan Proxy",
     "addProxies": "Tambah Proxy",
     "filterPlaceholder": "Saring proxy...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Kunci",
       "valuePlaceholder": "Nilai (JSON)",
       "noEntries": "Tidak ada entri metadata. Tambahkan satu di atas.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Coba Lagi",
       "addSuccess": "Entri berhasil ditambahkan",
       "addError": "Gagal menambahkan entri",
       "updateError": "Gagal memperbarui entri",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaris",
+      "actionRejected": "",
       "hotbar": "Hotbar",
       "main": "Inventaris Utama",
       "items": "item",
@@ -446,17 +473,24 @@
         "beaconEffects": "Efek Suar",
         "crafterSlots": "Kontrol Slot",
         "lecternControls": "Kontrol Buku",
-        "actions": "Aksi"
+        "actions": "Aksi",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Input Teks",
-        "anvilRename": "Ganti Nama Item"
+        "anvilRename": "Ganti Nama Item",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Isi Buku",
         "emptyPage": "(Halaman kosong)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Halaman {{current}} dari {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Tampilan Bot",
@@ -479,6 +513,7 @@
       "offline": "Bot sedang offline. Aksi hanya tersedia saat bot terhubung."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Kontrol Gerakan",
       "movement": "Gerakan (WASD)",
       "forward": "Maju (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Skrip dinonaktifkan oleh pengguna",
     "executionFailed": "Eksekusi skrip gagal",
     "executionError": "Kesalahan eksekusi: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node dimulai: {{nodeId}}",
     "nodeCompleted": "Node selesai: {{nodeId}}",
     "nodeError": "Kesalahan node: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Kembali ke Skrip",
         "save": "Simpan",
         "saveTooltip": "Simpan skrip",
@@ -704,6 +742,16 @@
         "tooltip": "Tinjau perubahan"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Dry Run",
         "title": "Script Dry Run",
         "description": "Jalankan skrip dari trigger yang dipilih dengan input tiruan.",
@@ -712,7 +760,8 @@
         "triggerDescription": "Pilih node trigger untuk dieksekusi dengan nilai input tiruan.",
         "mockInputs": "Input Tiruan",
         "valuePlaceholder": "nilai {{type}}",
-        "start": "Mulai Dry Run"
+        "start": "Mulai Dry Run",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Kuota Skrip",
@@ -732,8 +781,13 @@
         "maxStateStoreEntriesDescription": "Jumlah entri maksimum di state store skrip",
         "disableTimeouts": "Nonaktifkan Timeout",
         "disableTimeoutsDescription": "Menonaktifkan timeout per-node dan data edge",
-        "save": "Simpan Kuota"
+        "save": "Simpan Kuota",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

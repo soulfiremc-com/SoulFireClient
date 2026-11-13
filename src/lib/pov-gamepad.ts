@@ -13,6 +13,9 @@ const deadzone = (value: number) =>
 // Standard gamepad mapping. Changes emit edges; analog look is time-based.
 export class PovGamepad {
   private held = new Map<string, PovInputEvent>();
+  private pressedButtons = new Set<number>();
+  private blockedButtons = new Set<number>();
+  private screen = false;
   private x = 0.5;
   private y = 0.5;
   sample(
@@ -22,6 +25,18 @@ export class PovGamepad {
   ): PovInputEvent[] {
     const events: PovInputEvent[] = [];
     const next = new Map<string, PovInputEvent>();
+    const pressedButtons = new Set<number>();
+    if (pad?.mapping === "standard")
+      for (const [index, button] of pad.buttons.entries())
+        if (button.pressed) pressedButtons.add(index);
+    // A held button must not become another action when a menu opens or closes.
+    if (screen !== this.screen)
+      for (const index of this.pressedButtons)
+        if (pressedButtons.has(index)) this.blockedButtons.add(index);
+    for (const index of this.blockedButtons)
+      if (!pressedButtons.has(index)) this.blockedButtons.delete(index);
+    this.pressedButtons = pressedButtons;
+    this.screen = screen;
     const hold = (kind: Kind, code: number, pressed: boolean) => {
       if (pressed)
         next.set(
@@ -30,7 +45,8 @@ export class PovGamepad {
         );
     };
     if (pad?.mapping === "standard") {
-      const button = (index: number) => pad.buttons[index]?.pressed ?? false;
+      const button = (index: number) =>
+        pressedButtons.has(index) && !this.blockedButtons.has(index);
       const x = deadzone(pad.axes[0] ?? 0);
       const y = deadzone(pad.axes[1] ?? 0);
       if (!screen) {
@@ -100,5 +116,8 @@ export class PovGamepad {
   }
   reset() {
     this.held.clear();
+    this.pressedButtons.clear();
+    this.blockedButtons.clear();
+    this.screen = false;
   }
 }

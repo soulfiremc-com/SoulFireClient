@@ -97,7 +97,8 @@ export function DataTablePagination<TData extends RowData>({
                 </Select>
               </div>
               <div className="flex items-center justify-center font-medium text-sm">
-                Page {pagination.pageIndex + 1} of {table.getPageCount()}
+                Page {table.getPageCount() === 0 ? 0 : pagination.pageIndex + 1}{" "}
+                of {table.getPageCount()}
               </div>
             </>
           )}
@@ -108,7 +109,7 @@ export function DataTablePagination<TData extends RowData>({
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"
-            onClick={() => table.setPageIndex(0)}
+            onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
           >
             <ChevronsLeft />
@@ -138,8 +139,8 @@ export function DataTablePagination<TData extends RowData>({
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanLastPage()}
           >
             <ChevronsRight />
           </Button>

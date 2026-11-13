@@ -14,7 +14,7 @@
         "title": "CPU 使用率 (%)"
       },
       "memoryUsage": {
-        "title": "堆記憶體 (MB)"
+        "title": "堆積記憶體 (MB)"
       },
       "threadCount": {
         "title": "執行緒數量"
@@ -86,6 +86,7 @@
         "update": "更新使用者"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "正在新增使用者...",
       "success": "成功新增使用者！",

@@ -19,11 +19,11 @@ import { PostHogProvider } from "posthog-js/react";
 import { type CSSProperties, memo, useEffect, useMemo, useState } from "react";
 import { CustomContextMenu } from "@/components/custom-context-menu.tsx";
 import { AboutProvider } from "@/components/dialog/about-dialog.tsx";
-import { SupportDialogProvider } from "@/components/dialog/support-dialog.tsx";
 import {
   type SystemInfo,
   SystemInfoContext,
 } from "@/components/providers/system-info-context.tsx";
+import { CookieConsentProvider } from "@/components/providers/cookie-consent-provider";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
 import { ThemeProvider } from "@/components/providers/theme-provider.tsx";
 import { TailwindIndicator } from "@/components/tailwind-indicator.tsx";
@@ -192,7 +192,7 @@ function getPresenceForPath(
     if (subPage.startsWith("settings"))
       return { state: "Configuring settings", details: botInfo };
 
-    return { state: "Viewing instance overview", details: botInfo };
+    return { state: "Viewing project overview", details: botInfo };
   }
 
   if (pathname.includes("/user/admin"))
@@ -322,8 +322,8 @@ function RootLayout() {
                   >
                     <PointerReset />
                     <CustomContextMenu />
-                    <AboutProvider>
-                      <SupportDialogProvider>
+                    <CookieConsentProvider>
+                      <AboutProvider>
                         {shouldShowWindowTitlebar && <WindowTitlebar />}
                         <div className="flex min-h-0 flex-1 flex-col">
                           <Outlet />
@@ -340,8 +340,8 @@ function RootLayout() {
                             },
                           ]}
                         />
-                      </SupportDialogProvider>
-                    </AboutProvider>
+                      </AboutProvider>
+                    </CookieConsentProvider>
                   </div>
                 </TerminalThemeContext>
               </SystemInfoContext>

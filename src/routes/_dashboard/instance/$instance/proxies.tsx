@@ -1,14 +1,14 @@
-import { createClient } from "@connectrpc/connect";
 import {
   type QueryClient,
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import { saveAs } from "file-saver";
 import {
+  ArrowLeftIcon,
   ClipboardCopyIcon,
   Dice4Icon,
   Dice5Icon,
@@ -20,15 +20,10 @@ import {
   TrashIcon,
   Wand2Icon,
 } from "lucide-react";
-import { use, useCallback, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type ExternalToast, toast } from "sonner";
-import URI from "urijs";
+import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
   DataTableActionBar,
@@ -44,12 +39,12 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton.t
 import { DataTableSortList } from "@/components/data-table/data-table-sort-list.tsx";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
-import { ExternalLink } from "@/components/external-link.tsx";
+import { ProxyImportReview } from "@/components/dialog/proxy-import-review";
+import ProxyProvidersDialog from "@/components/dialog/proxy-providers-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
 import {
-  type DisabledSettingId,
   InstanceSettingFieldByKey,
   InstanceSettingsPageComponent,
 } from "@/components/settings-page.tsx";
@@ -75,16 +70,20 @@ import {
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { SettingsPage } from "@/generated/soulfire/common_pb";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
-import { ProxyCheckService } from "@/generated/soulfire/proxy-check_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { createTextBlob } from "@/lib/download.ts";
 import i18n from "@/lib/i18n.ts";
-import { dataTableValidateSearch } from "@/lib/parsers.ts";
-import { observeServerStream } from "@/lib/protobuf.ts";
+import { guidedTableValidateSearch } from "@/lib/parsers.ts";
+import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
+import { useProxyCheck } from "@/hooks/use-proxy-check";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
+import { newProviderProxies } from "@/lib/proxy-providers.ts";
+import { getProxyRows, type ProxyTableRow } from "@/lib/proxy-selection.ts";
+import { formatProxyAsFlat, formatProxyAsURI } from "@/lib/proxy-format.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   getEnumEntries,
@@ -95,17 +94,10 @@ import {
 } from "@/lib/types.ts";
 import {
   addInstanceProxiesBatch,
-  data2blob,
-  removeInstanceProxiesBatch,
+  removeInstanceProxyEntries,
   runAsync,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
-
-const PROXY_SETTINGS_DISABLED_IDS: DisabledSettingId[] = [
-  { namespace: "proxy", key: "proxy-check-concurrency" },
-  { namespace: "proxy", key: "proxy-check-address" },
-  { namespace: "proxy", key: "proxy-check-timeout" },
-];
 
 const PROXY_CHECK_SETTING_KEYS = [
   "proxy-check-address",
@@ -178,7 +170,7 @@ function ProxyCheckDialog({
 }
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/proxies")({
-  validateSearch: dataTableValidateSearch,
+  validateSearch: guidedTableValidateSearch,
   beforeLoad: () =>
     routeChrome({
       getTitle: () => i18n.t("common:pageName.proxySettings"),
@@ -229,107 +221,6 @@ function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
   }
 }
 
-function parseNormalProxy(line: string, type: SimpleProxyType): ProfileProxy {
-  // Support user:pass@host:port format
-  const atIndex = line.lastIndexOf("@");
-  if (atIndex !== -1) {
-    const userInfo = line.substring(0, atIndex);
-    const hostPort = line.substring(atIndex + 1);
-    const hostPortParts = hostPort.split(":");
-    if (hostPortParts.length < 2) {
-      throw new Error(i18n.t("instance:proxy.invalidFormat"));
-    }
-
-    const host = `${hostPortParts[0]}:${hostPortParts[1]}`;
-    const userInfoParts = userInfo.split(":");
-    return {
-      type: uiProxyTypeToProto(type),
-      address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
-      username: userInfoParts[0],
-      password: userInfoParts[1],
-    };
-  }
-
-  // Standard host:port:user:pass format
-  const parts = line.split(":");
-  if (parts.length < 2) {
-    throw new Error(i18n.t("instance:proxy.invalidFormat"));
-  }
-
-  // Fill username and password with undefined if not present
-  parts.length = 4;
-
-  const host = `${parts[0]}:${parts[1]}`;
-  return {
-    type: uiProxyTypeToProto(type),
-    address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
-    username: parts[2],
-    password: parts[3],
-  };
-}
-
-function parseRawTypeToProto(rawType: string): ProxyProto_Type | null {
-  switch (rawType) {
-    case "http":
-      return ProxyProto_Type.HTTP;
-    case "socks4":
-      return ProxyProto_Type.SOCKS4;
-    case "socks5":
-      return ProxyProto_Type.SOCKS5;
-    default:
-      return null;
-  }
-}
-
-function parseURIProxy(line: string): ProfileProxy | null {
-  const uri = new URI(line);
-  const host = uri.host();
-  const type = parseRawTypeToProto(uri.protocol());
-  if (type === null) {
-    return null;
-  }
-
-  return {
-    type,
-    address: host.startsWith("/") ? `unix://${host}` : `inet://${host}`,
-    username: uri.username() === "" ? undefined : uri.username(),
-    password: uri.password() === "" ? undefined : uri.password(),
-  };
-}
-
-function getProxyKey(proxy: ProfileProxy): string {
-  return `${proxy.type}-${proxy.address}-${proxy.username ?? ""}-${
-    proxy.password ?? ""
-  }`;
-}
-
-function formatProxyAsURI(proxy: ProfileProxy): string {
-  const address = stripAddressPrefix(proxy.address);
-  const protocol = getEnumKeyByValue(ProxyProto_Type, proxy.type)
-    .toString()
-    .toLowerCase();
-
-  if (proxy.username && proxy.password) {
-    return `${protocol}://${proxy.username}:${proxy.password}@${address}`;
-  }
-  if (proxy.username) {
-    return `${protocol}://${proxy.username}@${address}`;
-  }
-  return `${protocol}://${address}`;
-}
-
-function formatProxyAsFlat(proxy: ProfileProxy): string {
-  const address = stripAddressPrefix(proxy.address);
-
-  if (proxy.username && proxy.password) {
-    return `${address}:${proxy.username}:${proxy.password}`;
-  }
-  if (proxy.username) {
-    return `${address}:${proxy.username}`;
-  }
-  return address;
-}
-
 function saveProxyFile(content: string, filename: string) {
   if (isDesktopApp()) {
     runAsync(async () => {
@@ -351,7 +242,7 @@ function saveProxyFile(content: string, filename: string) {
       }
     });
   } else {
-    saveAs(data2blob(content), filename);
+    saveAs(createTextBlob(content), filename);
   }
 }
 
@@ -367,7 +258,7 @@ const proxyTypeToIcon = (type: keyof typeof ProxyProto_Type) =>
     }
   });
 
-const columns: ColumnDef<typeof dataTableFeatures, ProfileProxy>[] = [
+const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
   {
     id: "select",
     header: SelectAllHeader,
@@ -410,6 +301,7 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileProxy>[] = [
         };
       }),
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {
@@ -478,25 +370,18 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileProxy>[] = [
   },
 ];
 
-function GetProxiesButton() {
+function GetProxiesButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      nativeButton={false}
-      render={
-        <ExternalLink href="https://soulfiremc.com/get-proxies?utm_source=soulfire-client&utm_medium=app&utm_campaign=proxies-get" />
-      }
-    >
+    <Button variant="outline" size="sm" onClick={onClick}>
       <ShoppingCartIcon />
       {t("proxy.getProxies")}
     </Button>
   );
 }
 
-function AddButton() {
+function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
@@ -507,13 +392,39 @@ function AddButton() {
   const [importedProxies, setImportedProxies] = useState<ProfileProxy[] | null>(
     null,
   );
+  const [importDraft, setImportDraft] = useState<string | null>(null);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
+  const guide = Route.useSearch({ select: (search) => search.guide });
+  const [providerDialogOpen, setProviderDialogOpen] = useState(
+    guide === "providers",
+  );
   // Batch add proxies mutation
-  const { mutateAsync: addProxiesBatchMutation } = useMutation({
-    mutationKey: ["instance", "proxies", "add-batch", instanceInfo.id],
+  const { mutateAsync: addProxiesBatchMutation, isPending: isImporting } =
+    useMutation({
+      mutationKey: ["instance", "proxies", "add-batch", instanceInfo.id],
+      scope: { id: `instance-proxies-${instanceInfo.id}` },
+      mutationFn: async (proxies: ProfileProxy[]) => {
+        await addInstanceProxiesBatch(
+          proxies,
+          instanceInfo,
+          transport,
+          queryClient,
+          instanceInfoQueryOptions.queryKey,
+        );
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: instanceInfoQueryOptions.queryKey,
+        });
+      },
+    });
+  // Batch remove proxies mutation (for post-import check)
+  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
+    mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
+    onMutate: onBeforeRemove,
     mutationFn: async (proxies: ProfileProxy[]) => {
-      await addInstanceProxiesBatch(
+      await removeInstanceProxyEntries(
         proxies,
         instanceInfo,
         transport,
@@ -527,179 +438,66 @@ function AddButton() {
       });
     },
   });
-  // Batch remove proxies mutation (for post-import check)
-  const { mutateAsync: removeProxiesBatchMutation } = useMutation({
-    mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
-    scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (addresses: string[]) => {
-      await removeInstanceProxiesBatch(
-        addresses,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
 
-  const textSelectedCallback = useCallback(
-    (text: string) => {
-      if (proxyTypeSelected === null) return;
-
-      if (text.length === 0) {
-        toast.error(t("proxy.listImportToast.noProxies"));
-        return;
-      }
-
-      setProxyTypeSelected(null);
-      const textSplit = text
-        .split("\n")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-      toast.promise(
-        (async () => {
-          const proxiesToAdd: ProfileProxy[] = [];
-          for (const line of textSplit) {
-            let proxy: ProfileProxy | null;
-            switch (proxyTypeSelected) {
-              case UIProxyType.HTTP:
-              case UIProxyType.SOCKS4:
-              case UIProxyType.SOCKS5:
-                proxy = parseNormalProxy(line, proxyTypeSelected);
-                break;
-              case UIProxyType.URI:
-                proxy = parseURIProxy(line);
-                break;
-            }
-
-            if (proxy === null) {
-              continue;
-            }
-
-            proxiesToAdd.push(proxy);
-          }
-
-          await addProxiesBatchMutation(proxiesToAdd);
-          if (proxiesToAdd.length > 0) {
-            setImportedProxies(proxiesToAdd);
-          }
-          return proxiesToAdd.length;
-        })(),
-        {
-          loading: t("proxy.listImportToast.loading"),
-          success: (r) => t("proxy.listImportToast.success", { count: r }),
-          error: (e) => {
-            console.error(e);
-            return t("proxy.listImportToast.error");
-          },
-        },
-      );
-    },
-    [proxyTypeSelected, addProxiesBatchMutation, t],
-  );
-
-  const performProxyCheck = useCallback(() => {
-    if (transport === null || importedProxies === null) {
-      return;
-    }
-
-    const proxiesToCheck = importedProxies;
-    setImportedProxies(null);
-
-    const abortController = new AbortController();
-    const loadingData: ExternalToast = {
-      cancel: {
-        label: t("common:cancel"),
-        onClick: () => {
-          abortController.abort();
-        },
-      },
-    };
-    const total = proxiesToCheck.length;
-    let failed = 0;
-    let success = 0;
-    const loadingReport = () =>
-      t("proxy.checkToast.loading", {
-        checked: success + failed,
-        total,
-        success,
-        failed,
-      });
-    const toastId = toast.loading(loadingReport(), loadingData);
-    const service = createClient(ProxyCheckService, transport);
-    const responses = service.check(
-      {
-        instanceId: instanceInfo.id,
-        proxy: proxiesToCheck,
-      },
-      {
-        signal: abortController.signal,
-      },
-    );
-    void observeServerStream(responses, {
-      onMessage: async (r) => {
-        const data = r.data;
-        switch (data.case) {
-          case "end": {
-            toast.success(
-              t("proxy.checkToast.success", {
-                count: failed,
-              }),
-              {
-                id: toastId,
-                cancel: undefined,
-              },
-            );
-            break;
-          }
-          case "single": {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            if (data.value.valid) {
-              success++;
-            } else {
-              failed++;
-              const proxyToRemove = data.value.proxy;
-              if (proxyToRemove) {
-                await removeProxiesBatchMutation([proxyToRemove.address]);
-              }
-            }
-
-            toast.loading(loadingReport(), {
-              id: toastId,
-              ...loadingData,
-            });
-            break;
-          }
-        }
-      },
-      onError: (e) => {
-        console.error(e);
-        toast.error(t("proxy.checkToast.error"), {
-          id: toastId,
-          cancel: undefined,
-        });
-      },
-    });
-  }, [
+  const checkProxies = useProxyCheck(
     transport,
-    importedProxies,
-    t,
     instanceInfo.id,
-    removeProxiesBatchMutation,
-  ]);
+    removeProxyEntriesMutation,
+  );
+  const performProxyCheck = useCallback(() => {
+    if (importedProxies === null) return;
+    checkProxies(importedProxies);
+    setImportedProxies(null);
+  }, [checkProxies, importedProxies]);
 
   return (
     <>
+      {guide && (
+        <Button
+          variant="secondary"
+          size="sm"
+          nativeButton={false}
+          render={
+            <Link
+              to="/instance/$instance"
+              params={{ instance: instanceInfo.id }}
+            />
+          }
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("setup.backToSetup")}
+        </Button>
+      )}
+      <GetProxiesButton onClick={() => setProviderDialogOpen(true)} />
+      <ProxyProvidersDialog
+        open={providerDialogOpen}
+        onOpenChange={setProviderDialogOpen}
+        canImport={transport !== null}
+        onImport={async (proxies) => {
+          if (transport === null) throw new Error("Server connection required");
+          const current = queryClient.getQueryData<InstanceInfoQueryData>(
+            instanceInfoQueryOptions.queryKey,
+          );
+          const additions = newProviderProxies(
+            proxies,
+            current?.profile.proxies ?? [],
+          );
+          if (!additions.length) {
+            toast.info(t("providers.alreadyImported"));
+            return;
+          }
+          await addProxiesBatchMutation(additions);
+          setImportedProxies(additions);
+          toast.success(
+            t("proxy.listImportToast.success", { count: additions.length }),
+          );
+        }}
+      />
       <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+        <DropdownMenuTrigger
+          disabled={isImporting}
+          render={<Button variant="outline" size="sm" />}
+        >
           <PlusIcon />
           {t("proxy.addProxies")}
         </DropdownMenuTrigger>
@@ -738,14 +536,15 @@ function AddButton() {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      {proxyTypeSelected !== null && (
+      {proxyTypeSelected !== null && importDraft === null && (
         <ImportDialog
           title={t("proxy.import.dialog.title", {
             type: getEnumKeyByValue(UIProxyType, proxyTypeSelected),
           })}
           description={t("proxy.import.dialog.description")}
           closer={() => setProxyTypeSelected(null)}
-          listener={textSelectedCallback}
+          listener={setImportDraft}
+          isPending={isImporting}
           filters={[
             {
               name: "Text File",
@@ -759,6 +558,27 @@ function AddButton() {
           }}
         />
       )}
+      {proxyTypeSelected !== null && importDraft !== null && (
+        <ProxyImportReview
+          text={importDraft}
+          type={
+            proxyTypeSelected === UIProxyType.URI
+              ? "uri"
+              : uiProxyTypeToProto(proxyTypeSelected)
+          }
+          onBack={() => setImportDraft(null)}
+          onImport={async (proxies) => {
+            await addProxiesBatchMutation(proxies);
+            setImportedProxies(proxies);
+            setImportDraft(null);
+            setProxyTypeSelected(null);
+            toast.success(
+              t("proxy.listImportToast.success", { count: proxies.length }),
+            );
+          }}
+        />
+      )}
+
       <Dialog
         open={importedProxies !== null && !checkDialogOpen}
         onOpenChange={(open) => {
@@ -801,7 +621,7 @@ function AddButton() {
 }
 
 function ExtraHeader(props: {
-  table: ReactTable<typeof dataTableFeatures, ProfileProxy>;
+  table: ReactTable<typeof dataTableFeatures, ProxyTableRow>;
 }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
@@ -810,12 +630,13 @@ function ExtraHeader(props: {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   // Batch remove proxies mutation
-  const { mutateAsync: removeProxiesBatchMutation } = useMutation({
+  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (addresses: string[]) => {
-      await removeInstanceProxiesBatch(
-        addresses,
+    onMutate: () => props.table.resetRowSelection(),
+    mutationFn: async (proxies: ProfileProxy[]) => {
+      await removeInstanceProxyEntries(
+        proxies,
         instanceInfo,
         transport,
         queryClient,
@@ -859,94 +680,16 @@ function ExtraHeader(props: {
     [props.table, t],
   );
 
+  const checkProxies = useProxyCheck(
+    transport,
+    instanceInfo.id,
+    removeProxyEntriesMutation,
+  );
   const performProxyCheck = useCallback(() => {
-    if (transport === null) {
-      return;
-    }
-
-    const selectedRows = props.table
-      .getFilteredSelectedRowModel()
-      .rows.map((r) => r.original);
-
-    const abortController = new AbortController();
-    const loadingData: ExternalToast = {
-      cancel: {
-        label: t("common:cancel"),
-        onClick: () => {
-          abortController.abort();
-        },
-      },
-    };
-    const total = selectedRows.length;
-    let failed = 0;
-    let success = 0;
-    const loadingReport = () =>
-      t("proxy.checkToast.loading", {
-        checked: success + failed,
-        total,
-        success,
-        failed,
-      });
-    const toastId = toast.loading(loadingReport(), loadingData);
-    const service = createClient(ProxyCheckService, transport);
-    const responses = service.check(
-      {
-        instanceId: instanceInfo.id,
-        proxy: selectedRows,
-      },
-      {
-        signal: abortController.signal,
-      },
+    checkProxies(
+      props.table.getFilteredSelectedRowModel().rows.map((row) => row.original),
     );
-    void observeServerStream(responses, {
-      onMessage: async (r) => {
-        const data = r.data;
-        switch (data.case) {
-          case "end": {
-            toast.success(
-              t("proxy.checkToast.success", {
-                count: failed,
-              }),
-              {
-                id: toastId,
-                cancel: undefined,
-              },
-            );
-            break;
-          }
-          case "single": {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            if (data.value.valid) {
-              success++;
-            } else {
-              failed++;
-              // Remove the invalid proxy by address
-              const proxyToRemove = data.value.proxy;
-              if (proxyToRemove) {
-                await removeProxiesBatchMutation([proxyToRemove.address]);
-              }
-            }
-
-            toast.loading(loadingReport(), {
-              id: toastId,
-              ...loadingData,
-            });
-            break;
-          }
-        }
-      },
-      onError: (e) => {
-        console.error(e);
-        toast.error(t("proxy.checkToast.error"), {
-          id: toastId,
-          cancel: undefined,
-        });
-      },
-    });
-  }, [transport, props.table, t, instanceInfo.id, removeProxiesBatchMutation]);
+  }, [checkProxies, props.table]);
 
   return (
     <>
@@ -1001,19 +744,16 @@ function ExtraHeader(props: {
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
 
-          toast.promise(
-            removeProxiesBatchMutation(selectedRows.map((r) => r.address)),
-            {
-              loading: t("proxy.removeToast.loading"),
-              success: t("proxy.removeToast.success", {
-                count: selectedRows.length,
-              }),
-              error: (e) => {
-                console.error(e);
-                return t("proxy.removeToast.error");
-              },
+          toast.promise(removeProxyEntriesMutation(selectedRows), {
+            loading: t("proxy.removeToast.loading"),
+            success: t("proxy.removeToast.success", {
+              count: selectedRows.length,
+            }),
+            error: (e) => {
+              console.error(e);
+              return t("proxy.removeToast.error");
             },
-          );
+          });
         }}
       >
         <TrashIcon />
@@ -1063,14 +803,23 @@ function ProxySettings() {
 function Content() {
   const { t } = useTranslation("instance");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
+  // Exact setting links come from search and keep the table params intact.
+  const focusNamespace = Route.useSearch({
+    select: (search) => search.focusNamespace,
+  });
+  const focusKey = Route.useSearch({ select: (search) => search.focusKey });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
+  const proxyRows = useMemo(
+    () => getProxyRows(profile.proxies),
+    [profile.proxies],
+  );
   const { table } = useDataTable({
-    data: profile.proxies,
+    data: proxyRows,
     columns,
-    getRowId: (row) => getProxyKey(row),
+    getRowId: (row) => row.rowId,
   });
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<ProfileProxy>();
@@ -1079,9 +828,10 @@ function Content() {
   const { mutate: removeProxyMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-single", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    mutationFn: async (address: string) => {
-      await removeInstanceProxiesBatch(
-        [address],
+    onMutate: () => table.resetRowSelection(),
+    mutationFn: async (proxy: ProfileProxy) => {
+      await removeInstanceProxyEntries(
+        [proxy],
         instanceInfo,
         transport,
         queryClient,
@@ -1111,7 +861,12 @@ function Content() {
               (s) => s.id === "proxy",
             ) as SettingsPage
           }
-          disabledIds={PROXY_SETTINGS_DISABLED_IDS}
+          disabledIds={PAGE_HIDDEN_SETTINGS.proxy}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
         />
       </div>
       <DataTable
@@ -1125,17 +880,17 @@ function Content() {
       >
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
-          <GetProxiesButton />
-          <AddButton />
+          <AddButton onBeforeRemove={() => table.resetRowSelection()} />
         </DataTableToolbar>
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.address);
               dismiss();
@@ -1143,9 +898,9 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("proxy.contextMenu.copyAddress")}
-          </MenuItem>
+          </DropdownMenuItem>
           {contextMenu.data.username && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 copyToClipboard(contextMenu.data.username ?? "");
                 dismiss();
@@ -1153,10 +908,10 @@ function Content() {
             >
               <ClipboardCopyIcon />
               {t("proxy.contextMenu.copyUsername")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
           {contextMenu.data.password && (
-            <MenuItem
+            <DropdownMenuItem
               onClick={() => {
                 copyToClipboard(contextMenu.data.password ?? "");
                 dismiss();
@@ -1164,19 +919,19 @@ function Content() {
             >
               <ClipboardCopyIcon />
               {t("proxy.contextMenu.copyPassword")}
-            </MenuItem>
+            </DropdownMenuItem>
           )}
-          <MenuSeparator />
-          <MenuItem
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             variant="destructive"
             onClick={() => {
-              removeProxyMutation(contextMenu.data.address);
+              removeProxyMutation(contextMenu.data);
               dismiss();
             }}
           >
             <TrashIcon />
             {t("proxy.contextMenu.deleteProxy")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
     </div>

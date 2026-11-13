@@ -16,5 +16,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "electron"]
+  "include": ["src", "electron", ".storybook", "vitest.config.ts"],
+  "exclude": ["electron/cast/**/*.test.ts"]
 }

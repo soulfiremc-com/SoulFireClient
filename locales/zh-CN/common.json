@@ -15,6 +15,11 @@
     },
     "connectionFailed": "连接 SoulFire 服务器失败。"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "未找到",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "一个友好的名称",
           "placeholder": "我的 Minecraft 机器人",
-          "description": "您想要赋予此实例的名称",
-          "min": "名称至少需要3个字符",
-          "max": "名称最多允许32个字符",
-          "regex": "名称只能包含字母、数字和空格"
+          "description": "您想要赋予此实例的名称"
         },
         "cancel": "取消",
         "create": "创建"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "正在下载数据...",
           "success": "数据已加载！",
-          "error": "下载数据失败"
+          "error": "下载数据失败",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,18 @@
       "error": "停止机器人失败"
     },
     "permissionDenied": "您没有权限在此实例中启动或停止机器人。",
-    "serverUpdateRequired": "服务器未报告机器人控制权限。请检查您的服务器和客户端版本是否匹配。"
+    "serverUpdateRequired": "服务器未报告机器人控制权限。请检查您的服务器和客户端版本是否匹配。",
+    "startBots": "启动机器人",
+    "moreActions": "更多机器人操作",
+    "generateFirst": "创建账户以启动您的第一个机器人。",
+    "startCountHelp": "启动额外的机器人，已运行的机器人将保持连接。",
+    "startAllCount": "启动全部 {{count}} 个",
+    "validCount": "请输入一个介于 1 和 {{count}} 之间的整数。",
+    "positiveCount": "请输入至少为 1 的整数。",
+    "availableCount_other": "有 {{count}} 个已停止的机器人可用。",
+    "startSelected_other": "启动 {{count}} 个机器人",
+    "stopCount_other": "停止 {{count}} 个机器人",
+    "restartCount_other": "重启 {{count}} 个机器人"
   },
   "botFleetSummary": "{{online}} 在线 · {{desired}} 目标 · {{total}} 总计",
   "icon": {
@@ -237,8 +252,13 @@
     "website": "网站"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "未找到设置命名空间",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "添加新条目...",
       "add": "添加",
       "remove": "删除"
@@ -453,6 +473,14 @@
     "success": "已将“{{content}}”复制到剪贴板",
     "error": "复制到剪贴板失败"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "头像",
@@ -466,7 +494,11 @@
     "email": {
       "uiName": "电子邮箱",
       "description": "您的邮箱用于登录和通知。"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "筛选审计日志...",
@@ -610,5 +642,13 @@
     "filter": "过滤进程输出",
     "truncated": "已省略 {{count}} 条较旧的日志行。完整的服务器日志仍保存在数据目录中。",
     "privacy": "报告包括本地路径和最近的日志。分享前请仔细检查报告和线程转储中是否有个人信息。不自动上传任何内容。"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

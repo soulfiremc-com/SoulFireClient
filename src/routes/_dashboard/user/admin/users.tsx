@@ -1,5 +1,6 @@
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQueryClient,
@@ -23,9 +24,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
-  MenuItem,
-  MenuSeparator,
-} from "@/components/context-menu-primitives.tsx";
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
   DataTableActionBar,
@@ -54,6 +55,7 @@ import { UserService } from "@/generated/soulfire/user_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import { calendarDateRangeFilter } from "@/lib/calendar-date-range-filter";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
@@ -182,11 +184,13 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         };
       }),
     },
+    filterFn: "arrHas",
     enableColumnFilter: true,
   },
   {
     id: "createdAt",
-    accessorFn: (row) => timestampToDate(row.createdAt as Timestamp),
+    accessorFn: (row) =>
+      row.createdAt ? timestampToDate(row.createdAt) : undefined,
     accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -194,9 +198,10 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         label={i18n.t("admin:users.table.createdAt")}
       />
     ),
-    cell: ({ row }) => (
-      <SFTimeAgo date={timestampToDate(row.original.createdAt as Timestamp)} />
-    ),
+    cell: ({ row }) =>
+      row.original.createdAt ? (
+        <SFTimeAgo date={timestampToDate(row.original.createdAt)} />
+      ) : null,
     enableGlobalFilter: false,
     sortFn: "datetime",
     meta: {
@@ -208,12 +213,13 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
       },
       variant: "dateRange",
     },
-    filterFn: "inNumberRange",
+    filterFn: calendarDateRangeFilter,
     enableColumnFilter: true,
   },
   {
     id: "minIssuedAt",
-    accessorFn: (row) => timestampToDate(row.minIssuedAt as Timestamp),
+    accessorFn: (row) =>
+      row.minIssuedAt ? timestampToDate(row.minIssuedAt) : undefined,
     accessorKey: "minIssuedAt",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -221,11 +227,10 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         label={i18n.t("admin:users.table.minIssuedAt")}
       />
     ),
-    cell: ({ row }) => (
-      <SFTimeAgo
-        date={timestampToDate(row.original.minIssuedAt as Timestamp)}
-      />
-    ),
+    cell: ({ row }) =>
+      row.original.minIssuedAt ? (
+        <SFTimeAgo date={timestampToDate(row.original.minIssuedAt)} />
+      ) : null,
     enableGlobalFilter: false,
     sortFn: "datetime",
     meta: {
@@ -237,7 +242,7 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
       },
       variant: "dateRange",
     },
-    filterFn: "inNumberRange",
+    filterFn: calendarDateRangeFilter,
     enableColumnFilter: true,
   },
   {
@@ -258,11 +263,13 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
 function UpdateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
+  const { t } = useTranslation("admin");
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Button
+        aria-label={t("users.contextMenu.editUser")}
         disabled={!props.row.getCanSelect()}
         variant="secondary"
         size="sm"
@@ -283,10 +290,12 @@ function UpdateUserButton(props: {
 function ImpersonateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
+  const { t } = useTranslation("admin");
   const transport = use(TransportContext);
   const navigate = useNavigate();
   return (
     <Button
+      aria-label={t("users.contextMenu.impersonate")}
       disabled={!props.row.getCanSelect()}
       variant="secondary"
       size="sm"
@@ -296,10 +305,12 @@ function ImpersonateUserButton(props: {
             return;
           }
 
-          const userService = createClient(UserService, transport);
-          const token = await userService.generateUserAPIToken({
-            id: props.row.original.id,
-          });
+          const userService = createRpcClient(UserService, transport);
+          const token = await Effect.runPromise(
+            userService.generateUserAPIToken({
+              id: props.row.original.id,
+            }),
+          );
           startImpersonation(token.token);
           await navigate({
             to: "/user",
@@ -315,11 +326,17 @@ function ImpersonateUserButton(props: {
 }
 
 function AddButton() {
+  const { t } = useTranslation("admin");
   const [createOpen, setCreateOpen] = useState(false);
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={() => setCreateOpen(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        aria-label={t("users.addUserDialog.title")}
+        onClick={() => setCreateOpen(true)}
+      >
         <PlusIcon />
       </Button>
       <ManageUserDialog mode="add" open={createOpen} setOpen={setCreateOpen} />
@@ -341,11 +358,13 @@ function ExtraHeader(props: {
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       for (const u of user) {
-        await userService.deleteUser({
-          id: u.id,
-        });
+        await Effect.runPromise(
+          userService.deleteUser({
+            id: u.id,
+          }),
+        );
       }
     },
     onSettled: async () => {
@@ -361,11 +380,13 @@ function ExtraHeader(props: {
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       for (const u of user) {
-        await userService.invalidateSessions({
-          id: u.id,
-        });
+        await Effect.runPromise(
+          userService.invalidateSessions({
+            id: u.id,
+          }),
+        );
       }
     },
     onSettled: async () => {
@@ -489,11 +510,12 @@ function Content() {
       </DataTable>
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               setEditUser(contextMenu.data);
               dismiss();
@@ -501,15 +523,17 @@ function Content() {
           >
             <PencilIcon />
             {t("users.contextMenu.editUser")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               runAsync(async () => {
                 if (transport === null) return;
-                const userService = createClient(UserService, transport);
-                const token = await userService.generateUserAPIToken({
-                  id: contextMenu.data.id,
-                });
+                const userService = createRpcClient(UserService, transport);
+                const token = await Effect.runPromise(
+                  userService.generateUserAPIToken({
+                    id: contextMenu.data.id,
+                  }),
+                );
                 startImpersonation(token.token);
                 await navigate({
                   to: "/user",
@@ -522,9 +546,9 @@ function Content() {
           >
             <VenetianMaskIcon />
             {t("users.contextMenu.impersonate")}
-          </MenuItem>
-          <MenuSeparator />
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(contextMenu.data.id);
               dismiss();
@@ -532,7 +556,7 @@ function Content() {
           >
             <ClipboardCopyIcon />
             {t("users.contextMenu.copyUserId")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
       {editUser && (

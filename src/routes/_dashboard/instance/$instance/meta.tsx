@@ -1,6 +1,9 @@
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -8,37 +11,56 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { PlusIcon, TrashIcon } from "lucide-react";
-import { use, useCallback, useEffect, useMemo, useState } from "react";
+import { LoaderCircleIcon, PlusIcon, TrashIcon } from "lucide-react";
+import {
+  use,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { getAllIconTags } from "@/components/dynamic-icon.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { SettingTypeRenderer } from "@/components/settings-page.tsx";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import {
   Field,
   FieldError,
+  FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { SettingsNamespace } from "@/generated/soulfire/common_pb";
 import {
   ComboSettingSchema,
   InstancePermission,
-  StringSetting_InputType,
-  StringSettingSchema,
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import i18n from "@/lib/i18n";
-import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
+import { createInstanceNameSchema } from "@/lib/instance-name.ts";
+import {
+  metadataKeyPattern,
+  metadataNamespacePattern,
+  updateMetadataEntry,
+} from "@/lib/metadata.ts";
+import { jsonToValue, parseJsonValue, valueToJson } from "@/lib/protobuf.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
   formatIconName,
@@ -80,14 +102,6 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
     }
   }
   return entries;
-}
-
-function parseJsonValue(value: string): JsonValue | null {
-  try {
-    return JSON.parse(value) as JsonValue;
-  } catch {
-    return null;
-  }
 }
 
 function MetaSettingsSkeleton() {
@@ -141,6 +155,106 @@ function MetaSettings() {
   );
 }
 
+function InstanceNameField({
+  value,
+  disabled,
+  onSave,
+}: {
+  value: string;
+  disabled: boolean;
+  onSave: (name: string) => Promise<void>;
+}) {
+  const { t } = useTranslation("common");
+  const id = useId();
+  const schema = createInstanceNameSchema({
+    required: t("instanceName.required"),
+    max: t("instanceName.max"),
+    singleLine: t("instanceName.singleLine"),
+  });
+  const form = useForm({
+    defaultValues: { name: value },
+    validators: { onSubmit: toFormSchema(Schema.Struct({ name: schema })) },
+    onSubmit: async ({ value: fields, formApi }) => {
+      const name = Schema.decodeUnknownSync(schema)(fields.name);
+      if (name === value) return;
+      try {
+        await onSave(name);
+        formApi.reset({ name });
+        toast.success(t("instanceName.saved"));
+      } catch (error) {
+        console.error(error);
+        toast.error(t("instanceName.saveError"));
+      }
+    },
+  });
+  return (
+    <form
+      className="max-w-xl"
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <form.Subscribe selector={(state) => state.isSubmitting}>
+        {(isSubmitting) => (
+          <form.Field name="name">
+            {(field) => {
+              const invalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <Field
+                  data-invalid={invalid}
+                  data-disabled={disabled || isSubmitting}
+                >
+                  <FieldLabel htmlFor={id}>
+                    {t("dialog.createInstance.form.friendlyName.label")}
+                  </FieldLabel>
+                  <InputGroup>
+                    <InputGroupInput
+                      id={id}
+                      name="friendlyName"
+                      value={field.state.value}
+                      placeholder={t(
+                        "dialog.createInstance.form.friendlyName.placeholder",
+                      )}
+                      aria-invalid={invalid}
+                      disabled={disabled || isSubmitting}
+                      onChange={(event) =>
+                        field.handleChange(event.currentTarget.value)
+                      }
+                      onBlur={field.handleBlur}
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        type="submit"
+                        aria-label={t("instanceName.save")}
+                        disabled={disabled || isSubmitting}
+                      >
+                        {isSubmitting && (
+                          <LoaderCircleIcon
+                            className="animate-spin"
+                            data-icon="inline-start"
+                          />
+                        )}
+                        {t("save")}
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <FieldDescription>
+                    {t("dialog.createInstance.form.friendlyName.description")}
+                  </FieldDescription>
+                  {invalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+        )}
+      </form.Subscribe>
+    </form>
+  );
+}
+
 function Content() {
   const { instanceInfoQueryOptions, instanceListQueryOptions } =
     Route.useRouteContext();
@@ -150,9 +264,9 @@ function Content() {
   const setFriendlyNameMutation = useMutation({
     mutationKey: ["instance", "meta", "friendlyName", instanceInfo.id],
     scope: { id: `instance-meta-friendlyName-${instanceInfo.id}` },
-    mutationFn: async (value: JsonValue) => {
+    mutationFn: async (value: string) => {
       await setInstanceFriendlyName(
-        value as string,
+        value,
         instanceInfo,
         transport,
         queryClient,
@@ -204,32 +318,18 @@ function Content() {
   return (
     <div className="container flex h-full w-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <SettingTypeRenderer
-          settingType={{
-            case: "string",
-            value: create(StringSettingSchema, {
-              uiName: "Friendly Name",
-              description:
-                "The name of the instance that will be displayed in the UI.",
-              def: "",
-              inputType: StringSetting_InputType.TEXT,
-              placeholder: "My Instance",
-              minLength: 3,
-              maxLength: 32,
-              pattern: "[a-zA-Z0-9 ]+",
-              disabled: !canEditMeta,
-            }),
-          }}
+        <InstanceNameField
+          key={instanceInfo.id}
           value={instanceInfo.friendlyName}
-          changeCallback={setFriendlyNameMutation.mutate}
+          disabled={!canEditMeta}
+          onSave={setFriendlyNameMutation.mutateAsync}
         />
         <SettingTypeRenderer
           settingType={{
             case: "combo",
             value: create(ComboSettingSchema, {
               uiName: "Icon",
-              description:
-                "The icon of the instance that will be displayed in the UI.",
+              description: "The project icon shown in the app.",
               options: getAllIconTags().map((iconName) => ({
                 id: iconName[0],
                 displayName: formatIconName(iconName[0]),
@@ -244,7 +344,12 @@ function Content() {
           changeCallback={setIconMutation.mutate}
         />
       </div>
-      {canEditMeta && <InstanceMetadataEditor instanceId={instanceInfo.id} />}
+      {canEditMeta && (
+        <InstanceMetadataEditor
+          key={instanceInfo.id}
+          instanceId={instanceInfo.id}
+        />
+      )}
     </div>
   );
 }
@@ -255,30 +360,53 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   const [entries, setEntries] = useState<MetadataEntry[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const activeLoad = useRef<AbortController | null>(null);
+  const activeView = useRef(false);
+  const isMetadataReady = !isLoading && !loadError && entries !== null;
 
   const loadMetadata = useCallback(async () => {
+    if (!activeView.current) return;
+    activeLoad.current?.abort();
+    const controller = new AbortController();
+    activeLoad.current = controller;
     setIsLoading(true);
-    if (transport === null) {
-      setEntries([]);
-      setIsLoading(false);
-      return;
-    }
-
-    const instanceService = createClient(InstanceService, transport);
+    setLoadError(false);
     try {
-      const result = await instanceService.getInstanceMetadata({
-        instanceId,
-      });
+      if (transport === null) {
+        setLoadError(true);
+        return;
+      }
+      const result = await Effect.runPromise(
+        createRpcClient(InstanceService, transport).getInstanceMetadata(
+          { instanceId },
+          { signal: controller.signal },
+        ),
+      );
+      if (controller.signal.aborted || activeLoad.current !== controller)
+        return;
       setEntries(convertProtoToEntries(result.metadata));
     } catch (e) {
+      if (controller.signal.aborted || activeLoad.current !== controller)
+        return;
       console.error("Failed to load instance metadata:", e);
-      setEntries([]);
+      setLoadError(true);
+    } finally {
+      if (activeLoad.current === controller) {
+        activeLoad.current = null;
+        setIsLoading(false);
+      }
     }
-    setIsLoading(false);
   }, [transport, instanceId]);
 
   useEffect(() => {
+    activeView.current = true;
     void loadMetadata();
+    return () => {
+      activeView.current = false;
+      activeLoad.current?.abort();
+      activeLoad.current = null;
+    };
   }, [loadMetadata]);
 
   const isDuplicate = useCallback(
@@ -303,17 +431,18 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.setInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-        value: jsonToValue(entry.value),
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.setInstanceMetadataEntry({
+          instanceId,
+          namespace: entry.namespace,
+          key: entry.key,
+          value: jsonToValue(entry.value),
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.addSuccess"));
-      void loadMetadata();
     },
     onError: (e) => {
       console.error(e);
@@ -333,28 +462,27 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
+      const instanceService = createRpcClient(InstanceService, transport);
 
-      if (
-        entry.oldNamespace !== entry.namespace ||
-        entry.oldKey !== entry.key
-      ) {
-        await instanceService.deleteInstanceMetadataEntry({
-          instanceId,
-          namespace: entry.oldNamespace,
-          key: entry.oldKey,
-        });
-      }
+      await updateMetadataEntry(entry, {
+        setEntry: (replacement) =>
+          Effect.runPromise(
+            instanceService.setInstanceMetadataEntry({
+              instanceId,
 
-      await instanceService.setInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-        value: jsonToValue(entry.value),
+              ...replacement,
+              value: jsonToValue(replacement.value),
+            }),
+          ),
+        deleteEntry: (original) =>
+          Effect.runPromise(
+            instanceService.deleteInstanceMetadataEntry({
+              instanceId,
+
+              ...original,
+            }),
+          ),
       });
-    },
-    onSuccess: () => {
-      void loadMetadata();
     },
     onError: (e) => {
       console.error(e);
@@ -368,16 +496,17 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     scope: { id: `instance-metadata-${instanceId}` },
     mutationFn: async (entry: { namespace: string; key: string }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.deleteInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.deleteInstanceMetadataEntry({
+          instanceId,
+          namespace: entry.namespace,
+          key: entry.key,
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.deleteSuccess"));
-      void loadMetadata();
     },
     onError: (e) => {
       console.error(e);
@@ -388,18 +517,28 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   const addEntrySchema = useMemo(
     () =>
-      z.object({
-        namespace: z
-          .string()
-          .min(1, t("instanceMetadata.namespacePlaceholder")),
-        key: z.string().min(1, t("instanceMetadata.keyPlaceholder")),
-        value: z
-          .string()
-          .min(1, t("instanceMetadata.valuePlaceholder"))
-          .refine(
-            (v) => parseJsonValue(v) !== null,
-            t("instanceMetadata.invalidJson"),
+      Schema.Struct({
+        namespace: Schema.Trim.check(
+          Schema.isPattern(metadataNamespacePattern, {
+            message: t("metadataValidation.invalidNamespace"),
+          }),
+        ),
+        key: Schema.Trim.check(
+          Schema.isPattern(metadataKeyPattern, {
+            message: t("metadataValidation.invalidKey"),
+          }),
+        ),
+        value: Schema.String.check(
+          Schema.isMinLength(1, {
+            message: t("instanceMetadata.valuePlaceholder"),
+          }),
+        ).check(
+          Schema.makeFilter(
+            (value) =>
+              parseJsonValue(value) !== undefined ||
+              t("instanceMetadata.invalidJson"),
           ),
+        ),
       }),
     [t],
   );
@@ -411,14 +550,16 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: "",
     },
     validators: {
-      onSubmit: addEntrySchema,
+      onSubmit: toFormSchema(addEntrySchema),
     },
-    onSubmit: async ({ value }) => {
-      const namespace = value.namespace.trim();
-      const key = value.key.trim();
-      const parsedValue = parseJsonValue(value.value);
+    onSubmit: async ({ value, formApi }) => {
+      if (!isMetadataReady) return;
+      const submitted = { ...value };
+      const namespace = submitted.namespace.trim();
+      const key = submitted.key.trim();
+      const parsedValue = parseJsonValue(submitted.value);
 
-      if (parsedValue === null) return;
+      if (parsedValue === undefined) return;
 
       if (isDuplicate(namespace, key)) {
         toast.error(t("instanceMetadata.duplicateError"));
@@ -431,12 +572,28 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
           id: generateId(),
           namespace,
           key,
-          value: value.value,
+          value: submitted.value,
         },
       ]);
 
-      addEntryForm.reset();
-      addEntryMutation.mutate({ namespace, key, value: parsedValue });
+      try {
+        await addEntryMutation.mutateAsync({
+          namespace,
+          key,
+          value: parsedValue,
+        });
+      } catch {
+        // The mutation reports the error. Keep the current draft for a retry.
+        return;
+      }
+      const current = formApi.state.values;
+      if (
+        current.namespace === submitted.namespace &&
+        current.key === submitted.key &&
+        current.value === submitted.value
+      ) {
+        formApi.reset();
+      }
     },
   });
 
@@ -448,7 +605,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       field: "namespace" | "key" | "value",
       newFieldValue: string,
     ) => {
-      if (!entries) return;
+      if (!isMetadataReady) return;
 
       const entry = entries.find((e) => e.id === id);
       if (!entry) return;
@@ -456,12 +613,12 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       const updatedEntry = { ...entry, [field]: newFieldValue };
 
       const parsedValue = parseJsonValue(updatedEntry.value);
-      if (parsedValue === null) {
-        setEntries(
-          (prev) => prev?.map((e) => (e.id === id ? updatedEntry : e)) ?? [],
-        );
+      if (
+        parsedValue === undefined ||
+        !metadataNamespacePattern.test(updatedEntry.namespace) ||
+        !metadataKeyPattern.test(updatedEntry.key)
+      )
         return;
-      }
 
       if (
         (field === "namespace" || field === "key") &&
@@ -483,20 +640,17 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
         value: parsedValue,
       });
     },
-    [entries, isDuplicate, t, updateEntryMutation],
+    [entries, isDuplicate, isMetadataReady, t, updateEntryMutation],
   );
 
   const handleDeleteEntry = useCallback(
     (id: string, namespace: string, key: string) => {
+      if (!isMetadataReady) return;
       setEntries((prev) => prev?.filter((e) => e.id !== id) ?? []);
       deleteEntryMutation.mutate({ namespace, key });
     },
-    [deleteEntryMutation],
+    [deleteEntryMutation, isMetadataReady],
   );
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -616,7 +770,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                   <Button
                     type="submit"
                     variant="outline"
-                    disabled={addEntryMutation.isPending}
+                    disabled={!isMetadataReady || addEntryMutation.isPending}
                   >
                     <PlusIcon data-icon="inline-start" />
                     {t("instanceMetadata.addEntryButton", {
@@ -628,8 +782,34 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
             </FieldSet>
           </form>
         </CardHeader>
-        <CardContent className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0">
-          {entries && entries.length === 0 && (
+        <CardContent
+          className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0"
+          aria-busy={isLoading}
+        >
+          {loadError && (
+            <Alert variant="destructive">
+              <AlertTitle>{t("instanceMetadata.loadError")}</AlertTitle>
+              <AlertDescription>
+                <div className="flex flex-col items-start gap-2">
+                  <p>{t("instanceMetadata.loadErrorDescription")}</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void loadMetadata()}
+                  >
+                    {t("instanceMetadata.retryLoad")}
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
+          {isLoading && entries === null && (
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+          )}
+          {isMetadataReady && entries.length === 0 && (
             <p className="text-muted-foreground text-center text-sm py-4">
               {t("instanceMetadata.noEntries")}
             </p>
@@ -651,6 +831,11 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                 handleDeleteEntry(entry.id, entry.namespace, entry.key)
               }
               isDeleting={deleteEntryMutation.isPending}
+              isUpdating={
+                !isMetadataReady ||
+                updateEntryMutation.isPending ||
+                addEntryMutation.isPending
+              }
             />
           ))}
         </CardContent>
@@ -664,22 +849,36 @@ function MetadataEntryRow({
   onUpdate,
   onDelete,
   isDeleting,
+  isUpdating,
 }: {
   entry: MetadataEntry;
   onUpdate: (field: "namespace" | "key" | "value", value: string) => void;
   onDelete: () => void;
   isDeleting: boolean;
+  isUpdating: boolean;
 }) {
   const { t } = useTranslation("instance");
 
-  const [originalNamespace] = useState(entry.namespace);
-  const [originalKey] = useState(entry.key);
-  const [originalValue] = useState(entry.value);
-
-  const isValidJson = useMemo(
-    () => parseJsonValue(entry.value) !== null,
-    [entry.value],
+  const [draft, setDraft] = useState(entry);
+  const isValidNamespace = metadataNamespacePattern.test(
+    draft.namespace.trim(),
   );
+  const isValidKey = metadataKeyPattern.test(draft.key.trim());
+  const isValidJson = parseJsonValue(draft.value) !== undefined;
+
+  const saveField = (field: "namespace" | "key" | "value") => {
+    const value = field === "value" ? draft[field] : draft[field].trim();
+    const valid =
+      field === "namespace"
+        ? isValidNamespace
+        : field === "key"
+          ? isValidKey
+          : isValidJson;
+    if (valid && value !== entry[field]) {
+      setDraft((current) => ({ ...current, [field]: value }));
+      onUpdate(field, value);
+    }
+  };
 
   return (
     <FieldSet className="gap-3 rounded-lg border p-3">
@@ -689,7 +888,7 @@ function MetadataEntryRow({
         })}
       </FieldLegend>
       <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
-        <Field className="gap-2">
+        <Field data-invalid={!isValidNamespace} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-namespace`}>
             {t("instanceMetadata.namespaceLabel", {
               defaultValue: "Namespace",
@@ -698,17 +897,20 @@ function MetadataEntryRow({
           <Input
             id={`${entry.id}-namespace`}
             type="text"
-            value={entry.namespace}
-            onChange={(e) => onUpdate("namespace", e.currentTarget.value)}
-            onBlur={(e) => {
-              if (e.currentTarget.value !== originalNamespace) {
-                onUpdate("namespace", e.currentTarget.value);
-              }
-            }}
+            value={draft.namespace}
+            onChange={(e) =>
+              setDraft({ ...draft, namespace: e.currentTarget.value })
+            }
+            onBlur={() => saveField("namespace")}
+            disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.namespacePlaceholder")}
+            aria-invalid={!isValidNamespace}
           />
+          {!isValidNamespace ? (
+            <FieldError>{t("metadataValidation.invalidNamespace")}</FieldError>
+          ) : null}
         </Field>
-        <Field className="gap-2">
+        <Field data-invalid={!isValidKey} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-key`}>
             {t("instanceMetadata.keyLabel", {
               defaultValue: "Key",
@@ -717,15 +919,16 @@ function MetadataEntryRow({
           <Input
             id={`${entry.id}-key`}
             type="text"
-            value={entry.key}
-            onChange={(e) => onUpdate("key", e.currentTarget.value)}
-            onBlur={(e) => {
-              if (e.currentTarget.value !== originalKey) {
-                onUpdate("key", e.currentTarget.value);
-              }
-            }}
+            value={draft.key}
+            onChange={(e) => setDraft({ ...draft, key: e.currentTarget.value })}
+            onBlur={() => saveField("key")}
+            disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.keyPlaceholder")}
+            aria-invalid={!isValidKey}
           />
+          {!isValidKey ? (
+            <FieldError>{t("metadataValidation.invalidKey")}</FieldError>
+          ) : null}
         </Field>
         <Field data-invalid={!isValidJson} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-value`}>
@@ -736,13 +939,12 @@ function MetadataEntryRow({
           <Input
             id={`${entry.id}-value`}
             type="text"
-            value={entry.value}
-            onChange={(e) => onUpdate("value", e.currentTarget.value)}
-            onBlur={(e) => {
-              if (e.currentTarget.value !== originalValue) {
-                onUpdate("value", e.currentTarget.value);
-              }
-            }}
+            value={draft.value}
+            onChange={(e) =>
+              setDraft({ ...draft, value: e.currentTarget.value })
+            }
+            onBlur={() => saveField("value")}
+            disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.valuePlaceholder")}
             className="font-mono"
             aria-invalid={!isValidJson}
@@ -752,7 +954,11 @@ function MetadataEntryRow({
           ) : null}
         </Field>
         <div className="md:self-end">
-          <Button variant="outline" onClick={onDelete} disabled={isDeleting}>
+          <Button
+            variant="outline"
+            onClick={onDelete}
+            disabled={isDeleting || isUpdating}
+          >
             <TrashIcon data-icon="inline-start" />
             {t("instanceMetadata.removeEntryButton", {
               defaultValue: "Remove",

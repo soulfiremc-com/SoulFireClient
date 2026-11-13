@@ -6,6 +6,15 @@ import {
 // Releasing a controller key must not release a key still held on the keyboard.
 export class PovInputSources {
   private held = new Map<string, Set<string>>();
+
+  get hasPressedButtons(): boolean {
+    const prefix = `${Kind.BUTTON}:`;
+    for (const id of this.held.keys()) {
+      if (id.startsWith(prefix)) return true;
+    }
+    return false;
+  }
+
   accept(event: PovInputEvent, source: string): boolean {
     if (event.kind !== Kind.KEY && event.kind !== Kind.BUTTON) return true;
     const id = `${event.kind}:${event.code}`;

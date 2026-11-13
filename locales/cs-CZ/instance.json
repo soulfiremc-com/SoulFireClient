@@ -63,16 +63,34 @@
         "respawned": "znovu oživen",
         "disconnected": "odpojen",
         "unknown": "změnil stav"
+      },
+      "pause": "Pozastavit",
+      "resume": "Pokračovat",
+      "paused": "Zobrazení je pozastaveno. Nová aktivita se stále zaznamenává.",
+      "following": "Živé aktualizace",
+      "reconnecting": "Znovu se připojuji k živému přenosu...",
+      "emptyFilter": "Žádná aktivita neodpovídá tomuto filtru.",
+      "filterLabel": "Filtrovat živý přenos",
+      "filters": {
+        "all": "Vše",
+        "chat": "Chatovací místnost",
+        "lifecycle": "Události"
+      },
+      "columns": {
+        "time": "Čas",
+        "bot": "Bot",
+        "message": "Zpráva"
       }
     },
     "bots": {
       "title": "Boti",
       "viewAll": "Zobrazit všechny boti: {{total}}",
-      "viewAllShort": "Zobrazit vše"
+      "viewAllShort": "Zobrazit vše",
+      "detailsFor": "Detaily bota pro {{name}}"
     },
     "timeline": {
-      "title": "Aktivita",
-      "viewAll": "Zobrazit vše",
+      "title": "Nedávné akce",
+      "viewAll": "Zobrazit historii",
       "empty": "Zatím nebyla zaznamenána žádná aktivita.",
       "noPermission": "Nemáte oprávnění zobrazit záznam auditu.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Podrobné metriky",
       "composition": "Složení světa"
-    }
+    },
+    "loadError": "Nelze načíst nejnovější data."
   },
   "proxy": {
+    "transport": {
+      "network": "Síťová adresa",
+      "unix": "Unixový socket"
+    },
     "getProxies": "Získat proxy servery",
     "addProxies": "Přidat proxy servery",
     "filterPlaceholder": "Filtrovat proxy...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Klíč",
       "valuePlaceholder": "Hodnota (JSON)",
       "noEntries": "Žádné položky metadat. Přidejte jednu výše.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Opakovat",
       "addSuccess": "Položka byla přidána",
       "addError": "Nepodařilo se přidat položku",
       "updateError": "Nepodařilo se aktualizovat položku",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventář",
+      "actionRejected": "",
       "hotbar": "Rychlá lišta",
       "main": "Hlavní inventář",
       "items": "položky",
@@ -446,17 +473,24 @@
         "beaconEffects": "Efekty majáku",
         "crafterSlots": "Ovládání slotů",
         "lecternControls": "Ovládání knihy",
-        "actions": "Akce"
+        "actions": "Akce",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Textové pole",
-        "anvilRename": "Přejmenovat předmět"
+        "anvilRename": "Přejmenovat předmět",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Obsah knihy",
         "emptyPage": "(Prázdná stránka)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Stránka {{current}} z {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Pohled bota",
@@ -479,6 +513,7 @@
       "offline": "Bot je offline. Akce jsou k dispozici pouze když je bot připojen."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Ovládání pohybu",
       "movement": "Pohyb (WASD)",
       "forward": "Pohyb vpřed (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Skript byl deaktivován uživatelem",
     "executionFailed": "Spuštění skriptu selhalo",
     "executionError": "Chyba při spuštění: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Uzlu spuštěn: {{nodeId}}",
     "nodeCompleted": "Uzel dokončen: {{nodeId}}",
     "nodeError": "Chyba uzlu: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Zpět na Skripty",
         "save": "Uložit",
         "saveTooltip": "Uložit skript",
@@ -707,6 +745,16 @@
         "tooltip": "Zkontrolovat změny"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Suchý běh",
         "title": "Suchý běh skriptu",
         "description": "Spusťte skript ze zvoleného spouštěče s testovacími vstupy.",
@@ -715,7 +763,11 @@
         "triggerDescription": "Vyberte uzel spouštěče, který se má provést s testovacími vstupy.",
         "mockInputs": "Testovací vstupy",
         "valuePlaceholder": "Hodnota typu {{type}}",
-        "start": "Spustit suchý běh"
+        "start": "Spustit suchý běh",
+        "stats_one": "",
+        "stats_few": "",
+        "stats_many": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Limity skriptu",
@@ -735,8 +787,13 @@
         "maxStateStoreEntriesDescription": "Maximální počet záznamů ve stavovém úložišti skriptu",
         "disableTimeouts": "Zakázat časové limity",
         "disableTimeoutsDescription": "Zakáže časové limity pro jednotlivé uzly a datové hrany",
-        "save": "Uložit limity"
+        "save": "Uložit limity",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

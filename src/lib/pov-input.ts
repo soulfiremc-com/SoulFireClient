@@ -78,6 +78,19 @@ export function mouseButton(button: number): number {
   return button === 1 ? 2 : button === 2 ? 1 : button;
 }
 
+export function scrollInput(
+  event: Pick<WheelEvent, "deltaMode" | "deltaX" | "deltaY">,
+) {
+  // Sensitivity: 100 pixels, 3 lines, or 1 page per native wheel unit.
+  // Keep fractions so Minecraft can accumulate smooth trackpad gestures.
+  const units = event.deltaMode === 1 ? 3 : event.deltaMode === 2 ? 1 : 100;
+  return create(PovInputEventSchema, {
+    kind: PovInputEvent_Kind.SCROLL,
+    x: -event.deltaX / units,
+    y: -event.deltaY / units,
+  });
+}
+
 export function isSystemShortcut(
   event: Pick<KeyboardEvent, "code" | "metaKey" | "altKey" | "ctrlKey">,
 ): boolean {
@@ -93,28 +106,75 @@ export function isSystemShortcut(
   );
 }
 
-export function keyInput(event: KeyboardEvent, pressed: boolean) {
-  if (isSystemShortcut(event)) return null;
+type TextShortcutEvent = Pick<
+  KeyboardEvent,
+  "code" | "key" | "ctrlKey" | "metaKey" | "altKey" | "shiftKey"
+>;
+
+export function textShortcutKey(
+  event: Pick<KeyboardEvent, "code" | "key">,
+): string {
+  if (
+    event.key.length === 1 &&
+    event.key.charCodeAt(0) >= 32 &&
+    event.key.charCodeAt(0) <= 126
+  )
+    return event.key.toLowerCase();
+  // Match SDL's Latin shortcut fallback on non-Latin layouts.
+  return /^Key[A-Z]$/.test(event.code)
+    ? event.code.slice(3).toLowerCase()
+    : event.key;
+}
+
+export function isTextEditingShortcut(event: TextShortcutEvent): boolean {
+  return (
+    (event.ctrlKey || event.metaKey) &&
+    !event.altKey &&
+    !event.shiftKey &&
+    ["a", "c", "x"].includes(textShortcutKey(event))
+  );
+}
+
+export function isTextInputKey(
+  event: Pick<KeyboardEvent, "key" | "ctrlKey" | "altKey" | "metaKey">,
+): boolean {
+  // AltGr can report Control+Alt. Dead keys must start browser composition.
+  return (
+    !event.metaKey &&
+    (!event.ctrlKey || event.altKey) &&
+    (event.key === "Dead" || [...event.key].length === 1)
+  );
+}
+
+export function keyInput(
+  event: TextShortcutEvent & Pick<KeyboardEvent, "repeat" | "isComposing">,
+  pressed: boolean,
+  typing: boolean,
+) {
+  const editing = typing && isTextEditingShortcut(event);
+  if (pressed && (event.isComposing || (isSystemShortcut(event) && !editing)))
+    return null;
   const code = glfwKey(event.code);
   return code === undefined
     ? null
     : create(PovInputEventSchema, {
         kind: PovInputEvent_Kind.KEY,
         code,
+        key: event.key,
         action: pressed ? (event.repeat ? 2 : 1) : 0,
-        modifiers: inputModifiers(event),
+        modifiers: editing ? 2 : inputModifiers(event),
       });
 }
 
 export function isPovReleaseShortcut(
   event: Pick<
     KeyboardEvent,
-    "code" | "shiftKey" | "ctrlKey" | "metaKey" | "altKey"
+    "code" | "key" | "shiftKey" | "ctrlKey" | "metaKey" | "altKey"
   >,
   mac: boolean,
 ): boolean {
   return (
-    event.code === "KeyG" &&
+    textShortcutKey(event) === "g" &&
     event.shiftKey &&
     !event.altKey &&
     (mac ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey)

@@ -1,8 +1,11 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient } from "@connectrpc/connect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import {
   queryOptions,
   useMutation,
+  useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -11,14 +14,17 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   ArrowUpIcon,
+  BackpackIcon,
   BookOpenIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronUpIcon,
+  CircleAlertIcon,
   ClipboardCopyIcon,
   CompassIcon,
   EyeIcon,
+  Gamepad2Icon,
   GamepadIcon,
   HandIcon,
   HeartIcon,
@@ -28,9 +34,12 @@ import {
   NetworkIcon,
   PackageIcon,
   PencilIcon,
+  PlayIcon,
+  RefreshCwIcon,
   ShieldIcon,
   SparklesIcon,
   SquareIcon,
+  SquareTerminalIcon,
   Trash2Icon,
   UtensilsIcon,
   XIcon,
@@ -38,16 +47,41 @@ import {
 import {
   Activity,
   Suspense,
+  use,
   useCallback,
   useEffect,
+  useEffectEvent,
+  useId,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { BotDialogForm } from "@/components/bot-dialog-form";
+import { BotChatBox } from "@/components/bot-view/bot-chat-box.tsx";
+import { BotStateBadge } from "@/components/instance-overview/bot-grid.tsx";
+import { getFailureFix } from "@/components/instance-overview/fleet-status.tsx";
+import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
+import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible.tsx";
+import {
+  type BotDisplayState,
+  classifyBotFailure,
+  getBotDisplayState,
+} from "@/lib/bot-fleet.ts";
+import {
+  copyMinecraftText,
+  openMinecraftUrl,
+} from "@/lib/minecraft-client-actions";
 import CommandInput from "@/components/command-input.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import { MenuItem } from "@/components/context-menu-primitives.tsx";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { BotPovPlayer } from "@/components/pov/bot-pov-player";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
@@ -57,10 +91,17 @@ import { Button } from "@/components/ui/button.tsx";
 import {
   Empty,
   EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
-import { Input } from "@/components/ui/input.tsx";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
 import {
   Item,
   ItemContent,
@@ -88,6 +129,8 @@ import {
   type BotLiveState,
   type BotMouseClickRequest,
   BotMouseClickRequestSchema,
+  BotConnectionPhase,
+  BotDesiredState,
   BotService,
   type BotSetContainerTextRequest,
   BotSetContainerTextRequestSchema,
@@ -121,7 +164,21 @@ import {
   accountTypeToIcon,
   translateAccountType,
 } from "@/lib/account-types.ts";
+import {
+  createServerInputDraft,
+  editServerInputDraft,
+  syncServerInputDraft,
+} from "@/lib/server-input-draft";
+import { editBoxInsertion, editBoxValue } from "@/lib/minecraft-edit-box";
 import i18n from "@/lib/i18n";
+import {
+  containerMutationOptions,
+  containerMutationScopeId,
+} from "@/lib/container-mutation-options";
+import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
+import { dialogMutationOptions } from "@/lib/dialog-mutation-options";
+import { isResourceUnavailable } from "@/lib/resource-errors";
+import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
@@ -139,10 +196,12 @@ export const Route = createFileRoute(
         if (transport === null) {
           return create(BotInfoResponseSchema, {});
         }
-        const botService = createClient(BotService, transport);
-        const result = await botService.getBotInfo(
-          { instanceId: instance, botId },
-          { signal: queryProps.signal },
+        const botService = createRpcClient(BotService, transport);
+        const result = await Effect.runPromise(
+          botService.getBotInfo(
+            { instanceId: instance, botId },
+            { signal: queryProps.signal },
+          ),
         );
         return result;
       },
@@ -217,8 +276,13 @@ function BotDetailSkeleton() {
 
 function BotDetail() {
   const { t } = useTranslation("common");
-  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  const { instanceInfoQueryOptions, botInfoQueryOptions } =
+    Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const { error: botInfoError } = useQuery({
+    ...botInfoQueryOptions,
+    refetchInterval: false,
+  });
   const { botId } = Route.useParams();
 
   // Find the account
@@ -227,7 +291,7 @@ function BotDetail() {
     [instanceInfo.profile.accounts, botId],
   );
 
-  if (!account) {
+  if (!account || isResourceUnavailable(botInfoError)) {
     return (
       <InstancePageLayout
         extraCrumbs={[
@@ -239,7 +303,10 @@ function BotDetail() {
         <div className="container flex py-8">
           <Empty className="mx-auto max-w-md bg-card">
             <EmptyHeader>
-              <EmptyTitle>Bot not found</EmptyTitle>
+              <EmptyTitle>{t("botUnavailable.title")}</EmptyTitle>
+              <EmptyDescription>
+                {t("botUnavailable.description")}
+              </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button
@@ -365,11 +432,12 @@ function BotDetailContent({
 
       {contextMenu && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(account.lastKnownName);
               dismiss();
@@ -377,8 +445,8 @@ function BotDetailContent({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyUsername")}
-          </MenuItem>
-          <MenuItem
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(account.profileId);
               dismiss();
@@ -386,12 +454,20 @@ function BotDetailContent({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyUuid")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
 
+      <Suspense fallback={null}>
+        <BotStateNotice
+          instanceId={instanceId}
+          botId={account.profileId}
+          onOpenControls={() => setActiveTab("controls")}
+        />
+      </Suspense>
+
       <div className="rounded-lg border">
-        <div className="border-b px-4 py-3">
+        <div className="overflow-x-auto border-b px-4 py-3">
           <ToggleGroup
             value={[activeTab]}
             onValueChange={(value) => {
@@ -404,15 +480,19 @@ function BotDetailContent({
             size="sm"
           >
             <ToggleGroupItem value="overview">
+              <EyeIcon data-icon="inline-start" />
               {t("bots.tabs.overview")}
             </ToggleGroupItem>
             <ToggleGroupItem value="inventory">
+              <BackpackIcon data-icon="inline-start" />
               {t("bots.tabs.inventory")}
             </ToggleGroupItem>
             <ToggleGroupItem value="controls">
+              <Gamepad2Icon data-icon="inline-start" />
               {t("bots.tabs.controls")}
             </ToggleGroupItem>
             <ToggleGroupItem value="terminal">
+              <SquareTerminalIcon data-icon="inline-start" />
               {t("bots.tabs.terminal")}
             </ToggleGroupItem>
           </ToggleGroup>
@@ -420,7 +500,11 @@ function BotDetailContent({
         <div className="p-4">
           <Activity mode={activeTab === "overview" ? "visible" : "hidden"}>
             <Suspense fallback={<TabPanelSkeleton />}>
-              <OverviewTab instanceId={instanceId} botId={account.profileId} />
+              <OverviewTab
+                instanceId={instanceId}
+                botId={account.profileId}
+                botName={account.lastKnownName}
+              />
             </Suspense>
           </Activity>
           <Activity mode={activeTab === "inventory" ? "visible" : "hidden"}>
@@ -516,14 +600,19 @@ function BotDetailHeader({
       <ItemContent className="gap-1">
         <ItemTitle className="text-lg">{account.lastKnownName}</ItemTitle>
         <ItemDescription className="line-clamp-none flex flex-wrap items-center gap-2 text-sm">
-          <span className={cn("font-medium", isOnline ? "text-success" : "")}>
-            {isOnline ? t("bots.online") : t("bots.notJoined")}
-          </span>
+          <BotStateBadge
+            bot={{
+              isOnline,
+              connectionPhase: isOnline
+                ? BotConnectionPhase.SPAWNED
+                : BotConnectionPhase.DISCONNECTED,
+              status: botInfo.status,
+            }}
+          />
           <span className="flex items-center gap-1">
             <TypeIcon className="size-3" />
             {typeLabel}
           </span>
-          <span className="font-mono text-xs">{account.profileId}</span>
         </ItemDescription>
       </ItemContent>
       {isOnline && liveState && (
@@ -590,30 +679,209 @@ function BotDetailHeader({
           </span>
         </div>
       )}
-      <Button
-        variant="ghost"
-        size="sm"
-        nativeButton={false}
-        render={
-          <Link
-            to="/instance/$instance/bots"
-            params={{ instance: instanceId }}
-          />
-        }
-      >
-        <ArrowLeftIcon data-icon="inline-start" />
-        {t("bots.backToBots")}
-      </Button>
+      <div className="flex flex-wrap items-center gap-2">
+        <BotPowerActions
+          instanceId={instanceId}
+          botId={account.profileId}
+          state={getBotDisplayState({
+            isOnline,
+            status: botInfo.status,
+          })}
+        />
+        <Button
+          variant="ghost"
+          size="sm"
+          nativeButton={false}
+          render={
+            <Link
+              to="/instance/$instance/bots"
+              params={{ instance: instanceId }}
+            />
+          }
+        >
+          <ArrowLeftIcon data-icon="inline-start" />
+          {t("bots.backToBots")}
+        </Button>
+      </div>
     </Item>
+  );
+}
+
+/** Start, restart, and stop change what this bot should do, not its view. */
+function BotPowerActions({
+  instanceId,
+  botId,
+  state,
+}: {
+  instanceId: string;
+  botId: string;
+  state: BotDisplayState;
+}) {
+  const { t } = useTranslation("common");
+  const { botInfoQueryOptions, instanceInfoQueryOptions, queryClient } =
+    Route.useRouteContext();
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const transport = use(TransportContext);
+  const change = useMutation({
+    mutationKey: ["bots", "single-state", instanceId, botId],
+    scope: { id: `bot-state-${instanceId}` },
+    mutationFn: async (action: "start" | "restart" | "stop") => {
+      if (transport === null) return;
+      const client = createRpcClient(BotService, transport);
+      if (action === "restart") {
+        await Effect.runPromise(
+          client.restartBots({ instanceId, botIds: [botId] }),
+        );
+        return;
+      }
+      await Effect.runPromise(
+        client.setBotsDesiredState({
+          instanceId,
+          botIds: [botId],
+          desiredState:
+            action === "start"
+              ? BotDesiredState.RUNNING
+              : BotDesiredState.STOPPED,
+        }),
+      );
+    },
+    onError: (error) => toast.error(error.message),
+    onSettled: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
+        queryClient.invalidateQueries({
+          queryKey: botInfoQueryOptions.queryKey,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["instance-info", instanceId],
+        }),
+      ]),
+  });
+  if (!hasInstancePermission(instanceInfo, InstancePermission.CONTROL_BOTS)) {
+    return null;
+  }
+  if (state === "stopped") {
+    return (
+      <Button
+        size="sm"
+        disabled={change.isPending}
+        onClick={() => change.mutate("start")}
+      >
+        <PlayIcon data-icon="inline-start" />
+        {t("controls.start")}
+      </Button>
+    );
+  }
+  return (
+    <>
+      <Button
+        size="sm"
+        variant={state === "failed" ? "default" : "outline"}
+        disabled={change.isPending || state === "stopping"}
+        onClick={() => change.mutate("restart")}
+      >
+        <RefreshCwIcon data-icon="inline-start" />
+        {t("controls.restart")}
+      </Button>
+      <Button
+        size="sm"
+        variant="outline"
+        disabled={change.isPending || state === "stopping"}
+        onClick={() => change.mutate("stop")}
+      >
+        <SquareIcon data-icon="inline-start" />
+        {t("controls.stop")}
+      </Button>
+    </>
+  );
+}
+
+/** Says what a disconnected bot is doing and points to the next step. */
+function BotStateNotice({
+  instanceId,
+  botId,
+  onOpenControls,
+}: {
+  instanceId: string;
+  botId: string;
+  onOpenControls: () => void;
+}) {
+  const { t } = useTranslation("instance");
+  const { botInfoQueryOptions } = Route.useRouteContext();
+  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
+  const isOnline = !!botInfo.liveState;
+  const state = getBotDisplayState({ isOnline, status: botInfo.status });
+  const { data: dialogData } = useQuery(
+    botDialogQueryOptions(instanceId, botId, isOnline),
+  );
+  if (isOnline && dialogData?.dialog) {
+    return (
+      <Alert role="status">
+        <MonitorIcon />
+        <AlertTitle>{t("bots.notice.dialogOpen.title")}</AlertTitle>
+        <AlertDescription>
+          <div className="flex flex-wrap items-center gap-2">
+            {t("bots.notice.dialogOpen.description")}
+            <Button size="sm" variant="outline" onClick={onOpenControls}>
+              {t("bots.notice.dialogOpen.action")}
+            </Button>
+          </div>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+  if (state === "connected" || state === "stopping") return null;
+  const lastError = botInfo.status?.lastError;
+  if (state === "failed" || state === "retrying") {
+    const kind = lastError ? classifyBotFailure(lastError) : "other";
+    const fix = getFailureFix(kind, instanceId);
+    return (
+      <Alert role="alert">
+        <CircleAlertIcon
+          className={
+            state === "failed" ? "text-destructive" : "text-warning-emphasis"
+          }
+        />
+        <AlertTitle>{t(`bots.notice.${state}`)}</AlertTitle>
+        <AlertDescription>
+          <div className="flex flex-col gap-2">
+            <span>{t(`fleet.kind.${kind}.description`)}</span>
+            {lastError && (
+              <span className="font-mono text-xs break-words select-text">
+                {lastError}
+              </span>
+            )}
+            {fix && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-fit"
+                nativeButton={false}
+                render={<Link {...fix.link} />}
+              >
+                {t(fix.labelKey)}
+              </Button>
+            )}
+          </div>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+  return (
+    <p className="text-muted-foreground text-sm" role="status">
+      {t(`bots.notice.${state}`)}
+    </p>
   );
 }
 
 function OverviewTab({
   instanceId,
   botId,
+  botName,
 }: {
   instanceId: string;
   botId: string;
+  botName: string;
 }) {
   const { botInfoQueryOptions } = Route.useRouteContext();
   const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
@@ -622,22 +890,44 @@ function OverviewTab({
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<null>();
   const copyToClipboard = useCopyToClipboard();
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const canWatchFeed = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.READ_BOT_INFO,
+  );
   const isOnline = !!botInfo.liveState;
   const liveState = botInfo.liveState;
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Left: POV panel */}
-        <BotPovPlayer
-          instanceId={instanceId}
-          botId={botId}
-          isOnline={isOnline}
-        />
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]">
+        {/* Main: watch and control, with this bot's chat below. */}
+        <div className="flex min-w-0 flex-col gap-6">
+          <BotPovPlayer
+            instanceId={instanceId}
+            botId={botId}
+            isOnline={isOnline}
+          />
+          <BotChatBox
+            key={`${instanceId}:${botId}`}
+            instanceId={instanceId}
+            botId={botId}
+            disabledReason={
+              isOnline ? undefined : t("bots.chatPanel.offlineHint")
+            }
+          />
+          <LiveFeed
+            instanceId={instanceId}
+            canWatch={canWatchFeed}
+            botName={botName}
+            title={t("bots.chatPanel.title")}
+          />
+        </div>
 
-        {/* Right: Position + Compass */}
+        {/* Side: status first, details on request. */}
         <div
-          className="flex flex-col gap-6"
+          className="flex min-w-0 flex-col gap-6"
           onContextMenu={(e) => handleContextMenu(e, null)}
         >
           <Item variant="outline" size="sm">
@@ -676,9 +966,9 @@ function OverviewTab({
               {t("bots.positionPanel.title")}
             </h3>
             {isOnline && liveState ? (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-3">
                 <div>
-                  <p className="text-muted-foreground text-xs font-medium uppercase">
+                  <p className="text-muted-foreground text-xs">
                     {t("bots.positionPanel.position")}
                   </p>
                   <div className="mt-1 grid select-text grid-cols-3 gap-2 font-mono text-sm">
@@ -697,7 +987,7 @@ function OverviewTab({
                   </div>
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-xs font-medium uppercase">
+                  <p className="text-muted-foreground text-xs">
                     {t("bots.positionPanel.rotation")}
                   </p>
                   <div className="mt-1 grid select-text grid-cols-2 gap-2 font-mono text-sm">
@@ -721,19 +1011,47 @@ function OverviewTab({
             )}
           </div>
 
-          {/* Compass + Look direction */}
-          <BotVisualPanel liveState={liveState} isOnline={isOnline} />
+          <Collapsible>
+            <CollapsibleTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="group/details w-fit"
+                />
+              }
+            >
+              <ChevronRightIcon
+                data-icon="inline-start"
+                className="group-data-[panel-open]/details:rotate-90"
+              />
+              {t("bots.detailsToggle")}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-3 flex flex-col gap-4">
+              <dl className="text-sm">
+                <dt className="text-muted-foreground text-xs">
+                  {t("bots.profileId")}
+                </dt>
+                <dd className="font-mono text-xs break-all select-text">
+                  {botId}
+                </dd>
+              </dl>
+              <BotVisualPanel liveState={liveState} isOnline={isOnline} />
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
 
       {/* Context menu for position copy */}
       {contextMenu && isOnline && liveState && (
         <ContextMenuPortal
+          onClose={dismiss}
           x={contextMenu.position.x}
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <MenuItem
+          <DropdownMenuItem
             onClick={() => {
               copyToClipboard(
                 `${liveState.x.toFixed(2)}, ${liveState.y.toFixed(2)}, ${liveState.z.toFixed(2)}`,
@@ -743,7 +1061,7 @@ function OverviewTab({
           >
             <ClipboardCopyIcon />
             {tCommon("contextMenu.bot.copyCoordinates")}
-          </MenuItem>
+          </DropdownMenuItem>
         </ContextMenuPortal>
       )}
     </>
@@ -770,6 +1088,7 @@ function ControlsTab({
           instanceId={instanceId}
           botId={botId}
           liveState={liveState}
+          movementState={botInfo.movementState}
         />
       </div>
       <div className="flex flex-col gap-6">
@@ -799,13 +1118,12 @@ function BotTerminalPanel({
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
   return (
-    <div className="flex flex-col gap-2">
-      <TerminalComponent scope={logScope} />
+    <TerminalComponent scope={logScope}>
       {hasInstancePermission(
         instanceInfo,
         InstancePermission.INSTANCE_COMMAND_EXECUTION,
       ) && <CommandInput scope={commandScope} />}
-    </div>
+    </TerminalComponent>
   );
 }
 
@@ -849,6 +1167,24 @@ function InventorySlotDisplay({
   hotbarIndex?: number;
   slotIndex?: number;
 }) {
+  const { t } = useTranslation("instance");
+  const isCreativeCatalog =
+    containerType === "creative" && regionId === "creative_catalog";
+  const isCreativeTrash =
+    containerType === "creative" && regionId === "destroy_item";
+  const clickHints = isCreativeCatalog
+    ? [t("bots.inventoryPanel.creativeCatalogHint")]
+    : isCreativeTrash
+      ? [t("bots.inventoryPanel.creativeTrashHint")]
+      : [
+          "Left click: Pick up/place",
+          "Right click: Pick up half/place one",
+          "Shift+click: Quick move",
+        ];
+  if (onMiddleClick && !isCreativeCatalog) {
+    clickHints.push("Middle click: Select as active slot");
+  }
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (e.shiftKey && onShiftClick) {
@@ -860,7 +1196,9 @@ function InventorySlotDisplay({
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (onRightClick) {
+    if (e.shiftKey && onShiftClick) {
+      onShiftClick();
+    } else if (onRightClick) {
       onRightClick();
     }
   };
@@ -886,6 +1224,11 @@ function InventorySlotDisplay({
   if (hotbarIndex !== undefined) devInfoParts.push(`Hotbar: ${hotbarIndex}`);
 
   if (!item) {
+    const description = [
+      ...(isCreativeTrash ? [t("bots.inventoryPanel.destroyItem")] : []),
+      ...devInfoParts,
+      ...(isClickable ? ["", ...clickHints] : []),
+    ].join("\n");
     return (
       <button
         type="button"
@@ -894,29 +1237,31 @@ function InventorySlotDisplay({
         onContextMenu={handleContextMenu}
         onMouseDown={handleMouseDown}
         disabled={!isClickable}
-        title={devInfoParts.length > 0 ? devInfoParts.join("\n") : undefined}
+        aria-label={description}
+        title={description}
       >
-        {slotNumber !== undefined && (
-          <span className="text-muted-foreground/30">{slotNumber}</span>
+        {isCreativeTrash ? (
+          <Trash2Icon className="text-muted-foreground size-4" />
+        ) : (
+          slotNumber !== undefined && (
+            <span className="text-muted-foreground/30">{slotNumber}</span>
+          )
         )}
       </button>
     );
   }
 
+  const [tooltipName, ...tooltipDetails] = item.tooltipLines;
   const titleParts = [
-    `${item.displayName || formatItemId(item.itemId)} x${item.count}`,
+    `${tooltipName || item.displayName || formatItemId(item.itemId)} x${item.count}`,
+    ...tooltipDetails,
   ];
   const itemImageSrc = inventoryItemImageSrc(item);
   if (devInfoParts.length > 0) {
     titleParts.push("", ...devInfoParts);
   }
   if (isClickable) {
-    titleParts.push("", "Left click: Pick up/place");
-    titleParts.push("Right click: Pick up half/place one");
-    titleParts.push("Shift+click: Quick move");
-  }
-  if (onMiddleClick) {
-    titleParts.push("Middle click: Select as active slot");
+    titleParts.push("", ...clickHints);
   }
 
   return (
@@ -926,6 +1271,7 @@ function InventorySlotDisplay({
       onClick={handleClick}
       onContextMenu={handleContextMenu}
       onMouseDown={handleMouseDown}
+      aria-label={titleParts.join("\n")}
       title={titleParts.join("\n")}
       disabled={!isClickable}
     >
@@ -999,9 +1345,11 @@ function SlotRegionGrid({
                 onSlotClick(slotIndex, ClickType.SHIFT_LEFT_CLICK)
               }
               onMiddleClick={
-                isHotbar && onHotbarSlotSelect
-                  ? () => onHotbarSlotSelect(i)
-                  : undefined
+                containerType === "creative" && region.id === "creative_catalog"
+                  ? () => onSlotClick(slotIndex, ClickType.MIDDLE_CLICK)
+                  : isHotbar && onHotbarSlotSelect
+                    ? () => onHotbarSlotSelect(i)
+                    : undefined
               }
               containerType={containerType}
               regionId={region.id}
@@ -1035,86 +1383,134 @@ function BotInventoryPanel({
         if (!isOnline) return null;
         const transport = createTransport();
         if (transport === null) return null;
-        const botService = createClient(BotService, transport);
-        const result = await botService.getInventoryState({
-          instanceId,
-          botId,
-        });
+        const botService = createRpcClient(BotService, transport);
+        const result = await Effect.runPromise(
+          botService.getInventoryState({
+            instanceId,
+            botId,
+          }),
+        );
         return result;
       },
       refetchInterval: 1_000,
     }),
   );
 
+  const isPending = useMutationScopePending(
+    containerMutationScopeId(instanceId, botId, inventoryState?.menuId),
+  );
+
+  const requireSuccess = <T extends { success: boolean; error?: string }>(
+    result: T,
+  ): T => {
+    if (!result.success)
+      throw new Error(result.error || t("bots.inventoryPanel.actionRejected"));
+    return result;
+  };
+
+  const handleContainerError = useCallback((error: Error) => {
+    toast.error(error.message);
+  }, []);
+
   // Mutation for clicking inventory slots
   const clickMutation = useMutation({
-    mutationKey: ["bot", "inventory", "click", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "click",
+    ),
     mutationFn: async (request: BotInventoryClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.clickInventorySlot(request);
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(botService.clickInventorySlot(request)),
+      );
     },
-    onSuccess: () => {
+    onError: handleContainerError,
+    onSettled: () => {
       void refetch();
     },
   });
 
   // Mutation for closing container
   const closeContainerMutation = useMutation({
-    mutationKey: ["bot", "container", "close", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
-    mutationFn: async () => {
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "close",
+    ),
+    mutationFn: async (expectedMenuId: string | undefined) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.closeContainer({ instanceId, botId });
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(
+          botService.closeContainer({ instanceId, botId, expectedMenuId }),
+        ),
+      );
     },
-    onSuccess: () => {
+    onError: handleContainerError,
+    onSettled: () => {
       void refetch();
     },
   });
 
   // Mutation for clicking container buttons (stonecutter recipes, etc.)
   const buttonClickMutation = useMutation({
-    mutationKey: ["bot", "container", "button", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "button",
+    ),
     mutationFn: async (request: BotContainerButtonClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.clickContainerButton(request);
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(botService.clickContainerButton(request)),
+      );
     },
-    onSuccess: () => {
+    onError: handleContainerError,
+    onSettled: () => {
       void refetch();
     },
   });
 
   // Mutation for setting container text (anvil rename, etc.)
   const setTextMutation = useMutation({
-    mutationKey: ["bot", "container", "text", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
+    ...containerMutationOptions(
+      instanceId,
+      botId,
+      inventoryState?.menuId,
+      "text",
+    ),
     mutationFn: async (request: BotSetContainerTextRequest) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.setContainerText(request);
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(botService.setContainerText(request)),
+      );
     },
-    onSuccess: () => {
-      void refetch();
+    onError: handleContainerError,
+    onSettled: async () => {
+      await refetch();
     },
   });
 
-  // Mutation for setting hotbar slot
+  // Hotbar selection is bot-wide, so it keeps its own queue across menu changes.
   const setHotbarSlotMutation = useMutation({
     mutationKey: ["bot", "hotbar", "slot", instanceId, botId],
     scope: { id: `bot-container-${instanceId}-${botId}` },
@@ -1123,10 +1519,15 @@ function BotInventoryPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.setHotbarSlot({ instanceId, botId, slot });
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(
+          botService.setHotbarSlot({ instanceId, botId, slot }),
+        ),
+      );
     },
-    onSuccess: () => {
+    onError: handleContainerError,
+    onSettled: () => {
       void refetch();
     },
   });
@@ -1137,12 +1538,13 @@ function BotInventoryPanel({
         create(BotSetContainerTextRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           fieldId,
           text,
         }),
       );
     },
-    [setTextMutation, instanceId, botId],
+    [setTextMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleButtonClick = useCallback(
@@ -1151,11 +1553,12 @@ function BotInventoryPanel({
         create(BotContainerButtonClickRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           buttonId,
         }),
       );
     },
-    [buttonClickMutation, instanceId, botId],
+    [buttonClickMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleSlotClick = useCallback(
@@ -1164,13 +1567,14 @@ function BotInventoryPanel({
         create(BotInventoryClickRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           slot: slotIndex,
           clickType,
           hotbarSlot: 0,
         }),
       );
     },
-    [clickMutation, instanceId, botId],
+    [clickMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleDropOutside = useCallback(
@@ -1179,13 +1583,14 @@ function BotInventoryPanel({
         create(BotInventoryClickRequestSchema, {
           instanceId,
           botId,
+          expectedMenuId: inventoryState?.menuId,
           slot: -999, // Outside slot for dropping
           clickType: dropAll ? ClickType.LEFT_CLICK : ClickType.RIGHT_CLICK,
           hotbarSlot: 0,
         }),
       );
     },
-    [clickMutation, instanceId, botId],
+    [clickMutation, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleHotbarSlotSelect = useCallback(
@@ -1203,9 +1608,11 @@ function BotInventoryPanel({
     ? inventoryItemImageSrc(carriedItem)
     : undefined;
   const selectedHotbarSlot = inventoryState?.selectedHotbarSlot ?? 0;
-  const isPlayerInventory = layout?.title === "Inventory";
+  const isPlayerInventory = layout?.containerType === "inventory";
   const buttons = layout?.buttons ?? [];
   const textInputs = layout?.textInputs ?? [];
+  const anvilInputItem =
+    layout?.containerType === "anvil" ? slotByIndex.get(0) : undefined;
   const bookPages = layout?.bookPages ?? [];
   const currentBookPage = layout?.currentBookPage ?? 0;
 
@@ -1218,7 +1625,11 @@ function BotInventoryPanel({
         </h3>
         <div className="ml-auto flex items-center gap-2">
           {carriedItem && (
-            <Badge variant="default" className="gap-1">
+            <Badge
+              variant="default"
+              className="gap-1"
+              title={carriedItem.tooltipLines.join("\n") || undefined}
+            >
               <HandIcon className="size-3" />
               {carriedItemImageSrc && (
                 <img
@@ -1228,7 +1639,10 @@ function BotInventoryPanel({
                   className="size-4 object-contain [image-rendering:pixelated]"
                 />
               )}
-              {formatItemId(carriedItem.itemId)} x{carriedItem.count}
+              {carriedItem.tooltipLines[0] ||
+                carriedItem.displayName ||
+                formatItemId(carriedItem.itemId)}{" "}
+              x{carriedItem.count}
             </Badge>
           )}
           {slots.length > 0 && (
@@ -1246,8 +1660,10 @@ function BotInventoryPanel({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => closeContainerMutation.mutate()}
-                disabled={closeContainerMutation.isPending}
+                onClick={() =>
+                  closeContainerMutation.mutate(inventoryState?.menuId)
+                }
+                disabled={isPending}
               >
                 <XIcon className="mr-1 size-4" />
                 {t("bots.inventoryPanel.closeContainer")}
@@ -1274,17 +1690,24 @@ function BotInventoryPanel({
               buttons={buttons}
               containerType={layout.containerType}
               onButtonClick={handleButtonClick}
-              isPending={buttonClickMutation.isPending}
+              isPending={isPending}
             />
           )}
 
           {/* Text inputs (anvil rename, etc.) */}
           {textInputs.length > 0 && (
             <ContainerTextInputPanel
+              key={JSON.stringify([
+                inventoryState?.menuId,
+                layout.containerType,
+                anvilInputItem?.itemId,
+                anvilInputItem?.count,
+                anvilInputItem?.displayName,
+              ])}
               textInputs={textInputs}
               containerType={layout.containerType}
               onSetText={handleSetText}
-              isPending={setTextMutation.isPending}
+              isPending={isPending}
             />
           )}
 
@@ -1324,7 +1747,10 @@ function BotInventoryPanel({
 
           {/* Click instructions */}
           <p className="text-muted-foreground text-center text-xs">
-            {t("bots.inventoryPanel.clickHint")}
+            {layout.containerType === "creative" &&
+            layout.regions.some((region) => region.id === "creative_catalog")
+              ? t("bots.inventoryPanel.creativeCatalogHint")
+              : t("bots.inventoryPanel.clickHint")}
           </p>
         </div>
       ) : (
@@ -1354,6 +1780,8 @@ function ContainerButtonsPanel({
   // Get title based on container type
   const title = (() => {
     switch (containerType) {
+      case "creative":
+        return t("bots.inventoryPanel.buttons.creativeTabs");
       case "stonecutter":
         return t("bots.inventoryPanel.buttons.stonecutterRecipes");
       case "enchanting":
@@ -1405,7 +1833,7 @@ function ContainerButtonsPanel({
             disabled={isPending || button.disabled}
             title={button.description || undefined}
           >
-            {button.iconItemId && (
+            {button.iconItemId && containerType !== "creative" && (
               <span className="mr-1 font-mono text-3xs opacity-60">
                 {formatItemId(button.iconItemId)}
               </span>
@@ -1430,68 +1858,184 @@ function ContainerTextInputPanel({
   isPending: boolean;
 }) {
   const { t } = useTranslation("instance");
-  const [localValues, setLocalValues] = useState<Record<string, string>>({});
-
-  // Initialize local values from textInputs
-  useEffect(() => {
-    const initial: Record<string, string> = {};
-    for (const input of textInputs) {
-      if (!(input.id in localValues)) {
-        initial[input.id] = input.currentValue;
-      }
-    }
-    if (Object.keys(initial).length > 0) {
-      setLocalValues((prev) => ({ ...prev, ...initial }));
-    }
-  }, [textInputs, localValues]);
-
-  const handleSubmit = (fieldId: string) => {
-    const value = localValues[fieldId] ?? "";
-    onSetText(fieldId, value);
-  };
-
   // Get title based on container type
   const title =
     containerType === "anvil"
       ? t("bots.inventoryPanel.textInput.anvilRename")
-      : t("bots.inventoryPanel.textInput.title");
+      : containerType === "creative"
+        ? t("bots.inventoryPanel.textInput.creativeSearch")
+        : t("bots.inventoryPanel.textInput.title");
 
   return (
     <div className="flex flex-col gap-2">
       <div className="text-muted-foreground text-sm font-medium">{title}</div>
-      <div className="flex flex-col gap-2 rounded-lg border p-2">
-        {textInputs.map((input) => (
-          <div key={input.id} className="flex items-center gap-2">
-            <Input
-              placeholder={input.placeholder || input.label}
-              value={localValues[input.id] ?? input.currentValue}
-              onChange={(e) =>
-                setLocalValues((prev) => ({
-                  ...prev,
-                  [input.id]: e.target.value,
-                }))
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSubmit(input.id);
-                }
-              }}
-              maxLength={input.maxLength > 0 ? input.maxLength : undefined}
-              className="h-8 text-sm"
-              disabled={isPending}
+      <div className="rounded-lg border p-2">
+        <FieldGroup className="gap-2">
+          {textInputs.map((input) => (
+            <ContainerTextInputField
+              key={input.id}
+              input={input}
+              onSetText={onSetText}
+              isPending={isPending}
             />
-            <Button
-              size="sm"
-              onClick={() => handleSubmit(input.id)}
-              disabled={isPending}
-              className="h-8"
-            >
-              <PencilIcon className="size-3" />
-            </Button>
-          </div>
-        ))}
+          ))}
+        </FieldGroup>
       </div>
     </div>
+  );
+}
+
+function ContainerTextInputField({
+  input,
+  onSetText,
+  isPending,
+}: {
+  input: ContainerTextInput;
+  onSetText: (fieldId: string, text: string) => void;
+  isPending: boolean;
+}) {
+  const { t } = useTranslation("common");
+  const id = useId();
+  const fieldRef = useRef<HTMLInputElement>(null);
+  const composition = useRef<{
+    value: string;
+    start: number;
+    end: number;
+    direction: "forward" | "backward" | "none";
+  } | null>(null);
+  const [draft, setDraft] = useState(() =>
+    createServerInputDraft(input.currentValue),
+  );
+  const current = syncServerInputDraft(draft, input.currentValue);
+  if (current !== draft) setDraft(current);
+
+  const insertText = (element: HTMLInputElement, text: string) => {
+    const start = element.selectionStart ?? element.value.length;
+    const end = element.selectionEnd ?? start;
+    const insertion = editBoxInsertion(
+      element.value,
+      text,
+      start,
+      end,
+      input.maxLength,
+    );
+    element.setRangeText(insertion, start, end, "end");
+    setDraft(editServerInputDraft(current, element.value, isPending));
+  };
+
+  const handleBeforeInput = useEffectEvent((event: InputEvent) => {
+    const element = fieldRef.current;
+    if (
+      !element ||
+      !event.cancelable ||
+      composition.current ||
+      event.isComposing ||
+      event.data === null
+    )
+      return;
+    const start = element.selectionStart ?? element.value.length;
+    const end = element.selectionEnd ?? start;
+    const insertion = editBoxInsertion(
+      element.value,
+      event.data,
+      start,
+      end,
+      input.maxLength,
+    );
+    if (insertion === event.data) return;
+    event.preventDefault();
+    if (editBoxValue(event.data, 0)) insertText(element, event.data);
+  });
+
+  useEffect(() => {
+    const element = fieldRef.current;
+    if (!element) return;
+    const beforeInput = (event: InputEvent) => handleBeforeInput(event);
+    element.addEventListener("beforeinput", beforeInput);
+    return () => element.removeEventListener("beforeinput", beforeInput);
+  }, []);
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!isPending && !composition.current)
+          onSetText(input.id, current.value);
+      }}
+    >
+      <Field>
+        <FieldLabel htmlFor={id} className="sr-only">
+          {input.label}
+        </FieldLabel>
+        <InputGroup>
+          <InputGroupInput
+            ref={fieldRef}
+            id={id}
+            placeholder={input.placeholder || input.label}
+            value={current.value}
+            maxLength={input.maxLength > 0 ? input.maxLength : undefined}
+            onCompositionStart={(event) => {
+              const element = event.currentTarget;
+              const start = element.selectionStart ?? element.value.length;
+              composition.current = {
+                value: element.value,
+                start,
+                end: element.selectionEnd ?? start,
+                direction: element.selectionDirection ?? "none",
+              };
+            }}
+            onCompositionEnd={(event) => {
+              const before = composition.current;
+              composition.current = null;
+              if (!before) return;
+              const element = event.currentTarget;
+              // A browser can clip the commit but leave the caret after the
+              // full preedit. Apply the native insertion to its original range.
+              element.value = before.value;
+              element.setSelectionRange(
+                before.start,
+                before.end,
+                before.direction,
+              );
+              if (event.data) insertText(element, event.data);
+              else
+                setDraft(
+                  editServerInputDraft(current, before.value, isPending),
+                );
+            }}
+            onPaste={(event) => {
+              event.preventDefault();
+              insertText(
+                event.currentTarget,
+                event.clipboardData.getData("text/plain"),
+              );
+            }}
+            onChange={(event) =>
+              setDraft(
+                editServerInputDraft(
+                  current,
+                  composition.current
+                    ? event.target.value
+                    : editBoxValue(event.target.value, 0),
+                  isPending,
+                ),
+              )
+            }
+          />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              type="submit"
+              size="icon-xs"
+              disabled={isPending}
+              aria-label={t("save")}
+              title={t("save")}
+            >
+              <PencilIcon />
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+      </Field>
+    </form>
   );
 }
 
@@ -1545,6 +2089,7 @@ function BookPagesPanel({
           <Button
             variant="outline"
             size="sm"
+            aria-label={t("bots.inventoryPanel.bookPages.previousPage")}
             onClick={handlePrevPage}
             disabled={displayPage <= 0}
           >
@@ -1559,6 +2104,7 @@ function BookPagesPanel({
           <Button
             variant="outline"
             size="sm"
+            aria-label={t("bots.inventoryPanel.bookPages.nextPage")}
             onClick={handleNextPage}
             disabled={displayPage >= totalPages - 1}
           >
@@ -1581,17 +2127,20 @@ function BotActionsPanel({
 }) {
   const { t } = useTranslation("instance");
 
+  const mutationScopeId = `bot-mouse-${instanceId}-${botId}`;
+  const isPending = useMutationScopePending(mutationScopeId);
+
   // Mutation for mouse click actions
   const clickMutation = useMutation({
     mutationKey: ["bot", "mouse", "click", instanceId, botId],
-    scope: { id: `bot-mouse-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async (request: BotMouseClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.mouseClick(request);
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(botService.mouseClick(request));
     },
     onError: (error) => toast.error(error.message),
   });
@@ -1627,10 +2176,10 @@ function BotActionsPanel({
           <Button
             variant="outline"
             onClick={handleLeftClick}
-            disabled={clickMutation.isPending}
+            disabled={isPending}
             title={t("bots.actionsPanel.leftClickDescription")}
           >
-            {clickMutation.isPending ? (
+            {isPending ? (
               <LoaderIcon className="mr-2 size-4 animate-spin" />
             ) : null}
             {t("bots.actionsPanel.leftClick")}
@@ -1638,10 +2187,10 @@ function BotActionsPanel({
           <Button
             variant="outline"
             onClick={handleRightClick}
-            disabled={clickMutation.isPending}
+            disabled={isPending}
             title={t("bots.actionsPanel.rightClickDescription")}
           >
-            {clickMutation.isPending ? (
+            {isPending ? (
               <LoaderIcon className="mr-2 size-4 animate-spin" />
             ) : null}
             {t("bots.actionsPanel.rightClick")}
@@ -1658,93 +2207,102 @@ function BotActionsPanel({
   );
 }
 
+const EMPTY_MOVEMENT_STATE = {
+  forward: false,
+  backward: false,
+  left: false,
+  right: false,
+  jump: false,
+  sneak: false,
+  sprint: false,
+};
+
 function BotMovementPanel({
   isOnline,
   instanceId,
   botId,
   liveState,
+  movementState: currentMovementState,
 }: {
   isOnline: boolean;
   instanceId: string;
   botId: string;
   liveState?: BotLiveState;
+  movementState?: typeof EMPTY_MOVEMENT_STATE;
 }) {
   const { t } = useTranslation("instance");
-  const [movementState, setMovementState] = useState({
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
-    jump: false,
-    sneak: false,
-    sprint: false,
-  });
+  const { queryClient, botInfoQueryOptions } = Route.useRouteContext();
+  const movementState = currentMovementState ?? EMPTY_MOVEMENT_STATE;
+  const mutationScopeId = `bot-movement-${instanceId}-${botId}`;
+  const isPending = useMutationScopePending(mutationScopeId);
 
   // Mutation for setting movement state
   const movementMutation = useMutation({
     mutationKey: ["bot", "movement", "state", instanceId, botId],
-    scope: { id: `bot-movement-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async (state: Partial<typeof movementState>) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.setMovementState({
-        instanceId,
-        botId,
-        ...state,
-      });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(
+        botService.setMovementState({
+          instanceId,
+          botId,
+          ...state,
+        }),
+      );
     },
     onError: (error) => toast.error(error.message),
-    onSuccess: (_response, state) => {
-      setMovementState((previous) => ({ ...previous, ...state }));
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: botInfoQueryOptions.queryKey,
+      }),
   });
 
   // Mutation for resetting movement
   const resetMutation = useMutation({
     mutationKey: ["bot", "movement", "reset", instanceId, botId],
-    scope: { id: `bot-movement-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async () => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.resetMovement({ instanceId, botId });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(botService.resetMovement({ instanceId, botId }));
     },
     onError: (error) => toast.error(error.message),
-    onSuccess: () => {
-      setMovementState({
-        forward: false,
-        backward: false,
-        left: false,
-        right: false,
-        jump: false,
-        sneak: false,
-        sprint: false,
-      });
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: botInfoQueryOptions.queryKey,
+      }),
   });
 
   // Mutation for setting rotation
   const rotationMutation = useMutation({
     mutationKey: ["bot", "rotation", instanceId, botId],
-    scope: { id: `bot-movement-${instanceId}-${botId}` },
+    scope: { id: mutationScopeId },
     mutationFn: async (rotation: { yaw: number; pitch: number }) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.setRotation({
-        instanceId,
-        botId,
-        ...rotation,
-      });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(
+        botService.setRotation({
+          instanceId,
+          botId,
+          ...rotation,
+        }),
+      );
     },
     onError: (error) => toast.error(error.message),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: botInfoQueryOptions.queryKey,
+      }),
   });
 
   const toggleMovement = useCallback(
@@ -1767,11 +2325,6 @@ function BotMovementPanel({
     [liveState, rotationMutation],
   );
 
-  const isPending =
-    movementMutation.isPending ||
-    resetMutation.isPending ||
-    rotationMutation.isPending;
-
   return (
     <div>
       <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
@@ -1785,6 +2338,11 @@ function BotMovementPanel({
             <p className="text-muted-foreground mb-2 text-xs font-medium">
               {t("bots.movementPanel.movement")}
             </p>
+            {!currentMovementState && (
+              <p className="mb-2 text-xs text-muted-foreground">
+                {t("bots.movementPanel.updateServer")}
+              </p>
+            )}
             <div className="flex flex-col items-center gap-1">
               {/* Forward */}
               <Toggle
@@ -1793,7 +2351,7 @@ function BotMovementPanel({
                 size="sm"
                 className="size-10"
                 onPressedChange={() => toggleMovement("forward")}
-                disabled={isPending}
+                disabled={isPending || !currentMovementState}
                 title={t("bots.movementPanel.forward")}
               >
                 <ArrowUpIcon />
@@ -1806,7 +2364,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onPressedChange={() => toggleMovement("left")}
-                  disabled={isPending}
+                  disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.left")}
                 >
                   <ArrowLeftIcon />
@@ -1817,7 +2375,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onPressedChange={() => toggleMovement("backward")}
-                  disabled={isPending}
+                  disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.backward")}
                 >
                   <ArrowDownIcon />
@@ -1828,7 +2386,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onPressedChange={() => toggleMovement("right")}
-                  disabled={isPending}
+                  disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.right")}
                 >
                   <ArrowRightIcon />
@@ -1855,13 +2413,22 @@ function BotMovementPanel({
             spacing={2}
             className="flex-wrap"
           >
-            <ToggleGroupItem value="jump" disabled={isPending}>
+            <ToggleGroupItem
+              value="jump"
+              disabled={isPending || !currentMovementState}
+            >
               {t("bots.movementPanel.jump")}
             </ToggleGroupItem>
-            <ToggleGroupItem value="sneak" disabled={isPending}>
+            <ToggleGroupItem
+              value="sneak"
+              disabled={isPending || !currentMovementState}
+            >
               {t("bots.movementPanel.sneak")}
             </ToggleGroupItem>
-            <ToggleGroupItem value="sprint" disabled={isPending}>
+            <ToggleGroupItem
+              value="sprint"
+              disabled={isPending || !currentMovementState}
+            >
               {t("bots.movementPanel.sprint")}
             </ToggleGroupItem>
             <Button
@@ -1939,6 +2506,32 @@ function BotMovementPanel({
   );
 }
 
+function botDialogQueryOptions(
+  instanceId: string,
+  botId: string,
+  isOnline: boolean,
+) {
+  return queryOptions({
+    queryKey: ["bot-dialog", instanceId, botId],
+    queryFn: async (queryProps) => {
+      const transport = createTransport();
+      if (transport === null) {
+        return { dialog: undefined };
+      }
+      const botService = createRpcClient(BotService, transport);
+      const result = await Effect.runPromise(
+        botService.getDialog(
+          { instanceId, botId },
+          { signal: queryProps.signal },
+        ),
+      );
+      return result;
+    },
+    refetchInterval: 2_000, // Poll for dialog updates
+    enabled: isOnline,
+  });
+}
+
 function BotDialogPanel({
   isOnline,
   instanceId,
@@ -1951,43 +2544,64 @@ function BotDialogPanel({
   const { t } = useTranslation("instance");
   const queryClient = Route.useRouteContext().queryClient;
 
-  // Query for dialog state
-  const dialogQueryOptions = queryOptions({
-    queryKey: ["bot-dialog", instanceId, botId],
-    queryFn: async (queryProps) => {
-      const transport = createTransport();
-      if (transport === null) {
-        return { dialog: undefined };
-      }
-      const botService = createClient(BotService, transport);
-      const result = await botService.getDialog(
-        { instanceId, botId },
-        { signal: queryProps.signal },
-      );
-      return result;
-    },
-    refetchInterval: 2_000, // Poll for dialog updates
-    enabled: isOnline,
-  });
+  const dialogQueryOptions = botDialogQueryOptions(instanceId, botId, isOnline);
 
   const { data: dialogData } = useSuspenseQuery(dialogQueryOptions);
   const dialog = dialogData?.dialog;
 
-  // Mutation for dismissing dialog
-  const dismissMutation = useMutation({
-    mutationKey: ["bot", "dialog", "dismiss", instanceId, botId],
-    mutationFn: async () => {
+  const mutationOptions = dialogMutationOptions(
+    instanceId,
+    botId,
+    dialog?.screenId,
+  );
+  const isPending = useMutationScopePending(mutationOptions.scope.id);
+
+  const submitMutation = useMutation({
+    ...mutationOptions,
+    mutationFn: async ({
+      buttonIndex,
+      inputValues,
+      expectedScreenId,
+    }: {
+      buttonIndex: number;
+      inputValues: Record<string, string>;
+      expectedScreenId: string;
+    }) => {
       const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createClient(BotService, transport);
-      return botService.closeDialog({ instanceId, botId });
+      if (transport === null) throw new Error("Not connected");
+      const service = createRpcClient(BotService, transport);
+      const result = await Effect.runPromise(
+        service.submitDialog({
+          instanceId,
+          botId,
+          buttonIndex,
+          inputValues,
+          expectedScreenId,
+        }),
+      );
+      if (!result.success)
+        throw new Error(result.error || "The dialog action failed.");
+      if (result.clipboard !== undefined)
+        void copyMinecraftText(result.clipboard);
+      if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
+      // A failed refresh must not turn an accepted action into a retryable failure.
+      return Effect.runPromise(service.getDialog({ instanceId, botId })).catch(
+        () => undefined,
+      );
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["bot-dialog", instanceId, botId],
-      });
+    onSuccess: (state, { expectedScreenId }) =>
+      applyServerDialogRefresh(
+        queryClient,
+        dialogQueryOptions.queryKey,
+        expectedScreenId,
+        state,
+      ),
+    onError: (error) => {
+      toast.error(error.message);
+      if (error instanceof ConnectError && error.code === Code.Aborted)
+        void queryClient.invalidateQueries({
+          queryKey: dialogQueryOptions.queryKey,
+        });
     },
   });
 
@@ -2040,27 +2654,20 @@ function BotDialogPanel({
                 </code>
               </div>
             )}
-            {dialog.title && (
-              <div className="bg-muted/30 rounded-lg p-4">
-                <p className="font-medium">{dialog.title}</p>
-              </div>
-            )}
           </div>
-
-          {/* Dismiss button */}
-          <Button
-            variant="outline"
-            onClick={() => dismissMutation.mutate()}
-            disabled={dismissMutation.isPending}
-            className="w-full"
-          >
-            {dismissMutation.isPending ? (
-              <LoaderIcon className="mr-2 size-4 animate-spin" />
-            ) : (
-              <XIcon className="mr-2 size-4" />
-            )}
-            {t("bots.dialogPanel.dismiss")}
-          </Button>
+          <BotDialogForm
+            key={`${instanceId}:${botId}:${dialog.screenId}`}
+            dialog={dialog}
+            pending={isPending}
+            onSubmit={async (buttonIndex, inputValues) => {
+              const state = await submitMutation.mutateAsync({
+                buttonIndex,
+                inputValues,
+                expectedScreenId: dialog.screenId,
+              });
+              return state?.dialog;
+            }}
+          />
         </div>
       ) : (
         <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">

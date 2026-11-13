@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Yhteys SoulFire-palvelimeen epäonnistui."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Ei löytynyt",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Selkokielinen nimi",
           "placeholder": "Oma Minecraft-bottini",
-          "description": "Nimi, jonka haluat antaa tälle instanssille.",
-          "min": "Selkokielisen nimen on oltava vähintään 3 merkkiä pitkä.",
-          "max": "Selkokielisen nimen on oltava enintään 32 merkkiä pitkä.",
-          "regex": "Selkokielinen nimi saa sisältää vain kirjaimia, numeroita ja välilyöntejä"
+          "description": "Nimi, jonka haluat antaa tälle instanssille."
         },
         "cancel": "Peruuta",
         "create": "Luo"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Ladataan tietoja...",
           "success": "Tiedot ladattu!",
-          "error": "Tietojen lataus epäonnistui"
+          "error": "Tietojen lataus epäonnistui",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,22 @@
       "error": "Bottien pysäyttäminen epäonnistui"
     },
     "permissionDenied": "Sinulla ei ole oikeutta käynnistää tai pysäyttää botteja tässä instanssissa.",
-    "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan."
+    "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan.",
+    "startBots": "Käynnistä botit",
+    "moreActions": "Lisää bottitoimintoja",
+    "generateFirst": "Luo tilejä aloittaaksesi ensimmäiset bottisi.",
+    "startCountHelp": "Käynnistää lisää botteja. Käynnissä olevat botit pysyvät yhdistettynä.",
+    "startAllCount": "Käynnistä kaikki {{count}}",
+    "validCount": "Anna kokonaisluku välillä 1–{{count}}.",
+    "positiveCount": "Anna kokonaisluku, joka on vähintään 1.",
+    "availableCount_one": "{{count}} pysäytetty botti käytettävissä.",
+    "availableCount_other": "{{count}} pysäytettyä bottia käytettävissä.",
+    "startSelected_one": "Käynnistä {{count}} botti",
+    "startSelected_other": "Käynnistä {{count}} bottia",
+    "stopCount_one": "Pysäytä {{count}} botti",
+    "stopCount_other": "Pysäytä {{count}} bottia",
+    "restartCount_one": "Käynnistä {{count}} botti uudelleen",
+    "restartCount_other": "Käynnistä {{count}} bottia uudelleen"
   },
   "botFleetSummary": "{{online}} paikalla · {{desired}} tavoite · {{total}} yhteensä",
   "icon": {
@@ -237,8 +256,13 @@
     "website": "Sivusto"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Asetusten nimiavaruuksia ei löytynyt",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Lisää uusi merkintä...",
       "add": "Lisää",
       "remove": "Poista"
@@ -453,6 +477,14 @@
     "success": "Kopioitiin \"{{content}}\" leikepöydälle",
     "error": "Kopiointi leikepöydälle epäonnistui"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +498,11 @@
     "email": {
       "uiName": "Sähköposti",
       "description": "Sähköpostiasi käytetään kirjautumiseen ja ilmoituksiin."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Suodata audit-lokia...",
@@ -610,5 +646,13 @@
     "filter": "Suodata prosessin tuloste",
     "truncated": "{{count}} vanhempaa lokiriviä jätettiin pois. Kaikki palvelimen lokit löytyvät datakansiosta.",
     "privacy": "Raportit sisältävät paikalliset polut ja viimeaikaiset lokit. Tarkista raportit ja thread dumpit henkilötietojen varalta ennen jakamista. Mitään ei ladata automaattisesti."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

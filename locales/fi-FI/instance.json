@@ -63,16 +63,34 @@
         "respawned": "syntyi uudelleen",
         "disconnected": "yhteys katkaistu",
         "unknown": "muutti tilaa"
+      },
+      "pause": "Tauota",
+      "resume": "Jatka",
+      "paused": "Näyttö keskeytetty. Uutta aktiivisuutta kerätään silti.",
+      "following": "Live-päivitykset",
+      "reconnecting": "Yhdistetään uudelleen live-syötteeseen...",
+      "emptyFilter": "Yksikään tapahtuma ei täsmää tähän suodattimeen.",
+      "filterLabel": "Suodata live-syöte",
+      "filters": {
+        "all": "Kaikki",
+        "chat": "Keskustelu",
+        "lifecycle": "Tapahtumat"
+      },
+      "columns": {
+        "time": "Aika",
+        "bot": "Botti",
+        "message": "Viesti"
       }
     },
     "bots": {
       "title": "Botit",
       "viewAll": "Näytä kaikki {{total}} bottia",
-      "viewAllShort": "Näytä kaikki"
+      "viewAllShort": "Näytä kaikki",
+      "detailsFor": "Botin tiedot {{name}}"
     },
     "timeline": {
-      "title": "Toiminta",
-      "viewAll": "Näytä kaikki",
+      "title": "Viimeisimmät toiminnot",
+      "viewAll": "Näytä historia",
       "empty": "Ei vielä tallennettua toimintaa.",
       "noPermission": "Sinulla ei ole oikeuksia nähdä audit-lokia.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Tarkat metrikat",
       "composition": "Maailman koostumus"
-    }
+    },
+    "loadError": "Tietojen lataus epäonnistui."
   },
   "proxy": {
+    "transport": {
+      "network": "Verkko-osoite",
+      "unix": "Unix-pistoke"
+    },
     "getProxies": "Hae proxyja",
     "addProxies": "Lisää proxyja",
     "filterPlaceholder": "Suodata proxyt...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Avain",
       "valuePlaceholder": "Arvo (JSON)",
       "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Yritä uudelleen",
       "addSuccess": "Merkintä lisätty",
       "addError": "Kirjauksen lisääminen epäonnistui",
       "updateError": "Kirjauksen päivittäminen epäonnistui",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Inventaario",
+      "actionRejected": "",
       "hotbar": "Pikavalikko",
       "main": "Päätavarasto",
       "items": "esineet",
@@ -446,17 +473,24 @@
         "beaconEffects": "Majakan efektit",
         "crafterSlots": "Paikkaohjaimet",
         "lecternControls": "Kirjaohjaimet",
-        "actions": "Toiminnot"
+        "actions": "Toiminnot",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Tekstisyöte",
-        "anvilRename": "Nimeä esine uudelleen"
+        "anvilRename": "Nimeä esine uudelleen",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Kirjan sisältö",
         "emptyPage": "(Tyhjä sivu)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Sivu {{current}} / {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Botin näkymä",
@@ -479,6 +513,7 @@
       "offline": "Botti on offline-tilassa. Toiminnot ovat käytettävissä vain, kun botti on yhdistetty."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Liikeohjaus",
       "movement": "Liikkuminen (WASD)",
       "forward": "Liiku eteenpäin (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Käyttäjä poisti skriptin käytöstä",
     "executionFailed": "Skriptin suoritus epäonnistui",
     "executionError": "Suoritusvirhe: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Solmu käynnistetty: {{nodeId}}",
     "nodeCompleted": "Solmu valmis: {{nodeId}}",
     "nodeError": "Solmun virhe: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Takaisin skripteihin",
         "save": "Tallenna",
         "saveTooltip": "Tallenna skripti",
@@ -705,6 +743,16 @@
         "tooltip": "Tarkista muutokset"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Testiajo",
         "title": "Testiajo Skripti",
         "description": "Suorita skripti valitusta laukaisevasta solmusta käyttäen mallisyötteitä.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Valitse laukaiseva solmu, joka suoritetaan malliarvoilla.",
         "mockInputs": "Mallisyötteet",
         "valuePlaceholder": "{{type}} arvo",
-        "start": "Aloita testiajo"
+        "start": "Aloita testiajo",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Skriptin kiintiöt",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Suurin määrä merkintöjä skriptin tilakaupassa",
         "disableTimeouts": "Poista aikakatkaisut käytöstä",
         "disableTimeoutsDescription": "Poistaa käytöstä solmu- ja datareunasidonnaiset aikakatkaisut",
-        "save": "Tallenna kiintiöt"
+        "save": "Tallenna kiintiöt",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

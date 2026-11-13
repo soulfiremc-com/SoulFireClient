@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { create } from "@bufbuild/protobuf";
 import {
   BotListResponseSchema,
+  BotConnectionPhase,
   BotRuntimeState,
   BotStatusSchema,
 } from "@/generated/soulfire/bot_pb";
@@ -59,4 +60,36 @@ test("partial updates retain unrelated bots and do not invent connection details
   assert.equal(reconcileBotStatuses(current, [], true)?.bots.length, 0);
   assert.equal(reconcileBotStatuses(current, [], false, "b")?.bots.length, 1);
   assert.equal(reconcileBotStatuses(undefined, [update], true), undefined);
+});
+
+test("disconnected lifecycle events retire stale live details without changing other bots", () => {
+  const current = create(BotListResponseSchema, {
+    bots: [
+      {
+        profileId: "a",
+        isOnline: true,
+        pingMs: 42,
+        connectionPhase: BotConnectionPhase.SPAWNED,
+        liveState: { health: 20 },
+      },
+      { profileId: "b", isOnline: true, pingMs: 7 },
+    ],
+  });
+  for (const runtimeState of [
+    BotRuntimeState.STOPPED,
+    BotRuntimeState.FAILED,
+    BotRuntimeState.RETRYING,
+  ]) {
+    const status = create(BotStatusSchema, { profileId: "a", runtimeState });
+    const result = reconcileBotStatuses(current, [status], false)!;
+    assert.equal(result.bots[0].isOnline, false);
+    assert.equal(
+      result.bots[0].connectionPhase,
+      BotConnectionPhase.DISCONNECTED,
+    );
+    assert.equal(result.bots[0].liveState, undefined);
+    assert.equal(result.bots[0].pingMs, undefined);
+    assert.deepEqual(result.bots[1], current.bots[1]);
+  }
+  assert.equal(current.bots[0].liveState?.health, 20);
 });

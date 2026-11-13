@@ -15,6 +15,11 @@
     },
     "connectionFailed": "เชื่อมต่อกับเซิร์ฟเวอร์ SoulFire ไม่สำเร็จ"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "ไม่พบ",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "ชื่อที่จดจำง่าย",
           "placeholder": "My Minecraft Bot",
-          "description": "ชื่อที่คุณต้องการตั้งให้กับอินสแตนซ์นี้",
-          "min": "ชื่อที่จดจำง่ายต้องมีอย่างน้อย 3 ตัวอักษร",
-          "max": "ชื่อที่จดจำง่ายต้องมีไม่เกิน 32 ตัวอักษร",
-          "regex": "ชื่อที่จดจำง่ายต้องมีเฉพาะตัวเลข ตัวอักษร และช่องว่างเท่านั้น"
+          "description": "ชื่อที่คุณต้องการตั้งให้กับอินสแตนซ์นี้"
         },
         "cancel": "ยกเลิก",
         "create": "สร้าง"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "กำลังดาวน์โหลดข้อมูล...",
           "success": "โหลดข้อมูลเรียบร้อย!",
-          "error": "ดาวน์โหลดข้อมูลไม่สำเร็จ"
+          "error": "ดาวน์โหลดข้อมูลไม่สำเร็จ",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,18 @@
       "error": "ไม่สามารถหยุดบอทได้"
     },
     "permissionDenied": "คุณไม่มีสิทธิ์ในการเริ่มหรือหยุดบอทในอินสแตนซ์นี้.",
-    "serverUpdateRequired": "เซิร์ฟเวอร์ไม่ได้รายงานสิทธิ์ควบคุมบอท โปรดตรวจสอบว่าเวอร์ชันของเซิร์ฟเวอร์และไคลเอนต์ตรงกันหรือไม่."
+    "serverUpdateRequired": "เซิร์ฟเวอร์ไม่ได้รายงานสิทธิ์ควบคุมบอท โปรดตรวจสอบว่าเวอร์ชันของเซิร์ฟเวอร์และไคลเอนต์ตรงกันหรือไม่.",
+    "startBots": "เริ่มบอท",
+    "moreActions": "ดำเนินการบอทเพิ่มเติม",
+    "generateFirst": "สร้างบัญชีเพื่อเริ่มต้นบอทตัวแรกของคุณ",
+    "startCountHelp": "เริ่มบอทเพิ่มเติม บอทที่กำลังทำงานจะยังเชื่อมต่ออยู่",
+    "startAllCount": "เริ่มทั้งหมด {{count}} ตัว",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_other": "มีบอทที่หยุดแล้ว {{count}} ตัวพร้อมใช้งาน",
+    "startSelected_other": "เริ่มบอท {{count}} ตัว",
+    "stopCount_other": "หยุดบอท {{count}} ตัว",
+    "restartCount_other": ""
   },
   "botFleetSummary": "ออนไลน์ {{online}} · ที่ต้องการ {{desired}} · ทั้งหมด {{total}}",
   "icon": {
@@ -237,8 +252,13 @@
     "website": "เว็บไซต์"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "ไม่พบ namespaces ของการตั้งค่า",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "เพิ่มรายการใหม่...",
       "add": "เพิ่ม",
       "remove": "ลบ"
@@ -453,6 +473,14 @@
     "success": "คัดลอก \"{{content}}\" ไปยังคลิปบอร์ดแล้ว",
     "error": "คัดลอกไปยังคลิปบอร์ดไม่สำเร็จ"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "อวตาร",
@@ -466,7 +494,11 @@
     "email": {
       "uiName": "อีเมล",
       "description": "อีเมลของคุณจะใช้สำหรับเข้าสู่ระบบและการแจ้งเตือน"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "กรองบันทึกการตรวจสอบ...",
@@ -610,5 +642,13 @@
     "filter": "กรองผลลัพธ์ของกระบวนการ",
     "truncated": "",
     "privacy": "รายงานจะรวมเส้นทางโลคัลและล็อกล่าสุด โปรดตรวจสอบรายงานและ Thread Dump ว่ามีข้อมูลส่วนตัวหรือไม่ก่อนแบ่งปัน ไม่มีการอัปโหลดอัตโนมัติ"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

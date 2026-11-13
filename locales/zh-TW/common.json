@@ -15,6 +15,11 @@
     },
     "connectionFailed": "連接 SoulFire 伺服器失敗。"
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "找不到",
@@ -29,7 +34,7 @@
   "dialog": {
     "about": {
       "title": "關於 SoulFire",
-      "description": "您正在執行 SoulFire 客戶端的版本 {{version}}。",
+      "description": "您正在執行 SoulFire 用戶端的版本 {{version}}。",
       "type": "類型",
       "value": "數值",
       "fields": {
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "顯示名稱",
           "placeholder": "我的 Minecraft Bot",
-          "description": "您想給這個實例設定的名稱。",
-          "min": "顯示名稱必須至少 3 個字元。",
-          "max": "顯示名稱最多只能有 32 個字元。",
-          "regex": "顯示名稱只能包含字母、數字和空格"
+          "description": "您想給這個實例設定的名稱。"
         },
         "cancel": "取消",
         "create": "建立"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "正在從網址下載資料...",
           "success": "資料載入完成！",
-          "error": "下載資料失敗"
+          "error": "下載資料失敗",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,18 @@
       "error": "停止機器人失敗"
     },
     "permissionDenied": "您沒有權限在此實例中啟動或停止機器人。",
-    "serverUpdateRequired": "伺服器未回報機器人控制權限。請檢查您的伺服器與用戶端版本是否一致。"
+    "serverUpdateRequired": "伺服器未回報機器人控制權限。請檢查您的伺服器與用戶端版本是否一致。",
+    "startBots": "啟動機器人​",
+    "moreActions": "更多機器人操作",
+    "generateFirst": "建立帳號以啟動您的第一批機器人。",
+    "startCountHelp": "啟動更多機器人，已運行的機器人會保持連線。",
+    "startAllCount": "啟動全部 {{count}}",
+    "validCount": "請輸入 1 到 {{count}} 之間的整數。",
+    "positiveCount": "請輸入至少為 1 的整數。",
+    "availableCount_other": "{{count}} 個已停止的機器人可用。",
+    "startSelected_other": "啟動 {{count}} 個機器人",
+    "stopCount_other": "停止 {{count}} 個機器人",
+    "restartCount_other": "重新啟動 {{count}} 個機器人"
   },
   "botFleetSummary": "{{online}} 在線 · {{desired}} 目標 · {{total}} 總數",
   "icon": {
@@ -237,8 +252,13 @@
     "website": "網站"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "未找到設定命名空間",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "新增項目...",
       "add": "新增",
       "remove": "移除"
@@ -453,6 +473,14 @@
     "success": "已將「{{content}}」複製到剪貼簿",
     "error": "複製到剪貼簿失敗"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "頭像",
@@ -466,7 +494,11 @@
     "email": {
       "uiName": "電子郵件",
       "description": "您的電子郵件將用於登入與通知。"
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "篩選稽核日誌...",
@@ -610,5 +642,13 @@
     "filter": "篩選程序輸出",
     "truncated": "已略過 {{count}} 行較舊日誌。完整伺服器日誌仍保留於資料目錄內。",
     "privacy": "報告內含本機路徑及最新日誌。在分享前請檢查報告及執行緒轉儲是否包含個人資訊。不會自動上傳任何資料。"
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

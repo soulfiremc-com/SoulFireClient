@@ -1,7 +1,10 @@
 import type {
-  DesktopCastDevice,
-  DesktopCastDisconnectedEvent,
-  DesktopCastRemovedEvent,
+  CastDevice,
+  CastSource,
+  CastState,
+  DisplaySettings,
+} from "@soulfiremc/cast-protocol";
+import type {
   DesktopCustomSoulFireServerJar,
   DesktopFsEntry,
   DesktopFsWatchEvent,
@@ -54,6 +57,11 @@ function windowApi(target?: "pov") {
 }
 
 export const desktop = {
+  providers: {
+    request: (
+      request: Parameters<SoulFireDesktopApi["providers"]["request"]>[0],
+    ) => requireDesktopRuntime().providers.request(request),
+  },
   pov: {
     onReleased: (callback: (target?: "pov") => void) =>
       requireDesktopRuntime().pov.onReleased(callback),
@@ -77,33 +85,16 @@ export const desktop = {
     },
   },
   cast: {
-    async broadcast(payload?: unknown): Promise<void> {
-      await requireDesktopRuntime().cast.broadcast(payload);
-    },
-    async connect(address: string, port: number): Promise<string> {
-      return requireDesktopRuntime().cast.connect(address, port);
-    },
-    async discover(): Promise<void> {
-      await requireDesktopRuntime().cast.discover();
-    },
-    async getDevices(): Promise<DesktopCastDevice[]> {
-      return requireDesktopRuntime().cast.getDevices();
-    },
-    async onDisconnected(
-      callback: (payload: DesktopCastDisconnectedEvent) => void,
-    ): Promise<() => void> {
-      return requireDesktopRuntime().cast.onDisconnected(callback);
-    },
-    async onDiscovered(
-      callback: (device: DesktopCastDevice) => void,
-    ): Promise<() => void> {
-      return requireDesktopRuntime().cast.onDiscovered(callback);
-    },
-    async onRemoved(
-      callback: (payload: DesktopCastRemovedEvent) => void,
-    ): Promise<() => void> {
-      return requireDesktopRuntime().cast.onRemoved(callback);
-    },
+    connect: (device: CastDevice, source: CastSource, relaunch = false) =>
+      requireDesktopRuntime().cast.connect(device, source, relaunch),
+    discover: () => requireDesktopRuntime().cast.discover(),
+    getState: () => requireDesktopRuntime().cast.getState(),
+    stop: (id: string) => requireDesktopRuntime().cast.stop(id),
+    stopAll: () => requireDesktopRuntime().cast.stopAll(),
+    setSettings: (settings: DisplaySettings) =>
+      requireDesktopRuntime().cast.setSettings(settings),
+    onState: (callback: (state: CastState) => void) =>
+      requireDesktopRuntime().cast.onState(callback),
   },
   clipboard: {
     async readText(): Promise<string> {
@@ -186,6 +177,7 @@ export const desktop = {
       await requireDesktopRuntime().integratedServer.resetData();
     },
     async run(options: {
+      forceSoftwareRendering?: boolean;
       jarSource?: DesktopIntegratedServerJarSource;
       jvmArgs: string[];
     }): Promise<DesktopIntegratedServerCredentials | null> {

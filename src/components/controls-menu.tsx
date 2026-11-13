@@ -1,45 +1,61 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import { PlayIcon, RefreshCwIcon, SquareIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  EllipsisIcon,
+  PlayIcon,
+  RefreshCwIcon,
+  SquareIcon,
+} from "lucide-react";
 import { usePostHog } from "posthog-js/react";
-import { use, useCallback, useMemo, useState } from "react";
+import { use, useCallback, useId, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { ButtonGroup } from "@/components/ui/button-group.tsx";
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@/components/ui/input-group.tsx";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu.tsx";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover.tsx";
 import {
   BotDesiredState,
   BotService,
   type BotStatus,
 } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
+import { selectBotsToStart } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { applyGeneratedAccounts, hasInstancePermission } from "@/lib/utils.tsx";
-
-function shuffle<T>(values: T[]): void {
-  for (let index = values.length - 1; index > 0; index -= 1) {
-    const selectedIndex = Math.floor(Math.random() * (index + 1));
-    [values[index], values[selectedIndex]] = [
-      values[selectedIndex] as T,
-      values[index] as T,
-    ];
-  }
-}
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
@@ -56,7 +72,9 @@ export default function ControlsMenu() {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const statusQueryOptions = botStatusQueryOptions(instanceInfo.id);
   const { data: botList } = useSuspenseQuery(statusQueryOptions);
-  const [startCount, setStartCount] = useState(1);
+  const [startCount, setStartCount] = useState("1");
+  const [startOpen, setStartOpen] = useState(false);
+  const startCountId = useId();
   const [generateDialogOpen, setGenerateDialogOpen] = useState(false);
   const [pendingStartCount, setPendingStartCount] = useState<number | null>(
     null,
@@ -104,14 +122,13 @@ export default function ControlsMenu() {
       if (transport === null || botIds.length === 0) {
         return [];
       }
-      const response = await createClient(
-        BotService,
-        transport,
-      ).setBotsDesiredState({
-        instanceId: instanceInfo.id,
-        botIds,
-        desiredState,
-      });
+      const response = await Effect.runPromise(
+        createRpcClient(BotService, transport).setBotsDesiredState({
+          instanceId: instanceInfo.id,
+          botIds,
+          desiredState,
+        }),
+      );
       return response.bots;
     },
     [instanceInfo.id, transport],
@@ -120,23 +137,17 @@ export default function ControlsMenu() {
   const startBots = useCallback(
     async (count?: number) => {
       if (transport === null) return [];
-      const latest = await createClient(BotService, transport).getBotList({
-        instanceId: instanceInfo.id,
-      });
-      const candidates = latest.bots.filter(
-        (bot) => bot.status?.desiredState !== BotDesiredState.RUNNING,
+      const latest = await Effect.runPromise(
+        createRpcClient(BotService, transport).getBotList({
+          instanceId: instanceInfo.id,
+        }),
       );
-      if (
-        instanceInfo.profile.settings.account?.["shuffle-accounts"] === true
-      ) {
-        shuffle(candidates);
-      }
-      const selected =
-        count === undefined
-          ? candidates
-          : candidates.slice(0, Math.max(0, Math.floor(count)));
       return setDesiredState(
-        selected.map((bot) => bot.profileId),
+        selectBotsToStart(
+          latest.bots,
+          count,
+          instanceInfo.profile.settings.account?.["shuffle-accounts"] === true,
+        ),
         BotDesiredState.RUNNING,
       );
     },
@@ -178,9 +189,12 @@ export default function ControlsMenu() {
     scope: { id: `bot-state-${instanceInfo.id}` },
     mutationFn: async () => {
       if (transport === null || desiredBotIds.length === 0) return [];
-      const promise = createClient(BotService, transport)
-        .restartBots({ instanceId: instanceInfo.id, botIds: desiredBotIds })
-        .then((response) => response.bots);
+      const promise = Effect.runPromise(
+        createRpcClient(BotService, transport).restartBots({
+          instanceId: instanceInfo.id,
+          botIds: desiredBotIds,
+        }),
+      ).then((response) => response.bots);
       toast.promise(promise, {
         loading: t("controls.restartToast.loading"),
         success: t("controls.restartToast.success"),
@@ -229,7 +243,6 @@ export default function ControlsMenu() {
       await applyGeneratedAccounts(
         newAccounts,
         mode,
-        instanceInfo.profile.accounts,
         instanceInfo,
         transport,
         queryClient,
@@ -249,6 +262,8 @@ export default function ControlsMenu() {
     },
   });
 
+  const isPending = useMutationScopePending(`bot-state-${instanceInfo.id}`);
+
   if (!canControl) {
     const supportsBotControls = instanceInfo.instancePermissions.some(
       (permission) =>
@@ -265,66 +280,149 @@ export default function ControlsMenu() {
     );
   }
 
-  const isPending =
-    startMutation.isPending ||
-    restartMutation.isPending ||
-    stopMutation.isPending;
-  const normalizedStartCount = Math.max(
-    1,
-    Math.min(stoppedCount || 1, Math.floor(startCount) || 1),
-  );
-  const startUnavailable =
-    instanceInfo.profile.accounts.length > 0 && stoppedCount === 0;
+  const requestedStartCount = Number(startCount);
+  const hasAccounts = instanceInfo.profile.accounts.length > 0;
+  const startUnavailable = hasAccounts && stoppedCount === 0;
+  const validStartCount =
+    startCount.trim() !== "" &&
+    Number.isInteger(requestedStartCount) &&
+    requestedStartCount >= 1 &&
+    (!hasAccounts || requestedStartCount <= stoppedCount);
+
+  const showCountError =
+    !startUnavailable && startCount !== "" && !validStartCount;
 
   return (
     <>
-      <ButtonGroup className="flex-wrap">
-        <InputGroup className="w-36">
-          <InputGroupInput
-            type="number"
-            min={1}
-            max={Math.max(1, stoppedCount)}
-            value={startCount}
-            aria-label={t("controls.startCount")}
-            onChange={(event) => setStartCount(event.target.valueAsNumber)}
-            disabled={isPending || stoppedCount === 0}
-          />
-          <InputGroupAddon align="inline-end">
-            <InputGroupButton
-              variant="secondary"
-              onClick={() => startMutation.mutate(normalizedStartCount)}
-              disabled={isPending || startUnavailable}
+      <div className="flex flex-wrap items-center gap-2">
+        <Popover open={startOpen} onOpenChange={setStartOpen}>
+          <PopoverTrigger
+            render={
+              <Button size="sm" disabled={isPending || startUnavailable} />
+            }
+          >
+            <PlayIcon data-icon="inline-start" />
+            {t("controls.startBots")}
+            <ChevronDownIcon data-icon="inline-end" />
+          </PopoverTrigger>
+          <PopoverContent align="end">
+            <PopoverHeader>
+              <PopoverTitle>{t("controls.startBots")}</PopoverTitle>
+              <PopoverDescription>
+                {t(
+                  hasAccounts
+                    ? "controls.availableCount"
+                    : "controls.generateFirst",
+                  { count: stoppedCount },
+                )}
+              </PopoverDescription>
+            </PopoverHeader>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                if (!validStartCount || isPending || startUnavailable) return;
+                startMutation.mutate(requestedStartCount);
+                setStartOpen(false);
+              }}
             >
-              <PlayIcon />
-              {t("controls.start")}
-            </InputGroupButton>
-          </InputGroupAddon>
-        </InputGroup>
+              <FieldGroup>
+                <Field data-invalid={showCountError}>
+                  <FieldLabel htmlFor={startCountId}>
+                    {t("controls.startCount")}
+                  </FieldLabel>
+                  <Input
+                    id={startCountId}
+                    type="number"
+                    min={1}
+                    max={hasAccounts ? stoppedCount : undefined}
+                    step={1}
+                    required
+                    aria-invalid={showCountError}
+                    value={startCount}
+                    onChange={(event) => setStartCount(event.target.value)}
+                    disabled={isPending || startUnavailable}
+                  />
+                  <FieldDescription>
+                    {t("controls.startCountHelp")}
+                  </FieldDescription>
+                  {showCountError && (
+                    <FieldError>
+                      {t(
+                        hasAccounts
+                          ? "controls.validCount"
+                          : "controls.positiveCount",
+                        { count: stoppedCount },
+                      )}
+                    </FieldError>
+                  )}
+                </Field>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={isPending || startUnavailable || !validStartCount}
+                  >
+                    <PlayIcon data-icon="inline-start" />
+                    {validStartCount
+                      ? t("controls.startSelected", {
+                          count: requestedStartCount,
+                        })
+                      : t("controls.startBots")}
+                  </Button>
+                  {hasAccounts && requestedStartCount !== stoppedCount && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={isPending || startUnavailable}
+                      onClick={() => {
+                        startMutation.mutate(undefined);
+                        setStartOpen(false);
+                      }}
+                    >
+                      {t("controls.startAllCount", { count: stoppedCount })}
+                    </Button>
+                  )}
+                </div>
+              </FieldGroup>
+            </form>
+          </PopoverContent>
+        </Popover>
         <Button
-          variant="secondary"
-          onClick={() => startMutation.mutate(undefined)}
-          disabled={isPending || startUnavailable}
-        >
-          <PlayIcon />
-          {t("controls.startAll")}
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => restartMutation.mutate()}
-          disabled={isPending || desiredBotIds.length === 0}
-        >
-          <RefreshCwIcon />
-          {t("controls.restart")}
-        </Button>
-        <Button
-          variant="secondary"
+          variant="outline"
+          size="sm"
           onClick={() => stopMutation.mutate()}
           disabled={isPending || desiredBotIds.length === 0}
         >
-          <SquareIcon />
-          {t("controls.stopAll")}
+          <SquareIcon data-icon="inline-start" />
+          {t("controls.stopCount", { count: desiredBotIds.length })}
         </Button>
-      </ButtonGroup>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label={t("controls.moreActions")}
+                disabled={isPending || desiredBotIds.length === 0}
+              />
+            }
+          >
+            <EllipsisIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() => restartMutation.mutate()}
+                disabled={isPending || desiredBotIds.length === 0}
+              >
+                <RefreshCwIcon />
+                {t("controls.restartCount", { count: desiredBotIds.length })}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <GenerateAccountsDialog
         open={generateDialogOpen}

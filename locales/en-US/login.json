@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "Checking connection...",
+    "connection": "Could not reach the SoulFire server. Check the URL, make sure the server is running, and try again. For a web connection, also check HTTPS and browser access settings.",
+    "authentication": "The token was rejected or has expired. Check the token and try again.",
+    "permission": "This account cannot access the SoulFire server. Ask the server administrator for access.",
+    "unexpected": "Could not connect to the SoulFire server. Check the URL and token, and make sure the app and server versions are compatible."
+  },
   "header": {
     "image": {
       "alt": "SoulFire logo"
@@ -7,47 +14,65 @@
   },
   "newUser": "New to SoulFire? Read the <a>getting started guide</a>.",
   "connect": {
-    "title": "Connect to a SoulFire server",
-    "description": "Select which type of SoulFire server to connect to.",
+    "title": "Choose where SoulFire runs",
+    "description": "Your bots run on a SoulFire server. The bots then join the Minecraft server that you pick in the next steps.",
     "integrated": {
-      "title": "Integrated server (local)",
-      "description": "Runs a SoulFire server on this device. Setup is automatic. This option requires the desktop or Android app."
+      "title": "Run on this computer",
+      "description": "SoulFire downloads and starts a local SoulFire server for you. You do not need to install Java or configure anything.",
+      "webDescription": "Needs the SoulFire desktop app. A browser cannot start a local server.",
+      "getDesktop": "Want to run bots on this computer? <a>Get the desktop app</a>."
     },
     "dedicated": {
-      "title": "Dedicated server (remote)",
-      "description": "Connects to a remote SoulFire server with its address and token."
+      "title": "Connect to a SoulFire server",
+      "description": "Use the address and login of a SoulFire server that you or your team already runs. This is not your Minecraft server address."
     },
     "demo": {
-      "title": "Demo server",
-      "description": "Provides a read-only server with demo data. SoulFire does not save changes."
+      "title": "Try the demo",
+      "description": "Look around with sample data. The demo is read-only and SoulFire does not save changes.",
+      "linkDescription": "Opens a read-only demo with sample data in your browser. No setup needed."
+    },
+    "recommended": "Recommended",
+    "path": {
+      "label": "How SoulFire connects",
+      "app": "This app",
+      "server": "SoulFire server (runs your bots)",
+      "minecraft": "Minecraft server (you pick it later)"
+    },
+    "saved": {
+      "title": "Continue with your saved server",
+      "withAddress": "Continue with {{address}}"
     }
   },
   "integrated": {
-    "preparing": "Preparing to start integrated server...",
+    "preparing": "Preparing to start the local SoulFire server...",
     "toast": {
-      "loading": "Starting integrated server...",
-      "success": "Integrated server started in {{time}}s",
-      "error": "Failed to start integrated server"
+      "loading": "Starting your local SoulFire server",
+      "success": "Local SoulFire server started in {{time}}s",
+      "error": "The local SoulFire server did not start"
     },
-    "retry": "Retry",
+    "retry": "Try again",
     "reset": {
-      "button": "Reset Data",
+      "button": "Reset local data",
       "loading": "Resetting SoulFire data...",
       "success": "SoulFire data reset successfully. Try starting again.",
-      "error": "Failed to reset SoulFire data"
+      "error": "Failed to reset SoulFire data",
+      "confirmTitle": "Reset local SoulFire data?",
+      "confirmDescription": "This permanently deletes the data of the local SoulFire server on this computer, including its projects, accounts, proxies, and scripts.",
+      "keep": "Keep my data"
     },
-    "description": "The integrated server runs on your computer. You can change the Java startup arguments below.",
+    "description": "SoulFire manages a local server for you. It stays on this computer and stops when you close the app.",
     "form": {
       "jvmArgs": {
         "title": "JVM arguments",
         "description": "Java VM arguments for SoulFire. Add <bold>-Xmx4G</bold> to use 4 GB of RAM. The default is 25% of available RAM.",
-        "placeholder": "Your JVM arguments here"
+        "placeholder": "Your JVM arguments here",
+        "reset": "Reset JVM arguments to the default"
       },
       "back": "Back",
-      "start": "Start"
+      "start": "Start local server"
     },
     "mobile": {
-      "description": "To run the integrated server on mobile, you need to complete a few manual steps.",
+      "description": "To run the SoulFire server on this device, you need to complete a few manual steps.",
       "form": {
         "termuxCommand": {
           "title": "Termux command",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Start automatically next time",
       "description": "Skip server selection and use these settings when SoulFire opens."
+    },
+    "softwareRendering": {
+      "title": "Force software rendering",
+      "description": "Uses bundled software rendering and does not try to use system Vulkan drivers. This may help with driver-related crashes. Can be slower and use more CPU. Requires SoulFire server 2.11 or newer."
+    },
+    "title": "Start SoulFire on this computer",
+    "plan": {
+      "prepare": "Downloads the matching SoulFire server and Java runtime the first time",
+      "start": "Starts the SoulFire server in the background",
+      "connect": "Signs you in and opens your dashboard"
+    },
+    "advanced": {
+      "title": "Advanced",
+      "description": "The defaults work on most computers. Change these only to troubleshoot or to run your own server build."
+    },
+    "progress": {
+      "label": "Startup progress",
+      "description": "The first start can take a few minutes while SoulFire downloads what it needs.",
+      "prepare": {
+        "title": "Prepare files",
+        "description": "Checks the SoulFire server and Java runtime, and downloads them if needed."
+      },
+      "start": {
+        "title": "Start the server",
+        "description": "Java is running and the SoulFire server is loading."
+      },
+      "connect": {
+        "title": "Connect and sign in",
+        "description": "The server is up. SoulFire is signing you in."
+      }
+    },
+    "details": "Show server output",
+    "changeSettings": "Change startup settings",
+    "useExisting": "Use another SoulFire server",
+    "failure": {
+      "port-in-use": {
+        "title": "Another program is using the server port",
+        "description": "Close other SoulFire windows or programs that use this port, then try again."
+      },
+      "out-of-memory": {
+        "title": "The server ran out of memory",
+        "description": "Close other programs and try again. If you set -Xmx in the JVM arguments under Advanced, change that value."
+      },
+      "java": {
+        "title": "Java rejected the startup arguments",
+        "description": "Open the startup settings and reset the JVM arguments under Advanced to the default."
+      },
+      "custom-jar": {
+        "title": "The custom server jar did not run",
+        "description": "Open the startup settings and select the official server, or import the jar again."
+      },
+      "download": {
+        "title": "SoulFire could not download a required file",
+        "description": "Check your internet connection and try again."
+      },
+      "unknown": {
+        "title": "The server stopped before it was ready",
+        "description": "Try again. If it keeps failing, the server output below shows the cause, and you can copy it for support."
+      }
     }
   },
   "dedicated": {
-    "description": "Enter the address and token of the SoulFire server.",
+    "description": "Enter the address of the SoulFire server, then sign in. Your Minecraft server address goes in a later step.",
     "toast": {
       "loading": "Connecting to server...",
       "success": "Connected to server",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Address",
-        "description": "Address of your SoulFire server.",
+        "description": "Address of the SoulFire server, not the Minecraft server. The default port is 38765.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Secret token",
-        "description": "Token to authenticate with the server."
+        "description": "API token from this SoulFire server."
       },
       "email": {
         "title": "Email",
@@ -96,7 +180,7 @@
       "back": "Back",
       "useToken": "Use token",
       "useEmail": "Use email",
-      "login": "Login"
+      "login": "Sign in"
     }
   },
   "emailCode": {

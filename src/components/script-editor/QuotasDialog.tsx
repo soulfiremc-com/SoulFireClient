@@ -1,7 +1,6 @@
-import { create } from "@bufbuild/protobuf";
 import { useSelector } from "@tanstack/react-store";
 import { Settings2 } from "lucide-react";
-import { useCallback, useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Button } from "@/components/ui/button";
@@ -14,22 +13,47 @@ import {
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/credenza";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import {
-  type ScriptQuotas,
-  ScriptQuotasSchema,
-} from "@/generated/soulfire/script_pb";
+  parseScriptQuotaInputs,
+  SCRIPT_QUOTA_LIMITS,
+  scriptQuotasToInputs,
+} from "@/lib/script-quota-input";
 
-function bigintToInput(value: bigint | undefined): string {
-  return value?.toString() ?? "";
-}
-
-function parseOptionalBigIntInput(value: string): bigint | undefined {
-  const trimmed = value.trim();
-  return trimmed === "" ? undefined : BigInt(trimmed);
-}
+const quotaFields = [
+  {
+    field: "maxExecutionCount",
+    label: "maxExecutionCount",
+    placeholder: "maxExecutionCountPlaceholder",
+    description: "maxExecutionCountDescription",
+  },
+  {
+    field: "maxExecutionTimeMs",
+    label: "maxExecutionTime",
+    placeholder: "maxExecutionTimePlaceholder",
+    description: "maxExecutionTimeDescription",
+  },
+  {
+    field: "maxConcurrentTriggers",
+    label: "maxConcurrentTriggers",
+    placeholder: "maxConcurrentTriggersPlaceholder",
+    description: "maxConcurrentTriggersDescription",
+  },
+  {
+    field: "maxStateStoreEntries",
+    label: "maxStateStoreEntries",
+    placeholder: "maxStateStoreEntriesPlaceholder",
+    description: "maxStateStoreEntriesDescription",
+  },
+] as const;
 
 /**
  * Dialog for configuring script execution quotas.
@@ -43,73 +67,22 @@ export function QuotasDialog() {
   const [open, setOpen] = useState(false);
   const id = useId();
 
-  // Local form state (strings for controlled inputs)
-  const [maxExecutionCount, setMaxExecutionCount] = useState("");
-  const [maxExecutionTimeMs, setMaxExecutionTimeMs] = useState("");
-  const [maxConcurrentTriggers, setMaxConcurrentTriggers] = useState("");
-  const [maxStateStoreEntries, setMaxStateStoreEntries] = useState("");
-  const [disableTimeouts, setDisableTimeouts] = useState(false);
+  const [inputs, setInputs] = useState(() => scriptQuotasToInputs(quotas));
+  const validation = parseScriptQuotaInputs(inputs);
 
-  // Sync local state when dialog opens
-  useEffect(() => {
-    if (open) {
-      setMaxExecutionCount(bigintToInput(quotas?.maxExecutionCount));
-      setMaxExecutionTimeMs(bigintToInput(quotas?.maxExecutionTimeMs));
-      setMaxConcurrentTriggers(
-        quotas?.maxConcurrentTriggers != null
-          ? String(quotas.maxConcurrentTriggers)
-          : "",
-      );
-      setMaxStateStoreEntries(bigintToInput(quotas?.maxStateStoreEntries));
-      setDisableTimeouts(quotas?.disableTimeouts ?? false);
-    }
-  }, [open, quotas]);
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen) setInputs(scriptQuotasToInputs(quotas));
+    setOpen(nextOpen);
+  };
 
-  const handleSave = useCallback(() => {
-    const parsedMaxExecutionCount = parseOptionalBigIntInput(maxExecutionCount);
-    const parsedMaxExecutionTimeMs =
-      parseOptionalBigIntInput(maxExecutionTimeMs);
-    const parsedMaxStateStoreEntries =
-      parseOptionalBigIntInput(maxStateStoreEntries);
-    const hasAnyValue =
-      maxExecutionCount ||
-      maxExecutionTimeMs ||
-      maxConcurrentTriggers ||
-      maxStateStoreEntries ||
-      disableTimeouts;
-
-    if (!hasAnyValue) {
-      setQuotas(undefined);
-    } else {
-      const newQuotas: ScriptQuotas = create(ScriptQuotasSchema, {
-        disableTimeouts,
-        ...(parsedMaxExecutionCount !== undefined && {
-          maxExecutionCount: parsedMaxExecutionCount,
-        }),
-        ...(parsedMaxExecutionTimeMs !== undefined && {
-          maxExecutionTimeMs: parsedMaxExecutionTimeMs,
-        }),
-        ...(maxConcurrentTriggers && {
-          maxConcurrentTriggers: Number(maxConcurrentTriggers),
-        }),
-        ...(parsedMaxStateStoreEntries !== undefined && {
-          maxStateStoreEntries: parsedMaxStateStoreEntries,
-        }),
-      });
-      setQuotas(newQuotas);
-    }
+  const handleSave = () => {
+    if (!validation.valid) return;
+    setQuotas(validation.quotas);
     setOpen(false);
-  }, [
-    maxExecutionCount,
-    maxExecutionTimeMs,
-    maxConcurrentTriggers,
-    maxStateStoreEntries,
-    disableTimeouts,
-    setQuotas,
-  ]);
+  };
 
   return (
-    <Credenza open={open} onOpenChange={setOpen}>
+    <Credenza open={open} onOpenChange={handleOpenChange}>
       <CredenzaTrigger
         render={
           <Button
@@ -129,81 +102,47 @@ export function QuotasDialog() {
           </CredenzaDescription>
         </CredenzaHeader>
         <CredenzaBody className="flex flex-col gap-4">
-          <Field>
-            <FieldLabel htmlFor={`${id}-maxExecutionCount`}>
-              {t("scripts.editor.quotas.maxExecutionCount")}
-            </FieldLabel>
-            <Input
-              id={`${id}-maxExecutionCount`}
-              type="number"
-              placeholder={t(
-                "scripts.editor.quotas.maxExecutionCountPlaceholder",
-              )}
-              value={maxExecutionCount}
-              onChange={(e) => setMaxExecutionCount(e.target.value)}
-              className="h-8 text-sm"
-            />
-            <FieldDescription className="text-xs">
-              {t("scripts.editor.quotas.maxExecutionCountDescription")}
-            </FieldDescription>
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor={`${id}-maxExecutionTimeMs`}>
-              {t("scripts.editor.quotas.maxExecutionTime")}
-            </FieldLabel>
-            <Input
-              id={`${id}-maxExecutionTimeMs`}
-              type="number"
-              placeholder={t(
-                "scripts.editor.quotas.maxExecutionTimePlaceholder",
-              )}
-              value={maxExecutionTimeMs}
-              onChange={(e) => setMaxExecutionTimeMs(e.target.value)}
-              className="h-8 text-sm"
-            />
-            <FieldDescription className="text-xs">
-              {t("scripts.editor.quotas.maxExecutionTimeDescription")}
-            </FieldDescription>
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor={`${id}-maxConcurrentTriggers`}>
-              {t("scripts.editor.quotas.maxConcurrentTriggers")}
-            </FieldLabel>
-            <Input
-              id={`${id}-maxConcurrentTriggers`}
-              type="number"
-              placeholder={t(
-                "scripts.editor.quotas.maxConcurrentTriggersPlaceholder",
-              )}
-              value={maxConcurrentTriggers}
-              onChange={(e) => setMaxConcurrentTriggers(e.target.value)}
-              className="h-8 text-sm"
-            />
-            <FieldDescription className="text-xs">
-              {t("scripts.editor.quotas.maxConcurrentTriggersDescription")}
-            </FieldDescription>
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor={`${id}-maxStateStoreEntries`}>
-              {t("scripts.editor.quotas.maxStateStoreEntries")}
-            </FieldLabel>
-            <Input
-              id={`${id}-maxStateStoreEntries`}
-              type="number"
-              placeholder={t(
-                "scripts.editor.quotas.maxStateStoreEntriesPlaceholder",
-              )}
-              value={maxStateStoreEntries}
-              onChange={(e) => setMaxStateStoreEntries(e.target.value)}
-              className="h-8 text-sm"
-            />
-            <FieldDescription className="text-xs">
-              {t("scripts.editor.quotas.maxStateStoreEntriesDescription")}
-            </FieldDescription>
-          </Field>
+          <FieldGroup className="gap-4">
+            {quotaFields.map(({ field, label, placeholder, description }) => {
+              const invalid =
+                !validation.valid && validation.fields.includes(field);
+              const hintId = `${id}-${field}-hint`;
+              const errorId = `${id}-${field}-error`;
+              return (
+                <Field key={field} data-invalid={invalid}>
+                  <FieldLabel htmlFor={`${id}-${field}`}>
+                    {t(`scripts.editor.quotas.${label}`)}
+                  </FieldLabel>
+                  <Input
+                    id={`${id}-${field}`}
+                    inputMode="numeric"
+                    placeholder={t(`scripts.editor.quotas.${placeholder}`)}
+                    value={inputs[field]}
+                    onChange={(event) =>
+                      setInputs((current) => ({
+                        ...current,
+                        [field]: event.target.value,
+                      }))
+                    }
+                    aria-invalid={invalid}
+                    aria-describedby={invalid ? `${hintId} ${errorId}` : hintId}
+                    className="h-8 text-sm"
+                  />
+                  <FieldDescription id={hintId} className="text-xs">
+                    {t(`scripts.editor.quotas.${description}`)}
+                  </FieldDescription>
+                  {invalid && (
+                    <FieldError id={errorId}>
+                      {t("scripts.editor.quotas.invalidInteger", {
+                        min: SCRIPT_QUOTA_LIMITS[field].min.toString(),
+                        max: SCRIPT_QUOTA_LIMITS[field].max.toString(),
+                      })}
+                    </FieldError>
+                  )}
+                </Field>
+              );
+            })}
+          </FieldGroup>
 
           <Field
             orientation="horizontal"
@@ -219,12 +158,18 @@ export function QuotasDialog() {
             </div>
             <Switch
               id={`${id}-disableTimeouts`}
-              checked={disableTimeouts}
-              onCheckedChange={setDisableTimeouts}
+              checked={inputs.disableTimeouts}
+              onCheckedChange={(disableTimeouts) =>
+                setInputs((current) => ({ ...current, disableTimeouts }))
+              }
             />
           </Field>
 
-          <Button className="w-full" onClick={handleSave}>
+          <Button
+            className="w-full"
+            onClick={handleSave}
+            disabled={!validation.valid}
+          >
             {t("scripts.editor.quotas.save")}
           </Button>
         </CredenzaBody>

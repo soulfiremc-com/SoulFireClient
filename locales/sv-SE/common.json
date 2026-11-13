@@ -15,6 +15,11 @@
     },
     "connectionFailed": "Anslutning till SoulFire-servern misslyckades."
   },
+  "queryStatus": {
+    "failed": "",
+    "retry": "",
+    "stale": ""
+  },
   "notFound": {
     "page": {
       "title": "Hittades inte",
@@ -60,10 +65,7 @@
         "friendlyName": {
           "label": "Vänligt namn",
           "placeholder": "Min Minecraft-bot",
-          "description": "Namnet du vill ge den här instansen.",
-          "min": "Det vänliga namnet måste vara minst 3 tecken.",
-          "max": "Det vänliga namnet får vara högst 32 tecken.",
-          "regex": "Vänligt namn får endast innehålla bokstäver, siffror och mellanslag"
+          "description": "Namnet du vill ge den här instansen."
         },
         "cancel": "Avbryt",
         "create": "Skapa"
@@ -112,7 +114,9 @@
         "toast": {
           "loading": "Laddar data från URL...",
           "success": "Data inläst!",
-          "error": "Misslyckades med att ladda ner data"
+          "error": "Misslyckades med att ladda ner data",
+          "httpError": "",
+          "empty": ""
         }
       }
     }
@@ -145,7 +149,22 @@
       "error": "Det gick inte att stoppa bottarna"
     },
     "permissionDenied": "Du har inte behörighet att starta eller stoppa bottar i denna instans.",
-    "serverUpdateRequired": "Servern rapporterade inte botkontrollsbehörigheter. Kontrollera att din server- och klientversion matchar."
+    "serverUpdateRequired": "Servern rapporterade inte botkontrollsbehörigheter. Kontrollera att din server- och klientversion matchar.",
+    "startBots": "Starta bottar",
+    "moreActions": "Fler botåtgärder",
+    "generateFirst": "Skapa konton för att starta dina första bottar.",
+    "startCountHelp": "Startar fler bottar. Aktiva bottar förblir anslutna.",
+    "startAllCount": "Starta alla {{count}}",
+    "validCount": "",
+    "positiveCount": "",
+    "availableCount_one": "{{count}} stoppad bot tillgänglig.",
+    "availableCount_other": "{{count}} stoppade bottar tillgängliga.",
+    "startSelected_one": "Starta {{count}} bot",
+    "startSelected_other": "Starta {{count}} bottar",
+    "stopCount_one": "Stoppa {{count}} bot",
+    "stopCount_other": "Stoppa {{count}} bottar",
+    "restartCount_one": "",
+    "restartCount_other": ""
   },
   "botFleetSummary": "{{online}} online · {{desired}} önskade · {{total}} totalt",
   "icon": {
@@ -237,8 +256,13 @@
     "website": "Webbplats"
   },
   "settingsPage": {
+    "saveError": "",
     "namespacesNotFound": "Inställningsnamnrymder hittades inte",
     "stringList": {
+      "newEntry": "",
+      "entry": "",
+      "removeEntry": "",
+      "saveError": "",
       "placeholder": "Lägg till en ny post...",
       "add": "Lägg till",
       "remove": "Ta bort"
@@ -453,6 +477,14 @@
     "success": "Kopierade \"{{content}}\" till urklipp",
     "error": "Misslyckades med att kopiera till urklipp"
   },
+  "instanceName": {
+    "required": "",
+    "max": "",
+    "singleLine": "",
+    "save": "",
+    "saved": "",
+    "saveError": ""
+  },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
@@ -466,7 +498,11 @@
     "email": {
       "uiName": "E-post",
       "description": "Din e-postadress används för inloggning och aviseringar."
-    }
+    },
+    "saved": "",
+    "conflict": "",
+    "saveError": "",
+    "saveField": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtrera granskningsloggar...",
@@ -610,5 +646,13 @@
     "filter": "Filtrera processutdata",
     "truncated": "{{count}} äldre loggrader utelämnades. Fullständiga serverloggar finns kvar i datamappen.",
     "privacy": "Rapporter inkluderar lokala sökvägar och senaste loggar. Granska rapporter och tråddumpar för personlig information innan du delar. Ingenting laddas upp automatiskt."
+  },
+  "instanceUnavailable": {
+    "title": "",
+    "description": ""
+  },
+  "botUnavailable": {
+    "title": "",
+    "description": ""
   }
 }

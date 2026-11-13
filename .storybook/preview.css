@@ -1,0 +1,10 @@
+/* The app locks scrolling to its shell. Stories and docs scroll independently. */
+html,
+body {
+  height: auto;
+  max-height: none;
+}
+
+body {
+  overflow: auto;
+}

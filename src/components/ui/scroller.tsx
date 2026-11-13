@@ -1,5 +1,8 @@
 "use client";
 
+import { useRender } from "@base-ui/react/use-render";
+import { mergeProps } from "@base-ui/react/merge-props";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   ChevronDown,
@@ -7,7 +10,6 @@ import {
   ChevronRight,
   ChevronUp,
 } from "lucide-react";
-import { Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
 import { useComposedRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
@@ -53,11 +55,12 @@ type ScrollVisibility = {
 };
 
 interface ScrollerProps
-  extends VariantProps<typeof scrollerVariants>,
-    React.ComponentProps<"div"> {
+  extends
+    VariantProps<typeof scrollerVariants>,
+    useRender.ComponentProps<"div"> {
   size?: number;
   offset?: number;
-  asChild?: boolean;
+
   withNavigation?: boolean;
   scrollStep?: number;
   scrollTriggerMode?: "press" | "hover" | "click";
@@ -72,7 +75,7 @@ function Scroller(props: ScrollerProps) {
     offset = 0,
     scrollStep = 40,
     style,
-    asChild,
+    render,
     withNavigation = false,
     scrollTriggerMode = "press",
     ref,
@@ -226,19 +229,17 @@ function Scroller(props: ScrollerProps) {
     return orientation === "vertical" ? ["up", "down"] : ["left", "right"];
   }, [orientation, withNavigation]);
 
-  const ScrollerPrimitive = asChild ? SlotPrimitive.Slot : "div";
-
-  const ScrollerImpl = (
-    <ScrollerPrimitive
-      data-slot="scroller"
-      {...scrollerProps}
-      ref={composedRef}
-      style={composedStyle}
-      className={cn(
+  const element = useRender({
+    defaultTagName: "div",
+    render,
+    ref: composedRef,
+    props: mergeProps({ "data-slot": "scroller" }, scrollerProps, {
+      style: composedStyle,
+      className: cn(
         scrollerVariants({ orientation, hideScrollbar, className }),
-      )}
-    />
-  );
+      ),
+    }),
+  });
 
   const navigationButtons = React.useMemo(() => {
     if (!withNavigation) return null;
@@ -266,12 +267,12 @@ function Scroller(props: ScrollerProps) {
     return (
       <div className="relative w-full">
         {navigationButtons}
-        {ScrollerImpl}
+        {element}
       </div>
     );
   }
 
-  return ScrollerImpl;
+  return element;
 }
 
 const scrollButtonVariants = cva(
@@ -298,7 +299,7 @@ const directionToIcon: Record<ScrollDirection, React.ElementType> = {
   right: ChevronRight,
 } as const;
 
-interface ScrollButtonProps extends React.ComponentProps<"button"> {
+interface ScrollButtonProps extends useRender.ComponentProps<"button"> {
   direction: ScrollDirection;
   triggerMode?: "press" | "hover" | "click";
 }
@@ -344,7 +345,7 @@ function ScrollButton(props: ScrollButtonProps) {
   const eventHandlers = React.useMemo(() => {
     const triggerModeHandlers: Record<
       NonNullable<ScrollerProps["scrollTriggerMode"]>,
-      React.ComponentProps<"button">
+      useRender.ComponentProps<"button">
     > = {
       press: {
         onPointerDown: onAutoScrollStart,

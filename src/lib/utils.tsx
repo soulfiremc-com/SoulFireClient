@@ -1,6 +1,8 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { type ClassValue, clsx } from "clsx";
 import type { FlagComponent } from "country-flag-icons/react/1x1";
@@ -30,8 +32,11 @@ import {
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { ServerService } from "@/generated/soulfire/server_pb";
+import { mergeAccounts } from "@/lib/account-list.ts";
+import { isDemoHostname } from "@/lib/app-deployment.ts";
 import { desktop } from "@/lib/desktop.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
+import { removeProxyEntries } from "@/lib/proxy-selection.ts";
 import {
   type BaseSettings,
   convertToInstanceProto,
@@ -77,13 +82,13 @@ export function openExternalUrl(url: string) {
   if (desktop.available()) {
     void desktop.shell.openExternal(url);
   } else {
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 }
 
 export function isDemo() {
   return (
-    document.location.host === "demo.soulfiremc.com" ||
+    isDemoHostname(document.location.hostname) ||
     localStorage.getItem(LOCAL_STORAGE_DEMO_MODE_KEY) === "true"
   );
 }
@@ -146,15 +151,6 @@ export function hasInstancePermission(
 
 export function getGravatarUrl(email: string) {
   return `https://www.gravatar.com/avatar/${sha256(email)}?d=404`;
-}
-
-export function data2blob(data: string) {
-  const bytes = new Uint8Array(data.length);
-  for (let i = 0; i < data.length; i++) {
-    bytes[i] = data.charCodeAt(i);
-  }
-
-  return new Blob([bytes]);
 }
 
 export function languageEmoji(locale: string): ReactNode {
@@ -332,14 +328,16 @@ export async function setInstanceIcon(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceMeta({
-    id: instanceInfo.id,
-    meta: {
-      case: "icon",
-      value: icon,
-    },
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceMeta({
+      id: instanceInfo.id,
+      meta: {
+        case: "icon",
+        value: icon,
+      },
+    }),
+  );
 }
 
 export async function setInstanceFriendlyName(
@@ -399,14 +397,16 @@ export async function setInstanceFriendlyName(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceMeta({
-    id: instanceInfo.id,
-    meta: {
-      case: "friendlyName",
-      value: friendlyName,
-    },
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceMeta({
+      id: instanceInfo.id,
+      meta: {
+        case: "friendlyName",
+        value: friendlyName,
+      },
+    }),
+  );
 }
 
 // Used only for profile import - sends entire config
@@ -443,11 +443,13 @@ export async function setInstanceConfigFull(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceConfig({
-    id: instanceInfo.id,
-    config: targetProfile,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceConfig({
+      id: instanceInfo.id,
+      config: targetProfile,
+    }),
+  );
 }
 
 // Granular config entry update for instance settings
@@ -484,13 +486,15 @@ export async function updateInstanceConfigEntry(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceConfigEntry({
-    id: instanceInfo.id,
-    namespace: namespace,
-    key: key,
-    value: jsonToValue(value),
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceConfigEntry({
+      id: instanceInfo.id,
+      namespace: namespace,
+      key: key,
+      value: jsonToValue(value),
+    }),
+  );
 }
 
 // Granular config entry update for server settings
@@ -521,12 +525,14 @@ export async function updateServerConfigEntry(
     };
   });
 
-  const serverService = createClient(ServerService, transport);
-  await serverService.updateServerConfigEntry({
-    namespace: namespace,
-    key: key,
-    value: jsonToValue(value),
-  });
+  const serverService = createRpcClient(ServerService, transport);
+  await Effect.runPromise(
+    serverService.updateServerConfigEntry({
+      namespace: namespace,
+      key: key,
+      value: jsonToValue(value),
+    }),
+  );
 }
 
 // Granular config entry update for bot settings
@@ -608,14 +614,16 @@ export async function updateBotConfigEntry(
     },
   );
 
-  const botService = createClient(BotService, transport);
-  await botService.updateBotConfigEntry({
-    instanceId: instanceId,
-    botId: botId,
-    namespace: namespace,
-    key: key,
-    value: jsonToValue(value),
-  });
+  const botService = createRpcClient(BotService, transport);
+  await Effect.runPromise(
+    botService.updateBotConfigEntry({
+      instanceId: instanceId,
+      botId: botId,
+      namespace: namespace,
+      key: key,
+      value: jsonToValue(value),
+    }),
+  );
 }
 
 export async function removeBotConfigEntry(
@@ -630,8 +638,6 @@ export async function removeBotConfigEntry(
   if (transport === null) {
     return;
   }
-
-  let updatedAccount: ProfileAccount | null = null;
 
   await queryClient.cancelQueries({
     queryKey: instanceInfoQueryKey,
@@ -667,7 +673,7 @@ export async function removeBotConfigEntry(
         })
         .filter((settingsNamespace) => settingsNamespace.entries.length > 0);
 
-      updatedAccount = {
+      const updatedAccount = {
         ...account,
         config: nextConfig,
       };
@@ -685,15 +691,15 @@ export async function removeBotConfigEntry(
     },
   );
 
-  if (updatedAccount === null) {
-    return;
-  }
-
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceAccount({
-    id: instanceId,
-    account: toMinecraftAccountProto(updatedAccount),
-  });
+  const botService = createRpcClient(BotService, transport);
+  await Effect.runPromise(
+    botService.deleteBotConfigEntry({
+      instanceId,
+      botId,
+      namespace,
+      key,
+    }),
+  );
 }
 
 // Account operations
@@ -727,17 +733,19 @@ export async function addInstanceAccount(
         ...old,
         profile: {
           ...old.profile,
-          accounts: [...old.profile.accounts, account],
+          accounts: mergeAccounts(old.profile.accounts, [account]),
         },
       };
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.addInstanceAccount({
-    id: instanceInfo.id,
-    account: accountProto,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.addInstanceAccount({
+      id: instanceInfo.id,
+      account: accountProto,
+    }),
+  );
 }
 
 // Batch account operations
@@ -773,17 +781,19 @@ export async function addInstanceAccountsBatch(
         ...old,
         profile: {
           ...old.profile,
-          accounts: [...old.profile.accounts, ...accounts],
+          accounts: mergeAccounts(old.profile.accounts, accounts),
         },
       };
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.addInstanceAccountsBatch({
-    id: instanceInfo.id,
-    accounts: accountProtos,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.addInstanceAccountsBatch({
+      id: instanceInfo.id,
+      accounts: accountProtos,
+    }),
+  );
 }
 
 export async function removeInstanceAccountsBatch(
@@ -824,17 +834,18 @@ export async function removeInstanceAccountsBatch(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.removeInstanceAccountsBatch({
-    id: instanceInfo.id,
-    profileIds: profileIds,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.removeInstanceAccountsBatch({
+      id: instanceInfo.id,
+      profileIds: profileIds,
+    }),
+  );
 }
 
 export async function applyGeneratedAccounts(
   newAccounts: ProfileAccount[],
   mode: GenerateAccountsMode,
-  existingAccounts: ProfileAccount[],
   instanceInfo: {
     id: string;
   },
@@ -842,63 +853,38 @@ export async function applyGeneratedAccounts(
   queryClient: QueryClient,
   instanceInfoQueryKey: QueryKey,
 ) {
-  switch (mode) {
-    case "IGNORE_EXISTING":
-      // Just append new accounts (duplicates already filtered during generation)
-      await addInstanceAccountsBatch(
-        newAccounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryKey,
-      );
-      break;
-    case "REPLACE_EXISTING": {
-      // Remove accounts with colliding UUIDs, then add new accounts
-      const newProfileIds = new Set(newAccounts.map((a) => a.profileId));
-      const existingToRemove = existingAccounts
-        .filter((a) => newProfileIds.has(a.profileId))
-        .map((a) => a.profileId);
-      if (existingToRemove.length > 0) {
-        await removeInstanceAccountsBatch(
-          existingToRemove,
-          instanceInfo,
-          transport,
-          queryClient,
-          instanceInfoQueryKey,
-        );
-      }
-      await addInstanceAccountsBatch(
-        newAccounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryKey,
-      );
-      break;
-    }
-    case "REPLACE_ALL": {
-      // Delete all existing accounts and replace with generated ones
-      const allExistingIds = existingAccounts.map((a) => a.profileId);
-      if (allExistingIds.length > 0) {
-        await removeInstanceAccountsBatch(
-          allExistingIds,
-          instanceInfo,
-          transport,
-          queryClient,
-          instanceInfoQueryKey,
-        );
-      }
-      await addInstanceAccountsBatch(
-        newAccounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryKey,
-      );
-      break;
-    }
+  if (mode !== "REPLACE_ALL") {
+    await addInstanceAccountsBatch(
+      newAccounts,
+      instanceInfo,
+      transport,
+      queryClient,
+      instanceInfoQueryKey,
+    );
+    return;
   }
+  if (transport === null) return;
+
+  await queryClient.cancelQueries({ queryKey: instanceInfoQueryKey });
+  queryClient.setQueryData<InstanceInfoQueryData>(
+    instanceInfoQueryKey,
+    (old) =>
+      old
+        ? {
+            ...old,
+            profile: {
+              ...old.profile,
+              accounts: mergeAccounts([], newAccounts),
+            },
+          }
+        : old,
+  );
+  await Effect.runPromise(
+    createRpcClient(InstanceService, transport).replaceInstanceAccounts({
+      id: instanceInfo.id,
+      accounts: newAccounts.map(toMinecraftAccountProto),
+    }),
+  );
 }
 
 // Batch proxy operations
@@ -938,15 +924,17 @@ export async function addInstanceProxiesBatch(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.addInstanceProxiesBatch({
-    id: instanceInfo.id,
-    proxies: proxyProtos,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.addInstanceProxiesBatch({
+      id: instanceInfo.id,
+      proxies: proxyProtos,
+    }),
+  );
 }
 
-export async function removeInstanceProxiesBatch(
-  addresses: string[],
+export async function removeInstanceProxyEntries(
+  proxies: ProfileProxy[],
   instanceInfo: {
     id: string;
   },
@@ -957,8 +945,6 @@ export async function removeInstanceProxiesBatch(
   if (transport === null) {
     return;
   }
-
-  const addressSet = new Set(addresses);
 
   await queryClient.cancelQueries({
     queryKey: instanceInfoQueryKey,
@@ -975,19 +961,19 @@ export async function removeInstanceProxiesBatch(
         ...old,
         profile: {
           ...old.profile,
-          proxies: old.profile.proxies.filter(
-            (p) => !addressSet.has(p.address),
-          ),
+          proxies: removeProxyEntries(old.profile.proxies, proxies),
         },
       };
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.removeInstanceProxiesBatch({
-    id: instanceInfo.id,
-    addresses: addresses,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.removeInstanceProxyEntries({
+      id: instanceInfo.id,
+      proxies: proxies.map(toProxyProto),
+    }),
+  );
 }
 
 export async function setSelfUsername(
@@ -1015,10 +1001,12 @@ export async function setSelfUsername(
     };
   });
 
-  const clientService = createClient(ClientService, transport);
-  await clientService.updateSelfUsername({
-    username: username,
-  });
+  const clientService = createRpcClient(ClientService, transport);
+  await Effect.runPromise(
+    clientService.updateSelfUsername({
+      username: username,
+    }),
+  );
 }
 
 export async function setSelfEmail(
@@ -1046,10 +1034,12 @@ export async function setSelfEmail(
     };
   });
 
-  const clientService = createClient(ClientService, transport);
-  await clientService.updateSelfEmail({
-    email: email,
-  });
+  const clientService = createRpcClient(ClientService, transport);
+  await Effect.runPromise(
+    clientService.updateSelfEmail({
+      email: email,
+    }),
+  );
 }
 
 export function timestampToDate(timestamp: Timestamp): Date {

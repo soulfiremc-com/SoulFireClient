@@ -1,19 +1,30 @@
 import { create } from "@bufbuild/protobuf";
+import { Code, ConnectError } from "@connectrpc/connect";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import {
   ExpandIcon,
   ExternalLinkIcon,
+  EyeIcon,
   Gamepad2Icon,
   PauseIcon,
   PlayIcon,
   RefreshCwIcon,
+  Volume2Icon,
+  VolumeXIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
-import { PovTouchControls } from "@/components/pov/pov-touch-controls";
+import {
+  PovTouchControls,
+  PovTouchToolbar,
+} from "@/components/pov/pov-touch-controls";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Slider } from "@/components/ui/slider";
 import { Toaster } from "@/components/ui/sonner";
 import {
   titlebarClassName,
@@ -24,17 +35,26 @@ import {
   PovInputEventSchema,
 } from "@/generated/soulfire/pov_pb";
 import { WINDOW_TITLEBAR_HEIGHT } from "@/hooks/use-window-titlebar";
+import {
+  copyMinecraftText,
+  openMinecraftUrl,
+} from "@/lib/minecraft-client-actions";
 import { desktop, isDesktopApp, isMac } from "@/lib/desktop";
+import { PovAudioPlayer } from "@/lib/pov-audio-player";
 import { povCursor } from "@/lib/pov-cursor";
 import { povDisplayFps } from "@/lib/pov-display";
 import { PovGamepad } from "@/lib/pov-gamepad";
 import {
   inputModifiers,
   isPovReleaseShortcut,
-  isSystemShortcut,
+  isTextEditingShortcut,
+  isTextInputKey,
   keyInput,
   mouseButton,
+  scrollInput,
+  textShortcutKey,
 } from "@/lib/pov-input";
+import { textEditEvents, textInputEvents } from "@/lib/pov-text-input";
 import { lockPovPointer } from "@/lib/pov-pointer-lock";
 import { PovPresenter } from "@/lib/pov-presenter";
 import { povRenderSize } from "@/lib/pov-render-size";
@@ -43,6 +63,7 @@ import { PovStreamFeedbackTracker } from "@/lib/pov-stream-feedback";
 import { PovStreamMetrics, povDebugEnabled } from "@/lib/pov-stream-metrics";
 import { PovVideoDecoder } from "@/lib/pov-video-decoder";
 import { createPovPlayerStore } from "@/stores/pov-player-store";
+import { createTransport, povInputUrl } from "@/lib/web-rpc";
 
 type KeyboardCapture = Navigator & {
   keyboard?: { lock(keys?: string[]): Promise<void>; unlock(): void };
@@ -67,6 +88,8 @@ function BotPovSession({
   botId: string;
   isOnline: boolean;
 }) {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation("instance");
   const [playerStore] = useState(createPovPlayerStore);
   const actions = playerStore.actions;
   const captureToastId = useId();
@@ -78,7 +101,6 @@ function BotPovSession({
     povDebugEnabled() ? new PovStreamMetrics() : null,
   );
   const playing = useSelector(playerStore, (state) => state.playing);
-  const autoStart = useSelector(playerStore, (state) => state.autoStart);
   const capturePending = useSelector(
     playerStore,
     (state) => state.capture === "pending",
@@ -100,12 +122,77 @@ function BotPovSession({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const unlockingForScreen = useRef(false);
+  const heldMouseButtons = useRef(new Set<number>());
   const session = useRef<ReturnType<typeof startPovSession> | null>(null);
+  const audioRef = useRef<PovAudioPlayer | null>(null);
+  const audioGeneration = useRef(0);
+  const audioStartingAbort = useRef<AbortController | null>(null);
+  const volumeLabelId = useId();
+  const audioSupportedRef = useRef<boolean | null>(null);
+  const [audioSupported, setAudioSupported] = useState<boolean | null>(null);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [audioStarting, setAudioStarting] = useState(false);
+  const [volume, setVolume] = useState(80);
+  const muteAudio = useCallback(() => {
+    audioGeneration.current++;
+    audioStartingAbort.current?.abort();
+    audioStartingAbort.current = null;
+    audioRef.current?.close();
+    audioRef.current = null;
+    setAudioEnabled(false);
+    setAudioStarting(false);
+    session.current?.audio(false);
+  }, []);
+
+  async function toggleAudio() {
+    if (audioRef.current || audioStarting) {
+      muteAudio();
+      return;
+    }
+    const generation = ++audioGeneration.current;
+    setAudioStarting(true);
+    const abort = new AbortController();
+    audioStartingAbort.current = abort;
+    try {
+      const audio = await PovAudioPlayer.create(
+        volume / 100,
+        (reason) => {
+          if (generation !== audioGeneration.current) return;
+          muteAudio();
+          toast.error(reason.message);
+        },
+        abort.signal,
+      );
+      if (generation !== audioGeneration.current || !session.current) {
+        audio.close();
+        return;
+      }
+      audioRef.current = audio;
+      setAudioEnabled(true);
+      session.current.audio(true);
+    } catch (reason) {
+      if (generation === audioGeneration.current)
+        toast.error(
+          reason instanceof Error ? reason.message : "Unable to start audio.",
+        );
+    } finally {
+      if (generation === audioGeneration.current) {
+        audioStartingAbort.current = null;
+        setAudioStarting(false);
+      }
+    }
+  }
 
   const release = useCallback(() => {
+    heldMouseButtons.current.clear();
     actions.releaseCapture();
     toast.dismiss(captureToastId);
     session.current?.capture(false);
+    const textInput = textInputRef.current;
+    if (textInput) {
+      textInput.value = "";
+      textInput.blur();
+    }
     if (isDesktopApp())
       void desktop.pov
         .setCaptured(false, nativeCaptureTarget.current)
@@ -127,6 +214,8 @@ function BotPovSession({
     const feedback = new PovStreamFeedbackTracker();
     let decoder: PovVideoDecoder | undefined;
     actions.connecting();
+    audioSupportedRef.current = null;
+    setAudioSupported(null);
     const dimensions = () => {
       const current = canvasRef.current;
       const rect = current?.getBoundingClientRect();
@@ -140,10 +229,22 @@ function BotPovSession({
     };
     const failed = (reason: Error) => {
       if (disposed) return;
+      if (
+        reason instanceof ConnectError &&
+        reason.code === Code.FailedPrecondition
+      ) {
+        void queryClient.invalidateQueries({
+          queryKey: ["bot-info", instanceId, botId],
+        });
+        void queryClient.invalidateQueries({
+          queryKey: ["bot-status", instanceId],
+        });
+      }
       actions.setError(reason.message);
       actions.disconnected();
       release();
       session.current?.stop();
+      muteAudio();
       decoder?.close();
     };
     let presentationWindow = window;
@@ -161,6 +262,12 @@ function BotPovSession({
         metrics?.draw(metadata);
         const screenChanged = actions.framePresented(metadata.screenOpen);
         target.style.cursor = povCursor(metadata.cursorShape);
+        const textInput = textInputRef.current;
+        if (screenChanged && !metadata.screenOpen && textInput) {
+          // Discard unfinished composition before returning to gameplay.
+          textInput.value = "";
+          textInput.blur();
+        }
         if (playerStore.get().capture === "captured" && screenChanged) {
           const doc = target.ownerDocument;
           if (metadata.screenOpen && doc.pointerLockElement === target) {
@@ -199,13 +306,28 @@ function BotPovSession({
         const activeDecoder = decoder;
         metrics.decoder = () => activeDecoder.stats;
       }
+      const transport = createTransport();
+      if (!transport)
+        throw new Error("Interactive POV requires a connected server.");
       session.current = startPovSession(
+        transport,
+        povInputUrl(),
         instanceId,
         botId,
         dimensions,
         (frame) => {
           feedback.receive(frame);
           metrics?.receive(frame);
+          if (audioSupportedRef.current === null) {
+            const supported = frame.audioEnabled !== undefined;
+            audioSupportedRef.current = supported;
+            setAudioSupported(supported);
+          }
+          if (frame.audioError && audioRef.current) {
+            muteAudio();
+            toast.error(frame.audioError);
+          }
+          audioRef.current?.accept(frame.audio);
           decoder?.accept(frame);
         },
         failed,
@@ -214,52 +336,24 @@ function BotPovSession({
           metrics?.reconnect();
           decoder?.reset();
           presenter.reset();
+          audioRef.current?.reset();
+          audioSupportedRef.current = null;
+          setAudioSupported(null);
           actions.disconnected();
         },
         () => (decoder ? feedback.sample(decoder.stats) : undefined),
         undefined,
-        (text) => {
-          void (
-            isDesktopApp()
-              ? desktop.clipboard.writeText(text)
-              : (
-                  canvasRef.current?.ownerDocument.defaultView?.navigator ??
-                  navigator
-                ).clipboard.writeText(text)
-          ).catch(() =>
-            toast.error("Allow clipboard access to copy text from Minecraft."),
-          );
-        },
-        (value) => {
-          let url: URL;
-          try {
-            url = new URL(value);
-          } catch {
-            return;
-          }
-          if (url.protocol !== "https:" && url.protocol !== "http:") return;
-          const win = canvasRef.current?.ownerDocument.defaultView ?? window;
-          release();
-          if (isDesktopApp()) {
-            void desktop.shell
-              .openExternal(url.href)
-              .catch(() => toast.error("Could not open the link."));
-          } else {
-            const opened = win.open("about:blank", "_blank");
-            if (opened) {
-              opened.opener = null;
-              opened.location.href = url.href;
-              return;
-            }
-            toast.info("Your browser blocked the new tab.", {
-              action: {
-                label: "Open link",
-                onClick: () =>
-                  win.open(url.href, "_blank", "noopener,noreferrer"),
-              },
-            });
-          }
-        },
+        (text) =>
+          void copyMinecraftText(
+            text,
+            canvasRef.current?.ownerDocument.defaultView ?? window,
+          ),
+        (value) =>
+          openMinecraftUrl(
+            value,
+            canvasRef.current?.ownerDocument.defaultView ?? window,
+            release,
+          ),
       );
     } catch (reason) {
       actions.setError(
@@ -268,6 +362,7 @@ function BotPovSession({
     }
     return () => {
       disposed = true;
+      muteAudio();
       actions.disconnected();
       if (metrics) {
         metrics.decoder = null;
@@ -281,6 +376,7 @@ function BotPovSession({
       session.current = null;
     };
   }, [
+    queryClient,
     playing,
     isOnline,
     instanceId,
@@ -291,6 +387,7 @@ function BotPovSession({
     touch,
     actions,
     playerStore,
+    muteAudio,
   ]);
 
   useEffect(() => {
@@ -385,48 +482,48 @@ function BotPovSession({
     let escapeForwarded = false;
     const key = (event: KeyboardEvent) => {
       if (playerStore.get().capture !== "captured") return;
-      if (isPovReleaseShortcut(event, isMac)) {
+      const pressed = event.type === "keydown";
+      if (pressed && isPovReleaseShortcut(event, isMac)) {
         event.preventDefault();
         event.stopPropagation();
-        if (event.type === "keydown") release();
+        release();
         return;
       }
-      if (event.isComposing || event.code === "Process") return;
-      const typing = event.target === textInputRef.current;
-      if (typing && (event.ctrlKey || event.metaKey) && event.code === "KeyV")
-        return;
-      const copying =
+      const typing =
+        playerStore.get().screenOpen && event.target === textInputRef.current;
+      const shortcutKey = textShortcutKey(event);
+      if (
+        pressed &&
         typing &&
         (event.ctrlKey || event.metaKey) &&
-        (event.code === "KeyC" || event.code === "KeyX");
-      if (isSystemShortcut(event) && !copying) return;
-      const pressed = event.type === "keydown";
-      const input = keyInput(event, pressed);
-      if (!input) return;
-      if (
-        !(
-          typing &&
-          !event.ctrlKey &&
-          !event.metaKey &&
-          [...event.key].length === 1
-        )
+        shortcutKey === "v"
       )
-        event.preventDefault();
+        return;
+      const input = keyInput(event, pressed, typing);
+      if (!input) return;
+      if (!pressed) {
+        // A modifier or IME change must not strand a previously pressed key.
+        // Input ownership suppresses releases for keys this keyboard never sent.
+        session.current?.enqueue(input);
+        return;
+      }
+      const copying =
+        typing &&
+        isTextEditingShortcut(event) &&
+        (shortcutKey === "c" || shortcutKey === "x");
+      if (!(typing && isTextInputKey(event))) event.preventDefault();
       event.stopPropagation();
       if (event.code === "Escape") {
-        if (pressed && !event.repeat) {
+        if (!event.repeat) {
           escapeForwarded = true;
           session.current?.escape();
         }
         return;
       }
-      if (copying) input.modifiers = 2;
       session.current?.enqueue(input);
-      if (copying && pressed) session.current?.copy();
+      if (copying) session.current?.copy();
       if (
-        pressed &&
         !typing &&
-        !event.isComposing &&
         !event.ctrlKey &&
         !event.metaKey &&
         [...event.key].length === 1
@@ -438,18 +535,30 @@ function BotPovSession({
       }
     };
     const textInput = textInputRef.current;
-    const text = (event: Event) => {
+    const beforeText = (event: InputEvent) => {
       if (
         playerStore.get().capture !== "captured" ||
-        !textInput ||
-        (event as InputEvent).isComposing
+        !playerStore.get().screenOpen
       )
         return;
-      for (const character of textInput.value)
-        enqueue({
-          kind: PovInputEvent_Kind.CHARACTER,
-          code: character.codePointAt(0),
-        });
+      const edits = textEditEvents(event);
+      if (!edits.length) return;
+      event.preventDefault();
+      for (const input of edits) session.current?.enqueue(input);
+    };
+    const text = (event: Event) => {
+      if (!textInput) return;
+      if (
+        playerStore.get().capture !== "captured" ||
+        !playerStore.get().screenOpen
+      ) {
+        // A late IME commit after release must not enter the next capture.
+        textInput.value = "";
+        return;
+      }
+      if ((event as InputEvent).isComposing) return;
+      for (const input of textInputEvents(textInput.value))
+        session.current?.enqueue(input);
       textInput.value = "";
     };
     const paste = (event: ClipboardEvent) => {
@@ -461,6 +570,7 @@ function BotPovSession({
       event.preventDefault();
       session.current?.paste(event.clipboardData?.getData("text/plain") ?? "");
     };
+    textInput?.addEventListener("beforeinput", beforeText);
     textInput?.addEventListener("input", text);
     textInput?.addEventListener("compositionend", text);
     textInput?.addEventListener("paste", paste);
@@ -543,7 +653,7 @@ function BotPovSession({
     canvas.addEventListener("pointermove", touchMove);
     canvas.addEventListener("pointerup", touchEnd);
     canvas.addEventListener("pointercancel", touchEnd);
-    const heldButtons = new Set<number>();
+    const heldButtons = heldMouseButtons.current;
     const moveInScreen = (event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       enqueue({
@@ -589,11 +699,7 @@ function BotPovSession({
     const wheel = (event: WheelEvent) => {
       if (playerStore.get().capture !== "captured") return;
       event.preventDefault();
-      enqueue({
-        kind: PovInputEvent_Kind.SCROLL,
-        x: -Math.sign(event.deltaX),
-        y: -Math.sign(event.deltaY),
-      });
+      enqueue(scrollInput(event));
     };
     const context = (event: Event) => {
       if (playerStore.get().capture === "captured" && event.target === canvas)
@@ -629,6 +735,7 @@ function BotPovSession({
       canvas.removeEventListener("pointermove", touchMove);
       canvas.removeEventListener("pointerup", touchEnd);
       canvas.removeEventListener("pointercancel", touchEnd);
+      textInput?.removeEventListener("beforeinput", beforeText);
       textInput?.removeEventListener("input", text);
       textInput?.removeEventListener("compositionend", text);
       textInput?.removeEventListener("paste", paste);
@@ -679,6 +786,9 @@ function BotPovSession({
       themeObserver.disconnect();
       popup.removeEventListener("pagehide", closed);
       popup.close();
+      // Activity retains state while disconnecting this effect's window.
+      setPopup((current) => (current === popup ? null : current));
+      actions.setFullscreen(false);
     };
   }, [popup, release, actions.setFullscreen]);
 
@@ -708,14 +818,16 @@ function BotPovSession({
       }
       session.current?.capture(true);
       if (!actions.isCurrentCapture(attempt)) return;
-      toast.info(
-        `Press ${releaseShortcut} to release your keyboard and mouse.`,
-        {
-          id: captureToastId,
-          toasterId: captureToastId,
-          duration: 4000,
-        },
-      );
+      if (!touch)
+        toast.info(
+          `Press ${releaseShortcut} to release your keyboard and mouse.`,
+          {
+            id: captureToastId,
+            toasterId: captureToastId,
+            duration: 4000,
+            style: { pointerEvents: "none" },
+          },
+        );
       const navigator = canvas.ownerDocument.defaultView?.navigator as
         | KeyboardCapture
         | undefined;
@@ -743,12 +855,6 @@ function BotPovSession({
     playerStore,
   ]);
 
-  useEffect(() => {
-    if (!autoStart || !connected || !canvas) return;
-    actions.consumeAutoStart();
-    void capture();
-  }, [autoStart, connected, canvas, capture, actions]);
-
   function detach() {
     release();
     const child = window.open(
@@ -757,7 +863,9 @@ function BotPovSession({
       "popup,width=1280,height=800",
     );
     if (!child) {
-      actions.setError("Allow popups to detach the POV window.");
+      toast.error("Allow popups to detach the POV window.", {
+        toasterId: captureToastId,
+      });
       return;
     }
     child.document.title = "SoulFire POV";
@@ -782,15 +890,72 @@ function BotPovSession({
       if (root.ownerDocument.fullscreenElement)
         await root.ownerDocument.exitFullscreen();
       else {
-        if (connected) void capture();
+        // Raw pointer input may need an asynchronous fallback. Finish capture
+        // before fullscreen consumes the gesture needed by that retry.
+        if (connected) await capture();
         await root.requestFullscreen();
       }
     } catch {
-      actions.setError("Fullscreen is unavailable in this window.");
+      toast.error("Fullscreen is unavailable in this window.", {
+        toasterId: captureToastId,
+      });
     }
   }
 
   const immersive = fullscreen || popup !== null;
+  const audioControls = (
+    <div className="flex items-center gap-2">
+      <Button
+        size="sm"
+        variant="outline"
+        disabled={
+          !isOnline || !connected || !playing || audioSupported !== true
+        }
+        title={
+          audioSupported === null
+            ? playing
+              ? "Waiting for POV to connect."
+              : "Watch the bot to use audio."
+            : audioSupported
+              ? undefined
+              : "Update the server to use POV audio."
+        }
+        aria-label={audioEnabled ? "Mute audio" : "Unmute audio"}
+        aria-pressed={audioEnabled}
+        onClick={() => void toggleAudio()}
+      >
+        {audioEnabled ? <Volume2Icon /> : <VolumeXIcon />}
+        {audioStarting
+          ? "Starting audio…"
+          : audioEnabled
+            ? "Mute"
+            : audioSupported === null
+              ? "Audio"
+              : audioSupported
+                ? "Unmute"
+                : "Audio unavailable"}
+      </Button>
+      {audioEnabled && (
+        <Field className="w-24">
+          <FieldLabel id={volumeLabelId} className="sr-only">
+            POV volume
+          </FieldLabel>
+          <Slider
+            aria-labelledby={volumeLabelId}
+            min={0}
+            max={100}
+            value={[volume]}
+            onValueChange={(value) => {
+              const next = Array.isArray(value) ? value[0] : value;
+              if (next === undefined) return;
+              setVolume(next);
+              audioRef.current?.volume(next / 100);
+            }}
+          />
+        </Field>
+      )}
+    </div>
+  );
   const player = (
     <div
       ref={rootRef}
@@ -806,7 +971,7 @@ function BotPovSession({
       )}
       {!immersive && (
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="mr-auto text-sm font-medium">Bot POV</h3>
+          <h3 className="mr-auto text-sm font-medium">{t("bots.pov.title")}</h3>
           <Button
             size="sm"
             variant="outline"
@@ -821,33 +986,45 @@ function BotPovSession({
             ) : (
               <PlayIcon data-icon="inline-start" />
             )}
-            {playing ? "Stop" : "Watch"}
+            {playing ? t("bots.pov.stopWatching") : t("bots.pov.watch")}
           </Button>
           <Button
             size="sm"
-            variant="outline"
-            disabled={!isOnline || !connected || !playing || capturePending}
-            onClick={capture}
+            variant={captured ? "outline" : "default"}
+            disabled={
+              !isOnline ||
+              (!captured && (!connected || !playing || capturePending))
+            }
+            onClick={captured ? release : capture}
           >
             <Gamepad2Icon data-icon="inline-start" />
-            Play
+            {captured ? t("bots.pov.release") : t("bots.pov.takeControl")}
           </Button>
+          {audioControls}
           <Button
             size="sm"
-            variant="outline"
+            variant="ghost"
             onClick={toggleFullscreen}
-            aria-label="Fullscreen"
+            aria-label={t("bots.pov.fullscreen")}
           >
             <ExpandIcon />
           </Button>
-          <Button size="sm" variant="outline" onClick={detach}>
+          <Button size="sm" variant="ghost" onClick={detach}>
             <ExternalLinkIcon data-icon="inline-start" />
-            Detach
+            {t("bots.pov.detach")}
           </Button>
         </div>
       )}
+      {touch && captured && (
+        <PovTouchToolbar
+          screenOpen={guiOpen}
+          keyboard={() => textInputRef.current?.focus()}
+          closeMenu={() => session.current?.escape()}
+          release={release}
+        />
+      )}
       <div
-        className={`relative min-h-0 overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
+        className={`relative ${touch && captured && !immersive ? "min-h-60" : "min-h-0"} overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${captured && !immersive ? "outline-primary outline-2 outline-offset-2" : ""} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
       >
         <textarea
           ref={textInputRef}
@@ -886,9 +1063,7 @@ function BotPovSession({
                 "touch",
               )
             }
-            release={release}
             screenOpen={guiOpen}
-            keyboard={() => textInputRef.current?.focus()}
           />
         )}
         {!captured && (
@@ -906,7 +1081,7 @@ function BotPovSession({
                 </Button>
               </div>
             ) : !isOnline ? (
-              <p>Bot is offline</p>
+              <p>{t("bots.pov.offline")}</p>
             ) : !playing ? (
               <Button
                 onClick={() => {
@@ -914,10 +1089,10 @@ function BotPovSession({
                 }}
               >
                 <PlayIcon data-icon="inline-start" />
-                Watch bot
+                {t("bots.pov.watchBot")}
               </Button>
-            ) : !connected || autoStart || capturePending ? (
-              <p>Connecting…</p>
+            ) : !connected || capturePending ? (
+              <p>{t("bots.pov.connecting")}</p>
             ) : (
               <button
                 type="button"
@@ -926,7 +1101,7 @@ function BotPovSession({
               >
                 <span className={buttonVariants()}>
                   <Gamepad2Icon data-icon="inline-start" />
-                  Click to play
+                  {t("bots.pov.takeControl")}
                 </span>
                 {captureError && (
                   <span className="absolute inset-x-4 bottom-4 text-center text-sm text-muted-foreground">
@@ -938,11 +1113,30 @@ function BotPovSession({
           </div>
         )}
       </div>
+      {immersive && !captured && (
+        <div className="flex items-center gap-2 p-2">{audioControls}</div>
+      )}
       {!immersive && (
-        <p className="text-muted-foreground text-xs">
-          {captured
-            ? `Controlling Minecraft. Press ${releaseShortcut} to release.`
-            : `Play captures your keyboard and mouse. ${releaseShortcut} releases control.`}
+        <p
+          role="status"
+          className={`flex items-center gap-2 text-xs ${captured ? "font-medium" : "text-muted-foreground"}`}
+        >
+          {captured ? (
+            <Gamepad2Icon aria-hidden="true" className="size-3.5 shrink-0" />
+          ) : (
+            <EyeIcon aria-hidden="true" className="size-3.5 shrink-0" />
+          )}
+          <span>
+            {touch
+              ? captured
+                ? t("bots.pov.touchControlling")
+                : t("bots.pov.touchHint")
+              : captured
+                ? t("bots.pov.controlling", { shortcut: releaseShortcut })
+                : playing && connected
+                  ? t("bots.pov.watching", { shortcut: releaseShortcut })
+                  : t("bots.pov.idle")}
+          </span>
         </p>
       )}
       <Toaster

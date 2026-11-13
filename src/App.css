@@ -1,10 +1,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@wterm/dom/css" layer(components);
 
 @custom-variant dark (&:is(.dark *));
 
+[data-slot="sdk-code-sample"] [data-syntax-token] {
+  color: var(--syntax-light);
+}
+
+.dark [data-slot="sdk-code-sample"] [data-syntax-token] {
+  color: var(--syntax-dark);
+}
+
 :root {
+  --provider-accent: var(--primary);
+  --provider-tile: #ffffff;
   --background: oklch(1 0 0);
   --foreground: oklch(0.148 0.004 228.8);
   --card: oklch(1 0 0);
@@ -117,6 +128,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-provider: var(--provider-accent);
+  --color-provider-tile: var(--provider-tile);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
@@ -133,6 +146,62 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Brand colors come from the bundled logos in src/assets/providers. */
+[data-provider="webshare"] {
+  --provider-accent: #1cb39b;
+}
+[data-provider="proxy-seller"] {
+  --provider-accent: #0bbd6c;
+}
+[data-provider="proxyscrape"] {
+  --provider-accent: #3f86c7;
+}
+[data-provider="iproyal"] {
+  --provider-accent: #2fc7da;
+}
+[data-provider="decodo"] {
+  --provider-accent: #00bfae;
+}
+[data-provider="oxylabs"] {
+  --provider-accent: #23d8a0;
+}
+[data-provider="thordata"] {
+  --provider-accent: #2ebd9a;
+}
+[data-provider="bright-data"] {
+  --provider-accent: #3d7ffc;
+}
+[data-provider="legionproxy"] {
+  --provider-accent: #5cc51e;
+}
+[data-provider="plainproxies"] {
+  --provider-accent: #0a84ff;
+}
+[data-provider="flashproxy"] {
+  --provider-accent: #7c5cf5;
+}
+[data-provider="ravealts"] {
+  --provider-accent: #38b8b8;
+}
+[data-provider="fernan"] {
+  --provider-accent: #e8a91e;
+}
+[data-provider="localts"] {
+  --provider-accent: #1d5fbf;
+}
+[data-provider="alts-fast"] {
+  --provider-accent: #2aa8e0;
+}
+[data-provider="kynoselling"] {
+  --provider-accent: #12c9c9;
+}
+[data-provider="flameproxies"] {
+  --provider-tile: #1c1e2a;
+}
+[data-provider="kynoselling"] {
+  --provider-tile: #05070d;
 }
 
 @layer base {
@@ -178,5 +247,22 @@
   [data-app-drag-region] {
     app-region: drag;
     -webkit-app-region: drag;
+  }
+}
+
+@layer components {
+  .wterm[data-terminal-viewport] {
+    --term-font-family: var(--font-mono);
+    --term-font-size: 12px;
+    --term-line-height: 1.4;
+    height: 100%;
+    padding: 2px;
+    border-radius: 0;
+    box-shadow: none;
+    overscroll-behavior: contain;
+  }
+
+  [data-terminal-viewport] ::selection {
+    background: var(--term-selection-bg);
   }
 }

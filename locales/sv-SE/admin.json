@@ -86,6 +86,7 @@
         "update": "Uppdatera användare"
       }
     },
+    "profileConflict": "",
     "addToast": {
       "loading": "Lägger till användare...",
       "success": "Användaren tillagd!",

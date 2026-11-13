@@ -1,3 +1,4 @@
+import { Schema, Result } from "effect";
 import {
   createParser,
   createStandardSchemaV1,
@@ -5,7 +6,6 @@ import {
   parseAsString,
   parseAsStringLiteral,
 } from "nuqs/server";
-import { z } from "zod";
 
 import { dataTableConfig } from "@/config/data-table";
 
@@ -14,9 +14,9 @@ import type {
   ExtendedColumnSort,
 } from "@/types/data-table";
 
-const sortingItemSchema = z.object({
-  id: z.string(),
-  desc: z.boolean(),
+const sortingItemSchema = Schema.Struct({
+  id: Schema.String,
+  desc: Schema.Boolean,
 });
 
 export const getSortingStateParser = <TData>(
@@ -32,15 +32,21 @@ export const getSortingStateParser = <TData>(
     parse: (value) => {
       try {
         const parsed = JSON.parse(value);
-        const result = z.array(sortingItemSchema).safeParse(parsed);
+        const result = Schema.decodeUnknownResult(
+          Schema.mutable(Schema.Array(sortingItemSchema)),
+          { errors: "all" },
+        )(parsed);
 
-        if (!result.success) return null;
+        if (!Result.isSuccess(result)) return null;
 
-        if (validKeys && result.data.some((item) => !validKeys.has(item.id))) {
+        if (
+          validKeys &&
+          result.success.some((item) => !validKeys.has(item.id))
+        ) {
           return null;
         }
 
-        return result.data as ExtendedColumnSort<TData>[];
+        return result.success as ExtendedColumnSort<TData>[];
       } catch {
         return null;
       }
@@ -55,15 +61,18 @@ export const getSortingStateParser = <TData>(
   });
 };
 
-const filterItemSchema = z.object({
-  id: z.string(),
-  value: z.union([z.string(), z.array(z.string())]),
-  variant: z.enum(dataTableConfig.filterVariants),
-  operator: z.enum(dataTableConfig.operators),
-  filterId: z.string(),
+const filterItemSchema = Schema.Struct({
+  id: Schema.String,
+  value: Schema.Union([
+    Schema.String,
+    Schema.mutable(Schema.Array(Schema.String)),
+  ]),
+  variant: Schema.Literals(dataTableConfig.filterVariants),
+  operator: Schema.Literals(dataTableConfig.operators),
+  filterId: Schema.String,
 });
 
-export type FilterItemSchema = z.infer<typeof filterItemSchema>;
+export type FilterItemSchema = (typeof filterItemSchema)["Type"];
 
 export const getFiltersStateParser = <TData>(
   columnIds?: string[] | Set<string>,
@@ -78,15 +87,21 @@ export const getFiltersStateParser = <TData>(
     parse: (value) => {
       try {
         const parsed = JSON.parse(value);
-        const result = z.array(filterItemSchema).safeParse(parsed);
+        const result = Schema.decodeUnknownResult(
+          Schema.mutable(Schema.Array(filterItemSchema)),
+          { errors: "all" },
+        )(parsed);
 
-        if (!result.success) return null;
+        if (!Result.isSuccess(result)) return null;
 
-        if (validKeys && result.data.some((item) => !validKeys.has(item.id))) {
+        if (
+          validKeys &&
+          result.success.some((item) => !validKeys.has(item.id))
+        ) {
           return null;
         }
 
-        return result.data as ExtendedColumnFilter<TData>[];
+        return result.success as ExtendedColumnFilter<TData>[];
       } catch {
         return null;
       }
@@ -133,6 +148,27 @@ export const dataTableValidateSearch = createStandardSchemaV1(
   },
 );
 
+/** One part of an exact setting link. Matches parseSettingFocusSearch limits. */
+const settingFocusPart = createParser({
+  parse: (value) => (value.length > 0 && value.length <= 256 ? value : null),
+  serialize: (value: string) => value,
+});
+
+/**
+ * Table routes that the first-bot guide links to. "guide" offers a way back to
+ * the guide, and "providers" also opens the provider dialog. The focus params
+ * open one field in the page's settings section without changing table state.
+ */
+export const guidedTableValidateSearch = createStandardSchemaV1(
+  {
+    ...dataTableSearchParams,
+    guide: parseAsStringLiteral(["setup", "providers"]),
+    focusNamespace: settingFocusPart,
+    focusKey: settingFocusPart,
+  },
+  { partialOutput: true },
+);
+
 /**
  * Search params definition for simple search input routes.
  */
@@ -143,6 +179,21 @@ export const simpleSearchParams = {
 /**
  * Standard Schema validator for simple search params.
  */
+export const botListValidateSearch = createStandardSchemaV1(
+  {
+    ...simpleSearchParams,
+    status: parseAsStringLiteral([
+      "connected",
+      "starting",
+      "retrying",
+      "failed",
+      "stopping",
+      "stopped",
+    ]),
+  },
+  { partialOutput: true },
+);
+
 export const simpleSearchValidateSearch = createStandardSchemaV1(
   simpleSearchParams,
   {

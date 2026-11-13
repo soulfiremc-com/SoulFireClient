@@ -3,9 +3,14 @@ import { test } from "node:test";
 import {
   glfwKey,
   inputModifiers,
+  keyInput,
   isPovReleaseShortcut,
   isSystemShortcut,
+  isTextEditingShortcut,
+  isTextInputKey,
   mouseButton,
+  scrollInput,
+  textShortcutKey,
 } from "./pov-input";
 
 test("physical keyboard codes map independently of typed text and include extended keys", () => {
@@ -30,6 +35,39 @@ test("browser middle/right buttons and simultaneous modifiers map to GLFW", () =
   );
 });
 
+test("splitting a wheel gesture preserves its native distance in every delta mode", () => {
+  for (const [deltaMode, distance] of [
+    [0, 100],
+    [1, 3],
+    [2, 1],
+  ]) {
+    const whole = scrollInput({
+      deltaMode,
+      deltaX: -distance,
+      deltaY: distance,
+    });
+    const part = scrollInput({
+      deltaMode,
+      deltaX: -distance / 8,
+      deltaY: distance / 8,
+    });
+    assert.equal(whole.x, 1);
+    assert.equal(whole.y, -1);
+    assert.equal(part.x * 8, whole.x);
+    assert.equal(part.y * 8, whole.y);
+    assert.equal(part.kind, whole.kind);
+  }
+});
+
+test("wheel input preserves acceleration and reverses each axis independently", () => {
+  const input = scrollInput({ deltaMode: 0, deltaX: 250, deltaY: -12.5 });
+  const reversed = scrollInput({ deltaMode: 0, deltaX: -250, deltaY: 12.5 });
+  assert.equal(input.x, -2.5);
+  assert.equal(input.y, 0.125);
+  assert.equal(reversed.x, -input.x);
+  assert.equal(reversed.y, -input.y);
+});
+
 test("OS shortcuts remain available while Minecraft keys and Escape are forwarded", () => {
   const event = { code: "KeyW", metaKey: false, altKey: false, ctrlKey: false };
   assert.equal(isSystemShortcut(event), false);
@@ -46,9 +84,10 @@ test("OS shortcuts remain available while Minecraft keys and Escape are forwarde
   );
 });
 
-test("release chord is platform-specific and leaves plain gameplay keys alone", () => {
+test("release chord follows the keyboard layout and platform modifiers", () => {
   const event = {
     code: "KeyG",
+    key: "G",
     shiftKey: true,
     ctrlKey: true,
     metaKey: false,
@@ -70,7 +109,160 @@ test("release chord is platform-specific and leaves plain gameplay keys alone", 
   );
   assert.equal(isPovReleaseShortcut({ ...event, altKey: true }, false), false);
   assert.equal(
-    isPovReleaseShortcut({ ...event, code: "Escape" }, false),
+    isPovReleaseShortcut({ ...event, code: "Escape", key: "Escape" }, false),
+    false,
+  );
+  for (const mac of [false, true]) {
+    const modifiers = { ...event, ctrlKey: !mac, metaKey: mac };
+    assert.equal(
+      isPovReleaseShortcut({ ...modifiers, code: "KeyI" }, mac),
+      true,
+    );
+    assert.equal(isPovReleaseShortcut({ ...modifiers, key: "I" }, mac), false);
+    assert.equal(isPovReleaseShortcut({ ...modifiers, key: "П" }, mac), true);
+  }
+});
+
+test("Command editing shortcuts reach native text fields as Control shortcuts", () => {
+  for (const code of ["KeyA", "KeyC", "KeyX"]) {
+    const event = {
+      code,
+      key: code.slice(-1).toLowerCase(),
+      ctrlKey: false,
+      metaKey: true,
+      altKey: false,
+      shiftKey: false,
+      repeat: false,
+      isComposing: false,
+    };
+    const pressed = keyInput(event, true, true);
+    const released = keyInput(event, false, true);
+    assert.equal(pressed?.code, glfwKey(code));
+    assert.equal(pressed?.modifiers, 2);
+    assert.equal(pressed?.action, 1);
+    assert.equal(released?.modifiers, 2);
+    assert.equal(released?.action, 0);
+    assert.equal(keyInput(event, true, false), null);
+  }
+});
+
+test("native text editing leaves system shortcuts and browser paste available", () => {
+  const event = {
+    code: "KeyR",
+    key: "r",
+    ctrlKey: false,
+    metaKey: true,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  for (const code of ["KeyR", "KeyQ", "KeyT", "KeyV", "Tab"])
+    assert.equal(keyInput({ ...event, code }, true, true), null);
+  assert.equal(
+    keyInput({ ...event, code: "KeyC", shiftKey: true }, true, true),
+    null,
+  );
+  assert.equal(
+    keyInput({ ...event, code: "KeyC", altKey: true }, true, true),
+    null,
+  );
+});
+
+test("Control editing shortcuts preserve modified game key combinations", () => {
+  const event = {
+    code: "KeyC",
+    key: "c",
+    ctrlKey: true,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  assert.equal(isTextEditingShortcut(event), true);
+  assert.equal(keyInput(event, true, true)?.modifiers, 2);
+  const shifted = { ...event, shiftKey: true };
+  assert.equal(isTextEditingShortcut(shifted), false);
+  assert.equal(keyInput(shifted, true, true)?.modifiers, 3);
+  assert.equal(keyInput({ ...event, repeat: true }, true, true)?.action, 2);
+});
+
+test("layout shortcuts retain physical identity and follow the logical letter", () => {
+  const event = {
+    code: "KeyQ",
+    key: "a",
+    ctrlKey: false,
+    metaKey: true,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  assert.equal(isTextEditingShortcut(event), true);
+  const press = keyInput(event, true, true);
+  assert.equal(press?.code, 81);
+  assert.equal(press?.key, "a");
+  assert.equal(press?.modifiers, 2);
+  const release = keyInput(
+    { ...event, key: "A", metaKey: false, shiftKey: true },
+    false,
+    true,
+  );
+  assert.equal(release?.code, press?.code);
+  assert.equal(release?.action, 0);
+  assert.equal(
+    isTextEditingShortcut({ ...event, code: "KeyA", key: "q" }),
+    false,
+  );
+  assert.equal(
+    isTextEditingShortcut({ ...event, code: "KeyA", key: "ф" }),
+    true,
+  );
+  assert.equal(textShortcutKey({ code: "KeyK", key: "v" }), "v");
+  assert.equal(textShortcutKey({ code: "KeyV", key: "м" }), "v");
+});
+
+test("composition filters key presses without losing physical key releases", () => {
+  const event = {
+    code: "KeyW",
+    key: "w",
+    ctrlKey: false,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: true,
+  };
+  assert.equal(keyInput(event, true, false), null);
+  const release = keyInput(event, false, false);
+  assert.equal(release?.code, 87);
+  assert.equal(release?.action, 0);
+});
+
+test("browser text input accepts dead keys and AltGr characters without consuming shortcuts", () => {
+  const event = { key: "a", ctrlKey: false, altKey: false, metaKey: false };
+  for (const key of ["a", "é", "😀", "Dead"])
+    assert.equal(isTextInputKey({ ...event, key }), true);
+  assert.equal(
+    isTextInputKey({ ...event, key: "@", ctrlKey: true, altKey: true }),
+    true,
+  );
+  assert.equal(isTextInputKey({ ...event, key: "Dead", altKey: true }), true);
+  for (const key of [
+    "Enter",
+    "Tab",
+    "ArrowLeft",
+    "Backspace",
+    "",
+    "Unidentified",
+  ])
+    assert.equal(isTextInputKey({ ...event, key }), false);
+  assert.equal(isTextInputKey({ ...event, ctrlKey: true }), false);
+  assert.equal(isTextInputKey({ ...event, metaKey: true }), false);
+  assert.equal(isTextInputKey({ ...event, key: "Dead", ctrlKey: true }), false);
+  assert.equal(
+    isTextInputKey({ ...event, ctrlKey: true, altKey: true, metaKey: true }),
     false,
   );
 });

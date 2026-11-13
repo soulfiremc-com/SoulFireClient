@@ -1,19 +1,39 @@
 import { create } from "@bufbuild/protobuf";
 import { TimestampSchema } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
-import { type QueryClient, queryOptions } from "@tanstack/react-query";
-import { CatchBoundary, createFileRoute, Outlet } from "@tanstack/react-router";
+import {
+  type QueryClient,
+  queryOptions,
+  useQuery,
+} from "@tanstack/react-query";
+import {
+  CatchBoundary,
+  createFileRoute,
+  Link,
+  Outlet,
+} from "@tanstack/react-router";
+import { ArrowLeftIcon } from "lucide-react";
+import type { ComponentProps } from "react";
+import { useTranslation } from "react-i18next";
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { InstanceSidebar } from "@/components/nav/instance/instance-sidebar.tsx";
+import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip.tsx";
 import {
+  demoInstancePermissions,
+  demoInstancePlugins,
   demoInstanceSettings,
   demoInstanceSettingsDefinitions,
 } from "@/demo-data.ts";
 import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
 import {
-  InstancePermission,
   MinecraftAccountProto_AccountTypeProto,
   MinecraftAccountProto_OfflineJavaDataSchema,
   ProxyProto_Type,
@@ -23,20 +43,18 @@ import {
   type InstanceConfig,
   InstanceConfigSchema,
   InstanceInfoSchema,
-  InstancePermissionStateSchema,
-  InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
-import { useCastBroadcast } from "@/hooks/use-cast-broadcast.ts";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
+import { fetchInstanceInfo } from "@/lib/instance-info-query.ts";
 import { instanceMetricsQueryOptions } from "@/lib/metrics-query.ts";
+import { isResourceUnavailable } from "@/lib/resource-errors";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   convertFromInstanceProto,
   type InstanceInfoQueryData,
 } from "@/lib/types.ts";
-import { smartEntries } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance")({
@@ -89,17 +107,11 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
           const instanceInfo = create(InstanceInfoSchema, {
             friendlyName: "Demo",
             icon: "pickaxe",
-            instancePermissions: smartEntries(InstancePermission).map(
-              (permission) =>
-                create(InstancePermissionStateSchema, {
-                  instancePermission: permission[1],
-                  granted: true,
-                }),
-            ),
+            instancePermissions: demoInstancePermissions,
             config: instanceConfig,
             settingsDefinitions: demoInstanceSettingsDefinitions,
             instanceSettings: demoInstanceSettings,
-            plugins: [],
+            plugins: demoInstancePlugins,
             botSummary: create(BotFleetSummarySchema, {
               totalBots: 1,
               desiredBots: 1,
@@ -117,41 +129,12 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
           };
         }
 
-        // Get previous cached data to use for if-modified-since check
-        const previousData = props.client.getQueryData<InstanceInfoQueryData>([
-          "instance-info",
+        return fetchInstanceInfo(
+          transport,
           instance,
-        ]);
-
-        const instanceService = createClient(InstanceService, transport);
-        const result = await instanceService.getInstanceInfo(
-          {
-            id: instance,
-            ifModifiedSince: previousData?.lastModified,
-          },
-          {
-            signal: props.signal,
-          },
+          props.client,
+          props.signal,
         );
-
-        if (result.result.case === "notModified") {
-          // Return previous data if not modified
-          if (previousData) {
-            return previousData;
-          }
-          throw new Error("No cached data available");
-        }
-
-        if (result.result.case !== "info") {
-          throw new Error("Unexpected response type");
-        }
-
-        const info = result.result.value;
-        return {
-          id: instance,
-          profile: convertFromInstanceProto(info.config),
-          ...info,
-        };
       },
       refetchInterval: 3_000,
     });
@@ -203,15 +186,55 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
     );
   },
   component: InstanceLayout,
+  errorComponent: InstanceErrorComponent,
 });
 
-function InstanceLayout() {
-  const { metricsQueryOptions, instanceInfoQueryOptions } =
-    Route.useRouteContext();
-  useCastBroadcast(
-    metricsQueryOptions.queryKey,
-    instanceInfoQueryOptions.queryKey,
+function UnavailableInstance() {
+  const { t } = useTranslation("common");
+  return (
+    <main className="flex flex-1 p-4">
+      <Empty className="m-auto max-w-md bg-card">
+        <EmptyHeader>
+          <EmptyTitle>{t("instanceUnavailable.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("instanceUnavailable.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link to="/user" />}
+          >
+            <ArrowLeftIcon data-icon="inline-start" />
+            {t("instanceSidebar.backToDashboard")}
+          </Button>
+        </EmptyContent>
+      </Empty>
+    </main>
   );
+}
+
+function InstanceErrorComponent(props: ComponentProps<typeof ErrorComponent>) {
+  return isResourceUnavailable(props.error) ? (
+    <UnavailableInstance />
+  ) : (
+    <ErrorComponent {...props} />
+  );
+}
+
+function InstanceLayout() {
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  // Observe errors without adding another polling timer or suspending the layout.
+  const { error } = useQuery({
+    ...instanceInfoQueryOptions,
+    refetchInterval: false,
+  });
+  if (isResourceUnavailable(error)) return <UnavailableInstance />;
+  return <InstanceLayoutContent />;
+}
+
+function InstanceLayoutContent() {
   useBotStatusStream(Route.useParams().instance);
   const isMobile = useIsMobile();
   const sidebarState = localStorage.getItem("sidebar:state");
@@ -222,7 +245,7 @@ function InstanceLayout() {
     <SidebarProvider defaultOpen={defaultOpen} className="min-h-0 flex-1">
       <InstanceSidebar />
       <TooltipProvider delay={500}>
-        <SidebarInset>
+        <SidebarInset className="min-w-0">
           <CatchBoundary
             getResetKey={() => "instance-layout"}
             errorComponent={ErrorComponent}

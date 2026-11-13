@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import { ConnectError } from "@connectrpc/connect";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -187,18 +189,23 @@ function Content() {
                 return;
               }
 
-              const clientService = createClient(ClientService, transport);
+              const clientService = createRpcClient(ClientService, transport);
               toast.promise(
-                clientService.generateWebDAVToken({}).then((response) => {
-                  setWebDavToken(response.token);
-                  copyToClipboard(response.token);
-                }),
+                Effect.runPromise(clientService.generateWebDAVToken({})).then(
+                  (response) => {
+                    setWebDavToken(response.token);
+                    copyToClipboard(response.token);
+                  },
+                ),
                 {
                   loading: t("access.token.generating"),
                   success: t("access.token.success"),
                   error: (error) => {
                     console.error(error);
-                    return t("access.token.error");
+                    return {
+                      message: t("access.token.error"),
+                      description: ConnectError.from(error).rawMessage,
+                    };
                   },
                 },
               );
@@ -293,18 +300,23 @@ function Content() {
                 return;
               }
 
-              const clientService = createClient(ClientService, transport);
+              const clientService = createRpcClient(ClientService, transport);
               toast.promise(
-                clientService.generateAPIToken({}).then((response) => {
-                  setApiToken(response.token);
-                  copyToClipboard(response.token);
-                }),
+                Effect.runPromise(clientService.generateAPIToken({})).then(
+                  (response) => {
+                    setApiToken(response.token);
+                    copyToClipboard(response.token);
+                  },
+                ),
                 {
                   loading: t("access.token.generating"),
                   success: t("access.token.success"),
                   error: (error) => {
                     console.error(error);
-                    return t("access.token.error");
+                    return {
+                      message: t("access.token.error"),
+                      description: ConnectError.from(error).rawMessage,
+                    };
                   },
                 },
               );

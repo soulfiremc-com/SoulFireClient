@@ -1,6 +1,15 @@
 import { fromJson, type JsonValue, toJson } from "@bufbuild/protobuf";
 import { type Value, ValueSchema } from "@bufbuild/protobuf/wkt";
 import { Code, ConnectError } from "@connectrpc/connect";
+import { Effect, Stream } from "effect";
+
+export function parseJsonValue(value: string): JsonValue | undefined {
+  try {
+    return JSON.parse(value) as JsonValue;
+  } catch {
+    return undefined;
+  }
+}
 
 export function jsonToValue(json: JsonValue): Value {
   return fromJson(ValueSchema, json);
@@ -11,7 +20,7 @@ export function valueToJson(value: Value): JsonValue {
 }
 
 export async function observeServerStream<T>(
-  stream: AsyncIterable<T>,
+  stream: Stream.Stream<T, ConnectError>,
   handlers: {
     onMessage?: (message: T) => void | Promise<void>;
     onError?: (error: unknown) => void | Promise<void>;
@@ -19,9 +28,16 @@ export async function observeServerStream<T>(
   },
 ): Promise<void> {
   try {
-    for await (const message of stream) {
-      await handlers.onMessage?.(message);
-    }
+    await Effect.runPromise(
+      stream.pipe(
+        Stream.runForEach((message) =>
+          Effect.tryPromise({
+            try: async () => handlers.onMessage?.(message),
+            catch: (error) => error,
+          }),
+        ),
+      ),
+    );
     await handlers.onComplete?.();
   } catch (error) {
     if (ConnectError.from(error).code === Code.Canceled) {

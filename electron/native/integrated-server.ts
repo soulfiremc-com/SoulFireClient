@@ -15,9 +15,10 @@ import { createRequire } from "node:module";
 import net from "node:net";
 import path from "node:path";
 import type { App } from "electron";
+import { Effect } from "effect";
 import * as tar from "tar";
 import { getAppLocalDataDir } from "./app-paths";
-import { downloadToFile } from "./integrated-server-download";
+import { downloadToFileEffect } from "./integrated-server-download";
 import {
   appendIntegratedLog,
   type IntegratedServerState,
@@ -38,6 +39,16 @@ const AdmZip = require("adm-zip") as {
     }>;
   };
 };
+
+const preparationStep = <A>(operation: () => Promise<A>) =>
+  Effect.uninterruptible(
+    Effect.tryPromise({ try: operation, catch: (error) => error }),
+  );
+
+function temporaryPath(filePath: string, recursive = false) {
+  const remove = Effect.promise(() => rm(filePath, { force: true, recursive }));
+  return Effect.acquireRelease(remove, () => remove);
+}
 
 const ROOT_USER_UUID = "00000000-0000-0000-0000-000000000000";
 
@@ -101,84 +112,118 @@ export async function runIntegratedServer(
   jvmArgs: string[],
   jarSource: IntegratedServerJarSource,
   fallbackVersion: string,
+  forceSoftwareRendering = false,
 ): Promise<string | null> {
-  return startIntegratedOperation(state, async (signal) => {
-    const report = (message: string) => {
-      if (!signal.aborted) appendIntegratedLog(state, message);
-    };
-    const serverVersion = await getSoulFireServerVersion(app, fallbackVersion);
-    const appLocalDataDir = getAppLocalDataDir(app);
-    await mkdir(appLocalDataDir, {
-      recursive: true,
-    });
-
-    const jvmDir = path.join(appLocalDataDir, "jvm-25");
-    state.diagnostics.dataDirectory =
-      jarSource.type === "custom"
-        ? path.join(appLocalDataDir, "soulfire-custom", jarSource.jarId)
-        : path.join(appLocalDataDir, "soulfire");
-    await ensureJvm(jvmDir, report, signal);
-    signal.throwIfAborted();
-
-    const { jarPath: soulFireJarPath, runDir: soulFireRunDir } =
-      await resolveSoulFireJar(
-        app,
-        appLocalDataDir,
-        serverVersion,
-        jarSource,
-        report,
-        signal,
+  return startIntegratedOperation(state, (signal) =>
+    Effect.gen(function* () {
+      const report = (message: string) => {
+        if (!signal.aborted) appendIntegratedLog(state, message);
+      };
+      const serverVersion = yield* preparationStep(() =>
+        getSoulFireServerVersion(app, fallbackVersion),
       );
-    await mkdir(soulFireRunDir, {
-      recursive: true,
-    });
+      if (
+        forceSoftwareRendering &&
+        jarSource.type === "official" &&
+        Number(serverVersion.split(".")[0]) === 2 &&
+        Number(serverVersion.split(".")[1]) < 11
+      ) {
+        throw new Error(
+          "Software rendering requires SoulFire server 2.11 or newer. Import an updated server jar or turn off software rendering.",
+        );
+      }
+      const appLocalDataDir = getAppLocalDataDir(app);
+      yield* preparationStep(() => mkdir(appLocalDataDir, { recursive: true }));
 
-    const javaHomeDir = getJavaHomeDir(jvmDir);
-    const javaExecPath = path.join(javaHomeDir, "bin", getJavaExecutableName());
-    const availablePort = await findRandomAvailablePort();
+      const jvmDir = path.join(appLocalDataDir, "jvm-25");
+      state.diagnostics.dataDirectory =
+        jarSource.type === "custom"
+          ? path.join(appLocalDataDir, "soulfire-custom", jarSource.jarId)
+          : path.join(appLocalDataDir, "soulfire");
+      yield* ensureJvm(jvmDir, report, signal);
+      signal.throwIfAborted();
 
-    signal.throwIfAborted();
-    Object.assign(state.diagnostics, {
-      javaPath: javaExecPath,
-      jarPath: soulFireJarPath,
-      dataDirectory: soulFireRunDir,
-      port: availablePort,
-    });
-    report("Starting SoulFire server...");
+      const { jarPath: soulFireJarPath, runDir: soulFireRunDir } =
+        yield* resolveSoulFireJar(
+          app,
+          appLocalDataDir,
+          serverVersion,
+          jarSource,
+          report,
+          signal,
+        );
+      yield* preparationStep(() => mkdir(soulFireRunDir, { recursive: true }));
 
-    const child = spawn(
-      javaExecPath,
-      [...jvmArgs, `-Dsf.grpc.port=${availablePort}`, "-jar", soulFireJarPath],
-      {
-        cwd: soulFireRunDir,
-        env: {
-          ...process.env,
-          JAVA_HOME: javaHomeDir,
-          LD_LIBRARY_PATH: [
-            path.join(javaHomeDir, "lib"),
-            path.join(javaHomeDir, "lib", "server"),
-            process.env.LD_LIBRARY_PATH ?? "",
-          ].join(path.delimiter),
-          DYLD_LIBRARY_PATH: [
-            path.join(javaHomeDir, "lib"),
-            path.join(javaHomeDir, "lib", "server"),
-            process.env.DYLD_LIBRARY_PATH ?? "",
-          ].join(path.delimiter),
+      const javaHomeDir = getJavaHomeDir(jvmDir);
+      const javaExecPath = path.join(
+        javaHomeDir,
+        "bin",
+        getJavaExecutableName(),
+      );
+      const availablePort = yield* preparationStep(() =>
+        findRandomAvailablePort(),
+      );
+
+      signal.throwIfAborted();
+      Object.assign(state.diagnostics, {
+        javaPath: javaExecPath,
+        jarPath: soulFireJarPath,
+        dataDirectory: soulFireRunDir,
+        port: availablePort,
+      });
+      report("Starting SoulFire server...");
+      if (forceSoftwareRendering) {
+        report("Forcing software rendering for the integrated server.");
+      }
+
+      const child = spawn(
+        javaExecPath,
+        [
+          // Match Minecraft's JVM defaults, including saved argument presets.
+          "-XX:StackShadowPages=32",
+          "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED",
+          "-XX:+UseStringDeduplication",
+          ...(process.platform === "darwin" ? ["-XstartOnFirstThread"] : []),
+          ...jvmArgs,
+          ...(forceSoftwareRendering ? ["-Dsf.vulkan.software=true"] : []),
+          `-Dsf.grpc.port=${availablePort}`,
+          "-jar",
+          soulFireJarPath,
+        ],
+        {
+          cwd: soulFireRunDir,
+          env: {
+            ...process.env,
+            JAVA_HOME: javaHomeDir,
+            LD_LIBRARY_PATH: [
+              path.join(javaHomeDir, "lib"),
+              path.join(javaHomeDir, "lib", "server"),
+              process.env.LD_LIBRARY_PATH ?? "",
+            ].join(path.delimiter),
+            DYLD_LIBRARY_PATH: [
+              path.join(javaHomeDir, "lib"),
+              path.join(javaHomeDir, "lib", "server"),
+              process.env.DYLD_LIBRARY_PATH ?? "",
+            ].join(path.delimiter),
+          },
+          stdio: "pipe",
+          windowsHide: true,
         },
-        stdio: "pipe",
-        windowsHide: true,
-      },
-    );
+      );
 
-    await waitForIntegratedServerReady(state, child, signal);
-    signal.throwIfAborted();
+      yield* Effect.tryPromise({
+        try: () => waitForIntegratedServerReady(state, child, signal),
+        catch: (error) => error,
+      });
+      signal.throwIfAborted();
 
-    const secretKey = await readFile(
-      path.join(soulFireRunDir, "secret-key.bin"),
-    );
-    const token = createRootApiToken(secretKey);
-    return `http://127.0.0.1:${availablePort}\n${token}`;
-  });
+      const secretKey = yield* preparationStep(() =>
+        readFile(path.join(soulFireRunDir, "secret-key.bin")),
+      );
+      const token = createRootApiToken(secretKey);
+      return `http://127.0.0.1:${availablePort}\n${token}`;
+    }),
+  );
 }
 
 export async function listCustomSoulFireServerJars(
@@ -266,50 +311,55 @@ export async function removeCustomSoulFireServerJar(
   });
 }
 
-async function resolveSoulFireJar(
+function resolveSoulFireJar(
   app: App,
   appLocalDataDir: string,
   serverVersion: string,
   jarSource: IntegratedServerJarSource,
   report: (message: string) => void,
   signal: AbortSignal,
-): Promise<{
-  jarPath: string;
-  runDir: string;
-}> {
-  if (jarSource.type === "custom") {
-    const jar = await findCustomSoulFireServerJar(app, jarSource.jarId);
-    if (jar === null || !(await exists(jar.path))) {
-      throw new Error("Custom SoulFire server jar is no longer available");
+): Effect.Effect<
+  {
+    jarPath: string;
+    runDir: string;
+  },
+  unknown
+> {
+  return Effect.gen(function* () {
+    if (jarSource.type === "custom") {
+      const jar = yield* preparationStep(() =>
+        findCustomSoulFireServerJar(app, jarSource.jarId),
+      );
+      if (jar === null || !(yield* preparationStep(() => exists(jar.path)))) {
+        throw new Error("Custom SoulFire server jar is no longer available");
+      }
+
+      report(`Using custom SoulFire jar: ${jar.originalName}`);
+
+      return {
+        jarPath: jar.path,
+        runDir: path.join(appLocalDataDir, "soulfire-custom", jar.id),
+      };
     }
 
-    report(`Using custom SoulFire jar: ${jar.originalName}`);
+    const jarsDir = path.join(appLocalDataDir, "jars");
+    yield* preparationStep(() => mkdir(jarsDir, { recursive: true }));
+
+    const soulFireJarName = `SoulFireDedicated-${serverVersion}.jar`;
+    const soulFireJarPath = path.join(jarsDir, soulFireJarName);
+    yield* ensureSoulFireJar(
+      serverVersion,
+      soulFireJarName,
+      soulFireJarPath,
+      report,
+      signal,
+    );
 
     return {
-      jarPath: jar.path,
-      runDir: path.join(appLocalDataDir, "soulfire-custom", jar.id),
+      jarPath: soulFireJarPath,
+      runDir: path.join(appLocalDataDir, "soulfire"),
     };
-  }
-
-  const jarsDir = path.join(appLocalDataDir, "jars");
-  await mkdir(jarsDir, {
-    recursive: true,
   });
-
-  const soulFireJarName = `SoulFireDedicated-${serverVersion}.jar`;
-  const soulFireJarPath = path.join(jarsDir, soulFireJarName);
-  await ensureSoulFireJar(
-    serverVersion,
-    soulFireJarName,
-    soulFireJarPath,
-    report,
-    signal,
-  );
-
-  return {
-    jarPath: soulFireJarPath,
-    runDir: path.join(appLocalDataDir, "soulfire"),
-  };
 }
 
 async function findCustomSoulFireServerJar(
@@ -406,152 +456,133 @@ async function validateJar(jarPath: string): Promise<void> {
   }
 }
 
-async function ensureJvm(
+function ensureJvm(
   jvmDir: string,
   report: (message: string) => void,
   signal: AbortSignal,
-): Promise<void> {
-  signal.throwIfAborted();
-  if (
-    await exists(
-      path.join(getJavaHomeDir(jvmDir), "bin", getJavaExecutableName()),
-    )
-  ) {
-    report("JVM detected");
-    return;
-  }
-
-  const adoptiumOs = detectOs();
-  const adoptiumArch = detectArchitecture();
-  const jvmUrl = `https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=${adoptiumArch}&image_type=jre&os=${adoptiumOs}&vendor=eclipse`;
-
-  report("Fetching JVM data...");
-  const metadataResponse = await fetch(jvmUrl, { signal });
-  if (!metadataResponse.ok) {
-    throw new Error("Failed to fetch JVM metadata");
-  }
-
-  const metadata = (await metadataResponse.json()) as Array<{
-    binary?: {
-      package?: {
-        checksum?: string;
-        link?: string;
-      };
-    };
-    release_name?: string;
-  }>;
-  const release = metadata[0];
-  const checksum = release?.binary?.package?.checksum;
-  const downloadUrl = release?.binary?.package?.link;
-  const releaseName = release?.release_name;
-  if (!checksum || !downloadUrl || !releaseName) {
-    throw new Error("JVM metadata was incomplete");
-  }
-
-  const archiveTmpPath = `${jvmDir}.download`;
-  const extractTmpRoot = `${jvmDir}.extract`;
-  await rm(archiveTmpPath, {
-    force: true,
-  });
-  await rm(extractTmpRoot, {
-    force: true,
-    recursive: true,
-  });
-
-  try {
-    await downloadToFile(downloadUrl, archiveTmpPath, signal, (percent) => {
-      report(`Downloading JVM... ${percent}%`);
-    });
-    await verifyFileChecksum(archiveTmpPath, checksum, "JVM", signal);
-    signal.throwIfAborted();
-
-    report("Extracting JVM...");
-    await mkdir(extractTmpRoot, {
-      recursive: true,
-    });
-
-    if (downloadUrl.endsWith(".zip")) {
-      const zip = new AdmZip(archiveTmpPath);
-      await zip.extractAllToAsync(extractTmpRoot, true);
-    } else if (downloadUrl.endsWith(".tar.gz")) {
-      await tar.x({
-        cwd: extractTmpRoot,
-        file: archiveTmpPath,
+): Effect.Effect<void, unknown> {
+  return Effect.scoped(
+    Effect.gen(function* () {
+      signal.throwIfAborted();
+      if (
+        yield* preparationStep(() =>
+          exists(
+            path.join(getJavaHomeDir(jvmDir), "bin", getJavaExecutableName()),
+          ),
+        )
+      ) {
+        report("JVM detected");
+        return;
+      }
+      const jvmUrl = `https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=${detectArchitecture()}&image_type=jre&os=${detectOs()}&vendor=eclipse`;
+      report("Fetching JVM data...");
+      const metadata = yield* preparationStep(async () => {
+        const response = await fetch(jvmUrl, { signal });
+        if (!response.ok) throw new Error("Failed to fetch JVM metadata");
+        return (await response.json()) as Array<{
+          binary?: { package?: { checksum?: string; link?: string } };
+          release_name?: string;
+        }>;
       });
-    } else {
-      throw new Error("Unsupported JVM archive type");
-    }
+      const release = metadata[0];
+      const checksum = release?.binary?.package?.checksum;
+      const downloadUrl = release?.binary?.package?.link;
+      const releaseName = release?.release_name;
+      if (!checksum || !downloadUrl || !releaseName)
+        return yield* Effect.fail(new Error("JVM metadata was incomplete"));
 
-    const extractedJvmDir = path.join(extractTmpRoot, `${releaseName}-jre`);
-    const extractedJavaExec = path.join(
-      getJavaHomeDir(extractedJvmDir),
-      "bin",
-      getJavaExecutableName(),
-    );
-    if (!(await exists(extractedJavaExec))) {
-      throw new Error("Extracted JVM is missing the Java executable");
-    }
-
-    signal.throwIfAborted();
-    await atomicReplaceDirectory(extractedJvmDir, jvmDir);
-  } finally {
-    await rm(archiveTmpPath, {
-      force: true,
-    });
-    await rm(extractTmpRoot, {
-      force: true,
-      recursive: true,
-    });
-  }
-  signal.throwIfAborted();
-  report("Downloaded JVM");
+      const archiveTmpPath = `${jvmDir}.download`;
+      const extractTmpRoot = `${jvmDir}.extract`;
+      yield* temporaryPath(archiveTmpPath);
+      yield* temporaryPath(extractTmpRoot, true);
+      yield* downloadToFileEffect(
+        downloadUrl,
+        archiveTmpPath,
+        signal,
+        (percent) => {
+          report(`Downloading JVM... ${percent}%`);
+        },
+      );
+      yield* preparationStep(() =>
+        verifyFileChecksum(archiveTmpPath, checksum, "JVM", signal),
+      );
+      signal.throwIfAborted();
+      report("Extracting JVM...");
+      yield* preparationStep(() => mkdir(extractTmpRoot, { recursive: true }));
+      if (downloadUrl.endsWith(".zip")) {
+        const zip = new AdmZip(archiveTmpPath);
+        yield* preparationStep(() =>
+          zip.extractAllToAsync(extractTmpRoot, true),
+        );
+      } else if (downloadUrl.endsWith(".tar.gz")) {
+        yield* preparationStep(() =>
+          tar.x({ cwd: extractTmpRoot, file: archiveTmpPath }),
+        );
+      } else {
+        return yield* Effect.fail(new Error("Unsupported JVM archive type"));
+      }
+      const extractedJvmDir = path.join(extractTmpRoot, `${releaseName}-jre`);
+      const extractedJavaExec = path.join(
+        getJavaHomeDir(extractedJvmDir),
+        "bin",
+        getJavaExecutableName(),
+      );
+      if (!(yield* preparationStep(() => exists(extractedJavaExec))))
+        return yield* Effect.fail(
+          new Error("Extracted JVM is missing the Java executable"),
+        );
+      signal.throwIfAborted();
+      yield* preparationStep(() =>
+        atomicReplaceDirectory(extractedJvmDir, jvmDir),
+      );
+      signal.throwIfAborted();
+      report("Downloaded JVM");
+    }),
+  );
 }
 
-async function ensureSoulFireJar(
+function ensureSoulFireJar(
   version: string,
   jarName: string,
   jarPath: string,
   report: (message: string) => void,
   signal: AbortSignal,
-): Promise<void> {
-  report("Fetching SoulFire checksum metadata...");
-
-  const expectedChecksum = await fetchSoulFireJarChecksum(
-    version,
-    jarName,
-    signal,
+): Effect.Effect<void, unknown> {
+  return Effect.scoped(
+    Effect.gen(function* () {
+      report("Fetching SoulFire checksum metadata...");
+      const expectedChecksum = yield* preparationStep(() =>
+        fetchSoulFireJarChecksum(version, jarName, signal),
+      );
+      if (yield* preparationStep(() => exists(jarPath))) {
+        const existingChecksum = yield* preparationStep(() =>
+          sha256FileHex(jarPath, signal),
+        );
+        if (existingChecksum.toLowerCase() === expectedChecksum.toLowerCase()) {
+          report("SoulFire already downloaded and verified");
+          return;
+        }
+      }
+      const jarUrl = `https://github.com/soulfiremc-com/SoulFire/releases/download/${version}/${jarName}`;
+      const tempJarPath = `${jarPath}.download`;
+      yield* temporaryPath(tempJarPath);
+      report("Fetching SoulFire data...");
+      yield* downloadToFileEffect(jarUrl, tempJarPath, signal, (percent) => {
+        report(`Downloading SoulFire... ${percent}%`);
+      });
+      yield* preparationStep(() =>
+        verifyFileChecksum(
+          tempJarPath,
+          expectedChecksum,
+          "SoulFire jar",
+          signal,
+        ),
+      );
+      signal.throwIfAborted();
+      yield* preparationStep(() => atomicReplaceFile(tempJarPath, jarPath));
+      report("Downloaded SoulFire");
+    }),
   );
-  if (await exists(jarPath)) {
-    const existingChecksum = await sha256FileHex(jarPath, signal);
-    if (existingChecksum.toLowerCase() === expectedChecksum.toLowerCase()) {
-      report("SoulFire already downloaded and verified");
-      return;
-    }
-  }
-
-  const jarUrl = `https://github.com/soulfiremc-com/SoulFire/releases/download/${version}/${jarName}`;
-  const tempJarPath = `${jarPath}.download`;
-  await rm(tempJarPath, {
-    force: true,
-  });
-
-  report("Fetching SoulFire data...");
-  try {
-    await downloadToFile(jarUrl, tempJarPath, signal, (percent) => {
-      report(`Downloading SoulFire... ${percent}%`);
-    });
-    await verifyFileChecksum(
-      tempJarPath,
-      expectedChecksum,
-      "SoulFire jar",
-      signal,
-    );
-    signal.throwIfAborted();
-    await atomicReplaceFile(tempJarPath, jarPath);
-  } finally {
-    await rm(tempJarPath, { force: true });
-  }
-  report("Downloaded SoulFire");
 }
 
 async function fetchSoulFireJarChecksum(

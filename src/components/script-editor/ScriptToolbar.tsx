@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import {
   ArrowLeftIcon,
+  CircleHelpIcon,
   DownloadIcon,
   EllipsisVerticalIcon,
   LoaderCircleIcon,
@@ -10,10 +11,19 @@ import {
   SaveIcon,
   Trash2Icon,
   UploadIcon,
+  ZapIcon,
   ZoomInIcon,
   ZoomOutIcon,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { ScriptHealthButton } from "./ScriptHealthButton";
+import {
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover.tsx";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
@@ -36,11 +46,49 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
+import { ImportReadSession, readImportFile } from "@/lib/import-read";
+import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { cn } from "@/lib/utils.tsx";
 import { ComplexityScore } from "./ComplexityScore";
 import { DryRunDialog } from "./DryRunDialog";
 import { QuotasDialog } from "./QuotasDialog";
 import { ScriptDiffDialog } from "./ScriptDiffDialog";
+
+function ScriptLifecycleHelp() {
+  const { t } = useTranslation("instance");
+  return (
+    <Popover>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={t("scripts.lifecycle.title")}
+          />
+        }
+      >
+        <CircleHelpIcon />
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-96">
+        <PopoverHeader>
+          <PopoverTitle>{t("scripts.lifecycle.title")}</PopoverTitle>
+        </PopoverHeader>
+        <dl className="flex flex-col gap-2 text-sm">
+          {(["saved", "on", "run", "test"] as const).map((term) => (
+            <div key={term}>
+              <dt className="font-medium">
+                {t(`scripts.lifecycle.${term}.term`)}
+              </dt>
+              <dd className="text-muted-foreground">
+                {t(`scripts.lifecycle.${term}.description`)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 interface ScriptToolbarProps {
   instanceId: string;
@@ -52,6 +100,7 @@ interface ScriptToolbarProps {
   onFitView?: () => void;
   onClear?: () => void;
   isSaving?: boolean;
+  isControlling?: boolean;
   className?: string;
 }
 
@@ -65,6 +114,7 @@ export function ScriptToolbar({
   onFitView,
   onClear,
   isSaving = false,
+  isControlling = false,
   className,
 }: ScriptToolbarProps) {
   const editor = useScriptEditor();
@@ -72,35 +122,27 @@ export function ScriptToolbar({
   const isMobile = useIsMobile();
   const scriptName = useSelector(editor.document, (state) => state.scriptName);
   const setScriptName = editor.actions.setScriptName;
-  const scriptDescription = useSelector(
-    editor.document,
-    (state) => state.scriptDescription,
-  );
   const isDirty = useSelector(editor.document, (state) => state.isDirty);
   const paused = useSelector(editor.document, (state) => state.paused);
-  const quotas = useSelector(editor.document, (state) => state.quotas);
   const loadScriptData = editor.actions.loadScriptData;
+  const nodeCount = useSelector(editor.document, (state) => state.nodes.length);
+  const hasErrors = useSelector(editor.validation, (state) =>
+    state.validationDiagnostics.some((item) => item.severity === "error"),
+  );
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(scriptName);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [readSession] = useState(() => new ImportReadSession());
+  useEffect(() => () => readSession.cancel(), [readSession]);
 
   const handleExport = () => {
-    const { nodes, edges } = editor.document.get();
-    const exportData = {
-      version: 1,
-      name: scriptName,
-      description: scriptDescription,
-      paused,
-      quotas,
-      nodes,
-      edges,
-      exportedAt: new Date().toISOString(),
-    };
-
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json",
-    });
+    const blob = new Blob(
+      [serializeScriptFile(editor.actions.getScriptData())],
+      {
+        type: "application/json",
+      },
+    );
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -113,39 +155,30 @@ export function ScriptToolbar({
     toast.success(t("scripts.editor.toolbar.exportSuccess"));
   };
 
-  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    event.currentTarget.value = "";
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const content = e.target?.result as string;
-        const importData = JSON.parse(content);
-
-        if (!importData.nodes || !importData.edges) {
-          throw new Error("Invalid script file format");
-        }
-
-        loadScriptData({
-          nodes: importData.nodes,
-          edges: importData.edges,
-          name: importData.name ?? scriptName,
-          description: importData.description ?? scriptDescription,
-          paused: importData.paused ?? false,
-          quotas: importData.quotas,
-        });
-
-        toast.success(t("scripts.editor.toolbar.importSuccess"));
-      } catch {
-        toast.error(t("scripts.editor.toolbar.importError"));
-      }
-    };
-    reader.readAsText(file);
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    try {
+      await readSession.run(
+        async (signal) => [await readImportFile(file, signal)],
+        ([content]) => {
+          const importData = parseScriptFile(content);
+          const current = editor.document.get();
+          loadScriptData({
+            nodes: importData.nodes,
+            edges: importData.edges,
+            name: importData.name ?? current.scriptName,
+            description: importData.description ?? current.scriptDescription,
+            paused: importData.paused ?? false,
+            quotas: importData.quotas,
+          });
+          toast.success(t("scripts.editor.toolbar.importSuccess"));
+        },
+      );
+    } catch {
+      toast.error(t("scripts.editor.toolbar.importError"));
     }
   };
 
@@ -170,7 +203,8 @@ export function ScriptToolbar({
   return (
     <div
       className={cn(
-        "flex h-12 items-center gap-2 border-b border-border bg-card px-3",
+        "flex min-w-0 shrink-0 items-center gap-2 border-b border-border bg-card px-3",
+        isMobile ? "h-12" : "min-h-12 flex-wrap py-2",
         className,
       )}
     >
@@ -213,19 +247,20 @@ export function ScriptToolbar({
         ) : (
           <button
             type="button"
+            title={scriptName}
             onClick={() => {
               setIsEditingName(true);
               setEditedName(scriptName);
             }}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-sm font-medium transition-colors hover:bg-muted",
-              isMobile && "max-w-24",
+              "flex min-w-0 items-center gap-1 rounded px-2 py-1 text-sm font-medium transition-colors hover:bg-muted",
+              isMobile ? "max-w-24" : "max-w-48",
             )}
           >
-            <span className={cn(isMobile && "truncate")}>{scriptName}</span>
+            <span className="truncate">{scriptName}</span>
             {isDirty && (
               <span
-                className="text-muted-foreground"
+                className="shrink-0 text-muted-foreground"
                 title={t("scripts.editor.toolbar.unsavedChanges")}
               >
                 *
@@ -253,6 +288,7 @@ export function ScriptToolbar({
             <Button
               variant="outline"
               size={isMobile ? "icon" : "sm"}
+              aria-label={t("scripts.editor.toolbar.save")}
               onClick={onSave}
               disabled={isSaving || !isDirty}
               className={cn(!isMobile && "gap-1.5")}
@@ -275,25 +311,30 @@ export function ScriptToolbar({
         <Separator orientation="vertical" className="h-6 my-auto" />
       )}
 
-      {/* Execution Controls */}
+      {/* A saved script only reacts to triggers while it is on. */}
       <div className="flex items-center gap-1">
+        {!isMobile && <ScriptHealthButton />}
         {paused ? (
           <Tooltip>
             <TooltipTrigger
               render={
                 <Button
-                  variant="outline"
                   size={isMobile ? "icon" : "sm"}
+                  aria-label={t("scripts.editor.toolbar.resume")}
                   onClick={onStart}
-                  className={cn(!isMobile && "gap-1.5")}
+                  disabled={isControlling || hasErrors || nodeCount === 0}
                 />
               }
             >
-              <PlayIcon className="size-4" />
+              <PlayIcon data-icon="inline-start" />
               {!isMobile && t("scripts.editor.toolbar.resume")}
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t("scripts.editor.toolbar.resumeTooltip")}</p>
+              <p>
+                {hasErrors
+                  ? t("scripts.editor.toolbar.resumeBlocked")
+                  : t("scripts.editor.toolbar.resumeTooltip")}
+              </p>
             </TooltipContent>
           </Tooltip>
         ) : (
@@ -304,12 +345,13 @@ export function ScriptToolbar({
                   <Button
                     variant="outline"
                     size={isMobile ? "icon" : "sm"}
+                    aria-label={t("scripts.editor.toolbar.pause")}
                     onClick={onStop}
-                    className={cn(!isMobile && "gap-1.5")}
+                    disabled={isControlling}
                   />
                 }
               >
-                <PauseIcon className="size-4" />
+                <PauseIcon data-icon="inline-start" />
                 {!isMobile && t("scripts.editor.toolbar.pause")}
               </TooltipTrigger>
               <TooltipContent>
@@ -317,14 +359,18 @@ export function ScriptToolbar({
               </TooltipContent>
             </Tooltip>
             {!isMobile && (
-              <Badge variant="default" className="gap-1.5 bg-success-strong">
-                <div className="size-2 animate-pulse rounded-full bg-white" />
+              <Badge
+                variant="outline"
+                className="border-success/40 text-success-emphasis gap-1.5"
+              >
+                <ZapIcon aria-hidden="true" className="size-3" />
                 {t("scripts.running")}
               </Badge>
             )}
           </>
         )}
-        {!isMobile && <DryRunDialog />}
+        {!isMobile && <ScriptLifecycleHelp />}
+        <DryRunDialog instanceId={instanceId} />
         {!isMobile && <QuotasDialog />}
       </div>
 
@@ -335,7 +381,13 @@ export function ScriptToolbar({
         <>
           <DropdownMenu>
             <DropdownMenuTrigger
-              render={<Button variant="ghost" size="icon" />}
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={t("scripts.editor.toolbar.actions")}
+                />
+              }
             >
               <EllipsisVerticalIcon className="size-4" />
             </DropdownMenuTrigger>
@@ -393,7 +445,12 @@ export function ScriptToolbar({
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Button variant="ghost" size="icon" onClick={handleExport} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t("scripts.editor.toolbar.export")}
+                    onClick={handleExport}
+                  />
                 }
               >
                 <DownloadIcon className="size-4" />
@@ -408,6 +465,7 @@ export function ScriptToolbar({
                   <Button
                     variant="ghost"
                     size="icon"
+                    aria-label={t("scripts.editor.toolbar.import")}
                     onClick={() => fileInputRef.current?.click()}
                   />
                 }
@@ -435,7 +493,12 @@ export function ScriptToolbar({
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <Button variant="ghost" size="icon" onClick={onClear} />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={t("scripts.editor.toolbar.clearCanvas")}
+                      onClick={onClear}
+                    />
                   }
                 >
                   <Trash2Icon className="size-4" />

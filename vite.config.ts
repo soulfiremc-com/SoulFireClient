@@ -1,18 +1,15 @@
 import * as fs from "node:fs";
+import { resolve } from "node:path";
 import { devtools } from "@tanstack/devtools-vite";
+import posthog from "@posthog/rollup-plugin";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import electron from "vite-plugin-electron/simple";
 import svgr from "vite-plugin-svgr";
+import { getBuildEnvironment } from "./src/lib/build-environment.ts";
 
-const baseEnv = process.env.VERCEL_ENV ?? process.env.NODE_ENV;
-const appEnv =
-  baseEnv === "production"
-    ? "production"
-    : baseEnv === "preview"
-      ? "preview"
-      : "development";
+const appEnv = getBuildEnvironment(process.env);
 
 const locales = fs
   .readdirSync("./locales", { withFileTypes: true })
@@ -29,7 +26,7 @@ const namespaces = fs
 const isDev = appEnv === "development";
 const isElectron = process.env.SF_ELECTRON === "1";
 const desktopCsp =
-  "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://tc.soulfiremc.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; connect-src 'self' https://tc.soulfiremc.com https://api.mclo.gs *; font-src 'self'; frame-src 'self'; img-src 'self' data: blob: https://www.gravatar.com https://mc-heads.net https://assets.mcasset.cloud; manifest-src 'self'; media-src 'self'; worker-src 'self' blob:;";
+  "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' 'unsafe-eval' https://tc.soulfiremc.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; connect-src 'self' https://tc.soulfiremc.com https://api.mclo.gs *; font-src 'self'; frame-src 'self'; img-src 'self' data: blob: https://www.gravatar.com https://mc-heads.net https://assets.mcasset.cloud; manifest-src 'self'; media-src 'self'; worker-src 'self' blob:;";
 
 export default defineConfig({
   define: {
@@ -76,6 +73,27 @@ export default defineConfig({
     react(),
     // babel({ presets: [reactCompilerPreset()] }),
     svgr(),
+    ...(!isDev && process.env.POSTHOG_PERSONAL_API_KEY
+      ? [
+          posthog({
+            personalApiKey: process.env.POSTHOG_PERSONAL_API_KEY,
+            projectId: "274904",
+            host: "https://eu.posthog.com",
+            // Bun creates an executable shim on Windows instead of a .cmd shim.
+            cliBinaryPath:
+              process.platform === "win32"
+                ? resolve("node_modules/.bin/posthog-cli.exe")
+                : undefined,
+            sourcemaps: {
+              enabled: true,
+              releaseName: "SoulFireClient",
+              releaseVersion:
+                process.env.GITHUB_SHA ?? process.env.npm_package_version,
+              deleteAfterUpload: false,
+            },
+          }),
+        ]
+      : []),
   ],
   clearScreen: false,
   resolve: {
@@ -100,7 +118,7 @@ export default defineConfig({
   build: {
     target: isElectron ? "chrome128" : "es2020",
     minify: "esbuild",
-    sourcemap: isDev,
+    sourcemap: true,
     rolldownOptions: {
       checks: {
         circularDependency: true,

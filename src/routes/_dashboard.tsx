@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import {
   createFileRoute,
@@ -8,25 +10,30 @@ import {
   useNavigate,
 } from "@tanstack/react-router";
 import { usePostHog } from "posthog-js/react";
-import { Suspense, useEffect } from "react";
+import { Suspense, use, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { CommandPaletteProvider } from "@/components/command-palette";
 import { CreateInstanceProvider } from "@/components/dialog/create-instance-dialog.tsx";
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { demoClientData } from "@/demo-data.ts";
+import { demoClientData, demoInstancePermissions } from "@/demo-data.ts";
 import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
 import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import { ClientService } from "@/generated/soulfire/client_pb";
-import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { useProductActivation } from "@/hooks/use-product-activation";
 import {
   type InstanceListResponse,
   InstanceListResponseSchema,
-  InstancePermissionStateSchema,
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
-import { isPostHogConfigured } from "@/lib/posthog.ts";
-import { smartEntries } from "@/lib/utils.tsx";
+import {
+  getAnalyticsIdentity,
+  syncAnalyticsIdentity,
+} from "@/lib/analytics-identity";
+import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
+import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
+import { useSupportReminderUsage } from "@/hooks/use-support-reminder-usage";
 import {
   createTransport,
   isAuthenticated,
@@ -53,24 +60,20 @@ export const Route = createFileRoute("/_dashboard")({
                     desiredBots: 1,
                     onlineBots: 1,
                   }),
-                  instancePermissions: smartEntries(InstancePermission).map(
-                    (permission) =>
-                      create(InstancePermissionStateSchema, {
-                        instancePermission: permission[1],
-                        granted: true,
-                      }),
-                  ),
+                  instancePermissions: demoInstancePermissions,
                 },
               ],
             });
           }
 
-          const instanceService = createClient(InstanceService, transport);
-          const result = await instanceService.listInstances(
-            {},
-            {
-              signal: props.signal,
-            },
+          const instanceService = createRpcClient(InstanceService, transport);
+          const result = await Effect.runPromise(
+            instanceService.listInstances(
+              {},
+              {
+                signal: props.signal,
+              },
+            ),
           );
 
           return result;
@@ -90,12 +93,14 @@ export const Route = createFileRoute("/_dashboard")({
             return demoClientData;
           }
 
-          const clientService = createClient(ClientService, transport);
-          const result = await clientService.getClientData(
-            {},
-            {
-              signal: props.signal,
-            },
+          const clientService = createRpcClient(ClientService, transport);
+          const result = await Effect.runPromise(
+            clientService.getClientData(
+              {},
+              {
+                signal: props.signal,
+              },
+            ),
           );
 
           // console.log(JSON.stringify(result))
@@ -198,26 +203,45 @@ function InstanceSwitchKeybinds() {
   return null;
 }
 
-function PostHogIdentity() {
+function ClientSession() {
   const posthog = usePostHog();
+  const consent = useAnalyticsConsent();
+  const transport = use(TransportContext);
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  const installationId = clientInfo.serverInfo?.installationId;
+  const identity =
+    transport && !isImpersonating()
+      ? getAnalyticsIdentity(installationId, clientInfo.id)
+      : null;
 
   useEffect(() => {
-    if (!isPostHogConfigured || clientInfo.id === "") return;
+    if (!isPostHogConfigured || consent !== "granted") return;
 
-    posthog.identify(clientInfo.id, {
-      email: clientInfo.email,
-      role: clientInfo.role,
-      username: clientInfo.username,
-    });
+    syncAnalyticsIdentity(
+      posthog,
+      identity,
+      {
+        email: clientInfo.email,
+        role: clientInfo.role,
+        username: clientInfo.username,
+        installation_id: installationId ?? "",
+        analytics_identity_version: 2,
+      },
+      () => analyticsConsent.resetIdentity(true),
+    );
   }, [
     clientInfo.email,
-    clientInfo.id,
     clientInfo.role,
     clientInfo.username,
+    identity,
+    installationId,
     posthog,
+    consent,
   ]);
+
+  useProductActivation(identity ?? "", identity !== null);
+  useSupportReminderUsage(clientInfo.id, !isImpersonating());
 
   return null;
 }
@@ -232,14 +256,16 @@ function DashboardLayout() {
   return (
     <TransportContext value={loaderData.transport}>
       <Suspense>
-        <PostHogIdentity />
+        <ClientSession />
         <InstanceSwitchKeybinds />
       </Suspense>
       {isImpersonating() && (
         <div className="border-sidebar-primary pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-30 overflow-hidden border-4" />
       )}
       <CreateInstanceProvider>
-        <Outlet />
+        <CommandPaletteProvider>
+          <Outlet />
+        </CommandPaletteProvider>
       </CreateInstanceProvider>
     </TransportContext>
   );

@@ -63,16 +63,34 @@
         "respawned": "리스폰됨",
         "disconnected": "연결 해제됨",
         "unknown": "상태 변경됨"
+      },
+      "pause": "일시 정지",
+      "resume": "다시 시작",
+      "paused": "표시가 일시 중지되었습니다. 새로운 활동은 계속 수집되고 있습니다.",
+      "following": "실시간 업데이트",
+      "reconnecting": "실시간 피드에 다시 연결하는 중...",
+      "emptyFilter": "이 필터에 일치하는 활동이 없습니다.",
+      "filterLabel": "실시간 피드 필터",
+      "filters": {
+        "all": "전체",
+        "chat": "채팅",
+        "lifecycle": "이벤트"
+      },
+      "columns": {
+        "time": "시간",
+        "bot": "봇",
+        "message": "메시지"
       }
     },
     "bots": {
       "title": "봇들",
       "viewAll": "모든 봇({{total}}개) 보기",
-      "viewAllShort": "모두 보기"
+      "viewAllShort": "모두 보기",
+      "detailsFor": "{{name}} 봇 세부 정보"
     },
     "timeline": {
-      "title": "활동",
-      "viewAll": "모두 보기",
+      "title": "최근 작업",
+      "viewAll": "히스토리 보기",
       "empty": "아직 기록된 활동이 없습니다.",
       "noPermission": "감사 로그를 볼 권한이 없습니다.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "상세 메트릭",
       "composition": "월드 구성"
-    }
+    },
+    "loadError": "최신 데이터를 불러올 수 없습니다."
   },
   "proxy": {
+    "transport": {
+      "network": "네트워크 주소",
+      "unix": "유닉스 소켓"
+    },
     "getProxies": "프록시 가져오기",
     "addProxies": "프록시 추가",
     "filterPlaceholder": "프록시 필터링...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "키",
       "valuePlaceholder": "값 (JSON)",
       "noEntries": "메타데이터 항목이 없습니다. 위에서 하나 추가하세요.",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "다시 시도하기",
       "addSuccess": "항목이 추가되었습니다",
       "addError": "항목 추가에 실패하였습니다",
       "updateError": "항목 수정에 실패하였습니다",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "인벤토리",
+      "actionRejected": "",
       "hotbar": "빠른바",
       "main": "메인 인벤토리",
       "items": "아이템",
@@ -446,17 +473,24 @@
         "beaconEffects": "비콘 효과",
         "crafterSlots": "슬롯 컨트롤",
         "lecternControls": "책 컨트롤",
-        "actions": "동작"
+        "actions": "동작",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "텍스트 입력",
-        "anvilRename": "아이템 이름 변경"
+        "anvilRename": "아이템 이름 변경",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "책 내용",
         "emptyPage": "(빈 페이지)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "{{total}}페이지 중 {{current}}페이지"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "봇 뷰",
@@ -479,6 +513,7 @@
       "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 액션을 사용할 수 있습니다."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "이동 조작",
       "movement": "이동 (WASD)",
       "forward": "전진 (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "사용자에 의해 스크립트가 비활성화되었습니다.",
     "executionFailed": "스크립트 실행에 실패했습니다.",
     "executionError": "실행 오류: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "노드 시작됨: {{nodeId}}",
     "nodeCompleted": "노드 완료됨: {{nodeId}}",
     "nodeError": "노드 오류: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "스크립트 목록으로 돌아가기",
         "save": "저장",
         "saveTooltip": "스크립트 저장하기",
@@ -704,6 +742,16 @@
         "tooltip": "변경 사항 검토"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "드라이 런",
         "title": "드라이 런 스크립트",
         "description": "선택한 트리거에서 스크립트를 모의 입력값과 함께 실행합니다.",
@@ -712,7 +760,8 @@
         "triggerDescription": "모의 입력값으로 실행할 트리거 노드를 선택하세요.",
         "mockInputs": "모의 입력값",
         "valuePlaceholder": "{{type}} 값",
-        "start": "드라이 런 시작"
+        "start": "드라이 런 시작",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "스크립트 할당량",
@@ -732,8 +781,13 @@
         "maxStateStoreEntriesDescription": "스크립트 상태 저장소의 최대 항목 수",
         "disableTimeouts": "타임아웃 비활성화",
         "disableTimeoutsDescription": "노드별 및 데이터 엣지 타임아웃을 비활성화합니다.",
-        "save": "할당량 저장"
+        "save": "할당량 저장",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

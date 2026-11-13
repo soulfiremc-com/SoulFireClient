@@ -63,16 +63,34 @@
         "respawned": "washed ashore again",
         "disconnected": "left the ship",
         "unknown": "shifted course"
+      },
+      "pause": "Drop anchor",
+      "resume": "Sail onward",
+      "paused": "Display be paused, matey. New happenings still be gathered below decks.",
+      "following": "Live updates, arrr",
+      "reconnecting": "Tryin' to reconnect to the live feed, ye scallywag...",
+      "emptyFilter": "No activity matches this here filter, ye landlubber.",
+      "filterLabel": "Filter the live feed, savvy",
+      "filters": {
+        "all": "All hands",
+        "chat": "Parley",
+        "lifecycle": "Happenings"
+      },
+      "columns": {
+        "time": "Hourglass",
+        "bot": "Bot Buccaneer",
+        "message": "Message in a bottle"
       }
     },
     "bots": {
       "title": "Crew",
       "viewAll": "Gaze at all {{total}} bots in the fleet",
-      "viewAllShort": "Show all hands"
+      "viewAllShort": "Show all hands",
+      "detailsFor": "Details o' the bot fer {{name}}, aye"
     },
     "timeline": {
-      "title": "Cap'n's Log",
-      "viewAll": "Show all hands",
+      "title": "Recent deeds & mischief",
+      "viewAll": "View the ol' logs, matey",
       "empty": "No tales in the log yet, matey.",
       "noPermission": "Ye lack permission to read the pirate's ledger.",
       "types": {
@@ -93,9 +111,14 @@
     "detailed": {
       "title": "Finer Booty Details",
       "composition": "Shape o' the Seas"
-    }
+    },
+    "loadError": "Arrr, could not fish up the latest booty."
   },
   "proxy": {
+    "transport": {
+      "network": "Netwurk address, me heartie",
+      "unix": "Unix socket, yarrr"
+    },
     "getProxies": "Fetch Proxies!",
     "addProxies": "Add more proxies t' yer crew!",
     "filterPlaceholder": "Arr, filter them scallywag proxies...",
@@ -318,6 +341,9 @@
       "keyPlaceholder": "Key to the chest",
       "valuePlaceholder": "Booty Value (JSON)",
       "noEntries": "No metadata trinkets. Add one up top!",
+      "loadError": "",
+      "loadErrorDescription": "",
+      "retryLoad": "Try again, matey!",
       "addSuccess": "Entry stashed!",
       "addError": "Failed to stash the loot!",
       "updateError": "Couldn't update that trinket, arrr!",
@@ -429,6 +455,7 @@
     },
     "inventoryPanel": {
       "title": "Cargo Hold",
+      "actionRejected": "",
       "hotbar": "Armory",
       "main": "Main Cargo",
       "items": "bits o' loot",
@@ -446,17 +473,24 @@
         "beaconEffects": "Beacon Buffs",
         "crafterSlots": "Slot Commands",
         "lecternControls": "Book o' Orders",
-        "actions": "Duties"
+        "actions": "Duties",
+        "creativeTabs": ""
       },
       "textInput": {
         "title": "Text Parley",
-        "anvilRename": "Rename Yer Loot"
+        "anvilRename": "Rename Yer Loot",
+        "creativeSearch": ""
       },
       "bookPages": {
         "title": "Book Scribblin's",
         "emptyPage": "(Blank page, matey)",
+        "previousPage": "",
+        "nextPage": "",
         "pageIndicator": "Page {{current}} of {{total}}"
-      }
+      },
+      "creativeCatalogHint": "",
+      "creativeTrashHint": "",
+      "destroyItem": ""
     },
     "visualPanel": {
       "title": "Bot's View",
@@ -479,6 +513,7 @@
       "offline": "Bot's off deck. Actions be cut off till it returns."
     },
     "movementPanel": {
+      "updateServer": "",
       "title": "Movement O' the Ship",
       "movement": "Ship Movements (WASD)",
       "forward": "Surge Ahead (W)",
@@ -622,6 +657,8 @@
     "deactivatedByUser": "Spell sunk by yer own hand!",
     "executionFailed": "Spell failed t'run!",
     "executionError": "Execution mishap: {{error}}",
+    "monitoringError": "",
+    "monitoringDisconnected": "",
     "nodeStarted": "Node let loose: {{nodeId}}",
     "nodeCompleted": "Node tied off: {{nodeId}}",
     "nodeError": "Node got cursed: {{error}}",
@@ -635,6 +672,7 @@
     },
     "editor": {
       "toolbar": {
+        "actions": "",
         "backToScripts": "Back t' Spells!",
         "save": "Tuck it away",
         "saveTooltip": "Be savin' yer script, matey!",
@@ -705,6 +743,16 @@
         "tooltip": "Inspect the changes, matey"
       },
       "dryRun": {
+        "saveFirst": "",
+        "unavailable": "",
+        "inputHint": "",
+        "invalidInput": "",
+        "running": "",
+        "cancel": "",
+        "completed": "",
+        "failed": "",
+        "cancelled": "",
+        "incomplete": "",
         "tooltip": "Dry Run (No cannonballs fired)",
         "title": "Dry Run o' the Script",
         "description": "Sail a script from yer chosen trigger with pretend cargo.",
@@ -713,7 +761,9 @@
         "triggerDescription": "Pick the trigger node to set sail with pretend loot.",
         "mockInputs": "Mock Inputs, arrr!",
         "valuePlaceholder": "{{type}} booty value",
-        "start": "Hoist the Dry Run!"
+        "start": "Hoist the Dry Run!",
+        "stats_one": "",
+        "stats_other": ""
       },
       "quotas": {
         "tooltip": "Script Rations",
@@ -733,8 +783,13 @@
         "maxStateStoreEntriesDescription": "Maximum notches in the ship's state log",
         "disableTimeouts": "Cut Timeouts loose",
         "disableTimeoutsDescription": "Disables single-node and data line timeouts, arrr!",
-        "save": "Save the rations, secure the cargo!"
+        "save": "Save the rations, secure the cargo!",
+        "invalidInteger": ""
       }
     }
+  },
+  "metadataValidation": {
+    "invalidNamespace": "",
+    "invalidKey": ""
   }
 }

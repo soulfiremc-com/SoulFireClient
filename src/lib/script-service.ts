@@ -1,3 +1,5 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import {
@@ -5,9 +7,15 @@ import {
   StructSchema,
   ValueSchema,
 } from "@bufbuild/protobuf/wkt";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { queryOptions } from "@tanstack/react-query";
 import type { Edge, Node } from "@xyflow/react";
+import { persistedNodeDimensions } from "@/lib/script-node-layout";
+import {
+  localPortTypeToProto,
+  protoPortTypeToLocal,
+  type PortType as LocalPortType,
+} from "@/components/script-editor/nodes/types";
 import {
   EdgeType,
   type GetNodeTypesRequest,
@@ -49,10 +57,9 @@ export function scriptListQueryOptions(
       if (!transport) {
         return { scripts: [] };
       }
-      const client = createClient(ScriptService, transport);
-      const result = await client.listScripts(
-        { instanceId },
-        { signal: signal },
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.listScripts({ instanceId }, { signal: signal }),
       );
       return result;
     },
@@ -74,10 +81,9 @@ export function scriptQueryOptions(
       if (!transport) {
         return null;
       }
-      const client = createClient(ScriptService, transport);
-      const result = await client.getScript(
-        { instanceId, scriptId },
-        { signal: signal },
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.getScript({ instanceId, scriptId }, { signal: signal }),
       );
       return result.script;
     },
@@ -99,10 +105,9 @@ export function scriptStatusQueryOptions(
       if (!transport) {
         return null;
       }
-      const client = createClient(ScriptService, transport);
-      const result = await client.getScriptStatus(
-        { instanceId, scriptId },
-        { signal: signal },
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.getScriptStatus({ instanceId, scriptId }, { signal: signal }),
       );
       return result.status;
     },
@@ -132,13 +137,15 @@ export function nodeTypesQueryOptions(
       if (!transport) {
         return { nodeTypes: [], categories: [], portTypeMetadata: [] };
       }
-      const client = createClient(ScriptService, transport);
-      const result = await client.getNodeTypes(
-        {
-          category: options?.category,
-          includeDeprecated: options?.includeDeprecated ?? false,
-        },
-        { signal: signal },
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.getNodeTypes(
+          {
+            category: options?.category,
+            includeDeprecated: options?.includeDeprecated ?? false,
+          },
+          { signal: signal },
+        ),
       );
       return result;
     },
@@ -162,10 +169,9 @@ export function registryDataQueryOptions(
       if (!transport) {
         return { blocks: [], entities: [], items: [], biomes: [] };
       }
-      const client = createClient(ScriptService, transport);
-      const result = await client.getRegistryData(
-        { registry },
-        { signal: signal },
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.getRegistryData({ registry }, { signal: signal }),
       );
       return result;
     },
@@ -292,9 +298,11 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
       label: (nodeData?.label as string) ?? "",
       containedNodes: (nodeData?.containedNodes as string[]) ?? [],
       parentFrameId: (nodeData?.parentFrameId as string) ?? "",
-      width: node.width ?? node.measured?.width,
-      height: node.height ?? node.measured?.height,
-      resolvedType: nodeData?.resolvedType as PortType | undefined,
+      ...persistedNodeDimensions(node),
+      resolvedType:
+        nodeData?.resolvedType === undefined
+          ? undefined
+          : localPortTypeToProto(nodeData.resolvedType as LocalPortType),
     });
   });
 }
@@ -317,7 +325,8 @@ export function protoToNodes(nodes: ScriptNode[]): Node[] {
     if (node.containedNodes.length > 0)
       data.containedNodes = node.containedNodes;
     if (node.parentFrameId) data.parentFrameId = node.parentFrameId;
-    if (node.resolvedType !== undefined) data.resolvedType = node.resolvedType;
+    if (node.resolvedType !== undefined)
+      data.resolvedType = protoPortTypeToLocal(node.resolvedType);
     return {
       id: node.id,
       type: node.type,
@@ -326,8 +335,7 @@ export function protoToNodes(nodes: ScriptNode[]): Node[] {
         y: node.position?.y ?? 0,
       },
       data,
-      ...(node.width != null && { width: node.width }),
-      ...(node.height != null && { height: node.height }),
+      ...persistedNodeDimensions(node),
       // Frames must render behind other nodes
       ...(node.type === "layout.frame" && { zIndex: -1 }),
     };

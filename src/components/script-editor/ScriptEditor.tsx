@@ -10,26 +10,23 @@ import {
   type Node,
   ReactFlow,
   type ReactFlowInstance,
+  useNodesInitialized,
+  useStore,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
+import { ScriptGroupViewports } from "@/lib/script-group-viewports";
 import { createConnectionValidator, edgeTypes } from "./edges";
 import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
 import { useNodeTypes } from "./NodeTypesContext";
 import { QuickAddMenu } from "./QuickAddMenu";
-
-// State for node context menu (React Flow idiomatic pattern)
-interface NodeContextMenuState {
-  nodeId: string;
-  top?: number | false;
-  left?: number | false;
-  right?: number | false;
-  bottom?: number | false;
-}
+import { ScriptFirstUse } from "./ScriptFirstUse";
 
 export function ScriptEditor() {
   const editor = useScriptEditor();
@@ -37,8 +34,18 @@ export function ScriptEditor() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
-  const [nodeContextMenu, setNodeContextMenu] =
-    useState<NodeContextMenuState | null>(null);
+  const nodesInitialized = useNodesInitialized();
+  // The 200x150 overview needs room beside the graph and its navigation controls.
+  const showMiniMap = useStore(
+    (state) => state.width >= 640 && state.height >= 400,
+  );
+  const [groupViewports] = useState(() => new ScriptGroupViewports());
+  const {
+    contextMenu: nodeContextMenu,
+    handleContextMenu: openNodeContextMenu,
+    dismiss: dismissNodeContextMenu,
+    menuRef: nodeMenuRef,
+  } = useContextMenu<string>();
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null);
   const { nodeTypes } = useNodeTypes();
 
@@ -70,6 +77,13 @@ export function ScriptEditor() {
     editor.ui,
     (state) => state.groupEditStack,
   );
+  const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+  const canvasRevision = useSelector(
+    editor.ui,
+    (state) => state.canvasRevision,
+  );
+  const visibleNodes = useSelector(editor.visibleNodes);
+  const visibleEdges = useSelector(editor.visibleEdges);
   const enterGroup = editor.actions.enterGroup;
   const exitGroup = editor.actions.exitGroup;
   const createGroupFromSelection = editor.actions.createGroupFromSelection;
@@ -109,9 +123,58 @@ export function ScriptEditor() {
     setReactFlowInstance(instance);
   }, []);
 
+  // Keep the first fit behind measurement; later fits are queued for the new group's nodes.
+  useEffect(() => {
+    if (
+      !reactFlowInstance ||
+      (!nodesInitialized && !groupViewports.isInitialized(canvasRevision))
+    )
+      return;
+    const navigating = groupViewports.isInitialized(canvasRevision);
+    const change = groupViewports.enter(
+      currentGroupId,
+      reactFlowInstance.getViewport(),
+      canvasRevision,
+    );
+    if (change.type === "unchanged") return;
+    if (navigating) containerRef.current?.focus({ preventScroll: true });
+    if (change.type === "restore") {
+      void reactFlowInstance.setViewport(change.viewport);
+    } else if (change.type === "fit") {
+      const fitted = visibleNodes.length
+        ? reactFlowInstance.fitView({
+            nodes: visibleNodes.map(({ id }) => ({ id })),
+          })
+        : reactFlowInstance.setViewport({ x: 0, y: 0, zoom: 1 });
+      void fitted.then((success) => {
+        if (success) groupViewports.completeFit(currentGroupId, canvasRevision);
+      });
+    }
+  }, [
+    canvasRevision,
+    currentGroupId,
+    groupViewports,
+    nodesInitialized,
+    reactFlowInstance,
+    visibleNodes,
+  ]);
+
+  const getCanvasCenter = useCallback(() => {
+    if (!reactFlowInstance || !containerRef.current) return null;
+    const rect = containerRef.current.getBoundingClientRect();
+    const screenPosition = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+    return {
+      screenPosition,
+      flowPosition: reactFlowInstance.screenToFlowPosition(screenPosition),
+    };
+  }, [reactFlowInstance]);
+
   // Auto-focus the container so keyboard shortcuts work immediately
   useEffect(() => {
-    containerRef.current?.focus();
+    containerRef.current?.focus({ preventScroll: true });
   }, []);
 
   const handleSelectionChange = useCallback(
@@ -223,14 +286,17 @@ export function ScriptEditor() {
 
       // Tab - Enter/Exit group
       if (event.key === "Tab") {
-        event.preventDefault();
+        if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey)
+          return;
         if (groupEditStack.length > 0) {
+          event.preventDefault();
           // If inside a group, exit
           exitGroup();
         } else if (selectedNodeId) {
           // If a group node is selected, enter it
           const selectedNode = nodes.find((n) => n.id === selectedNodeId);
           if (selectedNode?.type === "layout.group") {
+            event.preventDefault();
             enterGroup(selectedNodeId);
           }
         }
@@ -245,19 +311,9 @@ export function ScriptEditor() {
         !event.metaKey
       ) {
         event.preventDefault();
-        if (reactFlowInstance && containerRef.current) {
-          const rect = containerRef.current.getBoundingClientRect();
-          // Get mouse position relative to viewport, or center of canvas
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          const flowPosition = reactFlowInstance.screenToFlowPosition({
-            x: centerX,
-            y: centerY,
-          });
-          openQuickAddMenu(flowPosition, {
-            x: rect.left + centerX,
-            y: rect.top + centerY,
-          });
+        const center = getCanvasCenter();
+        if (center) {
+          openQuickAddMenu(center.flowPosition, center.screenPosition);
         }
         return;
       }
@@ -319,7 +375,8 @@ export function ScriptEditor() {
       if (
         event.key === "g" &&
         (event.ctrlKey || event.metaKey) &&
-        !event.shiftKey
+        !event.shiftKey &&
+        !event.altKey
       ) {
         event.preventDefault();
         if (selectedNodes.length > 0) {
@@ -458,7 +515,7 @@ export function ScriptEditor() {
       nodes,
       onNodesChange,
       deleteSelected,
-      reactFlowInstance,
+      getCanvasCenter,
       openQuickAddMenu,
       selectedNodeId,
       toggleMute,
@@ -511,18 +568,12 @@ export function ScriptEditor() {
       }
 
       const clipboardData = handleNativePaste(event.nativeEvent);
-      if (clipboardData && reactFlowInstance && containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const flowPosition = reactFlowInstance.screenToFlowPosition({
-          x: centerX,
-          y: centerY,
-        });
-        pasteClipboardData(clipboardData, flowPosition);
+      const center = getCanvasCenter();
+      if (clipboardData && center) {
+        pasteClipboardData(clipboardData, center.flowPosition);
       }
     },
-    [reactFlowInstance, pasteClipboardData],
+    [getCanvasCenter, pasteClipboardData],
   );
 
   // Handle right-click on canvas for quick add menu
@@ -564,10 +615,6 @@ export function ScriptEditor() {
   // Handle right-click on node (React Flow idiomatic pattern)
   const handleNodeContextMenu = useCallback(
     (event: React.MouseEvent, node: Node) => {
-      event.preventDefault();
-
-      if (!containerRef.current) return;
-
       // Select the right-clicked node if it isn't already selected
       if (!node.selected) {
         onNodesChange([
@@ -584,27 +631,16 @@ export function ScriptEditor() {
         ]);
       }
 
-      // Calculate position, ensuring menu stays within bounds
-      const pane = containerRef.current.getBoundingClientRect();
-      setNodeContextMenu({
-        nodeId: node.id,
-        top: event.clientY < pane.height - 200 && event.clientY - pane.top,
-        left: event.clientX < pane.width - 200 && event.clientX - pane.left,
-        right:
-          event.clientX >= pane.width - 200 &&
-          pane.width - (event.clientX - pane.left),
-        bottom:
-          event.clientY >= pane.height - 200 &&
-          pane.height - (event.clientY - pane.top),
-      });
+      openNodeContextMenu(event, node.id);
     },
-    [nodes, onNodesChange],
+    [nodes, onNodesChange, openNodeContextMenu],
   );
 
   // Close node context menu on pane click
   const handlePaneClick = useCallback(() => {
-    setNodeContextMenu(null);
-  }, []);
+    dismissNodeContextMenu();
+    containerRef.current?.focus({ preventScroll: true });
+  }, [dismissNodeContextMenu]);
 
   // Handle pointer down for link cutting (Alt+drag)
   // Uses pointer events instead of mouse events to support touch/stylus
@@ -643,10 +679,6 @@ export function ScriptEditor() {
       endLinkCutting();
     }
   }, [linkCutting.active, endLinkCutting]);
-
-  // Get visible nodes and edges based on current group context
-  const visibleNodes = useSelector(editor.visibleNodes);
-  const visibleEdges = useSelector(editor.visibleEdges);
 
   // Create connection validator with current nodes
   const connectionValidator = useMemo(
@@ -739,6 +771,7 @@ export function ScriptEditor() {
   return (
     <div
       ref={containerRef}
+      tabIndex={0}
       className="h-full w-full relative outline-none"
       onKeyDown={handleKeyDown}
       onCopy={handleCopy}
@@ -777,7 +810,6 @@ export function ScriptEditor() {
           onReconnect={handleReconnect}
           onReconnectEnd={handleReconnectEnd}
           colorMode={(resolvedTheme as ColorMode) ?? "dark"}
-          fitView
           minZoom={0.1}
           snapToGrid
           snapGrid={[16, 16]}
@@ -791,7 +823,8 @@ export function ScriptEditor() {
             color="var(--muted-foreground)"
           />
           <Controls />
-          <MiniMap zoomable pannable />
+          {showMiniMap && <MiniMap zoomable pannable />}
+          {groupEditStack.length === 0 && <ScriptFirstUse />}
         </ReactFlow>
       </NodeEditingProvider>
 
@@ -800,72 +833,37 @@ export function ScriptEditor() {
 
       <QuickAddMenu />
 
-      {/* Node context menu (React Flow idiomatic pattern) */}
       {nodeContextMenu && (
-        <>
-          {/* Backdrop - closes menu on click, prevents native context menu on right-click */}
-          <div
-            className="fixed inset-0 z-[99]"
-            onClick={() => setNodeContextMenu(null)}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              setNodeContextMenu(null);
-            }}
-          />
+        <ContextMenuPortal
+          x={nodeContextMenu.position.x}
+          y={nodeContextMenu.position.y}
+          menuRef={nodeMenuRef}
+          onClose={dismissNodeContextMenu}
+        >
           <NodeContextMenu
-            nodeId={nodeContextMenu.nodeId}
+            nodeId={nodeContextMenu.data}
             isMuted={
               (
-                visibleNodes.find((n) => n.id === nodeContextMenu.nodeId)
+                visibleNodes.find((n) => n.id === nodeContextMenu.data)
                   ?.data as { muted?: boolean } | undefined
               )?.muted ?? false
             }
             isCollapsed={
               (
-                visibleNodes.find((n) => n.id === nodeContextMenu.nodeId)
+                visibleNodes.find((n) => n.id === nodeContextMenu.data)
                   ?.data as { collapsed?: boolean } | undefined
               )?.collapsed ?? false
             }
-            previewEnabled={previewEnabledNodes.has(nodeContextMenu.nodeId)}
-            onRename={(nodeId) => {
-              setRenamingNodeId(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onDelete={() => {
-              deleteSelected();
-              setNodeContextMenu(null);
-            }}
-            onDuplicate={() => {
-              duplicateSelected();
-              setNodeContextMenu(null);
-            }}
-            onDisconnectAll={(nodeId) => {
-              disconnectNode(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onToggleMute={(nodeId) => {
-              toggleMute(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onToggleCollapse={(nodeId) => {
-              toggleCollapse(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onTogglePreview={(nodeId) => {
-              togglePreview(nodeId);
-              setNodeContextMenu(null);
-            }}
-            onClose={() => setNodeContextMenu(null)}
-            style={{
-              position: "absolute",
-              top: nodeContextMenu.top || undefined,
-              left: nodeContextMenu.left || undefined,
-              right: nodeContextMenu.right || undefined,
-              bottom: nodeContextMenu.bottom || undefined,
-              zIndex: 100,
-            }}
+            previewEnabled={previewEnabledNodes.has(nodeContextMenu.data)}
+            onRename={setRenamingNodeId}
+            onDelete={deleteSelected}
+            onDuplicate={duplicateSelected}
+            onDisconnectAll={disconnectNode}
+            onToggleMute={toggleMute}
+            onToggleCollapse={toggleCollapse}
+            onTogglePreview={togglePreview}
           />
-        </>
+        </ContextMenuPortal>
       )}
 
       {/* Link cutting visual indicator */}

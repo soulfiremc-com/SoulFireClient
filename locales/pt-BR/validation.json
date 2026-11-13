@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "Tipo inválido: esperado string, recebido undefined",
+    "null": "Tipo inválido: esperado string, recebido nulo",
+    "number": "Tipo inválido: esperado string, recebido número",
+    "boolean": "Tipo inválido: esperado string, recebido boolean",
+    "array": "Tipo inválido: esperado string, recebido array",
+    "object": "Tipo inválido: esperado string, recebido object",
+    "nan": "Tipo inválido: esperado string, recebido NaN",
+    "infinity": "Tipo inválido: esperado string, recebido número"
+  },
+  "number": {
+    "undefined": "Tipo inválido: esperado número, recebido undefined",
+    "null": "Tipo inválido: esperado número, recebido nulo",
+    "string": "Tipo inválido: esperado número, recebido string",
+    "boolean": "Tipo inválido: esperado número, recebido boolean",
+    "array": "Tipo inválido: esperado número, recebido array",
+    "object": "Tipo inválido: esperado número, recebido object",
+    "nan": "Tipo inválido: esperado número, recebido NaN",
+    "infinity": "Tipo inválido: esperado número, recebido número"
+  },
+  "object": {
+    "undefined": "Tipo inválido: esperado object, recebido undefined",
+    "null": "Tipo inválido: esperado object, recebido nulo",
+    "number": "Tipo inválido: esperado object, recebido número",
+    "string": "Tipo inválido: esperado object, recebido string",
+    "boolean": "Tipo inválido: esperado object, recebido boolean",
+    "array": "Tipo inválido: esperado object, recebido array",
+    "nan": "Tipo inválido: esperado object, recebido NaN",
+    "infinity": "Tipo inválido: esperado object, recebido número"
+  },
+  "email": "endereço de e-mail inválido",
+  "url": "URL inválido",
+  "jwt": "JWT inválido",
+  "emailTooLong": "Muito grande: esperado que string tivesse <=255 caracteres",
+  "jarSource": "Opção inválida: esperada uma das \"official\"|\"custom\"",
+  "generationMode": "Opção inválida: esperada uma das \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
+  "userRole": "Opção inválida: esperada uma das 0|1"
+}
