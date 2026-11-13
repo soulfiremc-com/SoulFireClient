@@ -1,4 +1,6 @@
-import { ConnectError, createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import { ConnectError } from "@connectrpc/connect";
 import {
   type KeyboardEventHandler,
   type CSSProperties,
@@ -174,12 +176,11 @@ export default function CommandInput(props: { scope: CommandScope }) {
       if (transport === null) return;
       try {
         const result = await completionRequest.run(async (signal) => {
-          const response = await createClient(
-            CommandService,
-            transport,
-          ).tabCompleteCommand(
-            { scope: props.scope, command: text, cursor },
-            { signal },
+          const response = await Effect.runPromise(
+            createRpcClient(CommandService, transport).tabCompleteCommand(
+              { scope: props.scope, command: text, cursor },
+              { signal },
+            ),
           );
           return response.suggestions;
         });
@@ -516,10 +517,12 @@ export default function CommandInput(props: { scope: CommandScope }) {
       saveCommandHistory(nextHistory);
     }
     if (!transport) return Promise.resolve();
-    return createClient(CommandService, transport).executeCommand({
-      scope: props.scope,
-      command: value,
-    });
+    return Effect.runPromise(
+      createRpcClient(CommandService, transport).executeCommand({
+        scope: props.scope,
+        command: value,
+      }),
+    );
   };
 
   useLayoutEffect(() => {

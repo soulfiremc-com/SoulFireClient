@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { use } from "react";
@@ -101,9 +103,11 @@ function Content() {
         hasGlobalPermission(clientInfo, GlobalPermission.GENERATE_API_TOKEN)
           ? async (signal) =>
               (
-                await createClient(ClientService, transport).generateAPIToken(
-                  {},
-                  { signal },
+                await Effect.runPromise(
+                  createRpcClient(ClientService, transport).generateAPIToken(
+                    {},
+                    { signal },
+                  ),
                 )
               ).token
           : undefined

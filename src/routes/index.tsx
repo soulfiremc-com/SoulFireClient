@@ -1,3 +1,5 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import {
   emailFormSchema,
   tokenFormSchema,
@@ -5,7 +7,7 @@ import {
   mobileIntegratedServerFormSchema,
 } from "@/lib/login-validation";
 import { toFormSchema } from "@/lib/form-validation";
-import { createClient } from "@connectrpc/connect";
+
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
@@ -1651,23 +1653,23 @@ function EmailForm({
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const email = value.email.trim();
-      const loginService = createClient(
+      const loginService = createRpcClient(
         LoginService,
         createAddressOnlyTransport(address),
       );
       toast.promise(
-        loginService
-          .login({
+        Effect.runPromise(
+          loginService.login({
             email: email,
-          })
-          .then((response) => {
-            setAuthFlowData({
-              email: email,
-              flowToken: response.authFlowToken,
-              address: address,
-            });
-            setLoginType("EMAIL_CODE");
           }),
+        ).then((response) => {
+          setAuthFlowData({
+            email: email,
+            flowToken: response.authFlowToken,
+            address: address,
+          });
+          setLoginType("EMAIL_CODE");
+        }),
         {
           loading: t("dedicated.toast.loading"),
           success: t("dedicated.toast.success"),
@@ -1956,36 +1958,36 @@ function EmailCodeMenu(props: {
 
     setInputDisabled(true);
     toast.promise(
-      createClient(
-        LoginService,
-        createAddressOnlyTransport(props.authFlowData.address),
-      )
-        .emailCode({
+      Effect.runPromise(
+        createRpcClient(
+          LoginService,
+          createAddressOnlyTransport(props.authFlowData.address),
+        ).emailCode({
           code: code,
           authFlowToken: props.authFlowData.flowToken,
-        })
-        .then((response) => {
-          if (response.next.case === "success") {
-            void props.redirectWithCredentials(
-              "dedicated",
-              props.authFlowData.address,
-              response.next.value.token,
-            );
-          } else if (response.next.case === "failure") {
-            setInputDisabled(false);
-            setCodeValue("");
-            throw new Error(
-              getEnumKeyByValue(
-                NextAuthFlowResponse_Failure_Reason,
-                response.next.value.reason,
-              ),
-            );
-          } else {
-            setInputDisabled(false);
-            setCodeValue("");
-            throw new Error("Unknown response type");
-          }
         }),
+      ).then((response) => {
+        if (response.next.case === "success") {
+          void props.redirectWithCredentials(
+            "dedicated",
+            props.authFlowData.address,
+            response.next.value.token,
+          );
+        } else if (response.next.case === "failure") {
+          setInputDisabled(false);
+          setCodeValue("");
+          throw new Error(
+            getEnumKeyByValue(
+              NextAuthFlowResponse_Failure_Reason,
+              response.next.value.reason,
+            ),
+          );
+        } else {
+          setInputDisabled(false);
+          setCodeValue("");
+          throw new Error("Unknown response type");
+        }
+      }),
       {
         loading: t("emailCode.toast.loading"),
         success: t("emailCode.toast.success"),

@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { Schema } from "effect";
-import { createClient } from "@connectrpc/connect";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -328,15 +329,19 @@ function Content() {
       action: StateAction["key"];
     }) => {
       if (transport === null) return;
-      const botService = createClient(BotService, transport);
-      const promise = botService.getBotList({ instanceId }).then((list) =>
-        botService.setBotsDesiredState({
-          instanceId,
-          botIds: list.bots
-            .filter((bot) => bot.status?.desiredState !== desiredState)
-            .map((bot) => bot.profileId),
-          desiredState,
-        }),
+      const botService = createRpcClient(BotService, transport);
+      const promise = Effect.runPromise(
+        botService.getBotList({ instanceId }),
+      ).then((list) =>
+        Effect.runPromise(
+          botService.setBotsDesiredState({
+            instanceId,
+            botIds: list.bots
+              .filter((bot) => bot.status?.desiredState !== desiredState)
+              .map((bot) => bot.profileId),
+            desiredState,
+          }),
+        ),
       );
       toast.promise(promise, {
         loading: t(`controls.${action}Toast.loading`),
@@ -365,13 +370,12 @@ function Content() {
       friendlyName: string;
     }) => {
       if (transport === null) return;
-      const promise = createClient(
-        InstanceService,
-        transport,
-      ).duplicateInstance({
-        id: sourceInstance.id,
-        friendlyName,
-      });
+      const promise = Effect.runPromise(
+        createRpcClient(InstanceService, transport).duplicateInstance({
+          id: sourceInstance.id,
+          friendlyName,
+        }),
+      );
 
       toast.promise(promise, {
         loading: t("dialog.duplicateInstance.duplicateToast.loading"),
@@ -405,10 +409,10 @@ function Content() {
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .deleteInstance({ id: instanceId })
-        .then((r) => r);
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.deleteInstance({ id: instanceId }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: () => {

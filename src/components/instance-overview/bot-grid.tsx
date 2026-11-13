@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   infiniteQueryOptions,
   useMutation,
@@ -354,18 +356,22 @@ export function BotContextMenu({
       action: "start" | "restart" | "stop";
     }) => {
       if (transport === null) return;
-      const client = createClient(BotService, transport);
+      const client = createRpcClient(BotService, transport);
       if (action === "restart") {
-        return client.restartBots({ instanceId, botIds: [botId] });
+        return Effect.runPromise(
+          client.restartBots({ instanceId, botIds: [botId] }),
+        );
       }
-      return client.setBotsDesiredState({
-        instanceId,
-        botIds: [botId],
-        desiredState:
-          action === "start"
-            ? BotDesiredState.RUNNING
-            : BotDesiredState.STOPPED,
-      });
+      return Effect.runPromise(
+        client.setBotsDesiredState({
+          instanceId,
+          botIds: [botId],
+          desiredState:
+            action === "start"
+              ? BotDesiredState.RUNNING
+              : BotDesiredState.STOPPED,
+        }),
+      );
     },
     onError: (error) => toast.error(error.message),
     onSettled: async () => {

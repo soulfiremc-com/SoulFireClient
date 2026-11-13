@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { formNumber, toFormSchema } from "@/lib/form-validation";
 import { Schema } from "effect";
-import { createClient } from "@connectrpc/connect";
+
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -134,7 +135,7 @@ export default function GenerateAccountsDialog({
       return;
     }
 
-    const service = createClient(MCAuthService, transport);
+    const service = createRpcClient(MCAuthService, transport);
 
     const abortController = new AbortController();
     const loadingData: ExternalToast = {

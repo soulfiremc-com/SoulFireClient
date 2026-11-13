@@ -55,7 +55,7 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 - All six shadcn rules are off in `src/components/ui/`.
 - Oxlint's other checks still run in `src/components/ui/`.
 - Oxfmt leaves `src/components/ui/` unchanged.
-- Pre-commit hook runs lint-staged with Oxlint and Oxfmt.
+- Lefthook runs Oxlint and Oxfmt on staged files before commits.
 - Generated protocol bindings and the route tree are ignored by Oxlint.
 
 ### Proto Generation

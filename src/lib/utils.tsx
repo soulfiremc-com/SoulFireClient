@@ -1,6 +1,8 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { type ClassValue, clsx } from "clsx";
 import type { FlagComponent } from "country-flag-icons/react/1x1";
@@ -326,14 +328,16 @@ export async function setInstanceIcon(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceMeta({
-    id: instanceInfo.id,
-    meta: {
-      case: "icon",
-      value: icon,
-    },
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceMeta({
+      id: instanceInfo.id,
+      meta: {
+        case: "icon",
+        value: icon,
+      },
+    }),
+  );
 }
 
 export async function setInstanceFriendlyName(
@@ -393,14 +397,16 @@ export async function setInstanceFriendlyName(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceMeta({
-    id: instanceInfo.id,
-    meta: {
-      case: "friendlyName",
-      value: friendlyName,
-    },
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceMeta({
+      id: instanceInfo.id,
+      meta: {
+        case: "friendlyName",
+        value: friendlyName,
+      },
+    }),
+  );
 }
 
 // Used only for profile import - sends entire config
@@ -437,11 +443,13 @@ export async function setInstanceConfigFull(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceConfig({
-    id: instanceInfo.id,
-    config: targetProfile,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceConfig({
+      id: instanceInfo.id,
+      config: targetProfile,
+    }),
+  );
 }
 
 // Granular config entry update for instance settings
@@ -478,13 +486,15 @@ export async function updateInstanceConfigEntry(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.updateInstanceConfigEntry({
-    id: instanceInfo.id,
-    namespace: namespace,
-    key: key,
-    value: jsonToValue(value),
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.updateInstanceConfigEntry({
+      id: instanceInfo.id,
+      namespace: namespace,
+      key: key,
+      value: jsonToValue(value),
+    }),
+  );
 }
 
 // Granular config entry update for server settings
@@ -515,12 +525,14 @@ export async function updateServerConfigEntry(
     };
   });
 
-  const serverService = createClient(ServerService, transport);
-  await serverService.updateServerConfigEntry({
-    namespace: namespace,
-    key: key,
-    value: jsonToValue(value),
-  });
+  const serverService = createRpcClient(ServerService, transport);
+  await Effect.runPromise(
+    serverService.updateServerConfigEntry({
+      namespace: namespace,
+      key: key,
+      value: jsonToValue(value),
+    }),
+  );
 }
 
 // Granular config entry update for bot settings
@@ -602,14 +614,16 @@ export async function updateBotConfigEntry(
     },
   );
 
-  const botService = createClient(BotService, transport);
-  await botService.updateBotConfigEntry({
-    instanceId: instanceId,
-    botId: botId,
-    namespace: namespace,
-    key: key,
-    value: jsonToValue(value),
-  });
+  const botService = createRpcClient(BotService, transport);
+  await Effect.runPromise(
+    botService.updateBotConfigEntry({
+      instanceId: instanceId,
+      botId: botId,
+      namespace: namespace,
+      key: key,
+      value: jsonToValue(value),
+    }),
+  );
 }
 
 export async function removeBotConfigEntry(
@@ -677,13 +691,15 @@ export async function removeBotConfigEntry(
     },
   );
 
-  const botService = createClient(BotService, transport);
-  await botService.deleteBotConfigEntry({
-    instanceId,
-    botId,
-    namespace,
-    key,
-  });
+  const botService = createRpcClient(BotService, transport);
+  await Effect.runPromise(
+    botService.deleteBotConfigEntry({
+      instanceId,
+      botId,
+      namespace,
+      key,
+    }),
+  );
 }
 
 // Account operations
@@ -723,11 +739,13 @@ export async function addInstanceAccount(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.addInstanceAccount({
-    id: instanceInfo.id,
-    account: accountProto,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.addInstanceAccount({
+      id: instanceInfo.id,
+      account: accountProto,
+    }),
+  );
 }
 
 // Batch account operations
@@ -769,11 +787,13 @@ export async function addInstanceAccountsBatch(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.addInstanceAccountsBatch({
-    id: instanceInfo.id,
-    accounts: accountProtos,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.addInstanceAccountsBatch({
+      id: instanceInfo.id,
+      accounts: accountProtos,
+    }),
+  );
 }
 
 export async function removeInstanceAccountsBatch(
@@ -814,11 +834,13 @@ export async function removeInstanceAccountsBatch(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.removeInstanceAccountsBatch({
-    id: instanceInfo.id,
-    profileIds: profileIds,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.removeInstanceAccountsBatch({
+      id: instanceInfo.id,
+      profileIds: profileIds,
+    }),
+  );
 }
 
 export async function applyGeneratedAccounts(
@@ -857,10 +879,12 @@ export async function applyGeneratedAccounts(
           }
         : old,
   );
-  await createClient(InstanceService, transport).replaceInstanceAccounts({
-    id: instanceInfo.id,
-    accounts: newAccounts.map(toMinecraftAccountProto),
-  });
+  await Effect.runPromise(
+    createRpcClient(InstanceService, transport).replaceInstanceAccounts({
+      id: instanceInfo.id,
+      accounts: newAccounts.map(toMinecraftAccountProto),
+    }),
+  );
 }
 
 // Batch proxy operations
@@ -900,11 +924,13 @@ export async function addInstanceProxiesBatch(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.addInstanceProxiesBatch({
-    id: instanceInfo.id,
-    proxies: proxyProtos,
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.addInstanceProxiesBatch({
+      id: instanceInfo.id,
+      proxies: proxyProtos,
+    }),
+  );
 }
 
 export async function removeInstanceProxyEntries(
@@ -941,11 +967,13 @@ export async function removeInstanceProxyEntries(
     },
   );
 
-  const instanceService = createClient(InstanceService, transport);
-  await instanceService.removeInstanceProxyEntries({
-    id: instanceInfo.id,
-    proxies: proxies.map(toProxyProto),
-  });
+  const instanceService = createRpcClient(InstanceService, transport);
+  await Effect.runPromise(
+    instanceService.removeInstanceProxyEntries({
+      id: instanceInfo.id,
+      proxies: proxies.map(toProxyProto),
+    }),
+  );
 }
 
 export async function setSelfUsername(
@@ -973,10 +1001,12 @@ export async function setSelfUsername(
     };
   });
 
-  const clientService = createClient(ClientService, transport);
-  await clientService.updateSelfUsername({
-    username: username,
-  });
+  const clientService = createRpcClient(ClientService, transport);
+  await Effect.runPromise(
+    clientService.updateSelfUsername({
+      username: username,
+    }),
+  );
 }
 
 export async function setSelfEmail(
@@ -1004,10 +1034,12 @@ export async function setSelfEmail(
     };
   });
 
-  const clientService = createClient(ClientService, transport);
-  await clientService.updateSelfEmail({
-    email: email,
-  });
+  const clientService = createRpcClient(ClientService, transport);
+  await Effect.runPromise(
+    clientService.updateSelfEmail({
+      email: email,
+    }),
+  );
 }
 
 export function timestampToDate(timestamp: Timestamp): Date {

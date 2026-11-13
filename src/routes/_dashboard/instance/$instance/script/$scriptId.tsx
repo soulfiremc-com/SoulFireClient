@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQuery,
@@ -314,14 +316,16 @@ function ScriptEditorContent() {
     const controller = new AbortController();
     const timeout = setTimeout(async () => {
       try {
-        const client = createClient(ScriptService, transport);
-        const result = await client.validateScript(
-          {
-            instanceId,
-            nodes: nodesToProto(validationGraph.nodes),
-            edges: edgesToProto(validationGraph.edges),
-          },
-          { signal: controller.signal },
+        const client = createRpcClient(ScriptService, transport);
+        const result = await Effect.runPromise(
+          client.validateScript(
+            {
+              instanceId,
+              nodes: nodesToProto(validationGraph.nodes),
+              edges: edgesToProto(validationGraph.edges),
+            },
+            { signal: controller.signal },
+          ),
         );
         if (
           controller.signal.aborted ||
@@ -452,7 +456,7 @@ function ScriptEditorContent() {
     });
 
     try {
-      const client = createClient(ScriptService, transport);
+      const client = createRpcClient(ScriptService, transport);
       const responses = client.activateScript(
         { instanceId, scriptId },
         { signal: abortController.signal },
@@ -638,11 +642,13 @@ function ScriptEditorContent() {
       queryKey: ["script-status", instanceId, scriptId],
     });
     try {
-      const client = createClient(ScriptService, transport);
-      await client.deactivateScript({
-        instanceId,
-        scriptId: currentScriptId ?? scriptId,
-      });
+      const client = createRpcClient(ScriptService, transport);
+      await Effect.runPromise(
+        client.deactivateScript({
+          instanceId,
+          scriptId: currentScriptId ?? scriptId,
+        }),
+      );
       setActive(false);
       setActiveNode(null);
       acknowledgePause(true);
