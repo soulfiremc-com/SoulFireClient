@@ -1,4 +1,6 @@
-import { createClient, type Transport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import type { Transport } from "@connectrpc/connect";
+import { Effect, Stream } from "effect";
 import { ScriptService } from "@/generated/soulfire/script_pb";
 
 export async function resumeScript(
@@ -6,23 +8,23 @@ export async function resumeScript(
   instanceId: string,
   scriptId: string,
 ): Promise<void> {
-  const controller = new AbortController();
-  try {
-    const client = createClient(ScriptService, transport);
-    for await (const event of client.activateScript(
-      { instanceId, scriptId },
-      { signal: controller.signal },
-    )) {
-      if (event.event.case === "scriptStarted") {
-        controller.abort();
-        return;
-      }
-    }
-    throw new Error(
-      "The server ended script activation without confirming it.",
-    );
-  } finally {
-    // The script keeps running when its monitoring stream disconnects.
-    controller.abort();
-  }
+  await Effect.runPromise(
+    Effect.gen(function* () {
+      const client = createRpcClient(ScriptService, transport);
+      // Closing the monitoring stream after confirmation leaves the script running.
+      const started = yield* client
+        .activateScript({ instanceId, scriptId })
+        .pipe(
+          Stream.filter((event) => event.event.case === "scriptStarted"),
+          Stream.take(1),
+          Stream.runCollect,
+        );
+      if (started.length === 0)
+        return yield* Effect.fail(
+          new Error(
+            "The server ended script activation without confirming it.",
+          ),
+        );
+    }),
+  );
 }

@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { Code, ConnectError, createClient } from "@connectrpc/connect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import {
   queryOptions,
   useMutation,
@@ -194,10 +196,12 @@ export const Route = createFileRoute(
         if (transport === null) {
           return create(BotInfoResponseSchema, {});
         }
-        const botService = createClient(BotService, transport);
-        const result = await botService.getBotInfo(
-          { instanceId: instance, botId },
-          { signal: queryProps.signal },
+        const botService = createRpcClient(BotService, transport);
+        const result = await Effect.runPromise(
+          botService.getBotInfo(
+            { instanceId: instance, botId },
+            { signal: queryProps.signal },
+          ),
         );
         return result;
       },
@@ -723,19 +727,23 @@ function BotPowerActions({
     scope: { id: `bot-state-${instanceId}` },
     mutationFn: async (action: "start" | "restart" | "stop") => {
       if (transport === null) return;
-      const client = createClient(BotService, transport);
+      const client = createRpcClient(BotService, transport);
       if (action === "restart") {
-        await client.restartBots({ instanceId, botIds: [botId] });
+        await Effect.runPromise(
+          client.restartBots({ instanceId, botIds: [botId] }),
+        );
         return;
       }
-      await client.setBotsDesiredState({
-        instanceId,
-        botIds: [botId],
-        desiredState:
-          action === "start"
-            ? BotDesiredState.RUNNING
-            : BotDesiredState.STOPPED,
-      });
+      await Effect.runPromise(
+        client.setBotsDesiredState({
+          instanceId,
+          botIds: [botId],
+          desiredState:
+            action === "start"
+              ? BotDesiredState.RUNNING
+              : BotDesiredState.STOPPED,
+        }),
+      );
     },
     onError: (error) => toast.error(error.message),
     onSettled: () =>
@@ -1375,11 +1383,13 @@ function BotInventoryPanel({
         if (!isOnline) return null;
         const transport = createTransport();
         if (transport === null) return null;
-        const botService = createClient(BotService, transport);
-        const result = await botService.getInventoryState({
-          instanceId,
-          botId,
-        });
+        const botService = createRpcClient(BotService, transport);
+        const result = await Effect.runPromise(
+          botService.getInventoryState({
+            instanceId,
+            botId,
+          }),
+        );
         return result;
       },
       refetchInterval: 1_000,
@@ -1415,8 +1425,10 @@ function BotInventoryPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return requireSuccess(await botService.clickInventorySlot(request));
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(botService.clickInventorySlot(request)),
+      );
     },
     onError: handleContainerError,
     onSettled: () => {
@@ -1437,9 +1449,11 @@ function BotInventoryPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
+      const botService = createRpcClient(BotService, transport);
       return requireSuccess(
-        await botService.closeContainer({ instanceId, botId, expectedMenuId }),
+        await Effect.runPromise(
+          botService.closeContainer({ instanceId, botId, expectedMenuId }),
+        ),
       );
     },
     onError: handleContainerError,
@@ -1461,8 +1475,10 @@ function BotInventoryPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return requireSuccess(await botService.clickContainerButton(request));
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(botService.clickContainerButton(request)),
+      );
     },
     onError: handleContainerError,
     onSettled: () => {
@@ -1483,8 +1499,10 @@ function BotInventoryPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return requireSuccess(await botService.setContainerText(request));
+      const botService = createRpcClient(BotService, transport);
+      return requireSuccess(
+        await Effect.runPromise(botService.setContainerText(request)),
+      );
     },
     onError: handleContainerError,
     onSettled: async () => {
@@ -1501,9 +1519,11 @@ function BotInventoryPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
+      const botService = createRpcClient(BotService, transport);
       return requireSuccess(
-        await botService.setHotbarSlot({ instanceId, botId, slot }),
+        await Effect.runPromise(
+          botService.setHotbarSlot({ instanceId, botId, slot }),
+        ),
       );
     },
     onError: handleContainerError,
@@ -2119,8 +2139,8 @@ function BotActionsPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.mouseClick(request);
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(botService.mouseClick(request));
     },
     onError: (error) => toast.error(error.message),
   });
@@ -2225,12 +2245,14 @@ function BotMovementPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.setMovementState({
-        instanceId,
-        botId,
-        ...state,
-      });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(
+        botService.setMovementState({
+          instanceId,
+          botId,
+          ...state,
+        }),
+      );
     },
     onError: (error) => toast.error(error.message),
     onSuccess: () =>
@@ -2248,8 +2270,8 @@ function BotMovementPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.resetMovement({ instanceId, botId });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(botService.resetMovement({ instanceId, botId }));
     },
     onError: (error) => toast.error(error.message),
     onSuccess: () =>
@@ -2267,12 +2289,14 @@ function BotMovementPanel({
       if (transport === null) {
         throw new Error("Not connected");
       }
-      const botService = createClient(BotService, transport);
-      return botService.setRotation({
-        instanceId,
-        botId,
-        ...rotation,
-      });
+      const botService = createRpcClient(BotService, transport);
+      return Effect.runPromise(
+        botService.setRotation({
+          instanceId,
+          botId,
+          ...rotation,
+        }),
+      );
     },
     onError: (error) => toast.error(error.message),
     onSuccess: () =>
@@ -2494,10 +2518,12 @@ function botDialogQueryOptions(
       if (transport === null) {
         return { dialog: undefined };
       }
-      const botService = createClient(BotService, transport);
-      const result = await botService.getDialog(
-        { instanceId, botId },
-        { signal: queryProps.signal },
+      const botService = createRpcClient(BotService, transport);
+      const result = await Effect.runPromise(
+        botService.getDialog(
+          { instanceId, botId },
+          { signal: queryProps.signal },
+        ),
       );
       return result;
     },
@@ -2543,21 +2569,25 @@ function BotDialogPanel({
     }) => {
       const transport = createTransport();
       if (transport === null) throw new Error("Not connected");
-      const service = createClient(BotService, transport);
-      const result = await service.submitDialog({
-        instanceId,
-        botId,
-        buttonIndex,
-        inputValues,
-        expectedScreenId,
-      });
+      const service = createRpcClient(BotService, transport);
+      const result = await Effect.runPromise(
+        service.submitDialog({
+          instanceId,
+          botId,
+          buttonIndex,
+          inputValues,
+          expectedScreenId,
+        }),
+      );
       if (!result.success)
         throw new Error(result.error || "The dialog action failed.");
       if (result.clipboard !== undefined)
         void copyMinecraftText(result.clipboard);
       if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
       // A failed refresh must not turn an accepted action into a retryable failure.
-      return service.getDialog({ instanceId, botId }).catch(() => undefined);
+      return Effect.runPromise(service.getDialog({ instanceId, botId })).catch(
+        () => undefined,
+      );
     },
     onSuccess: (state, { expectedScreenId }) =>
       applyServerDialogRefresh(

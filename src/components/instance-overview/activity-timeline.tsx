@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient } from "@connectrpc/connect";
+
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
@@ -52,8 +54,10 @@ export function ActivityTimeline({
       if (transport === null) {
         return create(InstanceAuditLogResponseSchema, { entry: [] });
       }
-      const service = createClient(InstanceService, transport);
-      return service.getAuditLog({ id: instanceId }, { signal });
+      const service = createRpcClient(InstanceService, transport);
+      return Effect.runPromise(
+        service.getAuditLog({ id: instanceId }, { signal }),
+      );
     },
     refetchInterval: 5_000,
   });

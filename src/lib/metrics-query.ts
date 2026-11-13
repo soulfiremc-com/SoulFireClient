@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { type QueryClient, queryOptions } from "@tanstack/react-query";
 import {
   type GetInstanceMetricsResponse,
@@ -39,15 +41,17 @@ export function instanceMetricsQueryOptions(
           ? previous.snapshots[previous.snapshots.length - 1].timestamp
           : undefined;
 
-      const client = createClient(MetricsService, transport);
-      const result = await client.getInstanceMetrics(
-        since
-          ? {
-              instanceId,
-              since,
-            }
-          : { instanceId },
-        { signal: signal },
+      const client = createRpcClient(MetricsService, transport);
+      const result = await Effect.runPromise(
+        client.getInstanceMetrics(
+          since
+            ? {
+                instanceId,
+                since,
+              }
+            : { instanceId },
+          { signal: signal },
+        ),
       );
       const response = result;
 

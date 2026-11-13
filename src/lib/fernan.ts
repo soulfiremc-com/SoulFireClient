@@ -1,39 +1,56 @@
-import { z } from "zod";
+import { Effect, Schema } from "effect";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import {
   ProviderApiError,
-  providerJson,
+  providerJsonEffect,
+  runProviderEffect,
   type ProviderFetch,
 } from "@/lib/provider-request.ts";
 
 // Contract: https://fernan.club/api (authenticated documentation).
 const base = "https://api.fernan.club/api/v1";
-const stockSchema = z.object({
-  product_id: z.number().int().positive(),
-  product_name: z.string(),
-  category: z.string(),
-  count: z.number().int().nonnegative(),
-  price: z.number().nonnegative().finite(),
-  purchase_limit: z.number().int().nonnegative(),
+const stockSchema = Schema.Struct({
+  product_id: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThan(0),
+  ),
+  product_name: Schema.String,
+  category: Schema.String,
+  count: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
+  price: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+    Schema.isFinite(),
+  ),
+  purchase_limit: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
 });
-const cooldownSchema = z.object({
-  product_id: z.number().int().positive(),
-  remaining_allowed: z.number().int().nonnegative(),
-  on_cooldown: z.boolean(),
+const cooldownSchema = Schema.Struct({
+  product_id: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThan(0),
+  ),
+  remaining_allowed: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
+  on_cooldown: Schema.Boolean,
 });
-const itemSchema = z.object({
-  data: z.string(),
-  access_token: z.string().nullish(),
+const itemSchema = Schema.Struct({
+  data: Schema.String,
+  access_token: Schema.optional(Schema.NullOr(Schema.String)),
 });
-const purchaseSchema = z.object({
-  purchase_id: z.string().uuid(),
-  products: z.array(itemSchema),
-  total_cost: z.number().nonnegative().optional(),
-  balance_after: z.number().nonnegative().optional(),
+const purchaseSchema = Schema.Struct({
+  purchase_id: Schema.String.check(Schema.isUUID()),
+  products: Schema.mutable(Schema.Array(itemSchema)),
+  total_cost: Schema.optional(
+    Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)),
+  ),
+  balance_after: Schema.optional(
+    Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)),
+  ),
 });
-export type FernanProduct = z.infer<typeof stockSchema>;
-export type FernanCooldown = z.infer<typeof cooldownSchema>;
-export type FernanPurchase = z.infer<typeof purchaseSchema>;
+export type FernanProduct = (typeof stockSchema)["Type"];
+export type FernanCooldown = (typeof cooldownSchema)["Type"];
+export type FernanPurchase = (typeof purchaseSchema)["Type"];
 export type FernanImportFormat = "access-token" | "cookies" | "credentials";
 export type FernanAccount = {
   balance: number;
@@ -42,24 +59,19 @@ export type FernanAccount = {
   purchases: { purchase_id: string; product_name: string }[];
 };
 
-function parse<T>(schema: z.ZodType<T>, data: unknown): T {
-  const result = schema.safeParse(data);
-  if (!result.success) throw new ProviderApiError("response");
-  return result.data;
+function parse<T>(schema: Schema.ConstraintDecoder<T>, data: unknown) {
+  return Schema.decodeUnknownEffect(schema, { errors: "all" })(data).pipe(
+    Effect.mapError(() => new ProviderApiError("response")),
+  );
 }
 
-async function request(
-  path: string,
-  key: string,
-  signal?: AbortSignal,
-  fetcher?: ProviderFetch,
-  body?: Record<string, unknown>,
-): Promise<unknown> {
-  if (!key.trim()) throw new ProviderApiError("authentication");
-  const result = parse(
-    z.object({ success: z.boolean(), data: z.unknown() }),
-    await providerJson(
-      {
+function request(path: string, key: string, body?: Record<string, unknown>) {
+  return Effect.gen(function* () {
+    if (!key.trim())
+      return yield* Effect.fail(new ProviderApiError("authentication"));
+    const result = yield* parse(
+      Schema.Struct({ success: Schema.Boolean, data: Schema.Unknown }),
+      yield* providerJsonEffect({
         url: `${base}${path}`,
         method: body ? "POST" : "GET",
         headers: {
@@ -67,48 +79,67 @@ async function request(
           ...(body ? { "Content-Type": "application/json" } : {}),
         },
         ...(body ? { body: JSON.stringify(body) } : {}),
-      },
-      signal,
-      fetcher,
-    ),
-  );
-  if (!result.success) throw new ProviderApiError("rejected");
-  return result.data;
+      }),
+    );
+    if (!result.success)
+      return yield* Effect.fail(new ProviderApiError("rejected"));
+    return result.data;
+  });
 }
 
-export async function fetchFernanAccount(
+function accountEffect(key: string) {
+  return Effect.gen(function* () {
+    const [user, stock, cooldowns, history] = yield* Effect.all(
+      [
+        request("/user/me", key),
+        request("/store/stock", key),
+        request("/store/cooldown", key),
+        request("/store/purchases?limit=20&offset=0", key),
+      ],
+      { concurrency: "unbounded" },
+    );
+    return {
+      balance: (yield* parse(
+        Schema.Struct({
+          balance: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+            Schema.isFinite(),
+          ),
+        }),
+        user,
+      )).balance,
+      stock: (yield* parse(
+        Schema.Struct({ stock: Schema.mutable(Schema.Array(stockSchema)) }),
+        stock,
+      )).stock,
+      cooldowns: (yield* parse(
+        Schema.Struct({
+          cooldowns: Schema.mutable(Schema.Array(cooldownSchema)),
+        }),
+        cooldowns,
+      )).cooldowns,
+      purchases: (yield* parse(
+        Schema.Struct({
+          purchases: Schema.mutable(
+            Schema.Array(
+              Schema.Struct({
+                purchase_id: Schema.String.check(Schema.isUUID()),
+                product_name: Schema.String,
+              }),
+            ),
+          ),
+        }),
+        history,
+      )).purchases,
+    };
+  });
+}
+
+export function fetchFernanAccount(
   key: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<FernanAccount> {
-  const [user, stock, cooldowns, history] = await Promise.all([
-    request("/user/me", key, signal, fetcher),
-    request("/store/stock", key, signal, fetcher),
-    request("/store/cooldown", key, signal, fetcher),
-    request("/store/purchases?limit=20&offset=0", key, signal, fetcher),
-  ]);
-  return {
-    balance: parse(
-      z.object({ balance: z.number().nonnegative().finite() }),
-      user,
-    ).balance,
-    stock: parse(z.object({ stock: z.array(stockSchema) }), stock).stock,
-    cooldowns: parse(
-      z.object({ cooldowns: z.array(cooldownSchema) }),
-      cooldowns,
-    ).cooldowns,
-    purchases: parse(
-      z.object({
-        purchases: z.array(
-          z.object({
-            purchase_id: z.string().uuid(),
-            product_name: z.string(),
-          }),
-        ),
-      }),
-      history,
-    ).purchases,
-  };
+  return runProviderEffect(accountEffect(key), signal, fetcher);
 }
 
 export function fernanPurchaseLimit(
@@ -127,7 +158,7 @@ export function fernanPurchaseLimit(
   );
 }
 
-export async function purchaseFernanAccounts(
+export function purchaseFernanAccounts(
   key: string,
   product: FernanProduct,
   amount: number,
@@ -136,44 +167,60 @@ export async function purchaseFernanAccounts(
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<FernanPurchase> {
-  if (
-    !Number.isInteger(amount) ||
-    amount < 1 ||
-    amount > 100 ||
-    (referral && !/^[a-z\d]{3,16}$/i.test(referral))
-  )
-    throw new ProviderApiError("response");
-  const current = await fetchFernanAccount(key, signal, fetcher);
-  const updated = current.stock.find(
-    (entry) => entry.product_id === product.product_id,
-  );
-  if (!updated || amount > fernanPurchaseLimit(updated, current.cooldowns))
-    throw new ProviderApiError("empty");
-  if (updated.price * amount !== maximumCost || current.balance < maximumCost)
-    throw new ProviderApiError("priceChanged");
-  return parse(
-    purchaseSchema,
-    await request("/store/purchase", key, signal, fetcher, {
-      product_id: product.product_id,
-      amount,
-      ...(referral ? { referral_code: referral } : {}),
+  return runProviderEffect(
+    Effect.gen(function* () {
+      if (
+        !Number.isInteger(amount) ||
+        amount < 1 ||
+        amount > 100 ||
+        (referral && !/^[a-z\d]{3,16}$/i.test(referral))
+      )
+        return yield* Effect.fail(new ProviderApiError("response"));
+      const current = yield* accountEffect(key);
+      const updated = current.stock.find(
+        (entry) => entry.product_id === product.product_id,
+      );
+      if (!updated || amount > fernanPurchaseLimit(updated, current.cooldowns))
+        return yield* Effect.fail(new ProviderApiError("empty"));
+      if (
+        updated.price * amount !== maximumCost ||
+        current.balance < maximumCost
+      )
+        return yield* Effect.fail(new ProviderApiError("priceChanged"));
+      return yield* parse(
+        purchaseSchema,
+        yield* request("/store/purchase", key, {
+          product_id: product.product_id,
+          amount,
+          ...(referral ? { referral_code: referral } : {}),
+        }),
+      );
     }),
+    signal,
+    fetcher,
   );
 }
 
-export async function fetchFernanPurchase(
+export function fetchFernanPurchase(
   key: string,
   id: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<FernanPurchase> {
-  const parsedId = parse(z.string().uuid(), id);
-  const purchase = parse(
-    z.object({ purchase: purchaseSchema }),
-    await request(`/store/purchases/${parsedId}`, key, signal, fetcher),
-  ).purchase;
-  if (purchase.purchase_id !== parsedId) throw new ProviderApiError("response");
-  return purchase;
+  return runProviderEffect(
+    Effect.gen(function* () {
+      const parsedId = yield* parse(Schema.String.check(Schema.isUUID()), id);
+      const purchase = (yield* parse(
+        Schema.Struct({ purchase: purchaseSchema }),
+        yield* request(`/store/purchases/${parsedId}`, key),
+      )).purchase;
+      if (purchase.purchase_id !== parsedId)
+        return yield* Effect.fail(new ProviderApiError("response"));
+      return purchase;
+    }),
+    signal,
+    fetcher,
+  );
 }
 
 export function fernanPurchaseAccounts(

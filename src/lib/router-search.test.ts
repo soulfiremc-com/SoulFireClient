@@ -1,3 +1,4 @@
+import { Schema } from "effect";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
@@ -9,14 +10,30 @@ import {
   parseAsInteger,
   parseAsString,
 } from "nuqs/server";
-import { z } from "zod";
 import { parseUrlSearch, stringifyUrlSearch } from "./router-search";
 
 const parsers = {
   sort: parseAsJson(
-    z.array(z.object({ id: z.enum(["name", "id"]), desc: z.boolean() })),
+    Schema.toStandardSchemaV1(
+      Schema.mutable(
+        Schema.Array(
+          Schema.Struct({
+            id: Schema.Literals(["name", "id"]),
+            desc: Schema.Boolean,
+          }),
+        ),
+      ),
+      { parseOptions: { errors: "all" } },
+    ),
   ),
-  filters: parseAsJson(z.array(z.record(z.string(), z.unknown()))),
+  filters: parseAsJson(
+    Schema.toStandardSchemaV1(
+      Schema.mutable(
+        Schema.Array(Schema.Record(Schema.String, Schema.Unknown)),
+      ),
+      { parseOptions: { errors: "all" } },
+    ),
+  ),
   page: parseAsInteger,
   perPage: parseAsInteger,
 };

@@ -33,6 +33,10 @@ if (!isPostHogConfigured) {
     debug: import.meta.env.DEV,
     defaults: "2026-01-30",
     loaded: (client) => {
+      client.register({
+        app_version: APP_VERSION,
+        app_environment: APP_ENVIRONMENT,
+      });
       resetLegacyAnalyticsIdentity(client, () =>
         analyticsConsent.resetIdentity(true),
       );

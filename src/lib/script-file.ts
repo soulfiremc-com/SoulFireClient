@@ -1,5 +1,5 @@
+import { Schema } from "effect";
 import { fromJson, type JsonValue, toJson } from "@bufbuild/protobuf";
-import { z } from "zod";
 import { ScriptQuotasSchema } from "@/generated/soulfire/script_pb";
 import { scriptGraphSchema } from "@/lib/script-graph";
 import type { ScriptDocumentData } from "@/stores/script-editor-types";
@@ -7,12 +7,16 @@ import type { ScriptDocumentData } from "@/stores/script-editor-types";
 type ImportedScript = Pick<ScriptDocumentData, "nodes" | "edges" | "quotas"> &
   Partial<Pick<ScriptDocumentData, "name" | "description" | "paused">>;
 
-const scriptFileSchema = scriptGraphSchema.extend({
-  name: z.string().optional(),
-  description: z.string().optional(),
-  paused: z.boolean().optional(),
-  quotas: z.record(z.string(), z.unknown()).nullable().optional(),
-});
+const scriptFileSchema = scriptGraphSchema.pipe(
+  Schema.fieldsAssign({
+    name: Schema.optional(Schema.String),
+    description: Schema.optional(Schema.String),
+    paused: Schema.optional(Schema.Boolean),
+    quotas: Schema.optional(
+      Schema.NullOr(Schema.Record(Schema.String, Schema.Unknown)),
+    ),
+  }),
+);
 
 export function serializeScriptFile(data: ScriptDocumentData): string {
   return JSON.stringify(
@@ -28,11 +32,13 @@ export function serializeScriptFile(data: ScriptDocumentData): string {
 }
 
 export function parseScriptFile(content: string): ImportedScript {
-  const data = scriptFileSchema.parse(JSON.parse(content));
+  const data = Schema.decodeUnknownSync(scriptFileSchema, { errors: "all" })(
+    JSON.parse(content),
+  );
 
   // Earlier version 1 exports included the protobuf runtime type name.
-  if (data.quotas && typeof data.quotas === "object")
-    delete data.quotas.$typeName;
+  const quotas = data.quotas == null ? undefined : { ...data.quotas };
+  if (quotas) delete quotas.$typeName;
 
   return {
     nodes: data.nodes,
@@ -41,8 +47,8 @@ export function parseScriptFile(content: string): ImportedScript {
     description: data.description,
     paused: data.paused,
     quotas:
-      data.quotas == null
+      quotas == null
         ? undefined
-        : fromJson(ScriptQuotasSchema, data.quotas as JsonValue),
+        : fromJson(ScriptQuotasSchema, quotas as JsonValue),
   };
 }

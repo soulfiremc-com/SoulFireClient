@@ -10,7 +10,7 @@ import {
   type LocaltsOrder,
   type LocaltsProduct,
 } from "./localts.ts";
-import type { ProviderFetch } from "./provider-request.ts";
+import { ProviderApiError, type ProviderFetch } from "./provider-request.ts";
 import {
   validateProviderRequest,
   type ProviderRequest,
@@ -201,4 +201,62 @@ test("Localts empty keys do not trigger authenticated balance requests", async (
     reason: "authentication",
   });
   assert.equal(requests.length, 0);
+});
+
+test("Localts aborts sibling preflight requests after failure and never purchases", async () => {
+  const requests: ProviderRequest[] = [];
+  let productsAborted = false;
+  const fetcher: ProviderFetch = async (request, signal) => {
+    requests.push(request);
+    if (request.url.endsWith("/products")) {
+      await new Promise<void>((resolve) => {
+        signal!.addEventListener(
+          "abort",
+          () => {
+            productsAborted = true;
+            resolve();
+          },
+          { once: true },
+        );
+      });
+      return {
+        status: 200,
+        body: JSON.stringify({ success: true, products: [product] }),
+      };
+    }
+    throw new ProviderApiError("authentication");
+  };
+  await assert.rejects(
+    purchaseLocaltsAccounts("key", product, 1, 10, undefined, fetcher),
+    {
+      reason: "authentication",
+    },
+  );
+  assert.equal(productsAborted, true);
+  assert.equal(
+    requests.some((request) => request.method === "POST"),
+    false,
+  );
+});
+
+test("Localts does not retry an uncertain paid request", async () => {
+  for (const failure of ["network", "server"] as const) {
+    const { fetcher: baseFetcher } = mock();
+    let purchases = 0;
+    const fetcher: ProviderFetch = async (request, signal) => {
+      if (request.method !== "POST") return baseFetcher(request, signal);
+      purchases++;
+      if (failure === "network")
+        throw new Error("private-key in network error");
+      return { status: 502, body: "private account details" };
+    };
+    await assert.rejects(
+      purchaseLocaltsAccounts("key", product, 1, 10, undefined, fetcher),
+      {
+        reason: failure === "network" ? "network" : "response",
+        message: `Provider request failed: ${failure === "network" ? "network" : "response"}`,
+      },
+    );
+    assert.equal(purchases, 1);
+  }
 });

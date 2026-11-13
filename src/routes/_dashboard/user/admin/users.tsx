@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQueryClient,
@@ -303,10 +305,12 @@ function ImpersonateUserButton(props: {
             return;
           }
 
-          const userService = createClient(UserService, transport);
-          const token = await userService.generateUserAPIToken({
-            id: props.row.original.id,
-          });
+          const userService = createRpcClient(UserService, transport);
+          const token = await Effect.runPromise(
+            userService.generateUserAPIToken({
+              id: props.row.original.id,
+            }),
+          );
           startImpersonation(token.token);
           await navigate({
             to: "/user",
@@ -354,11 +358,13 @@ function ExtraHeader(props: {
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       for (const u of user) {
-        await userService.deleteUser({
-          id: u.id,
-        });
+        await Effect.runPromise(
+          userService.deleteUser({
+            id: u.id,
+          }),
+        );
       }
     },
     onSettled: async () => {
@@ -374,11 +380,13 @@ function ExtraHeader(props: {
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       for (const u of user) {
-        await userService.invalidateSessions({
-          id: u.id,
-        });
+        await Effect.runPromise(
+          userService.invalidateSessions({
+            id: u.id,
+          }),
+        );
       }
     },
     onSettled: async () => {
@@ -520,10 +528,12 @@ function Content() {
             onClick={() => {
               runAsync(async () => {
                 if (transport === null) return;
-                const userService = createClient(UserService, transport);
-                const token = await userService.generateUserAPIToken({
-                  id: contextMenu.data.id,
-                });
+                const userService = createRpcClient(UserService, transport);
+                const token = await Effect.runPromise(
+                  userService.generateUserAPIToken({
+                    id: contextMenu.data.id,
+                  }),
+                );
                 startImpersonation(token.token);
                 await navigate({
                   to: "/user",

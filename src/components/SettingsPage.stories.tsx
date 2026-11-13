@@ -23,6 +23,8 @@ function SettingsFormExample({
   disabled,
   onSave,
   focusKey,
+  invalidCombo,
+  emptyCombo,
 }: {
   pageId: string;
   compact: boolean;
@@ -31,18 +33,26 @@ function SettingsFormExample({
   disabled: boolean;
   onSave: (namespace: string, key: string, value: JsonValue) => void;
   focusKey?: string;
+  invalidCombo?: boolean;
+  emptyCombo?: boolean;
 }) {
   const [queryClient] = useState(
     () => new QueryClient({ defaultOptions: { queries: { retry: false } } }),
   );
-  const [config, setConfig] = useState<BaseSettings>({ settings: {} });
+  const [config, setConfig] = useState<BaseSettings>({
+    settings: invalidCombo
+      ? { bot: { "protocol-version": "removed-version" } }
+      : {},
+  });
   const definitions = useMemo(() => {
     const result = structuredClone(demoInstanceSettingsDefinitions);
     for (const definition of result) {
       if (definition.type.value) definition.type.value.disabled = disabled;
+      if (emptyCombo && definition.type.case === "combo")
+        definition.type.value.options = [];
     }
     return result;
-  }, [disabled]);
+  }, [disabled, emptyCombo]);
   const registry = useMemo(
     () => createSettingsRegistry(definitions),
     [definitions],
@@ -296,5 +306,38 @@ export const Demo: Story = {
     await expect(
       canvas.queryByText("Changes save automatically."),
     ).not.toBeInTheDocument();
+  },
+};
+
+export const UnknownSavedOption: Story = {
+  args: { pageId: "bot", invalidCombo: true, failSave: true },
+  play: async ({ args, canvas, userEvent, canvasElement }) => {
+    const combo = canvas.getByRole("combobox", { name: "Protocol Version" });
+    await expect(combo).toHaveTextContent("Select an option");
+    await expect(args.onSave).not.toHaveBeenCalled();
+    await userEvent.click(combo);
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await body.findByRole("option", { name: /1.21.11/ }));
+    await expect(args.onSave).toHaveBeenCalledTimes(1);
+    await expect(args.onSave).toHaveBeenCalledWith(
+      "bot",
+      "protocol-version",
+      "RELEASE|774",
+    );
+    await expect(combo).toHaveTextContent("Select an option");
+    await waitFor(() =>
+      expect(
+        body.queryByRole("dialog", { hidden: true }),
+      ).not.toBeInTheDocument(),
+    );
+  },
+};
+
+export const EmptyOptions: Story = {
+  args: { pageId: "bot", emptyCombo: true },
+  play: async ({ args, canvas }) => {
+    const combo = canvas.getByRole("combobox", { name: "Protocol Version" });
+    await expect(combo).toBeDisabled();
+    await expect(args.onSave).not.toHaveBeenCalled();
   },
 };

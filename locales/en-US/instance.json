@@ -130,6 +130,23 @@
       "noProxies": "No proxies to import"
     },
     "import": {
+      "review": {
+        "title": "Review proxy import",
+        "description": "Check the proxies before importing. Correct rejected lines so no entries are discarded.",
+        "input": "Proxy list",
+        "accepted_one": "{{count}} proxy ready to import.",
+        "accepted_other": "{{count}} proxies ready to import.",
+        "rejected_one": "{{count}} line could not be parsed. Correct line {{lines}} or choose another import format.",
+        "rejected_other": "{{count}} lines could not be parsed. Correct lines {{lines}} or choose another import format.",
+        "confirm": "Import proxies",
+        "importing": "Importing proxies...",
+        "error": {
+          "connection": "Could not reach the SoulFire server. Your list is still here. Check the connection and try again.",
+          "authentication": "Your token was rejected or has expired. Sign in again, then retry the import.",
+          "permission": "You do not have permission to import proxies in this project.",
+          "unexpected": "Could not import the proxies. Check the addresses and credentials, then try again. Your list is still here."
+        }
+      },
       "proxyType": "Proxy Type",
       "http": "HTTP",
       "socks4": "SOCKS4",

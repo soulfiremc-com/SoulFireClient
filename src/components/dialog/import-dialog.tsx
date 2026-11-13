@@ -1,4 +1,7 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -14,7 +17,6 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -82,8 +84,12 @@ function UrlDialog(props: ImportDialogProps) {
   const activeDownload = useRef<AbortController | null>(null);
   useEffect(() => () => activeDownload.current?.abort(), []);
 
-  const urlSchema = z.object({
-    url: z.string().url(t("dialog.import.url.form.url.empty")),
+  const urlSchema = Schema.Struct({
+    url: Schema.String.check(
+      Schema.makeFilter(
+        (value) => URL.canParse(value) || t("dialog.import.url.form.url.empty"),
+      ),
+    ),
   });
 
   const form = useForm({
@@ -91,21 +97,23 @@ function UrlDialog(props: ImportDialogProps) {
       url: "",
     },
     validators: {
-      onSubmit: urlSchema,
+      onSubmit: toFormSchema(urlSchema),
     },
     onSubmit: async ({ value }) => {
       if (transport === null) return;
       const controller = new AbortController();
       activeDownload.current = controller;
       try {
-        const service = createClient(DownloadService, transport);
-        const response = await service.download(
-          {
-            instanceId: instanceInfo.id,
-            uri: value.url,
-            headers: [],
-          },
-          { signal: controller.signal },
+        const service = createRpcClient(DownloadService, transport);
+        const response = await Effect.runPromise(
+          service.download(
+            {
+              instanceId: instanceInfo.id,
+              uri: value.url,
+              headers: [],
+            },
+            { signal: controller.signal },
+          ),
         );
         const text = decodeTextDownload(response);
         if (!text.trim()) {

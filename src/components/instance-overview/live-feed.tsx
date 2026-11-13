@@ -1,4 +1,5 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { use, useEffect, useEffectEvent, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -127,7 +128,7 @@ export function LiveFeed({
   useEffect(() => {
     if (!canWatch || transport === null) return;
     const controller = new AbortController();
-    const service = createClient(InstanceLiveService, transport);
+    const service = createRpcClient(InstanceLiveService, transport);
     let retryTimer: ReturnType<typeof setTimeout> | undefined;
     function retry(delay: number) {
       if (controller.signal.aborted) return;

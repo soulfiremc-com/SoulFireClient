@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect, Stream } from "effect";
+
 import { useSelector } from "@tanstack/react-store";
 import { FlaskConical, LoaderCircle } from "lucide-react";
 import {
@@ -126,65 +128,83 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
           ]),
         );
         const mockInputs = parseMockInputs(triggerOutputs, inputs);
-        const client = createClient(ScriptService, transport);
-        for await (const response of client.dryRunScript(
-          {
-            instanceId,
-            scriptId: saved.scriptId,
-            triggerNodeId: selectedNode.id,
-            mockInputs,
-          },
-          { signal: controller.signal },
-        )) {
-          if (controller.signal.aborted) break;
-          const event = response.event;
-          switch (event.case) {
-            case "nodeStarted":
-              addLog(
-                "debug",
-                t("scripts.nodeStarted", { nodeId: event.value.nodeId }),
-                event.value.nodeId,
-              );
-              break;
-            case "nodeCompleted": {
-              const outputs = Object.fromEntries(
-                Object.entries(event.value.outputs).map(([key, value]) => [
-                  key,
-                  valueToJson(value),
-                ]),
-              );
-              addLog(
-                "debug",
-                `${t("scripts.nodeCompleted", { nodeId: event.value.nodeId })}${Object.keys(outputs).length ? ` ${JSON.stringify(outputs)}` : ""}`,
-                event.value.nodeId,
-              );
-              break;
-            }
-            case "nodeError":
-              addLog("error", event.value.errorMessage, event.value.nodeId);
-              break;
-            case "scriptLog":
-              addLog(
-                ["debug", "info", "warn", "error"].includes(event.value.level)
-                  ? (event.value.level as LogLevel)
-                  : "info",
-                event.value.message,
-                event.value.nodeId ?? null,
-              );
-              break;
-            case "executionStats":
-              addLog(
-                "info",
-                t("scripts.editor.dryRun.stats", {
-                  count: Number(event.value.nodeCount),
+        const client = createRpcClient(ScriptService, transport);
+        await Effect.runPromise(
+          client
+            .dryRunScript(
+              {
+                instanceId,
+                scriptId: saved.scriptId,
+                triggerNodeId: selectedNode.id,
+                mockInputs,
+              },
+              { signal: controller.signal },
+            )
+            .pipe(
+              Stream.takeWhile(() => !controller.signal.aborted),
+              Stream.runForEach((response) =>
+                Effect.try({
+                  try: () => {
+                    const event = response.event;
+                    switch (event.case) {
+                      case "nodeStarted":
+                        addLog(
+                          "debug",
+                          t("scripts.nodeStarted", {
+                            nodeId: event.value.nodeId,
+                          }),
+                          event.value.nodeId,
+                        );
+                        break;
+                      case "nodeCompleted": {
+                        const outputs = Object.fromEntries(
+                          Object.entries(event.value.outputs).map(
+                            ([key, value]) => [key, valueToJson(value)],
+                          ),
+                        );
+                        addLog(
+                          "debug",
+                          `${t("scripts.nodeCompleted", { nodeId: event.value.nodeId })}${Object.keys(outputs).length ? ` ${JSON.stringify(outputs)}` : ""}`,
+                          event.value.nodeId,
+                        );
+                        break;
+                      }
+                      case "nodeError":
+                        addLog(
+                          "error",
+                          event.value.errorMessage,
+                          event.value.nodeId,
+                        );
+                        break;
+                      case "scriptLog":
+                        addLog(
+                          ["debug", "info", "warn", "error"].includes(
+                            event.value.level,
+                          )
+                            ? (event.value.level as LogLevel)
+                            : "info",
+                          event.value.message,
+                          event.value.nodeId ?? null,
+                        );
+                        break;
+                      case "executionStats":
+                        addLog(
+                          "info",
+                          t("scripts.editor.dryRun.stats", {
+                            count: Number(event.value.nodeCount),
+                          }),
+                        );
+                        break;
+                      case "scriptCompleted":
+                        success = event.value.success;
+                        break;
+                    }
+                  },
+                  catch: (error) => error,
                 }),
-              );
-              break;
-            case "scriptCompleted":
-              success = event.value.success;
-              break;
-          }
-        }
+              ),
+            ),
+        );
         if (controller.signal.aborted)
           return { status: "cancelled", error: null };
         if (success === undefined)

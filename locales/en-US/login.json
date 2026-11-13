@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "Checking connection...",
+    "connection": "Could not reach the SoulFire server. Check the URL, make sure the server is running, and try again. For a web connection, also check HTTPS and browser access settings.",
+    "authentication": "The token was rejected or has expired. Check the token and try again.",
+    "permission": "This account cannot access the SoulFire server. Ask the server administrator for access.",
+    "unexpected": "Could not connect to the SoulFire server. Check the URL and token, and make sure the app and server versions are compatible."
+  },
   "header": {
     "image": {
       "alt": "SoulFire logo"

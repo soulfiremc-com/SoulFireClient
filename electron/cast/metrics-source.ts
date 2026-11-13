@@ -1,9 +1,5 @@
-import {
-  createClient,
-  ConnectError,
-  Code,
-  type Transport,
-} from "@connectrpc/connect";
+import { createRpcClient } from "../../src/lib/rpc";
+import { ConnectError, Code, type Transport } from "@connectrpc/connect";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import { QueryClient } from "@tanstack/query-core";
@@ -60,8 +56,8 @@ export const makeMetricsSource = (
             }),
         );
         const transport = transportFor(source);
-        const metrics = createClient(MetricsService, transport);
-        const instances = createClient(InstanceService, transport);
+        const metrics = createRpcClient(MetricsService, transport);
+        const instances = createRpcClient(InstanceService, transport);
         let snapshots: readonly MetricsSnapshot[] = [];
         let since: Timestamp | undefined;
         return {
@@ -71,21 +67,25 @@ export const makeMetricsSource = (
                 cache.fetchQuery({
                   queryKey: ["metrics"],
                   queryFn: ({ signal: querySignal }) =>
-                    metrics.getInstanceMetrics(
-                      {
-                        instanceId: source.instanceId,
-                        since,
-                      },
-                      { signal: AbortSignal.any([signal, querySignal]) },
+                    Effect.runPromise(
+                      metrics.getInstanceMetrics(
+                        {
+                          instanceId: source.instanceId,
+                          since,
+                        },
+                        { signal: AbortSignal.any([signal, querySignal]) },
+                      ),
                     ),
                 }),
                 cache.fetchQuery({
                   queryKey: ["info"],
                   staleTime: 10_000,
                   queryFn: ({ signal: querySignal }) =>
-                    instances.getInstanceInfo(
-                      { id: source.instanceId },
-                      { signal: AbortSignal.any([signal, querySignal]) },
+                    Effect.runPromise(
+                      instances.getInstanceInfo(
+                        { id: source.instanceId },
+                        { signal: AbortSignal.any([signal, querySignal]) },
+                      ),
                     ),
                 }),
               ]);

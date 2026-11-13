@@ -1,5 +1,7 @@
 import * as fs from "node:fs";
+import { resolve } from "node:path";
 import { devtools } from "@tanstack/devtools-vite";
+import posthog from "@posthog/rollup-plugin";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
@@ -71,6 +73,27 @@ export default defineConfig({
     react(),
     // babel({ presets: [reactCompilerPreset()] }),
     svgr(),
+    ...(!isDev && process.env.POSTHOG_PERSONAL_API_KEY
+      ? [
+          posthog({
+            personalApiKey: process.env.POSTHOG_PERSONAL_API_KEY,
+            projectId: "274904",
+            host: "https://eu.posthog.com",
+            // Bun creates an executable shim on Windows instead of a .cmd shim.
+            cliBinaryPath:
+              process.platform === "win32"
+                ? resolve("node_modules/.bin/posthog-cli.exe")
+                : undefined,
+            sourcemaps: {
+              enabled: true,
+              releaseName: "SoulFireClient",
+              releaseVersion:
+                process.env.GITHUB_SHA ?? process.env.npm_package_version,
+              deleteAfterUpload: false,
+            },
+          }),
+        ]
+      : []),
   ],
   clearScreen: false,
   resolve: {
@@ -95,7 +118,7 @@ export default defineConfig({
   build: {
     target: isElectron ? "chrome128" : "es2020",
     minify: "esbuild",
-    sourcemap: isDev,
+    sourcemap: true,
     rolldownOptions: {
       checks: {
         circularDependency: true,

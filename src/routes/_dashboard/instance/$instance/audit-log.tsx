@@ -1,6 +1,8 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -63,14 +65,16 @@ export const Route = createFileRoute(
           });
         }
 
-        const instanceService = createClient(InstanceService, transport);
-        const result = await instanceService.getAuditLog(
-          {
-            id: instance,
-          },
-          {
-            signal: props.signal,
-          },
+        const instanceService = createRpcClient(InstanceService, transport);
+        const result = await Effect.runPromise(
+          instanceService.getAuditLog(
+            {
+              id: instance,
+            },
+            {
+              signal: props.signal,
+            },
+          ),
         );
 
         return result;

@@ -82,7 +82,8 @@ Do not expose unrestricted native APIs to the renderer.
 
 Oxlint and Oxfmt enforce the configured conventions. Run `bun run check` before submission.
 For intentional edits, use `bun run fix` and review its diff.
-Husky installs the pre-commit hook during dependency installation. The hook runs lint-staged.
+Dependency installation configures Lefthook. Before each commit, it runs Oxlint and then Oxfmt on staged files and stages their fixes.
+Existing Husky hook paths migrate automatically. Other custom hook paths remain unchanged.
 
 Run `bun run generate-routes` after changes that require a route tree update.
 Do not edit generated routes or protocol bindings by hand.

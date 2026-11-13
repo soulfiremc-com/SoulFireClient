@@ -1,6 +1,9 @@
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
-import { createClient } from "@connectrpc/connect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -20,7 +23,6 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { getAllIconTags } from "@/components/dynamic-icon.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -171,9 +173,9 @@ function InstanceNameField({
   });
   const form = useForm({
     defaultValues: { name: value },
-    validators: { onSubmit: z.object({ name: schema }) },
+    validators: { onSubmit: toFormSchema(Schema.Struct({ name: schema })) },
     onSubmit: async ({ value: fields, formApi }) => {
-      const name = schema.parse(fields.name);
+      const name = Schema.decodeUnknownSync(schema)(fields.name);
       if (name === value) return;
       try {
         await onSave(name);
@@ -375,10 +377,12 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
         setLoadError(true);
         return;
       }
-      const result = await createClient(
-        InstanceService,
-        transport,
-      ).getInstanceMetadata({ instanceId }, { signal: controller.signal });
+      const result = await Effect.runPromise(
+        createRpcClient(InstanceService, transport).getInstanceMetadata(
+          { instanceId },
+          { signal: controller.signal },
+        ),
+      );
       if (controller.signal.aborted || activeLoad.current !== controller)
         return;
       setEntries(convertProtoToEntries(result.metadata));
@@ -427,13 +431,15 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.setInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-        value: jsonToValue(entry.value),
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.setInstanceMetadataEntry({
+          instanceId,
+          namespace: entry.namespace,
+          key: entry.key,
+          value: jsonToValue(entry.value),
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.addSuccess"));
@@ -456,22 +462,26 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: JsonValue;
     }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
+      const instanceService = createRpcClient(InstanceService, transport);
 
       await updateMetadataEntry(entry, {
         setEntry: (replacement) =>
-          instanceService.setInstanceMetadataEntry({
-            instanceId,
+          Effect.runPromise(
+            instanceService.setInstanceMetadataEntry({
+              instanceId,
 
-            ...replacement,
-            value: jsonToValue(replacement.value),
-          }),
+              ...replacement,
+              value: jsonToValue(replacement.value),
+            }),
+          ),
         deleteEntry: (original) =>
-          instanceService.deleteInstanceMetadataEntry({
-            instanceId,
+          Effect.runPromise(
+            instanceService.deleteInstanceMetadataEntry({
+              instanceId,
 
-            ...original,
-          }),
+              ...original,
+            }),
+          ),
       });
     },
     onError: (e) => {
@@ -486,12 +496,14 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     scope: { id: `instance-metadata-${instanceId}` },
     mutationFn: async (entry: { namespace: string; key: string }) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      await instanceService.deleteInstanceMetadataEntry({
-        instanceId,
-        namespace: entry.namespace,
-        key: entry.key,
-      });
+      const instanceService = createRpcClient(InstanceService, transport);
+      await Effect.runPromise(
+        instanceService.deleteInstanceMetadataEntry({
+          instanceId,
+          namespace: entry.namespace,
+          key: entry.key,
+        }),
+      );
     },
     onSuccess: () => {
       toast.success(t("instanceMetadata.deleteSuccess"));
@@ -505,25 +517,28 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   const addEntrySchema = useMemo(
     () =>
-      z.object({
-        namespace: z
-          .string()
-          .trim()
-          .regex(
-            metadataNamespacePattern,
-            t("metadataValidation.invalidNamespace"),
+      Schema.Struct({
+        namespace: Schema.Trim.check(
+          Schema.isPattern(metadataNamespacePattern, {
+            message: t("metadataValidation.invalidNamespace"),
+          }),
+        ),
+        key: Schema.Trim.check(
+          Schema.isPattern(metadataKeyPattern, {
+            message: t("metadataValidation.invalidKey"),
+          }),
+        ),
+        value: Schema.String.check(
+          Schema.isMinLength(1, {
+            message: t("instanceMetadata.valuePlaceholder"),
+          }),
+        ).check(
+          Schema.makeFilter(
+            (value) =>
+              parseJsonValue(value) !== undefined ||
+              t("instanceMetadata.invalidJson"),
           ),
-        key: z
-          .string()
-          .trim()
-          .regex(metadataKeyPattern, t("metadataValidation.invalidKey")),
-        value: z
-          .string()
-          .min(1, t("instanceMetadata.valuePlaceholder"))
-          .refine(
-            (v) => parseJsonValue(v) !== undefined,
-            t("instanceMetadata.invalidJson"),
-          ),
+        ),
       }),
     [t],
   );
@@ -535,7 +550,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       value: "",
     },
     validators: {
-      onSubmit: addEntrySchema,
+      onSubmit: toFormSchema(addEntrySchema),
     },
     onSubmit: async ({ value, formApi }) => {
       if (!isMetadataReady) return;

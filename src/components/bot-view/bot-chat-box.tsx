@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircleIcon, SendIcon } from "lucide-react";
 import { use, useId, useState } from "react";
@@ -35,11 +37,13 @@ export function BotChatBox(props: {
     mutationKey: ["bot", "chat", props.instanceId, props.botId],
     mutationFn: async (text: string) => {
       if (transport === null) return;
-      const client = createClient(ChatService, transport);
+      const client = createRpcClient(ChatService, transport);
       const scope = { instanceId: props.instanceId, botId: props.botId };
       const response = await (text.startsWith("/")
-        ? client.sendCommand({ scope, command: text.slice(1) })
-        : client.sendPublicChat({ scope, message: text }));
+        ? Effect.runPromise(
+            client.sendCommand({ scope, command: text.slice(1) }),
+          )
+        : Effect.runPromise(client.sendPublicChat({ scope, message: text })));
       if (response.result?.status !== BotActionStatus.COMPLETED)
         throw new Error(
           response.result?.error || t("bots.chatPanel.sendError"),

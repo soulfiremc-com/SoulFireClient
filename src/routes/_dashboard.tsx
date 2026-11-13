@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import {
   createFileRoute,
@@ -64,12 +66,14 @@ export const Route = createFileRoute("/_dashboard")({
             });
           }
 
-          const instanceService = createClient(InstanceService, transport);
-          const result = await instanceService.listInstances(
-            {},
-            {
-              signal: props.signal,
-            },
+          const instanceService = createRpcClient(InstanceService, transport);
+          const result = await Effect.runPromise(
+            instanceService.listInstances(
+              {},
+              {
+                signal: props.signal,
+              },
+            ),
           );
 
           return result;
@@ -89,12 +93,14 @@ export const Route = createFileRoute("/_dashboard")({
             return demoClientData;
           }
 
-          const clientService = createClient(ClientService, transport);
-          const result = await clientService.getClientData(
-            {},
-            {
-              signal: props.signal,
-            },
+          const clientService = createRpcClient(ClientService, transport);
+          const result = await Effect.runPromise(
+            clientService.getClientData(
+              {},
+              {
+                signal: props.signal,
+              },
+            ),
           );
 
           // console.log(JSON.stringify(result))

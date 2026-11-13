@@ -1,13 +1,17 @@
+import { Schema, Effect } from "effect";
 import type { Edge, Node } from "@xyflow/react";
-import { z } from "zod";
 import { desktop, isDesktopApp } from "@/lib/desktop";
 import { scriptGraphSchema } from "@/lib/script-graph";
 
 const CLIPBOARD_PREFIX = "SOULFIRE_SCRIPT_CLIPBOARD:";
 const LOCAL_STORAGE_KEY = "script-editor-clipboard";
-const clipboardSchema = scriptGraphSchema.extend({
-  sourceScriptId: z.string().nullable().optional().default(null),
-});
+const clipboardSchema = scriptGraphSchema.pipe(
+  Schema.fieldsAssign({
+    sourceScriptId: Schema.NullOr(Schema.String).pipe(
+      Schema.withDecodingDefaultType(Effect.sync(() => null)),
+    ),
+  }),
+);
 
 export interface ScriptClipboardData {
   nodes: Node[];
@@ -27,7 +31,9 @@ function serializeClipboardData(data: ScriptClipboardData): string {
  */
 function parseClipboardJson(text: string): ScriptClipboardData | null {
   try {
-    return clipboardSchema.parse(JSON.parse(text));
+    return Schema.decodeUnknownSync(clipboardSchema, { errors: "all" })(
+      JSON.parse(text),
+    );
   } catch {
     return null;
   }

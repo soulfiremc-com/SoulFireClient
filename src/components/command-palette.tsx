@@ -468,7 +468,7 @@ function CommandPaletteContent({
   const commands = useMemo(
     () =>
       createPaletteCommands({
-        t: (key, options) => t(key, options),
+        t: (key, options) => t(key, options ?? {}),
         client: client.isError ? undefined : client.data,
         instances: instances.isError ? [] : (instances.data?.instances ?? []),
         current: scopeProject,

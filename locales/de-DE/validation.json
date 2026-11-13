@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "Ungültige Eingabe: erwartet string, erhalten undefined",
+    "null": "Ungültige Eingabe: erwartet string, erhalten null",
+    "number": "Ungültige Eingabe: erwartet string, erhalten Zahl",
+    "boolean": "Ungültige Eingabe: erwartet string, erhalten boolean",
+    "array": "Ungültige Eingabe: erwartet string, erhalten Array",
+    "object": "Ungültige Eingabe: erwartet string, erhalten object",
+    "nan": "Ungültige Eingabe: erwartet string, erhalten NaN",
+    "infinity": "Ungültige Eingabe: erwartet string, erhalten Zahl"
+  },
+  "number": {
+    "undefined": "Ungültige Eingabe: erwartet Zahl, erhalten undefined",
+    "null": "Ungültige Eingabe: erwartet Zahl, erhalten null",
+    "string": "Ungültige Eingabe: erwartet Zahl, erhalten string",
+    "boolean": "Ungültige Eingabe: erwartet Zahl, erhalten boolean",
+    "array": "Ungültige Eingabe: erwartet Zahl, erhalten Array",
+    "object": "Ungültige Eingabe: erwartet Zahl, erhalten object",
+    "nan": "Ungültige Eingabe: erwartet Zahl, erhalten NaN",
+    "infinity": "Ungültige Eingabe: erwartet Zahl, erhalten Zahl"
+  },
+  "object": {
+    "undefined": "Ungültige Eingabe: erwartet object, erhalten undefined",
+    "null": "Ungültige Eingabe: erwartet object, erhalten null",
+    "number": "Ungültige Eingabe: erwartet object, erhalten Zahl",
+    "string": "Ungültige Eingabe: erwartet object, erhalten string",
+    "boolean": "Ungültige Eingabe: erwartet object, erhalten boolean",
+    "array": "Ungültige Eingabe: erwartet object, erhalten Array",
+    "nan": "Ungültige Eingabe: erwartet object, erhalten NaN",
+    "infinity": "Ungültige Eingabe: erwartet object, erhalten Zahl"
+  },
+  "email": "Ungültig: E-Mail-Adresse",
+  "url": "Ungültig: URL",
+  "jwt": "Ungültig: JWT",
+  "emailTooLong": "Zu groß: erwartet, dass string <=255 Zeichen hat",
+  "jarSource": "Ungültige Option: erwartet eine von \"official\"|\"custom\"",
+  "generationMode": "Ungültige Option: erwartet eine von \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
+  "userRole": "Ungültige Option: erwartet eine von 0|1"
+}
