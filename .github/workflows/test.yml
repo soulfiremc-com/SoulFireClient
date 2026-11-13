@@ -53,6 +53,9 @@ jobs:
       - name: Run file-watch regression tests
         run: bun run test:fs-watch
 
+      - name: Run settings persistence tests
+        run: bun run test:settings
+
       - name: Run proxy-check regression tests
         run: bun test src/lib/proxy-check.test.ts
 

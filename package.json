@@ -45,7 +45,8 @@
     "protocol:generate": "buf generate",
     "test:cast": "bun test electron/cast src/lib/query-session.test.ts",
     "test:hooks": "node --test scripts/install-hooks.test.mjs",
-    "test:fs-watch": "bun test electron/native/fs-watch.test.ts"
+    "test:fs-watch": "bun test electron/native/fs-watch.test.ts",
+    "test:settings": "bun test electron/native/settings-store.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
@@ -85,7 +86,7 @@
     "date-fns": "^4.1.0",
     "effect": "4.1.1",
     "electron-log": "^5.4.3",
-    "electron-store": "^11.0.2",
+    "electron-store": "^12.0.0",
     "electron-updater": "^6.6.2",
     "embla-carousel-react": "^8.6.0",
     "fancy-ansi": "^0.1.3",
