@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DirectionProvider } from "@base-ui/react/direction-provider";
-import { expect, fn, within } from "storybook/test";
+import { expect, fn, spyOn, within } from "storybook/test";
 import {
   Editable,
   EditableInput,
@@ -43,6 +43,34 @@ export const EditAndCancel: Story = {
       canvas.getByRole("button", { name: "Updated name" }),
     ).toBeVisible();
     await expect(canvas.queryByRole("textbox")).not.toBeInTheDocument();
+  },
+};
+
+export const TypingBeforeNextFrame: Story = {
+  ...EditAndCancel,
+  play: async ({ args, canvasElement, userEvent }) => {
+    const frames: FrameRequestCallback[] = [];
+    const requestFrame = spyOn(window, "requestAnimationFrame").mockImplementation(
+      (callback) => frames.push(callback),
+    );
+    const cancelFrame = spyOn(window, "cancelAnimationFrame").mockImplementation(
+      () => {},
+    );
+    try {
+      const canvas = within(canvasElement);
+      await userEvent.click(canvas.getByRole("button", { name: "Initial name" }));
+      const input = canvas.getByRole("textbox", { name: "Display name" });
+      await userEvent.clear(input);
+      await userEvent.keyboard("U");
+      // Deliver a pending selection frame after the first real keystroke.
+      for (const callback of frames.splice(0)) callback(performance.now());
+      await userEvent.keyboard("pdated name{Enter}");
+      await expect(args.onSubmit).toHaveBeenCalledWith("Updated name");
+      await expect(canvas.getByRole("button", { name: "Updated name" })).toBeVisible();
+    } finally {
+      requestFrame.mockRestore();
+      cancelFrame.mockRestore();
+    }
   },
 };
 
