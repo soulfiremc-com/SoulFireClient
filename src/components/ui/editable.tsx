@@ -623,17 +623,9 @@ function EditableInput(props: EditableInputProps) {
   useIsomorphicLayoutEffect(() => {
     if (!editing || isDisabled || isReadOnly || !inputRef.current) return;
 
-    const frameId = window.requestAnimationFrame(() => {
-      if (!inputRef.current) return;
-
-      inputRef.current.focus();
-      inputRef.current.select();
-      onAutosize(inputRef.current);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-    };
+    inputRef.current.focus();
+    inputRef.current.select();
+    onAutosize(inputRef.current);
   }, [editing, onAutosize, isDisabled, isReadOnly]);
 
   const element = useRender({
