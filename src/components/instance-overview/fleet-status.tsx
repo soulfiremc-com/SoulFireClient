@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, type LinkProps } from "@tanstack/react-router";
 import {
@@ -141,10 +143,12 @@ function FailureGroupRow({
     scope: { id: `bot-state-${instanceInfo.id}` },
     mutationFn: async () => {
       if (transport === null) return;
-      await createClient(BotService, transport).restartBots({
-        instanceId: instanceInfo.id,
-        botIds: group.botIds,
-      });
+      await Effect.runPromise(
+        createRpcClient(BotService, transport).restartBots({
+          instanceId: instanceInfo.id,
+          botIds: group.botIds,
+        }),
+      );
     },
     onError: (error) =>
       toast.error(t("fleet.restartError"), { description: error.message }),

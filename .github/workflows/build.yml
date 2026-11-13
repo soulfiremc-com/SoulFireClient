@@ -23,7 +23,7 @@ jobs:
           - os: macos-15-intel
             platform: macos
             arch: x64
-          - os: macos-14
+          - os: macos-15
             platform: macos
             arch: arm64
           - os: windows-2025
@@ -58,6 +58,8 @@ jobs:
         run: bun run test:cast
 
       - name: Build unpacked Electron app
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
         run: bun run build:electron:dir -- --${{ matrix.arch }}
 
       - name: Upload artifacts

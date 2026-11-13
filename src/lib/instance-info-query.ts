@@ -1,4 +1,6 @@
-import { createClient, type Transport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import type { Transport } from "@connectrpc/connect";
 import type { QueryClient } from "@tanstack/react-query";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import {
@@ -18,9 +20,11 @@ export async function fetchInstanceInfo(
   const lastModified = client.getQueryState(queryKey)?.isInvalidated
     ? undefined
     : previousData?.lastModified;
-  const result = await createClient(InstanceService, transport).getInstanceInfo(
-    { id: instance, ifModifiedSince: lastModified },
-    { signal },
+  const result = await Effect.runPromise(
+    createRpcClient(InstanceService, transport).getInstanceInfo(
+      { id: instance, ifModifiedSince: lastModified },
+      { signal },
+    ),
   );
 
   if (result.result.case === "notModified") {

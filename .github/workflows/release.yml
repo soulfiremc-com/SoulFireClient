@@ -67,7 +67,7 @@ jobs:
           - os: macos-15-intel
             platform: macos
             arch: x64
-          - os: macos-14
+          - os: macos-15
             platform: macos
             arch: arm64
           - os: windows-2025
@@ -105,6 +105,8 @@ jobs:
         run: sudo apt-get update && sudo apt-get install --yes libarchive-tools rpm
 
       - name: Build Electron release artifacts
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
         run: bun run build:electron -- --${{ matrix.arch }} --config.extraMetadata.version=${{ inputs.app-version }}
 
       - name: Upload unsigned Windows installer

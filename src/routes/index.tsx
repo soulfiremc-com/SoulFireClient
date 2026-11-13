@@ -1,4 +1,13 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import {
+  emailFormSchema,
+  tokenFormSchema,
+  integratedServerFormSchema,
+  mobileIntegratedServerFormSchema,
+} from "@/lib/login-validation";
+import { toFormSchema } from "@/lib/form-validation";
+
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
@@ -35,7 +44,6 @@ import {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { TextInfoButton } from "@/components/info-buttons.tsx";
 import {
@@ -44,6 +52,7 @@ import {
   useIntegratedDiagnostics,
 } from "@/components/IntegratedServerDiagnostics";
 import { ConnectionChoices } from "@/components/launcher/connection-choices.tsx";
+import { ConnectionFailure } from "@/components/launcher/connection-failure";
 import {
   StartupFailureNotice,
   StartupProgress,
@@ -118,6 +127,7 @@ import {
   NextAuthFlowResponse_Failure_Reason,
 } from "@/generated/soulfire/login_pb";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
+import { useServerConnection } from "@/hooks/use-server-connection";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import type {
   DesktopCustomSoulFireServerJar,
@@ -159,24 +169,6 @@ export const Route = createFileRoute("/")({
   beforeLoad: () =>
     staticRouteChrome(() => i18n.t("login:connect.title"), SOULFIRE_LOGO_ICON),
   component: Index,
-});
-
-const emailFormSchema = z.object({
-  address: z.string().trim().pipe(z.url()),
-  email: z.email(),
-});
-const tokenFormSchema = z.object({
-  address: z.string().trim().pipe(z.url()),
-  token: z.string().trim().pipe(z.jwt()),
-});
-
-const integratedServerFormSchema = z.object({
-  customJarId: z.string(),
-  jarSource: z.enum(["official", "custom"]),
-  jvmArgs: z.string(),
-});
-const mobileIntegratedServerFormSchema = z.object({
-  token: z.string().trim().pipe(z.jwt()),
 });
 
 type LoginType = "INTEGRATED" | "DEDICATED" | "EMAIL_CODE" | null;
@@ -257,12 +249,14 @@ function Index() {
   const searchParams: Record<string, string> = Route.useSearch();
   const systemInfo = use(SystemInfoContext);
   const hasSavedIntegratedSession =
+    searchParams.configure !== "true" &&
     isDesktopApp() &&
     systemInfo !== null &&
     !systemInfo.mobile &&
     isAuthenticated() &&
     getServerType() === "integrated" &&
-    localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true";
+    (searchParams.startLocal === "true" ||
+      localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true");
   const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
   const [autoStartIntegratedServer, setAutoStartIntegratedServer] = useState(
     hasSavedIntegratedSession,
@@ -691,7 +685,7 @@ function IntegratedConfigureMenu({
           : DEFAULT_JVM_ARGS_STRING),
     },
     validators: {
-      onSubmit: integratedServerFormSchema,
+      onSubmit: toFormSchema(integratedServerFormSchema),
     },
     onSubmit: async ({ value }) => {
       if (
@@ -1413,6 +1407,9 @@ function IntegratedMobileMenu({
   const copyToClipboard = useCopyToClipboard();
   const systemInfo = use(SystemInfoContext);
   const { t } = useTranslation("login");
+  const connection = useServerConnection((address, token) =>
+    redirectWithCredentials("integrated", address, token),
+  );
   const runCommand = `bash <(curl -s https://raw.githubusercontent.com/soulfiremc-com/SoulFireClient/refs/heads/main/scripts/termux_setup.sh) ${systemInfo?.sfServerVersion} "${localStorage.getItem(LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS)}"`;
   const form = useForm({
     defaultValues: {
@@ -1422,15 +1419,11 @@ function IntegratedMobileMenu({
         ) ?? "",
     },
     validators: {
-      onSubmit: mobileIntegratedServerFormSchema,
+      onSubmit: toFormSchema(mobileIntegratedServerFormSchema),
     },
     onSubmit: async ({ value }) => {
       const token = value.token.trim();
-      void redirectWithCredentials(
-        "integrated",
-        "http://localhost:38765",
-        token,
-      );
+      await connection.connect("http://localhost:38765", token);
     },
   });
 
@@ -1533,6 +1526,7 @@ function IntegratedMobileMenu({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={connection.error} />
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button
@@ -1546,9 +1540,17 @@ function IntegratedMobileMenu({
             <ArrowLeftIcon data-icon="inline-start" />
             {t("integrated.mobile.form.back")}
           </Button>
-          <Button type="submit">
+          <Button
+            type="submit"
+            disabled={connection.connecting}
+            aria-busy={connection.connecting}
+          >
             <PlugZapIcon data-icon="inline-start" />
-            {t("integrated.mobile.form.connect")}
+            {t(
+              connection.connecting
+                ? "connection.checking"
+                : "integrated.mobile.form.connect",
+            )}
           </Button>
         </CardFooter>
       </Card>
@@ -1646,28 +1648,28 @@ function EmailForm({
       email: localStorage.getItem(LOCAL_STORAGE_FORM_SERVER_EMAIL_KEY) ?? "",
     },
     validators: {
-      onSubmit: emailFormSchema,
+      onSubmit: toFormSchema(emailFormSchema),
     },
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const email = value.email.trim();
-      const loginService = createClient(
+      const loginService = createRpcClient(
         LoginService,
         createAddressOnlyTransport(address),
       );
       toast.promise(
-        loginService
-          .login({
+        Effect.runPromise(
+          loginService.login({
             email: email,
-          })
-          .then((response) => {
-            setAuthFlowData({
-              email: email,
-              flowToken: response.authFlowToken,
-              address: address,
-            });
-            setLoginType("EMAIL_CODE");
           }),
+        ).then((response) => {
+          setAuthFlowData({
+            email: email,
+            flowToken: response.authFlowToken,
+            address: address,
+          });
+          setLoginType("EMAIL_CODE");
+        }),
         {
           loading: t("dedicated.toast.loading"),
           success: t("dedicated.toast.success"),
@@ -1800,6 +1802,9 @@ function TokenForm({
   setDedicatedType: (type: DedicatedType) => void;
 }) {
   const { t } = useTranslation("login");
+  const connection = useServerConnection((address, token) =>
+    redirectWithCredentials("dedicated", address, token),
+  );
   const form = useForm({
     defaultValues: {
       address:
@@ -1807,12 +1812,12 @@ function TokenForm({
       token: localStorage.getItem(LOCAL_STORAGE_FORM_SERVER_TOKEN_KEY) ?? "",
     },
     validators: {
-      onSubmit: tokenFormSchema,
+      onSubmit: toFormSchema(tokenFormSchema),
     },
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const token = value.token.trim();
-      void redirectWithCredentials("dedicated", address, token);
+      await connection.connect(address, token);
     },
   });
 
@@ -1897,6 +1902,7 @@ function TokenForm({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={connection.error} />
         </CardContent>
         <CardFooter className="flex flex-col gap-2 max-md:items-stretch md:flex-row">
           <div className="flex grow flex-col justify-between gap-2 max-md:items-stretch md:flex-row">
@@ -1916,9 +1922,17 @@ function TokenForm({
               onValueChange={setDedicatedType}
             />
           </div>
-          <Button type="submit">
+          <Button
+            type="submit"
+            disabled={connection.connecting}
+            aria-busy={connection.connecting}
+          >
             <LogInIcon />
-            {t("dedicated.form.login")}
+            {t(
+              connection.connecting
+                ? "connection.checking"
+                : "dedicated.form.login",
+            )}
           </Button>
         </CardFooter>
       </Card>
@@ -1944,36 +1958,36 @@ function EmailCodeMenu(props: {
 
     setInputDisabled(true);
     toast.promise(
-      createClient(
-        LoginService,
-        createAddressOnlyTransport(props.authFlowData.address),
-      )
-        .emailCode({
+      Effect.runPromise(
+        createRpcClient(
+          LoginService,
+          createAddressOnlyTransport(props.authFlowData.address),
+        ).emailCode({
           code: code,
           authFlowToken: props.authFlowData.flowToken,
-        })
-        .then((response) => {
-          if (response.next.case === "success") {
-            void props.redirectWithCredentials(
-              "dedicated",
-              props.authFlowData.address,
-              response.next.value.token,
-            );
-          } else if (response.next.case === "failure") {
-            setInputDisabled(false);
-            setCodeValue("");
-            throw new Error(
-              getEnumKeyByValue(
-                NextAuthFlowResponse_Failure_Reason,
-                response.next.value.reason,
-              ),
-            );
-          } else {
-            setInputDisabled(false);
-            setCodeValue("");
-            throw new Error("Unknown response type");
-          }
         }),
+      ).then((response) => {
+        if (response.next.case === "success") {
+          void props.redirectWithCredentials(
+            "dedicated",
+            props.authFlowData.address,
+            response.next.value.token,
+          );
+        } else if (response.next.case === "failure") {
+          setInputDisabled(false);
+          setCodeValue("");
+          throw new Error(
+            getEnumKeyByValue(
+              NextAuthFlowResponse_Failure_Reason,
+              response.next.value.reason,
+            ),
+          );
+        } else {
+          setInputDisabled(false);
+          setCodeValue("");
+          throw new Error("Unknown response type");
+        }
+      }),
       {
         loading: t("emailCode.toast.loading"),
         success: t("emailCode.toast.success"),

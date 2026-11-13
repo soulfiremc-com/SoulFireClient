@@ -1,4 +1,3 @@
-import { createClient } from "@connectrpc/connect";
 import {
   type QueryClient,
   useMutation,
@@ -23,7 +22,7 @@ import {
 } from "lucide-react";
 import { use, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type ExternalToast, toast } from "sonner";
+import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
@@ -40,6 +39,7 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton.t
 import { DataTableSortList } from "@/components/data-table/data-table-sort-list.tsx";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar.tsx";
 import ImportDialog from "@/components/dialog/import-dialog.tsx";
+import { ProxyImportReview } from "@/components/dialog/proxy-import-review";
 import ProxyProvidersDialog from "@/components/dialog/proxy-providers-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -70,7 +70,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { SettingsPage } from "@/generated/soulfire/common_pb";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
-import { ProxyCheckService } from "@/generated/soulfire/proxy-check_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
@@ -80,16 +79,11 @@ import { createTextBlob } from "@/lib/download.ts";
 import i18n from "@/lib/i18n.ts";
 import { guidedTableValidateSearch } from "@/lib/parsers.ts";
 import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
-import { observeServerStream } from "@/lib/protobuf.ts";
+import { useProxyCheck } from "@/hooks/use-proxy-check";
 import { stripAddressPrefix } from "@/lib/proxy-address.ts";
 import { newProviderProxies } from "@/lib/proxy-providers.ts";
 import { getProxyRows, type ProxyTableRow } from "@/lib/proxy-selection.ts";
-import {
-  formatProxyAsFlat,
-  formatProxyAsURI,
-  parseNormalProxy,
-  parseURIProxy,
-} from "@/lib/proxy-format.ts";
+import { formatProxyAsFlat, formatProxyAsURI } from "@/lib/proxy-format.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import {
   getEnumEntries,
@@ -398,6 +392,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   const [importedProxies, setImportedProxies] = useState<ProfileProxy[] | null>(
     null,
   );
+  const [importDraft, setImportDraft] = useState<string | null>(null);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   const guide = Route.useSearch({ select: (search) => search.guide });
   const [providerDialogOpen, setProviderDialogOpen] = useState(
@@ -444,159 +439,16 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
     },
   });
 
-  const textSelectedCallback = useCallback(
-    (text: string) => {
-      if (proxyTypeSelected === null) return;
-
-      if (!text.trim()) {
-        toast.error(t("proxy.listImportToast.noProxies"));
-        return;
-      }
-
-      const textSplit = text
-        .split("\n")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-      toast.promise(
-        (async () => {
-          const proxiesToAdd: ProfileProxy[] = [];
-          for (const line of textSplit) {
-            let proxy: ProfileProxy | null;
-            switch (proxyTypeSelected) {
-              case UIProxyType.HTTP:
-              case UIProxyType.SOCKS4:
-              case UIProxyType.SOCKS5:
-                proxy = parseNormalProxy(
-                  line,
-                  uiProxyTypeToProto(proxyTypeSelected),
-                );
-                break;
-              case UIProxyType.URI:
-                proxy = parseURIProxy(line);
-                break;
-            }
-
-            if (proxy === null) {
-              continue;
-            }
-
-            proxiesToAdd.push(proxy);
-          }
-
-          if (proxiesToAdd.length === 0) {
-            throw new Error("No supported proxies found");
-          }
-
-          await addProxiesBatchMutation(proxiesToAdd);
-          setProxyTypeSelected(null);
-          setImportedProxies(proxiesToAdd);
-          return proxiesToAdd.length;
-        })(),
-        {
-          loading: t("proxy.listImportToast.loading"),
-          success: (r) => t("proxy.listImportToast.success", { count: r }),
-          error: (e) => {
-            console.error(e);
-            return t("proxy.listImportToast.error");
-          },
-        },
-      );
-    },
-    [proxyTypeSelected, addProxiesBatchMutation, t],
-  );
-
-  const performProxyCheck = useCallback(() => {
-    if (transport === null || importedProxies === null) {
-      return;
-    }
-
-    const proxiesToCheck = importedProxies;
-    setImportedProxies(null);
-
-    const abortController = new AbortController();
-    const loadingData: ExternalToast = {
-      cancel: {
-        label: t("common:cancel"),
-        onClick: () => {
-          abortController.abort();
-        },
-      },
-    };
-    const total = proxiesToCheck.length;
-    let failed = 0;
-    let success = 0;
-    const loadingReport = () =>
-      t("proxy.checkToast.loading", {
-        checked: success + failed,
-        total,
-        success,
-        failed,
-      });
-    const toastId = toast.loading(loadingReport(), loadingData);
-    const service = createClient(ProxyCheckService, transport);
-    const responses = service.check(
-      {
-        instanceId: instanceInfo.id,
-        proxy: proxiesToCheck,
-      },
-      {
-        signal: abortController.signal,
-      },
-    );
-    void observeServerStream(responses, {
-      onMessage: async (r) => {
-        const data = r.data;
-        switch (data.case) {
-          case "end": {
-            toast.success(
-              t("proxy.checkToast.success", {
-                count: failed,
-              }),
-              {
-                id: toastId,
-                cancel: undefined,
-              },
-            );
-            break;
-          }
-          case "single": {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            if (data.value.valid) {
-              success++;
-            } else {
-              failed++;
-              const proxyToRemove = data.value.proxy;
-              if (proxyToRemove) {
-                await removeProxyEntriesMutation([proxyToRemove]);
-              }
-            }
-
-            toast.loading(loadingReport(), {
-              id: toastId,
-              ...loadingData,
-            });
-            break;
-          }
-        }
-      },
-      onError: (e) => {
-        console.error(e);
-        toast.error(t("proxy.checkToast.error"), {
-          id: toastId,
-          cancel: undefined,
-        });
-      },
-    });
-  }, [
+  const checkProxies = useProxyCheck(
     transport,
-    importedProxies,
-    t,
     instanceInfo.id,
     removeProxyEntriesMutation,
-  ]);
+  );
+  const performProxyCheck = useCallback(() => {
+    if (importedProxies === null) return;
+    checkProxies(importedProxies);
+    setImportedProxies(null);
+  }, [checkProxies, importedProxies]);
 
   return (
     <>
@@ -684,14 +536,14 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      {proxyTypeSelected !== null && (
+      {proxyTypeSelected !== null && importDraft === null && (
         <ImportDialog
           title={t("proxy.import.dialog.title", {
             type: getEnumKeyByValue(UIProxyType, proxyTypeSelected),
           })}
           description={t("proxy.import.dialog.description")}
           closer={() => setProxyTypeSelected(null)}
-          listener={textSelectedCallback}
+          listener={setImportDraft}
           isPending={isImporting}
           filters={[
             {
@@ -706,6 +558,27 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           }}
         />
       )}
+      {proxyTypeSelected !== null && importDraft !== null && (
+        <ProxyImportReview
+          text={importDraft}
+          type={
+            proxyTypeSelected === UIProxyType.URI
+              ? "uri"
+              : uiProxyTypeToProto(proxyTypeSelected)
+          }
+          onBack={() => setImportDraft(null)}
+          onImport={async (proxies) => {
+            await addProxiesBatchMutation(proxies);
+            setImportedProxies(proxies);
+            setImportDraft(null);
+            setProxyTypeSelected(null);
+            toast.success(
+              t("proxy.listImportToast.success", { count: proxies.length }),
+            );
+          }}
+        />
+      )}
+
       <Dialog
         open={importedProxies !== null && !checkDialogOpen}
         onOpenChange={(open) => {
@@ -807,94 +680,16 @@ function ExtraHeader(props: {
     [props.table, t],
   );
 
+  const checkProxies = useProxyCheck(
+    transport,
+    instanceInfo.id,
+    removeProxyEntriesMutation,
+  );
   const performProxyCheck = useCallback(() => {
-    if (transport === null) {
-      return;
-    }
-
-    const selectedRows = props.table
-      .getFilteredSelectedRowModel()
-      .rows.map((r) => r.original);
-
-    const abortController = new AbortController();
-    const loadingData: ExternalToast = {
-      cancel: {
-        label: t("common:cancel"),
-        onClick: () => {
-          abortController.abort();
-        },
-      },
-    };
-    const total = selectedRows.length;
-    let failed = 0;
-    let success = 0;
-    const loadingReport = () =>
-      t("proxy.checkToast.loading", {
-        checked: success + failed,
-        total,
-        success,
-        failed,
-      });
-    const toastId = toast.loading(loadingReport(), loadingData);
-    const service = createClient(ProxyCheckService, transport);
-    const responses = service.check(
-      {
-        instanceId: instanceInfo.id,
-        proxy: selectedRows,
-      },
-      {
-        signal: abortController.signal,
-      },
+    checkProxies(
+      props.table.getFilteredSelectedRowModel().rows.map((row) => row.original),
     );
-    void observeServerStream(responses, {
-      onMessage: async (r) => {
-        const data = r.data;
-        switch (data.case) {
-          case "end": {
-            toast.success(
-              t("proxy.checkToast.success", {
-                count: failed,
-              }),
-              {
-                id: toastId,
-                cancel: undefined,
-              },
-            );
-            break;
-          }
-          case "single": {
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            if (data.value.valid) {
-              success++;
-            } else {
-              failed++;
-              // Remove only the failed entry, preserving its endpoint neighbors.
-              const proxyToRemove = data.value.proxy;
-              if (proxyToRemove) {
-                await removeProxyEntriesMutation([proxyToRemove]);
-              }
-            }
-
-            toast.loading(loadingReport(), {
-              id: toastId,
-              ...loadingData,
-            });
-            break;
-          }
-        }
-      },
-      onError: (e) => {
-        console.error(e);
-        toast.error(t("proxy.checkToast.error"), {
-          id: toastId,
-          cancel: undefined,
-        });
-      },
-    });
-  }, [transport, props.table, t, instanceInfo.id, removeProxyEntriesMutation]);
+  }, [checkProxies, props.table]);
 
   return (
     <>

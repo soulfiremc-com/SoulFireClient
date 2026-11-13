@@ -1,5 +1,10 @@
+import { Effect } from "effect";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
-import { ProviderApiError, requestProvider } from "@/lib/provider-request.ts";
+import {
+  ProviderApiError,
+  providerResponseEffect,
+  runProviderEffect,
+} from "@/lib/provider-request.ts";
 
 const RAVEALTS_BASE_URL = "https://api.ravealts.com";
 const LOCAL_STORAGE_RAVEALTS_API_KEY = "ravealts-api-key";
@@ -50,32 +55,34 @@ function isRavealtsError(data: unknown): data is RavealtsErrorResponse {
   );
 }
 
-async function ravealtsRequest<T>(
+function ravealtsRequest<T>(
   path: string,
   options?: {
     method?: "GET" | "POST";
     headers?: Record<string, string>;
     body?: string;
   },
-): Promise<T> {
-  const response = await requestProvider({
-    url: `${RAVEALTS_BASE_URL}${path}`,
-    method: "GET",
-    ...options,
+) {
+  return Effect.gen(function* () {
+    const response = yield* providerResponseEffect({
+      url: `${RAVEALTS_BASE_URL}${path}`,
+      method: "GET",
+      ...options,
+    });
+    if (response.status >= 500)
+      return yield* Effect.fail(new ProviderApiError("response"));
+    const data = yield* Effect.try({
+      try: () => JSON.parse(response.body) as unknown,
+      catch: () => new ProviderApiError("response"),
+    });
+    if (isRavealtsError(data))
+      return yield* Effect.fail(
+        new RavealtsApiError(data.error_type, data.message),
+      );
+    if (response.status < 200 || response.status >= 300)
+      return yield* Effect.fail(new ProviderApiError("rejected"));
+    return data as T;
   });
-  if (response.status >= 500) throw new ProviderApiError("response");
-  let data: unknown;
-  try {
-    data = JSON.parse(response.body) as unknown;
-  } catch {
-    throw new ProviderApiError("response");
-  }
-  if (isRavealtsError(data)) {
-    throw new RavealtsApiError(data.error_type, data.message);
-  }
-  if (response.status < 200 || response.status >= 300)
-    throw new ProviderApiError("rejected");
-  return data as T;
 }
 
 export class RavealtsApiError extends Error {
@@ -89,15 +96,19 @@ export class RavealtsApiError extends Error {
 }
 
 export async function fetchStock(): Promise<RavealtsStockResponse> {
-  return ravealtsRequest<RavealtsStockResponse>("/alts/stock");
+  return runProviderEffect(
+    ravealtsRequest<RavealtsStockResponse>("/alts/stock"),
+  );
 }
 
 export async function fetchKeyInfo(
   apiKey: string,
 ): Promise<RavealtsKeyInfoResponse> {
-  return ravealtsRequest<RavealtsKeyInfoResponse>("/alts/key-info", {
-    headers: { Authorization: `Bearer ${apiKey}` },
-  });
+  return runProviderEffect(
+    ravealtsRequest<RavealtsKeyInfoResponse>("/alts/key-info", {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    }),
+  );
 }
 
 export async function purchaseAccounts(
@@ -114,19 +125,21 @@ export async function purchaseAccounts(
   ) {
     throw new Error("Invalid Ravealts purchase");
   }
-  return ravealtsRequest<RavealtsPurchaseResponse>("/alts/purchase", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      user_request: {
-        account_type: accountType,
-        amount,
+  return runProviderEffect(
+    ravealtsRequest<RavealtsPurchaseResponse>("/alts/purchase", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        user_request: {
+          account_type: accountType,
+          amount,
+        },
+      }),
     }),
-  });
+  );
 }
 
 export function mapPurchasedAccounts(accounts: RavealtsPurchasedAccount[]): {

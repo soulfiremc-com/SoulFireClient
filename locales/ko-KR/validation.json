@@ -1,0 +1,39 @@
+{
+  "string": {
+    "undefined": "잘못된 입력: 예상 타입은 string, 받은 타입은 undefined입니다",
+    "null": "잘못된 입력: 예상 타입은 string, 받은 타입은 null입니다",
+    "number": "잘못된 입력: 예상 타입은 string, 받은 타입은 number입니다",
+    "boolean": "잘못된 입력: 예상 타입은 string, 받은 타입은 boolean입니다",
+    "array": "잘못된 입력: 예상 타입은 string, 받은 타입은 array입니다",
+    "object": "잘못된 입력: 예상 타입은 string, 받은 타입은 object입니다",
+    "nan": "잘못된 입력: 예상 타입은 string, 받은 타입은 NaN입니다",
+    "infinity": "잘못된 입력: 예상 타입은 string, 받은 타입은 number입니다"
+  },
+  "number": {
+    "undefined": "잘못된 입력: 예상 타입은 number, 받은 타입은 undefined입니다",
+    "null": "잘못된 입력: 예상 타입은 number, 받은 타입은 null입니다",
+    "string": "잘못된 입력: 예상 타입은 number, 받은 타입은 string입니다",
+    "boolean": "잘못된 입력: 예상 타입은 number, 받은 타입은 boolean입니다",
+    "array": "잘못된 입력: 예상 타입은 number, 받은 타입은 array입니다",
+    "object": "잘못된 입력: 예상 타입은 number, 받은 타입은 object입니다",
+    "nan": "잘못된 입력: 예상 타입은 number, 받은 타입은 NaN입니다",
+    "infinity": "잘못된 입력: 예상 타입은 number, 받은 타입은 number입니다"
+  },
+  "object": {
+    "undefined": "잘못된 입력: 예상 타입은 object, 받은 타입은 undefined입니다",
+    "null": "잘못된 입력: 예상 타입은 object, 받은 타입은 null입니다",
+    "number": "잘못된 입력: 예상 타입은 object, 받은 타입은 number입니다",
+    "string": "잘못된 입력: 예상 타입은 object, 받은 타입은 string입니다",
+    "boolean": "잘못된 입력: 예상 타입은 object, 받은 타입은 boolean입니다",
+    "array": "잘못된 입력: 예상 타입은 object, 받은 타입은 array입니다",
+    "nan": "잘못된 입력: 예상 타입은 object, 받은 타입은 NaN입니다",
+    "infinity": "잘못된 입력: 예상 타입은 object, 받은 타입은 number입니다"
+  },
+  "email": "잘못된 이메일 주소",
+  "url": "잘못된 URL",
+  "jwt": "잘못된 JWT",
+  "emailTooLong": "string이 너무 큽니다: 255문자 이하여야 합니다",
+  "jarSource": "잘못된 옵션: \"official\"또는 \"custom\" 중 하나여야 합니다",
+  "generationMode": "잘못된 옵션: \"IGNORE_EXISTING\"또는 \"REPLACE_EXISTING\"또는 \"REPLACE_ALL\" 중 하나여야 합니다",
+  "userRole": "잘못된 옵션: 0또는 1 중 하나여야 합니다"
+}

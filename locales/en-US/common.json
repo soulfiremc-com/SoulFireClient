@@ -21,7 +21,15 @@
       "description": "The page did not load. Open the console for more information.",
       "logOut": "Log out",
       "reloadPage": "Reload page",
-      "showDetails": "Show details"
+      "showDetails": "Show details",
+      "connectionSettings": "Connection settings",
+      "restartLocalServer": "Restart local server",
+      "recovery": {
+        "connection": "Could not reach the SoulFire server. Check that it is running and retry, or open connection settings.",
+        "authentication": "Your token was rejected or has expired. Open connection settings to sign in again.",
+        "permission": "You do not have permission to open this page. Sign in with another account or ask the server administrator for access.",
+        "unexpected": "The page could not load. Retry once, or share the error details when reporting the problem."
+      }
     },
     "connectionFailed": "Connection to the SoulFire server failed."
   },
@@ -298,7 +306,8 @@
       "remove": "Remove"
     },
     "combo": {
-      "searchPlaceholder": "Search value..."
+      "searchPlaceholder": "Search value...",
+      "selectPlaceholder": "Select an option"
     },
     "invalidNumberToast": {
       "title": "Invalid number",

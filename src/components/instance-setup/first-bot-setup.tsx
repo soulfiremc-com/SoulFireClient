@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import {
@@ -285,17 +287,22 @@ export function FirstBotSetup({
     scope: { id: `bot-state-${instanceInfo.id}` },
     mutationFn: async (count: number) => {
       if (transport === null) return;
-      const client = createClient(BotService, transport);
-      const latest = await client.getBotList({ instanceId: instanceInfo.id });
-      await client.setBotsDesiredState({
-        instanceId: instanceInfo.id,
-        botIds: selectBotsToStart(
-          latest.bots,
-          count,
-          instanceInfo.profile.settings.account?.["shuffle-accounts"] === true,
-        ),
-        desiredState: BotDesiredState.RUNNING,
-      });
+      const client = createRpcClient(BotService, transport);
+      const latest = await Effect.runPromise(
+        client.getBotList({ instanceId: instanceInfo.id }),
+      );
+      await Effect.runPromise(
+        client.setBotsDesiredState({
+          instanceId: instanceInfo.id,
+          botIds: selectBotsToStart(
+            latest.bots,
+            count,
+            instanceInfo.profile.settings.account?.["shuffle-accounts"] ===
+              true,
+          ),
+          desiredState: BotDesiredState.RUNNING,
+        }),
+      );
     },
     onSuccess: () => setStarting(true),
     onError: (error) =>

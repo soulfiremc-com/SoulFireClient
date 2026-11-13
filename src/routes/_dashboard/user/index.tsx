@@ -1,4 +1,7 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -26,7 +29,6 @@ import { usePostHog } from "posthog-js/react";
 import { type ComponentType, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
@@ -163,7 +165,7 @@ function DuplicateInstanceDialog({
   pending: boolean;
 }) {
   const { t } = useTranslation("common");
-  const formSchema = z.object({
+  const formSchema = Schema.Struct({
     friendlyName: createInstanceNameSchema({
       required: t("instanceName.required"),
       max: t("instanceName.max"),
@@ -177,11 +179,11 @@ function DuplicateInstanceDialog({
         : "",
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value }) => {
       try {
-        await onDuplicate(formSchema.parse(value));
+        await onDuplicate(Schema.decodeUnknownSync(formSchema)(value));
       } catch {
         // The mutation reports errors and keeps the draft available for corrections.
       }
@@ -327,15 +329,19 @@ function Content() {
       action: StateAction["key"];
     }) => {
       if (transport === null) return;
-      const botService = createClient(BotService, transport);
-      const promise = botService.getBotList({ instanceId }).then((list) =>
-        botService.setBotsDesiredState({
-          instanceId,
-          botIds: list.bots
-            .filter((bot) => bot.status?.desiredState !== desiredState)
-            .map((bot) => bot.profileId),
-          desiredState,
-        }),
+      const botService = createRpcClient(BotService, transport);
+      const promise = Effect.runPromise(
+        botService.getBotList({ instanceId }),
+      ).then((list) =>
+        Effect.runPromise(
+          botService.setBotsDesiredState({
+            instanceId,
+            botIds: list.bots
+              .filter((bot) => bot.status?.desiredState !== desiredState)
+              .map((bot) => bot.profileId),
+            desiredState,
+          }),
+        ),
       );
       toast.promise(promise, {
         loading: t(`controls.${action}Toast.loading`),
@@ -364,13 +370,12 @@ function Content() {
       friendlyName: string;
     }) => {
       if (transport === null) return;
-      const promise = createClient(
-        InstanceService,
-        transport,
-      ).duplicateInstance({
-        id: sourceInstance.id,
-        friendlyName,
-      });
+      const promise = Effect.runPromise(
+        createRpcClient(InstanceService, transport).duplicateInstance({
+          id: sourceInstance.id,
+          friendlyName,
+        }),
+      );
 
       toast.promise(promise, {
         loading: t("dialog.duplicateInstance.duplicateToast.loading"),
@@ -404,10 +409,10 @@ function Content() {
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
       if (transport === null) return;
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .deleteInstance({ id: instanceId })
-        .then((r) => r);
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.deleteInstance({ id: instanceId }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: () => {

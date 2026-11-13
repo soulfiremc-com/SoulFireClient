@@ -55,7 +55,7 @@ Use `@/*` to import from `src/` (e.g., `import { Button } from '@/components/ui/
 - All six shadcn rules are off in `src/components/ui/`.
 - Oxlint's other checks still run in `src/components/ui/`.
 - Oxfmt leaves `src/components/ui/` unchanged.
-- Pre-commit hook runs lint-staged with Oxlint and Oxfmt.
+- Lefthook runs Oxlint and Oxfmt on staged files before commits.
 - Generated protocol bindings and the route tree are ignored by Oxlint.
 
 ### Proto Generation
@@ -98,3 +98,7 @@ Before naming features or changing user-facing text and visuals, read the [SoulF
 Use its terminology, naming, writing, and visual identity guides.
 Keep proposed renames separate from accepted guidance.
 Preserve public identifiers until the owning repository approves a migration.
+
+## Validation
+
+Use Effect v4 Schema for validation. Pass form schemas through `toFormSchema` to preserve localized messages and field paths. Generic validation messages live in the `validation` translation namespace; custom field messages stay in their existing namespaces. Keep schema transformations explicit when submitting decoded values.

@@ -1,15 +1,20 @@
-import { z } from "zod";
+import { emailSchema } from "./form-validation";
+import { Schema } from "effect";
 
 export function createUsernameSchema(messages: {
   min: string;
   max: string;
   pattern: string;
 }) {
-  return z
-    .string()
-    .min(3, messages.min)
-    .max(32, messages.max)
-    .regex(/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/, messages.pattern);
+  return Schema.String.check(Schema.isMinLength(3, { message: messages.min }))
+    .check(Schema.isMaxLength(32, { message: messages.max }))
+    .check(
+      Schema.isPattern(/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/, {
+        message: messages.pattern,
+      }),
+    );
 }
 
-export const userEmailSchema = z.email().max(255);
+export const userEmailSchema = emailSchema.check(
+  Schema.isMaxLength(255, { message: "validation:emailTooLong" }),
+);

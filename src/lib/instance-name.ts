@@ -1,18 +1,18 @@
-import { z } from "zod";
+import { Schema } from "effect";
 
 export function createInstanceNameSchema(messages: {
   required: string;
   max: string;
   singleLine: string;
 }) {
-  return z
-    .string()
-    .trim()
-    .min(1, messages.required)
-    .max(32, messages.max)
-    .refine(
-      (value) => !/[\p{Cc}\p{Zl}\p{Zp}]/u.test(value),
-      messages.singleLine,
+  return Schema.Trim.check(
+    Schema.isMinLength(1, { message: messages.required }),
+  )
+    .check(Schema.isMaxLength(32, { message: messages.max }))
+    .check(
+      Schema.makeFilter(
+        (value) => !/[\p{Cc}\p{Zl}\p{Zp}]/u.test(value) || messages.singleLine,
+      ),
     );
 }
 

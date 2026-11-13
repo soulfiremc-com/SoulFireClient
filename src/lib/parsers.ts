@@ -1,3 +1,4 @@
+import { Schema, Result } from "effect";
 import {
   createParser,
   createStandardSchemaV1,
@@ -5,7 +6,6 @@ import {
   parseAsString,
   parseAsStringLiteral,
 } from "nuqs/server";
-import { z } from "zod";
 
 import { dataTableConfig } from "@/config/data-table";
 
@@ -14,9 +14,9 @@ import type {
   ExtendedColumnSort,
 } from "@/types/data-table";
 
-const sortingItemSchema = z.object({
-  id: z.string(),
-  desc: z.boolean(),
+const sortingItemSchema = Schema.Struct({
+  id: Schema.String,
+  desc: Schema.Boolean,
 });
 
 export const getSortingStateParser = <TData>(
@@ -32,15 +32,21 @@ export const getSortingStateParser = <TData>(
     parse: (value) => {
       try {
         const parsed = JSON.parse(value);
-        const result = z.array(sortingItemSchema).safeParse(parsed);
+        const result = Schema.decodeUnknownResult(
+          Schema.mutable(Schema.Array(sortingItemSchema)),
+          { errors: "all" },
+        )(parsed);
 
-        if (!result.success) return null;
+        if (!Result.isSuccess(result)) return null;
 
-        if (validKeys && result.data.some((item) => !validKeys.has(item.id))) {
+        if (
+          validKeys &&
+          result.success.some((item) => !validKeys.has(item.id))
+        ) {
           return null;
         }
 
-        return result.data as ExtendedColumnSort<TData>[];
+        return result.success as ExtendedColumnSort<TData>[];
       } catch {
         return null;
       }
@@ -55,15 +61,18 @@ export const getSortingStateParser = <TData>(
   });
 };
 
-const filterItemSchema = z.object({
-  id: z.string(),
-  value: z.union([z.string(), z.array(z.string())]),
-  variant: z.enum(dataTableConfig.filterVariants),
-  operator: z.enum(dataTableConfig.operators),
-  filterId: z.string(),
+const filterItemSchema = Schema.Struct({
+  id: Schema.String,
+  value: Schema.Union([
+    Schema.String,
+    Schema.mutable(Schema.Array(Schema.String)),
+  ]),
+  variant: Schema.Literals(dataTableConfig.filterVariants),
+  operator: Schema.Literals(dataTableConfig.operators),
+  filterId: Schema.String,
 });
 
-export type FilterItemSchema = z.infer<typeof filterItemSchema>;
+export type FilterItemSchema = (typeof filterItemSchema)["Type"];
 
 export const getFiltersStateParser = <TData>(
   columnIds?: string[] | Set<string>,
@@ -78,15 +87,21 @@ export const getFiltersStateParser = <TData>(
     parse: (value) => {
       try {
         const parsed = JSON.parse(value);
-        const result = z.array(filterItemSchema).safeParse(parsed);
+        const result = Schema.decodeUnknownResult(
+          Schema.mutable(Schema.Array(filterItemSchema)),
+          { errors: "all" },
+        )(parsed);
 
-        if (!result.success) return null;
+        if (!Result.isSuccess(result)) return null;
 
-        if (validKeys && result.data.some((item) => !validKeys.has(item.id))) {
+        if (
+          validKeys &&
+          result.success.some((item) => !validKeys.has(item.id))
+        ) {
           return null;
         }
 
-        return result.data as ExtendedColumnFilter<TData>[];
+        return result.success as ExtendedColumnFilter<TData>[];
       } catch {
         return null;
       }

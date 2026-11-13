@@ -1,86 +1,112 @@
-import { z } from "zod";
+import { Effect, Schema } from "effect";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import {
   ProviderApiError,
-  providerJson,
+  providerJsonEffect,
+  runProviderEffect,
   type ProviderFetch,
 } from "@/lib/provider-request.ts";
 
 // Contract: https://localts.store/api-docs (authenticated documentation).
 const base = "https://localts.store/v1";
-const productSchema = z.object({
-  id: z.string().regex(/^[\w-]+$/),
-  name: z.string(),
-  category: z.string(),
-  priceInCredits: z.number().nonnegative().finite(),
-  stock: z.number().int().nonnegative(),
-  type: z.string(),
-  quantityDiscounts: z
-    .record(z.string().regex(/^[1-9]\d*$/), z.number().min(0).max(100))
-    .optional(),
+const productSchema = Schema.Struct({
+  id: Schema.String.check(Schema.isPattern(/^[\w-]+$/)),
+  name: Schema.String,
+  category: Schema.String,
+  priceInCredits: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+    Schema.isFinite(),
+  ),
+  stock: Schema.Finite.check(Schema.isInt()).check(
+    Schema.isGreaterThanOrEqualTo(0),
+  ),
+  type: Schema.String,
+  quantityDiscounts: Schema.optional(
+    Schema.Record(
+      Schema.String.check(Schema.isPattern(/^[1-9]\d*$/)),
+      Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+        Schema.isLessThanOrEqualTo(100),
+      ),
+    ),
+  ),
 });
-export type LocaltsProduct = z.infer<typeof productSchema>;
-const localtsOrderSchema = z.object({
-  "order-id": z.string(),
-  status: z.enum(["PENDING", "PACKAGING", "PACKAGED"]),
-  "order-status": z.enum([
+export type LocaltsProduct = (typeof productSchema)["Type"];
+const localtsOrderSchema = Schema.Struct({
+  "order-id": Schema.String,
+  status: Schema.Literals(["PENDING", "PACKAGING", "PACKAGED"]),
+  "order-status": Schema.Literals([
     "PENDING",
     "PROCESSING",
     "COMPLETE",
     "PARTIALLY_REFUNDED",
     "REFUNDED",
   ]),
-  items: z.array(z.object({ id: z.string(), content: z.string() })).optional(),
+  items: Schema.optional(
+    Schema.mutable(
+      Schema.Array(
+        Schema.Struct({ id: Schema.String, content: Schema.String }),
+      ),
+    ),
+  ),
 });
-export type LocaltsOrder = z.infer<typeof localtsOrderSchema>;
+export type LocaltsOrder = (typeof localtsOrderSchema)["Type"];
 
-function parse<T>(schema: z.ZodType<T>, value: unknown): T {
-  const result = schema.safeParse(value);
-  if (!result.success) throw new ProviderApiError("response");
-  return result.data;
+function parse<T>(schema: Schema.ConstraintDecoder<T>, value: unknown) {
+  return Schema.decodeUnknownEffect(schema, { errors: "all" })(value).pipe(
+    Effect.mapError(() => new ProviderApiError("response")),
+  );
 }
 
-async function request(
-  path: string,
-  key: string,
-  method: "GET" | "POST",
-  signal?: AbortSignal,
-  fetcher?: ProviderFetch,
-): Promise<unknown> {
-  const response = await providerJson(
-    {
+function request(path: string, key: string, method: "GET" | "POST") {
+  return Effect.gen(function* () {
+    const response = yield* providerJsonEffect({
       url: `${base}${path}`,
       method,
       headers: key ? { "X-API-Key": key.trim() } : undefined,
-    },
-    signal,
-    fetcher,
-  );
-  const result = parse(z.object({ success: z.boolean() }), response);
-  if (!result.success) throw new ProviderApiError("rejected");
-  return response;
+    });
+    const result = yield* parse(
+      Schema.Struct({ success: Schema.Boolean }),
+      response,
+    );
+    if (!result.success)
+      return yield* Effect.fail(new ProviderApiError("rejected"));
+    return response;
+  });
 }
 
-export async function fetchLocaltsProducts(
+const productsEffect = () =>
+  Effect.gen(function* () {
+    return (yield* parse(
+      Schema.Struct({ products: Schema.mutable(Schema.Array(productSchema)) }),
+      yield* request("/products", "", "GET"),
+    )).products;
+  });
+const balanceEffect = (key: string) =>
+  Effect.gen(function* () {
+    if (!key.trim())
+      return yield* Effect.fail(new ProviderApiError("authentication"));
+    return (yield* parse(
+      Schema.Struct({
+        balance: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
+          Schema.isFinite(),
+        ),
+      }),
+      yield* request("/me", key, "GET"),
+    )).balance;
+  });
+
+export function fetchLocaltsProducts(
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<LocaltsProduct[]> {
-  return parse(
-    z.object({ products: z.array(productSchema) }),
-    await request("/products", "", "GET", signal, fetcher),
-  ).products;
+  return runProviderEffect(productsEffect(), signal, fetcher);
 }
 
-export async function fetchLocaltsBalance(
+export function fetchLocaltsBalance(
   key: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<number> {
-  if (!key.trim()) throw new ProviderApiError("authentication");
-  return parse(
-    z.object({ balance: z.number().nonnegative().finite() }),
-    await request("/me", key, "GET", signal, fetcher),
-  ).balance;
+  return runProviderEffect(balanceEffect(key), signal, fetcher);
 }
 
 export function localtsPrice(product: LocaltsProduct, amount: number): number {
@@ -94,7 +120,7 @@ export function localtsPrice(product: LocaltsProduct, amount: number): number {
   );
 }
 
-export async function purchaseLocaltsAccounts(
+export function purchaseLocaltsAccounts(
   key: string,
   product: LocaltsProduct,
   amount: number,
@@ -102,59 +128,85 @@ export async function purchaseLocaltsAccounts(
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<string> {
-  localtsPrice(product, amount);
-  const [products, balance] = await Promise.all([
-    fetchLocaltsProducts(signal, fetcher),
-    fetchLocaltsBalance(key, signal, fetcher),
-  ]);
-  const current = products.find((entry) => entry.id === product.id);
-  if (!current || current.stock < amount) throw new ProviderApiError("empty");
-  if (
-    localtsPrice(current, amount) !== expectedTotal ||
-    balance < expectedTotal
-  )
-    throw new ProviderApiError("priceChanged");
-  const result = await request(
-    `/products/${current.id}/purchase?amount=${amount}`,
-    key,
-    "POST",
+  return runProviderEffect(
+    Effect.gen(function* () {
+      yield* Effect.try({
+        try: () => localtsPrice(product, amount),
+        catch: () => new ProviderApiError("limit"),
+      });
+      const [products, balance] = yield* Effect.all(
+        [productsEffect(), balanceEffect(key)],
+        { concurrency: "unbounded" },
+      );
+      const current = products.find((entry) => entry.id === product.id);
+      if (!current || current.stock < amount)
+        return yield* Effect.fail(new ProviderApiError("empty"));
+      if (
+        localtsPrice(current, amount) !== expectedTotal ||
+        balance < expectedTotal
+      )
+        return yield* Effect.fail(new ProviderApiError("priceChanged"));
+      const result = yield* request(
+        `/products/${current.id}/purchase?amount=${amount}`,
+        key,
+        "POST",
+      );
+      return (yield* parse(
+        Schema.Struct({ orderId: Schema.String.check(Schema.isMinLength(1)) }),
+        result,
+      )).orderId;
+    }),
     signal,
     fetcher,
   );
-  return parse(z.object({ orderId: z.string().min(1) }), result).orderId;
 }
 
-export async function fetchLocaltsOrder(
+export function fetchLocaltsOrder(
   key: string,
   id: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<LocaltsOrder> {
-  const order = parse(
-    localtsOrderSchema,
-    await request(
-      `/orders/get-order?${new URLSearchParams({ id })}`,
-      key,
-      "GET",
-      signal,
-      fetcher,
-    ),
+  return runProviderEffect(
+    Effect.gen(function* () {
+      const order = yield* parse(
+        localtsOrderSchema,
+        yield* request(
+          `/orders/get-order?${new URLSearchParams({ id })}`,
+          key,
+          "GET",
+        ),
+      );
+      if (order["order-id"] !== id)
+        return yield* Effect.fail(new ProviderApiError("response"));
+      return order;
+    }),
+    signal,
+    fetcher,
   );
-  if (order["order-id"] !== id) throw new ProviderApiError("response");
-  return order;
 }
 
-export async function fetchLocaltsOrders(
+export function fetchLocaltsOrders(
   key: string,
   signal?: AbortSignal,
   fetcher?: ProviderFetch,
 ): Promise<{ id: string; productId: string }[]> {
-  return parse(
-    z.object({
-      orders: z.array(z.object({ id: z.string(), productId: z.string() })),
+  return runProviderEffect(
+    Effect.gen(function* () {
+      return (yield* parse(
+        Schema.Struct({
+          orders: Schema.mutable(
+            Schema.Array(
+              Schema.Struct({ id: Schema.String, productId: Schema.String }),
+            ),
+          ),
+        }),
+        yield* request("/orders?page=0&size=25", key, "GET"),
+      )).orders;
     }),
-    await request("/orders?page=0&size=25", key, "GET", signal, fetcher),
-  ).orders;
+    signal,
+    fetcher,
+  );
 }
 
 export type LocaltsImportFormat =

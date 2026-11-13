@@ -1,6 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
 import { create } from "@bufbuild/protobuf";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
-import { createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { terminalLogText } from "@/lib/terminal-interactions";
 import type { LogEntry } from "@/components/script-editor/types";
 import { LogScopeSchema, LogsService } from "@/generated/soulfire/logs_pb";
@@ -44,7 +45,7 @@ export function watchScriptLogs(
   onLogs: (entries: LogEntry[]) => void,
 ) {
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     create(LogScopeSchema, {
       scope: { case: "instanceScript", value: { instanceId, scriptId } },
     }),

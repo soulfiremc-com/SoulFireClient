@@ -1,6 +1,13 @@
+import { createRpcClient } from "@/lib/rpc";
 import { toJsonString } from "@bufbuild/protobuf";
-import { type Client, createClient, type Transport } from "@connectrpc/connect";
+import type { Transport } from "@connectrpc/connect";
 import { createStore } from "@tanstack/store";
+import { Effect, Fiber, Queue, Ref, Schedule, Stream } from "effect";
+import {
+  type LogClient,
+  TerminalLogs,
+  terminalLogsLayer,
+} from "@/lib/terminal-log-service";
 import {
   type LogScope,
   LogScopeSchema,
@@ -12,7 +19,6 @@ export type TerminalLine = Pick<LogString, "id" | "message" | "personal"> &
   Partial<
     Omit<LogString, "$typeName" | "$unknown" | "id" | "message" | "personal">
   > & { lines: number };
-type LogClient = Pick<Client<typeof LogsService>, "getPrevious" | "subscribe">;
 const MAX_LINES = 500;
 const FLUSH_INTERVAL = 50;
 const IDLE_RETENTION = 5 * 60_000;
@@ -93,99 +99,99 @@ export function createTerminalLogSession(
       ),
   );
   let consumers = 0;
-  let controller: AbortController | undefined;
-  let pending: TerminalLine[] = [];
-  let flushTimer: ReturnType<typeof setTimeout> | undefined;
-  let retryTimer: ReturnType<typeof setTimeout> | undefined;
+  let generation = 0;
+  let stop: () => void = () => {};
 
-  function flush() {
-    clearTimeout(flushTimer);
-    flushTimer = undefined;
-    if (pending.length === 0) return;
-    const incoming = pending;
-    pending = [];
-    state.setState((current) => {
-      const entries = mergeTerminalLines(current.entries, incoming);
-      return entries === current.entries ? current : { ...current, entries };
+  function start(): () => void {
+    if (!client) return () => {};
+    // Each retention lifetime owns its own batch. A retiring fiber cannot flush a new one.
+    const pending = Ref.makeUnsafe<TerminalLine[]>([]);
+    const flush = Effect.gen(function* () {
+      const incoming = yield* Ref.getAndSet(pending, []);
+      if (incoming.length === 0) return;
+      state.setState((current) => {
+        const entries = mergeTerminalLines(current.entries, incoming);
+        return entries === current.entries ? current : { ...current, entries };
+      });
     });
-  }
-
-  function start() {
-    if (!client) return;
-    const activeClient = client;
-    const abort = new AbortController();
-    controller = abort;
-    let historyLoading = false;
-    let historyRequested = false;
-    function loadHistory() {
-      if (historyLoading) {
-        historyRequested = true;
-        return;
-      }
-      historyLoading = true;
-      historyRequested = false;
-      void activeClient
-        .getPrevious({ scope, count: 300 }, { signal: abort.signal })
-        .then((response) => {
-          if (abort.signal.aborted) return;
-          flush();
-          state.setState((current) => {
+    const epoch = ++generation;
+    const current = () => epoch === generation && consumers > 0;
+    const program = Effect.scoped(
+      Effect.gen(function* () {
+        const logs = yield* TerminalLogs;
+        // Coalesce snapshot requests while retaining one catch-up behind an active request.
+        const historyRequests = yield* Queue.sliding<void>(1);
+        const flushRequests = yield* Queue.dropping<void>(1);
+        const loadHistory = Effect.gen(function* () {
+          yield* Queue.take(historyRequests);
+          const result = yield* Effect.result(logs.history);
+          if (!current()) return;
+          if (result._tag === "Failure") {
+            yield* Effect.logWarning(
+              "Could not load previous logs",
+              result.failure,
+            );
+            state.setState((value) =>
+              value.historyLoaded ? value : { ...value, historyLoaded: true },
+            );
+            return;
+          }
+          yield* flush;
+          state.setState((value) => {
             const entries = mergeTerminalLines(
-              current.entries,
-              response.messages.map(toTerminalLine),
+              value.entries,
+              result.success.messages.map(toTerminalLine),
               true,
             );
-            return entries === current.entries && current.historyLoaded
-              ? current
+            return entries === value.entries && value.historyLoaded
+              ? value
               : { entries, historyLoaded: true };
           });
-        })
-        .catch((error) => {
-          if (abort.signal.aborted) return;
-          console.error("Could not load previous logs", error);
-          state.setState((current) =>
-            current.historyLoaded
-              ? current
-              : { ...current, historyLoaded: true },
-          );
-        })
-        .finally(() => {
-          historyLoading = false;
-          if (historyRequested && !abort.signal.aborted) loadHistory();
+        }).pipe(Effect.forever);
+        yield* loadHistory.pipe(Effect.forkScoped);
+        yield* Queue.take(flushRequests).pipe(
+          Effect.andThen(Effect.sleep(FLUSH_INTERVAL)),
+          Effect.andThen(flush),
+          Effect.forever,
+          Effect.forkScoped,
+        );
+        const attempt = Effect.suspend(() => {
+          let first = true;
+          return Effect.gen(function* () {
+            yield* Queue.offer(historyRequests, undefined);
+            yield* Stream.runForEach(logs.live, (response) =>
+              Effect.gen(function* () {
+                if (!current()) return;
+                if (first) {
+                  first = false;
+                  // Close the gap between the initial snapshot and stream registration.
+                  yield* Queue.offer(historyRequests, undefined);
+                }
+                const message = response.message;
+                if (!message) return;
+                yield* Ref.update(pending, (batch) =>
+                  mergeTerminalLines(batch, [toTerminalLine(message)]),
+                );
+                yield* Queue.offer(flushRequests, undefined);
+              }),
+            );
+          });
         });
-    }
-
-    async function watch() {
-      loadHistory();
-      let firstResponse = true;
-      let delay = 1000;
-      try {
-        for await (const response of activeClient.subscribe(
-          { scope },
-          { signal: abort.signal },
-        )) {
-          if (abort.signal.aborted) return;
-          if (firstResponse) {
-            firstResponse = false;
-            // Catch messages emitted between the snapshot and live registration.
-            loadHistory();
-          }
-          if (!response.message) continue;
-          // Bound the pending batch too, even when the main thread is busy.
-          pending = mergeTerminalLines(pending, [
-            toTerminalLine(response.message),
-          ]);
-          flushTimer ??= setTimeout(flush, FLUSH_INTERVAL);
-        }
-      } catch (error) {
-        if (abort.signal.aborted) return;
-        console.error("Log stream ended", error);
-        delay = 3000;
-      }
-      if (!abort.signal.aborted)
-        retryTimer = setTimeout(() => void watch(), delay);
-    }
-    void watch();
+        yield* attempt.pipe(
+          Effect.catch((error) =>
+            Effect.logWarning("Log stream ended", error).pipe(
+              Effect.andThen(Effect.sleep(2000)),
+            ),
+          ),
+          Effect.repeat(Schedule.spaced(1000)),
+        );
+      }),
+    ).pipe(Effect.provide(terminalLogsLayer(client, scope)), Effect.asVoid);
+    const running = Effect.runFork(program);
+    return () => {
+      Effect.runSync(flush);
+      Effect.runFork(Fiber.interrupt(running));
+    };
   }
 
   return {
@@ -197,16 +203,16 @@ export function createTerminalLogSession(
     retain() {
       if (consumers++ === 0) {
         onActivity(true);
-        start();
+        stop = start();
       }
       let released = false;
       return () => {
         if (released) return;
         released = true;
         if (--consumers !== 0) return;
-        controller?.abort();
-        clearTimeout(retryTimer);
-        flush();
+        generation++;
+        stop();
+        stop = () => {};
         onActivity(false);
       };
     },
@@ -242,7 +248,7 @@ export function getTerminalLogSession(transport: Transport, scope: LogScope) {
     }
   }
   const session = createTerminalLogSession(
-    createClient(LogsService, transport),
+    createRpcClient(LogsService, transport),
     scope,
     (active) => {
       entry.idleSince = active ? Number.POSITIVE_INFINITY : Date.now();

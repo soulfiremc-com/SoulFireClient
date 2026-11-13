@@ -1,4 +1,6 @@
-import { createClient, type Transport } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+import type { Transport } from "@connectrpc/connect";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { BotDesiredState, BotService } from "@/generated/soulfire/bot_pb";
 import { ScriptService } from "@/generated/soulfire/script_pb";
@@ -89,9 +91,11 @@ export async function runPaletteOperation(
     if (operation.action === "activate") {
       await resumeScript(transport, operation.instanceId, operation.scriptId);
     } else {
-      await createClient(ScriptService, transport).deactivateScript(
-        { instanceId: operation.instanceId, scriptId: operation.scriptId },
-        { signal },
+      await Effect.runPromise(
+        createRpcClient(ScriptService, transport).deactivateScript(
+          { instanceId: operation.instanceId, scriptId: operation.scriptId },
+          { signal },
+        ),
       );
     }
     return 1;
@@ -99,23 +103,27 @@ export async function runPaletteOperation(
   // An empty list can mean every bot to the server, so never send one.
   const botIds = [...new Set(operation.botIds.filter(Boolean))];
   if (!botIds.length) throw new Error("The operation has no target bots.");
-  const client = createClient(BotService, transport);
+  const client = createRpcClient(BotService, transport);
   const response =
     operation.action === "restart"
-      ? await client.restartBots(
-          { instanceId: operation.instanceId, botIds },
-          { signal },
+      ? await Effect.runPromise(
+          client.restartBots(
+            { instanceId: operation.instanceId, botIds },
+            { signal },
+          ),
         )
-      : await client.setBotsDesiredState(
-          {
-            instanceId: operation.instanceId,
-            botIds,
-            desiredState:
-              operation.action === "start"
-                ? BotDesiredState.RUNNING
-                : BotDesiredState.STOPPED,
-          },
-          { signal },
+      : await Effect.runPromise(
+          client.setBotsDesiredState(
+            {
+              instanceId: operation.instanceId,
+              botIds,
+              desiredState:
+                operation.action === "start"
+                  ? BotDesiredState.RUNNING
+                  : BotDesiredState.STOPPED,
+            },
+            { signal },
+          ),
         );
   return response.bots.length;
 }

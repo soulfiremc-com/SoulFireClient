@@ -29,6 +29,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible.tsx";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { getConnectionErrorKind } from "@/lib/connection-errors";
 import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
 import { runAsync } from "@/lib/utils.tsx";
 import {
@@ -53,6 +54,11 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const retryingRef = useRef(false);
   const [revalidating, setRevalidating] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const errorKind = getConnectionErrorKind(error);
+  const canRestartLocal =
+    errorKind === "connection" &&
+    getServerType() === "integrated" &&
+    isDesktopApp();
 
   useEffect(() => {
     mountedRef.current = true;
@@ -71,36 +77,29 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
     }
   }, [error]);
 
-  const reloadPage = useCallback(() => {
-    runAsync(async () => {
-      if (retryingRef.current) return;
-      retryingRef.current = true;
-      setRevalidating(true);
-      queryErrorResetBoundary.reset();
-      try {
-        // A boundary reset only permits retries; it does not clear cached query
-        // errors. Reset inactive failures too, before the route mounts them again.
-        await queryClient.resetQueries({
-          predicate: (query) => query.state.status === "error",
-        });
-        await router.invalidate({ sync: true });
-      } finally {
-        retryingRef.current = false;
-        if (mountedRef.current) {
-          // Nested CatchBoundary instances are independent of route invalidation.
-          // Allow failed queries to retry when their children mount again.
-          queryErrorResetBoundary.reset();
-          reset?.();
-          setRevalidating(false);
-        }
+  const reloadPage = useCallback(async () => {
+    if (retryingRef.current) return;
+    retryingRef.current = true;
+    setRevalidating(true);
+    queryErrorResetBoundary.reset();
+    try {
+      // A boundary reset only permits retries; it does not clear cached query
+      // errors. Reset inactive failures too, before the route mounts them again.
+      await queryClient.resetQueries({
+        predicate: (query) => query.state.status === "error",
+      });
+      await router.invalidate({ sync: true });
+    } finally {
+      retryingRef.current = false;
+      if (mountedRef.current) {
+        // Nested CatchBoundary instances are independent of route invalidation.
+        // Allow failed queries to retry when their children mount again.
+        queryErrorResetBoundary.reset();
+        reset?.();
+        setRevalidating(false);
       }
-    });
+    }
   }, [router, queryClient, queryErrorResetBoundary, reset]);
-
-  useEffect(() => {
-    const interval = setInterval(reloadPage, 1000 * 5);
-    return () => clearInterval(interval);
-  }, [reloadPage]);
 
   const hasStack = error.stack && error.stack !== error.message;
 
@@ -112,7 +111,9 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
             <BugIcon className="h-8" />
             {t("error.page.title")}
           </CardTitle>
-          <CardDescription>{t("error.page.description")}</CardDescription>
+          <CardDescription>
+            {t(`error.page.recovery.${errorKind}`)}
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Collapsible open={expanded} onOpenChange={setExpanded}>
@@ -150,6 +151,26 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
           )}
         </CardContent>
         <CardFooter className="flex flex-wrap gap-2">
+          {errorKind !== "unexpected" && (
+            <Button
+              variant="outline"
+              onClick={() =>
+                void navigate({
+                  to: "/",
+                  replace: true,
+                  search: canRestartLocal
+                    ? { startLocal: "true" }
+                    : { configure: "true" },
+                })
+              }
+            >
+              {t(
+                canRestartLocal
+                  ? "error.page.restartLocalServer"
+                  : "error.page.connectionSettings",
+              )}
+            </Button>
+          )}
           {isImpersonating() && (
             <Button
               onClick={() => {
@@ -183,7 +204,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
             <LogOutIcon />
             {t("error.page.logOut")}
           </Button>
-          <Button onClick={reloadPage} disabled={revalidating}>
+          <Button onClick={() => runAsync(reloadPage)} disabled={revalidating}>
             {revalidating ? (
               <LoaderCircleIcon className="animate-spin" />
             ) : (

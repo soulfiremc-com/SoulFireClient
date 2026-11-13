@@ -1,4 +1,7 @@
-import { Code, ConnectError, createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
@@ -6,7 +9,6 @@ import { PencilIcon, PlusIcon, XIcon } from "lucide-react";
 import { use } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Field,
@@ -62,14 +64,16 @@ export function ManageUserDialog({
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { t } = useTranslation("admin");
-  const formSchema = z.object({
+  const formSchema = Schema.Struct({
     username: createUsernameSchema({
       min: t("users.baseUserDialog.form.username.min"),
       max: t("users.baseUserDialog.form.username.max"),
       pattern: t("users.baseUserDialog.form.username.regex"),
     }),
     email: userEmailSchema,
-    role: z.enum(UserRole),
+    role: Schema.Enum(UserRole)
+      .annotate({ message: "validation:userRole" })
+      .annotateKey({ messageMissingKey: "validation:userRole" }),
   });
   const submitMutation = useMutation({
     mutationKey: [
@@ -82,20 +86,24 @@ export function ManageUserDialog({
         return;
       }
 
-      const userService = createClient(UserService, transport);
+      const userService = createRpcClient(UserService, transport);
       const promise: Promise<unknown> =
         props.mode === "add"
-          ? userService.createUser({
-              username: values.username,
-              email: values.email,
-              role: values.role,
-            })
-          : userService.updateUser({
-              id: props.user.id,
-              username: values.username,
-              email: values.email,
-              role: values.role,
-            });
+          ? Effect.runPromise(
+              userService.createUser({
+                username: values.username,
+                email: values.email,
+                role: values.role,
+              }),
+            )
+          : Effect.runPromise(
+              userService.updateUser({
+                id: props.user.id,
+                username: values.username,
+                email: values.email,
+                role: values.role,
+              }),
+            );
       toast.promise(promise, {
         loading:
           props.mode === "add"
@@ -133,7 +141,7 @@ export function ManageUserDialog({
       role: props.mode === "edit" ? props.user.role : UserRole.USER,
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value, formApi }) => {
       try {

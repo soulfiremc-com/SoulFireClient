@@ -1,3 +1,4 @@
+import { Schema, Result } from "effect";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
@@ -13,15 +14,24 @@ const schema = createInstanceNameSchema({
 
 test("instance names support the database boundaries, Unicode and punctuation", () => {
   for (const name of ["x", "x".repeat(32), "Farm - A_1", "日本語 Farm"]) {
-    assert.equal(schema.parse(name), name);
+    assert.equal(Schema.decodeUnknownSync(schema)(name), name);
   }
-  assert.equal(schema.safeParse("x".repeat(33)).success, false);
+  assert.equal(
+    Result.isSuccess(Schema.decodeUnknownResult(schema)("x".repeat(33))),
+    false,
+  );
 });
 
 test("pasted outer whitespace is normalized before validating instance names", () => {
-  assert.equal(schema.parse(" \u00a0Farm - A_1\ufeff "), "Farm - A_1");
+  assert.equal(
+    Schema.decodeUnknownSync(schema)(" \u00a0Farm - A_1\ufeff "),
+    "Farm - A_1",
+  );
   for (const name of ["", "   ", "\u00a0\ufeff"]) {
-    assert.equal(schema.safeParse(name).success, false);
+    assert.equal(
+      Result.isSuccess(Schema.decodeUnknownResult(schema)(name)),
+      false,
+    );
   }
 });
 
@@ -35,7 +45,12 @@ test("control characters and line breaks cannot be embedded in a name", () => {
     "\u2028",
     "\u2029",
   ]) {
-    assert.equal(schema.safeParse(`first${separator}second`).success, false);
+    assert.equal(
+      Result.isSuccess(
+        Schema.decodeUnknownResult(schema)(`first${separator}second`),
+      ),
+      false,
+    );
   }
 });
 
@@ -49,7 +64,7 @@ test("duplicate names stay within the limit without splitting Unicode characters
     "   ",
   ]) {
     const duplicate = getDuplicateInstanceName(name);
-    assert.equal(schema.parse(duplicate), duplicate);
+    assert.equal(Schema.decodeUnknownSync(schema)(duplicate), duplicate);
     assert.equal(
       new TextDecoder().decode(new TextEncoder().encode(duplicate)),
       duplicate,

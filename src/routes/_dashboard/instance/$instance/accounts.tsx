@@ -1,4 +1,5 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+
 import {
   type QueryClient,
   useMutation,
@@ -499,7 +500,7 @@ function AddButton() {
     (payload: string[], credentialType: AccountTypeCredentials) => {
       if (transport === null) return;
 
-      const service = createClient(MCAuthService, transport);
+      const service = createRpcClient(MCAuthService, transport);
       const abortController = new AbortController();
       const loadingData: ExternalToast = {
         cancel: {
@@ -616,7 +617,7 @@ function AddButton() {
         return;
       }
 
-      const service = createClient(MCAuthService, transport);
+      const service = createRpcClient(MCAuthService, transport);
 
       const abortController = new AbortController();
       const loadingData: ExternalToast = {
@@ -741,7 +742,7 @@ function AddButton() {
       }
 
       const abortController = new AbortController();
-      const service = createClient(MCAuthService, transport);
+      const service = createRpcClient(MCAuthService, transport);
       toast.promise(
         (async () => {
           const promise = new Promise<ProfileAccount>((resolve, reject) => {

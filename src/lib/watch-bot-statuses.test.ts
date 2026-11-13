@@ -142,3 +142,72 @@ test("stream reconnects after EOF, refreshes details, and stops on cleanup", asy
     cache.clear();
   }
 });
+
+test("cleanup cancels a pending fleet refresh as well as the live stream", async () => {
+  const cache = new QueryClient();
+  const key = ["instance-info", instanceId];
+  cache.setQueryData(key, { id: instanceId });
+  let updated = false;
+  let ended = false;
+  const transport = createRouterTransport((router) => {
+    router.service(BotService, {
+      async *watchBotStatuses(_request, context) {
+        try {
+          yield { event: { case: "removedBotId", value: "bot" } };
+          updated = true;
+          await new Promise<void>((resolve) => {
+            if (context.signal.aborted) resolve();
+            else
+              context.signal.addEventListener("abort", () => resolve(), {
+                once: true,
+              });
+          });
+        } finally {
+          ended = true;
+        }
+      },
+    });
+  });
+  const stop = watchBotStatuses(transport, cache, instanceId);
+  try {
+    const deadline = Date.now() + 1000;
+    while (!updated && Date.now() < deadline) await delay(1);
+    assert.equal(updated, true);
+    stop();
+    await delay(350);
+    assert.equal(cache.getQueryState(key)?.isInvalidated, false);
+    assert.equal(ended, true);
+  } finally {
+    stop();
+    cache.clear();
+  }
+});
+
+test("permission and unsupported-stream failures never reconnect", async () => {
+  const stops: (() => void)[] = [];
+  const cache = new QueryClient();
+  const attempts = new Map<Code, number>();
+  try {
+    for (const code of [
+      Code.Unauthenticated,
+      Code.PermissionDenied,
+      Code.Unimplemented,
+    ]) {
+      const transport = createRouterTransport((router) => {
+        router.service(BotService, {
+          watchBotStatuses() {
+            attempts.set(code, (attempts.get(code) ?? 0) + 1);
+            throw new ConnectError("Unavailable", code);
+          },
+        });
+      });
+      stops.push(watchBotStatuses(transport, cache, instanceId));
+    }
+    await delay(1150);
+    for (const count of attempts.values()) assert.equal(count, 1);
+    assert.equal(attempts.size, 3);
+  } finally {
+    for (const stop of stops) stop();
+    cache.clear();
+  }
+});

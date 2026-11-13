@@ -1,5 +1,7 @@
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { createClient } from "@connectrpc/connect";
+
 import { queryOptions } from "@tanstack/react-query";
 import {
   type GetInstancePluginStatsResponse,
@@ -20,8 +22,10 @@ export function pluginStatsQueryOptions(instanceId: string) {
         return create(GetInstancePluginStatsResponseSchema, { stats: [] });
       }
 
-      const service = createClient(PluginStatsService, transport);
-      return service.getInstancePluginStats({ instanceId }, { signal });
+      const service = createRpcClient(PluginStatsService, transport);
+      return Effect.runPromise(
+        service.getInstancePluginStats({ instanceId }, { signal }),
+      );
     },
     refetchInterval: 3_000,
   });

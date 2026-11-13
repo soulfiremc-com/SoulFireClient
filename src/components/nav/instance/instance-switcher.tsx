@@ -1,4 +1,6 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { Effect } from "effect";
+
 import {
   useMutation,
   useQueryClient,
@@ -546,12 +548,12 @@ function DeleteInstanceButton() {
         return;
       }
 
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .deleteInstance({
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.deleteInstance({
           id: instanceId,
-        })
-        .then((r) => r);
+        }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: t("instanceSidebar.deleteToast.success"),

@@ -1,4 +1,7 @@
-import { createClient } from "@connectrpc/connect";
+import { createRpcClient } from "@/lib/rpc";
+import { toFormSchema } from "@/lib/form-validation";
+import { Effect, Schema } from "effect";
+
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
@@ -7,7 +10,6 @@ import { usePostHog } from "posthog-js/react";
 import { createContext, type ReactNode, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Field,
@@ -74,7 +76,7 @@ function CreateInstanceDialog({
   const transport = use(TransportContext);
   const posthog = usePostHog();
   const { t } = useTranslation("common");
-  const formSchema = z.object({
+  const formSchema = Schema.Struct({
     friendlyName: createInstanceNameSchema({
       required: t("instanceName.required"),
       max: t("instanceName.max"),
@@ -88,12 +90,13 @@ function CreateInstanceDialog({
         return;
       }
 
-      const instanceService = createClient(InstanceService, transport);
-      const promise = instanceService
-        .createInstance({
-          friendlyName: formSchema.parse(values).friendlyName,
-        })
-        .then((r) => r);
+      const instanceService = createRpcClient(InstanceService, transport);
+      const promise = Effect.runPromise(
+        instanceService.createInstance({
+          friendlyName:
+            Schema.decodeUnknownSync(formSchema)(values).friendlyName,
+        }),
+      ).then((r) => r);
       toast.promise(promise, {
         loading: t("dialog.createInstance.createToast.loading"),
         success: (r) => {
@@ -126,7 +129,7 @@ function CreateInstanceDialog({
       friendlyName: "",
     },
     validators: {
-      onSubmit: formSchema,
+      onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value, formApi }) => {
       try {

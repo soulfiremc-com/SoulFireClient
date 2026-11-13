@@ -1,35 +1,52 @@
-import { z } from "zod";
+import { Schema, Result, SchemaGetter } from "effect";
 import { normalizeScriptNodeDimensions } from "@/lib/script-node-layout";
 
-const idSchema = z.string().min(1);
-const editorDataSchema = z.looseObject({
-  label: z.string().nullish(),
-  muted: z.boolean().nullish(),
-  collapsed: z.boolean().nullish(),
-  isActive: z.boolean().nullish(),
-  hiddenSockets: z.array(z.string()).nullish(),
-  parentGroupId: idSchema.nullish(),
-  parentFrameId: z.string().nullish(),
-  containedNodes: z.array(idSchema).nullish(),
-  resolvedType: z.string().nullish(),
-});
-const groupPortsSchema = z
-  .array(
-    z.looseObject({
-      id: idSchema,
-      type: z.string().min(1),
-      label: z.string(),
-    }),
-  )
-  .nullish();
-const nodeSchema = z
-  .looseObject({
+const idSchema = Schema.String.check(Schema.isMinLength(1));
+const editorDataSchema = Schema.StructWithRest(
+  Schema.Struct({
+    label: Schema.optional(Schema.NullOr(Schema.String)),
+    muted: Schema.optional(Schema.NullOr(Schema.Boolean)),
+    collapsed: Schema.optional(Schema.NullOr(Schema.Boolean)),
+    isActive: Schema.optional(Schema.NullOr(Schema.Boolean)),
+    hiddenSockets: Schema.optional(
+      Schema.NullOr(Schema.mutable(Schema.Array(Schema.String))),
+    ),
+    parentGroupId: Schema.optional(Schema.NullOr(idSchema)),
+    parentFrameId: Schema.optional(Schema.NullOr(Schema.String)),
+    containedNodes: Schema.optional(
+      Schema.NullOr(Schema.mutable(Schema.Array(idSchema))),
+    ),
+    resolvedType: Schema.optional(Schema.NullOr(Schema.String)),
+  }),
+  [Schema.Record(Schema.String, Schema.Unknown)],
+);
+const groupPortsSchema = Schema.optional(
+  Schema.NullOr(
+    Schema.mutable(
+      Schema.Array(
+        Schema.StructWithRest(
+          Schema.Struct({
+            id: idSchema,
+            type: Schema.String.check(Schema.isMinLength(1)),
+            label: Schema.String,
+          }),
+          [Schema.Record(Schema.String, Schema.Unknown)],
+        ),
+      ),
+    ),
+  ),
+);
+const rawNodeSchema = Schema.StructWithRest(
+  Schema.Struct({
     id: idSchema,
-    type: z.string().min(1).optional(),
-    position: z.object({ x: z.number(), y: z.number() }),
+    type: Schema.optional(Schema.String.check(Schema.isMinLength(1))),
+    position: Schema.Struct({ x: Schema.Finite, y: Schema.Finite }),
     data: editorDataSchema,
-  })
-  .superRefine((node, ctx) => {
+  }),
+  [Schema.Record(Schema.String, Schema.Unknown)],
+).check(
+  Schema.makeFilter((node) => {
+    const issues: Schema.FilterIssue[] = [];
     // Only layout nodes use these names for editor ports. Ordinary nodes may
     // have unrelated inputs/outputs in their own parameter data.
     for (const key of ["inputs", "outputs"] as const) {
@@ -39,11 +56,16 @@ const nodeSchema = z
           (key === "inputs" ? "layout.group_output" : "layout.group_input")
       )
         continue;
-      if (!groupPortsSchema.safeParse(node.data[key]).success) {
-        ctx.addIssue({
-          code: "custom",
+      if (
+        !Result.isSuccess(
+          Schema.decodeUnknownResult(groupPortsSchema, { errors: "all" })(
+            node.data[key],
+          ),
+        )
+      ) {
+        issues.push({
           path: ["data", key],
-          message: "Invalid group ports",
+          issue: "Invalid group ports",
         });
       }
     }
@@ -53,37 +75,55 @@ const nodeSchema = z
         !(node.type === "layout.frame" && key === "color")
       )
         continue;
-      if (!z.string().nullish().safeParse(node.data[key]).success) {
-        ctx.addIssue({
-          code: "custom",
+      if (
+        !Result.isSuccess(
+          Schema.decodeUnknownResult(
+            Schema.optional(Schema.NullOr(Schema.String)),
+            { errors: "all" },
+          )(node.data[key]),
+        )
+      ) {
+        issues.push({
           path: ["data", key],
-          message: "Invalid layout node text",
+          issue: "Invalid layout node text",
         });
       }
     }
-  })
-  .transform(normalizeScriptNodeDimensions);
-const edgeSchema = z.looseObject({
-  id: idSchema,
-  source: idSchema,
-  target: idSchema,
-  sourceHandle: z.string().nullable().optional(),
-  targetHandle: z.string().nullable().optional(),
-  data: z.record(z.string(), z.unknown()).optional(),
-});
+    return issues;
+  }),
+);
+const nodeSchema = rawNodeSchema.pipe(
+  Schema.decodeTo(Schema.toType(rawNodeSchema), {
+    decode: SchemaGetter.transform(normalizeScriptNodeDimensions),
+    encode: SchemaGetter.forbiddenEncoding,
+  }),
+);
+const edgeSchema = Schema.StructWithRest(
+  Schema.Struct({
+    id: idSchema,
+    source: idSchema,
+    target: idSchema,
+    sourceHandle: Schema.optional(Schema.NullOr(Schema.String)),
+    targetHandle: Schema.optional(Schema.NullOr(Schema.String)),
+    data: Schema.optional(Schema.Record(Schema.String, Schema.Unknown)),
+  }),
+  [Schema.Record(Schema.String, Schema.Unknown)],
+);
 
 // Files and clipboard payloads must pass the same checks before reaching the editor.
-export const scriptGraphSchema = z.object({
-  nodes: z
-    .array(nodeSchema)
-    .refine(
-      (nodes) => new Set(nodes.map((node) => node.id)).size === nodes.length,
-      "Duplicate node IDs",
+export const scriptGraphSchema = Schema.Struct({
+  nodes: Schema.mutable(Schema.Array(nodeSchema)).check(
+    Schema.makeFilter(
+      (nodes) =>
+        new Set(nodes.map((node) => node.id)).size === nodes.length ||
+        "Duplicate node IDs",
     ),
-  edges: z
-    .array(edgeSchema)
-    .refine(
-      (edges) => new Set(edges.map((edge) => edge.id)).size === edges.length,
-      "Duplicate edge IDs",
+  ),
+  edges: Schema.mutable(Schema.Array(edgeSchema)).check(
+    Schema.makeFilter(
+      (edges) =>
+        new Set(edges.map((edge) => edge.id)).size === edges.length ||
+        "Duplicate edge IDs",
     ),
+  ),
 });
