@@ -44,7 +44,8 @@
     "pre-commit": "lefthook run pre-commit",
     "protocol:generate": "buf generate",
     "test:cast": "bun test electron/cast src/lib/query-session.test.ts",
-    "test:hooks": "node --test scripts/install-hooks.test.mjs"
+    "test:hooks": "node --test scripts/install-hooks.test.mjs",
+    "test:fs-watch": "bun test electron/native/fs-watch.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.0",
