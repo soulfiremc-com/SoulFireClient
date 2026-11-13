@@ -50,6 +50,9 @@ jobs:
       - name: Run terminal tests
         run: bun run test:terminal
 
+      - name: Run file-watch regression tests
+        run: bun run test:fs-watch
+
       - name: Run settings persistence tests
         run: bun run test:settings
 
