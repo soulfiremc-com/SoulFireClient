@@ -4,6 +4,16 @@
   "cancel": "취소",
   "save": "저장",
   "saving": "저장 중...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "서버 주소나 토큰을 찾을 수 없습니다",
     "page": {
@@ -11,7 +21,15 @@
       "description": "페이지를 불러오지 못했습니다. 자세한 내용은 콘솔을 확인하세요.",
       "logOut": "로그아웃",
       "reloadPage": "페이지 새로고침",
-      "showDetails": "자세히 보기"
+      "showDetails": "자세히 보기",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "SoulFire 서버 연결에 실패했습니다."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "SoulFire를 지원하기",
       "description": "SoulFire는 커뮤니티가 사랑으로 만든 무료 오픈 소스입니다.",
-      "body": "SoulFire가 도움이 되었다면 프로젝트를 지원하는 것을 고려해 주세요. 여러분의 기여는 서버 비용을 충당하고, 개발을 지원하며, 모든 사람에게 SoulFire를 무료로 제공하는 데 도움이 됩니다.",
+      "body": "",
       "dismiss": "나중에 할게요",
-      "action": "SoulFire를 지원하기"
+      "action": "SoulFire를 지원하기",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "새 인스턴스 만들기",
-      "description": "인스턴스가 무엇인지 알아볼 수 있도록 \"내 마인크래프트 봇\"과 같이 이름을 지정하세요.",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "친근한 이름",
-          "placeholder": "내 마인크래프트 봇",
-          "description": "이 인스턴스에 부여할 이름입니다."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "취소",
-        "create": "생성"
+        "create": ""
       },
       "createToast": {
-        "loading": "인스턴스 생성 중...",
-        "success": "인스턴스가 성공적으로 생성되었습니다",
-        "error": "인스턴스 생성에 실패했습니다"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "인스턴스 복제하기",
-      "description": "\"{{name}}\"의 프로필을 사용하여 새 인스턴스를 만듭니다.",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "복제된 인스턴스의 이름입니다."
+          "description": ""
         },
-        "duplicate": "복제"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "인스턴스 복제 중...",
-        "success": "인스턴스가 성공적으로 복제되었습니다",
-        "error": "인스턴스 복제에 실패했습니다"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "URL에서",
         "firstClipboardItem": "클립보드에 여러 항목이 있습니다. SoulFire는 첫 번째 항목을 사용합니다.",
         "fromClipboard": "클립보드에서",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "여기에 텍스트를 입력하세요...",
           "submit": "텍스트에서 불러오기"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "명령 입력 (목록이 필요하면 'help' 입력)",
     "emptySuggestions": "제안을 요청하려면 입력하거나 Tab 키를 누르세요.",
     "noSuggestions": "사용 가능한 제안이 없습니다."
@@ -148,12 +173,12 @@
       "success": "봇이 중지됩니다.",
       "error": "봇 중지에 실패했습니다."
     },
-    "permissionDenied": "이 인스턴스에서 봇을 시작하거나 중지할 권한이 없습니다.",
+    "permissionDenied": "",
     "serverUpdateRequired": "서버가 봇 제어 권한을 보고하지 않았습니다. 서버와 클라이언트 버전이 일치하는지 확인하세요.",
     "startBots": "봇 시작하기.",
     "moreActions": "더 많은 봇 작업",
-    "generateFirst": "계정을 생성하여 첫 번째 봇을 시작하세요.",
-    "startCountHelp": "추가 봇을 시작합니다. 실행 중인 봇은 계속 연결됩니다.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "{{count}}개 모두 시작",
     "validCount": "",
     "positiveCount": "",
@@ -249,9 +274,37 @@
     "version": "버전: {{version}}",
     "author": "작성자: {{author}}",
     "license": "라이선스: {{license}}",
-    "website": "웹사이트"
+    "website": "웹사이트",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "설정 네임스페이스를 찾을 수 없습니다",
     "stringList": {
@@ -264,17 +317,44 @@
       "remove": "제거"
     },
     "combo": {
-      "searchPlaceholder": "값 검색..."
+      "searchPlaceholder": "값 검색...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "잘못된 숫자입니다.",
       "description": "값은 {{min}}에서 {{max}} 사이여야 합니다"
-    }
+    },
+    "saving": "저장 중...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "클립보드에 복사",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "아직 로그가 없습니다. 명령어를 실행하면 로그 출력이 생성됩니다.",
     "demo-1": "데모 모드에 오신 것을 환영합니다! 🧪",
-    "demo-2": "이것은 SoulFire의 읽기 전용 인스턴스입니다",
+    "demo-2": "",
     "demo-3": "SoulFire를 설치하기 전에 모든 메뉴와 기능을 확인해 보세요 :D",
     "demo-4": "문의가 있으시면 언제든지 Discord 서버에 참여해 주세요: https://soulfiremc.com/discord"
   },
@@ -324,26 +404,165 @@
       "error": "메시지 브로드캐스트에 실패했습니다"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "다시 시도하기",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_other": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "전체",
+      "projects": "",
+      "bots": "봇들",
+      "scripts": "스크립트",
+      "settings": "설정",
+      "actions": "동작"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "봇 시작하기.",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "취소",
+      "unavailable": "",
+      "start_other": "",
+      "stop_other": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_other": "{{count}}개의 봇 시작",
+      "stopBots_other": "{{count}}개의 봇 중지",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "연결됨",
+      "starting": "시작 중",
+      "retrying": "재시도 중",
+      "failed": "실패함",
+      "stopping": "중지 중",
+      "stopped": "중지됨",
+      "active": "활성화됨",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "닫기",
+      "pin": "",
+      "back": "뒤로"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "설정",
+      "bots": "봇들",
+      "scripts": "스크립트",
+      "admin": "",
+      "actions": "동작",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "문서 읽기",
     "backToDashboard": "대시보드로 돌아가기",
     "deleteToast": {
-      "loading": "인스턴스 삭제 중...",
-      "success": "인스턴스가 삭제되었습니다",
-      "error": "인스턴스 삭제에 실패했습니다"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "인스턴스",
-    "createInstance": "인스턴스 생성",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "프로필 불러오는 중...",
-      "success": "프로필이 불러와졌습니다",
-      "error": "프로필 불러오기에 실패했습니다"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "프로필 불러오기",
+    "loadProfile": "",
     "loadFromFile": "파일에서 불러오기",
-    "profileSaved": "프로필이 저장되었습니다",
-    "saveProfile": "프로필 저장하기",
-    "deleteInstance": "인스턴스 삭제",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "컨트롤",
     "overview": "개요",
     "terminal": "터미널",
@@ -353,19 +572,21 @@
     "extensionsGroup": "확장 프로그램 또는 플러그인 그룹",
     "botSettings": "봇 설정",
     "accountSettings": "계정 설정",
-    "metaSettings": "인스턴스 설정",
+    "metaSettings": "",
     "proxySettings": "프록시 설정",
     "aiSettings": "AI 설정",
     "pathfindingSettings": "경로 탐색 설정",
     "discoverPlugins": "플러그인",
-    "instanceScripts": "스크립트"
+    "instanceScripts": "스크립트",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "문서 읽기",
     "userGroup": "사용자",
-    "instances": "인스턴스",
+    "instances": "",
     "access": "접근",
-    "createInstance": "인스턴스 생성",
+    "createInstance": "",
     "settings": "설정",
     "adminGroup": "관리자",
     "adminOverview": "개요",
@@ -410,21 +631,21 @@
     "extensions": "확장 프로그램 또는 플러그인 그룹",
     "bots": "봇들"
   },
-  "noInstancesFound": "인스턴스를 찾을 수 없습니다",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "터미널",
     "logs": "로그",
     "audit-log": "감사 로그",
     "bots": "봇들",
     "botDetail": "봇 상세정보",
-    "instances": "인스턴스",
+    "instances": "",
     "access": "접근",
     "settings": "설정",
     "proxySettings": "프록시 설정",
     "overview": "개요",
     "users": "사용자",
     "accountSettings": "계정 설정",
-    "metaSettings": "인스턴스 설정",
+    "metaSettings": "",
     "discoverPlugins": "플러그인",
     "adminScripts": "스크립트",
     "instanceScripts": "스크립트"
@@ -432,7 +653,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV 접근",
-      "description": "WebDAV를 통해 인스턴스 파일, 스크립트 등 여러 파일에 접근할 수 있습니다.",
+      "description": "",
       "publicAddress": "공용 WebDAV 주소",
       "personalToken": "개인 WebDAV 토큰",
       "securityWarning": "개인 WebDAV 토큰은 안전하게 보관하세요. 파일 접근 권한을 제공합니다. 토큰을 WebDAV 비밀번호로 사용하세요. 사용자명은 필요하지 않습니다. 앱에서 사용자명을 요구하는 경우 'soulfire'와 같은 아무 값이나 입력하세요.",
@@ -440,7 +661,7 @@
     },
     "api": {
       "title": "API 접근",
-      "description": "SoulFire gRPC HTTP API는 웹 요청을 통해 인스턴스를 관리합니다.",
+      "description": "",
       "publicAddress": "공용 API 주소",
       "personalToken": "개인 API 토큰",
       "securityWarning": "개인 API 토큰은 비공개로 보관하세요. API 접근 권한을 제공합니다.",
@@ -471,7 +692,8 @@
   "clipboardCopy": {
     "loading": "클립보드에 복사 중...",
     "success": "\"{{content}}\"(을)를 클립보드에 복사했습니다",
-    "error": "클립보드 복사에 실패했습니다"
+    "error": "클립보드 복사에 실패했습니다",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -511,6 +733,7 @@
     "executedCommand": "명령 실행됨: {{data}}",
     "changedBotDesiredState": "봇의 목표 상태를 변경함",
     "restartedBots": "봇 다시 시작함",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "사용자명 복사",
       "copyCommand": "명령어 복사"
@@ -581,15 +804,16 @@
       "actions": "동작"
     },
     "globalScript": "글로벌",
-    "instanceScript": "인스턴스"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "동작",
     "instance": {
-      "goToInstance": "인스턴스로 이동",
-      "duplicateInstance": "인스턴스 복제",
-      "copyInstanceId": "인스턴스 ID 복사하기",
-      "copyInstanceName": "인스턴스 이름 복사하기",
-      "deleteInstance": "인스턴스 삭제"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "봇으로 이동",
@@ -650,5 +874,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "전체",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "기타"
+    },
+    "enabledHeading": "",
+    "availableHeading": "사용 가능함"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "토큰 생성 중...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "봇",
+    "botOnline": "온라인",
+    "botOffline": "오프라인",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Đầu vào không hợp lệ: mong đợi string, nhận được undefined",
-    "null": "Đầu vào không hợp lệ: mong đợi string, nhận được null",
-    "number": "Đầu vào không hợp lệ: mong đợi string, nhận được số",
-    "boolean": "Đầu vào không hợp lệ: mong đợi string, nhận được boolean",
-    "array": "Đầu vào không hợp lệ: mong đợi string, nhận được mảng",
-    "object": "Đầu vào không hợp lệ: mong đợi string, nhận được object",
-    "nan": "Đầu vào không hợp lệ: mong đợi string, nhận được NaN",
-    "infinity": "Đầu vào không hợp lệ: mong đợi string, nhận được số"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Đầu vào không hợp lệ: mong đợi số, nhận được undefined",
-    "null": "Đầu vào không hợp lệ: mong đợi số, nhận được null",
-    "string": "Đầu vào không hợp lệ: mong đợi số, nhận được string",
-    "boolean": "Đầu vào không hợp lệ: mong đợi số, nhận được boolean",
-    "array": "Đầu vào không hợp lệ: mong đợi số, nhận được mảng",
-    "object": "Đầu vào không hợp lệ: mong đợi số, nhận được object",
-    "nan": "Đầu vào không hợp lệ: mong đợi số, nhận được NaN",
-    "infinity": "Đầu vào không hợp lệ: mong đợi số, nhận được số"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Đầu vào không hợp lệ: mong đợi object, nhận được undefined",
-    "null": "Đầu vào không hợp lệ: mong đợi object, nhận được null",
-    "number": "Đầu vào không hợp lệ: mong đợi object, nhận được số",
-    "string": "Đầu vào không hợp lệ: mong đợi object, nhận được string",
-    "boolean": "Đầu vào không hợp lệ: mong đợi object, nhận được boolean",
-    "array": "Đầu vào không hợp lệ: mong đợi object, nhận được mảng",
-    "nan": "Đầu vào không hợp lệ: mong đợi object, nhận được NaN",
-    "infinity": "Đầu vào không hợp lệ: mong đợi object, nhận được số"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "địa chỉ email không hợp lệ",
-  "url": "URL không hợp lệ",
-  "jwt": "JWT không hợp lệ",
-  "emailTooLong": "Quá lớn: mong đợi string có <=255 ký tự",
-  "jarSource": "Tùy chọn không hợp lệ: mong đợi một trong các giá trị \"official\"|\"custom\"",
-  "generationMode": "Tùy chọn không hợp lệ: mong đợi một trong các giá trị \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Tùy chọn không hợp lệ: mong đợi một trong các giá trị 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

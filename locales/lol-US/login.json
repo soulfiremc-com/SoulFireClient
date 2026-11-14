@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire loog"
@@ -7,47 +14,65 @@
   },
   "newUser": "Nu tu SoulFire? Reed teh <a>gettin startd guide</a>.",
   "connect": {
-    "title": "Connect 2 SoulFier servr",
-    "description": "Select which tyep ov SoulFier servr 2 connect 2.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Integratd servr (local)",
-      "description": "Runz a SoulFire servr on dis device. Setzup iz automatik. Dis opshun needz desktop or Android app."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Dedicatd servr (remoet)",
-      "description": "Connekts tu a remote SoulFire servr wif itz adress an token."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Deom servr",
-      "description": "Gibz u read-only servr wif demo data. SoulFire doez not save changez."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Preparing 2 start integratd servr...",
+    "preparing": "",
     "toast": {
-      "loading": "Startin integratd servr...",
-      "success": "Integraetd servr startd in {{time}}s",
-      "error": "Faild 2 start integratd servr"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Try agin? kthx!",
+    "retry": "",
     "reset": {
-      "button": "ZOMGWTF RESET DATAZ",
+      "button": "",
       "loading": "Resettin SoulFire data... hang onz plz",
       "success": "SoulFire data haz reset, yaaay! Try agin now kthx.",
-      "error": "Uh-oh, failed to reset SoulFire dataz :("
+      "error": "Uh-oh, failed to reset SoulFire dataz :(",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Teh integrated servr runz on ur computr. U kin change teh Java startz-up argumintz below.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM argumints",
         "description": "Java VM argumintz 4 SoulFire. Add <bold>-Xmx4G</bold> 2 use 4 GB ov RAM. By defawlt iz 25% ov available RAM.",
-        "placeholder": "Ur JVM argumints herez"
+        "placeholder": "Ur JVM argumints herez",
+        "reset": ""
       },
       "back": "Bak",
-      "start": "Strat"
+      "start": ""
     },
     "mobile": {
-      "description": "To run teh integrayted servurr on moobile, u haz to doo sum manooal stoopz.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux kommando",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Startz aut O-MATICALLY next tiem",
       "description": "Skips teh serber selectshun an uzez deez setinz wen SoulFire opens. KTHXBAI"
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "Put in teh adress an token ov teh SoulFire servr.",
+    "description": "",
     "toast": {
       "loading": "Connekting to serverz...",
       "success": "Connektahed to serverz",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Addres",
-        "description": "Adresz uf ur SoulFire serverz.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Seekret token",
-        "description": "Token 2 aufenticaet wif teh servr."
+        "description": ""
       },
       "email": {
         "title": "EMAYL",
@@ -96,7 +180,7 @@
       "back": "Bak",
       "useToken": "Useh tokenz",
       "useEmail": "Useh emayl",
-      "login": "LOGINZ"
+      "login": ""
     }
   },
   "emailCode": {

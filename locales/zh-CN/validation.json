@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "无效输入：期望 string，实际接收 undefined",
-    "null": "无效输入：期望 string，实际接收 空值(null)",
-    "number": "无效输入：期望 string，实际接收 数字",
-    "boolean": "无效输入：期望 string，实际接收 boolean",
-    "array": "无效输入：期望 string，实际接收 数组",
-    "object": "无效输入：期望 string，实际接收 object",
-    "nan": "无效输入：期望 string，实际接收 NaN",
-    "infinity": "无效输入：期望 string，实际接收 数字"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "无效输入：期望 数字，实际接收 undefined",
-    "null": "无效输入：期望 数字，实际接收 空值(null)",
-    "string": "无效输入：期望 数字，实际接收 string",
-    "boolean": "无效输入：期望 数字，实际接收 boolean",
-    "array": "无效输入：期望 数字，实际接收 数组",
-    "object": "无效输入：期望 数字，实际接收 object",
-    "nan": "无效输入：期望 数字，实际接收 NaN",
-    "infinity": "无效输入：期望 数字，实际接收 数字"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "无效输入：期望 object，实际接收 undefined",
-    "null": "无效输入：期望 object，实际接收 空值(null)",
-    "number": "无效输入：期望 object，实际接收 数字",
-    "string": "无效输入：期望 object，实际接收 string",
-    "boolean": "无效输入：期望 object，实际接收 boolean",
-    "array": "无效输入：期望 object，实际接收 数组",
-    "nan": "无效输入：期望 object，实际接收 NaN",
-    "infinity": "无效输入：期望 object，实际接收 数字"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "无效电子邮件",
-  "url": "无效URL",
-  "jwt": "无效JWT",
-  "emailTooLong": "数值过大：期望 string <=255 字符",
-  "jarSource": "无效选项：期望以下之一 \"official\"|\"custom\"",
-  "generationMode": "无效选项：期望以下之一 \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "无效选项：期望以下之一 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

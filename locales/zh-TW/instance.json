@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "當您需要檢查主控台細節時，可在此查看原始實例輸出。",
+    "logsDescription": "",
     "summary": {
       "accounts": "帳號",
       "proxies": "代理伺服器",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "即時監控",
-      "empty": "正在等待實例活動...",
+      "empty": "",
       "noPermission": "你沒有權限查看即時監控。",
       "lifecycle": {
         "connecting": "正在連線",
@@ -97,6 +97,7 @@
         "executeCommand": "執行了一個指令：{{data}}",
         "botDesiredStateChange": "已更改機器人目標狀態",
         "botRestart": "已重新啟動機器人",
+        "pluginRpc": "",
         "unknown": "執行了一個動作"
       }
     },
@@ -129,6 +130,21 @@
       "noProxies": "沒有可導入的代理伺服器"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "正在導入代理伺服器...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "rejected_other": ""
+      },
       "proxyType": "代理伺服器類型",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +219,7 @@
     },
     "unknownError": "未知錯誤",
     "types": {
-      "OFFLINE": "離線",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java（憑證）",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java（裝置代碼）",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java（刷新權杖）",
@@ -272,7 +288,7 @@
     "contextMenu": {
       "openConfig": "打開設定檔",
       "openMetadata": "打開中繼資料",
-      "copyProfileId": "複製個人檔案 ID",
+      "copyProfileId": "",
       "copyUsername": "複製用戶名稱"
     },
     "config": {
@@ -292,7 +308,7 @@
       "selectPage": "選擇設定頁面",
       "noSearchResults": "沒有相關設定符合此搜尋。",
       "matchesInheritedValue": "符合繼承值",
-      "instanceValue": "實例值",
+      "instanceValue": "",
       "defaultValue": "預設值",
       "resetOverride": "重設覆蓋"
     },
@@ -311,23 +327,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "透過 Ravealts 購買帳號",
       "description": "使用您的 Ravealts API 金鑰購買 Minecraft 帳號。",
-      "apiKeyLabel": "",
       "apiKeyPlaceholder": "請輸入您的 Ravealts API 金鑰",
-      "validate": "驗證",
-      "validating": "正在驗證...",
-      "keyValid": "金鑰已驗證",
-      "keyInvalid": "API 金鑰無效",
-      "credits": "點數：{{credits}}",
-      "stockTitle": "可用庫存",
       "noStock": "庫存中沒有帳號",
       "accountType": "帳號類型",
-      "amount": "數量 (1-10)",
-      "purchase": "購買並導入",
-      "purchasing": "正在購買...",
-      "purchaseSuccess": "已購買 {{count}} 個帳號，正在導入...",
-      "purchaseError": "購買失敗：{{message}}",
       "networkError": "連線至 Ravealts API 失敗",
       "outOfStock": "所選類型已無庫存",
       "insufficientBalance": "點數不足",
@@ -354,12 +357,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "實例中繼資料（Metadata）",
-    "description": "管理此實例的持久中繼資料項目。每個項目都包含一個命名空間、鍵，以及 JSON 值。",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "命名空間",
     "keyPlaceholder": "鍵",
     "valuePlaceholder": "值（JSON）",
     "noEntries": "沒有中繼資料條目。請在上方新增一個。",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "重試",
     "addSuccess": "已新增條目",
     "addError": "新增條目失敗",
     "updateError": "更新條目失敗",
@@ -371,7 +377,7 @@
   "bots": {
     "searchPlaceholder": "搜尋機器人...",
     "onlineCount": "{{online}} 位在線 / 共 {{total}} 位",
-    "noBots": "沒有已設定的機器人。請至帳戶設定頁面新增帳號。",
+    "noBots": "",
     "noBotsFound": "沒有符合搜尋條件的機器人。",
     "loadingMore": "載入更多...",
     "showingCount": "正在顯示 {{loaded}} / {{total}} 筆資料",
@@ -396,12 +402,12 @@
       "waiting": "等待中",
       "stopped": "已停止"
     },
-    "backToBots": "返回機器人列表",
+    "backToBots": "",
     "tabs": {
-      "overview": "總覽",
+      "overview": "",
       "inventory": "物品欄",
-      "controls": "控制項",
-      "terminal": "終端機"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "即將推出",
     "terminalPanel": {
@@ -419,8 +425,15 @@
       "offline": "機器人離線時僅能查看位置資料，僅在連線時可用。"
     },
     "chatPanel": {
-      "title": "聊天訊息",
-      "description": "來自此機器人的聊天訊息將在後續更新中顯示於此。"
+      "title": "",
+      "description": "來自此機器人的聊天訊息將在後續更新中顯示於此。",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "機器人指令",
@@ -428,14 +441,14 @@
       "description": "僅限機器人的指令將在後續更新中提供。"
     },
     "povPanel": {
-      "title": "機器人視角",
+      "title": "",
       "capture": "截圖",
       "refresh": "重新整理",
       "auto": "自動",
       "startAutoRefresh": "開始自動刷新（每秒1次）",
       "stopAutoRefresh": "停止自動刷新",
       "clickToCapture": "點擊「截圖」以渲染機器人的視角",
-      "offline": "機器人離線。只有連線時才能渲染視角。"
+      "offline": ""
     },
     "statsPanel": {
       "title": "機器人統計",
@@ -545,6 +558,49 @@
       "dismiss": "關閉",
       "submit": "提交",
       "offline": "機器人離線。只有當機器人連線時才能顯示對話框。"
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "全部",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "已連線",
+      "starting": "正在啟動",
+      "retrying": "正在重試",
+      "failed": "失敗了",
+      "stopping": "正在停止",
+      "stopped": "已停止"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +668,12 @@
   },
   "scripts": {
     "title": "視覺腳本",
-    "description": "使用可視化節點編輯器建立自動化腳本。",
+    "description": "",
     "experimentalTitle": "實驗性功能",
     "experimentalWarning": "此功能為實驗性質。未來的更新可能會導致現有腳本無法運作，請小心使用。",
-    "createScript": "建立腳本",
-    "createScriptTitle": "建立新腳本",
-    "createScriptDescription": "為此實例建立新的視覺腳本。腳本可自動化機器人行為並回應事件。",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "腳本名稱",
     "scriptNamePlaceholder": "輸入腳本名稱...",
     "scriptDescription": "描述",
@@ -625,36 +681,36 @@
     "create": "建立",
     "createSuccess": "腳本建立成功",
     "createError": "腳本建立失敗",
-    "noScripts": "尚無腳本",
-    "noScriptsDescription": "建立您的第一個腳本，透過可視化節點編輯器自動化機器人動作。",
-    "createFirstScript": "建立您的第一個腳本",
-    "running": "執行中",
-    "paused": "已暫停",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "節點",
     "noDescription": "無描述",
     "edit": "編輯",
-    "pause": "暫停",
-    "pauseSuccess": "指令碼已暫停",
-    "pauseError": "暫停指令碼失敗",
-    "resume": "繼續",
-    "resumeSuccess": "指令碼已恢復運行",
-    "resumeError": "恢復指令碼失敗",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "刪除",
     "deleteSuccess": "腳本刪除成功",
     "deleteError": "腳本刪除失敗",
     "saveSuccess": "腳本儲存成功",
     "saveError": "腳本儲存失敗",
-    "activateSuccess": "指令碼已啟用",
-    "activateError": "啟用指令碼失敗",
-    "deactivateSuccess": "指令碼已停用",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "未命名腳本",
-    "saveFirstBeforeActivating": "請先儲存指令碼再啟用",
-    "activating": "正在啟用腳本...",
-    "activated": "指令碼已啟用",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "腳本完成",
     "executionCompletedSuccess": "腳本順利完成",
-    "deactivated": "指令碼已停用",
-    "deactivatedByUser": "腳本已由使用者停用",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "腳本執行失敗",
     "executionError": "執行錯誤：{{error}}",
     "monitoringError": "",
@@ -664,8 +720,8 @@
     "nodeError": "節點錯誤：{{error}}",
     "contextMenu": {
       "edit": "編輯腳本",
-      "pause": "暫停",
-      "resume": "繼續",
+      "pause": "",
+      "resume": "",
       "delete": "刪除腳本",
       "copyScriptName": "複製腳本名稱",
       "copyScriptId": "複製腳本 ID"
@@ -675,11 +731,11 @@
         "actions": "",
         "backToScripts": "返回腳本",
         "save": "儲存",
-        "saveTooltip": "儲存腳本",
-        "resume": "繼續",
-        "resumeTooltip": "恢復執行指令碼",
-        "pause": "暫停",
-        "pauseTooltip": "暫停腳本執行",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "未儲存",
         "unsavedChanges": "尚未儲存變更",
         "clearCanvas": "清除畫布",
@@ -690,16 +746,17 @@
         "import": "導入腳本",
         "exportSuccess": "腳本匯出成功",
         "importSuccess": "腳本導入成功",
-        "importError": "導入腳本失敗"
+        "importError": "導入腳本失敗",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "節點面板",
+        "title": "",
         "search": "搜尋節點..."
       },
       "logs": {
-        "title": "執行紀錄",
+        "title": "",
         "clearTitle": "清除紀錄",
-        "noLogs": "尚無紀錄。執行腳本以查看執行紀錄。",
+        "noLogs": "",
         "entries_other": "{{count}} 筆紀錄"
       },
       "contextMenu": {
@@ -752,15 +809,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "模擬運行",
-        "title": "模擬運行腳本",
-        "description": "以模擬輸入從已選觸發器運行腳本。",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "觸發節點",
         "selectTrigger": "選擇觸發器...",
-        "triggerDescription": "選擇要以模擬輸入值執行的觸發節點。",
-        "mockInputs": "模擬輸入",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}}值",
-        "start": "開始模擬運行",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
@@ -784,10 +842,523 @@
         "save": "儲存額度",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "動作",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "連接",
+    "back": "返回",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "全部",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "連接",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "總計",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "無",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_other": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "已連線",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": "重新啟動 {{count}} 個機器人"
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "可選",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "打開所有設定頁面。 ",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "帳號",
+      "reviewProxies": "代理伺服器",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_other": "啟動 {{count}} 個機器人"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

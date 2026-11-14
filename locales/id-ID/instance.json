@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Keluaran instance mentah tersedia di sini saat Anda perlu memeriksa detail konsol.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Akun",
       "proxies": "Proxy",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Umpan langsung",
-      "empty": "Menunggu aktivitas instance...",
+      "empty": "",
       "noPermission": "Anda tidak memiliki izin untuk melihat umpan langsung.",
       "lifecycle": {
         "connecting": "sedang terhubung",
@@ -97,6 +97,7 @@
         "executeCommand": "menjalankan perintah: {{data}}",
         "botDesiredStateChange": "mengubah status yang diinginkan bot",
         "botRestart": "me-restart bot",
+        "pluginRpc": "",
         "unknown": "melakukan sebuah aksi"
       }
     },
@@ -129,6 +130,21 @@
       "noProxies": "Tidak ada proxy untuk diimpor"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Mengimpor proxy...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "rejected_other": ""
+      },
       "proxyType": "Jenis Proxy",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +219,7 @@
     },
     "unknownError": "Kesalahan tidak diketahui",
     "types": {
-      "OFFLINE": "Luring",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Kredensial)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Kode Perangkat)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
@@ -272,7 +288,7 @@
     "contextMenu": {
       "openConfig": "Buka Konfigurasi",
       "openMetadata": "Buka Metadata",
-      "copyProfileId": "Salin ID Profil",
+      "copyProfileId": "",
       "copyUsername": "Salin Nama Pengguna"
     },
     "config": {
@@ -292,7 +308,7 @@
       "selectPage": "Pilih halaman pengaturan",
       "noSearchResults": "Tidak ada pengaturan yang cocok dengan pencarian ini.",
       "matchesInheritedValue": "Cocok dengan nilai turunan",
-      "instanceValue": "Nilai instance",
+      "instanceValue": "",
       "defaultValue": "Nilai default",
       "resetOverride": "Atur ulang penggantian"
     },
@@ -311,23 +327,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Beli Akun lewat Ravealts",
       "description": "Beli akun Minecraft menggunakan kunci API Ravealts Anda.",
-      "apiKeyLabel": "Kunci API",
       "apiKeyPlaceholder": "Masukkan kunci API Ravealts Anda",
-      "validate": "Validasi",
-      "validating": "Memvalidasi...",
-      "keyValid": "Kunci berhasil divalidasi",
-      "keyInvalid": "Kunci API tidak valid",
-      "credits": "Kredit: {{credits}}",
-      "stockTitle": "Stok Tersedia",
       "noStock": "Tidak ada akun dalam stok",
       "accountType": "Jenis Akun",
-      "amount": "Jumlah (1-10)",
-      "purchase": "Beli & Impor",
-      "purchasing": "Membeli...",
-      "purchaseSuccess": "Berhasil membeli {{count}} akun, mengimpor...",
-      "purchaseError": "Pembelian gagal: {{message}}",
       "networkError": "Koneksi ke API Ravealts gagal",
       "outOfStock": "Tipe yang dipilih tidak tersedia",
       "insufficientBalance": "Kredit tidak cukup",
@@ -354,12 +357,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Metadata Instance",
-    "description": "Kelola entri metadata persisten untuk instance ini. Setiap entri memiliki namespace, kunci, dan nilai JSON.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Namespace",
     "keyPlaceholder": "Kunci",
     "valuePlaceholder": "Nilai (JSON)",
     "noEntries": "Tidak ada entri metadata. Tambahkan satu di atas.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Coba Lagi",
     "addSuccess": "Entri berhasil ditambahkan",
     "addError": "Gagal menambahkan entri",
     "updateError": "Gagal memperbarui entri",
@@ -371,7 +377,7 @@
   "bots": {
     "searchPlaceholder": "Cari bot...",
     "onlineCount": "{{online}} online / {{total}} total",
-    "noBots": "Belum ada bot yang dikonfigurasi. Tambahkan akun dari halaman Pengaturan Akun.",
+    "noBots": "",
     "noBotsFound": "Tidak ada bot yang cocok dengan pencarian Anda.",
     "loadingMore": "Memuat lebih banyak...",
     "showingCount": "Menampilkan {{loaded}} dari {{total}}",
@@ -396,12 +402,12 @@
       "waiting": "Menunggu",
       "stopped": "Dihentikan"
     },
-    "backToBots": "Kembali ke Bot",
+    "backToBots": "",
     "tabs": {
-      "overview": "Ikhtisar",
+      "overview": "",
       "inventory": "Inventaris",
-      "controls": "Kontrol",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Segera Hadir",
     "terminalPanel": {
@@ -419,8 +425,15 @@
       "offline": "Bot sedang offline. Data posisi hanya tersedia ketika bot terhubung."
     },
     "chatPanel": {
-      "title": "Pesan Chat",
-      "description": "Pesan chat dari bot ini akan muncul di sini pada pembaruan mendatang."
+      "title": "",
+      "description": "Pesan chat dari bot ini akan muncul di sini pada pembaruan mendatang.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Perintah Bot",
@@ -428,14 +441,14 @@
       "description": "Perintah khusus bot akan tersedia pada pembaruan mendatang."
     },
     "povPanel": {
-      "title": "POV Bot",
+      "title": "",
       "capture": "Tangkap",
       "refresh": "Muat Ulang",
       "auto": "Otomatis",
       "startAutoRefresh": "Mulai penyegaran otomatis (interval 1 detik)",
       "stopAutoRefresh": "Hentikan penyegaran otomatis",
       "clickToCapture": "Klik Tangkap untuk menampilkan sudut pandang bot",
-      "offline": "Bot sedang offline. Rendering POV hanya tersedia saat bot terhubung."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Statistik Bot",
@@ -545,6 +558,49 @@
       "dismiss": "Tutup",
       "submit": "Kirim",
       "offline": "Bot sedang offline. Dialog hanya tersedia saat bot terhubung."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Semua",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Terhubung",
+      "starting": "Memulai",
+      "retrying": "Mencoba ulang",
+      "failed": "Gagal",
+      "stopping": "Menghentikan",
+      "stopped": "Dihentikan"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +668,12 @@
   },
   "scripts": {
     "title": "Skrip Visual",
-    "description": "Buat skrip otomatisasi menggunakan editor node visual.",
+    "description": "",
     "experimentalTitle": "Fitur Eksperimental",
     "experimentalWarning": "Fitur ini masih eksperimental. Pembaruan di masa depan bisa membuat skrip yang ada menjadi rusak. Gunakan dengan hati-hati.",
-    "createScript": "Buat Skrip",
-    "createScriptTitle": "Buat Skrip Baru",
-    "createScriptDescription": "Buat skrip visual baru untuk instance ini. Skrip dapat mengotomatisasi aksi bot dan merespons kejadian.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Nama Skrip",
     "scriptNamePlaceholder": "Masukkan nama skrip...",
     "scriptDescription": "Deskripsi",
@@ -625,36 +681,36 @@
     "create": "Buat",
     "createSuccess": "Skrip berhasil dibuat",
     "createError": "Gagal membuat skrip",
-    "noScripts": "Belum Ada Skrip",
-    "noScriptsDescription": "Buat skrip pertama Anda untuk mengotomatisasi aksi bot menggunakan editor node visual.",
-    "createFirstScript": "Buat Skrip Pertama Anda",
-    "running": "Berjalan",
-    "paused": "Dijeda",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "node",
     "noDescription": "Tidak ada deskripsi",
     "edit": "Edit",
-    "pause": "Jeda",
-    "pauseSuccess": "Skrip dijeda",
-    "pauseError": "Gagal menjeda skrip",
-    "resume": "Lanjutkan",
-    "resumeSuccess": "Skrip dilanjutkan",
-    "resumeError": "Gagal melanjutkan skrip",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Hapus",
     "deleteSuccess": "Skrip berhasil dihapus",
     "deleteError": "Gagal menghapus skrip",
     "saveSuccess": "Skrip berhasil disimpan",
     "saveError": "Gagal menyimpan skrip",
-    "activateSuccess": "Skrip diaktifkan",
-    "activateError": "Gagal mengaktifkan skrip",
-    "deactivateSuccess": "Skrip dinonaktifkan",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Skrip Tanpa Judul",
-    "saveFirstBeforeActivating": "Simpan skrip terlebih dahulu sebelum mengaktifkan",
-    "activating": "Mengaktifkan skrip...",
-    "activated": "Skrip diaktifkan",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skrip selesai",
     "executionCompletedSuccess": "Skrip selesai dengan sukses",
-    "deactivated": "Skrip dinonaktifkan",
-    "deactivatedByUser": "Skrip dinonaktifkan oleh pengguna",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Eksekusi skrip gagal",
     "executionError": "Kesalahan eksekusi: {{error}}",
     "monitoringError": "",
@@ -664,8 +720,8 @@
     "nodeError": "Kesalahan node: {{error}}",
     "contextMenu": {
       "edit": "Edit Skrip",
-      "pause": "Jeda",
-      "resume": "Lanjutkan",
+      "pause": "",
+      "resume": "",
       "delete": "Hapus Skrip",
       "copyScriptName": "Salin Nama Skrip",
       "copyScriptId": "Salin ID Skrip"
@@ -675,11 +731,11 @@
         "actions": "",
         "backToScripts": "Kembali ke Skrip",
         "save": "Simpan",
-        "saveTooltip": "Simpan skrip",
-        "resume": "Lanjutkan",
-        "resumeTooltip": "Lanjutkan eksekusi skrip",
-        "pause": "Jeda",
-        "pauseTooltip": "Jeda eksekusi skrip",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Belum disimpan",
         "unsavedChanges": "Perubahan belum disimpan",
         "clearCanvas": "Bersihkan kanvas",
@@ -690,16 +746,17 @@
         "import": "Impor skrip",
         "exportSuccess": "Skrip berhasil diekspor",
         "importSuccess": "Skrip berhasil diimpor",
-        "importError": "Gagal mengimpor skrip"
+        "importError": "Gagal mengimpor skrip",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Palet Node",
+        "title": "",
         "search": "Cari node..."
       },
       "logs": {
-        "title": "Log Eksekusi",
+        "title": "",
         "clearTitle": "Bersihkan log",
-        "noLogs": "Belum ada log. Jalankan skrip untuk melihat log eksekusi.",
+        "noLogs": "",
         "entries_other": "{{count}} entri"
       },
       "contextMenu": {
@@ -752,15 +809,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Dry Run",
-        "title": "Script Dry Run",
-        "description": "Jalankan skrip dari trigger yang dipilih dengan input tiruan.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Node Trigger",
         "selectTrigger": "Pilih trigger...",
-        "triggerDescription": "Pilih node trigger untuk dieksekusi dengan nilai input tiruan.",
-        "mockInputs": "Input Tiruan",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "nilai {{type}}",
-        "start": "Mulai Dry Run",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
@@ -784,10 +842,523 @@
         "save": "Simpan Kuota",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Aksi",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Hubungkan",
+    "back": "Kembali",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Semua",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Hubungkan",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Total",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Tidak ada",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_other": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "terhubung",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Opsional",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Buka semua pengaturan",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Akun",
+      "reviewProxies": "Proxy",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_other": "Mulai {{count}} bot"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

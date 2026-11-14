@@ -4,6 +4,16 @@
   "cancel": "Batal",
   "save": "Simpan",
   "saving": "Menyimpan...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Alamat server atau token tidak ditemukan",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Halaman tidak berhasil dimuat. Buka konsol untuk informasi lebih lanjut.",
       "logOut": "Keluar",
       "reloadPage": "Muat ulang halaman",
-      "showDetails": "Tampilkan detail"
+      "showDetails": "Tampilkan detail",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Koneksi ke server SoulFire gagal."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "Dukung SoulFire",
       "description": "SoulFire gratis dan open-source, dibuat dengan penuh cinta oleh komunitas.",
-      "body": "Jika SoulFire bermanfaat untuk Anda, pertimbangkan untuk mendukung proyek ini. Kontribusi Anda membantu menutupi biaya server, mendanai pengembangan, dan menjaga SoulFire tetap gratis untuk semua orang.",
+      "body": "",
       "dismiss": "Mungkin nanti",
-      "action": "Dukung SoulFire"
+      "action": "Dukung SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Buat instansi baru",
-      "description": "Beri instansi nama yang mudah Anda kenali, seperti \"Bot Minecraft Saya\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Nama ramah",
-          "placeholder": "Bot Minecraft Saya",
-          "description": "Nama yang ingin Anda berikan untuk instansi ini."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Batal",
-        "create": "Buat"
+        "create": ""
       },
       "createToast": {
-        "loading": "Membuat instansi...",
-        "success": "Instansi berhasil dibuat",
-        "error": "Gagal membuat instansi"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Duplikat instansi",
-      "description": "Buat instansi baru menggunakan profil dari \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Nama untuk instansi hasil duplikasi."
+          "description": ""
         },
-        "duplicate": "Duplikat"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Menggandakan instance...",
-        "success": "Instance berhasil digandakan",
-        "error": "Gagal menggandakan instance"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "Dari URL",
         "firstClipboardItem": "Clipboard berisi beberapa item. SoulFire akan menggunakan item pertama.",
         "fromClipboard": "Dari clipboard",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Masukkan teks di sini...",
           "submit": "Muat dari teks"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Masukkan perintah (ketik 'help' untuk daftar)",
     "emptySuggestions": "Ketik untuk meminta saran atau tekan Tab.",
     "noSuggestions": "Tidak ada saran yang tersedia."
@@ -148,12 +173,12 @@
       "success": "Bot sedang dihentikan",
       "error": "Gagal menghentikan bot"
     },
-    "permissionDenied": "Anda tidak memiliki izin untuk memulai atau menghentikan bot di instance ini.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Server tidak melaporkan izin kontrol bot. Periksa apakah versi server dan klien Anda sudah cocok.",
     "startBots": "Mulai bot",
     "moreActions": "Aksi bot lainnya",
-    "generateFirst": "Buat akun untuk memulai bot pertamamu.",
-    "startCountHelp": "Menjalankan bot tambahan. Bot yang sedang berjalan akan tetap terhubung.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Mulai semua {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -249,9 +274,37 @@
     "version": "Versi: {{version}}",
     "author": "Penulis: {{author}}",
     "license": "Lisensi: {{license}}",
-    "website": "Situs web"
+    "website": "Situs web",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "Namespace pengaturan tidak ditemukan",
     "stringList": {
@@ -264,17 +317,44 @@
       "remove": "Hapus"
     },
     "combo": {
-      "searchPlaceholder": "Cari nilai..."
+      "searchPlaceholder": "Cari nilai...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "Nomor tidak valid",
       "description": "Nilai harus antara {{min}} dan {{max}}"
-    }
+    },
+    "saving": "Menyimpan...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Salin ke clipboard",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Belum ada log. Jalankan perintah untuk membuat output log.",
     "demo-1": "Selamat datang di mode demo! 🧪",
-    "demo-2": "Ini adalah instansi SoulFire hanya-baca",
+    "demo-2": "",
     "demo-3": "Jelajahi semua menu dan fitur sebelum memutuskan untuk menginstal SoulFire :D",
     "demo-4": "Silakan bergabung dengan server Discord kami jika ingin menghubungi: https://soulfiremc.com/discord"
   },
@@ -324,26 +404,165 @@
       "error": "Gagal menyiarkan pesan"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Coba Lagi",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_other": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Semua",
+      "projects": "",
+      "bots": "Bot",
+      "scripts": "Skrip",
+      "settings": "Pengaturan",
+      "actions": "Aksi"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Mulai bot",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Batal",
+      "unavailable": "",
+      "start_other": "",
+      "stop_other": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_other": "Mulai {{count}} bot",
+      "stopBots_other": "Hentikan {{count}} bot",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Terhubung",
+      "starting": "Memulai",
+      "retrying": "Mencoba ulang",
+      "failed": "Gagal",
+      "stopping": "Menghentikan",
+      "stopped": "Dihentikan",
+      "active": "Aktif",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Tutup",
+      "pin": "",
+      "back": "Kembali"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Pengaturan",
+      "bots": "Bot",
+      "scripts": "Skrip",
+      "admin": "",
+      "actions": "Aksi",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Baca dokumentasi",
     "backToDashboard": "Kembali ke dasbor",
     "deleteToast": {
-      "loading": "Menghapus instansi...",
-      "success": "Instansi dihapus",
-      "error": "Gagal menghapus instansi"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instansi",
-    "createInstance": "Buat Instansi",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Memuat profil...",
-      "success": "Profil dimuat",
-      "error": "Gagal memuat profil"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Muat Profil",
+    "loadProfile": "",
     "loadFromFile": "Muat dari berkas",
-    "profileSaved": "Profil tersimpan",
-    "saveProfile": "Simpan Profil",
-    "deleteInstance": "Hapus Instansi",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Kontrol",
     "overview": "Ikhtisar",
     "terminal": "Terminal",
@@ -353,19 +572,21 @@
     "extensionsGroup": "Ekstensi",
     "botSettings": "Pengaturan Bot",
     "accountSettings": "Pengaturan Akun",
-    "metaSettings": "Pengaturan Instansi",
+    "metaSettings": "",
     "proxySettings": "Pengaturan Proxy",
     "aiSettings": "Pengaturan AI",
     "pathfindingSettings": "Pengaturan Pathfinding",
     "discoverPlugins": "Plugin",
-    "instanceScripts": "Skrip"
+    "instanceScripts": "Skrip",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Baca dokumentasi",
     "userGroup": "Pengguna",
-    "instances": "Instansi",
+    "instances": "",
     "access": "Akses",
-    "createInstance": "Buat Instansi",
+    "createInstance": "",
     "settings": "Pengaturan",
     "adminGroup": "Admin",
     "adminOverview": "Ikhtisar",
@@ -410,21 +631,21 @@
     "extensions": "Ekstensi",
     "bots": "Bot"
   },
-  "noInstancesFound": "Tidak ada instansi ditemukan",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Log",
     "audit-log": "Log Audit",
     "bots": "Bot",
     "botDetail": "Detail Bot",
-    "instances": "Instansi",
+    "instances": "",
     "access": "Akses",
     "settings": "Pengaturan",
     "proxySettings": "Pengaturan Proxy",
     "overview": "Ikhtisar",
     "users": "Pengguna",
     "accountSettings": "Pengaturan Akun",
-    "metaSettings": "Pengaturan Instansi",
+    "metaSettings": "",
     "discoverPlugins": "Plugin",
     "adminScripts": "Skrip",
     "instanceScripts": "Skrip"
@@ -432,7 +653,7 @@
   "access": {
     "webdav": {
       "title": "Akses WebDAV",
-      "description": "WebDAV menyediakan akses ke file instansi, skrip, dan file lainnya.",
+      "description": "",
       "publicAddress": "Alamat WebDAV Publik",
       "personalToken": "Token WebDAV Pribadi",
       "securityWarning": "Jaga token WebDAV pribadi Anda tetap rahasia. Token ini memberikan akses ke file Anda. Gunakan token tersebut sebagai kata sandi WebDAV Anda. Anda tidak perlu nama pengguna. Jika aplikasi Anda memerlukannya, masukkan nilai apa saja, misalnya 'soulfire'.",
@@ -440,7 +661,7 @@
     },
     "api": {
       "title": "Akses API",
-      "description": "API HTTP gRPC SoulFire mengelola instansi menggunakan permintaan web.",
+      "description": "",
       "publicAddress": "Alamat API Publik",
       "personalToken": "Token API Pribadi",
       "securityWarning": "Jaga token API pribadi Anda tetap rahasia. Token ini memberikan akses ke API.",
@@ -471,7 +692,8 @@
   "clipboardCopy": {
     "loading": "Menyalin ke clipboard...",
     "success": "\"{{content}}\" berhasil disalin ke clipboard",
-    "error": "Gagal menyalin ke clipboard"
+    "error": "Gagal menyalin ke clipboard",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -511,6 +733,7 @@
     "executedCommand": "Perintah dijalankan: {{data}}",
     "changedBotDesiredState": "Keadaan bot yang diinginkan telah diubah",
     "restartedBots": "Bot telah dimulai ulang",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Salin Nama Pengguna",
       "copyCommand": "Salin Perintah"
@@ -581,15 +804,16 @@
       "actions": "Aksi"
     },
     "globalScript": "Global",
-    "instanceScript": "Instansi"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Aksi",
     "instance": {
-      "goToInstance": "Buka Instance",
-      "duplicateInstance": "Gandakan Instance",
-      "copyInstanceId": "Salin ID Instansi",
-      "copyInstanceName": "Salin Nama Instansi",
-      "deleteInstance": "Hapus Instansi"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Buka Bot",
@@ -650,5 +874,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Semua",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Lainnya"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Tersedia"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Membuat token...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
+    "botOnline": "Online",
+    "botOffline": "Luring",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

@@ -4,6 +4,16 @@
   "cancel": "Zrušit",
   "save": "Uložit",
   "saving": "Ukládání...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Nenalezena adresa serveru ani token",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Stránka se nenačetla. Otevřete konzoli pro více informací.",
       "logOut": "Odhlásit se",
       "reloadPage": "Znovu načíst stránku",
-      "showDetails": "Zobrazit podrobnosti"
+      "showDetails": "Zobrazit podrobnosti",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Připojení k serveru SoulFire selhalo."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "Podpořte SoulFire",
       "description": "SoulFire je zdarma a open-source, vytvářený s láskou komunitou.",
-      "body": "Pokud vám SoulFire pomohl, zvažte prosím podporu tohoto projektu. Vaše příspěvky pomáhají pokrýt náklady na servery, financovat vývoj a udržet SoulFire zdarma pro všechny.",
+      "body": "",
       "dismiss": "Možná později",
-      "action": "Podpořte SoulFire"
+      "action": "Podpořte SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Vytvořit novou instanci",
-      "description": "Dejte instanci jméno, které poznáte, například \"Můj Minecraft Bot\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Přátelské jméno",
-          "placeholder": "Můj Minecraft Bot",
-          "description": "Jméno, které chcete této instanci přiřadit."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Zrušit",
-        "create": "Vytvořit"
+        "create": ""
       },
       "createToast": {
-        "loading": "Vytváření instance...",
-        "success": "Instance úspěšně vytvořena",
-        "error": "Nepodařilo se vytvořit instanci"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Duplikovat instanci",
-      "description": "Vytvořit novou instanci pomocí profilu z \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Název pro duplikovanou instanci."
+          "description": ""
         },
-        "duplicate": "Duplikovat"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Duplikuji instanci...",
-        "success": "Instance byla úspěšně duplikována",
-        "error": "Duplikace instance se nezdařila"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "Z URL",
         "firstClipboardItem": "Schránka obsahuje více položek. SoulFire použije první položku.",
         "fromClipboard": "Ze schránky",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Zde vložte text...",
           "submit": "Načíst z textu"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Zadejte příkaz (napište 'help' pro seznam)",
     "emptySuggestions": "Začněte psát pro návrhy nebo stiskněte Tab.",
     "noSuggestions": "Žádné návrhy nejsou k dispozici."
@@ -148,12 +173,12 @@
       "success": "Boti se zastavují",
       "error": "Nepodařilo se zastavit boty"
     },
-    "permissionDenied": "Nemáte oprávnění spouštět nebo zastavovat boty v této instanci.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Server neohlásil oprávnění pro ovládání botů. Zkontrolujte, zda se verze serveru a klienta shodují.",
     "startBots": "Spustit boty",
     "moreActions": "Další akce s boty",
-    "generateFirst": "Vytvořte účty pro spuštění svých prvních botů.",
-    "startCountHelp": "Spustí další boty. Běžící boti zůstávají připojeni.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Spustit všech {{count}}",
     "validCount": "Zadejte celé číslo mezi 1 a {{count}}.",
     "positiveCount": "Zadejte celé číslo alespoň 1.",
@@ -261,9 +286,37 @@
     "version": "Verze: {{version}}",
     "author": "Autor: {{author}}",
     "license": "Licence: {{license}}",
-    "website": "Webová stránka"
+    "website": "Webová stránka",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "Nebyly nalezeny žádné jmenné prostory nastavení",
     "stringList": {
@@ -276,17 +329,47 @@
       "remove": "Odebrat"
     },
     "combo": {
-      "searchPlaceholder": "Hodnota vyhledávání..."
+      "searchPlaceholder": "Hodnota vyhledávání...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "Neplatné číslo",
       "description": "Hodnota musí být mezi {{min}} a {{max}}"
-    }
+    },
+    "saving": "Ukládání...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_few": "",
+    "advanced_many": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Kopírovat do schránky",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Zatím žádné logy. Spusťte příkaz pro vytvoření výstupu logu.",
     "demo-1": "Vítejte v demo režimu! 🧪",
-    "demo-2": "Toto je instance SoulFire pouze pro čtení",
+    "demo-2": "",
     "demo-3": "Vyzkoušejte všechny nabídky a funkce, než se rozhodnete SoulFire nainstalovat :D",
     "demo-4": "Klidně se připojte na náš Discord server, pokud se na nás chcete obrátit: https://soulfiremc.com/discord"
   },
@@ -336,26 +419,201 @@
       "error": "Nepodařilo se odvysílat zprávu"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Opakovat",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_few": "",
+      "failedWithServer_many": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Vše",
+      "projects": "",
+      "bots": "Boti",
+      "scripts": "Skripty",
+      "settings": "Nastavení",
+      "actions": "Akce"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Spustit boty",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Zrušit",
+      "unavailable": "",
+      "start_one": "",
+      "start_few": "",
+      "start_many": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_few": "",
+      "stop_many": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_few": "",
+      "restart_many": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Spustit {{count}} bota",
+      "startBots_few": "Spustit {{count}} boty",
+      "startBots_many": "Spustit {{count}} botů",
+      "startBots_other": "Spustit {{count}} botů",
+      "stopBots_one": "Zastavit {{count}} bota",
+      "stopBots_few": "Zastavit {{count}} boty",
+      "stopBots_many": "Zastavit {{count}} botů",
+      "stopBots_other": "Zastavit {{count}} botů",
+      "retryBots_one": "",
+      "retryBots_few": "",
+      "retryBots_many": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Připojeno",
+      "starting": "Spouštění",
+      "retrying": "Opakování",
+      "failed": "Selhalo",
+      "stopping": "Zastavování",
+      "stopped": "Zastaveno",
+      "active": "Aktivní",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Zavřít",
+      "pin": "",
+      "back": "Zpět"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Nastavení",
+      "bots": "Boti",
+      "scripts": "Skripty",
+      "admin": "",
+      "actions": "Akce",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_few": "",
+    "moreResults_many": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Přečíst dokumentaci",
     "backToDashboard": "Zpět na hlavní panel",
     "deleteToast": {
-      "loading": "Maže se instance...",
-      "success": "Instance byla smazána",
-      "error": "Nepodařilo se smazat instanci"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instance",
-    "createInstance": "Vytvořit instanci",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Načítání profilu...",
-      "success": "Profil načten",
-      "error": "Nepodařilo se načíst profil"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Načíst profil",
+    "loadProfile": "",
     "loadFromFile": "Načíst ze souboru",
-    "profileSaved": "Profil uložen",
-    "saveProfile": "Uložit profil",
-    "deleteInstance": "Smazat instanci",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Ovládací prvky",
     "overview": "Přehled",
     "terminal": "Terminál",
@@ -365,19 +623,21 @@
     "extensionsGroup": "Rozšíření",
     "botSettings": "Nastavení bota",
     "accountSettings": "Nastavení účtu",
-    "metaSettings": "Nastavení instance",
+    "metaSettings": "",
     "proxySettings": "Nastavení proxy",
     "aiSettings": "Nastavení AI",
     "pathfindingSettings": "Nastavení hledání cesty",
     "discoverPlugins": "Pluginy",
-    "instanceScripts": "Skripty"
+    "instanceScripts": "Skripty",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Přečíst dokumentaci",
     "userGroup": "Uživatel",
-    "instances": "Instance",
+    "instances": "",
     "access": "Přístup",
-    "createInstance": "Vytvořit instanci",
+    "createInstance": "",
     "settings": "Nastavení",
     "adminGroup": "Admin",
     "adminOverview": "Přehled",
@@ -422,21 +682,21 @@
     "extensions": "Rozšíření",
     "bots": "Boti"
   },
-  "noInstancesFound": "Nebyly nalezeny žádné instance",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Terminál",
     "logs": "Logy",
     "audit-log": "Audit log",
     "bots": "Boti",
     "botDetail": "Podrobnosti o botu",
-    "instances": "Instance",
+    "instances": "",
     "access": "Přístup",
     "settings": "Nastavení",
     "proxySettings": "Nastavení proxy",
     "overview": "Přehled",
     "users": "Uživatelé",
     "accountSettings": "Nastavení účtu",
-    "metaSettings": "Nastavení instance",
+    "metaSettings": "",
     "discoverPlugins": "Pluginy",
     "adminScripts": "Skripty",
     "instanceScripts": "Skripty"
@@ -444,7 +704,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV přístup",
-      "description": "WebDAV poskytuje přístup k souborům instance, skriptům a dalším souborům.",
+      "description": "",
       "publicAddress": "Veřejná adresa WebDAV",
       "personalToken": "Osobní WebDAV token",
       "securityWarning": "Uchovejte svůj osobní WebDAV token v tajnosti. Umožňuje přístup k vašim souborům. Token použijte jako své WebDAV heslo. Uživatelské jméno zadávat nemusíte. Pokud ho vaše aplikace vyžaduje, zadejte libovolnou hodnotu, například 'soulfire'.",
@@ -452,7 +712,7 @@
     },
     "api": {
       "title": "API přístup",
-      "description": "SoulFire gRPC HTTP API spravuje instance pomocí webových požadavků.",
+      "description": "",
       "publicAddress": "Veřejná API adresa",
       "personalToken": "Osobní API token",
       "securityWarning": "Uchovejte svůj osobní API token v tajnosti. Umožňuje přístup k API.",
@@ -483,7 +743,8 @@
   "clipboardCopy": {
     "loading": "Kopírování do schránky...",
     "success": "„{{content}}“ zkopírováno do schránky",
-    "error": "Nepodařilo se zkopírovat do schránky"
+    "error": "Nepodařilo se zkopírovat do schránky",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -523,6 +784,7 @@
     "executedCommand": "Proveden příkaz: {{data}}",
     "changedBotDesiredState": "Změněn požadovaný stav bota",
     "restartedBots": "Boti byli restartováni",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Kopírovat uživatelské jméno",
       "copyCommand": "Kopírovat příkaz"
@@ -593,15 +855,16 @@
       "actions": "Akce"
     },
     "globalScript": "Globální",
-    "instanceScript": "Instance"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Akce",
     "instance": {
-      "goToInstance": "Přejít na instanci",
-      "duplicateInstance": "Duplikovat instanci",
-      "copyInstanceId": "Kopírovat ID instance",
-      "copyInstanceName": "Kopírovat název instance",
-      "deleteInstance": "Smazat instanci"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Přejít na bota",
@@ -662,5 +925,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Vše",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Ostatní"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Dostupné"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Generování tokenu...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
+    "botOnline": "Online",
+    "botOffline": "Offline",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

@@ -20,12 +20,12 @@
         "title": "Liczba wątków"
       },
       "aggregateBots": {
-        "title": "Boty online (wszystkie instancje)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Wszystkie instancje na tym serwerze",
-      "instances": "Instancje",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Stan",
         "active": "Aktywny",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Role",
           "placeholder": "Wybierz rolę",
-          "description": "Rola użytkownika. Administratorzy mogą zarządzać użytkownikami i wszystkimi instancjami. Zwykli użytkownicy mogą zarządzać tylko własnymi instancjami.",
+          "description": "",
           "user": "Użytkownik",
           "admin": "Administrator"
         }

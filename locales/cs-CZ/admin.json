@@ -20,12 +20,12 @@
         "title": "Počet vláken"
       },
       "aggregateBots": {
-        "title": "Boti online (všechny instance)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Celkový počet instancí na tomto serveru",
-      "instances": "Instance",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Stav",
         "active": "Aktivní",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Role",
           "placeholder": "Vyberte roli",
-          "description": "Role uživatele. Správci mohou spravovat uživatele a všechny instance. Uživatelé mohou spravovat pouze své vlastní instance.",
+          "description": "",
           "user": "Uživatel",
           "admin": "Admin"
         }

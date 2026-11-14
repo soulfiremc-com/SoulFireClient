@@ -20,12 +20,12 @@
         "title": "Số lượng luồng"
       },
       "aggregateBots": {
-        "title": "Bots trực tuyến (Tất cả phiên bản)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Tổng số phiên bản trên máy chủ này",
-      "instances": "Các phiên bản",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Trạng thái",
         "active": "Đang hoạt động",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Vai trò",
           "placeholder": "Chọn vai trò",
-          "description": "Vai trò của người dùng. Quản trị viên có thể quản lý người dùng và tất cả các phiên bản. Người dùng chỉ được phép quản lý phiên bản của riêng mình.",
+          "description": "",
           "user": "Người dùng",
           "admin": "Quản trị viên"
         }

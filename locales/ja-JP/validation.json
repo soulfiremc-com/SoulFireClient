@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "無効な入力: stringが期待されましたが、undefinedが入力されました",
-    "null": "無効な入力: stringが期待されましたが、nullが入力されました",
-    "number": "無効な入力: stringが期待されましたが、数値が入力されました",
-    "boolean": "無効な入力: stringが期待されましたが、booleanが入力されました",
-    "array": "無効な入力: stringが期待されましたが、配列が入力されました",
-    "object": "無効な入力: stringが期待されましたが、objectが入力されました",
-    "nan": "無効な入力: stringが期待されましたが、NaNが入力されました",
-    "infinity": "無効な入力: stringが期待されましたが、数値が入力されました"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "無効な入力: 数値が期待されましたが、undefinedが入力されました",
-    "null": "無効な入力: 数値が期待されましたが、nullが入力されました",
-    "string": "無効な入力: 数値が期待されましたが、stringが入力されました",
-    "boolean": "無効な入力: 数値が期待されましたが、booleanが入力されました",
-    "array": "無効な入力: 数値が期待されましたが、配列が入力されました",
-    "object": "無効な入力: 数値が期待されましたが、objectが入力されました",
-    "nan": "無効な入力: 数値が期待されましたが、NaNが入力されました",
-    "infinity": "無効な入力: 数値が期待されましたが、数値が入力されました"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "無効な入力: objectが期待されましたが、undefinedが入力されました",
-    "null": "無効な入力: objectが期待されましたが、nullが入力されました",
-    "number": "無効な入力: objectが期待されましたが、数値が入力されました",
-    "string": "無効な入力: objectが期待されましたが、stringが入力されました",
-    "boolean": "無効な入力: objectが期待されましたが、booleanが入力されました",
-    "array": "無効な入力: objectが期待されましたが、配列が入力されました",
-    "nan": "無効な入力: objectが期待されましたが、NaNが入力されました",
-    "infinity": "無効な入力: objectが期待されましたが、数値が入力されました"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "無効なメールアドレス",
-  "url": "無効なURL",
-  "jwt": "無効なJWT",
-  "emailTooLong": "大きすぎる値: stringは255文字以下である必要があります",
-  "jarSource": "無効な選択: \"official\"、\"custom\"のいずれかである必要があります",
-  "generationMode": "無効な選択: \"IGNORE_EXISTING\"、\"REPLACE_EXISTING\"、\"REPLACE_ALL\"のいずれかである必要があります",
-  "userRole": "無効な選択: 0、1のいずれかである必要があります"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

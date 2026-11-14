@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Surový výstup inštancie je k dispozícii tu, keď potrebujete skontrolovať podrobnosti konzoly.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Účty",
       "proxies": "Proxy",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Živý prenos",
-      "empty": "Čaká sa na aktivitu inštancie...",
+      "empty": "",
       "noPermission": "Nemáte povolenie na zobrazenie živého prenosu.",
       "lifecycle": {
         "connecting": "sa pripája",
@@ -97,6 +97,7 @@
         "executeCommand": "spustil príkaz: {{data}}",
         "botDesiredStateChange": "zmenený požadovaný stav bota",
         "botRestart": "boty boli reštartované",
+        "pluginRpc": "",
         "unknown": "vykonal akciu"
       }
     },
@@ -129,6 +130,27 @@
       "noProxies": "Žiadne proxy na importovanie"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Importovanie proxy...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_few": "",
+        "accepted_many": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_few": "",
+        "rejected_many": "",
+        "rejected_other": ""
+      },
       "proxyType": "Typ proxy",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +225,7 @@
     },
     "unknownError": "Neznáma chyba",
     "types": {
-      "OFFLINE": "Offline",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (prihlasovacie údaje)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (kód zariadenia)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (obnovovací token)",
@@ -272,7 +294,7 @@
     "contextMenu": {
       "openConfig": "Otvoriť konfiguráciu",
       "openMetadata": "Otvoriť metadáta",
-      "copyProfileId": "Kopírovať ID profilu",
+      "copyProfileId": "",
       "copyUsername": "Kopírovať používateľské meno"
     },
     "config": {
@@ -292,7 +314,7 @@
       "selectPage": "Vyberte stránku nastavení",
       "noSearchResults": "Žiadne nastavenia nezodpovedajú tomuto vyhľadávaniu.",
       "matchesInheritedValue": "Zhoduje sa s zdedenou hodnotou",
-      "instanceValue": "Hodnota inštancie",
+      "instanceValue": "",
       "defaultValue": "Predvolená hodnota",
       "resetOverride": "Obnoviť prepísanie"
     },
@@ -311,23 +333,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Zakúpte účty cez Ravealts",
       "description": "Zakúpte Minecraft účty pomocou vášho Ravealts API kľúča.",
-      "apiKeyLabel": "API kľúč",
       "apiKeyPlaceholder": "Zadajte svoj API kľúč pre Ravealts",
-      "validate": "Overiť",
-      "validating": "Overovanie...",
-      "keyValid": "Kľúč overený",
-      "keyInvalid": "Neplatný API kľúč",
-      "credits": "Kredity: {{credits}}",
-      "stockTitle": "Dostupné zásoby",
       "noStock": "Žiadne účty na sklade",
       "accountType": "Typ účtu",
-      "amount": "Počet (1-10)",
-      "purchase": "Zakúpiť a importovať",
-      "purchasing": "Nakupuje sa...",
-      "purchaseSuccess": "Zakúpený{{count, plural, one{ý} few{é} many{ých} other{ých}}} {{count}} účt{{count, plural, one{ov} few{y} many{ov} other{ov}}}, importuje sa...",
-      "purchaseError": "Nákup zlyhal: {{message}}",
       "networkError": "Nepodarilo sa pripojiť k Ravealts API",
       "outOfStock": "Vybraný typ nie je na sklade",
       "insufficientBalance": "Nedostatok kreditov",
@@ -354,12 +363,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Metadáta inštancie",
-    "description": "Spravujte pretrvávajúce metadáta tejto inštancie. Každá položka obsahuje menný priestor, kľúč a hodnotu v JSON formáte.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Menný priestor",
     "keyPlaceholder": "Kľúč",
     "valuePlaceholder": "Hodnota (JSON)",
     "noEntries": "Žiadne záznamy metaúdajov. Pridajte jeden vyššie.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opakovať",
     "addSuccess": "Záznam pridaný",
     "addError": "Záznam sa nepodarilo pridať",
     "updateError": "Záznam sa nepodarilo aktualizovať",
@@ -371,7 +383,7 @@
   "bots": {
     "searchPlaceholder": "Hľadať botov...",
     "onlineCount": "{{online}} online / {{total}} celkom",
-    "noBots": "Nie sú nakonfigurované žiadne boty. Pridajte účty na stránke Nastavenia účtu.",
+    "noBots": "",
     "noBotsFound": "Žiadny bot nezodpovedá vášmu vyhľadávaniu.",
     "loadingMore": "Načítavajú sa ďalšie...",
     "showingCount": "Zobrazuje sa {{loaded}} z {{total}}",
@@ -396,12 +408,12 @@
       "waiting": "Čaká sa",
       "stopped": "Zastavené"
     },
-    "backToBots": "Späť na botov",
+    "backToBots": "",
     "tabs": {
-      "overview": "Prehľad",
+      "overview": "",
       "inventory": "Inventár",
-      "controls": "Ovládanie",
-      "terminal": "Terminál"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Už čoskoro",
     "terminalPanel": {
@@ -419,8 +431,15 @@
       "offline": "Bot je offline. Údaje o pozícii sú dostupné len vtedy, keď je bot pripojený."
     },
     "chatPanel": {
-      "title": "Chat správy",
-      "description": "Chat správy od tohto bota sa tu zobrazia v budúcej aktualizácii."
+      "title": "",
+      "description": "Chat správy od tohto bota sa tu zobrazia v budúcej aktualizácii.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Príkazy bota",
@@ -428,14 +447,14 @@
       "description": "Príkazy určené pre jednotlivých botov budú dostupné v budúcej aktualizácii."
     },
     "povPanel": {
-      "title": "Pohľad bota",
+      "title": "",
       "capture": "Snímať",
       "refresh": "Obnoviť",
       "auto": "Auto",
       "startAutoRefresh": "Spustiť automatické obnovenie (interval 1 sekunda)",
       "stopAutoRefresh": "Zastaviť automatické obnovenie",
       "clickToCapture": "Kliknite na Snímať pre zobrazenie pohľadu bota",
-      "offline": "Bot je offline. Zobrazenie pohľadu je dostupné len keď je bot pripojený."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Štatistiky bota",
@@ -545,6 +564,49 @@
       "dismiss": "Zavrieť",
       "submit": "Odoslať",
       "offline": "Bot je offline. Dialógy sú dostupné len keď je bot pripojený."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Všetko",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Pripojený",
+      "starting": "Spúšťanie",
+      "retrying": "Opakovanie pokusu",
+      "failed": "Zlyhalo",
+      "stopping": "Zastavovanie",
+      "stopped": "Zastavené"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +674,12 @@
   },
   "scripts": {
     "title": "Vizuálne skripty",
-    "description": "Vytvárajte automatizačné skripty použitím vizuálneho editora na základe uzlov.",
+    "description": "",
     "experimentalTitle": "Experimentálna funkcia",
     "experimentalWarning": "Táto funkcia je experimentálna. Budúce aktualizácie môžu narušiť existujúce skripty. Používajte ju opatrne.",
-    "createScript": "Vytvoriť skript",
-    "createScriptTitle": "Vytvoriť nový skript",
-    "createScriptDescription": "Vytvorte nový vizuálny skript pre túto inštanciu. Skripty môžu automatizovať akcie bota a reagovať na udalosti.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Názov skriptu",
     "scriptNamePlaceholder": "Zadajte názov skriptu...",
     "scriptDescription": "Popis",
@@ -625,36 +687,36 @@
     "create": "Vytvoriť",
     "createSuccess": "Skript bol úspešne vytvorený",
     "createError": "Nepodarilo sa vytvoriť skript",
-    "noScripts": "Zatiaľ žiadne skripty",
-    "noScriptsDescription": "Vytvorte svoj prvý skript na automatizáciu akcií bota pomocou vizuálneho editora na základe uzlov.",
-    "createFirstScript": "Vytvoriť svoj prvý skript",
-    "running": "Beží",
-    "paused": "Pozastavené",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "uzly",
     "noDescription": "Žiadny popis",
     "edit": "Upraviť",
-    "pause": "Pozastaviť",
-    "pauseSuccess": "Skript pozastavený",
-    "pauseError": "Skript sa nepodarilo pozastaviť",
-    "resume": "Pokračovať",
-    "resumeSuccess": "Skript obnovený",
-    "resumeError": "Skript sa nepodarilo obnoviť",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Odstrániť",
     "deleteSuccess": "Skript bol úspešne odstránený",
     "deleteError": "Nepodarilo sa odstrániť skript",
     "saveSuccess": "Skript bol úspešne uložený",
     "saveError": "Nepodarilo sa uložiť skript",
-    "activateSuccess": "Skript aktivovaný",
-    "activateError": "Nepodarilo sa aktivovať skript",
-    "deactivateSuccess": "Skript deaktivovaný",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Nepomenovaný skript",
-    "saveFirstBeforeActivating": "Najprv uložte skript pred aktivovaním",
-    "activating": "Aktivujem skript...",
-    "activated": "Skript aktivovaný",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skript dokončený",
     "executionCompletedSuccess": "Skript úspešne dokončený",
-    "deactivated": "Skript deaktivovaný",
-    "deactivatedByUser": "Skript deaktivovaný používateľom",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Skript zlyhal pri vykonávaní",
     "executionError": "Chyba vykonania: {{error}}",
     "monitoringError": "",
@@ -664,8 +726,8 @@
     "nodeError": "Chyba uzla: {{error}}",
     "contextMenu": {
       "edit": "Upraviť skript",
-      "pause": "Pozastaviť",
-      "resume": "Pokračovať",
+      "pause": "",
+      "resume": "",
       "delete": "Odstrániť skript",
       "copyScriptName": "Kopírovať názov skriptu",
       "copyScriptId": "Kopírovať ID skriptu"
@@ -675,11 +737,11 @@
         "actions": "",
         "backToScripts": "Späť na skripty",
         "save": "Uložiť",
-        "saveTooltip": "Uložiť skript",
-        "resume": "Pokračovať",
-        "resumeTooltip": "Obnoviť vykonávanie skriptu",
-        "pause": "Pozastaviť",
-        "pauseTooltip": "Pozastaviť vykonávanie skriptu",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Neuložené",
         "unsavedChanges": "Neuložené zmeny",
         "clearCanvas": "Vyčistiť plátno",
@@ -690,16 +752,17 @@
         "import": "Importovať skript",
         "exportSuccess": "Skript bol úspešne exportovaný",
         "importSuccess": "Skript bol úspešne importovaný",
-        "importError": "Nepodarilo sa importovať skript"
+        "importError": "Nepodarilo sa importovať skript",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Paleta uzlov",
+        "title": "",
         "search": "Hľadať uzly..."
       },
       "logs": {
-        "title": "Záznamy vykonávania",
+        "title": "",
         "clearTitle": "Vyčistiť záznamy",
-        "noLogs": "Zatiaľ žiadne záznamy. Spustite skript na zobrazenie záznamov vykonávania.",
+        "noLogs": "",
         "entries_one": "{{count}} záznam",
         "entries_few": "{{count}} záznamy",
         "entries_many": "{{count}} záznamov",
@@ -755,15 +818,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Testovací beh nasucho",
-        "title": "Skript testovacieho behu nasucho",
-        "description": "Spustite skript zo zvoleného spúšťača so simulovanými vstupmi.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Spúšťací uzol",
         "selectTrigger": "Vyberte spúšťač...",
-        "triggerDescription": "Vyberte spúšťací uzol, ktorý sa má vykonať so simulovanými vstupnými hodnotami.",
-        "mockInputs": "Simulované vstupy",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} hodnota",
-        "start": "Začať testovací beh nasucho",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_few": "",
         "stats_many": "",
@@ -790,10 +854,589 @@
         "save": "Uložiť kvóty",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_few": "",
+      "errors_many": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_few": "",
+      "warnings_many": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Akcia",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Pripojiť",
+    "back": "Späť",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Všetko",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Pripojiť",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Celkovo",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Žiadne",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_few": "",
+      "orderStatus_many": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_few": "",
+      "limit_many": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_few": "",
+      "delivered_many": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_few": "",
+      "importing_many": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_few": "",
+    "importAccounts_many": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_few": "",
+    "inStock_many": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_few": "",
+    "previewMore_many": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_few": "",
+    "preview_many": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_few": "",
+    "importProxies_many": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_few": "",
+      "noneRunning_many": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_few": "",
+      "allConnected_many": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_few": "",
+      "partial_many": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "pripojený",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_few": "",
+      "retrying_many": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_few": "",
+    "restartGroup_many": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Voliteľné",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Otvoriť všetky nastavenia",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Účty",
+      "reviewProxies": "Proxy",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Spustiť {{count}} bota",
+      "action_few": "Spustiť {{count}} boty",
+      "action_many": "Spustiť {{count}} botov",
+      "action_other": "Spustiť {{count}} botov"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

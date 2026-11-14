@@ -4,6 +4,16 @@
   "cancel": "Avbryt",
   "save": "Spara",
   "saving": "Sparar...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Ingen serveradress eller token hittades",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Sidan kunde inte laddas. Öppna konsolen för mer information.",
       "logOut": "Logga ut",
       "reloadPage": "Ladda om sidan",
-      "showDetails": "Visa detaljer"
+      "showDetails": "Visa detaljer",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Anslutning till SoulFire-servern misslyckades."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "Stöd SoulFire",
       "description": "SoulFire är gratis och öppen källkod, byggd med kärlek av communityn.",
-      "body": "Om SoulFire har varit användbar för dig, överväg gärna att stödja projektet. Ditt bidrag hjälper till att täcka serverkostnader, finansiera utveckling och hålla SoulFire gratis för alla.",
+      "body": "",
       "dismiss": "Kanske senare",
-      "action": "Stöd SoulFire"
+      "action": "Stöd SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Skapa en ny instans",
-      "description": "Ge instansen ett namn som du kan känna igen, till exempel \"Min Minecraft-bot\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Vänligt namn",
-          "placeholder": "Min Minecraft-bot",
-          "description": "Namnet du vill ge den här instansen."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Avbryt",
-        "create": "Skapa"
+        "create": ""
       },
       "createToast": {
-        "loading": "Skapar instans...",
-        "success": "Instans skapad",
-        "error": "Misslyckades med att skapa instans"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Duplicera instans.",
-      "description": "Skapa en ny instans med profilen från \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Namnet för den duplicerade instansen."
+          "description": ""
         },
-        "duplicate": "Duplicera"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Duplicerar instans...",
-        "success": "Instansen duplicerades framgångsrikt",
-        "error": "Misslyckades att duplicera instansen"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "Från URL",
         "firstClipboardItem": "Urklippet innehåller flera objekt. SoulFire kommer att använda det första objektet.",
         "fromClipboard": "Från urklipp",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Skriv in text här...",
           "submit": "Ladda från text"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Skriv kommando (\"help\" visar lista)",
     "emptySuggestions": "Skriv för att be om förslag eller tryck på Tab.",
     "noSuggestions": "Inga förslag tillgängliga."
@@ -148,12 +173,12 @@
       "success": "Bottar stoppar",
       "error": "Det gick inte att stoppa bottarna"
     },
-    "permissionDenied": "Du har inte behörighet att starta eller stoppa bottar i denna instans.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Servern rapporterade inte botkontrollsbehörigheter. Kontrollera att din server- och klientversion matchar.",
     "startBots": "Starta bottar",
     "moreActions": "Fler botåtgärder",
-    "generateFirst": "Skapa konton för att starta dina första bottar.",
-    "startCountHelp": "Startar fler bottar. Aktiva bottar förblir anslutna.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Starta alla {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -253,9 +278,37 @@
     "version": "Version: {{version}}",
     "author": "Författare: {{author}}",
     "license": "Licens: {{license}}",
-    "website": "Webbplats"
+    "website": "Webbplats",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "Inställningsnamnrymder hittades inte",
     "stringList": {
@@ -268,17 +321,45 @@
       "remove": "Ta bort"
     },
     "combo": {
-      "searchPlaceholder": "Sökvärde..."
+      "searchPlaceholder": "Sökvärde...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "Ogiltigt nummer",
       "description": "Värdet måste vara mellan {{min}} och {{max}}"
-    }
+    },
+    "saving": "Sparar...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Kopiera till urklipp",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Inga loggar än. Kör ett kommando för att skapa loggutdata.",
     "demo-1": "Välkommen till demoläge! 🧪",
-    "demo-2": "Det här är en skrivskyddad instans av SoulFire",
+    "demo-2": "",
     "demo-3": "Utforska alla menyer och funktioner innan du bestämmer dig för att installera SoulFire :D",
     "demo-4": "Gå gärna med i vår Discord-server om du vill kontakta oss: https://soulfiremc.com/discord"
   },
@@ -328,26 +409,177 @@
       "error": "Misslyckades med att sända meddelandet"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Försök igen",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alla",
+      "projects": "",
+      "bots": "Bottar",
+      "scripts": "Skript",
+      "settings": "Inställningar",
+      "actions": "Åtgärder"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Starta bottar",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Avbryt",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Starta {{count}} bot",
+      "startBots_other": "Starta {{count}} bottar",
+      "stopBots_one": "Stoppa {{count}} bot",
+      "stopBots_other": "Stoppa {{count}} bottar",
+      "retryBots_one": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Ansluten",
+      "starting": "Startar",
+      "retrying": "Försöker igen",
+      "failed": "Misslyckades",
+      "stopping": "Stoppar",
+      "stopped": "Stoppad",
+      "active": "Aktiv",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Stäng",
+      "pin": "",
+      "back": "Tillbaka"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Inställningar",
+      "bots": "Bottar",
+      "scripts": "Skript",
+      "admin": "",
+      "actions": "Åtgärder",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Läs dokumentationen",
     "backToDashboard": "Tillbaka till instrumentpanel",
     "deleteToast": {
-      "loading": "Tar bort instans...",
-      "success": "Instans borttagen",
-      "error": "Misslyckades med att ta bort instans"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instanser",
-    "createInstance": "Skapa instans",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Laddar profil...",
-      "success": "Profil laddad",
-      "error": "Misslyckades med att ladda profil"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Ladda profil",
+    "loadProfile": "",
     "loadFromFile": "Ladda från fil",
-    "profileSaved": "Profil sparad",
-    "saveProfile": "Spara profil",
-    "deleteInstance": "Ta bort instans",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Kontroller",
     "overview": "Översikt",
     "terminal": "Terminal",
@@ -357,19 +589,21 @@
     "extensionsGroup": "Tillägg",
     "botSettings": "Bot-inställningar",
     "accountSettings": "Kontoinställningar",
-    "metaSettings": "Instansinställningar",
+    "metaSettings": "",
     "proxySettings": "Proxyinställningar",
     "aiSettings": "AI-inställningar",
     "pathfindingSettings": "Sökvägsinställningar",
     "discoverPlugins": "Plugins",
-    "instanceScripts": "Skript"
+    "instanceScripts": "Skript",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Läs dokumentationen",
     "userGroup": "Användare",
-    "instances": "Instanser",
+    "instances": "",
     "access": "Åtkomst",
-    "createInstance": "Skapa instans",
+    "createInstance": "",
     "settings": "Inställningar",
     "adminGroup": "Admin",
     "adminOverview": "Översikt",
@@ -414,21 +648,21 @@
     "extensions": "Tillägg",
     "bots": "Bottar"
   },
-  "noInstancesFound": "Inga instanser hittades",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Loggar",
     "audit-log": "Granskningslogg",
     "bots": "Bottar",
     "botDetail": "Botdetaljer",
-    "instances": "Instanser",
+    "instances": "",
     "access": "Åtkomst",
     "settings": "Inställningar",
     "proxySettings": "Proxyinställningar",
     "overview": "Översikt",
     "users": "Användare",
     "accountSettings": "Kontoinställningar",
-    "metaSettings": "Instansinställningar",
+    "metaSettings": "",
     "discoverPlugins": "Plugins",
     "adminScripts": "Skript",
     "instanceScripts": "Skript"
@@ -436,7 +670,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV-åtkomst",
-      "description": "WebDAV ger åtkomst till instansfiler, skript och andra filer.",
+      "description": "",
       "publicAddress": "Offentlig WebDAV-adress",
       "personalToken": "Personlig WebDAV-token",
       "securityWarning": "Håll din personliga WebDAV-token hemlig. Den ger åtkomst till dina filer. Använd token som ditt WebDAV-lösenord. Du behöver inget användarnamn. Om din app kräver ett, fyll i ett godtyckligt värde, till exempel 'soulfire'.",
@@ -444,7 +678,7 @@
     },
     "api": {
       "title": "API-åtkomst",
-      "description": "SoulFires gRPC HTTP API hanterar instanser via webbförfrågningar.",
+      "description": "",
       "publicAddress": "Offentlig API-adress",
       "personalToken": "Personlig API-token",
       "securityWarning": "Håll din personliga API-token hemlig. Den ger åtkomst till API:et.",
@@ -475,7 +709,8 @@
   "clipboardCopy": {
     "loading": "Kopierar till urklipp...",
     "success": "Kopierade \"{{content}}\" till urklipp",
-    "error": "Misslyckades med att kopiera till urklipp"
+    "error": "Misslyckades med att kopiera till urklipp",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -515,6 +750,7 @@
     "executedCommand": "Körde kommando: {{data}}",
     "changedBotDesiredState": "Ändrade önskat tillstånd för bottar",
     "restartedBots": "Startade om bottar",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "Kopiera användarnamn",
       "copyCommand": "Kopiera kommando"
@@ -585,15 +821,16 @@
       "actions": "Åtgärder"
     },
     "globalScript": "Globalt",
-    "instanceScript": "Instans"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Åtgärder",
     "instance": {
-      "goToInstance": "Gå till instans",
-      "duplicateInstance": "Duplicera instans",
-      "copyInstanceId": "Kopiera instans-ID",
-      "copyInstanceName": "Kopiera instansnamn",
-      "deleteInstance": "Ta bort instans"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Gå till bot",
@@ -654,5 +891,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Alla",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Annat"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Tillgänglig"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Genererar token...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
+    "botOnline": "Online",
+    "botOffline": "Offline",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

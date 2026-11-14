@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Invalid input: expected string, received undefined",
-    "null": "Invalid input: expected string, received null",
-    "number": "Invalid input: expected string, received number",
-    "boolean": "Invalid input: expected string, received boolean",
-    "array": "Invalid input: expected string, received array",
-    "object": "Invalid input: expected string, received object",
-    "nan": "Invalid input: expected string, received NaN",
-    "infinity": "Invalid input: expected string, received number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Invalid input: expected number, received undefined",
-    "null": "Invalid input: expected number, received null",
-    "string": "Invalid input: expected number, received string",
-    "boolean": "Invalid input: expected number, received boolean",
-    "array": "Invalid input: expected number, received array",
-    "object": "Invalid input: expected number, received object",
-    "nan": "Invalid input: expected number, received NaN",
-    "infinity": "Invalid input: expected number, received number"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Invalid input: expected object, received undefined",
-    "null": "Invalid input: expected object, received null",
-    "number": "Invalid input: expected object, received number",
-    "string": "Invalid input: expected object, received string",
-    "boolean": "Invalid input: expected object, received boolean",
-    "array": "Invalid input: expected object, received array",
-    "nan": "Invalid input: expected object, received NaN",
-    "infinity": "Invalid input: expected object, received number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Invalid email address",
-  "url": "Invalid URL",
-  "jwt": "Invalid JWT",
-  "emailTooLong": "Too big: expected string to have <=255 characters",
-  "jarSource": "Invalid option: expected one of \"official\"|\"custom\"",
-  "generationMode": "Invalid option: expected one of \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Invalid option: expected one of 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

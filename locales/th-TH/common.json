@@ -4,6 +4,16 @@
   "cancel": "ยกเลิก",
   "save": "บันทึก",
   "saving": "กำลังบันทึก...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "ไม่พบที่อยู่เซิร์ฟเวอร์หรือโทเค็น",
     "page": {
@@ -11,7 +21,15 @@
       "description": "หน้าเว็บโหลดไม่สำเร็จ กรุณาเปิดคอนโซลเพื่อดูข้อมูลเพิ่มเติม.",
       "logOut": "ออกจากระบบ",
       "reloadPage": "โหลดหน้านี้ใหม่",
-      "showDetails": "แสดงรายละเอียด"
+      "showDetails": "แสดงรายละเอียด",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "เชื่อมต่อกับเซิร์ฟเวอร์ SoulFire ไม่สำเร็จ"
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "สนับสนุน SoulFire",
       "description": "SoulFire เป็นซอฟต์แวร์ฟรีและโอเพ่นซอร์ส พัฒนาอย่างตั้งใจโดยชุมชน",
-      "body": "หาก SoulFire มีประโยชน์สำหรับคุณ กรุณาพิจารณาสนับสนุนโครงการนี้ การสนับสนุนของคุณจะช่วยชำระค่าเซิร์ฟเวอร์ สนับสนุนการพัฒนา และทำให้ SoulFire ฟรีสำหรับทุกคน",
+      "body": "",
       "dismiss": "ไว้ทีหลัง",
-      "action": "สนับสนุน SoulFire"
+      "action": "สนับสนุน SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "สร้างอินสแตนซ์ใหม่",
-      "description": "ตั้งชื่ออินสแตนซ์ที่คุณสามารถจดจำได้ เช่น \"My Minecraft Bot\"",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "ชื่อที่จดจำง่าย",
-          "placeholder": "My Minecraft Bot",
-          "description": "ชื่อที่คุณต้องการตั้งให้กับอินสแตนซ์นี้"
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "ยกเลิก",
-        "create": "สร้าง"
+        "create": ""
       },
       "createToast": {
-        "loading": "กำลังสร้างอินสแตนซ์...",
-        "success": "สร้างอินสแตนซ์สำเร็จ",
-        "error": "สร้างอินสแตนซ์ไม่สำเร็จ"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "จำลองอินสแตนซ์ซ้ำใหม่อีกครั้งแล้ว",
-      "description": "สร้างอินสแตนซ์ใหม่โดยใช้โปรไฟล์จาก \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "ชื่อสำหรับอินสแตนซ์ที่ถูกทำซ้ำ"
+          "description": ""
         },
-        "duplicate": "ทำซ้ำ"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "กำลังทำสำเนาอินสแตนซ์...",
-        "success": "ทำสำเนาอินสแตนซ์เรียบร้อยแล้ว",
-        "error": "ไม่สามารถทำสำเนาอินสแตนซ์ได้"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "จาก URL",
         "firstClipboardItem": "คลิปบอร์ดมีหลายรายการ SoulFire จะใช้รายการแรก",
         "fromClipboard": "จากคลิปบอร์ด",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "ใส่ข้อความที่นี่...",
           "submit": "โหลดจากข้อความ"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "ใส่คำสั่ง (พิมพ์ 'help' เพื่อดูรายการ)",
     "emptySuggestions": "พิมพ์เพื่อขอรับคำแนะนำหรือกด Tab",
     "noSuggestions": "ไม่มีคำแนะนำที่พร้อมใช้งาน"
@@ -148,12 +173,12 @@
       "success": "บอทกำลังหยุดทำงาน",
       "error": "ไม่สามารถหยุดบอทได้"
     },
-    "permissionDenied": "คุณไม่มีสิทธิ์ในการเริ่มหรือหยุดบอทในอินสแตนซ์นี้.",
+    "permissionDenied": "",
     "serverUpdateRequired": "เซิร์ฟเวอร์ไม่ได้รายงานสิทธิ์ควบคุมบอท โปรดตรวจสอบว่าเวอร์ชันของเซิร์ฟเวอร์และไคลเอนต์ตรงกันหรือไม่.",
     "startBots": "เริ่มบอท",
     "moreActions": "ดำเนินการบอทเพิ่มเติม",
-    "generateFirst": "สร้างบัญชีเพื่อเริ่มต้นบอทตัวแรกของคุณ",
-    "startCountHelp": "เริ่มบอทเพิ่มเติม บอทที่กำลังทำงานจะยังเชื่อมต่ออยู่",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "เริ่มทั้งหมด {{count}} ตัว",
     "validCount": "",
     "positiveCount": "",
@@ -249,9 +274,37 @@
     "version": "เวอร์ชัน: {{version}}",
     "author": "ผู้พัฒนา: {{author}}",
     "license": "สัญญาอนุญาต: {{license}}",
-    "website": "เว็บไซต์"
+    "website": "เว็บไซต์",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "ไม่พบ namespaces ของการตั้งค่า",
     "stringList": {
@@ -264,17 +317,44 @@
       "remove": "ลบ"
     },
     "combo": {
-      "searchPlaceholder": "ค้นหาค่า..."
+      "searchPlaceholder": "ค้นหาค่า...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "จำนวนไม่ถูกต้อง",
       "description": "ค่าต้องอยู่ระหว่าง {{min}} ถึง {{max}}"
-    }
+    },
+    "saving": "กำลังบันทึก...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "คัดลอกไปยังคลิปบอร์ด",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "ยังไม่มีล็อก รันคำสั่งเพื่อสร้างผลลัพธ์ล็อก",
     "demo-1": "ยินดีต้อนรับสู่โหมดทดลอง! 🧪",
-    "demo-2": "นี่คืออินสแตนซ์ SoulFire แบบอ่านอย่างเดียว",
+    "demo-2": "",
     "demo-3": "ลองดูทุกเมนูและฟีเจอร์ก่อนจะตัดสินใจติดตั้ง SoulFire :D",
     "demo-4": "สามารถเข้าร่วม Discord ของเราได้ หากต้องการติดต่อ: https://soulfiremc.com/discord"
   },
@@ -324,26 +404,165 @@
       "error": "ส่งข้อความไม่สำเร็จ"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "ลองใหม่อีกครั้ง",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_other": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ทั้งหมด",
+      "projects": "",
+      "bots": "บอท",
+      "scripts": "สคริปต์",
+      "settings": "การตั้งค่า",
+      "actions": "การดำเนินการ"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "เริ่มบอท",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "ยกเลิก",
+      "unavailable": "",
+      "start_other": "",
+      "stop_other": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_other": "เริ่มบอท {{count}} ตัว",
+      "stopBots_other": "หยุดบอท {{count}} ตัว",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "เชื่อมต่อแล้ว",
+      "starting": "กำลังเริ่มต้น",
+      "retrying": "กำลังลองใหม่อีกครั้ง",
+      "failed": "ล้มเหลว",
+      "stopping": "กำลังหยุด",
+      "stopped": "หยุดแล้ว",
+      "active": "ใช้งานอยู่",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "ปิด",
+      "pin": "",
+      "back": "ย้อนกลับ"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "การตั้งค่า",
+      "bots": "บอท",
+      "scripts": "สคริปต์",
+      "admin": "",
+      "actions": "การดำเนินการ",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "อ่านเอกสารคู่มือ",
     "backToDashboard": "กลับไปแดชบอร์ด",
     "deleteToast": {
-      "loading": "กำลังลบอินสแตนซ์...",
-      "success": "ลบอินสแตนซ์แล้ว",
-      "error": "ลบอินสแตนซ์ไม่สำเร็จ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "อินสแตนซ์",
-    "createInstance": "สร้างอินสแตนซ์",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "กำลังโหลดโปรไฟล์...",
-      "success": "โหลดโปรไฟล์เรียบร้อย",
-      "error": "โหลดโปรไฟล์ไม่สำเร็จ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "โหลดโปรไฟล์",
+    "loadProfile": "",
     "loadFromFile": "โหลดจากไฟล์",
-    "profileSaved": "บันทึกโปรไฟล์แล้ว",
-    "saveProfile": "บันทึกโปรไฟล์",
-    "deleteInstance": "ลบอินสแตนซ์",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "ส่วนควบคุม",
     "overview": "ภาพรวม",
     "terminal": "เทอร์มินัล",
@@ -353,19 +572,21 @@
     "extensionsGroup": "ส่วนขยาย",
     "botSettings": "ตั้งค่าบอท",
     "accountSettings": "ตั้งค่าบัญชีผู้ใช้",
-    "metaSettings": "ตั้งค่าอินสแตนซ์",
+    "metaSettings": "",
     "proxySettings": "ตั้งค่าพร็อกซี่",
     "aiSettings": "ตั้งค่า AI",
     "pathfindingSettings": "ตั้งค่าการค้นหาเส้นทาง",
     "discoverPlugins": "ปลั๊กอิน",
-    "instanceScripts": "สคริปต์"
+    "instanceScripts": "สคริปต์",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "อ่านเอกสารคู่มือ",
     "userGroup": "ผู้ใช้",
-    "instances": "อินสแตนซ์",
+    "instances": "",
     "access": "การเข้าถึง",
-    "createInstance": "สร้างอินสแตนซ์",
+    "createInstance": "",
     "settings": "การตั้งค่า",
     "adminGroup": "แอดมิน",
     "adminOverview": "ภาพรวม",
@@ -410,21 +631,21 @@
     "extensions": "ส่วนขยาย",
     "bots": "บอท"
   },
-  "noInstancesFound": "ไม่พบบัญชีอินสแตนซ์",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "เทอร์มินัล",
     "logs": "บันทึก",
     "audit-log": "บันทึกตรวจสอบ",
     "bots": "บอท",
     "botDetail": "รายละเอียดบอท",
-    "instances": "อินสแตนซ์",
+    "instances": "",
     "access": "การเข้าถึง",
     "settings": "การตั้งค่า",
     "proxySettings": "ตั้งค่าพร็อกซี่",
     "overview": "ภาพรวม",
     "users": "ผู้ใช้",
     "accountSettings": "ตั้งค่าบัญชีผู้ใช้",
-    "metaSettings": "ตั้งค่าอินสแตนซ์",
+    "metaSettings": "",
     "discoverPlugins": "ปลั๊กอิน",
     "adminScripts": "สคริปต์",
     "instanceScripts": "สคริปต์"
@@ -432,7 +653,7 @@
   "access": {
     "webdav": {
       "title": "เข้าถึง WebDAV",
-      "description": "WebDAV ให้สิทธิ์การเข้าถึงไฟล์อินสแตนซ์, สคริปต์ และไฟล์อื่น ๆ",
+      "description": "",
       "publicAddress": "ที่อยู่อินเทอร์เน็ต WebDAV สาธารณะ",
       "personalToken": "โทเค็น WebDAV ส่วนตัว",
       "securityWarning": "เก็บ Token WebDAV ส่วนตัวของคุณเป็นความลับ เพราะมันให้สิทธิ์เข้าถึงไฟล์ของคุณ ใช้ Token นี้เป็นรหัสผ่าน WebDAV คุณไม่จำเป็นต้องใช้ชื่อผู้ใช้ หากแอปของคุณต้องการ ให้ใส่ค่าใดก็ได้ เช่น 'soulfire'",
@@ -440,7 +661,7 @@
     },
     "api": {
       "title": "เข้าถึง API",
-      "description": "SoulFire gRPC HTTP API ใช้จัดการอินสแตนซ์ผ่านเว็บรีเควสต์",
+      "description": "",
       "publicAddress": "ที่อยู่ API สาธารณะ",
       "personalToken": "โทเค็น API ส่วนตัว",
       "securityWarning": "เก็บ Token API ส่วนตัวของคุณเป็นความลับ เพราะมันให้สิทธิ์เข้าถึง API ได้",
@@ -471,7 +692,8 @@
   "clipboardCopy": {
     "loading": "กำลังคัดลอกไปยังคลิปบอร์ด...",
     "success": "คัดลอก \"{{content}}\" ไปยังคลิปบอร์ดแล้ว",
-    "error": "คัดลอกไปยังคลิปบอร์ดไม่สำเร็จ"
+    "error": "คัดลอกไปยังคลิปบอร์ดไม่สำเร็จ",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -511,6 +733,7 @@
     "executedCommand": "ดำเนินการคำสั่ง: {{data}}",
     "changedBotDesiredState": "เปลี่ยนสถานะที่ต้องการของบอทแล้ว",
     "restartedBots": "รีสตาร์ทบอทแล้ว",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "คัดลอกชื่อผู้ใช้",
       "copyCommand": "คัดลอกคำสั่ง"
@@ -581,15 +804,16 @@
       "actions": "การดำเนินการ"
     },
     "globalScript": "โกลบอล",
-    "instanceScript": "อินสแตนซ์"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "การดำเนินการ",
     "instance": {
-      "goToInstance": "ไปที่อินสแตนซ์",
-      "duplicateInstance": "ทำสำเนาอินสแตนซ์",
-      "copyInstanceId": "คัดลอก Instance ID",
-      "copyInstanceName": "คัดลอกชื่อ Instance",
-      "deleteInstance": "ลบอินสแตนซ์"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "ไปที่บอท",
@@ -650,5 +874,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "ทั้งหมด",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "อื่น ๆ"
+    },
+    "enabledHeading": "",
+    "availableHeading": "พร้อมใช้งาน"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "กำลังสร้างโทเค็น...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "บอท",
+    "botOnline": "ออนไลน์",
+    "botOffline": "ออฟไลน์",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

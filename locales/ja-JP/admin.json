@@ -20,12 +20,12 @@
         "title": "スレッド数"
       },
       "aggregateBots": {
-        "title": "Botオンライン数（全インスタンス）"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "このサーバー上の合計インスタンス数",
-      "instances": "インスタンス",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "状態",
         "active": "稼働中",
@@ -64,7 +64,7 @@
         "role": {
           "label": "役割",
           "placeholder": "役割を選択してください",
-          "description": "ユーザーの役割です。管理者はユーザーや全インスタンスを管理できます。ユーザーは自分のインスタンスのみ管理できます。",
+          "description": "",
           "user": "ユーザー",
           "admin": "管理者"
         }

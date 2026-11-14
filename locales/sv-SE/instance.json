@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Rå instansutdata finns tillgänglig här när du behöver inspektera konsoldetaljer.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Konton",
       "proxies": "Proxies",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Liveflöde",
-      "empty": "Väntar på instansaktivitet...",
+      "empty": "",
       "noPermission": "Du har inte behörighet att visa liveflödet.",
       "lifecycle": {
         "connecting": "ansluter",
@@ -97,6 +97,7 @@
         "executeCommand": "körde ett kommando: {{data}}",
         "botDesiredStateChange": "ändrade önskat tillstånd för bot",
         "botRestart": "startade om bottar",
+        "pluginRpc": "",
         "unknown": "utförde en åtgärd"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "Inga proxies att importera"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Importerar proxies...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "ProxytTyp",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +221,7 @@
     },
     "unknownError": "Okänt fel",
     "types": {
-      "OFFLINE": "Offline",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (autentiseringsuppgifter)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (enhetskod)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (uppfriskningstoken)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "Öppna konfigurering",
       "openMetadata": "Öppna metadata",
-      "copyProfileId": "Kopiera profil-ID",
+      "copyProfileId": "",
       "copyUsername": "Kopiera användarnamn"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "Välj en inställningssida",
       "noSearchResults": "Inga inställningar matchar denna sökning.",
       "matchesInheritedValue": "Matchar ärvt värde",
-      "instanceValue": "Instansvärde",
+      "instanceValue": "",
       "defaultValue": "Standardvärde",
       "resetOverride": "Återställ överskridande"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Köp konton via Ravealts",
       "description": "Köp Minecraft-konton med din Ravealts API-nyckel.",
-      "apiKeyLabel": "API-nyckel",
       "apiKeyPlaceholder": "Ange din Ravealts API-nyckel",
-      "validate": "Validera",
-      "validating": "Validerar...",
-      "keyValid": "Nyckel validerad",
-      "keyInvalid": "Ogiltig API-nyckel",
-      "credits": "Krediter: {{credits}}",
-      "stockTitle": "Tillgängligt lager",
       "noStock": "Inga konton i lager",
       "accountType": "Kontotyp",
-      "amount": "Antal (1-10)",
-      "purchase": "Köp & importera",
-      "purchasing": "Köper...",
-      "purchaseSuccess": "Köpte {{count}} konto(n), importerar...",
-      "purchaseError": "Köp misslyckades: {{message}}",
       "networkError": "Anslutningen till Ravealts API misslyckades",
       "outOfStock": "Vald typ är slut i lager",
       "insufficientBalance": "Inte tillräckligt med krediter",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Instansmetadata",
-    "description": "Hantera beständiga metadata-poster för denna instans. Varje post har ett namnrymd, en nyckel och ett JSON-värde.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Namnområde",
     "keyPlaceholder": "Nyckel",
     "valuePlaceholder": "Värde (JSON)",
     "noEntries": "Inga metadata-poster. Lägg till en ovan.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Försök igen",
     "addSuccess": "Post tillagd",
     "addError": "Misslyckades med att lägga till posten",
     "updateError": "Misslyckades med att uppdatera posten",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "Sök bland botar...",
     "onlineCount": "{{online}} online / {{total}} totalt",
-    "noBots": "Inga botar konfigurerade. Lägg till konton från sidan Kontoinställningar.",
+    "noBots": "",
     "noBotsFound": "Inga botar matchar din sökning.",
     "loadingMore": "Laddar mer...",
     "showingCount": "Visar {{loaded}} av {{total}}",
@@ -396,12 +404,12 @@
       "waiting": "Väntar",
       "stopped": "Stoppad"
     },
-    "backToBots": "Tillbaka till Botar",
+    "backToBots": "",
     "tabs": {
-      "overview": "Översikt",
+      "overview": "",
       "inventory": "Inventory",
-      "controls": "Kontroller",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Kommer snart",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": "Bot är offline. Positionsdata är endast tillgänglig när boten är ansluten."
     },
     "chatPanel": {
-      "title": "Chattmeddelanden",
-      "description": "Chattmeddelanden från denna bot kommer att visas här i en framtida uppdatering."
+      "title": "",
+      "description": "Chattmeddelanden från denna bot kommer att visas här i en framtida uppdatering.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Botkommandon",
@@ -428,14 +443,14 @@
       "description": "Kommandon med bot-omfattning kommer att vara tillgängliga i en framtida uppdatering."
     },
     "povPanel": {
-      "title": "Botens vy",
+      "title": "",
       "capture": "Fånga",
       "refresh": "Uppdatera",
       "auto": "Auto",
       "startAutoRefresh": "Starta auto-uppdatering (1 sekunds intervall)",
       "stopAutoRefresh": "Stoppa auto-uppdatering",
       "clickToCapture": "Klicka på Fånga för att visa botens synvinkel",
-      "offline": "Bot är offline. Renderingen av POV är endast tillgänglig när boten är ansluten."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Botstatistik",
@@ -545,6 +560,49 @@
       "dismiss": "Avvisa",
       "submit": "Skicka",
       "offline": "Bot är offline. Dialoger är endast tillgängliga när boten är ansluten."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Alla",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Ansluten",
+      "starting": "Startar",
+      "retrying": "Försöker igen",
+      "failed": "Misslyckades",
+      "stopping": "Stoppar",
+      "stopped": "Stoppad"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "Visuella skript",
-    "description": "Skapa automationsskript med en visuell nodbaserad editor.",
+    "description": "",
     "experimentalTitle": "Experimentell funktion",
     "experimentalWarning": "Den här funktionen är experimentell. Framtida uppdateringar kan förstöra befintliga skript. Använd med försiktighet.",
-    "createScript": "Skapa skript",
-    "createScriptTitle": "Skapa nytt skript",
-    "createScriptDescription": "Skapa ett nytt visuellt skript för denna instans. Skript kan automatisera bottåtgärder och svara på händelser.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Skriptets namn",
     "scriptNamePlaceholder": "Ange skriptnamn...",
     "scriptDescription": "Beskrivning",
@@ -625,36 +683,36 @@
     "create": "Skapa",
     "createSuccess": "Skriptet har skapats",
     "createError": "Misslyckades med att skapa skriptet",
-    "noScripts": "Inga skript än",
-    "noScriptsDescription": "Skapa ditt första skript för att automatisera bottåtgärder med den visuella nodbaserade editorn.",
-    "createFirstScript": "Skapa ditt första skript",
-    "running": "Kör",
-    "paused": "Pausad",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "noder",
     "noDescription": "Ingen beskrivning",
     "edit": "Redigera",
-    "pause": "Pausa",
-    "pauseSuccess": "Skript pausat",
-    "pauseError": "Misslyckades att pausa skriptet",
-    "resume": "Återuppta",
-    "resumeSuccess": "Skript återupptaget",
-    "resumeError": "Misslyckades att återuppta skriptet",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Ta bort",
     "deleteSuccess": "Skriptet har tagits bort",
     "deleteError": "Misslyckades med att ta bort skriptet",
     "saveSuccess": "Skriptet har sparats",
     "saveError": "Misslyckades med att spara skriptet",
-    "activateSuccess": "Skript aktiverat",
-    "activateError": "Det gick inte att aktivera skriptet",
-    "deactivateSuccess": "Skript inaktiverat",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Namnlöst skript",
-    "saveFirstBeforeActivating": "Spara skriptet först innan du aktiverar",
-    "activating": "Aktiverar skript...",
-    "activated": "Skript aktiverat",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skriptet slutfört",
     "executionCompletedSuccess": "Skriptet slutfördes utan fel",
-    "deactivated": "Skript inaktiverat",
-    "deactivatedByUser": "Skript avaktiverat av användaren",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Skriptkörning misslyckades",
     "executionError": "Körningsfel: {{error}}",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "Nodfel: {{error}}",
     "contextMenu": {
       "edit": "Redigera skript",
-      "pause": "Pausa",
-      "resume": "Återuppta",
+      "pause": "",
+      "resume": "",
       "delete": "Ta bort skript",
       "copyScriptName": "Kopiera skriptnamn",
       "copyScriptId": "Kopiera skript-ID"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "Tillbaka till skript",
         "save": "Spara",
-        "saveTooltip": "Spara skriptet",
-        "resume": "Återuppta",
-        "resumeTooltip": "Återuppta skriptexekvering",
-        "pause": "Pausa",
-        "pauseTooltip": "Pausa skriptkörning",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Ej sparad",
         "unsavedChanges": "Osparade ändringar",
         "clearCanvas": "Rensa arbetsyta",
@@ -690,16 +748,17 @@
         "import": "Importera skriptet",
         "exportSuccess": "Skriptet har exporterats",
         "importSuccess": "Skriptet har importerats",
-        "importError": "Det gick inte att importera skriptet"
+        "importError": "Det gick inte att importera skriptet",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Nodpalett",
+        "title": "",
         "search": "Sök noder..."
       },
       "logs": {
-        "title": "Körloggar",
+        "title": "",
         "clearTitle": "Rensa loggar",
-        "noLogs": "Inga loggar än. Kör skriptet för att se körloggar.",
+        "noLogs": "",
         "entries_one": "{{count}} post",
         "entries_other": "{{count}} poster"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Testkörning",
-        "title": "Testkör skript",
-        "description": "Kör ett skript från en vald trigger med simulerad indata.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Trigger-nod",
         "selectTrigger": "Välj en trigger...",
-        "triggerDescription": "Välj trigger-noden att köra med simulerade indata.",
-        "mockInputs": "Simulerad indata",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}}-värde",
-        "start": "Starta testkörning",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "Spara kvoter",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Åtgärd",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Anslut",
+    "back": "Tillbaka",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alla",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Anslut",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Totalt",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Ingen",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "ansluten",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Valfritt",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Öppna alla inställningar",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Konton",
+      "reviewProxies": "Proxies",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Starta {{count}} bot",
+      "action_other": "Starta {{count}} bottar"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

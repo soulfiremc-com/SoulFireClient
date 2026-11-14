@@ -20,12 +20,12 @@
         "title": "Jumlah Thread"
       },
       "aggregateBots": {
-        "title": "Bot Online (Semua Instansi)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Total instansi di server ini",
-      "instances": "Instansi",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Status",
         "active": "Aktif",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Peran",
           "placeholder": "Pilih peran",
-          "description": "Peran pengguna. Admin dapat mengelola pengguna dan semua instansi. Pengguna hanya dapat mengelola instansi mereka sendiri.",
+          "description": "",
           "user": "Pengguna",
           "admin": "Admin"
         }
