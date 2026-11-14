@@ -866,18 +866,16 @@ export async function applyGeneratedAccounts(
   if (transport === null) return;
 
   await queryClient.cancelQueries({ queryKey: instanceInfoQueryKey });
-  queryClient.setQueryData<InstanceInfoQueryData>(
-    instanceInfoQueryKey,
-    (old) =>
-      old
-        ? {
-            ...old,
-            profile: {
-              ...old.profile,
-              accounts: mergeAccounts([], newAccounts),
-            },
-          }
-        : old,
+  queryClient.setQueryData<InstanceInfoQueryData>(instanceInfoQueryKey, (old) =>
+    old
+      ? {
+          ...old,
+          profile: {
+            ...old.profile,
+            accounts: mergeAccounts([], newAccounts),
+          },
+        }
+      : old,
   );
   await Effect.runPromise(
     createRpcClient(InstanceService, transport).replaceInstanceAccounts({
