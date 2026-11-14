@@ -23,7 +23,7 @@ jobs:
           - os: macos-15-intel
             platform: macos
             arch: x64
-          - os: macos-15
+          - os: macos-14
             platform: macos
             arch: arm64
           - os: windows-2025
@@ -50,6 +50,12 @@ jobs:
 
       - name: Install dependencies
         run: bun ci
+
+      - name: Install PostHog CLI binary
+        if: runner.os == 'Windows'
+        run: |
+          npm rebuild @posthog/cli
+          node node_modules/@posthog/cli/run-posthog-cli.js --version
 
       - name: Typecheck
         run: bun run typecheck
