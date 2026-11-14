@@ -20,12 +20,12 @@
         "title": "Cantidad de hilos"
       },
       "aggregateBots": {
-        "title": "Bots en línea (todas las instancias)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Instalaciones totales en este servidor",
-      "instances": "Instancias",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Estado",
         "active": "Activo",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rol",
           "placeholder": "Seleccione un rol",
-          "description": "El rol del usuario; los administradores pueden administrar usuarios y todas las instancias, los usuarios solo pueden administrar sus propias instancias.",
+          "description": "",
           "user": "Usuario",
           "admin": "Admin"
         }

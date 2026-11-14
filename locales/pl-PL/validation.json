@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano undefined",
-    "null": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano null",
-    "number": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano liczba",
-    "boolean": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano boolean",
-    "array": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano tablica",
-    "object": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano object",
-    "nan": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano NaN",
-    "infinity": "Nieprawidłowe dane wejściowe: oczekiwano string, otrzymano liczba"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano undefined",
-    "null": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano null",
-    "string": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano string",
-    "boolean": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano boolean",
-    "array": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano tablica",
-    "object": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano object",
-    "nan": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano NaN",
-    "infinity": "Nieprawidłowe dane wejściowe: oczekiwano liczba, otrzymano liczba"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano undefined",
-    "null": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano null",
-    "number": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano liczba",
-    "string": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano string",
-    "boolean": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano boolean",
-    "array": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano tablica",
-    "nan": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano NaN",
-    "infinity": "Nieprawidłowe dane wejściowe: oczekiwano object, otrzymano liczba"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Nieprawidłow(y/a/e) adres email",
-  "url": "Nieprawidłow(y/a/e) URL",
-  "jwt": "Nieprawidłow(y/a/e) JWT",
-  "emailTooLong": "Za duża wartość: oczekiwano, że string będzie mieć <=255 znaków",
-  "jarSource": "Nieprawidłowa opcja: oczekiwano jednej z wartości \"official\"|\"custom\"",
-  "generationMode": "Nieprawidłowa opcja: oczekiwano jednej z wartości \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Nieprawidłowa opcja: oczekiwano jednej z wartości 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

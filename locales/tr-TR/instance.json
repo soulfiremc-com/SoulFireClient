@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Konsol ayrıntılarını incelemeniz gerektiğinde ham örnek çıktısı burada mevcuttur.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Hesaplar",
       "proxies": "Proxyler",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Canlı akış",
-      "empty": "Instans etkinliği bekleniyor...",
+      "empty": "",
       "noPermission": "Canlı yayını görüntüleme izniniz yok.",
       "lifecycle": {
         "connecting": "bağlanıyor",
@@ -97,6 +97,7 @@
         "executeCommand": "bir komut çalıştırdı: {{data}}",
         "botDesiredStateChange": "botun istenen durumu değiştirildi",
         "botRestart": "botlar yeniden başlatıldı",
+        "pluginRpc": "",
         "unknown": "bir işlem gerçekleştirdi"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "İçe aktarılacak proxy yok"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Proxyler içe aktarılıyor...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "Proxy Türü",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +221,7 @@
     },
     "unknownError": "Bilinmeyen hata",
     "types": {
-      "OFFLINE": "Çevrimdışı",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Kimlik Bilgileri)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Cihaz Kodu)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Yenileme Jetonu)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "Yapılandırmayı Aç",
       "openMetadata": "Metadata'yı Aç",
-      "copyProfileId": "Profil Kimliğini Kopyala",
+      "copyProfileId": "",
       "copyUsername": "Kullanıcı Adını Kopyala"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "Bir ayarlar sayfası seçin",
       "noSearchResults": "Bu aramayla eşleşen bir ayar yok.",
       "matchesInheritedValue": "Miras alınan değerle eşleşiyor",
-      "instanceValue": "Örnek değeri",
+      "instanceValue": "",
       "defaultValue": "Varsayılan değer",
       "resetOverride": "Geçersiz kılmayı sıfırla"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Ravealts üzerinden Hesap Satın Al",
       "description": "Ravealts API anahtarınızı kullanarak Minecraft hesapları satın alın.",
-      "apiKeyLabel": "API Anahtarı",
       "apiKeyPlaceholder": "Ravealts API anahtarınızı girin",
-      "validate": "Doğrula",
-      "validating": "Doğrulanıyor...",
-      "keyValid": "Anahtar doğrulandı",
-      "keyInvalid": "Geçersiz API anahtarı",
-      "credits": "Kredi: {{credits}}",
-      "stockTitle": "Mevcut Stok",
       "noStock": "Stokta hesap yok",
       "accountType": "Hesap Türü",
-      "amount": "Miktar (1-10)",
-      "purchase": "Satın Al &amp; İçe Aktar",
-      "purchasing": "Satın alınıyor...",
-      "purchaseSuccess": "{{count}} hesap satın alındı, içe aktarılıyor...",
-      "purchaseError": "Satın alma başarısız: {{message}}",
       "networkError": "Ravealts API'ye bağlantı başarısız oldu",
       "outOfStock": "Seçilen tür stokta yok",
       "insufficientBalance": "Yeterli kredi yok",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Varlık Meta Verisi / Instance Meta Verisi ",
-    "description": "Bu örnek için kalıcı meta veri girişlerini yönetin. Her bir giriş, bir ad alanı, bir anahtar ve bir JSON değeri içerir.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Ad Alanı",
     "keyPlaceholder": "Anahtar",
     "valuePlaceholder": "Değer (JSON)",
     "noEntries": "Metadata girişi yok. Yukarıdan bir tane ekleyin.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Yeniden Dene",
     "addSuccess": "Giriş eklendi",
     "addError": "Giriş eklenemedi",
     "updateError": "Giriş güncellenemedi",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "Botlarda ara...",
     "onlineCount": "{{online}} çevrim içi / {{total}} toplamı",
-    "noBots": "Hiç bot yapılandırılmadı. Hesaplarınızı Hesap Ayarları sayfasından ekleyin.",
+    "noBots": "",
     "noBotsFound": "Aramanıza uyan bot bulunamadı.",
     "loadingMore": "Daha fazla yükleniyor...",
     "showingCount": "{{total}} öğeden {{loaded}} gösteriliyor",
@@ -396,12 +404,12 @@
       "waiting": "Bekleniyor",
       "stopped": "Durduruldu"
     },
-    "backToBots": "Botlara Geri Dön",
+    "backToBots": "",
     "tabs": {
-      "overview": "Genel Bakış",
+      "overview": "",
       "inventory": "Envanter",
-      "controls": "Kontroller",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Çok Yakında",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": "Bot çevrim dışı. Konum verileri yalnızca bot bağlıyken görüntülenebilir."
     },
     "chatPanel": {
-      "title": "Sohbet Mesajları",
-      "description": "Bu bota ait sohbet mesajları gelecekteki bir güncellemede burada görünecek."
+      "title": "",
+      "description": "Bu bota ait sohbet mesajları gelecekteki bir güncellemede burada görünecek.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Bot Komutları",
@@ -428,14 +443,14 @@
       "description": "Bota özel komutlar gelecekteki bir güncellemede sunulacak."
     },
     "povPanel": {
-      "title": "Bot Bakış Açısı",
+      "title": "",
       "capture": "Yakala",
       "refresh": "Yenile",
       "auto": "Otomatik",
       "startAutoRefresh": "Oto-yenilemeyi başlat (1 saniye aralıkla)",
       "stopAutoRefresh": "Oto-yenilemeyi durdur",
       "clickToCapture": "Botun bakış açısını göstermek için Yakala'ya tıklayın",
-      "offline": "Bot çevrimdışı. Bakış açısı yalnızca bot bağlandığında kullanılabilir."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Bot İstatistikleri",
@@ -545,6 +560,49 @@
       "dismiss": "Kapat",
       "submit": "Gönder",
       "offline": "Bot çevrimdışı. Diyaloglar yalnızca bot bağlandığında kullanılabilir."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Tümü",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Bağlandı",
+      "starting": "Başlatılıyor",
+      "retrying": "Yeniden deneniyor",
+      "failed": "Başarısız oldu",
+      "stopping": "Durduruluyor",
+      "stopped": "Durduruldu"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "Görsel Scriptler",
-    "description": "Görsel bir düğüm tabanlı düzenleyici kullanarak otomasyon scriptleri oluşturun.",
+    "description": "",
     "experimentalTitle": "Deneysel Özellik",
     "experimentalWarning": "Bu özellik deneyseldir. Gelecekteki güncellemeler mevcut scriptleri bozabilir. Dikkatli kullanın.",
-    "createScript": "Script Oluştur",
-    "createScriptTitle": "Yeni Script Oluştur",
-    "createScriptDescription": "Bu örnek için yeni bir görsel script oluşturun. Scriptler, botun eylemlerini otomatikleştirebilir ve olaylara yanıt verebilir.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Script Adı",
     "scriptNamePlaceholder": "Script adını girin...",
     "scriptDescription": "Açıklama",
@@ -625,36 +683,36 @@
     "create": "Oluştur",
     "createSuccess": "Script başarıyla oluşturuldu",
     "createError": "Script oluşturulamadı",
-    "noScripts": "Henüz Script Yok",
-    "noScriptsDescription": "Görsel düğüm tabanlı düzenleyiciyi kullanarak bot eylemlerini otomatikleştirmek için ilk scriptinizi oluşturun.",
-    "createFirstScript": "İlk Scriptinizi Oluşturun",
-    "running": "Çalışıyor",
-    "paused": "Duraklatıldı",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "düğümler",
     "noDescription": "Açıklama yok",
     "edit": "Düzenle",
-    "pause": "Duraklat",
-    "pauseSuccess": "Betik duraklatıldı",
-    "pauseError": "Betik duraklatılamadı",
-    "resume": "Devam et",
-    "resumeSuccess": "Betik devam ettirildi",
-    "resumeError": "Betik devam ettirilemedi",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Sil",
     "deleteSuccess": "Script başarıyla silindi",
     "deleteError": "Script silinemedi",
     "saveSuccess": "Script başarıyla kaydedildi",
     "saveError": "Script kaydedilemedi",
-    "activateSuccess": "Script aktifleştirildi",
-    "activateError": "Script aktifleştirilemedi",
-    "deactivateSuccess": "Script devre dışı bırakıldı",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Başlıksız Script",
-    "saveFirstBeforeActivating": "Aktifleştirmeden önce scripti kaydedin",
-    "activating": "Komut dosyası etkinleştiriliyor...",
-    "activated": "Script aktifleştirildi",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Script tamamlandı",
     "executionCompletedSuccess": "Script başarıyla tamamlandı",
-    "deactivated": "Script devre dışı bırakıldı",
-    "deactivatedByUser": "Komut dosyası kullanıcı tarafından devre dışı bırakıldı",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Script yürütme başarısız oldu",
     "executionError": "Yürütme hatası: {{error}}",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "Düğüm hatası: {{error}}",
     "contextMenu": {
       "edit": "Script'i Düzenle",
-      "pause": "Duraklat",
-      "resume": "Devam et",
+      "pause": "",
+      "resume": "",
       "delete": "Script'i Sil",
       "copyScriptName": "Script Adını Kopyala",
       "copyScriptId": "Script Kimliğini Kopyala"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "Scriptlere Geri Dön",
         "save": "Kaydet",
-        "saveTooltip": "Scripti kaydet.",
-        "resume": "Devam et",
-        "resumeTooltip": "Betik yürütmesini devam ettir",
-        "pause": "Duraklat",
-        "pauseTooltip": "Komut dosyası yürütmesini duraklat",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Kaydedilmedi",
         "unsavedChanges": "Kaydedilmemiş değişiklikler",
         "clearCanvas": "Tuvali temizle",
@@ -690,16 +748,17 @@
         "import": "Scripti içe aktar",
         "exportSuccess": "Script başarıyla dışa aktarıldı",
         "importSuccess": "Script başarıyla içe aktarıldı",
-        "importError": "Script içe aktarılamadı"
+        "importError": "Script içe aktarılamadı",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Düğüm Paleti",
+        "title": "",
         "search": "Düğüm ara..."
       },
       "logs": {
-        "title": "Yürütme Günlükleri",
+        "title": "",
         "clearTitle": "Günlükleri temizle",
-        "noLogs": "Henüz günlük yok. Yürütme günlüklerini görmek için scripti çalıştırın.",
+        "noLogs": "",
         "entries_one": "{{count}} giriş",
         "entries_other": "{{count}} giriş"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Deneme Çalıştır",
-        "title": "Deneme Çalıştır Script",
-        "description": "Seçili bir tetikleyiciden script çalıştır, sahte girişlerle.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Tetikleyici Düğümü",
         "selectTrigger": "Bir tetikleyici seç...",
-        "triggerDescription": "Sahte giriş değerleriyle çalıştırılacak tetikleyici düğümünü seçin.",
-        "mockInputs": "Sahte Girdiler",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} değeri",
-        "start": "Deneme Çalıştır'ı Başlat",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "Kotaları Kaydet",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Eylem",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Bağlan",
+    "back": "Geri Dön",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Tümü",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Bağlan",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Toplam",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Yok",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "bağlandı",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "İsteğe bağlı",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Tüm ayarları aç",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Hesaplar",
+      "reviewProxies": "Proxyler",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "{{count}} botu başlat",
+      "action_other": "{{count}} botu başlat"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

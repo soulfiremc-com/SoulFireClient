@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "Логотип SoulFire"
@@ -7,47 +14,65 @@
   },
   "newUser": "Вперше в SoulFire? Прочитайте <a>посібник для початківців</a>.",
   "connect": {
-    "title": "Підключіться до сервера SoulFire",
-    "description": "Оберіть тип сервера SoulFire, до якого бажаєте підключитися.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Інтегрований сервер (локальний)",
-      "description": "Запускає сервер SoulFire на цьому пристрої. Налаштування проходить автоматично. Цей варіант доступний лише для настільних ПК або Android додатка."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Виділений сервер (віддалений)",
-      "description": "Підключає до віддаленого сервера SoulFire за його адресою та токеном."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Демонстраційний сервер",
-      "description": "Надає сервер лише для читання з демо-даними. SoulFire не зберігає зміни."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Підготовка до запуску інтегрованого сервера...",
+    "preparing": "",
     "toast": {
-      "loading": "Запуск інтегрованого сервера...",
-      "success": "Інтегрований сервер запущено за {{time}} с",
-      "error": "Не вдалося запустити інтегрований сервер"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Повторити спробу",
+    "retry": "",
     "reset": {
-      "button": "Скинути дані",
+      "button": "",
       "loading": "Скидання даних SoulFire...",
       "success": "Дані SoulFire успішно скинуто. Спробуйте почати знову.",
-      "error": "Не вдалося скинути дані SoulFire"
+      "error": "Не вдалося скинути дані SoulFire",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Вбудований сервер працює на вашому комп’ютері. Ви можете змінити аргументи запуску Java нижче.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "Аргументи JVM",
         "description": "Аргументи Java VM для SoulFire. Додайте <bold>-Xmx4G</bold>, щоб використовувати 4 ГБ оперативної пам’яті. За замовчуванням використовується 25% доступної пам’яті.",
-        "placeholder": "Ваші аргументи JVM тут"
+        "placeholder": "Ваші аргументи JVM тут",
+        "reset": ""
       },
       "back": "Назад",
-      "start": "Почати"
+      "start": ""
     },
     "mobile": {
-      "description": "Щоб запустити інтегрований сервер на мобільному пристрої, потрібно виконати кілька ручних кроків.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Команда Termux",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Запускати автоматично наступного разу.",
       "description": "Пропустити вибір сервера й використовувати ці налаштування під час відкриття SoulFire."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "Введіть адресу та токен сервера SoulFire.",
+    "description": "",
     "toast": {
       "loading": "Підключення до сервера...",
       "success": "Підключено до сервера",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Адреса",
-        "description": "Адреса вашого сервера SoulFire.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Токен",
         "placeholder": "Секретний токен",
-        "description": "Токен для автентифікації на сервері."
+        "description": ""
       },
       "email": {
         "title": "Електронна пошта",
@@ -96,7 +180,7 @@
       "back": "Назад",
       "useToken": "Використати токен",
       "useEmail": "Використати email",
-      "login": "Увійти"
+      "login": ""
     }
   },
   "emailCode": {

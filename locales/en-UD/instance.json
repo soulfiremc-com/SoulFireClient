@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": ".sliated elosnoc tcepsni ot deen uoy nehw ereh elbaliava si tuptuo ecnatsni waR",
+    "logsDescription": "",
     "summary": {
       "accounts": "snuoccA",
       "proxies": "seixorP",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "pǝǝɟ ǝʌᴉl",
-      "empty": "...ʎʇᴉʌᴉʇɔɐ ǝɔuɐʇsᴉ uoɹɟ ƃuᴉʇᴉɐʍ",
+      "empty": "",
       "noPermission": ".pǝǝɟ ǝʌᴉl ǝɥʇ ʍǝᴉʌ oʇ uoᴉssᴉɯɹǝd ǝʌɐɥ ʇou os no⅄",
       "lifecycle": {
         "connecting": "ƃuᴉʇɔǝuuoɔ sᴉ",
@@ -97,6 +97,7 @@
         "executeCommand": " :{{data}} puɐɯɯoɔ ɐ pɐu",
         "botDesiredStateChange": "ǝƃuɐɥɔ ǝʇɐʇs pǝɹᴉɹǝs pʇoq pǝƃuɐɥɔ",
         "botRestart": "sʇoq pǝʇɐɹʇsǝɹ",
+        "pluginRpc": "",
         "unknown": "uoᴉʇɔɐ  uɐ pǝɯɹoɟɹǝd"
       }
     },
@@ -129,6 +130,23 @@
       "noProxies": "ʇɹodɯᴉ oʇ sǝᴉxɐɹd oN"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "...sǝᴉxɐɹd ƃuᴉʇɹodɯᴉ",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": ""
+      },
       "proxyType": "ǝndoɹԀ ʎdxoɹԀ",
       "http": "HTTP",
       "socks4": "4SKCOS",
@@ -203,7 +221,7 @@
     },
     "unknownError": "ɹoɹɹǝ uʍoʞun",
     "types": {
-      "OFFLINE": "ǝuᴉlɟɟO",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "sɐlıʇuǝpǝɹɔ (ɐʌɐſ)",
       "MICROSOFT_JAVA_DEVICE_CODE": "ǝpoɔ ǝɔıʌǝp (ɐʌɐſ)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "uǝʞoʇ ɥsǝɟǝɹ (ɐʌɐſ)",
@@ -272,7 +290,7 @@
     "contextMenu": {
       "openConfig": "ƃᴉɟuoɔ  uǝdo",
       "openMetadata": "ɐʇɐpɐʇǝɯ uǝdo",
-      "copyProfileId": "pᴉI ǝlᴉɟoɹԀ ʎdoↃ",
+      "copyProfileId": "",
       "copyUsername": "ǝɯɐuǝɯɐu ʎdoↃ"
     },
     "config": {
@@ -292,7 +310,7 @@
       "selectPage": "peagepgs aa tcniseleS",
       "noSearchResults": ".hcraes siht hctam sgnits sero n oN",
       "matchesInheritedValue": "eulav detarihnI sehctam",
-      "instanceValue": "eulav ecnatsnI",
+      "instanceValue": "",
       "defaultValue": "eulav tluafed",
       "resetOverride": "ediverrO teser"
     },
@@ -311,23 +329,10 @@
     },
     "ravealts": {
       "button": "sʇlɐǝʌɐɹ",
-      "title": "sʇlɐǝʌɐɹ ɐ ɐᴉʌ sʇunoɔɔ∀ ǝsɐɥɔɹnԀ",
       "description": ".ʎǝʞ IԀ∀ sʇlɐǝʌɐɹ ɹnoʎ ƃuᴉnsn ʇunoɔɔɐ ʇɟɐɹɔɐɯ ʎnq",
-      "apiKeyLabel": "ʎǝʞ IԀ∀",
       "apiKeyPlaceholder": "ʇʎǝʞ IԀ∀ sʇlɐǝʌɐɹ ɹnoʎ ɹǝʇuƎ",
-      "validate": "ǝʇɐpᴉʃɐʌ",
-      "validating": ".ƃuᴉʇɐpᴉʃɐʌ",
-      "keyValid": "pǝʇɐpᴉʃɐʌ ʎǝʞ",
-      "keyInvalid": "ʎǝʞ IԀ∀ pᴉlɐʌuI",
-      "credits": ":sʇᴉpǝɹɔ {{credits}}",
-      "stockTitle": "ʞɔoʇS ǝʅqɐʅᴉɐʌ∀",
       "noStock": "ʞɔoʇs uᴉ sʇunoɔɔɐ oN",
       "accountType": "ǝdɈʇ ʇunoɔɔ∀",
-      "amount": "(01-1) ʇunoɯ∀",
-      "purchase": "ʇɹodɯI ⅋ ǝsɐɥɔɹnԀ",
-      "purchasing": ".ƃuᴉsɐɥɔɹnԀ",
-      "purchaseSuccess": ".ƃuᴉʇɹodɯᴉ ,sʇunoɔɔɐ {{count}} pǝsɐɥɔɹnԀ",
-      "purchaseError": ":ɹoɹɹƎ ǝsɐɥɔɹnԀ {{message}}",
       "networkError": "pǝlᴉɐℲ IԀ∀ sʇlɐʌʇl∀ ǝʇsɐʌǝɐᴚ ǝɥʇ oʇ uoᴉʇɔǝuuoↃ",
       "outOfStock": "ʞɔoʇs ɟo ʇno sᴉ ǝdʎʇ pǝʇɔǝʅǝS",
       "insufficientBalance": "sʇᴉpǝɹɔ ɥƃnoǝu ʇoq",
@@ -354,12 +359,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "ɐʇɐpɐʇɐɯ ǝɔuɐʇsᴉuƃI",
-    "description": "˙ǝnlɐʌ uosɾ puɐ ʎǝʞ ,,ǝɔɐdsǝɯɐu sɐɥ ʎɹʇuǝ sʎɹǝʇuǝ pɐʇɐpɐʇǝɯ ʇuǝʇsᴉsɹǝd ǝƃɐuɐɯ oʇ ǝɔuɐʇsᴉu sᴉɥʇ ɹoɟ sǝᴉɹʇuǝ ɐƃɐuɐɯ",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "ǝɔɐdsǝɯɐN",
     "keyPlaceholder": "ʎǝ⋊",
     "valuePlaceholder": ")NOႧ( ǝnlɐʌ",
     "noEntries": "..ǝʌoɯɐ ǝuo ppp∀ .sǝᴉɹʇuǝ ɐʇɐpɐʇǝɯ oN",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "ʎɹʇǝɹ",
     "addSuccess": "pǝpp∀ ʎɹʇuƎ",
     "addError": "ʎɹʇuǝ  ppA oʇ pǝlᴉɐℲ",
     "updateError": "ʎɹʇuǝ ǝʇɐpdnl pǝlᴉɐℲ",
@@ -371,7 +379,7 @@
   "bots": {
     "searchPlaceholder": "...sʇoq ɥɔɹɐǝS",
     "onlineCount": "lɐʇoʇ {{total}} / ǝuᴉluo {{online}}",
-    "noBots": ".ǝƃɐd sƃuᴉʇsǝʇ uoʇunoɔɔɐ pp∀ .pǝɹnƃᴉɟuoɔ sʇoq oN",
+    "noBots": "",
     "noBotsFound": ".ɥɔɹɐǝs ɹnoʎ ɥɔɐʇɯ sʇoq oN",
     "loadingMore": "...ǝɹoɯ ƃuᴉpɐo˥",
     "showingCount": "{{total}} ɟo {{loaded}} ƃuᴉʍoɥS",
@@ -396,12 +404,12 @@
       "waiting": "ƃuᴉʇᴉɐM",
       "stopped": "pǝddo┴S"
     },
-    "backToBots": "sʇoq oʇ ʞɔɐԐ",
+    "backToBots": "",
     "tabs": {
-      "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
+      "overview": "",
       "inventory": "ʎɹoʇuǝʌuI",
-      "controls": "sdoɹʇuoↃ",
-      "terminal": "ןɐuᴉɯɹǝ┴"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "uooS ƃuᴉɯoɔ",
     "terminalPanel": {
@@ -419,8 +427,15 @@
       "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ ǝlqɐlᴉɐʌ sᴉ ɐʇɐp uoᴉʇᴉsod .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
     },
     "chatPanel": {
-      "title": "sǝƃɐssǝW ʇɐɥↃ",
-      "description": ".ǝʇɐpdn ǝɹnlɥ ǝɹǝɥʍ ɹɐǝddɐ llᴉʍ ʇoq sᴉɥʇ ɯoɹɟ sǝƃɐssǝɥ ʇɐɥↃ"
+      "title": "",
+      "description": ".ǝʇɐpdn ǝɹnlɥ ǝɹǝɥʍ ɹɐǝddɐ llᴉʍ ʇoq sᴉɥʇ ɯoɹɟ sǝƃɐssǝɥ ʇɐɥↃ",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "spuɐɯɯoↃ ʇoq",
@@ -428,14 +443,14 @@
       "description": ".ǝʇɐpdn ǝɹnlɥ ɐuᴉ pllᴉʍ spuɐɯɯoↃ pǝdoɔs-ʇoq .ǝʇɐpdn ǝlqɐlᴉɐʌ sᴉ spuɐɯɯoↃ"
     },
     "povPanel": {
-      "title": "ʌOԀ ʇoq",
+      "title": "",
       "capture": "ǝɹnɯɐϽ",
       "refresh": "ɥsǝɹɟǝᴚ",
       "auto": "onʇԀ",
       "startAutoRefresh": ")lɐuɹǝʇuᴉ puoɔǝs 1( ɥsǝɹɟǝɹoʇnɐ ʇɹɐʇs",
       "stopAutoRefresh": "ɥsǝɹɟǝɹoʇnɐ doʇS",
       "clickToCapture": "ǝnlpnɐ ɟo ʇuᴉod ǝɥʇ s,ʇoq ǝɥʇ ɹǝpuǝɹ oʇ ǝɹnʇdɐɔ pᴉlɔ ƃuᴉʞɔᴉlↃ",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ llɐ ǝlqɐlᴉɐʌ sᴉ ƃuᴉɹǝpuǝɹ ʌOԀ .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ""
     },
     "statsPanel": {
       "title": "sʇɐʇS ʇoq",
@@ -545,6 +560,49 @@
       "dismiss": "ssǝɯsᴉᗡ",
       "submit": "ʇᴉnbᴉԀ",
       "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ llɐ ǝlqɐlᴉɐʌ sᴉ sɐƃolɐp .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "ll∀",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "pǝʇɔǝuuoɔ",
+      "starting": "ƃuᴉʇɹɐʇS",
+      "retrying": "ƃuᴉʎɹʇǝᴚ",
+      "failed": "pǝlᴉɐℲ",
+      "stopping": "ƃuᴉddodS",
+      "stopped": "pǝddo┴S"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +670,12 @@
   },
   "scripts": {
     "title": "sʇdıɹɔS lɐnsᴉ˥",
-    "description": ".ɹoʇᴉpǝ ǝsɐq-ǝpou lɐnsᴉʌ ɐ ƃuᴉnsnlɐ ɥɔᴉɹɔs uoᴉʇɐɯnlɐ ǝʇɐǝɹↃ",
+    "description": "",
     "experimentalTitle": "ǝɹnɹndǝɯᴉɹǝdxƎ ǝɹnʇɐǝɟ",
     "experimentalWarning": "˙uoᴉʇsᴉunɔ ɥʇᴉʍ ᴉ ǝs∩ ˙sʇdᴉɹɔs ƃuᴉʇsᴉxǝ ƃuᴉʞɐǝɹ uqɐɔ sǝʇɐpdn ǝɹnʇnℲ ˙lɐʇuǝɯᴉɹǝdxǝ sᴉ ǝɹnʇɐǝɹℲ sᴉɥ⊥",
-    "createScript": "ʇdıɹɔS ǝʇɐǝɹↃ",
-    "createScriptTitle": "ʇdıɹɔS ʍǝN ǝʇɐǝɹↃ",
-    "createScriptDescription": ".sʇuǝʌǝ oʇ puɐ suoᴉʇɔ∀ ʇoq ǝʇɐɯnlɐ  puɐ suoᴉʇɔnɐ ʇoq ǝʇɐɯnlɐ sʇdıɹɔs ʇsᴉɥ ɹoɟ lɐnsᴉʌ ɐ ʍǝu ǝʇɐǝɹɔ oʇ ʇdıɹɔS",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "ǝɯɐu ʇdıɹɔS",
     "scriptNamePlaceholder": "...ǝɯɐu ʇdıɹɔs ɹǝʇuǝ",
     "scriptDescription": "uoᴉʇdᴉɹɔsǝᗡ",
@@ -625,36 +683,36 @@
     "create": "ǝʇɐɹɔ",
     "createSuccess": "ʎllɟnlɐ sʎlndɐɔɔns ʇdıɹɔs",
     "createError": "ʇdıɹɔs ǝʇɐǝɹɔ oʇ pǝlᴉɐℲ",
-    "noScripts": "ʇǝ⅄ sʇdıɹɔS oN",
-    "noScriptsDescription": ".ɹoʇᴉpǝ ǝsɐq-ǝpou lɐnsᴉʌ ǝɥʇ ƃuᴉsnlɐ oʇ ʇdıɹɔs ʇsɹᴉɟ ɹnoʎ ǝʇɐǝɹɔ",
-    "createFirstScript": "ʇdıɹɔS ʇsɹᴉℲ ɹno⅄ ǝʇɐǝɹↃ",
-    "running": "ƃuᴉuunᴚ",
-    "paused": "pǝsnsɐԀ",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "sǝpoᗡ",
     "noDescription": "uoᴉʇdᴉɹɔsǝᗡ oN",
     "edit": "ʇᴉpƎ",
-    "pause": "ǝsnsɐԀ",
-    "pauseSuccess": "pǝsnuɐd ʇdıɹɔS",
-    "pauseError": "ʇdıɹɔs ǝsnuɐd oʇ pǝlᴉɐℲ",
-    "resume": "ǝɯnsǝᴚ",
-    "resumeSuccess": "pǝɯnsǝɹ ʇdıɹɔS",
-    "resumeError": "ʇdıɹɔs ǝɯnsǝɹ oʇ pǝlᴉɐℲ",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "ǝʇǝlǝᗡ",
     "deleteSuccess": "ʎllɟnlɐ ǝɹǝ ʇdıɹɔs ǝʇǝlǝᗡ",
     "deleteError": "ʇdıɹɔs ǝʇǝlǝᗡ oʇ pǝlᴉɐℲ",
     "saveSuccess": "ʎllɟnlɐ ǝɹǝ ʇdıɹɔs pǝʌɐS",
     "saveError": "ʇdıɹɔs ǝʌɐs oʇ pǝlᴉɐℲ",
-    "activateSuccess": "pǝʇɐʌᴉʇɔɐ sʇdıɹɔS",
-    "activateError": "ʇdıɹɔs ǝʇɐʌᴉʇɔɐ oʇ pǝlᴉɐℲ",
-    "deactivateSuccess": "pǝʇɐʌᴉʇɔɐp ʇdıɹɔS",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "ʇdıɹɔS pǝlʇᴉʇu∩",
-    "saveFirstBeforeActivating": "ƃuᴉʇɐʌᴉʇɔɐ ǝɹoɟ ʇsɹᴉɟ ʇdıɹɔs ǝɥʇ ǝʌɐs",
-    "activating": "...ƃuᴉʇɐʌᴉɔɐ ƃuᴉʇdᴉɹɔS",
-    "activated": "pǝʇɐʌᴉʇɔɐ sʇdıɹɔS",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "pǝʇǝlǝdoɔ ʇdıɹɔS",
     "executionCompletedSuccess": "ʎllɟnlɐ sʎlndɐɔɔns pǝʇǝlǝdoɔ ʇdıɹɔS",
-    "deactivated": "pǝʇɐʌᴉʇɔɐp ʇdıɹɔS",
-    "deactivatedByUser": "ɹǝns ʎq pǝʇɐʌᴉʇɔɐ pǝʇdıɹɔS",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "pǝlᴉɐℲ uoᴉʇnɔǝxǝ ʇdıɹɔS",
     "executionError": "}}error{{ :ɹoɹɹǝ uoᴉʇnɔǝxǝ",
     "monitoringError": "",
@@ -664,8 +722,8 @@
     "nodeError": "}}error{{ :ɹoɹɹǝ ǝpoN",
     "contextMenu": {
       "edit": "ʇᴉpƎ ʇdıɹɔS",
-      "pause": "ǝsnsɐԀ",
-      "resume": "ǝɯnsǝᴚ",
+      "pause": "",
+      "resume": "",
       "delete": "ʇdıɹɔS ǝʇǝlǝᗡ",
       "copyScriptName": "ǝɯɐu ʇdıɹɔS ʎdoↃ",
       "copyScriptId": "DI ʇdıɹɔS ʎdoↃ"
@@ -675,11 +733,11 @@
         "actions": "",
         "backToScripts": "sʇdıɹɔS oʇ ʞɔɐq",
         "save": "ǝʌɐS",
-        "saveTooltip": "ʇdᴉɹɔs ǝʌɐS",
-        "resume": "ǝɯnsǝᴚ",
-        "resumeTooltip": "uoᴉʇnɔǝxǝ ʇdıɹɔs ǝɯnsǝɹ",
-        "pause": "ǝsnsɐԀ",
-        "pauseTooltip": "uoᴉʇnɔǝxǝ ʇdıɹɔs ǝsnuɐd",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "pǝʌɐsnu",
         "unsavedChanges": "sǝᵷuɐɥɔ pǝʌɐsnu",
         "clearCanvas": "sɐʇuǝʌɐɔ ɹɐǝlↃ",
@@ -690,16 +748,17 @@
         "import": "ʇɹodɯI ʇdıɹɔS",
         "exportSuccess": "ʎllɟnlɐ sʎlndɐɔɔns ʇɹoddxǝ ɇʇdıɹɔS",
         "importSuccess": "ʎllɟnlɐ sʎlndɐɔɔns ʇɹodɯI ʇdıɹɔS",
-        "importError": "ʇdıɹɔs ʇɹodɯI oʇ pǝlᴉɐℲ"
+        "importError": "ʇdıɹɔs ʇɹodɯI oʇ pǝlᴉɐℲ",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "ǝʇʇǝlɐԀ ǝpoN",
+        "title": "",
         "search": "...sǝpou ɥɔɹɐǝS"
       },
       "logs": {
-        "title": "sƃo˥ uoᴉʇnɔǝxƎ",
+        "title": "",
         "clearTitle": "sƃo˥ ɹɐǝlↃ",
-        "noLogs": ".sƃo˥ uǝǝs oN .uɐɹɔ ǝǝs oʇ ʇdıɹɔs ǝɥʇ uɐɹ ǝɥʇ nuɹ",
+        "noLogs": "",
         "entries_one": "ʎɹʇuǝ {{count}}",
         "entries_other": "sǝᴉɹʇuǝ {{count}}"
       },
@@ -753,15 +812,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "uɐᴚ ʎɹᗡ",
-        "title": "ʇdᴉɹɔS uɐᴚ ʎɹᗡ",
-        "description": ".sʇnɾuᴉ uʞɔoɯ ɥʇᴉʍ ɹǝᵷɡᴉɹʇ dǝʇɔǝlǝs ɐ ɯoɹɟ ʇdᴉɹɔs ɐ nɹ uɐ",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "ǝpoN ɹǝᵷɡᴉɹ⟘",
         "selectTrigger": "...ɹǝᵷɡᴉɹʇ ɐ ʇɔǝlǝS",
-        "triggerDescription": ".sǝnlɐʌ ʇnᴉdnᴉ ʞɔoɯ ɥʇᴉʍ ǝʇnɔǝxǝ oʇ ǝpou ɹǝᵷɡᴉɹ⟘ ǝɥʇ ʞɔᴉd",
-        "mockInputs": "sʇnduᴉ ʞɔoW",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "ǝnlɐǝnlԀ {{ʎdǝʇ}}",
-        "start": "uɐᴚ ʎɹᗡ ʇɹɐʇS",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
@@ -786,10 +846,545 @@
         "save": "sɐʇonbᴉn ǝʌɐS",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "uoᴉʇɔ∀",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "ʇɔǝuuoɔ",
+    "back": "ʞɔɐԐ",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ll∀",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "ʇɔǝuuoɔ",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "ןɐʇo⊥",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "ǝuoN",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "pǝʇɔǝuuouuoɔ",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "ɹǝʇɹɐʇsǝᴚ {{count}} ʇoq",
+    "restartGroup_other": "ɹǝʇɹɐʇsǝᴚ {{count}} sʇoq"
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "lɐuoᴉʇdo",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "nitinfetsnlla pninepO",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "snuoccA",
+      "reviewProxies": "seixorP",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "ʇoq {{count}} ʇɐɹʇS",
+      "action_other": "sʇoq {{count}} ʇɐɹʇS"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

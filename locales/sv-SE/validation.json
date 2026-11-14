@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Ogiltig inmatning: förväntat string, fick undefined",
-    "null": "Ogiltig inmatning: förväntat string, fick null",
-    "number": "Ogiltig inmatning: förväntat string, fick antal",
-    "boolean": "Ogiltig inmatning: förväntat string, fick boolean",
-    "array": "Ogiltig inmatning: förväntat string, fick lista",
-    "object": "Ogiltig inmatning: förväntat string, fick object",
-    "nan": "Ogiltig inmatning: förväntat string, fick NaN",
-    "infinity": "Ogiltig inmatning: förväntat string, fick antal"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Ogiltig inmatning: förväntat antal, fick undefined",
-    "null": "Ogiltig inmatning: förväntat antal, fick null",
-    "string": "Ogiltig inmatning: förväntat antal, fick string",
-    "boolean": "Ogiltig inmatning: förväntat antal, fick boolean",
-    "array": "Ogiltig inmatning: förväntat antal, fick lista",
-    "object": "Ogiltig inmatning: förväntat antal, fick object",
-    "nan": "Ogiltig inmatning: förväntat antal, fick NaN",
-    "infinity": "Ogiltig inmatning: förväntat antal, fick antal"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Ogiltig inmatning: förväntat object, fick undefined",
-    "null": "Ogiltig inmatning: förväntat object, fick null",
-    "number": "Ogiltig inmatning: förväntat object, fick antal",
-    "string": "Ogiltig inmatning: förväntat object, fick string",
-    "boolean": "Ogiltig inmatning: förväntat object, fick boolean",
-    "array": "Ogiltig inmatning: förväntat object, fick lista",
-    "nan": "Ogiltig inmatning: förväntat object, fick NaN",
-    "infinity": "Ogiltig inmatning: förväntat object, fick antal"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Ogiltig(t) e-postadress",
-  "url": "Ogiltig(t) URL",
-  "jwt": "Ogiltig(t) JWT",
-  "emailTooLong": "För stor(t): förväntade string att ha <=255 tecken",
-  "jarSource": "Ogiltigt val: förväntade en av \"official\"|\"custom\"",
-  "generationMode": "Ogiltigt val: förväntade en av \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Ogiltigt val: förväntade en av 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

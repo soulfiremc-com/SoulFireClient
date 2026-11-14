@@ -4,6 +4,16 @@
   "cancel": "Ləğv et",
   "save": "Yadda saxla",
   "saving": "Yadda saxlanılır...",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Server ünvanı və ya token tapılmadı",
     "page": {
@@ -11,7 +21,15 @@
       "description": "Səhifə yüklənmədi. Əlavə məlumat üçün konsolu açın.",
       "logOut": "Çıxış",
       "reloadPage": "Səhifəni yenilə",
-      "showDetails": "Təfərrüatları göstər"
+      "showDetails": "Təfərrüatları göstər",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "SoulFire serveri ilə əlaqə alınmadı."
   },
@@ -54,41 +72,44 @@
     "support": {
       "title": "SoulFire-ə dəstək olun",
       "description": "SoulFire pulsuz və açıq mənbəlidir, icma tərəfindən sevgi ilə hazırlanıb.",
-      "body": "Əgər SoulFire sizə faydalı olubsa, layihəni dəstəkləməyi nəzərdən keçirin. Sizin töhfəniz server xərclərini qarşılamağa, inkişafı maliyyələşdirməyə və SoulFire-nı hamı üçün pulsuz saxlamağa kömək edir.",
+      "body": "",
       "dismiss": "Bəlkə sonra",
-      "action": "SoulFire-ə dəstək olun"
+      "action": "SoulFire-ə dəstək olun",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Yeni instansiya yaradın",
-      "description": "İnstansta tanımağa rahat olacağınız bir ad verin, məsələn \"Mənim Minecraft Botum\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Dost adı",
-          "placeholder": "Mənim Minecraft Botum",
-          "description": "Bu instansiyaya vermək istədiyiniz ad."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Ləğv et",
-        "create": "Yarat"
+        "create": ""
       },
       "createToast": {
-        "loading": "İnstan yaradılır...",
-        "success": "İnstan uğurla yaradıldı",
-        "error": "İnstanı yaratmaq mümkün olmadı"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Nüsxə instansiyası",
-      "description": "\"{{name}}\" profilindən istifadə edərək yeni instansiya yaradın.",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Nüsxələnmiş instansiya üçün ad."
+          "description": ""
         },
-        "duplicate": "Dublikat"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Nüsxə çıxarılır...",
-        "success": "Nüsxə uğurla çıxarıldı",
-        "error": "Nüsxə çıxarmaq alınmadı"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,6 +118,8 @@
         "fromUrl": "URL-dən",
         "firstClipboardItem": "Mübadilə buferində bir neçə element var. SoulFire ilk elementi istifadə edəcək.",
         "fromClipboard": "Arxivdən",
+        "clipboardError": "",
+        "fileError": "",
         "textarea": {
           "placeholder": "Mətni bura yazın...",
           "submit": "Mətndən yüklə"
@@ -122,6 +145,8 @@
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Əmr daxil edin ('help' yazın siyahı üçün)",
     "emptySuggestions": "Təkliflər üçün yazmağa başlayın və ya Tab düyməsini basın.",
     "noSuggestions": "Heç bir təklif mövcud deyil."
@@ -148,12 +173,12 @@
       "success": "Botlar dayandırılır",
       "error": "Botları dayandırmaq alınmadı"
     },
-    "permissionDenied": "Bu instansiyada botları başlatmağa və ya dayandırmağa icazəniz yoxdur.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Server bot idarəetmə icazələri barədə hesabat vermədi. Server və kliyen versiyalarınızın uyğun olduğundan əmin olun.",
     "startBots": "Botları başlat",
     "moreActions": "Daha çox bot əməliyyatları",
-    "generateFirst": "İlk botlarınızı başlatmaq üçün hesablar yaradın.",
-    "startCountHelp": "Əlavə botlar işə salınacaq. Aktiv botlar qoşulu qalacaq.",
+    "generateFirst": "",
+    "startCountHelp": "",
     "startAllCount": "Hamısını başladın: {{count}}",
     "validCount": "1-dən {{count}}-ə qədər tam ədəd daxil edin.",
     "positiveCount": "Ən azı 1 olan tam ədəd daxil edin.",
@@ -253,9 +278,37 @@
     "version": "Versiya: {{version}}",
     "author": "Müəllif: {{author}}",
     "license": "Lisenziya: {{license}}",
-    "website": "Vebsayt"
+    "website": "Vebsayt",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
     "saveError": "",
     "namespacesNotFound": "Tənzimləmə bölmələri tapılmadı",
     "stringList": {
@@ -268,17 +321,45 @@
       "remove": "Sil"
     },
     "combo": {
-      "searchPlaceholder": "Axtarış dəyəri..."
+      "searchPlaceholder": "Axtarış dəyəri...",
+      "selectPlaceholder": ""
     },
     "invalidNumberToast": {
       "title": "Yanlış ədəd",
       "description": "Dəyər {{min}} və {{max}} arasında olmalıdır"
-    }
+    },
+    "saving": "Yadda saxlanılır...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Panoya kopyala",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Hələ heç bir log yoxdur. Log çıxışı yaratmaq üçün əmr verin.",
     "demo-1": "Demo rejiminə xoş gəldiniz! 🧪",
-    "demo-2": "Bu, SoulFire-in yalnız oxumaq üçün nəzərdə tutulmuş instansiyasıdır",
+    "demo-2": "",
     "demo-3": "SoulFire-i qurmaq qərarına gəlməzdən əvvəl bütün menyu və funksiyalara baxın :D",
     "demo-4": "Bizim Discord serverə qoşulmaqdan çəkinməyin: https://soulfiremc.com/discord"
   },
@@ -328,26 +409,177 @@
       "error": "Mesajı yaymaq mümkün olmadı"
     }
   },
+  "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Təkrar cəhd et",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Hamısı",
+      "projects": "",
+      "bots": "Botlar",
+      "scripts": "Skriptlər",
+      "settings": "Ayarlar",
+      "actions": "Əməliyyatlar"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Botları başlat",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Ləğv et",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
+    "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "activate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "deactivate": {
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
+    },
+    "operations": {
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "{{count}} botu başladın",
+      "startBots_other": "{{count}} botu başladın",
+      "stopBots_one": "{{count}} botu dayandırın",
+      "stopBots_other": "{{count}} botu dayandırın",
+      "retryBots_one": "",
+      "retryBots_other": ""
+    },
+    "status": {
+      "connected": "Bağlandı",
+      "starting": "Başladılır",
+      "retrying": "Təkrar cəhd edilir",
+      "failed": "Uğursuz oldu",
+      "stopping": "Dayandırılır",
+      "stopped": "Dayandırılıb",
+      "active": "Aktiv",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Bağla",
+      "pin": "",
+      "back": "Geri"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Ayarlar",
+      "bots": "Botlar",
+      "scripts": "Skriptlər",
+      "admin": "",
+      "actions": "Əməliyyatlar",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
+  },
   "instanceSidebar": {
     "readDocumentation": "Sənədləri oxu",
     "backToDashboard": "Panelə geri dön",
     "deleteToast": {
-      "loading": "Instansiya silinir...",
-      "success": "Instansiya silindi",
-      "error": "Instansiyanı silmək mümkün olmadı"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instansiyalar",
-    "createInstance": "Instansiya yarat",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Profil yüklənir...",
-      "success": "Profil yükləndi",
-      "error": "Profil yüklənmədi"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Profil yüklə",
+    "loadProfile": "",
     "loadFromFile": "Fayldan yüklə",
-    "profileSaved": "Profil yadda saxlanıldı",
-    "saveProfile": "Profil yadda saxla",
-    "deleteInstance": "Instansiyanı sil",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "İdarəetmə",
     "overview": "İcmal",
     "terminal": "Terminal",
@@ -357,19 +589,21 @@
     "extensionsGroup": "Uzantılar",
     "botSettings": "Bot ayarları",
     "accountSettings": "Hesab ayarları",
-    "metaSettings": "İnstan ayarları",
+    "metaSettings": "",
     "proxySettings": "Proxy ayarları",
     "aiSettings": "Süni intellekt ayarları",
     "pathfindingSettings": "Yol tapma ayarları",
     "discoverPlugins": "Pluginlər",
-    "instanceScripts": "Skriptlər"
+    "instanceScripts": "Skriptlər",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Sənədləri oxu",
     "userGroup": "İstifadəçi",
-    "instances": "Instansiyalar",
+    "instances": "",
     "access": "Giriş",
-    "createInstance": "Instansiya yarat",
+    "createInstance": "",
     "settings": "Ayarlar",
     "adminGroup": "Admin",
     "adminOverview": "İcmal",
@@ -414,21 +648,21 @@
     "extensions": "Uzantılar",
     "bots": "Botlar"
   },
-  "noInstancesFound": "Instansiya tapılmadı",
+  "noInstancesFound": "",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Jurnalları",
     "audit-log": "Audit Log",
     "bots": "Botlar",
     "botDetail": "Bot Təfərrüatları",
-    "instances": "Instansiyalar",
+    "instances": "",
     "access": "Giriş",
     "settings": "Ayarlar",
     "proxySettings": "Proxy ayarları",
     "overview": "İcmal",
     "users": "İstifadəçilər",
     "accountSettings": "Hesab ayarları",
-    "metaSettings": "İnstan ayarları",
+    "metaSettings": "",
     "discoverPlugins": "Pluginlər",
     "adminScripts": "Skriptlər",
     "instanceScripts": "Skriptlər"
@@ -436,7 +670,7 @@
   "access": {
     "webdav": {
       "title": "WebDAV Girişi",
-      "description": "WebDAV instans fayllarına, skriptlərə və digər fayllara çıxış imkanı yaradır.",
+      "description": "",
       "publicAddress": "İctimai WebDAV ünvanı",
       "personalToken": "Şəxsi WebDAV Token",
       "securityWarning": "Şəxsi WebDAV tokeninizi gizli saxlayın. O, fayllarınıza çıxış imkanı verir. Tokeni WebDAV parolunuz kimi istifadə edin. İstifadəçi adı lazım deyil. Əgər tətbiqiniz tələb edirsə, məsələn 'soulfire' kimi istənilən dəyəri daxil edin.",
@@ -444,7 +678,7 @@
     },
     "api": {
       "title": "API Girişi",
-      "description": "SoulFire gRPC HTTP API instansları veb sorğularla idarə edir.",
+      "description": "",
       "publicAddress": "İctimai API ünvanı",
       "personalToken": "Şəxsi API Token",
       "securityWarning": "Şəxsi API tokeninizi gizli saxlayın. O, API-yə çıxış imkanı verir.",
@@ -475,7 +709,8 @@
   "clipboardCopy": {
     "loading": "Panoya kopyalanır...",
     "success": "\"{{content}}\" panoya kopyalandı",
-    "error": "Panoya kopyalama uğursuz oldu"
+    "error": "Panoya kopyalama uğursuz oldu",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
@@ -515,6 +750,7 @@
     "executedCommand": "İcra edilmiş əmr: {{data}}",
     "changedBotDesiredState": "Botun istənilən vəziyyəti dəyişdi",
     "restartedBots": "Botlar yenidən başlatıldı",
+    "calledPluginRpc": "",
     "contextMenu": {
       "copyUsername": "İstifadəçi adını kopyala",
       "copyCommand": "Əmri Kopyala"
@@ -585,15 +821,16 @@
       "actions": "Əməliyyatlar"
     },
     "globalScript": "Qlobal",
-    "instanceScript": "Instansiya"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Əməliyyatlar",
     "instance": {
-      "goToInstance": "İnstantsa get",
-      "duplicateInstance": "Nüsxəni çıxar",
-      "copyInstanceId": "İnstant ID-ni kopyala",
-      "copyInstanceName": "İnstant adını kopyala",
-      "deleteInstance": "Instansiyanı sil"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "deleteInstance": ""
     },
     "bot": {
       "goToBot": "Bota get",
@@ -654,5 +891,114 @@
   "botUnavailable": {
     "title": "",
     "description": ""
+  },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Hamısı",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Digər"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Mövcuddur"
+  },
+  "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Token yaradılır...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
+    "botOnline": "Onlayn",
+    "botOffline": "Offline",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   }
 }

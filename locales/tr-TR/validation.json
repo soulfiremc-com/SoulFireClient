@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Geçersiz değer: beklenen string, alınan undefined",
-    "null": "Geçersiz değer: beklenen string, alınan null",
-    "number": "Geçersiz değer: beklenen string, alınan number",
-    "boolean": "Geçersiz değer: beklenen string, alınan boolean",
-    "array": "Geçersiz değer: beklenen string, alınan array",
-    "object": "Geçersiz değer: beklenen string, alınan object",
-    "nan": "Geçersiz değer: beklenen string, alınan NaN",
-    "infinity": "Geçersiz değer: beklenen string, alınan number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Geçersiz değer: beklenen number, alınan undefined",
-    "null": "Geçersiz değer: beklenen number, alınan null",
-    "string": "Geçersiz değer: beklenen number, alınan string",
-    "boolean": "Geçersiz değer: beklenen number, alınan boolean",
-    "array": "Geçersiz değer: beklenen number, alınan array",
-    "object": "Geçersiz değer: beklenen number, alınan object",
-    "nan": "Geçersiz değer: beklenen number, alınan NaN",
-    "infinity": "Geçersiz değer: beklenen number, alınan number"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Geçersiz değer: beklenen object, alınan undefined",
-    "null": "Geçersiz değer: beklenen object, alınan null",
-    "number": "Geçersiz değer: beklenen object, alınan number",
-    "string": "Geçersiz değer: beklenen object, alınan string",
-    "boolean": "Geçersiz değer: beklenen object, alınan boolean",
-    "array": "Geçersiz değer: beklenen object, alınan array",
-    "nan": "Geçersiz değer: beklenen object, alınan NaN",
-    "infinity": "Geçersiz değer: beklenen object, alınan number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Geçersiz e-posta adresi",
-  "url": "Geçersiz URL",
-  "jwt": "Geçersiz JWT",
-  "emailTooLong": "Çok büyük: beklenen string <=255 karakter",
-  "jarSource": "Geçersiz seçenek: aşağıdakilerden biri olmalı: \"official\"|\"custom\"",
-  "generationMode": "Geçersiz seçenek: aşağıdakilerden biri olmalı: \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Geçersiz seçenek: aşağıdakilerden biri olmalı: 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

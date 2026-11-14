@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Yanlış dəyər: gözlənilən string, daxil olan undefined",
-    "null": "Yanlış dəyər: gözlənilən string, daxil olan null",
-    "number": "Yanlış dəyər: gözlənilən string, daxil olan number",
-    "boolean": "Yanlış dəyər: gözlənilən string, daxil olan boolean",
-    "array": "Yanlış dəyər: gözlənilən string, daxil olan array",
-    "object": "Yanlış dəyər: gözlənilən string, daxil olan object",
-    "nan": "Yanlış dəyər: gözlənilən string, daxil olan NaN",
-    "infinity": "Yanlış dəyər: gözlənilən string, daxil olan number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Yanlış dəyər: gözlənilən number, daxil olan undefined",
-    "null": "Yanlış dəyər: gözlənilən number, daxil olan null",
-    "string": "Yanlış dəyər: gözlənilən number, daxil olan string",
-    "boolean": "Yanlış dəyər: gözlənilən number, daxil olan boolean",
-    "array": "Yanlış dəyər: gözlənilən number, daxil olan array",
-    "object": "Yanlış dəyər: gözlənilən number, daxil olan object",
-    "nan": "Yanlış dəyər: gözlənilən number, daxil olan NaN",
-    "infinity": "Yanlış dəyər: gözlənilən number, daxil olan number"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Yanlış dəyər: gözlənilən object, daxil olan undefined",
-    "null": "Yanlış dəyər: gözlənilən object, daxil olan null",
-    "number": "Yanlış dəyər: gözlənilən object, daxil olan number",
-    "string": "Yanlış dəyər: gözlənilən object, daxil olan string",
-    "boolean": "Yanlış dəyər: gözlənilən object, daxil olan boolean",
-    "array": "Yanlış dəyər: gözlənilən object, daxil olan array",
-    "nan": "Yanlış dəyər: gözlənilən object, daxil olan NaN",
-    "infinity": "Yanlış dəyər: gözlənilən object, daxil olan number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Yanlış email address",
-  "url": "Yanlış URL",
-  "jwt": "Yanlış JWT",
-  "emailTooLong": "Çox böyük: gözlənilən string <=255 simvol",
-  "jarSource": "Yanlış seçim: aşağıdakılardan biri olmalıdır: \"official\"|\"custom\"",
-  "generationMode": "Yanlış seçim: aşağıdakılardan biri olmalıdır: \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Yanlış seçim: aşağıdakılardan biri olmalıdır: 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

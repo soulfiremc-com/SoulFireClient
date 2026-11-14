@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire लोगो"
@@ -7,47 +14,65 @@
   },
   "newUser": "SoulFire में नए हैं? <a>शुरुआती गाइड</a> पढ़ें।",
   "connect": {
-    "title": "SoulFire सर्वर से कनेक्ट करें",
-    "description": "चुनें कि आप किस प्रकार के SoulFire सर्वर से कनेक्ट करना चाहते हैं।",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "इंटीग्रेटेड सर्वर (स्थानीय)",
-      "description": "यह विकल्प इस डिवाइस पर SoulFire सर्वर चलाता है। सेटअप स्वचालित है। इस विकल्प के लिए डेस्कटॉप या Android ऐप की आवश्यकता होती है।"
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "डेडिकेटेड सर्वर (रिमोट)",
-      "description": "यह एक दूरस्थ SoulFire सर्वर से उसके पते और टोकन के साथ जुड़ता है।"
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "डेमो सर्वर",
-      "description": "यह केवल-पढ़ने योग्य सर्वर डेमो डेटा के साथ प्रदान करता है। SoulFire परिवर्तनों को सहेजता नहीं है।"
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "इंटीग्रेटेड सर्वर शुरू करने की तैयारी हो रही है...",
+    "preparing": "",
     "toast": {
-      "loading": "इंटीग्रेटेड सर्वर शुरू हो रहा है...",
-      "success": "इंटीग्रेटेड सर्वर {{time}} सेकंड में शुरू हुआ",
-      "error": "इंटीग्रेटेड सर्वर शुरू करने में विफल"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "पुनः प्रयास करें",
+    "retry": "",
     "reset": {
-      "button": "डेटा रीसेट करें",
+      "button": "",
       "loading": "SoulFire डेटा रीसेट किया जा रहा है...",
       "success": "SoulFire डेटा सफलतापूर्वक रीसेट हो गया। पुनः प्रारंभ करने का प्रयास करें।",
-      "error": "SoulFire डेटा रीसेट करने में विफल हुआ"
+      "error": "SoulFire डेटा रीसेट करने में विफल हुआ",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "इंटीग्रेटेड सर्वर आपके कंप्यूटर पर चलता है। आप नीचे दिए गए Java स्टार्टअप आर्ग्यूमेंट्स बदल सकते हैं।",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM आर्गुमेंट्स",
         "description": "SoulFire के लिए Java VM आर्ग्यूमेंट्स। 4 जीबी RAM उपयोग करने के लिए <bold>-Xmx4G</bold> जोड़ें। डिफ़ॉल्ट रूप से उपलब्ध RAM का 25% उपयोग होगा।",
-        "placeholder": "यहाँ अपने JVM आर्गुमेंट्स डालें"
+        "placeholder": "यहाँ अपने JVM आर्गुमेंट्स डालें",
+        "reset": ""
       },
       "back": "वापस",
-      "start": "प्रारंभ करें"
+      "start": ""
     },
     "mobile": {
-      "description": "इंटीग्रेटेड सर्वर को मोबाइल पर चलाने के लिए, आपको कुछ मैन्युअल स्टेप पूरे करने होंगे।",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux कमांड",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "अगली बार स्वचालित रूप से प्रारंभ करें",
       "description": "सर्वर चयन छोड़ें और SoulFire खोलते समय इन सेटिंग्स का उपयोग करें।"
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "SoulFire सर्वर का पता और टोकन दर्ज करें।",
+    "description": "",
     "toast": {
       "loading": "सर्वर से कनेक्ट किया जा रहा है...",
       "success": "सर्वर से कनेक्ट हो गया",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "पता",
-        "description": "आपके SoulFire सर्वर का पता।",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "टोकन",
         "placeholder": "गुप्त टोकन",
-        "description": "सर्वर के साथ प्रमाणन के लिए टोकन।"
+        "description": ""
       },
       "email": {
         "title": "ईमेल",
@@ -96,7 +180,7 @@
       "back": "वापस",
       "useToken": "टोकन उपयोग करें",
       "useEmail": "ईमेल उपयोग करें",
-      "login": "लॉगिन"
+      "login": ""
     }
   },
   "emailCode": {

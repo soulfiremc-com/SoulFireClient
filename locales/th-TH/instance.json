@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "เอาต์พุตของอินสแตนซ์ดิบจะแสดงที่นี่เมื่อคุณต้องการตรวจสอบรายละเอียดคอนโซล.",
+    "logsDescription": "",
     "summary": {
       "accounts": "บัญชีผู้ใช้",
       "proxies": "พร็อกซี",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "ฟีดสด",
-      "empty": "กำลังรอกิจกรรมจากอินสแตนซ์...",
+      "empty": "",
       "noPermission": "คุณไม่มีสิทธิ์ในการดูฟีดสด",
       "lifecycle": {
         "connecting": "กำลังเชื่อมต่อ",
@@ -97,6 +97,7 @@
         "executeCommand": "รันคำสั่ง: {{data}}",
         "botDesiredStateChange": "เปลี่ยนสถานะที่ต้องการของบอท",
         "botRestart": "รีสตาร์ทบอทแล้ว",
+        "pluginRpc": "",
         "unknown": "ดำเนินการแล้ว"
       }
     },
@@ -129,6 +130,21 @@
       "noProxies": "ไม่มีพร็อกซีให้นำเข้า"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "กำลังนำเข้าพร็อกซี...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "rejected_other": ""
+      },
       "proxyType": "ประเภทพร็อกซี",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +219,7 @@
     },
     "unknownError": "ข้อผิดพลาดที่ไม่ทราบสาเหตุ",
     "types": {
-      "OFFLINE": "ออฟไลน์",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (ข้อมูลเข้าสู่ระบบ)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (รหัสอุปกรณ์)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (โทเคนรีเฟรช)",
@@ -272,7 +288,7 @@
     "contextMenu": {
       "openConfig": "เปิดการตั้งค่า",
       "openMetadata": "เปิดข้อมูลเมตา",
-      "copyProfileId": "คัดลอกโปรไฟล์ ID",
+      "copyProfileId": "",
       "copyUsername": "คัดลอกชื่อผู้ใช้"
     },
     "config": {
@@ -292,7 +308,7 @@
       "selectPage": "เลือกหน้าการตั้งค่า",
       "noSearchResults": "ไม่พบการตั้งค่าที่ตรงกับการค้นหานี้",
       "matchesInheritedValue": "ตรงกับค่าที่สืบทอดมา",
-      "instanceValue": "ค่าของอินสแตนซ์",
+      "instanceValue": "",
       "defaultValue": "ค่าเริ่มต้น",
       "resetOverride": "รีเซ็ตการแทนที่"
     },
@@ -311,23 +327,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "ซื้อบัญชีผ่าน Ravealts",
       "description": "ซื้อบัญชี Minecraft โดยใช้คีย์ API ของคุณจาก Ravealts.",
-      "apiKeyLabel": "คีย์ API",
       "apiKeyPlaceholder": "กรอกคีย์ API ของ Ravealts ของคุณ",
-      "validate": "ตรวจสอบความถูกต้อง",
-      "validating": "กำลังตรวจสอบ...",
-      "keyValid": "ตรวจสอบคีย์แล้ว",
-      "keyInvalid": "คีย์ API ไม่ถูกต้อง",
-      "credits": "เครดิต: {{credits}}",
-      "stockTitle": "สินค้าคงเหลือ",
       "noStock": "ไม่มีบัญชีในสต็อก",
       "accountType": "ประเภทบัญชี",
-      "amount": "จำนวน (1-10)",
-      "purchase": "ซื้อและนำเข้า",
-      "purchasing": "กำลังซื้อ...",
-      "purchaseSuccess": "ซื้อบัญชีแล้ว {{count}} รายการ กำลังนำเข้า...",
-      "purchaseError": "การซื้อไม่สำเร็จ: {{message}}",
       "networkError": "การเชื่อมต่อกับ Ravealts API ล้มเหลว",
       "outOfStock": "ประเภทที่เลือกหมดสต็อก",
       "insufficientBalance": "เครดิตไม่เพียงพอ",
@@ -354,12 +357,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "เมทาดาท-instance",
-    "description": "จัดการรายการเมทาดาทาถาวรสำหรับอินสแตนซ์นี้ แต่ละรายการจะมีเนมสเปซ คีย์ และค่า JSON",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "เนมสเปซ",
     "keyPlaceholder": "คีย์",
     "valuePlaceholder": "ค่า (JSON)",
     "noEntries": "ไม่มีรายการข้อมูลเมตา กรุณาเพิ่มรายการด้านบน",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "ลองใหม่อีกครั้ง",
     "addSuccess": "เพิ่มรายการแล้ว",
     "addError": "ไม่สามารถเพิ่มรายการได้",
     "updateError": "ไม่สามารถอัปเดตรายการได้",
@@ -371,7 +377,7 @@
   "bots": {
     "searchPlaceholder": "ค้นหาบ็อต...",
     "onlineCount": "{{online}} ออนไลน์ / {{total}} ทั้งหมด",
-    "noBots": "ไม่มีบอทที่ถูกตั้งค่า เพิ่มบัญชีจากหน้าการตั้งค่าบัญชีผู้ใช้",
+    "noBots": "",
     "noBotsFound": "ไม่พบบอทที่ตรงกับการค้นหาของคุณ",
     "loadingMore": "กำลังโหลดเพิ่มเติม...",
     "showingCount": "แสดง {{loaded}} จากทั้งหมด {{total}} ",
@@ -396,12 +402,12 @@
       "waiting": "กำลังรอ",
       "stopped": "หยุดแล้ว"
     },
-    "backToBots": "กลับไปที่บอท",
+    "backToBots": "",
     "tabs": {
-      "overview": "ภาพรวม",
+      "overview": "",
       "inventory": "อินเวนทอรี",
-      "controls": "ส่วนควบคุม",
-      "terminal": "เทอร์มินัล"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "เร็วๆ นี้",
     "terminalPanel": {
@@ -419,8 +425,15 @@
       "offline": "บอทออฟไลน์ ข้อมูลตำแหน่งจะแสดงเฉพาะเมื่อบอทเชื่อมต่อแล้วเท่านั้น"
     },
     "chatPanel": {
-      "title": "ข้อความแชท",
-      "description": "ข้อความแชทจากบอทนี้จะแสดงที่นี่ในการอัปเดตถัดไป"
+      "title": "",
+      "description": "ข้อความแชทจากบอทนี้จะแสดงที่นี่ในการอัปเดตถัดไป",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "คำสั่งบอท",
@@ -428,14 +441,14 @@
       "description": "คำสั่งที่ใช้เฉพาะบอทนี้จะพร้อมใช้งานในการอัปเดตถัดไป"
     },
     "povPanel": {
-      "title": "มุมมองบอท",
+      "title": "",
       "capture": "จับภาพ",
       "refresh": "รีเฟรช",
       "auto": "อัตโนมัติ",
       "startAutoRefresh": "เริ่มรีเฟรชอัตโนมัติ (ทุก 1 วินาที)",
       "stopAutoRefresh": "หยุดรีเฟรชอัตโนมัติ",
       "clickToCapture": "คลิกที่ปุ่มจับภาพเพื่อแสดงมุมมองของบอท",
-      "offline": "บอทออฟไลน์ การแสดงมุมมองจะสามารถใช้ได้เมื่อบอทเชื่อมต่อเท่านั้น"
+      "offline": ""
     },
     "statsPanel": {
       "title": "สถิติบอท",
@@ -545,6 +558,49 @@
       "dismiss": "ปิดหน้าต่าง",
       "submit": "ส่ง",
       "offline": "บอทออฟไลน์ หน้าต่างโต้ตอบจะใช้ได้ต่อเมื่อบอทเชื่อมต่ออยู่เท่านั้น"
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "ทั้งหมด",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "เชื่อมต่อแล้ว",
+      "starting": "กำลังเริ่มต้น",
+      "retrying": "กำลังลองใหม่อีกครั้ง",
+      "failed": "ล้มเหลว",
+      "stopping": "กำลังหยุด",
+      "stopped": "หยุดแล้ว"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +668,12 @@
   },
   "scripts": {
     "title": "สคริปต์แบบภาพ",
-    "description": "สร้างสคริปต์อัตโนมัติด้วยตัวแก้ไขแบบโหนดภาพ",
+    "description": "",
     "experimentalTitle": "ฟีเจอร์ทดลองใช้งาน",
     "experimentalWarning": "ฟีเจอร์นี้เป็นเวอร์ชันทดลอง อัปเดตในอนาคตอาจทำให้สคริปต์ปัจจุบันใช้ไม่ได้ ใช้งานด้วยความระมัดระวัง",
-    "createScript": "สร้างสคริปต์",
-    "createScriptTitle": "สร้างสคริปต์ใหม่",
-    "createScriptDescription": "สร้างสคริปต์ภาพใหม่สำหรับอินสแตนซ์นี้ สคริปต์สามารถทำให้อัตโนมัติและตอบสนองต่อเหตุการณ์",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "ชื่อสคริปต์",
     "scriptNamePlaceholder": "ใส่ชื่อสคริปต์...",
     "scriptDescription": "คำอธิบาย",
@@ -625,36 +681,36 @@
     "create": "สร้าง",
     "createSuccess": "สร้างสคริปต์สำเร็จ",
     "createError": "สร้างสคริปต์ไม่สำเร็จ",
-    "noScripts": "ยังไม่มีสคริปต์",
-    "noScriptsDescription": "สร้างสคริปต์แรกของคุณเพื่อทำให้งานบอทเป็นอัตโนมัติด้วยตัวแก้ไขแบบโหนดภาพ",
-    "createFirstScript": "สร้างสคริปต์แรกของคุณ",
-    "running": "กำลังทำงาน",
-    "paused": "หยุดชั่วคราว",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "โหนด",
     "noDescription": "ไม่มีคำอธิบาย",
     "edit": "แก้ไข",
-    "pause": "หยุดชั่วคราว",
-    "pauseSuccess": "หยุดสคริปต์ชั่วคราวแล้ว",
-    "pauseError": "ไม่สามารถหยุดสคริปต์ชั่วคราวได้",
-    "resume": "ดำเนินการต่อ",
-    "resumeSuccess": "ทำงานสคริปต์ต่อแล้ว",
-    "resumeError": "ไม่สามารถทำงานสคริปต์ต่อได้",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "ลบ",
     "deleteSuccess": "ลบสคริปต์เรียบร้อยแล้ว",
     "deleteError": "ลบสคริปต์ไม่สำเร็จ",
     "saveSuccess": "บันทึกสคริปต์สำเร็จ",
     "saveError": "บันทึกสคริปต์ไม่สำเร็จ",
-    "activateSuccess": "สคริปต์เปิดใช้งานแล้ว",
-    "activateError": "ไม่สามารถเปิดใช้งานสคริปต์ได้",
-    "deactivateSuccess": "สคริปต์ถูกปิดการใช้งานแล้ว",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "สคริปต์ไม่มีชื่อ",
-    "saveFirstBeforeActivating": "โปรดบันทึกสคริปต์ก่อนเปิดใช้งาน",
-    "activating": "กำลังเปิดใช้งานสคริปต์...",
-    "activated": "สคริปต์เปิดใช้งานแล้ว",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "สคริปต์เสร็จสิ้นแล้ว",
     "executionCompletedSuccess": "สคริปต์เสร็จสิ้นสำเร็จ",
-    "deactivated": "สคริปต์ถูกปิดการใช้งานแล้ว",
-    "deactivatedByUser": "สคริปต์ถูกปิดใช้งานโดยผู้ใช้",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "การทำงานของสคริปต์ล้มเหลว",
     "executionError": "ข้อผิดพลาดขณะรัน: {{error}}",
     "monitoringError": "",
@@ -664,8 +720,8 @@
     "nodeError": "ข้อผิดพลาดโหนด: {{error}}",
     "contextMenu": {
       "edit": "แก้ไขสคริปต์",
-      "pause": "หยุดชั่วคราว",
-      "resume": "ดำเนินการต่อ",
+      "pause": "",
+      "resume": "",
       "delete": "ลบสคริปต์",
       "copyScriptName": "คัดลอกชื่อสคริปต์",
       "copyScriptId": "คัดลอก Script ID"
@@ -675,11 +731,11 @@
         "actions": "",
         "backToScripts": "กลับไปที่สคริปต์",
         "save": "บันทึก",
-        "saveTooltip": "บันทึกสคริปต์",
-        "resume": "ดำเนินการต่อ",
-        "resumeTooltip": "ดำเนินการสคริปต์ต่อ",
-        "pause": "หยุดชั่วคราว",
-        "pauseTooltip": "หยุดการทำงานของสคริปต์ชั่วคราว",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "ยังไม่ได้บันทึก",
         "unsavedChanges": "การเปลี่ยนแปลงที่ยังไม่ได้บันทึก",
         "clearCanvas": "ล้างผืนผ้าใบ",
@@ -690,16 +746,17 @@
         "import": "นำเข้าสคริปต์",
         "exportSuccess": "ส่งออกสคริปต์สำเร็จแล้ว",
         "importSuccess": "นำเข้าสคริปต์สำเร็จแล้ว",
-        "importError": "นำเข้าสคริปต์ไม่สำเร็จ"
+        "importError": "นำเข้าสคริปต์ไม่สำเร็จ",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "พาเลตต์โหนด",
+        "title": "",
         "search": "ค้นหาโหนด..."
       },
       "logs": {
-        "title": "บันทึกการทำงาน",
+        "title": "",
         "clearTitle": "ล้างบันทึก",
-        "noLogs": "ยังไม่มีบันทึก รันสคริปต์เพื่อดูบันทึก",
+        "noLogs": "",
         "entries_other": "{{count}} รายการ"
       },
       "contextMenu": {
@@ -752,15 +809,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "ทดสอบจำลอง (Dry Run)",
-        "title": "ทดสอบจำลองสคริปต์",
-        "description": "รันสคริปต์จากทริกเกอร์ที่เลือกด้วยอินพุตจำลอง",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "โหนดทริกเกอร์",
         "selectTrigger": "เลือกทริกเกอร์...",
-        "triggerDescription": "เลือกโหนดทริกเกอร์เพื่อรันด้วยค่าจำลองอินพุต",
-        "mockInputs": "อินพุตจำลอง",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "ค่าประเภท {{type}}",
-        "start": "เริ่มทดสอบจำลอง",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
@@ -784,10 +842,523 @@
         "save": "บันทึกโควต้า",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "การกระทำ",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "เชื่อมต่อ",
+    "back": "ย้อนกลับ",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ทั้งหมด",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "เชื่อมต่อ",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "รวม",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "ไม่มี",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_other": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "เชื่อมต่อแล้ว",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "ทางเลือก",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "เปิดการตั้งค่าทั้งหมด",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "บัญชีผู้ใช้",
+      "reviewProxies": "พร็อกซี",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_other": "เริ่มบอท {{count}} ตัว"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

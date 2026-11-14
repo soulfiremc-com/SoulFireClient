@@ -20,12 +20,12 @@
         "title": "Aantal threads"
       },
       "aggregateBots": {
-        "title": "Bots online (alle instanties)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Totaal aantal instanties op deze server",
-      "instances": "Instanties",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Status",
         "active": "Actief",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rol",
           "placeholder": "Selecteer een rol",
-          "description": "De rol van de gebruiker. Beheerders kunnen gebruikers en alle instanties beheren. Gebruikers kunnen alleen hun eigen instanties beheren.",
+          "description": "",
           "user": "Gebruiker",
           "admin": "Beheerder"
         }

@@ -20,12 +20,12 @@
         "title": "Nombre de threads"
       },
       "aggregateBots": {
-        "title": "Bots en ligne (toutes les instances)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Nombre total d'instances sur ce serveur",
-      "instances": "Instances",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "État",
         "active": "Actif",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rôle",
           "placeholder": "Sélectionnez un rôle",
-          "description": "Le rôle de l'utilisateur. Les administrateurs peuvent gérer les utilisateurs et toutes les instances. Les utilisateurs ne peuvent gérer que leurs propres instances.",
+          "description": "",
           "user": "Utilisateur",
           "admin": "Administrateur"
         }

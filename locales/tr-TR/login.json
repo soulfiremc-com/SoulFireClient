@@ -1,4 +1,11 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
     "image": {
       "alt": "Soul Fire ikonu"
@@ -7,47 +14,65 @@
   },
   "newUser": "SoulFire'a yeni misiniz? <a>Başlangıç rehberini</a> okuyun.",
   "connect": {
-    "title": "SoulFire Sunucusuna Bağlan",
-    "description": "Hangi tür SoulFire sunucusuna bağlanmak istiyorsanız onu seçin.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Yerel Sunucu (ev)",
-      "description": "Bu cihazda bir SoulFire sunucusu çalıştırır. Kurulum otomatik olarak yapılır. Bu seçenek masaüstü veya Android uygulaması gerektirir."
+      "title": "",
+      "description": "",
+      "webDescription": "",
+      "getDesktop": ""
     },
     "dedicated": {
-      "title": "Dedicated Sunucu (uzaktan bağlantı)",
-      "description": "Sunucunun adresi ve token ile uzaktaki bir SoulFire sunucusuna bağlanır."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Örnek Sunucu",
-      "description": "Salt okunur bir sunucuda demo verileri sağlar. SoulFire değişiklikleri kaydetmez."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Yerel sunucu başlatmaya hazırlanıyor...",
+    "preparing": "",
     "toast": {
-      "loading": "Yerel sunucu başlatılıyor...",
-      "success": "Yerel sunucu {{time}} saniyede başlatıldı",
-      "error": "Yerel sunucu başlatılamadı"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Yeniden Dene",
+    "retry": "",
     "reset": {
-      "button": "Verileri Sıfırla",
+      "button": "",
       "loading": "SoulFire verileri sıfırlanıyor...",
       "success": "SoulFire verileri başarıyla sıfırlandı. Tekrar başlatmayı deneyin.",
-      "error": "SoulFire verileri sıfırlanamadı"
+      "error": "SoulFire verileri sıfırlanamadı",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Entegre sunucu bilgisayarınızda çalışır. Aşağıdan Java başlatma argümanlarını değiştirebilirsiniz.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM argümanları",
         "description": "SoulFire için Java VM argümanları. 4 GB RAM kullanmak için <bold>-Xmx4G</bold> ekleyin. Varsayılan olarak kullanılabilir RAM'in %25'i kullanılır.",
-        "placeholder": "JVM argümanlarınızı buraya girin"
+        "placeholder": "JVM argümanlarınızı buraya girin",
+        "reset": ""
       },
       "back": "Geri Dön",
-      "start": "Başlat"
+      "start": ""
     },
     "mobile": {
-      "description": "Entegre sunucuyu mobilde çalıştırmak için birkaç manuel adımı tamamlamanız gerekiyor.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Termux komutu",
@@ -68,10 +93,69 @@
     "autoStart": {
       "title": "Bir dahaki sefere otomatik başlat",
       "description": "SoulFire açıldığında sunucu seçimini atla ve bu ayarları kullan."
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "dedicated": {
-    "description": "SoulFire sunucusunun adresini ve token bilgisini girin.",
+    "description": "",
     "toast": {
       "loading": "Sunucuya bağlanılıyor...",
       "success": "Sunucuya bağlanıldı",
@@ -80,13 +164,13 @@
     "form": {
       "address": {
         "title": "Adres",
-        "description": "SoulFire sunucunuzun adresi.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Gizli Token",
-        "description": "Sunucuyla kimlik doğrulamak için token."
+        "description": ""
       },
       "email": {
         "title": "Mail Adresi",
@@ -96,7 +180,7 @@
       "back": "Geri Dön",
       "useToken": "Tokeni Kullan",
       "useEmail": "Mail Adresini Kullan",
-      "login": "Oturum Aç"
+      "login": ""
     }
   },
   "emailCode": {

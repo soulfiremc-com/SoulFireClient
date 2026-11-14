@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Сырой вывод экземпляра доступен здесь, если вам нужно просмотреть детали консоли.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Аккаунты",
       "proxies": "Прокси",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Живая лента",
-      "empty": "Ожидание активности экземпляра...",
+      "empty": "",
       "noPermission": "У вас нет разрешения на просмотр живой ленты.",
       "lifecycle": {
         "connecting": "подключается",
@@ -97,6 +97,7 @@
         "executeCommand": "выполнил команду: {{data}}",
         "botDesiredStateChange": "изменено желаемое состояние бота",
         "botRestart": "боты перезапущены",
+        "pluginRpc": "",
         "unknown": "выполнил действие"
       }
     },
@@ -129,6 +130,27 @@
       "noProxies": "Нет прокси для импорта"
     },
     "import": {
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "confirm": "",
+        "importing": "Импорт прокси...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_few": "",
+        "accepted_many": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_few": "",
+        "rejected_many": "",
+        "rejected_other": ""
+      },
       "proxyType": "Тип прокси",
       "http": "HTTP",
       "socks4": "SOCKS4",
@@ -203,7 +225,7 @@
     },
     "unknownError": "Неизвестная ошибка",
     "types": {
-      "OFFLINE": "Офлайн",
+      "OFFLINE": "",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (учётные данные)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (код устройства)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (токен обновления)",
@@ -272,7 +294,7 @@
     "contextMenu": {
       "openConfig": "Открыть конфигурацию",
       "openMetadata": "Открыть метаданные",
-      "copyProfileId": "Скопировать ID профиля",
+      "copyProfileId": "",
       "copyUsername": "Скопировать имя пользователя"
     },
     "config": {
@@ -292,7 +314,7 @@
       "selectPage": "Выберите страницу настроек",
       "noSearchResults": "По вашему запросу не найдено настроек.",
       "matchesInheritedValue": "Совпадает с унаследованным значением",
-      "instanceValue": "Значение экземпляра",
+      "instanceValue": "",
       "defaultValue": "Значение по умолчанию",
       "resetOverride": "Сбросить переопределение"
     },
@@ -311,23 +333,10 @@
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Покупка аккаунтов через Ravealts",
       "description": "Покупайте аккаунты Minecraft, используя ваш API-ключ Ravealts.",
-      "apiKeyLabel": "API-ключ",
       "apiKeyPlaceholder": "Введите ваш API-ключ Ravealts",
-      "validate": "Проверить",
-      "validating": "Проверка...",
-      "keyValid": "Ключ подтверждён",
-      "keyInvalid": "Неверный API-ключ",
-      "credits": "Кредиты: {{credits}}",
-      "stockTitle": "Доступный запас",
       "noStock": "Нет аккаунтов в наличии",
       "accountType": "Тип аккаунта",
-      "amount": "Количество (1-10)",
-      "purchase": "Купить и импортировать",
-      "purchasing": "Покупка...",
-      "purchaseSuccess": "Куплено аккаунтов: {{count}}, импортируется...",
-      "purchaseError": "Покупка не удалась: {{message}}",
       "networkError": "Не удалось подключиться к API Ravealts",
       "outOfStock": "Выбранный тип закончился на складе",
       "insufficientBalance": "Недостаточно кредитов",
@@ -354,12 +363,15 @@
     }
   },
   "instanceMetadata": {
-    "title": "Метаданные экземпляра",
-    "description": "Управляйте постоянными метаданными этого экземпляра. Каждая запись содержит пространство имён, ключ и значение в формате JSON.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Пространство имён",
     "keyPlaceholder": "Ключ",
     "valuePlaceholder": "Значение (JSON)",
     "noEntries": "Нет метаданных. Добавьте запись выше.",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Повторить",
     "addSuccess": "Запись добавлена",
     "addError": "Ошибка добавления записи",
     "updateError": "Ошибка обновления записи",
@@ -371,7 +383,7 @@
   "bots": {
     "searchPlaceholder": "Поиск ботов...",
     "onlineCount": "{{online}} в сети / {{total}} всего",
-    "noBots": "Боты не настроены. Добавьте аккаунты на странице настроек аккаунта.",
+    "noBots": "",
     "noBotsFound": "Боты, соответствующие вашему запросу, не найдены.",
     "loadingMore": "Загрузка дополнительных...",
     "showingCount": "Показано {{loaded}} из {{total}}",
@@ -396,12 +408,12 @@
       "waiting": "Ожидание",
       "stopped": "Остановлен"
     },
-    "backToBots": "Назад к ботам",
+    "backToBots": "",
     "tabs": {
-      "overview": "Обзор",
+      "overview": "",
       "inventory": "Инвентарь",
-      "controls": "Управление",
-      "terminal": "Терминал"
+      "controls": "",
+      "terminal": ""
     },
     "comingSoon": "Скоро будет",
     "terminalPanel": {
@@ -419,8 +431,15 @@
       "offline": "Бот офлайн. Данные о положении доступны только когда бот подключён."
     },
     "chatPanel": {
-      "title": "Чат-сообщения",
-      "description": "Чат-сообщения этого бота появятся здесь в одном из следующих обновлений."
+      "title": "",
+      "description": "Чат-сообщения этого бота появятся здесь в одном из следующих обновлений.",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": ""
     },
     "commandPanel": {
       "title": "Команды бота",
@@ -428,14 +447,14 @@
       "description": "Команды, привязанные к боту, будут доступны в одном из следующих обновлений."
     },
     "povPanel": {
-      "title": "POV бота",
+      "title": "",
       "capture": "Сделать снимок",
       "refresh": "Обновить",
       "auto": "Авто",
       "startAutoRefresh": "Запустить автообновление (интервал 1 секунда)",
       "stopAutoRefresh": "Остановить автообновление",
       "clickToCapture": "Нажмите «Сделать снимок», чтобы отобразить точку зрения бота",
-      "offline": "Бот офлайн. Отображение точки зрения доступно только при подключении бота."
+      "offline": ""
     },
     "statsPanel": {
       "title": "Статистика бота",
@@ -545,6 +564,49 @@
       "dismiss": "Закрыть",
       "submit": "Отправить",
       "offline": "Бот офлайн. Диалоги доступны только при подключении бота."
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Все",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Подключён",
+      "starting": "Запуск",
+      "retrying": "Повторная попытка",
+      "failed": "Не удалось",
+      "stopping": "Остановка",
+      "stopped": "Остановлен"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
+    },
+    "pov": {
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": ""
     }
   },
   "metrics": {
@@ -612,12 +674,12 @@
   },
   "scripts": {
     "title": "Визуальные скрипты",
-    "description": "Создавайте скрипты автоматизации, используя визуальный редактор на узлах.",
+    "description": "",
     "experimentalTitle": "Экспериментальная функция",
     "experimentalWarning": "Эта функция экспериментальная. Последующие обновления могут нарушить работу существующих скриптов. Используйте с осторожностью.",
-    "createScript": "Создать скрипт",
-    "createScriptTitle": "Создать новый скрипт",
-    "createScriptDescription": "Создайте новый визуальный скрипт для этого экземпляра. Скрипты могут автоматизировать действия бота и реагировать на события.",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
     "scriptName": "Имя скрипта",
     "scriptNamePlaceholder": "Введите имя скрипта...",
     "scriptDescription": "Описание",
@@ -625,36 +687,36 @@
     "create": "Создать",
     "createSuccess": "Скрипт успешно создан",
     "createError": "Не удалось создать скрипт",
-    "noScripts": "Скриптов пока нет",
-    "noScriptsDescription": "Создайте свой первый скрипт для автоматизации действий бота с помощью визуального редактора на узлах.",
-    "createFirstScript": "Создать свой первый скрипт",
-    "running": "Запущен",
-    "paused": "Приостановлено",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "узлы",
     "noDescription": "Нет описания",
     "edit": "Редактировать",
-    "pause": "Пауза",
-    "pauseSuccess": "Скрипт приостановлен",
-    "pauseError": "Не удалось приостановить скрипт",
-    "resume": "Возобновить",
-    "resumeSuccess": "Скрипт возобновлён",
-    "resumeError": "Не удалось возобновить скрипт",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Удалить",
     "deleteSuccess": "Скрипт успешно удален",
     "deleteError": "Не удалось удалить скрипт",
     "saveSuccess": "Скрипт успешно сохранён",
     "saveError": "Не удалось сохранить скрипт",
-    "activateSuccess": "Скрипт активирован",
-    "activateError": "Не удалось активировать скрипт",
-    "deactivateSuccess": "Скрипт деактивирован",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
     "untitledScript": "Безымянный скрипт",
-    "saveFirstBeforeActivating": "Сначала сохраните скрипт, прежде чем активировать",
-    "activating": "Активация скрипта...",
-    "activated": "Скрипт активирован",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Скрипт завершён",
     "executionCompletedSuccess": "Скрипт успешно завершён",
-    "deactivated": "Скрипт деактивирован",
-    "deactivatedByUser": "Скрипт деактивирован пользователем",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Ошибка выполнения скрипта",
     "executionError": "Ошибка выполнения: {{error}}",
     "monitoringError": "",
@@ -664,8 +726,8 @@
     "nodeError": "Ошибка узла: {{error}}",
     "contextMenu": {
       "edit": "Редактировать скрипт",
-      "pause": "Пауза",
-      "resume": "Возобновить",
+      "pause": "",
+      "resume": "",
       "delete": "Удалить скрипт",
       "copyScriptName": "Скопировать имя скрипта",
       "copyScriptId": "Скопировать ID скрипта"
@@ -675,11 +737,11 @@
         "actions": "",
         "backToScripts": "Назад к скриптам",
         "save": "Сохранить",
-        "saveTooltip": "Сохранить скрипт",
-        "resume": "Возобновить",
-        "resumeTooltip": "Возобновить выполнение скрипта",
-        "pause": "Пауза",
-        "pauseTooltip": "Приостановить выполнение скрипта",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Не сохранено",
         "unsavedChanges": "Несохранённые изменения",
         "clearCanvas": "Очистить полотно",
@@ -690,16 +752,17 @@
         "import": "Импортировать скрипт",
         "exportSuccess": "Скрипт успешно экспортирован",
         "importSuccess": "Скрипт успешно импортирован",
-        "importError": "Не удалось импортировать скрипт"
+        "importError": "Не удалось импортировать скрипт",
+        "resumeBlocked": ""
       },
       "palette": {
-        "title": "Палитра узлов",
+        "title": "",
         "search": "Поиск по узлам..."
       },
       "logs": {
-        "title": "Журналы выполнения",
+        "title": "",
         "clearTitle": "Очистить журналы",
-        "noLogs": "Журналов пока нет. Запустите скрипт, чтобы посмотреть журналы выполнения.",
+        "noLogs": "",
         "entries_one": "{{count}} запись",
         "entries_few": "{{count}} записи",
         "entries_many": "{{count}} записей",
@@ -755,15 +818,16 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Пробный запуск",
-        "title": "Скрипт пробного запуска",
-        "description": "Запустите скрипт от выбранного триггера с имитацией входных данных.",
+        "tooltip": "",
+        "title": "",
+        "description": "",
         "triggerNode": "Триггер-узел",
         "selectTrigger": "Выберите триггер...",
-        "triggerDescription": "Выберите триггер-узел для выполнения с тестовыми входными значениями.",
-        "mockInputs": "Тестовые входные данные",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "Значение {{type}}",
-        "start": "Запустить пробный запуск",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_few": "",
         "stats_many": "",
@@ -790,10 +854,589 @@
         "save": "Сохранить квоты",
         "invalidInteger": ""
       }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_few": "",
+      "errors_many": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_few": "",
+      "warnings_many": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
+      }
     }
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Действие",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Подключиться",
+    "back": "Назад",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Все",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Подключиться",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Всего",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Нет",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_few": "",
+      "orderStatus_many": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_few": "",
+      "limit_many": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_few": "",
+      "delivered_many": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_few": "",
+      "importing_many": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_few": "",
+    "importAccounts_many": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_few": "",
+    "inStock_many": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_few": "",
+    "previewMore_many": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_few": "",
+    "preview_many": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_few": "",
+    "importProxies_many": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_few": "",
+      "noneRunning_many": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_few": "",
+      "allConnected_many": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_few": "",
+      "partial_many": "",
+      "partial_other": ""
+    },
+    "state": {
+      "connected": "подключён",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_few": "",
+      "retrying_many": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_few": "",
+    "restartGroup_many": "",
+    "restartGroup_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Необязательно",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Открыть все настройки",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Аккаунты",
+      "reviewProxies": "Прокси",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "error": "",
+      "action_one": "Запустить {{count}} бота",
+      "action_few": "Запустить {{count}} бота",
+      "action_many": "Запустить {{count}} ботов",
+      "action_other": "Запустить {{count}} ботов"
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

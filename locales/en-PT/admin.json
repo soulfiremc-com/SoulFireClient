@@ -20,12 +20,12 @@
         "title": "Thread Count"
       },
       "aggregateBots": {
-        "title": "Bots Online (All Instances)"
+        "title": ""
       }
     },
     "instancesChart": {
-      "title": "Total booty o' instances on this ship",
-      "instances": "Fleets",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "State o' affairs",
         "active": "Active n' sailin'",
@@ -64,7 +64,7 @@
         "role": {
           "label": "Rank",
           "placeholder": "Pick a role, matey!",
-          "description": "The matey rank. Cap'ns may command all, swabs tend only their own ships.",
+          "description": "",
           "user": "Buccaneer",
           "admin": "Admiral"
         }

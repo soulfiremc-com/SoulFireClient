@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Virheellinen tyyppi: odotettiin string, oli undefined",
-    "null": "Virheellinen tyyppi: odotettiin string, oli null",
-    "number": "Virheellinen tyyppi: odotettiin string, oli number",
-    "boolean": "Virheellinen tyyppi: odotettiin string, oli boolean",
-    "array": "Virheellinen tyyppi: odotettiin string, oli array",
-    "object": "Virheellinen tyyppi: odotettiin string, oli object",
-    "nan": "Virheellinen tyyppi: odotettiin string, oli NaN",
-    "infinity": "Virheellinen tyyppi: odotettiin string, oli number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Virheellinen tyyppi: odotettiin number, oli undefined",
-    "null": "Virheellinen tyyppi: odotettiin number, oli null",
-    "string": "Virheellinen tyyppi: odotettiin number, oli string",
-    "boolean": "Virheellinen tyyppi: odotettiin number, oli boolean",
-    "array": "Virheellinen tyyppi: odotettiin number, oli array",
-    "object": "Virheellinen tyyppi: odotettiin number, oli object",
-    "nan": "Virheellinen tyyppi: odotettiin number, oli NaN",
-    "infinity": "Virheellinen tyyppi: odotettiin number, oli number"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Virheellinen tyyppi: odotettiin object, oli undefined",
-    "null": "Virheellinen tyyppi: odotettiin object, oli null",
-    "number": "Virheellinen tyyppi: odotettiin object, oli number",
-    "string": "Virheellinen tyyppi: odotettiin object, oli string",
-    "boolean": "Virheellinen tyyppi: odotettiin object, oli boolean",
-    "array": "Virheellinen tyyppi: odotettiin object, oli array",
-    "nan": "Virheellinen tyyppi: odotettiin object, oli NaN",
-    "infinity": "Virheellinen tyyppi: odotettiin object, oli number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Virheellinen sähköpostiosoite",
-  "url": "Virheellinen URL-osoite",
-  "jwt": "Virheellinen JWT",
-  "emailTooLong": "Liian suuri: merkkijonon täytyy olla <=255 merkkiä",
-  "jarSource": "Virheellinen valinta: täytyy olla yksi seuraavista: \"official\"|\"custom\"",
-  "generationMode": "Virheellinen valinta: täytyy olla yksi seuraavista: \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Virheellinen valinta: täytyy olla yksi seuraavista: 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Input tidak valid: diharapkan string, diterima undefined",
-    "null": "Input tidak valid: diharapkan string, diterima null",
-    "number": "Input tidak valid: diharapkan string, diterima number",
-    "boolean": "Input tidak valid: diharapkan string, diterima boolean",
-    "array": "Input tidak valid: diharapkan string, diterima array",
-    "object": "Input tidak valid: diharapkan string, diterima object",
-    "nan": "Input tidak valid: diharapkan string, diterima NaN",
-    "infinity": "Input tidak valid: diharapkan string, diterima number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Input tidak valid: diharapkan number, diterima undefined",
-    "null": "Input tidak valid: diharapkan number, diterima null",
-    "string": "Input tidak valid: diharapkan number, diterima string",
-    "boolean": "Input tidak valid: diharapkan number, diterima boolean",
-    "array": "Input tidak valid: diharapkan number, diterima array",
-    "object": "Input tidak valid: diharapkan number, diterima object",
-    "nan": "Input tidak valid: diharapkan number, diterima NaN",
-    "infinity": "Input tidak valid: diharapkan number, diterima number"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Input tidak valid: diharapkan object, diterima undefined",
-    "null": "Input tidak valid: diharapkan object, diterima null",
-    "number": "Input tidak valid: diharapkan object, diterima number",
-    "string": "Input tidak valid: diharapkan object, diterima string",
-    "boolean": "Input tidak valid: diharapkan object, diterima boolean",
-    "array": "Input tidak valid: diharapkan object, diterima array",
-    "nan": "Input tidak valid: diharapkan object, diterima NaN",
-    "infinity": "Input tidak valid: diharapkan object, diterima number"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "alamat email tidak valid",
-  "url": "URL tidak valid",
-  "jwt": "JWT tidak valid",
-  "emailTooLong": "Terlalu besar: diharapkan string memiliki <=255 karakter",
-  "jarSource": "Pilihan tidak valid: diharapkan salah satu dari \"official\"|\"custom\"",
-  "generationMode": "Pilihan tidak valid: diharapkan salah satu dari \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Pilihan tidak valid: diharapkan salah satu dari 0|1"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }
