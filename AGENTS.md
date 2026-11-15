@@ -102,7 +102,7 @@ The app supports a demo mode (no server connection) using fallback data from `sr
 
 ## Design skills
 
-- For visual design work, use `frontend-design` and `uncodixfy`.
+- For visual design work, use `frontend-design`.
 
 ## Branding and product language
 
