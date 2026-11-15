@@ -59,6 +59,9 @@ jobs:
       - name: Run proxy-check regression tests
         run: bun test src/lib/proxy-check.test.ts
 
+      - name: Test Crowdin upload preparation
+        run: node --test scripts/prepare-crowdin-upload.test.mjs
+
       - name: Run web build
         env:
           POSTHOG_PERSONAL_API_KEY: ${{ github.event_name == 'push' && secrets.POSTHOG_PERSONAL_API_KEY || '' }}

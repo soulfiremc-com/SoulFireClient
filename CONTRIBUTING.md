@@ -90,7 +90,30 @@ Do not edit generated routes or protocol bindings by hand.
 For a protocol update, follow [the RPC binding workflow](README.md#update-rpc-bindings).
 Commit the remote source pin, generated bindings, and affected client code together.
 New client features must handle older servers that omit optional fields or do not implement new methods.
-For translations, inspect `crowdin.yml` and keep locale keys aligned with the source language.
+
+## Translations
+
+English files in `locales/en-US/` define the source strings and keys in Crowdin.
+Keep translated keys aligned with these files and the paths in `crowdin.yml`.
+Add new keys to English first, even when you also provide translations.
+
+Use [Crowdin](https://crowdin.com/project/soulfireclient) for normal translation work.
+The daily `Sync Crowdin` workflow uploads English sources and opens a pull request with downloaded translations.
+It does not upload translations from the repository.
+
+When a pull request with locale changes merges into `main`, `Upload translations to Crowdin` runs automatically.
+It reads `main`, uploads English sources, then uploads only translation files changed by that pull request.
+It skips Crowdin's `l10n_crowdin_translations` pull requests to prevent imports from triggering another upload.
+Deleted files and translation files without a matching English source file are excluded.
+The workflow supports all target languages enabled in Crowdin, including contributions from forks.
+It does not create target languages or approve imported translations.
+Crowdin skips translations that match the source text or an existing translation by default.
+The upload workflow does not download files or create a pull request.
+
+For a bulk import of all matching translation files on `main`, run the workflow manually from the Actions tab.
+Review imported translations in Crowdin before the next daily sync.
+Unapproved translations can still appear in downloads unless Crowdin requires approval for export.
+Avoid repeated bulk uploads because repository files can replace newer unapproved work in Crowdin.
 
 ## Validate
 
