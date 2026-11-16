@@ -106,6 +106,8 @@ function Content() {
             <SearchIcon className="text-muted-foreground" />
           </InputGroupAddon>
           <InputGroupInput
+            type="search"
+            aria-label={t("bots.searchPlaceholder")}
             placeholder={t("bots.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}

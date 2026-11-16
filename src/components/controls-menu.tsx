@@ -9,25 +9,18 @@ import {
 import { useRouteContext } from "@tanstack/react-router";
 import {
   ChevronDownIcon,
-  EllipsisIcon,
+  LoaderCircleIcon,
   PlayIcon,
   RefreshCwIcon,
   SquareIcon,
 } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
-import { use, useCallback, useId, useMemo, useState } from "react";
+import { use, useCallback, useId, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
 import {
   Field,
   FieldDescription,
@@ -51,7 +44,7 @@ import {
 } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
-import { selectBotsToStart } from "@/lib/bot-fleet.ts";
+import { parseBotStartCount, selectBotsToStart } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
@@ -75,6 +68,7 @@ export default function ControlsMenu() {
   const [startCount, setStartCount] = useState("1");
   const [startOpen, setStartOpen] = useState(false);
   const startCountId = useId();
+  const startCountRef = useRef<HTMLInputElement>(null);
   const [generateDialogOpen, setGenerateDialogOpen] = useState(false);
   const [pendingStartCount, setPendingStartCount] = useState<number | null>(
     null,
@@ -280,14 +274,13 @@ export default function ControlsMenu() {
     );
   }
 
-  const requestedStartCount = Number(startCount);
   const hasAccounts = instanceInfo.profile.accounts.length > 0;
   const startUnavailable = hasAccounts && stoppedCount === 0;
-  const validStartCount =
-    startCount.trim() !== "" &&
-    Number.isInteger(requestedStartCount) &&
-    requestedStartCount >= 1 &&
-    (!hasAccounts || requestedStartCount <= stoppedCount);
+  const requestedStartCount = parseBotStartCount(
+    startCount,
+    hasAccounts ? stoppedCount : undefined,
+  );
+  const validStartCount = requestedStartCount !== null;
 
   const showCountError =
     !startUnavailable && startCount !== "" && !validStartCount;
@@ -296,23 +289,35 @@ export default function ControlsMenu() {
     <>
       <div className="flex flex-wrap items-center gap-2">
         <Popover open={startOpen} onOpenChange={setStartOpen}>
+          {/* Stays clickable when every bot runs, so the popover can say why
+              nothing can start instead of showing a silent disabled button. */}
           <PopoverTrigger
-            render={
-              <Button size="sm" disabled={isPending || startUnavailable} />
-            }
+            render={<Button size="sm" disabled={startMutation.isPending} />}
           >
-            <PlayIcon data-icon="inline-start" />
+            {startMutation.isPending ? (
+              <LoaderCircleIcon
+                data-icon="inline-start"
+                className="motion-safe:animate-spin"
+              />
+            ) : (
+              <PlayIcon data-icon="inline-start" />
+            )}
             {t("controls.startBots")}
             <ChevronDownIcon data-icon="inline-end" />
           </PopoverTrigger>
-          <PopoverContent align="end">
+          <PopoverContent
+            align="end"
+            initialFocus={startUnavailable ? undefined : startCountRef}
+          >
             <PopoverHeader>
               <PopoverTitle>{t("controls.startBots")}</PopoverTitle>
               <PopoverDescription>
                 {t(
-                  hasAccounts
-                    ? "controls.availableCount"
-                    : "controls.generateFirst",
+                  !hasAccounts
+                    ? "controls.generateFirst"
+                    : startUnavailable
+                      ? "controls.allRunning"
+                      : "controls.availableCount",
                   { count: stoppedCount },
                 )}
               </PopoverDescription>
@@ -320,7 +325,13 @@ export default function ControlsMenu() {
             <form
               onSubmit={(event) => {
                 event.preventDefault();
-                if (!validStartCount || isPending || startUnavailable) return;
+                if (
+                  requestedStartCount === null ||
+                  isPending ||
+                  startUnavailable
+                ) {
+                  return;
+                }
                 startMutation.mutate(requestedStartCount);
                 setStartOpen(false);
               }}
@@ -331,6 +342,8 @@ export default function ControlsMenu() {
                     {t("controls.startCount")}
                   </FieldLabel>
                   <Input
+                    ref={startCountRef}
+                    onFocus={(event) => event.currentTarget.select()}
                     id={startCountId}
                     type="number"
                     min={1}
@@ -363,7 +376,7 @@ export default function ControlsMenu() {
                     disabled={isPending || startUnavailable || !validStartCount}
                   >
                     <PlayIcon data-icon="inline-start" />
-                    {validStartCount
+                    {requestedStartCount !== null
                       ? t("controls.startSelected", {
                           count: requestedStartCount,
                         })
@@ -394,34 +407,36 @@ export default function ControlsMenu() {
           onClick={() => stopMutation.mutate()}
           disabled={isPending || desiredBotIds.length === 0}
         >
-          <SquareIcon data-icon="inline-start" />
+          {stopMutation.isPending ? (
+            <LoaderCircleIcon
+              data-icon="inline-start"
+              className="motion-safe:animate-spin"
+            />
+          ) : (
+            <SquareIcon data-icon="inline-start" />
+          )}
           {t("controls.stopCount", { count: desiredBotIds.length })}
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={t("controls.moreActions")}
-                disabled={isPending || desiredBotIds.length === 0}
-              />
-            }
+        {/* Restart was the only entry in a "more" menu, which hid it behind
+            an icon. A labeled button shows what it does and how many bots. */}
+        {desiredBotIds.length > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => restartMutation.mutate()}
+            disabled={isPending}
           >
-            <EllipsisIcon />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => restartMutation.mutate()}
-                disabled={isPending || desiredBotIds.length === 0}
-              >
-                <RefreshCwIcon />
-                {t("controls.restartCount", { count: desiredBotIds.length })}
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            {restartMutation.isPending ? (
+              <LoaderCircleIcon
+                data-icon="inline-start"
+                className="motion-safe:animate-spin"
+              />
+            ) : (
+              <RefreshCwIcon data-icon="inline-start" />
+            )}
+            {t("controls.restartCount", { count: desiredBotIds.length })}
+          </Button>
+        )}
       </div>
 
       <GenerateAccountsDialog

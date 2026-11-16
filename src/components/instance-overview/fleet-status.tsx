@@ -31,6 +31,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { BotService } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
 import {
   type BotDisplayState,
   type BotFailureGroup,
@@ -138,9 +139,11 @@ function FailureGroupRow({
   const { t } = useTranslation("instance");
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
+  const stateScope = `bot-state-${instanceInfo.id}`;
+  const botStatePending = useMutationScopePending(stateScope);
   const restart = useMutation({
     mutationKey: ["bots", "restart-group", instanceInfo.id, group.id],
-    scope: { id: `bot-state-${instanceInfo.id}` },
+    scope: { id: stateScope },
     mutationFn: async () => {
       if (transport === null) return;
       await Effect.runPromise(
@@ -148,6 +151,14 @@ function FailureGroupRow({
           instanceId: instanceInfo.id,
           botIds: group.botIds,
         }),
+      );
+    },
+    // The group often looks the same until the next status poll, so confirm
+    // the request right away instead of leaving the click without a result.
+    onSuccess: () => {
+      if (transport === null) return;
+      toast.success(
+        t("fleet.restartRequested", { count: group.botIds.length }),
       );
     },
     onError: (error) =>
@@ -212,10 +223,17 @@ function FailureGroupRow({
             <Button
               size="sm"
               variant={group.severity === "failed" ? "default" : "outline"}
-              disabled={restart.isPending}
+              disabled={botStatePending}
               onClick={() => restart.mutate()}
             >
-              <RefreshCwIcon data-icon="inline-start" />
+              {restart.isPending ? (
+                <LoaderCircleIcon
+                  data-icon="inline-start"
+                  className="motion-safe:animate-spin"
+                />
+              ) : (
+                <RefreshCwIcon data-icon="inline-start" />
+              )}
               {t("fleet.restartGroup", { count: group.botIds.length })}
             </Button>
           )}

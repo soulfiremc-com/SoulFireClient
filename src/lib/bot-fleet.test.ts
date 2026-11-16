@@ -12,6 +12,7 @@ import {
   countBotFleet,
   getBotDisplayState,
   groupBotFailures,
+  parseBotStartCount,
   selectBotsToStart,
 } from "./bot-fleet.ts";
 
@@ -128,4 +129,16 @@ test("starts only stopped bots and respects the requested count", () => {
     selectBotsToStart(bots, 2, true, () => 0),
     ["c", "b"],
   );
+});
+
+test("accepts only whole bot counts within the account limit", () => {
+  assert.equal(parseBotStartCount("3", 5), 3);
+  assert.equal(parseBotStartCount("5", 5), 5);
+  assert.equal(parseBotStartCount("6", 5), null);
+  assert.equal(parseBotStartCount("0", 5), null);
+  assert.equal(parseBotStartCount("", 5), null);
+  assert.equal(parseBotStartCount("1.5", 5), null);
+  assert.equal(parseBotStartCount("-2", 5), null);
+  assert.equal(parseBotStartCount("1e3"), null);
+  assert.equal(parseBotStartCount("250"), 250);
 });

@@ -185,3 +185,14 @@ export function selectBotsToStart(
     ? candidates
     : candidates.slice(0, Math.max(0, Math.floor(count)));
 }
+
+/**
+ * Reads a typed bot count. Returns null unless it is a whole number from 1 to
+ * `max`. Pass no `max` when the limit is not known yet.
+ */
+export function parseBotStartCount(value: string, max?: number): number | null {
+  if (!/^\s*\d+\s*$/.test(value)) return null;
+  const count = Number(value);
+  if (count < 1 || (max !== undefined && count > max)) return null;
+  return count;
+}

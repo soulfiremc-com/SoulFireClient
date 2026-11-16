@@ -28,7 +28,12 @@ import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { InstanceSettingFieldByKey } from "@/components/settings-page.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field.tsx";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import {
   Item,
@@ -44,6 +49,7 @@ import { InstancePermission } from "@/generated/soulfire/common_pb";
 import {
   getBotDisplayState,
   groupBotFailures,
+  parseBotStartCount,
   selectBotsToStart,
 } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
@@ -318,11 +324,11 @@ export function FirstBotSetup({
     },
   });
 
-  const requestedCount = Number(startCount);
-  const validCount =
-    Number.isInteger(requestedCount) &&
-    requestedCount >= 1 &&
-    requestedCount <= accounts.length;
+  const requestedCount = parseBotStartCount(startCount, accounts.length);
+  const validCount = requestedCount !== null;
+  // Each bot needs its own account, so the count cannot pass the account total.
+  const atAccountLimit =
+    requestedCount === accounts.length || Number(startCount) > accounts.length;
 
   const summaries: Record<FirstBotSetupStep, string> = {
     server: t("setup.server.summary", {
@@ -642,7 +648,9 @@ export function FirstBotSetup({
                             className="flex flex-wrap items-end gap-3"
                             onSubmit={(event) => {
                               event.preventDefault();
-                              if (validCount) start.mutate(requestedCount);
+                              if (requestedCount !== null && !start.isPending) {
+                                start.mutate(requestedCount);
+                              }
                             }}
                           >
                             <Field className="w-40" data-invalid={!validCount}>
@@ -652,10 +660,13 @@ export function FirstBotSetup({
                               <Input
                                 id="first-bot-start-count"
                                 type="number"
+                                inputMode="numeric"
                                 min={1}
                                 max={accounts.length}
+                                step={1}
                                 value={startCount}
                                 aria-invalid={!validCount}
+                                aria-describedby="first-bot-start-count-limit"
                                 onChange={(event) =>
                                   setStartCount(event.target.value)
                                 }
@@ -674,12 +685,39 @@ export function FirstBotSetup({
                                 <PlayIcon data-icon="inline-start" />
                               )}
                               {t("setup.start.action", {
-                                count: validCount ? requestedCount : 1,
+                                count: requestedCount ?? 1,
                               })}
                             </Button>
-                            <FieldDescription className="w-full">
-                              {t("setup.start.help")}
-                            </FieldDescription>
+                            <div className="flex w-full flex-col gap-1">
+                              {validCount ? (
+                                <FieldDescription id="first-bot-start-count-limit">
+                                  {t("setup.start.countLimit", {
+                                    count: accounts.length,
+                                  })}
+                                </FieldDescription>
+                              ) : (
+                                <FieldError id="first-bot-start-count-limit">
+                                  {t("setup.start.countInvalid", {
+                                    count: accounts.length,
+                                  })}
+                                </FieldError>
+                              )}
+                              {atAccountLimit && canConfigure && (
+                                <Button
+                                  type="button"
+                                  variant="link"
+                                  size="sm"
+                                  className="h-auto w-fit p-0"
+                                  onClick={() => setSelectedStep("accounts")}
+                                >
+                                  <UsersIcon data-icon="inline-start" />
+                                  {t("setup.start.addAccounts")}
+                                </Button>
+                              )}
+                              <FieldDescription>
+                                {t("setup.start.help")}
+                              </FieldDescription>
+                            </div>
                           </form>
                         ) : (
                           <p className="text-sm">{t("setup.noPermission")}</p>

@@ -1426,6 +1426,8 @@
     "restartGroup_one": "Restart {{count}} bot",
     "restartGroup_other": "Restart {{count}} bots",
     "restartError": "Could not restart bots",
+    "restartRequested_one": "Restarting {{count}} bot. Its status updates in a few seconds.",
+    "restartRequested_other": "Restarting {{count}} bots. Their status updates in a few seconds.",
     "namesMore": "{{names}} and {{count}} more",
     "startHint": "Use Start bots to connect them to the Minecraft server.",
     "startHintNoPermission": "You can view these bots, but you do not have permission to start them."
@@ -1491,6 +1493,11 @@
       "action_one": "Start {{count}} bot",
       "action_other": "Start {{count}} bots",
       "help": "Starting one bot first is a quick way to test the connection.",
+      "countLimit_one": "You have {{count}} account. Each bot uses its own account.",
+      "countLimit_other": "You have {{count}} accounts, so you can start up to {{count}} bots.",
+      "countInvalid_one": "You have {{count}} account, so you can start only {{count}} bot.",
+      "countInvalid_other": "Enter a whole number from 1 to {{count}}.",
+      "addAccounts": "Add more accounts",
       "error": "Could not start bots"
     },
     "connecting": {

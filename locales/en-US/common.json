@@ -176,7 +176,7 @@
     "startCount": "Number of bots to start",
     "startToast": {
       "loading": "Starting bots...",
-      "success": "Bot state updated",
+      "success": "Bots are connecting",
       "error": "Could not start bots"
     },
     "restartToast": {
@@ -192,7 +192,7 @@
     "permissionDenied": "You do not have permission to start or stop bots in this project.",
     "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match.",
     "startBots": "Start bots",
-    "moreActions": "More bot actions",
+    "allRunning": "All bots are already running. To start more bots, add more accounts.",
     "availableCount_one": "{{count}} stopped bot available.",
     "availableCount_other": "{{count}} stopped bots available.",
     "generateFirst": "This project has no accounts yet. Create offline accounts to start, or add other accounts on the Accounts page.",
