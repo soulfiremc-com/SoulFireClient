@@ -258,7 +258,10 @@ function BotPovSession({
           queryKey: ["bot-status", instanceId],
         });
       }
-      actions.setError(reason.message);
+      // ConnectError.message adds a "[code]" prefix that users should not see.
+      actions.setError(
+        reason instanceof ConnectError ? reason.rawMessage : reason.message,
+      );
       actions.disconnected();
       release();
       session.current?.stop();

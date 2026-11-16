@@ -10,6 +10,7 @@ import {
   type PovStreamFeedback,
 } from "@/generated/soulfire/pov_pb";
 import { Cause, Deferred, Effect, Fiber, Result, Stream } from "effect";
+import i18n from "i18next";
 import { povCodecs, povDisplayFps } from "@/lib/pov-display";
 import { PovInputQueue } from "@/lib/pov-input-queue";
 import { createRpcClient } from "@/lib/rpc";
@@ -56,7 +57,7 @@ export function startPovSession(
   } | null = null;
   let sessionFiber: Fiber.Fiber<void> | undefined;
   const connectionTimeout = new ConnectError(
-    "Bot view did not connect within 15 seconds. Check that the bot is online and try again.",
+    i18n.t("instance:bots.pov.connectTimeout"),
     Code.DeadlineExceeded,
   );
 
@@ -232,7 +233,7 @@ export function startPovSession(
                               current.token = frame.inputToken;
                               if (!current.token)
                                 throw new ConnectError(
-                                  "Update the server to use the POV input channel.",
+                                  i18n.t("instance:bots.pov.inputUpdateServer"),
                                   Code.Unimplemented,
                                 );
                               const socket = new WebSocket(inputUrl);

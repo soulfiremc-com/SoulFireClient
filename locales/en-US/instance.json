@@ -715,6 +715,9 @@
         "closeMenu": "Close menu"
       },
       "needsServer": "The Bot view needs a connected SoulFire server.",
+      "connectTimeout": "The Bot view did not connect within 15 seconds. Check that the bot is online, then try again.",
+      "inputUpdateServer": "Update the SoulFire server to control bots from the Bot view.",
+      "decoderUnsupported": "This browser cannot play the Bot view video. Update the browser or try another one.",
       "step": {
         "online": "The bot is in the world.",
         "queued": "Waiting for a free start slot. The Bot view opens when the bot joins.",
