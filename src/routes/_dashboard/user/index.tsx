@@ -520,10 +520,7 @@ function Content() {
                   </ItemContent>
                   {index < MAX_INSTANCE_SHORTCUTS && (
                     <div className="ml-auto hidden shrink-0 sm:block">
-                      <Kbd
-                        aria-hidden="true"
-                        className="h-6 px-2 text-sm opacity-60"
-                      >
+                      <Kbd aria-hidden="true" className="h-6 px-2 text-sm">
                         {formatShortcut(`Ctrl+${index + 1}`)}
                       </Kbd>
                     </div>

@@ -168,7 +168,7 @@ export function ProviderFrame({
         {stepper}
       </header>
       <div className="flex min-h-0 flex-1 flex-col overflow-y-auto md:flex-row md:overflow-hidden">
-        <main className="flex min-w-0 flex-1 flex-col gap-4 p-4 md:overflow-y-auto">
+        <div className="flex min-w-0 flex-1 flex-col gap-4 p-4 md:overflow-y-auto">
           {heading && (
             <div className="flex flex-col gap-1">
               <h3
@@ -184,7 +184,7 @@ export function ProviderFrame({
             </div>
           )}
           {children}
-        </main>
+        </div>
         {aside && (
           <aside className="border-border bg-muted/40 flex shrink-0 flex-col gap-4 border-t p-4 md:w-72 md:overflow-y-auto md:border-t-0 md:border-l">
             {aside}

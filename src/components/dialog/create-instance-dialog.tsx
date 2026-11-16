@@ -179,7 +179,6 @@ function CreateInstanceDialog({
                           <Input
                             id={field.name}
                             name={field.name}
-                            autoFocus
                             disabled={isSubmitting}
                             placeholder={t(
                               "dialog.createInstance.form.friendlyName.placeholder",

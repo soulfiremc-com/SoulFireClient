@@ -202,7 +202,7 @@ export function DataTableDateFilter<TData extends RowData>({
           {label}
         </PopoverTrigger>
       </ButtonGroup>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent aria-label={title} className="w-auto p-0" align="start">
         {multiple ? (
           <Calendar
             autoFocus

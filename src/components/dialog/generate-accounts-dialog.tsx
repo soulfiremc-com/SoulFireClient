@@ -307,9 +307,15 @@ export default function GenerateAccountsDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid ? `${field.name}-error` : undefined
+                      }
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );
@@ -333,12 +339,20 @@ export default function GenerateAccountsDialog({
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Bot_%d"
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid
+                          ? `${field.name}-description ${field.name}-error`
+                          : `${field.name}-description`
+                      }
                     />
-                    <FieldDescription>
+                    <FieldDescription id={`${field.name}-description`}>
                       {t("account.generate.nameFormatHelp")}
                     </FieldDescription>
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );

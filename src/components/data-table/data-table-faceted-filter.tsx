@@ -146,7 +146,7 @@ export function DataTableFacetedFilter<
           )}
         </PopoverTrigger>
       </ButtonGroup>
-      <PopoverContent className="w-50 p-0" align="start">
+      <PopoverContent aria-label={title} className="w-50 p-0" align="start">
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className="max-h-full">

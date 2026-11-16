@@ -189,6 +189,9 @@ export function ManageUserDialog({
               {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
+                const describedBy = isInvalid
+                  ? `${field.name}-description ${field.name}-error`
+                  : `${field.name}-description`;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>
@@ -197,7 +200,6 @@ export function ManageUserDialog({
                     <Input
                       id={field.name}
                       name={field.name}
-                      autoFocus
                       placeholder={t(
                         "users.baseUserDialog.form.username.placeholder",
                       )}
@@ -205,13 +207,17 @@ export function ManageUserDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={describedBy}
                       disabled={submitMutation.isPending}
                     />
-                    <FieldDescription>
+                    <FieldDescription id={`${field.name}-description`}>
                       {t("users.baseUserDialog.form.username.description")}
                     </FieldDescription>
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );
@@ -221,6 +227,9 @@ export function ManageUserDialog({
               {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
+                const describedBy = isInvalid
+                  ? `${field.name}-description ${field.name}-error`
+                  : `${field.name}-description`;
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>
@@ -238,13 +247,17 @@ export function ManageUserDialog({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={describedBy}
                       disabled={submitMutation.isPending}
                     />
-                    <FieldDescription>
+                    <FieldDescription id={`${field.name}-description`}>
                       {t("users.baseUserDialog.form.email.description")}
                     </FieldDescription>
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );
@@ -254,6 +267,9 @@ export function ManageUserDialog({
               {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
+                const describedBy = isInvalid
+                  ? `${field.name}-description ${field.name}-error`
+                  : `${field.name}-description`;
                 const roleItems = getEnumEntries(UserRole).map((role) => ({
                   label: t(
                     `users.baseUserDialog.form.role.${role.key.toLowerCase()}`,
@@ -275,7 +291,11 @@ export function ManageUserDialog({
                       }
                       items={roleItems}
                     >
-                      <SelectTrigger id={field.name} aria-invalid={isInvalid}>
+                      <SelectTrigger
+                        id={field.name}
+                        aria-invalid={isInvalid}
+                        aria-describedby={describedBy}
+                      >
                         <SelectValue
                           placeholder={t(
                             "users.baseUserDialog.form.role.placeholder",
@@ -295,11 +315,14 @@ export function ManageUserDialog({
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <FieldDescription>
+                    <FieldDescription id={`${field.name}-description`}>
                       {t("users.baseUserDialog.form.role.description")}
                     </FieldDescription>
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );

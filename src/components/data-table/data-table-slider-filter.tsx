@@ -5,6 +5,7 @@ import type { Column, RowData } from "@tanstack/react-table";
 import { PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -132,54 +133,58 @@ export function DataTableSliderFilter<TData extends RowData>({
     [column],
   );
 
-  const onReset = React.useCallback(
-    (event: React.MouseEvent) => {
-      if (event.target instanceof HTMLDivElement) {
-        event.stopPropagation();
-      }
-      column.setFilterValue(undefined);
-    },
-    [column],
-  );
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+
+  const onReset = React.useCallback(() => {
+    column.setFilterValue(undefined);
+    triggerRef.current?.focus();
+  }, [column]);
 
   return (
     <Popover>
-      <PopoverTrigger
-        render={
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-dashed font-normal"
-          />
-        }
-      >
+      <ButtonGroup aria-label={title}>
         {columnFilterValue ? (
-          <div
-            role="button"
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
             aria-label={i18n.t("common:dataTable.clearFilter", { title })}
-            tabIndex={0}
-            className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="border-dashed"
             onClick={onReset}
           >
             <XCircle />
-          </div>
-        ) : (
-          <PlusCircle />
-        )}
-        <span>{title}</span>
-        {columnFilterValue ? (
-          <>
-            <Separator
-              orientation="vertical"
-              className="mx-0.5 data-[orientation=vertical]:h-4"
-            />
-            {formatValue(columnFilterValue[0])} -{" "}
-            {formatValue(columnFilterValue[1])}
-            {unit ? ` ${unit}` : ""}
-          </>
+          </Button>
         ) : null}
-      </PopoverTrigger>
-      <PopoverContent align="start" className="flex w-auto flex-col gap-4">
+        <PopoverTrigger
+          render={
+            <Button
+              ref={triggerRef}
+              variant="outline"
+              size="sm"
+              className="border-dashed font-normal"
+            />
+          }
+        >
+          {columnFilterValue ? null : <PlusCircle />}
+          <span>{title}</span>
+          {columnFilterValue ? (
+            <>
+              <Separator
+                orientation="vertical"
+                className="mx-0.5 data-[orientation=vertical]:h-4"
+              />
+              {formatValue(columnFilterValue[0])} -{" "}
+              {formatValue(columnFilterValue[1])}
+              {unit ? ` ${unit}` : ""}
+            </>
+          ) : null}
+        </PopoverTrigger>
+      </ButtonGroup>
+      <PopoverContent
+        aria-label={title}
+        align="start"
+        className="flex w-auto flex-col gap-4"
+      >
         <FieldGroup className="gap-3">
           <p className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {title}

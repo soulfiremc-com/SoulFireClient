@@ -169,7 +169,6 @@ function UrlDialog(props: ImportDialogProps) {
                       <Input
                         id={field.name}
                         name={field.name}
-                        autoFocus
                         placeholder={t(
                           "dialog.import.url.form.url.placeholder",
                         )}
@@ -182,9 +181,15 @@ function UrlDialog(props: ImportDialogProps) {
                         inputMode="url"
                         disabled={props.isPending}
                         aria-invalid={isInvalid}
+                        aria-describedby={
+                          isInvalid ? `${field.name}-error` : undefined
+                        }
                       />
                       {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
+                        <FieldError
+                          id={`${field.name}-error`}
+                          errors={field.state.meta.errors}
+                        />
                       )}
                     </Field>
                   );

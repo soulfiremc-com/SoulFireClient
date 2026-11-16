@@ -502,9 +502,15 @@ function DialogContentInner({
                             "account.metadata.namespacePlaceholder",
                           )}
                           aria-invalid={isInvalid}
+                          aria-describedby={
+                            isInvalid ? `${field.name}-error` : undefined
+                          }
                         />
                         {isInvalid ? (
-                          <FieldError errors={field.state.meta.errors} />
+                          <FieldError
+                            id={`${field.name}-error`}
+                            errors={field.state.meta.errors}
+                          />
                         ) : null}
                       </Field>
                     );
@@ -532,9 +538,15 @@ function DialogContentInner({
                           }
                           placeholder={t("account.metadata.keyPlaceholder")}
                           aria-invalid={isInvalid}
+                          aria-describedby={
+                            isInvalid ? `${field.name}-error` : undefined
+                          }
                         />
                         {isInvalid ? (
-                          <FieldError errors={field.state.meta.errors} />
+                          <FieldError
+                            id={`${field.name}-error`}
+                            errors={field.state.meta.errors}
+                          />
                         ) : null}
                       </Field>
                     );
@@ -563,9 +575,15 @@ function DialogContentInner({
                           placeholder={t("account.metadata.valuePlaceholder")}
                           className="font-mono"
                           aria-invalid={isInvalid}
+                          aria-describedby={
+                            isInvalid ? `${field.name}-error` : undefined
+                          }
                         />
                         {isInvalid ? (
-                          <FieldError errors={field.state.meta.errors} />
+                          <FieldError
+                            id={`${field.name}-error`}
+                            errors={field.state.meta.errors}
+                          />
                         ) : null}
                       </Field>
                     );
@@ -718,9 +736,14 @@ function EntryRow({
             disabled={isUpdating || isDeleting}
             placeholder={t("account.metadata.namespacePlaceholder")}
             aria-invalid={!isValidNamespace}
+            aria-describedby={
+              isValidNamespace ? undefined : `${entry.id}-namespace-error`
+            }
           />
           {!isValidNamespace ? (
-            <FieldError>{t("metadataValidation.invalidNamespace")}</FieldError>
+            <FieldError id={`${entry.id}-namespace-error`}>
+              {t("metadataValidation.invalidNamespace")}
+            </FieldError>
           ) : null}
         </Field>
         <Field data-invalid={!isValidKey} className="gap-2">
@@ -738,9 +761,12 @@ function EntryRow({
             disabled={isUpdating || isDeleting}
             placeholder={t("account.metadata.keyPlaceholder")}
             aria-invalid={!isValidKey}
+            aria-describedby={isValidKey ? undefined : `${entry.id}-key-error`}
           />
           {!isValidKey ? (
-            <FieldError>{t("metadataValidation.invalidKey")}</FieldError>
+            <FieldError id={`${entry.id}-key-error`}>
+              {t("metadataValidation.invalidKey")}
+            </FieldError>
           ) : null}
         </Field>
         <Field data-invalid={!isValidJson} className="gap-2">
@@ -761,9 +787,14 @@ function EntryRow({
             placeholder={t("account.metadata.valuePlaceholder")}
             className="font-mono"
             aria-invalid={!isValidJson}
+            aria-describedby={
+              isValidJson ? undefined : `${entry.id}-value-error`
+            }
           />
           {!isValidJson ? (
-            <FieldError>{t("account.metadata.invalidJson")}</FieldError>
+            <FieldError id={`${entry.id}-value-error`}>
+              {t("account.metadata.invalidJson")}
+            </FieldError>
           ) : null}
         </Field>
         <div className="md:self-end">

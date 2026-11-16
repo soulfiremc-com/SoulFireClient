@@ -227,7 +227,7 @@ function Sidebar({
             : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
         )}
       />
-      <div
+      <aside
         data-slot="sidebar-container"
         data-side={side}
         className={cn(
@@ -247,7 +247,7 @@ function Sidebar({
         >
           {children}
         </div>
-      </div>
+      </aside>
     </div>
   );
 }

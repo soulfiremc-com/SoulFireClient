@@ -49,8 +49,6 @@ export function DataTableViewOptions<TData extends RowData>({
       <PopoverTrigger
         render={
           <Button
-            aria-label={i18n.t("common:dataTable.toggleColumns")}
-            role="combobox"
             variant="outline"
             size="sm"
             className="ml-auto hidden h-8 font-normal lg:flex"
@@ -61,7 +59,11 @@ export function DataTableViewOptions<TData extends RowData>({
         <Settings2 className="text-muted-foreground" />
         {i18n.t("common:dataTable.view")}
       </PopoverTrigger>
-      <PopoverContent className="w-44 p-0" {...props}>
+      <PopoverContent
+        aria-label={i18n.t("common:dataTable.toggleColumns")}
+        className="w-44 p-0"
+        {...props}
+      >
         <Command>
           <CommandInput
             placeholder={i18n.t("common:dataTable.searchColumns")}
