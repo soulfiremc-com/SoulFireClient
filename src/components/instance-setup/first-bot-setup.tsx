@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/item.tsx";
 import { BotDesiredState, BotService } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { getFailureFix } from "@/components/instance-overview/fleet-status.tsx";
 import {
   getBotDisplayState,
   groupBotFailures,
@@ -157,6 +158,7 @@ function FirstBotConnecting({
   }
 
   if (failure) {
+    const fix = getFailureFix(failure.kind, instanceInfo.id);
     return (
       <Alert role="alert">
         <CircleAlertIcon className="text-destructive" />
@@ -169,14 +171,20 @@ function FirstBotConnecting({
                 {failure.message}
               </span>
             )}
-            <Button
-              size="sm"
-              variant="outline"
-              className="w-fit"
-              onClick={onDone}
-            >
-              {t("setup.connecting.seeStatus")}
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              {fix && (
+                <Button
+                  size="sm"
+                  nativeButton={false}
+                  render={<Link {...fix.link} />}
+                >
+                  {t(fix.labelKey)}
+                </Button>
+              )}
+              <Button size="sm" variant="outline" onClick={onDone}>
+                {t("setup.connecting.seeStatus")}
+              </Button>
+            </div>
           </div>
         </AlertDescription>
       </Alert>

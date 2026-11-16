@@ -1464,7 +1464,9 @@
       "allConnected_one": "{{count}} bot is connected",
       "allConnected_other": "All {{count}} running bots are connected",
       "partial_one": "{{connected}} of {{count}} running bot is connected",
-      "partial_other": "{{connected}} of {{count}} running bots are connected"
+      "partial_other": "{{connected}} of {{count}} running bots are connected",
+      "connecting_one": "Connecting: {{connected}} of {{count}} bot has joined",
+      "connecting_other": "Connecting: {{connected}} of {{count}} bots have joined"
     },
     "state": {
       "connected": "connected",
@@ -1484,19 +1486,27 @@
     "kind": {
       "unreachable": {
         "title": "cannot reach the Minecraft server",
-        "description": "Check that the Minecraft server is online and that the address in Bot Settings is correct."
+        "description": "Check that the Minecraft server is online and that the address and port in Bot Settings are correct."
+      },
+      "onlineAuth": {
+        "title": "the server requires Microsoft accounts",
+        "description": "This server checks every player with Microsoft, so offline accounts cannot join. Add Microsoft Java accounts, or use a server with online mode turned off."
       },
       "account": {
         "title": "account login rejected",
-        "description": "The Minecraft server did not accept these accounts. Check that the server supports this account type, or refresh the accounts."
+        "description": "The Minecraft server did not accept these accounts. Refresh the accounts, or check that each account name is used by only one bot."
+      },
+      "blocked": {
+        "title": "the server banned or blocked these accounts",
+        "description": "The server banned these accounts or their IP address, or they are not on its whitelist. Use other accounts or proxies, or ask the server owner for access."
       },
       "throttled": {
         "title": "the server limits connections",
-        "description": "Bots keep retrying on their own. A longer join delay can help."
+        "description": "Bots keep retrying on their own. Start fewer bots at once or set a longer join delay."
       },
       "version": {
         "title": "Minecraft version mismatch",
-        "description": "Choose the Minecraft version that the server runs in Bot Settings."
+        "description": "The server runs a different Minecraft version. Choose that version in Bot Settings."
       },
       "proxy": {
         "title": "proxy connection problem",
@@ -1519,6 +1529,8 @@
     "restartRequested_one": "Restarting {{count}} bot. Its status updates in a few seconds.",
     "restartRequested_other": "Restarting {{count}} bots. Their status updates in a few seconds.",
     "namesMore": "{{names}} and {{count}} more",
+    "connectingHint_one": "{{count}} bot is still joining. Bots join one after another, so keep them running.",
+    "connectingHint_other": "{{count}} bots are still joining. Bots join one after another, so keep them running.",
     "startHint": "Use Start bots to connect them to the Minecraft server.",
     "startHintNoPermission": "You can view these bots, but you do not have permission to start them."
   },
@@ -1592,7 +1604,7 @@
     },
     "connecting": {
       "title": "Connecting to the Minecraft server",
-      "description": "This usually takes a few seconds. The bot retries by itself if the server does not respond.",
+      "description": "This usually takes a few seconds. Bots join one after another and retry by themselves if the server does not respond, so keep them running.",
       "seeStatus": "See bot status"
     },
     "connected": {

@@ -117,6 +117,35 @@ test("classifies failures only when the message supports it", () => {
   assert.equal(classifyBotFailure("Something unusual happened"), "other");
 });
 
+test("classifies the disconnect messages the server reports", () => {
+  const cases: [string, ReturnType<typeof classifyBotFailure>][] = [
+    // SoulFire's message for an offline account on a server in online mode.
+    [
+      "Failed to log in: Server requested Java online authentication for 'Bot1', but this account uses OFFLINE authentication. Cracked servers can still require premium authentication for specific usernames. Use a Microsoft Java account, or ask the server administrator to check this username's premium status.",
+      "onlineAuth",
+    ],
+    ["Failed to verify username!", "account"],
+    ["You logged in from another location", "account"],
+    ["You are banned from this server.\nReason: account sharing", "blocked"],
+    ["You are not whitelisted on this server!", "blocked"],
+    ["Kicked by an operator", "blocked"],
+    ["Incompatible client! Please use 1.21.4", "version"],
+    ["Outdated server! I'm still on 1.8.8", "version"],
+    ["Server is full!", "throttled"],
+    ["You are connecting too fast, please wait", "throttled"],
+    ["Unknown host", "unreachable"],
+    ["Connection refused: ", "unreachable"],
+    ["Timed out", "unreachable"],
+    [
+      "socks5, none, /10.0.0.1:1080 => play.test:25565, connection refused",
+      "proxy",
+    ],
+  ];
+  for (const [message, kind] of cases) {
+    assert.equal(classifyBotFailure(message), kind, message);
+  }
+});
+
 test("starts only stopped bots and respects the requested count", () => {
   const bots = [
     bot("a", BotRuntimeState.RUNNING, { online: true }),

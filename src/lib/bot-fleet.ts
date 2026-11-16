@@ -80,26 +80,43 @@ export function countBotFleet(
 
 export type BotFailureKind =
   | "unreachable"
+  | "onlineAuth"
   | "account"
+  | "blocked"
   | "throttled"
   | "version"
   | "proxy"
   | "other";
 
+/**
+ * The server reports the plain Minecraft disconnect text or a short exception
+ * message. Earlier patterns win, so specific causes come before broad words
+ * such as "account" or "version" that can also appear in other messages.
+ */
 const FAILURE_PATTERNS: readonly (readonly [BotFailureKind, RegExp])[] = [
   ["proxy", /proxy|socks[45]?\b/i],
+  // SoulFire's own message when an offline or Bedrock account meets a server
+  // in online mode, and login plugins that reserve premium names.
+  [
+    "onlineAuth",
+    /online authentication|online.?mode|premium|use a microsoft (java )?account/i,
+  ],
+  ["blocked", /\bbanned\b|white-?listed|kicked by an operator/i],
   [
     "account",
-    /invalid session|not authenticated|authenticat|premium|failed to verify username|session server|token|account/i,
+    /invalid session|not authenticated|authenticat|failed to verify username|session server|logged in from another location|name is already taken|token|account/i,
   ],
-  ["version", /outdated|incompatible|protocol|unsupported version|version/i],
+  [
+    "version",
+    /outdated (client|server)|incompatible client|protocol|unsupported version|version/i,
+  ],
   [
     "throttled",
-    /throttl|too many|rate.?limit|please wait|wait before|banned|whitelist|white-listed/i,
+    /throttl|too many|too fast|rate.?limit|please wait|wait before|server is full/i,
   ],
   [
     "unreachable",
-    /connection refused|timed? ?out|no route|unknown host|unresolved|name or service|connection reset|unreachable/i,
+    /connection refused|timed? ?out|no route|unknown host|unresolved|name or service|connection reset|unreachable|failed to connect/i,
   ],
 ];
 

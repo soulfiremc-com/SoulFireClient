@@ -112,7 +112,9 @@ export function getFailureFix(
           params: { ...params, pageId: "bot" },
         },
       };
+    case "onlineAuth":
     case "account":
+    case "blocked":
       return {
         labelKey: "fleet.fix.accounts",
         link: { to: "/instance/$instance/accounts", params },
@@ -281,10 +283,15 @@ export function FleetStatus({
       ? t("fleet.headline.noneRunning", { count: counts.total })
       : counts.connected === counts.desired
         ? t("fleet.headline.allConnected", { count: counts.connected })
-        : t("fleet.headline.partial", {
-            connected: counts.connected,
-            count: counts.desired,
-          });
+        : counts.starting > 0
+          ? t("fleet.headline.connecting", {
+              connected: counts.connected,
+              count: counts.desired,
+            })
+          : t("fleet.headline.partial", {
+              connected: counts.connected,
+              count: counts.desired,
+            });
 
   return (
     <section
@@ -347,6 +354,18 @@ export function FleetStatus({
           })}
         </ul>
       </div>
+      {counts.starting > 0 && (
+        <p
+          role="status"
+          className="text-muted-foreground flex items-center gap-2 text-sm"
+        >
+          <LoaderCircleIcon
+            aria-hidden="true"
+            className="size-3.5 shrink-0 motion-safe:animate-spin"
+          />
+          {t("fleet.connectingHint", { count: counts.starting })}
+        </p>
+      )}
       {groups.length > 0 && (
         <ItemGroup className="gap-2" aria-label={t("fleet.attention")}>
           {groups.map((group) => (

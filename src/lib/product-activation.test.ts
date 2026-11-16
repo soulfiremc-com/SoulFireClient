@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { QueryClient } from "@tanstack/react-query";
-import { BotConnectionPhase } from "@/generated/soulfire/bot_pb";
+import { create } from "@bufbuild/protobuf";
+import {
+  BotConnectionPhase,
+  BotDesiredState,
+  BotRuntimeState,
+  BotStatusSchema,
+} from "@/generated/soulfire/bot_pb";
 import { getAnalyticsIdentity } from "./analytics-identity";
 import {
   createProductActivationTracker,
@@ -178,4 +184,79 @@ test("fresh bot-status results activate once and unsubscribe stops observation",
   queryClient.setQueryData(["bot-status", "instance"], { bots: [spawned] });
   assert.deepEqual(otherEvents, []);
   queryClient.clear();
+});
+
+const failing = (runtimeState: BotRuntimeState, lastError?: string) => ({
+  isOnline: false,
+  connectionPhase: BotConnectionPhase.DISCONNECTED,
+  status: create(BotStatusSchema, {
+    desiredState: BotDesiredState.RUNNING,
+    runtimeState,
+    lastError,
+  }),
+});
+
+test("reports the first failed connection once with only its kind", () => {
+  const saved = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => saved.get(key) ?? null,
+    setItem: (key: string, value: string) => void saved.set(key, value),
+  };
+  const events: { event: string; properties: object }[] = [];
+  const makeTracker = () =>
+    createProductActivationTracker({
+      surface: "web",
+      storage,
+      capture: (event, properties) => {
+        events.push({ event, properties });
+        return true;
+      },
+    });
+  const tracker = makeTracker();
+  // A retry without an error gives no cause, so it waits for a real one.
+  tracker.observe("user", [failing(BotRuntimeState.RETRYING)]);
+  assert.deepEqual(
+    events.map(({ event }) => event),
+    [],
+  );
+  tracker.observe("user", [
+    failing(BotRuntimeState.RETRYING, "Connection refused: play.test:25565"),
+    failing(
+      BotRuntimeState.FAILED,
+      "Failed to log in: Server requested Java online authentication for 'Bot1'",
+    ),
+  ]);
+  const failure = events.find(
+    ({ event }) => event === "first_bot_connect_failed",
+  );
+  // The failed bot wins over the retrying one, and no message text is sent.
+  assert.deepEqual(failure?.properties, {
+    client_surface: "web",
+    measurement_version: 1,
+    failure_kind: "onlineAuth",
+    bot_state: "failed",
+  });
+  tracker.observe("user", [failing(BotRuntimeState.FAILED, "Timed out")]);
+  makeTracker().observe("user", [failing(BotRuntimeState.FAILED, "Timed out")]);
+  assert.equal(
+    events.filter(({ event }) => event === "first_bot_connect_failed").length,
+    1,
+  );
+});
+
+test("does not report failures once a bot has spawned", () => {
+  const events: string[] = [];
+  const tracker = createProductActivationTracker({
+    surface: "desktop",
+    capture: (event) => {
+      events.push(event);
+      return true;
+    },
+  });
+  tracker.observe("user", [
+    spawned,
+    failing(BotRuntimeState.FAILED, "Timed out"),
+  ]);
+  tracker.observe("user", [failing(BotRuntimeState.FAILED, "Timed out")]);
+  assert.deepEqual(events, ["product_session_started", "product_activated"]);
 });

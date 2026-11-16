@@ -136,3 +136,41 @@ export const AllStopped: Story = {
     ).toBeVisible();
   },
 };
+
+export const Connecting: Story = {
+  render: () =>
+    renderFleet([
+      entry("Alder", BotRuntimeState.RUNNING, { online: true }),
+      entry("Birch", BotRuntimeState.STARTING),
+      entry("Cedar", BotRuntimeState.QUEUED),
+    ]),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Joining bots show progress, so a slow join does not look stuck.
+    await expect(
+      await canvas.findByRole("heading", {
+        name: "Connecting: 1 of 3 bots have joined",
+      }),
+    ).toBeVisible();
+    await expect(canvas.getByRole("status")).toHaveTextContent(
+      "2 bots are still joining. Bots join one after another, so keep them running.",
+    );
+  },
+};
+
+export const OnlineModeServer: Story = {
+  render: () =>
+    renderFleet([
+      entry("Iris", BotRuntimeState.FAILED, {
+        error:
+          "Failed to log in: Server requested Java online authentication for 'Iris', but this account uses OFFLINE authentication.",
+      }),
+    ]),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByText("the server requires Microsoft accounts"),
+    ).toBeVisible();
+    await expect(canvas.getByText("Open accounts")).toBeVisible();
+  },
+};
