@@ -624,7 +624,7 @@ export const SearchAndNavigate: Story = {
     await userEvent.keyboard("{Enter}");
     await canvas.findByText("Project terminal page");
     await userEvent.click(
-      canvas.getByRole("button", { name: /^Search (Ctrl|⌘)\+K$/ }),
+      canvas.getByRole("button", { name: /^Search (Ctrl\+|⌘)K$/ }),
     );
     const reopened = await page.findByRole("dialog", { name: "Command menu" });
     const recentGroup = within(reopened).getByRole("group", {
@@ -657,7 +657,7 @@ export const ShortcutsAndActions: Story = {
     const canvas = within(canvasElement);
     const page = within(document.body);
     const trigger = await canvas.findByRole("button", {
-      name: /^Search (Ctrl|⌘)\+K$/,
+      name: /^Search (Ctrl\+|⌘)K$/,
     });
     await userEvent.click(trigger);
     let dialog = await page.findByRole("dialog", { name: "Command menu" });
@@ -722,7 +722,7 @@ export const QueryFailureAndRetry: Story = {
     const canvas = within(canvasElement);
     const page = within(document.body);
     await userEvent.click(
-      await canvas.findByRole("button", { name: /^Search (Ctrl|⌘)\+K$/ }),
+      await canvas.findByRole("button", { name: /^Search (Ctrl\+|⌘)K$/ }),
     );
     const dialog = await page.findByRole("dialog", { name: "Command menu" });
     await within(dialog).findByText("Some results could not load.");
@@ -1242,7 +1242,7 @@ export const SamePageSettingKeepsTableFilters: Story = {
     const canvas = within(context.canvasElement);
     await canvas.findByRole("switch", { name: "Shuffle accounts" });
     await context.userEvent.click(
-      canvas.getByRole("button", { name: /^Search (Ctrl|⌘)\+K$/ }),
+      canvas.getByRole("button", { name: /^Search (Ctrl\+|⌘)K$/ }),
     );
     const menu = within(
       await within(document.body).findByRole("dialog", {
@@ -1432,7 +1432,7 @@ export const HeaderSearchOnNarrowScreen: Story = {
     const canvas = within(canvasElement);
     await canvas.findByText("Project overview");
     const trigger = canvas.getByRole("button", {
-      name: /^Search (Ctrl|⌘)\+K$/,
+      name: /^Search (Ctrl\+|⌘)K$/,
     });
     const header = trigger.closest("header")!;
     await expect(trigger).toBeVisible();

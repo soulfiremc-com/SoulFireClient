@@ -223,9 +223,31 @@ export const isMac =
   typeof navigator !== "undefined" &&
   /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
 
-export function formatShortcut(shortcut: string): string {
-  if (isMac) {
+// macOS lists modifiers as symbols in this order, with no separators.
+const MAC_MODIFIERS = [
+  ["Alt", "⌥"],
+  ["Shift", "⇧"],
+  ["Ctrl", "⌘"],
+] as const;
+
+export function formatShortcutForPlatform(
+  shortcut: string,
+  mac: boolean,
+): string {
+  if (!mac) return shortcut;
+
+  const parts = shortcut.split(/\s*\+\s*/);
+  const modifiers = MAC_MODIFIERS.filter(([name]) => parts.includes(name));
+  const keys = parts.filter(
+    (part) => !MAC_MODIFIERS.some(([name]) => name === part),
+  );
+  if (keys.length > 1 || modifiers.length + keys.length !== parts.length) {
     return shortcut.replace(/Ctrl/g, "⌘").replace(/Alt/g, "⌥");
   }
-  return shortcut;
+
+  return modifiers.map(([, symbol]) => symbol).join("") + (keys[0] ?? "");
+}
+
+export function formatShortcut(shortcut: string): string {
+  return formatShortcutForPlatform(shortcut, isMac);
 }

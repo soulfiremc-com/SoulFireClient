@@ -15,6 +15,7 @@ import {
   nativeTheme,
   net,
   protocol,
+  screen,
   shell,
   Tray,
 } from "electron";
@@ -66,6 +67,9 @@ const APP_PROTOCOL_HOST = "soulfire";
 const DEEP_LINK_PREFIX = "soulfire://";
 const DEFAULT_WINDOW_HEIGHT = 675;
 const DEFAULT_WINDOW_WIDTH = 1200;
+// Match --background in src/App.css so new and resized windows do not flash.
+const DARK_WINDOW_BACKGROUND = "#090b0c";
+const LIGHT_WINDOW_BACKGROUND = "#ffffff";
 protocol.registerSchemesAsPrivileged([
   {
     scheme: APP_PROTOCOL,
@@ -82,7 +86,11 @@ type StoredWindowState = {
   height: number;
   isMaximized: boolean;
   width: number;
+  x?: number;
+  y?: number;
 };
+
+type StoredThemeSource = "dark" | "light" | "system";
 
 type FsWatchRegistration = {
   changedPaths: Set<string>;
@@ -92,9 +100,11 @@ type FsWatchRegistration = {
 };
 
 const windowStateStore = new Store<{
+  themeSource: StoredThemeSource;
   window: StoredWindowState;
 }>({
   defaults: {
+    themeSource: "system",
     window: {
       height: DEFAULT_WINDOW_HEIGHT,
       isMaximized: false,
@@ -131,6 +141,7 @@ const povInputOwners = new Map<
 let nextFsWatchId = 1;
 let pendingOpenUrl = findProtocolUrl(process.argv);
 let tray: Tray | null = null;
+let appStarted = false;
 
 app.on("open-url", (event, url) => {
   event.preventDefault();
@@ -228,6 +239,13 @@ function sendToMainWindow(channel: string, payload?: unknown): void {
 
 function focusMainWindow(): void {
   if (mainWindow === null || mainWindow.isDestroyed()) {
+    // On macOS the app keeps running after its window closes. Reopen it for
+    // the tray, the Dock, and deep links.
+    if (appStarted) {
+      createMainWindow().catch((error: unknown) => {
+        console.error("Could not reopen the SoulFire window", error);
+      });
+    }
     return;
   }
 
@@ -421,7 +439,15 @@ function registerSecurityHandlers(): void {
     contents.on("will-navigate", (event, navigationUrl) => {
       if (!isAllowedRendererUrl(navigationUrl)) {
         event.preventDefault();
+        // Plain links without target="_blank" should still open in the browser.
+        if (isSafeExternalUrl(navigationUrl)) {
+          void shell.openExternal(navigationUrl);
+        }
       }
+    });
+
+    contents.on("context-menu", (_event, params) => {
+      showEditContextMenu(contents, params);
     });
 
     contents.setWindowOpenHandler(({ url, frameName }) => {
@@ -435,7 +461,8 @@ function registerSecurityHandlers(): void {
           overrideBrowserWindowOptions: {
             autoHideMenuBar: true,
             frame: false,
-            backgroundColor: "#111418",
+            backgroundColor: windowBackgroundColor(),
+            icon: windowIcon(),
             webPreferences: {
               nodeIntegration: false,
               contextIsolation: true,
@@ -475,6 +502,44 @@ function registerSecurityHandlers(): void {
   });
 }
 
+function showEditContextMenu(
+  contents: Electron.WebContents,
+  params: Electron.ContextMenuParams,
+): void {
+  const { editFlags, isEditable, selectionText } = params;
+  const template: Electron.MenuItemConstructorOptions[] = isEditable
+    ? [
+        { role: "undo", enabled: editFlags.canUndo },
+        { role: "redo", enabled: editFlags.canRedo },
+        { type: "separator" },
+        { role: "cut", enabled: editFlags.canCut },
+        { role: "copy", enabled: editFlags.canCopy },
+        { role: "paste", enabled: editFlags.canPaste },
+        { type: "separator" },
+        { role: "selectAll", enabled: editFlags.canSelectAll },
+      ]
+    : selectionText.trim().length > 0
+      ? [{ role: "copy", enabled: editFlags.canCopy }]
+      : [];
+  if (template.length === 0) return;
+
+  const window = BrowserWindow.fromWebContents(contents);
+  Menu.buildFromTemplate(template).popup(window ? { window } : undefined);
+}
+
+function windowBackgroundColor(): string {
+  return nativeTheme.shouldUseDarkColors
+    ? DARK_WINDOW_BACKGROUND
+    : LIGHT_WINDOW_BACKGROUND;
+}
+
+function updateWindowBackgrounds(): void {
+  const color = windowBackgroundColor();
+  for (const window of BrowserWindow.getAllWindows()) {
+    if (!window.isDestroyed()) window.setBackgroundColor(color);
+  }
+}
+
 async function createMainWindow(): Promise<BrowserWindow> {
   const state = app.isPackaged
     ? loadStoredWindowState()
@@ -483,10 +548,11 @@ async function createMainWindow(): Promise<BrowserWindow> {
         isMaximized: false,
         width: DEFAULT_WINDOW_WIDTH,
       };
+  const position = visibleWindowPosition(state);
 
   const window = new BrowserWindow({
-    backgroundColor: "#111418",
-    center: true,
+    backgroundColor: windowBackgroundColor(),
+    center: position === null,
     frame: false,
     height: state.height,
     icon: windowIcon(),
@@ -500,6 +566,7 @@ async function createMainWindow(): Promise<BrowserWindow> {
       sandbox: true,
     },
     width: state.width,
+    ...position,
   });
   mainWindow = window;
 
@@ -520,6 +587,9 @@ async function createMainWindow(): Promise<BrowserWindow> {
   });
   window.on("resize", () => {
     sendToMainWindow("window:resized");
+    persistWindowState(window);
+  });
+  window.on("move", () => {
     persistWindowState(window);
   });
   window.on("maximize", () => {
@@ -549,7 +619,32 @@ function loadStoredWindowState(): StoredWindowState {
       typeof state.width === "number" && state.width >= 940
         ? state.width
         : DEFAULT_WINDOW_WIDTH,
+    x: typeof state.x === "number" ? state.x : undefined,
+    y: typeof state.y === "number" ? state.y : undefined,
   };
+}
+
+// Restore the saved position only while enough of the title bar is on a
+// connected display. A monitor may have been removed since the last run.
+function visibleWindowPosition(
+  state: StoredWindowState,
+): { x: number; y: number } | null {
+  const { x, y } = state;
+  if (x === undefined || y === undefined) return null;
+
+  const minVisible = 100;
+  const isVisible = screen.getAllDisplays().some(({ workArea }) => {
+    const visibleWidth =
+      Math.min(x + state.width, workArea.x + workArea.width) -
+      Math.max(x, workArea.x);
+    return (
+      visibleWidth >= minVisible &&
+      y >= workArea.y &&
+      y < workArea.y + workArea.height - minVisible / 2
+    );
+  });
+
+  return isVisible ? { x, y } : null;
 }
 
 function persistWindowState(window: BrowserWindow): void {
@@ -557,12 +652,18 @@ function persistWindowState(window: BrowserWindow): void {
     return;
   }
 
-  const bounds = window.getBounds();
+  // Keep the restored bounds while maximized, minimized, or fullscreen so
+  // unmaximizing on the next launch returns to the previous size and place.
+  const isMaximized = window.isMaximized();
+  if (window.isMinimized() || window.isFullScreen()) return;
   const current = windowStateStore.get("window");
+  const bounds = isMaximized ? current : window.getBounds();
   windowStateStore.set("window", {
-    height: window.isMaximized() ? current.height : bounds.height,
-    isMaximized: window.isMaximized(),
-    width: window.isMaximized() ? current.width : bounds.width,
+    height: bounds.height,
+    isMaximized,
+    width: bounds.width,
+    x: bounds.x,
+    y: bounds.y,
   });
 }
 
@@ -588,7 +689,7 @@ function createAppTray(): void {
         click: () => {
           app.quit();
         },
-        label: "Quit",
+        label: "Quit SoulFire",
       },
     ]),
   );
@@ -1029,8 +1130,18 @@ async function saveDialog(
 }
 
 function setThemeSource(theme: DesktopTheme): void {
-  nativeTheme.themeSource =
+  const themeSource: StoredThemeSource =
     theme === null ? "system" : theme === "dark" ? "dark" : "light";
+  nativeTheme.themeSource = themeSource;
+  // Remember the choice so the next launch creates windows with the right
+  // background before the renderer loads.
+  windowStateStore.set("themeSource", themeSource);
+}
+
+function restoreThemeSource(): void {
+  const stored = windowStateStore.get("themeSource");
+  nativeTheme.themeSource =
+    stored === "dark" || stored === "light" ? stored : "system";
 }
 
 function mapPlatformToType(platformName: string): string {
@@ -1049,6 +1160,8 @@ function mapPlatformToType(platformName: string): string {
 async function bootstrap(): Promise<void> {
   app.setAppUserModelId(APP_ID);
   applyApplicationIcon();
+  restoreThemeSource();
+  nativeTheme.on("updated", updateWindowBackgrounds);
   registerSecurityHandlers();
   registerIpcHandlers();
   castManager.setSettings(
@@ -1073,17 +1186,14 @@ async function bootstrap(): Promise<void> {
     void killIntegratedServer(integratedServerState);
   });
 
-  mainWindow = await createMainWindow();
+  const firstWindow = createMainWindow();
+  appStarted = true;
+  await firstWindow;
   createAppTray();
-  startUpdater();
+  startUpdater(() => mainWindow);
 
-  app.on("activate", async () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      mainWindow = await createMainWindow();
-      flushPendingOpenUrl();
-    } else {
-      focusMainWindow();
-    }
+  app.on("activate", () => {
+    focusMainWindow();
   });
 
   app.on("window-all-closed", () => {

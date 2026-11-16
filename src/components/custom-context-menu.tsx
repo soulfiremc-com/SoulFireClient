@@ -19,6 +19,26 @@ function hasSelectTextAncestor(element: Element | null): boolean {
   return false;
 }
 
+function isEditableTarget(element: Element | null): boolean {
+  return (
+    element instanceof HTMLElement &&
+    (element.isContentEditable ||
+      element instanceof HTMLTextAreaElement ||
+      (element instanceof HTMLInputElement &&
+        ![
+          "button",
+          "checkbox",
+          "color",
+          "file",
+          "image",
+          "radio",
+          "range",
+          "reset",
+          "submit",
+        ].includes(element.type)))
+  );
+}
+
 export function CustomContextMenu() {
   const {
     contextMenu: menu,
@@ -36,9 +56,15 @@ export function CustomContextMenu() {
       )
         return;
 
+      const target = e.target as Element | null;
+      // Keep the native cut, copy, and paste menu in text fields.
+      if (isEditableTarget(target)) {
+        dismiss();
+        return;
+      }
+
       e.preventDefault();
 
-      const target = e.target as Element | null;
       if (!target || !hasSelectTextAncestor(target)) {
         dismiss();
         return;

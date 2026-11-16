@@ -1,4 +1,4 @@
-import { app } from "electron";
+import { app, type BrowserWindow, dialog } from "electron";
 import electronLog from "electron-log";
 import electronUpdater from "electron-updater";
 
@@ -44,7 +44,45 @@ function getUpdaterTarget(): {
   };
 }
 
-export function startUpdater(): void {
+function installUpdateNow(): void {
+  if (process.platform === "win32") {
+    autoUpdater.quitAndInstall(true, true);
+    return;
+  }
+
+  autoUpdater.quitAndInstall();
+}
+
+// Restarting stops running bots and the integrated server, so ask first. If
+// the user waits, the update installs the next time they quit.
+async function promptToInstall(
+  window: BrowserWindow | null,
+  version: string,
+): Promise<void> {
+  const options: Electron.MessageBoxOptions = {
+    buttons: ["Restart now", "Later"],
+    cancelId: 1,
+    defaultId: 0,
+    detail:
+      "Restarting stops running bots and the integrated server. If you choose Later, SoulFire installs the update when you quit.",
+    message: `SoulFire ${version} is ready to install`,
+    title: "Update ready",
+    type: "info",
+  };
+  const { response } =
+    window === null || window.isDestroyed()
+      ? await dialog.showMessageBox(options)
+      : await dialog.showMessageBox(window, options);
+
+  if (response === 0) {
+    installUpdateNow();
+    return;
+  }
+
+  autoUpdater.autoInstallOnAppQuit = true;
+}
+
+export function startUpdater(getMainWindow: () => BrowserWindow | null): void {
   if (
     !app.isPackaged ||
     process.env.SOULFIRE_DISABLE_UPDATER !== undefined ||
@@ -80,20 +118,25 @@ export function startUpdater(): void {
   autoUpdater.on("update-not-available", (info) => {
     electronLog.info("No update available", info);
   });
+  const setProgress = (value: number) => {
+    const window = getMainWindow();
+    if (window !== null && !window.isDestroyed()) window.setProgressBar(value);
+  };
   autoUpdater.on("download-progress", (progress) => {
     electronLog.info("Update download progress", progress);
+    setProgress(progress.percent / 100);
   });
   autoUpdater.on("update-downloaded", (info) => {
-    electronLog.info("Update downloaded, installing now", info);
-    if (process.platform === "win32") {
-      autoUpdater.quitAndInstall(true, true);
-      return;
-    }
-
-    autoUpdater.quitAndInstall();
+    electronLog.info("Update downloaded", info);
+    setProgress(-1);
+    promptToInstall(getMainWindow(), info.version).catch((error: unknown) => {
+      electronLog.error("Could not show the update prompt", error);
+      autoUpdater.autoInstallOnAppQuit = true;
+    });
   });
   autoUpdater.on("error", (error) => {
     electronLog.error("Auto-update failed", error);
+    setProgress(-1);
   });
 
   // The "error" handler above logs failed checks, for example when the device
