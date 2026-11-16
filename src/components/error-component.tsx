@@ -1,4 +1,5 @@
 import {
+  CancelledError,
   useQueryClient,
   useQueryErrorResetBoundary,
 } from "@tanstack/react-query";
@@ -10,6 +11,7 @@ import {
   LogOutIcon,
   RotateCwIcon,
   VenetianMaskIcon,
+  WifiOffIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,6 +32,7 @@ import {
 } from "@/components/ui/collapsible.tsx";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { getConnectionErrorKind } from "@/lib/connection-errors";
+import { isExpectedError } from "@/lib/error-reporting";
 import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
 import { runAsync } from "@/lib/utils.tsx";
 import {
@@ -38,6 +41,8 @@ import {
   logOut,
   stopImpersonation,
 } from "@/lib/web-rpc.ts";
+
+const RECONNECT_INTERVAL_MS = 10_000;
 
 type ErrorComponentProps = {
   error: Error;
@@ -72,7 +77,13 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   }, [queryErrorResetBoundary]);
 
   useEffect(() => {
-    if (isPostHogConfigured) {
+    // Connection loss, cancellation, and rejected sessions have their own
+    // recovery UI. Reporting them would hide real defects in error tracking.
+    if (
+      isPostHogConfigured &&
+      !import.meta.env.DEV &&
+      !isExpectedError(error)
+    ) {
       posthog.captureException(error);
     }
   }, [error]);
@@ -101,6 +112,26 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
     }
   }, [router, queryClient, queryErrorResetBoundary, reset]);
 
+  const isCancelled = error instanceof CancelledError;
+  const autoRetry = isCancelled || errorKind === "connection";
+
+  // A cancelled load is not a failure, so retry it once without user action.
+  // A lost connection retries until the server responds again.
+  useEffect(() => {
+    if (!autoRetry) return;
+    if (isCancelled) {
+      runAsync(reloadPage);
+      return;
+    }
+    const retry = () => runAsync(reloadPage);
+    const interval = window.setInterval(retry, RECONNECT_INTERVAL_MS);
+    window.addEventListener("online", retry);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("online", retry);
+    };
+  }, [autoRetry, isCancelled, reloadPage]);
+
   const hasStack = error.stack && error.stack !== error.message;
 
   return (
@@ -108,12 +139,19 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
       <Card className="m-auto flex max-w-2xl flex-col">
         <CardHeader>
           <CardTitle className="flex-row flex gap-1 text-2xl font-bold">
-            <BugIcon className="h-8" />
-            {t("error.page.title")}
+            {errorKind === "connection" ? (
+              <WifiOffIcon className="h-8" />
+            ) : (
+              <BugIcon className="h-8" />
+            )}
+            {t(`error.page.kindTitle.${errorKind}`)}
           </CardTitle>
           <CardDescription>
             {t(`error.page.recovery.${errorKind}`)}
           </CardDescription>
+          {errorKind === "connection" && (
+            <CardDescription>{t("error.page.reconnecting")}</CardDescription>
+          )}
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Collapsible open={expanded} onOpenChange={setExpanded}>

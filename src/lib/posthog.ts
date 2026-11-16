@@ -4,6 +4,7 @@ import {
   createAnalyticsConsent,
 } from "@/lib/analytics-consent";
 import { resetLegacyAnalyticsIdentity } from "@/lib/analytics-identity";
+import { filterExpectedExceptions } from "@/lib/error-reporting";
 
 const projectToken = import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN;
 const host = import.meta.env.VITE_PUBLIC_POSTHOG_HOST;
@@ -29,7 +30,9 @@ if (!isPostHogConfigured) {
     ...analyticsConsentConfig,
     api_host: host,
     ui_host: "https://eu.posthog.com",
-    capture_exceptions: true,
+    // Dev builds report HMR and Vite client errors that never reach users.
+    capture_exceptions: !import.meta.env.DEV,
+    before_send: filterExpectedExceptions,
     debug: import.meta.env.DEV,
     defaults: "2026-01-30",
     loaded: (client) => {

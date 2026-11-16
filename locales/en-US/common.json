@@ -24,6 +24,13 @@
       "showDetails": "Show details",
       "connectionSettings": "Connection settings",
       "restartLocalServer": "Restart local server",
+      "reconnecting": "Retrying automatically. The page loads again when the server responds.",
+      "kindTitle": {
+        "connection": "Connection lost",
+        "authentication": "Sign-in expired",
+        "permission": "Access denied",
+        "unexpected": "Error"
+      },
       "recovery": {
         "connection": "Could not reach the SoulFire server. Check that it is running and retry, or open connection settings.",
         "authentication": "Your token was rejected or has expired. Open connection settings to sign in again.",

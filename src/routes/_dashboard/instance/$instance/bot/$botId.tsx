@@ -177,6 +177,7 @@ import {
 import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
 import { dialogMutationOptions } from "@/lib/dialog-mutation-options";
 import { isResourceUnavailable } from "@/lib/resource-errors";
+import { isBotNotReadyError } from "@/lib/bot-availability";
 import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
@@ -1384,13 +1385,18 @@ function BotInventoryPanel({
         const transport = createTransport();
         if (transport === null) return null;
         const botService = createRpcClient(BotService, transport);
-        const result = await Effect.runPromise(
-          botService.getInventoryState({
-            instanceId,
-            botId,
-          }),
-        );
-        return result;
+        try {
+          return await Effect.runPromise(
+            botService.getInventoryState({
+              instanceId,
+              botId,
+            }),
+          );
+        } catch (error) {
+          // The bot can go offline or leave its world between status polls.
+          if (isBotNotReadyError(error)) return null;
+          throw error;
+        }
       },
       refetchInterval: 1_000,
     }),
@@ -2514,18 +2520,24 @@ function botDialogQueryOptions(
   return queryOptions({
     queryKey: ["bot-dialog", instanceId, botId],
     queryFn: async (queryProps) => {
+      // useSuspenseQuery ignores `enabled`, so offline bots must not reach the RPC.
+      if (!isOnline) return { dialog: undefined };
       const transport = createTransport();
       if (transport === null) {
         return { dialog: undefined };
       }
       const botService = createRpcClient(BotService, transport);
-      const result = await Effect.runPromise(
-        botService.getDialog(
-          { instanceId, botId },
-          { signal: queryProps.signal },
-        ),
-      );
-      return result;
+      try {
+        return await Effect.runPromise(
+          botService.getDialog(
+            { instanceId, botId },
+            { signal: queryProps.signal },
+          ),
+        );
+      } catch (error) {
+        if (isBotNotReadyError(error)) return { dialog: undefined };
+        throw error;
+      }
     },
     refetchInterval: 2_000, // Poll for dialog updates
     enabled: isOnline,
