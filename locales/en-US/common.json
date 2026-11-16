@@ -353,7 +353,13 @@
       "saveError": "Could not save {{name}}",
       "placeholder": "Add a new entry...",
       "add": "Add",
-      "remove": "Remove"
+      "remove": "Remove",
+      "count_one": "{{count}} entry",
+      "count_other": "{{count}} entries",
+      "removeAll": "Remove all",
+      "removedAll_one": "Removed {{count}} {{name}} entry",
+      "removedAll_other": "Removed {{count}} {{name}} entries",
+      "undo": "Undo"
     },
     "combo": {
       "searchPlaceholder": "Search value...",

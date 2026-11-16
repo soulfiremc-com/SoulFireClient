@@ -126,6 +126,10 @@ import {
   splitSettingsEntries,
   groupSettingsEntries,
 } from "@/lib/settings-discovery.ts";
+import {
+  getSettingDefaultValue,
+  isSameSettingValue,
+} from "@/lib/setting-default-value.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
   cn,
@@ -565,6 +569,7 @@ function StringListComponent(props: {
     }
   };
   const insertValue = async (value: string) => {
+    if (value.trim() === "") return;
     const revision = ++draftRevision.current;
     setNewEntryInput("");
     const saved = await saveEntries([
@@ -584,6 +589,24 @@ function StringListComponent(props: {
   };
   const deleteId = (id: string) => {
     void saveEntries(list.entries.filter((entry) => entry.id !== id));
+  };
+  const removeAll = async () => {
+    const previous = list.entries;
+    if (!(await saveEntries([]))) return;
+    toast.success(
+      t("settingsPage.stringList.removedAll", {
+        name: props.setting.uiName,
+        count: previous.length,
+      }),
+      {
+        action: {
+          label: t("settingsPage.stringList.undo"),
+          onClick: () => {
+            void saveEntries(previous);
+          },
+        },
+      },
+    );
   };
 
   return (
@@ -614,13 +637,34 @@ function StringListComponent(props: {
               onClick={() => {
                 void insertValue(newEntryInput);
               }}
-              disabled={props.setting.disabled}
+              disabled={props.setting.disabled || newEntryInput.trim() === ""}
             >
               <PlusIcon />
               {t("settingsPage.stringList.add")}
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
+        {list.entries.length > 1 && (
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-muted-foreground text-xs">
+              {t("settingsPage.stringList.count", {
+                count: list.entries.length,
+              })}
+            </p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="xs"
+              disabled={props.setting.disabled}
+              onClick={() => {
+                void removeAll();
+              }}
+            >
+              <TrashIcon data-icon="inline-start" />
+              {t("settingsPage.stringList.removeAll")}
+            </Button>
+          </div>
+        )}
         {list.entries.map((item, index) => (
           <InputGroup key={item.id}>
             <InputGroupInput
@@ -781,23 +825,10 @@ export function SettingTypeRenderer(props: {
   }
 }
 
-function getSettingDefaultValue(
-  definition: SettingsDefinition,
-): JsonValue | undefined {
-  const type = definition.type;
-  switch (type.case) {
-    case "string":
-    case "int":
-    case "double":
-    case "bool":
-    case "combo":
-      return type.value.def as JsonValue;
-    default:
-      return undefined;
-  }
-}
-
 function formatDefault(value: JsonValue, definition: SettingsDefinition) {
+  if (definition.type.case === "stringList") {
+    return undefined;
+  }
   if (definition.type.case === "combo") {
     return definition.type.value.options.find((option) => option.id === value)
       ?.displayName;
@@ -820,7 +851,8 @@ function SettingStatusRow(props: {
     defaultValue === undefined
       ? undefined
       : formatDefault(defaultValue, props.definition);
-  const isDefault = defaultValue === undefined || props.value === defaultValue;
+  const isDefault =
+    defaultValue === undefined || isSameSettingValue(props.value, defaultValue);
   const canReset = !isDefault && !props.definition.type.value?.disabled;
   const showStatus =
     props.status === "error" || (props.persisted && props.status !== "idle");
@@ -957,7 +989,13 @@ function SettingField<T extends BaseSettings>(props: {
           props.mutationTarget.type === "bot" &&
           props.config.settings[namespace]?.[key] !== undefined
         }
-        onReset={setValueMutation.mutate}
+        onReset={(value) =>
+          setValueMutation.mutate(value, {
+            // String lists report other save errors inside the list.
+            onError:
+              definition.type.case === "stringList" ? onSaveError : undefined,
+          })
+        }
       />
     </div>
   );
@@ -1071,7 +1109,13 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
         status={setValueMutation.status}
         persisted
         overridden={false}
-        onReset={setValueMutation.mutate}
+        onReset={(value) =>
+          setValueMutation.mutate(value, {
+            // String lists report other save errors inside the list.
+            onError:
+              definition.type.case === "stringList" ? onSaveError : undefined,
+          })
+        }
       />
     </div>
   );

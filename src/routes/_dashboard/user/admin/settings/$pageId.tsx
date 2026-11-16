@@ -75,13 +75,21 @@ function SettingsPage() {
   );
 }
 
+const SKELETON_FIELD_IDS = [
+  "field-1",
+  "field-2",
+  "field-3",
+  "field-4",
+  "field-5",
+] as const;
+
 function SettingsFormSkeleton() {
   return (
     <div className="flex h-full w-full grow flex-row gap-2 pl-2">
       <div className="flex h-full grow flex-col gap-4">
         <div className="flex flex-col gap-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex flex-col gap-1">
+          {SKELETON_FIELD_IDS.map((id) => (
+            <div key={id} className="flex flex-col gap-1">
               <Skeleton className="h-4 w-28" />
               <Skeleton className="h-9 w-full" />
             </div>
