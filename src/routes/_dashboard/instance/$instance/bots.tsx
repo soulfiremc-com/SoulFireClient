@@ -72,7 +72,7 @@ function Bots() {
       extraCrumbs={[{ id: "controls", content: t("breadcrumbs.controls") }]}
       pageName={t("pageName.bots")}
       loadingSkeleton={
-        <div className="container flex h-full w-full grow flex-col gap-4 py-4">
+        <div className="container flex h-full w-full grow flex-col gap-4">
           <BotGridSkeleton />
         </div>
       }
@@ -99,9 +99,9 @@ function Content() {
   );
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4 py-4">
+    <div className="container flex h-full w-full grow flex-col gap-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-        <InputGroup className="max-w-sm flex-1">
+        <InputGroup className="max-w-sm min-w-56 flex-1">
           <InputGroupAddon>
             <SearchIcon className="text-muted-foreground" />
           </InputGroupAddon>
@@ -113,28 +113,32 @@ function Content() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </InputGroup>
-        <ToggleGroup
-          aria-label={t("bots.filterLabel")}
-          variant="outline"
-          size="sm"
-          className="flex-wrap"
-          value={[status ?? "all"]}
-          onValueChange={(value) => {
-            const next = value[0];
-            if (next) {
-              void setStatus(next === "all" ? null : (next as BotDisplayState));
-            }
-          }}
-        >
-          <ToggleGroupItem value="all">{t("bots.filterAll")}</ToggleGroupItem>
-          {BOT_DISPLAY_STATES.filter((state) => state !== "stopping").map(
-            (state) => (
-              <ToggleGroupItem key={state} value={state}>
-                {t(`bots.displayState.${state}`)}
-              </ToggleGroupItem>
-            ),
-          )}
-        </ToggleGroup>
+        {/* Scroll the segmented filter on narrow screens instead of wrapping it. */}
+        <div className="-m-1 overflow-x-auto p-1">
+          <ToggleGroup
+            aria-label={t("bots.filterLabel")}
+            variant="outline"
+            size="sm"
+            value={[status ?? "all"]}
+            onValueChange={(value) => {
+              const next = value[0];
+              if (next) {
+                void setStatus(
+                  next === "all" ? null : (next as BotDisplayState),
+                );
+              }
+            }}
+          >
+            <ToggleGroupItem value="all">{t("bots.filterAll")}</ToggleGroupItem>
+            {BOT_DISPLAY_STATES.filter((state) => state !== "stopping").map(
+              (state) => (
+                <ToggleGroupItem key={state} value={state}>
+                  {t(`bots.displayState.${state}`)}
+                </ToggleGroupItem>
+              ),
+            )}
+          </ToggleGroup>
+        </div>
         <Suspense
           fallback={
             <Badge variant="outline" className="w-fit">

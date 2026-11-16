@@ -19,7 +19,7 @@ import {
   UserIcon,
   VenetianMaskIcon,
 } from "lucide-react";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -56,6 +56,7 @@ import { UserService } from "@/generated/soulfire/user_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
+import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { calendarDateRangeFilter } from "@/lib/calendar-date-range-filter";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
@@ -523,6 +524,12 @@ function Users() {
   );
 }
 
+// Phones hide the date columns so the username, email, and role fit on screen.
+// The view options menu that could restore them only shows on wide screens.
+function phoneColumnVisibility(isMobile: boolean) {
+  return { createdAt: !isMobile, minIssuedAt: !isMobile };
+}
+
 function Content() {
   const { t } = useTranslation(["admin", "common"]);
   const { usersQueryOptions, clientDataQueryOptions } = Route.useRouteContext();
@@ -530,13 +537,23 @@ function Content() {
   const { data: userList } = useSuspenseQuery(usersQueryOptions);
   const transport = use(TransportContext);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { table } = useDataTable({
     data: userList.users,
     columns,
+    initialState: {
+      columnVisibility: phoneColumnVisibility(isMobile),
+    },
     enableRowSelection: (row) =>
       row.original.id !== ROOT_USER_ID && row.original.id !== clientInfo.id,
     getRowId: (row) => row.id,
   });
+  useEffect(() => {
+    table.setColumnVisibility((visibility) => ({
+      ...visibility,
+      ...phoneColumnVisibility(isMobile),
+    }));
+  }, [table, isMobile]);
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<UserListResponse_User>();
   const copyToClipboard = useCopyToClipboard();

@@ -20,7 +20,7 @@ function UserLayout() {
     <SidebarProvider defaultOpen={defaultOpen} className="min-h-0 flex-1">
       <UserSidebar />
       <TooltipProvider delay={500}>
-        <SidebarInset>
+        <SidebarInset className="min-w-0">
           <NavigationFeedback />
           <CatchBoundary
             getResetKey={() => "user-layout"}
