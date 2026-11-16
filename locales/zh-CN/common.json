@@ -113,18 +113,24 @@
         "submit": "从 URL 加载",
         "toast": {
           "loading": "正在下载数据...",
-          "success": "数据已加载！",
+          "success": "数据已加载",
           "error": "下载数据失败",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "删除实例？",
+      "description": "这会永久删除“{{name}}”及其数据。此操作无法撤销。",
+      "descriptionUnnamed": "这会永久删除此实例及其数据。此操作无法撤销。"
     }
   },
   "commandInput": {
     "placeholder": "输入命令（输入“help”查看列表）",
     "emptySuggestions": "输入以请求建议或按 Tab 键。",
-    "noSuggestions": "暂无可用建议。"
+    "noSuggestions": "暂无可用建议。",
+    "emptySuggestionsPrefix": "输入以获取建议，或按"
   },
   "controls": {
     "start": "开始",
@@ -162,7 +168,7 @@
     "stopCount_other": "停止 {{count}} 个机器人",
     "restartCount_other": "重启 {{count}} 个机器人"
   },
-  "botFleetSummary": "{{online}} 在线 · {{desired}} 目标 · {{total}} 总计",
+  "botFleetSummary": "{{online}} 个已连接 · {{desired}} 个设为运行 · 共 {{total}} 个",
   "icon": {
     "invalidName": "无效的图标名称: {{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "升序",
       "desc": "降序"
-    }
+    },
+    "openFilterMenu": "打开筛选菜单",
+    "filterOperator": "筛选运算符",
+    "filterValue": "筛选值",
+    "sortDirection": "排序方向",
+    "selectJoinOperator": "选择连接运算符",
+    "joinOperator": "连接运算符",
+    "escapeKey": "Escape",
+    "selectDate": "选择日期",
+    "selectDateRange": "选择日期范围",
+    "clearFilter": "清除 {{title}} 筛选",
+    "clearFilters": "清除筛选",
+    "clear": "清除",
+    "from": "从",
+    "to": "到",
+    "sortDirectionFor": "{{column}} 的排序方向",
+    "minValue": "{{label}} 最小值",
+    "maxValue": "{{label}} 最大值"
   },
   "pluginCard": {
     "version": "版本: {{version}}",
@@ -252,13 +275,13 @@
     "website": "网站"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "无法保存 {{name}}",
     "namespacesNotFound": "未找到设置命名空间",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "无法保存 {{name}}",
       "placeholder": "添加新条目...",
       "add": "添加",
       "remove": "删除"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "无效数字",
       "description": "值必须介于 {{min}} 和 {{max}} 之间"
-    }
+    },
+    "minMaxLegend": "最小值和最大值设置"
   },
   "terminal": {
     "noLogs": "暂时没有日志。运行命令以生成日志输出。",
@@ -317,16 +341,37 @@
       "error": "无法连接到{{device}}"
     },
     "noDevices": "未找到设备",
-    "broadcastLabel": "广播测试",
     "broadcastToast": {
       "loading": "正在广播消息…",
-      "success": "消息已播报！",
+      "success": "消息已播报",
       "error": "广播消息失败"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "正在开启脚本...",
+        "success": "脚本已开启",
+        "error": "无法开启脚本。请重试。"
+      },
+      "deactivate": {
+        "loading": "正在关闭脚本...",
+        "success": "脚本已关闭",
+        "error": "无法关闭脚本。请重试。"
+      }
+    },
+    "operations": {
+      "activateScript": "开启脚本 {{name}}",
+      "deactivateScript": "关闭脚本 {{name}}"
+    },
+    "status": {
+      "active": "开",
+      "paused": "关"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "阅读文档",
-    "backToDashboard": "返回仪表板",
+    "backToDashboard": "返回实例列表",
     "deleteToast": {
       "loading": "正在删除实例...",
       "success": "实例已删除",
@@ -352,9 +397,9 @@
     "settingsGroup": "设置",
     "extensionsGroup": "扩展",
     "botSettings": "机器人设置",
-    "accountSettings": "帐户设置",
+    "accountSettings": "账户",
     "metaSettings": "实例设置",
-    "proxySettings": "代理设置",
+    "proxySettings": "代理",
     "aiSettings": "AI设置",
     "pathfindingSettings": "路径寻路设置",
     "discoverPlugins": "插件",
@@ -420,10 +465,10 @@
     "instances": "实例",
     "access": "访问权限",
     "settings": "设置",
-    "proxySettings": "代理设置",
+    "proxySettings": "代理",
     "overview": "概况",
     "users": "用户",
-    "accountSettings": "帐户设置",
+    "accountSettings": "账户",
     "metaSettings": "实例设置",
     "discoverPlugins": "插件",
     "adminScripts": "脚本",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "API 访问",
-      "description": "SoulFire gRPC HTTP API 可通过Web请求管理实例。",
+      "description": "使用 SoulFire API 从你自己的程序管理实例。",
       "publicAddress": "公共 API 地址",
       "personalToken": "个人 API Token",
       "securityWarning": "请保管好你的API个人令牌。这将授权访问API。",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "生成 Token",
-      "placeholder": "点击下方“生成 Token”",
+      "placeholder": "请选择下方的“生成 Token”",
       "generating": "正在生成 token...",
       "success": "令牌生成成功",
       "error": "生成 token 失败",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "无法更新实例名称"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "无法更新 {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "筛选审计日志...",
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "正在删除脚本...",
-      "success": "脚本已删除！",
+      "success": "脚本已删除",
       "error": "删除脚本失败"
     },
     "addToast": {
       "loading": "正在添加脚本...",
-      "success": "脚本已添加！",
+      "success": "脚本已添加",
       "error": "添加脚本失败"
     },
     "updateToast": {
       "loading": "正在更新脚本...",
-      "success": "脚本已更新！",
+      "success": "脚本已更新",
       "error": "更新脚本失败"
     },
     "restartToast": {
       "loading": "正在重启脚本...",
-      "success": "脚本已重启！",
+      "success": "脚本已重启",
       "error": "重启脚本失败"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "前往 Bot",
       "copyUsername": "复制用户名",
-      "copyUuid": "复制 UUID",
+      "copyUuid": "复制档案 ID",
       "copyCoordinates": "复制坐标"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "已连接",
+    "botOffline": "已断开"
+  },
+  "minecraftActions": {
+    "copyError": "无法复制文本。请使用 HTTPS 或允许访问剪贴板。",
+    "openError": "无法打开链接。",
+    "popupBlocked": "浏览器拦截了新标签页。",
+    "openLink": "打开链接"
+  },
+  "instanceIcon": {
+    "label": "图标",
+    "description": "应用中显示的实例图标。"
+  },
+  "unknown": "未知",
+  "minecraftHead": "Minecraft 头像",
+  "textFile": "文本文件"
 }

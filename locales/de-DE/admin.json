@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Heap verwendet",
         "threads": "Threads",
-        "botsOnline": "Bots online",
+        "botsOnline": "Verbundene Bots",
         "uptime": "Betriebszeit"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Thread-Anzahl"
       },
       "aggregateBots": {
-        "title": "Bots online (alle Instanzen)"
+        "title": "Verbundene Bots (alle Instanzen)"
+      },
+      "legend": {
+        "process": "Prozess",
+        "system": "System",
+        "used": "Belegt",
+        "committed": "Reserviert",
+        "max": "Max.",
+        "total": "Gesamt",
+        "daemon": "Daemon",
+        "online": "Verbunden"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Benutzer wird hinzugefügt...",
-      "success": "Benutzer hinzugefügt!",
+      "success": "Benutzer hinzugefügt",
       "error": "Fehler beim Hinzufügen des Benutzers"
     },
     "updateToast": {
       "loading": "Benutzer wird aktualisiert...",
-      "success": "Benutzer aktualisiert!",
+      "success": "Benutzer aktualisiert",
       "error": "Fehler beim Aktualisieren des Benutzers"
     },
     "removeToast": {
       "loading": "Benutzer werden entfernt...",
-      "success": "Benutzer entfernt!",
+      "success": "Benutzer entfernt",
       "error": "Fehler beim Entfernen der Benutzer"
     },
     "invalidateToast": {
       "loading": "Benutzer werden abgemeldet...",
-      "success": "Benutzer abgemeldet!",
+      "success": "Benutzer abgemeldet",
       "error": "Fehler beim Abmelden der Benutzer"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "E-Mail",
       "role": "Rolle",
       "createdAt": "Erstellt",
-      "minIssuedAt": "Min. Login",
+      "minIssuedAt": "Sitzungen gültig seit",
       "actions": "Aktionen",
       "searchUsernames": "Benutzernamen suchen...",
       "searchEmails": "E-Mails suchen...",
       "searchCreatedAts": "Erstellungsdaten suchen...",
-      "searchMinIssuedAts": "Mindest-Anmeldedaten suchen..."
+      "searchMinIssuedAts": "Sitzungsdaten durchsuchen..."
     },
     "removeSelectedTooltip": "Ausgewählte Benutzer entfernen",
     "logOutSelectedTooltip": "Ausgewählte Benutzer abmelden",
@@ -125,6 +135,18 @@
       "editUser": "Benutzer bearbeiten",
       "impersonate": "Sich als Benutzer ausgeben",
       "copyUserId": "Benutzer-ID kopieren"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} Benutzer entfernen?",
+      "title_other": "{{count}} Benutzer entfernen?",
+      "description": "Dies löscht die ausgewählten Benutzer und ihren Zugriff dauerhaft. Das lässt sich nicht rückgängig machen.",
+      "confirm": "Benutzer entfernen"
+    },
+    "invalidateDialog": {
+      "title_one": "{{count}} Benutzer abmelden?",
+      "title_other": "{{count}} Benutzer abmelden?",
+      "description": "Dies beendet alle Sitzungen und Tokens der ausgewählten Benutzer. Sie müssen sich erneut anmelden.",
+      "confirm": "Benutzer abmelden"
     }
   }
 }

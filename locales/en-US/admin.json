@@ -1,26 +1,36 @@
 {
   "overview": {
-    "welcome": "Welcome back, {{name}} 🧙",
+    "welcome": "Welcome back, {{name}}",
     "serverMetrics": {
-      "sectionTitle": "Server Metrics",
+      "sectionTitle": "Server metrics",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Heap Used",
+        "heapUsed": "Heap used",
         "threads": "Threads",
-        "botsOnline": "Bots Online",
+        "botsOnline": "Bots connected",
         "uptime": "Uptime"
       },
       "cpuUsage": {
-        "title": "CPU Usage (%)"
+        "title": "CPU usage (%)"
       },
       "memoryUsage": {
-        "title": "Heap Memory (MB)"
+        "title": "Heap memory (MB)"
       },
       "threadCount": {
-        "title": "Thread Count"
+        "title": "Thread count"
       },
       "aggregateBots": {
-        "title": "Bots Online (All Projects)"
+        "title": "Bots connected (all projects)"
+      },
+      "legend": {
+        "process": "Process",
+        "system": "System",
+        "used": "Used",
+        "committed": "Committed",
+        "max": "Max",
+        "total": "Total",
+        "daemon": "Daemon",
+        "online": "Connected"
       }
     },
     "instancesChart": {
@@ -75,7 +85,7 @@
       "description": "Add a new user to this server",
       "form": {
         "cancel": "Cancel",
-        "add": "Add User"
+        "add": "Add user"
       }
     },
     "updateUserDialog": {
@@ -83,48 +93,60 @@
       "description": "Update the user's information",
       "form": {
         "cancel": "Cancel",
-        "update": "Update User"
+        "update": "Update user"
       }
     },
     "profileConflict": "That username or email is already in use. Choose another.",
     "addToast": {
       "loading": "Adding user...",
-      "success": "Added user!",
-      "error": "Failed to add user"
+      "success": "User added",
+      "error": "Could not add user"
     },
     "updateToast": {
       "loading": "Updating user...",
-      "success": "Updated user!",
-      "error": "Failed to update user"
+      "success": "User updated",
+      "error": "Could not update user"
     },
     "removeToast": {
       "loading": "Removing users...",
-      "success": "Removed users!",
-      "error": "Failed to remove users"
+      "success": "Users removed",
+      "error": "Could not remove users"
     },
     "invalidateToast": {
-      "loading": "Logging users out...",
-      "success": "Logged out users!",
-      "error": "Failed to log out users"
+      "loading": "Signing users out...",
+      "success": "Users signed out",
+      "error": "Could not sign users out"
     },
     "table": {
       "username": "Username",
       "email": "Email",
       "role": "Role",
       "createdAt": "Created",
-      "minIssuedAt": "Min Login",
+      "minIssuedAt": "Sessions valid since",
       "actions": "Actions",
       "searchUsernames": "Search usernames...",
       "searchEmails": "Search emails...",
       "searchCreatedAts": "Search creation dates...",
-      "searchMinIssuedAts": "Search minimum login dates..."
+      "searchMinIssuedAts": "Search session dates..."
     },
     "removeSelectedTooltip": "Remove selected users",
-    "logOutSelectedTooltip": "Log out selected users",
+    "logOutSelectedTooltip": "Sign out selected users",
     "contextMenu": {
-      "editUser": "Edit User",
+      "editUser": "Edit user",
       "impersonate": "Impersonate",
-      "copyUserId": "Copy User ID"
+      "copyUserId": "Copy user ID"
+    },
+    "removeDialog": {
+      "title_one": "Remove {{count}} user?",
+      "title_other": "Remove {{count}} users?",
+      "description": "This permanently deletes the selected users and their access. You cannot undo this.",
+      "confirm": "Remove users"
+    },
+    "invalidateDialog": {
+      "title_one": "Sign out {{count}} user?",
+      "title_other": "Sign out {{count}} users?",
+      "description": "This ends every session and token of the selected users. They must sign in again.",
+      "confirm": "Sign out users"
     }
   }
 }

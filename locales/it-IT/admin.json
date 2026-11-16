@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Heap utilizzata",
         "threads": "Thread",
-        "botsOnline": "Bot online",
+        "botsOnline": "Bot connessi",
         "uptime": "Tempo di attività"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Numero Thread"
       },
       "aggregateBots": {
-        "title": "Bot Online (Tutte le istanze)"
+        "title": "Bot connessi (tutte le istanze)"
+      },
+      "legend": {
+        "process": "Processo",
+        "system": "Sistema",
+        "used": "In uso",
+        "committed": "Riservata",
+        "max": "Max",
+        "total": "Totale",
+        "daemon": "Daemon",
+        "online": "Connesso"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Aggiunta utente...",
-      "success": "Utente aggiunto!",
+      "success": "Utente aggiunto",
       "error": "Impossibile aggiungere l'utente"
     },
     "updateToast": {
       "loading": "Aggiornamento utente...",
-      "success": "Utente aggiornato!",
+      "success": "Utente aggiornato",
       "error": "Impossibile aggiornare l'utente"
     },
     "removeToast": {
       "loading": "Rimozione utenti...",
-      "success": "Utenti rimossi!",
+      "success": "Utenti rimossi",
       "error": "Impossibile rimuovere gli utenti"
     },
     "invalidateToast": {
       "loading": "Uscita utenti in corso...",
-      "success": "Utenti disconnessi!",
+      "success": "Utenti disconnessi",
       "error": "Impossibile disconnettere gli utenti"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Email",
       "role": "Ruolo",
       "createdAt": "Creato",
-      "minIssuedAt": "Login Min",
+      "minIssuedAt": "Sessioni valide dal",
       "actions": "Azioni",
       "searchUsernames": "Cerca nomi utente...",
       "searchEmails": "Cerca email...",
       "searchCreatedAts": "Cerca per date di creazione...",
-      "searchMinIssuedAts": "Cerca per date minime di accesso..."
+      "searchMinIssuedAts": "Cerca date di sessione..."
     },
     "removeSelectedTooltip": "Rimuovi utenti selezionati",
     "logOutSelectedTooltip": "Disconnetti utenti selezionati",
@@ -125,6 +135,18 @@
       "editUser": "Modifica utente",
       "impersonate": "Impersona",
       "copyUserId": "Copia ID utente"
+    },
+    "removeDialog": {
+      "title_one": "Rimuovere {{count}} utente?",
+      "title_other": "Rimuovere {{count}} utenti?",
+      "description": "Questa azione elimina in modo permanente gli utenti selezionati e il loro accesso. Non si può annullare.",
+      "confirm": "Rimuovi utenti"
+    },
+    "invalidateDialog": {
+      "title_one": "Disconnettere {{count}} utente?",
+      "title_other": "Disconnettere {{count}} utenti?",
+      "description": "Questa azione termina tutte le sessioni e i token degli utenti selezionati. Dovranno accedere di nuovo.",
+      "confirm": "Disconnetti utenti"
     }
   }
 }

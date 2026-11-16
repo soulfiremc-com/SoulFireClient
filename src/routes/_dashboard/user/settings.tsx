@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { use, useId } from "react";
+import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link.tsx";
@@ -25,7 +26,6 @@ import {
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
 import {
@@ -280,23 +280,22 @@ function ProfileField({
                         onChange={(event) =>
                           field.handleChange(event.currentTarget.value)
                         }
-                        onBlur={field.handleBlur}
+                        onBlur={() => {
+                          field.handleBlur();
+                          void form.handleSubmit();
+                        }}
                         disabled={disabled || isSubmitting}
                         aria-invalid={invalid}
                         aria-describedby={`${id}-description`}
                       />
-                      <InputGroupAddon align="inline-end">
-                        <InputGroupButton
-                          type="submit"
-                          disabled={disabled || isSubmitting}
-                          aria-busy={isSubmitting}
-                          aria-label={t("userSettings.saveField", {
-                            field: label,
-                          })}
-                        >
-                          {t(isSubmitting ? "saving" : "save")}
-                        </InputGroupButton>
-                      </InputGroupAddon>
+                      {isSubmitting && (
+                        <InputGroupAddon align="inline-end">
+                          <LoaderCircleIcon
+                            className="animate-spin"
+                            aria-label={t("saving")}
+                          />
+                        </InputGroupAddon>
+                      )}
                     </InputGroup>
                     <FieldDescription id={`${id}-description`}>
                       {description}

@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { Column, RowData } from "@tanstack/react-table";
 import { PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
@@ -155,7 +156,7 @@ export function DataTableSliderFilter<TData extends RowData>({
         {columnFilterValue ? (
           <div
             role="button"
-            aria-label={`Clear ${title} filter`}
+            aria-label={i18n.t("common:dataTable.clearFilter", { title })}
             tabIndex={0}
             className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             onClick={onReset}
@@ -186,7 +187,7 @@ export function DataTableSliderFilter<TData extends RowData>({
           <div className="flex items-center gap-4">
             <Field className="gap-2">
               <FieldLabel htmlFor={`${id}-from`} className="text-xs">
-                From
+                {i18n.t("common:dataTable.from")}
               </FieldLabel>
               <div className="relative">
                 <Input
@@ -212,7 +213,7 @@ export function DataTableSliderFilter<TData extends RowData>({
             </Field>
             <Field className="gap-2">
               <FieldLabel htmlFor={`${id}-to`} className="text-xs">
-                To
+                {i18n.t("common:dataTable.to")}
               </FieldLabel>
               <div className="relative">
                 <Input
@@ -252,12 +253,12 @@ export function DataTableSliderFilter<TData extends RowData>({
           </Field>
         </FieldGroup>
         <Button
-          aria-label={`Clear ${title} filter`}
+          aria-label={i18n.t("common:dataTable.clearFilter", { title })}
           variant="outline"
           size="sm"
           onClick={onReset}
         >
-          Clear
+          {i18n.t("common:dataTable.clear")}
         </Button>
       </PopoverContent>
     </Popover>

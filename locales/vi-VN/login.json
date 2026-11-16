@@ -44,7 +44,24 @@
         "placeholder": "Tham số JVM của bạn tại đây"
       },
       "back": "Quay lại",
-      "start": "Bắt đầu"
+      "start": "Bắt đầu",
+      "jar": {
+        "title": "Jar máy chủ",
+        "official": "Chính thức",
+        "custom": "Tùy chỉnh",
+        "officialTitle": "Máy chủ SoulFire chính thức",
+        "customTitle": "Jar máy chủ tùy chỉnh",
+        "officialDescription": "Tải xuống và xác minh bản phát hành SoulFire tương ứng.",
+        "customDescription": "Chạy một tệp jar đã nhập. SoulFire không xác minh hay cập nhật tệp này.",
+        "import": "Nhập jar",
+        "importSuccess": "Đã nhập {{name}}",
+        "importError": "Không thể nhập jar SoulFire tùy chỉnh",
+        "selectCustomFirst": "Hãy nhập và chọn một jar tùy chỉnh trước khi khởi động.",
+        "dialog": {
+          "filter": "Tệp lưu trữ Java",
+          "title": "Chọn jar máy chủ SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Để chạy máy chủ tích hợp trên thiết bị di động, bạn cần thực hiện một số bước thủ công.",

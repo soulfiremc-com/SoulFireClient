@@ -119,12 +119,12 @@
       "network": "Şəbəkə ünvanı",
       "unix": "Unix soketi"
     },
-    "getProxies": "Proksi əldə et",
+    "getProxies": "Proksi təminatçıları",
     "addProxies": "Proksi əlavə et",
     "filterPlaceholder": "Proxy-ləri filtrlə...",
     "listImportToast": {
       "loading": "Proxy-lər idxal edilir...",
-      "success": "{{count}} proxy idxal olundu!",
+      "success": "{{count}} proxy idxal olundu",
       "error": "Proxy-ləri idxal etmək mümkün olmadı.",
       "noProxies": "Idxal üçün proxy yoxdur"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Proxy-lər silinir...",
-      "success": "{{count}} proxy silindi!",
+      "success": "{{count}} proxy silindi",
       "error": "Proxy-ləri silmək mümkün olmadı."
     },
     "checkToast": {
       "loading": "Proxy-lər yoxlanılır... {{checked}}/{{total}} (Uğurlu: {{success}} Uğursuz: {{failed}})",
-      "success": "{{count}} pozulmuş proxy silindi!",
-      "error": "Proxy-ləri yoxlamaq mümkün olmadı"
+      "success": "{{count}} pozulmuş proxy silindi",
+      "error": "Proxy-ləri yoxlamaq mümkün olmadı",
+      "successKept": "{{total}} proksidən {{failed}} ədədi yoxlamadan keçmədi. Heç bir proksi silinmədi."
     },
     "checkDialog": {
       "title": "Proksiləri Yoxla",
-      "description": "{{count}} proksini yoxlamaq üzrəsiniz. Etibarsız proksilər avtomatik olaraq silinəcək.",
-      "confirm": "Yoxlamaya Başla"
+      "description": "{{count}} proksi yoxlanılacaq.",
+      "confirm": "Yoxlamaya Başla",
+      "removeFailed": "Uğursuz proksiləri sil",
+      "removeFailedHelp": "Proksi müvəqqəti şəbəkə problemi səbəbindən uğursuz ola bilər. Bütün proksiləri saxlamaq və yalnız nəticəni görmək üçün bu seçimi söndürün."
     },
     "invalidFormat": "Yanlış proxy formatı",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "İdxal edilmiş proksiləri yoxlamaq istəyirsiniz?",
-      "description": "{{count}} proksi idxal etdiniz. İndi onları yoxlayasınız? SoulFire etibarsız proksiləri avtomatik olaraq silir.",
+      "description": "{{count}} proksi idxal etdiniz. İndi yoxlanılsın?",
       "confirm": "Proksiləri Yoxla",
       "skip": "Keç"
     },
@@ -186,10 +189,18 @@
       "socks4": "Yalnız SOCKS4 (səviyyəli)",
       "socks5": "Yalnız SOCKS5 (səviyyəli)",
       "noProxies": "İxrac etmək üçün proksi yoxdur"
-    }
+    },
+    "removeDialog": {
+      "title_one": "{{count}} proksi silinsin?",
+      "title_other": "{{count}} proksi silinsin?",
+      "description": "Bu, seçilmiş proksiləri və onların giriş məlumatlarını bu instansiyadan silir. Bunu geri qaytarmaq olmur.",
+      "confirm": "Proksiləri sil"
+    },
+    "showPassword": "Şifrəni göstər",
+    "hidePassword": "Şifrəni gizlət"
   },
   "account": {
-    "getAccounts": "Hesabları əldə et",
+    "getAccounts": "Hesab təminatçıları",
     "addAccounts": "Hesab əlavə et",
     "generateAccounts": "Hesablar yarat",
     "filterPlaceholder": "Hesabları filtrlə...",
@@ -197,7 +208,7 @@
       "loading": "Hesablar idxal edilir... {{checked}}/{{total}} (Uğurlu: {{success}} Uğursuz: {{failed}})",
       "allFailed": "Heç bir hesabı idxal etmək mümkün olmadı.",
       "someFailed": "{{count}} hesab idxal olundu, {{failed}} hesabı idxal etmək mümkün olmadı.",
-      "noneFailed": "{{count}} hesab idxal olundu!",
+      "noneFailed": "{{count}} hesab idxal olundu",
       "error": "Hesabları idxal etmək mümkün olmadı.",
       "noAccounts": "Idxal üçün hesab yoxdur"
     },
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Hesab idxal edilir...",
-      "success": "Hesab idxal olundu!",
+      "success": "Hesab idxal olundu",
       "error": "Hesabı idxal etmək mümkün olmadı"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Yarat",
       "generating": "Yaradılır...",
       "progress": "Hesablar yaradılır... {{checked}}/{{total}} (Uğur: {{success}} Uğursuz: {{failed}})",
-      "success": "{{count}} hesab yaradıldı!",
+      "success": "{{count}} hesab yaradıldı",
       "allFailed": "Heç bir hesab yaradılmadı",
-      "allExist": "Bütün istifadəçi adları artıq mövcuddur. Onları yenidən yaratmaq üçün 'Mövcud hesabları əvəz et' seçimini aktiv edin.",
+      "allExist": "Bütün istifadəçi adları artıq mövcuddur. Onları yenidən yaratmaq üçün \"Mövcudları Əvəz Et\" seçin.",
       "error": "Hesabları yaratmaq mümkün olmadı",
       "invalidAmount": "Zəhmət olmasa düzgün miqdar daxil edin (ən azı 1)",
       "missingPlaceholder": "Ad formatında %d saxlayıcı olmalıdır"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Hesablar silinir...",
-      "success": "{{count}} hesab silindi!",
+      "success": "{{count}} hesab silindi",
       "error": "Hesabları silmək mümkün olmadı"
     },
     "table": {
       "type": "Növ",
-      "profileId": "UUID",
+      "profileId": "Profil ID",
       "lastKnownName": "İstifadəçi adı",
       "searchProfileIds": "Profil ID-lərində axtarış...",
       "searchLastKnownNames": "Son məlum adlarda axtarış...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "Seçilmiş hesabları sil",
     "contextMenu": {
-      "openConfig": "Konfiqurasiyanı Aç",
+      "openConfig": "Ayarları aç",
       "openMetadata": "Metadatanı Aç",
       "copyProfileId": "Profil ID-ni Kopyala",
       "copyUsername": "İstifadəçi adını kopyala"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "İrsi dəyərə uyğundur",
       "instanceValue": "Instance dəyəri",
       "defaultValue": "Susmaya görə dəyər",
-      "resetOverride": "İstisnanı sıfırla"
+      "resetOverride": "İstisnanı sıfırla",
+      "value": {
+        "notSet": "Təyin edilməyib",
+        "on": "Açıq",
+        "off": "Sönülü",
+        "empty": "Boş",
+        "entries_one": "{{count}} qeyd",
+        "entries_other": "{{count}} qeyd",
+        "range": "Aralıq"
+      },
+      "source": {
+        "bot": "Bota xas dəyər",
+        "instance": "İnstansiyadan miras alınıb",
+        "default": "Standart dəyər istifadə olunur"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Cihaz Kodu İlə Doğrulama",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Açar",
       "valuePlaceholder": "Dəyər (JSON)",
       "noEntries": "Heç bir metadata girişi yoxdur. Yuxarıdan birini əlavə edin.",
-      "loadError": "",
+      "loadError": "Metadatanı yükləmək alınmadı",
       "loadErrorDescription": "",
       "retryLoad": "Təkrar cəhd et",
       "addSuccess": "Giriş əlavə olundu",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Qeyd silindi",
       "deleteError": "Qeydi silmək mümkün olmadı",
       "duplicateError": "Bu ad sahəsi və açarla giriş artıq mövcuddur",
-      "invalidJson": "Yanlış JSON dəyəri"
+      "invalidJson": "Yanlış JSON dəyəri",
+      "namespaceLabel": "Ad sahəsi",
+      "keyLabel": "Açar",
+      "valueLabel": "Dəyər",
+      "addEntryLegend": "Metadata qeydi əlavə et",
+      "addEntryButton": "Qeyd əlavə et",
+      "entryLegend": "Metadata qeydi",
+      "removeEntryButton": "Sil"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} hesab silinsin?",
+      "title_other": "{{count}} hesab silinsin?",
+      "description": "Bu, seçilmiş hesabları, onların saxlanmış giriş məlumatlarını və botlarını bu instansiyadan silir. Bunu geri qaytarmaq olmur.",
+      "confirm": "Hesabları sil"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Açar",
     "valuePlaceholder": "Dəyər (JSON)",
     "noEntries": "Heç bir metadata girişi yoxdur. Yuxarıdan birini əlavə edin.",
+    "loadError": "Metadatanı yükləmək alınmadı",
     "addSuccess": "Giriş əlavə olundu",
     "addError": "Girişi əlavə etmək mümkün olmadı",
     "updateError": "Girişi yeniləmək mümkün olmadı",
     "deleteSuccess": "Qeyd silindi",
     "deleteError": "Qeydi silmək mümkün olmadı",
     "duplicateError": "Bu ad sahəsi və açarla giriş artıq mövcuddur",
-    "invalidJson": "Yanlış JSON dəyəri"
+    "invalidJson": "Yanlış JSON dəyəri",
+    "namespaceLabel": "Ad sahəsi",
+    "keyLabel": "Açar",
+    "valueLabel": "Dəyər",
+    "addEntryLegend": "Metadata qeydi əlavə et",
+    "addEntryButton": "Qeyd əlavə et",
+    "entryLegend": "Metadata qeydi",
+    "removeEntryButton": "Sil"
   },
   "bots": {
     "searchPlaceholder": "Botları axtar...",
-    "onlineCount": "{{online}} onlayn / {{total}} cəmi",
+    "onlineCount": "{{online}} qoşulub / {{total}} cəmi",
     "noBots": "Heç bir bot qurulmayıb. Hesab Ayarları səhifəsindən hesab əlavə edin.",
     "noBotsFound": "Axtarışınıza uyğun bot tapılmadı.",
     "loadingMore": "Daha çox yüklənir...",
     "showingCount": "{{total}}-dən {{loaded}} göstərilir",
     "allLoaded": "Bütün {{total}} bot yükləndi",
-    "online": "Onlayn",
-    "offline": "Offline",
+    "online": "Qoşulub",
+    "offline": "Bağlantı kəsilib",
     "notJoined": "Qoşulmayıb",
     "connectionPhase": {
       "connecting": "Bağlanır",
-      "connected": "Bağlandı",
-      "spawned": "Onlayn",
+      "connected": "Daxil olunur",
+      "spawned": "Qoşulub",
       "died": "Ölü",
-      "disconnected": "Offline",
+      "disconnected": "Bağlantı kəsilib",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "Botlara qayıt",
     "tabs": {
-      "overview": "İcmal",
+      "overview": "Bot görünüşü",
       "inventory": "İnventar",
       "controls": "İdarəetmə",
       "terminal": "Terminal"
     },
-    "comingSoon": "Tezliklə",
-    "terminalPanel": {
-      "title": "Bot Terminalı"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proksi",
       "direct": "Birbaşa (proksisiz)",
@@ -416,16 +459,14 @@
       "title": "Mövqe & Fırlanma",
       "position": "Mövqe",
       "rotation": "Fırlanma",
-      "offline": "Bot oflayndır. Mövqe məlumatları yalnız bot qoşulduqda mövcuddur."
+      "offline": "Botun bağlantısı kəsilib. Mövqe məlumatları yalnız bot qoşulduqda mövcuddur."
     },
     "chatPanel": {
-      "title": "Çat Mesajları",
-      "description": "Bu botdan olan çat mesajları gələcək yeniləmədə burada görünəcək."
+      "title": "Çat Mesajları"
     },
     "commandPanel": {
       "title": "Bot Əmrləri",
-      "placeholder": "Bu bota əmr göndərin...",
-      "description": "Bot-əhatəli əmrlər gələcək yeniləmədə mövcud olacaq."
+      "placeholder": "Bu bota əmr göndərin..."
     },
     "povPanel": {
       "title": "Botun Baxışı",
@@ -438,7 +479,6 @@
       "offline": "Bot oflayndadır. Baxış bucağı yalnız bot qoşulduqda əlçatandır."
     },
     "statsPanel": {
-      "title": "Bot Statistikası",
       "health": "Sağlamlıq",
       "food": "Yemək",
       "saturation": "Doyğunluq",
@@ -451,7 +491,7 @@
       "adventure": "Macəra",
       "spectator": "Nəzarətçi",
       "unknown": "Naməlum",
-      "offline": "Bot oflayndadır. Statistikalar yalnız bot qoşulduqda əlçatandır."
+      "offline": "Botun bağlantısı kəsilib. Statistikalar yalnız bot qoşulduqda əlçatandır."
     },
     "inventoryPanel": {
       "title": "İnventar",
@@ -464,7 +504,7 @@
       "dropAll": "Hamısını At",
       "closeContainer": "Bağla",
       "clickHint": "Sol klik: götür/burax | Sağ klik: yarı/bir | Shift+klik: tez hərəkət | Orta klik: isti panel slotunu seç",
-      "offline": "Bot oflayndadır. Ehtiyat yalnız bot qoşulduqda əlçatandır.",
+      "offline": "Botun bağlantısı kəsilib. Ehtiyat yalnız bot qoşulduqda əlçatandır.",
       "buttons": {
         "stonecutterRecipes": "Reseptlər",
         "enchantments": "Sehrləmələr",
@@ -474,12 +514,12 @@
         "crafterSlots": "Slot İdarəetməsi",
         "lecternControls": "Kitab İdarəetməsi",
         "actions": "Əməliyyatlar",
-        "creativeTabs": ""
+        "creativeTabs": "Yaradıcı vərəqlər"
       },
       "textInput": {
         "title": "Mətn Girişi",
         "anvilRename": "Əşyaya ad ver",
-        "creativeSearch": ""
+        "creativeSearch": "Əşya axtar"
       },
       "bookPages": {
         "title": "Kitab Məzmunu",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Əşyanı məhv et",
+      "clickHints": {
+        "left": "Sol klik: götür və ya qoy",
+        "right": "Sağ klik: yarısını götür və ya birini qoy",
+        "shift": "Shift+klik: sürətli köçür",
+        "middle": "Orta klik: aktiv slot kimi seç"
+      }
     },
     "visualPanel": {
-      "title": "Bot Görünüşü",
+      "title": "İstiqamət və dünya",
       "compass": "Baxılan İstiqamət",
       "lookDirection": "Baxış Buçağı",
       "lookingUp": "Yuxarıya baxır",
@@ -502,7 +548,7 @@
       "worldInfo": "Dünya Məlumatı",
       "dimension": "Ölçü",
       "biome": "Biom",
-      "offline": "Bot oflayndadır. Vizual məlumatlar yalnız bot qoşulduqda əlçatandır."
+      "offline": "Botun bağlantısı kəsilib. Vizual məlumatlar yalnız bot qoşulduqda əlçatandır."
     },
     "actionsPanel": {
       "title": "Bot Fəaliyyətləri",
@@ -510,7 +556,7 @@
       "rightClick": "Sağ Klik",
       "leftClickDescription": "Obyekti hücum et və ya bloku sındır",
       "rightClickDescription": "Əşyadan istifadə et və ya qarşılıqlı təsir et",
-      "offline": "Bot oflayndır. Fəaliyyətlər yalnız bot qoşulu olduqda mövcuddur."
+      "offline": "Botun bağlantısı kəsilib. Fəaliyyətlər yalnız bot qoşulu olduqda mövcuddur."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "Aşağı bax",
       "lookLeft": "Sola bax",
       "lookRight": "Sağa bax",
-      "offline": "Bot oflayndır. Hərəkət idarəetməsi yalnız bot qoşulu olduqda mövcuddur."
+      "offline": "Botun bağlantısı kəsilib. Hərəkət idarəetməsi yalnız bot qoşulu olduqda mövcuddur."
     },
     "dialogPanel": {
       "title": "Server Dialoqu",
@@ -544,7 +590,45 @@
       "unknownType": "Naməlum",
       "dismiss": "Bağla",
       "submit": "Təsdiqlə",
-      "offline": "Bot oflayndır. Dialoqlar yalnız bot qoşulu olduqda mövcuddur."
+      "offline": "Botun bağlantısı kəsilib. Dialoqlar yalnız bot qoşulu olduqda mövcuddur."
+    },
+    "pov": {
+      "title": "Bot görünüşü",
+      "touchControlling": "Bu botu siz idarə edirsiniz. Dayanmaq üçün \"Release control\" istifadə edin.",
+      "popupBlocked": "Bot görünüşü pəncərəsini ayırmaq üçün açılan pəncərələrə icazə verin.",
+      "windowTitle": "SoulFire bot görünüşü",
+      "fullscreenUnavailable": "Bu pəncərədə tam ekran əlçatan deyil.",
+      "textInputLabel": "Minecraft mətn girişi",
+      "videoLabel": "Canlı bot görünüşü",
+      "touchMove": "Hərəkət",
+      "audioError": "Səsi başlatmaq alınmadı.",
+      "startError": "Bot görünüşünü başlatmaq alınmadı.",
+      "releaseHint": "Klaviatura və siçanı azad etmək üçün {{shortcut}} basın.",
+      "captureHint": "Görünüşə klikləyin və klaviatura ilə siçanın tutulmasına icazə verin.",
+      "audioWaiting": "Bot görünüşünün qoşulması gözlənilir.",
+      "audioWatchFirst": "Səsdən istifadə üçün botu izləyin.",
+      "audioUpdateServer": "Bot görünüşündə səsdən istifadə üçün serveri yeniləyin.",
+      "muteAudio": "Səsi söndür",
+      "unmuteAudio": "Səsi aç",
+      "audioStarting": "Səs başladılır...",
+      "mute": "Səssiz et",
+      "unmute": "Səsi aç",
+      "audio": "Səs",
+      "audioUnavailable": "Səs əlçatan deyil",
+      "volume": "Bot görünüşünün səs səviyyəsi",
+      "reconnect": "Yenidən qoşul",
+      "showWindow": "Bot görünüşü pəncərəsini göstər",
+      "attachWindow": "Bot görünüşü pəncərəsini birləşdir",
+      "touch": {
+        "jump": "Tullan",
+        "sneak": "Gizlən",
+        "attack": "Hücum",
+        "use": "İstifadə et",
+        "inventory": "İnventar",
+        "keyboard": "Klaviatura",
+        "closeMenu": "Menyunu bağla"
+      },
+      "needsServer": "Bot görünüşü üçün qoşulmuş SoulFire serveri lazımdır."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Məlumat yoxdur"
     },
     "summary": {
-      "online": "Onlayn",
+      "online": "Qoşulub",
       "packetsPerSecond": "Paket/s",
       "traffic": "Trafik",
       "health": "Sağlamlıq",
       "tick": "Tik"
     },
     "botsOnline": {
-      "title": "Onlayn Botlar",
-      "online": "Onlayn",
+      "title": "Qoşulmuş botlar",
+      "online": "Qoşulub",
       "total": "Cəmi"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Skript yaratmaq uğursuz oldu",
     "noScripts": "Hələ Skript yoxdur",
     "noScriptsDescription": "Vizual düyün əsaslı redaktor vasitəsi ilə bot hərəkətlərini avtomatlaşdırmaq üçün ilk skriptinizi yaradın.",
-    "createFirstScript": "İlk Skriptini Yarat",
+    "createFirstScript": "Skript Yarat",
     "running": "İşləyir",
     "paused": "Dayandırılıb",
     "nodes": "düyünlər",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Düyün Palitrası",
-        "search": "Düyünləri axtarın..."
+        "search": "Düyünləri axtarın...",
+        "noResults": "Axtarışınıza uyğun düyün yoxdur",
+        "noResultsDescription": "Başqa söz yoxlayın və ya cari filtri təmizləyin."
       },
       "logs": {
         "title": "İcra Jurnalları",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Qovşağı genişlət",
-        "collapse": "Qovşağı daralt"
+        "collapse": "Qovşağı daralt",
+        "avgTime": "Orta icra vaxtı: {{avg}} ms (son {{count}} icra)",
+        "preview": "Önizləmə"
       },
       "debug": {
         "copyValue": "Cari dəyəri kopyala",
-        "clearHistory": "Tarixçəni təmizlə"
+        "clearHistory": "Tarixçəni təmizlə",
+        "current": "Cari ({{time}}):",
+        "noValue": "Hələ dəyər alınmayıb"
       },
       "edge": {
         "direction": "Kənar istiqaməti"
@@ -733,14 +823,36 @@
         "title": "Skript mürəkkəblik balı"
       },
       "group": {
-        "returnToRoot": "Kökə qayıt (Tab)"
+        "returnToRoot": "Kökə qayıt (Tab)",
+        "root": "Kök",
+        "exitHint": "Çıxmaq üçün <key>Tab</key> basın",
+        "editHint": "Redaktə üçün iki dəfə klikləyin",
+        "noInputs": "Giriş təyin edilməyib",
+        "noOutputs": "Çıxış təyin edilməyib"
       },
       "quickAdd": {
         "menuLabel": "Tez əlavə qovşağı menyusu",
-        "searchPlaceholder": "Düyünləri axtarın..."
+        "searchPlaceholder": "Düyünləri axtarın...",
+        "noResults": "Düyün tapılmadı",
+        "noResultsDescription": "Başqa axtarış sözü yoxlayın.",
+        "navigate": "Hərəkət et",
+        "select": "Seçmək üçün Enter",
+        "close": "Bağlamaq üçün Esc"
       },
       "diff": {
-        "tooltip": "Dəyişiklikləri nəzərdən keçir"
+        "tooltip": "Dəyişiklikləri nəzərdən keçir",
+        "title": "Yadda saxlanmamış dəyişikliklər",
+        "description": "Son yadda saxlamadan bəri dəyişikliklər.",
+        "nodesAdded_one": "{{count}} düyün əlavə edildi",
+        "nodesAdded_other": "{{count}} düyün əlavə edildi",
+        "nodesRemoved_one": "{{count}} düyün silindi",
+        "nodesRemoved_other": "{{count}} düyün silindi",
+        "nodesModified_one": "{{count}} düyün dəyişdirildi",
+        "nodesModified_other": "{{count}} düyün dəyişdirildi",
+        "edgesAdded_one": "{{count}} əlaqə əlavə edildi",
+        "edgesAdded_other": "{{count}} əlaqə əlavə edildi",
+        "edgesRemoved_one": "{{count}} əlaqə silindi",
+        "edgesRemoved_other": "{{count}} əlaqə silindi"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Qovşaq və məlumat kənarı zamanı timeoutlar söndürüləcək",
         "save": "Kotaları yadda saxla",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} sırasını dəyiş",
+        "empty": "Gələn dəyər yoxdur",
+        "title": "Çoxlu giriş: bir neçə əlaqə qəbul edir",
+        "connectTo": "Dəyərləri {{label}} girişinə qoşun"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Skript silinsin?",
+      "description": "Bu, \"{{name}}\" elementini həmişəlik silir. Bunu geri qaytarmaq olmur.",
+      "descriptionUnnamed": "Bu, skripti həmişəlik silir. Bunu geri qaytarmaq olmur."
+    },
+    "executionStats": "İcra statistikası: {{executed}}/{{max}} düyün icra edildi"
   },
   "metadataValidation": {
     "invalidNamespace": "",

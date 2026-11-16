@@ -590,10 +590,13 @@ function DeleteInstanceButton() {
             <AlertDialogMedia>
               <TrashIcon />
             </AlertDialogMedia>
-            <AlertDialogTitle>Delete instance?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("dialog.deleteInstance.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete "{instanceInfo.friendlyName}" and its
-              data. This action cannot be undone.
+              {t("dialog.deleteInstance.description", {
+                name: instanceInfo.friendlyName,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

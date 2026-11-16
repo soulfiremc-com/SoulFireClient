@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
 import { use, useCallback, useMemo, useState } from "react";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
@@ -1044,7 +1045,7 @@ function AddButton() {
           listener={textSelectedCallback}
           filters={[
             {
-              name: "Text File",
+              name: i18n.t("common:textFile"),
               mimeType: "text/plain",
               extensions: ["txt"],
             },
@@ -1133,11 +1134,25 @@ function ExtraHeader(props: {
     },
   });
 
+  const [removeOpen, setRemoveOpen] = useState(false);
+  const selectedCount = props.table.getFilteredSelectedRowModel().rows.length;
+
   return (
     <>
       <DataTableActionBarAction
         tooltip={t("account.removeSelectedTooltip")}
-        onClick={() => {
+        onClick={() => setRemoveOpen(true)}
+      >
+        <TrashIcon />
+      </DataTableActionBarAction>
+      <ConfirmDialog
+        open={removeOpen}
+        onOpenChange={setRemoveOpen}
+        icon={<TrashIcon />}
+        title={t("account.removeDialog.title", { count: selectedCount })}
+        description={t("account.removeDialog.description")}
+        confirmLabel={t("account.removeDialog.confirm")}
+        onConfirm={() => {
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
@@ -1156,9 +1171,7 @@ function ExtraHeader(props: {
             },
           );
         }}
-      >
-        <TrashIcon />
-      </DataTableActionBarAction>
+      />
       <DataTableActionBarSelection table={props.table} />
     </>
   );
@@ -1187,8 +1200,8 @@ function AccountSettings() {
     <InstancePageLayout
       extraCrumbs={[
         {
-          id: "settings",
-          content: t("breadcrumbs.settings"),
+          id: "controls",
+          content: t("breadcrumbs.controls"),
         },
       ]}
       pageName={t("pageName.accountSettings")}

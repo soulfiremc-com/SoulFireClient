@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Använt heapminne",
         "threads": "Trådar",
-        "botsOnline": "Bots online",
+        "botsOnline": "Anslutna bottar",
         "uptime": "Drifttid"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Trådantal"
       },
       "aggregateBots": {
-        "title": "Botar online (alla instanser)"
+        "title": "Anslutna bottar (alla instanser)"
+      },
+      "legend": {
+        "process": "Process",
+        "system": "System",
+        "used": "Använt",
+        "committed": "Reserverat",
+        "max": "Max",
+        "total": "Totalt",
+        "daemon": "Daemon",
+        "online": "Ansluten"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Lägger till användare...",
-      "success": "Användaren tillagd!",
+      "success": "Användaren tillagd",
       "error": "Misslyckades med att lägga till användaren"
     },
     "updateToast": {
       "loading": "Uppdaterar användare...",
-      "success": "Användare uppdaterad!",
+      "success": "Användare uppdaterad",
       "error": "Misslyckades med att uppdatera användaren"
     },
     "removeToast": {
       "loading": "Tar bort användare...",
-      "success": "Användare borttagna!",
+      "success": "Användare borttagna",
       "error": "Misslyckades med att ta bort användare"
     },
     "invalidateToast": {
       "loading": "Loggar ut användare...",
-      "success": "Användare utloggade!",
+      "success": "Användare utloggade",
       "error": "Misslyckades med att logga ut användare"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "E-post",
       "role": "Roll",
       "createdAt": "Skapad",
-      "minIssuedAt": "Min inloggning",
+      "minIssuedAt": "Sessioner giltiga sedan",
       "actions": "Åtgärder",
       "searchUsernames": "Sök användarnamn...",
       "searchEmails": "Sök e-postadresser...",
       "searchCreatedAts": "Sök efter skapelsedatum...",
-      "searchMinIssuedAts": "Sök efter minsta inloggningsdatum..."
+      "searchMinIssuedAts": "Sök sessionsdatum..."
     },
     "removeSelectedTooltip": "Ta bort valda användare",
     "logOutSelectedTooltip": "Logga ut valda användare",
@@ -125,6 +135,18 @@
       "editUser": "Redigera användare",
       "impersonate": "Imitera",
       "copyUserId": "Kopiera användar-ID"
+    },
+    "removeDialog": {
+      "title_one": "Ta bort {{count}} användare?",
+      "title_other": "Ta bort {{count}} användare?",
+      "description": "Detta tar permanent bort de valda användarna och deras åtkomst. Det går inte att ångra.",
+      "confirm": "Ta bort användare"
+    },
+    "invalidateDialog": {
+      "title_one": "Logga ut {{count}} användare?",
+      "title_other": "Logga ut {{count}} användare?",
+      "description": "Detta avslutar alla sessioner och token för de valda användarna. De måste logga in igen.",
+      "confirm": "Logga ut användare"
     }
   }
 }

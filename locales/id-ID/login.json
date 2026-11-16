@@ -44,7 +44,24 @@
         "placeholder": "Argumen JVM Anda di sini"
       },
       "back": "Kembali",
-      "start": "Mulai"
+      "start": "Mulai",
+      "jar": {
+        "title": "Jar server",
+        "official": "Resmi",
+        "custom": "Kustom",
+        "officialTitle": "Server SoulFire resmi",
+        "customTitle": "Jar server kustom",
+        "officialDescription": "Mengunduh dan memverifikasi rilis SoulFire yang sesuai.",
+        "customDescription": "Menjalankan jar yang diimpor. SoulFire tidak memverifikasi atau memperbaruinya.",
+        "import": "Impor jar",
+        "importSuccess": "{{name}} diimpor",
+        "importError": "Tidak dapat mengimpor jar SoulFire kustom",
+        "selectCustomFirst": "Impor dan pilih jar kustom sebelum memulai.",
+        "dialog": {
+          "filter": "Arsip Java",
+          "title": "Pilih jar server SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Untuk menjalankan server terintegrasi di ponsel, Anda perlu menyelesaikan beberapa langkah manual.",

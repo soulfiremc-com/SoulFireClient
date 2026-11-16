@@ -44,7 +44,24 @@
         "placeholder": "ใส่อาร์กิวเมนต์ JVM ของคุณที่นี่"
       },
       "back": "ย้อนกลับ",
-      "start": "เริ่มต้น"
+      "start": "เริ่มต้น",
+      "jar": {
+        "title": "jar เซิร์ฟเวอร์",
+        "official": "ทางการ",
+        "custom": "กำหนดเอง",
+        "officialTitle": "เซิร์ฟเวอร์ SoulFire ทางการ",
+        "customTitle": "jar เซิร์ฟเวอร์แบบกำหนดเอง",
+        "officialDescription": "ดาวน์โหลดและตรวจสอบ SoulFire รุ่นที่ตรงกัน",
+        "customDescription": "รันไฟล์ jar ที่นำเข้า SoulFire ไม่ตรวจสอบหรืออัปเดตไฟล์นี้",
+        "import": "นำเข้า jar",
+        "importSuccess": "นำเข้า {{name}} แล้ว",
+        "importError": "นำเข้า jar SoulFire แบบกำหนดเองไม่ได้",
+        "selectCustomFirst": "นำเข้าและเลือก jar แบบกำหนดเองก่อนเริ่ม",
+        "dialog": {
+          "filter": "ไฟล์ Java archive",
+          "title": "เลือก jar เซิร์ฟเวอร์ SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "หากต้องการรันเซิร์ฟเวอร์ฝังตัวบนมือถือ คุณต้องทำตามขั้นตอนด้วยตนเองเล็กน้อย",

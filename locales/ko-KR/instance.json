@@ -119,12 +119,12 @@
       "network": "네트워크 주소",
       "unix": "유닉스 소켓"
     },
-    "getProxies": "프록시 가져오기",
+    "getProxies": "프록시 제공업체",
     "addProxies": "프록시 추가",
     "filterPlaceholder": "프록시 필터링...",
     "listImportToast": {
       "loading": "프록시 가져오는 중...",
-      "success": "{{count}}개의 프록시를 가져왔습니다!",
+      "success": "{{count}}개의 프록시를 가져왔습니다",
       "error": "프록시 가져오기에 실패했습니다.",
       "noProxies": "가져올 프록시가 없습니다."
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "프록시 삭제 중...",
-      "success": "{{count}}개의 프록시를 삭제했습니다!",
+      "success": "{{count}}개의 프록시를 삭제했습니다",
       "error": "프록시 삭제에 실패했습니다."
     },
     "checkToast": {
       "loading": "프록시 확인 중... {{checked}}/{{total}} (성공: {{success}} 실패: {{failed}})",
-      "success": "손상된 프록시 {{count}}개를 삭제했습니다!",
-      "error": "프록시 확인에 실패했습니다."
+      "success": "손상된 프록시 {{count}}개를 삭제했습니다",
+      "error": "프록시 확인에 실패했습니다.",
+      "successKept": "프록시 {{total}}개 중 {{failed}}개가 검사에 실패했습니다. 삭제된 프록시는 없습니다."
     },
     "checkDialog": {
       "title": "프록시 확인하기",
-      "description": "{{count}}개의 프록시를 확인하려고 합니다. 잘못된 프록시는 자동으로 제거됩니다.",
-      "confirm": "확인 시작"
+      "description": "프록시 {{count}}개를 검사합니다.",
+      "confirm": "확인 시작",
+      "removeFailed": "실패한 프록시 삭제",
+      "removeFailedHelp": "프록시는 일시적인 네트워크 문제로 실패할 수 있습니다. 모든 프록시를 유지하고 결과만 보려면 이 옵션을 끄세요."
     },
     "invalidFormat": "잘못된 프록시 형식",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "가져온 프록시를 확인하시겠습니까?",
-      "description": "{{count}}개의 프록시를 가져왔습니다. 지금 확인하시겠습니까? SoulFire는 유효하지 않은 프록시를 자동으로 제거합니다.",
+      "description": "프록시 {{count}}개를 가져왔습니다. 지금 검사할까요?",
       "confirm": "프록시 확인하기",
       "skip": "건너뛰기"
     },
@@ -186,10 +189,17 @@
       "socks4": "SOCKS4 전용(평면)",
       "socks5": "SOCKS5 전용(평면)",
       "noProxies": "내보낼 프록시가 없습니다."
-    }
+    },
+    "removeDialog": {
+      "title_other": "프록시 {{count}}개를 삭제할까요?",
+      "description": "선택한 프록시와 해당 자격 증명을 이 인스턴스에서 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
+      "confirm": "프록시 삭제"
+    },
+    "showPassword": "비밀번호 표시",
+    "hidePassword": "비밀번호 숨기기"
   },
   "account": {
-    "getAccounts": "계정 가져오기",
+    "getAccounts": "계정 제공업체",
     "addAccounts": "계정 추가",
     "generateAccounts": "계정 생성",
     "filterPlaceholder": "계정 필터링...",
@@ -197,7 +207,7 @@
       "loading": "계정 가져오는 중... {{checked}}/{{total}} (성공: {{success}} 실패: {{failed}})",
       "allFailed": "계정 가져오기에 모두 실패했습니다.",
       "someFailed": "{{count}}개의 계정을 가져왔고, {{failed}}개의 계정은 가져오지 못했습니다.",
-      "noneFailed": "{{count}}개의 계정이 가져와졌습니다!",
+      "noneFailed": "{{count}}개의 계정이 가져와졌습니다",
       "error": "계정 가져오기에 실패했습니다.",
       "noAccounts": "가져올 계정이 없습니다."
     },
@@ -215,7 +225,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "계정 가져오는 중...",
-      "success": "계정이 가져와졌습니다!",
+      "success": "계정이 가져와졌습니다",
       "error": "계정 가져오기에 실패했습니다."
     },
     "generate": {
@@ -232,9 +242,9 @@
       "submit": "생성",
       "generating": "생성 중...",
       "progress": "계정 생성 중... {{checked}}/{{total}} (성공: {{success}} 실패: {{failed}})",
-      "success": "{{count}}개의 계정이 생성되었습니다!",
+      "success": "{{count}}개의 계정이 생성되었습니다",
       "allFailed": "계정 생성에 모두 실패했습니다.",
-      "allExist": "모든 사용자 이름이 이미 존재합니다. 다시 생성하려면 '기존 계정 덮어쓰기'를 활성화하세요.",
+      "allExist": "모든 사용자 이름이 이미 있습니다. 다시 생성하려면 \"기존 교체\"을(를) 선택하세요.",
       "error": "계정 생성에 실패했습니다.",
       "invalidAmount": "유효한 수량(최소 1개)을 입력하세요.",
       "missingPlaceholder": "이름 형식에 %d 자리 표시자가 포함되어야 합니다."
@@ -257,12 +267,12 @@
     },
     "removeToast": {
       "loading": "계정 삭제 중...",
-      "success": "{{count}}개의 계정을 삭제했습니다!",
+      "success": "{{count}}개의 계정을 삭제했습니다",
       "error": "계정 삭제에 실패했습니다."
     },
     "table": {
       "type": "종류",
-      "profileId": "UUID",
+      "profileId": "프로필 ID",
       "lastKnownName": "사용자 이름",
       "searchProfileIds": "프로필 ID 검색...",
       "searchLastKnownNames": "마지막으로 확인된 이름 검색...",
@@ -294,7 +304,20 @@
       "matchesInheritedValue": "상속된 값과 일치함",
       "instanceValue": "인스턴스 값",
       "defaultValue": "기본값",
-      "resetOverride": "재정의 초기화"
+      "resetOverride": "재정의 초기화",
+      "value": {
+        "notSet": "설정되지 않음",
+        "on": "켜짐",
+        "off": "꺼짐",
+        "empty": "비어 있음",
+        "entries_other": "{{count}}개 항목",
+        "range": "범위"
+      },
+      "source": {
+        "bot": "봇 전용 값",
+        "instance": "인스턴스에서 상속됨",
+        "default": "기본값 사용 중"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "디바이스 코드 인증",
@@ -341,7 +364,7 @@
       "keyPlaceholder": "키",
       "valuePlaceholder": "값 (JSON)",
       "noEntries": "메타데이터 항목이 없습니다. 위에서 하나 추가하세요.",
-      "loadError": "",
+      "loadError": "메타데이터를 불러오지 못했습니다",
       "loadErrorDescription": "",
       "retryLoad": "다시 시도하기",
       "addSuccess": "항목이 추가되었습니다",
@@ -350,7 +373,19 @@
       "deleteSuccess": "항목이 삭제되었습니다.",
       "deleteError": "항목 삭제에 실패했습니다.",
       "duplicateError": "이 네임스페이스와 키를 가진 항목이 이미 존재합니다.",
-      "invalidJson": "잘못된 JSON 값"
+      "invalidJson": "잘못된 JSON 값",
+      "namespaceLabel": "네임스페이스",
+      "keyLabel": "키",
+      "valueLabel": "값",
+      "addEntryLegend": "메타데이터 항목 추가",
+      "addEntryButton": "항목 추가",
+      "entryLegend": "메타데이터 항목",
+      "removeEntryButton": "삭제"
+    },
+    "removeDialog": {
+      "title_other": "계정 {{count}}개를 삭제할까요?",
+      "description": "선택한 계정, 저장된 자격 증명, 해당 봇을 이 인스턴스에서 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
+      "confirm": "계정 삭제"
     }
   },
   "instanceMetadata": {
@@ -360,31 +395,39 @@
     "keyPlaceholder": "키",
     "valuePlaceholder": "값 (JSON)",
     "noEntries": "메타데이터 항목이 없습니다. 위에서 하나 추가하세요.",
+    "loadError": "메타데이터를 불러오지 못했습니다",
     "addSuccess": "항목이 추가되었습니다",
     "addError": "항목 추가에 실패하였습니다",
     "updateError": "항목 수정에 실패하였습니다",
     "deleteSuccess": "항목이 삭제되었습니다.",
     "deleteError": "항목 삭제에 실패했습니다.",
     "duplicateError": "이 네임스페이스와 키를 가진 항목이 이미 존재합니다.",
-    "invalidJson": "잘못된 JSON 값"
+    "invalidJson": "잘못된 JSON 값",
+    "namespaceLabel": "네임스페이스",
+    "keyLabel": "키",
+    "valueLabel": "값",
+    "addEntryLegend": "메타데이터 항목 추가",
+    "addEntryButton": "항목 추가",
+    "entryLegend": "메타데이터 항목",
+    "removeEntryButton": "삭제"
   },
   "bots": {
     "searchPlaceholder": "봇 검색...",
-    "onlineCount": "{{online}}명 온라인 / 총 {{total}}명",
+    "onlineCount": "연결 {{online}} / 전체 {{total}}",
     "noBots": "설정된 봇이 없습니다. 계정 설정 페이지에서 계정을 추가하세요.",
     "noBotsFound": "검색 결과에 맞는 봇이 없습니다.",
     "loadingMore": "더 불러오는 중...",
     "showingCount": "{{total}}개 중 {{loaded}}개 표시 중",
     "allLoaded": "모든 {{total}}개의 봇이 불러와졌습니다",
-    "online": "온라인",
-    "offline": "오프라인",
+    "online": "연결됨",
+    "offline": "연결 끊김",
     "notJoined": "미참가",
     "connectionPhase": {
       "connecting": "연결 중",
-      "connected": "연결됨",
-      "spawned": "온라인",
+      "connected": "로그인 중",
+      "spawned": "연결됨",
       "died": "사망",
-      "disconnected": "오프라인",
+      "disconnected": "연결 끊김",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +441,12 @@
     },
     "backToBots": "봇 목록으로 돌아가기",
     "tabs": {
-      "overview": "개요",
+      "overview": "봇 뷰",
       "inventory": "인벤토리",
       "controls": "컨트롤",
       "terminal": "터미널"
     },
-    "comingSoon": "곧 출시 예정",
-    "terminalPanel": {
-      "title": "봇 터미널"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "프록시",
       "direct": "직접 연결(프록시 없음)",
@@ -416,16 +456,14 @@
       "title": "위치 및 회전",
       "position": "위치",
       "rotation": "회전",
-      "offline": "봇이 오프라인입니다. 위치 데이터는 봇이 연결되어 있을 때만 볼 수 있습니다."
+      "offline": "봇의 연결이 끊겼습니다. 위치 데이터는 봇이 연결되어 있을 때만 볼 수 있습니다."
     },
     "chatPanel": {
-      "title": "채팅 메시지",
-      "description": "이 봇의 채팅 메시지는 향후 업데이트에서 여기 표시됩니다."
+      "title": "채팅 메시지"
     },
     "commandPanel": {
       "title": "봇 명령어",
-      "placeholder": "이 봇에 명령어 전송...",
-      "description": "봇 전용 명령어는 다음 업데이트에서 제공될 예정입니다."
+      "placeholder": "이 봇에 명령어 전송..."
     },
     "povPanel": {
       "title": "봇 시점",
@@ -438,7 +476,6 @@
       "offline": "봇이 오프라인입니다. 시점 렌더링은 봇이 연결되어 있을 때만 사용할 수 있습니다."
     },
     "statsPanel": {
-      "title": "봇 통계",
       "health": "체력",
       "food": "음식",
       "saturation": "포만감",
@@ -451,7 +488,7 @@
       "adventure": "어드벤처",
       "spectator": "관전자",
       "unknown": "알 수 없음",
-      "offline": "봇이 오프라인입니다. 통계는 봇이 연결되어 있을 때만 볼 수 있습니다."
+      "offline": "봇의 연결이 끊겼습니다. 통계는 봇이 연결되어 있을 때만 볼 수 있습니다."
     },
     "inventoryPanel": {
       "title": "인벤토리",
@@ -464,7 +501,7 @@
       "dropAll": "모두 버리기",
       "closeContainer": "닫기",
       "clickHint": "좌클릭: 줍기/두기 | 우클릭: 절반/하나 | Shift+클릭: 빠른 이동 | 휠 클릭: 단축바 슬롯 선택",
-      "offline": "봇이 오프라인입니다. 인벤토리는 봇이 연결되어 있을 때만 사용할 수 있습니다.",
+      "offline": "봇의 연결이 끊겼습니다. 인벤토리는 봇이 연결되어 있을 때만 사용할 수 있습니다.",
       "buttons": {
         "stonecutterRecipes": "레시피",
         "enchantments": "인챈트",
@@ -474,12 +511,12 @@
         "crafterSlots": "슬롯 컨트롤",
         "lecternControls": "책 컨트롤",
         "actions": "동작",
-        "creativeTabs": ""
+        "creativeTabs": "크리에이티브 탭"
       },
       "textInput": {
         "title": "텍스트 입력",
         "anvilRename": "아이템 이름 변경",
-        "creativeSearch": ""
+        "creativeSearch": "아이템 검색"
       },
       "bookPages": {
         "title": "책 내용",
@@ -490,10 +527,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "아이템 파괴",
+      "clickHints": {
+        "left": "왼쪽 클릭: 집기 또는 놓기",
+        "right": "오른쪽 클릭: 절반 집기 또는 하나 놓기",
+        "shift": "Shift+클릭: 빠른 이동",
+        "middle": "가운데 클릭: 활성 슬롯으로 선택"
+      }
     },
     "visualPanel": {
-      "title": "봇 뷰",
+      "title": "방향 및 월드",
       "compass": "보고 있는 방향",
       "lookDirection": "시선 각도",
       "lookingUp": "위쪽 보기",
@@ -502,7 +545,7 @@
       "worldInfo": "월드 정보",
       "dimension": "차원",
       "biome": "생물 군계",
-      "offline": "봇이 오프라인입니다. 시각 데이터는 봇이 연결되어 있을 때만 사용할 수 있습니다."
+      "offline": "봇의 연결이 끊겼습니다. 시각 데이터는 봇이 연결되어 있을 때만 사용할 수 있습니다."
     },
     "actionsPanel": {
       "title": "봇 액션",
@@ -510,7 +553,7 @@
       "rightClick": "우클릭",
       "leftClickDescription": "개체 공격 또는 블록 파괴",
       "rightClickDescription": "아이템 사용 또는 상호작용",
-      "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 액션을 사용할 수 있습니다."
+      "offline": "봇의 연결이 끊겼습니다. 봇이 연결되어 있을 때만 액션을 사용할 수 있습니다."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +572,7 @@
       "lookDown": "아래 보기",
       "lookLeft": "왼쪽 보기",
       "lookRight": "오른쪽 보기",
-      "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 이동 조작을 사용할 수 있습니다."
+      "offline": "봇의 연결이 끊겼습니다. 봇이 연결되어 있을 때만 이동 조작을 사용할 수 있습니다."
     },
     "dialogPanel": {
       "title": "서버 대화상자",
@@ -544,7 +587,45 @@
       "unknownType": "알 수 없음",
       "dismiss": "닫기",
       "submit": "제출",
-      "offline": "봇이 오프라인입니다. 봇이 연결되어 있을 때만 대화상자를 사용할 수 있습니다."
+      "offline": "봇의 연결이 끊겼습니다. 봇이 연결되어 있을 때만 대화상자를 사용할 수 있습니다."
+    },
+    "pov": {
+      "title": "봇 뷰",
+      "touchControlling": "이 봇을 조종하고 있습니다. 멈추려면 \"Release control\"을(를) 사용하세요.",
+      "popupBlocked": "봇 뷰 창을 분리하려면 팝업을 허용하세요.",
+      "windowTitle": "SoulFire 봇 뷰",
+      "fullscreenUnavailable": "이 창에서는 전체 화면을 사용할 수 없습니다.",
+      "textInputLabel": "Minecraft 텍스트 입력",
+      "videoLabel": "실시간 봇 뷰",
+      "touchMove": "이동",
+      "audioError": "오디오를 시작하지 못했습니다.",
+      "startError": "봇 뷰를 시작하지 못했습니다.",
+      "releaseHint": "{{shortcut}}을(를) 누르면 키보드와 마우스가 해제됩니다.",
+      "captureHint": "뷰를 클릭하고 키보드와 마우스 캡처를 허용하세요.",
+      "audioWaiting": "봇 뷰 연결을 기다리는 중입니다.",
+      "audioWatchFirst": "오디오를 사용하려면 봇을 시청하세요.",
+      "audioUpdateServer": "봇 뷰 오디오를 사용하려면 서버를 업데이트하세요.",
+      "muteAudio": "오디오 음소거",
+      "unmuteAudio": "오디오 음소거 해제",
+      "audioStarting": "오디오 시작 중...",
+      "mute": "음소거",
+      "unmute": "음소거 해제",
+      "audio": "오디오",
+      "audioUnavailable": "오디오를 사용할 수 없음",
+      "volume": "봇 뷰 음량",
+      "reconnect": "다시 연결",
+      "showWindow": "봇 뷰 창 표시",
+      "attachWindow": "봇 뷰 창 다시 붙이기",
+      "touch": {
+        "jump": "점프",
+        "sneak": "웅크리기",
+        "attack": "공격",
+        "use": "사용",
+        "inventory": "인벤토리",
+        "keyboard": "키보드",
+        "closeMenu": "메뉴 닫기"
+      },
+      "needsServer": "봇 뷰에는 연결된 SoulFire 서버가 필요합니다."
     }
   },
   "metrics": {
@@ -552,15 +633,15 @@
       "noData": "데이터 없음"
     },
     "summary": {
-      "online": "온라인",
+      "online": "연결됨",
       "packetsPerSecond": "패킷/초",
       "traffic": "트래픽",
       "health": "체력",
       "tick": "틱"
     },
     "botsOnline": {
-      "title": "온라인 봇",
-      "online": "온라인",
+      "title": "연결된 봇",
+      "online": "연결됨",
       "total": "전체"
     },
     "packets": {
@@ -627,7 +708,7 @@
     "createError": "스크립트 생성에 실패했습니다.",
     "noScripts": "아직 스크립트가 없습니다.",
     "noScriptsDescription": "비주얼 노드 기반 에디터로 첫 번째 스크립트를 만들어 봇의 동작을 자동화하세요.",
-    "createFirstScript": "첫 번째 스크립트 만들기",
+    "createFirstScript": "스크립트 생성",
     "running": "실행 중",
     "paused": "일시 정지됨",
     "nodes": "노드",
@@ -694,7 +775,9 @@
       },
       "palette": {
         "title": "노드 팔레트",
-        "search": "노드 검색..."
+        "search": "노드 검색...",
+        "noResults": "검색과 일치하는 노드가 없습니다",
+        "noResultsDescription": "다른 검색어를 쓰거나 현재 필터를 지우세요."
       },
       "logs": {
         "title": "실행 로그",
@@ -716,11 +799,15 @@
       },
       "node": {
         "expand": "노드 확장",
-        "collapse": "노드 접기"
+        "collapse": "노드 접기",
+        "avgTime": "평균 실행 시간: {{avg}} ms(최근 {{count}}회)",
+        "preview": "미리보기"
       },
       "debug": {
         "copyValue": "현재 값 복사",
-        "clearHistory": "기록 지우기"
+        "clearHistory": "기록 지우기",
+        "current": "현재({{time}}):",
+        "noValue": "아직 받은 값이 없습니다"
       },
       "edge": {
         "direction": "엣지 방향"
@@ -732,14 +819,31 @@
         "title": "스크립트 복잡도 점수"
       },
       "group": {
-        "returnToRoot": "루트로 돌아가기 (Tab)"
+        "returnToRoot": "루트로 돌아가기 (Tab)",
+        "root": "루트",
+        "exitHint": "나가려면 <key>Tab</key> 키를 누르세요",
+        "editHint": "두 번 클릭해 편집",
+        "noInputs": "정의된 입력 없음",
+        "noOutputs": "정의된 출력 없음"
       },
       "quickAdd": {
         "menuLabel": "빠른 노드 추가 메뉴",
-        "searchPlaceholder": "노드 검색..."
+        "searchPlaceholder": "노드 검색...",
+        "noResults": "노드를 찾을 수 없음",
+        "noResultsDescription": "다른 검색어를 사용해 보세요.",
+        "navigate": "이동",
+        "select": "Enter로 선택",
+        "close": "Esc로 닫기"
       },
       "diff": {
-        "tooltip": "변경 사항 검토"
+        "tooltip": "변경 사항 검토",
+        "title": "저장되지 않은 변경 사항",
+        "description": "마지막 저장 이후의 변경 사항입니다.",
+        "nodesAdded_other": "노드 {{count}}개 추가됨",
+        "nodesRemoved_other": "노드 {{count}}개 삭제됨",
+        "nodesModified_other": "노드 {{count}}개 수정됨",
+        "edgesAdded_other": "연결 {{count}}개 추가됨",
+        "edgesRemoved_other": "연결 {{count}}개 삭제됨"
       },
       "dryRun": {
         "saveFirst": "",
@@ -783,8 +887,20 @@
         "disableTimeoutsDescription": "노드별 및 데이터 엣지 타임아웃을 비활성화합니다.",
         "save": "할당량 저장",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} 순서 변경",
+        "empty": "들어오는 값 없음",
+        "title": "다중 입력: 여러 연결을 받습니다",
+        "connectTo": "{{label}}에 값을 연결하세요"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "스크립트를 삭제할까요?",
+      "description": "\"{{name}}\"을(를) 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
+      "descriptionUnnamed": "스크립트를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다."
+    },
+    "executionStats": "실행 통계: 노드 {{executed}}/{{max}}개 실행됨"
   },
   "metadataValidation": {
     "invalidNamespace": "",

@@ -119,12 +119,12 @@
       "network": "Sieťová adresa",
       "unix": "Unixový socket"
     },
-    "getProxies": "Získať proxy servery",
+    "getProxies": "Poskytovatelia proxy serverov",
     "addProxies": "Pridať proxy servery",
     "filterPlaceholder": "Filtrovať proxy...",
     "listImportToast": {
       "loading": "Importovanie proxy...",
-      "success": "Bolo importovaných {{count}} proxy!",
+      "success": "Bolo importovaných {{count}} proxy",
       "error": "Nepodarilo sa importovať proxy.",
       "noProxies": "Žiadne proxy na importovanie"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Odstraňovanie proxy...",
-      "success": "Odstránených {{count}} proxy!",
+      "success": "Odstránených {{count}} proxy",
       "error": "Nepodarilo sa odstrániť proxy."
     },
     "checkToast": {
       "loading": "Kontrolujú sa proxy... {{checked}}/{{total}} (Úspešné: {{success}} Neúspešné: {{failed}})",
-      "success": "Odstránených {{count}} nefunkčných proxy!",
-      "error": "Nepodarilo sa skontrolovať proxy."
+      "success": "Odstránených {{count}} nefunkčných proxy",
+      "error": "Nepodarilo sa skontrolovať proxy.",
+      "successKept": "Kontrolou neprešlo {{failed}} z {{total}} proxy serverov. Žiadny proxy server nebol odstránený."
     },
     "checkDialog": {
       "title": "Skontrolovať proxy servery",
-      "description": "Chystáte sa skontrolovať {{count}} proxy. Neplatné proxy budú automaticky odstránené.",
-      "confirm": "Spustiť kontrolu"
+      "description": "Chystáte sa skontrolovať proxy servery: {{count}}.",
+      "confirm": "Spustiť kontrolu",
+      "removeFailed": "Odstrániť proxy servery, ktoré zlyhajú",
+      "removeFailedHelp": "Proxy server môže zlyhať pre dočasný problém so sieťou. Zrušte túto možnosť, ak chcete ponechať všetky proxy servery a iba vidieť výsledok."
     },
     "invalidFormat": "Neplatný formát proxy",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Skontrolovať importované proxy?",
-      "description": "Importovali ste {{count}} proxy serverov. Skontrolovať ich teraz? SoulFire automaticky odstráni neplatné proxy.",
+      "description": "Importované proxy servery: {{count}}. Skontrolovať ich teraz?",
       "confirm": "Skontrolovať proxy servery",
       "skip": "Preskočiť"
     },
@@ -186,10 +189,20 @@
       "socks4": "Iba SOCKS4 (ploché)",
       "socks5": "Iba SOCKS5 (ploché)",
       "noProxies": "Žiadne proxy na export"
-    }
+    },
+    "removeDialog": {
+      "title_one": "Odstrániť {{count}} proxy server?",
+      "title_few": "Odstrániť {{count}} proxy servery?",
+      "title_many": "Odstrániť {{count}} proxy servera?",
+      "title_other": "Odstrániť {{count}} proxy serverov?",
+      "description": "Týmto sa z tejto inštancie odstránia vybrané proxy servery a ich prihlasovacie údaje. Túto akciu nemožno vrátiť späť.",
+      "confirm": "Odstrániť proxy servery"
+    },
+    "showPassword": "Zobraziť heslo",
+    "hidePassword": "Skryť heslo"
   },
   "account": {
-    "getAccounts": "Získať účty",
+    "getAccounts": "Poskytovatelia účtov",
     "addAccounts": "Pridať účty",
     "generateAccounts": "Generovať účty",
     "filterPlaceholder": "Filtrovať účty...",
@@ -197,7 +210,7 @@
       "loading": "Importovanie účtov... {{checked}}/{{total}} (Úspešné: {{success}} Neúspešné: {{failed}})",
       "allFailed": "Nepodarilo sa importovať žiadne účty.",
       "someFailed": "Importovaných {{count}} účtov, nepodarilo sa importovať {{failed}} účtov.",
-      "noneFailed": "{{count}} účtov bolo importovaných!",
+      "noneFailed": "{{count}} účtov bolo importovaných",
       "error": "Nepodarilo sa importovať účty.",
       "noAccounts": "Žiadne účty na importovanie"
     },
@@ -215,7 +228,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Importovanie účtu...",
-      "success": "Účet bol importovaný!",
+      "success": "Účet bol importovaný",
       "error": "Nepodarilo sa importovať účet."
     },
     "generate": {
@@ -232,9 +245,9 @@
       "submit": "Generovať",
       "generating": "Generovanie...",
       "progress": "Generujú sa účty... {{checked}}/{{total}} (Úspešné: {{success}} Neúspešné: {{failed}})",
-      "success": "Vygenerovaných {{count}} účtov!",
+      "success": "Vygenerovaných {{count}} účtov",
       "allFailed": "Nepodarilo sa vygenerovať žiadne účty",
-      "allExist": "Všetky používateľské mená už existujú. Ak chcete ich znovu vygenerovať, povoľte možnosť „Prepísať existujúce účty“.",
+      "allExist": "Všetky používateľské mená už existujú. Zvoľte „Nahradiť existujúce“ a vygenerujte ich znova.",
       "error": "Nepodarilo sa vygenerovať účty",
       "invalidAmount": "Zadajte platné množstvo (aspoň 1)",
       "missingPlaceholder": "Formát názvu musí obsahovať zástupný znak %d"
@@ -257,12 +270,12 @@
     },
     "removeToast": {
       "loading": "Odstraňovanie účtov...",
-      "success": "Odstránených {{count}} účtov!",
+      "success": "Odstránených {{count}} účtov",
       "error": "Nepodarilo sa odstrániť účty."
     },
     "table": {
       "type": "Typ",
-      "profileId": "UUID",
+      "profileId": "ID profilu",
       "lastKnownName": "Používateľské meno",
       "searchProfileIds": "Hľadať ID profilov...",
       "searchLastKnownNames": "Hľadať posledné známe mená...",
@@ -270,7 +283,7 @@
     },
     "removeSelectedTooltip": "Odstrániť vybrané účty",
     "contextMenu": {
-      "openConfig": "Otvoriť konfiguráciu",
+      "openConfig": "Otvoriť nastavenia",
       "openMetadata": "Otvoriť metadáta",
       "copyProfileId": "Kopírovať ID profilu",
       "copyUsername": "Kopírovať používateľské meno"
@@ -294,7 +307,23 @@
       "matchesInheritedValue": "Zhoduje sa s zdedenou hodnotou",
       "instanceValue": "Hodnota inštancie",
       "defaultValue": "Predvolená hodnota",
-      "resetOverride": "Obnoviť prepísanie"
+      "resetOverride": "Obnoviť prepísanie",
+      "value": {
+        "notSet": "Nenastavené",
+        "on": "Zap.",
+        "off": "Vyp.",
+        "empty": "Prázdne",
+        "entries_one": "{{count}} položka",
+        "entries_few": "{{count}} položky",
+        "entries_many": "{{count}} položky",
+        "entries_other": "{{count}} položiek",
+        "range": "Rozsah"
+      },
+      "source": {
+        "bot": "Prepísané pre bota",
+        "instance": "Zdedené z inštancie",
+        "default": "Predvolená hodnota"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Overenie zariadenia pomocou kódu",
@@ -341,7 +370,7 @@
       "keyPlaceholder": "Kľúč",
       "valuePlaceholder": "Hodnota (JSON)",
       "noEntries": "Žiadne záznamy metaúdajov. Pridajte jeden vyššie.",
-      "loadError": "",
+      "loadError": "Metadáta sa nepodarilo načítať",
       "loadErrorDescription": "",
       "retryLoad": "Opakovať",
       "addSuccess": "Záznam pridaný",
@@ -350,7 +379,22 @@
       "deleteSuccess": "Záznam bol odstránený",
       "deleteError": "Zlyhalo odstránenie záznamu",
       "duplicateError": "Záznam s touto mennou oblasťou a kľúčom už existuje",
-      "invalidJson": "Neplatná hodnota JSON"
+      "invalidJson": "Neplatná hodnota JSON",
+      "namespaceLabel": "Menný priestor",
+      "keyLabel": "Kľúč",
+      "valueLabel": "Hodnota",
+      "addEntryLegend": "Pridať položku metadát",
+      "addEntryButton": "Pridať položku",
+      "entryLegend": "Položka metadát",
+      "removeEntryButton": "Odstrániť"
+    },
+    "removeDialog": {
+      "title_one": "Odstrániť {{count}} účet?",
+      "title_few": "Odstrániť {{count}} účty?",
+      "title_many": "Odstrániť {{count}} účtu?",
+      "title_other": "Odstrániť {{count}} účtov?",
+      "description": "Týmto sa z tejto inštancie odstránia vybrané účty, ich uložené prihlasovacie údaje a ich boti. Túto akciu nemožno vrátiť späť.",
+      "confirm": "Odstrániť účty"
     }
   },
   "instanceMetadata": {
@@ -360,31 +404,39 @@
     "keyPlaceholder": "Kľúč",
     "valuePlaceholder": "Hodnota (JSON)",
     "noEntries": "Žiadne záznamy metaúdajov. Pridajte jeden vyššie.",
+    "loadError": "Metadáta sa nepodarilo načítať",
     "addSuccess": "Záznam pridaný",
     "addError": "Záznam sa nepodarilo pridať",
     "updateError": "Záznam sa nepodarilo aktualizovať",
     "deleteSuccess": "Záznam bol odstránený",
     "deleteError": "Zlyhalo odstránenie záznamu",
     "duplicateError": "Záznam s touto mennou oblasťou a kľúčom už existuje",
-    "invalidJson": "Neplatná hodnota JSON"
+    "invalidJson": "Neplatná hodnota JSON",
+    "namespaceLabel": "Menný priestor",
+    "keyLabel": "Kľúč",
+    "valueLabel": "Hodnota",
+    "addEntryLegend": "Pridať položku metadát",
+    "addEntryButton": "Pridať položku",
+    "entryLegend": "Položka metadát",
+    "removeEntryButton": "Odstrániť"
   },
   "bots": {
     "searchPlaceholder": "Hľadať botov...",
-    "onlineCount": "{{online}} online / {{total}} celkom",
+    "onlineCount": "{{online}} pripojených / {{total}} spolu",
     "noBots": "Nie sú nakonfigurované žiadne boty. Pridajte účty na stránke Nastavenia účtu.",
     "noBotsFound": "Žiadny bot nezodpovedá vášmu vyhľadávaniu.",
     "loadingMore": "Načítavajú sa ďalšie...",
     "showingCount": "Zobrazuje sa {{loaded}} z {{total}}",
     "allLoaded": "Všetkých {{total}} botov načítaných",
-    "online": "Online",
-    "offline": "Offline",
+    "online": "Pripojené",
+    "offline": "Odpojené",
     "notJoined": "Nepripojený",
     "connectionPhase": {
       "connecting": "Pripájanie",
-      "connected": "Pripojený",
-      "spawned": "Online",
+      "connected": "Prihlasovanie",
+      "spawned": "Pripojené",
       "died": "Mŕtvy",
-      "disconnected": "Offline",
+      "disconnected": "Odpojené",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +450,12 @@
     },
     "backToBots": "Späť na botov",
     "tabs": {
-      "overview": "Prehľad",
+      "overview": "Pohľad bota",
       "inventory": "Inventár",
       "controls": "Ovládanie",
       "terminal": "Terminál"
     },
-    "comingSoon": "Už čoskoro",
-    "terminalPanel": {
-      "title": "Terminál bota"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy server",
       "direct": "Priame pripojenie (bez proxy)",
@@ -416,16 +465,14 @@
       "title": "Pozícia a rotácia",
       "position": "Pozícia",
       "rotation": "Rotácia",
-      "offline": "Bot je offline. Údaje o pozícii sú dostupné len vtedy, keď je bot pripojený."
+      "offline": "Bot je odpojený. Údaje o pozícii sú dostupné len vtedy, keď je bot pripojený."
     },
     "chatPanel": {
-      "title": "Chat správy",
-      "description": "Chat správy od tohto bota sa tu zobrazia v budúcej aktualizácii."
+      "title": "Chat správy"
     },
     "commandPanel": {
       "title": "Príkazy bota",
-      "placeholder": "Odoslať príkaz tomuto botovi...",
-      "description": "Príkazy určené pre jednotlivých botov budú dostupné v budúcej aktualizácii."
+      "placeholder": "Odoslať príkaz tomuto botovi..."
     },
     "povPanel": {
       "title": "Pohľad bota",
@@ -438,7 +485,6 @@
       "offline": "Bot je offline. Zobrazenie pohľadu je dostupné len keď je bot pripojený."
     },
     "statsPanel": {
-      "title": "Štatistiky bota",
       "health": "Zdravie",
       "food": "Jedlo",
       "saturation": "Sýtosť",
@@ -451,7 +497,7 @@
       "adventure": "Dobrodružstvo",
       "spectator": "Divák",
       "unknown": "Neznámy",
-      "offline": "Bot je offline. Štatistiky sú dostupné len keď je bot pripojený."
+      "offline": "Bot je odpojený. Štatistiky sú dostupné len keď je bot pripojený."
     },
     "inventoryPanel": {
       "title": "Inventár",
@@ -464,7 +510,7 @@
       "dropAll": "Vyhodiť všetko",
       "closeContainer": "Zavrieť",
       "clickHint": "Ľavé kliknutie: zdvihnúť/umiestniť | Pravé kliknutie: polovica/jeden | Shift+klik: rýchly presun | Stredné kliknutie: výber slotu rýchleho panela",
-      "offline": "Bot je offline. Inventár je dostupný len keď je bot pripojený.",
+      "offline": "Bot je odpojený. Inventár je dostupný len keď je bot pripojený.",
       "buttons": {
         "stonecutterRecipes": "Recepty",
         "enchantments": "Očarovania",
@@ -474,12 +520,12 @@
         "crafterSlots": "Ovládanie slotov",
         "lecternControls": "Ovládanie knihy",
         "actions": "Akcie",
-        "creativeTabs": ""
+        "creativeTabs": "Kreatívne karty"
       },
       "textInput": {
         "title": "Textové pole",
         "anvilRename": "Premenovať predmet",
-        "creativeSearch": ""
+        "creativeSearch": "Hľadať predmety"
       },
       "bookPages": {
         "title": "Obsah knihy",
@@ -490,10 +536,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Zničiť predmet",
+      "clickHints": {
+        "left": "Ľavé tlačidlo: vziať alebo položiť",
+        "right": "Pravé tlačidlo: vziať polovicu alebo položiť jeden",
+        "shift": "Shift+klik: rýchly presun",
+        "middle": "Stredné tlačidlo: vybrať ako aktívny slot"
+      }
     },
     "visualPanel": {
-      "title": "Zobrazenie bota",
+      "title": "Smer a svet",
       "compass": "Smer pohľadu",
       "lookDirection": "Uhol pohľadu",
       "lookingUp": "Pozerá hore",
@@ -502,7 +554,7 @@
       "worldInfo": "Informácie o svete",
       "dimension": "Dimenzia",
       "biome": "Biom",
-      "offline": "Bot je offline. Zobrazovanie vizuálnych dát je dostupné len keď je bot pripojený."
+      "offline": "Bot je odpojený. Zobrazovanie vizuálnych dát je dostupné len keď je bot pripojený."
     },
     "actionsPanel": {
       "title": "Akcie bota",
@@ -510,7 +562,7 @@
       "rightClick": "Pravé kliknutie",
       "leftClickDescription": "Zaútočiť na entitu alebo zničiť blok",
       "rightClickDescription": "Použiť predmet alebo interagovať",
-      "offline": "Bot je offline. Akcie sú dostupné len keď je bot pripojený."
+      "offline": "Bot je odpojený. Akcie sú dostupné len keď je bot pripojený."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +581,7 @@
       "lookDown": "Pozrieť dole",
       "lookLeft": "Pozrieť doľava",
       "lookRight": "Pozrieť doprava",
-      "offline": "Bot je offline. Ovládanie pohybu je k dispozícii len keď je bot pripojený."
+      "offline": "Bot je odpojený. Ovládanie pohybu je k dispozícii len keď je bot pripojený."
     },
     "dialogPanel": {
       "title": "Serverový dialóg",
@@ -544,7 +596,45 @@
       "unknownType": "Neznámy",
       "dismiss": "Zavrieť",
       "submit": "Odoslať",
-      "offline": "Bot je offline. Dialógy sú dostupné len keď je bot pripojený."
+      "offline": "Bot je odpojený. Dialógy sú dostupné len keď je bot pripojený."
+    },
+    "pov": {
+      "title": "Pohľad bota",
+      "touchControlling": "Ovládate tohto bota. Ukončíte to tlačidlom „Release control“.",
+      "popupBlocked": "Povoľte vyskakovacie okná, aby ste mohli odpojiť okno pohľadu bota.",
+      "windowTitle": "Pohľad bota SoulFire",
+      "fullscreenUnavailable": "Režim celej obrazovky nie je v tomto okne dostupný.",
+      "textInputLabel": "Zadávanie textu v Minecrafte",
+      "videoLabel": "Živý pohľad bota",
+      "touchMove": "Pohyb",
+      "audioError": "Zvuk sa nepodarilo spustiť.",
+      "startError": "Pohľad bota sa nepodarilo spustiť.",
+      "releaseHint": "Stlačením {{shortcut}} uvoľníte klávesnicu a myš.",
+      "captureHint": "Kliknite na pohľad a povoľte zachytávanie klávesnice a myši.",
+      "audioWaiting": "Čaká sa na pripojenie pohľadu bota.",
+      "audioWatchFirst": "Sledujte bota, aby ste mohli používať zvuk.",
+      "audioUpdateServer": "Aktualizujte server, aby ste mohli používať zvuk v pohľade bota.",
+      "muteAudio": "Stlmiť zvuk",
+      "unmuteAudio": "Zapnúť zvuk",
+      "audioStarting": "Spúšťa sa zvuk...",
+      "mute": "Stlmiť",
+      "unmute": "Zrušiť stlmenie",
+      "audio": "Zvuk",
+      "audioUnavailable": "Zvuk nie je dostupný",
+      "volume": "Hlasitosť pohľadu bota",
+      "reconnect": "Znova pripojiť",
+      "showWindow": "Zobraziť okno pohľadu bota",
+      "attachWindow": "Pripojiť okno pohľadu bota",
+      "touch": {
+        "jump": "Skok",
+        "sneak": "Zakrádanie",
+        "attack": "Útok",
+        "use": "Použiť",
+        "inventory": "Inventár",
+        "keyboard": "Klávesnica",
+        "closeMenu": "Zavrieť ponuku"
+      },
+      "needsServer": "Pohľad bota vyžaduje pripojený server SoulFire."
     }
   },
   "metrics": {
@@ -552,15 +642,15 @@
       "noData": "Žiadne údaje"
     },
     "summary": {
-      "online": "Online",
+      "online": "Pripojené",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Prenos",
       "health": "Zdravie",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Boti online",
-      "online": "Online",
+      "title": "Pripojení boti",
+      "online": "Pripojené",
       "total": "Celkovo"
     },
     "packets": {
@@ -627,7 +717,7 @@
     "createError": "Nepodarilo sa vytvoriť skript",
     "noScripts": "Zatiaľ žiadne skripty",
     "noScriptsDescription": "Vytvorte svoj prvý skript na automatizáciu akcií bota pomocou vizuálneho editora na základe uzlov.",
-    "createFirstScript": "Vytvoriť svoj prvý skript",
+    "createFirstScript": "Vytvoriť skript",
     "running": "Beží",
     "paused": "Pozastavené",
     "nodes": "uzly",
@@ -694,7 +784,9 @@
       },
       "palette": {
         "title": "Paleta uzlov",
-        "search": "Hľadať uzly..."
+        "search": "Hľadať uzly...",
+        "noResults": "Hľadaniu nezodpovedá žiadny uzol",
+        "noResultsDescription": "Skúste iný výraz alebo vymažte aktuálny filter."
       },
       "logs": {
         "title": "Záznamy vykonávania",
@@ -719,11 +811,15 @@
       },
       "node": {
         "expand": "Rozbaliť uzol",
-        "collapse": "Zbaliť uzol"
+        "collapse": "Zbaliť uzol",
+        "avgTime": "Priemerný čas behu: {{avg}} ms (posledné behy: {{count}})",
+        "preview": "Náhľad"
       },
       "debug": {
         "copyValue": "Kopírovať aktuálnu hodnotu",
-        "clearHistory": "Vymazať históriu"
+        "clearHistory": "Vymazať históriu",
+        "current": "Aktuálna ({{time}}):",
+        "noValue": "Zatiaľ nebola prijatá žiadna hodnota"
       },
       "edge": {
         "direction": "Smer hrany"
@@ -735,14 +831,46 @@
         "title": "Skóre komplexnosti skriptu"
       },
       "group": {
-        "returnToRoot": "Vrátiť sa na koreň (Tab)"
+        "returnToRoot": "Vrátiť sa na koreň (Tab)",
+        "root": "Koreň",
+        "exitHint": "Stlačením <key>Tab</key> odídete",
+        "editHint": "Dvojklikom upravíte",
+        "noInputs": "Nie sú definované žiadne vstupy",
+        "noOutputs": "Nie sú definované žiadne výstupy"
       },
       "quickAdd": {
         "menuLabel": "Rýchle pridanie uzla — menu",
-        "searchPlaceholder": "Hľadať uzly..."
+        "searchPlaceholder": "Hľadať uzly...",
+        "noResults": "Nenašli sa žiadne uzly",
+        "noResultsDescription": "Skúste iný hľadaný výraz.",
+        "navigate": "Navigácia",
+        "select": "Enter vyberie",
+        "close": "Esc zavrie"
       },
       "diff": {
-        "tooltip": "Skontrolovať zmeny"
+        "tooltip": "Skontrolovať zmeny",
+        "title": "Neuložené zmeny",
+        "description": "Zmeny od posledného uloženia.",
+        "nodesAdded_one": "Pridaný {{count}} uzol",
+        "nodesAdded_few": "Pridané {{count}} uzly",
+        "nodesAdded_many": "Pridaného {{count}} uzla",
+        "nodesAdded_other": "Pridaných {{count}} uzlov",
+        "nodesRemoved_one": "Odstránený {{count}} uzol",
+        "nodesRemoved_few": "Odstránené {{count}} uzly",
+        "nodesRemoved_many": "Odstráneného {{count}} uzla",
+        "nodesRemoved_other": "Odstránených {{count}} uzlov",
+        "nodesModified_one": "Zmenený {{count}} uzol",
+        "nodesModified_few": "Zmenené {{count}} uzly",
+        "nodesModified_many": "Zmeneného {{count}} uzla",
+        "nodesModified_other": "Zmenených {{count}} uzlov",
+        "edgesAdded_one": "Pridané {{count}} spojenie",
+        "edgesAdded_few": "Pridané {{count}} spojenia",
+        "edgesAdded_many": "Pridaného {{count}} spojenia",
+        "edgesAdded_other": "Pridaných {{count}} spojení",
+        "edgesRemoved_one": "Odstránené {{count}} spojenie",
+        "edgesRemoved_few": "Odstránené {{count}} spojenia",
+        "edgesRemoved_many": "Odstráneného {{count}} spojenia",
+        "edgesRemoved_other": "Odstránených {{count}} spojení"
       },
       "dryRun": {
         "saveFirst": "",
@@ -789,8 +917,20 @@
         "disableTimeoutsDescription": "Zakazuje časové limity pre jednotlivé uzly a dátové hrany",
         "save": "Uložiť kvóty",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Zmeniť poradie: {{label}}",
+        "empty": "Žiadne prichádzajúce hodnoty",
+        "title": "Viacnásobný vstup: prijíma viac spojení",
+        "connectTo": "Pripojte hodnoty k {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Odstrániť skript?",
+      "description": "Týmto sa natrvalo odstráni „{{name}}“. Túto akciu nemožno vrátiť späť.",
+      "descriptionUnnamed": "Týmto sa skript natrvalo odstráni. Túto akciu nemožno vrátiť späť."
+    },
+    "executionStats": "Štatistika behu: spustených {{executed}}/{{max}} uzlov"
   },
   "metadataValidation": {
     "invalidNamespace": "",

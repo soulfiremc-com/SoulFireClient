@@ -44,7 +44,24 @@
         "placeholder": "Dina JVM-argument här"
       },
       "back": "Tillbaka",
-      "start": "Starta"
+      "start": "Starta",
+      "jar": {
+        "title": "Server-jar",
+        "official": "Officiell",
+        "custom": "Anpassad",
+        "officialTitle": "Officiell SoulFire-server",
+        "customTitle": "Anpassad server-jar",
+        "officialDescription": "Laddar ned och verifierar den matchande SoulFire-versionen.",
+        "customDescription": "Kör en importerad jar. SoulFire verifierar eller uppdaterar den inte.",
+        "import": "Importera jar",
+        "importSuccess": "Importerade {{name}}",
+        "importError": "Det gick inte att importera den anpassade SoulFire-jaren",
+        "selectCustomFirst": "Importera och välj en anpassad jar innan du startar.",
+        "dialog": {
+          "filter": "Java-arkiv",
+          "title": "Välj SoulFire-serverns jar"
+        }
+      }
     },
     "mobile": {
       "description": "För att köra den integrerade servern på mobil måste du genomföra några manuella steg.",

@@ -625,11 +625,15 @@ function Content() {
             <AlertDialogMedia>
               <TrashIcon />
             </AlertDialogMedia>
-            <AlertDialogTitle>Delete instance?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("dialog.deleteInstance.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {deleteTarget
-                ? `This will permanently delete "${deleteTarget.friendlyName}" and its data. This action cannot be undone.`
-                : "This will permanently delete this project and its data. This action cannot be undone."}
+                ? t("dialog.deleteInstance.description", {
+                    name: deleteTarget.friendlyName,
+                  })
+                : t("dialog.deleteInstance.descriptionUnnamed")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

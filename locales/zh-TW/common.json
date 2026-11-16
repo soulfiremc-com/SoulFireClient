@@ -113,18 +113,24 @@
         "submit": "從網址載入",
         "toast": {
           "loading": "正在從網址下載資料...",
-          "success": "資料載入完成！",
+          "success": "資料載入完成",
           "error": "下載資料失敗",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "要刪除實例嗎？",
+      "description": "這會永久刪除「{{name}}」及其資料。此操作無法復原。",
+      "descriptionUnnamed": "這會永久刪除此實例及其資料。此操作無法復原。"
     }
   },
   "commandInput": {
     "placeholder": "輸入指令（輸入 'help' 查看列表）",
     "emptySuggestions": "輸入以請求建議或按 Tab 鍵。",
-    "noSuggestions": "沒有可用建議。"
+    "noSuggestions": "沒有可用建議。",
+    "emptySuggestionsPrefix": "輸入以取得建議，或按"
   },
   "controls": {
     "start": "開始",
@@ -162,7 +168,7 @@
     "stopCount_other": "停止 {{count}} 個機器人",
     "restartCount_other": "重新啟動 {{count}} 個機器人"
   },
-  "botFleetSummary": "{{online}} 在線 · {{desired}} 目標 · {{total}} 總數",
+  "botFleetSummary": "{{online}} 個已連線 · {{desired}} 個設為執行 · 共 {{total}} 個",
   "icon": {
     "invalidName": "無效的圖示名稱：{{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "升冪",
       "desc": "降冪"
-    }
+    },
+    "openFilterMenu": "開啟篩選選單",
+    "filterOperator": "篩選運算子",
+    "filterValue": "篩選值",
+    "sortDirection": "排序方向",
+    "selectJoinOperator": "選擇連接運算子",
+    "joinOperator": "連接運算子",
+    "escapeKey": "Escape",
+    "selectDate": "選擇日期",
+    "selectDateRange": "選擇日期範圍",
+    "clearFilter": "清除 {{title}} 篩選",
+    "clearFilters": "清除篩選",
+    "clear": "清除",
+    "from": "從",
+    "to": "到",
+    "sortDirectionFor": "{{column}} 的排序方向",
+    "minValue": "{{label}} 最小值",
+    "maxValue": "{{label}} 最大值"
   },
   "pluginCard": {
     "version": "版本：{{version}}",
@@ -252,13 +275,13 @@
     "website": "網站"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "無法儲存 {{name}}",
     "namespacesNotFound": "未找到設定命名空間",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "無法儲存 {{name}}",
       "placeholder": "新增項目...",
       "add": "新增",
       "remove": "移除"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "無效的數值",
       "description": "數值必須介於 {{min}} 和 {{max}} 之間"
-    }
+    },
+    "minMaxLegend": "最小值和最大值設定"
   },
   "terminal": {
     "noLogs": "尚無日誌。請執行指令以產生日誌輸出。",
@@ -317,16 +341,37 @@
       "error": "連線到 {{device}} 失敗"
     },
     "noDevices": "沒有找到裝置",
-    "broadcastLabel": "廣播測試",
     "broadcastToast": {
       "loading": "正在廣播訊息...",
-      "success": "訊息已廣播！",
+      "success": "訊息已廣播",
       "error": "廣播訊息失敗"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "正在開啟腳本...",
+        "success": "腳本已開啟",
+        "error": "無法開啟腳本。請再試一次。"
+      },
+      "deactivate": {
+        "loading": "正在關閉腳本...",
+        "success": "腳本已關閉",
+        "error": "無法關閉腳本。請再試一次。"
+      }
+    },
+    "operations": {
+      "activateScript": "開啟腳本 {{name}}",
+      "deactivateScript": "關閉腳本 {{name}}"
+    },
+    "status": {
+      "active": "開",
+      "paused": "關"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "閱讀文件",
-    "backToDashboard": "返回主控台",
+    "backToDashboard": "返回實例清單",
     "deleteToast": {
       "loading": "正在刪除實例...",
       "success": "實例已刪除",
@@ -352,9 +397,9 @@
     "settingsGroup": "設定",
     "extensionsGroup": "擴充功能",
     "botSettings": "Bot 設定",
-    "accountSettings": "帳戶設定",
+    "accountSettings": "帳戶",
     "metaSettings": "實例設定",
-    "proxySettings": "代理設定",
+    "proxySettings": "代理伺服器",
     "aiSettings": "AI 設定",
     "pathfindingSettings": "路徑尋找設定",
     "discoverPlugins": "插件",
@@ -420,10 +465,10 @@
     "instances": "實例清單",
     "access": "存取權限",
     "settings": "設定",
-    "proxySettings": "代理設定",
+    "proxySettings": "代理伺服器",
     "overview": "總覽",
     "users": "使用者",
-    "accountSettings": "帳戶設定",
+    "accountSettings": "帳戶",
     "metaSettings": "實例設定",
     "discoverPlugins": "插件",
     "adminScripts": "腳本",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "API 存取",
-      "description": "SoulFire gRPC HTTP API 透過網路請求管理實例。",
+      "description": "使用 SoulFire API，從你自己的程式管理實例。",
       "publicAddress": "公開 API 位址",
       "personalToken": "個人 API 權杖",
       "securityWarning": "請妥善保管您的個人 API 權杖。它可存取 API。",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "產生權杖",
-      "placeholder": "請點下方的「產生權杖」",
+      "placeholder": "請選擇下方的「產生權杖」",
       "generating": "正在產生權杖...",
       "success": "權杖產生成功",
       "error": "產生權杖失敗",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "無法更新實例名稱"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "無法更新 {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "篩選稽核日誌...",
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "正在移除腳本...",
-      "success": "腳本已移除！",
+      "success": "腳本已移除",
       "error": "移除腳本失敗"
     },
     "addToast": {
       "loading": "正在新增腳本...",
-      "success": "腳本已新增！",
+      "success": "腳本已新增",
       "error": "新增腳本失敗"
     },
     "updateToast": {
       "loading": "正在更新腳本...",
-      "success": "腳本已更新！",
+      "success": "腳本已更新",
       "error": "更新腳本失敗"
     },
     "restartToast": {
       "loading": "正在重新啟動腳本...",
-      "success": "腳本已重新啟動！",
+      "success": "腳本已重新啟動",
       "error": "重新啟動腳本失敗"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "前往機器人",
       "copyUsername": "複製用戶名稱",
-      "copyUuid": "複製 UUID",
+      "copyUuid": "複製個人檔案 ID",
       "copyCoordinates": "複製座標"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "已連線",
+    "botOffline": "已中斷連線"
+  },
+  "minecraftActions": {
+    "copyError": "無法複製文字。請使用 HTTPS 或允許存取剪貼簿。",
+    "openError": "無法開啟連結。",
+    "popupBlocked": "瀏覽器封鎖了新分頁。",
+    "openLink": "開啟連結"
+  },
+  "instanceIcon": {
+    "label": "圖示",
+    "description": "應用程式中顯示的實例圖示。"
+  },
+  "unknown": "未知",
+  "minecraftHead": "Minecraft 頭像",
+  "textFile": "文字檔"
 }

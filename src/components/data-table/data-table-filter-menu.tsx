@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import {
   BadgeCheck,
@@ -245,7 +246,7 @@ export function DataTableFilterMenu<TData extends RowData>({
       ))}
       {filters.length > 0 && (
         <Button
-          aria-label="Reset all filters"
+          aria-label={i18n.t("common:dataTable.resetFilters")}
           variant="outline"
           size="icon"
           className="size-8"
@@ -258,7 +259,7 @@ export function DataTableFilterMenu<TData extends RowData>({
         <PopoverTrigger
           render={
             <Button
-              aria-label="Open filter command menu"
+              aria-label={i18n.t("common:dataTable.openFilterMenu")}
               variant="outline"
               size={filters.length > 0 ? "icon" : "sm"}
               className={cn(filters.length > 0 && "size-8", "h-8 font-normal")}
@@ -291,7 +292,9 @@ export function DataTableFilterMenu<TData extends RowData>({
               {selectedColumn ? (
                 <>
                   {selectedColumn.columnDef.meta?.options && (
-                    <CommandEmpty>No options found.</CommandEmpty>
+                    <CommandEmpty>
+                      {i18n.t("common:dataTable.noOptionsFound")}
+                    </CommandEmpty>
                   )}
                   <FilterValueSelector
                     column={selectedColumn}
@@ -301,7 +304,9 @@ export function DataTableFilterMenu<TData extends RowData>({
                 </>
               ) : (
                 <>
-                  <CommandEmpty>No fields found.</CommandEmpty>
+                  <CommandEmpty>
+                    {i18n.t("common:dataTable.noFieldsFound")}
+                  </CommandEmpty>
                   <CommandGroup>
                     {columns.map((column) => (
                       <CommandItem
@@ -420,9 +425,13 @@ function DataTableFilterItem<TData extends RowData>({
           </PopoverTrigger>
           <PopoverContent align="start" className="w-48 p-0">
             <Command loop>
-              <CommandInput placeholder="Search fields..." />
+              <CommandInput
+                placeholder={i18n.t("common:dataTable.searchFields")}
+              />
               <CommandList>
-                <CommandEmpty>No fields found.</CommandEmpty>
+                <CommandEmpty>
+                  {i18n.t("common:dataTable.noFieldsFound")}
+                </CommandEmpty>
                 <CommandGroup>
                   {columns.map((column) => (
                     <CommandItem
@@ -486,7 +495,9 @@ function DataTableFilterItem<TData extends RowData>({
           </SelectTrigger>
           <SelectContent id={operatorListboxId}>
             <SelectGroup>
-              <SelectLabel>Filter operator</SelectLabel>
+              <SelectLabel>
+                {i18n.t("common:dataTable.filterOperator")}
+              </SelectLabel>
               {filterOperators.map((operator) => (
                 <SelectItem
                   key={operator.value}
@@ -703,7 +714,9 @@ function onFilterInputRender<TData extends RowData>({
           </SelectTrigger>
           <SelectContent id={inputListboxId}>
             <SelectGroup>
-              <SelectLabel>Filter value</SelectLabel>
+              <SelectLabel>
+                {i18n.t("common:dataTable.filterValue")}
+              </SelectLabel>
               {BOOLEAN_FILTER_ITEMS.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
@@ -775,9 +788,13 @@ function onFilterInputRender<TData extends RowData>({
             className="w-48 p-0"
           >
             <Command>
-              <CommandInput placeholder="Search options..." />
+              <CommandInput
+                placeholder={i18n.t("common:dataTable.searchOptions")}
+              />
               <CommandList>
-                <CommandEmpty>No options found.</CommandEmpty>
+                <CommandEmpty>
+                  {i18n.t("common:dataTable.noOptionsFound")}
+                </CommandEmpty>
                 <CommandGroup>
                   {options.map((option) => (
                     <CommandItem

@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { Column, RowData } from "@tanstack/react-table";
 import { CalendarIcon, XCircle } from "lucide-react";
 import * as React from "react";
@@ -131,7 +132,7 @@ export function DataTableDateFilter<TData extends RowData>({
       const hasSelectedDates = selectedDates.from || selectedDates.to;
       const dateText = hasSelectedDates
         ? formatDateRange(selectedDates)
-        : "Select date range";
+        : i18n.t("common:dataTable.selectDateRange");
 
       return (
         <span className="flex items-center gap-2">
@@ -154,7 +155,7 @@ export function DataTableDateFilter<TData extends RowData>({
     const hasSelectedDate = selectedDates.length > 0;
     const dateText = hasSelectedDate
       ? formatDate(selectedDates[0])
-      : "Select date";
+      : i18n.t("common:dataTable.selectDate");
 
     return (
       <span className="flex items-center gap-2">
@@ -180,7 +181,7 @@ export function DataTableDateFilter<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={`Clear ${title} filter`}
+            aria-label={i18n.t("common:dataTable.clearFilter", { title })}
             className="border-dashed"
             onClick={onReset}
           >

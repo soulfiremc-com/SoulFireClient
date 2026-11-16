@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Invalid input: expected string, received undefined",
-    "null": "Invalid input: expected string, received null",
-    "number": "Invalid input: expected string, received number",
-    "boolean": "Invalid input: expected string, received boolean",
-    "array": "Invalid input: expected string, received array",
-    "object": "Invalid input: expected string, received object",
-    "nan": "Invalid input: expected string, received NaN",
-    "infinity": "Invalid input: expected string, received number"
+    "undefined": "कोई मान दर्ज करें।",
+    "null": "कोई मान दर्ज करें।",
+    "number": "कोई मान दर्ज करें।",
+    "boolean": "कोई मान दर्ज करें।",
+    "array": "कोई मान दर्ज करें।",
+    "object": "कोई मान दर्ज करें।",
+    "nan": "कोई मान दर्ज करें।",
+    "infinity": "कोई मान दर्ज करें।"
   },
   "number": {
-    "undefined": "Invalid input: expected number, received undefined",
-    "null": "Invalid input: expected number, received null",
-    "string": "Invalid input: expected number, received string",
-    "boolean": "Invalid input: expected number, received boolean",
-    "array": "Invalid input: expected number, received array",
-    "object": "Invalid input: expected number, received object",
-    "nan": "Invalid input: expected number, received NaN",
-    "infinity": "Invalid input: expected number, received number"
+    "undefined": "कोई संख्या दर्ज करें।",
+    "null": "कोई संख्या दर्ज करें।",
+    "string": "कोई संख्या दर्ज करें।",
+    "boolean": "कोई संख्या दर्ज करें।",
+    "array": "कोई संख्या दर्ज करें।",
+    "object": "कोई संख्या दर्ज करें।",
+    "nan": "कोई संख्या दर्ज करें।",
+    "infinity": "कोई संख्या दर्ज करें।"
   },
   "object": {
-    "undefined": "Invalid input: expected object, received undefined",
-    "null": "Invalid input: expected object, received null",
-    "number": "Invalid input: expected object, received number",
-    "string": "Invalid input: expected object, received string",
-    "boolean": "Invalid input: expected object, received boolean",
-    "array": "Invalid input: expected object, received array",
-    "nan": "Invalid input: expected object, received NaN",
-    "infinity": "Invalid input: expected object, received number"
+    "undefined": "मान्य मान दर्ज करें।",
+    "null": "मान्य मान दर्ज करें।",
+    "number": "मान्य मान दर्ज करें।",
+    "string": "मान्य मान दर्ज करें।",
+    "boolean": "मान्य मान दर्ज करें।",
+    "array": "मान्य मान दर्ज करें।",
+    "nan": "मान्य मान दर्ज करें।",
+    "infinity": "मान्य मान दर्ज करें।"
   },
-  "email": "Invalid email address",
-  "url": "Invalid URL",
-  "jwt": "Invalid JWT",
-  "emailTooLong": "Too big: expected string to have <=255 characters",
-  "jarSource": "Invalid option: expected one of \"official\"|\"custom\"",
-  "generationMode": "Invalid option: expected one of \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Invalid option: expected one of 0|1"
+  "email": "मान्य ईमेल पता दर्ज करें।",
+  "url": "मान्य URL दर्ज करें।",
+  "jwt": "मान्य टोकन दर्ज करें।",
+  "emailTooLong": "अधिकतम 255 अक्षर उपयोग करें।",
+  "jarSource": "आधिकारिक सर्वर या कस्टम jar चुनें।",
+  "generationMode": "चुनें कि मौजूदा खातों का क्या किया जाए।",
+  "userRole": "कोई भूमिका चुनें।"
 }

@@ -119,12 +119,12 @@
       "network": "網絡位址",
       "unix": "Unix 套接字"
     },
-    "getProxies": "獲取代理伺服器",
+    "getProxies": "代理伺服器供應商",
     "addProxies": "新增代理伺服器",
     "filterPlaceholder": "篩選代理伺服器...",
     "listImportToast": {
       "loading": "正在導入代理伺服器...",
-      "success": "已導入 {{count}} 個代理伺服器！",
+      "success": "已導入 {{count}} 個代理伺服器",
       "error": "導入代理伺服器失敗",
       "noProxies": "沒有可導入的代理伺服器"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "正在移除代理伺服器...",
-      "success": "已移除 {{count}} 個代理伺服器！",
+      "success": "已移除 {{count}} 個代理伺服器",
       "error": "移除代理伺服器失敗"
     },
     "checkToast": {
       "loading": "正在檢查代理伺服器... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "已移除 {{count}} 個損壞的代理伺服器！",
-      "error": "檢查代理伺服器失敗"
+      "success": "已移除 {{count}} 個損壞的代理伺服器",
+      "error": "檢查代理伺服器失敗",
+      "successKept": "{{total}} 個代理伺服器中有 {{failed}} 個未通過檢查。沒有移除任何代理伺服器。"
     },
     "checkDialog": {
       "title": "檢查代理伺服器",
-      "description": "您即將檢查 {{count}} 個代理伺服器。無效的代理將會自動移除。",
-      "confirm": "開始檢查"
+      "description": "即將檢查 {{count}} 個代理伺服器。",
+      "confirm": "開始檢查",
+      "removeFailed": "移除未通過的代理伺服器",
+      "removeFailedHelp": "代理伺服器可能因暫時的網路問題而未通過。取消此選項可保留所有代理伺服器，只查看結果。"
     },
     "invalidFormat": "代理伺服器格式無效",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "要檢查已匯入的代理伺服器嗎？",
-      "description": "您已匯入 {{count}} 個代理伺服器。現在要檢查它們嗎？SoulFire 會自動移除無效的代理伺服器。",
+      "description": "你匯入了 {{count}} 個代理伺服器。要現在檢查嗎？",
       "confirm": "檢查代理伺服器",
       "skip": "略過"
     },
@@ -186,10 +189,17 @@
       "socks4": "僅限 SOCKS4（平面）",
       "socks5": "僅限 SOCKS5（平面）",
       "noProxies": "無可匯出的代理伺服器"
-    }
+    },
+    "removeDialog": {
+      "title_other": "要移除 {{count}} 個代理伺服器嗎？",
+      "description": "這會從此實例移除所選代理伺服器及其憑證。此操作無法復原。",
+      "confirm": "移除代理伺服器"
+    },
+    "showPassword": "顯示密碼",
+    "hidePassword": "隱藏密碼"
   },
   "account": {
-    "getAccounts": "獲取帳戶",
+    "getAccounts": "帳戶供應商",
     "addAccounts": "新增帳戶",
     "generateAccounts": "產生帳戶",
     "filterPlaceholder": "篩選帳戶...",
@@ -197,7 +207,7 @@
       "loading": "正在導入帳戶... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
       "allFailed": "未能導入任何帳戶",
       "someFailed": "已導入 {{count}} 個帳戶，未能導入 {{failed}} 個帳戶",
-      "noneFailed": "已導入 {{count}} 個帳戶！",
+      "noneFailed": "已導入 {{count}} 個帳戶",
       "error": "導入帳戶失敗",
       "noAccounts": "沒有可導入的帳戶"
     },
@@ -215,7 +225,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "正在導入帳戶...",
-      "success": "帳戶已導入！",
+      "success": "帳戶已導入",
       "error": "導入帳戶失敗"
     },
     "generate": {
@@ -232,9 +242,9 @@
       "submit": "產生",
       "generating": "正在產生...",
       "progress": "正在產生帳戶... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "已產生 {{count}} 個帳戶！",
+      "success": "已產生 {{count}} 個帳戶",
       "allFailed": "未能產生任何帳戶",
-      "allExist": "所有使用者名稱已存在。請啟用「覆蓋現有帳號」以重新產生。",
+      "allExist": "所有使用者名稱都已存在。選擇「替換現有」即可重新產生。",
       "error": "產生帳戶失敗",
       "invalidAmount": "請輸入有效數量（至少 1）",
       "missingPlaceholder": "名稱格式必須包含 %d 佔位符"
@@ -257,12 +267,12 @@
     },
     "removeToast": {
       "loading": "正在移除帳戶...",
-      "success": "已移除 {{count}} 個帳戶！",
+      "success": "已移除 {{count}} 個帳戶",
       "error": "移除帳戶失敗"
     },
     "table": {
       "type": "類型",
-      "profileId": "UUID",
+      "profileId": "個人檔案 ID",
       "lastKnownName": "使用者名稱",
       "searchProfileIds": "搜尋個人檔案 ID...",
       "searchLastKnownNames": "搜尋最後已知名稱...",
@@ -270,7 +280,7 @@
     },
     "removeSelectedTooltip": "移除所選帳號",
     "contextMenu": {
-      "openConfig": "打開設定檔",
+      "openConfig": "開啟設定",
       "openMetadata": "打開中繼資料",
       "copyProfileId": "複製個人檔案 ID",
       "copyUsername": "複製用戶名稱"
@@ -294,7 +304,20 @@
       "matchesInheritedValue": "符合繼承值",
       "instanceValue": "實例值",
       "defaultValue": "預設值",
-      "resetOverride": "重設覆蓋"
+      "resetOverride": "重設覆蓋",
+      "value": {
+        "notSet": "未設定",
+        "on": "開",
+        "off": "關",
+        "empty": "空白",
+        "entries_other": "{{count}} 個項目",
+        "range": "範圍"
+      },
+      "source": {
+        "bot": "機器人專屬值",
+        "instance": "繼承自實例",
+        "default": "使用預設值"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "裝置代碼驗證",
@@ -341,7 +364,7 @@
       "keyPlaceholder": "鍵",
       "valuePlaceholder": "值（JSON）",
       "noEntries": "沒有中繼資料條目。請在上方新增一個。",
-      "loadError": "",
+      "loadError": "無法載入中繼資料",
       "loadErrorDescription": "",
       "retryLoad": "重試",
       "addSuccess": "已新增條目",
@@ -350,7 +373,19 @@
       "deleteSuccess": "條目已刪除",
       "deleteError": "刪除條目失敗",
       "duplicateError": "具有相同命名空間和鍵的條目已存在",
-      "invalidJson": "無效的 JSON 值"
+      "invalidJson": "無效的 JSON 值",
+      "namespaceLabel": "命名空間",
+      "keyLabel": "鍵",
+      "valueLabel": "值",
+      "addEntryLegend": "新增中繼資料項目",
+      "addEntryButton": "新增項目",
+      "entryLegend": "中繼資料項目",
+      "removeEntryButton": "移除"
+    },
+    "removeDialog": {
+      "title_other": "要移除 {{count}} 個帳戶嗎？",
+      "description": "這會從此實例移除所選帳戶、已儲存的憑證及其機器人。此操作無法復原。",
+      "confirm": "移除帳戶"
     }
   },
   "instanceMetadata": {
@@ -360,31 +395,39 @@
     "keyPlaceholder": "鍵",
     "valuePlaceholder": "值（JSON）",
     "noEntries": "沒有中繼資料條目。請在上方新增一個。",
+    "loadError": "無法載入中繼資料",
     "addSuccess": "已新增條目",
     "addError": "新增條目失敗",
     "updateError": "更新條目失敗",
     "deleteSuccess": "條目已刪除",
     "deleteError": "刪除條目失敗",
     "duplicateError": "具有相同命名空間和鍵的條目已存在",
-    "invalidJson": "無效的 JSON 值"
+    "invalidJson": "無效的 JSON 值",
+    "namespaceLabel": "命名空間",
+    "keyLabel": "鍵",
+    "valueLabel": "值",
+    "addEntryLegend": "新增中繼資料項目",
+    "addEntryButton": "新增項目",
+    "entryLegend": "中繼資料項目",
+    "removeEntryButton": "移除"
   },
   "bots": {
     "searchPlaceholder": "搜尋機器人...",
-    "onlineCount": "{{online}} 位在線 / 共 {{total}} 位",
+    "onlineCount": "{{online}} 個已連線 / 共 {{total}} 個",
     "noBots": "沒有已設定的機器人。請至帳戶設定頁面新增帳號。",
     "noBotsFound": "沒有符合搜尋條件的機器人。",
     "loadingMore": "載入更多...",
     "showingCount": "正在顯示 {{loaded}} / {{total}} 筆資料",
     "allLoaded": "所有 {{total}} 個機器人已載入",
-    "online": "在線",
-    "offline": "離線",
+    "online": "已連線",
+    "offline": "已中斷連線",
     "notJoined": "未加入",
     "connectionPhase": {
       "connecting": "連線中",
-      "connected": "已連線",
-      "spawned": "在線",
+      "connected": "登入中",
+      "spawned": "已連線",
       "died": "死亡",
-      "disconnected": "離線",
+      "disconnected": "已中斷連線",
       "ping": "{{ms}} 毫秒"
     },
     "runtimeState": {
@@ -398,15 +441,12 @@
     },
     "backToBots": "返回機器人列表",
     "tabs": {
-      "overview": "總覽",
+      "overview": "機器人視角",
       "inventory": "物品欄",
       "controls": "控制項",
       "terminal": "終端機"
     },
-    "comingSoon": "即將推出",
-    "terminalPanel": {
-      "title": "機器人終端機"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "代理伺服器",
       "direct": "直接（無代理伺服器）",
@@ -416,16 +456,14 @@
       "title": "位置與旋轉",
       "position": "位置",
       "rotation": "旋轉",
-      "offline": "機器人離線時僅能查看位置資料，僅在連線時可用。"
+      "offline": "機器人已中斷連線。位置資料僅在機器人連線時可用。"
     },
     "chatPanel": {
-      "title": "聊天訊息",
-      "description": "來自此機器人的聊天訊息將在後續更新中顯示於此。"
+      "title": "聊天訊息"
     },
     "commandPanel": {
       "title": "機器人指令",
-      "placeholder": "傳送指令給此機器人...",
-      "description": "僅限機器人的指令將在後續更新中提供。"
+      "placeholder": "傳送指令給此機器人..."
     },
     "povPanel": {
       "title": "機器人視角",
@@ -438,7 +476,6 @@
       "offline": "機器人離線。只有連線時才能渲染視角。"
     },
     "statsPanel": {
-      "title": "機器人統計",
       "health": "生命值",
       "food": "飽食度",
       "saturation": "飽和度",
@@ -451,7 +488,7 @@
       "adventure": "冒險",
       "spectator": "旁觀",
       "unknown": "未知",
-      "offline": "機器人離線。只有連線時才能查看統計數據。"
+      "offline": "機器人已中斷連線。只有連線時才能查看統計數據。"
     },
     "inventoryPanel": {
       "title": "物品欄",
@@ -464,7 +501,7 @@
       "dropAll": "全部丟棄",
       "closeContainer": "關閉",
       "clickHint": "左鍵：拿取/放置 | 右鍵：一半/一個 | Shift+點擊：快速移動 | 滾輪鍵：選擇快捷欄欄位",
-      "offline": "機器人離線。只有連線時才能使用背包。",
+      "offline": "機器人已中斷連線。只有連線時才能使用背包。",
       "buttons": {
         "stonecutterRecipes": "配方",
         "enchantments": "附魔",
@@ -474,12 +511,12 @@
         "crafterSlots": "格控",
         "lecternControls": "書本控制",
         "actions": "動作",
-        "creativeTabs": ""
+        "creativeTabs": "創造模式分頁"
       },
       "textInput": {
         "title": "文字輸入",
         "anvilRename": "重新命名物品",
-        "creativeSearch": ""
+        "creativeSearch": "搜尋物品"
       },
       "bookPages": {
         "title": "書本內容",
@@ -490,10 +527,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "銷毀物品",
+      "clickHints": {
+        "left": "左鍵：拿起或放下",
+        "right": "右鍵：拿起一半或放下一個",
+        "shift": "Shift+點擊：快速移動",
+        "middle": "中鍵：選為目前欄位"
+      }
     },
     "visualPanel": {
-      "title": "機器人視圖",
+      "title": "方向和世界",
       "compass": "朝向",
       "lookDirection": "視角",
       "lookingUp": "向上看",
@@ -502,7 +545,7 @@
       "worldInfo": "世界資訊",
       "dimension": "維度",
       "biome": "生物群系",
-      "offline": "機器人離線。只有連線時才能查看視覺資料。"
+      "offline": "機器人已中斷連線。只有連線時才能查看視覺資料。"
     },
     "actionsPanel": {
       "title": "機器人動作",
@@ -510,7 +553,7 @@
       "rightClick": "右鍵點擊",
       "leftClickDescription": "攻擊實體或破壞方塊",
       "rightClickDescription": "使用物品或互動",
-      "offline": "機器人離線。只有當機器人連線時才能操作。"
+      "offline": "機器人已中斷連線。只有當機器人連線時才能操作。"
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +572,7 @@
       "lookDown": "向下看",
       "lookLeft": "向左看",
       "lookRight": "向右看",
-      "offline": "機器人離線。只有當機器人連線時才能移動。"
+      "offline": "機器人已中斷連線。只有當機器人連線時才能移動。"
     },
     "dialogPanel": {
       "title": "伺服器對話框",
@@ -544,7 +587,45 @@
       "unknownType": "未知",
       "dismiss": "關閉",
       "submit": "提交",
-      "offline": "機器人離線。只有當機器人連線時才能顯示對話框。"
+      "offline": "機器人已中斷連線。只有當機器人連線時才能顯示對話框。"
+    },
+    "pov": {
+      "title": "機器人視角",
+      "touchControlling": "你正在控制這個機器人。使用「Release control」即可停止。",
+      "popupBlocked": "請允許彈出式視窗，以便分離機器人視角視窗。",
+      "windowTitle": "SoulFire 機器人視角",
+      "fullscreenUnavailable": "此視窗無法使用全螢幕。",
+      "textInputLabel": "Minecraft 文字輸入",
+      "videoLabel": "即時機器人視角",
+      "touchMove": "移動",
+      "audioError": "無法啟動音訊。",
+      "startError": "無法啟動機器人視角。",
+      "releaseHint": "按 {{shortcut}} 釋放鍵盤和滑鼠。",
+      "captureHint": "點擊視角並允許擷取鍵盤和滑鼠。",
+      "audioWaiting": "正在等待機器人視角連線。",
+      "audioWatchFirst": "觀看機器人後才能使用音訊。",
+      "audioUpdateServer": "更新伺服器後才能使用機器人視角音訊。",
+      "muteAudio": "將音訊靜音",
+      "unmuteAudio": "取消音訊靜音",
+      "audioStarting": "正在啟動音訊...",
+      "mute": "靜音",
+      "unmute": "取消靜音",
+      "audio": "音訊",
+      "audioUnavailable": "無法使用音訊",
+      "volume": "機器人視角音量",
+      "reconnect": "重新連線",
+      "showWindow": "顯示機器人視角視窗",
+      "attachWindow": "重新附加機器人視角視窗",
+      "touch": {
+        "jump": "跳躍",
+        "sneak": "潛行",
+        "attack": "攻擊",
+        "use": "使用",
+        "inventory": "物品欄",
+        "keyboard": "鍵盤",
+        "closeMenu": "關閉選單"
+      },
+      "needsServer": "機器人視角需要已連線的 SoulFire 伺服器。"
     }
   },
   "metrics": {
@@ -552,15 +633,15 @@
       "noData": "無數據"
     },
     "summary": {
-      "online": "在線",
+      "online": "已連線",
       "packetsPerSecond": "封包/秒",
       "traffic": "流量",
       "health": "生命值",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "線上機器人",
-      "online": "在線",
+      "title": "已連線的機器人",
+      "online": "已連線",
       "total": "總計"
     },
     "packets": {
@@ -627,7 +708,7 @@
     "createError": "腳本建立失敗",
     "noScripts": "尚無腳本",
     "noScriptsDescription": "建立您的第一個腳本，透過可視化節點編輯器自動化機器人動作。",
-    "createFirstScript": "建立您的第一個腳本",
+    "createFirstScript": "建立腳本",
     "running": "執行中",
     "paused": "已暫停",
     "nodes": "節點",
@@ -694,7 +775,9 @@
       },
       "palette": {
         "title": "節點面板",
-        "search": "搜尋節點..."
+        "search": "搜尋節點...",
+        "noResults": "沒有符合搜尋的節點",
+        "noResultsDescription": "換一個詞試試，或清除目前的篩選。"
       },
       "logs": {
         "title": "執行紀錄",
@@ -716,11 +799,15 @@
       },
       "node": {
         "expand": "展開節點",
-        "collapse": "收合節點"
+        "collapse": "收合節點",
+        "avgTime": "平均執行時間：{{avg}} ms（最近 {{count}} 次執行）",
+        "preview": "預覽"
       },
       "debug": {
         "copyValue": "複製目前值",
-        "clearHistory": "清除歷史紀錄"
+        "clearHistory": "清除歷史紀錄",
+        "current": "目前（{{time}}）：",
+        "noValue": "尚未收到值"
       },
       "edge": {
         "direction": "邊緣方向"
@@ -732,14 +819,31 @@
         "title": "腳本複雜度評分"
       },
       "group": {
-        "returnToRoot": "返回根目錄 (Tab)"
+        "returnToRoot": "返回根目錄 (Tab)",
+        "root": "根",
+        "exitHint": "按 <key>Tab</key> 離開",
+        "editHint": "按兩下即可編輯",
+        "noInputs": "未定義輸入",
+        "noOutputs": "未定義輸出"
       },
       "quickAdd": {
         "menuLabel": "快速新增節點選單",
-        "searchPlaceholder": "搜尋節點..."
+        "searchPlaceholder": "搜尋節點...",
+        "noResults": "找不到節點",
+        "noResultsDescription": "換一個搜尋詞試試。",
+        "navigate": "瀏覽",
+        "select": "Enter 選擇",
+        "close": "Esc 關閉"
       },
       "diff": {
-        "tooltip": "檢視變更"
+        "tooltip": "檢視變更",
+        "title": "未儲存的變更",
+        "description": "自上次儲存以來的變更。",
+        "nodesAdded_other": "新增 {{count}} 個節點",
+        "nodesRemoved_other": "移除 {{count}} 個節點",
+        "nodesModified_other": "修改 {{count}} 個節點",
+        "edgesAdded_other": "新增 {{count}} 條連線",
+        "edgesRemoved_other": "移除 {{count}} 條連線"
       },
       "dryRun": {
         "saveFirst": "",
@@ -783,8 +887,20 @@
         "disableTimeoutsDescription": "停用每節點及資料邊緣的逾時",
         "save": "儲存額度",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "調整 {{label}} 的順序",
+        "empty": "沒有傳入的值",
+        "title": "多重輸入：可接受多個連線",
+        "connectTo": "將值連接到 {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "要刪除腳本嗎？",
+      "description": "這會永久刪除「{{name}}」。此操作無法復原。",
+      "descriptionUnnamed": "這會永久刪除該腳本。此操作無法復原。"
+    },
+    "executionStats": "執行統計：已執行 {{executed}}/{{max}} 個節點"
   },
   "metadataValidation": {
     "invalidNamespace": "",

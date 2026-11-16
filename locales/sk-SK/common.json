@@ -113,18 +113,24 @@
         "submit": "Načítať z URL",
         "toast": {
           "loading": "Sťahovanie dát...",
-          "success": "Dáta načítané!",
+          "success": "Dáta načítané",
           "error": "Nepodarilo sa stiahnuť dáta",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Odstrániť inštanciu?",
+      "description": "Týmto sa natrvalo odstráni „{{name}}“ a súvisiace údaje. Túto akciu nemožno vrátiť späť.",
+      "descriptionUnnamed": "Týmto sa natrvalo odstráni táto inštancia a jej údaje. Túto akciu nemožno vrátiť späť."
     }
   },
   "commandInput": {
     "placeholder": "Zadajte príkaz (napíšte \"help\" pre zoznam)",
     "emptySuggestions": "Začnite písať pre návrhy alebo stlačte Tabulátor.",
-    "noSuggestions": "Žiadne návrhy nie sú k dispozícii."
+    "noSuggestions": "Žiadne návrhy nie sú k dispozícii.",
+    "emptySuggestionsPrefix": "Píšte pre zobrazenie návrhov alebo stlačte"
   },
   "controls": {
     "start": "Spustiť",
@@ -174,7 +180,7 @@
     "restartCount_many": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} požadovaní · {{total}} spolu",
+  "botFleetSummary": "{{online}} pripojených · {{desired}} má bežať · {{total}} spolu",
   "icon": {
     "invalidName": "Neplatný názov ikony: {{name}}"
   },
@@ -255,7 +261,24 @@
     "sortOrders": {
       "asc": "Vzostupne",
       "desc": "Zostupne"
-    }
+    },
+    "openFilterMenu": "Otvoriť ponuku filtrov",
+    "filterOperator": "Operátor filtra",
+    "filterValue": "Hodnota filtra",
+    "sortDirection": "Smer zoradenia",
+    "selectJoinOperator": "Vybrať spájací operátor",
+    "joinOperator": "Spájací operátor",
+    "escapeKey": "Escape",
+    "selectDate": "Vybrať dátum",
+    "selectDateRange": "Vybrať rozsah dátumov",
+    "clearFilter": "Vymazať filter {{title}}",
+    "clearFilters": "Vymazať filtre",
+    "clear": "Vymazať",
+    "from": "Od",
+    "to": "Do",
+    "sortDirectionFor": "Smer zoradenia: {{column}}",
+    "minValue": "Minimálna hodnota: {{label}}",
+    "maxValue": "Maximálna hodnota: {{label}}"
   },
   "pluginCard": {
     "version": "Verzia: {{version}}",
@@ -264,13 +287,13 @@
     "website": "Webstránka"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Nepodarilo sa uložiť {{name}}",
     "namespacesNotFound": "Mená nastavení neboli nájdené",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Nepodarilo sa uložiť {{name}}",
       "placeholder": "Pridať novú položku...",
       "add": "Pridať",
       "remove": "Odstrániť"
@@ -281,7 +304,8 @@
     "invalidNumberToast": {
       "title": "Neplatné číslo",
       "description": "Hodnota musí byť medzi {{min}} a {{max}}"
-    }
+    },
+    "minMaxLegend": "Nastavenia minima a maxima"
   },
   "terminal": {
     "noLogs": "Zatiaľ žiadne logy. Spustite príkaz na vytvorenie log výstupu.",
@@ -329,16 +353,37 @@
       "error": "Nepodarilo sa pripojiť k {{device}}"
     },
     "noDevices": "Neboli nájdené žiadne zariadenia",
-    "broadcastLabel": "Test vysielania",
     "broadcastToast": {
       "loading": "Vysielanie správy...",
-      "success": "Správa bola odoslaná!",
+      "success": "Správa bola odoslaná",
       "error": "Nepodarilo sa odoslať správu"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Zapína sa skript...",
+        "success": "Skript zapnutý",
+        "error": "Skript sa nepodarilo zapnúť. Skúste to znova."
+      },
+      "deactivate": {
+        "loading": "Vypína sa skript...",
+        "success": "Skript vypnutý",
+        "error": "Skript sa nepodarilo vypnúť. Skúste to znova."
+      }
+    },
+    "operations": {
+      "activateScript": "Zapnúť skript {{name}}",
+      "deactivateScript": "Vypnúť skript {{name}}"
+    },
+    "status": {
+      "active": "Zap.",
+      "paused": "Vyp."
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Prečítať dokumentáciu",
-    "backToDashboard": "Späť na panel",
+    "backToDashboard": "Späť na inštancie",
     "deleteToast": {
       "loading": "Maže sa inštancia...",
       "success": "Inštancia bola odstránená",
@@ -364,9 +409,9 @@
     "settingsGroup": "Nastavenia",
     "extensionsGroup": "Rozšírenia",
     "botSettings": "Nastavenia bota",
-    "accountSettings": "Nastavenia účtu",
+    "accountSettings": "Účty",
     "metaSettings": "Nastavenia inštancie",
-    "proxySettings": "Nastavenia proxy",
+    "proxySettings": "Proxy servery",
     "aiSettings": "Nastavenia AI",
     "pathfindingSettings": "Nastavenia hľadania cesty",
     "discoverPlugins": "Doplnky",
@@ -432,10 +477,10 @@
     "instances": "Inštancie",
     "access": "Prístup",
     "settings": "Nastavenia",
-    "proxySettings": "Nastavenia proxy",
+    "proxySettings": "Proxy servery",
     "overview": "Prehľad",
     "users": "Používatelia",
-    "accountSettings": "Nastavenia účtu",
+    "accountSettings": "Účty",
     "metaSettings": "Nastavenia inštancie",
     "discoverPlugins": "Doplnky",
     "adminScripts": "Skripty",
@@ -452,7 +497,7 @@
     },
     "api": {
       "title": "API prístup",
-      "description": "SoulFire gRPC HTTP API spravuje inštancie pomocou webových požiadaviek.",
+      "description": "Pomocou SoulFire API môžete spravovať inštancie z vlastných programov.",
       "publicAddress": "Verejná adresa API",
       "personalToken": "Osobný API token",
       "securityWarning": "Svoj osobný API token uchovávajte v tajnosti. Udeľuje prístup k API.",
@@ -460,7 +505,7 @@
     },
     "token": {
       "generate": "Generovať token",
-      "placeholder": "Kliknite nižšie na \"Generovať token\"",
+      "placeholder": "Nižšie vyberte „Generovať token“",
       "generating": "Generuje sa token...",
       "success": "Token bol úspešne vygenerovaný",
       "error": "Nepodarilo sa vygenerovať token",
@@ -489,9 +534,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Názov inštancie sa nepodarilo aktualizovať"
   },
   "userSettings": {
     "avatar": {
@@ -509,8 +553,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Nepodarilo sa aktualizovať: {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filtrovať audity...",
@@ -566,22 +609,22 @@
     },
     "removeToast": {
       "loading": "Odstraňovanie skriptov...",
-      "success": "Skripty odstránené!",
+      "success": "Skripty odstránené",
       "error": "Nepodarilo sa odstrániť skripty"
     },
     "addToast": {
       "loading": "Pridáva sa skript...",
-      "success": "Skript pridaný!",
+      "success": "Skript pridaný",
       "error": "Nepodarilo sa pridať skript"
     },
     "updateToast": {
       "loading": "Aktualizuje sa skript...",
-      "success": "Skript aktualizovaný!",
+      "success": "Skript aktualizovaný",
       "error": "Nepodarilo sa aktualizovať skript"
     },
     "restartToast": {
       "loading": "Reštartuje sa skript...",
-      "success": "Skript reštartovaný!",
+      "success": "Skript reštartovaný",
       "error": "Nepodarilo sa reštartovať skript"
     },
     "table": {
@@ -606,7 +649,7 @@
     "bot": {
       "goToBot": "Prejsť na bota",
       "copyUsername": "Kopírovať používateľské meno",
-      "copyUuid": "Kopírovať UUID",
+      "copyUuid": "Kopírovať ID profilu",
       "copyCoordinates": "Kopírovať súradnice"
     },
     "plugin": {
@@ -662,5 +705,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Pripojené",
+    "botOffline": "Odpojené"
+  },
+  "minecraftActions": {
+    "copyError": "Text sa nepodarilo skopírovať. Použite HTTPS alebo povoľte prístup k schránke.",
+    "openError": "Odkaz sa nepodarilo otvoriť.",
+    "popupBlocked": "Prehliadač zablokoval novú kartu.",
+    "openLink": "Otvoriť odkaz"
+  },
+  "instanceIcon": {
+    "label": "Ikona",
+    "description": "Ikona inštancie zobrazená v aplikácii."
+  },
+  "unknown": "Neznáme",
+  "minecraftHead": "Hlava z Minecraftu",
+  "textFile": "Textový súbor"
 }

@@ -44,7 +44,24 @@
         "placeholder": "JVM arqumentlərinizi bura yazın"
       },
       "back": "Geri",
-      "start": "Başla"
+      "start": "Başla",
+      "jar": {
+        "title": "Server jar faylı",
+        "official": "Rəsmi",
+        "custom": "Fərdi",
+        "officialTitle": "Rəsmi SoulFire serveri",
+        "customTitle": "Fərdi server jar faylı",
+        "officialDescription": "Uyğun SoulFire buraxılışını yükləyir və yoxlayır.",
+        "customDescription": "İdxal edilmiş jar faylını işə salır. SoulFire onu yoxlamır və yeniləmir.",
+        "import": "Jar idxal et",
+        "importSuccess": "{{name}} idxal edildi",
+        "importError": "Fərdi SoulFire jar faylını idxal etmək alınmadı",
+        "selectCustomFirst": "Başlamazdan əvvəl fərdi jar idxal edin və seçin.",
+        "dialog": {
+          "filter": "Java arxivi",
+          "title": "SoulFire server jar faylını seçin"
+        }
+      }
     },
     "mobile": {
       "description": "İnteqrasiyalı serveri mobil cihazda işlətmək üçün bir neçə əl addımını tamamlamağınız lazımdır.",

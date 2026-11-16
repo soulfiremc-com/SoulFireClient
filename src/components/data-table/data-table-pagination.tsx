@@ -1,3 +1,4 @@
+import i18n from "@/lib/i18n.ts";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import {
   ChevronLeft,
@@ -69,7 +70,7 @@ export function DataTablePagination<TData extends RowData>({
                   id={rowsPerPageLabelId}
                   className="whitespace-nowrap font-medium text-sm"
                 >
-                  Rows per page
+                  {i18n.t("common:dataTable.rowsPerPage")}
                 </p>
                 <Select
                   value={`${pagination.pageSize}`}
@@ -86,7 +87,9 @@ export function DataTablePagination<TData extends RowData>({
                   </SelectTrigger>
                   <SelectContent side="top">
                     <SelectGroup>
-                      <SelectLabel>Rows per page</SelectLabel>
+                      <SelectLabel>
+                        {i18n.t("common:dataTable.rowsPerPage")}
+                      </SelectLabel>
                       {pageSizeItems.map((pageSize) => (
                         <SelectItem key={pageSize.value} value={pageSize.value}>
                           {pageSize.label}
@@ -97,15 +100,17 @@ export function DataTablePagination<TData extends RowData>({
                 </Select>
               </div>
               <div className="flex items-center justify-center font-medium text-sm">
-                Page {table.getPageCount() === 0 ? 0 : pagination.pageIndex + 1}{" "}
-                of {table.getPageCount()}
+                {i18n.t("common:dataTable.currentPage", {
+                  page: pagination.pageIndex + 1,
+                  total: Math.max(table.getPageCount(), 1),
+                })}
               </div>
             </>
           )}
         </table.Subscribe>
         <div className="flex items-center gap-2">
           <Button
-            aria-label="Go to first page"
+            aria-label={i18n.t("common:dataTable.goFirst")}
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"
@@ -115,7 +120,7 @@ export function DataTablePagination<TData extends RowData>({
             <ChevronsLeft />
           </Button>
           <Button
-            aria-label="Go to previous page"
+            aria-label={i18n.t("common:dataTable.goPrevious")}
             variant="outline"
             size="icon"
             className="size-8"
@@ -125,7 +130,7 @@ export function DataTablePagination<TData extends RowData>({
             <ChevronLeft />
           </Button>
           <Button
-            aria-label="Go to next page"
+            aria-label={i18n.t("common:dataTable.goNext")}
             variant="outline"
             size="icon"
             className="size-8"
@@ -135,7 +140,7 @@ export function DataTablePagination<TData extends RowData>({
             <ChevronRight />
           </Button>
           <Button
-            aria-label="Go to last page"
+            aria-label={i18n.t("common:dataTable.goLast")}
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"

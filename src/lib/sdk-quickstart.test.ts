@@ -169,7 +169,7 @@ describe("SDK starter projects", () => {
     assert.ok(result.install.includes("py -3.14 -m venv .venv"));
     assert.ok(
       result.install.includes(
-        ".venv\\Scripts\\python.exe -m pip install soulfire==2.10.6",
+        ".venv\\Scripts\\python.exe -m pip install soulfire==2.10.7",
       ),
     );
     assert.equal(

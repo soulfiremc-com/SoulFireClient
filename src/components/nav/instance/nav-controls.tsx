@@ -4,9 +4,11 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import {
   HouseIcon,
+  IdCardIcon,
   SquareTerminalIcon,
   TextSearchIcon,
   UsersIcon,
+  WaypointsIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,6 +56,22 @@ export function NavControls() {
       icon: UsersIcon,
       linkProps: {
         to: "/instance/$instance/bots",
+        params: { instance: instanceInfo.id },
+      },
+    },
+    {
+      title: t("instanceSidebar.accountSettings"),
+      icon: IdCardIcon,
+      linkProps: {
+        to: "/instance/$instance/accounts",
+        params: { instance: instanceInfo.id },
+      },
+    },
+    {
+      title: t("instanceSidebar.proxySettings"),
+      icon: WaypointsIcon,
+      linkProps: {
+        to: "/instance/$instance/proxies",
         params: { instance: instanceInfo.id },
       },
     },

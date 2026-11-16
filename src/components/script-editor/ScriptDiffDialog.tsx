@@ -111,35 +111,50 @@ export function ScriptDiffDialog() {
       </CredenzaTrigger>
       <CredenzaContent>
         <CredenzaHeader>
-          <CredenzaTitle>Unsaved Changes</CredenzaTitle>
+          <CredenzaTitle>{t("scripts.editor.diff.title")}</CredenzaTitle>
           <CredenzaDescription>
-            Summary of changes since last save.
+            {t("scripts.editor.diff.description")}
           </CredenzaDescription>
         </CredenzaHeader>
         <CredenzaBody className="space-y-2 text-sm">
           {diff.addedNodes.length > 0 && (
             <div className="text-success">
-              + {diff.addedNodes.length} node(s) added
+              +{" "}
+              {t("scripts.editor.diff.nodesAdded", {
+                count: diff.addedNodes.length,
+              })}
             </div>
           )}
           {diff.removedNodes.length > 0 && (
             <div className="text-destructive">
-              - {diff.removedNodes.length} node(s) removed
+              -{" "}
+              {t("scripts.editor.diff.nodesRemoved", {
+                count: diff.removedNodes.length,
+              })}
             </div>
           )}
           {diff.modifiedNodes.length > 0 && (
             <div className="text-warning-muted">
-              ~ {diff.modifiedNodes.length} node(s) modified
+              ~{" "}
+              {t("scripts.editor.diff.nodesModified", {
+                count: diff.modifiedNodes.length,
+              })}
             </div>
           )}
           {diff.addedEdges.length > 0 && (
             <div className="text-success">
-              + {diff.addedEdges.length} edge(s) added
+              +{" "}
+              {t("scripts.editor.diff.edgesAdded", {
+                count: diff.addedEdges.length,
+              })}
             </div>
           )}
           {diff.removedEdges.length > 0 && (
             <div className="text-destructive">
-              - {diff.removedEdges.length} edge(s) removed
+              -{" "}
+              {t("scripts.editor.diff.edgesRemoved", {
+                count: diff.removedEdges.length,
+              })}
             </div>
           )}
         </CredenzaBody>

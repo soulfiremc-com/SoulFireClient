@@ -119,7 +119,7 @@
       "network": "Netwurk adres",
       "unix": "Unix soxket"
     },
-    "getProxies": "Getz Proxyz!",
+    "getProxies": "Proxy providerz",
     "addProxies": "Add Proxyz!",
     "filterPlaceholder": "Findz proxies...",
     "listImportToast": {
@@ -147,12 +147,15 @@
     "checkToast": {
       "loading": "Chekin proxyz... {{checked}}/{{total}} (Success: {{success}} Failz: {{failed}})",
       "success": "Removed {{count}} broked proxyz!",
-      "error": "Proxy check borked! No can haz check."
+      "error": "Proxy check borked! No can haz check.",
+      "successKept": "{{failed}} ov {{total}} proxyz faild teh check. No proxyz wer remoovd."
     },
     "checkDialog": {
       "title": "Chek Proxyz",
-      "description": "U iz about to chek {{count}} proxyz. Bad proxyz will be deletd automatiklee.",
-      "confirm": "Start Chek"
+      "description": "U r about 2 check {{count}} proxyz.",
+      "confirm": "Start Chek",
+      "removeFailed": "Remoov proxyz dat fail",
+      "removeFailedHelp": "A proxy can fail cuz ov a temporary network problem. Cleer dis opshun 2 keep evry proxy an only see teh result."
     },
     "invalidFormat": "Proxy not rite format, no cheezburgerz.",
     "table": {
@@ -175,21 +178,29 @@
     },
     "postImportCheckDialog": {
       "title": "Chek da ported proxeez, k?",
-      "description": "U imported {{count}} proxeez. Chek dem now? SoulFire be deletin' bad proxeez automagically.",
+      "description": "U imported {{count}} proxyz. Check dem nao?",
       "confirm": "Chek Proxyz",
       "skip": "SKIPZ"
     },
     "export": {
       "format": "Eksport Format",
       "uri": "URI Format (all typz)",
-      "http": "HTTP Only (flat)",
-      "socks4": "SOCKS4 Only (flat)",
-      "socks5": "SOCKS5 Only (flat)",
+      "http": "HTTP only (flat)",
+      "socks4": "SOCKS4 only (flat)",
+      "socks5": "SOCKS5 only (flat)",
       "noProxies": "No proxiez to eksport, kthx."
-    }
+    },
+    "removeDialog": {
+      "title_one": "Remoov {{count}} proxy?",
+      "title_other": "Remoov {{count}} proxyz?",
+      "description": "Dis remoovz teh picked proxyz an their credentialz frum dis instance. U cant undo dis.",
+      "confirm": "Remoov proxyz"
+    },
+    "showPassword": "Show passwurd",
+    "hidePassword": "Hide passwurd"
   },
   "account": {
-    "getAccounts": "Getz Accountz!",
+    "getAccounts": "Account providerz",
     "addAccounts": "Add Accountz!",
     "generateAccounts": "Genurayt Accountz!",
     "filterPlaceholder": "Findz acountz...",
@@ -234,7 +245,7 @@
       "progress": "Genuraytin accountz... {{checked}}/{{total}} (Succesz: {{success}} Failz: {{failed}})",
       "success": "Genurayted {{count}} accountz!",
       "allFailed": "Faild tu genurayt any accountz",
-      "allExist": "All teh usernamez alredy exist. Plz enable 'OVERRID EXISTIN ACCOUNTS' to regen dem.",
+      "allExist": "All usernamez already exist. Pick \"Replaze Alreddy\" 2 make dem agen.",
       "error": "Faild tu genurayt accountz",
       "invalidAmount": "Plz enterz valid amownt (at leest 1)",
       "missingPlaceholder": "Naym format haz to haz %d placeholder"
@@ -262,7 +273,7 @@
     },
     "table": {
       "type": "Tyep",
-      "profileId": "UUID",
+      "profileId": "Profil ID",
       "lastKnownName": "Usernamez",
       "searchProfileIds": "SRSCH PURRFILE IDS...",
       "searchLastKnownNames": "SRSCH LAST KNOWN NAMES...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "RMVZ SLEKTEDZ ACCOUNTZ",
     "contextMenu": {
-      "openConfig": "OPN CONFIG, YAY!",
+      "openConfig": "Open settingz",
       "openMetadata": "OPN METADEETA, WOW!",
       "copyProfileId": "COPY PROFILE ID, SRSLY",
       "copyUsername": "Copy Usernamez"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Iz matchin' inherited valu, so fancy!",
       "instanceValue": "Instance valu here, kitteh seez.",
       "defaultValue": "Defawlt valu! Naow u kno.",
-      "resetOverride": "Reset teh overraide, kthxbai!"
+      "resetOverride": "Reset teh overraide, kthxbai!",
+      "value": {
+        "notSet": "Not set",
+        "on": "ON",
+        "off": "OFF",
+        "empty": "Empty",
+        "entries_one": "{{count}} entury",
+        "entries_other": "{{count}} enturiez",
+        "range": "Range"
+      },
+      "source": {
+        "bot": "Bot override",
+        "instance": "Inheritd frum instance",
+        "default": "Uzin default"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "DEVIC COD AUTENTIKASHUNZ!11!",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Key",
       "valuePlaceholder": "Valoo (JSON)",
       "noEntries": "No metadata enturiez. Addz one up dere.",
-      "loadError": "",
+      "loadError": "Cud not load metadaterz",
       "loadErrorDescription": "",
       "retryLoad": "Try agin? kthx!",
       "addSuccess": "Entury addzored",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Entry deletd, kthxbye!",
       "deleteError": "O NOEZ! Couldn delet entry D:",
       "duplicateError": "Dis entry already existz wit dat namespace an key!",
-      "invalidJson": "Dis JSON iz borked, fix plz!"
+      "invalidJson": "Dis JSON iz borked, fix plz!",
+      "namespaceLabel": "Namspace",
+      "keyLabel": "Key",
+      "valueLabel": "Valu",
+      "addEntryLegend": "Add metadata entury",
+      "addEntryButton": "Add entury",
+      "entryLegend": "Metadata entury",
+      "removeEntryButton": "Remoov"
+    },
+    "removeDialog": {
+      "title_one": "Remoov {{count}} account?",
+      "title_other": "Remoov {{count}} accountz?",
+      "description": "Dis remoovz teh picked accountz, their saved credentialz, an their botz frum dis instance. U cant undo dis.",
+      "confirm": "Remoov accountz"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Valoo (JSON)",
     "noEntries": "No metadata enturiez. Addz one up dere.",
+    "loadError": "Cud not load metadaterz",
     "addSuccess": "Entury addzored",
     "addError": "No can add entury, oh noes!",
     "updateError": "No can updait entury, sry!",
     "deleteSuccess": "Entry deletd, kthxbye!",
     "deleteError": "O NOEZ! Couldn delet entry D:",
     "duplicateError": "Dis entry already existz wit dat namespace an key!",
-    "invalidJson": "Dis JSON iz borked, fix plz!"
+    "invalidJson": "Dis JSON iz borked, fix plz!",
+    "namespaceLabel": "Namspace",
+    "keyLabel": "Key",
+    "valueLabel": "Valu",
+    "addEntryLegend": "Add metadata entury",
+    "addEntryButton": "Add entury",
+    "entryLegend": "Metadata entury",
+    "removeEntryButton": "Remoov"
   },
   "bots": {
     "searchPlaceholder": "Serch bots...",
-    "onlineCount": "{{online}} kittehs onlien / {{total}} totl kittehs",
+    "onlineCount": "{{online}} catnectd / {{total}} totul",
     "noBots": "No botz configgerd. Add acountz frum da Account Settin Page.",
     "noBotsFound": "No botz match ur search, kthx.",
     "loadingMore": "Loadin moar...",
     "showingCount": "Showin {{loaded}} uv {{total}}",
     "allLoaded": "All {{total}} botz loaded",
-    "online": "ONLIEN",
-    "offline": "Offlyne",
+    "online": "Catnectd",
+    "offline": "Discatnectd",
     "notJoined": "Nawt Joind",
     "connectionPhase": {
       "connecting": "Catwalkin",
-      "connected": "Catnectd",
-      "spawned": "ONLIEN",
+      "connected": "Loggin in",
+      "spawned": "Catnectd",
       "died": "DED",
-      "disconnected": "Offlyne",
+      "disconnected": "Discatnectd",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "Bak 2 Botz",
     "tabs": {
-      "overview": "Ovarview",
+      "overview": "Bot view",
       "inventory": "Inventoryz",
       "controls": "Controlz",
       "terminal": "Termenawl"
     },
-    "comingSoon": "CUHMIN SOONZ",
-    "terminalPanel": {
-      "title": "Bot Termynal"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxeh",
       "direct": "Direct (no proxeh)",
@@ -416,16 +459,14 @@
       "title": "Pozishun & Rotashun",
       "position": "Pozishun",
       "rotation": "Rotashun",
-      "offline": "Bot iz offlien. Pozishun data only availbul wen bot iz connekkted."
+      "offline": "Teh bot iz discatnectd. Pozishun data only availbul wen bot iz connekkted."
     },
     "chatPanel": {
-      "title": "Chat Meowsajes",
-      "description": "Chat meowsajes frum dis bot will appear heer in teh fuchur updat."
+      "title": "Chat Meowsajes"
     },
     "commandPanel": {
       "title": "Bot Commandses",
-      "placeholder": "Send command 2 dis bot...",
-      "description": "Bot-skoped commandz will b availbul in a fuchur updat."
+      "placeholder": "Send command 2 dis bot..."
     },
     "povPanel": {
       "title": "Bot POW!",
@@ -438,20 +479,19 @@
       "offline": "Bot iz offlinez. U c'n only see POW when bot iz connekktid, kthx."
     },
     "statsPanel": {
-      "title": "Bot Statzz",
       "health": "Helth",
       "food": "FOODS",
       "saturation": "Nomz Levl (Saturashun)",
       "experience": "Eksperiencez",
       "level": "Levelz",
       "toNextLevel": "to nexteh levelz",
-      "gameMode": "Game Mode",
+      "gameMode": "Game mode",
       "survival": "Survival",
       "creative": "Creative",
       "adventure": "Adventure",
       "spectator": "Spectator",
       "unknown": "Unkownz",
-      "offline": "Bot iz offlinez. Statzz seez only when bot iz connekktid, kthx."
+      "offline": "Teh bot iz discatnectd. Statzz seez only when bot iz connekktid, kthx."
     },
     "inventoryPanel": {
       "title": "Inventoryz",
@@ -464,7 +504,7 @@
       "dropAll": "Drop All Teh Thingz",
       "closeContainer": "Cloes",
       "clickHint": "Left clik: pik up/places | Rite clik: half/one | Shift+clik: kwik mov | Middle clik: seleckt hotbar slot",
-      "offline": "Bot iz offlinez. Inventoree showz only when bot iz connekktid, kthx.",
+      "offline": "Teh bot iz discatnectd. Inventoree showz only when bot iz connekktid, kthx.",
       "buttons": {
         "stonecutterRecipes": "Recipiez",
         "enchantments": "Enchantmintz",
@@ -474,12 +514,12 @@
         "crafterSlots": "Slot Kontrolz",
         "lecternControls": "Buk Kontrolz",
         "actions": "Akshuns",
-        "creativeTabs": ""
+        "creativeTabs": "Creativ tabz"
       },
       "textInput": {
         "title": "Text Inpoot",
         "anvilRename": "Rename Itum",
-        "creativeSearch": ""
+        "creativeSearch": "Serch itemz"
       },
       "bookPages": {
         "title": "Buk Kontentz",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Destroy item",
+      "clickHints": {
+        "left": "Left clik: pik up or place",
+        "right": "Right clik: pik up half or place one",
+        "shift": "Shift+clik: quik move",
+        "middle": "Middle clik: pik as activ slot"
+      }
     },
     "visualPanel": {
-      "title": "Bot Viewz",
+      "title": "Direkshun an world",
       "compass": "Facin Direkshun",
       "lookDirection": "Look Anglez",
       "lookingUp": "Lookz up",
@@ -502,7 +548,7 @@
       "worldInfo": "Wurld Infoz",
       "dimension": "Dimenshun",
       "biome": "Biomez",
-      "offline": "Bot iz offlinez. Visual data onlyz wen bot iz connekktid, kthx."
+      "offline": "Teh bot iz discatnectd. Visual data onlyz wen bot iz connekktid, kthx."
     },
     "actionsPanel": {
       "title": "Bot Actshunz",
@@ -510,7 +556,7 @@
       "rightClick": "Rite Clik",
       "leftClickDescription": "Attack entitee or brek blok",
       "rightClickDescription": "Uze itum or interakt",
-      "offline": "Bot iz offline. Actshunz only avaylbul wen bot iz connectd."
+      "offline": "Teh bot iz discatnectd. Actshunz only avaylbul wen bot iz connectd."
     },
     "movementPanel": {
       "updateServer": "",
@@ -518,7 +564,7 @@
       "movement": "Moovmunt (WASD)",
       "forward": "Moov Forward (W)",
       "backward": "Moov Backward (S)",
-      "left": "Strafe Left (A)",
+      "left": "Strafe left (A)",
       "right": "Strafe Rite (D)",
       "jump": "Jumpz",
       "sneak": "Sneekz",
@@ -529,7 +575,7 @@
       "lookDown": "Lookz Down",
       "lookLeft": "Lookz Left",
       "lookRight": "Lookz Rite",
-      "offline": "Bot iz offline. Moovmunt kontrolz onli avaylbl wen bot iz connectd."
+      "offline": "Teh bot iz discatnectd. Moovmunt kontrolz onli avaylbl wen bot iz connectd."
     },
     "dialogPanel": {
       "title": "Server Dialogz",
@@ -544,7 +590,45 @@
       "unknownType": "Unkownz",
       "dismiss": "Dismizz",
       "submit": "Submitz",
-      "offline": "Bot iz offline. Dialogz only avaylbul wen bot iz connectd."
+      "offline": "Teh bot iz discatnectd. Dialogz only avaylbul wen bot iz connectd."
+    },
+    "pov": {
+      "title": "Bot view",
+      "touchControlling": "U control dis bot. Uze \"Release control\" 2 stop.",
+      "popupBlocked": "Allow popupz 2 detach teh bot view window.",
+      "windowTitle": "SoulFire bot view",
+      "fullscreenUnavailable": "Fullscreen iz not availabl in dis window.",
+      "textInputLabel": "Minecraft text input",
+      "videoLabel": "Live bot view",
+      "touchMove": "Move",
+      "audioError": "Cud not start audio.",
+      "startError": "Cud not start bot view.",
+      "releaseHint": "Press {{shortcut}} 2 release ur keybord an mouse.",
+      "captureHint": "Clik teh view an allow keybord an mouse capture.",
+      "audioWaiting": "Waitin 4 bot view 2 catnect.",
+      "audioWatchFirst": "Watch teh bot 2 uze audio.",
+      "audioUpdateServer": "Update teh server 2 uze bot view audio.",
+      "muteAudio": "Mute audio",
+      "unmuteAudio": "Unmute audio",
+      "audioStarting": "Startin audio...",
+      "mute": "MUTEZ",
+      "unmute": "UNMUTEZ",
+      "audio": "Audio",
+      "audioUnavailable": "No audio 4 u",
+      "volume": "Bot view volum",
+      "reconnect": "Recatnect",
+      "showWindow": "Show bot view window",
+      "attachWindow": "Attach bot view window",
+      "touch": {
+        "jump": "Jump",
+        "sneak": "Sneak",
+        "attack": "Attak",
+        "use": "Uze",
+        "inventory": "Inventoryz",
+        "keyboard": "Keybord",
+        "closeMenu": "Close menu"
+      },
+      "needsServer": "Bot view needz a catnectd SoulFire server."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "No dataz"
     },
     "summary": {
-      "online": "ONLIEN",
+      "online": "Catnectd",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Trafik",
       "health": "Helth",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "BOTS ONLAIIN",
-      "online": "ONLIEN",
+      "title": "Botz catnectd",
+      "online": "Catnectd",
       "total": "Totalz"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Failyure. Skript not created ;_;",
     "noScripts": "No Skriptz Yetz",
     "noScriptsDescription": "Mak ur first skript 2 automate bot stuf wit vizhul nodez editorz!",
-    "createFirstScript": "Make Ur First Skript",
+    "createFirstScript": "Make Skript",
     "running": "Runnin",
     "paused": "Pawzed",
     "nodes": "nodez",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Node Kitteh",
-        "search": "Sersch nodez..."
+        "search": "Sersch nodez...",
+        "noResults": "No nodez match ur serch",
+        "noResultsDescription": "Try a different wurd or cleer teh current filtur."
       },
       "logs": {
         "title": "Execushun Logz",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Expand nodeh",
-        "collapse": "Hidez nodeh"
+        "collapse": "Hidez nodeh",
+        "avgTime": "Average run tiem: {{avg}} ms (last {{count}} runz)",
+        "preview": "Preview"
       },
       "debug": {
         "copyValue": "Copy dis value nao",
-        "clearHistory": "Clearz hisstorry"
+        "clearHistory": "Clearz hisstorry",
+        "current": "Current ({{time}}):",
+        "noValue": "No valu receivd yet"
       },
       "edge": {
         "direction": "Edge direcshun"
@@ -733,14 +823,36 @@
         "title": "Script komplixitee skor"
       },
       "group": {
-        "returnToRoot": "Return to cheezburger base (Tab)"
+        "returnToRoot": "Return to cheezburger base (Tab)",
+        "root": "Root",
+        "exitHint": "Press <key>Tab</key> 2 exit",
+        "editHint": "Double-clik 2 edit",
+        "noInputs": "No inputz defind",
+        "noOutputs": "No outputz defind"
       },
       "quickAdd": {
         "menuLabel": "Qwik add node menoo",
-        "searchPlaceholder": "Sersch nodez..."
+        "searchPlaceholder": "Sersch nodez...",
+        "noResults": "No nodez found",
+        "noResultsDescription": "Try a different serch wurd.",
+        "navigate": "Navigate",
+        "select": "Enter 2 pik",
+        "close": "Esc 2 close"
       },
       "diff": {
-        "tooltip": "Look at cheenz!"
+        "tooltip": "Look at cheenz!",
+        "title": "Unsaved changez",
+        "description": "Changez sinz teh last save.",
+        "nodesAdded_one": "{{count}} node added",
+        "nodesAdded_other": "{{count}} nodez added",
+        "nodesRemoved_one": "{{count}} node remoovd",
+        "nodesRemoved_other": "{{count}} nodez remoovd",
+        "nodesModified_one": "{{count}} node changd",
+        "nodesModified_other": "{{count}} nodez changd",
+        "edgesAdded_one": "{{count}} edge added",
+        "edgesAdded_other": "{{count}} edgez added",
+        "edgesRemoved_one": "{{count}} edge remoovd",
+        "edgesRemoved_other": "{{count}} edgez remoovd"
       },
       "dryRun": {
         "saveFirst": "",
@@ -766,8 +878,8 @@
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Script Quotas",
-        "title": "Script Quotas",
+        "tooltip": "Script quotas",
+        "title": "Script quotas",
         "description": "Configur teh resors limitz 4 dis script. Emptiez fieldz use servur defawltz.",
         "maxExecutionCount": "Max Run Countz",
         "maxExecutionCountPlaceholder": "100000",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Stopz tiem owtz for nodez and edgez",
         "save": "Savez da Quota",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Reorder {{label}}",
+        "empty": "No incomin valuz",
+        "title": "Multi-input: takez many catnectionz",
+        "connectTo": "Catnect valuz 2 {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Delete skript?",
+      "description": "Dis deletz \"{{name}}\" 4evr. U cant undo dis.",
+      "descriptionUnnamed": "Dis deletz teh skript 4evr. U cant undo dis."
+    },
+    "executionStats": "Run statz: {{executed}}/{{max}} nodez ran"
   },
   "metadataValidation": {
     "invalidNamespace": "",

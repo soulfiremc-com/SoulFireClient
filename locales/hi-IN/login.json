@@ -44,7 +44,24 @@
         "placeholder": "यहाँ अपने JVM आर्गुमेंट्स डालें"
       },
       "back": "वापस",
-      "start": "प्रारंभ करें"
+      "start": "प्रारंभ करें",
+      "jar": {
+        "title": "सर्वर jar",
+        "official": "आधिकारिक",
+        "custom": "कस्टम",
+        "officialTitle": "आधिकारिक SoulFire सर्वर",
+        "customTitle": "कस्टम सर्वर jar",
+        "officialDescription": "मेल खाने वाला SoulFire रिलीज़ डाउनलोड और सत्यापित करता है।",
+        "customDescription": "इंपोर्ट किया गया jar चलाता है। SoulFire इसे सत्यापित या अपडेट नहीं करता।",
+        "import": "jar इंपोर्ट करें",
+        "importSuccess": "{{name}} इंपोर्ट हुआ",
+        "importError": "कस्टम SoulFire jar इंपोर्ट नहीं हो सका",
+        "selectCustomFirst": "शुरू करने से पहले कस्टम jar इंपोर्ट करें और चुनें।",
+        "dialog": {
+          "filter": "Java आर्काइव",
+          "title": "SoulFire सर्वर jar चुनें"
+        }
+      }
     },
     "mobile": {
       "description": "इंटीग्रेटेड सर्वर को मोबाइल पर चलाने के लिए, आपको कुछ मैन्युअल स्टेप पूरे करने होंगे।",

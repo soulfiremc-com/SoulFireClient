@@ -44,7 +44,24 @@
         "placeholder": "Ваші аргументи JVM тут"
       },
       "back": "Назад",
-      "start": "Почати"
+      "start": "Почати",
+      "jar": {
+        "title": "Jar сервера",
+        "official": "Офіційний",
+        "custom": "Власний",
+        "officialTitle": "Офіційний сервер SoulFire",
+        "customTitle": "Власний jar сервера",
+        "officialDescription": "Завантажує та перевіряє відповідний випуск SoulFire.",
+        "customDescription": "Запускає імпортований jar. SoulFire не перевіряє й не оновлює його.",
+        "import": "Імпортувати jar",
+        "importSuccess": "Імпортовано {{name}}",
+        "importError": "Не вдалося імпортувати власний jar SoulFire",
+        "selectCustomFirst": "Перед запуском імпортуйте й виберіть власний jar.",
+        "dialog": {
+          "filter": "Архів Java",
+          "title": "Виберіть jar сервера SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Щоб запустити інтегрований сервер на мобільному пристрої, потрібно виконати кілька ручних кроків.",

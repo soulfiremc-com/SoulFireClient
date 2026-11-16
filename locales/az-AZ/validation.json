@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Yanlış dəyər: gözlənilən string, daxil olan undefined",
-    "null": "Yanlış dəyər: gözlənilən string, daxil olan null",
-    "number": "Yanlış dəyər: gözlənilən string, daxil olan number",
-    "boolean": "Yanlış dəyər: gözlənilən string, daxil olan boolean",
-    "array": "Yanlış dəyər: gözlənilən string, daxil olan array",
-    "object": "Yanlış dəyər: gözlənilən string, daxil olan object",
-    "nan": "Yanlış dəyər: gözlənilən string, daxil olan NaN",
-    "infinity": "Yanlış dəyər: gözlənilən string, daxil olan number"
+    "undefined": "Dəyər daxil edin.",
+    "null": "Dəyər daxil edin.",
+    "number": "Dəyər daxil edin.",
+    "boolean": "Dəyər daxil edin.",
+    "array": "Dəyər daxil edin.",
+    "object": "Dəyər daxil edin.",
+    "nan": "Dəyər daxil edin.",
+    "infinity": "Dəyər daxil edin."
   },
   "number": {
-    "undefined": "Yanlış dəyər: gözlənilən number, daxil olan undefined",
-    "null": "Yanlış dəyər: gözlənilən number, daxil olan null",
-    "string": "Yanlış dəyər: gözlənilən number, daxil olan string",
-    "boolean": "Yanlış dəyər: gözlənilən number, daxil olan boolean",
-    "array": "Yanlış dəyər: gözlənilən number, daxil olan array",
-    "object": "Yanlış dəyər: gözlənilən number, daxil olan object",
-    "nan": "Yanlış dəyər: gözlənilən number, daxil olan NaN",
-    "infinity": "Yanlış dəyər: gözlənilən number, daxil olan number"
+    "undefined": "Rəqəm daxil edin.",
+    "null": "Rəqəm daxil edin.",
+    "string": "Rəqəm daxil edin.",
+    "boolean": "Rəqəm daxil edin.",
+    "array": "Rəqəm daxil edin.",
+    "object": "Rəqəm daxil edin.",
+    "nan": "Rəqəm daxil edin.",
+    "infinity": "Rəqəm daxil edin."
   },
   "object": {
-    "undefined": "Yanlış dəyər: gözlənilən object, daxil olan undefined",
-    "null": "Yanlış dəyər: gözlənilən object, daxil olan null",
-    "number": "Yanlış dəyər: gözlənilən object, daxil olan number",
-    "string": "Yanlış dəyər: gözlənilən object, daxil olan string",
-    "boolean": "Yanlış dəyər: gözlənilən object, daxil olan boolean",
-    "array": "Yanlış dəyər: gözlənilən object, daxil olan array",
-    "nan": "Yanlış dəyər: gözlənilən object, daxil olan NaN",
-    "infinity": "Yanlış dəyər: gözlənilən object, daxil olan number"
+    "undefined": "Düzgün dəyər daxil edin.",
+    "null": "Düzgün dəyər daxil edin.",
+    "number": "Düzgün dəyər daxil edin.",
+    "string": "Düzgün dəyər daxil edin.",
+    "boolean": "Düzgün dəyər daxil edin.",
+    "array": "Düzgün dəyər daxil edin.",
+    "nan": "Düzgün dəyər daxil edin.",
+    "infinity": "Düzgün dəyər daxil edin."
   },
-  "email": "Yanlış email address",
-  "url": "Yanlış URL",
-  "jwt": "Yanlış JWT",
-  "emailTooLong": "Çox böyük: gözlənilən string <=255 simvol",
-  "jarSource": "Yanlış seçim: aşağıdakılardan biri olmalıdır: \"official\"|\"custom\"",
-  "generationMode": "Yanlış seçim: aşağıdakılardan biri olmalıdır: \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Yanlış seçim: aşağıdakılardan biri olmalıdır: 0|1"
+  "email": "Düzgün e-poçt ünvanı daxil edin.",
+  "url": "Düzgün URL daxil edin.",
+  "jwt": "Düzgün token daxil edin.",
+  "emailTooLong": "Ən çox 255 simvol istifadə edin.",
+  "jarSource": "Rəsmi serveri və ya fərdi jar faylını seçin.",
+  "generationMode": "Mövcud hesablarla nə ediləcəyini seçin.",
+  "userRole": "Rol seçin."
 }

@@ -113,18 +113,24 @@
         "submit": "Tải từ URL",
         "toast": {
           "loading": "Đang tải dữ liệu...",
-          "success": "Dữ liệu đã được tải!",
+          "success": "Dữ liệu đã được tải",
           "error": "Không tải được dữ liệu",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Xóa phiên bản?",
+      "description": "Thao tác này xóa vĩnh viễn \"{{name}}\" và dữ liệu của nó. Bạn không thể hoàn tác.",
+      "descriptionUnnamed": "Thao tác này xóa vĩnh viễn phiên bản này và dữ liệu của nó. Bạn không thể hoàn tác."
     }
   },
   "commandInput": {
     "placeholder": "Nhập lệnh (gõ 'help' để xem danh sách)",
     "emptySuggestions": "Nhập để yêu cầu gợi ý hoặc nhấn Tab.",
-    "noSuggestions": "Không có gợi ý nào."
+    "noSuggestions": "Không có gợi ý nào.",
+    "emptySuggestionsPrefix": "Nhập để yêu cầu gợi ý hoặc nhấn"
   },
   "controls": {
     "start": "Bắt đầu",
@@ -162,7 +168,7 @@
     "stopCount_other": "Dừng {{count}} bot",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} đang online · {{desired}} mong muốn · {{total}} tổng cộng",
+  "botFleetSummary": "{{online}} đã kết nối · {{desired}} được đặt để chạy · {{total}} tổng",
   "icon": {
     "invalidName": "Tên biểu tượng không hợp lệ: {{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "Tăng",
       "desc": "Giảm"
-    }
+    },
+    "openFilterMenu": "Mở menu bộ lọc",
+    "filterOperator": "Toán tử lọc",
+    "filterValue": "Giá trị lọc",
+    "sortDirection": "Hướng sắp xếp",
+    "selectJoinOperator": "Chọn toán tử kết hợp",
+    "joinOperator": "Toán tử kết hợp",
+    "escapeKey": "Escape",
+    "selectDate": "Chọn ngày",
+    "selectDateRange": "Chọn khoảng ngày",
+    "clearFilter": "Xóa bộ lọc {{title}}",
+    "clearFilters": "Xóa bộ lọc",
+    "clear": "Xóa",
+    "from": "Từ",
+    "to": "Đến",
+    "sortDirectionFor": "Hướng sắp xếp cho {{column}}",
+    "minValue": "Giá trị tối thiểu của {{label}}",
+    "maxValue": "Giá trị tối đa của {{label}}"
   },
   "pluginCard": {
     "version": "Phiên bản: {{version}}",
@@ -252,13 +275,13 @@
     "website": "Website"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Không thể lưu {{name}}",
     "namespacesNotFound": "Không tìm thấy không gian cài đặt",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Không thể lưu {{name}}",
       "placeholder": "Thêm mục mới...",
       "add": "Thêm",
       "remove": "Xóa"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "Số không hợp lệ",
       "description": "Giá trị phải nằm trong khoảng từ {{min}} đến {{max}}"
-    }
+    },
+    "minMaxLegend": "Cài đặt tối thiểu và tối đa"
   },
   "terminal": {
     "noLogs": "Chưa có nhật ký nào. Hãy chạy một lệnh để tạo đầu ra nhật ký.",
@@ -317,16 +341,37 @@
       "error": "Kết nối đến {{device}} thất bại"
     },
     "noDevices": "Không tìm thấy thiết bị nào",
-    "broadcastLabel": "Kiểm tra truyền tải",
     "broadcastToast": {
       "loading": "Đang truyền tin nhắn...",
-      "success": "Đã truyền tin nhắn!",
+      "success": "Đã truyền tin nhắn",
       "error": "Truyền tin nhắn thất bại"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Đang bật script...",
+        "success": "Đã bật script",
+        "error": "Không thể bật script. Hãy thử lại."
+      },
+      "deactivate": {
+        "loading": "Đang tắt script...",
+        "success": "Đã tắt script",
+        "error": "Không thể tắt script. Hãy thử lại."
+      }
+    },
+    "operations": {
+      "activateScript": "Bật script {{name}}",
+      "deactivateScript": "Tắt script {{name}}"
+    },
+    "status": {
+      "active": "Bật",
+      "paused": "Tắt"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Đọc tài liệu hướng dẫn",
-    "backToDashboard": "Quay lại bảng điều khiển",
+    "backToDashboard": "Quay lại danh sách phiên bản",
     "deleteToast": {
       "loading": "Đang xóa phiên bản...",
       "success": "Đã xóa phiên bản",
@@ -352,9 +397,9 @@
     "settingsGroup": "Cài đặt",
     "extensionsGroup": "Tiện ích mở rộng",
     "botSettings": "Cài đặt Bot",
-    "accountSettings": "Cài đặt tài khoản",
+    "accountSettings": "Tài khoản",
     "metaSettings": "Cài đặt phiên bản",
-    "proxySettings": "Cài đặt Proxy",
+    "proxySettings": "Proxy",
     "aiSettings": "Cài đặt AI",
     "pathfindingSettings": "Cài đặt tìm đường",
     "discoverPlugins": "Plugins",
@@ -420,10 +465,10 @@
     "instances": "Các phiên bản",
     "access": "Quyền truy cập",
     "settings": "Cài đặt",
-    "proxySettings": "Cài đặt Proxy",
+    "proxySettings": "Proxy",
     "overview": "Tổng quan",
     "users": "Người dùng",
-    "accountSettings": "Cài đặt tài khoản",
+    "accountSettings": "Tài khoản",
     "metaSettings": "Cài đặt phiên bản",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scripts",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "Truy cập API",
-      "description": "API gRPC HTTP của SoulFire quản lý các phiên bản qua các yêu cầu web.",
+      "description": "Dùng API SoulFire để quản lý các phiên bản từ chương trình của riêng bạn.",
       "publicAddress": "Địa chỉ API công khai",
       "personalToken": "Mã thông báo API cá nhân",
       "securityWarning": "Giữ bí mật token API cá nhân của bạn. Nó cấp quyền truy cập vào API.",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "Tạo mã thông báo",
-      "placeholder": "Nhấn 'Tạo mã thông báo' bên dưới",
+      "placeholder": "Chọn \"Tạo mã thông báo\" bên dưới",
       "generating": "Đang tạo mã thông báo...",
       "success": "Tạo mã thông báo thành công",
       "error": "Tạo mã thông báo thất bại",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Không thể cập nhật tên phiên bản"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Không thể cập nhật {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Lọc nhật ký kiểm toán...",
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "Đang xóa scripts...",
-      "success": "Đã xóa scripts!",
+      "success": "Đã xóa scripts",
       "error": "Không xóa được scripts"
     },
     "addToast": {
       "loading": "Đang thêm script...",
-      "success": "Đã thêm script!",
+      "success": "Đã thêm script",
       "error": "Không thêm được script"
     },
     "updateToast": {
       "loading": "Đang cập nhật script...",
-      "success": "Đã cập nhật script!",
+      "success": "Đã cập nhật script",
       "error": "Không cập nhật được script"
     },
     "restartToast": {
       "loading": "Đang khởi động lại script...",
-      "success": "Đã khởi động lại script!",
+      "success": "Đã khởi động lại script",
       "error": "Khởi động lại script thất bại"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "Đi đến Bot",
       "copyUsername": "Sao chép Tên người dùng",
-      "copyUuid": "Sao chép UUID",
+      "copyUuid": "Sao chép ID hồ sơ",
       "copyCoordinates": "Sao chép Tọa độ"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Đã kết nối",
+    "botOffline": "Đã ngắt kết nối"
+  },
+  "minecraftActions": {
+    "copyError": "Không thể sao chép văn bản. Hãy dùng HTTPS hoặc cho phép truy cập bảng nhớ tạm.",
+    "openError": "Không thể mở liên kết.",
+    "popupBlocked": "Trình duyệt đã chặn thẻ mới.",
+    "openLink": "Mở liên kết"
+  },
+  "instanceIcon": {
+    "label": "Biểu tượng",
+    "description": "Biểu tượng của phiên bản hiển thị trong ứng dụng."
+  },
+  "unknown": "Không rõ",
+  "minecraftHead": "Đầu Minecraft",
+  "textFile": "Tệp văn bản"
 }

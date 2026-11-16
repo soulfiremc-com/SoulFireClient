@@ -119,12 +119,12 @@
       "network": "Địa chỉ mạng",
       "unix": "Ổ cắm Unix"
     },
-    "getProxies": "Lấy Proxy",
+    "getProxies": "Nhà cung cấp proxy",
     "addProxies": "Thêm Proxy",
     "filterPlaceholder": "Lọc proxy...",
     "listImportToast": {
       "loading": "Đang nhập proxy...",
-      "success": "Đã nhập {{count}} proxy!",
+      "success": "Đã nhập {{count}} proxy",
       "error": "Không thể nhập proxy.",
       "noProxies": "Không có proxy để nhập"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Đang xóa proxy...",
-      "success": "Đã xóa {{count}} proxy!",
+      "success": "Đã xóa {{count}} proxy",
       "error": "Không thể xóa proxy."
     },
     "checkToast": {
       "loading": "Đang kiểm tra proxy... {{checked}}/{{total}} (Thành công: {{success}} Thất bại: {{failed}})",
-      "success": "Đã xóa {{count}} proxy lỗi!",
-      "error": "Không thể kiểm tra proxy."
+      "success": "Đã xóa {{count}} proxy lỗi",
+      "error": "Không thể kiểm tra proxy.",
+      "successKept": "{{failed}} trên {{total}} proxy không qua kiểm tra. Không có proxy nào bị xóa."
     },
     "checkDialog": {
       "title": "Kiểm Tra Proxy",
-      "description": "Bạn sắp kiểm tra {{count}} proxy. Proxy không hợp lệ sẽ tự động bị xóa.",
-      "confirm": "Bắt Đầu Kiểm Tra"
+      "description": "Bạn sắp kiểm tra {{count}} proxy.",
+      "confirm": "Bắt Đầu Kiểm Tra",
+      "removeFailed": "Xóa các proxy bị lỗi",
+      "removeFailedHelp": "Proxy có thể lỗi do sự cố mạng tạm thời. Bỏ chọn tùy chọn này để giữ mọi proxy và chỉ xem kết quả."
     },
     "invalidFormat": "Định dạng proxy không hợp lệ",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Kiểm tra các proxy vừa nhập?",
-      "description": "Bạn đã nhập {{count}} proxy. Kiểm tra ngay bây giờ? SoulFire sẽ tự động loại bỏ các proxy không hợp lệ.",
+      "description": "Bạn đã nhập {{count}} proxy. Kiểm tra ngay?",
       "confirm": "Kiểm Tra Proxy",
       "skip": "Bỏ qua"
     },
@@ -186,10 +189,17 @@
       "socks4": "Chỉ SOCKS4 (dạng đơn)",
       "socks5": "Chỉ SOCKS5 (dạng đơn)",
       "noProxies": "Không có proxy để xuất"
-    }
+    },
+    "removeDialog": {
+      "title_other": "Xóa {{count}} proxy?",
+      "description": "Thao tác này xóa các proxy đã chọn và thông tin đăng nhập của chúng khỏi phiên bản này. Bạn không thể hoàn tác.",
+      "confirm": "Xóa proxy"
+    },
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu"
   },
   "account": {
-    "getAccounts": "Lấy Tài khoản",
+    "getAccounts": "Nhà cung cấp tài khoản",
     "addAccounts": "Thêm Tài khoản",
     "generateAccounts": "Tạo Tài khoản",
     "filterPlaceholder": "Lọc tài khoản...",
@@ -197,7 +207,7 @@
       "loading": "Đang nhập tài khoản... {{checked}}/{{total}} (Thành công: {{success}} Thất bại: {{failed}})",
       "allFailed": "Không thể nhập bất kỳ tài khoản nào thành công.",
       "someFailed": "Đã nhập {{count}} tài khoản, không thể nhập {{failed}} tài khoản.",
-      "noneFailed": "Đã nhập {{count}} tài khoản!",
+      "noneFailed": "Đã nhập {{count}} tài khoản",
       "error": "Không thể nhập các tài khoản.",
       "noAccounts": "Không có tài khoản để nhập"
     },
@@ -215,7 +225,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Đang nhập tài khoản...",
-      "success": "Đã nhập tài khoản!",
+      "success": "Đã nhập tài khoản",
       "error": "Không thể nhập tài khoản."
     },
     "generate": {
@@ -232,9 +242,9 @@
       "submit": "Tạo",
       "generating": "Đang tạo...",
       "progress": "Đang tạo tài khoản... {{checked}}/{{total}} (Thành công: {{success}} Thất bại: {{failed}})",
-      "success": "Đã tạo {{count}} tài khoản!",
+      "success": "Đã tạo {{count}} tài khoản",
       "allFailed": "Không thể tạo bất kỳ tài khoản nào",
-      "allExist": "Tất cả tên người dùng đã tồn tại. Hãy bật 'Ghi đè lên tài khoản hiện có' để tạo lại chúng.",
+      "allExist": "Tất cả tên người dùng đã tồn tại. Chọn \"Thay Thế Hiện Có\" để tạo lại.",
       "error": "Không thể tạo tài khoản",
       "invalidAmount": "Vui lòng nhập số lượng hợp lệ (ít nhất là 1)",
       "missingPlaceholder": "Định dạng tên phải chứa ký tự đại diện %d"
@@ -257,12 +267,12 @@
     },
     "removeToast": {
       "loading": "Đang xóa tài khoản...",
-      "success": "Đã xóa {{count}} tài khoản!",
+      "success": "Đã xóa {{count}} tài khoản",
       "error": "Không thể xóa tài khoản."
     },
     "table": {
       "type": "Loại",
-      "profileId": "UUID",
+      "profileId": "ID hồ sơ",
       "lastKnownName": "Tên đăng nhập",
       "searchProfileIds": "Tìm kiếm ID hồ sơ...",
       "searchLastKnownNames": "Tìm kiếm tên đã biết cuối cùng...",
@@ -270,7 +280,7 @@
     },
     "removeSelectedTooltip": "Xóa các tài khoản đã chọn",
     "contextMenu": {
-      "openConfig": "Mở Cấu Hình",
+      "openConfig": "Mở cài đặt",
       "openMetadata": "Mở Metadata",
       "copyProfileId": "Sao Chép ID Hồ Sơ",
       "copyUsername": "Sao chép Tên người dùng"
@@ -294,7 +304,20 @@
       "matchesInheritedValue": "Khớp với giá trị kế thừa",
       "instanceValue": "Giá trị phiên bản",
       "defaultValue": "Giá trị mặc định",
-      "resetOverride": "Đặt lại ghi đè"
+      "resetOverride": "Đặt lại ghi đè",
+      "value": {
+        "notSet": "Chưa đặt",
+        "on": "Bật",
+        "off": "Tắt",
+        "empty": "Trống",
+        "entries_other": "{{count}} mục",
+        "range": "Khoảng"
+      },
+      "source": {
+        "bot": "Giá trị riêng của bot",
+        "instance": "Kế thừa từ phiên bản",
+        "default": "Đang dùng mặc định"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Xác thực mã thiết bị",
@@ -341,7 +364,7 @@
       "keyPlaceholder": "Khóa",
       "valuePlaceholder": "Giá trị (JSON)",
       "noEntries": "Không có mục siêu dữ liệu nào. Thêm một mục ở trên.",
-      "loadError": "",
+      "loadError": "Không thể tải metadata",
       "loadErrorDescription": "",
       "retryLoad": "Thử lại",
       "addSuccess": "Đã thêm mục",
@@ -350,7 +373,19 @@
       "deleteSuccess": "Mục đã được xóa",
       "deleteError": "Xóa mục thất bại",
       "duplicateError": "Đã tồn tại một mục với namespace và khóa này",
-      "invalidJson": "Giá trị JSON không hợp lệ"
+      "invalidJson": "Giá trị JSON không hợp lệ",
+      "namespaceLabel": "Không gian tên",
+      "keyLabel": "Khóa",
+      "valueLabel": "Giá trị",
+      "addEntryLegend": "Thêm mục metadata",
+      "addEntryButton": "Thêm mục",
+      "entryLegend": "Mục metadata",
+      "removeEntryButton": "Xóa"
+    },
+    "removeDialog": {
+      "title_other": "Xóa {{count}} tài khoản?",
+      "description": "Thao tác này xóa các tài khoản đã chọn, thông tin đăng nhập đã lưu và bot của chúng khỏi phiên bản này. Bạn không thể hoàn tác.",
+      "confirm": "Xóa tài khoản"
     }
   },
   "instanceMetadata": {
@@ -360,31 +395,39 @@
     "keyPlaceholder": "Khóa",
     "valuePlaceholder": "Giá trị (JSON)",
     "noEntries": "Không có mục siêu dữ liệu nào. Thêm một mục ở trên.",
+    "loadError": "Không thể tải metadata",
     "addSuccess": "Đã thêm mục",
     "addError": "Không thể thêm mục",
     "updateError": "Không thể cập nhật mục",
     "deleteSuccess": "Mục đã được xóa",
     "deleteError": "Xóa mục thất bại",
     "duplicateError": "Đã tồn tại một mục với namespace và khóa này",
-    "invalidJson": "Giá trị JSON không hợp lệ"
+    "invalidJson": "Giá trị JSON không hợp lệ",
+    "namespaceLabel": "Không gian tên",
+    "keyLabel": "Khóa",
+    "valueLabel": "Giá trị",
+    "addEntryLegend": "Thêm mục metadata",
+    "addEntryButton": "Thêm mục",
+    "entryLegend": "Mục metadata",
+    "removeEntryButton": "Xóa"
   },
   "bots": {
     "searchPlaceholder": "Tìm bot...",
-    "onlineCount": "{{online}} trực tuyến / {{total}} tổng cộng",
+    "onlineCount": "{{online}} đã kết nối / {{total}} tổng",
     "noBots": "Chưa cấu hình bot nào. Thêm tài khoản từ trang Cài đặt Tài khoản.",
     "noBotsFound": "Không có bot nào khớp với tìm kiếm của bạn.",
     "loadingMore": "Đang tải thêm...",
     "showingCount": "Đang hiển thị {{loaded}} trên tổng số {{total}}.",
     "allLoaded": "Tất cả {{total}} bot đã được tải.",
-    "online": "Trực tuyến",
-    "offline": "Ngoại tuyến",
+    "online": "Đã kết nối",
+    "offline": "Đã ngắt kết nối",
     "notJoined": "Chưa Tham Gia",
     "connectionPhase": {
       "connecting": "Đang kết nối",
-      "connected": "Đã kết nối",
-      "spawned": "Trực tuyến",
+      "connected": "Đang đăng nhập",
+      "spawned": "Đã kết nối",
       "died": "Đã chết",
-      "disconnected": "Ngoại tuyến",
+      "disconnected": "Đã ngắt kết nối",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +441,12 @@
     },
     "backToBots": "Quay lại Bots",
     "tabs": {
-      "overview": "Tổng quan",
+      "overview": "Góc nhìn bot",
       "inventory": "Kho đồ",
       "controls": "Bảng điều khiển",
       "terminal": "Terminal"
     },
-    "comingSoon": "Sắp ra mắt",
-    "terminalPanel": {
-      "title": "Bot Terminal"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Trực tiếp (không dùng proxy)",
@@ -416,16 +456,14 @@
       "title": "Vị trí & Xoay",
       "position": "Vị trí",
       "rotation": "Xoay",
-      "offline": "Bot đang ngoại tuyến. Dữ liệu vị trí chỉ khả dụng khi bot được kết nối."
+      "offline": "Bot đã ngắt kết nối. Dữ liệu vị trí chỉ khả dụng khi bot được kết nối."
     },
     "chatPanel": {
-      "title": "Tin nhắn trò chuyện",
-      "description": "Tin nhắn trò chuyện từ bot này sẽ xuất hiện ở đây trong bản cập nhật sắp tới."
+      "title": "Tin nhắn trò chuyện"
     },
     "commandPanel": {
       "title": "Lệnh Bot",
-      "placeholder": "Gửi lệnh đến bot này...",
-      "description": "Các lệnh dành riêng cho bot sẽ có trong bản cập nhật sắp tới."
+      "placeholder": "Gửi lệnh đến bot này..."
     },
     "povPanel": {
       "title": "Góc nhìn Bot",
@@ -438,7 +476,6 @@
       "offline": "Bot đang ngoại tuyến. Hiển thị góc nhìn chỉ khả dụng khi bot đã kết nối."
     },
     "statsPanel": {
-      "title": "Chỉ số Bot",
       "health": "Máu",
       "food": "Thức ăn",
       "saturation": "Độ bão hòa",
@@ -451,7 +488,7 @@
       "adventure": "Phiêu lưu",
       "spectator": "Khán giả",
       "unknown": "Không xác định",
-      "offline": "Bot đang ngoại tuyến. Chỉ số chỉ khả dụng khi bot đã kết nối."
+      "offline": "Bot đã ngắt kết nối. Chỉ số chỉ khả dụng khi bot đã kết nối."
     },
     "inventoryPanel": {
       "title": "Kho đồ",
@@ -464,7 +501,7 @@
       "dropAll": "Thả Tất Cả",
       "closeContainer": "Đóng",
       "clickHint": "Nhấp chuột trái: nhặt/đặt | Nhấp phải: chia đôi/một | Shift+nhấp: di chuyển nhanh | Nhấp giữa: chọn ô thanh nhanh",
-      "offline": "Bot đang ngoại tuyến. Kho chỉ khả dụng khi bot đã kết nối.",
+      "offline": "Bot đã ngắt kết nối. Kho chỉ khả dụng khi bot đã kết nối.",
       "buttons": {
         "stonecutterRecipes": "Công thức",
         "enchantments": "Phù phép",
@@ -474,12 +511,12 @@
         "crafterSlots": "Điều khiển ô",
         "lecternControls": "Điều khiển sách",
         "actions": "Hành động",
-        "creativeTabs": ""
+        "creativeTabs": "Thẻ chế độ sáng tạo"
       },
       "textInput": {
         "title": "Nhập văn bản",
         "anvilRename": "Đổi tên vật phẩm",
-        "creativeSearch": ""
+        "creativeSearch": "Tìm vật phẩm"
       },
       "bookPages": {
         "title": "Nội dung sách",
@@ -490,10 +527,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Hủy vật phẩm",
+      "clickHints": {
+        "left": "Chuột trái: nhặt hoặc đặt",
+        "right": "Chuột phải: nhặt một nửa hoặc đặt một",
+        "shift": "Shift+nhấp: chuyển nhanh",
+        "middle": "Chuột giữa: chọn làm ô đang dùng"
+      }
     },
     "visualPanel": {
-      "title": "Giao diện Bot",
+      "title": "Hướng và thế giới",
       "compass": "Hướng Đang Nhìn",
       "lookDirection": "Góc Nhìn",
       "lookingUp": "Đang nhìn lên",
@@ -502,7 +545,7 @@
       "worldInfo": "Thông tin thế giới",
       "dimension": "Chiều Không Gian",
       "biome": "Sinh cảnh",
-      "offline": "Bot đang ngoại tuyến. Dữ liệu hình ảnh chỉ khả dụng khi bot đã kết nối."
+      "offline": "Bot đã ngắt kết nối. Dữ liệu hình ảnh chỉ khả dụng khi bot đã kết nối."
     },
     "actionsPanel": {
       "title": "Hành động của bot",
@@ -510,7 +553,7 @@
       "rightClick": "Nhấp Chuột Phải",
       "leftClickDescription": "Tấn công thực thể hoặc phá block",
       "rightClickDescription": "Sử dụng vật phẩm hoặc tương tác",
-      "offline": "Bot đang ngoại tuyến. Các hành động chỉ khả dụng khi bot đang kết nối."
+      "offline": "Bot đã ngắt kết nối. Các hành động chỉ khả dụng khi bot đang kết nối."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +572,7 @@
       "lookDown": "Nhìn xuống",
       "lookLeft": "Nhìn trái",
       "lookRight": "Nhìn phải",
-      "offline": "Bot đang ngoại tuyến. Điều khiển di chuyển chỉ khả dụng khi bot đang kết nối."
+      "offline": "Bot đã ngắt kết nối. Điều khiển di chuyển chỉ khả dụng khi bot đang kết nối."
     },
     "dialogPanel": {
       "title": "Hộp thoại máy chủ",
@@ -544,7 +587,45 @@
       "unknownType": "Không xác định",
       "dismiss": "Tắt",
       "submit": "Gửi",
-      "offline": "Bot đang ngoại tuyến. Hộp thoại chỉ khả dụng khi bot đang kết nối."
+      "offline": "Bot đã ngắt kết nối. Hộp thoại chỉ khả dụng khi bot đang kết nối."
+    },
+    "pov": {
+      "title": "Góc nhìn bot",
+      "touchControlling": "Bạn đang điều khiển bot này. Dùng \"Release control\" để dừng.",
+      "popupBlocked": "Cho phép cửa sổ bật lên để tách cửa sổ góc nhìn bot.",
+      "windowTitle": "Góc nhìn bot SoulFire",
+      "fullscreenUnavailable": "Cửa sổ này không hỗ trợ toàn màn hình.",
+      "textInputLabel": "Nhập văn bản Minecraft",
+      "videoLabel": "Góc nhìn bot trực tiếp",
+      "touchMove": "Di chuyển",
+      "audioError": "Không thể bật âm thanh.",
+      "startError": "Không thể mở góc nhìn bot.",
+      "releaseHint": "Nhấn {{shortcut}} để trả lại bàn phím và chuột.",
+      "captureHint": "Nhấp vào góc nhìn và cho phép bắt bàn phím và chuột.",
+      "audioWaiting": "Đang chờ góc nhìn bot kết nối.",
+      "audioWatchFirst": "Hãy xem bot để dùng âm thanh.",
+      "audioUpdateServer": "Cập nhật máy chủ để dùng âm thanh của góc nhìn bot.",
+      "muteAudio": "Tắt âm thanh",
+      "unmuteAudio": "Bật âm thanh",
+      "audioStarting": "Đang bật âm thanh...",
+      "mute": "Tắt tiếng",
+      "unmute": "Bật tiếng",
+      "audio": "Âm thanh",
+      "audioUnavailable": "Không có âm thanh",
+      "volume": "Âm lượng góc nhìn bot",
+      "reconnect": "Kết nối lại",
+      "showWindow": "Hiện cửa sổ góc nhìn bot",
+      "attachWindow": "Gắn lại cửa sổ góc nhìn bot",
+      "touch": {
+        "jump": "Nhảy",
+        "sneak": "Rón rén",
+        "attack": "Tấn công",
+        "use": "Dùng",
+        "inventory": "Kho đồ",
+        "keyboard": "Bàn phím",
+        "closeMenu": "Đóng menu"
+      },
+      "needsServer": "Góc nhìn bot cần một máy chủ SoulFire đã kết nối."
     }
   },
   "metrics": {
@@ -552,15 +633,15 @@
       "noData": "Không có dữ liệu"
     },
     "summary": {
-      "online": "Trực tuyến",
+      "online": "Đã kết nối",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Lưu lượng",
       "health": "Máu",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bots Trực Tuyến",
-      "online": "Trực tuyến",
+      "title": "Bot đã kết nối",
+      "online": "Đã kết nối",
       "total": "Tổng cộng"
     },
     "packets": {
@@ -611,7 +692,7 @@
     }
   },
   "scripts": {
-    "title": "Visual Scripts",
+    "title": "Visual scripts",
     "description": "Tạo script tự động hóa bằng trình chỉnh sửa dạng nút trực quan.",
     "experimentalTitle": "Tính năng thử nghiệm",
     "experimentalWarning": "Tính năng này đang ở giai đoạn thử nghiệm. Những cập nhật trong tương lai có thể làm hỏng các script hiện tại. Hãy sử dụng một cách thận trọng.",
@@ -627,7 +708,7 @@
     "createError": "Tạo script thất bại",
     "noScripts": "Chưa có Script nào",
     "noScriptsDescription": "Tạo script đầu tiên của bạn để tự động hóa hành động bot bằng trình chỉnh sửa dạng nút trực quan.",
-    "createFirstScript": "Tạo Script Đầu Tiên Của Bạn",
+    "createFirstScript": "Tạo Script",
     "running": "Đang chạy",
     "paused": "Đã tạm dừng",
     "nodes": "nút",
@@ -694,7 +775,9 @@
       },
       "palette": {
         "title": "Bảng Node",
-        "search": "Tìm kiếm node..."
+        "search": "Tìm kiếm node...",
+        "noResults": "Không có nút nào khớp với tìm kiếm",
+        "noResultsDescription": "Thử từ khác hoặc xóa bộ lọc hiện tại."
       },
       "logs": {
         "title": "Nhật ký thực thi",
@@ -716,11 +799,15 @@
       },
       "node": {
         "expand": "Mở rộng nút",
-        "collapse": "Thu gọn nút"
+        "collapse": "Thu gọn nút",
+        "avgTime": "Thời gian chạy trung bình: {{avg}} ms ({{count}} lần chạy gần nhất)",
+        "preview": "Xem trước"
       },
       "debug": {
         "copyValue": "Sao chép giá trị hiện tại",
-        "clearHistory": "Xóa lịch sử"
+        "clearHistory": "Xóa lịch sử",
+        "current": "Hiện tại ({{time}}):",
+        "noValue": "Chưa nhận được giá trị nào"
       },
       "edge": {
         "direction": "Hướng cạnh"
@@ -732,14 +819,31 @@
         "title": "Điểm độ phức tạp của script"
       },
       "group": {
-        "returnToRoot": "Quay lại gốc (Tab)"
+        "returnToRoot": "Quay lại gốc (Tab)",
+        "root": "Gốc",
+        "exitHint": "Nhấn <key>Tab</key> để thoát",
+        "editHint": "Nhấp đúp để chỉnh sửa",
+        "noInputs": "Chưa có đầu vào nào",
+        "noOutputs": "Chưa có đầu ra nào"
       },
       "quickAdd": {
         "menuLabel": "Trình đơn thêm nhanh nút",
-        "searchPlaceholder": "Tìm kiếm node..."
+        "searchPlaceholder": "Tìm kiếm node...",
+        "noResults": "Không tìm thấy nút nào",
+        "noResultsDescription": "Thử từ khóa tìm kiếm khác.",
+        "navigate": "Di chuyển",
+        "select": "Enter để chọn",
+        "close": "Esc để đóng"
       },
       "diff": {
-        "tooltip": "Xem lại thay đổi"
+        "tooltip": "Xem lại thay đổi",
+        "title": "Thay đổi chưa lưu",
+        "description": "Các thay đổi kể từ lần lưu gần nhất.",
+        "nodesAdded_other": "Đã thêm {{count}} nút",
+        "nodesRemoved_other": "Đã xóa {{count}} nút",
+        "nodesModified_other": "Đã sửa {{count}} nút",
+        "edgesAdded_other": "Đã thêm {{count}} kết nối",
+        "edgesRemoved_other": "Đã xóa {{count}} kết nối"
       },
       "dryRun": {
         "saveFirst": "",
@@ -783,8 +887,20 @@
         "disableTimeoutsDescription": "Tắt giới hạn thời gian cho từng node và data edge",
         "save": "Lưu hạn mức",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Sắp xếp lại {{label}}",
+        "empty": "Không có giá trị vào",
+        "title": "Đa đầu vào: nhận nhiều kết nối",
+        "connectTo": "Nối giá trị vào {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Xóa script?",
+      "description": "Thao tác này xóa vĩnh viễn \"{{name}}\". Bạn không thể hoàn tác.",
+      "descriptionUnnamed": "Thao tác này xóa vĩnh viễn script. Bạn không thể hoàn tác."
+    },
+    "executionStats": "Thống kê chạy: đã chạy {{executed}}/{{max}} nút"
   },
   "metadataValidation": {
     "invalidNamespace": "",

@@ -44,7 +44,24 @@
         "placeholder": "Tu sú vaše argumenty JVM"
       },
       "back": "Späť",
-      "start": "Spustiť"
+      "start": "Spustiť",
+      "jar": {
+        "title": "Jar servera",
+        "official": "Oficiálny",
+        "custom": "Vlastný",
+        "officialTitle": "Oficiálny server SoulFire",
+        "customTitle": "Vlastný jar servera",
+        "officialDescription": "Stiahne a overí zodpovedajúce vydanie SoulFire.",
+        "customDescription": "Spustí importovaný jar. SoulFire ho neoveruje ani neaktualizuje.",
+        "import": "Importovať jar",
+        "importSuccess": "Importované: {{name}}",
+        "importError": "Vlastný jar SoulFire sa nepodarilo importovať",
+        "selectCustomFirst": "Pred spustením importujte a vyberte vlastný jar.",
+        "dialog": {
+          "filter": "Archív Java",
+          "title": "Vyberte jar servera SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Na spustenie integrovaného servera na mobile je potrebné vykonať niekoľko manuálnych krokov.",

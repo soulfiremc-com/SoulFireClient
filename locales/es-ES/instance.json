@@ -119,12 +119,12 @@
       "network": "Dirección de red",
       "unix": "Socket Unix"
     },
-    "getProxies": "Obtener proxies",
+    "getProxies": "Proveedores de proxies",
     "addProxies": "Agregar proxies",
     "filterPlaceholder": "Filtrar proxies...",
     "listImportToast": {
       "loading": "Importando proxies...",
-      "success": "¡{{count}} proxies importados!",
+      "success": "¡{{count}} proxies importados",
       "error": "Error al importar proxies",
       "noProxies": "No hay proxies para importar"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Eliminando proxies...",
-      "success": "¡{{count}} proxies eliminados!",
+      "success": "¡{{count}} proxies eliminados",
       "error": "Error al eliminar proxies"
     },
     "checkToast": {
       "loading": "Comprobando proxies... {{checked}}/{{total}} (Éxito: {{success}} Fallidos: {{failed}})",
-      "success": "¡{{count}} proxies defectuosos eliminados!",
-      "error": "Error al comprobar proxies"
+      "success": "¡{{count}} proxies defectuosos eliminados",
+      "error": "Error al comprobar proxies",
+      "successKept": "{{failed}} de {{total}} proxies no superaron la comprobación. No se eliminó ningún proxy."
     },
     "checkDialog": {
       "title": "Verificar proxies",
-      "description": "Estás a punto de verificar {{count}} proxies. Los proxies inválidos se eliminarán automáticamente.",
-      "confirm": "Iniciar verificación"
+      "description": "Vas a comprobar {{count}} proxies.",
+      "confirm": "Iniciar verificación",
+      "removeFailed": "Eliminar los proxies que fallen",
+      "removeFailedHelp": "Un proxy puede fallar por un problema temporal de red. Desmarca esta opción para conservar todos los proxies y ver solo el resultado."
     },
     "invalidFormat": "Formato de proxy inválido",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "¿Comprobar los proxies importados?",
-      "description": "Has importado {{count}} proxies. ¿Quieres comprobarlos ahora? SoulFire elimina automáticamente los proxies inválidos.",
+      "description": "Has importado {{count}} proxies. ¿Comprobarlos ahora?",
       "confirm": "Verificar proxies",
       "skip": "Omitir"
     },
@@ -186,10 +189,18 @@
       "socks4": "Solo SOCKS4 (plano)",
       "socks5": "Solo SOCKS5 (plano)",
       "noProxies": "No hay proxies para exportar"
-    }
+    },
+    "removeDialog": {
+      "title_one": "¿Eliminar {{count}} proxy?",
+      "title_other": "¿Eliminar {{count}} proxies?",
+      "description": "Esto elimina de esta instancia los proxies seleccionados y sus credenciales. No se puede deshacer.",
+      "confirm": "Eliminar proxies"
+    },
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña"
   },
   "account": {
-    "getAccounts": "Obtener cuentas",
+    "getAccounts": "Proveedores de cuentas",
     "addAccounts": "Agregar cuentas",
     "generateAccounts": "Generar cuentas",
     "filterPlaceholder": "Filtrar cuentas...",
@@ -197,7 +208,7 @@
       "loading": "Importando cuentas... {{checked}}/{{total}} (Éxito: {{success}} Fallidos: {{failed}})",
       "allFailed": "Error al importar cualquier cuenta.",
       "someFailed": "Se importaron {{count}} cuentas, no se pudieron importar {{failed}} cuentas.",
-      "noneFailed": "¡{{count}} cuentas importadas!",
+      "noneFailed": "¡{{count}} cuentas importadas",
       "error": "Error al importar cuentas.",
       "noAccounts": "No hay cuentas para importar"
     },
@@ -207,7 +218,7 @@
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Credenciales)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Código de dispositivo)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Token de actualización)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
       "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Token de acceso)",
       "THE_ALTENING": "Java (TheAltening)",
       "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Credenciales)",
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Importando cuenta...",
-      "success": "¡Cuenta importada!",
+      "success": "¡Cuenta importada",
       "error": "Error al importar la cuenta"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Generar",
       "generating": "Generando...",
       "progress": "Generando cuentas... {{checked}}/{{total}} (Éxito: {{success}} Fallidas: {{failed}})",
-      "success": "¡Se generó {{count}} cuenta!",
+      "success": "¡Se generó {{count}} cuenta",
       "allFailed": "No se pudo generar ninguna cuenta",
-      "allExist": "Todos los nombres de usuario ya existen. Activa 'Sobrescribir cuentas existentes' para regenerarlos.",
+      "allExist": "Todos los nombres de usuario ya existen. Elige «Reemplazar existentes» para generarlos de nuevo.",
       "error": "No se pudieron generar las cuentas",
       "invalidAmount": "Por favor ingresa una cantidad válida (al menos 1)",
       "missingPlaceholder": "El formato de nombre debe contener el marcador de posición %d"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Eliminando cuentas...",
-      "success": "¡{{count}} cuentas eliminadas!",
+      "success": "¡{{count}} cuentas eliminadas",
       "error": "Error al eliminar cuentas"
     },
     "table": {
       "type": "Tipo",
-      "profileId": "UUID",
+      "profileId": "ID de perfil",
       "lastKnownName": "Nombre de usuario",
       "searchProfileIds": "Buscar IDs de perfil...",
       "searchLastKnownNames": "Buscar últimos nombres conocidos...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "Eliminar cuentas seleccionadas",
     "contextMenu": {
-      "openConfig": "Abrir configuración",
+      "openConfig": "Abrir ajustes",
       "openMetadata": "Abrir metadatos",
       "copyProfileId": "Copiar ID de perfil",
       "copyUsername": "Copiar nombre de usuario"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Coincide con el valor heredado",
       "instanceValue": "Valor de la instancia",
       "defaultValue": "Valor predeterminado",
-      "resetOverride": "Restablecer anulación"
+      "resetOverride": "Restablecer anulación",
+      "value": {
+        "notSet": "Sin definir",
+        "on": "Activado",
+        "off": "Desactivado",
+        "empty": "Vacío",
+        "entries_one": "{{count}} entrada",
+        "entries_other": "{{count}} entradas",
+        "range": "Rango"
+      },
+      "source": {
+        "bot": "Valor propio del bot",
+        "instance": "Heredado de la instancia",
+        "default": "Valor predeterminado"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Autenticación con código de dispositivo",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Clave",
       "valuePlaceholder": "Valor (JSON)",
       "noEntries": "No hay entradas de metadatos. Agregue una arriba.",
-      "loadError": "",
+      "loadError": "No se pudieron cargar los metadatos",
       "loadErrorDescription": "",
       "retryLoad": "Reintentar",
       "addSuccess": "Entrada añadida",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Entrada eliminada",
       "deleteError": "Error al eliminar la entrada",
       "duplicateError": "Ya existe una entrada con este espacio de nombres y clave",
-      "invalidJson": "Valor JSON no válido"
+      "invalidJson": "Valor JSON no válido",
+      "namespaceLabel": "Espacio de nombres",
+      "keyLabel": "Clave",
+      "valueLabel": "Valor",
+      "addEntryLegend": "Añadir entrada de metadatos",
+      "addEntryButton": "Añadir entrada",
+      "entryLegend": "Entrada de metadatos",
+      "removeEntryButton": "Eliminar"
+    },
+    "removeDialog": {
+      "title_one": "¿Eliminar {{count}} cuenta?",
+      "title_other": "¿Eliminar {{count}} cuentas?",
+      "description": "Esto elimina de esta instancia las cuentas seleccionadas, sus credenciales guardadas y sus bots. No se puede deshacer.",
+      "confirm": "Eliminar cuentas"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Clave",
     "valuePlaceholder": "Valor (JSON)",
     "noEntries": "No hay entradas de metadatos. Agregue una arriba.",
+    "loadError": "No se pudieron cargar los metadatos",
     "addSuccess": "Entrada añadida",
     "addError": "Error al añadir la entrada",
     "updateError": "Error al actualizar la entrada",
     "deleteSuccess": "Entrada eliminada",
     "deleteError": "Error al eliminar la entrada",
     "duplicateError": "Ya existe una entrada con este espacio de nombres y clave",
-    "invalidJson": "Valor JSON no válido"
+    "invalidJson": "Valor JSON no válido",
+    "namespaceLabel": "Espacio de nombres",
+    "keyLabel": "Clave",
+    "valueLabel": "Valor",
+    "addEntryLegend": "Añadir entrada de metadatos",
+    "addEntryButton": "Añadir entrada",
+    "entryLegend": "Entrada de metadatos",
+    "removeEntryButton": "Eliminar"
   },
   "bots": {
     "searchPlaceholder": "Buscar bots...",
-    "onlineCount": "{{online}} en línea / {{total}} en total",
+    "onlineCount": "{{online}} conectados / {{total}} en total",
     "noBots": "No hay bots configurados. Agrega cuentas desde la página de Configuración de cuentas.",
     "noBotsFound": "Ningún bot coincide con tu búsqueda.",
     "loadingMore": "Cargando más...",
     "showingCount": "Mostrando {{loaded}} de {{total}}",
     "allLoaded": "Todos los {{total}} bots cargados",
-    "online": "En línea",
-    "offline": "Sin conexión",
+    "online": "Conectado",
+    "offline": "Desconectado",
     "notJoined": "No unido",
     "connectionPhase": {
       "connecting": "Conectando",
-      "connected": "Conectado",
-      "spawned": "En línea",
+      "connected": "Iniciando sesión",
+      "spawned": "Conectado",
       "died": "Muerto",
-      "disconnected": "Sin conexión",
+      "disconnected": "Desconectado",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "Volver a Bots",
     "tabs": {
-      "overview": "Resumen",
+      "overview": "Vista del bot",
       "inventory": "Inventario",
       "controls": "Controles",
       "terminal": "Terminal"
     },
-    "comingSoon": "Próximamente",
-    "terminalPanel": {
-      "title": "Terminal de Bot"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Directo (sin proxy)",
@@ -419,13 +462,11 @@
       "offline": "El bot está desconectado. Los datos de posición solo están disponibles cuando el bot está conectado."
     },
     "chatPanel": {
-      "title": "Mensajes de chat",
-      "description": "Los mensajes de chat de este bot aparecerán aquí en una futura actualización."
+      "title": "Mensajes de chat"
     },
     "commandPanel": {
       "title": "Comandos del bot",
-      "placeholder": "Enviar comando a este bot...",
-      "description": "Los comandos específicos del bot estarán disponibles en una futura actualización."
+      "placeholder": "Enviar comando a este bot..."
     },
     "povPanel": {
       "title": "POV del Bot",
@@ -438,7 +479,6 @@
       "offline": "El bot está desconectado. El renderizado del POV solo está disponible cuando el bot está conectado."
     },
     "statsPanel": {
-      "title": "Estadísticas del Bot",
       "health": "Salud",
       "food": "Comida",
       "saturation": "Saturación",
@@ -474,12 +514,12 @@
         "crafterSlots": "Controles de ranura",
         "lecternControls": "Controles del libro",
         "actions": "Acciones",
-        "creativeTabs": ""
+        "creativeTabs": "Pestañas del modo creativo"
       },
       "textInput": {
         "title": "Entrada de texto",
         "anvilRename": "Renombrar objeto",
-        "creativeSearch": ""
+        "creativeSearch": "Buscar objetos"
       },
       "bookPages": {
         "title": "Contenido del libro",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Destruir objeto",
+      "clickHints": {
+        "left": "Clic izquierdo: recoger o colocar",
+        "right": "Clic derecho: recoger la mitad o colocar uno",
+        "shift": "Mayús+clic: mover rápido",
+        "middle": "Clic central: seleccionar como ranura activa"
+      }
     },
     "visualPanel": {
-      "title": "Vista del Bot",
+      "title": "Dirección y mundo",
       "compass": "Dirección mirando",
       "lookDirection": "Ángulo de visión",
       "lookingUp": "Mirando hacia arriba",
@@ -545,6 +591,44 @@
       "dismiss": "Descartar",
       "submit": "Enviar",
       "offline": "El bot está desconectado. Los diálogos solo están disponibles cuando el bot está conectado."
+    },
+    "pov": {
+      "title": "Vista del bot",
+      "touchControlling": "Controlas este bot. Usa «Release control» para parar.",
+      "popupBlocked": "Permite las ventanas emergentes para separar la ventana de la vista del bot.",
+      "windowTitle": "Vista del bot de SoulFire",
+      "fullscreenUnavailable": "La pantalla completa no está disponible en esta ventana.",
+      "textInputLabel": "Entrada de texto de Minecraft",
+      "videoLabel": "Vista del bot en directo",
+      "touchMove": "Mover",
+      "audioError": "No se pudo iniciar el audio.",
+      "startError": "No se pudo iniciar la vista del bot.",
+      "releaseHint": "Pulsa {{shortcut}} para liberar el teclado y el ratón.",
+      "captureHint": "Haz clic en la vista y permite la captura del teclado y el ratón.",
+      "audioWaiting": "Esperando a que se conecte la vista del bot.",
+      "audioWatchFirst": "Observa al bot para usar el audio.",
+      "audioUpdateServer": "Actualiza el servidor para usar el audio de la vista del bot.",
+      "muteAudio": "Silenciar audio",
+      "unmuteAudio": "Activar audio",
+      "audioStarting": "Iniciando audio...",
+      "mute": "Silenciar",
+      "unmute": "Activar sonido",
+      "audio": "Audio",
+      "audioUnavailable": "Audio no disponible",
+      "volume": "Volumen de la vista del bot",
+      "reconnect": "Reconectar",
+      "showWindow": "Mostrar la ventana de la vista del bot",
+      "attachWindow": "Acoplar la ventana de la vista del bot",
+      "touch": {
+        "jump": "Saltar",
+        "sneak": "Agacharse",
+        "attack": "Atacar",
+        "use": "Usar",
+        "inventory": "Inventario",
+        "keyboard": "Teclado",
+        "closeMenu": "Cerrar menú"
+      },
+      "needsServer": "La vista del bot necesita un servidor de SoulFire conectado."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Sin datos"
     },
     "summary": {
-      "online": "En línea",
+      "online": "Conectado",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Tráfico",
       "health": "Salud",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bots en línea",
-      "online": "En línea",
+      "title": "Bots conectados",
+      "online": "Conectado",
       "total": "Total"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Error al crear el script",
     "noScripts": "Aún no hay Scripts",
     "noScriptsDescription": "Crea tu primer script para automatizar acciones del bot usando el editor visual basado en nodos.",
-    "createFirstScript": "Crea tu Primer Script",
+    "createFirstScript": "Crear Script",
     "running": "En ejecución",
     "paused": "Pausado",
     "nodes": "nodos",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Paleta de Nodos",
-        "search": "Buscar nodos..."
+        "search": "Buscar nodos...",
+        "noResults": "Ningún nodo coincide con tu búsqueda",
+        "noResultsDescription": "Prueba otro término o borra el filtro actual."
       },
       "logs": {
         "title": "Registros de Ejecución",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Expandir nodo",
-        "collapse": "Colapsar nodo"
+        "collapse": "Colapsar nodo",
+        "avgTime": "Tiempo medio de ejecución: {{avg}} ms (últimas {{count}} ejecuciones)",
+        "preview": "Vista previa"
       },
       "debug": {
         "copyValue": "Copiar valor actual",
-        "clearHistory": "Borrar historial"
+        "clearHistory": "Borrar historial",
+        "current": "Actual ({{time}}):",
+        "noValue": "Aún no se ha recibido ningún valor"
       },
       "edge": {
         "direction": "Dirección del borde"
@@ -733,14 +823,36 @@
         "title": "Puntaje de complejidad del script"
       },
       "group": {
-        "returnToRoot": "Volver a la raíz (Tab)"
+        "returnToRoot": "Volver a la raíz (Tab)",
+        "root": "Raíz",
+        "exitHint": "Pulsa <key>Tab</key> para salir",
+        "editHint": "Doble clic para editar",
+        "noInputs": "No hay entradas definidas",
+        "noOutputs": "No hay salidas definidas"
       },
       "quickAdd": {
         "menuLabel": "Menú de añadir nodo rápido",
-        "searchPlaceholder": "Buscar nodos..."
+        "searchPlaceholder": "Buscar nodos...",
+        "noResults": "No se encontraron nodos",
+        "noResultsDescription": "Prueba otro término de búsqueda.",
+        "navigate": "Navegar",
+        "select": "Enter para seleccionar",
+        "close": "Esc para cerrar"
       },
       "diff": {
-        "tooltip": "Revisar cambios"
+        "tooltip": "Revisar cambios",
+        "title": "Cambios sin guardar",
+        "description": "Cambios desde el último guardado.",
+        "nodesAdded_one": "{{count}} nodo añadido",
+        "nodesAdded_other": "{{count}} nodos añadidos",
+        "nodesRemoved_one": "{{count}} nodo eliminado",
+        "nodesRemoved_other": "{{count}} nodos eliminados",
+        "nodesModified_one": "{{count}} nodo modificado",
+        "nodesModified_other": "{{count}} nodos modificados",
+        "edgesAdded_one": "{{count}} conexión añadida",
+        "edgesAdded_other": "{{count}} conexiones añadidas",
+        "edgesRemoved_one": "{{count}} conexión eliminada",
+        "edgesRemoved_other": "{{count}} conexiones eliminadas"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Desactiva los tiempos límite por nodo y por conexión de datos",
         "save": "Guardar cuotas",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Reordenar {{label}}",
+        "empty": "Sin valores entrantes",
+        "title": "Entrada múltiple: acepta varias conexiones",
+        "connectTo": "Conecta valores a {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "¿Eliminar el script?",
+      "description": "Esto elimina de forma permanente «{{name}}». No se puede deshacer.",
+      "descriptionUnnamed": "Esto elimina el script de forma permanente. No se puede deshacer."
+    },
+    "executionStats": "Estadísticas de ejecución: {{executed}}/{{max}} nodos ejecutados"
   },
   "metadataValidation": {
     "invalidNamespace": "",

@@ -26,7 +26,7 @@ export function useProxyCheck(
   );
 
   return useCallback(
-    (proxies: ProfileProxy[]) => {
+    (proxies: ProfileProxy[], removeFailedProxies = true) => {
       if (!transport || !proxies.length) return;
       current.current?.abort.abort();
       if (current.current) toast.dismiss(current.current.toastId);
@@ -57,13 +57,18 @@ export function useProxyCheck(
           const result = await checkProxies(
             responses,
             abort.signal,
-            removeFailed,
+            removeFailedProxies ? removeFailed : async () => {},
             (progress) => {
               toast.loading(loading(progress), { id: toastId, cancel });
             },
           );
           toast.success(
-            t("proxy.checkToast.success", { count: result.failed }),
+            removeFailedProxies
+              ? t("proxy.checkToast.success", { count: result.failed })
+              : t("proxy.checkToast.successKept", {
+                  failed: result.failed,
+                  total: proxies.length,
+                }),
             { id: toastId, cancel: undefined },
           );
         } catch (error) {

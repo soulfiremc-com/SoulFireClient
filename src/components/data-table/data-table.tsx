@@ -1,3 +1,4 @@
+import i18n from "@/lib/i18n.ts";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import type * as React from "react";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
@@ -87,7 +88,9 @@ export function DataTable<TData extends RowData>({
                 >
                   <Empty className="h-full rounded-none border-0 px-4 py-8">
                     <EmptyHeader className="gap-1">
-                      <EmptyTitle className="text-sm">No results.</EmptyTitle>
+                      <EmptyTitle className="text-sm">
+                        {i18n.t("common:dataTable.noResults")}
+                      </EmptyTitle>
                     </EmptyHeader>
                   </Empty>
                 </TableCell>

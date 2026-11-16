@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Gebruikt geheugen",
         "threads": "Threads",
-        "botsOnline": "Bots online",
+        "botsOnline": "Verbonden bots",
         "uptime": "Uptime"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Aantal threads"
       },
       "aggregateBots": {
-        "title": "Bots online (alle instanties)"
+        "title": "Verbonden bots (alle instanties)"
+      },
+      "legend": {
+        "process": "Proces",
+        "system": "Systeem",
+        "used": "In gebruik",
+        "committed": "Gereserveerd",
+        "max": "Max.",
+        "total": "Totaal",
+        "daemon": "Daemon",
+        "online": "Verbonden"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Gebruiker wordt toegevoegd...",
-      "success": "Gebruiker toegevoegd!",
+      "success": "Gebruiker toegevoegd",
       "error": "Toevoegen van gebruiker mislukt"
     },
     "updateToast": {
       "loading": "Gebruiker bijwerken...",
-      "success": "Gebruiker bijgewerkt!",
+      "success": "Gebruiker bijgewerkt",
       "error": "Bijwerken van gebruiker mislukt"
     },
     "removeToast": {
       "loading": "Gebruikers worden verwijderd...",
-      "success": "Gebruikers verwijderd!",
+      "success": "Gebruikers verwijderd",
       "error": "Verwijderen van gebruikers mislukt"
     },
     "invalidateToast": {
       "loading": "Gebruikers worden uitgelogd...",
-      "success": "Gebruikers uitgelogd!",
+      "success": "Gebruikers uitgelogd",
       "error": "Uitloggen van gebruikers mislukt"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "E-mailadres",
       "role": "Rol",
       "createdAt": "Aangemaakt",
-      "minIssuedAt": "Min. login",
+      "minIssuedAt": "Sessies geldig sinds",
       "actions": "Acties",
       "searchUsernames": "Gebruikersnamen zoeken...",
       "searchEmails": "E-mails zoeken...",
       "searchCreatedAts": "Zoek aanmaakdatums...",
-      "searchMinIssuedAts": "Zoek minimale inlogdatums..."
+      "searchMinIssuedAts": "Sessiedatums zoeken..."
     },
     "removeSelectedTooltip": "Geselecteerde gebruikers verwijderen",
     "logOutSelectedTooltip": "Geselecteerde gebruikers uitloggen",
@@ -125,6 +135,18 @@
       "editUser": "Gebruiker bewerken",
       "impersonate": "Als deze gebruiker inloggen",
       "copyUserId": "Gebruikers-ID kopiëren"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} gebruiker verwijderen?",
+      "title_other": "{{count}} gebruikers verwijderen?",
+      "description": "Dit verwijdert de geselecteerde gebruikers en hun toegang definitief. Je kunt dit niet ongedaan maken.",
+      "confirm": "Gebruikers verwijderen"
+    },
+    "invalidateDialog": {
+      "title_one": "{{count}} gebruiker afmelden?",
+      "title_other": "{{count}} gebruikers afmelden?",
+      "description": "Dit beëindigt alle sessies en tokens van de geselecteerde gebruikers. Ze moeten opnieuw inloggen.",
+      "confirm": "Gebruikers afmelden"
     }
   }
 }

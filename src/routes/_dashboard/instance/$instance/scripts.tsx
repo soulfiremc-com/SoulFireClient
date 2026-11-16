@@ -178,8 +178,8 @@ function InstanceScripts() {
     <InstancePageLayout
       extraCrumbs={[
         {
-          id: "controls",
-          content: t("breadcrumbs.controls"),
+          id: "extensions",
+          content: t("breadcrumbs.extensions"),
         },
       ]}
       pageName={t("pageName.instanceScripts")}
@@ -405,9 +405,9 @@ function Content() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold">
+          <h2 className="text-2xl font-semibold">
             {tInstance("scripts.title")}
-          </h1>
+          </h2>
           <p className="text-sm text-muted-foreground">
             {tInstance("scripts.description")}
           </p>
@@ -520,9 +520,9 @@ function Content() {
           className="flex max-w-3xl flex-col gap-3"
         >
           <div className="flex flex-col gap-1">
-            <h2 id="script-first-use-title" className="text-base font-semibold">
+            <h3 id="script-first-use-title" className="text-base font-semibold">
               {tInstance("scripts.noScripts")}
-            </h2>
+            </h3>
             <p className="text-muted-foreground text-sm">
               {tInstance("scripts.noScriptsDescription")}
             </p>
@@ -642,11 +642,15 @@ function Content() {
             <AlertDialogMedia>
               <Trash2Icon />
             </AlertDialogMedia>
-            <AlertDialogTitle>Delete script?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {tInstance("scripts.deleteDialog.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {deleteTarget
-                ? `This will permanently delete "${deleteTarget.name}". This action cannot be undone.`
-                : "This will permanently delete the script. This action cannot be undone."}
+                ? tInstance("scripts.deleteDialog.description", {
+                    name: deleteTarget.name,
+                  })
+                : tInstance("scripts.deleteDialog.descriptionUnnamed")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

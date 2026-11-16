@@ -44,7 +44,24 @@
         "placeholder": "Drop yer own JVM spells here"
       },
       "back": "Avast",
-      "start": "Hoist anchor"
+      "start": "Hoist anchor",
+      "jar": {
+        "title": "Server jar",
+        "official": "Official",
+        "custom": "Custom",
+        "officialTitle": "Official SoulFire server",
+        "customTitle": "Custom server jar",
+        "officialDescription": "Fetches an' checks the matchin' SoulFire release.",
+        "customDescription": "Runs a jar ye hauled in. SoulFire neither checks nor updates it.",
+        "import": "Haul in a jar",
+        "importSuccess": "Hauled in {{name}}",
+        "importError": "Couldn't haul in the custom SoulFire jar",
+        "selectCustomFirst": "Haul in an' pick a custom jar before settin' sail.",
+        "dialog": {
+          "filter": "Java archive",
+          "title": "Pick the SoulFire server jar"
+        }
+      }
     },
     "mobile": {
       "description": "To set sail on mobile, ye need to do a bit o' handwork first.",

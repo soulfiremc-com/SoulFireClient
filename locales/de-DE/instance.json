@@ -119,12 +119,12 @@
       "network": "Netzwerkadresse",
       "unix": "Unix-Socket"
     },
-    "getProxies": "Proxies abrufen",
+    "getProxies": "Proxy-Anbieter",
     "addProxies": "Proxies hinzufügen",
     "filterPlaceholder": "Proxies filtern...",
     "listImportToast": {
       "loading": "Proxies werden importiert...",
-      "success": "Importierte {{count}} Proxies!",
+      "success": "Importierte {{count}} Proxies",
       "error": "Fehler beim Importieren der Proxies",
       "noProxies": "Keine Proxies zu importieren"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Entferne Proxies...",
-      "success": "Entfernte {{count}} Proxies!",
+      "success": "Entfernte {{count}} Proxies",
       "error": "Fehler beim Entfernen der Proxies"
     },
     "checkToast": {
       "loading": "Prüfe Proxies... {{checked}}/{{total}} (Erfolg: {{success}} Fehlgeschlagen: {{failed}})",
-      "success": "Entfernte {{count}} defekte Proxies!",
-      "error": "Fehler beim Prüfen der Proxies"
+      "success": "Entfernte {{count}} defekte Proxies",
+      "error": "Fehler beim Prüfen der Proxies",
+      "successKept": "{{failed}} von {{total}} Proxies haben die Prüfung nicht bestanden. Es wurden keine Proxies entfernt."
     },
     "checkDialog": {
       "title": "Proxies überprüfen",
-      "description": "Sie sind dabei, {{count}} Proxies zu überprüfen. Ungültige Proxies werden automatisch entfernt.",
-      "confirm": "Prüfung starten"
+      "description": "Du bist dabei, {{count}} Proxies zu prüfen.",
+      "confirm": "Prüfung starten",
+      "removeFailed": "Fehlgeschlagene Proxies entfernen",
+      "removeFailedHelp": "Ein Proxy kann wegen eines vorübergehenden Netzwerkproblems fehlschlagen. Deaktiviere diese Option, um alle Proxies zu behalten und nur das Ergebnis zu sehen."
     },
     "invalidFormat": "Ungültiges Proxy Format",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Importierte Proxys überprüfen?",
-      "description": "Sie haben {{count}} Proxys importiert. Jetzt überprüfen? SoulFire entfernt ungültige Proxys automatisch.",
+      "description": "Du hast {{count}} Proxies importiert. Jetzt prüfen?",
       "confirm": "Proxies überprüfen",
       "skip": "Überspringen"
     },
@@ -186,10 +189,18 @@
       "socks4": "Nur SOCKS4 (flach)",
       "socks5": "Nur SOCKS5 (flach)",
       "noProxies": "Keine Proxies zum Exportieren"
-    }
+    },
+    "removeDialog": {
+      "title_one": "{{count}} Proxy entfernen?",
+      "title_other": "{{count}} Proxies entfernen?",
+      "description": "Dies entfernt die ausgewählten Proxies und ihre Zugangsdaten aus dieser Instanz. Das lässt sich nicht rückgängig machen.",
+      "confirm": "Proxies entfernen"
+    },
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen"
   },
   "account": {
-    "getAccounts": "Konten abrufen",
+    "getAccounts": "Kontoanbieter",
     "addAccounts": "Konten hinzufügen",
     "generateAccounts": "Konten generieren",
     "filterPlaceholder": "Konten filtern...",
@@ -197,7 +208,7 @@
       "loading": "Importiere Konten... {{checked}}/{{total}} (Erfolg: {{success}} Fehlgeschlagen: {{failed}})",
       "allFailed": "Fehler beim Importieren aller Konten",
       "someFailed": "Importierte {{count}} Konten, Fehler beim Importieren von {{failed}} Konten",
-      "noneFailed": "{{count}} Konten importiert!",
+      "noneFailed": "{{count}} Konten importiert",
       "error": "Fehler beim Importieren der Konten",
       "noAccounts": "Keine Konten zum Importieren"
     },
@@ -207,7 +218,7 @@
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Zugangsdaten)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Gerätecode)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh-Token)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
       "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Access-Token)",
       "THE_ALTENING": "Java (TheAltening)",
       "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Zugangsdaten)",
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Konto wird importiert...",
-      "success": "Konto importiert!",
+      "success": "Konto importiert",
       "error": "Fehler beim Importieren des Kontos"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Generieren",
       "generating": "Generiere...",
       "progress": "Konten werden generiert... {{checked}}/{{total}} (Erfolg: {{success}} Fehlgeschlagen: {{failed}})",
-      "success": "{{count}} Konten generiert!",
+      "success": "{{count}} Konten generiert",
       "allFailed": "Fehler beim Generieren aller Konten",
-      "allExist": "Alle Benutzernamen existieren bereits. Aktiviere „Vorhandene Konten überschreiben“, um sie neu zu generieren.",
+      "allExist": "Alle Benutzernamen existieren bereits. Wähle „Vorhandene ersetzen“, um sie neu zu generieren.",
       "error": "Fehler beim Generieren der Konten",
       "invalidAmount": "Bitte geben Sie eine gültige Anzahl ein (mindestens 1)",
       "missingPlaceholder": "Das Namensformat muss einen %d-Platzhalter enthalten"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Konten werden entfernt...",
-      "success": "{{count}} Konten entfernt!",
+      "success": "{{count}} Konten entfernt",
       "error": "Fehler beim Entfernen der Konten"
     },
     "table": {
       "type": "Typ",
-      "profileId": "UUID",
+      "profileId": "Profil-ID",
       "lastKnownName": "Benutzername",
       "searchProfileIds": "Profil-IDs suchen...",
       "searchLastKnownNames": "Letzte bekannte Namen suchen...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "Ausgewählte Konten entfernen",
     "contextMenu": {
-      "openConfig": "Konfiguration öffnen",
+      "openConfig": "Einstellungen öffnen",
       "openMetadata": "Metadaten öffnen",
       "copyProfileId": "Profil-ID kopieren",
       "copyUsername": "Benutzernamen kopieren"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Entspricht dem geerbten Wert",
       "instanceValue": "Instanzwert",
       "defaultValue": "Standardwert",
-      "resetOverride": "Überschreibung zurücksetzen"
+      "resetOverride": "Überschreibung zurücksetzen",
+      "value": {
+        "notSet": "Nicht gesetzt",
+        "on": "An",
+        "off": "Aus",
+        "empty": "Leer",
+        "entries_one": "{{count}} Eintrag",
+        "entries_other": "{{count}} Einträge",
+        "range": "Bereich"
+      },
+      "source": {
+        "bot": "Bot-Überschreibung",
+        "instance": "Von der Instanz übernommen",
+        "default": "Standardwert"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Gerätecode-Authentifizierung",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Schlüssel",
       "valuePlaceholder": "Wert (JSON)",
       "noEntries": "Keine Metadaten-Einträge. Fügen Sie oben einen hinzu.",
-      "loadError": "",
+      "loadError": "Metadaten konnten nicht geladen werden",
       "loadErrorDescription": "",
       "retryLoad": "Erneut versuchen",
       "addSuccess": "Eintrag hinzugefügt",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Eintrag gelöscht",
       "deleteError": "Fehler beim Löschen des Eintrags",
       "duplicateError": "Ein Eintrag mit diesem Namensraum und Schlüssel existiert bereits",
-      "invalidJson": "Ungültiger JSON-Wert"
+      "invalidJson": "Ungültiger JSON-Wert",
+      "namespaceLabel": "Namensraum",
+      "keyLabel": "Schlüssel",
+      "valueLabel": "Wert",
+      "addEntryLegend": "Metadaten-Eintrag hinzufügen",
+      "addEntryButton": "Eintrag hinzufügen",
+      "entryLegend": "Metadaten-Eintrag",
+      "removeEntryButton": "Entfernen"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} Konto entfernen?",
+      "title_other": "{{count}} Konten entfernen?",
+      "description": "Dies entfernt die ausgewählten Konten, ihre gespeicherten Zugangsdaten und ihre Bots aus dieser Instanz. Das lässt sich nicht rückgängig machen.",
+      "confirm": "Konten entfernen"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Schlüssel",
     "valuePlaceholder": "Wert (JSON)",
     "noEntries": "Keine Metadaten-Einträge. Fügen Sie oben einen hinzu.",
+    "loadError": "Metadaten konnten nicht geladen werden",
     "addSuccess": "Eintrag hinzugefügt",
     "addError": "Eintrag konnte nicht hinzugefügt werden",
     "updateError": "Eintrag konnte nicht aktualisiert werden",
     "deleteSuccess": "Eintrag gelöscht",
     "deleteError": "Fehler beim Löschen des Eintrags",
     "duplicateError": "Ein Eintrag mit diesem Namensraum und Schlüssel existiert bereits",
-    "invalidJson": "Ungültiger JSON-Wert"
+    "invalidJson": "Ungültiger JSON-Wert",
+    "namespaceLabel": "Namensraum",
+    "keyLabel": "Schlüssel",
+    "valueLabel": "Wert",
+    "addEntryLegend": "Metadaten-Eintrag hinzufügen",
+    "addEntryButton": "Eintrag hinzufügen",
+    "entryLegend": "Metadaten-Eintrag",
+    "removeEntryButton": "Entfernen"
   },
   "bots": {
     "searchPlaceholder": "Bots suchen...",
-    "onlineCount": "{{online}} online / {{total}} gesamt",
+    "onlineCount": "{{online}} verbunden / {{total}} gesamt",
     "noBots": "Keine Bots konfiguriert. Fügen Sie Konten auf der Seite Kontoeinstellungen hinzu.",
     "noBotsFound": "Keine Bots entsprechen Ihrer Suche.",
     "loadingMore": "Weitere werden geladen...",
     "showingCount": "{{loaded}} von {{total}} werden angezeigt",
     "allLoaded": "Alle {{total}} Bots geladen",
-    "online": "Online",
-    "offline": "Offline",
+    "online": "Verbunden",
+    "offline": "Getrennt",
     "notJoined": "Nicht beigetreten",
     "connectionPhase": {
       "connecting": "Verbinde",
-      "connected": "Verbunden",
-      "spawned": "Online",
+      "connected": "Anmeldung läuft",
+      "spawned": "Verbunden",
       "died": "Tot",
-      "disconnected": "Offline",
+      "disconnected": "Getrennt",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,34 +444,29 @@
     },
     "backToBots": "Zurück zu Bots",
     "tabs": {
-      "overview": "Übersicht",
+      "overview": "Bot-Ansicht",
       "inventory": "Inventar",
       "controls": "Steuerung",
       "terminal": "Terminal"
     },
-    "comingSoon": "Demnächst verfügbar",
-    "terminalPanel": {
-      "title": "Bot-Terminal"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Direkt (kein Proxy)",
       "unavailable": "Nicht verfügbar"
     },
     "positionPanel": {
-      "title": "Position & Rotation",
+      "title": "Position and rotation",
       "position": "Position",
       "rotation": "Rotation",
-      "offline": "Bot ist offline. Positionsdaten sind nur verfügbar, wenn der Bot verbunden ist."
+      "offline": "Der Bot ist getrennt. Positionsdaten sind nur verfügbar, wenn der Bot verbunden ist."
     },
     "chatPanel": {
-      "title": "Chat-Nachrichten",
-      "description": "Chat-Nachrichten dieses Bots werden in einem zukünftigen Update hier angezeigt."
+      "title": "Chat-Nachrichten"
     },
     "commandPanel": {
       "title": "Bot-Befehle",
-      "placeholder": "Befehl an diesen Bot senden...",
-      "description": "Bot-spezifische Befehle werden in einem zukünftigen Update verfügbar sein."
+      "placeholder": "Befehl an diesen Bot senden..."
     },
     "povPanel": {
       "title": "Bot-POV",
@@ -438,7 +479,6 @@
       "offline": "Bot ist offline. Die POV-Ansicht ist nur verfügbar, wenn der Bot verbunden ist."
     },
     "statsPanel": {
-      "title": "Bot-Statistiken",
       "health": "Gesundheit",
       "food": "Nahrung",
       "saturation": "Sättigung",
@@ -451,7 +491,7 @@
       "adventure": "Abenteuer",
       "spectator": "Zuschauer",
       "unknown": "Unbekannt",
-      "offline": "Bot ist offline. Statistiken sind nur verfügbar, wenn der Bot verbunden ist."
+      "offline": "Der Bot ist getrennt. Statistiken sind nur verfügbar, wenn der Bot verbunden ist."
     },
     "inventoryPanel": {
       "title": "Inventar",
@@ -464,7 +504,7 @@
       "dropAll": "Alle fallen lassen",
       "closeContainer": "Schließen",
       "clickHint": "Linksklick: aufnehmen/platzieren | Rechtsklick: halb/ein | Shift+Klick: schnell bewegen | Mittelklick: Hotbar-Slot auswählen",
-      "offline": "Bot ist offline. Das Inventar ist nur verfügbar, wenn der Bot verbunden ist.",
+      "offline": "Der Bot ist getrennt. Das Inventar ist nur verfügbar, wenn der Bot verbunden ist.",
       "buttons": {
         "stonecutterRecipes": "Rezepte",
         "enchantments": "Verzauberungen",
@@ -474,12 +514,12 @@
         "crafterSlots": "Slot-Steuerung",
         "lecternControls": "Buch-Steuerung",
         "actions": "Aktionen",
-        "creativeTabs": ""
+        "creativeTabs": "Kreativ-Tabs"
       },
       "textInput": {
         "title": "Texteingabe",
         "anvilRename": "Gegenstand umbenennen",
-        "creativeSearch": ""
+        "creativeSearch": "Gegenstände suchen"
       },
       "bookPages": {
         "title": "Buchinhalt",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Gegenstand zerstören",
+      "clickHints": {
+        "left": "Linksklick: aufnehmen oder ablegen",
+        "right": "Rechtsklick: Hälfte aufnehmen oder eins ablegen",
+        "shift": "Umschalt+Klick: schnell verschieben",
+        "middle": "Mittelklick: als aktiven Slot wählen"
+      }
     },
     "visualPanel": {
-      "title": "Bot-Ansicht",
+      "title": "Richtung und Welt",
       "compass": "Blickrichtung",
       "lookDirection": "Blickwinkel",
       "lookingUp": "Schaut nach oben",
@@ -502,7 +548,7 @@
       "worldInfo": "Weltinfo",
       "dimension": "Dimension",
       "biome": "Biom",
-      "offline": "Bot ist offline. Visuelle Daten sind nur verfügbar, wenn der Bot verbunden ist."
+      "offline": "Der Bot ist getrennt. Visuelle Daten sind nur verfügbar, wenn der Bot verbunden ist."
     },
     "actionsPanel": {
       "title": "Bot-Aktionen",
@@ -510,7 +556,7 @@
       "rightClick": "Rechtsklick",
       "leftClickDescription": "Entity angreifen oder Block abbauen",
       "rightClickDescription": "Gegenstand benutzen oder interagieren",
-      "offline": "Bot ist offline. Aktionen sind nur verfügbar, wenn der Bot verbunden ist."
+      "offline": "Der Bot ist getrennt. Aktionen sind nur verfügbar, wenn der Bot verbunden ist."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "Nach unten schauen",
       "lookLeft": "Nach links schauen",
       "lookRight": "Nach rechts schauen",
-      "offline": "Bot ist offline. Bewegungssteuerung ist nur verfügbar, wenn der Bot verbunden ist."
+      "offline": "Der Bot ist getrennt. Bewegungssteuerung ist nur verfügbar, wenn der Bot verbunden ist."
     },
     "dialogPanel": {
       "title": "Server-Dialog",
@@ -544,7 +590,45 @@
       "unknownType": "Unbekannt",
       "dismiss": "Schließen",
       "submit": "Absenden",
-      "offline": "Bot ist offline. Dialoge sind nur verfügbar, wenn der Bot verbunden ist."
+      "offline": "Der Bot ist getrennt. Dialoge sind nur verfügbar, wenn der Bot verbunden ist."
+    },
+    "pov": {
+      "title": "Bot-Ansicht",
+      "touchControlling": "Du steuerst diesen Bot. Nutze „Release control“, um aufzuhören.",
+      "popupBlocked": "Erlaube Pop-ups, um das Bot-Ansicht-Fenster abzulösen.",
+      "windowTitle": "SoulFire Bot-Ansicht",
+      "fullscreenUnavailable": "Vollbild ist in diesem Fenster nicht verfügbar.",
+      "textInputLabel": "Minecraft-Texteingabe",
+      "videoLabel": "Live-Bot-Ansicht",
+      "touchMove": "Bewegen",
+      "audioError": "Audio konnte nicht gestartet werden.",
+      "startError": "Die Bot-Ansicht konnte nicht gestartet werden.",
+      "releaseHint": "Drücke {{shortcut}}, um Tastatur und Maus freizugeben.",
+      "captureHint": "Klicke auf die Ansicht und erlaube die Tastatur- und Mauserfassung.",
+      "audioWaiting": "Warte auf die Verbindung der Bot-Ansicht.",
+      "audioWatchFirst": "Beobachte den Bot, um Audio zu nutzen.",
+      "audioUpdateServer": "Aktualisiere den Server, um Audio in der Bot-Ansicht zu nutzen.",
+      "muteAudio": "Audio stummschalten",
+      "unmuteAudio": "Audio einschalten",
+      "audioStarting": "Audio wird gestartet...",
+      "mute": "Stumm",
+      "unmute": "Ton an",
+      "audio": "Audio",
+      "audioUnavailable": "Audio nicht verfügbar",
+      "volume": "Lautstärke der Bot-Ansicht",
+      "reconnect": "Neu verbinden",
+      "showWindow": "Bot-Ansicht-Fenster anzeigen",
+      "attachWindow": "Bot-Ansicht-Fenster andocken",
+      "touch": {
+        "jump": "Springen",
+        "sneak": "Schleichen",
+        "attack": "Angreifen",
+        "use": "Benutzen",
+        "inventory": "Inventar",
+        "keyboard": "Tastatur",
+        "closeMenu": "Menü schließen"
+      },
+      "needsServer": "Die Bot-Ansicht braucht einen verbundenen SoulFire-Server."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Keine Daten"
     },
     "summary": {
-      "online": "Online",
+      "online": "Verbunden",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Verkehr",
       "health": "Gesundheit",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bots online",
-      "online": "Online",
+      "title": "Verbundene Bots",
+      "online": "Verbunden",
       "total": "Gesamt"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Fehler beim Erstellen des Skripts",
     "noScripts": "Noch keine Skripte",
     "noScriptsDescription": "Erstellen Sie Ihr erstes Skript zur Automatisierung von Botaktionen mit dem visuellen, node-basierten Editor.",
-    "createFirstScript": "Ihr erstes Skript erstellen",
+    "createFirstScript": "Skript erstellen",
     "running": "Läuft",
     "paused": "Pausiert",
     "nodes": "Knoten",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Knotenpalette",
-        "search": "Knoten suchen..."
+        "search": "Knoten suchen...",
+        "noResults": "Keine Knoten passen zu deiner Suche",
+        "noResultsDescription": "Versuche einen anderen Begriff oder lösche den aktuellen Filter."
       },
       "logs": {
         "title": "Ausführungsprotokolle",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Knoten erweitern",
-        "collapse": "Knoten reduzieren"
+        "collapse": "Knoten reduzieren",
+        "avgTime": "Durchschnittliche Ausführungszeit: {{avg}} ms (letzte {{count}} Läufe)",
+        "preview": "Vorschau"
       },
       "debug": {
         "copyValue": "Aktuellen Wert kopieren",
-        "clearHistory": "Verlauf löschen"
+        "clearHistory": "Verlauf löschen",
+        "current": "Aktuell ({{time}}):",
+        "noValue": "Noch kein Wert empfangen"
       },
       "edge": {
         "direction": "Kantenrichtung"
@@ -733,14 +823,36 @@
         "title": "Skript-Komplexitätswert"
       },
       "group": {
-        "returnToRoot": "Zur Wurzel zurückkehren (Tab)"
+        "returnToRoot": "Zur Wurzel zurückkehren (Tab)",
+        "root": "Wurzel",
+        "exitHint": "Drücke <key>Tab</key> zum Verlassen",
+        "editHint": "Doppelklick zum Bearbeiten",
+        "noInputs": "Keine Eingänge definiert",
+        "noOutputs": "Keine Ausgänge definiert"
       },
       "quickAdd": {
         "menuLabel": "Schnell hinzufügen - Knotenmenü",
-        "searchPlaceholder": "Knoten suchen..."
+        "searchPlaceholder": "Knoten suchen...",
+        "noResults": "Keine Knoten gefunden",
+        "noResultsDescription": "Versuche einen anderen Suchbegriff.",
+        "navigate": "Navigieren",
+        "select": "Enter zum Auswählen",
+        "close": "Esc zum Schließen"
       },
       "diff": {
-        "tooltip": "Änderungen prüfen"
+        "tooltip": "Änderungen prüfen",
+        "title": "Ungespeicherte Änderungen",
+        "description": "Änderungen seit dem letzten Speichern.",
+        "nodesAdded_one": "{{count}} Knoten hinzugefügt",
+        "nodesAdded_other": "{{count}} Knoten hinzugefügt",
+        "nodesRemoved_one": "{{count}} Knoten entfernt",
+        "nodesRemoved_other": "{{count}} Knoten entfernt",
+        "nodesModified_one": "{{count}} Knoten geändert",
+        "nodesModified_other": "{{count}} Knoten geändert",
+        "edgesAdded_one": "{{count}} Verbindung hinzugefügt",
+        "edgesAdded_other": "{{count}} Verbindungen hinzugefügt",
+        "edgesRemoved_one": "{{count}} Verbindung entfernt",
+        "edgesRemoved_other": "{{count}} Verbindungen entfernt"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Deaktiviert Timeouts pro Knoten und Datenkante",
         "save": "Kontingente speichern",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} neu anordnen",
+        "empty": "Keine eingehenden Werte",
+        "title": "Mehrfacheingang: akzeptiert mehrere Verbindungen",
+        "connectTo": "Verbinde Werte mit {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Skript löschen?",
+      "description": "Dies löscht „{{name}}“ dauerhaft. Das lässt sich nicht rückgängig machen.",
+      "descriptionUnnamed": "Dies löscht das Skript dauerhaft. Das lässt sich nicht rückgängig machen."
+    },
+    "executionStats": "Ausführungsstatistik: {{executed}}/{{max}} Knoten ausgeführt"
   },
   "metadataValidation": {
     "invalidNamespace": "",

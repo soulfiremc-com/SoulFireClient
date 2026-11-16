@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import {
   CalendarIcon,
@@ -434,7 +435,7 @@ function DataTableFilterItem<TData extends RowData>({
             items={joinOperatorItems}
           >
             <SelectTrigger
-              aria-label="Select join operator"
+              aria-label={i18n.t("common:dataTable.selectJoinOperator")}
               aria-controls={joinOperatorListboxId}
               size="sm"
               className="rounded lowercase"
@@ -446,7 +447,9 @@ function DataTableFilterItem<TData extends RowData>({
               className="min-w-(--anchor-width) lowercase"
             >
               <SelectGroup>
-                <SelectLabel>Join operator</SelectLabel>
+                <SelectLabel>
+                  {i18n.t("common:dataTable.joinOperator")}
+                </SelectLabel>
                 {joinOperatorItems.map((joinOperator) => (
                   <SelectItem
                     key={joinOperator.value}
@@ -481,9 +484,13 @@ function DataTableFilterItem<TData extends RowData>({
         </PopoverTrigger>
         <PopoverContent id={fieldListboxId} align="start" className="w-40 p-0">
           <Command>
-            <CommandInput placeholder="Search fields..." />
+            <CommandInput
+              placeholder={i18n.t("common:dataTable.searchFields")}
+            />
             <CommandList>
-              <CommandEmpty>No fields found.</CommandEmpty>
+              <CommandEmpty>
+                {i18n.t("common:dataTable.noFieldsFound")}
+              </CommandEmpty>
               <CommandGroup>
                 {columns.map((column) => (
                   <CommandItem
@@ -545,7 +552,9 @@ function DataTableFilterItem<TData extends RowData>({
         </SelectTrigger>
         <SelectContent id={operatorListboxId}>
           <SelectGroup>
-            <SelectLabel>Filter operator</SelectLabel>
+            <SelectLabel>
+              {i18n.t("common:dataTable.filterOperator")}
+            </SelectLabel>
             {filterOperators.map((operator) => (
               <SelectItem
                 key={operator.value}
@@ -695,7 +704,9 @@ function onFilterInputRender<TData extends RowData>({
           </SelectTrigger>
           <SelectContent id={inputListboxId}>
             <SelectGroup>
-              <SelectLabel>Filter value</SelectLabel>
+              <SelectLabel>
+                {i18n.t("common:dataTable.filterValue")}
+              </SelectLabel>
               {BOOLEAN_FILTER_ITEMS.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
@@ -758,7 +769,9 @@ function onFilterInputRender<TData extends RowData>({
               placeholder={columnMeta?.placeholder ?? "Search options..."}
             />
             <FacetedList>
-              <FacetedEmpty>No options found.</FacetedEmpty>
+              <FacetedEmpty>
+                {i18n.t("common:dataTable.noOptionsFound")}
+              </FacetedEmpty>
               <FacetedGroup>
                 {columnMeta?.options?.map((option) => (
                   <FacetedItem key={option.value} value={option.value}>

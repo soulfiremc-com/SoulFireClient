@@ -113,18 +113,24 @@
         "submit": "Charger depuis une URL",
         "toast": {
           "loading": "Téléchargement des données...",
-          "success": "Données chargées !",
+          "success": "Données chargées",
           "error": "Échec du téléchargement des données",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Supprimer l'instance ?",
+      "description": "Cela supprime définitivement « {{name}} » et ses données. Cette action est irréversible.",
+      "descriptionUnnamed": "Cela supprime définitivement cette instance et ses données. Cette action est irréversible."
     }
   },
   "commandInput": {
     "placeholder": "Entrez une commande (tapez 'help' pour la liste)",
     "emptySuggestions": "Tapez pour demander des suggestions ou appuyez sur Tab.",
-    "noSuggestions": "Aucune suggestion disponible."
+    "noSuggestions": "Aucune suggestion disponible.",
+    "emptySuggestionsPrefix": "Saisissez du texte pour obtenir des suggestions ou appuyez sur"
   },
   "controls": {
     "start": "Démarrer",
@@ -166,7 +172,7 @@
     "restartCount_one": "Redémarrer {{count}} bot",
     "restartCount_other": "Redémarrer {{count}} bots"
   },
-  "botFleetSummary": "{{online}} en ligne · {{desired}} souhaité(s) · {{total}} au total",
+  "botFleetSummary": "{{online}} connectés · {{desired}} à exécuter · {{total}} au total",
   "icon": {
     "invalidName": "Nom de l'icône invalide : {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Asc",
       "desc": "Desc"
-    }
+    },
+    "openFilterMenu": "Ouvrir le menu des filtres",
+    "filterOperator": "Opérateur de filtre",
+    "filterValue": "Valeur du filtre",
+    "sortDirection": "Sens du tri",
+    "selectJoinOperator": "Sélectionner l'opérateur de jointure",
+    "joinOperator": "Opérateur de jointure",
+    "escapeKey": "Échap",
+    "selectDate": "Sélectionner une date",
+    "selectDateRange": "Sélectionner une période",
+    "clearFilter": "Effacer le filtre {{title}}",
+    "clearFilters": "Effacer les filtres",
+    "clear": "Effacer",
+    "from": "De",
+    "to": "À",
+    "sortDirectionFor": "Sens du tri pour {{column}}",
+    "minValue": "Valeur minimale de {{label}}",
+    "maxValue": "Valeur maximale de {{label}}"
   },
   "pluginCard": {
     "version": "Version {{version}}",
@@ -256,13 +279,13 @@
     "website": "Site Internet"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Impossible d'enregistrer {{name}}",
     "namespacesNotFound": "Noms des paramètres introuvables",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Impossible d'enregistrer {{name}}",
       "placeholder": "Ajouter une nouvelle entrée...",
       "add": "Ajouter",
       "remove": "Retirer"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Nombre invalide",
       "description": "La valeur doit être comprise entre {{min}} et {{max}}"
-    }
+    },
+    "minMaxLegend": "Paramètres minimum et maximum"
   },
   "terminal": {
     "noLogs": "Aucun journal pour le moment. Exécutez une commande pour générer une sortie de journal.",
@@ -321,16 +345,37 @@
       "error": "Échec de la connexion à {{device}}"
     },
     "noDevices": "Aucun périphérique trouvé",
-    "broadcastLabel": "Test de diffusion",
     "broadcastToast": {
       "loading": "Diffusion du message en cours...",
-      "success": "Message diffusé !",
+      "success": "Message diffusé",
       "error": "Échec de la diffusion du message"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Activation du script...",
+        "success": "Script activé",
+        "error": "Impossible d'activer le script. Réessayez."
+      },
+      "deactivate": {
+        "loading": "Désactivation du script...",
+        "success": "Script désactivé",
+        "error": "Impossible de désactiver le script. Réessayez."
+      }
+    },
+    "operations": {
+      "activateScript": "Activer le script {{name}}",
+      "deactivateScript": "Désactiver le script {{name}}"
+    },
+    "status": {
+      "active": "Activé",
+      "paused": "Désactivé"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Lire la documentation",
-    "backToDashboard": "Retourner au tableau de bord",
+    "backToDashboard": "Retour aux instances",
     "deleteToast": {
       "loading": "Suppression de l'instance...",
       "success": "Instance supprimée",
@@ -356,9 +401,9 @@
     "settingsGroup": "Paramètres",
     "extensionsGroup": "Extensions",
     "botSettings": "Configuration du bot",
-    "accountSettings": "Paramètres de compte",
+    "accountSettings": "Comptes",
     "metaSettings": "Paramètres de l'instance",
-    "proxySettings": "Paramètres de proxy",
+    "proxySettings": "Proxies",
     "aiSettings": "Paramètres IA",
     "pathfindingSettings": "Paramètres de Pathfinding",
     "discoverPlugins": "Plugins",
@@ -424,10 +469,10 @@
     "instances": "Instances",
     "access": "Accès",
     "settings": "Paramètres",
-    "proxySettings": "Paramètres de proxy",
+    "proxySettings": "Proxies",
     "overview": "Aperçu",
     "users": "Utilisateur·rice·s",
-    "accountSettings": "Paramètres de compte",
+    "accountSettings": "Comptes",
     "metaSettings": "Paramètres de l'instance",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scripts",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "Accès à l'API",
-      "description": "L'API HTTP gRPC SoulFire gère les instances via des requêtes web.",
+      "description": "Utilisez l'API SoulFire pour gérer les instances depuis vos propres programmes.",
       "publicAddress": "Adresse API publique",
       "personalToken": "Token d'API personnel",
       "securityWarning": "Gardez votre jeton API personnel secret. Il donne accès à l'API.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Générer le token",
-      "placeholder": "Cliquez sur \"Générer un token\" ci-dessous",
+      "placeholder": "Sélectionnez « Générer le token » ci-dessous",
       "generating": "Génération du token...",
       "success": "Jeton généré avec succès",
       "error": "Impossible de générer le token",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Impossible de mettre à jour le nom de l'instance"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Impossible de mettre à jour {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filtrer les journaux d'audit...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Suppression des scripts...",
-      "success": "Scripts supprimés !",
+      "success": "Scripts supprimés",
       "error": "Échec de la suppression des scripts"
     },
     "addToast": {
       "loading": "Ajout du script...",
-      "success": "Script ajouté !",
+      "success": "Script ajouté",
       "error": "Échec de l'ajout du script"
     },
     "updateToast": {
       "loading": "Mise à jour du script...",
-      "success": "Script mis à jour !",
+      "success": "Script mis à jour",
       "error": "Échec de la mise à jour du script"
     },
     "restartToast": {
       "loading": "Redémarrage du script...",
-      "success": "Script redémarré !",
+      "success": "Script redémarré",
       "error": "Échec du redémarrage du script"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Aller au bot",
       "copyUsername": "Copier le nom d'utilisateur",
-      "copyUuid": "Copier l'UUID",
+      "copyUuid": "Copier l'ID de profil",
       "copyCoordinates": "Copier les coordonnées"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Connecté",
+    "botOffline": "Déconnecté"
+  },
+  "minecraftActions": {
+    "copyError": "Impossible de copier le texte. Utilisez HTTPS ou autorisez l'accès au presse-papiers.",
+    "openError": "Impossible d'ouvrir le lien.",
+    "popupBlocked": "Votre navigateur a bloqué le nouvel onglet.",
+    "openLink": "Ouvrir le lien"
+  },
+  "instanceIcon": {
+    "label": "Icône",
+    "description": "L'icône de l'instance affichée dans l'application."
+  },
+  "unknown": "Inconnu",
+  "minecraftHead": "Tête Minecraft",
+  "textFile": "Fichier texte"
 }

@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { useSelector } from "@tanstack/react-store";
 import {
   type Edge,
@@ -181,7 +182,7 @@ function PortRow({
         }}
         title={
           isMultiInput
-            ? `Multi-input: accepts multiple connections${port.description ? ` (${port.description})` : ""}`
+            ? `${i18n.t("instance:scripts.editor.multiInput.title")}${port.description ? ` (${port.description})` : ""}`
             : port.description || undefined
         }
       />
@@ -216,7 +217,12 @@ function PortRow({
                 items={multiInputItems}
                 onReorder={onReorderMultiInput}
                 compact
-                emptyLabel={`Connect values to ${translatedLabel}`}
+                emptyLabel={i18n.t(
+                  "instance:scripts.editor.multiInput.connectTo",
+                  {
+                    label: translatedLabel,
+                  },
+                )}
               />
             </div>
           )}
@@ -280,7 +286,10 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
   return (
     <span
       className={`text-3xs font-mono ${colorClass} bg-muted/50 px-1 rounded`}
-      title={`Avg execution time: ${avg.toFixed(2)}ms (last ${times.length} runs)`}
+      title={i18n.t("instance:scripts.editor.node.avgTime", {
+        avg: avg.toFixed(2),
+        count: times.length,
+      })}
     >
       {display}
     </span>

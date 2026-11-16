@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Heap Usada",
         "threads": "Threads",
-        "botsOnline": "Bots Online",
+        "botsOnline": "Bots conectados",
         "uptime": "Tempo de atividade"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Contagem de Threads"
       },
       "aggregateBots": {
-        "title": "Bots Online (Todas as Instâncias)"
+        "title": "Bots conectados (todas as instâncias)"
+      },
+      "legend": {
+        "process": "Processo",
+        "system": "Sistema",
+        "used": "Em uso",
+        "committed": "Reservada",
+        "max": "Máx.",
+        "total": "Total",
+        "daemon": "Daemon",
+        "online": "Conectado"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Adicionando usuário...",
-      "success": "Usuário adicionado!",
+      "success": "Usuário adicionado",
       "error": "Falha ao adicionar usuário"
     },
     "updateToast": {
       "loading": "Atualizando usuário...",
-      "success": "Usuário atualizado!",
+      "success": "Usuário atualizado",
       "error": "Falha ao atualizar usuário"
     },
     "removeToast": {
       "loading": "Removendo usuários...",
-      "success": "Usuários removidos!",
+      "success": "Usuários removidos",
       "error": "Falha ao remover usuários"
     },
     "invalidateToast": {
       "loading": "Encerrando sessões dos usuários...",
-      "success": "Sessões dos usuários encerradas!",
+      "success": "Sessões dos usuários encerradas",
       "error": "Falha ao encerrar sessões dos usuários"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "E-mail",
       "role": "Função",
       "createdAt": "Criado",
-      "minIssuedAt": "Login Mínimo",
+      "minIssuedAt": "Sessões válidas desde",
       "actions": "Ações",
       "searchUsernames": "Pesquisar nomes de usuário...",
       "searchEmails": "Pesquisar e-mails...",
       "searchCreatedAts": "Pesquisar datas de criação...",
-      "searchMinIssuedAts": "Pesquisar datas mínimas de login..."
+      "searchMinIssuedAts": "Buscar datas de sessão..."
     },
     "removeSelectedTooltip": "Remover usuários selecionados",
     "logOutSelectedTooltip": "Desconectar usuários selecionados",
@@ -125,6 +135,18 @@
       "editUser": "Editar usuário",
       "impersonate": "Personificar",
       "copyUserId": "Copiar ID do usuário"
+    },
+    "removeDialog": {
+      "title_one": "Remover {{count}} usuário?",
+      "title_other": "Remover {{count}} usuários?",
+      "description": "Isso exclui permanentemente os usuários selecionados e o acesso deles. Não é possível desfazer.",
+      "confirm": "Remover usuários"
+    },
+    "invalidateDialog": {
+      "title_one": "Desconectar {{count}} usuário?",
+      "title_other": "Desconectar {{count}} usuários?",
+      "description": "Isso encerra todas as sessões e tokens dos usuários selecionados. Eles precisarão entrar novamente.",
+      "confirm": "Desconectar usuários"
     }
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { CellData, Column, RowData } from "@tanstack/react-table";
 import { Check, PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
@@ -86,7 +87,7 @@ export function DataTableFacetedFilter<
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={`Clear ${title} filter`}
+            aria-label={i18n.t("common:dataTable.clearFilter", { title })}
             className="border-dashed"
             onClick={onReset}
           >
@@ -147,7 +148,7 @@ export function DataTableFacetedFilter<
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className="max-h-full">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{i18n.t("common:dataTable.noResults")}</CommandEmpty>
             <CommandGroup className="max-h-[300px] scroll-py-1 overflow-y-auto overflow-x-hidden">
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -186,7 +187,7 @@ export function DataTableFacetedFilter<
                     onSelect={() => onReset()}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    {i18n.t("common:dataTable.clearFilters")}
                   </CommandItem>
                 </CommandGroup>
               </>

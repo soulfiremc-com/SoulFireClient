@@ -150,7 +150,7 @@ const columns: ColumnDef<
     cell: ({ row }) => (
       <div className="flex flex-row items-center justify-start gap-2">
         <UserAvatar
-          username={row.original.user?.username || "Unknown"}
+          username={row.original.user?.username || i18n.t("common:unknown")}
           email={row.original.user?.email || ""}
           className="size-8"
         />

@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Kullanılan Yığın",
         "threads": "İş Parçacıkları",
-        "botsOnline": "Çevrimiçi Botlar",
+        "botsOnline": "Bağlı botlar",
         "uptime": "Çalışma Süresi"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "İş Parçacığı Sayısı"
       },
       "aggregateBots": {
-        "title": "Botlar Çevrimiçi (Tüm Sunucular)"
+        "title": "Bağlı botlar (tüm örnekler)"
+      },
+      "legend": {
+        "process": "İşlem",
+        "system": "Sistem",
+        "used": "Kullanılan",
+        "committed": "Ayrılan",
+        "max": "Maks.",
+        "total": "Toplam",
+        "daemon": "Daemon",
+        "online": "Bağlı"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Kullanıcı ekleniyor...",
-      "success": "Kullanıcı eklendi!",
+      "success": "Kullanıcı eklendi",
       "error": "Kullanıcı eklenemedi"
     },
     "updateToast": {
       "loading": "Kullanıcı güncelleniyor...",
-      "success": "Kullanıcı güncellendi!",
+      "success": "Kullanıcı güncellendi",
       "error": "Kullanıcı güncellenemedi"
     },
     "removeToast": {
       "loading": "Kullanıcılar kaldırılıyor...",
-      "success": "Kullanıcılar kaldırıldı!",
+      "success": "Kullanıcılar kaldırıldı",
       "error": "Kullanıcılar kaldırılamadı"
     },
     "invalidateToast": {
       "loading": "Kullanıcılar çıkış yaptırılıyor...",
-      "success": "Kullanıcılar çıkış yaptı!",
+      "success": "Kullanıcılar çıkış yaptı",
       "error": "Kullanıcıların çıkışı yapılamadı"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Mail Adresi",
       "role": "Rol",
       "createdAt": "Oluşturulma",
-      "minIssuedAt": "Min. Giriş",
+      "minIssuedAt": "Oturumların geçerlilik başlangıcı",
       "actions": "İşlemler",
       "searchUsernames": "Kullanıcı adlarında ara...",
       "searchEmails": "E-postalarda ara...",
       "searchCreatedAts": "Oluşturulma tarihlerini ara...",
-      "searchMinIssuedAts": "Minimum giriş tarihlerini ara..."
+      "searchMinIssuedAts": "Oturum tarihlerinde ara..."
     },
     "removeSelectedTooltip": "Seçili kullanıcıları kaldır",
     "logOutSelectedTooltip": "Seçili kullanıcıların oturumunu kapat",
@@ -125,6 +135,18 @@
       "editUser": "Kullanıcıyı Düzenle",
       "impersonate": "Kimliğe Bürün",
       "copyUserId": "Kullanıcı Kimliğini Kopyala"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} kullanıcı kaldırılsın mı?",
+      "title_other": "{{count}} kullanıcı kaldırılsın mı?",
+      "description": "Bu işlem, seçilen kullanıcıları ve erişimlerini kalıcı olarak siler. Geri alınamaz.",
+      "confirm": "Kullanıcıları kaldır"
+    },
+    "invalidateDialog": {
+      "title_one": "{{count}} kullanıcının oturumu kapatılsın mı?",
+      "title_other": "{{count}} kullanıcının oturumu kapatılsın mı?",
+      "description": "Bu işlem, seçilen kullanıcıların tüm oturumlarını ve jetonlarını sonlandırır. Yeniden giriş yapmaları gerekir.",
+      "confirm": "Kullanıcıların oturumunu kapat"
     }
   }
 }

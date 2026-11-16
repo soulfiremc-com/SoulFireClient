@@ -44,7 +44,24 @@
         "placeholder": "Ur JVM argumints herez"
       },
       "back": "Bak",
-      "start": "Strat"
+      "start": "Strat",
+      "jar": {
+        "title": "Server jar",
+        "official": "Official",
+        "custom": "Custom",
+        "officialTitle": "Official SoulFire server",
+        "customTitle": "Custom server jar",
+        "officialDescription": "Downloadz an verifiez teh matchin SoulFire release.",
+        "customDescription": "Runz an imported jar. SoulFire duz not verify or update it.",
+        "import": "Import jar",
+        "importSuccess": "Imported {{name}}",
+        "importError": "Cud not import teh custom SoulFire jar",
+        "selectCustomFirst": "Import an pick a custom jar b4 startin.",
+        "dialog": {
+          "filter": "Java archive",
+          "title": "Pick SoulFire server jar"
+        }
+      }
     },
     "mobile": {
       "description": "To run teh integrayted servurr on moobile, u haz to doo sum manooal stoopz.",

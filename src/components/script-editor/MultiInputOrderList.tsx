@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "i18next";
 import { GripVertical, Link2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -64,7 +65,9 @@ function ItemCard({
             "nodrag nopan inline-flex size-6 items-center justify-center rounded border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
             compact && "size-5",
           )}
-          aria-label={`Reorder ${item.label}`}
+          aria-label={i18n.t("instance:scripts.editor.multiInput.reorder", {
+            label: item.label,
+          })}
         >
           <GripVertical className={compact ? "size-3" : "size-3.5"} />
         </SortableItemHandle>
@@ -77,7 +80,7 @@ export function MultiInputOrderList({
   items,
   onReorder,
   compact = false,
-  emptyLabel = "No incoming values",
+  emptyLabel = i18n.t("instance:scripts.editor.multiInput.empty"),
 }: MultiInputOrderListProps) {
   if (items.length === 0) {
     return (

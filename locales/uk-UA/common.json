@@ -113,18 +113,24 @@
         "submit": "Завантажити з URL",
         "toast": {
           "loading": "Завантаження даних...",
-          "success": "Дані завантажено!",
+          "success": "Дані завантажено",
           "error": "Не вдалося завантажити дані",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Видалити екземпляр?",
+      "description": "Це назавжди видалить «{{name}}» і пов'язані дані. Скасувати це неможливо.",
+      "descriptionUnnamed": "Це назавжди видалить цей екземпляр і його дані. Скасувати це неможливо."
     }
   },
   "commandInput": {
     "placeholder": "Введіть команду (введіть 'help' для списку)",
     "emptySuggestions": "Введіть текст для отримання підказок або натисніть Tab.",
-    "noSuggestions": "Підказки відсутні."
+    "noSuggestions": "Підказки відсутні.",
+    "emptySuggestionsPrefix": "Почніть вводити, щоб отримати підказки, або натисніть"
   },
   "controls": {
     "start": "Почати",
@@ -174,7 +180,7 @@
     "restartCount_many": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} бажано · {{total}} всього",
+  "botFleetSummary": "{{online}} підключено · {{desired}} мають працювати · {{total}} усього",
   "icon": {
     "invalidName": "Недійсна назва іконки: {{name}}"
   },
@@ -255,7 +261,24 @@
     "sortOrders": {
       "asc": "За зростанням",
       "desc": "За спаданням"
-    }
+    },
+    "openFilterMenu": "Відкрити меню фільтрів",
+    "filterOperator": "Оператор фільтра",
+    "filterValue": "Значення фільтра",
+    "sortDirection": "Напрямок сортування",
+    "selectJoinOperator": "Вибрати оператор об'єднання",
+    "joinOperator": "Оператор об'єднання",
+    "escapeKey": "Escape",
+    "selectDate": "Вибрати дату",
+    "selectDateRange": "Вибрати діапазон дат",
+    "clearFilter": "Очистити фільтр «{{title}}»",
+    "clearFilters": "Очистити фільтри",
+    "clear": "Очистити",
+    "from": "Від",
+    "to": "До",
+    "sortDirectionFor": "Напрямок сортування: {{column}}",
+    "minValue": "Мінімальне значення: {{label}}",
+    "maxValue": "Максимальне значення: {{label}}"
   },
   "pluginCard": {
     "version": "Версія: {{version}}",
@@ -264,13 +287,13 @@
     "website": "Вебсайт"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Не вдалося зберегти: {{name}}",
     "namespacesNotFound": "Простори назв налаштувань не знайдено",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Не вдалося зберегти: {{name}}",
       "placeholder": "Додати новий запис...",
       "add": "Додати",
       "remove": "Видалити"
@@ -281,7 +304,8 @@
     "invalidNumberToast": {
       "title": "Неправильне число",
       "description": "Значення має бути між {{min}} і {{max}}"
-    }
+    },
+    "minMaxLegend": "Налаштування мінімуму й максимуму"
   },
   "terminal": {
     "noLogs": "Журналів ще немає. Виконайте команду, щоб створити вивід журналу.",
@@ -329,16 +353,37 @@
       "error": "Не вдалося підключитися до {{device}}"
     },
     "noDevices": "Пристроїв не знайдено",
-    "broadcastLabel": "Тест трансляції",
     "broadcastToast": {
       "loading": "Трансляція повідомлення...",
-      "success": "Повідомлення транслюється!",
+      "success": "Повідомлення транслюється",
       "error": "Не вдалося транслювати повідомлення"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Увімкнення скрипта...",
+        "success": "Скрипт увімкнено",
+        "error": "Не вдалося ввімкнути скрипт. Спробуйте ще раз."
+      },
+      "deactivate": {
+        "loading": "Вимкнення скрипта...",
+        "success": "Скрипт вимкнено",
+        "error": "Не вдалося вимкнути скрипт. Спробуйте ще раз."
+      }
+    },
+    "operations": {
+      "activateScript": "Увімкнути скрипт {{name}}",
+      "deactivateScript": "Вимкнути скрипт {{name}}"
+    },
+    "status": {
+      "active": "Увімк.",
+      "paused": "Вимк."
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Читати документацію",
-    "backToDashboard": "Назад до панелі",
+    "backToDashboard": "Назад до екземплярів",
     "deleteToast": {
       "loading": "Видалення екземпляра...",
       "success": "Екземпляр видалено",
@@ -364,9 +409,9 @@
     "settingsGroup": "Налаштування",
     "extensionsGroup": "Розширення",
     "botSettings": "Налаштування бота",
-    "accountSettings": "Налаштування акаунта",
+    "accountSettings": "Акаунти",
     "metaSettings": "Налаштування екземпляра",
-    "proxySettings": "Налаштування проксі",
+    "proxySettings": "Проксі",
     "aiSettings": "AI налаштування",
     "pathfindingSettings": "Налаштування пошуку шляху",
     "discoverPlugins": "Плагіни",
@@ -432,10 +477,10 @@
     "instances": "Екземпляри",
     "access": "Доступ",
     "settings": "Налаштування",
-    "proxySettings": "Налаштування проксі",
+    "proxySettings": "Проксі",
     "overview": "Огляд",
     "users": "Користувачі",
-    "accountSettings": "Налаштування акаунта",
+    "accountSettings": "Акаунти",
     "metaSettings": "Налаштування екземпляра",
     "discoverPlugins": "Плагіни",
     "adminScripts": "Скрипти",
@@ -452,7 +497,7 @@
     },
     "api": {
       "title": "API-доступ",
-      "description": "SoulFire gRPC HTTP API керує екземплярами через веб-запити.",
+      "description": "Використовуйте API SoulFire, щоб керувати екземплярами зі своїх програм.",
       "publicAddress": "Публічна адреса API",
       "personalToken": "Особистий API токен",
       "securityWarning": "Зберігайте ваш персональний API-токен у секреті. Він надає доступ до API.",
@@ -460,7 +505,7 @@
     },
     "token": {
       "generate": "Згенерувати токен",
-      "placeholder": "Натисніть 'Згенерувати токен' нижче",
+      "placeholder": "Натисніть «Згенерувати токен» нижче",
       "generating": "Генерація токена...",
       "success": "Токен успішно згенеровано",
       "error": "Не вдалося згенерувати токен",
@@ -489,9 +534,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Не вдалося оновити назву екземпляра"
   },
   "userSettings": {
     "avatar": {
@@ -509,8 +553,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Не вдалося оновити: {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Фільтрувати аудит-логи...",
@@ -566,22 +609,22 @@
     },
     "removeToast": {
       "loading": "Видалення скриптів...",
-      "success": "Скрипти видалено!",
+      "success": "Скрипти видалено",
       "error": "Не вдалося видалити скрипти"
     },
     "addToast": {
       "loading": "Додавання скрипта...",
-      "success": "Скрипт додано!",
+      "success": "Скрипт додано",
       "error": "Не вдалося додати скрипт"
     },
     "updateToast": {
       "loading": "Оновлення скрипта...",
-      "success": "Скрипт оновлено!",
+      "success": "Скрипт оновлено",
       "error": "Не вдалося оновити скрипт"
     },
     "restartToast": {
       "loading": "Перезапуск скрипта...",
-      "success": "Скрипт перезапущено!",
+      "success": "Скрипт перезапущено",
       "error": "Не вдалося перезапустити скрипт"
     },
     "table": {
@@ -606,7 +649,7 @@
     "bot": {
       "goToBot": "Перейти до бота",
       "copyUsername": "Копіювати ім'я користувача",
-      "copyUuid": "Скопіювати UUID",
+      "copyUuid": "Копіювати ID профілю",
       "copyCoordinates": "Скопіювати координати"
     },
     "plugin": {
@@ -662,5 +705,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Підключено",
+    "botOffline": "Відключено"
+  },
+  "minecraftActions": {
+    "copyError": "Не вдалося скопіювати текст. Використовуйте HTTPS або дозвольте доступ до буфера обміну.",
+    "openError": "Не вдалося відкрити посилання.",
+    "popupBlocked": "Браузер заблокував нову вкладку.",
+    "openLink": "Відкрити посилання"
+  },
+  "instanceIcon": {
+    "label": "Значок",
+    "description": "Значок екземпляра, який показується в застосунку."
+  },
+  "unknown": "Невідомо",
+  "minecraftHead": "Голова Minecraft",
+  "textFile": "Текстовий файл"
 }

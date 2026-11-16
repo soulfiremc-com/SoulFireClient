@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { cn } from "@/lib/utils.tsx";
 
 const FALLBACK_SKIN = "MHF_Steve";
@@ -27,7 +28,7 @@ export function MinecraftHead({
   return (
     <img
       src={getMinecraftHeadUrl(skinTextureHash, size)}
-      alt={name ?? "Minecraft head"}
+      alt={name ?? i18n.t("common:minecraftHead")}
       width={size}
       height={size}
       style={{ width: size, height: size }}

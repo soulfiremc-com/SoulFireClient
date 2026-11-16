@@ -119,12 +119,12 @@
       "network": "网络地址",
       "unix": "Unix 套接字"
     },
-    "getProxies": "获取代理服务器",
+    "getProxies": "代理提供商",
     "addProxies": "添加代理服务器",
     "filterPlaceholder": "过滤代理服务器...",
     "listImportToast": {
       "loading": "正在导入代理...",
-      "success": "成功导入 {{count}} 个代理!",
+      "success": "成功导入 {{count}} 个代理",
       "error": "导入代理失败",
       "noProxies": "没有代理可导入"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "正在删除代理...",
-      "success": "删除了 {{count}} 个代理!",
+      "success": "删除了 {{count}} 个代理",
       "error": "删除代理失败"
     },
     "checkToast": {
       "loading": "检查代理中… {{checked}}/{{total}}（成功：{{success}} 失败：{{failed}}）",
-      "success": "删除了 {{count}} 个无效的代理!",
-      "error": "无法检查代理"
+      "success": "删除了 {{count}} 个无效的代理",
+      "error": "无法检查代理",
+      "successKept": "{{total}} 个代理中有 {{failed}} 个未通过检查。没有移除任何代理。"
     },
     "checkDialog": {
       "title": "检查代理服务器",
-      "description": "您即将检查{{count}}个代理。无效的代理将会自动移除。",
-      "confirm": "开始检查"
+      "description": "即将检查 {{count}} 个代理。",
+      "confirm": "开始检查",
+      "removeFailed": "移除未通过的代理",
+      "removeFailedHelp": "代理可能因临时网络问题而未通过。取消此选项可保留所有代理，只查看结果。"
     },
     "invalidFormat": "无效的代理格式",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "检查已导入的代理？",
-      "description": "您已导入 {{count}} 个代理。现在要检查它们吗？SoulFire 会自动移除无效的代理。",
+      "description": "你导入了 {{count}} 个代理。现在检查吗？",
       "confirm": "检查代理服务器",
       "skip": "跳过"
     },
@@ -186,10 +189,17 @@
       "socks4": "仅限SOCKS4（扁平）",
       "socks5": "仅限SOCKS5（扁平）",
       "noProxies": "没有代理可导出"
-    }
+    },
+    "removeDialog": {
+      "title_other": "移除 {{count}} 个代理？",
+      "description": "这会从此实例移除所选代理及其凭据。此操作无法撤销。",
+      "confirm": "移除代理"
+    },
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码"
   },
   "account": {
-    "getAccounts": "获取账户",
+    "getAccounts": "账户提供商",
     "addAccounts": "添加账户",
     "generateAccounts": "生成账户",
     "filterPlaceholder": "筛选账户...",
@@ -215,7 +225,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "导入帐户...",
-      "success": "帐户已导入！",
+      "success": "帐户已导入",
       "error": "导入帐户失败"
     },
     "generate": {
@@ -232,9 +242,9 @@
       "submit": "生成",
       "generating": "正在生成...",
       "progress": "正在生成账户... {{checked}}/{{total}}（成功：{{success}} 失败：{{failed}}）",
-      "success": "已生成 {{count}} 个账户！",
+      "success": "已生成 {{count}} 个账户",
       "allFailed": "未能生成任何账户",
-      "allExist": "所有用户名已存在。请启用“覆盖已有账户”以重新生成。",
+      "allExist": "所有用户名都已存在。选择“替换已有”可重新生成。",
       "error": "生成账户失败",
       "invalidAmount": "请输入有效的数量（至少为 1）",
       "missingPlaceholder": "名称格式必须包含 %d 占位符"
@@ -246,7 +256,7 @@
       "microsoftCredentials": "Microsoft 账户",
       "microsoftDeviceCode": "Microsoft 设备代码",
       "microsoftRefreshToken": "Microsoft 刷新令牌",
-      "microsoftCookies": "Microsoft Cookies",
+      "microsoftCookies": "Microsoft cookies",
       "microsoftAccessToken": "Microsoft 访问令牌",
       "theAltening": "TheAltening 令牌",
       "altProviders": "备用提供方",
@@ -257,12 +267,12 @@
     },
     "removeToast": {
       "loading": "正在删除帐户...",
-      "success": "删除了 {{count}} 个账户!",
+      "success": "删除了 {{count}} 个账户",
       "error": "删除帐户失败"
     },
     "table": {
       "type": "类型",
-      "profileId": "UUID",
+      "profileId": "档案 ID",
       "lastKnownName": "用户名",
       "searchProfileIds": "搜索档案ID...",
       "searchLastKnownNames": "搜索上次已知名称...",
@@ -270,7 +280,7 @@
     },
     "removeSelectedTooltip": "移除所选账户",
     "contextMenu": {
-      "openConfig": "打开配置",
+      "openConfig": "打开设置",
       "openMetadata": "打开元数据",
       "copyProfileId": "复制配置文件ID",
       "copyUsername": "复制用户名"
@@ -294,7 +304,20 @@
       "matchesInheritedValue": "与继承值匹配",
       "instanceValue": "实例值",
       "defaultValue": "默认值",
-      "resetOverride": "重置覆盖"
+      "resetOverride": "重置覆盖",
+      "value": {
+        "notSet": "未设置",
+        "on": "开",
+        "off": "关",
+        "empty": "空",
+        "entries_other": "{{count}} 项",
+        "range": "范围"
+      },
+      "source": {
+        "bot": "机器人专属值",
+        "instance": "继承自实例",
+        "default": "使用默认值"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "设备代码认证",
@@ -341,7 +364,7 @@
       "keyPlaceholder": "键",
       "valuePlaceholder": "值（JSON）",
       "noEntries": "没有元数据条目。请在上方添加。",
-      "loadError": "",
+      "loadError": "无法加载元数据",
       "loadErrorDescription": "",
       "retryLoad": "重试",
       "addSuccess": "条目已添加",
@@ -350,7 +373,19 @@
       "deleteSuccess": "条目已删除",
       "deleteError": "删除条目失败",
       "duplicateError": "具有此命名空间和键的条目已存在",
-      "invalidJson": "无效的JSON值"
+      "invalidJson": "无效的JSON值",
+      "namespaceLabel": "命名空间",
+      "keyLabel": "键",
+      "valueLabel": "值",
+      "addEntryLegend": "添加元数据条目",
+      "addEntryButton": "添加条目",
+      "entryLegend": "元数据条目",
+      "removeEntryButton": "移除"
+    },
+    "removeDialog": {
+      "title_other": "移除 {{count}} 个账户？",
+      "description": "这会从此实例移除所选账户、已保存的凭据及其机器人。此操作无法撤销。",
+      "confirm": "移除账户"
     }
   },
   "instanceMetadata": {
@@ -360,31 +395,39 @@
     "keyPlaceholder": "键",
     "valuePlaceholder": "值（JSON）",
     "noEntries": "没有元数据条目。请在上方添加。",
+    "loadError": "无法加载元数据",
     "addSuccess": "条目已添加",
     "addError": "添加条目失败",
     "updateError": "更新条目失败",
     "deleteSuccess": "条目已删除",
     "deleteError": "删除条目失败",
     "duplicateError": "具有此命名空间和键的条目已存在",
-    "invalidJson": "无效的JSON值"
+    "invalidJson": "无效的JSON值",
+    "namespaceLabel": "命名空间",
+    "keyLabel": "键",
+    "valueLabel": "值",
+    "addEntryLegend": "添加元数据条目",
+    "addEntryButton": "添加条目",
+    "entryLegend": "元数据条目",
+    "removeEntryButton": "移除"
   },
   "bots": {
     "searchPlaceholder": "搜索机器人...",
-    "onlineCount": "{{online}} 在线 / 共 {{total}} 个",
+    "onlineCount": "{{online}} 个已连接 / 共 {{total}} 个",
     "noBots": "未配置机器人。请在账户设置页面添加账户。",
     "noBotsFound": "没有与您的搜索匹配的机器人。",
     "loadingMore": "正在加载更多...",
     "showingCount": "已显示 {{loaded}} / {{total}}",
     "allLoaded": "已加载全部 {{total}} 个机器人",
-    "online": "在线",
-    "offline": "离线",
+    "online": "已连接",
+    "offline": "已断开",
     "notJoined": "未加入",
     "connectionPhase": {
       "connecting": "正在连接",
-      "connected": "已连接",
-      "spawned": "在线",
+      "connected": "正在登录",
+      "spawned": "已连接",
       "died": "已死亡",
-      "disconnected": "离线",
+      "disconnected": "已断开",
       "ping": "{{ms}} 毫秒"
     },
     "runtimeState": {
@@ -398,15 +441,12 @@
     },
     "backToBots": "返回机器人列表",
     "tabs": {
-      "overview": "概况",
+      "overview": "机器人视图",
       "inventory": "背包",
       "controls": "控制",
       "terminal": "终端"
     },
-    "comingSoon": "即将上线",
-    "terminalPanel": {
-      "title": "机器人终端"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "代理服务器",
       "direct": "直接（无代理）",
@@ -416,16 +456,14 @@
       "title": "位置与朝向",
       "position": "位置",
       "rotation": "朝向",
-      "offline": "机器人已离线。仅在机器人连接时可用位置信息。"
+      "offline": "机器人已断开连接。仅在机器人连接时可用位置信息。"
     },
     "chatPanel": {
-      "title": "聊天消息",
-      "description": "该机器人的聊天消息将在未来更新中显示于此。"
+      "title": "聊天消息"
     },
     "commandPanel": {
       "title": "机器人指令",
-      "placeholder": "发送指令到该机器人...",
-      "description": "限定于机器人的指令将在未来的更新中提供。"
+      "placeholder": "发送指令到该机器人..."
     },
     "povPanel": {
       "title": "Bot视角",
@@ -438,7 +476,6 @@
       "offline": "Bot已离线。只有连接时才能渲染视角。"
     },
     "statsPanel": {
-      "title": "Bot状态",
       "health": "生命值",
       "food": "食物值",
       "saturation": "饱食度",
@@ -451,7 +488,7 @@
       "adventure": "冒险模式",
       "spectator": "旁观者模式",
       "unknown": "未知",
-      "offline": "Bot已离线。只有连接时才能显示状态。"
+      "offline": "机器人已断开连接。只有连接时才能显示状态。"
     },
     "inventoryPanel": {
       "title": "背包",
@@ -464,7 +501,7 @@
       "dropAll": "全部丢弃",
       "closeContainer": "关闭",
       "clickHint": "左键：拾取/放置 | 右键：分半/单个 | Shift+点击：快速移动 | 中键：选择快捷栏格",
-      "offline": "Bot已离线。只有连接时才能管理物品栏。",
+      "offline": "机器人已断开连接。只有连接时才能管理物品栏。",
       "buttons": {
         "stonecutterRecipes": "配方",
         "enchantments": "附魔",
@@ -474,12 +511,12 @@
         "crafterSlots": "槽位控制",
         "lecternControls": "书本控制",
         "actions": "操作",
-        "creativeTabs": ""
+        "creativeTabs": "创造模式标签页"
       },
       "textInput": {
         "title": "文本输入",
         "anvilRename": "重命名物品",
-        "creativeSearch": ""
+        "creativeSearch": "搜索物品"
       },
       "bookPages": {
         "title": "书本内容",
@@ -490,10 +527,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "销毁物品",
+      "clickHints": {
+        "left": "左键：拿起或放下",
+        "right": "右键：拿起一半或放下一个",
+        "shift": "Shift+点击：快速移动",
+        "middle": "中键：选为当前槽位"
+      }
     },
     "visualPanel": {
-      "title": "Bot视图",
+      "title": "方向和世界",
       "compass": "朝向",
       "lookDirection": "视角角度",
       "lookingUp": "向上看",
@@ -502,7 +545,7 @@
       "worldInfo": "世界信息",
       "dimension": "维度",
       "biome": "生物群系",
-      "offline": "Bot已离线。只有连接时才能显示视觉数据。"
+      "offline": "机器人已断开连接。只有连接时才能显示视觉数据。"
     },
     "actionsPanel": {
       "title": "机器人操作",
@@ -510,7 +553,7 @@
       "rightClick": "右键点击",
       "leftClickDescription": "攻击实体或破坏方块",
       "rightClickDescription": "使用物品或交互",
-      "offline": "机器人离线。仅在机器人连接时可用操作。"
+      "offline": "机器人已断开连接。仅在机器人连接时可用操作。"
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +572,7 @@
       "lookDown": "向下看",
       "lookLeft": "向左看",
       "lookRight": "向右看",
-      "offline": "机器人离线。只有当机器人已连接时，移动控制可用。"
+      "offline": "机器人已断开连接。只有当机器人已连接时，移动控制可用。"
     },
     "dialogPanel": {
       "title": "服务器对话框",
@@ -544,7 +587,45 @@
       "unknownType": "未知",
       "dismiss": "关闭",
       "submit": "提交",
-      "offline": "机器人离线。只有当机器人已连接时对话框可用。"
+      "offline": "机器人已断开连接。只有当机器人已连接时对话框可用。"
+    },
+    "pov": {
+      "title": "机器人视图",
+      "touchControlling": "你正在控制这个机器人。使用“Release control”可停止。",
+      "popupBlocked": "请允许弹出窗口，以便分离机器人视图窗口。",
+      "windowTitle": "SoulFire 机器人视图",
+      "fullscreenUnavailable": "此窗口无法使用全屏。",
+      "textInputLabel": "Minecraft 文本输入",
+      "videoLabel": "实时机器人视图",
+      "touchMove": "移动",
+      "audioError": "无法启动音频。",
+      "startError": "无法启动机器人视图。",
+      "releaseHint": "按 {{shortcut}} 释放键盘和鼠标。",
+      "captureHint": "点击视图并允许捕获键盘和鼠标。",
+      "audioWaiting": "正在等待机器人视图连接。",
+      "audioWatchFirst": "观看机器人后才能使用音频。",
+      "audioUpdateServer": "更新服务器后才能使用机器人视图音频。",
+      "muteAudio": "将音频静音",
+      "unmuteAudio": "取消音频静音",
+      "audioStarting": "正在启动音频...",
+      "mute": "静音",
+      "unmute": "取消静音",
+      "audio": "音频",
+      "audioUnavailable": "音频不可用",
+      "volume": "机器人视图音量",
+      "reconnect": "重新连接",
+      "showWindow": "显示机器人视图窗口",
+      "attachWindow": "重新附加机器人视图窗口",
+      "touch": {
+        "jump": "跳跃",
+        "sneak": "潜行",
+        "attack": "攻击",
+        "use": "使用",
+        "inventory": "背包",
+        "keyboard": "键盘",
+        "closeMenu": "关闭菜单"
+      },
+      "needsServer": "机器人视图需要已连接的 SoulFire 服务器。"
     }
   },
   "metrics": {
@@ -552,15 +633,15 @@
       "noData": "无数据"
     },
     "summary": {
-      "online": "在线",
+      "online": "已连接",
       "packetsPerSecond": "包/秒",
       "traffic": "流量",
       "health": "生命值",
       "tick": "刻"
     },
     "botsOnline": {
-      "title": "机器人在线",
-      "online": "在线",
+      "title": "已连接的机器人",
+      "online": "已连接",
       "total": "总计"
     },
     "packets": {
@@ -627,7 +708,7 @@
     "createError": "创建脚本失败",
     "noScripts": "尚无脚本",
     "noScriptsDescription": "使用可视化节点编辑器创建第一个脚本来自动化机器人操作。",
-    "createFirstScript": "创建您的第一个脚本",
+    "createFirstScript": "创建脚本",
     "running": "正在运行",
     "paused": "已暂停",
     "nodes": "节点",
@@ -694,7 +775,9 @@
       },
       "palette": {
         "title": "节点面板",
-        "search": "搜索节点..."
+        "search": "搜索节点...",
+        "noResults": "没有与搜索匹配的节点",
+        "noResultsDescription": "换一个词试试，或清除当前筛选。"
       },
       "logs": {
         "title": "执行日志",
@@ -716,11 +799,15 @@
       },
       "node": {
         "expand": "展开节点",
-        "collapse": "折叠节点"
+        "collapse": "折叠节点",
+        "avgTime": "平均执行时间：{{avg}} ms（最近 {{count}} 次运行）",
+        "preview": "预览"
       },
       "debug": {
         "copyValue": "复制当前值",
-        "clearHistory": "清空历史记录"
+        "clearHistory": "清空历史记录",
+        "current": "当前（{{time}}）：",
+        "noValue": "尚未收到值"
       },
       "edge": {
         "direction": "边方向"
@@ -732,14 +819,31 @@
         "title": "脚本复杂度评分"
       },
       "group": {
-        "returnToRoot": "返回根目录（Tab）"
+        "returnToRoot": "返回根目录（Tab）",
+        "root": "根",
+        "exitHint": "按 <key>Tab</key> 退出",
+        "editHint": "双击进行编辑",
+        "noInputs": "未定义输入",
+        "noOutputs": "未定义输出"
       },
       "quickAdd": {
         "menuLabel": "快速添加节点菜单",
-        "searchPlaceholder": "搜索节点..."
+        "searchPlaceholder": "搜索节点...",
+        "noResults": "未找到节点",
+        "noResultsDescription": "换一个搜索词试试。",
+        "navigate": "导航",
+        "select": "Enter 选择",
+        "close": "Esc 关闭"
       },
       "diff": {
-        "tooltip": "查看更改"
+        "tooltip": "查看更改",
+        "title": "未保存的更改",
+        "description": "自上次保存以来的更改。",
+        "nodesAdded_other": "新增 {{count}} 个节点",
+        "nodesRemoved_other": "移除 {{count}} 个节点",
+        "nodesModified_other": "修改 {{count}} 个节点",
+        "edgesAdded_other": "新增 {{count}} 条连线",
+        "edgesRemoved_other": "移除 {{count}} 条连线"
       },
       "dryRun": {
         "saveFirst": "",
@@ -783,8 +887,20 @@
         "disableTimeoutsDescription": "禁用每节点和数据边的超时时间",
         "save": "保存配额",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "调整 {{label}} 的顺序",
+        "empty": "没有传入的值",
+        "title": "多重输入：可接受多个连接",
+        "connectTo": "将值连接到 {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "删除脚本？",
+      "description": "这会永久删除“{{name}}”。此操作无法撤销。",
+      "descriptionUnnamed": "这会永久删除该脚本。此操作无法撤销。"
+    },
+    "executionStats": "执行统计：已执行 {{executed}}/{{max}} 个节点"
   },
   "metadataValidation": {
     "invalidNamespace": "",

@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Ogiltig inmatning: förväntat string, fick undefined",
-    "null": "Ogiltig inmatning: förväntat string, fick null",
-    "number": "Ogiltig inmatning: förväntat string, fick antal",
-    "boolean": "Ogiltig inmatning: förväntat string, fick boolean",
-    "array": "Ogiltig inmatning: förväntat string, fick lista",
-    "object": "Ogiltig inmatning: förväntat string, fick object",
-    "nan": "Ogiltig inmatning: förväntat string, fick NaN",
-    "infinity": "Ogiltig inmatning: förväntat string, fick antal"
+    "undefined": "Ange ett värde.",
+    "null": "Ange ett värde.",
+    "number": "Ange ett värde.",
+    "boolean": "Ange ett värde.",
+    "array": "Ange ett värde.",
+    "object": "Ange ett värde.",
+    "nan": "Ange ett värde.",
+    "infinity": "Ange ett värde."
   },
   "number": {
-    "undefined": "Ogiltig inmatning: förväntat antal, fick undefined",
-    "null": "Ogiltig inmatning: förväntat antal, fick null",
-    "string": "Ogiltig inmatning: förväntat antal, fick string",
-    "boolean": "Ogiltig inmatning: förväntat antal, fick boolean",
-    "array": "Ogiltig inmatning: förväntat antal, fick lista",
-    "object": "Ogiltig inmatning: förväntat antal, fick object",
-    "nan": "Ogiltig inmatning: förväntat antal, fick NaN",
-    "infinity": "Ogiltig inmatning: förväntat antal, fick antal"
+    "undefined": "Ange ett tal.",
+    "null": "Ange ett tal.",
+    "string": "Ange ett tal.",
+    "boolean": "Ange ett tal.",
+    "array": "Ange ett tal.",
+    "object": "Ange ett tal.",
+    "nan": "Ange ett tal.",
+    "infinity": "Ange ett tal."
   },
   "object": {
-    "undefined": "Ogiltig inmatning: förväntat object, fick undefined",
-    "null": "Ogiltig inmatning: förväntat object, fick null",
-    "number": "Ogiltig inmatning: förväntat object, fick antal",
-    "string": "Ogiltig inmatning: förväntat object, fick string",
-    "boolean": "Ogiltig inmatning: förväntat object, fick boolean",
-    "array": "Ogiltig inmatning: förväntat object, fick lista",
-    "nan": "Ogiltig inmatning: förväntat object, fick NaN",
-    "infinity": "Ogiltig inmatning: förväntat object, fick antal"
+    "undefined": "Ange ett giltigt värde.",
+    "null": "Ange ett giltigt värde.",
+    "number": "Ange ett giltigt värde.",
+    "string": "Ange ett giltigt värde.",
+    "boolean": "Ange ett giltigt värde.",
+    "array": "Ange ett giltigt värde.",
+    "nan": "Ange ett giltigt värde.",
+    "infinity": "Ange ett giltigt värde."
   },
-  "email": "Ogiltig(t) e-postadress",
-  "url": "Ogiltig(t) URL",
-  "jwt": "Ogiltig(t) JWT",
-  "emailTooLong": "För stor(t): förväntade string att ha <=255 tecken",
-  "jarSource": "Ogiltigt val: förväntade en av \"official\"|\"custom\"",
-  "generationMode": "Ogiltigt val: förväntade en av \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Ogiltigt val: förväntade en av 0|1"
+  "email": "Ange en giltig e-postadress.",
+  "url": "Ange en giltig URL.",
+  "jwt": "Ange en giltig token.",
+  "emailTooLong": "Använd högst 255 tecken.",
+  "jarSource": "Välj den officiella servern eller en anpassad jar.",
+  "generationMode": "Välj hur befintliga konton ska hanteras.",
+  "userRole": "Välj en roll."
 }

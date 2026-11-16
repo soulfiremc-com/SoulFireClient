@@ -13,6 +13,8 @@ import {
   Dice4Icon,
   Dice5Icon,
   DownloadIcon,
+  EyeIcon,
+  EyeOffIcon,
   GlobeIcon,
   PlusIcon,
   ShoppingCartIcon,
@@ -21,6 +23,7 @@ import {
   Wand2Icon,
 } from "lucide-react";
 import { use, useCallback, useMemo, useState } from "react";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
@@ -50,6 +53,13 @@ import {
 } from "@/components/settings-page.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from "@/components/ui/field.tsx";
 import {
   Dialog,
   DialogContent,
@@ -113,10 +123,11 @@ function ProxyCheckDialog({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: () => void;
+  onConfirm: (removeFailed: boolean) => void;
   count: number;
 }) {
   const { t } = useTranslation("instance");
+  const [removeFailed, setRemoveFailed] = useState(true);
   const queryClient = useQueryClient();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
@@ -157,12 +168,29 @@ function ProxyCheckDialog({
               config={profile}
             />
           ))}
+          <Field orientation="horizontal">
+            <Checkbox
+              id="proxy-check-remove-failed"
+              checked={removeFailed}
+              onCheckedChange={(checked) => setRemoveFailed(checked === true)}
+            />
+            <FieldContent>
+              <FieldLabel htmlFor="proxy-check-remove-failed">
+                {t("proxy.checkDialog.removeFailed")}
+              </FieldLabel>
+              <FieldDescription>
+                {t("proxy.checkDialog.removeFailedHelp")}
+              </FieldDescription>
+            </FieldContent>
+          </Field>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             {t("common:cancel")}
           </Button>
-          <Button onClick={onConfirm}>{t("proxy.checkDialog.confirm")}</Button>
+          <Button onClick={() => onConfirm(removeFailed)}>
+            {t("proxy.checkDialog.confirm")}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -228,7 +256,7 @@ function saveProxyFile(content: string, filename: string) {
         title: filename,
         filters: [
           {
-            name: "Text File",
+            name: i18n.t("common:textFile"),
             extensions: ["txt"],
           },
         ],
@@ -356,6 +384,7 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
         label={i18n.t("instance:proxy.table.password")}
       />
     ),
+    cell: ({ row }) => <ProxyPassword password={row.original.password} />,
     meta: {
       get label() {
         return i18n.t("instance:proxy.table.password");
@@ -369,6 +398,31 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
     enableColumnFilter: true,
   },
 ];
+
+function ProxyPassword({ password }: { password?: string }) {
+  const { t } = useTranslation("instance");
+  const [visible, setVisible] = useState(false);
+
+  if (!password) return null;
+
+  return (
+    <span className="flex items-center gap-1">
+      <span className="font-mono">{visible ? password : "•".repeat(8)}</span>
+      <Button
+        variant="ghost"
+        size="icon-xs"
+        aria-label={t(visible ? "proxy.hidePassword" : "proxy.showPassword")}
+        aria-pressed={visible}
+        onClick={(event) => {
+          event.stopPropagation();
+          setVisible((current) => !current);
+        }}
+      >
+        {visible ? <EyeOffIcon /> : <EyeIcon />}
+      </Button>
+    </span>
+  );
+}
 
 function GetProxiesButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
@@ -444,11 +498,14 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
     instanceInfo.id,
     removeProxyEntriesMutation,
   );
-  const performProxyCheck = useCallback(() => {
-    if (importedProxies === null) return;
-    checkProxies(importedProxies);
-    setImportedProxies(null);
-  }, [checkProxies, importedProxies]);
+  const performProxyCheck = useCallback(
+    (removeFailed: boolean) => {
+      if (importedProxies === null) return;
+      checkProxies(importedProxies, removeFailed);
+      setImportedProxies(null);
+    },
+    [checkProxies, importedProxies],
+  );
 
   return (
     <>
@@ -547,7 +604,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           isPending={isImporting}
           filters={[
             {
-              name: "Text File",
+              name: i18n.t("common:textFile"),
               mimeType: "text/plain",
               extensions: ["txt"],
             },
@@ -610,9 +667,9 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           setCheckDialogOpen(open);
           if (!open) setImportedProxies(null);
         }}
-        onConfirm={() => {
+        onConfirm={(removeFailed) => {
           setCheckDialogOpen(false);
-          performProxyCheck();
+          performProxyCheck(removeFailed);
         }}
         count={importedProxies?.length ?? 0}
       />
@@ -629,6 +686,7 @@ function ExtraHeader(props: {
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
+  const [removeOpen, setRemoveOpen] = useState(false);
   // Batch remove proxies mutation
   const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
@@ -685,11 +743,17 @@ function ExtraHeader(props: {
     instanceInfo.id,
     removeProxyEntriesMutation,
   );
-  const performProxyCheck = useCallback(() => {
-    checkProxies(
-      props.table.getFilteredSelectedRowModel().rows.map((row) => row.original),
-    );
-  }, [checkProxies, props.table]);
+  const performProxyCheck = useCallback(
+    (removeFailed: boolean) => {
+      checkProxies(
+        props.table
+          .getFilteredSelectedRowModel()
+          .rows.map((row) => row.original),
+        removeFailed,
+      );
+    },
+    [checkProxies, props.table],
+  );
 
   return (
     <>
@@ -702,9 +766,9 @@ function ExtraHeader(props: {
       <ProxyCheckDialog
         open={checkDialogOpen}
         onOpenChange={setCheckDialogOpen}
-        onConfirm={() => {
+        onConfirm={(removeFailed) => {
           setCheckDialogOpen(false);
-          performProxyCheck();
+          performProxyCheck(removeFailed);
         }}
         count={selectedProxyCount}
       />
@@ -739,7 +803,18 @@ function ExtraHeader(props: {
       </DropdownMenu>
       <DataTableActionBarAction
         tooltip={t("proxy.removeSelectedTooltip")}
-        onClick={() => {
+        onClick={() => setRemoveOpen(true)}
+      >
+        <TrashIcon />
+      </DataTableActionBarAction>
+      <ConfirmDialog
+        open={removeOpen}
+        onOpenChange={setRemoveOpen}
+        icon={<TrashIcon />}
+        title={t("proxy.removeDialog.title", { count: selectedProxyCount })}
+        description={t("proxy.removeDialog.description")}
+        confirmLabel={t("proxy.removeDialog.confirm")}
+        onConfirm={() => {
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
@@ -755,9 +830,7 @@ function ExtraHeader(props: {
             },
           });
         }}
-      >
-        <TrashIcon />
-      </DataTableActionBarAction>
+      />
       <DataTableActionBarSelection table={props.table} />
     </>
   );
@@ -787,8 +860,8 @@ function ProxySettings() {
     <InstancePageLayout
       extraCrumbs={[
         {
-          id: "settings",
-          content: t("breadcrumbs.settings"),
+          id: "controls",
+          content: t("breadcrumbs.controls"),
         },
       ]}
       pageName={t("pageName.proxySettings")}

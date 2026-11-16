@@ -44,7 +44,24 @@
         "placeholder": "Twoje argumenty JVM tutaj"
       },
       "back": "Wróć",
-      "start": "Rozpocznij"
+      "start": "Rozpocznij",
+      "jar": {
+        "title": "Plik jar serwera",
+        "official": "Oficjalny",
+        "custom": "Własny",
+        "officialTitle": "Oficjalny serwer SoulFire",
+        "customTitle": "Własny plik jar serwera",
+        "officialDescription": "Pobiera i weryfikuje pasujące wydanie SoulFire.",
+        "customDescription": "Uruchamia zaimportowany plik jar. SoulFire go nie weryfikuje ani nie aktualizuje.",
+        "import": "Importuj jar",
+        "importSuccess": "Zaimportowano {{name}}",
+        "importError": "Nie udało się zaimportować własnego pliku jar SoulFire",
+        "selectCustomFirst": "Przed uruchomieniem zaimportuj i wybierz własny plik jar.",
+        "dialog": {
+          "filter": "Archiwum Java",
+          "title": "Wybierz plik jar serwera SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Aby uruchomić zintegrowany serwer na urządzeniu mobilnym, musisz wykonać kilka ręcznych kroków.",

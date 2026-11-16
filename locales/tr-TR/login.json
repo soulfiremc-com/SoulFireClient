@@ -44,7 +44,24 @@
         "placeholder": "JVM argümanlarınızı buraya girin"
       },
       "back": "Geri Dön",
-      "start": "Başlat"
+      "start": "Başlat",
+      "jar": {
+        "title": "Sunucu jar dosyası",
+        "official": "Resmi",
+        "custom": "Özel",
+        "officialTitle": "Resmi SoulFire sunucusu",
+        "customTitle": "Özel sunucu jar dosyası",
+        "officialDescription": "Eşleşen SoulFire sürümünü indirir ve doğrular.",
+        "customDescription": "İçe aktarılan bir jar dosyasını çalıştırır. SoulFire bunu doğrulamaz veya güncellemez.",
+        "import": "Jar içe aktar",
+        "importSuccess": "{{name}} içe aktarıldı",
+        "importError": "Özel SoulFire jar dosyası içe aktarılamadı",
+        "selectCustomFirst": "Başlatmadan önce özel bir jar içe aktarın ve seçin.",
+        "dialog": {
+          "filter": "Java arşivi",
+          "title": "SoulFire sunucu jar dosyasını seçin"
+        }
+      }
     },
     "mobile": {
       "description": "Entegre sunucuyu mobilde çalıştırmak için birkaç manuel adımı tamamlamanız gerekiyor.",

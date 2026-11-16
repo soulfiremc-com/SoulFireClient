@@ -122,7 +122,6 @@ import {
   type BotContainerButtonClickRequest,
   BotContainerButtonClickRequestSchema,
   type BotInfoResponse,
-  BotInfoResponseSchema,
   type BotInventoryClickRequest,
   BotInventoryClickRequestSchema,
   type BotInventoryStateResponse,
@@ -183,6 +182,7 @@ import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
+import { demoBotInfo } from "@/demo-data.ts";
 
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/bot/$botId",
@@ -194,7 +194,7 @@ export const Route = createFileRoute(
       queryFn: async (queryProps): Promise<BotInfoResponse> => {
         const transport = createTransport();
         if (transport === null) {
-          return create(BotInfoResponseSchema, {});
+          return demoBotInfo;
         }
         const botService = createRpcClient(BotService, transport);
         const result = await Effect.runPromise(
@@ -320,7 +320,7 @@ function BotDetail() {
                 }
               >
                 <ArrowLeftIcon data-icon="inline-start" />
-                Back to Bots
+                {t("bots.backToBots")}
               </Button>
             </EmptyContent>
           </Empty>
@@ -1177,12 +1177,12 @@ function InventorySlotDisplay({
     : isCreativeTrash
       ? [t("bots.inventoryPanel.creativeTrashHint")]
       : [
-          "Left click: Pick up/place",
-          "Right click: Pick up half/place one",
-          "Shift+click: Quick move",
+          t("bots.inventoryPanel.clickHints.left"),
+          t("bots.inventoryPanel.clickHints.right"),
+          t("bots.inventoryPanel.clickHints.shift"),
         ];
   if (onMiddleClick && !isCreativeCatalog) {
-    clickHints.push("Middle click: Select as active slot");
+    clickHints.push(t("bots.inventoryPanel.clickHints.middle"));
   }
 
   const handleClick = (e: React.MouseEvent) => {

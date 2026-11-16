@@ -54,8 +54,8 @@
     "reset": {
       "button": "Reset local data",
       "loading": "Resetting SoulFire data...",
-      "success": "SoulFire data reset successfully. Try starting again.",
-      "error": "Failed to reset SoulFire data",
+      "success": "SoulFire data reset. Try starting again.",
+      "error": "Could not reset SoulFire data",
       "confirmTitle": "Reset local SoulFire data?",
       "confirmDescription": "This permanently deletes the data of the local SoulFire server on this computer, including its projects, accounts, proxies, and scripts.",
       "keep": "Keep my data"
@@ -69,7 +69,24 @@
         "reset": "Reset JVM arguments to the default"
       },
       "back": "Back",
-      "start": "Start local server"
+      "start": "Start local server",
+      "jar": {
+        "title": "Server jar",
+        "official": "Official",
+        "custom": "Custom",
+        "officialTitle": "Official SoulFire server",
+        "customTitle": "Custom server jar",
+        "officialDescription": "Downloads and verifies the matching SoulFire release.",
+        "customDescription": "Runs an imported jar. SoulFire does not verify or update it.",
+        "import": "Import jar",
+        "importSuccess": "Imported {{name}}",
+        "importError": "Could not import the custom SoulFire jar",
+        "selectCustomFirst": "Import and select a custom jar before starting.",
+        "dialog": {
+          "filter": "Java archive",
+          "title": "Select SoulFire server jar"
+        }
+      }
     },
     "mobile": {
       "description": "To run the SoulFire server on this device, you need to complete a few manual steps.",
@@ -159,7 +176,7 @@
     "toast": {
       "loading": "Connecting to server...",
       "success": "Connected to server",
-      "error": "Failed to connect to server"
+      "error": "Could not connect to server"
     },
     "form": {
       "address": {
@@ -187,7 +204,7 @@
     "description": "If you have an account, we have sent a code to <bold>{{email}}</bold>. Enter it below.",
     "toast": {
       "loading": "Checking code...",
-      "success": "Logged in",
+      "success": "Signed in",
       "error": "Code is invalid"
     },
     "back": "Back"

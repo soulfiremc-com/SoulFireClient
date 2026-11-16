@@ -1,5 +1,5 @@
 // Examples verified against the published TypeScript and Python SDKs.
-export const SDK_EXAMPLE_VERSION = "2.10.6";
+export const SDK_EXAMPLE_VERSION = "2.10.7";
 export const SDK_RECIPES = ["list-bots", "read-state", "send-chat"] as const;
 export type SdkRecipe = (typeof SDK_RECIPES)[number];
 export type SdkLanguage = "typescript" | "python";

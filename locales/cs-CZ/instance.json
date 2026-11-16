@@ -119,12 +119,12 @@
       "network": "Síťová adresa",
       "unix": "Unixový socket"
     },
-    "getProxies": "Získat proxy servery",
+    "getProxies": "Poskytovatelé proxy serverů",
     "addProxies": "Přidat proxy servery",
     "filterPlaceholder": "Filtrovat proxy...",
     "listImportToast": {
       "loading": "Importuji proxy...",
-      "success": "{{count}} proxy importováno!",
+      "success": "{{count}} proxy importováno",
       "error": "Nepodařilo se importovat proxy.",
       "noProxies": "Žádné proxy k importu"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Odstraňuji proxy...",
-      "success": "{{count}} proxy odstraněno!",
+      "success": "{{count}} proxy odstraněno",
       "error": "Nepodařilo se odstranit proxy."
     },
     "checkToast": {
       "loading": "Kontrola proxy... {{checked}}/{{total}} (Úspěšných: {{success}} Neúspěšných: {{failed}})",
-      "success": "{{count}} nefunkčních proxy odstraněno!",
-      "error": "Nepodařilo se zkontrolovat proxy."
+      "success": "{{count}} nefunkčních proxy odstraněno",
+      "error": "Nepodařilo se zkontrolovat proxy.",
+      "successKept": "Kontrolou neprošlo {{failed}} z {{total}} proxy serverů. Žádný proxy server nebyl odebrán."
     },
     "checkDialog": {
       "title": "Zkontrolovat proxy servery",
-      "description": "Chystáte se zkontrolovat {{count}} proxy serverů. Neplatné proxy budou automaticky odstraněny.",
-      "confirm": "Spustit kontrolu"
+      "description": "Chystáte se zkontrolovat proxy servery: {{count}}.",
+      "confirm": "Spustit kontrolu",
+      "removeFailed": "Odebrat proxy servery, které selžou",
+      "removeFailedHelp": "Proxy server může selhat kvůli dočasnému problému se sítí. Zrušte tuto volbu, pokud chcete ponechat všechny proxy servery a jen vidět výsledek."
     },
     "invalidFormat": "Neplatný formát proxy",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Zkontrolovat importované proxy?",
-      "description": "Importovali jste {{count}} proxy. Zkontrolovat je nyní? SoulFire automaticky odstraní neplatné proxy.",
+      "description": "Importováno proxy serverů: {{count}}. Zkontrolovat je teď?",
       "confirm": "Zkontrolovat proxy servery",
       "skip": "Přeskočit"
     },
@@ -186,10 +189,20 @@
       "socks4": "Pouze SOCKS4 (plochý)",
       "socks5": "Pouze SOCKS5 (plochý)",
       "noProxies": "Žádné proxy k exportu"
-    }
+    },
+    "removeDialog": {
+      "title_one": "Odebrat {{count}} proxy server?",
+      "title_few": "Odebrat {{count}} proxy servery?",
+      "title_many": "Odebrat {{count}} proxy serveru?",
+      "title_other": "Odebrat {{count}} proxy serverů?",
+      "description": "Tím se z této instance odeberou vybrané proxy servery a jejich přihlašovací údaje. Tuto akci nelze vrátit zpět.",
+      "confirm": "Odebrat proxy servery"
+    },
+    "showPassword": "Zobrazit heslo",
+    "hidePassword": "Skrýt heslo"
   },
   "account": {
-    "getAccounts": "Získat účty",
+    "getAccounts": "Poskytovatelé účtů",
     "addAccounts": "Přidat účty",
     "generateAccounts": "Vygenerovat účty",
     "filterPlaceholder": "Filtrovat účty...",
@@ -197,7 +210,7 @@
       "loading": "Importuji účty... {{checked}}/{{total}} (Úspěšných: {{success}} Neúspěšných: {{failed}})",
       "allFailed": "Nepodařilo se importovat žádné účty.",
       "someFailed": "Importováno {{count}} účtů, nepodařilo se importovat {{failed}} účtů.",
-      "noneFailed": "{{count}} účtů importováno!",
+      "noneFailed": "{{count}} účtů importováno",
       "error": "Nepodařilo se importovat účty.",
       "noAccounts": "Žádné účty k importu"
     },
@@ -215,7 +228,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Importuji účet...",
-      "success": "Účet importován!",
+      "success": "Účet importován",
       "error": "Nepodařilo se importovat účet"
     },
     "generate": {
@@ -232,9 +245,9 @@
       "submit": "Generovat",
       "generating": "Generuje se...",
       "progress": "Generování účtů... {{checked}}/{{total}} (Úspěšně: {{success}} Neúspěšně: {{failed}})",
-      "success": "Vygenerováno {{count}} účtů!",
+      "success": "Vygenerováno {{count}} účtů",
       "allFailed": "Nepodařilo se vygenerovat žádné účty",
-      "allExist": "Všechna uživatelská jména již existují. Pro jejich opětovné vygenerování povolte možnost \"Přepsat existující účty\".",
+      "allExist": "Všechna uživatelská jména již existují. Zvolte „Nahradit existující“ a vygenerujte je znovu.",
       "error": "Nepodařilo se vygenerovat účty",
       "invalidAmount": "Zadejte prosím platný počet (alespoň 1)",
       "missingPlaceholder": "Formát jména musí obsahovat zástupný znak %d"
@@ -244,10 +257,10 @@
       "bedrockEdition": "Bedrock Edition",
       "offline": "Offline",
       "microsoftCredentials": "Microsoft přihlašovací údaje",
-      "microsoftDeviceCode": "Microsoft Device Code",
-      "microsoftRefreshToken": "Microsoft Refresh Token",
+      "microsoftDeviceCode": "Microsoft device code",
+      "microsoftRefreshToken": "Microsoft refresh token",
       "microsoftCookies": "Microsoft cookies",
-      "microsoftAccessToken": "Microsoft Access Token",
+      "microsoftAccessToken": "Microsoft access token",
       "theAltening": "TheAltening token",
       "altProviders": "Alternativní poskytovatelé",
       "dialog": {
@@ -257,12 +270,12 @@
     },
     "removeToast": {
       "loading": "Odstraňuji účty...",
-      "success": "{{count}} účtů odstraněno!",
+      "success": "{{count}} účtů odstraněno",
       "error": "Nepodařilo se odstranit účty"
     },
     "table": {
       "type": "Typ",
-      "profileId": "UUID",
+      "profileId": "ID profilu",
       "lastKnownName": "Uživatelské jméno",
       "searchProfileIds": "Hledat ID profilů...",
       "searchLastKnownNames": "Hledat poslední známá jména...",
@@ -270,7 +283,7 @@
     },
     "removeSelectedTooltip": "Odebrat vybrané účty",
     "contextMenu": {
-      "openConfig": "Otevřít konfiguraci",
+      "openConfig": "Otevřít nastavení",
       "openMetadata": "Otevřít metadata",
       "copyProfileId": "Kopírovat ID profilu",
       "copyUsername": "Kopírovat uživatelské jméno"
@@ -294,7 +307,23 @@
       "matchesInheritedValue": "Shoduje se s převzatou hodnotou",
       "instanceValue": "Hodnota instance",
       "defaultValue": "Výchozí hodnota",
-      "resetOverride": "Obnovit přepsání"
+      "resetOverride": "Obnovit přepsání",
+      "value": {
+        "notSet": "Nenastaveno",
+        "on": "Zap.",
+        "off": "Vyp.",
+        "empty": "Prázdné",
+        "entries_one": "{{count}} položka",
+        "entries_few": "{{count}} položky",
+        "entries_many": "{{count}} položky",
+        "entries_other": "{{count}} položek",
+        "range": "Rozsah"
+      },
+      "source": {
+        "bot": "Přepsáno pro bota",
+        "instance": "Zděděno z instance",
+        "default": "Výchozí hodnota"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Ověření pomocí kódu zařízení",
@@ -341,7 +370,7 @@
       "keyPlaceholder": "Klíč",
       "valuePlaceholder": "Hodnota (JSON)",
       "noEntries": "Žádné položky metadat. Přidejte jednu výše.",
-      "loadError": "",
+      "loadError": "Metadata se nepodařilo načíst",
       "loadErrorDescription": "",
       "retryLoad": "Opakovat",
       "addSuccess": "Položka byla přidána",
@@ -350,7 +379,22 @@
       "deleteSuccess": "Záznam byl smazán",
       "deleteError": "Nepodařilo se smazat záznam",
       "duplicateError": "Záznam s tímto jmenným prostorem a klíčem již existuje",
-      "invalidJson": "Neplatná hodnota JSON"
+      "invalidJson": "Neplatná hodnota JSON",
+      "namespaceLabel": "Jmenný prostor",
+      "keyLabel": "Klíč",
+      "valueLabel": "Hodnota",
+      "addEntryLegend": "Přidat položku metadat",
+      "addEntryButton": "Přidat položku",
+      "entryLegend": "Položka metadat",
+      "removeEntryButton": "Odebrat"
+    },
+    "removeDialog": {
+      "title_one": "Odebrat {{count}} účet?",
+      "title_few": "Odebrat {{count}} účty?",
+      "title_many": "Odebrat {{count}} účtu?",
+      "title_other": "Odebrat {{count}} účtů?",
+      "description": "Tím se z této instance odeberou vybrané účty, jejich uložené přihlašovací údaje a jejich boti. Tuto akci nelze vrátit zpět.",
+      "confirm": "Odebrat účty"
     }
   },
   "instanceMetadata": {
@@ -360,31 +404,39 @@
     "keyPlaceholder": "Klíč",
     "valuePlaceholder": "Hodnota (JSON)",
     "noEntries": "Žádné položky metadat. Přidejte jednu výše.",
+    "loadError": "Metadata se nepodařilo načíst",
     "addSuccess": "Položka byla přidána",
     "addError": "Nepodařilo se přidat položku",
     "updateError": "Nepodařilo se aktualizovat položku",
     "deleteSuccess": "Záznam byl smazán",
     "deleteError": "Nepodařilo se smazat záznam",
     "duplicateError": "Záznam s tímto jmenným prostorem a klíčem již existuje",
-    "invalidJson": "Neplatná hodnota JSON"
+    "invalidJson": "Neplatná hodnota JSON",
+    "namespaceLabel": "Jmenný prostor",
+    "keyLabel": "Klíč",
+    "valueLabel": "Hodnota",
+    "addEntryLegend": "Přidat položku metadat",
+    "addEntryButton": "Přidat položku",
+    "entryLegend": "Položka metadat",
+    "removeEntryButton": "Odebrat"
   },
   "bots": {
     "searchPlaceholder": "Vyhledat boty...",
-    "onlineCount": "{{online}} online / {{total}} celkem",
+    "onlineCount": "{{online}} připojeno / {{total}} celkem",
     "noBots": "Žádné boty nejsou nastaveny. Přidejte účty na stránce Nastavení účtu.",
     "noBotsFound": "Žádní boti neodpovídají vašemu hledání.",
     "loadingMore": "Načítání dalších...",
     "showingCount": "Zobrazeno {{loaded}} z {{total}}",
     "allLoaded": "Všech {{total}} botů načteno",
-    "online": "Online",
-    "offline": "Offline",
+    "online": "Připojeno",
+    "offline": "Odpojeno",
     "notJoined": "Nepřipojený",
     "connectionPhase": {
       "connecting": "Připojování",
-      "connected": "Připojeno",
-      "spawned": "Online",
+      "connected": "Přihlašování",
+      "spawned": "Připojeno",
       "died": "Mrtvý",
-      "disconnected": "Offline",
+      "disconnected": "Odpojeno",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +450,12 @@
     },
     "backToBots": "Zpět na boty",
     "tabs": {
-      "overview": "Přehled",
+      "overview": "Pohled bota",
       "inventory": "Inventář",
       "controls": "Ovládací prvky",
       "terminal": "Terminál"
     },
-    "comingSoon": "Již brzy",
-    "terminalPanel": {
-      "title": "Terminál Bota"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy server",
       "direct": "Přímé spojení (bez proxy)",
@@ -416,16 +465,14 @@
       "title": "Pozice a rotace",
       "position": "Pozice",
       "rotation": "Rotace",
-      "offline": "Bot je offline. Údaje o pozici jsou k dispozici pouze, když je bot připojen."
+      "offline": "Bot je odpojen. Údaje o pozici jsou k dispozici pouze, když je bot připojen."
     },
     "chatPanel": {
-      "title": "Zprávy chatu",
-      "description": "Zprávy chatu od tohoto bota se zde objeví v některé z příštích aktualizací."
+      "title": "Zprávy chatu"
     },
     "commandPanel": {
       "title": "Příkazy bota",
-      "placeholder": "Odeslat příkaz tomuto botovi...",
-      "description": "Příkazy specifické pro bota budou dostupné v některé z příštích aktualizací."
+      "placeholder": "Odeslat příkaz tomuto botovi..."
     },
     "povPanel": {
       "title": "Pohled bota",
@@ -438,7 +485,6 @@
       "offline": "Bot je offline. Zobrazení pohledu je dostupné pouze když je bot připojen."
     },
     "statsPanel": {
-      "title": "Statistiky bota",
       "health": "Zdraví",
       "food": "Jídlo",
       "saturation": "Nasycení",
@@ -451,7 +497,7 @@
       "adventure": "Dobrodružství",
       "spectator": "Divák",
       "unknown": "Neznámý",
-      "offline": "Bot je offline. Statistiky jsou dostupné pouze když je bot připojen."
+      "offline": "Bot je odpojen. Statistiky jsou dostupné pouze když je bot připojen."
     },
     "inventoryPanel": {
       "title": "Inventář",
@@ -464,7 +510,7 @@
       "dropAll": "Vyhodit vše",
       "closeContainer": "Zavřít",
       "clickHint": "Levé kliknutí: zvednout/umístit | Pravé kliknutí: polovina/jeden | Shift+kliknutí: rychlý přesun | Prostřední kliknutí: výběr slotu v hotbaru",
-      "offline": "Bot je offline. Inventář je dostupný pouze když je bot připojen.",
+      "offline": "Bot je odpojen. Inventář je dostupný pouze když je bot připojen.",
       "buttons": {
         "stonecutterRecipes": "Recepty",
         "enchantments": "Očarování",
@@ -474,12 +520,12 @@
         "crafterSlots": "Ovládání slotů",
         "lecternControls": "Ovládání knihy",
         "actions": "Akce",
-        "creativeTabs": ""
+        "creativeTabs": "Kreativní karty"
       },
       "textInput": {
         "title": "Textové pole",
         "anvilRename": "Přejmenovat předmět",
-        "creativeSearch": ""
+        "creativeSearch": "Hledat předměty"
       },
       "bookPages": {
         "title": "Obsah knihy",
@@ -490,10 +536,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Zničit předmět",
+      "clickHints": {
+        "left": "Levé tlačítko: vzít nebo položit",
+        "right": "Pravé tlačítko: vzít polovinu nebo položit jeden",
+        "shift": "Shift+klik: rychlý přesun",
+        "middle": "Prostřední tlačítko: vybrat jako aktivní slot"
+      }
     },
     "visualPanel": {
-      "title": "Pohled bota",
+      "title": "Směr a svět",
       "compass": "Směr pohledu",
       "lookDirection": "Úhel pohledu",
       "lookingUp": "Dívá se nahoru",
@@ -502,7 +554,7 @@
       "worldInfo": "Informace o světě",
       "dimension": "Dimenze",
       "biome": "Biom",
-      "offline": "Bot je offline. Vizuální data jsou dostupná pouze když je bot připojen."
+      "offline": "Bot je odpojen. Vizuální data jsou dostupná pouze když je bot připojen."
     },
     "actionsPanel": {
       "title": "Akce bota",
@@ -510,7 +562,7 @@
       "rightClick": "Pravé kliknutí",
       "leftClickDescription": "Zaútočit na entitu nebo rozbít blok",
       "rightClickDescription": "Použít předmět nebo interagovat",
-      "offline": "Bot je offline. Akce jsou k dispozici pouze když je bot připojen."
+      "offline": "Bot je odpojen. Akce jsou k dispozici pouze když je bot připojen."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +581,7 @@
       "lookDown": "Podívat se dolů",
       "lookLeft": "Podívat se vlevo",
       "lookRight": "Podívat se vpravo",
-      "offline": "Bot je offline. Ovládání pohybu je dostupné pouze, když je bot připojen."
+      "offline": "Bot je odpojen. Ovládání pohybu je dostupné pouze, když je bot připojen."
     },
     "dialogPanel": {
       "title": "Serverový dialog",
@@ -544,7 +596,45 @@
       "unknownType": "Neznámý",
       "dismiss": "Zavřít",
       "submit": "Odeslat",
-      "offline": "Bot je offline. Dialogy jsou k dispozici pouze když je bot připojen."
+      "offline": "Bot je odpojen. Dialogy jsou k dispozici pouze když je bot připojen."
+    },
+    "pov": {
+      "title": "Pohled bota",
+      "touchControlling": "Ovládáte tohoto bota. Ukončíte to tlačítkem „Release control“.",
+      "popupBlocked": "Povolte vyskakovací okna, abyste mohli odpojit okno pohledu bota.",
+      "windowTitle": "Pohled bota SoulFire",
+      "fullscreenUnavailable": "Režim celé obrazovky není v tomto okně dostupný.",
+      "textInputLabel": "Zadávání textu v Minecraftu",
+      "videoLabel": "Živý pohled bota",
+      "touchMove": "Pohyb",
+      "audioError": "Zvuk se nepodařilo spustit.",
+      "startError": "Pohled bota se nepodařilo spustit.",
+      "releaseHint": "Stisknutím {{shortcut}} uvolníte klávesnici a myš.",
+      "captureHint": "Klikněte na pohled a povolte zachytávání klávesnice a myši.",
+      "audioWaiting": "Čeká se na připojení pohledu bota.",
+      "audioWatchFirst": "Sledujte bota, abyste mohli používat zvuk.",
+      "audioUpdateServer": "Aktualizujte server, abyste mohli používat zvuk v pohledu bota.",
+      "muteAudio": "Ztlumit zvuk",
+      "unmuteAudio": "Zapnout zvuk",
+      "audioStarting": "Spouštění zvuku...",
+      "mute": "Ztlumit",
+      "unmute": "Zrušit ztlumení",
+      "audio": "Zvuk",
+      "audioUnavailable": "Zvuk není dostupný",
+      "volume": "Hlasitost pohledu bota",
+      "reconnect": "Znovu připojit",
+      "showWindow": "Zobrazit okno pohledu bota",
+      "attachWindow": "Připojit okno pohledu bota",
+      "touch": {
+        "jump": "Skok",
+        "sneak": "Plížení",
+        "attack": "Útok",
+        "use": "Použít",
+        "inventory": "Inventář",
+        "keyboard": "Klávesnice",
+        "closeMenu": "Zavřít nabídku"
+      },
+      "needsServer": "Pohled bota vyžaduje připojený server SoulFire."
     }
   },
   "metrics": {
@@ -552,15 +642,15 @@
       "noData": "Žádná data"
     },
     "summary": {
-      "online": "Online",
+      "online": "Připojeno",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Provoz",
       "health": "Zdraví",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Boti online",
-      "online": "Online",
+      "title": "Připojení boti",
+      "online": "Připojeno",
       "total": "Celkem"
     },
     "packets": {
@@ -627,7 +717,7 @@
     "createError": "Nepodařilo se vytvořit skript",
     "noScripts": "Zatím žádné skripty",
     "noScriptsDescription": "Vytvořte svůj první skript pro automatizaci akcí bota pomocí vizuálního editoru založeného na uzlech.",
-    "createFirstScript": "Vytvořte svůj první skript",
+    "createFirstScript": "Vytvořit skript",
     "running": "Běží",
     "paused": "Pozastaveno",
     "nodes": "uzly",
@@ -694,7 +784,9 @@
       },
       "palette": {
         "title": "Paleta uzlů",
-        "search": "Hledat uzly..."
+        "search": "Hledat uzly...",
+        "noResults": "Hledání neodpovídá žádný uzel",
+        "noResultsDescription": "Zkuste jiný výraz nebo vymažte aktuální filtr."
       },
       "logs": {
         "title": "Protokoly spuštění",
@@ -719,11 +811,15 @@
       },
       "node": {
         "expand": "Rozbalit uzel",
-        "collapse": "Sbalit uzel"
+        "collapse": "Sbalit uzel",
+        "avgTime": "Průměrná doba běhu: {{avg}} ms (poslední běhy: {{count}})",
+        "preview": "Náhled"
       },
       "debug": {
         "copyValue": "Kopírovat aktuální hodnotu",
-        "clearHistory": "Vymazat historii"
+        "clearHistory": "Vymazat historii",
+        "current": "Aktuální ({{time}}):",
+        "noValue": "Zatím nebyla přijata žádná hodnota"
       },
       "edge": {
         "direction": "Směr hrany"
@@ -735,14 +831,46 @@
         "title": "Skóre složitosti skriptu"
       },
       "group": {
-        "returnToRoot": "Vrátit se na kořen (Tab)"
+        "returnToRoot": "Vrátit se na kořen (Tab)",
+        "root": "Kořen",
+        "exitHint": "Stisknutím <key>Tab</key> odejdete",
+        "editHint": "Dvojklikem upravíte",
+        "noInputs": "Nejsou definovány žádné vstupy",
+        "noOutputs": "Nejsou definovány žádné výstupy"
       },
       "quickAdd": {
         "menuLabel": "Rychlé přidání uzlu – nabídka",
-        "searchPlaceholder": "Hledat uzly..."
+        "searchPlaceholder": "Hledat uzly...",
+        "noResults": "Nenalezeny žádné uzly",
+        "noResultsDescription": "Zkuste jiný hledaný výraz.",
+        "navigate": "Navigace",
+        "select": "Enter vybere",
+        "close": "Esc zavře"
       },
       "diff": {
-        "tooltip": "Zkontrolovat změny"
+        "tooltip": "Zkontrolovat změny",
+        "title": "Neuložené změny",
+        "description": "Změny od posledního uložení.",
+        "nodesAdded_one": "Přidán {{count}} uzel",
+        "nodesAdded_few": "Přidány {{count}} uzly",
+        "nodesAdded_many": "Přidáno {{count}} uzlu",
+        "nodesAdded_other": "Přidáno {{count}} uzlů",
+        "nodesRemoved_one": "Odebrán {{count}} uzel",
+        "nodesRemoved_few": "Odebrány {{count}} uzly",
+        "nodesRemoved_many": "Odebráno {{count}} uzlu",
+        "nodesRemoved_other": "Odebráno {{count}} uzlů",
+        "nodesModified_one": "Změněn {{count}} uzel",
+        "nodesModified_few": "Změněny {{count}} uzly",
+        "nodesModified_many": "Změněno {{count}} uzlu",
+        "nodesModified_other": "Změněno {{count}} uzlů",
+        "edgesAdded_one": "Přidáno {{count}} spojení",
+        "edgesAdded_few": "Přidána {{count}} spojení",
+        "edgesAdded_many": "Přidáno {{count}} spojení",
+        "edgesAdded_other": "Přidáno {{count}} spojení",
+        "edgesRemoved_one": "Odebráno {{count}} spojení",
+        "edgesRemoved_few": "Odebrána {{count}} spojení",
+        "edgesRemoved_many": "Odebráno {{count}} spojení",
+        "edgesRemoved_other": "Odebráno {{count}} spojení"
       },
       "dryRun": {
         "saveFirst": "",
@@ -789,8 +917,20 @@
         "disableTimeoutsDescription": "Zakáže časové limity pro jednotlivé uzly a datové hrany",
         "save": "Uložit limity",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Změnit pořadí: {{label}}",
+        "empty": "Žádné příchozí hodnoty",
+        "title": "Vícenásobný vstup: přijímá více spojení",
+        "connectTo": "Připojte hodnoty k {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Smazat skript?",
+      "description": "Tím se trvale smaže „{{name}}“. Tuto akci nelze vrátit zpět.",
+      "descriptionUnnamed": "Tím se skript trvale smaže. Tuto akci nelze vrátit zpět."
+    },
+    "executionStats": "Statistika běhu: spuštěno {{executed}}/{{max}} uzlů"
   },
   "metadataValidation": {
     "invalidNamespace": "",

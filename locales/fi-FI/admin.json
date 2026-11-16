@@ -7,7 +7,7 @@
         "cpu": "Suoritin",
         "heapUsed": "Käytetty kasa",
         "threads": "Säikeet",
-        "botsOnline": "Botit verkossa",
+        "botsOnline": "Yhdistetyt botit",
         "uptime": "Käyttöaika"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Säikeiden määrä"
       },
       "aggregateBots": {
-        "title": "Botit verkossa (kaikissa instansseissa)"
+        "title": "Yhdistetyt botit (kaikki instanssit)"
+      },
+      "legend": {
+        "process": "Prosessi",
+        "system": "Järjestelmä",
+        "used": "Käytössä",
+        "committed": "Varattu",
+        "max": "Enint.",
+        "total": "Yhteensä",
+        "daemon": "Daemon",
+        "online": "Yhdistetty"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Lisätään käyttäjää...",
-      "success": "Käyttäjä lisätty!",
+      "success": "Käyttäjä lisätty",
       "error": "Käyttäjän lisääminen epäonnistui"
     },
     "updateToast": {
       "loading": "Päivitetään käyttäjää...",
-      "success": "Käyttäjä päivitetty!",
+      "success": "Käyttäjä päivitetty",
       "error": "Käyttäjän päivitys epäonnistui"
     },
     "removeToast": {
       "loading": "Poistetaan käyttäjiä...",
-      "success": "Käyttäjät poistettu!",
+      "success": "Käyttäjät poistettu",
       "error": "Käyttäjien poistaminen epäonnistui"
     },
     "invalidateToast": {
       "loading": "Kirjataan käyttäjiä ulos...",
-      "success": "Käyttäjät kirjattu ulos!",
+      "success": "Käyttäjät kirjattu ulos",
       "error": "Uloskirjautuminen epäonnistui"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Sähköposti",
       "role": "Rooli",
       "createdAt": "Luotu",
-      "minIssuedAt": "Min. kirjautuminen",
+      "minIssuedAt": "Istunnot voimassa alkaen",
       "actions": "Toiminnot",
       "searchUsernames": "Etsi käyttäjätunnuksia...",
       "searchEmails": "Etsi sähköpostiosoitteita...",
       "searchCreatedAts": "Etsi luontipäivämääriä...",
-      "searchMinIssuedAts": "Etsi vähimmäiskirjautumispäivämääriä..."
+      "searchMinIssuedAts": "Hae istuntojen päivämääriä..."
     },
     "removeSelectedTooltip": "Poista valitut käyttäjät",
     "logOutSelectedTooltip": "Kirjaa valitut käyttäjät ulos",
@@ -125,6 +135,18 @@
       "editUser": "Muokkaa käyttäjää",
       "impersonate": "Aja käyttäjäksi",
       "copyUserId": "Kopioi käyttäjätunnus"
+    },
+    "removeDialog": {
+      "title_one": "Poistetaanko {{count}} käyttäjä?",
+      "title_other": "Poistetaanko {{count}} käyttäjää?",
+      "description": "Tämä poistaa valitut käyttäjät ja heidän käyttöoikeutensa pysyvästi. Tätä ei voi kumota.",
+      "confirm": "Poista käyttäjät"
+    },
+    "invalidateDialog": {
+      "title_one": "Kirjataanko {{count}} käyttäjä ulos?",
+      "title_other": "Kirjataanko {{count}} käyttäjää ulos?",
+      "description": "Tämä päättää valittujen käyttäjien kaikki istunnot ja tokenit. Heidän on kirjauduttava uudelleen.",
+      "confirm": "Kirjaa käyttäjät ulos"
     }
   }
 }

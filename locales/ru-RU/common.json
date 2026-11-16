@@ -113,18 +113,24 @@
         "submit": "Загрузить из URL",
         "toast": {
           "loading": "Загрузка данных...",
-          "success": "Данные загружены!",
+          "success": "Данные загружены",
           "error": "Не удалось загрузить данные",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Удалить экземпляр?",
+      "description": "Это навсегда удалит «{{name}}» и связанные данные. Отменить это нельзя.",
+      "descriptionUnnamed": "Это навсегда удалит этот экземпляр и его данные. Отменить это нельзя."
     }
   },
   "commandInput": {
     "placeholder": "Введите команду (введите 'help' для списка)",
     "emptySuggestions": "Начните вводить для получения подсказок или нажмите Tab.",
-    "noSuggestions": "Подсказки отсутствуют."
+    "noSuggestions": "Подсказки отсутствуют.",
+    "emptySuggestionsPrefix": "Начните вводить, чтобы получить подсказки, или нажмите"
   },
   "controls": {
     "start": "Запуск",
@@ -174,7 +180,7 @@
     "restartCount_many": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} онлайн · {{desired}} требуется · {{total}} всего",
+  "botFleetSummary": "{{online}} подключено · {{desired}} должны работать · {{total}} всего",
   "icon": {
     "invalidName": "Недопустимое имя иконки: {{name}}"
   },
@@ -255,7 +261,24 @@
     "sortOrders": {
       "asc": "По возрастанию",
       "desc": "По убыванию"
-    }
+    },
+    "openFilterMenu": "Открыть меню фильтров",
+    "filterOperator": "Оператор фильтра",
+    "filterValue": "Значение фильтра",
+    "sortDirection": "Направление сортировки",
+    "selectJoinOperator": "Выбрать оператор объединения",
+    "joinOperator": "Оператор объединения",
+    "escapeKey": "Escape",
+    "selectDate": "Выбрать дату",
+    "selectDateRange": "Выбрать диапазон дат",
+    "clearFilter": "Очистить фильтр «{{title}}»",
+    "clearFilters": "Очистить фильтры",
+    "clear": "Очистить",
+    "from": "От",
+    "to": "До",
+    "sortDirectionFor": "Направление сортировки: {{column}}",
+    "minValue": "Минимальное значение: {{label}}",
+    "maxValue": "Максимальное значение: {{label}}"
   },
   "pluginCard": {
     "version": "Версия: {{version}}",
@@ -264,13 +287,13 @@
     "website": "Сайт"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Не удалось сохранить: {{name}}",
     "namespacesNotFound": "Настройки пространства имен не найдены",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Не удалось сохранить: {{name}}",
       "placeholder": "Добавить новую запись...",
       "add": "Добавить",
       "remove": "Удалить"
@@ -281,7 +304,8 @@
     "invalidNumberToast": {
       "title": "Неверное число",
       "description": "Значение должно быть от {{min}} до {{max}}"
-    }
+    },
+    "minMaxLegend": "Настройки минимума и максимума"
   },
   "terminal": {
     "noLogs": "Пока нет логов. Выполните команду для вывода логов.",
@@ -329,16 +353,37 @@
       "error": "Не удалось подключиться к {{device}}"
     },
     "noDevices": "Устройства не найдены",
-    "broadcastLabel": "Тест трансляции",
     "broadcastToast": {
       "loading": "Транслирование сообщения...",
-      "success": "Сообщение отправлено!",
+      "success": "Сообщение отправлено",
       "error": "Не удалось отправить сообщение"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Включение скрипта...",
+        "success": "Скрипт включён",
+        "error": "Не удалось включить скрипт. Повторите попытку."
+      },
+      "deactivate": {
+        "loading": "Выключение скрипта...",
+        "success": "Скрипт выключен",
+        "error": "Не удалось выключить скрипт. Повторите попытку."
+      }
+    },
+    "operations": {
+      "activateScript": "Включить скрипт {{name}}",
+      "deactivateScript": "Выключить скрипт {{name}}"
+    },
+    "status": {
+      "active": "Вкл.",
+      "paused": "Выкл."
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Прочитать документацию",
-    "backToDashboard": "Назад на главную панель",
+    "backToDashboard": "Назад к экземплярам",
     "deleteToast": {
       "loading": "Удаление экземпляра...",
       "success": "Экземпляр удален",
@@ -364,9 +409,9 @@
     "settingsGroup": "Настройки",
     "extensionsGroup": "Расширения",
     "botSettings": "Настройки ботов",
-    "accountSettings": "Настройки аккаунтов",
+    "accountSettings": "Аккаунты",
     "metaSettings": "Настройки экземпляра",
-    "proxySettings": "Настройки прокси",
+    "proxySettings": "Прокси",
     "aiSettings": "Настройки ИИ",
     "pathfindingSettings": "Настройки поиска пути",
     "discoverPlugins": "Плагины",
@@ -432,10 +477,10 @@
     "instances": "Экземпляры",
     "access": "Доступ",
     "settings": "Настройки",
-    "proxySettings": "Настройки прокси",
+    "proxySettings": "Прокси",
     "overview": "Обзор",
     "users": "Пользователи",
-    "accountSettings": "Настройки аккаунтов",
+    "accountSettings": "Аккаунты",
     "metaSettings": "Настройки экземпляра",
     "discoverPlugins": "Плагины",
     "adminScripts": "Скрипты",
@@ -452,7 +497,7 @@
     },
     "api": {
       "title": "Доступ через API",
-      "description": "SoulFire gRPC HTTP API управляет экземплярами через веб-запросы.",
+      "description": "Используйте API SoulFire, чтобы управлять экземплярами из своих программ.",
       "publicAddress": "Публичный API адрес",
       "personalToken": "Персональный токен API",
       "securityWarning": "Держите свой персональный API-токен в секрете. Он предоставляет доступ к API.",
@@ -460,7 +505,7 @@
     },
     "token": {
       "generate": "Сгенерировать токен",
-      "placeholder": "Нажмите 'Сгенерировать токен' ниже",
+      "placeholder": "Нажмите «Сгенерировать токен» ниже",
       "generating": "Генерация токена...",
       "success": "Токен успешно сгенерирован",
       "error": "Не удалось сгенерировать токен",
@@ -489,9 +534,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Не удалось обновить имя экземпляра"
   },
   "userSettings": {
     "avatar": {
@@ -509,8 +553,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Не удалось обновить: {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Фильтровать журнал аудита...",
@@ -566,22 +609,22 @@
     },
     "removeToast": {
       "loading": "Удаление скрипта...",
-      "success": "Скрипты удален!",
+      "success": "Скрипты удален",
       "error": "Не удалось удалить скрипт"
     },
     "addToast": {
       "loading": "Добавление скрипта...",
-      "success": "Скрипт добавлен!",
+      "success": "Скрипт добавлен",
       "error": "Не удалось добавить скрипт"
     },
     "updateToast": {
       "loading": "Обновление скрипта...",
-      "success": "Скрипт обновлен!",
+      "success": "Скрипт обновлен",
       "error": "Не удалось обновить скрипт"
     },
     "restartToast": {
       "loading": "Перезапуск скрипта...",
-      "success": "Скрипт перезапущен!",
+      "success": "Скрипт перезапущен",
       "error": "Не удалось перезапустить скрипт"
     },
     "table": {
@@ -606,7 +649,7 @@
     "bot": {
       "goToBot": "Перейти к боту",
       "copyUsername": "Скопировать имя пользователя",
-      "copyUuid": "Скопировать UUID",
+      "copyUuid": "Копировать ID профиля",
       "copyCoordinates": "Скопировать координаты"
     },
     "plugin": {
@@ -662,5 +705,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Подключён",
+    "botOffline": "Отключён"
+  },
+  "minecraftActions": {
+    "copyError": "Не удалось скопировать текст. Используйте HTTPS или разрешите доступ к буферу обмена.",
+    "openError": "Не удалось открыть ссылку.",
+    "popupBlocked": "Браузер заблокировал новую вкладку.",
+    "openLink": "Открыть ссылку"
+  },
+  "instanceIcon": {
+    "label": "Значок",
+    "description": "Значок экземпляра, который показывается в приложении."
+  },
+  "unknown": "Неизвестно",
+  "minecraftHead": "Голова Minecraft",
+  "textFile": "Текстовый файл"
 }

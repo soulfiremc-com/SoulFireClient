@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Mémoire utilisée par le tas",
         "threads": "Threads",
-        "botsOnline": "Bots en ligne",
+        "botsOnline": "Bots connectés",
         "uptime": "Temps de fonctionnement"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Nombre de threads"
       },
       "aggregateBots": {
-        "title": "Bots en ligne (toutes les instances)"
+        "title": "Bots connectés (toutes les instances)"
+      },
+      "legend": {
+        "process": "Processus",
+        "system": "Système",
+        "used": "Utilisée",
+        "committed": "Réservée",
+        "max": "Max.",
+        "total": "Total",
+        "daemon": "Daemon",
+        "online": "Connecté"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Ajout de l'utilisateur...",
-      "success": "Utilisateur ajouté !",
+      "success": "Utilisateur ajouté",
       "error": "Impossible d'ajouter l'utilisateur"
     },
     "updateToast": {
       "loading": "Mise à jour de l'utilisateur...",
-      "success": "Utilisateur mis à jour !",
+      "success": "Utilisateur mis à jour",
       "error": "Impossible de mettre à jour l'utilisateur"
     },
     "removeToast": {
       "loading": "Suppression des utilisateurs...",
-      "success": "Utilisateurs supprimés !",
+      "success": "Utilisateurs supprimés",
       "error": "Impossible de supprimer les utilisateurs"
     },
     "invalidateToast": {
       "loading": "Déconnexion des utilisateurs...",
-      "success": "Utilisateurs déconnectés !",
+      "success": "Utilisateurs déconnectés",
       "error": "Échec de la déconnexion des utilisateurs"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Email",
       "role": "Rôle",
       "createdAt": "Créé",
-      "minIssuedAt": "Connexion minimum",
+      "minIssuedAt": "Sessions valides depuis",
       "actions": "Actions",
       "searchUsernames": "Rechercher des noms d'utilisateur...",
       "searchEmails": "Rechercher des emails...",
       "searchCreatedAts": "Rechercher des dates de création...",
-      "searchMinIssuedAts": "Rechercher des dates de connexion minimales..."
+      "searchMinIssuedAts": "Rechercher des dates de session..."
     },
     "removeSelectedTooltip": "Supprimer les utilisateurs sélectionnés",
     "logOutSelectedTooltip": "Déconnecter les utilisateurs sélectionnés",
@@ -125,6 +135,18 @@
       "editUser": "Modifier l'utilisateur",
       "impersonate": "Se connecter en tant qu'utilisateur",
       "copyUserId": "Copier l'ID de l'utilisateur"
+    },
+    "removeDialog": {
+      "title_one": "Supprimer {{count}} utilisateur ?",
+      "title_other": "Supprimer {{count}} utilisateurs ?",
+      "description": "Cela supprime définitivement les utilisateurs sélectionnés et leur accès. Cette action est irréversible.",
+      "confirm": "Supprimer les utilisateurs"
+    },
+    "invalidateDialog": {
+      "title_one": "Déconnecter {{count}} utilisateur ?",
+      "title_other": "Déconnecter {{count}} utilisateurs ?",
+      "description": "Cela met fin à toutes les sessions et à tous les tokens des utilisateurs sélectionnés. Ils devront se reconnecter.",
+      "confirm": "Déconnecter les utilisateurs"
     }
   }
 }

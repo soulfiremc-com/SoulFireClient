@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
+import i18n from "i18next";
 import {
   type PovInputEvent,
   PovInputEvent_Kind as Kind,
@@ -65,7 +66,7 @@ export function PovTouchControls({
       }}
     >
       <fieldset
-        aria-label="Move"
+        aria-label={i18n.t("instance:bots.pov.touchMove")}
         className="pointer-events-auto absolute bottom-4 left-4 flex size-20 touch-none items-center justify-center rounded-full border border-white/40 bg-black/30 text-white select-none"
         onPointerDown={(event) => {
           event.preventDefault();
@@ -80,18 +81,18 @@ export function PovTouchControls({
         onPointerCancel={reset}
         onLostPointerCapture={reset}
       >
-        Move
+        {i18n.t("instance:bots.pov.touchMove")}
       </fieldset>
       <div className="pointer-events-auto absolute right-4 bottom-4 grid grid-cols-2 gap-2">
         {[
-          { label: "Jump", code: 32 },
-          { label: "Sneak", code: 340 },
-          { label: "Attack", code: 0, mouse: true },
-          { label: "Use", code: 1, mouse: true },
-          { label: "Inventory", code: 69 },
+          { id: "jump", code: 32 },
+          { id: "sneak", code: 340 },
+          { id: "attack", code: 0, mouse: true },
+          { id: "use", code: 1, mouse: true },
+          { id: "inventory", code: 69 },
         ].map((control) => (
           <Button
-            key={control.label}
+            key={control.id}
             variant="secondary"
             className="min-h-11 touch-none px-2 text-xs select-none"
             onPointerDown={(event) =>
@@ -107,7 +108,7 @@ export function PovTouchControls({
               action(event, false, control.code, control.mouse)
             }
           >
-            {control.label}
+            {i18n.t(`instance:bots.pov.touch.${control.id}`)}
           </Button>
         ))}
       </div>
@@ -142,7 +143,7 @@ export function PovTouchToolbar({
           className="min-h-11 px-2 text-xs"
           onClick={keyboard}
         >
-          Keyboard
+          {i18n.t("instance:bots.pov.touch.keyboard")}
         </Button>
       )}
       {screenOpen && (
@@ -152,7 +153,7 @@ export function PovTouchToolbar({
           className="min-h-11 px-2 text-xs"
           onClick={closeMenu}
         >
-          Close menu
+          {i18n.t("instance:bots.pov.touch.closeMenu")}
         </Button>
       )}
       <Button
@@ -161,7 +162,7 @@ export function PovTouchToolbar({
         className="min-h-11 px-2 text-xs"
         onClick={release}
       >
-        Leave control
+        {i18n.t("instance:bots.pov.release")}
       </Button>
     </div>
   );

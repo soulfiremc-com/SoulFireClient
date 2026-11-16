@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Invalid input: expected string, received undefined",
-    "null": "Invalid input: expected string, received null",
-    "number": "Invalid input: expected string, received number",
-    "boolean": "Invalid input: expected string, received boolean",
-    "array": "Invalid input: expected string, received array",
-    "object": "Invalid input: expected string, received object",
-    "nan": "Invalid input: expected string, received NaN",
-    "infinity": "Invalid input: expected string, received number"
+    "undefined": "Enter a value.",
+    "null": "Enter a value.",
+    "number": "Enter a value.",
+    "boolean": "Enter a value.",
+    "array": "Enter a value.",
+    "object": "Enter a value.",
+    "nan": "Enter a value.",
+    "infinity": "Enter a value."
   },
   "number": {
-    "undefined": "Invalid input: expected number, received undefined",
-    "null": "Invalid input: expected number, received null",
-    "string": "Invalid input: expected number, received string",
-    "boolean": "Invalid input: expected number, received boolean",
-    "array": "Invalid input: expected number, received array",
-    "object": "Invalid input: expected number, received object",
-    "nan": "Invalid input: expected number, received NaN",
-    "infinity": "Invalid input: expected number, received number"
+    "undefined": "Enter a number.",
+    "null": "Enter a number.",
+    "string": "Enter a number.",
+    "boolean": "Enter a number.",
+    "array": "Enter a number.",
+    "object": "Enter a number.",
+    "nan": "Enter a number.",
+    "infinity": "Enter a number."
   },
   "object": {
-    "undefined": "Invalid input: expected object, received undefined",
-    "null": "Invalid input: expected object, received null",
-    "number": "Invalid input: expected object, received number",
-    "string": "Invalid input: expected object, received string",
-    "boolean": "Invalid input: expected object, received boolean",
-    "array": "Invalid input: expected object, received array",
-    "nan": "Invalid input: expected object, received NaN",
-    "infinity": "Invalid input: expected object, received number"
+    "undefined": "Enter a valid value.",
+    "null": "Enter a valid value.",
+    "number": "Enter a valid value.",
+    "string": "Enter a valid value.",
+    "boolean": "Enter a valid value.",
+    "array": "Enter a valid value.",
+    "nan": "Enter a valid value.",
+    "infinity": "Enter a valid value."
   },
-  "email": "Invalid email address",
-  "url": "Invalid URL",
-  "jwt": "Invalid JWT",
-  "emailTooLong": "Too big: expected string to have <=255 characters",
-  "jarSource": "Invalid option: expected one of \"official\"|\"custom\"",
-  "generationMode": "Invalid option: expected one of \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Invalid option: expected one of 0|1"
+  "email": "Enter a valid email address.",
+  "url": "Enter a valid URL.",
+  "jwt": "Enter a valid token.",
+  "emailTooLong": "Use 255 characters or fewer.",
+  "jarSource": "Choose the official server or a custom jar.",
+  "generationMode": "Choose how to handle existing accounts.",
+  "userRole": "Choose a role."
 }

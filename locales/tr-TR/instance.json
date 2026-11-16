@@ -119,12 +119,12 @@
       "network": "Ağ adresi",
       "unix": "Unix soketi"
     },
-    "getProxies": "Proxyleri Al",
+    "getProxies": "Proxy sağlayıcıları",
     "addProxies": "Proxy Ekle",
     "filterPlaceholder": "Proxyleri filtrele...",
     "listImportToast": {
       "loading": "Proxyler içe aktarılıyor...",
-      "success": "{{count}} proxy içe aktarıldı!",
+      "success": "{{count}} proxy içe aktarıldı",
       "error": "Proxyler içe aktarılamadı",
       "noProxies": "İçe aktarılacak proxy yok"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Proxyler kaldırılıyor...",
-      "success": "{{count}} proxy kaldırıldı!",
+      "success": "{{count}} proxy kaldırıldı",
       "error": "Proxyler kaldırılamadı"
     },
     "checkToast": {
       "loading": "Proxyler kontrol ediliyor... {{checked}}/{{total}} (Başarılı: {{success}} Başarısız: {{failed}})",
-      "success": "{{count}} bozuk proxy kaldırıldı!",
-      "error": "Proxyler kontrol edilemedi"
+      "success": "{{count}} bozuk proxy kaldırıldı",
+      "error": "Proxyler kontrol edilemedi",
+      "successKept": "{{total}} proxyden {{failed}} tanesi kontrolü geçemedi. Hiçbir proxy kaldırılmadı."
     },
     "checkDialog": {
       "title": "Proxyleri Kontrol Et",
-      "description": "{{count}} proxyyi kontrol etmek üzeresiniz. Geçersiz proxyler otomatik olarak kaldırılacaktır.",
-      "confirm": "Kontrolü Başlat"
+      "description": "{{count}} proxy kontrol edilmek üzere.",
+      "confirm": "Kontrolü Başlat",
+      "removeFailed": "Başarısız olan proxyleri kaldır",
+      "removeFailedHelp": "Bir proxy geçici bir ağ sorunu yüzünden başarısız olabilir. Tüm proxyleri korumak ve yalnızca sonucu görmek için bu seçeneği kapatın."
     },
     "invalidFormat": "Geçersiz proxy formatı",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "İçe aktarılan proxy'leri kontrol etmek ister misiniz?",
-      "description": "{{count}} proxy içe aktardınız. Şimdi kontrol edilsin mi? SoulFire geçersiz proxy'leri otomatik olarak kaldırır.",
+      "description": "{{count}} proxy içe aktardınız. Şimdi kontrol edilsin mi?",
       "confirm": "Proxyleri Kontrol Et",
       "skip": "Atla"
     },
@@ -186,10 +189,18 @@
       "socks4": "Yalnızca SOCKS4 (düz)",
       "socks5": "Yalnızca SOCKS5 (düz)",
       "noProxies": "Dışa aktarılacak proxy yok"
-    }
+    },
+    "removeDialog": {
+      "title_one": "{{count}} proxy kaldırılsın mı?",
+      "title_other": "{{count}} proxy kaldırılsın mı?",
+      "description": "Bu işlem, seçilen proxyleri ve kimlik bilgilerini bu örnekten kaldırır. Geri alınamaz.",
+      "confirm": "Proxyleri kaldır"
+    },
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle"
   },
   "account": {
-    "getAccounts": "Hesapları Al",
+    "getAccounts": "Hesap sağlayıcıları",
     "addAccounts": "Hesap Ekle",
     "generateAccounts": "Hesapları Oluştur",
     "filterPlaceholder": "Hesapları filtrele...",
@@ -197,7 +208,7 @@
       "loading": "Hesaplar içe aktarılıyor... {{checked}}/{{total}} (Başarılı: {{success}} Başarısız: {{failed}})",
       "allFailed": "Hiçbir hesap içe aktarılamadı",
       "someFailed": "{{count}} hesap içe aktarıldı, {{failed}} hesap içe aktarılamadı",
-      "noneFailed": "{{count}} hesap içe aktarıldı!",
+      "noneFailed": "{{count}} hesap içe aktarıldı",
       "error": "Hesaplar içe aktarılamadı",
       "noAccounts": "İçe aktarılacak hesap yok"
     },
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Hesap içe aktarılıyor...",
-      "success": "Hesap içe aktarıldı!",
+      "success": "Hesap içe aktarıldı",
       "error": "Hesap içe aktarılamadı"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Oluştur",
       "generating": "Oluşturuluyor...",
       "progress": "Hesaplar oluşturuluyor... {{checked}}/{{total}} (Başarılı: {{success}} Hatalı: {{failed}})",
-      "success": "{{count}} hesap oluşturuldu!",
+      "success": "{{count}} hesap oluşturuldu",
       "allFailed": "Hiç hesap oluşturulamadı",
-      "allExist": "Tüm kullanıcı adları zaten mevcut. Yeniden oluşturmak için 'Mevcut hesapların üzerine yaz' seçeneğini etkinleştirin.",
+      "allExist": "Tüm kullanıcı adları zaten var. Yeniden oluşturmak için \"Mevcut Olanları Değiştir\" seçeneğini belirleyin.",
       "error": "Hesaplar oluşturulamadı",
       "invalidAmount": "Lütfen geçerli bir miktar girin (en az 1)",
       "missingPlaceholder": "Ad formatı %d yer tutucu içermeli"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Hesaplar kaldırılıyor...",
-      "success": "{{count}} hesap kaldırıldı!",
+      "success": "{{count}} hesap kaldırıldı",
       "error": "Hesaplar kaldırılamadı"
     },
     "table": {
       "type": "Tip",
-      "profileId": "UUID",
+      "profileId": "Profil kimliği",
       "lastKnownName": "Kullanıcı Adı",
       "searchProfileIds": "Profil kimliklerinde ara...",
       "searchLastKnownNames": "Son bilinen isimlerde ara...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "Seçili hesapları kaldır",
     "contextMenu": {
-      "openConfig": "Yapılandırmayı Aç",
+      "openConfig": "Ayarları aç",
       "openMetadata": "Metadata'yı Aç",
       "copyProfileId": "Profil Kimliğini Kopyala",
       "copyUsername": "Kullanıcı Adını Kopyala"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Miras alınan değerle eşleşiyor",
       "instanceValue": "Örnek değeri",
       "defaultValue": "Varsayılan değer",
-      "resetOverride": "Geçersiz kılmayı sıfırla"
+      "resetOverride": "Geçersiz kılmayı sıfırla",
+      "value": {
+        "notSet": "Ayarlanmadı",
+        "on": "Açık",
+        "off": "Kapalı",
+        "empty": "Boş",
+        "entries_one": "{{count}} kayıt",
+        "entries_other": "{{count}} kayıt",
+        "range": "Aralık"
+      },
+      "source": {
+        "bot": "Bota özel değer",
+        "instance": "Örnekten devralındı",
+        "default": "Varsayılan kullanılıyor"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Cihaz Kodu Kimlik Doğrulaması",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Anahtar",
       "valuePlaceholder": "Değer (JSON)",
       "noEntries": "Metadata girişi yok. Yukarıdan bir tane ekleyin.",
-      "loadError": "",
+      "loadError": "Metaveri yüklenemedi",
       "loadErrorDescription": "",
       "retryLoad": "Yeniden Dene",
       "addSuccess": "Giriş eklendi",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Girdi silindi",
       "deleteError": "Girdi silinemedi",
       "duplicateError": "Bu ad alanı ve anahtara sahip bir giriş zaten mevcut",
-      "invalidJson": "Geçersiz JSON değeri"
+      "invalidJson": "Geçersiz JSON değeri",
+      "namespaceLabel": "Ad alanı",
+      "keyLabel": "Anahtar",
+      "valueLabel": "Değer",
+      "addEntryLegend": "Metaveri kaydı ekle",
+      "addEntryButton": "Kayıt ekle",
+      "entryLegend": "Metaveri kaydı",
+      "removeEntryButton": "Kaldır"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} hesap kaldırılsın mı?",
+      "title_other": "{{count}} hesap kaldırılsın mı?",
+      "description": "Bu işlem, seçilen hesapları, kayıtlı kimlik bilgilerini ve botlarını bu örnekten kaldırır. Geri alınamaz.",
+      "confirm": "Hesapları kaldır"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Anahtar",
     "valuePlaceholder": "Değer (JSON)",
     "noEntries": "Metadata girişi yok. Yukarıdan bir tane ekleyin.",
+    "loadError": "Metaveri yüklenemedi",
     "addSuccess": "Giriş eklendi",
     "addError": "Giriş eklenemedi",
     "updateError": "Giriş güncellenemedi",
     "deleteSuccess": "Girdi silindi",
     "deleteError": "Girdi silinemedi",
     "duplicateError": "Bu ad alanı ve anahtara sahip bir giriş zaten mevcut",
-    "invalidJson": "Geçersiz JSON değeri"
+    "invalidJson": "Geçersiz JSON değeri",
+    "namespaceLabel": "Ad alanı",
+    "keyLabel": "Anahtar",
+    "valueLabel": "Değer",
+    "addEntryLegend": "Metaveri kaydı ekle",
+    "addEntryButton": "Kayıt ekle",
+    "entryLegend": "Metaveri kaydı",
+    "removeEntryButton": "Kaldır"
   },
   "bots": {
     "searchPlaceholder": "Botlarda ara...",
-    "onlineCount": "{{online}} çevrim içi / {{total}} toplamı",
+    "onlineCount": "{{online}} bağlı / {{total}} toplam",
     "noBots": "Hiç bot yapılandırılmadı. Hesaplarınızı Hesap Ayarları sayfasından ekleyin.",
     "noBotsFound": "Aramanıza uyan bot bulunamadı.",
     "loadingMore": "Daha fazla yükleniyor...",
     "showingCount": "{{total}} öğeden {{loaded}} gösteriliyor",
     "allLoaded": "Tüm {{total}} botlar yüklendi",
-    "online": "Çevrim içi",
-    "offline": "Çevrimdışı",
+    "online": "Bağlı",
+    "offline": "Bağlantı kesildi",
     "notJoined": "Katılmadı",
     "connectionPhase": {
       "connecting": "Bağlanıyor",
-      "connected": "Bağlandı",
-      "spawned": "Çevrim içi",
+      "connected": "Giriş yapılıyor",
+      "spawned": "Bağlı",
       "died": "Ölü",
-      "disconnected": "Çevrimdışı",
+      "disconnected": "Bağlantı kesildi",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "Botlara Geri Dön",
     "tabs": {
-      "overview": "Genel Bakış",
+      "overview": "Bot görünümü",
       "inventory": "Envanter",
       "controls": "Kontroller",
       "terminal": "Terminal"
     },
-    "comingSoon": "Çok Yakında",
-    "terminalPanel": {
-      "title": "Bot Terminali"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy Sunucusu",
       "direct": "Doğrudan (proxy yok)",
@@ -416,16 +459,14 @@
       "title": "Konum ve Rotasyon",
       "position": "Konum",
       "rotation": "Rotasyon",
-      "offline": "Bot çevrim dışı. Konum verileri yalnızca bot bağlıyken görüntülenebilir."
+      "offline": "Botun bağlantısı kesildi. Konum verileri yalnızca bot bağlıyken görüntülenebilir."
     },
     "chatPanel": {
-      "title": "Sohbet Mesajları",
-      "description": "Bu bota ait sohbet mesajları gelecekteki bir güncellemede burada görünecek."
+      "title": "Sohbet Mesajları"
     },
     "commandPanel": {
       "title": "Bot Komutları",
-      "placeholder": "Bu bota komut gönder...",
-      "description": "Bota özel komutlar gelecekteki bir güncellemede sunulacak."
+      "placeholder": "Bu bota komut gönder..."
     },
     "povPanel": {
       "title": "Bot Bakış Açısı",
@@ -438,7 +479,6 @@
       "offline": "Bot çevrimdışı. Bakış açısı yalnızca bot bağlandığında kullanılabilir."
     },
     "statsPanel": {
-      "title": "Bot İstatistikleri",
       "health": "Can",
       "food": "Yiyecek",
       "saturation": "Doygunluk",
@@ -451,7 +491,7 @@
       "adventure": "Macera",
       "spectator": "İzleyici",
       "unknown": "Bilinmeyen",
-      "offline": "Bot çevrimdışı. İstatistikler yalnızca bot bağlandığında görüntülenebilir."
+      "offline": "Botun bağlantısı kesildi. İstatistikler yalnızca bot bağlandığında görüntülenebilir."
     },
     "inventoryPanel": {
       "title": "Envanter",
@@ -464,7 +504,7 @@
       "dropAll": "Hepsini Bırak",
       "closeContainer": "Kapat",
       "clickHint": "Sol tık: al/koy | Sağ tık: yarım/bir | Shift+tık: hızlı taşı | Orta tık: hızlı envanter seç",
-      "offline": "Bot çevrimdışı. Envanter yalnızca bot bağlandığında kullanılabilir.",
+      "offline": "Botun bağlantısı kesildi. Envanter yalnızca bot bağlandığında kullanılabilir.",
       "buttons": {
         "stonecutterRecipes": "Tarifler",
         "enchantments": "Büyüler",
@@ -474,12 +514,12 @@
         "crafterSlots": "Slot Kontrolleri",
         "lecternControls": "Kitap Kontrolleri",
         "actions": "İşlemler",
-        "creativeTabs": ""
+        "creativeTabs": "Yaratıcı mod sekmeleri"
       },
       "textInput": {
         "title": "Metin Girişi",
         "anvilRename": "Eşyayı Yeniden Adlandır",
-        "creativeSearch": ""
+        "creativeSearch": "Eşya ara"
       },
       "bookPages": {
         "title": "Kitap İçeriği",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Eşyayı yok et",
+      "clickHints": {
+        "left": "Sol tık: al veya yerleştir",
+        "right": "Sağ tık: yarısını al veya bir tane yerleştir",
+        "shift": "Shift+tık: hızlı taşı",
+        "middle": "Orta tık: etkin slot olarak seç"
+      }
     },
     "visualPanel": {
-      "title": "Bot Görünümü",
+      "title": "Yön ve dünya",
       "compass": "Baktığı Yön",
       "lookDirection": "Bakış Açısı",
       "lookingUp": "Yukarı bakıyor",
@@ -502,7 +548,7 @@
       "worldInfo": "Dünya Bilgisi",
       "dimension": "Boyut",
       "biome": "Biyom",
-      "offline": "Bot çevrimdışı. Görsel veriler yalnızca bot bağlıyken kullanılabilir."
+      "offline": "Botun bağlantısı kesildi. Görsel veriler yalnızca bot bağlıyken kullanılabilir."
     },
     "actionsPanel": {
       "title": "Bot Eylemleri",
@@ -510,7 +556,7 @@
       "rightClick": "Sağ Tık",
       "leftClickDescription": "Varlığa saldır veya blok kır",
       "rightClickDescription": "Eşyayı kullan veya etkileşimde bulun",
-      "offline": "Bot çevrimdışı. Eylemler yalnızca bot bağlandığında kullanılabilir."
+      "offline": "Botun bağlantısı kesildi. Eylemler yalnızca bot bağlandığında kullanılabilir."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "Aşağı Bak",
       "lookLeft": "Sola Bak",
       "lookRight": "Sağa Bak",
-      "offline": "Bot çevrimdışı. Hareket kontrolleri yalnızca bot bağlandığında kullanılabilir."
+      "offline": "Botun bağlantısı kesildi. Hareket kontrolleri yalnızca bot bağlandığında kullanılabilir."
     },
     "dialogPanel": {
       "title": "Sunucu Diyaloğu",
@@ -544,7 +590,45 @@
       "unknownType": "Bilinmeyen",
       "dismiss": "Kapat",
       "submit": "Gönder",
-      "offline": "Bot çevrimdışı. Diyaloglar yalnızca bot bağlandığında kullanılabilir."
+      "offline": "Botun bağlantısı kesildi. Diyaloglar yalnızca bot bağlandığında kullanılabilir."
+    },
+    "pov": {
+      "title": "Bot görünümü",
+      "touchControlling": "Bu botu siz kontrol ediyorsunuz. Durmak için \"Release control\" seçeneğini kullanın.",
+      "popupBlocked": "Bot görünümü penceresini ayırmak için açılır pencerelere izin verin.",
+      "windowTitle": "SoulFire bot görünümü",
+      "fullscreenUnavailable": "Bu pencerede tam ekran kullanılamıyor.",
+      "textInputLabel": "Minecraft metin girişi",
+      "videoLabel": "Canlı bot görünümü",
+      "touchMove": "Hareket",
+      "audioError": "Ses başlatılamadı.",
+      "startError": "Bot görünümü başlatılamadı.",
+      "releaseHint": "Klavyenizi ve farenizi serbest bırakmak için {{shortcut}} tuşlarına basın.",
+      "captureHint": "Görünüme tıklayın ve klavye ile fare yakalamaya izin verin.",
+      "audioWaiting": "Bot görünümünün bağlanması bekleniyor.",
+      "audioWatchFirst": "Sesi kullanmak için botu izleyin.",
+      "audioUpdateServer": "Bot görünümünde sesi kullanmak için sunucuyu güncelleyin.",
+      "muteAudio": "Sesi kapat",
+      "unmuteAudio": "Sesi aç",
+      "audioStarting": "Ses başlatılıyor...",
+      "mute": "Sessize al",
+      "unmute": "Sesi aç",
+      "audio": "Ses",
+      "audioUnavailable": "Ses kullanılamıyor",
+      "volume": "Bot görünümü ses düzeyi",
+      "reconnect": "Yeniden bağlan",
+      "showWindow": "Bot görünümü penceresini göster",
+      "attachWindow": "Bot görünümü penceresini yerleştir",
+      "touch": {
+        "jump": "Zıpla",
+        "sneak": "Eğil",
+        "attack": "Saldır",
+        "use": "Kullan",
+        "inventory": "Envanter",
+        "keyboard": "Klavye",
+        "closeMenu": "Menüyü kapat"
+      },
+      "needsServer": "Bot görünümü için bağlı bir SoulFire sunucusu gerekir."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Veri yok"
     },
     "summary": {
-      "online": "Çevrim içi",
+      "online": "Bağlı",
       "packetsPerSecond": "Pkt/sn",
       "traffic": "Trafik",
       "health": "Can",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Çevrimiçi Botlar",
-      "online": "Çevrim içi",
+      "title": "Bağlı botlar",
+      "online": "Bağlı",
       "total": "Toplam"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Script oluşturulamadı",
     "noScripts": "Henüz Script Yok",
     "noScriptsDescription": "Görsel düğüm tabanlı düzenleyiciyi kullanarak bot eylemlerini otomatikleştirmek için ilk scriptinizi oluşturun.",
-    "createFirstScript": "İlk Scriptinizi Oluşturun",
+    "createFirstScript": "Script Oluştur",
     "running": "Çalışıyor",
     "paused": "Duraklatıldı",
     "nodes": "düğümler",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Düğüm Paleti",
-        "search": "Düğüm ara..."
+        "search": "Düğüm ara...",
+        "noResults": "Aramanızla eşleşen düğüm yok",
+        "noResultsDescription": "Başka bir terim deneyin veya geçerli filtreyi temizleyin."
       },
       "logs": {
         "title": "Yürütme Günlükleri",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Düğümü genişlet",
-        "collapse": "Düğümü daralt"
+        "collapse": "Düğümü daralt",
+        "avgTime": "Ortalama çalışma süresi: {{avg}} ms (son {{count}} çalıştırma)",
+        "preview": "Önizleme"
       },
       "debug": {
         "copyValue": "Mevcut değeri kopyala",
-        "clearHistory": "Geçmişi temizle"
+        "clearHistory": "Geçmişi temizle",
+        "current": "Geçerli ({{time}}):",
+        "noValue": "Henüz değer alınmadı"
       },
       "edge": {
         "direction": "Kenar yönü"
@@ -733,14 +823,36 @@
         "title": "Script karmaşıklık puanı"
       },
       "group": {
-        "returnToRoot": "Kök'e dön (Tab)"
+        "returnToRoot": "Kök'e dön (Tab)",
+        "root": "Kök",
+        "exitHint": "Çıkmak için <key>Tab</key> tuşuna basın",
+        "editHint": "Düzenlemek için çift tıklayın",
+        "noInputs": "Tanımlı giriş yok",
+        "noOutputs": "Tanımlı çıkış yok"
       },
       "quickAdd": {
         "menuLabel": "Hızlı düğüm ekleme menüsü",
-        "searchPlaceholder": "Düğüm ara..."
+        "searchPlaceholder": "Düğüm ara...",
+        "noResults": "Düğüm bulunamadı",
+        "noResultsDescription": "Başka bir arama terimi deneyin.",
+        "navigate": "Gezin",
+        "select": "Seçmek için Enter",
+        "close": "Kapatmak için Esc"
       },
       "diff": {
-        "tooltip": "Değişiklikleri incele"
+        "tooltip": "Değişiklikleri incele",
+        "title": "Kaydedilmemiş değişiklikler",
+        "description": "Son kayıttan bu yana yapılan değişiklikler.",
+        "nodesAdded_one": "{{count}} düğüm eklendi",
+        "nodesAdded_other": "{{count}} düğüm eklendi",
+        "nodesRemoved_one": "{{count}} düğüm kaldırıldı",
+        "nodesRemoved_other": "{{count}} düğüm kaldırıldı",
+        "nodesModified_one": "{{count}} düğüm değiştirildi",
+        "nodesModified_other": "{{count}} düğüm değiştirildi",
+        "edgesAdded_one": "{{count}} bağlantı eklendi",
+        "edgesAdded_other": "{{count}} bağlantı eklendi",
+        "edgesRemoved_one": "{{count}} bağlantı kaldırıldı",
+        "edgesRemoved_other": "{{count}} bağlantı kaldırıldı"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Düğüm ve veri kenarı zaman aşımı devre dışı bırakılır",
         "save": "Kotaları Kaydet",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} sırasını değiştir",
+        "empty": "Gelen değer yok",
+        "title": "Çoklu giriş: birden fazla bağlantı kabul eder",
+        "connectTo": "Değerleri {{label}} girişine bağlayın"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Script silinsin mi?",
+      "description": "Bu işlem \"{{name}}\" öğesini kalıcı olarak siler. Geri alınamaz.",
+      "descriptionUnnamed": "Bu işlem scripti kalıcı olarak siler. Geri alınamaz."
+    },
+    "executionStats": "Çalışma istatistikleri: {{executed}}/{{max}} düğüm çalıştırıldı"
   },
   "metadataValidation": {
     "invalidNamespace": "",

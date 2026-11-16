@@ -119,12 +119,12 @@
       "network": "Alamat jaringan",
       "unix": "Socket unix"
     },
-    "getProxies": "Dapatkan Proxy",
+    "getProxies": "Penyedia proxy",
     "addProxies": "Tambah Proxy",
     "filterPlaceholder": "Saring proxy...",
     "listImportToast": {
       "loading": "Mengimpor proxy...",
-      "success": "{{count}} proxy berhasil diimpor!",
+      "success": "{{count}} proxy berhasil diimpor",
       "error": "Gagal mengimpor proxy",
       "noProxies": "Tidak ada proxy untuk diimpor"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Menghapus proxy...",
-      "success": "{{count}} proxy telah dihapus!",
+      "success": "{{count}} proxy telah dihapus",
       "error": "Gagal menghapus proxy"
     },
     "checkToast": {
       "loading": "Memeriksa proxy... {{checked}}/{{total}} (Berhasil: {{success}} Gagal: {{failed}})",
-      "success": "{{count}} proxy rusak telah dihapus!",
-      "error": "Gagal memeriksa proxy"
+      "success": "{{count}} proxy rusak telah dihapus",
+      "error": "Gagal memeriksa proxy",
+      "successKept": "{{failed}} dari {{total}} proxy gagal dalam pemeriksaan. Tidak ada proxy yang dihapus."
     },
     "checkDialog": {
       "title": "Periksa Proksi",
-      "description": "Anda akan memeriksa {{count}} proksi. Proksi yang tidak valid akan dihapus secara otomatis.",
-      "confirm": "Mulai Pemeriksaan"
+      "description": "Anda akan memeriksa {{count}} proxy.",
+      "confirm": "Mulai Pemeriksaan",
+      "removeFailed": "Hapus proxy yang gagal",
+      "removeFailedHelp": "Proxy bisa gagal karena masalah jaringan sementara. Matikan opsi ini untuk menyimpan semua proxy dan hanya melihat hasilnya."
     },
     "invalidFormat": "Format proxy tidak valid",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Cek proxy yang diimpor?",
-      "description": "Anda telah mengimpor {{count}} proxy. Cek sekarang? SoulFire akan menghapus proxy yang tidak valid secara otomatis.",
+      "description": "Anda mengimpor {{count}} proxy. Periksa sekarang?",
       "confirm": "Periksa Proksi",
       "skip": "Lewati"
     },
@@ -186,10 +189,17 @@
       "socks4": "Hanya SOCKS4 (flat)",
       "socks5": "Hanya SOCKS5 (flat)",
       "noProxies": "Tidak ada proxy untuk diekspor"
-    }
+    },
+    "removeDialog": {
+      "title_other": "Hapus {{count}} proxy?",
+      "description": "Tindakan ini menghapus proxy yang dipilih dan kredensialnya dari instansi ini. Tindakan ini tidak dapat dibatalkan.",
+      "confirm": "Hapus proxy"
+    },
+    "showPassword": "Tampilkan kata sandi",
+    "hidePassword": "Sembunyikan kata sandi"
   },
   "account": {
-    "getAccounts": "Dapatkan Akun",
+    "getAccounts": "Penyedia akun",
     "addAccounts": "Tambah Akun",
     "generateAccounts": "Buat Akun",
     "filterPlaceholder": "Saring akun...",
@@ -197,7 +207,7 @@
       "loading": "Mengimpor akun... {{checked}}/{{total}} (Berhasil: {{success}} Gagal: {{failed}})",
       "allFailed": "Gagal mengimpor akun apa pun",
       "someFailed": "Berhasil mengimpor {{count}} akun, gagal mengimpor {{failed}} akun",
-      "noneFailed": "{{count}} akun berhasil diimpor!",
+      "noneFailed": "{{count}} akun berhasil diimpor",
       "error": "Gagal mengimpor akun",
       "noAccounts": "Tidak ada akun untuk diimpor"
     },
@@ -206,7 +216,7 @@
       "OFFLINE": "Luring",
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Kredensial)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Kode Perangkat)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (refresh token)",
       "MICROSOFT_JAVA_COOKIES": "Java (Cookie)",
       "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Token Akses)",
       "THE_ALTENING": "Java (TheAltening)",
@@ -215,7 +225,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Mengimpor akun...",
-      "success": "Akun berhasil diimpor!",
+      "success": "Akun berhasil diimpor",
       "error": "Gagal mengimpor akun"
     },
     "generate": {
@@ -232,9 +242,9 @@
       "submit": "Buat",
       "generating": "Sedang membuat...",
       "progress": "Sedang membuat akun... {{checked}}/{{total}} (Berhasil: {{success}} Gagal: {{failed}})",
-      "success": "Berhasil membuat {{count}} akun!",
+      "success": "Berhasil membuat {{count}} akun",
       "allFailed": "Gagal membuat akun apa pun",
-      "allExist": "Semua nama pengguna sudah ada. Aktifkan 'Timpa akun yang sudah ada' untuk membuat ulang mereka.",
+      "allExist": "Semua nama pengguna sudah ada. Pilih \"Ganti yang Ada\" untuk membuatnya lagi.",
       "error": "Gagal membuat akun",
       "invalidAmount": "Silakan masukkan jumlah yang valid (setidaknya 1)",
       "missingPlaceholder": "Format nama harus mengandung penampung %d"
@@ -257,12 +267,12 @@
     },
     "removeToast": {
       "loading": "Menghapus akun...",
-      "success": "{{count}} akun telah dihapus!",
+      "success": "{{count}} akun telah dihapus",
       "error": "Gagal menghapus akun"
     },
     "table": {
       "type": "Tipe",
-      "profileId": "UUID",
+      "profileId": "ID profil",
       "lastKnownName": "Nama Pengguna",
       "searchProfileIds": "Cari ID profil...",
       "searchLastKnownNames": "Cari nama terakhir yang diketahui...",
@@ -270,7 +280,7 @@
     },
     "removeSelectedTooltip": "Hapus akun yang dipilih",
     "contextMenu": {
-      "openConfig": "Buka Konfigurasi",
+      "openConfig": "Buka pengaturan",
       "openMetadata": "Buka Metadata",
       "copyProfileId": "Salin ID Profil",
       "copyUsername": "Salin Nama Pengguna"
@@ -294,7 +304,20 @@
       "matchesInheritedValue": "Cocok dengan nilai turunan",
       "instanceValue": "Nilai instance",
       "defaultValue": "Nilai default",
-      "resetOverride": "Atur ulang penggantian"
+      "resetOverride": "Atur ulang penggantian",
+      "value": {
+        "notSet": "Belum diatur",
+        "on": "Nyala",
+        "off": "Mati",
+        "empty": "Kosong",
+        "entries_other": "{{count}} entri",
+        "range": "Rentang"
+      },
+      "source": {
+        "bot": "Nilai khusus bot",
+        "instance": "Diwarisi dari instansi",
+        "default": "Menggunakan nilai bawaan"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Otentikasi Kode Perangkat",
@@ -334,14 +357,14 @@
       "rateLimited": "Batas kecepatan tercapai, coba lagi nanti"
     },
     "metadata": {
-      "openButton": "Edit Metadata",
+      "openButton": "Edit metadata",
       "title": "Metadata: {{name}}",
       "description": "Kelola entri metadata persisten untuk akun ini. Setiap entri memiliki namespace, kunci, dan nilai JSON.",
       "namespacePlaceholder": "Namespace",
       "keyPlaceholder": "Kunci",
       "valuePlaceholder": "Nilai (JSON)",
       "noEntries": "Tidak ada entri metadata. Tambahkan satu di atas.",
-      "loadError": "",
+      "loadError": "Tidak dapat memuat metadata",
       "loadErrorDescription": "",
       "retryLoad": "Coba Lagi",
       "addSuccess": "Entri berhasil ditambahkan",
@@ -350,7 +373,19 @@
       "deleteSuccess": "Entri dihapus",
       "deleteError": "Gagal menghapus entri",
       "duplicateError": "Entri dengan namespace dan kunci ini sudah ada",
-      "invalidJson": "Nilai JSON tidak valid"
+      "invalidJson": "Nilai JSON tidak valid",
+      "namespaceLabel": "Namespace",
+      "keyLabel": "Kunci",
+      "valueLabel": "Nilai",
+      "addEntryLegend": "Tambah entri metadata",
+      "addEntryButton": "Tambah entri",
+      "entryLegend": "Entri metadata",
+      "removeEntryButton": "Hapus"
+    },
+    "removeDialog": {
+      "title_other": "Hapus {{count}} akun?",
+      "description": "Tindakan ini menghapus akun yang dipilih, kredensial tersimpannya, dan botnya dari instansi ini. Tindakan ini tidak dapat dibatalkan.",
+      "confirm": "Hapus akun"
     }
   },
   "instanceMetadata": {
@@ -360,31 +395,39 @@
     "keyPlaceholder": "Kunci",
     "valuePlaceholder": "Nilai (JSON)",
     "noEntries": "Tidak ada entri metadata. Tambahkan satu di atas.",
+    "loadError": "Tidak dapat memuat metadata",
     "addSuccess": "Entri berhasil ditambahkan",
     "addError": "Gagal menambahkan entri",
     "updateError": "Gagal memperbarui entri",
     "deleteSuccess": "Entri dihapus",
     "deleteError": "Gagal menghapus entri",
     "duplicateError": "Entri dengan namespace dan kunci ini sudah ada",
-    "invalidJson": "Nilai JSON tidak valid"
+    "invalidJson": "Nilai JSON tidak valid",
+    "namespaceLabel": "Namespace",
+    "keyLabel": "Kunci",
+    "valueLabel": "Nilai",
+    "addEntryLegend": "Tambah entri metadata",
+    "addEntryButton": "Tambah entri",
+    "entryLegend": "Entri metadata",
+    "removeEntryButton": "Hapus"
   },
   "bots": {
     "searchPlaceholder": "Cari bot...",
-    "onlineCount": "{{online}} online / {{total}} total",
+    "onlineCount": "{{online}} terhubung / {{total}} total",
     "noBots": "Belum ada bot yang dikonfigurasi. Tambahkan akun dari halaman Pengaturan Akun.",
     "noBotsFound": "Tidak ada bot yang cocok dengan pencarian Anda.",
     "loadingMore": "Memuat lebih banyak...",
     "showingCount": "Menampilkan {{loaded}} dari {{total}}",
     "allLoaded": "Semua {{total}} bot dimuat",
-    "online": "Online",
-    "offline": "Luring",
+    "online": "Terhubung",
+    "offline": "Terputus",
     "notJoined": "Belum Bergabung",
     "connectionPhase": {
       "connecting": "Menghubungkan",
-      "connected": "Terhubung",
-      "spawned": "Online",
+      "connected": "Sedang masuk",
+      "spawned": "Terhubung",
       "died": "Mati",
-      "disconnected": "Luring",
+      "disconnected": "Terputus",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +441,12 @@
     },
     "backToBots": "Kembali ke Bot",
     "tabs": {
-      "overview": "Ikhtisar",
+      "overview": "Tampilan bot",
       "inventory": "Inventaris",
       "controls": "Kontrol",
       "terminal": "Terminal"
     },
-    "comingSoon": "Segera Hadir",
-    "terminalPanel": {
-      "title": "Terminal Bot"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Langsung (tanpa proxy)",
@@ -416,16 +456,14 @@
       "title": "Posisi & Rotasi",
       "position": "Posisi",
       "rotation": "Rotasi",
-      "offline": "Bot sedang offline. Data posisi hanya tersedia ketika bot terhubung."
+      "offline": "Bot terputus. Data posisi hanya tersedia ketika bot terhubung."
     },
     "chatPanel": {
-      "title": "Pesan Chat",
-      "description": "Pesan chat dari bot ini akan muncul di sini pada pembaruan mendatang."
+      "title": "Pesan Chat"
     },
     "commandPanel": {
       "title": "Perintah Bot",
-      "placeholder": "Kirim perintah ke bot ini...",
-      "description": "Perintah khusus bot akan tersedia pada pembaruan mendatang."
+      "placeholder": "Kirim perintah ke bot ini..."
     },
     "povPanel": {
       "title": "POV Bot",
@@ -438,7 +476,6 @@
       "offline": "Bot sedang offline. Rendering POV hanya tersedia saat bot terhubung."
     },
     "statsPanel": {
-      "title": "Statistik Bot",
       "health": "Kesehatan",
       "food": "Makanan",
       "saturation": "Saturasi",
@@ -451,7 +488,7 @@
       "adventure": "Petualangan",
       "spectator": "Penonton",
       "unknown": "Tidak diketahui",
-      "offline": "Bot sedang offline. Statistik hanya tersedia saat bot terhubung."
+      "offline": "Bot terputus. Statistik hanya tersedia saat bot terhubung."
     },
     "inventoryPanel": {
       "title": "Inventaris",
@@ -464,7 +501,7 @@
       "dropAll": "Buang Semua",
       "closeContainer": "Tutup",
       "clickHint": "Klik kiri: ambil/tempatkan | Klik kanan: setengah/satu | Shift+klik: pindahkan cepat | Klik tengah: pilih slot hotbar",
-      "offline": "Bot sedang offline. Inventaris hanya tersedia saat bot terhubung.",
+      "offline": "Bot terputus. Inventaris hanya tersedia saat bot terhubung.",
       "buttons": {
         "stonecutterRecipes": "Resep",
         "enchantments": "Enchantment",
@@ -474,12 +511,12 @@
         "crafterSlots": "Kontrol Slot",
         "lecternControls": "Kontrol Buku",
         "actions": "Aksi",
-        "creativeTabs": ""
+        "creativeTabs": "Tab kreatif"
       },
       "textInput": {
         "title": "Input Teks",
         "anvilRename": "Ganti Nama Item",
-        "creativeSearch": ""
+        "creativeSearch": "Cari item"
       },
       "bookPages": {
         "title": "Isi Buku",
@@ -490,10 +527,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Hancurkan item",
+      "clickHints": {
+        "left": "Klik kiri: ambil atau taruh",
+        "right": "Klik kanan: ambil setengah atau taruh satu",
+        "shift": "Shift+klik: pindah cepat",
+        "middle": "Klik tengah: pilih sebagai slot aktif"
+      }
     },
     "visualPanel": {
-      "title": "Tampilan Bot",
+      "title": "Arah dan dunia",
       "compass": "Arah Menghadap",
       "lookDirection": "Sudut Pandang",
       "lookingUp": "Melihat ke atas",
@@ -502,7 +545,7 @@
       "worldInfo": "Info Dunia",
       "dimension": "Dimensi",
       "biome": "Bioma",
-      "offline": "Bot sedang offline. Data visual hanya tersedia saat bot terhubung."
+      "offline": "Bot terputus. Data visual hanya tersedia saat bot terhubung."
     },
     "actionsPanel": {
       "title": "Aksi Bot",
@@ -510,7 +553,7 @@
       "rightClick": "Klik Kanan",
       "leftClickDescription": "Serang entitas atau hancurkan blok",
       "rightClickDescription": "Gunakan item atau berinteraksi",
-      "offline": "Bot sedang offline. Aksi hanya tersedia saat bot terhubung."
+      "offline": "Bot terputus. Aksi hanya tersedia saat bot terhubung."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +572,7 @@
       "lookDown": "Lihat Bawah",
       "lookLeft": "Lihat Kiri",
       "lookRight": "Lihat Kanan",
-      "offline": "Bot sedang offline. Kontrol gerakan hanya tersedia saat bot terhubung."
+      "offline": "Bot terputus. Kontrol gerakan hanya tersedia saat bot terhubung."
     },
     "dialogPanel": {
       "title": "Dialog Server",
@@ -544,7 +587,45 @@
       "unknownType": "Tidak diketahui",
       "dismiss": "Tutup",
       "submit": "Kirim",
-      "offline": "Bot sedang offline. Dialog hanya tersedia saat bot terhubung."
+      "offline": "Bot terputus. Dialog hanya tersedia saat bot terhubung."
+    },
+    "pov": {
+      "title": "Tampilan bot",
+      "touchControlling": "Anda mengendalikan bot ini. Gunakan \"Release control\" untuk berhenti.",
+      "popupBlocked": "Izinkan popup untuk melepas jendela tampilan bot.",
+      "windowTitle": "Tampilan bot SoulFire",
+      "fullscreenUnavailable": "Layar penuh tidak tersedia di jendela ini.",
+      "textInputLabel": "Input teks Minecraft",
+      "videoLabel": "Tampilan bot langsung",
+      "touchMove": "Gerak",
+      "audioError": "Tidak dapat memulai audio.",
+      "startError": "Tidak dapat memulai tampilan bot.",
+      "releaseHint": "Tekan {{shortcut}} untuk melepas keyboard dan mouse Anda.",
+      "captureHint": "Klik tampilan dan izinkan penangkapan keyboard dan mouse.",
+      "audioWaiting": "Menunggu tampilan bot terhubung.",
+      "audioWatchFirst": "Tonton bot untuk memakai audio.",
+      "audioUpdateServer": "Perbarui server untuk memakai audio tampilan bot.",
+      "muteAudio": "Bisukan audio",
+      "unmuteAudio": "Bunyikan audio",
+      "audioStarting": "Memulai audio...",
+      "mute": "Bisukan",
+      "unmute": "Bunyikan",
+      "audio": "Audio",
+      "audioUnavailable": "Audio tidak tersedia",
+      "volume": "Volume tampilan bot",
+      "reconnect": "Hubungkan ulang",
+      "showWindow": "Tampilkan jendela tampilan bot",
+      "attachWindow": "Gabungkan jendela tampilan bot",
+      "touch": {
+        "jump": "Lompat",
+        "sneak": "Menyelinap",
+        "attack": "Serang",
+        "use": "Gunakan",
+        "inventory": "Inventaris",
+        "keyboard": "Keyboard",
+        "closeMenu": "Tutup menu"
+      },
+      "needsServer": "Tampilan bot memerlukan server SoulFire yang terhubung."
     }
   },
   "metrics": {
@@ -552,15 +633,15 @@
       "noData": "Tidak ada data"
     },
     "summary": {
-      "online": "Online",
+      "online": "Terhubung",
       "packetsPerSecond": "Pkt/d",
       "traffic": "Lalu lintas",
       "health": "Kesehatan",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bot Online",
-      "online": "Online",
+      "title": "Bot terhubung",
+      "online": "Terhubung",
       "total": "Total"
     },
     "packets": {
@@ -627,7 +708,7 @@
     "createError": "Gagal membuat skrip",
     "noScripts": "Belum Ada Skrip",
     "noScriptsDescription": "Buat skrip pertama Anda untuk mengotomatisasi aksi bot menggunakan editor node visual.",
-    "createFirstScript": "Buat Skrip Pertama Anda",
+    "createFirstScript": "Buat Skrip",
     "running": "Berjalan",
     "paused": "Dijeda",
     "nodes": "node",
@@ -694,7 +775,9 @@
       },
       "palette": {
         "title": "Palet Node",
-        "search": "Cari node..."
+        "search": "Cari node...",
+        "noResults": "Tidak ada node yang cocok dengan pencarian Anda",
+        "noResultsDescription": "Coba istilah lain atau hapus filter saat ini."
       },
       "logs": {
         "title": "Log Eksekusi",
@@ -716,11 +799,15 @@
       },
       "node": {
         "expand": "Perluas node",
-        "collapse": "Ciutkan node"
+        "collapse": "Ciutkan node",
+        "avgTime": "Waktu eksekusi rata-rata: {{avg}} ms ({{count}} eksekusi terakhir)",
+        "preview": "Pratinjau"
       },
       "debug": {
         "copyValue": "Salin nilai saat ini",
-        "clearHistory": "Bersihkan riwayat"
+        "clearHistory": "Bersihkan riwayat",
+        "current": "Saat ini ({{time}}):",
+        "noValue": "Belum ada nilai yang diterima"
       },
       "edge": {
         "direction": "Arah edge"
@@ -732,14 +819,31 @@
         "title": "Skor kompleksitas skrip"
       },
       "group": {
-        "returnToRoot": "Kembali ke root (Tab)"
+        "returnToRoot": "Kembali ke root (Tab)",
+        "root": "Akar",
+        "exitHint": "Tekan <key>Tab</key> untuk keluar",
+        "editHint": "Klik dua kali untuk mengedit",
+        "noInputs": "Tidak ada input yang ditentukan",
+        "noOutputs": "Tidak ada output yang ditentukan"
       },
       "quickAdd": {
         "menuLabel": "Menu tambah node cepat",
-        "searchPlaceholder": "Cari node..."
+        "searchPlaceholder": "Cari node...",
+        "noResults": "Node tidak ditemukan",
+        "noResultsDescription": "Coba istilah pencarian lain.",
+        "navigate": "Navigasi",
+        "select": "Enter untuk memilih",
+        "close": "Esc untuk menutup"
       },
       "diff": {
-        "tooltip": "Tinjau perubahan"
+        "tooltip": "Tinjau perubahan",
+        "title": "Perubahan belum disimpan",
+        "description": "Perubahan sejak penyimpanan terakhir.",
+        "nodesAdded_other": "{{count}} node ditambahkan",
+        "nodesRemoved_other": "{{count}} node dihapus",
+        "nodesModified_other": "{{count}} node diubah",
+        "edgesAdded_other": "{{count}} koneksi ditambahkan",
+        "edgesRemoved_other": "{{count}} koneksi dihapus"
       },
       "dryRun": {
         "saveFirst": "",
@@ -783,8 +887,20 @@
         "disableTimeoutsDescription": "Menonaktifkan timeout per-node dan data edge",
         "save": "Simpan Kuota",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Urutkan ulang {{label}}",
+        "empty": "Tidak ada nilai masuk",
+        "title": "Multi-input: menerima beberapa koneksi",
+        "connectTo": "Hubungkan nilai ke {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Hapus skrip?",
+      "description": "Tindakan ini menghapus \"{{name}}\" secara permanen. Tindakan ini tidak dapat dibatalkan.",
+      "descriptionUnnamed": "Tindakan ini menghapus skrip secara permanen. Tindakan ini tidak dapat dibatalkan."
+    },
+    "executionStats": "Statistik eksekusi: {{executed}}/{{max}} node dieksekusi"
   },
   "metadataValidation": {
     "invalidNamespace": "",

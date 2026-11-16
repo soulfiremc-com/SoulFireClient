@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Check, Settings2 } from "lucide-react";
 import * as React from "react";
@@ -48,7 +49,7 @@ export function DataTableViewOptions<TData extends RowData>({
       <PopoverTrigger
         render={
           <Button
-            aria-label="Toggle columns"
+            aria-label={i18n.t("common:dataTable.toggleColumns")}
             role="combobox"
             variant="outline"
             size="sm"
@@ -58,13 +59,17 @@ export function DataTableViewOptions<TData extends RowData>({
         }
       >
         <Settings2 className="text-muted-foreground" />
-        View
+        {i18n.t("common:dataTable.view")}
       </PopoverTrigger>
       <PopoverContent className="w-44 p-0" {...props}>
         <Command>
-          <CommandInput placeholder="Search columns..." />
+          <CommandInput
+            placeholder={i18n.t("common:dataTable.searchColumns")}
+          />
           <CommandList>
-            <CommandEmpty>No columns found.</CommandEmpty>
+            <CommandEmpty>
+              {i18n.t("common:dataTable.noColumnsFound")}
+            </CommandEmpty>
             <CommandGroup>
               {columns.map((column) => (
                 <CommandItem

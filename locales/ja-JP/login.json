@@ -44,7 +44,24 @@
         "placeholder": "ここにJVM引数を入力"
       },
       "back": "戻る",
-      "start": "開始"
+      "start": "開始",
+      "jar": {
+        "title": "サーバー jar",
+        "official": "公式",
+        "custom": "カスタム",
+        "officialTitle": "公式 SoulFire サーバー",
+        "customTitle": "カスタムサーバー jar",
+        "officialDescription": "対応する SoulFire リリースをダウンロードして検証します。",
+        "customDescription": "インポートした jar を実行します。SoulFire は検証も更新もしません。",
+        "import": "jar をインポート",
+        "importSuccess": "{{name}} をインポートしました",
+        "importError": "カスタム SoulFire jar をインポートできませんでした",
+        "selectCustomFirst": "開始する前にカスタム jar をインポートして選択してください。",
+        "dialog": {
+          "filter": "Java アーカイブ",
+          "title": "SoulFire サーバーの jar を選択"
+        }
+      }
     },
     "mobile": {
       "description": "モバイルで統合サーバーを実行するには、いくつか手動の手順を行う必要があります。",

@@ -113,18 +113,24 @@
         "submit": "Načíst z URL",
         "toast": {
           "loading": "Stahuji data...",
-          "success": "Data načtena!",
+          "success": "Data načtena",
           "error": "Nepodařilo se stáhnout data",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Smazat instanci?",
+      "description": "Tím se trvale smaže „{{name}}“ a související data. Tuto akci nelze vrátit zpět.",
+      "descriptionUnnamed": "Tím se trvale smaže tato instance a její data. Tuto akci nelze vrátit zpět."
     }
   },
   "commandInput": {
     "placeholder": "Zadejte příkaz (napište 'help' pro seznam)",
     "emptySuggestions": "Začněte psát pro návrhy nebo stiskněte Tab.",
-    "noSuggestions": "Žádné návrhy nejsou k dispozici."
+    "noSuggestions": "Žádné návrhy nejsou k dispozici.",
+    "emptySuggestionsPrefix": "Pište pro zobrazení návrhů nebo stiskněte"
   },
   "controls": {
     "start": "Spustit",
@@ -174,7 +180,7 @@
     "restartCount_many": "Restartovat {{count}} botů",
     "restartCount_other": "Restartovat {{count}} botů"
   },
-  "botFleetSummary": "{{online}} online · {{desired}} požadováno · {{total}} celkem",
+  "botFleetSummary": "{{online}} připojeno · {{desired}} má běžet · {{total}} celkem",
   "icon": {
     "invalidName": "Neplatný název ikony: {{name}}"
   },
@@ -255,7 +261,24 @@
     "sortOrders": {
       "asc": "Vzestupně",
       "desc": "Sestupně"
-    }
+    },
+    "openFilterMenu": "Otevřít nabídku filtrů",
+    "filterOperator": "Operátor filtru",
+    "filterValue": "Hodnota filtru",
+    "sortDirection": "Směr řazení",
+    "selectJoinOperator": "Vybrat spojovací operátor",
+    "joinOperator": "Spojovací operátor",
+    "escapeKey": "Escape",
+    "selectDate": "Vybrat datum",
+    "selectDateRange": "Vybrat rozsah dat",
+    "clearFilter": "Vymazat filtr {{title}}",
+    "clearFilters": "Vymazat filtry",
+    "clear": "Vymazat",
+    "from": "Od",
+    "to": "Do",
+    "sortDirectionFor": "Směr řazení: {{column}}",
+    "minValue": "Minimální hodnota: {{label}}",
+    "maxValue": "Maximální hodnota: {{label}}"
   },
   "pluginCard": {
     "version": "Verze: {{version}}",
@@ -264,13 +287,13 @@
     "website": "Webová stránka"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Nepodařilo se uložit {{name}}",
     "namespacesNotFound": "Nebyly nalezeny žádné jmenné prostory nastavení",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Nepodařilo se uložit {{name}}",
       "placeholder": "Přidat novou položku...",
       "add": "Přidat",
       "remove": "Odebrat"
@@ -281,7 +304,8 @@
     "invalidNumberToast": {
       "title": "Neplatné číslo",
       "description": "Hodnota musí být mezi {{min}} a {{max}}"
-    }
+    },
+    "minMaxLegend": "Nastavení minima a maxima"
   },
   "terminal": {
     "noLogs": "Zatím žádné logy. Spusťte příkaz pro vytvoření výstupu logu.",
@@ -329,16 +353,37 @@
       "error": "Nepodařilo se připojit k zařízení {{device}}"
     },
     "noDevices": "Nebyla nalezena žádná zařízení",
-    "broadcastLabel": "Testovací vysílání",
     "broadcastToast": {
       "loading": "Vysílání zprávy...",
-      "success": "Zpráva byla odvysílána!",
+      "success": "Zpráva byla odvysílána",
       "error": "Nepodařilo se odvysílat zprávu"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Zapínání skriptu...",
+        "success": "Skript zapnut",
+        "error": "Skript se nepodařilo zapnout. Zkuste to znovu."
+      },
+      "deactivate": {
+        "loading": "Vypínání skriptu...",
+        "success": "Skript vypnut",
+        "error": "Skript se nepodařilo vypnout. Zkuste to znovu."
+      }
+    },
+    "operations": {
+      "activateScript": "Zapnout skript {{name}}",
+      "deactivateScript": "Vypnout skript {{name}}"
+    },
+    "status": {
+      "active": "Zap.",
+      "paused": "Vyp."
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Přečíst dokumentaci",
-    "backToDashboard": "Zpět na hlavní panel",
+    "backToDashboard": "Zpět na instance",
     "deleteToast": {
       "loading": "Maže se instance...",
       "success": "Instance byla smazána",
@@ -364,9 +409,9 @@
     "settingsGroup": "Nastavení",
     "extensionsGroup": "Rozšíření",
     "botSettings": "Nastavení bota",
-    "accountSettings": "Nastavení účtu",
+    "accountSettings": "Účty",
     "metaSettings": "Nastavení instance",
-    "proxySettings": "Nastavení proxy",
+    "proxySettings": "Proxy servery",
     "aiSettings": "Nastavení AI",
     "pathfindingSettings": "Nastavení hledání cesty",
     "discoverPlugins": "Pluginy",
@@ -432,10 +477,10 @@
     "instances": "Instance",
     "access": "Přístup",
     "settings": "Nastavení",
-    "proxySettings": "Nastavení proxy",
+    "proxySettings": "Proxy servery",
     "overview": "Přehled",
     "users": "Uživatelé",
-    "accountSettings": "Nastavení účtu",
+    "accountSettings": "Účty",
     "metaSettings": "Nastavení instance",
     "discoverPlugins": "Pluginy",
     "adminScripts": "Skripty",
@@ -452,7 +497,7 @@
     },
     "api": {
       "title": "API přístup",
-      "description": "SoulFire gRPC HTTP API spravuje instance pomocí webových požadavků.",
+      "description": "Pomocí SoulFire API můžete spravovat instance z vlastních programů.",
       "publicAddress": "Veřejná API adresa",
       "personalToken": "Osobní API token",
       "securityWarning": "Uchovejte svůj osobní API token v tajnosti. Umožňuje přístup k API.",
@@ -460,7 +505,7 @@
     },
     "token": {
       "generate": "Vygenerovat token",
-      "placeholder": "Klikněte níže na \"Vygenerovat token\"",
+      "placeholder": "Níže vyberte „Vygenerovat token“",
       "generating": "Generování tokenu...",
       "success": "Token byl úspěšně vygenerován",
       "error": "Nepodařilo se vygenerovat token",
@@ -489,9 +534,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Název instance se nepodařilo aktualizovat"
   },
   "userSettings": {
     "avatar": {
@@ -509,8 +553,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Nepodařilo se aktualizovat: {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filtrovat audit logy...",
@@ -566,22 +609,22 @@
     },
     "removeToast": {
       "loading": "Odebírám skripty...",
-      "success": "Skripty odebrány!",
+      "success": "Skripty odebrány",
       "error": "Nepodařilo se odebrat skripty"
     },
     "addToast": {
       "loading": "Přidávám skript...",
-      "success": "Skript přidán!",
+      "success": "Skript přidán",
       "error": "Nepodařilo se přidat skript"
     },
     "updateToast": {
       "loading": "Aktualizuji skript...",
-      "success": "Skript aktualizován!",
+      "success": "Skript aktualizován",
       "error": "Nepodařilo se aktualizovat skript"
     },
     "restartToast": {
       "loading": "Restartování skriptu...",
-      "success": "Skript restartován!",
+      "success": "Skript restartován",
       "error": "Nepodařilo se restartovat skript"
     },
     "table": {
@@ -606,7 +649,7 @@
     "bot": {
       "goToBot": "Přejít na bota",
       "copyUsername": "Kopírovat uživatelské jméno",
-      "copyUuid": "Kopírovat UUID",
+      "copyUuid": "Kopírovat ID profilu",
       "copyCoordinates": "Kopírovat souřadnice"
     },
     "plugin": {
@@ -662,5 +705,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Připojeno",
+    "botOffline": "Odpojeno"
+  },
+  "minecraftActions": {
+    "copyError": "Text se nepodařilo zkopírovat. Použijte HTTPS nebo povolte přístup ke schránce.",
+    "openError": "Odkaz se nepodařilo otevřít.",
+    "popupBlocked": "Prohlížeč zablokoval novou kartu.",
+    "openLink": "Otevřít odkaz"
+  },
+  "instanceIcon": {
+    "label": "Ikona",
+    "description": "Ikona instance zobrazená v aplikaci."
+  },
+  "unknown": "Neznámé",
+  "minecraftHead": "Hlava z Minecraftu",
+  "textFile": "Textový soubor"
 }

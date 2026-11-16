@@ -7,7 +7,7 @@
         "cpu": "CPUZ",
         "heapUsed": "Heap UZED",
         "threads": "THR3DZ",
-        "botsOnline": "BOTS ONLAIIN",
+        "botsOnline": "Botz catnectd",
         "uptime": "UPTAIM"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Thred Counz"
       },
       "aggregateBots": {
-        "title": "Bots Onlinez (All Instunces)"
+        "title": "Botz catnectd (all instances)"
+      },
+      "legend": {
+        "process": "Process",
+        "system": "Sistem",
+        "used": "Uzed",
+        "committed": "Committd",
+        "max": "Max",
+        "total": "Totul",
+        "daemon": "Daemon",
+        "online": "Catnectd"
       }
     },
     "instancesChart": {
@@ -112,12 +122,12 @@
       "email": "EMAYL",
       "role": "Roel",
       "createdAt": "Makd",
-      "minIssuedAt": "Min Login",
+      "minIssuedAt": "Seshunz valid sinz",
       "actions": "Akshuns",
       "searchUsernames": "Seerch usernams...",
       "searchEmails": "Seerch emailz...",
       "searchCreatedAts": "Serch creashun datez...",
-      "searchMinIssuedAts": "Serch minumum login datez..."
+      "searchMinIssuedAts": "Serch seshun datez..."
     },
     "removeSelectedTooltip": "Remoov selekted users",
     "logOutSelectedTooltip": "Logz owt selekted users",
@@ -125,6 +135,18 @@
       "editUser": "Edits Usr",
       "impersonate": "Impurrrsonaet",
       "copyUserId": "Coppy Usr ID"
+    },
+    "removeDialog": {
+      "title_one": "Remoov {{count}} hooman?",
+      "title_other": "Remoov {{count}} hoomanz?",
+      "description": "Dis deletz teh picked hoomanz an their access 4evr. U cant undo dis.",
+      "confirm": "Remoov hoomanz"
+    },
+    "invalidateDialog": {
+      "title_one": "Sign out {{count}} hooman?",
+      "title_other": "Sign out {{count}} hoomanz?",
+      "description": "Dis endz evry seshun an token ov teh picked hoomanz. Dey must sign in agen.",
+      "confirm": "Sign out hoomanz"
     }
   }
 }

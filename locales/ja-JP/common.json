@@ -113,18 +113,24 @@
         "submit": "URLから読み込む",
         "toast": {
           "loading": "データをダウンロード中...",
-          "success": "データを読み込みました！",
+          "success": "データを読み込みました",
           "error": "データのダウンロードに失敗しました",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "インスタンスを削除しますか？",
+      "description": "「{{name}}」とそのデータを完全に削除します。この操作は元に戻せません。",
+      "descriptionUnnamed": "このインスタンスとそのデータを完全に削除します。この操作は元に戻せません。"
     }
   },
   "commandInput": {
     "placeholder": "コマンドを入力 (一覧は「help」と入力)",
     "emptySuggestions": "提案をリクエストするには入力するか、Tabキーを押してください。",
-    "noSuggestions": "利用可能な提案はありません。"
+    "noSuggestions": "利用可能な提案はありません。",
+    "emptySuggestionsPrefix": "入力して候補を表示するか、次のキーを押します:"
   },
   "controls": {
     "start": "開始",
@@ -162,7 +168,7 @@
     "stopCount_other": "{{count}}体のボットを停止する",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}}人オンライン · 希望数:{{desired}} · 合計:{{total}}",
+  "botFleetSummary": "接続済み {{online}} · 実行設定 {{desired}} · 合計 {{total}}",
   "icon": {
     "invalidName": "無効なアイコン名: {{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "昇順",
       "desc": "降順"
-    }
+    },
+    "openFilterMenu": "フィルターメニューを開く",
+    "filterOperator": "フィルター演算子",
+    "filterValue": "フィルター値",
+    "sortDirection": "並べ替えの方向",
+    "selectJoinOperator": "結合演算子を選択",
+    "joinOperator": "結合演算子",
+    "escapeKey": "Escape",
+    "selectDate": "日付を選択",
+    "selectDateRange": "日付範囲を選択",
+    "clearFilter": "{{title}} フィルターをクリア",
+    "clearFilters": "フィルターをクリア",
+    "clear": "クリア",
+    "from": "開始",
+    "to": "終了",
+    "sortDirectionFor": "{{column}} の並べ替えの方向",
+    "minValue": "{{label}} の最小値",
+    "maxValue": "{{label}} の最大値"
   },
   "pluginCard": {
     "version": "バージョン: {{version}}",
@@ -252,13 +275,13 @@
     "website": "ウェブサイト"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}} を保存できませんでした",
     "namespacesNotFound": "設定のネームスペースが見つかりません",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}} を保存できませんでした",
       "placeholder": "新しいエントリを追加...",
       "add": "追加",
       "remove": "削除"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "無効な数値です",
       "description": "値は{{min}}〜{{max}}の間である必要があります"
-    }
+    },
+    "minMaxLegend": "最小値と最大値の設定"
   },
   "terminal": {
     "noLogs": "まだログがありません。コマンドを実行するとログが出力されます。",
@@ -317,16 +341,37 @@
       "error": "{{device}}への接続に失敗しました"
     },
     "noDevices": "デバイスが見つかりません",
-    "broadcastLabel": "ブロードキャストテスト",
     "broadcastToast": {
       "loading": "メッセージをブロードキャスト中...",
-      "success": "メッセージがブロードキャストされました！",
+      "success": "メッセージがブロードキャストされました",
       "error": "メッセージのブロードキャストに失敗しました"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "スクリプトをオンにしています...",
+        "success": "スクリプトをオンにしました",
+        "error": "スクリプトをオンにできませんでした。もう一度お試しください。"
+      },
+      "deactivate": {
+        "loading": "スクリプトをオフにしています...",
+        "success": "スクリプトをオフにしました",
+        "error": "スクリプトをオフにできませんでした。もう一度お試しください。"
+      }
+    },
+    "operations": {
+      "activateScript": "スクリプト {{name}} をオンにする",
+      "deactivateScript": "スクリプト {{name}} をオフにする"
+    },
+    "status": {
+      "active": "オン",
+      "paused": "オフ"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "ドキュメントを読む",
-    "backToDashboard": "ダッシュボードに戻る",
+    "backToDashboard": "インスタンス一覧に戻る",
     "deleteToast": {
       "loading": "インスタンスを削除中...",
       "success": "インスタンスを削除しました",
@@ -352,9 +397,9 @@
     "settingsGroup": "設定",
     "extensionsGroup": "拡張機能",
     "botSettings": "ボット設定",
-    "accountSettings": "アカウント設定",
+    "accountSettings": "アカウント",
     "metaSettings": "インスタンス設定",
-    "proxySettings": "プロキシ設定",
+    "proxySettings": "プロキシ",
     "aiSettings": "AI設定",
     "pathfindingSettings": "パスファインディング設定",
     "discoverPlugins": "プラグイン",
@@ -420,10 +465,10 @@
     "instances": "インスタンス",
     "access": "アクセス",
     "settings": "設定",
-    "proxySettings": "プロキシ設定",
+    "proxySettings": "プロキシ",
     "overview": "概要",
     "users": "ユーザー",
-    "accountSettings": "アカウント設定",
+    "accountSettings": "アカウント",
     "metaSettings": "インスタンス設定",
     "discoverPlugins": "プラグイン",
     "adminScripts": "スクリプト",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "APIアクセス",
-      "description": "SoulFire の gRPC HTTP API はウェブリクエストでインスタンスを管理します。",
+      "description": "SoulFire API を使うと、自分のプログラムからインスタンスを管理できます。",
       "publicAddress": "公開APIアドレス",
       "personalToken": "個人用APIトークン",
       "securityWarning": "個人の API トークンは秘密にしてください。このトークンで API にアクセスできます。",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "トークンを生成",
-      "placeholder": "下の「トークンを生成」をクリックしてください",
+      "placeholder": "下の「トークンを生成」を選択してください",
       "generating": "トークンを生成中...",
       "success": "トークンの生成に成功しました",
       "error": "トークンの生成に失敗しました",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "インスタンス名を更新できませんでした"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}} を更新できませんでした"
   },
   "auditLog": {
     "filterPlaceholder": "監査ログを絞り込み...",
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "スクリプトを削除中...",
-      "success": "スクリプトを削除しました！",
+      "success": "スクリプトを削除しました",
       "error": "スクリプトの削除に失敗しました"
     },
     "addToast": {
       "loading": "スクリプトを追加中...",
-      "success": "スクリプトを追加しました！",
+      "success": "スクリプトを追加しました",
       "error": "スクリプトの追加に失敗しました"
     },
     "updateToast": {
       "loading": "スクリプトを更新中...",
-      "success": "スクリプトを更新しました！",
+      "success": "スクリプトを更新しました",
       "error": "スクリプトの更新に失敗しました"
     },
     "restartToast": {
       "loading": "スクリプトを再起動中...",
-      "success": "スクリプトを再起動しました！",
+      "success": "スクリプトを再起動しました",
       "error": "スクリプトの再起動に失敗しました"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "Botへ移動",
       "copyUsername": "ユーザー名をコピー",
-      "copyUuid": "UUIDをコピー",
+      "copyUuid": "プロファイル ID をコピー",
       "copyCoordinates": "座標をコピー"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "接続済み",
+    "botOffline": "切断済み"
+  },
+  "minecraftActions": {
+    "copyError": "テキストをコピーできませんでした。HTTPS を使うか、クリップボードへのアクセスを許可してください。",
+    "openError": "リンクを開けませんでした。",
+    "popupBlocked": "ブラウザーが新しいタブをブロックしました。",
+    "openLink": "リンクを開く"
+  },
+  "instanceIcon": {
+    "label": "アイコン",
+    "description": "アプリに表示されるインスタンスのアイコンです。"
+  },
+  "unknown": "不明",
+  "minecraftHead": "Minecraft の頭",
+  "textFile": "テキストファイル"
 }

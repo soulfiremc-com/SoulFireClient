@@ -119,12 +119,12 @@
       "network": "नेटवर्क पता",
       "unix": "यूनिक्स सॉकेट"
     },
-    "getProxies": "प्रॉक्सी प्राप्त करें",
+    "getProxies": "प्रॉक्सी प्रदाता",
     "addProxies": "प्रॉक्सी जोड़ें",
     "filterPlaceholder": "प्रॉक्सी छाँटें...",
     "listImportToast": {
       "loading": "प्रॉक्सी आयात हो रही हैं...",
-      "success": "{{count}} प्रॉक्सी आयात हुईं!",
+      "success": "{{count}} प्रॉक्सी आयात हुईं",
       "error": "प्रॉक्सी आयात करने में विफल रहे",
       "noProxies": "आयात करने के लिए कोई प्रॉक्सी नहीं है"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "प्रॉक्सी हटाई जा रही हैं...",
-      "success": "{{count}} प्रॉक्सी हटाई गईं!",
+      "success": "{{count}} प्रॉक्सी हटाई गईं",
       "error": "प्रॉक्सी हटाने में विफल रहे"
     },
     "checkToast": {
       "loading": "प्रॉक्सी जाँची जा रही हैं... {{checked}}/{{total}} (सफल: {{success}} विफल: {{failed}})",
-      "success": "{{count}} टूटी हुई प्रॉक्सी हटाई गईं!",
-      "error": "प्रॉक्सी जांचने में विफल रहे"
+      "success": "{{count}} टूटी हुई प्रॉक्सी हटाई गईं",
+      "error": "प्रॉक्सी जांचने में विफल रहे",
+      "successKept": "{{total}} में से {{failed}} प्रॉक्सी जाँच में विफल रहे। कोई प्रॉक्सी नहीं हटाया गया।"
     },
     "checkDialog": {
       "title": "प्रॉक्सी जांचें",
-      "description": "आप {{count}} प्रॉक्सी जांचने वाले हैं। अमान्य प्रॉक्सी स्वचालित रूप से हटा दिए जाएंगे।",
-      "confirm": "जांच शुरू करें"
+      "description": "आप {{count}} प्रॉक्सी जाँचने वाले हैं।",
+      "confirm": "जांच शुरू करें",
+      "removeFailed": "विफल प्रॉक्सी हटाएँ",
+      "removeFailedHelp": "अस्थायी नेटवर्क समस्या से प्रॉक्सी विफल हो सकता है। सभी प्रॉक्सी रखने और केवल परिणाम देखने के लिए यह विकल्प हटाएँ।"
     },
     "invalidFormat": "अमान्य प्रॉक्सी प्रारूप",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "आयात किए गए प्रॉक्सी जांचें?",
-      "description": "आपने {{count}} प्रॉक्सी आयात किए हैं। क्या आप इन्हें अभी जांचना चाहते हैं? SoulFire अवैध प्रॉक्सियों को स्वचालित रूप से हटा देता है।",
+      "description": "आपने {{count}} प्रॉक्सी इंपोर्ट किए। अभी जाँचें?",
       "confirm": "प्रॉक्सी जांचें",
       "skip": "छोड़ें"
     },
@@ -186,10 +189,18 @@
       "socks4": "केवल SOCKS4 (फ्लैट)",
       "socks5": "केवल SOCKS5 (फ्लैट)",
       "noProxies": "निर्यात करने के लिए कोई प्रॉक्सी नहीं है"
-    }
+    },
+    "removeDialog": {
+      "title_one": "{{count}} प्रॉक्सी हटाएँ?",
+      "title_other": "{{count}} प्रॉक्सी हटाएँ?",
+      "description": "इससे चुने गए प्रॉक्सी और उनके क्रेडेंशियल इस इंस्टेंस से हट जाते हैं। इसे पूर्ववत नहीं किया जा सकता।",
+      "confirm": "प्रॉक्सी हटाएँ"
+    },
+    "showPassword": "पासवर्ड दिखाएँ",
+    "hidePassword": "पासवर्ड छिपाएँ"
   },
   "account": {
-    "getAccounts": "खाते प्राप्त करें",
+    "getAccounts": "खाता प्रदाता",
     "addAccounts": "खाते जोड़ें",
     "generateAccounts": "खाते जनरेट करें",
     "filterPlaceholder": "खातों को छाँटें...",
@@ -197,7 +208,7 @@
       "loading": "खाते आयात हो रहे हैं... {{checked}}/{{total}} (सफल: {{success}} विफल: {{failed}})",
       "allFailed": "कोई भी खाता आयात करने में विफल रहे",
       "someFailed": "{{count}} खाते आयात किए गए, {{failed}} खाते आयात करने में विफल रहे",
-      "noneFailed": "{{count}} खाते आयात हुए!",
+      "noneFailed": "{{count}} खाते आयात हुए",
       "error": "खाते आयात करने में विफल रहे",
       "noAccounts": "आयात करने के लिए कोई खाता नहीं है"
     },
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "खाता आयात हो रहा है...",
-      "success": "खाता आयात हुआ!",
+      "success": "खाता आयात हुआ",
       "error": "खाता आयात करने में विफल रहे"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "जनरेट करें",
       "generating": "जनरेट किया जा रहा है...",
       "progress": "खाते जनरेट हो रहे हैं... {{checked}}/{{total}} (सफल: {{success}} विफल: {{failed}})",
-      "success": "{{count}} खाते जनरेट किए गए!",
+      "success": "{{count}} खाते जनरेट किए गए",
       "allFailed": "कोई भी खाता जनरेट करने में विफल रहे",
-      "allExist": "सभी उपयोगकर्ता नाम पहले से मौजूद हैं। इन्हें फिर से जनरेट करने के लिए 'मौजूदा खातों को ओवरराइट करें' सक्षम करें।",
+      "allExist": "सभी उपयोगकर्ता नाम पहले से मौजूद हैं। उन्हें फिर से बनाने के लिए \"मौजूदा को बदलें\" चुनें।",
       "error": "खाते जनरेट करने में विफल रहे",
       "invalidAmount": "कृपया एक मान्य संख्या दर्ज करें (कम से कम 1)",
       "missingPlaceholder": "नाम प्रारूप में %d प्लेसहोल्डर होना आवश्यक है"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "खाते हटाए जा रहे हैं...",
-      "success": "{{count}} खाते हटाए गए!",
+      "success": "{{count}} खाते हटाए गए",
       "error": "खाते हटाने में विफल रहे"
     },
     "table": {
       "type": "प्रकार",
-      "profileId": "UUID",
+      "profileId": "प्रोफ़ाइल ID",
       "lastKnownName": "उपयोगकर्ता नाम",
       "searchProfileIds": "प्रोफ़ाइल आईडी खोजें...",
       "searchLastKnownNames": "आखिरी ज्ञात नाम खोजें...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "चयनित खाते हटाएँ",
     "contextMenu": {
-      "openConfig": "कॉन्फ़िग खोलें",
+      "openConfig": "सेटिंग्स खोलें",
       "openMetadata": "मेटाडाटा खोलें",
       "copyProfileId": "प्रोफ़ाइल आईडी कॉपी करें",
       "copyUsername": "यूज़रनेम कॉपी करें"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "इनहेरिटेड मान से मेल खाता है",
       "instanceValue": "इंस्टेंस मान",
       "defaultValue": "डिफ़ॉल्ट मान",
-      "resetOverride": "ओवरराइड रीसेट करें"
+      "resetOverride": "ओवरराइड रीसेट करें",
+      "value": {
+        "notSet": "सेट नहीं है",
+        "on": "चालू",
+        "off": "बंद",
+        "empty": "खाली",
+        "entries_one": "{{count}} प्रविष्टि",
+        "entries_other": "{{count}} प्रविष्टियाँ",
+        "range": "सीमा"
+      },
+      "source": {
+        "bot": "बॉट का अपना मान",
+        "instance": "इंस्टेंस से लिया गया",
+        "default": "डिफ़ॉल्ट उपयोग में"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "डिवाइस कोड प्रमाणीकरण",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "कुंजी",
       "valuePlaceholder": "मान (JSON)",
       "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
-      "loadError": "",
+      "loadError": "मेटाडेटा लोड नहीं हो सका",
       "loadErrorDescription": "",
       "retryLoad": "पुनः प्रयास करें",
       "addSuccess": "प्रविष्टि जोड़ी गई",
@@ -350,7 +375,20 @@
       "deleteSuccess": "प्रविष्टि हटाई गई",
       "deleteError": "प्रविष्टि हटाने में विफल",
       "duplicateError": "इस नेमस्पेस और कुंजी के साथ एक प्रविष्टि पहले से मौजूद है",
-      "invalidJson": "अमान्य JSON मान"
+      "invalidJson": "अमान्य JSON मान",
+      "namespaceLabel": "नेमस्पेस",
+      "keyLabel": "कुंजी",
+      "valueLabel": "मान",
+      "addEntryLegend": "मेटाडेटा प्रविष्टि जोड़ें",
+      "addEntryButton": "प्रविष्टि जोड़ें",
+      "entryLegend": "मेटाडेटा प्रविष्टि",
+      "removeEntryButton": "हटाएँ"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} खाता हटाएँ?",
+      "title_other": "{{count}} खाते हटाएँ?",
+      "description": "इससे चुने गए खाते, उनके सहेजे गए क्रेडेंशियल और उनके बॉट इस इंस्टेंस से हट जाते हैं। इसे पूर्ववत नहीं किया जा सकता।",
+      "confirm": "खाते हटाएँ"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "कुंजी",
     "valuePlaceholder": "मान (JSON)",
     "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
+    "loadError": "मेटाडेटा लोड नहीं हो सका",
     "addSuccess": "प्रविष्टि जोड़ी गई",
     "addError": "प्रविष्टि जोड़ने में विफल",
     "updateError": "प्रविष्टि अपडेट करने में विफल",
     "deleteSuccess": "प्रविष्टि हटाई गई",
     "deleteError": "प्रविष्टि हटाने में विफल",
     "duplicateError": "इस नेमस्पेस और कुंजी के साथ एक प्रविष्टि पहले से मौजूद है",
-    "invalidJson": "अमान्य JSON मान"
+    "invalidJson": "अमान्य JSON मान",
+    "namespaceLabel": "नेमस्पेस",
+    "keyLabel": "कुंजी",
+    "valueLabel": "मान",
+    "addEntryLegend": "मेटाडेटा प्रविष्टि जोड़ें",
+    "addEntryButton": "प्रविष्टि जोड़ें",
+    "entryLegend": "मेटाडेटा प्रविष्टि",
+    "removeEntryButton": "हटाएँ"
   },
   "bots": {
     "searchPlaceholder": "बॉट्स खोजें...",
-    "onlineCount": "{{online}} ऑनलाइन / {{total}} कुल",
+    "onlineCount": "{{online}} कनेक्टेड / {{total}} कुल",
     "noBots": "कोई बॉट कॉन्फ़िगर नहीं है। खाते जोड़ने के लिए खाता सेटिंग्स पृष्ठ पर जाएँ।",
     "noBotsFound": "आपकी खोज से कोई बॉट नहीं मिला।",
     "loadingMore": "अधिक लोड हो रहा है...",
     "showingCount": "{{loaded}} में से {{total}} दिखा रहे हैं",
     "allLoaded": "सभी {{total}} बॉट्स लोड किए गए",
-    "online": "ऑनलाइन",
-    "offline": "ऑफ़लाइन",
+    "online": "कनेक्टेड",
+    "offline": "डिस्कनेक्टेड",
     "notJoined": "शामिल नहीं हुआ",
     "connectionPhase": {
       "connecting": "कनेक्ट हो रहा है",
-      "connected": "कनेक्टेड",
-      "spawned": "ऑनलाइन",
+      "connected": "लॉग इन हो रहा है",
+      "spawned": "कनेक्टेड",
       "died": "मृत",
-      "disconnected": "ऑफ़लाइन",
+      "disconnected": "डिस्कनेक्टेड",
       "ping": "{{ms}} मि.से."
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "बॉट्स पर वापस जाएं",
     "tabs": {
-      "overview": "अवलोकन",
+      "overview": "बॉट व्यू",
       "inventory": "इन्वेंटरी",
       "controls": "नियंत्रण",
       "terminal": "टर्मिनल"
     },
-    "comingSoon": "जल्द आ रहा है",
-    "terminalPanel": {
-      "title": "बॉट टर्मिनल"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "प्रॉक्सी",
       "direct": "सीधा (कोई प्रॉक्सी नहीं)",
@@ -416,16 +459,14 @@
       "title": "स्थिति और घूर्णन",
       "position": "स्थिति",
       "rotation": "घूर्णन",
-      "offline": "बॉट ऑफलाइन है। स्थिति डेटा केवल तब उपलब्ध होता है जब बॉट जुड़ा होता है।"
+      "offline": "बॉट डिस्कनेक्ट है। स्थिति डेटा केवल तब उपलब्ध होता है जब बॉट जुड़ा होता है।"
     },
     "chatPanel": {
-      "title": "चैट संदेश",
-      "description": "इस बॉट से चैट संदेश भविष्य के अपडेट में यहाँ दिखेंगे।"
+      "title": "चैट संदेश"
     },
     "commandPanel": {
       "title": "बॉट कमांड्स",
-      "placeholder": "इस बॉट को कमांड भेजें...",
-      "description": "बॉट-स्कोप्ड कमांड्स भविष्य के अपडेट में उपलब्ध होंगे।"
+      "placeholder": "इस बॉट को कमांड भेजें..."
     },
     "povPanel": {
       "title": "बॉट दृष्टिकोण",
@@ -438,7 +479,6 @@
       "offline": "बॉट ऑफलाइन है। दृष्टिकोण रेंडरिंग केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।"
     },
     "statsPanel": {
-      "title": "बॉट की जानकारी",
       "health": "स्वास्थ्य",
       "food": "खाद्य",
       "saturation": "संतृप्ति",
@@ -451,7 +491,7 @@
       "adventure": "एडवेंचर",
       "spectator": "स्पेकटेटर",
       "unknown": "अज्ञात",
-      "offline": "बॉट ऑफलाइन है। आँकड़े केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "offline": "बॉट डिस्कनेक्ट है। आँकड़े केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
     },
     "inventoryPanel": {
       "title": "इन्वेंटरी",
@@ -464,7 +504,7 @@
       "dropAll": "सभी छोड़ें",
       "closeContainer": "बंद करें",
       "clickHint": "बाएं क्लिक करें: उठाएँ/रखें | दाएं क्लिक करें: आधा/एक | शिफ्ट+क्लिक: तुरंत स्थानांतरित करें | मिडल क्लिक: हॉटबार स्लॉट चुनें",
-      "offline": "बॉट ऑफलाइन है। इन्वेंटरी केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।",
+      "offline": "बॉट डिस्कनेक्ट है। इन्वेंटरी केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।",
       "buttons": {
         "stonecutterRecipes": "रेसिपीज़",
         "enchantments": "जादू-टोने",
@@ -474,12 +514,12 @@
         "crafterSlots": "स्लॉट नियंत्रण",
         "lecternControls": "पुस्तक नियंत्रण",
         "actions": "क्रियाएँ",
-        "creativeTabs": ""
+        "creativeTabs": "क्रिएटिव टैब"
       },
       "textInput": {
         "title": "पाठ इनपुट",
         "anvilRename": "आइटम का नाम बदलें",
-        "creativeSearch": ""
+        "creativeSearch": "आइटम खोजें"
       },
       "bookPages": {
         "title": "पुस्तक सामग्री",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "आइटम नष्ट करें",
+      "clickHints": {
+        "left": "बायाँ क्लिक: उठाएँ या रखें",
+        "right": "दायाँ क्लिक: आधा उठाएँ या एक रखें",
+        "shift": "Shift+क्लिक: तुरंत ले जाएँ",
+        "middle": "मध्य क्लिक: सक्रिय स्लॉट के रूप में चुनें"
+      }
     },
     "visualPanel": {
-      "title": "बॉट दृश्य",
+      "title": "दिशा और दुनिया",
       "compass": "मुखि दिशा",
       "lookDirection": "देखने का कोण",
       "lookingUp": "ऊपर देख रहा है",
@@ -502,7 +548,7 @@
       "worldInfo": "दुनिया की जानकारी",
       "dimension": "आयाम",
       "biome": "जैवमंडल",
-      "offline": "बॉट ऑफलाइन है। दृश्य डेटा केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।"
+      "offline": "बॉट डिस्कनेक्ट है। दृश्य डेटा केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।"
     },
     "actionsPanel": {
       "title": "बॉट क्रियाएँ",
@@ -510,7 +556,7 @@
       "rightClick": "दाएं क्लिक",
       "leftClickDescription": "इकाई पर हमला करें या ब्लॉक तोड़ें",
       "rightClickDescription": "आइटम का उपयोग करें या इंटरैक्ट करें",
-      "offline": "बॉट ऑफ़लाइन है। क्रियाएँ केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "offline": "बॉट डिस्कनेक्ट है। क्रियाएँ केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "नीचे देखें",
       "lookLeft": "बाएँ देखें",
       "lookRight": "दाएँ देखें",
-      "offline": "बॉट ऑफ़लाइन है। गतिविधि नियंत्रण केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "offline": "बॉट डिस्कनेक्ट है। गतिविधि नियंत्रण केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
     },
     "dialogPanel": {
       "title": "सर्वर संवाद",
@@ -544,7 +590,45 @@
       "unknownType": "अज्ञात",
       "dismiss": "निरस्त करें",
       "submit": "प्रस्तुत करें",
-      "offline": "बॉट ऑफ़लाइन है। संवाद केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "offline": "बॉट डिस्कनेक्ट है। संवाद केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+    },
+    "pov": {
+      "title": "बॉट व्यू",
+      "touchControlling": "आप इस बॉट को नियंत्रित कर रहे हैं। रोकने के लिए \"Release control\" का उपयोग करें।",
+      "popupBlocked": "बॉट व्यू विंडो अलग करने के लिए पॉपअप की अनुमति दें।",
+      "windowTitle": "SoulFire बॉट व्यू",
+      "fullscreenUnavailable": "इस विंडो में फ़ुलस्क्रीन उपलब्ध नहीं है।",
+      "textInputLabel": "Minecraft टेक्स्ट इनपुट",
+      "videoLabel": "लाइव बॉट व्यू",
+      "touchMove": "चलें",
+      "audioError": "ऑडियो शुरू नहीं हो सका।",
+      "startError": "बॉट व्यू शुरू नहीं हो सका।",
+      "releaseHint": "कीबोर्ड और माउस छोड़ने के लिए {{shortcut}} दबाएँ।",
+      "captureHint": "व्यू पर क्लिक करें और कीबोर्ड व माउस कैप्चर की अनुमति दें।",
+      "audioWaiting": "बॉट व्यू के कनेक्ट होने की प्रतीक्षा है।",
+      "audioWatchFirst": "ऑडियो के लिए बॉट को देखें।",
+      "audioUpdateServer": "बॉट व्यू ऑडियो के लिए सर्वर अपडेट करें।",
+      "muteAudio": "ऑडियो म्यूट करें",
+      "unmuteAudio": "ऑडियो अनम्यूट करें",
+      "audioStarting": "ऑडियो शुरू हो रहा है...",
+      "mute": "म्यूट",
+      "unmute": "अनम्यूट",
+      "audio": "ऑडियो",
+      "audioUnavailable": "ऑडियो उपलब्ध नहीं है",
+      "volume": "बॉट व्यू वॉल्यूम",
+      "reconnect": "फिर से कनेक्ट करें",
+      "showWindow": "बॉट व्यू विंडो दिखाएँ",
+      "attachWindow": "बॉट व्यू विंडो वापस जोड़ें",
+      "touch": {
+        "jump": "कूदें",
+        "sneak": "दबे पाँव",
+        "attack": "हमला",
+        "use": "उपयोग करें",
+        "inventory": "इन्वेंटरी",
+        "keyboard": "कीबोर्ड",
+        "closeMenu": "मेनू बंद करें"
+      },
+      "needsServer": "बॉट व्यू के लिए कनेक्टेड SoulFire सर्वर चाहिए।"
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "कोई डेटा नहीं"
     },
     "summary": {
-      "online": "ऑनलाइन",
+      "online": "कनेक्टेड",
       "packetsPerSecond": "Pkt/s",
       "traffic": "ट्रैफिक",
       "health": "स्वास्थ्य",
       "tick": "टिक"
     },
     "botsOnline": {
-      "title": "बॉट्स ऑनलाइन",
-      "online": "ऑनलाइन",
+      "title": "कनेक्टेड बॉट्स",
+      "online": "कनेक्टेड",
       "total": "कुल"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "स्क्रिप्ट बनाने में विफल",
     "noScripts": "अभी तक कोई स्क्रिप्ट नहीं",
     "noScriptsDescription": "विजुअल नोड-आधारित संपादक का उपयोग कर अपने पहले बॉट ऑटोमेशन के लिए स्क्रिप्ट बनाएँ।",
-    "createFirstScript": "अपनी पहली स्क्रिप्ट बनाएँ",
+    "createFirstScript": "स्क्रिप्ट बनाएँ",
     "running": "चल रहा है",
     "paused": "रुका हुआ है",
     "nodes": "नोड्स",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "नोड पैलेट",
-        "search": "नोड खोजें..."
+        "search": "नोड खोजें...",
+        "noResults": "आपकी खोज से कोई नोड मेल नहीं खाता",
+        "noResultsDescription": "कोई दूसरा शब्द आज़माएँ या मौजूदा फ़िल्टर साफ़ करें।"
       },
       "logs": {
         "title": "निष्पादन लॉग्स",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "नोड विस्तार करें",
-        "collapse": "नोड संक्षिप्त करें"
+        "collapse": "नोड संक्षिप्त करें",
+        "avgTime": "औसत निष्पादन समय: {{avg}} ms (पिछले {{count}} रन)",
+        "preview": "पूर्वावलोकन"
       },
       "debug": {
         "copyValue": "वर्तमान मान कॉपी करें",
-        "clearHistory": "इतिहास साफ़ करें"
+        "clearHistory": "इतिहास साफ़ करें",
+        "current": "वर्तमान ({{time}}):",
+        "noValue": "अभी तक कोई मान नहीं मिला"
       },
       "edge": {
         "direction": "एज दिशा"
@@ -733,14 +823,36 @@
         "title": "स्क्रिप्ट जटिलता स्कोर"
       },
       "group": {
-        "returnToRoot": "रूट पर लौटें (Tab)"
+        "returnToRoot": "रूट पर लौटें (Tab)",
+        "root": "रूट",
+        "exitHint": "बाहर निकलने के लिए <key>Tab</key> दबाएँ",
+        "editHint": "संपादित करने के लिए डबल-क्लिक करें",
+        "noInputs": "कोई इनपुट परिभाषित नहीं",
+        "noOutputs": "कोई आउटपुट परिभाषित नहीं"
       },
       "quickAdd": {
         "menuLabel": "त्वरित नोड जोड़ने का मेनू",
-        "searchPlaceholder": "नोड खोजें..."
+        "searchPlaceholder": "नोड खोजें...",
+        "noResults": "कोई नोड नहीं मिला",
+        "noResultsDescription": "कोई दूसरा खोज शब्द आज़माएँ।",
+        "navigate": "नेविगेट करें",
+        "select": "चुनने के लिए Enter",
+        "close": "बंद करने के लिए Esc"
       },
       "diff": {
-        "tooltip": "बदलाव देखें"
+        "tooltip": "बदलाव देखें",
+        "title": "बिना सहेजे बदलाव",
+        "description": "पिछली बार सहेजने के बाद के बदलाव।",
+        "nodesAdded_one": "{{count}} नोड जोड़ा गया",
+        "nodesAdded_other": "{{count}} नोड्स जोड़े गए",
+        "nodesRemoved_one": "{{count}} नोड हटाया गया",
+        "nodesRemoved_other": "{{count}} नोड्स हटाए गए",
+        "nodesModified_one": "{{count}} नोड बदला गया",
+        "nodesModified_other": "{{count}} नोड्स बदले गए",
+        "edgesAdded_one": "{{count}} कनेक्शन जोड़ा गया",
+        "edgesAdded_other": "{{count}} कनेक्शन जोड़े गए",
+        "edgesRemoved_one": "{{count}} कनेक्शन हटाया गया",
+        "edgesRemoved_other": "{{count}} कनेक्शन हटाए गए"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "प्रति-नोड और डेटा एज टाइमआउट्स को अक्षम करता है",
         "save": "कोटा सहेजें",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} का क्रम बदलें",
+        "empty": "कोई आने वाला मान नहीं",
+        "title": "मल्टी-इनपुट: कई कनेक्शन स्वीकार करता है",
+        "connectTo": "{{label}} से मान जोड़ें"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "स्क्रिप्ट हटाएँ?",
+      "description": "इससे \"{{name}}\" स्थायी रूप से हट जाता है। इसे पूर्ववत नहीं किया जा सकता।",
+      "descriptionUnnamed": "इससे स्क्रिप्ट स्थायी रूप से हट जाती है। इसे पूर्ववत नहीं किया जा सकता।"
+    },
+    "executionStats": "निष्पादन आँकड़े: {{executed}}/{{max}} नोड्स चले"
   },
   "metadataValidation": {
     "invalidNamespace": "",

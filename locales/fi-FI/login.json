@@ -44,7 +44,24 @@
         "placeholder": "JVM-parametrisi tähän"
       },
       "back": "Takaisin",
-      "start": "Aloita"
+      "start": "Aloita",
+      "jar": {
+        "title": "Palvelimen jar",
+        "official": "Virallinen",
+        "custom": "Mukautettu",
+        "officialTitle": "Virallinen SoulFire-palvelin",
+        "customTitle": "Mukautettu palvelimen jar",
+        "officialDescription": "Lataa ja tarkistaa vastaavan SoulFire-julkaisun.",
+        "customDescription": "Suorittaa tuodun jar-tiedoston. SoulFire ei tarkista tai päivitä sitä.",
+        "import": "Tuo jar",
+        "importSuccess": "{{name}} tuotu",
+        "importError": "Mukautettua SoulFire-jaria ei voitu tuoda",
+        "selectCustomFirst": "Tuo ja valitse mukautettu jar ennen käynnistystä.",
+        "dialog": {
+          "filter": "Java-arkisto",
+          "title": "Valitse SoulFire-palvelimen jar"
+        }
+      }
     },
     "mobile": {
       "description": "Jos haluat ajaa integroitua palvelinta mobiililla, sinun tulee suorittaa muutama manuaalinen vaihe.",

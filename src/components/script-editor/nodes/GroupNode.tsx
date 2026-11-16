@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { Layers } from "lucide-react";
 import { memo } from "react";
@@ -130,7 +131,7 @@ function GroupNodeComponent({ data, selected }: GroupNodeProps) {
 
       {/* Footer hint */}
       <div className="border-t border-border/50 px-3 py-1 text-xs text-muted-foreground">
-        Double-click to edit
+        {i18n.t("instance:scripts.editor.group.editHint")}
       </div>
     </div>
   );

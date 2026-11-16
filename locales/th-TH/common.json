@@ -113,18 +113,24 @@
         "submit": "โหลดจาก URL",
         "toast": {
           "loading": "กำลังดาวน์โหลดข้อมูล...",
-          "success": "โหลดข้อมูลเรียบร้อย!",
+          "success": "โหลดข้อมูลเรียบร้อย",
           "error": "ดาวน์โหลดข้อมูลไม่สำเร็จ",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "ลบอินสแตนซ์หรือไม่",
+      "description": "การดำเนินการนี้จะลบ \"{{name}}\" และข้อมูลอย่างถาวร คุณไม่สามารถย้อนกลับได้",
+      "descriptionUnnamed": "การดำเนินการนี้จะลบอินสแตนซ์นี้และข้อมูลอย่างถาวร คุณไม่สามารถย้อนกลับได้"
     }
   },
   "commandInput": {
     "placeholder": "ใส่คำสั่ง (พิมพ์ 'help' เพื่อดูรายการ)",
     "emptySuggestions": "พิมพ์เพื่อขอรับคำแนะนำหรือกด Tab",
-    "noSuggestions": "ไม่มีคำแนะนำที่พร้อมใช้งาน"
+    "noSuggestions": "ไม่มีคำแนะนำที่พร้อมใช้งาน",
+    "emptySuggestionsPrefix": "พิมพ์เพื่อขอคำแนะนำ หรือกด"
   },
   "controls": {
     "start": "เริ่มต้น",
@@ -162,7 +168,7 @@
     "stopCount_other": "หยุดบอท {{count}} ตัว",
     "restartCount_other": ""
   },
-  "botFleetSummary": "ออนไลน์ {{online}} · ที่ต้องการ {{desired}} · ทั้งหมด {{total}}",
+  "botFleetSummary": "เชื่อมต่อ {{online}} · ตั้งให้ทำงาน {{desired}} · ทั้งหมด {{total}}",
   "icon": {
     "invalidName": "ชื่อไอคอนไม่ถูกต้อง: {{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "น้อยไปมาก",
       "desc": "มากไปน้อย"
-    }
+    },
+    "openFilterMenu": "เปิดเมนูตัวกรอง",
+    "filterOperator": "ตัวดำเนินการกรอง",
+    "filterValue": "ค่าตัวกรอง",
+    "sortDirection": "ทิศทางการเรียง",
+    "selectJoinOperator": "เลือกตัวดำเนินการเชื่อม",
+    "joinOperator": "ตัวดำเนินการเชื่อม",
+    "escapeKey": "Escape",
+    "selectDate": "เลือกวันที่",
+    "selectDateRange": "เลือกช่วงวันที่",
+    "clearFilter": "ล้างตัวกรอง {{title}}",
+    "clearFilters": "ล้างตัวกรอง",
+    "clear": "ล้าง",
+    "from": "จาก",
+    "to": "ถึง",
+    "sortDirectionFor": "ทิศทางการเรียงของ {{column}}",
+    "minValue": "ค่าต่ำสุดของ {{label}}",
+    "maxValue": "ค่าสูงสุดของ {{label}}"
   },
   "pluginCard": {
     "version": "เวอร์ชัน: {{version}}",
@@ -252,13 +275,13 @@
     "website": "เว็บไซต์"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "บันทึก {{name}} ไม่ได้",
     "namespacesNotFound": "ไม่พบ namespaces ของการตั้งค่า",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "บันทึก {{name}} ไม่ได้",
       "placeholder": "เพิ่มรายการใหม่...",
       "add": "เพิ่ม",
       "remove": "ลบ"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "จำนวนไม่ถูกต้อง",
       "description": "ค่าต้องอยู่ระหว่าง {{min}} ถึง {{max}}"
-    }
+    },
+    "minMaxLegend": "การตั้งค่าต่ำสุดและสูงสุด"
   },
   "terminal": {
     "noLogs": "ยังไม่มีล็อก รันคำสั่งเพื่อสร้างผลลัพธ์ล็อก",
@@ -317,16 +341,37 @@
       "error": "เชื่อมต่อกับ {{device}} ไม่สำเร็จ"
     },
     "noDevices": "ไม่พบอุปกรณ์",
-    "broadcastLabel": "ทดสอบการกระจายสัญญาณ",
     "broadcastToast": {
       "loading": "กำลังส่งข้อความ...",
-      "success": "ส่งข้อความแล้ว!",
+      "success": "ส่งข้อความแล้ว",
       "error": "ส่งข้อความไม่สำเร็จ"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "กำลังเปิดสคริปต์...",
+        "success": "เปิดสคริปต์แล้ว",
+        "error": "เปิดสคริปต์ไม่ได้ ลองอีกครั้ง"
+      },
+      "deactivate": {
+        "loading": "กำลังปิดสคริปต์...",
+        "success": "ปิดสคริปต์แล้ว",
+        "error": "ปิดสคริปต์ไม่ได้ ลองอีกครั้ง"
+      }
+    },
+    "operations": {
+      "activateScript": "เปิดสคริปต์ {{name}}",
+      "deactivateScript": "ปิดสคริปต์ {{name}}"
+    },
+    "status": {
+      "active": "เปิด",
+      "paused": "ปิด"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "อ่านเอกสารคู่มือ",
-    "backToDashboard": "กลับไปแดชบอร์ด",
+    "backToDashboard": "กลับไปที่อินสแตนซ์",
     "deleteToast": {
       "loading": "กำลังลบอินสแตนซ์...",
       "success": "ลบอินสแตนซ์แล้ว",
@@ -352,9 +397,9 @@
     "settingsGroup": "การตั้งค่า",
     "extensionsGroup": "ส่วนขยาย",
     "botSettings": "ตั้งค่าบอท",
-    "accountSettings": "ตั้งค่าบัญชีผู้ใช้",
+    "accountSettings": "ไอดี",
     "metaSettings": "ตั้งค่าอินสแตนซ์",
-    "proxySettings": "ตั้งค่าพร็อกซี่",
+    "proxySettings": "พร็อกซี",
     "aiSettings": "ตั้งค่า AI",
     "pathfindingSettings": "ตั้งค่าการค้นหาเส้นทาง",
     "discoverPlugins": "ปลั๊กอิน",
@@ -420,10 +465,10 @@
     "instances": "อินสแตนซ์",
     "access": "การเข้าถึง",
     "settings": "การตั้งค่า",
-    "proxySettings": "ตั้งค่าพร็อกซี่",
+    "proxySettings": "พร็อกซี",
     "overview": "ภาพรวม",
     "users": "ผู้ใช้",
-    "accountSettings": "ตั้งค่าบัญชีผู้ใช้",
+    "accountSettings": "ไอดี",
     "metaSettings": "ตั้งค่าอินสแตนซ์",
     "discoverPlugins": "ปลั๊กอิน",
     "adminScripts": "สคริปต์",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "เข้าถึง API",
-      "description": "SoulFire gRPC HTTP API ใช้จัดการอินสแตนซ์ผ่านเว็บรีเควสต์",
+      "description": "ใช้ SoulFire API เพื่อจัดการอินสแตนซ์จากโปรแกรมของคุณเอง",
       "publicAddress": "ที่อยู่ API สาธารณะ",
       "personalToken": "โทเค็น API ส่วนตัว",
       "securityWarning": "เก็บ Token API ส่วนตัวของคุณเป็นความลับ เพราะมันให้สิทธิ์เข้าถึง API ได้",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "สร้างโทเค็น",
-      "placeholder": "คลิก 'สร้างโทเค็น' ด้านล่าง",
+      "placeholder": "เลือก \"สร้างโทเค็น\" ด้านล่าง",
       "generating": "กำลังสร้างโทเค็น...",
       "success": "สร้างโทเค็นสำเร็จ",
       "error": "สร้างโทเค็นไม่สำเร็จ",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "อัปเดตชื่ออินสแตนซ์ไม่ได้"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "อัปเดต {{field}} ไม่ได้"
   },
   "auditLog": {
     "filterPlaceholder": "กรองบันทึกการตรวจสอบ...",
@@ -527,7 +570,7 @@
           "max": "ชื่อสคริปต์ต้องมีไม่เกิน 32 ตัวอักษร",
           "regex": "ใช้ตัวอักษรพิมพ์เล็ก ตัวเลข และขีดกลางเท่านั้น ชื่อต้องขึ้นต้นและลงท้ายด้วยตัวอักษรหรือตัวเลข",
           "label": "ชื่อ",
-          "placeholder": "My Script",
+          "placeholder": "my-script",
           "description": "ชื่อของสคริปต์"
         },
         "elevatedPermissions": {
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "กำลังลบสคริปต์...",
-      "success": "ลบสคริปต์แล้ว!",
+      "success": "ลบสคริปต์แล้ว",
       "error": "ลบสคริปต์ไม่สำเร็จ"
     },
     "addToast": {
       "loading": "กำลังเพิ่มสคริปต์...",
-      "success": "เพิ่มสคริปต์แล้ว!",
+      "success": "เพิ่มสคริปต์แล้ว",
       "error": "เพิ่มสคริปต์ไม่สำเร็จ"
     },
     "updateToast": {
       "loading": "กำลังอัปเดตสคริปต์...",
-      "success": "อัปเดตสคริปต์แล้ว!",
+      "success": "อัปเดตสคริปต์แล้ว",
       "error": "อัปเดตสคริปต์ไม่สำเร็จ"
     },
     "restartToast": {
       "loading": "กำลังรีสตาร์ทสคริปต์...",
-      "success": "รีสตาร์ทสคริปต์แล้ว!",
+      "success": "รีสตาร์ทสคริปต์แล้ว",
       "error": "รีสตาร์ทสคริปต์ไม่สำเร็จ"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "ไปที่บอท",
       "copyUsername": "คัดลอกชื่อผู้ใช้",
-      "copyUuid": "คัดลอก UUID",
+      "copyUuid": "คัดลอก ID โปรไฟล์",
       "copyCoordinates": "คัดลอกพิกัด"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "เชื่อมต่อแล้ว",
+    "botOffline": "ตัดการเชื่อมต่อ"
+  },
+  "minecraftActions": {
+    "copyError": "คัดลอกข้อความไม่ได้ ใช้ HTTPS หรืออนุญาตการเข้าถึงคลิปบอร์ด",
+    "openError": "เปิดลิงก์ไม่ได้",
+    "popupBlocked": "เบราว์เซอร์ของคุณบล็อกแท็บใหม่",
+    "openLink": "เปิดลิงก์"
+  },
+  "instanceIcon": {
+    "label": "ไอคอน",
+    "description": "ไอคอนของอินสแตนซ์ที่แสดงในแอป"
+  },
+  "unknown": "ไม่ทราบ",
+  "minecraftHead": "หัว Minecraft",
+  "textFile": "ไฟล์ข้อความ"
 }

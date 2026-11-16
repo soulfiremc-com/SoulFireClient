@@ -111,7 +111,7 @@ export default function InstancePageLayout(props: {
               ))}
               <BreadcrumbItem className="min-w-0">
                 <BreadcrumbPage className="min-w-0">
-                  <span className="block truncate">{props.pageName}</span>
+                  <h1 className="block truncate">{props.pageName}</h1>
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>

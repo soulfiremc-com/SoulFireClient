@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Ongeldige invoer: verwacht string, ontving undefined",
-    "null": "Ongeldige invoer: verwacht string, ontving null",
-    "number": "Ongeldige invoer: verwacht string, ontving getal",
-    "boolean": "Ongeldige invoer: verwacht string, ontving boolean",
-    "array": "Ongeldige invoer: verwacht string, ontving array",
-    "object": "Ongeldige invoer: verwacht string, ontving object",
-    "nan": "Ongeldige invoer: verwacht string, ontving NaN",
-    "infinity": "Ongeldige invoer: verwacht string, ontving getal"
+    "undefined": "Voer een waarde in.",
+    "null": "Voer een waarde in.",
+    "number": "Voer een waarde in.",
+    "boolean": "Voer een waarde in.",
+    "array": "Voer een waarde in.",
+    "object": "Voer een waarde in.",
+    "nan": "Voer een waarde in.",
+    "infinity": "Voer een waarde in."
   },
   "number": {
-    "undefined": "Ongeldige invoer: verwacht getal, ontving undefined",
-    "null": "Ongeldige invoer: verwacht getal, ontving null",
-    "string": "Ongeldige invoer: verwacht getal, ontving string",
-    "boolean": "Ongeldige invoer: verwacht getal, ontving boolean",
-    "array": "Ongeldige invoer: verwacht getal, ontving array",
-    "object": "Ongeldige invoer: verwacht getal, ontving object",
-    "nan": "Ongeldige invoer: verwacht getal, ontving NaN",
-    "infinity": "Ongeldige invoer: verwacht getal, ontving getal"
+    "undefined": "Voer een getal in.",
+    "null": "Voer een getal in.",
+    "string": "Voer een getal in.",
+    "boolean": "Voer een getal in.",
+    "array": "Voer een getal in.",
+    "object": "Voer een getal in.",
+    "nan": "Voer een getal in.",
+    "infinity": "Voer een getal in."
   },
   "object": {
-    "undefined": "Ongeldige invoer: verwacht object, ontving undefined",
-    "null": "Ongeldige invoer: verwacht object, ontving null",
-    "number": "Ongeldige invoer: verwacht object, ontving getal",
-    "string": "Ongeldige invoer: verwacht object, ontving string",
-    "boolean": "Ongeldige invoer: verwacht object, ontving boolean",
-    "array": "Ongeldige invoer: verwacht object, ontving array",
-    "nan": "Ongeldige invoer: verwacht object, ontving NaN",
-    "infinity": "Ongeldige invoer: verwacht object, ontving getal"
+    "undefined": "Voer een geldige waarde in.",
+    "null": "Voer een geldige waarde in.",
+    "number": "Voer een geldige waarde in.",
+    "string": "Voer een geldige waarde in.",
+    "boolean": "Voer een geldige waarde in.",
+    "array": "Voer een geldige waarde in.",
+    "nan": "Voer een geldige waarde in.",
+    "infinity": "Voer een geldige waarde in."
   },
-  "email": "Ongeldig: emailadres",
-  "url": "Ongeldig: URL",
-  "jwt": "Ongeldig: JWT",
-  "emailTooLong": "Te lang: verwacht dat string <=255 tekens heeft",
-  "jarSource": "Ongeldige optie: verwacht één van \"official\"|\"custom\"",
-  "generationMode": "Ongeldige optie: verwacht één van \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Ongeldige optie: verwacht één van 0|1"
+  "email": "Voer een geldig e-mailadres in.",
+  "url": "Voer een geldige URL in.",
+  "jwt": "Voer een geldig token in.",
+  "emailTooLong": "Gebruik maximaal 255 tekens.",
+  "jarSource": "Kies de officiële server of een aangepaste jar.",
+  "generationMode": "Kies hoe bestaande accounts worden behandeld.",
+  "userRole": "Kies een rol."
 }

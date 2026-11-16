@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { Column, RowData } from "@tanstack/react-table";
 import * as React from "react";
 
@@ -92,7 +93,9 @@ export function DataTableRangeFilter<TData extends RowData>({
       <Input
         id={`${inputId}-min`}
         type="number"
-        aria-label={`${meta?.label} minimum value`}
+        aria-label={i18n.t("common:dataTable.minValue", {
+          label: meta?.label,
+        })}
         aria-valuemin={min}
         aria-valuemax={max}
         data-slot="range-min"
@@ -108,7 +111,9 @@ export function DataTableRangeFilter<TData extends RowData>({
       <Input
         id={`${inputId}-max`}
         type="number"
-        aria-label={`${meta?.label} maximum value`}
+        aria-label={i18n.t("common:dataTable.maxValue", {
+          label: meta?.label,
+        })}
         aria-valuemin={min}
         aria-valuemax={max}
         data-slot="range-max"

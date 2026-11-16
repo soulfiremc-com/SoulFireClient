@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "İstifadə olunan Yığın (Heap)",
         "threads": "Thread-lər",
-        "botsOnline": "Onlayn Botlar",
+        "botsOnline": "Qoşulmuş botlar",
         "uptime": "İşləmə vaxtı"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Thread Sayı"
       },
       "aggregateBots": {
-        "title": "Botlar Onlinedır (Bütün İnstansiyalar)"
+        "title": "Qoşulmuş botlar (bütün instansiyalar)"
+      },
+      "legend": {
+        "process": "Proses",
+        "system": "Sistem",
+        "used": "İstifadə olunan",
+        "committed": "Ayrılmış",
+        "max": "Maks.",
+        "total": "Cəmi",
+        "daemon": "Daemon",
+        "online": "Qoşulub"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "İstifadəçi əlavə olunur...",
-      "success": "İstifadəçi əlavə edildi!",
+      "success": "İstifadəçi əlavə edildi",
       "error": "İstifadəçi əlavə etmək alınmadı"
     },
     "updateToast": {
       "loading": "İstifadəçi yenilənir...",
-      "success": "İstifadəçi yeniləndi!",
+      "success": "İstifadəçi yeniləndi",
       "error": "İstifadəçi yenilənə bilmədi"
     },
     "removeToast": {
       "loading": "İstifadəçilər silinir...",
-      "success": "İstifadəçilər silindi!",
+      "success": "İstifadəçilər silindi",
       "error": "İstifadəçiləri silmək mümkün olmadı"
     },
     "invalidateToast": {
       "loading": "İstifadəçilər çıxarılır...",
-      "success": "İstifadəçilər çıxarıldı!",
+      "success": "İstifadəçilər çıxarıldı",
       "error": "İstifadəçiləri çıxarmaq mümkün olmadı"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Email",
       "role": "Rol",
       "createdAt": "Yaradılıb",
-      "minIssuedAt": "Minimal giriş",
+      "minIssuedAt": "Sessiyaların etibarlılıq başlanğıcı",
       "actions": "Əməliyyatlar",
       "searchUsernames": "İstifadəçi adlarında axtarış...",
       "searchEmails": "E-poçtlarda axtarış...",
       "searchCreatedAts": "Yaradılma tarixində axtarış...",
-      "searchMinIssuedAts": "Minimum giriş tarixində axtarış..."
+      "searchMinIssuedAts": "Sessiya tarixlərində axtar..."
     },
     "removeSelectedTooltip": "Seçilmiş istifadəçiləri sil",
     "logOutSelectedTooltip": "Seçilmiş istifadəçiləri çıxış etdir",
@@ -125,6 +135,18 @@
       "editUser": "İstifadəçini düzəliş et",
       "impersonate": "Təqlid et",
       "copyUserId": "İstifadəçi ID-sini köçür"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} istifadəçi silinsin?",
+      "title_other": "{{count}} istifadəçi silinsin?",
+      "description": "Bu, seçilmiş istifadəçiləri və onların girişini həmişəlik silir. Bunu geri qaytarmaq olmur.",
+      "confirm": "İstifadəçiləri sil"
+    },
+    "invalidateDialog": {
+      "title_one": "{{count}} istifadəçi sistemdən çıxarılsın?",
+      "title_other": "{{count}} istifadəçi sistemdən çıxarılsın?",
+      "description": "Bu, seçilmiş istifadəçilərin bütün sessiyalarını və tokenlərini bitirir. Onlar yenidən daxil olmalıdır.",
+      "confirm": "İstifadəçiləri sistemdən çıxar"
     }
   }
 }

@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { ArrowLeftFromLine } from "lucide-react";
 import { memo } from "react";
@@ -77,7 +78,7 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
         <Empty className="border-0 p-3">
           <EmptyHeader className="gap-1">
             <EmptyTitle className="text-xs text-muted-foreground">
-              No outputs defined
+              {i18n.t("instance:scripts.editor.group.noOutputs")}
             </EmptyTitle>
           </EmptyHeader>
         </Empty>

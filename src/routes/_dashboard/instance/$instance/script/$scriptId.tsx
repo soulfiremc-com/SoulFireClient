@@ -512,7 +512,10 @@ function ScriptEditorContent() {
               timestamp: new Date(),
               level: "info",
               nodeId: null,
-              message: `Execution stats: ${nodeCount}/${maxCount} nodes executed`,
+              message: i18n.t("instance:scripts.executionStats", {
+                executed: String(nodeCount),
+                max: String(maxCount),
+              }),
             });
           } else if (event.event.case === "nodeError") {
             const { nodeId, errorMessage } = event.event.value;

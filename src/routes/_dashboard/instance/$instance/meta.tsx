@@ -43,7 +43,6 @@ import { Input } from "@/components/ui/input.tsx";
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
@@ -223,23 +222,19 @@ function InstanceNameField({
                       onChange={(event) =>
                         field.handleChange(event.currentTarget.value)
                       }
-                      onBlur={field.handleBlur}
+                      onBlur={() => {
+                        field.handleBlur();
+                        void form.handleSubmit();
+                      }}
                     />
-                    <InputGroupAddon align="inline-end">
-                      <InputGroupButton
-                        type="submit"
-                        aria-label={t("instanceName.save")}
-                        disabled={disabled || isSubmitting}
-                      >
-                        {isSubmitting && (
-                          <LoaderCircleIcon
-                            className="animate-spin"
-                            data-icon="inline-start"
-                          />
-                        )}
-                        {t("save")}
-                      </InputGroupButton>
-                    </InputGroupAddon>
+                    {isSubmitting && (
+                      <InputGroupAddon align="inline-end">
+                        <LoaderCircleIcon
+                          className="animate-spin"
+                          aria-label={t("saving")}
+                        />
+                      </InputGroupAddon>
+                    )}
                   </InputGroup>
                   <FieldDescription>
                     {t("dialog.createInstance.form.friendlyName.description")}
@@ -328,8 +323,8 @@ function Content() {
           settingType={{
             case: "combo",
             value: create(ComboSettingSchema, {
-              uiName: "Icon",
-              description: "The project icon shown in the app.",
+              uiName: i18n.t("common:instanceIcon.label"),
+              description: i18n.t("common:instanceIcon.description"),
               options: getAllIconTags().map((iconName) => ({
                 id: iconName[0],
                 displayName: formatIconName(iconName[0]),
@@ -374,7 +369,8 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
     setLoadError(false);
     try {
       if (transport === null) {
-        setLoadError(true);
+        // The demo has no server. Show an empty list, not a load error.
+        setEntries([]);
         return;
       }
       const result = await Effect.runPromise(

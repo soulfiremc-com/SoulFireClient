@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Neplatný vstup: očekáváno řetězec, obdrženo undefined",
-    "null": "Neplatný vstup: očekáváno řetězec, obdrženo null",
-    "number": "Neplatný vstup: očekáváno řetězec, obdrženo číslo",
-    "boolean": "Neplatný vstup: očekáváno řetězec, obdrženo boolean",
-    "array": "Neplatný vstup: očekáváno řetězec, obdrženo pole",
-    "object": "Neplatný vstup: očekáváno řetězec, obdrženo object",
-    "nan": "Neplatný vstup: očekáváno řetězec, obdrženo NaN",
-    "infinity": "Neplatný vstup: očekáváno řetězec, obdrženo číslo"
+    "undefined": "Zadejte hodnotu.",
+    "null": "Zadejte hodnotu.",
+    "number": "Zadejte hodnotu.",
+    "boolean": "Zadejte hodnotu.",
+    "array": "Zadejte hodnotu.",
+    "object": "Zadejte hodnotu.",
+    "nan": "Zadejte hodnotu.",
+    "infinity": "Zadejte hodnotu."
   },
   "number": {
-    "undefined": "Neplatný vstup: očekáváno číslo, obdrženo undefined",
-    "null": "Neplatný vstup: očekáváno číslo, obdrženo null",
-    "string": "Neplatný vstup: očekáváno číslo, obdrženo řetězec",
-    "boolean": "Neplatný vstup: očekáváno číslo, obdrženo boolean",
-    "array": "Neplatný vstup: očekáváno číslo, obdrženo pole",
-    "object": "Neplatný vstup: očekáváno číslo, obdrženo object",
-    "nan": "Neplatný vstup: očekáváno číslo, obdrženo NaN",
-    "infinity": "Neplatný vstup: očekáváno číslo, obdrženo číslo"
+    "undefined": "Zadejte číslo.",
+    "null": "Zadejte číslo.",
+    "string": "Zadejte číslo.",
+    "boolean": "Zadejte číslo.",
+    "array": "Zadejte číslo.",
+    "object": "Zadejte číslo.",
+    "nan": "Zadejte číslo.",
+    "infinity": "Zadejte číslo."
   },
   "object": {
-    "undefined": "Neplatný vstup: očekáváno object, obdrženo undefined",
-    "null": "Neplatný vstup: očekáváno object, obdrženo null",
-    "number": "Neplatný vstup: očekáváno object, obdrženo číslo",
-    "string": "Neplatný vstup: očekáváno object, obdrženo řetězec",
-    "boolean": "Neplatný vstup: očekáváno object, obdrženo boolean",
-    "array": "Neplatný vstup: očekáváno object, obdrženo pole",
-    "nan": "Neplatný vstup: očekáváno object, obdrženo NaN",
-    "infinity": "Neplatný vstup: očekáváno object, obdrženo číslo"
+    "undefined": "Zadejte platnou hodnotu.",
+    "null": "Zadejte platnou hodnotu.",
+    "number": "Zadejte platnou hodnotu.",
+    "string": "Zadejte platnou hodnotu.",
+    "boolean": "Zadejte platnou hodnotu.",
+    "array": "Zadejte platnou hodnotu.",
+    "nan": "Zadejte platnou hodnotu.",
+    "infinity": "Zadejte platnou hodnotu."
   },
-  "email": "Neplatný formát e-mailová adresa",
-  "url": "Neplatný formát URL",
-  "jwt": "Neplatný formát JWT",
-  "emailTooLong": "Hodnota je příliš velká: string musí mít <=255 znaků",
-  "jarSource": "Neplatná možnost: očekávána jedna z hodnot \"official\"|\"custom\"",
-  "generationMode": "Neplatná možnost: očekávána jedna z hodnot \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Neplatná možnost: očekávána jedna z hodnot 0|1"
+  "email": "Zadejte platnou e-mailovou adresu.",
+  "url": "Zadejte platnou adresu URL.",
+  "jwt": "Zadejte platný token.",
+  "emailTooLong": "Použijte nejvýše 255 znaků.",
+  "jarSource": "Zvolte oficiální server nebo vlastní jar.",
+  "generationMode": "Zvolte, jak naložit s existujícími účty.",
+  "userRole": "Zvolte roli."
 }

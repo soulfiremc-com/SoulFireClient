@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { ArrowRightFromLine } from "lucide-react";
 import { memo } from "react";
@@ -80,7 +81,7 @@ function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
         <Empty className="border-0 p-3">
           <EmptyHeader className="gap-1">
             <EmptyTitle className="text-xs text-muted-foreground">
-              No inputs defined
+              {i18n.t("instance:scripts.editor.group.noInputs")}
             </EmptyTitle>
           </EmptyHeader>
         </Empty>

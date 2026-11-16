@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
@@ -173,7 +174,9 @@ function BotPovSession({
     } catch (reason) {
       if (generation === audioGeneration.current)
         toast.error(
-          reason instanceof Error ? reason.message : "Unable to start audio.",
+          reason instanceof Error
+            ? reason.message
+            : i18n.t("instance:bots.pov.audioError"),
         );
     } finally {
       if (generation === audioGeneration.current) {
@@ -307,8 +310,7 @@ function BotPovSession({
         metrics.decoder = () => activeDecoder.stats;
       }
       const transport = createTransport();
-      if (!transport)
-        throw new Error("Interactive POV requires a connected server.");
+      if (!transport) throw new Error(i18n.t("instance:bots.pov.needsServer"));
       session.current = startPovSession(
         transport,
         povInputUrl(),
@@ -357,7 +359,9 @@ function BotPovSession({
       );
     } catch (reason) {
       actions.setError(
-        reason instanceof Error ? reason.message : "Unable to start POV.",
+        reason instanceof Error
+          ? reason.message
+          : i18n.t("instance:bots.pov.startError"),
       );
     }
     return () => {
@@ -820,7 +824,9 @@ function BotPovSession({
       if (!actions.isCurrentCapture(attempt)) return;
       if (!touch)
         toast.info(
-          `Press ${releaseShortcut} to release your keyboard and mouse.`,
+          i18n.t("instance:bots.pov.releaseHint", {
+            shortcut: releaseShortcut,
+          }),
           {
             id: captureToastId,
             toasterId: captureToastId,
@@ -840,8 +846,8 @@ function BotPovSession({
       release();
       actions.setCaptureError(
         error instanceof Error
-          ? `${error.message} Click to play and allow mouse/keyboard capture.`
-          : "Click to play and allow mouse/keyboard capture.",
+          ? `${error.message} ${i18n.t("instance:bots.pov.captureHint")}`
+          : i18n.t("instance:bots.pov.captureHint"),
       );
     }
   }, [
@@ -863,12 +869,12 @@ function BotPovSession({
       "popup,width=1280,height=800",
     );
     if (!child) {
-      toast.error("Allow popups to detach the POV window.", {
+      toast.error(t("bots.pov.popupBlocked"), {
         toasterId: captureToastId,
       });
       return;
     }
-    child.document.title = "SoulFire POV";
+    child.document.title = t("bots.pov.windowTitle");
     child.document.documentElement.className =
       document.documentElement.className;
     for (const style of document.querySelectorAll(
@@ -896,7 +902,7 @@ function BotPovSession({
         await root.requestFullscreen();
       }
     } catch {
-      toast.error("Fullscreen is unavailable in this window.", {
+      toast.error(t("bots.pov.fullscreenUnavailable"), {
         toasterId: captureToastId,
       });
     }
@@ -914,31 +920,33 @@ function BotPovSession({
         title={
           audioSupported === null
             ? playing
-              ? "Waiting for POV to connect."
-              : "Watch the bot to use audio."
+              ? t("bots.pov.audioWaiting")
+              : t("bots.pov.audioWatchFirst")
             : audioSupported
               ? undefined
-              : "Update the server to use POV audio."
+              : t("bots.pov.audioUpdateServer")
         }
-        aria-label={audioEnabled ? "Mute audio" : "Unmute audio"}
+        aria-label={
+          audioEnabled ? t("bots.pov.muteAudio") : t("bots.pov.unmuteAudio")
+        }
         aria-pressed={audioEnabled}
         onClick={() => void toggleAudio()}
       >
         {audioEnabled ? <Volume2Icon /> : <VolumeXIcon />}
         {audioStarting
-          ? "Starting audio…"
+          ? t("bots.pov.audioStarting")
           : audioEnabled
-            ? "Mute"
+            ? t("bots.pov.mute")
             : audioSupported === null
-              ? "Audio"
+              ? t("bots.pov.audio")
               : audioSupported
-                ? "Unmute"
-                : "Audio unavailable"}
+                ? t("bots.pov.unmute")
+                : t("bots.pov.audioUnavailable")}
       </Button>
       {audioEnabled && (
         <Field className="w-24">
           <FieldLabel id={volumeLabelId} className="sr-only">
-            POV volume
+            {t("bots.pov.volume")}
           </FieldLabel>
           <Slider
             aria-labelledby={volumeLabelId}
@@ -963,7 +971,9 @@ function BotPovSession({
     >
       {popup && isDesktopApp() && !fullscreen && (
         <header data-app-drag-region="" className={titlebarClassName}>
-          <span className="col-start-2 self-center text-xs">SoulFire POV</span>
+          <span className="col-start-2 self-center text-xs">
+            {t("bots.pov.windowTitle")}
+          </span>
           <div className="window-topbar-no-drag col-start-3 justify-self-end">
             <WindowControls windowApi={desktop.povWindow} />
           </div>
@@ -981,12 +991,14 @@ function BotPovSession({
               actions.setPlaying(!playing);
             }}
           >
-            {playing ? (
+            {playing && isOnline ? (
               <PauseIcon data-icon="inline-start" />
             ) : (
               <PlayIcon data-icon="inline-start" />
             )}
-            {playing ? t("bots.pov.stopWatching") : t("bots.pov.watch")}
+            {playing && isOnline
+              ? t("bots.pov.stopWatching")
+              : t("bots.pov.watch")}
           </Button>
           <Button
             size="sm"
@@ -1028,7 +1040,7 @@ function BotPovSession({
       >
         <textarea
           ref={textInputRef}
-          aria-label="Minecraft text input"
+          aria-label={t("bots.pov.textInputLabel")}
           autoCapitalize="off"
           autoComplete="off"
           spellCheck={false}
@@ -1038,7 +1050,7 @@ function BotPovSession({
         <canvas
           ref={attachCanvas}
           className="block size-full touch-none"
-          aria-label="Live Minecraft POV"
+          aria-label={t("bots.pov.videoLabel")}
         />
         {metrics && <PovStreamOverlay metrics={metrics} />}
         {touch && captured && (
@@ -1077,7 +1089,7 @@ function BotPovSession({
                   }}
                 >
                   <RefreshCwIcon data-icon="inline-start" />
-                  Reconnect
+                  {t("bots.pov.reconnect")}
                 </Button>
               </div>
             ) : !isOnline ? (
@@ -1151,10 +1163,10 @@ function BotPovSession({
       {createPortal(player, popup.document.body)}
       <div className="flex items-center gap-2">
         <Button variant="outline" onClick={() => popup.focus()}>
-          Show POV window
+          {t("bots.pov.showWindow")}
         </Button>
         <Button variant="outline" onClick={() => setPopup(null)}>
-          Attach POV window
+          {t("bots.pov.attachWindow")}
         </Button>
       </div>
     </>

@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
@@ -173,12 +174,14 @@ function formatSettingValue(
   value: JsonValue,
 ): string {
   if (value === null || value === undefined) {
-    return "Not set";
+    return i18n.t("instance:account.config.value.notSet");
   }
 
   switch (definition.type.case) {
     case "bool":
-      return value ? "Enabled" : "Disabled";
+      return value
+        ? i18n.t("instance:account.config.value.on")
+        : i18n.t("instance:account.config.value.off");
     case "combo":
       return (
         definition.type.value.options.find((option) => option.id === value)
@@ -187,7 +190,7 @@ function formatSettingValue(
     case "string": {
       const stringValue = String(value);
       if (stringValue.length === 0) {
-        return "Empty";
+        return i18n.t("instance:account.config.value.empty");
       }
 
       return stringValue.length > 64
@@ -197,14 +200,16 @@ function formatSettingValue(
     case "stringList": {
       const listValue = Array.isArray(value) ? value : [];
       if (listValue.length === 0) {
-        return "Empty";
+        return i18n.t("instance:account.config.value.empty");
       }
 
       if (listValue.length <= 2) {
         return listValue.join(", ");
       }
 
-      return `${listValue.length} entries`;
+      return i18n.t("instance:account.config.value.entries", {
+        count: listValue.length,
+      });
     }
     case "minMax": {
       if (
@@ -213,7 +218,7 @@ function formatSettingValue(
         !("min" in value) ||
         !("max" in value)
       ) {
-        return "Range";
+        return i18n.t("instance:account.config.value.range");
       }
 
       return `${value.min} – ${value.max}`;
@@ -247,11 +252,11 @@ function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
 function sourceLabel(source: ResolvedBotSetting["source"]): string {
   switch (source) {
     case "bot":
-      return "Bot override";
+      return i18n.t("instance:account.config.source.bot");
     case "instance":
-      return "Inherited from project";
+      return i18n.t("instance:account.config.source.instance");
     case "default":
-      return "Using default";
+      return i18n.t("instance:account.config.source.default");
   }
 }
 

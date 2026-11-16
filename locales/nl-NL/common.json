@@ -113,18 +113,24 @@
         "submit": "Laden van URL",
         "toast": {
           "loading": "Data wordt gedownload...",
-          "success": "Data geladen!",
+          "success": "Data geladen",
           "error": "Downloaden van data mislukt",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Instantie verwijderen?",
+      "description": "Dit verwijdert '{{name}}' en de bijbehorende gegevens definitief. Je kunt dit niet ongedaan maken.",
+      "descriptionUnnamed": "Dit verwijdert deze instantie en de bijbehorende gegevens definitief. Je kunt dit niet ongedaan maken."
     }
   },
   "commandInput": {
     "placeholder": "Voer commando in (typ 'help' voor lijst)",
     "emptySuggestions": "Typ om suggesties aan te vragen of druk op Tab.",
-    "noSuggestions": "Geen suggesties beschikbaar."
+    "noSuggestions": "Geen suggesties beschikbaar.",
+    "emptySuggestionsPrefix": "Typ om suggesties op te vragen of druk op"
   },
   "controls": {
     "start": "Start",
@@ -166,7 +172,7 @@
     "restartCount_one": "Herstart {{count}} bot",
     "restartCount_other": "Herstart {{count}} bots"
   },
-  "botFleetSummary": "{{online}} online · {{desired}} gewenst · {{total}} totaal",
+  "botFleetSummary": "{{online}} verbonden · {{desired}} ingesteld om te draaien · {{total}} totaal",
   "icon": {
     "invalidName": "Ongeldige pictogramnaam: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Opl.",
       "desc": "Afl."
-    }
+    },
+    "openFilterMenu": "Filtermenu openen",
+    "filterOperator": "Filteroperator",
+    "filterValue": "Filterwaarde",
+    "sortDirection": "Sorteerrichting",
+    "selectJoinOperator": "Koppeloperator selecteren",
+    "joinOperator": "Koppeloperator",
+    "escapeKey": "Escape",
+    "selectDate": "Datum selecteren",
+    "selectDateRange": "Datumbereik selecteren",
+    "clearFilter": "Filter {{title}} wissen",
+    "clearFilters": "Filters wissen",
+    "clear": "Wissen",
+    "from": "Van",
+    "to": "Tot",
+    "sortDirectionFor": "Sorteerrichting voor {{column}}",
+    "minValue": "Minimumwaarde voor {{label}}",
+    "maxValue": "Maximumwaarde voor {{label}}"
   },
   "pluginCard": {
     "version": "Versie: {{version}}",
@@ -256,13 +279,13 @@
     "website": "Website"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}} kon niet worden opgeslagen",
     "namespacesNotFound": "Instelling-namespaces niet gevonden",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}} kon niet worden opgeslagen",
       "placeholder": "Een nieuw item toevoegen...",
       "add": "Toevoegen",
       "remove": "Verwijderen"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Ongeldig getal",
       "description": "De waarde moet tussen {{min}} en {{max}} liggen"
-    }
+    },
+    "minMaxLegend": "Minimum- en maximuminstellingen"
   },
   "terminal": {
     "noLogs": "Nog geen logs. Voer een commando uit om loguitvoer te genereren.",
@@ -321,16 +345,37 @@
       "error": "Verbinding maken met {{device}} mislukt"
     },
     "noDevices": "Geen apparaten gevonden",
-    "broadcastLabel": "Uitzendtest",
     "broadcastToast": {
       "loading": "Bericht uitzenden...",
-      "success": "Bericht uitgezonden!",
+      "success": "Bericht uitgezonden",
       "error": "Uitzenden van bericht mislukt"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Script inschakelen...",
+        "success": "Script ingeschakeld",
+        "error": "Het script kon niet worden ingeschakeld. Probeer het opnieuw."
+      },
+      "deactivate": {
+        "loading": "Script uitschakelen...",
+        "success": "Script uitgeschakeld",
+        "error": "Het script kon niet worden uitgeschakeld. Probeer het opnieuw."
+      }
+    },
+    "operations": {
+      "activateScript": "Script {{name}} inschakelen",
+      "deactivateScript": "Script {{name}} uitschakelen"
+    },
+    "status": {
+      "active": "Aan",
+      "paused": "Uit"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Lees documentatie",
-    "backToDashboard": "Terug naar dashboard",
+    "backToDashboard": "Terug naar instanties",
     "deleteToast": {
       "loading": "Instantie verwijderen...",
       "success": "Instantie verwijderd",
@@ -356,9 +401,9 @@
     "settingsGroup": "Instellingen",
     "extensionsGroup": "Extensies",
     "botSettings": "Bot instellingen",
-    "accountSettings": "Account instellingen",
+    "accountSettings": "Accounts",
     "metaSettings": "Instellingen van instantie",
-    "proxySettings": "Proxy-instellingen",
+    "proxySettings": "Proxies",
     "aiSettings": "AI-instellingen",
     "pathfindingSettings": "Padzoeken-instellingen",
     "discoverPlugins": "Plug-ins",
@@ -424,10 +469,10 @@
     "instances": "Instanties",
     "access": "Toegang",
     "settings": "Instellingen",
-    "proxySettings": "Proxy-instellingen",
+    "proxySettings": "Proxies",
     "overview": "Overzicht",
     "users": "Gebruikers",
-    "accountSettings": "Account instellingen",
+    "accountSettings": "Accounts",
     "metaSettings": "Instellingen van instantie",
     "discoverPlugins": "Plug-ins",
     "adminScripts": "Scripts",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API-toegang",
-      "description": "De SoulFire gRPC HTTP API beheert instanties via webverzoeken.",
+      "description": "Gebruik de SoulFire-API om instanties vanuit je eigen programma's te beheren.",
       "publicAddress": "Openbaar API-adres",
       "personalToken": "Persoonlijk API-token",
       "securityWarning": "Houd je persoonlijke API-token geheim. Deze geeft toegang tot de API.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Token genereren",
-      "placeholder": "Klik hieronder op &#39;Token genereren&#39;",
+      "placeholder": "Kies hieronder 'Token genereren'",
       "generating": "Token wordt gegenereerd...",
       "success": "Token succesvol gegenereerd",
       "error": "Token genereren mislukt",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "De instantienaam kon niet worden bijgewerkt"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}} kon niet worden bijgewerkt"
   },
   "auditLog": {
     "filterPlaceholder": "Filter auditlogs...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Scripts worden verwijderd...",
-      "success": "Scripts verwijderd!",
+      "success": "Scripts verwijderd",
       "error": "Verwijderen van scripts mislukt"
     },
     "addToast": {
       "loading": "Script toevoegen...",
-      "success": "Script toegevoegd!",
+      "success": "Script toegevoegd",
       "error": "Toevoegen van script mislukt"
     },
     "updateToast": {
       "loading": "Script bijwerken...",
-      "success": "Script bijgewerkt!",
+      "success": "Script bijgewerkt",
       "error": "Bijwerken van script mislukt"
     },
     "restartToast": {
       "loading": "Script wordt herstart...",
-      "success": "Script herstart!",
+      "success": "Script herstart",
       "error": "Herstarten van script mislukt"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Ga naar bot",
       "copyUsername": "Gebruikersnaam kopiëren",
-      "copyUuid": "UUID kopiëren",
+      "copyUuid": "Profiel-ID kopiëren",
       "copyCoordinates": "Coördinaten kopiëren"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Verbonden",
+    "botOffline": "Niet verbonden"
+  },
+  "minecraftActions": {
+    "copyError": "Tekst kon niet worden gekopieerd. Gebruik HTTPS of sta toegang tot het klembord toe.",
+    "openError": "De link kon niet worden geopend.",
+    "popupBlocked": "Je browser heeft het nieuwe tabblad geblokkeerd.",
+    "openLink": "Link openen"
+  },
+  "instanceIcon": {
+    "label": "Pictogram",
+    "description": "Het pictogram van de instantie in de app."
+  },
+  "unknown": "Onbekend",
+  "minecraftHead": "Minecraft-hoofd",
+  "textFile": "Tekstbestand"
 }

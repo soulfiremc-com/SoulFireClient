@@ -119,12 +119,18 @@
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Delete instance?",
+      "description": "Dis deletz \"{{name}}\" an its data 4evr. U cant undo dis.",
+      "descriptionUnnamed": "Dis deletz dis instance an its data 4evr. U cant undo dis."
     }
   },
   "commandInput": {
     "placeholder": "Entah teh command (type 'help' if yar confoosed)",
     "emptySuggestions": "Typz to get sugjestshunz or smash Tab, kthx.",
-    "noSuggestions": "No sugjestshunz r here, sry."
+    "noSuggestions": "No sugjestshunz r here, sry.",
+    "emptySuggestionsPrefix": "Type 2 ask 4 hintz or press"
   },
   "controls": {
     "start": "Strat",
@@ -166,7 +172,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} ONLINE · {{desired}} WANTZ · {{total}} TOTUL",
+  "botFleetSummary": "{{online}} catnectd · {{desired}} set 2 run · {{total}} totul",
   "icon": {
     "invalidName": "Invalid ikon naym: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Asc",
       "desc": "Desc"
-    }
+    },
+    "openFilterMenu": "Open filtur menu",
+    "filterOperator": "Filtur operator",
+    "filterValue": "Filtur valu",
+    "sortDirection": "Sort direkshun",
+    "selectJoinOperator": "Pick join operator",
+    "joinOperator": "Join operator",
+    "escapeKey": "Escape",
+    "selectDate": "Pick date",
+    "selectDateRange": "Pick date range",
+    "clearFilter": "Cleer {{title}} filtur",
+    "clearFilters": "Cleer filturz",
+    "clear": "Cleer",
+    "from": "Frum",
+    "to": "2",
+    "sortDirectionFor": "Sort direkshun 4 {{column}}",
+    "minValue": "{{label}} smollest valu",
+    "maxValue": "{{label}} biggest valu"
   },
   "pluginCard": {
     "version": "Vurshun: {{version}}",
@@ -256,13 +279,13 @@
     "website": "Website"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Cud not saev {{name}}",
     "namespacesNotFound": "Settingz naymespaces not finded",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Cud not saev {{name}}",
       "placeholder": "Add new entry...",
       "add": "Put stuff",
       "remove": "Exit stuff"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Iz Invalid Numberz!",
       "description": "Da valyo must be btw {{min}} an {{max}}"
-    }
+    },
+    "minMaxLegend": "Smollest an biggest settingz"
   },
   "terminal": {
     "noLogs": "No logz yetz. Run a command an log cheezburger out!",
@@ -292,7 +316,7 @@
     "close": "Cloes"
   },
   "uiSidebar": {
-    "toggle": "Toggle Sidebar"
+    "toggle": "Toggle sidebar"
   },
   "window": {
     "minimize": "minimiez",
@@ -321,16 +345,37 @@
       "error": "Faild 2 connekt to {{device}}"
     },
     "noDevices": "No devisez foundz",
-    "broadcastLabel": "Broadcast test",
     "broadcastToast": {
       "loading": "Broadcastin messige...",
       "success": "Messige broadcasted!",
       "error": "Failed 2 broadcast messige"
     }
   },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Turnin on skript...",
+        "success": "Skript iz on",
+        "error": "Cud not turn on teh skript. Try agen."
+      },
+      "deactivate": {
+        "loading": "Turnin off skript...",
+        "success": "Skript iz off",
+        "error": "Cud not turn off teh skript. Try agen."
+      }
+    },
+    "operations": {
+      "activateScript": "Turn on skript {{name}}",
+      "deactivateScript": "Turn off skript {{name}}"
+    },
+    "status": {
+      "active": "ON",
+      "paused": "OFF"
+    }
+  },
   "instanceSidebar": {
     "readDocumentation": "Reed dokumentashun",
-    "backToDashboard": "Bak 2 dashboard",
+    "backToDashboard": "Bak 2 instances",
     "deleteToast": {
       "loading": "Deletin instance...",
       "success": "Instance deleted",
@@ -352,13 +397,13 @@
     "overview": "Ovarview",
     "terminal": "Termenawl",
     "bots": "BOTZ",
-    "audit-log": "Audit Log",
+    "audit-log": "Audit log",
     "settingsGroup": "Settingz",
     "extensionsGroup": "EXTENSCHUNZ",
     "botSettings": "Bot Settingz",
-    "accountSettings": "Account Settingz",
+    "accountSettings": "Accountz",
     "metaSettings": "Instance Settingz",
-    "proxySettings": "Proxy Settingz",
+    "proxySettings": "Proxyz",
     "aiSettings": "AI Settingz",
     "pathfindingSettings": "Pathfindin Settin'z",
     "discoverPlugins": "Plugins",
@@ -418,16 +463,16 @@
   "pageName": {
     "terminal": "Termenawl",
     "logs": "LOGZ",
-    "audit-log": "Audit Log",
+    "audit-log": "Audit log",
     "bots": "BOTZ",
     "botDetail": "BOT DTAILZ",
     "instances": "Instances",
     "access": "Akcess",
     "settings": "Settingz",
-    "proxySettings": "Proxy Settingz",
+    "proxySettings": "Proxyz",
     "overview": "Ovarview",
     "users": "Hoomans",
-    "accountSettings": "Account Settingz",
+    "accountSettings": "Accountz",
     "metaSettings": "Instance Settingz",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scriptz",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API Akcess",
-      "description": "SoulFire gRPC HTTP API can do magik stuf on instancez wit web reqz.",
+      "description": "Uze teh SoulFire API 2 manage instances frum ur own programz.",
       "publicAddress": "Public API Adress",
       "personalToken": "Pursonal API Token",
       "securityWarning": "Hide ur API toekn! It letz hoomanz use API!",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Genrate Token",
-      "placeholder": "Clik 'Genrate Token' belowz",
+      "placeholder": "Pick \"Genrate Token\" below plz",
       "generating": "Genrating token...",
       "success": "Token made'd successfulleh",
       "error": "Faild 2 genrate token",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Cud not update instance naem"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Cud not update {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logz...",
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Go tu Bot",
       "copyUsername": "Copy Usernamez",
-      "copyUuid": "Copy UUIDZ",
+      "copyUuid": "Copy profil ID",
       "copyCoordinates": "Copy Ceewrdinaytz"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Catnectd",
+    "botOffline": "Discatnectd"
+  },
+  "minecraftActions": {
+    "copyError": "Cud not copy text. Uze HTTPS or allow clipbord plz.",
+    "openError": "Cud not open teh link.",
+    "popupBlocked": "Ur browzer blokd teh new tab.",
+    "openLink": "Open link"
+  },
+  "instanceIcon": {
+    "label": "Icon",
+    "description": "Teh instance icon shown in teh app."
+  },
+  "unknown": "Dunno",
+  "minecraftHead": "Minecraft hed",
+  "textFile": "Text file"
 }

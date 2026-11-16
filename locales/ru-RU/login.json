@@ -44,7 +44,24 @@
         "placeholder": "Ваши JVM аргументы"
       },
       "back": "Назад",
-      "start": "Запуск"
+      "start": "Запуск",
+      "jar": {
+        "title": "Jar сервера",
+        "official": "Официальный",
+        "custom": "Свой",
+        "officialTitle": "Официальный сервер SoulFire",
+        "customTitle": "Свой jar сервера",
+        "officialDescription": "Скачивает и проверяет подходящий выпуск SoulFire.",
+        "customDescription": "Запускает импортированный jar. SoulFire не проверяет и не обновляет его.",
+        "import": "Импортировать jar",
+        "importSuccess": "Импортирован {{name}}",
+        "importError": "Не удалось импортировать свой jar SoulFire",
+        "selectCustomFirst": "Перед запуском импортируйте и выберите свой jar.",
+        "dialog": {
+          "filter": "Архив Java",
+          "title": "Выберите jar сервера SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Для запуска интегрированного сервера на мобильном телефоне необходимо выполнить несколько шагов.",

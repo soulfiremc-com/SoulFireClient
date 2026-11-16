@@ -119,12 +119,12 @@
       "network": "Nätverksadress",
       "unix": "Unix-socket"
     },
-    "getProxies": "Hämta proxies",
+    "getProxies": "Proxyleverantörer",
     "addProxies": "Lägg till proxies",
     "filterPlaceholder": "Filtrera proxies...",
     "listImportToast": {
       "loading": "Importerar proxies...",
-      "success": "{{count}} proxies har importerats!",
+      "success": "{{count}} proxies har importerats",
       "error": "Misslyckades att importera proxies",
       "noProxies": "Inga proxies att importera"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Tar bort proxies...",
-      "success": "{{count}} proxies har tagits bort!",
+      "success": "{{count}} proxies har tagits bort",
       "error": "Misslyckades att ta bort proxies"
     },
     "checkToast": {
       "loading": "Kontrollerar proxies... {{checked}}/{{total}} (Lyckade: {{success}} Misslyckade: {{failed}})",
-      "success": "{{count}} trasiga proxies har tagits bort!",
-      "error": "Misslyckades att kontrollera proxies"
+      "success": "{{count}} trasiga proxies har tagits bort",
+      "error": "Misslyckades att kontrollera proxies",
+      "successKept": "{{failed}} av {{total}} proxies klarade inte kontrollen. Inga proxies togs bort."
     },
     "checkDialog": {
       "title": "Kontrollera proxysar",
-      "description": "Du är på väg att kontrollera {{count}} proxysar. Ogiltiga proxysar tas bort automatiskt.",
-      "confirm": "Starta kontroll"
+      "description": "Du är på väg att kontrollera {{count}} proxies.",
+      "confirm": "Starta kontroll",
+      "removeFailed": "Ta bort proxies som misslyckas",
+      "removeFailedHelp": "En proxy kan misslyckas på grund av ett tillfälligt nätverksproblem. Avmarkera alternativet för att behålla alla proxies och bara se resultatet."
     },
     "invalidFormat": "Ogiltigt proxyformat",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Vill du kontrollera importerade proxys?",
-      "description": "Du importerade {{count}} proxys. Vill du kontrollera dem nu? SoulFire tar automatiskt bort ogiltiga proxys.",
+      "description": "Du importerade {{count}} proxies. Kontrollera dem nu?",
       "confirm": "Kontrollera proxysar",
       "skip": "Hoppa över"
     },
@@ -186,10 +189,18 @@
       "socks4": "Endast SOCKS4 (platt)",
       "socks5": "Endast SOCKS5 (platt)",
       "noProxies": "Inga proxys att exportera"
-    }
+    },
+    "removeDialog": {
+      "title_one": "Ta bort {{count}} proxy?",
+      "title_other": "Ta bort {{count}} proxies?",
+      "description": "Detta tar bort de valda proxies och deras inloggningsuppgifter från den här instansen. Det går inte att ångra.",
+      "confirm": "Ta bort proxies"
+    },
+    "showPassword": "Visa lösenord",
+    "hidePassword": "Dölj lösenord"
   },
   "account": {
-    "getAccounts": "Hämta konton",
+    "getAccounts": "Kontoleverantörer",
     "addAccounts": "Lägg till konton",
     "generateAccounts": "Generera konton",
     "filterPlaceholder": "Filtrera konton...",
@@ -197,7 +208,7 @@
       "loading": "Importerar konton... {{checked}}/{{total}} (Lyckade: {{success}} Misslyckade: {{failed}})",
       "allFailed": "Misslyckades att importera några konton alls.",
       "someFailed": "Importerade {{count}} konton, misslyckades att importera {{failed}} konton.",
-      "noneFailed": "{{count}} konton har importerats!",
+      "noneFailed": "{{count}} konton har importerats",
       "error": "Misslyckades att importera konton.",
       "noAccounts": "Inga konton att importera"
     },
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Importerar konto...",
-      "success": "Konto importerat!",
+      "success": "Konto importerat",
       "error": "Misslyckades att importera konto"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Generera",
       "generating": "Genererar...",
       "progress": "Genererar konton... {{checked}}/{{total}} (Lyckade: {{success}} Misslyckade: {{failed}})",
-      "success": "{{count}} konton har genererats!",
+      "success": "{{count}} konton har genererats",
       "allFailed": "Misslyckades att generera några konton alls",
-      "allExist": "Alla användarnamn finns redan. Aktivera \"Skriv över befintliga konton\" för att skapa dem på nytt.",
+      "allExist": "Alla användarnamn finns redan. Välj ”Ersätt befintliga” för att generera dem igen.",
       "error": "Misslyckades att generera konton",
       "invalidAmount": "Ange ett giltigt antal (minst 1)",
       "missingPlaceholder": "Namnformatet måste innehålla platshållaren %d"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Tar bort konton...",
-      "success": "{{count}} konton har tagits bort!",
+      "success": "{{count}} konton har tagits bort",
       "error": "Misslyckades att ta bort konton"
     },
     "table": {
       "type": "Typ",
-      "profileId": "UUID",
+      "profileId": "Profil-ID",
       "lastKnownName": "Användarnamn",
       "searchProfileIds": "Sök profil-ID:n...",
       "searchLastKnownNames": "Sök senaste kända namn...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "Ta bort valda konton",
     "contextMenu": {
-      "openConfig": "Öppna konfigurering",
+      "openConfig": "Öppna inställningar",
       "openMetadata": "Öppna metadata",
       "copyProfileId": "Kopiera profil-ID",
       "copyUsername": "Kopiera användarnamn"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Matchar ärvt värde",
       "instanceValue": "Instansvärde",
       "defaultValue": "Standardvärde",
-      "resetOverride": "Återställ överskridande"
+      "resetOverride": "Återställ överskridande",
+      "value": {
+        "notSet": "Inte angivet",
+        "on": "På",
+        "off": "Av",
+        "empty": "Tomt",
+        "entries_one": "{{count}} post",
+        "entries_other": "{{count}} poster",
+        "range": "Intervall"
+      },
+      "source": {
+        "bot": "Bottens eget värde",
+        "instance": "Ärvt från instansen",
+        "default": "Standardvärde"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Enhetskodautentisering",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Nyckel",
       "valuePlaceholder": "Värde (JSON)",
       "noEntries": "Inga metadata-poster. Lägg till en ovan.",
-      "loadError": "",
+      "loadError": "Det gick inte att läsa in metadata",
       "loadErrorDescription": "",
       "retryLoad": "Försök igen",
       "addSuccess": "Post tillagd",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Post borttagen",
       "deleteError": "Misslyckades med att ta bort posten",
       "duplicateError": "En post med detta namnrymd och nyckel finns redan",
-      "invalidJson": "Ogiltigt JSON-värde"
+      "invalidJson": "Ogiltigt JSON-värde",
+      "namespaceLabel": "Namnområde",
+      "keyLabel": "Nyckel",
+      "valueLabel": "Värde",
+      "addEntryLegend": "Lägg till metadatapost",
+      "addEntryButton": "Lägg till post",
+      "entryLegend": "Metadatapost",
+      "removeEntryButton": "Ta bort"
+    },
+    "removeDialog": {
+      "title_one": "Ta bort {{count}} konto?",
+      "title_other": "Ta bort {{count}} konton?",
+      "description": "Detta tar bort de valda kontona, deras sparade inloggningsuppgifter och deras bottar från den här instansen. Det går inte att ångra.",
+      "confirm": "Ta bort konton"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Nyckel",
     "valuePlaceholder": "Värde (JSON)",
     "noEntries": "Inga metadata-poster. Lägg till en ovan.",
+    "loadError": "Det gick inte att läsa in metadata",
     "addSuccess": "Post tillagd",
     "addError": "Misslyckades med att lägga till posten",
     "updateError": "Misslyckades med att uppdatera posten",
     "deleteSuccess": "Post borttagen",
     "deleteError": "Misslyckades med att ta bort posten",
     "duplicateError": "En post med detta namnrymd och nyckel finns redan",
-    "invalidJson": "Ogiltigt JSON-värde"
+    "invalidJson": "Ogiltigt JSON-värde",
+    "namespaceLabel": "Namnområde",
+    "keyLabel": "Nyckel",
+    "valueLabel": "Värde",
+    "addEntryLegend": "Lägg till metadatapost",
+    "addEntryButton": "Lägg till post",
+    "entryLegend": "Metadatapost",
+    "removeEntryButton": "Ta bort"
   },
   "bots": {
     "searchPlaceholder": "Sök bland botar...",
-    "onlineCount": "{{online}} online / {{total}} totalt",
+    "onlineCount": "{{online}} anslutna / {{total}} totalt",
     "noBots": "Inga botar konfigurerade. Lägg till konton från sidan Kontoinställningar.",
     "noBotsFound": "Inga botar matchar din sökning.",
     "loadingMore": "Laddar mer...",
     "showingCount": "Visar {{loaded}} av {{total}}",
     "allLoaded": "Alla {{total}} bots laddade",
-    "online": "Online",
-    "offline": "Offline",
+    "online": "Ansluten",
+    "offline": "Frånkopplad",
     "notJoined": "Inte ansluten",
     "connectionPhase": {
       "connecting": "Ansluter",
-      "connected": "Ansluten",
-      "spawned": "Online",
+      "connected": "Loggar in",
+      "spawned": "Ansluten",
       "died": "Död",
-      "disconnected": "Offline",
+      "disconnected": "Frånkopplad",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,34 +444,29 @@
     },
     "backToBots": "Tillbaka till Botar",
     "tabs": {
-      "overview": "Översikt",
+      "overview": "Bottvy",
       "inventory": "Inventory",
       "controls": "Kontroller",
       "terminal": "Terminal"
     },
-    "comingSoon": "Kommer snart",
-    "terminalPanel": {
-      "title": "Botterminal"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxyserverenhet/Proxyserver",
       "direct": "Direkt (ingen proxy)",
       "unavailable": "Ej tillgänglig"
     },
     "positionPanel": {
-      "title": "Position & Rotation",
+      "title": "Position and rotation",
       "position": "Position",
       "rotation": "Rotation",
-      "offline": "Bot är offline. Positionsdata är endast tillgänglig när boten är ansluten."
+      "offline": "Botten är frånkopplad. Positionsdata är endast tillgänglig när boten är ansluten."
     },
     "chatPanel": {
-      "title": "Chattmeddelanden",
-      "description": "Chattmeddelanden från denna bot kommer att visas här i en framtida uppdatering."
+      "title": "Chattmeddelanden"
     },
     "commandPanel": {
       "title": "Botkommandon",
-      "placeholder": "Skicka kommando till denna bot...",
-      "description": "Kommandon med bot-omfattning kommer att vara tillgängliga i en framtida uppdatering."
+      "placeholder": "Skicka kommando till denna bot..."
     },
     "povPanel": {
       "title": "Botens vy",
@@ -438,7 +479,6 @@
       "offline": "Bot är offline. Renderingen av POV är endast tillgänglig när boten är ansluten."
     },
     "statsPanel": {
-      "title": "Botstatistik",
       "health": "Hälsa",
       "food": "Mat",
       "saturation": "Mättnad",
@@ -451,7 +491,7 @@
       "adventure": "Äventyr",
       "spectator": "Åskådare",
       "unknown": "Okänd",
-      "offline": "Bot är offline. Statistik är endast tillgänglig när boten är ansluten."
+      "offline": "Botten är frånkopplad. Statistik är endast tillgänglig när boten är ansluten."
     },
     "inventoryPanel": {
       "title": "Inventory",
@@ -464,7 +504,7 @@
       "dropAll": "Släpp alla",
       "closeContainer": "Stäng",
       "clickHint": "Vänsterklick: plocka upp/placera | Högerklick: halva/en | Skift+klick: snabbflytta | Mittenklick: välj snabbfältsplats",
-      "offline": "Bot är offline. Inventariet är endast tillgängligt när boten är ansluten.",
+      "offline": "Botten är frånkopplad. Inventariet är endast tillgängligt när boten är ansluten.",
       "buttons": {
         "stonecutterRecipes": "Recept",
         "enchantments": "Förtrollningar",
@@ -474,12 +514,12 @@
         "crafterSlots": "Slotkontroller",
         "lecternControls": "Bokkontroller",
         "actions": "Åtgärder",
-        "creativeTabs": ""
+        "creativeTabs": "Kreativa flikar"
       },
       "textInput": {
         "title": "Textinmatning",
         "anvilRename": "Byt namn på föremål",
-        "creativeSearch": ""
+        "creativeSearch": "Sök föremål"
       },
       "bookPages": {
         "title": "Bokinnehåll",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Förstör föremål",
+      "clickHints": {
+        "left": "Vänsterklick: plocka upp eller placera",
+        "right": "Högerklick: plocka upp hälften eller placera en",
+        "shift": "Skift+klick: snabbflytta",
+        "middle": "Mittenklick: välj som aktiv plats"
+      }
     },
     "visualPanel": {
-      "title": "Botvy",
+      "title": "Riktning och värld",
       "compass": "Riktning",
       "lookDirection": "Vinkeln",
       "lookingUp": "Tittar uppåt",
@@ -502,7 +548,7 @@
       "worldInfo": "Världsinformation",
       "dimension": "Dimension",
       "biome": "Biom",
-      "offline": "Bot är offline. Visuella data är endast tillgängliga när boten är ansluten."
+      "offline": "Botten är frånkopplad. Visuella data är endast tillgängliga när boten är ansluten."
     },
     "actionsPanel": {
       "title": "Botåtgärder",
@@ -510,7 +556,7 @@
       "rightClick": "Högerklick",
       "leftClickDescription": "Attackera enhet eller bryt block",
       "rightClickDescription": "Använd föremål eller interagera",
-      "offline": "Bot är offline. Åtgärder är endast tillgängliga när boten är ansluten."
+      "offline": "Botten är frånkopplad. Åtgärder är endast tillgängliga när boten är ansluten."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "Titta ner",
       "lookLeft": "Titta vänster",
       "lookRight": "Titta höger",
-      "offline": "Bot är offline. Rörelsekontrollerna är bara tillgängliga när boten är ansluten."
+      "offline": "Botten är frånkopplad. Rörelsekontrollerna är bara tillgängliga när boten är ansluten."
     },
     "dialogPanel": {
       "title": "Serverdialog",
@@ -544,7 +590,45 @@
       "unknownType": "Okänd",
       "dismiss": "Avvisa",
       "submit": "Skicka",
-      "offline": "Bot är offline. Dialoger är endast tillgängliga när boten är ansluten."
+      "offline": "Botten är frånkopplad. Dialoger är endast tillgängliga när boten är ansluten."
+    },
+    "pov": {
+      "title": "Bottvy",
+      "touchControlling": "Du styr den här botten. Använd ”Release control” för att sluta.",
+      "popupBlocked": "Tillåt popup-fönster för att koppla loss fönstret för bottvyn.",
+      "windowTitle": "SoulFire bottvy",
+      "fullscreenUnavailable": "Helskärm är inte tillgängligt i det här fönstret.",
+      "textInputLabel": "Textinmatning för Minecraft",
+      "videoLabel": "Bottvy i realtid",
+      "touchMove": "Rör dig",
+      "audioError": "Det gick inte att starta ljudet.",
+      "startError": "Det gick inte att starta bottvyn.",
+      "releaseHint": "Tryck på {{shortcut}} för att släppa tangentbordet och musen.",
+      "captureHint": "Klicka på vyn och tillåt att tangentbord och mus fångas.",
+      "audioWaiting": "Väntar på att bottvyn ska ansluta.",
+      "audioWatchFirst": "Titta på botten för att använda ljud.",
+      "audioUpdateServer": "Uppdatera servern för att använda ljud i bottvyn.",
+      "muteAudio": "Stäng av ljudet",
+      "unmuteAudio": "Slå på ljudet",
+      "audioStarting": "Startar ljud...",
+      "mute": "Stäng av ljud",
+      "unmute": "Slå på ljud",
+      "audio": "Ljud",
+      "audioUnavailable": "Ljud är inte tillgängligt",
+      "volume": "Volym för bottvyn",
+      "reconnect": "Återanslut",
+      "showWindow": "Visa fönstret för bottvyn",
+      "attachWindow": "Docka fönstret för bottvyn",
+      "touch": {
+        "jump": "Hoppa",
+        "sneak": "Smyg",
+        "attack": "Attackera",
+        "use": "Använd",
+        "inventory": "Inventory",
+        "keyboard": "Tangentbord",
+        "closeMenu": "Stäng menyn"
+      },
+      "needsServer": "Bottvyn behöver en ansluten SoulFire-server."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Ingen data"
     },
     "summary": {
-      "online": "Online",
+      "online": "Ansluten",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Trafik",
       "health": "Hälsa",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bots online",
-      "online": "Online",
+      "title": "Anslutna bottar",
+      "online": "Ansluten",
       "total": "Totalt"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Misslyckades med att skapa skriptet",
     "noScripts": "Inga skript än",
     "noScriptsDescription": "Skapa ditt första skript för att automatisera bottåtgärder med den visuella nodbaserade editorn.",
-    "createFirstScript": "Skapa ditt första skript",
+    "createFirstScript": "Skapa skript",
     "running": "Kör",
     "paused": "Pausad",
     "nodes": "noder",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Nodpalett",
-        "search": "Sök noder..."
+        "search": "Sök noder...",
+        "noResults": "Inga noder matchar din sökning",
+        "noResultsDescription": "Prova ett annat ord eller rensa det aktuella filtret."
       },
       "logs": {
         "title": "Körloggar",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Expandera nod",
-        "collapse": "Dra ihop nod"
+        "collapse": "Dra ihop nod",
+        "avgTime": "Genomsnittlig körtid: {{avg}} ms (senaste {{count}} körningarna)",
+        "preview": "Förhandsvisning"
       },
       "debug": {
         "copyValue": "Kopiera aktuellt värde",
-        "clearHistory": "Rensa historik"
+        "clearHistory": "Rensa historik",
+        "current": "Aktuellt ({{time}}):",
+        "noValue": "Inget värde har tagits emot än"
       },
       "edge": {
         "direction": "Kantens riktning"
@@ -733,14 +823,36 @@
         "title": "Skriptkomplexitetspoäng"
       },
       "group": {
-        "returnToRoot": "Återgå till rotnivån (Tab)"
+        "returnToRoot": "Återgå till rotnivån (Tab)",
+        "root": "Rot",
+        "exitHint": "Tryck på <key>Tab</key> för att lämna",
+        "editHint": "Dubbelklicka för att redigera",
+        "noInputs": "Inga ingångar definierade",
+        "noOutputs": "Inga utgångar definierade"
       },
       "quickAdd": {
         "menuLabel": "Snabbmeny för att lägga till nod",
-        "searchPlaceholder": "Sök noder..."
+        "searchPlaceholder": "Sök noder...",
+        "noResults": "Inga noder hittades",
+        "noResultsDescription": "Prova ett annat sökord.",
+        "navigate": "Navigera",
+        "select": "Enter för att välja",
+        "close": "Esc för att stänga"
       },
       "diff": {
-        "tooltip": "Granska ändringar"
+        "tooltip": "Granska ändringar",
+        "title": "Osparade ändringar",
+        "description": "Ändringar sedan senaste sparningen.",
+        "nodesAdded_one": "{{count}} nod tillagd",
+        "nodesAdded_other": "{{count}} noder tillagda",
+        "nodesRemoved_one": "{{count}} nod borttagen",
+        "nodesRemoved_other": "{{count}} noder borttagna",
+        "nodesModified_one": "{{count}} nod ändrad",
+        "nodesModified_other": "{{count}} noder ändrade",
+        "edgesAdded_one": "{{count}} koppling tillagd",
+        "edgesAdded_other": "{{count}} kopplingar tillagda",
+        "edgesRemoved_one": "{{count}} koppling borttagen",
+        "edgesRemoved_other": "{{count}} kopplingar borttagna"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Inaktiverar timeout för varje nod och datakant",
         "save": "Spara kvoter",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Ändra ordning på {{label}}",
+        "empty": "Inga inkommande värden",
+        "title": "Multiingång: tar emot flera kopplingar",
+        "connectTo": "Anslut värden till {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Ta bort skriptet?",
+      "description": "Detta tar permanent bort ”{{name}}”. Det går inte att ångra.",
+      "descriptionUnnamed": "Detta tar permanent bort skriptet. Det går inte att ångra."
+    },
+    "executionStats": "Körstatistik: {{executed}}/{{max}} noder körda"
   },
   "metadataValidation": {
     "invalidNamespace": "",

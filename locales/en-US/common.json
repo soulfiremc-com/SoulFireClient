@@ -19,7 +19,7 @@
     "page": {
       "title": "Error",
       "description": "The page did not load. Open the console for more information.",
-      "logOut": "Log out",
+      "logOut": "Sign out",
       "reloadPage": "Reload page",
       "showDetails": "Show details",
       "connectionSettings": "Connection settings",
@@ -42,7 +42,7 @@
     "page": {
       "title": "Not found",
       "description": "There is no page at this address",
-      "logOut": "Log out",
+      "logOut": "Sign out",
       "reloadPage": "Reload page"
     }
   },
@@ -56,11 +56,11 @@
       "type": "Type",
       "value": "Value",
       "fields": {
-        "serverVersion": "Server Version",
-        "serverCommit": "Server Commit",
-        "serverBranch": "Server Branch",
-        "minecraftVersion": "Minecraft Version",
-        "operatingSystem": "Operating System",
+        "serverVersion": "Server version",
+        "serverCommit": "Server commit",
+        "serverBranch": "Server branch",
+        "minecraftVersion": "Minecraft version",
+        "operatingSystem": "Operating system",
         "platform": "Platform",
         "locale": "Locale",
         "architecture": "Architecture",
@@ -93,8 +93,8 @@
       },
       "createToast": {
         "loading": "Creating project...",
-        "success": "Project created successfully",
-        "error": "Failed to create project"
+        "success": "Project created",
+        "error": "Could not create project"
       }
     },
     "duplicateInstance": {
@@ -118,8 +118,8 @@
         "fromUrl": "From URL",
         "firstClipboardItem": "The clipboard contains multiple items. SoulFire will use the first item.",
         "fromClipboard": "From clipboard",
-        "clipboardError": "Failed to read the clipboard. Allow clipboard access or paste the text directly.",
-        "fileError": "Failed to read the selected files. Check file access and try again.",
+        "clipboardError": "Could not read the clipboard. Allow clipboard access or paste the text directly.",
+        "fileError": "Could not read the selected files. Check file access and try again.",
         "textarea": {
           "placeholder": "Put text here...",
           "submit": "Load from text"
@@ -136,12 +136,17 @@
         "submit": "Load from URL",
         "toast": {
           "loading": "Downloading data...",
-          "success": "Data loaded!",
-          "error": "Failed to download data",
+          "success": "Data loaded",
+          "error": "Could not download data",
           "httpError": "The URL returned HTTP {{status}}. Check the link and try again.",
           "empty": "The URL returned no data to import."
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Delete project?",
+      "description": "This permanently deletes \"{{name}}\" and its data. You cannot undo this.",
+      "descriptionUnnamed": "This permanently deletes this project and its data. You cannot undo this."
     }
   },
   "commandInput": {
@@ -149,7 +154,8 @@
     "suggestions": "Command suggestions",
     "placeholder": "Enter command (type 'help' for list)",
     "emptySuggestions": "Type to request suggestions or press Tab.",
-    "noSuggestions": "No suggestions available."
+    "noSuggestions": "No suggestions available.",
+    "emptySuggestionsPrefix": "Type to request suggestions or press"
   },
   "controls": {
     "start": "Start",
@@ -161,17 +167,17 @@
     "startToast": {
       "loading": "Starting bots...",
       "success": "Bot state updated",
-      "error": "Failed to start bots"
+      "error": "Could not start bots"
     },
     "restartToast": {
       "loading": "Restarting bots...",
       "success": "Bots are reconnecting",
-      "error": "Failed to restart bots"
+      "error": "Could not restart bots"
     },
     "stopToast": {
       "loading": "Stopping bots...",
       "success": "Bots are stopping",
-      "error": "Failed to stop bots"
+      "error": "Could not stop bots"
     },
     "permissionDenied": "You do not have permission to start or stop bots in this project.",
     "serverUpdateRequired": "The server did not report bot control permissions. Check that your server and client versions match.",
@@ -191,7 +197,7 @@
     "validCount": "Enter a whole number between 1 and {{count}}.",
     "positiveCount": "Enter a whole number of at least 1."
   },
-  "botFleetSummary": "{{online}} online · {{desired}} desired · {{total}} total",
+  "botFleetSummary": "{{online}} connected · {{desired}} set to run · {{total}} total",
   "icon": {
     "invalidName": "Invalid icon name: {{name}}"
   },
@@ -272,7 +278,24 @@
     "sortOrders": {
       "asc": "Asc",
       "desc": "Desc"
-    }
+    },
+    "openFilterMenu": "Open filter menu",
+    "filterOperator": "Filter operator",
+    "filterValue": "Filter value",
+    "sortDirection": "Sort direction",
+    "selectJoinOperator": "Select join operator",
+    "joinOperator": "Join operator",
+    "escapeKey": "Escape",
+    "selectDate": "Select date",
+    "selectDateRange": "Select date range",
+    "clearFilter": "Clear {{title}} filter",
+    "clearFilters": "Clear filters",
+    "clear": "Clear",
+    "from": "From",
+    "to": "To",
+    "sortDirectionFor": "Sort direction for {{column}}",
+    "minValue": "{{label}} minimum value",
+    "maxValue": "{{label}} maximum value"
   },
   "pluginCard": {
     "version": "Version: {{version}}",
@@ -287,20 +310,35 @@
   },
   "settingsPage": {
     "sections": {
-      "provider": { "title": "AI provider", "description": "Choose the API endpoint and credentials for AI requests." },
-      "requests": { "title": "Request handling", "description": "Set the timeout and retry limit for AI requests." },
-      "movement": { "title": "Movement rules", "description": "Choose which obstacles and hazards bots consider when finding a path." },
-      "costs": { "title": "Path costs", "description": "Adjust how strongly bots avoid enemies, breaking blocks, and placing blocks." },
-      "search": { "title": "Search limits", "description": "Control how long pathfinding runs and how it manages the search space." }
+      "provider": {
+        "title": "AI provider",
+        "description": "Choose the API endpoint and credentials for AI requests."
+      },
+      "requests": {
+        "title": "Request handling",
+        "description": "Set the timeout and retry limit for AI requests."
+      },
+      "movement": {
+        "title": "Movement rules",
+        "description": "Choose which obstacles and hazards bots consider when finding a path."
+      },
+      "costs": {
+        "title": "Path costs",
+        "description": "Adjust how strongly bots avoid enemies, breaking blocks, and placing blocks."
+      },
+      "search": {
+        "title": "Search limits",
+        "description": "Control how long pathfinding runs and how it manages the search space."
+      }
     },
     "autoSave": "Changes save automatically.",
-    "saveError": "Failed to save {{name}}",
+    "saveError": "Could not save {{name}}",
     "namespacesNotFound": "Settings namespaces not found",
     "stringList": {
       "newEntry": "New {{name}} entry",
       "entry": "{{name}} entry {{number}}",
       "removeEntry": "Remove {{name}} entry {{number}}",
-      "saveError": "Failed to save {{name}}",
+      "saveError": "Could not save {{name}}",
       "placeholder": "Add a new entry...",
       "add": "Add",
       "remove": "Remove"
@@ -333,7 +371,8 @@
       "instance": "Project default. Applies to every bot in this project unless a bot has its own value.",
       "bot": "This bot only. Values here override the project default for this bot.",
       "server": "Server setting. Applies to the whole SoulFire server and every project on it."
-    }
+    },
+    "minMaxLegend": "Minimum and maximum settings"
   },
   "terminal": {
     "actions": {
@@ -359,7 +398,7 @@
     "close": "Close"
   },
   "uiSidebar": {
-    "toggle": "Toggle Sidebar"
+    "toggle": "Toggle sidebar"
   },
   "window": {
     "minimize": "Minimize",
@@ -385,14 +424,13 @@
     "connectToast": {
       "loading": "Connecting to {{device}}...",
       "success": "Connected to {{device}}",
-      "error": "Failed to connect to {{device}}"
+      "error": "Could not connect to {{device}}"
     },
     "noDevices": "No devices found",
-    "broadcastLabel": "Broadcast test",
     "broadcastToast": {
       "loading": "Broadcasting message...",
-      "success": "Message broadcasted!",
-      "error": "Failed to broadcast message"
+      "success": "Message broadcasted",
+      "error": "Could not broadcast message"
     }
   },
   "commandPalette": {
@@ -484,14 +522,14 @@
         "error": "Could not request bot restart. Try again."
       },
       "activate": {
-        "loading": "Activating script...",
-        "success": "Script activated.",
-        "error": "Could not activate the script. Try again."
+        "loading": "Turning on script...",
+        "success": "Script turned on",
+        "error": "Could not turn on the script. Try again."
       },
       "deactivate": {
-        "loading": "Deactivating script...",
-        "success": "Script deactivated.",
-        "error": "Could not deactivate the script. Try again."
+        "loading": "Turning off script...",
+        "success": "Script turned off",
+        "error": "Could not turn off the script. Try again."
       },
       "busy": "A request for this target is still running. Try again when it finishes.",
       "demo": "Demo mode does not save changes. Connect to a SoulFire server to control bots and scripts."
@@ -506,8 +544,8 @@
       "stopBots_other": "Stop {{count}} bots",
       "retryBots_one": "Retry {{count}} failed bot",
       "retryBots_other": "Retry {{count}} failed bots",
-      "activateScript": "Activate script {{name}}",
-      "deactivateScript": "Deactivate script {{name}}"
+      "activateScript": "Turn on script {{name}}",
+      "deactivateScript": "Turn off script {{name}}"
     },
     "status": {
       "connected": "Connected",
@@ -516,8 +554,8 @@
       "failed": "Failed",
       "stopping": "Stopping",
       "stopped": "Stopped",
-      "active": "Active",
-      "paused": "Paused"
+      "active": "On",
+      "paused": "Off"
     },
     "theme": {
       "light": "Use light theme",
@@ -548,11 +586,11 @@
   },
   "instanceSidebar": {
     "readDocumentation": "Read documentation",
-    "backToDashboard": "Back to dashboard",
+    "backToDashboard": "Back to projects",
     "deleteToast": {
       "loading": "Deleting project...",
       "success": "Project deleted",
-      "error": "Failed to delete project"
+      "error": "Could not delete project"
     },
     "instancesGroup": "Projects",
     "createInstance": "Create project",
@@ -570,15 +608,15 @@
     "overview": "Overview",
     "terminal": "Terminal",
     "bots": "Bots",
-    "audit-log": "Audit Log",
+    "audit-log": "Audit log",
     "settingsGroup": "Settings",
     "extensionsGroup": "Extensions",
-    "botSettings": "Bot Settings",
-    "accountSettings": "Account Settings",
+    "botSettings": "Bot settings",
+    "accountSettings": "Accounts",
     "metaSettings": "Project settings",
-    "proxySettings": "Proxy Settings",
-    "aiSettings": "AI Settings",
-    "pathfindingSettings": "Pathfinding Settings",
+    "proxySettings": "Proxies",
+    "aiSettings": "AI settings",
+    "pathfindingSettings": "Pathfinding settings",
     "discoverPlugins": "Plugins",
     "instanceScripts": "Scripts",
     "configurationFileType": "SoulFire configuration (JSON)",
@@ -597,8 +635,8 @@
     "adminTerminal": "Terminal",
     "users": "Users",
     "adminScripts": "Scripts",
-    "serverSettings": "Server Settings",
-    "devSettings": "Dev Settings",
+    "serverSettings": "Server settings",
+    "devSettings": "Dev settings",
     "theme": {
       "title": "Theme",
       "system": "System",
@@ -612,11 +650,11 @@
     "dataDir": "Data directory",
     "supportSoulFire": "Support SoulFire",
     "about": "About",
-    "logOut": "Log out",
+    "logOut": "Sign out",
     "logOutToast": {
-      "loading": "Logging out...",
-      "success": "Logged out",
-      "error": "Failed to log out"
+      "loading": "Signing out...",
+      "success": "Signed out",
+      "error": "Could not sign out"
     },
     "exit": "Exit",
     "stopImpersonating": "Stop impersonating",
@@ -638,16 +676,16 @@
   "pageName": {
     "terminal": "Terminal",
     "logs": "Logs",
-    "audit-log": "Audit Log",
+    "audit-log": "Audit log",
     "bots": "Bots",
-    "botDetail": "Bot Details",
+    "botDetail": "Bot details",
     "instances": "Projects",
     "access": "Access",
     "settings": "Settings",
-    "proxySettings": "Proxy Settings",
+    "proxySettings": "Proxies",
     "overview": "Overview",
     "users": "Users",
-    "accountSettings": "Account Settings",
+    "accountSettings": "Accounts",
     "metaSettings": "Project settings",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scripts",
@@ -655,31 +693,31 @@
   },
   "access": {
     "webdav": {
-      "title": "WebDAV Access",
+      "title": "WebDAV access",
       "description": "WebDAV provides access to project files, scripts, and other files.",
-      "publicAddress": "Public WebDAV Address",
-      "personalToken": "Personal WebDAV Token",
+      "publicAddress": "Public WebDAV address",
+      "personalToken": "Personal WebDAV token",
       "securityWarning": "Keep your personal WebDAV token secret. It grants access to your files. Use the token as your WebDAV password. You do not need a username. If your app requires one, enter any value, such as 'soulfire'.",
       "addressDescription": "Use this address to access your files. Some clients require dav:// or davs:// instead of http:// or https://."
     },
     "api": {
-      "title": "API Access",
-      "description": "The SoulFire gRPC HTTP API manages projects with web requests.",
-      "publicAddress": "Public API Address",
-      "personalToken": "Personal API Token",
+      "title": "API access",
+      "description": "Use the SoulFire API to manage projects from your own programs.",
+      "publicAddress": "Public API address",
+      "personalToken": "Personal API token",
       "securityWarning": "Keep your personal API token secret. It grants access to the API.",
       "addressDescription": "Use this address to access the API."
     },
     "token": {
-      "generate": "Generate Token",
-      "placeholder": "Click 'Generate Token' below",
+      "generate": "Generate token",
+      "placeholder": "Select Generate token below",
       "generating": "Generating token...",
-      "success": "Token generated successfully",
-      "error": "Failed to generate token",
-      "copy": "Copy Token"
+      "success": "Token generated",
+      "error": "Could not generate token",
+      "copy": "Copy token"
     },
     "address": {
-      "copy": "Copy Address"
+      "copy": "Copy address"
     },
     "documentation": "Documentation",
     "howToConnect": "How to connect"
@@ -687,24 +725,23 @@
   "uploadToMcLogs": "Upload to mclo.gs",
   "mcLogsUpload": {
     "loading": "Uploading to mclo.gs...",
-    "success": "Uploaded to mclo.gs! View it here: {{url}}",
-    "error": "Failed to upload to mclo.gs"
+    "success": "Uploaded to mclo.gs. View it here: {{url}}",
+    "error": "Could not upload to mclo.gs"
   },
   "searchWithGoogle": "Search with Google",
   "copyToClipboard": "Copy to clipboard",
   "clipboardCopy": {
     "loading": "Copying to clipboard...",
     "success": "Copied \"{{content}}\" to clipboard",
-    "error": "Failed to copy to clipboard",
+    "error": "Could not copy to clipboard",
     "sensitiveSuccess": "Copied to clipboard"
   },
   "instanceName": {
     "required": "Enter a project name.",
     "max": "Project names must be 32 characters or fewer.",
     "singleLine": "Use one line without control characters.",
-    "save": "Save project name",
     "saved": "Project name updated",
-    "saveError": "Failed to update project name"
+    "saveError": "Could not update project name"
   },
   "userSettings": {
     "avatar": {
@@ -722,8 +759,7 @@
     },
     "saved": "{{field}} updated",
     "conflict": "{{field}} is already in use. Choose another.",
-    "saveError": "Failed to update {{field}}",
-    "saveField": "Save {{field}}"
+    "saveError": "Could not update {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logs...",
@@ -738,8 +774,8 @@
     "restartedBots": "Restarted bots",
     "calledPluginRpc": "Called plugin RPC",
     "contextMenu": {
-      "copyUsername": "Copy Username",
-      "copyCommand": "Copy Command"
+      "copyUsername": "Copy username",
+      "copyCommand": "Copy command"
     }
   },
   "toggleTheme": "Toggle theme",
@@ -753,11 +789,11 @@
           "max": "Script names must be at most 32 characters",
           "regex": "Use lowercase letters, numbers, and dashes. The name must start and end with a letter or number.",
           "label": "Name",
-          "placeholder": "My Script",
+          "placeholder": "my-script",
           "description": "The name of the script."
         },
         "elevatedPermissions": {
-          "label": "Elevated Permissions",
+          "label": "Elevated permissions",
           "description": "The script runs with elevated permissions. Only administrators can enable this option."
         }
       }
@@ -780,29 +816,29 @@
     },
     "removeToast": {
       "loading": "Removing scripts...",
-      "success": "Removed scripts!",
-      "error": "Failed to remove scripts"
+      "success": "Scripts removed",
+      "error": "Could not remove scripts"
     },
     "addToast": {
       "loading": "Adding script...",
-      "success": "Added script!",
-      "error": "Failed to add script"
+      "success": "Script added",
+      "error": "Could not add script"
     },
     "updateToast": {
       "loading": "Updating script...",
-      "success": "Updated script!",
-      "error": "Failed to update script"
+      "success": "Script updated",
+      "error": "Could not update script"
     },
     "restartToast": {
       "loading": "Restarting script...",
-      "success": "Restarted script!",
-      "error": "Failed to restart script"
+      "success": "Script restarted",
+      "error": "Could not restart script"
     },
     "table": {
       "type": "Type",
       "scriptName": "Name",
       "language": "Language",
-      "elevatedPermissions": "Elevated Permissions",
+      "elevatedPermissions": "Elevated permissions",
       "createdAt": "Created",
       "actions": "Actions"
     },
@@ -819,18 +855,18 @@
       "deleteInstance": "Delete project"
     },
     "bot": {
-      "goToBot": "Go to Bot",
-      "copyUsername": "Copy Username",
-      "copyUuid": "Copy UUID",
-      "copyCoordinates": "Copy Coordinates"
+      "goToBot": "Go to bot",
+      "copyUsername": "Copy username",
+      "copyUuid": "Copy profile ID",
+      "copyCoordinates": "Copy coordinates"
     },
     "plugin": {
       "enable": "Enable",
       "disable": "Disable",
-      "openSettings": "Open Settings",
-      "copyPluginName": "Copy Plugin Name",
-      "copyVersion": "Copy Version",
-      "openWebsite": "Open Website"
+      "openSettings": "Open settings",
+      "copyPluginName": "Copy plugin name",
+      "copyVersion": "Copy version",
+      "openWebsite": "Open website"
     }
   },
   "integratedDiagnostics": {
@@ -931,8 +967,8 @@
     "language": "SDK language",
     "recipe": "Example action",
     "bot": "Bot",
-    "botOnline": "Online",
-    "botOffline": "Offline",
+    "botOnline": "Connected",
+    "botOffline": "Disconnected",
     "noBotsTitle": "Add an account to choose a bot",
     "noBotsBody": "You can list bots now. Add an account to this project before you read a bot state or send chat.",
     "stoppedTitle": "This bot is not connected",
@@ -986,5 +1022,18 @@
     },
     "reference": "API reference",
     "moreExamples": "More examples"
-  }
+  },
+  "minecraftActions": {
+    "copyError": "Could not copy text. Use HTTPS or allow clipboard access.",
+    "openError": "Could not open the link.",
+    "popupBlocked": "Your browser blocked the new tab.",
+    "openLink": "Open link"
+  },
+  "instanceIcon": {
+    "label": "Icon",
+    "description": "The project icon shown in the app."
+  },
+  "unknown": "Unknown",
+  "minecraftHead": "Minecraft head",
+  "textFile": "Text file"
 }

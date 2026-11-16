@@ -119,17 +119,17 @@
       "network": "ssǝɹpppɐ ʞɹoʷʇǝu ʞɹoʷʇǝN",
       "unix": "ʇǝʞɔoS xᴉun∩"
     },
-    "getProxies": "sǝᴉxɐɹԀ ʇǝƃ",
-    "addProxies": "sǝᴉxɐɹԀ pp∀",
+    "getProxies": "sɹǝpᴉʌoɹd ʎxoɹԀ",
+    "addProxies": "sǝᴉxoɹd pp∀",
     "filterPlaceholder": "...sǝᴉxɐɹd ɹǝʇlᴉℲ",
     "listImportToast": {
       "loading": "...sǝᴉxɐɹd ƃuᴉʇɹodɯᴉ",
-      "success": "!sǝᴉxɐɹd {{count}} pǝʇɹodɯᴉ",
-      "error": "sǝᴉxɐɹd ʇɹodɯᴉ oʇ pǝlᴉɐℲ",
+      "success": "sǝᴉxoɹd {{count}} pǝʇɹodɯI",
+      "error": "sǝᴉxoɹd ʇɹodɯᴉ ʇou plnoↃ",
       "noProxies": "ʇɹodɯᴉ oʇ sǝᴉxɐɹd oN"
     },
     "import": {
-      "proxyType": "ǝndoɹԀ ʎdxoɹԀ",
+      "proxyType": "ǝdʎʇ ʎxoɹԀ",
       "http": "HTTP",
       "socks4": "4SKCOS",
       "socks5": "5SKCOS",
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "...sǝᴉxɐɹd ƃuᴉʌoɯǝɹ",
-      "success": "!sǝᴉxɐɹd {{count}} pǝʌoɯǝɹ",
-      "error": "sǝᴉxɐɹd ǝʌoɯǝɹ oʇ pǝlᴉɐℲ"
+      "success": "sǝᴉxoɹd {{count}} pǝʌoɯǝᴚ",
+      "error": "sǝᴉxoɹd ǝʌoɯǝɹ ʇou plnoↃ"
     },
     "checkToast": {
       "loading": "ᄅpǝʇɔǝɥɔ …sǝᴉxɐɹd ƃuᴉʞɔǝɥɔ (pǝlᴉɐℲ :{{failed}} ssǝɔɔnS :{{success}} ){{total}}/ {{checked}}",
-      "success": "!sǝᴉxɐɹd uǝʞoɹq {{count}} pǝʌoɯǝɹ",
-      "error": "sǝᴉxɐɹd ʞɔǝɥɔ oʇ pǝlᴉɐℲ"
+      "success": "sǝᴉxoɹd uǝʞoɹq {{count}} pǝʌoɯǝᴚ",
+      "error": "sǝᴉxoɹd ʞɔǝɥɔ ʇou plnoↃ",
+      "successKept": ".pǝʌoɯǝɹ ǝɹǝʍ sǝᴉxoɹd oN .ʞɔǝɥɔ ǝɥʇ pǝlᴉɐɟ sǝᴉxoɹd {{total}} ɟo {{failed}}"
     },
     "checkDialog": {
-      "title": "sǝᴉxɐɹԀ ʞɔǝɥƆ",
-      "description": ".ʎlᴉʇɐɯoʇnɐ ʞɔoɹds sǝlᴉʇxǝ ʍᴉlᴉʍ sǝᴉxɐɹd {{count}} ʞɔǝɥ oʇ ʇnoqɐ ǝɹɐ no∩",
-      "confirm": "ʞɔǝɥ ʇɐɹʇS"
+      "title": "sǝᴉxoɹd ʞɔǝɥↃ",
+      "description": ".sǝᴉxoɹd {{count}} ʞɔǝɥɔ oʇ ʇnoqɐ ǝɹɐ no⅄",
+      "confirm": "ʞɔǝɥɔ ʇɹɐʇS",
+      "removeFailed": "lᴉɐɟ ʇɐɥʇ sǝᴉxoɹd ǝʌoɯǝᴚ",
+      "removeFailedHelp": ".ʇlnsǝɹ ǝɥʇ ǝǝs ʎluo puɐ ʎxoɹd ʎɹǝʌǝ dǝǝʞ oʇ uoᴉʇdo sᴉɥʇ ɹɐǝlↃ .ɯǝlqoɹd ʞɹoʍʇǝu ʎɹɐɹodɯǝʇ ɐ ɟo ǝsnɐɔǝq lᴉɐɟ uɐɔ ʎxoɹd ∀"
     },
     "invalidFormat": "ʇɐɯɹoɟ ʎxɐɹd punoʎᴉlʌuI",
     "table": {
@@ -168,87 +171,95 @@
     "exportSelectedTooltip": "sǝᴉxɐɹd pǝʇɔǝlǝs ʇɹoddxǝ",
     "checkSelectedTooltip": "sǝᴉxɐɹd pǝʇɔǝlǝs ʞɔǝɥɔ",
     "contextMenu": {
-      "copyAddress": "ssǝɹpp∀ ʎdoↃ",
-      "copyUsername": "ǝɯɐuǝɯɐu ʎdoↃ",
-      "copyPassword": "pɹoʍssɐԀ ʎdoↃ",
-      "deleteProxy": "ʎxǝpɐɹԀ ǝʇǝlǝᗡ"
+      "copyAddress": "ssǝɹppɐ ʎdoↃ",
+      "copyUsername": "ǝɯɐuɹǝsn ʎdoↃ",
+      "copyPassword": "pɹoʍssɐd ʎdoↃ",
+      "deleteProxy": "ʎxoɹd ǝʇǝlǝᗡ"
     },
     "postImportCheckDialog": {
       "title": "¿¿sǝᴉxɐɹd pǝʇɹoԀ ʞɔǝɥↃ?",
-      "description": "¿¿ʍou ɯǝɥʇ ʞɔǝɥↃ ¿ʎlʇɐɯoʇnɐʞ sı ɥɔᴉɥʇ sǝᴉxɐɹd pǝlpᴉʇɹoԀ uoʇunoɔ noʎ ɹǝʇɹodɯᴉ noʎ {{count}}",
-      "confirm": "sǝᴉxɐɹԀ ʞɔǝɥƆ",
+      "description": "¿ʍou ɯǝɥʇ ʞɔǝɥↃ .sǝᴉxoɹd {{count}} pǝʇɹodɯᴉ no⅄",
+      "confirm": "sǝᴉxoɹd ʞɔǝɥↃ",
       "skip": "dᴉʞS"
     },
     "export": {
-      "format": "ʇɐɯɹoɟ ʇɹoddxǝ",
-      "uri": ")sǝdʎʇ llɐ( ǝɯɹoɟ Iᴚ∩",
-      "http": "(ɟlɐʇ )ʎluo HTTP",
-      "socks4": "(ɟlɐʇ )ʎluo 4SKCOS",
-      "socks5": "(ɟlɐʇ )ʎluo 5SKCOS",
+      "format": "ʇɐɯɹoɟ ʇɹodxƎ",
+      "uri": ")sǝdʎʇ llɐ( ʇɐɯɹoɟ Iᴚ∩",
+      "http": ")ʇɐlɟ( ʎluo Ԁ┴┴H",
+      "socks4": ")ʇɐlɟ( ʎluo 4SKↃoS",
+      "socks5": ")ʇɐlɟ( ʎluo 5SKↃoS",
       "noProxies": "ʇɹoddxǝ oʇ sǝᴉxɐɹp oN"
-    }
+    },
+    "removeDialog": {
+      "title_one": "¿ʎxoɹd {{count}} ǝʌoɯǝᴚ",
+      "title_other": "¿sǝᴉxoɹd {{count}} ǝʌoɯǝᴚ",
+      "description": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .ʇɔǝɐoɹd sᴉɥʇ ɯoɹɟ slɐᴉʇuǝpǝɹɔ ɹᴉǝɥʇ puɐ sǝᴉxoɹd pǝʇɔǝlǝs ǝɥʇ sǝʌoɯǝɹ sᴉɥ┴",
+      "confirm": "sǝᴉxoɹd ǝʌoɯǝᴚ"
+    },
+    "showPassword": "pɹoʍssɐd ʍoɥS",
+    "hidePassword": "pɹoʍssɐd ǝpᴉH"
   },
   "account": {
-    "getAccounts": "sʇunoɔɔ∀ ʇǝƃ",
-    "addAccounts": "sʇunoɔɔ∀ pp∀",
-    "generateAccounts": "sʇunoɔɔ∀ ǝʇɐɹǝuǝƃ",
+    "getAccounts": "sɹǝpᴉʌoɹd ʇunoɔɔ∀",
+    "addAccounts": "sʇunoɔɔɐ pp∀",
+    "generateAccounts": "sʇunoɔɔɐ ǝʇɐɹǝuǝƃ",
     "filterPlaceholder": "...sʇunoɔɔɐ ɹǝʇlᴉℲ",
     "listImportToast": {
       "loading": "ᄅpǝʇɔǝɥɔ …sʇunoɔɔɐ ƃuᴉɹodɯI (pǝlᴉɐℲ :{{failed}} ssǝɔɔnS :{{success}} ){{total}}/ {{checked}}",
-      "allFailed": "sʇunoɔɔɐ ʎu∀ ʇɹodɯᴉ oʇ pǝlᴉɐℲ",
+      "allFailed": "sʇunoɔɔɐ ʎuɐ ʇɹodɯᴉ ʇou plnoↃ",
       "someFailed": "sʇunoɔɔɐ {{count}} pǝʇɹodɯᴉ \\,sʇunoɔɔɐ {{failed}} ʇɹodɯᴉ oʇ pǝlᴉɐℲ",
-      "noneFailed": "!pǝʇɹodɯᴉ sʇunoɔɔɐ {{count}}",
-      "error": "sʇunoɔɔɐ ʇɹodɯᴉ oʇ pǝlᴉɐℲ",
+      "noneFailed": "pǝʇɹodɯᴉ sʇunoɔɔɐ {{count}}",
+      "error": "sʇunoɔɔɐ ʇɹodɯᴉ ʇou plnoↃ",
       "noAccounts": "ʇɹodɯᴉ oʇ sʇunoɔɔɐ oN"
     },
     "unknownError": "ɹoɹɹǝ uʍoʞun",
     "types": {
       "OFFLINE": "ǝuᴉlɟɟO",
-      "MICROSOFT_JAVA_CREDENTIALS": "sɐlıʇuǝpǝɹɔ (ɐʌɐſ)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "ǝpoɔ ǝɔıʌǝp (ɐʌɐſ)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "uǝʞoʇ ɥsǝɟǝɹ (ɐʌɐſ)",
-      "MICROSOFT_JAVA_COOKIES": "sǝıʞooɔ (ɐʌɐſ)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "uǝʞoʇ ssǝɔɔɐ (ɐʌɐſ)",
+      "MICROSOFT_JAVA_CREDENTIALS": ")slɐᴉʇuǝpǝɹɔ( ɐʌɐ)",
+      "MICROSOFT_JAVA_DEVICE_CODE": ")ǝpoɔ ǝɔᴉʌǝp( ɐʌɐ)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": ")uǝʞoʇ ɥsǝɹɟǝɹ( ɐʌɐ)",
+      "MICROSOFT_JAVA_COOKIES": ")sǝᴉʞooɔ( ɐʌɐ)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": ")uǝʞoʇ ssǝɔɔɐ( ɐʌɐ)",
       "THE_ALTENING": "ƃuıuǝuʇl∀ǝɥ⊥ (ɐʌɐſ)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "sɐlıʇuǝpǝɹɔ (ʞɔoɹpoǝԐ)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "ǝpoɔ ǝɔıʌǝp (ʞɔoɹpoǝԐ)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": ")slɐᴉʇuǝpǝɹɔ( ʞɔoɹpǝԐ",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ")ǝpoɔ ǝɔᴉʌǝp( ʞɔoɹpǝԐ"
     },
     "deviceCodeImportToast": {
       "loading": "...ʇunoɔɔɐ ƃuᴉɹodɯI",
-      "success": "!pǝʇɹodɯᴉ ʇunoɔɔɐ",
-      "error": "ʇunoɔɔɐ ʇɹodɯᴉ oʇ pǝlᴉɐℲ"
+      "success": "pǝʇɹodɯᴉ ʇunoɔɔ∀",
+      "error": "ʇunoɔɔɐ ʇɹodɯᴉ ʇou plnoↃ"
     },
     "generate": {
-      "title": "sʇunoɔɔ∀ ǝuᴉlɟɟO ǝʇɐɹǝuǝƃ",
+      "title": "sʇunoɔɔɐ ǝuᴉlɟɟo ǝʇɐɹǝuǝƃ",
       "description": ".ʇɐɯɹoɟ ǝɯɐu ɯoʇsnoɔ ɐɥʇᴉʍ sʇunoɔɔɐ ɐʌɐɾ ǝuᴉlɟɟo ǝʇɐɹǝuǝƃ",
       "amount": "ʇunoɯ∀",
       "nameFormat": "ʇɐɯɹoɟ ǝɯɐN",
       "nameFormatHelp": ".sǝɯɐu ɥɔns ǝʞɐǝɹɔ sǝɐɹǝʇɐ 2_ʇoԐ puɐ 1_ʇoԐ sɐ ɥɔnS \"%d_ʇoԐ ,ǝldoɯxɐ ɹoℲ .ɹǝqɯnu ʇunoɔ ǝɥʇ ɹoɟ %d ǝs∩",
-      "mode": "sʇunoɔɔɐ ƃuᴉʇsᴉxǝ ƃuᴉʞɔǝɥɔ",
-      "modeHelp": "˙sʇunoɔɔɐ ɓuᴉʇsᴉxǝ ƃuᴉʇsᴉxǝ pǝlpuɐ ʍoɥ ǝsooɥↃ\n\n˙sʇunoɔɔɐ ʎlןlɐ ʍǝuɯᴉɐu sʇunoɔɔɐ ʎןuoǝ ǝʇɐɹǝuǝƃ :ƃuᴉʇsᴉxǝ ǝɹoƃuᴉ•\n˙sʇunoɔɔɐ ɹǝɥʇo llɐ ǝǝʞ ˙spᴉᴉnb ƃuᴉɥɔɐʇɐɯ ɥʇᴉʍ sʇunoɔɔɐ ǝɔɐlԀ ˙sʇunoɔɔɐ pǝʇsǝnbǝɹ lןɐ ll∀ :ƃuᴉʇsᴉxǝ ǝɔɐlԀ•\n˙sʇunoɔɔɐ pǝʇɐɹǝuǝƃ ǝɥʇ pɐ nǝɥʇ uǝɥʇ ˙sʇunoɔɔɐ ƃuᴉʇsᴉxǝ llɐ ǝʌoɯǝɹ :ll∀ ǝɔɐlԀ•",
-      "modeIgnoreExisting": "ƃuᴉʇsᴉxǝ ǝɹoƃuI",
-      "modeReplaceExisting": "ƃuᴉʇsᴉxǝ ǝɔɐlԀ ǝɔɐlԀ",
-      "modeReplaceAll": "ll∀ ǝɔɐlԀ",
+      "mode": "sʇunoɔɔɐ ƃuᴉʇsᴉxƎ",
+      "modeHelp": ".sʇunoɔɔɐ pǝʇɐɹǝuǝƃ ǝɥʇ ppɐ uǝɥ┴ .sʇunoɔɔɐ ƃuᴉʇsᴉxǝ llɐ ǝʌoɯǝᴚ ellɐ ǝɔɐldǝᴚ •\n\n.sʇunoɔɔɐ ɹǝɥʇo llɐ dǝǝK .sᗡI∩∩ ƃuᴉɥɔʇɐɯ ɥʇᴉʍ sʇunoɔɔɐ ǝɔɐldǝᴚ .sʇunoɔɔɐ pǝʇsǝn˙ǝɹ llɐ ǝʇɐɹǝuǝƃ eƃuᴉʇsᴉxǝ ǝɔɐldǝᴚ •\n\n.sʇunoɔɔɐ ƃuᴉʇsᴉxǝ llɐ dǝǝK .sǝɯɐu ʍǝu ɥʇᴉʍ sʇunoɔɔɐ ʎluo ǝʇɐɹǝuǝƃ eƃuᴉʇsᴉxǝ ǝɹouƃI •\n\nesʇunoɔɔɐ ƃuᴉʇsᴉxǝ ǝlpuɐɥ oʇ ʍoɥ ǝsooɥↃ",
+      "modeIgnoreExisting": "ƃuᴉʇsᴉxǝ ǝɹouƃI",
+      "modeReplaceExisting": "ƃuᴉʇsᴉxǝ ǝɔɐldǝᴚ",
+      "modeReplaceAll": "llɐ ǝɔɐldǝᴚ",
       "submit": "ǝʇɐɹǝuǝƃ",
       "generating": "...ƃuᴉʇɐɹǝuǝƃ",
       "progress": "ᄅpǝʇɔǝɥɔ …sʇunoɔɔɐ ƃuᴉʇɐɹǝuǝƃ (pǝlᴉɐℲ :{{failed}} ssǝɔɔnS :{{success}} ){{total}}/ {{checked}}",
-      "success": "!pǝʇɹodɯᴉ sʇunoɔɔɐ {{count}}",
-      "allFailed": "sʇunoɔɔɐ ʎu∀ ǝʇɐɹǝuǝƃ oʇ pǝlᴉɐℲ",
-      "allExist": ".ɯǝɯǝƃǝɹ oʇ 'sʇunoɔɔɐ ƃuᴉsʇsᴉxǝ ǝpɐpɹɐ ʎpɐǝɹlɐ ǝɯɐun sǝɯɐuɹǝs∩ ll∀",
-      "error": "sʇunoɔɔɐ ǝʇɐɹǝuǝƃ oʇ pǝlᴉɐℲ",
-      "invalidAmount": ")1 ʇsɐǝʇ lᴉɐ ( ʇunoɯɐ pᴉlɐʌ ɐ ɹǝʇuǝ ǝsɐǝlԀ",
-      "missingPlaceholder": "ɹǝplɐɥloɥʇsԀ %d uᴉɐʇuoɔ ɹoɟ uᴉɐʇuoɔ ǝɯɐu ʇsoɯ ʇɐɯɹoɟ ǝɯɐN"
+      "success": "sʇunoɔɔɐ {{count}} pǝʇɐɹǝuǝƃ",
+      "allFailed": "sʇunoɔɔɐ ʎuɐ ǝʇɐɹǝuǝƃ ʇou plnoↃ",
+      "allExist": ".uᴉɐƃɐ ɯǝɥʇ ǝʇɐɹǝuǝƃ oʇ ƃuᴉʇsᴉxǝ ǝɔɐldǝᴚ ǝsooɥↃ .ʇsᴉxǝ ʎpɐǝɹlɐ sǝɯɐuɹǝsn ll∀",
+      "error": "sʇunoɔɔɐ ǝʇɐɹǝuǝƃ ʇou plnoↃ",
+      "invalidAmount": ".Ɩ ʇsɐǝl ʇɐ ɟo ʇunoɯɐ uɐ ɹǝʇuƎ",
+      "missingPlaceholder": ".%d uᴉɐʇuoɔ ʇsnɯ ʇɐɯɹoɟ ǝɯɐu ǝɥ┴"
     },
     "import": {
       "javaEdition": "uoᴉʇᴉpǝƎ ɐʌɐɾ",
       "bedrockEdition": "uoᴉʇᴉpǝ ʞɔoɹpǝԐ",
       "offline": "ǝuᴉlɟɟO",
-      "microsoftCredentials": "slɐᴉʇuǝpǝɹɔ ʇɥɢosɟoɹɔosɟoɹɯ",
-      "microsoftDeviceCode": "ǝpoɔ ǝɔᴉʌǝp ʇɥɢosɟoɹɔosɟoɹɯ",
-      "microsoftRefreshToken": "uǝʞoʇ ɥsǝɹɟǝɹ ʇɥɢosɟoɹɔosɟoɹɯ",
-      "microsoftCookies": "sǝıʞooɔ ʇɟoɥsodɹoɔ ʇɹosǝɯᴉW",
-      "microsoftAccessToken": "uǝʞoʇ sɯǝssǝɔɔ∀ ʇɟoɥsodɹoɔ ʇɹosǝɯᴉW",
-      "theAltening": "ƃuǝʞo┴ ƃuᴉunǝɥ┴ǝɥ┴ɐǝɥ┴ǝɥ┴ɥ┴ɐǝɥ┴ɥ┴ɐ",
+      "microsoftCredentials": "slɐᴉʇuǝpǝɹɔ ʇɟosoɹɔᴉW",
+      "microsoftDeviceCode": "ǝpoɔ ǝɔᴉʌǝp ʇɟosoɹɔᴉW",
+      "microsoftRefreshToken": "uǝʞoʇ ɥsǝɹɟǝɹ ʇɟosoɹɔᴉW",
+      "microsoftCookies": "sǝᴉʞooɔ ʇɟosoɹɔᴉW",
+      "microsoftAccessToken": "uǝʞoʇ ssǝɔɔɐ ʇɟosoɹɔᴉW",
+      "theAltening": "uǝʞoʇ ƃuᴉuǝʇl∀ǝɥ┴",
       "altProviders": "sɹǝpᴉʌoɹd ʇl∀",
       "dialog": {
         "title": "sʇunoɔɔɐ {{type}} ʇɹodɯI",
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "...sʇunoɔɔɐ ƃuᴉʌoɯǝɹ",
-      "success": "!sʇunoɔɔɐ {{count}} pǝʌoɯǝɹ",
-      "error": "sʇunoɔɔɐ ǝʌoɯǝɹ oʇ pǝlᴉɐℲ"
+      "success": "sʇunoɔɔɐ {{count}} pǝʌoɯǝᴚ",
+      "error": "sʇunoɔɔɐ ǝʌoɯǝɹ ʇou plnoↃ"
     },
     "table": {
       "type": "ǝԀʎ┴",
-      "profileId": "DIɟI∩∩",
+      "profileId": "ᗡI ǝlᴉɟoɹԀ",
       "lastKnownName": "ǝɯɐuɹǝs∩",
       "searchProfileIds": "...sᴉpI ǝlᴉɟoɹd ɥɔɹɐǝS",
       "searchLastKnownNames": "...sǝɯɐu uoʍuɐʞ ʇsɐl ɥɔɹɐǝS",
@@ -270,10 +281,10 @@
     },
     "removeSelectedTooltip": "sʇunoɔɔɐ pǝʇɔǝlǝs ǝʌoɯǝɹ",
     "contextMenu": {
-      "openConfig": "ƃᴉɟuoɔ  uǝdo",
+      "openConfig": "sƃuᴉʇʇǝs uǝdo",
       "openMetadata": "ɐʇɐpɐʇǝɯ uǝdo",
       "copyProfileId": "pᴉI ǝlᴉɟoɹԀ ʎdoↃ",
-      "copyUsername": "ǝɯɐuǝɯɐu ʎdoↃ"
+      "copyUsername": "ǝɯɐuɹǝsn ʎdoↃ"
     },
     "config": {
       "title": "{{name}} ǝɹnƃᴉɟuoɔ",
@@ -294,17 +305,31 @@
       "matchesInheritedValue": "eulav detarihnI sehctam",
       "instanceValue": "eulav ecnatsnI",
       "defaultValue": "eulav tluafed",
-      "resetOverride": "ediverrO teser"
+      "resetOverride": "ediverrO teser",
+      "value": {
+        "notSet": "ʇǝs ʇoN",
+        "on": "uo",
+        "off": "ɟɟo",
+        "empty": "ʎʇdɯƎ",
+        "entries_one": "ʎɹʇuǝ {{count}}",
+        "entries_other": "sǝᴉɹʇuǝ {{count}}",
+        "range": "ǝƃuɐᴚ"
+      },
+      "source": {
+        "bot": "ǝpᴉɹɹǝʌo ʇoԐ",
+        "instance": "ʇɔǝɐoɹd ɯoɹɟ pǝʇᴉɹǝɥuI",
+        "default": "ʇlnɐɟǝp ƃuᴉs∩"
+      }
     },
     "deviceCodeConfirmDialog": {
-      "title": "uoıʇɐɔıɟıʇuǝ lɐʇuǝɥʇn∀ ǝpoɔ ǝɔıʌǝp",
+      "title": "uᴉ-uƃᴉs ǝpoɔ ǝɔᴉʌǝᗡ",
       "description": ".ʍolɟ ǝpoɔ ǝɔᴉʌǝp ǝɥʇ ƃuᴉʇɹɐʇs ǝɹoɟǝq suoᴉʇdo l ǝɹnƃᴉɟuoɔ",
-      "start": "uoᴉʇɐɔᴉʇuǝɥʇn∀ ʇɹɐʇS"
+      "start": "uᴉ-uƃᴉs ʇɹɐʇS"
     },
     "deviceCodeDialog": {
-      "title": "uoıʇɐɔıɟıʇuǝ lɐʇuǝɥʇn∀ ǝpoɔ ǝɔıʌǝp",
+      "title": "uᴉ-uƃᴉs ǝpoɔ ǝɔᴉʌǝᗡ",
       "description": ".ʇı ʞuıl oʇ ʇunoɔɔɐ ʇɐɹoɟoɹɔıɯ ɹnoʎ ɥʇıʍ uı ƃuıƃuıs",
-      "openInBrowser": "ɹǝsʍoɹq uı uǝdo",
+      "openInBrowser": "ɹǝsʍoɹq uᴉ uǝdo",
       "orManually": "ʎllɐnɯ ǝpoɔ ɹǝʇuǝ ɹO",
       "codeLabel": "ǝpoɔ ɹnoʎ",
       "urlLabel": "oʇ oƃ"
@@ -322,7 +347,7 @@
       "credits": ":sʇᴉpǝɹɔ {{credits}}",
       "stockTitle": "ʞɔoʇS ǝʅqɐʅᴉɐʌ∀",
       "noStock": "ʞɔoʇs uᴉ sʇunoɔɔɐ oN",
-      "accountType": "ǝdɈʇ ʇunoɔɔ∀",
+      "accountType": "ǝdʎʇ ʇunoɔɔ∀",
       "amount": "(01-1) ʇunoɯ∀",
       "purchase": "ʇɹodɯI ⅋ ǝsɐɥɔɹnԀ",
       "purchasing": ".ƃuᴉsɐɥɔɹnԀ",
@@ -341,16 +366,29 @@
       "keyPlaceholder": "ʎǝ⋊",
       "valuePlaceholder": ")NOႧ( ǝnlɐʌ",
       "noEntries": "..ǝʌoɯɐ ǝuo ppp∀ .sǝᴉɹʇuǝ ɐʇɐpɐʇǝɯ oN",
-      "loadError": "",
+      "loadError": "ɐʇɐpɐʇǝɯ pɐol ʇou plnoↃ",
       "loadErrorDescription": "",
       "retryLoad": "ʎɹʇǝɹ",
       "addSuccess": "pǝpp∀ ʎɹʇuƎ",
-      "addError": "ʎɹʇuǝ  ppA oʇ pǝlᴉɐℲ",
-      "updateError": "ʎɹʇuǝ ǝʇɐpdnl pǝlᴉɐℲ",
+      "addError": "ʎɹʇuǝ ppɐ ʇou plnoↃ",
+      "updateError": "ʎɹʇuǝ ǝʇɐpdn ʇou plnoↃ",
       "deleteSuccess": "pǝʇǝlǝp ʎɹʇuƎ",
-      "deleteError": "ʎɹʇuǝ ǝʇǝlǝp pǝlᴉɐℲ",
+      "deleteError": "ʎɹʇuǝ ǝʇǝlǝp ʇou plnoↃ",
       "duplicateError": "sʎǝʞ puɐ ǝɔɐdsǝɯɐu sᴉɥʇ ɥʇᴉM ɥʇᴉʍ ʎɹʇuǝ uɐ",
-      "invalidJson": "uoʎlɐʌ uosſ ǝnlɐʌᴉ"
+      "invalidJson": "uoʎlɐʌ uosſ ǝnlɐʌᴉ",
+      "namespaceLabel": "ǝɔɐdsǝɯɐN",
+      "keyLabel": "ʎǝK",
+      "valueLabel": "ǝnlɐΛ",
+      "addEntryLegend": "ʎɹʇuǝ ɐʇɐpɐʇǝɯ pp∀",
+      "addEntryButton": "ʎɹʇuǝ pp∀",
+      "entryLegend": "ʎɹʇuǝ ɐʇɐpɐʇǝW",
+      "removeEntryButton": "ǝʌoɯǝᴚ"
+    },
+    "removeDialog": {
+      "title_one": "¿ʇunoɔɔɐ {{count}} ǝʌoɯǝᴚ",
+      "title_other": "¿sʇunoɔɔɐ {{count}} ǝʌoɯǝᴚ",
+      "description": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .ʇɔǝɐoɹd sᴉɥʇ ɯoɹɟ sʇoq ɹᴉǝɥʇ puɐ xslɐᴉʇuǝpǝɹɔ pǝʌɐs ɹᴉǝɥʇ xsʇunoɔɔɐ pǝʇɔǝlǝs ǝɥʇ sǝʌoɯǝɹ sᴉɥ┴",
+      "confirm": "sʇunoɔɔɐ ǝʌoɯǝᴚ"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "ʎǝ⋊",
     "valuePlaceholder": ")NOႧ( ǝnlɐʌ",
     "noEntries": "..ǝʌoɯɐ ǝuo ppp∀ .sǝᴉɹʇuǝ ɐʇɐpɐʇǝɯ oN",
+    "loadError": "ɐʇɐpɐʇǝɯ pɐol ʇou plnoↃ",
     "addSuccess": "pǝpp∀ ʎɹʇuƎ",
-    "addError": "ʎɹʇuǝ  ppA oʇ pǝlᴉɐℲ",
-    "updateError": "ʎɹʇuǝ ǝʇɐpdnl pǝlᴉɐℲ",
+    "addError": "ʎɹʇuǝ ppɐ ʇou plnoↃ",
+    "updateError": "ʎɹʇuǝ ǝʇɐpdn ʇou plnoↃ",
     "deleteSuccess": "pǝʇǝlǝp ʎɹʇuƎ",
-    "deleteError": "ʎɹʇuǝ ǝʇǝlǝp pǝlᴉɐℲ",
+    "deleteError": "ʎɹʇuǝ ǝʇǝlǝp ʇou plnoↃ",
     "duplicateError": "sʎǝʞ puɐ ǝɔɐdsǝɯɐu sᴉɥʇ ɥʇᴉM ɥʇᴉʍ ʎɹʇuǝ uɐ",
-    "invalidJson": "uoʎlɐʌ uosſ ǝnlɐʌᴉ"
+    "invalidJson": "uoʎlɐʌ uosſ ǝnlɐʌᴉ",
+    "namespaceLabel": "ǝɔɐdsǝɯɐN",
+    "keyLabel": "ʎǝK",
+    "valueLabel": "ǝnlɐΛ",
+    "addEntryLegend": "ʎɹʇuǝ ɐʇɐpɐʇǝɯ pp∀",
+    "addEntryButton": "ʎɹʇuǝ pp∀",
+    "entryLegend": "ʎɹʇuǝ ɐʇɐpɐʇǝW",
+    "removeEntryButton": "ǝʌoɯǝᴚ"
   },
   "bots": {
     "searchPlaceholder": "...sʇoq ɥɔɹɐǝS",
-    "onlineCount": "lɐʇoʇ {{total}} / ǝuᴉluo {{online}}",
+    "onlineCount": "lɐʇoʇ {{total}} / pǝʇɔǝuuoɔ {{online}}",
     "noBots": ".ǝƃɐd sƃuᴉʇsǝʇ uoʇunoɔɔɐ pp∀ .pǝɹnƃᴉɟuoɔ sʇoq oN",
     "noBotsFound": ".ɥɔɹɐǝs ɹnoʎ ɥɔɐʇɯ sʇoq oN",
     "loadingMore": "...ǝɹoɯ ƃuᴉpɐo˥",
     "showingCount": "{{total}} ɟo {{loaded}} ƃuᴉʍoɥS",
     "allLoaded": "pǝpɐol lls ʇoq {{total}} ll∀",
-    "online": "ǝuᴉlO",
-    "offline": "ǝuᴉlɟɟO",
-    "notJoined": "pǝuᴉoɾ ʇoN",
+    "online": "pǝʇɔǝuuoↃ",
+    "offline": "pǝʇɔǝuuoɔsᴉᗡ",
+    "notJoined": "pǝuᴉoɐ ʇoN",
     "connectionPhase": {
       "connecting": "ƃuᴉʇɔǝuuoƆ",
-      "connected": "pǝʇɔǝuuoɔ",
-      "spawned": "ǝuᴉlO",
+      "connected": "uᴉ ƃuᴉƃƃo˥",
+      "spawned": "pǝʇɔǝuuoↃ",
       "died": "pɐǝᗡ",
-      "disconnected": "ǝuᴉlɟɟO",
+      "disconnected": "pǝʇɔǝuuoɔsᴉᗡ",
       "ping": "{{ms}} sɯ"
     },
     "runtimeState": {
@@ -398,34 +444,29 @@
     },
     "backToBots": "sʇoq oʇ ʞɔɐԐ",
     "tabs": {
-      "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
+      "overview": "ʍǝᴉʌ ʇoԐ",
       "inventory": "ʎɹoʇuǝʌuI",
       "controls": "sdoɹʇuoↃ",
       "terminal": "ןɐuᴉɯɹǝ┴"
     },
-    "comingSoon": "uooS ƃuᴉɯoɔ",
-    "terminalPanel": {
-      "title": "lɐuᴉɹǝɯɹǝʇ ʇoq"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "ʎxoɹԀ",
       "direct": "ʇɔǝɹᴉp (ou oxoɹԀ)",
       "unavailable": "ǝlqɐlᴉɐʇɐʌɐu∩"
     },
     "positionPanel": {
-      "title": "uoᴉʇɐʇoᴚ ∧ uoᴉʇᴉsod",
+      "title": "uoᴉʇɐʇoɹ puɐ uoᴉʇᴉsoԀ",
       "position": "uoᴉʇᴉsod",
       "rotation": "uoᴉʇɐʇoᴚ",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ ǝlqɐlᴉɐʌ sᴉ ɐʇɐp uoᴉʇᴉsod .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo sᴉ ɐʇɐp uoᴉʇᴉsoԀ .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴"
     },
     "chatPanel": {
-      "title": "sǝƃɐssǝW ʇɐɥↃ",
-      "description": ".ǝʇɐpdn ǝɹnlɥ ǝɹǝɥʍ ɹɐǝddɐ llᴉʍ ʇoq sᴉɥʇ ɯoɹɟ sǝƃɐssǝɥ ʇɐɥↃ"
+      "title": "sǝƃɐssǝW ʇɐɥↃ"
     },
     "commandPanel": {
-      "title": "spuɐɯɯoↃ ʇoq",
-      "placeholder": "...ʇoq sᴉɥʇ oʇ puɐɯɯoɔ pǝuǝs",
-      "description": ".ǝʇɐpdn ǝɹnlɥ ɐuᴉ pllᴉʍ spuɐɯɯoↃ pǝdoɔs-ʇoq .ǝʇɐpdn ǝlqɐlᴉɐʌ sᴉ spuɐɯɯoↃ"
+      "title": "spuɐɯɯoɔ ʇoԐ",
+      "placeholder": "...ʇoq sᴉɥʇ oʇ puɐɯɯoɔ pǝuǝs"
     },
     "povPanel": {
       "title": "ʌOԀ ʇoq",
@@ -438,51 +479,50 @@
       "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ llɐ ǝlqɐlᴉɐʌ sᴉ ƃuᴉɹǝpuǝɹ ʌOԀ .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
     },
     "statsPanel": {
-      "title": "sʇɐʇS ʇoq",
       "health": "ɥʇlɐǝH",
       "food": " pooℲ",
       "saturation": "uoᴉʇɐɹnɐʇɐS",
       "experience": "ǝɔuǝᴉɹǝdxƎ",
       "level": "lǝʌǝ˥",
       "toNextLevel": "lǝʌǝ˥ ʇxǝu oʇ",
-      "gameMode": "ǝpoW ǝɯɐƃ",
+      "gameMode": "ǝpoɯ ǝɯɐƃ",
       "survival": "lɐʌᴉʌɹnS",
       "creative": "ǝʌᴉʇɐɹɔ",
       "adventure": "ǝɹnɹnʌpl∀",
       "spectator": "ɹoɹɐʇɔǝds",
       "unknown": "uʍoʞu∩",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ llɐ ǝlqɐlᴉɐʌ sᴉ sʇɐʇS .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo ǝɹɐ sʇɐʇS .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴"
     },
     "inventoryPanel": {
       "title": "ʎɹoʇuǝʌuI",
       "actionRejected": "",
       "hotbar": "ɹɐqʇoH",
-      "main": "ʎɹoʇuǝʌuᴉ  uᴉɐW",
+      "main": "ʎɹoʇuǝʌuᴉ uᴉɐW",
       "items": "sɯǝʇᴉ",
       "carrying": "ƃuᴉʎuoɹɹɐↃ",
-      "dropOne": "ǝuo ɹodɹO",
-      "dropAll": "llɐ ɹodɹO",
+      "dropOne": "ǝuo doɹᗡ",
+      "dropAll": "llɐ doɹᗡ",
       "closeContainer": "ǝsolↃ",
       "clickHint": "ʇoq ʇoʇs :ɹɐq llᴉɯ Middle | ǝʌoɯ ʞɔᴉnb :ʞɔᴉl+ʇɟᴉɥS | ǝuo/ɟlɐɥ :ʞɔᴉl ʇɥƃᴉɹ | ǝɔɐlԀ/dn ʇɥdᴉɹ :ʞɔᴉl ʇɟǝ˥",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ llɐ ǝlqɐlᴉɐʌ sᴉ ʎɹoʇuǝʌuᴉ .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ",
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo sᴉ ʎɹoʇuǝʌuI .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴",
       "buttons": {
         "stonecutterRecipes": "sǝdoɔᴉɹǝᴚ",
         "enchantments": "sʇuǝɯʇuɐɥɔuƎ",
         "patterns": "suuɹǝʇʇɐԀ",
         "trades": "sǝpɐɹ┴",
-        "beaconEffects": "sʇɔǝɟɟǝ ƃuoɔɐǝԐ",
-        "crafterSlots": "sloS ɹolʇuoↃ",
-        "lecternControls": "slɐʇuoↃ ʞooԐ",
+        "beaconEffects": "sʇɔǝɟɟǝ uoɔɐǝԐ",
+        "crafterSlots": "sloɹʇuoɔ ʇolS",
+        "lecternControls": "sloɹʇuoɔ ʞooԐ",
         "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
-        "creativeTabs": ""
+        "creativeTabs": "sqɐʇ ǝʌᴉʇɐǝɹↃ"
       },
       "textInput": {
-        "title": "ʇnoddn ʇxǝ┴",
-        "anvilRename": "ǝɯɐuǝᴚ ɯǝ⊥",
-        "creativeSearch": ""
+        "title": "ʇnduᴉ ʇxǝ┴",
+        "anvilRename": "ɯǝʇᴉ ǝɯɐuǝᴚ",
+        "creativeSearch": "sɯǝʇᴉ ɥɔɹɐǝS"
       },
       "bookPages": {
-        "title": "ǝlᴉʇǝɯ ʞooԐ",
+        "title": "ʇuǝʇuoɔ ʞooԐ",
         "emptyPage": ")ǝƃɐd ʎʇdɯƎ(",
         "previousPage": "",
         "nextPage": "",
@@ -490,61 +530,105 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "ɯǝʇᴉ ʎoɹʇsǝᗡ",
+      "clickHints": {
+        "left": "ǝɔɐld ɹo dn ʞɔᴉd eʞɔᴉlɔ ʇɟǝ˥",
+        "right": "ǝuo ǝɔɐld ɹo ɟlɐɥ dn ʞɔᴉd eʞɔᴉlɔ ʇɥƃᴉᴚ",
+        "shift": "ǝʌoɯ ʞɔᴉn˙ eʞɔᴉlɔ+ʇɟᴉɥS",
+        "middle": "ʇols ǝʌᴉʇɔɐ sɐ ʇɔǝlǝs eʞɔᴉlɔ ǝlppᴉW"
+      }
     },
     "visualPanel": {
-      "title": "ʍǝᴉɅ ʇoq",
-      "compass": "uoᴉʇɔǝɹᴉp ƃuᴉɔɐɟ",
-      "lookDirection": "ǝƃu∀ ʞoo˥",
+      "title": "plɹoʍ puɐ uoᴉʇɔǝɹᴉᗡ",
+      "compass": "uoᴉʇɔǝɹᴉp ƃuᴉɔɐℲ",
+      "lookDirection": "ǝlƃuɐ ʞoo˥",
       "lookingUp": "dn ƃuᴉʞool",
       "lookingDown": "uʍop ƃuᴉʞool",
       "lookingStraight": "ʇɐᴉɹʇs ƃuᴉʞool",
-      "worldInfo": "oɟuI plɹoM",
+      "worldInfo": "oɟuᴉ plɹoM",
       "dimension": "uoᴉsuoᴉɯǝp",
       "biome": "ǝɯoᴉq",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ʎlnoʞ llɐ ǝlqɐlᴉɐʌ sᴉ ɐʇɐp lɐnsᴉ˥ .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo sᴉ ɐʇɐp lɐnsᴉΛ .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴"
     },
     "actionsPanel": {
-      "title": "suoᴉʇɔ∀ ʇoq",
-      "leftClick": "ʞɔᴉlↃ ʇɟǝ˥",
-      "rightClick": "ʞɔᴉl ʇɥƃᴉɹ",
+      "title": "suoᴉʇɔɐ ʇoԐ",
+      "leftClick": "ʞɔᴉlɔ ʇɟǝ˥",
+      "rightClick": "ʞɔᴉlɔ ʇɥƃᴉᴚ",
       "leftClickDescription": "ʞɔolq ʞɐǝɹq ɹo 'ʎʇᴉʇuǝ ʞɔɐʇʇ∀",
       "rightClickDescription": "ʞɔɐɹǝʇuᴉ ɹo ɯǝʇᴉ ǝs∩",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ llɐ ǝlqɐlᴉɐʌ sᴉ suoᴉʇɔ∀ .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo ǝɹɐ suoᴉʇɔ∀ .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴"
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "lɔoɹʇuoↃ ʇuǝɯǝʌoW",
+      "title": "loɹʇuoɔ ʇuǝɯǝʌoW",
       "movement": ")pspʍ( ʇuǝɯǝʌoW",
-      "forward": ")M( pɹɐʍɹoℲ ǝʌoW",
-      "backward": ")S( pɹɐʍʞɔɐԐ ǝʌoW",
-      "left": ")∀( ʇɟǝ˥ ǝɟɐɹʇS",
+      "forward": ")M( pɹɐʍɹoɟ ǝʌoW",
+      "backward": ")S( pɹɐʍʞɔɐq ǝʌoW",
+      "left": ")∀( ʇɟǝl ǝɟɐɹʇS",
       "right": ")ᗡ( ʇɥƃᴉɹ ǝɟɐɹʇS",
       "jump": "dnɯnℲ",
       "sneak": "ʞɐǝuS",
       "sprint": "ʇuᴉɹds",
       "stop": "do┴S",
-      "rotation": "uoᴉʇɔǝɹᴉᄅ ʞoo˥",
+      "rotation": "uoᴉʇɔǝɹᴉp ʞoo˥",
       "lookUp": "dn ʞoo˥",
       "lookDown": "uʍop ʞoo˥",
-      "lookLeft": "ɟǝ˥ ʞoo˥",
+      "lookLeft": "ʇɟǝl ʞoo˥",
       "lookRight": "ʇɥƃᴉɹ ʞoo˥",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ llɐ ǝlqɐlᴉɐʌ sᴉ llooɹʇuoɔ ʇuǝɯǝʌoW .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo ǝɹɐ sloɹʇuoɔ ʇuǝɯǝʌoW .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴"
     },
     "dialogPanel": {
-      "title": "lɐƃoloɹǝᄅ ɹǝʌɹǝS",
+      "title": "ƃolɐᴉp ɹǝʌɹǝS",
       "noDialog": ".pǝʎɐlps ʎlʇuǝɹɹnɔ sᴉ lɐƃoloɹʌǝɹ sǝoN",
       "dialogType": "ǝԀʎ┴",
       "dialogId": "pᴉᄅ lɐƃoloɹↃ",
       "notice": "ǝɔᴉʇoN",
       "confirmation": "uoᴉʇɐɯɹᴉɟuoↃ",
-      "multiAction": "uoᴉʇɔ∀ ᴉɯlᴉϺ",
-      "serverLinks": "sʞuᴉ˥ ɹǝʌɹǝS",
-      "dialogList": "ʇsᴉ˥ lɐƃoloɹᄅ",
+      "multiAction": "uoᴉʇɔɐ ᴉʇlnW",
+      "serverLinks": "sʞuᴉl ɹǝʌɹǝS",
+      "dialogList": "ʇsᴉl ƃolɐᴉᗡ",
       "unknownType": "uʍoʞu∩",
       "dismiss": "ssǝɯsᴉᗡ",
       "submit": "ʇᴉnbᴉԀ",
-      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ llɐ ǝlqɐlᴉɐʌ sᴉ sɐƃolɐp .ǝuᴉlɟɟo sᴉ ʇoq ǝɥʇ"
+      "offline": ".pǝʇɔǝuuoɔ sᴉ ʇoq ǝɥʇ uǝɥʍ ǝlqɐlᴉɐʌɐ ʎluo ǝɹɐ sƃolɐᴉᗡ .pǝʇɔǝuuoɔsᴉp sᴉ ʇoq ǝɥ┴"
+    },
+    "pov": {
+      "title": "ʍǝᴉʌ ʇoԐ",
+      "touchControlling": ".doʇs oʇ loɹʇuoɔ ǝsɐǝlǝᴚ ǝs∩ .ʇoq sᴉɥʇ loɹʇuoɔ no⅄",
+      "popupBlocked": ".ʍopuᴉʍ ʍǝᴉʌ ʇoԐ ǝɥʇ ɥɔɐʇǝp oʇ sdndod ʍoll∀",
+      "windowTitle": "ʍǝᴉʌ ʇoԐ ǝɹᴉℲlnoS",
+      "fullscreenUnavailable": ".ʍopuᴉʍ sᴉɥʇ uᴉ ǝlqɐlᴉɐʌɐun sᴉ uǝǝɹɔsllnℲ",
+      "textInputLabel": "ʇnduᴉ ʇxǝʇ ʇɟɐɹɔǝuᴉW",
+      "videoLabel": "ʍǝᴉʌ ʇoԐ ǝʌᴉ˥",
+      "touchMove": "ǝʌoW",
+      "audioError": ".oᴉpnɐ ʇɹɐʇs ʇou plnoↃ",
+      "startError": ".ʍǝᴉʌ ʇoԐ ǝɥʇ ʇɹɐʇs ʇou plnoↃ",
+      "releaseHint": ".ǝsnoɯ puɐ pɹɐoqʎǝʞ ɹnoʎ ǝsɐǝlǝɹ oʇ {{shortcut}} ssǝɹԀ",
+      "captureHint": ".ǝɹnʇdɐɔ ǝsnoɯ puɐ pɹɐoqʎǝʞ ʍollɐ puɐ ʍǝᴉʌ ǝɥʇ ʞɔᴉlↃ",
+      "audioWaiting": ".ʇɔǝuuoɔ oʇ ʍǝᴉʌ ʇoԐ ǝɥʇ ɹoɟ ƃuᴉʇᴉɐM",
+      "audioWatchFirst": ".oᴉpnɐ ǝsn oʇ ʇoq ǝɥʇ ɥɔʇɐM",
+      "audioUpdateServer": ".oᴉpnɐ ʍǝᴉʌ ʇoԐ ǝsn oʇ ɹǝʌɹǝs ǝɥʇ ǝʇɐpd∩",
+      "muteAudio": "oᴉpnɐ ǝʇnW",
+      "unmuteAudio": "oᴉpnɐ ǝʇnɯu∩",
+      "audioStarting": "...oᴉpnɐ ƃuᴉʇɹɐʇS",
+      "mute": "ǝʇnW",
+      "unmute": "ǝʇnɯu∩",
+      "audio": "oᴉpn∀",
+      "audioUnavailable": "ǝlqɐlᴉɐʌɐun oᴉpn∀",
+      "volume": "ǝɯnloʌ ʍǝᴉʌ ʇoԐ",
+      "reconnect": "ʇɔǝuuoɔǝᴚ",
+      "showWindow": "ʍopuᴉʍ ʍǝᴉʌ ʇoԐ ʍoɥS",
+      "attachWindow": "ʍopuᴉʍ ʍǝᴉʌ ʇoԐ ɥɔɐʇʇ∀",
+      "touch": {
+        "jump": "dɯn)",
+        "sneak": "ʞɐǝuS",
+        "attack": "ʞɔɐʇʇ∀",
+        "use": "ǝs∩",
+        "inventory": "ʎɹoʇuǝʌuI",
+        "keyboard": "pɹɐoqʎǝK",
+        "closeMenu": "nuǝɯ ǝsolↃ"
+      },
+      "needsServer": ".ɹǝʌɹǝs ǝɹᴉℲlnoS pǝʇɔǝuuoɔ ɐ spǝǝu ʍǝᴉʌ ʇoԐ ǝɥ┴"
     }
   },
   "metrics": {
@@ -552,19 +636,19 @@
       "noData": "ɐʇɐp oN"
     },
     "summary": {
-      "online": "ǝuᴉlO",
+      "online": "pǝʇɔǝuuoↃ",
       "packetsPerSecond": "sʞʇd/",
       "traffic": "ɔᴉɟɟɐɹ⊥",
       "health": "ɥʇlɐǝH",
       "tick": "ʞɔᴉ⊥"
     },
     "botsOnline": {
-      "title": "  ",
-      "online": "ǝuᴉlO",
+      "title": "pǝʇɔǝuuoɔ sʇoԐ",
+      "online": "pǝʇɔǝuuoↃ",
       "total": "ןɐʇo⊥"
     },
     "packets": {
-      "title": "puoɔǝS / sʇǝʞɔɐԀ",
+      "title": "puoɔǝs ɹǝd sʇǝʞɔɐԀ",
       "sent": "s/ʇuǝS",
       "received": "s/ʌǝɔǝᴚ"
     },
@@ -574,27 +658,27 @@
       "download": "pɐoןuʍoᗡ"
     },
     "tick": {
-      "title": "uoᴉʇɐɹnɐɹnᗡ ʞɔᴉ⊥",
+      "title": "uoᴉʇɐɹnp ʞɔᴉ┴",
       "avg": ")sɯ( ᵷʌ∀",
       "max": ")sɯ( xaW"
     },
     "healthFood": {
-      "title": "pooℲ / ɥʇlɐǝH",
-      "health": "ɥʇlɐǝH ᵷʌ∀",
-      "food": "pooℲ ᵷʌ∀"
+      "title": "pooɟ puɐ ɥʇlɐǝH",
+      "health": "ɥʇlɐǝɥ ƃʌ∀",
+      "food": "pooɟ ƃʌ∀"
     },
     "chunksEntities": {
-      "title": "sǝᴉʇᴉʇuǝ / sʞuɥɔ",
+      "title": "sǝᴉʇᴉʇuǝ puɐ sʞunɥↃ",
       "chunks": "sʞuɥɔ",
       "entities": "sǝᴉʇᴉʇuǝ"
     },
     "connections": {
-      "title": "sʇuǝʌƎ uoᴉʇɔǝuuoɔɐ",
+      "title": "sʇuǝʌǝ uoᴉʇɔǝuuoↃ",
       "connections": "suoᴉɔɔǝuuoɔ",
       "disconnections": "suoᴉuoᴉɔǝpuᴉsᴉᗡ"
     },
     "healthDistribution": {
-      "title": "uoᴉʇnqᴉɹʇsᴉᗡ ɥʇlɐǝH",
+      "title": "uoᴉʇnqᴉɹʇsᴉp ɥʇlɐǝH",
       "bots": "sʇoԐ"
     },
     "dimensions": {
@@ -602,32 +686,32 @@
       "bots": "sʇoԐ"
     },
     "gameModes": {
-      "title": "sǝpoW ǝɯɐᵷ",
+      "title": "sǝpoɯ ǝɯɐƃ",
       "bots": "sʇoԐ"
     },
     "positions": {
-      "title": "(ZX) suoᴉʇᴉsod ʇoq",
+      "title": ")ZX( suoᴉʇᴉsod ʇoԐ",
       "bot": "ʇoq"
     }
   },
   "scripts": {
-    "title": "sʇdıɹɔS lɐnsᴉ˥",
+    "title": "sʇdᴉɹɔs lɐnsᴉΛ",
     "description": ".ɹoʇᴉpǝ ǝsɐq-ǝpou lɐnsᴉʌ ɐ ƃuᴉnsnlɐ ɥɔᴉɹɔs uoᴉʇɐɯnlɐ ǝʇɐǝɹↃ",
-    "experimentalTitle": "ǝɹnɹndǝɯᴉɹǝdxƎ ǝɹnʇɐǝɟ",
+    "experimentalTitle": "ǝɹnʇɐǝɟ lɐʇuǝɯᴉɹǝdxƎ",
     "experimentalWarning": "˙uoᴉʇsᴉunɔ ɥʇᴉʍ ᴉ ǝs∩ ˙sʇdᴉɹɔs ƃuᴉʇsᴉxǝ ƃuᴉʞɐǝɹ uqɐɔ sǝʇɐpdn ǝɹnʇnℲ ˙lɐʇuǝɯᴉɹǝdxǝ sᴉ ǝɹnʇɐǝɹℲ sᴉɥ⊥",
     "createScript": "ʇdıɹɔS ǝʇɐǝɹↃ",
     "createScriptTitle": "ʇdıɹɔS ʍǝN ǝʇɐǝɹↃ",
     "createScriptDescription": ".sʇuǝʌǝ oʇ puɐ suoᴉʇɔ∀ ʇoq ǝʇɐɯnlɐ  puɐ suoᴉʇɔnɐ ʇoq ǝʇɐɯnlɐ sʇdıɹɔs ʇsᴉɥ ɹoɟ lɐnsᴉʌ ɐ ʍǝu ǝʇɐǝɹɔ oʇ ʇdıɹɔS",
-    "scriptName": "ǝɯɐu ʇdıɹɔS",
+    "scriptName": "ǝɯɐu ʇdᴉɹɔS",
     "scriptNamePlaceholder": "...ǝɯɐu ʇdıɹɔs ɹǝʇuǝ",
     "scriptDescription": "uoᴉʇdᴉɹɔsǝᗡ",
     "scriptDescriptionPlaceholder": "...sǝop sʇdıɹɔs sᴉɥʇ ʇɐɥʍ ǝqᴉɹɔsǝᗡ",
     "create": "ǝʇɐɹɔ",
-    "createSuccess": "ʎllɟnlɐ sʎlndɐɔɔns ʇdıɹɔs",
-    "createError": "ʇdıɹɔs ǝʇɐǝɹɔ oʇ pǝlᴉɐℲ",
+    "createSuccess": "pǝʇɐǝɹɔ ʇdᴉɹɔS",
+    "createError": "ʇdᴉɹɔs ǝʇɐǝɹɔ ʇou plnoↃ",
     "noScripts": "ʇǝ⅄ sʇdıɹɔS oN",
     "noScriptsDescription": ".ɹoʇᴉpǝ ǝsɐq-ǝpou lɐnsᴉʌ ǝɥʇ ƃuᴉsnlɐ oʇ ʇdıɹɔs ʇsɹᴉɟ ɹnoʎ ǝʇɐǝɹɔ",
-    "createFirstScript": "ʇdıɹɔS ʇsɹᴉℲ ɹno⅄ ǝʇɐǝɹↃ",
+    "createFirstScript": "ʇdᴉɹɔs ʞuɐlq ʍǝN",
     "running": "ƃuᴉuunᴚ",
     "paused": "pǝsnsɐԀ",
     "nodes": "sǝpoᗡ",
@@ -640,19 +724,19 @@
     "resumeSuccess": "pǝɯnsǝɹ ʇdıɹɔS",
     "resumeError": "ʇdıɹɔs ǝɯnsǝɹ oʇ pǝlᴉɐℲ",
     "delete": "ǝʇǝlǝᗡ",
-    "deleteSuccess": "ʎllɟnlɐ ǝɹǝ ʇdıɹɔs ǝʇǝlǝᗡ",
-    "deleteError": "ʇdıɹɔs ǝʇǝlǝᗡ oʇ pǝlᴉɐℲ",
-    "saveSuccess": "ʎllɟnlɐ ǝɹǝ ʇdıɹɔs pǝʌɐS",
-    "saveError": "ʇdıɹɔs ǝʌɐs oʇ pǝlᴉɐℲ",
+    "deleteSuccess": "pǝʇǝlǝp ʇdᴉɹɔS",
+    "deleteError": "ʇdᴉɹɔs ǝʇǝlǝp ʇou plnoↃ",
+    "saveSuccess": "pǝʌɐs ʇdᴉɹɔS",
+    "saveError": "ʇdᴉɹɔs ǝʌɐs ʇou plnoↃ",
     "activateSuccess": "pǝʇɐʌᴉʇɔɐ sʇdıɹɔS",
     "activateError": "ʇdıɹɔs ǝʇɐʌᴉʇɔɐ oʇ pǝlᴉɐℲ",
     "deactivateSuccess": "pǝʇɐʌᴉʇɔɐp ʇdıɹɔS",
-    "untitledScript": "ʇdıɹɔS pǝlʇᴉʇu∩",
+    "untitledScript": "ʇdᴉɹɔs pǝlʇᴉʇu∩",
     "saveFirstBeforeActivating": "ƃuᴉʇɐʌᴉʇɔɐ ǝɹoɟ ʇsɹᴉɟ ʇdıɹɔs ǝɥʇ ǝʌɐs",
     "activating": "...ƃuᴉʇɐʌᴉɔɐ ƃuᴉʇdᴉɹɔS",
     "activated": "pǝʇɐʌᴉʇɔɐ sʇdıɹɔS",
     "executionCompleted": "pǝʇǝlǝdoɔ ʇdıɹɔS",
-    "executionCompletedSuccess": "ʎllɟnlɐ sʎlndɐɔɔns pǝʇǝlǝdoɔ ʇdıɹɔS",
+    "executionCompletedSuccess": "pǝʇǝldɯoɔ ʇdᴉɹɔS",
     "deactivated": "pǝʇɐʌᴉʇɔɐp ʇdıɹɔS",
     "deactivatedByUser": "ɹǝns ʎq pǝʇɐʌᴉʇɔɐ pǝʇdıɹɔS",
     "executionFailed": "pǝlᴉɐℲ uoᴉʇnɔǝxǝ ʇdıɹɔS",
@@ -663,17 +747,17 @@
     "nodeCompleted": "}}nodeId{{ :pǝʇǝlǝdoɔ ǝpoN",
     "nodeError": "}}error{{ :ɹoɹɹǝ ǝpoN",
     "contextMenu": {
-      "edit": "ʇᴉpƎ ʇdıɹɔS",
+      "edit": "ʇdᴉɹɔs ʇᴉpƎ",
       "pause": "ǝsnsɐԀ",
       "resume": "ǝɯnsǝᴚ",
-      "delete": "ʇdıɹɔS ǝʇǝlǝᗡ",
-      "copyScriptName": "ǝɯɐu ʇdıɹɔS ʎdoↃ",
-      "copyScriptId": "DI ʇdıɹɔS ʎdoↃ"
+      "delete": "ʇdᴉɹɔs ǝʇǝlǝᗡ",
+      "copyScriptName": "ǝɯɐu ʇdᴉɹɔs ʎdoↃ",
+      "copyScriptId": "ᗡI ʇdᴉɹɔs ʎdoↃ"
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "sʇdıɹɔS oʇ ʞɔɐq",
+        "backToScripts": "sʇdᴉɹɔs oʇ ʞɔɐԐ",
         "save": "ǝʌɐS",
         "saveTooltip": "ʇdᴉɹɔs ǝʌɐS",
         "resume": "ǝɯnsǝᴚ",
@@ -688,13 +772,15 @@
         "fit": "ʇᴉℲ",
         "export": "ʇɹoddxǝ ɇʇdıɹɔS",
         "import": "ʇɹodɯI ʇdıɹɔS",
-        "exportSuccess": "ʎllɟnlɐ sʎlndɐɔɔns ʇɹoddxǝ ɇʇdıɹɔS",
-        "importSuccess": "ʎllɟnlɐ sʎlndɐɔɔns ʇɹodɯI ʇdıɹɔS",
-        "importError": "ʇdıɹɔs ʇɹodɯI oʇ pǝlᴉɐℲ"
+        "exportSuccess": "pǝʇɹodxǝ ʇdᴉɹɔS",
+        "importSuccess": "pǝʇɹodɯᴉ ʇdᴉɹɔS",
+        "importError": "ʇdᴉɹɔs ʇɹodɯᴉ ʇou plnoↃ"
       },
       "palette": {
         "title": "ǝʇʇǝlɐԀ ǝpoN",
-        "search": "...sǝpou ɥɔɹɐǝS"
+        "search": "...sǝpou ɥɔɹɐǝS",
+        "noResults": "ɥɔɹɐǝs ɹnoʎ ɥɔʇɐɯ sǝpou oN",
+        "noResultsDescription": ".ɹǝʇlᴉɟ ʇuǝɹɹnɔ ǝɥʇ ɹɐǝlɔ ɹo ɯɹǝʇ ʇuǝɹǝɟɟᴉp ɐ ʎɹ┴"
       },
       "logs": {
         "title": "sƃo˥ uoᴉʇnɔǝxƎ",
@@ -706,22 +792,26 @@
       "contextMenu": {
         "duplicate": "ǝʇɐɔᴉlndnᗡ",
         "rename": "ǝɯɐuǝɹ",
-        "disconnectAll": "ll∀ ʇɔǝuuoɔsᴉᗡ",
+        "disconnectAll": "llɐ ʇɔǝuuoɔsᴉᗡ",
         "collapse": "ǝsɐdlolɯoↃ",
         "expand": "puɐdxƎ",
         "mute": "ǝʇnɯ",
         "unmute": "ǝʇnuW",
-        "showPreview": "ʍǝɹd ʍoɥS",
-        "hidePreview": "ʍǝɹd ǝpᴉH",
+        "showPreview": "ʍǝᴉʌǝɹd ʍoɥS",
+        "hidePreview": "ʍǝᴉʌǝɹd ǝpᴉH",
         "delete": "ǝʇǝlǝᗡ"
       },
       "node": {
         "expand": "ǝpou puɐdxƎ",
-        "collapse": "ǝpou ǝdsɐןןoɔ"
+        "collapse": "ǝpou ǝdsɐןןoɔ",
+        "avgTime": ")sunɹ {{count}} ʇsɐl( sɯ {{avg}} eǝɯᴉʇ uoᴉʇnɔǝxǝ ǝƃɐɹǝʌ∀",
+        "preview": "ʍǝᴉʌǝɹԀ"
       },
       "debug": {
         "copyValue": "ǝnlɐʌ ʇuǝɹɹnɔ ʎdoɔ",
-        "clearHistory": "ʎɹoɹʇsᴉɥ ɹɐǝlnɔ"
+        "clearHistory": "ʎɹoɹʇsᴉɥ ɹɐǝlnɔ",
+        "current": "e){{time}}( ʇuǝɹɹnↃ",
+        "noValue": "ʇǝʎ pǝʌᴉǝɔǝɹ ǝnlɐʌ oN"
       },
       "edge": {
         "direction": "uoᴉʇɔǝɹp ǝƃpǝ"
@@ -733,14 +823,36 @@
         "title": "ǝɹoɔs ʎʇᴉxǝןdɯoɔ ʇdᴉɹɔS"
       },
       "group": {
-        "returnToRoot": ")qɐⱯ( ʇooɹ oʇ uɹnʇǝᴚ"
+        "returnToRoot": ")qɐⱯ( ʇooɹ oʇ uɹnʇǝᴚ",
+        "root": "ʇooᴚ",
+        "exitHint": "ʇᴉxǝ oʇ <key>Tab</key> ssǝɹԀ",
+        "editHint": "ʇᴉpǝ oʇ ʞɔᴉlɔ-ǝlqnoᗡ",
+        "noInputs": "pǝuᴉɟǝp sʇnduᴉ oN",
+        "noOutputs": "pǝuᴉɟǝp sʇndʇno oN"
       },
       "quickAdd": {
         "menuLabel": "nǝɯ ǝpon ppɐʞɔᴉnQ",
-        "searchPlaceholder": "...sǝpou ɥɔɹɐǝS"
+        "searchPlaceholder": "...sǝpou ɥɔɹɐǝS",
+        "noResults": "punoɟ sǝpou oN",
+        "noResultsDescription": ".ɯɹǝʇ ɥɔɹɐǝs ʇuǝɹǝɟɟᴉp ɐ ʎɹ┴",
+        "navigate": "ǝʇɐƃᴉʌɐN",
+        "select": "ʇɔǝlǝs oʇ ɹǝʇuƎ",
+        "close": "ǝsolɔ oʇ ɔsƎ"
       },
       "diff": {
-        "tooltip": "sǝᵷuɐɥɔ ʍǝᴉʌǝᴚ"
+        "tooltip": "sǝᵷuɐɥɔ ʍǝᴉʌǝᴚ",
+        "title": "sǝƃuɐɥɔ pǝʌɐsu∩",
+        "description": ".ǝʌɐs ʇsɐl ǝɥʇ ǝɔuᴉs sǝƃuɐɥↃ",
+        "nodesAdded_one": "pǝppɐ ǝpou {{count}}",
+        "nodesAdded_other": "pǝppɐ sǝpou {{count}}",
+        "nodesRemoved_one": "pǝʌoɯǝɹ ǝpou {{count}}",
+        "nodesRemoved_other": "pǝʌoɯǝɹ sǝpou {{count}}",
+        "nodesModified_one": "pǝᴉɟᴉpoɯ ǝpou {{count}}",
+        "nodesModified_other": "pǝᴉɟᴉpoɯ sǝpou {{count}}",
+        "edgesAdded_one": "pǝppɐ ǝƃpǝ {{count}}",
+        "edgesAdded_other": "pǝppɐ sǝƃpǝ {{count}}",
+        "edgesRemoved_one": "pǝʌoɯǝɹ ǝƃpǝ {{count}}",
+        "edgesRemoved_other": "pǝʌoɯǝɹ sǝƃpǝ {{count}}"
       },
       "dryRun": {
         "saveFirst": "",
@@ -756,7 +868,7 @@
         "tooltip": "uɐᴚ ʎɹᗡ",
         "title": "ʇdᴉɹɔS uɐᴚ ʎɹᗡ",
         "description": ".sʇnɾuᴉ uʞɔoɯ ɥʇᴉʍ ɹǝᵷɡᴉɹʇ dǝʇɔǝlǝs ɐ ɯoɹɟ ʇdᴉɹɔs ɐ nɹ uɐ",
-        "triggerNode": "ǝpoN ɹǝᵷɡᴉɹ⟘",
+        "triggerNode": "ǝpou ɹǝƃƃᴉɹ┴",
         "selectTrigger": "...ɹǝᵷɡᴉɹʇ ɐ ʇɔǝlǝS",
         "triggerDescription": ".sǝnlɐʌ ʇnᴉdnᴉ ʞɔoɯ ɥʇᴉʍ ǝʇnɔǝxǝ oʇ ǝpou ɹǝᵷɡᴉɹ⟘ ǝɥʇ ʞɔᴉd",
         "mockInputs": "sʇnduᴉ ʞɔoW",
@@ -766,27 +878,39 @@
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "sɐʇonbᴉn ʇdᴉɹɔS",
-        "title": "sɐʇonbᴉn ʇdᴉɹɔS",
+        "tooltip": "sɐʇon˙ ʇdᴉɹɔS",
+        "title": "sɐʇon˙ ʇdᴉɹɔS",
         "description": ".sʇlǝɟɐnp ɹǝʌɹǝs ǝs∩ splǝɥʇ dɯǝ ǝsu∩ .ʇdᴉɹɔs sᴉɥʇ ɹoɟ sʇᴉɯᴉן ǝɔɹnoɥɔuᴉɟuoɔ ǝɹnᵷᴉɟuoɔ",
-        "maxExecutionCount": "ʇunoɔ noᴉʇnɔǝxƎ xaW",
+        "maxExecutionCount": "ʇunoɔ uoᴉʇnɔǝxǝ xɐW",
         "maxExecutionCountPlaceholder": "00000Ɩ",
         "maxExecutionCountDescription": "uoᴉʇɐɔoʌuᴉ sᴉɹǝɟᴉɟᴉ ɹǝᵷɡᴉɹʇ ɹǝd suoᴉʇnɔǝxǝ ǝpou ɯnᴉɯᴉɐɯ ɥɔɐW",
         "maxExecutionTime": ")sɯ( ǝɯɐᴉʇ uoᴉʇnɔǝxƎ xaW",
         "maxExecutionTimePlaceholder": "00003",
         "maxExecutionTimeDescription": ".uoᴉʇnɔǝxǝ ɹǝᵷɡᴉɹʇ ɹǝd ǝɯᴉʇ ʞɔoןɔ-ʇןןɐʍ ɯnᴉɯxɐɯ",
-        "maxConcurrentTriggers": "sɹǝɷᵷᴉɹʇ ʇuǝɹɹnɔ ɯnᴉɯxɐW",
+        "maxConcurrentTriggers": "sɹǝƃƃᴉɹʇ ʇuǝɹɹnɔuoɔ xɐW",
         "maxConcurrentTriggersPlaceholder": "Ɩ",
         "maxConcurrentTriggersDescription": ".suoᴉɔɐɔoʌuᴉ ɹǝᵷɡᴉɹʇ ʇuǝɹɹnɔ ɯnᴉɯxɐɯ",
-        "maxStateStoreEntries": "sǝᴉɹʇuǝ ǝɹoʇS ǝʇɐʇS xaW",
+        "maxStateStoreEntries": "sǝᴉɹʇuǝ ǝɹoʇs ǝʇɐʇs xɐW",
         "maxStateStoreEntriesPlaceholder": "pǝpᴉɯᴉןu∩",
         "maxStateStoreEntriesDescription": "ǝɹoʇs ǝʇɐʇs ʇdᴉɹɔs ǝɥʇ uᴉ sǝᴉɹʇuǝ ɯnᴉɯxɐW",
-        "disableTimeouts": "snoǝʇnoɯɐᴉʇ ǝןqɐsᴉᗡ",
+        "disableTimeouts": "sʇnoǝɯᴉʇ ǝlqɐsᴉᗡ",
         "disableTimeoutsDescription": ".snoǝʇnoɯɐᴉʇ ǝᗡ ɐʇɐp puɐ ǝpou-ɹǝd sǝlqɐsᴉᗡ",
-        "save": "sɐʇonbᴉn ǝʌɐS",
+        "save": "sɐʇon˙ ǝʌɐS",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} ɹǝpɹoǝᴚ",
+        "empty": "sǝnlɐʌ ƃuᴉɯoɔuᴉ oN",
+        "title": "suoᴉʇɔǝuuoɔ ǝldᴉʇlnɯ sʇdǝɔɔɐ eʇnduᴉ-ᴉʇlnW",
+        "connectTo": "{{label}} oʇ sǝnlɐʌ ʇɔǝuuoↃ"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "¿ʇdᴉɹɔs ǝʇǝlǝᗡ",
+      "description": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .I{{name}}I sǝʇǝlǝp ʎlʇuǝuɐɯɹǝd sᴉɥ┴",
+      "descriptionUnnamed": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .ʇdᴉɹɔs ǝɥʇ sǝʇǝlǝp ʎlʇuǝuɐɯɹǝd sᴉɥ┴"
+    },
+    "executionStats": "pǝʇnɔǝxǝ sǝpou {{max}}/{{executed}} esʇɐʇs uoᴉʇnɔǝxƎ"
   },
   "metadataValidation": {
     "invalidNamespace": "",

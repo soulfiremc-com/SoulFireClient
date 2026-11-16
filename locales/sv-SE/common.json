@@ -113,18 +113,24 @@
         "submit": "Ladda från URL",
         "toast": {
           "loading": "Laddar data från URL...",
-          "success": "Data inläst!",
+          "success": "Data inläst",
           "error": "Misslyckades med att ladda ner data",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Ta bort instansen?",
+      "description": "Detta tar permanent bort ”{{name}}” och dess data. Det går inte att ångra.",
+      "descriptionUnnamed": "Detta tar permanent bort den här instansen och dess data. Det går inte att ångra."
     }
   },
   "commandInput": {
     "placeholder": "Skriv kommando (\"help\" visar lista)",
     "emptySuggestions": "Skriv för att be om förslag eller tryck på Tab.",
-    "noSuggestions": "Inga förslag tillgängliga."
+    "noSuggestions": "Inga förslag tillgängliga.",
+    "emptySuggestionsPrefix": "Skriv för att få förslag eller tryck på"
   },
   "controls": {
     "start": "Starta",
@@ -166,7 +172,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} önskade · {{total}} totalt",
+  "botFleetSummary": "{{online}} anslutna · {{desired}} inställda att köra · {{total}} totalt",
   "icon": {
     "invalidName": "Ogiltigt ikon-namn: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Stigande",
       "desc": "Fallande"
-    }
+    },
+    "openFilterMenu": "Öppna filtermenyn",
+    "filterOperator": "Filteroperator",
+    "filterValue": "Filtervärde",
+    "sortDirection": "Sorteringsriktning",
+    "selectJoinOperator": "Välj kopplingsoperator",
+    "joinOperator": "Kopplingsoperator",
+    "escapeKey": "Escape",
+    "selectDate": "Välj datum",
+    "selectDateRange": "Välj datumintervall",
+    "clearFilter": "Rensa filtret {{title}}",
+    "clearFilters": "Rensa filter",
+    "clear": "Rensa",
+    "from": "Från",
+    "to": "Till",
+    "sortDirectionFor": "Sorteringsriktning för {{column}}",
+    "minValue": "Lägsta värde för {{label}}",
+    "maxValue": "Högsta värde för {{label}}"
   },
   "pluginCard": {
     "version": "Version: {{version}}",
@@ -256,13 +279,13 @@
     "website": "Webbplats"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Det gick inte att spara {{name}}",
     "namespacesNotFound": "Inställningsnamnrymder hittades inte",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Det gick inte att spara {{name}}",
       "placeholder": "Lägg till en ny post...",
       "add": "Lägg till",
       "remove": "Ta bort"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Ogiltigt nummer",
       "description": "Värdet måste vara mellan {{min}} och {{max}}"
-    }
+    },
+    "minMaxLegend": "Inställningar för lägsta och högsta värde"
   },
   "terminal": {
     "noLogs": "Inga loggar än. Kör ett kommando för att skapa loggutdata.",
@@ -321,16 +345,37 @@
       "error": "Misslyckades med att ansluta till {{device}}"
     },
     "noDevices": "Inga enheter hittades",
-    "broadcastLabel": "Sänd test",
     "broadcastToast": {
       "loading": "Sänder meddelande...",
-      "success": "Meddelande sändes!",
+      "success": "Meddelande sändes",
       "error": "Misslyckades med att sända meddelandet"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Slår på skriptet...",
+        "success": "Skriptet är påslaget",
+        "error": "Det gick inte att slå på skriptet. Försök igen."
+      },
+      "deactivate": {
+        "loading": "Stänger av skriptet...",
+        "success": "Skriptet är avstängt",
+        "error": "Det gick inte att stänga av skriptet. Försök igen."
+      }
+    },
+    "operations": {
+      "activateScript": "Slå på skriptet {{name}}",
+      "deactivateScript": "Stäng av skriptet {{name}}"
+    },
+    "status": {
+      "active": "På",
+      "paused": "Av"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Läs dokumentationen",
-    "backToDashboard": "Tillbaka till instrumentpanel",
+    "backToDashboard": "Tillbaka till instanser",
     "deleteToast": {
       "loading": "Tar bort instans...",
       "success": "Instans borttagen",
@@ -356,9 +401,9 @@
     "settingsGroup": "Inställningar",
     "extensionsGroup": "Tillägg",
     "botSettings": "Bot-inställningar",
-    "accountSettings": "Kontoinställningar",
+    "accountSettings": "Konton",
     "metaSettings": "Instansinställningar",
-    "proxySettings": "Proxyinställningar",
+    "proxySettings": "Proxies",
     "aiSettings": "AI-inställningar",
     "pathfindingSettings": "Sökvägsinställningar",
     "discoverPlugins": "Plugins",
@@ -424,10 +469,10 @@
     "instances": "Instanser",
     "access": "Åtkomst",
     "settings": "Inställningar",
-    "proxySettings": "Proxyinställningar",
+    "proxySettings": "Proxies",
     "overview": "Översikt",
     "users": "Användare",
-    "accountSettings": "Kontoinställningar",
+    "accountSettings": "Konton",
     "metaSettings": "Instansinställningar",
     "discoverPlugins": "Plugins",
     "adminScripts": "Skript",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API-åtkomst",
-      "description": "SoulFires gRPC HTTP API hanterar instanser via webbförfrågningar.",
+      "description": "Använd SoulFire-API:et för att hantera instanser från dina egna program.",
       "publicAddress": "Offentlig API-adress",
       "personalToken": "Personlig API-token",
       "securityWarning": "Håll din personliga API-token hemlig. Den ger åtkomst till API:et.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Generera token",
-      "placeholder": "Klicka på 'Generera token' nedan",
+      "placeholder": "Välj ”Generera token” nedan",
       "generating": "Genererar token...",
       "success": "Token genererad",
       "error": "Misslyckades med att generera token",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Det gick inte att uppdatera instansens namn"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Det gick inte att uppdatera {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filtrera granskningsloggar...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Tar bort skript...",
-      "success": "Skript borttagna!",
+      "success": "Skript borttagna",
       "error": "Misslyckades med att ta bort skript"
     },
     "addToast": {
       "loading": "Lägger till skript...",
-      "success": "Skript tillagt!",
+      "success": "Skript tillagt",
       "error": "Misslyckades med att lägga till skript"
     },
     "updateToast": {
       "loading": "Uppdaterar skript...",
-      "success": "Skript uppdaterat!",
+      "success": "Skript uppdaterat",
       "error": "Misslyckades med att uppdatera skript"
     },
     "restartToast": {
       "loading": "Startar om skript...",
-      "success": "Skript omstartat!",
+      "success": "Skript omstartat",
       "error": "Misslyckades med att starta om skript"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Gå till bot",
       "copyUsername": "Kopiera användarnamn",
-      "copyUuid": "Kopiera UUID",
+      "copyUuid": "Kopiera profil-ID",
       "copyCoordinates": "Kopiera koordinater"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Ansluten",
+    "botOffline": "Frånkopplad"
+  },
+  "minecraftActions": {
+    "copyError": "Det gick inte att kopiera texten. Använd HTTPS eller tillåt åtkomst till urklipp.",
+    "openError": "Det gick inte att öppna länken.",
+    "popupBlocked": "Din webbläsare blockerade den nya fliken.",
+    "openLink": "Öppna länk"
+  },
+  "instanceIcon": {
+    "label": "Ikon",
+    "description": "Instansens ikon som visas i appen."
+  },
+  "unknown": "Okänt",
+  "minecraftHead": "Minecraft-huvud",
+  "textFile": "Textfil"
 }

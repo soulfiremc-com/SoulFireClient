@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import { memo } from "react";
 
 interface NodePreviewProps {
@@ -16,7 +17,9 @@ function NodePreviewComponent({ values, enabled }: NodePreviewProps) {
 
   return (
     <div className="border-t border-border/50 px-2 py-1 bg-muted/30">
-      <div className="text-xs text-muted-foreground mb-1">Preview</div>
+      <div className="text-xs text-muted-foreground mb-1">
+        {i18n.t("instance:scripts.editor.node.preview")}
+      </div>
       <div className="space-y-0.5">
         {Object.entries(values).map(([key, value]) => (
           <div key={key} className="flex items-center gap-2 text-xs">

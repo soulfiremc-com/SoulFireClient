@@ -3,6 +3,8 @@ import { TimestampSchema } from "@bufbuild/protobuf/wkt";
 import {
   BotConnectionPhase,
   BotDesiredState,
+  type BotInfoResponse,
+  BotInfoResponseSchema,
   type BotListResponse,
   BotListResponseSchema,
   BotRuntimeState,
@@ -66,6 +68,20 @@ export const demoBotList = create(BotListResponseSchema, {
     },
   ],
 }) satisfies BotListResponse;
+
+// Matches demoBotList, so the bot page shows the same state as the overview.
+export const demoBotInfo = create(BotInfoResponseSchema, {
+  status: demoBotList.bots[0]?.status,
+  liveState: {
+    x: 0.5,
+    y: 64,
+    z: 0.5,
+    health: 20,
+    maxHealth: 20,
+    foodLevel: 20,
+    saturationLevel: 5,
+  },
+}) satisfies BotInfoResponse;
 
 export const demoInstancePlugins = [
   create(ServerPluginSchema, {
@@ -989,7 +1005,8 @@ export const demoInstanceSettingsDefinitions = [
       case: "int",
       value: {
         uiName: "Bots per proxy",
-        description: "Amount of bots that can be on a single proxy",
+        description:
+          "Maximum number of bots that can use one proxy. Use -1 for no limit.",
         def: -1,
         min: -1,
         max: 2147483647,

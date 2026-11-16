@@ -113,18 +113,24 @@
         "submit": "Carregar do URL",
         "toast": {
           "loading": "Baixando dados...",
-          "success": "Dados carregados!",
+          "success": "Dados carregados",
           "error": "Falha ao baixar dados",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Excluir a instância?",
+      "description": "Isso exclui permanentemente \"{{name}}\" e seus dados. Não é possível desfazer.",
+      "descriptionUnnamed": "Isso exclui permanentemente esta instância e seus dados. Não é possível desfazer."
     }
   },
   "commandInput": {
     "placeholder": "Digite o comando (digite 'help' para a lista)",
     "emptySuggestions": "Digite para solicitar sugestões ou pressione Tab.",
-    "noSuggestions": "Nenhuma sugestão disponível."
+    "noSuggestions": "Nenhuma sugestão disponível.",
+    "emptySuggestionsPrefix": "Digite para pedir sugestões ou pressione"
   },
   "controls": {
     "start": "Iniciar",
@@ -166,7 +172,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} desejado · {{total}} total",
+  "botFleetSummary": "{{online}} conectados · {{desired}} definidos para rodar · {{total}} no total",
   "icon": {
     "invalidName": "Nome de ícone inválido: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Asc",
       "desc": "Desc"
-    }
+    },
+    "openFilterMenu": "Abrir menu de filtros",
+    "filterOperator": "Operador do filtro",
+    "filterValue": "Valor do filtro",
+    "sortDirection": "Direção da ordenação",
+    "selectJoinOperator": "Selecionar operador de junção",
+    "joinOperator": "Operador de junção",
+    "escapeKey": "Esc",
+    "selectDate": "Selecionar data",
+    "selectDateRange": "Selecionar intervalo de datas",
+    "clearFilter": "Limpar o filtro {{title}}",
+    "clearFilters": "Limpar filtros",
+    "clear": "Limpar",
+    "from": "De",
+    "to": "Até",
+    "sortDirectionFor": "Direção da ordenação de {{column}}",
+    "minValue": "Valor mínimo de {{label}}",
+    "maxValue": "Valor máximo de {{label}}"
   },
   "pluginCard": {
     "version": "Versão {{version}}",
@@ -256,13 +279,13 @@
     "website": "Site"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Não foi possível salvar {{name}}",
     "namespacesNotFound": "Namespaces de configurações não encontrados",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Não foi possível salvar {{name}}",
       "placeholder": "Adicionar uma nova entrada...",
       "add": "Adicionar",
       "remove": "Remover"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Número inválido",
       "description": "O valor deve estar entre {{min}} e {{max}}"
-    }
+    },
+    "minMaxLegend": "Configurações de mínimo e máximo"
   },
   "terminal": {
     "noLogs": "Ainda não há logs. Execute um comando para gerar saída do log.",
@@ -321,16 +345,37 @@
       "error": "Falha ao conectar-se ao {{device}}"
     },
     "noDevices": "Nenhum dispositivo encontrado",
-    "broadcastLabel": "Transmitir teste",
     "broadcastToast": {
       "loading": "Transmitindo mensagem...",
-      "success": "Mensagem transmitida!",
+      "success": "Mensagem transmitida",
       "error": "Falha ao transmitir a mensagem"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Ativando script...",
+        "success": "Script ativado",
+        "error": "Não foi possível ativar o script. Tente novamente."
+      },
+      "deactivate": {
+        "loading": "Desativando script...",
+        "success": "Script desativado",
+        "error": "Não foi possível desativar o script. Tente novamente."
+      }
+    },
+    "operations": {
+      "activateScript": "Ativar o script {{name}}",
+      "deactivateScript": "Desativar o script {{name}}"
+    },
+    "status": {
+      "active": "Ativado",
+      "paused": "Desativado"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Ler a documentação",
-    "backToDashboard": "Voltar ao painel de controle",
+    "backToDashboard": "Voltar para as instâncias",
     "deleteToast": {
       "loading": "Excluindo instância...",
       "success": "Instância excluída",
@@ -356,9 +401,9 @@
     "settingsGroup": "Configurações",
     "extensionsGroup": "Extensões",
     "botSettings": "Configurações do Bot",
-    "accountSettings": "Configurações da Conta",
+    "accountSettings": "Contas",
     "metaSettings": "Configurações da Instância",
-    "proxySettings": "Configurações de Proxy",
+    "proxySettings": "Proxies",
     "aiSettings": "Configurações de IA",
     "pathfindingSettings": "Configurações de Pathfinding",
     "discoverPlugins": "Plugins",
@@ -424,10 +469,10 @@
     "instances": "Instâncias",
     "access": "Acesso",
     "settings": "Configurações",
-    "proxySettings": "Configurações de Proxy",
+    "proxySettings": "Proxies",
     "overview": "Visão geral",
     "users": "Usuários",
-    "accountSettings": "Configurações da Conta",
+    "accountSettings": "Contas",
     "metaSettings": "Configurações da Instância",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scripts",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "Acesso via API",
-      "description": "A API HTTP gRPC do SoulFire gerencia instâncias por meio de requisições web.",
+      "description": "Use a API do SoulFire para gerenciar instâncias a partir dos seus próprios programas.",
       "publicAddress": "Endereço público da API",
       "personalToken": "Token pessoal da API",
       "securityWarning": "Mantenha seu token pessoal da API em segredo. Ele concede acesso à API.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Gerar Token",
-      "placeholder": "Clique em 'Gerar Token' abaixo",
+      "placeholder": "Selecione \"Gerar Token\" abaixo",
       "generating": "Gerando token...",
       "success": "Token gerado com sucesso",
       "error": "Falha ao gerar token",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Não foi possível atualizar o nome da instância"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Não foi possível atualizar {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filtrar logs de auditoria...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Removendo scripts...",
-      "success": "Scripts removidos!",
+      "success": "Scripts removidos",
       "error": "Falha ao remover scripts"
     },
     "addToast": {
       "loading": "Adicionando script...",
-      "success": "Script adicionado!",
+      "success": "Script adicionado",
       "error": "Falha ao adicionar script"
     },
     "updateToast": {
       "loading": "Atualizando script...",
-      "success": "Script atualizado!",
+      "success": "Script atualizado",
       "error": "Falha ao atualizar script"
     },
     "restartToast": {
       "loading": "Reiniciando script...",
-      "success": "Script reiniciado!",
+      "success": "Script reiniciado",
       "error": "Falha ao reiniciar script"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Ir para o Bot",
       "copyUsername": "Copiar nome de usuário",
-      "copyUuid": "Copiar UUID",
+      "copyUuid": "Copiar ID do perfil",
       "copyCoordinates": "Copiar Coordenadas"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Conectado",
+    "botOffline": "Desconectado"
+  },
+  "minecraftActions": {
+    "copyError": "Não foi possível copiar o texto. Use HTTPS ou permita o acesso à área de transferência.",
+    "openError": "Não foi possível abrir o link.",
+    "popupBlocked": "Seu navegador bloqueou a nova aba.",
+    "openLink": "Abrir link"
+  },
+  "instanceIcon": {
+    "label": "Ícone",
+    "description": "O ícone da instância exibido no aplicativo."
+  },
+  "unknown": "Desconhecido",
+  "minecraftHead": "Cabeça do Minecraft",
+  "textFile": "Arquivo de texto"
 }

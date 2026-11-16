@@ -113,18 +113,24 @@
         "submit": "Muat dari URL",
         "toast": {
           "loading": "Mengunduh data...",
-          "success": "Data berhasil dimuat!",
+          "success": "Data berhasil dimuat",
           "error": "Gagal mengunduh data",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Hapus instansi?",
+      "description": "Tindakan ini menghapus \"{{name}}\" dan datanya secara permanen. Tindakan ini tidak dapat dibatalkan.",
+      "descriptionUnnamed": "Tindakan ini menghapus instansi ini dan datanya secara permanen. Tindakan ini tidak dapat dibatalkan."
     }
   },
   "commandInput": {
     "placeholder": "Masukkan perintah (ketik 'help' untuk daftar)",
     "emptySuggestions": "Ketik untuk meminta saran atau tekan Tab.",
-    "noSuggestions": "Tidak ada saran yang tersedia."
+    "noSuggestions": "Tidak ada saran yang tersedia.",
+    "emptySuggestionsPrefix": "Ketik untuk meminta saran atau tekan"
   },
   "controls": {
     "start": "Mulai",
@@ -162,7 +168,7 @@
     "stopCount_other": "Hentikan {{count}} bot",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} diinginkan · {{total}} total",
+  "botFleetSummary": "{{online}} terhubung · {{desired}} diatur untuk berjalan · {{total}} total",
   "icon": {
     "invalidName": "Nama ikon tidak valid: {{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "Asc",
       "desc": "Desc"
-    }
+    },
+    "openFilterMenu": "Buka menu filter",
+    "filterOperator": "Operator filter",
+    "filterValue": "Nilai filter",
+    "sortDirection": "Arah urutan",
+    "selectJoinOperator": "Pilih operator gabungan",
+    "joinOperator": "Operator gabungan",
+    "escapeKey": "Escape",
+    "selectDate": "Pilih tanggal",
+    "selectDateRange": "Pilih rentang tanggal",
+    "clearFilter": "Hapus filter {{title}}",
+    "clearFilters": "Hapus filter",
+    "clear": "Hapus",
+    "from": "Dari",
+    "to": "Sampai",
+    "sortDirectionFor": "Arah urutan untuk {{column}}",
+    "minValue": "Nilai minimum {{label}}",
+    "maxValue": "Nilai maksimum {{label}}"
   },
   "pluginCard": {
     "version": "Versi: {{version}}",
@@ -252,13 +275,13 @@
     "website": "Situs web"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Tidak dapat menyimpan {{name}}",
     "namespacesNotFound": "Namespace pengaturan tidak ditemukan",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Tidak dapat menyimpan {{name}}",
       "placeholder": "Tambahkan entri baru...",
       "add": "Tambah",
       "remove": "Hapus"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "Nomor tidak valid",
       "description": "Nilai harus antara {{min}} dan {{max}}"
-    }
+    },
+    "minMaxLegend": "Pengaturan minimum dan maksimum"
   },
   "terminal": {
     "noLogs": "Belum ada log. Jalankan perintah untuk membuat output log.",
@@ -317,16 +341,37 @@
       "error": "Gagal terhubung ke {{device}}"
     },
     "noDevices": "Tidak ada perangkat ditemukan",
-    "broadcastLabel": "Uji siaran",
     "broadcastToast": {
       "loading": "Mengirim pesan siaran...",
-      "success": "Pesan berhasil disiarkan!",
+      "success": "Pesan berhasil disiarkan",
       "error": "Gagal menyiarkan pesan"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Menyalakan skrip...",
+        "success": "Skrip dinyalakan",
+        "error": "Tidak dapat menyalakan skrip. Coba lagi."
+      },
+      "deactivate": {
+        "loading": "Mematikan skrip...",
+        "success": "Skrip dimatikan",
+        "error": "Tidak dapat mematikan skrip. Coba lagi."
+      }
+    },
+    "operations": {
+      "activateScript": "Nyalakan skrip {{name}}",
+      "deactivateScript": "Matikan skrip {{name}}"
+    },
+    "status": {
+      "active": "Nyala",
+      "paused": "Mati"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Baca dokumentasi",
-    "backToDashboard": "Kembali ke dasbor",
+    "backToDashboard": "Kembali ke instansi",
     "deleteToast": {
       "loading": "Menghapus instansi...",
       "success": "Instansi dihapus",
@@ -352,9 +397,9 @@
     "settingsGroup": "Pengaturan",
     "extensionsGroup": "Ekstensi",
     "botSettings": "Pengaturan Bot",
-    "accountSettings": "Pengaturan Akun",
+    "accountSettings": "Akun",
     "metaSettings": "Pengaturan Instansi",
-    "proxySettings": "Pengaturan Proxy",
+    "proxySettings": "Proxy",
     "aiSettings": "Pengaturan AI",
     "pathfindingSettings": "Pengaturan Pathfinding",
     "discoverPlugins": "Plugin",
@@ -420,10 +465,10 @@
     "instances": "Instansi",
     "access": "Akses",
     "settings": "Pengaturan",
-    "proxySettings": "Pengaturan Proxy",
+    "proxySettings": "Proxy",
     "overview": "Ikhtisar",
     "users": "Pengguna",
-    "accountSettings": "Pengaturan Akun",
+    "accountSettings": "Akun",
     "metaSettings": "Pengaturan Instansi",
     "discoverPlugins": "Plugin",
     "adminScripts": "Skrip",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "Akses API",
-      "description": "API HTTP gRPC SoulFire mengelola instansi menggunakan permintaan web.",
+      "description": "Gunakan API SoulFire untuk mengelola instansi dari program Anda sendiri.",
       "publicAddress": "Alamat API Publik",
       "personalToken": "Token API Pribadi",
       "securityWarning": "Jaga token API pribadi Anda tetap rahasia. Token ini memberikan akses ke API.",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "Buat Token",
-      "placeholder": "Klik 'Buat Token' di bawah",
+      "placeholder": "Pilih \"Buat Token\" di bawah",
       "generating": "Membuat token...",
       "success": "Token berhasil dibuat",
       "error": "Gagal membuat token",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Tidak dapat memperbarui nama instansi"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Tidak dapat memperbarui {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filter log audit...",
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "Menghapus skrip...",
-      "success": "Skrip dihapus!",
+      "success": "Skrip dihapus",
       "error": "Gagal menghapus skrip"
     },
     "addToast": {
       "loading": "Menambah skrip...",
-      "success": "Skrip berhasil ditambahkan!",
+      "success": "Skrip berhasil ditambahkan",
       "error": "Gagal menambah skrip"
     },
     "updateToast": {
       "loading": "Memperbarui skrip...",
-      "success": "Skrip berhasil diperbarui!",
+      "success": "Skrip berhasil diperbarui",
       "error": "Gagal memperbarui skrip"
     },
     "restartToast": {
       "loading": "Merestart skrip...",
-      "success": "Skrip berhasil direstart!",
+      "success": "Skrip berhasil direstart",
       "error": "Gagal merestart skrip"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "Buka Bot",
       "copyUsername": "Salin Nama Pengguna",
-      "copyUuid": "Salin UUID",
+      "copyUuid": "Salin ID profil",
       "copyCoordinates": "Salin Koordinat"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Terhubung",
+    "botOffline": "Terputus"
+  },
+  "minecraftActions": {
+    "copyError": "Tidak dapat menyalin teks. Gunakan HTTPS atau izinkan akses papan klip.",
+    "openError": "Tidak dapat membuka tautan.",
+    "popupBlocked": "Browser Anda memblokir tab baru.",
+    "openLink": "Buka tautan"
+  },
+  "instanceIcon": {
+    "label": "Ikon",
+    "description": "Ikon instansi yang ditampilkan di aplikasi."
+  },
+  "unknown": "Tidak diketahui",
+  "minecraftHead": "Kepala Minecraft",
+  "textFile": "File teks"
 }

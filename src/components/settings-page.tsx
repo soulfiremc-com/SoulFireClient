@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import type { JsonValue } from "@bufbuild/protobuf";
 import {
   useMutation,
@@ -374,7 +375,7 @@ function MinMaxSettingField(props: {
       <FieldLegend className="sr-only">
         {props.setting.minEntry?.uiName ??
           props.setting.maxEntry?.uiName ??
-          "Minimum and maximum settings"}
+          i18n.t("common:settingsPage.minMaxLegend")}
       </FieldLegend>
       <FieldGroup className="gap-4">
         <NumericSettingField

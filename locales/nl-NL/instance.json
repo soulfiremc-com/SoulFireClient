@@ -119,12 +119,12 @@
       "network": "Netwerkadres",
       "unix": "Unix-socket"
     },
-    "getProxies": "Proxies ophalen",
+    "getProxies": "Proxy-aanbieders",
     "addProxies": "Proxies toevoegen",
     "filterPlaceholder": "Proxies filteren...",
     "listImportToast": {
       "loading": "Proxies importeren...",
-      "success": "{{count}} proxies geïmporteerd!",
+      "success": "{{count}} proxies geïmporteerd",
       "error": "Importeren van proxies mislukt",
       "noProxies": "Geen proxies om te importeren"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Proxies worden verwijderd...",
-      "success": "{{count}} proxies verwijderd!",
+      "success": "{{count}} proxies verwijderd",
       "error": "Verwijderen van proxies mislukt"
     },
     "checkToast": {
       "loading": "Proxies worden gecontroleerd... {{checked}}/{{total}} (Succes: {{success}} Mislukt: {{failed}})",
-      "success": "{{count}} defecte proxies verwijderd!",
-      "error": "Controleren van proxies mislukt"
+      "success": "{{count}} defecte proxies verwijderd",
+      "error": "Controleren van proxies mislukt",
+      "successKept": "{{failed}} van {{total}} proxies zijn niet door de controle gekomen. Er zijn geen proxies verwijderd."
     },
     "checkDialog": {
       "title": "Proxies controleren",
-      "description": "Je staat op het punt om {{count}} proxies te controleren. Ongeldige proxies worden automatisch verwijderd.",
-      "confirm": "Controle starten"
+      "description": "Je staat op het punt {{count}} proxies te controleren.",
+      "confirm": "Controle starten",
+      "removeFailed": "Mislukte proxies verwijderen",
+      "removeFailedHelp": "Een proxy kan mislukken door een tijdelijk netwerkprobleem. Schakel deze optie uit om alle proxies te behouden en alleen het resultaat te zien."
     },
     "invalidFormat": "Ongeldig proxyformaat",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Geïmporteerde proxies controleren?",
-      "description": "Je hebt {{count}} proxies geïmporteerd. Nu controleren? SoulFire verwijdert automatisch ongeldige proxies.",
+      "description": "Je hebt {{count}} proxies geïmporteerd. Nu controleren?",
       "confirm": "Proxies controleren",
       "skip": "Overslaan"
     },
@@ -186,10 +189,18 @@
       "socks4": "Alleen SOCKS4 (vlak)",
       "socks5": "Alleen SOCKS5 (vlak)",
       "noProxies": "Geen proxies om te exporteren"
-    }
+    },
+    "removeDialog": {
+      "title_one": "{{count}} proxy verwijderen?",
+      "title_other": "{{count}} proxies verwijderen?",
+      "description": "Dit verwijdert de geselecteerde proxies en hun inloggegevens uit deze instantie. Je kunt dit niet ongedaan maken.",
+      "confirm": "Proxies verwijderen"
+    },
+    "showPassword": "Wachtwoord tonen",
+    "hidePassword": "Wachtwoord verbergen"
   },
   "account": {
-    "getAccounts": "Accounts ophalen",
+    "getAccounts": "Accountaanbieders",
     "addAccounts": "Accounts toevoegen",
     "generateAccounts": "Accounts genereren",
     "filterPlaceholder": "Accounts filteren...",
@@ -197,7 +208,7 @@
       "loading": "Accounts worden geïmporteerd... {{checked}}/{{total}} (Succes: {{success}} Mislukt: {{failed}})",
       "allFailed": "Importeren van accounts mislukt.",
       "someFailed": "{{count}} accounts geïmporteerd, importeren van {{failed}} accounts mislukt.",
-      "noneFailed": "{{count}} accounts geïmporteerd!",
+      "noneFailed": "{{count}} accounts geïmporteerd",
       "error": "Importeren van accounts mislukt.",
       "noAccounts": "Geen accounts om te importeren"
     },
@@ -207,7 +218,7 @@
       "MICROSOFT_JAVA_CREDENTIALS": "Java (Inloggegevens)",
       "MICROSOFT_JAVA_DEVICE_CODE": "Java (Apparaatcode)",
       "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Vernieuwtoken)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
+      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
       "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Toegangstoken)",
       "THE_ALTENING": "Java (TheAltening)",
       "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Inloggegevens)",
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Account wordt geïmporteerd...",
-      "success": "Account geïmporteerd!",
+      "success": "Account geïmporteerd",
       "error": "Importeren van account mislukt"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Genereren",
       "generating": "Bezig met genereren...",
       "progress": "Accounts worden gegenereerd... {{checked}}/{{total}} (Succes: {{success}} Mislukt: {{failed}})",
-      "success": "{{count}} accounts gegenereerd!",
+      "success": "{{count}} accounts gegenereerd",
       "allFailed": "Kon geen enkele account genereren",
-      "allExist": "Alle gebruikersnamen bestaan al. Schakel 'Bestaande accounts overschrijven' in om ze opnieuw te genereren.",
+      "allExist": "Alle gebruikersnamen bestaan al. Kies 'Bestaanden vervangen' om ze opnieuw te genereren.",
       "error": "Aanmaken van accounts mislukt",
       "invalidAmount": "Voer een geldig aantal in (minimaal 1)",
       "missingPlaceholder": "Naamformaat moet een %d placeholder bevatten"
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Accounts worden verwijderd...",
-      "success": "{{count}} accounts verwijderd!",
+      "success": "{{count}} accounts verwijderd",
       "error": "Verwijderen van accounts mislukt"
     },
     "table": {
       "type": "Type",
-      "profileId": "UUID",
+      "profileId": "Profiel-ID",
       "lastKnownName": "Gebruikersnaam",
       "searchProfileIds": "Profiel-ID&#39;s zoeken...",
       "searchLastKnownNames": "Laatste bekende namen zoeken...",
@@ -270,7 +281,7 @@
     },
     "removeSelectedTooltip": "Geselecteerde accounts verwijderen",
     "contextMenu": {
-      "openConfig": "Config openen",
+      "openConfig": "Instellingen openen",
       "openMetadata": "Metadata openen",
       "copyProfileId": "Profiel-ID kopiëren",
       "copyUsername": "Gebruikersnaam kopiëren"
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Komt overeen met de geërfde waarde",
       "instanceValue": "Instantiewaarde",
       "defaultValue": "Standaardwaarde",
-      "resetOverride": "Overschrijving resetten"
+      "resetOverride": "Overschrijving resetten",
+      "value": {
+        "notSet": "Niet ingesteld",
+        "on": "Aan",
+        "off": "Uit",
+        "empty": "Leeg",
+        "entries_one": "{{count}} item",
+        "entries_other": "{{count}} items",
+        "range": "Bereik"
+      },
+      "source": {
+        "bot": "Bot-specifieke waarde",
+        "instance": "Overgenomen van instantie",
+        "default": "Standaardwaarde"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Authenticatie met apparaatgecode",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Sleutel",
       "valuePlaceholder": "Waarde (JSON)",
       "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
-      "loadError": "",
+      "loadError": "Metadata kon niet worden geladen",
       "loadErrorDescription": "",
       "retryLoad": "Opnieuw proberen",
       "addSuccess": "Item toegevoegd",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Item verwijderd",
       "deleteError": "Verwijderen van item mislukt",
       "duplicateError": "Er bestaat al een item met deze namespace en sleutel",
-      "invalidJson": "Ongeldige JSON-waarde"
+      "invalidJson": "Ongeldige JSON-waarde",
+      "namespaceLabel": "Namespace",
+      "keyLabel": "Sleutel",
+      "valueLabel": "Waarde",
+      "addEntryLegend": "Metadata-item toevoegen",
+      "addEntryButton": "Item toevoegen",
+      "entryLegend": "Metadata-item",
+      "removeEntryButton": "Verwijderen"
+    },
+    "removeDialog": {
+      "title_one": "{{count}} account verwijderen?",
+      "title_other": "{{count}} accounts verwijderen?",
+      "description": "Dit verwijdert de geselecteerde accounts, hun opgeslagen inloggegevens en hun bots uit deze instantie. Je kunt dit niet ongedaan maken.",
+      "confirm": "Accounts verwijderen"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Sleutel",
     "valuePlaceholder": "Waarde (JSON)",
     "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
+    "loadError": "Metadata kon niet worden geladen",
     "addSuccess": "Item toegevoegd",
     "addError": "Toevoegen van item mislukt",
     "updateError": "Bijwerken van item mislukt",
     "deleteSuccess": "Item verwijderd",
     "deleteError": "Verwijderen van item mislukt",
     "duplicateError": "Er bestaat al een item met deze namespace en sleutel",
-    "invalidJson": "Ongeldige JSON-waarde"
+    "invalidJson": "Ongeldige JSON-waarde",
+    "namespaceLabel": "Namespace",
+    "keyLabel": "Sleutel",
+    "valueLabel": "Waarde",
+    "addEntryLegend": "Metadata-item toevoegen",
+    "addEntryButton": "Item toevoegen",
+    "entryLegend": "Metadata-item",
+    "removeEntryButton": "Verwijderen"
   },
   "bots": {
     "searchPlaceholder": "Bots zoeken...",
-    "onlineCount": "{{online}} online / {{total}} totaal",
+    "onlineCount": "{{online}} verbonden / {{total}} totaal",
     "noBots": "Geen bots geconfigureerd. Voeg accounts toe via de pagina Accountinstellingen.",
     "noBotsFound": "Geen bots gevonden die overeenkomen met je zoekopdracht.",
     "loadingMore": "Meer laden...",
     "showingCount": "Toont {{loaded}} van {{total}}",
     "allLoaded": "Alle {{total}} bots geladen",
-    "online": "Online",
-    "offline": "Offline",
+    "online": "Verbonden",
+    "offline": "Niet verbonden",
     "notJoined": "Niet Deelnomen",
     "connectionPhase": {
       "connecting": "Verbindt",
-      "connected": "Verbonden",
-      "spawned": "Online",
+      "connected": "Bezig met inloggen",
+      "spawned": "Verbonden",
       "died": "Dood",
-      "disconnected": "Offline",
+      "disconnected": "Niet verbonden",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "Terug naar Bots",
     "tabs": {
-      "overview": "Overzicht",
+      "overview": "Botweergave",
       "inventory": "Inventaris",
       "controls": "Bediening",
       "terminal": "Terminal"
     },
-    "comingSoon": "Binnenkort beschikbaar",
-    "terminalPanel": {
-      "title": "Bot Terminal"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Direct (geen proxy)",
@@ -416,16 +459,14 @@
       "title": "Positie & Rotatie",
       "position": "Positie",
       "rotation": "Rotatie",
-      "offline": "Bot is offline. Positiegegevens zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": "De bot is niet verbonden. Positiegegevens zijn alleen beschikbaar wanneer de bot is verbonden."
     },
     "chatPanel": {
-      "title": "Chatberichten",
-      "description": "Chatberichten van deze bot verschijnen hier in een toekomstige update."
+      "title": "Chatberichten"
     },
     "commandPanel": {
       "title": "Botcommando's",
-      "placeholder": "Stuur een commando naar deze bot...",
-      "description": "Bot-specifieke commando's zullen beschikbaar zijn in een toekomstige update."
+      "placeholder": "Stuur een commando naar deze bot..."
     },
     "povPanel": {
       "title": "Bot POV",
@@ -438,7 +479,6 @@
       "offline": "Bot is offline. POV-weergave is alleen beschikbaar wanneer de bot is verbonden."
     },
     "statsPanel": {
-      "title": "Botstatistieken",
       "health": "Gezondheid",
       "food": "Voedsel",
       "saturation": "Verzadiging",
@@ -451,7 +491,7 @@
       "adventure": "Avontuur",
       "spectator": "Toeschouwer",
       "unknown": "Onbekend",
-      "offline": "Bot is offline. Statistieken zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": "De bot is niet verbonden. Statistieken zijn alleen beschikbaar wanneer de bot is verbonden."
     },
     "inventoryPanel": {
       "title": "Inventaris",
@@ -464,7 +504,7 @@
       "dropAll": "Laat Alles Vallen",
       "closeContainer": "Sluiten",
       "clickHint": "Linkermuisklik: oppakken/plaatsen | Rechtermuisklik: helft/één | Shift+klik: snel verplaatsen | Middelste muisklik: hotbar-slot selecteren",
-      "offline": "Bot is offline. Inventaris is alleen beschikbaar wanneer de bot is verbonden.",
+      "offline": "De bot is niet verbonden. Inventaris is alleen beschikbaar wanneer de bot is verbonden.",
       "buttons": {
         "stonecutterRecipes": "Recepten",
         "enchantments": "Betoveringen",
@@ -474,12 +514,12 @@
         "crafterSlots": "Slotbediening",
         "lecternControls": "Boekbediening",
         "actions": "Acties",
-        "creativeTabs": ""
+        "creativeTabs": "Creatieve tabbladen"
       },
       "textInput": {
         "title": "Tekstinvoer",
         "anvilRename": "Item hernoemen",
-        "creativeSearch": ""
+        "creativeSearch": "Voorwerpen zoeken"
       },
       "bookPages": {
         "title": "Boekinhoud",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Voorwerp vernietigen",
+      "clickHints": {
+        "left": "Linkermuisknop: oppakken of plaatsen",
+        "right": "Rechtermuisknop: de helft oppakken of één plaatsen",
+        "shift": "Shift+klik: snel verplaatsen",
+        "middle": "Middelste muisknop: als actief slot kiezen"
+      }
     },
     "visualPanel": {
-      "title": "Botweergave",
+      "title": "Richting en wereld",
       "compass": "Kijkrichting",
       "lookDirection": "Kijkhoek",
       "lookingUp": "Kijkt omhoog",
@@ -502,7 +548,7 @@
       "worldInfo": "Wereldinformatie",
       "dimension": "Dimensie",
       "biome": "Biome",
-      "offline": "Bot is offline. Visuele data is alleen beschikbaar wanneer de bot is verbonden."
+      "offline": "De bot is niet verbonden. Visuele data is alleen beschikbaar wanneer de bot is verbonden."
     },
     "actionsPanel": {
       "title": "Botacties",
@@ -510,7 +556,7 @@
       "rightClick": "Rechtermuisklik",
       "leftClickDescription": "Entiteit aanvallen of blok breken",
       "rightClickDescription": "Item gebruiken of interactie",
-      "offline": "Bot is offline. Acties zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": "De bot is niet verbonden. Acties zijn alleen beschikbaar wanneer de bot is verbonden."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "Omlaag kijken",
       "lookLeft": "Links kijken",
       "lookRight": "Rechts kijken",
-      "offline": "Bot is offline. Bewegingsbediening is alleen beschikbaar wanneer de bot is verbonden."
+      "offline": "De bot is niet verbonden. Bewegingsbediening is alleen beschikbaar wanneer de bot is verbonden."
     },
     "dialogPanel": {
       "title": "Serverdialoog",
@@ -544,7 +590,45 @@
       "unknownType": "Onbekend",
       "dismiss": "Sluiten",
       "submit": "Verzenden",
-      "offline": "Bot is offline. Dialogen zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": "De bot is niet verbonden. Dialogen zijn alleen beschikbaar wanneer de bot is verbonden."
+    },
+    "pov": {
+      "title": "Botweergave",
+      "touchControlling": "Je bestuurt deze bot. Gebruik 'Release control' om te stoppen.",
+      "popupBlocked": "Sta pop-ups toe om het botweergavevenster los te maken.",
+      "windowTitle": "SoulFire-botweergave",
+      "fullscreenUnavailable": "Volledig scherm is niet beschikbaar in dit venster.",
+      "textInputLabel": "Minecraft-tekstinvoer",
+      "videoLabel": "Live botweergave",
+      "touchMove": "Bewegen",
+      "audioError": "Audio kon niet worden gestart.",
+      "startError": "De botweergave kon niet worden gestart.",
+      "releaseHint": "Druk op {{shortcut}} om je toetsenbord en muis vrij te geven.",
+      "captureHint": "Klik op de weergave en sta het vastleggen van toetsenbord en muis toe.",
+      "audioWaiting": "Wachten tot de botweergave verbinding maakt.",
+      "audioWatchFirst": "Bekijk de bot om audio te gebruiken.",
+      "audioUpdateServer": "Werk de server bij om audio in de botweergave te gebruiken.",
+      "muteAudio": "Audio dempen",
+      "unmuteAudio": "Audio inschakelen",
+      "audioStarting": "Audio starten...",
+      "mute": "Dempen",
+      "unmute": "Dempen opheffen",
+      "audio": "Audio",
+      "audioUnavailable": "Audio niet beschikbaar",
+      "volume": "Volume van de botweergave",
+      "reconnect": "Opnieuw verbinden",
+      "showWindow": "Botweergavevenster tonen",
+      "attachWindow": "Botweergavevenster vastmaken",
+      "touch": {
+        "jump": "Springen",
+        "sneak": "Sluipen",
+        "attack": "Aanvallen",
+        "use": "Gebruiken",
+        "inventory": "Inventaris",
+        "keyboard": "Toetsenbord",
+        "closeMenu": "Menu sluiten"
+      },
+      "needsServer": "De botweergave heeft een verbonden SoulFire-server nodig."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Geen gegevens"
     },
     "summary": {
-      "online": "Online",
+      "online": "Verbonden",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Verkeer",
       "health": "Gezondheid",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bots online",
-      "online": "Online",
+      "title": "Verbonden bots",
+      "online": "Verbonden",
       "total": "Totaal"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Aanmaken van script mislukt",
     "noScripts": "Nog geen scripts",
     "noScriptsDescription": "Maak je eerste script om botacties te automatiseren met de visuele knooppunteneditor.",
-    "createFirstScript": "Maak je eerste script",
+    "createFirstScript": "Script aanmaken",
     "running": "Draait",
     "paused": "Gepauzeerd",
     "nodes": "knooppunten",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Knooppuntpalet",
-        "search": "Zoek knooppunten..."
+        "search": "Zoek knooppunten...",
+        "noResults": "Geen knooppunten komen overeen met je zoekopdracht",
+        "noResultsDescription": "Probeer een andere term of wis het huidige filter."
       },
       "logs": {
         "title": "Uitvoeringslogboeken",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Node uitvouwen",
-        "collapse": "Node samenvouwen"
+        "collapse": "Node samenvouwen",
+        "avgTime": "Gemiddelde uitvoeringstijd: {{avg}} ms (laatste {{count}} runs)",
+        "preview": "Voorbeeld"
       },
       "debug": {
         "copyValue": "Huidige waarde kopiëren",
-        "clearHistory": "Geschiedenis wissen"
+        "clearHistory": "Geschiedenis wissen",
+        "current": "Huidig ({{time}}):",
+        "noValue": "Nog geen waarde ontvangen"
       },
       "edge": {
         "direction": "Randrichting"
@@ -733,14 +823,36 @@
         "title": "Scriptcomplexiteitsscore"
       },
       "group": {
-        "returnToRoot": "Ga terug naar de root (Tab)"
+        "returnToRoot": "Ga terug naar de root (Tab)",
+        "root": "Hoofdniveau",
+        "exitHint": "Druk op <key>Tab</key> om af te sluiten",
+        "editHint": "Dubbelklik om te bewerken",
+        "noInputs": "Geen ingangen gedefinieerd",
+        "noOutputs": "Geen uitgangen gedefinieerd"
       },
       "quickAdd": {
         "menuLabel": "Snel toevoegen node menu",
-        "searchPlaceholder": "Zoek knooppunten..."
+        "searchPlaceholder": "Zoek knooppunten...",
+        "noResults": "Geen knooppunten gevonden",
+        "noResultsDescription": "Probeer een andere zoekterm.",
+        "navigate": "Navigeren",
+        "select": "Enter om te selecteren",
+        "close": "Esc om te sluiten"
       },
       "diff": {
-        "tooltip": "Wijzigingen bekijken"
+        "tooltip": "Wijzigingen bekijken",
+        "title": "Niet-opgeslagen wijzigingen",
+        "description": "Wijzigingen sinds de laatste keer opslaan.",
+        "nodesAdded_one": "{{count}} knooppunt toegevoegd",
+        "nodesAdded_other": "{{count}} knooppunten toegevoegd",
+        "nodesRemoved_one": "{{count}} knooppunt verwijderd",
+        "nodesRemoved_other": "{{count}} knooppunten verwijderd",
+        "nodesModified_one": "{{count}} knooppunt gewijzigd",
+        "nodesModified_other": "{{count}} knooppunten gewijzigd",
+        "edgesAdded_one": "{{count}} verbinding toegevoegd",
+        "edgesAdded_other": "{{count}} verbindingen toegevoegd",
+        "edgesRemoved_one": "{{count}} verbinding verwijderd",
+        "edgesRemoved_other": "{{count}} verbindingen verwijderd"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Schakelt time-outs per node en data-edge uit",
         "save": "Quota opslaan",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} herordenen",
+        "empty": "Geen inkomende waarden",
+        "title": "Meervoudige ingang: accepteert meerdere verbindingen",
+        "connectTo": "Verbind waarden met {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Script verwijderen?",
+      "description": "Dit verwijdert '{{name}}' definitief. Je kunt dit niet ongedaan maken.",
+      "descriptionUnnamed": "Dit verwijdert het script definitief. Je kunt dit niet ongedaan maken."
+    },
+    "executionStats": "Uitvoeringsstatistieken: {{executed}}/{{max}} knooppunten uitgevoerd"
   },
   "metadataValidation": {
     "invalidNamespace": "",

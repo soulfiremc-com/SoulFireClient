@@ -138,7 +138,7 @@ function AboutDialog({
                   <TableRow>
                     <TableCell>{t("dialog.about.fields.locale")}</TableCell>
                     <TableCell className="select-text">
-                      {systemInfo.osLocale ?? "Unknown"}
+                      {systemInfo.osLocale ?? t("unknown")}
                     </TableCell>
                   </TableRow>
 

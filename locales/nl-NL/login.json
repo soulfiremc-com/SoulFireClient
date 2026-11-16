@@ -44,7 +44,24 @@
         "placeholder": "Jouw JVM-argumenten hier"
       },
       "back": "Terug",
-      "start": "Start"
+      "start": "Start",
+      "jar": {
+        "title": "Server-jar",
+        "official": "Officieel",
+        "custom": "Aangepast",
+        "officialTitle": "Officiële SoulFire-server",
+        "customTitle": "Aangepaste server-jar",
+        "officialDescription": "Downloadt en verifieert de bijpassende SoulFire-release.",
+        "customDescription": "Voert een geïmporteerde jar uit. SoulFire controleert of updatet deze niet.",
+        "import": "Jar importeren",
+        "importSuccess": "{{name}} geïmporteerd",
+        "importError": "De aangepaste SoulFire-jar kon niet worden geïmporteerd",
+        "selectCustomFirst": "Importeer en selecteer een aangepaste jar voordat je start.",
+        "dialog": {
+          "filter": "Java-archief",
+          "title": "SoulFire-server-jar selecteren"
+        }
+      }
     },
     "mobile": {
       "description": "Om de geïntegreerde server op mobiel te draaien, moet je enkele handmatige stappen uitvoeren.",

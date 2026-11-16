@@ -2,25 +2,35 @@
   "overview": {
     "welcome": "Ahoy, {{name}}, ye be back! 🧙",
     "serverMetrics": {
-      "sectionTitle": "Server Metrics",
+      "sectionTitle": "Server metrics",
       "summary": {
         "cpu": "CPU",
         "heapUsed": "Heap Plundered",
         "threads": "Threads",
-        "botsOnline": "Bots On Deck",
+        "botsOnline": "Crew aboard",
         "uptime": "Uptime"
       },
       "cpuUsage": {
-        "title": "CPU Usage (%)"
+        "title": "CPU usage (%)"
       },
       "memoryUsage": {
-        "title": "Heap Memory (MB)"
+        "title": "Heap memory (MB)"
       },
       "threadCount": {
-        "title": "Thread Count"
+        "title": "Thread count"
       },
       "aggregateBots": {
-        "title": "Bots Online (All Instances)"
+        "title": "Crew aboard (all fleets)"
+      },
+      "legend": {
+        "process": "Process",
+        "system": "System",
+        "used": "Used",
+        "committed": "Committed",
+        "max": "Max",
+        "total": "Total",
+        "daemon": "Daemon",
+        "online": "Aboard"
       }
     },
     "instancesChart": {
@@ -112,12 +122,12 @@
       "email": "Parrot mail",
       "role": "Rank",
       "createdAt": "Set afloat",
-      "minIssuedAt": "Earliest Login",
+      "minIssuedAt": "Sessions good since",
       "actions": "Duties",
       "searchUsernames": "Seek crew names...",
       "searchEmails": "Seek sea-mails...",
       "searchCreatedAts": "Be huntin' fer creation dates...",
-      "searchMinIssuedAts": "Be huntin' fer minimum login dates..."
+      "searchMinIssuedAts": "Search session dates..."
     },
     "removeSelectedTooltip": "Send selected crew off the plank",
     "logOutSelectedTooltip": "Make selected crew disembark",
@@ -125,6 +135,18 @@
       "editUser": "Edit Matey",
       "impersonate": "Sail in another matey's boots",
       "copyUserId": "Copy Matey ID"
+    },
+    "removeDialog": {
+      "title_one": "Make {{count}} scallywag walk the plank?",
+      "title_other": "Make {{count}} scallywags walk the plank?",
+      "description": "This sends the chosen scallywags an' their access to Davy Jones fer good. Ye cannot undo this.",
+      "confirm": "Walk the plank"
+    },
+    "invalidateDialog": {
+      "title_one": "Send {{count}} scallywag ashore?",
+      "title_other": "Send {{count}} scallywags ashore?",
+      "description": "This ends every session an' token o' the chosen scallywags. They must sign aboard again.",
+      "confirm": "Send these scallywags ashore"
     }
   }
 }

@@ -113,18 +113,24 @@
         "submit": "URL'den yükle",
         "toast": {
           "loading": "Veri indiriliyor...",
-          "success": "Veri yüklendi!",
+          "success": "Veri yüklendi",
           "error": "Veri indirilemedi",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Örnek silinsin mi?",
+      "description": "Bu işlem \"{{name}}\" öğesini ve verilerini kalıcı olarak siler. Geri alınamaz.",
+      "descriptionUnnamed": "Bu işlem bu örneği ve verilerini kalıcı olarak siler. Geri alınamaz."
     }
   },
   "commandInput": {
     "placeholder": "Komut girin ('help' yazarsanız liste çıkar)",
     "emptySuggestions": "Öneri istemek için yazın veya Tab tuşuna basın.",
-    "noSuggestions": "Hiçbir öneri yok."
+    "noSuggestions": "Hiçbir öneri yok.",
+    "emptySuggestionsPrefix": "Öneri istemek için yazın veya şu tuşa basın:"
   },
   "controls": {
     "start": "Başlat",
@@ -166,7 +172,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} çevrimiçi · {{desired}} istenen · {{total}} toplam",
+  "botFleetSummary": "{{online}} bağlı · {{desired}} çalışacak şekilde ayarlı · {{total}} toplam",
   "icon": {
     "invalidName": "Geçersiz simge adı: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Artan",
       "desc": "Azalan"
-    }
+    },
+    "openFilterMenu": "Filtre menüsünü aç",
+    "filterOperator": "Filtre operatörü",
+    "filterValue": "Filtre değeri",
+    "sortDirection": "Sıralama yönü",
+    "selectJoinOperator": "Birleştirme operatörü seç",
+    "joinOperator": "Birleştirme operatörü",
+    "escapeKey": "Escape",
+    "selectDate": "Tarih seç",
+    "selectDateRange": "Tarih aralığı seç",
+    "clearFilter": "{{title}} filtresini temizle",
+    "clearFilters": "Filtreleri temizle",
+    "clear": "Temizle",
+    "from": "Başlangıç",
+    "to": "Bitiş",
+    "sortDirectionFor": "{{column}} için sıralama yönü",
+    "minValue": "{{label}} en düşük değeri",
+    "maxValue": "{{label}} en yüksek değeri"
   },
   "pluginCard": {
     "version": "Sürüm: {{version}}",
@@ -256,13 +279,13 @@
     "website": "Web sitesi"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}} kaydedilemedi",
     "namespacesNotFound": "Ayar ad alanları bulunamadı",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}} kaydedilemedi",
       "placeholder": "Yeni bir giriş ekle...",
       "add": "Ekle",
       "remove": "Kaldır"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Geçersiz sayı",
       "description": "Değer {{min}} ile {{max}} arasında olmalıdır"
-    }
+    },
+    "minMaxLegend": "En düşük ve en yüksek ayarları"
   },
   "terminal": {
     "noLogs": "Henüz kayıt yok. Kayıt çıktısı oluşturmak için bir komut çalıştırın.",
@@ -321,16 +345,37 @@
       "error": "{{device}} cihazına bağlanılamadı"
     },
     "noDevices": "Cihaz bulunamadı",
-    "broadcastLabel": "Yayın testi",
     "broadcastToast": {
       "loading": "Mesaj yayınlanıyor...",
-      "success": "Mesaj yayınlandı!",
+      "success": "Mesaj yayınlandı",
       "error": "Mesaj yayınlanamadı"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Script açılıyor...",
+        "success": "Script açıldı",
+        "error": "Script açılamadı. Tekrar deneyin."
+      },
+      "deactivate": {
+        "loading": "Script kapatılıyor...",
+        "success": "Script kapatıldı",
+        "error": "Script kapatılamadı. Tekrar deneyin."
+      }
+    },
+    "operations": {
+      "activateScript": "{{name}} scriptini aç",
+      "deactivateScript": "{{name}} scriptini kapat"
+    },
+    "status": {
+      "active": "Açık",
+      "paused": "Kapalı"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Dokümantasyonu oku",
-    "backToDashboard": "Panele dön",
+    "backToDashboard": "Örneklere dön",
     "deleteToast": {
       "loading": "Örnek siliniyor...",
       "success": "Örnek silindi",
@@ -356,9 +401,9 @@
     "settingsGroup": "Ayarlar",
     "extensionsGroup": "Eklentiler",
     "botSettings": "Bot Ayarları",
-    "accountSettings": "Hesap Ayarları",
+    "accountSettings": "Hesaplar",
     "metaSettings": "Örnek Ayarları",
-    "proxySettings": "Proxy Ayarları",
+    "proxySettings": "Proxyler",
     "aiSettings": "Yapay Zeka Ayarları",
     "pathfindingSettings": "Yol Bulma Ayarları",
     "discoverPlugins": "Eklentiler",
@@ -424,10 +469,10 @@
     "instances": "Örnekler",
     "access": "Erişim",
     "settings": "Ayarlar",
-    "proxySettings": "Proxy Ayarları",
+    "proxySettings": "Proxyler",
     "overview": "Genel Bakış",
     "users": "Kullanıcılar",
-    "accountSettings": "Hesap Ayarları",
+    "accountSettings": "Hesaplar",
     "metaSettings": "Örnek Ayarları",
     "discoverPlugins": "Eklentiler",
     "adminScripts": "Betikler",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API Erişimi",
-      "description": "SoulFire gRPC HTTP API'si, web istekleriyle instance'ları yönetir.",
+      "description": "Örnekleri kendi programlarınızdan yönetmek için SoulFire API'sini kullanın.",
       "publicAddress": "Genel API Adresi",
       "personalToken": "Kişisel API Jetonu",
       "securityWarning": "Kişisel API belirtecinizi gizli tutun. API'ye erişim sağlar.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Jeton Oluştur",
-      "placeholder": "Aşağıdan 'Jeton Oluştur'u tıklayın",
+      "placeholder": "Aşağıdan \"Jeton Oluştur\" seçeneğini belirleyin",
       "generating": "Jeton oluşturuluyor...",
       "success": "Token başarıyla oluşturuldu",
       "error": "Jeton oluşturulamadı",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Örnek adı güncellenemedi"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}} güncellenemedi"
   },
   "auditLog": {
     "filterPlaceholder": "Denetim günlüklerini filtrele...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Betikler kaldırılıyor...",
-      "success": "Betikler kaldırıldı!",
+      "success": "Betikler kaldırıldı",
       "error": "Betikler kaldırılamadı"
     },
     "addToast": {
       "loading": "Betik ekleniyor...",
-      "success": "Betik eklendi!",
+      "success": "Betik eklendi",
       "error": "Betik eklenemedi"
     },
     "updateToast": {
       "loading": "Betik güncelleniyor...",
-      "success": "Betik güncellendi!",
+      "success": "Betik güncellendi",
       "error": "Betik güncellenemedi"
     },
     "restartToast": {
       "loading": "Betik yeniden başlatılıyor...",
-      "success": "Betik yeniden başlatıldı!",
+      "success": "Betik yeniden başlatıldı",
       "error": "Betik yeniden başlatılamadı"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Bot'a Git",
       "copyUsername": "Kullanıcı Adını Kopyala",
-      "copyUuid": "UUID'yi Kopyala",
+      "copyUuid": "Profil kimliğini kopyala",
       "copyCoordinates": "Koordinatları Kopyala"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Bağlı",
+    "botOffline": "Bağlantı kesildi"
+  },
+  "minecraftActions": {
+    "copyError": "Metin kopyalanamadı. HTTPS kullanın veya pano erişimine izin verin.",
+    "openError": "Bağlantı açılamadı.",
+    "popupBlocked": "Tarayıcınız yeni sekmeyi engelledi.",
+    "openLink": "Bağlantıyı aç"
+  },
+  "instanceIcon": {
+    "label": "Simge",
+    "description": "Uygulamada gösterilen örnek simgesi."
+  },
+  "unknown": "Bilinmiyor",
+  "minecraftHead": "Minecraft kafası",
+  "textFile": "Metin dosyası"
 }

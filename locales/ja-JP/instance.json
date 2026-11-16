@@ -119,12 +119,12 @@
       "network": "ネットワークアドレス",
       "unix": "Unixソケット"
     },
-    "getProxies": "プロキシを取得",
+    "getProxies": "プロキシプロバイダー",
     "addProxies": "プロキシを追加",
     "filterPlaceholder": "プロキシをフィルター...",
     "listImportToast": {
       "loading": "プロキシをインポート中...",
-      "success": "{{count}}件のプロキシをインポートしました！",
+      "success": "{{count}}件のプロキシをインポートしました",
       "error": "プロキシのインポートに失敗しました。",
       "noProxies": "インポートするプロキシがありません。"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "プロキシを削除中...",
-      "success": "{{count}}件のプロキシを削除しました！",
+      "success": "{{count}}件のプロキシを削除しました",
       "error": "プロキシの削除に失敗しました。"
     },
     "checkToast": {
       "loading": "プロキシをチェック中... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "{{count}}件の壊れたプロキシを削除しました！",
-      "error": "プロキシのチェックに失敗しました。"
+      "success": "{{count}}件の壊れたプロキシを削除しました",
+      "error": "プロキシのチェックに失敗しました。",
+      "successKept": "{{total}} 件中 {{failed}} 件のプロキシがチェックに失敗しました。プロキシは削除されていません。"
     },
     "checkDialog": {
       "title": "プロキシの確認",
-      "description": "{{count}}個のプロキシを確認しようとしています。無効なプロキシは自動的に削除されます。",
-      "confirm": "確認を開始"
+      "description": "{{count}} 件のプロキシをチェックします。",
+      "confirm": "確認を開始",
+      "removeFailed": "失敗したプロキシを削除する",
+      "removeFailedHelp": "プロキシは一時的なネットワークの問題で失敗することがあります。すべてのプロキシを残して結果だけを確認するには、このオプションをオフにしてください。"
     },
     "invalidFormat": "無効なプロキシ形式です。",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "インポートしたプロキシをチェックしますか？​​",
-      "description": "{{count}}個のプロキシをインポートしました。今すぐチェックしますか？SoulFireは無効なプロキシを自動的に削除します。",
+      "description": "{{count}} 件のプロキシをインポートしました。今すぐチェックしますか？",
       "confirm": "プロキシの確認",
       "skip": "スキップ"
     },
@@ -186,10 +189,17 @@
       "socks4": "SOCKS4専用（フラット）",
       "socks5": "SOCKS5専用（フラット）",
       "noProxies": "エクスポートするプロキシがありません"
-    }
+    },
+    "removeDialog": {
+      "title_other": "{{count}} 件のプロキシを削除しますか？",
+      "description": "選択したプロキシとその認証情報をこのインスタンスから削除します。この操作は元に戻せません。",
+      "confirm": "プロキシを削除"
+    },
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを隠す"
   },
   "account": {
-    "getAccounts": "アカウントを取得",
+    "getAccounts": "アカウントプロバイダー",
     "addAccounts": "アカウントを追加",
     "generateAccounts": "アカウントを生成",
     "filterPlaceholder": "アカウントをフィルター...",
@@ -197,7 +207,7 @@
       "loading": "アカウントをインポート中... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
       "allFailed": "アカウントのインポートにすべて失敗しました。",
       "someFailed": "{{count}}件のアカウントをインポートし、{{failed}}件のアカウントのインポートに失敗しました。",
-      "noneFailed": "{{count}}件のアカウントをインポートしました！",
+      "noneFailed": "{{count}}件のアカウントをインポートしました",
       "error": "アカウントのインポートに失敗しました。",
       "noAccounts": "インポートするアカウントがありません。"
     },
@@ -215,7 +225,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "アカウントをインポート中...",
-      "success": "アカウントをインポートしました！",
+      "success": "アカウントをインポートしました",
       "error": "アカウントのインポートに失敗しました。"
     },
     "generate": {
@@ -232,9 +242,9 @@
       "submit": "生成",
       "generating": "生成中...",
       "progress": "アカウントを生成中... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "{{count}}件のアカウントを生成しました！",
+      "success": "{{count}}件のアカウントを生成しました",
       "allFailed": "アカウントの生成にすべて失敗しました。",
-      "allExist": "すべてのユーザー名は既に存在します。「既存のアカウントを上書き」を有効にして再生成してください。",
+      "allExist": "すべてのユーザー名がすでに存在します。「既存を置換」を選ぶと再生成できます。",
       "error": "アカウントの生成に失敗しました。",
       "invalidAmount": "有効な件数（1以上）を入力してください。",
       "missingPlaceholder": "名前フォーマットに%dプレースホルダーが含まれている必要があります。"
@@ -257,12 +267,12 @@
     },
     "removeToast": {
       "loading": "アカウントを削除中...",
-      "success": "{{count}}件のアカウントを削除しました！",
+      "success": "{{count}}件のアカウントを削除しました",
       "error": "アカウントの削除に失敗しました。"
     },
     "table": {
       "type": "種類",
-      "profileId": "UUID",
+      "profileId": "プロファイル ID",
       "lastKnownName": "ユーザー名",
       "searchProfileIds": "プロファイルIDを検索...",
       "searchLastKnownNames": "最後に確認された名前を検索...",
@@ -294,7 +304,20 @@
       "matchesInheritedValue": "継承された値と一致",
       "instanceValue": "インスタンス値",
       "defaultValue": "デフォルト値",
-      "resetOverride": "上書きをリセット"
+      "resetOverride": "上書きをリセット",
+      "value": {
+        "notSet": "未設定",
+        "on": "オン",
+        "off": "オフ",
+        "empty": "空",
+        "entries_other": "{{count}} 件",
+        "range": "範囲"
+      },
+      "source": {
+        "bot": "ボット固有の値",
+        "instance": "インスタンスから継承",
+        "default": "デフォルトを使用中"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "デバイスコード認証",
@@ -341,7 +364,7 @@
       "keyPlaceholder": "キー",
       "valuePlaceholder": "値（JSON）",
       "noEntries": "メタデータエントリがありません。上で追加してください。",
-      "loadError": "",
+      "loadError": "メタデータを読み込めませんでした",
       "loadErrorDescription": "",
       "retryLoad": "再試行する",
       "addSuccess": "エントリが追加されました",
@@ -350,7 +373,19 @@
       "deleteSuccess": "エントリを削除しました",
       "deleteError": "エントリの削除に失敗しました",
       "duplicateError": "このネームスペースとキーを持つエントリは既に存在します",
-      "invalidJson": "無効なJSON値"
+      "invalidJson": "無効なJSON値",
+      "namespaceLabel": "名前空間",
+      "keyLabel": "キー",
+      "valueLabel": "値",
+      "addEntryLegend": "メタデータエントリを追加",
+      "addEntryButton": "エントリを追加",
+      "entryLegend": "メタデータエントリ",
+      "removeEntryButton": "削除"
+    },
+    "removeDialog": {
+      "title_other": "{{count}} 件のアカウントを削除しますか？",
+      "description": "選択したアカウント、保存済みの認証情報、そのボットをこのインスタンスから削除します。この操作は元に戻せません。",
+      "confirm": "アカウントを削除"
     }
   },
   "instanceMetadata": {
@@ -360,31 +395,39 @@
     "keyPlaceholder": "キー",
     "valuePlaceholder": "値（JSON）",
     "noEntries": "メタデータエントリがありません。上で追加してください。",
+    "loadError": "メタデータを読み込めませんでした",
     "addSuccess": "エントリが追加されました",
     "addError": "エントリの追加に失敗しました",
     "updateError": "エントリの更新に失敗しました",
     "deleteSuccess": "エントリを削除しました",
     "deleteError": "エントリの削除に失敗しました",
     "duplicateError": "このネームスペースとキーを持つエントリは既に存在します",
-    "invalidJson": "無効なJSON値"
+    "invalidJson": "無効なJSON値",
+    "namespaceLabel": "名前空間",
+    "keyLabel": "キー",
+    "valueLabel": "値",
+    "addEntryLegend": "メタデータエントリを追加",
+    "addEntryButton": "エントリを追加",
+    "entryLegend": "メタデータエントリ",
+    "removeEntryButton": "削除"
   },
   "bots": {
     "searchPlaceholder": "ボットを検索...",
-    "onlineCount": "{{online}} 人がオンライン / 合計 {{total}} 人",
+    "onlineCount": "接続済み {{online}} / 合計 {{total}}",
     "noBots": "ボットが設定されていません。アカウント設定ページからアカウントを追加してください。",
     "noBotsFound": "検索条件に一致するボットが見つかりません。",
     "loadingMore": "さらに読み込み中...",
     "showingCount": "{{loaded}}／{{total}}件を表示中",
     "allLoaded": "すべての{{total}}体のボットが読み込まれました",
-    "online": "オンライン",
-    "offline": "オフライン",
+    "online": "接続済み",
+    "offline": "切断済み",
     "notJoined": "未参加",
     "connectionPhase": {
       "connecting": "接続中",
-      "connected": "接続済み",
-      "spawned": "オンライン",
+      "connected": "ログイン中",
+      "spawned": "接続済み",
       "died": "死亡",
-      "disconnected": "オフライン",
+      "disconnected": "切断済み",
       "ping": "{{ms}}ミリ秒"
     },
     "runtimeState": {
@@ -398,15 +441,12 @@
     },
     "backToBots": "ボット一覧に戻る",
     "tabs": {
-      "overview": "概要",
+      "overview": "ボットビュー",
       "inventory": "インベントリ",
       "controls": "コントロール",
       "terminal": "ターミナル"
     },
-    "comingSoon": "近日公開",
-    "terminalPanel": {
-      "title": "ボット端末"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "プロキシ",
       "direct": "直接（プロキシなし）",
@@ -416,16 +456,14 @@
       "title": "位置 & 回転",
       "position": "位置",
       "rotation": "回転",
-      "offline": "ボットはオフラインです。位置データはボットが接続中のみ利用可能です。"
+      "offline": "ボットは切断されています。位置データはボットが接続中のみ利用可能です。"
     },
     "chatPanel": {
-      "title": "チャットメッセージ",
-      "description": "このボットのチャットメッセージは今後のアップデートでここに表示されます。"
+      "title": "チャットメッセージ"
     },
     "commandPanel": {
       "title": "ボットコマンド",
-      "placeholder": "このボットにコマンドを送信...",
-      "description": "ボット専用コマンドは今後のアップデートで利用可能になります。"
+      "placeholder": "このボットにコマンドを送信..."
     },
     "povPanel": {
       "title": "ボット視点",
@@ -438,7 +476,6 @@
       "offline": "ボットはオフラインです。視点表示はボットが接続中のみ利用できます。"
     },
     "statsPanel": {
-      "title": "ボット統計",
       "health": "体力",
       "food": "食料",
       "saturation": "満腹度",
@@ -451,7 +488,7 @@
       "adventure": "アドベンチャー",
       "spectator": "スペクテイター",
       "unknown": "不明",
-      "offline": "ボットはオフラインです。統計はボットが接続中のみ利用できます。"
+      "offline": "ボットは切断されています。統計はボットが接続中のみ利用できます。"
     },
     "inventoryPanel": {
       "title": "インベントリ",
@@ -464,7 +501,7 @@
       "dropAll": "すべて捨てる",
       "closeContainer": "閉じる",
       "clickHint": "左クリック：取得／配置 ｜ 右クリック：半分／1つ ｜ Shift+クリック：すばやく移動 ｜ 中クリック：ホットバーのスロット選択",
-      "offline": "ボットはオフラインです。インベントリーはボットが接続中のみ利用できます。",
+      "offline": "ボットは切断されています。インベントリーはボットが接続中のみ利用できます。",
       "buttons": {
         "stonecutterRecipes": "レシピ",
         "enchantments": "エンチャント",
@@ -474,12 +511,12 @@
         "crafterSlots": "スロット操作",
         "lecternControls": "本の操作",
         "actions": "操作",
-        "creativeTabs": ""
+        "creativeTabs": "クリエイティブタブ"
       },
       "textInput": {
         "title": "テキスト入力",
         "anvilRename": "アイテム名を変更",
-        "creativeSearch": ""
+        "creativeSearch": "アイテムを検索"
       },
       "bookPages": {
         "title": "本の内容",
@@ -490,10 +527,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "アイテムを破棄",
+      "clickHints": {
+        "left": "左クリック: 持つ／置く",
+        "right": "右クリック: 半分持つ／1 個置く",
+        "shift": "Shift+クリック: クイック移動",
+        "middle": "中クリック: アクティブスロットに選択"
+      }
     },
     "visualPanel": {
-      "title": "ボットビュ―",
+      "title": "向きとワールド",
       "compass": "向いている方角",
       "lookDirection": "視線の角度",
       "lookingUp": "上を見ている",
@@ -502,7 +545,7 @@
       "worldInfo": "ワールド情報",
       "dimension": "ディメンション",
       "biome": "バイオーム",
-      "offline": "ボットはオフラインです。ビジュアルデータはボットが接続中のみ利用できます。"
+      "offline": "ボットは切断されています。ビジュアルデータはボットが接続中のみ利用できます。"
     },
     "actionsPanel": {
       "title": "ボットのアクション",
@@ -510,7 +553,7 @@
       "rightClick": "右クリック",
       "leftClickDescription": "エンティティ攻撃またはブロックを壊す",
       "rightClickDescription": "アイテム使用または操作",
-      "offline": "ボットはオフラインです。アクションはボットが接続されている時のみ可能です。"
+      "offline": "ボットは切断されています。アクションはボットが接続されている時のみ可能です。"
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +572,7 @@
       "lookDown": "下を見る",
       "lookLeft": "左を見る",
       "lookRight": "右を見る",
-      "offline": "ボットはオフラインです。移動コントロールはボットが接続されている時のみ使用できます。"
+      "offline": "ボットは切断されています。移動コントロールはボットが接続されている時のみ使用できます。"
     },
     "dialogPanel": {
       "title": "サーバーダイアログ",
@@ -544,7 +587,45 @@
       "unknownType": "不明",
       "dismiss": "閉じる",
       "submit": "送信",
-      "offline": "ボットはオフラインです。ダイアログはボットが接続されている時のみ利用できます。"
+      "offline": "ボットは切断されています。ダイアログはボットが接続されている時のみ利用できます。"
+    },
+    "pov": {
+      "title": "ボットビュー",
+      "touchControlling": "このボットを操作中です。やめるには「Release control」を使います。",
+      "popupBlocked": "ボットビューのウィンドウを切り離すには、ポップアップを許可してください。",
+      "windowTitle": "SoulFire ボットビュー",
+      "fullscreenUnavailable": "このウィンドウでは全画面表示を利用できません。",
+      "textInputLabel": "Minecraft テキスト入力",
+      "videoLabel": "ライブボットビュー",
+      "touchMove": "移動",
+      "audioError": "音声を開始できませんでした。",
+      "startError": "ボットビューを開始できませんでした。",
+      "releaseHint": "{{shortcut}} を押すとキーボードとマウスを解放します。",
+      "captureHint": "ビューをクリックし、キーボードとマウスのキャプチャを許可してください。",
+      "audioWaiting": "ボットビューの接続を待っています。",
+      "audioWatchFirst": "音声を使うにはボットを視聴してください。",
+      "audioUpdateServer": "ボットビューの音声を使うにはサーバーを更新してください。",
+      "muteAudio": "音声をミュート",
+      "unmuteAudio": "音声のミュートを解除",
+      "audioStarting": "音声を開始しています...",
+      "mute": "ミュート",
+      "unmute": "ミュート解除",
+      "audio": "音声",
+      "audioUnavailable": "音声は利用できません",
+      "volume": "ボットビューの音量",
+      "reconnect": "再接続",
+      "showWindow": "ボットビューのウィンドウを表示",
+      "attachWindow": "ボットビューのウィンドウを戻す",
+      "touch": {
+        "jump": "ジャンプ",
+        "sneak": "スニーク",
+        "attack": "攻撃",
+        "use": "使う",
+        "inventory": "インベントリ",
+        "keyboard": "キーボード",
+        "closeMenu": "メニューを閉じる"
+      },
+      "needsServer": "ボットビューには接続済みの SoulFire サーバーが必要です。"
     }
   },
   "metrics": {
@@ -552,15 +633,15 @@
       "noData": "データなし"
     },
     "summary": {
-      "online": "オンライン",
+      "online": "接続済み",
       "packetsPerSecond": "Pkt/s",
       "traffic": "トラフィック",
       "health": "体力",
       "tick": "ティック"
     },
     "botsOnline": {
-      "title": "オンライン中のボット",
-      "online": "オンライン",
+      "title": "接続中のボット",
+      "online": "接続済み",
       "total": "合計"
     },
     "packets": {
@@ -627,7 +708,7 @@
     "createError": "スクリプトの作成に失敗しました",
     "noScripts": "まだスクリプトはありません",
     "noScriptsDescription": "ビジュアルノードベースのエディターを使って、最初のスクリプトでボット動作を自動化しましょう。",
-    "createFirstScript": "最初のスクリプトを作成",
+    "createFirstScript": "スクリプトを作成",
     "running": "稼働中",
     "paused": "一時停止中",
     "nodes": "ノード",
@@ -694,7 +775,9 @@
       },
       "palette": {
         "title": "ノードパレット",
-        "search": "ノード検索..."
+        "search": "ノード検索...",
+        "noResults": "検索に一致するノードがありません",
+        "noResultsDescription": "別の語句を試すか、現在のフィルターをクリアしてください。"
       },
       "logs": {
         "title": "実行ログ",
@@ -716,11 +799,15 @@
       },
       "node": {
         "expand": "ノードを展開",
-        "collapse": "ノードを折りたたむ"
+        "collapse": "ノードを折りたたむ",
+        "avgTime": "平均実行時間: {{avg}} ms（直近 {{count}} 回）",
+        "preview": "プレビュー"
       },
       "debug": {
         "copyValue": "現在の値をコピー",
-        "clearHistory": "履歴をクリア"
+        "clearHistory": "履歴をクリア",
+        "current": "現在（{{time}}）:",
+        "noValue": "まだ値を受け取っていません"
       },
       "edge": {
         "direction": "エッジの方向"
@@ -732,14 +819,31 @@
         "title": "スクリプト複雑度スコア"
       },
       "group": {
-        "returnToRoot": "ルートに戻る（Tab）"
+        "returnToRoot": "ルートに戻る（Tab）",
+        "root": "ルート",
+        "exitHint": "<key>Tab</key> を押して終了",
+        "editHint": "ダブルクリックで編集",
+        "noInputs": "入力が定義されていません",
+        "noOutputs": "出力が定義されていません"
       },
       "quickAdd": {
         "menuLabel": "ノード追加メニュー",
-        "searchPlaceholder": "ノード検索..."
+        "searchPlaceholder": "ノード検索...",
+        "noResults": "ノードが見つかりません",
+        "noResultsDescription": "別の検索語句を試してください。",
+        "navigate": "移動",
+        "select": "Enter で選択",
+        "close": "Esc で閉じる"
       },
       "diff": {
-        "tooltip": "変更を確認"
+        "tooltip": "変更を確認",
+        "title": "未保存の変更",
+        "description": "前回の保存以降の変更です。",
+        "nodesAdded_other": "ノードを {{count}} 個追加",
+        "nodesRemoved_other": "ノードを {{count}} 個削除",
+        "nodesModified_other": "ノードを {{count}} 個変更",
+        "edgesAdded_other": "接続を {{count}} 件追加",
+        "edgesRemoved_other": "接続を {{count}} 件削除"
       },
       "dryRun": {
         "saveFirst": "",
@@ -783,8 +887,20 @@
         "disableTimeoutsDescription": "ノードごとおよびデータエッジごとのタイムアウトを無効化します",
         "save": "クォータを保存",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "{{label}} を並べ替え",
+        "empty": "入力値がありません",
+        "title": "複数入力: 複数の接続を受け付けます",
+        "connectTo": "{{label}} に値を接続してください"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "スクリプトを削除しますか？",
+      "description": "「{{name}}」を完全に削除します。この操作は元に戻せません。",
+      "descriptionUnnamed": "スクリプトを完全に削除します。この操作は元に戻せません。"
+    },
+    "executionStats": "実行統計: {{executed}}/{{max}} ノードを実行"
   },
   "metadataValidation": {
     "invalidNamespace": "",

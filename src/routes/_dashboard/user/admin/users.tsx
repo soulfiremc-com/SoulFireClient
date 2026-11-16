@@ -20,6 +20,7 @@ import {
   VenetianMaskIcon,
 } from "lucide-react";
 import { use, useState } from "react";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
@@ -87,6 +88,12 @@ const roleToIcon = (type: keyof typeof UserRole) =>
         return ShieldUserIcon;
     }
   });
+
+function roleLabel(role: keyof typeof UserRole) {
+  return role === "ADMIN"
+    ? i18n.t("admin:users.baseUserDialog.form.role.admin")
+    : i18n.t("admin:users.baseUserDialog.form.role.user");
+}
 
 const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
   {
@@ -167,7 +174,7 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
       return (
         <Badge variant="outline" className="capitalize">
           <Icon />
-          {type}
+          {roleLabel(type)}
         </Badge>
       );
     },
@@ -178,7 +185,7 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
       variant: "multiSelect",
       options: getEnumEntries(UserRole).map((type) => {
         return {
-          label: type.key,
+          label: roleLabel(type.key),
           value: type.key,
           icon: roleToIcon(type.key),
         };
@@ -396,11 +403,26 @@ function ExtraHeader(props: {
     },
   });
 
+  const [removeOpen, setRemoveOpen] = useState(false);
+  const [signOutOpen, setSignOutOpen] = useState(false);
+  const selectedCount = props.table.getFilteredSelectedRowModel().rows.length;
+
   return (
     <>
       <DataTableActionBarAction
         tooltip={t("users.removeSelectedTooltip")}
-        onClick={() => {
+        onClick={() => setRemoveOpen(true)}
+      >
+        <TrashIcon />
+      </DataTableActionBarAction>
+      <ConfirmDialog
+        open={removeOpen}
+        onOpenChange={setRemoveOpen}
+        icon={<TrashIcon />}
+        title={t("users.removeDialog.title", { count: selectedCount })}
+        description={t("users.removeDialog.description")}
+        confirmLabel={t("users.removeDialog.confirm")}
+        onConfirm={() => {
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
@@ -414,12 +436,21 @@ function ExtraHeader(props: {
             },
           });
         }}
-      >
-        <TrashIcon />
-      </DataTableActionBarAction>
+      />
       <DataTableActionBarAction
         tooltip={t("users.logOutSelectedTooltip")}
-        onClick={() => {
+        onClick={() => setSignOutOpen(true)}
+      >
+        <LogOutIcon />
+      </DataTableActionBarAction>
+      <ConfirmDialog
+        open={signOutOpen}
+        onOpenChange={setSignOutOpen}
+        icon={<LogOutIcon />}
+        title={t("users.invalidateDialog.title", { count: selectedCount })}
+        description={t("users.invalidateDialog.description")}
+        confirmLabel={t("users.invalidateDialog.confirm")}
+        onConfirm={() => {
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
@@ -433,9 +464,7 @@ function ExtraHeader(props: {
             },
           });
         }}
-      >
-        <LogOutIcon />
-      </DataTableActionBarAction>
+      />
       <DataTableActionBarSelection table={props.table} />
     </>
   );
@@ -461,8 +490,8 @@ function Users() {
       showUserCrumb={false}
       extraCrumbs={[
         {
-          id: "settings",
-          content: t("breadcrumbs.settings"),
+          id: "admin",
+          content: t("breadcrumbs.admin"),
         },
       ]}
       pageName={t("pageName.users")}

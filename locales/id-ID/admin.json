@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Heap Digunakan",
         "threads": "Thread",
-        "botsOnline": "Bot Online",
+        "botsOnline": "Bot terhubung",
         "uptime": "Waktu Aktif"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Jumlah Thread"
       },
       "aggregateBots": {
-        "title": "Bot Online (Semua Instansi)"
+        "title": "Bot terhubung (semua instansi)"
+      },
+      "legend": {
+        "process": "Proses",
+        "system": "Sistem",
+        "used": "Terpakai",
+        "committed": "Dialokasikan",
+        "max": "Maks",
+        "total": "Total",
+        "daemon": "Daemon",
+        "online": "Terhubung"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Menambah pengguna...",
-      "success": "Pengguna berhasil ditambahkan!",
+      "success": "Pengguna berhasil ditambahkan",
       "error": "Gagal menambah pengguna"
     },
     "updateToast": {
       "loading": "Memperbarui pengguna...",
-      "success": "Pengguna berhasil diperbarui!",
+      "success": "Pengguna berhasil diperbarui",
       "error": "Gagal memperbarui pengguna"
     },
     "removeToast": {
       "loading": "Menghapus pengguna...",
-      "success": "Pengguna berhasil dihapus!",
+      "success": "Pengguna berhasil dihapus",
       "error": "Gagal menghapus pengguna"
     },
     "invalidateToast": {
       "loading": "Mengeluarkan pengguna...",
-      "success": "Pengguna berhasil keluar!",
+      "success": "Pengguna berhasil keluar",
       "error": "Gagal mengeluarkan pengguna"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Email",
       "role": "Peran",
       "createdAt": "Dibuat",
-      "minIssuedAt": "Login Minimal",
+      "minIssuedAt": "Sesi berlaku sejak",
       "actions": "Aksi",
       "searchUsernames": "Cari nama pengguna...",
       "searchEmails": "Cari email...",
       "searchCreatedAts": "Cari tanggal pembuatan...",
-      "searchMinIssuedAts": "Cari tanggal login minimum..."
+      "searchMinIssuedAts": "Cari tanggal sesi..."
     },
     "removeSelectedTooltip": "Hapus pengguna yang dipilih",
     "logOutSelectedTooltip": "Keluar dari pengguna yang dipilih",
@@ -125,6 +135,16 @@
       "editUser": "Edit Pengguna",
       "impersonate": "Menjadi Pengguna Ini",
       "copyUserId": "Salin ID Pengguna"
+    },
+    "removeDialog": {
+      "title_other": "Hapus {{count}} pengguna?",
+      "description": "Tindakan ini menghapus pengguna yang dipilih dan aksesnya secara permanen. Tindakan ini tidak dapat dibatalkan.",
+      "confirm": "Hapus pengguna"
+    },
+    "invalidateDialog": {
+      "title_other": "Keluarkan {{count}} pengguna?",
+      "description": "Tindakan ini mengakhiri semua sesi dan token pengguna yang dipilih. Mereka harus masuk lagi.",
+      "confirm": "Keluarkan pengguna"
     }
   }
 }

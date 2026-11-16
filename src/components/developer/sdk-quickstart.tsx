@@ -173,10 +173,10 @@ export function SdkQuickstart({
     <div className="container flex w-full max-w-6xl flex-col gap-6 py-4">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold">
+          <h2 className="flex items-center gap-2 text-2xl font-semibold">
             <CodeXmlIcon className="size-6" />
             {t("sdk.title")}
-          </h1>
+          </h2>
           <p className="max-w-2xl text-sm text-muted-foreground">
             {t("sdk.description")}
           </p>
@@ -201,7 +201,7 @@ export function SdkQuickstart({
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <CardTitle>
-              <h2>{t("sdk.connectionTitle")}</h2>
+              <h3>{t("sdk.connectionTitle")}</h3>
             </CardTitle>
             <Badge variant="outline">
               {t(
@@ -381,9 +381,9 @@ export function SdkQuickstart({
         className="flex min-w-0 flex-col gap-4"
         aria-labelledby={`${id}-example`}
       >
-        <h2 id={`${id}-example`} className="text-lg font-semibold">
+        <h3 id={`${id}-example`} className="text-lg font-semibold">
           {t("sdk.exampleTitle")}
-        </h2>
+        </h3>
         <div className="flex flex-wrap items-center gap-3">
           <ToggleGroup
             aria-orientation={undefined}

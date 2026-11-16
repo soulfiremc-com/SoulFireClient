@@ -1,5 +1,6 @@
 "use client";
 
+import i18n from "@/lib/i18n.ts";
 import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import * as React from "react";
@@ -52,14 +53,14 @@ export function DataTableToolbar<TData extends RowData>({
           {(columnFilters) =>
             columnFilters.length > 0 ? (
               <Button
-                aria-label="Reset filters"
+                aria-label={i18n.t("common:dataTable.resetFilters")}
                 variant="outline"
                 size="sm"
                 className="border-dashed"
                 onClick={onReset}
               >
                 <X />
-                Reset
+                {i18n.t("common:dataTable.reset")}
               </Button>
             ) : null
           }

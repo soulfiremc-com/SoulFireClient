@@ -119,12 +119,18 @@
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Scuttle the fleet?",
+      "description": "This sends \"{{name}}\" an' its booty to Davy Jones fer good. Ye cannot undo this.",
+      "descriptionUnnamed": "This sends this fleet an' its booty to Davy Jones fer good. Ye cannot undo this."
     }
   },
   "commandInput": {
     "placeholder": "Enter yer decree! (Type 'help' to spy the legend)",
     "emptySuggestions": "Type to beg for ideas or whack Tab, matey.",
-    "noSuggestions": "No pirate ideas showed up, arrr."
+    "noSuggestions": "No pirate ideas showed up, arrr.",
+    "emptySuggestionsPrefix": "Scribble to ask fer hints or press"
   },
   "controls": {
     "start": "Hoist anchor",
@@ -166,7 +172,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} wanted · {{total}} booty in total",
+  "botFleetSummary": "{{online}} aboard · {{desired}} set to sail · {{total}} total",
   "icon": {
     "invalidName": "Scurvy icon name: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Climbin' up",
       "desc": "Divin' down"
-    }
+    },
+    "openFilterMenu": "Open the filter chest",
+    "filterOperator": "Filter operator",
+    "filterValue": "Filter value",
+    "sortDirection": "Sortin' heading",
+    "selectJoinOperator": "Pick a join operator",
+    "joinOperator": "Join operator",
+    "escapeKey": "Escape",
+    "selectDate": "Pick a date",
+    "selectDateRange": "Pick a stretch o' dates",
+    "clearFilter": "Swab the {{title}} filter",
+    "clearFilters": "Swab the filters",
+    "clear": "Swab",
+    "from": "From",
+    "to": "To",
+    "sortDirectionFor": "Sortin' heading fer {{column}}",
+    "minValue": "{{label}} lowest value",
+    "maxValue": "{{label}} highest value"
   },
   "pluginCard": {
     "version": "Manifest ver. {{version}}",
@@ -256,13 +279,13 @@
     "website": "Shanty Site"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Couldn't stow {{name}}, arr",
     "namespacesNotFound": "No map findin' for settings!",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Couldn't stow {{name}}, arr",
       "placeholder": "Jot a new entry, matey...",
       "add": "Chart course",
       "remove": "Scuttle"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "That be not a proper number, matey!",
       "description": "Yarrr! Value should be between {{min}} and {{max}}, no more and no less!"
-    }
+    },
+    "minMaxLegend": "Lowest an' highest settings"
   },
   "terminal": {
     "noLogs": "No logs yet, ye landlubber. Run a command to see some logs roll out.",
@@ -321,16 +345,37 @@
       "error": "Failed t' reach {{device}}"
     },
     "noDevices": "No seafarin' gadgets found",
-    "broadcastLabel": "Broadcast test, arr!",
     "broadcastToast": {
       "loading": "Sendin' message by sea...",
       "success": "Message sent by cannonball!",
       "error": "Couldn’t fire off the message, mate!"
     }
   },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Lightin' the spell...",
+        "success": "Spell be lit",
+        "error": "Couldn't light the spell. Try again, matey."
+      },
+      "deactivate": {
+        "loading": "Dousin' the spell...",
+        "success": "Spell be doused",
+        "error": "Couldn't douse the spell. Try again, matey."
+      }
+    },
+    "operations": {
+      "activateScript": "Light spell {{name}}",
+      "deactivateScript": "Douse spell {{name}}"
+    },
+    "status": {
+      "active": "Lit",
+      "paused": "Doused"
+    }
+  },
   "instanceSidebar": {
     "readDocumentation": "Read the captain's map",
-    "backToDashboard": "Back t' the main deck",
+    "backToDashboard": "Back to yer fleets",
     "deleteToast": {
       "loading": "Castin' off instance...",
       "success": "Hull cast adrift",
@@ -356,9 +401,9 @@
     "settingsGroup": "Chart Room",
     "extensionsGroup": "Add-ons 'n Trinkets",
     "botSettings": "Bot Shimmy",
-    "accountSettings": "Matey Account",
+    "accountSettings": "Scallywags",
     "metaSettings": "Fleet Chartin'",
-    "proxySettings": "Proxy Tides",
+    "proxySettings": "Proxies",
     "aiSettings": "Artificial Matey (AI)",
     "pathfindingSettings": "Pathfindin’ Charts",
     "discoverPlugins": "Pirate Add-ons",
@@ -424,10 +469,10 @@
     "instances": "Fleets",
     "access": "Boardin’ Rights",
     "settings": "Chart Room",
-    "proxySettings": "Proxy Tides",
+    "proxySettings": "Proxies",
     "overview": "Spyglass View",
     "users": "Crewmates",
-    "accountSettings": "Matey Account",
+    "accountSettings": "Scallywags",
     "metaSettings": "Fleet Chartin'",
     "discoverPlugins": "Pirate Add-ons",
     "adminScripts": "Script Scrolls",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API Gangway",
-      "description": "The SoulFire gRPC HTTP API lets ye command yer instances with web requests, aye.",
+      "description": "Use the SoulFire API to command yer fleets from yer own programs.",
       "publicAddress": "Charted API Port",
       "personalToken": "Yer own API Treasure Map (Token)",
       "securityWarning": "Keep yer API token buried, else someone steals yer wind and sails yer ship!",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Hoist a New Map!",
-      "placeholder": "Click 'Hoist a New Map' below",
+      "placeholder": "Pick \"Hoist a New Map!\" below, matey",
       "generating": "Drawin' treasure map...",
       "success": "Map made, aye!",
       "error": "Couldn’t draw ye a map, mate!",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Couldn't rename the fleet"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Couldn't update {{field}}, arr"
   },
   "auditLog": {
     "filterPlaceholder": "Filter the captain's log...",
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Sail t' Bot",
       "copyUsername": "Snatch Pirate Name",
-      "copyUuid": "Snatch UUID",
+      "copyUuid": "Copy sailor ID",
       "copyCoordinates": "Snatch Map Pieces (Coords)"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Aboard",
+    "botOffline": "Overboard"
+  },
+  "minecraftActions": {
+    "copyError": "Couldn't copy the words. Use HTTPS or allow the clipboard, matey.",
+    "openError": "Couldn't open the link.",
+    "popupBlocked": "Yer browser blocked the new tab, arr.",
+    "openLink": "Open link"
+  },
+  "instanceIcon": {
+    "label": "Flag",
+    "description": "The fleet's flag shown in the app."
+  },
+  "unknown": "Unknown waters",
+  "minecraftHead": "Minecraft noggin",
+  "textFile": "Text scroll"
 }

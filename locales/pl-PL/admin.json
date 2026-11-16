@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Użycie sterty",
         "threads": "Wątki",
-        "botsOnline": "Boty online",
+        "botsOnline": "Połączone boty",
         "uptime": "Czas działania"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Liczba wątków"
       },
       "aggregateBots": {
-        "title": "Boty online (wszystkie instancje)"
+        "title": "Połączone boty (wszystkie instancje)"
+      },
+      "legend": {
+        "process": "Proces",
+        "system": "System",
+        "used": "Używana",
+        "committed": "Zarezerwowana",
+        "max": "Maks.",
+        "total": "Łącznie",
+        "daemon": "Daemon",
+        "online": "Połączono"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Dodawanie użytkownika...",
-      "success": "Użytkownik został dodany!",
+      "success": "Użytkownik został dodany",
       "error": "Nie udało się dodać użytkownika"
     },
     "updateToast": {
       "loading": "Aktualizowanie użytkownika...",
-      "success": "Użytkownik został zaktualizowany!",
+      "success": "Użytkownik został zaktualizowany",
       "error": "Nie udało się zaktualizować użytkownika"
     },
     "removeToast": {
       "loading": "Usuwanie użytkowników...",
-      "success": "Użytkownicy zostali usunięci!",
+      "success": "Użytkownicy zostali usunięci",
       "error": "Nie udało się usunąć użytkowników"
     },
     "invalidateToast": {
       "loading": "Wylogowywanie użytkowników...",
-      "success": "Wylogowano użytkowników!",
+      "success": "Wylogowano użytkowników",
       "error": "Nie udało się wylogować użytkowników"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "E-mail",
       "role": "Role",
       "createdAt": "Utworzono",
-      "minIssuedAt": "Minimalne logowanie",
+      "minIssuedAt": "Sesje ważne od",
       "actions": "Akcje",
       "searchUsernames": "Szukaj nazw użytkowników...",
       "searchEmails": "Szukaj adresów e-mail...",
       "searchCreatedAts": "Wyszukaj daty utworzenia...",
-      "searchMinIssuedAts": "Wyszukaj minimalne daty logowania..."
+      "searchMinIssuedAts": "Szukaj dat sesji..."
     },
     "removeSelectedTooltip": "Usuń wybranych użytkowników",
     "logOutSelectedTooltip": "Wyloguj wybranych użytkowników",
@@ -125,6 +135,22 @@
       "editUser": "Edytuj użytkownika",
       "impersonate": "Podszyj się",
       "copyUserId": "Kopiuj ID użytkownika"
+    },
+    "removeDialog": {
+      "title_one": "Usunąć {{count}} użytkownika?",
+      "title_few": "Usunąć {{count}} użytkowników?",
+      "title_many": "Usunąć {{count}} użytkowników?",
+      "title_other": "Usunąć {{count}} użytkownika?",
+      "description": "To trwale usunie wybranych użytkowników i ich dostęp. Tej operacji nie można cofnąć.",
+      "confirm": "Usuń użytkowników"
+    },
+    "invalidateDialog": {
+      "title_one": "Wylogować {{count}} użytkownika?",
+      "title_few": "Wylogować {{count}} użytkowników?",
+      "title_many": "Wylogować {{count}} użytkowników?",
+      "title_other": "Wylogować {{count}} użytkownika?",
+      "description": "To zakończy wszystkie sesje i tokeny wybranych użytkowników. Będą musieli zalogować się ponownie.",
+      "confirm": "Wyloguj użytkowników"
     }
   }
 }

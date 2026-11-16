@@ -193,7 +193,9 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
           {currentValue ? (
             <div className="space-y-1">
               <div className="text-xs text-muted-foreground">
-                Current ({formatTime(currentValue.timestamp)}):
+                {t("scripts.editor.debug.current", {
+                  time: formatTime(currentValue.timestamp),
+                })}
               </div>
               <div className="font-mono text-sm break-all">
                 {formatValue(currentValue.value)}
@@ -203,7 +205,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
             <Empty className="border-0 p-2">
               <EmptyHeader className="gap-1">
                 <EmptyTitle className="text-xs text-muted-foreground">
-                  No value received yet
+                  {t("scripts.editor.debug.noValue")}
                 </EmptyTitle>
               </EmptyHeader>
             </Empty>

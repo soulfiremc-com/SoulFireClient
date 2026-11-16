@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "ヒープ使用量",
         "threads": "スレッド",
-        "botsOnline": "オンライン中のボット",
+        "botsOnline": "接続中のボット",
         "uptime": "稼働時間"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "スレッド数"
       },
       "aggregateBots": {
-        "title": "Botオンライン数（全インスタンス）"
+        "title": "接続中のボット（全インスタンス）"
+      },
+      "legend": {
+        "process": "プロセス",
+        "system": "システム",
+        "used": "使用中",
+        "committed": "確保済み",
+        "max": "最大",
+        "total": "合計",
+        "daemon": "デーモン",
+        "online": "接続済み"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "ユーザーを追加中...",
-      "success": "ユーザーが追加されました！",
+      "success": "ユーザーが追加されました",
       "error": "ユーザーの追加に失敗しました"
     },
     "updateToast": {
       "loading": "ユーザーを更新中...",
-      "success": "ユーザーが更新されました！",
+      "success": "ユーザーが更新されました",
       "error": "ユーザーの更新に失敗しました"
     },
     "removeToast": {
       "loading": "ユーザーを削除中...",
-      "success": "ユーザーを削除しました！",
+      "success": "ユーザーを削除しました",
       "error": "ユーザーの削除に失敗しました"
     },
     "invalidateToast": {
       "loading": "ユーザーをログアウト中...",
-      "success": "ユーザーがログアウトしました！",
+      "success": "ユーザーがログアウトしました",
       "error": "ユーザーのログアウトに失敗しました"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "メールアドレス",
       "role": "役割",
       "createdAt": "作成日",
-      "minIssuedAt": "最小ログイン日時",
+      "minIssuedAt": "セッションの有効開始日時",
       "actions": "操作",
       "searchUsernames": "ユーザー名で検索...",
       "searchEmails": "メールアドレスで検索...",
       "searchCreatedAts": "作成日の検索...",
-      "searchMinIssuedAts": "最小ログイン日の検索..."
+      "searchMinIssuedAts": "セッションの日付を検索..."
     },
     "removeSelectedTooltip": "選択したユーザーを削除",
     "logOutSelectedTooltip": "選択したユーザーをログアウト",
@@ -125,6 +135,16 @@
       "editUser": "ユーザーを編集する",
       "impersonate": "なりすます",
       "copyUserId": "ユーザーIDをコピー"
+    },
+    "removeDialog": {
+      "title_other": "{{count}} 人のユーザーを削除しますか？",
+      "description": "選択したユーザーとそのアクセス権を完全に削除します。この操作は元に戻せません。",
+      "confirm": "ユーザーを削除"
+    },
+    "invalidateDialog": {
+      "title_other": "{{count}} 人のユーザーをサインアウトしますか？",
+      "description": "選択したユーザーのすべてのセッションとトークンを終了します。ユーザーは再度サインインする必要があります。",
+      "confirm": "ユーザーをサインアウト"
     }
   }
 }

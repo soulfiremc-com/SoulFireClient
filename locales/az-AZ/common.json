@@ -113,18 +113,24 @@
         "submit": "URL-dən yüklə",
         "toast": {
           "loading": "Məlumatlar yüklənir...",
-          "success": "Məlumatlar yükləndi!",
+          "success": "Məlumatlar yükləndi",
           "error": "Məlumatları yükləmək alınmadı",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "İnstansiya silinsin?",
+      "description": "Bu, \"{{name}}\" və onun məlumatlarını həmişəlik silir. Bunu geri qaytarmaq olmur.",
+      "descriptionUnnamed": "Bu, bu instansiyanı və onun məlumatlarını həmişəlik silir. Bunu geri qaytarmaq olmur."
     }
   },
   "commandInput": {
     "placeholder": "Əmr daxil edin ('help' yazın siyahı üçün)",
     "emptySuggestions": "Təkliflər üçün yazmağa başlayın və ya Tab düyməsini basın.",
-    "noSuggestions": "Heç bir təklif mövcud deyil."
+    "noSuggestions": "Heç bir təklif mövcud deyil.",
+    "emptySuggestionsPrefix": "Təklif almaq üçün yazın və ya bu düyməni basın:"
   },
   "controls": {
     "start": "Başla",
@@ -166,7 +172,7 @@
     "restartCount_one": "{{count}} botu yenidən başladın",
     "restartCount_other": "{{count}} bot yenidən başladın"
   },
-  "botFleetSummary": "{{online}} onlayn · {{desired}} istənilən · {{total}} cəmi",
+  "botFleetSummary": "{{online}} qoşulub · {{desired}} işləməyə qurulub · {{total}} cəmi",
   "icon": {
     "invalidName": "Yanlış ikon adı: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Artan",
       "desc": "Azalan"
-    }
+    },
+    "openFilterMenu": "Filtr menyusunu aç",
+    "filterOperator": "Filtr operatoru",
+    "filterValue": "Filtr dəyəri",
+    "sortDirection": "Sıralama istiqaməti",
+    "selectJoinOperator": "Birləşdirmə operatoru seç",
+    "joinOperator": "Birləşdirmə operatoru",
+    "escapeKey": "Escape",
+    "selectDate": "Tarix seç",
+    "selectDateRange": "Tarix aralığı seç",
+    "clearFilter": "{{title}} filtrini təmizlə",
+    "clearFilters": "Filtrləri təmizlə",
+    "clear": "Təmizlə",
+    "from": "Başlanğıc",
+    "to": "Son",
+    "sortDirectionFor": "{{column}} üçün sıralama istiqaməti",
+    "minValue": "{{label}} üçün minimum dəyər",
+    "maxValue": "{{label}} üçün maksimum dəyər"
   },
   "pluginCard": {
     "version": "Versiya: {{version}}",
@@ -256,13 +279,13 @@
     "website": "Vebsayt"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}} yadda saxlanmadı",
     "namespacesNotFound": "Tənzimləmə bölmələri tapılmadı",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}} yadda saxlanmadı",
       "placeholder": "Yeni daxil əlavə edin...",
       "add": "Əlavə et",
       "remove": "Sil"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Yanlış ədəd",
       "description": "Dəyər {{min}} və {{max}} arasında olmalıdır"
-    }
+    },
+    "minMaxLegend": "Minimum və maksimum ayarları"
   },
   "terminal": {
     "noLogs": "Hələ heç bir log yoxdur. Log çıxışı yaratmaq üçün əmr verin.",
@@ -321,16 +345,37 @@
       "error": "{{device}}-ə qoşulmaq mümkün olmadı"
     },
     "noDevices": "Cihaz tapılmadı",
-    "broadcastLabel": "Yayım testi",
     "broadcastToast": {
       "loading": "Mesaj yayılır...",
-      "success": "Mesaj yayıldı!",
+      "success": "Mesaj yayıldı",
       "error": "Mesajı yaymaq mümkün olmadı"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Skript yandırılır...",
+        "success": "Skript yandırıldı",
+        "error": "Skripti yandırmaq alınmadı. Yenidən cəhd edin."
+      },
+      "deactivate": {
+        "loading": "Skript söndürülür...",
+        "success": "Skript söndürüldü",
+        "error": "Skripti söndürmək alınmadı. Yenidən cəhd edin."
+      }
+    },
+    "operations": {
+      "activateScript": "{{name}} skriptini yandır",
+      "deactivateScript": "{{name}} skriptini söndür"
+    },
+    "status": {
+      "active": "Açıq",
+      "paused": "Sönülü"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Sənədləri oxu",
-    "backToDashboard": "Panelə geri dön",
+    "backToDashboard": "İnstansiyalara qayıt",
     "deleteToast": {
       "loading": "Instansiya silinir...",
       "success": "Instansiya silindi",
@@ -352,13 +397,13 @@
     "overview": "İcmal",
     "terminal": "Terminal",
     "bots": "Botlar",
-    "audit-log": "Audit Log",
+    "audit-log": "Audit log",
     "settingsGroup": "Ayarlar",
     "extensionsGroup": "Uzantılar",
     "botSettings": "Bot ayarları",
-    "accountSettings": "Hesab ayarları",
+    "accountSettings": "Hesablar",
     "metaSettings": "İnstan ayarları",
-    "proxySettings": "Proxy ayarları",
+    "proxySettings": "Proksilər",
     "aiSettings": "Süni intellekt ayarları",
     "pathfindingSettings": "Yol tapma ayarları",
     "discoverPlugins": "Pluginlər",
@@ -418,16 +463,16 @@
   "pageName": {
     "terminal": "Terminal",
     "logs": "Jurnalları",
-    "audit-log": "Audit Log",
+    "audit-log": "Audit log",
     "bots": "Botlar",
     "botDetail": "Bot Təfərrüatları",
     "instances": "Instansiyalar",
     "access": "Giriş",
     "settings": "Ayarlar",
-    "proxySettings": "Proxy ayarları",
+    "proxySettings": "Proksilər",
     "overview": "İcmal",
     "users": "İstifadəçilər",
-    "accountSettings": "Hesab ayarları",
+    "accountSettings": "Hesablar",
     "metaSettings": "İnstan ayarları",
     "discoverPlugins": "Pluginlər",
     "adminScripts": "Skriptlər",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API Girişi",
-      "description": "SoulFire gRPC HTTP API instansları veb sorğularla idarə edir.",
+      "description": "İnstansiyaları öz proqramlarınızdan idarə etmək üçün SoulFire API-dən istifadə edin.",
       "publicAddress": "İctimai API ünvanı",
       "personalToken": "Şəxsi API Token",
       "securityWarning": "Şəxsi API tokeninizi gizli saxlayın. O, API-yə çıxış imkanı verir.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Token yarat",
-      "placeholder": "Aşağıdakı 'Token yarat' düyməsini klikləyin",
+      "placeholder": "Aşağıda \"Token yarat\" seçin",
       "generating": "Token yaradılır...",
       "success": "Token uğurla yaradıldı",
       "error": "Token yaratmaq olmadı",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "İnstansiya adını yeniləmək alınmadı"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}} yenilənmədi"
   },
   "auditLog": {
     "filterPlaceholder": "Audit loglarını filtr edin...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Skriptlər silinir...",
-      "success": "Skriptlər silindi!",
+      "success": "Skriptlər silindi",
       "error": "Skriptləri silmək mümkün olmadı"
     },
     "addToast": {
       "loading": "Skript əlavə olunur...",
-      "success": "Skript əlavə olundu!",
+      "success": "Skript əlavə olundu",
       "error": "Skript əlavə etmək mümkün olmadı"
     },
     "updateToast": {
       "loading": "Skript yenilənir...",
-      "success": "Skript yeniləndi!",
+      "success": "Skript yeniləndi",
       "error": "Skripti yeniləmək mümkün olmadı"
     },
     "restartToast": {
       "loading": "Skript yenidən başladılır...",
-      "success": "Skript yenidən başladıldı!",
+      "success": "Skript yenidən başladıldı",
       "error": "Skripti yenidən başlatmaq mümkün olmadı"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Bota get",
       "copyUsername": "İstifadəçi adını kopyala",
-      "copyUuid": "UUID-ni kopyala",
+      "copyUuid": "Profil ID-ni kopyala",
       "copyCoordinates": "Kordinatları kopyala"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Qoşulub",
+    "botOffline": "Bağlantı kəsilib"
+  },
+  "minecraftActions": {
+    "copyError": "Mətni kopyalamaq alınmadı. HTTPS istifadə edin və ya mübadilə buferinə icazə verin.",
+    "openError": "Keçidi açmaq alınmadı.",
+    "popupBlocked": "Brauzeriniz yeni vərəqi blokladı.",
+    "openLink": "Keçidi aç"
+  },
+  "instanceIcon": {
+    "label": "İkon",
+    "description": "Tətbiqdə göstərilən instansiya ikonu."
+  },
+  "unknown": "Naməlum",
+  "minecraftHead": "Minecraft başı",
+  "textFile": "Mətn faylı"
 }

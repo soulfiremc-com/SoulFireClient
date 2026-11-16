@@ -494,7 +494,7 @@ test("bot and script operations require control permissions and never include em
   assert.equal(
     commands.find((command) => command.id === `script:${current.id}:script-1`)
       ?.status?.label,
-    "Paused",
+    "Off",
   );
   assert(
     !commands.some(

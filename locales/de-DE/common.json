@@ -113,18 +113,24 @@
         "submit": "Von URL laden",
         "toast": {
           "loading": "Daten werden heruntergeladen...",
-          "success": "Daten geladen!",
+          "success": "Daten geladen",
           "error": "Fehler beim Herunterladen der Daten",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Instanz löschen?",
+      "description": "Dies löscht „{{name}}“ und die zugehörigen Daten dauerhaft. Das lässt sich nicht rückgängig machen.",
+      "descriptionUnnamed": "Dies löscht diese Instanz und ihre Daten dauerhaft. Das lässt sich nicht rückgängig machen."
     }
   },
   "commandInput": {
     "placeholder": "Befehl eingeben (\"help\" für Liste tippen)",
     "emptySuggestions": "Tippen Sie, um Vorschläge anzufordern, oder drücken Sie die Tabulatortaste.",
-    "noSuggestions": "Keine Vorschläge verfügbar."
+    "noSuggestions": "Keine Vorschläge verfügbar.",
+    "emptySuggestionsPrefix": "Tippe, um Vorschläge anzufordern, oder drücke"
   },
   "controls": {
     "start": "Start",
@@ -166,7 +172,7 @@
     "restartCount_one": "Starte {{count}} Bot neu",
     "restartCount_other": "Starte {{count}} Bots neu"
   },
-  "botFleetSummary": "{{online}} online · {{desired}} gewünscht · {{total}} gesamt",
+  "botFleetSummary": "{{online}} verbunden · {{desired}} sollen laufen · {{total}} gesamt",
   "icon": {
     "invalidName": "Ungültiger Symbolname: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "Aufsteigend",
       "desc": "Absteigend"
-    }
+    },
+    "openFilterMenu": "Filtermenü öffnen",
+    "filterOperator": "Filteroperator",
+    "filterValue": "Filterwert",
+    "sortDirection": "Sortierrichtung",
+    "selectJoinOperator": "Verknüpfungsoperator auswählen",
+    "joinOperator": "Verknüpfungsoperator",
+    "escapeKey": "Escape",
+    "selectDate": "Datum auswählen",
+    "selectDateRange": "Zeitraum auswählen",
+    "clearFilter": "Filter „{{title}}“ löschen",
+    "clearFilters": "Filter löschen",
+    "clear": "Löschen",
+    "from": "Von",
+    "to": "Bis",
+    "sortDirectionFor": "Sortierrichtung für {{column}}",
+    "minValue": "Mindestwert für {{label}}",
+    "maxValue": "Höchstwert für {{label}}"
   },
   "pluginCard": {
     "version": "Version: {{version}}",
@@ -256,13 +279,13 @@
     "website": "Webseite"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}} konnte nicht gespeichert werden",
     "namespacesNotFound": "Einstellungs-Namensräume nicht gefunden",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}} konnte nicht gespeichert werden",
       "placeholder": "Neuen Eintrag hinzufügen...",
       "add": "Hinzufügen",
       "remove": "Entfernen"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "Ungültige Zahl",
       "description": "Der Wert muss zwischen {{min}} und {{max}} liegen"
-    }
+    },
+    "minMaxLegend": "Mindest- und Höchstwert"
   },
   "terminal": {
     "noLogs": "Noch keine Protokolle vorhanden. Führen Sie einen Befehl aus, um Protokollausgaben zu erzeugen.",
@@ -321,16 +345,37 @@
       "error": "Verbindung zu {{device}} fehlgeschlagen"
     },
     "noDevices": "Keine Geräte gefunden",
-    "broadcastLabel": "Übertragungstest",
     "broadcastToast": {
       "loading": "Nachricht wird übertragen...",
-      "success": "Nachricht verbreitet!",
+      "success": "Nachricht verbreitet",
       "error": "Senden der Nachricht fehlgeschlagen"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Skript wird eingeschaltet...",
+        "success": "Skript eingeschaltet",
+        "error": "Das Skript konnte nicht eingeschaltet werden. Versuche es erneut."
+      },
+      "deactivate": {
+        "loading": "Skript wird ausgeschaltet...",
+        "success": "Skript ausgeschaltet",
+        "error": "Das Skript konnte nicht ausgeschaltet werden. Versuche es erneut."
+      }
+    },
+    "operations": {
+      "activateScript": "Skript {{name}} einschalten",
+      "deactivateScript": "Skript {{name}} ausschalten"
+    },
+    "status": {
+      "active": "An",
+      "paused": "Aus"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Dokumentation lesen",
-    "backToDashboard": "Zurück zum Dashboard",
+    "backToDashboard": "Zurück zu den Instanzen",
     "deleteToast": {
       "loading": "Instanz wird gelöscht...",
       "success": "Instanz gelöscht",
@@ -356,9 +401,9 @@
     "settingsGroup": "Einstellungen",
     "extensionsGroup": "Erweiterungen",
     "botSettings": "Bot Einstellungen",
-    "accountSettings": "Konto Einstellungen",
+    "accountSettings": "Konten",
     "metaSettings": "Instanzeinstellungen",
-    "proxySettings": "Proxy Einstellungen",
+    "proxySettings": "Proxies",
     "aiSettings": "KI Einstellungen",
     "pathfindingSettings": "Pathfinding-Einstellungen",
     "discoverPlugins": "Plugins",
@@ -424,10 +469,10 @@
     "instances": "Instanzen",
     "access": "Zugriff",
     "settings": "Einstellungen",
-    "proxySettings": "Proxy Einstellungen",
+    "proxySettings": "Proxies",
     "overview": "Übersicht",
     "users": "Nutzer",
-    "accountSettings": "Konto Einstellungen",
+    "accountSettings": "Konten",
     "metaSettings": "Instanzeinstellungen",
     "discoverPlugins": "Plugins",
     "adminScripts": "Skripte",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API-Zugriff",
-      "description": "Die SoulFire gRPC HTTP API verwaltet Instanzen über Webanfragen.",
+      "description": "Verwalte Instanzen mit der SoulFire-API aus deinen eigenen Programmen.",
       "publicAddress": "Öffentliche API-Adresse",
       "personalToken": "Persönliches API-Token",
       "securityWarning": "Bewahren Sie Ihren persönlichen API-Token geheim auf. Er gewährt Zugriff auf die API.",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "Token generieren",
-      "placeholder": "Unten auf \"Token generieren\" klicken",
+      "placeholder": "Wähle unten „Token generieren“",
       "generating": "Token wird generiert...",
       "success": "Token erfolgreich generiert",
       "error": "Token konnte nicht generiert werden",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Der Instanzname konnte nicht aktualisiert werden"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}} konnte nicht aktualisiert werden"
   },
   "auditLog": {
     "filterPlaceholder": "Audit-Logs filtern...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "Skripte werden entfernt...",
-      "success": "Skripte entfernt!",
+      "success": "Skripte entfernt",
       "error": "Fehler beim Entfernen der Skripte"
     },
     "addToast": {
       "loading": "Skript wird hinzugefügt...",
-      "success": "Skript hinzugefügt!",
+      "success": "Skript hinzugefügt",
       "error": "Fehler beim Hinzufügen des Skripts"
     },
     "updateToast": {
       "loading": "Skript wird aktualisiert...",
-      "success": "Skript aktualisiert!",
+      "success": "Skript aktualisiert",
       "error": "Fehler beim Aktualisieren des Skripts"
     },
     "restartToast": {
       "loading": "Skript wird neu gestartet...",
-      "success": "Skript neu gestartet!",
+      "success": "Skript neu gestartet",
       "error": "Fehler beim Neustart des Skripts"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "Zum Bot gehen",
       "copyUsername": "Benutzernamen kopieren",
-      "copyUuid": "UUID kopieren",
+      "copyUuid": "Profil-ID kopieren",
       "copyCoordinates": "Koordinaten kopieren"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Verbunden",
+    "botOffline": "Getrennt"
+  },
+  "minecraftActions": {
+    "copyError": "Text konnte nicht kopiert werden. Nutze HTTPS oder erlaube den Zugriff auf die Zwischenablage.",
+    "openError": "Der Link konnte nicht geöffnet werden.",
+    "popupBlocked": "Dein Browser hat den neuen Tab blockiert.",
+    "openLink": "Link öffnen"
+  },
+  "instanceIcon": {
+    "label": "Symbol",
+    "description": "Das Symbol der Instanz in der App."
+  },
+  "unknown": "Unbekannt",
+  "minecraftHead": "Minecraft-Kopf",
+  "textFile": "Textdatei"
 }

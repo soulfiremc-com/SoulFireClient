@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Invalid input: expected string, received undefined",
-    "null": "Invalid input: expected string, received null",
-    "number": "Invalid input: expected string, received number",
-    "boolean": "Invalid input: expected string, received boolean",
-    "array": "Invalid input: expected string, received array",
-    "object": "Invalid input: expected string, received object",
-    "nan": "Invalid input: expected string, received NaN",
-    "infinity": "Invalid input: expected string, received number"
+    "undefined": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "null": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "number": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "boolean": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "array": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "object": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "nan": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
+    "infinity": ".ǝnlɐʌ ɐ ɹǝʇuƎ"
   },
   "number": {
-    "undefined": "Invalid input: expected number, received undefined",
-    "null": "Invalid input: expected number, received null",
-    "string": "Invalid input: expected number, received string",
-    "boolean": "Invalid input: expected number, received boolean",
-    "array": "Invalid input: expected number, received array",
-    "object": "Invalid input: expected number, received object",
-    "nan": "Invalid input: expected number, received NaN",
-    "infinity": "Invalid input: expected number, received number"
+    "undefined": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "null": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "string": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "boolean": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "array": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "object": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "nan": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
+    "infinity": ".ɹǝqɯnu ɐ ɹǝʇuƎ"
   },
   "object": {
-    "undefined": "Invalid input: expected object, received undefined",
-    "null": "Invalid input: expected object, received null",
-    "number": "Invalid input: expected object, received number",
-    "string": "Invalid input: expected object, received string",
-    "boolean": "Invalid input: expected object, received boolean",
-    "array": "Invalid input: expected object, received array",
-    "nan": "Invalid input: expected object, received NaN",
-    "infinity": "Invalid input: expected object, received number"
+    "undefined": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "null": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "number": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "string": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "boolean": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "array": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "nan": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
+    "infinity": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ"
   },
-  "email": "Invalid email address",
-  "url": "Invalid URL",
-  "jwt": "Invalid JWT",
-  "emailTooLong": "Too big: expected string to have <=255 characters",
-  "jarSource": "Invalid option: expected one of \"official\"|\"custom\"",
-  "generationMode": "Invalid option: expected one of \"IGNORE_EXISTING\"|\"REPLACE_EXISTING\"|\"REPLACE_ALL\"",
-  "userRole": "Invalid option: expected one of 0|1"
+  "email": ".ssǝɹppɐ lᴉɐɯǝ pᴉlɐʌ ɐ ɹǝʇuƎ",
+  "url": ".˥ᴚ∩ pᴉlɐʌ ɐ ɹǝʇuƎ",
+  "jwt": ".uǝʞoʇ pᴉlɐʌ ɐ ɹǝʇuƎ",
+  "emailTooLong": ".ɹǝʍǝɟ ɹo sɹǝʇɔɐɹɐɥɔ 552 ǝs∩",
+  "jarSource": ".ɹɐɐ ɯoʇsnɔ ɐ ɹo ɹǝʌɹǝs lɐᴉɔᴉɟɟo ǝɥʇ ǝsooɥↃ",
+  "generationMode": ".sʇunoɔɔɐ ƃuᴉʇsᴉxǝ ǝlpuɐɥ oʇ ʍoɥ ǝsooɥↃ",
+  "userRole": ".ǝloɹ ɐ ǝsooɥↃ"
 }

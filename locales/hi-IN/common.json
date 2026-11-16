@@ -113,18 +113,24 @@
         "submit": "URL से लोड करें",
         "toast": {
           "loading": "डेटा डाउनलोड हो रहा है...",
-          "success": "डेटा लोड हो गया!",
+          "success": "डेटा लोड हो गया",
           "error": "डेटा डाउनलोड करने में विफल",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "इंस्टेंस हटाएँ?",
+      "description": "इससे \"{{name}}\" और उसका डेटा स्थायी रूप से हट जाता है। इसे पूर्ववत नहीं किया जा सकता।",
+      "descriptionUnnamed": "इससे यह इंस्टेंस और उसका डेटा स्थायी रूप से हट जाता है। इसे पूर्ववत नहीं किया जा सकता।"
     }
   },
   "commandInput": {
     "placeholder": "कमान्ड दर्ज करें (सूची के लिए 'help' टाइप करें)",
     "emptySuggestions": "सुझाव प्राप्त करने के लिए टाइप करें या Tab दबाएँ।",
-    "noSuggestions": "कोई सुझाव उपलब्ध नहीं हैं।"
+    "noSuggestions": "कोई सुझाव उपलब्ध नहीं हैं।",
+    "emptySuggestionsPrefix": "सुझाव पाने के लिए टाइप करें या दबाएँ"
   },
   "controls": {
     "start": "प्रारंभ करें",
@@ -166,7 +172,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} ऑनलाइन · {{desired}} इच्छित · {{total}} कुल",
+  "botFleetSummary": "{{online}} कनेक्टेड · {{desired}} चलने के लिए सेट · {{total}} कुल",
   "icon": {
     "invalidName": "अमान्य आइकन नाम: {{name}}"
   },
@@ -247,7 +253,24 @@
     "sortOrders": {
       "asc": "आरोही",
       "desc": "अवरोही"
-    }
+    },
+    "openFilterMenu": "फ़िल्टर मेनू खोलें",
+    "filterOperator": "फ़िल्टर ऑपरेटर",
+    "filterValue": "फ़िल्टर मान",
+    "sortDirection": "क्रम की दिशा",
+    "selectJoinOperator": "जोड़ने वाला ऑपरेटर चुनें",
+    "joinOperator": "जोड़ने वाला ऑपरेटर",
+    "escapeKey": "Escape",
+    "selectDate": "तारीख चुनें",
+    "selectDateRange": "तारीख की सीमा चुनें",
+    "clearFilter": "{{title}} फ़िल्टर साफ़ करें",
+    "clearFilters": "फ़िल्टर साफ़ करें",
+    "clear": "साफ़ करें",
+    "from": "से",
+    "to": "तक",
+    "sortDirectionFor": "{{column}} के लिए क्रम की दिशा",
+    "minValue": "{{label}} का न्यूनतम मान",
+    "maxValue": "{{label}} का अधिकतम मान"
   },
   "pluginCard": {
     "version": "संस्करण: {{version}}",
@@ -256,13 +279,13 @@
     "website": "वेबसाइट"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}} सहेजा नहीं जा सका",
     "namespacesNotFound": "सेटिंग्स नामस्पेस नहीं मिला",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}} सहेजा नहीं जा सका",
       "placeholder": "नया प्रविष्टि जोड़ें...",
       "add": "जोड़ें",
       "remove": "हटाएँ"
@@ -273,7 +296,8 @@
     "invalidNumberToast": {
       "title": "अमान्य संख्या",
       "description": "मान {{min}} से {{max}} के बीच होना चाहिए"
-    }
+    },
+    "minMaxLegend": "न्यूनतम और अधिकतम सेटिंग्स"
   },
   "terminal": {
     "noLogs": "अभी तक कोई लॉग नहीं हैं। लॉग आउटपुट बनाने के लिए कोई कमांड चलाएँ।",
@@ -321,16 +345,37 @@
       "error": "{{device}} से कनेक्ट करने में विफल"
     },
     "noDevices": "कोई डिवाइस नहीं मिला",
-    "broadcastLabel": "प्रसारण परीक्षण",
     "broadcastToast": {
       "loading": "संदेश प्रसारित हो रहा है...",
-      "success": "संदेश प्रसारित हुआ!",
+      "success": "संदेश प्रसारित हुआ",
       "error": "संदेश प्रसारित करने में विफल"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "स्क्रिप्ट चालू हो रही है...",
+        "success": "स्क्रिप्ट चालू हुई",
+        "error": "स्क्रिप्ट चालू नहीं हो सकी। फिर से कोशिश करें।"
+      },
+      "deactivate": {
+        "loading": "स्क्रिप्ट बंद हो रही है...",
+        "success": "स्क्रिप्ट बंद हुई",
+        "error": "स्क्रिप्ट बंद नहीं हो सकी। फिर से कोशिश करें।"
+      }
+    },
+    "operations": {
+      "activateScript": "स्क्रिप्ट {{name}} चालू करें",
+      "deactivateScript": "स्क्रिप्ट {{name}} बंद करें"
+    },
+    "status": {
+      "active": "चालू",
+      "paused": "बंद"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "दस्तावेज़ पढ़ें",
-    "backToDashboard": "डैशबोर्ड पर वापस जाएँ",
+    "backToDashboard": "इंस्टेंस पर वापस जाएँ",
     "deleteToast": {
       "loading": "इंस्टेंस हटाई जा रही है...",
       "success": "इंस्टेंस हटाई गई",
@@ -356,9 +401,9 @@
     "settingsGroup": "सेटिंग्स",
     "extensionsGroup": "एक्सटेंशनस्",
     "botSettings": "बॉट सेटिंग्स",
-    "accountSettings": "अकाउंट सेटिंग्स",
+    "accountSettings": "खाते",
     "metaSettings": "इंस्टेंस सेटिंग्स",
-    "proxySettings": "प्रॉक्सी सेटिंग्स",
+    "proxySettings": "प्रॉक्सी",
     "aiSettings": "एआई सेटिंग्स",
     "pathfindingSettings": "पाथफाइंडिंग सेटिंग्स",
     "discoverPlugins": "प्लगइन्स",
@@ -424,10 +469,10 @@
     "instances": "इंस्टेंस",
     "access": "पहुँच",
     "settings": "सेटिंग्स",
-    "proxySettings": "प्रॉक्सी सेटिंग्स",
+    "proxySettings": "प्रॉक्सी",
     "overview": "अवलोकन",
     "users": "उपयोगकर्ता",
-    "accountSettings": "अकाउंट सेटिंग्स",
+    "accountSettings": "खाते",
     "metaSettings": "इंस्टेंस सेटिंग्स",
     "discoverPlugins": "प्लगइन्स",
     "adminScripts": "स्क्रिप्ट्स",
@@ -444,7 +489,7 @@
     },
     "api": {
       "title": "API एक्सेस",
-      "description": "SoulFire gRPC HTTP API वेब अनुरोधों के साथ इंस्टेंस प्रबंधित करता है।",
+      "description": "अपने प्रोग्राम से इंस्टेंस प्रबंधित करने के लिए SoulFire API का उपयोग करें।",
       "publicAddress": "सार्वजनिक API पता",
       "personalToken": "व्यक्तिगत API टोकन",
       "securityWarning": "अपने व्यक्तिगत API टोकन को गुप्त रखें। यह API तक पहुँच के लिए अनुमति देता है।",
@@ -452,7 +497,7 @@
     },
     "token": {
       "generate": "टोकन जनरेट करें",
-      "placeholder": "नीचे 'टोकन जनरेट करें' पर क्लिक करें",
+      "placeholder": "नीचे \"टोकन जनरेट करें\" चुनें",
       "generating": "टोकन जेनरेट किया जा रहा है...",
       "success": "टोकन सफलतापूर्वक जेनरेट किया गया",
       "error": "टोकन जेनरेट करने में विफल",
@@ -481,9 +526,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "इंस्टेंस का नाम अपडेट नहीं हो सका"
   },
   "userSettings": {
     "avatar": {
@@ -501,8 +545,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}} अपडेट नहीं हो सका"
   },
   "auditLog": {
     "filterPlaceholder": "ऑडिट लॉग छाँटें...",
@@ -558,22 +601,22 @@
     },
     "removeToast": {
       "loading": "स्क्रिप्ट्स हटाई जा रही हैं...",
-      "success": "स्क्रिप्ट्स हटाई गईं!",
+      "success": "स्क्रिप्ट्स हटाई गईं",
       "error": "स्क्रिप्ट्स हटाने में विफल"
     },
     "addToast": {
       "loading": "स्क्रिप्ट जोड़ी जा रही है...",
-      "success": "स्क्रिप्ट जोड़ी गई!",
+      "success": "स्क्रिप्ट जोड़ी गई",
       "error": "स्क्रिप्ट जोड़ने में विफल"
     },
     "updateToast": {
       "loading": "स्क्रिप्ट अपडेट हो रही है...",
-      "success": "स्क्रिप्ट अपडेट की गई!",
+      "success": "स्क्रिप्ट अपडेट की गई",
       "error": "स्क्रिप्ट अपडेट करने में विफल"
     },
     "restartToast": {
       "loading": "स्क्रिप्ट पुनः आरंभ हो रही है...",
-      "success": "स्क्रिप्ट पुनः आरंभ हुई!",
+      "success": "स्क्रिप्ट पुनः आरंभ हुई",
       "error": "स्क्रिप्ट पुनः आरंभ करने में विफल"
     },
     "table": {
@@ -598,7 +641,7 @@
     "bot": {
       "goToBot": "बोट पर जाएँ",
       "copyUsername": "यूज़रनेम कॉपी करें",
-      "copyUuid": "UUID कॉपी करें",
+      "copyUuid": "प्रोफ़ाइल ID कॉपी करें",
       "copyCoordinates": "निर्देशांक कॉपी करें"
     },
     "plugin": {
@@ -654,5 +697,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "कनेक्टेड",
+    "botOffline": "डिस्कनेक्टेड"
+  },
+  "minecraftActions": {
+    "copyError": "टेक्स्ट कॉपी नहीं हो सका। HTTPS का उपयोग करें या क्लिपबोर्ड की अनुमति दें।",
+    "openError": "लिंक नहीं खुल सका।",
+    "popupBlocked": "आपके ब्राउज़र ने नया टैब रोक दिया।",
+    "openLink": "लिंक खोलें"
+  },
+  "instanceIcon": {
+    "label": "आइकन",
+    "description": "ऐप में दिखने वाला इंस्टेंस का आइकन।"
+  },
+  "unknown": "अज्ञात",
+  "minecraftHead": "Minecraft सिर",
+  "textFile": "टेक्स्ट फ़ाइल"
 }

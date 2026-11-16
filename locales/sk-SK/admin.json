@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Použitá halda",
         "threads": "Vlákna",
-        "botsOnline": "Boti online",
+        "botsOnline": "Pripojení boti",
         "uptime": "Doba prevádzky"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Počet vlákien"
       },
       "aggregateBots": {
-        "title": "Boti online (všetky inštancie)"
+        "title": "Pripojení boti (všetky inštancie)"
+      },
+      "legend": {
+        "process": "Proces",
+        "system": "Systém",
+        "used": "Využité",
+        "committed": "Vyhradené",
+        "max": "Max.",
+        "total": "Spolu",
+        "daemon": "Daemon",
+        "online": "Pripojené"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Pridávanie používateľa...",
-      "success": "Používateľ pridaný!",
+      "success": "Používateľ pridaný",
       "error": "Nepodarilo sa pridať používateľa"
     },
     "updateToast": {
       "loading": "Aktualizácia používateľa...",
-      "success": "Používateľ bol aktualizovaný!",
+      "success": "Používateľ bol aktualizovaný",
       "error": "Nepodarilo sa aktualizovať používateľa"
     },
     "removeToast": {
       "loading": "Odstraňovanie používateľov...",
-      "success": "Používatelia boli odstránení!",
+      "success": "Používatelia boli odstránení",
       "error": "Nepodarilo sa odstrániť používateľov"
     },
     "invalidateToast": {
       "loading": "Odhlasovanie používateľov...",
-      "success": "Používatelia boli odhlásení!",
+      "success": "Používatelia boli odhlásení",
       "error": "Nepodarilo sa odhlásiť používateľov"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "E-mail",
       "role": "Rola",
       "createdAt": "Vytvorené",
-      "minIssuedAt": "Min. prihlásenie",
+      "minIssuedAt": "Relácie platné od",
       "actions": "Akcie",
       "searchUsernames": "Hľadať používateľské mená...",
       "searchEmails": "Hľadať e‑mailové adresy...",
       "searchCreatedAts": "Hľadať dátumy vytvorenia...",
-      "searchMinIssuedAts": "Hľadať minimálne dátumy prihlásenia..."
+      "searchMinIssuedAts": "Hľadať dátumy relácií..."
     },
     "removeSelectedTooltip": "Odstrániť vybraných používateľov",
     "logOutSelectedTooltip": "Odhlásiť vybraných používateľov",
@@ -125,6 +135,22 @@
       "editUser": "Upraviť používateľa",
       "impersonate": "Imitovať",
       "copyUserId": "Kopírovať ID používateľa"
+    },
+    "removeDialog": {
+      "title_one": "Odstrániť {{count}} používateľa?",
+      "title_few": "Odstrániť {{count}} používateľov?",
+      "title_many": "Odstrániť {{count}} používateľa?",
+      "title_other": "Odstrániť {{count}} používateľov?",
+      "description": "Týmto sa vybraní používatelia a ich prístup natrvalo odstránia. Túto akciu nemožno vrátiť späť.",
+      "confirm": "Odstrániť používateľov"
+    },
+    "invalidateDialog": {
+      "title_one": "Odhlásiť {{count}} používateľa?",
+      "title_few": "Odhlásiť {{count}} používateľov?",
+      "title_many": "Odhlásiť {{count}} používateľa?",
+      "title_other": "Odhlásiť {{count}} používateľov?",
+      "description": "Týmto sa ukončia všetky relácie a tokeny vybraných používateľov. Budú sa musieť prihlásiť znova.",
+      "confirm": "Odhlásiť používateľov"
     }
   }
 }

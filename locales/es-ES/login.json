@@ -44,7 +44,24 @@
         "placeholder": "Tus argumentos JVM aquí"
       },
       "back": "Volver",
-      "start": "Iniciar"
+      "start": "Iniciar",
+      "jar": {
+        "title": "Jar del servidor",
+        "official": "Oficial",
+        "custom": "Personalizado",
+        "officialTitle": "Servidor oficial de SoulFire",
+        "customTitle": "Jar de servidor personalizado",
+        "officialDescription": "Descarga y verifica la versión de SoulFire correspondiente.",
+        "customDescription": "Ejecuta un jar importado. SoulFire no lo verifica ni lo actualiza.",
+        "import": "Importar jar",
+        "importSuccess": "{{name}} importado",
+        "importError": "No se pudo importar el jar personalizado de SoulFire",
+        "selectCustomFirst": "Importa y selecciona un jar personalizado antes de iniciar.",
+        "dialog": {
+          "filter": "Archivo Java",
+          "title": "Seleccionar el jar del servidor de SoulFire"
+        }
+      }
     },
     "mobile": {
       "description": "Para ejecutar el servidor integrado en el móvil, necesitas completar algunos pasos manuales.",

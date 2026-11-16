@@ -119,12 +119,12 @@
       "network": "Сетевой адрес",
       "unix": "Юникс-сокет"
     },
-    "getProxies": "Получить прокси",
+    "getProxies": "Поставщики прокси",
     "addProxies": "Добавить прокси",
     "filterPlaceholder": "Фильтр прокси...",
     "listImportToast": {
       "loading": "Импорт прокси...",
-      "success": "Импортировано {{count}} прокси!",
+      "success": "Импортировано {{count}} прокси",
       "error": "Не удалось импортировать прокси",
       "noProxies": "Нет прокси для импорта"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Удаление прокси...",
-      "success": "Удаленно {{count}} прокси!",
+      "success": "Удаленно {{count}} прокси",
       "error": "Не удалось удалить прокси"
     },
     "checkToast": {
       "loading": "Проверка прокси... {{checked}}/{{total}} (Успешно: {{success}} не удалось: {{failed}})",
-      "success": "Удалено {{count}} сломанных прокси серверов!",
-      "error": "Не удалось проверить прокси"
+      "success": "Удалено {{count}} сломанных прокси серверов",
+      "error": "Не удалось проверить прокси",
+      "successKept": "{{failed}} из {{total}} прокси не прошли проверку. Ни один прокси не удалён."
     },
     "checkDialog": {
       "title": "Проверить прокси",
-      "description": "Вы собираетесь проверить {{count}} прокси. Недействительные прокси будут автоматически удалены.",
-      "confirm": "Начать проверку"
+      "description": "Вы собираетесь проверить прокси: {{count}}.",
+      "confirm": "Начать проверку",
+      "removeFailed": "Удалять прокси, не прошедшие проверку",
+      "removeFailedHelp": "Прокси может не пройти проверку из-за временной проблемы с сетью. Снимите этот флажок, чтобы сохранить все прокси и только увидеть результат."
     },
     "invalidFormat": "Неверный формат прокси",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Проверить импортированные прокси?",
-      "description": "Вы импортировали {{count}} прокси. Проверить их сейчас? SoulFire удаляет неработающие прокси автоматически.",
+      "description": "Импортировано прокси: {{count}}. Проверить их сейчас?",
       "confirm": "Проверить прокси",
       "skip": "Пропустить"
     },
@@ -186,10 +189,20 @@
       "socks4": "Только SOCKS4 (плоский)",
       "socks5": "Только SOCKS5 (плоский)",
       "noProxies": "Нет прокси для экспорта"
-    }
+    },
+    "removeDialog": {
+      "title_one": "Удалить {{count}} прокси?",
+      "title_few": "Удалить {{count}} прокси?",
+      "title_many": "Удалить {{count}} прокси?",
+      "title_other": "Удалить {{count}} прокси?",
+      "description": "Это удалит из этого экземпляра выбранные прокси и их учётные данные. Отменить это нельзя.",
+      "confirm": "Удалить прокси"
+    },
+    "showPassword": "Показать пароль",
+    "hidePassword": "Скрыть пароль"
   },
   "account": {
-    "getAccounts": "Получить аккаунты",
+    "getAccounts": "Поставщики аккаунтов",
     "addAccounts": "Добавить аккаунты",
     "generateAccounts": "Сгенерировать аккаунты",
     "filterPlaceholder": "Фильтр учетных записей...",
@@ -197,7 +210,7 @@
       "loading": "Импорт аккаунтов... {{checked}}/{{total}} (Успешно: {{success}} не удалось: {{failed}})",
       "allFailed": "Не удалось импортировать ни одного аккаунта",
       "someFailed": "Импортировано {{count}} аккаунтов, не удалось импортировать {{failed}} аккаунтов",
-      "noneFailed": "Импортировано {{count}} аккаунтов!",
+      "noneFailed": "Импортировано {{count}} аккаунтов",
       "error": "Не удалось импортировать аккаунты",
       "noAccounts": "Нет аккаунтов для импорта"
     },
@@ -215,7 +228,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Импорт аккаунта...",
-      "success": "Аккаунт импортирован!",
+      "success": "Аккаунт импортирован",
       "error": "Не удалось импортировать аккаунт"
     },
     "generate": {
@@ -232,9 +245,9 @@
       "submit": "Сгенерировать",
       "generating": "Генерация...",
       "progress": "Генерация аккаунтов... {{checked}}/{{total}} (Успешно: {{success}} Не удалось: {{failed}})",
-      "success": "Сгенерировано {{count}} аккаунтов!",
+      "success": "Сгенерировано {{count}} аккаунтов",
       "allFailed": "Не удалось сгенерировать ни одного аккаунта",
-      "allExist": "Все имена пользователей уже существуют. Включите «Перезаписать существующие аккаунты», чтобы сгенерировать их заново.",
+      "allExist": "Все имена пользователей уже существуют. Выберите «Заменить существующие», чтобы сгенерировать их заново.",
       "error": "Не удалось сгенерировать аккаунты",
       "invalidAmount": "Пожалуйста, введите корректное количество (минимум 1)",
       "missingPlaceholder": "В формате имени должен быть заполнитель %d"
@@ -245,7 +258,7 @@
       "offline": "Офлайн",
       "microsoftCredentials": "Учетные данные Microsoft",
       "microsoftDeviceCode": "Код устройства Microsoft",
-      "microsoftRefreshToken": "Microsoft Refresh Token",
+      "microsoftRefreshToken": "Microsoft refresh token",
       "microsoftCookies": "Файлы cookie Microsoft",
       "microsoftAccessToken": "Токен доступа Microsoft",
       "theAltening": "Токен TheAltening",
@@ -257,12 +270,12 @@
     },
     "removeToast": {
       "loading": "Удаление аккаунтов...",
-      "success": "Удалено {{count}} аккаунтов!",
+      "success": "Удалено {{count}} аккаунтов",
       "error": "Не удалось удалить аккаунты"
     },
     "table": {
       "type": "Тип",
-      "profileId": "UUID",
+      "profileId": "ID профиля",
       "lastKnownName": "Имя пользователя",
       "searchProfileIds": "Поиск ID профиля...",
       "searchLastKnownNames": "Поиск последних известных имён...",
@@ -270,7 +283,7 @@
     },
     "removeSelectedTooltip": "Удалить выбранные аккаунты",
     "contextMenu": {
-      "openConfig": "Открыть конфигурацию",
+      "openConfig": "Открыть настройки",
       "openMetadata": "Открыть метаданные",
       "copyProfileId": "Скопировать ID профиля",
       "copyUsername": "Скопировать имя пользователя"
@@ -294,7 +307,23 @@
       "matchesInheritedValue": "Совпадает с унаследованным значением",
       "instanceValue": "Значение экземпляра",
       "defaultValue": "Значение по умолчанию",
-      "resetOverride": "Сбросить переопределение"
+      "resetOverride": "Сбросить переопределение",
+      "value": {
+        "notSet": "Не задано",
+        "on": "Вкл.",
+        "off": "Выкл.",
+        "empty": "Пусто",
+        "entries_one": "{{count}} запись",
+        "entries_few": "{{count}} записи",
+        "entries_many": "{{count}} записей",
+        "entries_other": "{{count}} записи",
+        "range": "Диапазон"
+      },
+      "source": {
+        "bot": "Переопределено для бота",
+        "instance": "Унаследовано от экземпляра",
+        "default": "Значение по умолчанию"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Аутентификация с помощью кода устройства",
@@ -341,7 +370,7 @@
       "keyPlaceholder": "Ключ",
       "valuePlaceholder": "Значение (JSON)",
       "noEntries": "Нет метаданных. Добавьте запись выше.",
-      "loadError": "",
+      "loadError": "Не удалось загрузить метаданные",
       "loadErrorDescription": "",
       "retryLoad": "Повторить",
       "addSuccess": "Запись добавлена",
@@ -350,7 +379,22 @@
       "deleteSuccess": "Запись удалена",
       "deleteError": "Не удалось удалить запись",
       "duplicateError": "Запись с этим пространством имен и ключом уже существует",
-      "invalidJson": "Недопустимое значение JSON"
+      "invalidJson": "Недопустимое значение JSON",
+      "namespaceLabel": "Пространство имён",
+      "keyLabel": "Ключ",
+      "valueLabel": "Значение",
+      "addEntryLegend": "Добавить запись метаданных",
+      "addEntryButton": "Добавить запись",
+      "entryLegend": "Запись метаданных",
+      "removeEntryButton": "Удалить"
+    },
+    "removeDialog": {
+      "title_one": "Удалить {{count}} аккаунт?",
+      "title_few": "Удалить {{count}} аккаунта?",
+      "title_many": "Удалить {{count}} аккаунтов?",
+      "title_other": "Удалить {{count}} аккаунта?",
+      "description": "Это удалит из этого экземпляра выбранные аккаунты, их сохранённые учётные данные и их ботов. Отменить это нельзя.",
+      "confirm": "Удалить аккаунты"
     }
   },
   "instanceMetadata": {
@@ -360,31 +404,39 @@
     "keyPlaceholder": "Ключ",
     "valuePlaceholder": "Значение (JSON)",
     "noEntries": "Нет метаданных. Добавьте запись выше.",
+    "loadError": "Не удалось загрузить метаданные",
     "addSuccess": "Запись добавлена",
     "addError": "Ошибка добавления записи",
     "updateError": "Ошибка обновления записи",
     "deleteSuccess": "Запись удалена",
     "deleteError": "Не удалось удалить запись",
     "duplicateError": "Запись с этим пространством имен и ключом уже существует",
-    "invalidJson": "Недопустимое значение JSON"
+    "invalidJson": "Недопустимое значение JSON",
+    "namespaceLabel": "Пространство имён",
+    "keyLabel": "Ключ",
+    "valueLabel": "Значение",
+    "addEntryLegend": "Добавить запись метаданных",
+    "addEntryButton": "Добавить запись",
+    "entryLegend": "Запись метаданных",
+    "removeEntryButton": "Удалить"
   },
   "bots": {
     "searchPlaceholder": "Поиск ботов...",
-    "onlineCount": "{{online}} в сети / {{total}} всего",
+    "onlineCount": "{{online}} подключено / {{total}} всего",
     "noBots": "Боты не настроены. Добавьте аккаунты на странице настроек аккаунта.",
     "noBotsFound": "Боты, соответствующие вашему запросу, не найдены.",
     "loadingMore": "Загрузка дополнительных...",
     "showingCount": "Показано {{loaded}} из {{total}}",
     "allLoaded": "Загружены все {{total}} ботов",
-    "online": "В сети",
-    "offline": "Офлайн",
+    "online": "Подключён",
+    "offline": "Отключён",
     "notJoined": "Не присоединился",
     "connectionPhase": {
       "connecting": "Подключение",
-      "connected": "Подключён",
-      "spawned": "В сети",
+      "connected": "Вход",
+      "spawned": "Подключён",
       "died": "Мёртв",
-      "disconnected": "Офлайн",
+      "disconnected": "Отключён",
       "ping": "{{ms}} мс"
     },
     "runtimeState": {
@@ -398,15 +450,12 @@
     },
     "backToBots": "Назад к ботам",
     "tabs": {
-      "overview": "Обзор",
+      "overview": "Вид бота",
       "inventory": "Инвентарь",
       "controls": "Управление",
       "terminal": "Терминал"
     },
-    "comingSoon": "Скоро будет",
-    "terminalPanel": {
-      "title": "Терминал бота"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Прокси-серверй",
       "direct": "Прямое соединение (без прокси)",
@@ -416,16 +465,14 @@
       "title": "Положение и вращение",
       "position": "Положение",
       "rotation": "Вращение",
-      "offline": "Бот офлайн. Данные о положении доступны только когда бот подключён."
+      "offline": "Бот отключён. Данные о положении доступны только когда бот подключён."
     },
     "chatPanel": {
-      "title": "Чат-сообщения",
-      "description": "Чат-сообщения этого бота появятся здесь в одном из следующих обновлений."
+      "title": "Чат-сообщения"
     },
     "commandPanel": {
       "title": "Команды бота",
-      "placeholder": "Отправить команду этому боту...",
-      "description": "Команды, привязанные к боту, будут доступны в одном из следующих обновлений."
+      "placeholder": "Отправить команду этому боту..."
     },
     "povPanel": {
       "title": "POV бота",
@@ -438,7 +485,6 @@
       "offline": "Бот офлайн. Отображение точки зрения доступно только при подключении бота."
     },
     "statsPanel": {
-      "title": "Статистика бота",
       "health": "Здоровье",
       "food": "Еда",
       "saturation": "Сытость",
@@ -451,7 +497,7 @@
       "adventure": "Приключение",
       "spectator": "Наблюдатель",
       "unknown": "Неизвестно",
-      "offline": "Бот офлайн. Статистика доступна только при подключении бота."
+      "offline": "Бот отключён. Статистика доступна только при подключении бота."
     },
     "inventoryPanel": {
       "title": "Инвентарь",
@@ -464,7 +510,7 @@
       "dropAll": "Выбросить все",
       "closeContainer": "Закрыть",
       "clickHint": "ЛКМ: взять/поставить | ПКМ: половину/один | Shift+клик: быстрое перемещение | Средняя кнопка: выбрать слот панели быстрого доступа",
-      "offline": "Бот офлайн. Инвентарь доступен только при подключении бота.",
+      "offline": "Бот отключён. Инвентарь доступен только при подключении бота.",
       "buttons": {
         "stonecutterRecipes": "Рецепты",
         "enchantments": "Зачарования",
@@ -474,12 +520,12 @@
         "crafterSlots": "Управление слотами",
         "lecternControls": "Управление книгой",
         "actions": "Действия",
-        "creativeTabs": ""
+        "creativeTabs": "Вкладки творческого режима"
       },
       "textInput": {
         "title": "Ввод текста",
         "anvilRename": "Переименовать предмет",
-        "creativeSearch": ""
+        "creativeSearch": "Поиск предметов"
       },
       "bookPages": {
         "title": "Содержимое книги",
@@ -490,10 +536,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Уничтожить предмет",
+      "clickHints": {
+        "left": "Левая кнопка: взять или положить",
+        "right": "Правая кнопка: взять половину или положить один",
+        "shift": "Shift+клик: быстро переместить",
+        "middle": "Средняя кнопка: выбрать активным слотом"
+      }
     },
     "visualPanel": {
-      "title": "Вид от бота",
+      "title": "Направление и мир",
       "compass": "Направление взгляда",
       "lookDirection": "Угол обзора",
       "lookingUp": "Смотрит вверх",
@@ -502,7 +554,7 @@
       "worldInfo": "Информация о мире",
       "dimension": "Измерение",
       "biome": "Биом",
-      "offline": "Бот офлайн. Визуальные данные доступны только при подключении бота."
+      "offline": "Бот отключён. Визуальные данные доступны только при подключении бота."
     },
     "actionsPanel": {
       "title": "Действия бота",
@@ -510,7 +562,7 @@
       "rightClick": "Правый клик",
       "leftClickDescription": "Атаковать существо или сломать блок",
       "rightClickDescription": "Использовать предмет или взаимодействовать",
-      "offline": "Бот офлайн. Действия доступны только при подключении бота."
+      "offline": "Бот отключён. Действия доступны только при подключении бота."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +581,7 @@
       "lookDown": "Смотреть вниз",
       "lookLeft": "Смотреть влево",
       "lookRight": "Смотреть вправо",
-      "offline": "Бот офлайн. Управление движением доступно только при подключении бота."
+      "offline": "Бот отключён. Управление движением доступно только при подключении бота."
     },
     "dialogPanel": {
       "title": "Диалог сервера",
@@ -544,7 +596,45 @@
       "unknownType": "Неизвестно",
       "dismiss": "Закрыть",
       "submit": "Отправить",
-      "offline": "Бот офлайн. Диалоги доступны только при подключении бота."
+      "offline": "Бот отключён. Диалоги доступны только при подключении бота."
+    },
+    "pov": {
+      "title": "Вид бота",
+      "touchControlling": "Вы управляете этим ботом. Нажмите «Release control», чтобы прекратить.",
+      "popupBlocked": "Разрешите всплывающие окна, чтобы открепить окно вида бота.",
+      "windowTitle": "Вид бота SoulFire",
+      "fullscreenUnavailable": "Полноэкранный режим недоступен в этом окне.",
+      "textInputLabel": "Ввод текста Minecraft",
+      "videoLabel": "Вид бота в реальном времени",
+      "touchMove": "Движение",
+      "audioError": "Не удалось запустить звук.",
+      "startError": "Не удалось запустить вид бота.",
+      "releaseHint": "Нажмите {{shortcut}}, чтобы освободить клавиатуру и мышь.",
+      "captureHint": "Нажмите на вид и разрешите захват клавиатуры и мыши.",
+      "audioWaiting": "Ожидание подключения вида бота.",
+      "audioWatchFirst": "Начните наблюдать за ботом, чтобы использовать звук.",
+      "audioUpdateServer": "Обновите сервер, чтобы использовать звук в виде бота.",
+      "muteAudio": "Выключить звук",
+      "unmuteAudio": "Включить звук",
+      "audioStarting": "Запуск звука...",
+      "mute": "Без звука",
+      "unmute": "Со звуком",
+      "audio": "Звук",
+      "audioUnavailable": "Звук недоступен",
+      "volume": "Громкость вида бота",
+      "reconnect": "Переподключиться",
+      "showWindow": "Показать окно вида бота",
+      "attachWindow": "Прикрепить окно вида бота",
+      "touch": {
+        "jump": "Прыжок",
+        "sneak": "Красться",
+        "attack": "Атака",
+        "use": "Использовать",
+        "inventory": "Инвентарь",
+        "keyboard": "Клавиатура",
+        "closeMenu": "Закрыть меню"
+      },
+      "needsServer": "Для вида бота нужен подключённый сервер SoulFire."
     }
   },
   "metrics": {
@@ -552,15 +642,15 @@
       "noData": "Нет данных"
     },
     "summary": {
-      "online": "В сети",
+      "online": "Подключён",
       "packetsPerSecond": "Пакетов/с",
       "traffic": "Трафик",
       "health": "Здоровье",
       "tick": "Тик"
     },
     "botsOnline": {
-      "title": "Боты онлайн",
-      "online": "В сети",
+      "title": "Подключённые боты",
+      "online": "Подключён",
       "total": "Всего"
     },
     "packets": {
@@ -627,7 +717,7 @@
     "createError": "Не удалось создать скрипт",
     "noScripts": "Скриптов пока нет",
     "noScriptsDescription": "Создайте свой первый скрипт для автоматизации действий бота с помощью визуального редактора на узлах.",
-    "createFirstScript": "Создать свой первый скрипт",
+    "createFirstScript": "Создать скрипт",
     "running": "Запущен",
     "paused": "Приостановлено",
     "nodes": "узлы",
@@ -694,7 +784,9 @@
       },
       "palette": {
         "title": "Палитра узлов",
-        "search": "Поиск по узлам..."
+        "search": "Поиск по узлам...",
+        "noResults": "Нет узлов, подходящих под запрос",
+        "noResultsDescription": "Попробуйте другой запрос или очистите текущий фильтр."
       },
       "logs": {
         "title": "Журналы выполнения",
@@ -719,11 +811,15 @@
       },
       "node": {
         "expand": "Развернуть узел",
-        "collapse": "Свернуть узел"
+        "collapse": "Свернуть узел",
+        "avgTime": "Среднее время выполнения: {{avg}} мс (последние запуски: {{count}})",
+        "preview": "Предпросмотр"
       },
       "debug": {
         "copyValue": "Скопировать текущее значение",
-        "clearHistory": "Очистить историю"
+        "clearHistory": "Очистить историю",
+        "current": "Текущее ({{time}}):",
+        "noValue": "Значение ещё не получено"
       },
       "edge": {
         "direction": "Направление ребра"
@@ -735,14 +831,46 @@
         "title": "Оценка сложности скрипта"
       },
       "group": {
-        "returnToRoot": "Вернуться к корню (Tab)"
+        "returnToRoot": "Вернуться к корню (Tab)",
+        "root": "Корень",
+        "exitHint": "Нажмите <key>Tab</key>, чтобы выйти",
+        "editHint": "Дважды нажмите, чтобы изменить",
+        "noInputs": "Входы не заданы",
+        "noOutputs": "Выходы не заданы"
       },
       "quickAdd": {
         "menuLabel": "Меню быстрого добавления узла",
-        "searchPlaceholder": "Поиск по узлам..."
+        "searchPlaceholder": "Поиск по узлам...",
+        "noResults": "Узлы не найдены",
+        "noResultsDescription": "Попробуйте другой поисковый запрос.",
+        "navigate": "Навигация",
+        "select": "Enter — выбрать",
+        "close": "Esc — закрыть"
       },
       "diff": {
-        "tooltip": "Просмотреть изменения"
+        "tooltip": "Просмотреть изменения",
+        "title": "Несохранённые изменения",
+        "description": "Изменения с момента последнего сохранения.",
+        "nodesAdded_one": "Добавлен {{count}} узел",
+        "nodesAdded_few": "Добавлено {{count}} узла",
+        "nodesAdded_many": "Добавлено {{count}} узлов",
+        "nodesAdded_other": "Добавлено {{count}} узла",
+        "nodesRemoved_one": "Удалён {{count}} узел",
+        "nodesRemoved_few": "Удалено {{count}} узла",
+        "nodesRemoved_many": "Удалено {{count}} узлов",
+        "nodesRemoved_other": "Удалено {{count}} узла",
+        "nodesModified_one": "Изменён {{count}} узел",
+        "nodesModified_few": "Изменено {{count}} узла",
+        "nodesModified_many": "Изменено {{count}} узлов",
+        "nodesModified_other": "Изменено {{count}} узла",
+        "edgesAdded_one": "Добавлена {{count}} связь",
+        "edgesAdded_few": "Добавлено {{count}} связи",
+        "edgesAdded_many": "Добавлено {{count}} связей",
+        "edgesAdded_other": "Добавлено {{count}} связи",
+        "edgesRemoved_one": "Удалена {{count}} связь",
+        "edgesRemoved_few": "Удалено {{count}} связи",
+        "edgesRemoved_many": "Удалено {{count}} связей",
+        "edgesRemoved_other": "Удалено {{count}} связи"
       },
       "dryRun": {
         "saveFirst": "",
@@ -789,8 +917,20 @@
         "disableTimeoutsDescription": "Отключить тайм-ауты для каждого узла и передачи данных по ребру",
         "save": "Сохранить квоты",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Изменить порядок: {{label}}",
+        "empty": "Нет входящих значений",
+        "title": "Множественный вход: принимает несколько соединений",
+        "connectTo": "Подключите значения к {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Удалить скрипт?",
+      "description": "Это навсегда удалит «{{name}}». Отменить это нельзя.",
+      "descriptionUnnamed": "Это навсегда удалит скрипт. Отменить это нельзя."
+    },
+    "executionStats": "Статистика выполнения: выполнено узлов {{executed}}/{{max}}"
   },
   "metadataValidation": {
     "invalidNamespace": "",

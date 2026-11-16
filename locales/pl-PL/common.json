@@ -113,18 +113,24 @@
         "submit": "Wczytaj z adresu URL",
         "toast": {
           "loading": "Pobieranie danych...",
-          "success": "Dane załadowane!",
+          "success": "Dane załadowane",
           "error": "Nie udało się pobrać danych",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "Usunąć instancję?",
+      "description": "To trwale usunie „{{name}}” i powiązane dane. Tej operacji nie można cofnąć.",
+      "descriptionUnnamed": "To trwale usunie tę instancję i jej dane. Tej operacji nie można cofnąć."
     }
   },
   "commandInput": {
     "placeholder": "Wpisz komendę (napisz 'help' dla listy)",
     "emptySuggestions": "Wpisz, aby poprosić o sugestie lub naciśnij Tab.",
-    "noSuggestions": "Brak dostępnych sugestii."
+    "noSuggestions": "Brak dostępnych sugestii.",
+    "emptySuggestionsPrefix": "Zacznij pisać, aby uzyskać podpowiedzi, lub naciśnij"
   },
   "controls": {
     "start": "Rozpocznij",
@@ -174,7 +180,7 @@
     "restartCount_many": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} online · {{desired}} żądanych · {{total}} łącznie",
+  "botFleetSummary": "{{online}} połączonych · {{desired}} ustawionych do działania · {{total}} łącznie",
   "icon": {
     "invalidName": "Nieprawidłowa nazwa ikony: {{name}}"
   },
@@ -255,7 +261,24 @@
     "sortOrders": {
       "asc": "Rosnąco",
       "desc": "Malejąco"
-    }
+    },
+    "openFilterMenu": "Otwórz menu filtrów",
+    "filterOperator": "Operator filtra",
+    "filterValue": "Wartość filtra",
+    "sortDirection": "Kierunek sortowania",
+    "selectJoinOperator": "Wybierz operator łączenia",
+    "joinOperator": "Operator łączenia",
+    "escapeKey": "Escape",
+    "selectDate": "Wybierz datę",
+    "selectDateRange": "Wybierz zakres dat",
+    "clearFilter": "Wyczyść filtr {{title}}",
+    "clearFilters": "Wyczyść filtry",
+    "clear": "Wyczyść",
+    "from": "Od",
+    "to": "Do",
+    "sortDirectionFor": "Kierunek sortowania: {{column}}",
+    "minValue": "Minimalna wartość: {{label}}",
+    "maxValue": "Maksymalna wartość: {{label}}"
   },
   "pluginCard": {
     "version": "Wersja: {{version}}",
@@ -264,13 +287,13 @@
     "website": "Strona Internetowa"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "Nie udało się zapisać: {{name}}",
     "namespacesNotFound": "Nie znaleziono przestrzeni nazw w ustawieniach",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "Nie udało się zapisać: {{name}}",
       "placeholder": "Dodaj nowy wpis...",
       "add": "Dodaj",
       "remove": "Usuń"
@@ -281,7 +304,8 @@
     "invalidNumberToast": {
       "title": "Nieprawidłowy numer",
       "description": "Wartość musi być pomiędzy {{min}} i {{max}}"
-    }
+    },
+    "minMaxLegend": "Ustawienia minimum i maksimum"
   },
   "terminal": {
     "noLogs": "Brak logów. Uruchom polecenie, aby wygenerować logi.",
@@ -329,16 +353,37 @@
       "error": "Nie udało się połączyć z {{device}}"
     },
     "noDevices": "Nie znaleziono urządzeń",
-    "broadcastLabel": "Test transmisji",
     "broadcastToast": {
       "loading": "Nadawanie wiadomości...",
-      "success": "Wiadomość nadana!",
+      "success": "Wiadomość nadana",
       "error": "Nie udało się nadać wiadomości"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "Włączanie skryptu...",
+        "success": "Skrypt włączony",
+        "error": "Nie udało się włączyć skryptu. Spróbuj ponownie."
+      },
+      "deactivate": {
+        "loading": "Wyłączanie skryptu...",
+        "success": "Skrypt wyłączony",
+        "error": "Nie udało się wyłączyć skryptu. Spróbuj ponownie."
+      }
+    },
+    "operations": {
+      "activateScript": "Włącz skrypt {{name}}",
+      "deactivateScript": "Wyłącz skrypt {{name}}"
+    },
+    "status": {
+      "active": "Wł.",
+      "paused": "Wył."
     }
   },
   "instanceSidebar": {
     "readDocumentation": "Przeczytaj dokumentację",
-    "backToDashboard": "Wróć do pulpitu",
+    "backToDashboard": "Wróć do instancji",
     "deleteToast": {
       "loading": "Usuwanie instancji...",
       "success": "Instancja usunięta",
@@ -364,9 +409,9 @@
     "settingsGroup": "Ustawienia",
     "extensionsGroup": "Rozszerzenia",
     "botSettings": "Ustawienia botów",
-    "accountSettings": "Ustawienia konta",
+    "accountSettings": "Konta",
     "metaSettings": "Ustawienia instancji",
-    "proxySettings": "Ustawienia serwera proxy",
+    "proxySettings": "Proxy",
     "aiSettings": "Ustawienia SI",
     "pathfindingSettings": "Ustawienia pathfindingu",
     "discoverPlugins": "Wtyczki",
@@ -432,10 +477,10 @@
     "instances": "Instancje",
     "access": "Dostęp",
     "settings": "Ustawienia",
-    "proxySettings": "Ustawienia serwera proxy",
+    "proxySettings": "Proxy",
     "overview": "Przegląd",
     "users": "Użytkownicy",
-    "accountSettings": "Ustawienia konta",
+    "accountSettings": "Konta",
     "metaSettings": "Ustawienia instancji",
     "discoverPlugins": "Wtyczki",
     "adminScripts": "Skrypty",
@@ -452,7 +497,7 @@
     },
     "api": {
       "title": "Dostęp API",
-      "description": "Interfejs API SoulFire gRPC HTTP zarządza instancjami za pomocą żądań internetowych.",
+      "description": "Użyj API SoulFire, aby zarządzać instancjami z własnych programów.",
       "publicAddress": "Publiczny adres API",
       "personalToken": "Osobisty token API",
       "securityWarning": "Trzymaj swój osobisty token API w tajemnicy. Umożliwia on dostęp do API.",
@@ -460,7 +505,7 @@
     },
     "token": {
       "generate": "Generuj token",
-      "placeholder": "Kliknij \\\"Generuj token\\\" poniżej",
+      "placeholder": "Wybierz poniżej „Generuj token”",
       "generating": "Generowanie tokena...",
       "success": "Token został pomyślnie wygenerowany",
       "error": "Nie udało się wygenerować tokena",
@@ -489,9 +534,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "Nie udało się zaktualizować nazwy instancji"
   },
   "userSettings": {
     "avatar": {
@@ -509,8 +553,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "Nie udało się zaktualizować: {{field}}"
   },
   "auditLog": {
     "filterPlaceholder": "Filtruj dzienniki audytu...",
@@ -566,22 +609,22 @@
     },
     "removeToast": {
       "loading": "Usuwanie skryptów...",
-      "success": "Usunięto skrypty!",
+      "success": "Usunięto skrypty",
       "error": "Nie udało się usunąć skryptów"
     },
     "addToast": {
       "loading": "Dodawanie skryptu...",
-      "success": "Dodano skrypt!",
+      "success": "Dodano skrypt",
       "error": "Nie udało się dodać skryptu"
     },
     "updateToast": {
       "loading": "Aktualizowanie skryptu...",
-      "success": "Zaktualizowano skrypt!",
+      "success": "Zaktualizowano skrypt",
       "error": "Nie udało się zaktualizować skryptu"
     },
     "restartToast": {
       "loading": "Restartowanie skryptu...",
-      "success": "Zrestartowano skrypt!",
+      "success": "Zrestartowano skrypt",
       "error": "Nie udało się zrestartować skryptu"
     },
     "table": {
@@ -606,7 +649,7 @@
     "bot": {
       "goToBot": "Przejdź do bota",
       "copyUsername": "Kopiuj nazwę użytkownika",
-      "copyUuid": "Kopiuj UUID",
+      "copyUuid": "Kopiuj ID profilu",
       "copyCoordinates": "Kopiuj współrzędne"
     },
     "plugin": {
@@ -662,5 +705,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "Połączono",
+    "botOffline": "Rozłączono"
+  },
+  "minecraftActions": {
+    "copyError": "Nie udało się skopiować tekstu. Użyj HTTPS lub zezwól na dostęp do schowka.",
+    "openError": "Nie udało się otworzyć linku.",
+    "popupBlocked": "Przeglądarka zablokowała nową kartę.",
+    "openLink": "Otwórz link"
+  },
+  "instanceIcon": {
+    "label": "Ikona",
+    "description": "Ikona instancji widoczna w aplikacji."
+  },
+  "unknown": "Nieznane",
+  "minecraftHead": "Głowa z Minecrafta",
+  "textFile": "Plik tekstowy"
 }

@@ -119,12 +119,12 @@
       "network": "Verkko-osoite",
       "unix": "Unix-pistoke"
     },
-    "getProxies": "Hae proxyja",
+    "getProxies": "Proxyjen tarjoajat",
     "addProxies": "Lisää proxyja",
     "filterPlaceholder": "Suodata proxyt...",
     "listImportToast": {
       "loading": "Tuodaan proxyja...",
-      "success": "{{count}} proxy tuotu!",
+      "success": "{{count}} proxy tuotu",
       "error": "Proxyjen tuominen epäonnistui",
       "noProxies": "Ei proxyja tuotavaksi"
     },
@@ -141,18 +141,21 @@
     },
     "removeToast": {
       "loading": "Poistetaan proxyja...",
-      "success": "{{count}} proxy poistettu!",
+      "success": "{{count}} proxy poistettu",
       "error": "Proxyjen poistaminen epäonnistui"
     },
     "checkToast": {
       "loading": "Tarkistetaan proxyja... {{checked}}/{{total}} (Onnistui: {{success}} Epäonnistui: {{failed}})",
-      "success": "{{count}} viallista proxyä poistettu!",
-      "error": "Proxyjen tarkistus epäonnistui"
+      "success": "{{count}} viallista proxyä poistettu",
+      "error": "Proxyjen tarkistus epäonnistui",
+      "successKept": "{{failed}}/{{total}} proxya ei läpäissyt tarkistusta. Yhtään proxya ei poistettu."
     },
     "checkDialog": {
       "title": "Tarkista välityspalvelimet",
-      "description": "Olet tarkistamassa {{count}} välityspalvelinta. Virheelliset välityspalvelimet poistetaan automaattisesti.",
-      "confirm": "Aloita tarkistus"
+      "description": "Olet tarkistamassa {{count}} proxya.",
+      "confirm": "Aloita tarkistus",
+      "removeFailed": "Poista epäonnistuneet proxyt",
+      "removeFailedHelp": "Proxy voi epäonnistua tilapäisen verkko-ongelman vuoksi. Poista tämä valinta, jos haluat säilyttää kaikki proxyt ja nähdä vain tuloksen."
     },
     "invalidFormat": "Virheellinen proxyn muoto",
     "table": {
@@ -175,7 +178,7 @@
     },
     "postImportCheckDialog": {
       "title": "Tarkista tuodut proxyt?",
-      "description": "Toit {{count}} proxyä. Tarkistetaanko ne nyt? SoulFire poistaa virheelliset proxyt automaattisesti.",
+      "description": "Toit {{count}} proxya. Tarkistetaanko ne nyt?",
       "confirm": "Tarkista välityspalvelimet",
       "skip": "Ohita"
     },
@@ -186,10 +189,18 @@
       "socks4": "Vain SOCKS4 (tavallinen)",
       "socks5": "Vain SOCKS5 (tavallinen)",
       "noProxies": "Ei proxyja vietäväksi"
-    }
+    },
+    "removeDialog": {
+      "title_one": "Poistetaanko {{count}} proxy?",
+      "title_other": "Poistetaanko {{count}} proxya?",
+      "description": "Tämä poistaa valitut proxyt ja niiden tunnistetiedot tästä instanssista. Tätä ei voi kumota.",
+      "confirm": "Poista proxyt"
+    },
+    "showPassword": "Näytä salasana",
+    "hidePassword": "Piilota salasana"
   },
   "account": {
-    "getAccounts": "Hae tilejä",
+    "getAccounts": "Tilien tarjoajat",
     "addAccounts": "Lisää tilejä",
     "generateAccounts": "Luo tilejä",
     "filterPlaceholder": "Suodata tilejä...",
@@ -197,7 +208,7 @@
       "loading": "Tuodaan tilejä... {{checked}}/{{total}} (Onnistui: {{success}} Epäonnistui: {{failed}})",
       "allFailed": "Tilien tuominen epäonnistui kokonaan.",
       "someFailed": "Tuotiin {{count}} tiliä, {{failed}} tilin tuominen epäonnistui.",
-      "noneFailed": "{{count}} tiliä tuotu!",
+      "noneFailed": "{{count}} tiliä tuotu",
       "error": "Tilien tuominen epäonnistui",
       "noAccounts": "Ei tilejä tuotavaksi"
     },
@@ -215,7 +226,7 @@
     },
     "deviceCodeImportToast": {
       "loading": "Tiliä tuodaan...",
-      "success": "Tili tuotu!",
+      "success": "Tili tuotu",
       "error": "Tilin tuominen epäonnistui"
     },
     "generate": {
@@ -232,9 +243,9 @@
       "submit": "Luo",
       "generating": "Luodaan...",
       "progress": "Luodaan tilejä... {{checked}}/{{total}} (Onnistui: {{success}} Epäonnistui: {{failed}})",
-      "success": "{{count}} tiliä luotu!",
+      "success": "{{count}} tiliä luotu",
       "allFailed": "Yhtään tiliä ei voitu luoda",
-      "allExist": "Kaikki käyttäjänimet ovat jo olemassa. Ota käyttöön \\\"Korvaa olemassa olevat tilit\\\" uudelleenluodaksesi ne.",
+      "allExist": "Kaikki käyttäjänimet ovat jo olemassa. Valitse ”Korvaa olemassa olevat” luodaksesi ne uudelleen.",
       "error": "Tilien luonti epäonnistui",
       "invalidAmount": "Syötä kelvollinen määrä (vähintään 1)",
       "missingPlaceholder": "Nimimuodossa on oltava %d-paikkamerkki"
@@ -247,7 +258,7 @@
       "microsoftDeviceCode": "Microsoft-laitteen koodi",
       "microsoftRefreshToken": "Microsoft-virkistystunnus",
       "microsoftCookies": "Microsoft-evästeet",
-      "microsoftAccessToken": "Microsoft Access Token",
+      "microsoftAccessToken": "Microsoft access token",
       "theAltening": "TheAltening-tunnus",
       "altProviders": "Vaihtoehtoiset tarjoajat",
       "dialog": {
@@ -257,12 +268,12 @@
     },
     "removeToast": {
       "loading": "Poistetaan tilejä...",
-      "success": "{{count}} tiliä poistettu!",
+      "success": "{{count}} tiliä poistettu",
       "error": "Tilien poistaminen epäonnistui"
     },
     "table": {
       "type": "Tyyppi",
-      "profileId": "UUID",
+      "profileId": "Profiilin tunnus",
       "lastKnownName": "Käyttäjätunnus",
       "searchProfileIds": "Etsi profiilitunnuksia...",
       "searchLastKnownNames": "Etsi viimeksi tunnettuja nimiä...",
@@ -294,7 +305,21 @@
       "matchesInheritedValue": "Vastaa perittyä arvoa",
       "instanceValue": "Instanssin arvo",
       "defaultValue": "Oletusarvo",
-      "resetOverride": "Palauta ohitus"
+      "resetOverride": "Palauta ohitus",
+      "value": {
+        "notSet": "Ei asetettu",
+        "on": "Päällä",
+        "off": "Pois",
+        "empty": "Tyhjä",
+        "entries_one": "{{count}} merkintä",
+        "entries_other": "{{count}} merkintää",
+        "range": "Väli"
+      },
+      "source": {
+        "bot": "Botin oma arvo",
+        "instance": "Peritty instanssilta",
+        "default": "Oletusarvo"
+      }
     },
     "deviceCodeConfirmDialog": {
       "title": "Laitteen kooditodennus",
@@ -341,7 +366,7 @@
       "keyPlaceholder": "Avain",
       "valuePlaceholder": "Arvo (JSON)",
       "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
-      "loadError": "",
+      "loadError": "Metatietoja ei voitu ladata",
       "loadErrorDescription": "",
       "retryLoad": "Yritä uudelleen",
       "addSuccess": "Merkintä lisätty",
@@ -350,7 +375,20 @@
       "deleteSuccess": "Merkintä poistettu",
       "deleteError": "Merkinnän poistaminen epäonnistui",
       "duplicateError": "Merkintä tällä nimiavaruudella ja avaimella on jo olemassa",
-      "invalidJson": "Virheellinen JSON-arvo"
+      "invalidJson": "Virheellinen JSON-arvo",
+      "namespaceLabel": "Nimiavaruus",
+      "keyLabel": "Avain",
+      "valueLabel": "Arvo",
+      "addEntryLegend": "Lisää metatietomerkintä",
+      "addEntryButton": "Lisää merkintä",
+      "entryLegend": "Metatietomerkintä",
+      "removeEntryButton": "Poista"
+    },
+    "removeDialog": {
+      "title_one": "Poistetaanko {{count}} tili?",
+      "title_other": "Poistetaanko {{count}} tiliä?",
+      "description": "Tämä poistaa valitut tilit, niiden tallennetut tunnistetiedot ja niiden botit tästä instanssista. Tätä ei voi kumota.",
+      "confirm": "Poista tilit"
     }
   },
   "instanceMetadata": {
@@ -360,31 +398,39 @@
     "keyPlaceholder": "Avain",
     "valuePlaceholder": "Arvo (JSON)",
     "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
+    "loadError": "Metatietoja ei voitu ladata",
     "addSuccess": "Merkintä lisätty",
     "addError": "Kirjauksen lisääminen epäonnistui",
     "updateError": "Kirjauksen päivittäminen epäonnistui",
     "deleteSuccess": "Merkintä poistettu",
     "deleteError": "Merkinnän poistaminen epäonnistui",
     "duplicateError": "Merkintä tällä nimiavaruudella ja avaimella on jo olemassa",
-    "invalidJson": "Virheellinen JSON-arvo"
+    "invalidJson": "Virheellinen JSON-arvo",
+    "namespaceLabel": "Nimiavaruus",
+    "keyLabel": "Avain",
+    "valueLabel": "Arvo",
+    "addEntryLegend": "Lisää metatietomerkintä",
+    "addEntryButton": "Lisää merkintä",
+    "entryLegend": "Metatietomerkintä",
+    "removeEntryButton": "Poista"
   },
   "bots": {
     "searchPlaceholder": "Hae botteja...",
-    "onlineCount": "{{online}} online / {{total}} yhteensä",
+    "onlineCount": "{{online}} yhdistetty / {{total}} yhteensä",
     "noBots": "Ei yhtään bottia asetettu. Lisää tilejä Tiliasetukset-sivulta.",
     "noBotsFound": "Hakusi ei vastannut yhtään bottia.",
     "loadingMore": "Ladataan lisää...",
     "showingCount": "Näytetään {{loaded}} / {{total}}:sta",
     "allLoaded": "Kaikki {{total}} bottia ladattu",
-    "online": "Paikalla",
-    "offline": "Offline",
+    "online": "Yhdistetty",
+    "offline": "Ei yhteyttä",
     "notJoined": "Ei liittynyt",
     "connectionPhase": {
       "connecting": "Yhdistetään",
-      "connected": "Yhdistetty",
-      "spawned": "Paikalla",
+      "connected": "Kirjaudutaan",
+      "spawned": "Yhdistetty",
       "died": "Kuollut",
-      "disconnected": "Offline",
+      "disconnected": "Ei yhteyttä",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -398,15 +444,12 @@
     },
     "backToBots": "Takaisin botteihin",
     "tabs": {
-      "overview": "Yleiskatsaus",
+      "overview": "Bottinäkymä",
       "inventory": "Inventaario",
       "controls": "Ohjaimet",
       "terminal": "Terminaali"
     },
-    "comingSoon": "Tulossa pian",
-    "terminalPanel": {
-      "title": "Botti-terminaali"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Välityspalvelin​",
       "direct": "Suora (ei välityspalvelinta)",
@@ -416,16 +459,14 @@
       "title": "Sijainti & kääntö",
       "position": "Sijainti",
       "rotation": "Kääntö",
-      "offline": "Botti on offline-tilassa. Sijaintitiedot saatavilla vain, kun botti on yhdistetty."
+      "offline": "Botti ei ole yhteydessä. Sijaintitiedot saatavilla vain, kun botti on yhdistetty."
     },
     "chatPanel": {
-      "title": "Viestit chatissa",
-      "description": "Tämän botin chat-viestit näkyvät täällä tulevassa päivityksessä."
+      "title": "Viestit chatissa"
     },
     "commandPanel": {
       "title": "Bottikomennot",
-      "placeholder": "Lähetä komento tälle botille...",
-      "description": "Bottikohtaiset komennot ovat saatavilla tulevassa päivityksessä."
+      "placeholder": "Lähetä komento tälle botille..."
     },
     "povPanel": {
       "title": "Botin näkymä",
@@ -438,7 +479,6 @@
       "offline": "Botti on offline-tilassa. Näkymän renderöinti on käytettävissä vain, kun botti on yhdistettynä."
     },
     "statsPanel": {
-      "title": "Botin tilastot",
       "health": "Terveys",
       "food": "Ruoka",
       "saturation": "Kylläisyys",
@@ -451,7 +491,7 @@
       "adventure": "Seikkailu",
       "spectator": "Katselija",
       "unknown": "Tuntematon",
-      "offline": "Botti on offline-tilassa. Tilastot ovat saatavilla vain, kun botti on yhdistetty."
+      "offline": "Botti ei ole yhteydessä. Tilastot ovat saatavilla vain, kun botti on yhdistetty."
     },
     "inventoryPanel": {
       "title": "Inventaario",
@@ -464,7 +504,7 @@
       "dropAll": "Pudota kaikki",
       "closeContainer": "Sulje",
       "clickHint": "Vasen klikkaus: nosta/sijoita | Oikea klikkaus: puolet/yksi | Shift+klikkaus: nopea siirto | Keskimmäinen klikkaus: valitse pikanäppäin",
-      "offline": "Botti on offline-tilassa. Varasto on saatavilla vain, kun botti on yhdistetty.",
+      "offline": "Botti ei ole yhteydessä. Varasto on saatavilla vain, kun botti on yhdistetty.",
       "buttons": {
         "stonecutterRecipes": "Reseptit",
         "enchantments": "Lumoukset",
@@ -474,12 +514,12 @@
         "crafterSlots": "Paikkaohjaimet",
         "lecternControls": "Kirjaohjaimet",
         "actions": "Toiminnot",
-        "creativeTabs": ""
+        "creativeTabs": "Luovan tilan välilehdet"
       },
       "textInput": {
         "title": "Tekstisyöte",
         "anvilRename": "Nimeä esine uudelleen",
-        "creativeSearch": ""
+        "creativeSearch": "Hae esineitä"
       },
       "bookPages": {
         "title": "Kirjan sisältö",
@@ -490,10 +530,16 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": ""
+      "destroyItem": "Tuhoa esine",
+      "clickHints": {
+        "left": "Vasen painike: poimi tai aseta",
+        "right": "Oikea painike: poimi puolet tai aseta yksi",
+        "shift": "Shift+napsautus: pikasiirto",
+        "middle": "Keskipainike: valitse aktiiviseksi paikaksi"
+      }
     },
     "visualPanel": {
-      "title": "Botin näkymä",
+      "title": "Suunta ja maailma",
       "compass": "Suunta",
       "lookDirection": "Katselukulma",
       "lookingUp": "Katsoo ylös",
@@ -502,7 +548,7 @@
       "worldInfo": "Maailman tiedot",
       "dimension": "Ulottuvuus",
       "biome": "Biomi",
-      "offline": "Botti on offline-tilassa. Näkymätiedot ovat saatavilla vain, kun botti on yhdistetty."
+      "offline": "Botti ei ole yhteydessä. Näkymätiedot ovat saatavilla vain, kun botti on yhdistetty."
     },
     "actionsPanel": {
       "title": "Botin toiminnot",
@@ -510,7 +556,7 @@
       "rightClick": "Oikea klikkaus",
       "leftClickDescription": "Hyökkää olentoon tai riko lohko",
       "rightClickDescription": "Käytä esinettä tai käytä toimintoa",
-      "offline": "Botti on offline-tilassa. Toiminnot ovat käytettävissä vain, kun botti on yhdistetty."
+      "offline": "Botti ei ole yhteydessä. Toiminnot ovat käytettävissä vain, kun botti on yhdistetty."
     },
     "movementPanel": {
       "updateServer": "",
@@ -529,7 +575,7 @@
       "lookDown": "Katso alas",
       "lookLeft": "Katso vasemmalle",
       "lookRight": "Katso oikealle",
-      "offline": "Botti on offline-tilassa. Liikeohjaimet ovat käytettävissä vain, kun botti on yhdistetty."
+      "offline": "Botti ei ole yhteydessä. Liikeohjaimet ovat käytettävissä vain, kun botti on yhdistetty."
     },
     "dialogPanel": {
       "title": "Palvelimen dialogi",
@@ -544,7 +590,45 @@
       "unknownType": "Tuntematon",
       "dismiss": "Hylkää",
       "submit": "Lähetä",
-      "offline": "Botti on offline-tilassa. Dialogit ovat käytettävissä vain, kun botti on yhdistetty."
+      "offline": "Botti ei ole yhteydessä. Dialogit ovat käytettävissä vain, kun botti on yhdistetty."
+    },
+    "pov": {
+      "title": "Bottinäkymä",
+      "touchControlling": "Ohjaat tätä bottia. Lopeta valitsemalla ”Release control”.",
+      "popupBlocked": "Salli ponnahdusikkunat irrottaaksesi bottinäkymän ikkunan.",
+      "windowTitle": "SoulFire-bottinäkymä",
+      "fullscreenUnavailable": "Koko näytön tila ei ole käytettävissä tässä ikkunassa.",
+      "textInputLabel": "Minecraftin tekstinsyöttö",
+      "videoLabel": "Reaaliaikainen bottinäkymä",
+      "touchMove": "Liiku",
+      "audioError": "Ääntä ei voitu käynnistää.",
+      "startError": "Bottinäkymää ei voitu käynnistää.",
+      "releaseHint": "Vapauta näppäimistö ja hiiri painamalla {{shortcut}}.",
+      "captureHint": "Napsauta näkymää ja salli näppäimistön ja hiiren kaappaus.",
+      "audioWaiting": "Odotetaan bottinäkymän yhdistämistä.",
+      "audioWatchFirst": "Katso bottia käyttääksesi ääntä.",
+      "audioUpdateServer": "Päivitä palvelin käyttääksesi bottinäkymän ääntä.",
+      "muteAudio": "Mykistä ääni",
+      "unmuteAudio": "Poista äänen mykistys",
+      "audioStarting": "Käynnistetään ääntä...",
+      "mute": "Mykistä",
+      "unmute": "Poista mykistys",
+      "audio": "Ääni",
+      "audioUnavailable": "Ääni ei ole käytettävissä",
+      "volume": "Bottinäkymän äänenvoimakkuus",
+      "reconnect": "Yhdistä uudelleen",
+      "showWindow": "Näytä bottinäkymän ikkuna",
+      "attachWindow": "Kiinnitä bottinäkymän ikkuna",
+      "touch": {
+        "jump": "Hyppää",
+        "sneak": "Hiivi",
+        "attack": "Hyökkää",
+        "use": "Käytä",
+        "inventory": "Inventaario",
+        "keyboard": "Näppäimistö",
+        "closeMenu": "Sulje valikko"
+      },
+      "needsServer": "Bottinäkymä tarvitsee yhdistetyn SoulFire-palvelimen."
     }
   },
   "metrics": {
@@ -552,15 +636,15 @@
       "noData": "Ei tietoja"
     },
     "summary": {
-      "online": "Paikalla",
+      "online": "Yhdistetty",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Liikenne",
       "health": "Terveys",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Botit verkossa",
-      "online": "Paikalla",
+      "title": "Yhdistetyt botit",
+      "online": "Yhdistetty",
       "total": "Yhteensä"
     },
     "packets": {
@@ -627,7 +711,7 @@
     "createError": "Skriptin luonti epäonnistui",
     "noScripts": "Ei vielä skriptejä",
     "noScriptsDescription": "Luo ensimmäinen skriptisi automatisoidaksesi botin toimintoja visuaalisella solmupohjaisella editorilla.",
-    "createFirstScript": "Luo ensimmäinen skriptisi",
+    "createFirstScript": "Luo skripti",
     "running": "Käynnissä",
     "paused": "Tauotettu",
     "nodes": "solmut",
@@ -694,7 +778,9 @@
       },
       "palette": {
         "title": "Solmupaletti",
-        "search": "Etsi solmuja..."
+        "search": "Etsi solmuja...",
+        "noResults": "Mikään solmu ei vastaa hakuasi",
+        "noResultsDescription": "Kokeile toista hakusanaa tai tyhjennä nykyinen suodatin."
       },
       "logs": {
         "title": "Suorituksen lokit",
@@ -717,11 +803,15 @@
       },
       "node": {
         "expand": "Laajenna solmu",
-        "collapse": "Supista solmu"
+        "collapse": "Supista solmu",
+        "avgTime": "Keskimääräinen suoritusaika: {{avg}} ms (viimeiset {{count}} ajoa)",
+        "preview": "Esikatselu"
       },
       "debug": {
         "copyValue": "Kopioi nykyinen arvo",
-        "clearHistory": "Tyhjennä historia"
+        "clearHistory": "Tyhjennä historia",
+        "current": "Nykyinen ({{time}}):",
+        "noValue": "Arvoa ei ole vielä vastaanotettu"
       },
       "edge": {
         "direction": "Reunan suunta"
@@ -733,14 +823,36 @@
         "title": "Skriptin monimutkaisuuspisteet"
       },
       "group": {
-        "returnToRoot": "Palaa juureen (Välilehti)"
+        "returnToRoot": "Palaa juureen (Välilehti)",
+        "root": "Juuri",
+        "exitHint": "Poistu painamalla <key>Tab</key>",
+        "editHint": "Muokkaa kaksoisnapsauttamalla",
+        "noInputs": "Tuloja ei ole määritetty",
+        "noOutputs": "Lähtöjä ei ole määritetty"
       },
       "quickAdd": {
         "menuLabel": "Pikalisäyssolmun valikko",
-        "searchPlaceholder": "Etsi solmuja..."
+        "searchPlaceholder": "Etsi solmuja...",
+        "noResults": "Solmuja ei löytynyt",
+        "noResultsDescription": "Kokeile toista hakusanaa.",
+        "navigate": "Siirry",
+        "select": "Enter valitsee",
+        "close": "Esc sulkee"
       },
       "diff": {
-        "tooltip": "Tarkista muutokset"
+        "tooltip": "Tarkista muutokset",
+        "title": "Tallentamattomat muutokset",
+        "description": "Muutokset edellisen tallennuksen jälkeen.",
+        "nodesAdded_one": "{{count}} solmu lisätty",
+        "nodesAdded_other": "{{count}} solmua lisätty",
+        "nodesRemoved_one": "{{count}} solmu poistettu",
+        "nodesRemoved_other": "{{count}} solmua poistettu",
+        "nodesModified_one": "{{count}} solmu muutettu",
+        "nodesModified_other": "{{count}} solmua muutettu",
+        "edgesAdded_one": "{{count}} yhteys lisätty",
+        "edgesAdded_other": "{{count}} yhteyttä lisätty",
+        "edgesRemoved_one": "{{count}} yhteys poistettu",
+        "edgesRemoved_other": "{{count}} yhteyttä poistettu"
       },
       "dryRun": {
         "saveFirst": "",
@@ -785,8 +897,20 @@
         "disableTimeoutsDescription": "Poistaa käytöstä solmu- ja datareunasidonnaiset aikakatkaisut",
         "save": "Tallenna kiintiöt",
         "invalidInteger": ""
+      },
+      "multiInput": {
+        "reorder": "Järjestä uudelleen: {{label}}",
+        "empty": "Ei saapuvia arvoja",
+        "title": "Monitulo: hyväksyy useita yhteyksiä",
+        "connectTo": "Yhdistä arvoja kohteeseen {{label}}"
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Poistetaanko skripti?",
+      "description": "Tämä poistaa kohteen ”{{name}}” pysyvästi. Tätä ei voi kumota.",
+      "descriptionUnnamed": "Tämä poistaa skriptin pysyvästi. Tätä ei voi kumota."
+    },
+    "executionStats": "Suoritustilastot: {{executed}}/{{max}} solmua suoritettu"
   },
   "metadataValidation": {
     "invalidNamespace": "",

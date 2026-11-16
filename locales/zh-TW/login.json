@@ -44,7 +44,24 @@
         "placeholder": "在此輸入您的 JVM 參數"
       },
       "back": "返回",
-      "start": "開始"
+      "start": "開始",
+      "jar": {
+        "title": "伺服器 jar",
+        "official": "官方",
+        "custom": "自訂",
+        "officialTitle": "官方 SoulFire 伺服器",
+        "customTitle": "自訂伺服器 jar",
+        "officialDescription": "下載並驗證相符的 SoulFire 版本。",
+        "customDescription": "執行匯入的 jar。SoulFire 不會驗證或更新它。",
+        "import": "匯入 jar",
+        "importSuccess": "已匯入 {{name}}",
+        "importError": "無法匯入自訂 SoulFire jar",
+        "selectCustomFirst": "啟動前請匯入並選擇自訂 jar。",
+        "dialog": {
+          "filter": "Java 封存檔",
+          "title": "選擇 SoulFire 伺服器 jar"
+        }
+      }
     },
     "mobile": {
       "description": "如要在行動裝置上執行整合式伺服器，您需要完成幾個手動步驟。",

@@ -33,8 +33,8 @@
     "reset": {
       "button": "ɐʇɐᗡ ʇǝsǝᴚ",
       "loading": "˙˙˙ɐɹǝɟlnoS ⅁uᴉʇʇǝs ɐʇɐᗡ",
-      "success": "˙uᴉɐƃɐ ǝuᴉʇɹɐʇs ʎɹ⊥ ˙ʎllnɟsǝɔɔns ʇǝsǝɹ ɐʇɐᗡ ⅁uᴉɟlnoS",
-      "error": "ɐʇɐᗡ ⅁uᴉɟlnoS ʇǝsǝɹ oʇ pǝlᴉɐɟ"
+      "success": ".uᴉɐƃɐ ƃuᴉʇɹɐʇs ʎɹ┴ .ʇǝsǝɹ ɐʇɐp ǝɹᴉℲlnoS",
+      "error": "ɐʇɐp ǝɹᴉℲlnoS ʇǝsǝɹ ʇou plnoↃ"
     },
     "description": ".sʇuǝɯnlɐʌɐ ɟo %52 sᴉ ʇlᴉɟɐnlp ǝɥʇ .Wɯɐɥ ɟo ∀4-xW ˙sƃɹɐ ʍddɯɐʌɾ ǝƃuɐɹʇs puɐ sʇuǝɹbɐ puǝƃuᴉʇsᴉlɪuɐ sɐ sɐ spnɾ uo ɹǝʇndoɔ no  sᴉ sɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ǝɥʇ",
     "form": {
@@ -44,7 +44,24 @@
         "placeholder": "ǝɹǝɥ sʎɐƃɐɯɹʌ ɯʌɾ ɹnoʎ"
       },
       "back": "ʞɔɐԐ",
-      "start": "ʇɹɐ┴S"
+      "start": "ʇɹɐ┴S",
+      "jar": {
+        "title": "ɹɐɐ ɹǝʌɹǝS",
+        "official": "lɐᴉɔᴉɟɟo",
+        "custom": "ɯoʇsnↃ",
+        "officialTitle": "ɹǝʌɹǝs ǝɹᴉℲlnoS lɐᴉɔᴉɟɟo",
+        "customTitle": "ɹɐɐ ɹǝʌɹǝs ɯoʇsnↃ",
+        "officialDescription": ".ǝsɐǝlǝɹ ǝɹᴉℲlnoS ƃuᴉɥɔʇɐɯ ǝɥʇ sǝᴉɟᴉɹǝʌ puɐ spɐoluʍoᗡ",
+        "customDescription": ".ʇᴉ ǝʇɐpdn ɹo ʎɟᴉɹǝʌ ʇou sǝop ǝɹᴉℲlnoS .ɹɐɐ pǝʇɹodɯᴉ uɐ sunᴚ",
+        "import": "ɹɐɐ ʇɹodɯI",
+        "importSuccess": "{{name}} pǝʇɹodɯI",
+        "importError": "ɹɐɐ ǝɹᴉℲlnoS ɯoʇsnɔ ǝɥʇ ʇɹodɯᴉ ʇou plnoↃ",
+        "selectCustomFirst": ".ƃuᴉʇɹɐʇs ǝɹoɟǝq ɹɐɐ ɯoʇsnɔ ɐ ʇɔǝlǝs puɐ ʇɹodɯI",
+        "dialog": {
+          "filter": "ǝʌᴉɥɔɹɐ ɐʌɐ)",
+          "title": "ɹɐɐ ɹǝʌɹǝs ǝɹᴉℲlnoS ʇɔǝlǝS"
+        }
+      }
     },
     "mobile": {
       "description": "˙sǝdǝʇs lɐnuɐɯ ʍǝɟ ɐ ǝʇǝldoɯ uo ɹǝʌɹǝs pǝʇɐɹƃǝʇuᴉ ǝɥʇ uɐ ɹnu oʇ pǝǝu noʎ 'ǝlᴉqoɯ uo",
@@ -75,7 +92,7 @@
     "toast": {
       "loading": ". . .ɹǝʌɹǝs oʇ ƃuᴉʞɔǝuuoɔ",
       "success": "ɹǝʌɹǝs oʇ pǝʇɔǝuuoɔ",
-      "error": "ɹǝʌɹǝs oʇ ʇɔǝuuoɔ oʇ pǝlᴉɐlℲ"
+      "error": "ɹǝʌɹǝs oʇ ʇɔǝuuoɔ ʇou plnoↃ"
     },
     "form": {
       "address": {
@@ -103,7 +120,7 @@
     "description": "˙ʍo˥ǝq ʇᴉ ɹǝʇuǝ  .<bold>{{lᴉɐɯǝ}}</bold> oʇ ǝpoɔ ɐ ʇuǝs ǝʌɐɥ ǝʍ  'ʇunoɔɔɐ uɐ ǝʌɐɥ noʎ ɟI",
     "toast": {
       "loading": ". . .ƃuᴉpɐo˥ ƃuᴉʞɔnǝɥɔ",
-      "success": "uᴉ puǝƃƃo˥",
+      "success": "uᴉ pǝuƃᴉS",
       "error": "pᴉlɐʌuᴉ sᴉ ǝpoɔ"
     },
     "back": "ʞɔɐԐ"

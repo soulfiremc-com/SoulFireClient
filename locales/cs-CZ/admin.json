@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Využitá hromada",
         "threads": "Vlákna",
-        "botsOnline": "Boti online",
+        "botsOnline": "Připojení boti",
         "uptime": "Doba provozu"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Počet vláken"
       },
       "aggregateBots": {
-        "title": "Boti online (všechny instance)"
+        "title": "Připojení boti (všechny instance)"
+      },
+      "legend": {
+        "process": "Proces",
+        "system": "Systém",
+        "used": "Využito",
+        "committed": "Vyhrazeno",
+        "max": "Max.",
+        "total": "Celkem",
+        "daemon": "Daemon",
+        "online": "Připojeno"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Přidávání uživatele...",
-      "success": "Uživatel přidán!",
+      "success": "Uživatel přidán",
       "error": "Nepodařilo se přidat uživatele"
     },
     "updateToast": {
       "loading": "Aktualizace uživatele...",
-      "success": "Uživatel aktualizován!",
+      "success": "Uživatel aktualizován",
       "error": "Nepodařilo se aktualizovat uživatele"
     },
     "removeToast": {
       "loading": "Odstraňování uživatelů...",
-      "success": "Uživatelé odstraněni!",
+      "success": "Uživatelé odstraněni",
       "error": "Nepodařilo se odstranit uživatele"
     },
     "invalidateToast": {
       "loading": "Odhlašování uživatelů...",
-      "success": "Uživatelé odhlášeni!",
+      "success": "Uživatelé odhlášeni",
       "error": "Nepodařilo se odhlásit uživatele"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Email",
       "role": "Role",
       "createdAt": "Vytvořeno",
-      "minIssuedAt": "Minimální přihlášení",
+      "minIssuedAt": "Relace platné od",
       "actions": "Akce",
       "searchUsernames": "Hledat uživatelská jména...",
       "searchEmails": "Hledat e-maily...",
       "searchCreatedAts": "Hledat data vytvoření...",
-      "searchMinIssuedAts": "Hledat minimální data přihlášení..."
+      "searchMinIssuedAts": "Hledat data relací..."
     },
     "removeSelectedTooltip": "Odstranit vybrané uživatele",
     "logOutSelectedTooltip": "Odhlásit vybrané uživatele",
@@ -125,6 +135,22 @@
       "editUser": "Upravit uživatele",
       "impersonate": "Převzít identitu",
       "copyUserId": "Zkopírovat ID uživatele"
+    },
+    "removeDialog": {
+      "title_one": "Odebrat {{count}} uživatele?",
+      "title_few": "Odebrat {{count}} uživatele?",
+      "title_many": "Odebrat {{count}} uživatele?",
+      "title_other": "Odebrat {{count}} uživatelů?",
+      "description": "Tím se vybraní uživatelé a jejich přístup trvale smažou. Tuto akci nelze vrátit zpět.",
+      "confirm": "Odebrat uživatele"
+    },
+    "invalidateDialog": {
+      "title_one": "Odhlásit {{count}} uživatele?",
+      "title_few": "Odhlásit {{count}} uživatele?",
+      "title_many": "Odhlásit {{count}} uživatele?",
+      "title_other": "Odhlásit {{count}} uživatelů?",
+      "description": "Tím se ukončí všechny relace a tokeny vybraných uživatelů. Budou se muset přihlásit znovu.",
+      "confirm": "Odhlásit uživatele"
     }
   }
 }

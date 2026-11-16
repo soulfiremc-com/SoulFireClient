@@ -58,22 +58,6 @@ export function NavSettings() {
       },
     },
     {
-      title: t("instanceSidebar.accountSettings"),
-      iconId: pageIconMap.get("account") ?? "users",
-      linkProps: {
-        to: "/instance/$instance/accounts",
-        params: { instance: instanceInfo.id },
-      },
-    },
-    {
-      title: t("instanceSidebar.proxySettings"),
-      iconId: pageIconMap.get("proxy") ?? "waypoints",
-      linkProps: {
-        to: "/instance/$instance/proxies",
-        params: { instance: instanceInfo.id },
-      },
-    },
-    {
       title: t("instanceSidebar.aiSettings"),
       iconId: pageIconMap.get("ai") ?? "sparkles",
       linkProps: {

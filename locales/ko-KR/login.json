@@ -44,7 +44,24 @@
         "placeholder": "여기에 JVM 인수를 입력하세요"
       },
       "back": "뒤로",
-      "start": "시작"
+      "start": "시작",
+      "jar": {
+        "title": "서버 jar",
+        "official": "공식",
+        "custom": "사용자 지정",
+        "officialTitle": "공식 SoulFire 서버",
+        "customTitle": "사용자 지정 서버 jar",
+        "officialDescription": "맞는 SoulFire 릴리스를 내려받아 검증합니다.",
+        "customDescription": "가져온 jar를 실행합니다. SoulFire는 이 파일을 검증하거나 업데이트하지 않습니다.",
+        "import": "jar 가져오기",
+        "importSuccess": "{{name}}을(를) 가져왔습니다",
+        "importError": "사용자 지정 SoulFire jar를 가져오지 못했습니다",
+        "selectCustomFirst": "시작하기 전에 사용자 지정 jar를 가져와 선택하세요.",
+        "dialog": {
+          "filter": "Java 아카이브",
+          "title": "SoulFire 서버 jar 선택"
+        }
+      }
     },
     "mobile": {
       "description": "모바일에서 통합 서버를 실행하려면 몇 가지 수동 단계가 필요합니다.",

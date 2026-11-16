@@ -120,13 +120,13 @@
       "network": "Network address",
       "unix": "Unix socket"
     },
-    "getProxies": "Get Proxies",
-    "addProxies": "Add Proxies",
+    "getProxies": "Proxy providers",
+    "addProxies": "Add proxies",
     "filterPlaceholder": "Filter proxies...",
     "listImportToast": {
       "loading": "Importing proxies...",
-      "success": "Imported {{count}} proxies!",
-      "error": "Failed to import proxies",
+      "success": "Imported {{count}} proxies",
+      "error": "Could not import proxies",
       "noProxies": "No proxies to import"
     },
     "import": {
@@ -147,7 +147,7 @@
           "unexpected": "Could not import the proxies. Check the addresses and credentials, then try again. Your list is still here."
         }
       },
-      "proxyType": "Proxy Type",
+      "proxyType": "Proxy type",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -159,18 +159,21 @@
     },
     "removeToast": {
       "loading": "Removing proxies...",
-      "success": "Removed {{count}} proxies!",
-      "error": "Failed to remove proxies"
+      "success": "Removed {{count}} proxies",
+      "error": "Could not remove proxies"
     },
     "checkToast": {
       "loading": "Checking proxies... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
-      "success": "Removed {{count}} broken proxies!",
-      "error": "Failed to check proxies"
+      "success": "Removed {{count}} broken proxies",
+      "error": "Could not check proxies",
+      "successKept": "{{failed}} of {{total}} proxies failed the check. No proxies were removed."
     },
     "checkDialog": {
-      "title": "Check Proxies",
-      "description": "You are about to check {{count}} proxies. Invalid proxies will be removed automatically.",
-      "confirm": "Start Check"
+      "title": "Check proxies",
+      "description": "You are about to check {{count}} proxies.",
+      "confirm": "Start check",
+      "removeFailed": "Remove proxies that fail",
+      "removeFailedHelp": "A proxy can fail because of a temporary network problem. Clear this option to keep every proxy and only see the result."
     },
     "invalidFormat": "Invalid proxy format",
     "table": {
@@ -186,88 +189,96 @@
     "exportSelectedTooltip": "Export selected proxies",
     "checkSelectedTooltip": "Check selected proxies",
     "contextMenu": {
-      "copyAddress": "Copy Address",
-      "copyUsername": "Copy Username",
-      "copyPassword": "Copy Password",
-      "deleteProxy": "Delete Proxy"
+      "copyAddress": "Copy address",
+      "copyUsername": "Copy username",
+      "copyPassword": "Copy password",
+      "deleteProxy": "Delete proxy"
     },
     "postImportCheckDialog": {
       "title": "Check imported proxies?",
-      "description": "You imported {{count}} proxies. Check them now? SoulFire removes invalid proxies automatically.",
-      "confirm": "Check Proxies",
+      "description": "You imported {{count}} proxies. Check them now?",
+      "confirm": "Check proxies",
       "skip": "Skip"
     },
     "export": {
-      "format": "Export Format",
-      "uri": "URI Format (all types)",
-      "http": "HTTP Only (flat)",
-      "socks4": "SOCKS4 Only (flat)",
-      "socks5": "SOCKS5 Only (flat)",
+      "format": "Export format",
+      "uri": "URI format (all types)",
+      "http": "HTTP only (flat)",
+      "socks4": "SOCKS4 only (flat)",
+      "socks5": "SOCKS5 only (flat)",
       "noProxies": "No proxies to export"
-    }
+    },
+    "removeDialog": {
+      "title_one": "Remove {{count}} proxy?",
+      "title_other": "Remove {{count}} proxies?",
+      "description": "This removes the selected proxies and their credentials from this project. You cannot undo this.",
+      "confirm": "Remove proxies"
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "account": {
-    "getAccounts": "Get Accounts",
-    "addAccounts": "Add Accounts",
-    "generateAccounts": "Generate Accounts",
+    "getAccounts": "Account providers",
+    "addAccounts": "Add accounts",
+    "generateAccounts": "Generate accounts",
     "filterPlaceholder": "Filter accounts...",
     "listImportToast": {
       "loading": "Importing accounts... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
-      "allFailed": "Failed to import any accounts",
+      "allFailed": "Could not import any accounts",
       "someFailed": "Imported {{count}} accounts, failed to import {{failed}} accounts",
-      "noneFailed": "{{count}} accounts imported!",
-      "error": "Failed to import accounts",
+      "noneFailed": "{{count}} accounts imported",
+      "error": "Could not import accounts",
       "noAccounts": "No accounts to import"
     },
     "unknownError": "Unknown error",
     "types": {
       "OFFLINE": "Offline account",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Credentials)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Device Code)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Token)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Cookies)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Access Token)",
+      "MICROSOFT_JAVA_CREDENTIALS": "Java (credentials)",
+      "MICROSOFT_JAVA_DEVICE_CODE": "Java (device code)",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (refresh token)",
+      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (access token)",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Credentials)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Device Code)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (credentials)",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (device code)"
     },
     "deviceCodeImportToast": {
       "loading": "Importing account...",
-      "success": "Account imported!",
-      "error": "Failed to import account"
+      "success": "Account imported",
+      "error": "Could not import account"
     },
     "generate": {
-      "title": "Generate Offline Accounts",
+      "title": "Generate offline accounts",
       "description": "Generate offline Java accounts with a custom name format.",
       "amount": "Amount",
-      "nameFormat": "Name Format",
+      "nameFormat": "Name format",
       "nameFormatHelp": "Use %d for the account number. For example, Bot_%d creates names such as Bot_1 and Bot_2.",
-      "mode": "Existing Accounts",
-      "modeHelp": "Choose how to handle existing accounts:\n\n• Ignore Existing: Generate only accounts with new names. Keep all existing accounts.\n\n• Replace Existing: Generate all requested accounts. Replace accounts with matching UUIDs. Keep all other accounts.\n\n• Replace All: Remove all existing accounts. Then add the generated accounts.",
-      "modeIgnoreExisting": "Ignore Existing",
-      "modeReplaceExisting": "Replace Existing",
-      "modeReplaceAll": "Replace All",
+      "mode": "Existing accounts",
+      "modeHelp": "Choose how to handle existing accounts:\n\n• Ignore existing: Generate only accounts with new names. Keep all existing accounts.\n\n• Replace existing: Generate all requested accounts. Replace accounts with matching UUIDs. Keep all other accounts.\n\n• Replace all: Remove all existing accounts. Then add the generated accounts.",
+      "modeIgnoreExisting": "Ignore existing",
+      "modeReplaceExisting": "Replace existing",
+      "modeReplaceAll": "Replace all",
       "submit": "Generate",
       "generating": "Generating...",
       "progress": "Generating accounts... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
-      "success": "Generated {{count}} accounts!",
-      "allFailed": "Failed to generate any accounts",
-      "allExist": "All usernames already exist. Enable 'Override existing accounts' to regenerate them.",
-      "error": "Failed to generate accounts",
-      "invalidAmount": "Please enter a valid amount (at least 1)",
-      "missingPlaceholder": "Name format must contain %d placeholder"
+      "success": "Generated {{count}} accounts",
+      "allFailed": "Could not generate any accounts",
+      "allExist": "All usernames already exist. Choose Replace existing to generate them again.",
+      "error": "Could not generate accounts",
+      "invalidAmount": "Enter an amount of at least 1.",
+      "missingPlaceholder": "The name format must contain %d."
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Offline",
-      "microsoftCredentials": "Microsoft Credentials",
-      "microsoftDeviceCode": "Microsoft Device Code",
-      "microsoftRefreshToken": "Microsoft Refresh Token",
-      "microsoftCookies": "Microsoft Cookies",
-      "microsoftAccessToken": "Microsoft Access Token",
-      "theAltening": "TheAltening Token",
-      "altProviders": "Alt Providers",
+      "microsoftCredentials": "Microsoft credentials",
+      "microsoftDeviceCode": "Microsoft device code",
+      "microsoftRefreshToken": "Microsoft refresh token",
+      "microsoftCookies": "Microsoft cookies",
+      "microsoftAccessToken": "Microsoft access token",
+      "theAltening": "TheAltening token",
+      "altProviders": "Alt providers",
       "dialog": {
         "title": "Import {{type}} accounts",
         "description": "Paste your accounts here, one per line"
@@ -275,12 +286,12 @@
     },
     "removeToast": {
       "loading": "Removing accounts...",
-      "success": "Removed {{count}} accounts!",
-      "error": "Failed to remove accounts"
+      "success": "Removed {{count}} accounts",
+      "error": "Could not remove accounts"
     },
     "table": {
       "type": "Type",
-      "profileId": "UUID",
+      "profileId": "Profile ID",
       "lastKnownName": "Username",
       "searchProfileIds": "Search profile IDs...",
       "searchLastKnownNames": "Search last known names...",
@@ -288,10 +299,10 @@
     },
     "removeSelectedTooltip": "Remove selected accounts",
     "contextMenu": {
-      "openConfig": "Open Config",
-      "openMetadata": "Open Metadata",
+      "openConfig": "Open settings",
+      "openMetadata": "Open metadata",
       "copyProfileId": "Copy profile ID",
-      "copyUsername": "Copy Username"
+      "copyUsername": "Copy username"
     },
     "config": {
       "title": "Configure {{name}}",
@@ -312,17 +323,31 @@
       "matchesInheritedValue": "Matches inherited value",
       "instanceValue": "Project value",
       "defaultValue": "Default value",
-      "resetOverride": "Reset override"
+      "resetOverride": "Reset override",
+      "value": {
+        "notSet": "Not set",
+        "on": "On",
+        "off": "Off",
+        "empty": "Empty",
+        "entries_one": "{{count}} entry",
+        "entries_other": "{{count}} entries",
+        "range": "Range"
+      },
+      "source": {
+        "bot": "Bot override",
+        "instance": "Inherited from project",
+        "default": "Using default"
+      }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Device Code Authentication",
+      "title": "Device code sign-in",
       "description": "Configure options before starting the device code flow.",
-      "start": "Start Authentication"
+      "start": "Start sign-in"
     },
     "deviceCodeDialog": {
-      "title": "Device Code Authentication",
+      "title": "Device code sign-in",
       "description": "Sign in with your Microsoft account to link it.",
-      "openInBrowser": "Open in Browser",
+      "openInBrowser": "Open in browser",
       "orManually": "Or enter code manually",
       "codeLabel": "Your code",
       "urlLabel": "Go to"
@@ -332,30 +357,43 @@
       "description": "Buy Minecraft accounts using your Ravealts API key.",
       "apiKeyPlaceholder": "Enter your Ravealts API key",
       "noStock": "No accounts in stock",
-      "accountType": "Account Type",
+      "accountType": "Account type",
       "networkError": "Connection to the Ravealts API failed",
       "outOfStock": "Selected type is out of stock",
       "insufficientBalance": "Not enough credits",
       "rateLimited": "Rate limited, try again later"
     },
     "metadata": {
-      "openButton": "Edit Metadata",
+      "openButton": "Edit metadata",
       "title": "Metadata: {{name}}",
       "description": "Manage persistent metadata entries for this account. Each entry has a namespace, key, and JSON value.",
       "namespacePlaceholder": "Namespace",
       "keyPlaceholder": "Key",
       "valuePlaceholder": "Value (JSON)",
       "noEntries": "No metadata entries. Add one above.",
-      "loadError": "Failed to load metadata",
+      "loadError": "Could not load metadata",
       "loadErrorDescription": "Retry before adding or changing entries.",
       "retryLoad": "Retry",
       "addSuccess": "Entry added",
-      "addError": "Failed to add entry",
-      "updateError": "Failed to update entry",
+      "addError": "Could not add entry",
+      "updateError": "Could not update entry",
       "deleteSuccess": "Entry deleted",
-      "deleteError": "Failed to delete entry",
+      "deleteError": "Could not delete entry",
       "duplicateError": "An entry with this namespace and key already exists",
-      "invalidJson": "Invalid JSON value"
+      "invalidJson": "Invalid JSON value",
+      "namespaceLabel": "Namespace",
+      "keyLabel": "Key",
+      "valueLabel": "Value",
+      "addEntryLegend": "Add metadata entry",
+      "addEntryButton": "Add entry",
+      "entryLegend": "Metadata entry",
+      "removeEntryButton": "Remove"
+    },
+    "removeDialog": {
+      "title_one": "Remove {{count}} account?",
+      "title_other": "Remove {{count}} accounts?",
+      "description": "This removes the selected accounts, their saved credentials, and their bots from this project. You cannot undo this.",
+      "confirm": "Remove accounts"
     }
   },
   "instanceMetadata": {
@@ -365,34 +403,41 @@
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Value (JSON)",
     "noEntries": "No metadata entries. Add one above.",
-    "loadError": "Failed to load metadata",
+    "loadError": "Could not load metadata",
     "loadErrorDescription": "Retry before adding or changing entries.",
     "retryLoad": "Retry",
     "addSuccess": "Entry added",
-    "addError": "Failed to add entry",
-    "updateError": "Failed to update entry",
+    "addError": "Could not add entry",
+    "updateError": "Could not update entry",
     "deleteSuccess": "Entry deleted",
-    "deleteError": "Failed to delete entry",
+    "deleteError": "Could not delete entry",
     "duplicateError": "An entry with this namespace and key already exists",
-    "invalidJson": "Invalid JSON value"
+    "invalidJson": "Invalid JSON value",
+    "namespaceLabel": "Namespace",
+    "keyLabel": "Key",
+    "valueLabel": "Value",
+    "addEntryLegend": "Add metadata entry",
+    "addEntryButton": "Add entry",
+    "entryLegend": "Metadata entry",
+    "removeEntryButton": "Remove"
   },
   "bots": {
     "searchPlaceholder": "Search bots...",
-    "onlineCount": "{{online}} online / {{total}} total",
+    "onlineCount": "{{online}} connected / {{total}} total",
     "noBots": "No bots yet. Each account in this project becomes one bot.",
     "noBotsFound": "No bots match your search.",
     "loadingMore": "Loading more...",
     "showingCount": "Showing {{loaded}} of {{total}}",
     "allLoaded": "All {{total}} bots loaded",
-    "online": "Online",
-    "offline": "Offline",
-    "notJoined": "Not Joined",
+    "online": "Connected",
+    "offline": "Disconnected",
+    "notJoined": "Not joined",
     "connectionPhase": {
       "connecting": "Connecting",
-      "connected": "Connected",
-      "spawned": "Online",
+      "connected": "Logging in",
+      "spawned": "Connected",
       "died": "Dead",
-      "disconnected": "Offline",
+      "disconnected": "Disconnected",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -406,29 +451,25 @@
     },
     "backToBots": "All bots",
     "tabs": {
-      "overview": "Live view",
+      "overview": "Bot view",
       "inventory": "Inventory",
       "controls": "Controls and dialogs",
       "terminal": "Logs and commands"
     },
-    "comingSoon": "Coming Soon",
-    "terminalPanel": {
-      "title": "Bot Terminal"
-    },
+    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Direct (no proxy)",
       "unavailable": "Unavailable"
     },
     "positionPanel": {
-      "title": "Position & Rotation",
+      "title": "Position and rotation",
       "position": "Position",
       "rotation": "Rotation",
-      "offline": "Bot is offline. Position data is only available when the bot is connected."
+      "offline": "The bot is disconnected. Position data is only available when the bot is connected."
     },
     "chatPanel": {
       "title": "Chat and events",
-      "description": "Chat messages from this bot will appear here in a future update.",
       "label": "Send as this bot",
       "placeholder": "Type a message, or /command",
       "send": "Send",
@@ -438,9 +479,8 @@
       "sendError": "Could not send the message"
     },
     "commandPanel": {
-      "title": "Bot Commands",
-      "placeholder": "Send command to this bot...",
-      "description": "Bot-scoped commands will be available in a future update."
+      "title": "Bot commands",
+      "placeholder": "Send command to this bot..."
     },
     "povPanel": {
       "title": "Bot view",
@@ -453,51 +493,50 @@
       "offline": "The bot is disconnected. Bot view is available when the bot connects."
     },
     "statsPanel": {
-      "title": "Bot Stats",
       "health": "Health",
       "food": "Food",
       "saturation": "Saturation",
       "experience": "Experience",
       "level": "Level",
       "toNextLevel": "to next level",
-      "gameMode": "Game Mode",
+      "gameMode": "Game mode",
       "survival": "Survival",
       "creative": "Creative",
       "adventure": "Adventure",
       "spectator": "Spectator",
       "unknown": "Unknown",
-      "offline": "Bot is offline. Stats are only available when the bot is connected."
+      "offline": "The bot is disconnected. Stats are only available when the bot is connected."
     },
     "inventoryPanel": {
       "title": "Inventory",
       "actionRejected": "The inventory action was rejected.",
       "hotbar": "Hotbar",
-      "main": "Main Inventory",
+      "main": "Main inventory",
       "items": "items",
       "carrying": "Carrying",
-      "dropOne": "Drop One",
-      "dropAll": "Drop All",
+      "dropOne": "Drop one",
+      "dropAll": "Drop all",
       "closeContainer": "Close",
       "clickHint": "Left click: pick up/place | Right click: half/one | Shift+click: quick move | Middle click: select hotbar slot",
-      "offline": "Bot is offline. Inventory is only available when the bot is connected.",
+      "offline": "The bot is disconnected. Inventory is only available when the bot is connected.",
       "buttons": {
         "stonecutterRecipes": "Recipes",
         "enchantments": "Enchantments",
         "patterns": "Patterns",
         "trades": "Trades",
-        "beaconEffects": "Beacon Effects",
-        "crafterSlots": "Slot Controls",
-        "lecternControls": "Book Controls",
+        "beaconEffects": "Beacon effects",
+        "crafterSlots": "Slot controls",
+        "lecternControls": "Book controls",
         "actions": "Actions",
-        "creativeTabs": "Creative Tabs"
+        "creativeTabs": "Creative tabs"
       },
       "textInput": {
-        "title": "Text Input",
-        "anvilRename": "Rename Item",
-        "creativeSearch": "Search Items"
+        "title": "Text input",
+        "anvilRename": "Rename item",
+        "creativeSearch": "Search items"
       },
       "bookPages": {
-        "title": "Book Content",
+        "title": "Book content",
         "emptyPage": "(Empty page)",
         "previousPage": "Previous page",
         "nextPage": "Next page",
@@ -505,61 +544,67 @@
       },
       "creativeCatalogHint": "Catalog: click to copy one, Shift+click or middle click to copy a stack. Click the same item to add one, or right click to remove one from the cursor.",
       "creativeTrashHint": "Click: destroy carried items | Shift+click: clear the entire inventory",
-      "destroyItem": "Destroy Item"
+      "destroyItem": "Destroy item",
+      "clickHints": {
+        "left": "Left click: pick up or place",
+        "right": "Right click: pick up half or place one",
+        "shift": "Shift+click: quick move",
+        "middle": "Middle click: select as active slot"
+      }
     },
     "visualPanel": {
-      "title": "Bot View",
-      "compass": "Facing Direction",
-      "lookDirection": "Look Angle",
+      "title": "Direction and world",
+      "compass": "Facing direction",
+      "lookDirection": "Look angle",
       "lookingUp": "Looking up",
       "lookingDown": "Looking down",
       "lookingStraight": "Looking straight",
-      "worldInfo": "World Info",
+      "worldInfo": "World info",
       "dimension": "Dimension",
       "biome": "Biome",
-      "offline": "Bot is offline. Visual data is only available when the bot is connected."
+      "offline": "The bot is disconnected. Visual data is only available when the bot is connected."
     },
     "actionsPanel": {
-      "title": "Bot Actions",
-      "leftClick": "Left Click",
-      "rightClick": "Right Click",
+      "title": "Bot actions",
+      "leftClick": "Left click",
+      "rightClick": "Right click",
       "leftClickDescription": "Attack entity or break block",
       "rightClickDescription": "Use item or interact",
-      "offline": "Bot is offline. Actions are only available when the bot is connected."
+      "offline": "The bot is disconnected. Actions are only available when the bot is connected."
     },
     "movementPanel": {
       "updateServer": "Update SoulFire to synchronize movement controls.",
-      "title": "Movement Control",
+      "title": "Movement control",
       "movement": "Movement (WASD)",
-      "forward": "Move Forward (W)",
-      "backward": "Move Backward (S)",
-      "left": "Strafe Left (A)",
-      "right": "Strafe Right (D)",
+      "forward": "Move forward (W)",
+      "backward": "Move backward (S)",
+      "left": "Strafe left (A)",
+      "right": "Strafe right (D)",
       "jump": "Jump",
       "sneak": "Sneak",
       "sprint": "Sprint",
       "stop": "Stop",
-      "rotation": "Look Direction",
-      "lookUp": "Look Up",
-      "lookDown": "Look Down",
-      "lookLeft": "Look Left",
-      "lookRight": "Look Right",
-      "offline": "Bot is offline. Movement controls are only available when the bot is connected."
+      "rotation": "Look direction",
+      "lookUp": "Look up",
+      "lookDown": "Look down",
+      "lookLeft": "Look left",
+      "lookRight": "Look right",
+      "offline": "The bot is disconnected. Movement controls are only available when the bot is connected."
     },
     "dialogPanel": {
-      "title": "Server Dialog",
+      "title": "Server dialog",
       "noDialog": "No server dialog is currently displayed.",
       "dialogType": "Type",
       "dialogId": "Dialog ID",
       "notice": "Notice",
       "confirmation": "Confirmation",
-      "multiAction": "Multi Action",
-      "serverLinks": "Server Links",
-      "dialogList": "Dialog List",
+      "multiAction": "Multi action",
+      "serverLinks": "Server links",
+      "dialogList": "Dialog list",
       "unknownType": "Unknown",
       "dismiss": "Dismiss",
       "submit": "Submit",
-      "offline": "Bot is offline. Dialogs are only available when the bot is connected."
+      "offline": "The bot is disconnected. Dialogs are only available when the bot is connected."
     },
     "addFirst": "Add accounts",
     "filterLabel": "Filter by status",
@@ -588,7 +633,7 @@
       }
     },
     "pov": {
-      "title": "Live view",
+      "title": "Bot view",
       "watch": "Watch",
       "stopWatching": "Stop watching",
       "watchBot": "Watch this bot",
@@ -602,7 +647,41 @@
       "watching": "View only. Take control to send your keyboard and mouse to this bot. {{shortcut}} gives them back.",
       "controlling": "You control this bot. Your keyboard and mouse go to Minecraft. Press {{shortcut}} to release.",
       "touchHint": "Take control to show touch controls.",
-      "touchControlling": "You control this bot. Use Leave control to stop."
+      "touchControlling": "You control this bot. Use Release control to stop.",
+      "popupBlocked": "Allow popups to detach the Bot view window.",
+      "windowTitle": "SoulFire Bot view",
+      "fullscreenUnavailable": "Fullscreen is unavailable in this window.",
+      "textInputLabel": "Minecraft text input",
+      "videoLabel": "Live Bot view",
+      "touchMove": "Move",
+      "audioError": "Could not start audio.",
+      "startError": "Could not start the Bot view.",
+      "releaseHint": "Press {{shortcut}} to release your keyboard and mouse.",
+      "captureHint": "Click the view and allow keyboard and mouse capture.",
+      "audioWaiting": "Waiting for the Bot view to connect.",
+      "audioWatchFirst": "Watch the bot to use audio.",
+      "audioUpdateServer": "Update the server to use Bot view audio.",
+      "muteAudio": "Mute audio",
+      "unmuteAudio": "Unmute audio",
+      "audioStarting": "Starting audio...",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "audio": "Audio",
+      "audioUnavailable": "Audio unavailable",
+      "volume": "Bot view volume",
+      "reconnect": "Reconnect",
+      "showWindow": "Show Bot view window",
+      "attachWindow": "Attach Bot view window",
+      "touch": {
+        "jump": "Jump",
+        "sneak": "Sneak",
+        "attack": "Attack",
+        "use": "Use",
+        "inventory": "Inventory",
+        "keyboard": "Keyboard",
+        "closeMenu": "Close menu"
+      },
+      "needsServer": "The Bot view needs a connected SoulFire server."
     }
   },
   "metrics": {
@@ -610,19 +689,19 @@
       "noData": "No data"
     },
     "summary": {
-      "online": "Online",
+      "online": "Connected",
       "packetsPerSecond": "Pkt/s",
       "traffic": "Traffic",
       "health": "Health",
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Bots Online",
-      "online": "Online",
+      "title": "Bots connected",
+      "online": "Connected",
       "total": "Total"
     },
     "packets": {
-      "title": "Packets / Second",
+      "title": "Packets per second",
       "sent": "Sent/s",
       "received": "Recv/s"
     },
@@ -632,27 +711,27 @@
       "download": "Download"
     },
     "tick": {
-      "title": "Tick Duration",
+      "title": "Tick duration",
       "avg": "Avg (ms)",
       "max": "Max (ms)"
     },
     "healthFood": {
-      "title": "Health / Food",
-      "health": "Avg Health",
-      "food": "Avg Food"
+      "title": "Health and food",
+      "health": "Avg health",
+      "food": "Avg food"
     },
     "chunksEntities": {
-      "title": "Chunks / Entities",
+      "title": "Chunks and entities",
       "chunks": "Chunks",
       "entities": "Entities"
     },
     "connections": {
-      "title": "Connection Events",
+      "title": "Connection events",
       "connections": "Connections",
       "disconnections": "Disconnections"
     },
     "healthDistribution": {
-      "title": "Health Distribution",
+      "title": "Health distribution",
       "bots": "Bots"
     },
     "dimensions": {
@@ -660,32 +739,32 @@
       "bots": "Bots"
     },
     "gameModes": {
-      "title": "Game Modes",
+      "title": "Game modes",
       "bots": "Bots"
     },
     "positions": {
-      "title": "Bot Positions (XZ)",
+      "title": "Bot positions (XZ)",
       "bot": "Bot"
     }
   },
   "scripts": {
-    "title": "Visual Scripts",
+    "title": "Visual scripts",
     "description": "Scripts make your bots react to events. Build them by connecting nodes.",
-    "experimentalTitle": "Experimental Feature",
+    "experimentalTitle": "Experimental feature",
     "experimentalWarning": "This feature is experimental. Future updates can break existing scripts. Use it with caution.",
     "createScript": "New blank script",
     "createScriptTitle": "New blank script",
     "createScriptDescription": "Give the script a name. You add a trigger and actions in the editor. New scripts start off.",
-    "scriptName": "Script Name",
+    "scriptName": "Script name",
     "scriptNamePlaceholder": "Enter script name...",
     "scriptDescription": "Description",
     "scriptDescriptionPlaceholder": "Describe what this script does...",
     "create": "Create",
-    "createSuccess": "Script created successfully",
-    "createError": "Failed to create script",
+    "createSuccess": "Script created",
+    "createError": "Could not create script",
     "noScripts": "Start with a template",
     "noScriptsDescription": "Each template is a working script that you can change. Templates start off, so nothing runs until you turn them on.",
-    "createFirstScript": "Start from a blank script",
+    "createFirstScript": "New blank script",
     "running": "On",
     "paused": "Off",
     "nodes": "nodes",
@@ -698,19 +777,19 @@
     "resumeSuccess": "Script turned on",
     "resumeError": "Could not turn on the script",
     "delete": "Delete",
-    "deleteSuccess": "Script deleted successfully",
-    "deleteError": "Failed to delete script",
-    "saveSuccess": "Script saved successfully",
-    "saveError": "Failed to save script",
+    "deleteSuccess": "Script deleted",
+    "deleteError": "Could not delete script",
+    "saveSuccess": "Script saved",
+    "saveError": "Could not save script",
     "activateSuccess": "Script turned on",
     "activateError": "Could not turn on the script",
     "deactivateSuccess": "Script turned off",
-    "untitledScript": "Untitled Script",
+    "untitledScript": "Untitled script",
     "saveFirstBeforeActivating": "Save the script before you turn it on",
     "activating": "Turning on script...",
     "activated": "Script turned on",
     "executionCompleted": "Script completed",
-    "executionCompletedSuccess": "Script completed successfully",
+    "executionCompletedSuccess": "Script completed",
     "deactivated": "Script turned off",
     "deactivatedByUser": "Script turned off by user",
     "executionFailed": "Script execution failed",
@@ -721,17 +800,17 @@
     "nodeCompleted": "Node completed: {{nodeId}}",
     "nodeError": "Node error: {{error}}",
     "contextMenu": {
-      "edit": "Edit Script",
+      "edit": "Edit script",
       "pause": "Turn off",
       "resume": "Turn on",
-      "delete": "Delete Script",
-      "copyScriptName": "Copy Script Name",
-      "copyScriptId": "Copy Script ID"
+      "delete": "Delete script",
+      "copyScriptName": "Copy script name",
+      "copyScriptId": "Copy script ID"
     },
     "editor": {
       "toolbar": {
         "actions": "Script actions",
-        "backToScripts": "Back to Scripts",
+        "backToScripts": "Back to scripts",
         "save": "Save",
         "saveTooltip": "Save this version on the server",
         "resume": "Turn on",
@@ -746,14 +825,16 @@
         "fit": "Fit",
         "export": "Export script",
         "import": "Import script",
-        "exportSuccess": "Script exported successfully",
-        "importSuccess": "Script imported successfully",
-        "importError": "Failed to import script",
+        "exportSuccess": "Script exported",
+        "importSuccess": "Script imported",
+        "importError": "Could not import script",
         "resumeBlocked": "Fix the errors in the script check first"
       },
       "palette": {
         "title": "Nodes",
-        "search": "Search nodes..."
+        "search": "Search nodes...",
+        "noResults": "No nodes match your search",
+        "noResultsDescription": "Try a different term or clear the current filter."
       },
       "logs": {
         "title": "Run logs",
@@ -765,22 +846,26 @@
       "contextMenu": {
         "duplicate": "Duplicate",
         "rename": "Rename",
-        "disconnectAll": "Disconnect All",
+        "disconnectAll": "Disconnect all",
         "collapse": "Collapse",
         "expand": "Expand",
         "mute": "Mute",
         "unmute": "Unmute",
-        "showPreview": "Show Preview",
-        "hidePreview": "Hide Preview",
+        "showPreview": "Show preview",
+        "hidePreview": "Hide preview",
         "delete": "Delete"
       },
       "node": {
         "expand": "Expand node",
-        "collapse": "Collapse node"
+        "collapse": "Collapse node",
+        "avgTime": "Average execution time: {{avg}} ms (last {{count}} runs)",
+        "preview": "Preview"
       },
       "debug": {
         "copyValue": "Copy current value",
-        "clearHistory": "Clear history"
+        "clearHistory": "Clear history",
+        "current": "Current ({{time}}):",
+        "noValue": "No value received yet"
       },
       "edge": {
         "direction": "Edge direction"
@@ -792,14 +877,36 @@
         "title": "Script complexity score"
       },
       "group": {
-        "returnToRoot": "Return to root (Tab)"
+        "returnToRoot": "Return to root (Tab)",
+        "root": "Root",
+        "exitHint": "Press <key>Tab</key> to exit",
+        "editHint": "Double-click to edit",
+        "noInputs": "No inputs defined",
+        "noOutputs": "No outputs defined"
       },
       "quickAdd": {
         "menuLabel": "Quick add node menu",
-        "searchPlaceholder": "Search nodes..."
+        "searchPlaceholder": "Search nodes...",
+        "noResults": "No nodes found",
+        "noResultsDescription": "Try a different search term.",
+        "navigate": "Navigate",
+        "select": "Enter to select",
+        "close": "Esc to close"
       },
       "diff": {
-        "tooltip": "Review changes"
+        "tooltip": "Review changes",
+        "title": "Unsaved changes",
+        "description": "Changes since the last save.",
+        "nodesAdded_one": "{{count}} node added",
+        "nodesAdded_other": "{{count}} nodes added",
+        "nodesRemoved_one": "{{count}} node removed",
+        "nodesRemoved_other": "{{count}} nodes removed",
+        "nodesModified_one": "{{count}} node modified",
+        "nodesModified_other": "{{count}} nodes modified",
+        "edgesAdded_one": "{{count}} edge added",
+        "edgesAdded_other": "{{count}} edges added",
+        "edgesRemoved_one": "{{count}} edge removed",
+        "edgesRemoved_other": "{{count}} edges removed"
       },
       "dryRun": {
         "saveFirst": "Save your changes before you start a test run.",
@@ -817,7 +924,7 @@
         "tooltip": "Run one trigger with test values",
         "title": "Test run",
         "description": "Runs this script once from a trigger with values that you enter. The script does not need to be on.",
-        "triggerNode": "Trigger Node",
+        "triggerNode": "Trigger node",
         "selectTrigger": "Select a trigger...",
         "triggerDescription": "Pick the trigger to run with these test values.",
         "mockInputs": "Test values",
@@ -826,25 +933,31 @@
         "button": "Test run"
       },
       "quotas": {
-        "tooltip": "Script Quotas",
-        "title": "Script Quotas",
+        "tooltip": "Script quotas",
+        "title": "Script quotas",
         "description": "Configure resource limits for this script. Empty fields use server defaults.",
-        "maxExecutionCount": "Max Execution Count",
+        "maxExecutionCount": "Max execution count",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Maximum node executions per trigger invocation",
         "maxExecutionTime": "Max Execution Time (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Maximum wall-clock time per trigger execution",
-        "maxConcurrentTriggers": "Max Concurrent Triggers",
+        "maxConcurrentTriggers": "Max concurrent triggers",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "Maximum concurrent trigger invocations",
-        "maxStateStoreEntries": "Max State Store Entries",
+        "maxStateStoreEntries": "Max state store entries",
         "maxStateStoreEntriesPlaceholder": "Unlimited",
         "maxStateStoreEntriesDescription": "Maximum entries in the script state store",
-        "disableTimeouts": "Disable Timeouts",
+        "disableTimeouts": "Disable timeouts",
         "disableTimeoutsDescription": "Disables per-node and data edge timeouts",
-        "save": "Save Quotas",
+        "save": "Save quotas",
         "invalidInteger": "Enter a whole number between {{min}} and {{max}}."
+      },
+      "multiInput": {
+        "reorder": "Reorder {{label}}",
+        "empty": "No incoming values",
+        "title": "Multi-input: accepts multiple connections",
+        "connectTo": "Connect values to {{label}}"
       }
     },
     "lifecycle": {
@@ -902,7 +1015,13 @@
         "title": "Log bot health every minute",
         "description": "Every minute, writes the health of each connected bot to the script logs."
       }
-    }
+    },
+    "deleteDialog": {
+      "title": "Delete script?",
+      "description": "This permanently deletes \"{{name}}\". You cannot undo this.",
+      "descriptionUnnamed": "This permanently deletes the script. You cannot undo this."
+    },
+    "executionStats": "Execution stats: {{executed}}/{{max}} nodes executed"
   },
   "metadataValidation": {
     "invalidNamespace": "Use lowercase letters, digits, underscores, periods, or hyphens.",

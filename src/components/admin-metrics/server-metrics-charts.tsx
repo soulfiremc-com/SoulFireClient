@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import {
   Area,
@@ -113,8 +114,18 @@ export function ServerMetricsSummaryCards({
 }
 
 const cpuConfig = {
-  process: { label: "Process", color: "var(--chart-1)" },
-  system: { label: "System", color: "var(--chart-2)" },
+  process: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.process");
+    },
+    color: "var(--chart-1)",
+  },
+  system: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.system");
+    },
+    color: "var(--chart-2)",
+  },
 } satisfies ChartConfig;
 
 export function CpuUsageChart({
@@ -203,9 +214,24 @@ export function CpuUsageChart({
 }
 
 const memoryConfig = {
-  used: { label: "Used", color: "var(--chart-1)" },
-  committed: { label: "Committed", color: "var(--chart-3)" },
-  max: { label: "Max", color: "var(--chart-4)" },
+  used: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.used");
+    },
+    color: "var(--chart-1)",
+  },
+  committed: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.committed");
+    },
+    color: "var(--chart-3)",
+  },
+  max: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.max");
+    },
+    color: "var(--chart-4)",
+  },
 } satisfies ChartConfig;
 
 export function MemoryUsageChart({
@@ -324,8 +350,18 @@ export function MemoryUsageChart({
 }
 
 const threadConfig = {
-  total: { label: "Total", color: "var(--chart-1)" },
-  daemon: { label: "Daemon", color: "var(--chart-2)" },
+  total: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.total");
+    },
+    color: "var(--chart-1)",
+  },
+  daemon: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.daemon");
+    },
+    color: "var(--chart-2)",
+  },
 } satisfies ChartConfig;
 
 export function ThreadCountChart({
@@ -399,8 +435,18 @@ export function ThreadCountChart({
 }
 
 const botsConfig = {
-  online: { label: "Online", color: "var(--chart-1)" },
-  total: { label: "Total", color: "var(--chart-3)" },
+  online: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.online");
+    },
+    color: "var(--chart-1)",
+  },
+  total: {
+    get label() {
+      return i18n.t("admin:overview.serverMetrics.legend.total");
+    },
+    color: "var(--chart-3)",
+  },
 } satisfies ChartConfig;
 
 export function AggregateBotsChart({

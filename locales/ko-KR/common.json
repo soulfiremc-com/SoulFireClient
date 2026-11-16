@@ -113,18 +113,24 @@
         "submit": "URL에서 불러오기",
         "toast": {
           "loading": "데이터 다운로드 중...",
-          "success": "데이터가 불러와졌습니다!",
+          "success": "데이터가 불러와졌습니다",
           "error": "데이터 다운로드에 실패했습니다",
           "httpError": "",
           "empty": ""
         }
       }
+    },
+    "deleteInstance": {
+      "title": "인스턴스를 삭제할까요?",
+      "description": "\"{{name}}\"과(와) 해당 데이터를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
+      "descriptionUnnamed": "이 인스턴스와 해당 데이터를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다."
     }
   },
   "commandInput": {
     "placeholder": "명령 입력 (목록이 필요하면 'help' 입력)",
     "emptySuggestions": "제안을 요청하려면 입력하거나 Tab 키를 누르세요.",
-    "noSuggestions": "사용 가능한 제안이 없습니다."
+    "noSuggestions": "사용 가능한 제안이 없습니다.",
+    "emptySuggestionsPrefix": "입력해 제안을 요청하거나 다음 키를 누르세요:"
   },
   "controls": {
     "start": "시작",
@@ -162,7 +168,7 @@
     "stopCount_other": "{{count}}개의 봇 중지",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} 온라인 · {{desired}} 목표 · {{total}} 전체",
+  "botFleetSummary": "연결 {{online}} · 실행 설정 {{desired}} · 전체 {{total}}",
   "icon": {
     "invalidName": "잘못된 아이콘 이름: {{name}}"
   },
@@ -243,7 +249,24 @@
     "sortOrders": {
       "asc": "오름차순",
       "desc": "내림차순"
-    }
+    },
+    "openFilterMenu": "필터 메뉴 열기",
+    "filterOperator": "필터 연산자",
+    "filterValue": "필터 값",
+    "sortDirection": "정렬 방향",
+    "selectJoinOperator": "결합 연산자 선택",
+    "joinOperator": "결합 연산자",
+    "escapeKey": "Escape",
+    "selectDate": "날짜 선택",
+    "selectDateRange": "날짜 범위 선택",
+    "clearFilter": "{{title}} 필터 지우기",
+    "clearFilters": "필터 지우기",
+    "clear": "지우기",
+    "from": "시작",
+    "to": "끝",
+    "sortDirectionFor": "{{column}} 정렬 방향",
+    "minValue": "{{label}} 최솟값",
+    "maxValue": "{{label}} 최댓값"
   },
   "pluginCard": {
     "version": "버전: {{version}}",
@@ -252,13 +275,13 @@
     "website": "웹사이트"
   },
   "settingsPage": {
-    "saveError": "",
+    "saveError": "{{name}}을(를) 저장하지 못했습니다",
     "namespacesNotFound": "설정 네임스페이스를 찾을 수 없습니다",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "",
+      "saveError": "{{name}}을(를) 저장하지 못했습니다",
       "placeholder": "새 항목 추가...",
       "add": "추가",
       "remove": "제거"
@@ -269,7 +292,8 @@
     "invalidNumberToast": {
       "title": "잘못된 숫자입니다.",
       "description": "값은 {{min}}에서 {{max}} 사이여야 합니다"
-    }
+    },
+    "minMaxLegend": "최솟값 및 최댓값 설정"
   },
   "terminal": {
     "noLogs": "아직 로그가 없습니다. 명령어를 실행하면 로그 출력이 생성됩니다.",
@@ -317,16 +341,37 @@
       "error": "{{device}}에 연결하지 못했습니다"
     },
     "noDevices": "기기를 찾을 수 없습니다",
-    "broadcastLabel": "브로드캐스트 테스트",
     "broadcastToast": {
       "loading": "메시지 브로드캐스트 중...",
-      "success": "메시지가 브로드캐스트되었습니다!",
+      "success": "메시지가 브로드캐스트되었습니다",
       "error": "메시지 브로드캐스트에 실패했습니다"
+    }
+  },
+  "commandPalette": {
+    "feedback": {
+      "activate": {
+        "loading": "스크립트를 켜는 중...",
+        "success": "스크립트를 켰습니다",
+        "error": "스크립트를 켜지 못했습니다. 다시 시도하세요."
+      },
+      "deactivate": {
+        "loading": "스크립트를 끄는 중...",
+        "success": "스크립트를 껐습니다",
+        "error": "스크립트를 끄지 못했습니다. 다시 시도하세요."
+      }
+    },
+    "operations": {
+      "activateScript": "스크립트 {{name}} 켜기",
+      "deactivateScript": "스크립트 {{name}} 끄기"
+    },
+    "status": {
+      "active": "켜짐",
+      "paused": "꺼짐"
     }
   },
   "instanceSidebar": {
     "readDocumentation": "문서 읽기",
-    "backToDashboard": "대시보드로 돌아가기",
+    "backToDashboard": "인스턴스 목록으로 돌아가기",
     "deleteToast": {
       "loading": "인스턴스 삭제 중...",
       "success": "인스턴스가 삭제되었습니다",
@@ -352,9 +397,9 @@
     "settingsGroup": "설정",
     "extensionsGroup": "확장 프로그램 또는 플러그인 그룹",
     "botSettings": "봇 설정",
-    "accountSettings": "계정 설정",
+    "accountSettings": "계정",
     "metaSettings": "인스턴스 설정",
-    "proxySettings": "프록시 설정",
+    "proxySettings": "프록시",
     "aiSettings": "AI 설정",
     "pathfindingSettings": "경로 탐색 설정",
     "discoverPlugins": "플러그인",
@@ -420,10 +465,10 @@
     "instances": "인스턴스",
     "access": "접근",
     "settings": "설정",
-    "proxySettings": "프록시 설정",
+    "proxySettings": "프록시",
     "overview": "개요",
     "users": "사용자",
-    "accountSettings": "계정 설정",
+    "accountSettings": "계정",
     "metaSettings": "인스턴스 설정",
     "discoverPlugins": "플러그인",
     "adminScripts": "스크립트",
@@ -440,7 +485,7 @@
     },
     "api": {
       "title": "API 접근",
-      "description": "SoulFire gRPC HTTP API는 웹 요청을 통해 인스턴스를 관리합니다.",
+      "description": "SoulFire API를 사용해 직접 만든 프로그램에서 인스턴스를 관리하세요.",
       "publicAddress": "공용 API 주소",
       "personalToken": "개인 API 토큰",
       "securityWarning": "개인 API 토큰은 비공개로 보관하세요. API 접근 권한을 제공합니다.",
@@ -448,7 +493,7 @@
     },
     "token": {
       "generate": "토큰 생성",
-      "placeholder": "아래에서 '토큰 생성'을 클릭하세요",
+      "placeholder": "아래에서 \"토큰 생성\"을(를) 선택하세요",
       "generating": "토큰 생성 중...",
       "success": "토큰이 성공적으로 생성되었습니다",
       "error": "토큰 생성에 실패했습니다",
@@ -477,9 +522,8 @@
     "required": "",
     "max": "",
     "singleLine": "",
-    "save": "",
     "saved": "",
-    "saveError": ""
+    "saveError": "인스턴스 이름을 업데이트하지 못했습니다"
   },
   "userSettings": {
     "avatar": {
@@ -497,8 +541,7 @@
     },
     "saved": "",
     "conflict": "",
-    "saveError": "",
-    "saveField": ""
+    "saveError": "{{field}}을(를) 업데이트하지 못했습니다"
   },
   "auditLog": {
     "filterPlaceholder": "감사 로그 필터...",
@@ -554,22 +597,22 @@
     },
     "removeToast": {
       "loading": "스크립트 삭제 중...",
-      "success": "스크립트가 삭제되었습니다!",
+      "success": "스크립트가 삭제되었습니다",
       "error": "스크립트 삭제에 실패했습니다"
     },
     "addToast": {
       "loading": "스크립트 추가 중...",
-      "success": "스크립트가 추가되었습니다!",
+      "success": "스크립트가 추가되었습니다",
       "error": "스크립트 추가에 실패했습니다"
     },
     "updateToast": {
       "loading": "스크립트 업데이트 중...",
-      "success": "스크립트가 업데이트되었습니다!",
+      "success": "스크립트가 업데이트되었습니다",
       "error": "스크립트 업데이트에 실패했습니다"
     },
     "restartToast": {
       "loading": "스크립트 재시작 중...",
-      "success": "스크립트가 재시작되었습니다!",
+      "success": "스크립트가 재시작되었습니다",
       "error": "스크립트 재시작에 실패했습니다"
     },
     "table": {
@@ -594,7 +637,7 @@
     "bot": {
       "goToBot": "봇으로 이동",
       "copyUsername": "사용자명 복사",
-      "copyUuid": "UUID 복사하기",
+      "copyUuid": "프로필 ID 복사",
       "copyCoordinates": "좌표 복사하기"
     },
     "plugin": {
@@ -650,5 +693,22 @@
   "botUnavailable": {
     "title": "",
     "description": ""
-  }
+  },
+  "sdk": {
+    "botOnline": "연결됨",
+    "botOffline": "연결 끊김"
+  },
+  "minecraftActions": {
+    "copyError": "텍스트를 복사하지 못했습니다. HTTPS를 사용하거나 클립보드 접근을 허용하세요.",
+    "openError": "링크를 열지 못했습니다.",
+    "popupBlocked": "브라우저가 새 탭을 차단했습니다.",
+    "openLink": "링크 열기"
+  },
+  "instanceIcon": {
+    "label": "아이콘",
+    "description": "앱에 표시되는 인스턴스 아이콘입니다."
+  },
+  "unknown": "알 수 없음",
+  "minecraftHead": "Minecraft 머리",
+  "textFile": "텍스트 파일"
 }

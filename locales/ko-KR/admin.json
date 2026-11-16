@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "사용된 힙",
         "threads": "스레드",
-        "botsOnline": "온라인 봇",
+        "botsOnline": "연결된 봇",
         "uptime": "가동 시간"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "스레드 수"
       },
       "aggregateBots": {
-        "title": "온라인 봇 (모든 인스턴스)"
+        "title": "연결된 봇(모든 인스턴스)"
+      },
+      "legend": {
+        "process": "프로세스",
+        "system": "시스템",
+        "used": "사용 중",
+        "committed": "할당됨",
+        "max": "최대",
+        "total": "전체",
+        "daemon": "데몬",
+        "online": "연결됨"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "사용자 추가 중...",
-      "success": "사용자가 추가되었습니다!",
+      "success": "사용자가 추가되었습니다",
       "error": "사용자 추가 실패"
     },
     "updateToast": {
       "loading": "사용자 업데이트 중...",
-      "success": "사용자가 업데이트되었습니다!",
+      "success": "사용자가 업데이트되었습니다",
       "error": "사용자 업데이트 실패"
     },
     "removeToast": {
       "loading": "사용자 삭제 중...",
-      "success": "사용자가 삭제되었습니다!",
+      "success": "사용자가 삭제되었습니다",
       "error": "사용자 삭제 실패"
     },
     "invalidateToast": {
       "loading": "사용자 로그아웃 중...",
-      "success": "사용자가 로그아웃되었습니다!",
+      "success": "사용자가 로그아웃되었습니다",
       "error": "사용자 로그아웃 실패"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "이메일",
       "role": "역할",
       "createdAt": "생성일",
-      "minIssuedAt": "최소 로그인",
+      "minIssuedAt": "세션 유효 시작 시점",
       "actions": "동작",
       "searchUsernames": "사용자 이름 검색...",
       "searchEmails": "이메일 검색...",
       "searchCreatedAts": "생성 날짜 검색...",
-      "searchMinIssuedAts": "최소 로그인 날짜 검색..."
+      "searchMinIssuedAts": "세션 날짜 검색..."
     },
     "removeSelectedTooltip": "선택한 사용자 삭제",
     "logOutSelectedTooltip": "선택한 사용자 로그아웃",
@@ -125,6 +135,16 @@
       "editUser": "사용자 편집",
       "impersonate": "가상 사용자로 전환",
       "copyUserId": "사용자 ID 복사"
+    },
+    "removeDialog": {
+      "title_other": "사용자 {{count}}명을 삭제할까요?",
+      "description": "선택한 사용자와 접근 권한을 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
+      "confirm": "사용자 삭제"
+    },
+    "invalidateDialog": {
+      "title_other": "사용자 {{count}}명을 로그아웃할까요?",
+      "description": "선택한 사용자의 모든 세션과 토큰을 종료합니다. 사용자는 다시 로그인해야 합니다.",
+      "confirm": "사용자 로그아웃"
     }
   }
 }

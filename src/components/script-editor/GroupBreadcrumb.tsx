@@ -1,6 +1,6 @@
 import { useSelector } from "@tanstack/react-store";
 import { ChevronRight, Home } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
@@ -53,7 +53,7 @@ export function GroupBreadcrumb() {
         title={t("scripts.editor.group.returnToRoot")}
       >
         <Home className="h-3 w-3" />
-        <span>Root</span>
+        <span>{t("scripts.editor.group.root")}</span>
       </button>
 
       {/* Path items */}
@@ -77,11 +77,17 @@ export function GroupBreadcrumb() {
 
       {/* Keyboard hint */}
       <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
-        Press
-        <KbdGroup>
-          <Kbd>Tab</Kbd>
-        </KbdGroup>
-        to exit
+        <Trans
+          t={t}
+          i18nKey="scripts.editor.group.exitHint"
+          components={{
+            key: (
+              <KbdGroup>
+                <Kbd />
+              </KbdGroup>
+            ),
+          }}
+        />
       </span>
     </div>
   );

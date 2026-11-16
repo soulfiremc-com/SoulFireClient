@@ -7,7 +7,7 @@
         "cpu": "CPU",
         "heapUsed": "Bộ Nhớ Heap Đã Sử Dụng",
         "threads": "Luồng",
-        "botsOnline": "Bots Trực Tuyến",
+        "botsOnline": "Bot đã kết nối",
         "uptime": "Thời Gian Hoạt Động"
       },
       "cpuUsage": {
@@ -20,7 +20,17 @@
         "title": "Số lượng luồng"
       },
       "aggregateBots": {
-        "title": "Bots trực tuyến (Tất cả phiên bản)"
+        "title": "Bot đã kết nối (mọi phiên bản)"
+      },
+      "legend": {
+        "process": "Tiến trình",
+        "system": "Hệ thống",
+        "used": "Đã dùng",
+        "committed": "Đã cấp phát",
+        "max": "Tối đa",
+        "total": "Tổng",
+        "daemon": "Daemon",
+        "online": "Đã kết nối"
       }
     },
     "instancesChart": {
@@ -89,22 +99,22 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Đang thêm người dùng...",
-      "success": "Đã thêm người dùng!",
+      "success": "Đã thêm người dùng",
       "error": "Thêm người dùng thất bại"
     },
     "updateToast": {
       "loading": "Đang cập nhật người dùng...",
-      "success": "Đã cập nhật người dùng!",
+      "success": "Đã cập nhật người dùng",
       "error": "Cập nhật người dùng thất bại"
     },
     "removeToast": {
       "loading": "Đang xóa người dùng...",
-      "success": "Đã xóa người dùng!",
+      "success": "Đã xóa người dùng",
       "error": "Xóa người dùng thất bại"
     },
     "invalidateToast": {
       "loading": "Đang đăng xuất người dùng...",
-      "success": "Đã đăng xuất người dùng!",
+      "success": "Đã đăng xuất người dùng",
       "error": "Đăng xuất người dùng thất bại"
     },
     "table": {
@@ -112,12 +122,12 @@
       "email": "Email",
       "role": "Vai trò",
       "createdAt": "Đã tạo",
-      "minIssuedAt": "Lần đăng nhập sớm nhất",
+      "minIssuedAt": "Phiên có hiệu lực từ",
       "actions": "Hành động",
       "searchUsernames": "Tìm kiếm tên người dùng...",
       "searchEmails": "Tìm kiếm email...",
       "searchCreatedAts": "Tìm ngày tạo...",
-      "searchMinIssuedAts": "Tìm ngày đăng nhập tối thiểu..."
+      "searchMinIssuedAts": "Tìm ngày của phiên..."
     },
     "removeSelectedTooltip": "Xóa người dùng đã chọn",
     "logOutSelectedTooltip": "Đăng xuất người dùng đã chọn",
@@ -125,6 +135,16 @@
       "editUser": "Chỉnh sửa người dùng",
       "impersonate": "Giả lập người dùng",
       "copyUserId": "Sao chép ID người dùng"
+    },
+    "removeDialog": {
+      "title_other": "Xóa {{count}} người dùng?",
+      "description": "Thao tác này xóa vĩnh viễn những người dùng đã chọn và quyền truy cập của họ. Bạn không thể hoàn tác.",
+      "confirm": "Xóa người dùng"
+    },
+    "invalidateDialog": {
+      "title_other": "Đăng xuất {{count}} người dùng?",
+      "description": "Thao tác này kết thúc mọi phiên và token của những người dùng đã chọn. Họ phải đăng nhập lại.",
+      "confirm": "Đăng xuất người dùng"
     }
   }
 }
