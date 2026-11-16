@@ -126,19 +126,22 @@
     "listImportToast": {
       "loading": "Importing proxies...",
       "success": "Imported {{count}} proxies",
+      "skipped_one": "Skipped {{count}} line that could not be parsed.",
+      "skipped_other": "Skipped {{count}} lines that could not be parsed.",
       "error": "Could not import proxies",
       "noProxies": "No proxies to import"
     },
     "import": {
       "review": {
         "title": "Review proxy import",
-        "description": "Check the proxies before importing. Correct rejected lines so no entries are discarded.",
+        "description": "Check the proxies before importing. SoulFire skips lines that it cannot read.",
         "input": "Proxy list",
         "accepted_one": "{{count}} proxy ready to import.",
         "accepted_other": "{{count}} proxies ready to import.",
-        "rejected_one": "{{count}} line could not be parsed. Correct line {{lines}} or choose another import format.",
-        "rejected_other": "{{count}} lines could not be parsed. Correct lines {{lines}} or choose another import format.",
-        "confirm": "Import proxies",
+        "rejected_one": "{{count}} line could not be parsed and will be skipped: line {{lines}}. To import it too, correct it here or choose another import format.",
+        "rejected_other": "{{count}} lines could not be parsed and will be skipped: lines {{lines}}. To import them too, correct them here or choose another import format.",
+        "confirm_one": "Import {{count}} proxy",
+        "confirm_other": "Import {{count}} proxies",
         "importing": "Importing proxies...",
         "error": {
           "connection": "Could not reach the SoulFire server. Your list is still here. Check the connection and try again.",
@@ -228,7 +231,13 @@
       "someFailed": "Imported {{count}} accounts, failed to import {{failed}} accounts",
       "noneFailed": "{{count}} accounts imported",
       "error": "Could not import accounts",
-      "noAccounts": "No accounts to import"
+      "noAccounts": "No accounts found in the text",
+      "errorReason": {
+        "connection": "Could not reach the SoulFire server. Check the connection and try again.",
+        "authentication": "Your token was rejected or has expired. Sign in again, then retry the import.",
+        "permission": "You do not have permission to add accounts in this project.",
+        "unexpected": "The server stopped the import. Check the server logs, then try again."
+      }
     },
     "unknownError": "Unknown error",
     "types": {
@@ -252,7 +261,7 @@
       "description": "Generate offline Java accounts with a custom name format.",
       "amount": "Amount",
       "nameFormat": "Name format",
-      "nameFormatHelp": "Use %d for the account number. For example, Bot_%d creates names such as Bot_1 and Bot_2.",
+      "nameFormatHelp": "Use %d for the account number. Without %d, SoulFire adds the number to the end.",
       "mode": "Existing accounts",
       "modeHelp": "Choose how to handle existing accounts:\n\n• Ignore existing: Generate only accounts with new names. Keep all existing accounts.\n\n• Replace existing: Generate all requested accounts. Replace accounts with matching UUIDs. Keep all other accounts.\n\n• Replace all: Remove all existing accounts. Then add the generated accounts.",
       "modeIgnoreExisting": "Ignore existing",
@@ -266,7 +275,9 @@
       "allExist": "All usernames already exist. Choose Replace existing to generate them again.",
       "error": "Could not generate accounts",
       "invalidAmount": "Enter a whole number of at least 1.",
-      "missingPlaceholder": "The name format must contain %d."
+      "missingNameFormat": "Enter a name format, such as Bot_%d.",
+      "preview_one": "Creates {{first}}.",
+      "preview_other": "Creates {{first}} to {{last}}."
     },
     "import": {
       "javaEdition": "Java Edition",
@@ -280,8 +291,16 @@
       "theAltening": "TheAltening token",
       "altProviders": "Alt providers",
       "dialog": {
-        "title": "Import {{type}} accounts",
-        "description": "Paste your accounts here, one per line"
+        "title": "Import {{type}} accounts"
+      },
+      "demo": "The demo cannot add accounts. Connect to a SoulFire server to import or create accounts.",
+      "format": {
+        "offline": "Put one username on each line.",
+        "microsoftCredentials": "Put one account on each line as email:password.",
+        "refreshToken": "Put one Microsoft refresh token on each line.",
+        "cookies": "Paste a Netscape cookie file, a Cookie-Editor JSON export, or a cookie header from login.live.com. Separate accounts with a blank line.",
+        "accessToken": "Put one Minecraft access token on each line. Expired tokens fail.",
+        "theAltening": "Put one TheAltening token on each line."
       }
     },
     "removeToast": {

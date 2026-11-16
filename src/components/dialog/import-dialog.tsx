@@ -243,18 +243,38 @@ function MainDialog(
 
   const read = (
     load: (signal: AbortSignal) => Promise<readonly string[]>,
-    errorKey:
-      | "dialog.import.main.fileError"
-      | "dialog.import.main.clipboardError",
+    source: "file" | "clipboard",
   ) => {
     startReading(async () => {
       try {
         await readSession.run(load, (texts) => {
-          if (texts.length) props.listener(texts.join("\n"));
+          // No files means the user closed the file picker.
+          if (!texts.length && source === "file") return;
+          if (texts.some((text) => text.includes("\u0000"))) {
+            toast.error(t("dialog.import.main.unsupportedFile"));
+            return;
+          }
+          if (texts.every((text) => !text.trim())) {
+            toast.error(
+              t(
+                source === "file"
+                  ? "dialog.import.main.emptyFile"
+                  : "dialog.import.main.emptyClipboard",
+              ),
+            );
+            return;
+          }
+          props.listener(texts.join("\n"));
         });
       } catch (error) {
         console.error(error);
-        toast.error(t(errorKey));
+        toast.error(
+          t(
+            source === "file"
+              ? "dialog.import.main.fileError"
+              : "dialog.import.main.clipboardError",
+          ),
+        );
       }
     });
   };
@@ -320,7 +340,7 @@ function MainDialog(
                           Promise.all(
                             files.map((file) => readImportFile(file, signal)),
                           ),
-                        "dialog.import.main.fileError",
+                        "file",
                       );
                     }}
                   />
@@ -355,7 +375,7 @@ function MainDialog(
                           signal.throwIfAborted();
                         }
                         return texts;
-                      }, "dialog.import.main.fileError");
+                      }, "file");
                     } else {
                       fileInputRef.current?.click();
                     }
@@ -431,7 +451,7 @@ function MainDialog(
                         }
                         return texts;
                       }
-                    }, "dialog.import.main.clipboardError");
+                    }, "clipboard");
                   }}
                 >
                   <ClipboardIcon />

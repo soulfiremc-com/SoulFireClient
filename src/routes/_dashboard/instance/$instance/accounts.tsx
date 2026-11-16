@@ -6,7 +6,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import {
   ArrowLeftIcon,
@@ -98,6 +98,7 @@ import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { guidedTableValidateSearch } from "@/lib/parsers.ts";
 import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
+import { getConnectionErrorKind } from "@/lib/connection-errors.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
@@ -115,6 +116,40 @@ import {
   removeInstanceAccountsBatch,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
+
+const CREDENTIAL_FORMAT_KEYS = {
+  [AccountTypeCredentials.OFFLINE]: "offline",
+  [AccountTypeCredentials.MICROSOFT_JAVA_CREDENTIALS]: "microsoftCredentials",
+  [AccountTypeCredentials.MICROSOFT_BEDROCK_CREDENTIALS]:
+    "microsoftCredentials",
+  [AccountTypeCredentials.MICROSOFT_JAVA_REFRESH_TOKEN]: "refreshToken",
+  [AccountTypeCredentials.MICROSOFT_JAVA_COOKIES]: "cookies",
+  [AccountTypeCredentials.MICROSOFT_JAVA_ACCESS_TOKEN]: "accessToken",
+  [AccountTypeCredentials.THE_ALTENING]: "theAltening",
+} as const satisfies Record<AccountTypeCredentials, string>;
+
+function credentialFormatKey(type: AccountTypeCredentials) {
+  return `account.import.format.${CREDENTIAL_FORMAT_KEYS[type]}` as const;
+}
+
+/** Toast options that point users who just added accounts to the bot controls. */
+function useStartBotsToastAction(): ExternalToast {
+  const { t } = useTranslation("common");
+  const navigate = useNavigate();
+  const instanceId = Route.useParams({ select: (params) => params.instance });
+  return {
+    duration: 10_000,
+    action: {
+      label: t("controls.startBots"),
+      onClick: () => {
+        void navigate({
+          to: "/instance/$instance",
+          params: { instance: instanceId },
+        });
+      },
+    },
+  };
+}
 
 function GetAccountsButton({ onClick }: { onClick: () => void }) {
   const { t } = useTranslation("instance");
@@ -136,6 +171,7 @@ function GenerateAccountsButton() {
   const profile = instanceInfo.profile;
   const posthog = usePostHog();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const startBotsToastAction = useStartBotsToastAction();
 
   const { mutateAsync: applyGeneratedAccountsMutation } = useMutation({
     mutationKey: ["instance", "accounts", "generate", instanceInfo.id],
@@ -192,6 +228,7 @@ function GenerateAccountsButton() {
         onOpenChange={setDialogOpen}
         onGenerate={handleGenerate}
         existingUsernames={existingUsernames}
+        successToast={startBotsToastAction}
       />
     </>
   );
@@ -497,9 +534,14 @@ function AddButton() {
     setProviderDialogOpen(true);
   };
 
-  const handleProviderAccountImport = useCallback(
+  const startBotsToastAction = useStartBotsToastAction();
+
+  const importCredentials = useCallback(
     (payload: string[], credentialType: AccountTypeCredentials) => {
-      if (transport === null) return;
+      if (transport === null) {
+        toast.error(t("account.import.demo"));
+        return;
+      }
 
       const service = createRpcClient(MCAuthService, transport);
       const abortController = new AbortController();
@@ -511,6 +553,7 @@ function AddButton() {
           },
         },
       };
+      const formatHint = t(credentialFormatKey(credentialType));
       const total = payload.length;
       let failed = 0;
       let success = 0;
@@ -566,6 +609,8 @@ function AddButton() {
                 toast.error(t("account.listImportToast.allFailed"), {
                   id: toastId,
                   cancel: undefined,
+                  description: formatHint,
+                  duration: 10_000,
                 });
               } else if (failed > 0) {
                 toast.warning(
@@ -573,14 +618,19 @@ function AddButton() {
                     count: accountsToAdd.length,
                     failed,
                   }),
-                  { id: toastId, cancel: undefined },
+                  {
+                    ...startBotsToastAction,
+                    id: toastId,
+                    cancel: undefined,
+                    description: formatHint,
+                  },
                 );
               } else {
                 toast.success(
                   t("account.listImportToast.noneFailed", {
                     count: accountsToAdd.length,
                   }),
-                  { id: toastId, cancel: undefined },
+                  { ...startBotsToastAction, id: toastId, cancel: undefined },
                 );
               }
               break;
@@ -592,11 +642,20 @@ function AddButton() {
           toast.error(t("account.listImportToast.error"), {
             id: toastId,
             cancel: undefined,
+            description: t(
+              `account.listImportToast.errorReason.${getConnectionErrorKind(e)}`,
+            ),
           });
         },
       });
     },
-    [instanceInfo.id, addAccountsBatchMutation, t, transport],
+    [
+      instanceInfo.id,
+      addAccountsBatchMutation,
+      t,
+      transport,
+      startBotsToastAction,
+    ],
   );
 
   const textSelectedCallback = useCallback(
@@ -608,132 +667,16 @@ function AddButton() {
         accountTypeCredentialsSelected,
       );
       if (textSplit.length === 0) {
-        toast.error(t("account.listImportToast.noAccounts"));
+        toast.error(t("account.listImportToast.noAccounts"), {
+          description: t(credentialFormatKey(accountTypeCredentialsSelected)),
+        });
         return;
       }
 
       setAccountTypeCredentialsSelected(null);
-
-      if (transport === null) {
-        return;
-      }
-
-      const service = createRpcClient(MCAuthService, transport);
-
-      const abortController = new AbortController();
-      const loadingData: ExternalToast = {
-        cancel: {
-          label: t("common:cancel"),
-          onClick: () => {
-            abortController.abort();
-          },
-        },
-      };
-      const total = textSplit.length;
-      let failed = 0;
-      let success = 0;
-      const accountsToAdd: ProfileAccount[] = [];
-      const loadingReport = () =>
-        t("account.listImportToast.loading", {
-          checked: success + failed,
-          total,
-          success,
-          failed,
-        });
-      const toastId = toast.loading(loadingReport(), loadingData);
-      const responses = service.loginCredentials(
-        {
-          instanceId: instanceInfo.id,
-          service: accountTypeCredentialsSelected,
-          payload: textSplit,
-        },
-        {
-          signal: abortController.signal,
-        },
-      );
-      void observeServerStream(responses, {
-        onMessage: async (r) => {
-          const data = r.data;
-          switch (data.case) {
-            case "oneSuccess": {
-              if (abortController.signal.aborted) {
-                return;
-              }
-
-              if (data.value.account) {
-                accountsToAdd.push(data.value.account);
-              }
-              success++;
-              toast.loading(loadingReport(), {
-                id: toastId,
-                ...loadingData,
-              });
-              break;
-            }
-            case "oneFailure": {
-              if (abortController.signal.aborted) {
-                return;
-              }
-
-              failed++;
-              toast.loading(loadingReport(), {
-                id: toastId,
-                ...loadingData,
-              });
-              break;
-            }
-            case "end": {
-              if (accountsToAdd.length > 0) {
-                await addAccountsBatchMutation(accountsToAdd);
-              }
-
-              if (accountsToAdd.length === 0) {
-                toast.error(t("account.listImportToast.allFailed"), {
-                  id: toastId,
-                  cancel: undefined,
-                });
-              } else if (failed > 0) {
-                toast.warning(
-                  t("account.listImportToast.someFailed", {
-                    count: accountsToAdd.length,
-                    failed,
-                  }),
-                  {
-                    id: toastId,
-                    cancel: undefined,
-                  },
-                );
-              } else {
-                toast.success(
-                  t("account.listImportToast.noneFailed", {
-                    count: accountsToAdd.length,
-                  }),
-                  {
-                    id: toastId,
-                    cancel: undefined,
-                  },
-                );
-              }
-              break;
-            }
-          }
-        },
-        onError: (e) => {
-          console.error(e);
-          toast.error(t("account.listImportToast.error"), {
-            id: toastId,
-            cancel: undefined,
-          });
-        },
-      });
+      importCredentials(textSplit, accountTypeCredentialsSelected);
     },
-    [
-      accountTypeCredentialsSelected,
-      instanceInfo.id,
-      addAccountsBatchMutation,
-      t,
-      transport,
-    ],
+    [accountTypeCredentialsSelected, importCredentials, t],
   );
 
   const deviceCodeSelected = useCallback(
@@ -793,7 +736,11 @@ function AddButton() {
         })(),
         {
           loading: t("account.deviceCodeImportToast.loading"),
-          success: t("account.deviceCodeImportToast.success"),
+          success: () => ({
+            message: t("account.deviceCodeImportToast.success"),
+            ...startBotsToastAction,
+            cancel: undefined,
+          }),
           error: (e) => {
             console.error(e);
             setDeviceCodeData(null);
@@ -809,7 +756,7 @@ function AddButton() {
         },
       );
     },
-    [instanceInfo.id, addAccountMutation, t, transport],
+    [instanceInfo.id, addAccountMutation, t, transport, startBotsToastAction],
   );
 
   return (
@@ -836,7 +783,7 @@ function AddButton() {
         open={providerDialogOpen}
         onOpenChange={setProviderDialogOpen}
         initialProviderId={initialProviderId}
-        onImport={handleProviderAccountImport}
+        onImport={importCredentials}
         canPurchase={transport !== null}
       />
       <DropdownMenu>
@@ -1040,7 +987,7 @@ function AddButton() {
               accountTypeCredentialsSelected,
             ),
           })}
-          description={t("account.import.dialog.description")}
+          description={t(credentialFormatKey(accountTypeCredentialsSelected))}
           closer={() => setAccountTypeCredentialsSelected(null)}
           listener={textSelectedCallback}
           filters={[

@@ -16,26 +16,50 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const ImportValidLinesAndSkipRejected: Story = {
+  play: async ({ args, canvasElement, userEvent }) => {
+    const body = within(canvasElement.ownerDocument.body);
+    const submit = await body.findByRole("button", {
+      name: "Import 1 proxy",
+    });
+    await expect(body.getByRole("alert")).toHaveTextContent(
+      "1 line could not be parsed and will be skipped: line 2.",
+    );
+    await expect(submit).toBeEnabled();
+    await userEvent.click(submit);
+    await expect(args.onImport).toHaveBeenCalledWith(
+      [{ type: 2, address: "inet://localhost:1080" }],
+      1,
+    );
+  },
+};
+
 export const CorrectRejectedLines: Story = {
   play: async ({ args, canvasElement, userEvent }) => {
     const body = within(canvasElement.ownerDocument.body);
-    const submit = await body.findByRole("button", { name: "Import proxies" });
-    await expect(submit).toBeDisabled();
-    await expect(body.getByRole("alert")).toHaveTextContent("Correct line 2");
-    await expect(args.onImport).not.toHaveBeenCalled();
+    await body.findByRole("button", { name: "Import 1 proxy" });
     const input = body.getByRole("textbox", { name: "Proxy list" });
     await userEvent.clear(input);
-    await userEvent.type(input, "socks5://user:secret@localhost:1080");
-    await expect(submit).toBeEnabled();
-    await userEvent.click(submit);
-    await expect(args.onImport).toHaveBeenCalledWith([
-      {
-        type: 2,
-        address: "inet://localhost:1080",
-        username: "user",
-        password: "secret",
-      },
-    ]);
+    await userEvent.type(
+      input,
+      "socks5://user:secret@localhost:1080{enter}socks5://localhost:1081",
+    );
+    await expect(body.queryByRole("alert")).not.toBeInTheDocument();
+    await userEvent.click(
+      body.getByRole("button", { name: "Import 2 proxies" }),
+    );
+    await expect(args.onImport).toHaveBeenCalledWith(
+      [
+        {
+          type: 2,
+          address: "inet://localhost:1080",
+          username: "user",
+          password: "secret",
+        },
+        { type: 2, address: "inet://localhost:1081" },
+      ],
+      0,
+    );
   },
 };
 
@@ -48,7 +72,7 @@ export const FailedImportPreservesDraft: Story = {
   },
   play: async ({ args, canvasElement, userEvent }) => {
     const body = within(canvasElement.ownerDocument.body);
-    const submit = await body.findByRole("button", { name: "Import proxies" });
+    const submit = await body.findByRole("button", { name: "Import 1 proxy" });
     await userEvent.click(submit);
     await expect(await body.findByRole("alert")).toHaveTextContent(
       "You do not have permission",

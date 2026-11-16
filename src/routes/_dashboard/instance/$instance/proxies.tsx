@@ -624,13 +624,20 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
               : uiProxyTypeToProto(proxyTypeSelected)
           }
           onBack={() => setImportDraft(null)}
-          onImport={async (proxies) => {
+          onImport={async (proxies, skippedLines) => {
             await addProxiesBatchMutation(proxies);
             setImportedProxies(proxies);
             setImportDraft(null);
             setProxyTypeSelected(null);
             toast.success(
               t("proxy.listImportToast.success", { count: proxies.length }),
+              skippedLines > 0
+                ? {
+                    description: t("proxy.listImportToast.skipped", {
+                      count: skippedLines,
+                    }),
+                  }
+                : undefined,
             );
           }}
         />

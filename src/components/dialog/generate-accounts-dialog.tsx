@@ -1,6 +1,10 @@
 import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
-import { parseAccountAmount } from "@/lib/generate-accounts.ts";
+import {
+  formatAccountName,
+  parseAccountAmount,
+  resolveNameFormat,
+} from "@/lib/generate-accounts.ts";
 import { Schema } from "effect";
 
 import { useForm } from "@tanstack/react-form";
@@ -50,6 +54,8 @@ export type GenerateAccountsDialogProps = {
     mode: GenerateAccountsMode,
   ) => Promise<void>;
   existingUsernames: Set<string>;
+  /** Extra options for the success toast, such as a next step action. */
+  successToast?: ExternalToast;
 };
 
 type GenerationPhase = "generating" | "saving";
@@ -65,6 +71,7 @@ export default function GenerateAccountsDialog({
   onOpenChange,
   onGenerate,
   existingUsernames,
+  successToast,
 }: GenerateAccountsDialogProps) {
   const { t } = useTranslation("instance");
   const transport = use(TransportContext);
@@ -107,7 +114,8 @@ export default function GenerateAccountsDialog({
     nameFormat: Schema.String.check(
       Schema.makeFilter(
         (value) =>
-          value.includes("%d") || t("account.generate.missingPlaceholder"),
+          resolveNameFormat(value) !== null ||
+          t("account.generate.missingNameFormat"),
       ),
     ),
     mode: Schema.Literals([
@@ -124,12 +132,16 @@ export default function GenerateAccountsDialog({
     nameFormat: string;
     mode: GenerateAccountsMode;
   }) => {
-    if (transport === null || !open || activeJob.current) return;
+    if (!open || activeJob.current) return;
+    if (transport === null) {
+      toast.error(t("account.import.demo"));
+      return;
+    }
 
     // Generate usernames based on format
     const usernames: string[] = [];
     for (let i = 1; i <= value.amount; i++) {
-      const username = value.nameFormat.replace("%d", String(i));
+      const username = formatAccountName(value.nameFormat, i);
       // Skip usernames that already exist only in IGNORE_EXISTING mode
       if (value.mode === "IGNORE_EXISTING" && existingUsernames.has(username)) {
         continue;
@@ -233,6 +245,7 @@ export default function GenerateAccountsDialog({
                   count: accountsToAdd.length,
                 }),
                 {
+                  ...successToast,
                   id: toastId,
                   cancel: undefined,
                 },
@@ -266,8 +279,9 @@ export default function GenerateAccountsDialog({
     },
     onSubmit: async ({ value }) => {
       const amount = parseAccountAmount(value.amount);
-      if (amount === null) return;
-      handleGenerate({ ...value, amount });
+      const nameFormat = resolveNameFormat(value.nameFormat);
+      if (amount === null || nameFormat === null) return;
+      handleGenerate({ ...value, amount, nameFormat });
     },
   });
 
@@ -347,6 +361,14 @@ export default function GenerateAccountsDialog({
                     />
                     <FieldDescription id={`${field.name}-description`}>
                       {t("account.generate.nameFormatHelp")}
+                      <form.Subscribe selector={(state) => state.values.amount}>
+                        {(amountValue) => (
+                          <NamePreview
+                            nameFormat={field.state.value}
+                            amount={parseAccountAmount(amountValue)}
+                          />
+                        )}
+                      </form.Subscribe>
                     </FieldDescription>
                     {isInvalid && (
                       <FieldError
@@ -428,5 +450,27 @@ export default function GenerateAccountsDialog({
         </form>
       </CredenzaContent>
     </Credenza>
+  );
+}
+
+function NamePreview({
+  nameFormat,
+  amount,
+}: {
+  nameFormat: string;
+  amount: number | null;
+}) {
+  const { t } = useTranslation("instance");
+  const resolved = resolveNameFormat(nameFormat);
+  if (resolved === null || amount === null) return null;
+  return (
+    <>
+      {" "}
+      {t("account.generate.preview", {
+        count: amount,
+        first: formatAccountName(resolved, 1),
+        last: formatAccountName(resolved, amount),
+      })}
+    </>
   );
 }

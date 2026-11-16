@@ -33,7 +33,8 @@ export function ProxyImportReview({
   text: string;
   type: ProxyProto_Type | "uri";
   onBack: () => void;
-  onImport: (proxies: ProfileProxy[]) => Promise<void>;
+  /** Receives the parsed proxies and how many rejected lines were skipped. */
+  onImport: (proxies: ProfileProxy[], skippedLines: number) => Promise<void>;
 }) {
   const { t } = useTranslation("instance");
   const [draft, setDraft] = useState(text);
@@ -95,17 +96,13 @@ export function ProxyImportReview({
             {t("common:cancel")}
           </Button>
           <Button
-            disabled={
-              pending ||
-              result.proxies.length === 0 ||
-              result.rejectedLines.length > 0
-            }
+            disabled={pending || result.proxies.length === 0}
             aria-busy={pending}
             onClick={async () => {
               setPending(true);
               setError(null);
               try {
-                await onImport(result.proxies);
+                await onImport(result.proxies, result.rejectedLines.length);
               } catch (reason) {
                 setError(reason);
               } finally {
@@ -113,11 +110,11 @@ export function ProxyImportReview({
               }
             }}
           >
-            {t(
-              pending
-                ? "proxy.import.review.importing"
-                : "proxy.import.review.confirm",
-            )}
+            {pending
+              ? t("proxy.import.review.importing")
+              : t("proxy.import.review.confirm", {
+                  count: result.proxies.length,
+                })}
           </Button>
         </DialogFooter>
       </DialogContent>
