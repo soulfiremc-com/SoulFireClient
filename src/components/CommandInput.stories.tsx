@@ -228,4 +228,55 @@ export const CompositionAndFailure: Story = {
   },
 };
 
+export const EmptyPromptKeepsOutputVisible: Story = {
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "Command" });
+    await userEvent.click(input);
+    await userEvent.click(
+      canvasElement.querySelector("[data-terminal-viewport]")!,
+    );
+    await expect(input).toHaveFocus();
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    await expect(canvas.queryByRole("listbox")).not.toBeInTheDocument();
+    await expect(completions).not.toHaveBeenCalled();
+    await userEvent.type(input, "status{Enter}");
+    await waitFor(() =>
+      expect(commands).toHaveBeenCalledWith(
+        expect.objectContaining({ command: "status" }),
+      ),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    await expect(canvas.queryByRole("listbox")).not.toBeInTheDocument();
+    await userEvent.keyboard("{Tab}");
+    await expect(input).toHaveValue("help");
+    await expect(await canvas.findByRole("listbox")).toBeVisible();
+  },
+};
+
+function DemoPromptExample() {
+  return (
+    <div className="bg-background min-h-screen p-6">
+      <TransportContext value={null}>
+        <TerminalView entries={[]} theme="mocha">
+          <CommandInput scope={scope} />
+        </TerminalView>
+        <Toaster />
+      </TransportContext>
+    </div>
+  );
+}
+
+export const DemoExplainsUnavailableCommands: Story = {
+  render: () => <DemoPromptExample />,
+  play: async ({ canvasElement, userEvent }) => {
+    const input = within(canvasElement).getByRole("combobox", {
+      name: "Command",
+    });
+    await userEvent.type(input, "help{Enter}");
+    await within(document.body).findByText(/The demo cannot run commands/);
+    await expect(input).toHaveValue("help");
+  },
+};
+
 export const LightTheme: Story = { args: { theme: "latte" } };

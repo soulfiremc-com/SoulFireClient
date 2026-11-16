@@ -1,7 +1,7 @@
 import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
 import { Effect, Schema } from "effect";
-import { create, type JsonValue } from "@bufbuild/protobuf";
+import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 
 import { useForm } from "@tanstack/react-form";
@@ -11,7 +11,13 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { LoaderCircleIcon, PlusIcon, TrashIcon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronsUpDownIcon,
+  LoaderCircleIcon,
+  PlusIcon,
+  TrashIcon,
+} from "lucide-react";
 import {
   use,
   useCallback,
@@ -23,13 +29,20 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { getAllIconTags } from "@/components/dynamic-icon.tsx";
+import DynamicIcon, { getAllIconTags } from "@/components/dynamic-icon.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { SettingTypeRenderer } from "@/components/settings-page.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command.tsx";
 import {
   Field,
   FieldError,
@@ -45,14 +58,17 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { SettingsNamespace } from "@/generated/soulfire/common_pb";
-import {
-  ComboSettingSchema,
-  InstancePermission,
-} from "@/generated/soulfire/common_pb";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import i18n from "@/lib/i18n";
+import { searchIcons } from "@/lib/icon-search.ts";
 import { createInstanceNameSchema } from "@/lib/instance-name.ts";
 import {
   metadataKeyPattern,
@@ -250,7 +266,120 @@ function InstanceNameField({
   );
 }
 
+const ICON_RESULT_LIMIT = 60;
+
+function InstanceIconField({
+  value,
+  disabled,
+  pending,
+  onChange,
+}: {
+  value: string;
+  disabled: boolean;
+  pending: boolean;
+  onChange: (icon: string) => void;
+}) {
+  const { t } = useTranslation("common");
+  const id = useId();
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const allIcons = useMemo(() => getAllIconTags(), []);
+  // Render a ranked slice. Mounting every Lucide icon at once froze the
+  // picker for seconds, so people clicked the trigger again and closed it.
+  const results = useMemo(
+    () => (open ? searchIcons(allIcons, query, ICON_RESULT_LIMIT) : null),
+    [allIcons, open, query],
+  );
+  const hiddenCount = results ? results.total - results.names.length : 0;
+
+  return (
+    <Field data-disabled={disabled} className="max-w-xl">
+      <FieldLabel htmlFor={id}>{t("instanceIcon.label")}</FieldLabel>
+      <Popover
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next);
+          if (!next) setQuery("");
+        }}
+      >
+        <PopoverTrigger
+          render={
+            <Button
+              id={id}
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              aria-busy={pending || undefined}
+              className="w-full justify-between"
+              disabled={disabled}
+            />
+          }
+        >
+          <span className="inline-flex min-w-0 items-center gap-2">
+            {value && <DynamicIcon name={value} />}
+            <span className="truncate">
+              {value
+                ? formatIconName(value)
+                : t("settingsPage.combo.selectPlaceholder")}
+            </span>
+          </span>
+          {pending ? (
+            <LoaderCircleIcon
+              className="animate-spin"
+              data-icon="inline-end"
+              aria-label={t("saving")}
+            />
+          ) : (
+            <ChevronsUpDownIcon className="opacity-50" data-icon="inline-end" />
+          )}
+        </PopoverTrigger>
+        <PopoverContent
+          aria-label={t("instanceIcon.label")}
+          className="w-(--anchor-width) p-0"
+        >
+          <Command shouldFilter={false}>
+            <CommandInput
+              value={query}
+              onValueChange={setQuery}
+              placeholder={t("instanceIcon.searchPlaceholder")}
+            />
+            <CommandList>
+              <CommandEmpty>{t("instanceIcon.empty")}</CommandEmpty>
+              <CommandGroup>
+                {results?.names.map((icon) => (
+                  <CommandItem
+                    key={icon}
+                    value={icon}
+                    onSelect={() => {
+                      setOpen(false);
+                      setQuery("");
+                      if (icon !== value) onChange(icon);
+                    }}
+                  >
+                    <CheckIcon
+                      className={icon === value ? "opacity-100" : "opacity-0"}
+                    />
+                    <DynamicIcon name={icon} />
+                    {formatIconName(icon)}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+              {hiddenCount > 0 && (
+                <p className="px-3 py-2 text-xs text-muted-foreground">
+                  {t("instanceIcon.more", { count: hiddenCount })}
+                </p>
+              )}
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      <FieldDescription>{t("instanceIcon.description")}</FieldDescription>
+    </Field>
+  );
+}
+
 function Content() {
+  const { t } = useTranslation("common");
   const { instanceInfoQueryOptions, instanceListQueryOptions } =
     Route.useRouteContext();
   const queryClient = useQueryClient();
@@ -283,9 +412,9 @@ function Content() {
   const setIconMutation = useMutation({
     mutationKey: ["instance", "meta", "icon", instanceInfo.id],
     scope: { id: `instance-meta-icon-${instanceInfo.id}` },
-    mutationFn: async (value: JsonValue) => {
+    mutationFn: async (value: string) => {
       await setInstanceIcon(
-        value as string,
+        value,
         instanceInfo,
         transport,
         queryClient,
@@ -319,24 +448,22 @@ function Content() {
           disabled={!canEditMeta}
           onSave={setFriendlyNameMutation.mutateAsync}
         />
-        <SettingTypeRenderer
-          settingType={{
-            case: "combo",
-            value: create(ComboSettingSchema, {
-              uiName: i18n.t("common:instanceIcon.label"),
-              description: i18n.t("common:instanceIcon.description"),
-              options: getAllIconTags().map((iconName) => ({
-                id: iconName[0],
-                displayName: formatIconName(iconName[0]),
-                iconId: iconName[0],
-                keywords: iconName[1],
-              })),
-              def: "",
-              disabled: !canEditMeta,
-            }),
-          }}
+        <InstanceIconField
           value={instanceInfo.icon}
-          changeCallback={setIconMutation.mutate}
+          disabled={!canEditMeta}
+          pending={setIconMutation.isPending}
+          onChange={(icon) => {
+            if (transport === null) {
+              toast.info(t("settingsPage.demoNotSaved"));
+              return;
+            }
+            setIconMutation.mutate(icon, {
+              onError: (error) => {
+                console.error(error);
+                toast.error(t("instanceIcon.saveError"));
+              },
+            });
+          }}
         />
       </div>
       {canEditMeta && (

@@ -1,6 +1,7 @@
 import {
   ArrowUpRightIcon,
   BookOpenTextIcon,
+  CheckIcon,
   ChevronDownIcon,
   ClipboardIcon,
   CodeXmlIcon,
@@ -53,6 +54,7 @@ import {
 } from "@/components/ui/select.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
+import { useCopyFeedback } from "@/hooks/use-copy-feedback.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import {
   buildSdkAgentPrompt,
@@ -103,7 +105,14 @@ export function SdkQuickstart({
   onOpenBots,
 }: Props) {
   const { t } = useTranslation("common");
-  const copy = useCopyToClipboard({ sensitive: true });
+  const copyToClipboard = useCopyToClipboard({ sensitive: true });
+  const [copiedKey, markCopied] = useCopyFeedback();
+  const copy = (key: string, text: string) => {
+    copyToClipboard(text);
+    markCopied(key);
+  };
+  const copyIcon = (key: string) =>
+    copiedKey === key ? <CheckIcon /> : <ClipboardIcon />;
   const id = useId();
   const [language, setLanguage] = useState<SdkLanguage>("typescript");
   const [shell, setShell] = useState<SdkShell>(() =>
@@ -182,8 +191,12 @@ export function SdkQuickstart({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button onClick={() => copy(agentPrompt)}>
-            <SparklesIcon data-icon="inline-start" />
+          <Button onClick={() => copy("agentPrompt", agentPrompt)}>
+            {copiedKey === "agentPrompt" ? (
+              <CheckIcon data-icon="inline-start" />
+            ) : (
+              <SparklesIcon data-icon="inline-start" />
+            )}
             {t("sdk.copyAgentPrompt")}
           </Button>
           <Button
@@ -236,9 +249,9 @@ export function SdkQuickstart({
                     size="icon-xs"
                     aria-label={t("sdk.copyUrl")}
                     disabled={!serverUrl}
-                    onClick={() => serverUrl && copy(serverUrl)}
+                    onClick={() => serverUrl && copy("url", serverUrl)}
                   >
-                    <ClipboardIcon />
+                    {copyIcon("url")}
                   </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
@@ -291,9 +304,9 @@ export function SdkQuickstart({
                   size="icon"
                   variant="outline"
                   aria-label={t("sdk.copyInstanceId")}
-                  onClick={() => copy(instanceId)}
+                  onClick={() => copy("instanceId", instanceId)}
                 >
-                  <ClipboardIcon />
+                  {copyIcon("instanceId")}
                 </Button>
               </div>
               <FieldDescription>
@@ -321,9 +334,9 @@ export function SdkQuickstart({
                       <InputGroupButton
                         size="icon-xs"
                         aria-label={t("sdk.copyToken")}
-                        onClick={() => copy(token)}
+                        onClick={() => copy("token", token)}
                       >
-                        <ClipboardIcon />
+                        {copyIcon("token")}
                       </InputGroupButton>
                     </InputGroupAddon>
                   </InputGroup>

@@ -165,9 +165,8 @@
     "label": "Command",
     "suggestions": "Command suggestions",
     "placeholder": "Enter command (type 'help' for list)",
-    "emptySuggestions": "Type to request suggestions or press Tab.",
     "noSuggestions": "No suggestions available.",
-    "emptySuggestionsPrefix": "Type to request suggestions or press"
+    "demoUnavailable": "The demo cannot run commands. Connect to a SoulFire server to use the terminal."
   },
   "controls": {
     "start": "Start",
@@ -1051,7 +1050,12 @@
   },
   "instanceIcon": {
     "label": "Icon",
-    "description": "The project icon shown in the app."
+    "description": "The project icon shown in the app.",
+    "searchPlaceholder": "Search icons",
+    "empty": "No icons match your search.",
+    "more_one": "{{count}} more icon. Type to narrow the list.",
+    "more_other": "{{count}} more icons. Type to narrow the list.",
+    "saveError": "Could not save the icon. Try again."
   },
   "unknown": "Unknown",
   "minecraftHead": "Minecraft head",

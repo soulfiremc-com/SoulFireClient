@@ -22,7 +22,6 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Kbd } from "@/components/ui/kbd";
 import type {
   CommandCompletion,
   CommandScope,
@@ -313,6 +312,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
       setSuggestionsDismissed(false);
       resetCompletionFetchDebounce();
       completionRequest.cancel();
+      // An empty prompt opens suggestions only on Tab. Opening them on focus
+      // or after Enter covered the output, and clicking the log refocused the
+      // prompt, so the popup could not be dismissed by clicking.
+      if (text === "") return;
       completionFetchTimeout.current = window.setTimeout(() => {
         void fetchCompletions(text, cursor);
       }, COMPLETION_DEBOUNCE_MS);
@@ -417,10 +420,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
   const showSuggestions =
     isFocused &&
     !suggestionsDismissed &&
-    (inputValue === "" ||
-      (completionState.receivedCompletions !== null &&
-        completionState.baseText === inputValue &&
-        completionState.cursor === cursorPosition));
+    completionState.receivedCompletions !== null &&
+    completionState.baseText === inputValue &&
+    completionState.cursor === cursorPosition;
   const popupVisible = showSuggestions && caretPositionStyle !== null;
   const listboxVisible = popupVisible && hasSuggestions;
 
@@ -614,6 +616,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
       const submittedText = currentTarget.value;
       const currentVal = submittedText.trim();
+      if (transport === null && currentVal !== "") {
+        toast.info(t("commandInput.demoUnavailable"));
+        return;
+      }
       setInputValue("");
       const submittedRevision = inputRevision.current;
       setCompletionState({
@@ -625,7 +631,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
       });
       pendingCaret.current = 0;
       setCursorPosition(0);
-      scheduleCompletionFetch("", 0);
+      resetCompletionFetchDebounce();
+      completionRequest.cancel();
 
       if (transport === null || currentVal === "") {
         return;
@@ -782,12 +789,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
             setCursorPosition(position);
             setIsFocused(true);
             setSuggestionsDismissed(false);
-            if (value === "") {
-              resetCompletionFetchDebounce();
-              void fetchCompletions(value, position);
-            } else {
-              scheduleCompletionFetch(value, position);
-            }
+            scheduleCompletionFetch(value, position);
           }}
           onBlur={() => {
             resetCompletionFetchDebounce();
@@ -872,18 +874,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
               role="status"
               className="text-(--terminal-muted) px-3 py-2 font-mono text-xs"
             >
-              {inputValue === "" ? (
-                <>
-                  {t("commandInput.emptySuggestionsPrefix", {
-                    defaultValue: "Type to request suggestions or press",
-                  })}{" "}
-                  <Kbd>Tab</Kbd>.
-                </>
-              ) : (
-                t("commandInput.noSuggestions", {
-                  defaultValue: "No suggestions available.",
-                })
-              )}
+              {t("commandInput.noSuggestions")}
             </div>
           )}
         </div>

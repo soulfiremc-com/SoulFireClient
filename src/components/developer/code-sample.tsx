@@ -1,6 +1,7 @@
-import { ClipboardIcon } from "lucide-react";
+import { CheckIcon, ClipboardIcon } from "lucide-react";
 import { type CSSProperties, Fragment, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
+import { useCopyFeedback } from "@/hooks/use-copy-feedback.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import type { CodeLanguage, highlightCode } from "@/lib/code-highlighter.ts";
 
@@ -20,6 +21,8 @@ export function CodeSample({
   disabled?: boolean;
 }) {
   const copy = useCopyToClipboard({ sensitive: true });
+  const [copiedKey, markCopied] = useCopyFeedback();
+  const copied = copiedKey === "code";
   const [highlighted, setHighlighted] = useState<{
     code: string;
     language: CodeLanguage;
@@ -57,9 +60,16 @@ export function CodeSample({
           variant="ghost"
           size="sm"
           disabled={disabled}
-          onClick={() => copy(code)}
+          onClick={() => {
+            copy(code);
+            markCopied("code");
+          }}
         >
-          <ClipboardIcon data-icon="inline-start" />
+          {copied ? (
+            <CheckIcon data-icon="inline-start" />
+          ) : (
+            <ClipboardIcon data-icon="inline-start" />
+          )}
           {copyLabel}
         </Button>
       </figcaption>
