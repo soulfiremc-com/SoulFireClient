@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { LoaderCircleIcon, SendIcon } from "lucide-react";
 import { use, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
+import { ConnectError } from "@connectrpc/connect";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import {
   Field,
@@ -44,18 +44,21 @@ export function BotChatBox(props: {
             client.sendCommand({ scope, command: text.slice(1) }),
           )
         : Effect.runPromise(client.sendPublicChat({ scope, message: text })));
-      if (response.result?.status !== BotActionStatus.COMPLETED)
-        throw new Error(
-          response.result?.error || t("bots.chatPanel.sendError"),
-        );
+      // A missing or unspecified status still means the server accepted the call.
+      switch (response.result?.status) {
+        case BotActionStatus.FAILED:
+          throw new Error(response.result.error ?? "");
+        case BotActionStatus.CANCELLED:
+          throw new Error(t("bots.chatPanel.cancelled"));
+      }
     },
     onSuccess: (_response, sentMessage) =>
       setMessage((draft) => (draft.trim() === sentMessage ? "" : draft)),
-    onError: (error) =>
-      toast.error(t("bots.chatPanel.sendError"), {
-        description: error.message,
-      }),
   });
+  const errorMessage =
+    send.error instanceof ConnectError
+      ? send.error.rawMessage
+      : send.error?.message;
   const submit = () => {
     const text = message.trim();
     if (text !== "" && !disabled && !send.isPending) send.mutate(text);
@@ -76,7 +79,10 @@ export function BotChatBox(props: {
             value={message}
             disabled={disabled}
             placeholder={t("bots.chatPanel.placeholder")}
-            onChange={(event) => setMessage(event.currentTarget.value)}
+            onChange={(event) => {
+              setMessage(event.currentTarget.value);
+              if (!send.isPending) send.reset();
+            }}
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton
@@ -92,13 +98,23 @@ export function BotChatBox(props: {
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
-        <FieldDescription>
+        <FieldDescription role="status">
           {props.disabledReason ??
             (transport === null
               ? t("bots.chatPanel.demo")
-              : t("bots.chatPanel.help"))}
+              : send.isPending
+                ? t("bots.chatPanel.sending")
+                : send.isSuccess
+                  ? t("bots.chatPanel.sent")
+                  : t("bots.chatPanel.help"))}
         </FieldDescription>
-        {send.isError && <FieldError>{send.error.message}</FieldError>}
+        {send.isError && (
+          <FieldError>
+            {errorMessage
+              ? t("bots.chatPanel.sendErrorReason", { reason: errorMessage })
+              : t("bots.chatPanel.sendError")}
+          </FieldError>
+        )}
       </Field>
     </form>
   );

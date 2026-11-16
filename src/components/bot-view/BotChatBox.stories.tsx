@@ -10,19 +10,29 @@ import { BotChatBox } from "./bot-chat-box.tsx";
 
 const requests = fn();
 let pending = false;
-let failed = false;
+type Outcome = "completed" | "failed" | "cancelled" | "noResult";
+let outcome: Outcome = "completed";
 let finish: (() => void) | undefined;
 async function deliver() {
   if (pending)
     await new Promise<void>((resolve) => {
       finish = resolve;
     });
-  return {
-    result: {
-      status: failed ? BotActionStatus.FAILED : BotActionStatus.COMPLETED,
-      ...(failed ? { error: "Chat is unavailable" } : {}),
-    },
-  };
+  switch (outcome) {
+    case "completed":
+      return { result: { status: BotActionStatus.COMPLETED } };
+    case "failed":
+      return {
+        result: {
+          status: BotActionStatus.FAILED,
+          error: "Chat is unavailable",
+        },
+      };
+    case "cancelled":
+      return { result: { status: BotActionStatus.CANCELLED } };
+    case "noResult":
+      return {};
+  }
 }
 const transport = createRouterTransport((router) =>
   router.service(ChatService, {
@@ -43,7 +53,7 @@ const meta = {
   args: { instanceId: "instance-example", botId: "bot-example" },
   beforeEach: ({ parameters }) => {
     pending = parameters.pendingDelivery ?? false;
-    failed = parameters.failedDelivery ?? false;
+    outcome = parameters.outcome ?? "completed";
     requests.mockClear();
     finish = undefined;
     return () => {
@@ -99,6 +109,7 @@ export const RoutesCommandToThisBot: Story = {
     await userEvent.type(input, "/list");
     await userEvent.click(canvas.getByRole("button", { name: "Send" }));
     await waitFor(() => expect(input).toHaveValue(""));
+    await expect(canvas.getByText("Sent.")).toBeVisible();
     await expect(requests).toHaveBeenCalledWith(
       "command",
       expect.objectContaining({
@@ -113,15 +124,43 @@ export const RoutesCommandToThisBot: Story = {
 };
 
 export const KeepsDraftWhenActionFails: Story = {
-  parameters: { failedDelivery: true },
+  parameters: { outcome: "failed" },
   play: async ({ canvas, userEvent }) => {
     const input = canvas.getByRole("textbox", { name: "Send as this bot" });
     const send = canvas.getByRole("button", { name: "Send" });
     await userEvent.type(input, "Keep this message");
     await userEvent.click(send);
-    await expect(await canvas.findByText("Chat is unavailable")).toBeVisible();
+    await expect(
+      await canvas.findByText(
+        "Could not send the message: Chat is unavailable",
+      ),
+    ).toBeVisible();
     await expect(input).toHaveValue("Keep this message");
     await expect(send).toBeEnabled();
     await expect(requests).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const ExplainsReplacedMessage: Story = {
+  parameters: { outcome: "cancelled" },
+  play: async ({ canvas, userEvent }) => {
+    const input = canvas.getByRole("textbox", { name: "Send as this bot" });
+    await userEvent.type(input, "Replaced message");
+    await userEvent.click(canvas.getByRole("button", { name: "Send" }));
+    await expect(
+      await canvas.findByText(/Another bot action took over chat/),
+    ).toBeVisible();
+    await expect(input).toHaveValue("Replaced message");
+  },
+};
+
+export const AcceptsResponseWithoutResult: Story = {
+  parameters: { outcome: "noResult" },
+  play: async ({ canvas, userEvent }) => {
+    const input = canvas.getByRole("textbox", { name: "Send as this bot" });
+    await userEvent.type(input, "Hello");
+    await userEvent.click(canvas.getByRole("button", { name: "Send" }));
+    await waitFor(() => expect(input).toHaveValue(""));
+    await expect(canvas.queryByText(/Could not send/)).toBeNull();
   },
 };

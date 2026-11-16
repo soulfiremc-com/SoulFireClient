@@ -477,7 +477,11 @@
       "help": "Everyone on the Minecraft server can see public chat. Start with / to run a command.",
       "offlineHint": "The bot must be connected to send chat.",
       "demo": "The demo does not send chat.",
-      "sendError": "Could not send the message"
+      "sendError": "Could not send the message",
+      "sendErrorReason": "Could not send the message: {{reason}}",
+      "cancelled": "Another bot action took over chat before this message was sent. Try again.",
+      "sending": "Sending...",
+      "sent": "Sent."
     },
     "commandPanel": {
       "title": "Bot commands",
@@ -575,6 +579,7 @@
       "rightClick": "Right click",
       "leftClickDescription": "Attack entity or break block",
       "rightClickDescription": "Use item or interact",
+      "clickError": "The bot could not click",
       "offline": "The bot is disconnected. Actions are only available when the bot is connected."
     },
     "movementPanel": {
@@ -663,6 +668,9 @@
       "startError": "Could not start the Bot view.",
       "releaseHint": "Press {{shortcut}} to release your keyboard and mouse.",
       "captureHint": "Click the view and allow keyboard and mouse capture.",
+      "capturing": "Taking control...",
+      "captureCooldown": "Your browser blocks mouse capture for a moment after you release it. Wait a second, then click Take control again.",
+      "captureTimeout": "Mouse capture did not start. Click the view and try again.",
       "audioWaiting": "Waiting for the Bot view to connect.",
       "audioWatchFirst": "Watch the bot to use audio.",
       "audioUpdateServer": "Update the server to use Bot view audio.",
@@ -686,7 +694,17 @@
         "keyboard": "Keyboard",
         "closeMenu": "Close menu"
       },
-      "needsServer": "The Bot view needs a connected SoulFire server."
+      "needsServer": "The Bot view needs a connected SoulFire server.",
+      "step": {
+        "online": "The bot is in the world.",
+        "queued": "Waiting for a free start slot. The Bot view opens when the bot joins.",
+        "starting": "Starting the bot. The Bot view opens when it joins the Minecraft server.",
+        "joining": "Logging in to the Minecraft server. The Bot view opens when the bot spawns.",
+        "retrying": "The connection failed. The bot is trying again.",
+        "failed": "The bot could not connect.",
+        "stopping": "Stopping the bot.",
+        "stopped": "The bot is stopped. Start it to see what it sees."
+      }
     }
   },
   "metrics": {

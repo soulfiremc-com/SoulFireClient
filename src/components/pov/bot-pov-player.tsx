@@ -7,6 +7,7 @@ import {
   ExternalLinkIcon,
   EyeIcon,
   Gamepad2Icon,
+  LoaderCircleIcon,
   PauseIcon,
   PlayIcon,
   RefreshCwIcon,
@@ -57,7 +58,7 @@ import {
   textShortcutKey,
 } from "@/lib/pov-input";
 import { textEditEvents, textInputEvents } from "@/lib/pov-text-input";
-import { lockPovPointer } from "@/lib/pov-pointer-lock";
+import { lockPovPointer, PovPointerLockError } from "@/lib/pov-pointer-lock";
 import { PovPresenter } from "@/lib/pov-presenter";
 import { povRenderSize } from "@/lib/pov-render-size";
 import { startPovSession } from "@/lib/pov-session";
@@ -71,10 +72,19 @@ type KeyboardCapture = Navigator & {
   keyboard?: { lock(keys?: string[]): Promise<void>; unlock(): void };
 };
 
+/** What to show in place of the view while the bot is not in the world. */
+export type PovOfflineStatus = {
+  message: string;
+  /** True while the bot is on its way, so the user should wait. */
+  waiting: boolean;
+  detail?: string;
+};
+
 export function BotPovPlayer(props: {
   instanceId: string;
   botId: string;
   isOnline: boolean;
+  offlineStatus?: PovOfflineStatus;
 }) {
   return (
     <BotPovSession key={`${props.instanceId}:${props.botId}`} {...props} />
@@ -85,10 +95,12 @@ function BotPovSession({
   instanceId,
   botId,
   isOnline,
+  offlineStatus,
 }: {
   instanceId: string;
   botId: string;
   isOnline: boolean;
+  offlineStatus?: PovOfflineStatus;
 }) {
   const queryClient = useQueryClient();
   const { t } = useTranslation("instance");
@@ -848,9 +860,13 @@ function BotPovSession({
       if (!actions.isCurrentCapture(attempt)) return;
       release();
       actions.setCaptureError(
-        error instanceof Error
-          ? `${error.message} ${i18n.t("instance:bots.pov.captureHint")}`
-          : i18n.t("instance:bots.pov.captureHint"),
+        error instanceof PovPointerLockError && error.reason === "cooldown"
+          ? i18n.t("instance:bots.pov.captureCooldown")
+          : error instanceof PovPointerLockError && error.reason === "timeout"
+            ? i18n.t("instance:bots.pov.captureTimeout")
+            : error instanceof Error && !(error instanceof PovPointerLockError)
+              ? `${error.message} ${i18n.t("instance:bots.pov.captureHint")}`
+              : i18n.t("instance:bots.pov.captureHint"),
       );
     }
   }, [
@@ -1098,7 +1114,25 @@ function BotPovSession({
                 )}
               </div>
             ) : !isOnline ? (
-              <p>{t("bots.pov.offline")}</p>
+              <div
+                role="status"
+                className="flex max-w-md flex-col items-center gap-2 p-4 text-center"
+              >
+                <p className="flex items-center gap-2">
+                  {offlineStatus?.waiting && (
+                    <LoaderCircleIcon
+                      aria-hidden="true"
+                      className="size-4 shrink-0 animate-spin"
+                    />
+                  )}
+                  {offlineStatus?.message ?? t("bots.pov.offline")}
+                </p>
+                {offlineStatus?.detail && (
+                  <p className="font-mono text-xs break-words select-text opacity-80">
+                    {offlineStatus.detail}
+                  </p>
+                )}
+              </div>
             ) : !playing ? (
               <Button
                 onClick={() => {
@@ -1108,7 +1142,9 @@ function BotPovSession({
                 <PlayIcon data-icon="inline-start" />
                 {t("bots.pov.watchBot")}
               </Button>
-            ) : !connected || capturePending ? (
+            ) : capturePending ? (
+              <p>{t("bots.pov.capturing")}</p>
+            ) : !connected ? (
               <p>{t("bots.pov.connecting")}</p>
             ) : (
               <button

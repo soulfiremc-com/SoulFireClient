@@ -5,6 +5,7 @@ import { Code, ConnectError } from "@connectrpc/connect";
 import {
   queryOptions,
   useMutation,
+  useMutationState,
   useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
@@ -84,6 +85,10 @@ import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { BotPovPlayer } from "@/components/pov/bot-pov-player";
+import {
+  getPovConnectionStep,
+  POV_WAITING_STEPS,
+} from "@/lib/pov-connection-step";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
@@ -913,6 +918,7 @@ function OverviewTab({
   );
   const isOnline = !!botInfo.liveState;
   const liveState = botInfo.liveState;
+  const connectionStep = getPovConnectionStep(botInfo);
 
   return (
     <>
@@ -923,6 +929,14 @@ function OverviewTab({
             instanceId={instanceId}
             botId={botId}
             isOnline={isOnline}
+            offlineStatus={{
+              message: t(`bots.pov.step.${connectionStep}`),
+              waiting: POV_WAITING_STEPS.has(connectionStep),
+              detail:
+                connectionStep === "failed" || connectionStep === "retrying"
+                  ? botInfo.status?.lastError
+                  : undefined,
+            }}
           />
           <BotChatBox
             key={`${instanceId}:${botId}`}
@@ -2180,23 +2194,37 @@ function BotActionsPanel({
   const { t } = useTranslation("instance");
   const demo = use(TransportContext) === null;
 
-  const mutationScopeId = `bot-mouse-${instanceId}-${botId}`;
-  const isPending = useMutationScopePending(mutationScopeId);
+  const mutationKey = ["bot", "mouse", "click", instanceId, botId];
+  // Each click is a separate, short server action. The shared scope queues
+  // fast repeated clicks in order instead of dropping them.
+  const pendingButtons = useMutationState({
+    filters: { mutationKey, status: "pending" },
+    select: (mutation) =>
+      (mutation.state.variables as BotMouseClickRequest | undefined)?.button,
+  });
 
-  // Mutation for mouse click actions
   const clickMutation = useMutation({
-    mutationKey: ["bot", "mouse", "click", instanceId, botId],
-    scope: { id: mutationScopeId },
+    mutationKey,
+    scope: { id: `bot-mouse-${instanceId}-${botId}` },
     mutationFn: async (request: BotMouseClickRequest) => {
       const transport = createTransport();
       if (transport === null) {
         throw new Error("Not connected");
       }
       const botService = createRpcClient(BotService, transport);
-      return Effect.runPromise(botService.mouseClick(request));
+      const response = await Effect.runPromise(botService.mouseClick(request));
+      if (!response.success) throw new Error(response.error ?? "");
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) =>
+      toast.error(t("bots.actionsPanel.clickError"), {
+        id: `bot-mouse-error-${instanceId}-${botId}`,
+        description:
+          (error instanceof ConnectError ? error.rawMessage : error.message) ||
+          undefined,
+      }),
   });
+  const leftPending = pendingButtons.includes(MouseButton.LEFT_BUTTON);
+  const rightPending = pendingButtons.includes(MouseButton.RIGHT_BUTTON);
 
   const handleLeftClick = useCallback(() => {
     clickMutation.mutate(
@@ -2234,23 +2262,25 @@ function BotActionsPanel({
           <Button
             variant="outline"
             onClick={handleLeftClick}
-            disabled={isPending || demo}
+            disabled={demo}
+            aria-busy={leftPending}
             title={t("bots.actionsPanel.leftClickDescription")}
           >
-            {isPending ? (
-              <LoaderIcon className="mr-2 size-4 animate-spin" />
-            ) : null}
+            {leftPending && (
+              <LoaderIcon data-icon="inline-start" className="animate-spin" />
+            )}
             {t("bots.actionsPanel.leftClick")}
           </Button>
           <Button
             variant="outline"
             onClick={handleRightClick}
-            disabled={isPending || demo}
+            disabled={demo}
+            aria-busy={rightPending}
             title={t("bots.actionsPanel.rightClickDescription")}
           >
-            {isPending ? (
-              <LoaderIcon className="mr-2 size-4 animate-spin" />
-            ) : null}
+            {rightPending && (
+              <LoaderIcon data-icon="inline-start" className="animate-spin" />
+            )}
             {t("bots.actionsPanel.rightClick")}
           </Button>
         </div>
