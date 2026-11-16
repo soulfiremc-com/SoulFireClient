@@ -968,7 +968,9 @@
       "other": "Other"
     },
     "enabledHeading": "On",
-    "availableHeading": "Available"
+    "availableHeading": "Available",
+    "movesToAvailable": "Turned off. This plugin moves to Available the next time you open this page.",
+    "movesToEnabled": "Turned on. This plugin moves to On the next time you open this page."
   },
   "sdk": {
     "title": "SDK quickstart",

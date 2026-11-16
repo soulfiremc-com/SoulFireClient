@@ -19,9 +19,10 @@ import {
   useTable,
 } from "@tanstack/react-table";
 import { Schema } from "effect";
-import { ArrowLeftIcon, CastIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowUpRightIcon, CastIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ExternalLink } from "@/components/external-link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -265,7 +266,12 @@ function CastPage() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6">
       <header className="flex flex-col gap-3">
-        <Button variant="ghost" className="w-fit" render={<Link to="/user" />}>
+        <Button
+          variant="ghost"
+          className="w-fit"
+          nativeButton={false}
+          render={<Link to="/user" />}
+        >
           <ArrowLeftIcon data-icon="inline-start" />
           {t("back")}
         </Button>
@@ -278,7 +284,22 @@ function CastPage() {
       {!isDesktopApp() ? (
         <Alert>
           <AlertTitle>{t("desktopRequired")}</AlertTitle>
-          <AlertDescription>{t("desktopDescription")}</AlertDescription>
+          <AlertDescription>
+            <div className="flex flex-col items-start gap-2">
+              <p>{t("desktopDescription")}</p>
+              <Button
+                variant="outline"
+                size="sm"
+                nativeButton={false}
+                render={
+                  <ExternalLink href="https://soulfiremc.com/docs/installation?utm_source=soulfire-client&utm_medium=app&utm_campaign=cast-desktop" />
+                }
+              >
+                {t("getDesktopApp")}
+                <ArrowUpRightIcon data-icon="inline-end" />
+              </Button>
+            </div>
+          </AlertDescription>
         </Alert>
       ) : (
         <>
@@ -469,13 +490,18 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
               </Field>
             )}
           </form.Field>
-          <Button
-            type="submit"
-            className="w-fit"
-            disabled={!instance || connect.isPending}
-          >
-            {connect.isPending ? t("phase.connecting") : t("connect")}
-          </Button>
+          <Field>
+            <Button
+              type="submit"
+              className="w-fit"
+              disabled={!instance || connect.isPending}
+            >
+              {connect.isPending ? t("phase.connecting") : t("connect")}
+            </Button>
+            {!instance && (
+              <FieldDescription>{t("manualNeedsInstance")}</FieldDescription>
+            )}
+          </Field>
         </FieldGroup>
       </form>
       {connect.error && (

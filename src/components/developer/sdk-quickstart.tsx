@@ -14,7 +14,7 @@ import {
   SquareTerminalIcon,
   UnplugIcon,
 } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { type SyntheticEvent, useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CodeSample } from "@/components/developer/code-sample.tsx";
 import { ExternalLink } from "@/components/external-link.tsx";
@@ -89,6 +89,12 @@ const recipes = [
   { id: "read-state", Icon: MonitorIcon },
   { id: "send-chat", Icon: MessageSquareIcon },
 ] as const;
+
+// One click selects a read-only value, so people can copy it by hand too.
+// Select on click as well: the mouseup after focus clears a focus selection.
+function selectAll(event: SyntheticEvent<HTMLInputElement>) {
+  event.currentTarget.select();
+}
 
 export function SdkQuickstart({
   serverUrl,
@@ -239,6 +245,8 @@ export function SdkQuickstart({
                 <InputGroupInput
                   id={`${id}-url`}
                   readOnly
+                  onFocus={selectAll}
+                  onClick={selectAll}
                   value={serverUrl ?? ""}
                   placeholder={
                     demo ? "YOUR_SOULFIRE_SERVER_URL" : t("sdk.noUrl")
@@ -296,6 +304,8 @@ export function SdkQuickstart({
                     <InputGroupInput
                       id={`${id}-instance`}
                       readOnly
+                      onFocus={selectAll}
+                      onClick={selectAll}
                       value={instanceName}
                     />
                   </InputGroup>
@@ -328,6 +338,8 @@ export function SdkQuickstart({
                       type="password"
                       autoComplete="off"
                       readOnly
+                      onFocus={selectAll}
+                      onClick={selectAll}
                       value={token}
                     />
                     <InputGroupAddon align="inline-end">
@@ -510,10 +522,15 @@ export function SdkQuickstart({
         </div>
 
         <Collapsible>
-          <CollapsibleTrigger render={<Button variant="outline" />}>
+          <CollapsibleTrigger
+            render={<Button variant="outline" className="group/run" />}
+          >
             <SquareTerminalIcon data-icon="inline-start" />
             {t("sdk.runTitle")}
-            <ChevronDownIcon data-icon="inline-end" />
+            <ChevronDownIcon
+              data-icon="inline-end"
+              className="group-data-[panel-open]/run:rotate-180"
+            />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <div className="flex min-w-0 flex-col gap-4 pt-4">
@@ -577,9 +594,16 @@ export function SdkQuickstart({
         </Collapsible>
 
         <Collapsible>
-          <CollapsibleTrigger render={<Button variant="ghost" size="sm" />}>
+          <CollapsibleTrigger
+            render={
+              <Button variant="ghost" size="sm" className="group/prompt" />
+            }
+          >
             {t("sdk.previewAgentPrompt")}
-            <ChevronDownIcon data-icon="inline-end" />
+            <ChevronDownIcon
+              data-icon="inline-end"
+              className="group-data-[panel-open]/prompt:rotate-180"
+            />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <pre
@@ -631,10 +655,13 @@ export function SdkQuickstart({
       </div>
       <Collapsible>
         <CollapsibleTrigger
-          render={<Button variant="ghost" className="w-fit" />}
+          render={<Button variant="ghost" className="group/help w-fit" />}
         >
           {t("sdk.helpTitle")}
-          <ChevronDownIcon data-icon="inline-end" />
+          <ChevronDownIcon
+            data-icon="inline-end"
+            className="group-data-[panel-open]/help:rotate-180"
+          />
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="grid gap-4 pt-4 md:grid-cols-3">

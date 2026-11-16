@@ -178,7 +178,8 @@ function InstanceNameField({
 }: {
   value: string;
   disabled: boolean;
-  onSave: (name: string) => Promise<void>;
+  /** Resolves to false when the name was not saved, such as in the demo. */
+  onSave: (name: string) => Promise<boolean>;
 }) {
   const { t } = useTranslation("common");
   const id = useId();
@@ -194,7 +195,10 @@ function InstanceNameField({
       const name = Schema.decodeUnknownSync(schema)(fields.name);
       if (name === value) return;
       try {
-        await onSave(name);
+        if (!(await onSave(name))) {
+          formApi.reset({ name: value });
+          return;
+        }
         formApi.reset({ name });
         toast.success(t("instanceName.saved"));
       } catch (error) {
@@ -447,7 +451,14 @@ function Content() {
           key={instanceInfo.id}
           value={instanceInfo.friendlyName}
           disabled={!canEditMeta}
-          onSave={setFriendlyNameMutation.mutateAsync}
+          onSave={async (name) => {
+            if (transport === null) {
+              toast.info(t("settingsPage.demoNotSaved"));
+              return false;
+            }
+            await setFriendlyNameMutation.mutateAsync(name);
+            return true;
+          }}
         />
         <InstanceIconField
           value={instanceInfo.icon}
@@ -654,7 +665,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
         ),
         value: Schema.String.check(
           Schema.isMinLength(1, {
-            message: t("instanceMetadata.valuePlaceholder"),
+            message: t("instanceMetadata.valueRequired"),
           }),
         ).check(
           Schema.makeFilter(
@@ -684,6 +695,12 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
       const parsedValue = parseJsonValue(submitted.value);
 
       if (parsedValue === undefined) return;
+
+      if (transport === null) {
+        // The demo has no server, so do not show the entry as added.
+        toast.info(t("common:settingsPage.demoNotSaved"));
+        return;
+      }
 
       if (isDuplicate(namespace, key)) {
         toast.error(t("instanceMetadata.duplicateError"));
@@ -778,7 +795,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="font-medium text-sm">{t("instanceMetadata.title")}</h3>
+      <h2 className="font-medium text-sm">{t("instanceMetadata.title")}</h2>
       <p className="text-muted-foreground text-sm">
         {t("instanceMetadata.description")}
       </p>
@@ -907,7 +924,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
           </form>
         </CardHeader>
         <CardContent
-          className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0"
+          className="flex flex-col gap-2 p-4 pt-0 md:max-h-64 md:overflow-y-auto"
           aria-busy={isLoading}
         >
           {loadError && (

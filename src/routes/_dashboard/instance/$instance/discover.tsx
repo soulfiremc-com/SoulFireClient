@@ -108,15 +108,30 @@ function Discover() {
 }
 
 function PluginGrid(props: {
-  entries: { settings: SettingsPage; plugin: ServerPlugin }[];
+  entries: {
+    settings: SettingsPage;
+    plugin: ServerPlugin;
+    enabled: boolean;
+  }[];
+  sectionEnabled: boolean;
 }) {
+  const { t } = useTranslation("common");
   return (
     <div className="grid w-full grid-cols-1 items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {props.entries.map(({ settings, plugin }) => (
+      {props.entries.map(({ settings, plugin, enabled }) => (
         <InstancePluginInfoCard
           key={settings.id}
           settingsEntry={settings}
           plugin={plugin}
+          note={
+            enabled === props.sectionEnabled
+              ? undefined
+              : t(
+                  enabled
+                    ? "discover.movesToEnabled"
+                    : "discover.movesToAvailable",
+                )
+          }
         />
       ))}
     </div>
@@ -257,18 +272,18 @@ function Content() {
       )}
       {enabled.length > 0 && (
         <section className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">
+          <h2 className="text-sm font-medium">
             {t("discover.enabledHeading")}
-          </h3>
-          <PluginGrid entries={enabled} />
+          </h2>
+          <PluginGrid entries={enabled} sectionEnabled />
         </section>
       )}
       {available.length > 0 && (
         <section className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">
+          <h2 className="text-sm font-medium">
             {t("discover.availableHeading")}
-          </h3>
-          <PluginGrid entries={available} />
+          </h2>
+          <PluginGrid entries={available} sectionEnabled={false} />
         </section>
       )}
     </div>

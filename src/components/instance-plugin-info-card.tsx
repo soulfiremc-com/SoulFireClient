@@ -59,6 +59,7 @@ function PluginInfoCardContent(props: {
   onEnabledChange: (value: boolean) => void;
   cardSize?: "default" | "sm";
   settingsUrl?: string;
+  note?: string;
 }) {
   const { t } = useTranslation("common");
   const navigate = useNavigate();
@@ -106,14 +107,18 @@ function PluginInfoCardContent(props: {
               </>
             )}
           </p>
+          {props.note && (
+            <p className="text-muted-foreground text-xs" role="status">
+              {props.note}
+            </p>
+          )}
           {props.settingsUrl && props.enabledValue && (
             <Button
               className="mt-2 w-fit"
               size="sm"
               variant="outline"
-              onClick={() => {
-                void navigate({ to: props.settingsUrl });
-              }}
+              nativeButton={false}
+              render={<Link to={props.settingsUrl} />}
             >
               <SlidersHorizontalIcon data-icon="inline-start" />
               {t("pluginCard.configure")}
@@ -234,6 +239,8 @@ function usePluginEnabledState(
 export function InstancePluginInfoCard(props: {
   settingsEntry: SettingsPage;
   plugin: ServerPlugin;
+  /** Explains a state change that the surrounding list does not show yet. */
+  note?: string;
 }) {
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
@@ -289,6 +296,7 @@ export function InstancePluginInfoCard(props: {
       plugin={props.plugin}
       enabledValue={enabledValue}
       onEnabledChange={setEnabledMutation.mutate}
+      note={props.note}
       settingsUrl={`/instance/${instanceInfo.id}/settings/${props.settingsEntry.id}`}
       link={
         <Link

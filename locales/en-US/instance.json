@@ -421,6 +421,7 @@
     "namespacePlaceholder": "Namespace",
     "keyPlaceholder": "Key",
     "valuePlaceholder": "Value (JSON)",
+    "valueRequired": "Enter a JSON value, such as true, 5, or \"text\".",
     "noEntries": "No metadata entries. Add one above.",
     "loadError": "Could not load metadata",
     "loadErrorDescription": "Retry before adding or changing entries.",

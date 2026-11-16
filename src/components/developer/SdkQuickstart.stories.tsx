@@ -265,13 +265,24 @@ export const TokenFailure: Story = {
 
 export const RemoteServer: Story = {
   args: { serverUrl: "https://soulfire.example.test/api", integrated: false },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, userEvent }) => {
     await expect(
       canvas.getByText("Remote connection", { exact: true }),
     ).toBeVisible();
     await expect(canvas.getByLabelText("example.ts")).toHaveTextContent(
       'baseUrl: "https://soulfire.example.test/api"',
     );
+    // One click selects the whole read-only address for a manual copy.
+    const address = canvas.getByRole<HTMLInputElement>("textbox", {
+      name: "SoulFire API address",
+    });
+    await userEvent.click(address);
+    await expect(
+      address.value.slice(
+        address.selectionStart ?? 0,
+        address.selectionEnd ?? 0,
+      ),
+    ).toBe("https://soulfire.example.test/api");
   },
 };
 
