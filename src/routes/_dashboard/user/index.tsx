@@ -17,6 +17,7 @@ import {
 import {
   ClipboardCopyIcon,
   CopyPlusIcon,
+  EllipsisVerticalIcon,
   ExternalLinkIcon,
   LoaderCircleIcon,
   PlayIcon,
@@ -33,8 +34,12 @@ import { toast } from "sonner";
 import { BotFleetSummaryBadge } from "@/components/bot-fleet-summary.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
@@ -455,18 +460,108 @@ function Content() {
     },
   });
 
-  const contextStateActions =
-    contextMenu &&
-    hasInstancePermission(contextMenu.data, InstancePermission.CONTROL_BOTS)
-      ? getAvailableStateActions(contextMenu.data.botSummary)
-      : [];
-  const canDeleteContextInstance =
-    contextMenu &&
-    hasInstancePermission(contextMenu.data, InstancePermission.DELETE_INSTANCE);
   const canCreateInstance = hasGlobalPermission(
     clientInfo,
     GlobalPermission.CREATE_INSTANCE,
   );
+  // One set of items for the right-click menu and the card's actions button.
+  const renderInstanceActions = (
+    instance: InstanceListResponse_Instance,
+    close: () => void,
+  ) => {
+    const stateActions = hasInstancePermission(
+      instance,
+      InstancePermission.CONTROL_BOTS,
+    )
+      ? getAvailableStateActions(instance.botSummary)
+      : [];
+    const canDelete = hasInstancePermission(
+      instance,
+      InstancePermission.DELETE_INSTANCE,
+    );
+    return (
+      <>
+        <DropdownMenuItem
+          onClick={() => {
+            void navigate({
+              to: "/instance/$instance",
+              params: { instance: instance.id },
+            });
+            close();
+          }}
+        >
+          <ExternalLinkIcon />
+          {t("contextMenu.instance.goToInstance")}
+        </DropdownMenuItem>
+        {canCreateInstance && (
+          <DropdownMenuItem
+            onClick={() => {
+              setDuplicateSource(instance);
+              close();
+            }}
+          >
+            <CopyPlusIcon />
+            {t("contextMenu.instance.duplicateInstance")}
+          </DropdownMenuItem>
+        )}
+        {stateActions.length > 0 && (
+          <>
+            <DropdownMenuSeparator />
+            {stateActions.map((action) => (
+              <DropdownMenuItem
+                key={action.key}
+                onClick={() => {
+                  stateMutation.mutate({
+                    instanceId: instance.id,
+                    desiredState: action.desiredState,
+                    action: action.key,
+                  });
+                  close();
+                }}
+              >
+                <action.Icon />
+                {t(`controls.${action.key}`)}
+              </DropdownMenuItem>
+            ))}
+          </>
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => {
+            copyToClipboard(instance.friendlyName);
+            close();
+          }}
+        >
+          <ClipboardCopyIcon />
+          {t("contextMenu.instance.copyInstanceName")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            copyToClipboard(instance.id);
+            close();
+          }}
+        >
+          <ClipboardCopyIcon />
+          {t("contextMenu.instance.copyInstanceId")}
+        </DropdownMenuItem>
+        {canDelete && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={() => {
+                setDeleteTarget(instance);
+                close();
+              }}
+            >
+              <TrashIcon />
+              {t("contextMenu.instance.deleteInstance")}
+            </DropdownMenuItem>
+          </>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -493,10 +588,14 @@ function Content() {
         <ItemGroup className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           {instanceList.instances.map((instance, index) => {
             return (
-              <div key={instance.id} role="listitem" className="max-h-fit">
+              <div
+                key={instance.id}
+                role="listitem"
+                className="relative max-h-fit"
+              >
                 <Item
                   variant="outline"
-                  className="w-full rounded-lg px-6 py-4"
+                  className="w-full rounded-lg py-4 pr-14 pl-6"
                   render={
                     <Link
                       to="/instance/$instance"
@@ -530,6 +629,28 @@ function Content() {
                     </div>
                   )}
                 </Item>
+                {/* Touch screens cannot open the right-click menu, so the same actions live here. */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-1/2 right-3 -translate-y-1/2"
+                        aria-label={t("contextMenu.instance.actions", {
+                          name: instance.friendlyName,
+                        })}
+                      />
+                    }
+                  >
+                    <EllipsisVerticalIcon />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuGroup>
+                      {renderInstanceActions(instance, () => {})}
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             );
           })}
@@ -542,84 +663,7 @@ function Content() {
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <DropdownMenuItem
-            onClick={() => {
-              void navigate({
-                to: "/instance/$instance",
-                params: { instance: contextMenu.data.id },
-              });
-              dismiss();
-            }}
-          >
-            <ExternalLinkIcon />
-            {t("contextMenu.instance.goToInstance")}
-          </DropdownMenuItem>
-          {canCreateInstance && (
-            <DropdownMenuItem
-              onClick={() => {
-                setDuplicateSource(contextMenu.data);
-                dismiss();
-              }}
-            >
-              <CopyPlusIcon />
-              {t("contextMenu.instance.duplicateInstance")}
-            </DropdownMenuItem>
-          )}
-          {contextStateActions.length > 0 && (
-            <>
-              <DropdownMenuSeparator />
-              {contextStateActions.map((action) => (
-                <DropdownMenuItem
-                  key={action.key}
-                  onClick={() => {
-                    stateMutation.mutate({
-                      instanceId: contextMenu.data.id,
-                      desiredState: action.desiredState,
-                      action: action.key,
-                    });
-                    dismiss();
-                  }}
-                >
-                  <action.Icon />
-                  {t(`controls.${action.key}`)}
-                </DropdownMenuItem>
-              ))}
-            </>
-          )}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              copyToClipboard(contextMenu.data.friendlyName);
-              dismiss();
-            }}
-          >
-            <ClipboardCopyIcon />
-            {t("contextMenu.instance.copyInstanceName")}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              copyToClipboard(contextMenu.data.id);
-              dismiss();
-            }}
-          >
-            <ClipboardCopyIcon />
-            {t("contextMenu.instance.copyInstanceId")}
-          </DropdownMenuItem>
-          {canDeleteContextInstance && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => {
-                  setDeleteTarget(contextMenu.data);
-                  dismiss();
-                }}
-              >
-                <TrashIcon />
-                {t("contextMenu.instance.deleteInstance")}
-              </DropdownMenuItem>
-            </>
-          )}
+          {renderInstanceActions(contextMenu.data, dismiss)}
         </ContextMenuPortal>
       )}
       <DuplicateInstanceDialog

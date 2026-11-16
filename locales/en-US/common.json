@@ -892,6 +892,7 @@
       "duplicateInstance": "Create from configuration",
       "copyInstanceId": "Copy project ID",
       "copyInstanceName": "Copy project name",
+      "actions": "Actions for {{name}}",
       "deleteInstance": "Delete project"
     },
     "bot": {
