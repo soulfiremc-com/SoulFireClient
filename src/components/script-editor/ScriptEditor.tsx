@@ -54,9 +54,10 @@ function isCanvasShortcutTarget(container: Element, target: EventTarget) {
 }
 
 /**
- * next-themes resolves the theme after the first render. Until then, follow
- * the theme class already on the page, so the canvas never mixes dark node
- * colors with light text.
+ * Picks the canvas color mode from the theme on the page. A forced theme wins,
+ * because next-themes keeps reporting the stored theme as resolvedTheme. Before
+ * the theme resolves, follow the theme class already on the page, so the
+ * canvas never mixes dark node colors with light text.
  */
 function canvasColorMode(resolvedTheme: string | undefined): ColorMode {
   if (resolvedTheme === "light" || resolvedTheme === "dark") {
@@ -68,7 +69,7 @@ function canvasColorMode(resolvedTheme: string | undefined): ColorMode {
 export function ScriptEditor() {
   const editor = useScriptEditor();
   const { t } = useTranslation("instance");
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, forcedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
@@ -928,7 +929,7 @@ export function ScriptEditor() {
           onReconnectStart={handleReconnectStart}
           onReconnect={handleReconnect}
           onReconnectEnd={handleReconnectEnd}
-          colorMode={canvasColorMode(resolvedTheme)}
+          colorMode={canvasColorMode(forcedTheme ?? resolvedTheme)}
           minZoom={0.1}
           snapToGrid
           snapGrid={[16, 16]}

@@ -155,7 +155,17 @@ const meta = {
   title: "Scripts/Canvas",
   component: ScriptCanvasExample,
   parameters: { layout: "fullscreen" },
-  beforeEach: () => initNodeDefinitions(definitions.map(protoNodeTypeToLocal)),
+  beforeEach: () => {
+    initNodeDefinitions(definitions.map(protoNodeTypeToLocal));
+    // A stored dark theme must not leak into the canvas while the page is
+    // forced to light. Other stories can leave one behind in CI.
+    const storedTheme = localStorage.getItem("theme");
+    localStorage.setItem("theme", "dark");
+    return () => {
+      if (storedTheme === null) localStorage.removeItem("theme");
+      else localStorage.setItem("theme", storedTheme);
+    };
+  },
 } satisfies Meta<typeof ScriptCanvasExample>;
 export default meta;
 type Story = StoryObj<typeof meta>;
