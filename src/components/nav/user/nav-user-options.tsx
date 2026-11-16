@@ -90,6 +90,7 @@ export function NavUserOptions() {
                 <SidebarMenuAction
                   onClick={openCreateInstance}
                   title={t("userSidebar.createInstance")}
+                  aria-label={t("userSidebar.createInstance")}
                 >
                   <PlusIcon />
                 </SidebarMenuAction>

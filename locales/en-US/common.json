@@ -40,6 +40,9 @@
     },
     "connectionFailed": "Connection to the SoulFire server failed."
   },
+  "navigation": {
+    "pending": "Loading page"
+  },
   "queryStatus": {
     "failed": "Refresh failed",
     "retry": "Retry failed refreshes",

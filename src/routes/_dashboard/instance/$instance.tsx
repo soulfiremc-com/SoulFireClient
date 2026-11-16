@@ -15,6 +15,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import { ErrorComponent } from "@/components/error-component.tsx";
+import { NavigationFeedback } from "@/components/nav/navigation-feedback.tsx";
 import { InstanceSidebar } from "@/components/nav/instance/instance-sidebar.tsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -246,6 +247,7 @@ function InstanceLayoutContent() {
       <InstanceSidebar />
       <TooltipProvider delay={500}>
         <SidebarInset className="min-w-0">
+          <NavigationFeedback />
           <CatchBoundary
             getResetKey={() => "instance-layout"}
             errorComponent={ErrorComponent}

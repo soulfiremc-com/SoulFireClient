@@ -106,7 +106,9 @@ function SidebarInstanceButton() {
         <span className="max-w-64 truncate font-semibold">
           {instanceInfo.friendlyName}
         </span>
-        <span className="truncate text-xs">{fleetSummary}</span>
+        <span className="truncate text-xs" title={fleetSummary}>
+          {fleetSummary}
+        </span>
       </div>
       <ChevronsUpDownIcon className="ml-auto" />
     </DropdownMenuTrigger>
@@ -154,7 +156,7 @@ function InstanceList() {
             }
           >
             <DynamicIcon name={instance.icon} className="size-4 shrink-0" />
-            {instance.friendlyName}
+            <span>{instance.friendlyName}</span>
             <DropdownMenuShortcut>
               {formatShortcut(`Ctrl+${index + 1}`)}
             </DropdownMenuShortcut>
