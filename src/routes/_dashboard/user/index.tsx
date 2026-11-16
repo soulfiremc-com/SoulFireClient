@@ -493,15 +493,19 @@ function Content() {
         <ItemGroup className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           {instanceList.instances.map((instance, index) => {
             return (
-              <Link
-                key={instance.id}
-                to="/instance/$instance"
-                params={{ instance: instance.id }}
-                search={{}}
-                className="max-h-fit w-full"
-                onContextMenu={(e) => handleContextMenu(e, instance)}
-              >
-                <Item variant="outline" className="w-full rounded-lg px-6 py-4">
+              <div key={instance.id} role="listitem" className="max-h-fit">
+                <Item
+                  variant="outline"
+                  className="w-full rounded-lg px-6 py-4"
+                  render={
+                    <Link
+                      to="/instance/$instance"
+                      params={{ instance: instance.id }}
+                      search={{}}
+                      onContextMenu={(e) => handleContextMenu(e, instance)}
+                    />
+                  }
+                >
                   <ItemMedia>
                     <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-12 items-center justify-center rounded-lg">
                       <DynamicIcon
@@ -526,7 +530,7 @@ function Content() {
                     </div>
                   )}
                 </Item>
-              </Link>
+              </div>
             );
           })}
         </ItemGroup>

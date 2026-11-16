@@ -6,6 +6,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Label, Pie, PieChart } from "recharts";
 import {
   AggregateBotsChart,
+  ChartFocusFrame,
   CpuUsageChart,
   MemoryUsageChart,
   ServerMetricsSummaryCards,
@@ -63,12 +64,12 @@ function UsersChart(props: { userList: UserListResponse }) {
   const chartData = useMemo(
     () => [
       {
-        role: "admin",
+        userRole: "admin",
         users: forType(props.userList, UserRole.ADMIN),
         fill: "var(--color-admin)",
       },
       {
-        role: "user",
+        userRole: "user",
         users: forType(props.userList, UserRole.USER),
         fill: "var(--color-user)",
       },
@@ -86,56 +87,58 @@ function UsersChart(props: { userList: UserListResponse }) {
         <CardTitle>{t("overview.usersChart.title")}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        <ChartContainer
-          config={usersChartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent {...props} hideLabel />
-              )}
-            />
-            <Pie
-              data={chartData}
-              dataKey="users"
-              nameKey="role"
-              innerRadius={60}
-              strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
+        <ChartFocusFrame>
+          <ChartContainer
+            config={usersChartConfig}
+            className="mx-auto aspect-square max-h-[250px]"
+          >
+            <PieChart title={t("overview.usersChart.title")}>
+              <ChartTooltip
+                cursor={false}
+                content={(props: CustomTooltipProps) => (
+                  <ChartTooltipContent {...props} hideLabel />
+                )}
+              />
+              <Pie
+                data={chartData}
+                dataKey="users"
+                nameKey="userRole"
+                innerRadius={60}
+                strokeWidth={5}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
                         >
-                          {totalUsers.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          {t("overview.usersChart.users")}
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {totalUsers.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            {t("overview.usersChart.users")}
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+        </ChartFocusFrame>
       </CardContent>
     </Card>
   );
@@ -164,14 +167,14 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
   const chartData = useMemo(
     () => [
       {
-        state: "active",
+        instanceState: "active",
         instances: props.instanceList.instances.filter(
           (instance) => (instance.botSummary?.desiredBots ?? 0) > 0,
         ).length,
         fill: "var(--color-active)",
       },
       {
-        state: "stopped",
+        instanceState: "stopped",
         instances: props.instanceList.instances.filter(
           (instance) => (instance.botSummary?.desiredBots ?? 0) === 0,
         ).length,
@@ -191,56 +194,58 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
         <CardTitle>{t("overview.instancesChart.title")}</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={instancesChartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent {...props} hideLabel />
-              )}
-            />
-            <Pie
-              data={chartData}
-              dataKey="instances"
-              nameKey="state"
-              innerRadius={60}
-              strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
+        <ChartFocusFrame>
+          <ChartContainer
+            config={instancesChartConfig}
+            className="mx-auto aspect-square max-h-[250px]"
+          >
+            <PieChart title={t("overview.instancesChart.title")}>
+              <ChartTooltip
+                cursor={false}
+                content={(props: CustomTooltipProps) => (
+                  <ChartTooltipContent {...props} hideLabel />
+                )}
+              />
+              <Pie
+                data={chartData}
+                dataKey="instances"
+                nameKey="instanceState"
+                innerRadius={60}
+                strokeWidth={5}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
                         >
-                          {totalInstances.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          {t("overview.instancesChart.instances")}
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {totalInstances.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            {t("overview.instancesChart.instances")}
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+        </ChartFocusFrame>
       </CardContent>
     </Card>
   );

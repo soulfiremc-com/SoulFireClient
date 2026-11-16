@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import {
@@ -57,6 +57,16 @@ const TIME_AXIS_PROPS = {
 function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
   const timeLabel = payload?.[0]?.payload?.timeLabel;
   return typeof timeLabel === "string" ? timeLabel : "";
+}
+
+// ChartContainer hides the outline on the focusable chart surface, so draw a
+// ring around the chart while keyboard users move through its data points.
+export function ChartFocusFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="has-focus-visible:ring-ring/50 rounded-lg has-focus-visible:ring-3">
+      {children}
+    </div>
+  );
 }
 
 export function ServerMetricsSummaryCards({
@@ -163,51 +173,53 @@ export function CpuUsageChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={cpuConfig} className="min-h-[200px] w-full">
-          <AreaChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              {...TIME_AXIS_PROPS}
-              tick={{ fontSize: 10 }}
-              tickFormatter={(value) => formatChartAxisTime(Number(value))}
-            />
-            <YAxis
-              domain={[0, 100]}
-              tick={{ fontSize: 10 }}
-              tickFormatter={(v: number) => `${v}%`}
-            />
-            <ChartTooltip
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent
-                  {...props}
-                  labelFormatter={(_label, payload) =>
-                    formatTooltipLabel(payload)
-                  }
-                />
-              )}
-            />
-            <Area
-              type="monotone"
-              dataKey="system"
-              stroke="var(--color-system)"
-              fill="var(--color-system)"
-              fillOpacity={0.1}
-              isAnimationActive={false}
-              strokeWidth={1}
-              strokeDasharray="4 2"
-            />
-            <Area
-              type="monotone"
-              dataKey="process"
-              stroke="var(--color-process)"
-              fill="var(--color-process)"
-              fillOpacity={0.3}
-              isAnimationActive={false}
-              strokeWidth={2}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
+        <ChartFocusFrame>
+          <ChartContainer config={cpuConfig} className="min-h-[200px] w-full">
+            <AreaChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                {...TIME_AXIS_PROPS}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => formatChartAxisTime(Number(value))}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v: number) => `${v}%`}
+              />
+              <ChartTooltip
+                content={(props: CustomTooltipProps) => (
+                  <ChartTooltipContent
+                    {...props}
+                    labelFormatter={(_label, payload) =>
+                      formatTooltipLabel(payload)
+                    }
+                  />
+                )}
+              />
+              <Area
+                type="monotone"
+                dataKey="system"
+                stroke="var(--color-system)"
+                fill="var(--color-system)"
+                fillOpacity={0.1}
+                isAnimationActive={false}
+                strokeWidth={1}
+                strokeDasharray="4 2"
+              />
+              <Area
+                type="monotone"
+                dataKey="process"
+                stroke="var(--color-process)"
+                fill="var(--color-process)"
+                fillOpacity={0.3}
+                isAnimationActive={false}
+                strokeWidth={2}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+            </AreaChart>
+          </ChartContainer>
+        </ChartFocusFrame>
       </CardContent>
     </Card>
   );
@@ -270,80 +282,85 @@ export function MemoryUsageChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={memoryConfig} className="min-h-[200px] w-full">
-          <AreaChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              {...TIME_AXIS_PROPS}
-              tick={{ fontSize: 10 }}
-              tickFormatter={(value) => formatChartAxisTime(Number(value))}
-            />
-            <YAxis
-              tick={{ fontSize: 10 }}
-              tickFormatter={(v: number) => `${v.toFixed(0)} MB`}
-            />
-            <ChartTooltip
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent
-                  {...props}
-                  labelFormatter={(_label, payload) =>
-                    formatTooltipLabel(payload)
-                  }
-                  formatter={(value, name, item) => (
-                    <>
-                      <div
-                        className="h-2.5 w-2.5 shrink-0 rounded-xs"
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <div className="flex flex-1 items-center justify-between leading-none">
-                        <span className="text-muted-foreground">
-                          {memoryConfig[name as keyof typeof memoryConfig]
-                            ?.label ?? name}
-                        </span>
-                        <span className="text-foreground font-mono font-medium tabular-nums">
-                          {formatMB(
-                            (typeof value === "number" ? value : 0) *
-                              1024 *
-                              1024,
-                          )}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                />
-              )}
-            />
-            <Area
-              type="monotone"
-              dataKey="max"
-              stroke="var(--color-max)"
-              fill="var(--color-max)"
-              fillOpacity={0.05}
-              isAnimationActive={false}
-              strokeWidth={1}
-              strokeDasharray="4 2"
-            />
-            <Area
-              type="monotone"
-              dataKey="committed"
-              stroke="var(--color-committed)"
-              fill="var(--color-committed)"
-              fillOpacity={0.1}
-              isAnimationActive={false}
-              strokeWidth={1}
-            />
-            <Area
-              type="monotone"
-              dataKey="used"
-              stroke="var(--color-used)"
-              fill="var(--color-used)"
-              fillOpacity={0.3}
-              isAnimationActive={false}
-              strokeWidth={2}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
+        <ChartFocusFrame>
+          <ChartContainer
+            config={memoryConfig}
+            className="min-h-[200px] w-full"
+          >
+            <AreaChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                {...TIME_AXIS_PROPS}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => formatChartAxisTime(Number(value))}
+              />
+              <YAxis
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v: number) => `${v.toFixed(0)} MB`}
+              />
+              <ChartTooltip
+                content={(props: CustomTooltipProps) => (
+                  <ChartTooltipContent
+                    {...props}
+                    labelFormatter={(_label, payload) =>
+                      formatTooltipLabel(payload)
+                    }
+                    formatter={(value, name, item) => (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-xs"
+                          style={{ backgroundColor: item.color }}
+                        />
+                        <div className="flex flex-1 items-center justify-between leading-none">
+                          <span className="text-muted-foreground">
+                            {memoryConfig[name as keyof typeof memoryConfig]
+                              ?.label ?? name}
+                          </span>
+                          <span className="text-foreground font-mono font-medium tabular-nums">
+                            {formatMB(
+                              (typeof value === "number" ? value : 0) *
+                                1024 *
+                                1024,
+                            )}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  />
+                )}
+              />
+              <Area
+                type="monotone"
+                dataKey="max"
+                stroke="var(--color-max)"
+                fill="var(--color-max)"
+                fillOpacity={0.05}
+                isAnimationActive={false}
+                strokeWidth={1}
+                strokeDasharray="4 2"
+              />
+              <Area
+                type="monotone"
+                dataKey="committed"
+                stroke="var(--color-committed)"
+                fill="var(--color-committed)"
+                fillOpacity={0.1}
+                isAnimationActive={false}
+                strokeWidth={1}
+              />
+              <Area
+                type="monotone"
+                dataKey="used"
+                stroke="var(--color-used)"
+                fill="var(--color-used)"
+                fillOpacity={0.3}
+                isAnimationActive={false}
+                strokeWidth={2}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+            </AreaChart>
+          </ChartContainer>
+        </ChartFocusFrame>
       </CardContent>
     </Card>
   );
@@ -391,44 +408,49 @@ export function ThreadCountChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={threadConfig} className="min-h-[200px] w-full">
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              {...TIME_AXIS_PROPS}
-              tick={{ fontSize: 10 }}
-              tickFormatter={(value) => formatChartAxisTime(Number(value))}
-            />
-            <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
-            <ChartTooltip
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent
-                  {...props}
-                  labelFormatter={(_label, payload) =>
-                    formatTooltipLabel(payload)
-                  }
-                />
-              )}
-            />
-            <Line
-              type="monotone"
-              dataKey="total"
-              stroke="var(--color-total)"
-              strokeWidth={2}
-              dot={false}
-              isAnimationActive={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="daemon"
-              stroke="var(--color-daemon)"
-              strokeWidth={2}
-              dot={false}
-              isAnimationActive={false}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </LineChart>
-        </ChartContainer>
+        <ChartFocusFrame>
+          <ChartContainer
+            config={threadConfig}
+            className="min-h-[200px] w-full"
+          >
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                {...TIME_AXIS_PROPS}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => formatChartAxisTime(Number(value))}
+              />
+              <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
+              <ChartTooltip
+                content={(props: CustomTooltipProps) => (
+                  <ChartTooltipContent
+                    {...props}
+                    labelFormatter={(_label, payload) =>
+                      formatTooltipLabel(payload)
+                    }
+                  />
+                )}
+              />
+              <Line
+                type="monotone"
+                dataKey="total"
+                stroke="var(--color-total)"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="daemon"
+                stroke="var(--color-daemon)"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={false}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+            </LineChart>
+          </ChartContainer>
+        </ChartFocusFrame>
       </CardContent>
     </Card>
   );
@@ -476,47 +498,49 @@ export function AggregateBotsChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={botsConfig} className="min-h-[200px] w-full">
-          <AreaChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              {...TIME_AXIS_PROPS}
-              tick={{ fontSize: 10 }}
-              tickFormatter={(value) => formatChartAxisTime(Number(value))}
-            />
-            <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
-            <ChartTooltip
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent
-                  {...props}
-                  labelFormatter={(_label, payload) =>
-                    formatTooltipLabel(payload)
-                  }
-                />
-              )}
-            />
-            <Area
-              type="monotone"
-              dataKey="total"
-              stroke="var(--color-total)"
-              fill="var(--color-total)"
-              fillOpacity={0.1}
-              isAnimationActive={false}
-              strokeWidth={1}
-              strokeDasharray="4 2"
-            />
-            <Area
-              type="monotone"
-              dataKey="online"
-              stroke="var(--color-online)"
-              fill="var(--color-online)"
-              fillOpacity={0.3}
-              isAnimationActive={false}
-              strokeWidth={2}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
+        <ChartFocusFrame>
+          <ChartContainer config={botsConfig} className="min-h-[200px] w-full">
+            <AreaChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                {...TIME_AXIS_PROPS}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => formatChartAxisTime(Number(value))}
+              />
+              <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
+              <ChartTooltip
+                content={(props: CustomTooltipProps) => (
+                  <ChartTooltipContent
+                    {...props}
+                    labelFormatter={(_label, payload) =>
+                      formatTooltipLabel(payload)
+                    }
+                  />
+                )}
+              />
+              <Area
+                type="monotone"
+                dataKey="total"
+                stroke="var(--color-total)"
+                fill="var(--color-total)"
+                fillOpacity={0.1}
+                isAnimationActive={false}
+                strokeWidth={1}
+                strokeDasharray="4 2"
+              />
+              <Area
+                type="monotone"
+                dataKey="online"
+                stroke="var(--color-online)"
+                fill="var(--color-online)"
+                fillOpacity={0.3}
+                isAnimationActive={false}
+                strokeWidth={2}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+            </AreaChart>
+          </ChartContainer>
+        </ChartFocusFrame>
       </CardContent>
     </Card>
   );
