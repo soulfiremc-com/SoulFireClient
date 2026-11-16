@@ -365,7 +365,10 @@
     },
     "combo": {
       "searchPlaceholder": "Search value...",
-      "selectPlaceholder": "Select an option"
+      "selectPlaceholder": "Select an option",
+      "empty": "No options match your search.",
+      "more_one": "{{count}} more option. Type to narrow the list.",
+      "more_other": "{{count}} more options. Type to narrow the list."
     },
     "invalidNumberToast": {
       "title": "Invalid number",

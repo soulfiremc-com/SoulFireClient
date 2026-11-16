@@ -75,6 +75,8 @@ function SettingsFormExample({
             invalidateQuery={async () => {}}
             updateConfigEntry={async (namespace, key, value) => {
               onSave(namespace, key, value);
+              // Like the app without a server, the demo stores nothing.
+              if (!persisted) return;
               if (failSave) throw new Error("The server is unavailable");
               setConfig((current) => ({
                 settings: {
@@ -306,6 +308,59 @@ export const Demo: Story = {
     await expect(
       canvas.queryByText("Changes save automatically."),
     ).not.toBeInTheDocument();
+  },
+};
+
+export const DemoKeepsChoices: Story = {
+  args: { pageId: "bot", persisted: false },
+  play: async ({ args, canvas, userEvent, canvasElement }) => {
+    await userEvent.click(canvas.getByRole("button", { name: /Advanced/ }));
+    const toggle = canvas.getByRole("switch", { name: "Resolve SRV" });
+    await expect(toggle).toBeChecked();
+    await userEvent.click(toggle);
+    await expect(args.onSave).toHaveBeenCalledWith("bot", "resolve-srv", false);
+    await waitFor(() => expect(toggle).not.toBeChecked());
+
+    const combo = canvas.getByRole("combobox", { name: "Protocol Version" });
+    await userEvent.click(combo);
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await body.findByRole("option", { name: "1.20.2" }));
+    await waitFor(() => expect(combo).toHaveTextContent("1.20.2"));
+    await waitFor(() =>
+      expect(
+        body.queryByRole("dialog", { hidden: true }),
+      ).not.toBeInTheDocument(),
+    );
+  },
+};
+
+export const LongOptionList: Story = {
+  args: { pageId: "bot" },
+  play: async ({ args, canvas, userEvent, canvasElement }) => {
+    const combo = canvas.getByRole("combobox", { name: "Protocol Version" });
+    await userEvent.click(combo);
+    const body = within(canvasElement.ownerDocument.body);
+    await expect(await body.findAllByRole("option")).toHaveLength(50);
+    await expect(body.getByText(/more options\. Type to narrow/)).toBeVisible();
+
+    await userEvent.type(body.getByPlaceholderText("Search value..."), "1.20");
+    await waitFor(() =>
+      expect(
+        body.getAllByRole("option").map((option) => option.textContent),
+      ).toEqual(["1.20.5-1.20.6", "1.20.3-1.20.4", "1.20.2", "1.20-1.20.1"]),
+    );
+    await userEvent.click(body.getByRole("option", { name: "1.20.2" }));
+    await expect(args.onSave).toHaveBeenCalledWith(
+      "bot",
+      "protocol-version",
+      expect.any(String),
+    );
+    await waitFor(() => expect(combo).toHaveTextContent("1.20.2"));
+    await waitFor(() =>
+      expect(
+        body.queryByRole("dialog", { hidden: true }),
+      ).not.toBeInTheDocument(),
+    );
   },
 };
 

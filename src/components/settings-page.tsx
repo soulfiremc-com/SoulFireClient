@@ -25,6 +25,7 @@ import {
   type ChangeEvent,
   type HTMLInputTypeAttribute,
   type ReactNode,
+  memo,
   use,
   useEffect,
   useId,
@@ -54,6 +55,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card.tsx";
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -106,6 +108,7 @@ import {
   type StringListEntry,
 } from "@/lib/string-list-entries.ts";
 import { NumericRangeEditor } from "@/lib/numeric-range-editor.ts";
+import { searchComboOptions } from "@/lib/combo-option-search.ts";
 import {
   focusSettingElement,
   getSettingLabel,
@@ -408,6 +411,7 @@ function MinMaxSettingField(props: {
 function BoolComponent(props: {
   setting: BoolSetting;
   value: boolean;
+  pending?: boolean;
   changeCallback: (value: boolean) => void;
   title: string;
   description: string;
@@ -435,6 +439,7 @@ function BoolComponent(props: {
               props.description ? `${id}-description` : undefined
             }
             checked={props.value}
+            aria-busy={props.pending || undefined}
             disabled={props.setting.disabled}
             onCheckedChange={props.changeCallback}
           />
@@ -444,21 +449,44 @@ function BoolComponent(props: {
   );
 }
 
+const COMBO_RESULT_LIMIT = 50;
+
 function ComboComponent(props: {
   id: string;
   setting: ComboSetting;
   value: string;
+  pending?: boolean;
   changeCallback: (value: string) => void;
 }) {
   const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
 
   const selectedOption = props.setting.options.find(
     (option) => option.id === props.value,
   );
+  // Render a ranked slice. Combos such as the protocol version have hundreds
+  // of options, and mounting all of them made the picker slow to open.
+  const results = useMemo(
+    () =>
+      searchComboOptions(
+        props.setting.options,
+        query,
+        COMBO_RESULT_LIMIT,
+        props.value,
+      ),
+    [props.setting.options, query, props.value],
+  );
+  const hiddenCount = results.total - results.options.length;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) setQuery("");
+      }}
+    >
       <PopoverTrigger
         render={
           <Button
@@ -467,6 +495,7 @@ function ComboComponent(props: {
             role="combobox"
             aria-label={props.setting.uiName}
             aria-expanded={open}
+            aria-busy={props.pending || undefined}
             className="w-full justify-between"
             disabled={
               props.setting.disabled || props.setting.options.length === 0
@@ -483,39 +512,56 @@ function ComboComponent(props: {
               t("settingsPage.combo.selectPlaceholder")}
           </span>
         </div>
-        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        {props.pending ? (
+          <LoaderCircleIcon
+            className="animate-spin"
+            data-icon="inline-end"
+            aria-label={t("settingsPage.saving")}
+          />
+        ) : (
+          <ChevronsUpDown className="opacity-50" data-icon="inline-end" />
+        )}
       </PopoverTrigger>
       <PopoverContent
         aria-label={props.setting.uiName}
         className="w-(--anchor-width) p-0"
       >
-        <Command>
+        <Command shouldFilter={false}>
           <CommandInput
+            value={query}
+            onValueChange={setQuery}
             placeholder={t("settingsPage.combo.searchPlaceholder")}
           />
           <CommandList>
+            <CommandEmpty>{t("settingsPage.combo.empty")}</CommandEmpty>
             <CommandGroup>
-              {props.setting.options.map((option) => (
+              {results.options.map((option) => (
                 <CommandItem
                   key={option.id}
                   value={option.id}
-                  keywords={[option.displayName, ...option.keywords]}
-                  onSelect={(currentValue) => {
-                    props.changeCallback(currentValue);
+                  onSelect={() => {
                     setOpen(false);
+                    setQuery("");
+                    if (option.id !== props.value) {
+                      props.changeCallback(option.id);
+                    }
                   }}
                 >
                   <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      props.value === option.id ? "opacity-100" : "opacity-0",
-                    )}
+                    className={
+                      props.value === option.id ? "opacity-100" : "opacity-0"
+                    }
                   />
                   {option.iconId && <DynamicIcon name={option.iconId} />}
                   {option.displayName}
                 </CommandItem>
               ))}
             </CommandGroup>
+            {hiddenCount > 0 && (
+              <p className="text-muted-foreground px-3 py-2 text-xs">
+                {t("settingsPage.combo.more", { count: hiddenCount })}
+              </p>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
@@ -704,11 +750,15 @@ function StringListComponent(props: {
 /**
  * Renders a setting type (the UI input component) with its value and change callback.
  * This is a pure presentation component that takes a setting type definition and renders it.
+ * It is memoized because each saved value updates the shared config, and
+ * re-rendering every field on a keystroke made typing slow on long pages.
  */
-export function SettingTypeRenderer(props: {
+export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
   settingType: SettingsDefinition["type"];
   value: JsonValue;
   changeCallback: (value: JsonValue) => void | Promise<void>;
+  /** A toggle or option change is still saving. */
+  pending?: boolean;
 }) {
   const inputId = useId();
   if (!props.settingType || props.value === undefined) {
@@ -756,6 +806,7 @@ export function SettingTypeRenderer(props: {
           <BoolComponent
             setting={props.settingType.value}
             value={props.value as boolean}
+            pending={props.pending}
             changeCallback={props.changeCallback}
             title={props.settingType.value.uiName}
             description={props.settingType.value.description}
@@ -789,6 +840,7 @@ export function SettingTypeRenderer(props: {
             id={inputId}
             setting={props.settingType.value}
             value={props.value as string}
+            pending={props.pending}
             changeCallback={props.changeCallback}
           />
         </SettingInputLayout>
@@ -823,7 +875,7 @@ export function SettingTypeRenderer(props: {
       );
     }
   }
-}
+});
 
 function formatDefault(value: JsonValue, definition: SettingsDefinition) {
   if (definition.type.case === "stringList") {
@@ -906,6 +958,29 @@ function SettingStatusRow(props: {
 }
 
 /**
+ * Picks the value a setting shows. Toggles and option pickers have no draft
+ * state, so they show the chosen value while it saves instead of waiting for
+ * the refetch. Without a server, the chosen value stays in this session.
+ */
+function getShownSettingValue(
+  definition: SettingsDefinition | undefined,
+  storedValue: JsonValue,
+  mutation: { isPending: boolean; variables: JsonValue | undefined },
+  unsaved: { value: JsonValue } | undefined,
+): JsonValue {
+  if (unsaved) return unsaved.value;
+  const type = definition?.type.case;
+  if (
+    mutation.isPending &&
+    mutation.variables !== undefined &&
+    (type === "bool" || type === "combo")
+  ) {
+    return mutation.variables;
+  }
+  return storedValue;
+}
+
+/**
  * Component that renders a setting field by its identifier.
  * This is the main component for mounting settings anywhere in the UI.
  * It looks up the setting definition from context and handles value management.
@@ -936,12 +1011,16 @@ function SettingField<T extends BaseSettings>(props: {
   const namespace = props.settingId.namespace;
   const key = props.settingId.key;
   const onSaveError = useSettingSaveError(definition, `${namespace}:${key}`);
-  const value = useMemo(
+  const storedValue = useMemo(
     () => getSettingValue(props.config, definition),
     [props.config, definition],
   );
+  const [unsavedValue, setUnsavedValue] = useState<{ value: JsonValue }>();
   const setValueMutation = useMutation({
     ...settingMutationOptions(props.mutationTarget, namespace, key, "value"),
+    onMutate: (value: JsonValue) => {
+      if (!props.persisted) setUnsavedValue({ value });
+    },
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(namespace, key, value);
     },
@@ -950,6 +1029,12 @@ function SettingField<T extends BaseSettings>(props: {
       await props.invalidateQuery();
     },
   });
+  const value = getShownSettingValue(
+    definition,
+    storedValue,
+    setValueMutation,
+    unsavedValue,
+  );
 
   if (!definition) {
     return null;
@@ -970,6 +1055,7 @@ function SettingField<T extends BaseSettings>(props: {
       <SettingTypeRenderer
         settingType={definition.type}
         value={value}
+        pending={setValueMutation.isPending}
         changeCallback={
           definition.type.case === "stringList" ||
           definition.type.case === "string" ||
@@ -1064,10 +1150,12 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     definition,
     `${props.namespace}:${props.settingKey}`,
   );
-  const value = useMemo(
+  const persisted = use(TransportContext) !== null;
+  const storedValue = useMemo(
     () => getSettingValue(props.config, definition),
     [props.config, definition],
   );
+  const [unsavedValue, setUnsavedValue] = useState<{ value: JsonValue }>();
   const setValueMutation = useMutation({
     ...settingMutationOptions(
       props.mutationTarget,
@@ -1075,6 +1163,9 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
       props.settingKey,
       "value",
     ),
+    onMutate: (value: JsonValue) => {
+      if (!persisted) setUnsavedValue({ value });
+    },
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(props.namespace, props.settingKey, value);
     },
@@ -1083,6 +1174,12 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
       await props.invalidateQuery();
     },
   });
+  const value = getShownSettingValue(
+    definition,
+    storedValue,
+    setValueMutation,
+    unsavedValue,
+  );
 
   if (!definition) {
     return null;
@@ -1093,6 +1190,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
       <SettingTypeRenderer
         settingType={definition.type}
         value={value}
+        pending={setValueMutation.isPending}
         changeCallback={
           definition.type.case === "stringList" ||
           definition.type.case === "string" ||
@@ -1107,7 +1205,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
         definition={definition}
         value={value}
         status={setValueMutation.status}
-        persisted
+        persisted={persisted}
         overridden={false}
         onReset={(value) =>
           setValueMutation.mutate(value, {
