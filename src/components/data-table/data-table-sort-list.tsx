@@ -444,6 +444,9 @@ function DataTableSortItem({
         </SelectContent>
       </Select>
       <Button
+        aria-label={i18n.t("common:dataTable.removeSort", {
+          column: columnLabels.get(sort.id),
+        })}
         aria-controls={sortItemId}
         variant="outline"
         size="icon"
@@ -455,6 +458,9 @@ function DataTableSortItem({
       <SortableItemHandle
         render={
           <Button
+            aria-label={i18n.t("common:dataTable.reorderSort", {
+              column: columnLabels.get(sort.id),
+            })}
             variant="outline"
             size="icon"
             className="size-8 shrink-0 rounded"

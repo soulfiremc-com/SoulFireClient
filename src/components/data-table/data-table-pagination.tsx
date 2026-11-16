@@ -56,8 +56,10 @@ export function DataTablePagination<TData extends RowData>({
       >
         {() => (
           <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {i18n.t("common:dataTable.rowsSelected", {
+              amount: table.getFilteredSelectedRowModel().rows.length,
+              total: table.getFilteredRowModel().rows.length,
+            })}
           </div>
         )}
       </table.Subscribe>

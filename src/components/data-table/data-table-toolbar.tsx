@@ -40,7 +40,7 @@ export function DataTableToolbar<TData extends RowData>({
       role="toolbar"
       aria-orientation="horizontal"
       className={cn(
-        "flex w-full items-start justify-between gap-2 p-1",
+        "flex w-full flex-wrap items-start justify-between gap-2 p-1",
         className,
       )}
       {...props}
@@ -66,7 +66,7 @@ export function DataTableToolbar<TData extends RowData>({
           }
         </table.Subscribe>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {children}
         <DataTableViewOptions table={table} align="end" />
       </div>
@@ -90,6 +90,7 @@ function DataTableToolbarFilter<TData extends RowData>({
         case "text":
           return (
             <Input
+              aria-label={columnMeta.label ?? column.id}
               placeholder={columnMeta.placeholder ?? columnMeta.label}
               value={(column.getFilterValue() as string) ?? ""}
               onChange={(event) => column.setFilterValue(event.target.value)}
@@ -103,6 +104,7 @@ function DataTableToolbarFilter<TData extends RowData>({
               <Input
                 type="number"
                 inputMode="numeric"
+                aria-label={columnMeta.label ?? column.id}
                 placeholder={columnMeta.placeholder ?? columnMeta.label}
                 value={(column.getFilterValue() as string) ?? ""}
                 onChange={(event) => column.setFilterValue(event.target.value)}

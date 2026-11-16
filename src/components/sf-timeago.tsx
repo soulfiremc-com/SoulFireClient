@@ -1,6 +1,7 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ClipboardIcon } from "lucide-react";
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Popover,
@@ -12,6 +13,7 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDateFnsLocale } from "@/hooks/use-date-fns-locale.ts";
 
 export const SFTimeAgo = React.memo((props: { date: Date }) => {
+  const { t } = useTranslation("common");
   const dateFnsLocale = useDateFnsLocale();
   const copyToClipboard = useCopyToClipboard();
   const baseText = useChangingData(
@@ -36,6 +38,7 @@ export const SFTimeAgo = React.memo((props: { date: Date }) => {
           <Button
             variant="link"
             className="h-auto px-0 py-0 font-normal text-inherit"
+            title={formatted}
           />
         }
       >
@@ -48,6 +51,7 @@ export const SFTimeAgo = React.memo((props: { date: Date }) => {
         <Button
           variant="outline"
           size="icon"
+          aria-label={t("copyToClipboard")}
           onClick={() => {
             copyToClipboard(isoString);
           }}

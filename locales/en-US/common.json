@@ -259,6 +259,8 @@
     "addSorting": "Add sorting to organize your rows.",
     "addSort": "Add sort",
     "resetSorting": "Reset sorting",
+    "removeSort": "Remove {{column}} sort",
+    "reorderSort": "Reorder {{column}} sort",
     "columnHeader": {
       "asc": "Asc",
       "desc": "Desc",

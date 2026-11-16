@@ -19,6 +19,7 @@ export function TextInfoButton(props: { value: ReactNode }) {
 
 export function CopyInfoButton(props: { value: string }) {
   const copyToClipboard = useCopyToClipboard();
+  const { t } = useTranslation("common");
 
   return (
     <GenericInfoButton
@@ -28,6 +29,7 @@ export function CopyInfoButton(props: { value: string }) {
           <Button
             size="icon"
             variant="secondary"
+            aria-label={t("copyToClipboard")}
             className="shrink-0"
             onClick={() => {
               copyToClipboard(props.value);
@@ -56,7 +58,7 @@ function GenericInfoButton(props: {
           <Button
             variant="ghost"
             size="icon-xs"
-            className="h-4 w-4 shrink-0 opacity-50"
+            className="relative h-4 w-4 shrink-0 opacity-50 after:absolute after:-inset-1"
           />
         }
       >

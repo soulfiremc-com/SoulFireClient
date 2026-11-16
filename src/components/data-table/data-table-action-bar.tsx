@@ -18,6 +18,9 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
+const ESCAPE_LAYER_SELECTOR =
+  '[role="dialog"], [role="alertdialog"], [role="menu"], [role="listbox"], [data-slot="popover-content"]';
+
 interface DataTableActionBarProps<
   TData extends RowData,
 > extends React.ComponentProps<typeof motion.div> {
@@ -42,9 +45,15 @@ function DataTableActionBar<TData extends RowData>({
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        table.toggleAllRowsSelected(false);
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      // Escape inside a dialog, menu, or popover closes that layer only.
+      if (
+        event.target instanceof Element &&
+        event.target.closest(ESCAPE_LAYER_SELECTOR)
+      ) {
+        return;
       }
+      table.toggleAllRowsSelected(false);
     }
 
     window.addEventListener("keydown", onKeyDown);
@@ -180,7 +189,7 @@ function DataTableActionBarSelection<TData extends RowData>({
             <Button
               variant="ghost"
               size="icon"
-              className="size-5"
+              className="size-6"
               aria-label={t("dataTable.clearSelection")}
               aria-keyshortcuts="Escape"
               onClick={onClearSelection}

@@ -124,7 +124,9 @@ export function DataTableFacetedFilter<
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedValues.size} selected
+                    {i18n.t("common:dataTable.selected", {
+                      count: selectedValues.size,
+                    })}
                   </Badge>
                 ) : (
                   options
@@ -170,7 +172,7 @@ export function DataTableFacetedFilter<
                     </div>
                     {option.icon && <option.icon />}
                     <span className="truncate">{option.label}</span>
-                    {option.count && (
+                    {typeof option.count === "number" && (
                       <span className="ml-auto font-mono text-xs">
                         {option.count}
                       </span>
