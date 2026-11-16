@@ -44,20 +44,8 @@ jobs:
       - name: Run check
         run: bun run check
 
-      - name: Run deployment tests
-        run: bun run test:deployment
-
-      - name: Run terminal tests
-        run: bun run test:terminal
-
-      - name: Run file-watch regression tests
-        run: bun run test:fs-watch
-
-      - name: Run settings persistence tests
-        run: bun run test:settings
-
-      - name: Run proxy-check regression tests
-        run: bun test src/lib/proxy-check.test.ts
+      - name: Run unit tests
+        run: bun run test
 
       - name: Test Crowdin upload preparation
         run: node --test scripts/prepare-crowdin-upload.test.mjs
