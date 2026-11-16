@@ -159,7 +159,7 @@ export const RecoverEarlierOrder: Story = {
     await userEvent.click(dialog.getByRole("button", { name: "Load order" }));
     await expect(await dialog.findByText("Order loaded")).toBeVisible();
     await userEvent.click(
-      dialog.getByRole("radio", { name: "Microsoft Cookies" }),
+      dialog.getByRole("radio", { name: "Microsoft cookies" }),
     );
     await userEvent.click(
       dialog.getByRole("button", { name: "Import 1 account" }),

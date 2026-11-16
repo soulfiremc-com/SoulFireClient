@@ -603,7 +603,15 @@ export function createPaletteCommands({
           projectId: current.id,
           icon: script.paused ? "play" : "pause",
           group: "actions",
-          keywords: ["script", "automation", script.id, script.name],
+          // Keep the earlier verbs searchable after the "Turn on/off" rename.
+          keywords: [
+            "script",
+            "automation",
+            script.id,
+            script.name,
+            action,
+            script.paused ? "resume" : "pause",
+          ],
           operation: {
             kind: "script",
             action,

@@ -808,7 +808,7 @@ export const BrowseProjectInPlace: Story = {
       menu.getByRole("option", { name: /Delta.*Stopped/ }),
     ).toBeVisible();
     await expect(
-      menu.getByRole("option", { name: /Auto mine.*Active/ }),
+      menu.getByRole("option", { name: /Auto mine.*On/ }),
     ).toBeVisible();
     await expect(
       menu.queryByRole("option", { name: /Terminal/ }),
@@ -962,12 +962,12 @@ export const PinnedCommandsAndSingleOperations: Story = {
     await browseMine(context, opened);
     await userEvent.type(opened.input, "deactivate");
     await opened.menu.findByRole("option", {
-      name: /^Deactivate script Auto mine/,
+      name: /^Turn off script Auto mine/,
       selected: true,
     });
     await userEvent.keyboard("{Control>}p{/Control}");
     await opened.menu.findByRole("button", {
-      name: "Unpin Deactivate script Auto mine",
+      name: "Unpin Turn off script Auto mine",
     });
     await userEvent.click(
       opened.menu.getByRole("button", { name: "Search all projects" }),
@@ -1005,18 +1005,18 @@ export const PinnedCommandsAndSingleOperations: Story = {
       pinned.getByRole("option", { name: "Use dark theme" }),
     ).toBeVisible();
     await expect(
-      pinned.queryByRole("option", { name: /Deactivate script/ }),
+      pinned.queryByRole("option", { name: /Turn off script/ }),
     ).not.toBeInTheDocument();
     await browseMine(context, opened);
     await userEvent.clear(opened.input);
     pinned = within(await opened.menu.findByRole("group", { name: "Pinned" }));
     await userEvent.click(
       await pinned.findByRole("option", {
-        name: /^Deactivate script Auto mine/,
+        name: /^Turn off script Auto mine/,
       }),
     );
     await closed();
-    await page.findByText("Script deactivated.");
+    await page.findByText("Script turned off");
     await expect(deactivateScript).toHaveBeenCalledOnce();
     await expect(deactivateScript).toHaveBeenCalledWith({
       instanceId: "mine",
