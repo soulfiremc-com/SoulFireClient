@@ -28,6 +28,7 @@ import { TerminalThemeContext } from "@/components/providers/terminal-theme-cont
 import { ThemeProvider } from "@/components/providers/theme-provider.tsx";
 import { TailwindIndicator } from "@/components/tailwind-indicator.tsx";
 import { Toaster } from "@/components/ui/sonner.tsx";
+import { UpdateReadyPrompt } from "@/components/update-ready-prompt.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   titlebarClassName,
@@ -346,6 +347,7 @@ function RootLayout() {
                 </TerminalThemeContext>
               </SystemInfoContext>
               <Toaster richColors />
+              <UpdateReadyPrompt />
             </TooltipProvider>
           </ThemeProvider>
           <TailwindIndicator />

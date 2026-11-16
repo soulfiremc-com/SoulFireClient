@@ -30,6 +30,13 @@ const desktopApi: SoulFireDesktopApi = {
       invoke("pov:set-captured", captured, target),
     onEscape: (callback) => subscribe("pov:escape", callback),
   },
+  updates: {
+    getReady: () => invoke("updates:get-ready"),
+    onReady: (callback) => subscribe("updates:ready", callback),
+    installNow: async () => {
+      await invoke("updates:install-now");
+    },
+  },
   app: {
     onOpenUrl: async (callback) => subscribe("app:open-url", callback),
     quit: async () => {

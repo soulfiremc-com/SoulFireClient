@@ -142,6 +142,12 @@ export interface SoulFireDesktopApi {
     quit: () => Promise<void>;
     setTheme: (theme: DesktopTheme) => Promise<void>;
   };
+  updates: {
+    /** The version of a downloaded update waiting for a restart, if any. */
+    getReady: () => Promise<string | null>;
+    onReady: (callback: (version: string) => void) => Promise<DesktopUnlisten>;
+    installNow: () => Promise<void>;
+  };
   cast: {
     connect: (
       device: CastDevice,

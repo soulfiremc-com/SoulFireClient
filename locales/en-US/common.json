@@ -430,6 +430,12 @@
   "uiSheet": {
     "close": "Close"
   },
+  "updateReady": {
+    "title": "SoulFire {{version}} is ready to install",
+    "description": "Restarting stops running bots and the integrated server. If you choose Later, SoulFire installs the update when you quit.",
+    "restart": "Restart now",
+    "later": "Later"
+  },
   "uiSidebar": {
     "toggle": "Toggle sidebar",
     "title": "Navigation",

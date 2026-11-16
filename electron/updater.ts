@@ -44,7 +44,15 @@ function getUpdaterTarget(): {
   };
 }
 
-function installUpdateNow(): void {
+let readyVersion: string | null = null;
+
+/** The downloaded update waiting for a restart, if any. */
+export function getReadyUpdateVersion(): string | null {
+  return readyVersion;
+}
+
+export function installUpdateNow(): void {
+  if (readyVersion === null) return;
   if (process.platform === "win32") {
     autoUpdater.quitAndInstall(true, true);
     return;
@@ -53,12 +61,9 @@ function installUpdateNow(): void {
   autoUpdater.quitAndInstall();
 }
 
-// Restarting stops running bots and the integrated server, so ask first. If
-// the user waits, the update installs the next time they quit.
-async function promptToInstall(
-  window: BrowserWindow | null,
-  version: string,
-): Promise<void> {
+// Fallback when no app window can show the translated prompt. Restarting stops
+// running bots and the integrated server, so ask first.
+async function promptToInstall(version: string): Promise<void> {
   const options: Electron.MessageBoxOptions = {
     buttons: ["Restart now", "Later"],
     cancelId: 1,
@@ -69,20 +74,19 @@ async function promptToInstall(
     title: "Update ready",
     type: "info",
   };
-  const { response } =
-    window === null || window.isDestroyed()
-      ? await dialog.showMessageBox(options)
-      : await dialog.showMessageBox(window, options);
-
-  if (response === 0) {
-    installUpdateNow();
-    return;
-  }
-
-  autoUpdater.autoInstallOnAppQuit = true;
+  const { response } = await dialog.showMessageBox(options);
+  if (response === 0) installUpdateNow();
 }
 
-export function startUpdater(getMainWindow: () => BrowserWindow | null): void {
+/**
+ * Starts background updates. When an update finishes downloading, it installs
+ * on quit, and `notifyReady` lets the app window ask the user to restart now.
+ * Without a window, a native dialog asks instead.
+ */
+export function startUpdater(
+  getMainWindow: () => BrowserWindow | null,
+  notifyReady: (version: string) => void,
+): void {
   if (
     !app.isPackaged ||
     process.env.SOULFIRE_DISABLE_UPDATER !== undefined ||
@@ -129,9 +133,15 @@ export function startUpdater(getMainWindow: () => BrowserWindow | null): void {
   autoUpdater.on("update-downloaded", (info) => {
     electronLog.info("Update downloaded", info);
     setProgress(-1);
-    promptToInstall(getMainWindow(), info.version).catch((error: unknown) => {
+    readyVersion = info.version;
+    autoUpdater.autoInstallOnAppQuit = true;
+    const window = getMainWindow();
+    if (window !== null && !window.isDestroyed()) {
+      notifyReady(info.version);
+      return;
+    }
+    promptToInstall(info.version).catch((error: unknown) => {
       electronLog.error("Could not show the update prompt", error);
-      autoUpdater.autoInstallOnAppQuit = true;
     });
   });
   autoUpdater.on("error", (error) => {

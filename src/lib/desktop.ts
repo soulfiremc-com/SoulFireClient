@@ -73,6 +73,17 @@ export const desktop = {
   available(): boolean {
     return getDesktopRuntime() !== null;
   },
+  updates: {
+    async getReady(): Promise<string | null> {
+      return requireDesktopRuntime().updates.getReady();
+    },
+    async onReady(callback: (version: string) => void): Promise<() => void> {
+      return requireDesktopRuntime().updates.onReady(callback);
+    },
+    async installNow(): Promise<void> {
+      await requireDesktopRuntime().updates.installNow();
+    },
+  },
   app: {
     async onOpenUrl(callback: (url: string) => void): Promise<() => void> {
       return requireDesktopRuntime().app.onOpenUrl(callback);

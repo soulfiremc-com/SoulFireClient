@@ -59,7 +59,11 @@ import {
   killIntegratedServer,
 } from "./native/integrated-server-process";
 import { trayGuidForPlatform } from "./tray-args";
-import { startUpdater } from "./updater";
+import {
+  getReadyUpdateVersion,
+  installUpdateNow,
+  startUpdater,
+} from "./updater";
 
 const APP_ID = "com.soulfiremc.soulfire";
 const APP_PROTOCOL = "app";
@@ -747,6 +751,11 @@ function registerIpcHandlers(): void {
     app.quit();
   });
 
+  handleIpc("updates:get-ready", () => getReadyUpdateVersion());
+  handleIpc("updates:install-now", () => {
+    installUpdateNow();
+  });
+
   handleIpc("app:set-theme", async (_window, theme: DesktopTheme) => {
     setThemeSource(theme);
   });
@@ -1190,7 +1199,10 @@ async function bootstrap(): Promise<void> {
   appStarted = true;
   await firstWindow;
   createAppTray();
-  startUpdater(() => mainWindow);
+  startUpdater(
+    () => mainWindow,
+    (version) => sendToMainWindow("updates:ready", version),
+  );
 
   app.on("activate", () => {
     focusMainWindow();
