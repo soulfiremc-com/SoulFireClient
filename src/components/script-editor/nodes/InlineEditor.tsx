@@ -40,7 +40,17 @@ interface InlineEditorProps {
   value: unknown;
   defaultValue: unknown;
   onChange: (value: unknown) => void;
+  /** Accessible name, usually the port label next to the field. */
+  label: string;
   className?: string;
+}
+
+type Vector3Value = { x?: number; y?: number; z?: number };
+
+function asVector3(value: unknown): Vector3Value | undefined {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Vector3Value)
+    : undefined;
 }
 
 /**
@@ -53,6 +63,7 @@ function InlineEditorComponent({
   value,
   defaultValue,
   onChange,
+  label,
   className,
 }: InlineEditorProps) {
   // Use value if defined, otherwise fall back to default
@@ -60,6 +71,7 @@ function InlineEditorComponent({
 
   // Common input props to prevent node dragging/selection when editing
   const inputProps = {
+    "aria-label": label,
     className: cn(
       "nodrag nopan bg-muted/80 text-foreground border border-border/50 rounded px-1.5 py-0.5 text-xs",
       "focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary",
@@ -98,6 +110,7 @@ function InlineEditorComponent({
       return (
         <Checkbox
           checked={(currentValue as boolean) ?? false}
+          aria-label={label}
           onCheckedChange={(checked) => onChange(checked === true)}
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
@@ -107,14 +120,12 @@ function InlineEditorComponent({
       );
 
     case "vector3":
-      // Vector3 is typically handled as separate x, y, z fields
-      // For inline, we just show a compact number input
       return (
-        <DraftNumberInput
-          value={(currentValue as number) ?? 0}
+        <Vector3Editor
+          value={asVector3(value)}
+          defaultValue={asVector3(defaultValue)}
           onChange={onChange}
-          {...inputProps}
-          className={cn(inputProps.className, "w-14 text-right")}
+          label={label}
         />
       );
 
@@ -136,18 +147,20 @@ function InlineEditorComponent({
 export const InlineEditor = memo(InlineEditorComponent);
 
 /**
- * Vector3 inline editor with x, y, z fields
+ * Vector3 inline editor with x, y, and z fields.
  */
 interface Vector3EditorProps {
-  value: { x?: number; y?: number; z?: number } | undefined;
-  defaultValue: { x?: number; y?: number; z?: number } | undefined;
+  value: Vector3Value | undefined;
+  defaultValue: Vector3Value | undefined;
   onChange: (value: { x: number; y: number; z: number }) => void;
+  label: string;
 }
 
 function Vector3EditorComponent({
   value,
   defaultValue,
   onChange,
+  label,
 }: Vector3EditorProps) {
   const current = value ?? defaultValue ?? { x: 0, y: 0, z: 0 };
 
@@ -172,21 +185,15 @@ function Vector3EditorComponent({
 
   return (
     <div className="flex items-center gap-0.5">
-      <DraftNumberInput
-        value={current.x ?? 0}
-        onChange={(num) => handleChange("x", num)}
-        {...inputProps}
-      />
-      <DraftNumberInput
-        value={current.y ?? 0}
-        onChange={(num) => handleChange("y", num)}
-        {...inputProps}
-      />
-      <DraftNumberInput
-        value={current.z ?? 0}
-        onChange={(num) => handleChange("z", num)}
-        {...inputProps}
-      />
+      {(["x", "y", "z"] as const).map((axis) => (
+        <DraftNumberInput
+          key={axis}
+          aria-label={`${label} ${axis.toUpperCase()}`}
+          value={current[axis] ?? 0}
+          onChange={(num) => handleChange(axis, num)}
+          {...inputProps}
+        />
+      ))}
     </div>
   );
 }

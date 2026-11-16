@@ -7,10 +7,21 @@ import {
   Position,
   useReactFlow,
 } from "@xyflow/react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  CircleAlertIcon,
+  TriangleAlertIcon,
+} from "lucide-react";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { EMPTY_DIAGNOSTICS } from "@/stores/script-editor-derived";
 import { MultiInputOrderList } from "../MultiInputOrderList";
@@ -220,6 +231,7 @@ function PortRow({
             value={value}
             defaultValue={parseDefaultValue(port.defaultValue)}
             onChange={onValueChange}
+            label={translatedLabel}
           />
         </div>
       ) : (
@@ -253,8 +265,17 @@ function PortRow({
   );
 }
 
+/** Keeps node badge taps from dragging the node or panning the canvas. */
+const NODE_BADGE_CLASS =
+  "nodrag nopan rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:relative pointer-coarse:before:absolute pointer-coarse:before:-inset-2 pointer-coarse:before:content-['']";
+
+/**
+ * Error and warning counts for one node. Hover, focus, or tap shows the
+ * messages, so touch screens can read them too.
+ */
 function ValidationBadges({ nodeId }: { nodeId: string }) {
   const editor = useScriptEditor();
+  const { t } = useTranslation("instance");
   const diagnostics = useSelector(
     editor.validation,
     (s) => s.diagnosticsByNode.get(nodeId) ?? EMPTY_DIAGNOSTICS,
@@ -263,31 +284,70 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
 
   const errors = diagnostics.filter((d) => d.severity === "error");
   const warnings = diagnostics.filter((d) => d.severity === "warning");
+  const summary = [
+    errors.length > 0 && t("scripts.health.errors", { count: errors.length }),
+    warnings.length > 0 &&
+      t("scripts.health.warnings", { count: warnings.length }),
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   return (
-    <div className="flex items-center gap-0.5">
-      {errors.length > 0 && (
-        <span
-          className="flex items-center justify-center size-4 rounded-full bg-destructive text-white text-4xs font-bold"
-          title={errors.map((d) => d.message).join("\n")}
-        >
-          {errors.length}
-        </span>
-      )}
-      {warnings.length > 0 && (
-        <span
-          className="flex items-center justify-center size-4 rounded-full bg-warning-muted text-white text-4xs font-bold"
-          title={warnings.map((d) => d.message).join("\n")}
-        >
-          {warnings.length}
-        </span>
-      )}
-    </div>
+    <Popover>
+      <PopoverTrigger
+        openOnHover
+        onMouseDown={(e) => e.stopPropagation()}
+        render={
+          <button
+            type="button"
+            className={cn("flex items-center gap-0.5", NODE_BADGE_CLASS)}
+          />
+        }
+      >
+        <span className="sr-only">{summary}</span>
+        {errors.length > 0 && (
+          <span
+            aria-hidden
+            className="flex items-center justify-center size-4 rounded-full bg-destructive text-white text-4xs font-bold"
+          >
+            {errors.length}
+          </span>
+        )}
+        {warnings.length > 0 && (
+          <span
+            aria-hidden
+            className="flex items-center justify-center size-4 rounded-full bg-warning-muted text-white text-4xs font-bold"
+          >
+            {warnings.length}
+          </span>
+        )}
+      </PopoverTrigger>
+      <PopoverContent side="top" className="w-72">
+        <PopoverTitle>{summary}</PopoverTitle>
+        <ul className="flex flex-col gap-1.5 text-xs">
+          {diagnostics.map((d) => (
+            <li
+              key={`${d.severity}:${d.edgeId}:${d.message}`}
+              className="flex items-start gap-1.5"
+            >
+              {d.severity === "error" ? (
+                <CircleAlertIcon className="text-destructive size-3.5 shrink-0" />
+              ) : (
+                <TriangleAlertIcon className="text-warning-emphasis size-3.5 shrink-0" />
+              )}
+              <span>{d.message}</span>
+            </li>
+          ))}
+        </ul>
+      </PopoverContent>
+    </Popover>
   );
 }
 
+/** Average run time for one node. Hover, focus, or tap shows the details. */
 function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
   const editor = useScriptEditor();
+  const { t } = useTranslation("instance");
   const times = useSelector(editor.execution, (s) =>
     s.nodeExecutionTimes.get(nodeId),
   );
@@ -303,17 +363,34 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
         : avg < 100
           ? "text-warning-strong"
           : "text-destructive";
+  const details = t("scripts.editor.node.avgTime", {
+    avg: avg.toFixed(2),
+    count: times.length,
+  });
 
   return (
-    <span
-      className={`text-3xs font-mono ${colorClass} bg-muted/50 px-1 rounded`}
-      title={i18n.t("instance:scripts.editor.node.avgTime", {
-        avg: avg.toFixed(2),
-        count: times.length,
-      })}
-    >
-      {display}
-    </span>
+    <Popover>
+      <PopoverTrigger
+        openOnHover
+        aria-label={t("scripts.editor.node.avgTimeBadge", { display })}
+        onMouseDown={(e) => e.stopPropagation()}
+        render={
+          <button
+            type="button"
+            className={cn(
+              "text-3xs font-mono bg-muted/50 px-1",
+              colorClass,
+              NODE_BADGE_CLASS,
+            )}
+          />
+        }
+      >
+        {display}
+      </PopoverTrigger>
+      <PopoverContent side="top" className="w-auto max-w-64">
+        <PopoverTitle>{details}</PopoverTitle>
+      </PopoverContent>
+    </Popover>
   );
 }
 

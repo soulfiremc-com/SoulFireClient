@@ -15,13 +15,14 @@ import {
   EditIcon,
   PlayIcon,
   PlusIcon,
+  SearchIcon,
   SquareIcon,
   Trash2Icon,
   WorkflowIcon,
   ZapIcon,
 } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
-import { Suspense, use, useMemo, useState } from "react";
+import { use, useDeferredValue, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
@@ -62,8 +63,22 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { Field, FieldLabel } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
+import { SFTimeAgo } from "@/components/sf-timeago.tsx";
 import type { ScriptInfo } from "@/generated/soulfire/script_pb";
 import { ScriptService } from "@/generated/soulfire/script_pb";
 import { ScriptTemplatePicker } from "@/components/script-editor/ScriptTemplatePicker.tsx";
@@ -74,7 +89,12 @@ import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { resumeScript } from "@/lib/resume-script.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
+  filterScripts,
   nodeTypesQueryOptions,
+  SCRIPT_SORTS,
+  SCRIPT_STATE_FILTERS,
+  type ScriptSort,
+  type ScriptStateFilter,
   scriptListQueryOptions,
 } from "@/lib/script-service.ts";
 import {
@@ -152,25 +172,6 @@ function ScriptsPageSkeleton() {
   );
 }
 
-function formatLastModified(timestamp: ScriptInfo["updatedAt"]) {
-  if (!timestamp) return "";
-
-  const date = timestampToDate(timestamp);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffMins < 60) {
-    return `${diffMins}m ago`;
-  }
-  if (diffHours < 24) {
-    return `${diffHours}h ago`;
-  }
-  return `${diffDays}d ago`;
-}
-
 function InstanceScripts() {
   const { t } = useTranslation("common");
 
@@ -207,6 +208,18 @@ function Content() {
   );
   const scripts = scriptsData?.scripts ?? [];
 
+  const [search, setSearch] = useState("");
+  const [stateFilter, setStateFilter] = useState<ScriptStateFilter>("all");
+  const [sort, setSort] = useState<ScriptSort>("edited");
+  const deferredSearch = useDeferredValue(search);
+  const visibleScripts = useMemo(
+    () => filterScripts(scripts, deferredSearch, stateFilter, sort),
+    [scripts, deferredSearch, stateFilter, sort],
+  );
+  const sortItems = SCRIPT_SORTS.map((value) => ({
+    value,
+    label: tInstance(`scripts.sort.${value}`),
+  }));
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<ScriptInfo | null>(null);
 
@@ -423,7 +436,7 @@ function Content() {
   return (
     <div className="container flex h-full w-full grow flex-col gap-4 py-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">
             {tInstance("scripts.title")}
@@ -570,29 +583,85 @@ function Content() {
           </Button>
         </section>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {scripts.map((script) => (
-            <Suspense
-              key={script.id}
-              fallback={<ScriptCardSkeleton script={script} />}
-            >
-              <ScriptCard
-                script={script}
-                instanceId={instanceInfo.id}
-                onDelete={() => setDeleteTarget(script)}
-                onTogglePaused={(isPaused) =>
-                  handleTogglePaused(script.id, isPaused)
-                }
-                isDeleting={
-                  deleteMutation.isPending &&
-                  deleteMutation.variables === script.id
-                }
-                isToggling={togglingScriptId === script.id}
-                onContextMenu={(e) => handleContextMenu(e, script)}
+        <>
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+            <InputGroup className="max-w-sm min-w-56 flex-1">
+              <InputGroupAddon>
+                <SearchIcon className="text-muted-foreground" />
+              </InputGroupAddon>
+              <InputGroupInput
+                type="search"
+                aria-label={tInstance("scripts.searchPlaceholder")}
+                placeholder={tInstance("scripts.searchPlaceholder")}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-            </Suspense>
-          ))}
-        </div>
+            </InputGroup>
+            <ToggleGroup
+              aria-label={tInstance("scripts.filterLabel")}
+              variant="outline"
+              size="sm"
+              value={[stateFilter]}
+              onValueChange={(value) => {
+                const next = value[0] as ScriptStateFilter | undefined;
+                if (next) setStateFilter(next);
+              }}
+            >
+              {SCRIPT_STATE_FILTERS.map((filter) => (
+                <ToggleGroupItem key={filter} value={filter}>
+                  {tInstance(`scripts.filter.${filter}`)}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <Select
+              value={sort}
+              onValueChange={(value) => {
+                if (value) setSort(value);
+              }}
+              items={sortItems}
+            >
+              <SelectTrigger
+                size="sm"
+                aria-label={tInstance("scripts.sort.label")}
+                className="sm:ml-auto"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {sortItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {visibleScripts.length === 0 ? (
+            <p role="status" className="text-sm text-muted-foreground">
+              {tInstance("scripts.noMatches")}
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {visibleScripts.map((script) => (
+                <ScriptCard
+                  key={script.id}
+                  script={script}
+                  instanceId={instanceInfo.id}
+                  onDelete={() => setDeleteTarget(script)}
+                  onTogglePaused={(isPaused) =>
+                    handleTogglePaused(script.id, isPaused)
+                  }
+                  isDeleting={
+                    deleteMutation.isPending &&
+                    deleteMutation.variables === script.id
+                  }
+                  isToggling={togglingScriptId === script.id}
+                  onContextMenu={(e) => handleContextMenu(e, script)}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
       {contextMenu && (
         <ContextMenuPortal
@@ -701,43 +770,6 @@ function Content() {
   );
 }
 
-function ScriptCardSkeleton({ script }: { script: ScriptInfo }) {
-  const { t: tInstance } = useTranslation("instance");
-
-  return (
-    <Card className="group relative transition-colors hover:bg-muted/50">
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-2">
-            <WorkflowIcon className="size-5 text-muted-foreground" />
-            <CardTitle className="text-base">{script.name}</CardTitle>
-          </div>
-        </div>
-        <CardDescription className="line-clamp-2">
-          {script.description || tInstance("scripts.noDescription")}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>{formatLastModified(script.updatedAt)}</span>
-        </div>
-        <div className="mt-3 flex items-center gap-2">
-          <Button variant="outline" size="sm" className="flex-1" disabled>
-            <EditIcon data-icon="inline-start" />
-            {tInstance("scripts.edit")}
-          </Button>
-          <Button variant="outline" size="icon" disabled>
-            <PlayIcon className="size-4" />
-          </Button>
-          <Button variant="outline" size="icon" disabled>
-            <Trash2Icon className="size-4" />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
 interface ScriptCardProps {
   script: ScriptInfo;
   instanceId: string;
@@ -790,9 +822,12 @@ function ScriptCard({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>{formatLastModified(script.updatedAt)}</span>
-        </div>
+        {script.updatedAt && (
+          <p className="text-xs text-muted-foreground">
+            {tInstance("scripts.edited")}{" "}
+            <SFTimeAgo date={timestampToDate(script.updatedAt)} />
+          </p>
+        )}
         <div className="mt-3 flex items-center gap-2">
           <Button
             variant="outline"

@@ -5,6 +5,7 @@ import type { Value } from "@bufbuild/protobuf/wkt";
 import {
   ListValueSchema,
   StructSchema,
+  timestampMs,
   ValueSchema,
 } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
@@ -27,6 +28,7 @@ import {
   type ScriptData,
   type ScriptEdge,
   ScriptEdgeSchema,
+  type ScriptInfo,
   type ScriptNode,
   ScriptNodeSchema,
   ScriptService,
@@ -401,4 +403,34 @@ export function scriptDataToStore(script: ScriptData) {
     nodes: protoToNodes(script.nodes),
     edges: protoToEdges(script.edges),
   };
+}
+
+export const SCRIPT_STATE_FILTERS = ["all", "on", "off"] as const;
+export type ScriptStateFilter = (typeof SCRIPT_STATE_FILTERS)[number];
+export const SCRIPT_SORTS = ["edited", "name"] as const;
+export type ScriptSort = (typeof SCRIPT_SORTS)[number];
+
+/** Filters scripts by name or description and on/off state, then sorts them. */
+export function filterScripts(
+  scripts: ScriptInfo[],
+  search: string,
+  state: ScriptStateFilter,
+  sort: ScriptSort,
+) {
+  const query = search.trim().toLocaleLowerCase();
+  const editedAt = (script: ScriptInfo) =>
+    script.updatedAt ? timestampMs(script.updatedAt) : 0;
+  return scripts
+    .filter(
+      (script) =>
+        (state === "all" || script.paused === (state === "off")) &&
+        (query === "" ||
+          script.name.toLocaleLowerCase().includes(query) ||
+          script.description.toLocaleLowerCase().includes(query)),
+    )
+    .sort((a, b) =>
+      sort === "name"
+        ? a.name.localeCompare(b.name)
+        : editedAt(b) - editedAt(a),
+    );
 }

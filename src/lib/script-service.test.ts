@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { fromBinary, toBinary } from "@bufbuild/protobuf";
+import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
+import { timestampFromMs } from "@bufbuild/protobuf/wkt";
 import type { Node } from "@xyflow/react";
 import type { PortType as LocalPortType } from "@/components/script-editor/nodes/types";
-import { PortType, ScriptNodeSchema } from "@/generated/soulfire/script_pb";
-import { nodesToProto, protoToNodes } from "./script-service";
+import {
+  PortType,
+  ScriptInfoSchema,
+  ScriptNodeSchema,
+} from "@/generated/soulfire/script_pb";
+import { filterScripts, nodesToProto, protoToNodes } from "./script-service";
 
 test("typed reroutes retain their editor type through protobuf binary round trips", () => {
   const types: Array<[LocalPortType, PortType]> = [
@@ -115,4 +120,47 @@ test("frames and notes retain explicit dimensions without persisting measurement
       assert.equal(restored.height, 192);
     }
   }
+});
+
+test("script list filters by text and state, then sorts", () => {
+  const script = (name: string, paused: boolean, seconds: number) =>
+    create(ScriptInfoSchema, {
+      id: name,
+      name,
+      description: `${name} description`,
+      paused,
+      updatedAt: timestampFromMs(seconds * 1000),
+    });
+  const scripts = [
+    script("Greeter", false, 10),
+    script("Auto eat", true, 30),
+    script("Guard", false, 20),
+  ];
+  const names = (list: typeof scripts) => list.map(({ name }) => name);
+
+  assert.deepEqual(names(filterScripts(scripts, "", "all", "edited")), [
+    "Auto eat",
+    "Guard",
+    "Greeter",
+  ]);
+  assert.deepEqual(names(filterScripts(scripts, "", "all", "name")), [
+    "Auto eat",
+    "Greeter",
+    "Guard",
+  ]);
+  assert.deepEqual(names(filterScripts(scripts, "", "on", "name")), [
+    "Greeter",
+    "Guard",
+  ]);
+  assert.deepEqual(names(filterScripts(scripts, "", "off", "name")), [
+    "Auto eat",
+  ]);
+  assert.deepEqual(names(filterScripts(scripts, " GU ", "all", "name")), [
+    "Guard",
+  ]);
+  // The search also matches descriptions.
+  assert.deepEqual(names(filterScripts(scripts, "eat desc", "all", "name")), [
+    "Auto eat",
+  ]);
+  assert.deepEqual(filterScripts(scripts, "missing", "all", "name"), []);
 });

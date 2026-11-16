@@ -812,6 +812,20 @@
     "paused": "Off",
     "nodes": "nodes",
     "noDescription": "No description",
+    "edited": "Edited",
+    "searchPlaceholder": "Search scripts",
+    "filterLabel": "Show scripts",
+    "filter": {
+      "all": "All",
+      "on": "On",
+      "off": "Off"
+    },
+    "sort": {
+      "label": "Sort scripts",
+      "edited": "Recently edited",
+      "name": "Name"
+    },
+    "noMatches": "No scripts match your search.",
     "edit": "Edit",
     "pause": "Turn off",
     "pauseSuccess": "Script turned off",
@@ -905,12 +919,13 @@
       "connection": {
         "self": "A node cannot connect to itself.",
         "execution": "Square ports control when nodes run. They connect only to other square ports.",
-        "type": "A {{source}} output cannot go into a {{target}} input."
+        "type": "You cannot connect {{source}} outputs to {{target}} inputs."
       },
       "node": {
         "expand": "Expand node",
         "collapse": "Collapse node",
         "avgTime": "Average execution time: {{avg}} ms (last {{count}} runs)",
+        "avgTimeBadge": "{{display}} average run time",
         "preview": "Preview",
         "muted": "(muted)"
       },
