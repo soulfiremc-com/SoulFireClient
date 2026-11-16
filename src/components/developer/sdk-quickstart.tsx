@@ -114,8 +114,9 @@ export function SdkQuickstart({
   const copyToClipboard = useCopyToClipboard({ sensitive: true });
   const [copiedKey, markCopied] = useCopyFeedback();
   const copy = (key: string, text: string) => {
-    copyToClipboard(text);
-    markCopied(key);
+    void copyToClipboard(text).then((copied) => {
+      if (copied) markCopied(key);
+    });
   };
   const copyIcon = (key: string) =>
     copiedKey === key ? <CheckIcon /> : <ClipboardIcon />;

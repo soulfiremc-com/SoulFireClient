@@ -145,6 +145,26 @@ export const PrivateToken: Story = {
   },
 };
 
+export const ClipboardFailure: Story = {
+  play: async ({ canvas, userEvent }) => {
+    writeClipboard.mockRejectedValueOnce(new Error("Clipboard blocked"));
+    const button = canvas.getByRole("button", { name: "Copy project ID" });
+    await userEvent.click(button);
+    await waitFor(() =>
+      expect(
+        within(document.body).getByText("Could not copy to clipboard"),
+      ).toBeVisible(),
+    );
+    // A failed copy must not show the check mark.
+    await expect(button.querySelector(".lucide-check")).toBeNull();
+
+    await userEvent.click(button);
+    await waitFor(() =>
+      expect(button.querySelector(".lucide-check")).not.toBeNull(),
+    );
+  },
+};
+
 export const EmptyInstance: Story = {
   args: { bots: [] },
   play: async ({ canvas, userEvent, args }) => {

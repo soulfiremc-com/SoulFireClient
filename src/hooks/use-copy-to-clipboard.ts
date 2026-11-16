@@ -23,15 +23,21 @@ export function useCopyToClipboard(options?: { sensitive?: boolean }) {
   const { t } = useTranslation("common");
   const sensitive = options?.sensitive ?? false;
 
-  return useCallback<(text: string) => void>(
+  // Resolves to whether the copy worked, so callers can confirm it in place.
+  return useCallback<(text: string) => Promise<boolean>>(
     (text) => {
-      toast.promise(copyToClipboard(text), {
+      const copied = copyToClipboard(text);
+      toast.promise(copied, {
         loading: t("clipboardCopy.loading"),
         success: sensitive
           ? t("clipboardCopy.sensitiveSuccess")
           : t("clipboardCopy.success", { content: truncate(text, 50) }),
         error: t("clipboardCopy.error"),
       });
+      return copied.then(
+        () => true,
+        () => false,
+      );
     },
     [t, sensitive],
   );

@@ -61,8 +61,9 @@ export function CodeSample({
           size="sm"
           disabled={disabled}
           onClick={() => {
-            copy(code);
-            markCopied("code");
+            void copy(code).then((done) => {
+              if (done) markCopied("code");
+            });
           }}
         >
           {copied ? (
