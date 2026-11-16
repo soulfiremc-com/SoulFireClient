@@ -431,7 +431,9 @@
     "close": "Close"
   },
   "uiSidebar": {
-    "toggle": "Toggle sidebar"
+    "toggle": "Toggle sidebar",
+    "title": "Navigation",
+    "description": "Links to the pages of SoulFire."
   },
   "window": {
     "minimize": "Minimize",
