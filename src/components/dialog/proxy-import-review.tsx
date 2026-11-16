@@ -17,6 +17,13 @@ import { parseProxyImport } from "@/lib/proxy-import";
 import type { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import type { ProfileProxy } from "@/lib/types";
 
+const MAX_LISTED_LINES = 10;
+
+function formatRejectedLines(lines: number[]) {
+  const listed = lines.slice(0, MAX_LISTED_LINES).join(", ");
+  return lines.length > MAX_LISTED_LINES ? `${listed}, …` : listed;
+}
+
 export function ProxyImportReview({
   text,
   type,
@@ -54,7 +61,7 @@ export function ProxyImportReview({
           <Textarea
             id="proxy-import-draft"
             data-ph-no-capture
-            className="min-h-40"
+            className="max-h-[50dvh] min-h-40 overflow-y-auto"
             value={draft}
             disabled={pending}
             onChange={(event) => {
@@ -71,7 +78,7 @@ export function ProxyImportReview({
             <AlertDescription>
               {t("proxy.import.review.rejected", {
                 count: result.rejectedLines.length,
-                lines: result.rejectedLines.join(", "),
+                lines: formatRejectedLines(result.rejectedLines),
               })}
             </AlertDescription>
           </Alert>

@@ -131,8 +131,10 @@
         "clipboardError": "Could not read the clipboard. Allow clipboard access or paste the text directly.",
         "fileError": "Could not read the selected files. Check file access and try again.",
         "textarea": {
+          "label": "Text to import",
           "placeholder": "Put text here...",
-          "submit": "Load from text"
+          "submit": "Load from text",
+          "empty": "Paste the text to import first."
         }
       },
       "url": {

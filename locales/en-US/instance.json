@@ -265,7 +265,7 @@
       "allFailed": "Could not generate any accounts",
       "allExist": "All usernames already exist. Choose Replace existing to generate them again.",
       "error": "Could not generate accounts",
-      "invalidAmount": "Enter an amount of at least 1.",
+      "invalidAmount": "Enter a whole number of at least 1.",
       "missingPlaceholder": "The name format must contain %d."
     },
     "import": {

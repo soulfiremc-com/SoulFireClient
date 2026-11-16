@@ -1,5 +1,6 @@
 import { createRpcClient } from "@/lib/rpc";
-import { formNumber, toFormSchema } from "@/lib/form-validation";
+import { toFormSchema } from "@/lib/form-validation";
+import { parseAccountAmount } from "@/lib/generate-accounts.ts";
 import { Schema } from "effect";
 
 import { useForm } from "@tanstack/react-form";
@@ -96,10 +97,12 @@ export default function GenerateAccountsDialog({
   };
 
   const formSchema = Schema.Struct({
-    amount: formNumber.check(
-      Schema.isGreaterThanOrEqualTo(1, {
-        message: t("account.generate.invalidAmount"),
-      }),
+    amount: Schema.String.check(
+      Schema.makeFilter(
+        (value) =>
+          parseAccountAmount(value) !== null ||
+          t("account.generate.invalidAmount"),
+      ),
     ),
     nameFormat: Schema.String.check(
       Schema.makeFilter(
@@ -116,7 +119,11 @@ export default function GenerateAccountsDialog({
       .annotateKey({ messageMissingKey: "validation:generationMode" }),
   });
 
-  const handleGenerate = (value: (typeof formSchema)["Type"]) => {
+  const handleGenerate = (value: {
+    amount: number;
+    nameFormat: string;
+    mode: GenerateAccountsMode;
+  }) => {
     if (transport === null || !open || activeJob.current) return;
 
     // Generate usernames based on format
@@ -250,7 +257,7 @@ export default function GenerateAccountsDialog({
 
   const form = useForm({
     defaultValues: {
-      amount: 1,
+      amount: "1",
       nameFormat: "Bot_%d",
       mode: "IGNORE_EXISTING" as GenerateAccountsMode,
     },
@@ -258,7 +265,9 @@ export default function GenerateAccountsDialog({
       onSubmit: toFormSchema(formSchema),
     },
     onSubmit: async ({ value }) => {
-      handleGenerate(value);
+      const amount = parseAccountAmount(value.amount);
+      if (amount === null) return;
+      handleGenerate({ ...value, amount });
     },
   });
 
@@ -291,14 +300,12 @@ export default function GenerateAccountsDialog({
                       id={field.name}
                       name={field.name}
                       type="number"
+                      inputMode="numeric"
                       min={1}
+                      step={1}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) =>
-                        field.handleChange(
-                          Math.max(1, Number.parseInt(e.target.value, 10) || 1),
-                        )
-                      }
+                      onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
                     />
                     {isInvalid && (

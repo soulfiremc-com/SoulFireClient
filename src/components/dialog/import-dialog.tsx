@@ -11,6 +11,7 @@ import {
   use,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
   useTransition,
@@ -460,30 +461,59 @@ function TextInput(
 ) {
   const { t } = useTranslation("common");
   const [inputText, setInputText] = useState(props.textInput.defaultValue);
+  const [showEmptyError, setShowEmptyError] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaId = useId();
   return (
     <>
       <Separator orientation="horizontal" />
-      <div className="flex flex-col gap-4">
-        <Textarea
-          autoFocus
-          disabled={props.isPending}
-          placeholder={t("dialog.import.main.textarea.placeholder")}
-          defaultValue={inputText}
-          onChange={(e) => setInputText(e.currentTarget.value)}
-        />
+      <form
+        className="flex flex-col gap-4"
+        noValidate
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (!inputText.trim()) {
+            setShowEmptyError(true);
+            textareaRef.current?.focus();
+            return;
+          }
+          props.listener(inputText);
+        }}
+      >
+        <Field data-invalid={showEmptyError}>
+          <FieldLabel htmlFor={textareaId} className="sr-only">
+            {t("dialog.import.main.textarea.label")}
+          </FieldLabel>
+          <Textarea
+            ref={textareaRef}
+            id={textareaId}
+            autoFocus
+            data-ph-no-capture
+            className="max-h-64 min-h-24 overflow-y-auto"
+            disabled={props.isPending}
+            placeholder={t("dialog.import.main.textarea.placeholder")}
+            value={inputText}
+            aria-invalid={showEmptyError}
+            onChange={(e) => {
+              setInputText(e.currentTarget.value);
+              setShowEmptyError(false);
+            }}
+          />
+          {showEmptyError && (
+            <FieldError>{t("dialog.import.main.textarea.empty")}</FieldError>
+          )}
+        </Field>
         <Button
+          type="submit"
           variant="secondary"
           className="w-full"
           disabled={props.isPending}
           aria-busy={props.isPending}
-          onClick={() => {
-            props.listener(inputText);
-          }}
         >
           <TextIcon />
           <span>{t("dialog.import.main.textarea.submit")}</span>
         </Button>
-      </div>
+      </form>
     </>
   );
 }
