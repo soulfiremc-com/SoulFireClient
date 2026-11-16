@@ -468,7 +468,7 @@ function BotDetailContent({
       </Suspense>
 
       <div className="rounded-lg border">
-        <div className="overflow-x-auto border-b px-4 py-3">
+        <div className="border-b px-4 py-3">
           <ToggleGroup
             value={[activeTab]}
             onValueChange={(value) => {
@@ -479,6 +479,8 @@ function BotDetailContent({
             }}
             variant="outline"
             size="sm"
+            spacing={1}
+            className="grid w-full grid-cols-2 sm:flex sm:w-fit"
           >
             <ToggleGroupItem value="overview">
               <EyeIcon data-icon="inline-start" />
@@ -627,11 +629,12 @@ function BotDetailHeader({
                 <div
                   className="h-full bg-destructive transition-all"
                   style={{
-                    width: `${(liveState.health / liveState.maxHealth) * 100}%`,
+                    width: `${liveState.maxHealth > 0 ? Math.min(100, (liveState.health / liveState.maxHealth) * 100) : 0}%`,
                   }}
                 />
               </div>
               <span className="text-xs tabular-nums">
+                <span className="sr-only">{t("bots.statsPanel.health")} </span>
                 {liveState.health.toFixed(0)}/{liveState.maxHealth.toFixed(0)}
               </span>
             </TooltipTrigger>
@@ -651,6 +654,7 @@ function BotDetailHeader({
                 />
               </div>
               <span className="text-xs tabular-nums">
+                <span className="sr-only">{t("bots.statsPanel.food")} </span>
                 {liveState.foodLevel}/20
               </span>
             </TooltipTrigger>
@@ -670,6 +674,9 @@ function BotDetailHeader({
                 />
               </div>
               <span className="text-xs tabular-nums">
+                <span className="sr-only">
+                  {t("bots.statsPanel.experience")}{" "}
+                </span>
                 L{liveState.experienceLevel}
               </span>
             </TooltipTrigger>
@@ -727,7 +734,7 @@ function BotPowerActions({
     mutationKey: ["bots", "single-state", instanceId, botId],
     scope: { id: `bot-state-${instanceId}` },
     mutationFn: async (action: "start" | "restart" | "stop") => {
-      if (transport === null) return;
+      if (transport === null) throw new Error(t("demoReadOnly"));
       const client = createRpcClient(BotService, transport);
       if (action === "restart") {
         await Effect.runPromise(
@@ -761,12 +768,19 @@ function BotPowerActions({
   if (!hasInstancePermission(instanceInfo, InstancePermission.CONTROL_BOTS)) {
     return null;
   }
+  const run = (action: "start" | "restart" | "stop") => {
+    if (transport === null) {
+      toast.info(t("demoReadOnly"));
+      return;
+    }
+    change.mutate(action);
+  };
   if (state === "stopped") {
     return (
       <Button
         size="sm"
         disabled={change.isPending}
-        onClick={() => change.mutate("start")}
+        onClick={() => run("start")}
       >
         <PlayIcon data-icon="inline-start" />
         {t("controls.start")}
@@ -779,7 +793,7 @@ function BotPowerActions({
         size="sm"
         variant={state === "failed" ? "default" : "outline"}
         disabled={change.isPending || state === "stopping"}
-        onClick={() => change.mutate("restart")}
+        onClick={() => run("restart")}
       >
         <RefreshCwIcon data-icon="inline-start" />
         {t("controls.restart")}
@@ -788,7 +802,7 @@ function BotPowerActions({
         size="sm"
         variant="outline"
         disabled={change.isPending || state === "stopping"}
-        onClick={() => change.mutate("stop")}
+        onClick={() => run("stop")}
       >
         <SquareIcon data-icon="inline-start" />
         {t("controls.stop")}
@@ -1313,13 +1327,14 @@ function SlotRegionGrid({
   onHotbarSlotSelect?: (slot: number) => void;
   containerType?: string;
 }) {
+  const { t } = useTranslation("instance");
   const isHotbar = region.type === SlotRegionType.SLOT_REGION_HOTBAR;
   const isArmor = region.type === SlotRegionType.SLOT_REGION_ARMOR;
   const isOutput = region.type === SlotRegionType.SLOT_REGION_OUTPUT;
 
   return (
-    <div>
-      <p className="text-muted-foreground mb-1 flex items-center gap-1 text-xs font-medium">
+    <div className="flex flex-col gap-1">
+      <p className="text-muted-foreground flex items-center gap-1 text-xs font-medium">
         {isArmor && <ShieldIcon className="size-3" />}
         {region.label}
         {isOutput && <span className="text-muted-foreground/50">(output)</span>}
@@ -1360,6 +1375,32 @@ function SlotRegionGrid({
           );
         })}
       </div>
+      {isHotbar && onHotbarSlotSelect && (
+        <ToggleGroup
+          aria-label={t("bots.inventoryPanel.heldSlot")}
+          value={[String(selectedHotbarSlot)]}
+          onValueChange={(value) => {
+            const next = value[0];
+            if (next !== undefined) onHotbarSlotSelect(Number(next));
+          }}
+          variant="outline"
+          size="sm"
+          spacing={1}
+          className="flex-wrap"
+        >
+          {Array.from({ length: region.slotCount }, (_, i) => (
+            <ToggleGroupItem
+              key={`${region.id}-held-${region.startIndex + i}`}
+              value={String(i)}
+              aria-label={t("bots.inventoryPanel.holdSlot", { slot: i + 1 })}
+              title={t("bots.inventoryPanel.holdSlot", { slot: i + 1 })}
+              className="w-8"
+            >
+              {i + 1}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      )}
     </div>
   );
 }
@@ -1372,6 +1413,7 @@ function BotInventoryPanel({
   botId: string;
 }) {
   const { t } = useTranslation("instance");
+  const demo = use(TransportContext) === null;
   const { botInfoQueryOptions } = Route.useRouteContext();
   const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
   const isOnline = !!botInfo.liveState;
@@ -1761,8 +1803,12 @@ function BotInventoryPanel({
         </div>
       ) : (
         <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
-          <p className="text-muted-foreground">
-            {t("bots.inventoryPanel.offline")}
+          <p className="text-muted-foreground" role="status">
+            {!isOnline
+              ? t("bots.inventoryPanel.offline")
+              : demo
+                ? t("bots.inventoryPanel.demo")
+                : t("bots.inventoryPanel.waiting")}
           </p>
         </div>
       )}
@@ -2132,6 +2178,7 @@ function BotActionsPanel({
   botId: string;
 }) {
   const { t } = useTranslation("instance");
+  const demo = use(TransportContext) === null;
 
   const mutationScopeId = `bot-mouse-${instanceId}-${botId}`;
   const isPending = useMutationScopePending(mutationScopeId);
@@ -2179,10 +2226,15 @@ function BotActionsPanel({
       </h3>
       {isOnline ? (
         <div className="flex flex-wrap gap-2">
+          {demo && (
+            <p className="w-full text-xs text-muted-foreground">
+              {t("bots.demoControls")}
+            </p>
+          )}
           <Button
             variant="outline"
             onClick={handleLeftClick}
-            disabled={isPending}
+            disabled={isPending || demo}
             title={t("bots.actionsPanel.leftClickDescription")}
           >
             {isPending ? (
@@ -2193,7 +2245,7 @@ function BotActionsPanel({
           <Button
             variant="outline"
             onClick={handleRightClick}
-            disabled={isPending}
+            disabled={isPending || demo}
             title={t("bots.actionsPanel.rightClickDescription")}
           >
             {isPending ? (
@@ -2237,6 +2289,7 @@ function BotMovementPanel({
   movementState?: typeof EMPTY_MOVEMENT_STATE;
 }) {
   const { t } = useTranslation("instance");
+  const demo = use(TransportContext) === null;
   const { queryClient, botInfoQueryOptions } = Route.useRouteContext();
   const movementState = currentMovementState ?? EMPTY_MOVEMENT_STATE;
   const mutationScopeId = `bot-movement-${instanceId}-${botId}`;
@@ -2344,9 +2397,11 @@ function BotMovementPanel({
             <p className="text-muted-foreground mb-2 text-xs font-medium">
               {t("bots.movementPanel.movement")}
             </p>
-            {!currentMovementState && (
+            {(demo || !currentMovementState) && (
               <p className="mb-2 text-xs text-muted-foreground">
-                {t("bots.movementPanel.updateServer")}
+                {demo
+                  ? t("bots.demoControls")
+                  : t("bots.movementPanel.updateServer")}
               </p>
             )}
             <div className="flex flex-col items-center gap-1">
@@ -2441,7 +2496,7 @@ function BotMovementPanel({
               variant="destructive"
               size="sm"
               onClick={() => resetMutation.mutate()}
-              disabled={isPending}
+              disabled={isPending || demo}
             >
               <SquareIcon className="mr-1 size-3" />
               {t("bots.movementPanel.stop")}
@@ -2460,7 +2515,7 @@ function BotMovementPanel({
                 size="sm"
                 className="size-10"
                 onClick={() => handleRotationChange(0, -15)}
-                disabled={isPending}
+                disabled={isPending || demo}
                 title={t("bots.movementPanel.lookUp")}
               >
                 <ChevronUpIcon className="size-4" />
@@ -2472,7 +2527,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onClick={() => handleRotationChange(-15, 0)}
-                  disabled={isPending}
+                  disabled={isPending || demo}
                   title={t("bots.movementPanel.lookLeft")}
                 >
                   <ChevronLeftIcon className="size-4" />
@@ -2482,7 +2537,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onClick={() => handleRotationChange(0, 15)}
-                  disabled={isPending}
+                  disabled={isPending || demo}
                   title={t("bots.movementPanel.lookDown")}
                 >
                   <ChevronDownIcon className="size-4" />
@@ -2492,7 +2547,7 @@ function BotMovementPanel({
                   size="sm"
                   className="size-10"
                   onClick={() => handleRotationChange(15, 0)}
-                  disabled={isPending}
+                  disabled={isPending || demo}
                   title={t("bots.movementPanel.lookRight")}
                 >
                   <ChevronRightIcon className="size-4" />
@@ -2775,10 +2830,7 @@ function BotVisualPanel({
                 }}
               >
                 <div className="bg-primary h-full w-full rounded-full" />
-                <div
-                  className="border-primary absolute -top-1 left-1/2 size-0 -translate-x-1/2 border-4 border-transparent border-b-4"
-                  style={{ borderBottomColor: "hsl(var(--primary))" }}
-                />
+                <div className="absolute -top-1 left-1/2 size-0 -translate-x-1/2 border-4 border-transparent border-b-primary" />
               </div>
               {/* Center dot */}
               <div className="bg-primary absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full" />
@@ -2838,7 +2890,9 @@ function BotVisualPanel({
                 {t("bots.visualPanel.dimension")}:
               </span>{" "}
               <span className="select-text font-mono">
-                {formatDimension(liveState.dimension)}
+                {liveState.dimension
+                  ? formatDimension(liveState.dimension)
+                  : t("bots.statsPanel.unknown")}
               </span>
             </div>
           </div>

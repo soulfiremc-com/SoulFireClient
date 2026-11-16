@@ -1,4 +1,5 @@
 import { DrumstickIcon, HeartIcon, type LucideIcon } from "lucide-react";
+import i18n from "i18next";
 import { cn } from "@/lib/utils.tsx";
 
 function generateN(count: number) {
@@ -60,8 +61,10 @@ function Meter({
   baseClassName,
   fillClassName,
   idPrefix,
+  label,
   className,
 }: {
+  label: string;
   value: number;
   maxValue: number;
   units: number;
@@ -74,7 +77,12 @@ function Meter({
 }) {
   const perUnit = maxValue / units;
   return (
-    <span className={cn("inline-flex items-center gap-0.5", className)}>
+    <span
+      role="img"
+      aria-label={label}
+      title={label}
+      className={cn("inline-flex items-center gap-0.5", className)}
+    >
       {generateN(units).map((unit) => {
         const fill = (value - (unit - 1) * perUnit) / perUnit;
         return (
@@ -115,6 +123,7 @@ export function HeartsBar({
       baseClassName="text-muted-foreground/25"
       fillClassName="text-destructive"
       idPrefix="heart"
+      label={`${i18n.t("instance:bots.statsPanel.health")}: ${Math.round(health)}/${Math.round(maxHealth)}`}
       className={className}
     />
   );
@@ -140,6 +149,7 @@ export function FoodBar({
       baseClassName="text-muted-foreground/25"
       fillClassName="text-warning"
       idPrefix="food"
+      label={`${i18n.t("instance:bots.statsPanel.food")}: ${Math.round(foodLevel)}/20`}
       className={className}
     />
   );

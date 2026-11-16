@@ -13,12 +13,13 @@ import {
   Volume2Icon,
   VolumeXIcon,
 } from "lucide-react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { use, useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
+import { TransportContext } from "@/components/providers/transport-context";
 import {
   PovTouchControls,
   PovTouchToolbar,
@@ -91,6 +92,8 @@ function BotPovSession({
 }) {
   const queryClient = useQueryClient();
   const { t } = useTranslation("instance");
+  // The demo has no server to stream from, so retrying cannot help.
+  const demo = use(TransportContext) === null;
   const [playerStore] = useState(createPovPlayerStore);
   const actions = playerStore.actions;
   const captureToastId = useId();
@@ -985,18 +988,18 @@ function BotPovSession({
           <Button
             size="sm"
             variant="outline"
-            disabled={!isOnline}
+            disabled={!isOnline || demo}
             onClick={() => {
               release();
               actions.setPlaying(!playing);
             }}
           >
-            {playing && isOnline ? (
+            {playing && isOnline && !demo ? (
               <PauseIcon data-icon="inline-start" />
             ) : (
               <PlayIcon data-icon="inline-start" />
             )}
-            {playing && isOnline
+            {playing && isOnline && !demo
               ? t("bots.pov.stopWatching")
               : t("bots.pov.watch")}
           </Button>
@@ -1083,14 +1086,16 @@ function BotPovSession({
             {error ? (
               <div className="flex max-w-md flex-col items-center gap-3 p-4 text-center">
                 <p role="alert">{error}</p>
-                <Button
-                  onClick={() => {
-                    actions.reconnect();
-                  }}
-                >
-                  <RefreshCwIcon data-icon="inline-start" />
-                  {t("bots.pov.reconnect")}
-                </Button>
+                {!demo && (
+                  <Button
+                    onClick={() => {
+                      actions.reconnect();
+                    }}
+                  >
+                    <RefreshCwIcon data-icon="inline-start" />
+                    {t("bots.pov.reconnect")}
+                  </Button>
+                )}
               </div>
             ) : !isOnline ? (
               <p>{t("bots.pov.offline")}</p>

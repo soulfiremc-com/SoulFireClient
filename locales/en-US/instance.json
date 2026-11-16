@@ -450,6 +450,7 @@
       "stopped": "Stopped"
     },
     "backToBots": "All bots",
+    "demoControls": "The demo cannot control bots. Connect to a SoulFire server to use these controls.",
     "tabs": {
       "overview": "Bot view",
       "inventory": "Inventory",
@@ -517,8 +518,12 @@
       "dropOne": "Drop one",
       "dropAll": "Drop all",
       "closeContainer": "Close",
-      "clickHint": "Left click: pick up/place | Right click: half/one | Shift+click: quick move | Middle click: select hotbar slot",
+      "clickHint": "Left click: pick up/place | Right click: half/one | Shift+click: quick move | Middle click or the numbers below the hotbar: select hotbar slot",
       "offline": "The bot is disconnected. Inventory is only available when the bot is connected.",
+      "waiting": "Waiting for the bot to load its inventory.",
+      "demo": "The demo has no live inventory. Connect to a SoulFire server to see what your bots carry.",
+      "heldSlot": "Held slot",
+      "holdSlot": "Hold slot {{slot}}",
       "buttons": {
         "stonecutterRecipes": "Recipes",
         "enchantments": "Enchantments",
