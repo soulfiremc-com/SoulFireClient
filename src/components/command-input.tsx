@@ -27,7 +27,10 @@ import type {
   CommandScope,
 } from "@/generated/soulfire/command_pb";
 import { CommandService } from "@/generated/soulfire/command_pb";
+import { isBotNotReadyError } from "@/lib/bot-availability";
 import { getCommandTokenRange } from "@/lib/command-token";
+import { getConnectionErrorKind } from "@/lib/connection-errors";
+import { isExpectedError } from "@/lib/error-reporting";
 import { getCommandSuggestionsPosition } from "@/lib/command-suggestions-position";
 import { CommandCompletionRequest } from "@/lib/command-completion-request";
 import { cn } from "@/lib/utils";
@@ -45,6 +48,8 @@ type CompletionState = {
   receivedCompletions: CommandCompletion[] | null;
   index: number | null;
   replacementRange: { start: number; end: number } | null;
+  // Set when the last request failed, so the popup can say why it is empty.
+  failed?: boolean;
 };
 
 const COMPLETION_DEBOUNCE_MS = 120;
@@ -121,6 +126,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
   }, [inputValue, cursorPosition]);
   const completionFetchTimeout = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
+  // Focusing on load opens the on-screen keyboard and hides the log on phones.
+  const [autoFocus] = useState(
+    () => !window.matchMedia("(pointer: coarse)").matches,
+  );
   const composing = useRef(false);
   const [suggestionsDismissed, setSuggestionsDismissed] = useState(false);
   const suggestionsId = useId();
@@ -173,6 +182,15 @@ export default function CommandInput(props: { scope: CommandScope }) {
       accept: (state: CompletionState) => void = setCompletionState,
     ) => {
       if (transport === null) return;
+      const isCurrent = () => {
+        const input = inputRef.current;
+        return (
+          !!input &&
+          input.ownerDocument.activeElement === input &&
+          input.value === text &&
+          input.selectionStart === cursor
+        );
+      };
       try {
         const result = await completionRequest.run(async (signal) => {
           const response = await Effect.runPromise(
@@ -183,16 +201,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           );
           return response.suggestions;
         });
-        const input = inputRef.current;
-        if (
-          !result ||
-          result.signal.aborted ||
-          !input ||
-          input.ownerDocument.activeElement !== input ||
-          input.value !== text ||
-          input.selectionStart !== cursor
-        )
-          return;
+        if (!result || result.signal.aborted || !isCurrent()) return;
         accept({
           baseText: text,
           cursor,
@@ -201,7 +210,19 @@ export default function CommandInput(props: { scope: CommandScope }) {
           replacementRange: getCommandTokenRange(text, cursor),
         });
       } catch (error) {
-        console.error("Could not load command completions", error);
+        // A dropped connection or a bot that is not in a world yet is not a
+        // client defect. Show an inline hint instead of reporting it.
+        if (!isExpectedError(error) && !isBotNotReadyError(error))
+          console.error("Could not load command completions", error);
+        if (!isCurrent()) return;
+        setCompletionState({
+          baseText: text,
+          cursor,
+          receivedCompletions: [],
+          index: null,
+          replacementRange: getCommandTokenRange(text, cursor),
+          failed: true,
+        });
       }
     },
     [completionRequest, props.scope, transport],
@@ -512,6 +533,12 @@ export default function CommandInput(props: { scope: CommandScope }) {
   );
 
   const terminalCommands = use(TerminalCommandContext);
+  const commandErrorMessage = (error: unknown) => {
+    if (isBotNotReadyError(error)) return t("commandInput.botNotReady");
+    if (getConnectionErrorKind(error) === "connection")
+      return t("commandInput.connectionLost");
+    return ConnectError.from(error).rawMessage;
+  };
   const executeCommand = (value: string) => {
     const nextHistory = appendCommandHistory(commandHistory, value);
     if (nextHistory !== commandHistory) {
@@ -536,7 +563,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       if (action === "run_command") {
         if (!transport || !value.trim()) return;
         void executeCommand(value.trim()).catch((error: unknown) =>
-          toast.error(ConnectError.from(error).message),
+          toast.error(commandErrorMessage(error)),
         );
         return;
       }
@@ -640,7 +667,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
       setHistoryPosition({ index: -1, draft: "" });
       void executeCommand(currentVal).catch((error: unknown) => {
-        toast.error(ConnectError.from(error).message);
+        toast.error(commandErrorMessage(error));
         // A failed request must not replace a newer draft or another view.
         if (
           inputRevision.current !== submittedRevision ||
@@ -733,7 +760,13 @@ export default function CommandInput(props: { scope: CommandScope }) {
         <InputGroupAddon aria-hidden="true">&gt;</InputGroupAddon>
         <InputGroupInput
           ref={inputRef}
-          autoFocus
+          autoFocus={autoFocus}
+          // Commands are case sensitive. Phone keyboards must not change them.
+          autoCapitalize="none"
+          autoCorrect="off"
+          autoComplete="off"
+          spellCheck={false}
+          enterKeyHint="send"
           role="combobox"
           aria-label={t("commandInput.label")}
           aria-autocomplete="list"
@@ -874,7 +907,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
               role="status"
               className="text-(--terminal-muted) px-3 py-2 font-mono text-xs"
             >
-              {t("commandInput.noSuggestions")}
+              {completionState.failed
+                ? t("commandInput.suggestionsUnavailable")
+                : t("commandInput.noSuggestions")}
             </div>
           )}
         </div>

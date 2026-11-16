@@ -1,5 +1,6 @@
 import { flavorEntries } from "@catppuccin/palette";
 import { WTerm } from "@wterm/dom";
+import { ArrowDownIcon } from "lucide-react";
 import {
   type CSSProperties,
   type ReactNode,
@@ -16,6 +17,7 @@ import { ContextMenuPortal } from "@/components/context-menu-portal";
 import { SelectedTextActions } from "@/components/custom-context-menu";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
 import { TransportContext } from "@/components/providers/transport-context";
+import { Button } from "@/components/ui/button";
 import type { LogScope } from "@/generated/soulfire/logs_pb";
 import {
   TerminalCommandContext,
@@ -63,9 +65,15 @@ export function TerminalView({
   const [runs, setRuns] = useState<TerminalInteractionRun[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
-  const pointerDown = useRef<{ x: number; y: number; uri?: string } | null>(
-    null,
-  );
+  const pointerDown = useRef<{
+    x: number;
+    y: number;
+    uri?: string;
+    touch: boolean;
+  } | null>(null);
+  // Set when output arrives while the reader has scrolled away from the end.
+  const [newBelow, setNewBelow] = useState(false);
+  const lastEntry = useRef<TerminalLine | undefined>(undefined);
   const interactionFrame = useRef(0);
   const metrics = useRef({ width: 0, height: 0, top: 0, left: 0 });
 
@@ -157,6 +165,10 @@ export function TerminalView({
     const top = host.scrollTop;
     const atBottom = top + host.clientHeight >= host.scrollHeight - 1;
     const update = output.sync(entries, i18n.resolvedLanguage, resized);
+    const latest = entries[entries.length - 1];
+    if (!atBottom && lastEntry.current && latest !== lastEntry.current)
+      setNewBelow(true);
+    lastEntry.current = latest;
     setHovered(null);
     scheduleInteractions();
     if (update.reset && !atBottom) {
@@ -233,7 +245,7 @@ export function TerminalView({
     <TerminalCommandContext value={commandHandler}>
       <div
         data-terminal-output
-        className="flex h-[calc(75vh-8rem)] flex-col overflow-hidden rounded-md focus-within:ring-1 focus-within:ring-(--terminal-border)"
+        className="flex h-[calc(75dvh-8rem)] flex-col overflow-hidden rounded-md focus-within:ring-1 focus-within:ring-(--terminal-border)"
         style={
           {
             backgroundColor: colors.base.hex,
@@ -254,6 +266,7 @@ export function TerminalView({
               x: event.clientX,
               y: event.clientY,
               uri: interactionAt(event.clientX, event.clientY),
+              touch: event.pointerType === "touch",
             };
           }}
           onPointerMove={(event) => {
@@ -278,6 +291,8 @@ export function TerminalView({
           onPointerLeave={() => setHovered(null)}
           onClickCapture={(event) => {
             if (
+              (event.target instanceof HTMLElement &&
+                event.target.closest("[data-terminal-jump]")) ||
               !event.detail ||
               event.detail > 1 ||
               event.button !== 0 ||
@@ -291,7 +306,6 @@ export function TerminalView({
             )
               return;
             const down = pointerDown.current;
-            pointerDown.current = null;
             const uri = interactionAt(event.clientX, event.clientY);
             const metadata = uri
               ? outputRef.current?.interactions.get(uri)
@@ -308,8 +322,13 @@ export function TerminalView({
             actions.activate(metadata);
           }}
           onClick={(event) => {
+            const down = pointerDown.current;
+            pointerDown.current = null;
             if (
               !children ||
+              // Focusing the prompt after a tap opens the on-screen keyboard
+              // and covers the log the reader was scrolling.
+              down?.touch ||
               event.detail > 1 ||
               event.ctrlKey ||
               event.metaKey ||
@@ -335,7 +354,9 @@ export function TerminalView({
             if (
               failed ||
               (event.target instanceof HTMLElement &&
-                event.target.closest("[data-terminal-interaction]"))
+                event.target.closest(
+                  "[data-terminal-interaction], [data-terminal-jump]",
+                ))
             )
               return;
             const terminal = terminalRef.current;
@@ -377,14 +398,38 @@ export function TerminalView({
             <div
               ref={hostRef}
               data-terminal-viewport
-              className={hovered ? "cursor-pointer select-text" : "select-text"}
+              // React replaces the whole class attribute when className changes,
+              // which would drop the classes that wterm adds. Keep it static.
+              data-hovered={hovered ? "" : undefined}
+              className="px-3 py-2 select-text data-hovered:cursor-pointer"
               role="region"
               aria-label={t("pageName.terminal")}
-              onScroll={() => {
+              onScroll={(event) => {
                 setHovered(null);
                 scheduleInteractions();
+                const host = event.currentTarget;
+                if (host.scrollTop + host.clientHeight >= host.scrollHeight - 1)
+                  setNewBelow(false);
               }}
             />
+          )}
+          {!failed && newBelow && (
+            <Button
+              data-terminal-jump
+              type="button"
+              size="sm"
+              variant="secondary"
+              className="absolute right-3 bottom-3 shadow-lg"
+              onClick={(event) => {
+                event.stopPropagation();
+                const host = hostRef.current;
+                if (host) host.scrollTop = host.scrollHeight;
+                setNewBelow(false);
+              }}
+            >
+              <ArrowDownIcon data-icon="inline-start" />
+              {t("terminal.jumpToLatest")}
+            </Button>
           )}
           {!failed &&
             runs.map((run) => {
@@ -488,6 +533,8 @@ export function TerminalComponent({
     demo ? null : transport,
     scope,
   );
+  // Read-only views, such as the logs page, have no command prompt.
+  const readOnly = !children;
   const entries = demo
     ? [1, 2, 3, 4].map((id) =>
         toTerminalLine({
@@ -500,7 +547,9 @@ export function TerminalComponent({
       ? [
           toTerminalLine({
             id: "empty",
-            message: t("terminal.noLogs"),
+            message: t(
+              readOnly ? "terminal.noLogsReadOnly" : "terminal.noLogs",
+            ),
             personal: false,
           }),
         ]

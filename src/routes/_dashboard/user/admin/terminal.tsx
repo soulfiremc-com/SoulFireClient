@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_dashboard/user/admin/terminal")({
 function TerminalSkeleton() {
   return (
     <div className="flex flex-col gap-2">
-      <Skeleton className="h-[calc(75vh-8rem)] w-full rounded-md" />
+      <Skeleton className="h-[calc(75dvh-8rem)] w-full rounded-md" />
       <Skeleton className="h-9 w-full rounded-md" />
     </div>
   );

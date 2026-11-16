@@ -1,5 +1,5 @@
 import { create } from "@bufbuild/protobuf";
-import { ConnectError, createRouterTransport } from "@connectrpc/connect";
+import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 import { expect, fn, waitFor, within } from "storybook/test";
@@ -57,6 +57,8 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
       router.service(CommandService, {
         tabCompleteCommand: (request) => {
           completions(request);
+          if (request.command.startsWith("offline"))
+            throw new ConnectError("Failed to fetch", Code.Unavailable);
           const range = getCommandTokenRange(request.command, request.cursor);
           const prefix = request.command.slice(range.start, request.cursor);
           const candidates = request.command.startsWith("say ")
@@ -75,6 +77,11 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
           commands(request);
           if (request.command === "fail")
             throw new ConnectError("Command rejected");
+          if (request.command === "position")
+            throw new ConnectError(
+              'Cannot invoke "LocalPlayer.position()" because "com.soulfiremc.server.bot.BotConnection.minecraft().player" is null',
+              Code.Internal,
+            );
           append(`> ${request.command}`);
           append(
             request.command === "status"
@@ -225,6 +232,25 @@ export const CompositionAndFailure: Story = {
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(input).toHaveValue("fail"));
     await within(document.body).findByText(/Command rejected/);
+  },
+};
+
+export const UnavailableServerAndBot: Story = {
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "Command" });
+    await userEvent.type(input, "offline");
+    const status = await canvas.findByRole("status");
+    await expect(status).toHaveTextContent(
+      "Could not load suggestions. Check the server connection.",
+    );
+    await expect(input).toHaveAttribute("aria-describedby", status.id);
+    await userEvent.clear(input);
+    await userEvent.type(input, "position{Enter}");
+    await within(document.body).findByText(
+      "The bot has not joined a world yet. Run the command again after it joins.",
+    );
+    await expect(input).toHaveValue("position");
   },
 };
 

@@ -252,6 +252,9 @@ export const PointerActionsAndSelection: Story = {
       await within(document.body).findByRole("tooltip"),
     ).toHaveTextContent("Show available commands");
     await expect(commands).not.toHaveBeenCalled();
+    // The hover cursor must not replace the classes that wterm styles with.
+    await expect(getComputedStyle(host).cursor).toBe("pointer");
+    await expect(host).toHaveClass("wterm");
     await userEvent.pointer({ target: host, coords, keys: "[MouseLeft]" });
     await waitFor(() => expect(commands).toHaveBeenCalledTimes(1));
     // Selecting log text must prevent command activation, even over the same span.

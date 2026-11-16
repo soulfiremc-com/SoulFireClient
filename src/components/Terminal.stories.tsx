@@ -127,6 +127,38 @@ export const ScrollAndReconcile: Story = {
   },
 };
 
+export const JumpToLatest: Story = {
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const host = canvasElement.querySelector<HTMLElement>(
+      "[data-terminal-viewport]",
+    )!;
+    await waitFor(() => expect(host).toHaveTextContent("Last log"), {
+      timeout: 5000,
+    });
+    // Log text keeps a gap from the side of the panel.
+    expect(Number.parseFloat(getComputedStyle(host).paddingLeft)).toBe(12);
+    await waitFor(() => expect(host.scrollTop).toBeGreaterThan(0));
+    expect(canvas.queryByRole("button", { name: "Jump to latest" })).toBeNull();
+    host.scrollTop = 100;
+    host.dispatchEvent(new Event("scroll"));
+    await userEvent.click(canvas.getByRole("button", { name: "Append" }));
+    const jump = await canvas.findByRole("button", { name: "Jump to latest" });
+    expect(host.scrollTop).toBeCloseTo(100, 0);
+    await userEvent.click(jump);
+    await waitFor(() =>
+      expect(host.scrollTop + host.clientHeight).toBeGreaterThanOrEqual(
+        host.scrollHeight - 1,
+      ),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("button", { name: "Jump to latest" }),
+      ).toBeNull(),
+    );
+    expect(host).toHaveClass("wterm");
+  },
+};
+
 export const SelectAndCopy: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const host = canvasElement.querySelector<HTMLElement>(
