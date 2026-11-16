@@ -34,6 +34,7 @@ import {
 } from "@/lib/terminal-interaction-cells";
 import { useContextMenu } from "@/hooks/use-context-menu";
 import { useTerminalLogs } from "@/hooks/use-terminal-logs";
+import { readableTerminalColor } from "@/lib/terminal-colors";
 import { createTerminalOutput } from "@/lib/terminal-output";
 import { isDemo } from "@/lib/utils";
 import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
@@ -141,7 +142,11 @@ export function TerminalView({
       foreground: rgb(colors.text.hex),
       background: rgb(colors.base.hex),
       cursor: rgb(colors.text.hex),
-      palette: palette.map((color) => rgb(color.hex)),
+      // Catppuccin keeps some ANSI colors close to the base color. Logs and
+      // chat use them for text, so lift each one to readable contrast.
+      palette: palette.map((color) =>
+        rgb(readableTerminalColor(color.hex, colors.base.hex, colors.text.hex)),
+      ),
     });
   });
 
@@ -233,12 +238,12 @@ export function TerminalView({
           {
             backgroundColor: colors.base.hex,
             color: colors.text.hex,
-            "--term-selection-bg": `${colors.overlay2.hex}80`,
+            "--term-selection-bg": `${colors.overlay2.hex}4d`,
             "--terminal-prompt": dark ? colors.green.hex : colors.text.hex,
             "--terminal-muted": colors.subtext1.hex,
             "--terminal-popup": colors.mantle.hex,
             "--terminal-active": dark ? colors.surface0.hex : colors.base.hex,
-            "--terminal-border": colors.surface2.hex,
+            "--terminal-border": colors.overlay2.hex,
           } as CSSProperties
         }
       >
