@@ -164,7 +164,7 @@ function AboutDialog({
                 <>
                   <TableRow>
                     <TableCell>{t("dialog.about.fields.browser")}</TableCell>
-                    <TableCell className="select-text">
+                    <TableCell className="whitespace-normal break-all select-text">
                       {navigator.userAgent}
                     </TableCell>
                   </TableRow>

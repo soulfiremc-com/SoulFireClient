@@ -18,6 +18,7 @@ import {
   ClipboardCopyIcon,
   CopyPlusIcon,
   ExternalLinkIcon,
+  LoaderCircleIcon,
   PlayIcon,
   PlusIcon,
   SearchXIcon,
@@ -64,6 +65,7 @@ import {
 import {
   Empty,
   EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
@@ -102,6 +104,7 @@ import {
   createInstanceNameSchema,
   getDuplicateInstanceName,
 } from "@/lib/instance-name.ts";
+import { formatShortcut } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
@@ -114,6 +117,9 @@ export const Route = createFileRoute("/_dashboard/user/")({
     }),
   component: InstanceSelectPage,
 });
+
+// Matches the Ctrl/Cmd+1-9 handler in the dashboard layout.
+const MAX_INSTANCE_SHORTCUTS = 9;
 
 type StateAction = {
   key: "start" | "stop";
@@ -252,7 +258,11 @@ function DuplicateInstanceDialog({
               {t("dialog.createInstance.form.cancel")}
             </CredenzaClose>
             <Button type="submit" disabled={pending || sourceInstance === null}>
-              <CopyPlusIcon />
+              {pending ? (
+                <LoaderCircleIcon className="animate-spin" />
+              ) : (
+                <CopyPlusIcon />
+              )}
               {t("dialog.duplicateInstance.form.duplicate")}
             </Button>
           </CredenzaFooter>
@@ -328,7 +338,10 @@ function Content() {
       desiredState: BotDesiredState;
       action: StateAction["key"];
     }) => {
-      if (transport === null) return;
+      if (transport === null) {
+        toast.info(t("demoReadOnly"));
+        return;
+      }
       const botService = createRpcClient(BotService, transport);
       const promise = Effect.runPromise(
         botService.getBotList({ instanceId }),
@@ -369,7 +382,11 @@ function Content() {
       sourceInstance: InstanceListResponse_Instance;
       friendlyName: string;
     }) => {
-      if (transport === null) return;
+      if (transport === null) {
+        toast.info(t("demoReadOnly"));
+        setDuplicateSource(null);
+        return;
+      }
       const promise = Effect.runPromise(
         createRpcClient(InstanceService, transport).duplicateInstance({
           id: sourceInstance.id,
@@ -408,7 +425,10 @@ function Content() {
   const deleteMutation = useMutation({
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
-      if (transport === null) return;
+      if (transport === null) {
+        toast.info(t("demoReadOnly"));
+        return;
+      }
       const instanceService = createRpcClient(InstanceService, transport);
       const promise = Effect.runPromise(
         instanceService.deleteInstance({ id: instanceId }),
@@ -458,6 +478,11 @@ function Content() {
                 <SearchXIcon className="size-6" />
               </EmptyMedia>
               <EmptyTitle>{t("noInstancesFound")}</EmptyTitle>
+              <EmptyDescription>
+                {canCreateInstance
+                  ? t("noInstancesDescription")
+                  : t("noInstancesNoPermission")}
+              </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <CreateInstanceButton />
@@ -493,11 +518,16 @@ function Content() {
                       <BotFleetSummaryBadge summary={instance.botSummary} />
                     </div>
                   </ItemContent>
-                  <div className="ml-auto shrink-0">
-                    <Kbd className="h-6 px-2 text-sm tracking-widest opacity-60">
-                      ⌘{index + 1}
-                    </Kbd>
-                  </div>
+                  {index < MAX_INSTANCE_SHORTCUTS && (
+                    <div className="ml-auto hidden shrink-0 sm:block">
+                      <Kbd
+                        aria-hidden="true"
+                        className="h-6 px-2 text-sm opacity-60"
+                      >
+                        {formatShortcut(`Ctrl+${index + 1}`)}
+                      </Kbd>
+                    </div>
+                  )}
                 </Item>
               </Link>
             );

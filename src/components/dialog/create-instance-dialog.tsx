@@ -1,6 +1,7 @@
 import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
 import { Effect, Schema } from "effect";
+import { ConnectError } from "@connectrpc/connect";
 
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -87,6 +88,8 @@ function CreateInstanceDialog({
     mutationKey: ["instance", "create"],
     mutationFn: async (values: FormType) => {
       if (transport === null) {
+        toast.info(t("demoReadOnly"));
+        setOpen(false);
         return;
       }
 
@@ -112,7 +115,10 @@ function CreateInstanceDialog({
         },
         error: (e) => {
           console.error(e);
-          return t("dialog.createInstance.createToast.error");
+          return {
+            message: t("dialog.createInstance.createToast.error"),
+            description: ConnectError.from(e).rawMessage,
+          };
         },
       });
 

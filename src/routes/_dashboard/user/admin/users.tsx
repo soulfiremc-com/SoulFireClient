@@ -277,6 +277,7 @@ function UpdateUserButton(props: {
     <>
       <Button
         aria-label={t("users.contextMenu.editUser")}
+        title={t("users.contextMenu.editUser")}
         disabled={!props.row.getCanSelect()}
         variant="secondary"
         size="sm"
@@ -297,18 +298,20 @@ function UpdateUserButton(props: {
 function ImpersonateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
-  const { t } = useTranslation("admin");
+  const { t } = useTranslation(["admin", "common"]);
   const transport = use(TransportContext);
   const navigate = useNavigate();
   return (
     <Button
       aria-label={t("users.contextMenu.impersonate")}
+      title={t("users.contextMenu.impersonate")}
       disabled={!props.row.getCanSelect()}
       variant="secondary"
       size="sm"
       onClick={() => {
         runAsync(async () => {
           if (transport === null) {
+            toast.info(t("common:demoReadOnly"));
             return;
           }
 
@@ -342,6 +345,7 @@ function AddButton() {
         variant="outline"
         size="sm"
         aria-label={t("users.addUserDialog.title")}
+        title={t("users.addUserDialog.title")}
         onClick={() => setCreateOpen(true)}
       >
         <PlusIcon />
@@ -354,7 +358,7 @@ function AddButton() {
 function ExtraHeader(props: {
   table: ReactTable<typeof dataTableFeatures, UserListResponse_User>;
 }) {
-  const { t } = useTranslation("admin");
+  const { t } = useTranslation(["admin", "common"]);
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { usersQueryOptions } = Route.useRouteContext();
@@ -423,18 +427,28 @@ function ExtraHeader(props: {
         description={t("users.removeDialog.description")}
         confirmLabel={t("users.removeDialog.confirm")}
         onConfirm={() => {
+          if (transport === null) {
+            toast.info(t("common:demoReadOnly"));
+            return;
+          }
+
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
 
-          toast.promise(deleteUsersMutation(selectedRows), {
+          const promise = deleteUsersMutation(selectedRows);
+          toast.promise(promise, {
             loading: t("users.removeToast.loading"),
-            success: t("users.removeToast.success"),
+            success: () => {
+              props.table.resetRowSelection();
+              return t("users.removeToast.success");
+            },
             error: (e) => {
               console.error(e);
               return t("users.removeToast.error");
             },
           });
+          return promise;
         }}
       />
       <DataTableActionBarAction
@@ -451,11 +465,17 @@ function ExtraHeader(props: {
         description={t("users.invalidateDialog.description")}
         confirmLabel={t("users.invalidateDialog.confirm")}
         onConfirm={() => {
+          if (transport === null) {
+            toast.info(t("common:demoReadOnly"));
+            return;
+          }
+
           const selectedRows = props.table
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
 
-          toast.promise(invalidateUsersMutation(selectedRows), {
+          const promise = invalidateUsersMutation(selectedRows);
+          toast.promise(promise, {
             loading: t("users.invalidateToast.loading"),
             success: t("users.invalidateToast.success"),
             error: (e) => {
@@ -463,6 +483,7 @@ function ExtraHeader(props: {
               return t("users.invalidateToast.error");
             },
           });
+          return promise;
         }}
       />
       <DataTableActionBarSelection table={props.table} />
@@ -503,7 +524,7 @@ function Users() {
 }
 
 function Content() {
-  const { t } = useTranslation("admin");
+  const { t } = useTranslation(["admin", "common"]);
   const { usersQueryOptions, clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const { data: userList } = useSuspenseQuery(usersQueryOptions);
@@ -556,7 +577,10 @@ function Content() {
           <DropdownMenuItem
             onClick={() => {
               runAsync(async () => {
-                if (transport === null) return;
+                if (transport === null) {
+                  toast.info(t("common:demoReadOnly"));
+                  return;
+                }
                 const userService = createRpcClient(UserService, transport);
                 const token = await Effect.runPromise(
                   userService.generateUserAPIToken({

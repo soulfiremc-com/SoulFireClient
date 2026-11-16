@@ -5,7 +5,7 @@ import { Code, ConnectError } from "@connectrpc/connect";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import { PencilIcon, PlusIcon, XIcon } from "lucide-react";
+import { LoaderCircleIcon, PencilIcon, PlusIcon, XIcon } from "lucide-react";
 import { use } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -63,7 +63,7 @@ export function ManageUserDialog({
   });
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
-  const { t } = useTranslation("admin");
+  const { t } = useTranslation(["admin", "common"]);
   const formSchema = Schema.Struct({
     username: createUsernameSchema({
       min: t("users.baseUserDialog.form.username.min"),
@@ -83,6 +83,8 @@ export function ManageUserDialog({
     ],
     mutationFn: async (values: FormType) => {
       if (transport === null) {
+        toast.info(t("common:demoReadOnly"));
+        setOpen(false);
         return;
       }
 
@@ -163,6 +165,7 @@ export function ManageUserDialog({
     >
       <CredenzaContent className="pb-4">
         <form
+          noValidate
           className="flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault();
@@ -226,6 +229,8 @@ export function ManageUserDialog({
                     <Input
                       id={field.name}
                       name={field.name}
+                      type="email"
+                      autoComplete="off"
                       placeholder={t(
                         "users.baseUserDialog.form.email.placeholder",
                       )}
@@ -302,7 +307,11 @@ export function ManageUserDialog({
             </form.Field>
           </CredenzaBody>
           <CredenzaFooter className="justify-between">
-            <CredenzaClose render={<Button variant="outline" />}>
+            <CredenzaClose
+              render={
+                <Button variant="outline" disabled={submitMutation.isPending} />
+              }
+            >
               <XIcon />
               {props.mode === "add"
                 ? t("users.addUserDialog.form.cancel")
@@ -313,7 +322,13 @@ export function ManageUserDialog({
               disabled={submitMutation.isPending}
               aria-busy={submitMutation.isPending}
             >
-              {props.mode === "add" ? <PlusIcon /> : <PencilIcon />}
+              {submitMutation.isPending ? (
+                <LoaderCircleIcon className="animate-spin" />
+              ) : props.mode === "add" ? (
+                <PlusIcon />
+              ) : (
+                <PencilIcon />
+              )}
               {props.mode === "add"
                 ? t("users.addUserDialog.form.add")
                 : t("users.updateUserDialog.form.update")}

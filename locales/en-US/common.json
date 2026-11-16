@@ -4,6 +4,7 @@
   "cancel": "Cancel",
   "save": "Save",
   "saving": "Saving...",
+  "demoReadOnly": "The demo is read-only. Connect to a SoulFire server to make changes.",
   "analyticsConsent": {
     "title": "Analytics cookies",
     "description": "We use analytics cookies to understand how you use SoulFire and improve the app. Accepting links usage to your SoulFire user account.",
@@ -692,6 +693,8 @@
     "bots": "Bots"
   },
   "noInstancesFound": "No projects found",
+  "noInstancesDescription": "Create a project to add accounts, proxies, and bots.",
+  "noInstancesNoPermission": "Ask a server admin to give you access to a project.",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Logs",
@@ -776,6 +779,8 @@
       "uiName": "Email",
       "description": "Your email is used for login and notifications."
     },
+    "autoSave": "Changes save when you press Enter or leave the field.",
+    "noPermission": "You do not have permission to change this.",
     "saved": "{{field}} updated",
     "conflict": "{{field}} is already in use. Choose another.",
     "saveError": "Could not update {{field}}"

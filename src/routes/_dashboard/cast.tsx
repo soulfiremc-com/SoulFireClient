@@ -53,6 +53,7 @@ import {
 } from "@/components/ui/table";
 import { castClient, castStore } from "@/lib/cast-client";
 import { isDesktopApp } from "@/lib/desktop";
+import { toFormSchema } from "@/lib/form-validation";
 import i18n from "@/lib/i18n";
 import { staticRouteTitle } from "@/lib/route-title";
 import { getCastSource } from "@/lib/web-rpc";
@@ -381,12 +382,16 @@ function CastPage() {
   );
 }
 
-const ManualDevice = Schema.Struct({
-  address: Schema.String.check(Schema.isPattern(/^[a-zA-Z0-9:.[\]-]+$/)),
-  port: CastDevice.fields.port,
-});
 function ManualConnection({ instance }: { instance: string | undefined }) {
   const { t } = useTranslation("cast");
+  const manualDevice = Schema.Struct({
+    address: Schema.String.check(
+      Schema.isPattern(/^[a-zA-Z0-9:.[\]-]+$/, {
+        message: t("invalidAddress"),
+      }),
+    ),
+    port: CastDevice.fields.port.annotate({ message: t("invalidPort") }),
+  });
   const connect = useMutation({
     mutationFn: (device: CastDevice) => {
       const source = instance ? getCastSource(instance) : null;
@@ -397,7 +402,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
   });
   const form = useForm({
     defaultValues: { address: "", port: 8009 },
-    validators: { onSubmit: Schema.toStandardSchemaV1(ManualDevice) },
+    validators: { onSubmit: toFormSchema(manualDevice) },
     onSubmit: async ({ value }) => {
       const address = value.address.replace(/^\[|\]$/g, "");
       const known = castStore

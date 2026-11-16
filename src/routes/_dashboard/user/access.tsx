@@ -1,13 +1,14 @@
 import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 import { ConnectError } from "@connectrpc/connect";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   BookOpenTextIcon,
   CopyIcon,
   FoldersIcon,
   GlobeIcon,
+  LoaderCircleIcon,
   PlusIcon,
 } from "lucide-react";
 import { use, useId, useState } from "react";
@@ -103,11 +104,50 @@ function AccessPage() {
 function Content() {
   const { t } = useTranslation("common");
   const copyToClipboard = useCopyToClipboard();
+  const copySecret = useCopyToClipboard({ sensitive: true });
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const transport = use(TransportContext);
   const [webDavToken, setWebDavToken] = useState("");
   const [apiToken, setApiToken] = useState("");
+  const generateTokenMutation = useMutation({
+    mutationKey: ["access", "generate-token"],
+    mutationFn: async (kind: "webdav" | "api") => {
+      if (transport === null) {
+        toast.info(t("demoReadOnly"));
+        return;
+      }
+
+      const clientService = createRpcClient(ClientService, transport);
+      const request =
+        kind === "webdav"
+          ? Effect.runPromise(clientService.generateWebDAVToken({}))
+          : Effect.runPromise(clientService.generateAPIToken({}));
+      const promise = request.then((response) => {
+        if (kind === "webdav") {
+          setWebDavToken(response.token);
+        } else {
+          setApiToken(response.token);
+        }
+        copySecret(response.token);
+      });
+      toast.promise(promise, {
+        loading: t("access.token.generating"),
+        success: t("access.token.success"),
+        error: (error) => {
+          console.error(error);
+          return {
+            message: t("access.token.error"),
+            description: ConnectError.from(error).rawMessage,
+          };
+        },
+      });
+      return promise;
+    },
+  });
+  const generatingKind = generateTokenMutation.isPending
+    ? generateTokenMutation.variables
+    : null;
   const webdavAddressId = useId();
   const webdavTokenId = useId();
   const apiAddressId = useId();
@@ -168,7 +208,7 @@ function Content() {
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    copyToClipboard(webDavToken);
+                    copySecret(webDavToken);
                   }}
                   disabled={webDavToken === ""}
                 >
@@ -184,34 +224,16 @@ function Content() {
         </CardContent>
         <CardFooter className="gap-2">
           <Button
+            disabled={generateTokenMutation.isPending}
             onClick={() => {
-              if (transport === null) {
-                return;
-              }
-
-              const clientService = createRpcClient(ClientService, transport);
-              toast.promise(
-                Effect.runPromise(clientService.generateWebDAVToken({})).then(
-                  (response) => {
-                    setWebDavToken(response.token);
-                    copyToClipboard(response.token);
-                  },
-                ),
-                {
-                  loading: t("access.token.generating"),
-                  success: t("access.token.success"),
-                  error: (error) => {
-                    console.error(error);
-                    return {
-                      message: t("access.token.error"),
-                      description: ConnectError.from(error).rawMessage,
-                    };
-                  },
-                },
-              );
+              generateTokenMutation.mutate("webdav");
             }}
           >
-            <PlusIcon />
+            {generatingKind === "webdav" ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              <PlusIcon />
+            )}
             <span>{t("access.token.generate")}</span>
           </Button>
           <Button
@@ -279,7 +301,7 @@ function Content() {
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    copyToClipboard(apiToken);
+                    copySecret(apiToken);
                   }}
                   disabled={apiToken === ""}
                 >
@@ -295,34 +317,16 @@ function Content() {
         </CardContent>
         <CardFooter className="gap-2">
           <Button
+            disabled={generateTokenMutation.isPending}
             onClick={() => {
-              if (transport === null) {
-                return;
-              }
-
-              const clientService = createRpcClient(ClientService, transport);
-              toast.promise(
-                Effect.runPromise(clientService.generateAPIToken({})).then(
-                  (response) => {
-                    setApiToken(response.token);
-                    copyToClipboard(response.token);
-                  },
-                ),
-                {
-                  loading: t("access.token.generating"),
-                  success: t("access.token.success"),
-                  error: (error) => {
-                    console.error(error);
-                    return {
-                      message: t("access.token.error"),
-                      description: ConnectError.from(error).rawMessage,
-                    };
-                  },
-                },
-              );
+              generateTokenMutation.mutate("api");
             }}
           >
-            <PlusIcon />
+            {generatingKind === "api" ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              <PlusIcon />
+            )}
             <span>{t("access.token.generate")}</span>
           </Button>
           <Button

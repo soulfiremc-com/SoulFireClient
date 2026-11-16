@@ -191,6 +191,7 @@ function Content() {
               GlobalPermission.UPDATE_SELF_USERNAME,
             )
           }
+          demo={transport === null}
           onSave={setUsernameMutation.mutateAsync}
         />
         <ProfileField
@@ -202,6 +203,7 @@ function Content() {
           disabled={
             !hasGlobalPermission(clientInfo, GlobalPermission.UPDATE_SELF_EMAIL)
           }
+          demo={transport === null}
           onSave={setEmailMutation.mutateAsync}
         />
       </div>
@@ -216,6 +218,7 @@ function ProfileField({
   value,
   schema,
   disabled,
+  demo,
   onSave,
 }: {
   name: "username" | "email";
@@ -224,6 +227,7 @@ function ProfileField({
   value: string;
   schema: Schema.Codec<string, string>;
   disabled: boolean;
+  demo: boolean;
   onSave: (value: string) => Promise<void>;
 }) {
   const { t } = useTranslation("common");
@@ -233,6 +237,11 @@ function ProfileField({
     validators: { onSubmit: toFormSchema(Schema.Struct({ value: schema })) },
     onSubmit: async ({ value: fields, formApi }) => {
       if (fields.value === value) return;
+      if (demo) {
+        formApi.reset({ value });
+        toast.info(t("demoReadOnly"));
+        return;
+      }
       try {
         await onSave(fields.value);
         formApi.reset({ value: fields.value });
@@ -298,7 +307,10 @@ function ProfileField({
                       )}
                     </InputGroup>
                     <FieldDescription id={`${id}-description`}>
-                      {description}
+                      {description}{" "}
+                      {disabled
+                        ? t("userSettings.noPermission")
+                        : t("userSettings.autoSave")}
                     </FieldDescription>
                     {invalid ? (
                       <FieldError errors={field.state.meta.errors} />

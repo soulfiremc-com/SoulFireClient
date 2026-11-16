@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { LoaderCircleIcon } from "lucide-react";
+import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
@@ -19,12 +20,24 @@ export function ConfirmDialog(props: {
   title: string;
   description: string;
   confirmLabel: string;
-  onConfirm: () => void;
+  /**
+   * Return a promise to keep the dialog open with a pending state until the
+   * action settles. Callers report errors themselves.
+   */
+  onConfirm: () => void | Promise<unknown>;
 }) {
   const { t } = useTranslation("common");
+  const [pending, setPending] = useState(false);
 
   return (
-    <AlertDialog open={props.open} onOpenChange={props.onOpenChange}>
+    <AlertDialog
+      open={props.open}
+      onOpenChange={(open) => {
+        if (!pending) {
+          props.onOpenChange(open);
+        }
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>{props.icon}</AlertDialogMedia>
@@ -32,14 +45,36 @@ export function ConfirmDialog(props: {
           <AlertDialogDescription>{props.description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogCancel disabled={pending}>
+            {t("cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
+            disabled={pending}
             onClick={() => {
-              props.onOpenChange(false);
-              props.onConfirm();
+              const result = props.onConfirm();
+              if (!(result instanceof Promise)) {
+                props.onOpenChange(false);
+                return;
+              }
+
+              setPending(true);
+              void result
+                .catch(() => {
+                  // The caller reports the error.
+                })
+                .finally(() => {
+                  setPending(false);
+                  props.onOpenChange(false);
+                });
             }}
           >
+            {pending && (
+              <LoaderCircleIcon
+                className="animate-spin"
+                data-icon="inline-start"
+              />
+            )}
             {props.confirmLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
