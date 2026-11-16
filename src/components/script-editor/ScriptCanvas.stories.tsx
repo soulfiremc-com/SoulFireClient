@@ -83,7 +83,7 @@ function ScriptCanvasExample() {
     return queryClient;
   });
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+    <ThemeProvider attribute="class" forcedTheme="light" enableSystem={false}>
       <QueryClientProvider client={client}>
         <ScriptEditorProvider session={editor}>
           <ReactFlowProvider>

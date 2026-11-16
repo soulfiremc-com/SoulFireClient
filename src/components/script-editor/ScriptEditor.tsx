@@ -53,6 +53,18 @@ function isCanvasShortcutTarget(container: Element, target: EventTarget) {
   );
 }
 
+/**
+ * next-themes resolves the theme after the first render. Until then, follow
+ * the theme class already on the page, so the canvas never mixes dark node
+ * colors with light text.
+ */
+function canvasColorMode(resolvedTheme: string | undefined): ColorMode {
+  if (resolvedTheme === "light" || resolvedTheme === "dark") {
+    return resolvedTheme;
+  }
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
 export function ScriptEditor() {
   const editor = useScriptEditor();
   const { t } = useTranslation("instance");
@@ -916,7 +928,7 @@ export function ScriptEditor() {
           onReconnectStart={handleReconnectStart}
           onReconnect={handleReconnect}
           onReconnectEnd={handleReconnectEnd}
-          colorMode={(resolvedTheme as ColorMode) ?? "dark"}
+          colorMode={canvasColorMode(resolvedTheme)}
           minZoom={0.1}
           snapToGrid
           snapGrid={[16, 16]}
