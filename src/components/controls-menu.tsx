@@ -6,9 +6,10 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useRouteContext } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import {
   ChevronDownIcon,
+  CircleAlertIcon,
   LoaderCircleIcon,
   PlayIcon,
   RefreshCwIcon,
@@ -20,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { Alert, AlertDescription } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Field,
@@ -48,10 +50,15 @@ import { parseBotStartCount, selectBotsToStart } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
-import { applyGeneratedAccounts, hasInstancePermission } from "@/lib/utils.tsx";
+import {
+  applyGeneratedAccounts,
+  getSettingValue,
+  hasInstancePermission,
+} from "@/lib/utils.tsx";
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
+  const { t: tInstance } = useTranslation("instance");
   const posthog = usePostHog();
   const { instanceInfoQueryOptions, metricsQueryOptions } = useRouteContext({
     from: "/_dashboard/instance/$instance",
@@ -172,7 +179,10 @@ export default function ControlsMenu() {
     },
     onSuccess: (bots) => {
       if (isPostHogConfigured && bots.length > 0) {
-        posthog.capture("bot_start_completed", { bot_count: bots.length });
+        posthog.capture("bot_start_completed", {
+          bot_count: bots.length,
+          source: "controls",
+        });
       }
     },
     onSettled: invalidateBotQueries,
@@ -243,11 +253,17 @@ export default function ControlsMenu() {
         instanceInfoQueryOptions.queryKey,
       );
       if (pendingStartCount !== null) {
-        await startBots(
+        const bots = await startBots(
           pendingStartCount === Number.MAX_SAFE_INTEGER
             ? undefined
             : pendingStartCount,
         );
+        if (isPostHogConfigured && bots.length > 0) {
+          posthog.capture("bot_start_completed", {
+            bot_count: bots.length,
+            source: "controls",
+          });
+        }
       }
     },
     onSettled: async () => {
@@ -284,6 +300,30 @@ export default function ControlsMenu() {
 
   const showCountError =
     !startUnavailable && startCount !== "" && !validStartCount;
+
+  // Show where bots go before they start. Failed first starts often come
+  // from a server address that was never changed from the default.
+  const definitions = instanceInfo.settingsDefinitions;
+  const addressDefinition = definitions.find(
+    (d) => d.id?.namespace === "bot" && d.id.key === "address",
+  );
+  const versionDefinition = definitions.find(
+    (d) => d.id?.namespace === "bot" && d.id.key === "protocol-version",
+  );
+  const address = String(
+    getSettingValue(instanceInfo.profile, addressDefinition) ?? "",
+  );
+  const usesDefaultAddress =
+    addressDefinition?.type.case === "string" &&
+    address === addressDefinition.type.value.def;
+  const version = String(
+    getSettingValue(instanceInfo.profile, versionDefinition) ?? "",
+  );
+  const versionName =
+    versionDefinition?.type.case === "combo"
+      ? (versionDefinition.type.value.options.find((o) => o.id === version)
+          ?.displayName ?? version)
+      : version;
 
   return (
     <>
@@ -322,6 +362,29 @@ export default function ControlsMenu() {
                 )}
               </PopoverDescription>
             </PopoverHeader>
+            {address !== "" && !startUnavailable && (
+              <div className="flex flex-col gap-2 text-sm">
+                <p>
+                  {t("controls.target", { address, version: versionName })}{" "}
+                  <Link
+                    className="underline underline-offset-3"
+                    to="/instance/$instance/settings/$pageId"
+                    params={{ instance: instanceInfo.id, pageId: "bot" }}
+                    onClick={() => setStartOpen(false)}
+                  >
+                    {t("controls.changeTarget")}
+                  </Link>
+                </p>
+                {usesDefaultAddress && (
+                  <Alert>
+                    <CircleAlertIcon />
+                    <AlertDescription>
+                      {tInstance("setup.start.defaultAddress", { address })}
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+            )}
             <form
               onSubmit={(event) => {
                 event.preventDefault();

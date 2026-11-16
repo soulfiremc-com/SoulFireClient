@@ -20,6 +20,7 @@ import {
   SparklesIcon,
   UsersIcon,
 } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 import { use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -53,6 +54,7 @@ import {
   selectBotsToStart,
 } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { isPostHogConfigured } from "@/lib/posthog.ts";
 import {
   dismissFirstBotSetup,
   getFirstBotSetupState,
@@ -205,6 +207,7 @@ export function FirstBotSetup({
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
+  const posthog = usePostHog();
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
     select: (context) => context.instanceInfoQueryOptions,
@@ -292,12 +295,12 @@ export function FirstBotSetup({
     mutationKey: ["bots", "start", instanceInfo.id],
     scope: { id: `bot-state-${instanceInfo.id}` },
     mutationFn: async (count: number) => {
-      if (transport === null) return;
+      if (transport === null) return [];
       const client = createRpcClient(BotService, transport);
       const latest = await Effect.runPromise(
         client.getBotList({ instanceId: instanceInfo.id }),
       );
-      await Effect.runPromise(
+      const response = await Effect.runPromise(
         client.setBotsDesiredState({
           instanceId: instanceInfo.id,
           botIds: selectBotsToStart(
@@ -309,8 +312,18 @@ export function FirstBotSetup({
           desiredState: BotDesiredState.RUNNING,
         }),
       );
+      return response.bots;
     },
-    onSuccess: () => setStarting(true),
+    onSuccess: (bots) => {
+      setStarting(true);
+      // Count guide starts too, or the first-run funnel misses these users.
+      if (isPostHogConfigured && bots.length > 0) {
+        posthog.capture("bot_start_completed", {
+          bot_count: bots.length,
+          source: "setup_guide",
+        });
+      }
+    },
     onError: (error) =>
       toast.error(t("setup.start.error"), { description: error.message }),
     onSettled: async () => {

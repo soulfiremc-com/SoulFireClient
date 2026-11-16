@@ -199,6 +199,8 @@
     "availableCount_other": "{{count}} stopped bots available.",
     "generateFirst": "This project has no accounts yet. Create offline accounts to start, or add other accounts on the Accounts page.",
     "startCountHelp": "Starts stopped bots. Bots that already run stay connected.",
+    "target": "Bots join {{address}} ({{version}}).",
+    "changeTarget": "Change server",
     "startSelected_one": "Start {{count}} bot",
     "startSelected_other": "Start {{count}} bots",
     "startAllCount": "Start all {{count}}",
