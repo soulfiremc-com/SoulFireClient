@@ -17,7 +17,6 @@ import {
   CheckIcon,
   ChevronRightIcon,
   ClipboardIcon,
-  FileArchiveIcon,
   HeartHandshakeIcon,
   KeyRoundIcon,
   LoaderCircleIcon,
@@ -53,6 +52,7 @@ import {
 } from "@/components/IntegratedServerDiagnostics";
 import { ConnectionChoices } from "@/components/launcher/connection-choices.tsx";
 import { ConnectionFailure } from "@/components/launcher/connection-failure";
+import { withDefaultServerScheme } from "@/components/launcher/server-address.ts";
 import {
   StartupFailureNotice,
   StartupProgress,
@@ -121,6 +121,7 @@ import {
 } from "@/components/ui/input-otp";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import {
   LoginService,
@@ -312,9 +313,14 @@ function Index() {
             jvmArgs:
               args === null
                 ? DEFAULT_JVM_ARGS
-                : args.split(" ").filter((str) => str !== ""),
+                : args.split(/\s+/).filter((str) => str !== ""),
           });
-          if (attempt.cancelled || credentials === null) return;
+          if (attempt.cancelled) return;
+          if (credentials === null) {
+            // Another window or process stopped this startup.
+            onError();
+            return;
+          }
           await redirectWithCredentials(
             "integrated",
             credentials.address,
@@ -369,7 +375,7 @@ function Index() {
           fill={`url(#${circuitPatternId})`}
         />
       </svg>
-      <div className="relative min-h-0 flex-1 overflow-y-auto px-4">
+      <div className="relative min-h-0 flex-1 overflow-y-auto px-4 pb-(--cookie-banner-offset)">
         <main className="flex min-h-full w-full flex-col">
           <div className="m-auto flex w-full max-w-2xl flex-col gap-4 py-6">
             <ExternalLink
@@ -554,7 +560,6 @@ function DefaultMenu(props: {
     <ConnectionChoices
       demoMode={demo}
       canRunLocally={!demo && systemInfo !== null}
-      isDesktop={systemInfo !== null}
       savedServer={
         hasSavedServer
           ? { address: localStorage.getItem("server-address") }
@@ -593,6 +598,16 @@ function IntegratedMenu({
   const [integratedState, setIntegratedState] = useState<IntegratedState>(
     autoStart ? "loading" : "configure",
   );
+  // Counts failures in a row, so a retry that fails again still gives feedback.
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const startWithFeedback = useCallback(
+    (onError: () => void) =>
+      startIntegratedServer(() => {
+        setFailedAttempts((count) => count + 1);
+        onError();
+      }),
+    [startIntegratedServer],
+  );
   useEffect(() => {
     if (!autoStart || hasAutoStarted.current) {
       return;
@@ -600,16 +615,19 @@ function IntegratedMenu({
 
     hasAutoStarted.current = true;
     onAutoStart();
-    startIntegratedServer(() => setIntegratedState("error"));
-  }, [autoStart, onAutoStart, startIntegratedServer]);
+    startWithFeedback(() => setIntegratedState("error"));
+  }, [autoStart, onAutoStart, startWithFeedback]);
 
   switch (integratedState) {
     case "configure":
       return (
         <IntegratedConfigureMenu
           setLoginType={setLoginType}
-          setIntegratedState={setIntegratedState}
-          startIntegratedServer={startIntegratedServer}
+          setIntegratedState={(state) => {
+            if (state !== "error") setFailedAttempts(0);
+            setIntegratedState(state);
+          }}
+          startIntegratedServer={startWithFeedback}
         />
       );
     case "loading":
@@ -624,9 +642,10 @@ function IntegratedMenu({
     case "error":
       return (
         <IntegratedErrorMenu
+          failedAttempts={failedAttempts}
           setLoginType={setLoginType}
           setIntegratedState={setIntegratedState}
-          startIntegratedServer={startIntegratedServer}
+          startIntegratedServer={startWithFeedback}
         />
       );
     case "mobile":
@@ -667,6 +686,10 @@ function IntegratedConfigureMenu({
   const [importingCustomJar, setImportingCustomJar] = useState(false);
   const autoStartId = useId();
   const softwareRenderingId = useId();
+  const jarSourceLabelId = useId();
+  const defaultJvmArgs = systemInfo?.mobile
+    ? DEFAULT_MOBILE_JVM_ARGS_STRING
+    : DEFAULT_JVM_ARGS_STRING;
   const [forceSoftwareRendering, setForceSoftwareRendering] = useState(
     () =>
       localStorage.getItem(LOCAL_STORAGE_FORCE_SOFTWARE_RENDERING) === "true",
@@ -680,9 +703,7 @@ function IntegratedConfigureMenu({
       jarSource: initialJarSource,
       jvmArgs:
         localStorage.getItem(LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS) ??
-        (systemInfo?.mobile
-          ? DEFAULT_MOBILE_JVM_ARGS_STRING
-          : DEFAULT_JVM_ARGS_STRING),
+        defaultJvmArgs,
     },
     validators: {
       onSubmit: toFormSchema(integratedServerFormSchema),
@@ -853,6 +874,7 @@ function IntegratedConfigureMenu({
 
   return (
     <form
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         void form.handleSubmit();
@@ -960,46 +982,50 @@ function IntegratedConfigureMenu({
                         <FieldLabel htmlFor={field.name}>
                           {t("integrated.form.jvmArgs.title")}
                         </FieldLabel>
-                        <div className="flex flex-row gap-2">
-                          <Input
-                            id={field.name}
-                            name={field.name}
-                            type="text"
-                            inputMode="text"
-                            placeholder={t(
-                              "integrated.form.jvmArgs.placeholder",
-                            )}
-                            value={field.state.value}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => {
-                              field.handleChange(e.target.value);
-                              localStorage.setItem(
-                                LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-                                e.target.value,
-                              );
-                            }}
-                            aria-invalid={isInvalid}
-                          />
+                        <Textarea
+                          id={field.name}
+                          name={field.name}
+                          rows={2}
+                          spellCheck={false}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          placeholder={t("integrated.form.jvmArgs.placeholder")}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onKeyDown={(e) => {
+                            // Keep Enter as "start", like the other launcher fields.
+                            if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault();
+                              e.currentTarget.form?.requestSubmit();
+                            }
+                          }}
+                          onChange={(e) => {
+                            field.handleChange(e.target.value);
+                            localStorage.setItem(
+                              LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
+                              e.target.value,
+                            );
+                          }}
+                          aria-invalid={isInvalid}
+                        />
+                        {field.state.value !== defaultJvmArgs && (
                           <Button
                             type="button"
-                            variant="secondary"
-                            disabled={
-                              field.state.value === DEFAULT_JVM_ARGS_STRING
-                            }
+                            variant="ghost"
+                            size="sm"
+                            className="w-fit"
                             onClick={() => {
-                              field.handleChange(DEFAULT_JVM_ARGS_STRING);
+                              field.handleChange(defaultJvmArgs);
                               localStorage.setItem(
                                 LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-                                DEFAULT_JVM_ARGS_STRING,
+                                defaultJvmArgs,
                               );
                             }}
                           >
-                            <RotateCcwIcon />
-                            <span className="sr-only">
-                              {t("integrated.form.jvmArgs.reset")}
-                            </span>
+                            <RotateCcwIcon data-icon="inline-start" />
+                            {t("integrated.form.jvmArgs.reset")}
                           </Button>
-                        </div>
+                        )}
                         <FieldDescription>
                           <Trans
                             i18nKey="login:integrated.form.jvmArgs.description"
@@ -1017,88 +1043,47 @@ function IntegratedConfigureMenu({
                 </form.Field>
                 {!systemInfo?.mobile && (
                   <Field>
-                    <FieldLabel>
-                      {t("integrated.form.jar.title", {
-                        defaultValue: "Server jar",
-                      })}
+                    <FieldLabel id={jarSourceLabelId}>
+                      {t("integrated.form.jar.title")}
                     </FieldLabel>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button
-                        type="button"
-                        variant={
-                          selectedJarSource === "official"
-                            ? "secondary"
-                            : "outline"
+                    <RadioGroup
+                      aria-labelledby={jarSourceLabelId}
+                      value={selectedJarSource}
+                      onValueChange={(value) => {
+                        if (value === "custom") {
+                          selectCustomJarSource();
+                        } else {
+                          selectOfficialJarSource();
                         }
-                        onClick={selectOfficialJarSource}
-                      >
-                        <ServerIcon />
-                        {t("integrated.form.jar.official", {
-                          defaultValue: "Official",
-                        })}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant={
-                          selectedJarSource === "custom"
-                            ? "secondary"
-                            : "outline"
-                        }
-                        onClick={selectCustomJarSource}
-                      >
-                        <FileArchiveIcon />
-                        {t("integrated.form.jar.custom", {
-                          defaultValue: "Custom",
-                        })}
-                      </Button>
-                    </div>
-                    <div className="flex flex-col gap-2 rounded-md border p-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="font-medium text-sm">
-                            {selectedJarSource === "custom"
-                              ? t("integrated.form.jar.customTitle", {
-                                  defaultValue: "Custom server jar",
-                                })
-                              : t("integrated.form.jar.officialTitle", {
-                                  defaultValue: "Official SoulFire server",
-                                })}
-                          </p>
-                          <p className="text-muted-foreground text-xs">
-                            {selectedJarSource === "custom"
-                              ? t("integrated.form.jar.customDescription", {
-                                  defaultValue:
-                                    "Runs an imported jar. It is not verified or auto-updated.",
-                                })
-                              : t("integrated.form.jar.officialDescription", {
-                                  defaultValue:
-                                    "Downloads and verifies the matching SoulFire release.",
-                                })}
-                          </p>
-                        </div>
-                        {selectedJarSource === "custom" && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            disabled={importingCustomJar}
-                            onClick={() => {
-                              void importCustomJar();
-                            }}
-                          >
-                            {importingCustomJar ? (
-                              <LoaderCircleIcon className="animate-spin" />
-                            ) : (
-                              <UploadIcon />
-                            )}
-                            {t("integrated.form.jar.import", {
-                              defaultValue: "Import jar",
-                            })}
-                          </Button>
-                        )}
-                      </div>
-                      {selectedJarSource === "custom" &&
-                        customJars.length > 0 && (
+                      }}
+                    >
+                      {(["official", "custom"] as const).map((source) => (
+                        <FieldLabel
+                          key={source}
+                          htmlFor={`${jarSourceLabelId}-${source}`}
+                        >
+                          <Field orientation="horizontal">
+                            <RadioGroupItem
+                              id={`${jarSourceLabelId}-${source}`}
+                              value={source}
+                            />
+                            <FieldContent>
+                              <FieldTitle>
+                                {t(`integrated.form.jar.${source}Title`)}
+                              </FieldTitle>
+                              <FieldDescription>
+                                {t(`integrated.form.jar.${source}Description`)}
+                              </FieldDescription>
+                            </FieldContent>
+                          </Field>
+                        </FieldLabel>
+                      ))}
+                    </RadioGroup>
+                    {selectedJarSource === "custom" && (
+                      <div className="flex flex-col gap-2 rounded-lg border p-3">
+                        {customJars.length > 0 && (
                           <RadioGroup
+                            aria-label={t("integrated.form.jar.customTitle")}
                             value={selectedCustomJarId}
                             onValueChange={selectCustomJar}
                           >
@@ -1125,34 +1110,46 @@ function IntegratedConfigureMenu({
                                         {jar.sha256.slice(0, 12)}
                                       </FieldDescription>
                                     </FieldContent>
-                                    <Button
-                                      type="button"
-                                      size="icon"
-                                      variant="ghost"
-                                      onClick={(event) => {
-                                        event.preventDefault();
-                                        event.stopPropagation();
-                                        void removeCustomJar(jar.id);
-                                      }}
-                                    >
-                                      <Trash2Icon />
-                                    </Button>
                                   </Field>
                                 </FieldLabel>
+                                <Button
+                                  type="button"
+                                  size="icon"
+                                  variant="ghost"
+                                  aria-label={t("integrated.form.jar.remove", {
+                                    name: jar.originalName,
+                                  })}
+                                  onClick={() => {
+                                    void removeCustomJar(jar.id);
+                                  }}
+                                >
+                                  <Trash2Icon />
+                                </Button>
                               </div>
                             ))}
                           </RadioGroup>
                         )}
-                    </div>
-                    {selectedJarSource === "custom" &&
-                      !hasSelectedCustomJar && (
-                        <FieldDescription>
-                          {t("integrated.form.jar.selectCustomFirst", {
-                            defaultValue:
-                              "Import and select a custom jar before starting.",
-                          })}
-                        </FieldDescription>
-                      )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-fit"
+                          disabled={importingCustomJar}
+                          onClick={() => {
+                            void importCustomJar();
+                          }}
+                        >
+                          {importingCustomJar ? (
+                            <LoaderCircleIcon
+                              className="animate-spin"
+                              data-icon="inline-start"
+                            />
+                          ) : (
+                            <UploadIcon data-icon="inline-start" />
+                          )}
+                          {t("integrated.form.jar.import")}
+                        </Button>
+                      </div>
+                    )}
                   </Field>
                 )}
                 <IntegratedServerSupportActions />
@@ -1272,10 +1269,12 @@ function IntegratedLoadingMenu({
 }
 
 function IntegratedErrorMenu({
+  failedAttempts,
   setLoginType,
   setIntegratedState,
   startIntegratedServer,
 }: {
+  failedAttempts: number;
   setLoginType: (type: LoginType) => void;
   setIntegratedState: (state: IntegratedState) => void;
   startIntegratedServer: (onError: () => void) => void;
@@ -1311,9 +1310,14 @@ function IntegratedErrorMenu({
     <Card>
       <CardHeader>
         <LoginCardTitle title={t("integrated.toast.error")} />
+        {failedAttempts > 1 && (
+          <CardDescription>
+            {t("integrated.failedAttempts", { count: failedAttempts })}
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <StartupFailureNotice failure={failure} />
+        <StartupFailureNotice key={failedAttempts} failure={failure} />
         <div className="flex flex-wrap gap-2">
           <Button
             disabled={resetting}
@@ -1429,6 +1433,7 @@ function IntegratedMobileMenu({
 
   return (
     <form
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         void form.handleSubmit();
@@ -1641,6 +1646,7 @@ function EmailForm({
   setDedicatedType: (type: DedicatedType) => void;
 }) {
   const { t } = useTranslation("login");
+  const [loginError, setLoginError] = useState<unknown>(null);
   const form = useForm({
     defaultValues: {
       address:
@@ -1653,39 +1659,38 @@ function EmailForm({
     onSubmit: async ({ value }) => {
       const address = value.address.trim();
       const email = value.email.trim();
-      const loginService = createRpcClient(
-        LoginService,
-        createAddressOnlyTransport(address),
-      );
-      toast.promise(
-        Effect.runPromise(
-          loginService.login({
-            email: email,
-          }),
-        ).then((response) => {
-          setAuthFlowData({
-            email: email,
-            flowToken: response.authFlowToken,
-            address: address,
-          });
-          setLoginType("EMAIL_CODE");
-        }),
-        {
-          loading: t("dedicated.toast.loading"),
-          success: t("dedicated.toast.success"),
-          error: (e) => {
-            console.error(e);
-            return t("dedicated.toast.error");
-          },
-        },
-      );
+      setLoginError(null);
+      try {
+        const response = await Effect.runPromise(
+          createRpcClient(
+            LoginService,
+            createAddressOnlyTransport(address),
+          ).login({ email }, { timeoutMs: 15_000 }),
+        );
+        setAuthFlowData({
+          email: email,
+          flowToken: response.authFlowToken,
+          address: address,
+        });
+        setLoginType("EMAIL_CODE");
+      } catch (error) {
+        console.error(error);
+        setLoginError(error);
+      }
     },
   });
+  const normalizeAddress = () => {
+    const address = withDefaultServerScheme(form.getFieldValue("address"));
+    form.setFieldValue("address", address);
+    localStorage.setItem(LOCAL_STORAGE_FORM_SERVER_ADDRESS_KEY, address);
+  };
 
   return (
     <form
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
+        normalizeAddress();
         void form.handleSubmit();
       }}
     >
@@ -1710,9 +1715,15 @@ function EmailForm({
                     autoFocus
                     type="url"
                     inputMode="url"
+                    autoComplete="url"
+                    spellCheck={false}
+                    autoCapitalize="off"
                     placeholder={t("dedicated.form.address.placeholder")}
                     value={field.state.value}
-                    onBlur={field.handleBlur}
+                    onBlur={() => {
+                      normalizeAddress();
+                      field.handleBlur();
+                    }}
                     onChange={(e) => {
                       field.handleChange(e.target.value);
                       localStorage.setItem(
@@ -1743,6 +1754,7 @@ function EmailForm({
                     id={field.name}
                     name={field.name}
                     type="email"
+                    autoComplete="email"
                     placeholder={t("dedicated.form.email.placeholder")}
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -1763,6 +1775,7 @@ function EmailForm({
               );
             }}
           </form.Field>
+          <ConnectionFailure error={loginError} />
         </CardContent>
         <CardFooter className="flex flex-col gap-2 max-md:items-stretch md:flex-row">
           <div className="flex grow flex-col justify-between gap-2 max-md:items-stretch md:flex-row">
@@ -1782,10 +1795,27 @@ function EmailForm({
               onValueChange={setDedicatedType}
             />
           </div>
-          <Button type="submit">
-            <LogInIcon />
-            {t("dedicated.form.login")}
-          </Button>
+          <form.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <LoaderCircleIcon
+                    className="animate-spin"
+                    data-icon="inline-start"
+                  />
+                ) : (
+                  <LogInIcon data-icon="inline-start" />
+                )}
+                {t(
+                  isSubmitting ? "connection.checking" : "dedicated.form.login",
+                )}
+              </Button>
+            )}
+          </form.Subscribe>
         </CardFooter>
       </Card>
     </form>
@@ -1820,11 +1850,18 @@ function TokenForm({
       await connection.connect(address, token);
     },
   });
+  const normalizeAddress = () => {
+    const address = withDefaultServerScheme(form.getFieldValue("address"));
+    form.setFieldValue("address", address);
+    localStorage.setItem(LOCAL_STORAGE_FORM_SERVER_ADDRESS_KEY, address);
+  };
 
   return (
     <form
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
+        normalizeAddress();
         void form.handleSubmit();
       }}
     >
@@ -1849,9 +1886,15 @@ function TokenForm({
                     autoFocus
                     type="url"
                     inputMode="url"
+                    autoComplete="url"
+                    spellCheck={false}
+                    autoCapitalize="off"
                     placeholder={t("dedicated.form.address.placeholder")}
                     value={field.state.value}
-                    onBlur={field.handleBlur}
+                    onBlur={() => {
+                      normalizeAddress();
+                      field.handleBlur();
+                    }}
                     onChange={(e) => {
                       field.handleChange(e.target.value);
                       localStorage.setItem(
@@ -1882,6 +1925,7 @@ function TokenForm({
                     id={field.name}
                     name={field.name}
                     type="password"
+                    autoComplete="off"
                     placeholder={t("dedicated.form.token.placeholder")}
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -1927,7 +1971,14 @@ function TokenForm({
             disabled={connection.connecting}
             aria-busy={connection.connecting}
           >
-            <LogInIcon />
+            {connection.connecting ? (
+              <LoaderCircleIcon
+                className="animate-spin"
+                data-icon="inline-start"
+              />
+            ) : (
+              <LogInIcon data-icon="inline-start" />
+            )}
             {t(
               connection.connecting
                 ? "connection.checking"

@@ -9,7 +9,7 @@ import {
   PickaxeIcon,
   ServerIcon,
 } from "lucide-react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -112,11 +112,42 @@ function ChoiceButton(props: {
   );
 }
 
+function LinkChoice(props: {
+  href: string;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}) {
+  const Icon = props.icon;
+  return (
+    <div role="listitem">
+      <Item
+        variant="outline"
+        className="hover:bg-muted rounded-lg"
+        render={<ExternalLink href={props.href} />}
+      >
+        <ItemMedia variant="icon">
+          <Icon />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>{props.title}</ItemTitle>
+          <ItemDescription className="line-clamp-none">
+            {props.description}
+          </ItemDescription>
+        </ItemContent>
+        <ExternalLinkIcon
+          aria-hidden="true"
+          className="text-muted-foreground size-4"
+        />
+      </Item>
+    </div>
+  );
+}
+
 /** The first decision: where the SoulFire server runs. */
 export function ConnectionChoices(props: {
   demoMode: boolean;
   canRunLocally: boolean;
-  isDesktop: boolean;
   savedServer: { address: string | null } | null;
   onContinueSaved: () => void;
   onEnterDemo: () => void;
@@ -158,19 +189,26 @@ export function ConnectionChoices(props: {
               onSelect={props.onEnterDemo}
             />
           )}
-          <ChoiceButton
-            autoFocus={props.canRunLocally}
-            disabled={!props.canRunLocally}
-            recommended={props.canRunLocally}
-            icon={LaptopMinimalIcon}
-            title={t("connect.integrated.title")}
-            description={
-              props.canRunLocally || props.demoMode
-                ? t("connect.integrated.description")
-                : t("connect.integrated.webDescription")
-            }
-            onSelect={props.onRunLocally}
-          />
+          {props.canRunLocally || props.demoMode ? (
+            <ChoiceButton
+              autoFocus={props.canRunLocally}
+              disabled={!props.canRunLocally}
+              recommended={props.canRunLocally}
+              icon={LaptopMinimalIcon}
+              title={t("connect.integrated.title")}
+              description={t("connect.integrated.description")}
+              onSelect={props.onRunLocally}
+            />
+          ) : (
+            // A browser cannot start a local server, so link to the desktop
+            // app instead of showing a disabled choice.
+            <LinkChoice
+              href="https://soulfiremc.com/docs/installation?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-desktop"
+              icon={MonitorDownIcon}
+              title={t("connect.integrated.title")}
+              description={t("connect.integrated.webDescription")}
+            />
+          )}
           <ChoiceButton
             autoFocus={!props.canRunLocally && !props.demoMode}
             disabled={props.demoMode}
@@ -180,54 +218,14 @@ export function ConnectionChoices(props: {
             onSelect={props.onConnectExisting}
           />
           {!props.demoMode && (
-            <div role="listitem">
-              <Item
-                variant="outline"
-                className="hover:bg-muted rounded-lg"
-                render={
-                  <ExternalLink
-                    href={`${getAppUrl(APP_ENVIRONMENT, true)}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-demo`}
-                  />
-                }
-              >
-                <ItemMedia variant="icon">
-                  <FlaskConicalIcon />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{t("connect.demo.title")}</ItemTitle>
-                  <ItemDescription className="line-clamp-none">
-                    {t("connect.demo.linkDescription")}
-                  </ItemDescription>
-                </ItemContent>
-                <ExternalLinkIcon
-                  aria-hidden="true"
-                  className="text-muted-foreground size-4"
-                />
-              </Item>
-            </div>
+            <LinkChoice
+              href={`${getAppUrl(APP_ENVIRONMENT, true)}?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-demo`}
+              icon={FlaskConicalIcon}
+              title={t("connect.demo.title")}
+              description={t("connect.demo.linkDescription")}
+            />
           )}
         </ItemGroup>
-        {!props.isDesktop && !props.demoMode && (
-          <p className="text-muted-foreground flex items-start gap-2 text-sm">
-            <MonitorDownIcon
-              aria-hidden="true"
-              className="mt-0.5 size-4 shrink-0"
-            />
-            <span>
-              <Trans
-                i18nKey="login:connect.integrated.getDesktop"
-                components={{
-                  a: (
-                    <ExternalLink
-                      href="https://soulfiremc.com/docs/installation?utm_source=soulfire-client&utm_medium=app&utm_campaign=login-desktop"
-                      className="underline underline-offset-3"
-                    />
-                  ),
-                }}
-              />
-            </span>
-          </p>
-        )}
       </CardContent>
     </Card>
   );

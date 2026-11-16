@@ -9,7 +9,6 @@ const meta = {
   args: {
     demoMode: false,
     canRunLocally: true,
-    isDesktop: true,
     savedServer: null,
     onContinueSaved: fn(),
     onEnterDemo: fn(),
@@ -40,15 +39,19 @@ export const Desktop: Story = {
 };
 
 export const Web: Story = {
-  args: { canRunLocally: false, isDesktop: false },
+  args: { canRunLocally: false },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    // The browser cannot run a server, so the choice leads to the desktop app.
     await expect(
-      canvas.getByRole("button", { name: /Run on this computer/ }),
-    ).toBeDisabled();
+      canvas.getByRole("link", { name: /Run on this computer/ }),
+    ).toHaveAttribute(
+      "href",
+      expect.stringContaining("soulfiremc.com/docs/installation"),
+    );
     await expect(
-      canvas.getByText(/Needs the SoulFire desktop app/),
-    ).toBeVisible();
+      canvas.queryByRole("button", { name: /Run on this computer/ }),
+    ).toBeNull();
     await expect(
       canvas.getByRole("link", { name: /Try the demo/ }),
     ).toBeVisible();
@@ -56,7 +59,7 @@ export const Web: Story = {
 };
 
 export const DemoMode: Story = {
-  args: { demoMode: true, canRunLocally: false, isDesktop: false },
+  args: { demoMode: true, canRunLocally: false },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(

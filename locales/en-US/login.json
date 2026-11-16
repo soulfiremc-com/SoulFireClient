@@ -19,8 +19,7 @@
     "integrated": {
       "title": "Run on this computer",
       "description": "SoulFire downloads and starts a local SoulFire server for you. You do not need to install Java or configure anything.",
-      "webDescription": "Needs the SoulFire desktop app. A browser cannot start a local server.",
-      "getDesktop": "Want to run bots on this computer? <a>Get the desktop app</a>."
+      "webDescription": "Needs the SoulFire desktop app. Opens the download page."
     },
     "dedicated": {
       "title": "Connect to a SoulFire server",
@@ -51,6 +50,8 @@
       "error": "The local SoulFire server did not start"
     },
     "retry": "Try again",
+    "failedAttempts_one": "Startup failed {{count}} time in a row.",
+    "failedAttempts_other": "Startup failed {{count}} times in a row.",
     "reset": {
       "button": "Reset local data",
       "loading": "Resetting SoulFire data...",
@@ -66,7 +67,7 @@
         "title": "JVM arguments",
         "description": "Java VM arguments for SoulFire. Add <bold>-Xmx4G</bold> to use 4 GB of RAM. The default is 25% of available RAM.",
         "placeholder": "Your JVM arguments here",
-        "reset": "Reset JVM arguments to the default"
+        "reset": "Reset to default"
       },
       "back": "Back",
       "start": "Start local server",
@@ -79,6 +80,7 @@
         "officialDescription": "Downloads and verifies the matching SoulFire release.",
         "customDescription": "Runs an imported jar. SoulFire does not verify or update it.",
         "import": "Import jar",
+        "remove": "Remove {{name}}",
         "importSuccess": "Imported {{name}}",
         "importError": "Could not import the custom SoulFire jar",
         "selectCustomFirst": "Import and select a custom jar before starting.",
@@ -173,11 +175,6 @@
   },
   "dedicated": {
     "description": "Enter the address of the SoulFire server, then sign in. Your Minecraft server address goes in a later step.",
-    "toast": {
-      "loading": "Connecting to server...",
-      "success": "Connected to server",
-      "error": "Could not connect to server"
-    },
     "form": {
       "address": {
         "title": "Address",

@@ -1,5 +1,5 @@
 import { CookieIcon } from "lucide-react";
-import { useId } from "react";
+import { useEffect, useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link";
 import { Button } from "@/components/ui/button";
@@ -24,9 +24,31 @@ export function CookieConsentBanner({
 }) {
   const { t } = useTranslation("common");
   const titleId = useId();
+  const bannerRef = useRef<HTMLElement>(null);
+
+  // Publish the space the banner covers, so pages can scroll their primary
+  // actions above it while a choice is pending.
+  useEffect(() => {
+    const banner = bannerRef.current;
+    if (!banner) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() => {
+      const offset = window.innerHeight - banner.getBoundingClientRect().top;
+      root.style.setProperty(
+        "--cookie-banner-offset",
+        `${Math.max(0, Math.ceil(offset))}px`,
+      );
+    });
+    observer.observe(banner);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--cookie-banner-offset");
+    };
+  }, []);
 
   return (
     <section
+      ref={bannerRef}
       data-cookie-consent-banner=""
       aria-labelledby={titleId}
       className="ph-no-capture fixed inset-x-3 bottom-3 z-50 max-h-[calc(100dvh-6rem)] overflow-y-auto sm:right-auto sm:bottom-4 sm:left-4 sm:w-96"
