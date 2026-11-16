@@ -106,7 +106,14 @@ export function WindowControls({
     let disposed = false;
     let unlisten: null | (() => void) = null;
     const syncWindowState = async () => {
-      const maximized = await appWindow.isMaximized();
+      let maximized: boolean;
+      try {
+        maximized = await appWindow.isMaximized();
+      } catch {
+        // The POV window can close while a sync is pending. Keep the last
+        // known state instead of reporting an unhandled rejection.
+        return;
+      }
       if (!disposed) {
         setIsMaximized(maximized);
       }

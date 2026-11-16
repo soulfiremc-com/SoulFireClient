@@ -96,5 +96,8 @@ export function startUpdater(): void {
     electronLog.error("Auto-update failed", error);
   });
 
-  void autoUpdater.checkForUpdates();
+  // The "error" handler above logs failed checks, for example when the device
+  // is offline. The promise still rejects, so catch it to avoid an unhandled
+  // rejection in the main process.
+  autoUpdater.checkForUpdates().catch(() => {});
 }
