@@ -58,7 +58,7 @@ function forType(userList: UserListResponse, type: UserRole) {
   return userList.users.filter((user) => user.role === type).length;
 }
 
-export function UsersChart(props: { userList: UserListResponse }) {
+function UsersChart(props: { userList: UserListResponse }) {
   const { t } = useTranslation("admin");
   const chartData = useMemo(
     () => [
@@ -159,7 +159,7 @@ const instancesChartConfig = {
   },
 } satisfies ChartConfig;
 
-export function InstancesChart(props: { instanceList: InstanceListResponse }) {
+function InstancesChart(props: { instanceList: InstanceListResponse }) {
   const { t } = useTranslation("admin");
   const chartData = useMemo(
     () => [

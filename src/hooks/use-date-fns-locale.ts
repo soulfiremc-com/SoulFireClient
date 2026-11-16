@@ -1,16 +1,33 @@
-import type { Locale } from "date-fns/locale";
-import * as locales from "date-fns/locale";
-import { useMemo } from "react";
+import type { Locale } from "date-fns";
+import { useEffect, useReducer } from "react";
 import { useTranslation } from "react-i18next";
-
-const localeCast = locales as Record<string, Locale | undefined>;
+import {
+  getLoadedDateFnsLocale,
+  isDateFnsLocaleLoaded,
+  loadDateFnsLocale,
+} from "@/lib/date-fns-locale.ts";
 
 export function useDateFnsLocale(): Locale {
   const { i18n } = useTranslation();
-  return useMemo(() => {
-    const language = i18n.resolvedLanguage ?? i18n.language ?? "en-US";
-    const langPart = language.substring(0, 2);
+  const language = i18n.resolvedLanguage ?? i18n.language ?? "en-US";
+  const [, rerender] = useReducer((count: number) => count + 1, 0);
 
-    return localeCast[language] ?? localeCast[langPart] ?? locales.enUS;
-  }, [i18n.resolvedLanguage, i18n.language]);
+  useEffect(() => {
+    if (isDateFnsLocaleLoaded(language)) return;
+
+    let active = true;
+    loadDateFnsLocale(language).then(
+      () => {
+        if (active) rerender();
+      },
+      () => {
+        // Keep the English fallback when the locale chunk fails to load.
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [language]);
+
+  return getLoadedDateFnsLocale(language);
 }

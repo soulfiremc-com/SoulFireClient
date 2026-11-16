@@ -1,11 +1,6 @@
 import type { LucideProps } from "lucide-react";
-import dynamicIconImports from "lucide-react/dynamicIconImports";
-import tags from "lucide-static/tags.json" with { type: "json" };
+import type dynamicIconImports from "lucide-react/dynamicIconImports";
 import React, { Suspense } from "react";
-
-export function getAllIconTags() {
-  return Object.entries(tags);
-}
 
 export type LucideIconName = keyof typeof dynamicIconImports;
 
@@ -18,30 +13,29 @@ const cache = new Map<
   React.LazyExoticComponent<React.ComponentType<LucideProps>>
 >();
 
-function convertUnsafeIconName(name: string): LucideIconName | null {
-  if (name in dynamicIconImports) {
-    return name as LucideIconName;
-  }
+const FALLBACK_ICON: LucideIconName = "settings";
 
-  return null;
+// The import map lists every Lucide icon, so load it on first use instead of
+// keeping it in the startup bundle.
+function loadIcon(name: string) {
+  return import("lucide-react/dynamicIconImports").then(({ default: icons }) =>
+    name in icons ? icons[name as LucideIconName]() : icons[FALLBACK_ICON](),
+  );
 }
 
-function loadCachedIcon(name: LucideIconName) {
+function loadCachedIcon(name: string) {
   const value = cache.get(name);
   if (value !== undefined) {
     return value;
   }
 
-  const lazyValue = React.lazy(dynamicIconImports[name]);
+  const lazyValue = React.lazy(() => loadIcon(name));
   cache.set(name, lazyValue);
   return lazyValue;
 }
 
-const FALLBACK_ICON: LucideIconName = "settings";
-
 const DynamicIcon = React.memo(({ name, ...props }: IconProps) => {
-  const iconName = convertUnsafeIconName(name) ?? FALLBACK_ICON;
-  const LazyIcon = loadCachedIcon(iconName);
+  const LazyIcon = loadCachedIcon(name);
 
   return (
     <Suspense fallback={<div className={props.className} />}>

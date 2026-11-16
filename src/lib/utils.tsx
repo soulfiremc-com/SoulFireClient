@@ -5,8 +5,6 @@ import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import { type ClassValue, clsx } from "clsx";
-import type { FlagComponent } from "country-flag-icons/react/1x1";
-import * as Flags from "country-flag-icons/react/3x2";
 import { sha256 } from "js-sha256";
 import type { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
@@ -35,6 +33,7 @@ import { ServerService } from "@/generated/soulfire/server_pb";
 import { mergeAccounts } from "@/lib/account-list.ts";
 import { isDemoHostname } from "@/lib/app-deployment.ts";
 import { desktop } from "@/lib/desktop.ts";
+import { getLanguageFlag } from "@/lib/language-flags.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
 import { removeProxyEntries } from "@/lib/proxy-selection.ts";
 import {
@@ -54,17 +53,6 @@ import {
 export const ROOT_USER_ID = "00000000-0000-0000-0000-000000000000";
 const LOCAL_STORAGE_TERMINAL_THEME_KEY = "terminal-theme";
 const LOCAL_STORAGE_DEMO_MODE_KEY = "demo-mode";
-
-const emojiMap = APP_LOCALES.split(",").reduce<Record<string, FlagComponent>>(
-  (acc, locale) => {
-    const countryCode = locale.split("-")[1];
-    if (!countryCode) return acc;
-
-    acc[countryCode] = Flags[countryCode as keyof typeof Flags];
-    return acc;
-  },
-  {},
-);
 
 export function setTerminalTheme(theme: string) {
   localStorage.setItem(LOCAL_STORAGE_TERMINAL_THEME_KEY, theme);
@@ -166,10 +154,7 @@ export function languageEmoji(locale: string): ReactNode {
     return "🏴‍☠️";
   }
 
-  const countryCode = locale.split("-")[1];
-  if (!countryCode) return "";
-
-  const Flag = emojiMap[countryCode];
+  const Flag = getLanguageFlag(locale);
   if (!Flag) return "";
 
   return <Flag className="mx-1 size-4 align-middle" />;

@@ -1,11 +1,5 @@
 import type { Interceptor, Transport } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
-import {
-  AuthType,
-  createClient as createWebDAV,
-  type WebDAVClient,
-} from "webdav";
-import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import i18n from "@/lib/i18n.ts";
 import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { resetQuerySession } from "@/lib/query-session.ts";
@@ -67,31 +61,6 @@ export const getServerType = () => {
 
 export const getServerAddress = () =>
   localStorage.getItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
-
-export const getOrGenerateWebDAVToken = (generator: () => string): string => {
-  let token = localStorage.getItem(LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY);
-  if (!token) {
-    token = generator();
-    localStorage.setItem(LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY, token);
-  }
-  return token;
-};
-
-export function createWebDAVClient(
-  clientInfo: ClientDataResponse,
-  generator: () => string,
-): WebDAVClient {
-  const token = getOrGenerateWebDAVToken(generator);
-  const address = clientInfo.serverInfo?.publicWebdavAddress;
-  if (!address) {
-    throw new Error("WebDAV address not available");
-  }
-  return createWebDAV(address, {
-    authType: AuthType.Password,
-    username: "ignored",
-    password: token,
-  });
-}
 
 export const logOut = () => {
   if (isPostHogConfigured && isAuthenticated()) {

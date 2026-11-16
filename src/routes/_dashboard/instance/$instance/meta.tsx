@@ -29,7 +29,8 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import DynamicIcon, { getAllIconTags } from "@/components/dynamic-icon.tsx";
+import DynamicIcon from "@/components/dynamic-icon.tsx";
+import { getAllIconTags } from "@/components/icon-tags.ts";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";

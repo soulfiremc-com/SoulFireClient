@@ -1,152 +1,29 @@
 import { ChevronDownIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pie, PieChart } from "recharts";
-import {
-  BandwidthChart,
-  PositionScatterChart,
-  TickDurationChart,
-} from "@/components/instance-metrics/metrics-charts.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card.tsx";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type CustomTooltipProps,
-} from "@/components/ui/chart.tsx";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible.tsx";
-import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb";
 import { cn } from "@/lib/utils.tsx";
 
-const PIE_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-];
+// The charts pull in Recharts, so load them when the section opens.
+const loadDetailedMetricsCharts = () =>
+  import("@/components/instance-overview/detailed-metrics-charts.tsx");
+const DetailedMetricsCharts = lazy(loadDetailedMetricsCharts);
 
-function MiniDonut({
-  label,
-  data,
-}: {
-  label: string;
-  data: { name: string; value: number; fill: string }[];
-}) {
-  const config = useMemo<ChartConfig>(() => ({ value: { label } }), [label]);
-
+function DetailedMetricsSkeleton() {
   return (
-    <div className="flex flex-col items-center gap-1">
-      <span className="text-muted-foreground text-xs">{label}</span>
-      {data.length === 0 ? (
-        <div className="text-muted-foreground flex h-36 items-center text-xs">
-          —
-        </div>
-      ) : (
-        <ChartContainer config={config} className="mx-auto h-36 max-w-36">
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent {...props} nameKey="name" />
-              )}
-            />
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              innerRadius={34}
-              isAnimationActive={false}
-              strokeWidth={3}
-            />
-          </PieChart>
-        </ChartContainer>
-      )}
+    <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-4">
+      <Skeleton className="h-72" />
+      <Skeleton className="h-72" />
+      <Skeleton className="h-72" />
+      <Skeleton className="h-72" />
     </div>
-  );
-}
-
-function WorldCompositionCard({
-  distributions,
-}: {
-  distributions: GetInstanceMetricsResponse["distributions"];
-}) {
-  const { t } = useTranslation("instance");
-
-  const dimensionData = useMemo(
-    () =>
-      Object.entries(distributions?.dimensionCounts ?? {}).map(
-        ([dim, count], index) => ({
-          name: dim.replace("minecraft:", ""),
-          value: count,
-          fill: PIE_COLORS[index % PIE_COLORS.length],
-        }),
-      ),
-    [distributions?.dimensionCounts],
-  );
-
-  const gameModeData = useMemo(
-    () =>
-      Object.entries(distributions?.gameModeCounts ?? {}).map(
-        ([mode, count], index) => ({
-          name: mode.charAt(0) + mode.slice(1).toLowerCase(),
-          value: count,
-          fill: PIE_COLORS[index % PIE_COLORS.length],
-        }),
-      ),
-    [distributions?.gameModeCounts],
-  );
-
-  if (dimensionData.length === 0 && gameModeData.length === 0) {
-    return (
-      <Card size="sm">
-        <CardHeader>
-          <CardTitle className="text-sm">
-            {t("overview.detailed.composition")}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Empty className="border-0 px-0 py-8">
-            <EmptyHeader className="gap-1">
-              <EmptyTitle className="text-sm">
-                {t("metrics.empty.noData")}
-              </EmptyTitle>
-            </EmptyHeader>
-          </Empty>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card size="sm">
-      <CardHeader>
-        <CardTitle className="text-sm">
-          {t("overview.detailed.composition")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-2">
-          <MiniDonut
-            label={t("metrics.dimensions.title")}
-            data={dimensionData}
-          />
-          <MiniDonut label={t("metrics.gameModes.title")} data={gameModeData} />
-        </div>
-      </CardContent>
-    </Card>
   );
 }
 
@@ -161,7 +38,11 @@ export function DetailedMetrics({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger render={<Button variant="ghost" size="sm" />}>
+      <CollapsibleTrigger
+        render={<Button variant="ghost" size="sm" />}
+        onPointerEnter={() => void loadDetailedMetricsCharts()}
+        onFocus={() => void loadDetailedMetricsCharts()}
+      >
         <ChevronDownIcon
           data-icon="inline-start"
           className={cn("transition-transform", open && "rotate-180")}
@@ -169,14 +50,9 @@ export function DetailedMetrics({
         {t("overview.detailed.title")}
       </CollapsibleTrigger>
       <CollapsibleContent className="pt-3">
-        <div className="grid min-w-0 grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-4">
-          <TickDurationChart snapshots={metricsData.snapshots} />
-          <BandwidthChart snapshots={metricsData.snapshots} />
-          <PositionScatterChart
-            positions={metricsData.distributions?.botPositions ?? []}
-          />
-          <WorldCompositionCard distributions={metricsData.distributions} />
-        </div>
+        <Suspense fallback={<DetailedMetricsSkeleton />}>
+          <DetailedMetricsCharts metricsData={metricsData} />
+        </Suspense>
       </CollapsibleContent>
     </Collapsible>
   );
