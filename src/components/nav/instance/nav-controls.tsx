@@ -1,7 +1,12 @@
 "use client";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
+import {
+  Link,
+  type LinkProps,
+  useRouteContext,
+  useRouterState,
+} from "@tanstack/react-router";
 import {
   HouseIcon,
   IdCardIcon,
@@ -24,6 +29,8 @@ type NavLinks = {
   title: string;
   icon: (props: { className: string }) => ReactNode;
   linkProps: LinkProps;
+  /** A detail page that belongs to this link, such as one bot of the list. */
+  detailRouteId?: string;
 }[];
 
 export function NavControls() {
@@ -33,6 +40,9 @@ export function NavControls() {
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const routeIds = useRouterState({
+    select: (state) => state.matches.map((match) => match.routeId as string),
+  });
 
   const navLinks: NavLinks = [
     {
@@ -58,6 +68,7 @@ export function NavControls() {
         to: "/instance/$instance/bots",
         params: { instance: instanceInfo.id },
       },
+      detailRouteId: "/_dashboard/instance/$instance/bot/$botId",
     },
     {
       title: t("instanceSidebar.accountSettings"),
@@ -95,6 +106,11 @@ export function NavControls() {
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               tooltip={item.title}
+              isActive={
+                item.detailRouteId
+                  ? routeIds.includes(item.detailRouteId)
+                  : undefined
+              }
               render={
                 <Link
                   activeOptions={{ exact: true }}

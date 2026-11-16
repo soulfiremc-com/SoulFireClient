@@ -638,6 +638,7 @@
     "aiSettings": "AI settings",
     "pathfindingSettings": "Pathfinding settings",
     "discoverPlugins": "Plugins",
+    "togglePluginSettings": "Show or hide plugin settings",
     "instanceScripts": "Scripts",
     "configurationFileType": "SoulFire configuration (JSON)",
     "exportWarning": "Exported files include account and proxy credentials. Keep them private."

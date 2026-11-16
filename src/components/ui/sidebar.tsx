@@ -22,6 +22,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { isMac } from "@/lib/desktop";
+import { isPrimaryKeyShortcut } from "@/lib/keyboard-shortcuts";
 import { cn } from "@/lib/utils";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
@@ -96,8 +98,8 @@ function SidebarProvider({
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-        (event.metaKey || event.ctrlKey)
+        !event.defaultPrevented &&
+        isPrimaryKeyShortcut(event, SIDEBAR_KEYBOARD_SHORTCUT, isMac)
       ) {
         event.preventDefault();
         toggleSidebar();

@@ -70,6 +70,7 @@ import {
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { createTextBlob } from "@/lib/download.ts";
+import { PROJECT_SHORTCUT_LIMIT } from "@/lib/keyboard-shortcuts";
 import { formatShortcut } from "@/lib/platform.ts";
 import { parseProfileFile, serializeProfileFile } from "@/lib/profile-file.ts";
 import type { ProfileRoot } from "@/lib/types.ts";
@@ -157,9 +158,11 @@ function InstanceList() {
           >
             <DynamicIcon name={instance.icon} className="size-4 shrink-0" />
             <span>{instance.friendlyName}</span>
-            <DropdownMenuShortcut>
-              {formatShortcut(`Ctrl+${index + 1}`)}
-            </DropdownMenuShortcut>
+            {index < PROJECT_SHORTCUT_LIMIT && (
+              <DropdownMenuShortcut>
+                {formatShortcut(`Ctrl+${index + 1}`)}
+              </DropdownMenuShortcut>
+            )}
           </DropdownMenuItem>
         );
       })}

@@ -22,6 +22,7 @@ import {
 import { ScriptInfoSchema } from "@/generated/soulfire/script_pb";
 import {
   createPaletteCommands,
+  isPalettePinShortcut,
   isPaletteShortcut,
   matchesPaletteFilter,
   readPaletteRecents,
@@ -283,9 +284,10 @@ test("recents are deduplicated, bounded, validated, and resolved from the curren
   );
 });
 
-test("the global shortcut accepts Ctrl or Command and ignores composition, repeats, and other modifiers", () => {
+test("the menu shortcut uses Command on macOS and Ctrl elsewhere", () => {
   const event = {
     key: "k",
+    code: "KeyK",
     ctrlKey: false,
     metaKey: false,
     altKey: false,
@@ -293,9 +295,25 @@ test("the global shortcut accepts Ctrl or Command and ignores composition, repea
     repeat: false,
     isComposing: false,
   };
-  assert.equal(isPaletteShortcut(event), false);
-  assert.equal(isPaletteShortcut({ ...event, ctrlKey: true }), true);
-  assert.equal(isPaletteShortcut({ ...event, metaKey: true, key: "K" }), true);
+  assert.equal(isPaletteShortcut(event, false), false);
+  assert.equal(isPaletteShortcut({ ...event, ctrlKey: true }, false), true);
+  assert.equal(isPaletteShortcut({ ...event, metaKey: true }, false), false);
+  assert.equal(
+    isPaletteShortcut({ ...event, metaKey: true, key: "K" }, true),
+    true,
+  );
+  // Ctrl+K deletes to the end of the line in macOS text fields.
+  assert.equal(isPaletteShortcut({ ...event, ctrlKey: true }, true), false);
+  // A Cyrillic layout types "л" on the K key.
+  assert.equal(
+    isPaletteShortcut({ ...event, ctrlKey: true, key: "л" }, false),
+    true,
+  );
+  // Dvorak puts another letter on the physical K key.
+  assert.equal(
+    isPaletteShortcut({ ...event, ctrlKey: true, key: "t" }, false),
+    false,
+  );
   for (const modifier of [
     "altKey",
     "shiftKey",
@@ -303,9 +321,29 @@ test("the global shortcut accepts Ctrl or Command and ignores composition, repea
     "isComposing",
   ] as const)
     assert.equal(
-      isPaletteShortcut({ ...event, ctrlKey: true, [modifier]: true }),
+      isPaletteShortcut({ ...event, ctrlKey: true, [modifier]: true }, false),
       false,
     );
+});
+
+test("pinning uses the same platform modifier as the menu shortcut", () => {
+  const event = {
+    key: "p",
+    code: "KeyP",
+    ctrlKey: true,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+    repeat: false,
+    isComposing: false,
+  };
+  assert.equal(isPalettePinShortcut(event, false), true);
+  assert.equal(isPalettePinShortcut(event, true), false);
+  assert.equal(
+    isPalettePinShortcut({ ...event, ctrlKey: false, metaKey: true }, true),
+    true,
+  );
+  assert.equal(isPalettePinShortcut({ ...event, key: "k" }, false), false);
 });
 
 test("individual setting results link to an exact field rather than only its page", () => {

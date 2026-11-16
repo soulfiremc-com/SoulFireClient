@@ -63,12 +63,18 @@ import {
 import { ScriptService } from "@/generated/soulfire/script_pb";
 import { ServerService } from "@/generated/soulfire/server_pb";
 import { palettePinKey } from "@/lib/command-palette-pins";
+import { isMac } from "@/lib/desktop";
 import { fetchInstanceInfo } from "@/lib/instance-info-query";
 import { guidedTableValidateSearch } from "@/lib/parsers";
 import { serverInfoQueryOptions } from "@/lib/server-info-query";
 import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery";
 import { parseSettingFocusSearch } from "@/lib/settings-focus";
 import type { InstanceInfoQueryData } from "@/lib/types";
+
+// The menu uses Command on macOS and Ctrl elsewhere.
+const MODIFIER = isMac ? "Meta" : "Control";
+const OPEN_SHORTCUT = `{${MODIFIER}>}k{/${MODIFIER}}`;
+const PIN_SHORTCUT = `{${MODIFIER}>}p{/${MODIFIER}}`;
 
 const createProject = fn();
 const loadProjects = fn();
@@ -593,7 +599,7 @@ export const SearchAndNavigate: Story = {
     const page = within(document.body);
     await canvas.findByText("Project overview");
     await expect(loadProjects).not.toHaveBeenCalled();
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     const dialog = await page.findByRole("dialog", { name: "Command menu" });
     const input = within(dialog).getByRole("combobox", {
       name: "Command menu",
@@ -635,7 +641,7 @@ export const SearchAndNavigate: Story = {
       within(reopened).getByRole("option", { name: "Projects" }),
     );
     await canvas.findByText("Projects page");
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     const globalDialog = await page.findByRole("dialog", {
       name: "Command menu",
     });
@@ -684,15 +690,15 @@ export const ShortcutsAndActions: Story = {
         page.queryByRole("combobox", { name: "Command menu" }),
       ).not.toBeInTheDocument(),
     );
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     await page.findByRole("dialog", { name: "Command menu" });
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     await waitFor(() => expect(editor).toHaveFocus());
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     await page.findByRole("dialog", { name: "Command menu" });
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(editor).toHaveFocus());
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     dialog = await page.findByRole("dialog", { name: "Command menu" });
     await userEvent.type(within(dialog).getByRole("combobox"), "about");
     await userEvent.keyboard("{Enter}");
@@ -700,7 +706,7 @@ export const ShortcutsAndActions: Story = {
     await waitFor(() =>
       expect(about.contains(document.activeElement)).toBe(true),
     );
-    await userEvent.keyboard("{Control>}k{/Control}");
+    await userEvent.keyboard(OPEN_SHORTCUT);
     await waitFor(() =>
       expect(
         page.queryByRole("combobox", { name: "Command menu" }),
@@ -741,7 +747,7 @@ type PlayContext = Parameters<Play>[0];
 
 async function openMenu({ canvasElement, userEvent }: PlayContext) {
   await within(canvasElement).findByText("Project overview");
-  await userEvent.keyboard("{Control>}k{/Control}");
+  await userEvent.keyboard(OPEN_SHORTCUT);
   const dialog = await within(document.body).findByRole("dialog", {
     name: "Command menu",
   });
@@ -965,7 +971,7 @@ export const PinnedCommandsAndSingleOperations: Story = {
       name: /^Turn off script Auto mine/,
       selected: true,
     });
-    await userEvent.keyboard("{Control>}p{/Control}");
+    await userEvent.keyboard(PIN_SHORTCUT);
     await opened.menu.findByRole("button", {
       name: "Unpin Turn off script Auto mine",
     });

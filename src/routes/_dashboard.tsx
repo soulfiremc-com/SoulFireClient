@@ -26,7 +26,8 @@ import {
   InstanceListResponseSchema,
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
-import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { hasOpenDialog, projectShortcutIndex } from "@/lib/keyboard-shortcuts";
+import { desktop, isDesktopApp, isMac } from "@/lib/desktop.ts";
 import {
   getAnalyticsIdentity,
   syncAnalyticsIdentity,
@@ -184,17 +185,23 @@ function InstanceSwitchKeybinds() {
   const { data: instanceList } = useSuspenseQuery(instanceListQueryOptions);
 
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey) {
-        const numberKey = parseInt(e.key, 10);
-        if (numberKey > 0 && numberKey <= instanceList.instances.length) {
-          e.preventDefault();
-          void navigate({
-            to: "/instance/$instance",
-            params: { instance: instanceList.instances[numberKey - 1].id },
-          });
-        }
-      }
+    const down = (event: KeyboardEvent) => {
+      // Keep keys inside open dialogs and the bot view's captured input.
+      if (
+        event.defaultPrevented ||
+        document.pointerLockElement ||
+        hasOpenDialog(document)
+      )
+        return;
+      const index = projectShortcutIndex(event, isMac);
+      const instance =
+        index === null ? undefined : instanceList.instances[index];
+      if (!instance) return;
+      event.preventDefault();
+      void navigate({
+        to: "/instance/$instance",
+        params: { instance: instance.id },
+      });
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);

@@ -23,6 +23,10 @@ import {
   PAGE_HIDDEN_SETTINGS,
 } from "@/lib/settings-discovery";
 import { getSettingLabel, isFocusedSetting } from "@/lib/settings-focus";
+import {
+  isPrimaryKeyShortcut,
+  type ShortcutEvent,
+} from "@/lib/keyboard-shortcuts";
 
 export type PaletteOperation =
   | {
@@ -1040,26 +1044,17 @@ export function resolvePaletteRecents(
   return recents.flatMap((id) => byId.get(id) ?? []);
 }
 
-export function isPaletteShortcut(
-  event: Pick<
-    KeyboardEvent,
-    | "key"
-    | "ctrlKey"
-    | "metaKey"
-    | "altKey"
-    | "shiftKey"
-    | "repeat"
-    | "isComposing"
-  >,
+/** Ctrl+K, or Command+K on macOS, opens and closes the command menu. */
+export function isPaletteShortcut(event: ShortcutEvent, mac: boolean): boolean {
+  return isPrimaryKeyShortcut(event, "k", mac);
+}
+
+/** Ctrl+P, or Command+P on macOS, pins the selected result. */
+export function isPalettePinShortcut(
+  event: ShortcutEvent,
+  mac: boolean,
 ): boolean {
-  return (
-    !event.repeat &&
-    !event.isComposing &&
-    !event.altKey &&
-    !event.shiftKey &&
-    (event.ctrlKey || event.metaKey) &&
-    event.key.toLowerCase() === "k"
-  );
+  return isPrimaryKeyShortcut(event, "p", mac);
 }
 
 export function isPaletteTypingTarget(target: EventTarget | null): boolean {

@@ -77,6 +77,7 @@ import { usePaletteSearchIndex } from "@/hooks/use-palette-search-index";
 import { botStatusRpcQueryOptions } from "@/lib/bot-status-query";
 import {
   createPaletteCommands,
+  isPalettePinShortcut,
   isPaletteShortcut,
   isPaletteTypingTarget,
   matchesPaletteFilter,
@@ -107,7 +108,8 @@ import {
   resolvePalettePins,
   togglePalettePin,
 } from "@/lib/command-palette-pins";
-import { desktop, formatShortcut, isDesktopApp } from "@/lib/desktop";
+import { desktop, formatShortcut, isDesktopApp, isMac } from "@/lib/desktop";
+import { hasOpenDialog } from "@/lib/keyboard-shortcuts";
 import { fetchInstanceInfo } from "@/lib/instance-info-query";
 import { scriptListQueryOptions } from "@/lib/script-service";
 import type { InstanceInfoQueryData } from "@/lib/types";
@@ -157,12 +159,7 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const hasOtherDialog = () =>
-      Boolean(
-        document.querySelector(
-          '[role="dialog"]:not([data-closed]), [role="alertdialog"]:not([data-closed])',
-        ),
-      );
+    const hasOtherDialog = () => hasOpenDialog(document);
     const resetShift = () => {
       lastShift.current = null;
       shiftPressedAt.current = null;
@@ -176,7 +173,7 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
         resetShift();
         return;
       }
-      if (isPaletteShortcut(event) && (open || !hasOtherDialog())) {
+      if (isPaletteShortcut(event, isMac) && (open || !hasOtherDialog())) {
         event.preventDefault();
         resetShift();
         if (open) setOpen(false);
@@ -285,7 +282,7 @@ export function CommandPaletteTrigger() {
       className="w-8 justify-center px-2 font-normal text-muted-foreground sm:w-40 sm:justify-start lg:w-56"
       title={t("commandPalette.shortcutHint", { shortcut })}
       aria-label={t("commandPalette.triggerLabel", { shortcut })}
-      aria-keyshortcuts="Control+k Meta+k"
+      aria-keyshortcuts={isMac ? "Meta+K" : "Control+K"}
       onClick={() => show()}
     >
       <SearchIcon data-icon="inline-start" />
@@ -823,15 +820,7 @@ function CommandPaletteContent({
       onValueChange={setSelected}
       className="min-h-0 flex-1"
       onKeyDown={(event) => {
-        if (
-          (event.ctrlKey || event.metaKey) &&
-          !event.altKey &&
-          !event.shiftKey &&
-          !event.repeat &&
-          !event.nativeEvent.isComposing &&
-          event.key.toLowerCase() === "p" &&
-          selectedCommand
-        ) {
+        if (selectedCommand && isPalettePinShortcut(event.nativeEvent, isMac)) {
           event.preventDefault();
           togglePin(selectedCommand);
         }
@@ -1092,7 +1081,7 @@ function CommandPaletteContent({
                   : "commandPalette.pinLabel",
                 { name: selectedCommand.label },
               )}
-              aria-keyshortcuts="Control+p Meta+p"
+              aria-keyshortcuts={isMac ? "Meta+P" : "Control+P"}
               // Keep focus in the search field so the selected result stays active.
               onMouseDown={(event) => event.preventDefault()}
               onKeyDown={keepListKeys}

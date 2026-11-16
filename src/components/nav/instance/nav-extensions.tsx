@@ -4,6 +4,7 @@ import {
   type LinkProps,
   useParams,
   useRouteContext,
+  useRouterState,
 } from "@tanstack/react-router";
 import {
   BlocksIcon,
@@ -42,6 +43,8 @@ type NavLinks = {
   icon: (props: { className: string }) => ReactNode;
   linkProps: LinkProps;
   pluginList?: boolean;
+  /** A detail page that belongs to this link, such as one script of the list. */
+  detailRouteId?: string;
 }[];
 
 export function NavExtensions() {
@@ -67,6 +70,9 @@ export function NavExtensions() {
   const pluginPageId = settingsEntry?.owningPluginId
     ? settingsEntry.id
     : undefined;
+  const routeIds = useRouterState({
+    select: (state) => state.matches.map((match) => match.routeId as string),
+  });
   useEffect(() => {
     if (pluginPageId !== undefined) setPluginCollapsibleOpen(true);
   }, [pluginPageId]);
@@ -88,6 +94,7 @@ export function NavExtensions() {
         to: "/instance/$instance/scripts",
         params: { instance: instanceInfo.id },
       },
+      detailRouteId: "/_dashboard/instance/$instance/script/$scriptId",
     },
     {
       title: t("sdk.title"),
@@ -144,6 +151,12 @@ export function NavExtensions() {
             >
               <SidebarMenuButton
                 tooltip={item.title}
+                // The icon rail hides plugin pages, so mark their parent instead.
+                isActive={
+                  pluginPageId !== undefined &&
+                  !sidebar.isMobile &&
+                  sidebar.state === "collapsed"
+                }
                 render={
                   <Link
                     activeOptions={{ exact: true }}
@@ -173,7 +186,9 @@ export function NavExtensions() {
                 }
               >
                 <ChevronRightIcon />
-                <span className="sr-only">Toggle</span>
+                <span className="sr-only">
+                  {t("instanceSidebar.togglePluginSettings")}
+                </span>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
@@ -202,6 +217,10 @@ export function NavExtensions() {
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
+                isActive={
+                  item.detailRouteId !== undefined &&
+                  routeIds.includes(item.detailRouteId)
+                }
                 render={
                   <Link
                     activeOptions={{ exact: true }}
