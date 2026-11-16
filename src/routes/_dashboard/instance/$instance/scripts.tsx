@@ -305,6 +305,10 @@ function Content() {
       onSubmit: toFormSchema(createScriptSchema),
     },
     onSubmit: async ({ value }) => {
+      if (!transport) {
+        openDemoEditor();
+        return;
+      }
       createMutation.mutate(value);
     },
   });
@@ -349,9 +353,9 @@ function Content() {
       console.error("Failed to resume script:", error);
       toast.error(tInstance("scripts.resumeError"));
     },
-    onSettled: () => {
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
-    },
+    // Keep the button busy until the list shows the new state.
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] }),
   });
 
   // Pause script mutation
@@ -374,9 +378,8 @@ function Content() {
       console.error("Failed to pause script:", error);
       toast.error(tInstance("scripts.pauseError"));
     },
-    onSettled: () => {
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
-    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] }),
   });
 
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
@@ -392,7 +395,24 @@ function Content() {
     setDeleteTarget(null);
   };
 
+  const togglingScriptId = resumeMutation.isPending
+    ? resumeMutation.variables
+    : pauseMutation.isPending
+      ? pauseMutation.variables
+      : undefined;
+
+  // The demo has no server. Open an unsaved editor so visitors can still try it.
+  const openDemoEditor = () => {
+    toast.info(t("commandPalette.feedback.demo"));
+    setIsCreateDialogOpen(false);
+    void navigate({
+      to: "/instance/$instance/script/$scriptId",
+      params: { instance: instanceId, scriptId: "new" },
+    });
+  };
+
   const handleTogglePaused = (scriptId: string, isPaused: boolean) => {
+    if (togglingScriptId === scriptId) return;
     if (isPaused) {
       resumeMutation.mutate(scriptId);
     } else {
@@ -531,7 +551,13 @@ function Content() {
             <ScriptTemplatePicker
               templates={templates}
               disabled={templateMutation.isPending}
-              onPick={(template) => templateMutation.mutate(template)}
+              onPick={(template) => {
+                if (!transport) {
+                  openDemoEditor();
+                  return;
+                }
+                templateMutation.mutate(template);
+              }}
             />
           )}
           <Button
@@ -557,7 +583,11 @@ function Content() {
                 onTogglePaused={(isPaused) =>
                   handleTogglePaused(script.id, isPaused)
                 }
-                isDeleting={deleteMutation.isPending}
+                isDeleting={
+                  deleteMutation.isPending &&
+                  deleteMutation.variables === script.id
+                }
+                isToggling={togglingScriptId === script.id}
                 onContextMenu={(e) => handleContextMenu(e, script)}
               />
             </Suspense>
@@ -714,6 +744,7 @@ interface ScriptCardProps {
   onDelete: () => void;
   onTogglePaused: (isPaused: boolean) => void;
   isDeleting: boolean;
+  isToggling: boolean;
   onContextMenu: (e: React.MouseEvent) => void;
 }
 
@@ -723,6 +754,7 @@ function ScriptCard({
   onDelete,
   onTogglePaused,
   isDeleting,
+  isToggling,
   onContextMenu,
 }: ScriptCardProps) {
   const { t: tInstance } = useTranslation("instance");
@@ -781,6 +813,7 @@ function ScriptCard({
             variant="outline"
             size="icon"
             onClick={() => onTogglePaused(isPaused)}
+            disabled={isToggling}
             title={
               isPaused
                 ? tInstance("scripts.resume")

@@ -51,6 +51,7 @@ import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { cn } from "@/lib/utils.tsx";
 import { ComplexityScore } from "./ComplexityScore";
 import { DryRunDialog } from "./DryRunDialog";
+import { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 import { QuotasDialog } from "./QuotasDialog";
 import { ScriptDiffDialog } from "./ScriptDiffDialog";
 
@@ -518,6 +519,7 @@ export function ScriptToolbar({
               size="icon"
               onClick={onZoomOut}
               title={t("scripts.editor.toolbar.zoomOut")}
+              aria-label={t("scripts.editor.toolbar.zoomOut")}
             >
               <ZoomOutIcon className="size-4" />
             </Button>
@@ -526,6 +528,7 @@ export function ScriptToolbar({
               size="icon"
               onClick={onZoomIn}
               title={t("scripts.editor.toolbar.zoomIn")}
+              aria-label={t("scripts.editor.toolbar.zoomIn")}
             >
               <ZoomInIcon className="size-4" />
             </Button>
@@ -538,6 +541,7 @@ export function ScriptToolbar({
               {t("scripts.editor.toolbar.fit")}
             </Button>
           </ButtonGroup>
+          <KeyboardShortcutsHelp />
         </>
       )}
     </div>

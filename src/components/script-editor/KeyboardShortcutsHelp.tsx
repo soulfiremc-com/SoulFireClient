@@ -1,72 +1,96 @@
-import { Keyboard } from "lucide-react";
+import { KeyboardIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatShortcut } from "@/lib/platform.ts";
 
-const SHORTCUTS = [
-  { keys: "A", action: "Select all nodes" },
-  { keys: "Alt + A", action: "Deselect all" },
-  { keys: "Shift + A", action: "Quick add menu" },
-  { keys: "Shift + D", action: "Duplicate selection" },
-  { keys: "L", action: "Select linked nodes" },
-  { keys: "Ctrl + L", action: "Select upstream nodes" },
-  { keys: "Alt + L", action: "Select downstream nodes" },
-  { keys: "Shift + S", action: "Select similar nodes" },
-  { keys: "Tab", action: "Enter/Exit group" },
-  { keys: "M", action: "Toggle mute node" },
-  { keys: "H", action: "Toggle collapse node" },
-  { keys: "Ctrl + H", action: "Hide unconnected sockets" },
-  { keys: "Shift + H", action: "Toggle node preview" },
-  { keys: "Ctrl + G", action: "Create group from selection" },
-  { keys: "Ctrl + Alt + G", action: "Ungroup selected" },
-  { keys: "Ctrl + J", action: "Create frame from selection" },
-  { keys: "Ctrl + C", action: "Copy selection" },
-  { keys: "Ctrl + V", action: "Paste" },
-  { keys: "Ctrl + Shift + ←↑↓→", action: "Align nodes" },
-  { keys: "Alt + Shift + H/V", action: "Distribute nodes" },
-  { keys: "Alt + Drag", action: "Cut links" },
-  { keys: "Shift + Right Click", action: "Quick reroute on edge" },
-  { keys: "Right Click", action: "Quick add menu at cursor" },
-  { keys: "Delete / Backspace / X", action: "Delete selection" },
-  { keys: "F2", action: "Rename selected node" },
+type MouseInput = "drag" | "rightClick";
+
+const SHORTCUTS: ReadonlyArray<{
+  id: string;
+  keys: string;
+  mouse?: MouseInput;
+}> = [
+  { id: "quickAdd", keys: "Shift + A" },
+  { id: "quickAddAtCursor", keys: "", mouse: "rightClick" },
+  { id: "selectAll", keys: "A" },
+  { id: "deselectAll", keys: "Alt + A" },
+  { id: "selectLinked", keys: "L" },
+  { id: "selectUpstream", keys: "Ctrl + L" },
+  { id: "selectDownstream", keys: "Alt + L" },
+  { id: "selectSimilar", keys: "Shift + S" },
+  { id: "duplicate", keys: "Shift + D" },
+  { id: "copy", keys: "Ctrl + C" },
+  { id: "paste", keys: "Ctrl + V" },
+  { id: "delete", keys: "Delete / Backspace / X" },
+  { id: "rename", keys: "F2" },
+  { id: "mute", keys: "M" },
+  { id: "collapse", keys: "H" },
+  { id: "hideSockets", keys: "Ctrl + H" },
+  { id: "preview", keys: "Shift + H" },
+  { id: "group", keys: "Ctrl + G" },
+  { id: "ungroup", keys: "Ctrl + Alt + G" },
+  { id: "enterGroup", keys: "Tab" },
+  { id: "frame", keys: "Ctrl + J" },
+  { id: "align", keys: "Ctrl + Shift + ←↑↓→" },
+  { id: "distribute", keys: "Alt + Shift + H/V" },
+  { id: "cutLinks", keys: "Alt", mouse: "drag" },
+  { id: "reroute", keys: "Shift", mouse: "rightClick" },
 ];
 
-/**
- * A help button that shows available keyboard shortcuts.
- * Blender-style: Users can quickly reference shortcuts while learning.
- */
+/** Lists the canvas shortcuts. They work while the canvas has focus. */
 export function KeyboardShortcutsHelp() {
+  const { t } = useTranslation("instance");
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger
-          render={<Button variant="outline" size="icon" className="h-8 w-8" />}
-        >
-          <Keyboard className="h-4 w-4" />
-        </TooltipTrigger>
-        <TooltipContent side="left" className="w-64">
-          <div className="flex flex-col gap-2">
-            <p className="font-medium">Keyboard Shortcuts</p>
-            <div className="flex flex-col gap-1">
-              {SHORTCUTS.map(({ keys, action }) => (
-                <div
-                  key={keys}
-                  className="flex items-center justify-between text-xs"
-                >
-                  <span className="text-muted-foreground">{action}</span>
-                  <Kbd className="font-mono">{formatShortcut(keys)}</Kbd>
-                </div>
-              ))}
-            </div>
-          </div>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Popover>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={t("scripts.editor.shortcuts.title")}
+          />
+        }
+      >
+        <KeyboardIcon />
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-80">
+        <PopoverHeader>
+          <PopoverTitle>{t("scripts.editor.shortcuts.title")}</PopoverTitle>
+          <p className="text-muted-foreground text-xs">
+            {t("scripts.editor.shortcuts.description")}
+          </p>
+        </PopoverHeader>
+        <ScrollArea className="h-72">
+          <dl className="flex flex-col gap-1.5 pr-3 text-xs">
+            {SHORTCUTS.map(({ id, keys, mouse }) => (
+              <div key={id} className="flex items-center justify-between gap-3">
+                <dt className="text-muted-foreground">
+                  {t(`scripts.editor.shortcuts.actions.${id}`)}
+                </dt>
+                <dd>
+                  <Kbd className="font-mono">
+                    {[
+                      keys && formatShortcut(keys),
+                      mouse && t(`scripts.editor.shortcuts.mouse.${mouse}`),
+                    ]
+                      .filter(Boolean)
+                      .join(" + ")}
+                  </Kbd>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
   );
 }

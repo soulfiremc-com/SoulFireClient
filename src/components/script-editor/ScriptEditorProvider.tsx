@@ -1,7 +1,14 @@
-import { createContext, type ReactNode, use } from "react";
+import { type Context, createContext, type ReactNode, use } from "react";
 import type { ScriptEditorSession } from "@/stores/script-editor-store";
 
-const ScriptEditorContext = createContext<ScriptEditorSession | null>(null);
+type ScriptEditorContextValue = Context<ScriptEditorSession | null>;
+
+// Hot updates re-run this module. Reuse the context so mounted providers and
+// re-imported consumers keep matching each other.
+const ScriptEditorContext: ScriptEditorContextValue =
+  (import.meta.hot?.data.context as ScriptEditorContextValue | undefined) ??
+  createContext<ScriptEditorSession | null>(null);
+if (import.meta.hot) import.meta.hot.data.context = ScriptEditorContext;
 
 export function ScriptEditorProvider({
   children,

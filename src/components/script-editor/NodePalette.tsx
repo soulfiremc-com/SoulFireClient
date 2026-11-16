@@ -25,8 +25,10 @@ import type { CategoryInfo, NodeDefinition } from "./nodes/types.ts";
 import { useNodeTranslations } from "./useNodeTranslations";
 
 interface NodePaletteProps {
+  /** Starts a pointer drag. Without it, the palette uses tap-to-add buttons. */
   onNodeDragStart?: (nodeType: string, x: number, y: number) => void;
-  onNodeTap?: (nodeType: string) => void;
+  /** Adds the node at the canvas center. */
+  onNodeAdd: (nodeType: string) => void;
   className?: string;
 }
 
@@ -34,22 +36,22 @@ interface DraggableNodeItemProps {
   node: NodeDefinition;
   nodeLabel: string;
   onDragStart?: (nodeType: string, x: number, y: number) => void;
-  onTap?: (nodeType: string) => void;
+  onAdd: (nodeType: string) => void;
 }
 
 function DraggableNodeItem({
   node,
   nodeLabel,
   onDragStart,
-  onTap,
+  onAdd,
 }: DraggableNodeItemProps) {
-  if (onTap) {
+  if (!onDragStart) {
     // Mobile mode: tap to add instead of drag
     return (
       <button
         type="button"
         title={node.description}
-        onClick={() => onTap(node.type)}
+        onClick={() => onAdd(node.type)}
         className="group flex cursor-pointer items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm select-none transition-colors hover:border-border hover:bg-muted"
       >
         <DynamicIcon name={node.icon} className="size-4 shrink-0" />
@@ -58,6 +60,8 @@ function DraggableNodeItem({
     );
   }
 
+  // A drop on the canvas places the node there. A click or Enter without a
+  // drop adds it at the canvas center.
   return (
     <div
       role="button"
@@ -65,7 +69,13 @@ function DraggableNodeItem({
       title={node.description}
       onPointerDown={(e) => {
         if (e.button !== 0) return;
-        onDragStart?.(node.type, e.clientX, e.clientY);
+        onDragStart(node.type, e.clientX, e.clientY);
+      }}
+      onClick={() => onAdd(node.type)}
+      onKeyDown={(e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        onAdd(node.type);
       }}
       className="group flex cursor-grab items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm select-none transition-colors hover:border-border hover:bg-muted active:cursor-grabbing"
     >
@@ -81,9 +91,9 @@ interface CategorySectionProps {
   categoryInfo: CategoryInfo;
   nodes: NodeDefinition[];
   getNodeLabel: (node: NodeDefinition) => string;
-  defaultOpen?: boolean;
+  forceOpen: boolean;
   onNodeDragStart?: (nodeType: string, x: number, y: number) => void;
-  onNodeTap?: (nodeType: string) => void;
+  onNodeAdd: (nodeType: string) => void;
 }
 
 function CategorySection({
@@ -91,11 +101,13 @@ function CategorySection({
   categoryInfo,
   nodes,
   getNodeLabel,
-  defaultOpen = true,
+  forceOpen,
   onNodeDragStart,
-  onNodeTap,
+  onNodeAdd,
 }: CategorySectionProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [userOpen, setIsOpen] = useState(true);
+  // Search results stay visible even in a category the user collapsed.
+  const isOpen = forceOpen || userOpen;
 
   if (nodes.length === 0) {
     return null;
@@ -128,7 +140,7 @@ function CategorySection({
               node={node}
               nodeLabel={getNodeLabel(node)}
               onDragStart={onNodeDragStart}
-              onTap={onNodeTap}
+              onAdd={onNodeAdd}
             />
           ))}
         </div>
@@ -139,7 +151,7 @@ function CategorySection({
 
 export function NodePalette({
   onNodeDragStart,
-  onNodeTap,
+  onNodeAdd,
   className,
 }: NodePaletteProps) {
   const { t } = useTranslation("instance");
@@ -197,6 +209,7 @@ export function NodePalette({
           </InputGroupAddon>
           <InputGroupInput
             type="search"
+            aria-label={t("scripts.editor.palette.search")}
             placeholder={t("scripts.editor.palette.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -219,9 +232,9 @@ export function NodePalette({
                 categoryInfo={info}
                 nodes={filteredNodesByCategory[category] ?? []}
                 getNodeLabel={getNodeLabel}
-                defaultOpen={!searchQuery}
+                forceOpen={searchQuery.trim() !== ""}
                 onNodeDragStart={onNodeDragStart}
-                onNodeTap={onNodeTap}
+                onNodeAdd={onNodeAdd}
               />
             );
           })}

@@ -66,11 +66,23 @@ function PluginCardSkeleton() {
   );
 }
 
+const SKELETON_SLOTS = [
+  "plugin-1",
+  "plugin-2",
+  "plugin-3",
+  "plugin-4",
+  "plugin-5",
+  "plugin-6",
+  "plugin-7",
+  "plugin-8",
+  "plugin-9",
+];
+
 function DiscoverSkeleton() {
   return (
     <div className="grid h-full w-full grow grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 9 }).map((_, i) => (
-        <PluginCardSkeleton key={i} />
+      {SKELETON_SLOTS.map((slot) => (
+        <PluginCardSkeleton key={slot} />
       ))}
     </div>
   );
@@ -156,6 +168,16 @@ function Content() {
       instanceInfo.settingsDefinitions,
     ],
   );
+  // Sections follow the state from when the page opened. A toggled card stays
+  // under the pointer instead of jumping to the other section.
+  const [initiallyEnabled] = useState(
+    () =>
+      new Set(
+        plugins
+          .filter((plugin) => plugin.enabled)
+          .map((plugin) => plugin.settings.id),
+      ),
+  );
 
   if (plugins.length === 0) {
     return (
@@ -182,8 +204,12 @@ function Content() {
       (task === "all" || plugin.task === task) &&
       (needle === "" || plugin.text.includes(needle)),
   );
-  const enabled = visible.filter((plugin) => plugin.enabled);
-  const available = visible.filter((plugin) => !plugin.enabled);
+  const enabled = visible.filter((plugin) =>
+    initiallyEnabled.has(plugin.settings.id),
+  );
+  const available = visible.filter(
+    (plugin) => !initiallyEnabled.has(plugin.settings.id),
+  );
 
   return (
     <div className="flex w-full flex-col gap-5">

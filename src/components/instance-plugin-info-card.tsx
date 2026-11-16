@@ -15,6 +15,7 @@ import {
 import type { ReactNode } from "react";
 import { use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   DropdownMenuItem,
@@ -38,6 +39,7 @@ import type {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import i18n from "@/lib/i18n";
 import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
@@ -194,7 +196,9 @@ function PluginCardTitle(props: { settingsEntry: SettingsPage }) {
         className="size-5 shrink-0"
         name={props.settingsEntry.iconId}
       />
-      {props.settingsEntry.pageName}
+      {/* The lazy icon replaces its fallback before this sibling. Keep the
+          anchor an element so page translators cannot swap it out. */}
+      <span>{props.settingsEntry.pageName}</span>
     </CardTitle>
   );
 }
@@ -256,6 +260,11 @@ export function InstancePluginInfoCard(props: {
     ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
+      if (!transport) {
+        // The demo keeps its sample state, so say why the switch did not move.
+        toast.info(i18n.t("common:settingsPage.demoNotSaved"));
+        return;
+      }
       await updateInstanceConfigEntry(
         enabledIdentifier.namespace,
         enabledIdentifier.key,
@@ -326,6 +335,11 @@ export function BotPluginInfoCard(props: {
     ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
+      if (!transport) {
+        // The demo keeps its sample state, so say why the switch did not move.
+        toast.info(i18n.t("common:settingsPage.demoNotSaved"));
+        return;
+      }
       await updateBotConfigEntry(
         enabledIdentifier.namespace,
         enabledIdentifier.key,
@@ -386,6 +400,11 @@ export function ServerPluginInfoCard(props: {
     ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
+      if (!transport) {
+        // The demo keeps its sample state, so say why the switch did not move.
+        toast.info(i18n.t("common:settingsPage.demoNotSaved"));
+        return;
+      }
       await updateServerConfigEntry(
         enabledIdentifier.namespace,
         enabledIdentifier.key,

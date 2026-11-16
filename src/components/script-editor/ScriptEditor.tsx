@@ -28,6 +28,22 @@ import { useNodeTypes } from "./NodeTypesContext";
 import { QuickAddMenu } from "./QuickAddMenu";
 import { ScriptFirstUse } from "./ScriptFirstUse";
 
+/**
+ * Canvas shortcuts skip text fields, menus, and dialogs. React also bubbles
+ * events from portaled menus through this tree, so the target must be in the
+ * canvas DOM.
+ */
+function isCanvasShortcutTarget(container: Element, target: EventTarget) {
+  if (!(target instanceof HTMLElement) || !container.contains(target))
+    return false;
+  return (
+    !target.isContentEditable &&
+    !target.closest(
+      "input, textarea, select, [role='dialog'], [role='menu'], [role='listbox']",
+    )
+  );
+}
+
 export function ScriptEditor() {
   const editor = useScriptEditor();
   const { resolvedTheme } = useTheme();
@@ -144,6 +160,8 @@ export function ScriptEditor() {
       const fitted = visibleNodes.length
         ? reactFlowInstance.fitView({
             nodes: visibleNodes.map(({ id }) => ({ id })),
+            // A lone first node should not fill the whole canvas.
+            maxZoom: 1,
           })
         : reactFlowInstance.setViewport({ x: 0, y: 0, zoom: 1 });
       void fitted.then((success) => {
@@ -215,13 +233,7 @@ export function ScriptEditor() {
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      // Ignore if typing in an input
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) {
-        return;
-      }
+      if (!isCanvasShortcutTarget(event.currentTarget, event.target)) return;
 
       const selectedNodes = nodes.filter((n) => n.selected);
 
@@ -540,13 +552,7 @@ export function ScriptEditor() {
   // Native copy handler - uses ClipboardEvent for cross-browser support without permission prompts
   const handleCopy = useCallback(
     (event: React.ClipboardEvent) => {
-      // Ignore if typing in an input
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) {
-        return;
-      }
+      if (!isCanvasShortcutTarget(event.currentTarget, event.target)) return;
 
       const clipboardData = getSelectedForClipboard();
       if (clipboardData) {
@@ -559,13 +565,7 @@ export function ScriptEditor() {
   // Native paste handler - uses ClipboardEvent for cross-browser support without permission prompts
   const handlePaste = useCallback(
     (event: React.ClipboardEvent) => {
-      // Ignore if typing in an input
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) {
-        return;
-      }
+      if (!isCanvasShortcutTarget(event.currentTarget, event.target)) return;
 
       const clipboardData = handleNativePaste(event.nativeEvent);
       const center = getCanvasCenter();

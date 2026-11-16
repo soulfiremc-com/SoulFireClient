@@ -1,7 +1,39 @@
-import { memo } from "react";
+import { type ComponentProps, memo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { PortType } from "./types";
+
+/**
+ * Number input that keeps partial text such as "-" or "" while typing.
+ * Only parseable values reach onChange, and blur shows the stored value again.
+ */
+function DraftNumberInput({
+  value,
+  onChange,
+  onBlur,
+  ...props
+}: Omit<ComponentProps<"input">, "type" | "value" | "onChange"> & {
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  const [draft, setDraft] = useState<string | null>(null);
+  return (
+    <input
+      {...props}
+      type="number"
+      value={draft ?? value}
+      onChange={(e) => {
+        setDraft(e.target.value);
+        const num = Number.parseFloat(e.target.value);
+        if (!Number.isNaN(num)) onChange(num);
+      }}
+      onBlur={(e) => {
+        setDraft(null);
+        onBlur?.(e);
+      }}
+    />
+  );
+}
 
 interface InlineEditorProps {
   type: PortType;
@@ -42,13 +74,9 @@ function InlineEditorComponent({
   switch (type) {
     case "number":
       return (
-        <input
-          type="number"
+        <DraftNumberInput
           value={(currentValue as number) ?? 0}
-          onChange={(e) => {
-            const num = parseFloat(e.target.value);
-            onChange(Number.isNaN(num) ? 0 : num);
-          }}
+          onChange={onChange}
           {...inputProps}
           className={cn(inputProps.className, "w-16 text-right")}
         />
@@ -82,13 +110,9 @@ function InlineEditorComponent({
       // Vector3 is typically handled as separate x, y, z fields
       // For inline, we just show a compact number input
       return (
-        <input
-          type="number"
+        <DraftNumberInput
           value={(currentValue as number) ?? 0}
-          onChange={(e) => {
-            const num = parseFloat(e.target.value);
-            onChange(Number.isNaN(num) ? 0 : num);
-          }}
+          onChange={onChange}
           {...inputProps}
           className={cn(inputProps.className, "w-14 text-right")}
         />
@@ -137,34 +161,30 @@ function Vector3EditorComponent({
     onKeyDown: (e: React.KeyboardEvent) => e.stopPropagation(),
   };
 
-  const handleChange = (axis: "x" | "y" | "z", val: string) => {
-    const num = parseFloat(val);
+  const handleChange = (axis: "x" | "y" | "z", num: number) => {
     onChange({
       x: current.x ?? 0,
       y: current.y ?? 0,
       z: current.z ?? 0,
-      [axis]: Number.isNaN(num) ? 0 : num,
+      [axis]: num,
     });
   };
 
   return (
     <div className="flex items-center gap-0.5">
-      <input
-        type="number"
+      <DraftNumberInput
         value={current.x ?? 0}
-        onChange={(e) => handleChange("x", e.target.value)}
+        onChange={(num) => handleChange("x", num)}
         {...inputProps}
       />
-      <input
-        type="number"
+      <DraftNumberInput
         value={current.y ?? 0}
-        onChange={(e) => handleChange("y", e.target.value)}
+        onChange={(num) => handleChange("y", num)}
         {...inputProps}
       />
-      <input
-        type="number"
+      <DraftNumberInput
         value={current.z ?? 0}
-        onChange={(e) => handleChange("z", e.target.value)}
+        onChange={(num) => handleChange("z", num)}
         {...inputProps}
       />
     </div>

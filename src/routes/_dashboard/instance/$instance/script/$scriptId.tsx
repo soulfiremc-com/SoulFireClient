@@ -131,6 +131,15 @@ export const Route = createFileRoute(
   component: ScriptEditorPage,
 });
 
+const PALETTE_SKELETON_SLOTS = [
+  "node-1",
+  "node-2",
+  "node-3",
+  "node-4",
+  "node-5",
+  "node-6",
+];
+
 function ScriptEditorSkeleton() {
   return (
     <div className="flex h-full w-full flex-col">
@@ -149,8 +158,8 @@ function ScriptEditorSkeleton() {
         {/* Node palette */}
         <div className="flex w-48 flex-col gap-2 border-r p-3">
           <Skeleton className="h-8 w-full" />
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-8 w-full" />
+          {PALETTE_SKELETON_SLOTS.map((slot) => (
+            <Skeleton key={slot} className="h-8 w-full" />
           ))}
         </div>
         {/* Canvas area */}
@@ -421,12 +430,20 @@ function ScriptEditorContent() {
   });
 
   const handleSave = useCallback(() => {
+    if (!transport) {
+      toast.info(i18n.t("common:commandPalette.feedback.demo"));
+      return;
+    }
     saveMutation.mutate();
-  }, [saveMutation]);
+  }, [saveMutation, transport]);
 
   // Handle script activation
   const handleStart = useCallback(async () => {
-    if (!transport || scriptId === "new") {
+    if (!transport) {
+      toast.info(i18n.t("common:commandPalette.feedback.demo"));
+      return;
+    }
+    if (scriptId === "new") {
       toast.error(tInstance("scripts.saveFirstBeforeActivating"));
       return;
     }
@@ -730,8 +747,8 @@ function ScriptEditorContent() {
     [getDefinition],
   );
 
-  // Mobile: tap a node in the palette to add it at viewport center
-  const handleMobileNodeAdd = useCallback(
+  // Click, tap, or Enter on a palette node adds it at the canvas center.
+  const handleNodeAdd = useCallback(
     (nodeType: string) => {
       const definition = getDefinition(nodeType);
       if (!definition) return;
@@ -890,7 +907,7 @@ function ScriptEditorContent() {
                 {tInstance("scripts.editor.palette.title")}
               </SheetDescription>
             </SheetHeader>
-            <NodePalette onNodeTap={handleMobileNodeAdd} />
+            <NodePalette onNodeAdd={handleNodeAdd} />
           </SheetContent>
         </Sheet>
 
@@ -932,7 +949,10 @@ function ScriptEditorContent() {
       <ResizablePanelGroup orientation="horizontal" className="flex-1">
         {/* Left sidebar - Node Palette */}
         <ResizablePanel defaultSize="20%" minSize="12.5rem" maxSize="25rem">
-          <NodePalette onNodeDragStart={handleNodeDragStart} />
+          <NodePalette
+            onNodeDragStart={handleNodeDragStart}
+            onNodeAdd={handleNodeAdd}
+          />
         </ResizablePanel>
 
         <ResizableHandle withHandle />

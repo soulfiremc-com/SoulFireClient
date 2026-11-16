@@ -1,5 +1,5 @@
 import { useSelector } from "@tanstack/react-store";
-import { Panel, useReactFlow } from "@xyflow/react";
+import { Panel, useReactFlow, useStoreApi } from "@xyflow/react";
 import { MousePointerClickIcon, SearchIcon, ZapIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +27,7 @@ export function ScriptFirstUse() {
   const { t } = useTranslation("instance");
   const editor = useScriptEditor();
   const reactFlow = useReactFlow();
+  const flowStore = useStoreApi();
   const nodes = useSelector(editor.document, (state) => state.nodes);
   const edges = useSelector(editor.document, (state) => state.edges);
   const scriptName = useSelector(editor.document, (state) => state.scriptName);
@@ -41,11 +42,12 @@ export function ScriptFirstUse() {
     () => STARTER_TRIGGERS.flatMap((type) => definitions[type] ?? []),
     [definitions],
   );
+  // Use the canvas, not the window. The sidebar and palette offset it.
   const canvasCenter = () => {
-    const screen = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-    };
+    const rect = flowStore.getState().domNode?.getBoundingClientRect();
+    const screen = rect
+      ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+      : { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     return { screen, flow: reactFlow.screenToFlowPosition(screen) };
   };
 
@@ -82,7 +84,11 @@ export function ScriptFirstUse() {
                     variant="outline"
                     title={trigger.description}
                     onClick={() =>
-                      editor.actions.addNode(trigger.type, canvasCenter().flow)
+                      editor.actions.addNode(
+                        trigger.type,
+                        canvasCenter().flow,
+                        trigger.defaultData,
+                      )
                     }
                   >
                     {trigger.label}

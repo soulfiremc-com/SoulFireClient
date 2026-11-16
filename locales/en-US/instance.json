@@ -958,6 +958,41 @@
         "empty": "No incoming values",
         "title": "Multi-input: accepts multiple connections",
         "connectTo": "Connect values to {{label}}"
+      },
+      "shortcuts": {
+        "title": "Keyboard shortcuts",
+        "description": "Click the canvas first. Shortcuts do not run while you type in a field.",
+        "mouse": {
+          "drag": "Drag",
+          "rightClick": "Right-click"
+        },
+        "actions": {
+          "quickAdd": "Add a node",
+          "quickAddAtCursor": "Add a node at the pointer",
+          "selectAll": "Select all nodes",
+          "deselectAll": "Clear the selection",
+          "selectLinked": "Select connected nodes",
+          "selectUpstream": "Select nodes before",
+          "selectDownstream": "Select nodes after",
+          "selectSimilar": "Select nodes of the same type",
+          "duplicate": "Duplicate the selection",
+          "copy": "Copy the selection",
+          "paste": "Paste",
+          "delete": "Delete the selection",
+          "rename": "Rename the node",
+          "mute": "Mute or unmute the node",
+          "collapse": "Collapse or expand the node",
+          "hideSockets": "Hide unconnected ports",
+          "preview": "Show or hide the preview",
+          "group": "Group the selection",
+          "ungroup": "Ungroup",
+          "enterGroup": "Open or leave a group",
+          "frame": "Put a frame around the selection",
+          "align": "Align nodes",
+          "distribute": "Space nodes evenly",
+          "cutLinks": "Cut connections",
+          "reroute": "Add a reroute point on a connection"
+        }
       }
     },
     "lifecycle": {
