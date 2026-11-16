@@ -33,6 +33,8 @@ test("saving an explicit pause edit retains a newer pause draft during acknowled
     "instance",
     "script",
   ).editor;
+  // Start from a script that was saved as running.
+  editor.actions.setPaused(false);
   editor.actions.markSaved(editor.actions.getScriptData(), "script");
   editor.actions.setPaused(true);
   const transport = createRouterTransport((router) => {
