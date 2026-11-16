@@ -53,6 +53,8 @@ test("duplicate starts and unmatched or unidentified completions cannot cancel t
 
 test("polled nodes restore observation without replacing fresher streaming highlights", () => {
   const editor = createScriptEditorSession();
+  // Start from a script that was saved as running.
+  editor.actions.setPaused(false);
   editor.actions.markSaved(editor.actions.getScriptData(), "script");
   const document = editor.document.get();
   const status = create(ScriptStatusSchema, {
@@ -160,6 +162,8 @@ test("status updates pause controls without replacing unsaved graph edits", () =
 
 test("status preserves local pause intent and ignores other scripts and unknown pause settings", () => {
   const editor = createScriptEditorSession();
+  // Start from a script that was saved as running.
+  editor.actions.setPaused(false);
   editor.actions.markSaved(editor.actions.getScriptData(), "script");
   editor.actions.setPaused(true);
   editor.actions.syncScriptStatus(
@@ -871,4 +875,16 @@ test("canvas revisions follow document replacement independently of edits and na
   assert.notEqual(imported, loaded);
   editor.actions.resetEditor();
   assert.notEqual(editor.ui.get().canvasRevision, imported);
+});
+
+test("new and reset scripts start paused so saving does not run them", () => {
+  const editor = createScriptEditorSession();
+  assert.equal(editor.document.get().paused, true);
+  assert.equal(editor.document.get().lastSavedPaused, true);
+  assert.equal(editor.actions.getScriptData().paused, true);
+
+  editor.actions.setPaused(false);
+  editor.actions.resetEditor();
+  assert.equal(editor.document.get().paused, true);
+  assert.equal(editor.document.get().lastSavedPaused, true);
 });
