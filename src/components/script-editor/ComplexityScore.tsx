@@ -1,7 +1,10 @@
 import { useSelector } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { getNodeDefinition } from "@/components/script-editor/nodes/types";
+import {
+  getNodeDefinition,
+  StandardPorts,
+} from "@/components/script-editor/nodes/types";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 
 /**
@@ -29,7 +32,9 @@ export function ComplexityScore() {
       if (!node.type) continue;
       const def = getNodeDefinition(node.type);
       if (!def) continue;
-      const hasLoopPort = def.outputs.some((p) => p.id === "exec_loop");
+      const hasLoopPort = def.outputs.some(
+        (p) => p.id === StandardPorts.EXEC_LOOP,
+      );
       if (hasLoopPort) loopNodes++;
     }
 

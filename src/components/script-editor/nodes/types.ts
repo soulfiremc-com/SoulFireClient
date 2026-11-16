@@ -30,10 +30,10 @@ export type PortType =
 export const StandardPorts = {
   EXEC_IN: "in",
   EXEC_OUT: "out",
-  EXEC_TRUE: "true",
-  EXEC_FALSE: "false",
-  EXEC_LOOP: "loop",
-  EXEC_DONE: "done",
+  EXEC_TRUE: "exec_true",
+  EXEC_FALSE: "exec_false",
+  EXEC_LOOP: "exec_loop",
+  EXEC_DONE: "exec_done",
 } as const;
 
 export type NodeCategory = string;

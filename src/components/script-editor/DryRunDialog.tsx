@@ -45,6 +45,7 @@ import { ScriptService } from "@/generated/soulfire/script_pb";
 import { valueToJson } from "@/lib/protobuf";
 import { InvalidMockInput, parseMockInputs } from "@/lib/script-dry-run";
 import { ExecutionLogs } from "./ExecutionLogs";
+import { getNodeDisplayLabel } from "./node-label";
 import type { LogEntry, LogLevel } from "./types";
 
 type RunResult = {
@@ -105,6 +106,8 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
         };
       const controller = new AbortController();
       controllerRef.current = controller;
+      const nodeName = (nodeId: string) =>
+        getNodeDisplayLabel(editor.document.get().nodes, nodeId) ?? nodeId;
       let success: boolean | undefined;
       const addLog = (
         level: LogLevel,
@@ -151,7 +154,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                         addLog(
                           "debug",
                           t("scripts.nodeStarted", {
-                            nodeId: event.value.nodeId,
+                            nodeId: nodeName(event.value.nodeId),
                           }),
                           event.value.nodeId,
                         );
@@ -164,7 +167,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                         );
                         addLog(
                           "debug",
-                          `${t("scripts.nodeCompleted", { nodeId: event.value.nodeId })}${Object.keys(outputs).length ? ` ${JSON.stringify(outputs)}` : ""}`,
+                          `${t("scripts.nodeCompleted", { nodeId: nodeName(event.value.nodeId) })}${Object.keys(outputs).length ? ` ${JSON.stringify(outputs)}` : ""}`,
                           event.value.nodeId,
                         );
                         break;
@@ -373,7 +376,11 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
             )}
             {logs.length > 0 && (
               <div className="h-48 min-w-0">
-                <ExecutionLogs logs={logs} onClearLogs={() => setLogs([])} />
+                <ExecutionLogs
+                  logs={logs}
+                  onClearLogs={() => setLogs([])}
+                  getNodeLabel={(nodeId) => getNodeDisplayLabel(nodes, nodeId)}
+                />
               </div>
             )}
           </form>

@@ -73,6 +73,23 @@ function getFieldKey(portId: string): string {
   return portId;
 }
 
+// Servers send defaults as JSON. Keep the raw text if it is not valid JSON.
+function parseDefaultValue(raw: string | undefined): unknown {
+  if (raw === undefined) return undefined;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return raw;
+  }
+}
+
+/**
+ * Colors a port green or red while a wire hovers it, and gives touch screens a
+ * larger target than the small visible dot.
+ */
+const HANDLE_FEEDBACK_CLASS =
+  "[&.connectingto.valid]:ring-2 [&.connectingto.valid]:ring-success [&.connectingto:not(.valid)]:ring-2 [&.connectingto:not(.valid)]:ring-destructive pointer-coarse:before:absolute pointer-coarse:before:-inset-3 pointer-coarse:before:content-['']";
+
 interface PortRowProps {
   port: PortDefinition;
   type: "source" | "target";
@@ -143,7 +160,10 @@ function PortRow({
         type={type}
         position={position}
         id={port.id}
-        className="!absolute transition-transform hover:scale-125"
+        className={cn(
+          "!absolute transition-transform hover:scale-125",
+          HANDLE_FEEDBACK_CLASS,
+        )}
         title={port.description || undefined}
         style={{
           background: color,
@@ -170,7 +190,10 @@ function PortRow({
         type={type}
         position={position}
         id={port.id}
-        className="!relative !top-0 !transform-none transition-transform hover:scale-125"
+        className={cn(
+          "!relative !top-0 !transform-none transition-transform hover:scale-125",
+          HANDLE_FEEDBACK_CLASS,
+        )}
         style={{
           background: color,
           // Dimensions are data-driven based on handle shape
@@ -195,9 +218,7 @@ function PortRow({
           <InlineEditor
             type={port.type}
             value={value}
-            defaultValue={
-              port.defaultValue ? JSON.parse(port.defaultValue) : undefined
-            }
+            defaultValue={parseDefaultValue(port.defaultValue)}
             onChange={onValueChange}
           />
         </div>
@@ -529,7 +550,9 @@ function BaseNodeComponent({
           variant={isMuted ? "muted" : "default"}
         />
         {isMuted && supportsMuting && (
-          <span className="text-xs text-muted-foreground">(muted)</span>
+          <span className="text-xs text-muted-foreground">
+            {t("scripts.editor.node.muted")}
+          </span>
         )}
         <ValidationBadges nodeId={id} />
         <ExecutionTimeBadge nodeId={id} />

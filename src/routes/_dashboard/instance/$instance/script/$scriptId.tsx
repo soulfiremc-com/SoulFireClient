@@ -22,6 +22,7 @@ import { Separator } from "react-resizable-panels";
 import { toast } from "sonner";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { getNodeDisplayLabel } from "@/components/script-editor/node-label";
 import { NodePalette } from "@/components/script-editor/NodePalette.tsx";
 import {
   NodeTypesProvider,
@@ -502,7 +503,11 @@ function ScriptEditorContent() {
               timestamp: new Date(),
               level: "debug",
               nodeId,
-              message: tInstance("scripts.nodeStarted", { nodeId }),
+              message: tInstance("scripts.nodeStarted", {
+                nodeId:
+                  getNodeDisplayLabel(editor.document.get().nodes, nodeId) ??
+                  nodeId,
+              }),
             });
           } else if (event.event.case === "nodeCompleted") {
             const nodeId = event.event.value.nodeId;
@@ -516,7 +521,11 @@ function ScriptEditorContent() {
               timestamp: new Date(),
               level: "debug",
               nodeId,
-              message: tInstance("scripts.nodeCompleted", { nodeId }),
+              message: tInstance("scripts.nodeCompleted", {
+                nodeId:
+                  getNodeDisplayLabel(editor.document.get().nodes, nodeId) ??
+                  nodeId,
+              }),
             });
           } else if (event.event.case === "executionStats") {
             const { nodeCount, maxCount } = event.event.value;

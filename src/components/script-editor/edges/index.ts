@@ -12,6 +12,7 @@ const edgeTypes: EdgeTypes = {
 };
 
 export * from "./connection-validation";
+export { ConnectionLine } from "./ConnectionLine";
 export {
   DataEdge,
   type DataEdgeType,

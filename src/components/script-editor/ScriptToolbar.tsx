@@ -8,8 +8,10 @@ import {
   LoaderCircleIcon,
   PauseIcon,
   PlayIcon,
+  Redo2Icon,
   SaveIcon,
   Trash2Icon,
+  Undo2Icon,
   UploadIcon,
   ZapIcon,
   ZoomInIcon,
@@ -127,6 +129,11 @@ export function ScriptToolbar({
   const paused = useSelector(editor.document, (state) => state.paused);
   const loadScriptData = editor.actions.loadScriptData;
   const nodeCount = useSelector(editor.document, (state) => state.nodes.length);
+  const canUndo = useSelector(editor.history, (state) => state.past.length > 0);
+  const canRedo = useSelector(
+    editor.history,
+    (state) => state.future.length > 0,
+  );
   const hasErrors = useSelector(editor.validation, (state) =>
     state.validationDiagnostics.some((item) => item.severity === "error"),
   );
@@ -172,7 +179,8 @@ export function ScriptToolbar({
             edges: importData.edges,
             name: importData.name ?? current.scriptName,
             description: importData.description ?? current.scriptDescription,
-            paused: importData.paused ?? false,
+            // A file without a run state keeps this script's current one.
+            paused: importData.paused ?? current.paused,
             quotas: importData.quotas,
           });
           toast.success(t("scripts.editor.toolbar.importSuccess"));
@@ -279,6 +287,31 @@ export function ScriptToolbar({
 
       {!isMobile && (
         <Separator orientation="vertical" className="h-6 my-auto" />
+      )}
+
+      {!isMobile && (
+        <ButtonGroup>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={editor.actions.undo}
+            disabled={!canUndo}
+            title={t("scripts.editor.toolbar.undo")}
+            aria-label={t("scripts.editor.toolbar.undo")}
+          >
+            <Undo2Icon className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={editor.actions.redo}
+            disabled={!canRedo}
+            title={t("scripts.editor.toolbar.redo")}
+            aria-label={t("scripts.editor.toolbar.redo")}
+          >
+            <Redo2Icon className="size-4" />
+          </Button>
+        </ButtonGroup>
       )}
 
       {/* Save Button + Diff (diff hidden on mobile) */}
@@ -393,6 +426,23 @@ export function ScriptToolbar({
               <EllipsisVerticalIcon className="size-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onClick={editor.actions.undo}
+                  disabled={!canUndo}
+                >
+                  <Undo2Icon />
+                  {t("scripts.editor.toolbar.undo")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={editor.actions.redo}
+                  disabled={!canRedo}
+                >
+                  <Redo2Icon />
+                  {t("scripts.editor.toolbar.redo")}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={handleExport}>
                   <DownloadIcon />

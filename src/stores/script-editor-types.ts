@@ -38,6 +38,17 @@ export interface ScriptDocumentState {
   lastSavedEdges: Edge[] | null;
 }
 
+/** The graph as it was before one undoable edit. */
+export interface ScriptGraphSnapshot {
+  nodes: Node[];
+  edges: Edge[];
+}
+
+export interface ScriptHistoryState {
+  past: ScriptGraphSnapshot[];
+  future: ScriptGraphSnapshot[];
+}
+
 export interface ScriptEditorUIState {
   canvasRevision: number;
   selectedNodeId: string | null;
@@ -121,6 +132,13 @@ export interface ScriptEditorActions {
   createGroupFromSelection: () => void;
   ungroupSelected: () => void;
   getCurrentGroupId: () => string | null;
+  /** Opens the groups that contain a node and selects it. */
+  revealNode: (nodeId: string) => boolean;
+  undo: () => void;
+  redo: () => void;
+  /** Collects the edits until the matching end call into one undo step. */
+  beginHistoryGesture: () => void;
+  endHistoryGesture: () => void;
 
   findClosestEdge: (position: XYPosition, threshold: number) => Edge | null;
   insertNodeOnEdge: (nodeId: string, edgeId: string) => void;

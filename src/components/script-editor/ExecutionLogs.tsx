@@ -13,6 +13,8 @@ interface ExecutionLogsProps {
   onClearLogs?: () => void;
   autoScroll?: boolean;
   className?: string;
+  /** Turns node IDs into the names shown on the canvas. */
+  getNodeLabel?: (nodeId: string) => string | undefined;
 }
 
 function getLogLevelStyles(level: LogLevel): {
@@ -47,9 +49,13 @@ function formatTimestamp(date: Date): string {
 
 interface LogEntryRowProps {
   entry: LogEntry;
+  nodeLabel?: string;
 }
 
-const LogEntryRow = memo(function LogEntryRow({ entry }: LogEntryRowProps) {
+const LogEntryRow = memo(function LogEntryRow({
+  entry,
+  nodeLabel,
+}: LogEntryRowProps) {
   const styles = getLogLevelStyles(entry.level);
 
   return (
@@ -76,7 +82,7 @@ const LogEntryRow = memo(function LogEntryRow({ entry }: LogEntryRowProps) {
           className="min-w-0 truncate text-muted-foreground"
           title={entry.nodeId}
         >
-          [{entry.nodeId}]
+          [{nodeLabel ?? entry.nodeId}]
         </span>
       )}
       <span className="col-span-full min-w-0 break-all whitespace-pre-wrap">
@@ -91,16 +97,30 @@ export function ExecutionLogs({
   onClearLogs,
   autoScroll = true,
   className,
+  getNodeLabel,
 }: ExecutionLogsProps) {
   const { t } = useTranslation("instance");
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+  // New entries only scroll the list while the reader is at the end.
+  const followingRef = useRef(true);
   const lastLogId = logs[logs.length - 1]?.id;
+
+  useEffect(() => {
+    const viewport = scrollViewportRef.current;
+    if (!viewport) return;
+    const onScroll = () => {
+      followingRef.current =
+        viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 24;
+    };
+    viewport.addEventListener("scroll", onScroll, { passive: true });
+    return () => viewport.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Auto-scroll to bottom when new logs are added
   useEffect(() => {
-    if (autoScroll && scrollViewportRef.current) {
-      scrollViewportRef.current.scrollTop =
-        scrollViewportRef.current.scrollHeight;
+    const viewport = scrollViewportRef.current;
+    if (autoScroll && viewport && followingRef.current) {
+      viewport.scrollTop = viewport.scrollHeight;
     }
   }, [autoScroll, lastLogId]);
 
@@ -140,7 +160,13 @@ export function ExecutionLogs({
         ) : (
           <div className="flex flex-col">
             {logs.map((entry) => (
-              <LogEntryRow key={entry.id} entry={entry} />
+              <LogEntryRow
+                key={entry.id}
+                entry={entry}
+                nodeLabel={
+                  entry.nodeId ? getNodeLabel?.(entry.nodeId) : undefined
+                }
+              />
             ))}
           </div>
         )}

@@ -833,7 +833,9 @@
         "exportSuccess": "Script exported",
         "importSuccess": "Script imported",
         "importError": "Could not import script",
-        "resumeBlocked": "Fix the errors in the script check first"
+        "resumeBlocked": "Fix the errors in the script check first",
+        "undo": "Undo",
+        "redo": "Redo"
       },
       "palette": {
         "title": "Nodes",
@@ -858,13 +860,21 @@
         "unmute": "Unmute",
         "showPreview": "Show preview",
         "hidePreview": "Hide preview",
+        "openGroup": "Open group",
+        "ungroup": "Ungroup",
         "delete": "Delete"
+      },
+      "connection": {
+        "self": "A node cannot connect to itself.",
+        "execution": "Square ports control when nodes run. They connect only to other square ports.",
+        "type": "A {{source}} output cannot go into a {{target}} input."
       },
       "node": {
         "expand": "Expand node",
         "collapse": "Collapse node",
         "avgTime": "Average execution time: {{avg}} ms (last {{count}} runs)",
-        "preview": "Preview"
+        "preview": "Preview",
+        "muted": "(muted)"
       },
       "debug": {
         "copyValue": "Copy current value",
@@ -884,6 +894,7 @@
       "group": {
         "returnToRoot": "Return to root (Tab)",
         "root": "Root",
+        "defaultLabel": "Group",
         "exitHint": "Press <key>Tab</key> to exit",
         "editHint": "Double-click to edit",
         "noInputs": "No inputs defined",
@@ -996,7 +1007,9 @@
           "align": "Align nodes",
           "distribute": "Space nodes evenly",
           "cutLinks": "Cut connections",
-          "reroute": "Add a reroute point on a connection"
+          "reroute": "Add a reroute point on a connection",
+          "undo": "Undo",
+          "redo": "Redo"
         }
       }
     },

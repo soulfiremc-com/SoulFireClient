@@ -25,7 +25,8 @@ export function GroupBreadcrumb() {
     const node = nodes.find((n) => n.id === groupId);
     return {
       id: groupId,
-      label: (node?.data?.label as string) || "Group",
+      label:
+        (node?.data?.label as string) || t("scripts.editor.group.defaultLabel"),
     };
   });
 
@@ -76,7 +77,7 @@ export function GroupBreadcrumb() {
       ))}
 
       {/* Keyboard hint */}
-      <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+      <span className="ml-2 hidden items-center gap-1 text-xs text-muted-foreground pointer-fine:inline-flex">
         <Trans
           t={t}
           i18nKey="scripts.editor.group.exitHint"

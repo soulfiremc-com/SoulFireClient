@@ -116,7 +116,7 @@ export function ScriptDiffDialog() {
             {t("scripts.editor.diff.description")}
           </CredenzaDescription>
         </CredenzaHeader>
-        <CredenzaBody className="space-y-2 text-sm">
+        <CredenzaBody className="flex flex-col gap-2 text-sm">
           {diff.addedNodes.length > 0 && (
             <div className="text-success">
               +{" "}

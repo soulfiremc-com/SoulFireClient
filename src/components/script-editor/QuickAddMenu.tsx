@@ -27,7 +27,31 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { useNodeTypes } from "./NodeTypesContext";
-import { getPortTypeFromDefinition, type NodeDefinition } from "./nodes/types";
+import { canConvertType } from "./edges/connection-validation";
+import {
+  getPortTypeFromDefinition,
+  type NodeDefinition,
+  type PortDefinition,
+  type PortType,
+} from "./nodes/types";
+
+// Matches the canvas rule: execution ports only pair with execution ports.
+function portsFit(from: PortType, to: PortType) {
+  return (
+    (from === "execution") === (to === "execution") && canConvertType(from, to)
+  );
+}
+
+/** Finds the first port on a new node that fits the wire the user dragged. */
+function findMatchingPort(
+  definition: NodeDefinition,
+  socketType: PortType,
+  socketSide: "source" | "target",
+): PortDefinition | undefined {
+  return socketSide === "source"
+    ? definition.inputs.find((input) => portsFit(socketType, input.type))
+    : definition.outputs.find((output) => portsFit(output.type, socketType));
+}
 
 /**
  * QuickAddMenu - Blender-style quick add menu (Shift+A)
@@ -53,6 +77,19 @@ export function QuickAddMenu() {
 
   const { definitions, categories, getCategoryInfo, createNodeData } =
     useNodeTypes();
+
+  // Layout nodes such as reroutes keep their resolved type in their data.
+  const getSocketType = useCallback(
+    (socket: { nodeId: string; handleId: string }): PortType => {
+      const node = nodes.find((n) => n.id === socket.nodeId);
+      return (
+        getPortTypeFromDefinition(node?.type ?? "", socket.handleId) ??
+        (node?.data as { resolvedType?: PortType } | undefined)?.resolvedType ??
+        "any"
+      );
+    },
+    [nodes],
+  );
 
   useLayoutEffect(() => {
     const menu = menuRef.current;
@@ -116,43 +153,16 @@ export function QuickAddMenu() {
 
     // Filter by socket compatibility if connecting from a socket
     if (sourceSocket) {
-      // Look up the source node type from the store nodes
-      const sourceNode = nodes.find((n) => n.id === sourceSocket.nodeId);
-      const sourceNodeType = sourceNode?.type ?? "";
-      const sourceType = getPortTypeFromDefinition(
-        sourceNodeType,
-        sourceSocket.handleId,
+      const socketType = getSocketType(sourceSocket);
+      nodeDefinitions = nodeDefinitions.filter(
+        (node) =>
+          findMatchingPort(node, socketType, sourceSocket.handleType) !==
+          undefined,
       );
-
-      if (sourceType) {
-        nodeDefinitions = nodeDefinitions.filter((node) => {
-          if (sourceSocket.handleType === "source") {
-            // Looking for nodes with compatible inputs
-            return node.inputs.some((input) => {
-              const inputType = input.type;
-              return (
-                inputType === "any" ||
-                sourceType === "any" ||
-                inputType === sourceType
-              );
-            });
-          } else {
-            // Looking for nodes with compatible outputs
-            return node.outputs.some((output) => {
-              const outputType = output.type;
-              return (
-                outputType === "any" ||
-                sourceType === "any" ||
-                outputType === sourceType
-              );
-            });
-          }
-        });
-      }
     }
 
     return nodeDefinitions;
-  }, [quickAddMenu, definitions, search, nodes]);
+  }, [quickAddMenu, definitions, search, getSocketType]);
 
   // Group filtered nodes by category
   const nodesByCategory = useMemo(() => {
@@ -211,14 +221,48 @@ export function QuickAddMenu() {
       if (!quickAddMenu) return;
 
       const nodeData = createNodeData(nodeDef.type);
-      addNode(nodeDef.type, quickAddMenu.position, nodeData);
-
-      // Note: Auto-connecting from socket drag would require the new node ID
-      // which we don't have here. This feature would need additional infrastructure.
-
+      const socket = quickAddMenu.sourceSocket;
+      const port =
+        socket &&
+        findMatchingPort(nodeDef, getSocketType(socket), socket.handleType);
+      // Adding the node and its wire is one undo step.
+      editor.actions.beginHistoryGesture();
+      const nodeId = addNode(
+        nodeDef.type,
+        // A node that feeds the dragged input ends at the pointer.
+        socket?.handleType === "target"
+          ? { ...quickAddMenu.position, x: quickAddMenu.position.x - 160 }
+          : quickAddMenu.position,
+        nodeData,
+      );
+      if (socket && port) {
+        editor.actions.onConnect(
+          socket.handleType === "source"
+            ? {
+                source: socket.nodeId,
+                sourceHandle: socket.handleId,
+                target: nodeId,
+                targetHandle: port.id,
+              }
+            : {
+                source: nodeId,
+                sourceHandle: port.id,
+                target: socket.nodeId,
+                targetHandle: socket.handleId,
+              },
+        );
+      }
+      editor.actions.endHistoryGesture();
       closeQuickAddMenu();
     },
-    [quickAddMenu, addNode, createNodeData, closeQuickAddMenu],
+    [
+      quickAddMenu,
+      addNode,
+      createNodeData,
+      closeQuickAddMenu,
+      editor,
+      getSocketType,
+    ],
   );
 
   // Handle keyboard navigation

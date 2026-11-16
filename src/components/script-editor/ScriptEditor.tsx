@@ -6,6 +6,7 @@ import {
   type Connection,
   Controls,
   type Edge,
+  type FinalConnectionState,
   MiniMap,
   type Node,
   ReactFlow,
@@ -15,16 +16,24 @@ import {
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
 import { ScriptGroupViewports } from "@/lib/script-group-viewports";
-import { createConnectionValidator, edgeTypes } from "./edges";
+import {
+  ConnectionLine,
+  createConnectionValidator,
+  edgeTypes,
+  getConnectionProblem,
+} from "./edges";
 import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
 import { useNodeTypes } from "./NodeTypesContext";
+import { getNodeDefinition, isPortMultiInput } from "./nodes/types";
 import { QuickAddMenu } from "./QuickAddMenu";
 import { ScriptFirstUse } from "./ScriptFirstUse";
 
@@ -46,6 +55,7 @@ function isCanvasShortcutTarget(container: Element, target: EventTarget) {
 
 export function ScriptEditor() {
   const editor = useScriptEditor();
+  const { t } = useTranslation("instance");
   const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
@@ -236,6 +246,25 @@ export function ScriptEditor() {
       if (!isCanvasShortcutTarget(event.currentTarget, event.target)) return;
 
       const selectedNodes = nodes.filter((n) => n.selected);
+      const commandKey = event.ctrlKey || event.metaKey;
+
+      // Ctrl+Z - Undo, Ctrl+Shift+Z or Ctrl+Y - Redo
+      if (commandKey && !event.altKey && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        if (event.shiftKey) editor.actions.redo();
+        else editor.actions.undo();
+        return;
+      }
+      if (
+        commandKey &&
+        !event.altKey &&
+        !event.shiftKey &&
+        event.key.toLowerCase() === "y"
+      ) {
+        event.preventDefault();
+        editor.actions.redo();
+        return;
+      }
 
       // A - Select all nodes (Blender-style, no modifier)
       if (
@@ -337,8 +366,12 @@ export function ScriptEditor() {
         !event.metaKey &&
         !event.shiftKey
       ) {
-        if (selectedNodeId) {
-          toggleMute(selectedNodeId);
+        const selected = nodes.find((n) => n.id === selectedNodeId);
+        if (
+          selected &&
+          getNodeDefinition(selected.type ?? "")?.supportsMuting
+        ) {
+          toggleMute(selected.id);
         }
         return;
       }
@@ -524,6 +557,7 @@ export function ScriptEditor() {
       }
     },
     [
+      editor,
       nodes,
       onNodesChange,
       deleteSelected,
@@ -691,7 +725,8 @@ export function ScriptEditor() {
 
   const handleReconnectStart = useCallback(() => {
     edgeReconnectSuccessful.current = false;
-  }, []);
+    editor.actions.beginHistoryGesture();
+  }, [editor]);
 
   const handleReconnect = useCallback(
     (oldEdge: Edge, newConnection: Connection) => {
@@ -708,14 +743,15 @@ export function ScriptEditor() {
         onEdgesChange([{ id: edge.id, type: "remove" }]);
       }
       edgeReconnectSuccessful.current = true;
+      editor.actions.endHistoryGesture();
     },
-    [onEdgesChange],
+    [editor, onEdgesChange],
   );
 
-  // Handle-based reconnection: dragging from an occupied input detaches the
-  // existing edge so the user can reconnect it elsewhere. If dropped on empty
-  // space the original edge is restored.
-  const detachedEdgeRef = useRef<Edge | null>(null);
+  // Handle-based reconnection: dragging from an occupied single input
+  // detaches the existing edge so the user can reconnect it elsewhere. If
+  // dropped on empty space the original edge is restored.
+  const detachedEdgeRef = useRef<{ edge: Edge; index: number } | null>(null);
   const connectionMadeRef = useRef(false);
 
   const handleConnectStart = useCallback(
@@ -729,21 +765,30 @@ export function ScriptEditor() {
     ) => {
       connectionMadeRef.current = false;
       detachedEdgeRef.current = null;
+      // Detaching and reconnecting is one undo step.
+      editor.actions.beginHistoryGesture();
 
       if (params.handleType === "target" && params.nodeId && params.handleId) {
-        const { edges: currentEdges } = editor.document.get();
-        const existingEdges = currentEdges.filter(
+        const { edges: currentEdges, nodes: currentNodes } =
+          editor.document.get();
+        const nodeType =
+          currentNodes.find((node) => node.id === params.nodeId)?.type ?? "";
+        // Multi-input ports keep their wires, so a drag adds another one.
+        if (isPortMultiInput(nodeType, params.handleId)) return;
+        const existing = currentEdges.filter(
           (e) =>
             e.target === params.nodeId && e.targetHandle === params.handleId,
         );
-        // Only detach if there's exactly one edge (single-input port)
-        if (existingEdges.length === 1) {
-          detachedEdgeRef.current = existingEdges[0];
-          onEdgesChange([{ id: existingEdges[0].id, type: "remove" }]);
+        if (existing.length === 1) {
+          detachedEdgeRef.current = {
+            edge: existing[0],
+            index: currentEdges.indexOf(existing[0]),
+          };
+          onEdgesChange([{ id: existing[0].id, type: "remove" }]);
         }
       }
     },
-    [onEdgesChange, editor.document.get],
+    [onEdgesChange, editor],
   );
 
   const handleConnect = useCallback(
@@ -755,18 +800,79 @@ export function ScriptEditor() {
     [onConnect],
   );
 
-  const handleConnectEnd = useCallback(() => {
-    if (detachedEdgeRef.current && !connectionMadeRef.current) {
-      // Restore the detached edge since no new connection was made
-      const edgeToRestore = detachedEdgeRef.current;
-      editor.document.setState((state) => ({
-        ...state,
-        edges: [...state.edges, edgeToRestore],
-      }));
-    }
-    detachedEdgeRef.current = null;
-    connectionMadeRef.current = false;
-  }, [editor.document.setState]);
+  const handleConnectEnd = useCallback(
+    (event: MouseEvent | TouchEvent, state: FinalConnectionState) => {
+      const detached = detachedEdgeRef.current;
+      const connected = connectionMadeRef.current;
+      if (detached && !connected) {
+        // Restore the detached edge in place since no new connection was made
+        editor.document.setState((current) => {
+          const edges = [...current.edges];
+          edges.splice(detached.index, 0, detached.edge);
+          return { ...current, edges };
+        });
+      }
+      detachedEdgeRef.current = null;
+      connectionMadeRef.current = false;
+      editor.actions.endHistoryGesture();
+      if (connected || detached || !state.fromHandle) return;
+
+      const from = state.fromHandle;
+      const to = state.toHandle;
+      if (to && to.type !== from.type) {
+        // Dropped on a port that does not fit. Say why.
+        const connection =
+          from.type === "source"
+            ? {
+                source: from.nodeId,
+                sourceHandle: from.id ?? null,
+                target: to.nodeId,
+                targetHandle: to.id ?? null,
+              }
+            : {
+                source: to.nodeId,
+                sourceHandle: to.id ?? null,
+                target: from.nodeId,
+                targetHandle: from.id ?? null,
+              };
+        const problem = getConnectionProblem(
+          editor.document.get().nodes,
+          connection,
+        );
+        if (problem?.kind === "self") {
+          toast.info(t("scripts.editor.connection.self"));
+        } else if (problem?.kind === "execution") {
+          toast.info(t("scripts.editor.connection.execution"));
+        } else if (problem) {
+          toast.info(
+            t("scripts.editor.connection.type", {
+              source: problem.sourceType,
+              target: problem.targetType,
+            }),
+          );
+        }
+        return;
+      }
+
+      // Dropped on empty canvas: offer the nodes that fit this port.
+      if (!state.toNode && reactFlowInstance) {
+        const point =
+          "changedTouches" in event ? event.changedTouches[0] : event;
+        if (!point) return;
+        const screenPosition = { x: point.clientX, y: point.clientY };
+        openQuickAddMenu(
+          reactFlowInstance.screenToFlowPosition(screenPosition),
+          screenPosition,
+          {
+            nodeId: from.nodeId,
+            handleId: from.id ?? "",
+            handleType: from.type,
+          },
+        );
+      }
+    },
+    [editor, openQuickAddMenu, reactFlowInstance, t],
+  );
 
   return (
     <div
@@ -805,6 +911,7 @@ export function ScriptEditor() {
           onEdgeContextMenu={handleEdgeContextMenu}
           onPaneClick={handlePaneClick}
           isValidConnection={connectionValidator}
+          connectionLineComponent={ConnectionLine}
           edgesReconnectable
           onReconnectStart={handleReconnectStart}
           onReconnect={handleReconnect}
@@ -833,38 +940,46 @@ export function ScriptEditor() {
 
       <QuickAddMenu />
 
-      {nodeContextMenu && (
-        <ContextMenuPortal
-          x={nodeContextMenu.position.x}
-          y={nodeContextMenu.position.y}
-          menuRef={nodeMenuRef}
-          onClose={dismissNodeContextMenu}
-        >
-          <NodeContextMenu
-            nodeId={nodeContextMenu.data}
-            isMuted={
-              (
-                visibleNodes.find((n) => n.id === nodeContextMenu.data)
-                  ?.data as { muted?: boolean } | undefined
-              )?.muted ?? false
-            }
-            isCollapsed={
-              (
-                visibleNodes.find((n) => n.id === nodeContextMenu.data)
-                  ?.data as { collapsed?: boolean } | undefined
-              )?.collapsed ?? false
-            }
-            previewEnabled={previewEnabledNodes.has(nodeContextMenu.data)}
-            onRename={setRenamingNodeId}
-            onDelete={deleteSelected}
-            onDuplicate={duplicateSelected}
-            onDisconnectAll={disconnectNode}
-            onToggleMute={toggleMute}
-            onToggleCollapse={toggleCollapse}
-            onTogglePreview={togglePreview}
-          />
-        </ContextMenuPortal>
-      )}
+      {nodeContextMenu &&
+        (() => {
+          const menuNode = visibleNodes.find(
+            (n) => n.id === nodeContextMenu.data,
+          );
+          const menuDefinition = getNodeDefinition(menuNode?.type ?? "");
+          const menuData = menuNode?.data as
+            | { muted?: boolean; collapsed?: boolean }
+            | undefined;
+          return (
+            <ContextMenuPortal
+              x={nodeContextMenu.position.x}
+              y={nodeContextMenu.position.y}
+              menuRef={nodeMenuRef}
+              onClose={dismissNodeContextMenu}
+            >
+              <NodeContextMenu
+                nodeId={nodeContextMenu.data}
+                isMuted={menuData?.muted ?? false}
+                isCollapsed={menuData?.collapsed ?? false}
+                isGroup={menuNode?.type === "layout.group"}
+                supportsMuting={menuDefinition?.supportsMuting ?? false}
+                supportsPreview={menuDefinition?.supportsPreview ?? false}
+                previewEnabled={previewEnabledNodes.has(nodeContextMenu.data)}
+                onRename={setRenamingNodeId}
+                onDelete={deleteSelected}
+                onDuplicate={duplicateSelected}
+                onDisconnectAll={disconnectNode}
+                onToggleMute={toggleMute}
+                onToggleCollapse={toggleCollapse}
+                onTogglePreview={togglePreview}
+                onOpenGroup={enterGroup}
+                onUngroup={(nodeId) => {
+                  setSelectedNode(nodeId);
+                  ungroupSelected();
+                }}
+              />
+            </ContextMenuPortal>
+          );
+        })()}
 
       {/* Link cutting visual indicator */}
       {linkCutting.active &&

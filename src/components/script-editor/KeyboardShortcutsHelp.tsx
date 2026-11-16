@@ -30,6 +30,8 @@ const SHORTCUTS: ReadonlyArray<{
   { id: "duplicate", keys: "Shift + D" },
   { id: "copy", keys: "Ctrl + C" },
   { id: "paste", keys: "Ctrl + V" },
+  { id: "undo", keys: "Ctrl + Z" },
+  { id: "redo", keys: "Ctrl + Shift + Z" },
   { id: "delete", keys: "Delete / Backspace / X" },
   { id: "rename", keys: "F2" },
   { id: "mute", keys: "M" },

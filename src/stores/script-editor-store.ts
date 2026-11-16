@@ -35,6 +35,8 @@ import type {
   ScriptEditorActions,
   ScriptEditorUIState,
   ScriptExecutionState,
+  ScriptGraphSnapshot,
+  ScriptHistoryState,
   ScriptValidationState,
 } from "./script-editor-types";
 
@@ -130,6 +132,13 @@ function assignEdgeOrder(
     },
   };
 }
+
+const HISTORY_LIMIT = 100;
+const sameItems = <T>(first: readonly T[], second: readonly T[]) =>
+  first === second ||
+  (first.length === second.length &&
+    first.every((item, index) => item === second[index]));
+const HISTORY_COALESCE_MS = 1500;
 
 // Generate unique IDs
 const generateId = () => crypto.randomUUID();
@@ -245,6 +254,75 @@ export function createScriptEditorSession() {
     diagnosticsByNode: new Map(),
     validationDiagnostics: [],
   });
+  const history = createStore<ScriptHistoryState>({ past: [], future: [] });
+  // A gesture (dragging, resizing, rewiring) becomes one undo step.
+  let gestureStart: ScriptGraphSnapshot | null = null;
+  // Typing into one field merges into one undo step while it continues.
+  let lastCoalesce: { key: string; at: number } | null = null;
+  let canvasGesture = false;
+
+  const pushHistory = (entry: ScriptGraphSnapshot) =>
+    history.setState((state) => ({
+      past: [...state.past, entry].slice(-HISTORY_LIMIT),
+      future: [],
+    }));
+  const clearHistory = () => {
+    gestureStart = null;
+    lastCoalesce = null;
+    history.setState(() => ({ past: [], future: [] }));
+  };
+  const remember = (before: ScriptGraphSnapshot, coalesceKey?: string) => {
+    if (gestureStart) return;
+    const now = Date.now();
+    const coalesce =
+      coalesceKey !== undefined &&
+      lastCoalesce?.key === coalesceKey &&
+      now - lastCoalesce.at < HISTORY_COALESCE_MS;
+    lastCoalesce =
+      coalesceKey === undefined ? null : { key: coalesceKey, at: now };
+    if (!coalesce) pushHistory(before);
+  };
+  // Applies a graph edit and records the previous graph for undo.
+  const commit = (
+    updater: (state: ScriptDocumentState) => ScriptDocumentState,
+    coalesceKey?: string,
+  ) => {
+    const before = document.get();
+    document.setState(updater);
+    const after = document.get();
+    if (
+      !sameItems(after.nodes, before.nodes) ||
+      !sameItems(after.edges, before.edges)
+    )
+      remember({ nodes: before.nodes, edges: before.edges }, coalesceKey);
+  };
+  const restoreGraph = (entry: ScriptGraphSnapshot) => {
+    const ids = new Set(entry.nodes.map((node) => node.id));
+    batch(() => {
+      document.setState((state) => ({
+        ...state,
+        nodes: entry.nodes,
+        edges: entry.edges,
+        isDirty: true,
+      }));
+      ui.setState((state) => {
+        // Leave groups that the restored graph no longer has.
+        const missing = state.groupEditStack.findIndex((id) => !ids.has(id));
+        return {
+          ...state,
+          groupEditStack:
+            missing === -1
+              ? state.groupEditStack
+              : state.groupEditStack.slice(0, missing),
+          selectedNodeId:
+            state.selectedNodeId && ids.has(state.selectedNodeId)
+              ? state.selectedNodeId
+              : null,
+          quickAddMenu: null,
+        };
+      });
+    });
+  };
   const actions: ScriptEditorActions = {
     onNodesChange: (changes) => {
       // Only mark as dirty for actual content changes, not internal React Flow events
@@ -257,11 +335,38 @@ export function createScriptEditorSession() {
           change.type === "replace" ||
           (change.type === "dimensions" && !!change.setAttributes),
       );
-      document.setState((state) => ({
+      // Drags and resizes report every frame. Record them once per gesture.
+      const gestureActive = changes.some(
+        (change) =>
+          (change.type === "position" && change.dragging === true) ||
+          (change.type === "dimensions" &&
+            !!change.setAttributes &&
+            change.resizing === true),
+      );
+      const gestureEnded =
+        !gestureActive &&
+        changes.some(
+          (change) =>
+            (change.type === "position" && change.dragging === false) ||
+            (change.type === "dimensions" &&
+              !!change.setAttributes &&
+              change.resizing === false),
+        );
+      if (gestureActive && !canvasGesture) {
+        canvasGesture = true;
+        actions.beginHistoryGesture();
+      }
+      const update = (state: ScriptDocumentState) => ({
         ...state,
         nodes: applyNodeChanges(changes, document.get().nodes),
         ...(hasMeaningfulChange && { isDirty: true }),
-      }));
+      });
+      if (hasMeaningfulChange) commit(update);
+      else document.setState(update);
+      if (gestureEnded && canvasGesture) {
+        canvasGesture = false;
+        actions.endHistoryGesture();
+      }
     },
     onEdgesChange: (changes) => {
       // Only mark as dirty for actual content changes, not selection changes
@@ -272,12 +377,14 @@ export function createScriptEditorSession() {
           change.type === "replace",
       );
       const nextEdges = applyEdgeChanges(changes, document.get().edges);
-      document.setState((state) => ({
+      if (!hasMeaningfulChange) {
+        document.setState((state) => ({ ...state, edges: nextEdges }));
+        return;
+      }
+      commit((state) => ({
         ...state,
-        edges: hasMeaningfulChange
-          ? normalizeMultiInputEdgeOrders(document.get().nodes, nextEdges)
-          : nextEdges,
-        ...(hasMeaningfulChange && { isDirty: true }),
+        edges: normalizeMultiInputEdgeOrders(document.get().nodes, nextEdges),
+        isDirty: true,
       }));
     },
     onConnect: (connection) => {
@@ -315,7 +422,7 @@ export function createScriptEditorSession() {
         data: { edgeType, edgeStyle },
       });
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         edges: normalizeMultiInputEdgeOrders(
           nodes,
@@ -327,7 +434,7 @@ export function createScriptEditorSession() {
     onReconnect: (oldEdge, newConnection) => {
       const { nodes, edges } = document.get();
       const reconnected = reconnectEdge(oldEdge, newConnection, edges);
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         edges: normalizeMultiInputEdgeOrders(nodes, reconnected),
         isDirty: true,
@@ -344,7 +451,7 @@ export function createScriptEditorSession() {
           ...(currentGroupId && { parentGroupId: currentGroupId }),
         },
       };
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: [...document.get().nodes, newNode],
         isDirty: true,
@@ -352,17 +459,20 @@ export function createScriptEditorSession() {
       return newNode.id;
     },
     updateNodeData: (nodeId, data) => {
-      document.setState((state) => ({
-        ...state,
-        nodes: document
-          .get()
-          .nodes.map((node) =>
-            node.id === nodeId
-              ? { ...node, data: { ...node.data, ...data } }
-              : node,
-          ),
-        isDirty: true,
-      }));
+      commit(
+        (state) => ({
+          ...state,
+          nodes: document
+            .get()
+            .nodes.map((node) =>
+              node.id === nodeId
+                ? { ...node, data: { ...node.data, ...data } }
+                : node,
+            ),
+          isDirty: true,
+        }),
+        `${nodeId}:${Object.keys(data).sort().join(",")}`,
+      );
     },
     deleteSelected: () => {
       const { nodes, edges } = document.get();
@@ -383,7 +493,7 @@ export function createScriptEditorSession() {
           .map((node) => node.id),
       );
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: nodes.filter((node) => !nodeIdsToDelete.has(node.id)),
         edges: normalizeMultiInputEdgeOrders(
@@ -404,7 +514,7 @@ export function createScriptEditorSession() {
     },
     disconnectNode: (nodeId) => {
       const { edges, nodes } = document.get();
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         edges: normalizeMultiInputEdgeOrders(
           nodes,
@@ -444,14 +554,14 @@ export function createScriptEditorSession() {
         };
       });
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         edges: normalizeMultiInputEdgeOrders(nodes, reorderedEdges),
         isDirty: true,
       }));
     },
     toggleMute: (nodeId) => {
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: document
           .get()
@@ -464,7 +574,7 @@ export function createScriptEditorSession() {
       }));
     },
     toggleCollapse: (nodeId) => {
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: document.get().nodes.map((node) =>
           node.id === nodeId
@@ -491,7 +601,7 @@ export function createScriptEditorSession() {
       const newHidden =
         currentHidden.length > 0 ? [] : ["__hide_unconnected__"];
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: nodes.map((n) =>
           n.id === nodeId
@@ -567,7 +677,7 @@ export function createScriptEditorSession() {
           : node,
       );
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: [frameNode, ...updatedNodes],
         isDirty: true,
@@ -580,7 +690,7 @@ export function createScriptEditorSession() {
 
       const frameId = node.data.parentFrameId as string;
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: nodes.map((n) => {
           if (n.id === nodeId) {
@@ -647,7 +757,7 @@ export function createScriptEditorSession() {
         data: edge.data,
       };
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: [
           ...nodes,
@@ -678,7 +788,7 @@ export function createScriptEditorSession() {
         n.selected ? { ...n, selected: false } : n,
       );
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: [...updatedNodes, ...newNodes],
         edges: [...edges, ...newEdges],
@@ -711,6 +821,33 @@ export function createScriptEditorSession() {
         groupEditStack: [],
         selectedNodeId: null,
       }));
+    },
+    revealNode: (nodeId) => {
+      const { nodes } = document.get();
+      const byId = new Map(nodes.map((node) => [node.id, node]));
+      if (!byId.has(nodeId)) return false;
+      const groupPath: string[] = [];
+      let parent = byId.get(nodeId)?.data.parentGroupId as string | undefined;
+      while (parent && byId.has(parent) && !groupPath.includes(parent)) {
+        groupPath.unshift(parent);
+        parent = byId.get(parent)?.data.parentGroupId as string | undefined;
+      }
+      batch(() => {
+        ui.setState((state) => ({
+          ...state,
+          groupEditStack: groupPath,
+          selectedNodeId: nodeId,
+        }));
+        document.setState((state) => ({
+          ...state,
+          nodes: state.nodes.map((node) =>
+            (node.id === nodeId) === !!node.selected
+              ? node
+              : { ...node, selected: node.id === nodeId },
+          ),
+        }));
+      });
+      return true;
     },
     getCurrentGroupId: () => {
       const stack = ui.get().groupEditStack;
@@ -923,7 +1060,7 @@ export function createScriptEditorSession() {
         ...outgoingEdges.map((e) => e.id),
       ]);
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: [...updatedNodes, groupNode, groupInputNode, groupOutputNode],
         edges: [
@@ -1033,7 +1170,7 @@ export function createScriptEditorSession() {
       ]);
 
       batch(() => {
-        document.setState((state) => ({
+        commit((state) => ({
           ...state,
           nodes: [
             ...nodes.filter(
@@ -1049,6 +1186,49 @@ export function createScriptEditorSession() {
         }));
         ui.setState((state) => ({ ...state, selectedNodeId: null }));
       });
+    },
+    undo: () => {
+      const { past, future } = history.get();
+      const entry = past[past.length - 1];
+      if (!entry || gestureStart) return;
+      const { nodes, edges } = document.get();
+      lastCoalesce = null;
+      history.setState(() => ({
+        past: past.slice(0, -1),
+        future: [...future, { nodes, edges }],
+      }));
+      restoreGraph(entry);
+    },
+    redo: () => {
+      const { past, future } = history.get();
+      const entry = future[future.length - 1];
+      if (!entry || gestureStart) return;
+      const { nodes, edges } = document.get();
+      lastCoalesce = null;
+      history.setState(() => ({
+        past: [...past, { nodes, edges }],
+        future: future.slice(0, -1),
+      }));
+      restoreGraph(entry);
+    },
+    beginHistoryGesture: () => {
+      if (gestureStart) return;
+      const { nodes, edges } = document.get();
+      gestureStart = { nodes, edges };
+    },
+    endHistoryGesture: () => {
+      const start = gestureStart;
+      if (!start) return;
+      gestureStart = null;
+      const current = actions.getScriptData();
+      if (
+        !sameScriptDocument(current, {
+          ...current,
+          nodes: start.nodes,
+          edges: start.edges,
+        })
+      )
+        remember(start);
     },
     findClosestEdge: (position, threshold) => {
       const { nodes, edges } = document.get();
@@ -1136,7 +1316,7 @@ export function createScriptEditorSession() {
         data: edge.data,
       };
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         edges: [...edges.filter((e) => e.id !== edgeId), newEdge1, newEdge2],
         isDirty: true,
@@ -1375,7 +1555,7 @@ export function createScriptEditorSession() {
         n.selected ? { ...n, selected: false } : n,
       );
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: [...updatedNodes, ...newNodes],
         edges: [...edges, ...newEdges],
@@ -1435,7 +1615,7 @@ export function createScriptEditorSession() {
           break;
       }
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: nodes.map((n) => {
           if (!selectedIds.has(n.id)) return n;
@@ -1510,7 +1690,7 @@ export function createScriptEditorSession() {
         positionMap.set(sorted[i].id, firstPos + i * step);
       }
 
-      document.setState((state) => ({
+      commit((state) => ({
         ...state,
         nodes: nodes.map((n) => {
           if (!selectedIds.has(n.id)) return n;
@@ -1636,7 +1816,7 @@ export function createScriptEditorSession() {
       });
 
       if (edgesToRemove.length > 0) {
-        document.setState((state) => ({
+        commit((state) => ({
           ...state,
           edges: edges.filter((e) => !edgesToRemove.some((r) => r.id === e.id)),
           isDirty: true,
@@ -1757,6 +1937,7 @@ export function createScriptEditorSession() {
     },
     loadScript: (data) =>
       batch(() => {
+        clearHistory();
         document.setState((state) => ({
           ...state,
           scriptId: data.id,
@@ -1790,7 +1971,7 @@ export function createScriptEditorSession() {
     loadScriptData: (data) => {
       const current = document.get();
       batch(() => {
-        document.setState((state) => ({
+        commit((state) => ({
           ...state,
           nodes: data.nodes,
           edges: normalizeMultiInputEdgeOrders(data.nodes, data.edges),
@@ -1819,6 +2000,7 @@ export function createScriptEditorSession() {
     },
     resetEditor: () =>
       batch(() => {
+        clearHistory();
         document.setState((state) => ({
           ...state,
           nodes: [],
@@ -1917,6 +2099,7 @@ export function createScriptEditorSession() {
     ui,
     execution,
     validation,
+    history,
     actions,
     ...createEditorDerivedStores(document, ui),
   };

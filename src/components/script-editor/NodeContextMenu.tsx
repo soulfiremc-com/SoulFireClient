@@ -4,8 +4,10 @@ import {
   CopyIcon,
   EyeIcon,
   EyeOffIcon,
+  LayersIcon,
   PencilIcon,
   TrashIcon,
+  UngroupIcon,
   UnplugIcon,
   VolumeIcon,
   VolumeOffIcon,
@@ -25,6 +27,7 @@ interface NodeContextMenuProps {
   previewEnabled?: boolean;
   supportsMuting?: boolean;
   supportsPreview?: boolean;
+  isGroup?: boolean;
   onDelete?: (nodeId: string) => void;
   onDuplicate?: (nodeId: string) => void;
   onRename?: (nodeId: string) => void;
@@ -32,6 +35,8 @@ interface NodeContextMenuProps {
   onToggleMute?: (nodeId: string) => void;
   onToggleCollapse?: (nodeId: string) => void;
   onTogglePreview?: (nodeId: string) => void;
+  onOpenGroup?: (nodeId: string) => void;
+  onUngroup?: (nodeId: string) => void;
 }
 
 export function NodeContextMenu({
@@ -41,6 +46,7 @@ export function NodeContextMenu({
   previewEnabled = false,
   supportsMuting = true,
   supportsPreview = true,
+  isGroup = false,
   onDelete,
   onDuplicate,
   onRename,
@@ -48,11 +54,30 @@ export function NodeContextMenu({
   onToggleMute,
   onToggleCollapse,
   onTogglePreview,
+  onOpenGroup,
+  onUngroup,
 }: NodeContextMenuProps) {
   const { t } = useTranslation("instance");
 
   return (
     <>
+      {isGroup && (
+        <>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => onOpenGroup?.(nodeId)}>
+              <LayersIcon />
+              {t("scripts.editor.contextMenu.openGroup")}
+              <DropdownMenuShortcut>Tab</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onUngroup?.(nodeId)}>
+              <UngroupIcon />
+              {t("scripts.editor.contextMenu.ungroup")}
+              <DropdownMenuShortcut>Ctrl+Alt+G</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+        </>
+      )}
       <DropdownMenuGroup>
         <DropdownMenuItem
           onClick={() => {

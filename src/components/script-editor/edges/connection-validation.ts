@@ -88,46 +88,59 @@ function getPortDescriptor(
   return simpleType("any");
 }
 
+export type ConnectionProblem =
+  | { kind: "self" }
+  | { kind: "execution"; sourceType: PortType; targetType: PortType }
+  | { kind: "type"; sourceType: PortType; targetType: PortType };
+
+/**
+ * Explains why a connection is not allowed, or returns null when it is.
+ * Supports generic type descriptors with type variable unification.
+ */
+export function getConnectionProblem(
+  nodes: Node[],
+  connection: Edge | Connection,
+): ConnectionProblem | null {
+  // A node wired to itself never finishes or depends on its own result.
+  if (connection.source === connection.target) return { kind: "self" };
+
+  const sourceType = getPortType(
+    nodes,
+    connection.source,
+    connection.sourceHandle,
+  );
+  const targetType = getPortType(
+    nodes,
+    connection.target,
+    connection.targetHandle,
+  );
+
+  // Execution ports only connect to execution ports
+  if (sourceType === "execution" && targetType === "execution") return null;
+  if (sourceType === "execution" || targetType === "execution")
+    return { kind: "execution", sourceType, targetType };
+
+  const sourceDesc = getPortDescriptor(
+    nodes,
+    connection.source,
+    connection.sourceHandle,
+  );
+  const targetDesc = getPortDescriptor(
+    nodes,
+    connection.target,
+    connection.targetHandle,
+  );
+  return canConvertDescriptor(sourceDesc, targetDesc)
+    ? null
+    : { kind: "type", sourceType, targetType };
+}
+
 /**
  * Creates a connection validator that uses node definitions to determine port types.
- * Supports generic type descriptors with type variable unification.
  *
  * @param nodes The current nodes in the graph
  * @returns An IsValidConnection function for React Flow
  */
 export function createConnectionValidator(nodes: Node[]): IsValidConnection {
-  return (connection: Edge | Connection): boolean => {
-    const sourceType = getPortType(
-      nodes,
-      connection.source,
-      connection.sourceHandle,
-    );
-    const targetType = getPortType(
-      nodes,
-      connection.target,
-      connection.targetHandle,
-    );
-
-    // Execution ports only connect to execution ports
-    if (sourceType === "execution" && targetType === "execution") return true;
-    if (sourceType === "execution" || targetType === "execution") return false;
-
-    // Try TypeDescriptor-based validation first (supports generics)
-    const sourceDesc = getPortDescriptor(
-      nodes,
-      connection.source,
-      connection.sourceHandle,
-    );
-    const targetDesc = getPortDescriptor(
-      nodes,
-      connection.target,
-      connection.targetHandle,
-    );
-    if (sourceDesc && targetDesc) {
-      return canConvertDescriptor(sourceDesc, targetDesc);
-    }
-
-    // Fall back to flat type check
-    return canConvertType(sourceType, targetType);
-  };
+  return (connection) => getConnectionProblem(nodes, connection) === null;
 }

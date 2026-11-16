@@ -6,6 +6,7 @@ import {
   CircleDashedIcon,
   TriangleAlertIcon,
 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
 import { Button } from "@/components/ui/button.tsx";
@@ -30,6 +31,7 @@ export function ScriptHealthButton() {
   const { t } = useTranslation("instance");
   const editor = useScriptEditor();
   const reactFlow = useReactFlow();
+  const [open, setOpen] = useState(false);
   const nodes = useSelector(editor.document, (state) => state.nodes);
   const diagnostics = useSelector(
     editor.validation,
@@ -55,7 +57,7 @@ export function ScriptHealthButton() {
           : CircleCheckIcon;
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger render={<Button variant="ghost" size="sm" />}>
         <Icon
           data-icon="inline-start"
@@ -81,7 +83,10 @@ export function ScriptHealthButton() {
         {diagnostics.length > 0 ? (
           <ItemGroup className="max-h-72 gap-1 overflow-y-auto">
             {diagnostics.map((item) => (
-              <div role="listitem" key={`${item.nodeId}:${item.message}`}>
+              <div
+                role="listitem"
+                key={`${item.nodeId}:${item.edgeId}:${item.severity}:${item.message}`}
+              >
                 <Item
                   size="xs"
                   className="hover:bg-muted text-left"
@@ -89,13 +94,20 @@ export function ScriptHealthButton() {
                     <button
                       type="button"
                       onClick={() => {
-                        if (!item.nodeId) return;
-                        editor.actions.setSelectedNode(item.nodeId);
-                        void reactFlow.fitView({
-                          nodes: [{ id: item.nodeId }],
-                          maxZoom: 1,
-                          duration: 200,
-                        });
+                        const nodeId = item.nodeId;
+                        if (!nodeId || !editor.actions.revealNode(nodeId))
+                          return;
+                        setOpen(false);
+                        // A node inside a group renders after the group opens.
+                        requestAnimationFrame(() =>
+                          requestAnimationFrame(() => {
+                            void reactFlow.fitView({
+                              nodes: [{ id: nodeId }],
+                              maxZoom: 1,
+                              duration: 200,
+                            });
+                          }),
+                        );
                       }}
                     />
                   }
