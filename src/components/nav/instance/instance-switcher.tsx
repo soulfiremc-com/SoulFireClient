@@ -158,7 +158,7 @@ function InstanceList() {
           >
             <DynamicIcon name={instance.icon} className="size-4 shrink-0" />
             <span>{instance.friendlyName}</span>
-            {index < PROJECT_SHORTCUT_LIMIT && (
+            {isDesktopApp() && index < PROJECT_SHORTCUT_LIMIT && (
               <DropdownMenuShortcut>
                 {formatShortcut(`Ctrl+${index + 1}`)}
               </DropdownMenuShortcut>

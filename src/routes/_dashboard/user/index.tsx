@@ -104,7 +104,7 @@ import {
   createInstanceNameSchema,
   getDuplicateInstanceName,
 } from "@/lib/instance-name.ts";
-import { formatShortcut } from "@/lib/desktop.ts";
+import { formatShortcut, isDesktopApp } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
@@ -522,7 +522,7 @@ function Content() {
                       <BotFleetSummaryBadge summary={instance.botSummary} />
                     </div>
                   </ItemContent>
-                  {index < MAX_INSTANCE_SHORTCUTS && (
+                  {isDesktopApp() && index < MAX_INSTANCE_SHORTCUTS && (
                     <div className="ml-auto hidden shrink-0 sm:block">
                       <Kbd aria-hidden="true" className="h-6 px-2 text-sm">
                         {formatShortcut(`Ctrl+${index + 1}`)}

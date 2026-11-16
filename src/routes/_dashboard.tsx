@@ -264,7 +264,8 @@ function DashboardLayout() {
     <TransportContext value={loaderData.transport}>
       <Suspense>
         <ClientSession />
-        <InstanceSwitchKeybinds />
+        {/* Browsers use Ctrl+1 to 9 to switch tabs, so only the desktop app takes them. */}
+        {isDesktopApp() && <InstanceSwitchKeybinds />}
       </Suspense>
       {isImpersonating() && (
         <div className="border-sidebar-primary pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-30 overflow-hidden border-4" />
