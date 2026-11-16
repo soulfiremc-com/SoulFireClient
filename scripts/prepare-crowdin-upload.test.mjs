@@ -17,6 +17,12 @@ const script = fileURLToPath(
   new URL("./prepare-crowdin-upload.mjs", import.meta.url),
 );
 
+// readdirSync returns entries in filesystem order, which differs between
+// filesystems. Crowdin matches files by glob, so only the set of files matters.
+function listDirectory(path) {
+  return readdirSync(path).sort();
+}
+
 function prepare(t, files) {
   const root = mkdtempSync(join(tmpdir(), "crowdin-upload-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
@@ -64,15 +70,15 @@ test("stages source files and changed translations across paginated PR files", (
   ]);
 
   assert.equal(output, "has_translations=true");
-  assert.deepEqual(readdirSync(join(destination, "locales")), [
+  assert.deepEqual(listDirectory(join(destination, "locales")), [
     "de-DE",
     "en-US",
     "ja-JP",
   ]);
-  assert.deepEqual(readdirSync(join(destination, "locales/de-DE")), [
+  assert.deepEqual(listDirectory(join(destination, "locales/de-DE")), [
     "common.json",
   ]);
-  assert.deepEqual(readdirSync(join(destination, "locales/en-US")), [
+  assert.deepEqual(listDirectory(join(destination, "locales/en-US")), [
     "common.json",
     "script.editor.json",
   ]);
@@ -92,5 +98,5 @@ test("source-only edits do not stage unrelated translations", (t) => {
   ]);
 
   assert.equal(output, "has_translations=false");
-  assert.deepEqual(readdirSync(join(destination, "locales")), ["en-US"]);
+  assert.deepEqual(listDirectory(join(destination, "locales")), ["en-US"]);
 });

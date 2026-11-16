@@ -353,7 +353,10 @@ function Index() {
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
-      <svg className="fill-muted-foreground/5 absolute top-0 right-0 bottom-0 left-0 z-[-1] h-dvh w-dvw">
+      <svg
+        aria-hidden="true"
+        className="fill-muted-foreground/5 absolute top-0 right-0 bottom-0 left-0 z-[-1] h-dvh w-dvw"
+      >
         <title>Decorative background pattern</title>
         <defs>
           <pattern
