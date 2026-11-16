@@ -341,7 +341,10 @@ export const LongOptionList: Story = {
     await userEvent.click(combo);
     const body = within(canvasElement.ownerDocument.body);
     await expect(await body.findAllByRole("option")).toHaveLength(50);
-    await expect(body.getByText(/more options\. Type to narrow/)).toBeVisible();
+    // The popup animates in, so wait until the hint is visible.
+    await waitFor(() =>
+      expect(body.getByText(/more options\. Type to narrow/)).toBeVisible(),
+    );
 
     await userEvent.type(body.getByPlaceholderText("Search value..."), "1.20");
     await waitFor(() =>
