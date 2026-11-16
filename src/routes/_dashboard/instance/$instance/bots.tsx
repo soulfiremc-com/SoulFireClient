@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { SearchIcon } from "lucide-react";
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
-import { Suspense } from "react";
+import { memo, Suspense, useDeferredValue } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BotCardSkeleton,
@@ -97,6 +97,10 @@ function Content() {
     "status",
     parseAsStringLiteral(BOT_DISPLAY_STATES).withOptions({ shallow: true }),
   );
+  // Typing and filter clicks update the controls first. The grid follows
+  // without blocking input and keeps its old cards until the new ones load.
+  const deferredSearch = useDeferredValue(search);
+  const deferredStatus = useDeferredValue(status);
 
   return (
     <div className="container flex h-full w-full grow flex-col gap-4">
@@ -151,7 +155,7 @@ function Content() {
       </div>
 
       <Suspense fallback={<BotGridSkeleton />}>
-        <BotGridContainer search={search} status={status} />
+        <BotGridContainer search={deferredSearch} status={deferredStatus} />
       </Suspense>
     </div>
   );
@@ -163,7 +167,7 @@ function OnlineCountBadgeContainer() {
   return <OnlineCountBadge instanceInfo={instanceInfo} />;
 }
 
-function BotGridContainer({
+const BotGridContainer = memo(function BotGridContainer({
   search,
   status,
 }: {
@@ -175,4 +179,4 @@ function BotGridContainer({
   return (
     <BotGrid instanceInfo={instanceInfo} search={search} status={status} />
   );
-}
+});

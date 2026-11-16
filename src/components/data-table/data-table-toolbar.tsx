@@ -11,6 +11,7 @@ import { DataTableSliderFilter } from "@/components/data-table/data-table-slider
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { cn } from "@/lib/utils";
 
@@ -45,9 +46,17 @@ export function DataTableToolbar<TData extends RowData>({
       )}
       {...props}
     >
-      <div className="flex flex-1 flex-wrap items-center gap-2">
+      <div className="flex min-w-0 flex-1 basis-72 flex-wrap items-center gap-2">
         {columns.map((column) => (
-          <DataTableToolbarFilter key={column.id} column={column} />
+          <table.Subscribe
+            key={column.id}
+            source={table.atoms.columnFilters}
+            selector={(filters) =>
+              filters.find((filter) => filter.id === column.id)?.value
+            }
+          >
+            {() => <DataTableToolbarFilter column={column} />}
+          </table.Subscribe>
         ))}
         <table.Subscribe source={table.atoms.columnFilters}>
           {(columnFilters) =>
@@ -73,6 +82,8 @@ export function DataTableToolbar<TData extends RowData>({
     </div>
   );
 }
+const TEXT_FILTER_DEBOUNCE_MS = 150;
+
 interface DataTableToolbarFilterProps<TData extends RowData> {
   column: Column<typeof dataTableFeatures, TData>;
 }
@@ -80,78 +91,113 @@ interface DataTableToolbarFilterProps<TData extends RowData> {
 function DataTableToolbarFilter<TData extends RowData>({
   column,
 }: DataTableToolbarFilterProps<TData>) {
-  {
-    const columnMeta = column.columnDef.meta;
+  const columnMeta = column.columnDef.meta;
+  if (!columnMeta?.variant) return null;
 
-    const onFilterRender = React.useCallback(() => {
-      if (!columnMeta?.variant) return null;
+  switch (columnMeta.variant) {
+    case "text":
+      return (
+        <DataTableTextFilter
+          label={columnMeta.label ?? column.id}
+          placeholder={columnMeta.placeholder ?? columnMeta.label}
+          value={(column.getFilterValue() as string | undefined) ?? ""}
+          onValueChange={(value) => column.setFilterValue(value)}
+          className="h-8 w-full sm:w-56"
+        />
+      );
 
-      switch (columnMeta.variant) {
-        case "text":
-          return (
-            <Input
-              aria-label={columnMeta.label ?? column.id}
-              placeholder={columnMeta.placeholder ?? columnMeta.label}
-              value={(column.getFilterValue() as string) ?? ""}
-              onChange={(event) => column.setFilterValue(event.target.value)}
-              className="h-8 w-40 lg:w-56"
-            />
-          );
+    case "number":
+      return (
+        <div className="relative w-full sm:w-auto">
+          <DataTableTextFilter
+            type="number"
+            inputMode="numeric"
+            label={columnMeta.label ?? column.id}
+            placeholder={columnMeta.placeholder ?? columnMeta.label}
+            value={(column.getFilterValue() as string | undefined) ?? ""}
+            onValueChange={(value) => column.setFilterValue(value)}
+            className={cn("h-8 w-full sm:w-36", columnMeta.unit && "pr-8")}
+          />
+          {columnMeta.unit && (
+            <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm">
+              {columnMeta.unit}
+            </span>
+          )}
+        </div>
+      );
 
-        case "number":
-          return (
-            <div className="relative">
-              <Input
-                type="number"
-                inputMode="numeric"
-                aria-label={columnMeta.label ?? column.id}
-                placeholder={columnMeta.placeholder ?? columnMeta.label}
-                value={(column.getFilterValue() as string) ?? ""}
-                onChange={(event) => column.setFilterValue(event.target.value)}
-                className={cn("h-8 w-[120px]", columnMeta.unit && "pr-8")}
-              />
-              {columnMeta.unit && (
-                <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm">
-                  {columnMeta.unit}
-                </span>
-              )}
-            </div>
-          );
+    case "range":
+      return (
+        <DataTableSliderFilter
+          column={column}
+          title={columnMeta.label ?? column.id}
+        />
+      );
 
-        case "range":
-          return (
-            <DataTableSliderFilter
-              column={column}
-              title={columnMeta.label ?? column.id}
-            />
-          );
+    case "date":
+    case "dateRange":
+      return (
+        <DataTableDateFilter
+          column={column}
+          title={columnMeta.label ?? column.id}
+          multiple={columnMeta.variant === "dateRange"}
+        />
+      );
 
-        case "date":
-        case "dateRange":
-          return (
-            <DataTableDateFilter
-              column={column}
-              title={columnMeta.label ?? column.id}
-              multiple={columnMeta.variant === "dateRange"}
-            />
-          );
+    case "select":
+    case "multiSelect":
+      return (
+        <DataTableFacetedFilter
+          column={column}
+          title={columnMeta.label ?? column.id}
+          options={columnMeta.options ?? []}
+          multiple={columnMeta.variant === "multiSelect"}
+        />
+      );
 
-        case "select":
-        case "multiSelect":
-          return (
-            <DataTableFacetedFilter
-              column={column}
-              title={columnMeta.label ?? column.id}
-              options={columnMeta.options ?? []}
-              multiple={columnMeta.variant === "multiSelect"}
-            />
-          );
-
-        default:
-          return null;
-      }
-    }, [column, columnMeta]);
-
-    return onFilterRender();
+    default:
+      return null;
   }
+}
+
+interface DataTableTextFilterProps extends Omit<
+  React.ComponentProps<typeof Input>,
+  "value" | "onChange"
+> {
+  label: string;
+  value: string;
+  onValueChange: (value: string) => void;
+}
+
+// Keeps keystrokes local and filters the rows once typing pauses.
+function DataTableTextFilter({
+  label,
+  value,
+  onValueChange,
+  ...props
+}: DataTableTextFilterProps) {
+  const [draft, setDraft] = React.useState(value);
+  const [prevValue, setPrevValue] = React.useState(value);
+  const debouncedChange = useDebouncedCallback(
+    onValueChange,
+    TEXT_FILTER_DEBOUNCE_MS,
+  );
+
+  // Follow outside changes, such as Reset.
+  if (value !== prevValue) {
+    setPrevValue(value);
+    setDraft(value);
+  }
+
+  return (
+    <Input
+      aria-label={label}
+      value={draft}
+      onChange={(event) => {
+        setDraft(event.target.value);
+        debouncedChange(event.target.value);
+      }}
+      {...props}
+    />
+  );
 }

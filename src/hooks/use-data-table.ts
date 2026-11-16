@@ -1,9 +1,8 @@
 import {
   type ColumnFiltersState,
-  type ColumnVisibilityState,
   type PaginationState,
+  type ReactTable,
   type RowData,
-  type RowSelectionState,
   type SortingState,
   type TableOptions,
   type TableState,
@@ -115,12 +114,6 @@ export function useDataTable<TData extends RowData>(
     ],
   );
 
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(
-    initialState?.rowSelection ?? {},
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<ColumnVisibilityState>(initialState?.columnVisibility ?? {});
-
   const [page, setPage] = useQueryState(
     pageKey,
     parseAsInteger.withOptions(queryStateOptions).withDefault(1),
@@ -210,83 +203,85 @@ export function useDataTable<TData extends RowData>(
     debounceMs,
   );
 
-  const initialColumnFilters: ColumnFiltersState = React.useMemo(() => {
-    if (enableAdvancedFilter) return [];
-
-    return getTableColumnFilters(filterValues, filterableColumns);
-  }, [filterValues, filterableColumns, enableAdvancedFilter]);
-
-  const [columnFilters, setColumnFilters] =
-    React.useState<ColumnFiltersState>(initialColumnFilters);
-
-  const onColumnFiltersChange = React.useCallback(
-    (updaterOrValue: Updater<ColumnFiltersState>) => {
-      if (enableAdvancedFilter) return;
-
-      setColumnFilters((prev) => {
-        const next =
-          typeof updaterOrValue === "function"
-            ? updaterOrValue(prev)
-            : updaterOrValue;
-
-        const filterUpdates = next.reduce<
-          Record<string, string | string[] | null>
-        >((acc, filter) => {
-          if (filterableColumns.find((column) => column.id === filter.id)) {
-            acc[filter.id] = filter.value as string | string[];
-          }
-          return acc;
-        }, {});
-
-        for (const prevFilter of prev) {
-          if (!next.some((filter) => filter.id === prevFilter.id)) {
-            filterUpdates[prevFilter.id] = null;
-          }
-        }
-
-        debouncedSetFilterValues(filterUpdates);
-        return next;
-      });
-    },
-    [debouncedSetFilterValues, filterableColumns, enableAdvancedFilter],
+  // The URL only seeds the filters. Afterwards the table owns them, so typing
+  // re-renders the table parts that read filters instead of the whole page.
+  const [initialColumnFilters] = React.useState<ColumnFiltersState>(() =>
+    enableAdvancedFilter
+      ? []
+      : getTableColumnFilters(filterValues, filterableColumns),
   );
 
-  const table = useTable({
-    ...tableProps,
-    features: dataTableFeatures,
-    columns,
-    initialState,
-    pageCount,
-    state: {
-      pagination,
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
-    },
-    defaultColumn: {
-      ...tableProps.defaultColumn,
-      enableColumnFilter: false,
-    },
-    // Modified to prevent selecting some rows
-    enableRowSelection: tableProps.enableRowSelection ?? true,
-    onRowSelectionChange: setRowSelection,
-    onPaginationChange,
-    onSortingChange,
-    onColumnFiltersChange,
-    onColumnVisibilityChange: setColumnVisibility,
-    // Removed manual filtering settings here
-    meta: {
-      ...tableProps.meta,
-      queryKeys: {
-        page: pageKey,
-        perPage: perPageKey,
-        sort: sortKey,
-        filters: filtersKey,
-        joinOperator: joinOperatorKey,
+  const table = useTable(
+    {
+      ...tableProps,
+      features: dataTableFeatures,
+      columns,
+      initialState: {
+        ...initialState,
+        columnFilters: initialColumnFilters,
+      },
+      pageCount,
+      // Pagination and sorting live in the URL. Selection, visibility, and
+      // filters stay in table atoms that `table.Subscribe` consumers read.
+      state: {
+        pagination,
+        sorting,
+      },
+      defaultColumn: {
+        ...tableProps.defaultColumn,
+        enableColumnFilter: false,
+      },
+      // Modified to prevent selecting some rows
+      enableRowSelection: tableProps.enableRowSelection ?? true,
+      onPaginationChange,
+      onSortingChange,
+      meta: {
+        ...tableProps.meta,
+        queryKeys: {
+          page: pageKey,
+          perPage: perPageKey,
+          sort: sortKey,
+          filters: filtersKey,
+          joinOperator: joinOperatorKey,
+        },
       },
     },
-  });
+    // Do not re-render the host component for table state changes.
+    () => null,
+  );
+
+  React.useEffect(() => {
+    if (enableAdvancedFilter) return;
+
+    let previous = table.atoms.columnFilters.get();
+    const subscription = table.atoms.columnFilters.subscribe((next) => {
+      if (next === previous) return;
+
+      const filterUpdates: Record<string, string | string[] | null> = {};
+      for (const filter of next) {
+        if (filterableColumns.some((column) => column.id === filter.id)) {
+          filterUpdates[filter.id] = filter.value as string | string[];
+        }
+      }
+      for (const prevFilter of previous) {
+        if (!next.some((filter) => filter.id === prevFilter.id)) {
+          filterUpdates[prevFilter.id] = null;
+        }
+      }
+
+      previous = next;
+      // Leave a later page right away so the filtered rows stay visible.
+      if (table.atoms.pagination.get().pageIndex !== 0) void setPage(1);
+      debouncedSetFilterValues(filterUpdates);
+    });
+    return () => subscription.unsubscribe();
+  }, [
+    table,
+    debouncedSetFilterValues,
+    filterableColumns,
+    enableAdvancedFilter,
+    setPage,
+  ]);
 
   const validPageIndex = getValidPageIndex(
     pagination.pageIndex,
@@ -298,7 +293,14 @@ export function useDataTable<TData extends RowData>(
   }, [page, perPage, validPageIndex, pagination.pageSize, setPage, setPerPage]);
 
   return React.useMemo(
-    () => ({ table, shallow, debounceMs, throttleMs }),
+    () => ({
+      // `table.state` stays empty because the host does not subscribe.
+      // Read state with `table.Subscribe` or the table getters instead.
+      table: table as unknown as ReactTable<typeof dataTableFeatures, TData>,
+      shallow,
+      debounceMs,
+      throttleMs,
+    }),
     [table, shallow, debounceMs, throttleMs],
   );
 }

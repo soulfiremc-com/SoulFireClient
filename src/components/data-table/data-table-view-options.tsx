@@ -51,7 +51,7 @@ export function DataTableViewOptions<TData extends RowData>({
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto hidden h-8 font-normal lg:flex"
+            className="ml-auto h-8 font-normal"
             disabled={disabled}
           />
         }
@@ -72,26 +72,30 @@ export function DataTableViewOptions<TData extends RowData>({
             <CommandEmpty>
               {i18n.t("common:dataTable.noColumnsFound")}
             </CommandEmpty>
-            <CommandGroup>
-              {columns.map((column) => (
-                <CommandItem
-                  key={column.id}
-                  onSelect={() =>
-                    column.toggleVisibility(!column.getIsVisible())
-                  }
-                >
-                  <span className="truncate">
-                    {column.columnDef.meta?.label ?? column.id}
-                  </span>
-                  <Check
-                    className={cn(
-                      "ml-auto size-4 shrink-0",
-                      column.getIsVisible() ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            <table.Subscribe source={table.atoms.columnVisibility}>
+              {() => (
+                <CommandGroup>
+                  {columns.map((column) => (
+                    <CommandItem
+                      key={column.id}
+                      onSelect={() =>
+                        column.toggleVisibility(!column.getIsVisible())
+                      }
+                    >
+                      <span className="truncate">
+                        {column.columnDef.meta?.label ?? column.id}
+                      </span>
+                      <Check
+                        className={cn(
+                          "ml-auto size-4 shrink-0",
+                          column.getIsVisible() ? "opacity-100" : "opacity-0",
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+            </table.Subscribe>
           </CommandList>
         </Command>
       </PopoverContent>

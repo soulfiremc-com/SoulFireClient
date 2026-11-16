@@ -3,7 +3,6 @@
 import i18n from "@/lib/i18n.ts";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Loader, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
@@ -23,7 +22,7 @@ const ESCAPE_LAYER_SELECTOR =
 
 interface DataTableActionBarProps<
   TData extends RowData,
-> extends React.ComponentProps<typeof motion.div> {
+> extends React.ComponentProps<"div"> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   visible?: boolean;
   container?: Element | DocumentFragment | null;
@@ -77,29 +76,53 @@ function DataTableActionBar<TData extends RowData>({
           visibleProp ?? table.getFilteredSelectedRowModel().rows.length > 0;
 
         return (
-          <AnimatePresence>
-            {visible && (
-              <motion.div
-                role="toolbar"
-                aria-orientation="horizontal"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                className={cn(
-                  "bg-background text-foreground fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border p-2 shadow-sm",
-                  className,
-                )}
-                {...props}
-              >
-                {children}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <DataTableActionBarPresence
+            visible={visible}
+            className={className}
+            {...props}
+          >
+            {children}
+          </DataTableActionBarPresence>
         );
       }}
     </table.Subscribe>,
     container,
+  );
+}
+
+interface DataTableActionBarPresenceProps extends React.ComponentProps<"div"> {
+  visible: boolean;
+}
+
+// Keeps the bar mounted until its exit animation ends.
+function DataTableActionBarPresence({
+  visible,
+  className,
+  onAnimationEnd,
+  ...props
+}: DataTableActionBarPresenceProps) {
+  const [rendered, setRendered] = React.useState(visible);
+  if (visible && !rendered) setRendered(true);
+  if (!rendered) return null;
+
+  return (
+    <div
+      role="toolbar"
+      aria-orientation="horizontal"
+      aria-hidden={visible ? undefined : true}
+      data-state={visible ? "open" : "closed"}
+      onAnimationEnd={(event) => {
+        onAnimationEnd?.(event);
+        if (!visible && event.target === event.currentTarget) {
+          setRendered(false);
+        }
+      }}
+      className={cn(
+        "bg-background text-foreground fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border p-2 shadow-sm duration-200 ease-in-out data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-5 data-[state=closed]:pointer-events-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-5 motion-reduce:animate-none data-[state=closed]:motion-reduce:hidden",
+        className,
+      )}
+      {...props}
+    />
   );
 }
 
