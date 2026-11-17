@@ -56,8 +56,8 @@ The demo domains serve the same build as the app domains. The hostname turns on 
 Demo links on preview builds open the preview demo, and links between channels keep demo mode.
 
 `cloudflare.config.ts` defines both Workers and their domains. The `preview` mode selects `soulfire-client-preview` and the preview app environment.
-Static assets come straight from Cloudflare. Page loads that match no file get `index.html`, so client-side routes work.
-Other requests for missing files reach `worker/index.ts`, which answers 404. A stale chunk from an older deploy then fails as a real 404 instead of returning the app shell.
+The Workers are assets-only, so no Worker code runs. Paths that match no file get `index.html`, so client-side routes work.
+A missing chunk from an older deploy also gets `index.html`. The app reloads the page when a chunk fails to load.
 
 The Deploy Web workflow builds and deploys with the [`cf` CLI](https://developers.cloudflare.com/cf/):
 

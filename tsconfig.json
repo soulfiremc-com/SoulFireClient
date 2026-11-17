@@ -19,7 +19,6 @@
   "include": [
     "src",
     "electron",
-    "worker",
     ".storybook",
     "vitest.config.ts",
     "cloudflare.config.ts"
