@@ -169,10 +169,17 @@ jobs:
     name: Publish Release
     needs: build
     runs-on: ubuntu-26.04
+    permissions:
+      contents: write
+      pull-requests: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -329,6 +336,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install communique
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/communique"
+          gh release download v1.8.0 --repo jdx/communique --pattern communique-x86_64-unknown-linux-musl.tar.gz --output - | tar -xz -C "$RUNNER_TEMP/communique"
+          echo "$RUNNER_TEMP/communique" >> "$GITHUB_PATH"
+
+      - name: Generate release notes
+        id: release_notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          RELEASE_TAG: ${{ inputs.app-version }}
+          COMMIT_CHANGELOG: ${{ steps.github_release.outputs.changelog }}
+        run: |
+          # The release step creates the real tag. A local tag lets communique find the release range now.
+          git update-ref "refs/tags/$RELEASE_TAG" HEAD
+          communique generate "$RELEASE_TAG" --tag-pattern '[0-9]*' --output "$RUNNER_TEMP/communique.md"
+          # Drop the generated "# <tag>: <title>" heading because each release keeps its own name.
+          sed '1{/^# /d}' "$RUNNER_TEMP/communique.md" | sed '/./,$!d' > "$RUNNER_TEMP/release-highlights.md"
+          printf '\n\n## Commits\n\n%s\n' "$COMMIT_CHANGELOG" | cat "$RUNNER_TEMP/release-highlights.md" - > "$RUNNER_TEMP/release-notes.md"
+          delimiter="EOF_$(openssl rand -hex 16)"
+          {
+            echo "highlights<<$delimiter"
+            cat "$RUNNER_TEMP/release-highlights.md"
+            echo
+            echo "$delimiter"
+            echo "notes<<$delimiter"
+            cat "$RUNNER_TEMP/release-notes.md"
+            echo "$delimiter"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
@@ -347,7 +387,7 @@ jobs:
             > [!TIP]
             > x86_64 means Intel and AMD CPUs; AArch64 means ARM CPUs like Qualcomm Snapdragon, which are used in some laptops.
 
-            ${{ steps.github_release.outputs.changelog }}
+            ${{ steps.release_notes.outputs.notes }}
           tag_name: ${{ inputs.app-version }}
           target_commitish: main
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -355,12 +395,13 @@ jobs:
           generate_release_notes: false
           files: release-upload/*
 
-      - name: Announce new SoulFireClient release
-        uses: tsickert/discord-webhook@b217a69502f52803de774ded2b1ab7c282e99645 # 7.0.0
+      - name: Announce release on Discord
+        uses: SethCohen/github-releases-to-discord@24d166886aee4646d448c8a389ff9e1ebcab3682 # v1.20.0
         with:
-          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
           content: <@&850705047938793503> New SoulFireClient version released!
-          embed-title: SoulFireClient ${{ inputs.app-version }}
-          embed-description: SoulFireClient ${{ inputs.app-version }} has been released! Download at https://soulfiremc.com/download and changelog at https://github.com/soulfiremc-com/SoulFireClient/releases/tag/${{ inputs.app-version }}
-          embed-color: 3312063
-          embed-thumbnail-url: https://soulfiremc.com/logo.png
+          release_name: SoulFireClient ${{ inputs.app-version }}
+          release_body: ${{ steps.release_notes.outputs.highlights }}
+          release_html_url: https://github.com/soulfiremc-com/SoulFireClient/releases/tag/${{ inputs.app-version }}
+          color: "3312063"
+          reduce_headings: true
