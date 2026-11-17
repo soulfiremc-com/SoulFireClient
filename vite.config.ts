@@ -1,6 +1,5 @@
 import * as fs from "node:fs";
 import { resolve } from "node:path";
-import { cloudflare } from "@cloudflare/vite-plugin";
 import { devtools } from "@tanstack/devtools-vite";
 import posthog from "@posthog/rollup-plugin";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -26,7 +25,7 @@ const isElectron = process.env.SF_ELECTRON === "1";
 const desktopCsp =
   "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' 'unsafe-eval' https://tc.soulfiremc.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; connect-src 'self' https://tc.soulfiremc.com https://api.mclo.gs *; font-src 'self'; frame-src 'self'; img-src 'self' data: blob: https://www.gravatar.com https://mc-heads.net https://assets.mcasset.cloud; manifest-src 'self'; media-src 'self'; worker-src 'self' blob:;";
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const appEnv = getBuildEnvironment(mode);
   const isDev = appEnv === "development";
 
@@ -67,8 +66,9 @@ export default defineConfig(({ mode }) => {
               },
             }),
           ]
-        : // The web app runs as a Cloudflare Worker with static assets.
-          [cloudflare()]),
+        : // The web app runs as a Cloudflare Worker with static assets. Load the
+          // plugin only here: workerd has no binary for some desktop targets.
+          [(await import("@cloudflare/vite-plugin")).cloudflare()]),
       tanstackRouter({
         target: "react",
         autoCodeSplitting: !isDev,
