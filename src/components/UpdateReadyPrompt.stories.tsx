@@ -69,14 +69,14 @@ export const ReadyOnStart: Story = {
 export const ReadyLaterKeepsBotsRunning: Story = {
   play: async ({ userEvent }) => {
     const body = within(document.body);
-    await waitFor(() => expect(listeners.size).toBeGreaterThan(0));
-    announce("2.11.1");
-    // The toast animates in, so wait until it is visible.
-    await waitFor(() =>
+    // Announce until the toast shows: an announcement can arrive before the
+    // prompt or the toaster subscribes. The fixed toast ID keeps one toast.
+    await waitFor(() => {
+      announce("2.11.1");
       expect(
         body.getByText("SoulFire 2.11.1 is ready to install"),
-      ).toBeVisible(),
-    );
+      ).toBeVisible();
+    });
     await userEvent.click(body.getByRole("button", { name: "Later" }));
     await waitFor(() =>
       expect(
