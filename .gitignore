@@ -22,7 +22,7 @@ dist-ssr
 *.sln
 *.sw?
 .eslintcache
-.wrangler/
+.cloudflare/
 
 .flatpak-builder/
 builddir/

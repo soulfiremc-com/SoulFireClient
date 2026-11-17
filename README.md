@@ -45,46 +45,36 @@ The desktop app can show instance metrics on Chromecast and Cast-enabled TVs. Re
 
 ## Deployments
 
-See which branches are at which URLs:
+Cloudflare Workers serve the web app. Each release channel is one Worker with two domains:
 
-- [`release`](https://app.soulfiremc.com) -> app.soulfiremc.com
-- [`main`](https://preview.soulfiremc.com) -> preview.soulfiremc.com
-- [`demo`](https://demo.soulfiremc.com) -> demo.soulfiremc.com
+| Branch    | Worker                    | App                                                      | Demo                                                               |
+| --------- | ------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------ |
+| `release` | `soulfire-client`         | [app.soulfiremc.com](https://app.soulfiremc.com)         | [demo.soulfiremc.com](https://demo.soulfiremc.com)                 |
+| `main`    | `soulfire-client-preview` | [preview.soulfiremc.com](https://preview.soulfiremc.com) | [preview-demo.soulfiremc.com](https://preview-demo.soulfiremc.com) |
 
-The preview demo uses `preview-demo.soulfiremc.com` as another domain for the `main` deployment.
-The hostname enables demo mode, so it needs no separate branch or build.
-Demo links on preview builds open the preview demo. The preview and production links preserve demo mode.
+The demo domains serve the same build as the app domains. The hostname turns on demo mode.
+Demo links on preview builds open the preview demo, and links between channels keep demo mode.
 
-To enable the preview demo, add `preview-demo.soulfiremc.com` under **Custom domains** in the Cloudflare Pages project that serves `preview.soulfiremc.com`.
-Point its proxied DNS CNAME to `main.soulfire-client.pages.dev`, the same branch alias as `preview.soulfiremc.com`.
-See [Cloudflare's branch domain instructions](https://developers.cloudflare.com/pages/how-to/custom-branch-aliases/).
-Domain assignments and DNS records are managed outside this repository.
+`cloudflare.config.ts` defines both Workers and their domains. The `preview` mode selects `soulfire-client-preview` and the preview app environment.
+Static assets come straight from Cloudflare. Page loads that match no file get `index.html`, so client-side routes work.
+Other requests for missing files reach `worker/index.ts`, which answers 404. A stale chunk from an older deploy then fails as a real 404 instead of returning the app shell.
 
-Cloudflare builds use `CF_PAGES_BRANCH` to select the app environment: `release` and `demo` use production, and other branches use preview.
+The Deploy Web workflow builds and deploys with the [`cf` CLI](https://developers.cloudflare.com/cf/):
 
-The checked-in `wrangler.toml` targets the existing `soulfire-client` Pages project.
-Cloudflare's Git integration builds each pushed branch with `bun ci && bun run ci:pages`.
-The `ci:pages` script runs typecheck, lint, formatting, deployment tests, and the web build before Pages publishes the result.
-The `release` branch deploys to production. Other branches receive preview deployments, including the `main` and `demo` domain aliases above.
-GitHub Actions also runs the deployment tests as part of the Test workflow.
+- Pushes to `release` deploy production with `cf deploy --mode production`.
+- Pushes to `main` deploy preview with `cf deploy --mode preview`.
+- Pull requests from this repository get a Worker Preview, and the workflow comments its URL.
 
-You can also prepare a build and upload it with Wrangler:
+The workflow needs the `CLOUDFLARE_API_TOKEN` secret. It is an account API token that can edit Workers scripts and the routes in the `soulfiremc.com` zone.
+
+To deploy by hand, sign in with `bunx cf auth login`, then run:
 
 ```bash
-# Authenticate if needed.
-bunx wrangler@4.156.2 login
-
-# Prepare the main branch preview bundle.
-CF_PAGES=1 CF_PAGES_BRANCH=main bun run build:web
-
-# Publish the prepared bundle to the main branch alias.
-CLOUDFLARE_ACCOUNT_ID=4dd0e72d7bf89402be905fb40cdb230a bunx wrangler@4.156.2 pages deploy dist --branch main
+bunx cf build --mode preview
+bunx cf deploy --prebuilt --mode preview
 ```
 
-Use the same branch name for `CF_PAGES_BRANCH` and `--branch`.
-An upload with `--branch main` updates the shared preview. Use your feature branch name for a separate preview deployment.
-Wrangler uploads the existing `dist` directory, so rebuild it after code changes.
-Pages supplies the SPA route fallback automatically because this app has no top-level `404.html`.
+Use `--mode production` for production. `bunx vite preview --mode preview` serves the last build locally in the Workers runtime.
 
 ## Building
 
