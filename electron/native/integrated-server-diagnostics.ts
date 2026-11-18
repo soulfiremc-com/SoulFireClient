@@ -71,6 +71,7 @@ export async function getIntegratedDiagnostics(
     state.jcmdSearch = findJcmd(state)
       .then((executable) => {
         state.jcmdPath ??= executable;
+        return undefined;
       })
       .finally(() => {
         state.jcmdSearch = null;
@@ -151,6 +152,7 @@ export async function captureIntegratedThreadDump(
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(
       `Could not capture the thread dump. Java may not be responding to diagnostic commands. ${message}`,
+      { cause: error },
     );
   }
 }

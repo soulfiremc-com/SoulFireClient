@@ -29,8 +29,8 @@ test("consumes progress before removing failed proxies in one batch", async () =
     async (proxies) => {
       events.push(`remove ${proxies.map((p) => p.address).join(",")}`);
     },
-    ({ success, failed }) => {
-      events.push(`progress ${success + failed}`);
+    ({ success, failed: failedCount }) => {
+      events.push(`progress ${success + failedCount}`);
     },
   );
   assert.deepEqual(result, { success: 1, failed: 2 });
@@ -65,10 +65,15 @@ test("cancellation does not remove partially checked proxies", async () => {
   assert.equal(removals, 0);
 });
 
+async function* incomplete() {
+  yield failed("host:1");
+}
+async function* complete() {
+  yield failed("host:1");
+  yield end();
+}
+
 test("an incomplete stream or failed settings write cannot report success", async () => {
-  async function* incomplete() {
-    yield failed("host:1");
-  }
   await assert.rejects(
     checkProxies(
       rpcStream("Test.Check", () => incomplete()),
@@ -78,10 +83,6 @@ test("an incomplete stream or failed settings write cannot report success", asyn
     ),
     /completion message/,
   );
-  async function* complete() {
-    yield failed("host:1");
-    yield end();
-  }
   await assert.rejects(
     checkProxies(
       rpcStream("Test.Check", () => complete()),

@@ -108,7 +108,7 @@ test("generated streams subscribe lazily and abort after finite consumption", as
       stream.pipe(Stream.take(1), Stream.runCollect),
     );
     assert.equal(response[0].message?.id, id);
-    assert.equal(signals[signals.length - 1]?.aborted, true);
+    assert.equal(signals.at(-1)?.aborted, true);
   }
   assert.notEqual(signals[0], signals[1]);
 });
@@ -321,12 +321,13 @@ test("streams without iterator.return still abort when the consumer finishes", a
   assert.equal(signal?.aborted, true);
 });
 
+const onHeader = () => {};
+
 test("signal composition preserves call options and cancellation from either owner", () => {
   for (const owner of ["caller", "effect"] as const) {
     const caller = new AbortController();
     const effect = new AbortController();
     const headers = new Headers({ Authorization: "Bearer token" });
-    const onHeader = () => {};
     const options: CallOptions = {
       signal: caller.signal,
       timeoutMs: 1_000,
@@ -337,6 +338,7 @@ test("signal composition preserves call options and cancellation from either own
     assert.equal(composed.signal?.aborted, false);
     assert.equal(composed.timeoutMs, 1_000);
     assert.equal(composed.headers, headers);
+    // oxlint-disable-next-line typescript/unbound-method -- the test compares the forwarded callback by identity
     assert.equal(composed.onHeader, onHeader);
     assert.equal(options.signal, caller.signal);
     (owner === "caller" ? caller : effect).abort();

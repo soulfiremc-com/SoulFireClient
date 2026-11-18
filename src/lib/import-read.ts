@@ -39,19 +39,19 @@ export function readImportFile(
     const reader = new FileReader();
     const abort = () => reader.abort();
     const cleanup = () => signal.removeEventListener("abort", abort);
-    reader.onload = () => {
+    reader.addEventListener("load", () => {
       cleanup();
-      resolve(reader.result as string);
-    };
-    reader.onerror = () => {
+      resolve(typeof reader.result === "string" ? reader.result : "");
+    });
+    reader.addEventListener("error", () => {
       cleanup();
       reject(reader.error ?? new Error("Could not read the file"));
-    };
-    reader.onabort = () => {
+    });
+    reader.addEventListener("abort", () => {
       cleanup();
       // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- AbortSignal.reason is typed any; it holds the abort reason
       reject(signal.reason);
-    };
+    });
     signal.addEventListener("abort", abort, { once: true });
     try {
       reader.readAsText(file);

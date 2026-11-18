@@ -30,6 +30,10 @@ test("late history merges in order without duplicating live entries or displacin
   );
 });
 
+let sendNext = () => {};
+let release = () => {};
+let ready = () => {};
+
 test("script log feed reconciles history and live messages and retains repeated messages", async () => {
   const warning = {
     id: "warning",
@@ -43,7 +47,6 @@ test("script log feed reconciles history and live messages and retains repeated 
     level: "FATAL",
     timestamp: { seconds: 2n },
   };
-  let sendNext = () => {};
   const nextMessage = new Promise<void>((resolve) => {
     sendNext = resolve;
   });
@@ -143,7 +146,6 @@ test("script feed retains independent provenance and strips untrusted interactio
       message: "\x1b[31mLegacy\x1b[0m\x1b]777;soulfire;1;unfinished",
     },
   ];
-  let release = () => {};
   const pending = new Promise<void>((resolve) => {
     release = resolve;
   });
@@ -157,7 +159,6 @@ test("script feed retains independent provenance and strips untrusted interactio
     }),
   );
   let logs: LogEntry[] = [];
-  let ready = () => {};
   const received = new Promise<void>((resolve) => {
     ready = resolve;
   });
@@ -181,7 +182,7 @@ test("script feed retains independent provenance and strips untrusted interactio
       "fixture-token",
     );
     for (const id of ["raw-personal", "nonpersonal"]) {
-      const log = logs.find((log) => log.id === id)!;
+      const log = logs.find((candidate) => candidate.id === id)!;
       assert.equal(log.message, "Copy token");
       assert.ok(parseTerminalText(log).every((span) => !span.interaction));
     }

@@ -4,6 +4,21 @@ import { create } from "@bufbuild/protobuf";
 import { PovFrameSchema } from "@/generated/soulfire/pov_pb";
 import { PovVideoDecoder } from "./pov-video-decoder";
 
+const chunk = (sequence: number, keyFrame = false, width = 640) =>
+  create(PovFrameSchema, {
+    sequence: BigInt(sequence),
+    timestampUs: BigInt(sequence * 16667),
+    keyFrame,
+    width,
+    height: 360,
+    codec: "avc1.42C02A",
+    data: new Uint8Array([1]),
+  });
+const settle = async () => {
+  await Promise.resolve();
+  await Promise.resolve();
+};
+
 test("decoder recovers at keyframes after backlog and releases stale output after reset", async () => {
   const originalDecoder = globalThis.VideoDecoder;
   const originalChunk = globalThis.EncodedVideoChunk;
@@ -52,20 +67,6 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     },
     (error) => errors.push(error),
   );
-  const chunk = (sequence: number, keyFrame = false, width = 640) =>
-    create(PovFrameSchema, {
-      sequence: BigInt(sequence),
-      timestampUs: BigInt(sequence * 16667),
-      keyFrame,
-      width,
-      height: 360,
-      codec: "avc1.42C02A",
-      data: new Uint8Array([1]),
-    });
-  const settle = async () => {
-    await Promise.resolve();
-    await Promise.resolve();
-  };
   try {
     decoder.accept(chunk(1, true));
     await settle();
@@ -76,6 +77,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
       "Discard dependent frames until a fresh keyframe",
     );
     decoder.accept(chunk(3, true));
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     decoders[0].callbacks.output({
       timestamp: 3 * 16667,
       close() {
@@ -94,6 +96,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
       "Reset a decoder that falls behind",
     );
     assert.ok(requestedKeys > 0);
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     decoders[0].callbacks.output({
       timestamp: 4 * 16667,
       close() {

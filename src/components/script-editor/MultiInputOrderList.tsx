@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "i18next";
+import { t } from "i18next";
 import { GripVertical, Link2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -62,10 +62,10 @@ function ItemCard({
       {showHandle && (
         <SortableItemHandle
           className={cn(
-            "nodrag nopan inline-flex size-6 items-center justify-center rounded border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+            "nodrag nopan inline-flex size-6 items-center justify-center rounded-sm border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
             compact && "size-5",
           )}
-          aria-label={i18n.t("instance:scripts.editor.multiInput.reorder", {
+          aria-label={t("instance:scripts.editor.multiInput.reorder", {
             label: item.label,
           })}
         >
@@ -80,7 +80,7 @@ export function MultiInputOrderList({
   items,
   onReorder,
   compact = false,
-  emptyLabel = i18n.t("instance:scripts.editor.multiInput.empty"),
+  emptyLabel = t("instance:scripts.editor.multiInput.empty"),
 }: MultiInputOrderListProps) {
   if (items.length === 0) {
     return (

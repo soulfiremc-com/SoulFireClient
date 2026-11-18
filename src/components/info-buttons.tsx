@@ -58,7 +58,7 @@ function GenericInfoButton(props: {
           <Button
             variant="ghost"
             size="icon-xs"
-            className="relative h-4 w-4 shrink-0 opacity-50 after:absolute after:-inset-1"
+            className="relative size-4 shrink-0 opacity-50 after:absolute after:-inset-1"
           />
         }
       >

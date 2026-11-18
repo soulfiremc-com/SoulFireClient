@@ -36,7 +36,9 @@ export function shareBotListData(current: unknown, incoming: unknown) {
   return replaceEqualDeep(
     current,
     reconcileBotList(
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- structural sharing receives the bot-status query data, which is always a BotListResponse
       current as BotListResponse | undefined,
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- structural sharing receives the bot-status query data, which is always a BotListResponse
       incoming as BotListResponse,
     ),
   );

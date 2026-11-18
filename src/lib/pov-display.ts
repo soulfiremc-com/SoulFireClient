@@ -33,19 +33,20 @@ export function povDisplayFps(win: Window): Promise<number> {
   });
 }
 
+const supported = async (codec: string) => {
+  try {
+    return (
+      await VideoDecoder.isConfigSupported({
+        codec,
+        optimizeForLatency: true,
+      })
+    ).supported;
+  } catch {
+    return false;
+  }
+};
+
 export async function povCodecs(): Promise<string[]> {
-  const supported = async (codec: string) => {
-    try {
-      return (
-        await VideoDecoder.isConfigSupported({
-          codec,
-          optimizeForLatency: true,
-        })
-      ).supported;
-    } catch {
-      return false;
-    }
-  };
   const codecs: string[] = [];
   if (await supported("avc1.640034")) {
     if (

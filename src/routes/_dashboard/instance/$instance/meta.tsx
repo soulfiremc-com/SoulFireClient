@@ -2,7 +2,6 @@ import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
 import { Effect, Schema } from "effect";
 import type { JsonValue } from "@bufbuild/protobuf";
-import type { Value } from "@bufbuild/protobuf/wkt";
 
 import { useForm } from "@tanstack/react-form";
 import {
@@ -113,7 +112,7 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
         id: generateId(),
         namespace: namespace.namespace,
         key: entry.key,
-        value: JSON.stringify(valueToJson(entry.value as Value)),
+        value: JSON.stringify(valueToJson(entry.value)),
       });
     }
   }
@@ -122,7 +121,7 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
 
 function MetaSettingsSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         {/* Friendly Name field */}
         <div className="flex flex-col gap-1">
@@ -144,7 +143,7 @@ function MetaSettingsSkeleton() {
             <Skeleton className="h-9 flex-1" />
             <Skeleton className="h-9 flex-1" />
             <Skeleton className="h-9 flex-1" />
-            <Skeleton className="h-9 w-9" />
+            <Skeleton className="size-9" />
           </div>
         </div>
       </div>
@@ -192,7 +191,7 @@ function InstanceNameField({
     defaultValues: { name: value },
     validators: { onSubmit: toFormSchema(Schema.Struct({ name: schema })) },
     onSubmit: async ({ value: fields, formApi }) => {
-      const name = Schema.decodeUnknownSync(schema)(fields.name);
+      const name = Schema.decodeSync(schema)(fields.name);
       if (name === value) return;
       try {
         if (!(await onSave(name))) {
@@ -312,6 +311,7 @@ function InstanceIconField({
             <Button
               id={id}
               variant="outline"
+              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role, jsx-a11y/role-has-required-aria-props -- custom combobox with a filtered popup list, which a native select cannot provide; PopoverTrigger adds aria-controls for the popup it opens
               role="combobox"
               aria-expanded={open}
               aria-busy={pending || undefined}
@@ -445,7 +445,7 @@ function Content() {
   );
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         <InstanceNameField
           key={instanceInfo.id}

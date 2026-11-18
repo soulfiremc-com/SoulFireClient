@@ -92,10 +92,10 @@ export function DataTableFilterMenu<TData extends RowData>({
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const onOpenChange = React.useCallback((open: boolean) => {
-    setOpen(open);
+  const onOpenChange = React.useCallback((nextOpen: boolean) => {
+    setOpen(nextOpen);
 
-    if (!open) {
+    if (!nextOpen) {
       setTimeout(() => {
         setSelectedColumn(null);
         setInputValue("");
@@ -139,6 +139,7 @@ export function DataTableFilterMenu<TData extends RowData>({
         column.columnDef.meta?.variant === "multiSelect" ? [value] : value;
 
       const newFilter: ExtendedColumnFilter<TData> = {
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- column IDs are keys of TData
         id: column.id as Extract<keyof TData, string>,
         value: filterValue,
         variant: column.columnDef.meta?.variant ?? "text",
@@ -180,7 +181,7 @@ export function DataTableFilterMenu<TData extends RowData>({
       debouncedSetFilters((prevFilters) => {
         const updatedFilters = prevFilters.map((filter) => {
           if (filter.filterId === filterId) {
-            return { ...filter, ...updates } as ExtendedColumnFilter<TData>;
+            return { ...filter, ...updates };
           }
           return filter;
         });
@@ -226,14 +227,14 @@ export function DataTableFilterMenu<TData extends RowData>({
         filters.length > 0
       ) {
         event.preventDefault();
-        onFilterRemove(filters[filters.length - 1]?.filterId ?? "");
+        onFilterRemove(filters.at(-1)?.filterId ?? "");
       }
     },
     [filters, onFilterRemove],
   );
 
   return (
-    <div role="list" className="flex flex-wrap items-center gap-2">
+    <ul className="flex flex-wrap items-center gap-2">
       {filters.map((filter) => (
         <DataTableFilterItem
           key={filter.filterId}
@@ -335,7 +336,7 @@ export function DataTableFilterMenu<TData extends RowData>({
           </Command>
         </PopoverContent>
       </Popover>
-    </div>
+    </ul>
   );
 }
 
@@ -363,7 +364,7 @@ function DataTableFilterItem<TData extends RowData>({
       React.useState(false);
     const [showValueSelector, setShowValueSelector] = React.useState(false);
 
-    const column = columns.find((column) => column.id === filter.id);
+    const column = columns.find((candidate) => candidate.id === filter.id);
 
     const operatorListboxId = `${filterItemId}-operator-listbox`;
     const inputId = `${filterItemId}-input`;
@@ -372,7 +373,7 @@ function DataTableFilterItem<TData extends RowData>({
     const filterOperators = getFilterOperators(filter.variant);
 
     const onItemKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLDivElement>) => {
+      (event: React.KeyboardEvent<HTMLLIElement>) => {
         if (
           event.target instanceof HTMLInputElement ||
           event.target instanceof HTMLTextAreaElement
@@ -401,9 +402,9 @@ function DataTableFilterItem<TData extends RowData>({
     if (!column) return null;
 
     return (
-      <div
+      // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the list item handles keyboard shortcuts for the focused filter or sort row
+      <li
         key={filter.filterId}
-        role="listitem"
         id={filterItemId}
         className="flex h-8 items-center rounded-md bg-background"
         onKeyDown={onItemKeyDown}
@@ -433,16 +434,18 @@ function DataTableFilterItem<TData extends RowData>({
                   {i18n.t("common:dataTable.noFieldsFound")}
                 </CommandEmpty>
                 <CommandGroup>
-                  {columns.map((column) => (
+                  {columns.map((columnOption) => (
                     <CommandItem
-                      key={column.id}
-                      value={column.id}
+                      key={columnOption.id}
+                      value={columnOption.id}
                       onSelect={() => {
                         onFilterUpdate(filter.filterId, {
-                          id: column.id as Extract<keyof TData, string>,
-                          variant: column.columnDef.meta?.variant ?? "text",
+                          // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- column IDs are keys of TData
+                          id: columnOption.id as Extract<keyof TData, string>,
+                          variant:
+                            columnOption.columnDef.meta?.variant ?? "text",
                           operator: getDefaultFilterOperator(
-                            column.columnDef.meta?.variant ?? "text",
+                            columnOption.columnDef.meta?.variant ?? "text",
                           ),
                           value: "",
                         });
@@ -450,16 +453,18 @@ function DataTableFilterItem<TData extends RowData>({
                         setShowFieldSelector(false);
                       }}
                     >
-                      {column.columnDef.meta?.icon && (
-                        <column.columnDef.meta.icon />
+                      {columnOption.columnDef.meta?.icon && (
+                        <columnOption.columnDef.meta.icon />
                       )}
                       <span className="truncate">
-                        {column.columnDef.meta?.label ?? column.id}
+                        {columnOption.columnDef.meta?.label ?? columnOption.id}
                       </span>
                       <Check
                         className={cn(
                           "ml-auto",
-                          column.id === filter.id ? "opacity-100" : "opacity-0",
+                          columnOption.id === filter.id
+                            ? "opacity-100"
+                            : "opacity-0",
                         )}
                       />
                     </CommandItem>
@@ -527,7 +532,7 @@ function DataTableFilterItem<TData extends RowData>({
         >
           <X className="size-3.5" />
         </Button>
-      </div>
+      </li>
     );
   }
 }
@@ -643,14 +648,13 @@ function onFilterInputRender<TData extends RowData>({
 }) {
   if (filter.operator === "isEmpty" || filter.operator === "isNotEmpty") {
     return (
-      <div
+      <output
         id={inputId}
-        role="status"
         aria-label={`${column.columnDef.meta?.label} filter is ${
           filter.operator === "isEmpty" ? "empty" : "not empty"
         }`}
         aria-live="polite"
-        className="h-full w-16 rounded-none border bg-transparent px-1.5 py-0.5 text-muted-foreground dark:bg-input/30"
+        className="block h-full w-16 rounded-none border bg-transparent px-1.5 py-0.5 text-muted-foreground dark:bg-input/30"
       />
     );
   }

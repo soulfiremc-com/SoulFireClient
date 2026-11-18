@@ -148,6 +148,7 @@ test("cleanup cancels a pending fleet refresh as well as the live stream", async
   const key = ["instance-info", instanceId];
   cache.setQueryData(key, { id: instanceId });
   let updated = false;
+  const isUpdated = () => updated;
   let ended = false;
   const transport = createRouterTransport((router) => {
     router.service(BotService, {
@@ -171,7 +172,7 @@ test("cleanup cancels a pending fleet refresh as well as the live stream", async
   const stop = watchBotStatuses(transport, cache, instanceId);
   try {
     const deadline = Date.now() + 1000;
-    while (!updated && Date.now() < deadline) await delay(1);
+    while (!isUpdated() && Date.now() < deadline) await delay(1);
     assert.equal(updated, true);
     stop();
     await delay(350);

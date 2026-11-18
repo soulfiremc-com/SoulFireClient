@@ -27,10 +27,7 @@ export function serverMetricsQueryOptions(
 
       const previous =
         queryClient.getQueryData<GetServerMetricsResponse>(queryKey);
-      const since =
-        previous && previous.snapshots.length > 0
-          ? previous.snapshots[previous.snapshots.length - 1].timestamp
-          : undefined;
+      const since = previous?.snapshots.at(-1)?.timestamp;
 
       const client = createRpcClient(MetricsService, transport);
       const result = await Effect.runPromise(

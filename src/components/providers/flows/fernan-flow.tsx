@@ -56,6 +56,8 @@ import {
   type FernanPurchase,
 } from "@/lib/fernan.ts";
 import { ProviderApiError } from "@/lib/provider-request.ts";
+import { isOneOf } from "@/lib/is-one-of";
+import { FERNAN_IMPORT_FORMATS } from "@/lib/fernan";
 
 type Stage = "connect" | "choose" | "review" | "import";
 export type AccountImport = (
@@ -614,9 +616,9 @@ export function FernanFlow({
             aria-label={t("providers.importFormat")}
             value={importFormat}
             disabled={busy}
-            onValueChange={(next) =>
-              setImportFormat(next as FernanImportFormat)
-            }
+            onValueChange={(next) => {
+              if (isOneOf(next, FERNAN_IMPORT_FORMATS)) setImportFormat(next);
+            }}
           >
             {(
               [

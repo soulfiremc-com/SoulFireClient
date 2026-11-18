@@ -92,7 +92,7 @@ export function QuotasDialog() {
           />
         }
       >
-        <Settings2 className="h-4 w-4" />
+        <Settings2 className="size-4" />
       </CredenzaTrigger>
       <CredenzaContent>
         <CredenzaHeader>

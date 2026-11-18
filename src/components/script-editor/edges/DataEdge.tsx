@@ -71,7 +71,7 @@ function DataEdge({
       <BaseEdge
         id={id}
         path={edgePath}
-        className={cn(selected && "!opacity-100")}
+        className={cn(selected && "opacity-100!")}
         style={{
           stroke: color,
           strokeWidth: 1.5,

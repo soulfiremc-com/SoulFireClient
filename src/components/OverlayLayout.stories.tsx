@@ -47,7 +47,7 @@ const meta = {
   component: OverlayExample,
   args: { kind: "popover" },
   beforeEach: async () => {
-    if (!page) return;
+    if (!page) return undefined;
     const original = { width: innerWidth, height: innerHeight };
     await page.viewport(320, 480);
     return () => page.viewport(original.width, original.height);

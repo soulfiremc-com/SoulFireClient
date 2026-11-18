@@ -30,7 +30,7 @@ export function CookieConsentBanner({
   // actions above it while a choice is pending.
   useEffect(() => {
     const banner = bannerRef.current;
-    if (!banner) return;
+    if (!banner) return undefined;
     const root = document.documentElement;
     const observer = new ResizeObserver(() => {
       const offset = window.innerHeight - banner.getBoundingClientRect().top;

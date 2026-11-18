@@ -54,6 +54,7 @@ function readState(storage: Storage | undefined): ReminderState {
           state.disabled === "never" ||
           state.disabled === "supporter")
       ) {
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the stored reminder state is validated field by field above
         return {
           ...state,
           activeDays: [...new Set(state.activeDays)],
@@ -153,7 +154,7 @@ export function createSupportReminder({
 
   return {
     getSnapshot: () => state,
-    subscribe(listener: () => void) {
+    subscribe: (listener: () => void) => {
       listeners.add(listener);
       return () => {
         listeners.delete(listener);
@@ -197,6 +198,7 @@ export function watchSupportReminderBots(
       event.query.queryKey[0] === "bot-status"
     ) {
       reminder.observeBots(
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the bot-status query always stores a BotListResponse
         (event.query.state.data as BotListResponse | undefined)?.bots ?? [],
       );
     }

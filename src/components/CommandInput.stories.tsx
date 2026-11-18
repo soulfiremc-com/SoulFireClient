@@ -135,9 +135,9 @@ export const Interactive: Story = {};
 export const CompletionAndHistory: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole("combobox", {
+    const input = canvas.getByRole<HTMLInputElement>("combobox", {
       name: "Command",
-    }) as HTMLInputElement;
+    });
     await userEvent.type(input, "h");
     const firstOption = await canvas.findByRole("option", {
       name: "help List available commands",
@@ -179,9 +179,9 @@ export const CompletionAndHistory: Story = {
 export const DraftSurvivesLogs: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole("combobox", {
+    const input = canvas.getByRole<HTMLInputElement>("combobox", {
       name: "Command",
-    }) as HTMLInputElement;
+    });
     await userEvent.type(input, "say H friend");
     input.setSelectionRange(5, 5);
     input.dispatchEvent(new Event("click", { bubbles: true }));
@@ -214,9 +214,9 @@ export const DraftSurvivesLogs: Story = {
 export const CompositionAndFailure: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole("combobox", {
+    const input = canvas.getByRole<HTMLInputElement>("combobox", {
       name: "Command",
-    }) as HTMLInputElement;
+    });
     await userEvent.type(input, "say hello");
     input.dispatchEvent(
       new CompositionEvent("compositionstart", { bubbles: true }),

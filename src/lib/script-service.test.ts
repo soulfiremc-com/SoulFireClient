@@ -122,15 +122,16 @@ test("frames and notes retain explicit dimensions without persisting measurement
   }
 });
 
+const script = (name: string, paused: boolean, seconds: number) =>
+  create(ScriptInfoSchema, {
+    id: name,
+    name,
+    description: `${name} description`,
+    paused,
+    updatedAt: timestampFromMs(seconds * 1000),
+  });
+
 test("script list filters by text and state, then sorts", () => {
-  const script = (name: string, paused: boolean, seconds: number) =>
-    create(ScriptInfoSchema, {
-      id: name,
-      name,
-      description: `${name} description`,
-      paused,
-      updatedAt: timestampFromMs(seconds * 1000),
-    });
   const scripts = [
     script("Greeter", false, 10),
     script("Auto eat", true, 30),

@@ -18,7 +18,7 @@ export function GlobalQueryIndicator() {
 
   if (hasFailures) {
     return (
-      <div role="status">
+      <output className="block">
         <span className="sr-only">{t("queryStatus.stale")}</span>
         <Tooltip>
           <TooltipTrigger
@@ -41,7 +41,7 @@ export function GlobalQueryIndicator() {
           </TooltipTrigger>
           <TooltipContent>{t("queryStatus.stale")}</TooltipContent>
         </Tooltip>
-      </div>
+      </output>
     );
   }
 

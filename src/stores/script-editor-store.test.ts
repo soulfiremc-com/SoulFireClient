@@ -8,6 +8,7 @@ import {
 import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import { createScriptEditorSession } from "./script-editor-store";
+import { nodeDataString } from "@/lib/script-node-data";
 
 test("identified completions retain overlapping invocations and return to older running nodes", () => {
   const editor = createScriptEditorSession();
@@ -348,11 +349,11 @@ test("duplicating a group clones its nested graph and internal frame references"
     );
     assert.equal(
       copy.data.parentGroupId,
-      ids.get(original.data.parentGroupId as string),
+      ids.get(nodeDataString(original.data, "parentGroupId") ?? ""),
     );
     assert.equal(
       copy.data.parentFrameId,
-      ids.get(original.data.parentFrameId as string),
+      ids.get(nodeDataString(original.data, "parentFrameId") ?? ""),
     );
     if (Array.isArray(original.data.containedNodes)) {
       assert.deepEqual(
@@ -408,11 +409,11 @@ test("pasting groups into another group retains hierarchy and offsets only root 
     const copy = copies[index];
     assert.equal(
       copy.data.parentGroupId,
-      ids.get(original.data.parentGroupId as string) ?? parent,
+      ids.get(nodeDataString(original.data, "parentGroupId") ?? "") ?? parent,
     );
     assert.equal(
       copy.data.parentFrameId,
-      ids.get(original.data.parentFrameId as string),
+      ids.get(nodeDataString(original.data, "parentFrameId") ?? ""),
     );
     assert.deepEqual(
       copy.position,

@@ -18,7 +18,7 @@ export class PovInputQueue {
 
   enqueue(event: PovInputEvent, source: string): boolean {
     if (!this.sources.accept(event, source)) return true;
-    const previous = this.events[this.events.length - 1];
+    const previous = this.events.at(-1);
     // Native screen drags need every absolute position along the path.
     if (
       previous &&

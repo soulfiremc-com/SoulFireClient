@@ -78,14 +78,11 @@ function EditableNodeLabelComponent({
     >
       <EditableArea className="nodrag nopan min-w-0">
         <EditablePreview
-          className={cn(
-            "cursor-text truncate border-none px-0 py-0",
-            labelClasses,
-          )}
+          className={cn("cursor-text truncate border-none p-0", labelClasses)}
         />
         <EditableInput
           className={cn(
-            "border-none bg-transparent px-0 py-0 shadow-none focus-visible:ring-0",
+            "border-none bg-transparent p-0 shadow-none focus-visible:ring-0",
             labelClasses,
           )}
         />

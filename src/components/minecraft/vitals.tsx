@@ -1,5 +1,5 @@
 import { DrumstickIcon, HeartIcon, type LucideIcon } from "lucide-react";
-import i18n from "i18next";
+import { t } from "i18next";
 import { cn } from "@/lib/utils.tsx";
 import { generateN } from "@/lib/generate-n.ts";
 
@@ -72,6 +72,7 @@ function Meter({
   const perUnit = maxValue / units;
   return (
     <span
+      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- the icons and text form one labelled image
       role="img"
       aria-label={label}
       title={label}
@@ -117,7 +118,7 @@ export function HeartsBar({
       baseClassName="text-muted-foreground/25"
       fillClassName="text-destructive"
       idPrefix="heart"
-      label={`${i18n.t("instance:bots.statsPanel.health")}: ${Math.round(health)}/${Math.round(maxHealth)}`}
+      label={`${t("instance:bots.statsPanel.health")}: ${Math.round(health)}/${Math.round(maxHealth)}`}
       className={className}
     />
   );
@@ -143,7 +144,7 @@ export function FoodBar({
       baseClassName="text-muted-foreground/25"
       fillClassName="text-warning"
       idPrefix="food"
-      label={`${i18n.t("instance:bots.statsPanel.food")}: ${Math.round(foodLevel)}/20`}
+      label={`${t("instance:bots.statsPanel.food")}: ${Math.round(foodLevel)}/20`}
       className={className}
     />
   );

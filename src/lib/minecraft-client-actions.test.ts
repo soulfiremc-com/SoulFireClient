@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { copyMinecraftText } from "./minecraft-client-actions";
 
 function browser(clipboard?: { writeText: (text: string) => Promise<void> }) {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   return { navigator: { clipboard } } as unknown as Window;
 }
 

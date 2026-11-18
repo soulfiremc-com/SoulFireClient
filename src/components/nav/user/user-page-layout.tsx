@@ -68,7 +68,7 @@ export default function UserPageLayout(props: {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7"
+                className="size-7"
                 nativeButton={false}
                 render={<ExternalLink href={props.documentationLink} />}
               >

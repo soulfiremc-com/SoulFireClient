@@ -25,6 +25,7 @@ const stringSetting = (namespace: string, key: string, uiName: string) =>
   });
 
 test("common settings come first and new server settings stay reachable", () => {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const list = [
     id("bot", "address"),
     id("bot", "new-server-option"),
@@ -41,6 +42,7 @@ test("common settings come first and new server settings stay reachable", () => 
 });
 
 test("pages without a curated list show everything", () => {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const list = [id("my-plugin", "a"), id("my-plugin", "b")] as never[];
   const split = splitSettingsEntries("my-plugin", list);
   assert.equal(split.common.length, 2);
@@ -48,6 +50,7 @@ test("pages without a curated list show everything", () => {
 });
 
 test("content sections retain unknown fields and respect namespaces", () => {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const entries = [
     id("ai", "api-key"),
     id("ai", "api-max-retries"),
@@ -73,6 +76,7 @@ test("search matches names and descriptions from server definitions", () => {
     stringSetting("bot", "address", "Address"),
     stringSetting("bot", "brand", "Client brand"),
   ];
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const entries = [id("bot", "address"), id("bot", "brand")] as never[];
   assert.deepEqual(
     filterSettingsEntries(entries, defs, "client").map((e) => e.key),
@@ -109,7 +113,7 @@ test("plugins group by task and unknown plugins stay available", () => {
 });
 
 test("renamed plugins remain searchable by familiar names and stable IDs", () => {
-  for (const [id, displayName, legacyName] of [
+  for (const [settingId, displayName, legacyName] of [
     ["kill-aura", "Auto attack", "Kill Aura"],
     ["server-list-bypass", "Ping before join", "Server List Bypass"],
     ["fake-virtual-host", "Handshake host override", "Fake Virtual Host"],
@@ -117,13 +121,13 @@ test("renamed plugins remain searchable by familiar names and stable IDs", () =>
     ["ai-chat-bot", "AI chat", "AI Chat Bot"],
   ]) {
     const text = getPluginSearchText(displayName, {
-      id,
+      id: settingId,
       description: "Server-provided behavior description",
     });
     assert.ok(text.includes(displayName.toLowerCase()));
-    assert.ok(text.includes(id));
+    assert.ok(text.includes(settingId));
     assert.ok(text.includes(legacyName.toLowerCase()));
-    assert.ok(text.includes(id.replace(/-/g, "")));
+    assert.ok(text.includes(settingId.replaceAll("-", "")));
     assert.ok(text.includes("server-provided behavior description"));
   }
 });

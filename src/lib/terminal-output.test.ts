@@ -27,7 +27,7 @@ function text(core: TerminalCore) {
       row < history
         ? core.getScrollbackCell(history - row - 1, col)
         : core.getCell(row - history, col);
-    return Array.from({ length: core.getCols() }, (_, col) => {
+    return Array.from({ length: core.getCols() }, (_cell, col) => {
       const value = cell(col);
       return (
         value.chars ?? (value.char ? String.fromCodePoint(value.char) : " ")

@@ -2,7 +2,8 @@
 export const SDK_EXAMPLE_VERSION = "2.10.7";
 export const SDK_RECIPES = ["list-bots", "read-state", "send-chat"] as const;
 export type SdkRecipe = (typeof SDK_RECIPES)[number];
-export type SdkLanguage = "typescript" | "python";
+export const SDK_LANGUAGES = ["typescript", "python"] as const;
+export type SdkLanguage = (typeof SDK_LANGUAGES)[number];
 export type SdkShell = "posix" | "powershell";
 
 export function sdkServerUrl(

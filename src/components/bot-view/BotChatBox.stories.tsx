@@ -32,6 +32,8 @@ async function deliver() {
       return { result: { status: BotActionStatus.CANCELLED } };
     case "noResult":
       return {};
+    default:
+      return outcome satisfies never;
   }
 }
 const transport = createRouterTransport((router) =>

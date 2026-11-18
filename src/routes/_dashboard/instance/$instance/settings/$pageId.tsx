@@ -9,7 +9,7 @@ import { NotFoundComponent } from "@/components/not-found-component.tsx";
 import { InstanceSettingsPageComponent } from "@/components/settings-page.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import i18n from "@/lib/i18n";
-import { routeChrome } from "@/lib/route-title.ts";
+import { loaderDataString, routeChrome } from "@/lib/route-title.ts";
 import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
 function getSettingsPageFallbackIcon(pageId: string) {
@@ -36,26 +36,16 @@ export const Route = createFileRoute(
   beforeLoad: () =>
     routeChrome({
       getTitle: (match) => {
-        const loaderData = match.loaderData as
-          | {
-              title?: null | string;
-            }
-          | undefined;
         return (
-          loaderData?.title?.trim() || i18n.t("common:breadcrumbs.settings")
+          loaderDataString(match, "title")?.trim() ||
+          i18n.t("common:breadcrumbs.settings")
         );
       },
       getIcon: (match) => {
-        const loaderData = match.loaderData as
-          | {
-              iconName?: null | string;
-            }
-          | undefined;
+        const iconName = loaderDataString(match, "iconName");
         return {
           kind: "dynamic" as const,
-          name:
-            loaderData?.iconName ??
-            getSettingsPageFallbackIcon(match.params.pageId),
+          name: iconName ?? getSettingsPageFallbackIcon(match.params.pageId),
         };
       },
     }),
@@ -100,7 +90,7 @@ const SKELETON_FIELD_IDS = [
 
 function SettingsFormSkeleton() {
   return (
-    <div className="flex h-full w-full grow flex-row gap-2">
+    <div className="flex size-full grow flex-row gap-2">
       <div className="flex h-full grow flex-col gap-4">
         <div className="flex flex-col gap-2">
           {SKELETON_FIELD_IDS.map((id) => (

@@ -1,7 +1,6 @@
 import { createRpcClient } from "@/lib/rpc";
 
 import {
-  type QueryClient,
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -80,7 +79,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
-import type { SettingsPage } from "@/generated/soulfire/common_pb";
 import {
   AccountTypeCredentials,
   AccountTypeDeviceCode,
@@ -116,6 +114,7 @@ import {
   removeInstanceAccountsBatch,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
+import { requireField } from "@/lib/require-field";
 
 const CREDENTIAL_FORMAT_KEYS = {
   [AccountTypeCredentials.OFFLINE]: "offline",
@@ -237,19 +236,13 @@ function GenerateAccountsButton() {
 export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
   {
     validateSearch: guidedTableValidateSearch,
-    beforeLoad: () =>
+    beforeLoad: ({ context }) =>
       routeChrome({
         getTitle: () => i18n.t("common:pageName.accountSettings"),
-        getIcon: (match) => {
-          const iconContext = match.context as {
-            queryClient: QueryClient;
-            instanceInfoQueryOptions: {
-              queryKey: readonly unknown[];
-            };
-          };
+        getIcon: () => {
           const instanceInfo =
-            iconContext.queryClient.getQueryData<InstanceInfoQueryData>(
-              iconContext.instanceInfoQueryOptions.queryKey,
+            context.queryClient.getQueryData<InstanceInfoQueryData>(
+              context.instanceInfoQueryOptions.queryKey,
             );
           const accountPage = instanceInfo?.instanceSettings.find(
             (page) => page.id === "account",
@@ -1128,7 +1121,7 @@ function ExtraHeader(props: {
 
 function AccountSettingsSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         <Skeleton className="h-10 w-full" />
         <Skeleton className="h-10 w-full" />
@@ -1192,14 +1185,13 @@ function Content() {
   );
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         <InstanceSettingsPageComponent
-          data={
-            instanceInfo.instanceSettings.find(
-              (s) => s.id === "account",
-            ) as SettingsPage
-          }
+          data={requireField(
+            instanceInfo.instanceSettings.find((s) => s.id === "account"),
+            "the account settings page",
+          )}
           disabledIds={PAGE_HIDDEN_SETTINGS.account}
           focusSetting={
             focusNamespace && focusKey

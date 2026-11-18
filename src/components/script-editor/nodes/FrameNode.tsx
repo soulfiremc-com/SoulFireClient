@@ -49,7 +49,7 @@ function FrameNodeComponent({ id, data, selected }: FrameNodeProps) {
       {/* Frame container */}
       <div
         className={cn(
-          "h-full w-full rounded-lg border-2 border-dashed",
+          "size-full rounded-lg border-2 border-dashed",
           selected ? "border-primary" : "border-border/50",
           data.locked && "cursor-not-allowed",
         )}
@@ -62,7 +62,7 @@ function FrameNodeComponent({ id, data, selected }: FrameNodeProps) {
         {/* Frame header/label */}
         <div
           className={cn(
-            "absolute -top-6 left-2 flex items-center rounded px-2 py-0.5 text-sm font-medium",
+            "absolute -top-6 left-2 flex items-center rounded-sm px-2 py-0.5 text-sm font-medium",
             selected ? "text-primary" : "text-muted-foreground",
           )}
           style={{

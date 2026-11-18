@@ -202,7 +202,9 @@ export const SelectAndCopy: Story = {
     );
     await waitFor(() => expect(uploadLog).toHaveBeenCalled());
     await expect(
-      new URLSearchParams(String(uploadLog.mock.calls[0][0])).get("content"),
+      new URLSearchParams(uploadedBody(uploadLog.mock.calls[0][0])).get(
+        "content",
+      ),
     ).toBe("Last log");
     await waitFor(() =>
       expect(writeClipboard).toHaveBeenLastCalledWith(
@@ -211,3 +213,9 @@ export const SelectAndCopy: Story = {
     );
   },
 };
+
+function uploadedBody(body: BodyInit | null | undefined): string {
+  return typeof body === "string" || body instanceof URLSearchParams
+    ? body.toString()
+    : "";
+}

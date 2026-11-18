@@ -108,9 +108,9 @@ function PluginInfoCardContent(props: {
             )}
           </p>
           {props.note && (
-            <p className="text-xs text-muted-foreground" role="status">
+            <output className="block text-xs text-muted-foreground">
               {props.note}
-            </p>
+            </output>
           )}
           {props.settingsUrl && props.enabledValue && (
             <Button

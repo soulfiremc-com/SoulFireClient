@@ -10,7 +10,7 @@ import {
   type PovStreamFeedback,
 } from "@/generated/soulfire/pov_pb";
 import { Cause, Deferred, Effect, Fiber, Result, Stream } from "effect";
-import i18n from "i18next";
+import { t } from "i18next";
 import { povCodecs, povDisplayFps } from "@/lib/pov-display";
 import { PovInputQueue } from "@/lib/pov-input-queue";
 import { createRpcClient } from "@/lib/rpc";
@@ -46,6 +46,8 @@ export function startPovSession(
   let lastSent = 0;
   let lastCaptured = false;
   let stopped = false;
+  // stop() sets this flag from outside the reconnect loop.
+  const isStopped = () => stopped;
   let attempt: {
     id: string;
     abort: AbortController;
@@ -57,7 +59,7 @@ export function startPovSession(
   } | null = null;
   let sessionFiber: Fiber.Fiber<void> | undefined;
   const connectionTimeout = new ConnectError(
-    i18n.t("instance:bots.pov.connectTimeout"),
+    t("instance:bots.pov.connectTimeout"),
     Code.DeadlineExceeded,
   );
 
@@ -168,7 +170,7 @@ export function startPovSession(
           { concurrency: "unbounded" },
         );
         let failures = 0;
-        while (!stopped) {
+        while (!isStopped()) {
           const size = dimensions();
           if (size) {
             const result = yield* Effect.result(
@@ -185,17 +187,21 @@ export function startPovSession(
                       connected: Deferred.makeUnsafe<void>(),
                       failure: Deferred.makeUnsafe<never, unknown>(),
                     })),
-                    (current) =>
+                    (active) =>
                       Effect.sync(() => {
-                        current.abort.abort();
-                        if (current.socket) {
-                          current.socket.onopen = null;
-                          current.socket.onmessage = null;
-                          current.socket.onerror = null;
-                          current.socket.onclose = null;
-                          current.socket.close();
+                        active.abort.abort();
+                        if (active.socket) {
+                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                          active.socket.onopen = null;
+                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                          active.socket.onmessage = null;
+                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                          active.socket.onerror = null;
+                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                          active.socket.onclose = null;
+                          active.socket.close();
                         }
-                        if (attempt === current) {
+                        if (attempt === active) {
                           attempt = null;
                           ready = false;
                           captured = false;
@@ -234,11 +240,12 @@ export function startPovSession(
                               current.token = frame.inputToken;
                               if (!current.token)
                                 throw new ConnectError(
-                                  i18n.t("instance:bots.pov.inputUpdateServer"),
+                                  t("instance:bots.pov.inputUpdateServer"),
                                   Code.Unimplemented,
                                 );
                               const socket = new WebSocket(inputUrl);
                               current.socket = socket;
+                              // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
                               socket.onopen = () => {
                                 if (
                                   attempt === current &&
@@ -253,6 +260,7 @@ export function startPovSession(
                                   flush();
                                 }
                               };
+                              // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
                               socket.onmessage = (event) => {
                                 if (attempt !== current) return;
                                 try {
@@ -269,6 +277,7 @@ export function startPovSession(
                                   reconnect(error);
                                 }
                               };
+                              // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
                               socket.onerror = socket.onclose = () => {
                                 if (
                                   attempt === current &&
@@ -332,6 +341,7 @@ export function startPovSession(
             Math.min(500 * 2 ** Math.min(failures++, 4), 5000),
           );
         }
+        return undefined;
       }),
     ).pipe(
       Effect.catchCause((cause) =>

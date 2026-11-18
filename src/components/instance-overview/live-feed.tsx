@@ -127,7 +127,7 @@ export function LiveFeed({
   });
 
   useEffect(() => {
-    if (!canWatch || transport === null) return;
+    if (!canWatch || transport === null) return undefined;
     const controller = new AbortController();
     const service = createRpcClient(InstanceLiveService, transport);
     let retryTimer: ReturnType<typeof setTimeout> | undefined;
@@ -235,7 +235,7 @@ export function LiveFeed({
           className={cn(
             displayedEntries.length > 0
               ? botName === undefined
-                ? "h-80 sm:h-96 xl:h-[26rem]"
+                ? "h-80 sm:h-96 xl:h-104"
                 : "h-64"
               : "h-48",
           )}
@@ -252,7 +252,7 @@ export function LiveFeed({
           {canWatch && visibleEntries.length > 0 ? (
             <ol
               aria-label={t("overview.liveFeed.title")}
-              className="flex flex-col gap-2 px-3 pt-4 font-mono text-xs leading-5 sm:px-4"
+              className="flex flex-col gap-2 px-3 pt-4 font-mono text-xs/5 sm:px-4"
             >
               {visibleEntries.map((entry) => (
                 <li key={entry.id} className={FEED_COLUMNS}>
@@ -307,7 +307,7 @@ export function LiveFeed({
           )}
         </ScrollArea>
         {canWatch && (
-          <div className="px-3 py-3 text-xs text-muted-foreground sm:px-4">
+          <div className="p-3 text-xs text-muted-foreground sm:px-4">
             {t(
               pausedEntries !== null
                 ? "overview.liveFeed.paused"

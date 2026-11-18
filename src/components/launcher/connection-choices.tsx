@@ -74,11 +74,14 @@ function ChoiceButton(props: {
   const { t } = useTranslation("login");
   const Icon = props.icon;
   return (
+    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
     <div role="listitem">
       <Item
         render={
+          // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
           <button
             type="button"
+            // oxlint-disable-next-line jsx-a11y/no-autofocus -- the launcher moves focus to its recommended choice, so keyboard users can start at once
             autoFocus={props.autoFocus}
             disabled={props.disabled}
             onClick={props.onSelect}
@@ -120,6 +123,7 @@ function LinkChoice(props: {
 }) {
   const Icon = props.icon;
   return (
+    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
     <div role="listitem">
       <Item
         variant="outline"

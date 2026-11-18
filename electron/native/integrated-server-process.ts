@@ -1,11 +1,15 @@
 import type { ChildProcessWithoutNullStreams } from "node:child_process";
 import readline from "node:readline";
 import { stripVTControlCharacters } from "node:util";
-import { Cause, Deferred, Effect, Exit, Fiber, type Scope } from "effect";
+import { Cause, Data, Deferred, Effect, Exit, Fiber, type Scope } from "effect";
 import type {
   DesktopIntegratedServerDiagnostics,
   DesktopIntegratedServerLog,
 } from "../../src/lib/desktop-api";
+
+export class IntegratedServerError extends Data.TaggedError(
+  "IntegratedServerError",
+)<{ readonly message: string }> {}
 
 const MAX_LOG_LINES = 2_000;
 const MAX_LOG_CHARACTERS = 1_000_000;
@@ -60,8 +64,8 @@ export function appendIntegratedLog(
 ): string {
   const message = stripVTControlCharacters(rawMessage)
     .trim()
-    .replace(/\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/g, "[redacted token]")
-    .replace(/(\bBearer\s+)\S+/gi, "$1[redacted]")
+    .replaceAll(/\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/g, "[redacted token]")
+    .replaceAll(/(\bBearer\s+)\S+/gi, "$1[redacted]")
     .slice(0, 16_000);
   if (!message) return message;
   state.diagnostics.logs.push({
@@ -92,8 +96,8 @@ function awaitPreparation<A>(promise: Promise<A>): Effect.Effect<A, unknown> {
     );
     return Effect.promise(() =>
       promise.then(
-        () => {},
-        () => {},
+        () => undefined,
+        () => undefined,
       ),
     );
   });
@@ -128,18 +132,17 @@ export function startIntegratedOperation(
         : awaitPreparation(work);
       controller.signal.throwIfAborted();
       if (state.child?.exitCode !== null || state.child.signalCode !== null)
-        return yield* Effect.fail(
-          new Error("SoulFire exited before startup completed"),
-        );
+        return yield* new IntegratedServerError({
+          message: "SoulFire exited before startup completed",
+        });
       state.diagnostics.status = "running";
       return credentials;
     }),
   ).pipe(
-    Effect.onExit((exit) => {
-      if (Exit.isSuccess(exit)) return Effect.void;
-      return Effect.gen(function* () {
+    Effect.onError((cause) =>
+      Effect.gen(function* () {
         if (!controller.signal.aborted) {
-          const error = Cause.squash(exit.cause);
+          const error = Cause.squash(cause);
           state.diagnostics.error =
             error instanceof Error ? error.message : String(error);
           appendIntegratedLog(state, state.diagnostics.error);
@@ -149,8 +152,8 @@ export function startIntegratedOperation(
           ? "stopped"
           : "failed";
         state.diagnostics.exitedAt ??= Date.now();
-      });
-    }),
+      }),
+    ),
   );
   state.startup = Effect.runPromiseExit(startup, { signal: controller.signal })
     .then((exit) => {
@@ -180,8 +183,8 @@ export async function killIntegratedServer(
         Effect.promise(
           () =>
             state.startup?.then(
-              () => {},
-              () => {},
+              () => undefined,
+              () => undefined,
             ) ?? Promise.resolve(),
         ),
       ],
@@ -217,11 +220,10 @@ export function terminateIntegratedProcess(
       child.kill("SIGKILL");
     }
     yield* Effect.sleep(5_000);
-    return yield* Effect.fail(
-      new Error(
+    return yield* new IntegratedServerError({
+      message:
         "Java did not exit after a forced stop. Check the process in your system monitor.",
-      ),
-    );
+    });
   });
   state.termination = Effect.runPromise(
     Effect.raceFirst(closed, terminate),
@@ -292,10 +294,11 @@ export function waitForIntegratedServerReady(
               Deferred.doneUnsafe(
                 readiness,
                 Effect.fail(
-                  new Error(
-                    state.diagnostics.error ??
+                  new IntegratedServerError({
+                    message:
+                      state.diagnostics.error ??
                       "SoulFire stopped before it finished loading",
-                  ),
+                  }),
                 ),
               );
             Deferred.doneUnsafe(closed, Effect.void);

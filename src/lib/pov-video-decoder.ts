@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import { t } from "i18next";
 import type { PovFrame } from "@/generated/soulfire/pov_pb";
 
 // Inter-frame video chunks cannot be discarded independently. Reset to a new keyframe
@@ -125,7 +125,7 @@ export class PovVideoDecoder {
       }
       if (this.closed || generation !== this.generation) return;
       if (!support.supported)
-        throw new Error(i18n.t("instance:bots.pov.decoderUnsupported"));
+        throw new Error(t("instance:bots.pov.decoderUnsupported"));
       this.decoder = new VideoDecoder({
         output: (frame) => {
           try {

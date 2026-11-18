@@ -1,5 +1,15 @@
-import { createContext } from "react";
+import { createContext, use } from "react";
 
-export const CreateInstanceContext = createContext<{
+type CreateInstanceContextValue = {
   openCreateInstance: () => void;
-}>(null as never);
+};
+
+export const CreateInstanceContext =
+  createContext<CreateInstanceContextValue | null>(null);
+
+export function useCreateInstanceContext(): CreateInstanceContextValue {
+  const value = use(CreateInstanceContext);
+  if (value === null)
+    throw new Error("CreateInstanceContext is used outside its provider");
+  return value;
+}

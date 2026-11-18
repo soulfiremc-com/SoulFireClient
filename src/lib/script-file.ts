@@ -49,6 +49,7 @@ export function parseScriptFile(content: string): ImportedScript {
     quotas:
       quotas == null
         ? undefined
-        : fromJson(ScriptQuotasSchema, quotas as JsonValue),
+        : // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the quota object comes from the script file JSON, which fromJson validates
+          fromJson(ScriptQuotasSchema, quotas as JsonValue),
   };
 }

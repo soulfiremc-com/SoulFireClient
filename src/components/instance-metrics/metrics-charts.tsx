@@ -133,13 +133,14 @@ export function BandwidthChart({
                   formatter={(value, name, item) => (
                     <>
                       <div
-                        className="h-2.5 w-2.5 shrink-0 rounded-xs"
+                        className="size-2.5 shrink-0 rounded-xs"
                         style={{ backgroundColor: item.color }}
                       />
                       <div className="flex flex-1 items-center justify-between leading-none">
                         <span className="text-muted-foreground">
-                          {bandwidthConfig[name as keyof typeof bandwidthConfig]
-                            ?.label ?? name}
+                          {Object.entries(bandwidthConfig).find(
+                            ([key]) => key === name,
+                          )?.[1].label ?? name}
                         </span>
                         <span className="font-mono font-medium text-foreground tabular-nums">
                           {formatBytes(typeof value === "number" ? value : 0)}

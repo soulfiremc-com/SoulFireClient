@@ -20,6 +20,7 @@ const meta = {
     listeners.clear();
     const original = window.soulfireElectron;
     // Only the updates bridge is needed to render the prompt.
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story builds its own fixtures and route tree
     window.soulfireElectron = {
       updates: {
         getReady: async () => readyVersion,

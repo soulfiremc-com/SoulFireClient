@@ -39,6 +39,7 @@ import type {
   ScriptHistoryState,
   ScriptValidationState,
 } from "./script-editor-types";
+import { nodeDataString, nodeDataStrings } from "@/lib/script-node-data";
 
 export type { PortType };
 
@@ -70,7 +71,7 @@ function normalizeMultiInputEdgeOrders(nodes: Node[], edges: Edge[]): Edge[] {
   for (const group of groupedEdges.values()) {
     group
       .slice()
-      .sort((a, b) => getMultiInputOrder(a) - getMultiInputOrder(b))
+      .toSorted((a, b) => getMultiInputOrder(a) - getMultiInputOrder(b))
       .forEach((edge, index) => {
         normalizedOrders.set(edge.id, index);
       });
@@ -91,7 +92,7 @@ function normalizeMultiInputEdgeOrders(nodes: Node[], edges: Edge[]): Edge[] {
     return {
       ...edge,
       data: {
-        ...(edge.data as Record<string, unknown> | undefined),
+        ...edge.data,
         order: nextOrder,
       },
     };
@@ -205,6 +206,35 @@ const findClosestEdgeToPoint = (
     }
   }
   return closest;
+};
+
+const turnDirection = (
+  p1: XYPosition,
+  p2: XYPosition,
+  p3: XYPosition,
+): number => {
+  return (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
+};
+
+// Helper function to check if two line segments intersect
+const lineSegmentsIntersect = (
+  p1: XYPosition,
+  p2: XYPosition,
+  p3: XYPosition,
+  p4: XYPosition,
+): boolean => {
+  const d1 = turnDirection(p3, p4, p1);
+  const d2 = turnDirection(p3, p4, p2);
+  const d3 = turnDirection(p1, p2, p3);
+  const d4 = turnDirection(p1, p2, p4);
+
+  if (
+    ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) &&
+    ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))
+  ) {
+    return true;
+  }
+  return false;
 };
 
 export function createScriptEditorSession() {
@@ -321,6 +351,7 @@ export function createScriptEditorSession() {
       });
     });
   };
+
   const actions: ScriptEditorActions = {
     onNodesChange: (changes) => {
       // Only mark as dirty for actual content changes, not internal React Flow events
@@ -469,13 +500,13 @@ export function createScriptEditorSession() {
             ),
           isDirty: true,
         }),
-        `${nodeId}:${Object.keys(data).sort().join(",")}`,
+        `${nodeId}:${Object.keys(data).toSorted().join(",")}`,
       );
     },
     deleteSelected: () => {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       const { nodes: nodesToDelete } = selectedSubgraph(
         nodes,
@@ -546,7 +577,7 @@ export function createScriptEditorSession() {
         return {
           ...edge,
           data: {
-            ...(edge.data as Record<string, unknown> | undefined),
+            ...edge.data,
             order: nextOrder,
           },
         };
@@ -591,7 +622,7 @@ export function createScriptEditorSession() {
       if (!node) return;
 
       // Current hidden sockets
-      const currentHidden = (node.data.hiddenSockets as string[]) || [];
+      const currentHidden = nodeDataStrings(node.data, "hiddenSockets") ?? [];
 
       // Toggle: if any hidden, show all; otherwise we'll hide unconnected
       // Note: We can't know all sockets here without the definition,
@@ -686,7 +717,7 @@ export function createScriptEditorSession() {
       const node = nodes.find((n) => n.id === nodeId);
       if (!node?.data.parentFrameId) return;
 
-      const frameId = node.data.parentFrameId as string;
+      const frameId = nodeDataString(node.data, "parentFrameId");
 
       commit((state) => ({
         ...state,
@@ -700,9 +731,9 @@ export function createScriptEditorSession() {
               ...n,
               data: {
                 ...n.data,
-                containedNodes: (n.data.containedNodes as string[]).filter(
-                  (id) => id !== nodeId,
-                ),
+                containedNodes: (
+                  nodeDataStrings(n.data, "containedNodes") ?? []
+                ).filter((id) => id !== nodeId),
               },
             };
           }
@@ -771,7 +802,7 @@ export function createScriptEditorSession() {
     duplicateSelected: () => {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       const selected = selectedSubgraph(nodes, edges, currentGroupId);
       if (selected.nodes.length === 0) return;
@@ -825,10 +856,10 @@ export function createScriptEditorSession() {
       const byId = new Map(nodes.map((node) => [node.id, node]));
       if (!byId.has(nodeId)) return false;
       const groupPath: string[] = [];
-      let parent = byId.get(nodeId)?.data.parentGroupId as string | undefined;
+      let parent = nodeDataString(byId.get(nodeId)?.data, "parentGroupId");
       while (parent && byId.has(parent) && !groupPath.includes(parent)) {
         groupPath.unshift(parent);
-        parent = byId.get(parent)?.data.parentGroupId as string | undefined;
+        parent = nodeDataString(byId.get(parent)?.data, "parentGroupId");
       }
       batch(() => {
         ui.setState((state) => ({
@@ -849,18 +880,18 @@ export function createScriptEditorSession() {
     },
     getCurrentGroupId: () => {
       const stack = ui.get().groupEditStack;
-      return stack.length > 0 ? stack[stack.length - 1] : null;
+      return stack.at(-1) ?? null;
     },
 
     createGroupFromSelection: () => {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Get selected nodes in current view
       const selectedNodes = nodes.filter((n) => {
         if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
         return nodeGroupId === currentGroupId;
       });
 
@@ -1072,7 +1103,7 @@ export function createScriptEditorSession() {
     ungroupSelected: () => {
       const { nodes, edges } = document.get();
       const { selectedNodeId, groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       const groupNode = nodes.find(
         (n) => n.id === selectedNodeId && n.type === "layout.group",
@@ -1187,7 +1218,7 @@ export function createScriptEditorSession() {
     },
     undo: () => {
       const { past, future } = history.get();
-      const entry = past[past.length - 1];
+      const entry = past.at(-1);
       if (!entry || gestureStart) return;
       const { nodes, edges } = document.get();
       lastCoalesce = null;
@@ -1199,7 +1230,7 @@ export function createScriptEditorSession() {
     },
     redo: () => {
       const { past, future } = history.get();
-      const entry = future[future.length - 1];
+      const entry = future.at(-1);
       if (!entry || gestureStart) return;
       const { nodes, edges } = document.get();
       lastCoalesce = null;
@@ -1323,10 +1354,10 @@ export function createScriptEditorSession() {
     updateDebugValue: (nodeId, value) => {
       const current = execution.get().debugNodeValues;
       const next = new Map(current);
-      const history = next.get(nodeId) ?? [];
+      const nodeHistory = next.get(nodeId) ?? [];
       // Keep last 50 values
       const newHistory = [
-        ...history.slice(-49),
+        ...nodeHistory.slice(-49),
         { value, timestamp: new Date() },
       ];
       next.set(nodeId, newHistory);
@@ -1342,13 +1373,13 @@ export function createScriptEditorSession() {
     selectAll: () => {
       const { nodes } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Select all nodes in current view
       document.setState((state) => ({
         ...state,
         nodes: nodes.map((n) => {
-          const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
           if (nodeGroupId !== currentGroupId) return n;
           return { ...n, selected: true };
         }),
@@ -1364,7 +1395,7 @@ export function createScriptEditorSession() {
     selectShortestPath: (fromNodeId, toNodeId) => {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Build undirected adjacency list (treat edges as bidirectional for path finding)
       const adjacency = new Map<string, string[]>();
@@ -1416,7 +1447,7 @@ export function createScriptEditorSession() {
       document.setState((state) => ({
         ...state,
         nodes: nodes.map((n) => {
-          const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
           if (nodeGroupId !== currentGroupId) return n;
           if (pathNodes.has(n.id)) return { ...n, selected: true };
           return n;
@@ -1426,12 +1457,12 @@ export function createScriptEditorSession() {
     selectLinked: (direction) => {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Get currently selected nodes in current view
       const selectedNodes = nodes.filter((n) => {
         if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
         return nodeGroupId === currentGroupId;
       });
 
@@ -1479,7 +1510,7 @@ export function createScriptEditorSession() {
       document.setState((state) => ({
         ...state,
         nodes: nodes.map((n) => {
-          const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
           if (nodeGroupId !== currentGroupId) return n;
           return { ...n, selected: toSelect.has(n.id) };
         }),
@@ -1488,14 +1519,14 @@ export function createScriptEditorSession() {
     selectSimilar: () => {
       const { nodes } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Get types of selected nodes
       const selectedTypes = new Set(
         nodes
           .filter((n) => {
             if (!n.selected) return false;
-            const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+            const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
             return nodeGroupId === currentGroupId;
           })
           .map((n) => n.type),
@@ -1507,7 +1538,7 @@ export function createScriptEditorSession() {
       document.setState((state) => ({
         ...state,
         nodes: nodes.map((n) => {
-          const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
           if (nodeGroupId !== currentGroupId) return n;
           return { ...n, selected: selectedTypes.has(n.type) };
         }),
@@ -1516,7 +1547,7 @@ export function createScriptEditorSession() {
     getSelectedForClipboard: () => {
       const { nodes, edges, scriptId } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       const selected = selectedSubgraph(nodes, edges, currentGroupId);
       if (selected.nodes.length === 0) return null;
@@ -1532,7 +1563,7 @@ export function createScriptEditorSession() {
 
       if (!clipboardData || clipboardData.nodes.length === 0) return;
 
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       const roots = subgraphRoots(clipboardData.nodes);
       if (roots.length === 0) return;
@@ -1566,12 +1597,12 @@ export function createScriptEditorSession() {
     alignNodes: (direction) => {
       const { nodes } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Get selected nodes in current view
       const selectedNodes = nodes.filter((n) => {
         if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
         return nodeGroupId === currentGroupId;
       });
 
@@ -1651,12 +1682,12 @@ export function createScriptEditorSession() {
     distributeNodes: (direction) => {
       const { nodes } = document.get();
       const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+      const currentGroupId = groupEditStack.at(-1) ?? null;
 
       // Get selected nodes in current view
       const selectedNodes = nodes.filter((n) => {
         if (!n.selected) return false;
-        const nodeGroupId = (n.data.parentGroupId as string) ?? null;
+        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
         return nodeGroupId === currentGroupId;
       });
 
@@ -1665,7 +1696,7 @@ export function createScriptEditorSession() {
       const selectedIds = new Set(selectedNodes.map((n) => n.id));
 
       // Sort by position
-      const sorted = [...selectedNodes].sort((a, b) =>
+      const sorted = [...selectedNodes].toSorted((a, b) =>
         direction === "horizontal"
           ? a.position.x - b.position.x
           : a.position.y - b.position.y,
@@ -1673,7 +1704,8 @@ export function createScriptEditorSession() {
 
       // Calculate spacing
       const first = sorted[0];
-      const last = sorted[sorted.length - 1];
+      const last = sorted.at(-1);
+      if (last === undefined) return;
       const lastPos =
         direction === "horizontal" ? last.position.x : last.position.y;
       const firstPos =
@@ -1766,35 +1798,6 @@ export function createScriptEditorSession() {
     },
     cutEdgesIntersectingLine: (start, end) => {
       const { edges, nodes } = document.get();
-
-      // Helper function to check if two line segments intersect
-      const lineSegmentsIntersect = (
-        p1: XYPosition,
-        p2: XYPosition,
-        p3: XYPosition,
-        p4: XYPosition,
-      ): boolean => {
-        const d1 = direction(p3, p4, p1);
-        const d2 = direction(p3, p4, p2);
-        const d3 = direction(p1, p2, p3);
-        const d4 = direction(p1, p2, p4);
-
-        if (
-          ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) &&
-          ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))
-        ) {
-          return true;
-        }
-        return false;
-      };
-
-      const direction = (
-        p1: XYPosition,
-        p2: XYPosition,
-        p3: XYPosition,
-      ): number => {
-        return (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
-      };
 
       // Get node positions for edge endpoints
       const nodePositions = new Map(nodes.map((n) => [n.id, n.position]));

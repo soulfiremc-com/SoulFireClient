@@ -13,9 +13,12 @@ import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
 import {
   GlobalPermission,
   InstancePermission,
+  SettingsPageEntryScopeType,
   ServerPluginSchema,
   type SettingsDefinition,
   type SettingsPage,
+  StringSetting_InputType,
+  UserRole,
 } from "@/generated/soulfire/common_pb";
 import { InstancePermissionStateSchema } from "@/generated/soulfire/instance_pb";
 import { getEnumEntries } from "@/lib/types.ts";
@@ -28,10 +31,11 @@ export const demoInstancePermissions = getEnumEntries(InstancePermission).map(
     }),
 );
 
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- demo fixtures list only the fields that the demo screens read
 export const demoClientData = {
   id: "00000000-0000-0000-0000-000000000000",
   username: "root",
-  role: 0,
+  role: UserRole.ADMIN,
   email: "root@soulfiremc.com",
   serverPermissions: getEnumEntries(GlobalPermission).map((permission) => ({
     globalPermission: permission.value,
@@ -104,6 +108,7 @@ export const demoInstancePlugins = [
   }),
 ];
 
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- demo fixtures list only the fields that the demo screens read
 export const demoInstanceSettings = [
   {
     id: "bot",
@@ -194,16 +199,17 @@ export const demoInstanceSettings = [
     enabledIdentifier: { namespace: "disconnect-logger", key: "enabled" },
   },
 ] as SettingsPage[];
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- demo fixtures list only the fields that the demo screens read
 export const demoInstanceSettingsDefinitions = [
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "string",
       value: {
         uiName: "Address",
         description: "Address to connect to",
         def: "127.0.0.1:25565",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -214,7 +220,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "address" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "minMax",
       value: {
@@ -240,7 +246,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "join-delay" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "combo",
       value: {
@@ -840,7 +846,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "protocol-version" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -858,7 +864,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "read-timeout" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -876,7 +882,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "write-timeout" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -894,7 +900,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "connect-timeout" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -907,7 +913,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "resolve-srv" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -925,7 +931,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "concurrent-connects" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "bool",
       value: {
@@ -939,7 +945,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "restore-on-reboot" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "bool",
       value: {
@@ -953,7 +959,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "bot", key: "ignore-packet-handling-errors" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -967,7 +973,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "account", key: "shuffle-accounts" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -981,7 +987,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "account", key: "use-proxies-for-account-auth" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -1000,7 +1006,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "account", key: "account-import-concurrency" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -1019,7 +1025,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "proxy", key: "bots-per-proxy" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -1032,7 +1038,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "proxy", key: "shuffle-proxies" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "string",
       value: {
@@ -1040,7 +1046,7 @@ export const demoInstanceSettingsDefinitions = [
         description:
           "What Minecraft server address to use to check if a proxy is working",
         def: "mc.hypixel.net",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1051,7 +1057,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "proxy", key: "proxy-check-address" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -1069,7 +1075,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "proxy", key: "proxy-check-concurrency" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -1088,7 +1094,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "proxy", key: "proxy-check-timeout" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "string",
       value: {
@@ -1096,7 +1102,7 @@ export const demoInstanceSettingsDefinitions = [
         description:
           "API server base URL, can also be changed to other providers",
         def: "https://api.openai.com/v1",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1107,14 +1113,14 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "ai", key: "api-base-url" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "string",
       value: {
         uiName: "API Key",
         description: "API key or none if using a custom provider",
         def: "",
-        inputType: 1,
+        inputType: StringSetting_InputType.PASSWORD,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1125,7 +1131,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "ai", key: "api-key" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -1143,7 +1149,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "ai", key: "api-request-timeout" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -1161,7 +1167,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "ai", key: "api-max-retries" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "bool",
       value: {
@@ -1175,7 +1181,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "allow-breaking-undiggable" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "bool",
       value: {
@@ -1189,7 +1195,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "avoid-diagonal-squeeze" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "bool",
       value: {
@@ -1203,7 +1209,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "avoid-harmful-entities" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -1222,7 +1228,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "max-enemy-penalty" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -1241,7 +1247,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "break-block-penalty" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -1260,7 +1266,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "place-block-penalty" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "int",
       value: {
@@ -1278,7 +1284,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "expire-timeout" },
   },
   {
-    scope: 2,
+    scope: SettingsPageEntryScopeType.BOT,
     type: {
       case: "bool",
       value: {
@@ -1292,7 +1298,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "pathfinding", key: "disable-pruning" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -1305,7 +1311,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "chat-logger", key: "enabled" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -1318,7 +1324,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "chat-logger", key: "log-death-messages" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -1337,7 +1343,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "chat-logger", key: "deduplicate-amount" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "bool",
       value: {
@@ -1350,7 +1356,7 @@ export const demoInstanceSettingsDefinitions = [
     id: { namespace: "disconnect-logger", key: "enabled" },
   },
   {
-    scope: 1,
+    scope: SettingsPageEntryScopeType.INSTANCE,
     type: {
       case: "int",
       value: {
@@ -1370,6 +1376,7 @@ export const demoInstanceSettingsDefinitions = [
   },
 ] as SettingsDefinition[];
 
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- demo fixtures list only the fields that the demo screens read
 export const demoServerSettings = [
   {
     id: "server",
@@ -1406,9 +1413,10 @@ export const demoServerSettings = [
     iconId: "code",
   },
 ] as SettingsPage[];
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- demo fixtures list only the fields that the demo screens read
 export const demoServerSettingsDefinitions = [
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "string",
       value: {
@@ -1416,7 +1424,7 @@ export const demoServerSettingsDefinitions = [
         description:
           "The address clients on the internet use to connect to this SoulFire server.\nUsed for links in E-Mails and WebDAV.",
         def: "http://127.0.0.1:38765",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1427,7 +1435,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "public-address" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1440,7 +1448,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "allow-creating-instances" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1453,7 +1461,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "allow-updating-self-username" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1466,7 +1474,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "allow-updating-self-email" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1479,7 +1487,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "allow-deleting-instances" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1493,7 +1501,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "allow-changing-instance-meta" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "combo",
       value: {
@@ -1515,14 +1523,14 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "email-type" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "string",
       value: {
         uiName: "SMTP Host",
         description: "SMTP server host to use for sending emails.",
         def: "smtp.gmail.com",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1533,7 +1541,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "smtp-host" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "int",
       value: {
@@ -1551,14 +1559,14 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "smtp-port" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "string",
       value: {
         uiName: "SMTP Username",
         description: "Username to use for SMTP authentication.",
         def: "",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1569,14 +1577,14 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "smtp-username" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "string",
       value: {
         uiName: "SMTP Password",
         description: "Password to use for SMTP authentication.",
         def: "",
-        inputType: 1,
+        inputType: StringSetting_InputType.PASSWORD,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1587,7 +1595,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "smtp-password" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "combo",
       value: {
@@ -1620,14 +1628,14 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "smtp-type" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "string",
       value: {
         uiName: "SMTP From",
         description: "Email address to use as sender for emails.",
         def: "soulfire@gmail.com",
-        inputType: 0,
+        inputType: StringSetting_InputType.TEXT,
         placeholder: "",
         minLength: 0,
         maxLength: 2147483647,
@@ -1638,7 +1646,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "server", key: "smtp-from" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1651,7 +1659,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "dev", key: "soulfire-debug" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1664,7 +1672,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "dev", key: "minecraft-debug" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1677,7 +1685,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "dev", key: "netty-debug" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1690,7 +1698,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "dev", key: "grpc-debug" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1703,7 +1711,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "dev", key: "hibernate-debug" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {
@@ -1716,7 +1724,7 @@ export const demoServerSettingsDefinitions = [
     id: { namespace: "dev", key: "via-debug" },
   },
   {
-    scope: 0,
+    scope: SettingsPageEntryScopeType.SERVER,
     type: {
       case: "bool",
       value: {

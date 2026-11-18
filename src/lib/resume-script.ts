@@ -1,7 +1,11 @@
 import { createRpcClient } from "@/lib/rpc";
 import type { Transport } from "@connectrpc/connect";
-import { Effect, Stream } from "effect";
+import { Data, Effect, Stream } from "effect";
 import { ScriptService } from "@/generated/soulfire/script_pb";
+
+class ScriptActivationError extends Data.TaggedError("ScriptActivationError")<{
+  readonly message: string;
+}> {}
 
 export async function resumeScript(
   transport: Transport,
@@ -20,11 +24,10 @@ export async function resumeScript(
           Stream.runCollect,
         );
       if (started.length === 0)
-        return yield* Effect.fail(
-          new Error(
-            "The server ended script activation without confirming it.",
-          ),
-        );
+        return yield* new ScriptActivationError({
+          message: "The server ended script activation without confirming it.",
+        });
+      return undefined;
     }),
   );
 }

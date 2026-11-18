@@ -24,9 +24,11 @@ import {
   type IntegratedServerState,
   startIntegratedOperation,
   waitForIntegratedServerReady,
+  IntegratedServerError,
 } from "./integrated-server-process";
 
 const require = createRequire(__filename);
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- adm-zip is loaded with require so its types are declared here
 const AdmZip = require("adm-zip") as {
   new (path: string): {
     extractAllToAsync: (
@@ -242,7 +244,7 @@ export async function listCustomSoulFireServerJars(
     });
   }
 
-  return [...existingJars].sort((a, b) =>
+  return [...existingJars].toSorted((a, b) =>
     b.importedAt.localeCompare(a.importedAt),
   );
 }
@@ -382,6 +384,7 @@ async function readCustomJarIndex(
   app: App,
 ): Promise<CustomSoulFireServerJarIndex> {
   try {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the jar index is our own file, and each entry is checked by isCustomJar below
     const rawIndex = JSON.parse(
       await readFile(getCustomJarIndexPath(app), "utf8"),
     ) as Partial<CustomSoulFireServerJarIndex>;
@@ -392,7 +395,7 @@ async function readCustomJarIndex(
         : [],
     };
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       return {
         jars: [],
       };
@@ -425,14 +428,10 @@ function isCustomSoulFireServerJar(
     return false;
   }
 
-  const jar = value as Record<string, unknown>;
   return (
-    typeof jar.id === "string" &&
-    typeof jar.importedAt === "string" &&
-    typeof jar.originalName === "string" &&
-    typeof jar.path === "string" &&
-    typeof jar.sha256 === "string" &&
-    typeof jar.size === "number"
+    ["id", "importedAt", "originalName", "path", "sha256"].every(
+      (key) => typeof Reflect.get(value, key) === "string",
+    ) && typeof Reflect.get(value, "size") === "number"
   );
 }
 
@@ -472,13 +471,14 @@ function ensureJvm(
         )
       ) {
         report("JVM detected");
-        return;
+        return undefined;
       }
       const jvmUrl = `https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=${detectArchitecture()}&image_type=jre&os=${detectOs()}&vendor=eclipse`;
       report("Fetching JVM data...");
       const metadata = yield* preparationStep(async () => {
         const response = await fetch(jvmUrl, { signal });
         if (!response.ok) throw new Error("Failed to fetch JVM metadata");
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the Adoptium API response is checked for the fields used below
         return (await response.json()) as Array<{
           binary?: { package?: { checksum?: string; link?: string } };
           release_name?: string;
@@ -489,7 +489,9 @@ function ensureJvm(
       const downloadUrl = release?.binary?.package?.link;
       const releaseName = release?.release_name;
       if (!checksum || !downloadUrl || !releaseName)
-        return yield* Effect.fail(new Error("JVM metadata was incomplete"));
+        return yield* new IntegratedServerError({
+          message: "JVM metadata was incomplete",
+        });
 
       const archiveTmpPath = `${jvmDir}.download`;
       const extractTmpRoot = `${jvmDir}.extract`;
@@ -519,7 +521,9 @@ function ensureJvm(
           tar.x({ cwd: extractTmpRoot, file: archiveTmpPath }),
         );
       } else {
-        return yield* Effect.fail(new Error("Unsupported JVM archive type"));
+        return yield* new IntegratedServerError({
+          message: "Unsupported JVM archive type",
+        });
       }
       const extractedJvmDir = path.join(extractTmpRoot, `${releaseName}-jre`);
       const extractedJavaExec = path.join(
@@ -528,15 +532,16 @@ function ensureJvm(
         getJavaExecutableName(),
       );
       if (!(yield* preparationStep(() => exists(extractedJavaExec))))
-        return yield* Effect.fail(
-          new Error("Extracted JVM is missing the Java executable"),
-        );
+        return yield* new IntegratedServerError({
+          message: "Extracted JVM is missing the Java executable",
+        });
       signal.throwIfAborted();
       yield* preparationStep(() =>
         atomicReplaceDirectory(extractedJvmDir, jvmDir),
       );
       signal.throwIfAborted();
       report("Downloaded JVM");
+      return undefined;
     }),
   );
 }
@@ -603,6 +608,7 @@ async function fetchSoulFireJarChecksum(
     throw new Error("Failed to fetch SoulFire release metadata");
   }
 
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the GitHub release response is checked for the fields used below
   const release = (await response.json()) as {
     assets?: Array<{
       name?: string;

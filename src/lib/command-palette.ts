@@ -316,7 +316,7 @@ export function createPaletteCommands({
   });
 
   // The current project comes first; stable IDs distinguish identically named projects.
-  const ordered = [...instances].sort(
+  const ordered = [...instances].toSorted(
     (a, b) =>
       Number(b.id === current?.id) - Number(a.id === current?.id) ||
       a.friendlyName.localeCompare(b.friendlyName),
@@ -890,7 +890,7 @@ export function searchPaletteCommands(
       };
     })
     .filter((entry) => entry.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .toSorted((a, b) => b.score - a.score)
     .map((entry) => entry.command);
 }
 
@@ -934,11 +934,13 @@ export function matchesPaletteFilter(
       return command.group === "settings";
     case "actions":
       return Boolean(command.action || command.operation);
+    default:
+      return filter satisfies never;
   }
 }
 
 function normalizePaletteText(value: string): string {
-  return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  return value.normalize("NFD").replaceAll(/\p{M}/gu, "").toLowerCase();
 }
 
 /** Split display text into plain and matched spans without interpreting markup. */
@@ -951,8 +953,8 @@ export function paletteMatchSegments(
   let offset = 0;
   for (const character of value) {
     const plain = normalizePaletteText(character);
-    if (!plain && positions.length)
-      positions[positions.length - 1].end = offset + character.length;
+    const previous = positions.at(-1);
+    if (!plain && previous) previous.end = offset + character.length;
     for (const unit of plain) {
       normalized += unit;
       for (let index = 0; index < unit.length; index++)
@@ -984,7 +986,7 @@ export function paletteMatchSegments(
         indexes.push(index);
         from = index + character.length;
       }
-      if (indexes.length === [...token].length)
+      if (indexes.length === Array.from(token).length)
         indexes.forEach((index) => matched.add(index));
     }
   }
@@ -996,7 +998,7 @@ export function paletteMatchSegments(
   }
   const segments: { text: string; matched: boolean }[] = [];
   for (let index = 0; index < value.length; index++) {
-    const last = segments[segments.length - 1];
+    const last = segments.at(-1);
     if (last?.matched === mask[index]) last.text += value[index];
     else segments.push({ text: value[index], matched: mask[index] });
   }

@@ -13,7 +13,7 @@ import type { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfir
 export type MinecraftAccountTypeKey =
   keyof typeof MinecraftAccountProto_AccountTypeProto;
 
-const accountTypeIcons = {
+export const accountTypeIcons = {
   OFFLINE: WifiOffIcon,
   MICROSOFT_JAVA_CREDENTIALS: KeyRoundIcon,
   MICROSOFT_JAVA_DEVICE_CODE: MonitorSmartphoneIcon,

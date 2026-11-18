@@ -253,7 +253,7 @@ export function formatShortcutForPlatform(
     (part) => !MAC_MODIFIERS.some(([name]) => name === part),
   );
   if (keys.length > 1 || modifiers.length + keys.length !== parts.length) {
-    return shortcut.replace(/Ctrl/g, "⌘").replace(/Alt/g, "⌥");
+    return shortcut.replaceAll("Ctrl", "⌘").replaceAll("Alt", "⌥");
   }
 
   return modifiers.map(([, symbol]) => symbol).join("") + (keys[0] ?? "");

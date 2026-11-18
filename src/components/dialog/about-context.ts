@@ -1,5 +1,14 @@
-import { createContext } from "react";
+import { createContext, use } from "react";
 
-export const AboutContext = createContext<{
+type AboutContextValue = {
   openAbout: () => void;
-}>(null as never);
+};
+
+export const AboutContext = createContext<AboutContextValue | null>(null);
+
+export function useAboutContext(): AboutContextValue {
+  const value = use(AboutContext);
+  if (value === null)
+    throw new Error("AboutContext is used outside its provider");
+  return value;
+}

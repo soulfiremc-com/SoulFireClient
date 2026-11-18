@@ -58,7 +58,7 @@ export function createAnalyticsConsent(
     setConsent,
     resetIdentity,
     synchronize,
-    subscribe(listener: () => void) {
+    subscribe: (listener: () => void) => {
       listeners.add(listener);
       return () => {
         listeners.delete(listener);

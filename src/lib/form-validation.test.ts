@@ -1,7 +1,7 @@
 import { beforeAll, expect, test } from "bun:test";
 import { FieldApi, FormApi } from "@tanstack/react-form";
 import { Schema } from "effect";
-import i18n from "i18next";
+import { changeLanguage, init } from "i18next";
 import en from "../../locales/en-US/validation.json";
 import de from "../../locales/de-DE/validation.json";
 import fr from "../../locales/fr-FR/validation.json";
@@ -21,7 +21,7 @@ import { createInstanceNameSchema } from "./instance-name";
 import { createUsernameSchema, userEmailSchema } from "./user-profile";
 
 beforeAll(async () => {
-  await i18n.init({
+  await init({
     lng: "en-US",
     fallbackLng: "en-US",
     load: "currentOnly",
@@ -41,7 +41,7 @@ test("existing validators follow language changes and retain paths for every inv
     ["fr-FR", fr],
     ["en-US", en],
   ] as const) {
-    await i18n.changeLanguage(locale);
+    await changeLanguage(locale);
     expect(
       await validator["~standard"].validate({
         address: "invalid",
@@ -66,7 +66,7 @@ test("existing validators follow language changes and retain paths for every inv
 });
 
 test("generic type errors, missing fields, bounds, and locale fallbacks preserve their wording", async () => {
-  await i18n.changeLanguage("de-DE");
+  await changeLanguage("de-DE");
   expect(
     await toFormSchema(
       Schema.Struct({ name: Schema.String, amount: formNumber }),
@@ -87,11 +87,11 @@ test("generic type errors, missing fields, bounds, and locale fallbacks preserve
       `${"a".repeat(250)}@example.com`,
     ),
   ).toEqual({ issues: [{ path: [], message: de.emailTooLong }] });
-  await i18n.changeLanguage("en-PT");
+  await changeLanguage("en-PT");
   expect(
     await toFormSchema(emailSchema)["~standard"].validate("invalid"),
   ).toEqual({ issues: [{ path: [], message: en.email }] });
-  await i18n.changeLanguage("missing-locale");
+  await changeLanguage("missing-locale");
   expect(
     await toFormSchema(emailSchema)["~standard"].validate("invalid"),
   ).toEqual({ issues: [{ path: [], message: en.email }] });
@@ -134,7 +134,7 @@ test("decoded submissions retain trimming and existing JWT header acceptance", a
 });
 
 test("TanStack Form blocks invalid submissions and retains translated field errors", async () => {
-  await i18n.changeLanguage("de-DE");
+  await changeLanguage("de-DE");
   const submitted: string[] = [];
   const form = new FormApi({
     defaultValues: { email: "invalid" },

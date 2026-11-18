@@ -159,16 +159,16 @@ export function BotDialogForm({
       className="flex min-w-0 flex-col gap-4 wrap-anywhere"
     >
       <p className="font-medium">{dialog.title}</p>
-      {body.map(({ element, id }) => {
+      {body.map(({ element, id: elementId }) => {
         if (element.case === "plainMessage")
           return (
-            <p key={id} className="text-sm whitespace-pre-wrap">
+            <p key={elementId} className="text-sm whitespace-pre-wrap">
               {element.value.contents}
             </p>
           );
         if (element.case === "item")
           return (
-            <p key={id} className="text-sm">
+            <p key={elementId} className="text-sm">
               {element.value.description ?? element.value.itemId} ×{" "}
               {element.value.count}
             </p>
@@ -235,8 +235,8 @@ export function BotDialogForm({
                 {input.case === "singleOption" && (
                   <Select
                     value={value}
-                    onValueChange={(value) => {
-                      if (value !== null) update(input, value);
+                    onValueChange={(selected) => {
+                      if (selected !== null) update(input, selected);
                     }}
                     items={input.value.options.map((option) => ({
                       value: option.id,
@@ -276,9 +276,9 @@ export function BotDialogForm({
         </FieldGroup>
       )}
       <div className="flex flex-wrap gap-2">
-        {actions.map(({ button, index, id }) => (
+        {actions.map(({ button, index, id: actionId }) => (
           <Button
-            key={id}
+            key={actionId}
             type="submit"
             value={index}
             variant="outline"

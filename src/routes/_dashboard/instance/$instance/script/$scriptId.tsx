@@ -139,13 +139,13 @@ const PALETTE_SKELETON_SLOTS = [
 
 function ScriptEditorSkeleton() {
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex size-full flex-col">
       {/* Toolbar skeleton */}
       <div className="flex items-center gap-2 border-b p-2">
         <Skeleton className="h-8 w-32" />
-        <Skeleton className="h-8 w-8" />
-        <Skeleton className="h-8 w-8" />
-        <Skeleton className="h-8 w-8" />
+        <Skeleton className="size-8" />
+        <Skeleton className="size-8" />
+        <Skeleton className="size-8" />
         <div className="flex-1" />
         <Skeleton className="h-8 w-20" />
         <Skeleton className="h-8 w-20" />
@@ -310,7 +310,8 @@ function ScriptEditorContent() {
   }, [scriptId, serverScriptData, syncScriptDocument, resetEditor, editor]);
 
   useEffect(() => {
-    if (scriptId === "new" || !transport || !canViewLogs || isDemo()) return;
+    if (scriptId === "new" || !transport || !canViewLogs || isDemo())
+      return undefined;
     return watchScriptLogs(transport, instanceId, scriptId, addExecutionLogs);
   }, [transport, instanceId, scriptId, addExecutionLogs, canViewLogs]);
 
@@ -318,7 +319,7 @@ function ScriptEditorContent() {
   const setValidationDiagnostics = editor.actions.setValidationDiagnostics;
 
   useEffect(() => {
-    if (!transport || scriptId === "new") return;
+    if (!transport || scriptId === "new") return undefined;
     const controller = new AbortController();
     const validate = async () => {
       try {
@@ -640,7 +641,7 @@ function ScriptEditorContent() {
     addNodeExecutionTime,
     setExecutionStats,
     addExecutionLog,
-    editor.document.setState,
+    editor.document,
     canViewLogs,
     acknowledgePause,
   ]);
@@ -654,8 +655,8 @@ function ScriptEditorContent() {
       executionAbortRef.current = null;
     }
 
-    const currentScriptId = editor.document.get().scriptId;
-    if (scriptId === "new" && !currentScriptId) {
+    const documentScriptId = editor.document.get().scriptId;
+    if (scriptId === "new" && !documentScriptId) {
       editor.actions.setPaused(true);
       setActive(false);
       setActiveNode(null);
@@ -672,7 +673,7 @@ function ScriptEditorContent() {
       await Effect.runPromise(
         client.deactivateScript({
           instanceId,
-          scriptId: currentScriptId ?? scriptId,
+          scriptId: documentScriptId ?? scriptId,
         }),
       );
       setActive(false);
@@ -780,7 +781,7 @@ function ScriptEditorContent() {
   );
 
   useEffect(() => {
-    if (!dragPreview) return;
+    if (!dragPreview) return undefined;
 
     const handlePointerMove = (event: PointerEvent) => {
       if (dragPreviewRef.current) {
@@ -852,7 +853,7 @@ function ScriptEditorContent() {
 
   if (isMobile) {
     return (
-      <div className="flex h-full w-full flex-col">
+      <div className="flex size-full flex-col">
         {/* Compact Toolbar */}
         <ScriptToolbar
           isControlling={isControlling}
@@ -868,11 +869,7 @@ function ScriptEditorContent() {
 
         {/* Full-screen canvas */}
         <div className="relative flex-1">
-          <div
-            role="application"
-            ref={reactFlowWrapper}
-            className="h-full w-full"
-          >
+          <div role="application" ref={reactFlowWrapper} className="size-full">
             <ScriptEditor />
           </div>
 
@@ -937,7 +934,7 @@ function ScriptEditorContent() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex size-full flex-col">
       {/* Toolbar */}
       <ScriptToolbar
         isControlling={isControlling}
@@ -971,7 +968,7 @@ function ScriptEditorContent() {
               <div
                 role="application"
                 ref={reactFlowWrapper}
-                className="h-full w-full"
+                className="size-full"
               >
                 <ScriptEditor />
               </div>

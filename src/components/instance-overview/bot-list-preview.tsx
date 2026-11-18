@@ -41,7 +41,7 @@ export function BotListPreview({
   const statusMap = new Map(data?.bots.map((bot) => [bot.profileId, bot]));
   const accounts = instanceInfo.profile.accounts;
   const preview = [...accounts]
-    .sort(
+    .toSorted(
       (a, b) =>
         Number(statusMap.get(b.profileId)?.isOnline ?? false) -
         Number(statusMap.get(a.profileId)?.isOnline ?? false),
@@ -94,6 +94,7 @@ export function BotListPreview({
                 );
                 const live = bot?.isOnline ? bot.liveState : undefined;
                 return (
+                  // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
                   <div key={account.profileId} role="listitem">
                     <Item
                       size="xs"

@@ -1,5 +1,4 @@
 import {
-  type QueryClient,
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -78,7 +77,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import type { SettingsPage } from "@/generated/soulfire/common_pb";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
@@ -108,6 +106,7 @@ import {
   runAsync,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
+import { requireField } from "@/lib/require-field";
 
 const PROXY_CHECK_SETTING_KEYS = [
   "proxy-check-address",
@@ -199,19 +198,13 @@ function ProxyCheckDialog({
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/proxies")({
   validateSearch: guidedTableValidateSearch,
-  beforeLoad: () =>
+  beforeLoad: ({ context }) =>
     routeChrome({
       getTitle: () => i18n.t("common:pageName.proxySettings"),
-      getIcon: (match) => {
-        const iconContext = match.context as {
-          queryClient: QueryClient;
-          instanceInfoQueryOptions: {
-            queryKey: readonly unknown[];
-          };
-        };
+      getIcon: () => {
         const instanceInfo =
-          iconContext.queryClient.getQueryData<InstanceInfoQueryData>(
-            iconContext.instanceInfoQueryOptions.queryKey,
+          context.queryClient.getQueryData<InstanceInfoQueryData>(
+            context.instanceInfoQueryOptions.queryKey,
           );
         const proxyPage = instanceInfo?.instanceSettings.find(
           (page) => page.id === "proxy",
@@ -246,6 +239,8 @@ function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
       return ProxyProto_Type.SOCKS4;
     case UIProxyType.SOCKS5:
       return ProxyProto_Type.SOCKS5;
+    default:
+      return type satisfies never;
   }
 }
 
@@ -283,6 +278,8 @@ const proxyTypeToIcon = (type: keyof typeof ProxyProto_Type) =>
         return Dice4Icon;
       case "SOCKS5":
         return Dice5Icon;
+      default:
+        return key satisfies never;
     }
   });
 
@@ -845,7 +842,7 @@ function ExtraHeader(props: {
 
 function ProxySettingsSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         <Skeleton className="h-10 w-full" />
         <Skeleton className="h-10 w-full" />
@@ -933,14 +930,13 @@ function Content() {
   });
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         <InstanceSettingsPageComponent
-          data={
-            instanceInfo.instanceSettings.find(
-              (s) => s.id === "proxy",
-            ) as SettingsPage
-          }
+          data={requireField(
+            instanceInfo.instanceSettings.find((s) => s.id === "proxy"),
+            "the proxy settings page",
+          )}
           disabledIds={PAGE_HIDDEN_SETTINGS.proxy}
           focusSetting={
             focusNamespace && focusKey

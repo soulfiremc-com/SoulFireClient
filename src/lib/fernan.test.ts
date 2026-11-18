@@ -117,7 +117,7 @@ test("Fernan purchase requests include the documented SOULFIRE referral code", a
 test("Fernan omits a removed referral code", async () => {
   const { fetcher, requests } = mock();
   await purchaseFernanAccounts("key", product, 1, 100, "", undefined, fetcher);
-  assert.deepEqual(JSON.parse(requests[requests.length - 1].body!), {
+  assert.deepEqual(JSON.parse(requests.at(-1)?.body ?? ""), {
     product_id: 1,
     amount: 1,
   });

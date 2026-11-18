@@ -58,7 +58,7 @@ import {
   StartupProgress,
 } from "@/components/launcher/startup-status.tsx";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
-import { CookieConsentContext } from "@/components/providers/cookie-consent-context";
+import { useCookieConsentContext } from "@/components/providers/cookie-consent-context";
 import { isPostHogConfigured } from "@/lib/posthog";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import {
@@ -149,6 +149,7 @@ import {
   isAuthenticated,
   setAuthentication,
 } from "@/lib/web-rpc.ts";
+import { isOneOf } from "@/lib/is-one-of";
 
 const LOCAL_STORAGE_AUTO_START_INTEGRATED = "auto-start-integrated-server";
 
@@ -244,8 +245,8 @@ const DEFAULT_MOBILE_JVM_ARGS = [
 const DEFAULT_MOBILE_JVM_ARGS_STRING = DEFAULT_MOBILE_JVM_ARGS.join(" ");
 
 function Index() {
-  const { openCookiePreferences } = use(CookieConsentContext);
-  const { t, i18n } = useTranslation("login");
+  const { openCookiePreferences } = useCookieConsentContext();
+  const { t, i18n: activeI18n } = useTranslation("login");
   const navigate = useNavigate();
   const searchParams: Record<string, string> = Route.useSearch();
   const systemInfo = use(SystemInfoContext);
@@ -355,7 +356,7 @@ function Index() {
     <div className="relative flex min-h-0 flex-1 flex-col">
       <svg
         aria-hidden="true"
-        className="absolute top-0 right-0 bottom-0 left-0 z-[-1] h-dvh w-dvw fill-muted-foreground/5"
+        className="absolute inset-0 z-[-1] h-dvh w-dvw fill-muted-foreground/5"
       >
         <title>Decorative background pattern</title>
         <defs>
@@ -476,10 +477,12 @@ function Index() {
                       />
                     }
                   >
-                    {languageEmoji(i18n.resolvedLanguage ?? i18n.language)}{" "}
+                    {languageEmoji(
+                      activeI18n.resolvedLanguage ?? activeI18n.language,
+                    )}{" "}
                     {getLanguageName(
-                      i18n.resolvedLanguage ?? i18n.language,
-                      i18n.resolvedLanguage ?? i18n.language,
+                      activeI18n.resolvedLanguage ?? activeI18n.language,
+                      activeI18n.resolvedLanguage ?? activeI18n.language,
                     )}
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-96">
@@ -489,16 +492,18 @@ function Index() {
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuRadioGroup
-                        value={i18n.resolvedLanguage ?? i18n.language}
+                        value={
+                          activeI18n.resolvedLanguage ?? activeI18n.language
+                        }
                         onValueChange={(value) => {
                           if (value) {
-                            void i18n.changeLanguage(value);
+                            void activeI18n.changeLanguage(value);
                           }
                         }}
                         className="grid grid-cols-1 md:grid-cols-2"
                       >
-                        {(i18n.options.supportedLngs
-                          ? i18n.options.supportedLngs
+                        {(activeI18n.options.supportedLngs
+                          ? activeI18n.options.supportedLngs
                           : []
                         )
                           .filter((lang) => lang !== "cimode")
@@ -658,6 +663,8 @@ function IntegratedMenu({
           redirectWithCredentials={redirectWithCredentials}
         />
       );
+    default:
+      return integratedState satisfies never;
   }
 }
 
@@ -943,7 +950,7 @@ function IntegratedConfigureMenu({
               {t("integrated.advanced.title")}
               <ChevronRightIcon
                 data-icon="inline-end"
-                className="group-data-[panel-open]/advanced:rotate-90"
+                className="group-data-panel-open/advanced:rotate-90"
               />
             </CollapsibleTrigger>
             <CollapsibleContent>
@@ -1211,7 +1218,7 @@ function ProcessDetails({ defaultOpen }: { defaultOpen?: boolean }) {
         {t("integrated.details")}
         <ChevronRightIcon
           data-icon="inline-end"
-          className="group-data-[panel-open]/details:rotate-90"
+          className="group-data-panel-open/details:rotate-90"
         />
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-3">
@@ -1485,6 +1492,7 @@ function IntegratedMobileMenu({
                     />
                   ),
                   copy: (
+                    // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- Trans fills this button with its translated text
                     <button
                       type="button"
                       className="font-bold text-info"
@@ -1566,7 +1574,8 @@ function IntegratedMobileMenu({
   );
 }
 
-type DedicatedType = "email" | "token";
+const DEDICATED_TYPES = ["email", "token"] as const;
+type DedicatedType = (typeof DEDICATED_TYPES)[number];
 
 function DedicatedTypeToggle(props: {
   value: DedicatedType;
@@ -1578,8 +1587,8 @@ function DedicatedTypeToggle(props: {
     <ToggleGroup
       value={[props.value]}
       onValueChange={(value) => {
-        const nextValue = value[0] as DedicatedType | undefined;
-        if (nextValue && nextValue !== props.value) {
+        const nextValue = value[0];
+        if (isOneOf(nextValue, DEDICATED_TYPES) && nextValue !== props.value) {
           props.onValueChange(nextValue);
         }
       }}
@@ -2027,6 +2036,7 @@ function EmailCodeMenu(props: {
             props.authFlowData.address,
             response.next.value.token,
           );
+          return undefined;
         } else if (response.next.case === "failure") {
           setInputDisabled(false);
           setCodeValue("");
@@ -2105,7 +2115,7 @@ function EmailCodeMenu(props: {
           {t("emailCode.back")}
         </Button>
         {inputDisabled && (
-          <LoaderCircleIcon className="h-10 w-10 animate-spin text-muted-foreground" />
+          <LoaderCircleIcon className="size-10 animate-spin text-muted-foreground" />
         )}
       </CardFooter>
     </Card>

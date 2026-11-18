@@ -147,6 +147,7 @@ export function useDataTable<TData extends RowData>(
 
   const columnIds = React.useMemo(() => {
     return new Set(
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
       columns.map((column) => column.id).filter(Boolean) as string[],
     );
   }, [columns]);
@@ -162,8 +163,10 @@ export function useDataTable<TData extends RowData>(
     (updaterOrValue: Updater<SortingState>) => {
       if (typeof updaterOrValue === "function") {
         const newSorting = updaterOrValue(sorting);
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
         void setSorting(newSorting as ExtendedColumnSort<TData>[]);
       } else {
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
         void setSorting(updaterOrValue as ExtendedColumnSort<TData>[]);
       }
     },
@@ -252,7 +255,7 @@ export function useDataTable<TData extends RowData>(
   );
 
   React.useEffect(() => {
-    if (enableAdvancedFilter) return;
+    if (enableAdvancedFilter) return undefined;
 
     let previous = table.atoms.columnFilters.get();
     const subscription = table.atoms.columnFilters.subscribe((next) => {
@@ -261,6 +264,7 @@ export function useDataTable<TData extends RowData>(
       const filterUpdates: Record<string, string | string[] | null> = {};
       for (const filter of next) {
         if (filterableColumns.some((column) => column.id === filter.id)) {
+          // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
           filterUpdates[filter.id] = filter.value as string | string[];
         }
       }
@@ -297,6 +301,7 @@ export function useDataTable<TData extends RowData>(
     () => ({
       // `table.state` stays empty because the host does not subscribe.
       // Read state with `table.Subscribe` or the table getters instead.
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
       table: table as unknown as ReactTable<typeof dataTableFeatures, TData>,
       shallow,
       debounceMs,

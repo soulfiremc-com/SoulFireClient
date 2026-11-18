@@ -19,6 +19,7 @@ function useCallbackRef<T extends (...args: never[]) => unknown>(
 
   // https://github.com/facebook/react/issues/19240
   return React.useMemo(
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the wrapper forwards all arguments to the stored callback of type T
     () => ((...args) => callbackRef.current?.(...args)) as T,
     [],
   );

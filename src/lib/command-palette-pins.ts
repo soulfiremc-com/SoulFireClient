@@ -15,7 +15,8 @@ export function palettePinKey(
 
 function isPin(value: unknown): value is PalettePin {
   if (typeof value !== "object" || value === null) return false;
-  const { id, projectId } = value as Record<string, unknown>;
+  const id: unknown = Reflect.get(value, "id");
+  const projectId: unknown = Reflect.get(value, "projectId");
   return (
     typeof id === "string" &&
     id.length > 0 &&

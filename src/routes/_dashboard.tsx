@@ -47,7 +47,7 @@ export const Route = createFileRoute("/_dashboard")({
     if (isAuthenticated()) {
       const instanceListQueryOptions = queryOptions({
         queryKey: ["instance-list"],
-        queryFn: async (props): Promise<InstanceListResponse> => {
+        queryFn: async (context): Promise<InstanceListResponse> => {
           const transport = createTransport();
           if (transport === null) {
             return create(InstanceListResponseSchema, {
@@ -72,7 +72,7 @@ export const Route = createFileRoute("/_dashboard")({
             instanceService.listInstances(
               {},
               {
-                signal: props.signal,
+                signal: context.signal,
               },
             ),
           );
@@ -88,7 +88,7 @@ export const Route = createFileRoute("/_dashboard")({
       });
       const clientDataQueryOptions = queryOptions({
         queryKey: ["client-data"],
-        queryFn: async (props): Promise<ClientDataResponse> => {
+        queryFn: async (context): Promise<ClientDataResponse> => {
           const transport = createTransport();
           if (transport === null) {
             return demoClientData;
@@ -99,7 +99,7 @@ export const Route = createFileRoute("/_dashboard")({
             clientService.getClientData(
               {},
               {
-                signal: props.signal,
+                signal: context.signal,
               },
             ),
           );
@@ -170,7 +170,7 @@ export const Route = createFileRoute("/_dashboard")({
     } catch (e) {
       return {
         success: false,
-        connectionError: e as object,
+        connectionError: e instanceof Error ? e : new Error(String(e)),
       };
     }
   },
@@ -268,7 +268,7 @@ function DashboardLayout() {
         {isDesktopApp() && <InstanceSwitchKeybinds />}
       </Suspense>
       {isImpersonating() && (
-        <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-30 overflow-hidden border-4 border-sidebar-primary" />
+        <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden border-4 border-sidebar-primary" />
       )}
       <CreateInstanceProvider>
         <CommandPaletteProvider>

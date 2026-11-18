@@ -52,6 +52,9 @@ test("saving an explicit pause edit retains a newer pause draft during acknowled
   assert.equal(editor.document.get().isDirty, true);
 });
 
+let acknowledge = () => {};
+let received = () => {};
+
 test("a second save updates the assigned ID before canonical navigation finishes", async () => {
   const session = getScriptEditorRouteSession(undefined, "instance", "new");
   const editor = session.editor;
@@ -61,11 +64,9 @@ test("a second save updates the assigned ID before canonical navigation finishes
     { x: 10, y: 20 },
     { value: 1 },
   );
-  let acknowledge = () => {};
   const acknowledgement = new Promise<void>((resolve) => {
     acknowledge = resolve;
   });
-  let received = () => {};
   const requestReceived = new Promise<void>((resolve) => {
     received = resolve;
   });

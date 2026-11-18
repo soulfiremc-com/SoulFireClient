@@ -184,6 +184,7 @@ export function instantiateScriptTemplate(
   createId: () => string = () => crypto.randomUUID(),
 ): { nodes: Node[]; edges: Edge[] } {
   const ids = new Map(template.nodes.map((node) => [node.id, createId()]));
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- every template node ID is in the map that the loop above built
   const newId = (id: string) => ids.get(id) as string;
   return {
     nodes: template.nodes.map((node) => ({

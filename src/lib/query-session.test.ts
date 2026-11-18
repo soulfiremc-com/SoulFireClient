@@ -102,6 +102,7 @@ test("credential changes cancel old queries and distinguish local and remote ses
 
       client.setQueryData(["retained"], 3);
       storageEvent("theme");
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       storageEvent(null, {} as Storage);
       assert.equal(client.getQueryData(["retained"]), 3);
       const key = storage.key(0)!;

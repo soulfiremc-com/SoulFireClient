@@ -102,6 +102,7 @@ export function BotChatBox(props: {
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
+        {/* oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- FieldDescription renders a p, and the status role announces this update */}
         <FieldDescription role="status">
           {props.disabledReason ??
             (transport === null

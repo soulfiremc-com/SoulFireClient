@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import i18n from "i18next";
+import { t as translate } from "i18next";
 import { useTranslation } from "react-i18next";
 import {
   Area,
@@ -67,10 +67,7 @@ export function ServerMetricsSummaryCards({
   data: GetServerMetricsResponse;
 }) {
   const { t } = useTranslation("admin");
-  const latest =
-    data.snapshots.length > 0
-      ? data.snapshots[data.snapshots.length - 1]
-      : null;
+  const latest = data.snapshots.length > 0 ? data.snapshots.at(-1) : null;
 
   const items = [
     {
@@ -118,13 +115,13 @@ export function ServerMetricsSummaryCards({
 const cpuConfig = {
   process: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.process");
+      return translate("admin:overview.serverMetrics.legend.process");
     },
     color: "var(--chart-1)",
   },
   system: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.system");
+      return translate("admin:overview.serverMetrics.legend.system");
     },
     color: "var(--chart-2)",
   },
@@ -218,19 +215,19 @@ export function CpuUsageChart({
 const memoryConfig = {
   used: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.used");
+      return translate("admin:overview.serverMetrics.legend.used");
     },
     color: "var(--chart-1)",
   },
   committed: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.committed");
+      return translate("admin:overview.serverMetrics.legend.committed");
     },
     color: "var(--chart-3)",
   },
   max: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.max");
+      return translate("admin:overview.serverMetrics.legend.max");
     },
     color: "var(--chart-4)",
   },
@@ -294,13 +291,14 @@ export function MemoryUsageChart({
                   formatter={(value, name, item) => (
                     <>
                       <div
-                        className="h-2.5 w-2.5 shrink-0 rounded-xs"
+                        className="size-2.5 shrink-0 rounded-xs"
                         style={{ backgroundColor: item.color }}
                       />
                       <div className="flex flex-1 items-center justify-between leading-none">
                         <span className="text-muted-foreground">
-                          {memoryConfig[name as keyof typeof memoryConfig]
-                            ?.label ?? name}
+                          {Object.entries(memoryConfig).find(
+                            ([key]) => key === name,
+                          )?.[1].label ?? name}
                         </span>
                         <span className="font-mono font-medium text-foreground tabular-nums">
                           {formatMB(
@@ -354,13 +352,13 @@ export function MemoryUsageChart({
 const threadConfig = {
   total: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.total");
+      return translate("admin:overview.serverMetrics.legend.total");
     },
     color: "var(--chart-1)",
   },
   daemon: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.daemon");
+      return translate("admin:overview.serverMetrics.legend.daemon");
     },
     color: "var(--chart-2)",
   },
@@ -439,13 +437,13 @@ export function ThreadCountChart({
 const botsConfig = {
   online: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.online");
+      return translate("admin:overview.serverMetrics.legend.online");
     },
     color: "var(--chart-1)",
   },
   total: {
     get label() {
-      return i18n.t("admin:overview.serverMetrics.legend.total");
+      return translate("admin:overview.serverMetrics.legend.total");
     },
     color: "var(--chart-3)",
   },

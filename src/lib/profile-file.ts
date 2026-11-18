@@ -26,6 +26,7 @@ export function serializeProfileFile(profile: ProfileRoot): string {
 }
 
 export function parseProfileFile(content: string): ProfileRoot {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- profile files are user-provided JSON that convertFromServerProto and fromJson validate when the profile is applied
   const profile = JSON.parse(content) as ProfileRoot;
   // JSON.parse returned fresh objects, so the accounts can be decoded in place.
   for (const account of profile.accounts) {
@@ -34,6 +35,7 @@ export function parseProfileFile(content: string): ProfileRoot {
       case: "onlineSimpleJavaData",
       value: fromJson(
         MinecraftAccountProto_OnlineSimpleJavaDataSchema,
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- profile files are user-provided JSON that convertFromServerProto and fromJson validate when the profile is applied
         account.accountData.value as unknown as JsonValue,
         { ignoreUnknownFields: true },
       ),

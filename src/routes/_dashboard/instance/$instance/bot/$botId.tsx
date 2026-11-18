@@ -189,6 +189,7 @@ import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 import { demoBotInfo } from "@/demo-data.ts";
+import { isOneOf } from "@/lib/is-one-of";
 
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/bot/$botId",
@@ -257,7 +258,7 @@ function BotDetailSkeleton() {
     <div className="container flex flex-col gap-4">
       {/* Header with avatar */}
       <div className="flex items-start gap-4">
-        <Skeleton className="size-16 rounded" />
+        <Skeleton className="size-16 rounded-sm" />
         <div className="flex flex-col gap-2">
           <Skeleton className="h-6 w-32" />
           <div className="flex gap-2">
@@ -349,7 +350,8 @@ function BotDetail() {
   );
 }
 
-type BotTab = "overview" | "inventory" | "controls" | "terminal";
+const BOT_TABS = ["overview", "inventory", "controls", "terminal"] as const;
+type BotTab = (typeof BOT_TABS)[number];
 
 function getGameModeLabel(
   gameMode: GameMode,
@@ -478,8 +480,8 @@ function BotDetailContent({
           <ToggleGroup
             value={[activeTab]}
             onValueChange={(value) => {
-              const nextTab = value[0] as BotTab | undefined;
-              if (nextTab) {
+              const nextTab = value[0];
+              if (isOneOf(nextTab, BOT_TABS)) {
                 setActiveTab(nextTab);
               }
             }}
@@ -558,7 +560,7 @@ function TabPanelSkeleton({ className }: { className?: string }) {
 function BotDetailHeaderSkeleton() {
   return (
     <div className="flex flex-wrap items-center gap-4 rounded-lg border p-4">
-      <Skeleton className="h-16 w-12 rounded" />
+      <Skeleton className="h-16 w-12 rounded-sm" />
       <div className="flex flex-col gap-2">
         <Skeleton className="h-6 w-32" />
         <div className="flex gap-2">
@@ -585,12 +587,12 @@ function BotDetailHeader({
   typeIcon: ReturnType<typeof accountTypeToIcon>;
   onContextMenu: (event: React.MouseEvent, data: null) => void;
 }) {
-  const { i18n, t } = useTranslation("instance");
+  const { i18n: activeI18n, t } = useTranslation("instance");
   const { botInfoQueryOptions } = Route.useRouteContext();
   const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
   const isOnline = !!botInfo.liveState;
   const liveState = botInfo.liveState;
-  const typeLabel = translateAccountType(i18n, typeKey);
+  const typeLabel = translateAccountType(activeI18n, typeKey);
 
   return (
     <Item
@@ -837,6 +839,7 @@ function BotStateNotice({
   );
   if (isOnline && dialogData?.dialog) {
     return (
+      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Alert renders a div, and the status role announces this update
       <Alert role="status">
         <MonitorIcon />
         <AlertTitle>{t("bots.notice.dialogOpen.title")}</AlertTitle>
@@ -868,7 +871,7 @@ function BotStateNotice({
           <div className="flex flex-col gap-2">
             <span>{t(`fleet.kind.${kind}.description`)}</span>
             {lastError && (
-              <span className="font-mono text-xs break-words select-text">
+              <span className="font-mono text-xs wrap-break-word select-text">
                 {lastError}
               </span>
             )}
@@ -889,9 +892,9 @@ function BotStateNotice({
     );
   }
   return (
-    <p className="text-sm text-muted-foreground" role="status">
+    <output className="block text-sm text-muted-foreground">
       {t(`bots.notice.${state}`)}
-    </p>
+    </output>
   );
 }
 
@@ -1054,7 +1057,7 @@ function OverviewTab({
             >
               <ChevronRightIcon
                 data-icon="inline-start"
-                className="group-data-[panel-open]/details:rotate-90"
+                className="group-data-panel-open/details:rotate-90"
               />
               {t("bots.detailsToggle")}
             </CollapsibleTrigger>
@@ -1159,7 +1162,7 @@ function BotTerminalPanel({
 
 function formatItemId(itemId: string): string {
   // Remove minecraft: prefix and format nicely
-  return itemId.replace("minecraft:", "").replace(/_/g, " ");
+  return itemId.replace("minecraft:", "").replaceAll("_", " ");
 }
 
 function inventoryItemImageSrc(item: InventorySlot): string | undefined {
@@ -1313,7 +1316,7 @@ function InventorySlotDisplay({
           className="size-full object-contain p-0.5 [image-rendering:pixelated]"
         />
       ) : (
-        <span className="max-w-full truncate px-0.5 text-center text-3xs leading-tight">
+        <span className="max-w-full truncate px-0.5 text-center text-3xs/tight">
           {formatItemId(item.itemId).slice(0, 6)}
         </span>
       )}
@@ -1818,13 +1821,13 @@ function BotInventoryPanel({
         </div>
       ) : (
         <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <p className="text-muted-foreground" role="status">
+          <output className="block text-muted-foreground">
             {!isOnline
               ? t("bots.inventoryPanel.offline")
               : demo
                 ? t("bots.inventoryPanel.demo")
                 : t("bots.inventoryPanel.waiting")}
-          </p>
+          </output>
         </div>
       )}
     </div>
@@ -2016,7 +2019,7 @@ function ContainerTextInputField({
 
   useEffect(() => {
     const element = fieldRef.current;
-    if (!element) return;
+    if (!element) return undefined;
     const beforeInput = (event: InputEvent) => handleBeforeInput(event);
     element.addEventListener("beforeinput", beforeInput);
     return () => element.removeEventListener("beforeinput", beforeInput);
@@ -2142,7 +2145,7 @@ function BookPagesPanel({
       </div>
       <div className="rounded-lg border p-3">
         {/* Page content */}
-        <div className="mb-2 min-h-[100px] rounded bg-muted/30 p-2 font-mono text-xs whitespace-pre-wrap select-text">
+        <div className="mb-2 min-h-[100px] rounded-sm bg-muted/30 p-2 font-mono text-xs whitespace-pre-wrap select-text">
           {currentPageContent?.content ||
             t("bots.inventoryPanel.bookPages.emptyPage")}
         </div>
@@ -2197,6 +2200,7 @@ function BotActionsPanel({
   const pendingButtons = useMutationState({
     filters: { mutationKey, status: "pending" },
     select: (mutation) =>
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the click mutation always receives a BotMouseClickRequest
       (mutation.state.variables as BotMouseClickRequest | undefined)?.button,
   });
 
@@ -2743,7 +2747,7 @@ function BotDialogPanel({
                 <span className="text-sm text-muted-foreground">
                   {t("bots.dialogPanel.dialogId")}:
                 </span>
-                <code className="rounded bg-muted px-2 py-1 text-xs select-text">
+                <code className="rounded-sm bg-muted px-2 py-1 text-xs select-text">
                   {dialog.id}
                 </code>
               </div>
@@ -2776,9 +2780,23 @@ function BotDialogPanel({
 
 function formatDimension(dimension: string): string {
   // Format dimension ID like "minecraft:overworld" to "Overworld"
-  const name = dimension.replace("minecraft:", "").replace(/_/g, " ");
+  const name = dimension.replace("minecraft:", "").replaceAll("_", " ");
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
+
+// Convert yaw to compass direction
+const getCompassDirection = (yaw: number) => {
+  // Normalize yaw to 0-360
+  const normalizedYaw = ((yaw % 360) + 360) % 360;
+  if (normalizedYaw >= 337.5 || normalizedYaw < 22.5) return "S";
+  if (normalizedYaw >= 22.5 && normalizedYaw < 67.5) return "SW";
+  if (normalizedYaw >= 67.5 && normalizedYaw < 112.5) return "W";
+  if (normalizedYaw >= 112.5 && normalizedYaw < 157.5) return "NW";
+  if (normalizedYaw >= 157.5 && normalizedYaw < 202.5) return "N";
+  if (normalizedYaw >= 202.5 && normalizedYaw < 247.5) return "NE";
+  if (normalizedYaw >= 247.5 && normalizedYaw < 292.5) return "E";
+  return "SE";
+};
 
 function BotVisualPanel({
   liveState,
@@ -2788,20 +2806,6 @@ function BotVisualPanel({
   isOnline: boolean;
 }) {
   const { t } = useTranslation("instance");
-
-  // Convert yaw to compass direction
-  const getCompassDirection = (yaw: number) => {
-    // Normalize yaw to 0-360
-    const normalizedYaw = ((yaw % 360) + 360) % 360;
-    if (normalizedYaw >= 337.5 || normalizedYaw < 22.5) return "S";
-    if (normalizedYaw >= 22.5 && normalizedYaw < 67.5) return "SW";
-    if (normalizedYaw >= 67.5 && normalizedYaw < 112.5) return "W";
-    if (normalizedYaw >= 112.5 && normalizedYaw < 157.5) return "NW";
-    if (normalizedYaw >= 157.5 && normalizedYaw < 202.5) return "N";
-    if (normalizedYaw >= 202.5 && normalizedYaw < 247.5) return "NE";
-    if (normalizedYaw >= 247.5 && normalizedYaw < 292.5) return "E";
-    return "SE";
-  };
 
   if (!isOnline || !liveState) {
     return (
@@ -2856,11 +2860,11 @@ function BotVisualPanel({
                   transform: `translateX(-50%) rotate(${liveState.yRot + 180}deg)`,
                 }}
               >
-                <div className="h-full w-full rounded-full bg-primary" />
+                <div className="size-full rounded-full bg-primary" />
                 <div className="absolute -top-1 left-1/2 size-0 -translate-x-1/2 border-4 border-transparent border-b-primary" />
               </div>
               {/* Center dot */}
-              <div className="absolute top-1/2 left-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary" />
+              <div className="absolute top-1/2 left-1/2 size-3 -translate-1/2 rounded-full bg-primary" />
             </div>
             <div className="text-center">
               <p className="text-lg font-bold select-text">
@@ -2881,7 +2885,7 @@ function BotVisualPanel({
               <div className="relative h-24 w-4 overflow-hidden rounded-full bg-muted/30">
                 {/* Pitch indicator */}
                 <div
-                  className="absolute right-0 left-0 h-2 rounded-full bg-primary transition-all"
+                  className="absolute inset-x-0 h-2 rounded-full bg-primary transition-all"
                   style={{
                     // Pitch ranges from -90 (up) to 90 (down)
                     // Map to percentage: -90 -> 0%, 0 -> 50%, 90 -> 100%

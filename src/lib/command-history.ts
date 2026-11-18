@@ -25,7 +25,7 @@ export function appendCommandHistory(
   history: string[],
   command: string,
 ): string[] {
-  return history[history.length - 1] === command
+  return history.at(-1) === command
     ? history
     : [...history.slice(-(HISTORY_LIMIT - 1)), command];
 }
@@ -52,9 +52,10 @@ export function navigateCommandHistory(
   value: string,
   direction: -1 | 1,
 ): { position: CommandHistoryPosition; value: string } | undefined {
-  if (history.length === 0 || (direction > 0 && position.index === -1)) return;
+  if (history.length === 0 || (direction > 0 && position.index === -1))
+    return undefined;
   const draft = position.index === -1 ? value : position.draft;
-  if (direction < 0 && position.index === 0) return;
+  if (direction < 0 && position.index === 0) return undefined;
   const index =
     position.index === -1 ? history.length - 1 : position.index + direction;
   return index >= history.length

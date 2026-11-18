@@ -93,7 +93,7 @@ export function QuickAddMenu() {
 
   useLayoutEffect(() => {
     const menu = menuRef.current;
-    if (!quickAddMenu || !menu || isMobile) return;
+    if (!quickAddMenu || !menu || isMobile) return undefined;
     const reposition = () => {
       const bounds = menu.getBoundingClientRect();
       setMenuPosition({
@@ -184,12 +184,12 @@ export function QuickAddMenu() {
       node?: NodeDefinition;
     }[] = [];
     for (const category of categories) {
-      const nodes = nodesByCategory[category];
-      if (!nodes || nodes.length === 0) continue;
+      const categoryNodes = nodesByCategory[category];
+      if (!categoryNodes || categoryNodes.length === 0) continue;
 
       list.push({ type: "category", id: category });
       if (expandedCategory === category || search.trim()) {
-        for (const node of nodes) {
+        for (const node of categoryNodes) {
           list.push({ type: "node", id: node.type, node });
         }
       }
@@ -316,6 +316,7 @@ export function QuickAddMenu() {
   return (
     <>
       {/* Backdrop - closes menu on click, prevents native context menu on right-click */}
+      {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- the backdrop only catches pointer clicks; Escape closes the menu from the keyboard */}
       <div
         className="fixed inset-0 z-50"
         onClick={closeQuickAddMenu}
@@ -326,6 +327,7 @@ export function QuickAddMenu() {
       />
 
       {/* Menu */}
+      {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the menu container handles keyboard navigation for its search field and results */}
       <div
         ref={menuRef}
         className={cn(
@@ -342,6 +344,7 @@ export function QuickAddMenu() {
               }
         }
         onKeyDown={handleKeyDown}
+        // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- a positioned popover menu; a native dialog element brings its own layout and focus handling
         role="dialog"
         aria-label={t("scripts.editor.quickAdd.menuLabel")}
       >
@@ -363,7 +366,7 @@ export function QuickAddMenu() {
             type="button"
             onClick={closeQuickAddMenu}
             aria-label={t("common:uiDialog.close")}
-            className="rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-sm p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <XIcon className="size-4" />
           </button>
@@ -401,7 +404,7 @@ export function QuickAddMenu() {
                       type="button"
                       title={info.description}
                       className={cn(
-                        "flex w-full items-center gap-2 rounded px-2 py-1.5 text-sm font-medium",
+                        "flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm font-medium",
                         index === selectedIndex
                           ? "bg-accent text-accent-foreground"
                           : "hover:bg-accent/50",
@@ -438,7 +441,7 @@ export function QuickAddMenu() {
                       type="button"
                       title={item.node.description}
                       className={cn(
-                        "flex w-full items-center gap-2 rounded px-2 py-1.5 pl-6 text-sm",
+                        "flex w-full items-center gap-2 rounded-sm px-2 py-1.5 pl-6 text-sm",
                         index === selectedIndex
                           ? "bg-accent text-accent-foreground"
                           : "hover:bg-accent/50",
@@ -446,7 +449,7 @@ export function QuickAddMenu() {
                       onClick={() => item.node && selectNode(item.node)}
                     >
                       <span
-                        className="h-2 w-2 rounded-full"
+                        className="size-2 rounded-full"
                         style={{
                           backgroundColor: item.node.color ?? "#6b7280",
                         }}

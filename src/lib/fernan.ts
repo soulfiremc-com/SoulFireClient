@@ -51,7 +51,12 @@ const purchaseSchema = Schema.Struct({
 export type FernanProduct = (typeof stockSchema)["Type"];
 export type FernanCooldown = (typeof cooldownSchema)["Type"];
 export type FernanPurchase = (typeof purchaseSchema)["Type"];
-export type FernanImportFormat = "access-token" | "cookies" | "credentials";
+export const FERNAN_IMPORT_FORMATS = [
+  "access-token",
+  "cookies",
+  "credentials",
+] as const;
+export type FernanImportFormat = (typeof FERNAN_IMPORT_FORMATS)[number];
 export type FernanAccount = {
   balance: number;
   stock: FernanProduct[];

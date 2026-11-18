@@ -74,9 +74,10 @@ test("wire fixture preserves UTF-8 and matches the Java encoder contract", () =>
   assert.deepEqual(parsed, metadata);
 });
 
+const raw = (payload: unknown, version = "1") =>
+  `\x1b]777;soulfire;${version};${Buffer.from(JSON.stringify(payload)).toString("base64url").replaceAll("=", "")}\x1b\\`;
+
 test("unknown, malformed, oversized and unsafe markers end active metadata", () => {
-  const raw = (payload: unknown, version = "1") =>
-    `\x1b]777;soulfire;${version};${Buffer.from(JSON.stringify(payload)).toString("base64url").replace(/=/g, "")}\x1b\\`;
   const invalid = [
     "\x1b]777;soulfire;1;%%%\x1b\\",
     raw(metadata, "2"),
@@ -169,10 +170,10 @@ test("span count is bounded without dropping visible text", () => {
 });
 
 test("renderer-independent spans require both provenance flags and retain Unicode text", () => {
-  const message =
+  const rendered =
     "before " + marker(metadata) + "A界é\nline" + marker(null) + " after";
   const spans = parseTerminalText({
-    message,
+    message: rendered,
     personal: true,
     terminalInteractions: true,
   });
@@ -192,7 +193,7 @@ test("renderer-independent spans require both provenance flags and retain Unicod
     [true, false],
   ]) {
     const plain = parseTerminalText({
-      message,
+      message: rendered,
       personal,
       terminalInteractions,
     });

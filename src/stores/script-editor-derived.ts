@@ -45,7 +45,7 @@ export function createEditorDerivedStores(
   const edges = createStore(() => document.get().edges);
   const groupId = createStore(() => {
     const stack = ui.get().groupEditStack;
-    return stack[stack.length - 1];
+    return stack.at(-1);
   });
   const visibleNodes = createStore(() => {
     const currentGroup = groupId.get();

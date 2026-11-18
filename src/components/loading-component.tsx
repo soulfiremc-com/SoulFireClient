@@ -2,20 +2,20 @@ import * as React from "react";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { generateN } from "@/lib/generate-n.ts";
 
+// Random width between 75 and 114 percent of the maximum width.
+function randomSkeletonWidth() {
+  return `${Math.floor(Math.random() * 40) + 75}%`;
+}
+
 function LoadingSkeleton() {
-  // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 75}%`;
-  }, []);
+  const [width] = React.useState(randomSkeletonWidth);
 
   return (
     <Skeleton
       className="h-6 max-w-(--skeleton-width)"
-      style={
-        {
-          "--skeleton-width": width,
-        } as React.CSSProperties
-      }
+      style={{
+        "--skeleton-width": width,
+      }}
     />
   );
 }

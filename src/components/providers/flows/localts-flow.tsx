@@ -47,11 +47,12 @@ import {
   localtsOrderAccounts,
   localtsPrice,
   purchaseLocaltsAccounts,
-  type LocaltsImportFormat,
   type LocaltsOrder,
   type LocaltsProduct,
 } from "@/lib/localts.ts";
 import { ProviderApiError } from "@/lib/provider-request.ts";
+import { isOneOf } from "@/lib/is-one-of";
+import { LOCALTS_IMPORT_FORMATS } from "@/lib/localts";
 
 type Stage = "connect" | "choose" | "review" | "import";
 const skeletonSlots = ["first", "second", "third"];
@@ -60,7 +61,7 @@ function bestDiscount(product: LocaltsProduct) {
   return Object.entries(product.quantityDiscounts ?? {})
     .map(([quantity, percent]) => ({ quantity: Number(quantity), percent }))
     .filter((tier) => tier.percent > 0)
-    .sort((a, b) => a.quantity - b.quantity);
+    .toSorted((a, b) => a.quantity - b.quantity);
 }
 
 function orderReady(order: LocaltsOrder | null) {
@@ -302,12 +303,10 @@ export function LocaltsFlow({
               <Button
                 disabled={busy || !canWrite || !importFormat}
                 onClick={() => {
-                  if (!order || !importFormat) return;
+                  if (!order || !isOneOf(importFormat, LOCALTS_IMPORT_FORMATS))
+                    return;
                   try {
-                    const accounts = localtsOrderAccounts(
-                      order,
-                      importFormat as LocaltsImportFormat,
-                    );
+                    const accounts = localtsOrderAccounts(order, importFormat);
                     onImport(accounts.payload, accounts.credentialType);
                     onClose();
                   } catch {

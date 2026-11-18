@@ -137,8 +137,7 @@ export const PrivateToken: Story = {
       canvas.getByRole("button", { name: "Copy agent prompt" }),
     );
     await waitFor(async () => {
-      const prompt =
-        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0];
+      const prompt = writeClipboard.mock.calls.at(-1)?.[0];
       await expect(prompt).toContain("SOULFIRE_TOKEN");
       await expect(prompt).not.toContain(token);
     });
@@ -186,9 +185,9 @@ export const EmptyInstance: Story = {
       canvas.getByRole("button", { name: "Copy agent prompt" }),
     );
     await waitFor(() =>
-      expect(
-        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0],
-      ).toContain("Ask me for a bot profile ID"),
+      expect(writeClipboard.mock.calls.at(-1)?.[0]).toContain(
+        "Ask me for a bot profile ID",
+      ),
     );
     await userEvent.click(
       canvas.getByRole("button", { name: "Open accounts" }),
@@ -251,9 +250,9 @@ export const Demo: Story = {
       canvas.getByRole("button", { name: "Copy agent prompt" }),
     );
     await waitFor(() =>
-      expect(
-        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0],
-      ).toContain("All target values are samples"),
+      expect(writeClipboard.mock.calls.at(-1)?.[0]).toContain(
+        "All target values are samples",
+      ),
     );
   },
 };
@@ -316,7 +315,7 @@ export const DarkServer: Story = {
     const tokens = code.querySelectorAll<HTMLElement>("[data-syntax-token]");
     await expect(tokens.length).toBeGreaterThan(1);
     await expect(
-      new Set(Array.from(tokens, (token) => getComputedStyle(token).color))
+      new Set(Array.from(tokens, (element) => getComputedStyle(element).color))
         .size,
     ).toBeGreaterThan(1);
   },
@@ -376,9 +375,9 @@ export const InstanceSelection: Story = {
       canvas.getByRole("button", { name: "Copy agent prompt" }),
     );
     await waitFor(() =>
-      expect(
-        writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0],
-      ).toContain("44444444-4444-4444-8444-444444444444"),
+      expect(writeClipboard.mock.calls.at(-1)?.[0]).toContain(
+        "44444444-4444-4444-8444-444444444444",
+      ),
     );
   },
 };

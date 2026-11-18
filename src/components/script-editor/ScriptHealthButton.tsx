@@ -84,6 +84,7 @@ export function ScriptHealthButton() {
           <ItemGroup className="max-h-72 gap-1 overflow-y-auto">
             {diagnostics.map((item) => (
               <div
+                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
                 role="listitem"
                 key={`${item.nodeId}:${item.edgeId}:${item.severity}:${item.message}`}
               >
@@ -91,6 +92,7 @@ export function ScriptHealthButton() {
                   size="xs"
                   className="text-left hover:bg-muted"
                   render={
+                    // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
                     <button
                       type="button"
                       onClick={() => {

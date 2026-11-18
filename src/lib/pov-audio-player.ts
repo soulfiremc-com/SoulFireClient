@@ -6,6 +6,8 @@ const CONFIG: AudioDecoderConfig = {
   numberOfChannels: 2,
 };
 
+let rejectAbort: (reason: unknown) => void = () => {};
+
 // Keep a short jitter buffer and discard stale sound after stalls or reconnects.
 export class PovAudioPlayer {
   private readonly decoder: AudioDecoder;
@@ -31,7 +33,6 @@ export class PovAudioPlayer {
       latencyHint: "interactive",
       sampleRate: 48_000,
     });
-    let rejectAbort: (reason: unknown) => void = () => {};
     const aborted = new Promise<never>((_resolve, reject) => {
       rejectAbort = reject;
     });
@@ -176,6 +177,7 @@ export class PovAudioPlayer {
       source.buffer = buffer;
       source.connect(this.gain);
       this.sources.add(source);
+      // oxlint-disable-next-line unicorn/prefer-add-event-listener -- each buffer source has exactly one ended handler
       source.onended = () => {
         this.sources.delete(source);
         source.disconnect();

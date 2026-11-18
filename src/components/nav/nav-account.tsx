@@ -24,13 +24,13 @@ import { useTheme } from "next-themes";
 import { Suspense, use, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { AboutContext } from "@/components/dialog/about-context.ts";
-import { CookieConsentContext } from "@/components/providers/cookie-consent-context";
+import { useAboutContext } from "@/components/dialog/about-context.ts";
+import { useCookieConsentContext } from "@/components/providers/cookie-consent-context";
 import { ExternalLink } from "@/components/external-link.tsx";
 import { IntegratedServerDiagnosticsDialog } from "@/components/IntegratedServerDiagnostics";
 import CastMenuEntry from "@/components/nav/cast-menu-entry.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
-import { TerminalThemeContext } from "@/components/providers/terminal-theme-context.tsx";
+import { useTerminalThemeContext } from "@/components/providers/terminal-theme-context.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,7 +91,7 @@ function SidebarAccountButton() {
         email={clientInfo.email}
         className="size-8"
       />
-      <div className="grid flex-1 text-left text-sm leading-tight">
+      <div className="grid flex-1 text-left text-sm/tight">
         <span className="truncate font-semibold">{clientInfo.username}</span>
         <span className="truncate text-xs">{clientInfo.email}</span>
       </div>
@@ -110,8 +110,8 @@ function SidebarAccountButtonSkeleton() {
         />
       }
     >
-      <Skeleton className="relative flex size-8 h-10 w-10 shrink-0 overflow-hidden rounded-lg" />
-      <div className="grid flex-1 gap-2 text-left text-sm leading-tight">
+      <Skeleton className="relative flex size-8 shrink-0 overflow-hidden rounded-lg" />
+      <div className="grid flex-1 gap-2 text-left text-sm/tight">
         <Skeleton className="h-3 w-32" />
         <Skeleton className="h-3 w-24" />
       </div>
@@ -146,7 +146,7 @@ function DropdownAccountHeaderSkeleton() {
   return (
     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
       <Skeleton className="size-8 rounded-lg" />
-      <div className="grid flex-1 gap-2 text-left text-sm leading-tight">
+      <div className="grid flex-1 gap-2 text-left text-sm/tight">
         <Skeleton className="h-3 w-32" />
         <Skeleton className="h-3 w-24" />
       </div>
@@ -158,12 +158,23 @@ export function NavAccount() {
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const { t, i18n } = useTranslation("common");
   const navigate = useNavigate();
-  const terminalTheme = use(TerminalThemeContext);
-  const { openAbout } = use(AboutContext);
-  const { openCookiePreferences } = use(CookieConsentContext);
+  const terminalTheme = useTerminalThemeContext();
+  const { openAbout } = useAboutContext();
+  const { openCookiePreferences } = useCookieConsentContext();
   const systemInfo = use(SystemInfoContext);
   const { theme, setTheme } = useTheme();
   const { isMobile } = useSidebar();
+
+  const disconnect = async () => {
+    if (isDesktopApp()) {
+      await desktop.integratedServer.kill();
+    }
+    logOut();
+    await navigate({
+      to: "/",
+      replace: true,
+    });
+  };
 
   return (
     <SidebarMenu>
@@ -387,16 +398,6 @@ export function NavAccount() {
               )}
               <DropdownMenuItem
                 onClick={() => {
-                  const disconnect = async () => {
-                    if (isDesktopApp()) {
-                      await desktop.integratedServer.kill();
-                    }
-                    logOut();
-                    await navigate({
-                      to: "/",
-                      replace: true,
-                    });
-                  };
                   toast.promise(disconnect(), {
                     loading: t("userSidebar.logOutToast.loading"),
                     success: t("userSidebar.logOutToast.success"),

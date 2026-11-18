@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, rename, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import chokidar, { type FSWatcher } from "chokidar";
+import { watch, type FSWatcher } from "chokidar";
 
 function event(watcher: FSWatcher, name: string, target: string) {
   return new Promise<void>((resolve, reject) => {
@@ -25,7 +25,7 @@ test("desktop file watching reports create, edit, rename and deletion and releas
   const directory = await mkdtemp(path.join(tmpdir(), "sf-watch-"));
   const original = path.join(directory, "original.txt");
   await writeFile(original, "initial");
-  const watcher = chokidar.watch(directory, {
+  const watcher = watch(directory, {
     depth: 0,
     ignoreInitial: true,
     persistent: true,
@@ -71,11 +71,11 @@ test("recursive desktop watching includes nested files while depth zero excludes
   const directory = await mkdtemp(path.join(tmpdir(), "sf-watch-"));
   const nested = path.join(directory, "nested");
   await mkdir(nested);
-  const recursive = chokidar.watch(directory, {
+  const recursive = watch(directory, {
     ignoreInitial: true,
     persistent: true,
   });
-  const shallow = chokidar.watch(directory, {
+  const shallow = watch(directory, {
     depth: 0,
     ignoreInitial: true,
     persistent: true,

@@ -38,12 +38,14 @@ export function ScriptTemplatePicker(props: {
       {props.templates.map((template) => {
         const Icon = TEMPLATE_ICONS[template.id];
         return (
+          // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
           <div role="listitem" key={template.id}>
             <Item
               variant="outline"
               size="sm"
               className="items-start text-left hover:bg-muted"
               render={
+                // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
                 <button
                   type="button"
                   disabled={props.disabled}

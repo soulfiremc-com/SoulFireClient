@@ -53,6 +53,7 @@ interface DataTableRowProps<TData extends RowData> {
 
 // Rows only re-render when their data, cells, or selection change, so
 // toggling one checkbox does not re-render every cell on the page.
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- React.memo drops the generic type parameter of the row component
 const DataTableRow = React.memo(function DataTableRow<TData extends RowData>({
   row,
   cells,

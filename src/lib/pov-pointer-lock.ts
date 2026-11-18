@@ -44,11 +44,7 @@ export function isPointerLockCooldown(error: unknown) {
 // Retry without raw input only when the platform explicitly lacks support.
 async function request(canvas: PointerLockTarget) {
   try {
-    await (
-      canvas.requestPointerLock as (options: {
-        unadjustedMovement: boolean;
-      }) => Promise<void>
-    )({ unadjustedMovement: true });
+    await canvas.requestPointerLock({ unadjustedMovement: true });
   } catch (error) {
     if (errorName(error) !== "NotSupportedError") throw error;
     await canvas.requestPointerLock();

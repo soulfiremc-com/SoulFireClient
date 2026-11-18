@@ -30,6 +30,7 @@ function InteractiveText({
       <TooltipTrigger
         id={id}
         render={
+          // oxlint-disable-next-line jsx-a11y/control-has-associated-label, jsx-a11y/no-noninteractive-tabindex -- the component renders its children inside this button, which gives it its text label
           metadata.click ? <button type="button" /> : <span tabIndex={0} />
         }
         variant="inline"

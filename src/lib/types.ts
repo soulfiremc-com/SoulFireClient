@@ -1,5 +1,4 @@
 import { create, type JsonValue } from "@bufbuild/protobuf";
-import type { Value } from "@bufbuild/protobuf/wkt";
 import {
   type MinecraftAccountProto,
   type MinecraftAccountProto_AccountTypeProto,
@@ -22,7 +21,8 @@ import type {
 } from "@/generated/soulfire/server_pb";
 import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
 
-export type SFServerType = "integrated" | "dedicated";
+export const SF_SERVER_TYPES = ["integrated", "dedicated"] as const;
+export type SFServerType = (typeof SF_SERVER_TYPES)[number];
 
 export type BaseSettings = {
   settings: Record<string, Record<string, JsonValue>>;
@@ -33,10 +33,12 @@ export type ProfileRoot = BaseSettings & {
   proxies: ProfileProxy[];
 };
 
-export type GenerateAccountsMode =
-  | "IGNORE_EXISTING"
-  | "REPLACE_EXISTING"
-  | "REPLACE_ALL";
+export const GENERATE_ACCOUNTS_MODES = [
+  "IGNORE_EXISTING",
+  "REPLACE_EXISTING",
+  "REPLACE_ALL",
+] as const;
+export type GenerateAccountsMode = (typeof GENERATE_ACCOUNTS_MODES)[number];
 
 export type ServerInfoQueryData = ServerInfoResponse & {
   profile: BaseSettings;
@@ -51,6 +53,7 @@ export function getEnumKeyByValue<E extends object>(
   enumObj: E,
   value: E[keyof E],
 ): keyof E {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- generic enum helpers cannot express that Object.entries keys and values belong to the enum type
   return Object.entries(enumObj).find(([, v]) => v === value)?.[0] as keyof E;
 }
 
@@ -63,7 +66,9 @@ export function getEnumEntries<E extends object>(
   return Object.entries(enumObj)
     .filter(([key]) => Number.isNaN(parseInt(key, 10)))
     .map(([key, value]) => ({
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- generic enum helpers cannot express that Object.entries keys and values belong to the enum type
       key: key as keyof E,
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- generic enum helpers cannot express that Object.entries keys and values belong to the enum type
       value: value as E[keyof E],
     }));
 }
@@ -140,7 +145,7 @@ export function convertFromInstanceProto(data?: InstanceConfig): ProfileRoot {
   for (const namespace of data.settings) {
     const entries: Record<string, JsonValue> = {};
     for (const entry of namespace.entries) {
-      entries[entry.key] = valueToJson(entry.value as Value);
+      entries[entry.key] = valueToJson(entry.value);
     }
     settings[namespace.namespace] = entries;
   }
@@ -157,7 +162,7 @@ export function convertFromServerProto(data: ServerConfig): BaseSettings {
   for (const namespace of data.settings) {
     const entries: Record<string, JsonValue> = {};
     for (const entry of namespace.entries) {
-      entries[entry.key] = valueToJson(entry.value as Value);
+      entries[entry.key] = valueToJson(entry.value);
     }
     settings[namespace.namespace] = entries;
   }

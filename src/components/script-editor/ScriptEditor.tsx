@@ -89,7 +89,8 @@ export function ScriptEditor() {
   const { nodeTypes } = useNodeTypes();
 
   const nodes = useSelector(editor.document, (state) => state.nodes);
-  const _edges = useSelector(editor.document, (state) => state.edges);
+  // Re-render when edges change; React Flow reads them from the store.
+  useSelector(editor.document, (state) => state.edges);
   const onNodesChange = editor.actions.onNodesChange;
   const onEdgesChange = editor.actions.onEdgesChange;
   const onConnect = editor.actions.onConnect;
@@ -116,7 +117,7 @@ export function ScriptEditor() {
     editor.ui,
     (state) => state.groupEditStack,
   );
-  const currentGroupId = groupEditStack[groupEditStack.length - 1] ?? null;
+  const currentGroupId = groupEditStack.at(-1) ?? null;
   const canvasRevision = useSelector(
     editor.ui,
     (state) => state.canvasRevision,
@@ -888,10 +889,12 @@ export function ScriptEditor() {
   );
 
   return (
+    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- the canvas container takes focus to receive editor shortcuts
     <div
       ref={containerRef}
+      // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the canvas container takes focus to receive editor shortcuts
       tabIndex={0}
-      className="relative h-full w-full outline-none"
+      className="relative size-full outline-none"
       onKeyDown={handleKeyDown}
       onCopy={handleCopy}
       onPaste={handlePaste}

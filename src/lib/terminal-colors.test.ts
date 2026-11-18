@@ -22,6 +22,7 @@ test("readableTerminalColor keeps colors that already pass", () => {
 test("readableTerminalColor lifts every Catppuccin ANSI color to AA", () => {
   for (const [name, { colors }] of flavorEntries) {
     for (const key of ["red", "green", "yellow", "blue", "pink", "teal"]) {
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       const original = colors[key as keyof typeof colors].hex;
       const result = readableTerminalColor(
         original,

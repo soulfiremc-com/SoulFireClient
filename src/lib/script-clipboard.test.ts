@@ -19,6 +19,20 @@ const graph = {
   sourceScriptId: null,
 };
 
+const paste = (text: string) => {
+  let consumed = false;
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
+  const data = handleNativePaste({
+    clipboardData: { getData: () => text },
+    preventDefault: () => {
+      consumed = true;
+    },
+  } as unknown as ClipboardEvent);
+  return { data, consumed };
+};
+const encoded = (data: unknown) =>
+  `SOULFIRE_SCRIPT_CLIPBOARD:${JSON.stringify(data)}`;
+
 test("clipboard reads validate both supplied text and the stored fallback", async () => {
   const previous = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
   let stored = JSON.stringify(graph);
@@ -26,23 +40,11 @@ test("clipboard reads validate both supplied text and the stored fallback", asyn
     configurable: true,
     value: { getItem: () => stored },
   });
-  const paste = (text: string) => {
-    let consumed = false;
-    const data = handleNativePaste({
-      clipboardData: { getData: () => text },
-      preventDefault: () => {
-        consumed = true;
-      },
-    } as unknown as ClipboardEvent);
-    return { data, consumed };
-  };
   try {
     const invalid = {
       ...graph,
       nodes: [{ ...graph.nodes[0], data: { hiddenSockets: 42 } }],
     };
-    const encoded = (data: unknown) =>
-      `SOULFIRE_SCRIPT_CLIPBOARD:${JSON.stringify(data)}`;
     assert.deepEqual(paste(encoded(graph)), { data: graph, consumed: true });
     for (const text of [
       encoded(invalid),

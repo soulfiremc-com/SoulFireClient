@@ -4,12 +4,13 @@ import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
 import { ScriptService } from "@/generated/soulfire/script_pb";
 import { resumeScript } from "./resume-script";
 
+let acknowledge = () => {};
+let received = () => {};
+
 test("resume waits for acknowledgement and releases the monitoring stream", async () => {
-  let acknowledge = () => {};
   const acknowledgement = new Promise<void>((resolve) => {
     acknowledge = resolve;
   });
-  let received = () => {};
   const requestReceived = new Promise<void>((resolve) => {
     received = resolve;
   });
@@ -48,6 +49,7 @@ test("resume waits for acknowledgement and releases the monitoring stream", asyn
   );
   const resumed = resumeScript(transport, "instance", "script").then(() => {
     completed = true;
+    return undefined;
   });
   await requestReceived;
   assert.equal(completed, false);

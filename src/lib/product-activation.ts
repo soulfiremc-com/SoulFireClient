@@ -188,6 +188,7 @@ export function watchProductActivation(
     ) {
       tracker.observe(
         userId,
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the bot-status query always stores a BotListResponse
         (event.query.state.data as BotListResponse | undefined)?.bots ?? [],
       );
     }

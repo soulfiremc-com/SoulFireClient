@@ -114,7 +114,7 @@ export function localtsPrice(product: LocaltsProduct, amount: number): number {
     throw new ProviderApiError("limit");
   const tier = Object.entries(product.quantityDiscounts ?? {})
     .filter(([quantity]) => Number(quantity) <= amount)
-    .sort(([a], [b]) => Number(b) - Number(a))[0];
+    .toSorted(([a], [b]) => Number(b) - Number(a))[0];
   return Number(
     (product.priceInCredits * amount * (1 - (tier?.[1] ?? 0) / 100)).toFixed(8),
   );
@@ -209,11 +209,13 @@ export function fetchLocaltsOrders(
   );
 }
 
-export type LocaltsImportFormat =
-  | "cookies"
-  | "credentials"
-  | "refresh-token"
-  | "access-token";
+export const LOCALTS_IMPORT_FORMATS = [
+  "cookies",
+  "credentials",
+  "refresh-token",
+  "access-token",
+] as const;
+export type LocaltsImportFormat = (typeof LOCALTS_IMPORT_FORMATS)[number];
 
 export function localtsOrderAccounts(
   order: LocaltsOrder,

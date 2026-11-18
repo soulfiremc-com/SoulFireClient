@@ -32,6 +32,7 @@ export const dataTableFeatures = tableFeatures({
   rowPaginationFeature,
   rowSelectionFeature,
   rowSortingFeature,
+  // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- tsc needs the type carrier because TableColumnMeta comes from a module augmentation
   columnMeta: {} as TableColumnMeta,
   facetedMinMaxValues: createFacetedMinMaxValues(),
   facetedRowModel: createFacetedRowModel(),
@@ -43,5 +44,6 @@ export const dataTableFeatures = tableFeatures({
   filterFns,
   // oxlint-disable-next-line typescript/no-deprecated -- columns resolve built-in sort functions by name, which needs the full registry
   sortFns,
+  // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- tsc needs the type carrier because TableQueryMeta comes from a module augmentation
   tableMeta: {} as TableQueryMeta,
 });

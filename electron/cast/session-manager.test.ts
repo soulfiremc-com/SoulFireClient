@@ -79,7 +79,7 @@ async function fixture(
   }[] = [];
   let feedsClosed = 0;
   let metricsError: CastError | undefined;
-  const settingsGate = Effect.runSync(Deferred.make<void>());
+  const settingsGate = Deferred.makeUnsafe<void>();
   let deferSettings = options.deferSettings;
   const frame: MetricsFrame = {
     snapshots: Array.from({ length: options.history ?? 1 }, (_, i) =>
@@ -99,22 +99,22 @@ async function fixture(
       Effect.gen(function* () {
         const entry = yield* Effect.acquireRelease(
           Effect.sync(() => {
-            const entry = {
+            const record = {
               messages: [] as SenderMessage[],
               relaunch,
               closed: false,
               fail: undefined as ((error: CastError) => void) | undefined,
             };
-            channels.push(entry);
-            return entry;
+            channels.push(record);
+            return record;
           }),
-          (entry) =>
+          (candidate) =>
             Effect.sync(() => {
-              entry.closed = true;
+              candidate.closed = true;
             }),
         );
         if (options.reject)
-          return yield* Effect.fail(castError("incompatible receiver", false));
+          return yield* castError("incompatible receiver", false);
         if (options.hang) return yield* Effect.never;
         return {
           sessionId: crypto.randomUUID(),
@@ -136,9 +136,7 @@ async function fixture(
                     sessionId: message.sessionId,
                     visibility: "visible" as const,
                     lastSequence: 0,
-                    metricsAt:
-                      frame.snapshots[frame.snapshots.length - 1]?.timestamp ??
-                      0,
+                    metricsAt: frame.snapshots.at(-1)?.timestamp ?? 0,
                     receivedAt: 1,
                   }
                 : {
@@ -207,9 +205,7 @@ test("a session sends settings and bounded history, then releases all resources 
   expect(f.manager.getState().devices[0].visibility).toBe("visible");
   await f.manager.stop(device.id);
   expect(f.channels[0].closed).toBe(true);
-  expect(f.channels[0].messages[f.channels[0].messages.length - 1]?.type).toBe(
-    "RELEASE",
-  );
+  expect(f.channels[0].messages.at(-1)?.type).toBe("RELEASE");
   expect(f.feedsClosed()).toBe(1);
   expect(f.manager.getState().devices[0].phase).toBe("idle");
 });
@@ -233,7 +229,7 @@ test("unchanged snapshots are not sent twice; settings changes are delivered", a
   const settings = f.channels[0].messages.filter(
     (message) => message.type === "SETTINGS",
   );
-  expect(settings[settings.length - 1]?.settings.scale).toBe("large");
+  expect(settings.at(-1)?.settings.scale).toBe("large");
 });
 
 test("replacing a session closes the old scope and ignores its late failure", async () => {

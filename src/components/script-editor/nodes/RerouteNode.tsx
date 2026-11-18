@@ -29,7 +29,7 @@ function RerouteNodeComponent({ data, selected }: RerouteNodeProps) {
       {/* The reroute dot */}
       <div
         className={cn(
-          "h-4 w-4 rounded-full transition-all",
+          "size-4 rounded-full transition-all",
           selected &&
             "ring-2 ring-primary ring-offset-1 ring-offset-background",
         )}
@@ -44,7 +44,7 @@ function RerouteNodeComponent({ data, selected }: RerouteNodeProps) {
         type="target"
         position={Position.Left}
         id="in"
-        className="!absolute !top-0 !left-0 !h-full !w-full !transform-none !border-none !bg-transparent"
+        className="absolute! top-0! left-0! size-full! transform-none! border-none! bg-transparent!"
       />
 
       {/* Output handle (right) */}
@@ -52,7 +52,7 @@ function RerouteNodeComponent({ data, selected }: RerouteNodeProps) {
         type="source"
         position={Position.Right}
         id="out"
-        className="!absolute !top-0 !left-0 !h-full !w-full !transform-none !border-none !bg-transparent"
+        className="absolute! top-0! left-0! size-full! transform-none! border-none! bg-transparent!"
       />
 
       {/* Optional label */}

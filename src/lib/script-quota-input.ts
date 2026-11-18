@@ -41,6 +41,7 @@ export function parseScriptQuotaInputs(
   | { valid: false; fields: ScriptQuotaField[] } {
   const fields: ScriptQuotaField[] = [];
   const values: Partial<Record<ScriptQuotaField, bigint>> = {};
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Object.keys returns the keys of SCRIPT_QUOTA_LIMITS, which are the quota fields
   for (const field of Object.keys(SCRIPT_QUOTA_LIMITS) as ScriptQuotaField[]) {
     const input = inputs[field].trim();
     if (!input) continue;

@@ -82,6 +82,8 @@ export function mergeTerminalLines(
     : bounded;
 }
 
+let stop: () => void = () => {};
+
 export function createTerminalLogSession(
   client: LogClient | null,
   scope: LogScope,
@@ -100,7 +102,6 @@ export function createTerminalLogSession(
   );
   let consumers = 0;
   let generation = 0;
-  let stop: () => void = () => {};
 
   function start(): () => void {
     if (!client) return () => {};

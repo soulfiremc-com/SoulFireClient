@@ -9,6 +9,7 @@ test("paced presentation keeps only the newest frame and closes replaced frames"
   let closes = 0;
   let clones = 0;
   let draws = 0;
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const frame = {
     clone() {
       clones++;

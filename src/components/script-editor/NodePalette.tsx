@@ -63,26 +63,20 @@ function DraggableNodeItem({
   // A drop on the canvas places the node there. A click or Enter without a
   // drop adds it at the canvas center.
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
       title={node.description}
       onPointerDown={(e) => {
         if (e.button !== 0) return;
         onDragStart(node.type, e.clientX, e.clientY);
       }}
       onClick={() => onAdd(node.type)}
-      onKeyDown={(e) => {
-        if (e.key !== "Enter" && e.key !== " ") return;
-        e.preventDefault();
-        onAdd(node.type);
-      }}
       className="group flex cursor-grab items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted active:cursor-grabbing"
     >
       <GripVerticalIcon className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
       <DynamicIcon name={node.icon} className="size-4 shrink-0" />
       <span className="truncate">{nodeLabel}</span>
-    </div>
+    </button>
   );
 }
 

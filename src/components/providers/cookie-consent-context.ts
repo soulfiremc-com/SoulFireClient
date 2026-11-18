@@ -1,5 +1,15 @@
-import { createContext } from "react";
+import { createContext, use } from "react";
 
-export const CookieConsentContext = createContext<{
+type CookieConsentContextValue = {
   openCookiePreferences: () => void;
-}>(null as never);
+};
+
+export const CookieConsentContext =
+  createContext<CookieConsentContextValue | null>(null);
+
+export function useCookieConsentContext(): CookieConsentContextValue {
+  const value = use(CookieConsentContext);
+  if (value === null)
+    throw new Error("CookieConsentContext is used outside its provider");
+  return value;
+}

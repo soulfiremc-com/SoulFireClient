@@ -15,12 +15,13 @@ const controlStrings =
 function parseMetadata(encoded: string): TerminalInteraction | null {
   if (!/^[\w-]+$/.test(encoded) || encoded.length > 16384) return null;
   try {
-    const binary = atob(encoded.replace(/-/g, "+").replace(/_/g, "/"));
+    const binary = atob(encoded.replaceAll("-", "+").replaceAll("_", "/"));
     const data: unknown = JSON.parse(
       decoder.decode(Uint8Array.from(binary, (char) => char.charCodeAt(0))),
     );
     if (typeof data !== "object" || !data || Array.isArray(data)) return null;
-    const { hover, click } = data as Record<string, unknown>;
+    const hover: unknown = Reflect.get(data, "hover");
+    const click: unknown = Reflect.get(data, "click");
     const result: TerminalInteraction = {};
     if (hover !== undefined) {
       if (
@@ -34,7 +35,8 @@ function parseMetadata(encoded: string): TerminalInteraction | null {
     if (click !== undefined) {
       if (typeof click !== "object" || !click || Array.isArray(click))
         return null;
-      const { action, value } = click as Record<string, unknown>;
+      const action: unknown = Reflect.get(click, "action");
+      const value: unknown = Reflect.get(click, "value");
       if (
         typeof value !== "string" ||
         !value ||
@@ -74,8 +76,8 @@ export function encodeTerminalInteraction(
             ...new TextEncoder().encode(JSON.stringify(metadata)),
           ),
         )
-          .replace(/\+/g, "-")
-          .replace(/\//g, "_")
+          .replaceAll("+", "-")
+          .replaceAll("/", "_")
           .replace(/=+$/, "");
   return PRIVATE_PREFIX + payload + TERMINATOR;
 }
@@ -107,15 +109,15 @@ export function parseTerminalText(
   let offset = 0;
   const append = (text: string, start: number) => {
     if (!text) return;
-    const previous = result[result.length - 1];
+    const previous = result.at(-1);
     if (previous && previous.interaction === active) previous.text += text;
     else result.push({ start, text, interaction: active });
   };
   const appendText = (text: string, start: number) =>
     append(
       text
-        .replace(/\r\n?/g, "\n")
-        .replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, ""),
+        .replaceAll(/\r\n?/g, "\n")
+        .replaceAll(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, ""),
       start,
     );
   for (const match of entry.message.matchAll(controlStrings)) {

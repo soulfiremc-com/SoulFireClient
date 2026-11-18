@@ -20,7 +20,7 @@ const script = fileURLToPath(
 // readdirSync returns entries in filesystem order, which differs between
 // filesystems. Crowdin matches files by glob, so only the set of files matters.
 function listDirectory(path) {
-  return readdirSync(path).sort();
+  return readdirSync(path).toSorted();
 }
 
 function prepare(t, files) {

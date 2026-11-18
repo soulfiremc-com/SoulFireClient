@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
     const serverInfoOptions = serverInfoQueryOptions(createTransport());
     const usersQueryOptions = queryOptions({
       queryKey: ["users"],
-      queryFn: async (props): Promise<UserListResponse> => {
+      queryFn: async (context): Promise<UserListResponse> => {
         const transport = createTransport();
         if (transport === null) {
           return create(UserListResponseSchema, {
@@ -47,7 +47,7 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
           userService.listUsers(
             {},
             {
-              signal: props.signal,
+              signal: context.signal,
             },
           ),
         );

@@ -31,8 +31,10 @@ import type {
   ProviderRequirement,
   ResourceProvider,
 } from "@/lib/resource-providers.ts";
+import { isOneOf } from "@/lib/is-one-of";
 
-type Filter = "all" | "buy" | "import" | "checkout";
+const FILTERS = ["all", "buy", "import", "checkout"] as const;
+type Filter = (typeof FILTERS)[number];
 
 const capabilityIcons: Record<ProviderCapability, LucideIcon> = {
   buy: ShoppingCartIcon,
@@ -143,21 +145,20 @@ export function ProviderGallery({
         value={[filter]}
         className="flex-wrap"
         onValueChange={(next: string[]) => {
-          if (next[0]) setFilter(next[0] as Filter);
+          const value = next[0];
+          if (isOneOf(value, FILTERS)) setFilter(value);
         }}
       >
-        {(["all", "buy", "import", "checkout"] as const)
-          .filter((value) =>
-            providers.some((provider) => matches(provider, value)),
-          )
-          .map((value) => (
-            <ToggleGroupItem key={value} value={value}>
-              {t(`providers.filters.${value}`)}
-              <span className="text-muted-foreground tabular-nums">
-                {providers.filter((entry) => matches(entry, value)).length}
-              </span>
-            </ToggleGroupItem>
-          ))}
+        {FILTERS.filter((value) =>
+          providers.some((provider) => matches(provider, value)),
+        ).map((value) => (
+          <ToggleGroupItem key={value} value={value}>
+            {t(`providers.filters.${value}`)}
+            <span className="text-muted-foreground tabular-nums">
+              {providers.filter((entry) => matches(entry, value)).length}
+            </span>
+          </ToggleGroupItem>
+        ))}
       </ToggleGroup>
       <RadioGroup
         aria-label={t("providers.provider")}

@@ -73,6 +73,7 @@ import {
   hasInstancePermission,
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
+import { displayText } from "@/lib/display-text";
 
 const STEPS: readonly { id: FirstBotSetupStep; icon: LucideIcon }[] = [
   { id: "server", icon: PickaxeIcon },
@@ -88,6 +89,7 @@ function ActionRow(props: {
   action: React.ReactNode;
 }) {
   return (
+    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
     <div role="listitem">
       <Item variant="outline" size="sm">
         <ItemMedia variant="icon">
@@ -120,6 +122,7 @@ function FirstBotConnecting({
 
   if (connected) {
     return (
+      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Alert renders a div, and the status role announces this update
       <Alert role="status">
         <CheckIcon />
         <AlertTitle>
@@ -167,7 +170,7 @@ function FirstBotConnecting({
           <div className="flex flex-col gap-2">
             {t(`fleet.kind.${failure.kind}.description`)}
             {failure.message && (
-              <span className="font-mono text-xs break-words">
+              <span className="font-mono text-xs wrap-break-word">
                 {failure.message}
               </span>
             )}
@@ -192,6 +195,7 @@ function FirstBotConnecting({
   }
 
   return (
+    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Alert renders a div, and the status role announces this update
     <Alert role="status">
       <LoaderCircleIcon className="motion-safe:animate-spin" />
       <AlertTitle>{t("setup.connecting.title")}</AlertTitle>
@@ -231,14 +235,14 @@ export function FirstBotSetup({
   const versionDefinition = definitions.find(
     (d) => d.id?.namespace === "bot" && d.id.key === "protocol-version",
   );
-  const address = String(
+  const address = displayText(
     getSettingValue(instanceInfo.profile, addressDefinition) ?? "",
   );
   const defaultAddress =
     addressDefinition?.type.case === "string"
       ? addressDefinition.type.value.def
       : "";
-  const version = String(
+  const version = displayText(
     getSettingValue(instanceInfo.profile, versionDefinition) ?? "",
   );
   const versionName =
@@ -631,7 +635,7 @@ export function FirstBotSetup({
                           <dt className="text-muted-foreground">
                             {t("setup.start.reviewServer")}
                           </dt>
-                          <dd className="truncate font-mono text-xs leading-5 select-text">
+                          <dd className="truncate font-mono text-xs/5 select-text">
                             {address}
                           </dd>
                           <dt className="text-muted-foreground">

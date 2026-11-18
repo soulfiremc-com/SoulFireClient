@@ -52,7 +52,7 @@ function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
 
       <div
         className={cn(
-          "flex h-full w-full flex-col rounded-lg shadow-md",
+          "flex size-full flex-col rounded-lg shadow-md",
           selected &&
             "ring-2 ring-primary ring-offset-2 ring-offset-background",
         )}

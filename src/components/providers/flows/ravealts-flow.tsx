@@ -101,9 +101,10 @@ export function RavealtsFlow({
   const loadStock = (signal?: AbortSignal) =>
     fetchStock()
       .then((result) => {
-        if (signal?.aborted) return;
+        if (signal?.aborted) return undefined;
         setStock(result.stock);
         setStockFailed(false);
+        return undefined;
       })
       .catch(() => {
         if (!signal?.aborted) setStockFailed(true);

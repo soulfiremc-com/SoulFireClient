@@ -31,6 +31,7 @@ export function ExternalLink({
   };
 
   return (
+    // oxlint-disable-next-line jsx-a11y/anchor-has-content -- the link text arrives through the spread props
     <a
       {...props}
       href={href}

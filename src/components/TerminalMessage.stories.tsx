@@ -183,6 +183,7 @@ export const UntrustedText: Story = {
   play: async ({ canvas, canvasElement }) => {
     const message = canvasElement.querySelector("[data-log-message]")!;
     await expect(
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story builds its own fixtures and route tree
       within(message as HTMLElement).queryByRole("button"),
     ).not.toBeInTheDocument();
     await expect(message).toHaveTextContent(
@@ -298,6 +299,7 @@ export const WrappedAction: Story = {
 
 export const WasmFailureFallback: Story = {
   beforeEach: () => {
+    // oxlint-disable-next-line typescript/unbound-method -- the story restores this prototype method after replacing it
     const original = WTerm.prototype.init;
     WTerm.prototype.init = async () => {
       throw new Error("Fixture WASM unavailable");

@@ -46,6 +46,7 @@ export const getSortingStateParser = <TData>(
           return null;
         }
 
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the schema above validates ids against the column ids of TData
         return result.success as ExtendedColumnSort<TData>[];
       } catch {
         return null;
@@ -101,6 +102,7 @@ export const getFiltersStateParser = <TData>(
           return null;
         }
 
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the schema above validates ids against the column ids of TData
         return result.success as ExtendedColumnFilter<TData>[];
       } catch {
         return null;

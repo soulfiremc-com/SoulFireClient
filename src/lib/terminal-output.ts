@@ -26,7 +26,7 @@ export function formatTerminalPrefix(
     logger,
   ]
     .filter(Boolean)
-    .map((part) => logText(part!, false).replace(/\n/g, " "))
+    .map((part) => logText(part!, false).replaceAll("\n", " "))
     .join(" ");
 }
 
@@ -51,7 +51,7 @@ export function formatTerminalLine(
   return (
     "\x1b[0m" +
     (prefix ? `${color}${prefix}\x1b[0m ` : "") +
-    message.replace(/\n/g, "\r\n") +
+    message.replaceAll("\n", "\r\n") +
     "\x1b[0m" +
     (stripAnsi(message).endsWith("\n") ? "" : "\r\n")
   );

@@ -79,6 +79,7 @@ export function filterExpectedExceptions(
       (entry) =>
         typeof entry === "object" &&
         entry !== null &&
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- PostHog passes exception list entries as any; isExpectedExceptionEntry checks the fields it reads
         isExpectedExceptionEntry(entry as ExceptionEntry),
     )
   ) {

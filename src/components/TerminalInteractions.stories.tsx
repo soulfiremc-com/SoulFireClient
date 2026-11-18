@@ -358,7 +358,7 @@ export const SuggestionsFromBlurredDraft: Story = {
     const suggest = await canvas.findByRole("button", {
       name: /Insert status/,
     });
-    const input = canvas.getByRole("combobox") as HTMLInputElement;
+    const input = canvas.getByRole<HTMLInputElement>("combobox");
     await userEvent.type(input, "older draft");
     input.setSelectionRange(1, 1);
     suggest.focus();

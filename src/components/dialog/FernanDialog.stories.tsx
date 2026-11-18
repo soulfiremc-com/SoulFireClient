@@ -6,6 +6,14 @@ import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import AccountProvidersDialog from "./account-providers-dialog.tsx";
 import { settledDialog } from "./provider-story-helpers.ts";
 
+function requestUrl(input: RequestInfo | URL): string {
+  return input instanceof Request ? input.url : input.toString();
+}
+
+function requestBody(body: BodyInit | null | undefined): string {
+  return typeof body === "string" ? body : "";
+}
+
 const id = "550e8400-e29b-41d4-a716-446655440000";
 const purchases: Record<string, unknown>[] = [];
 const delivery = {
@@ -28,7 +36,7 @@ const meta = {
     const original = globalThis.fetch;
     purchases.length = 0;
     globalThis.fetch = async (input, options) => {
-      const url = String(input);
+      const url = requestUrl(input);
       if (!url.startsWith("https://api.fernan.club/"))
         return original(input, options);
       const path = new URL(url).pathname;
@@ -63,7 +71,7 @@ const meta = {
           purchases: [{ purchase_id: id, product_name: "Cookie accounts" }],
         };
       else if (path.endsWith("/purchase")) {
-        purchases.push(JSON.parse(String(options?.body)));
+        purchases.push(JSON.parse(requestBody(options?.body)));
         if (parameters.purchaseFails) return new Response("", { status: 502 });
         data = delivery;
       } else data = { purchase: delivery };

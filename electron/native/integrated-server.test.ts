@@ -8,6 +8,10 @@ import type { App } from "electron";
 import { runIntegratedServer } from "./integrated-server";
 import { createIntegratedServerState } from "./integrated-server-process";
 
+function requestUrl(input: RequestInfo | URL): string {
+  return input instanceof Request ? input.url : input.toString();
+}
+
 test("failed JVM extraction removes its archive and directory before startup is released", async (context) => {
   const directory = await mkdtemp(
     path.join(os.tmpdir(), "soulfire-preparation-"),
@@ -20,7 +24,7 @@ test("failed JVM extraction removes its archive and directory before startup is 
   const archive = Buffer.from("invalid zip archive");
   let downloads = 0;
   globalThis.fetch = async (input) => {
-    if (String(input).startsWith("https://api.adoptium.net/"))
+    if (requestUrl(input).startsWith("https://api.adoptium.net/"))
       return Response.json([
         {
           binary: {
@@ -32,10 +36,11 @@ test("failed JVM extraction removes its archive and directory before startup is 
           release_name: "test-jvm",
         },
       ]);
-    assert.equal(String(input), "https://example.test/jvm.zip");
+    assert.equal(requestUrl(input), "https://example.test/jvm.zip");
     downloads++;
     return new Response(archive);
   };
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const app = {
     getAppPath: () => directory,
     getPath: () => directory,

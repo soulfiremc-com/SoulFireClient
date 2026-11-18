@@ -135,11 +135,11 @@ async function dragWire(
   document.dispatchEvent(new MouseEvent("mouseup", { ...init, ...to }));
 }
 
+const viewport = () =>
+  document.querySelector<HTMLElement>(".react-flow__viewport")?.style.transform;
+
 /** Waits until the first fit has moved the nodes into view. */
 async function canvasReady() {
-  const viewport = () =>
-    document.querySelector<HTMLElement>(".react-flow__viewport")?.style
-      .transform;
   let last: string | undefined;
   await waitFor(async () => {
     await expect(handle(sinkId, "amount")).toBeTruthy();

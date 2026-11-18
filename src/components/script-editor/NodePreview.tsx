@@ -1,5 +1,6 @@
-import i18n from "i18next";
+import { t } from "i18next";
 import { memo } from "react";
+import { displayText } from "@/lib/display-text";
 
 interface NodePreviewProps {
   /** The preview values to display (output port ID -> value) */
@@ -18,7 +19,7 @@ function NodePreviewComponent({ values, enabled }: NodePreviewProps) {
   return (
     <div className="border-t border-border/50 bg-muted/30 px-2 py-1">
       <div className="mb-1 text-xs text-muted-foreground">
-        {i18n.t("instance:scripts.editor.node.preview")}
+        {t("instance:scripts.editor.node.preview")}
       </div>
       <div className="space-y-0.5">
         {Object.entries(values).map(([key, value]) => (
@@ -80,7 +81,7 @@ function formatValue(value: unknown): string {
     return "{...}";
   }
 
-  return String(value);
+  return displayText(value);
 }
 
 export const NodePreview = memo(NodePreviewComponent);

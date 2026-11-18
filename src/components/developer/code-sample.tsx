@@ -1,5 +1,5 @@
 import { CheckIcon, ClipboardIcon } from "lucide-react";
-import { type CSSProperties, Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { useCopyFeedback } from "@/hooks/use-copy-feedback.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
@@ -75,7 +75,8 @@ export function CodeSample({
         </Button>
       </figcaption>
       <pre
-        className="overflow-x-auto bg-muted/40 p-4 text-xs leading-relaxed"
+        className="overflow-x-auto bg-muted/40 p-4 text-xs/relaxed"
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable code must take focus so keyboard users can scroll it
         tabIndex={0}
         aria-label={title}
         data-language={language}
@@ -89,12 +90,10 @@ export function CodeSample({
                     <span
                       key={token.offset}
                       data-syntax-token
-                      style={
-                        {
-                          "--syntax-light": token.variants.light.color,
-                          "--syntax-dark": token.variants.dark.color,
-                        } as CSSProperties
-                      }
+                      style={{
+                        "--syntax-light": token.variants.light.color,
+                        "--syntax-dark": token.variants.dark.color,
+                      }}
                     >
                       {token.content}
                     </span>

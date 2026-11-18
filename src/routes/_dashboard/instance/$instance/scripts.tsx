@@ -105,6 +105,9 @@ import {
 } from "@/lib/script-templates.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
 import { generateN } from "@/lib/generate-n.ts";
+import { isOneOf } from "@/lib/is-one-of";
+
+const NO_SCRIPTS: readonly ScriptInfo[] = [];
 
 const createScriptSchema = Schema.Struct({
   name: Schema.String,
@@ -122,7 +125,7 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/scripts")({
 
 function ScriptsPageSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4 py-4">
+    <div className="container flex size-full grow flex-col gap-4 py-4">
       {/* Alert skeleton */}
       <div className="flex items-start gap-3 rounded-lg border p-4">
         <Skeleton className="size-5 shrink-0" />
@@ -200,7 +203,7 @@ function Content() {
   const { data: scriptsData } = useSuspenseQuery(
     scriptListQueryOptions(transport, instanceId),
   );
-  const scripts = scriptsData?.scripts ?? [];
+  const scripts = scriptsData?.scripts ?? NO_SCRIPTS;
 
   const [search, setSearch] = useState("");
   const [stateFilter, setStateFilter] = useState<ScriptStateFilter>("all");
@@ -428,7 +431,7 @@ function Content() {
   };
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4 py-4">
+    <div className="container flex size-full grow flex-col gap-4 py-4">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
@@ -597,8 +600,8 @@ function Content() {
               size="sm"
               value={[stateFilter]}
               onValueChange={(value) => {
-                const next = value[0] as ScriptStateFilter | undefined;
-                if (next) setStateFilter(next);
+                const next = value[0];
+                if (isOneOf(next, SCRIPT_STATE_FILTERS)) setStateFilter(next);
               }}
             >
               {SCRIPT_STATE_FILTERS.map((filter) => (
@@ -631,9 +634,9 @@ function Content() {
             </Select>
           </div>
           {visibleScripts.length === 0 ? (
-            <p role="status" className="text-sm text-muted-foreground">
+            <output className="block text-sm text-muted-foreground">
               {tInstance("scripts.noMatches")}
-            </p>
+            </output>
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {visibleScripts.map((script) => (

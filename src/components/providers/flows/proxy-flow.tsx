@@ -152,6 +152,7 @@ export function ProxyFlow({
     quantity >= 1 &&
     quantity <= MAX_PROVIDER_PROXIES;
   const order: SellerOrder = {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the product select only offers SellerOrder products
     product: values.product as SellerOrder["product"],
     country: orderCountry,
     period: "1m",
@@ -167,6 +168,7 @@ export function ProxyFlow({
   const stepperStage = stage === "ordered" ? "import" : stage;
   // The proxy list preview uses its own copy, so "import" here is the order step.
   const copy = buying || stage === "ordered" ? "sellerBuy" : "proxy";
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the stepper never shows the ordered and import stages under this heading
   const headingStage = (stage === "ordered" ? "import" : stage) as Exclude<
     Stage,
     "ordered" | "import"
@@ -358,6 +360,7 @@ export function ProxyFlow({
               label={t(`providers.fields.${field}`)}
               secret={field !== "username"}
               value={String(values[field])}
+              // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the field list contains only string fields of the connection
               onChange={(next) => update(field, next as never)}
             />
           ))}
@@ -474,12 +477,11 @@ export function ProxyFlow({
                     { value: String(ProxyProto_Type.HTTP), label: "HTTP" },
                     { value: String(ProxyProto_Type.SOCKS5), label: "SOCKS5" },
                   ]}
-                  onChange={(next) =>
-                    update(
-                      "protocol",
-                      Number(next) as ProviderConnection["protocol"],
-                    )
-                  }
+                  onChange={(next) => {
+                    const protocol = Number(next);
+                    if (isProviderProtocol(protocol))
+                      update("protocol", protocol);
+                  }}
                   disabled={busy}
                 />
               )}
@@ -665,9 +667,10 @@ export function ProxyFlow({
               { value: String(ProxyProto_Type.HTTP), label: "HTTP" },
               { value: String(ProxyProto_Type.SOCKS5), label: "SOCKS5" },
             ]}
-            onChange={(next) =>
-              update("protocol", Number(next) as ProviderConnection["protocol"])
-            }
+            onChange={(next) => {
+              const protocol = Number(next);
+              if (isProviderProtocol(protocol)) update("protocol", protocol);
+            }}
             disabled={busy}
           />
         </>
@@ -708,4 +711,15 @@ export function ProxyFlow({
       {error && <Notice tone="error">{error}</Notice>}
     </ProviderFrame>
   );
+}
+
+const providerProtocols: ReadonlySet<number> = new Set([
+  ProxyProto_Type.HTTP,
+  ProxyProto_Type.SOCKS5,
+]);
+
+function isProviderProtocol(
+  value: number,
+): value is ProviderConnection["protocol"] {
+  return providerProtocols.has(value);
 }

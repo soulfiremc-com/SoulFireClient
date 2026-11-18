@@ -47,7 +47,8 @@ function EligibleReminder({
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    if (!ready || blocked || state.disabled || attempted.current) return;
+    if (!ready || blocked || state.disabled || attempted.current)
+      return undefined;
     // Sibling banners and dialog portals can mount after the render snapshot.
     const frame = requestAnimationFrame(() => {
       if (isReminderSurfaceBlocked()) return;
@@ -65,6 +66,7 @@ function EligibleReminder({
   if (!shown || dismissed || !ready || blocked || state.disabled) return null;
 
   return (
+    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Alert renders a div, and the region role makes this labelled reminder a landmark
     <Alert role="region" aria-labelledby={titleId}>
       <HeartIcon aria-hidden="true" />
       <AlertTitle id={titleId}>{t("dialog.support.title")}</AlertTitle>

@@ -243,7 +243,7 @@ function OverviewContentSection() {
     ...metricsQueryOptions,
     enabled: canReadBots,
   });
-  const latest = metricsData?.snapshots[metricsData.snapshots.length - 1];
+  const latest = metricsData?.snapshots.at(-1);
   const {
     data: botStatus,
     isPending: botStatusPending,

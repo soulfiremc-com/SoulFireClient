@@ -143,6 +143,12 @@ export function newProviderProxies(
   });
 }
 
+const json = (
+  url: string,
+  headers: Record<string, string>,
+  method: "GET" | "POST" = "GET",
+) => providerJsonEffect({ url, headers, method });
+
 export function loadProviderProxies(
   id: ProxyProviderId,
   values: ProviderConnection,
@@ -162,11 +168,6 @@ export function loadProviderProxies(
         values.protocol !== ProxyProto_Type.SOCKS5
       )
         throw new ProviderApiError("response");
-      const json = (
-        url: string,
-        headers: Record<string, string>,
-        method: "GET" | "POST" = "GET",
-      ) => providerJsonEffect({ url, headers, method });
       let proxies: ProfileProxy[];
       switch (id) {
         case "webshare": {

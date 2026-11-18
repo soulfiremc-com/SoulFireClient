@@ -28,7 +28,9 @@ export function ProxyAddress({ address }: { address: string }) {
         <TooltipTrigger
           render={
             <span
+              // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the flag takes focus so keyboard users can open its tooltip
               tabIndex={0}
+              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- the icons and text form one labelled image
               role="img"
               aria-label={label}
               className="inline-flex shrink-0 text-muted-foreground"

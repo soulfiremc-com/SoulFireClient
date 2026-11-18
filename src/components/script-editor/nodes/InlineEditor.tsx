@@ -2,6 +2,7 @@ import { type ComponentProps, memo, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { PortType } from "./types";
+import { displayText } from "@/lib/display-text";
 
 /**
  * Number input that keeps partial text such as "-" or "" while typing.
@@ -49,7 +50,7 @@ type Vector3Value = { x?: number; y?: number; z?: number };
 
 function asVector3(value: unknown): Vector3Value | undefined {
   return value !== null && typeof value === "object" && !Array.isArray(value)
-    ? (value as Vector3Value)
+    ? value
     : undefined;
 }
 
@@ -73,7 +74,7 @@ function InlineEditorComponent({
   const inputProps = {
     "aria-label": label,
     className: cn(
-      "nodrag nopan rounded border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
+      "nodrag nopan rounded-sm border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
       "focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none",
       "hover:border-border",
       className,
@@ -87,7 +88,7 @@ function InlineEditorComponent({
     case "number":
       return (
         <DraftNumberInput
-          value={(currentValue as number) ?? 0}
+          value={typeof currentValue === "number" ? currentValue : 0}
           onChange={onChange}
           {...inputProps}
           className={cn(inputProps.className, "w-16 text-right")}
@@ -98,7 +99,7 @@ function InlineEditorComponent({
       return (
         <input
           type="text"
-          value={(currentValue as string) ?? ""}
+          value={typeof currentValue === "string" ? currentValue : ""}
           onChange={(e) => onChange(e.target.value)}
           placeholder="..."
           {...inputProps}
@@ -109,7 +110,7 @@ function InlineEditorComponent({
     case "boolean":
       return (
         <Checkbox
-          checked={(currentValue as boolean) ?? false}
+          checked={currentValue === true}
           aria-label={label}
           onCheckedChange={(checked) => onChange(checked)}
           onClick={(e) => e.stopPropagation()}
@@ -144,7 +145,7 @@ function InlineEditorComponent({
       return (
         <input
           type="text"
-          value={String(currentValue ?? "")}
+          value={displayText(currentValue ?? "")}
           onChange={(e) => onChange(e.target.value)}
           placeholder="..."
           {...inputProps}
@@ -176,7 +177,7 @@ function Vector3EditorComponent({
 
   const inputProps = {
     className: cn(
-      "nodrag nopan w-10 rounded border border-border/50 bg-muted/80 px-1 py-0.5 text-right text-xs text-foreground",
+      "nodrag nopan w-10 rounded-sm border border-border/50 bg-muted/80 px-1 py-0.5 text-right text-xs text-foreground",
       "focus:ring-1 focus:ring-primary focus:outline-none",
     ),
     onClick: (e: React.MouseEvent) => e.stopPropagation(),
@@ -226,7 +227,7 @@ function SelectEditorComponent({
 }: SelectEditorProps) {
   const inputProps = {
     className: cn(
-      "nodrag nopan rounded border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
+      "nodrag nopan rounded-sm border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
       "cursor-pointer focus:ring-1 focus:ring-primary focus:outline-none",
     ),
     onClick: (e: React.MouseEvent) => e.stopPropagation(),

@@ -130,7 +130,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           Effect.callback<ReceiverMessage, CastError>((resume) => {
             if (closed || !controller) {
               resume(Effect.fail(castError("The Cast connection is closed.")));
-              return;
+              return undefined;
             }
             if (payloadBytes(message) > MAX_PAYLOAD_BYTES) {
               resume(
@@ -141,7 +141,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                   ),
                 ),
               );
-              return;
+              return undefined;
             }
             pending.set(message.requestId, (reply) => {
               pending.delete(message.requestId);
@@ -300,11 +300,9 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           ready.version !== PROTOCOL_VERSION ||
           ready.sessionId !== sessionId
         ) {
-          return yield* Effect.fail(
-            castError(
-              "Update both SoulFire and the Cast receiver to compatible versions.",
-              false,
-            ),
+          return yield* castError(
+            "Update both SoulFire and the Cast receiver to compatible versions.",
+            false,
           );
         }
         return {
@@ -322,5 +320,6 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
 
 export const CastTransportLive = makeCastTransport(() => {
   const require = createRequire(__filename);
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- castv2-client is a CommonJS module without type declarations
   return require("castv2-client") as CastBindings;
 });

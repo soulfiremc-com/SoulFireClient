@@ -3,7 +3,6 @@ import { Effect } from "effect";
 import { ConnectError } from "@connectrpc/connect";
 import {
   type KeyboardEventHandler,
-  type CSSProperties,
   use,
   useCallback,
   useEffect,
@@ -144,7 +143,10 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const activeEl = document.activeElement as HTMLElement | null;
+      const activeEl =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
       if (
         inputRef.current &&
         !event.defaultPrevented &&
@@ -410,7 +412,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
   useEffect(() => {
     if (!isFocused) {
-      return;
+      return undefined;
     }
 
     let frame: number | null = null;
@@ -555,7 +557,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
   };
 
   useLayoutEffect(() => {
-    if (!terminalCommands) return;
+    if (!terminalCommands) return undefined;
     const handler: NonNullable<typeof terminalCommands.current> = (
       action,
       value,
@@ -767,6 +769,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           autoComplete="off"
           spellCheck={false}
           enterKeyHint="send"
+          // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- custom combobox with a filtered popup list, which a native select cannot provide
           role="combobox"
           aria-label={t("commandInput.label")}
           aria-autocomplete="list"
@@ -832,17 +835,16 @@ export default function CommandInput(props: { scope: CommandScope }) {
         />
       </InputGroup>
       {popupVisible && caretPositionStyle && (
+        // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- the suggestion popup keeps focus in the input on pointer down
         <div
           className="fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border border-(--terminal-border) bg-(--terminal-popup) text-inherit shadow-md data-[side=top]:-translate-y-full"
           data-side={caretPositionStyle.above ? "top" : "bottom"}
-          style={
-            {
-              left: caretPositionStyle.left,
-              top: caretPositionStyle.top,
-              "--suggestions-width": `${caretPositionStyle.width}px`,
-              "--suggestions-max-height": `${caretPositionStyle.maxHeight}px`,
-            } as CSSProperties
-          }
+          style={{
+            left: caretPositionStyle.left,
+            top: caretPositionStyle.top,
+            "--suggestions-width": `${caretPositionStyle.width}px`,
+            "--suggestions-max-height": `${caretPositionStyle.maxHeight}px`,
+          }}
           onMouseDown={(event) => {
             event.preventDefault();
             inputRef.current?.focus();
@@ -851,6 +853,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           {suggestions.length > 0 ? (
             <ul
               id={suggestionsId}
+              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role, jsx-a11y/no-noninteractive-element-to-interactive-role -- the suggestion list follows the ARIA listbox pattern, which datalist cannot render; the suggestion list follows the ARIA listbox pattern
               role="listbox"
               aria-label={t("commandInput.suggestions")}
               className="p-1 font-mono text-xs"
@@ -861,6 +864,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
                   <li
                     key={`${suggestion.suggestion}-${suggestion.tooltip ?? ""}`}
                     id={`${suggestionsId}-option-${index}`}
+                    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role, jsx-a11y/no-noninteractive-element-to-interactive-role -- the suggestion list follows the ARIA listbox pattern, which datalist cannot render; the suggestion list follows the ARIA listbox pattern
                     role="option"
                     aria-selected={isActive}
                     className={cn(
@@ -893,7 +897,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
                       {suggestion.suggestion}
                     </div>
                     {suggestion.tooltip && (
-                      <div className="min-w-0 break-words text-(--terminal-muted)">
+                      <div className="min-w-0 wrap-break-word text-(--terminal-muted)">
                         {suggestion.tooltip}
                       </div>
                     )}
@@ -902,15 +906,14 @@ export default function CommandInput(props: { scope: CommandScope }) {
               })}
             </ul>
           ) : (
-            <div
+            <output
               id={suggestionStatusId}
-              role="status"
-              className="px-3 py-2 font-mono text-xs text-(--terminal-muted)"
+              className="block px-3 py-2 font-mono text-xs text-(--terminal-muted)"
             >
               {completionState.failed
                 ? t("commandInput.suggestionsUnavailable")
                 : t("commandInput.noSuggestions")}
-            </div>
+            </output>
           )}
         </div>
       )}

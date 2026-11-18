@@ -6,6 +6,14 @@ import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import ProxyProvidersDialog from "./proxy-providers-dialog.tsx";
 import { settledDialog } from "./provider-story-helpers.ts";
 
+function requestUrl(input: RequestInfo | URL): string {
+  return input instanceof Request ? input.url : input.toString();
+}
+
+function requestBody(body: BodyInit | null | undefined): string {
+  return typeof body === "string" ? body : "";
+}
+
 const requests: { url: string; body?: string }[] = [];
 const meta = {
   title: "Providers/Proxy connections",
@@ -20,7 +28,7 @@ const meta = {
     const original = globalThis.fetch;
     requests.length = 0;
     globalThis.fetch = async (input, options) => {
-      const url = String(input);
+      const url = requestUrl(input);
       if (url.startsWith("https://proxy.webshare.io/")) {
         requests.push({ url });
         return Response.json({
@@ -37,7 +45,7 @@ const meta = {
         });
       }
       if (url.startsWith("https://proxy-seller.com/")) {
-        requests.push({ url, body: String(options?.body ?? "") });
+        requests.push({ url, body: requestBody(options?.body) });
         if (url.endsWith("/order/calc"))
           return Response.json({
             status: "success",
@@ -168,9 +176,7 @@ export const PurchaseWithAffiliate: Story = {
     await expect(
       await dialog.findByRole("button", { name: "Import 1 proxy" }),
     ).toBeEnabled();
-    await expect(requests[requests.length - 1]?.url).toContain(
-      "orderId=order-456",
-    );
+    await expect(requests.at(-1)?.url).toContain("orderId=order-456");
   },
 };
 

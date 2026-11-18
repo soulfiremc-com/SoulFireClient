@@ -54,6 +54,7 @@ import {
   InstancePermission,
   SettingsDefinitionSchema,
   SettingsPageSchema,
+  type SettingsPage,
 } from "@/generated/soulfire/common_pb";
 import {
   InstanceInfoSchema,
@@ -70,6 +71,55 @@ import { serverInfoQueryOptions } from "@/lib/server-info-query";
 import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery";
 import { parseSettingFocusSearch } from "@/lib/settings-focus";
 import type { InstanceInfoQueryData } from "@/lib/types";
+
+function InstanceSettingsStoryPage({ data }: { data: SettingsPage }) {
+  const search = useSearch({
+    from: "/_dashboard/instance/$instance/settings/$pageId",
+  });
+  return (
+    <InstanceSettingsPageComponent
+      data={data}
+      focusSetting={
+        search.focusNamespace && search.focusKey
+          ? { namespace: search.focusNamespace, key: search.focusKey }
+          : undefined
+      }
+    />
+  );
+}
+
+function AccountsStoryPage({ data }: { data: SettingsPage }) {
+  const search = useSearch({
+    from: "/_dashboard/instance/$instance/accounts",
+  });
+  return (
+    <InstanceSettingsPageComponent
+      data={data}
+      disabledIds={PAGE_HIDDEN_SETTINGS.account}
+      focusSetting={
+        search.focusNamespace && search.focusKey
+          ? { namespace: search.focusNamespace, key: search.focusKey }
+          : undefined
+      }
+    />
+  );
+}
+
+function AdminSettingsStoryPage({ data }: { data: SettingsPage }) {
+  const search = useSearch({
+    from: "/_dashboard/user/admin/settings/$pageId",
+  });
+  return (
+    <AdminSettingsPageComponent
+      data={data}
+      focusSetting={
+        search.focusNamespace && search.focusKey
+          ? { namespace: search.focusNamespace, key: search.focusKey }
+          : undefined
+      }
+    />
+  );
+}
 
 // The menu uses Command on macOS and Ctrl elsewhere.
 const MODIFIER = isMac ? "Meta" : "Control";
@@ -475,42 +525,13 @@ function Example({
       getParentRoute: () => instance,
       path: "/settings/$pageId",
       validateSearch: parseSettingFocusSearch,
-      component: () => {
-        const search = useSearch({
-          from: "/_dashboard/instance/$instance/settings/$pageId",
-        });
-        return (
-          <InstanceSettingsPageComponent
-            data={focusPage}
-            focusSetting={
-              search.focusNamespace && search.focusKey
-                ? { namespace: search.focusNamespace, key: search.focusKey }
-                : undefined
-            }
-          />
-        );
-      },
+      component: () => <InstanceSettingsStoryPage data={focusPage} />,
     });
     const accounts = createRoute({
       getParentRoute: () => instance,
       path: "/accounts",
       validateSearch: guidedTableValidateSearch,
-      component: () => {
-        const search = useSearch({
-          from: "/_dashboard/instance/$instance/accounts",
-        });
-        return (
-          <InstanceSettingsPageComponent
-            data={accountPage}
-            disabledIds={PAGE_HIDDEN_SETTINGS.account}
-            focusSetting={
-              search.focusNamespace && search.focusKey
-                ? { namespace: search.focusNamespace, key: search.focusKey }
-                : undefined
-            }
-          />
-        );
-      },
+      component: () => <AccountsStoryPage data={accountPage} />,
     });
     const admin = createRoute({
       getParentRoute: () => dashboard,
@@ -524,21 +545,7 @@ function Example({
       getParentRoute: () => admin,
       path: "/settings/$pageId",
       validateSearch: parseSettingFocusSearch,
-      component: () => {
-        const search = useSearch({
-          from: "/_dashboard/user/admin/settings/$pageId",
-        });
-        return (
-          <AdminSettingsPageComponent
-            data={serverPage}
-            focusSetting={
-              search.focusNamespace && search.focusKey
-                ? { namespace: search.focusNamespace, key: search.focusKey }
-                : undefined
-            }
-          />
-        );
-      },
+      component: () => <AdminSettingsStoryPage data={serverPage} />,
     });
     const router = createRouter({
       history: createMemoryHistory({ initialEntries: [initialPath] }),
@@ -555,6 +562,7 @@ function Example({
   });
   return (
     <QueryClientProvider client={setup.queryClient}>
+      {/* oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story router is not the registered app router */}
       <RouterProvider router={setup.router as never} />
     </QueryClientProvider>
   );
@@ -1376,7 +1384,7 @@ export const BoundedIndexStopsOnClose: Story = {
     const progress = await menu.findByText(
       /^Searching all projects \(\d+ of 21\)\. Results may be incomplete\.$/,
     );
-    await expect(progress.closest('[role="status"]')).not.toBeNull();
+    await expect(progress.closest("output")).not.toBeNull();
     await waitFor(() =>
       expect(loadProjectInfo.mock.calls.length).toBeGreaterThanOrEqual(3),
     );
@@ -1404,7 +1412,7 @@ export const IndexFailureAndRetry: Story = {
       await menu.findByText(
         "1 project could not be searched. Results are incomplete.",
       )
-    ).closest<HTMLElement>('[role="status"]')!;
+    ).closest<HTMLElement>("output")!;
     await expect(
       menu.queryByRole("option", { name: /Read Timeout/ }),
     ).not.toBeInTheDocument();
@@ -1424,7 +1432,7 @@ export const IndexFailureAndRetry: Story = {
 export const HeaderSearchOnNarrowScreen: Story = {
   beforeEach: async () => {
     // Vitest's browser module throws when loaded in regular Storybook.
-    if (import.meta.env.MODE !== "test") return;
+    if (import.meta.env.MODE !== "test") return undefined;
     const { page: browserPage } = await import("@vitest/browser/context");
     const original = { width: innerWidth, height: innerHeight };
     await browserPage.viewport(320, 640);

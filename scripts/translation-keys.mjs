@@ -2,7 +2,8 @@
 //
 // The scanner reads source text with regular expressions. It understands the
 // patterns this repository uses: `useTranslation` bindings (including aliases
-// such as `{ t: tCommon }`), `TFunction<"ns">` parameters, `i18n.t`, `<Trans
+// such as `{ t: tCommon }`), `TFunction<"ns">` parameters, `i18n.t` and `t`
+// imported from i18next, `<Trans
 // i18nKey>`, and fully qualified `"ns:key"` string literals anywhere in source.
 // Template literal keys become patterns that must match at least one key.
 // Keys built only from variables cannot be checked and are counted as dynamic.
@@ -39,7 +40,7 @@ function stripPlural(key) {
 
 export function loadCatalogs(localeDirectory) {
   const catalogs = new Map();
-  for (const file of readdirSync(localeDirectory).sort()) {
+  for (const file of readdirSync(localeDirectory).toSorted()) {
     if (!file.endsWith(".json")) continue;
     const namespace = file.slice(0, -".json".length);
     const json = JSON.parse(readFileSync(join(localeDirectory, file), "utf8"));
@@ -65,7 +66,7 @@ function listSourceFiles(directory) {
       files.push(path);
     }
   }
-  return files.sort();
+  return files.toSorted(compareStrings);
 }
 
 function lineOf(source, index) {
@@ -166,6 +167,13 @@ function translationBindings(source) {
     /\b(\w+)\??\s*:\s*TFunction<\s*"(\w+)"/g,
   )) {
     add(match[1], [match[2]]);
+  }
+  // Modules outside React import the default instance's `t` from i18next.
+  for (const match of source.matchAll(
+    /import\s*\{([^}]*)\}\s*from\s*"i18next"/g,
+  )) {
+    const binding = /(?:^|,)\s*t\s*(?:as\s+(\w+))?\s*(?:,|$)/.exec(match[1]);
+    if (binding) add(binding[1] ?? "t", [DEFAULT_NAMESPACE]);
   }
   // Plain modules receive `t` from a component as `t: (key: string) => string`.
   // Components pass the default namespace translator.
@@ -440,22 +448,28 @@ export function checkTranslationKeys({
   };
 }
 
+function print(title, items) {
+  process.stdout.write(`${title}: ${items.length}\n`);
+  for (const item of items) {
+    process.stdout.write(
+      typeof item === "string"
+        ? `  ${item}\n`
+        : `  ${item.location} ${item.key}${item.reason ? ` (${item.reason})` : ""}\n`,
+    );
+  }
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const rootDirectory = fileURLToPath(new URL("..", import.meta.url));
   const result = checkTranslationKeys({ rootDirectory });
-  const print = (title, items) => {
-    console.log(`${title}: ${items.length}`);
-    for (const item of items) {
-      console.log(
-        typeof item === "string"
-          ? `  ${item}`
-          : `  ${item.location} ${item.key}${item.reason ? ` (${item.reason})` : ""}`,
-      );
-    }
-  };
   print("Missing keys", result.missing);
   print("Plural problems", result.missingPlurals);
   print("Unpaired plural forms", result.unpairedPlurals);
   print("Dynamic keys", result.dynamic);
   print("Unused keys", result.unused);
+}
+
+// Matches the default sort order, which compares UTF-16 code units.
+function compareStrings(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
 }

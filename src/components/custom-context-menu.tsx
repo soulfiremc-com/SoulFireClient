@@ -49,14 +49,9 @@ export function CustomContextMenu() {
 
   useEffect(() => {
     function onContextMenu(e: MouseEvent) {
-      if (
-        "__entityContextMenu" in e &&
-        (e as MouseEvent & { __entityContextMenu?: boolean })
-          .__entityContextMenu
-      )
-        return;
+      if ("__entityContextMenu" in e && e.__entityContextMenu === true) return;
 
-      const target = e.target as Element | null;
+      const target = e.target instanceof Element ? e.target : null;
       // Keep the native cut, copy, and paste menu in text fields.
       if (isEditableTarget(target)) {
         dismiss();

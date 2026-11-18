@@ -47,6 +47,10 @@ import { InvalidMockInput, parseMockInputs } from "@/lib/script-dry-run";
 import { ExecutionLogs } from "./ExecutionLogs";
 import { getNodeDisplayLabel } from "./node-label";
 import type { LogEntry, LogLevel } from "./types";
+import { isOneOf } from "@/lib/is-one-of";
+import { displayText } from "@/lib/display-text";
+
+const LOG_LEVELS: readonly LogLevel[] = ["debug", "info", "warn", "error"];
 
 type RunResult = {
   status: "idle" | "completed" | "failed" | "cancelled";
@@ -75,7 +79,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
     () =>
       triggerNodes.map((node) => ({
         value: node.id,
-        label: String(
+        label: displayText(
           node.data.label ??
             getNodeDefinition(node.type ?? "")?.label ??
             node.id,
@@ -125,12 +129,9 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
       };
       try {
         const inputs = Object.fromEntries(
-          triggerOutputs.map((port) => [
-            port.id,
-            String(form.get(port.id) ?? ""),
-          ]),
+          triggerOutputs.map((port) => [port.id, formText(form.get(port.id))]),
         );
-        const mockInputs = parseMockInputs(triggerOutputs, inputs);
+        const parsedInputs = parseMockInputs(triggerOutputs, inputs);
         const client = createRpcClient(ScriptService, transport);
         await Effect.runPromise(
           client
@@ -139,7 +140,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                 instanceId,
                 scriptId: saved.scriptId,
                 triggerNodeId: selectedNode.id,
-                mockInputs,
+                mockInputs: parsedInputs,
               },
               { signal: controller.signal },
             )
@@ -181,10 +182,8 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                         break;
                       case "scriptLog":
                         addLog(
-                          ["debug", "info", "warn", "error"].includes(
-                            event.value.level,
-                          )
-                            ? (event.value.level as LogLevel)
+                          isOneOf(event.value.level, LOG_LEVELS)
+                            ? event.value.level
                             : "info",
                           event.value.message,
                           event.value.nodeId ?? null,
@@ -221,7 +220,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
           return { status: "cancelled", error: null };
         const port =
           error instanceof InvalidMockInput
-            ? triggerOutputs.find((port) => port.id === error.portId)
+            ? triggerOutputs.find((candidate) => candidate.id === error.portId)
             : undefined;
         return {
           status: "failed",
@@ -373,9 +372,9 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
               )}
             </div>
             {!isPending && result.status !== "idle" && (
-              <p role="status" className="text-sm text-muted-foreground">
+              <output className="block text-sm text-muted-foreground">
                 {t(`scripts.editor.dryRun.${result.status}`)}
-              </p>
+              </output>
             )}
             {logs.length > 0 && (
               <div className="h-48 min-w-0">
@@ -391,4 +390,8 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
       </CredenzaContent>
     </Credenza>
   );
+}
+
+function formText(value: FormDataEntryValue | null): string {
+  return typeof value === "string" ? value : "";
 }

@@ -39,8 +39,8 @@ export function formatChartTooltipTime(timestampMs: number): string {
   return tooltipTimeFormatter.format(timestampMs);
 }
 
-export function getSnapshotTimestampMs<T extends HasTimestamp>(
-  snapshot: T | null | undefined,
+export function getSnapshotTimestampMs(
+  snapshot: HasTimestamp | null | undefined,
 ): number | null {
   if (!snapshot?.timestamp) {
     return null;
@@ -106,7 +106,10 @@ export function downsampleTimeSeriesData<T extends ChartPoint>(
 
   for (let i = 0; i < data.length; i += bucketSize) {
     const bucket = data.slice(i, i + bucketSize);
-    const lastPoint = bucket[bucket.length - 1];
+    const lastPoint = bucket.at(-1);
+    if (lastPoint === undefined) {
+      continue;
+    }
 
     if (mode === "last") {
       result.push(lastPoint);
@@ -136,11 +139,15 @@ export function downsampleTimeSeriesData<T extends ChartPoint>(
       aggregatedPoint[key] = hasNumericValue ? sum : null;
     }
 
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the aggregated point copies every field of a T and replaces numeric fields with sums
     result.push(aggregatedPoint as T);
   }
 
-  const latestPoint = data[data.length - 1];
-  if (result[result.length - 1]?.timestampMs !== latestPoint.timestampMs) {
+  const latestPoint = data.at(-1);
+  if (
+    latestPoint !== undefined &&
+    result.at(-1)?.timestampMs !== latestPoint.timestampMs
+  ) {
     result.push(latestPoint);
   }
 
@@ -176,7 +183,7 @@ export function mergeSnapshots<T extends HasTimestamp>(
   }
 
   return Array.from(deduped.entries())
-    .sort(([left], [right]) => left - right)
+    .toSorted(([left], [right]) => left - right)
     .slice(-MAX_SNAPSHOTS)
     .map(([, snapshot]) => snapshot);
 }

@@ -35,7 +35,7 @@ export function mergeExecutionLogs(previous: LogEntry[], incoming: LogEntry[]) {
   }
   if (!changed) return previous;
   return [...entries.values()]
-    .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+    .toSorted((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
     .slice(-500);
 }
 

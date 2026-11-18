@@ -6,6 +6,10 @@ import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import AccountProvidersDialog from "./account-providers-dialog.tsx";
 import { settledDialog } from "./provider-story-helpers.ts";
 
+function requestUrl(input: RequestInfo | URL): string {
+  return input instanceof Request ? input.url : input.toString();
+}
+
 const purchases: string[] = [];
 const meta = {
   title: "Providers/Localts accounts",
@@ -21,7 +25,7 @@ const meta = {
     const original = globalThis.fetch;
     purchases.length = 0;
     globalThis.fetch = async (input, options) => {
-      const url = String(input);
+      const url = requestUrl(input);
       if (!url.startsWith("https://localts.store/v1/"))
         return original(input, options);
       if (url.endsWith("/products") && parameters.catalogFails)

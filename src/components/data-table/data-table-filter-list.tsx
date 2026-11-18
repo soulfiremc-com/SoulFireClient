@@ -139,6 +139,7 @@ export function DataTableFilterList<TData extends RowData>({
     debouncedSetFilters([
       ...filters,
       {
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- column IDs are keys of TData
         id: column.id as Extract<keyof TData, string>,
         value: "",
         variant: column.columnDef.meta?.variant ?? "text",
@@ -158,7 +159,7 @@ export function DataTableFilterList<TData extends RowData>({
       debouncedSetFilters((prevFilters) => {
         const updatedFilters = prevFilters.map((filter) => {
           if (filter.filterId === filterId) {
-            return { ...filter, ...updates } as ExtendedColumnFilter<TData>;
+            return { ...filter, ...updates };
           }
           return filter;
         });
@@ -218,7 +219,7 @@ export function DataTableFilterList<TData extends RowData>({
         filters.length > 0
       ) {
         event.preventDefault();
-        onFilterRemove(filters[filters.length - 1]?.filterId ?? "");
+        onFilterRemove(filters.at(-1)?.filterId ?? "");
       }
     },
     [filters, onFilterRemove],
@@ -278,10 +279,7 @@ export function DataTableFilterList<TData extends RowData>({
           {filters.length > 0 ? (
             <SortableContent
               render={
-                <div
-                  role="list"
-                  className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1"
-                />
+                <ul className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1" />
               }
             >
               {filters.map((filter, index) => (
@@ -302,7 +300,7 @@ export function DataTableFilterList<TData extends RowData>({
           <div className="flex w-full items-center gap-2">
             <Button
               size="sm"
-              className="rounded"
+              className="rounded-sm"
               ref={addButtonRef}
               onClick={onFilterAdd}
             >
@@ -312,7 +310,7 @@ export function DataTableFilterList<TData extends RowData>({
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded"
+                className="rounded-sm"
                 onClick={onFiltersReset}
               >
                 Reset filters
@@ -363,7 +361,7 @@ function DataTableFilterItem<TData extends RowData>({
   const [showOperatorSelector, setShowOperatorSelector] = React.useState(false);
   const [showValueSelector, setShowValueSelector] = React.useState(false);
 
-  const column = columns.find((column) => column.id === filter.id);
+  const column = columns.find((candidate) => candidate.id === filter.id);
 
   const joinOperatorListboxId = `${filterItemId}-join-operator-listbox`;
   const fieldListboxId = `${filterItemId}-field-listbox`;
@@ -374,7 +372,7 @@ function DataTableFilterItem<TData extends RowData>({
   const filterOperators = getFilterOperators(filter.variant);
 
   const onItemKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
+    (event: React.KeyboardEvent<HTMLLIElement>) => {
       if (
         event.target instanceof HTMLInputElement ||
         event.target instanceof HTMLTextAreaElement
@@ -401,19 +399,17 @@ function DataTableFilterItem<TData extends RowData>({
   );
 
   if (!column) return null;
-  const joinOperatorItems = dataTableConfig.joinOperators.map(
-    (joinOperator) => ({
-      label: joinOperator,
-      value: joinOperator,
-    }),
-  );
+  const joinOperatorItems = dataTableConfig.joinOperators.map((operator) => ({
+    label: operator,
+    value: operator,
+  }));
 
   return (
     <SortableItem
       value={filter.filterId}
       render={
-        <div
-          role="listitem"
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the list item handles keyboard shortcuts for the focused filter or sort row
+        <li
           id={filterItemId}
           tabIndex={-1}
           className="flex items-center gap-2"
@@ -438,7 +434,7 @@ function DataTableFilterItem<TData extends RowData>({
               aria-label={i18n.t("common:dataTable.selectJoinOperator")}
               aria-controls={joinOperatorListboxId}
               size="sm"
-              className="rounded lowercase"
+              className="rounded-sm lowercase"
             >
               <SelectValue placeholder={joinOperator} />
             </SelectTrigger>
@@ -450,12 +446,9 @@ function DataTableFilterItem<TData extends RowData>({
                 <SelectLabel>
                   {i18n.t("common:dataTable.joinOperator")}
                 </SelectLabel>
-                {joinOperatorItems.map((joinOperator) => (
-                  <SelectItem
-                    key={joinOperator.value}
-                    value={joinOperator.value}
-                  >
-                    {joinOperator.label}
+                {joinOperatorItems.map((operator) => (
+                  <SelectItem key={operator.value} value={operator.value}>
+                    {operator.label}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -472,13 +465,13 @@ function DataTableFilterItem<TData extends RowData>({
               aria-controls={fieldListboxId}
               variant="outline"
               size="sm"
-              className="w-32 justify-between rounded font-normal"
+              className="w-32 justify-between rounded-sm font-normal"
             />
           }
         >
           <span className="truncate">
-            {columns.find((column) => column.id === filter.id)?.columnDef.meta
-              ?.label ?? "Select field"}
+            {columns.find((candidate) => candidate.id === filter.id)?.columnDef
+              .meta?.label ?? "Select field"}
           </span>
           <ChevronsUpDown className="opacity-50" />
         </PopoverTrigger>
@@ -492,16 +485,17 @@ function DataTableFilterItem<TData extends RowData>({
                 {i18n.t("common:dataTable.noFieldsFound")}
               </CommandEmpty>
               <CommandGroup>
-                {columns.map((column) => (
+                {columns.map((columnOption) => (
                   <CommandItem
-                    key={column.id}
-                    value={column.id}
+                    key={columnOption.id}
+                    value={columnOption.id}
                     onSelect={(value) => {
                       onFilterUpdate(filter.filterId, {
+                        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- column IDs are keys of TData
                         id: value as Extract<keyof TData, string>,
-                        variant: column.columnDef.meta?.variant ?? "text",
+                        variant: columnOption.columnDef.meta?.variant ?? "text",
                         operator: getDefaultFilterOperator(
-                          column.columnDef.meta?.variant ?? "text",
+                          columnOption.columnDef.meta?.variant ?? "text",
                         ),
                         value: "",
                       });
@@ -510,12 +504,14 @@ function DataTableFilterItem<TData extends RowData>({
                     }}
                   >
                     <span className="truncate">
-                      {column.columnDef.meta?.label}
+                      {columnOption.columnDef.meta?.label}
                     </span>
                     <Check
                       className={cn(
                         "ml-auto",
-                        column.id === filter.id ? "opacity-100" : "opacity-0",
+                        columnOption.id === filter.id
+                          ? "opacity-100"
+                          : "opacity-0",
                       )}
                     />
                   </CommandItem>
@@ -544,7 +540,7 @@ function DataTableFilterItem<TData extends RowData>({
           aria-controls={operatorListboxId}
           aria-label={`${columnMeta?.label} filter operator`}
           size="sm"
-          className="w-32 rounded lowercase"
+          className="w-32 rounded-sm lowercase"
         >
           <div className="truncate">
             <SelectValue placeholder={filter.operator} />
@@ -582,14 +578,14 @@ function DataTableFilterItem<TData extends RowData>({
         aria-controls={filterItemId}
         variant="outline"
         size="icon"
-        className="size-8 rounded"
+        className="size-8 rounded-sm"
         onClick={() => onFilterRemove(filter.filterId)}
       >
         <Trash2 />
       </Button>
       <SortableItemHandle
         render={
-          <Button variant="outline" size="icon" className="size-8 rounded" />
+          <Button variant="outline" size="icon" className="size-8 rounded-sm" />
         }
       >
         <GripVertical />
@@ -620,14 +616,13 @@ function onFilterInputRender<TData extends RowData>({
 }) {
   if (filter.operator === "isEmpty" || filter.operator === "isNotEmpty") {
     return (
-      <div
+      <output
         id={inputId}
-        role="status"
         aria-label={`${columnMeta?.label} filter is ${
           filter.operator === "isEmpty" ? "empty" : "not empty"
         }`}
         aria-live="polite"
-        className="h-8 w-full rounded border bg-transparent dark:bg-input/30"
+        className="block h-8 w-full rounded-sm border bg-transparent dark:bg-input/30"
       />
     );
   }
@@ -661,7 +656,7 @@ function onFilterInputRender<TData extends RowData>({
           aria-describedby={`${inputId}-description`}
           inputMode={isNumber ? "numeric" : undefined}
           placeholder={columnMeta?.placeholder ?? "Enter a value..."}
-          className="h-8 w-full rounded"
+          className="h-8 w-full rounded-sm"
           defaultValue={
             typeof filter.value === "string" ? filter.value : undefined
           }
@@ -698,7 +693,7 @@ function onFilterInputRender<TData extends RowData>({
             aria-controls={inputListboxId}
             aria-label={`${columnMeta?.label} boolean filter`}
             size="sm"
-            className="w-full rounded"
+            className="w-full rounded-sm"
           >
             <SelectValue placeholder={filter.value ? "True" : "False"} />
           </SelectTrigger>
@@ -751,7 +746,7 @@ function onFilterInputRender<TData extends RowData>({
                 aria-label={`${columnMeta?.label} filter value${multiple ? "s" : ""}`}
                 variant="outline"
                 size="sm"
-                className="w-full rounded font-normal"
+                className="w-full rounded-sm font-normal"
               />
             }
           >
@@ -827,7 +822,7 @@ function onFilterInputRender<TData extends RowData>({
                 variant="outline"
                 size="sm"
                 className={cn(
-                  "w-full justify-start rounded text-left font-normal",
+                  "w-full justify-start rounded-sm text-left font-normal",
                   !filter.value && "text-muted-foreground",
                 )}
               />

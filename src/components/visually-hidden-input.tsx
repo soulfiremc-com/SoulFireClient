@@ -58,7 +58,7 @@ function VisuallyHiddenInput<T = InputValue>(
   React.useLayoutEffect(() => {
     if (!control) {
       setControlSize({});
-      return;
+      return undefined;
     }
 
     setControlSize({
@@ -66,7 +66,7 @@ function VisuallyHiddenInput<T = InputValue>(
       height: control.offsetHeight,
     });
 
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return undefined;
 
     const resizeObserver = new ResizeObserver((entries) => {
       if (!Array.isArray(entries) || !entries.length) return;
@@ -115,11 +115,9 @@ function VisuallyHiddenInput<T = InputValue>(
 
     const descriptor = Object.getOwnPropertyDescriptor(inputProto, propertyKey);
 
-    const setter = descriptor?.set;
-
-    if (prevValue !== currentValue && setter) {
+    if (prevValue !== currentValue && descriptor?.set) {
       const event = new Event(eventType, { bubbles });
-      setter.call(input, serializedCurrentValue);
+      descriptor.set.call(input, serializedCurrentValue);
       input.dispatchEvent(event);
     }
   }, [prevValue, value, checked, bubbles, isCheckInput]);

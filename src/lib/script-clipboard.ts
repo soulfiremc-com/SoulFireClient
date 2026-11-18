@@ -8,7 +8,7 @@ const LOCAL_STORAGE_KEY = "script-editor-clipboard";
 const clipboardSchema = scriptGraphSchema.pipe(
   Schema.fieldsAssign({
     sourceScriptId: Schema.NullOr(Schema.String).pipe(
-      Schema.withDecodingDefaultType(Effect.sync(() => null)),
+      Schema.withDecodingDefaultType(Effect.succeed(null)),
     ),
   }),
 );

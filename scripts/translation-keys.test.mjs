@@ -151,7 +151,7 @@ test("checks templates, ternaries, wrappers, and qualified literals", (t) => {
     `,
   });
 
-  assert.deepEqual(result.missing.map((item) => item.key).sort(), [
+  assert.deepEqual(result.missing.map((item) => item.key).toSorted(), [
     "common:absent",
     "common:dataTable.reset",
     "common:missing.${kind}",

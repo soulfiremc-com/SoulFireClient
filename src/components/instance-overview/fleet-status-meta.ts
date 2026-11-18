@@ -84,5 +84,7 @@ export function getFailureFix(
       };
     case "other":
       return null;
+    default:
+      return kind satisfies never;
   }
 }

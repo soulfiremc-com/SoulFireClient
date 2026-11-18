@@ -5,25 +5,41 @@ import {
   type DisplaySettings,
 } from "@soulfiremc/cast-protocol";
 import { createStore } from "@tanstack/react-store";
-import { Context, Effect, Fiber, Layer, ManagedRuntime, Schema } from "effect";
+import {
+  Context,
+  Data,
+  Effect,
+  Fiber,
+  Layer,
+  ManagedRuntime,
+  Schema,
+} from "effect";
 import { desktop, isDesktopApp } from "@/lib/desktop";
+
+class CastDesktopError extends Data.TaggedError("CastDesktopError")<{
+  readonly message: string;
+  readonly cause: unknown;
+}> {}
 
 const CastDesktop = Context.Service<{
   readonly connect: (
     device: CastDevice,
     source: CastSource,
     relaunch: boolean,
-  ) => Effect.Effect<void, Error>;
-  readonly stop: (id: string) => Effect.Effect<void, Error>;
+  ) => Effect.Effect<void, CastDesktopError>;
+  readonly stop: (id: string) => Effect.Effect<void, CastDesktopError>;
   readonly setSettings: (
     settings: DisplaySettings,
-  ) => Effect.Effect<void, Error>;
+  ) => Effect.Effect<void, CastDesktopError>;
 }>("soulfire/CastDesktop");
 const fromPromise = <A>(operation: () => Promise<A>) =>
   Effect.tryPromise({
     try: operation,
     catch: (error) =>
-      error instanceof Error ? error : new Error(String(error)),
+      new CastDesktopError({
+        message: error instanceof Error ? error.message : String(error),
+        cause: error,
+      }),
   });
 const runtime = ManagedRuntime.make(
   Layer.succeed(CastDesktop, {

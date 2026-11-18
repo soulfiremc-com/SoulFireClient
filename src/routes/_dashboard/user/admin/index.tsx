@@ -93,8 +93,8 @@ function UsersChart(props: { userList: UserListResponse }) {
           <PieChart title={t("overview.usersChart.title")}>
             <ChartTooltip
               cursor={false}
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent {...props} hideLabel />
+              content={(tooltipProps: CustomTooltipProps) => (
+                <ChartTooltipContent {...tooltipProps} hideLabel />
               )}
             />
             <Pie
@@ -131,6 +131,7 @@ function UsersChart(props: { userList: UserListResponse }) {
                       </text>
                     );
                   }
+                  return undefined;
                 }}
               />
             </Pie>
@@ -198,8 +199,8 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
           <PieChart title={t("overview.instancesChart.title")}>
             <ChartTooltip
               cursor={false}
-              content={(props: CustomTooltipProps) => (
-                <ChartTooltipContent {...props} hideLabel />
+              content={(tooltipProps: CustomTooltipProps) => (
+                <ChartTooltipContent {...tooltipProps} hideLabel />
               )}
             />
             <Pie
@@ -236,6 +237,7 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
                       </text>
                     );
                   }
+                  return undefined;
                 }}
               />
             </Pie>
@@ -248,7 +250,7 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
 
 function AdminOverviewSkeleton() {
   return (
-    <div className="flex h-full w-full grow flex-col gap-2 pl-2">
+    <div className="flex size-full grow flex-col gap-2 pl-2">
       <Skeleton className="h-7 w-48" />
       <AdminChartsSkeleton />
       <AdminMetricsSkeleton />
@@ -278,7 +280,7 @@ function OverviewPage() {
 
 function Content() {
   return (
-    <div className="flex h-full w-full grow flex-col gap-2 pl-2">
+    <div className="flex size-full grow flex-col gap-2 pl-2">
       <Suspense fallback={<Skeleton className="h-7 w-48" />}>
         <AdminWelcomeHeading />
       </Suspense>

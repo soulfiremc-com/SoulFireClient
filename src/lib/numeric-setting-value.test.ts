@@ -54,7 +54,7 @@ test("maximum prefixes do not permanently lower the minimum", () => {
   const edits = [2, 25, 250, 2500].map((value) =>
     updateNumericRange(baseline, "max", value),
   );
-  assert.deepEqual(edits[edits.length - 1], { min: 2500, max: 2500 });
+  assert.deepEqual(edits.at(-1), { min: 2500, max: 2500 });
   assert.deepEqual(baseline, { min: 4500, max: 4500 });
 });
 

@@ -64,7 +64,10 @@ import {
   type SdkLanguage,
   type SdkRecipe,
   type SdkShell,
+  SDK_LANGUAGES,
+  SDK_RECIPES,
 } from "@/lib/sdk-quickstart.ts";
+import { isOneOf } from "@/lib/is-one-of";
 
 export type SdkQuickstartBot = { id: string; name: string; online?: boolean };
 export type SdkQuickstartInstance = { id: string; name: string };
@@ -419,7 +422,8 @@ export function SdkQuickstart({
             aria-label={t("sdk.language")}
             value={[language]}
             onValueChange={(value) => {
-              if (value[0]) setLanguage(value[0] as SdkLanguage);
+              const next = value[0];
+              if (isOneOf(next, SDK_LANGUAGES)) setLanguage(next);
             }}
           >
             <ToggleGroupItem value="typescript">
@@ -434,7 +438,8 @@ export function SdkQuickstart({
             aria-label={t("sdk.recipe")}
             value={[recipe]}
             onValueChange={(value) => {
-              if (value[0]) setRecipe(value[0] as SdkRecipe);
+              const next = value[0];
+              if (isOneOf(next, SDK_RECIPES)) setRecipe(next);
             }}
           >
             {recipes.map(({ id: recipeId, Icon }) => (
@@ -532,7 +537,7 @@ export function SdkQuickstart({
             {t("sdk.runTitle")}
             <ChevronDownIcon
               data-icon="inline-end"
-              className="group-data-[panel-open]/run:rotate-180"
+              className="group-data-panel-open/run:rotate-180"
             />
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -551,7 +556,7 @@ export function SdkQuickstart({
                 <Select
                   value={shell}
                   onValueChange={(value) => {
-                    if (value) setShell(value as SdkShell);
+                    if (value) setShell(value);
                   }}
                   items={[
                     { value: "posix", label: "macOS / Linux" },
@@ -605,12 +610,13 @@ export function SdkQuickstart({
             {t("sdk.previewAgentPrompt")}
             <ChevronDownIcon
               data-icon="inline-end"
-              className="group-data-[panel-open]/prompt:rotate-180"
+              className="group-data-panel-open/prompt:rotate-180"
             />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <pre
-              className="mt-3 overflow-x-auto rounded-lg border bg-muted/40 p-4 text-xs leading-relaxed break-words whitespace-pre-wrap"
+              className="mt-3 overflow-x-auto rounded-lg border bg-muted/40 p-4 text-xs/relaxed wrap-break-word whitespace-pre-wrap"
+              // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable code must take focus so keyboard users can scroll it
               tabIndex={0}
               aria-label={t("sdk.agentPrompt")}
             >
@@ -663,7 +669,7 @@ export function SdkQuickstart({
           {t("sdk.helpTitle")}
           <ChevronDownIcon
             data-icon="inline-end"
-            className="group-data-[panel-open]/help:rotate-180"
+            className="group-data-panel-open/help:rotate-180"
           />
         </CollapsibleTrigger>
         <CollapsibleContent>

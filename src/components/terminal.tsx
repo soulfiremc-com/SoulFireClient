@@ -2,7 +2,6 @@ import { flavorEntries } from "@catppuccin/palette";
 import { WTerm } from "@wterm/dom";
 import { ArrowDownIcon } from "lucide-react";
 import {
-  type CSSProperties,
   type ReactNode,
   use,
   useEffect,
@@ -15,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { PlainTerminalOutput } from "@/components/plain-terminal-output";
 import { ContextMenuPortal } from "@/components/context-menu-portal";
 import { SelectedTextActions } from "@/components/custom-context-menu";
-import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
+import { useTerminalThemeContext } from "@/components/providers/terminal-theme-context";
 import { TransportContext } from "@/components/providers/transport-context";
 import { Button } from "@/components/ui/button";
 import type { LogScope } from "@/generated/soulfire/logs_pb";
@@ -165,7 +164,7 @@ export function TerminalView({
     const top = host.scrollTop;
     const atBottom = top + host.clientHeight >= host.scrollHeight - 1;
     const update = output.sync(entries, i18n.resolvedLanguage, resized);
-    const latest = entries[entries.length - 1];
+    const latest = entries.at(-1);
     if (!atBottom && lastEntry.current && latest !== lastEntry.current)
       setNewBelow(true);
     lastEntry.current = latest;
@@ -185,7 +184,7 @@ export function TerminalView({
 
   useEffect(() => {
     const host = hostRef.current;
-    if (!host) return;
+    if (!host) return undefined;
     let disposed = false;
     const previouslyFocused = document.activeElement;
     const terminal = new WTerm(host, {
@@ -246,19 +245,18 @@ export function TerminalView({
       <div
         data-terminal-output
         className="flex h-[calc(75dvh-8rem)] flex-col overflow-hidden rounded-md focus-within:ring-1 focus-within:ring-(--terminal-border)"
-        style={
-          {
-            backgroundColor: colors.base.hex,
-            color: colors.text.hex,
-            "--term-selection-bg": `${colors.overlay2.hex}4d`,
-            "--terminal-prompt": dark ? colors.green.hex : colors.text.hex,
-            "--terminal-muted": colors.subtext1.hex,
-            "--terminal-popup": colors.mantle.hex,
-            "--terminal-active": dark ? colors.surface0.hex : colors.base.hex,
-            "--terminal-border": colors.overlay2.hex,
-          } as CSSProperties
-        }
+        style={{
+          backgroundColor: colors.base.hex,
+          color: colors.text.hex,
+          "--term-selection-bg": `${colors.overlay2.hex}4d`,
+          "--terminal-prompt": dark ? colors.green.hex : colors.text.hex,
+          "--terminal-muted": colors.subtext1.hex,
+          "--terminal-popup": colors.mantle.hex,
+          "--terminal-active": dark ? colors.surface0.hex : colors.base.hex,
+          "--terminal-border": colors.overlay2.hex,
+        }}
       >
+        {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- pointer capture only clears the hover state; keyboard focus is handled by the links */}
         <div
           className="relative min-h-0 flex-1 overflow-hidden"
           onPointerDownCapture={(event) => {
@@ -395,14 +393,13 @@ export function TerminalView({
               onCommand={onCommand}
             />
           ) : (
-            <div
+            <section
               ref={hostRef}
               data-terminal-viewport
               // React replaces the whole class attribute when className changes,
               // which would drop the classes that wterm adds. Keep it static.
               data-hovered={hovered ? "" : undefined}
               className="px-3 py-2 select-text data-hovered:cursor-pointer"
-              role="region"
               aria-label={t("pageName.terminal")}
               onScroll={(event) => {
                 setHovered(null);
@@ -448,18 +445,17 @@ export function TerminalView({
                   open={(hovered ?? focused) === run.key}
                 >
                   <TooltipTrigger
+                    // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
                     render={<button type="button" />}
                     data-terminal-interaction
                     id={`${interactionId}-${run.key}`}
                     className="pointer-events-none absolute top-(--interaction-top) left-(--interaction-left) h-(--term-row-height) w-(--interaction-width) focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-(--terminal-prompt)"
-                    style={
-                      {
-                        "--interaction-top": `${metrics.current.top + run.row * metrics.current.height - (hostRef.current?.scrollTop ?? 0)}px`,
-                        "--interaction-left": `${metrics.current.left + run.col * metrics.current.width - (hostRef.current?.scrollLeft ?? 0)}px`,
-                        "--interaction-width": `${run.width * metrics.current.width}px`,
-                        "--term-row-height": `${metrics.current.height}px`,
-                      } as CSSProperties
-                    }
+                    style={{
+                      "--interaction-top": `${metrics.current.top + run.row * metrics.current.height - (hostRef.current?.scrollTop ?? 0)}px`,
+                      "--interaction-left": `${metrics.current.left + run.col * metrics.current.width - (hostRef.current?.scrollLeft ?? 0)}px`,
+                      "--interaction-width": `${run.width * metrics.current.width}px`,
+                      "--term-row-height": `${metrics.current.height}px`,
+                    }}
                     aria-label={[run.text, description]
                       .filter(Boolean)
                       .join(". ")}
@@ -500,7 +496,7 @@ export function TerminalView({
             })}
         </div>
         {children && (
-          <div data-terminal-command className="shrink-0 px-1 py-1">
+          <div data-terminal-command className="shrink-0 p-1">
             {children}
           </div>
         )}
@@ -554,7 +550,7 @@ export function TerminalComponent({
           }),
         ]
       : liveEntries;
-  const terminalTheme = use(TerminalThemeContext);
+  const terminalTheme = useTerminalThemeContext();
 
   return (
     <TerminalView entries={entries} theme={terminalTheme.value}>

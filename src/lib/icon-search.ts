@@ -11,7 +11,7 @@ export function searchIcons(
   limit: number,
 ): { names: string[]; total: number } {
   const text = query.trim().toLowerCase();
-  const needle = text.replace(/\s+/g, "-");
+  const needle = text.replaceAll(/\s+/g, "-");
   if (!needle) {
     return {
       names: entries.slice(0, limit).map(([name]) => name),

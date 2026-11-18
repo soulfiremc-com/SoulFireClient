@@ -58,7 +58,7 @@ export const Route = createFileRoute("/_dashboard/user/settings")({
 
 function UserSettingsSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         {/* Avatar section */}
         <div className="flex max-w-xl flex-col gap-1">
@@ -143,7 +143,7 @@ function Content() {
   });
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
         <div className="flex max-w-xl flex-col gap-1">
           <ComponentTitle
@@ -169,7 +169,7 @@ function Content() {
                 className="size-10"
               />
             </ItemMedia>
-            <ItemContent className="text-base leading-tight">
+            <ItemContent className="text-base/tight">
               <ItemTitle>{clientInfo.username}</ItemTitle>
               <ItemDescription>{clientInfo.email}</ItemDescription>
             </ItemContent>

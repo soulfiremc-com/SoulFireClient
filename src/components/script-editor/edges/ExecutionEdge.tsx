@@ -29,6 +29,8 @@ function getArrowRotation(position: Position): number {
       return -90;
     case Position.Bottom:
       return 90;
+    default:
+      return position satisfies never;
   }
 }
 
@@ -61,9 +63,9 @@ function ExecutionEdge({
       <BaseEdge
         path={edgePath}
         className={cn(
-          "!stroke-muted-foreground",
+          "stroke-muted-foreground!",
           isActive && "animate-pulse",
-          selected && "!stroke-foreground",
+          selected && "stroke-foreground!",
         )}
         style={{
           strokeWidth: 2.5,

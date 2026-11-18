@@ -1,4 +1,8 @@
-import { Effect } from "effect";
+import { Data, Effect } from "effect";
+
+export class ProviderRequestError extends Data.TaggedError(
+  "ProviderRequestError",
+)<{ readonly message: string; readonly cause?: unknown }> {}
 
 export type ProviderRequest = {
   url: string;
@@ -12,12 +16,16 @@ export type ProviderResponse = { status: number; body: string };
 export function executeProviderRequestEffect(
   request: ProviderRequest,
   fetcher: (input: string, init?: RequestInit) => Promise<Response> = fetch,
-): Effect.Effect<ProviderResponse, Error> {
+): Effect.Effect<ProviderResponse, ProviderRequestError> {
   return Effect.gen(function* () {
     yield* Effect.try({
       try: () => validateProviderRequest(request),
       catch: (error) =>
-        error instanceof Error ? error : new Error("Invalid provider request"),
+        new ProviderRequestError({
+          message:
+            error instanceof Error ? error.message : "Invalid provider request",
+          cause: error,
+        }),
     });
     return yield* Effect.tryPromise({
       try: async (signal) => {
@@ -32,15 +40,21 @@ export function executeProviderRequestEffect(
         });
         const body = await response.text();
         if (body.length > 8_000_000)
-          throw new Error("Provider response too large");
+          throw new ProviderRequestError({
+            message: "Provider response too large",
+          });
         return { status: response.status, body };
       },
       // Fetch errors can include the credential-bearing request URL.
-      catch: () => new Error("Provider connection failed"),
+      catch: () =>
+        new ProviderRequestError({ message: "Provider connection failed" }),
     }).pipe(
       Effect.timeoutOrElse({
         duration: "30 seconds",
-        orElse: () => Effect.fail(new Error("Provider connection failed")),
+        orElse: () =>
+          Effect.fail(
+            new ProviderRequestError({ message: "Provider connection failed" }),
+          ),
       }),
     );
   });

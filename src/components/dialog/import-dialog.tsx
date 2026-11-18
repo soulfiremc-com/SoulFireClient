@@ -70,6 +70,8 @@ export default function ImportDialog(props: ImportDialogProps) {
       return (
         <MainDialog {...props} openUrlDialog={() => setMenuState("url")} />
       );
+    default:
+      return menuState satisfies never;
   }
 }
 
@@ -327,7 +329,7 @@ function MainDialog(
                     className="hidden"
                     disabled={isPending}
                     onChange={(e) => {
-                      const target = e.target as HTMLInputElement;
+                      const target = e.target;
                       if (!target.files) {
                         return;
                       }
@@ -418,8 +420,8 @@ function MainDialog(
                         )
                           .map((item) => ({
                             item,
-                            firstSupportedType: item.types.find((t) =>
-                              mimeTypes.has(t),
+                            firstSupportedType: item.types.find((type) =>
+                              mimeTypes.has(type),
                             ),
                           }))
                           .filter(

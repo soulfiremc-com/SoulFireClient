@@ -2,7 +2,6 @@ import { createRpcClient } from "@/lib/rpc";
 import { toFormSchema } from "@/lib/form-validation";
 import { Effect, Schema } from "effect";
 import type { JsonValue } from "@bufbuild/protobuf";
-import type { Value } from "@bufbuild/protobuf/wkt";
 
 import { useForm } from "@tanstack/react-form";
 import { useIsMutating, useMutation } from "@tanstack/react-query";
@@ -71,7 +70,7 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
         id: generateId(),
         namespace: namespace.namespace,
         key: entry.key,
-        value: JSON.stringify(valueToJson(entry.value as Value)),
+        value: JSON.stringify(valueToJson(entry.value)),
       });
     }
   }
@@ -92,7 +91,7 @@ export function AccountMetadataDialog({
   const { t } = useTranslation("instance");
   const instanceId = useRouteContext({
     from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions.queryKey[1] as string,
+    select: (context) => context.instanceInfoQueryOptions.queryKey[1],
   });
 
   return (

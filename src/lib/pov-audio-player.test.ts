@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { PovAudioPlayer } from "./pov-audio-player";
 
+const packet = (timestampUs: bigint) => ({
+  timestampUs,
+  data: new Uint8Array([1]),
+});
+
 test("audio playback bounds latency and releases queued audio on reset and close", () => {
   const originalDecoder = globalThis.AudioDecoder;
   const originalChunk = globalThis.EncodedAudioChunk;
@@ -26,6 +31,7 @@ test("audio playback bounds latency and releases queued audio on reset and close
       this.output(chunk.timestamp);
     }
     output(timestamp: number) {
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       this.init.output({
         timestamp,
         numberOfChannels: 2,
@@ -86,22 +92,21 @@ test("audio playback bounds latency and releases queued audio on reset and close
   };
   const errors: Error[] = [];
   try {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     globalThis.AudioDecoder = FakeDecoder as unknown as typeof AudioDecoder;
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion, typescript/no-extraneous-class -- the fake class implements only the members this test uses
     globalThis.EncodedAudioChunk = class {
       constructor(init: EncodedAudioChunkInit) {
         Object.assign(this, init);
       }
     } as unknown as typeof EncodedAudioChunk;
     const player = new PovAudioPlayer(
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       context as unknown as AudioContext,
       0.8,
       (error) => errors.push(error),
     );
-    const decoder = decoders[0]!;
-    const packet = (timestampUs: bigint) => ({
-      timestampUs,
-      data: new Uint8Array([1]),
-    });
+    const decoder = decoders[0];
     player.accept([packet(0n), packet(20_000n)]);
     assert.deepEqual(
       sources.map((source) => source.when),
@@ -112,12 +117,12 @@ test("audio playback bounds latency and releases queued audio on reset and close
     assert.equal(gain, 0.3);
     context.currentTime = 4;
     player.accept([packet(40_000n)]);
-    assert.ok(sources[0]!.stopped && sources[1]!.stopped);
-    assert.equal(sources[2]!.when, 4.04);
-    decoder!.decodeQueueSize = 9;
+    assert.ok(sources[0].stopped && sources[1].stopped);
+    assert.equal(sources[2].when, 4.04);
+    decoder.decodeQueueSize = 9;
     player.accept([packet(60_000n)]);
-    assert.equal(decoder!.resets, 1);
-    assert.ok(sources[2]!.stopped);
+    assert.equal(decoder.resets, 1);
+    assert.ok(sources[2].stopped);
     player.reset();
     assert.ok(sources.every((source) => source.stopped && source.disconnected));
     player.accept([packet(0n)]);
@@ -125,11 +130,11 @@ test("audio playback bounds latency and releases queued audio on reset and close
     player.close();
     player.close();
     assert.equal(contextCloses, 1);
-    assert.equal(decoder!.state, "closed");
+    assert.equal(decoder.state, "closed");
     assert.ok(gainDisconnected);
     assert.ok(sources.every((source) => source.stopped && source.disconnected));
     const closedCount = dataCloses;
-    decoder!.output(80_000);
+    decoder.output(80_000);
     assert.equal(dataCloses, closedCount + 1);
     assert.equal(sources.length, 5);
     assert.deepEqual(errors, []);
@@ -155,7 +160,9 @@ test("cancelling unmute closes an audio context while browser resume is pending"
     }
   }
   try {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     globalThis.AudioContext = PendingContext as unknown as typeof AudioContext;
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion, typescript/no-extraneous-class -- the fake class implements only the members this test uses
     globalThis.AudioDecoder = class {} as unknown as typeof AudioDecoder;
     const abort = new AbortController();
     const pending = PovAudioPlayer.create(0.8, () => {}, abort.signal);

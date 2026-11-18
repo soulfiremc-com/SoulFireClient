@@ -284,7 +284,7 @@ export async function setInstanceIcon(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -298,7 +298,7 @@ export async function setInstanceIcon(
     instanceListQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return create(InstanceListResponseSchema, {
@@ -353,7 +353,7 @@ export async function setInstanceFriendlyName(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -367,7 +367,7 @@ export async function setInstanceFriendlyName(
     instanceListQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return create(InstanceListResponseSchema, {
@@ -418,7 +418,7 @@ export async function setInstanceConfigFull(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -462,7 +462,7 @@ export async function updateInstanceConfigEntry(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -502,7 +502,7 @@ export async function updateServerConfigEntry(
   // Update optimistically
   queryClient.setQueryData<ServerInfoQueryData>(serverInfoQueryKey, (old) => {
     if (old === undefined) {
-      return;
+      return undefined;
     }
 
     return {
@@ -544,7 +544,7 @@ export async function updateBotConfigEntry(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       const accountIndex = old.profile.accounts.findIndex(
@@ -633,7 +633,7 @@ export async function removeBotConfigEntry(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       const accountIndex = old.profile.accounts.findIndex(
@@ -712,7 +712,7 @@ export async function addInstanceAccount(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -760,7 +760,7 @@ export async function addInstanceAccountsBatch(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -805,7 +805,7 @@ export async function removeInstanceAccountsBatch(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -895,7 +895,7 @@ export async function addInstanceProxiesBatch(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -938,7 +938,7 @@ export async function removeInstanceProxyEntries(
     instanceInfoQueryKey,
     (old) => {
       if (old === undefined) {
-        return;
+        return undefined;
       }
 
       return {
@@ -976,7 +976,7 @@ export async function setSelfUsername(
   // Update optimistically
   queryClient.setQueryData<ClientDataResponse>(clientDataQueryKey, (old) => {
     if (old === undefined) {
-      return;
+      return undefined;
     }
 
     return {
@@ -1009,7 +1009,7 @@ export async function setSelfEmail(
   // Update optimistically
   queryClient.setQueryData<ClientDataResponse>(clientDataQueryKey, (old) => {
     if (old === undefined) {
-      return;
+      return undefined;
     }
 
     return {
@@ -1046,7 +1046,9 @@ export function smartEntries<T extends object>(
   obj: T,
 ): [keyof T, T[keyof T]][] {
   return Object.entries(obj).map(([key, value]) => [
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Object.entries loses the key and value types of the typed record
     key as keyof T,
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Object.entries loses the key and value types of the typed record
     value as T[keyof T],
   ]);
 }

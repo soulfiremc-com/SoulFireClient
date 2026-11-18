@@ -10,6 +10,7 @@ import {
 } from "@soulfiremc/cast-protocol";
 import {
   Cause,
+  Data,
   Deferred,
   Effect,
   Fiber,
@@ -21,6 +22,10 @@ import {
 import { castError, type CastError } from "./errors";
 import { MetricsSource, MetricsSourceLive } from "./metrics-source";
 import { CastTransport, CastTransportLive } from "./transport";
+
+class CastDiscoveryError extends Data.TaggedError("CastDiscoveryError")<{
+  readonly cause: unknown;
+}> {}
 
 interface ActiveSession {
   readonly generation: number;
@@ -72,24 +77,28 @@ export class CastSessionManager {
             txt?: Record<string, string>;
           };
           const bonjour = yield* Effect.acquireRelease(
-            Effect.try(() => {
-              const require = createRequire(__filename);
-              const { Bonjour } = require("bonjour-service") as {
-                Bonjour: new () => {
-                  destroy(): void;
-                  find(
-                    options: { type: string },
-                    callback: (service: ServiceRecord) => void,
-                  ): {
-                    on(
-                      event: "down",
+            Effect.try({
+              try: () => {
+                const require = createRequire(__filename);
+                // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- bonjour-service is loaded with require so its types are declared here
+                const { Bonjour } = require("bonjour-service") as {
+                  Bonjour: new () => {
+                    destroy(): void;
+                    find(
+                      options: { type: string },
                       callback: (service: ServiceRecord) => void,
-                    ): void;
-                    stop(): void;
+                    ): {
+                      on(
+                        event: "down",
+                        callback: (service: ServiceRecord) => void,
+                      ): void;
+                      stop(): void;
+                    };
                   };
                 };
-              };
-              return new Bonjour();
+                return new Bonjour();
+              },
+              catch: (cause) => new CastDiscoveryError({ cause }),
             }),
             (service) => Effect.sync(() => service.destroy()),
           );
@@ -166,18 +175,14 @@ export class CastSessionManager {
         this.lock.withPermit(
           Effect.gen({ self: this }, function* () {
             if (this.disposed || epoch !== this.sourceEpoch)
-              return yield* Effect.fail(
-                castError("Casting is shutting down.", false),
-              );
+              return yield* castError("Casting is shutting down.", false);
             device = this.registerDevice(device);
             const previous = this.sessions.get(device.id);
             if (previous) yield* Fiber.interrupt(previous.fiber);
             if (epoch !== this.sourceEpoch)
-              return yield* Effect.fail(
-                castError(
-                  "The server connection changed. Connect again.",
-                  false,
-                ),
+              return yield* castError(
+                "The server connection changed. Connect again.",
+                false,
               );
             const generation = ++this.generation;
             const ready = yield* Deferred.make<void, CastError>();
@@ -288,7 +293,7 @@ export class CastSessionManager {
             yield* Effect.acquireRelease(
               Effect.sync(() =>
                 channel.onFailure((error) => {
-                  Effect.runSync(Deferred.fail(failure, error));
+                  Deferred.doneUnsafe(failure, Effect.fail(error));
                 }),
               ),
               (unsubscribe) => Effect.sync(unsubscribe),
@@ -331,13 +336,13 @@ export class CastSessionManager {
                 lastSettings = settings;
               }
               const frame = yield* feed.read.pipe(
-                Effect.catch((error) =>
-                  error.retryable
-                    ? Effect.sync(() => {
-                        patch({ error: error.message });
-                        return null;
-                      })
-                    : Effect.fail(error),
+                Effect.catchIf(
+                  (error) => error.retryable,
+                  (error) =>
+                    Effect.sync(() => {
+                      patch({ error: error.message });
+                      return null;
+                    }),
                 ),
               );
               if (frame)
@@ -346,24 +351,22 @@ export class CastSessionManager {
                 frame?.snapshots.filter(
                   (sample) => sample.timestamp > lastTimestamp,
                 ) ?? [];
-              for (
-                let offset = 0;
-                frame && offset < incoming.length;
-                offset += 20
-              ) {
-                const snapshots = incoming.slice(offset, offset + 20);
-                yield* channel.send({
-                  type: "METRICS",
-                  requestId: crypto.randomUUID(),
-                  sessionId: channel.sessionId,
-                  instanceId: source.instanceId,
-                  sequence: sequence++,
-                  reset: lastTimestamp < 0,
-                  snapshots,
-                  distributions: frame.distributions,
-                  instanceInfo: frame.instanceInfo,
-                });
-                lastTimestamp = snapshots[snapshots.length - 1].timestamp;
+              if (frame) {
+                for (let offset = 0; offset < incoming.length; offset += 20) {
+                  const snapshots = incoming.slice(offset, offset + 20);
+                  yield* channel.send({
+                    type: "METRICS",
+                    requestId: crypto.randomUUID(),
+                    sessionId: channel.sessionId,
+                    instanceId: source.instanceId,
+                    sequence: sequence++,
+                    reset: lastTimestamp < 0,
+                    snapshots,
+                    distributions: frame.distributions,
+                    instanceInfo: frame.instanceInfo,
+                  });
+                  lastTimestamp = snapshots.at(-1)?.timestamp ?? lastTimestamp;
+                }
               }
               updateStatus(
                 yield* channel.send({
@@ -404,21 +407,21 @@ export class CastSessionManager {
           yield* Deferred.fail(ready, error);
         }),
       ),
-      Effect.catchCause((cause) =>
-        Cause.hasInterruptsOnly(cause)
-          ? Effect.failCause(cause)
-          : Effect.gen(function* () {
-              const error = castError(
-                "Could not start casting. Check the connection settings.",
-                false,
-              );
-              patch({
-                phase: "failed",
-                error: error.message,
-                visibility: "unknown",
-              });
-              yield* Deferred.fail(ready, error);
-            }),
+      Effect.catchCauseIf(
+        (cause) => !Cause.hasInterruptsOnly(cause),
+        () =>
+          Effect.gen(function* () {
+            const error = castError(
+              "Could not start casting. Check the connection settings.",
+              false,
+            );
+            patch({
+              phase: "failed",
+              error: error.message,
+              visibility: "unknown",
+            });
+            yield* Deferred.fail(ready, error);
+          }),
       ),
       Effect.onInterrupt(() =>
         Deferred.fail(

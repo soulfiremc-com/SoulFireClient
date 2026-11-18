@@ -87,6 +87,8 @@ const roleToIcon = (type: keyof typeof UserRole) =>
         return UserIcon;
       case "ADMIN":
         return ShieldUserIcon;
+      default:
+        return key satisfies never;
     }
   });
 
@@ -430,7 +432,7 @@ function ExtraHeader(props: {
         onConfirm={() => {
           if (transport === null) {
             toast.info(t("common:demoReadOnly"));
-            return;
+            return undefined;
           }
 
           const selectedRows = props.table
@@ -468,7 +470,7 @@ function ExtraHeader(props: {
         onConfirm={() => {
           if (transport === null) {
             toast.info(t("common:demoReadOnly"));
-            return;
+            return undefined;
           }
 
           const selectedRows = props.table
@@ -494,7 +496,7 @@ function ExtraHeader(props: {
 
 function UsersSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <DataTableSkeleton
         columnCount={7}
         filterCount={4}
@@ -560,7 +562,7 @@ function Content() {
   const [editUser, setEditUser] = useState<UserListResponse_User | null>(null);
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <DataTable
         table={table}
         onRowContextMenu={handleContextMenu}

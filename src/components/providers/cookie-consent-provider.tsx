@@ -13,7 +13,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    if (!isPostHogConfigured) return;
+    if (!isPostHogConfigured) return undefined;
     const consentKey = `__ph_opt_in_out_${import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN}`;
     const onStorage = (event: StorageEvent) => {
       if (event.key === null || event.key === consentKey) {

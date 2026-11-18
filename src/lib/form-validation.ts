@@ -1,10 +1,10 @@
 import { Schema, SchemaIssue } from "effect";
-import i18n from "i18next";
+import { t } from "i18next";
 import type { StandardSchemaV1 } from "effect/StandardSchema";
 
 // The validation catalogs preserve the former locale wording. See public/licenses/zod-validation-messages.txt.
 function message(key: string) {
-  return i18n.t(`validation:${key}`);
+  return t(`validation:${key}`);
 }
 
 function inputKind(input: unknown) {
@@ -68,6 +68,7 @@ export function toFormSchema<S extends Schema.ConstraintDecoder<unknown>>(
   });
 }
 
+// oxlint-disable-next-line effecttsgo/schema-number -- the filter below rejects non-finite values with a localized message
 export const formNumber = Schema.Number.check(
   Schema.makeFilter(
     (value) => Number.isFinite(value) || message(`number.${inputKind(value)}`),

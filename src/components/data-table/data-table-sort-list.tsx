@@ -253,10 +253,7 @@ function DataTableSortListContent<TData extends RowData>({
           {sorting.length > 0 && (
             <SortableContent
               render={
-                <div
-                  role="list"
-                  className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1"
-                />
+                <ul className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1" />
               }
             >
               {sorting.map((sort) => (
@@ -275,7 +272,7 @@ function DataTableSortListContent<TData extends RowData>({
           <div className="flex w-full items-center gap-2">
             <Button
               size="sm"
-              className="rounded"
+              className="rounded-sm"
               ref={addButtonRef}
               onClick={onSortAdd}
               disabled={columns.length === 0}
@@ -286,7 +283,7 @@ function DataTableSortListContent<TData extends RowData>({
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded"
+                className="rounded-sm"
                 onClick={onSortingReset}
               >
                 {i18n.t("common:dataTable.resetSorting")}
@@ -334,7 +331,7 @@ function DataTableSortItem({
   const sortOrderItems = dataTableConfig.sortOrders;
 
   const onItemKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
+    (event: React.KeyboardEvent<HTMLLIElement>) => {
       if (
         event.target instanceof HTMLInputElement ||
         event.target instanceof HTMLTextAreaElement
@@ -358,8 +355,8 @@ function DataTableSortItem({
     <SortableItem
       value={sort.id}
       render={
-        <div
-          role="listitem"
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the list item handles keyboard shortcuts for the focused filter or sort row
+        <li
           id={sortItemId}
           tabIndex={-1}
           className="flex items-center gap-2"
@@ -375,7 +372,7 @@ function DataTableSortItem({
               aria-controls={fieldListboxId}
               variant="outline"
               size="sm"
-              className="w-44 justify-between rounded font-normal"
+              className="w-44 justify-between rounded-sm font-normal"
             />
           }
         >
@@ -423,7 +420,7 @@ function DataTableSortItem({
           })}
           aria-controls={directionListboxId}
           size="sm"
-          className="w-24 rounded"
+          className="w-24 rounded-sm"
         >
           <SelectValue />
         </SelectTrigger>
@@ -450,7 +447,7 @@ function DataTableSortItem({
         aria-controls={sortItemId}
         variant="outline"
         size="icon"
-        className="size-8 shrink-0 rounded"
+        className="size-8 shrink-0 rounded-sm"
         onClick={() => onSortRemove(sort.id)}
       >
         <Trash2 />
@@ -463,7 +460,7 @@ function DataTableSortItem({
             })}
             variant="outline"
             size="icon"
-            className="size-8 shrink-0 rounded"
+            className="size-8 shrink-0 rounded-sm"
           />
         }
       >

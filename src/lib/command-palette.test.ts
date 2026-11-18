@@ -12,6 +12,7 @@ import {
 import {
   GlobalPermission,
   InstancePermission,
+  MinecraftAccountProto_AccountTypeProto,
   SettingsDefinitionSchema,
   SettingsPageSchema,
 } from "@/generated/soulfire/common_pb";
@@ -92,7 +93,7 @@ const current: InstanceInfoQueryData = {
       {
         profileId: "bot-id",
         lastKnownName: "AlexBot",
-        type: 0,
+        type: MinecraftAccountProto_AccountTypeProto.MICROSOFT_JAVA_CREDENTIALS,
         accountData: { case: undefined },
         config: [],
         persistentMetadata: [],
@@ -652,7 +653,7 @@ const otherProject = (
       {
         profileId: `${id}-bot`,
         lastKnownName: "FarBot",
-        type: 0,
+        type: MinecraftAccountProto_AccountTypeProto.MICROSOFT_JAVA_CREDENTIALS,
         accountData: { case: undefined },
         config: [],
         persistentMetadata: [],

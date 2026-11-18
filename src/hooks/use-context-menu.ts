@@ -26,7 +26,7 @@ export function useContextMenu<T>() {
   const dismiss = useCallback(() => setContextMenu(null), []);
 
   useEffect(() => {
-    if (!contextMenu) return;
+    if (!contextMenu) return undefined;
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -35,7 +35,10 @@ export function useContextMenu<T>() {
     }
 
     function onMouseDown(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      if (
+        menuRef.current &&
+        !(e.target instanceof Node && menuRef.current.contains(e.target))
+      ) {
         dismiss();
       }
     }

@@ -2,7 +2,11 @@ import { createWriteStream } from "node:fs";
 import { rm } from "node:fs/promises";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { Effect, Exit } from "effect";
+import { Data, Effect } from "effect";
+
+class DownloadError extends Data.TaggedError("DownloadError")<{
+  readonly message: string;
+}> {}
 
 export function downloadToFileEffect(
   url: string,
@@ -14,7 +18,7 @@ export function downloadToFileEffect(
     Effect.gen(function* () {
       const controller = yield* Effect.acquireRelease(
         Effect.sync(() => new AbortController()),
-        (controller) => Effect.sync(() => controller.abort()),
+        (acquired) => Effect.sync(() => acquired.abort()),
       );
       const response = yield* Effect.acquireRelease(
         Effect.tryPromise({
@@ -28,17 +32,17 @@ export function downloadToFileEffect(
             }),
           catch: (error) => error,
         }),
-        (response) =>
+        (opened) =>
           Effect.promise(async () => {
-            if (response.body && !response.bodyUsed && !response.body.locked)
-              await response.body.cancel();
+            if (opened.body && !opened.bodyUsed && !opened.body.locked)
+              await opened.body.cancel();
           }),
         { interruptible: true },
       );
       if (!response.ok || response.body === null)
-        return yield* Effect.fail(
-          new Error(`Download failed (HTTP ${response.status}) for ${url}`),
-        );
+        return yield* new DownloadError({
+          message: `Download failed (HTTP ${response.status}) for ${url}`,
+        });
       const totalSize = Number(response.headers.get("content-length") ?? 0);
       let downloaded = 0;
       let lastPercent = -1;
@@ -74,18 +78,17 @@ export function downloadToFileEffect(
           controller.abort();
           yield* Effect.promise(() =>
             pending.then(
-              () => {},
-              () => {},
+              () => undefined,
+              () => undefined,
             ),
           );
         });
       });
+      return undefined;
     }),
   ).pipe(
-    Effect.onExit((exit) =>
-      Exit.isFailure(exit)
-        ? Effect.promise(() => rm(destinationPath, { force: true }))
-        : Effect.void,
+    Effect.onError(() =>
+      Effect.promise(() => rm(destinationPath, { force: true })),
     ),
   );
 }

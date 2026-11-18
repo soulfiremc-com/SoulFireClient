@@ -32,6 +32,7 @@ import {
   type PluginTask,
 } from "@/lib/settings-discovery.ts";
 import { getSettingValue } from "@/lib/utils.tsx";
+import { isOneOf } from "@/lib/is-one-of";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/discover")(
   {
@@ -50,7 +51,7 @@ function PluginCardSkeleton() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Skeleton className="size-5 rounded" />
+            <Skeleton className="size-5 rounded-sm" />
             <Skeleton className="h-5 w-28" />
           </div>
           <Skeleton className="h-5 w-10 rounded-full" />
@@ -80,7 +81,7 @@ const SKELETON_SLOTS = [
 
 function DiscoverSkeleton() {
   return (
-    <div className="grid h-full w-full grow grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid size-full grow grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {SKELETON_SLOTS.map((slot) => (
         <PluginCardSkeleton key={slot} />
       ))}
@@ -252,7 +253,7 @@ function Content() {
           value={[task]}
           onValueChange={(value) => {
             const next = value[0];
-            if (next) setTask(next as PluginTask | "all");
+            if (next === "all" || isOneOf(next, PLUGIN_TASKS)) setTask(next);
           }}
         >
           <ToggleGroupItem value="all">
@@ -266,9 +267,9 @@ function Content() {
         </ToggleGroup>
       </div>
       {visible.length === 0 && (
-        <p className="text-sm text-muted-foreground" role="status">
+        <output className="block text-sm text-muted-foreground">
           {t("discover.noMatches")}
-        </p>
+        </output>
       )}
       {enabled.length > 0 && (
         <section className="flex flex-col gap-3">

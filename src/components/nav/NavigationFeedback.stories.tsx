@@ -38,6 +38,7 @@ function renderShell() {
             <MobileSheetProbe />
             <Link to="/">Home</Link>
             {/* The story router is not the registered app router. */}
+            {/* oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story router is not the registered app router */}
             <Link to={"/slow" as never}>Slow page</Link>
           </nav>
           <Outlet />
@@ -65,6 +66,7 @@ function renderShell() {
     history: createMemoryHistory(),
     routeTree,
   });
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story builds its own fixtures and route tree
   return <RouterProvider router={router as never} />;
 }
 

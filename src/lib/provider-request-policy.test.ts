@@ -75,16 +75,18 @@ test("HTTP requests omit ambient credentials and disallow redirects", async () =
   assert.equal(received?.redirect, "error");
   assert.equal(received?.referrerPolicy, "no-referrer");
   assert.equal(
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     (received?.headers as Record<string, string> | undefined)?.Authorization,
     "Token private-key",
   );
 });
 
+const rejectingFetcher: typeof fetch = async () => {
+  throw new Error("Request https://provider.test/?password=secret failed");
+};
+
 test("network errors do not expose credential-bearing URLs", async () => {
-  const fetcher: typeof fetch = async () => {
-    throw new Error("Request https://provider.test/?password=secret failed");
-  };
-  await assert.rejects(executeProviderRequest(request, fetcher), {
+  await assert.rejects(executeProviderRequest(request, rejectingFetcher), {
     message: "Provider connection failed",
   });
 });

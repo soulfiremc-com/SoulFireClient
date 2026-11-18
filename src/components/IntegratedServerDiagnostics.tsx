@@ -120,13 +120,12 @@ function ProcessSummary({
     data?.status === "running" ||
     data?.status === "stopping";
   useEffect(() => {
-    if (!active) return;
+    if (!active) return undefined;
     const interval = setInterval(() => setNow(Date.now()), 1_000);
     return () => clearInterval(interval);
   }, [active]);
   if (!data) return <Skeleton className="h-5 w-48" />;
-  const lastOutputAt =
-    data.logs[data.logs.length - 1]?.timestamp ?? data.startedAt;
+  const lastOutputAt = data.logs.at(-1)?.timestamp ?? data.startedAt;
   const elapsed = data.startedAt
     ? Math.max(0, Math.floor(((data.exitedAt ?? now) - data.startedAt) / 1000))
     : null;
@@ -156,7 +155,7 @@ function ProcessSummary({
         )}
       {!!data.error && (
         <Alert variant="destructive">
-          <AlertDescription className="break-words select-text">
+          <AlertDescription className="wrap-break-word select-text">
             {data.error}
           </AlertDescription>
         </Alert>
@@ -412,7 +411,7 @@ function DiagnosticsDetails() {
       </div>
       {!!actionError && (
         <Alert variant="destructive">
-          <AlertDescription className="break-words select-text">
+          <AlertDescription className="wrap-break-word select-text">
             {actionError}
           </AlertDescription>
         </Alert>

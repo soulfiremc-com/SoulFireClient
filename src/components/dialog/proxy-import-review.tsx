@@ -83,9 +83,9 @@ export function ProxyImportReview({
             }}
           />
         </Field>
-        <p role="status">
+        <output className="block">
           {t("proxy.import.review.accepted", { count: result.proxies.length })}
-        </p>
+        </output>
         {result.rejectedLines.length > 0 && (
           <Alert role="alert">
             <AlertDescription>

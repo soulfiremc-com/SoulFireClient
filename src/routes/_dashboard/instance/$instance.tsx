@@ -1,10 +1,6 @@
 import { create } from "@bufbuild/protobuf";
 import { TimestampSchema } from "@bufbuild/protobuf/wkt";
-import {
-  type QueryClient,
-  queryOptions,
-  useQuery,
-} from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import {
   CatchBoundary,
   createFileRoute,
@@ -63,7 +59,7 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
     const { instance } = props.params;
     const instanceInfoQueryOptions = queryOptions({
       queryKey: ["instance-info", instance],
-      queryFn: async (props): Promise<InstanceInfoQueryData> => {
+      queryFn: async (context): Promise<InstanceInfoQueryData> => {
         const transport = createTransport();
         if (transport === null) {
           const instanceConfig: InstanceConfig = create(InstanceConfigSchema, {
@@ -133,8 +129,8 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
         return fetchInstanceInfo(
           transport,
           instance,
-          props.client,
-          props.signal,
+          context.client,
+          context.signal,
         );
       },
       refetchInterval: 3_000,
@@ -154,24 +150,18 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
       instanceInfoQueryOptions,
       metricsQueryOptions,
       ...routeChrome({
-        getTitle: (match) => {
-          const titleContext = match.context as {
-            queryClient: QueryClient;
-          };
+        getTitle: () => {
           const instanceInfo =
-            titleContext.queryClient.getQueryData<InstanceInfoQueryData>(
+            props.context.queryClient.getQueryData<InstanceInfoQueryData>(
               instanceInfoQueryOptions.queryKey,
             );
           return (
             instanceInfo?.friendlyName ?? i18n.t("common:pageName.overview")
           );
         },
-        getIcon: (match) => {
-          const iconContext = match.context as {
-            queryClient: QueryClient;
-          };
+        getIcon: () => {
           const instanceInfo =
-            iconContext.queryClient.getQueryData<InstanceInfoQueryData>(
+            props.context.queryClient.getQueryData<InstanceInfoQueryData>(
               instanceInfoQueryOptions.queryKey,
             );
           return instanceInfo?.icon

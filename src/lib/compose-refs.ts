@@ -47,6 +47,7 @@ function composeRefs<T>(...refs: PossibleRef<T>[]): React.RefCallback<T> {
         }
       };
     }
+    return undefined;
   };
 }
 
@@ -55,6 +56,7 @@ function composeRefs<T>(...refs: PossibleRef<T>[]): React.RefCallback<T> {
  * Accepts callback refs and RefObject(s)
  */
 function useComposedRefs<T>(...refs: PossibleRef<T>[]): React.RefCallback<T> {
+  // oxlint-disable-next-line react/use-memo, react-hooks/exhaustive-deps -- the refs array is the dependency list, as in the Radix composeRefs helper
   return React.useCallback(composeRefs(...refs), refs);
 }
 

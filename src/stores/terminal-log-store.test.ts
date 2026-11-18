@@ -260,12 +260,17 @@ test("a newer history window keeps older cached logs ordered before trimming", (
   assert.equal(merged[0], previous[1]);
 });
 
+const logEntry = (sequence: number) =>
+  toTerminalLine({ ...message(1), id: `1000-${sequence}` });
+
 test("logs in the same millisecond use their numeric sequence for ordering", () => {
-  const entry = (sequence: number) =>
-    toTerminalLine({ ...message(1), id: `1000-${sequence}` });
-  const merged = mergeTerminalLines([entry(9)], [entry(10), entry(11)], true);
+  const merged = mergeTerminalLines(
+    [logEntry(9)],
+    [logEntry(10), logEntry(11)],
+    true,
+  );
   assert.deepEqual(
-    merged.map((entry) => Number(entry.id.split("-")[1])),
+    merged.map((mergedEntry) => Number(mergedEntry.id.split("-")[1])),
     [9, 10, 11],
   );
 });

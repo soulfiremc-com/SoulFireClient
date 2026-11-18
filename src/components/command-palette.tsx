@@ -44,8 +44,8 @@ import {
   CommandPaletteContext,
   type OpenCommandPalette,
 } from "@/components/command-palette-context";
-import { AboutContext } from "@/components/dialog/about-context";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-context";
+import { useAboutContext } from "@/components/dialog/about-context";
+import { useCreateInstanceContext } from "@/components/dialog/create-instance-context";
 import DynamicIcon from "@/components/dynamic-icon";
 import { TransportContext } from "@/components/providers/transport-context";
 import { Badge } from "@/components/ui/badge";
@@ -343,8 +343,8 @@ function CommandPaletteContent({
   const router = useRouter();
   const queryClient = useQueryClient();
   const { setTheme } = useTheme();
-  const { openAbout } = use(AboutContext);
-  const { openCreateInstance } = use(CreateInstanceContext);
+  const { openAbout } = useAboutContext();
+  const { openCreateInstance } = useCreateInstanceContext();
   const { clientDataQueryOptions, instanceListQueryOptions } = useRouteContext({
     from: "/_dashboard",
   });
@@ -563,7 +563,7 @@ function CommandPaletteContent({
     if (recents.length) groups.set("recent", recents);
     const rest = matches
       .filter((command) => !shown.has(command.id))
-      .sort(
+      .toSorted(
         (a, b) =>
           DEFAULT_GROUP_ORDER.indexOf(a.group) -
           DEFAULT_GROUP_ORDER.indexOf(b.group),
@@ -707,17 +707,17 @@ function CommandPaletteContent({
       if (command.destination) {
         saveRecents(rememberPaletteCommand(recentIds, command.id));
         const destination = command.destination;
-        const search = destination.search;
+        const destinationSearch = destination.search;
         // Jumping to a field on this page must not reset its table filters.
         if (
-          search &&
-          typeof search === "object" &&
+          destinationSearch &&
+          typeof destinationSearch === "object" &&
           router.buildLocation(destination).pathname ===
             router.state.location.pathname
         )
           await navigate({
             ...destination,
-            search: (previous) => ({ ...previous, ...search }),
+            search: (previous) => ({ ...previous, ...destinationSearch }),
           });
         else await navigate(destination);
         return;
@@ -924,22 +924,16 @@ function CommandPaletteContent({
         </div>
       )}
       {browseRevoked && (
-        <p
-          role="status"
-          className="-mx-1 flex items-center gap-2 border-b px-3 py-2 text-sm"
-        >
+        <output className="-mx-1 flex items-center gap-2 border-b px-3 py-2 text-sm">
           <CircleAlertIcon
             aria-hidden="true"
             className="size-4 shrink-0 text-destructive"
           />
           {t("commandPalette.projectUnavailable")}
-        </p>
+        </output>
       )}
       {failed && (
-        <div
-          role="status"
-          className="-mx-1 flex items-center gap-2 border-b px-3 py-2 text-sm"
-        >
+        <output className="-mx-1 flex items-center gap-2 border-b px-3 py-2 text-sm">
           <CircleAlertIcon
             aria-hidden="true"
             className="size-4 shrink-0 text-destructive"
@@ -961,11 +955,10 @@ function CommandPaletteContent({
           >
             {t("commandPalette.retry")}
           </Button>
-        </div>
+        </output>
       )}
       {indexStatus && !picking && !confirming && (
-        <div
-          role="status"
+        <output
           className={cn(
             "-mx-1 flex shrink-0 items-center gap-2 border-b px-3 py-2",
             indexFailed ? "text-sm" : "text-xs text-muted-foreground",
@@ -993,7 +986,7 @@ function CommandPaletteContent({
               {t("commandPalette.retry")}
             </Button>
           )}
-        </div>
+        </output>
       )}
       {confirming?.operation?.kind === "bot" ? (
         <OperationConfirmation
@@ -1055,8 +1048,7 @@ function CommandPaletteContent({
         </CommandList>
       )}
       {loading && !confirming && (
-        <div
-          role="status"
+        <output
           aria-label={t("commandPalette.loading")}
           className="flex flex-col gap-1 px-3 pt-1 pb-2"
         >
@@ -1068,7 +1060,7 @@ function CommandPaletteContent({
             <Skeleton className="size-7 shrink-0 rounded-md" />
             <Skeleton className="h-3.5 w-56" />
           </div>
-        </div>
+        </output>
       )}
       <div className="-mx-1 -mb-1 flex min-h-11 shrink-0 items-center gap-3 border-t px-3 py-2 text-xs text-muted-foreground">
         {selectedCommand && (
@@ -1164,6 +1156,7 @@ function OperationConfirmation({
   const action = operation.action;
   return (
     <div
+      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- a labelled group of details; fieldset would add form semantics and min-content sizing
       role="group"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}

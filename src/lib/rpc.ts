@@ -42,10 +42,12 @@ export function createRpcClient<S extends DescService>(
   transport: Transport,
 ): RpcClient<S> {
   const client = createClient(service, transport);
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- makeAnyClient builds the method map from the same service descriptor that types RpcClient
   return makeAnyClient(service, (method) => {
     const operation = `${service.typeName}/${method.name}`;
     // The descriptor selects the method's signature after indexing by its local name.
     if (method.methodKind === "unary") {
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- makeAnyClient builds the method map from the same service descriptor that types RpcClient
       const call = client[method.localName] as (
         request: MessageInitShape<DescMessage>,
         options?: CallOptions,
@@ -54,6 +56,7 @@ export function createRpcClient<S extends DescService>(
         rpc(operation, (signal) => call(request, withSignal(options, signal)));
     }
     if (method.methodKind === "server_streaming") {
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- makeAnyClient builds the method map from the same service descriptor that types RpcClient
       const call = client[method.localName] as (
         request: MessageInitShape<DescMessage>,
         options?: CallOptions,
@@ -77,7 +80,7 @@ export function rpc<A>(
 ): Effect.Effect<A, ConnectError> {
   return Effect.tryPromise({
     try: call,
-    catch: ConnectError.from,
+    catch: (error) => ConnectError.from(error),
   }).pipe(Effect.withSpan(operation));
 }
 
@@ -94,7 +97,7 @@ export function rpcStream<A>(
           const iterator = call(controller.signal)[Symbol.asyncIterator]();
           return { controller, iterator };
         },
-        catch: ConnectError.from,
+        catch: (error) => ConnectError.from(error),
       }),
       ({ controller, iterator }) =>
         Effect.gen(function* () {
@@ -103,7 +106,7 @@ export function rpcStream<A>(
           if (iterator.return !== undefined) {
             yield* Effect.tryPromise({
               try: () => iterator.return!(),
-              catch: ConnectError.from,
+              catch: (error) => ConnectError.from(error),
             }).pipe(Effect.ignore);
           }
         }),
@@ -112,7 +115,7 @@ export function rpcStream<A>(
         Stream.fromEffectRepeat(
           Effect.tryPromise({
             try: () => iterator.next(),
-            catch: ConnectError.from,
+            catch: (error) => ConnectError.from(error),
           }).pipe(
             Effect.flatMap((result) =>
               result.done ? Cause.done() : Effect.succeed(result.value),

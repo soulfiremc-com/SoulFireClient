@@ -2,12 +2,13 @@ import type { SettingsDefinition } from "@/generated/soulfire/common_pb";
 
 export type SettingFocus = { namespace: string; key: string };
 
+const valid = (value: unknown): value is string =>
+  typeof value === "string" && value.length > 0 && value.length <= 256;
+
 export function parseSettingFocusSearch(search: Record<string, unknown>): {
   focusNamespace?: string;
   focusKey?: string;
 } {
-  const valid = (value: unknown): value is string =>
-    typeof value === "string" && value.length > 0 && value.length <= 256;
   return valid(search.focusNamespace) && valid(search.focusKey)
     ? { focusNamespace: search.focusNamespace, focusKey: search.focusKey }
     : {};

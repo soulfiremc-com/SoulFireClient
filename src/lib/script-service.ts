@@ -1,11 +1,12 @@
 import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import type { Value } from "@bufbuild/protobuf/wkt";
 import {
   ListValueSchema,
+  NullValue,
   StructSchema,
   timestampMs,
+  type Value,
   ValueSchema,
 } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
@@ -33,6 +34,11 @@ import {
   ScriptNodeSchema,
   ScriptService,
 } from "@/generated/soulfire/script_pb";
+import {
+  nodeDataBoolean,
+  nodeDataString,
+  nodeDataStrings,
+} from "@/lib/script-node-data";
 
 export type {
   GetNodeTypesRequest,
@@ -192,7 +198,9 @@ export function registryDataQueryOptions(
  */
 function toProtoValue(value: unknown): Value {
   if (value === null || value === undefined) {
-    return create(ValueSchema, { kind: { case: "nullValue", value: 0 } });
+    return create(ValueSchema, {
+      kind: { case: "nullValue", value: NullValue.NULL_VALUE },
+    });
   }
   if (typeof value === "boolean") {
     return create(ValueSchema, {
@@ -229,7 +237,9 @@ function toProtoValue(value: unknown): Value {
       },
     });
   }
-  return create(ValueSchema, { kind: { case: "nullValue", value: 0 } });
+  return create(ValueSchema, {
+    kind: { case: "nullValue", value: NullValue.NULL_VALUE },
+  });
 }
 
 /**
@@ -267,7 +277,7 @@ function fromProtoValue(value: Value): unknown {
 export function nodesToProto(nodes: Node[]): ScriptNode[] {
   return nodes.map((node) => {
     const data: { [key: string]: Value } = {};
-    const nodeData = node.data as Record<string, unknown>;
+    const nodeData = node.data;
     if (nodeData && typeof nodeData === "object") {
       for (const [key, value] of Object.entries(nodeData)) {
         // Skip internal fields that are handled separately
@@ -296,16 +306,17 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
         y: node.position.y,
       }),
       data,
-      muted: (nodeData?.muted as boolean) ?? false,
-      collapsed: (nodeData?.collapsed as boolean) ?? false,
-      label: (nodeData?.label as string) ?? "",
-      containedNodes: (nodeData?.containedNodes as string[]) ?? [],
-      parentFrameId: (nodeData?.parentFrameId as string) ?? "",
+      muted: nodeDataBoolean(nodeData, "muted") ?? false,
+      collapsed: nodeDataBoolean(nodeData, "collapsed") ?? false,
+      label: nodeDataString(nodeData, "label") ?? "",
+      containedNodes: nodeDataStrings(nodeData, "containedNodes") ?? [],
+      parentFrameId: nodeDataString(nodeData, "parentFrameId") ?? "",
       ...persistedNodeDimensions(node),
       resolvedType:
         nodeData?.resolvedType === undefined
           ? undefined
-          : localPortTypeToProto(nodeData.resolvedType as LocalPortType),
+          : // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- resolvedType holds a LocalPortType that the editor stored in the node data
+            localPortTypeToProto(nodeData.resolvedType as LocalPortType),
     });
   });
 }
@@ -356,6 +367,7 @@ export function edgesToProto(edges: Edge[]): ScriptEdge[] {
     // Port IDs are now simple names, so we rely on edge metadata
     const isExecution =
       edge.type === "execution" ||
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- edge data is an untyped record that the editor fills with an optional edgeType string
       (edge.data as { edgeType?: string })?.edgeType === "execution";
 
     return create(ScriptEdgeSchema, {
@@ -411,6 +423,9 @@ export type ScriptStateFilter = (typeof SCRIPT_STATE_FILTERS)[number];
 export const SCRIPT_SORTS = ["edited", "name"] as const;
 export type ScriptSort = (typeof SCRIPT_SORTS)[number];
 
+const editedAt = (script: ScriptInfo) =>
+  script.updatedAt ? timestampMs(script.updatedAt) : 0;
+
 /** Filters scripts by name or description and on/off state, then sorts them. */
 export function filterScripts(
   scripts: ScriptInfo[],
@@ -419,8 +434,6 @@ export function filterScripts(
   sort: ScriptSort,
 ) {
   const query = search.trim().toLocaleLowerCase();
-  const editedAt = (script: ScriptInfo) =>
-    script.updatedAt ? timestampMs(script.updatedAt) : 0;
   return scripts
     .filter(
       (script) =>
@@ -429,7 +442,7 @@ export function filterScripts(
           script.name.toLocaleLowerCase().includes(query) ||
           script.description.toLocaleLowerCase().includes(query)),
     )
-    .sort((a, b) =>
+    .toSorted((a, b) =>
       sort === "name"
         ? a.name.localeCompare(b.name)
         : editedAt(b) - editedAt(a),

@@ -36,10 +36,7 @@ export function instanceMetricsQueryOptions(
 
       const previous =
         queryClient.getQueryData<GetInstanceMetricsResponse>(queryKey);
-      const since =
-        previous && previous.snapshots.length > 0
-          ? previous.snapshots[previous.snapshots.length - 1].timestamp
-          : undefined;
+      const since = previous?.snapshots.at(-1)?.timestamp;
 
       const client = createRpcClient(MetricsService, transport);
       const result = await Effect.runPromise(

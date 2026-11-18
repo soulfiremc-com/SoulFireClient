@@ -3,8 +3,9 @@ import { createGrpcWebTransport } from "@connectrpc/connect-web";
 import i18n from "@/lib/i18n.ts";
 import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { resetQuerySession } from "@/lib/query-session.ts";
-import type { SFServerType } from "@/lib/types.ts";
+import { SF_SERVER_TYPES, type SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";
+import { isOneOf } from "@/lib/is-one-of";
 
 const LOCAL_STORAGE_SERVER_TYPE_KEY = "server-type";
 const LOCAL_STORAGE_SERVER_ADDRESS_KEY = "server-address";
@@ -54,9 +55,8 @@ export const setAuthentication = (
 };
 
 export const getServerType = () => {
-  return localStorage.getItem(
-    LOCAL_STORAGE_SERVER_TYPE_KEY,
-  ) as SFServerType | null;
+  const serverType = localStorage.getItem(LOCAL_STORAGE_SERVER_TYPE_KEY);
+  return isOneOf(serverType, SF_SERVER_TYPES) ? serverType : null;
 };
 
 export const getServerAddress = () =>

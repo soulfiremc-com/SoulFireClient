@@ -16,7 +16,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useTheme } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 import { PostHogProvider } from "posthog-js/react";
-import { type CSSProperties, memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { CustomContextMenu } from "@/components/custom-context-menu.tsx";
 import { AboutProvider } from "@/components/dialog/about-dialog.tsx";
 import {
@@ -109,7 +109,7 @@ function RootPending() {
     "--titlebar-height": shouldShowWindowTitlebar
       ? WINDOW_TITLEBAR_HEIGHT
       : "0px",
-  } as CSSProperties;
+  };
 
   return (
     <ThemeProvider
@@ -163,7 +163,7 @@ function getPresenceForPath(
       instanceId,
     ]);
     const snapshots = metrics?.snapshots;
-    const lastSnapshot = snapshots?.[snapshots.length - 1];
+    const lastSnapshot = snapshots?.at(-1);
     const botInfo = lastSnapshot
       ? `${lastSnapshot.botsOnline}/${lastSnapshot.botsTotal} bots online`
       : undefined;
@@ -247,7 +247,7 @@ function RootLayout() {
     "--titlebar-height": shouldShowWindowTitlebar
       ? WINDOW_TITLEBAR_HEIGHT
       : "0px",
-  } as CSSProperties;
+  };
 
   useEffect(() => {
     if (isDesktopApp()) {
@@ -291,6 +291,7 @@ function RootLayout() {
         }
       };
     }
+    return undefined;
   }, []);
 
   return (

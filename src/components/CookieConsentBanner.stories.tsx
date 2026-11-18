@@ -119,7 +119,7 @@ export const PendingThenDeclined: Story = {
     await expect(consent.getStatus()).toBe("denied");
     client.identify("private-user");
     client.capture("after_reload");
-    await expect(events[events.length - 1]?.properties.distinct_id).toBe(
+    await expect(events.at(-1)?.properties.distinct_id).toBe(
       "$posthog_cookieless",
     );
     await expect(localStorage.getItem(persistenceKey)).toBeNull();
@@ -135,9 +135,7 @@ export const AcceptAndRemember: Story = {
     ).toBeNull();
     client.identify("consenting-user", { email: "allowed@example.com" });
     client.capture("after_accept");
-    await expect(events[events.length - 1]?.properties.distinct_id).toBe(
-      "consenting-user",
-    );
+    await expect(events.at(-1)?.properties.distinct_id).toBe("consenting-user");
     await expect(localStorage.getItem(persistenceKey)).not.toBeNull();
 
     consent.resetIdentity();
@@ -188,9 +186,7 @@ export const WithdrawConsent: Story = {
     client.identify("next-user");
     client.capture("after_accepting_again");
     await expect(consent.getStatus()).toBe("granted");
-    await expect(events[events.length - 1]?.properties.distinct_id).toBe(
-      "next-user",
-    );
+    await expect(events.at(-1)?.properties.distinct_id).toBe("next-user");
     await expect(JSON.stringify(events)).not.toContain("previous-user");
     await expect(localStorage.getItem(persistenceKey)).not.toBeNull();
   },

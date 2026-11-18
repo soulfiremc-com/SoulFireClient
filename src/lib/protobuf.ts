@@ -5,6 +5,7 @@ import { Effect, Stream } from "effect";
 
 export function parseJsonValue(value: string): JsonValue | undefined {
   try {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- JSON.parse returns any; callers pass JSON text that the server or an earlier JSON.stringify produced
     return JSON.parse(value) as JsonValue;
   } catch {
     return undefined;
@@ -15,8 +16,8 @@ export function jsonToValue(json: JsonValue): Value {
   return fromJson(ValueSchema, json);
 }
 
-export function valueToJson(value: Value): JsonValue {
-  return toJson(ValueSchema, value);
+export function valueToJson(value: Value | undefined): JsonValue {
+  return value === undefined ? null : toJson(ValueSchema, value);
 }
 
 export async function observeServerStream<T>(

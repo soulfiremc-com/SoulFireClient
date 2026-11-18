@@ -65,7 +65,7 @@ export async function runProviderEffect<A, E>(
     ? {
         request: (request: ProviderRequest) =>
           Effect.tryPromise({
-            try: (signal) => fetcher(request, signal),
+            try: (requestSignal) => fetcher(request, requestSignal),
             catch: (error) =>
               error instanceof ProviderApiError
                 ? error

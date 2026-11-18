@@ -41,7 +41,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
+import { useCreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -188,7 +188,7 @@ function DuplicateInstanceDialog({
     },
     onSubmit: async ({ value }) => {
       try {
-        await onDuplicate(Schema.decodeUnknownSync(formSchema)(value));
+        await onDuplicate(Schema.decodeSync(formSchema)(value));
       } catch {
         // The mutation reports errors and keeps the draft available for corrections.
       }
@@ -279,7 +279,7 @@ function InstanceCardSkeleton() {
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-4 w-20" />
       </div>
-      <Skeleton className="h-8 w-8" />
+      <Skeleton className="size-8" />
     </div>
   );
 }
@@ -339,7 +339,7 @@ function Content() {
     }) => {
       if (transport === null) {
         toast.info(t("demoReadOnly"));
-        return;
+        return undefined;
       }
       const botService = createRpcClient(BotService, transport);
       const promise = Effect.runPromise(
@@ -384,7 +384,7 @@ function Content() {
       if (transport === null) {
         toast.info(t("demoReadOnly"));
         setDuplicateSource(null);
-        return;
+        return undefined;
       }
       const promise = Effect.runPromise(
         createRpcClient(InstanceService, transport).duplicateInstance({
@@ -426,7 +426,7 @@ function Content() {
     mutationFn: async (instanceId: string) => {
       if (transport === null) {
         toast.info(t("demoReadOnly"));
-        return;
+        return undefined;
       }
       const instanceService = createRpcClient(InstanceService, transport);
       const promise = Effect.runPromise(
@@ -584,6 +584,7 @@ function Content() {
             return (
               <div
                 key={instance.id}
+                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
                 role="listitem"
                 className="relative max-h-fit"
               >
@@ -737,7 +738,7 @@ function CreateInstanceButton() {
     select: (context) => context.clientDataQueryOptions,
   });
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
-  const { openCreateInstance } = use(CreateInstanceContext);
+  const { openCreateInstance } = useCreateInstanceContext();
 
   if (!hasGlobalPermission(clientInfo, GlobalPermission.CREATE_INSTANCE)) {
     return null;

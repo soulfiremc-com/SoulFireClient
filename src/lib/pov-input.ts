@@ -142,7 +142,7 @@ export function isTextInputKey(
   return (
     !event.metaKey &&
     (!event.ctrlKey || event.altKey) &&
-    (event.key === "Dead" || [...event.key].length === 1)
+    (event.key === "Dead" || Array.from(event.key).length === 1)
   );
 }
 

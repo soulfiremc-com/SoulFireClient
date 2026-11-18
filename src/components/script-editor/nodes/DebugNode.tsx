@@ -9,6 +9,7 @@ import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { getPortColor, type PortType } from "./types";
+import { displayText } from "@/lib/display-text";
 
 export interface DebugNodeData {
   /** Custom label for the debug node */
@@ -56,15 +57,15 @@ function formatValue(value: unknown): string {
   }
 
   if (typeof value === "object") {
-    const keys = Object.keys(value);
-    if (keys.length === 0) return "{}";
-    if (keys.length <= 2) {
-      return `{${keys.map((k) => `${k}: ${formatValue((value as Record<string, unknown>)[k])}`).join(", ")}}`;
+    const entries = Object.entries(value);
+    if (entries.length === 0) return "{}";
+    if (entries.length <= 2) {
+      return `{${entries.map(([k, entry]) => `${k}: ${formatValue(entry)}`).join(", ")}}`;
     }
-    return `{${keys.length} keys}`;
+    return `{${entries.length} keys}`;
   }
 
-  return String(value);
+  return displayText(value);
 }
 
 /**
@@ -98,7 +99,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
   );
   const clearDebugValues = editor.actions.clearDebugValues;
 
-  const currentValue = history.length > 0 ? history[history.length - 1] : null;
+  const currentValue = history.length > 0 ? history.at(-1) : null;
 
   const handleClear = useCallback(() => {
     clearDebugValues(id);
@@ -124,32 +125,32 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border/50 bg-warning/10 px-3 py-2">
-        <Bug className="h-4 w-4 text-warning" />
+        <Bug className="size-4 text-warning" />
         <span className="flex-1 text-sm font-medium">{label}</span>
         <Button
           variant="ghost"
           size="icon"
-          className="h-5 w-5"
+          className="size-5"
           onClick={handleCopyValue}
           disabled={!currentValue}
           title={t("scripts.editor.debug.copyValue")}
         >
-          <Copy className="h-3 w-3" />
+          <Copy className="size-3" />
         </Button>
         <Button
           variant="ghost"
           size="icon"
-          className="h-5 w-5"
+          className="size-5"
           onClick={handleClear}
           disabled={history.length === 0}
           title={t("scripts.editor.debug.clearHistory")}
         >
-          <Trash2 className="h-3 w-3" />
+          <Trash2 className="size-3" />
         </Button>
       </div>
 
       {/* Ports */}
-      <div className="px-2 py-2">
+      <div className="p-2">
         <div className="flex items-center justify-between">
           {/* Input */}
           <div className="flex items-center gap-2">
@@ -157,7 +158,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
               type="target"
               position={Position.Left}
               id="in"
-              className="!relative !top-0 !transform-none transition-transform hover:scale-125"
+              className="relative! top-0! transform-none! transition-transform hover:scale-125"
               style={{
                 background: color,
                 width: 8,
@@ -175,7 +176,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
               type="source"
               position={Position.Right}
               id="out"
-              className="!relative !top-0 !transform-none transition-transform hover:scale-125"
+              className="relative! top-0! transform-none! transition-transform hover:scale-125"
               style={{
                 background: color,
                 width: 8,
@@ -191,7 +192,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 
       {/* Current Value Display */}
       <div className="px-2 pb-2">
-        <div className="rounded bg-muted/50 p-2">
+        <div className="rounded-sm bg-muted/50 p-2">
           {currentValue ? (
             <div className="space-y-1">
               <div className="text-xs text-muted-foreground">
@@ -217,7 +218,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 
       {/* History (collapsed by default, shows last 5) */}
       {history.length > 1 && (
-        <div className="border-t border-border/50 px-2 py-2">
+        <div className="border-t border-border/50 p-2">
           <div className="mb-1 text-xs text-muted-foreground">
             History ({history.length} values)
           </div>
@@ -225,7 +226,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
             <div className="space-y-1">
               {history
                 .slice(-5)
-                .reverse()
+                .toReversed()
                 .map((entry) => (
                   <div
                     key={`${entry.timestamp.getTime()}-${formatValue(entry.value)}`}

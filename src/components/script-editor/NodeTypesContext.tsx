@@ -198,7 +198,7 @@ export function NodeTypesProvider({
   // Get sorted category IDs
   const categories = useMemo(() => {
     const serverCategories = [...data.categories]
-      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .toSorted((a, b) => a.sortOrder - b.sortOrder)
       .map((c) => c.id);
     // Add layout category at the end
     return [...serverCategories, LAYOUT_CATEGORY_INFO.id];

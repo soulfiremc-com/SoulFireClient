@@ -1,6 +1,5 @@
-import i18n from "i18next";
+import { t as translate } from "i18next";
 import type { JsonValue } from "@bufbuild/protobuf";
-import type { Value } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
 import {
   useMutation,
@@ -65,12 +64,16 @@ import {
   removeBotConfigEntry,
   updateBotConfigEntry,
 } from "@/lib/utils.tsx";
+import { isOneOf } from "@/lib/is-one-of";
+import { requireField } from "@/lib/require-field";
+import { displayText } from "@/lib/display-text";
 
 type BotSettingsPage = SettingsPage & {
   plugin?: ServerPlugin;
 };
 
-type BotSettingsView = "overrides" | "all";
+const BOT_SETTINGS_VIEWS = ["overrides", "all"] as const;
+type BotSettingsView = (typeof BOT_SETTINGS_VIEWS)[number];
 
 type ResolvedBotSetting = {
   page: BotSettingsPage;
@@ -95,7 +98,9 @@ function getBotSettingsPages(
   const perBotDefinitionIds = new Set(
     settingsDefinitions
       .filter((def) => def.scope === SettingsPageEntryScopeType.BOT)
-      .map((def) => getSettingIdentifierKey(def.id as SettingsEntryIdentifier)),
+      .map((def) =>
+        getSettingIdentifierKey(requireField(def.id, "a setting ID")),
+      ),
   );
 
   return instanceSettings
@@ -124,7 +129,7 @@ function convertAccountConfigToSettings(
   for (const namespace of account.config) {
     const entries: Record<string, JsonValue> = {};
     for (const entry of namespace.entries) {
-      entries[entry.key] = valueToJson(entry.value as Value);
+      entries[entry.key] = valueToJson(entry.value);
     }
     settings[namespace.namespace] = entries;
   }
@@ -188,23 +193,23 @@ function formatSettingValue(
   value: JsonValue,
 ): string {
   if (value === null || value === undefined) {
-    return i18n.t("instance:account.config.value.notSet");
+    return translate("instance:account.config.value.notSet");
   }
 
   switch (definition.type.case) {
     case "bool":
       return value
-        ? i18n.t("instance:account.config.value.on")
-        : i18n.t("instance:account.config.value.off");
+        ? translate("instance:account.config.value.on")
+        : translate("instance:account.config.value.off");
     case "combo":
       return (
         definition.type.value.options.find((option) => option.id === value)
-          ?.displayName ?? String(value)
+          ?.displayName ?? displayText(value)
       );
     case "string": {
-      const stringValue = String(value);
+      const stringValue = displayText(value);
       if (stringValue.length === 0) {
-        return i18n.t("instance:account.config.value.empty");
+        return translate("instance:account.config.value.empty");
       }
 
       return stringValue.length > 64
@@ -214,14 +219,14 @@ function formatSettingValue(
     case "stringList": {
       const listValue = Array.isArray(value) ? value : [];
       if (listValue.length === 0) {
-        return i18n.t("instance:account.config.value.empty");
+        return translate("instance:account.config.value.empty");
       }
 
       if (listValue.length <= 2) {
-        return listValue.join(", ");
+        return listValue.map(displayText).join(", ");
       }
 
-      return i18n.t("instance:account.config.value.entries", {
+      return translate("instance:account.config.value.entries", {
         count: listValue.length,
       });
     }
@@ -232,16 +237,16 @@ function formatSettingValue(
         !("min" in value) ||
         !("max" in value)
       ) {
-        return i18n.t("instance:account.config.value.range");
+        return translate("instance:account.config.value.range");
       }
 
-      return `${value.min} – ${value.max}`;
+      return `${displayText(value.min)} – ${displayText(value.max)}`;
     }
     case undefined:
     case "double":
     case "int":
     default:
-      return String(value);
+      return displayText(value);
   }
 }
 
@@ -269,11 +274,13 @@ function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
 function sourceLabel(source: ResolvedBotSetting["source"]): string {
   switch (source) {
     case "bot":
-      return i18n.t("instance:account.config.source.bot");
+      return translate("instance:account.config.source.bot");
     case "instance":
-      return i18n.t("instance:account.config.source.instance");
+      return translate("instance:account.config.source.instance");
     case "default":
-      return i18n.t("instance:account.config.source.default");
+      return translate("instance:account.config.source.default");
+    default:
+      return source satisfies never;
   }
 }
 
@@ -535,7 +542,7 @@ function DialogSkeleton({ isMobile }: { isMobile: boolean }) {
               {[1, 2, 3, 4].map((index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 rounded-md px-2 py-2"
+                  className="flex items-center gap-3 rounded-md p-2"
                 >
                   <Skeleton className="size-4" />
                   <Skeleton className="h-4 w-28" />
@@ -613,7 +620,7 @@ function DialogContentInner({
     () =>
       new Map(
         instanceInfo.settingsDefinitions.map((definition) => [
-          getSettingIdentifierKey(definition.id as SettingsEntryIdentifier),
+          getSettingIdentifierKey(requireField(definition.id, "a setting ID")),
           definition,
         ]),
       ),
@@ -774,8 +781,8 @@ function DialogContentInner({
           <ToggleGroup
             value={[view]}
             onValueChange={(value) => {
-              const nextView = value[0] as BotSettingsView | undefined;
-              if (nextView) {
+              const nextView = value[0];
+              if (isOneOf(nextView, BOT_SETTINGS_VIEWS)) {
                 setView(nextView);
               }
             }}

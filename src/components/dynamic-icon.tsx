@@ -19,6 +19,7 @@ const FALLBACK_ICON: LucideIconName = "settings";
 // keeping it in the startup bundle.
 function loadIcon(name: string) {
   return import("lucide-react/dynamicIconImports").then(({ default: icons }) =>
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the `in` check above proves the name is a key of the icon map
     name in icons ? icons[name as LucideIconName]() : icons[FALLBACK_ICON](),
   );
 }

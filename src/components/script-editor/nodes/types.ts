@@ -92,6 +92,8 @@ export function getBaseType(td: TypeDescriptor): PortType {
       return td.base;
     case "type_variable":
       return "any";
+    default:
+      return td satisfies never;
   }
 }
 
@@ -106,6 +108,8 @@ export function typeDescriptorDisplayString(td: TypeDescriptor): string {
       return `${td.base}<${td.params.map(typeDescriptorDisplayString).join(", ")}>`;
     case "type_variable":
       return td.name;
+    default:
+      return td satisfies never;
   }
 }
 
@@ -120,6 +124,8 @@ export function hasTypeVariables(td: TypeDescriptor): boolean {
       return td.params.some(hasTypeVariables);
     case "type_variable":
       return true;
+    default:
+      return td satisfies never;
   }
 }
 
@@ -153,6 +159,8 @@ export function resolveTypeDescriptor(
       }
       return td;
     }
+    default:
+      return td satisfies never;
   }
 }
 
@@ -397,7 +405,7 @@ export function protoTypeDescriptorToLocal(
 
   const kind = proto.kind;
   if (kind.case === "simple") {
-    return simpleType(protoPortTypeToLocal(kind.value as ProtoPortType));
+    return simpleType(protoPortTypeToLocal(kind.value));
   }
   if (kind.case === "parameterized") {
     const p = kind.value;
@@ -410,7 +418,7 @@ export function protoTypeDescriptorToLocal(
     };
   }
   if (kind.case === "typeVariable") {
-    return typeVar(kind.value as string);
+    return typeVar(kind.value);
   }
 
   return undefined;

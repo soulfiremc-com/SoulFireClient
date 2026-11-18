@@ -2,7 +2,7 @@ import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import chokidar from "chokidar";
+import { watch } from "chokidar";
 import {
   app,
   BrowserWindow,
@@ -100,7 +100,7 @@ type FsWatchRegistration = {
   changedPaths: Set<string>;
   debounceTimer: NodeJS.Timeout | null;
   ownerContentsId: number;
-  watcher: ReturnType<typeof chokidar.watch>;
+  watcher: ReturnType<typeof watch>;
 };
 
 const windowStateStore = new Store<{
@@ -118,7 +118,7 @@ const windowStateStore = new Store<{
   name: "window-state",
 });
 
-const castSettingsStore = new Store<{ display: typeof DisplaySettings.Type }>({
+const castSettingsStore = new Store<{ display: DisplaySettings }>({
   name: "cast-display",
   defaults: { display: DEFAULT_SETTINGS },
 });
@@ -448,12 +448,15 @@ function registerSecurityHandlers(): void {
       povInputOwners.delete(contents.id);
       updatePovEscapeShortcut();
     });
-    contents.on("did-start-navigation", (_event, _url, inPlace, mainFrame) => {
-      if (mainFrame && !inPlace) {
-        povInputOwners.delete(contents.id);
-        updatePovEscapeShortcut();
-      }
-    });
+    contents.on(
+      "did-start-navigation",
+      (_navigationEvent, _url, inPlace, mainFrame) => {
+        if (mainFrame && !inPlace) {
+          povInputOwners.delete(contents.id);
+          updatePovEscapeShortcut();
+        }
+      },
+    );
     contents.on("will-attach-webview", (event) => {
       event.preventDefault();
     });
@@ -468,7 +471,7 @@ function registerSecurityHandlers(): void {
       }
     });
 
-    contents.on("context-menu", (_event, params) => {
+    contents.on("context-menu", (_menuEvent, params) => {
       showEditContextMenu(contents, params);
     });
 
@@ -720,6 +723,7 @@ function createAppTray(): void {
   });
 }
 
+// oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- each handler declares the argument types of its IPC channel
 function handleIpc<Args extends unknown[], Result>(
   channel: string,
   handler: (
@@ -743,7 +747,9 @@ function windowTarget(sender: BrowserWindow, target?: "pov"): BrowserWindow {
 
 function registerIpcHandlers(): void {
   handleIpc("providers:request", async (_window, request: ProviderRequest) => {
-    return executeProviderRequest(request, net.fetch);
+    return executeProviderRequest(request, (input, init) =>
+      net.fetch(input, init),
+    );
   });
   handleIpc("pov:set-captured", (owner, captured: boolean, target?: "pov") => {
     if (
@@ -874,7 +880,7 @@ function registerIpcHandlers(): void {
         changedPaths: new Set<string>(),
         debounceTimer: null,
         ownerContentsId,
-        watcher: chokidar.watch(targetPath, {
+        watcher: watch(targetPath, {
           depth: options?.recursive === false ? 0 : undefined,
           ignoreInitial: true,
           persistent: true,
@@ -1116,19 +1122,11 @@ async function openDialog(
     defaultPath: options.defaultPath,
     filters: options.filters,
     properties: [
-      ...(options.directory ? ["openDirectory"] : ["openFile"]),
-      ...(options.multiple ? ["multiSelections"] : []),
-    ] as Array<
-      | "openDirectory"
-      | "openFile"
-      | "multiSelections"
-      | "showHiddenFiles"
-      | "createDirectory"
-      | "promptToCreate"
-      | "noResolveAliases"
-      | "treatPackageAsDirectory"
-      | "dontAddToRecent"
-    >,
+      ...(options.directory
+        ? (["openDirectory"] as const)
+        : (["openFile"] as const)),
+      ...(options.multiple ? (["multiSelections"] as const) : []),
+    ],
     title: options.title,
   });
 
@@ -1192,9 +1190,9 @@ async function bootstrap(): Promise<void> {
   registerSecurityHandlers();
   registerIpcHandlers();
   castManager.setSettings(
-    Schema.decodeUnknownOption(DisplaySettings)(
-      castSettingsStore.get("display"),
-    ).pipe(Option.getOrElse(() => DEFAULT_SETTINGS)),
+    Schema.decodeOption(DisplaySettings)(castSettingsStore.get("display")).pipe(
+      Option.getOrElse(() => DEFAULT_SETTINGS),
+    ),
   );
   await registerAppProtocol();
 

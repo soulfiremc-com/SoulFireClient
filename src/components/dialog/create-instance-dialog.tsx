@@ -89,14 +89,13 @@ function CreateInstanceDialog({
       if (transport === null) {
         toast.info(t("demoReadOnly"));
         setOpen(false);
-        return;
+        return undefined;
       }
 
       const instanceService = createRpcClient(InstanceService, transport);
       const promise = Effect.runPromise(
         instanceService.createInstance({
-          friendlyName:
-            Schema.decodeUnknownSync(formSchema)(values).friendlyName,
+          friendlyName: Schema.decodeSync(formSchema)(values).friendlyName,
         }),
       ).then((r) => r);
       toast.promise(promise, {

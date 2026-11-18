@@ -55,6 +55,7 @@ import {
   getSettingValue,
   hasInstancePermission,
 } from "@/lib/utils.tsx";
+import { displayText } from "@/lib/display-text";
 
 export default function ControlsMenu() {
   const { t } = useTranslation("common");
@@ -280,13 +281,13 @@ export default function ControlsMenu() {
         permission.instancePermission === InstancePermission.CONTROL_BOTS,
     );
     return (
-      <p role="status" className="text-sm text-muted-foreground">
+      <output className="block text-sm text-muted-foreground">
         {t(
           supportsBotControls
             ? "controls.permissionDenied"
             : "controls.serverUpdateRequired",
         )}
-      </p>
+      </output>
     );
   }
 
@@ -310,13 +311,13 @@ export default function ControlsMenu() {
   const versionDefinition = definitions.find(
     (d) => d.id?.namespace === "bot" && d.id.key === "protocol-version",
   );
-  const address = String(
+  const address = displayText(
     getSettingValue(instanceInfo.profile, addressDefinition) ?? "",
   );
   const usesDefaultAddress =
     addressDefinition?.type.case === "string" &&
     address === addressDefinition.type.value.def;
-  const version = String(
+  const version = displayText(
     getSettingValue(instanceInfo.profile, versionDefinition) ?? "",
   );
   const versionName =

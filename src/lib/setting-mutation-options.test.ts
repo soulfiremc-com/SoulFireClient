@@ -225,9 +225,9 @@ test("other instances, bots and entries can save while one setting is pending", 
     ]) {
       const other = new MutationObserver(cache, {
         ...settingMutationOptions(
-          { type: "bot", instanceId: instance!, botId: bot! },
-          namespace!,
-          key!,
+          { type: "bot", instanceId: instance, botId: bot },
+          namespace,
+          key,
           "reset",
         ),
         mutationFn: async () => {},

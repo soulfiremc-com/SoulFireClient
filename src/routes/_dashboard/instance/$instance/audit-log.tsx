@@ -1,7 +1,6 @@
 import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
 
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -48,6 +47,7 @@ import {
 } from "@/lib/types.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
+import { requireField } from "@/lib/require-field";
 
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/audit-log",
@@ -57,7 +57,7 @@ export const Route = createFileRoute(
     const { instance } = props.params;
     const auditLogQueryOptions = queryOptions({
       queryKey: ["instance-audit-log", instance],
-      queryFn: async (props): Promise<InstanceAuditLogResponse> => {
+      queryFn: async (context): Promise<InstanceAuditLogResponse> => {
         const transport = createTransport();
         if (transport === null) {
           return create(InstanceAuditLogResponseSchema, {
@@ -72,7 +72,7 @@ export const Route = createFileRoute(
               id: instance,
             },
             {
-              signal: props.signal,
+              signal: context.signal,
             },
           ),
         );
@@ -112,6 +112,8 @@ function toI18nKey(type: InstanceAuditLogResponse_AuditLogEntryType) {
       return "auditLog.restartedBots";
     case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC:
       return "auditLog.calledPluginRpc";
+    default:
+      return type satisfies never;
   }
 }
 
@@ -220,7 +222,8 @@ const columns: ColumnDef<
   },
   {
     id: "timestamp",
-    accessorFn: (row) => timestampToDate(row.timestamp as Timestamp),
+    accessorFn: (row) =>
+      timestampToDate(requireField(row.timestamp, "an audit log timestamp")),
     accessorKey: "timestamp",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -229,7 +232,11 @@ const columns: ColumnDef<
       />
     ),
     cell: ({ row }) => (
-      <SFTimeAgo date={timestampToDate(row.original.timestamp as Timestamp)} />
+      <SFTimeAgo
+        date={timestampToDate(
+          requireField(row.original.timestamp, "an audit log timestamp"),
+        )}
+      />
     ),
     enableGlobalFilter: false,
     sortFn: "datetime",
@@ -249,7 +256,7 @@ const columns: ColumnDef<
 
 function AuditLogSkeleton() {
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <DataTableSkeleton
         columnCount={3}
         filterCount={3}
@@ -292,7 +299,7 @@ function Content() {
   const copyToClipboard = useCopyToClipboard();
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <DataTable table={table} onRowContextMenu={handleContextMenu}>
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />

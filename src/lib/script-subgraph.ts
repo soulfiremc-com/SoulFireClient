@@ -1,4 +1,5 @@
 import type { Edge, Node, XYPosition } from "@xyflow/react";
+import { nodeDataString } from "@/lib/script-node-data";
 
 export function selectedSubgraph(
   nodes: Node[],
@@ -8,7 +9,7 @@ export function selectedSubgraph(
   const children = new Map<string, string[]>();
   const pending: string[] = [];
   for (const node of nodes) {
-    const parent = node.data.parentGroupId as string | undefined;
+    const parent = nodeDataString(node.data, "parentGroupId");
     if (parent) {
       const siblings = children.get(parent) ?? [];
       siblings.push(node.id);
@@ -34,7 +35,9 @@ export function selectedSubgraph(
 
 export function subgraphRoots(nodes: Node[]) {
   const ids = new Set(nodes.map((node) => node.id));
-  return nodes.filter((node) => !ids.has(node.data.parentGroupId as string));
+  return nodes.filter(
+    (node) => !ids.has(nodeDataString(node.data, "parentGroupId") ?? ""),
+  );
 }
 
 export function cloneSubgraph(
@@ -47,7 +50,7 @@ export function cloneSubgraph(
   );
   return {
     nodes: graph.nodes.map((node): Node => {
-      const parent = ids.get(node.data.parentGroupId as string);
+      const parent = ids.get(nodeDataString(node.data, "parentGroupId") ?? "");
       return {
         ...node,
         id: ids.get(node.id)!,
@@ -58,7 +61,9 @@ export function cloneSubgraph(
         data: {
           ...node.data,
           parentGroupId: parent ?? groupId ?? undefined,
-          parentFrameId: ids.get(node.data.parentFrameId as string),
+          parentFrameId: ids.get(
+            nodeDataString(node.data, "parentFrameId") ?? "",
+          ),
           ...(Array.isArray(node.data.containedNodes) && {
             containedNodes: node.data.containedNodes.flatMap((id: string) => {
               const copy = ids.get(id);

@@ -56,10 +56,7 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
-import {
-  accountTypeToIcon,
-  translateAccountType,
-} from "@/lib/account-types.ts";
+import { accountTypeIcons, translateAccountType } from "@/lib/account-types.ts";
 import { type BotDisplayState, getBotDisplayState } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
@@ -161,7 +158,7 @@ export function BotCardSkeleton() {
   return (
     <div className="rounded-lg border p-4">
       <div className="flex items-start gap-3">
-        <Skeleton className="size-12 rounded" />
+        <Skeleton className="size-12 rounded-sm" />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <Skeleton className="h-5 w-24" />
           <div className="flex gap-1">
@@ -214,7 +211,7 @@ function BotCard({
     MinecraftAccountProto_AccountTypeProto,
     bot.type,
   );
-  const Icon = accountTypeToIcon(typeKey);
+  const Icon = accountTypeIcons[typeKey];
   const { i18n } = useTranslation("instance");
   const typeLabel = translateAccountType(i18n, typeKey);
   const displayName = bot.accountName || bot.lastKnownName;
@@ -250,7 +247,7 @@ function BotCard({
         {!bot.isOnline && bot.status?.lastError && (
           <CardContent className="pt-0">
             <p
-              className="line-clamp-2 text-xs break-words text-muted-foreground"
+              className="line-clamp-2 text-xs wrap-break-word text-muted-foreground"
               title={bot.status.lastError}
             >
               {bot.status.lastError}
@@ -309,7 +306,7 @@ export function BotContextMenu({
       botId: string;
       action: "start" | "restart" | "stop";
     }) => {
-      if (transport === null) return;
+      if (transport === null) return undefined;
       const client = createRpcClient(BotService, transport);
       if (action === "restart") {
         return Effect.runPromise(
@@ -573,7 +570,7 @@ export function BotGrid({
 
   useEffect(() => {
     const element = loadMoreRef.current;
-    if (!element) return;
+    if (!element) return undefined;
 
     const observer = new IntersectionObserver(handleIntersection, {
       rootMargin: "100px",

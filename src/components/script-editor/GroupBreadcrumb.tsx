@@ -4,6 +4,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
+import { nodeDataString } from "@/lib/script-node-data";
 
 /**
  * GroupBreadcrumb - Blender-style breadcrumb navigation for group editing
@@ -26,7 +27,8 @@ export function GroupBreadcrumb() {
     return {
       id: groupId,
       label:
-        (node?.data?.label as string) || t("scripts.editor.group.defaultLabel"),
+        nodeDataString(node?.data, "label") ||
+        t("scripts.editor.group.defaultLabel"),
     };
   });
 
@@ -41,31 +43,31 @@ export function GroupBreadcrumb() {
   };
 
   return (
-    <div className="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-lg border bg-card/90 px-2 py-1 shadow-sm backdrop-blur">
+    <div className="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-lg border bg-card/90 px-2 py-1 shadow-sm backdrop-blur-sm">
       {/* Root button */}
       <button
         type="button"
         onClick={exitToRoot}
         className={cn(
-          "flex items-center gap-1 rounded px-1.5 py-0.5 text-xs",
+          "flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-xs",
           "text-muted-foreground hover:bg-accent hover:text-foreground",
           "transition-colors",
         )}
         title={t("scripts.editor.group.returnToRoot")}
       >
-        <Home className="h-3 w-3" />
+        <Home className="size-3" />
         <span>{t("scripts.editor.group.root")}</span>
       </button>
 
       {/* Path items */}
       {pathItems.map((item, index) => (
         <div key={item.id} className="flex items-center gap-1">
-          <ChevronRight className="h-3 w-3 text-muted-foreground" />
+          <ChevronRight className="size-3 text-muted-foreground" />
           <button
             type="button"
             onClick={() => navigateToDepth(index)}
             className={cn(
-              "rounded px-1.5 py-0.5 text-xs transition-colors",
+              "rounded-sm px-1.5 py-0.5 text-xs transition-colors",
               index === pathItems.length - 1
                 ? "bg-accent font-medium text-accent-foreground"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground",

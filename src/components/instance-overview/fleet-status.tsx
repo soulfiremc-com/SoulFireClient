@@ -10,7 +10,7 @@ import {
   RotateCwIcon,
   SquareIcon,
 } from "lucide-react";
-import { type CSSProperties, use } from "react";
+import { use } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -95,6 +95,7 @@ function FailureGroupRow({
   const extra = group.botNames.length - 3;
 
   return (
+    // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
     <div role="listitem">
       <Item variant="outline" size="sm">
         <ItemMedia>
@@ -121,7 +122,7 @@ function FailureGroupRow({
             {t(`fleet.kind.${group.kind}.description`)}
           </ItemDescription>
           {group.message && (
-            <p className="font-mono text-xs break-words text-muted-foreground select-text">
+            <p className="font-mono text-xs wrap-break-word text-muted-foreground select-text">
               {group.message}
             </p>
           )}
@@ -236,7 +237,7 @@ export function FleetStatus({
                       BOT_STATE_META[state].bar,
                     )}
                     // The share carries real fleet data, so it cannot be a class.
-                    style={{ "--bot-share": counts[state] } as CSSProperties}
+                    style={{ "--bot-share": counts[state] }}
                   />
                 ),
             )}
@@ -274,16 +275,13 @@ export function FleetStatus({
         </ul>
       </div>
       {counts.starting > 0 && (
-        <p
-          role="status"
-          className="flex items-center gap-2 text-sm text-muted-foreground"
-        >
+        <output className="flex items-center gap-2 text-sm text-muted-foreground">
           <LoaderCircleIcon
             aria-hidden="true"
             className="size-3.5 shrink-0 motion-safe:animate-spin"
           />
           {t("fleet.connectingHint", { count: counts.starting })}
-        </p>
+        </output>
       )}
       {groups.length > 0 && (
         <ItemGroup className="gap-2" aria-label={t("fleet.attention")}>

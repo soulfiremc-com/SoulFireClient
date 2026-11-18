@@ -7,6 +7,7 @@ import {
 
 test("string list defaults can be reset and are copied", () => {
   const def = ["Hello", "World"];
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const value = getSettingDefaultValue({
     type: { case: "stringList", value: { def } },
   } as never);
@@ -16,6 +17,7 @@ test("string list defaults can be reset and are copied", () => {
 
 test("scalar defaults are returned unchanged", () => {
   assert.equal(
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     getSettingDefaultValue({
       type: { case: "int", value: { def: 5 } },
     } as never),
@@ -25,6 +27,7 @@ test("scalar defaults are returned unchanged", () => {
 
 test("min/max ranges have no single default", () => {
   assert.equal(
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     getSettingDefaultValue({ type: { case: "minMax", value: {} } } as never),
     undefined,
   );

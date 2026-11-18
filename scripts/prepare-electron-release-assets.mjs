@@ -44,7 +44,7 @@ function findMetadataFiles(metadataName, platformDirectoryPrefix) {
     .filter((filePath) =>
       path.basename(path.dirname(filePath)).startsWith(platformDirectoryPrefix),
     )
-    .sort();
+    .toSorted();
 
   if (files.length === 0) {
     throw new Error(
@@ -63,7 +63,7 @@ function findLinuxMetadataFiles() {
     .filter((filePath) =>
       path.basename(path.dirname(filePath)).startsWith("linux-"),
     )
-    .sort();
+    .toSorted();
 
   if (files.length === 0) {
     throw new Error("No Linux electron-updater metadata files found");
@@ -83,12 +83,7 @@ function copyAsset(sourceFile, assetName = path.basename(sourceFile)) {
 }
 
 function isAbsoluteUrl(value) {
-  try {
-    new URL(value);
-    return true;
-  } catch {
-    return false;
-  }
+  return URL.canParse(value);
 }
 
 function toGitHubReleaseAssetUrl(releaseVersion, assetPath) {
@@ -211,7 +206,12 @@ for (const linuxMetadataFile of findLinuxMetadataFiles()) {
   copyUpdateInfoAsset(linuxMetadataFile);
 }
 
-console.log("Prepared release assets:");
-for (const assetName of [...assetNames].sort()) {
-  console.log(assetName);
+process.stdout.write("Prepared release assets:\n");
+for (const assetName of [...assetNames].toSorted(compareStrings)) {
+  process.stdout.write(`${assetName}\n`);
+}
+
+// Matches the default sort order, which compares UTF-16 code units.
+function compareStrings(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
 }

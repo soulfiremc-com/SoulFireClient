@@ -40,6 +40,7 @@ function renderFleet(
   bots: ReturnType<typeof entry>[],
   permissions: InstancePermission[] = [InstancePermission.CONTROL_BOTS],
 ) {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story builds its own fixtures and route tree
   const instanceInfo = {
     id: "story",
     profile: { accounts: bots.map((bot) => ({ profileId: bot.profileId })) },
@@ -63,6 +64,7 @@ function renderFleet(
   });
   return (
     <QueryClientProvider client={queryClient}>
+      {/* oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story router is not the registered app router */}
       <RouterProvider router={router as never} />
     </QueryClientProvider>
   );

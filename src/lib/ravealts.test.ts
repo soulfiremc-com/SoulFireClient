@@ -19,10 +19,12 @@ test("Ravealts preserves purchases without adding unsupported affiliate fields",
   try {
     const result = await purchaseAccounts("api-key", "hypixel_unbanned", 2);
     assert.equal(result.accounts.length, 1);
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     assert.deepEqual(JSON.parse(requests[0].body as string), {
       user_request: { account_type: "hypixel_unbanned", amount: 2 },
     });
     assert.equal(
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       (requests[0].headers as Record<string, string>).Authorization,
       "Bearer api-key",
     );

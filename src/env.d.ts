@@ -12,6 +12,13 @@ declare global {
   }
 }
 
+declare module "react" {
+  // Components pass theme values to CSS through custom properties.
+  interface CSSProperties {
+    [property: `--${string}`]: string | number | undefined;
+  }
+}
+
 declare module "*.svg" {
   const content: string;
   export default content;

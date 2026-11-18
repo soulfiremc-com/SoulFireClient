@@ -118,10 +118,10 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   // A cancelled load is not a failure, so retry it once without user action.
   // A lost connection retries until the server responds again.
   useEffect(() => {
-    if (!autoRetry) return;
+    if (!autoRetry) return undefined;
     if (isCancelled) {
       runAsync(reloadPage);
-      return;
+      return undefined;
     }
     const retry = () => runAsync(reloadPage);
     const interval = window.setInterval(retry, RECONNECT_INTERVAL_MS);
@@ -156,7 +156,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
         <CardContent className="flex flex-col gap-4">
           <Collapsible open={expanded} onOpenChange={setExpanded}>
             <div className="flex flex-col gap-2">
-              <p className="break-words text-destructive select-text">
+              <p className="wrap-break-word text-destructive select-text">
                 {error.message}
               </p>
               {hasStack && (

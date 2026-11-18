@@ -96,14 +96,14 @@ test("ungrouping retains internal edges once and preserves every exposed executi
     [internal],
   );
   assert.deepEqual(
-    graph.edges.map((e) => [e.source, e.target]).sort(),
+    graph.edges.map((e) => [e.source, e.target]).toSorted(compareEdges),
     [
       ["trigger", "first"],
       ["trigger", "second"],
       ["first", "second"],
       ["first", "after"],
       ["second", "after"],
-    ].sort(),
+    ].toSorted(compareEdges),
   );
 });
 
@@ -157,8 +157,15 @@ test("ungrouping retains the internal consumer's multi-input order", () => {
   assert.deepEqual(
     graph.edges
       .slice()
-      .sort((a, b) => Number(a.data?.order) - Number(b.data?.order))
+      .toSorted((a, b) => Number(a.data?.order) - Number(b.data?.order))
       .map((e) => e.source),
     ["second", "first"],
   );
 });
+
+// Matches the default sort, which compares the arrays as comma-joined strings.
+function compareEdges(left: string[], right: string[]): number {
+  const a = left.join(",");
+  const b = right.join(",");
+  return a < b ? -1 : a > b ? 1 : 0;
+}

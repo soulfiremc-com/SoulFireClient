@@ -27,7 +27,7 @@ import { type RefObject, Suspense, use, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { formatBotFleetSummary } from "@/components/format-bot-fleet-summary.ts";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
+import { useCreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -103,7 +103,7 @@ function SidebarInstanceButton() {
       <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
         <DynamicIcon name={instanceInfo.icon} className="size-4" />
       </div>
-      <div className="grid flex-1 text-left text-sm leading-tight">
+      <div className="grid flex-1 text-left text-sm/tight">
         <span className="max-w-64 truncate font-semibold">
           {instanceInfo.friendlyName}
         </span>
@@ -126,7 +126,7 @@ function SidebarInstanceButtonSkeleton() {
         />
       }
     >
-      <Skeleton className="relative flex size-8 h-10 w-10 shrink-0 overflow-hidden rounded-lg" />
+      <Skeleton className="relative flex size-8 shrink-0 overflow-hidden rounded-lg" />
       <div className="grid flex-1 gap-2">
         <Skeleton className="h-3 w-32" />
         <Skeleton className="h-3 w-12" />
@@ -173,7 +173,7 @@ function InstanceList() {
 function InstanceListSkeleton() {
   return (
     <DropdownMenuItem>
-      <Skeleton className="h-4 w-4" />
+      <Skeleton className="size-4" />
       <Skeleton className="h-3 w-32" />
     </DropdownMenuItem>
   );
@@ -273,43 +273,45 @@ function InstanceActionButtons({
               <DropdownMenuSubContent>
                 {systemInfo.availableProfiles.length > 0 && (
                   <>
-                    {systemInfo.availableProfiles.map((file) => (
-                      <DropdownMenuItem
-                        key={file}
-                        onClick={() => {
-                          const loadProfile = async () => {
-                            const data = await desktop.fs.readTextFile(
-                              await desktop.path.resolve(
-                                await desktop.path.resolve(
-                                  await desktop.path.appConfigDir(),
-                                  "profile",
-                                ),
-                                file,
-                              ),
-                            );
+                    {systemInfo.availableProfiles.map((file) => {
+                      const loadProfile = async () => {
+                        const data = await desktop.fs.readTextFile(
+                          await desktop.path.resolve(
+                            await desktop.path.resolve(
+                              await desktop.path.appConfigDir(),
+                              "profile",
+                            ),
+                            file,
+                          ),
+                        );
 
-                            await importProfile(parseProfileFile(data));
-                          };
-                          toast.promise(loadProfile(), {
-                            loading: t(
-                              "instanceSidebar.loadProfileToast.loading",
-                            ),
-                            success: t(
-                              "instanceSidebar.loadProfileToast.success",
-                            ),
-                            error: (e) => {
-                              console.error(e);
-                              return t(
-                                "instanceSidebar.loadProfileToast.error",
-                              );
-                            },
-                          });
-                        }}
-                      >
-                        <FileIcon className="size-4" />
-                        {file}
-                      </DropdownMenuItem>
-                    ))}
+                        await importProfile(parseProfileFile(data));
+                      };
+                      return (
+                        <DropdownMenuItem
+                          key={file}
+                          onClick={() => {
+                            toast.promise(loadProfile(), {
+                              loading: t(
+                                "instanceSidebar.loadProfileToast.loading",
+                              ),
+                              success: t(
+                                "instanceSidebar.loadProfileToast.success",
+                              ),
+                              error: (e) => {
+                                console.error(e);
+                                return t(
+                                  "instanceSidebar.loadProfileToast.error",
+                                );
+                              },
+                            });
+                          }}
+                        >
+                          <FileIcon className="size-4" />
+                          {file}
+                        </DropdownMenuItem>
+                      );
+                    })}
                     <DropdownMenuSeparator />
                   </>
                 )}
@@ -443,7 +445,7 @@ function InstanceActionButtonsSkeleton() {
         <Skeleton className="h-3 w-32" />
       </DropdownMenuLabel>
       <DropdownMenuItem>
-        <Skeleton className="h-4 w-4" />
+        <Skeleton className="size-4" />
 
         <Skeleton className="h-3 w-32" />
       </DropdownMenuItem>
@@ -517,7 +519,7 @@ function CreateInstanceButton() {
     select: (context) => context.clientDataQueryOptions,
   });
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
-  const { openCreateInstance } = use(CreateInstanceContext);
+  const { openCreateInstance } = useCreateInstanceContext();
 
   if (!hasGlobalPermission(clientInfo, GlobalPermission.CREATE_INSTANCE)) {
     return null;
@@ -550,7 +552,7 @@ function DeleteInstanceButton() {
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
       if (transport === null) {
-        return;
+        return undefined;
       }
 
       const instanceService = createRpcClient(InstanceService, transport);

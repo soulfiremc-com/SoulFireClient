@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 
 const require = createRequire(__filename);
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- @xhayper/discord-rpc is loaded with require so its types are declared here
 const DiscordRpc = require("@xhayper/discord-rpc") as {
   Client: new (options: { transport: "ipc" }) => {
     login: (options: { clientId: string }) => Promise<void>;

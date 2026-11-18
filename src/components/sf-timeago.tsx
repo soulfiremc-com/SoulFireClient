@@ -37,7 +37,7 @@ export const SFTimeAgo = React.memo((props: { date: Date }) => {
         render={
           <Button
             variant="link"
-            className="h-auto px-0 py-0 font-normal text-inherit"
+            className="h-auto p-0 font-normal text-inherit"
             title={formatted}
           />
         }

@@ -70,7 +70,7 @@ test("selected operations must still be permitted and retain all of their origin
         {
           ...command,
           operation: {
-            ...command.operation!,
+            ...command.operation,
             kind: "bot",
             action: "stop",
             instanceId: "farm",
@@ -304,8 +304,9 @@ test("only bulk bot commands need confirmation", () => {
   );
 });
 
+let release = () => {};
+
 test("scoped operations report pending work and refresh affected queries when done", async () => {
-  let release = () => {};
   const released = new Promise<void>((resolve) => {
     release = resolve;
   });

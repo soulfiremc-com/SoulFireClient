@@ -12,14 +12,14 @@ import {
 export function useTerminalLogs(transport: Transport | null, scope: LogScope) {
   const scopeKey = toJsonString(LogScopeSchema, scope);
   const sessions = useMemo(() => {
-    const scope = fromJsonString(LogScopeSchema, scopeKey);
-    const getSession = (scope: LogScope) =>
+    const parsedScope = fromJsonString(LogScopeSchema, scopeKey);
+    const getSession = (logScope: LogScope) =>
       transport
-        ? getTerminalLogSession(transport, scope)
-        : createTerminalLogSession(null, scope);
-    const scoped = getSession(scope);
+        ? getTerminalLogSession(transport, logScope)
+        : createTerminalLogSession(null, logScope);
+    const scoped = getSession(parsedScope);
     const personal =
-      scope.scope.case === "personal"
+      parsedScope.scope.case === "personal"
         ? scoped
         : getSession(
             create(LogScopeSchema, { scope: { case: "personal", value: {} } }),

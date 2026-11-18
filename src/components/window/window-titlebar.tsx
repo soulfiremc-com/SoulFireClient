@@ -98,7 +98,7 @@ export function WindowControls({
 
   useEffect(() => {
     if (!appWindow) {
-      return;
+      return undefined;
     }
 
     let disposed = false;
@@ -278,7 +278,7 @@ export function WindowTitlebar() {
       >
         <div
           data-app-drag-region={desktopApp ? "" : undefined}
-          className="flex w-[min(32rem,calc(100vw-14rem))] max-w-full min-w-0 items-center justify-center gap-1.5 text-center [&>*]:pointer-events-none"
+          className="flex w-[min(32rem,calc(100vw-14rem))] max-w-full min-w-0 items-center justify-center gap-1.5 text-center *:pointer-events-none"
         >
           {pageIcon?.kind === "dynamic" && (
             <DynamicIcon

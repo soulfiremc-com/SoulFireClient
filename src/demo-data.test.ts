@@ -38,6 +38,7 @@ test("demo settings use distinct icons for the built-in pages", () => {
       if (page.id in expectedIcons) {
         assert.equal(
           page.iconId,
+          // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
           expectedIcons[page.id as keyof typeof expectedIcons],
           page.id,
         );
@@ -54,7 +55,7 @@ test("demo plugin pages have metadata and enabled definitions for discovery", ()
   );
   for (const page of pages) {
     const plugin = demoInstancePlugins.find(
-      (plugin) => plugin.id === page.owningPluginId,
+      (candidate) => candidate.id === page.owningPluginId,
     );
     assert.ok(plugin, page.id);
     assert.ok(
@@ -63,9 +64,9 @@ test("demo plugin pages have metadata and enabled definitions for discovery", ()
     const enabled = page.enabledIdentifier;
     assert.ok(enabled, page.id);
     const definition = demoInstanceSettingsDefinitions.find(
-      (definition) =>
-        definition.id?.namespace === enabled.namespace &&
-        definition.id.key === enabled.key,
+      (candidate) =>
+        candidate.id?.namespace === enabled.namespace &&
+        candidate.id.key === enabled.key,
     );
     assert.equal(definition?.type.case, "bool", page.id);
     if (definition?.type.case === "bool") {

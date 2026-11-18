@@ -33,13 +33,10 @@ export function NavigationFeedback() {
   if (!isPending) return null;
 
   return (
-    <div
-      role="status"
-      className="pointer-events-none absolute inset-x-0 top-0 z-20 h-0.5 overflow-hidden"
-    >
+    <output className="pointer-events-none absolute inset-x-0 top-0 z-20 h-0.5 overflow-hidden">
       <span className="sr-only">{t("navigation.pending")}</span>
       {/* The delay keeps fast navigations from flashing the bar. */}
-      <div className="h-full w-full animate-in bg-primary delay-150 ease-out animation-duration-1000 fill-mode-backwards fade-in slide-in-from-left motion-reduce:animate-none" />
-    </div>
+      <div className="size-full animate-in bg-primary delay-150 ease-out animation-duration-1000 fill-mode-backwards fade-in slide-in-from-left motion-reduce:animate-none" />
+    </output>
   );
 }

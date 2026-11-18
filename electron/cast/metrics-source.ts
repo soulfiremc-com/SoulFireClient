@@ -55,6 +55,7 @@ export const makeMetricsSource = (
               client.clear();
             }),
         );
+        const runPromise = Effect.runPromiseWith(yield* Effect.context());
         const transport = transportFor(source);
         const metrics = createRpcClient(MetricsService, transport);
         const instances = createRpcClient(InstanceService, transport);
@@ -67,7 +68,7 @@ export const makeMetricsSource = (
                 cache.query({
                   queryKey: ["metrics"],
                   queryFn: ({ signal: querySignal }) =>
-                    Effect.runPromise(
+                    runPromise(
                       metrics.getInstanceMetrics(
                         {
                           instanceId: source.instanceId,
@@ -81,7 +82,7 @@ export const makeMetricsSource = (
                   queryKey: ["info"],
                   staleTime: 10_000,
                   queryFn: ({ signal: querySignal }) =>
-                    Effect.runPromise(
+                    runPromise(
                       instances.getInstanceInfo(
                         { id: source.instanceId },
                         { signal: AbortSignal.any([signal, querySignal]) },

@@ -23,7 +23,7 @@ export function useProductActivation(userId: string, enabled: boolean) {
       !isPostHogConfigured ||
       consent !== "granted"
     )
-      return;
+      return undefined;
 
     let storage: Storage | undefined;
     try {

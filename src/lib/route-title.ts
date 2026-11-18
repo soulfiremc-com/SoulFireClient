@@ -29,6 +29,37 @@ const SOULFIRE_LOGO_ICON: RouteIcon = {
   alt: "SoulFire logo",
 };
 
+/** Reads a string field from the loader data of a route match. */
+export function loaderDataString(
+  match: RouteTitleMatch,
+  key: string,
+): string | undefined {
+  const loaderData = match.loaderData;
+  if (typeof loaderData !== "object" || loaderData === null) return undefined;
+  const value: unknown = Reflect.get(loaderData, key);
+  return typeof value === "string" ? value : undefined;
+}
+
+function contextResolver(
+  context: unknown,
+  key: "getIcon" | "getTitle",
+): ((match: RouteTitleMatch) => unknown) | undefined {
+  if (typeof context !== "object" || context === null) return undefined;
+  const resolver: unknown = Reflect.get(context, key);
+  return typeof resolver === "function"
+    ? (match) => Reflect.apply(resolver, undefined, [match])
+    : undefined;
+}
+
+function isRouteIcon(value: unknown): value is RouteIcon {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "kind" in value &&
+    (value.kind === "dynamic" || value.kind === "logo")
+  );
+}
+
 export function buildDocumentTitle(pageTitle?: null | string) {
   const normalizedTitle = pageTitle?.trim();
 
@@ -84,13 +115,13 @@ export function resolveRouteTitle(
 ) {
   for (let index = matches.length - 1; index >= 0; index -= 1) {
     const match = matches[index];
-    const getTitle = (match.context as { getTitle?: unknown }).getTitle;
+    const getTitle = contextResolver(match.context, "getTitle");
 
-    if (typeof getTitle !== "function") {
+    if (getTitle === undefined) {
       continue;
     }
 
-    const resolvedTitle = (getTitle as RouteTitleResolver)(match);
+    const resolvedTitle = getTitle(match);
     if (typeof resolvedTitle === "string" && resolvedTitle.trim()) {
       return resolvedTitle.trim();
     }
@@ -109,14 +140,14 @@ export function resolveRouteIcon(
 ) {
   for (let index = matches.length - 1; index >= 0; index -= 1) {
     const match = matches[index];
-    const getIcon = (match.context as { getIcon?: unknown }).getIcon;
+    const getIcon = contextResolver(match.context, "getIcon");
 
-    if (typeof getIcon !== "function") {
+    if (getIcon === undefined) {
       continue;
     }
 
-    const resolvedIcon = (getIcon as RouteIconResolver)(match);
-    if (resolvedIcon) {
+    const resolvedIcon = getIcon(match);
+    if (isRouteIcon(resolvedIcon)) {
       return resolvedIcon;
     }
   }

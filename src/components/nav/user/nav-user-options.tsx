@@ -3,9 +3,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import { Grid2x2Icon, PlusIcon, SettingsIcon, ZapIcon } from "lucide-react";
-import { type ReactNode, use } from "react";
+import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
+import { useCreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -31,7 +31,7 @@ export function NavUserOptions() {
     select: (context) => context.clientDataQueryOptions,
   });
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
-  const { openCreateInstance } = use(CreateInstanceContext);
+  const { openCreateInstance } = useCreateInstanceContext();
 
   const navLinks: NavLinks = [
     {

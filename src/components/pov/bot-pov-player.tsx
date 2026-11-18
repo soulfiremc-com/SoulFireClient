@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { use, useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import i18n from "i18next";
+import { t as translate } from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
@@ -189,7 +189,7 @@ function BotPovSession({
         toast.error(
           reason instanceof Error
             ? reason.message
-            : i18n.t("instance:bots.pov.audioError"),
+            : translate("instance:bots.pov.audioError"),
         );
     } finally {
       if (generation === audioGeneration.current) {
@@ -218,6 +218,7 @@ function BotPovSession({
     if (doc?.fullscreenElement === rootRef.current && doc?.fullscreenElement) {
       void doc.exitFullscreen().catch(() => {});
     }
+    // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- tsc needs the cast because its DOM lib has no Navigator.keyboard
     const navigator = doc?.defaultView?.navigator as
       | KeyboardCapture
       | undefined;
@@ -225,7 +226,7 @@ function BotPovSession({
   }, [captureToastId, actions]);
 
   useEffect(() => {
-    if (!playing || !isOnline) return;
+    if (!playing || !isOnline) return undefined;
     let disposed = false;
     const feedback = new PovStreamFeedbackTracker();
     let decoder: PovVideoDecoder | undefined;
@@ -326,7 +327,8 @@ function BotPovSession({
         metrics.decoder = () => activeDecoder.stats;
       }
       const transport = createTransport();
-      if (!transport) throw new Error(i18n.t("instance:bots.pov.needsServer"));
+      if (!transport)
+        throw new Error(translate("instance:bots.pov.needsServer"));
       session.current = startPovSession(
         transport,
         povInputUrl(),
@@ -377,7 +379,7 @@ function BotPovSession({
       actions.setError(
         reason instanceof Error
           ? reason.message
-          : i18n.t("instance:bots.pov.startError"),
+          : translate("instance:bots.pov.startError"),
       );
     }
     return () => {
@@ -412,7 +414,7 @@ function BotPovSession({
 
   useEffect(() => {
     const win = canvas?.ownerDocument.defaultView;
-    if (!win) return;
+    if (!win) return undefined;
     let disposed = false;
     const sample = () => {
       if (canvas.ownerDocument.hidden) return;
@@ -429,10 +431,10 @@ function BotPovSession({
   }, [canvas]);
 
   useEffect(() => {
-    if (!canvas) return;
+    if (!canvas) return undefined;
     const doc = canvas.ownerDocument;
     const win = doc.defaultView;
-    if (!win) return;
+    if (!win) return undefined;
     const enqueue = (
       values: Parameters<typeof create<typeof PovInputEventSchema>>[1],
     ) => {
@@ -546,7 +548,7 @@ function BotPovSession({
         !typing &&
         !event.ctrlKey &&
         !event.metaKey &&
-        [...event.key].length === 1
+        Array.from(event.key).length === 1
       ) {
         enqueue({
           kind: PovInputEvent_Kind.CHARACTER,
@@ -576,7 +578,7 @@ function BotPovSession({
         textInput.value = "";
         return;
       }
-      if ((event as InputEvent).isComposing) return;
+      if (event instanceof InputEvent && event.isComposing) return;
       for (const input of textInputEvents(textInput.value))
         session.current?.enqueue(input);
       textInput.value = "";
@@ -606,7 +608,8 @@ function BotPovSession({
       ) {
         const pad =
           Array.from(win.navigator.getGamepads?.() ?? []).find(
-            (pad) => pad?.connected && pad.mapping === "standard",
+            (connectedPad) =>
+              connectedPad?.connected && connectedPad.mapping === "standard",
           ) ?? null;
         if (pad?.buttons[8]?.pressed && pad.buttons[9]?.pressed) {
           release();
@@ -779,7 +782,7 @@ function BotPovSession({
   }, [canvas, release, actions, playerStore]);
 
   useEffect(() => {
-    if (!popup) return;
+    if (!popup) return undefined;
     const syncTheme = () => {
       const source = document.documentElement;
       const target = popup.document.documentElement;
@@ -810,7 +813,7 @@ function BotPovSession({
       setPopup((current) => (current === popup ? null : current));
       actions.setFullscreen(false);
     };
-  }, [popup, release, actions.setFullscreen]);
+  }, [popup, release, actions]);
 
   const attachCanvas = useCallback((node: HTMLCanvasElement | null) => {
     presenterRef.current?.reset();
@@ -840,7 +843,7 @@ function BotPovSession({
       if (!actions.isCurrentCapture(attempt)) return;
       if (!touch)
         toast.info(
-          i18n.t("instance:bots.pov.releaseHint", {
+          translate("instance:bots.pov.releaseHint", {
             shortcut: releaseShortcut,
           }),
           {
@@ -850,6 +853,7 @@ function BotPovSession({
             style: { pointerEvents: "none" },
           },
         );
+      // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- tsc needs the cast because its DOM lib has no Navigator.keyboard
       const navigator = canvas.ownerDocument.defaultView?.navigator as
         | KeyboardCapture
         | undefined;
@@ -857,17 +861,17 @@ function BotPovSession({
       void navigator?.keyboard
         ?.lock(["KeyW", "KeyA", "KeyS", "KeyD", "Tab", "Space", "Escape"])
         .catch(() => {});
-    } catch (error) {
+    } catch (cause) {
       if (!actions.isCurrentCapture(attempt)) return;
       release();
       actions.setCaptureError(
-        error instanceof PovPointerLockError && error.reason === "cooldown"
-          ? i18n.t("instance:bots.pov.captureCooldown")
-          : error instanceof PovPointerLockError && error.reason === "timeout"
-            ? i18n.t("instance:bots.pov.captureTimeout")
-            : error instanceof Error && !(error instanceof PovPointerLockError)
-              ? `${error.message} ${i18n.t("instance:bots.pov.captureHint")}`
-              : i18n.t("instance:bots.pov.captureHint"),
+        cause instanceof PovPointerLockError && cause.reason === "cooldown"
+          ? translate("instance:bots.pov.captureCooldown")
+          : cause instanceof PovPointerLockError && cause.reason === "timeout"
+            ? translate("instance:bots.pov.captureTimeout")
+            : cause instanceof Error && !(cause instanceof PovPointerLockError)
+              ? `${cause.message} ${translate("instance:bots.pov.captureHint")}`
+              : translate("instance:bots.pov.captureHint"),
       );
     }
   }, [
@@ -1115,10 +1119,7 @@ function BotPovSession({
                 )}
               </div>
             ) : !isOnline ? (
-              <div
-                role="status"
-                className="flex max-w-md flex-col items-center gap-2 p-4 text-center"
-              >
+              <output className="flex max-w-md flex-col items-center gap-2 p-4 text-center">
                 <p className="flex items-center gap-2">
                   {offlineStatus?.waiting && (
                     <LoaderCircleIcon
@@ -1129,11 +1130,11 @@ function BotPovSession({
                   {offlineStatus?.message ?? t("bots.pov.offline")}
                 </p>
                 {offlineStatus?.detail && (
-                  <p className="font-mono text-xs break-words opacity-80 select-text">
+                  <p className="font-mono text-xs wrap-break-word opacity-80 select-text">
                     {offlineStatus.detail}
                   </p>
                 )}
-              </div>
+              </output>
             ) : !playing ? (
               <Button
                 onClick={() => {
@@ -1171,8 +1172,7 @@ function BotPovSession({
         <div className="flex items-center gap-2 p-2">{audioControls}</div>
       )}
       {!immersive && (
-        <p
-          role="status"
+        <output
           className={`flex items-center gap-2 text-xs ${captured ? "font-medium" : "text-muted-foreground"}`}
         >
           {captured ? (
@@ -1191,7 +1191,7 @@ function BotPovSession({
                   ? t("bots.pov.watching", { shortcut: releaseShortcut })
                   : t("bots.pov.idle")}
           </span>
-        </p>
+        </output>
       )}
       <Toaster
         id={captureToastId}

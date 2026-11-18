@@ -141,8 +141,8 @@ export type BotFailureGroup = {
 function normalizeFailure(message: string): string {
   return message
     .trim()
-    .replace(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/gi, "#")
-    .replace(/\d+/g, "#")
+    .replaceAll(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/gi, "#")
+    .replaceAll(/\d+/g, "#")
     .toLowerCase();
 }
 
@@ -172,7 +172,7 @@ export function groupBotFailures(
     group.botNames.push(bot.accountName ?? bot.profileId);
     groups.set(key, group);
   }
-  return [...groups.values()].sort(
+  return [...groups.values()].toSorted(
     (a, b) =>
       Number(b.severity === "failed") - Number(a.severity === "failed") ||
       b.botIds.length - a.botIds.length,
@@ -193,8 +193,8 @@ export function selectBotsToStart(
     for (let index = candidates.length - 1; index > 0; index -= 1) {
       const other = Math.floor(random() * (index + 1));
       [candidates[index], candidates[other]] = [
-        candidates[other] as string,
-        candidates[index] as string,
+        candidates[other],
+        candidates[index],
       ];
     }
   }

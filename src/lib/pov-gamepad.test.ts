@@ -10,6 +10,7 @@ test("gamepad emits edges, applies a deadzone and releases on disconnect", () =>
     touched: false,
     value: 0,
   }));
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   const pad = {
     mapping: "standard",
     axes: [0, -1, 0.1, 0],
@@ -31,6 +32,7 @@ test("gamepad emits edges, applies a deadzone and releases on disconnect", () =>
 });
 
 const controller = (...pressed: number[]) =>
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
   ({
     mapping: "standard",
     axes: [0, 0, 0, 0],

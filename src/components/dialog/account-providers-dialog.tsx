@@ -70,7 +70,7 @@ function AccountProvidersContent({
   );
   const [activeId, setActiveId] = useState(initialProviderId ?? null);
   const active = ACCOUNT_PROVIDERS.find((entry) => entry.id === activeId);
-  const Flow = active && FLOWS[active.id];
+  const Flow = active === undefined ? undefined : FLOWS[active.id];
   if (active && Flow)
     return (
       <Flow

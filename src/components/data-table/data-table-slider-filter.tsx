@@ -86,14 +86,14 @@ export function DataTableSliderFilter<TData extends RowData>({
     }
 
     const rangeSize = maxValue - minValue;
-    const step =
+    const stepSize =
       rangeSize <= 20
         ? 1
         : rangeSize <= 100
           ? Math.ceil(rangeSize / 20)
           : Math.ceil(rangeSize / 50);
 
-    return { min: minValue, max: maxValue, step };
+    return { min: minValue, max: maxValue, step: stepSize };
   }, [column, defaultRange]);
 
   const range = React.useMemo((): RangeValue => {
@@ -210,7 +210,7 @@ export function DataTableSliderFilter<TData extends RowData>({
                   className={cn("h-8 w-24", unit && "pr-8")}
                 />
                 {unit && (
-                  <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
+                  <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}
@@ -236,7 +236,7 @@ export function DataTableSliderFilter<TData extends RowData>({
                   className={cn("h-8 w-24", unit && "pr-8")}
                 />
                 {unit && (
-                  <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
+                  <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}

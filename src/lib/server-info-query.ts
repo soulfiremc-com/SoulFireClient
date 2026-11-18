@@ -17,6 +17,7 @@ import {
   convertFromServerProto,
   type ServerInfoQueryData,
 } from "@/lib/types.ts";
+import { requireField } from "@/lib/require-field";
 
 /**
  * Server settings, definitions, and plugins. The server requires the
@@ -46,7 +47,9 @@ export function serverInfoQueryOptions(transport: Transport | null) {
       );
       return {
         ...result,
-        profile: convertFromServerProto(result.config as ServerConfig),
+        profile: convertFromServerProto(
+          requireField(result.config, "the server config"),
+        ),
       };
     },
     refetchInterval: 3_000,

@@ -94,7 +94,7 @@ test("permission and authentication errors do not retry; transient RPC errors ca
     const f = await fixture(code);
     const error = await f.read().then(
       () => null,
-      (error: { retryable: boolean }) => error,
+      (failure: { retryable: boolean }) => failure,
     );
     expect(error?.retryable).toBe(retryable);
     expect(f.requests).toHaveLength(1);

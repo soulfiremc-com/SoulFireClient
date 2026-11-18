@@ -13,7 +13,7 @@ export function useDateFnsLocale(): Locale {
   const [, rerender] = useReducer((count: number) => count + 1, 0);
 
   useEffect(() => {
-    if (isDateFnsLocaleLoaded(language)) return;
+    if (isDateFnsLocaleLoaded(language)) return undefined;
 
     let active = true;
     loadDateFnsLocale(language).then(

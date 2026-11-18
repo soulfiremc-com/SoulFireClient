@@ -64,6 +64,7 @@ export function usePaletteSearchIndex({
     () => [
       ...indexedIds.map((id) => ({
         id: `project:${id}`,
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the search source only reads query keys and data, which every listed query option provides
         queries: [
           {
             queryKey: ["instance-info", id],
@@ -77,6 +78,7 @@ export function usePaletteSearchIndex({
         ? [
             {
               id: "server",
+              // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the search source only reads query keys and data, which every listed query option provides
               queries: [serverInfoQueryOptions(transport)] as Source["queries"],
             },
           ]
@@ -100,7 +102,7 @@ export function usePaletteSearchIndex({
   );
 
   useEffect(() => {
-    if (!active || !sources.length) return;
+    if (!active || !sources.length) return undefined;
     const controller = new AbortController();
     const running = new Map<string, QueryKey>();
     setStatuses((previous) =>
@@ -170,6 +172,7 @@ export function usePaletteSearchIndex({
     });
     // Demo projects without a transport may still be cached by their own pages.
     if (!transport)
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- idsKey is a JSON.stringify of a string array built in this hook
       for (const id of JSON.parse(idsKey) as string[]) {
         const project = queryClient.getQueryData<InstanceInfoQueryData>([
           "instance-info",

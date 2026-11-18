@@ -60,8 +60,8 @@ export function DataTableRangeFilter<TData extends RowData>({
   }, [filter.value, formatValue]);
 
   const onRangeValueChange = React.useCallback(
-    (value: string, isMin?: boolean) => {
-      const numValue = Number(value);
+    (input: string, isMin?: boolean) => {
+      const numValue = Number(input);
       const currentValues = Array.isArray(filter.value)
         ? filter.value
         : ["", ""];
@@ -70,14 +70,14 @@ export function DataTableRangeFilter<TData extends RowData>({
         : (currentValues[0] ?? "");
 
       if (
-        value === "" ||
+        input === "" ||
         (!Number.isNaN(numValue) &&
           (isMin
             ? numValue >= min && numValue <= (Number(otherValue) || max)
             : numValue <= max && numValue >= (Number(otherValue) || min)))
       ) {
         onFilterUpdate(filter.filterId, {
-          value: isMin ? [value, otherValue] : [otherValue, value],
+          value: isMin ? [input, otherValue] : [otherValue, input],
         });
       }
     },
@@ -103,7 +103,7 @@ export function DataTableRangeFilter<TData extends RowData>({
         placeholder={min.toString()}
         min={min}
         max={max}
-        className="h-8 w-full rounded"
+        className="h-8 w-full rounded-sm"
         defaultValue={value[0]}
         onChange={(event) => onRangeValueChange(event.target.value, true)}
       />
@@ -121,7 +121,7 @@ export function DataTableRangeFilter<TData extends RowData>({
         placeholder={max.toString()}
         min={min}
         max={max}
-        className="h-8 w-full rounded"
+        className="h-8 w-full rounded-sm"
         defaultValue={value[1]}
         onChange={(event) => onRangeValueChange(event.target.value)}
       />

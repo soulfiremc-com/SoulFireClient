@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import { t as translate } from "i18next";
 import type { JsonValue } from "@bufbuild/protobuf";
 import {
   useMutation,
@@ -91,7 +91,6 @@ import {
   type DoubleSetting,
   type IntSetting,
   type MinMaxSetting,
-  type MinMaxSetting_Entry,
   type SettingsDefinition,
   type SettingsEntryIdentifier,
   type SettingsPage,
@@ -141,6 +140,8 @@ import {
   updateInstanceConfigEntry,
   updateServerConfigEntry,
 } from "@/lib/utils.tsx";
+import { requireField } from "@/lib/require-field";
+import { displayText } from "@/lib/display-text";
 
 function SettingInputLayout(props: {
   title: ReactNode;
@@ -197,6 +198,8 @@ function inputTypeToHtml(
       return "search";
     case StringSetting_InputType.TEL:
       return "tel";
+    default:
+      return inputType satisfies never;
   }
 }
 
@@ -332,6 +335,7 @@ function NumericSettingField(props: {
           props.setting.fixedDecimalScale
         }
         onValueChange={(values, sourceInfo) => {
+          // oxlint-disable-next-line typescript/no-unsafe-enum-comparison -- react-number-format declares SourceType without a runtime export
           if (sourceInfo.source !== "event") return;
           setDraft(values.value);
           const value = getNumericSettingValue(
@@ -382,12 +386,12 @@ function MinMaxSettingField(props: {
       <FieldLegend className="sr-only">
         {props.setting.minEntry?.uiName ??
           props.setting.maxEntry?.uiName ??
-          i18n.t("common:settingsPage.minMaxLegend")}
+          translate("common:settingsPage.minMaxLegend")}
       </FieldLegend>
       <FieldGroup className="gap-4">
         <NumericSettingField
           setting={props.setting}
-          entry={props.setting.minEntry as MinMaxSetting_Entry}
+          entry={requireField(props.setting.minEntry, "minEntry")}
           value={props.value.min}
           onFocus={startEdit}
           changeCallback={(value) =>
@@ -396,7 +400,7 @@ function MinMaxSettingField(props: {
         />
         <NumericSettingField
           setting={props.setting}
-          entry={props.setting.maxEntry as MinMaxSetting_Entry}
+          entry={requireField(props.setting.maxEntry, "maxEntry")}
           value={props.value.max}
           onFocus={startEdit}
           changeCallback={(value) =>
@@ -492,6 +496,7 @@ function ComboComponent(props: {
           <Button
             id={props.id}
             variant="outline"
+            // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role, jsx-a11y/role-has-required-aria-props -- custom combobox with a filtered popup list, which a native select cannot provide; PopoverTrigger adds aria-controls for the popup it opens
             role="combobox"
             aria-label={props.setting.uiName}
             aria-expanded={open}
@@ -781,7 +786,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
           <StringComponent
             id={inputId}
             setting={props.settingType.value}
-            value={props.value as string}
+            value={typeof props.value === "string" ? props.value : ""}
             changeCallback={props.changeCallback}
           />
         </SettingInputLayout>
@@ -792,7 +797,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         <NumericSettingField
           setting={props.settingType.value}
           entry={props.settingType.value}
-          value={props.value as number}
+          value={typeof props.value === "number" ? props.value : 0}
           changeCallback={props.changeCallback}
         />
       );
@@ -805,7 +810,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         >
           <BoolComponent
             setting={props.settingType.value}
-            value={props.value as boolean}
+            value={props.value === true}
             pending={props.pending}
             changeCallback={(value) => void props.changeCallback(value)}
             title={props.settingType.value.uiName}
@@ -819,7 +824,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         <NumericSettingField
           setting={props.settingType.value}
           entry={props.settingType.value}
-          value={props.value as number}
+          value={typeof props.value === "number" ? props.value : 0}
           changeCallback={props.changeCallback}
         />
       );
@@ -839,7 +844,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
           <ComboComponent
             id={inputId}
             setting={props.settingType.value}
-            value={props.value as string}
+            value={typeof props.value === "string" ? props.value : ""}
             pending={props.pending}
             changeCallback={(value) => void props.changeCallback(value)}
           />
@@ -859,7 +864,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         >
           <StringListComponent
             setting={props.settingType.value}
-            value={props.value as string[]}
+            value={isStringArray(props.value) ? props.value : []}
             changeCallback={props.changeCallback}
           />
         </SettingInputLayout>
@@ -869,13 +874,15 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
       return (
         <MinMaxSettingField
           setting={props.settingType.value}
-          value={props.value as NumericRange}
+          value={isNumericRange(props.value) ? props.value : { min: 0, max: 0 }}
           changeCallback={props.changeCallback}
         />
       );
     }
     case undefined:
-      break;
+      return null;
+    default:
+      return props.settingType satisfies never;
   }
 });
 
@@ -887,7 +894,9 @@ function formatDefault(value: JsonValue, definition: SettingsDefinition) {
     return definition.type.value.options.find((option) => option.id === value)
       ?.displayName;
   }
-  return typeof value === "boolean" || value === "" ? undefined : String(value);
+  return typeof value === "boolean" || value === ""
+    ? undefined
+    : displayText(value);
 }
 
 /** Reports the save result next to the setting that changed. */
@@ -929,7 +938,7 @@ function SettingStatusRow(props: {
           type="button"
           variant="ghost"
           size="xs"
-          onClick={() => props.onReset(defaultValue as JsonValue)}
+          onClick={() => props.onReset(defaultValue)}
         >
           <RotateCcwIcon data-icon="inline-start" />
           {t("settingsPage.resetToDefault")}
@@ -987,7 +996,7 @@ function getShownSettingValue(
  * This is the main component for mounting settings anywhere in the UI.
  * It looks up the setting definition from context and handles value management.
  */
-function SettingField<T extends BaseSettings>(props: {
+function SettingField(props: {
   settingId: SettingsEntryIdentifier;
   invalidateQuery: () => Promise<void>;
   updateConfigEntry: (
@@ -995,7 +1004,7 @@ function SettingField<T extends BaseSettings>(props: {
     key: string,
     value: JsonValue,
   ) => Promise<void>;
-  config: T;
+  config: BaseSettings;
   mutationTarget: SettingMutationTarget;
   persisted: boolean;
   focused?: boolean;
@@ -1009,6 +1018,7 @@ function SettingField<T extends BaseSettings>(props: {
         didFocus.current = true;
       });
     }
+    return undefined;
   }, [props.focused, definition]);
   const namespace = props.settingId.namespace;
   const key = props.settingId.key;
@@ -1077,8 +1087,8 @@ function SettingField<T extends BaseSettings>(props: {
           props.mutationTarget.type === "bot" &&
           props.config.settings[namespace]?.[key] !== undefined
         }
-        onReset={(value) =>
-          setValueMutation.mutate(value, {
+        onReset={(resetValue) =>
+          setValueMutation.mutate(resetValue, {
             // String lists report other save errors inside the list.
             onError:
               definition.type.case === "stringList" ? onSaveError : undefined,
@@ -1089,7 +1099,7 @@ function SettingField<T extends BaseSettings>(props: {
   );
 }
 
-export function InstanceSettingFieldByKey<T extends BaseSettings>(props: {
+export function InstanceSettingFieldByKey(props: {
   namespace: string;
   settingKey: string;
   invalidateQuery: () => Promise<void>;
@@ -1098,7 +1108,7 @@ export function InstanceSettingFieldByKey<T extends BaseSettings>(props: {
     key: string,
     value: JsonValue,
   ) => Promise<void>;
-  config: T;
+  config: BaseSettings;
 }) {
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
@@ -1132,7 +1142,7 @@ export function InstanceSettingFieldByKey<T extends BaseSettings>(props: {
  * Component that renders a setting field by namespace and key strings.
  * Convenience wrapper around SettingField for when you have separate strings.
  */
-function SettingFieldByKey<T extends BaseSettings>(props: {
+function SettingFieldByKey(props: {
   namespace: string;
   settingKey: string;
   invalidateQuery: () => Promise<void>;
@@ -1141,7 +1151,7 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
     key: string,
     value: JsonValue,
   ) => Promise<void>;
-  config: T;
+  config: BaseSettings;
   mutationTarget: SettingMutationTarget;
 }) {
   const definition = useSettingsDefinitionByKey(
@@ -1209,8 +1219,8 @@ function SettingFieldByKey<T extends BaseSettings>(props: {
         status={setValueMutation.status}
         persisted={persisted}
         overridden={false}
-        onReset={(value) =>
-          setValueMutation.mutate(value, {
+        onReset={(resetValue) =>
+          setValueMutation.mutate(resetValue, {
             // String lists report other save errors inside the list.
             onError:
               definition.type.case === "stringList" ? onSaveError : undefined,
@@ -1228,7 +1238,7 @@ export type DisabledSettingId = {
 
 const NO_DISABLED_IDS: readonly DisabledSettingId[] = [];
 
-export function ClientSettingsPageComponent<T extends BaseSettings>({
+export function ClientSettingsPageComponent({
   data,
   invalidateQuery,
   updateConfigEntry,
@@ -1248,7 +1258,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
     key: string,
     value: JsonValue,
   ) => Promise<void>;
-  config: T;
+  config: BaseSettings;
   mutationTarget: SettingMutationTarget;
   disabledIds?: readonly DisabledSettingId[];
   definitions: readonly SettingsDefinition[];
@@ -1341,6 +1351,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
               </InputGroupAddon>
               <InputGroupInput
                 // A search input adds its own clear button next to ours.
+                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- type="search" would add a second clear button
                 role="searchbox"
                 autoFocus
                 aria-label={t("settingsPage.filter")}
@@ -1389,9 +1400,9 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
       </div>
       {matches.length === 0 && searching && (
         <div className="flex max-w-3xl flex-wrap items-center gap-3">
-          <p className="text-sm text-muted-foreground" role="status">
+          <output className="block text-sm text-muted-foreground">
             {t("settingsPage.noMatches", { query: query.trim() })}
-          </p>
+          </output>
           {openCommandPalette && (
             <Button
               type="button"
@@ -1460,7 +1471,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
             >
               <ChevronRightIcon
                 data-icon="inline-start"
-                className="group-data-[panel-open]/advanced:rotate-90"
+                className="group-data-panel-open/advanced:rotate-90"
               />
               {t("settingsPage.advanced", { count: advanced.length })}
             </CollapsibleTrigger>
@@ -1651,5 +1662,21 @@ export function BotSettingsPageComponent({
         persisted={transport !== null}
       />
     </SettingsRegistryContext.Provider>
+  );
+}
+
+function isStringArray(value: JsonValue): value is string[] {
+  return (
+    Array.isArray(value) && value.every((item) => typeof item === "string")
+  );
+}
+
+function isNumericRange(value: JsonValue): value is NumericRange {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    typeof value.min === "number" &&
+    typeof value.max === "number"
   );
 }

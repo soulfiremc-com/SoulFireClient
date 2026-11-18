@@ -24,14 +24,14 @@ test("hover keeps the latest position and camera motion retains its total delta"
   queue.enqueue(move(0.3, 0.4), "mouse");
   const hover = queue.drain();
   assert.equal(hover.length, 1);
-  assert.deepEqual([hover[0]!.x, hover[0]!.y], [0.3, 0.4]);
+  assert.deepEqual([hover[0].x, hover[0].y], [0.3, 0.4]);
   queue.enqueue(button(0, 1), "mouse");
   queue.drain();
   queue.enqueue(move(2, -4, true), "mouse");
   queue.enqueue(move(-1, 7, true), "mouse");
   const camera = queue.drain();
   assert.equal(camera.length, 1);
-  assert.deepEqual([camera[0]!.x, camera[0]!.y], [1, 3]);
+  assert.deepEqual([camera[0].x, camera[0].y], [1, 3]);
 });
 
 test("dragging preserves every crossed slot across input batches", () => {
@@ -48,8 +48,8 @@ test("dragging preserves every crossed slot across input batches", () => {
         .map((event) => event.x),
       [0.1, 0.3, 0.5],
     );
-    assert.equal(received[received.length - 1]?.kind, Kind.BUTTON);
-    assert.equal(received[received.length - 1]?.action, 0);
+    assert.equal(received.at(-1)?.kind, Kind.BUTTON);
+    assert.equal(received.at(-1)?.action, 0);
     queue.enqueue(move(0.6), "mouse");
     queue.enqueue(move(0.7), "mouse");
     assert.equal(queue.drain().length, 1);
@@ -85,18 +85,19 @@ test("releasing capture clears queued events and held input ownership", () => {
   assert.equal(queue.drain().length, 1);
 });
 
+const keyEvent = () =>
+  create(PovInputEventSchema, { kind: Kind.CHARACTER, code: 65 });
+
 test("input stays bounded and can reset after overflow", () => {
   const queue = new PovInputQueue();
-  const event = () =>
-    create(PovInputEventSchema, { kind: Kind.CHARACTER, code: 65 });
   for (let i = 0; i < 128; i++)
-    assert.equal(queue.enqueue(event(), "keyboard"), true);
+    assert.equal(queue.enqueue(keyEvent(), "keyboard"), true);
   assert.equal(queue.isFull, true);
-  assert.equal(queue.enqueue(event(), "keyboard"), false);
+  assert.equal(queue.enqueue(keyEvent(), "keyboard"), false);
   assert.equal(queue.length, 128);
   queue.reset();
   assert.equal(queue.isFull, false);
-  assert.equal(queue.enqueue(event(), "keyboard"), true);
+  assert.equal(queue.enqueue(keyEvent(), "keyboard"), true);
   assert.equal(queue.drain().length, 1);
 });
 

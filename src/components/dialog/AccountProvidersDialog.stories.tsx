@@ -4,6 +4,14 @@ import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import AccountProvidersDialog from "./account-providers-dialog.tsx";
 import { settledDialog } from "./provider-story-helpers.ts";
 
+function requestUrl(input: RequestInfo | URL): string {
+  return input instanceof Request ? input.url : input.toString();
+}
+
+function requestBody(body: BodyInit | null | undefined): string {
+  return typeof body === "string" ? body : "";
+}
+
 const purchases: string[] = [];
 const meta = {
   title: "Providers/Account providers",
@@ -19,13 +27,13 @@ const meta = {
     purchases.length = 0;
     localStorage.removeItem("ravealts-api-key");
     globalThis.fetch = async (input, options) => {
-      const url = String(input);
+      const url = requestUrl(input);
       if (url.endsWith("/alts/stock"))
         return Response.json({ status: "success", stock: { cookie_nfa: 3 } });
       if (url.endsWith("/alts/key-info"))
         return Response.json({ status: "success", available_credits: 500 });
       if (url.endsWith("/alts/purchase")) {
-        purchases.push(String(options?.body));
+        purchases.push(requestBody(options?.body));
         if (parameters.purchaseFailure === "server")
           return Response.json(
             {

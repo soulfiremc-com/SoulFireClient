@@ -13,6 +13,7 @@ const samples: Record<CodeLanguage, string> = {
 
 for (const [language, code] of Object.entries(samples)) {
   test(`${language} highlights both themes without changing copyable text`, async () => {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     const lines = await highlightCode(code, language as CodeLanguage);
     assert.equal(
       lines

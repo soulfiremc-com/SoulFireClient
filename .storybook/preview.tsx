@@ -1,5 +1,5 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
-import type { Preview, Renderer } from "@storybook/react-vite";
+import type { Preview, ReactRenderer } from "@storybook/react-vite";
 import { createInstance, type ResourceLanguage } from "i18next";
 import { I18nextProvider } from "react-i18next";
 import { TooltipProvider } from "../src/components/ui/tooltip";
@@ -37,7 +37,7 @@ const preview: Preview = {
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/ } },
   },
   decorators: [
-    withThemeByClassName<Renderer>({
+    withThemeByClassName<ReactRenderer>({
       themes: { light: "", dark: "dark" },
       defaultTheme: "light",
     }),

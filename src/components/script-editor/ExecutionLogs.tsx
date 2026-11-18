@@ -103,11 +103,11 @@ export function ExecutionLogs({
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   // New entries only scroll the list while the reader is at the end.
   const followingRef = useRef(true);
-  const lastLogId = logs[logs.length - 1]?.id;
+  const lastLogId = logs.at(-1)?.id;
 
   useEffect(() => {
     const viewport = scrollViewportRef.current;
-    if (!viewport) return;
+    if (!viewport) return undefined;
     const onScroll = () => {
       followingRef.current =
         viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 24;

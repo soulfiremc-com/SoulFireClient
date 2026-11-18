@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import { t } from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { ArrowLeftFromLine } from "lucide-react";
 import { memo } from "react";
@@ -35,13 +35,13 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border/50 bg-destructive/10 px-3 py-2">
-        <ArrowLeftFromLine className="h-4 w-4 text-destructive" />
+        <ArrowLeftFromLine className="size-4 text-destructive" />
         <span className="text-sm font-medium">Group Output</span>
       </div>
 
       {/* Input ports */}
       {inputs.length > 0 && (
-        <div className="px-1 py-1">
+        <div className="p-1">
           {inputs.map((input) => {
             const handleShape = getHandleShape(input.type);
             const isSquareOrDiamond =
@@ -52,7 +52,7 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
                   type="target"
                   position={Position.Left}
                   id={input.id}
-                  className="!relative !top-0 shrink-0 !transform-none transition-transform hover:scale-125"
+                  className="relative! top-0! shrink-0 transform-none! transition-transform hover:scale-125"
                   style={{
                     background: getPortColor(input.type),
                     width: isSquareOrDiamond ? 10 : 8,
@@ -78,7 +78,7 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
         <Empty className="border-0 p-3">
           <EmptyHeader className="gap-1">
             <EmptyTitle className="text-xs text-muted-foreground">
-              {i18n.t("instance:scripts.editor.group.noOutputs")}
+              {t("instance:scripts.editor.group.noOutputs")}
             </EmptyTitle>
           </EmptyHeader>
         </Empty>

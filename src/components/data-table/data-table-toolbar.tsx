@@ -100,7 +100,7 @@ function DataTableToolbarFilter<TData extends RowData>({
         <DataTableTextFilter
           label={columnMeta.label ?? column.id}
           placeholder={columnMeta.placeholder ?? columnMeta.label}
-          value={(column.getFilterValue() as string | undefined) ?? ""}
+          value={filterText(column.getFilterValue())}
           onValueChange={(value) => column.setFilterValue(value)}
           className="h-8 w-full sm:w-56"
         />
@@ -114,12 +114,12 @@ function DataTableToolbarFilter<TData extends RowData>({
             inputMode="numeric"
             label={columnMeta.label ?? column.id}
             placeholder={columnMeta.placeholder ?? columnMeta.label}
-            value={(column.getFilterValue() as string | undefined) ?? ""}
+            value={filterText(column.getFilterValue())}
             onValueChange={(value) => column.setFilterValue(value)}
             className={cn("h-8 w-full sm:w-36", columnMeta.unit && "pr-8")}
           />
           {columnMeta.unit && (
-            <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
+            <span className="absolute inset-y-0 right-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
               {columnMeta.unit}
             </span>
           )}
@@ -201,4 +201,8 @@ function DataTableTextFilter({
       {...props}
     />
   );
+}
+
+function filterText(value: unknown): string {
+  return typeof value === "string" ? value : "";
 }

@@ -1,6 +1,6 @@
 import { useEffect, useEffectEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
-import i18n from "i18next";
+import { t } from "i18next";
 import {
   type PovInputEvent,
   PovInputEvent_Kind as Kind,
@@ -66,7 +66,7 @@ export function PovTouchControls({
       }}
     >
       <fieldset
-        aria-label={i18n.t("instance:bots.pov.touchMove")}
+        aria-label={t("instance:bots.pov.touchMove")}
         className="pointer-events-auto absolute bottom-4 left-4 flex size-20 touch-none items-center justify-center rounded-full border border-white/40 bg-black/30 text-white select-none"
         onPointerDown={(event) => {
           event.preventDefault();
@@ -81,7 +81,7 @@ export function PovTouchControls({
         onPointerCancel={reset}
         onLostPointerCapture={reset}
       >
-        {i18n.t("instance:bots.pov.touchMove")}
+        {t("instance:bots.pov.touchMove")}
       </fieldset>
       <div className="pointer-events-auto absolute right-4 bottom-4 grid grid-cols-2 gap-2">
         {[
@@ -108,7 +108,7 @@ export function PovTouchControls({
               action(event, false, control.code, control.mouse)
             }
           >
-            {i18n.t(`instance:bots.pov.touch.${control.id}`)}
+            {t(`instance:bots.pov.touch.${control.id}`)}
           </Button>
         ))}
       </div>
@@ -143,7 +143,7 @@ export function PovTouchToolbar({
           className="min-h-11 px-2 text-xs"
           onClick={keyboard}
         >
-          {i18n.t("instance:bots.pov.touch.keyboard")}
+          {t("instance:bots.pov.touch.keyboard")}
         </Button>
       )}
       {screenOpen && (
@@ -153,7 +153,7 @@ export function PovTouchToolbar({
           className="min-h-11 px-2 text-xs"
           onClick={closeMenu}
         >
-          {i18n.t("instance:bots.pov.touch.closeMenu")}
+          {t("instance:bots.pov.touch.closeMenu")}
         </Button>
       )}
       <Button
@@ -162,7 +162,7 @@ export function PovTouchToolbar({
         className="min-h-11 px-2 text-xs"
         onClick={release}
       >
-        {i18n.t("instance:bots.pov.release")}
+        {t("instance:bots.pov.release")}
       </Button>
     </div>
   );

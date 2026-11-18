@@ -2,9 +2,11 @@ import { clipboard, contextBridge, ipcRenderer } from "electron";
 import type { SoulFireDesktopApi } from "../src/lib/desktop-api";
 
 function invoke<T>(channel: string, ...args: unknown[]): Promise<T> {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- each IPC channel handler in main.ts returns the type that its caller declares
   return ipcRenderer.invoke(channel, ...args) as Promise<T>;
 }
 
+// oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- callers declare the payload type of the IPC channel they subscribe to
 function subscribe<T>(
   channel: string,
   callback: (payload: T) => void,

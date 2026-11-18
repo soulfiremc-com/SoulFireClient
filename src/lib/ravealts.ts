@@ -51,7 +51,7 @@ function isRavealtsError(data: unknown): data is RavealtsErrorResponse {
     typeof data === "object" &&
     data !== null &&
     "status" in data &&
-    (data as RavealtsErrorResponse).status === "error"
+    data.status === "error"
   );
 }
 
@@ -81,6 +81,7 @@ function ravealtsRequest<T>(
       );
     if (response.status < 200 || response.status >= 300)
       return yield* Effect.fail(new ProviderApiError("rejected"));
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- callers name the response type of the RaveAlts endpoint they call
     return data as T;
   });
 }

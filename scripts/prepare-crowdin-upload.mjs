@@ -28,4 +28,4 @@ for (const { filename, status } of files) {
   translations += 1;
 }
 
-console.log(`has_translations=${translations > 0}`);
+process.stdout.write(`has_translations=${translations > 0}\n`);

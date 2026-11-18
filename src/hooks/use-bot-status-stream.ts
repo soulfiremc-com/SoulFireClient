@@ -7,7 +7,7 @@ export function useBotStatusStream(instanceId: string) {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   useEffect(() => {
-    if (transport === null) return;
+    if (transport === null) return undefined;
     return watchBotStatuses(transport, queryClient, instanceId);
   }, [instanceId, queryClient, transport]);
 }

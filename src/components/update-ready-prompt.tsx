@@ -12,7 +12,7 @@ export function UpdateReadyPrompt() {
   const { t } = useTranslation("common");
 
   useEffect(() => {
-    if (!isDesktopApp()) return;
+    if (!isDesktopApp()) return undefined;
     let active = true;
     let unlisten: (() => void) | undefined;
     const show = (version: string) => {

@@ -27,6 +27,7 @@ import i18n from "@/lib/i18n";
 import { BOT_DISPLAY_STATES, type BotDisplayState } from "@/lib/bot-fleet.ts";
 import { botListValidateSearch } from "@/lib/parsers.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
+import { isOneOf } from "@/lib/is-one-of";
 
 const BOT_SKELETON_IDS = [
   "bot-1",
@@ -77,7 +78,7 @@ function Bots() {
       extraCrumbs={[{ id: "controls", content: t("breadcrumbs.controls") }]}
       pageName={t("pageName.bots")}
       loadingSkeleton={
-        <div className="container flex h-full w-full grow flex-col gap-4">
+        <div className="container flex size-full grow flex-col gap-4">
           <BotGridSkeleton />
         </div>
       }
@@ -108,7 +109,7 @@ function Content() {
   const deferredStatus = useDeferredValue(status);
 
   return (
-    <div className="container flex h-full w-full grow flex-col gap-4">
+    <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <InputGroup className="max-w-sm min-w-56 flex-1">
           <InputGroupAddon>
@@ -131,10 +132,10 @@ function Content() {
             value={[status ?? "all"]}
             onValueChange={(value) => {
               const next = value[0];
-              if (next) {
-                void setStatus(
-                  next === "all" ? null : (next as BotDisplayState),
-                );
+              if (next === "all") {
+                void setStatus(null);
+              } else if (isOneOf(next, BOT_DISPLAY_STATES)) {
+                void setStatus(next);
               }
             }}
           >

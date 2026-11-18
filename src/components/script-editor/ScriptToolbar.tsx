@@ -154,7 +154,7 @@ export function ScriptToolbar({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${scriptName.replace(/[^a-z0-9]/gi, "_")}.soulfire-script.json`;
+    a.download = `${scriptName.replaceAll(/[^a-z0-9]/gi, "_")}.soulfire-script.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -262,7 +262,7 @@ export function ScriptToolbar({
               setEditedName(scriptName);
             }}
             className={cn(
-              "flex min-w-0 items-center gap-1 rounded px-2 py-1 text-sm font-medium transition-colors hover:bg-muted",
+              "flex min-w-0 items-center gap-1 rounded-sm px-2 py-1 text-sm font-medium transition-colors hover:bg-muted",
               isMobile ? "max-w-24" : "max-w-48",
             )}
           >

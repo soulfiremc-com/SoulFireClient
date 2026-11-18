@@ -85,7 +85,7 @@ export function ManageUserDialog({
       if (transport === null) {
         toast.info(t("common:demoReadOnly"));
         setOpen(false);
-        return;
+        return undefined;
       }
 
       const userService = createRpcClient(UserService, transport);
@@ -286,9 +286,10 @@ export function ManageUserDialog({
                       disabled={submitMutation.isPending}
                       name={field.name}
                       value={String(field.state.value)}
-                      onValueChange={(value) =>
-                        field.handleChange(Number(value))
-                      }
+                      onValueChange={(value) => {
+                        const role = Number(value);
+                        if (isUserRole(role)) field.handleChange(role);
+                      }}
                       items={roleItems}
                     >
                       <SelectTrigger
@@ -361,4 +362,8 @@ export function ManageUserDialog({
       </CredenzaContent>
     </Credenza>
   );
+}
+
+function isUserRole(value: number): value is UserRole {
+  return value in UserRole;
 }

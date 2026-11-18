@@ -106,7 +106,7 @@ export function ScriptDiffDialog() {
           />
         }
       >
-        <FileDiff className="h-4 w-4" />
+        <FileDiff className="size-4" />
         <span className="ml-1 text-xs">{totalChanges}</span>
       </CredenzaTrigger>
       <CredenzaContent>

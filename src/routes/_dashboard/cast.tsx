@@ -425,7 +425,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
     defaultValues: { address: "", port: 8009 },
     validators: { onSubmit: toFormSchema(manualDevice) },
     onSubmit: async ({ value }) => {
-      const address = value.address.replace(/^\[|\]$/g, "");
+      const address = value.address.replaceAll(/^\[|\]$/g, "");
       const known = castStore
         .get()
         .state?.devices.find(
@@ -644,13 +644,13 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
               </Field>
             )}
           </form.Field>
-          <p className="text-sm text-muted-foreground" role="status">
+          <output className="block text-sm text-muted-foreground">
             {save.isPending
               ? t("saving")
               : save.isSuccess
                 ? t("saved")
                 : t("autosave")}
-          </p>
+          </output>
         </FieldGroup>
       </form>
       {save.error && (

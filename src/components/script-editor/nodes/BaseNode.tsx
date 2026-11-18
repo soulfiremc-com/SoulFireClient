@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import { t as translate } from "i18next";
 import { useSelector } from "@tanstack/react-store";
 import {
   type Edge,
@@ -40,6 +40,9 @@ import {
   type PortType,
   type TypeDescriptor,
 } from "./types";
+import { nodeDataString } from "@/lib/script-node-data";
+
+const NO_HIDDEN_SOCKETS: readonly string[] = [];
 
 // Stable empty object to avoid creating new references in selectors
 const EMPTY_PREVIEW_VALUES: Record<string, unknown> = {};
@@ -169,7 +172,7 @@ function PortRow({
         position={position}
         id={port.id}
         className={cn(
-          "!absolute transition-transform hover:scale-125",
+          "absolute! transition-transform hover:scale-125",
           HANDLE_FEEDBACK_CLASS,
         )}
         title={port.description || undefined}
@@ -199,7 +202,7 @@ function PortRow({
         position={position}
         id={port.id}
         className={cn(
-          "!relative !top-0 !transform-none transition-transform hover:scale-125",
+          "relative! top-0! transform-none! transition-transform hover:scale-125",
           HANDLE_FEEDBACK_CLASS,
         )}
         style={{
@@ -213,7 +216,7 @@ function PortRow({
         }}
         title={
           isMultiInput
-            ? `${i18n.t("instance:scripts.editor.multiInput.title")}${port.description ? ` (${port.description})` : ""}`
+            ? `${translate("instance:scripts.editor.multiInput.title")}${port.description ? ` (${port.description})` : ""}`
             : port.description || undefined
         }
       />
@@ -247,7 +250,7 @@ function PortRow({
                 items={multiInputItems}
                 onReorder={onReorderMultiInput}
                 compact
-                emptyLabel={i18n.t(
+                emptyLabel={translate(
                   "instance:scripts.editor.multiInput.connectTo",
                   {
                     label: translatedLabel,
@@ -295,6 +298,7 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
         openOnHover
         onMouseDown={(e) => e.stopPropagation()}
         render={
+          // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
           <button
             type="button"
             className={cn("flex items-center gap-0.5", NODE_BADGE_CLASS)}
@@ -372,6 +376,7 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
         aria-label={t("scripts.editor.node.avgTimeBadge", { display })}
         onMouseDown={(e) => e.stopPropagation()}
         render={
+          // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
           <button
             type="button"
             className={cn(
@@ -392,6 +397,11 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
 }
 
 const EMPTY_EDGES: Edge[] = [];
+
+// Get port label from server-provided definition
+const getPortLabel = (port: PortDefinition): string => {
+  return port.label;
+};
 
 function BaseNodeComponent({
   id,
@@ -461,7 +471,7 @@ function BaseNodeComponent({
   );
   const isMuted = data.muted ?? false;
   const isCollapsed = data.collapsed ?? false;
-  const hiddenSockets = data.hiddenSockets ?? [];
+  const hiddenSockets = data.hiddenSockets ?? NO_HIDDEN_SOCKETS;
   const hideUnconnected = hiddenSockets.includes("__hide_unconnected__");
 
   // Compute which input ports are connected
@@ -489,7 +499,7 @@ function BaseNodeComponent({
 
       const sourceNode = getNode(edge.source);
       const sourceLabel =
-        (sourceNode?.data?.label as string | undefined) ??
+        nodeDataString(sourceNode?.data, "label") ??
         getNodeDefinition(sourceNode?.type ?? "")?.label ??
         "Node";
       const sourcePort = sourceNode?.type
@@ -553,11 +563,6 @@ function BaseNodeComponent({
     });
   }, [outputs, connectedOutputs, hiddenSockets, hideUnconnected]);
 
-  // Get port label from server-provided definition
-  const getPortLabel = (port: PortDefinition): string => {
-    return port.label;
-  };
-
   // Handler for inline value changes
   const handleValueChange = useCallback(
     (portId: string, value: unknown) => {
@@ -604,7 +609,7 @@ function BaseNodeComponent({
             type="button"
             onClick={handleToggleCollapse}
             onMouseDown={(e) => e.stopPropagation()}
-            className="nodrag nopan -m-0.5 rounded p-0.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+            className="nodrag nopan -m-0.5 rounded-sm p-0.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
             title={
               isCollapsed
                 ? t("scripts.editor.node.expand")
@@ -612,9 +617,9 @@ function BaseNodeComponent({
             }
           >
             {isCollapsed ? (
-              <ChevronRight className="h-3 w-3" />
+              <ChevronRight className="size-3" />
             ) : (
-              <ChevronDown className="h-3 w-3" />
+              <ChevronDown className="size-3" />
             )}
           </button>
         )}
@@ -664,7 +669,7 @@ function BaseNodeComponent({
         </div>
       ) : (
         rows.length > 0 && (
-          <div className="px-1 py-1">
+          <div className="p-1">
             {rows.map((row) => (
               <div
                 key={`${row.input?.id ?? "empty"}-${row.output?.id ?? "empty"}`}

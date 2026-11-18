@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import { t } from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { Layers } from "lucide-react";
 import { memo } from "react";
@@ -54,7 +54,7 @@ function PortRow({
         type={type}
         position={position}
         id={port.id}
-        className="!relative !top-0 !transform-none transition-transform hover:scale-125"
+        className="relative! top-0! transform-none! transition-transform hover:scale-125"
         style={{
           background: color,
           width: handleWidth,
@@ -94,13 +94,13 @@ function GroupNodeComponent({ data, selected }: GroupNodeProps) {
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border/50 bg-primary/10 px-3 py-2">
-        <Layers className="h-4 w-4 text-primary" />
+        <Layers className="size-4 text-primary" />
         <span className="text-sm font-medium">{label}</span>
       </div>
 
       {/* Ports */}
       {rows.length > 0 && (
-        <div className="px-1 py-1">
+        <div className="p-1">
           {rows.map((row) => (
             <div
               key={`${row.input?.id ?? "empty"}-${row.output?.id ?? "empty"}`}
@@ -131,7 +131,7 @@ function GroupNodeComponent({ data, selected }: GroupNodeProps) {
 
       {/* Footer hint */}
       <div className="border-t border-border/50 px-3 py-1 text-xs text-muted-foreground">
-        {i18n.t("instance:scripts.editor.group.editHint")}
+        {t("instance:scripts.editor.group.editHint")}
       </div>
     </div>
   );

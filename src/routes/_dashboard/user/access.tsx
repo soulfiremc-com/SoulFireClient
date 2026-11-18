@@ -115,7 +115,7 @@ function Content() {
     mutationFn: async (kind: "webdav" | "api") => {
       if (transport === null) {
         toast.info(t("demoReadOnly"));
-        return;
+        return undefined;
       }
 
       const clientService = createRpcClient(ClientService, transport);
@@ -130,6 +130,7 @@ function Content() {
           setApiToken(response.token);
         }
         void copySecret(response.token);
+        return undefined;
       });
       toast.promise(promise, {
         loading: t("access.token.generating"),

@@ -12,7 +12,7 @@ export function useSupportReminderUsage(userId: string, enabled: boolean) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!enabled || !userId || !transport) return;
+    if (!enabled || !userId || !transport) return undefined;
     supportReminder.synchronize();
     const recordUse = () => {
       if (document.visibilityState === "visible") supportReminder.recordUse();

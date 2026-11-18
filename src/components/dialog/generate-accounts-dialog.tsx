@@ -45,6 +45,8 @@ import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import { MCAuthService } from "@/generated/soulfire/mc-auth_pb";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
+import { isOneOf } from "@/lib/is-one-of";
+import { GENERATE_ACCOUNTS_MODES } from "@/lib/types";
 
 export type GenerateAccountsDialogProps = {
   open: boolean;
@@ -409,9 +411,10 @@ export default function GenerateAccountsDialog({
                     </div>
                     <Select
                       value={field.state.value}
-                      onValueChange={(value) =>
-                        field.handleChange(value as GenerateAccountsMode)
-                      }
+                      onValueChange={(value) => {
+                        if (isOneOf(value, GENERATE_ACCOUNTS_MODES))
+                          field.handleChange(value);
+                      }}
                       items={modeItems}
                     >
                       <SelectTrigger id={field.name} className="w-full">
