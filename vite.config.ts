@@ -51,6 +51,7 @@ export default defineConfig(async ({ mode }) => {
                 vite: {
                   build: {
                     lib: {
+                      entry: "electron/main.ts",
                       formats: ["cjs"],
                     },
                     rolldownOptions: {
@@ -123,8 +124,8 @@ export default defineConfig(async ({ mode }) => {
       // target for the Worker bundle, which esbuild cannot minify for.
       client: {
         build: {
-          target: isElectron ? "chrome128" : "es2020",
-          minify: "esbuild",
+          target: isElectron ? "chrome128" : "es2023",
+          minify: "esbuild" as const,
         },
       },
     },

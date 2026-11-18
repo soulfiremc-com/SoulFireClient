@@ -13,7 +13,7 @@
     "vitest",
     "effecttsgo"
   ],
-  "jsPlugins": ["@shadcn/lint"],
+  "jsPlugins": ["@shadcn/lint", "eslint-plugin-better-tailwindcss"],
   "categories": {
     "correctness": "error",
     "suspicious": "error",
@@ -21,6 +21,8 @@
   },
   "options": {
     "typeAware": true,
+    "typeCheck": true,
+    "denyWarnings": true,
     "reportUnusedDisableDirectives": "error"
   },
   "env": {
@@ -43,21 +45,12 @@
     "src/routeTree.gen.ts"
   ],
   "rules": {
+    "better-tailwindcss/enforce-canonical-classes": "error",
+    "better-tailwindcss/no-conflicting-classes": "error",
+    "better-tailwindcss/no-deprecated-classes": "error",
+    "better-tailwindcss/no-duplicate-classes": "error",
     "effecttsgo/any-unknown-in-error-context": "off",
-    "effecttsgo/catch-conditional-refail-to-catch-if": "off",
-    "effecttsgo/effect-try-without-catch": "off",
-    "effecttsgo/global-error-in-effect-catch": "off",
-    "effecttsgo/global-error-in-effect-failure": "off",
-    "effecttsgo/on-exit-failure-to-on-error": "off",
-    "effecttsgo/prefer-typed-schema-decoder": "off",
-    "effecttsgo/prefer-unsafe-constructor": "off",
-    "effecttsgo/run-effect-inside-effect": "off",
-    "effecttsgo/schema-number": "off",
     "effecttsgo/strict-effect-provide": "off",
-    "effecttsgo/sync-to-succeed": "off",
-    "effecttsgo/unknown-in-effect-catch": "off",
-    "effecttsgo/unnecessary-fail-yieldable-error": "off",
-    "effecttsgo/unnecessary-typeof-type": "off",
     "effecttsgo/unsafe-effect-type-assertion": "off",
     "eslint/array-callback-return": "error",
     "eslint/eqeqeq": [
@@ -76,100 +69,158 @@
     ],
     "eslint/no-fallthrough": "error",
     "eslint/no-loop-func": "error",
-    "eslint/no-new": "off",
+    "eslint/no-new": "error",
     "eslint/no-promise-executor-return": "error",
     "eslint/no-self-compare": "error",
-    "eslint/no-shadow": "off",
+    "eslint/no-shadow": "error",
     "eslint/no-throw-literal": "error",
-    "eslint/preserve-caught-error": "off",
+    "eslint/no-underscore-dangle": [
+      "error",
+      {
+        "allow": ["_tag", "__entityContextMenu", "__TSR_index"]
+      }
+    ],
+    "eslint/no-unmodified-loop-condition": "error",
+    "eslint/preserve-caught-error": "error",
     "import/no-cycle": "error",
     "import/no-duplicates": "error",
+    "import/no-named-as-default": "error",
+    "import/no-named-as-default-member": "error",
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/*.css", "@/lib/i18n"]
+      }
+    ],
+    "jsx-a11y/anchor-has-content": "error",
+    "jsx-a11y/click-events-have-key-events": "error",
+    "jsx-a11y/control-has-associated-label": "error",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "controlComponents": ["Checkbox"]
+      }
+    ],
+    "jsx-a11y/no-autofocus": [
+      "error",
+      {
+        "ignoreNonDOM": true
+      }
+    ],
+    "jsx-a11y/no-noninteractive-element-interactions": "error",
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "error",
+    "jsx-a11y/no-noninteractive-tabindex": "error",
+    "jsx-a11y/no-static-element-interactions": "error",
+    "jsx-a11y/prefer-tag-over-role": "error",
+    "jsx-a11y/role-has-required-aria-props": "error",
+    "promise/always-return": [
+      "error",
+      {
+        "ignoreLastCallback": true
+      }
+    ],
     "promise/catch-or-return": [
       "error",
       {
         "allowThen": true
       }
     ],
+    "react-hooks/exhaustive-deps": "error",
     "react/button-has-type": "error",
+    "react/capitalized-calls": "error",
+    "react/exhaustive-effect-dependencies": "error",
+    "react/hooks": "error",
+    "react/immutability": "error",
     "react/jsx-no-target-blank": "error",
     "react/jsx-no-useless-fragment": "error",
+    "react/memo-dependencies": "error",
     "react/no-danger": "error",
     "react/no-unknown-property": "error",
+    "react/no-unstable-nested-components": [
+      "error",
+      {
+        "allowAsProps": true
+      }
+    ],
     "react/only-export-components": "error",
+    "react/purity": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/refs": "error",
+    "react/set-state-in-effect": "error",
+    "react/static-components": "error",
+    "react/use-memo": "error",
+    "typescript/ban-ts-comment": [
+      "error",
+      {
+        "ts-expect-error": "allow-with-description",
+        "ts-ignore": true,
+        "ts-nocheck": true,
+        "ts-check": false,
+        "minimumDescriptionLength": 10
+      }
+    ],
+    "typescript/consistent-return": "error",
     "typescript/consistent-type-exports": "error",
     "typescript/consistent-type-imports": "error",
+    "typescript/no-base-to-string": "error",
     "typescript/no-deprecated": "error",
     "typescript/no-explicit-any": "error",
+    "typescript/no-extraneous-class": "error",
+    "typescript/no-floating-promises": [
+      "error",
+      {
+        "allowForKnownSafeCalls": [
+          {
+            "from": "package",
+            "package": "node:test",
+            "name": [
+              "test",
+              "describe",
+              "it",
+              "suite",
+              "before",
+              "after",
+              "beforeEach",
+              "afterEach"
+            ]
+          }
+        ]
+      }
+    ],
     "typescript/no-misused-promises": "error",
+    "typescript/no-misused-spread": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-unnecessary-type-parameters": "error",
+    "typescript/no-unsafe-enum-assignment": "error",
+    "typescript/no-unsafe-enum-comparison": "error",
+    "typescript/no-unsafe-type-assertion": "error",
     "typescript/only-throw-error": "error",
     "typescript/prefer-optional-chain": "error",
     "typescript/prefer-promise-reject-errors": "error",
+    "typescript/prefer-ts-expect-error": "error",
+    "typescript/require-array-sort-compare": "error",
     "typescript/restrict-plus-operands": "error",
+    "typescript/restrict-template-expressions": "error",
     "typescript/return-await": "error",
     "typescript/switch-exhaustiveness-check": "error",
+    "typescript/unbound-method": "error",
+    "unicorn/consistent-function-scoping": "error",
+    "unicorn/no-abusive-eslint-disable": "error",
+    "unicorn/no-array-reverse": "error",
+    "unicorn/no-array-sort": "error",
+    "unicorn/prefer-add-event-listener": "error",
     "unicorn/prefer-at": "error",
     "unicorn/prefer-node-protocol": "error",
     "unicorn/prefer-string-replace-all": "error",
     "unicorn/prefer-top-level-await": "error",
-    "eslint/no-underscore-dangle": "off",
-    "eslint/no-unmodified-loop-condition": "off",
-    "import/no-named-as-default": "off",
-    "import/no-named-as-default-member": "off",
-    "import/no-unassigned-import": "off",
-    "jsx-a11y/anchor-has-content": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/control-has-associated-label": "off",
-    "jsx-a11y/label-has-associated-control": "off",
-    "jsx-a11y/no-autofocus": "off",
-    "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
-    "jsx-a11y/no-noninteractive-tabindex": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "jsx-a11y/prefer-tag-over-role": "off",
-    "jsx-a11y/role-has-required-aria-props": "off",
-    "promise/always-return": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "react/capitalized-calls": "off",
-    "react/exhaustive-effect-dependencies": "off",
-    "react/hooks": "off",
-    "react/immutability": "off",
-    "react/memo-dependencies": "off",
-    "react/no-unstable-nested-components": "off",
-    "react/purity": "off",
-    "react/refs": "off",
-    "react/set-state-in-effect": "off",
-    "react/static-components": "off",
-    "react/use-memo": "off",
-    "typescript/consistent-return": "off",
-    "typescript/no-base-to-string": "off",
-    "typescript/no-extraneous-class": "off",
-    "typescript/no-misused-spread": "off",
-    "typescript/no-unnecessary-type-assertion": "off",
-    "typescript/no-unnecessary-type-parameters": "off",
-    "typescript/no-unsafe-enum-assignment": "off",
-    "typescript/no-unsafe-enum-comparison": "off",
-    "typescript/no-unsafe-type-assertion": "off",
-    "typescript/require-array-sort-compare": "off",
-    "typescript/restrict-template-expressions": "off",
-    "typescript/unbound-method": "off",
-    "unicorn/consistent-function-scoping": "off",
-    "unicorn/no-array-reverse": "off",
-    "unicorn/no-array-sort": "off",
-    "unicorn/prefer-add-event-listener": "off",
-    "react/react-in-jsx-scope": "off",
-    "shadcn/no-unknown-classes": [
-      "error",
-      {
-        "allow": ["nodrag", "nopan", "ph-no-capture"]
-      }
-    ],
-    "shadcn/no-raw-colors": "error",
     "shadcn/no-arbitrary-values": [
       "error",
       {
         "allow": ["layout"]
       }
     ],
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-raw-colors": "error",
     "shadcn/no-restyle": [
       "error",
       {
@@ -377,6 +428,7 @@
               "font-medium",
               "font-semibold",
               "line-through",
+              "p-0",
               "px-0",
               "py-0",
               "shadow-none",
@@ -394,6 +446,7 @@
               "font-medium",
               "font-semibold",
               "line-through",
+              "p-0",
               "px-0",
               "py-0",
               "text-black/80",
@@ -653,29 +706,13 @@
         ]
       }
     ],
-    "shadcn/require-static-classes": "error",
-    "shadcn/no-inline-styles": "error",
-    "typescript/no-floating-promises": [
+    "shadcn/no-unknown-classes": [
       "error",
       {
-        "allowForKnownSafeCalls": [
-          {
-            "from": "package",
-            "package": "node:test",
-            "name": [
-              "test",
-              "describe",
-              "it",
-              "suite",
-              "before",
-              "after",
-              "beforeEach",
-              "afterEach"
-            ]
-          }
-        ]
+        "allow": ["nodrag", "nopan", "ph-no-capture"]
       }
-    ]
+    ],
+    "shadcn/require-static-classes": "error"
   },
   "overrides": [
     {
@@ -697,7 +734,27 @@
         "shadcn/no-arbitrary-values": "off",
         "shadcn/no-restyle": "off",
         "shadcn/require-static-classes": "off",
-        "shadcn/no-inline-styles": "off"
+        "shadcn/no-inline-styles": "off",
+        "better-tailwindcss/no-conflicting-classes": "off",
+        "better-tailwindcss/no-duplicate-classes": "off",
+        "better-tailwindcss/no-deprecated-classes": "off",
+        "better-tailwindcss/enforce-canonical-classes": "off",
+        "eslint/no-shadow": "off",
+        "typescript/no-unsafe-type-assertion": "off",
+        "react/memo-dependencies": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "typescript/no-unnecessary-type-assertion": "off",
+        "react/refs": "off",
+        "react/no-unstable-nested-components": "off",
+        "typescript/restrict-template-expressions": "off",
+        "typescript/consistent-return": "off",
+        "unicorn/prefer-string-replace-all": "off",
+        "react/set-state-in-effect": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "eslint/no-underscore-dangle": "off"
       }
     },
     {
@@ -995,22 +1052,9 @@
       }
     },
     {
-      "files": ["scripts/**", "**/*.test.ts", "**/*.test.tsx"],
-      "rules": {
-        "eslint/no-console": "off"
-      }
-    },
-    {
       "files": ["src/routes/**", "src/components/ui/**"],
       "rules": {
         "react/only-export-components": "off"
-      }
-    },
-    {
-      "files": ["src/**", "electron/**"],
-      "rules": {
-        "unicorn/prefer-at": "off",
-        "unicorn/prefer-string-replace-all": "off"
       }
     },
     {
@@ -1018,6 +1062,202 @@
       "rules": {
         "oxc/no-map-spread": "off"
       }
+    },
+    {
+      "files": [
+        "electron/native/integrated-server.ts",
+        "electron/native/integrated-server-download.ts",
+        "src/components/script-editor/DryRunDialog.tsx",
+        "src/lib/pov-session.ts",
+        "src/lib/protobuf.ts",
+        "src/lib/proxy-check.ts"
+      ],
+      "rules": {
+        "effecttsgo/unknown-in-effect-catch": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/dialog/account-metadata-dialog.tsx",
+        "src/components/dialog/create-instance-dialog.tsx",
+        "src/components/dialog/generate-accounts-dialog.tsx",
+        "src/components/dialog/import-dialog.tsx",
+        "src/components/dialog/manage-user-dialog.tsx",
+        "src/routes/_dashboard/cast.tsx",
+        "src/routes/_dashboard/instance/$instance/meta.tsx",
+        "src/routes/_dashboard/user/index.tsx",
+        "src/routes/_dashboard/user/settings.tsx"
+      ],
+      "rules": {
+        "react/capitalized-calls": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/command-palette.tsx",
+        "src/components/script-editor/ScriptEditor.tsx",
+        "src/components/script-editor/nodes/EditableNodeLabel.tsx",
+        "src/components/terminal.tsx",
+        "src/components/visually-hidden-input.tsx"
+      ],
+      "rules": {
+        "react/refs": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/command-input.tsx",
+        "src/components/command-palette.tsx",
+        "src/components/data-table/data-table-action-bar.tsx",
+        "src/components/dialog/account-config-dialog.tsx",
+        "src/components/dialog/account-metadata-dialog.tsx",
+        "src/components/nav/instance/nav-extensions.tsx",
+        "src/components/pov/bot-pov-player.tsx",
+        "src/components/script-editor/QuickAddMenu.tsx",
+        "src/components/script-editor/nodes/EditableNodeLabel.tsx",
+        "src/components/visually-hidden-input.tsx",
+        "src/hooks/use-cached-state.ts",
+        "src/hooks/use-palette-search-index.ts",
+        "src/routes/_dashboard/instance/$instance/meta.tsx"
+      ],
+      "rules": {
+        "react/set-state-in-effect": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/command-input.tsx",
+        "src/components/command-palette.tsx",
+        "src/components/dialog/generate-accounts-dialog.tsx",
+        "src/components/instance-overview/live-feed.tsx",
+        "src/components/pov/bot-pov-player.tsx",
+        "src/components/pov/pov-touch-controls.tsx",
+        "src/components/providers/flows/ravealts-flow.tsx",
+        "src/components/providers/provider-ui.tsx",
+        "src/components/script-editor/ExecutionLogs.tsx",
+        "src/components/script-editor/QuickAddMenu.tsx",
+        "src/components/terminal.tsx",
+        "src/hooks/use-changing-value.ts",
+        "src/hooks/use-palette-search-index.ts",
+        "src/hooks/use-proxy-check.ts",
+        "src/routes/__root.tsx",
+        "src/routes/_dashboard/instance/$instance/script/$scriptId.tsx"
+      ],
+      "rules": {
+        "react/exhaustive-effect-dependencies": "off"
+      }
+    },
+    {
+      "files": ["src/hooks/use-palette-search-index.ts"],
+      "rules": {
+        "react/memo-dependencies": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/command-input.tsx",
+        "src/components/command-palette.tsx",
+        "src/components/pov/bot-pov-player.tsx"
+      ],
+      "rules": {
+        "react/immutability": "off"
+      }
+    },
+    {
+      "files": [
+        "src/components/command-input.tsx",
+        "src/hooks/use-changing-value.ts"
+      ],
+      "rules": {
+        "react-hooks/exhaustive-deps": "off"
+      }
     }
-  ]
+  ],
+  "settings": {
+    "better-tailwindcss": {
+      "entryPoint": "src/App.css",
+      "selectors": [
+        {
+          "kind": "attribute",
+          "name": "^class(?:Name)?$"
+        },
+        {
+          "kind": "attribute",
+          "name": "^class(?:Name)?$",
+          "match": [
+            {
+              "type": "strings"
+            }
+          ]
+        },
+        {
+          "kind": "callee",
+          "name": "^cn$",
+          "match": [
+            {
+              "type": "strings"
+            },
+            {
+              "type": "objectKeys"
+            }
+          ]
+        },
+        {
+          "kind": "callee",
+          "name": "^clsx$",
+          "match": [
+            {
+              "type": "strings"
+            },
+            {
+              "type": "objectKeys"
+            }
+          ]
+        },
+        {
+          "kind": "callee",
+          "name": "^twMerge$",
+          "match": [
+            {
+              "type": "strings"
+            }
+          ]
+        },
+        {
+          "kind": "callee",
+          "name": "^cva$",
+          "match": [
+            {
+              "type": "strings"
+            },
+            {
+              "type": "objectValues",
+              "path": "^variants.*$"
+            },
+            {
+              "type": "objectValues",
+              "path": "^compoundVariants\\[\\d+\\]\\.(?:className|class)$"
+            }
+          ]
+        },
+        {
+          "kind": "callee",
+          "name": "^tv$",
+          "match": [
+            {
+              "type": "strings"
+            },
+            {
+              "type": "objectValues",
+              "path": "^(?:base|variants.*|slots.*)$"
+            },
+            {
+              "type": "objectValues",
+              "path": "^compound(?:Variants|Slots)\\[\\d+\\]\\.(?:className|class).*$"
+            }
+          ]
+        }
+      ]
+    }
+  }
 }
