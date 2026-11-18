@@ -36,8 +36,8 @@ export function OverviewSummary({
               <span
                 className={
                   online
-                    ? "bg-success size-1.5 rounded-full"
-                    : "bg-muted-foreground size-1.5 rounded-full"
+                    ? "size-1.5 rounded-full bg-success"
+                    : "size-1.5 rounded-full bg-muted-foreground"
                 }
               />
               {data ? `${online}/${accountIds.size}` : "-"}

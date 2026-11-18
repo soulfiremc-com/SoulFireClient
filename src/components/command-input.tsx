@@ -833,7 +833,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       </InputGroup>
       {popupVisible && caretPositionStyle && (
         <div
-          className="border-(--terminal-border) bg-(--terminal-popup) text-inherit fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border shadow-md data-[side=top]:-translate-y-full"
+          className="fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border border-(--terminal-border) bg-(--terminal-popup) text-inherit shadow-md data-[side=top]:-translate-y-full"
           data-side={caretPositionStyle.above ? "top" : "bottom"}
           style={
             {
@@ -893,7 +893,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
                       {suggestion.suggestion}
                     </div>
                     {suggestion.tooltip && (
-                      <div className="text-(--terminal-muted) min-w-0 break-words">
+                      <div className="min-w-0 break-words text-(--terminal-muted)">
                         {suggestion.tooltip}
                       </div>
                     )}
@@ -905,7 +905,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
             <div
               id={suggestionStatusId}
               role="status"
-              className="text-(--terminal-muted) px-3 py-2 font-mono text-xs"
+              className="px-3 py-2 font-mono text-xs text-(--terminal-muted)"
             >
               {completionState.failed
                 ? t("commandInput.suggestionsUnavailable")

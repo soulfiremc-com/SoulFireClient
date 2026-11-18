@@ -112,7 +112,7 @@ export function IntegratedServerDiagnosticsDialog({
             {t("integratedDiagnostics.description")}
           </DialogDescription>
         </DialogHeader>
-        {!!open && <DiagnosticsDetails />}
+        {open && <DiagnosticsDetails />}
       </DialogContent>
     </Dialog>
   );
@@ -146,7 +146,7 @@ function ProcessSummary({
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
         <span>{t(`integratedDiagnostics.status.${data.status}`)}</span>
         {data.pid !== null && (
-          <span className="select-text font-mono">PID {data.pid}</span>
+          <span className="font-mono select-text">PID {data.pid}</span>
         )}
         {elapsed !== null && (
           <span className="tabular-nums">
@@ -167,7 +167,7 @@ function ProcessSummary({
         )}
       {!!data.error && (
         <Alert variant="destructive">
-          <AlertDescription className="select-text break-words">
+          <AlertDescription className="break-words select-text">
             {data.error}
           </AlertDescription>
         </Alert>
@@ -211,7 +211,7 @@ export function ProcessOutput({
           filtered.map((log) => (
             <p
               key={log.id}
-              className="select-text whitespace-pre-wrap break-all"
+              className="break-all whitespace-pre-wrap select-text"
             >
               <span>[{log.source}] </span>
               <TerminalMessage entry={{ message: log.message }} />
@@ -309,7 +309,7 @@ function DiagnosticsDetails() {
         {fields.map((field) => (
           <div key={field.label} className="contents">
             <dt className="text-muted-foreground">{field.label}</dt>
-            <dd className="select-text break-all font-mono">
+            <dd className="font-mono break-all select-text">
               {field.value ?? t("integratedDiagnostics.unavailable")}
             </dd>
           </div>
@@ -403,7 +403,7 @@ function DiagnosticsDetails() {
         </p>
         {!!dumpPath && (
           <div className="flex flex-col items-start gap-2">
-            <p className="select-text break-all font-mono text-xs">
+            <p className="font-mono text-xs break-all select-text">
               {dumpPath}
             </p>
             <Button
@@ -423,7 +423,7 @@ function DiagnosticsDetails() {
       </div>
       {!!actionError && (
         <Alert variant="destructive">
-          <AlertDescription className="select-text break-words">
+          <AlertDescription className="break-words select-text">
             {actionError}
           </AlertDescription>
         </Alert>

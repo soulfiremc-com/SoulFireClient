@@ -151,7 +151,7 @@ function SettingInputLayout(props: {
 }) {
   return (
     <Field
-      className="min-w-0 max-w-3xl"
+      className="max-w-3xl min-w-0"
       data-invalid={props.invalid}
       data-disabled={props.disabled}
       aria-busy={props.busy}
@@ -429,7 +429,7 @@ function BoolComponent(props: {
         )}
       </FieldContent>
       <div>
-        <div className="bg-muted/50 inline-flex items-center gap-3 rounded-md border px-3 py-2">
+        <div className="inline-flex items-center gap-3 rounded-md border bg-muted/50 px-3 py-2">
           <span className="text-sm">
             {t(props.value ? "pluginCard.enabled" : "pluginCard.disabled")}
           </span>
@@ -558,7 +558,7 @@ function ComboComponent(props: {
               ))}
             </CommandGroup>
             {hiddenCount > 0 && (
-              <p className="text-muted-foreground px-3 py-2 text-xs">
+              <p className="px-3 py-2 text-xs text-muted-foreground">
                 {t("settingsPage.combo.more", { count: hiddenCount })}
               </p>
             )}
@@ -692,7 +692,7 @@ function StringListComponent(props: {
         </InputGroup>
         {list.entries.length > 1 && (
           <div className="flex items-center justify-between gap-2">
-            <p className="text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               {t("settingsPage.stringList.count", {
                 count: list.entries.length,
               })}
@@ -914,7 +914,7 @@ function SettingStatusRow(props: {
   return (
     <div
       data-slot="setting-status"
-      className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"
+      className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground"
     >
       {props.overridden && (
         <Badge variant="secondary">{t("settingsPage.overridden")}</Badge>
@@ -941,13 +941,13 @@ function SettingStatusRow(props: {
           </>
         )}
         {props.persisted && props.status === "success" && (
-          <span className="text-success-emphasis inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 text-success-emphasis">
             <CheckIcon className="size-3" />
             {t("settingsPage.saved")}
           </span>
         )}
         {props.status === "error" && (
-          <span className="text-destructive inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 text-destructive">
             <CircleAlertIcon className="size-3" />
             {t("settingsPage.notSaved")}
           </span>
@@ -1048,7 +1048,7 @@ function SettingField<T extends BaseSettings>(props: {
       aria-label={props.focused ? getSettingLabel(definition) : undefined}
       data-setting-focused={props.focused || undefined}
       className={cn(
-        "flex min-w-0 max-w-3xl flex-col has-[>[data-slot=setting-status]]:gap-2",
+        "flex max-w-3xl min-w-0 flex-col has-[>[data-slot=setting-status]]:gap-2",
         props.focused && "scroll-mt-4 rounded-lg p-3 ring-2 ring-ring",
       )}
     >
@@ -1326,7 +1326,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex max-w-3xl flex-col gap-3">
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           {t(`settingsPage.scope.${mutationTarget.type}`)}
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -1375,7 +1375,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
               {t("settingsPage.filter")}
             </Button>
           )}
-          <p className="text-muted-foreground inline-flex items-center gap-2 text-xs">
+          <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
             <InfoIcon className="size-3.5 shrink-0" />
             {t(
               persisted ? "settingsPage.autoSave" : "settingsPage.demoNotSaved",
@@ -1385,7 +1385,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
       </div>
       {matches.length === 0 && searching && (
         <div className="flex max-w-3xl flex-wrap items-center gap-3">
-          <p className="text-muted-foreground text-sm" role="status">
+          <p className="text-sm text-muted-foreground" role="status">
             {t("settingsPage.noMatches", { query: query.trim() })}
           </p>
           {openCommandPalette && (
@@ -1402,7 +1402,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
         </div>
       )}
       {otherPages.length > 0 && linkToPage && (
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           {t("settingsPage.otherPages")}{" "}
           {otherPages.map(({ page, count }, index) => (
             <span key={page.id}>
@@ -1429,7 +1429,7 @@ export function ClientSettingsPageComponent<T extends BaseSettings>({
                   <h3 className="text-base font-semibold">
                     {t(`settingsPage.sections.${section.id}.title`)}
                   </h3>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t(`settingsPage.sections.${section.id}.description`)}
                   </p>
                 </div>

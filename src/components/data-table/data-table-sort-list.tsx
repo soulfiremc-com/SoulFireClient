@@ -220,7 +220,7 @@ function DataTableSortListContent<TData extends RowData>({
           {sorting.length > 0 && (
             <Badge
               variant="secondary"
-              className="h-[18.24px] rounded-xs px-1.25 font-mono font-normal text-3xs"
+              className="h-[18.24px] rounded-xs px-1.25 font-mono text-3xs font-normal"
             >
               {sorting.length}
             </Badge>
@@ -233,7 +233,7 @@ function DataTableSortListContent<TData extends RowData>({
           {...props}
         >
           <div className="flex flex-col gap-1">
-            <h4 id={labelId} className="font-medium leading-none">
+            <h4 id={labelId} className="leading-none font-medium">
               {sorting.length > 0
                 ? i18n.t("common:dataTable.sortBy")
                 : i18n.t("common:dataTable.noSortingApplied")}
@@ -241,7 +241,7 @@ function DataTableSortListContent<TData extends RowData>({
             <p
               id={descriptionId}
               className={cn(
-                "text-muted-foreground text-sm",
+                "text-sm text-muted-foreground",
                 sorting.length > 0 && "sr-only",
               )}
             >

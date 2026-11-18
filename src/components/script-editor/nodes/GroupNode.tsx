@@ -47,7 +47,7 @@ function PortRow({
     <div
       className={cn(
         "relative flex items-center gap-2 py-1",
-        isLeft ? "pr-4" : "pl-4 flex-row-reverse",
+        isLeft ? "pr-4" : "flex-row-reverse pl-4",
       )}
     >
       <Handle

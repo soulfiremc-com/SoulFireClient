@@ -630,7 +630,7 @@ function BotDetailHeader({
               render={<div className="flex items-center gap-1" />}
             >
               <HeartIcon className="size-3.5 text-destructive" />
-              <div className="bg-muted h-1.5 w-12 overflow-hidden rounded-full">
+              <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full bg-destructive transition-all"
                   style={{
@@ -650,7 +650,7 @@ function BotDetailHeader({
               render={<div className="flex items-center gap-1" />}
             >
               <UtensilsIcon className="size-3.5 text-warning" />
-              <div className="bg-muted h-1.5 w-12 overflow-hidden rounded-full">
+              <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full bg-warning transition-all"
                   style={{
@@ -670,7 +670,7 @@ function BotDetailHeader({
               render={<div className="flex items-center gap-1" />}
             >
               <SparklesIcon className="size-3.5 text-success" />
-              <div className="bg-muted h-1.5 w-12 overflow-hidden rounded-full">
+              <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full bg-success transition-all"
                   style={{
@@ -888,7 +888,7 @@ function BotStateNotice({
     );
   }
   return (
-    <p className="text-muted-foreground text-sm" role="status">
+    <p className="text-sm text-muted-foreground" role="status">
       {t(`bots.notice.${state}`)}
     </p>
   );
@@ -965,7 +965,7 @@ function OverviewTab({
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{t("bots.connectionPanel.proxy")}</ItemTitle>
-              <ItemDescription className="select-text break-all">
+              <ItemDescription className="break-all select-text">
                 {botInfo.connection ? (
                   botInfo.connection.proxy ? (
                     <span className="inline-flex items-center gap-2">
@@ -997,10 +997,10 @@ function OverviewTab({
             {isOnline && liveState ? (
               <div className="flex flex-col gap-3">
                 <div>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     {t("bots.positionPanel.position")}
                   </p>
-                  <div className="mt-1 grid select-text grid-cols-3 gap-2 font-mono text-sm">
+                  <div className="mt-1 grid grid-cols-3 gap-2 font-mono text-sm select-text">
                     <div>
                       <span className="text-muted-foreground">X:</span>{" "}
                       {liveState.x.toFixed(2)}
@@ -1016,10 +1016,10 @@ function OverviewTab({
                   </div>
                 </div>
                 <div>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     {t("bots.positionPanel.rotation")}
                   </p>
-                  <div className="mt-1 grid select-text grid-cols-2 gap-2 font-mono text-sm">
+                  <div className="mt-1 grid grid-cols-2 gap-2 font-mono text-sm select-text">
                     <div>
                       <span className="text-muted-foreground">Pitch:</span>{" "}
                       {liveState.xRot.toFixed(1)}°
@@ -1032,7 +1032,7 @@ function OverviewTab({
                 </div>
               </div>
             ) : (
-              <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+              <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
                 <p className="text-muted-foreground">
                   {t("bots.positionPanel.offline")}
                 </p>
@@ -1059,7 +1059,7 @@ function OverviewTab({
             </CollapsibleTrigger>
             <CollapsibleContent className="mt-3 flex flex-col gap-4">
               <dl className="text-sm">
-                <dt className="text-muted-foreground text-xs">
+                <dt className="text-xs text-muted-foreground">
                   {t("bots.profileId")}
                 </dt>
                 <dd className="font-mono text-xs break-all select-text">
@@ -1261,7 +1261,7 @@ function InventorySlotDisplay({
     return (
       <button
         type="button"
-        className={`bg-muted/50 border-border ${baseClasses}`}
+        className={`border-border bg-muted/50 ${baseClasses}`}
         onClick={handleClick}
         onContextMenu={handleContextMenu}
         onMouseDown={handleMouseDown}
@@ -1270,7 +1270,7 @@ function InventorySlotDisplay({
         title={description}
       >
         {isCreativeTrash ? (
-          <Trash2Icon className="text-muted-foreground size-4" />
+          <Trash2Icon className="size-4 text-muted-foreground" />
         ) : (
           slotNumber !== undefined && (
             <span className="text-muted-foreground/30">{slotNumber}</span>
@@ -1296,7 +1296,7 @@ function InventorySlotDisplay({
   return (
     <button
       type="button"
-      className={`bg-muted border-border relative overflow-hidden ${baseClasses}`}
+      className={`relative overflow-hidden border-border bg-muted ${baseClasses}`}
       onClick={handleClick}
       onContextMenu={handleContextMenu}
       onMouseDown={handleMouseDown}
@@ -1317,7 +1317,7 @@ function InventorySlotDisplay({
         </span>
       )}
       {item.count > 1 && (
-        <span className="absolute bottom-0 right-0.5 text-4xs font-bold">
+        <span className="absolute right-0.5 bottom-0 text-4xs font-bold">
           {item.count}
         </span>
       )}
@@ -1348,7 +1348,7 @@ function SlotRegionGrid({
 
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-muted-foreground flex items-center gap-1 text-xs font-medium">
+      <p className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
         {isArmor && <ShieldIcon className="size-3" />}
         {region.label}
         {isOutput && <span className="text-muted-foreground/50">(output)</span>}
@@ -1783,8 +1783,8 @@ function BotInventoryPanel({
           )}
 
           {/* Drop zone */}
-          <div className="border-destructive/30 hover:border-destructive/50 hover:bg-destructive/5 flex items-center justify-center gap-2 rounded-lg border-2 border-dashed p-3 transition-colors">
-            <Trash2Icon className="text-muted-foreground size-4" />
+          <div className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-destructive/30 p-3 transition-colors hover:border-destructive/50 hover:bg-destructive/5">
+            <Trash2Icon className="size-4 text-muted-foreground" />
             <div className="flex gap-2">
               <Button
                 variant="ghost"
@@ -1808,7 +1808,7 @@ function BotInventoryPanel({
           </div>
 
           {/* Click instructions */}
-          <p className="text-muted-foreground text-center text-xs">
+          <p className="text-center text-xs text-muted-foreground">
             {layout.containerType === "creative" &&
             layout.regions.some((region) => region.id === "creative_catalog")
               ? t("bots.inventoryPanel.creativeCatalogHint")
@@ -1816,7 +1816,7 @@ function BotInventoryPanel({
           </p>
         </div>
       ) : (
-        <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
           <p className="text-muted-foreground" role="status">
             {!isOnline
               ? t("bots.inventoryPanel.offline")
@@ -1869,7 +1869,7 @@ function ContainerButtonsPanel({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-muted-foreground text-sm font-medium">{title}</div>
+      <div className="text-sm font-medium text-muted-foreground">{title}</div>
       <ToggleGroup
         multiple
         value={buttons
@@ -1934,7 +1934,7 @@ function ContainerTextInputPanel({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-muted-foreground text-sm font-medium">{title}</div>
+      <div className="text-sm font-medium text-muted-foreground">{title}</div>
       <div className="rounded-lg border p-2">
         <FieldGroup className="gap-2">
           {textInputs.map((input) => (
@@ -2139,13 +2139,13 @@ function BookPagesPanel({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
+      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
         <BookOpenIcon className="size-4" />
         {t("bots.inventoryPanel.bookPages.title")}
       </div>
       <div className="rounded-lg border p-3">
         {/* Page content */}
-        <div className="bg-muted/30 mb-2 min-h-[100px] select-text whitespace-pre-wrap rounded p-2 font-mono text-xs">
+        <div className="mb-2 min-h-[100px] rounded bg-muted/30 p-2 font-mono text-xs whitespace-pre-wrap select-text">
           {currentPageContent?.content ||
             t("bots.inventoryPanel.bookPages.emptyPage")}
         </div>
@@ -2161,7 +2161,7 @@ function BookPagesPanel({
           >
             <ChevronLeftIcon className="size-4" />
           </Button>
-          <span className="text-muted-foreground text-xs">
+          <span className="text-xs text-muted-foreground">
             {t("bots.inventoryPanel.bookPages.pageIndicator", {
               current: displayPage + 1,
               total: totalPages,
@@ -2285,7 +2285,7 @@ function BotActionsPanel({
           </Button>
         </div>
       ) : (
-        <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
           <p className="text-muted-foreground">
             {t("bots.actionsPanel.offline")}
           </p>
@@ -2424,7 +2424,7 @@ function BotMovementPanel({
         <div className="flex flex-col gap-4">
           {/* WASD Controls */}
           <div>
-            <p className="text-muted-foreground mb-2 text-xs font-medium">
+            <p className="mb-2 text-xs font-medium text-muted-foreground">
               {t("bots.movementPanel.movement")}
             </p>
             {(demo || !currentMovementState) && (
@@ -2535,7 +2535,7 @@ function BotMovementPanel({
 
           {/* Rotation controls */}
           <div>
-            <p className="text-muted-foreground mb-2 text-xs font-medium">
+            <p className="mb-2 text-xs font-medium text-muted-foreground">
               {t("bots.movementPanel.rotation")}
             </p>
             <div className="flex flex-col items-center gap-1">
@@ -2587,7 +2587,7 @@ function BotMovementPanel({
           </div>
         </div>
       ) : (
-        <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
           <p className="text-muted-foreground">
             {t("bots.movementPanel.offline")}
           </p>
@@ -2726,7 +2726,7 @@ function BotDialogPanel({
         {t("bots.dialogPanel.title")}
       </h3>
       {!isOnline ? (
-        <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
           <p className="text-muted-foreground">
             {t("bots.dialogPanel.offline")}
           </p>
@@ -2736,17 +2736,17 @@ function BotDialogPanel({
           {/* Dialog info */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">
+              <span className="text-sm text-muted-foreground">
                 {t("bots.dialogPanel.dialogType")}:
               </span>
               <Badge variant="outline">{getDialogTypeName(dialog.type)}</Badge>
             </div>
             {dialog.id && (
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground text-sm">
+                <span className="text-sm text-muted-foreground">
                   {t("bots.dialogPanel.dialogId")}:
                 </span>
-                <code className="bg-muted select-text rounded px-2 py-1 text-xs">
+                <code className="rounded bg-muted px-2 py-1 text-xs select-text">
                   {dialog.id}
                 </code>
               </div>
@@ -2767,7 +2767,7 @@ function BotDialogPanel({
           />
         </div>
       ) : (
-        <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
           <p className="text-muted-foreground">
             {t("bots.dialogPanel.noDialog")}
           </p>
@@ -2813,7 +2813,7 @@ function BotVisualPanel({
           <EyeIcon className="size-4" />
           {t("bots.visualPanel.title")}
         </h3>
-        <div className="bg-muted/30 flex items-center justify-center rounded-lg p-6">
+        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
           <p className="text-muted-foreground">
             {t("bots.visualPanel.offline")}
           </p>
@@ -2833,23 +2833,23 @@ function BotVisualPanel({
         <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8">
           {/* Compass */}
           <div className="flex flex-col items-center gap-2">
-            <p className="text-muted-foreground text-xs font-medium uppercase">
+            <p className="text-xs font-medium text-muted-foreground uppercase">
               {t("bots.visualPanel.compass")}
             </p>
             <div className="relative size-32">
               {/* Compass background */}
-              <div className="border-border bg-muted/30 absolute inset-0 rounded-full border-2" />
+              <div className="absolute inset-0 rounded-full border-2 border-border bg-muted/30" />
               {/* Cardinal directions */}
-              <span className="text-muted-foreground absolute left-1/2 top-1 -translate-x-1/2 text-xs font-bold">
+              <span className="absolute top-1 left-1/2 -translate-x-1/2 text-xs font-bold text-muted-foreground">
                 N
               </span>
-              <span className="text-muted-foreground absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-bold">
+              <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-bold text-muted-foreground">
                 S
               </span>
-              <span className="text-muted-foreground absolute left-1 top-1/2 -translate-y-1/2 text-xs font-bold">
+              <span className="absolute top-1/2 left-1 -translate-y-1/2 text-xs font-bold text-muted-foreground">
                 W
               </span>
-              <span className="text-muted-foreground absolute right-1 top-1/2 -translate-y-1/2 text-xs font-bold">
+              <span className="absolute top-1/2 right-1 -translate-y-1/2 text-xs font-bold text-muted-foreground">
                 E
               </span>
               {/* Direction indicator */}
@@ -2859,17 +2859,17 @@ function BotVisualPanel({
                   transform: `translateX(-50%) rotate(${liveState.yRot + 180}deg)`,
                 }}
               >
-                <div className="bg-primary h-full w-full rounded-full" />
+                <div className="h-full w-full rounded-full bg-primary" />
                 <div className="absolute -top-1 left-1/2 size-0 -translate-x-1/2 border-4 border-transparent border-b-primary" />
               </div>
               {/* Center dot */}
-              <div className="bg-primary absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full" />
+              <div className="absolute top-1/2 left-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary" />
             </div>
             <div className="text-center">
-              <p className="select-text text-lg font-bold">
+              <p className="text-lg font-bold select-text">
                 {getCompassDirection(liveState.yRot)}
               </p>
-              <p className="text-muted-foreground select-text text-xs">
+              <p className="text-xs text-muted-foreground select-text">
                 {liveState.yRot.toFixed(1)}°
               </p>
             </div>
@@ -2877,14 +2877,14 @@ function BotVisualPanel({
 
           {/* Look direction (pitch) */}
           <div className="flex flex-col items-center gap-2">
-            <p className="text-muted-foreground text-xs font-medium uppercase">
+            <p className="text-xs font-medium text-muted-foreground uppercase">
               {t("bots.visualPanel.lookDirection")}
             </p>
             <div className="flex items-center gap-4">
-              <div className="bg-muted/30 relative h-24 w-4 overflow-hidden rounded-full">
+              <div className="relative h-24 w-4 overflow-hidden rounded-full bg-muted/30">
                 {/* Pitch indicator */}
                 <div
-                  className="bg-primary absolute left-0 right-0 h-2 rounded-full transition-all"
+                  className="absolute right-0 left-0 h-2 rounded-full bg-primary transition-all"
                   style={{
                     // Pitch ranges from -90 (up) to 90 (down)
                     // Map to percentage: -90 -> 0%, 0 -> 50%, 90 -> 100%
@@ -2901,7 +2901,7 @@ function BotVisualPanel({
                       ? t("bots.visualPanel.lookingDown")
                       : t("bots.visualPanel.lookingStraight")}
                 </p>
-                <p className="text-muted-foreground select-text text-xs">
+                <p className="text-xs text-muted-foreground select-text">
                   {liveState.xRot.toFixed(1)}°
                 </p>
               </div>
@@ -2910,8 +2910,8 @@ function BotVisualPanel({
         </div>
 
         {/* World info */}
-        <div className="border-border bg-muted/20 rounded-lg border p-3">
-          <p className="text-muted-foreground mb-2 text-xs font-medium uppercase">
+        <div className="rounded-lg border border-border bg-muted/20 p-3">
+          <p className="mb-2 text-xs font-medium text-muted-foreground uppercase">
             {t("bots.visualPanel.worldInfo")}
           </p>
           <div className="text-sm">
@@ -2919,7 +2919,7 @@ function BotVisualPanel({
               <span className="text-muted-foreground">
                 {t("bots.visualPanel.dimension")}:
               </span>{" "}
-              <span className="select-text font-mono">
+              <span className="font-mono select-text">
                 {liveState.dimension
                   ? formatDimension(liveState.dimension)
                   : t("bots.statsPanel.unknown")}

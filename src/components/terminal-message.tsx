@@ -77,7 +77,7 @@ function InteractiveText({
         {span.text}
       </TooltipTrigger>
       <TooltipContent role="tooltip" id={`${id}-tooltip`}>
-        <span className="whitespace-pre-wrap break-all">
+        <span className="break-all whitespace-pre-wrap">
           {actions.tooltip(metadata)}
         </span>
       </TooltipContent>

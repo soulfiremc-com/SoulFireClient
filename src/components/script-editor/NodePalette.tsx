@@ -52,7 +52,7 @@ function DraggableNodeItem({
         type="button"
         title={node.description}
         onClick={() => onAdd(node.type)}
-        className="group flex cursor-pointer items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm select-none transition-colors hover:border-border hover:bg-muted"
+        className="group flex cursor-pointer items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted"
       >
         <DynamicIcon name={node.icon} className="size-4 shrink-0" />
         <span className="truncate">{nodeLabel}</span>
@@ -77,7 +77,7 @@ function DraggableNodeItem({
         e.preventDefault();
         onAdd(node.type);
       }}
-      className="group flex cursor-grab items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm select-none transition-colors hover:border-border hover:bg-muted active:cursor-grabbing"
+      className="group flex cursor-grab items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted active:cursor-grabbing"
     >
       <GripVerticalIcon className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
       <DynamicIcon name={node.icon} className="size-4 shrink-0" />
@@ -133,7 +133,7 @@ function CategorySection({
         <span className="text-xs text-muted-foreground">{nodes.length}</span>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="ml-4 flex flex-col gap-1 border-l border-border pl-2 pt-1">
+        <div className="ml-4 flex flex-col gap-1 border-l border-border pt-1 pl-2">
           {nodes.map((node) => (
             <DraggableNodeItem
               key={node.type}

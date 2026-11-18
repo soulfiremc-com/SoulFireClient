@@ -151,7 +151,7 @@ export function DataTableFacetedFilter<
           <CommandInput placeholder={title} />
           <CommandList className="max-h-full">
             <CommandEmpty>{i18n.t("common:dataTable.noResults")}</CommandEmpty>
-            <CommandGroup className="max-h-[300px] scroll-py-1 overflow-y-auto overflow-x-hidden">
+            <CommandGroup className="max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto">
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
 

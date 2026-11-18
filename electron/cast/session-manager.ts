@@ -24,7 +24,7 @@ import { CastTransport, CastTransportLive } from "./transport";
 
 interface ActiveSession {
   readonly generation: number;
-  readonly fiber: Fiber.Fiber<void, never>;
+  readonly fiber: Fiber.Fiber<void>;
 }
 type Service = CastTransport | MetricsSource;
 
@@ -33,7 +33,7 @@ export class CastSessionManager {
   private readonly devices = new Map<string, CastDeviceState>();
   private readonly sessions = new Map<string, ActiveSession>();
   private readonly lock = Semaphore.makeUnsafe(1);
-  private discovery: Fiber.Fiber<void, never> | undefined;
+  private discovery: Fiber.Fiber<void> | undefined;
   private generation = 0;
   private revision = 0;
   private settings: DisplaySettings = DEFAULT_SETTINGS;
@@ -123,7 +123,7 @@ export class CastSessionManager {
             }
           });
           yield* Effect.addFinalizer(() => Effect.sync(() => browser.stop()));
-          yield* Effect.never;
+          return yield* Effect.never;
         }),
       ).pipe(
         Effect.catch((error) =>
@@ -374,13 +374,13 @@ export class CastSessionManager {
               );
               yield* Effect.sleep("3 seconds");
             });
-            yield* Effect.raceFirst(
+            return yield* Effect.raceFirst(
               Effect.forever(poll),
               Deferred.await(failure),
             );
           }),
         );
-        yield* attempt.pipe(
+        return yield* attempt.pipe(
           Effect.tapError((error) =>
             Effect.sync(() =>
               patch({ phase: "reconnecting", error: error.message }),

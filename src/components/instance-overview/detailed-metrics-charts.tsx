@@ -41,9 +41,9 @@ function MiniDonut({
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-muted-foreground text-xs">{label}</span>
+      <span className="text-xs text-muted-foreground">{label}</span>
       {data.length === 0 ? (
-        <div className="text-muted-foreground flex h-36 items-center text-xs">
+        <div className="flex h-36 items-center text-xs text-muted-foreground">
           —
         </div>
       ) : (

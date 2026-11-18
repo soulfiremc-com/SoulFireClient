@@ -280,12 +280,12 @@ export function WindowTitlebar() {
       >
         <div
           data-app-drag-region={desktopApp ? "" : undefined}
-          className="flex min-w-0 w-[min(32rem,calc(100vw-14rem))] max-w-full items-center justify-center gap-1.5 text-center [&>*]:pointer-events-none"
+          className="flex w-[min(32rem,calc(100vw-14rem))] max-w-full min-w-0 items-center justify-center gap-1.5 text-center [&>*]:pointer-events-none"
         >
           {pageIcon?.kind === "dynamic" && (
             <DynamicIcon
               name={pageIcon.name}
-              className="text-muted-foreground size-3.5 shrink-0"
+              className="size-3.5 shrink-0 text-muted-foreground"
             />
           )}
           {pageIcon?.kind === "logo" && (
@@ -295,12 +295,12 @@ export function WindowTitlebar() {
               className="size-3.5 shrink-0 rounded-sm object-cover"
             />
           )}
-          <p className="text-muted-foreground truncate text-2xs font-medium tracking-wide">
+          <p className="truncate text-2xs font-medium tracking-wide text-muted-foreground">
             {pageTitle}
           </p>
         </div>
       </div>
-      <div className="window-topbar-no-drag col-start-3 flex h-full items-center justify-self-end gap-0 px-0">
+      <div className="window-topbar-no-drag col-start-3 flex h-full items-center gap-0 justify-self-end px-0">
         <TitlebarExternalLinks />
         <WindowControls />
       </div>

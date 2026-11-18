@@ -100,7 +100,7 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
     return () => clearInterval(timer);
   }, []);
   return (
-    <div className="bg-background min-h-screen p-6">
+    <div className="min-h-screen bg-background p-6">
       <TransportContext value={transport}>
         <TerminalView entries={entries} theme={theme}>
           <CommandInput scope={scope} />
@@ -282,7 +282,7 @@ export const EmptyPromptKeepsOutputVisible: Story = {
 
 function DemoPromptExample() {
   return (
-    <div className="bg-background min-h-screen p-6">
+    <div className="min-h-screen bg-background p-6">
       <TransportContext value={null}>
         <TerminalView entries={[]} theme="mocha">
           <CommandInput scope={scope} />

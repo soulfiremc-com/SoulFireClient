@@ -31,7 +31,7 @@ interface FacetedContextValue<Multiple extends boolean = boolean> {
   multiple?: Multiple;
 }
 
-const FacetedContext = React.createContext<FacetedContextValue<boolean> | null>(
+const FacetedContext = React.createContext<FacetedContextValue | null>(
   null,
 );
 

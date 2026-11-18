@@ -57,7 +57,7 @@ export function DataTablePagination<TData extends RowData>({
           )}
           {...props}
         >
-          <div className="text-muted-foreground text-sm">
+          <div className="text-sm text-muted-foreground">
             {i18n.t("common:dataTable.rowsSelected", {
               amount: table.getFilteredSelectedRowModel().rows.length,
               total: table.getFilteredRowModel().rows.length,
@@ -67,7 +67,7 @@ export function DataTablePagination<TData extends RowData>({
             <div className="flex items-center gap-2">
               <p
                 id={rowsPerPageLabelId}
-                className="whitespace-nowrap font-medium text-sm"
+                className="text-sm font-medium whitespace-nowrap"
               >
                 {i18n.t("common:dataTable.rowsPerPage")}
               </p>
@@ -99,7 +99,7 @@ export function DataTablePagination<TData extends RowData>({
               </Select>
             </div>
             <div className="flex items-center gap-2">
-              <div className="mr-2 whitespace-nowrap font-medium text-sm">
+              <div className="mr-2 text-sm font-medium whitespace-nowrap">
                 {i18n.t("common:dataTable.currentPage", {
                   page: pagination.pageIndex + 1,
                   total: Math.max(table.getPageCount(), 1),

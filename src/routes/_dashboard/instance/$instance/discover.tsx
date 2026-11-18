@@ -228,7 +228,7 @@ function Content() {
 
   return (
     <div className="flex w-full flex-col gap-5">
-      <p className="text-muted-foreground max-w-2xl text-sm">
+      <p className="max-w-2xl text-sm text-muted-foreground">
         {t("discover.scope")}
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
@@ -266,7 +266,7 @@ function Content() {
         </ToggleGroup>
       </div>
       {visible.length === 0 && (
-        <p className="text-muted-foreground text-sm" role="status">
+        <p className="text-sm text-muted-foreground" role="status">
           {t("discover.noMatches")}
         </p>
       )}

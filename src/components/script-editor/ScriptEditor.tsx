@@ -891,7 +891,7 @@ export function ScriptEditor() {
     <div
       ref={containerRef}
       tabIndex={0}
-      className="h-full w-full relative outline-none"
+      className="relative h-full w-full outline-none"
       onKeyDown={handleKeyDown}
       onCopy={handleCopy}
       onPaste={handlePaste}
@@ -1000,7 +1000,7 @@ export function ScriptEditor() {
         linkCutting.endPoint &&
         reactFlowInstance && (
           <svg
-            className="absolute inset-0 pointer-events-none z-50"
+            className="pointer-events-none absolute inset-0 z-50"
             style={{ overflow: "visible" }}
             aria-hidden="true"
           >

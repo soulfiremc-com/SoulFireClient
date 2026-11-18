@@ -141,7 +141,7 @@ export function BandwidthChart({
                           {bandwidthConfig[name as keyof typeof bandwidthConfig]
                             ?.label ?? name}
                         </span>
-                        <span className="text-foreground font-mono font-medium tabular-nums">
+                        <span className="font-mono font-medium text-foreground tabular-nums">
                           {formatBytes(typeof value === "number" ? value : 0)}
                         </span>
                       </div>

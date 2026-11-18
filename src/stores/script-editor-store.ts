@@ -82,9 +82,8 @@ function normalizeMultiInputEdgeOrders(nodes: Node[], edges: Edge[]): Edge[] {
       return edge;
     }
 
-    const currentOrder = Number(
-      (edge.data as { order?: number } | undefined)?.order ?? -1,
-    );
+    const currentOrder =
+      (edge.data as { order?: number } | undefined)?.order ?? -1;
     if (currentOrder === nextOrder) {
       return edge;
     }
@@ -119,9 +118,7 @@ function assignEdgeOrder(
       .filter(
         (e) => e.target === edge.target && e.targetHandle === targetHandle,
       )
-      .map((e) =>
-        Number((e.data as { order?: number } | undefined)?.order ?? -1),
-      )
+      .map((e) => (e.data as { order?: number } | undefined)?.order ?? -1)
       .reduce((max, value) => Math.max(max, value), -1) + 1;
 
   return {

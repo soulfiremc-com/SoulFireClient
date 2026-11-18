@@ -121,9 +121,9 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
       )}
     >
       {/* Header */}
-      <div className="px-3 py-2 flex items-center gap-2 border-b border-border/50 bg-warning/10">
+      <div className="flex items-center gap-2 border-b border-border/50 bg-warning/10 px-3 py-2">
         <Bug className="h-4 w-4 text-warning" />
-        <span className="text-sm font-medium flex-1">{label}</span>
+        <span className="flex-1 text-sm font-medium">{label}</span>
         <Button
           variant="ghost"
           size="icon"
@@ -168,7 +168,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
           </div>
 
           {/* Output (pass-through) */}
-          <div className="flex items-center gap-2 flex-row-reverse">
+          <div className="flex flex-row-reverse items-center gap-2">
             <Handle
               type="source"
               position={Position.Right}
@@ -216,7 +216,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
       {/* History (collapsed by default, shows last 5) */}
       {history.length > 1 && (
         <div className="border-t border-border/50 px-2 py-2">
-          <div className="text-xs text-muted-foreground mb-1">
+          <div className="mb-1 text-xs text-muted-foreground">
             History ({history.length} values)
           </div>
           <ScrollArea className="h-[80px]">
@@ -229,10 +229,10 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
                     key={`${entry.timestamp.getTime()}-${formatValue(entry.value)}`}
                     className="flex items-center gap-2 text-xs"
                   >
-                    <span className="text-muted-foreground shrink-0">
+                    <span className="shrink-0 text-muted-foreground">
                       {formatTime(entry.timestamp)}
                     </span>
-                    <span className="font-mono truncate">
+                    <span className="truncate font-mono">
                       {formatValue(entry.value)}
                     </span>
                   </div>

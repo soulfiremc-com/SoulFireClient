@@ -16,8 +16,8 @@ function NodePreviewComponent({ values, enabled }: NodePreviewProps) {
   if (!enabled || Object.keys(values).length === 0) return null;
 
   return (
-    <div className="border-t border-border/50 px-2 py-1 bg-muted/30">
-      <div className="text-xs text-muted-foreground mb-1">
+    <div className="border-t border-border/50 bg-muted/30 px-2 py-1">
+      <div className="mb-1 text-xs text-muted-foreground">
         {i18n.t("instance:scripts.editor.node.preview")}
       </div>
       <div className="space-y-0.5">
@@ -26,7 +26,7 @@ function NodePreviewComponent({ values, enabled }: NodePreviewProps) {
             <span className="text-muted-foreground">
               {formatPortName(key)}:
             </span>
-            <span className="font-mono truncate max-w-[120px]">
+            <span className="max-w-[120px] truncate font-mono">
               {formatValue(value)}
             </span>
           </div>

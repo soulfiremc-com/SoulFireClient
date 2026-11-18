@@ -67,7 +67,7 @@ export function KeyboardShortcutsHelp() {
       <PopoverContent align="end" className="w-80">
         <PopoverHeader>
           <PopoverTitle>{t("scripts.editor.shortcuts.title")}</PopoverTitle>
-          <p className="text-muted-foreground text-xs">
+          <p className="text-xs text-muted-foreground">
             {t("scripts.editor.shortcuts.description")}
           </p>
         </PopoverHeader>

@@ -355,7 +355,7 @@ function Index() {
     <div className="relative flex min-h-0 flex-1 flex-col">
       <svg
         aria-hidden="true"
-        className="fill-muted-foreground/5 absolute top-0 right-0 bottom-0 left-0 z-[-1] h-dvh w-dvw"
+        className="absolute top-0 right-0 bottom-0 left-0 z-[-1] h-dvh w-dvw fill-muted-foreground/5"
       >
         <title>Decorative background pattern</title>
         <defs>
@@ -425,7 +425,7 @@ function Index() {
               />
             )}
             <div>
-              <div className="text-muted-foreground text-center text-xs text-balance">
+              <div className="text-center text-xs text-balance text-muted-foreground">
                 <p className="mb-2">
                   <Trans
                     i18nKey="login:newUser"
@@ -439,7 +439,7 @@ function Index() {
                     }}
                   />
                 </p>
-                <p className="select-text mb-1">
+                <p className="mb-1 select-text">
                   {t("footer.version", {
                     version: APP_VERSION,
                     environment: APP_ENVIRONMENT,
@@ -471,7 +471,7 @@ function Index() {
                   <DropdownMenuTrigger
                     render={
                       <Button
-                        className="text-muted-foreground w-fit text-sm text-balance"
+                        className="w-fit text-sm text-balance text-muted-foreground"
                         variant="ghost"
                       />
                     }
@@ -896,7 +896,7 @@ function IntegratedConfigureMenu({
                   <li key={step} className="flex items-start gap-2">
                     <CheckIcon
                       aria-hidden="true"
-                      className="text-muted-foreground mt-0.5 size-4 shrink-0"
+                      className="mt-0.5 size-4 shrink-0 text-muted-foreground"
                     />
                     {t(`integrated.plan.${step}`)}
                   </li>
@@ -948,7 +948,7 @@ function IntegratedConfigureMenu({
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="mt-3 flex flex-col gap-4 rounded-lg border p-3">
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   {t("integrated.advanced.description")}
                 </p>
                 {!systemInfo?.mobile && (
@@ -2105,7 +2105,7 @@ function EmailCodeMenu(props: {
           {t("emailCode.back")}
         </Button>
         {inputDisabled && (
-          <LoaderCircleIcon className="text-muted-foreground h-10 w-10 animate-spin" />
+          <LoaderCircleIcon className="h-10 w-10 animate-spin text-muted-foreground" />
         )}
       </CardFooter>
     </Card>

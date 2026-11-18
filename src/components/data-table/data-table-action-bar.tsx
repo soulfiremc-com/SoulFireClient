@@ -118,7 +118,7 @@ function DataTableActionBarPresence({
         }
       }}
       className={cn(
-        "bg-background text-foreground fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border p-2 shadow-sm duration-200 ease-in-out data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-5 data-[state=closed]:pointer-events-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-5 motion-reduce:animate-none data-[state=closed]:motion-reduce:hidden",
+        "fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm duration-200 ease-in-out data-[state=closed]:pointer-events-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-5 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-5 motion-reduce:animate-none data-[state=closed]:motion-reduce:hidden",
         className,
       )}
       {...props}
@@ -147,7 +147,7 @@ function DataTableActionBarAction({
       variant="secondary"
       size={size}
       className={cn(
-        "border-secondary bg-secondary/50 hover:bg-secondary/70 gap-1.5 border [&>svg]:size-3.5",
+        "gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5",
         size === "icon" ? "size-7" : "h-7",
         className,
       )}
@@ -166,7 +166,7 @@ function DataTableActionBarAction({
       <TooltipTrigger render={trigger} />
       <TooltipContent
         sideOffset={6}
-        className="bg-accent text-foreground border font-semibold dark:bg-card [&>span]:hidden"
+        className="border bg-accent font-semibold text-foreground dark:bg-card [&>span]:hidden"
       >
         <p>{tooltip}</p>
       </TooltipContent>
@@ -223,10 +223,10 @@ function DataTableActionBarSelection<TData extends RowData>({
         </TooltipTrigger>
         <TooltipContent
           sideOffset={10}
-          className="bg-accent text-foreground flex items-center gap-2 border px-2 py-1 font-semibold dark:bg-card [&>span]:hidden"
+          className="flex items-center gap-2 border bg-accent px-2 py-1 font-semibold text-foreground dark:bg-card [&>span]:hidden"
         >
           <p>{t("dataTable.clearSelection")}</p>
-          <Kbd className="bg-background text-foreground border font-mono text-2xs font-normal shadow-xs">
+          <Kbd className="border bg-background font-mono text-2xs font-normal text-foreground shadow-xs">
             <abbr
               title={i18n.t("common:dataTable.escapeKey")}
               className="no-underline"

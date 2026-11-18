@@ -158,7 +158,7 @@ export function BotStateBadge({
       />
       <span className={meta.text}>{t(`bots.displayState.${state}`)}</span>
       {state === "connected" && bot.pingMs !== undefined && (
-        <span className="text-muted-foreground inline-flex items-center gap-0.5">
+        <span className="inline-flex items-center gap-0.5 text-muted-foreground">
           <WifiIcon aria-hidden="true" className="size-3" />
           {t("bots.connectionPhase.ping", { ms: bot.pingMs })}
         </span>
@@ -194,7 +194,7 @@ export function ConnectionPhaseBadge({
       <span className={cn("size-1.5 rounded-full", meta.dot)} />
       {t(meta.labelKey)}
       {meta.showPing && pingMs !== undefined && (
-        <span className="text-muted-foreground inline-flex items-center gap-0.5">
+        <span className="inline-flex items-center gap-0.5 text-muted-foreground">
           <WifiIcon className="size-3" />
           {t("bots.connectionPhase.ping", { ms: pingMs })}
         </span>
@@ -271,7 +271,7 @@ function BotCard({
       params={{ instance: instanceId, botId: bot.profileId }}
       onContextMenu={onContextMenu}
     >
-      <Card className="hover:bg-muted/50 h-full cursor-pointer transition-colors">
+      <Card className="h-full cursor-pointer transition-colors hover:bg-muted/50">
         <CardHeader className="pb-2">
           <div className="flex items-start gap-3">
             <MinecraftHead
@@ -296,7 +296,7 @@ function BotCard({
         {!bot.isOnline && bot.status?.lastError && (
           <CardContent className="pt-0">
             <p
-              className="text-muted-foreground line-clamp-2 text-xs break-words"
+              className="line-clamp-2 text-xs break-words text-muted-foreground"
               title={bot.status.lastError}
             >
               {bot.status.lastError}
@@ -312,7 +312,7 @@ function BotCard({
               />
               <FoodBar foodLevel={bot.liveState.foodLevel} />
             </div>
-            <div className="text-muted-foreground flex items-center gap-1 text-xs">
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPinIcon className="size-3" />
               <span className="select-text">
                 {bot.liveState.x.toFixed(1)}, {bot.liveState.y.toFixed(1)},{" "}
@@ -631,7 +631,7 @@ export function BotGrid({
 
   if (filteredAccounts.length === 0) {
     return (
-      <div className="text-muted-foreground flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center text-muted-foreground">
         {instanceInfo.profile.accounts.length === 0
           ? t("bots.noBots")
           : status && !search.trim()
@@ -659,16 +659,16 @@ export function BotGrid({
       </BotContextMenu>
       <div ref={loadMoreRef} className="flex justify-center py-4">
         {isFetchingNextPage ? (
-          <div className="text-muted-foreground flex items-center gap-2">
+          <div className="flex items-center gap-2 text-muted-foreground">
             <LoaderCircleIcon className="size-4 animate-spin" />
             <span>{t("bots.loadingMore")}</span>
           </div>
         ) : hasNextPage ? (
-          <span className="text-muted-foreground text-sm">
+          <span className="text-sm text-muted-foreground">
             {t("bots.showingCount", { loaded: loadedCount, total: totalCount })}
           </span>
         ) : loadedCount > PAGE_SIZE ? (
-          <span className="text-muted-foreground text-sm">
+          <span className="text-sm text-muted-foreground">
             {t("bots.allLoaded", { total: totalCount })}
           </span>
         ) : null}

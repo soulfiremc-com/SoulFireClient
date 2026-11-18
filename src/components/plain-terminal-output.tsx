@@ -17,7 +17,7 @@ export function PlainTerminalOutput({
   return (
     <pre
       data-terminal-plain
-      className="h-full overflow-auto p-1 font-mono text-xs whitespace-pre-wrap break-all select-text"
+      className="h-full overflow-auto p-1 font-mono text-xs break-all whitespace-pre-wrap select-text"
     >
       {entries.map((entry) => {
         const prefix = formatTerminalPrefix(entry, locale);

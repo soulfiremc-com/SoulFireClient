@@ -989,7 +989,7 @@ function BotPovSession({
   const player = (
     <div
       ref={rootRef}
-      className={`bg-background relative flex min-h-0 flex-col ${immersive ? "h-screen" : "gap-2"}`}
+      className={`relative flex min-h-0 flex-col bg-background ${immersive ? "h-screen" : "gap-2"}`}
     >
       {popup && isDesktopApp() && !fullscreen && (
         <header data-app-drag-region="" className={titlebarClassName}>
@@ -1058,7 +1058,7 @@ function BotPovSession({
         />
       )}
       <div
-        className={`relative ${touch && captured && !immersive ? "min-h-60" : "min-h-0"} overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${captured && !immersive ? "outline-primary outline-2 outline-offset-2" : ""} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
+        className={`relative ${touch && captured && !immersive ? "min-h-60" : "min-h-0"} overflow-hidden bg-black ${immersive ? "" : "rounded-lg"} ${captured && !immersive ? "outline-2 outline-offset-2 outline-primary" : ""} ${popup || fullscreen ? "flex-1" : "aspect-video"}`}
       >
         <textarea
           ref={textInputRef}
@@ -1131,7 +1131,7 @@ function BotPovSession({
                   {offlineStatus?.message ?? t("bots.pov.offline")}
                 </p>
                 {offlineStatus?.detail && (
-                  <p className="font-mono text-xs break-words select-text opacity-80">
+                  <p className="font-mono text-xs break-words opacity-80 select-text">
                     {offlineStatus.detail}
                   </p>
                 )}
@@ -1153,7 +1153,7 @@ function BotPovSession({
               <button
                 type="button"
                 onClick={capture}
-                className="absolute inset-0 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+                className="absolute inset-0 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
               >
                 <span className={buttonVariants()}>
                   <Gamepad2Icon data-icon="inline-start" />

@@ -16,7 +16,7 @@ export function ProxyAddress({ address }: { address: string }) {
       : null;
 
   if (!transport) {
-    return <span className="select-text break-all">{address}</span>;
+    return <span className="break-all select-text">{address}</span>;
   }
 
   const Icon = transport === "network" ? NetworkIcon : PlugIcon;
@@ -31,7 +31,7 @@ export function ProxyAddress({ address }: { address: string }) {
               tabIndex={0}
               role="img"
               aria-label={label}
-              className="text-muted-foreground inline-flex shrink-0"
+              className="inline-flex shrink-0 text-muted-foreground"
             />
           }
         >
@@ -39,7 +39,7 @@ export function ProxyAddress({ address }: { address: string }) {
         </TooltipTrigger>
         <TooltipContent>{label}</TooltipContent>
       </Tooltip>
-      <span className="select-text break-all">
+      <span className="break-all select-text">
         {stripAddressPrefix(address)}
       </span>
     </span>

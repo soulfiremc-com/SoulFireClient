@@ -58,7 +58,7 @@ export function startCastClient(): () => void {
         );
         accept(yield* fromPromise(() => desktop.cast.getState()));
         yield* fromPromise(() => desktop.cast.discover());
-        yield* Effect.never;
+        return yield* Effect.never;
       }),
     ).pipe(
       Effect.catch((error) =>

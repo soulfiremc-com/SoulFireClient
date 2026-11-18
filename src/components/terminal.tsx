@@ -491,7 +491,7 @@ export function TerminalView({
                     role="tooltip"
                     id={`${interactionId}-${run.key}-tooltip`}
                   >
-                    <span className="whitespace-pre-wrap break-all">
+                    <span className="break-all whitespace-pre-wrap">
                       {tooltip}
                     </span>
                   </TooltipContent>

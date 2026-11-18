@@ -52,7 +52,7 @@ function GroupOutputNodeComponent({ data, selected }: GroupOutputNodeProps) {
                   type="target"
                   position={Position.Left}
                   id={input.id}
-                  className="!relative !top-0 !transform-none shrink-0 transition-transform hover:scale-125"
+                  className="!relative !top-0 shrink-0 !transform-none transition-transform hover:scale-125"
                   style={{
                     background: getPortColor(input.type),
                     width: isSquareOrDiamond ? 10 : 8,

@@ -425,7 +425,7 @@ export function FernanFlow({
                         fernanPurchaseLimit(entry, account.cooldowns) === 0
                       }
                     >
-                      <span className="bg-provider/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-md">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-provider/10 text-primary">
                         <PackageIcon aria-hidden className="size-4" />
                       </span>
                       <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -434,7 +434,7 @@ export function FernanFlow({
                         </span>
                         <div className="flex flex-wrap items-center gap-1.5">
                           {stockBadge(entry)}
-                          <span className="text-foreground/70 text-xs">
+                          <span className="text-xs text-foreground/70">
                             {t("providers.fernan.perAccount", {
                               price: format(entry.price),
                             })}
@@ -523,7 +523,7 @@ export function FernanFlow({
                         <span className="font-medium">
                           {entry.product_name}
                         </span>
-                        <span className="text-foreground/70 truncate font-mono text-xs">
+                        <span className="truncate font-mono text-xs text-foreground/70">
                           {entry.purchase_id}
                         </span>
                       </div>
@@ -577,7 +577,7 @@ export function FernanFlow({
               },
             ]}
           />
-          <p className="text-foreground/70 text-xs">
+          <p className="text-xs text-foreground/70">
             {t("providers.fernan.total")}
           </p>
           {uncertain && (

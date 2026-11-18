@@ -158,7 +158,7 @@ function DeviceActions({
         )}
       </div>
       {(connect.error || stop.error) && (
-        <p role="alert" className="text-destructive text-sm">
+        <p role="alert" className="text-sm text-destructive">
           {connect.error?.message ?? stop.error?.message}
         </p>
       )}
@@ -200,7 +200,7 @@ function CastPage() {
         cell: ({ row }) => (
           <div className="flex flex-col gap-1">
             <span>{row.original.name}</span>
-            <span className="text-muted-foreground text-xs">
+            <span className="text-xs text-muted-foreground">
               {row.original.address}:{row.original.port}
             </span>
           </div>
@@ -218,7 +218,7 @@ function CastPage() {
           <div className="flex flex-col gap-1">
             <span>{t(`phase.${row.original.phase}`)}</span>
             {row.original.phase === "ready" && (
-              <span className="text-muted-foreground text-xs">
+              <span className="text-xs text-muted-foreground">
                 {t(`visibility.${row.original.visibility}`)}
                 {row.original.metricsAt &&
                 Date.now() - row.original.metricsAt > STALE_AFTER_MS
@@ -227,7 +227,7 @@ function CastPage() {
               </span>
             )}
             {row.original.error && (
-              <span className="text-destructive text-xs">
+              <span className="text-xs text-destructive">
                 {row.original.error}
               </span>
             )}
@@ -391,7 +391,7 @@ function CastPage() {
                 )}
               </TableBody>
             </Table>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-sm text-muted-foreground">
               {t("showDescription")}
             </p>
           </section>
@@ -505,7 +505,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
         </FieldGroup>
       </form>
       {connect.error && (
-        <p role="alert" className="text-destructive text-sm">
+        <p role="alert" className="text-sm text-destructive">
           {connect.error.message}
         </p>
       )}
@@ -543,7 +543,7 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
   return (
     <section className="flex flex-col gap-3">
       <h2 className="text-lg font-medium">{t("settings")}</h2>
-      <p className="text-muted-foreground text-sm">
+      <p className="text-sm text-muted-foreground">
         {t("settingsDescription")}
       </p>
       <form
@@ -644,7 +644,7 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
               </Field>
             )}
           </form.Field>
-          <p className="text-muted-foreground text-sm" role="status">
+          <p className="text-sm text-muted-foreground" role="status">
             {save.isPending
               ? t("saving")
               : save.isSuccess
@@ -654,7 +654,7 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
         </FieldGroup>
       </form>
       {save.error && (
-        <p role="alert" className="text-destructive text-sm">
+        <p role="alert" className="text-sm text-destructive">
           {save.error.message}
         </p>
       )}

@@ -192,7 +192,7 @@ export function LiveFeed({
           </Button>
         )}
       </div>
-      <div className="bg-card overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-md border bg-card">
         <div className="flex flex-col gap-5 px-3 pt-3 sm:px-4 sm:pt-4">
           <ToggleGroup
             size="sm"
@@ -219,7 +219,7 @@ export function LiveFeed({
             </ToggleGroupItem>
           </ToggleGroup>
           <div
-            className={cn(FEED_COLUMNS, "text-muted-foreground pr-3 text-xs")}
+            className={cn(FEED_COLUMNS, "pr-3 text-xs text-muted-foreground")}
             aria-hidden="true"
           >
             <span className="hidden sm:block">
@@ -257,19 +257,19 @@ export function LiveFeed({
                 <li key={entry.id} className={FEED_COLUMNS}>
                   <time
                     dateTime={entry.timestamp.toISOString()}
-                    className="text-muted-foreground hidden tabular-nums sm:block"
+                    className="hidden text-muted-foreground tabular-nums sm:block"
                   >
                     {timeFormatter.format(entry.timestamp)}
                   </time>
                   <span
-                    className="text-muted-foreground truncate"
+                    className="truncate text-muted-foreground"
                     title={entry.botName}
                   >
                     {entry.botName || "-"}
                   </span>
                   <span
                     className={cn(
-                      "min-w-0 whitespace-pre-wrap wrap-anywhere pr-3",
+                      "min-w-0 pr-3 wrap-anywhere whitespace-pre-wrap",
                       entry.kind === "lifecycle" && "text-muted-foreground",
                     )}
                   >
@@ -306,7 +306,7 @@ export function LiveFeed({
           )}
         </ScrollArea>
         {canWatch && (
-          <div className="text-muted-foreground px-3 py-3 text-xs sm:px-4">
+          <div className="px-3 py-3 text-xs text-muted-foreground sm:px-4">
             {t(
               pausedEntries !== null
                 ? "overview.liveFeed.paused"

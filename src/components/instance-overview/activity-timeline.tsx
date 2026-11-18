@@ -84,11 +84,11 @@ export function ActivityTimeline({
           ))}
         </div>
       ) : isError && !data ? (
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           {t("overview.loadError")}
         </p>
       ) : entries.length === 0 ? (
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           {t("overview.timeline.empty")}
         </p>
       ) : (
@@ -106,7 +106,7 @@ export function ActivityTimeline({
                 />
               </span>
               {entry.timestamp && (
-                <span className="text-muted-foreground text-xs">
+                <span className="text-xs text-muted-foreground">
                   <SFTimeAgo date={timestampToDate(entry.timestamp)} />
                 </span>
               )}

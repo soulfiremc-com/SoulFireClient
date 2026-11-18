@@ -89,7 +89,7 @@ export function ScriptHealthButton() {
               >
                 <Item
                   size="xs"
-                  className="hover:bg-muted text-left"
+                  className="text-left hover:bg-muted"
                   render={
                     <button
                       type="button"
@@ -114,9 +114,9 @@ export function ScriptHealthButton() {
                 >
                   <ItemMedia>
                     {item.severity === "error" ? (
-                      <CircleAlertIcon className="text-destructive size-4" />
+                      <CircleAlertIcon className="size-4 text-destructive" />
                     ) : (
-                      <TriangleAlertIcon className="text-warning-emphasis size-4" />
+                      <TriangleAlertIcon className="size-4 text-warning-emphasis" />
                     )}
                   </ItemMedia>
                   <ItemContent>
@@ -129,7 +129,7 @@ export function ScriptHealthButton() {
             ))}
           </ItemGroup>
         ) : (
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {t("scripts.health.noProblems")}
           </p>
         )}

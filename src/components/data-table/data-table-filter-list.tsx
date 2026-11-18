@@ -247,7 +247,7 @@ export function DataTableFilterList<TData extends RowData>({
           {filters.length > 0 && (
             <Badge
               variant="secondary"
-              className="h-[18.24px] rounded-xs px-1.25 font-mono font-normal text-3xs"
+              className="h-[18.24px] rounded-xs px-1.25 font-mono text-3xs font-normal"
             >
               {filters.length}
             </Badge>
@@ -260,13 +260,13 @@ export function DataTableFilterList<TData extends RowData>({
           {...props}
         >
           <div className="flex flex-col gap-1">
-            <h4 id={labelId} className="font-medium leading-none">
+            <h4 id={labelId} className="leading-none font-medium">
               {filters.length > 0 ? "Filters" : "No filters applied"}
             </h4>
             <p
               id={descriptionId}
               className={cn(
-                "text-muted-foreground text-sm",
+                "text-sm text-muted-foreground",
                 filters.length > 0 && "sr-only",
               )}
             >
@@ -423,7 +423,7 @@ function DataTableFilterItem<TData extends RowData>({
     >
       <div className="min-w-[72px] text-center">
         {index === 0 ? (
-          <span className="text-muted-foreground text-sm">Where</span>
+          <span className="text-sm text-muted-foreground">Where</span>
         ) : index === 1 ? (
           <Select
             value={joinOperator}
@@ -462,7 +462,7 @@ function DataTableFilterItem<TData extends RowData>({
             </SelectContent>
           </Select>
         ) : (
-          <span className="text-muted-foreground text-sm">{joinOperator}</span>
+          <span className="text-sm text-muted-foreground">{joinOperator}</span>
         )}
       </div>
       <Popover open={showFieldSelector} onOpenChange={setShowFieldSelector}>
@@ -567,7 +567,7 @@ function DataTableFilterItem<TData extends RowData>({
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div className="min-w-36 max-w-60 flex-1">
+      <div className="max-w-60 min-w-36 flex-1">
         {onFilterInputRender({
           filter,
           inputId,

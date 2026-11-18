@@ -42,7 +42,7 @@ export function ScriptTemplatePicker(props: {
             <Item
               variant="outline"
               size="sm"
-              className="hover:bg-muted items-start text-left"
+              className="items-start text-left hover:bg-muted"
               render={
                 <button
                   type="button"

@@ -73,8 +73,8 @@ function InlineEditorComponent({
   const inputProps = {
     "aria-label": label,
     className: cn(
-      "nodrag nopan bg-muted/80 text-foreground border border-border/50 rounded px-1.5 py-0.5 text-xs",
-      "focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary",
+      "nodrag nopan rounded border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
+      "focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none",
       "hover:border-border",
       className,
     ),
@@ -111,7 +111,7 @@ function InlineEditorComponent({
         <Checkbox
           checked={(currentValue as boolean) ?? false}
           aria-label={label}
-          onCheckedChange={(checked) => onChange(checked === true)}
+          onCheckedChange={(checked) => onChange(checked)}
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
           onKeyDown={(e) => e.stopPropagation()}
@@ -166,8 +166,8 @@ function Vector3EditorComponent({
 
   const inputProps = {
     className: cn(
-      "nodrag nopan bg-muted/80 text-foreground border border-border/50 rounded px-1 py-0.5 text-xs w-10 text-right",
-      "focus:outline-none focus:ring-1 focus:ring-primary",
+      "nodrag nopan w-10 rounded border border-border/50 bg-muted/80 px-1 py-0.5 text-right text-xs text-foreground",
+      "focus:ring-1 focus:ring-primary focus:outline-none",
     ),
     onClick: (e: React.MouseEvent) => e.stopPropagation(),
     onMouseDown: (e: React.MouseEvent) => e.stopPropagation(),
@@ -216,8 +216,8 @@ function SelectEditorComponent({
 }: SelectEditorProps) {
   const inputProps = {
     className: cn(
-      "nodrag nopan bg-muted/80 text-foreground border border-border/50 rounded px-1.5 py-0.5 text-xs",
-      "focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer",
+      "nodrag nopan rounded border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
+      "cursor-pointer focus:ring-1 focus:ring-primary focus:outline-none",
     ),
     onClick: (e: React.MouseEvent) => e.stopPropagation(),
     onMouseDown: (e: React.MouseEvent) => e.stopPropagation(),

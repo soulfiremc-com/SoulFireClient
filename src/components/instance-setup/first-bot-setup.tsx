@@ -377,7 +377,7 @@ export function FirstBotSetup({
           <h3 id="first-bot-setup-title" className="text-base font-semibold">
             {t("setup.title")}
           </h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {t("setup.description")}
           </p>
         </div>
@@ -401,7 +401,7 @@ export function FirstBotSetup({
           }}
         />
       ) : (
-        <ol className="bg-card flex flex-col rounded-lg border">
+        <ol className="flex flex-col rounded-lg border bg-card">
           {STEPS.map((step, index) => {
             const isActive = activeStep === step.id;
             const done = setup.done[step.id];
@@ -415,7 +415,7 @@ export function FirstBotSetup({
                   type="button"
                   aria-expanded={isActive}
                   onClick={() => setSelectedStep(step.id)}
-                  className="hover:bg-muted/50 flex w-full items-center gap-3 p-3 text-left"
+                  className="flex w-full items-center gap-3 p-3 text-left hover:bg-muted/50"
                 >
                   <span
                     className={cn(
@@ -438,13 +438,13 @@ export function FirstBotSetup({
                       {t(`setup.${step.id}.title`)}
                     </span>
                     {!isActive && (
-                      <span className="text-muted-foreground truncate text-xs">
+                      <span className="truncate text-xs text-muted-foreground">
                         {summaries[step.id]}
                       </span>
                     )}
                   </span>
                   {step.id === "proxies" && (
-                    <span className="text-muted-foreground ml-auto text-xs">
+                    <span className="ml-auto text-xs text-muted-foreground">
                       {t("setup.optional")}
                     </span>
                   )}
@@ -453,7 +453,7 @@ export function FirstBotSetup({
                   <div className="flex flex-col gap-4 px-3 pb-4 sm:pl-12">
                     {step.id === "server" && (
                       <>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-sm text-muted-foreground">
                           {t("setup.server.description")}
                         </p>
                         {canConfigure ? (
@@ -480,7 +480,7 @@ export function FirstBotSetup({
                                 />
                               ),
                             )}
-                            <p className="text-muted-foreground text-xs">
+                            <p className="text-xs text-muted-foreground">
                               {t("setup.server.versionHint")}
                             </p>
                             <Button
@@ -498,7 +498,7 @@ export function FirstBotSetup({
                     )}
                     {step.id === "accounts" && (
                       <>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-sm text-muted-foreground">
                           {t("setup.accounts.description")}
                         </p>
                         <ItemGroup className="gap-2">
@@ -578,7 +578,7 @@ export function FirstBotSetup({
                     )}
                     {step.id === "proxies" && (
                       <>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-sm text-muted-foreground">
                           {t("setup.proxies.description")}
                         </p>
                         <div className="flex flex-wrap gap-2">
@@ -752,7 +752,7 @@ export function FirstBotSetup({
           })}
         </ol>
       )}
-      <p className="text-muted-foreground flex items-center gap-2 text-sm">
+      <p className="flex items-center gap-2 text-sm text-muted-foreground">
         <BlocksIcon aria-hidden="true" className="size-4 shrink-0" />
         <span>
           {t("setup.expert")}{" "}

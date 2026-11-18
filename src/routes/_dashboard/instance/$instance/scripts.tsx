@@ -556,7 +556,7 @@ function Content() {
             <h3 id="script-first-use-title" className="text-base font-semibold">
               {tInstance("scripts.noScripts")}
             </h3>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-sm text-muted-foreground">
               {tInstance("scripts.noScriptsDescription")}
             </p>
           </div>
@@ -810,7 +810,7 @@ function ScriptCard({
           ) : (
             <Badge
               variant="outline"
-              className="border-success/40 text-success-emphasis gap-1.5"
+              className="gap-1.5 border-success/40 text-success-emphasis"
             >
               <ZapIcon aria-hidden="true" className="size-3" />
               {tInstance("scripts.running")}

@@ -87,8 +87,8 @@ const DEFAULT_NODE_HEIGHT = 80;
 // Custom horizontal handle for vertical panel groups
 function HorizontalResizableHandle() {
   return (
-    <Separator className="relative flex h-px w-full items-center justify-center bg-border after:absolute after:left-0 after:h-1 after:w-full after:-translate-y-1/2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1">
-      <div className="bg-border h-6 w-1 rounded-lg z-10 flex shrink-0 rotate-90" />
+    <Separator className="relative flex h-px w-full items-center justify-center bg-border after:absolute after:left-0 after:h-1 after:w-full after:-translate-y-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-none">
+      <div className="z-10 flex h-6 w-1 shrink-0 rotate-90 rounded-lg bg-border" />
     </Separator>
   );
 }
@@ -880,7 +880,7 @@ function ScriptEditorContent() {
           </div>
 
           {/* Floating action buttons */}
-          <div className="absolute bottom-4 right-4 z-10 flex flex-col gap-2">
+          <div className="absolute right-4 bottom-4 z-10 flex flex-col gap-2">
             <Button
               size="icon"
               className="size-12 rounded-full shadow-lg"
@@ -995,7 +995,7 @@ function ScriptEditorContent() {
         createPortal(
           <div
             ref={dragPreviewRef}
-            className="pointer-events-none fixed left-0 top-0 z-50 flex items-center gap-2 rounded-md border border-border bg-muted/90 px-2 py-1.5 text-sm shadow-md"
+            className="pointer-events-none fixed top-0 left-0 z-50 flex items-center gap-2 rounded-md border border-border bg-muted/90 px-2 py-1.5 text-sm shadow-md"
             style={{
               transform: `translate(${dragPreview.startX}px, ${dragPreview.startY}px) translate(-50%, -50%)`,
             }}

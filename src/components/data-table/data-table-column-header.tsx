@@ -45,7 +45,7 @@ export function DataTableColumnHeader<
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "-ml-1.5 flex h-8 items-center gap-1.5 rounded-md px-2 py-1.5 hover:bg-accent outline-none focus-visible:ring-1 focus-visible:ring-ring data-popup-open:bg-accent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
+          "-ml-1.5 flex h-8 items-center gap-1.5 rounded-md px-2 py-1.5 outline-none hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring data-popup-open:bg-accent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
           className,
         )}
         {...props}
@@ -64,7 +64,7 @@ export function DataTableColumnHeader<
         {column.getCanSort() && (
           <>
             <DropdownMenuCheckboxItem
-              className="relative pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground"
+              className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
               checked={column.getIsSorted() === "asc"}
               closeOnClick
               onClick={() => column.toggleSorting(false)}
@@ -73,7 +73,7 @@ export function DataTableColumnHeader<
               {i18n.t("common:dataTable.columnHeader.asc")}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              className="relative pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground"
+              className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
               checked={column.getIsSorted() === "desc"}
               closeOnClick
               onClick={() => column.toggleSorting(true)}
@@ -94,7 +94,7 @@ export function DataTableColumnHeader<
         )}
         {column.getCanHide() && (
           <DropdownMenuCheckboxItem
-            className="relative pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground"
+            className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
             checked={!column.getIsVisible()}
             closeOnClick
             onClick={() => column.toggleVisibility(false)}

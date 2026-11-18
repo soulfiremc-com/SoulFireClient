@@ -48,7 +48,7 @@ export function GroupBreadcrumb() {
         onClick={exitToRoot}
         className={cn(
           "flex items-center gap-1 rounded px-1.5 py-0.5 text-xs",
-          "hover:bg-accent text-muted-foreground hover:text-foreground",
+          "text-muted-foreground hover:bg-accent hover:text-foreground",
           "transition-colors",
         )}
         title={t("scripts.editor.group.returnToRoot")}
@@ -67,8 +67,8 @@ export function GroupBreadcrumb() {
             className={cn(
               "rounded px-1.5 py-0.5 text-xs transition-colors",
               index === pathItems.length - 1
-                ? "bg-accent text-accent-foreground font-medium"
-                : "hover:bg-accent text-muted-foreground hover:text-foreground",
+                ? "bg-accent font-medium text-accent-foreground"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground",
             )}
           >
             {item.label}

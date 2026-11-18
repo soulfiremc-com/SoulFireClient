@@ -39,7 +39,7 @@ export function NavigationFeedback() {
     >
       <span className="sr-only">{t("navigation.pending")}</span>
       {/* The delay keeps fast navigations from flashing the bar. */}
-      <div className="bg-primary h-full w-full animate-in fade-in slide-in-from-left fill-mode-backwards delay-150 animation-duration-1000 ease-out motion-reduce:animate-none" />
+      <div className="h-full w-full animate-in bg-primary delay-150 ease-out animation-duration-1000 fill-mode-backwards fade-in slide-in-from-left motion-reduce:animate-none" />
     </div>
   );
 }

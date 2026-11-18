@@ -207,6 +207,8 @@ test("launch timeout closes its socket and late callbacks cannot create a sessio
 test("a failed launch and a version mismatch release every acquired socket", async () => {
   for (const options of [{ launchError: true }, { incompatible: true }]) {
     const f = await fixture(options);
+    // Bun types `rejects` matchers as void, but they return a promise at runtime.
+    // oxlint-disable-next-line typescript/await-thenable
     await expect(f.open()).rejects.toBeInstanceOf(Error);
     await f.dispose();
     expect(f.clients[0].closed).toBe(1);

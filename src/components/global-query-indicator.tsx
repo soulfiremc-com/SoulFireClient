@@ -46,6 +46,6 @@ export function GlobalQueryIndicator() {
   }
 
   return isFetching ? (
-    <RefreshCwIcon className="text-muted-foreground size-4 animate-spin" />
+    <RefreshCwIcon className="size-4 animate-spin text-muted-foreground" />
   ) : null;
 }

@@ -20,7 +20,7 @@ import type { InstanceInfoQueryData, ServerInfoQueryData } from "@/lib/types";
 
 type Source = {
   id: string;
-  queries: FetchQueryOptions<unknown, Error, unknown, QueryKey>[];
+  queries: FetchQueryOptions<unknown, Error, unknown>[];
 };
 type SourceStatus = "loaded" | "failed";
 

@@ -21,7 +21,7 @@ export function UserSidebar({
       className="top-(--titlebar-height) h-[calc(100svh-var(--titlebar-height))]"
       {...props}
     >
-      <ScrollArea className="min-h-0 flex-1 w-full pr-2">
+      <ScrollArea className="min-h-0 w-full flex-1 pr-2">
         <SidebarContent className="min-h-full">
           <Suspense fallback={<NavDefaultSkeleton />}>
             <NavUserOptions />

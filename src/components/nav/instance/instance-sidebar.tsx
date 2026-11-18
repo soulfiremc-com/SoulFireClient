@@ -25,7 +25,7 @@ export function InstanceSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="h-16">
         <InstanceSwitcher />
       </SidebarHeader>
-      <ScrollArea className="min-h-0 flex-1 w-full pr-2">
+      <ScrollArea className="min-h-0 w-full flex-1 pr-2">
         <SidebarContent className="min-h-full">
           <Suspense fallback={<NavDefaultSkeleton />}>
             <NavControls />

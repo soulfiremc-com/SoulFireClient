@@ -56,7 +56,7 @@ export function ContextMenuPortal({
             ref={menuRef}
             aria-label={t("contextMenu.actions")}
             className={cn(
-              "animate-in fade-in-0 zoom-in-95 ring-foreground/10 bg-popover text-popover-foreground min-w-32 rounded-md p-1 shadow-md ring-1",
+              "min-w-32 animate-in rounded-md bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 fade-in-0 zoom-in-95",
               "max-h-[calc(100dvh-1rem)] max-w-[calc(100dvw-1rem)] overflow-y-auto outline-none",
             )}
             onContextMenu={(event) => event.preventDefault()}

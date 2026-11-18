@@ -81,7 +81,7 @@ export default function UserPageLayout(props: {
           )}
           <Separator
             orientation="vertical"
-            className="mr-2 my-auto data-[orientation=vertical]:h-4"
+            className="my-auto mr-2 data-[orientation=vertical]:h-4"
           />
           <Breadcrumb className="min-w-0">
             <BreadcrumbList className="flex-nowrap">
@@ -111,7 +111,7 @@ export default function UserPageLayout(props: {
           <CommandPaletteTrigger />
         </div>
       </header>
-      <ScrollArea className="min-h-0 flex-1 w-full max-w-dvw">
+      <ScrollArea className="min-h-0 w-full max-w-dvw flex-1">
         <div className="flex min-h-full w-full max-w-dvw flex-col p-4">
           <CatchBoundary
             getResetKey={() => "user-page-layout"}

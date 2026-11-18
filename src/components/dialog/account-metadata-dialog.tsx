@@ -633,7 +633,7 @@ function DialogContentInner({
             </div>
           )}
           {isMetadataReady && entries.length === 0 && (
-            <p className="text-muted-foreground text-center text-sm py-4">
+            <p className="py-4 text-center text-sm text-muted-foreground">
               {t("account.metadata.noEntries")}
             </p>
           )}

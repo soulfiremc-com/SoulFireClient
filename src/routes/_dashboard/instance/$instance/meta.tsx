@@ -795,8 +795,8 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="font-medium text-sm">{t("instanceMetadata.title")}</h2>
-      <p className="text-muted-foreground text-sm">
+      <h2 className="text-sm font-medium">{t("instanceMetadata.title")}</h2>
+      <p className="text-sm text-muted-foreground">
         {t("instanceMetadata.description")}
       </p>
       <Card>
@@ -951,7 +951,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
             </div>
           )}
           {isMetadataReady && entries.length === 0 && (
-            <p className="text-muted-foreground text-center text-sm py-4">
+            <p className="py-4 text-center text-sm text-muted-foreground">
               {t("instanceMetadata.noEntries")}
             </p>
           )}

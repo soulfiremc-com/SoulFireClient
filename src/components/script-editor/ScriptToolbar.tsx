@@ -236,11 +236,11 @@ export function ScriptToolbar({
       </Button>
 
       {!isMobile && (
-        <Separator orientation="vertical" className="h-6 my-auto" />
+        <Separator orientation="vertical" className="my-auto h-6" />
       )}
 
       {/* Script Name */}
-      <div className="flex items-center gap-2 min-w-0">
+      <div className="flex min-w-0 items-center gap-2">
         {isEditingName ? (
           <Input
             value={editedName}
@@ -286,7 +286,7 @@ export function ScriptToolbar({
       </div>
 
       {!isMobile && (
-        <Separator orientation="vertical" className="h-6 my-auto" />
+        <Separator orientation="vertical" className="my-auto h-6" />
       )}
 
       {!isMobile && (
@@ -342,7 +342,7 @@ export function ScriptToolbar({
       </Tooltip>
 
       {!isMobile && (
-        <Separator orientation="vertical" className="h-6 my-auto" />
+        <Separator orientation="vertical" className="my-auto h-6" />
       )}
 
       {/* A saved script only reacts to triggers while it is on. */}
@@ -395,7 +395,7 @@ export function ScriptToolbar({
             {!isMobile && (
               <Badge
                 variant="outline"
-                className="border-success/40 text-success-emphasis gap-1.5"
+                className="gap-1.5 border-success/40 text-success-emphasis"
               >
                 <ZapIcon aria-hidden="true" className="size-3" />
                 {t("scripts.running")}
@@ -536,7 +536,7 @@ export function ScriptToolbar({
             />
           </ButtonGroup>
 
-          <Separator orientation="vertical" className="h-6 my-auto" />
+          <Separator orientation="vertical" className="my-auto h-6" />
 
           {/* Clear Button */}
           {onClear && (
@@ -558,7 +558,7 @@ export function ScriptToolbar({
                   <p>{t("scripts.editor.toolbar.clearCanvas")}</p>
                 </TooltipContent>
               </Tooltip>
-              <Separator orientation="vertical" className="h-6 my-auto" />
+              <Separator orientation="vertical" className="my-auto h-6" />
             </>
           )}
 

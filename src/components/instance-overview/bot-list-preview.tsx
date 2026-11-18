@@ -56,7 +56,7 @@ export function BotListPreview({
       <div className="flex items-center justify-between gap-2">
         <h3 id="overview-bots-title" className="text-sm font-medium">
           {t("overview.bots.title")}{" "}
-          <span className="text-muted-foreground ml-1 tabular-nums">
+          <span className="ml-1 text-muted-foreground tabular-nums">
             {accounts.length}
           </span>
         </h3>
@@ -75,7 +75,7 @@ export function BotListPreview({
         </Button>
       </div>
       {accounts.length === 0 ? (
-        <p className="text-muted-foreground text-sm">{t("bots.noBots")}</p>
+        <p className="text-sm text-muted-foreground">{t("bots.noBots")}</p>
       ) : (
         <BotContextMenu
           instanceId={instanceInfo.id}
@@ -134,7 +134,7 @@ export function BotListPreview({
                           {isPending ? (
                             <Skeleton className="h-3 w-10" />
                           ) : isError && !data ? (
-                            <span className="text-muted-foreground text-xs">
+                            <span className="text-xs text-muted-foreground">
                               {t("overview.loadError")}
                             </span>
                           ) : (
@@ -149,14 +149,14 @@ export function BotListPreview({
                             />
                           )}
                         </div>
-                        <div className="text-muted-foreground flex flex-wrap gap-x-3 gap-y-1 text-xs tabular-nums">
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground tabular-nums">
                           <span
                             className="flex items-center gap-1"
                             title={t("bots.statsPanel.health")}
                           >
                             <HeartIcon
                               aria-hidden="true"
-                              className="text-destructive size-3"
+                              className="size-3 text-destructive"
                             />
                             <span className="sr-only">
                               {t("bots.statsPanel.health")}:{" "}
@@ -175,7 +175,7 @@ export function BotListPreview({
                           >
                             <DrumstickIcon
                               aria-hidden="true"
-                              className="text-warning-emphasis size-3"
+                              className="size-3 text-warning-emphasis"
                             />
                             <span className="sr-only">
                               {t("bots.statsPanel.food")}:{" "}
@@ -203,7 +203,7 @@ export function BotListPreview({
                       <ItemActions>
                         <ChevronRightIcon
                           aria-hidden="true"
-                          className="text-muted-foreground size-3.5"
+                          className="size-3.5 text-muted-foreground"
                         />
                       </ItemActions>
                     </Item>

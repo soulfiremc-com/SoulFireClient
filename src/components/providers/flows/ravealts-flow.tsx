@@ -275,7 +275,7 @@ export function RavealtsFlow({
             }}
           />
           <section className="flex flex-col gap-2">
-            <h4 className="text-foreground/70 text-xs font-medium">
+            <h4 className="text-xs font-medium text-foreground/70">
               {t("providers.liveCatalog")}
             </h4>
             {stockFailed && (
@@ -289,7 +289,7 @@ export function RavealtsFlow({
               </div>
             )}
             {stock && available.length === 0 && (
-              <p className="text-foreground/70 text-sm">
+              <p className="text-sm text-foreground/70">
                 {t("account.ravealts.noStock")}
               </p>
             )}
@@ -334,7 +334,7 @@ export function RavealtsFlow({
             >
               {available.map(([type, count]) => (
                 <ChoiceCard key={type} value={type}>
-                  <span className="bg-provider/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-md">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-provider/10 text-primary">
                     <PackageIcon aria-hidden className="size-4" />
                   </span>
                   <div className="flex min-w-0 flex-1 flex-col gap-1">

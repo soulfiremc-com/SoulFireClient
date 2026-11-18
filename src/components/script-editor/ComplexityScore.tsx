@@ -53,7 +53,7 @@ export function ComplexityScore() {
 
   return (
     <span
-      className={`text-xs font-mono ${color}`}
+      className={`font-mono text-xs ${color}`}
       title={t("scripts.editor.complexity.title")}
     >
       {score}

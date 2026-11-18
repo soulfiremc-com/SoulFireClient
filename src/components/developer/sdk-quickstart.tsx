@@ -608,7 +608,7 @@ export function SdkQuickstart({
           </CollapsibleTrigger>
           <CollapsibleContent>
             <pre
-              className="mt-3 overflow-x-auto whitespace-pre-wrap break-words rounded-lg border bg-muted/40 p-4 text-xs leading-relaxed"
+              className="mt-3 overflow-x-auto rounded-lg border bg-muted/40 p-4 text-xs leading-relaxed break-words whitespace-pre-wrap"
               tabIndex={0}
               aria-label={t("sdk.agentPrompt")}
             >

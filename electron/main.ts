@@ -257,7 +257,7 @@ function focusMainWindow(): void {
   if (mainWindow.isMinimized()) {
     mainWindow.restore();
   }
-  void mainWindow.focus();
+  mainWindow.focus();
 }
 
 function handleOpenUrl(url: string): void {
@@ -371,7 +371,7 @@ async function resolveAppProtocolPath(
 }
 
 async function registerAppProtocol(): Promise<void> {
-  await protocol.handle(APP_PROTOCOL, async (request) => {
+  protocol.handle(APP_PROTOCOL, async (request) => {
     const filePath = await resolveAppProtocolPath(request.url);
     if (filePath === null) {
       return new Response("Not found", { status: 404 });

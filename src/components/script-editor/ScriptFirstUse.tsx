@@ -61,12 +61,12 @@ export function ScriptFirstUse() {
     };
     return (
       <Panel position="top-center" className="max-h-full overflow-y-auto">
-        <div className="bg-card flex w-[min(42rem,calc(100vw-2rem))] flex-col gap-4 rounded-lg border p-4 shadow-sm">
+        <div className="flex w-[min(42rem,calc(100vw-2rem))] flex-col gap-4 rounded-lg border bg-card p-4 shadow-sm">
           <div className="flex flex-col gap-1">
             <h2 className="text-base font-semibold">
               {t("scripts.firstUse.title")}
             </h2>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-sm text-muted-foreground">
               {t("scripts.firstUse.description")}
             </p>
           </div>
@@ -127,7 +127,7 @@ export function ScriptFirstUse() {
   if (edges.length === 0 && nodes.length <= 2) {
     return (
       <Panel position="top-center">
-        <p className="bg-card text-muted-foreground flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm shadow-sm">
+        <p className="flex flex-wrap items-center gap-2 rounded-lg border bg-card px-3 py-2 text-sm text-muted-foreground shadow-sm">
           <MousePointerClickIcon aria-hidden="true" className="size-4" />
           {t("scripts.firstUse.connectHint")}
           <Kbd>Shift</Kbd>

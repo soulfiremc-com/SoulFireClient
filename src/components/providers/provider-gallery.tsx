@@ -94,7 +94,7 @@ export function ProviderGallery({
     <ProviderFrame
       title={title}
       description={description}
-      leading={<LayoutListIcon aria-hidden className="text-primary size-6" />}
+      leading={<LayoutListIcon aria-hidden className="size-6 text-primary" />}
       providerId={undefined}
       aside={
         <ProviderDetail
@@ -194,7 +194,7 @@ function DetailList({
 }) {
   return (
     <section className="flex flex-col gap-2">
-      <h4 className="text-foreground/70 text-xs font-medium">{title}</h4>
+      <h4 className="text-xs font-medium text-foreground/70">{title}</h4>
       <ul className="flex flex-col gap-1.5 text-sm">{children}</ul>
     </section>
   );
@@ -235,7 +235,7 @@ function ProviderDetail({
           <li className="flex gap-2">
             <ExternalLinkIcon
               aria-hidden
-              className="text-foreground/70 mt-0.5 size-4 shrink-0"
+              className="mt-0.5 size-4 shrink-0 text-foreground/70"
             />
             {t(
               resource === "accounts"
@@ -248,7 +248,7 @@ function ProviderDetail({
             <li key={capability} className="flex gap-2">
               <CheckIcon
                 aria-hidden
-                className="text-success-emphasis mt-0.5 size-4 shrink-0"
+                className="mt-0.5 size-4 shrink-0 text-success-emphasis"
               />
               {t(`providers.capability.${capability}`)}
             </li>
@@ -263,7 +263,7 @@ function ProviderDetail({
               <li key={need} className="flex gap-2">
                 <Icon
                   aria-hidden
-                  className="text-foreground/70 mt-0.5 size-4 shrink-0"
+                  className="mt-0.5 size-4 shrink-0 text-foreground/70"
                 />
                 {t(`providers.requirement.${need}`, {
                   provider: provider.name,
@@ -285,7 +285,7 @@ function ProviderDetail({
         </Button>
       )}
       {!canWrite && <Notice>{t("providers.demo")}</Notice>}
-      <p className="text-foreground/70 text-xs">
+      <p className="text-xs text-foreground/70">
         {t("providers.affiliateDisclosure")}
       </p>
     </div>

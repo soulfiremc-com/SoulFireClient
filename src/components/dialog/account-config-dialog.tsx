@@ -503,7 +503,7 @@ function DialogSkeleton({ isMobile }: { isMobile: boolean }) {
         <div className="px-4">
           <Skeleton className="h-5 w-40" />
           <Skeleton className="mt-2 h-4 w-72" />
-          <div className="-mb-px mt-4 flex gap-6">
+          <div className="mt-4 -mb-px flex gap-6">
             <Skeleton className="h-5 w-24" />
             <Skeleton className="h-5 w-28" />
           </div>
@@ -770,7 +770,7 @@ function DialogContentInner({
               {t("account.config.overrides", {
                 defaultValue: "Overrides",
               })}{" "}
-              <span className="tabular-nums text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground tabular-nums">
                 {resolvedSettings.filter((row) => row.source === "bot").length}
               </span>
             </ToggleGroupItem>
@@ -778,7 +778,7 @@ function DialogContentInner({
               {t("account.config.allSettings", {
                 defaultValue: "All settings",
               })}{" "}
-              <span className="tabular-nums text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground tabular-nums">
                 {resolvedSettings.length}
               </span>
             </ToggleGroupItem>
@@ -869,7 +869,7 @@ function DialogContentInner({
                     <span className="min-w-0 flex-1 truncate">
                       {page.pageName}
                     </span>
-                    <span className="tabular-nums text-xs text-muted-foreground">
+                    <span className="text-xs text-muted-foreground tabular-nums">
                       {page.entries.length}
                     </span>
                   </button>

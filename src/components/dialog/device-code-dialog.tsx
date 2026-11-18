@@ -56,17 +56,17 @@ export function DeviceCodeDialog({
               </Button>
               <div className="flex items-center gap-2">
                 <Separator className="flex-1" />
-                <span className="text-muted-foreground text-xs">
+                <span className="text-xs text-muted-foreground">
                   {t("account.deviceCodeDialog.orManually")}
                 </span>
                 <Separator className="flex-1" />
               </div>
               <div className="flex flex-col gap-2">
-                <span className="text-muted-foreground text-sm">
+                <span className="text-sm text-muted-foreground">
                   {t("account.deviceCodeDialog.codeLabel")}
                 </span>
                 <div className="flex items-center gap-2">
-                  <code className="bg-muted flex-1 rounded-md px-3 py-2 text-center font-mono text-lg font-semibold tracking-widest">
+                  <code className="flex-1 rounded-md bg-muted px-3 py-2 text-center font-mono text-lg font-semibold tracking-widest">
                     {deviceCodeData.userCode}
                   </code>
                   <Button
@@ -79,11 +79,11 @@ export function DeviceCodeDialog({
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <span className="text-muted-foreground text-sm">
+                <span className="text-sm text-muted-foreground">
                   {t("account.deviceCodeDialog.urlLabel")}
                 </span>
                 <div className="flex items-center gap-2">
-                  <code className="bg-muted flex-1 truncate rounded-md px-3 py-2 text-center text-sm">
+                  <code className="flex-1 truncate rounded-md bg-muted px-3 py-2 text-center text-sm">
                     {deviceCodeData.verificationUri}
                   </code>
                   <Button

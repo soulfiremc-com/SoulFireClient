@@ -37,7 +37,7 @@ export function StartupProgress({ stage }: { stage: LauncherStartupStage }) {
             {done ? (
               <CheckIcon
                 aria-hidden="true"
-                className="text-success-emphasis mt-0.5 size-4 shrink-0"
+                className="mt-0.5 size-4 shrink-0 text-success-emphasis"
               />
             ) : active ? (
               <LoaderCircleIcon
@@ -55,7 +55,7 @@ export function StartupProgress({ stage }: { stage: LauncherStartupStage }) {
                 {t(`integrated.progress.${step}.title`)}
               </span>
               {active && (
-                <span className="text-muted-foreground text-sm">
+                <span className="text-sm text-muted-foreground">
                   {t(`integrated.progress.${step}.description`)}
                 </span>
               )}

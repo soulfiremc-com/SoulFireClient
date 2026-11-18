@@ -54,7 +54,7 @@ function parseColumnFilterValue(value: unknown) {
 }
 
 interface DataTableDateFilterProps<TData extends RowData> {
-  column: Column<typeof dataTableFeatures, TData, unknown>;
+  column: Column<typeof dataTableFeatures, TData>;
   title?: string;
   multiple?: boolean;
 }

@@ -22,7 +22,7 @@ export function SelectAllHeader<T extends RowData>({
         indeterminate={
           !table.getIsAllRowsSelected() && table.getIsSomeRowsSelected()
         }
-        onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
+        onCheckedChange={(value) => table.toggleAllRowsSelected(value)}
         aria-label={t("dataTable.selectAll")}
       />
     </label>
@@ -38,7 +38,7 @@ export function SelectRowHeader<T extends RowData>({
       <Checkbox
         disabled={!row.getCanSelect()}
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onCheckedChange={(value) => row.toggleSelected(value)}
         aria-label={t("dataTable.selectRow")}
       />
     </label>

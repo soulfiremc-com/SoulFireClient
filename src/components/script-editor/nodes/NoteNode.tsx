@@ -52,7 +52,7 @@ function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
 
       <div
         className={cn(
-          "w-full h-full rounded-lg shadow-md flex flex-col",
+          "flex h-full w-full flex-col rounded-lg shadow-md",
           selected &&
             "ring-2 ring-primary ring-offset-2 ring-offset-background",
         )}
@@ -63,7 +63,7 @@ function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
         }}
       >
         {/* Header */}
-        <div className="px-3 py-1.5 border-b border-black/10 flex items-center">
+        <div className="flex items-center border-b border-black/10 px-3 py-1.5">
           <EditableNodeLabel
             nodeId={id}
             value={label}
@@ -74,7 +74,7 @@ function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
 
         {/* Content area */}
         <textarea
-          className="nodrag nopan flex-1 w-full bg-transparent text-sm text-black/70 p-3 resize-none outline-none placeholder:text-black/30"
+          className="nodrag nopan w-full flex-1 resize-none bg-transparent p-3 text-sm text-black/70 outline-none placeholder:text-black/30"
           value={content}
           onChange={handleContentChange}
           placeholder={t("scripts.editor.note.placeholder")}

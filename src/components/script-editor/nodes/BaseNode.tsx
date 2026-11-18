@@ -194,7 +194,7 @@ function PortRow({
     <div
       className={cn(
         "relative flex items-center gap-2 py-1",
-        isLeft ? "pr-2" : "pl-2 flex-row-reverse",
+        isLeft ? "pr-2" : "flex-row-reverse pl-2",
       )}
     >
       <Handle
@@ -222,8 +222,8 @@ function PortRow({
       />
 
       {showInlineEditor && onValueChange ? (
-        <div className="flex items-center gap-1.5 flex-1 min-w-0">
-          <span className="text-xs text-muted-foreground shrink-0">
+        <div className="flex min-w-0 flex-1 items-center gap-1.5">
+          <span className="shrink-0 text-xs text-muted-foreground">
             {translatedLabel}
           </span>
           <InlineEditor
@@ -308,7 +308,7 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
         {errors.length > 0 && (
           <span
             aria-hidden
-            className="flex items-center justify-center size-4 rounded-full bg-destructive text-white text-4xs font-bold"
+            className="flex size-4 items-center justify-center rounded-full bg-destructive text-4xs font-bold text-white"
           >
             {errors.length}
           </span>
@@ -316,7 +316,7 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
         {warnings.length > 0 && (
           <span
             aria-hidden
-            className="flex items-center justify-center size-4 rounded-full bg-warning-muted text-white text-4xs font-bold"
+            className="flex size-4 items-center justify-center rounded-full bg-warning-muted text-4xs font-bold text-white"
           >
             {warnings.length}
           </span>
@@ -331,9 +331,9 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
               className="flex items-start gap-1.5"
             >
               {d.severity === "error" ? (
-                <CircleAlertIcon className="text-destructive size-3.5 shrink-0" />
+                <CircleAlertIcon className="size-3.5 shrink-0 text-destructive" />
               ) : (
-                <TriangleAlertIcon className="text-warning-emphasis size-3.5 shrink-0" />
+                <TriangleAlertIcon className="size-3.5 shrink-0 text-warning-emphasis" />
               )}
               <span>{d.message}</span>
             </li>
@@ -378,7 +378,7 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
           <button
             type="button"
             className={cn(
-              "text-3xs font-mono bg-muted/50 px-1",
+              "bg-muted/50 px-1 font-mono text-3xs",
               colorClass,
               NODE_BADGE_CLASS,
             )}
@@ -499,8 +499,7 @@ function BaseNodeComponent({
       const list = itemsByPort.get(edge.targetHandle) ?? [];
       list.push({
         id: edge.id,
-        index:
-          Number((edge.data as { order?: number } | undefined)?.order ?? 0) + 1,
+        index: ((edge.data as { order?: number } | undefined)?.order ?? 0) + 1,
         label: sourceLabel,
         sublabel: sourcePort?.label,
       });
@@ -596,7 +595,7 @@ function BaseNodeComponent({
       {/* Header */}
       <div
         className={cn(
-          "px-3 py-2 flex items-center gap-2",
+          "flex items-center gap-2 px-3 py-2",
           !isCollapsed && "border-b border-border/50",
         )}
       >
@@ -606,7 +605,7 @@ function BaseNodeComponent({
             type="button"
             onClick={handleToggleCollapse}
             onMouseDown={(e) => e.stopPropagation()}
-            className="nodrag nopan text-muted-foreground hover:text-foreground transition-colors p-0.5 -m-0.5 rounded hover:bg-muted/50"
+            className="nodrag nopan -m-0.5 rounded p-0.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
             title={
               isCollapsed
                 ? t("scripts.editor.node.expand")
@@ -723,7 +722,7 @@ function BaseNodeComponent({
 
       {/* Muted pass-through indicator */}
       {isMuted && (
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-0.5 w-full bg-destructive/50" />
         </div>
       )}

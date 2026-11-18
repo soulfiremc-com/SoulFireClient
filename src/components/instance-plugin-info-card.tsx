@@ -87,7 +87,7 @@ function PluginInfoCardContent(props: {
           <CardDescription className="whitespace-pre-line">
             {props.plugin.description}
           </CardDescription>
-          <p className="text-muted-foreground mt-1 text-xs select-text">
+          <p className="mt-1 text-xs text-muted-foreground select-text">
             {t("pluginCard.meta", {
               version: props.plugin.version,
               author: props.plugin.author,
@@ -108,7 +108,7 @@ function PluginInfoCardContent(props: {
             )}
           </p>
           {props.note && (
-            <p className="text-muted-foreground text-xs" role="status">
+            <p className="text-xs text-muted-foreground" role="status">
               {props.note}
             </p>
           )}

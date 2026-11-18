@@ -50,7 +50,7 @@ function parseValuesAsNumbers(value: unknown): RangeValue | undefined {
 }
 
 interface DataTableSliderFilterProps<TData extends RowData> {
-  column: Column<typeof dataTableFeatures, TData, unknown>;
+  column: Column<typeof dataTableFeatures, TData>;
   title?: string;
 }
 
@@ -186,7 +186,7 @@ export function DataTableSliderFilter<TData extends RowData>({
         className="flex w-auto flex-col gap-4"
       >
         <FieldGroup className="gap-3">
-          <p className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <p className="leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {title}
           </p>
           <div className="flex items-center gap-4">
@@ -210,7 +210,7 @@ export function DataTableSliderFilter<TData extends RowData>({
                   className={cn("h-8 w-24", unit && "pr-8")}
                 />
                 {unit && (
-                  <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm">
+                  <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}
@@ -236,7 +236,7 @@ export function DataTableSliderFilter<TData extends RowData>({
                   className={cn("h-8 w-24", unit && "pr-8")}
                 />
                 {unit && (
-                  <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm">
+                  <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}

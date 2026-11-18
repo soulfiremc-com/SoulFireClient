@@ -106,7 +106,7 @@ export function ServerMetricsSummaryCards({
       {items.map((item) => (
         <Card key={item.label} size="sm">
           <CardContent className="flex flex-col items-center py-2">
-            <span className="text-muted-foreground text-xs">{item.label}</span>
+            <span className="text-xs text-muted-foreground">{item.label}</span>
             <span className="font-mono text-lg font-bold">{item.value}</span>
           </CardContent>
         </Card>
@@ -302,7 +302,7 @@ export function MemoryUsageChart({
                           {memoryConfig[name as keyof typeof memoryConfig]
                             ?.label ?? name}
                         </span>
-                        <span className="text-foreground font-mono font-medium tabular-nums">
+                        <span className="font-mono font-medium text-foreground tabular-nums">
                           {formatMB(
                             (typeof value === "number" ? value : 0) *
                               1024 *

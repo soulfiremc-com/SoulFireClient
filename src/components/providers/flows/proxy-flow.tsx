@@ -409,7 +409,7 @@ export function ProxyFlow({
                 <ChoiceCard key={product.value} value={product.value}>
                   <ServerIcon
                     aria-hidden
-                    className="text-primary size-4 shrink-0"
+                    className="size-4 shrink-0 text-primary"
                   />
                   <span className="font-medium">{product.label}</span>
                 </ChoiceCard>
@@ -679,7 +679,7 @@ export function ProxyFlow({
           <Notice tone="success">
             {t("providers.preview", { count: proxies.length })}
           </Notice>
-          <ul className="border-border bg-card divide-border divide-y rounded-lg border font-mono text-xs select-text">
+          <ul className="divide-y divide-border rounded-lg border border-border bg-card font-mono text-xs select-text">
             {proxies.slice(0, PREVIEW_ROWS).map((proxy) => (
               <li
                 key={getProxyKey(proxy)}
@@ -687,19 +687,19 @@ export function ProxyFlow({
               >
                 <ServerIcon
                   aria-hidden
-                  className="text-foreground/70 size-3.5 shrink-0"
+                  className="size-3.5 shrink-0 text-foreground/70"
                 />
                 <span className="truncate">
                   {proxy.address.replace("inet://", "")}
                 </span>
-                <span className="text-foreground/70 ml-auto">
+                <span className="ml-auto text-foreground/70">
                   {proxy.type === ProxyProto_Type.SOCKS5 ? "SOCKS5" : "HTTP"}
                 </span>
               </li>
             ))}
           </ul>
           {proxies.length > PREVIEW_ROWS && (
-            <p className="text-foreground/70 text-xs">
+            <p className="text-xs text-foreground/70">
               {t("providers.previewMore", {
                 count: proxies.length - PREVIEW_ROWS,
               })}

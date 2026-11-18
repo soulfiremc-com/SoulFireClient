@@ -31,7 +31,7 @@ function PluginStatRow({
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-col">
           <span className="truncate text-sm font-medium">{stat.pluginId}</span>
-          <span className="text-muted-foreground truncate text-xs">
+          <span className="truncate text-xs text-muted-foreground">
             {t("overview.plugins.activeBots", { count: stat.activeBotCount })}
             {stat.runningSince &&
               ` · ${t("overview.plugins.uptime", {
@@ -53,13 +53,13 @@ function PluginStatRow({
               title={metric.icon}
               className="flex flex-col gap-0.5"
             >
-              <span className="text-muted-foreground text-xs">
+              <span className="text-xs text-muted-foreground">
                 {metric.displayName}
               </span>
               <span className="font-mono text-sm leading-none font-semibold">
                 {formatCompactNumber(metric.value)}
                 {metric.unit && (
-                  <span className="text-muted-foreground ml-1 text-xs font-normal">
+                  <span className="ml-1 text-xs font-normal text-muted-foreground">
                     {metric.unit}
                   </span>
                 )}

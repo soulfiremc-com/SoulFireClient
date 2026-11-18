@@ -103,8 +103,8 @@ export function Stepper({
               className={cn(
                 "text-xs",
                 active
-                  ? "text-foreground font-medium"
-                  : "text-muted-foreground sr-only sm:not-sr-only",
+                  ? "font-medium text-foreground"
+                  : "sr-only text-muted-foreground sm:not-sr-only",
               )}
             >
               {step.label}
@@ -154,7 +154,7 @@ export function ProviderFrame({
       data-provider={providerId}
       className="flex max-h-[88dvh] min-h-0 w-full flex-col md:h-[min(40rem,88dvh)]"
     >
-      <header className="border-border border-t-provider flex flex-col gap-3 border-b border-t-4 p-4 pr-10 md:flex-row md:items-center md:justify-between">
+      <header className="flex flex-col gap-3 border-t-4 border-b border-border border-t-provider p-4 pr-10 md:flex-row md:items-center md:justify-between">
         <div className="flex min-w-0 items-center gap-3">
           {leading ??
             (providerId && (
@@ -179,19 +179,19 @@ export function ProviderFrame({
                 {heading}
               </h3>
               {subheading && (
-                <p className="text-muted-foreground text-sm">{subheading}</p>
+                <p className="text-sm text-muted-foreground">{subheading}</p>
               )}
             </div>
           )}
           {children}
         </div>
         {aside && (
-          <aside className="border-border bg-muted/40 flex shrink-0 flex-col gap-4 border-t p-4 md:w-72 md:overflow-y-auto md:border-t-0 md:border-l">
+          <aside className="flex shrink-0 flex-col gap-4 border-t border-border bg-muted/40 p-4 md:w-72 md:overflow-y-auto md:border-t-0 md:border-l">
             {aside}
           </aside>
         )}
       </div>
-      <footer className="border-border bg-popover flex flex-wrap items-center justify-between gap-2 border-t p-3">
+      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border bg-popover p-3">
         {footer}
       </footer>
     </div>
@@ -210,10 +210,10 @@ export function ChoiceCard({
   return (
     <label
       className={cn(
-        "border-border bg-card has-data-checked:border-primary has-data-checked:bg-primary/5 has-focus-visible:ring-ring/50 flex items-center gap-3 rounded-lg border p-3 transition-colors has-focus-visible:ring-3",
+        "flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-colors has-focus-visible:ring-3 has-focus-visible:ring-ring/50 has-data-checked:border-primary has-data-checked:bg-primary/5",
         disabled
           ? "cursor-not-allowed opacity-70"
-          : "hover:bg-muted/60 cursor-pointer",
+          : "cursor-pointer hover:bg-muted/60",
       )}
     >
       <div className="flex min-w-0 flex-1 items-center gap-3">{children}</div>
@@ -234,7 +234,7 @@ export function StatTile({
   tone?: "default" | "warning";
 }) {
   return (
-    <div className="border-border bg-card flex items-center gap-2.5 rounded-lg border p-2.5">
+    <div className="flex items-center gap-2.5 rounded-lg border border-border bg-card p-2.5">
       <span
         className={cn(
           "flex size-8 shrink-0 items-center justify-center rounded-md [&_svg]:size-4",
@@ -246,7 +246,7 @@ export function StatTile({
         {icon}
       </span>
       <div className="flex min-w-0 flex-col">
-        <span className="text-foreground/70 text-xs">{label}</span>
+        <span className="text-xs text-foreground/70">{label}</span>
         <span className="truncate text-sm font-semibold tabular-nums">
           {value}
         </span>
@@ -312,13 +312,13 @@ export function SummaryRows({
   rows: { id: string; label: string; value: ReactNode; strong?: boolean }[];
 }) {
   return (
-    <dl className="border-border bg-card divide-border divide-y rounded-lg border">
+    <dl className="divide-y divide-border rounded-lg border border-border bg-card">
       {rows.map((row) => (
         <div
           key={row.id}
           className="flex items-baseline justify-between gap-4 px-3 py-2.5"
         >
-          <dt className="text-muted-foreground text-sm">{row.label}</dt>
+          <dt className="text-sm text-muted-foreground">{row.label}</dt>
           <dd
             className={cn(
               "min-w-0 text-right tabular-nums select-text",
@@ -467,9 +467,9 @@ export function OfferCard({ provider }: { provider: ResourceProvider }) {
   const { t } = useTranslation("instance");
   if (!provider.hasOffer) return null;
   return (
-    <section className="border-provider/40 bg-provider/10 flex flex-col gap-2 rounded-lg border p-3">
+    <section className="flex flex-col gap-2 rounded-lg border border-provider/40 bg-provider/10 p-3">
       <h4 className="flex items-center gap-2 text-sm font-medium">
-        <TicketPercentIcon aria-hidden className="text-primary size-4" />
+        <TicketPercentIcon aria-hidden className="size-4 text-primary" />
         {t("providers.listedOffer")}
       </h4>
       <p className="text-sm">{t(`providers.catalog.${provider.id}.offer`)}</p>
@@ -525,7 +525,7 @@ export function FlowAside({
         <h4 className="text-sm font-medium">
           {t("providers.noAccountTitle", { provider: provider.name })}
         </h4>
-        <p className="text-foreground/70 text-xs">
+        <p className="text-xs text-foreground/70">
           {t("providers.noAccountBody")}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -546,11 +546,11 @@ export function FlowAside({
         </div>
       </section>
       <div className="mt-auto flex flex-col gap-2">
-        <p className="text-foreground/70 flex gap-2 text-xs">
+        <p className="flex gap-2 text-xs text-foreground/70">
           <ShieldCheckIcon aria-hidden className="size-4 shrink-0" />
           {t(savesKey ? "providers.keyPrivacySaved" : "providers.keyPrivacy")}
         </p>
-        <p className="text-foreground/70 text-xs">
+        <p className="text-xs text-foreground/70">
           {t("providers.affiliateDisclosure")}
         </p>
       </div>

@@ -115,7 +115,7 @@ async function fixture(
         );
         if (options.reject)
           return yield* Effect.fail(castError("incompatible receiver", false));
-        if (options.hang) yield* Effect.never;
+        if (options.hang) return yield* Effect.never;
         return {
           sessionId: crypto.randomUUID(),
           onFailure: (callback) => {
@@ -265,6 +265,8 @@ test("stop cancels a pending connection and rejects the initiating request", asy
 
 test("permanent errors fail immediately and release partially acquired resources", async () => {
   const f = await fixture({ reject: true });
+  // Bun types `rejects` matchers as void, but they return a promise at runtime.
+  // oxlint-disable-next-line typescript/await-thenable
   await expect(f.manager.connect(device, source)).rejects.toBeInstanceOf(Error);
   expect(f.channels).toHaveLength(1);
   expect(f.channels[0].closed).toBe(true);

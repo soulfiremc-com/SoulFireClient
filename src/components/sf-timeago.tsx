@@ -44,8 +44,8 @@ export const SFTimeAgo = React.memo((props: { date: Date }) => {
       >
         {baseText}
       </PopoverTrigger>
-      <PopoverContent className="flex flex-row gap-1 size-fit p-2 items-center">
-        <time className="select-text text-center text-sm" dateTime={isoString}>
+      <PopoverContent className="flex size-fit flex-row items-center gap-1 p-2">
+        <time className="text-center text-sm select-text" dateTime={isoString}>
           {formatted}
         </time>
         <Button

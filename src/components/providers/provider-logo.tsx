@@ -50,7 +50,7 @@ export function ProviderLogo({
     <span
       data-provider={providerId}
       className={cn(
-        "bg-provider-tile ring-foreground/10 flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg ring-1",
+        "flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-provider-tile ring-1 ring-foreground/10",
         className,
       )}
     >

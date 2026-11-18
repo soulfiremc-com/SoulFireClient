@@ -355,7 +355,7 @@ export function LocaltsFlow({
             aria-label={t("providers.liveCatalog")}
             className="flex flex-col gap-2"
           >
-            <h4 className="text-foreground/70 text-xs font-medium">
+            <h4 className="text-xs font-medium text-foreground/70">
               {t("providers.liveCatalog")}
             </h4>
             {catalogFailed && (
@@ -371,10 +371,10 @@ export function LocaltsFlow({
             {products?.slice(0, 4).map((entry) => (
               <div
                 key={entry.id}
-                className="border-border bg-card flex items-center justify-between gap-3 rounded-lg border p-2.5 text-sm"
+                className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card p-2.5 text-sm"
               >
                 <span className="min-w-0 truncate">{entry.name}</span>
-                <span className="text-foreground/70 shrink-0 text-xs tabular-nums">
+                <span className="shrink-0 text-xs text-foreground/70 tabular-nums">
                   {t("providers.localts.priceStock", {
                     price: format(entry.priceInCredits),
                     stock: format(entry.stock),
@@ -448,7 +448,7 @@ export function LocaltsFlow({
                         value={entry.id}
                         disabled={entry.stock === 0}
                       >
-                        <span className="bg-provider/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-md">
+                        <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-provider/10 text-primary">
                           <PackageIcon aria-hidden className="size-4" />
                         </span>
                         <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -461,7 +461,7 @@ export function LocaltsFlow({
                                 ? t("providers.inStock", { count: entry.stock })
                                 : t("providers.outOfStock")}
                             </Badge>
-                            <span className="text-foreground/70 text-xs">
+                            <span className="text-xs text-foreground/70">
                               {t("providers.localts.perAccount", {
                                 price: format(entry.priceInCredits),
                               })}
@@ -469,7 +469,7 @@ export function LocaltsFlow({
                             {tiers[0] && (
                               <Badge
                                 variant="outline"
-                                className="text-success-emphasis border-success/40"
+                                className="border-success/40 text-success-emphasis"
                               >
                                 {t("providers.localts.discountTier", {
                                   percent: tiers[0].percent,
@@ -529,7 +529,7 @@ export function LocaltsFlow({
                           {products?.find((item) => item.id === entry.productId)
                             ?.name ?? entry.productId}
                         </span>
-                        <span className="text-foreground/70 truncate font-mono text-xs">
+                        <span className="truncate font-mono text-xs text-foreground/70">
                           {entry.id}
                         </span>
                       </div>
@@ -584,7 +584,7 @@ export function LocaltsFlow({
               },
             ]}
           />
-          <p className="text-foreground/70 text-xs">
+          <p className="text-xs text-foreground/70">
             {t("providers.localts.reviewNote")}
           </p>
           {uncertain && (
@@ -623,7 +623,7 @@ export function LocaltsFlow({
             </Notice>
           )}
           {order && (
-            <p className="text-foreground/70 text-xs">
+            <p className="text-xs text-foreground/70">
               {t("providers.localts.orderStatus", {
                 status: order["order-status"],
                 count: order.items?.length ?? 0,

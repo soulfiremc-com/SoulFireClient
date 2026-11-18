@@ -172,7 +172,7 @@ function ProxyCheckDialog({
             <Checkbox
               id="proxy-check-remove-failed"
               checked={removeFailed}
-              onCheckedChange={(checked) => setRemoveFailed(checked === true)}
+              onCheckedChange={(checked) => setRemoveFailed(checked)}
             />
             <FieldContent>
               <FieldLabel htmlFor="proxy-check-remove-failed">

@@ -356,7 +356,7 @@ export function startPovSession(
     },
     requestKeyFrame() {
       pendingKeyFrame = true;
-      void flush();
+      flush();
     },
     escape() {
       // The server handles its escape flag before events. Keep this key ordered
@@ -380,7 +380,7 @@ export function startPovSession(
         readClipboard = false;
         clipboardSequence = 0n;
       }
-      void flush();
+      flush();
     },
     copy() {
       if (captured && ready) {

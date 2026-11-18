@@ -138,7 +138,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex size-full grow">
       <Card className="m-auto flex max-w-2xl flex-col">
         <CardHeader>
-          <CardTitle className="flex-row flex gap-1 text-2xl font-bold">
+          <CardTitle className="flex flex-row gap-1 text-2xl font-bold">
             {errorKind === "connection" ? (
               <WifiOffIcon className="h-8" />
             ) : (
@@ -156,7 +156,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
         <CardContent className="flex flex-col gap-4">
           <Collapsible open={expanded} onOpenChange={setExpanded}>
             <div className="flex flex-col gap-2">
-              <p className="select-text break-words text-destructive">
+              <p className="break-words text-destructive select-text">
                 {error.message}
               </p>
               {hasStack && (
@@ -176,7 +176,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
                     {t("error.page.showDetails")}
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <pre className="max-h-64 select-text overflow-auto rounded-md bg-muted p-3 font-mono text-xs text-muted-foreground">
+                    <pre className="max-h-64 overflow-auto rounded-md bg-muted p-3 font-mono text-xs text-muted-foreground select-text">
                       {error.stack}
                     </pre>
                   </CollapsibleContent>

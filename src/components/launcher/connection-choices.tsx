@@ -42,14 +42,14 @@ function ConnectionPath() {
   return (
     <ol
       aria-label={t("connect.path.label")}
-      className="bg-muted/50 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border px-3 py-2 text-xs"
+      className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border bg-muted/50 px-3 py-2 text-xs"
     >
       {stops.map((stop, index) => (
         <li key={stop.id} className="flex items-center gap-2">
           {index > 0 && (
             <ChevronRightIcon
               aria-hidden="true"
-              className="text-muted-foreground size-3.5"
+              className="size-3.5 text-muted-foreground"
             />
           )}
           <stop.icon aria-hidden="true" className="size-3.5" />
@@ -104,7 +104,7 @@ function ChoiceButton(props: {
         {!props.disabled && (
           <ChevronRightIcon
             aria-hidden="true"
-            className="text-muted-foreground size-4"
+            className="size-4 text-muted-foreground"
           />
         )}
       </Item>
@@ -123,7 +123,7 @@ function LinkChoice(props: {
     <div role="listitem">
       <Item
         variant="outline"
-        className="hover:bg-muted rounded-lg"
+        className="rounded-lg hover:bg-muted"
         render={<ExternalLink href={props.href} />}
       >
         <ItemMedia variant="icon">
@@ -137,7 +137,7 @@ function LinkChoice(props: {
         </ItemContent>
         <ExternalLinkIcon
           aria-hidden="true"
-          className="text-muted-foreground size-4"
+          className="size-4 text-muted-foreground"
         />
       </Item>
     </div>

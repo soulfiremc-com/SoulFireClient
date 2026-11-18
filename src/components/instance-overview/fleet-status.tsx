@@ -202,11 +202,11 @@ function FailureGroupRow({
             {t(`fleet.kind.${group.kind}.description`)}
           </ItemDescription>
           {group.message && (
-            <p className="text-muted-foreground font-mono text-xs break-words select-text">
+            <p className="font-mono text-xs break-words text-muted-foreground select-text">
               {group.message}
             </p>
           )}
-          <p className="text-muted-foreground text-xs">
+          <p className="text-xs text-muted-foreground">
             {extra > 0 ? t("fleet.namesMore", { names, count: extra }) : names}
           </p>
         </ItemContent>
@@ -305,7 +305,7 @@ export function FleetStatus({
         {counts.total > 0 && (
           <div
             aria-hidden="true"
-            className="bg-muted flex h-2 w-full gap-px overflow-hidden rounded-sm"
+            className="flex h-2 w-full gap-px overflow-hidden rounded-sm bg-muted"
           >
             {STATE_ORDER.map(
               (state) =>
@@ -332,7 +332,7 @@ export function FleetStatus({
                   to="/instance/$instance/bots"
                   params={{ instance: instanceInfo.id }}
                   search={{ status: state }}
-                  className="hover:underline inline-flex items-center gap-1"
+                  className="inline-flex items-center gap-1 hover:underline"
                 >
                   <meta.icon
                     aria-hidden="true"
@@ -342,7 +342,7 @@ export function FleetStatus({
                       meta.spin && "motion-safe:animate-spin",
                     )}
                   />
-                  <span className="tabular-nums font-medium">
+                  <span className="font-medium tabular-nums">
                     {counts[state]}
                   </span>
                   <span className="text-muted-foreground">
@@ -357,7 +357,7 @@ export function FleetStatus({
       {counts.starting > 0 && (
         <p
           role="status"
-          className="text-muted-foreground flex items-center gap-2 text-sm"
+          className="flex items-center gap-2 text-sm text-muted-foreground"
         >
           <LoaderCircleIcon
             aria-hidden="true"
@@ -379,7 +379,7 @@ export function FleetStatus({
         </ItemGroup>
       )}
       {counts.desired === 0 && counts.stopped > 0 && (
-        <p className="text-muted-foreground flex items-center gap-2 text-sm">
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <SquareIcon aria-hidden="true" className="size-3.5" />
           {canControl ? t("fleet.startHint") : t("fleet.startHintNoPermission")}
         </p>

@@ -138,7 +138,7 @@ function OverviewContentSkeleton() {
           <h3 className="text-sm font-medium">
             {t("overview.liveFeed.title")}
           </h3>
-          <div className="bg-card rounded-md border p-4">
+          <div className="rounded-md border bg-card p-4">
             <div className="flex gap-3 text-xs text-muted-foreground">
               <span>{t("overview.liveFeed.columns.bot")}</span>
               <span>{t("overview.liveFeed.columns.message")}</span>

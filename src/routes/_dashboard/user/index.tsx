@@ -606,7 +606,7 @@ function Content() {
                   }
                 >
                   <ItemMedia>
-                    <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-12 items-center justify-center rounded-lg">
+                    <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                       <DynamicIcon
                         name={instance.icon}
                         className="size-8 shrink-0"

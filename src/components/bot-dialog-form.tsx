@@ -163,7 +163,7 @@ export function BotDialogForm({
       {body.map(({ element, id }) => {
         if (element.case === "plainMessage")
           return (
-            <p key={id} className="whitespace-pre-wrap text-sm">
+            <p key={id} className="text-sm whitespace-pre-wrap">
               {element.value.contents}
             </p>
           );

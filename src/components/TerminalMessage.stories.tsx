@@ -62,7 +62,7 @@ function Example({
     <>
       <div
         data-log-message
-        className="w-80 font-mono text-xs whitespace-pre-wrap break-all select-text"
+        className="w-80 font-mono text-xs break-all whitespace-pre-wrap select-text"
       >
         <TerminalMessage
           entry={current}

@@ -1006,7 +1006,7 @@ function CommandPaletteContent({
           onConfirm={() => runOperation(confirming)}
         />
       ) : (
-        <CommandList className="min-h-0 max-h-[min(28rem,55dvh)]">
+        <CommandList className="max-h-[min(28rem,55dvh)] min-h-0">
           <CommandEmpty>
             <Empty className="p-2">
               <EmptyHeader>
