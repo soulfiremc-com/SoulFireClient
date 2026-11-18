@@ -16,7 +16,8 @@
   "jsPlugins": ["@shadcn/lint"],
   "categories": {
     "correctness": "error",
-    "suspicious": "error"
+    "suspicious": "error",
+    "perf": "error"
   },
   "options": {
     "typeAware": true,
@@ -58,9 +59,58 @@
     "effecttsgo/unnecessary-fail-yieldable-error": "off",
     "effecttsgo/unnecessary-typeof-type": "off",
     "effecttsgo/unsafe-effect-type-assertion": "off",
+    "eslint/array-callback-return": "error",
+    "eslint/eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
+    "eslint/no-await-in-loop": "off",
+    "eslint/no-console": [
+      "error",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    "eslint/no-fallthrough": "error",
+    "eslint/no-loop-func": "error",
     "eslint/no-new": "off",
+    "eslint/no-promise-executor-return": "error",
+    "eslint/no-self-compare": "error",
     "eslint/no-shadow": "off",
+    "eslint/no-throw-literal": "error",
     "eslint/preserve-caught-error": "off",
+    "import/no-cycle": "error",
+    "import/no-duplicates": "error",
+    "promise/catch-or-return": [
+      "error",
+      {
+        "allowThen": true
+      }
+    ],
+    "react/button-has-type": "error",
+    "react/jsx-no-target-blank": "error",
+    "react/jsx-no-useless-fragment": "error",
+    "react/no-danger": "error",
+    "react/no-unknown-property": "error",
+    "react/only-export-components": "error",
+    "typescript/consistent-type-exports": "error",
+    "typescript/consistent-type-imports": "error",
+    "typescript/no-deprecated": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/only-throw-error": "error",
+    "typescript/prefer-optional-chain": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/restrict-plus-operands": "error",
+    "typescript/return-await": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "unicorn/prefer-at": "error",
+    "unicorn/prefer-node-protocol": "error",
+    "unicorn/prefer-string-replace-all": "error",
+    "unicorn/prefer-top-level-await": "error",
     "eslint/no-underscore-dangle": "off",
     "eslint/no-unmodified-loop-condition": "off",
     "import/no-named-as-default": "off",
@@ -93,7 +143,6 @@
     "typescript/consistent-return": "off",
     "typescript/no-base-to-string": "off",
     "typescript/no-extraneous-class": "off",
-    "typescript/no-floating-promises": "off",
     "typescript/no-misused-spread": "off",
     "typescript/no-unnecessary-type-assertion": "off",
     "typescript/no-unnecessary-type-parameters": "off",
@@ -605,7 +654,28 @@
       }
     ],
     "shadcn/require-static-classes": "error",
-    "shadcn/no-inline-styles": "error"
+    "shadcn/no-inline-styles": "error",
+    "typescript/no-floating-promises": [
+      "error",
+      {
+        "allowForKnownSafeCalls": [
+          {
+            "from": "package",
+            "package": "node:test",
+            "name": [
+              "test",
+              "describe",
+              "it",
+              "suite",
+              "before",
+              "after",
+              "beforeEach",
+              "afterEach"
+            ]
+          }
+        ]
+      }
+    ]
   },
   "overrides": [
     {
@@ -922,6 +992,31 @@
             "allow": ["transform"]
           }
         ]
+      }
+    },
+    {
+      "files": ["scripts/**", "**/*.test.ts", "**/*.test.tsx"],
+      "rules": {
+        "eslint/no-console": "off"
+      }
+    },
+    {
+      "files": ["src/routes/**", "src/components/ui/**"],
+      "rules": {
+        "react/only-export-components": "off"
+      }
+    },
+    {
+      "files": ["src/**", "electron/**"],
+      "rules": {
+        "unicorn/prefer-at": "off",
+        "unicorn/prefer-string-replace-all": "off"
+      }
+    },
+    {
+      "files": ["src/stores/script-editor-store.ts"],
+      "rules": {
+        "oxc/no-map-spread": "off"
       }
     }
   ]
