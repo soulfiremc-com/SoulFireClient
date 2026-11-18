@@ -5,6 +5,7 @@ import { Toaster, toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { toTerminalLine } from "@/stores/terminal-log-store";
 import { TerminalView } from "./terminal";
+import { assertDefined } from "@/lib/assert-defined";
 
 const writeClipboard = fn(async (_text: string) => {});
 const uploadLog = fn(async (_body: BodyInit | null | undefined) =>
@@ -95,9 +96,10 @@ type Story = StoryObj<typeof meta>;
 
 export const ScrollAndReconcile: Story = {
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const host = canvasElement.querySelector<HTMLElement>(
-      "[data-terminal-viewport]",
-    )!;
+    const host = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
+    );
     // Allow the terminal's WASM core to initialize alongside other stories.
     await waitFor(() => expect(host).toHaveTextContent("Last log"), {
       timeout: 5000,
@@ -129,9 +131,10 @@ export const ScrollAndReconcile: Story = {
 
 export const JumpToLatest: Story = {
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const host = canvasElement.querySelector<HTMLElement>(
-      "[data-terminal-viewport]",
-    )!;
+    const host = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
+    );
     await waitFor(() => expect(host).toHaveTextContent("Last log"), {
       timeout: 5000,
     });
@@ -165,11 +168,15 @@ export const JumpToLatest: Story = {
 
 export const SelectAndCopy: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const host = canvasElement.querySelector<HTMLElement>(
-      "[data-terminal-viewport]",
-    )!;
+    const host = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
+    );
     await waitFor(() => expect(host).toHaveTextContent("Last log"));
-    const input = host.querySelector("textarea")!;
+    const input = assertDefined(
+      host.querySelector("textarea"),
+      "Expected host.querySelector(textarea) to exist",
+    );
     await expect(input).toHaveAttribute("readonly");
     await expect(input).not.toHaveFocus();
     input.focus();
@@ -183,14 +190,17 @@ export const SelectAndCopy: Story = {
     });
     await userEvent.click(copy);
     await waitFor(() => expect(writeClipboard).toHaveBeenCalled());
-    await expect(writeClipboard.mock.calls[0][0]).toContain("Log 0\nLog 1");
-    await expect(writeClipboard.mock.calls[0][0]).toContain("Last log");
-    await expect(writeClipboard.mock.calls[0][0]).not.toContain("\x1b");
+    await expect(writeClipboard.mock.calls[0]?.[0]).toContain("Log 0\nLog 1");
+    await expect(writeClipboard.mock.calls[0]?.[0]).toContain("Last log");
+    await expect(writeClipboard.mock.calls[0]?.[0]).not.toContain("\x1b");
     await userEvent.click(host);
     const lastLog = within(host).getByText("Last log");
     const range = host.ownerDocument.createRange();
     range.selectNodeContents(lastLog);
-    const selection = host.ownerDocument.getSelection()!;
+    const selection = assertDefined(
+      host.ownerDocument.getSelection(),
+      "Expected host.ownerDocument.getSelection() to exist",
+    );
     selection.removeAllRanges();
     selection.addRange(range);
     await expect(selection.toString()).toBe("Last log");
@@ -202,7 +212,7 @@ export const SelectAndCopy: Story = {
     );
     await waitFor(() => expect(uploadLog).toHaveBeenCalled());
     await expect(
-      new URLSearchParams(uploadedBody(uploadLog.mock.calls[0][0])).get(
+      new URLSearchParams(uploadedBody(uploadLog.mock.calls[0]?.[0])).get(
         "content",
       ),
     ).toBe("Last log");

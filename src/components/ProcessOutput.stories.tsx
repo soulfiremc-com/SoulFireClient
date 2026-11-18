@@ -44,6 +44,6 @@ export const InertProcessOutput: Story = {
 };
 
 export const DarkProcessOutput: Story = {
+  ...InertProcessOutput,
   globals: { theme: "dark" },
-  play: InertProcessOutput.play,
 };

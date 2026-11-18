@@ -77,9 +77,10 @@ test("polling uses exact RPC timestamps, merges history, and bounds positions", 
   const f = await fixture();
   const first = await f.read();
   const second = await f.read();
-  expect(f.requests[0].since).toBeUndefined();
-  expect(f.requests[1].since?.seconds).toBe(1n);
-  expect(f.requests[1].since?.nanos).toBe(123456789);
+  expect(f.requests[0]).toBeDefined();
+  expect(f.requests[0]?.since).toBeUndefined();
+  expect(f.requests[1]?.since?.seconds).toBe(1n);
+  expect(f.requests[1]?.since?.nanos).toBe(123456789);
   expect(second.snapshots.map((sample) => sample.botsOnline)).toEqual([1, 2]);
   expect(first.distributions.botPositions).toHaveLength(100);
   expect(f.infoRequests()).toBe(1);

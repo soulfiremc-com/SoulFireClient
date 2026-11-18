@@ -88,7 +88,7 @@ export function createSupportReminder({
   storage,
   now = () => Date.now(),
 }: {
-  storage?: Storage;
+  storage?: Storage | undefined;
   now?: () => number;
 } = {}) {
   let state = readState(storage);

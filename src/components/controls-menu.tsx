@@ -136,6 +136,7 @@ export default function ControlsMenu() {
     [instanceInfo.id, transport],
   );
 
+  const accountSettings = instanceInfo.profile.settings["account"];
   const startBots = useCallback(
     async (count?: number) => {
       if (transport === null) return [];
@@ -148,17 +149,12 @@ export default function ControlsMenu() {
         selectBotsToStart(
           latest.bots,
           count,
-          instanceInfo.profile.settings.account?.["shuffle-accounts"] === true,
+          accountSettings?.["shuffle-accounts"] === true,
         ),
         BotDesiredState.RUNNING,
       );
     },
-    [
-      instanceInfo.id,
-      instanceInfo.profile.settings.account,
-      setDesiredState,
-      transport,
-    ],
+    [instanceInfo.id, accountSettings, setDesiredState, transport],
   );
 
   const startMutation = useMutation({

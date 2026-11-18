@@ -27,7 +27,7 @@ for (const [language, code] of Object.entries(samples)) {
     for (const theme of ["light", "dark"]) {
       const colors = new Set(
         lines.flatMap((line) =>
-          line.tokens.map((token) => token.variants[theme].color),
+          line.tokens.map((token) => token.variants[theme]?.color),
         ),
       );
       assert.ok(colors.size > 1, `${theme} syntax colors`);

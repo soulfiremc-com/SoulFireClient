@@ -106,7 +106,7 @@ export default function InstancePageLayout(props: {
                 </Suspense>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
-              {(props.extraCrumbs || []).map((crumb) => (
+              {(props.extraCrumbs ?? []).map((crumb) => (
                 <CrumbComponent crumb={crumb.content} key={crumb.id} />
               ))}
               <BreadcrumbItem className="min-w-0">

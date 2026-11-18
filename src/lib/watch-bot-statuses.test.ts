@@ -85,7 +85,7 @@ test("a transient failure reconnects and teardown cancels the live stream", asyn
     assert.equal(attempts, 2);
     assert.equal(
       client.getQueryData<BotListResponse>(["bot-status", instanceId])?.bots[0]
-        .profileId,
+        ?.profileId,
       "bot",
     );
     stop();
@@ -130,8 +130,8 @@ test("stream reconnects after EOF, refreshes details, and stops on cleanup", asy
     await delay(1300);
     assert.equal(subscriptions, 2);
     const bots = cache.getQueryData<BotListResponse>(botKey);
-    assert.equal(bots?.bots[0].status?.runtimeState, BotRuntimeState.RUNNING);
-    assert.equal(bots?.bots[0].isOnline, false);
+    assert.equal(bots?.bots[0]?.status?.runtimeState, BotRuntimeState.RUNNING);
+    assert.equal(bots.bots[0].isOnline, false);
     assert.equal(cache.getQueryState(botKey)?.isInvalidated, true);
     assert.equal(cache.getQueryState(["instance-list"])?.isInvalidated, true);
     stop();

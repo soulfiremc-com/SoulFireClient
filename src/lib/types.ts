@@ -92,8 +92,8 @@ export type ProfileAccount = {
 export type ProfileProxy = {
   type: ProxyProto_Type;
   address: string;
-  username?: string;
-  password?: string;
+  username?: string | undefined;
+  password?: string | undefined;
 };
 
 export function toSettingsNamespace(

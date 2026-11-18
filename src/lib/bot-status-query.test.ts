@@ -53,9 +53,9 @@ test("an in-flight list cannot roll back a streamed lifecycle change", async () 
     complete(before);
     await pending;
     const result = client.getQueryData<typeof before>(options.queryKey);
-    assert.deepEqual(result?.bots[0].status, stopped);
-    assert.equal(result?.bots[0].isOnline, false);
-    assert.equal(result?.bots[0].pingMs, undefined);
+    assert.deepEqual(result?.bots[0]?.status, stopped);
+    assert.equal(result.bots[0].isOnline, false);
+    assert.equal(result.bots[0].pingMs, undefined);
 
     const fresh = create(BotListResponseSchema, {
       bots: [

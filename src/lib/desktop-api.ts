@@ -37,17 +37,17 @@ export type DesktopFileFilter = {
 };
 
 export type DesktopOpenDialogOptions = {
-  title?: string;
-  filters?: DesktopFileFilter[];
-  defaultPath?: string;
-  multiple?: boolean;
-  directory?: boolean;
+  title?: string | undefined;
+  filters?: DesktopFileFilter[] | undefined;
+  defaultPath?: string | undefined;
+  multiple?: boolean | undefined;
+  directory?: boolean | undefined;
 };
 
 export type DesktopSaveDialogOptions = {
-  title?: string;
-  filters?: DesktopFileFilter[];
-  defaultPath?: string;
+  title?: string | undefined;
+  filters?: DesktopFileFilter[] | undefined;
+  defaultPath?: string | undefined;
 };
 
 export type DesktopUnlisten = () => void;

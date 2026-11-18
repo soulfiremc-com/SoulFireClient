@@ -71,6 +71,7 @@ import { serverInfoQueryOptions } from "@/lib/server-info-query";
 import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery";
 import { parseSettingFocusSearch } from "@/lib/settings-focus";
 import type { InstanceInfoQueryData } from "@/lib/types";
+import { assertDefined } from "@/lib/assert-defined";
 
 function InstanceSettingsStoryPage({ data }: { data: SettingsPage }) {
   const search = useSearch({
@@ -95,7 +96,7 @@ function AccountsStoryPage({ data }: { data: SettingsPage }) {
   return (
     <InstanceSettingsPageComponent
       data={data}
-      disabledIds={PAGE_HIDDEN_SETTINGS.account}
+      disabledIds={PAGE_HIDDEN_SETTINGS["account"]}
       focusSetting={
         search.focusNamespace && search.focusKey
           ? { namespace: search.focusNamespace, key: search.focusKey }
@@ -198,11 +199,16 @@ const serverPage = create(SettingsPageSchema, {
   entries: demoServerSettingsDefinitions
     .filter((definition) => definition.id?.namespace === "server")
     .slice(0, 1)
-    .map((definition) => definition.id!),
+    .map((definition) =>
+      assertDefined(definition.id, "Expected definition.id to exist"),
+    ),
 });
-const serverField = demoServerSettingsDefinitions.find(
-  (definition) => definition.id?.key === serverPage.entries[0]?.key,
-)!;
+const serverField = assertDefined(
+  demoServerSettingsDefinitions.find(
+    (definition) => definition.id?.key === serverPage.entries[0]?.key,
+  ),
+  "Expected demoServerSettingsDefinitions.find((definition) => defini... to exist",
+);
 const grant = (permissions: InstancePermission[]) =>
   permissions.map((instancePermission) => ({
     instancePermission,
@@ -237,7 +243,7 @@ const projectData = create(InstanceListResponseSchema, {
 const current: InstanceInfoQueryData = {
   ...create(InstanceInfoSchema, {
     friendlyName: "Test farm",
-    instancePermissions: projectData.instances[0].instancePermissions,
+    instancePermissions: projectData.instances[0]?.instancePermissions ?? [],
   }),
   id: "farm",
   profile: { accounts: [], proxies: [], settings: {} },
@@ -1106,7 +1112,10 @@ export const PermissionRevokedDuringConfirmation: Story = {
     const confirmation = await opened.menu.findByRole("group", {
       name: "Stop 3 bots in Mine site?",
     });
-    activeQueryClient!.setQueryData<InstanceInfoQueryData>(
+    assertDefined(
+      activeQueryClient,
+      "Expected activeQueryClient to exist",
+    ).setQueryData<InstanceInfoQueryData>(
       ["instance-info", "mine"],
       (project) =>
         project
@@ -1284,7 +1293,10 @@ export const FailedIndexRefreshDropsCachedResults: Story = {
     const { menu } = await searchGlobally(context, "read timeout");
     await menu.findByRole("option", { name: /Read Timeout.*Mine site/ });
     // A denied refresh retains old cache data, but must remove its results.
-    await activeQueryClient!
+    await assertDefined(
+      activeQueryClient,
+      "Expected activeQueryClient to exist",
+    )
       .fetchQuery({
         queryKey: ["instance-info", "mine"],
         queryFn: async () => {
@@ -1408,11 +1420,14 @@ export const IndexFailureAndRetry: Story = {
   args: { projectFailure: true },
   play: async (context) => {
     const { menu } = await searchGlobally(context, "read timeout");
-    const status = (
-      await menu.findByText(
-        "1 project could not be searched. Results are incomplete.",
-      )
-    ).closest<HTMLElement>("output")!;
+    const status = assertDefined(
+      (
+        await menu.findByText(
+          "1 project could not be searched. Results are incomplete.",
+        )
+      ).closest<HTMLElement>("output"),
+      "Expected (await menu.findByText(1 project could not be searched. R... to exist",
+    );
     await expect(
       menu.queryByRole("option", { name: /Read Timeout/ }),
     ).not.toBeInTheDocument();
@@ -1444,7 +1459,10 @@ export const HeaderSearchOnNarrowScreen: Story = {
     const trigger = canvas.getByRole("button", {
       name: /^Search (Ctrl\+|⌘)K$/,
     });
-    const header = trigger.closest("header")!;
+    const header = assertDefined(
+      trigger.closest("header"),
+      "Expected trigger.closest(header) to exist",
+    );
     await expect(trigger).toBeVisible();
     await expect(trigger.getBoundingClientRect().right).toBeLessThanOrEqual(
       innerWidth,

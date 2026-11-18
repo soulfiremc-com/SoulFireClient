@@ -200,12 +200,12 @@ export async function runIntegratedServer(
             LD_LIBRARY_PATH: [
               path.join(javaHomeDir, "lib"),
               path.join(javaHomeDir, "lib", "server"),
-              process.env.LD_LIBRARY_PATH ?? "",
+              process.env["LD_LIBRARY_PATH"] ?? "",
             ].join(path.delimiter),
             DYLD_LIBRARY_PATH: [
               path.join(javaHomeDir, "lib"),
               path.join(javaHomeDir, "lib", "server"),
-              process.env.DYLD_LIBRARY_PATH ?? "",
+              process.env["DYLD_LIBRARY_PATH"] ?? "",
             ].join(path.delimiter),
           },
           stdio: "pipe",
@@ -257,7 +257,7 @@ export async function importCustomSoulFireServerJar(
     throw new Error("Custom SoulFire server file must be a jar");
   }
 
-  await validateJar(sourcePath);
+  validateJar(sourcePath);
 
   const fileStat = await stat(sourcePath);
   if (!fileStat.isFile()) {
@@ -435,7 +435,7 @@ function isCustomSoulFireServerJar(
   );
 }
 
-async function validateJar(jarPath: string): Promise<void> {
+function validateJar(jarPath: string): void {
   let zip: InstanceType<typeof AdmZip>;
   try {
     zip = new AdmZip(jarPath);

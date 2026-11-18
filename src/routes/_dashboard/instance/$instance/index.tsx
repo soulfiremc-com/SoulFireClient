@@ -292,7 +292,7 @@ function OverviewContentSection() {
             !metricsError &&
             !botStatusError &&
             !mutationsPending &&
-            !botStatus?.bots.some((bot) =>
+            !botStatus.bots.some((bot) =>
               ["starting", "stopping", "failed", "retrying"].includes(
                 getBotDisplayState(bot),
               ),

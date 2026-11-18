@@ -180,7 +180,7 @@ export function ScriptEditor() {
     if (navigating) containerRef.current?.focus({ preventScroll: true });
     if (change.type === "restore") {
       void reactFlowInstance.setViewport(change.viewport);
-    } else if (change.type === "fit") {
+    } else {
       const fitted = visibleNodes.length
         ? reactFlowInstance.fitView({
             nodes: visibleNodes.map(({ id }) => ({ id })),
@@ -221,8 +221,9 @@ export function ScriptEditor() {
 
   const handleSelectionChange = useCallback(
     ({ nodes: selectedNodes }: { nodes: Array<{ id: string }> }) => {
-      if (selectedNodes.length === 1) {
-        setSelectedNode(selectedNodes[0].id);
+      const [selected] = selectedNodes;
+      if (selectedNodes.length === 1 && selected) {
+        setSelectedNode(selected.id);
       } else {
         setSelectedNode(null);
       }
@@ -793,12 +794,13 @@ export function ScriptEditor() {
           (e) =>
             e.target === params.nodeId && e.targetHandle === params.handleId,
         );
-        if (existing.length === 1) {
+        const [edge] = existing;
+        if (existing.length === 1 && edge) {
           detachedEdgeRef.current = {
-            edge: existing[0],
-            index: currentEdges.indexOf(existing[0]),
+            edge,
+            index: currentEdges.indexOf(edge),
           };
-          onEdgesChange([{ id: existing[0].id, type: "remove" }]);
+          onEdgesChange([{ id: edge.id, type: "remove" }]);
         }
       }
     },

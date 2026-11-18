@@ -16,6 +16,7 @@ import {
 import { toTerminalLine } from "@/stores/terminal-log-store";
 import CommandInput from "./command-input";
 import { TerminalView } from "./terminal";
+import { assertDefined } from "@/lib/assert-defined";
 
 const copyToken = "terminal-test-token-not-a-secret";
 const commands = fn();
@@ -200,8 +201,8 @@ export const HoverAndKeyboardActions: Story = {
     await expect(commands).not.toHaveBeenCalled();
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(commands).toHaveBeenCalledTimes(1));
-    await expect(commands.mock.calls[0][0].scope).toEqual(scope);
-    await expect(commands.mock.calls[0][0].command).toBe("help");
+    await expect(commands.mock.calls[0]?.[0].scope).toEqual(scope);
+    await expect(commands.mock.calls[0]?.[0].command).toBe("help");
     await expect(canvas.getByRole("combobox")).toHaveValue("draft");
     await expect(run).toHaveFocus();
     canvas.getByRole("button", { name: /Insert status/ }).focus();
@@ -239,9 +240,10 @@ export const HoverAndKeyboardActions: Story = {
 export const PointerActionsAndSelection: Story = {
   play: async ({ canvas, canvasElement, userEvent }) => {
     const run = await canvas.findByRole("button", { name: /Run help/ });
-    const host = canvasElement.querySelector<HTMLElement>(
-      "[data-terminal-viewport]",
-    )!;
+    const host = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
+    );
     const rect = run.getBoundingClientRect();
     const coords = {
       clientX: rect.left + rect.width / 2,
@@ -258,9 +260,12 @@ export const PointerActionsAndSelection: Story = {
     await userEvent.pointer({ target: host, coords, keys: "[MouseLeft]" });
     await waitFor(() => expect(commands).toHaveBeenCalledTimes(1));
     // Selecting log text must prevent command activation, even over the same span.
-    const text = Array.from(host.querySelectorAll(".term-row")).find((row) =>
-      row.textContent?.startsWith("Run help"),
-    )!;
+    const text = assertDefined(
+      Array.from(host.querySelectorAll(".term-row")).find((row) =>
+        row.textContent.startsWith("Run help"),
+      ),
+      "Expected Array.from(host.querySelectorAll(.term-row)).find((row) =... to exist",
+    );
     const range = document.createRange();
     range.selectNodeContents(text);
     window.getSelection()?.removeAllRanges();
@@ -297,9 +302,10 @@ export const ReadOnlyTerminal: Story = {
 export const HistoryWrapAndResize: Story = {
   args: { history: true },
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const host = canvasElement.querySelector<HTMLElement>(
-      "[data-terminal-viewport]",
-    )!;
+    const host = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
+    );
     await waitFor(() =>
       expect(host.scrollHeight).toBeGreaterThan(host.clientHeight),
     );
@@ -315,10 +321,12 @@ export const HistoryWrapAndResize: Story = {
       name: /Run command: wrapped/,
     });
     await expect(wrapped.length).toBeGreaterThan(1);
-    wrapped[1].focus();
+    const [, secondPart] = wrapped;
+    if (!secondPart) throw new Error("The wrapped command has no second part");
+    secondPart.focus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(commands).toHaveBeenCalledTimes(1));
-    await expect(commands.mock.calls[0][0].command).toBe("wrapped");
+    await expect(commands.mock.calls[0]?.[0].command).toBe("wrapped");
     await userEvent.click(
       canvas.getByRole("button", { name: "Resize terminal" }),
     );
@@ -329,9 +337,10 @@ export const HistoryWrapAndResize: Story = {
         canvas.getAllByRole("button", { name: /Run command: wrapped/ }).length,
       ).toBeGreaterThan(wrapped.length),
     );
-    const next = canvas.getAllByRole("button", {
+    const [, next] = canvas.getAllByRole("button", {
       name: /Run command: wrapped/,
-    })[1];
+    });
+    if (!next) throw new Error("The resized command has no second part");
     const rect = next.getBoundingClientRect();
     await userEvent.pointer({
       target: host,
@@ -342,7 +351,7 @@ export const HistoryWrapAndResize: Story = {
       keys: "[MouseLeft]",
     });
     await waitFor(() => expect(commands).toHaveBeenCalledTimes(2));
-    await expect(commands.mock.calls[1][0].command).toBe("wrapped");
+    await expect(commands.mock.calls[1]?.[0].command).toBe("wrapped");
     host.scrollTop = host.scrollHeight;
     host.dispatchEvent(new Event("scroll"));
     await waitFor(() =>
@@ -362,9 +371,10 @@ export const SuggestionsFromBlurredDraft: Story = {
     await userEvent.type(input, "older draft");
     input.setSelectionRange(1, 1);
     suggest.focus();
-    const host = canvasElement.querySelector<HTMLElement>(
-      "[data-terminal-viewport]",
-    )!;
+    const host = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
+    );
     const rect = suggest.getBoundingClientRect();
     await userEvent.pointer({
       target: host,

@@ -19,7 +19,7 @@ const leafHook: SchemaIssue.LeafHook = (issue) => {
   if (issue._tag === "MissingKey" && !issue.annotations?.messageMissingKey) {
     return message("string.undefined");
   }
-  if (issue._tag === "InvalidType" && !issue.ast.annotations?.message) {
+  if (issue._tag === "InvalidType" && !issue.ast.annotations?.["message"]) {
     const expected =
       issue.ast._tag === "String"
         ? "string"

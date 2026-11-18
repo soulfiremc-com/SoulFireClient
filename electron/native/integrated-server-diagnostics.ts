@@ -1,4 +1,4 @@
-import { execFile } from "node:child_process";
+import { type ChildProcess, execFile } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { constants } from "node:fs";
 import { access, mkdir, stat } from "node:fs/promises";
@@ -40,8 +40,10 @@ async function findJcmd(state: IntegratedServerState): Promise<string | null> {
     state.diagnostics.javaPath
       ? path.dirname(state.diagnostics.javaPath)
       : null,
-    process.env.JAVA_HOME ? path.join(process.env.JAVA_HOME, "bin") : null,
-    ...(process.env.PATH ?? "").split(path.delimiter).filter(Boolean),
+    process.env["JAVA_HOME"]
+      ? path.join(process.env["JAVA_HOME"], "bin")
+      : null,
+    ...(process.env["PATH"] ?? "").split(path.delimiter).filter(Boolean),
   ];
   for (const directory of new Set(directories)) {
     if (!directory) continue;
@@ -63,10 +65,10 @@ export function integratedDataDirectory(
   return state.diagnostics.dataDirectory || getAppLocalDataDir(app);
 }
 
-export async function getIntegratedDiagnostics(
+export function getIntegratedDiagnostics(
   app: App,
   state: IntegratedServerState,
-): Promise<DesktopIntegratedServerDiagnostics> {
+): DesktopIntegratedServerDiagnostics {
   if (state.jcmdPath === undefined && !state.jcmdSearch) {
     state.jcmdSearch = findJcmd(state)
       .then((executable) => {
@@ -84,15 +86,20 @@ export async function getIntegratedDiagnostics(
   };
 }
 
+function isProcessRunning(child: ChildProcess): boolean {
+  return child.exitCode === null && child.signalCode === null;
+}
+
 export async function captureIntegratedThreadDump(
   app: App,
   state: IntegratedServerState,
 ): Promise<string> {
   const child = state.child;
-  if (!child?.pid || child.exitCode !== null || child.signalCode !== null) {
+  if (!child?.pid || !isProcessRunning(child)) {
     throw new Error("The integrated Java process is not running.");
   }
-  await getIntegratedDiagnostics(app, state);
+  // Starts the jcmd search when it has not run yet.
+  getIntegratedDiagnostics(app, state);
   await state.jcmdSearch;
   const jcmdPath = state.jcmdPath;
   if (!jcmdPath)
@@ -109,11 +116,8 @@ export async function captureIntegratedThreadDump(
     directory,
     `threads-${Date.now()}-${randomUUID().slice(0, 8)}.txt`,
   );
-  if (
-    state.child !== child ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
+  // The process can exit while the search and the directory setup run.
+  if (state.child !== child || !isProcessRunning(child)) {
     throw new Error(
       "The Java process exited before the thread dump could start.",
     );

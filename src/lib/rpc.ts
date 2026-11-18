@@ -105,7 +105,9 @@ export function rpcStream<A>(
           controller.abort();
           if (iterator.return !== undefined) {
             yield* Effect.tryPromise({
-              try: () => iterator.return!(),
+              try: async () => {
+                await iterator.return?.();
+              },
               catch: (error) => ConnectError.from(error),
             }).pipe(Effect.ignore);
           }

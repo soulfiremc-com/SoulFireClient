@@ -4,8 +4,11 @@ import { ScriptQuotasSchema } from "@/generated/soulfire/script_pb";
 import { scriptGraphSchema } from "@/lib/script-graph";
 import type { ScriptDocumentData } from "@/stores/script-editor-types";
 
-type ImportedScript = Pick<ScriptDocumentData, "nodes" | "edges" | "quotas"> &
-  Partial<Pick<ScriptDocumentData, "name" | "description" | "paused">>;
+type ImportedScript = Pick<ScriptDocumentData, "nodes" | "edges" | "quotas"> & {
+  [Key in "name" | "description" | "paused"]?:
+    | ScriptDocumentData[Key]
+    | undefined;
+};
 
 const scriptFileSchema = scriptGraphSchema.pipe(
   Schema.fieldsAssign({
@@ -38,7 +41,7 @@ export function parseScriptFile(content: string): ImportedScript {
 
   // Earlier version 1 exports included the protobuf runtime type name.
   const quotas = data.quotas == null ? undefined : { ...data.quotas };
-  if (quotas) delete quotas.$typeName;
+  if (quotas) delete quotas["$typeName"];
 
   return {
     nodes: data.nodes,

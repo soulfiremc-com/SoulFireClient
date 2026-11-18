@@ -34,7 +34,7 @@ test("only the latest completion can survive out-of-order replies", async () => 
   old.resolve(suggestions());
   assert.equal(await pending, undefined);
   request.cancel();
-  assert.equal(latest?.signal.aborted, true);
+  assert.equal(latest.signal.aborted, true);
 });
 
 test("cancellation suppresses late failures and successful replies", async () => {

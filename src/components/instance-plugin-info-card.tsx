@@ -57,20 +57,21 @@ function PluginInfoCardContent(props: {
   link: ReactNode;
   enabledValue: boolean;
   onEnabledChange: (value: boolean) => void;
-  cardSize?: "default" | "sm";
-  settingsUrl?: string;
-  note?: string;
+  cardSize?: "default" | "sm" | undefined;
+  settingsUrl?: string | undefined;
+  note?: string | undefined;
 }) {
   const { t } = useTranslation("common");
   const navigate = useNavigate();
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<null>();
   const copyToClipboard = useCopyToClipboard();
+  const { settingsUrl } = props;
 
   return (
     <>
       <Card
-        size={props.cardSize}
+        {...(props.cardSize && { size: props.cardSize })}
         onContextMenu={(e) => handleContextMenu(e, null)}
       >
         <CardHeader>
@@ -145,11 +146,11 @@ function PluginInfoCardContent(props: {
               : t("contextMenu.plugin.enable")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {props.settingsUrl && (
+          {settingsUrl && (
             <>
               <DropdownMenuItem
                 onClick={() => {
-                  void navigate({ to: props.settingsUrl });
+                  void navigate({ to: settingsUrl });
                   dismiss();
                 }}
               >
@@ -240,7 +241,7 @@ export function InstancePluginInfoCard(props: {
   settingsEntry: SettingsPage;
   plugin: ServerPlugin;
   /** Explains a state change that the surrounding list does not show yet. */
-  note?: string;
+  note?: string | undefined;
 }) {
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
@@ -320,7 +321,7 @@ export function BotPluginInfoCard(props: {
   botConfig: BaseSettings;
   instanceId: string;
   botId: string;
-  cardSize?: "default" | "sm";
+  cardSize?: "default" | "sm" | undefined;
   instanceInfoQueryKey: readonly unknown[];
   settingsDefinitions: SettingsDefinition[];
 }) {

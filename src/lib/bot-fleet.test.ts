@@ -95,16 +95,16 @@ test("groups the same cause across bots and puts failures first", () => {
   ]);
   assert.equal(groups.length, 2);
   assert.equal(groups[0]?.severity, "failed");
-  assert.deepEqual(groups[0]?.botIds, ["c", "d"]);
-  assert.equal(groups[0]?.kind, "unreachable");
+  assert.deepEqual(groups[0].botIds, ["c", "d"]);
+  assert.equal(groups[0].kind, "unreachable");
   assert.equal(groups[1]?.kind, "throttled");
 });
 
 test("keeps failed bots visible when the server gives no error", () => {
   const [group] = groupBotFailures([bot("a", BotRuntimeState.FAILED)]);
   assert.equal(group?.message, "");
-  assert.equal(group?.kind, "other");
-  assert.deepEqual(group?.botIds, ["a"]);
+  assert.equal(group.kind, "other");
+  assert.deepEqual(group.botIds, ["a"]);
 });
 
 test("classifies failures only when the message supports it", () => {

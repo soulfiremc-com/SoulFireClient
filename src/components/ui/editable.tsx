@@ -81,17 +81,17 @@ interface EditableContextValue {
   onCancel: () => void;
   onEdit: () => void;
   onSubmit: (value: string) => void;
-  onEnterKeyDown?: (event: KeyboardEvent) => void;
-  onEscapeKeyDown?: (event: KeyboardEvent) => void;
-  dir?: Direction;
-  maxLength?: number;
-  placeholder?: string;
+  onEnterKeyDown?: ((event: KeyboardEvent) => void) | undefined;
+  onEscapeKeyDown?: ((event: KeyboardEvent) => void) | undefined;
+  dir?: Direction | undefined;
+  maxLength?: number | undefined;
+  placeholder?: string | undefined;
   triggerMode: "click" | "dblclick" | "focus";
   autosize: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
-  invalid?: boolean;
+  disabled?: boolean | undefined;
+  readOnly?: boolean | undefined;
+  required?: boolean | undefined;
+  invalid?: boolean | undefined;
 }
 
 const EditableContext = React.createContext<EditableContextValue | null>(null);
@@ -568,7 +568,7 @@ function EditableInput(props: EditableInputProps) {
 
       const isAction =
         relatedTarget instanceof HTMLElement &&
-        (relatedTarget.closest(`[data-slot="editable-trigger"]`) ||
+        (relatedTarget.closest(`[data-slot="editable-trigger"]`) ??
           relatedTarget.closest(`[data-slot="editable-cancel"]`));
 
       if (!isAction) {

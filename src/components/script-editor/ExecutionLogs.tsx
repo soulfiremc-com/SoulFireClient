@@ -49,7 +49,7 @@ function formatTimestamp(date: Date): string {
 
 interface LogEntryRowProps {
   entry: LogEntry;
-  nodeLabel?: string;
+  nodeLabel?: string | undefined;
 }
 
 const LogEntryRow = memo(function LogEntryRow({

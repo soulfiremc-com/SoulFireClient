@@ -41,7 +41,7 @@ export async function verifyServerConnection(
       }),
   );
   await Effect.runPromise(
-    client.getClientData({}, { signal, timeoutMs: 15_000 }),
+    client.getClientData({}, { ...(signal && { signal }), timeoutMs: 15_000 }),
   );
   return normalizedAddress;
 }

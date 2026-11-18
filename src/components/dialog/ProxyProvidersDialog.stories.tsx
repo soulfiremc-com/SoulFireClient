@@ -51,7 +51,7 @@ const meta = {
             status: "success",
             data: {
               total: 1.8,
-              balance: parameters.sellerBalance ?? 40,
+              balance: parameters["sellerBalance"] ?? 40,
               currency: "USD",
             },
           });
@@ -168,7 +168,7 @@ export const PurchaseWithAffiliate: Story = {
     ).toBeVisible();
     const made = requests.filter((entry) => entry.url.endsWith("/order/make"));
     await expect(made).toHaveLength(1);
-    await expect(JSON.parse(made[0].body!)).toMatchObject({
+    await expect(JSON.parse(made[0]?.body ?? "null")).toMatchObject({
       coupon: "SOULFIREMC",
       paymentId: "balance",
     });

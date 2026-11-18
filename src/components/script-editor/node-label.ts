@@ -8,7 +8,7 @@ export function getNodeDisplayLabel(
 ): string | undefined {
   const node = nodes.find((item) => item.id === nodeId);
   if (!node) return undefined;
-  const label = node.data.label;
+  const label = node.data["label"];
   if (typeof label === "string" && label.trim()) return label;
   return getNodeDefinition(node.type ?? "")?.label;
 }

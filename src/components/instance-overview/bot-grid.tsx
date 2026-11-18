@@ -71,10 +71,10 @@ export type BotWithStatus =
   InstanceInfoQueryData["profile"]["accounts"][number] & {
     isOnline: boolean;
     connectionPhase: BotConnectionPhase;
-    pingMs?: number;
-    accountName?: string;
-    liveState?: BotListEntry["liveState"];
-    status?: BotListEntry["status"];
+    pingMs?: number | undefined;
+    accountName?: string | undefined;
+    liveState?: BotListEntry["liveState"] | undefined;
+    status?: BotListEntry["status"] | undefined;
   };
 
 /// One status per bot, so "should run" never reads as "connected".
@@ -85,7 +85,7 @@ export function BotStateBadge({
   bot: {
     isOnline: boolean;
     connectionPhase: BotConnectionPhase;
-    pingMs?: number;
+    pingMs?: number | undefined;
     status?: BotListEntry["status"];
   };
   className?: string;
@@ -125,7 +125,7 @@ export function ConnectionPhaseBadge({
   className,
 }: {
   phase: BotConnectionPhase;
-  pingMs?: number;
+  pingMs?: number | undefined;
   className?: string;
 }) {
   const { t } = useTranslation("instance");
@@ -561,7 +561,7 @@ export function BotGrid({
   const handleIntersection = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
         void fetchNextPage();
       }
     },

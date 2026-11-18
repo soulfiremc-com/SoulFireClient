@@ -157,7 +157,7 @@ function DeviceActions({
           </Button>
         )}
       </div>
-      {(connect.error || stop.error) && (
+      {(connect.error ?? stop.error) && (
         <p role="alert" className="text-sm text-destructive">
           {connect.error?.message ?? stop.error?.message}
         </p>

@@ -13,7 +13,7 @@ test("POV sizing follows display density and preserves aspect ratio at server li
     [3840, 2160, 2, 3840, 2160],
     [0.25, 0.25, 1, 2, 2],
     [641, 361, 1, 642, 362],
-  ]) {
+  ] as const) {
     assert.deepEqual(povRenderSize(width, height, dpr), {
       width: expectedWidth,
       height: expectedHeight,
@@ -29,7 +29,7 @@ test("hidden and invalid viewports do not request a render", () => {
     [640, 360, 0],
     [Number.NaN, 360, 1],
     [640, Number.POSITIVE_INFINITY, 1],
-  ]) {
+  ] as const) {
     assert.equal(povRenderSize(width, height, dpr), null);
   }
 });

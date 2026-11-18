@@ -55,7 +55,7 @@ const TIME_AXIS_PROPS = {
 };
 
 function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
-  const timeLabel = payload?.[0]?.payload?.timeLabel;
+  const timeLabel = payload[0]?.payload?.timeLabel;
   return typeof timeLabel === "string" ? timeLabel : "";
 }
 

@@ -103,7 +103,7 @@ export class CastSessionManager {
             (service) => Effect.sync(() => service.destroy()),
           );
           const browser = bonjour.find({ type: "googlecast" }, (service) => {
-            const id = service.txt?.id;
+            const id = service.txt?.["id"];
             const address =
               service.addresses?.find((candidate) => candidate.includes(".")) ??
               service.addresses?.[0] ??
@@ -113,19 +113,19 @@ export class CastSessionManager {
             if (
               !id ||
               !address ||
-              (service.txt?.ca !== undefined &&
-                (Number(service.txt.ca) & 1) === 0)
+              (service.txt?.["ca"] !== undefined &&
+                (Number(service.txt["ca"]) & 1) === 0)
             )
               return;
             this.registerDevice({
               id,
-              name: service.txt?.fn ?? service.name,
+              name: service.txt?.["fn"] ?? service.name,
               address: address.replace(/\.$/, ""),
               port: service.port,
             });
           });
           browser.on("down", (service) => {
-            const id = service.txt?.id;
+            const id = service.txt?.["id"];
             if (id && !this.sessions.has(id)) {
               this.devices.delete(id);
               this.changed();

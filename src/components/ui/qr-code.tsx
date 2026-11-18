@@ -270,6 +270,7 @@ function QRCode(props: QRCodeProps) {
 
       return () => cancelAnimationFrame(rafId);
     }
+    return undefined;
   }, [generationKey, onQRCodeGenerate]);
 
   const element = useRender({

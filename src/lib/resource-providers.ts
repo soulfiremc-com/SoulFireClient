@@ -32,7 +32,7 @@ export type ResourceProvider = {
 };
 
 // Keep referral identifiers aligned with soulfiremc.com provider listings.
-export const PROXY_PROVIDERS: ResourceProvider[] = [
+export const PROXY_PROVIDERS: [ResourceProvider, ...ResourceProvider[]] = [
   {
     id: "webshare",
     name: "Webshare",
@@ -149,7 +149,7 @@ export const PROXY_PROVIDERS: ResourceProvider[] = [
   },
 ];
 
-export const ACCOUNT_PROVIDERS: ResourceProvider[] = [
+export const ACCOUNT_PROVIDERS: [ResourceProvider, ...ResourceProvider[]] = [
   {
     id: "ravealts",
     name: "Ravealts",

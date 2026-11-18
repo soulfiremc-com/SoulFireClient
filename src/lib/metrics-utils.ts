@@ -16,7 +16,7 @@ const tooltipTimeFormatter = new Intl.DateTimeFormat(undefined, {
 });
 
 interface HasTimestamp {
-  timestamp?: Timestamp;
+  timestamp?: Timestamp | undefined;
 }
 
 export interface PaddedSnapshot<T> {

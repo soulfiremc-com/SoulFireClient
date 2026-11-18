@@ -15,7 +15,7 @@ export const analyticsConsent = createAnalyticsConsent(
   isPostHogConfigured,
 );
 
-if (!isPostHogConfigured) {
+if (!projectToken || !host) {
   if (import.meta.env.DEV) {
     const missingVariable = projectToken
       ? "VITE_PUBLIC_POSTHOG_HOST"

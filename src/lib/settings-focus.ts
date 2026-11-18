@@ -9,8 +9,8 @@ export function parseSettingFocusSearch(search: Record<string, unknown>): {
   focusNamespace?: string;
   focusKey?: string;
 } {
-  return valid(search.focusNamespace) && valid(search.focusKey)
-    ? { focusNamespace: search.focusNamespace, focusKey: search.focusKey }
+  return valid(search["focusNamespace"]) && valid(search["focusKey"])
+    ? { focusNamespace: search["focusNamespace"], focusKey: search["focusKey"] }
     : {};
 }
 
@@ -71,6 +71,7 @@ export function focusSettingElement(
   attempt();
   // A closing dialog can still reclaim focus until its popup leaves the DOM.
   // Wait for that change instead of guessing an animation duration.
+  // oxlint-disable-next-line typescript/no-unnecessary-condition -- attempt() sets focused
   if (!focused) {
     observer = new MutationObserver(attempt);
     observer.observe(document.body, {

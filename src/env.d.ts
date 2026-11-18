@@ -2,13 +2,18 @@
 import type { SoulFireDesktopApi } from "@/lib/desktop-api";
 
 declare global {
+  interface ImportMetaEnv {
+    readonly VITE_PUBLIC_POSTHOG_PROJECT_TOKEN?: string;
+    readonly VITE_PUBLIC_POSTHOG_HOST?: string;
+  }
+
   const APP_VERSION: string;
   const APP_ENVIRONMENT: "production" | "development" | "preview";
   const APP_LOCALES: string;
   const APP_NAMESPACES: string;
 
   interface Window {
-    soulfireElectron?: SoulFireDesktopApi;
+    soulfireElectron?: SoulFireDesktopApi | undefined;
   }
 }
 

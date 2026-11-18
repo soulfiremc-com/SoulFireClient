@@ -112,6 +112,7 @@ test("changing menus resets pending controls without moving the old request into
   try {
     await started.promise;
     const oldRequest = cache.getMutationCache().getAll()[0];
+    assert.ok(oldRequest);
     observer.setOptions({
       ...containerMutationOptions(
         instanceId,

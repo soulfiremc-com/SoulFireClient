@@ -15,6 +15,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { assertDefined } from "@/lib/assert-defined";
 
 function OverlayExample({ kind }: { kind: "popover" | "dropdown" }) {
   return kind === "popover" ? (
@@ -47,6 +48,7 @@ const meta = {
   component: OverlayExample,
   args: { kind: "popover" },
   beforeEach: async () => {
+    // oxlint-disable-next-line typescript/no-unnecessary-condition -- Storybook outside Vitest has no browser page
     if (!page) return undefined;
     const original = { width: innerWidth, height: innerHeight };
     await page.viewport(320, 480);
@@ -64,7 +66,10 @@ export const PopoverFitsSmallScreen: Story = {
     const title = await within(document.body).findByText("Details", {
       exact: true,
     });
-    const popup = title.closest<HTMLElement>('[data-slot="popover-content"]')!;
+    const popup = assertDefined(
+      title.closest<HTMLElement>('[data-slot="popover-content"]'),
+      "Expected title.closest<HTMLElement>([data-slot=popover-content]) to exist",
+    );
     await waitFor(async () => {
       const rect = popup.getBoundingClientRect();
       await expect(rect.left).toBeGreaterThanOrEqual(0);

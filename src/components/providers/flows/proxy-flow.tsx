@@ -62,6 +62,7 @@ import {
   type SellerOrder,
   type SellerQuote,
 } from "@/lib/proxy-providers.ts";
+import type { ProxyProviderId } from "@/lib/resource-providers.ts";
 import type { ProfileProxy } from "@/lib/types.ts";
 
 type Stage = "connect" | "choose" | "review" | "ordered" | "import";
@@ -80,17 +81,19 @@ const staticProducts = [
 
 export function ProxyFlow({
   provider,
+  connection,
   canWrite,
   onBack,
   onBusyChange,
   onClose,
   onImport,
-}: ProviderFlowProps<(proxies: ProfileProxy[]) => Promise<void>>) {
+}: ProviderFlowProps<(proxies: ProfileProxy[]) => Promise<void>> & {
+  connection: ProxyProviderId;
+}) {
   const { t } = useTranslation("instance");
   const format = useAmountFormat();
   const couponId = useId();
   const countryId = useId();
-  const connection = provider.connection!;
   const sellsHere = provider.capabilities.includes("buy");
   const { busy, error, setError, run } = useProviderTask({
     onBusyChange,

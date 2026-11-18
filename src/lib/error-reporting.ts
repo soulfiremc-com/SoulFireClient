@@ -71,7 +71,7 @@ export function filterExpectedExceptions(
   event: CaptureResult | null,
 ): CaptureResult | null {
   if (event?.event !== "$exception") return event;
-  const list: unknown = event.properties.$exception_list;
+  const list: unknown = event.properties["$exception_list"];
   if (
     Array.isArray(list) &&
     list.length > 0 &&

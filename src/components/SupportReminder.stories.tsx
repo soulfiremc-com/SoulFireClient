@@ -76,12 +76,12 @@ const meta = {
   beforeEach: ({ parameters }) => {
     now = firstUse;
     reminder = createSupportReminder({ now: () => now });
-    if (!parameters.firstUse) {
+    if (!parameters["firstUse"]) {
       for (const offset of [0, 1, 14]) {
         now = firstUse + offset * day;
         reminder.recordUse();
       }
-      if (!parameters.needsSpawn) reminder.observeBots([spawned]);
+      if (!parameters["needsSpawn"]) reminder.observeBots([spawned]);
     }
   },
   decorators: [

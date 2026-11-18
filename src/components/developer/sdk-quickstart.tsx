@@ -69,20 +69,24 @@ import {
 } from "@/lib/sdk-quickstart.ts";
 import { isOneOf } from "@/lib/is-one-of";
 
-export type SdkQuickstartBot = { id: string; name: string; online?: boolean };
+export type SdkQuickstartBot = {
+  id: string;
+  name: string;
+  online?: boolean | undefined;
+};
 export type SdkQuickstartInstance = { id: string; name: string };
 
 type Props = {
   serverUrl: string | null;
   instanceId: string;
   instanceName: string;
-  instances?: SdkQuickstartInstance[];
+  instances?: SdkQuickstartInstance[] | undefined;
   onInstanceChange?: (instanceId: string) => void;
   bots: SdkQuickstartBot[];
   demo?: boolean;
   integrated?: boolean;
   impersonating?: boolean;
-  generateToken?: (signal: AbortSignal) => Promise<string>;
+  generateToken?: ((signal: AbortSignal) => Promise<string>) | undefined;
   onOpenAccounts: () => void;
   onOpenBots: () => void;
 };

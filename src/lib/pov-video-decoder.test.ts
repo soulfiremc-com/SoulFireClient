@@ -72,7 +72,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     await settle();
     decoder.accept(chunk(2));
     assert.equal(
-      decoders[0].decodeQueueSize,
+      decoders[0]?.decodeQueueSize,
       0,
       "Discard dependent frames until a fresh keyframe",
     );
@@ -109,7 +109,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     await settle();
     decoder.accept(chunk(9, true, 800));
     assert.equal(
-      decoders[1].decodeQueueSize,
+      decoders[1]?.decodeQueueSize,
       1,
       "Resume with new dimensions and a keyframe",
     );

@@ -251,13 +251,13 @@ function Index() {
   const searchParams: Record<string, string> = Route.useSearch();
   const systemInfo = use(SystemInfoContext);
   const hasSavedIntegratedSession =
-    searchParams.configure !== "true" &&
+    searchParams["configure"] !== "true" &&
     isDesktopApp() &&
     systemInfo !== null &&
     !systemInfo.mobile &&
     isAuthenticated() &&
     getServerType() === "integrated" &&
-    (searchParams.startLocal === "true" ||
+    (searchParams["startLocal"] === "true" ||
       localStorage.getItem(LOCAL_STORAGE_AUTO_START_INTEGRATED) === "true");
   const [authFlowData, setAuthFlowData] = useState<AuthFlowData | null>(null);
   const [autoStartIntegratedServer, setAutoStartIntegratedServer] = useState(
@@ -268,13 +268,14 @@ function Index() {
   );
   const circuitPatternId = useId();
 
+  const redirect = searchParams["redirect"];
   const targetRedirect: TargetRedirectFunction = useCallback(async () => {
     await navigate({
-      to: searchParams.redirect ?? "/user",
+      to: redirect ?? "/user",
       replace: true,
       reloadDocument: true,
     });
-  }, [navigate, searchParams.redirect]);
+  }, [navigate, redirect]);
 
   const redirectWithCredentials: LoginFunction = useCallback(
     async (type: SFServerType, address: string, token: string) => {
@@ -316,6 +317,7 @@ function Index() {
                 ? DEFAULT_JVM_ARGS
                 : args.split(/\s+/).filter((str) => str !== ""),
           });
+          // oxlint-disable-next-line typescript/no-unnecessary-condition -- a newer startup sets cancelled while this one waits
           if (attempt.cancelled) return;
           if (credentials === null) {
             // Another window or process stopped this startup.
@@ -718,7 +720,7 @@ function IntegratedConfigureMenu({
     validators: {
       onSubmit: toFormSchema(integratedServerFormSchema),
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: ({ value }) => {
       if (
         !systemInfo?.mobile &&
         value.jarSource === "custom" &&

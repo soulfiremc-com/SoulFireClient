@@ -225,8 +225,9 @@ export function unifyTypes(
     ) {
       return false;
     }
-    for (let i = 0; i < resolvedA.params.length; i++) {
-      if (!unifyTypes(resolvedA.params[i], resolvedB.params[i], bindings)) {
+    for (const [i, paramA] of resolvedA.params.entries()) {
+      const paramB = resolvedB.params[i];
+      if (!paramB || !unifyTypes(paramA, paramB, bindings)) {
         return false;
       }
     }
@@ -292,18 +293,18 @@ export interface PortDefinition {
   id: string;
   label: string;
   type: PortType;
-  required?: boolean;
-  defaultValue?: string;
-  description?: string;
-  elementType?: PortType;
+  required?: boolean | undefined;
+  defaultValue?: string | undefined;
+  description?: string | undefined;
+  elementType?: PortType | undefined;
   /** Whether this input accepts multiple connections (Blender-style multi-input) */
-  multiInput?: boolean;
+  multiInput?: boolean | undefined;
   /** For polymorphic ports, the list of accepted types */
-  acceptedTypes?: PortType[];
+  acceptedTypes?: PortType[] | undefined;
   /** For dynamic output ports, the ID of the input port to inherit type from */
-  inferTypeFrom?: string;
+  inferTypeFrom?: string | undefined;
   /** Generic type descriptor for parameterized types */
-  typeDescriptor?: TypeDescriptor;
+  typeDescriptor?: TypeDescriptor | undefined;
 }
 
 export interface NodeDefinition {
@@ -313,26 +314,26 @@ export interface NodeDefinition {
   icon: string;
   inputs: PortDefinition[];
   outputs: PortDefinition[];
-  defaultData?: Record<string, unknown>;
-  description?: string;
-  isTrigger?: boolean;
-  keywords?: string[];
-  deprecated?: boolean;
-  deprecationMessage?: string;
-  color?: string;
+  defaultData?: Record<string, unknown> | undefined;
+  description?: string | undefined;
+  isTrigger?: boolean | undefined;
+  keywords?: string[] | undefined;
+  deprecated?: boolean | undefined;
+  deprecationMessage?: string | undefined;
+  color?: string | undefined;
   /** Whether this is a layout node (reroute, frame, etc.) with special rendering */
-  isLayoutNode?: boolean;
+  isLayoutNode?: boolean | undefined;
   /** Whether this node can be muted (bypassed during execution) */
-  supportsMuting?: boolean;
+  supportsMuting?: boolean | undefined;
   /** Whether this node supports inline preview of its output */
-  supportsPreview?: boolean;
+  supportsPreview?: boolean | undefined;
 }
 
 export interface CategoryInfo {
   id: string;
   name: string;
   icon: string;
-  description?: string;
+  description?: string | undefined;
   sortOrder: number;
 }
 
@@ -441,7 +442,7 @@ export function protoPortToLocal(proto: ProtoPortDefinition): PortDefinition {
         : undefined,
     multiInput: proto.multiInput || undefined,
     acceptedTypes:
-      proto.acceptedTypes && proto.acceptedTypes.length > 0
+      proto.acceptedTypes.length > 0
         ? proto.acceptedTypes.map(protoPortTypeToLocal)
         : undefined,
     inferTypeFrom: proto.inferTypeFrom || undefined,
@@ -722,7 +723,7 @@ export function initPortMetadata(
     if (meta.color) {
       serverPortColors[portType] = meta.color;
     }
-    if (meta.compatibleFrom && meta.compatibleFrom.length > 0) {
+    if (meta.compatibleFrom.length > 0) {
       serverTypeCompatibility[portType] =
         meta.compatibleFrom.map(protoPortTypeToLocal);
     }
@@ -737,11 +738,7 @@ export function initPortMetadata(
  * Uses server-provided color if available, falls back to default.
  */
 export function getPortColor(type: PortType): string {
-  return (
-    serverPortColors[type] ??
-    DEFAULT_PORT_COLORS[type] ??
-    DEFAULT_PORT_COLORS.any
-  );
+  return serverPortColors[type] ?? DEFAULT_PORT_COLORS[type];
 }
 
 /**
@@ -749,11 +746,7 @@ export function getPortColor(type: PortType): string {
  * Uses server-provided shape if available, falls back to default.
  */
 export function getHandleShape(type: PortType): HandleShape {
-  return (
-    serverHandleShapes[type] ??
-    DEFAULT_HANDLE_SHAPES[type] ??
-    DEFAULT_HANDLE_SHAPES.any
-  );
+  return serverHandleShapes[type] ?? DEFAULT_HANDLE_SHAPES[type];
 }
 
 /**
@@ -761,11 +754,7 @@ export function getHandleShape(type: PortType): HandleShape {
  * Uses server-provided style if available, falls back to default.
  */
 export function getEdgeStyle(type: PortType): EdgeStyle {
-  return (
-    serverEdgeStyles[type] ??
-    DEFAULT_EDGE_STYLES[type] ??
-    DEFAULT_EDGE_STYLES.any
-  );
+  return serverEdgeStyles[type] ?? DEFAULT_EDGE_STYLES[type];
 }
 
 /**

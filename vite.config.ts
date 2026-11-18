@@ -21,7 +21,9 @@ const namespaces = fs
   .map((dirent) => dirent.name.split(".")[0])
   .join(",");
 
-const isElectron = process.env.SF_ELECTRON === "1";
+const isElectron = process.env["SF_ELECTRON"] === "1";
+const releaseVersion =
+  process.env["GITHUB_SHA"] ?? process.env["npm_package_version"];
 const desktopCsp =
   "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' 'unsafe-eval' https://tc.soulfiremc.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; connect-src 'self' https://tc.soulfiremc.com https://api.mclo.gs *; font-src 'self'; frame-src 'self'; img-src 'self' data: blob: https://www.gravatar.com https://mc-heads.net https://assets.mcasset.cloud; manifest-src 'self'; media-src 'self'; worker-src 'self' blob:;";
 
@@ -31,7 +33,7 @@ export default defineConfig(async ({ mode }) => {
 
   return {
     define: {
-      APP_VERSION: JSON.stringify(process.env.npm_package_version),
+      APP_VERSION: JSON.stringify(process.env["npm_package_version"]),
       APP_ENVIRONMENT: JSON.stringify(appEnv),
       APP_LOCALES: JSON.stringify(locales),
       APP_NAMESPACES: JSON.stringify(namespaces),
@@ -77,22 +79,20 @@ export default defineConfig(async ({ mode }) => {
       react(),
       // babel({ presets: [reactCompilerPreset()] }),
       svgr(),
-      ...(!isDev && process.env.POSTHOG_PERSONAL_API_KEY
+      ...(!isDev && process.env["POSTHOG_PERSONAL_API_KEY"]
         ? [
             posthog({
-              personalApiKey: process.env.POSTHOG_PERSONAL_API_KEY,
+              personalApiKey: process.env["POSTHOG_PERSONAL_API_KEY"],
               projectId: "274904",
               host: "https://eu.posthog.com",
               // Bun creates an executable shim on Windows instead of a .cmd shim.
-              cliBinaryPath:
-                process.platform === "win32"
-                  ? resolve("node_modules/.bin/posthog-cli.exe")
-                  : undefined,
+              ...(process.platform === "win32" && {
+                cliBinaryPath: resolve("node_modules/.bin/posthog-cli.exe"),
+              }),
               sourcemaps: {
                 enabled: true,
                 releaseName: "SoulFireClient",
-                releaseVersion:
-                  process.env.GITHUB_SHA ?? process.env.npm_package_version,
+                ...(releaseVersion !== undefined && { releaseVersion }),
                 deleteAfterUpload: false,
               },
             }),

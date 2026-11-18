@@ -71,18 +71,18 @@ export type PaletteGroup =
 export type PaletteCommand = {
   id: string;
   label: string;
-  context?: string;
-  projectId?: string;
-  description?: string;
-  matchedText?: string;
-  status?: PaletteStatus;
+  context?: string | undefined;
+  projectId?: string | undefined;
+  description?: string | undefined;
+  matchedText?: string | undefined;
+  status?: PaletteStatus | undefined;
   icon: string;
   group: PaletteGroup;
-  keywords?: readonly string[];
+  keywords?: readonly string[] | undefined;
   /** Long server-provided text, such as descriptions. Matches contiguous text. */
-  details?: readonly string[];
+  details?: readonly string[] | undefined;
   /** Only shown for a search or type filter, so the default list stays short. */
-  searchOnly?: boolean;
+  searchOnly?: boolean | undefined;
 } & (
   | { destination: LinkOptions; action?: never; operation?: never }
   | { destination?: never; action: PaletteAction; operation?: never }
@@ -92,23 +92,25 @@ export type PaletteCommand = {
 /** Metadata for a project outside the live context, read for global search. */
 export type IndexedProject = {
   project: InstanceInfoQueryData;
-  scripts?: readonly ScriptInfo[];
+  scripts?: readonly ScriptInfo[] | undefined;
 };
 
 type CatalogOptions = {
   t: (key: string, options?: Record<string, string | number>) => string;
-  client?: ClientDataResponse;
+  client?: ClientDataResponse | undefined;
   instances: InstanceListResponse_Instance[];
   /** The project in context. Only this project gets live statuses and operations. */
-  current?: InstanceInfoQueryData;
-  scripts?: readonly ScriptInfo[];
-  bots?: readonly BotListEntry[];
-  indexed?: readonly IndexedProject[];
-  server?: Pick<
-    ServerInfoQueryData,
-    "serverSettings" | "settingsDefinitions" | "plugins"
-  >;
-  demo?: boolean;
+  current?: InstanceInfoQueryData | undefined;
+  scripts?: readonly ScriptInfo[] | undefined;
+  bots?: readonly BotListEntry[] | undefined;
+  indexed?: readonly IndexedProject[] | undefined;
+  server?:
+    | Pick<
+        ServerInfoQueryData,
+        "serverSettings" | "settingsDefinitions" | "plugins"
+      >
+    | undefined;
+  demo?: boolean | undefined;
 };
 
 type SettingsTarget =
@@ -127,18 +129,26 @@ function settingDestination(
     return {
       to: "/user/admin/settings/$pageId",
       params: { pageId },
-      search: focus,
+      ...(focus && { search: focus }),
     };
   const params = { instance: target.id };
   // Account and proxy settings live above their tables, not on a settings page.
   if (pageId === "account")
-    return { to: "/instance/$instance/accounts", params, search: focus };
+    return {
+      to: "/instance/$instance/accounts",
+      params,
+      ...(focus && { search: focus }),
+    };
   if (pageId === "proxy")
-    return { to: "/instance/$instance/proxies", params, search: focus };
+    return {
+      to: "/instance/$instance/proxies",
+      params,
+      ...(focus && { search: focus }),
+    };
   return {
     to: "/instance/$instance/settings/$pageId",
     params: { ...params, pageId },
-    search: focus,
+    ...(focus && { search: focus }),
   };
 }
 
@@ -155,12 +165,16 @@ function settingsCommands(
 ): PaletteCommand[] {
   const commands: PaletteCommand[] = [];
   const definitions = new Map(
-    definitionList
-      .filter((definition) => definition.id)
-      .map((definition) => [
-        `${definition.id!.namespace}:${definition.id!.key}`,
-        definition,
-      ]),
+    definitionList.flatMap((definition) =>
+      definition.id
+        ? [
+            [
+              `${definition.id.namespace}:${definition.id.key}`,
+              definition,
+            ] as const,
+          ]
+        : [],
+    ),
   );
   const scope =
     target.kind === "project"
@@ -817,7 +831,10 @@ export function createPaletteCommands({
 export function searchPaletteCommands(
   commands: PaletteCommand[],
   search: string,
-  options: { currentProjectId?: string; recentIds?: readonly string[] } = {},
+  options: {
+    currentProjectId?: string | undefined;
+    recentIds?: readonly string[] | undefined;
+  } = {},
 ): PaletteCommand[] {
   const tokens = search.trim().split(/\s+/).filter(Boolean);
   if (!tokens.length) return commands;
@@ -998,9 +1015,11 @@ export function paletteMatchSegments(
   }
   const segments: { text: string; matched: boolean }[] = [];
   for (let index = 0; index < value.length; index++) {
+    const text = value.charAt(index);
+    const isMatched = mask[index] ?? false;
     const last = segments.at(-1);
-    if (last?.matched === mask[index]) last.text += value[index];
-    else segments.push({ text: value[index], matched: mask[index] });
+    if (last?.matched === isMatched) last.text += text;
+    else segments.push({ text, matched: isMatched });
   }
   return segments;
 }

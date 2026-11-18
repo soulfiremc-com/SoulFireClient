@@ -19,9 +19,9 @@ test("snapshots remove absent bots and preserve live data for known bots", () =>
   });
   const result = reconcileBotStatuses(current, [status], true);
   assert.equal(result?.bots.length, 1);
-  assert.equal(result?.bots[0].pingMs, 42);
-  assert.equal(result?.bots[0].isOnline, true);
-  assert.deepEqual(result?.bots[0].status, status);
+  assert.equal(result.bots[0]?.pingMs, 42);
+  assert.equal(result.bots[0].isOnline, true);
+  assert.deepEqual(result.bots[0].status, status);
   assert.equal(current.bots.length, 2);
 });
 
@@ -56,7 +56,7 @@ test("partial updates retain unrelated bots and do not invent connection details
   });
   const result = reconcileBotStatuses(current, [update], false);
   assert.equal(result?.bots.length, 2);
-  assert.equal(result?.bots[0].isOnline, false);
+  assert.equal(result.bots[0]?.isOnline, false);
   assert.equal(reconcileBotStatuses(current, [], true)?.bots.length, 0);
   assert.equal(reconcileBotStatuses(current, [], false, "b")?.bots.length, 1);
   assert.equal(reconcileBotStatuses(undefined, [update], true), undefined);
@@ -81,15 +81,14 @@ test("disconnected lifecycle events retire stale live details without changing o
     BotRuntimeState.RETRYING,
   ]) {
     const status = create(BotStatusSchema, { profileId: "a", runtimeState });
-    const result = reconcileBotStatuses(current, [status], false)!;
-    assert.equal(result.bots[0].isOnline, false);
-    assert.equal(
-      result.bots[0].connectionPhase,
-      BotConnectionPhase.DISCONNECTED,
-    );
-    assert.equal(result.bots[0].liveState, undefined);
-    assert.equal(result.bots[0].pingMs, undefined);
-    assert.deepEqual(result.bots[1], current.bots[1]);
+    const result = reconcileBotStatuses(current, [status], false);
+    const [bot] = result?.bots ?? [];
+    assert.ok(bot);
+    assert.equal(bot.isOnline, false);
+    assert.equal(bot.connectionPhase, BotConnectionPhase.DISCONNECTED);
+    assert.equal(bot.liveState, undefined);
+    assert.equal(bot.pingMs, undefined);
+    assert.deepEqual(result?.bots[1], current.bots[1]);
   }
-  assert.equal(current.bots[0].liveState?.health, 20);
+  assert.equal(current.bots[0]?.liveState?.health, 20);
 });

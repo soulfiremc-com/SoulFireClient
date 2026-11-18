@@ -3,7 +3,10 @@ export type TerminalClick = {
   action: "run_command" | "suggest_command" | "copy_to_clipboard" | "open_url";
   value: string;
 };
-export type TerminalInteraction = { hover?: string; click?: TerminalClick };
+export type TerminalInteraction = {
+  hover?: string | undefined;
+  click?: TerminalClick | undefined;
+};
 
 const PRIVATE_PREFIX = "\x1b]777;soulfire;1;";
 const TERMINATOR = "\x1b\\";
@@ -84,15 +87,15 @@ export function encodeTerminalInteraction(
 
 export type TerminalLogContent = {
   message: string;
-  personal?: boolean;
-  terminalInteractions?: boolean;
+  personal?: boolean | undefined;
+  terminalInteractions?: boolean | undefined;
 };
 
 export type TerminalTextSpan = {
   // Source offset identifies a span within an immutable log message.
   start: number;
   text: string;
-  interaction?: TerminalInteraction;
+  interaction?: TerminalInteraction | undefined;
 };
 
 // Decode once for both React text and wterm. Stream provenance, not a control

@@ -349,7 +349,7 @@ function DiagnosticsDetails() {
           <Button
             variant="outline"
             size="sm"
-            disabled={!processRunning || !data?.jcmdPath || action !== null}
+            disabled={!processRunning || !data.jcmdPath || action !== null}
             onClick={() =>
               void runAction("dump", async () => {
                 setDump({

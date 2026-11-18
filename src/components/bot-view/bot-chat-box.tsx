@@ -26,7 +26,7 @@ import { BotActionStatus } from "@/generated/soulfire/bot_live_pb";
 export function BotChatBox(props: {
   instanceId: string;
   botId: string;
-  disabledReason?: string;
+  disabledReason?: string | undefined;
 }) {
   const { t } = useTranslation("instance");
   const transport = use(TransportContext);

@@ -29,11 +29,11 @@ type FeedEntry = {
   botName: string;
   timestamp: Date;
 } & (
-  | { kind: "chat"; senderName?: string; text: string }
+  | { kind: "chat"; senderName?: string | undefined; text: string }
   | {
       kind: "lifecycle";
       lifecycleKind: BotLifecycleKind;
-      message?: string;
+      message?: string | undefined;
     }
 );
 

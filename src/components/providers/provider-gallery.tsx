@@ -90,6 +90,7 @@ export function ProviderGallery({
   const visible = providers.filter((provider) => matches(provider, filter));
   const selected =
     visible.find((provider) => provider.id === selectedId) ?? visible[0];
+  if (!selected) return null;
   const native = !selected.capabilities.includes("checkout");
 
   return (
@@ -97,7 +98,6 @@ export function ProviderGallery({
       title={title}
       description={description}
       leading={<LayoutListIcon aria-hidden className="size-6 text-primary" />}
-      providerId={undefined}
       aside={
         <ProviderDetail
           provider={selected}

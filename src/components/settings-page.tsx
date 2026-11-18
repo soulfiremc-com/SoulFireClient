@@ -325,7 +325,7 @@ function NumericSettingField(props: {
         thousandSeparator={
           props.setting.thousandSeparator
             ? localeNumberFormat.thousandSeparator
-            : undefined
+            : false
         }
         decimalSeparator={localeNumberFormat.decimalSeparator}
         allowNegative={props.setting.min < 0}
@@ -415,7 +415,7 @@ function MinMaxSettingField(props: {
 function BoolComponent(props: {
   setting: BoolSetting;
   value: boolean;
-  pending?: boolean;
+  pending?: boolean | undefined;
   changeCallback: (value: boolean) => void;
   title: string;
   description: string;
@@ -459,7 +459,7 @@ function ComboComponent(props: {
   id: string;
   setting: ComboSetting;
   value: string;
-  pending?: boolean;
+  pending?: boolean | undefined;
   changeCallback: (value: string) => void;
 }) {
   const { t } = useTranslation("common");
@@ -763,13 +763,9 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
   value: JsonValue;
   changeCallback: (value: JsonValue) => void | Promise<void>;
   /** A toggle or option change is still saving. */
-  pending?: boolean;
+  pending?: boolean | undefined;
 }) {
   const inputId = useId();
-  if (!props.settingType || props.value === undefined) {
-    return null;
-  }
-
   switch (props.settingType.case) {
     case "string": {
       return (
@@ -1036,7 +1032,7 @@ function SettingField(props: {
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(namespace, key, value);
     },
-    onError: definition?.type.case === "stringList" ? undefined : onSaveError,
+    ...(definition?.type.case !== "stringList" && { onError: onSaveError }),
     onSettled: async () => {
       await props.invalidateQuery();
     },
@@ -1088,11 +1084,13 @@ function SettingField(props: {
           props.config.settings[namespace]?.[key] !== undefined
         }
         onReset={(resetValue) =>
-          setValueMutation.mutate(resetValue, {
+          setValueMutation.mutate(
+            resetValue,
             // String lists report other save errors inside the list.
-            onError:
-              definition.type.case === "stringList" ? onSaveError : undefined,
-          })
+            definition.type.case === "stringList"
+              ? { onError: onSaveError }
+              : {},
+          )
         }
       />
     </div>
@@ -1181,7 +1179,7 @@ function SettingFieldByKey(props: {
     mutationFn: async (value: JsonValue) => {
       await props.updateConfigEntry(props.namespace, props.settingKey, value);
     },
-    onError: definition?.type.case === "stringList" ? undefined : onSaveError,
+    ...(definition?.type.case !== "stringList" && { onError: onSaveError }),
     onSettled: async () => {
       await props.invalidateQuery();
     },
@@ -1220,11 +1218,13 @@ function SettingFieldByKey(props: {
         persisted={persisted}
         overridden={false}
         onReset={(resetValue) =>
-          setValueMutation.mutate(resetValue, {
+          setValueMutation.mutate(
+            resetValue,
             // String lists report other save errors inside the list.
-            onError:
-              definition.type.case === "stringList" ? onSaveError : undefined,
-          })
+            definition.type.case === "stringList"
+              ? { onError: onSaveError }
+              : {},
+          )
         }
       />
     </div>
@@ -1260,12 +1260,12 @@ export function ClientSettingsPageComponent({
   ) => Promise<void>;
   config: BaseSettings;
   mutationTarget: SettingMutationTarget;
-  disabledIds?: readonly DisabledSettingId[];
+  disabledIds?: readonly DisabledSettingId[] | undefined;
   definitions: readonly SettingsDefinition[];
   allPages?: readonly SettingsPage[];
   persisted: boolean;
   linkToPage?: (page: SettingsPage, label: ReactNode) => ReactNode;
-  focusSetting?: SettingFocus;
+  focusSetting?: SettingFocus | undefined;
 }) {
   const { t } = useTranslation("common");
   const openCommandPalette = useCommandPalette();
@@ -1490,8 +1490,8 @@ export function InstanceSettingsPageComponent({
   focusSetting,
 }: {
   data: SettingsPage;
-  disabledIds?: readonly DisabledSettingId[];
-  focusSetting?: SettingFocus;
+  disabledIds?: readonly DisabledSettingId[] | undefined;
+  focusSetting?: SettingFocus | undefined;
 }) {
   const queryClient = useQueryClient();
   const instanceInfoQueryOptions = useRouteContext({
@@ -1557,7 +1557,7 @@ export function AdminSettingsPageComponent({
   focusSetting,
 }: {
   data: SettingsPage;
-  focusSetting?: SettingFocus;
+  focusSetting?: SettingFocus | undefined;
 }) {
   const queryClient = useQueryClient();
   const serverInfoQueryOptions = useRouteContext({
@@ -1676,7 +1676,7 @@ function isNumericRange(value: JsonValue): value is NumericRange {
     typeof value === "object" &&
     value !== null &&
     !Array.isArray(value) &&
-    typeof value.min === "number" &&
-    typeof value.max === "number"
+    typeof value["min"] === "number" &&
+    typeof value["max"] === "number"
   );
 }

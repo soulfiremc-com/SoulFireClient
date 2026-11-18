@@ -9,6 +9,7 @@ import {
   resetLegacyAnalyticsIdentity,
   syncAnalyticsIdentity,
 } from "./analytics-identity";
+import { assertDefined } from "@/lib/assert-defined";
 
 const root = "00000000-0000-0000-0000-000000000000";
 const firstInstallation = "00000000-0000-4000-8000-000000000001";
@@ -59,7 +60,10 @@ test("SDK initialization resets legacy identities and their contaminated device 
   }
   for (const id of [
     undefined,
-    getAnalyticsIdentity(firstInstallation, root)!,
+    assertDefined(
+      getAnalyticsIdentity(firstInstallation, root),
+      "Expected getAnalyticsIdentity(firstInstallation, root) to exist",
+    ),
   ]) {
     const posthog = client(id);
     resetLegacyAnalyticsIdentity(posthog, () => posthog.reset(true));
@@ -69,7 +73,10 @@ test("SDK initialization resets legacy identities and their contaminated device 
 
 test("migration resets before identifying and does not reset the same user again", () => {
   const posthog = client(root);
-  const identity = getAnalyticsIdentity(firstInstallation, root)!;
+  const identity = assertDefined(
+    getAnalyticsIdentity(firstInstallation, root),
+    "Expected getAnalyticsIdentity(firstInstallation, root) to exist",
+  );
   const properties = { installation_id: firstInstallation };
   syncAnalyticsIdentity(posthog, identity, properties, () =>
     posthog.reset(true),
@@ -85,9 +92,18 @@ test("migration resets before identifying and does not reset the same user again
 });
 
 test("switching installations or users resets before the next identity", () => {
-  const first = getAnalyticsIdentity(firstInstallation, root)!;
-  const second = getAnalyticsIdentity(secondInstallation, root)!;
-  const other = getAnalyticsIdentity(secondInstallation, otherUser)!;
+  const first = assertDefined(
+    getAnalyticsIdentity(firstInstallation, root),
+    "Expected getAnalyticsIdentity(firstInstallation, root) to exist",
+  );
+  const second = assertDefined(
+    getAnalyticsIdentity(secondInstallation, root),
+    "Expected getAnalyticsIdentity(secondInstallation, root) to exist",
+  );
+  const other = assertDefined(
+    getAnalyticsIdentity(secondInstallation, otherUser),
+    "Expected getAnalyticsIdentity(secondInstallation, otherUser) to exist",
+  );
   const posthog = client(first);
   syncAnalyticsIdentity(posthog, second, {}, () => posthog.reset(true));
   syncAnalyticsIdentity(posthog, other, {}, () => posthog.reset(true));
@@ -100,7 +116,12 @@ test("switching installations or users resets before the next identity", () => {
 });
 
 test("older servers, demo, and impersonation clear identified state without reidentifying", () => {
-  const posthog = client(getAnalyticsIdentity(firstInstallation, root)!);
+  const posthog = client(
+    assertDefined(
+      getAnalyticsIdentity(firstInstallation, root),
+      "Expected getAnalyticsIdentity(firstInstallation, root) to exist",
+    ),
+  );
   syncAnalyticsIdentity(posthog, null, {}, () => posthog.reset(true));
   syncAnalyticsIdentity(posthog, null, {}, () => posthog.reset(true));
   assert.deepEqual(posthog.calls, [["reset", true]]);

@@ -13,8 +13,8 @@ export interface TouchControl {
 
 // Each finger owns its controls until it lifts or the visible controls change.
 export class PovTouchInput {
-  private pointers = new Map<number, Map<string, TouchControl>>();
-  private sources = new PovInputSources();
+  private readonly pointers = new Map<number, Map<string, TouchControl>>();
+  private readonly sources = new PovInputSources();
 
   update(pointer: number, controls: readonly TouchControl[]): PovInputEvent[] {
     const previous =

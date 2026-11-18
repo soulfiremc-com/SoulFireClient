@@ -14,6 +14,7 @@ import {
 } from "@/demo-data";
 import type { BaseSettings } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { assertDefined } from "@/lib/assert-defined";
 
 function SettingsFormExample({
   pageId,
@@ -57,7 +58,10 @@ function SettingsFormExample({
     () => createSettingsRegistry(definitions),
     [definitions],
   );
-  const page = demoInstanceSettings.find((entry) => entry.id === pageId)!;
+  const page = assertDefined(
+    demoInstanceSettings.find((entry) => entry.id === pageId),
+    "Expected demoInstanceSettings.find((entry) => entry.id === pageId) to exist",
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <SettingsRegistryContext value={registry}>
@@ -125,7 +129,10 @@ export const Pathfinding: Story = {
       "avoid-harmful-entities",
       false,
     );
-    const row = toggle.closest('[data-slot="field"]')!.parentElement!;
+    const row = assertDefined(
+      toggle.closest('[data-slot="field"]')?.parentElement,
+      "Expected the setting field to have a row",
+    );
     await userEvent.click(
       within(row).getByRole("button", { name: "Reset to default" }),
     );
@@ -142,7 +149,10 @@ export const AI: Story = {
   args: { pageId: "ai" },
   play: async ({ canvas, userEvent }) => {
     const key = canvas.getByLabelText("API Key");
-    const row = key.closest('[data-slot="field"]')!.parentElement!;
+    const row = assertDefined(
+      key.closest('[data-slot="field"]')?.parentElement,
+      "Expected the setting field to have a row",
+    );
     // An empty password default must not leave a blank status row behind.
     await expect(row.querySelector('[data-slot="setting-status"]')).toBeNull();
     await userEvent.click(

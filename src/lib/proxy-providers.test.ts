@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
+import { assertDefined } from "@/lib/assert-defined";
 import {
   ProviderApiError,
   providerJson,
@@ -73,12 +74,12 @@ test("Webshare imports authenticated pages and preserves complete credentials", 
     fetcher,
   );
   assert.equal(requests.length, 2);
-  assert.equal(requests[1].headers?.Authorization, "Token secret-key");
+  assert.equal(requests[1]?.headers?.["Authorization"], "Token secret-key");
   assert.deepEqual(
     result.map((entry) => entry.address),
     ["inet://192.0.2.1:1080", "inet://[2001:db8::1]:1080"],
   );
-  assert.equal(result[0].password, "part:two@three");
+  assert.equal(result[0]?.password, "part:two@three");
 });
 
 test("Webshare stops at the selected limit and does not leak its key to pagination URLs", async () => {
@@ -141,10 +142,13 @@ test("Proxy-Seller uses the selected protocol's port and filters purchased order
       undefined,
       fetcher,
     );
+    assert.ok(entry);
     assert.equal(entry.address, `inet://[2001:db8::1]:${expectedPort}`);
     assert.equal(entry.password, "secret:@");
     assert.equal(
-      new URL(requests[0].url).searchParams.get("orderId"),
+      new URL(
+        assertDefined(requests[0], "No provider request").url,
+      ).searchParams.get("orderId"),
       "order-123",
     );
   }
@@ -161,13 +165,20 @@ test("ProxyScrape requests credential exports with SOCKS-specific ports", async 
     fetcher,
   );
   assert.equal(result.length, 2);
-  assert.equal(result[0].type, ProxyProto_Type.SOCKS5);
-  assert.equal(new URL(requests[0].url).searchParams.get("protocol"), "socks");
+  assert.equal(result[0]?.type, ProxyProto_Type.SOCKS5);
   assert.equal(
-    new URL(requests[0].url).searchParams.get("format"),
+    new URL(
+      assertDefined(requests[0], "No provider request").url,
+    ).searchParams.get("protocol"),
+    "socks",
+  );
+  assert.equal(
+    new URL(
+      assertDefined(requests[0], "No provider request").url,
+    ).searchParams.get("format"),
     "credentials",
   );
-  assert.equal(requests[0].headers?.["api-token"], "secret-key");
+  assert.equal(requests[0]?.headers?.["api-token"], "secret-key");
 });
 
 test("IPRoyal imports an order using the shared protocol port", async () => {
@@ -192,7 +203,7 @@ test("IPRoyal imports an order using the shared protocol port", async () => {
     result.map((entry) => entry.address),
     ["inet://192.0.2.1:12324", "inet://192.0.2.2:12324"],
   );
-  assert.equal(result[1].password, "secret:@");
+  assert.equal(result[1]?.password, "secret:@");
 });
 
 test("Decodo handles its JSON-encoded array response and does not pretend HTTP endpoints are SOCKS5", async () => {
@@ -207,9 +218,14 @@ test("Decodo handles its JSON-encoded array response and does not pretend HTTP e
     undefined,
     fetcher,
   );
-  assert.equal(result[0].type, ProxyProto_Type.HTTP);
+  assert.equal(result[0]?.type, ProxyProto_Type.HTTP);
   assert.equal(result[0].address, "inet://gate.decodo.com:10000");
-  assert.equal(new URL(requests[0].url).searchParams.get("country"), "de");
+  assert.equal(
+    new URL(
+      assertDefined(requests[0], "No provider request").url,
+    ).searchParams.get("country"),
+    "de",
+  );
   await assert.rejects(
     loadProviderProxies("decodo", values, undefined, fetcher),
     { reason: "response" },
@@ -225,9 +241,10 @@ test("Oxylabs retrieves an enterprise list with proxy credentials", async () => 
     fetcher,
   );
   assert.equal(
-    requests[0].headers?.Authorization,
+    requests[0]?.headers?.["Authorization"],
     `Basic ${btoa("proxy-user:private:password@")}`,
   );
+  assert.ok(entry);
   assert.equal(entry.password, values.password);
   assert.equal(entry.address, "inet://192.0.2.1:60000");
 });
@@ -244,11 +261,11 @@ test("Thordata imports ISP credentials and rejects business-level errors", async
   assert.equal(
     (
       await loadProviderProxies("thordata", values, undefined, success.fetcher)
-    )[0].username,
+    )[0]?.username,
     "isp-user",
   );
-  assert.equal(success.requests[0].method, "POST");
-  assert.equal(success.requests[0].headers?.sign, "account-sign");
+  assert.equal(success.requests[0]?.method, "POST");
+  assert.equal(success.requests[0].headers?.["sign"], "account-sign");
   const failure = mock([{ code: 500, msg: "secret vendor details", data: [] }]);
   await assert.rejects(
     loadProviderProxies("thordata", values, undefined, failure.fetcher),
@@ -322,14 +339,14 @@ test("Proxy-Seller quotes and purchases with the affiliate coupon using balance 
   assert.equal(id, "order-456");
   assert.equal(requests.length, 3);
   for (const request of requests) {
-    const body = JSON.parse(request.body!);
+    const body = JSON.parse(assertDefined(request.body, "No request body"));
     assert.equal(body.coupon, "SOULFIREMC");
     assert.equal(body.paymentId, "balance");
     assert.equal(body.quantity, 5);
     assert.equal(body.sectionCode, "ipv4");
     assert.equal(body.periodId, "1m");
   }
-  assert.ok(requests[2].url.endsWith("/order/make"));
+  assert.ok(requests[2]?.url.endsWith("/order/make"));
 });
 
 test("a removed coupon stays removed and price checks never place an order", async () => {
@@ -340,7 +357,10 @@ test("a removed coupon stays removed and price checks never place an order", asy
     undefined,
     fetcher,
   );
-  assert.equal(JSON.parse(requests[0].body!).coupon, "");
+  assert.equal(
+    JSON.parse(assertDefined(requests[0]?.body, "No request body")).coupon,
+    "",
+  );
   assert.ok(requests.every((request) => request.url.endsWith("/order/calc")));
 });
 
@@ -356,7 +376,7 @@ test("price or currency changes and insufficient balance prevent a purchase", as
       { reason: "priceChanged" },
     );
     assert.equal(requests.length, 1);
-    assert.ok(requests[0].url.endsWith("/order/calc"));
+    assert.ok(requests[0]?.url.endsWith("/order/calc"));
   }
 });
 

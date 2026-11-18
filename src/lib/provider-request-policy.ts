@@ -1,4 +1,4 @@
-import { Data, Effect } from "effect";
+import { Data, Effect, Schema } from "effect";
 
 export class ProviderRequestError extends Data.TaggedError(
   "ProviderRequestError",
@@ -7,8 +7,8 @@ export class ProviderRequestError extends Data.TaggedError(
 export type ProviderRequest = {
   url: string;
   method: "GET" | "POST";
-  headers?: Record<string, string>;
-  body?: string;
+  headers?: Record<string, string> | undefined;
+  body?: string | undefined;
 };
 
 export type ProviderResponse = { status: number; body: string };
@@ -31,8 +31,8 @@ export function executeProviderRequestEffect(
       try: async (signal) => {
         const response = await fetcher(request.url, {
           method: request.method,
-          headers: request.headers,
-          body: request.body,
+          ...(request.headers && { headers: request.headers }),
+          ...(request.body !== undefined && { body: request.body }),
           credentials: "omit",
           redirect: "error",
           referrerPolicy: "no-referrer",
@@ -118,12 +118,20 @@ const routes: [string, RegExp, ProviderRequest["method"][]][] = [
   ["https://api.fernan.club", /^\/api\/v1\/store\/purchase$/, ["POST"]],
 ];
 
-export function validateProviderRequest(value: ProviderRequest): void {
-  if (
-    !value ||
-    typeof value.url !== "string" ||
-    typeof value.method !== "string"
-  ) {
+// Requests can come from the renderer over IPC, so the shape is decoded first.
+const isProviderRequestShape = Schema.is(
+  Schema.Struct({
+    url: Schema.String,
+    method: Schema.Literals(["GET", "POST"]),
+    headers: Schema.optional(Schema.Unknown),
+    body: Schema.optional(Schema.Unknown),
+  }),
+);
+
+export function validateProviderRequest(
+  value: unknown,
+): asserts value is ProviderRequest {
+  if (!isProviderRequestShape(value)) {
     throw new Error("Invalid provider request");
   }
   const url = new URL(value.url);

@@ -221,7 +221,7 @@ export function getSettingValue(
     return null;
   }
 
-  switch (definition?.type.case) {
+  switch (definition.type.case) {
     case "string": {
       return getEntryValue(namespace, key, config, definition.type.value.def);
     }
@@ -550,18 +550,18 @@ export async function updateBotConfigEntry(
       const accountIndex = old.profile.accounts.findIndex(
         (a) => a.profileId === botId,
       );
-      if (accountIndex < 0) {
+      const account = old.profile.accounts[accountIndex];
+      if (account === undefined) {
         return old;
       }
-
-      const account = old.profile.accounts[accountIndex];
-      const currentSettings = account.config ?? [];
+      const currentSettings = account.config;
       const namespaceIndex = currentSettings.findIndex(
         (ns) => ns.namespace === namespace,
       );
       const newSettings = [...currentSettings];
-      if (namespaceIndex >= 0) {
-        const entries = [...newSettings[namespaceIndex].entries];
+      const currentNamespace = newSettings[namespaceIndex];
+      if (currentNamespace) {
+        const entries = [...currentNamespace.entries];
         const entryIndex = entries.findIndex((e) => e.key === key);
         if (entryIndex >= 0) {
           entries[entryIndex] = create(SettingsNamespace_SettingsEntrySchema, {
@@ -577,7 +577,7 @@ export async function updateBotConfigEntry(
           );
         }
         newSettings[namespaceIndex] = {
-          ...newSettings[namespaceIndex],
+          ...currentNamespace,
           entries,
         };
       } else {
@@ -639,11 +639,10 @@ export async function removeBotConfigEntry(
       const accountIndex = old.profile.accounts.findIndex(
         (account) => account.profileId === botId,
       );
-      if (accountIndex < 0) {
+      const account = old.profile.accounts[accountIndex];
+      if (account === undefined) {
         return old;
       }
-
-      const account = old.profile.accounts[accountIndex];
       const nextConfig = account.config
         .map((settingsNamespace) => {
           if (settingsNamespace.namespace !== namespace) {

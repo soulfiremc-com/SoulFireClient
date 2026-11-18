@@ -16,7 +16,7 @@ export interface MultiInputOrderItem {
   id: string;
   index: number;
   label: string;
-  sublabel?: string;
+  sublabel?: string | undefined;
 }
 
 interface MultiInputOrderListProps {

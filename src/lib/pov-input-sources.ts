@@ -5,7 +5,7 @@ import {
 
 // Releasing a controller key must not release a key still held on the keyboard.
 export class PovInputSources {
-  private held = new Map<string, Set<string>>();
+  private readonly held = new Map<string, Set<string>>();
 
   get hasPressedButtons(): boolean {
     const prefix = `${Kind.BUTTON}:`;

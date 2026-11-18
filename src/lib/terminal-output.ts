@@ -25,8 +25,8 @@ export function formatTerminalPrefix(
       `${entry.instanceName}${entry.botAccountName ? `:${entry.botAccountName}` : ""}`,
     logger,
   ]
-    .filter(Boolean)
-    .map((part) => logText(part!, false).replaceAll("\n", " "))
+    .filter((part): part is string => Boolean(part))
+    .map((part) => logText(part, false).replaceAll("\n", " "))
     .join(" ");
 }
 
@@ -90,7 +90,7 @@ export function createTerminalOutput(terminal: OutputTerminal) {
         previous.length <= entries.length &&
         previous.every((entry, index) => entry === entries[index]);
       const retained = entries.find((entry) => starts.has(entry));
-      const oldStart = retained ? starts.get(retained)! : 0;
+      const oldStart = retained === undefined ? 0 : (starts.get(retained) ?? 0);
       const offset = append ? previous.length : 0;
       if (!append || previous.length === 0) {
         terminal.write(RESET);
@@ -103,9 +103,12 @@ export function createTerminalOutput(terminal: OutputTerminal) {
       }
       previous = entries;
       previousLocale = locale;
-      const rowShift = retained
-        ? starts.get(retained)! - discarded() - oldStart + previousDiscarded
-        : 0;
+      const newStart =
+        retained === undefined ? undefined : starts.get(retained);
+      const rowShift =
+        newStart === undefined
+          ? 0
+          : newStart - discarded() - oldStart + previousDiscarded;
       previousDiscarded = discarded();
       return {
         reset: !append,

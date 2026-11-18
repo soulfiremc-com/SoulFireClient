@@ -113,8 +113,7 @@ export function resolveRouteTitle(
     params: Record<string, string>;
   }>,
 ) {
-  for (let index = matches.length - 1; index >= 0; index -= 1) {
-    const match = matches[index];
+  for (const match of matches.toReversed()) {
     const getTitle = contextResolver(match.context, "getTitle");
 
     if (getTitle === undefined) {
@@ -138,8 +137,7 @@ export function resolveRouteIcon(
   }>,
   pageTitle: string,
 ) {
-  for (let index = matches.length - 1; index >= 0; index -= 1) {
-    const match = matches[index];
+  for (const match of matches.toReversed()) {
     const getIcon = contextResolver(match.context, "getIcon");
 
     if (getIcon === undefined) {

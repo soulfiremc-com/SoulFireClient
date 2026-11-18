@@ -69,7 +69,7 @@ import { requireField } from "@/lib/require-field";
 import { displayText } from "@/lib/display-text";
 
 type BotSettingsPage = SettingsPage & {
-  plugin?: ServerPlugin;
+  plugin?: ServerPlugin | undefined;
 };
 
 const BOT_SETTINGS_VIEWS = ["overrides", "all"] as const;
@@ -84,7 +84,7 @@ type ResolvedBotSetting = {
   effectiveValue: JsonValue;
   inheritedValue: JsonValue;
   defaultValue: JsonValue;
-  botValue?: JsonValue;
+  botValue?: JsonValue | undefined;
   matchesInherited: boolean;
 };
 
@@ -192,7 +192,7 @@ function formatSettingValue(
   definition: SettingsDefinition,
   value: JsonValue,
 ): string {
-  if (value === null || value === undefined) {
+  if (value === null) {
     return translate("instance:account.config.value.notSet");
   }
 
@@ -231,16 +231,11 @@ function formatSettingValue(
       });
     }
     case "minMax": {
-      if (
-        typeof value !== "object" ||
-        value === null ||
-        !("min" in value) ||
-        !("max" in value)
-      ) {
+      if (typeof value !== "object" || !("min" in value) || !("max" in value)) {
         return translate("instance:account.config.value.range");
       }
 
-      return `${displayText(value.min)} – ${displayText(value.max)}`;
+      return `${displayText(value["min"])} – ${displayText(value["max"])}`;
     }
     case undefined:
     case "double":
@@ -316,8 +311,9 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
-    onError:
-      props.row.definition.type.case === "stringList" ? undefined : onSaveError,
+    ...(props.row.definition.type.case !== "stringList" && {
+      onError: onSaveError,
+    }),
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
@@ -717,8 +713,9 @@ function DialogContentInner({
   );
 
   useEffect(() => {
-    if (selectedPage === null && botSettingsPages.length > 0) {
-      setSelectedPage(botSettingsPages[0].id);
+    const [firstPage] = botSettingsPages;
+    if (selectedPage === null && firstPage) {
+      setSelectedPage(firstPage.id);
     }
   }, [botSettingsPages, selectedPage, setSelectedPage]);
 
@@ -727,7 +724,8 @@ function DialogContentInner({
       return;
     }
 
-    if (filteredPages.length === 0) {
+    const [firstPage] = filteredPages;
+    if (!firstPage) {
       setSelectedPage(null);
       return;
     }
@@ -736,7 +734,7 @@ function DialogContentInner({
       selectedPage === null ||
       !filteredPages.some((page) => page.id === selectedPage)
     ) {
-      setSelectedPage(filteredPages[0].id);
+      setSelectedPage(firstPage.id);
     }
   }, [filteredPages, selectedPage, setSelectedPage, view]);
 

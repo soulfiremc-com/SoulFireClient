@@ -58,7 +58,7 @@ test("generated unary clients preserve payloads, metadata, deadlines, and contex
   );
   assert.equal(calls, 0);
   const response = await Effect.runPromise(request);
-  assert.equal(response.messages[0].id, "log-1");
+  assert.equal(response.messages[0]?.id, "log-1");
   assert.equal(response.messages[0].message, "Started");
   assert.deepEqual(received, ["request-1", "true"]);
   assert.equal(calls, 1);
@@ -107,7 +107,7 @@ test("generated streams subscribe lazily and abort after finite consumption", as
     const response = await Effect.runPromise(
       stream.pipe(Stream.take(1), Stream.runCollect),
     );
-    assert.equal(response[0].message?.id, id);
+    assert.equal(response[0]?.message?.id, id);
     assert.equal(signals.at(-1)?.aborted, true);
   }
   assert.notEqual(signals[0], signals[1]);
@@ -150,7 +150,7 @@ test("caller cancellation stops a pending generated stream read", async () => {
   controller.abort();
   const exit = await result;
   assert.equal(exit._tag, "Failure");
-  if (exit._tag === "Failure") assert.equal(exit.failure.code, Code.Canceled);
+  assert.equal(exit.failure.code, Code.Canceled);
   assert.equal(signal?.aborted, true);
 });
 
@@ -174,7 +174,7 @@ test("unary failures preserve Connect codes, metadata, and error identity", asyn
     ),
   );
   assert.equal(result._tag, "Failure");
-  if (result._tag === "Failure") assert.equal(result.failure, error);
+  assert.equal(result.failure, error);
 });
 
 test("interrupting a unary call aborts the transport signal", async () => {
@@ -221,9 +221,9 @@ test("streams are lazy and every consumer gets a fresh subscription", async () =
     await Effect.runPromise(stream.pipe(Stream.take(1), Stream.runCollect)),
     [1],
   );
-  assert.equal(signals[0].aborted, true);
+  assert.equal(signals[0]?.aborted, true);
   assert.deepEqual(await Effect.runPromise(Stream.runCollect(stream)), [1, 2]);
-  assert.equal(signals[1].aborted, true);
+  assert.equal(signals[1]?.aborted, true);
   assert.notEqual(signals[0], signals[1]);
   assert.equal(closed, 2);
 });
@@ -269,11 +269,9 @@ test("stream acquisition failures use the typed Connect error channel", async ()
     ),
   );
   assert.equal(result._tag, "Failure");
-  if (result._tag === "Failure") {
-    assert.ok(result.failure instanceof ConnectError);
-    assert.equal(result.failure.code, Code.Unknown);
-    assert.equal(result.failure.cause, cause);
-  }
+  assert.ok(result.failure instanceof ConnectError);
+  assert.equal(result.failure.code, Code.Unknown);
+  assert.equal(result.failure.cause, cause);
 });
 
 test("stream read failures survive cleanup failures and release the subscription", async () => {
@@ -301,7 +299,7 @@ test("stream read failures survive cleanup failures and release the subscription
     ),
   );
   assert.equal(result._tag, "Failure");
-  if (result._tag === "Failure") assert.equal(result.failure, error);
+  assert.equal(result.failure, error);
   assert.equal(signal?.aborted, true);
   assert.equal(returned, true);
 });
@@ -342,7 +340,7 @@ test("signal composition preserves call options and cancellation from either own
     assert.equal(composed.onHeader, onHeader);
     assert.equal(options.signal, caller.signal);
     (owner === "caller" ? caller : effect).abort();
-    assert.equal(composed.signal?.aborted, true);
+    assert.equal(composed.signal.aborted, true);
   }
   const controller = new AbortController();
   assert.equal(

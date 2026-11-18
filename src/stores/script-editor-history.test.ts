@@ -78,9 +78,10 @@ test("typing into one field merges, while another field starts a new step", () =
 
   editor.actions.undo();
   editor.actions.undo();
-  const data = editor.document.get().nodes[0].data;
-  assert.equal(data.message, undefined);
-  assert.equal(data.label, undefined);
+  const data = editor.document.get().nodes[0]?.data;
+  assert.ok(data);
+  assert.equal(data["message"], undefined);
+  assert.equal(data["label"], undefined);
 });
 
 test("a rewiring gesture that ends where it started records nothing", () => {
@@ -95,6 +96,7 @@ test("a rewiring gesture that ends where it started records nothing", () => {
   });
   const before = editor.history.get().past.length;
   const edge = editor.document.get().edges[0];
+  assert.ok(edge);
 
   editor.actions.beginHistoryGesture();
   editor.actions.onEdgesChange([{ id: edge.id, type: "remove" }]);
@@ -129,8 +131,10 @@ test("undoing a group while inside it returns to the remaining graph", () => {
 
   editor.actions.undo();
   assert.deepEqual(editor.ui.get().groupEditStack, []);
+  const [remaining] = editor.document.get().nodes;
+  assert.ok(remaining);
   assert.equal(editor.document.get().nodes.length, 1);
-  assert.equal(editor.document.get().nodes[0].data.parentGroupId, undefined);
+  assert.equal(remaining.data["parentGroupId"], undefined);
 });
 
 test("loading or resetting a script forgets the previous history", () => {

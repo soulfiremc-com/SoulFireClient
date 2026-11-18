@@ -15,7 +15,7 @@ function keyPress(code: number, modifiers = 0): PovInputEvent[] {
 export function textInputEvents(value: string): PovInputEvent[] {
   const events: PovInputEvent[] = [];
   for (const character of value.replaceAll(/\r\n?/g, "\n")) {
-    const code = character.codePointAt(0)!;
+    const code = character.codePointAt(0) ?? 0;
     if (character === "\n") events.push(...keyPress(257));
     else if (character === "\t") events.push(...keyPress(258));
     else if (code >= 32 && !(code >= 0xd800 && code <= 0xdfff))

@@ -8,6 +8,7 @@ import {
   type ProviderRequest,
   validateProviderRequest,
 } from "./provider-request-policy.ts";
+import { assertDefined } from "@/lib/assert-defined";
 
 const request: ProviderRequest = {
   url: "https://proxy.webshare.io/api/v2/proxy/list/?mode=direct",
@@ -72,11 +73,11 @@ test("HTTP requests omit ambient credentials and disallow redirects", async () =
     body: '{"results":[]}',
   });
   assert.equal(received?.credentials, "omit");
-  assert.equal(received?.redirect, "error");
-  assert.equal(received?.referrerPolicy, "no-referrer");
+  assert.equal(received.redirect, "error");
+  assert.equal(received.referrerPolicy, "no-referrer");
   assert.equal(
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
-    (received?.headers as Record<string, string> | undefined)?.Authorization,
+    (received.headers as Record<string, string> | undefined)?.["Authorization"],
     "Token private-key",
   );
 });
@@ -115,7 +116,10 @@ test("provider deadlines abort the HTTP request and hide transport details", asy
   });
   const fetcher: typeof fetch = (_url, options) =>
     new Promise((_resolve, reject) => {
-      requestSignal = options!.signal!;
+      requestSignal = assertDefined(
+        options?.signal,
+        "Expected the request to have a signal",
+      );
       requestSignal.addEventListener(
         "abort",
         () => reject(new Error("secret URL and token")),
@@ -150,7 +154,10 @@ test("caller cancellation aborts a provider HTTP request", async () => {
   });
   const fetcher: typeof fetch = (_url, options) =>
     new Promise((_resolve, reject) => {
-      requestSignal = options!.signal!;
+      requestSignal = assertDefined(
+        options?.signal,
+        "Expected the request to have a signal",
+      );
       requestSignal.addEventListener(
         "abort",
         () => reject(new Error("private credentials")),

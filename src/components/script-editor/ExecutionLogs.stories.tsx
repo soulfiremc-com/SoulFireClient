@@ -109,6 +109,6 @@ export const TrustedAndUntrustedLogs: Story = {
 };
 
 export const DarkLogs: Story = {
+  ...TrustedAndUntrustedLogs,
   globals: { theme: "dark" },
-  play: TrustedAndUntrustedLogs.play,
 };

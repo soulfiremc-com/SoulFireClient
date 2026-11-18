@@ -1,6 +1,7 @@
 import type { Transport } from "@connectrpc/connect";
 import {
   type FetchQueryOptions,
+  type QueryClient,
   type QueryKey,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -18,13 +19,34 @@ import { scriptListQueryOptions } from "@/lib/script-service";
 import { serverInfoQueryOptions } from "@/lib/server-info-query";
 import type { InstanceInfoQueryData, ServerInfoQueryData } from "@/lib/types";
 
+type SourceQuery = {
+  queryKey: QueryKey;
+  fetch: (queryClient: QueryClient) => Promise<unknown>;
+};
 type Source = {
   id: string;
-  queries: FetchQueryOptions<unknown, Error, unknown>[];
+  queries: SourceQuery[];
 };
 type SourceStatus = "loaded" | "failed";
 
 const INDEXED_KEYS = new Set(["instance-info", "scripts", "server-info"]);
+
+function sourceQuery<TData, TKey extends QueryKey>(
+  options: FetchQueryOptions<TData, Error, TData, TKey>,
+): SourceQuery {
+  return {
+    queryKey: options.queryKey,
+    // Fresh cached data resolves without a request.
+    fetch: (queryClient) =>
+      queryClient.fetchQuery({
+        ...options,
+        staleTime: PALETTE_INDEX_STALE_MS,
+        // Keep results while the menu stays open without page observers.
+        gcTime: PALETTE_INDEX_GC_MS,
+        retry: false,
+      }),
+  };
+}
 
 /**
  * Loads search metadata for every readable project and, with permission, the
@@ -45,7 +67,7 @@ export function usePaletteSearchIndex({
   transport: Transport | null;
 }): {
   projects: IndexedProject[];
-  server?: ServerInfoQueryData;
+  server?: ServerInfoQueryData | undefined;
   progress: PaletteIndexProgress;
   retry: () => void;
 } {
@@ -62,24 +84,24 @@ export function usePaletteSearchIndex({
   );
   const sources = useMemo<Source[]>(
     () => [
-      ...indexedIds.map((id) => ({
-        id: `project:${id}`,
-        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the search source only reads query keys and data, which every listed query option provides
-        queries: [
-          {
-            queryKey: ["instance-info", id],
-            queryFn: ({ signal }: { signal: AbortSignal }) =>
-              fetchInstanceInfo(transport!, id, queryClient, signal),
-          },
-          scriptListQueryOptions(transport, id),
-        ] as Source["queries"],
-      })),
+      ...(transport
+        ? indexedIds.map((id) => ({
+            id: `project:${id}`,
+            queries: [
+              sourceQuery({
+                queryKey: ["instance-info", id],
+                queryFn: ({ signal }) =>
+                  fetchInstanceInfo(transport, id, queryClient, signal),
+              }),
+              sourceQuery(scriptListQueryOptions(transport, id)),
+            ],
+          }))
+        : []),
       ...(includeServer
         ? [
             {
               id: "server",
-              // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the search source only reads query keys and data, which every listed query option provides
-              queries: [serverInfoQueryOptions(transport)] as Source["queries"],
+              queries: [sourceQuery(serverInfoQueryOptions(transport))],
             },
           ]
         : []),
@@ -115,16 +137,7 @@ export function usePaletteSearchIndex({
         for (const query of source.queries)
           running.set(JSON.stringify(query.queryKey), query.queryKey);
         const results = await Promise.allSettled(
-          source.queries.map((query) =>
-            // Fresh cached data resolves without a request.
-            queryClient.fetchQuery({
-              ...query,
-              staleTime: PALETTE_INDEX_STALE_MS,
-              // Keep results while the menu stays open without page observers.
-              gcTime: PALETTE_INDEX_GC_MS,
-              retry: false,
-            }),
-          ),
+          source.queries.map((query) => query.fetch(queryClient)),
         );
         for (const query of source.queries)
           running.delete(JSON.stringify(query.queryKey));
@@ -193,7 +206,7 @@ export function usePaletteSearchIndex({
         total: indexedIds.length,
         loaded: projectStatuses.filter((status) => status === "loaded").length,
         failed: projectStatuses.filter((status) => status === "failed").length,
-        server: includeServer ? (statuses.server ?? "pending") : "none",
+        server: includeServer ? (statuses["server"] ?? "pending") : "none",
       },
       retry,
     };

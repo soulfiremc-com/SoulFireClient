@@ -6,6 +6,7 @@ import {
   readableTerminalColor,
   TERMINAL_TEXT_CONTRAST,
 } from "@/lib/terminal-colors";
+import { assertDefined } from "@/lib/assert-defined";
 
 test("contrastRatio matches the WCAG extremes", () => {
   assert.equal(contrastRatio("#000000", "#ffffff"), 21);
@@ -38,7 +39,10 @@ test("readableTerminalColor lifts every Catppuccin ANSI color to AA", () => {
 });
 
 test("readableTerminalColor makes the smallest change toward the text color", () => {
-  const latte = flavorEntries.find(([name]) => name === "latte")![1].colors;
+  const latte = assertDefined(
+    flavorEntries.find(([name]) => name === "latte"),
+    "Expected flavorEntries.find(([name]) => name === latte) to exist",
+  )[1].colors;
   const result = readableTerminalColor(
     latte.yellow.hex,
     latte.base.hex,

@@ -13,6 +13,7 @@ import {
   createProductActivationTracker,
   watchProductActivation,
 } from "./product-activation";
+import { assertDefined } from "@/lib/assert-defined";
 
 const spawned = {
   isOnline: true,
@@ -132,14 +133,14 @@ test("root activation is independent per installation and ignores legacy dedupli
       return true;
     },
   });
-  const first = getAnalyticsIdentity(
-    "00000000-0000-4000-8000-000000000001",
-    root,
-  )!;
-  const second = getAnalyticsIdentity(
-    "00000000-0000-4000-8000-000000000002",
-    root,
-  )!;
+  const first = assertDefined(
+    getAnalyticsIdentity("00000000-0000-4000-8000-000000000001", root),
+    "Expected getAnalyticsIdentity(00000000-0000-4000-8000-000000000001... to exist",
+  );
+  const second = assertDefined(
+    getAnalyticsIdentity("00000000-0000-4000-8000-000000000002", root),
+    "Expected getAnalyticsIdentity(00000000-0000-4000-8000-000000000002... to exist",
+  );
   assert.equal(tracker.observe(first, [spawned]), true);
   assert.equal(tracker.observe(first, [spawned]), false);
   assert.equal(tracker.observe(second, [spawned]), true);

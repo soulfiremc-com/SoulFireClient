@@ -168,10 +168,7 @@ export function QuickAddMenu() {
   const nodesByCategory = useMemo(() => {
     const result: Record<string, NodeDefinition[]> = {};
     for (const node of filteredNodes) {
-      if (!result[node.category]) {
-        result[node.category] = [];
-      }
-      result[node.category].push(node);
+      (result[node.category] ??= []).push(node);
     }
     return result;
   }, [filteredNodes]);

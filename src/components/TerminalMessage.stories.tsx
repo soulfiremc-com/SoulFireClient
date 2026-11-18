@@ -18,6 +18,7 @@ import {
   type TerminalLogContent,
 } from "@/lib/terminal-interactions";
 import { TerminalMessage } from "./terminal-message";
+import { assertDefined } from "@/lib/assert-defined";
 
 const copy = fn(async (_value: string) => {});
 const open = fn();
@@ -181,7 +182,10 @@ export const UntrustedText: Story = {
     },
   },
   play: async ({ canvas, canvasElement }) => {
-    const message = canvasElement.querySelector("[data-log-message]")!;
+    const message = assertDefined(
+      canvasElement.querySelector("[data-log-message]"),
+      "Expected canvasElement.querySelector([data-log-message]) to exist",
+    );
     await expect(
       // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the story builds its own fixtures and route tree
       within(message as HTMLElement).queryByRole("button"),
@@ -252,9 +256,10 @@ export const WrappedUnicode: Story = {
     },
   },
   play: async ({ canvasElement, userEvent }) => {
-    const text = canvasElement.querySelector<HTMLElement>(
-      "[data-log-message] [tabindex]",
-    )!;
+    const text = assertDefined(
+      canvasElement.querySelector<HTMLElement>("[data-log-message] [tabindex]"),
+      "Expected canvasElement.querySelector<HTMLElement>([data-log-messag... to exist",
+    );
     text.focus();
     await expect(
       await within(document.body).findByRole("tooltip"),
@@ -287,9 +292,12 @@ export const WrappedAction: Story = {
     },
   },
   play: async ({ canvasElement, userEvent }) => {
-    const text = canvasElement.querySelector<HTMLElement>(
-      "[data-log-message] [data-slot=tooltip-trigger]",
-    )!;
+    const text = assertDefined(
+      canvasElement.querySelector<HTMLElement>(
+        "[data-log-message] [data-slot=tooltip-trigger]",
+      ),
+      "Expected canvasElement.querySelector<HTMLElement>([data-log-messag... to exist",
+    );
     await expect(text.getBoundingClientRect().width).toBeLessThanOrEqual(320);
     await expect(text.getBoundingClientRect().height).toBeGreaterThan(30);
     await userEvent.click(text);
@@ -344,8 +352,8 @@ export const WasmFailureFallback: Story = {
     help.focus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(command).toHaveBeenCalledTimes(1));
-    await expect(command.mock.calls[0][0].command).toBe("help");
-    await expect(command.mock.calls[0][0].scope.scope).toEqual({
+    await expect(command.mock.calls[0]?.[0].command).toBe("help");
+    await expect(command.mock.calls[0]?.[0].scope.scope).toEqual({
       case: "instance",
       value: expect.objectContaining({ instanceId: "fixture-instance" }),
     });

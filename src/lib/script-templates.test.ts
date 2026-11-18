@@ -525,5 +525,5 @@ test("proto output keeps edge kinds and default values", () => {
   const proto = scriptTemplateToProto(template);
   assert.equal(proto.edges[0]?.edgeType, EdgeType.EXECUTION);
   assert.equal(proto.edges[2]?.edgeType, EdgeType.DATA);
-  assert.equal(proto.nodes[2]?.data.message?.kind.value, "Hello!");
+  assert.equal(proto.nodes[2]?.data["message"]?.kind.value, "Hello!");
 });

@@ -94,7 +94,7 @@ test("search reports matches on other pages", () => {
   ];
   const found = findSettingsOnOtherPages("bot", pages, defs, "model");
   assert.equal(found[0]?.page.id, "ai");
-  assert.equal(found[0]?.count, 1);
+  assert.equal(found[0].count, 1);
   assert.deepEqual(findSettingsOnOtherPages("ai", pages, defs, "model"), []);
 });
 
@@ -119,7 +119,7 @@ test("renamed plugins remain searchable by familiar names and stable IDs", () =>
     ["fake-virtual-host", "Handshake host override", "Fake Virtual Host"],
     ["forwarding-bypass", "Player forwarding", "Forwarding Bypass"],
     ["ai-chat-bot", "AI chat", "AI Chat Bot"],
-  ]) {
+  ] as const) {
     const text = getPluginSearchText(displayName, {
       id: settingId,
       description: "Server-provided behavior description",

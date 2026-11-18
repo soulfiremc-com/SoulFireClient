@@ -7,5 +7,5 @@ export function useShouldShowWindowTitlebar() {
   const isMobile = useIsMobile();
   const desktopApp = isDesktopApp();
 
-  return desktopApp || (!desktopApp && !isMobile);
+  return desktopApp || !isMobile;
 }

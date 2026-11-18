@@ -201,7 +201,12 @@ export const EmptyInstance: Story = {
 };
 
 export const RestrictedUser: Story = {
-  args: { generateToken: undefined },
+  render: (args) => (
+    <>
+      <SdkQuickstart {...args} generateToken={undefined} />
+      <Toaster />
+    </>
+  ),
   play: async ({ canvas }) => {
     await expect(
       canvas.queryByRole("button", { name: "Generate personal token" }),

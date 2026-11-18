@@ -21,11 +21,10 @@ export async function saveScript(
     nodes: nodesToProto(snapshot.nodes),
     edges: edgesToProto(snapshot.edges),
     // Graph edits must not resume a script paused by another client.
-    paused:
-      scriptId && snapshot.paused === lastSavedPaused
-        ? undefined
-        : snapshot.paused,
-    quotas: snapshot.quotas,
+    ...(scriptId && snapshot.paused === lastSavedPaused
+      ? {}
+      : { paused: snapshot.paused }),
+    ...(snapshot.quotas && { quotas: snapshot.quotas }),
   };
   const result = scriptId
     ? await Effect.runPromise(

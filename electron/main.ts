@@ -13,8 +13,10 @@ import {
   Menu,
   nativeImage,
   nativeTheme,
+  type NativeImage,
   net,
   protocol,
+  type SaveDialogOptions,
   screen,
   shell,
   Tray,
@@ -90,8 +92,8 @@ type StoredWindowState = {
   height: number;
   isMaximized: boolean;
   width: number;
-  x?: number;
-  y?: number;
+  x?: number | undefined;
+  y?: number | undefined;
 };
 
 type StoredThemeSource = "dark" | "light" | "system";
@@ -130,8 +132,8 @@ const castManager = new CastSessionManager((state) => {
 });
 
 const fsWatchers = new Map<number, FsWatchRegistration>();
-const devServerUrl = process.env.VITE_DEV_SERVER_URL
-  ? new URL(process.env.VITE_DEV_SERVER_URL)
+const devServerUrl = process.env["VITE_DEV_SERVER_URL"]
+  ? new URL(process.env["VITE_DEV_SERVER_URL"])
   : null;
 const hasSingleInstanceLock =
   !app.isPackaged || app.requestSingleInstanceLock();
@@ -140,7 +142,7 @@ let mainWindow: BrowserWindow | null = null;
 const povWindows = new Map<number, BrowserWindow>();
 const povInputOwners = new Map<
   number,
-  { owner: BrowserWindow; target?: "pov" }
+  { owner: BrowserWindow; target?: "pov" | undefined }
 >();
 let nextFsWatchId = 1;
 let pendingOpenUrl = findProtocolUrl(process.argv);
@@ -235,14 +237,17 @@ function trayIconPath(): string {
   }
 }
 
-function windowIcon() {
+function windowIconOptions(): { icon?: string | NativeImage } {
   if (process.platform === "darwin") {
-    return undefined;
+    return {};
   }
 
-  return process.platform === "win32"
-    ? appIconPath()
-    : loadNativeImage(appIconPath());
+  return {
+    icon:
+      process.platform === "win32"
+        ? appIconPath()
+        : loadNativeImage(appIconPath()),
+  };
 }
 
 function applyApplicationIcon(): void {
@@ -388,7 +393,7 @@ async function resolveAppProtocolPath(
   }
 }
 
-async function registerAppProtocol(): Promise<void> {
+function registerAppProtocol(): void {
   protocol.handle(APP_PROTOCOL, async (request) => {
     const filePath = await resolveAppProtocolPath(request.url);
     if (filePath === null) {
@@ -487,7 +492,7 @@ function registerSecurityHandlers(): void {
             autoHideMenuBar: true,
             frame: false,
             backgroundColor: windowBackgroundColor(),
-            icon: windowIcon(),
+            ...windowIconOptions(),
             webPreferences: {
               nodeIntegration: false,
               contextIsolation: true,
@@ -580,7 +585,7 @@ async function createMainWindow(): Promise<BrowserWindow> {
     center: position === null,
     frame: false,
     height: state.height,
-    icon: windowIcon(),
+    ...windowIconOptions(),
     minHeight: 500,
     minWidth: 940,
     show: false,
@@ -737,7 +742,8 @@ function handleIpc<Args extends unknown[], Result>(
   });
 }
 
-function windowTarget(sender: BrowserWindow, target?: "pov"): BrowserWindow {
+// The target comes from the renderer, so it is checked at runtime.
+function windowTarget(sender: BrowserWindow, target: unknown): BrowserWindow {
   if (target === undefined) return sender;
   if (target !== "pov") throw new Error("Unknown window target");
   const popup = povWindows.get(sender.webContents.id);
@@ -751,27 +757,30 @@ function registerIpcHandlers(): void {
       net.fetch(input, init),
     );
   });
-  handleIpc("pov:set-captured", (owner, captured: boolean, target?: "pov") => {
-    if (
-      typeof captured !== "boolean" ||
-      (target !== undefined && target !== "pov")
-    )
-      throw new Error("Invalid POV capture");
-    if (!captured) {
-      for (const [id, capture] of povInputOwners) {
-        if (capture.owner === owner && capture.target === target)
-          povInputOwners.delete(id);
+  handleIpc(
+    "pov:set-captured",
+    (owner, captured: unknown, target?: unknown) => {
+      if (
+        typeof captured !== "boolean" ||
+        (target !== undefined && target !== "pov")
+      )
+        throw new Error("Invalid POV capture");
+      if (!captured) {
+        for (const [id, capture] of povInputOwners) {
+          if (capture.owner === owner && capture.target === target)
+            povInputOwners.delete(id);
+        }
+        updatePovEscapeShortcut();
+        return;
       }
+      const window = windowTarget(owner, target);
+      povInputOwners.set(window.webContents.id, { owner, target });
       updatePovEscapeShortcut();
-      return;
-    }
-    const window = windowTarget(owner, target);
-    povInputOwners.set(window.webContents.id, { owner, target });
-    updatePovEscapeShortcut();
-    // Native shortcut registration is optional. Some compositors cannot reserve
-    // bare Escape; pointer capture must still work with Chromium's fallback.
-  });
-  handleIpc("app:quit", async () => {
+      // Native shortcut registration is optional. Some compositors cannot reserve
+      // bare Escape; pointer capture must still work with Chromium's fallback.
+    },
+  );
+  handleIpc("app:quit", () => {
     app.quit();
   });
 
@@ -780,7 +789,7 @@ function registerIpcHandlers(): void {
     installUpdateNow();
   });
 
-  handleIpc("app:set-theme", async (_window, theme: DesktopTheme) => {
+  handleIpc("app:set-theme", (_window, theme: DesktopTheme) => {
     setThemeSource(theme);
   });
 
@@ -797,17 +806,17 @@ function registerIpcHandlers(): void {
       );
     },
   );
-  handleIpc("cast:discover", async () => {
+  handleIpc("cast:discover", () => {
     castManager.discover();
   });
-  handleIpc("cast:get-state", async () => castManager.getState());
+  handleIpc("cast:get-state", () => castManager.getState());
   handleIpc("cast:stop", async (_window, id: string) => {
     await castManager.stop(id);
   });
   handleIpc("cast:stop-all", async () => {
     await castManager.stopAll();
   });
-  handleIpc("cast:settings", async (_window, settings: unknown) => {
+  handleIpc("cast:settings", (_window, settings: unknown) => {
     const next = Schema.decodeUnknownSync(DisplaySettings)(settings);
     castSettingsStore.set("display", next);
     castManager.setSettings(next);
@@ -868,11 +877,7 @@ function registerIpcHandlers(): void {
 
   handleIpc(
     "fs:watch",
-    async (
-      senderWindow,
-      targetPath: string,
-      options?: DesktopFsWatchOptions,
-    ) => {
+    (senderWindow, targetPath: string, options?: DesktopFsWatchOptions) => {
       const watchId = nextFsWatchId++;
       const ownerContentsId = senderWindow.webContents.id;
 
@@ -881,7 +886,7 @@ function registerIpcHandlers(): void {
         debounceTimer: null,
         ownerContentsId,
         watcher: watch(targetPath, {
-          depth: options?.recursive === false ? 0 : undefined,
+          ...(options?.recursive === false && { depth: 0 }),
           ignoreInitial: true,
           persistent: true,
         }),
@@ -924,7 +929,7 @@ function registerIpcHandlers(): void {
     },
   );
 
-  handleIpc("fs:unwatch", async (_window, watchId: number) => {
+  handleIpc("fs:unwatch", (_window, watchId: number) => {
     cleanupFsWatch(watchId);
   });
 
@@ -942,7 +947,7 @@ function registerIpcHandlers(): void {
     return getSoulFireServerVersion(app, app.getVersion());
   });
 
-  handleIpc("integrated-server:get-diagnostics", async () =>
+  handleIpc("integrated-server:get-diagnostics", () =>
     getIntegratedDiagnostics(app, integratedServerState),
   );
   handleIpc("integrated-server:open-data-directory", async () => {
@@ -1031,19 +1036,19 @@ function registerIpcHandlers(): void {
     },
   );
 
-  handleIpc("path:app-config-dir", async () => {
+  handleIpc("path:app-config-dir", () => {
     return getAppConfigDir(app);
   });
 
-  handleIpc("path:app-local-data-dir", async () => {
+  handleIpc("path:app-local-data-dir", () => {
     return getAppLocalDataDir(app);
   });
 
-  handleIpc("path:download-dir", async () => {
+  handleIpc("path:download-dir", () => {
     return app.getPath("downloads");
   });
 
-  handleIpc("path:resolve", async (_window, ...pathsToResolve: string[]) => {
+  handleIpc("path:resolve", (_window, ...pathsToResolve: string[]) => {
     return path.resolve(...pathsToResolve);
   });
 
@@ -1059,7 +1064,7 @@ function registerIpcHandlers(): void {
     return shell.openPath(target);
   });
 
-  handleIpc("system:get-info", async () => {
+  handleIpc("system:get-info", () => {
     return {
       appVersion: app.getVersion(),
       os: {
@@ -1072,23 +1077,23 @@ function registerIpcHandlers(): void {
     };
   });
 
-  handleIpc("window:close", async (senderWindow, target?: "pov") => {
+  handleIpc("window:close", (senderWindow, target?: unknown) => {
     windowTarget(senderWindow, target).close();
   });
 
-  handleIpc("window:is-maximized", async (senderWindow, target?: "pov") => {
+  handleIpc("window:is-maximized", (senderWindow, target?: unknown) => {
     return windowTarget(senderWindow, target).isMaximized();
   });
 
-  handleIpc("window:maximize", async (senderWindow, target?: "pov") => {
+  handleIpc("window:maximize", (senderWindow, target?: unknown) => {
     windowTarget(senderWindow, target).maximize();
   });
 
-  handleIpc("window:minimize", async (senderWindow, target?: "pov") => {
+  handleIpc("window:minimize", (senderWindow, target?: unknown) => {
     windowTarget(senderWindow, target).minimize();
   });
 
-  handleIpc("window:unmaximize", async (senderWindow, target?: "pov") => {
+  handleIpc("window:unmaximize", (senderWindow, target?: unknown) => {
     windowTarget(senderWindow, target).unmaximize();
   });
 }
@@ -1114,20 +1119,30 @@ function cleanupFsWatchesForContents(contentsId: number): void {
   }
 }
 
+function dialogBaseOptions(
+  options: DesktopSaveDialogOptions,
+): Pick<SaveDialogOptions, "defaultPath" | "filters" | "title"> {
+  return {
+    ...(options.defaultPath !== undefined && {
+      defaultPath: options.defaultPath,
+    }),
+    ...(options.filters !== undefined && { filters: options.filters }),
+    ...(options.title !== undefined && { title: options.title }),
+  };
+}
+
 async function openDialog(
   window: BrowserWindow,
   options: DesktopOpenDialogOptions,
 ): Promise<string | string[] | null> {
   const result = await dialog.showOpenDialog(window, {
-    defaultPath: options.defaultPath,
-    filters: options.filters,
+    ...dialogBaseOptions(options),
     properties: [
       ...(options.directory
         ? (["openDirectory"] as const)
         : (["openFile"] as const)),
       ...(options.multiple ? (["multiSelections"] as const) : []),
     ],
-    title: options.title,
   });
 
   if (result.canceled) {
@@ -1141,17 +1156,16 @@ async function saveDialog(
   window: BrowserWindow,
   options: DesktopSaveDialogOptions,
 ): Promise<string | null> {
-  const result = await dialog.showSaveDialog(window, {
-    defaultPath: options.defaultPath,
-    filters: options.filters,
-    title: options.title,
-  });
+  const result = await dialog.showSaveDialog(
+    window,
+    dialogBaseOptions(options),
+  );
 
   if (result.canceled) {
     return null;
   }
 
-  return result.filePath ?? null;
+  return result.filePath;
 }
 
 function setThemeSource(theme: DesktopTheme): void {
@@ -1194,7 +1208,7 @@ async function bootstrap(): Promise<void> {
       Option.getOrElse(() => DEFAULT_SETTINGS),
     ),
   );
-  await registerAppProtocol();
+  registerAppProtocol();
 
   let castCleanupComplete = false;
   app.on("before-quit", (event) => {

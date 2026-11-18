@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, jest, test } from "bun:test";
 import { fromBinary } from "@bufbuild/protobuf";
 import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
 import { PovInputRequestSchema, PovService } from "@/generated/soulfire/pov_pb";
+import { assertDefined } from "@/lib/assert-defined";
 import { startPovSession } from "./pov-session";
 
 class Socket {
@@ -119,13 +120,13 @@ test("the input WebSocket handshake shares the connection deadline", async () =>
   jest.advanceTimersByTime(15_000);
   await settle();
   expect(state.errors).toHaveLength(1);
-  expect(Socket.instances[0].readyState).toBe(3);
+  expect(Socket.instances[0]?.readyState).toBe(3);
 });
 
 test("a connected stream clears the deadline and stop cancels all pending work", async () => {
   const state = fixture("frame");
   await settle();
-  Socket.instances[0].open();
+  Socket.instances[0]?.open();
   jest.advanceTimersByTime(20_000);
   await settle();
   expect(state.errors).toHaveLength(0);
@@ -156,7 +157,7 @@ test("transient stream failures still reconnect with a fresh attempt", async () 
   await settle();
   expect(state.calls()).toBe(2);
   expect(state.errors).toHaveLength(0);
-  Socket.instances[0].open();
+  Socket.instances[0]?.open();
   state.session.stop();
 });
 
@@ -173,13 +174,16 @@ test("stopping during reconnect backoff prevents another RPC attempt", async () 
 test("reconnecting releases the old socket and ignores its late callbacks", async () => {
   const state = fixture("frame");
   await settle();
-  const first = Socket.instances[0];
+  const first = assertDefined(Socket.instances[0], "No first socket");
   first.open();
   state.session.requestKeyFrame();
-  const staleClose = first.onclose!;
-  const staleOpen = first.onopen!;
-  const firstInput = fromBinary(PovInputRequestSchema, first.sent[0]);
-  first.onmessage!({ data: "9999" });
+  const staleClose = assertDefined(first.onclose, "No close handler");
+  const staleOpen = assertDefined(first.onopen, "No open handler");
+  const firstInput = fromBinary(
+    PovInputRequestSchema,
+    assertDefined(first.sent[0], "No first input"),
+  );
+  assertDefined(first.onmessage, "No message handler")({ data: "9999" });
   const sentBeforeReconnect = first.sent.length;
   staleOpen();
   state.session.requestKeyFrame();
@@ -190,10 +194,13 @@ test("reconnecting releases the old socket and ignores its late callbacks", asyn
   jest.advanceTimersByTime(500);
   await settle();
   expect(state.calls()).toBe(2);
-  const second = Socket.instances[1];
+  const second = assertDefined(Socket.instances[1], "No second socket");
   second.open();
   state.session.requestKeyFrame();
-  const secondInput = fromBinary(PovInputRequestSchema, second.sent[0]);
+  const secondInput = fromBinary(
+    PovInputRequestSchema,
+    assertDefined(second.sent[0], "No second input"),
+  );
   expect(secondInput.sessionId).not.toBe(firstInput.sessionId);
   expect(secondInput.sequence).toBe(1n);
   expect(secondInput.captured).toBe(false);

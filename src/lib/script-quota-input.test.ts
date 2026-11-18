@@ -24,7 +24,6 @@ test("quota input boundaries remain exact through protobuf serialization", () =>
   ]) {
     const parsed = parseScriptQuotaInputs(scriptQuotasToInputs(quotas));
     assert.equal(parsed.valid, true);
-    if (!parsed.valid) throw Error("Expected valid inputs");
     assert.ok(parsed.quotas);
     assert.deepEqual(
       fromBinary(
@@ -48,7 +47,6 @@ test("empty fields restore defaults while zero and timeout overrides stay explic
   ]) {
     const parsed = parseScriptQuotaInputs({ ...inputs, ...changes });
     assert.equal(parsed.valid, true);
-    if (!parsed.valid) throw Error("Expected valid override");
     assert.ok(parsed.quotas);
     assert.equal(
       parsed.quotas.maxExecutionCount,

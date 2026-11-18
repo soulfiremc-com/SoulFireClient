@@ -12,15 +12,15 @@ test("keeps exact affiliate identifiers", () => {
       entry.url,
     ]),
   );
-  assert.ok(urls.webshare?.includes("referral_code=36gneippfiwt"));
+  assert.ok(urls["webshare"]?.includes("referral_code=36gneippfiwt"));
   assert.ok(urls["proxy-seller"]?.includes("partner=GRJY71PA3XWPPP"));
-  assert.ok(urls.proxyscrape?.includes("ref=mge4mtc"));
-  assert.ok(urls.iproyal?.includes("r=soulfire"));
-  assert.ok(urls.decodo?.includes("/K0rr7e"));
-  assert.ok(urls.oxylabs?.includes("aff_id=1896"));
-  assert.equal(urls.localts, "https://localts.store/?campaign=soulfire");
+  assert.ok(urls["proxyscrape"]?.includes("ref=mge4mtc"));
+  assert.ok(urls["iproyal"]?.includes("r=soulfire"));
+  assert.ok(urls["decodo"]?.includes("/K0rr7e"));
+  assert.ok(urls["oxylabs"]?.includes("aff_id=1896"));
+  assert.equal(urls["localts"], "https://localts.store/?campaign=soulfire");
   assert.equal(urls["alts-fast"], "https://alts.fast/?referral=SOULFIRE");
-  assert.equal(urls.kynoselling, "https://kynoselling.xyz/?ref=SOULFIRE");
+  assert.equal(urls["kynoselling"], "https://kynoselling.xyz/?ref=SOULFIRE");
 });
 
 test("only documented integrations advertise in-app purchases", () => {

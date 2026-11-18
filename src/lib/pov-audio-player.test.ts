@@ -107,6 +107,7 @@ test("audio playback bounds latency and releases queued audio on reset and close
       (error) => errors.push(error),
     );
     const decoder = decoders[0];
+    assert.ok(decoder);
     player.accept([packet(0n), packet(20_000n)]);
     assert.deepEqual(
       sources.map((source) => source.when),
@@ -117,8 +118,8 @@ test("audio playback bounds latency and releases queued audio on reset and close
     assert.equal(gain, 0.3);
     context.currentTime = 4;
     player.accept([packet(40_000n)]);
-    assert.ok(sources[0].stopped && sources[1].stopped);
-    assert.equal(sources[2].when, 4.04);
+    assert.ok(sources[0]?.stopped && sources[1]?.stopped);
+    assert.equal(sources[2]?.when, 4.04);
     decoder.decodeQueueSize = 9;
     player.accept([packet(60_000n)]);
     assert.equal(decoder.resets, 1);

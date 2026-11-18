@@ -318,7 +318,7 @@ export function FirstBotSetup({
           botIds: selectBotsToStart(
             latest.bots,
             count,
-            instanceInfo.profile.settings.account?.["shuffle-accounts"] ===
+            instanceInfo.profile.settings["account"]?.["shuffle-accounts"] ===
               true,
           ),
           desiredState: BotDesiredState.RUNNING,

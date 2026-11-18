@@ -42,7 +42,7 @@ export function parseMockInputs(
             value === null ||
             typeof value !== "object" ||
             Array.isArray(value) ||
-            ![value.x, value.y, value.z].every(
+            ![value["x"], value["y"], value["z"]].every(
               (coordinate) =>
                 typeof coordinate === "number" && Number.isFinite(coordinate),
             )

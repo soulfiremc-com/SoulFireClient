@@ -31,11 +31,11 @@ test("structured mocks round-trip nested values and nulls", () => {
   const parsed = parseMockInputs([{ id: "value", type: "map" }], {
     value: JSON.stringify(input),
   });
-  assert.deepEqual(valueToJson(parsed.value), input);
+  assert.deepEqual(valueToJson(parsed["value"]), input);
   const vector = parseMockInputs([{ id: "value", type: "vector3" }], {
     value: '{"x":1,"y":2,"z":3}',
   });
-  assert.deepEqual(valueToJson(vector.value), { x: 1, y: 2, z: 3 });
+  assert.deepEqual(valueToJson(vector["value"]), { x: 1, y: 2, z: 3 });
 });
 
 test("invalid typed mocks identify the field that needs correction", () => {
@@ -64,10 +64,10 @@ test("invalid typed mocks identify the field that needs correction", () => {
 test("collection and any mocks retain arrays and explicit null", () => {
   for (const type of ["list", "set", "collection"] as const) {
     const parsed = parseMockInputs([{ id: "value", type }], { value: "[1,2]" });
-    assert.deepEqual(valueToJson(parsed.value), [1, 2]);
+    assert.deepEqual(valueToJson(parsed["value"]), [1, 2]);
   }
   const parsed = parseMockInputs([{ id: "value", type: "any" }], {
     value: "null",
   });
-  assert.equal(valueToJson(parsed.value), null);
+  assert.equal(valueToJson(parsed["value"]), null);
 });

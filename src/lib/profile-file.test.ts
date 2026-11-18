@@ -118,14 +118,14 @@ test("configuration export retains credentials and account metadata, but omits p
   const exported = parseProfileFile(serialized);
 
   assert.deepEqual(
-    exported.accounts[0].accountData,
-    source.accounts[0].accountData,
+    exported.accounts[0]?.accountData,
+    source.accounts[0]?.accountData,
   );
   assert.deepEqual(
-    exported.accounts[0].persistentMetadata,
-    source.accounts[0].persistentMetadata,
+    exported.accounts[0]?.persistentMetadata,
+    source.accounts[0]?.persistentMetadata,
   );
-  assert.equal(exported.proxies[0].password, "qa-test-password");
+  assert.equal(exported.proxies[0]?.password, "qa-test-password");
   assert.equal(
     Object.prototype.hasOwnProperty.call(
       JSON.parse(serialized),

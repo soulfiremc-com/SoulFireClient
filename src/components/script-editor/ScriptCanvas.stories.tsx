@@ -24,6 +24,7 @@ import { ScriptEditor } from "./ScriptEditor";
 import { ScriptEditorProvider } from "./ScriptEditorProvider";
 import { initNodeDefinitions, protoNodeTypeToLocal } from "./nodes/types";
 import "@xyflow/react/dist/style.css";
+import { assertDefined } from "@/lib/assert-defined";
 
 const port = (
   id: string,
@@ -32,7 +33,7 @@ const port = (
 ) =>
   create(PortDefinitionSchema, {
     id,
-    displayName: id[0].toUpperCase() + id.slice(1),
+    displayName: id.charAt(0).toUpperCase() + id.slice(1),
     portType,
     ...extra,
   });
@@ -101,9 +102,12 @@ function ScriptCanvasExample() {
 }
 
 function handle(nodeId: string, handleId: string) {
-  return document.querySelector<HTMLElement>(
-    `.react-flow__node[data-id="${nodeId}"] .react-flow__handle[data-handleid="${handleId}"]`,
-  )!;
+  return assertDefined(
+    document.querySelector<HTMLElement>(
+      `.react-flow__node[data-id="${nodeId}"] .react-flow__handle[data-handleid="${handleId}"]`,
+    ),
+    "Expected document.querySelector<HTMLElement>(.react-flow__node[dat... to exist",
+  );
 }
 
 function center(element: Element) {
@@ -239,8 +243,9 @@ export const Vector3DefaultsAreEditable: Story = {
     await userEvent.type(y, "7");
     await waitFor(() =>
       expect(
-        session.document.get().nodes.find((node) => node.id === sinkId)?.data
-          .position,
+        session.document.get().nodes.find((node) => node.id === sinkId)?.data[
+          "position"
+        ],
       ).toEqual({ x: 1, y: 7, z: 3 }),
     );
   },
@@ -290,7 +295,10 @@ async function touchWire(from: HTMLElement, to: HTMLElement, offset: number) {
   };
   const start = point(from);
   const end = point(to);
-  const startTarget = document.elementFromPoint(start.clientX, start.clientY)!;
+  const startTarget = assertDefined(
+    document.elementFromPoint(start.clientX, start.clientY),
+    "Expected document.elementFromPoint(start.clientX, start.clientY) to exist",
+  );
   const touch = (at: { clientX: number; clientY: number }) =>
     new Touch({ identifier: 1, target: startTarget, ...at });
   startTarget.dispatchEvent(

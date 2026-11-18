@@ -1187,18 +1187,18 @@ function InventorySlotDisplay({
   hotbarIndex,
   slotIndex,
 }: {
-  item?: InventorySlot;
-  isSelected?: boolean;
-  slotNumber?: number;
-  onClick?: () => void;
-  onRightClick?: () => void;
-  onShiftClick?: () => void;
-  onMiddleClick?: () => void;
-  isClickable?: boolean;
-  containerType?: string;
-  regionId?: string;
-  hotbarIndex?: number;
-  slotIndex?: number;
+  item?: InventorySlot | undefined;
+  isSelected?: boolean | undefined;
+  slotNumber?: number | undefined;
+  onClick?: (() => void) | undefined;
+  onRightClick?: (() => void) | undefined;
+  onShiftClick?: (() => void) | undefined;
+  onMiddleClick?: (() => void) | undefined;
+  isClickable?: boolean | undefined;
+  containerType?: string | undefined;
+  regionId?: string | undefined;
+  hotbarIndex?: number | undefined;
+  slotIndex?: number | undefined;
 }) {
   const { t } = useTranslation("instance");
   const isCreativeCatalog =
@@ -1466,7 +1466,9 @@ function BotInventoryPanel({
     containerMutationScopeId(instanceId, botId, inventoryState?.menuId),
   );
 
-  const requireSuccess = <T extends { success: boolean; error?: string }>(
+  const requireSuccess = <
+    T extends { success: boolean; error?: string | undefined },
+  >(
     result: T,
   ): T => {
     if (!result.success)
@@ -1727,7 +1729,7 @@ function BotInventoryPanel({
                 variant="outline"
                 size="sm"
                 onClick={() =>
-                  closeContainerMutation.mutate(inventoryState?.menuId)
+                  closeContainerMutation.mutate(inventoryState.menuId)
                 }
                 disabled={isPending}
               >
@@ -1764,7 +1766,7 @@ function BotInventoryPanel({
           {textInputs.length > 0 && (
             <ContainerTextInputPanel
               key={JSON.stringify([
-                inventoryState?.menuId,
+                inventoryState.menuId,
                 layout.containerType,
                 anvilInputItem?.itemId,
                 anvilInputItem?.count,
@@ -2316,8 +2318,8 @@ function BotMovementPanel({
   isOnline: boolean;
   instanceId: string;
   botId: string;
-  liveState?: BotLiveState;
-  movementState?: typeof EMPTY_MOVEMENT_STATE;
+  liveState?: BotLiveState | undefined;
+  movementState?: typeof EMPTY_MOVEMENT_STATE | undefined;
 }) {
   const { t } = useTranslation("instance");
   const demo = use(TransportContext) === null;
@@ -2645,7 +2647,7 @@ function BotDialogPanel({
   const dialogQueryOptions = botDialogQueryOptions(instanceId, botId, isOnline);
 
   const { data: dialogData } = useSuspenseQuery(dialogQueryOptions);
-  const dialog = dialogData?.dialog;
+  const dialog = dialogData.dialog;
 
   const mutationOptions = dialogMutationOptions(
     instanceId,
@@ -2802,7 +2804,7 @@ function BotVisualPanel({
   liveState,
   isOnline,
 }: {
-  liveState?: BotLiveState;
+  liveState?: BotLiveState | undefined;
   isOnline: boolean;
 }) {
   const { t } = useTranslation("instance");

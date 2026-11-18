@@ -216,9 +216,11 @@ test("older exported node sizes are normalized without losing frame sizes or oth
   const imported = parseScriptFile(
     serializeScriptFile(session.actions.getScriptData()),
   );
-  assert.equal(imported.nodes[0].width, undefined);
-  assert.equal(imported.nodes[0].height, undefined);
-  assert.deepEqual(imported.nodes[0].style, { opacity: 0.5 });
+  const [importedOrdinary] = imported.nodes;
+  assert.ok(importedOrdinary);
+  assert.equal(importedOrdinary.width, undefined);
+  assert.equal(importedOrdinary.height, undefined);
+  assert.deepEqual(importedOrdinary.style, { opacity: 0.5 });
   assert.deepEqual(imported.nodes[1], frame);
   assert.equal(ordinary.width, 180);
   assert.equal(ordinary.style.height, 126);

@@ -36,6 +36,7 @@ test("typed reroutes retain their editor type through protobuf binary round trip
       data: { resolvedType: local },
     };
     const proto = nodesToProto([node])[0];
+    assert.ok(proto);
     assert.equal(proto.resolvedType, wire);
     const decoded = fromBinary(
       ScriptNodeSchema,
@@ -54,6 +55,7 @@ test("unresolved reroutes stay unset rather than acquiring an explicit any type"
     data: {},
   };
   const proto = nodesToProto([node])[0];
+  assert.ok(proto);
   assert.equal(proto.resolvedType, undefined);
   const decoded = fromBinary(
     ScriptNodeSchema,
@@ -82,6 +84,7 @@ test("ordinary nodes stay sized by content despite measurements or older saved s
       style: { width: 200, height: 150 },
     };
     const proto = nodesToProto([node])[0];
+    assert.ok(proto);
     assert.equal(proto.width, undefined);
     assert.equal(proto.height, undefined);
     const stored = fromBinary(
@@ -89,6 +92,7 @@ test("ordinary nodes stay sized by content despite measurements or older saved s
       toBinary(ScriptNodeSchema, { ...proto, width: 200, height: 150 }),
     );
     const restored = protoToNodes([stored])[0];
+    assert.ok(restored);
     assert.equal(restored.width, undefined);
     assert.equal(restored.height, undefined);
     assert.equal(restored.style, undefined);
@@ -105,17 +109,21 @@ test("frames and notes retain explicit dimensions without persisting measurement
       measured: { width: 400, height: 300 },
     };
     const measured = nodesToProto([base])[0];
+    assert.ok(measured);
     assert.equal(measured.width, undefined);
     assert.equal(measured.height, undefined);
     for (const node of [
       { ...base, width: 348, height: 192 },
       { ...base, style: { width: 348, height: 192 } },
     ]) {
+      const [proto] = nodesToProto([node]);
+      assert.ok(proto);
       const wire = fromBinary(
         ScriptNodeSchema,
-        toBinary(ScriptNodeSchema, nodesToProto([node])[0]),
+        toBinary(ScriptNodeSchema, proto),
       );
       const restored = protoToNodes([wire])[0];
+      assert.ok(restored);
       assert.equal(restored.width, 348);
       assert.equal(restored.height, 192);
     }

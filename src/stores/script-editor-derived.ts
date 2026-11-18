@@ -1,5 +1,6 @@
 import { createStore, type Store, shallow } from "@tanstack/store";
 import type { Edge, Node } from "@xyflow/react";
+import { optionalEdgeFields } from "@/lib/script-edge-fields";
 import type {
   ScriptDocumentState,
   ScriptEditorUIState,
@@ -30,10 +31,12 @@ function validationEdge(edge: Edge): Edge {
     id: edge.id,
     source: edge.source,
     target: edge.target,
-    sourceHandle: edge.sourceHandle,
-    targetHandle: edge.targetHandle,
+    ...optionalEdgeFields({
+      sourceHandle: edge.sourceHandle,
+      targetHandle: edge.targetHandle,
+    }),
     type: edge.type,
-    data: { edgeType: edge.data?.edgeType, order: edge.data?.order },
+    data: { edgeType: edge.data?.["edgeType"], order: edge.data?.["order"] },
   };
 }
 
@@ -51,7 +54,7 @@ export function createEditorDerivedStores(
     const currentGroup = groupId.get();
     const all = nodes.get();
     const visible = all.filter(
-      (node) => (node.data.parentGroupId ?? undefined) === currentGroup,
+      (node) => (node.data["parentGroupId"] ?? undefined) === currentGroup,
     );
     return visible.length === all.length ? all : visible;
   });
@@ -71,15 +74,19 @@ export function createEditorDerivedStores(
         previous &&
         previous.nodes.length === nextNodes.length &&
         previous.edges.length === nextEdges.length &&
-        nextNodes.every(
-          (node, i) =>
-            node.id === previous.nodes[i].id &&
-            node.type === previous.nodes[i].type &&
-            shallow(node.data, previous.nodes[i].data),
-        ) &&
+        nextNodes.every((node, i) => {
+          const old = previous.nodes[i];
+          return (
+            old !== undefined &&
+            node.id === old.id &&
+            node.type === old.type &&
+            shallow(node.data, old.data)
+          );
+        }) &&
         nextEdges.every((edge, i) => {
           const old = previous.edges[i];
           return (
+            old !== undefined &&
             edge.id === old.id &&
             edge.source === old.source &&
             edge.target === old.target &&

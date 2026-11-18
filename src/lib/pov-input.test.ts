@@ -40,7 +40,7 @@ test("splitting a wheel gesture preserves its native distance in every delta mod
     [0, 100],
     [1, 3],
     [2, 1],
-  ]) {
+  ] as const) {
     const whole = scrollInput({
       deltaMode,
       deltaX: -distance,
@@ -139,9 +139,9 @@ test("Command editing shortcuts reach native text fields as Control shortcuts", 
     const released = keyInput(event, false, true);
     assert.equal(pressed?.code, glfwKey(code));
     assert.equal(pressed?.modifiers, 2);
-    assert.equal(pressed?.action, 1);
+    assert.equal(pressed.action, 1);
     assert.equal(released?.modifiers, 2);
-    assert.equal(released?.action, 0);
+    assert.equal(released.action, 0);
     assert.equal(keyInput(event, true, false), null);
   }
 });
@@ -202,15 +202,15 @@ test("layout shortcuts retain physical identity and follow the logical letter", 
   assert.equal(isTextEditingShortcut(event), true);
   const press = keyInput(event, true, true);
   assert.equal(press?.code, 81);
-  assert.equal(press?.key, "a");
-  assert.equal(press?.modifiers, 2);
+  assert.equal(press.key, "a");
+  assert.equal(press.modifiers, 2);
   const release = keyInput(
     { ...event, key: "A", metaKey: false, shiftKey: true },
     false,
     true,
   );
-  assert.equal(release?.code, press?.code);
-  assert.equal(release?.action, 0);
+  assert.equal(release?.code, press.code);
+  assert.equal(release.action, 0);
   assert.equal(
     isTextEditingShortcut({ ...event, code: "KeyA", key: "q" }),
     false,
@@ -237,7 +237,7 @@ test("composition filters key presses without losing physical key releases", () 
   assert.equal(keyInput(event, true, false), null);
   const release = keyInput(event, false, false);
   assert.equal(release?.code, 87);
-  assert.equal(release?.action, 0);
+  assert.equal(release.action, 0);
 });
 
 test("browser text input accepts dead keys and AltGr characters without consuming shortcuts", () => {

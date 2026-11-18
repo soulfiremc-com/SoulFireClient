@@ -4,9 +4,12 @@ const resizableNodeTypes = new Set(["layout.frame", "layout.note"]);
 
 export const GROUP_INTERFACE_NODE_WIDTH = 180;
 
-export function persistedNodeDimensions(
-  node: Pick<Node, "type" | "width" | "height" | "style">,
-): Pick<Node, "width" | "height"> {
+export function persistedNodeDimensions(node: {
+  type?: string | undefined;
+  width?: number | undefined;
+  height?: number | undefined;
+  style?: { width?: unknown; height?: unknown } | undefined;
+}): Pick<Node, "width" | "height"> {
   if (!resizableNodeTypes.has(node.type ?? "")) return {};
   const width = node.width ?? node.style?.width;
   const height = node.height ?? node.style?.height;

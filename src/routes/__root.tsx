@@ -152,7 +152,7 @@ const DocumentTitleSyncer = memo(() => {
 function getPresenceForPath(
   pathname: string,
   queryClient: QueryClient,
-): { state: string; details?: string } {
+): { state: string; details?: string | undefined } {
   const instanceMatch = pathname.match(/\/instance\/([^/]+)(?:\/(.*))?/);
   if (instanceMatch) {
     const instanceId = instanceMatch[1];
@@ -277,6 +277,7 @@ function RootLayout() {
           },
         );
 
+        // oxlint-disable-next-line typescript/no-unnecessary-condition -- the effect cleanup sets didUnmount while the watcher starts
         if (didUnmount) {
           unwatchFn();
         } else {

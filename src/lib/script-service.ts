@@ -246,7 +246,6 @@ function toProtoValue(value: unknown): Value {
  * Convert a protobuf Value to a JavaScript value
  */
 function fromProtoValue(value: Value): unknown {
-  if (!value.kind) return null;
   switch (value.kind.case) {
     case "nullValue":
       return null;
@@ -278,25 +277,23 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
   return nodes.map((node) => {
     const data: { [key: string]: Value } = {};
     const nodeData = node.data;
-    if (nodeData && typeof nodeData === "object") {
-      for (const [key, value] of Object.entries(nodeData)) {
-        // Skip internal fields that are handled separately
-        if (
-          [
-            "muted",
-            "collapsed",
-            "label",
-            "containedNodes",
-            "resolvedType",
-            "parentFrameId",
-            "isActive",
-            "hiddenSockets",
-          ].includes(key)
-        ) {
-          continue;
-        }
-        data[key] = toProtoValue(value);
+    for (const [key, value] of Object.entries(nodeData)) {
+      // Skip internal fields that are handled separately
+      if (
+        [
+          "muted",
+          "collapsed",
+          "label",
+          "containedNodes",
+          "resolvedType",
+          "parentFrameId",
+          "isActive",
+          "hiddenSockets",
+        ].includes(key)
+      ) {
+        continue;
       }
+      data[key] = toProtoValue(value);
     }
     return create(ScriptNodeSchema, {
       id: node.id,
@@ -313,10 +310,10 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
       parentFrameId: nodeDataString(nodeData, "parentFrameId") ?? "",
       ...persistedNodeDimensions(node),
       resolvedType:
-        nodeData?.resolvedType === undefined
+        nodeData["resolvedType"] === undefined
           ? undefined
           : // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- resolvedType holds a LocalPortType that the editor stored in the node data
-            localPortTypeToProto(nodeData.resolvedType as LocalPortType),
+            localPortTypeToProto(nodeData["resolvedType"] as LocalPortType),
     });
   });
 }
@@ -327,20 +324,18 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
 export function protoToNodes(nodes: ScriptNode[]): Node[] {
   return nodes.map((node) => {
     const data: Record<string, unknown> = {};
-    if (node.data) {
-      for (const [key, value] of Object.entries(node.data)) {
-        data[key] = fromProtoValue(value);
-      }
+    for (const [key, value] of Object.entries(node.data)) {
+      data[key] = fromProtoValue(value);
     }
     // Restore top-level proto fields that nodesToProto() extracts from data
-    if (node.label) data.label = node.label;
-    if (node.muted) data.muted = node.muted;
-    if (node.collapsed) data.collapsed = node.collapsed;
+    if (node.label) data["label"] = node.label;
+    if (node.muted) data["muted"] = node.muted;
+    if (node.collapsed) data["collapsed"] = node.collapsed;
     if (node.containedNodes.length > 0)
-      data.containedNodes = node.containedNodes;
-    if (node.parentFrameId) data.parentFrameId = node.parentFrameId;
+      data["containedNodes"] = node.containedNodes;
+    if (node.parentFrameId) data["parentFrameId"] = node.parentFrameId;
     if (node.resolvedType !== undefined)
-      data.resolvedType = protoPortTypeToLocal(node.resolvedType);
+      data["resolvedType"] = protoPortTypeToLocal(node.resolvedType);
     return {
       id: node.id,
       type: node.type,
@@ -366,9 +361,7 @@ export function edgesToProto(edges: Edge[]): ScriptEdge[] {
     // Determine edge type from the edge's type or data
     // Port IDs are now simple names, so we rely on edge metadata
     const isExecution =
-      edge.type === "execution" ||
-      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- edge data is an untyped record that the editor fills with an optional edgeType string
-      (edge.data as { edgeType?: string })?.edgeType === "execution";
+      edge.type === "execution" || edge.data?.["edgeType"] === "execution";
 
     return create(ScriptEdgeSchema, {
       id: edge.id,
@@ -391,9 +384,9 @@ export function protoToEdges(edges: ScriptEdge[]): Edge[] {
     return {
       id: edge.id,
       source: edge.source,
-      sourceHandle: edge.sourceHandle || undefined,
+      ...(edge.sourceHandle && { sourceHandle: edge.sourceHandle }),
       target: edge.target,
-      targetHandle: edge.targetHandle || undefined,
+      ...(edge.targetHandle && { targetHandle: edge.targetHandle }),
       type: isExecution ? "execution" : "data",
       data: {
         edgeType: isExecution ? "execution" : "data",

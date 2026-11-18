@@ -73,7 +73,7 @@ export function DataTableSliderFilter<TData extends RowData>({
       [minValue, maxValue] = defaultRange;
     } else {
       const values = column.getFacetedMinMaxValues();
-      if (values && Array.isArray(values) && values.length === 2) {
+      if (values) {
         const [facetMinValue, facetMaxValue] = values;
         if (
           typeof facetMinValue === "number" &&
@@ -205,7 +205,7 @@ export function DataTableSliderFilter<TData extends RowData>({
                   placeholder={min.toString()}
                   min={min}
                   max={max}
-                  value={range[0]?.toString()}
+                  value={range[0].toString()}
                   onChange={onFromInputChange}
                   className={cn("h-8 w-24", unit && "pr-8")}
                 />
@@ -231,7 +231,7 @@ export function DataTableSliderFilter<TData extends RowData>({
                   placeholder={max.toString()}
                   min={min}
                   max={max}
-                  value={range[1]?.toString()}
+                  value={range[1].toString()}
                   onChange={onToInputChange}
                   className={cn("h-8 w-24", unit && "pr-8")}
                 />

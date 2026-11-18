@@ -75,7 +75,7 @@ export type PovOfflineStatus = {
   message: string;
   /** True while the bot is on its way, so the user should wait. */
   waiting: boolean;
-  detail?: string;
+  detail?: string | undefined;
 };
 
 export function BotPovPlayer(props: {
@@ -215,7 +215,7 @@ function BotPovSession({
         .catch(console.error);
     const doc = canvasRef.current?.ownerDocument;
     if (doc?.pointerLockElement) doc.exitPointerLock();
-    if (doc?.fullscreenElement === rootRef.current && doc?.fullscreenElement) {
+    if (doc?.fullscreenElement === rootRef.current && doc.fullscreenElement) {
       void doc.exitFullscreen().catch(() => {});
     }
     // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- tsc needs the cast because its DOM lib has no Navigator.keyboard
@@ -544,16 +544,15 @@ function BotPovSession({
       }
       session.current?.enqueue(input);
       if (copying) session.current?.copy();
+      const code = event.key.codePointAt(0);
       if (
         !typing &&
         !event.ctrlKey &&
         !event.metaKey &&
-        Array.from(event.key).length === 1
+        Array.from(event.key).length === 1 &&
+        code !== undefined
       ) {
-        enqueue({
-          kind: PovInputEvent_Kind.CHARACTER,
-          code: event.key.codePointAt(0),
-        });
+        enqueue({ kind: PovInputEvent_Kind.CHARACTER, code });
       }
     };
     const textInput = textInputRef.current;
@@ -607,7 +606,7 @@ function BotPovSession({
         playerStore.get().connected
       ) {
         const pad =
-          Array.from(win.navigator.getGamepads?.() ?? []).find(
+          Array.from(win.navigator.getGamepads()).find(
             (connectedPad) =>
               connectedPad?.connected && connectedPad.mapping === "standard",
           ) ?? null;

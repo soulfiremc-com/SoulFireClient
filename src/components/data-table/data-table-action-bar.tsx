@@ -60,7 +60,7 @@ function DataTableActionBar<TData extends RowData>({
   }, [table]);
 
   const container =
-    containerProp ?? (mounted ? globalThis.document?.body : null);
+    containerProp ?? (mounted ? globalThis.document.body : null);
 
   if (!container) return null;
 

@@ -63,12 +63,14 @@ export function mergeTerminalLines(
   merged.sort(compareTerminalLines);
   let lines = 0;
   let first = merged.length;
-  while (first > 0 && lines < MAX_LINES) {
-    lines += merged[--first].lines;
+  for (const entry of merged.toReversed()) {
+    if (lines >= MAX_LINES) break;
+    lines += entry.lines;
+    first--;
   }
   const bounded = merged.slice(first);
-  if (lines > MAX_LINES) {
-    const oldest = bounded[0];
+  const oldest = bounded[0];
+  if (oldest && lines > MAX_LINES) {
     const retainedLines = oldest.lines - (lines - MAX_LINES);
     bounded[0] = {
       ...oldest,
@@ -97,7 +99,7 @@ export function createTerminalLogSession(
     state
       .get()
       .entries.filter(
-        (entry, i, all) => i === 0 || entry.message !== all[i - 1].message,
+        (entry, i, all) => i === 0 || entry.message !== all[i - 1]?.message,
       ),
   );
   let consumers = 0;

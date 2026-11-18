@@ -13,6 +13,7 @@ import {
   parseTerminalText,
   type TerminalInteraction,
 } from "./terminal-interactions";
+import { assertDefined } from "@/lib/assert-defined";
 
 const metadata: TerminalInteraction = {
   hover: "Héllo 🌍",
@@ -55,7 +56,12 @@ test("both protobuf trust flags are required, including for personal raw strings
   output.sync([line("2")]);
   assert.equal(output.interactions.size, 1);
   assert.deepEqual(
-    output.interactions.get(bridge.getCell(0, 0).linkUri!),
+    output.interactions.get(
+      assertDefined(
+        bridge.getCell(0, 0).linkUri,
+        "Expected bridge.getCell(0, 0).linkUri to exist",
+      ),
+    ),
     metadata,
   );
   // Plain fallback rendering must not expose control strings or actions.
@@ -133,7 +139,9 @@ test("cell identities survive wide glyphs, wrapping, history, replay, and append
     7,
   );
   assert.ok(runs.length >= 2);
-  assert.equal(terminalInteractionAt(bridge, runs[0].row, runs[0].col), uri);
+  const [firstRun] = runs;
+  assert.ok(firstRun);
+  assert.equal(terminalInteractionAt(bridge, firstRun.row, firstRun.col), uri);
   assert.equal(terminalInteractionAt(bridge, -1, 0), undefined);
   assert.equal(terminalInteractionAt(bridge, 0, -1), undefined);
   output.sync([first, second]);
@@ -220,7 +228,8 @@ test("React spans remove ANSI styling and unknown controls without losing bounda
     spans.map((span) => span.text),
     ["plain ", "styled", "ordinary"],
   );
-  assert.deepEqual(spans[1].interaction, metadata);
+  assert.deepEqual(spans[1]?.interaction, metadata);
+  assert.ok(spans[2]);
   assert.equal(spans[2].interaction, undefined);
   assert.equal(
     parseTerminalText(input, true)

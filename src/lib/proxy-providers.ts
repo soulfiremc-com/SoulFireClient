@@ -163,11 +163,6 @@ export function loadProviderProxies(
         values.limit > MAX_PROVIDER_PROXIES
       )
         throw new ProviderApiError("limit");
-      if (
-        values.protocol !== ProxyProto_Type.HTTP &&
-        values.protocol !== ProxyProto_Type.SOCKS5
-      )
-        throw new ProviderApiError("response");
       let proxies: ProfileProxy[];
       switch (id) {
         case "webshare": {
@@ -210,17 +205,19 @@ export function loadProviderProxies(
             // A capped page count also bounds empty or invalid-result pagination.
             if (visited.size > 100) throw new ProviderApiError("limit");
             results.push(
-              ...page.results
-                .filter((entry) => entry.valid && entry.proxy_address !== null)
-                .map((entry) =>
-                  proxy(
-                    entry.proxy_address!,
-                    entry.port,
-                    values.protocol,
-                    entry.username,
-                    entry.password,
-                  ),
-                ),
+              ...page.results.flatMap((entry) =>
+                entry.valid && entry.proxy_address !== null
+                  ? [
+                      proxy(
+                        entry.proxy_address,
+                        entry.port,
+                        values.protocol,
+                        entry.username,
+                        entry.password,
+                      ),
+                    ]
+                  : [],
+              ),
             );
             next = page.next;
           }

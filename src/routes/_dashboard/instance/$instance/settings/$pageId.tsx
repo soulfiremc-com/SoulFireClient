@@ -12,7 +12,7 @@ import i18n from "@/lib/i18n";
 import { loaderDataString, routeChrome } from "@/lib/route-title.ts";
 import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
-function getSettingsPageFallbackIcon(pageId: string) {
+function getSettingsPageFallbackIcon(pageId: string | undefined) {
   switch (pageId) {
     case "bot":
       return "bot";
@@ -24,6 +24,7 @@ function getSettingsPageFallbackIcon(pageId: string) {
       return "sparkles";
     case "pathfinding":
       return "route";
+    case undefined:
     default:
       return "settings-2";
   }
@@ -45,7 +46,7 @@ export const Route = createFileRoute(
         const iconName = loaderDataString(match, "iconName");
         return {
           kind: "dynamic" as const,
-          name: iconName ?? getSettingsPageFallbackIcon(match.params.pageId),
+          name: iconName ?? getSettingsPageFallbackIcon(match.params["pageId"]),
         };
       },
     }),
@@ -61,7 +62,7 @@ export const Route = createFileRoute(
       ? {
           title: settingsEntry.pageName,
           iconName:
-            settingsEntry.iconId ??
+            settingsEntry.iconId ||
             getSettingsPageFallbackIcon(props.params.pageId),
         }
       : {

@@ -222,7 +222,7 @@ test("other instances, bots and entries can save while one setting is pending", 
       [instanceId, crypto.randomUUID(), "plugin", "enabled"],
       [instanceId, botId, "other", "enabled"],
       [instanceId, botId, "plugin", "other"],
-    ]) {
+    ] as const) {
       const other = new MutationObserver(cache, {
         ...settingMutationOptions(
           { type: "bot", instanceId: instance, botId: bot },

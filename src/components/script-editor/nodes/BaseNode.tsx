@@ -50,7 +50,7 @@ const EMPTY_MULTI_INPUT_ITEMS: Array<{
   id: string;
   index: number;
   label: string;
-  sublabel?: string;
+  sublabel?: string | undefined;
 }> = [];
 
 export interface BaseNodeData {
@@ -72,7 +72,7 @@ interface BaseNodeProps extends NodeProps {
   /** Callback to update node data */
   onDataChange?: (data: Record<string, unknown>) => void;
   /** Resolved type variable bindings from generic inference */
-  typeBindings?: Map<string, TypeDescriptor>;
+  typeBindings?: Map<string, TypeDescriptor> | undefined;
 }
 
 /**
@@ -111,12 +111,12 @@ interface PortRowProps {
   value?: unknown;
   onValueChange?: (value: unknown) => void;
   /** Resolved port type after generic type inference (overrides static type for color/shape) */
-  resolvedType?: PortType;
+  resolvedType?: PortType | undefined;
   multiInputItems?: Array<{
     id: string;
     index: number;
     label: string;
-    sublabel?: string;
+    sublabel?: string | undefined;
   }>;
   onReorderMultiInput?: (orderedEdgeIds: string[]) => void;
 }
@@ -488,7 +488,12 @@ function BaseNodeComponent({
   const multiInputItemsByPort = useMemo(() => {
     const itemsByPort = new Map<
       string,
-      Array<{ id: string; index: number; label: string; sublabel?: string }>
+      Array<{
+        id: string;
+        index: number;
+        label: string;
+        sublabel?: string | undefined;
+      }>
     >();
 
     for (const edge of edges) {
@@ -670,30 +675,28 @@ function BaseNodeComponent({
       ) : (
         rows.length > 0 && (
           <div className="p-1">
-            {rows.map((row) => (
+            {rows.map(({ input, output }) => (
               <div
-                key={`${row.input?.id ?? "empty"}-${row.output?.id ?? "empty"}`}
+                key={`${input?.id ?? "empty"}-${output?.id ?? "empty"}`}
                 className="flex items-center justify-between"
               >
                 {/* Input port */}
-                {row.input ? (
+                {input ? (
                   <PortRow
-                    port={row.input}
+                    port={input}
                     type="target"
                     position={Position.Left}
-                    translatedLabel={getPortLabel(row.input)}
-                    isConnected={connectedInputs.has(row.input.id)}
-                    value={data[getFieldKey(row.input.id)]}
-                    onValueChange={(val) =>
-                      handleValueChange(row.input.id, val)
-                    }
-                    resolvedType={getResolvedType(row.input)}
+                    translatedLabel={getPortLabel(input)}
+                    isConnected={connectedInputs.has(input.id)}
+                    value={data[getFieldKey(input.id)]}
+                    onValueChange={(val) => handleValueChange(input.id, val)}
+                    resolvedType={getResolvedType(input)}
                     multiInputItems={
-                      multiInputItemsByPort.get(row.input.id) ??
+                      multiInputItemsByPort.get(input.id) ??
                       EMPTY_MULTI_INPUT_ITEMS
                     }
                     onReorderMultiInput={(orderedEdgeIds) =>
-                      reorderMultiInputEdges(id, row.input.id, orderedEdgeIds)
+                      reorderMultiInputEdges(id, input.id, orderedEdgeIds)
                     }
                   />
                 ) : (
@@ -701,14 +704,14 @@ function BaseNodeComponent({
                 )}
 
                 {/* Output port */}
-                {row.output ? (
+                {output ? (
                   <PortRow
-                    port={row.output}
+                    port={output}
                     type="source"
                     position={Position.Right}
-                    translatedLabel={getPortLabel(row.output)}
-                    isConnected={connectedOutputs.has(row.output.id)}
-                    resolvedType={getResolvedType(row.output)}
+                    translatedLabel={getPortLabel(output)}
+                    isConnected={connectedOutputs.has(output.id)}
+                    resolvedType={getResolvedType(output)}
                   />
                 ) : (
                   <div />

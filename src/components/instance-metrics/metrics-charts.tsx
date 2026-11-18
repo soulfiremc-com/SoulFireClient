@@ -49,7 +49,7 @@ const TIME_SERIES_CHART_CLASS_NAME = "aspect-auto h-52 min-h-0 w-full";
 const COMPACT_CHART_CLASS_NAME = "aspect-auto h-44 min-h-0 w-full";
 
 function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
-  const timeLabel = payload?.[0]?.payload?.timeLabel;
+  const timeLabel = payload[0]?.payload?.timeLabel;
   return typeof timeLabel === "string" ? timeLabel : "";
 }
 

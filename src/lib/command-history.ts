@@ -58,7 +58,8 @@ export function navigateCommandHistory(
   if (direction < 0 && position.index === 0) return undefined;
   const index =
     position.index === -1 ? history.length - 1 : position.index + direction;
-  return index >= history.length
+  const entry = history[index];
+  return entry === undefined
     ? { position: { index: -1, draft: "" }, value: draft }
-    : { position: { index, draft }, value: history[index] };
+    : { position: { index, draft }, value: entry };
 }

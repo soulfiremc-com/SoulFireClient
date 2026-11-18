@@ -12,7 +12,7 @@ const translations = import.meta.glob<ResourceLanguage>(
 );
 const resources = Object.fromEntries(
   Object.entries(translations).map(([path, resource]) => [
-    path.split("/").at(-1)!.replace(".json", ""),
+    path.slice(path.lastIndexOf("/") + 1).replace(".json", ""),
     resource,
   ]),
 );

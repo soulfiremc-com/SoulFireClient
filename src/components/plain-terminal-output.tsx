@@ -11,8 +11,8 @@ export function PlainTerminalOutput({
   onCommand,
 }: {
   entries: readonly TerminalLine[];
-  locale?: string;
-  onCommand?: TerminalCommandHandler;
+  locale?: string | undefined;
+  onCommand?: TerminalCommandHandler | undefined;
 }) {
   return (
     <pre

@@ -48,6 +48,8 @@ import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { isOneOf } from "@/lib/is-one-of";
 import { GENERATE_ACCOUNTS_MODES } from "@/lib/types";
 
+const DEFAULT_GENERATE_MODE: GenerateAccountsMode = "IGNORE_EXISTING";
+
 export type GenerateAccountsDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -276,12 +278,12 @@ export default function GenerateAccountsDialog({
     defaultValues: {
       amount: "1",
       nameFormat: "Bot_%d",
-      mode: "IGNORE_EXISTING" as GenerateAccountsMode,
+      mode: DEFAULT_GENERATE_MODE,
     },
     validators: {
       onSubmit: toFormSchema(formSchema),
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: ({ value }) => {
       const amount = parseAccountAmount(value.amount);
       const nameFormat = resolveNameFormat(value.nameFormat);
       if (amount === null || nameFormat === null) return;

@@ -172,6 +172,7 @@ export function ScriptToolbar({
       await readSession.run(
         async (signal) => [await readImportFile(file, signal)],
         ([content]) => {
+          if (content === undefined) return;
           const importData = parseScriptFile(content);
           const current = editor.document.get();
           loadScriptData({

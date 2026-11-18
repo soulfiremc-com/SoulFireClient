@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { getHandleShape, getPortColor, type PortType } from "./types";
 
 export interface GroupNodeData {
-  /** The name of the group */
-  label: string;
+  /** The name of the group. Imported scripts can omit it. */
+  label?: string | null | undefined;
   /** The ID of the node group definition this references */
   groupId?: string;
   /** Exposed input sockets */

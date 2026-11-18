@@ -170,7 +170,7 @@ test("process diagnostics strip interaction controls and retain token redaction"
     "stdout",
   );
   assert.equal(message, "Copy token text Bearer [redacted]");
-  assert.equal(state.diagnostics.logs[0].message, message);
+  assert.equal(state.diagnostics.logs[0]?.message, message);
   assert.equal(state.diagnostics.logs[0].source, "stdout");
 });
 

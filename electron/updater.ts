@@ -97,8 +97,8 @@ export function startUpdater(
 ): void {
   if (
     !app.isPackaged ||
-    process.env.SOULFIRE_DISABLE_UPDATER !== undefined ||
-    process.env.SF_ELECTRON_DISABLE_UPDATER !== undefined
+    process.env["SOULFIRE_DISABLE_UPDATER"] !== undefined ||
+    process.env["SF_ELECTRON_DISABLE_UPDATER"] !== undefined
   ) {
     return;
   }

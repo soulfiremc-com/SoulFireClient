@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { editBoxInsertion, editBoxValue } from "./minecraft-edit-box";
+import { assertDefined } from "@/lib/assert-defined";
 
 const text = (...codes: number[]) => String.fromCodePoint(...codes);
 const points = (value: string) =>
-  Array.from(value, (character) => character.codePointAt(0)!);
+  Array.from(value, (character) =>
+    assertDefined(
+      character.codePointAt(0),
+      "Expected character.codePointAt(0) to exist",
+    ),
+  );
 
 test("filters native disallowed characters before spending the length budget", () => {
   assert.deepEqual(

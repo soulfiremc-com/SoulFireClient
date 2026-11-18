@@ -103,9 +103,9 @@ const edgeSchema = Schema.StructWithRest(
     id: idSchema,
     source: idSchema,
     target: idSchema,
-    sourceHandle: Schema.optional(Schema.NullOr(Schema.String)),
-    targetHandle: Schema.optional(Schema.NullOr(Schema.String)),
-    data: Schema.optional(Schema.Record(Schema.String, Schema.Unknown)),
+    sourceHandle: Schema.optionalKey(Schema.NullOr(Schema.String)),
+    targetHandle: Schema.optionalKey(Schema.NullOr(Schema.String)),
+    data: Schema.optionalKey(Schema.Record(Schema.String, Schema.Unknown)),
   }),
   [Schema.Record(Schema.String, Schema.Unknown)],
 );

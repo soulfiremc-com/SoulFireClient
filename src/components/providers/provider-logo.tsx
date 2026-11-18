@@ -54,15 +54,17 @@ export function ProviderLogo({
         className,
       )}
     >
-      <img
-        src={logo.src}
-        alt=""
-        draggable={false}
-        className={cn(
-          "size-full",
-          logo.fill ? "object-cover" : "object-contain p-1.5",
-        )}
-      />
+      {logo && (
+        <img
+          src={logo.src}
+          alt=""
+          draggable={false}
+          className={cn(
+            "size-full",
+            logo.fill ? "object-cover" : "object-contain p-1.5",
+          )}
+        />
+      )}
     </span>
   );
 }

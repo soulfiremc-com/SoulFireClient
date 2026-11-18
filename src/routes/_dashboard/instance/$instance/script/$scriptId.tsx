@@ -99,7 +99,7 @@ export const Route = createFileRoute(
           return match.loaderData;
         }
 
-        if (match.params.scriptId === "new") {
+        if (match.params["scriptId"] === "new") {
           return i18n.t("instance:scripts.createScriptTitle");
         }
 

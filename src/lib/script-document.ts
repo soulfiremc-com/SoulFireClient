@@ -33,11 +33,13 @@ export function sameScriptDocument(
   const firstEdges = edgesToProto(first.edges);
   const secondEdges = edgesToProto(second.edges);
   return (
-    firstNodes.every((node, index) =>
-      equals(ScriptNodeSchema, node, secondNodes[index]),
-    ) &&
-    firstEdges.every((edge, index) =>
-      equals(ScriptEdgeSchema, edge, secondEdges[index]),
-    )
+    firstNodes.every((node, index) => {
+      const other = secondNodes[index];
+      return other !== undefined && equals(ScriptNodeSchema, node, other);
+    }) &&
+    firstEdges.every((edge, index) => {
+      const other = secondEdges[index];
+      return other !== undefined && equals(ScriptEdgeSchema, edge, other);
+    })
   );
 }

@@ -34,7 +34,7 @@ const meta = {
         return Response.json({ status: "success", available_credits: 500 });
       if (url.endsWith("/alts/purchase")) {
         purchases.push(requestBody(options?.body));
-        if (parameters.purchaseFailure === "server")
+        if (parameters["purchaseFailure"] === "server")
           return Response.json(
             {
               status: "error",
@@ -43,7 +43,7 @@ const meta = {
             },
             { status: 502 },
           );
-        if (parameters.purchaseFailure === "malformed")
+        if (parameters["purchaseFailure"] === "malformed")
           return Response.json({ status: "success" });
         return Response.json({
           status: "success",
@@ -98,7 +98,7 @@ export const RavealtsPurchaseImportsImmediately: Story = {
       dialog.getByRole("button", { name: "Buy 1 account" }),
     );
     await expect(await dialog.findByText("Purchase complete")).toBeVisible();
-    await expect(JSON.parse(purchases[0])).toEqual({
+    await expect(JSON.parse(purchases[0] ?? "null")).toEqual({
       user_request: { account_type: "cookie_nfa", amount: 1 },
     });
     await expect(args.onImport).toHaveBeenCalledWith(

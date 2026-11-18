@@ -109,7 +109,7 @@ export function NavControls() {
               isActive={
                 item.detailRouteId
                   ? routeIds.includes(item.detailRouteId)
-                  : undefined
+                  : false
               }
               render={
                 <Link

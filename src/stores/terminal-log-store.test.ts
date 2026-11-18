@@ -46,8 +46,8 @@ test("history merges with live messages by ID and retains a bounded buffer", () 
   );
   const bounded = mergeTerminalLines([], many);
   assert.equal(bounded.length, 500);
-  assert.equal(Number(bounded[0].id), 100);
-  assert.equal(Number(bounded[499].id), 599);
+  assert.equal(Number(bounded[0]?.id), 100);
+  assert.equal(Number(bounded[499]?.id), 599);
 });
 
 test("multiline messages retain the newest lines across buffer boundaries", () => {
@@ -57,7 +57,7 @@ test("multiline messages retain the newest lines across buffer boundaries", () =
   });
   const bounded = mergeTerminalLines([toTerminalLine(message(0))], [large]);
   assert.equal(bounded.length, 1);
-  assert.equal(bounded[0].id, large.id);
+  assert.equal(bounded[0]?.id, large.id);
   assert.equal(bounded[0].lines, 500);
   assert.deepEqual(
     bounded[0].message.split("\n").map(Number),
@@ -68,7 +68,7 @@ test("multiline messages retain the newest lines across buffer boundaries", () =
   const latest = toTerminalLine(message(2));
   const updated = mergeTerminalLines(bounded, [latest]);
   assert.equal(updated.length, 2);
-  assert.equal(updated[0].lines, 499);
+  assert.equal(updated[0]?.lines, 499);
   assert.equal(Number(updated[0].message.split("\n")[0]), 101);
   assert.equal(updated[1], latest);
   assert.equal(

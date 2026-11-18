@@ -9,6 +9,7 @@ import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import { createScriptEditorSession } from "./script-editor-store";
 import { nodeDataString } from "@/lib/script-node-data";
+import { assertDefined } from "@/lib/assert-defined";
 
 test("identified completions retain overlapping invocations and return to older running nodes", () => {
   const editor = createScriptEditorSession();
@@ -93,7 +94,7 @@ test("canonical documents retain selection and newer drafts until remote content
   editor.actions.syncScriptDocument(structuredClone(saved));
   assert.equal(editor.document.get(), selected);
   assert.equal(editor.ui.get().selectedNodeId, id);
-  assert.equal(editor.document.get().nodes[0].selected, true);
+  assert.equal(editor.document.get().nodes[0]?.selected, true);
 
   editor.actions.updateNodeData(id, { value: 3 });
   const draft = editor.document.get();
@@ -104,11 +105,11 @@ test("canonical documents retain selection and newer drafts until remote content
   };
   editor.actions.syncScriptDocument(remote);
   assert.equal(editor.document.get(), draft);
-  assert.equal(editor.document.get().nodes[0].data.value, 3);
+  assert.equal(editor.document.get().nodes[0]?.data["value"], 3);
 
   editor.actions.markSaved(editor.actions.getScriptData());
   editor.actions.syncScriptDocument(remote);
-  assert.equal(editor.document.get().nodes[0].data.value, 2);
+  assert.equal(editor.document.get().nodes[0]?.data["value"], 2);
   assert.equal(editor.ui.get().selectedNodeId, null);
   assert.equal(editor.document.get().isDirty, false);
 });
@@ -232,7 +233,7 @@ test("validation ignores canvas changes but observes graph edits", () => {
   assert.equal(updates, 0);
   session.actions.updateNodeData(id, { value: 2 });
   assert.equal(updates, 1);
-  assert.equal(session.validationGraph.get().nodes[0].data.value, 2);
+  assert.equal(session.validationGraph.get().nodes[0]?.data["value"], 2);
   const other = session.actions.addNode("value", { x: 0, y: 0 });
   session.actions.onConnect({
     source: id,
@@ -242,8 +243,10 @@ test("validation ignores canvas changes but observes graph edits", () => {
   });
   assert.equal(session.validationGraph.get().edges.length, 1);
   const connected = session.validationGraph.get();
+  const connectedEdge = connected.edges[0];
+  assert.ok(connectedEdge);
   session.actions.onEdgesChange([
-    { type: "select", id: connected.edges[0].id, selected: true },
+    { type: "select", id: connectedEdge.id, selected: true },
   ]);
   assert.equal(session.validationGraph.get(), connected);
   sub.unsubscribe();
@@ -319,14 +322,14 @@ test("each group view shows only its direct nodes and connections", () => {
     [group, outside],
   );
   assert.equal(session.visibleEdges.get().length, 1);
-  assert.equal(session.visibleEdges.get()[0].source, group);
+  assert.equal(session.visibleEdges.get()[0]?.source, group);
   session.actions.enterGroup(group);
   assert.equal(session.visibleNodes.get().length, 3);
   assert.equal(session.visibleEdges.get().length, 1);
-  assert.equal(session.visibleEdges.get()[0].target, nested);
+  assert.equal(session.visibleEdges.get()[0]?.target, nested);
   session.actions.enterGroup(nested);
   assert.equal(session.visibleNodes.get().length, 2);
-  assert.equal(session.visibleEdges.get()[0].source, first);
+  assert.equal(session.visibleEdges.get()[0]?.source, first);
 });
 
 test("duplicating a group clones its nested graph and internal frame references", () => {
@@ -339,35 +342,36 @@ test("duplicating a group clones its nested graph and internal frame references"
   const copies = after.nodes.slice(before.nodes.length);
   assert.equal(copies.length, originals.length);
   const ids = new Map(
-    originals.map((node, index) => [node.id, copies[index].id]),
+    originals.map((node, index) => [node.id, copies[index]?.id]),
   );
   for (const [index, original] of originals.entries()) {
     const copy = copies[index];
+    assert.ok(copy);
     assert.equal(
       before.nodes.some((node) => node.id === copy.id),
       false,
     );
     assert.equal(
-      copy.data.parentGroupId,
+      copy.data["parentGroupId"],
       ids.get(nodeDataString(original.data, "parentGroupId") ?? ""),
     );
     assert.equal(
-      copy.data.parentFrameId,
+      copy.data["parentFrameId"],
       ids.get(nodeDataString(original.data, "parentFrameId") ?? ""),
     );
-    if (Array.isArray(original.data.containedNodes)) {
+    if (Array.isArray(original.data["containedNodes"])) {
       assert.deepEqual(
-        copy.data.containedNodes,
-        original.data.containedNodes.map((id: string) => ids.get(id)),
+        copy.data["containedNodes"],
+        original.data["containedNodes"].map((id: string) => ids.get(id)),
       );
     }
     assert.deepEqual(
       copy.position,
-      original.data.parentGroupId
+      original.data["parentGroupId"]
         ? original.position
         : { x: original.position.x + 50, y: original.position.y + 50 },
     );
-    assert.equal(copy.selected, !original.data.parentGroupId);
+    assert.equal(copy.selected, !original.data["parentGroupId"]);
   }
   const copiedEdges = after.edges.slice(before.edges.length);
   assert.equal(copiedEdges.length, 2);
@@ -380,7 +384,7 @@ test("duplicating a group clones its nested graph and internal frame references"
     );
   }
   assert.equal(after.lastSavedNodes, before.lastSavedNodes);
-  assert.equal(before.nodes[0].selected, true);
+  assert.equal(before.nodes[0]?.selected, true);
   assert.equal(
     after.nodes.slice(0, before.nodes.length).some((node) => node.selected),
     false,
@@ -403,25 +407,26 @@ test("pasting groups into another group retains hierarchy and offsets only root 
   const copies = target.document.get().nodes.slice(1);
   assert.equal(copies.length, clipboard.nodes.length);
   const ids = new Map(
-    clipboard.nodes.map((node, index) => [node.id, copies[index].id]),
+    clipboard.nodes.map((node, index) => [node.id, copies[index]?.id]),
   );
   for (const [index, original] of clipboard.nodes.entries()) {
     const copy = copies[index];
+    assert.ok(copy);
     assert.equal(
-      copy.data.parentGroupId,
+      copy.data["parentGroupId"],
       ids.get(nodeDataString(original.data, "parentGroupId") ?? "") ?? parent,
     );
     assert.equal(
-      copy.data.parentFrameId,
+      copy.data["parentFrameId"],
       ids.get(nodeDataString(original.data, "parentFrameId") ?? ""),
     );
     assert.deepEqual(
       copy.position,
-      original.data.parentGroupId
+      original.data["parentGroupId"]
         ? original.position
         : { x: original.position.x + 300, y: original.position.y + 300 },
     );
-    assert.equal(copy.selected, !original.data.parentGroupId);
+    assert.equal(copy.selected, !original.data["parentGroupId"]);
   }
   assert.equal(target.visibleNodes.get().length, 2);
   assert.equal(target.visibleEdges.get().length, 1);
@@ -452,12 +457,13 @@ test("copying from inside a group rebases roots without retaining the source par
   target.actions.pasteClipboardData(clipboard, { x: 0, y: 0 });
   assert.equal(target.visibleNodes.get().length, 1);
   const root = target.visibleNodes.get()[0];
-  assert.equal(root.data.parentGroupId, undefined);
+  assert.ok(root);
+  assert.equal(root.data["parentGroupId"], undefined);
   assert.deepEqual(root.position, { x: 0, y: 0 });
   assert.equal(
     target.document
       .get()
-      .nodes.some((node) => node.data.parentGroupId === container),
+      .nodes.some((node) => node.data["parentGroupId"] === container),
     false,
   );
 });
@@ -468,10 +474,12 @@ test("deleting a visible selection preserves selected edges in hidden groups", (
     { type: "select", id: group, selected: false },
   ]);
   const hiddenEdge = session.document.get().edges[0];
+  assert.ok(hiddenEdge);
   session.actions.onEdgesChange([
     { type: "select", id: hiddenEdge.id, selected: true },
   ]);
   const visibleEdge = session.visibleEdges.get()[0];
+  assert.ok(visibleEdge);
   session.actions.onEdgesChange([
     { type: "select", id: visibleEdge.id, selected: true },
   ]);
@@ -518,7 +526,7 @@ test("React Flow changes preserve untouched node identities and saved graphs", (
   const after = session.document.get();
   assert.equal(after.nodes[1], before.nodes[1]);
   assert.notEqual(after.nodes[0], before.nodes[0]);
-  assert.deepEqual(after.lastSavedNodes?.[0].position, { x: 0, y: 0 });
+  assert.deepEqual(after.lastSavedNodes?.[0]?.position, { x: 0, y: 0 });
   assert.equal(after.isDirty, true);
 });
 
@@ -547,11 +555,11 @@ test("save acknowledgement retains newer graph edits and their submitted baselin
   const acknowledged = session.document.get();
   assert.equal(acknowledged.scriptId, "created-id");
   assert.equal(acknowledged.scriptName, "Newer edit");
-  assert.equal(acknowledged.nodes[0].data.value, 2);
+  assert.equal(acknowledged.nodes[0]?.data["value"], 2);
   assert.equal(acknowledged.nodes.length, 3);
   assert.equal(acknowledged.edges.length, 2);
-  assert.equal(acknowledged.lastSavedNodes?.[0].data.value, 1);
-  assert.equal(acknowledged.lastSavedNodes?.length, 2);
+  assert.equal(acknowledged.lastSavedNodes?.[0]?.data["value"], 1);
+  assert.equal(acknowledged.lastSavedNodes.length, 2);
   assert.equal(acknowledged.lastSavedEdges?.length, 1);
   assert.equal(acknowledged.isDirty, true);
   session.actions.markSaved(session.actions.getScriptData());
@@ -574,13 +582,15 @@ test("canvas selection and measurement do not make an acknowledged save dirty", 
     { type: "select", id: first, selected: true },
     { type: "dimensions", id: first, dimensions: { width: 160, height: 100 } },
   ]);
+  const submittedEdge = submitted.edges[0];
+  assert.ok(submittedEdge);
   session.actions.onEdgesChange([
-    { type: "select", id: submitted.edges[0].id, selected: true },
+    { type: "select", id: submittedEdge.id, selected: true },
   ]);
   session.actions.markSaved(submitted);
   assert.equal(session.document.get().isDirty, false);
-  assert.equal(session.document.get().nodes[0].selected, true);
-  assert.equal(session.document.get().nodes[0].measured?.height, 100);
+  assert.equal(session.document.get().nodes[0]?.selected, true);
+  assert.equal(session.document.get().nodes[0]?.measured?.height, 100);
 });
 
 test("explicit frame resizes change the saved document while measurements stay clean", () => {
@@ -624,8 +634,8 @@ test("explicit frame resizes change the saved document while measurements stay c
     ]);
     assert.equal(session.document.get().isDirty, true);
     if (setAttributes === true) {
-      assert.equal(session.document.get().lastSavedNodes?.[0].width, 300);
-      assert.equal(session.document.get().lastSavedNodes?.[0].height, 160);
+      assert.equal(session.document.get().lastSavedNodes?.[0]?.width, 300);
+      assert.equal(session.document.get().lastSavedNodes?.[0]?.height, 160);
     }
     session.actions.markSaved(session.actions.getScriptData());
     session.actions.onNodesChange([
@@ -638,8 +648,8 @@ test("explicit frame resizes change the saved document while measurements stay c
     ]);
     assert.equal(session.document.get().isDirty, false);
   }
-  assert.equal(session.document.get().nodes[0].width, 384);
-  assert.equal(session.document.get().nodes[0].height, 224);
+  assert.equal(session.document.get().nodes[0]?.width, 384);
+  assert.equal(session.document.get().nodes[0]?.height, 224);
 });
 
 test("acknowledgement compares quota values without losing bigint precision", () => {
@@ -686,6 +696,7 @@ test("acknowledgement detects node values and edge rewiring without metadata cha
   session.actions.markSaved(submitted);
   assert.equal(session.document.get().isDirty, false);
   const edge = submitted.edges[0];
+  assert.ok(edge);
   session.actions.onEdgesChange([
     {
       type: "replace",
@@ -695,8 +706,8 @@ test("acknowledgement detects node values and edge rewiring without metadata cha
   ]);
   session.actions.markSaved(submitted);
   assert.equal(session.document.get().isDirty, true);
-  assert.equal(session.document.get().lastSavedEdges?.[0].source, first);
-  assert.equal(session.document.get().edges[0].source, second);
+  assert.equal(session.document.get().lastSavedEdges?.[0]?.source, first);
+  assert.equal(session.document.get().edges[0]?.source, second);
 });
 
 test("framing selected nodes creates explicit dimensions for saving and resizing", () => {
@@ -714,8 +725,9 @@ test("framing selected nodes creates explicit dimensions for saving and resizing
   assert.equal(frame.width, 240);
   assert.equal(frame.height, 180);
   assert.equal(
-    session.document.get().nodes.find((node) => node.id === id)?.data
-      .parentFrameId,
+    session.document.get().nodes.find((node) => node.id === id)?.data[
+      "parentFrameId"
+    ],
     frame.id,
   );
 });
@@ -745,9 +757,18 @@ test("new group interfaces sit outside all selected content bounds", () => {
     );
     editor.actions.createGroupFromSelection();
     const nodes = editor.document.get().nodes;
-    const group = nodes.find((n) => n.type === "layout.group")!;
-    const input = nodes.find((n) => n.type === "layout.group_input")!;
-    const output = nodes.find((n) => n.type === "layout.group_output")!;
+    const group = assertDefined(
+      nodes.find((n) => n.type === "layout.group"),
+      "Expected nodes.find((n) => n.type === layout.group) to exist",
+    );
+    const input = assertDefined(
+      nodes.find((n) => n.type === "layout.group_input"),
+      "Expected nodes.find((n) => n.type === layout.group_input) to exist",
+    );
+    const output = assertDefined(
+      nodes.find((n) => n.type === "layout.group_output"),
+      "Expected nodes.find((n) => n.type === layout.group_output) to exist",
+    );
     assert.ok(
       input.position.x + group.position.x + GROUP_INTERFACE_NODE_WIDTH < -600,
     );
@@ -780,7 +801,7 @@ test("grouping preserves unique nodes through nesting, export, and clipboard clo
     [source, first],
     [first, second],
     [second, after],
-  ]) {
+  ] as const) {
     editor.actions.onConnect({
       source: from,
       sourceHandle: "out",
@@ -810,14 +831,18 @@ test("grouping preserves unique nodes through nesting, export, and clipboard clo
           grouped.nodes.some((node) => node.id === edge.target),
       ),
     );
-    const group = grouped.nodes.find(
-      (node) => node.type === "layout.group" && !oldIds.has(node.id),
-    )!;
+    const group = assertDefined(
+      grouped.nodes.find(
+        (node) => node.type === "layout.group" && !oldIds.has(node.id),
+      ),
+      "Expected grouped.nodes.find((node) => node.type === layout.group &... to exist",
+    );
     assert.ok(
       selection.every(
         (id) =>
-          grouped.nodes.find((node) => node.id === id)?.data.parentGroupId ===
-          group.id,
+          grouped.nodes.find((node) => node.id === id)?.data[
+            "parentGroupId"
+          ] === group.id,
       ),
     );
     assert.equal(
@@ -827,10 +852,15 @@ test("grouping preserves unique nodes through nesting, export, and clipboard clo
     selection = [group.id, after];
   }
   editor.actions.deselectAll();
+  const [selectedGroup] = selection;
+  assert.ok(selectedGroup);
   editor.actions.onNodesChange([
-    { type: "select", id: selection[0], selected: true },
+    { type: "select", id: selectedGroup, selected: true },
   ]);
-  const copied = editor.actions.getSelectedForClipboard()!;
+  const copied = assertDefined(
+    editor.actions.getSelectedForClipboard(),
+    "Expected editor.actions.getSelectedForClipboard() to exist",
+  );
   assert.equal(copied.nodes.length, 9);
   assert.equal(
     new Set(copied.nodes.map((node) => node.id)).size,

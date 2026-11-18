@@ -7,6 +7,7 @@ import {
   ServerDialogSchema,
 } from "@/generated/soulfire/bot_pb";
 import { applyServerDialogRefresh } from "./server-dialog-query";
+import { assertDefined } from "@/lib/assert-defined";
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
@@ -31,7 +32,8 @@ test("an old action refresh preserves its replacement and its pending poll", asy
     applyServerDialogRefresh(
       client,
       queryKey,
-      original.dialog!.screenId,
+      assertDefined(original.dialog, "Expected original.dialog to exist")
+        .screenId,
       state,
     ),
   );
@@ -72,7 +74,8 @@ test("a delayed refresh cannot resurrect a closed or removed dialog", async () =
       await applyServerDialogRefresh(
         client,
         queryKey,
-        original.dialog!.screenId,
+        assertDefined(original.dialog, "Expected original.dialog to exist")
+          .screenId,
         original,
       );
       assert.equal(client.getQueryData(queryKey), current);
@@ -92,7 +95,8 @@ test("an accepted action can replace or close the screen it acted on", async () 
       await applyServerDialogRefresh(
         client,
         queryKey,
-        original.dialog!.screenId,
+        assertDefined(original.dialog, "Expected original.dialog to exist")
+          .screenId,
         state,
       );
       assert.deepEqual(client.getQueryData(queryKey), state);
@@ -118,7 +122,8 @@ test("a screen replacement during query cancellation is also preserved", async (
   const refresh = applyServerDialogRefresh(
     client,
     queryKey,
-    original.dialog!.screenId,
+    assertDefined(original.dialog, "Expected original.dialog to exist")
+      .screenId,
     original,
   );
   try {
@@ -143,7 +148,8 @@ test("a failed read invalidates state without failing the accepted action", asyn
     await applyServerDialogRefresh(
       client,
       queryKey,
-      original.dialog!.screenId,
+      assertDefined(original.dialog, "Expected original.dialog to exist")
+        .screenId,
       undefined,
     );
     assert.deepEqual(client.getQueryData(queryKey), original);

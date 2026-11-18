@@ -42,7 +42,7 @@ const meta = {
       const path = new URL(url).pathname;
       let data: unknown;
       if (path.endsWith("/me"))
-        data = { balance: parameters.lowBalance ? 50 : 1_000 };
+        data = { balance: parameters["lowBalance"] ? 50 : 1_000 };
       else if (path.endsWith("/stock"))
         data = {
           stock: [
@@ -61,8 +61,8 @@ const meta = {
           cooldowns: [
             {
               product_id: 1,
-              remaining_allowed: parameters.cooling ? 0 : 5,
-              on_cooldown: parameters.cooling ?? false,
+              remaining_allowed: parameters["cooling"] ? 0 : 5,
+              on_cooldown: parameters["cooling"] ?? false,
             },
           ],
         };
@@ -72,7 +72,8 @@ const meta = {
         };
       else if (path.endsWith("/purchase")) {
         purchases.push(JSON.parse(requestBody(options?.body)));
-        if (parameters.purchaseFails) return new Response("", { status: 502 });
+        if (parameters["purchaseFails"])
+          return new Response("", { status: 502 });
         data = delivery;
       } else data = { purchase: delivery };
       return Response.json({ success: true, data });

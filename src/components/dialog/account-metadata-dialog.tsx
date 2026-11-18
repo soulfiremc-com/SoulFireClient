@@ -5,7 +5,7 @@ import type { JsonValue } from "@bufbuild/protobuf";
 
 import { useForm } from "@tanstack/react-form";
 import { useIsMutating, useMutation } from "@tanstack/react-query";
-import { useRouteContext } from "@tanstack/react-router";
+import { useParams } from "@tanstack/react-router";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import {
   Suspense,
@@ -89,9 +89,9 @@ export function AccountMetadataDialog({
   onOpenChange,
 }: AccountMetadataDialogProps) {
   const { t } = useTranslation("instance");
-  const instanceId = useRouteContext({
+  const instanceId = useParams({
     from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions.queryKey[1],
+    select: (params) => params.instance,
   });
 
   return (
@@ -405,7 +405,7 @@ function DialogContentInner({
       field: "namespace" | "key" | "value",
       newFieldValue: string,
     ) => {
-      if (!isMetadataReady || !entries) return false;
+      if (!isMetadataReady) return false;
 
       const entry = entries.find((e) => e.id === id);
       if (!entry) return false;

@@ -68,8 +68,6 @@ test("history failures retain a typed operation at the RPC adapter", async () =>
     ),
   );
   assert.equal(result._tag, "Failure");
-  if (result._tag === "Failure") {
-    assert.equal(result.failure._tag, "TerminalLogError");
-    assert.equal(result.failure.operation, "history");
-  }
+  assert.equal(result.failure._tag, "TerminalLogError");
+  assert.equal(result.failure.operation, "history");
 });

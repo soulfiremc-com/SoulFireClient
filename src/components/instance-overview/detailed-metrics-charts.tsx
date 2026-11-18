@@ -28,7 +28,11 @@ const PIE_COLORS = [
   "var(--chart-3)",
   "var(--chart-4)",
   "var(--chart-5)",
-];
+] as const;
+
+function pieColor(index: number): string {
+  return PIE_COLORS[index % PIE_COLORS.length] ?? PIE_COLORS[0];
+}
 
 function MiniDonut({
   label,
@@ -83,7 +87,7 @@ function WorldCompositionCard({
         ([dim, count], index) => ({
           name: dim.replace("minecraft:", ""),
           value: count,
-          fill: PIE_COLORS[index % PIE_COLORS.length],
+          fill: pieColor(index),
         }),
       ),
     [distributions?.dimensionCounts],
@@ -95,7 +99,7 @@ function WorldCompositionCard({
         ([mode, count], index) => ({
           name: mode.charAt(0) + mode.slice(1).toLowerCase(),
           value: count,
-          fill: PIE_COLORS[index % PIE_COLORS.length],
+          fill: pieColor(index),
         }),
       ),
     [distributions?.gameModeCounts],

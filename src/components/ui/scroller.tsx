@@ -363,7 +363,7 @@ function ScrollButton(props: ScrollButtonProps) {
       },
     } as const;
 
-    return triggerModeHandlers[triggerMode] ?? {};
+    return triggerModeHandlers[triggerMode];
   }, [triggerMode, onAutoScrollStart, onAutoScrollStop, onClick]);
 
   React.useEffect(() => {

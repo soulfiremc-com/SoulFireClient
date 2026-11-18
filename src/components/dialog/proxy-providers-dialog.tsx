@@ -58,6 +58,7 @@ function ProxyProvidersContent({
       <ProxyFlow
         key={active.id}
         provider={active}
+        connection={active.connection}
         canWrite={canImport}
         onBack={() => setActiveId(null)}
         onBusyChange={onBusyChange}

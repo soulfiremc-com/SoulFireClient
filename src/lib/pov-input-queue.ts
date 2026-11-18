@@ -6,7 +6,7 @@ import { PovInputSources } from "./pov-input-sources";
 
 export class PovInputQueue {
   private events: PovInputEvent[] = [];
-  private sources = new PovInputSources();
+  private readonly sources = new PovInputSources();
 
   get length(): number {
     return this.events.length;

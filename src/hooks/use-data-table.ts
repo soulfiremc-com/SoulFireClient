@@ -102,7 +102,7 @@ export function useDataTable<TData extends RowData>(
       limitUrlUpdates: throttle(throttleMs),
       debounceMs,
       clearOnDefault,
-      startTransition,
+      ...(startTransition && { startTransition }),
     }),
     [
       history,
@@ -224,7 +224,7 @@ export function useDataTable<TData extends RowData>(
         ...initialState,
         columnFilters: initialColumnFilters,
       },
-      pageCount,
+      ...(pageCount !== undefined && { pageCount }),
       // Pagination and sorting live in the URL. Selection, visibility, and
       // filters stay in table atoms that `table.Subscribe` consumers read.
       state: {

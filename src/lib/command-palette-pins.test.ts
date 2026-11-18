@@ -96,7 +96,7 @@ test("stored pins are validated, deduplicated, and bounded", () => {
 test("toggling adds, removes, and refuses to exceed the limit", () => {
   const pinned = togglePalettePin([], terminal);
   assert.deepEqual(pinned, [{ id: "terminal:farm", projectId: "farm" }]);
-  assert.deepEqual(togglePalettePin(pinned ?? [], terminal), []);
+  assert.deepEqual(togglePalettePin(pinned, terminal), []);
   const full = Array.from({ length: PIN_LIMIT }, (_, index) => ({
     id: `pin-${index}`,
   }));

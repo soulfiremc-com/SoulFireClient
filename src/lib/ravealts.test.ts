@@ -5,12 +5,13 @@ import {
   purchaseAccounts,
   RavealtsApiError,
 } from "./ravealts.ts";
+import { assertDefined } from "@/lib/assert-defined";
 
 test("Ravealts preserves purchases without adding unsupported affiliate fields", async () => {
   const original = globalThis.fetch;
   const requests: RequestInit[] = [];
   globalThis.fetch = async (_input, options) => {
-    requests.push(options!);
+    requests.push(assertDefined(options, "Expected options to exist"));
     return Response.json({
       status: "success",
       accounts: [{ raw: "account-token" }],
@@ -19,13 +20,15 @@ test("Ravealts preserves purchases without adding unsupported affiliate fields",
   try {
     const result = await purchaseAccounts("api-key", "hypixel_unbanned", 2);
     assert.equal(result.accounts.length, 1);
+    const [request] = requests;
+    assert.ok(request);
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
-    assert.deepEqual(JSON.parse(requests[0].body as string), {
+    assert.deepEqual(JSON.parse(request.body as string), {
       user_request: { account_type: "hypixel_unbanned", amount: 2 },
     });
     assert.equal(
       // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
-      (requests[0].headers as Record<string, string>).Authorization,
+      (request.headers as Record<string, string>)["Authorization"],
       "Bearer api-key",
     );
   } finally {

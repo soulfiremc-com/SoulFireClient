@@ -49,6 +49,7 @@ export async function checkProxies(
     throw error;
   }
   signal.throwIfAborted();
+  // oxlint-disable-next-line typescript/no-unnecessary-condition -- the stream callback sets completed
   if (completed) return { success, failed };
   throw new Error("Proxy check ended without a completion message");
 }

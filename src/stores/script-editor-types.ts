@@ -55,11 +55,13 @@ export interface ScriptEditorUIState {
   quickAddMenu: {
     position: XYPosition;
     screenPosition: XYPosition;
-    sourceSocket?: {
-      nodeId: string;
-      handleId: string;
-      handleType: "source" | "target";
-    };
+    sourceSocket?:
+      | {
+          nodeId: string;
+          handleId: string;
+          handleType: "source" | "target";
+        }
+      | undefined;
   } | null;
   groupEditStack: string[];
   previewEnabledNodes: Set<string>;
@@ -199,9 +201,9 @@ export interface ScriptEditorActions {
   loadScriptData: (data: {
     nodes: Node[];
     edges: Edge[];
-    name?: string;
-    description?: string;
-    paused?: boolean;
+    name?: string | undefined;
+    description?: string | undefined;
+    paused?: boolean | undefined;
     quotas: ScriptQuotas | undefined;
   }) => void;
   resetEditor: () => void;

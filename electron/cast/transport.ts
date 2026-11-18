@@ -50,11 +50,14 @@ type Platform = {
       message: unknown,
       callback: (
         error: Error | null,
-        response: {
-          type: string;
-          reason?: string;
-          status?: { applications?: Session[] };
-        },
+        // The receiver sends no response when the request fails.
+        response:
+          | {
+              type: string;
+              reason?: string;
+              status?: { applications?: Session[] };
+            }
+          | undefined,
       ) => void,
     ): void;
     stop(sessionId: string, callback: (error: Error | null) => void): void;

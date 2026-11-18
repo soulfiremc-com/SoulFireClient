@@ -27,7 +27,7 @@ export default function AccountProvidersDialog({
   onOpenChange: (open: boolean) => void;
   onImport: AccountImport;
   canPurchase: boolean;
-  initialProviderId?: string;
+  initialProviderId?: string | undefined;
 }) {
   const [busy, setBusy] = useState(false);
   return (
@@ -59,7 +59,7 @@ function AccountProvidersContent({
   onImport,
 }: {
   canPurchase: boolean;
-  initialProviderId?: string;
+  initialProviderId?: string | undefined;
   onBusyChange: (busy: boolean) => void;
   onClose: () => void;
   onImport: AccountImport;

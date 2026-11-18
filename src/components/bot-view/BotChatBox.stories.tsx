@@ -54,8 +54,8 @@ const meta = {
   component: BotChatBox,
   args: { instanceId: "instance-example", botId: "bot-example" },
   beforeEach: ({ parameters }) => {
-    pending = parameters.pendingDelivery ?? false;
-    outcome = parameters.outcome ?? "completed";
+    pending = parameters["pendingDelivery"] ?? false;
+    outcome = parameters["outcome"] ?? "completed";
     requests.mockClear();
     finish = undefined;
     return () => {

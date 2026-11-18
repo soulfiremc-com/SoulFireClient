@@ -67,7 +67,7 @@ function Meter({
   baseClassName: string;
   fillClassName: string;
   idPrefix: string;
-  className?: string;
+  className?: string | undefined;
 }) {
   const perUnit = maxValue / units;
   return (
@@ -105,7 +105,7 @@ export function HeartsBar({
   health: number;
   maxHealth?: number;
   size?: number;
-  className?: string;
+  className?: string | undefined;
 }) {
   const units = Math.min(10, Math.max(1, Math.ceil(maxHealth / 2)));
   return (
@@ -132,7 +132,7 @@ export function FoodBar({
 }: {
   foodLevel: number;
   size?: number;
-  className?: string;
+  className?: string | undefined;
 }) {
   return (
     <Meter

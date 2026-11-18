@@ -81,6 +81,7 @@
       }
     ],
     "eslint/no-unmodified-loop-condition": "error",
+    "eslint/no-useless-call": "error",
     "eslint/preserve-caught-error": "error",
     "import/no-cycle": "error",
     "import/no-duplicates": "error",
@@ -113,6 +114,7 @@
     "jsx-a11y/no-static-element-interactions": "error",
     "jsx-a11y/prefer-tag-over-role": "error",
     "jsx-a11y/role-has-required-aria-props": "error",
+    "oxc/no-accumulating-spread": "error",
     "promise/always-return": [
       "error",
       {
@@ -131,10 +133,14 @@
     "react/exhaustive-effect-dependencies": "error",
     "react/hooks": "error",
     "react/immutability": "error",
+    "react/jsx-no-constructed-context-values": "error",
     "react/jsx-no-target-blank": "error",
     "react/jsx-no-useless-fragment": "error",
     "react/memo-dependencies": "error",
+    "react/no-array-index-key": "error",
     "react/no-danger": "error",
+    "react/no-deriving-state-in-effects": "error",
+    "react/no-object-type-as-default-prop": "error",
     "react/no-unknown-property": "error",
     "react/no-unstable-nested-components": [
       "error",
@@ -189,16 +195,38 @@
     ],
     "typescript/no-misused-promises": "error",
     "typescript/no-misused-spread": "error",
+    "typescript/no-non-null-assertion": "error",
+    "typescript/no-unnecessary-condition": [
+      "error",
+      {
+        "allowConstantLoopConditions": "only-allowed-literals"
+      }
+    ],
+    "typescript/no-unnecessary-template-expression": "error",
+    "typescript/no-unnecessary-type-arguments": "error",
     "typescript/no-unnecessary-type-assertion": "error",
     "typescript/no-unnecessary-type-parameters": "error",
     "typescript/no-unsafe-enum-assignment": "error",
     "typescript/no-unsafe-enum-comparison": "error",
     "typescript/no-unsafe-type-assertion": "error",
+    "typescript/no-useless-empty-export": "error",
     "typescript/only-throw-error": "error",
+    "typescript/prefer-nullish-coalescing": [
+      "error",
+      {
+        "ignorePrimitives": {
+          "boolean": true,
+          "string": true
+        }
+      }
+    ],
     "typescript/prefer-optional-chain": "error",
     "typescript/prefer-promise-reject-errors": "error",
+    "typescript/prefer-readonly": "error",
+    "typescript/prefer-reduce-type-parameter": "error",
     "typescript/prefer-ts-expect-error": "error",
     "typescript/require-array-sort-compare": "error",
+    "typescript/require-await": "error",
     "typescript/restrict-plus-operands": "error",
     "typescript/restrict-template-expressions": "error",
     "typescript/return-await": "error",
@@ -209,8 +237,11 @@
     "unicorn/no-array-reverse": "error",
     "unicorn/no-array-sort": "error",
     "unicorn/prefer-add-event-listener": "error",
+    "unicorn/prefer-array-find": "error",
+    "unicorn/prefer-array-flat-map": "error",
     "unicorn/prefer-at": "error",
     "unicorn/prefer-node-protocol": "error",
+    "unicorn/prefer-set-has": "error",
     "unicorn/prefer-string-replace-all": "error",
     "unicorn/prefer-top-level-await": "error",
     "shadcn/no-arbitrary-values": [
@@ -1061,6 +1092,22 @@
       "files": ["src/stores/script-editor-store.ts"],
       "rules": {
         "oxc/no-map-spread": "off"
+      }
+    },
+    {
+      "files": ["**/*.test.ts", "**/*.stories.tsx"],
+      "rules": {
+        "typescript/require-await": "off"
+      }
+    },
+    {
+      "files": [
+        "electron/**/*.mjs",
+        "electron/cast/**/*.test.ts",
+        "scripts/**"
+      ],
+      "rules": {
+        "typescript/no-unnecessary-condition": "off"
       }
     },
     {

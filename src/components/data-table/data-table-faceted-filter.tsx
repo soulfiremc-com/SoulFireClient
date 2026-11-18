@@ -107,7 +107,7 @@ export function DataTableFacetedFilter<
         >
           {selectedValues.size === 0 && <PlusCircle />}
           {title}
-          {selectedValues?.size > 0 && (
+          {selectedValues.size > 0 && (
             <>
               <Separator
                 orientation="vertical"

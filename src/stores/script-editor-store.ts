@@ -18,6 +18,7 @@ import {
   type PortType,
 } from "@/components/script-editor/nodes/types";
 import { mergeExecutionLogs } from "@/lib/script-logs";
+import { optionalEdgeFields } from "@/lib/script-edge-fields";
 import { hasScriptClipboardData } from "@/lib/script-clipboard";
 import { sameScriptDocument } from "@/lib/script-document";
 import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
@@ -517,7 +518,7 @@ export function createScriptEditorSession() {
       const visibleIds = new Set(
         nodes
           .filter(
-            (node) => (node.data.parentGroupId ?? null) === currentGroupId,
+            (node) => (node.data["parentGroupId"] ?? null) === currentGroupId,
           )
           .map((node) => node.id),
       );
@@ -596,7 +597,7 @@ export function createScriptEditorSession() {
           .get()
           .nodes.map((node) =>
             node.id === nodeId
-              ? { ...node, data: { ...node.data, muted: !node.data.muted } }
+              ? { ...node, data: { ...node.data, muted: !node.data["muted"] } }
               : node,
           ),
         isDirty: true,
@@ -609,7 +610,7 @@ export function createScriptEditorSession() {
           node.id === nodeId
             ? {
                 ...node,
-                data: { ...node.data, collapsed: !node.data.collapsed },
+                data: { ...node.data, collapsed: !node.data["collapsed"] },
               }
             : node,
         ),
@@ -715,7 +716,7 @@ export function createScriptEditorSession() {
     removeFromFrame: (nodeId) => {
       const { nodes } = document.get();
       const node = nodes.find((n) => n.id === nodeId);
-      if (!node?.data.parentFrameId) return;
+      if (!node?.data["parentFrameId"]) return;
 
       const frameId = nodeDataString(node.data, "parentFrameId");
 
@@ -726,7 +727,7 @@ export function createScriptEditorSession() {
             const { parentFrameId: _parentFrameId, ...restData } = n.data;
             return { ...n, data: restData };
           }
-          if (n.id === frameId && n.data.containedNodes) {
+          if (n.id === frameId && n.data["containedNodes"]) {
             return {
               ...n,
               data: {
@@ -769,11 +770,13 @@ export function createScriptEditorSession() {
       const newEdge1: Edge = {
         id: generateId(),
         source: edge.source,
-        sourceHandle: edge.sourceHandle,
         target: rerouteId,
         targetHandle: "in",
         type: edge.type,
-        data: edge.data,
+        ...optionalEdgeFields({
+          sourceHandle: edge.sourceHandle,
+          data: edge.data,
+        }),
       };
 
       const newEdge2: Edge = {
@@ -781,9 +784,11 @@ export function createScriptEditorSession() {
         source: rerouteId,
         sourceHandle: "out",
         target: edge.target,
-        targetHandle: edge.targetHandle,
         type: edge.type,
-        data: edge.data,
+        ...optionalEdgeFields({
+          targetHandle: edge.targetHandle,
+          data: edge.data,
+        }),
       };
 
       commit((state) => ({
@@ -917,6 +922,7 @@ export function createScriptEditorSession() {
         label: e.targetHandle || `Input ${i + 1}`,
         originalTarget: e.target,
         originalTargetHandle: e.targetHandle,
+        edge: e,
       }));
 
       const groupOutputs = outgoingEdges.map((e, i) => ({
@@ -925,6 +931,7 @@ export function createScriptEditorSession() {
         label: e.sourceHandle || `Output ${i + 1}`,
         originalSource: e.source,
         originalSourceHandle: e.sourceHandle,
+        edge: e,
       }));
 
       // Calculate group position (center of selected nodes)
@@ -1034,9 +1041,8 @@ export function createScriptEditorSession() {
       const newInternalEdges: Edge[] = [];
 
       // Rewire incoming edges to group
-      for (let i = 0; i < incomingEdges.length; i++) {
-        const e = incomingEdges[i];
-        const input = groupInputs[i];
+      for (const input of groupInputs) {
+        const e = input.edge;
 
         // External: source -> group
         newExternalEdges.push({
@@ -1052,16 +1058,17 @@ export function createScriptEditorSession() {
           source: groupInputNode.id,
           sourceHandle: input.id,
           target: input.originalTarget,
-          targetHandle: input.originalTargetHandle,
           type: e.type,
-          data: e.data,
+          ...optionalEdgeFields({
+            targetHandle: input.originalTargetHandle,
+            data: e.data,
+          }),
         });
       }
 
       // Rewire outgoing edges from group
-      for (let i = 0; i < outgoingEdges.length; i++) {
-        const e = outgoingEdges[i];
-        const output = groupOutputs[i];
+      for (const output of groupOutputs) {
+        const e = output.edge;
 
         // External: group -> target
         newExternalEdges.push({
@@ -1075,11 +1082,13 @@ export function createScriptEditorSession() {
         newInternalEdges.push({
           id: generateId(),
           source: output.originalSource,
-          sourceHandle: output.originalSourceHandle,
           target: groupOutputNode.id,
           targetHandle: output.id,
           type: e.type,
-          data: e.data,
+          ...optionalEdgeFields({
+            sourceHandle: output.originalSourceHandle,
+            data: e.data,
+          }),
         });
       }
 
@@ -1113,7 +1122,9 @@ export function createScriptEditorSession() {
       const groupId = groupNode.id;
 
       // Find nodes inside this group
-      const innerNodes = nodes.filter((n) => n.data.parentGroupId === groupId);
+      const innerNodes = nodes.filter(
+        (n) => n.data["parentGroupId"] === groupId,
+      );
 
       // Find GroupInput and GroupOutput nodes
       const groupInputNode = innerNodes.find(
@@ -1158,12 +1169,19 @@ export function createScriptEditorSession() {
             e.sourceHandle === externalEdge.targetHandle,
         );
         for (const internalEdge of internalEdges) {
+          const {
+            targetHandle: _targetHandle,
+            data: _data,
+            ...rest
+          } = externalEdge;
           rewiredEdges.push({
-            ...externalEdge,
+            ...rest,
             id: generateId(),
             target: internalEdge.target,
-            targetHandle: internalEdge.targetHandle,
-            data: internalEdge.data,
+            ...optionalEdgeFields({
+              targetHandle: internalEdge.targetHandle,
+              data: internalEdge.data,
+            }),
           });
         }
       }
@@ -1182,11 +1200,12 @@ export function createScriptEditorSession() {
             e.targetHandle === externalEdge.sourceHandle,
         );
         for (const internalEdge of internalEdges) {
+          const { sourceHandle: _sourceHandle, ...rest } = externalEdge;
           rewiredEdges.push({
-            ...externalEdge,
+            ...rest,
             id: generateId(),
             source: internalEdge.source,
-            sourceHandle: internalEdge.sourceHandle,
+            ...optionalEdgeFields({ sourceHandle: internalEdge.sourceHandle }),
           });
         }
       }
@@ -1204,7 +1223,7 @@ export function createScriptEditorSession() {
           nodes: [
             ...nodes.filter(
               (n) =>
-                !nodesToRemove.has(n.id) && n.data.parentGroupId !== groupId,
+                !nodesToRemove.has(n.id) && n.data["parentGroupId"] !== groupId,
             ),
             ...nodesFromGroup,
           ],
@@ -1328,11 +1347,13 @@ export function createScriptEditorSession() {
       const newEdge1: Edge = {
         id: generateId(),
         source: edge.source,
-        sourceHandle: edge.sourceHandle,
         target: nodeId,
         targetHandle: inputHandle,
         type: edge.type,
-        data: edge.data,
+        ...optionalEdgeFields({
+          sourceHandle: edge.sourceHandle,
+          data: edge.data,
+        }),
       };
 
       const newEdge2: Edge = {
@@ -1340,9 +1361,11 @@ export function createScriptEditorSession() {
         source: nodeId,
         sourceHandle: outputHandle,
         target: edge.target,
-        targetHandle: edge.targetHandle,
         type: edge.type,
-        data: edge.data,
+        ...optionalEdgeFields({
+          targetHandle: edge.targetHandle,
+          data: edge.data,
+        }),
       };
 
       commit((state) => ({
@@ -1561,7 +1584,7 @@ export function createScriptEditorSession() {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
 
-      if (!clipboardData || clipboardData.nodes.length === 0) return;
+      if (clipboardData.nodes.length === 0) return;
 
       const currentGroupId = groupEditStack.at(-1) ?? null;
 
@@ -1705,7 +1728,7 @@ export function createScriptEditorSession() {
       // Calculate spacing
       const first = sorted[0];
       const last = sorted.at(-1);
-      if (last === undefined) return;
+      if (first === undefined || last === undefined) return;
       const lastPos =
         direction === "horizontal" ? last.position.x : last.position.y;
       const firstPos =
@@ -1716,8 +1739,8 @@ export function createScriptEditorSession() {
 
       // Create position map
       const positionMap = new Map<string, number>();
-      for (let i = 0; i < sorted.length; i++) {
-        positionMap.set(sorted[i].id, firstPos + i * step);
+      for (const [i, node] of sorted.entries()) {
+        positionMap.set(node.id, firstPos + i * step);
       }
 
       commit((state) => ({

@@ -167,7 +167,7 @@ async function fixture(
 test("the callback transport validates its handshake and correlates replies", async () => {
   const f = await fixture();
   const channel = await f.open();
-  expect(f.sent[0].type).toBe("HELLO");
+  expect(f.sent[0]?.type).toBe("HELLO");
   const reply = await f.runtime.runPromise(
     channel.send({
       type: "PING",
@@ -177,9 +177,11 @@ test("the callback transport validates its handshake and correlates replies", as
   );
   expect(reply.requestId).toBe("ping");
   await f.dispose();
-  expect(f.clients[0].closed).toBe(1);
+  const [client] = f.clients;
+  if (!client) throw new Error("The transport did not open a client");
+  expect(client.closed).toBe(1);
   expect(() =>
-    f.clients[0].emit("error", new Error("late socket error")),
+    client.emit("error", new Error("late socket error")),
   ).not.toThrow();
 });
 
@@ -199,8 +201,8 @@ test("launch timeout closes its socket and late callbacks cannot create a sessio
   await Effect.runPromise(f.clock.adjust("15 seconds"));
   expect(await result).toBeInstanceOf(Error);
   await f.dispose();
-  expect(f.clients[0].closed).toBe(1);
-  f.clients[0].connectCallback?.();
+  expect(f.clients[0]?.closed).toBe(1);
+  f.clients[0]?.connectCallback?.();
   expect(f.events).toEqual([]);
 });
 
@@ -211,7 +213,7 @@ test("a failed launch and a version mismatch release every acquired socket", asy
     // oxlint-disable-next-line typescript/await-thenable
     await expect(f.open()).rejects.toBeInstanceOf(Error);
     await f.dispose();
-    expect(f.clients[0].closed).toBe(1);
+    expect(f.clients[0]?.closed).toBe(1);
   }
 });
 
@@ -222,7 +224,7 @@ test("post-login errors notify the session owner", async () => {
   channel.onFailure(() => {
     errors++;
   });
-  f.clients[0].emit("error", new Error("device timeout"));
+  f.clients[0]?.emit("error", new Error("device timeout"));
   expect(errors).toBe(1);
 });
 
@@ -233,6 +235,6 @@ test("a receiver that starts slowly can complete a repeated idempotent handshake
   await Effect.runPromise(f.clock.adjust("3500 millis"));
   const channel = await result;
   expect(f.sent.filter((message) => message.type === "HELLO")).toHaveLength(2);
-  expect(channel.sessionId).toBe(f.sent[0].sessionId);
+  expect(f.sent[0]?.sessionId).toBe(channel.sessionId);
   expect(f.clients).toHaveLength(1);
 });

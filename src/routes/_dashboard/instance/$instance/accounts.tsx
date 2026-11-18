@@ -1192,7 +1192,7 @@ function Content() {
             instanceInfo.instanceSettings.find((s) => s.id === "account"),
             "the account settings page",
           )}
-          disabledIds={PAGE_HIDDEN_SETTINGS.account}
+          disabledIds={PAGE_HIDDEN_SETTINGS["account"]}
           focusSetting={
             focusNamespace && focusKey
               ? { namespace: focusNamespace, key: focusKey }

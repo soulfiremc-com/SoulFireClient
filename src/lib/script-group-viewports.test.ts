@@ -72,7 +72,6 @@ test("root and a group named root keep independent copied viewports", () => {
     type: "restore",
     viewport: { x: 20, y: 40, zoom: 1 },
   });
-  if (restored.type !== "restore") assert.fail();
   restored.viewport.x = 30;
   assert.deepEqual(history.enter("root", restored.viewport, 0), {
     type: "restore",

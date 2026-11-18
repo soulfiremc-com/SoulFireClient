@@ -1,7 +1,7 @@
 export function editBoxValue(value: string, maxLength: number): string {
   let filtered = "";
   for (const character of value) {
-    const code = character.codePointAt(0)!;
+    const code = character.codePointAt(0) ?? 0;
     if (
       code < 32 ||
       code === 127 ||

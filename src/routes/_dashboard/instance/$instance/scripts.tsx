@@ -107,8 +107,6 @@ import { timestampToDate } from "@/lib/utils.tsx";
 import { generateN } from "@/lib/generate-n.ts";
 import { isOneOf } from "@/lib/is-one-of";
 
-const NO_SCRIPTS: readonly ScriptInfo[] = [];
-
 const createScriptSchema = Schema.Struct({
   name: Schema.String,
   description: Schema.String,
@@ -203,7 +201,7 @@ function Content() {
   const { data: scriptsData } = useSuspenseQuery(
     scriptListQueryOptions(transport, instanceId),
   );
-  const scripts = scriptsData?.scripts ?? NO_SCRIPTS;
+  const scripts = scriptsData.scripts;
 
   const [search, setSearch] = useState("");
   const [stateFilter, setStateFilter] = useState<ScriptStateFilter>("all");
@@ -314,7 +312,7 @@ function Content() {
     validators: {
       onSubmit: toFormSchema(createScriptSchema),
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: ({ value }) => {
       if (!transport) {
         openDemoEditor();
         return;

@@ -7,6 +7,7 @@ import {
   resetQuerySession,
   synchronizeQuerySession,
 } from "./query-session.ts";
+import { assertDefined } from "@/lib/assert-defined";
 
 async function withBrowser(
   run: (browser: {
@@ -105,7 +106,10 @@ test("credential changes cancel old queries and distinguish local and remote ses
       // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       storageEvent(null, {} as Storage);
       assert.equal(client.getQueryData(["retained"]), 3);
-      const key = storage.key(0)!;
+      const key = assertDefined(
+        storage.key(0),
+        "Expected storage.key(0) to exist",
+      );
       storage.setItem(key, crypto.randomUUID());
       storageEvent(key);
       assert.equal(reloads(), 1);

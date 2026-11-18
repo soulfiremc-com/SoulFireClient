@@ -17,6 +17,7 @@ import { NodeTypesProvider } from "./NodeTypesContext";
 import { QuickAddMenu } from "./QuickAddMenu";
 import { ScriptEditorProvider } from "./ScriptEditorProvider";
 import { initNodeDefinitions, protoNodeTypeToLocal } from "./nodes/types";
+import { assertDefined } from "@/lib/assert-defined";
 
 const definitions = Array.from({ length: 40 }, (_, id) =>
   create(NodeTypeDefinitionSchema, {
@@ -127,7 +128,10 @@ export const QuickAddRevealsKeyboardSelection: Story = {
     const row = within(menu).getByRole("button", {
       name: "Test node 24",
     });
-    const viewport = menu.querySelector('[data-slot="scroll-area-viewport"]')!;
+    const viewport = assertDefined(
+      menu.querySelector('[data-slot="scroll-area-viewport"]'),
+      "Expected menu.querySelector([data-slot=scroll-area-viewport]) to exist",
+    );
     await waitFor(async () => {
       const bounds = viewport.getBoundingClientRect();
       const selected = row.getBoundingClientRect();
@@ -139,6 +143,7 @@ export const QuickAddRevealsKeyboardSelection: Story = {
 
 export const QuickAddFitsSmallScreen: Story = {
   beforeEach: async () => {
+    // oxlint-disable-next-line typescript/no-unnecessary-condition -- Storybook outside Vitest has no browser page
     if (!page) return undefined;
     const original = { width: innerWidth, height: innerHeight };
     await page.viewport(320, 320);
@@ -157,9 +162,10 @@ export const QuickAddFitsSmallScreen: Story = {
       within(menu).getByRole("textbox", { name: "Search nodes..." }),
       "Test node",
     );
-    const viewport = menu.querySelector<HTMLElement>(
-      '[data-slot="scroll-area-viewport"]',
-    )!;
+    const viewport = assertDefined(
+      menu.querySelector<HTMLElement>('[data-slot="scroll-area-viewport"]'),
+      "Expected menu.querySelector<HTMLElement>([data-slot=scroll-area-vi... to exist",
+    );
     await waitFor(async () => {
       const rect = menu.getBoundingClientRect();
       await expect(rect.left).toBeGreaterThanOrEqual(16);
@@ -194,7 +200,10 @@ export const DryRunOptionsHaveInset: Story = {
     const first = await within(document.body).findByRole("option", {
       name: "First trigger",
     });
-    const popup = first.closest('[data-slot="select-content"]')!;
+    const popup = assertDefined(
+      first.closest('[data-slot="select-content"]'),
+      "Expected first.closest([data-slot=select-content]) to exist",
+    );
     await waitFor(async () => {
       const inset =
         first.getBoundingClientRect().left - popup.getBoundingClientRect().left;

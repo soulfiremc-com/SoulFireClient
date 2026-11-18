@@ -72,8 +72,8 @@ test("nuqs table state survives router parsing, validation and link serializatio
   };
   const url = createSerializer(parsers)(expected);
   const parsed = parseUrlSearch(url);
-  assert.equal(typeof parsed.sort, "string");
-  assert.equal(typeof parsed.filters, "string");
+  assert.equal(typeof parsed["sort"], "string");
+  assert.equal(typeof parsed["filters"], "string");
   const validated = await dataTableValidateSearch["~standard"].validate(parsed);
   assert.ok("value" in validated);
   const linked = stringifyUrlSearch(validated.value);

@@ -293,7 +293,7 @@ function MainDialog(
         return;
       }
 
-      const text = event.clipboardData?.getData("text/plain");
+      const text = event.clipboardData.getData("text/plain");
       if (text) {
         event.preventDefault();
 
@@ -410,7 +410,7 @@ function MainDialog(
                   onClick={() => {
                     read(async (signal) => {
                       if (isDesktopApp()) {
-                        return [(await desktop.clipboard.readText()) ?? ""];
+                        return [await desktop.clipboard.readText()];
                       } else {
                         const mimeTypes = new Set(
                           props.filters.map((f) => f.mimeType),
@@ -441,7 +441,7 @@ function MainDialog(
                           toast.warning(
                             t("dialog.import.main.firstClipboardItem"),
                           );
-                          clipboardEntries = [clipboardEntries[0]];
+                          clipboardEntries = clipboardEntries.slice(0, 1);
                         }
 
                         const texts: string[] = [];

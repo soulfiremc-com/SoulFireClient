@@ -24,7 +24,7 @@ export function isPaletteOperationAvailable(
     !live ||
     !project ||
     command.projectId !== operation.instanceId ||
-    liveCommand?.projectId !== command.projectId ||
+    liveCommand.projectId !== command.projectId ||
     project.id !== operation.instanceId ||
     live.instanceId !== operation.instanceId ||
     live.kind !== operation.kind ||
@@ -94,7 +94,7 @@ export async function runPaletteOperation(
       await Effect.runPromise(
         createRpcClient(ScriptService, transport).deactivateScript(
           { instanceId: operation.instanceId, scriptId: operation.scriptId },
-          { signal },
+          signal ? { signal } : {},
         ),
       );
     }
@@ -109,7 +109,7 @@ export async function runPaletteOperation(
       ? await Effect.runPromise(
           client.restartBots(
             { instanceId: operation.instanceId, botIds },
-            { signal },
+            signal ? { signal } : {},
           ),
         )
       : await Effect.runPromise(
@@ -122,7 +122,7 @@ export async function runPaletteOperation(
                   ? BotDesiredState.RUNNING
                   : BotDesiredState.STOPPED,
             },
-            { signal },
+            signal ? { signal } : {},
           ),
         );
   return response.bots.length;

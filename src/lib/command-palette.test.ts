@@ -158,7 +158,9 @@ test("creation and administration require granted permissions", () => {
     ),
   );
   const denied = client([GlobalPermission.CREATE_INSTANCE]);
-  denied.serverPermissions[0].granted = false;
+  const [permission] = denied.serverPermissions;
+  assert.ok(permission);
+  permission.granted = false;
   assert(
     !createPaletteCommands({ t, instances: [], client: denied }).some(
       (command) => command.id === "create-project",
@@ -239,7 +241,9 @@ test("fuzzy search matches case, accents, aliases, and multiple words in either 
       "terminal:farm-1",
     );
   }
-  const accented = { ...commands[0], label: "Café" };
+  const [first] = commands;
+  assert.ok(first);
+  const accented = { ...first, label: "Café" };
   assert.equal(searchPaletteCommands([accented], "cafe").length, 1);
   assert.equal(
     searchPaletteCommands(commands, "nothing-matches-9xqz").length,
@@ -354,6 +358,7 @@ test("individual setting results link to an exact field rather than only its pag
     current,
   });
   const result = searchPaletteCommands(commands, "movement interval")[0];
+  assert.ok(result);
   assert.equal(result.label, "Movement interval");
   assert.equal(result.description, "Prevent idle kicks");
   assert.deepEqual(result.destination, {
@@ -365,6 +370,7 @@ test("individual setting results link to an exact field rather than only its pag
 
 test("exact names outrank aliases and context, with current project and recency breaking ties", () => {
   const base = createPaletteCommands({ t, instances: [] })[0];
+  assert.ok(base);
   const alias = {
     ...base,
     id: "alias",
@@ -382,24 +388,24 @@ test("exact names outrank aliases and context, with current project and recency 
     searchPaletteCommands([alias, exact], "terminal", {
       currentProjectId: "current",
       recentIds: ["alias"],
-    })[0].id,
+    })[0]?.id,
     "exact",
   );
   assert.equal(
-    searchPaletteCommands([alias], "terminal")[0].matchedText,
+    searchPaletteCommands([alias], "terminal")[0]?.matchedText,
     "Terminal",
   );
   const duplicate = { ...exact, id: "other", projectId: "current" };
   assert.equal(
     searchPaletteCommands([exact, duplicate], "terminal", {
       currentProjectId: "current",
-    })[0].id,
+    })[0]?.id,
     "other",
   );
   assert.equal(
     searchPaletteCommands([exact, { ...exact, id: "recent" }], "terminal", {
       recentIds: ["recent"],
-    })[0].id,
+    })[0]?.id,
     "recent",
   );
 });
@@ -433,6 +439,8 @@ test("bot and script operations require control permissions and never include em
     current,
   });
   assert(!denied.some((command) => command.operation));
+  const [account] = current.profile.accounts;
+  assert.ok(account);
   const authorized = {
     ...current,
     instancePermissions: [
@@ -451,12 +459,12 @@ test("bot and script operations require control permissions and never include em
       accounts: [
         ...current.profile.accounts,
         {
-          ...current.profile.accounts[0],
+          ...account,
           profileId: "stopped",
           lastKnownName: "Stopped",
         },
         {
-          ...current.profile.accounts[0],
+          ...account,
           profileId: "failed",
           lastKnownName: "Failed",
         },
@@ -670,6 +678,7 @@ test("global search covers each indexed project's own fields, descriptions, and 
     indexed: [{ project: otherProject("far") }],
   });
   const option = searchPaletteCommands(commands, "java edition")[0];
+  assert.ok(option);
   assert.equal(option.id, 'setting:far:["bot","bot","protocol"]');
   assert.equal(option.context, "Test farm");
   assert.equal(option.matchedText, "Java Edition 1.21.4");
@@ -784,7 +793,7 @@ test("server fields need READ_SERVER_CONFIG and link to the exact admin field", 
   });
   const field = searchPaletteCommands(allowed, "reachable url")[0];
   assert.equal(field?.context, "SoulFire server");
-  assert.deepEqual(field?.destination, {
+  assert.deepEqual(field.destination, {
     to: "/user/admin/settings/$pageId",
     params: { pageId: "server" },
     search: { focusNamespace: "server", focusKey: "public-address" },
@@ -795,6 +804,7 @@ test("server fields need READ_SERVER_CONFIG and link to the exact admin field", 
 
 test("long descriptions match contiguous text, not scattered letters", () => {
   const base = createPaletteCommands({ t, instances: [] })[0];
+  assert.ok(base);
   const command = {
     ...base,
     id: "described",

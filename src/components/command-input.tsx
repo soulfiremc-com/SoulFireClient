@@ -367,7 +367,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
     const inputValueCurrent = input.value;
     const anchorIndex = Math.min(
-      replacementRangeStart !== null ? replacementRangeStart : cursorPosition,
+      replacementRangeStart ?? cursorPosition,
       inputValueCurrent.length,
     );
     const textBeforeAnchor = inputValueCurrent.slice(0, anchorIndex);
@@ -491,7 +491,11 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const range =
           prev.replacementRange ??
           getCommandTokenRange(prev.baseText, prev.cursor);
-        const suggestion = prev.receivedCompletions[normalizedIndex].suggestion;
+        const suggestion =
+          prev.receivedCompletions[normalizedIndex]?.suggestion;
+        if (suggestion === undefined) {
+          return prev;
+        }
         const before = prev.baseText.slice(0, range.start);
         const after = prev.baseText.slice(range.end);
         const newValue = `${before}${suggestion}${after}`;
@@ -834,7 +838,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           }}
         />
       </InputGroup>
-      {popupVisible && caretPositionStyle && (
+      {popupVisible && (
         // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- the suggestion popup keeps focus in the input on pointer down
         <div
           className="fixed z-50 max-h-(--suggestions-max-height) w-(--suggestions-width) overflow-auto rounded-md border border-(--terminal-border) bg-(--terminal-popup) text-inherit shadow-md data-[side=top]:-translate-y-full"

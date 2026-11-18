@@ -8,22 +8,24 @@ import {
 import { useTerminalInteractionActions } from "@/hooks/use-terminal-interaction-actions";
 import {
   parseTerminalText,
+  type TerminalInteraction,
   type TerminalLogContent,
   type TerminalTextSpan,
 } from "@/lib/terminal-interactions";
 
 function InteractiveText({
   span,
+  metadata,
   onCommand,
 }: {
   span: TerminalTextSpan;
-  onCommand?: TerminalCommandHandler;
+  metadata: TerminalInteraction;
+  onCommand?: TerminalCommandHandler | undefined;
 }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const down = useRef<{ x: number; y: number } | null>(null);
   const actions = useTerminalInteractionActions(onCommand);
-  const metadata = span.interaction!;
   const description = actions.description(metadata.click);
   return (
     <Tooltip open={open} onOpenChange={setOpen} triggerId={id}>
@@ -93,7 +95,7 @@ export const TerminalMessage = memo(function TerminalMessage({
   onCommand,
 }: {
   entry: TerminalLogContent;
-  onCommand?: TerminalCommandHandler;
+  onCommand?: TerminalCommandHandler | undefined;
 }) {
   const { message, personal, terminalInteractions } = entry;
   const spans = useMemo(
@@ -105,7 +107,11 @@ export const TerminalMessage = memo(function TerminalMessage({
       {spans.map((span) => (
         <Fragment key={span.start}>
           {span.interaction ? (
-            <InteractiveText span={span} onCommand={onCommand} />
+            <InteractiveText
+              span={span}
+              metadata={span.interaction}
+              onCommand={onCommand}
+            />
           ) : (
             span.text
           )}

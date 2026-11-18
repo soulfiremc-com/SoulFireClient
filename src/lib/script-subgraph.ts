@@ -1,4 +1,5 @@
 import type { Edge, Node, XYPosition } from "@xyflow/react";
+import { assertDefined } from "@/lib/assert-defined";
 import { nodeDataString } from "@/lib/script-node-data";
 
 export function selectedSubgraph(
@@ -19,8 +20,9 @@ export function selectedSubgraph(
   }
 
   const ids = new Set(pending);
-  for (let index = 0; index < pending.length; index++) {
-    for (const child of children.get(pending[index]) ?? []) {
+  // The loop also visits children pushed while it runs.
+  for (const id of pending) {
+    for (const child of children.get(id) ?? []) {
       if (ids.has(child)) continue;
       ids.add(child);
       pending.push(child);
@@ -48,12 +50,15 @@ export function cloneSubgraph(
   const ids = new Map(
     graph.nodes.map((node) => [node.id, crypto.randomUUID()]),
   );
+  // Every node gets a copy ID above, and edges are filtered to copied nodes.
+  const copyId = (id: string) =>
+    assertDefined(ids.get(id), `Missing copy ID for node ${id}`);
   return {
     nodes: graph.nodes.map((node): Node => {
       const parent = ids.get(nodeDataString(node.data, "parentGroupId") ?? "");
       return {
         ...node,
-        id: ids.get(node.id)!,
+        id: copyId(node.id),
         // Each group has its own canvas. Only roots move in the target canvas.
         position: parent
           ? { ...node.position }
@@ -64,11 +69,13 @@ export function cloneSubgraph(
           parentFrameId: ids.get(
             nodeDataString(node.data, "parentFrameId") ?? "",
           ),
-          ...(Array.isArray(node.data.containedNodes) && {
-            containedNodes: node.data.containedNodes.flatMap((id: string) => {
-              const copy = ids.get(id);
-              return copy ? [copy] : [];
-            }),
+          ...(Array.isArray(node.data["containedNodes"]) && {
+            containedNodes: node.data["containedNodes"].flatMap(
+              (id: string) => {
+                const copy = ids.get(id);
+                return copy ? [copy] : [];
+              },
+            ),
           }),
         },
         selected: !parent,
@@ -80,8 +87,8 @@ export function cloneSubgraph(
       .map((edge): Edge => ({
         ...edge,
         id: crypto.randomUUID(),
-        source: ids.get(edge.source)!,
-        target: ids.get(edge.target)!,
+        source: copyId(edge.source),
+        target: copyId(edge.target),
         selected: false,
       })),
   };

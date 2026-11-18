@@ -95,7 +95,7 @@ test("a second save updates the assigned ID before canonical navigation finishes
         return {
           script: {
             id: request.scriptId,
-            name: request.name,
+            ...(request.name !== undefined && { name: request.name }),
             nodes: request.nodes,
           },
         };
@@ -115,7 +115,7 @@ test("a second save updates the assigned ID before canonical navigation finishes
   assert.equal(creates, 1);
   assert.equal(updates, 1);
   assert.equal(persisted.name, "Newer edit");
-  assert.deepEqual(persisted.nodes[0].data.value.kind, {
+  assert.deepEqual(persisted.nodes[0]?.data["value"]?.kind, {
     case: "numberValue",
     value: 2,
   });

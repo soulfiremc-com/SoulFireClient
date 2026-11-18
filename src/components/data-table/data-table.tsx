@@ -27,7 +27,7 @@ interface DataTableProps<
 > extends React.ComponentProps<"div"> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   actionBar?: React.ReactNode;
-  onRowContextMenu?: (e: React.MouseEvent, row: TData) => void;
+  onRowContextMenu?: ((e: React.MouseEvent, row: TData) => void) | undefined;
 }
 
 // Every slice that changes which rows, cells, or header states render.
@@ -48,7 +48,7 @@ interface DataTableRowProps<TData extends RowData> {
   row: Row<typeof dataTableFeatures, TData>;
   cells: Cell<typeof dataTableFeatures, TData>[];
   selected: boolean;
-  onRowContextMenu?: (e: React.MouseEvent, row: TData) => void;
+  onRowContextMenu?: ((e: React.MouseEvent, row: TData) => void) | undefined;
 }
 
 // Rows only re-render when their data, cells, or selection change, so

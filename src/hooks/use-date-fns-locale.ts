@@ -9,7 +9,7 @@ import {
 
 export function useDateFnsLocale(): Locale {
   const { i18n } = useTranslation();
-  const language = i18n.resolvedLanguage ?? i18n.language ?? "en-US";
+  const language = i18n.resolvedLanguage ?? i18n.language;
   const [, rerender] = useReducer((count: number) => count + 1, 0);
 
   useEffect(() => {

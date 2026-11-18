@@ -192,10 +192,11 @@ export function selectBotsToStart(
   if (shuffle) {
     for (let index = candidates.length - 1; index > 0; index -= 1) {
       const other = Math.floor(random() * (index + 1));
-      [candidates[index], candidates[other]] = [
-        candidates[other],
-        candidates[index],
-      ];
+      const current = candidates[index];
+      const swapped = candidates[other];
+      if (current === undefined || swapped === undefined) continue;
+      candidates[index] = swapped;
+      candidates[other] = current;
     }
   }
   return count === undefined

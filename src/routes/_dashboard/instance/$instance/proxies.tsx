@@ -396,7 +396,7 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
   },
 ];
 
-function ProxyPassword({ password }: { password?: string }) {
+function ProxyPassword({ password }: { password?: string | undefined }) {
   const { t } = useTranslation("instance");
   const [visible, setVisible] = useState(false);
 
@@ -937,7 +937,7 @@ function Content() {
             instanceInfo.instanceSettings.find((s) => s.id === "proxy"),
             "the proxy settings page",
           )}
-          disabledIds={PAGE_HIDDEN_SETTINGS.proxy}
+          disabledIds={PAGE_HIDDEN_SETTINGS["proxy"]}
           focusSetting={
             focusNamespace && focusKey
               ? { namespace: focusNamespace, key: focusKey }

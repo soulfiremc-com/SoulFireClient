@@ -155,7 +155,7 @@ export const SCRIPT_TEMPLATES: readonly ScriptTemplate[] = [
 
 export type NodeContract = {
   type: string;
-  isTrigger?: boolean;
+  isTrigger?: boolean | undefined;
   inputs: readonly { id: string }[];
   outputs: readonly { id: string }[];
 };

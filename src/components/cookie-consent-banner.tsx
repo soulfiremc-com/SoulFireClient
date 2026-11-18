@@ -20,7 +20,7 @@ export function CookieConsentBanner({
 }: {
   onAccept: () => void;
   onDecline: () => void;
-  onClose?: () => void;
+  onClose?: (() => void) | undefined;
 }) {
   const { t } = useTranslation("common");
   const titleId = useId();

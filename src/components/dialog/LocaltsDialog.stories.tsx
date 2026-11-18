@@ -28,7 +28,7 @@ const meta = {
       const url = requestUrl(input);
       if (!url.startsWith("https://localts.store/v1/"))
         return original(input, options);
-      if (url.endsWith("/products") && parameters.catalogFails)
+      if (url.endsWith("/products") && parameters["catalogFails"])
         return new Response("", { status: 500 });
       if (url.endsWith("/products"))
         return Response.json({
@@ -67,10 +67,10 @@ const meta = {
         success: true,
         "order-id": "order-123",
         status:
-          parameters.deliveryState === "pending" ? "PACKAGING" : "PACKAGED",
+          parameters["deliveryState"] === "pending" ? "PACKAGING" : "PACKAGED",
         "order-status":
-          parameters.deliveryState === "refunded" ? "REFUNDED" : "COMPLETE",
-        items: parameters.deliveryState
+          parameters["deliveryState"] === "refunded" ? "REFUNDED" : "COMPLETE",
+        items: parameters["deliveryState"]
           ? []
           : [{ id: "item-1", content: "test-cookie-value" }],
       });

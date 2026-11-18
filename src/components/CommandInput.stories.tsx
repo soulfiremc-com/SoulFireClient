@@ -14,6 +14,7 @@ import { getCommandTokenRange } from "@/lib/command-token";
 import { toTerminalLine } from "@/stores/terminal-log-store";
 import CommandInput from "./command-input";
 import { TerminalView } from "./terminal";
+import { assertDefined } from "@/lib/assert-defined";
 
 const commands = fn();
 const completions = fn();
@@ -186,8 +187,11 @@ export const DraftSurvivesLogs: Story = {
     input.setSelectionRange(5, 5);
     input.dispatchEvent(new Event("click", { bubbles: true }));
     await canvas.findByRole("option", { name: "Hello A greeting" });
-    const popup = canvas.getByRole("listbox").parentElement!;
-    await expect(popup.dataset.side).toBe("top");
+    const popup = assertDefined(
+      canvas.getByRole("listbox").parentElement,
+      "Expected canvas.getByRole(listbox).parentElement to exist",
+    );
+    await expect(popup.dataset["side"]).toBe("top");
     emitLog();
     await waitFor(() =>
       expect(
@@ -205,7 +209,10 @@ export const DraftSurvivesLogs: Story = {
     await expect(input).toHaveValue("say Hello friend");
     input.setSelectionRange(input.value.length, input.value.length);
     await userEvent.click(
-      canvasElement.querySelector("[data-terminal-viewport]")!,
+      assertDefined(
+        canvasElement.querySelector("[data-terminal-viewport]"),
+        "Expected canvasElement.querySelector([data-terminal-viewport]) to exist",
+      ),
     );
     await expect(input).toHaveFocus();
   },
@@ -260,7 +267,10 @@ export const EmptyPromptKeepsOutputVisible: Story = {
     const input = canvas.getByRole("combobox", { name: "Command" });
     await userEvent.click(input);
     await userEvent.click(
-      canvasElement.querySelector("[data-terminal-viewport]")!,
+      assertDefined(
+        canvasElement.querySelector("[data-terminal-viewport]"),
+        "Expected canvasElement.querySelector([data-terminal-viewport]) to exist",
+      ),
     );
     await expect(input).toHaveFocus();
     await new Promise((resolve) => {

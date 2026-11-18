@@ -5,6 +5,7 @@ import { createRouterTransport } from "@connectrpc/connect";
 import type { LogEntry } from "@/components/script-editor/types";
 import { LogsService } from "@/generated/soulfire/logs_pb";
 import { mergeExecutionLogs, watchScriptLogs } from "./script-logs";
+import { assertDefined } from "@/lib/assert-defined";
 
 const entry = (id: number): LogEntry => ({
   id: String(id),
@@ -21,7 +22,9 @@ test("late history merges in order without duplicating live entries or displacin
   assert.equal(merged.length, 500);
   assert.equal(merged[0], live[0]);
   assert.equal(merged[499], live[499]);
-  assert.equal(mergeExecutionLogs(merged, [live[20]]), merged);
+  const replayed = live[20];
+  assert.ok(replayed);
+  assert.equal(mergeExecutionLogs(merged, [replayed]), merged);
   assert.deepEqual(
     mergeExecutionLogs([entry(4), entry(4)], [entry(2), entry(3)]).map(
       (log) => log.id,
@@ -173,25 +176,46 @@ test("script feed retains independent provenance and strips untrusted interactio
         throw new Error("Log snapshot did not arrive");
       }),
     ]);
-    const trusted = logs.find((log) => log.id === "trusted")!;
+    const trusted = assertDefined(
+      logs.find((log) => log.id === "trusted"),
+      "Expected logs.find((log) => log.id === trusted) to exist",
+    );
     assert.equal(trusted.personal, true);
     assert.equal(trusted.terminalInteractions, true);
     assert.equal(trusted.message, text);
     assert.equal(
-      parseTerminalText(trusted)[0].interaction?.click?.value,
+      parseTerminalText(trusted)[0]?.interaction?.click?.value,
       "fixture-token",
     );
     for (const id of ["raw-personal", "nonpersonal"]) {
-      const log = logs.find((candidate) => candidate.id === id)!;
+      const log = assertDefined(
+        logs.find((candidate) => candidate.id === id),
+        "Expected logs.find((candidate) => candidate.id === id) to exist",
+      );
       assert.equal(log.message, "Copy token");
       assert.ok(parseTerminalText(log).every((span) => !span.interaction));
     }
-    assert.equal(logs.find((log) => log.id === "nonpersonal")!.personal, false);
     assert.equal(
-      logs.find((log) => log.id === "nonpersonal")!.terminalInteractions,
+      assertDefined(
+        logs.find((log) => log.id === "nonpersonal"),
+        "Expected logs.find((log) => log.id === nonpersonal) to exist",
+      ).personal,
+      false,
+    );
+    assert.equal(
+      assertDefined(
+        logs.find((log) => log.id === "nonpersonal"),
+        "Expected logs.find((log) => log.id === nonpersonal) to exist",
+      ).terminalInteractions,
       true,
     );
-    assert.equal(logs.find((log) => log.id === "legacy")!.message, "Legacy");
+    assert.equal(
+      assertDefined(
+        logs.find((log) => log.id === "legacy"),
+        "Expected logs.find((log) => log.id === legacy) to exist",
+      ).message,
+      "Legacy",
+    );
   } finally {
     stop();
     release();

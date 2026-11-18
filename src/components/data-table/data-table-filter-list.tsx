@@ -606,7 +606,7 @@ function onFilterInputRender<TData extends RowData>({
   filter: ExtendedColumnFilter<TData>;
   inputId: string;
   column: Column<typeof dataTableFeatures, TData>;
-  columnMeta?: TableColumnMeta;
+  columnMeta?: TableColumnMeta | undefined;
   onFilterUpdate: (
     filterId: string,
     updates: Partial<Omit<ExtendedColumnFilter<TData>, "filterId">>,
@@ -678,7 +678,7 @@ function onFilterInputRender<TData extends RowData>({
         <Select
           open={showValueSelector}
           onOpenChange={setShowValueSelector}
-          value={filter.value ?? undefined}
+          value={filter.value}
           onValueChange={(value) => {
             if (value !== null) {
               onFilterUpdate(filter.filterId, {
@@ -732,8 +732,9 @@ function onFilterInputRender<TData extends RowData>({
           onOpenChange={setShowValueSelector}
           value={selectedValues}
           onValueChange={(value) => {
+            // Clearing a single-select filter leaves an empty, inactive value.
             onFilterUpdate(filter.filterId, {
-              value,
+              value: value ?? "",
             });
           }}
           multiple={multiple}

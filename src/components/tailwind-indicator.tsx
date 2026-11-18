@@ -1,5 +1,5 @@
 export function TailwindIndicator() {
-  if (process.env.NODE_ENV === "production") return null;
+  if (process.env["NODE_ENV"] === "production") return null;
 
   return (
     <div className="fixed right-1 bottom-1 z-50 flex size-6 items-center justify-center rounded-full bg-foreground p-3 font-mono text-xs text-background">

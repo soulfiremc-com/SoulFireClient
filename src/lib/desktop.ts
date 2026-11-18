@@ -23,7 +23,7 @@ import type {
 
 declare global {
   interface Window {
-    soulfireElectron?: SoulFireDesktopApi;
+    soulfireElectron?: SoulFireDesktopApi | undefined;
   }
 }
 

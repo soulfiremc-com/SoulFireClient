@@ -132,7 +132,7 @@ export function NodeTypesProvider({
 
   // Initialize port metadata from server response
   useEffect(() => {
-    if (data.portTypeMetadata && data.portTypeMetadata.length > 0) {
+    if (data.portTypeMetadata.length > 0) {
       initPortMetadata(data.portTypeMetadata);
     }
   }, [data.portTypeMetadata]);
@@ -211,10 +211,7 @@ export function NodeTypesProvider({
       result[category] = [];
     }
     for (const node of Object.values(definitions)) {
-      if (!result[node.category]) {
-        result[node.category] = [];
-      }
-      result[node.category].push(node);
+      (result[node.category] ??= []).push(node);
     }
     return result;
   }, [definitions, categories]);

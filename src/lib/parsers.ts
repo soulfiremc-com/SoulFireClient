@@ -57,7 +57,7 @@ export const getSortingStateParser = <TData>(
       a.length === b.length &&
       a.every(
         (item, index) =>
-          item.id === b[index]?.id && item.desc === b[index]?.desc,
+          item.id === b[index]?.id && item.desc === b[index].desc,
       ),
   });
 };
@@ -114,9 +114,9 @@ export const getFiltersStateParser = <TData>(
       a.every(
         (filter, index) =>
           filter.id === b[index]?.id &&
-          filter.value === b[index]?.value &&
-          filter.variant === b[index]?.variant &&
-          filter.operator === b[index]?.operator,
+          filter.value === b[index].value &&
+          filter.variant === b[index].variant &&
+          filter.operator === b[index].operator,
       ),
   });
 };

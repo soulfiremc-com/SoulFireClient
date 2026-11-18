@@ -101,17 +101,16 @@ test("Fernan purchase requests include the documented SOULFIRE referral code", a
   assert.equal(result.products.length, 1);
   assert.equal(result.balance_after, 810);
   const purchases = requests.filter((request) => request.method === "POST");
+  const [purchase] = purchases;
   assert.equal(purchases.length, 1);
-  assert.equal(
-    purchases[0].url,
-    "https://api.fernan.club/api/v1/store/purchase",
-  );
-  assert.deepEqual(JSON.parse(purchases[0].body!), {
+  assert.ok(purchase?.body);
+  assert.equal(purchase.url, "https://api.fernan.club/api/v1/store/purchase");
+  assert.deepEqual(JSON.parse(purchase.body), {
     product_id: 1,
     amount: 2,
     referral_code: "SOULFIRE",
   });
-  assert.equal(purchases[0].headers?.["X-API-Key"], "private-key");
+  assert.equal(purchases[0]?.headers?.["X-API-Key"], "private-key");
 });
 
 test("Fernan omits a removed referral code", async () => {
@@ -234,9 +233,9 @@ test("Fernan imports delivered access tokens and decodes cookie files", () => {
 test("Fernan can recover an existing purchase without placing another order", async () => {
   const { fetcher, requests } = mock();
   const purchase = await fetchFernanPurchase("key", id, undefined, fetcher);
-  assert.equal(purchase.products[0].access_token, "test-access-token");
+  assert.equal(purchase.products[0]?.access_token, "test-access-token");
   assert.equal(requests.length, 1);
-  assert.equal(requests[0].method, "GET");
+  assert.equal(requests[0]?.method, "GET");
 });
 
 test("the desktop bridge cannot retrieve or regenerate Fernan API keys", () => {

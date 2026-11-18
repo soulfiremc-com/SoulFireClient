@@ -26,7 +26,9 @@ import { useNodeTranslations } from "./useNodeTranslations";
 
 interface NodePaletteProps {
   /** Starts a pointer drag. Without it, the palette uses tap-to-add buttons. */
-  onNodeDragStart?: (nodeType: string, x: number, y: number) => void;
+  onNodeDragStart?:
+    | ((nodeType: string, x: number, y: number) => void)
+    | undefined;
   /** Adds the node at the canvas center. */
   onNodeAdd: (nodeType: string) => void;
   className?: string;
@@ -35,7 +37,7 @@ interface NodePaletteProps {
 interface DraggableNodeItemProps {
   node: NodeDefinition;
   nodeLabel: string;
-  onDragStart?: (nodeType: string, x: number, y: number) => void;
+  onDragStart?: ((nodeType: string, x: number, y: number) => void) | undefined;
   onAdd: (nodeType: string) => void;
 }
 
@@ -86,7 +88,9 @@ interface CategorySectionProps {
   nodes: NodeDefinition[];
   getNodeLabel: (node: NodeDefinition) => string;
   forceOpen: boolean;
-  onNodeDragStart?: (nodeType: string, x: number, y: number) => void;
+  onNodeDragStart?:
+    | ((nodeType: string, x: number, y: number) => void)
+    | undefined;
   onNodeAdd: (nodeType: string) => void;
 }
 

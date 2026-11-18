@@ -3,6 +3,7 @@ import { test } from "node:test";
 import type { Edge, Node } from "@xyflow/react";
 import { parseScriptFile, serializeScriptFile } from "@/lib/script-file";
 import { createScriptEditorSession } from "./script-editor-store";
+import { assertDefined } from "@/lib/assert-defined";
 
 function node(id: string, type: string, parentGroupId?: string): Node {
   return { id, type, position: { x: 0, y: 0 }, data: { parentGroupId } };
@@ -55,9 +56,10 @@ test("grouping and ungrouping restores node positions and graph connections", ()
     [first, second].map((id) => ({ id, type: "select", selected: true })),
   );
   editor.actions.createGroupFromSelection();
-  const group = editor.document
-    .get()
-    .nodes.find((n) => n.type === "layout.group")!;
+  const group = assertDefined(
+    editor.document.get().nodes.find((n) => n.type === "layout.group"),
+    "Expected editor.document .get() .nodes.find((n) => n.type === layo... to exist",
+  );
   editor.actions.setSelectedNode(group.id);
   editor.actions.ungroupSelected();
   const restored = editor.actions.getScriptData();
@@ -131,7 +133,7 @@ for (const type of ["execution", "data"]) {
         e.target,
         e.targetHandle,
         e.type,
-        e.data?.order,
+        e.data?.["order"],
       ]),
       [["source", "value", "target", "value", type, 3]],
     );
@@ -157,7 +159,7 @@ test("ungrouping retains the internal consumer's multi-input order", () => {
   assert.deepEqual(
     graph.edges
       .slice()
-      .toSorted((a, b) => Number(a.data?.order) - Number(b.data?.order))
+      .toSorted((a, b) => Number(a.data?.["order"]) - Number(b.data?.["order"]))
       .map((e) => e.source),
     ["second", "first"],
   );

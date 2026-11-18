@@ -57,7 +57,7 @@ interface DataTableSortListProps<
   TData extends RowData,
 > extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
 }
 
 export function DataTableSortList<TData extends RowData>({
@@ -84,7 +84,7 @@ interface DataTableSortListContentProps<
 > extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<typeof dataTableFeatures, TData>;
   sorting: SortingState;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
 }
 
 function DataTableSortListContent<TData extends RowData>({
@@ -136,7 +136,6 @@ function DataTableSortListContent<TData extends RowData>({
   const onSortUpdate = React.useCallback(
     (sortId: string, updates: Partial<ColumnSort>) => {
       onSortingChange((prevSorting) => {
-        if (!prevSorting) return prevSorting;
         return prevSorting.map((sort) =>
           sort.id === sortId ? { ...sort, ...updates } : sort,
         );

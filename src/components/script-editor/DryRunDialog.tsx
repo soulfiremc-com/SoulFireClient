@@ -80,7 +80,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
       triggerNodes.map((node) => ({
         value: node.id,
         label: displayText(
-          node.data.label ??
+          node.data["label"] ??
             getNodeDefinition(node.type ?? "")?.label ??
             node.id,
         ),

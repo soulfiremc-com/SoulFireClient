@@ -125,11 +125,11 @@ test("decoded submissions retain trimming and existing JWT header acceptance", a
   });
   expect(
     (await toFormSchema(username)["~standard"].validate("ab")).issues?.[0]
-      .message,
+      ?.message,
   ).toBe("minimum");
   expect(
     (await toFormSchema(instance)["~standard"].validate(" \n ")).issues?.[0]
-      .message,
+      ?.message,
   ).toBe("required");
 });
 

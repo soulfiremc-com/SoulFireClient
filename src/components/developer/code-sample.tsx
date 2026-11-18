@@ -91,8 +91,8 @@ export function CodeSample({
                       key={token.offset}
                       data-syntax-token
                       style={{
-                        "--syntax-light": token.variants.light.color,
-                        "--syntax-dark": token.variants.dark.color,
+                        "--syntax-light": token.variants["light"]?.color,
+                        "--syntax-dark": token.variants["dark"]?.color,
                       }}
                     >
                       {token.content}

@@ -61,7 +61,9 @@ test("an invalidated optimistic profile is replaced by server state", async () =
     });
     await client.invalidateQueries({ queryKey, refetchType: "none" });
     const result = await client.fetchQuery(options);
-    assert.deepEqual(result.profile.settings.plugin.messages, ["stored"]);
+    assert.deepEqual(result.profile.settings["plugin"]?.["messages"], [
+      "stored",
+    ]);
     assert.deepEqual(conditionalRequests, [false]);
   } finally {
     client.clear();
@@ -123,7 +125,7 @@ test("conditional polling refreshes permissions and bot counts while preserving 
     for (const expected of [false, true]) {
       granted = expected;
       const result = await fetchInstanceInfo(transport, id, client);
-      assert.equal(result.instancePermissions[0].granted, expected);
+      assert.equal(result.instancePermissions[0]?.granted, expected);
       assert.equal(result.botSummary?.onlineBots, onlineBots);
       assert.equal(result.profile, cached.profile);
       assert.equal(result.config, cached.config);

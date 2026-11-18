@@ -1,4 +1,4 @@
-import { flavorEntries } from "@catppuccin/palette";
+import { flavorEntries, flavors } from "@catppuccin/palette";
 import { WTerm } from "@wterm/dom";
 import { ArrowDownIcon } from "lucide-react";
 import {
@@ -67,7 +67,7 @@ export function TerminalView({
   const pointerDown = useRef<{
     x: number;
     y: number;
-    uri?: string;
+    uri?: string | undefined;
     touch: boolean;
   } | null>(null);
   // Set when output arrives while the reader has scrolled away from the end.
@@ -122,7 +122,7 @@ export function TerminalView({
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<string>();
   const selectedTheme =
-    flavorEntries.find(([name]) => name === theme)?.[1] ?? flavorEntries[0][1];
+    flavorEntries.find(([name]) => name === theme)?.[1] ?? flavors.latte;
   const { colors, dark } = selectedTheme;
 
   const applyTheme = useEffectEvent(() => {

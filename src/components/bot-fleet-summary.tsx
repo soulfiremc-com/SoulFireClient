@@ -9,7 +9,7 @@ export function BotFleetSummaryBadge({
   summary,
   className,
 }: {
-  summary?: BotFleetSummary;
+  summary?: BotFleetSummary | undefined;
   className?: string;
 }) {
   const { t } = useTranslation("common");

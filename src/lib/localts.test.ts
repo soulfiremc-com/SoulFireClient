@@ -15,6 +15,7 @@ import {
   validateProviderRequest,
   type ProviderRequest,
 } from "./provider-request-policy.ts";
+import { assertDefined } from "@/lib/assert-defined";
 
 const product: LocaltsProduct = {
   id: "cookie-alts",
@@ -96,14 +97,16 @@ test("Localts verifies stock, balance and price before one credit-funded purchas
   );
   const purchases = requests.filter((request) => request.method === "POST");
   assert.equal(purchases.length, 1);
+  const [purchase] = purchases;
+  assert.ok(purchase);
   assert.equal(
-    purchases[0].url,
+    purchase.url,
     "https://localts.store/v1/products/cookie-alts/purchase?amount=5",
   );
-  assert.equal(purchases[0].headers?.["X-API-Key"], "private-key");
-  assert.equal(purchases[0].body, undefined);
-  assert.equal(new URL(purchases[0].url).searchParams.has("affiliate"), false);
-  assert.equal(new URL(purchases[0].url).searchParams.has("campaign"), false);
+  assert.equal(purchase.headers?.["X-API-Key"], "private-key");
+  assert.equal(purchase.body, undefined);
+  assert.equal(new URL(purchase.url).searchParams.has("affiliate"), false);
+  assert.equal(new URL(purchase.url).searchParams.has("campaign"), false);
 });
 
 test("Localts will not buy after a price change, insufficient balance or stock loss", async () => {
@@ -138,6 +141,7 @@ test("Localts order IDs are encoded and verified before importing", async () => 
     fetcher,
   );
   assert.equal(result["order-id"], "order-123");
+  assert.ok(requests[0]);
   assert.equal(new URL(requests[0].url).searchParams.get("id"), "order-123");
   await assert.rejects(
     fetchLocaltsOrder("key", "other&amount=999", undefined, fetcher),
@@ -151,6 +155,7 @@ test("Localts cookie tokens become cookie JSON accepted by the account importer"
     result.credentialType,
     AccountTypeCredentials.MICROSOFT_JAVA_COOKIES,
   );
+  assert.ok(result.payload[0]);
   assert.deepEqual(JSON.parse(result.payload[0]), [
     {
       domain: "login.live.com",
@@ -210,7 +215,7 @@ test("Localts aborts sibling preflight requests after failure and never purchase
     requests.push(request);
     if (request.url.endsWith("/products")) {
       await new Promise<void>((resolve) => {
-        signal!.addEventListener(
+        assertDefined(signal, "Expected signal to exist").addEventListener(
           "abort",
           () => {
             productsAborted = true;

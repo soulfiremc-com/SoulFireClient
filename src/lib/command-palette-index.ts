@@ -18,7 +18,7 @@ export async function runBounded(
   const worker = async () => {
     while (!signal.aborted && next < tasks.length) {
       const task = tasks[next++];
-      await task();
+      if (task) await task();
     }
   };
   await Promise.all(

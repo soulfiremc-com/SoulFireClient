@@ -48,7 +48,7 @@ export const Route = createFileRoute("/_dashboard/user/admin/settings/$pageId")(
       return settingsEntry
         ? {
             title: settingsEntry.pageName,
-            iconName: settingsEntry.iconId ?? fallbackIconName,
+            iconName: settingsEntry.iconId || fallbackIconName,
           }
         : {
             title: null,

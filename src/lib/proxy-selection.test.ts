@@ -55,7 +55,7 @@ test("identical proxies have separate occurrence identities across reordering", 
   const reordered = getProxyRows([{ ...other }, { ...first }, { ...first }]);
   assert.deepEqual(
     reordered.map((row) => row.rowId),
-    [rows[2].rowId, rows[0].rowId, rows[1].rowId],
+    [rows[2]?.rowId, rows[0]?.rowId, rows[1]?.rowId],
   );
   const withoutOther = getProxyRows([first, first]);
   assert.deepEqual(

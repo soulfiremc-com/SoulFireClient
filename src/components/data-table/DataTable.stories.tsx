@@ -159,8 +159,10 @@ export const SelectAndFilter: Story = {
     });
     await expect(rowCheckboxes).toHaveLength(50);
 
-    await userEvent.click(rowCheckboxes[1]);
-    await expect(rowCheckboxes[1]).toBeChecked();
+    const [, secondRow] = rowCheckboxes;
+    if (!secondRow) throw new Error("The table did not render a second row");
+    await userEvent.click(secondRow);
+    await expect(secondRow).toBeChecked();
     await expect(
       canvas.getByText(`1 of ${ROW_COUNT} row(s) selected`),
     ).toBeVisible();

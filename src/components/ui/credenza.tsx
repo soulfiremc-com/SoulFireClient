@@ -41,15 +41,8 @@ const CredenzaContext = React.createContext<{ isDesktop: boolean }>({
   isDesktop: false,
 });
 
-const useCredenzaContext = () => {
-  const context = React.use(CredenzaContext);
-  if (!context) {
-    throw new Error(
-      "Credenza components cannot be rendered outside the Credenza Context",
-    );
-  }
-  return context;
-};
+// The context has a default value, so components also work outside Credenza.
+const useCredenzaContext = () => React.use(CredenzaContext);
 
 const Credenza = ({ children, ...props }: RootCredenzaProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");

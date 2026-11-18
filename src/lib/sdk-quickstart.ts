@@ -44,8 +44,8 @@ export type SdkQuickstartOptions = {
   shell: SdkShell;
   serverUrl: string;
   instanceId: string;
-  botId?: string;
-  demo?: boolean;
+  botId?: string | undefined;
+  demo?: boolean | undefined;
 };
 
 export function buildSdkQuickstart(options: SdkQuickstartOptions) {
@@ -154,7 +154,7 @@ const AGENT_GOALS: Record<SdkRecipe, string> = {
 export function buildSdkAgentPrompt(
   options: SdkQuickstartOptions & {
     instanceName: string;
-    botName?: string;
+    botName?: string | undefined;
   },
 ) {
   const example = buildSdkQuickstart(options);

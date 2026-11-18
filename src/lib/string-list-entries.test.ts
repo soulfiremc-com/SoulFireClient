@@ -18,8 +18,8 @@ test("list echoes preserve every row and the current array", () => {
 test("replacing text preserves the edited row identity", () => {
   const previous = entries("alpha", "beta");
   const updated = reconcileStringListEntries(previous, ["edited", "beta"]);
-  assert.equal(updated[0].id, previous[0].id);
-  assert.equal(updated[0].value, "edited");
+  assert.equal(updated[0]?.id, previous[0]?.id);
+  assert.equal(updated[0]?.value, "edited");
   assert.equal(updated[1], previous[1]);
 });
 
@@ -32,7 +32,7 @@ test("insertion and removal preserve the identities of unchanged rows", () => {
     "gamma",
   ]);
   assert.deepEqual(inserted.slice(1), previous);
-  assert.ok(!previous.some((entry) => entry.id === inserted[0].id));
+  assert.ok(!previous.some((entry) => entry.id === inserted[0]?.id));
   const removed = reconcileStringListEntries(inserted, ["alpha", "gamma"]);
   assert.deepEqual(removed, [previous[0], previous[2]]);
 });
@@ -66,5 +66,5 @@ test("replacing a row with a duplicate does not move the unchanged row", () => {
   const previous = entries("alpha", "beta");
   const updated = reconcileStringListEntries(previous, ["beta", "beta"]);
   assert.equal(updated[1], previous[1]);
-  assert.equal(updated[0].id, previous[0].id);
+  assert.equal(updated[0]?.id, previous[0]?.id);
 });

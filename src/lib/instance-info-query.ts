@@ -23,7 +23,7 @@ export async function fetchInstanceInfo(
   const result = await Effect.runPromise(
     createRpcClient(InstanceService, transport).getInstanceInfo(
       { id: instance, ifModifiedSince: lastModified },
-      { signal },
+      signal ? { signal } : {},
     ),
   );
 

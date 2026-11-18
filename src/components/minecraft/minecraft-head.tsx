@@ -20,7 +20,7 @@ export function MinecraftHead({
   name,
   className,
 }: {
-  skinTextureHash?: string;
+  skinTextureHash?: string | undefined;
   size?: number;
   name?: string;
   className?: string;

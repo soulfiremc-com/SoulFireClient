@@ -21,7 +21,7 @@ export class PovStreamMetrics {
   private drawMs = 0;
   private timedDraws = 0;
   private lastReceived: number | null = null;
-  private arrivals = new Map<bigint, number>();
+  private readonly arrivals = new Map<bigint, number>();
   private targetBitrate = 0;
   private format = "Waiting for video";
   decoder:
@@ -37,8 +37,10 @@ export class PovStreamMetrics {
     this.format = `${frame.width} × ${frame.height} · ${frame.codec}`;
     this.arrivals.set(frame.sequence, now);
     // Decoder resets can discard frames. Never retain an unbounded history.
-    if (this.arrivals.size > 32)
-      this.arrivals.delete(this.arrivals.keys().next().value!);
+    if (this.arrivals.size > 32) {
+      const oldest = this.arrivals.keys().next();
+      if (!oldest.done) this.arrivals.delete(oldest.value);
+    }
   }
 
   draw(frame: PovFrame, now = performance.now()) {

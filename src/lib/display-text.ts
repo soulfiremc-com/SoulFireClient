@@ -24,5 +24,6 @@ export function displayText(value: unknown): string {
       )
       .join(",");
   }
+  // oxlint-disable-next-line typescript/no-unnecessary-condition -- JSON.stringify returns undefined when toJSON does, although TypeScript types it as string
   return JSON.stringify(value) ?? "";
 }

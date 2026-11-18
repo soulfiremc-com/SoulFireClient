@@ -7,6 +7,7 @@ import {
   SUPPORT_REMINDER_KEY,
   watchSupportReminderBots,
 } from "./support-reminder";
+import { assertDefined } from "@/lib/assert-defined";
 
 const DAY = 24 * 60 * 60 * 1000;
 const FIRST_USE = Date.UTC(2026, 0, 1, 12);
@@ -100,15 +101,23 @@ test("eligibility survives reloads and does not store user or bot identifiers", 
     month: "2-digit",
     day: "2-digit",
   });
-  assert.deepEqual(JSON.parse(f.storage.getItem(SUPPORT_REMINDER_KEY)!), {
-    firstUsedAt: FIRST_USE,
-    activeDays: [0, 1, 14].map((offset) =>
-      localDate.format(FIRST_USE + offset * DAY),
+  assert.deepEqual(
+    JSON.parse(
+      assertDefined(
+        f.storage.getItem(SUPPORT_REMINDER_KEY),
+        "Expected f.storage.getItem(SUPPORT_REMINDER_KEY) to exist",
+      ),
     ),
-    hasSpawnedBot: true,
-    lastShownAt: null,
-    disabled: null,
-  });
+    {
+      firstUsedAt: FIRST_USE,
+      activeDays: [0, 1, 14].map((offset) =>
+        localDate.format(FIRST_USE + offset * DAY),
+      ),
+      hasSpawnedBot: true,
+      lastShownAt: null,
+      disabled: null,
+    },
+  );
 });
 
 test("an impression starts the six-month cooldown even if the user ignores it", () => {

@@ -14,7 +14,7 @@ const deadzone = (value: number) =>
 export class PovGamepad {
   private held = new Map<string, PovInputEvent>();
   private pressedButtons = new Set<number>();
-  private blockedButtons = new Set<number>();
+  private readonly blockedButtons = new Set<number>();
   private screen = false;
   private x = 0.5;
   private y = 0.5;

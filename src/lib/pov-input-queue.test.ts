@@ -24,14 +24,14 @@ test("hover keeps the latest position and camera motion retains its total delta"
   queue.enqueue(move(0.3, 0.4), "mouse");
   const hover = queue.drain();
   assert.equal(hover.length, 1);
-  assert.deepEqual([hover[0].x, hover[0].y], [0.3, 0.4]);
+  assert.deepEqual([hover[0]?.x, hover[0]?.y], [0.3, 0.4]);
   queue.enqueue(button(0, 1), "mouse");
   queue.drain();
   queue.enqueue(move(2, -4, true), "mouse");
   queue.enqueue(move(-1, 7, true), "mouse");
   const camera = queue.drain();
   assert.equal(camera.length, 1);
-  assert.deepEqual([camera[0].x, camera[0].y], [1, 3]);
+  assert.deepEqual([camera[0]?.x, camera[0]?.y], [1, 3]);
 });
 
 test("dragging preserves every crossed slot across input batches", () => {

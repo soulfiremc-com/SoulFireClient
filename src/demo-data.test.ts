@@ -69,9 +69,7 @@ test("demo plugin pages have metadata and enabled definitions for discovery", ()
         candidate.id.key === enabled.key,
     );
     assert.equal(definition?.type.case, "bool", page.id);
-    if (definition?.type.case === "bool") {
-      assert.equal(definition.type.value.def, true, page.id);
-    }
+    assert.equal(definition.type.value.def, true, page.id);
   }
 });
 

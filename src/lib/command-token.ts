@@ -6,7 +6,7 @@ export function getCommandTokenRange(
 ): { start: number; end: number } {
   let start = 0;
   while (start < text.length) {
-    if (WHITESPACE_REGEX.test(text[start])) {
+    if (WHITESPACE_REGEX.test(text.charAt(start))) {
       if (start === cursor) return { start: cursor, end: cursor };
       start++;
       continue;
@@ -21,7 +21,8 @@ export function getCommandTokenRange(
         else if (character === quote) break;
       }
     } else {
-      while (end < text.length && !WHITESPACE_REGEX.test(text[end])) end++;
+      while (end < text.length && !WHITESPACE_REGEX.test(text.charAt(end)))
+        end++;
     }
     if (cursor <= end) return { start, end };
     start = end;

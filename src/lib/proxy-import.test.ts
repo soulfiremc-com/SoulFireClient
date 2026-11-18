@@ -10,8 +10,8 @@ test("mixed flat imports report original line numbers without discarding valid e
   );
   assert.deepEqual(result.rejectedLines, [3, 6]);
   assert.equal(result.proxies.length, 2);
-  assert.equal(result.proxies[0].password, "secret");
-  assert.equal(result.proxies[1].address, "inet://[::1]:1080");
+  assert.equal(result.proxies[0]?.password, "secret");
+  assert.equal(result.proxies[1]?.address, "inet://[::1]:1080");
 });
 
 test("unsupported URI protocols are rejected with malformed lines", () => {
@@ -21,7 +21,7 @@ test("unsupported URI protocols are rejected with malformed lines", () => {
   );
   assert.deepEqual(result.rejectedLines, [2, 3]);
   assert.equal(result.proxies.length, 1);
-  assert.equal(result.proxies[0].type, ProxyProto_Type.SOCKS5);
+  assert.equal(result.proxies[0]?.type, ProxyProto_Type.SOCKS5);
 });
 
 test("empty imports and corrected drafts are evaluated independently", () => {

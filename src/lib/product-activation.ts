@@ -45,7 +45,7 @@ export function createProductActivationTracker({
     properties: MeasurementProperties,
   ) => boolean;
   surface: "desktop" | "web";
-  storage?: Pick<Storage, "getItem" | "setItem">;
+  storage?: Pick<Storage, "getItem" | "setItem"> | undefined;
   now?: () => Date;
 }) {
   const sessions = new Set<string>();
