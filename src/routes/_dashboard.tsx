@@ -122,6 +122,7 @@ export const Route = createFileRoute("/_dashboard")({
         await desktop.integratedServer.kill();
       }
       logOut();
+      // oxlint-disable-next-line typescript/only-throw-error -- TanStack Router handles a thrown redirect
       throw redirect({
         to: "/",
         search: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
+import type { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import * as React from "react";
 

@@ -46,6 +46,7 @@ export function watchBotStatuses(
         while (true) {
           const result = yield* Effect.result(
             client.watchBotStatuses({ instanceId }).pipe(
+              // oxlint-disable-next-line eslint/no-loop-func -- the stream finishes inside this iteration and resets the retry delay for the next one
               Stream.runForEach((event) =>
                 Effect.gen(function* () {
                   retryDelay = 1_000;

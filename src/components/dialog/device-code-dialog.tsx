@@ -72,7 +72,9 @@ export function DeviceCodeDialog({
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => copyToClipboard(deviceCodeData.userCode)}
+                    onClick={() =>
+                      void copyToClipboard(deviceCodeData.userCode)
+                    }
                   >
                     <ClipboardCopyIcon />
                   </Button>
@@ -90,7 +92,7 @@ export function DeviceCodeDialog({
                     variant="outline"
                     size="icon"
                     onClick={() =>
-                      copyToClipboard(deviceCodeData.verificationUri)
+                      void copyToClipboard(deviceCodeData.verificationUri)
                     }
                   >
                     <ClipboardCopyIcon />

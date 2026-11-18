@@ -98,6 +98,7 @@ test("canonical documents retain selection and newer drafts until remote content
   const draft = editor.document.get();
   const remote = {
     ...saved,
+    // oxlint-disable-next-line oxc/no-map-spread -- the remote copy must not change the saved document
     nodes: saved.nodes.map((node) => ({ ...node, data: { value: 2 } })),
   };
   editor.actions.syncScriptDocument(remote);

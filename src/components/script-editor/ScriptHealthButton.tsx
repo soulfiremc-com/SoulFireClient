@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Item,

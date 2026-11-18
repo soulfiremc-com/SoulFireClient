@@ -64,7 +64,7 @@ export const makeMetricsSource = (
           read: Effect.tryPromise({
             try: async (signal) => {
               const [response, info] = await Promise.all([
-                cache.fetchQuery({
+                cache.query({
                   queryKey: ["metrics"],
                   queryFn: ({ signal: querySignal }) =>
                     Effect.runPromise(
@@ -77,7 +77,7 @@ export const makeMetricsSource = (
                       ),
                     ),
                 }),
-                cache.fetchQuery({
+                cache.query({
                   queryKey: ["info"],
                   staleTime: 10_000,
                   queryFn: ({ signal: querySignal }) =>

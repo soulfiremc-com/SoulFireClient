@@ -100,10 +100,10 @@ export const QuickAddStaysOnScreen: Story = {
     const menu = await within(document.body).findByRole("dialog", {
       name: "Quick add node menu",
     });
-    await waitFor(() => {
+    await waitFor(async () => {
       const rect = menu.getBoundingClientRect();
-      expect(rect.right).toBeLessThanOrEqual(innerWidth - 4);
-      expect(rect.bottom).toBeLessThanOrEqual(innerHeight - 4);
+      await expect(rect.right).toBeLessThanOrEqual(innerWidth - 4);
+      await expect(rect.bottom).toBeLessThanOrEqual(innerHeight - 4);
     });
   },
 };
@@ -128,11 +128,11 @@ export const QuickAddRevealsKeyboardSelection: Story = {
       name: "Test node 24",
     });
     const viewport = menu.querySelector('[data-slot="scroll-area-viewport"]')!;
-    await waitFor(() => {
+    await waitFor(async () => {
       const bounds = viewport.getBoundingClientRect();
       const selected = row.getBoundingClientRect();
-      expect(selected.top).toBeGreaterThanOrEqual(bounds.top);
-      expect(selected.bottom).toBeLessThanOrEqual(bounds.bottom);
+      await expect(selected.top).toBeGreaterThanOrEqual(bounds.top);
+      await expect(selected.bottom).toBeLessThanOrEqual(bounds.bottom);
     });
   },
 };
@@ -160,14 +160,16 @@ export const QuickAddFitsSmallScreen: Story = {
     const viewport = menu.querySelector<HTMLElement>(
       '[data-slot="scroll-area-viewport"]',
     )!;
-    await waitFor(() => {
+    await waitFor(async () => {
       const rect = menu.getBoundingClientRect();
-      expect(rect.left).toBeGreaterThanOrEqual(16);
-      expect(rect.right).toBeLessThanOrEqual(innerWidth - 16);
-      expect(rect.bottom).toBeLessThanOrEqual(innerHeight - 16);
-      expect(rect.height).toBeLessThanOrEqual(innerHeight / 2);
-      expect(viewport.clientHeight).toBeGreaterThan(0);
-      expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
+      await expect(rect.left).toBeGreaterThanOrEqual(16);
+      await expect(rect.right).toBeLessThanOrEqual(innerWidth - 16);
+      await expect(rect.bottom).toBeLessThanOrEqual(innerHeight - 16);
+      await expect(rect.height).toBeLessThanOrEqual(innerHeight / 2);
+      await expect(viewport.clientHeight).toBeGreaterThan(0);
+      await expect(viewport.scrollHeight).toBeGreaterThan(
+        viewport.clientHeight,
+      );
     });
   },
 };
@@ -193,10 +195,10 @@ export const DryRunOptionsHaveInset: Story = {
       name: "First trigger",
     });
     const popup = first.closest('[data-slot="select-content"]')!;
-    await waitFor(() => {
+    await waitFor(async () => {
       const inset =
         first.getBoundingClientRect().left - popup.getBoundingClientRect().left;
-      expect(inset).toBeGreaterThanOrEqual(4);
+      await expect(inset).toBeGreaterThanOrEqual(4);
     });
   },
 };

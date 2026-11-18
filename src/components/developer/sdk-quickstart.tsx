@@ -96,11 +96,13 @@ function selectAll(event: SyntheticEvent<HTMLInputElement>) {
   event.currentTarget.select();
 }
 
+const NO_INSTANCES: SdkQuickstartInstance[] = [];
+
 export function SdkQuickstart({
   serverUrl,
   instanceId,
   instanceName,
-  instances = [],
+  instances = NO_INSTANCES,
   onInstanceChange,
   bots,
   demo = false,

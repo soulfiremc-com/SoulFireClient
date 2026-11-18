@@ -1,23 +1,19 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { NodeTypes } from "@xyflow/react";
-import {
-  createContext,
-  type ReactNode,
-  use,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { type ReactNode, use, useCallback, useEffect, useMemo } from "react";
 import { TransportContext } from "@/components/providers/transport-context";
 import { nodeTypesQueryOptions } from "@/lib/script-service";
-import { createNodeComponent } from "./nodes/BaseNode";
+import { createNodeComponent } from "./nodes/create-node-component";
 import { DebugNode } from "./nodes/DebugNode";
 import { FrameNode } from "./nodes/FrameNode";
 import { GroupInputNode } from "./nodes/GroupInputNode";
 import { GroupNode } from "./nodes/GroupNode";
 import { GroupOutputNode } from "./nodes/GroupOutputNode";
 import { NoteNode } from "./nodes/NoteNode";
+import {
+  NodeTypesContext,
+  type NodeTypesContextValue,
+} from "./node-types-context.ts";
 import { RerouteNode } from "./nodes/RerouteNode";
 import {
   type CategoryInfo,
@@ -118,32 +114,6 @@ const LAYOUT_CATEGORY_INFO: CategoryInfo = {
   description: "Nodes for organizing your script visually",
   sortOrder: 1000, // Put at the end
 };
-
-export interface NodeTypesContextValue {
-  /** All node definitions keyed by type */
-  definitions: Record<string, NodeDefinition>;
-  /** React Flow node type components */
-  nodeTypes: NodeTypes;
-  /** All available categories (from server) */
-  categories: string[];
-  /** Category info derived from nodes */
-  categoryInfo: Record<string, CategoryInfo>;
-  /** Get a node definition by type */
-  getDefinition: (type: string) => NodeDefinition | undefined;
-  /** Get nodes by category */
-  getNodesByCategory: (category: string) => NodeDefinition[];
-  /** Get category info */
-  getCategoryInfo: (category: string) => CategoryInfo;
-  /** Create default data for a node type */
-  createNodeData: (
-    type: string,
-    overrides?: Record<string, unknown>,
-  ) => Record<string, unknown>;
-  /** Whether the node types are still loading */
-  isLoading: boolean;
-}
-
-const NodeTypesContext = createContext<NodeTypesContextValue | null>(null);
 
 interface NodeTypesProviderProps {
   children: ReactNode;
@@ -320,16 +290,4 @@ export function NodeTypesProvider({
       {children}
     </NodeTypesContext.Provider>
   );
-}
-
-/**
- * Hook to access node type definitions.
- * Must be used within a NodeTypesProvider.
- */
-export function useNodeTypes(): NodeTypesContextValue {
-  const context = useContext(NodeTypesContext);
-  if (!context) {
-    throw new Error("useNodeTypes must be used within a NodeTypesProvider");
-  }
-  return context;
 }

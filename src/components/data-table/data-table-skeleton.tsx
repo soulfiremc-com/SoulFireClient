@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { generateN } from "@/lib/generate-n.ts";
 
 interface DataTableSkeletonProps extends React.ComponentProps<"div"> {
   columnCount: number;
@@ -19,11 +20,13 @@ interface DataTableSkeletonProps extends React.ComponentProps<"div"> {
   shrinkZero?: boolean;
 }
 
+const DEFAULT_CELL_WIDTHS = ["auto"];
+
 export function DataTableSkeleton({
   columnCount,
   rowCount = 10,
   filterCount = 0,
-  cellWidths = ["auto"],
+  cellWidths = DEFAULT_CELL_WIDTHS,
   withViewOptions = true,
   withPagination = true,
   shrinkZero = false,
@@ -43,8 +46,8 @@ export function DataTableSkeleton({
       <div className="flex w-full items-center justify-between gap-2 overflow-auto p-1">
         <div className="flex flex-1 items-center gap-2">
           {filterCount > 0
-            ? Array.from({ length: filterCount }).map((_, i) => (
-                <Skeleton key={i} className="h-7 w-18 border-dashed" />
+            ? generateN(filterCount).map((slot) => (
+                <Skeleton key={slot} className="h-7 w-18 border-dashed" />
               ))
             : null}
         </div>
@@ -55,14 +58,16 @@ export function DataTableSkeleton({
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {Array.from({ length: 1 }).map((_, i) => (
-              <TableRow key={i} className="hover:bg-transparent">
-                {Array.from({ length: columnCount }).map((_, j) => (
+            {generateN(1).map((row) => (
+              <TableRow key={row} className="hover:bg-transparent">
+                {generateN(columnCount).map((column) => (
                   <TableHead
-                    key={j}
+                    key={column}
                     style={{
-                      width: cozyCellWidths[j],
-                      minWidth: shrinkZero ? cozyCellWidths[j] : "auto",
+                      width: cozyCellWidths[column - 1],
+                      minWidth: shrinkZero
+                        ? cozyCellWidths[column - 1]
+                        : "auto",
                     }}
                   >
                     <Skeleton className="h-6 w-full" />
@@ -72,14 +77,16 @@ export function DataTableSkeleton({
             ))}
           </TableHeader>
           <TableBody>
-            {Array.from({ length: rowCount }).map((_, i) => (
-              <TableRow key={i} className="hover:bg-transparent">
-                {Array.from({ length: columnCount }).map((_, j) => (
+            {generateN(rowCount).map((row) => (
+              <TableRow key={row} className="hover:bg-transparent">
+                {generateN(columnCount).map((column) => (
                   <TableCell
-                    key={j}
+                    key={column}
                     style={{
-                      width: cozyCellWidths[j],
-                      minWidth: shrinkZero ? cozyCellWidths[j] : "auto",
+                      width: cozyCellWidths[column - 1],
+                      minWidth: shrinkZero
+                        ? cozyCellWidths[column - 1]
+                        : "auto",
                     }}
                   >
                     <Skeleton className="h-6 w-full" />

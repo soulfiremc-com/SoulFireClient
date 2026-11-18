@@ -5,7 +5,7 @@ import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import { Grid2x2Icon, PlusIcon, SettingsIcon, ZapIcon } from "lucide-react";
 import { type ReactNode, use } from "react";
 import { useTranslation } from "react-i18next";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
+import { CreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import {
   SidebarGroup,
   SidebarGroupLabel,

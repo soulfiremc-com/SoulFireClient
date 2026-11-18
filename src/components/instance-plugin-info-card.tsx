@@ -161,7 +161,7 @@ function PluginInfoCardContent(props: {
           )}
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(props.settingsEntry.pageName);
+              void copyToClipboard(props.settingsEntry.pageName);
               dismiss();
             }}
           >
@@ -170,7 +170,7 @@ function PluginInfoCardContent(props: {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(props.plugin.version);
+              void copyToClipboard(props.plugin.version);
               dismiss();
             }}
           >

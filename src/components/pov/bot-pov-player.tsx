@@ -29,10 +29,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Slider } from "@/components/ui/slider";
 import { Toaster } from "@/components/ui/sonner";
-import {
-  titlebarClassName,
-  WindowControls,
-} from "@/components/window/window-titlebar";
+import { titlebarClassName } from "@/components/window/titlebar-class-name";
+import { WindowControls } from "@/components/window/window-titlebar";
 import {
   PovInputEvent_Kind,
   PovInputEventSchema,
@@ -1038,7 +1036,7 @@ function BotPovSession({
           <Button
             size="sm"
             variant="ghost"
-            onClick={toggleFullscreen}
+            onClick={() => void toggleFullscreen()}
             aria-label={t("bots.pov.fullscreen")}
           >
             <ExpandIcon />
@@ -1152,7 +1150,7 @@ function BotPovSession({
             ) : (
               <button
                 type="button"
-                onClick={capture}
+                onClick={() => void capture()}
                 className="absolute inset-0 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
               >
                 <span className={buttonVariants()}>

@@ -28,9 +28,11 @@ interface DataTablePaginationProps<
   pageSizeOptions?: number[];
 }
 
+const DEFAULT_PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
+
 export function DataTablePagination<TData extends RowData>({
   table,
-  pageSizeOptions = [10, 20, 30, 40, 50],
+  pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
   className,
   ...props
 }: DataTablePaginationProps<TData>) {

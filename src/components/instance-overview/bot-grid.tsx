@@ -64,7 +64,8 @@ import { type BotDisplayState, getBotDisplayState } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
-import { BOT_STATE_META } from "./fleet-status.tsx";
+import { connectionPhaseMeta } from "./connection-phase-meta.ts";
+import { BOT_STATE_META } from "./fleet-status-meta.ts";
 import { MinecraftHead } from "../minecraft/minecraft-head.tsx";
 
 const PAGE_SIZE = 50;
@@ -78,53 +79,6 @@ export type BotWithStatus =
     liveState?: BotListEntry["liveState"];
     status?: BotListEntry["status"];
   };
-
-type StatusTone = "warning" | "success" | "destructive" | "muted";
-
-export function connectionPhaseMeta(phase: BotConnectionPhase): {
-  labelKey: string;
-  tone: StatusTone;
-  dot: string;
-  showPing: boolean;
-} {
-  switch (phase) {
-    case BotConnectionPhase.CONNECTING:
-      return {
-        labelKey: "bots.connectionPhase.connecting",
-        tone: "warning",
-        dot: "bg-warning",
-        showPing: false,
-      };
-    case BotConnectionPhase.CONNECTED:
-      return {
-        labelKey: "bots.connectionPhase.connected",
-        tone: "success",
-        dot: "bg-success",
-        showPing: true,
-      };
-    case BotConnectionPhase.SPAWNED:
-      return {
-        labelKey: "bots.connectionPhase.spawned",
-        tone: "success",
-        dot: "bg-success",
-        showPing: true,
-      };
-    case BotConnectionPhase.DIED:
-      return {
-        labelKey: "bots.connectionPhase.died",
-        tone: "destructive",
-        dot: "bg-destructive",
-        showPing: true,
-      };
-    default:
-      return {
-        labelKey: "bots.connectionPhase.disconnected",
-        tone: "muted",
-        dot: "bg-muted-foreground/50",
-        showPing: false,
-      };
-  }
-}
 
 /// One status per bot, so "should run" never reads as "connected".
 export function BotStateBadge({
@@ -460,7 +414,7 @@ export function BotContextMenu({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(
+              void copyToClipboard(
                 contextMenu.data.accountName || contextMenu.data.lastKnownName,
               );
               dismiss();
@@ -471,7 +425,7 @@ export function BotContextMenu({
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.profileId);
+              void copyToClipboard(contextMenu.data.profileId);
               dismiss();
             }}
           >
@@ -486,7 +440,7 @@ export function BotContextMenu({
                   y: 0,
                   z: 0,
                 };
-                copyToClipboard(
+                void copyToClipboard(
                   `${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)}`,
                 );
                 dismiss();
@@ -611,7 +565,7 @@ export function BotGrid({
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
       if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
+        void fetchNextPage();
       }
     },
     [fetchNextPage, hasNextPage, isFetchingNextPage],

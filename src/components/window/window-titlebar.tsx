@@ -25,9 +25,7 @@ import { useShouldShowWindowTitlebar } from "@/hooks/use-window-titlebar.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import type { SoulFireDesktopApi } from "@/lib/desktop-api";
 import { cn } from "@/lib/utils.tsx";
-
-const titlebarClassName =
-  "window-topbar border-sidebar-border bg-sidebar text-sidebar-foreground grid h-(--titlebar-height) shrink-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch border-b";
+import { titlebarClassName } from "./titlebar-class-name.ts";
 
 const titlebarButtonClassName =
   "text-sidebar-foreground/72 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground disabled:text-sidebar-foreground/35 disabled:hover:bg-transparent m-0 h-full w-8 rounded-none! p-0 shadow-none transition-colors";
@@ -307,5 +305,3 @@ export function WindowTitlebar() {
     </header>
   );
 }
-
-export { titlebarClassName };

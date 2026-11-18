@@ -136,11 +136,11 @@ export const PrivateToken: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Copy agent prompt" }),
     );
-    await waitFor(() => {
+    await waitFor(async () => {
       const prompt =
         writeClipboard.mock.calls[writeClipboard.mock.calls.length - 1]?.[0];
-      expect(prompt).toContain("SOULFIRE_TOKEN");
-      expect(prompt).not.toContain(token);
+      await expect(prompt).toContain("SOULFIRE_TOKEN");
+      await expect(prompt).not.toContain(token);
     });
   },
 };

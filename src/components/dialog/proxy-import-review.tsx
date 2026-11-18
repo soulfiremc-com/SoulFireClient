@@ -41,6 +41,18 @@ export function ProxyImportReview({
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const result = parseProxyImport(draft, type);
+  const confirmImport = async () => {
+    setPending(true);
+    setError(null);
+    try {
+      await onImport(result.proxies, result.rejectedLines.length);
+    } catch (reason) {
+      setError(reason);
+    } finally {
+      setPending(false);
+    }
+  };
+
   return (
     <Dialog
       open
@@ -98,17 +110,7 @@ export function ProxyImportReview({
           <Button
             disabled={pending || result.proxies.length === 0}
             aria-busy={pending}
-            onClick={async () => {
-              setPending(true);
-              setError(null);
-              try {
-                await onImport(result.proxies, result.rejectedLines.length);
-              } catch (reason) {
-                setError(reason);
-              } finally {
-                setPending(false);
-              }
-            }}
+            onClick={() => void confirmImport()}
           >
             {pending
               ? t("proxy.import.review.importing")

@@ -27,21 +27,17 @@ export function serializeProfileFile(profile: ProfileRoot): string {
 
 export function parseProfileFile(content: string): ProfileRoot {
   const profile = JSON.parse(content) as ProfileRoot;
-  return {
-    ...profile,
-    accounts: profile.accounts.map((account) => {
-      if (account.accountData.case !== "onlineSimpleJavaData") return account;
-      return {
-        ...account,
-        accountData: {
-          case: "onlineSimpleJavaData",
-          value: fromJson(
-            MinecraftAccountProto_OnlineSimpleJavaDataSchema,
-            account.accountData.value as unknown as JsonValue,
-            { ignoreUnknownFields: true },
-          ),
-        },
-      };
-    }),
-  };
+  // JSON.parse returned fresh objects, so the accounts can be decoded in place.
+  for (const account of profile.accounts) {
+    if (account.accountData.case !== "onlineSimpleJavaData") continue;
+    account.accountData = {
+      case: "onlineSimpleJavaData",
+      value: fromJson(
+        MinecraftAccountProto_OnlineSimpleJavaDataSchema,
+        account.accountData.value as unknown as JsonValue,
+        { ignoreUnknownFields: true },
+      ),
+    };
+  }
+  return profile;
 }

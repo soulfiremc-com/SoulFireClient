@@ -10,8 +10,8 @@ import { useTranslation } from "react-i18next";
 import {
   BotContextMenu,
   BotStateBadge,
-  connectionPhaseMeta,
 } from "@/components/instance-overview/bot-grid.tsx";
+import { connectionPhaseMeta } from "@/components/instance-overview/connection-phase-meta.ts";
 import { MinecraftHead } from "@/components/minecraft/minecraft-head.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {

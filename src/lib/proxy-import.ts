@@ -1,4 +1,4 @@
-import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
+import type { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { parseNormalProxy, parseURIProxy } from "@/lib/proxy-format";
 import type { ProfileProxy } from "@/lib/types";
 

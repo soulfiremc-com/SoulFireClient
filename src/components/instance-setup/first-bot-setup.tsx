@@ -47,7 +47,7 @@ import {
 } from "@/components/ui/item.tsx";
 import { BotDesiredState, BotService } from "@/generated/soulfire/bot_pb";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
-import { getFailureFix } from "@/components/instance-overview/fleet-status.tsx";
+import { getFailureFix } from "@/components/instance-overview/fleet-status-meta.ts";
 import {
   getBotDisplayState,
   groupBotFailures,

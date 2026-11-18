@@ -5,7 +5,7 @@ const FALLBACK_SKIN = "MHF_Steve";
 
 /// Builds a mc-heads.net avatar URL for a skin texture hash, falling back to
 /// the default Steve head when no skin is available.
-export function getMinecraftHeadUrl(
+function getMinecraftHeadUrl(
   skinTextureHash: string | undefined,
   size: number,
 ): string {

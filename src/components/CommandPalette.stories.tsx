@@ -18,8 +18,8 @@ import {
 import { useState } from "react";
 import { expect, fn, waitFor, within } from "storybook/test";
 import { CommandPaletteProvider } from "@/components/command-palette";
-import { AboutContext } from "@/components/dialog/about-dialog";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog";
+import { AboutContext } from "@/components/dialog/about-context";
+import { CreateInstanceContext } from "@/components/dialog/create-instance-context";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TransportContext } from "@/components/providers/transport-context";
 import UserPageLayout from "@/components/nav/user/user-page-layout";
@@ -753,9 +753,9 @@ async function openMenu({ canvasElement, userEvent }: PlayContext) {
   });
   const menu = within(dialog);
   const input = menu.getByRole("combobox", { name: "Command menu" });
-  await waitFor(() => {
-    expect(dialog).toBeVisible();
-    expect(input).toHaveFocus();
+  await waitFor(async () => {
+    await expect(dialog).toBeVisible();
+    await expect(input).toHaveFocus();
   });
   return { dialog, menu, input };
 }
@@ -1386,7 +1386,9 @@ export const BoundedIndexStopsOnClose: Story = {
     await closed();
     await waitFor(() => expect(abortedProjectInfo).toHaveBeenCalled());
     const started = loadProjectInfo.mock.calls.length;
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 400);
+    });
     // Closing the menu stopped the queue, so no new project requests started.
     await expect(loadProjectInfo.mock.calls.length).toBe(started);
     await expect(started).toBeLessThan(21);

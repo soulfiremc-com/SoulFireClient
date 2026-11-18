@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/input-group.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import { cn } from "@/lib/utils.tsx";
-import { useNodeTypes } from "./NodeTypesContext";
+import { useNodeTypes } from "./node-types-context";
 import type { CategoryInfo, NodeDefinition } from "./nodes/types.ts";
 import { useNodeTranslations } from "./useNodeTranslations";
 

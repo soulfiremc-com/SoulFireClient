@@ -29,11 +29,11 @@ test("a finite stream consumer aborts the underlying Connect subscription", asyn
         yield {
           message: create(LogStringSchema, { id: "1", message: "Started" }),
         };
-        await new Promise<void>((resolve) =>
+        await new Promise<void>((resolve) => {
           context.signal.addEventListener("abort", () => resolve(), {
             once: true,
-          }),
-        );
+          });
+        });
       },
     }),
   );

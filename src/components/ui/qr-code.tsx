@@ -265,7 +265,7 @@ function QRCode(props: QRCodeProps) {
   React.useLayoutEffect(() => {
     if (generationKey) {
       const rafId = requestAnimationFrame(() => {
-        onQRCodeGenerate(generationKey);
+        void onQRCodeGenerate(generationKey);
       });
 
       return () => cancelAnimationFrame(rafId);
@@ -427,7 +427,7 @@ function QRCodeDownload(props: QRCodeDownloadProps) {
       {
         className: cn("max-w-(--qr-code-size)", className),
         onClick,
-        children: <>{children ?? `Download ${format.toUpperCase()}`}</>,
+        children: children ?? `Download ${format.toUpperCase()}`,
       },
     ),
   });

@@ -19,7 +19,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
 import { ScriptGroupViewports } from "@/lib/script-group-viewports";
@@ -32,7 +32,7 @@ import {
 import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
-import { useNodeTypes } from "./NodeTypesContext";
+import { useNodeTypes } from "./node-types-context";
 import { getNodeDefinition, isPortMultiInput } from "./nodes/types";
 import { QuickAddMenu } from "./QuickAddMenu";
 import { ScriptFirstUse } from "./ScriptFirstUse";

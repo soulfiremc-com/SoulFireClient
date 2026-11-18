@@ -12,6 +12,14 @@ function normalizeUpdaterPlatform(
     case "linux":
     case "win32":
       return platformName;
+    case "aix":
+    case "android":
+    case "cygwin":
+    case "freebsd":
+    case "haiku":
+    case "netbsd":
+    case "openbsd":
+    case "sunos":
     default:
       return null;
   }

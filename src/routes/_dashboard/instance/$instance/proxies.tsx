@@ -972,7 +972,7 @@ function Content() {
         >
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.address);
+              void copyToClipboard(contextMenu.data.address);
               dismiss();
             }}
           >
@@ -982,7 +982,7 @@ function Content() {
           {contextMenu.data.username && (
             <DropdownMenuItem
               onClick={() => {
-                copyToClipboard(contextMenu.data.username ?? "");
+                void copyToClipboard(contextMenu.data.username ?? "");
                 dismiss();
               }}
             >
@@ -993,7 +993,7 @@ function Content() {
           {contextMenu.data.password && (
             <DropdownMenuItem
               onClick={() => {
-                copyToClipboard(contextMenu.data.password ?? "");
+                void copyToClipboard(contextMenu.data.password ?? "");
                 dismiss();
               }}
             >

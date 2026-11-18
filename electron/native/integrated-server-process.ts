@@ -127,11 +127,7 @@ export function startIntegratedOperation(
         ? work
         : awaitPreparation(work);
       controller.signal.throwIfAborted();
-      if (
-        !state.child ||
-        state.child.exitCode !== null ||
-        state.child.signalCode !== null
-      )
+      if (state.child?.exitCode !== null || state.child.signalCode !== null)
         return yield* Effect.fail(
           new Error("SoulFire exited before startup completed"),
         );

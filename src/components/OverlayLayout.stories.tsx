@@ -65,17 +65,17 @@ export const PopoverFitsSmallScreen: Story = {
       exact: true,
     });
     const popup = title.closest<HTMLElement>('[data-slot="popover-content"]')!;
-    await waitFor(() => {
+    await waitFor(async () => {
       const rect = popup.getBoundingClientRect();
-      expect(rect.left).toBeGreaterThanOrEqual(0);
-      expect(rect.right).toBeLessThanOrEqual(innerWidth);
-      expect(rect.top).toBeGreaterThanOrEqual(0);
-      expect(rect.bottom).toBeLessThanOrEqual(innerHeight);
+      await expect(rect.left).toBeGreaterThanOrEqual(0);
+      await expect(rect.right).toBeLessThanOrEqual(innerWidth);
+      await expect(rect.top).toBeGreaterThanOrEqual(0);
+      await expect(rect.bottom).toBeLessThanOrEqual(innerHeight);
     });
     popup.scrollTop = popup.scrollHeight;
     await waitFor(() => expect(popup.scrollTop).toBeGreaterThan(0));
     const last = within(popup).getByText("Detail 30").getBoundingClientRect();
-    expect(last.bottom).toBeLessThanOrEqual(
+    await expect(last.bottom).toBeLessThanOrEqual(
       popup.getBoundingClientRect().bottom,
     );
   },
@@ -88,10 +88,10 @@ export const LanguageMenuFitsSmallScreen: Story = {
       within(canvasElement).getByRole("button", { name: "Choose language" }),
     );
     const menu = await within(document.body).findByRole("menu");
-    await waitFor(() => {
+    await waitFor(async () => {
       const rect = menu.getBoundingClientRect();
-      expect(rect.left).toBeGreaterThanOrEqual(0);
-      expect(rect.right).toBeLessThanOrEqual(innerWidth);
+      await expect(rect.left).toBeGreaterThanOrEqual(0);
+      await expect(rect.right).toBeLessThanOrEqual(innerWidth);
     });
   },
 };

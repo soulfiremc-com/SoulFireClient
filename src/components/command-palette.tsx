@@ -44,8 +44,8 @@ import {
   CommandPaletteContext,
   type OpenCommandPalette,
 } from "@/components/command-palette-context";
-import { AboutContext } from "@/components/dialog/about-dialog";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog";
+import { AboutContext } from "@/components/dialog/about-context";
+import { CreateInstanceContext } from "@/components/dialog/create-instance-context";
 import DynamicIcon from "@/components/dynamic-icon";
 import { TransportContext } from "@/components/providers/transport-context";
 import { Badge } from "@/components/ui/badge";
@@ -760,6 +760,8 @@ function CommandPaletteContent({
           toast.success(t("commandPalette.copied"));
           break;
         }
+        case "browse-project":
+          break;
       }
     } catch (error) {
       console.error(error);

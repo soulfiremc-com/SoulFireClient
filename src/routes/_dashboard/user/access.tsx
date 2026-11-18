@@ -129,7 +129,7 @@ function Content() {
         } else {
           setApiToken(response.token);
         }
-        copySecret(response.token);
+        void copySecret(response.token);
       });
       toast.promise(promise, {
         loading: t("access.token.generating"),
@@ -178,7 +178,7 @@ function Content() {
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    copyToClipboard(
+                    void copyToClipboard(
                       clientInfo.serverInfo?.publicWebdavAddress || "",
                     );
                   }}
@@ -208,7 +208,7 @@ function Content() {
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    copySecret(webDavToken);
+                    void copySecret(webDavToken);
                   }}
                   disabled={webDavToken === ""}
                 >
@@ -271,7 +271,7 @@ function Content() {
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    copyToClipboard(
+                    void copyToClipboard(
                       clientInfo.serverInfo?.publicApiAddress || "",
                     );
                   }}
@@ -301,7 +301,7 @@ function Content() {
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => {
-                    copySecret(apiToken);
+                    void copySecret(apiToken);
                   }}
                   disabled={apiToken === ""}
                 >

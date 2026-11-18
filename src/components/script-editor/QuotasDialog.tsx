@@ -2,7 +2,7 @@ import { useSelector } from "@tanstack/react-store";
 import { Settings2 } from "lucide-react";
 import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Button } from "@/components/ui/button";
 import {
   Credenza,

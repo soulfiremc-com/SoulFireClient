@@ -620,7 +620,7 @@ function Content() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.id);
+              void copyToClipboard(contextMenu.data.id);
               dismiss();
             }}
           >

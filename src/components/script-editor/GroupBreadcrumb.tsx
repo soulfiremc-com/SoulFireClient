@@ -1,7 +1,7 @@
 import { useSelector } from "@tanstack/react-store";
 import { ChevronRight, Home } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
 

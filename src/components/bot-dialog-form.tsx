@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { type SubmitEvent, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,6 +34,7 @@ function inputValue(input: DialogInput["input"]): string {
       return input.value.initialOptionId;
     case "numberRange":
       return String(input.value.initial);
+    case undefined:
     default:
       return "";
   }
@@ -100,63 +101,61 @@ export function BotDialogForm({
     );
   };
 
+  const submitDialog = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const submitter = event.nativeEvent.submitter;
+    const index =
+      submitter instanceof HTMLButtonElement ? Number(submitter.value) : 0;
+    if (pending) return;
+    const inputValues = { ...values };
+    if (index === -1) {
+      // Cancel keeps native range values when their text drafts are incomplete.
+      for (const { input } of dialog.inputs) {
+        if (input.case !== "numberRange") continue;
+        const { key, start, end } = input.value;
+        const draft = inputValues[key];
+        if (
+          !draft?.trim() ||
+          getNumericSettingValue(
+            Number(draft),
+            Math.min(start, end),
+            Math.max(start, end),
+            false,
+          ) === undefined
+        ) {
+          delete inputValues[key];
+        }
+      }
+    }
+    let updated: ServerDialog | undefined;
+    try {
+      updated = await onSubmit(index, inputValues);
+    } catch {
+      // The mutation reports the error. Keep all local drafts for a retry.
+      return;
+    }
+    if (updated?.screenId !== dialog.screenId) return;
+    setDrafts((current) => {
+      const next = new Map(current);
+      for (const { input } of updated.inputs) {
+        if (!input.case) continue;
+        const key = input.value.key;
+        const draft = current.get(key);
+        const submitted = inputValues[key];
+        if (draft && submitted !== undefined) {
+          next.set(
+            key,
+            acknowledgeServerInputDraft(draft, submitted, inputValue(input)),
+          );
+        }
+      }
+      return next;
+    });
+  };
+
   return (
     <form
-      onSubmit={async (event) => {
-        event.preventDefault();
-        const submitter = event.nativeEvent.submitter;
-        const index =
-          submitter instanceof HTMLButtonElement ? Number(submitter.value) : 0;
-        if (pending) return;
-        const inputValues = { ...values };
-        if (index === -1) {
-          // Cancel keeps native range values when their text drafts are incomplete.
-          for (const { input } of dialog.inputs) {
-            if (input.case !== "numberRange") continue;
-            const { key, start, end } = input.value;
-            const draft = inputValues[key];
-            if (
-              !draft?.trim() ||
-              getNumericSettingValue(
-                Number(draft),
-                Math.min(start, end),
-                Math.max(start, end),
-                false,
-              ) === undefined
-            ) {
-              delete inputValues[key];
-            }
-          }
-        }
-        let updated: ServerDialog | undefined;
-        try {
-          updated = await onSubmit(index, inputValues);
-        } catch {
-          // The mutation reports the error. Keep all local drafts for a retry.
-          return;
-        }
-        if (updated?.screenId !== dialog.screenId) return;
-        setDrafts((current) => {
-          const next = new Map(current);
-          for (const { input } of updated.inputs) {
-            if (!input.case) continue;
-            const key = input.value.key;
-            const draft = current.get(key);
-            const submitted = inputValues[key];
-            if (draft && submitted !== undefined) {
-              next.set(
-                key,
-                acknowledgeServerInputDraft(
-                  draft,
-                  submitted,
-                  inputValue(input),
-                ),
-              );
-            }
-          }
-          return next;
-        });
-      }}
+      onSubmit={(event) => void submitDialog(event)}
       className="flex min-w-0 flex-col gap-4 wrap-anywhere"
     >
       <p className="font-medium">{dialog.title}</p>

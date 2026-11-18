@@ -48,9 +48,9 @@ import { TextInfoButton } from "@/components/info-buttons.tsx";
 import {
   IntegratedServerProcessOutput,
   IntegratedServerSupportActions,
-  useIntegratedDiagnostics,
 } from "@/components/IntegratedServerDiagnostics";
 import { ConnectionChoices } from "@/components/launcher/connection-choices.tsx";
+import { useIntegratedDiagnostics } from "@/hooks/use-integrated-diagnostics.ts";
 import { ConnectionFailure } from "@/components/launcher/connection-failure";
 import { withDefaultServerScheme } from "@/components/launcher/server-address.ts";
 import {
@@ -58,7 +58,7 @@ import {
   StartupProgress,
 } from "@/components/launcher/startup-status.tsx";
 import { ModeToggle } from "@/components/mode-toggle.tsx";
-import { CookieConsentContext } from "@/components/providers/cookie-consent-provider";
+import { CookieConsentContext } from "@/components/providers/cookie-consent-context";
 import { isPostHogConfigured } from "@/lib/posthog";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import {
@@ -1467,7 +1467,7 @@ function IntegratedMobileMenu({
                 <InputGroupButton
                   size="icon-sm"
                   onClick={() => {
-                    copyToClipboard(runCommand);
+                    void copyToClipboard(runCommand);
                   }}
                 >
                   <ClipboardIcon />
@@ -1489,7 +1489,7 @@ function IntegratedMobileMenu({
                       type="button"
                       className="font-bold text-info"
                       onClick={() => {
-                        copyToClipboard("generate-token api");
+                        void copyToClipboard("generate-token api");
                       }}
                     />
                   ),

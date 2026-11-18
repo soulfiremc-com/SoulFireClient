@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, waitFor } from "storybook/test";
+import { expect, fn, type userEvent, waitFor } from "storybook/test";
 
-type UserEvent = ReturnType<typeof import("storybook/test").userEvent.setup>;
+type UserEvent = ReturnType<typeof userEvent.setup>;
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import AccountProvidersDialog from "./account-providers-dialog.tsx";
 import { settledDialog } from "./provider-story-helpers.ts";

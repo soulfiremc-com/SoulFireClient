@@ -104,18 +104,12 @@ import {
   scriptTemplateToProto,
 } from "@/lib/script-templates.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
+import { generateN } from "@/lib/generate-n.ts";
 
 const createScriptSchema = Schema.Struct({
   name: Schema.String,
   description: Schema.String,
 });
-
-function generateN(count: number) {
-  return Array.from(
-    { length: Math.max(0, Math.floor(count)) },
-    (_, index) => index + 1,
-  );
-}
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/scripts")({
   beforeLoad: () =>
@@ -699,7 +693,7 @@ function Content() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.name);
+              void copyToClipboard(contextMenu.data.name);
               dismiss();
             }}
           >
@@ -708,7 +702,7 @@ function Content() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.id);
+              void copyToClipboard(contextMenu.data.id);
               dismiss();
             }}
           >

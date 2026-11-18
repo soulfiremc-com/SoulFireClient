@@ -141,7 +141,7 @@ export function usePaletteSearchIndex({
       // same data keeps its request.
       for (const queryKey of running.values()) {
         const query = queryClient.getQueryCache().find({ queryKey });
-        if (query && query.getObserversCount() === 0)
+        if (query?.getObserversCount() === 0)
           void queryClient.cancelQueries({ queryKey, exact: true });
       }
     };

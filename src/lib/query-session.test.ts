@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { broadcastQueryClient } from "@tanstack/query-broadcast-client-experimental";
-import { isCancelledError, QueryClient } from "@tanstack/react-query";
+import { CancelledError, QueryClient } from "@tanstack/react-query";
 import {
   getQuerySessionId,
   resetQuerySession,
@@ -69,7 +69,9 @@ async function until(predicate: () => boolean) {
   const deadline = performance.now() + 2_000;
   while (!predicate()) {
     assert.ok(performance.now() < deadline, "Expected a cache broadcast");
-    await new Promise((resolve) => setTimeout(resolve, 5));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5);
+    });
   }
 }
 
@@ -94,7 +96,7 @@ test("credential changes cancel old queries and distinguish local and remote ses
       resetQuerySession();
       assert.notEqual(getQuerySessionId(), original);
       assert.equal(aborted, true);
-      assert.equal(isCancelledError(await fetch), true);
+      assert.equal((await fetch) instanceof CancelledError, true);
       assert.equal(reloads(), 0);
       assert.equal(client.getQueryCache().getAll().length, 0);
 

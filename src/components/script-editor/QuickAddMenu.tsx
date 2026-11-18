@@ -16,7 +16,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import {
   Empty,
   EmptyDescription,
@@ -26,7 +26,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { useNodeTypes } from "./NodeTypesContext";
+import { useNodeTypes } from "./node-types-context";
 import { canConvertType } from "./edges/connection-validation";
 import {
   getPortTypeFromDefinition,

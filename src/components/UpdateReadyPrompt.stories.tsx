@@ -71,9 +71,9 @@ export const ReadyLaterKeepsBotsRunning: Story = {
     const body = within(document.body);
     // Announce until the toast shows: an announcement can arrive before the
     // prompt or the toaster subscribes. The fixed toast ID keeps one toast.
-    await waitFor(() => {
+    await waitFor(async () => {
       announce("2.11.1");
-      expect(
+      await expect(
         body.getByText("SoulFire 2.11.1 is ready to install"),
       ).toBeVisible();
     });

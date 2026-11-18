@@ -26,8 +26,8 @@ import {
 import { type RefObject, Suspense, use, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { formatBotFleetSummary } from "@/components/bot-fleet-summary.tsx";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
+import { formatBotFleetSummary } from "@/components/format-bot-fleet-summary.ts";
+import { CreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";

@@ -27,7 +27,7 @@ function InstanceCrumb() {
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  return <>{instanceInfo.friendlyName}</>;
+  return instanceInfo.friendlyName;
 }
 
 function InstanceCrumbSkeleton() {

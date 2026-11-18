@@ -65,12 +65,12 @@ import {
 import type { ProfileProxy } from "@/lib/types.ts";
 
 type Stage = "connect" | "choose" | "review" | "ordered" | "import";
-const CREDENTIALS: ConnectionField[] = [
+const CREDENTIALS = new Set<ConnectionField>([
   "apiKey",
   "username",
   "password",
   "sign",
-];
+]);
 const PREVIEW_ROWS = 6;
 const staticProducts = [
   { value: "ipv4", label: "IPv4" },
@@ -135,9 +135,7 @@ export function ProxyFlow({
   }
 
   const fields = CONNECTION_FIELDS[connection];
-  const credentialFields = fields.filter((field) =>
-    CREDENTIALS.includes(field),
-  );
+  const credentialFields = fields.filter((field) => CREDENTIALS.has(field));
   const hasCredentials = credentialFields.every(
     (field) => String(values[field]).trim().length > 0,
   );

@@ -32,7 +32,7 @@ export function CopyInfoButton(props: { value: string }) {
             aria-label={t("copyToClipboard")}
             className="shrink-0"
             onClick={() => {
-              copyToClipboard(props.value);
+              void copyToClipboard(props.value);
               close();
             }}
           >

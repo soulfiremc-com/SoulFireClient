@@ -635,6 +635,8 @@ function AddButton() {
               }
               break;
             }
+            case undefined:
+              break;
           }
         },
         onError: (e) => {
@@ -1248,7 +1250,7 @@ function Content() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.profileId);
+              void copyToClipboard(contextMenu.data.profileId);
               dismiss();
             }}
           >
@@ -1257,7 +1259,7 @@ function Content() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(contextMenu.data.lastKnownName);
+              void copyToClipboard(contextMenu.data.lastKnownName);
               dismiss();
             }}
           >

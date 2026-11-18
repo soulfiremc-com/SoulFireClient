@@ -109,7 +109,7 @@ export const ScrollAndReconcile: Story = {
     await waitFor(() => expect(host.scrollTop).toBeCloseTo(300, 0));
     await userEvent.click(canvas.getByRole("button", { name: "Trim" }));
     await waitFor(() => expect(host.scrollTop).toBeLessThan(300));
-    expect(host.scrollTop).toBeGreaterThan(270);
+    await expect(host.scrollTop).toBeGreaterThan(270);
     host.scrollTop = host.scrollHeight;
     host.dispatchEvent(new Event("scroll"));
     await waitFor(() => expect(host).toHaveTextContent("New log"));
@@ -123,7 +123,7 @@ export const ScrollAndReconcile: Story = {
     await waitFor(() => expect(host).toHaveTextContent("New log"));
     await userEvent.click(canvas.getByRole("button", { name: "Change scope" }));
     await waitFor(() => expect(host).toHaveTextContent("Other scope"));
-    expect(host).not.toHaveTextContent("Last log");
+    await expect(host).not.toHaveTextContent("Last log");
   },
 };
 
@@ -136,14 +136,18 @@ export const JumpToLatest: Story = {
       timeout: 5000,
     });
     // Log text keeps a gap from the side of the panel.
-    expect(Number.parseFloat(getComputedStyle(host).paddingLeft)).toBe(12);
+    await expect(Number.parseFloat(getComputedStyle(host).paddingLeft)).toBe(
+      12,
+    );
     await waitFor(() => expect(host.scrollTop).toBeGreaterThan(0));
-    expect(canvas.queryByRole("button", { name: "Jump to latest" })).toBeNull();
+    await expect(
+      canvas.queryByRole("button", { name: "Jump to latest" }),
+    ).toBeNull();
     host.scrollTop = 100;
     host.dispatchEvent(new Event("scroll"));
     await userEvent.click(canvas.getByRole("button", { name: "Append" }));
     const jump = await canvas.findByRole("button", { name: "Jump to latest" });
-    expect(host.scrollTop).toBeCloseTo(100, 0);
+    await expect(host.scrollTop).toBeCloseTo(100, 0);
     await userEvent.click(jump);
     await waitFor(() =>
       expect(host.scrollTop + host.clientHeight).toBeGreaterThanOrEqual(
@@ -155,7 +159,7 @@ export const JumpToLatest: Story = {
         canvas.queryByRole("button", { name: "Jump to latest" }),
       ).toBeNull(),
     );
-    expect(host).toHaveClass("wterm");
+    await expect(host).toHaveClass("wterm");
   },
 };
 
@@ -166,11 +170,11 @@ export const SelectAndCopy: Story = {
     )!;
     await waitFor(() => expect(host).toHaveTextContent("Last log"));
     const input = host.querySelector("textarea")!;
-    expect(input).toHaveAttribute("readonly");
-    expect(input).not.toHaveFocus();
+    await expect(input).toHaveAttribute("readonly");
+    await expect(input).not.toHaveFocus();
     input.focus();
     await userEvent.keyboard("ignored input");
-    expect(host).not.toHaveTextContent("ignored input");
+    await expect(host).not.toHaveTextContent("ignored input");
     await userEvent.keyboard("{Control>}a{/Control}");
     await waitFor(() => expect(host).toHaveClass("term-select-all"));
     await userEvent.pointer({ target: host, keys: "[MouseRight]" });
@@ -179,9 +183,9 @@ export const SelectAndCopy: Story = {
     });
     await userEvent.click(copy);
     await waitFor(() => expect(writeClipboard).toHaveBeenCalled());
-    expect(writeClipboard.mock.calls[0][0]).toContain("Log 0\nLog 1");
-    expect(writeClipboard.mock.calls[0][0]).toContain("Last log");
-    expect(writeClipboard.mock.calls[0][0]).not.toContain("\x1b");
+    await expect(writeClipboard.mock.calls[0][0]).toContain("Log 0\nLog 1");
+    await expect(writeClipboard.mock.calls[0][0]).toContain("Last log");
+    await expect(writeClipboard.mock.calls[0][0]).not.toContain("\x1b");
     await userEvent.click(host);
     const lastLog = within(host).getByText("Last log");
     const range = host.ownerDocument.createRange();
@@ -189,7 +193,7 @@ export const SelectAndCopy: Story = {
     const selection = host.ownerDocument.getSelection()!;
     selection.removeAllRanges();
     selection.addRange(range);
-    expect(selection.toString()).toBe("Last log");
+    await expect(selection.toString()).toBe("Last log");
     await userEvent.pointer({ target: lastLog, keys: "[MouseRight]" });
     await userEvent.click(
       await within(document.body).findByRole("menuitem", {
@@ -197,7 +201,7 @@ export const SelectAndCopy: Story = {
       }),
     );
     await waitFor(() => expect(uploadLog).toHaveBeenCalled());
-    expect(
+    await expect(
       new URLSearchParams(String(uploadLog.mock.calls[0][0])).get("content"),
     ).toBe("Last log");
     await waitFor(() =>

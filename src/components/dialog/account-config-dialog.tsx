@@ -147,6 +147,13 @@ function getSettingDisplayName(definition: SettingsDefinition): string {
         definition.id?.key ||
         ""
       );
+    case undefined:
+    case "bool":
+    case "combo":
+    case "double":
+    case "int":
+    case "string":
+    case "stringList":
     default:
       return definition.type.value?.uiName ?? definition.id?.key ?? "";
   }
@@ -160,6 +167,13 @@ function getSettingDescription(definition: SettingsDefinition): string {
         definition.type.value.maxEntry?.description ||
         ""
       );
+    case undefined:
+    case "bool":
+    case "combo":
+    case "double":
+    case "int":
+    case "string":
+    case "stringList":
     default:
       return definition.type.value?.description ?? "";
   }
@@ -223,6 +237,9 @@ function formatSettingValue(
 
       return `${value.min} – ${value.max}`;
     }
+    case undefined:
+    case "double":
+    case "int":
     default:
       return String(value);
   }
@@ -282,7 +299,7 @@ function BotSettingRow(props: {
       "value",
     ),
     mutationFn: async (value: JsonValue) =>
-      await updateBotConfigEntry(
+      updateBotConfigEntry(
         props.row.identifier.namespace,
         props.row.identifier.key,
         value,
@@ -308,7 +325,7 @@ function BotSettingRow(props: {
       "reset",
     ),
     mutationFn: async () =>
-      await removeBotConfigEntry(
+      removeBotConfigEntry(
         props.row.identifier.namespace,
         props.row.identifier.key,
         props.instanceId,

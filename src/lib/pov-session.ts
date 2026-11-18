@@ -173,6 +173,7 @@ export function startPovSession(
           if (size) {
             const result = yield* Effect.result(
               Effect.scoped(
+                // oxlint-disable-next-line eslint/no-loop-func -- the session runs to completion inside this iteration and resets the failure count for the next one
                 Effect.gen(function* () {
                   const current = yield* Effect.acquireRelease(
                     Effect.sync(() => ({

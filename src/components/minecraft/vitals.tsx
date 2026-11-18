@@ -1,13 +1,7 @@
 import { DrumstickIcon, HeartIcon, type LucideIcon } from "lucide-react";
 import i18n from "i18next";
 import { cn } from "@/lib/utils.tsx";
-
-function generateN(count: number) {
-  return Array.from(
-    { length: Math.max(0, Math.floor(count)) },
-    (_, index) => index + 1,
-  );
-}
+import { generateN } from "@/lib/generate-n.ts";
 
 /// A single meter icon (e.g. a heart) rendered as an empty base with a
 /// horizontally clipped filled overlay, so half-filled units render cleanly.

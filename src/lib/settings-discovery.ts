@@ -109,6 +109,11 @@ export function getSettingSearchTerms(
       break;
     case undefined:
       break;
+    case "bool":
+    case "double":
+    case "int":
+    case "string":
+    case "stringList":
     default:
       parts.push(type.value.uiName, type.value.description);
   }

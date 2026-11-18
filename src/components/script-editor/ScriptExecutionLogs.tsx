@@ -2,7 +2,7 @@ import { useSelector } from "@tanstack/react-store";
 import { type ComponentProps, useCallback } from "react";
 import { ExecutionLogs } from "./ExecutionLogs";
 import { getNodeDisplayLabel } from "./node-label";
-import { useScriptEditor } from "./ScriptEditorProvider";
+import { useScriptEditor } from "./script-editor-context";
 
 export function ScriptExecutionLogs(
   props: Omit<ComponentProps<typeof ExecutionLogs>, "logs" | "getNodeLabel">,

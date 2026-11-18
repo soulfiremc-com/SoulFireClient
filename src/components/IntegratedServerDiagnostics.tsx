@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import {
   ActivityIcon,
   ClipboardIcon,
@@ -29,22 +28,12 @@ import {
 } from "@/components/ui/input-group";
 import { Scroller } from "@/components/ui/scroller";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useIntegratedDiagnostics } from "@/hooks/use-integrated-diagnostics";
 import { desktop, isDesktopApp } from "@/lib/desktop";
 import type {
   DesktopIntegratedServerDiagnostics,
   DesktopIntegratedServerLog,
 } from "@/lib/desktop-api";
-
-export function useIntegratedDiagnostics() {
-  return useQuery({
-    queryKey: ["integrated-server-diagnostics"],
-    queryFn: () => desktop.integratedServer.getDiagnostics(),
-    refetchInterval: 1_000,
-    staleTime: 0,
-    retry: false,
-    enabled: isDesktopApp(),
-  });
-}
 
 export function OpenIntegratedDataDirectoryButton() {
   const { t } = useTranslation("common");

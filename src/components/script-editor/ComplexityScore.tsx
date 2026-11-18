@@ -5,7 +5,7 @@ import {
   getNodeDefinition,
   StandardPorts,
 } from "@/components/script-editor/nodes/types";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 
 /**
  * Computes and displays a complexity score for the current script.

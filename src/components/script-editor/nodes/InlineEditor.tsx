@@ -129,6 +129,16 @@ function InlineEditorComponent({
         />
       );
 
+    case "any":
+    case "block":
+    case "bot":
+    case "collection":
+    case "entity":
+    case "execution":
+    case "item":
+    case "list":
+    case "map":
+    case "set":
     default:
       // For other types (entity, bot, block, item, list, any), show as text
       return (

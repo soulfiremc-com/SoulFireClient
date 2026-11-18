@@ -4,13 +4,14 @@ import {
   SidebarMenuItem,
   SidebarMenuSkeleton,
 } from "../ui/sidebar";
+import { generateN } from "@/lib/generate-n.ts";
 
 export function NavDefaultSkeleton() {
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <SidebarMenuItem key={`nav-skeleton-${index}`}>
+        {generateN(5).map((slot) => (
+          <SidebarMenuItem key={slot}>
             <SidebarMenuSkeleton showIcon />
           </SidebarMenuItem>
         ))}

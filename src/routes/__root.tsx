@@ -30,10 +30,8 @@ import { TailwindIndicator } from "@/components/tailwind-indicator.tsx";
 import { Toaster } from "@/components/ui/sonner.tsx";
 import { UpdateReadyPrompt } from "@/components/update-ready-prompt.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import {
-  titlebarClassName,
-  WindowTitlebar,
-} from "@/components/window/window-titlebar.tsx";
+import { titlebarClassName } from "@/components/window/titlebar-class-name.ts";
+import { WindowTitlebar } from "@/components/window/window-titlebar.tsx";
 import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb";
 import { useCurrentRouteTitle } from "@/hooks/use-current-route-title.ts";
 import { useDiscordPresence } from "@/hooks/use-discord-presence.ts";
@@ -135,7 +133,6 @@ function PointerReset() {
   // When dropdowns were open when page is switched, sometimes the body still has pointer-events: none
   // This will reset it to auto
   useEffect(() => {
-    console.debug("Resetting pointers because switched to ", location.pathname);
     document.body.style.pointerEvents = "auto";
   }, [location.pathname]);
 

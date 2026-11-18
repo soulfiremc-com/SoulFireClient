@@ -17,9 +17,9 @@ test("cancellation waits for preparation cleanup and prevents an overlapping ret
   const cleanup = new EventEmitter();
   const cleanupDone = once(cleanup, "done");
   const operation = startIntegratedOperation(state, async (signal) => {
-    await new Promise<void>((resolve) =>
-      signal.addEventListener("abort", () => resolve(), { once: true }),
-    );
+    await new Promise<void>((resolve) => {
+      signal.addEventListener("abort", () => resolve(), { once: true });
+    });
     await cleanupDone;
     signal.throwIfAborted();
     return "";

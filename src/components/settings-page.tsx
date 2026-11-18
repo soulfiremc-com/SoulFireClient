@@ -238,7 +238,7 @@ function StringComponent(props: {
         minLength={props.setting.minLength}
         maxLength={props.setting.maxLength}
         disabled={props.setting.disabled}
-        onChange={onChangeHandler}
+        onChange={(e) => void onChangeHandler(e)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
@@ -257,7 +257,7 @@ function StringComponent(props: {
         maxLength={props.setting.maxLength}
         pattern={props.setting.pattern}
         disabled={props.setting.disabled}
-        onChange={onChangeHandler}
+        onChange={(e) => void onChangeHandler(e)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
@@ -807,7 +807,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
             setting={props.settingType.value}
             value={props.value as boolean}
             pending={props.pending}
-            changeCallback={props.changeCallback}
+            changeCallback={(value) => void props.changeCallback(value)}
             title={props.settingType.value.uiName}
             description={props.settingType.value.description}
           />
@@ -841,7 +841,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
             setting={props.settingType.value}
             value={props.value as string}
             pending={props.pending}
-            changeCallback={props.changeCallback}
+            changeCallback={(value) => void props.changeCallback(value)}
           />
         </SettingInputLayout>
       );
@@ -874,6 +874,8 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         />
       );
     }
+    case undefined:
+      break;
   }
 });
 
@@ -1224,13 +1226,15 @@ export type DisabledSettingId = {
   key: string;
 };
 
+const NO_DISABLED_IDS: readonly DisabledSettingId[] = [];
+
 export function ClientSettingsPageComponent<T extends BaseSettings>({
   data,
   invalidateQuery,
   updateConfigEntry,
   config,
   mutationTarget,
-  disabledIds = [],
+  disabledIds = NO_DISABLED_IDS,
   definitions,
   allPages,
   persisted,
@@ -1503,7 +1507,7 @@ export function InstanceSettingsPageComponent({
         focusSetting={focusSetting}
         mutationTarget={{ type: "instance", instanceId: instanceInfo.id }}
         updateConfigEntry={async (namespace, key, value) =>
-          await updateInstanceConfigEntry(
+          updateInstanceConfigEntry(
             namespace,
             key,
             value,
@@ -1568,7 +1572,7 @@ export function AdminSettingsPageComponent({
         focusSetting={focusSetting}
         mutationTarget={{ type: "server" }}
         updateConfigEntry={async (namespace, key, value) =>
-          await updateServerConfigEntry(
+          updateServerConfigEntry(
             namespace,
             key,
             value,
@@ -1626,7 +1630,7 @@ export function BotSettingsPageComponent({
         data={data}
         mutationTarget={{ type: "bot", instanceId: instanceInfo.id, botId }}
         updateConfigEntry={async (namespace, key, value) =>
-          await updateBotConfigEntry(
+          updateBotConfigEntry(
             namespace,
             key,
             value,

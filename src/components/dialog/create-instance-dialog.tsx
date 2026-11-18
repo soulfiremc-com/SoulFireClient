@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { LoaderCircleIcon, PlusIcon, XIcon } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
-import { createContext, type ReactNode, use, useState } from "react";
+import { type ReactNode, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
@@ -33,23 +33,22 @@ import {
   CredenzaHeader,
   CredenzaTitle,
 } from "../ui/credenza.tsx";
-
-export const CreateInstanceContext = createContext<{
-  openCreateInstance: () => void;
-}>(null as never);
+import { CreateInstanceContext } from "./create-instance-context.ts";
 
 export function CreateInstanceProvider(props: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const value = useMemo(
+    () => ({
+      openCreateInstance: () => {
+        setOpen(true);
+      },
+    }),
+    [],
+  );
 
   return (
     <>
-      <CreateInstanceContext
-        value={{
-          openCreateInstance: () => {
-            setOpen(true);
-          },
-        }}
-      >
+      <CreateInstanceContext value={value}>
         {props.children}
       </CreateInstanceContext>
       <CreateInstanceDialog open={open} setOpen={setOpen} />

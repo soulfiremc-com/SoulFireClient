@@ -1,7 +1,12 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { SearchIcon } from "lucide-react";
-import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
+import {
+  parseAsString,
+  parseAsStringLiteral,
+  throttle,
+  useQueryState,
+} from "nuqs";
 import { memo, Suspense, useDeferredValue } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -89,7 +94,7 @@ function Content() {
     parseAsString.withDefault("").withOptions({
       clearOnDefault: true,
       shallow: true,
-      throttleMs: 300,
+      limitUrlUpdates: throttle(300),
     }),
   );
 
@@ -114,7 +119,7 @@ function Content() {
             aria-label={t("bots.searchPlaceholder")}
             placeholder={t("bots.searchPlaceholder")}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => void setSearch(e.target.value)}
           />
         </InputGroup>
         {/* Scroll the segmented filter on narrow screens instead of wrapping it. */}

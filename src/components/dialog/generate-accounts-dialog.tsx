@@ -253,6 +253,8 @@ export default function GenerateAccountsDialog({
             }
             break;
           }
+          case undefined:
+            break;
         }
       },
       onError: (e) => {

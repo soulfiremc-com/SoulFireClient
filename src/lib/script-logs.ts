@@ -18,6 +18,7 @@ export function scriptLogLevel(level: string | undefined): LogEntry["level"] {
     case "debug":
     case "trace":
       return "debug";
+    case undefined:
     default:
       return "info";
   }

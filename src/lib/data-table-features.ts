@@ -39,7 +39,9 @@ export const dataTableFeatures = tableFeatures({
   filteredRowModel: createFilteredRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
   sortedRowModel: createSortedRowModel(),
+  // oxlint-disable-next-line typescript/no-deprecated -- columns resolve built-in filter functions by name, which needs the full registry
   filterFns,
+  // oxlint-disable-next-line typescript/no-deprecated -- columns resolve built-in sort functions by name, which needs the full registry
   sortFns,
   tableMeta: {} as TableQueryMeta,
 });

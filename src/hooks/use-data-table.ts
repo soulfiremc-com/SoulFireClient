@@ -14,6 +14,7 @@ import {
   parseAsInteger,
   parseAsString,
   type SingleParser,
+  throttle,
   type UseQueryStateOptions,
   useQueryState,
   useQueryStates,
@@ -98,7 +99,7 @@ export function useDataTable<TData extends RowData>(
       history,
       scroll,
       shallow,
-      throttleMs,
+      limitUrlUpdates: throttle(throttleMs),
       debounceMs,
       clearOnDefault,
       startTransition,
@@ -161,9 +162,9 @@ export function useDataTable<TData extends RowData>(
     (updaterOrValue: Updater<SortingState>) => {
       if (typeof updaterOrValue === "function") {
         const newSorting = updaterOrValue(sorting);
-        setSorting(newSorting as ExtendedColumnSort<TData>[]);
+        void setSorting(newSorting as ExtendedColumnSort<TData>[]);
       } else {
-        setSorting(updaterOrValue as ExtendedColumnSort<TData>[]);
+        void setSorting(updaterOrValue as ExtendedColumnSort<TData>[]);
       }
     },
     [sorting, setSorting],

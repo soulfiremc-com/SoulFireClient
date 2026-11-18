@@ -45,10 +45,11 @@ export function readImportFile(
     };
     reader.onerror = () => {
       cleanup();
-      reject(reader.error);
+      reject(reader.error ?? new Error("Could not read the file"));
     };
     reader.onabort = () => {
       cleanup();
+      // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- AbortSignal.reason is typed any; it holds the abort reason
       reject(signal.reason);
     };
     signal.addEventListener("abort", abort, { once: true });
@@ -56,7 +57,7 @@ export function readImportFile(
       reader.readAsText(file);
     } catch (error) {
       cleanup();
-      reject(error);
+      reject(error instanceof Error ? error : new Error(String(error)));
     }
   });
 }

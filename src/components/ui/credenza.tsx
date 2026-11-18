@@ -54,9 +54,10 @@ const useCredenzaContext = () => {
 const Credenza = ({ children, ...props }: RootCredenzaProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const Credenza = isDesktop ? Dialog : Drawer;
+  const contextValue = React.useMemo(() => ({ isDesktop }), [isDesktop]);
 
   return (
-    <CredenzaContext value={{ isDesktop }}>
+    <CredenzaContext value={contextValue}>
       <Credenza {...props} {...(!isDesktop && { showSwipeHandle: true })}>
         {children}
       </Credenza>

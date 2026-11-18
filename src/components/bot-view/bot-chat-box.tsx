@@ -50,6 +50,10 @@ export function BotChatBox(props: {
           throw new Error(response.result.error ?? "");
         case BotActionStatus.CANCELLED:
           throw new Error(t("bots.chatPanel.cancelled"));
+        case BotActionStatus.UNSPECIFIED:
+        case BotActionStatus.COMPLETED:
+        case undefined:
+          break;
       }
     },
     onSuccess: (_response, sentMessage) =>

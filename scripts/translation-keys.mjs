@@ -123,9 +123,9 @@ function literalsIn(text) {
   // Drop literals in comparisons and nested calls, such as
   // `phase === "saving" ? "a" : "b"` or `list.includes("buy") ? "a" : "b"`.
   text = text
-    .replace(/[=!]==?\s*(["'`])(?:(?!\1).)*\1/g, "")
-    .replace(/(["'`])(?:(?!\1).)*\1\s*[=!]==?/g, "")
-    .replace(/\w\(\s*(["'`])(?:(?!\1).)*\1\s*\)/g, "");
+    .replaceAll(/[=!]==?\s*(["'`])(?:(?!\1).)*\1/g, "")
+    .replaceAll(/(["'`])(?:(?!\1).)*\1\s*[=!]==?/g, "")
+    .replaceAll(/\w\(\s*(["'`])(?:(?!\1).)*\1\s*\)/g, "");
   const pattern = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`([^`]*)`/g;
   for (const match of text.matchAll(pattern)) {
     if (match[3] !== undefined) {
@@ -179,7 +179,7 @@ function translationBindings(source) {
 function templatePattern(template) {
   const parts = template.split(/\$\{[^}]*\}/);
   const escaped = parts.map((part) =>
-    part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    part.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&"),
   );
   return new RegExp(`^${escaped.join(".+")}$`);
 }
@@ -214,7 +214,7 @@ export function scanSources(files, rootDirectory, namespaces) {
         references.push({
           path,
           line: lineOf(source, index),
-          dynamic: text.trim().replace(/\s+/g, " "),
+          dynamic: text.trim().replaceAll(/\s+/g, " "),
         });
         return;
       }

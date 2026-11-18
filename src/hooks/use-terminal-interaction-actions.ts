@@ -40,7 +40,7 @@ export function useTerminalInteractionActions(
     activate: (metadata: TerminalInteraction) => {
       const click = metadata.click;
       if (!click || disabled(click)) return;
-      if (click.action === "copy_to_clipboard") copy(click.value);
+      if (click.action === "copy_to_clipboard") void copy(click.value);
       else if (click.action === "open_url") openExternalUrl(click.value);
       else onCommand?.(click.action, click.value);
     },

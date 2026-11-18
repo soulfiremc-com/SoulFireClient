@@ -454,7 +454,7 @@ export function CopyValue({ value }: { value: string }) {
       variant="outline"
       size="sm"
       aria-label={t("providers.copyLabel", { value })}
-      onClick={() => copy(value)}
+      onClick={() => void copy(value)}
     >
       <CopyIcon data-icon="inline-start" />
       <span className="font-mono">{value}</span>

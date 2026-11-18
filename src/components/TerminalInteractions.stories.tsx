@@ -150,7 +150,7 @@ function Example({
   return (
     <TransportContext value={transport}>
       {history && (
-        <button onClick={() => setNarrow((value) => !value)}>
+        <button type="button" onClick={() => setNarrow((value) => !value)}>
           Resize terminal
         </button>
       )}

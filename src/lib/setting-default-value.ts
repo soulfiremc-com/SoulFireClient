@@ -15,6 +15,8 @@ export function getSettingDefaultValue(
       return type.value.def;
     case "stringList":
       return [...type.value.def];
+    case undefined:
+    case "minMax":
     default:
       return undefined;
   }

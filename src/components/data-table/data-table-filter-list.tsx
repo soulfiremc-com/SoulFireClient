@@ -10,7 +10,7 @@ import {
   ListFilter,
   Trash2,
 } from "lucide-react";
-import { parseAsStringEnum, useQueryState } from "nuqs";
+import { parseAsStringEnum, throttle, useQueryState } from "nuqs";
 import * as React from "react";
 
 import { DataTableRangeFilter } from "@/components/data-table/data-table-range-filter";
@@ -75,7 +75,7 @@ import type {
 const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 const FILTER_SHORTCUT_KEY = "f";
-const REMOVE_FILTER_SHORTCUTS = ["backspace", "delete"];
+const REMOVE_FILTER_SHORTCUTS = new Set(["backspace", "delete"]);
 const BOOLEAN_FILTER_ITEMS = [
   { label: "True", value: "true" },
   { label: "False", value: "false" },
@@ -118,7 +118,7 @@ export function DataTableFilterList<TData extends RowData>({
       .withOptions({
         clearOnDefault: true,
         shallow,
-        throttleMs,
+        limitUrlUpdates: throttle(throttleMs),
       }),
   );
   const debouncedSetFilters = useDebouncedCallback(setFilters, debounceMs);
@@ -214,7 +214,7 @@ export function DataTableFilterList<TData extends RowData>({
   const onTriggerKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLButtonElement>) => {
       if (
-        REMOVE_FILTER_SHORTCUTS.includes(event.key.toLowerCase()) &&
+        REMOVE_FILTER_SHORTCUTS.has(event.key.toLowerCase()) &&
         filters.length > 0
       ) {
         event.preventDefault();
@@ -227,7 +227,7 @@ export function DataTableFilterList<TData extends RowData>({
   return (
     <Sortable
       value={filters}
-      onValueChange={setFilters}
+      onValueChange={(value) => void setFilters(value)}
       getItemValue={(item) => item.filterId}
     >
       <Popover open={open} onOpenChange={setOpen}>
@@ -291,7 +291,7 @@ export function DataTableFilterList<TData extends RowData>({
                   index={index}
                   filterItemId={`${id}-filter-${filter.filterId}`}
                   joinOperator={joinOperator}
-                  setJoinOperator={setJoinOperator}
+                  setJoinOperator={(value) => void setJoinOperator(value)}
                   columns={columns}
                   onFilterUpdate={onFilterUpdate}
                   onFilterRemove={onFilterRemove}
@@ -386,7 +386,7 @@ function DataTableFilterItem<TData extends RowData>({
         return;
       }
 
-      if (REMOVE_FILTER_SHORTCUTS.includes(event.key.toLowerCase())) {
+      if (REMOVE_FILTER_SHORTCUTS.has(event.key.toLowerCase())) {
         event.preventDefault();
         onFilterRemove(filter.filterId);
       }

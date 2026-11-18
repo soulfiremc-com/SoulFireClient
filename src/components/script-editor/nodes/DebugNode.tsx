@@ -3,7 +3,7 @@ import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { Bug, Copy, Trash2 } from "lucide-react";
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -106,9 +106,11 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 
   const handleCopyValue = useCallback(() => {
     if (currentValue) {
-      navigator.clipboard.writeText(
-        JSON.stringify(currentValue.value, null, 2),
-      );
+      navigator.clipboard
+        .writeText(JSON.stringify(currentValue.value, null, 2))
+        .catch((error: unknown) => {
+          console.error("Could not copy the debug value", error);
+        });
     }
   }, [currentValue]);
 

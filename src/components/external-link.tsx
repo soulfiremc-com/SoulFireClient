@@ -36,6 +36,7 @@ export function ExternalLink({
       href={href}
       onClick={handleClick}
       rel={rel ?? "noopener noreferrer"}
+      // oxlint-disable-next-line react/jsx-no-target-blank -- rel defaults to "noopener noreferrer", and no caller overrides it
       target="_blank"
     />
   );

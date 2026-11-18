@@ -141,13 +141,13 @@ async function canvasReady() {
     document.querySelector<HTMLElement>(".react-flow__viewport")?.style
       .transform;
   let last: string | undefined;
-  await waitFor(() => {
-    expect(handle(sinkId, "amount")).toBeTruthy();
+  await waitFor(async () => {
+    await expect(handle(sinkId, "amount")).toBeTruthy();
     const current = viewport();
     const settled =
       current === last && current !== "translate(0px, 0px) scale(1)";
     last = current;
-    expect(settled).toBe(true);
+    await expect(settled).toBe(true);
   });
 }
 
@@ -189,7 +189,7 @@ export const DragConnectsMatchingPorts: Story = {
       ]),
     );
     // A connected input hides its inline field.
-    expect(
+    await expect(
       within(document.body).queryByRole("spinbutton", { name: "Amount" }),
     ).toBeNull();
   },
@@ -205,7 +205,7 @@ export const DragExplainsWrongPortType: Story = {
     await within(document.body).findByText(
       "You cannot connect entity outputs to number inputs.",
     );
-    expect(session.document.get().edges).toEqual([]);
+    await expect(session.document.get().edges).toEqual([]);
   },
 };
 
@@ -228,9 +228,13 @@ export const Vector3DefaultsAreEditable: Story = {
     await canvasReady();
     const body = within(document.body);
     const y = await body.findByRole("spinbutton", { name: "Position Y" });
-    expect(body.getByRole("spinbutton", { name: "Position X" })).toHaveValue(1);
-    expect(y).toHaveValue(2);
-    expect(body.getByRole("spinbutton", { name: "Position Z" })).toHaveValue(3);
+    await expect(
+      body.getByRole("spinbutton", { name: "Position X" }),
+    ).toHaveValue(1);
+    await expect(y).toHaveValue(2);
+    await expect(
+      body.getByRole("spinbutton", { name: "Position Z" }),
+    ).toHaveValue(3);
     await userEvent.clear(y);
     await userEvent.type(y, "7");
     await waitFor(() =>
@@ -337,7 +341,7 @@ export const TouchConnectsWithLargerTargets: Story = {
   },
   play: async () => {
     await canvasReady();
-    expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+    await expect(matchMedia("(pointer: coarse)").matches).toBe(true);
     // 8 px from the center lands outside the 8 px dot but inside its touch area.
     await touchWire(handle(sourceId, "value"), handle(sinkId, "amount"), 8);
     await waitFor(() =>

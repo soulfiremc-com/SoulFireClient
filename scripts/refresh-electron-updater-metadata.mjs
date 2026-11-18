@@ -87,8 +87,8 @@ for (const metadataFile of metadataFiles) {
   }
 
   const updatedMetadata = updateBlockMapSize(metadata)
-    .replace(/^(\s*sha512:\s*).+$/gm, `$1${signedInstallerInfo.sha512}`)
-    .replace(/^(\s*size:\s*)\d+$/gm, `$1${signedInstallerInfo.size}`);
+    .replaceAll(/^(\s*sha512:\s*).+$/gm, `$1${signedInstallerInfo.sha512}`)
+    .replaceAll(/^(\s*size:\s*)\d+$/gm, `$1${signedInstallerInfo.size}`);
 
   writeFileSync(metadataFile, updatedMetadata);
   updatedMetadataFiles += 1;

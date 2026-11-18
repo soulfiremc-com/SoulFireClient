@@ -71,6 +71,7 @@ export function cloneSubgraph(
     }),
     edges: graph.edges
       .filter((edge) => ids.has(edge.source) && ids.has(edge.target))
+      // oxlint-disable-next-line oxc/no-map-spread -- the copies must not change the edges of the source graph
       .map((edge): Edge => ({
         ...edge,
         id: crypto.randomUUID(),

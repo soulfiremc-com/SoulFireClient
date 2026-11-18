@@ -201,6 +201,15 @@ function appIconPath(): string {
       return resolveAssetPath("build/icons/icon.png");
     case "win32":
       return resolveAssetPath("build/icons/icon.ico");
+    case "aix":
+    case "android":
+    case "cygwin":
+    case "freebsd":
+    case "haiku":
+    case "linux":
+    case "netbsd":
+    case "openbsd":
+    case "sunos":
     default:
       return resolveAssetPath("build/icons/icon.png");
   }
@@ -212,6 +221,15 @@ function trayIconPath(): string {
       return resolveAssetPath("build/icons/trayTemplate.png");
     case "win32":
       return resolveAssetPath("build/icons/icon.ico");
+    case "aix":
+    case "android":
+    case "cygwin":
+    case "freebsd":
+    case "haiku":
+    case "linux":
+    case "netbsd":
+    case "openbsd":
+    case "sunos":
     default:
       return resolveAssetPath("build/icons/icon.png");
   }
@@ -1216,5 +1234,6 @@ async function bootstrap(): Promise<void> {
 }
 
 if (hasSingleInstanceLock) {
+  // oxlint-disable-next-line unicorn/prefer-top-level-await -- the main process is bundled as CommonJS, which has no top-level await
   void app.whenReady().then(bootstrap);
 }

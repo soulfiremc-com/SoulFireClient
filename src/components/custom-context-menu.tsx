@@ -112,7 +112,7 @@ export function SelectedTextActions({
     <>
       <DropdownMenuItem
         onClick={() => {
-          copyToClipboard(text);
+          void copyToClipboard(text);
           onClose();
         }}
       >
@@ -124,7 +124,7 @@ export function SelectedTextActions({
           toast.promise(
             uploadToMcLogs(text).then((response) => {
               if (response.success) {
-                copyToClipboard(response.url);
+                void copyToClipboard(response.url);
                 return response.url;
               }
               throw new Error(`Upload failed: ${response.error}`);

@@ -10,7 +10,9 @@ test("index tasks run in order with bounded concurrency", async () => {
     running++;
     max = Math.max(max, running);
     order.push(index);
-    await new Promise((resolve) => setTimeout(resolve, 2));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 2);
+    });
     running--;
   });
   await runBounded(tasks, 3, new AbortController().signal);
@@ -24,7 +26,9 @@ test("aborting the index starts no further tasks", async () => {
   const tasks = Array.from({ length: 10 }, (_, index) => async () => {
     started.push(index);
     if (index === 1) controller.abort();
-    await new Promise((resolve) => setTimeout(resolve, 2));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 2);
+    });
   });
   await runBounded(tasks, 2, controller.signal);
   assert.deepEqual(started, [0, 1]);

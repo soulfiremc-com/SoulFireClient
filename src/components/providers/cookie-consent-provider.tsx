@@ -1,15 +1,16 @@
-import { createContext, type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import { useAnalyticsConsent } from "@/hooks/use-analytics-consent";
 import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog";
-
-export const CookieConsentContext = createContext<{
-  openCookiePreferences: () => void;
-}>(null as never);
+import { CookieConsentContext } from "./cookie-consent-context.ts";
 
 export function CookieConsentProvider({ children }: { children: ReactNode }) {
   const consent = useAnalyticsConsent();
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const value = useMemo(
+    () => ({ openCookiePreferences: () => setPreferencesOpen(true) }),
+    [],
+  );
 
   useEffect(() => {
     if (!isPostHogConfigured) return;
@@ -30,9 +31,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CookieConsentContext
-      value={{ openCookiePreferences: () => setPreferencesOpen(true) }}
-    >
+    <CookieConsentContext value={value}>
       {children}
       {isPostHogConfigured && (consent === "pending" || preferencesOpen) && (
         <CookieConsentBanner

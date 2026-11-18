@@ -59,6 +59,7 @@ function lifecycleText(
       return message
         ? `${t("overview.liveFeed.lifecycle.disconnected")}: ${message}`
         : t("overview.liveFeed.lifecycle.disconnected");
+    case BotLifecycleKind.BOT_LIFECYCLE_UNSPECIFIED:
     default:
       return t("overview.liveFeed.lifecycle.unknown");
   }

@@ -41,7 +41,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import { CreateInstanceContext } from "@/components/dialog/create-instance-dialog.tsx";
+import { CreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -113,6 +113,7 @@ import { formatShortcut, isDesktopApp } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { hasGlobalPermission, hasInstancePermission } from "@/lib/utils.tsx";
+import { generateN } from "@/lib/generate-n.ts";
 
 export const Route = createFileRoute("/_dashboard/user/")({
   beforeLoad: () =>
@@ -135,13 +136,6 @@ type StateAction = {
 type DuplicateInstanceForm = {
   friendlyName: string;
 };
-
-function generateN(count: number) {
-  return Array.from(
-    { length: Math.max(0, Math.floor(count)) },
-    (_, index) => index + 1,
-  );
-}
 
 function getAvailableStateActions(summary?: BotFleetSummary): StateAction[] {
   const actions: StateAction[] = [];
@@ -528,7 +522,7 @@ function Content() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            copyToClipboard(instance.friendlyName);
+            void copyToClipboard(instance.friendlyName);
             close();
           }}
         >
@@ -537,7 +531,7 @@ function Content() {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            copyToClipboard(instance.id);
+            void copyToClipboard(instance.id);
             close();
           }}
         >

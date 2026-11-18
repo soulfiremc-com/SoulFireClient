@@ -138,11 +138,11 @@ test("batches stream updates and rejects history that completes after disposal",
       },
       async *subscribe(_, context) {
         for (let id = 1; id <= 10; id++) yield { message: message(id) };
-        await new Promise<void>((resolve) =>
+        await new Promise<void>((resolve) => {
           context.signal.addEventListener("abort", () => resolve(), {
             once: true,
-          }),
-        );
+          });
+        });
       },
     });
   });
@@ -186,11 +186,11 @@ test("restarted sessions reject an older snapshot that ignored cancellation", as
       },
       async *subscribe(_, context) {
         yield { message: message(10) };
-        await new Promise<void>((resolve) =>
+        await new Promise<void>((resolve) => {
           context.signal.addEventListener("abort", () => resolve(), {
             once: true,
-          }),
-        );
+          });
+        });
       },
     }),
   );
@@ -293,11 +293,11 @@ test("reconnecting catches up retained history without duplicating live entries"
         history = [message(1), message(2), message(3)];
         yield { message: message(3) };
         ready();
-        await new Promise<void>((resolve) =>
+        await new Promise<void>((resolve) => {
           context.signal.addEventListener("abort", () => resolve(), {
             once: true,
-          }),
-        );
+          });
+        });
       },
     });
   });
@@ -358,11 +358,11 @@ test("the first live response queues catch-up behind an in-flight snapshot", asy
       async *subscribe(_, context) {
         await snapshotReady;
         yield { message: message(3) };
-        await new Promise<void>((resolve) =>
+        await new Promise<void>((resolve) => {
           context.signal.addEventListener("abort", () => resolve(), {
             once: true,
-          }),
-        );
+          });
+        });
       },
     });
   });

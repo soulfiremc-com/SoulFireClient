@@ -410,14 +410,16 @@ function MainDialog(
                       if (isDesktopApp()) {
                         return [(await desktop.clipboard.readText()) ?? ""];
                       } else {
-                        const mimeTypes = props.filters.map((f) => f.mimeType);
+                        const mimeTypes = new Set(
+                          props.filters.map((f) => f.mimeType),
+                        );
                         let clipboardEntries = (
                           await navigator.clipboard.read()
                         )
                           .map((item) => ({
                             item,
                             firstSupportedType: item.types.find((t) =>
-                              mimeTypes.includes(t),
+                              mimeTypes.has(t),
                             ),
                           }))
                           .filter(

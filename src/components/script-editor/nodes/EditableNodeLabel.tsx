@@ -6,7 +6,7 @@ import {
   EditablePreview,
 } from "@/components/ui/editable";
 import { cn } from "@/lib/utils";
-import { useNodeEditing } from "../NodeEditingContext";
+import { useNodeEditing } from "../node-editing-context";
 
 interface EditableNodeLabelProps {
   nodeId: string;

@@ -59,7 +59,7 @@ const desktopApi: SoulFireDesktopApi = {
   clipboard: {
     readText: async () => clipboard.readText(),
     writeText: async (text: string) => {
-      clipboard.writeText(text);
+      await clipboard.writeText(text);
     },
   },
   dialog: {

@@ -3,7 +3,7 @@ import { Panel, useReactFlow, useStoreApi } from "@xyflow/react";
 import { MousePointerClickIcon, SearchIcon, ZapIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Button } from "@/components/ui/button.tsx";
 import { Kbd } from "@/components/ui/kbd.tsx";
 import {
@@ -12,7 +12,7 @@ import {
   SCRIPT_TEMPLATES,
   type ScriptTemplate,
 } from "@/lib/script-templates.ts";
-import { useNodeTypes } from "./NodeTypesContext";
+import { useNodeTypes } from "./node-types-context";
 import { ScriptTemplatePicker } from "./ScriptTemplatePicker";
 
 const STARTER_TRIGGERS = [

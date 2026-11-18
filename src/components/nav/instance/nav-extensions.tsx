@@ -65,7 +65,7 @@ export function NavExtensions() {
     (s) => s.id === pageId,
   );
   const [pluginCollapsibleOpen, setPluginCollapsibleOpen] = useState(
-    settingsEntry !== undefined && settingsEntry.owningPluginId !== undefined,
+    settingsEntry?.owningPluginId !== undefined,
   );
   const pluginPageId = settingsEntry?.owningPluginId
     ? settingsEntry.id

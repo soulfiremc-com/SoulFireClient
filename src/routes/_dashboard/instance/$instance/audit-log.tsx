@@ -308,7 +308,7 @@ function Content() {
           {contextMenu.data.user?.username && (
             <DropdownMenuItem
               onClick={() => {
-                copyToClipboard(contextMenu.data.user?.username ?? "");
+                void copyToClipboard(contextMenu.data.user?.username ?? "");
                 dismiss();
               }}
             >
@@ -321,7 +321,7 @@ function Content() {
             contextMenu.data.data && (
               <DropdownMenuItem
                 onClick={() => {
-                  copyToClipboard(contextMenu.data.data);
+                  void copyToClipboard(contextMenu.data.data);
                   dismiss();
                 }}
               >

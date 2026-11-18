@@ -155,6 +155,7 @@ function DataTableToolbarFilter<TData extends RowData>({
         />
       );
 
+    case "boolean":
     default:
       return null;
   }

@@ -1,6 +1,7 @@
 export type { BaseNodeData } from "./BaseNode";
 // Export base node component and factory
-export { BaseNode, createNodeComponent } from "./BaseNode";
+export { BaseNode } from "./BaseNode";
+export { createNodeComponent } from "./create-node-component";
 export type { FrameNodeData } from "./FrameNode";
 export { FrameNode } from "./FrameNode";
 export type { GroupInputNodeData } from "./GroupInputNode";

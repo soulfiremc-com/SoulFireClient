@@ -723,6 +723,9 @@ function detectArchitecture(): string {
       return "arm";
     case "riscv64":
       return "riscv64";
+    case "loong64":
+    case "mips":
+    case "mipsel":
     default:
       return "unknown";
   }
@@ -736,6 +739,14 @@ function detectOs(): string {
       return "windows";
     case "darwin":
       return "mac";
+    case "aix":
+    case "android":
+    case "cygwin":
+    case "freebsd":
+    case "haiku":
+    case "netbsd":
+    case "openbsd":
+    case "sunos":
     default:
       return "unknown";
   }

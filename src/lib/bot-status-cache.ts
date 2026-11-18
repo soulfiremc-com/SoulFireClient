@@ -22,6 +22,11 @@ function applyStatus(bot: BotListEntry, status: BotStatus): BotListEntry {
         liveState: undefined,
         pingMs: undefined,
       };
+    case BotRuntimeState.UNSPECIFIED:
+    case BotRuntimeState.QUEUED:
+    case BotRuntimeState.STARTING:
+    case BotRuntimeState.RUNNING:
+    case BotRuntimeState.STOPPING:
     default:
       return { ...bot, status };
   }

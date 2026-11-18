@@ -28,7 +28,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ButtonGroup } from "@/components/ui/button-group.tsx";
@@ -484,7 +484,7 @@ export function ScriptToolbar({
             ref={fileInputRef}
             type="file"
             accept=".json,.soulfire-script.json"
-            onChange={handleImport}
+            onChange={(event) => void handleImport(event)}
             className="hidden"
           />
         </>
@@ -531,7 +531,7 @@ export function ScriptToolbar({
               ref={fileInputRef}
               type="file"
               accept=".json,.soulfire-script.json"
-              onChange={handleImport}
+              onChange={(event) => void handleImport(event)}
               className="hidden"
             />
           </ButtonGroup>

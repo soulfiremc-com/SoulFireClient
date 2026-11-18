@@ -24,15 +24,11 @@ import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { getNodeDisplayLabel } from "@/components/script-editor/node-label";
 import { NodePalette } from "@/components/script-editor/NodePalette.tsx";
-import {
-  NodeTypesProvider,
-  useNodeTypes,
-} from "@/components/script-editor/NodeTypesContext.tsx";
+import { NodeTypesProvider } from "@/components/script-editor/NodeTypesContext.tsx";
+import { useNodeTypes } from "@/components/script-editor/node-types-context.ts";
 import { ScriptEditor } from "@/components/script-editor/ScriptEditor.tsx";
-import {
-  ScriptEditorProvider,
-  useScriptEditor,
-} from "@/components/script-editor/ScriptEditorProvider";
+import { ScriptEditorProvider } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { ScriptExecutionLogs } from "@/components/script-editor/ScriptExecutionLogs.tsx";
 import { ScriptToolbar } from "@/components/script-editor/ScriptToolbar.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -324,7 +320,7 @@ function ScriptEditorContent() {
   useEffect(() => {
     if (!transport || scriptId === "new") return;
     const controller = new AbortController();
-    const timeout = setTimeout(async () => {
+    const validate = async () => {
       try {
         const client = createRpcClient(ScriptService, transport);
         const result = await Effect.runPromise(
@@ -356,7 +352,8 @@ function ScriptEditorContent() {
       } catch {
         // Validation is best-effort. Keep the last successful diagnostics.
       }
-    }, 500);
+    };
+    const timeout = setTimeout(() => void validate(), 500);
     return () => {
       clearTimeout(timeout);
       controller.abort();
@@ -722,15 +719,15 @@ function ScriptEditorContent() {
 
   // Handle zoom controls
   const handleZoomIn = useCallback(() => {
-    reactFlowInstance.zoomIn();
+    void reactFlowInstance.zoomIn();
   }, [reactFlowInstance]);
 
   const handleZoomOut = useCallback(() => {
-    reactFlowInstance.zoomOut();
+    void reactFlowInstance.zoomOut();
   }, [reactFlowInstance]);
 
   const handleFitView = useCallback(() => {
-    reactFlowInstance.fitView({ padding: 0.2 });
+    void reactFlowInstance.fitView({ padding: 0.2 });
   }, [reactFlowInstance]);
 
   // Handle clear logs
@@ -861,8 +858,8 @@ function ScriptEditorContent() {
           isControlling={isControlling}
           instanceId={instanceId}
           onSave={handleSave}
-          onStart={handleStart}
-          onStop={handleStop}
+          onStart={() => void handleStart()}
+          onStop={() => void handleStop()}
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onFitView={handleFitView}
@@ -946,8 +943,8 @@ function ScriptEditorContent() {
         isControlling={isControlling}
         instanceId={instanceId}
         onSave={handleSave}
-        onStart={handleStart}
-        onStop={handleStop}
+        onStart={() => void handleStart()}
+        onStop={() => void handleStop()}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onFitView={handleFitView}

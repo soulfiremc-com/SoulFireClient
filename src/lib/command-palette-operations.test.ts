@@ -332,7 +332,9 @@ test("scoped operations report pending work and refresh affected queries when do
   ])
     queryClient.setQueryData(key, {});
   const result = startPaletteOperation(queryClient, transport, operation);
-  await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => {
+    setTimeout(resolve, 0);
+  });
   assert.equal(isPaletteOperationPending(queryClient, operation), true);
   assert.equal(
     isPaletteOperationPending(queryClient, { ...operation, instanceId: "x" }),

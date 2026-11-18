@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, mocked, waitFor } from "storybook/test";
+import { expect, fn, mocked, type userEvent, waitFor } from "storybook/test";
 
-type UserEvent = ReturnType<typeof import("storybook/test").userEvent.setup>;
+type UserEvent = ReturnType<typeof userEvent.setup>;
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import ProxyProvidersDialog from "./proxy-providers-dialog.tsx";
 import { settledDialog } from "./provider-story-helpers.ts";

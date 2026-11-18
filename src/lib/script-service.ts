@@ -255,6 +255,7 @@ function fromProtoValue(value: Value): unknown {
       }
       return result;
     }
+    case undefined:
     default:
       return null;
   }

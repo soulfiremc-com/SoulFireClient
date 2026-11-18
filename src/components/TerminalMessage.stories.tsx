@@ -69,7 +69,7 @@ function Example({
           onCommand={readOnly ? undefined : command}
         />
       </div>
-      <button onClick={() => setCurrent({ message: "Replaced" })}>
+      <button type="button" onClick={() => setCurrent({ message: "Replaced" })}>
         Replace message
       </button>
       <Toaster />

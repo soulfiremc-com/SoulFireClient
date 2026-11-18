@@ -57,7 +57,9 @@ test("desktop file watching reports create, edit, rename and deletion and releas
     let lateEvents = 0;
     watcher.on("all", () => lateEvents++);
     await writeFile(original, "after closing");
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 200);
+    });
     assert.equal(lateEvents, 0);
   } finally {
     await watcher.close();
@@ -94,7 +96,9 @@ test("recursive desktop watching includes nested files while depth zero excludes
     const observed = event(recursive, "add", target);
     await writeFile(target, "nested content");
     await observed;
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 200);
+    });
     assert.equal(shallowPaths.includes(target), false);
   } finally {
     await Promise.all([recursive.close(), shallow.close()]);

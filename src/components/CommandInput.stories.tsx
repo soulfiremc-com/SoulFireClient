@@ -149,10 +149,10 @@ export const CompletionAndHistory: Story = {
     const menuBounds = menu.getBoundingClientRect();
     const firstBounds = firstOption.getBoundingClientRect();
     const lastBounds = lastOption.getBoundingClientRect();
-    expect(firstBounds.left - menuBounds.left).toBeCloseTo(4, 0);
-    expect(menuBounds.right - firstBounds.right).toBeCloseTo(4, 0);
-    expect(firstBounds.top - menuBounds.top).toBeCloseTo(4, 0);
-    expect(menuBounds.bottom - lastBounds.bottom).toBeCloseTo(4, 0);
+    await expect(firstBounds.left - menuBounds.left).toBeCloseTo(4, 0);
+    await expect(menuBounds.right - firstBounds.right).toBeCloseTo(4, 0);
+    await expect(firstBounds.top - menuBounds.top).toBeCloseTo(4, 0);
+    await expect(menuBounds.bottom - lastBounds.bottom).toBeCloseTo(4, 0);
     await userEvent.keyboard("{Tab}");
     await expect(input).toHaveValue("help");
     await userEvent.keyboard("{Tab}");
@@ -222,8 +222,8 @@ export const CompositionAndFailure: Story = {
       new CompositionEvent("compositionstart", { bubbles: true }),
     );
     await userEvent.keyboard("{Enter}");
-    expect(commands).not.toHaveBeenCalled();
-    expect(input).toHaveValue("say hello");
+    await expect(commands).not.toHaveBeenCalled();
+    await expect(input).toHaveValue("say hello");
     input.dispatchEvent(
       new CompositionEvent("compositionend", { bubbles: true }),
     );
@@ -263,7 +263,9 @@ export const EmptyPromptKeepsOutputVisible: Story = {
       canvasElement.querySelector("[data-terminal-viewport]")!,
     );
     await expect(input).toHaveFocus();
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 200);
+    });
     await expect(canvas.queryByRole("listbox")).not.toBeInTheDocument();
     await expect(completions).not.toHaveBeenCalled();
     await userEvent.type(input, "status{Enter}");
@@ -272,7 +274,9 @@ export const EmptyPromptKeepsOutputVisible: Story = {
         expect.objectContaining({ command: "status" }),
       ),
     );
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 200);
+    });
     await expect(canvas.queryByRole("listbox")).not.toBeInTheDocument();
     await userEvent.keyboard("{Tab}");
     await expect(input).toHaveValue("help");

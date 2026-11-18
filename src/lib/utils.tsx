@@ -246,6 +246,7 @@ export function getSettingValue(
         max: definition.type.value.maxEntry?.def ?? null,
       });
     }
+    case undefined:
     default: {
       return null;
     }
@@ -1071,5 +1072,5 @@ export async function uploadToMcLogs(content: string): Promise<McLogsResponse> {
     body: new URLSearchParams({ content }),
   });
 
-  return await response.json();
+  return response.json();
 }

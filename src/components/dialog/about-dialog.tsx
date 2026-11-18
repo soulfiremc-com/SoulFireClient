@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { XIcon } from "lucide-react";
-import { createContext, type ReactNode, use, useState } from "react";
+import { type ReactNode, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -23,25 +23,22 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table.tsx";
-
-export const AboutContext = createContext<{
-  openAbout: () => void;
-}>(null as never);
+import { AboutContext } from "./about-context.ts";
 
 export function AboutProvider(props: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const value = useMemo(
+    () => ({
+      openAbout: () => {
+        setOpen(true);
+      },
+    }),
+    [],
+  );
 
   return (
     <>
-      <AboutContext
-        value={{
-          openAbout: () => {
-            setOpen(true);
-          },
-        }}
-      >
-        {props.children}
-      </AboutContext>
+      <AboutContext value={value}>{props.children}</AboutContext>
       <AboutDialog open={open} setOpen={setOpen} />
     </>
   );

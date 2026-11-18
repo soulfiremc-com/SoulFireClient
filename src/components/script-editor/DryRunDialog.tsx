@@ -15,7 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { TransportContext } from "@/components/providers/transport-context";
 import { getNodeDefinition } from "@/components/script-editor/nodes/types";
-import { useScriptEditor } from "@/components/script-editor/ScriptEditorProvider";
+import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Button } from "@/components/ui/button";
 import {
   Credenza,
@@ -200,6 +200,9 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                         break;
                       case "scriptCompleted":
                         success = event.value.success;
+                        break;
+                      case "scriptStarted":
+                      case undefined:
                         break;
                     }
                   },

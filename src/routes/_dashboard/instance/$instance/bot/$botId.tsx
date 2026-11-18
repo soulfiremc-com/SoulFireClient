@@ -62,7 +62,7 @@ import { toast } from "sonner";
 import { BotDialogForm } from "@/components/bot-dialog-form";
 import { BotChatBox } from "@/components/bot-view/bot-chat-box.tsx";
 import { BotStateBadge } from "@/components/instance-overview/bot-grid.tsx";
-import { getFailureFix } from "@/components/instance-overview/fleet-status.tsx";
+import { getFailureFix } from "@/components/instance-overview/fleet-status-meta.ts";
 import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
@@ -364,6 +364,7 @@ function getGameModeLabel(
       return t("bots.statsPanel.adventure");
     case GameMode.SPECTATOR:
       return t("bots.statsPanel.spectator");
+    case GameMode.UNSPECIFIED:
     default:
       return t("bots.statsPanel.unknown");
   }
@@ -445,7 +446,7 @@ function BotDetailContent({
         >
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(account.lastKnownName);
+              void copyToClipboard(account.lastKnownName);
               dismiss();
             }}
           >
@@ -454,7 +455,7 @@ function BotDetailContent({
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(account.profileId);
+              void copyToClipboard(account.profileId);
               dismiss();
             }}
           >
@@ -1082,7 +1083,7 @@ function OverviewTab({
         >
           <DropdownMenuItem
             onClick={() => {
-              copyToClipboard(
+              void copyToClipboard(
                 `${liveState.x.toFixed(2)}, ${liveState.y.toFixed(2)}, ${liveState.z.toFixed(2)}`,
               );
               dismiss();
@@ -2115,12 +2116,8 @@ function BookPagesPanel({
   onPageChange: (buttonId: number) => void;
 }) {
   const { t } = useTranslation("instance");
-  const [displayPage, setDisplayPage] = useState(currentPage);
-
-  // Sync displayPage with currentPage from server
-  useEffect(() => {
-    setDisplayPage(currentPage);
-  }, [currentPage]);
+  // The server owns the open page.
+  const displayPage = currentPage;
 
   const currentPageContent = pages.find((p) => p.pageNumber === displayPage);
   const totalPages = pages.length;

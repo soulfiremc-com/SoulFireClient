@@ -1,7 +1,7 @@
 import { type NodeProps, NodeResizer } from "@xyflow/react";
 import { memo, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { useNodeEditing } from "../NodeEditingContext";
+import { useNodeEditing } from "../node-editing-context";
 import { EditableNodeLabel } from "./EditableNodeLabel";
 
 export interface FrameNodeData {

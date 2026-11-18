@@ -53,7 +53,7 @@ export const SFTimeAgo = React.memo((props: { date: Date }) => {
           size="icon"
           aria-label={t("copyToClipboard")}
           onClick={() => {
-            copyToClipboard(isoString);
+            void copyToClipboard(isoString);
           }}
         >
           <ClipboardIcon className="select-none" />
