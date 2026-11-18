@@ -21,7 +21,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.eslintcache
 .cloudflare/
 
 .flatpak-builder/

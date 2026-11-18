@@ -122,7 +122,6 @@ export const Route = createFileRoute("/_dashboard")({
         await desktop.integratedServer.kill();
       }
       logOut();
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw redirect({
         to: "/",
         search: {
@@ -268,7 +267,7 @@ function DashboardLayout() {
         {isDesktopApp() && <InstanceSwitchKeybinds />}
       </Suspense>
       {isImpersonating() && (
-        <div className="border-sidebar-primary pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-30 overflow-hidden border-4" />
+        <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-30 overflow-hidden border-4 border-sidebar-primary" />
       )}
       <CreateInstanceProvider>
         <CommandPaletteProvider>

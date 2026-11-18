@@ -12,6 +12,10 @@
   "bracketSameLine": false,
   "bracketSpacing": true,
   "sortPackageJson": false,
+  "sortTailwindcss": {
+    "stylesheet": "./src/App.css",
+    "functions": ["cn", "cva", "clsx", "twMerge"]
+  },
   "ignorePatterns": [
     "index.html",
     "node_modules",

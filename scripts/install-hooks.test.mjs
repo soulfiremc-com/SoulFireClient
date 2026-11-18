@@ -36,7 +36,7 @@ function fixture(t) {
   git(cwd, "config", "user.email", "hook-test@example.invalid");
   git(cwd, "config", "commit.gpgsign", "false");
   cpSync(join(project, "lefthook.yml"), join(cwd, "lefthook.yml"));
-  for (const config of ["biome.json", ".oxlintrc.json", ".oxfmtrc.json"]) {
+  for (const config of [".oxlintrc.json", ".oxfmtrc.json"]) {
     try {
       cpSync(join(project, config), join(cwd, config));
     } catch (error) {

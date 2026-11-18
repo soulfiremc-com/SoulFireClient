@@ -1,4 +1,3 @@
-/* eslint-disable no-control-regex -- Terminal output requires matching ANSI control sequences. */
 import {
   terminalLogText as logText,
   type TerminalInteraction,

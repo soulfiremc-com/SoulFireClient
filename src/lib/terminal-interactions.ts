@@ -1,4 +1,4 @@
-/* eslint-disable no-control-regex -- Parse terminal control strings before wterm sees them. */
+/* oxlint-disable no-control-regex -- Parse terminal control strings before wterm sees them. */
 export type TerminalClick = {
   action: "run_command" | "suggest_command" | "copy_to_clipboard" | "open_url";
   value: string;
