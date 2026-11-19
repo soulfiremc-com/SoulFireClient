@@ -587,7 +587,11 @@ function DeleteInstanceButton() {
 
   return (
     <>
-      <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
+      <DropdownMenuItem
+        onClick={() => {
+          setDeleteOpen(true);
+        }}
+      >
         <TrashIcon />
         {t("instanceSidebar.deleteInstance")}
       </DropdownMenuItem>

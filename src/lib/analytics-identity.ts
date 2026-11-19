@@ -4,7 +4,7 @@ type IdentityClient = Pick<PostHog, "get_property" | "identify">;
 
 const IDENTITY_PREFIX = "soulfire:";
 const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu;
 const ROOT_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 export function getAnalyticsIdentity(

@@ -19,7 +19,9 @@ export function useChangingData<T>(
     checkUpdate();
     const timer = setInterval(checkUpdate, interval);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+    };
   }, [interval, ...deps, produce]);
 
   return value;

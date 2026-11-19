@@ -127,7 +127,9 @@ function QRCode(props: QRCodeProps) {
     return {
       subscribe: (cb) => {
         listenersRef.current.add(cb);
-        return () => listenersRef.current.delete(cb);
+        return () => {
+          listenersRef.current.delete(cb);
+        };
       },
       getState: () => stateRef.current,
       setState: (key, value) => {
@@ -268,7 +270,9 @@ function QRCode(props: QRCodeProps) {
         void onQRCodeGenerate(generationKey);
       });
 
-      return () => cancelAnimationFrame(rafId);
+      return () => {
+        cancelAnimationFrame(rafId);
+      };
     }
     return undefined;
   }, [generationKey, onQRCodeGenerate]);
@@ -408,9 +412,9 @@ function QRCodeDownload(props: QRCodeDownloadProps) {
         return;
       }
 
-      document.body.appendChild(link);
+      document.body.append(link);
       link.click();
-      document.body.removeChild(link);
+      link.remove();
 
       if (format === "svg" && svgString) {
         URL.revokeObjectURL(link.href);

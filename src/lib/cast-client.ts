@@ -78,9 +78,9 @@ export function startCastClient(): () => void {
       }),
     ).pipe(
       Effect.catch((error) =>
-        Effect.sync(() =>
-          castStore.setState((state) => ({ ...state, error: error.message })),
-        ),
+        Effect.sync(() => {
+          castStore.setState((state) => ({ ...state, error: error.message }));
+        }),
       ),
     ),
   );

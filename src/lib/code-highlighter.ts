@@ -35,7 +35,7 @@ export async function highlightCode(code: string, language: CodeLanguage) {
       dark: "github-dark-high-contrast",
     },
   });
-  const sourceLines = code.split(/(\r?\n)/);
+  const sourceLines = code.split(/(\r?\n)/u);
   let offset = 0;
   return lines.map((tokens, index) => {
     const start = offset;

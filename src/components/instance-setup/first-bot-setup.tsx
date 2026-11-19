@@ -299,7 +299,9 @@ export function FirstBotSetup({
         queryClient,
         instanceInfoQueryOptions.queryKey,
       ),
-    onSuccess: () => setSelectedStep("proxies"),
+    onSuccess: () => {
+      setSelectedStep("proxies");
+    },
     onSettled: invalidate,
   });
 
@@ -418,7 +420,9 @@ export function FirstBotSetup({
                 <button
                   type="button"
                   aria-expanded={isActive}
-                  onClick={() => setSelectedStep(step.id)}
+                  onClick={() => {
+                    setSelectedStep(step.id);
+                  }}
                   className="flex w-full items-center gap-3 p-3 text-left hover:bg-muted/50"
                 >
                   <span
@@ -489,7 +493,9 @@ export function FirstBotSetup({
                             </p>
                             <Button
                               className="w-fit"
-                              onClick={() => setSelectedStep("accounts")}
+                              onClick={() => {
+                                setSelectedStep("accounts");
+                              }}
                             >
                               {t("setup.continue")}
                               <ArrowRightIcon data-icon="inline-end" />
@@ -516,7 +522,9 @@ export function FirstBotSetup({
                               <Button
                                 size="sm"
                                 disabled={!canConfigure || generate.isPending}
-                                onClick={() => setGenerateOpen(true)}
+                                onClick={() => {
+                                  setGenerateOpen(true);
+                                }}
                               >
                                 {t("setup.accounts.offline.action")}
                               </Button>
@@ -572,7 +580,9 @@ export function FirstBotSetup({
                         {accounts.length > 0 && (
                           <Button
                             className="w-fit"
-                            onClick={() => setSelectedStep("proxies")}
+                            onClick={() => {
+                              setSelectedStep("proxies");
+                            }}
                           >
                             {t("setup.continue")}
                             <ArrowRightIcon data-icon="inline-end" />
@@ -663,7 +673,9 @@ export function FirstBotSetup({
                           <Button
                             className="w-fit"
                             variant="outline"
-                            onClick={() => setSelectedStep("accounts")}
+                            onClick={() => {
+                              setSelectedStep("accounts");
+                            }}
                           >
                             <UsersIcon data-icon="inline-start" />
                             {t("setup.start.needAccounts")}
@@ -692,9 +704,9 @@ export function FirstBotSetup({
                                 value={startCount}
                                 aria-invalid={!validCount}
                                 aria-describedby="first-bot-start-count-limit"
-                                onChange={(event) =>
-                                  setStartCount(event.target.value)
-                                }
+                                onChange={(event) => {
+                                  setStartCount(event.target.value);
+                                }}
                               />
                             </Field>
                             <Button
@@ -733,7 +745,9 @@ export function FirstBotSetup({
                                   variant="link"
                                   size="sm"
                                   className="h-auto w-fit p-0"
-                                  onClick={() => setSelectedStep("accounts")}
+                                  onClick={() => {
+                                    setSelectedStep("accounts");
+                                  }}
                                 >
                                   <UsersIcon data-icon="inline-start" />
                                   {t("setup.start.addAccounts")}

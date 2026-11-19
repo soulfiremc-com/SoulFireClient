@@ -49,8 +49,13 @@ const TIME_SERIES_CHART_CLASS_NAME = "aspect-auto h-52 min-h-0 w-full";
 const COMPACT_CHART_CLASS_NAME = "aspect-auto h-44 min-h-0 w-full";
 
 function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
-  const timeLabel = payload[0]?.payload?.timeLabel;
-  return typeof timeLabel === "string" ? timeLabel : "";
+  const point: unknown = payload[0]?.payload;
+  return typeof point === "object" &&
+    point !== null &&
+    "timeLabel" in point &&
+    typeof point.timeLabel === "string"
+    ? point.timeLabel
+    : "";
 }
 
 function EmptyMetricCard({ title }: { title: string }) {

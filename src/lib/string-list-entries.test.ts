@@ -5,7 +5,8 @@ import {
   reconcileStringListEntries,
 } from "./string-list-entries.ts";
 
-const entries = (...values: string[]) => values.map(createStringListEntry);
+const entries = (...values: string[]) =>
+  values.map((value) => createStringListEntry(value));
 
 test("list echoes preserve every row and the current array", () => {
   const previous = entries("alpha", "beta");

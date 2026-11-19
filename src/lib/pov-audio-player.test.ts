@@ -104,7 +104,9 @@ test("audio playback bounds latency and releases queued audio on reset and close
       // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
       context as unknown as AudioContext,
       0.8,
-      (error) => errors.push(error),
+      (error) => {
+        errors.push(error);
+      },
     );
     const decoder = decoders[0];
     assert.ok(decoder);

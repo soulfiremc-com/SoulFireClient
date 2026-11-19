@@ -118,12 +118,12 @@ export function QuotasDialog() {
                     inputMode="numeric"
                     placeholder={t(`scripts.editor.quotas.${placeholder}`)}
                     value={inputs[field]}
-                    onChange={(event) =>
+                    onChange={(event) => {
                       setInputs((current) => ({
                         ...current,
                         [field]: event.target.value,
-                      }))
-                    }
+                      }));
+                    }}
                     aria-invalid={invalid}
                     aria-describedby={invalid ? `${hintId} ${errorId}` : hintId}
                     className="h-8 text-sm"
@@ -159,9 +159,9 @@ export function QuotasDialog() {
             <Switch
               id={`${id}-disableTimeouts`}
               checked={inputs.disableTimeouts}
-              onCheckedChange={(disableTimeouts) =>
-                setInputs((current) => ({ ...current, disableTimeouts }))
-              }
+              onCheckedChange={(disableTimeouts) => {
+                setInputs((current) => ({ ...current, disableTimeouts }));
+              }}
             />
           </Field>
 

@@ -207,7 +207,11 @@ export function SdkQuickstart({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button onClick={() => copy("agentPrompt", agentPrompt)}>
+          <Button
+            onClick={() => {
+              copy("agentPrompt", agentPrompt);
+            }}
+          >
             {copiedKey === "agentPrompt" ? (
               <CheckIcon data-icon="inline-start" />
             ) : (
@@ -267,7 +271,9 @@ export function SdkQuickstart({
                     size="icon-xs"
                     aria-label={t("sdk.copyUrl")}
                     disabled={!serverUrl}
-                    onClick={() => serverUrl && copy("url", serverUrl)}
+                    onClick={() => {
+                      if (serverUrl) copy("url", serverUrl);
+                    }}
                   >
                     {copyIcon("url")}
                   </InputGroupButton>
@@ -324,7 +330,9 @@ export function SdkQuickstart({
                   size="icon"
                   variant="outline"
                   aria-label={t("sdk.copyInstanceId")}
-                  onClick={() => copy("instanceId", instanceId)}
+                  onClick={() => {
+                    copy("instanceId", instanceId);
+                  }}
                 >
                   {copyIcon("instanceId")}
                 </Button>
@@ -356,7 +364,9 @@ export function SdkQuickstart({
                       <InputGroupButton
                         size="icon-xs"
                         aria-label={t("sdk.copyToken")}
-                        onClick={() => copy("token", token)}
+                        onClick={() => {
+                          copy("token", token);
+                        }}
                       >
                         {copyIcon("token")}
                       </InputGroupButton>

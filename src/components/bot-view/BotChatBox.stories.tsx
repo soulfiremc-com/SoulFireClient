@@ -4,11 +4,28 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { expect, fn, waitFor } from "storybook/test";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { ChatService } from "@/generated/soulfire/chat_pb";
+import {
+  ChatService,
+  type SendCommandRequest,
+  type SendPublicChatRequest,
+} from "@/generated/soulfire/chat_pb";
 import { BotActionStatus } from "@/generated/soulfire/bot_live_pb";
 import { BotChatBox } from "./bot-chat-box.tsx";
 
-const requests = fn();
+const requests =
+  fn<
+    (
+      ...call:
+        | [kind: "chat", request: SendPublicChatRequest]
+        | [kind: "command", request: SendCommandRequest]
+    ) => void
+  >();
+const OUTCOMES: readonly Outcome[] = [
+  "completed",
+  "failed",
+  "cancelled",
+  "noResult",
+];
 let pending = false;
 type Outcome = "completed" | "failed" | "cancelled" | "noResult";
 let outcome: Outcome = "completed";
@@ -36,7 +53,7 @@ async function deliver() {
       return outcome satisfies never;
   }
 }
-const transport = createRouterTransport((router) =>
+const transport = createRouterTransport((router) => {
   router.service(ChatService, {
     sendPublicChat: (request) => {
       requests("chat", request);
@@ -46,16 +63,19 @@ const transport = createRouterTransport((router) =>
       requests("command", request);
       return deliver();
     },
-  }),
-);
+  });
+});
 
 const meta = {
   title: "Bots/Chat composer",
   component: BotChatBox,
   args: { instanceId: "instance-example", botId: "bot-example" },
   beforeEach: ({ parameters }) => {
-    pending = parameters["pendingDelivery"] ?? false;
-    outcome = parameters["outcome"] ?? "completed";
+    pending = parameters["pendingDelivery"] === true;
+    const requestedOutcome: unknown = parameters["outcome"];
+    outcome =
+      OUTCOMES.find((candidate) => candidate === requestedOutcome) ??
+      "completed";
     requests.mockClear();
     finish = undefined;
     return () => {
@@ -92,16 +112,12 @@ export const KeepsNewDraftDuringSend: Story = {
     finish?.();
     await waitFor(() => expect(send).toBeEnabled());
     await expect(input).toHaveValue("Next draft");
-    await expect(requests).toHaveBeenCalledWith(
-      "chat",
-      expect.objectContaining({
-        message: "First message",
-        scope: expect.objectContaining({
-          instanceId: "instance-example",
-          botId: "bot-example",
-        }),
-      }),
-    );
+    await expect(
+      requests.mock.calls.find(([kind]) => kind === "chat")?.[1],
+    ).toMatchObject({
+      message: "First message",
+      scope: { instanceId: "instance-example", botId: "bot-example" },
+    });
   },
 };
 
@@ -112,16 +128,12 @@ export const RoutesCommandToThisBot: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Send" }));
     await waitFor(() => expect(input).toHaveValue(""));
     await expect(canvas.getByText("Sent.")).toBeVisible();
-    await expect(requests).toHaveBeenCalledWith(
-      "command",
-      expect.objectContaining({
-        command: "list",
-        scope: expect.objectContaining({
-          instanceId: "instance-example",
-          botId: "bot-example",
-        }),
-      }),
-    );
+    await expect(
+      requests.mock.calls.find(([kind]) => kind === "command")?.[1],
+    ).toMatchObject({
+      command: "list",
+      scope: { instanceId: "instance-example", botId: "bot-example" },
+    });
   },
 };
 
@@ -150,7 +162,7 @@ export const ExplainsReplacedMessage: Story = {
     await userEvent.type(input, "Replaced message");
     await userEvent.click(canvas.getByRole("button", { name: "Send" }));
     await expect(
-      await canvas.findByText(/Another bot action took over chat/),
+      await canvas.findByText(/Another bot action took over chat/u),
     ).toBeVisible();
     await expect(input).toHaveValue("Replaced message");
   },
@@ -163,6 +175,6 @@ export const AcceptsResponseWithoutResult: Story = {
     await userEvent.type(input, "Hello");
     await userEvent.click(canvas.getByRole("button", { name: "Send" }));
     await waitFor(() => expect(input).toHaveValue(""));
-    await expect(canvas.queryByText(/Could not send/)).toBeNull();
+    await expect(canvas.queryByText(/Could not send/u)).toBeNull();
   },
 };

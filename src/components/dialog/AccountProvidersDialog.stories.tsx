@@ -19,8 +19,8 @@ const meta = {
   args: {
     open: true,
     canPurchase: true,
-    onOpenChange: fn(),
-    onImport: fn(),
+    onOpenChange: fn<() => void>(),
+    onImport: fn<() => void>(),
   },
   beforeEach: ({ parameters }) => {
     const original = globalThis.fetch;
@@ -63,16 +63,16 @@ type Story = StoryObj<typeof meta>;
 export const ComparesCapabilities: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const dialog = await settledDialog(canvasElement);
-    await userEvent.click(dialog.getByRole("radio", { name: /KynoSelling/ }));
+    await userEvent.click(dialog.getByRole("radio", { name: /KynoSelling/u }));
     await expect(
       dialog.getByRole("button", { name: "Open KynoSelling checkout" }),
     ).toHaveAttribute("href", "https://kynoselling.xyz/?ref=SOULFIRE");
     await expect(dialog.getByText("SOULFIRE10")).toBeVisible();
-    await userEvent.click(dialog.getByRole("radio", { name: /Localts/ }));
+    await userEvent.click(dialog.getByRole("radio", { name: /Localts/u }));
     await expect(
       dialog.getByRole("button", { name: "Create a Localts account" }),
     ).toHaveAttribute("href", "https://localts.store/?campaign=soulfire");
-    await expect(dialog.getByText(/do not send a code/)).toBeVisible();
+    await expect(dialog.getByText(/do not send a code/u)).toBeVisible();
   },
 };
 
@@ -89,11 +89,11 @@ export const RavealtsPurchaseImportsImmediately: Story = {
     );
     await userEvent.click(dialog.getByRole("button", { name: "Connect" }));
     await userEvent.click(
-      await dialog.findByRole("radio", { name: /Cookie Nfa/ }),
+      await dialog.findByRole("radio", { name: /Cookie Nfa/u }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
     await expect(purchases).toHaveLength(0);
-    await expect(dialog.getByText(/does not report the price/)).toBeVisible();
+    await expect(dialog.getByText(/does not report the price/u)).toBeVisible();
     await userEvent.click(
       dialog.getByRole("button", { name: "Buy 1 account" }),
     );
@@ -121,7 +121,7 @@ export const UncertainRavealtsPurchase: Story = {
     );
     await userEvent.click(dialog.getByRole("button", { name: "Connect" }));
     await userEvent.click(
-      await dialog.findByRole("radio", { name: /Cookie Nfa/ }),
+      await dialog.findByRole("radio", { name: /Cookie Nfa/u }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
     const buy = dialog.getByRole("button", { name: "Buy 1 account" });

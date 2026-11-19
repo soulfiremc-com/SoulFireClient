@@ -475,7 +475,9 @@ function Content() {
                           name={field.name}
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
+                          onChange={(e) => {
+                            field.handleChange(e.target.value);
+                          }}
                           placeholder={tInstance(
                             "scripts.scriptNamePlaceholder",
                           )}
@@ -499,7 +501,9 @@ function Content() {
                           name={field.name}
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
+                          onChange={(e) => {
+                            field.handleChange(e.target.value);
+                          }}
                           placeholder={tInstance(
                             "scripts.scriptDescriptionPlaceholder",
                           )}
@@ -515,7 +519,9 @@ function Content() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => setIsCreateDialogOpen(false)}
+                  onClick={() => {
+                    setIsCreateDialogOpen(false);
+                  }}
                 >
                   {t("cancel")}
                 </Button>
@@ -571,7 +577,9 @@ function Content() {
           <Button
             variant="outline"
             className="w-fit"
-            onClick={() => setIsCreateDialogOpen(true)}
+            onClick={() => {
+              setIsCreateDialogOpen(true);
+            }}
           >
             <PlusIcon data-icon="inline-start" />
             {tInstance("scripts.createFirstScript")}
@@ -589,7 +597,9 @@ function Content() {
                 aria-label={tInstance("scripts.searchPlaceholder")}
                 placeholder={tInstance("scripts.searchPlaceholder")}
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
               />
             </InputGroup>
             <ToggleGroup
@@ -642,16 +652,20 @@ function Content() {
                   key={script.id}
                   script={script}
                   instanceId={instanceInfo.id}
-                  onDelete={() => setDeleteTarget(script)}
-                  onTogglePaused={(isPaused) =>
-                    handleTogglePaused(script.id, isPaused)
-                  }
+                  onDelete={() => {
+                    setDeleteTarget(script);
+                  }}
+                  onTogglePaused={(isPaused) => {
+                    handleTogglePaused(script.id, isPaused);
+                  }}
                   isDeleting={
                     deleteMutation.isPending &&
                     deleteMutation.variables === script.id
                   }
                   isToggling={togglingScriptId === script.id}
-                  onContextMenu={(e) => handleContextMenu(e, script)}
+                  onContextMenu={(e) => {
+                    handleContextMenu(e, script);
+                  }}
                 />
               ))}
             </div>
@@ -842,7 +856,9 @@ function ScriptCard({
           <Button
             variant="outline"
             size="icon"
-            onClick={() => onTogglePaused(isPaused)}
+            onClick={() => {
+              onTogglePaused(isPaused);
+            }}
             disabled={isToggling}
             title={
               isPaused

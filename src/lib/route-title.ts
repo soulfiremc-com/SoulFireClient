@@ -47,7 +47,10 @@ function contextResolver(
   if (typeof context !== "object" || context === null) return undefined;
   const resolver: unknown = Reflect.get(context, key);
   return typeof resolver === "function"
-    ? (match) => Reflect.apply(resolver, undefined, [match])
+    ? (match) => {
+        const result: unknown = Reflect.apply(resolver, undefined, [match]);
+        return result;
+      }
     : undefined;
 }
 

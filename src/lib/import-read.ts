@@ -37,8 +37,12 @@ export function readImportFile(
   signal.throwIfAborted();
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    const abort = () => reader.abort();
-    const cleanup = () => signal.removeEventListener("abort", abort);
+    const abort = () => {
+      reader.abort();
+    };
+    const cleanup = () => {
+      signal.removeEventListener("abort", abort);
+    };
     reader.addEventListener("load", () => {
       cleanup();
       resolve(typeof reader.result === "string" ? reader.result : "");
@@ -54,6 +58,7 @@ export function readImportFile(
     });
     signal.addEventListener("abort", abort, { once: true });
     try {
+      // oxlint-disable-next-line unicorn/prefer-blob-reading-methods -- readAsText honors UTF-16 byte order marks and can be aborted, Blob.text() always decodes UTF-8
       reader.readAsText(file);
     } catch (error) {
       cleanup();

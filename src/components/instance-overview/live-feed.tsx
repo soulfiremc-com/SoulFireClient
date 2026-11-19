@@ -144,8 +144,12 @@ export function LiveFeed({
       );
       void observeServerStream(responses, {
         onMessage: receiveEvent,
-        onError: () => retry(3_000),
-        onComplete: () => retry(1_000),
+        onError: () => {
+          retry(3_000);
+        },
+        onComplete: () => {
+          retry(1_000);
+        },
       });
     }
     connect();

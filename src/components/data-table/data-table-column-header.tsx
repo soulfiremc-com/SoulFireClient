@@ -67,7 +67,9 @@ export function DataTableColumnHeader<
               className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
               checked={column.getIsSorted() === "asc"}
               closeOnClick
-              onClick={() => column.toggleSorting(false)}
+              onClick={() => {
+                column.toggleSorting(false);
+              }}
             >
               <ChevronUp />
               {i18n.t("common:dataTable.columnHeader.asc")}
@@ -76,7 +78,9 @@ export function DataTableColumnHeader<
               className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
               checked={column.getIsSorted() === "desc"}
               closeOnClick
-              onClick={() => column.toggleSorting(true)}
+              onClick={() => {
+                column.toggleSorting(true);
+              }}
             >
               <ChevronDown />
               {i18n.t("common:dataTable.columnHeader.desc")}
@@ -84,7 +88,9 @@ export function DataTableColumnHeader<
             {column.getIsSorted() && (
               <DropdownMenuItem
                 className="pl-2 [&_svg]:text-muted-foreground"
-                onClick={() => column.clearSorting()}
+                onClick={() => {
+                  column.clearSorting();
+                }}
               >
                 <X />
                 {i18n.t("common:dataTable.columnHeader.reset")}
@@ -97,7 +103,9 @@ export function DataTableColumnHeader<
             className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
             checked={!column.getIsVisible()}
             closeOnClick
-            onClick={() => column.toggleVisibility(false)}
+            onClick={() => {
+              column.toggleVisibility(false);
+            }}
           >
             <EyeOff />
             {i18n.t("common:dataTable.columnHeader.hide")}

@@ -93,7 +93,7 @@ function AboutDialog({
                       {t("dialog.about.fields.serverCommit")}
                     </TableCell>
                     <TableCell className="select-text">
-                      {clientData.serverInfo.commitHash.substring(0, 7)}
+                      {clientData.serverInfo.commitHash.slice(0, 7)}
                     </TableCell>
                   </TableRow>
                   <TableRow>

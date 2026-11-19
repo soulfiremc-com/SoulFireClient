@@ -12,7 +12,7 @@ import { useChangingData } from "@/hooks/use-changing-value.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDateFnsLocale } from "@/hooks/use-date-fns-locale.ts";
 
-export const SFTimeAgo = React.memo((props: { date: Date }) => {
+export const SFTimeAgo = React.memo(function SFTimeAgo(props: { date: Date }) {
   const { t } = useTranslation("common");
   const dateFnsLocale = useDateFnsLocale();
   const copyToClipboard = useCopyToClipboard();

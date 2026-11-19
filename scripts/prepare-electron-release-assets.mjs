@@ -58,7 +58,7 @@ function findMetadataFiles(metadataName, platformDirectoryPrefix) {
 function findLinuxMetadataFiles() {
   const files = listFilesRecursive(releaseArtifactsDir)
     .filter((filePath) =>
-      /^latest-linux(?:-.+)?\.yml$/.test(path.basename(filePath)),
+      /^latest-linux(?:-.+)?\.yml$/u.test(path.basename(filePath)),
     )
     .filter((filePath) =>
       path.basename(path.dirname(filePath)).startsWith("linux-"),
@@ -165,7 +165,9 @@ function copyUpdateInfoAsset(
 }
 
 function mergeUpdateInfo(outputName, sourceFiles) {
-  const updateInfos = sourceFiles.map(readUpdateInfo);
+  const updateInfos = sourceFiles.map((sourceFile) =>
+    readUpdateInfo(sourceFile),
+  );
   const [baseUpdateInfo] = updateInfos;
   const version = baseUpdateInfo.version;
 

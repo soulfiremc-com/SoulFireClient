@@ -17,7 +17,7 @@ export function normalizeServerAddress(address: string) {
   }
   url.search = "";
   url.hash = "";
-  return url.toString().replace(/\/$/, "");
+  return url.toString().replace(/\/$/u, "");
 }
 
 export async function verifyServerConnection(

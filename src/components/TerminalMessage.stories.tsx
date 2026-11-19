@@ -2,11 +2,13 @@ import { WTerm } from "@wterm/dom";
 import { create } from "@bufbuild/protobuf";
 import { createRouterTransport } from "@connectrpc/connect";
 import {
+  type CommandRequest,
   CommandScopeSchema,
   CommandService,
 } from "@/generated/soulfire/command_pb";
 import { TransportContext } from "@/components/providers/transport-context";
 import CommandInput from "@/components/command-input";
+import type { TerminalCommandHandler } from "@/components/terminal-command-context";
 import { TerminalView } from "@/components/terminal";
 import { toTerminalLine } from "@/stores/terminal-log-store";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -22,7 +24,8 @@ import { assertDefined } from "@/lib/assert-defined";
 
 const copy = fn(async (_value: string) => {});
 const open = fn();
-const command = fn();
+const command = fn<TerminalCommandHandler>();
+const executedCommands = fn<(request: CommandRequest) => void>();
 const secret = "terminal-fixture-token-not-a-secret";
 const encoded = (
   text: string,
@@ -70,7 +73,12 @@ function Example({
           onCommand={readOnly ? undefined : command}
         />
       </div>
-      <button type="button" onClick={() => setCurrent({ message: "Replaced" })}>
+      <button
+        type="button"
+        onClick={() => {
+          setCurrent({ message: "Replaced" });
+        }}
+      >
         Replace message
       </button>
       <Toaster />
@@ -84,6 +92,7 @@ const meta = {
     copy.mockClear();
     open.mockClear();
     command.mockClear();
+    executedCommands.mockClear();
     const original = Object.getOwnPropertyDescriptor(navigator, "clipboard");
     const originalOpen = window.open;
     Object.defineProperty(navigator, "clipboard", {
@@ -151,7 +160,7 @@ export const TrustedActions: Story = {
       canvas.getByRole("button", { name: "Replace message" }),
     );
     await expect(
-      canvas.queryByRole("button", { name: /Run command/ }),
+      canvas.queryByRole("button", { name: /Run command/u }),
     ).not.toBeInTheDocument();
     await expect(canvas.getByText("Replaced")).toBeVisible();
   },
@@ -159,7 +168,7 @@ export const TrustedActions: Story = {
 export const ReadOnlyActions: Story = {
   args: { readOnly: true },
   play: async ({ canvas, userEvent }) => {
-    const help = canvas.getByRole("button", { name: /Help\. Run command/ });
+    const help = canvas.getByRole("button", { name: /Help\. Run command/u });
     await expect(help).toHaveAttribute("aria-disabled", "true");
     help.focus();
     await expect(
@@ -167,7 +176,7 @@ export const ReadOnlyActions: Story = {
     ).toHaveTextContent("Command input is unavailable");
     await userEvent.keyboard("{Enter}");
     await expect(command).not.toHaveBeenCalled();
-    await userEvent.click(canvas.getByRole("button", { name: /Copy token/ }));
+    await userEvent.click(canvas.getByRole("button", { name: /Copy token/u }));
     await expect(copy).toHaveBeenCalledWith(secret);
   },
 };
@@ -178,7 +187,7 @@ export const UntrustedText: Story = {
       personal: false,
       message:
         entry.message +
-        "<img src=x onerror=alert(1)>\x1b]8;;https://example.com\x1b\\literal\x1b]8;;\x1b\\",
+        "<img src=x onerror=alert(1)>\u001B]8;;https://example.com\u001B\\literal\u001B]8;;\u001B\\",
     },
   },
   play: async ({ canvas, canvasElement }) => {
@@ -200,7 +209,7 @@ export const UntrustedText: Story = {
 };
 export const SelectionAndModifiers: Story = {
   play: async ({ canvas, userEvent }) => {
-    const help = canvas.getByRole("button", { name: /Help\. Run command/ });
+    const help = canvas.getByRole("button", { name: /Help\. Run command/u });
     await userEvent.keyboard("{Control>}");
     await userEvent.click(help);
     await userEvent.keyboard("{/Control}");
@@ -318,15 +327,15 @@ export const WasmFailureFallback: Story = {
   },
   render: () => (
     <TransportContext
-      value={createRouterTransport((router) =>
+      value={createRouterTransport((router) => {
         router.service(CommandService, {
           executeCommand: (request) => {
-            command(request);
+            executedCommands(request);
             return { code: 1 };
           },
           tabCompleteCommand: () => ({ suggestions: [] }),
-        }),
-      )}
+        });
+      })}
     >
       <TerminalView
         entries={[toTerminalLine({ ...entry, id: "fallback", level: "WARN" })]}
@@ -348,14 +357,16 @@ export const WasmFailureFallback: Story = {
     const help = await canvas.findByRole("button", {
       name: "Help. Run command: help",
     });
-    await expect(canvas.getByText(/WARN Ready:/)).toBeVisible();
+    await expect(canvas.getByText(/WARN Ready:/u)).toBeVisible();
     help.focus();
     await userEvent.keyboard("{Enter}");
-    await waitFor(() => expect(command).toHaveBeenCalledTimes(1));
-    await expect(command.mock.calls[0]?.[0].command).toBe("help");
-    await expect(command.mock.calls[0]?.[0].scope.scope).toEqual({
+    await waitFor(() => expect(executedCommands).toHaveBeenCalledTimes(1));
+    await expect(executedCommands.mock.calls[0]?.[0].command).toBe("help");
+    await expect(
+      executedCommands.mock.calls[0]?.[0].scope?.scope,
+    ).toMatchObject({
       case: "instance",
-      value: expect.objectContaining({ instanceId: "fixture-instance" }),
+      value: { instanceId: "fixture-instance" },
     });
     await userEvent.click(
       canvas.getByRole("button", { name: "Suggest. Insert command: status" }),

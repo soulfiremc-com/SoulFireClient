@@ -42,7 +42,9 @@ export default function AccountProvidersDialog({
           canPurchase={canPurchase}
           initialProviderId={initialProviderId}
           onBusyChange={setBusy}
-          onClose={() => onOpenChange(false)}
+          onClose={() => {
+            onOpenChange(false);
+          }}
           onImport={onImport}
         />
       </CredenzaContent>
@@ -77,7 +79,9 @@ function AccountProvidersContent({
         key={active.id}
         provider={active}
         canWrite={canPurchase}
-        onBack={() => setActiveId(null)}
+        onBack={() => {
+          setActiveId(null);
+        }}
         onBusyChange={onBusyChange}
         onClose={onClose}
         onImport={onImport}
@@ -93,7 +97,9 @@ function AccountProvidersContent({
       canWrite={canPurchase}
       compareUrl="https://soulfiremc.com/get-accounts?utm_source=soulfire-client"
       onSelect={setSelectedId}
-      onConnect={(provider) => setActiveId(provider.id)}
+      onConnect={(provider) => {
+        setActiveId(provider.id);
+      }}
     />
   );
 }

@@ -9,7 +9,7 @@ const meta = {
   args: {
     text: "socks5://localhost:1080\nhttps://localhost:1080",
     type: "uri",
-    onBack: fn(),
+    onBack: fn<() => void>(),
     onImport: fn(),
   },
 } satisfies Meta<typeof ProxyImportReview>;

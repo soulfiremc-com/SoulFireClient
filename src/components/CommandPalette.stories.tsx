@@ -127,7 +127,7 @@ const MODIFIER = isMac ? "Meta" : "Control";
 const OPEN_SHORTCUT = `{${MODIFIER}>}k{/${MODIFIER}}`;
 const PIN_SHORTCUT = `{${MODIFIER}>}p{/${MODIFIER}}`;
 
-const createProject = fn();
+const createProject = fn<() => void>();
 const loadProjects = fn();
 const loadProjectInfo = fn();
 const loadBots = fn();
@@ -388,7 +388,13 @@ function Shell({ transport }: { transport: StoryTransport }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
       <TransportContext value={transport}>
-        <AboutContext value={{ openAbout: () => setAboutOpen(true) }}>
+        <AboutContext
+          value={{
+            openAbout: () => {
+              setAboutOpen(true);
+            },
+          }}
+        >
           <CreateInstanceContext value={{ openCreateInstance: createProject }}>
             <CommandPaletteProvider>
               <SidebarProvider defaultOpen={false}>
@@ -403,7 +409,11 @@ function Shell({ transport }: { transport: StoryTransport }) {
                     <div className="flex flex-col gap-4">
                       <h1>Command menu test</h1>
                       <Input aria-label="Editor" placeholder="Type here" />
-                      <Button onClick={() => setAboutOpen(true)}>
+                      <Button
+                        onClick={() => {
+                          setAboutOpen(true);
+                        }}
+                      >
                         Open another dialog
                       </Button>
                       <Outlet />
@@ -599,7 +609,11 @@ const meta = {
       `sf-palette-recents:${JSON.stringify([server, "palette-story"])}`,
       palettePinKey(server, "palette-story"),
     ];
-    const clear = () => keys.forEach((key) => localStorage.removeItem(key));
+    const clear = () => {
+      keys.forEach((key) => {
+        localStorage.removeItem(key);
+      });
+    };
     clear();
     return clear;
   },
@@ -622,23 +636,23 @@ export const SearchAndNavigate: Story = {
     await within(dialog).findByRole("button", {
       name: "Change search scope, current: All projects",
     });
-    await within(dialog).findByRole("option", { name: /Overview.*Test farm/ });
+    await within(dialog).findByRole("option", { name: /Overview.*Test farm/u });
     await userEvent.type(input, "qqqqqq");
     await within(dialog).findByText("No matching results");
     await userEvent.clear(input);
     await userEvent.type(input, "farm");
-    await within(dialog).findByRole("option", { name: /Terminal.*Test farm/ });
+    await within(dialog).findByRole("option", { name: /Terminal.*Test farm/u });
     await userEvent.keyboard("{ArrowDown}");
     await expect(
-      within(dialog).getByRole("option", { name: /Terminal.*Test farm/ }),
+      within(dialog).getByRole("option", { name: /Terminal.*Test farm/u }),
     ).toHaveAttribute("aria-selected", "true");
     await userEvent.clear(input);
     await userEvent.type(input, "farm console");
-    await within(dialog).findByRole("option", { name: /Terminal.*Test farm/ });
+    await within(dialog).findByRole("option", { name: /Terminal.*Test farm/u });
     await userEvent.keyboard("{Enter}");
     await canvas.findByText("Project terminal page");
     await userEvent.click(
-      canvas.getByRole("button", { name: /^Search (Ctrl\+|⌘)K$/ }),
+      canvas.getByRole("button", { name: /^Search (Ctrl\+|⌘)K$/u }),
     );
     const reopened = await page.findByRole("dialog", { name: "Command menu" });
     const recentGroup = within(reopened).getByRole("group", {
@@ -647,7 +661,7 @@ export const SearchAndNavigate: Story = {
     await waitFor(() =>
       expect(
         within(recentGroup).getByRole("option", {
-          name: /Terminal.*Test farm/,
+          name: /Terminal.*Test farm/u,
         }),
       ).toBeVisible(),
     );
@@ -671,7 +685,7 @@ export const ShortcutsAndActions: Story = {
     const canvas = within(canvasElement);
     const page = within(document.body);
     const trigger = await canvas.findByRole("button", {
-      name: /^Search (Ctrl\+|⌘)K$/,
+      name: /^Search (Ctrl\+|⌘)K$/u,
     });
     await userEvent.click(trigger);
     let dialog = await page.findByRole("dialog", { name: "Command menu" });
@@ -736,7 +750,7 @@ export const QueryFailureAndRetry: Story = {
     const canvas = within(canvasElement);
     const page = within(document.body);
     await userEvent.click(
-      await canvas.findByRole("button", { name: /^Search (Ctrl\+|⌘)K$/ }),
+      await canvas.findByRole("button", { name: /^Search (Ctrl\+|⌘)K$/u }),
     );
     const dialog = await page.findByRole("dialog", { name: "Command menu" });
     await within(dialog).findByText("Some results could not load.");
@@ -748,7 +762,7 @@ export const QueryFailureAndRetry: Story = {
     await userEvent.click(
       within(dialog).getByRole("button", { name: "Retry" }),
     );
-    await within(dialog).findByRole("option", { name: /Terminal.*Test farm/ });
+    await within(dialog).findByRole("option", { name: /Terminal.*Test farm/u });
     await expect(
       within(dialog).queryByText("Some results could not load."),
     ).not.toBeInTheDocument();
@@ -787,7 +801,7 @@ async function browseMine(
   await expect(input).toHaveAttribute("placeholder", "Search projects...");
   await context.userEvent.type(input, "mine");
   await context.userEvent.click(
-    await menu.findByRole("option", { name: /Browse project.*Mine site/ }),
+    await menu.findByRole("option", { name: /Browse project.*Mine site/u }),
   );
   await menu.findByRole("button", {
     name: "Change search scope, current: Mine site",
@@ -817,21 +831,21 @@ export const BrowseProjectInPlace: Story = {
       "Search in Mine site...",
     );
     await menu.findByRole("option", {
-      name: /^Overview.*Mine site/,
+      name: /^Overview.*Mine site/u,
       selected: true,
     });
-    await menu.findByRole("option", { name: /Alpha.*Connected/ });
+    await menu.findByRole("option", { name: /Alpha.*Connected/u });
     await expect(
-      menu.getByRole("option", { name: /Gamma.*Failed/ }),
+      menu.getByRole("option", { name: /Gamma.*Failed/u }),
     ).toBeVisible();
     await expect(
-      menu.getByRole("option", { name: /Delta.*Stopped/ }),
+      menu.getByRole("option", { name: /Delta.*Stopped/u }),
     ).toBeVisible();
     await expect(
-      menu.getByRole("option", { name: /Auto mine.*On/ }),
+      menu.getByRole("option", { name: /Auto mine.*On/u }),
     ).toBeVisible();
     await expect(
-      menu.queryByRole("option", { name: /Terminal/ }),
+      menu.queryByRole("option", { name: /Terminal/u }),
     ).not.toBeInTheDocument();
     await expect(loadProjectInfo).toHaveBeenCalledOnce();
     await expect(loadProjectInfo).toHaveBeenCalledWith("mine");
@@ -839,14 +853,14 @@ export const BrowseProjectInPlace: Story = {
     await expect(canvas.getByText("Project overview")).toBeVisible();
 
     await userEvent.type(input, "overview");
-    await menu.findByRole("option", { name: /Overview.*Mine site/ });
+    await menu.findByRole("option", { name: /Overview.*Mine site/u });
     await userEvent.clear(input);
     // Backspace in an empty search returns to all results.
     await userEvent.keyboard("{Backspace}");
     await menu.findByRole("button", {
       name: "Change search scope, current: All projects",
     });
-    await menu.findByRole("option", { name: /Terminal.*Test farm/ });
+    await menu.findByRole("option", { name: /Terminal.*Test farm/u });
 
     await browseMine(context, opened);
     await userEvent.keyboard("{Escape}");
@@ -875,7 +889,7 @@ export const FiltersAndMatchHighlights: Story = {
     const { menu, input } = await openMenu(context);
     await userEvent.type(input, "console");
     const terminal = await menu.findByRole("option", {
-      name: /Terminal.*Test farm.*Matches console/,
+      name: /Terminal.*Test farm.*Matches console/u,
     });
     await expect(
       within(terminal).getByText("console", { selector: "mark" }),
@@ -895,17 +909,17 @@ export const FiltersAndMatchHighlights: Story = {
     await waitFor(() => expect(input).toHaveFocus());
     await menu.findByRole("option", { name: "Use dark theme" });
     await expect(
-      menu.queryByRole("option", { name: /Terminal/ }),
+      menu.queryByRole("option", { name: /Terminal/u }),
     ).not.toBeInTheDocument();
     await userEvent.click(
       within(filters).getByRole("button", { name: "Scripts" }),
     );
-    await menu.findByRole("option", { name: /Reconnect test/ });
+    await menu.findByRole("option", { name: /Reconnect test/u });
     await expect(
       menu.queryByRole("option", { name: "Use dark theme" }),
     ).not.toBeInTheDocument();
     await userEvent.click(within(filters).getByRole("button", { name: "All" }));
-    await menu.findByRole("option", { name: /Terminal.*Test farm/ });
+    await menu.findByRole("option", { name: /Terminal.*Test farm/u });
     await userEvent.keyboard("{Escape}");
     await closed();
   },
@@ -920,7 +934,7 @@ export const BulkOperationConfirmation: Story = {
     await browseMine(context, opened);
     await userEvent.type(input, "stop bots");
     await userEvent.click(
-      await menu.findByRole("option", { name: /Stop 3 bots/ }),
+      await menu.findByRole("option", { name: /Stop 3 bots/u }),
     );
     let confirmation = await menu.findByRole("group", {
       name: "Stop 3 bots in Mine site?",
@@ -931,16 +945,16 @@ export const BulkOperationConfirmation: Story = {
     await waitFor(() => expect(cancel).toHaveFocus());
     // Enter on the focused Cancel button must not run the selected result.
     await userEvent.keyboard("{Enter}");
-    await menu.findByRole("option", { name: /Stop 3 bots/ });
+    await menu.findByRole("option", { name: /Stop 3 bots/u });
     await expect(setDesiredState).not.toHaveBeenCalled();
 
-    await userEvent.click(menu.getByRole("option", { name: /Stop 3 bots/ }));
+    await userEvent.click(menu.getByRole("option", { name: /Stop 3 bots/u }));
     await menu.findByRole("group", { name: "Stop 3 bots in Mine site?" });
     await userEvent.keyboard("{Escape}");
-    await menu.findByRole("option", { name: /Stop 3 bots/ });
+    await menu.findByRole("option", { name: /Stop 3 bots/u });
     await expect(setDesiredState).not.toHaveBeenCalled();
 
-    await userEvent.click(menu.getByRole("option", { name: /Stop 3 bots/ }));
+    await userEvent.click(menu.getByRole("option", { name: /Stop 3 bots/u }));
     confirmation = await menu.findByRole("group", {
       name: "Stop 3 bots in Mine site?",
     });
@@ -966,7 +980,7 @@ export const PinnedCommandsAndSingleOperations: Story = {
     await browseMine(context, opened);
     await userEvent.type(opened.input, "restart bot alpha");
     await opened.menu.findByRole("option", {
-      name: /^Restart bot Alpha/,
+      name: /^Restart bot Alpha/u,
       selected: true,
     });
     await userEvent.keyboard("{Enter}");
@@ -982,7 +996,7 @@ export const PinnedCommandsAndSingleOperations: Story = {
     await browseMine(context, opened);
     await userEvent.type(opened.input, "deactivate");
     await opened.menu.findByRole("option", {
-      name: /^Turn off script Auto mine/,
+      name: /^Turn off script Auto mine/u,
       selected: true,
     });
     await userEvent.keyboard(PIN_SHORTCUT);
@@ -1025,14 +1039,14 @@ export const PinnedCommandsAndSingleOperations: Story = {
       pinned.getByRole("option", { name: "Use dark theme" }),
     ).toBeVisible();
     await expect(
-      pinned.queryByRole("option", { name: /Turn off script/ }),
+      pinned.queryByRole("option", { name: /Turn off script/u }),
     ).not.toBeInTheDocument();
     await browseMine(context, opened);
     await userEvent.clear(opened.input);
     pinned = within(await opened.menu.findByRole("group", { name: "Pinned" }));
     await userEvent.click(
       await pinned.findByRole("option", {
-        name: /^Turn off script Auto mine/,
+        name: /^Turn off script Auto mine/u,
       }),
     );
     await closed();
@@ -1055,16 +1069,16 @@ export const ProjectAndOperationErrors: Story = {
     await browseMine(context, opened);
     await menu.findByText("Some results could not load.");
     await expect(
-      menu.queryByRole("option", { name: /Alpha/ }),
+      menu.queryByRole("option", { name: /Alpha/u }),
     ).not.toBeInTheDocument();
     await userEvent.click(menu.getByRole("button", { name: "Retry" }));
-    await menu.findByRole("option", { name: /Alpha.*Connected/ });
+    await menu.findByRole("option", { name: /Alpha.*Connected/u });
     await expect(
       menu.queryByText("Some results could not load."),
     ).not.toBeInTheDocument();
     await userEvent.type(input, "stop bot alpha");
     await menu.findByRole("option", {
-      name: /^Stop bot Alpha/,
+      name: /^Stop bot Alpha/u,
       selected: true,
     });
     await userEvent.keyboard("{Enter}");
@@ -1080,7 +1094,7 @@ export const ExactSettingKeepsFocus: Story = {
     await browseMine(context, opened);
     await context.userEvent.type(opened.input, "read timeout");
     const result = await opened.menu.findByRole("option", {
-      name: /Read Timeout.*Bot settings/,
+      name: /Read Timeout.*Bot settings/u,
     });
     await context.userEvent.click(result);
     await waitFor(() =>
@@ -1107,7 +1121,7 @@ export const PermissionRevokedDuringConfirmation: Story = {
     await browseMine(context, opened);
     await context.userEvent.type(opened.input, "stop bots");
     await context.userEvent.click(
-      await opened.menu.findByRole("option", { name: /Stop 3 bots/ }),
+      await opened.menu.findByRole("option", { name: /Stop 3 bots/u }),
     );
     const confirmation = await opened.menu.findByRole("group", {
       name: "Stop 3 bots in Mine site?",
@@ -1162,7 +1176,7 @@ export const LargeCatalogIncludesPinsWithinLimit: Story = {
     await waitFor(() =>
       expect(opened.menu.getAllByRole("option")).toHaveLength(80),
     );
-    await opened.menu.findByText(/\d+ more results\. Refine your search\./);
+    await opened.menu.findByText(/\d+ more results\. Refine your search\./u);
     await context.userEvent.keyboard("{Escape}");
     await closed();
   },
@@ -1182,7 +1196,7 @@ export const GlobalSettingsWithoutBrowsing: Story = {
     const { menu, input } = await searchGlobally(context, "server response");
     // A description finds a field in another project without browsing it.
     const result = await menu.findByRole("option", {
-      name: /Read Timeout.*Mine site.*Bot settings.*Matches Seconds to wait for a server response/,
+      name: /Read Timeout.*Mine site.*Bot settings.*Matches Seconds to wait for a server response/u,
     });
     await expect(
       within(result).getByText("Mine site", { exact: true }),
@@ -1193,14 +1207,14 @@ export const GlobalSettingsWithoutBrowsing: Story = {
     await expect(loadBots).not.toHaveBeenCalledWith("mine");
     await waitFor(() =>
       expect(
-        menu.queryByText(/Searching all projects/),
+        menu.queryByText(/Searching all projects/u),
       ).not.toBeInTheDocument(),
     );
 
     await context.userEvent.clear(input);
     await context.userEvent.type(input, "java edition");
     await menu.findByRole("option", {
-      name: /Game version.*Mine site.*Matches Java Edition 1.21.4/,
+      name: /Game version.*Mine site.*Matches Java Edition 1.21.4/u,
     });
 
     // Account fields open above the accounts table. Fields edited in dialogs stay out.
@@ -1211,7 +1225,7 @@ export const GlobalSettingsWithoutBrowsing: Story = {
     await context.userEvent.type(input, "shuffle accounts");
     await context.userEvent.click(
       await menu.findByRole("option", {
-        name: /^Shuffle accounts.*Mine site.*Account settings/,
+        name: /^Shuffle accounts.*Mine site.*Account settings/u,
       }),
     );
     await closed();
@@ -1242,7 +1256,7 @@ export const GlobalSettingsWithoutBrowsing: Story = {
     await expect(
       reopened.getByRole("combobox", { name: "Command menu" }),
     ).toHaveValue("server response");
-    await reopened.findByRole("option", { name: /Read Timeout.*Mine site/ });
+    await reopened.findByRole("option", { name: /Read Timeout.*Mine site/u });
     await context.userEvent.keyboard("{Escape}");
     await closed();
     // Without READ_SERVER_CONFIG, server metadata is never requested.
@@ -1259,7 +1273,7 @@ export const SamePageSettingKeepsTableFilters: Story = {
     const canvas = within(context.canvasElement);
     await canvas.findByRole("switch", { name: "Shuffle accounts" });
     await context.userEvent.click(
-      canvas.getByRole("button", { name: /^Search (Ctrl\+|⌘)K$/ }),
+      canvas.getByRole("button", { name: /^Search (Ctrl\+|⌘)K$/u }),
     );
     const menu = within(
       await within(document.body).findByRole("dialog", {
@@ -1270,7 +1284,9 @@ export const SamePageSettingKeepsTableFilters: Story = {
     await waitFor(() => expect(input).toHaveFocus());
     await context.userEvent.type(input, "shuffle accounts");
     await context.userEvent.click(
-      await menu.findByRole("option", { name: /^Shuffle accounts.*Mine site/ }),
+      await menu.findByRole("option", {
+        name: /^Shuffle accounts.*Mine site/u,
+      }),
     );
     await closed();
     await waitFor(() =>
@@ -1291,7 +1307,7 @@ export const SamePageSettingKeepsTableFilters: Story = {
 export const FailedIndexRefreshDropsCachedResults: Story = {
   play: async (context) => {
     const { menu } = await searchGlobally(context, "read timeout");
-    await menu.findByRole("option", { name: /Read Timeout.*Mine site/ });
+    await menu.findByRole("option", { name: /Read Timeout.*Mine site/u });
     // A denied refresh retains old cache data, but must remove its results.
     await assertDefined(
       activeQueryClient,
@@ -1308,7 +1324,7 @@ export const FailedIndexRefreshDropsCachedResults: Story = {
       .catch(() => undefined);
     await waitFor(() =>
       expect(
-        menu.queryByRole("option", { name: /Read Timeout.*Mine site/ }),
+        menu.queryByRole("option", { name: /Read Timeout.*Mine site/u }),
       ).not.toBeInTheDocument(),
     );
     await context.userEvent.keyboard("{Escape}");
@@ -1337,7 +1353,7 @@ export const ServerSettingsWithPermission: Story = {
     );
     await context.userEvent.click(
       await menu.findByRole("option", {
-        name: new RegExp(`^${label}.*SoulFire server.*Server settings`),
+        name: new RegExp(`^${label}.*SoulFire server.*Server settings`, "u"),
       }),
     );
     await closed();
@@ -1372,7 +1388,7 @@ export const ExplicitProjectScope: Story = {
     });
     await context.userEvent.type(opened.input, "terminal");
     const terminal = await opened.menu.findByRole("option", {
-      name: /Terminal.*Test farm/,
+      name: /Terminal.*Test farm/u,
     });
     await expect(
       within(terminal).getByText("Test farm", { exact: true }),
@@ -1394,7 +1410,7 @@ export const BoundedIndexStopsOnClose: Story = {
   play: async (context) => {
     const { menu } = await searchGlobally(context, "zzzz");
     const progress = await menu.findByText(
-      /^Searching all projects \(\d+ of 21\)\. Results may be incomplete\.$/,
+      /^Searching all projects \(\d+ of 21\)\. Results may be incomplete\.$/u,
     );
     await expect(progress.closest("output")).not.toBeNull();
     await waitFor(() =>
@@ -1429,14 +1445,16 @@ export const IndexFailureAndRetry: Story = {
       "Expected (await menu.findByText(1 project could not be searched. R... to exist",
     );
     await expect(
-      menu.queryByRole("option", { name: /Read Timeout/ }),
+      menu.queryByRole("option", { name: /Read Timeout/u }),
     ).not.toBeInTheDocument();
     await context.userEvent.click(
       within(status).getByRole("button", { name: "Retry" }),
     );
-    await menu.findByRole("option", { name: /Read Timeout.*Mine site/ });
+    await menu.findByRole("option", { name: /Read Timeout.*Mine site/u });
     await waitFor(() =>
-      expect(menu.queryByText(/could not be searched/)).not.toBeInTheDocument(),
+      expect(
+        menu.queryByText(/could not be searched/u),
+      ).not.toBeInTheDocument(),
     );
     await expect(loadProjectInfo).toHaveBeenCalledTimes(2);
     await context.userEvent.keyboard("{Escape}");
@@ -1457,7 +1475,7 @@ export const HeaderSearchOnNarrowScreen: Story = {
     const canvas = within(canvasElement);
     await canvas.findByText("Project overview");
     const trigger = canvas.getByRole("button", {
-      name: /^Search (Ctrl\+|⌘)K$/,
+      name: /^Search (Ctrl\+|⌘)K$/u,
     });
     const header = assertDefined(
       trigger.closest("header"),

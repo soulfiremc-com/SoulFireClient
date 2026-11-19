@@ -279,7 +279,9 @@ export function useDataTable<TData extends RowData>(
       if (table.atoms.pagination.get().pageIndex !== 0) void setPage(1);
       debouncedSetFilterValues(filterUpdates);
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [
     table,
     debouncedSetFilterValues,

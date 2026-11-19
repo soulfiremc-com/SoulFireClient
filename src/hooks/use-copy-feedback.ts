@@ -7,12 +7,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export function useCopyFeedback(durationMs = 2000) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const timer = useRef<number | undefined>(undefined);
-  useEffect(() => () => window.clearTimeout(timer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(timer.current);
+    },
+    [],
+  );
   const markCopied = useCallback(
     (key: string) => {
       window.clearTimeout(timer.current);
       setCopiedKey(key);
-      timer.current = window.setTimeout(() => setCopiedKey(null), durationMs);
+      timer.current = window.setTimeout(() => {
+        setCopiedKey(null);
+      }, durationMs);
     },
     [durationMs],
   );

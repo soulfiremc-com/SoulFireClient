@@ -59,7 +59,9 @@ export function ContextMenuPortal({
               "min-w-32 animate-in rounded-md bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 fade-in-0 zoom-in-95",
               "max-h-[calc(100dvh-1rem)] max-w-[calc(100dvw-1rem)] overflow-y-auto outline-none",
             )}
-            onContextMenu={(event) => event.preventDefault()}
+            onContextMenu={(event) => {
+              event.preventDefault();
+            }}
             onKeyDown={(event) => {
               event.stopPropagation();
               if (event.key === "Tab") {

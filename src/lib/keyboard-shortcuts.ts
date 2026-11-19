@@ -50,9 +50,9 @@ export function projectShortcutIndex(
   mac: boolean,
 ): number | null {
   if (!isPrimaryShortcut(event, mac)) return null;
-  const digit = /^[1-9]$/.test(event.key)
+  const digit = /^[1-9]$/u.test(event.key)
     ? event.key
-    : /^(?:Digit|Numpad)([1-9])$/.exec(event.code)?.[1];
+    : /^(?:Digit|Numpad)([1-9])$/u.exec(event.code)?.[1];
   return digit ? Number(digit) - 1 : null;
 }
 

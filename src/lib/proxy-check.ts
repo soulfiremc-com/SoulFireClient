@@ -24,7 +24,7 @@ export async function checkProxies(
               if (response.data.case === "end") {
                 // Persist once, after consuming the results, instead of pausing the stream
                 // for a settings write and query invalidation for every failed proxy.
-                if (failedProxies.length) await removeFailed(failedProxies);
+                if (failedProxies.length > 0) await removeFailed(failedProxies);
                 signal.throwIfAborted();
                 completed = true;
                 return;

@@ -108,7 +108,7 @@ export function FernanFlow({
   const validAmount =
     Number.isInteger(amount) && amount >= 1 && amount <= limit;
   const total = product && validAmount ? product.price * amount : null;
-  const validReferral = referral === "" || /^[a-z\d]{3,16}$/i.test(referral);
+  const validReferral = referral === "" || /^[a-zA-Z\d]{3,16}$/u.test(referral);
   const insufficient = total !== null && balance !== null && balance < total;
 
   const go = (next: Stage) => {
@@ -155,7 +155,7 @@ export function FernanFlow({
   const back =
     stage === "connect"
       ? onBack
-      : () =>
+      : () => {
           go(
             stage === "import"
               ? "choose"
@@ -163,6 +163,7 @@ export function FernanFlow({
                 ? "choose"
                 : "connect",
           );
+        };
 
   return (
     <ProviderFrame
@@ -222,7 +223,9 @@ export function FernanFlow({
                 purchased ||
                 uncertain
               }
-              onClick={() => go("review")}
+              onClick={() => {
+                go("review");
+              }}
             >
               {t("providers.reviewOrder")}
               <ArrowRightIcon data-icon="inline-end" />
@@ -468,7 +471,9 @@ export function FernanFlow({
                         value={referral}
                         disabled={busy}
                         aria-invalid={!validReferral}
-                        onChange={(event) => setReferral(event.target.value)}
+                        onChange={(event) => {
+                          setReferral(event.target.value);
+                        }}
                       />
                       {referral && (
                         <InputGroupAddon align="inline-end">
@@ -476,7 +481,9 @@ export function FernanFlow({
                             size="icon-xs"
                             aria-label={t("providers.removeCode")}
                             disabled={busy}
-                            onClick={() => setReferral("")}
+                            onClick={() => {
+                              setReferral("");
+                            }}
                           >
                             <XIcon />
                           </InputGroupButton>
@@ -514,7 +521,9 @@ export function FernanFlow({
                   aria-label={t("providers.recentOrders")}
                   value={purchaseId}
                   disabled={busy}
-                  onValueChange={(next) => setPurchaseId(String(next))}
+                  onValueChange={(next) => {
+                    setPurchaseId(String(next));
+                  }}
                 >
                   {account.purchases.map((entry) => (
                     <ChoiceCard
@@ -616,8 +625,12 @@ export function FernanFlow({
             aria-label={t("providers.importFormat")}
             value={importFormat}
             disabled={busy}
-            onValueChange={(next) => {
-              if (isOneOf(next, FERNAN_IMPORT_FORMATS)) setImportFormat(next);
+            onValueChange={(next: unknown) => {
+              if (
+                typeof next === "string" &&
+                isOneOf(next, FERNAN_IMPORT_FORMATS)
+              )
+                setImportFormat(next);
             }}
           >
             {(

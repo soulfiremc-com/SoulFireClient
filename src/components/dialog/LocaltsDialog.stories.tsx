@@ -18,8 +18,8 @@ const meta = {
     open: true,
     initialProviderId: "localts",
     canPurchase: true,
-    onOpenChange: fn(),
-    onImport: fn(),
+    onOpenChange: fn<() => void>(),
+    onImport: fn<() => void>(),
   },
   beforeEach: ({ parameters }) => {
     const original = globalThis.fetch;
@@ -104,7 +104,7 @@ export const PurchaseAndImport: Story = {
     await expect(dialog.getByText("100 credits")).toBeVisible();
     await expect(dialog.getByText("20% off from 10")).toBeVisible();
     await userEvent.click(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
     await expect(purchases).toHaveLength(0);
@@ -147,7 +147,7 @@ async function recover(
   await userEvent.click(
     dialog.getByRole("button", { name: "Use an earlier order" }),
   );
-  await userEvent.click(dialog.getByRole("radio", { name: /order-123/ }));
+  await userEvent.click(dialog.getByRole("radio", { name: /order-123/u }));
   await userEvent.click(dialog.getByRole("button", { name: "Load order" }));
   return dialog;
 }
@@ -175,7 +175,7 @@ export const RefundedOrder: Story = {
       await dialog.findByText("This order was refunded"),
     ).toBeVisible();
     await expect(
-      dialog.queryByRole("button", { name: /^Import/ }),
+      dialog.queryByRole("button", { name: /^Import/u }),
     ).not.toBeInTheDocument();
     await expect(args.onImport).not.toHaveBeenCalled();
   },
@@ -197,7 +197,7 @@ export const DemoModeCannotPurchase: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const dialog = await connect(canvasElement, userEvent);
     await userEvent.click(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
     await expect(

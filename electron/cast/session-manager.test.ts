@@ -163,7 +163,9 @@ async function fixture(
       ),
   });
   const manager = new CastSessionManager(
-    (state) => states.push(state),
+    (state) => {
+      states.push(state);
+    },
     Layer.mergeAll(transport, metrics, Layer.succeed(Clock.Clock, clock)),
   );
   disposers.push(async () => {
@@ -272,7 +274,7 @@ test("stop cancels a pending connection and rejects the initiating request", asy
 test("permanent errors fail immediately and release partially acquired resources", async () => {
   const f = await fixture({ reject: true });
   // Bun types `rejects` matchers as void, but they return a promise at runtime.
-  // oxlint-disable-next-line typescript/await-thenable
+  // oxlint-disable-next-line typescript/await-thenable, typescript/no-confusing-void-expression
   await expect(f.manager.connect(device, source)).rejects.toBeInstanceOf(Error);
   expect(f.channels).toHaveLength(1);
   expect(f.channel(0).closed).toBe(true);

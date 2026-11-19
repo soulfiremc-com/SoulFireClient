@@ -221,7 +221,9 @@ function toProtoValue(value: unknown): Value {
     return create(ValueSchema, {
       kind: {
         case: "listValue",
-        value: create(ListValueSchema, { values: value.map(toProtoValue) }),
+        value: create(ListValueSchema, {
+          values: value.map((item) => toProtoValue(item)),
+        }),
       },
     });
   }

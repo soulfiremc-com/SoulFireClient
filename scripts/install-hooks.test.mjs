@@ -30,7 +30,9 @@ function git(cwd, ...args) {
 }
 function fixture(t) {
   const cwd = mkdtempSync(join(tmpdir(), "lefthook-migration-"));
-  t.after(() => rmSync(cwd, { recursive: true, force: true }));
+  t.after(() => {
+    rmSync(cwd, { recursive: true, force: true });
+  });
   git(cwd, "init", "--initial-branch=main");
   git(cwd, "config", "user.name", "Hook Test");
   git(cwd, "config", "user.email", "hook-test@example.invalid");
@@ -60,7 +62,7 @@ test("dependency preparation migrates the legacy Husky hook path", (t) => {
   );
   assert.match(
     readFileSync(join(cwd, ".git/hooks/pre-commit"), "utf8"),
-    /lefthook/,
+    /lefthook/u,
   );
 });
 
@@ -84,10 +86,10 @@ test("a real commit formats a spaced filename and preserves its unstaged changes
   writeFileSync(file, "export const first=1;\n\nexport const second = 2;\n");
   git(cwd, "commit", "-m", "test: format staged changes");
   const committed = git(cwd, "show", "HEAD:src/hook sample.ts");
-  assert.match(committed, /first = 1/);
-  assert.match(committed, /second = 0/);
-  assert.match(readFileSync(file, "utf8"), /second = 2/);
-  assert.match(git(cwd, "diff", "--", "src/hook sample.ts"), /second = 2/);
+  assert.match(committed, /first = 1/u);
+  assert.match(committed, /second = 0/u);
+  assert.match(readFileSync(file, "utf8"), /second = 2/u);
+  assert.match(git(cwd, "diff", "--", "src/hook sample.ts"), /second = 2/u);
 });
 
 test("a real commit rejects invalid staged syntax", (t) => {

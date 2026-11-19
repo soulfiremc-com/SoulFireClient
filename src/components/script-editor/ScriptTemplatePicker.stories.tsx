@@ -6,7 +6,7 @@ import { ScriptTemplatePicker } from "./ScriptTemplatePicker.tsx";
 const meta = {
   title: "Scripts/Template picker",
   component: ScriptTemplatePicker,
-  args: { templates: SCRIPT_TEMPLATES, onPick: fn() },
+  args: { templates: SCRIPT_TEMPLATES, onPick: fn<() => void>() },
 } satisfies Meta<typeof ScriptTemplatePicker>;
 
 export default meta;
@@ -16,7 +16,7 @@ export const AllTemplates: Story = {
   play: async ({ args, canvasElement }) => {
     await userEvent.click(
       within(canvasElement).getByRole("button", {
-        name: /Respawn after death/,
+        name: /Respawn after death/u,
       }),
     );
     await expect(args.onPick).toHaveBeenCalledWith(

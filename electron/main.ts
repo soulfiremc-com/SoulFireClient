@@ -1231,7 +1231,9 @@ async function bootstrap(): Promise<void> {
   createAppTray();
   startUpdater(
     () => mainWindow,
-    (version) => sendToMainWindow("updates:ready", version),
+    (version) => {
+      sendToMainWindow("updates:ready", version);
+    },
   );
 
   app.on("activate", () => {

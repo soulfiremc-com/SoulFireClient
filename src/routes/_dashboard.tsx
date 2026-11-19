@@ -117,19 +117,18 @@ export const Route = createFileRoute("/_dashboard")({
         instanceListQueryOptions,
         clientDataQueryOptions,
       };
-    } else {
-      if (isDesktopApp()) {
-        await desktop.integratedServer.kill();
-      }
-      logOut();
-      // oxlint-disable-next-line typescript/only-throw-error -- TanStack Router handles a thrown redirect
-      throw redirect({
-        to: "/",
-        search: {
-          redirect: props.location.href,
-        },
-      });
     }
+    if (isDesktopApp()) {
+      await desktop.integratedServer.kill();
+    }
+    logOut();
+    // oxlint-disable-next-line typescript/only-throw-error -- TanStack Router handles a thrown redirect
+    throw redirect({
+      to: "/",
+      search: {
+        redirect: props.location.href,
+      },
+    });
   },
   loader: (
     props,
@@ -204,7 +203,9 @@ function InstanceSwitchKeybinds() {
       });
     };
     document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    return () => {
+      document.removeEventListener("keydown", down);
+    };
   }, [instanceList.instances, navigate]);
 
   return null;
@@ -235,7 +236,9 @@ function ClientSession() {
         installation_id: installationId ?? "",
         analytics_identity_version: 2,
       },
-      () => analyticsConsent.resetIdentity(true),
+      () => {
+        analyticsConsent.resetIdentity(true);
+      },
     );
   }, [
     clientInfo.email,

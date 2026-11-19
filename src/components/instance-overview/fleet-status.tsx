@@ -146,7 +146,9 @@ function FailureGroupRow({
               size="sm"
               variant={group.severity === "failed" ? "default" : "outline"}
               disabled={botStatePending}
-              onClick={() => restart.mutate()}
+              onClick={() => {
+                restart.mutate();
+              }}
             >
               {restart.isPending ? (
                 <LoaderCircleIcon

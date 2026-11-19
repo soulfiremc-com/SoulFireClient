@@ -1,7 +1,12 @@
 import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
+import { Schema } from "effect";
 import type { PortDefinition } from "@/components/script-editor/nodes/types";
 import { jsonToValue } from "./protobuf";
+
+const decodeJson = Schema.decodeUnknownSync(
+  Schema.fromJsonString(Schema.MutableJson),
+);
 
 export class InvalidMockInput extends Error {
   constructor(public readonly portId: string) {
@@ -19,7 +24,7 @@ export function parseMockInputs(
       if (text.trim() === "") return [];
       try {
         const value: JsonValue =
-          port.type === "string" ? text : JSON.parse(text);
+          port.type === "string" ? text : decodeJson(text);
         if (
           port.type === "number" &&
           (typeof value !== "number" || !Number.isFinite(value))
@@ -37,18 +42,17 @@ export function parseMockInputs(
           (value === null || typeof value !== "object" || Array.isArray(value))
         )
           throw new Error();
-        if (port.type === "vector3") {
-          if (
-            value === null ||
+        if (
+          port.type === "vector3" &&
+          (value === null ||
             typeof value !== "object" ||
             Array.isArray(value) ||
             ![value["x"], value["y"], value["z"]].every(
               (coordinate) =>
                 typeof coordinate === "number" && Number.isFinite(coordinate),
-            )
-          )
-            throw new Error();
-        }
+            ))
+        )
+          throw new Error();
         return [[port.id, jsonToValue(value)]];
       } catch {
         throw new InvalidMockInput(port.id);

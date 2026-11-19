@@ -1,4 +1,4 @@
-import type { QueryClient } from "@tanstack/react-query";
+import { matchQuery, type QueryClient } from "@tanstack/react-query";
 import {
   BotConnectionPhase,
   type BotListEntry,
@@ -47,7 +47,7 @@ function readState(storage: Storage | undefined): ReminderState {
         Array.isArray(state.activeDays) &&
         state.activeDays.length <= 3 &&
         state.activeDays.every(
-          (day) => typeof day === "string" && /^\d{4}-\d{2}-\d{2}$/.test(day),
+          (day) => typeof day === "string" && /^\d{4}-\d{2}-\d{2}$/u.test(day),
         ) &&
         typeof state.hasSpawnedBot === "boolean" &&
         (state.disabled === null ||
@@ -102,7 +102,9 @@ export function createSupportReminder({
     } catch {
       // Preferences still apply in this app session when storage is unavailable.
     }
-    listeners.forEach((listener) => listener());
+    listeners.forEach((listener) => {
+      listener();
+    });
   }
 
   function synchronize() {
@@ -110,7 +112,9 @@ export function createSupportReminder({
     const saved = readState(storage);
     if (JSON.stringify(state) === JSON.stringify(saved)) return;
     state = saved;
-    listeners.forEach((listener) => listener());
+    listeners.forEach((listener) => {
+      listener();
+    });
   }
 
   function recordUse() {
@@ -195,7 +199,7 @@ export function watchSupportReminderBots(
     if (
       event.type === "updated" &&
       event.action.type === "success" &&
-      event.query.queryKey[0] === "bot-status"
+      matchQuery({ queryKey: ["bot-status"] }, event.query)
     ) {
       reminder.observeBots(
         // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the bot-status query always stores a BotListResponse

@@ -233,7 +233,9 @@ function DuplicateInstanceDialog({
                       )}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
                       aria-invalid={isInvalid}
                     />
                     <FieldDescription>
@@ -596,7 +598,9 @@ function Content() {
                       to="/instance/$instance"
                       params={{ instance: instance.id }}
                       search={{}}
-                      onContextMenu={(e) => handleContextMenu(e, instance)}
+                      onContextMenu={(e) => {
+                        handleContextMenu(e, instance);
+                      }}
                     />
                   }
                 >

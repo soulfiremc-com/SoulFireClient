@@ -56,7 +56,9 @@ function DataTableActionBar<TData extends RowData>({
     }
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [table]);
 
   const container =

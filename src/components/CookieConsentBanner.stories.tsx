@@ -33,7 +33,9 @@ function initializeClient() {
     capture_pageleave: false,
     capture_exceptions: false,
     cross_subdomain_cookie: false,
-    loaded: () => consent.synchronize(),
+    loaded: () => {
+      consent.synchronize();
+    },
     before_send: (event) => {
       // Inspect SDK payloads without sending analytics from tests.
       if (event) events.push(event);
@@ -47,7 +49,13 @@ function ConsentExample() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Cookie preferences</Button>
+      <Button
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        Cookie preferences
+      </Button>
       <p>Consent: {status}</p>
       {(status === "pending" || open) && (
         <CookieConsentBanner
@@ -59,7 +67,13 @@ function ConsentExample() {
             consent.setConsent(false);
             setOpen(false);
           }}
-          onClose={status === "pending" ? undefined : () => setOpen(false)}
+          onClose={
+            status === "pending"
+              ? undefined
+              : () => {
+                  setOpen(false);
+                }
+          }
         />
       )}
     </>

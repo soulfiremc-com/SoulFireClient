@@ -368,7 +368,9 @@ export function SecretField({
           value={value}
           disabled={disabled}
           placeholder={placeholder}
-          onChange={(event) => onChange(event.target.value)}
+          onChange={(event) => {
+            onChange(event.target.value);
+          }}
         />
         {secret && (
           <InputGroupAddon align="inline-end">
@@ -378,7 +380,9 @@ export function SecretField({
                 shown ? "providers.hideValue" : "providers.showValue",
               )}
               aria-pressed={shown}
-              onClick={() => setShown((previous) => !previous)}
+              onClick={() => {
+                setShown((previous) => !previous);
+              }}
             >
               {shown ? <EyeOffIcon /> : <EyeIcon />}
             </InputGroupButton>
@@ -417,7 +421,9 @@ export function QuantityField({
           size="icon"
           aria-label={t("providers.decrease")}
           disabled={disabled || value <= 1}
-          onClick={() => onChange(Math.min(top, Math.max(1, value - 1)))}
+          onClick={() => {
+            onChange(Math.min(top, Math.max(1, value - 1)));
+          }}
         >
           <MinusIcon />
         </Button>
@@ -429,14 +435,18 @@ export function QuantityField({
           value={value}
           disabled={disabled}
           className="w-24 text-center"
-          onChange={(event) => onChange(Number(event.target.value))}
+          onChange={(event) => {
+            onChange(Number(event.target.value));
+          }}
         />
         <Button
           variant="outline"
           size="icon"
           aria-label={t("providers.increase")}
           disabled={disabled || value >= top}
-          onClick={() => onChange(Math.max(1, Math.min(top, value + 1)))}
+          onClick={() => {
+            onChange(Math.max(1, Math.min(top, value + 1)));
+          }}
         >
           <PlusIcon />
         </Button>

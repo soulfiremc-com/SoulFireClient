@@ -17,7 +17,8 @@
   "categories": {
     "correctness": "error",
     "suspicious": "error",
-    "perf": "error"
+    "perf": "error",
+    "pedantic": "error"
   },
   "options": {
     "typeAware": true,
@@ -60,6 +61,11 @@
         "null": "ignore"
       }
     ],
+    "eslint/max-classes-per-file": "off",
+    "eslint/max-depth": "off",
+    "eslint/max-lines": "off",
+    "eslint/max-lines-per-function": "off",
+    "eslint/max-nested-callbacks": "off",
     "eslint/no-await-in-loop": "off",
     "eslint/no-console": [
       "error",
@@ -68,7 +74,9 @@
       }
     ],
     "eslint/no-fallthrough": "error",
+    "eslint/no-inline-comments": "off",
     "eslint/no-loop-func": "error",
+    "eslint/no-negated-condition": "off",
     "eslint/no-new": "error",
     "eslint/no-promise-executor-return": "error",
     "eslint/no-self-compare": "error",
@@ -82,7 +90,10 @@
     ],
     "eslint/no-unmodified-loop-condition": "error",
     "eslint/no-useless-call": "error",
+    "eslint/no-warning-comments": "off",
     "eslint/preserve-caught-error": "error",
+    "eslint/require-await": "off",
+    "import/max-dependencies": "off",
     "import/no-cycle": "error",
     "import/no-duplicates": "error",
     "import/no-named-as-default": "error",
@@ -223,6 +234,7 @@
     "typescript/prefer-optional-chain": "error",
     "typescript/prefer-promise-reject-errors": "error",
     "typescript/prefer-readonly": "error",
+    "typescript/prefer-readonly-parameter-types": "off",
     "typescript/prefer-reduce-type-parameter": "error",
     "typescript/prefer-ts-expect-error": "error",
     "typescript/require-array-sort-compare": "error",
@@ -230,17 +242,22 @@
     "typescript/restrict-plus-operands": "error",
     "typescript/restrict-template-expressions": "error",
     "typescript/return-await": "error",
+    "typescript/strict-boolean-expressions": "off",
     "typescript/switch-exhaustiveness-check": "error",
     "typescript/unbound-method": "error",
     "unicorn/consistent-function-scoping": "error",
     "unicorn/no-abusive-eslint-disable": "error",
     "unicorn/no-array-reverse": "error",
     "unicorn/no-array-sort": "error",
+    "unicorn/no-negated-condition": "off",
+    "unicorn/no-useless-switch-case": "off",
+    "unicorn/no-useless-undefined": "off",
     "unicorn/prefer-add-event-listener": "error",
     "unicorn/prefer-array-find": "error",
     "unicorn/prefer-array-flat-map": "error",
     "unicorn/prefer-at": "error",
     "unicorn/prefer-node-protocol": "error",
+    "unicorn/prefer-number-coercion": "off",
     "unicorn/prefer-set-has": "error",
     "unicorn/prefer-string-replace-all": "error",
     "unicorn/prefer-top-level-await": "error",
@@ -785,7 +802,8 @@
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "jsx-a11y/label-has-associated-control": "off",
         "jsx-a11y/click-events-have-key-events": "off",
-        "eslint/no-underscore-dangle": "off"
+        "eslint/no-underscore-dangle": "off",
+        "unicorn/explicit-length-check": "off"
       }
     },
     {
@@ -1217,6 +1235,22 @@
       ],
       "rules": {
         "react-hooks/exhaustive-deps": "off"
+      }
+    },
+    {
+      "files": ["electron/**"],
+      "rules": {
+        "unicorn/prefer-event-target": "off"
+      }
+    },
+    {
+      "files": ["**/*.mjs"],
+      "rules": {
+        "typescript/no-unsafe-argument": "off",
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-call": "off",
+        "typescript/no-unsafe-member-access": "off",
+        "typescript/no-unsafe-return": "off"
       }
     }
   ],

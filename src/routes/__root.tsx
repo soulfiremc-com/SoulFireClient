@@ -139,7 +139,7 @@ function PointerReset() {
   return null;
 }
 
-const DocumentTitleSyncer = memo(() => {
+const DocumentTitleSyncer = memo(function DocumentTitleSyncer() {
   const pageTitle = useCurrentRouteTitle();
 
   useEffect(() => {
@@ -153,7 +153,7 @@ function getPresenceForPath(
   pathname: string,
   queryClient: QueryClient,
 ): { state: string; details?: string | undefined } {
-  const instanceMatch = pathname.match(/\/instance\/([^/]+)(?:\/(.*))?/);
+  const instanceMatch = pathname.match(/\/instance\/([^/]+)(?:\/(.*))?/u);
   if (instanceMatch) {
     const instanceId = instanceMatch[1];
     const subPage = instanceMatch[2] ?? "";
@@ -265,9 +265,8 @@ function RootLayout() {
               setSystemInfoState((oldSystemInfo) => {
                 if (deepEqual(oldSystemInfo, newSystemInfo)) {
                   return oldSystemInfo;
-                } else {
-                  return newSystemInfo;
                 }
+                return newSystemInfo;
               });
             });
           },

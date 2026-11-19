@@ -878,7 +878,9 @@ function ScriptEditorContent() {
             <Button
               size="icon"
               className="size-12 rounded-full shadow-lg"
-              onClick={() => setNodePaletteOpen(true)}
+              onClick={() => {
+                setNodePaletteOpen(true);
+              }}
             >
               <PlusIcon className="size-5" />
               <span className="sr-only">
@@ -889,7 +891,9 @@ function ScriptEditorContent() {
               size="icon"
               variant="secondary"
               className="size-12 rounded-full shadow-lg"
-              onClick={() => setExecutionLogsOpen(true)}
+              onClick={() => {
+                setExecutionLogsOpen(true);
+              }}
             >
               <ScrollTextIcon className="size-5" />
               <span className="sr-only">

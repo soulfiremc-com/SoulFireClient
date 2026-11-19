@@ -37,8 +37,7 @@ function listDirectoriesRecursive(directory) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const entryPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
-      entries.push(entryPath);
-      entries.push(...listDirectoriesRecursive(entryPath));
+      entries.push(entryPath, ...listDirectoriesRecursive(entryPath));
     }
   }
   return entries;

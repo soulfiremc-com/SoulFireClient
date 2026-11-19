@@ -81,7 +81,7 @@ if (
 }
 
 // Render the app
-const rootElement = document.getElementById("root");
+const rootElement = document.querySelector("#root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(

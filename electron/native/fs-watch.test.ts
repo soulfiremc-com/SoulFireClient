@@ -55,7 +55,9 @@ test("desktop file watching reports create, edit, rename and deletion and releas
     await watcher.close();
     assert.deepEqual(Object.keys(watcher.getWatched()), []);
     let lateEvents = 0;
-    watcher.on("all", () => lateEvents++);
+    watcher.on("all", () => {
+      lateEvents++;
+    });
     await writeFile(original, "after closing");
     await new Promise((resolve) => {
       setTimeout(resolve, 200);
@@ -92,7 +94,9 @@ test("recursive desktop watching includes nested files while depth zero excludes
     );
     const target = path.join(nested, "nested.txt");
     const shallowPaths: string[] = [];
-    shallow.on("all", (_kind, changed) => shallowPaths.push(changed));
+    shallow.on("all", (_kind, changed) => {
+      shallowPaths.push(changed);
+    });
     const observed = event(recursive, "add", target);
     await writeFile(target, "nested content");
     await observed;

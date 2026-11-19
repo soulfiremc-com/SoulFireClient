@@ -104,7 +104,7 @@ export function startPovSession(
       !readClipboard &&
       clipboard === undefined &&
       !pendingKeyFrame &&
-      !inputs.length &&
+      inputs.length === 0 &&
       captured === lastCaptured &&
       audioEnabled === lastAudioEnabled &&
       performance.now() - lastSent < 500
@@ -152,7 +152,10 @@ export function startPovSession(
       Effect.gen(function* () {
         yield* Effect.acquireRelease(
           Effect.sync(() => setInterval(flush, 16)),
-          (timer) => Effect.sync(() => clearInterval(timer)),
+          (timer) =>
+            Effect.sync(() => {
+              clearInterval(timer);
+            }),
         );
         const [displayFps, codecs] = yield* Effect.all(
           [
@@ -261,9 +264,15 @@ export function startPovSession(
                                 }
                               };
                               // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
-                              socket.onmessage = (event) => {
+                              socket.onmessage = (
+                                event: MessageEvent<unknown>,
+                              ) => {
                                 if (attempt !== current) return;
                                 try {
+                                  if (typeof event.data !== "string")
+                                    throw new TypeError(
+                                      "Invalid input acknowledgement",
+                                    );
                                   const ack = BigInt(event.data);
                                   if (
                                     ack < current.acknowledged ||
@@ -345,7 +354,9 @@ export function startPovSession(
       }),
     ).pipe(
       Effect.catchCause((cause) =>
-        Effect.sync(() => fail(Cause.squash(cause))),
+        Effect.sync(() => {
+          fail(Cause.squash(cause));
+        }),
       ),
     ),
   );

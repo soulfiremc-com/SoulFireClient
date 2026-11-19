@@ -14,7 +14,7 @@ const uploadLog = fn(async (_body: BodyInit | null | undefined) =>
 const entries = Array.from({ length: 100 }, (_, id) =>
   toTerminalLine({
     id: String(id),
-    message: id === 99 ? "\x1b[31mLast log\x1b[0m" : `Log ${id}`,
+    message: id === 99 ? "\u001B[31mLast log\u001B[0m" : `Log ${id}`,
     personal: false,
   }),
 );
@@ -27,7 +27,7 @@ function TerminalHarness() {
     <div className={narrow ? "w-80" : "w-full"}>
       <div className="flex gap-2">
         <Button
-          onClick={() =>
+          onClick={() => {
             setLogs((current) => [
               ...current,
               toTerminalLine({
@@ -35,29 +35,45 @@ function TerminalHarness() {
                 message: "New log",
                 personal: false,
               }),
-            ])
-          }
+            ]);
+          }}
         >
           Append
         </Button>
-        <Button onClick={() => setLogs((current) => current.slice(1))}>
+        <Button
+          onClick={() => {
+            setLogs((current) => current.slice(1));
+          }}
+        >
           Trim
         </Button>
         <Button
-          onClick={() =>
+          onClick={() => {
             setLogs([
               toTerminalLine({
                 id: "scope",
                 message: "Other scope",
                 personal: false,
               }),
-            ])
-          }
+            ]);
+          }}
         >
           Change scope
         </Button>
-        <Button onClick={() => setTheme("latte")}>Change theme</Button>
-        <Button onClick={() => setNarrow((value) => !value)}>Resize</Button>
+        <Button
+          onClick={() => {
+            setTheme("latte");
+          }}
+        >
+          Change theme
+        </Button>
+        <Button
+          onClick={() => {
+            setNarrow((value) => !value);
+          }}
+        >
+          Resize
+        </Button>
       </div>
       <TerminalView entries={logs} theme={theme} />
       <Toaster />
@@ -192,7 +208,7 @@ export const SelectAndCopy: Story = {
     await waitFor(() => expect(writeClipboard).toHaveBeenCalled());
     await expect(writeClipboard.mock.calls[0]?.[0]).toContain("Log 0\nLog 1");
     await expect(writeClipboard.mock.calls[0]?.[0]).toContain("Last log");
-    await expect(writeClipboard.mock.calls[0]?.[0]).not.toContain("\x1b");
+    await expect(writeClipboard.mock.calls[0]?.[0]).not.toContain("\u001B");
     await userEvent.click(host);
     const lastLog = within(host).getByText("Last log");
     const range = host.ownerDocument.createRange();

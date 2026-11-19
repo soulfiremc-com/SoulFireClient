@@ -123,7 +123,9 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
       runAsync(reloadPage);
       return undefined;
     }
-    const retry = () => runAsync(reloadPage);
+    const retry = () => {
+      runAsync(reloadPage);
+    };
     const interval = window.setInterval(retry, RECONNECT_INTERVAL_MS);
     window.addEventListener("online", retry);
     return () => {
@@ -226,7 +228,7 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
           )}
           <Button
             className="w-fit"
-            onClick={() =>
+            onClick={() => {
               runAsync(async () => {
                 if (isDesktopApp()) {
                   await desktop.integratedServer.kill();
@@ -236,13 +238,18 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
                   to: "/",
                   replace: true,
                 });
-              })
-            }
+              });
+            }}
           >
             <LogOutIcon />
             {t("error.page.logOut")}
           </Button>
-          <Button onClick={() => runAsync(reloadPage)} disabled={revalidating}>
+          <Button
+            onClick={() => {
+              runAsync(reloadPage);
+            }}
+            disabled={revalidating}
+          >
             {revalidating ? (
               <LoaderCircleIcon className="animate-spin" />
             ) : (

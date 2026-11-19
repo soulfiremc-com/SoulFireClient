@@ -6,7 +6,7 @@ import type { WTerm } from "@wterm/dom";
 import { stripAnsi } from "fancy-ansi";
 import type { TerminalLine } from "@/stores/terminal-log-store";
 
-const RESET = "\x1b[0m\x1b[3J\x1b[2J\x1b[H\x1b[?25l";
+const RESET = "\u001B[0m\u001B[3J\u001B[2J\u001B[H\u001B[?25l";
 
 export function formatTerminalPrefix(
   entry: TerminalLine,
@@ -39,9 +39,9 @@ export function formatTerminalLine(
   const level = entry.level?.toUpperCase();
   const color =
     level === "WARN"
-      ? "\x1b[33m"
+      ? "\u001B[33m"
       : level === "ERROR" || level === "FATAL"
-        ? "\x1b[31m"
+        ? "\u001B[31m"
         : "";
   const message = logText(
     entry.message,
@@ -49,10 +49,10 @@ export function formatTerminalLine(
     entry.personal && entry.terminalInteractions ? register : undefined,
   );
   return (
-    "\x1b[0m" +
-    (prefix ? `${color}${prefix}\x1b[0m ` : "") +
+    "\u001B[0m" +
+    (prefix ? `${color}${prefix}\u001B[0m ` : "") +
     message.replaceAll("\n", "\r\n") +
-    "\x1b[0m" +
+    "\u001B[0m" +
     (stripAnsi(message).endsWith("\n") ? "" : "\r\n")
   );
 }

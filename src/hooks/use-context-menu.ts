@@ -23,7 +23,9 @@ export function useContextMenu<T>() {
     [],
   );
 
-  const dismiss = useCallback(() => setContextMenu(null), []);
+  const dismiss = useCallback(() => {
+    setContextMenu(null);
+  }, []);
 
   useEffect(() => {
     if (!contextMenu) return undefined;

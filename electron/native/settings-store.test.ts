@@ -3,7 +3,12 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
+import { Schema } from "effect";
 import Store from "electron-store";
+
+const decodeStoredWindow = Schema.decodeUnknownSync(
+  Schema.fromJsonString(Schema.Struct({ window: Schema.Unknown })),
+);
 
 const defaults = {
   window: { height: 675, isMaximized: false, width: 1200 },
@@ -24,7 +29,7 @@ test("window settings preserve legacy values and survive write and reopen", asyn
     const reopened = new Store({ cwd, name: "window-state", defaults });
     assert.deepEqual(reopened.get("window"), updated);
     assert.deepEqual(
-      JSON.parse(await readFile(store.path, "utf8")).window,
+      decodeStoredWindow(await readFile(store.path, "utf8")).window,
       updated,
     );
   } finally {

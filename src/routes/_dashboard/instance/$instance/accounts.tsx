@@ -218,7 +218,13 @@ function GenerateAccountsButton() {
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={() => setDialogOpen(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => {
+          setDialogOpen(true);
+        }}
+      >
         <SparklesIcon />
         {t("account.generateAccounts")}
       </Button>
@@ -272,13 +278,13 @@ function splitAccountCredentialPayloads(
     (looksLikeCookieJar(trimmed) || looksLikeCookieEditorJson(trimmed))
   ) {
     return trimmed
-      .split(/(?:\r?\n){2,}/)
+      .split(/(?:\r?\n){2,}/u)
       .map((payload) => payload.trim())
       .filter((payload) => payload.length > 0);
   }
 
   return text
-    .split(/\r?\n/)
+    .split(/\r?\n/u)
     .map((payload) => payload.trim())
     .filter((payload) => payload.length > 0);
 }
@@ -316,7 +322,9 @@ function ActionsCell({ account }: { account: ProfileAccount }) {
               variant="ghost"
               size="icon"
               className="size-8"
-              onClick={() => setConfigOpen(true)}
+              onClick={() => {
+                setConfigOpen(true);
+              }}
             />
           }
         >
@@ -332,7 +340,9 @@ function ActionsCell({ account }: { account: ProfileAccount }) {
               variant="ghost"
               size="icon"
               className="size-8"
-              onClick={() => setMetadataOpen(true)}
+              onClick={() => {
+                setMetadataOpen(true);
+              }}
             />
           }
         >
@@ -772,7 +782,11 @@ function AddButton() {
           {t("setup.backToSetup")}
         </Button>
       )}
-      <GetAccountsButton onClick={() => openProviderDialog()} />
+      <GetAccountsButton
+        onClick={() => {
+          openProviderDialog();
+        }}
+      />
       <GenerateAccountsButton />
       <AccountProvidersDialog
         open={providerDialogOpen}
@@ -860,11 +874,19 @@ function AddButton() {
             >
               {t("account.ravealts.button")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => openProviderDialog("localts")}>
+            <DropdownMenuItem
+              onClick={() => {
+                openProviderDialog("localts");
+              }}
+            >
               Localts
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => openProviderDialog("fernan")}>
-              Fernan's Club
+            <DropdownMenuItem
+              onClick={() => {
+                openProviderDialog("fernan");
+              }}
+            >
+              {"Fernan's Club"}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -983,7 +1005,9 @@ function AddButton() {
             ),
           })}
           description={t(credentialFormatKey(accountTypeCredentialsSelected))}
-          closer={() => setAccountTypeCredentialsSelected(null)}
+          closer={() => {
+            setAccountTypeCredentialsSelected(null);
+          }}
           listener={textSelectedCallback}
           filters={[
             {
@@ -1083,7 +1107,9 @@ function ExtraHeader(props: {
     <>
       <DataTableActionBarAction
         tooltip={t("account.removeSelectedTooltip")}
-        onClick={() => setRemoveOpen(true)}
+        onClick={() => {
+          setRemoveOpen(true);
+        }}
       >
         <TrashIcon />
       </DataTableActionBarAction>

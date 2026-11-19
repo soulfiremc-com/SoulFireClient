@@ -47,9 +47,9 @@ export function DeviceCodeDialog({
           <div className={`flex gap-6 ${isDesktop ? "flex-row" : "flex-col"}`}>
             <div className="flex flex-1 flex-col gap-4">
               <Button
-                onClick={() =>
-                  openExternalUrl(deviceCodeData.directVerificationUri)
-                }
+                onClick={() => {
+                  openExternalUrl(deviceCodeData.directVerificationUri);
+                }}
               >
                 <ExternalLinkIcon />
                 {t("account.deviceCodeDialog.openInBrowser")}

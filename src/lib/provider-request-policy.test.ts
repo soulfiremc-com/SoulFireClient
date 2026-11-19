@@ -27,23 +27,27 @@ test("provider requests reject arbitrary destinations, redirects and unexpected 
     "https://127.0.0.1/admin",
     "file:///etc/passwd",
   ])
-    assert.throws(() => validateProviderRequest({ ...request, url }));
-  assert.throws(() => validateProviderRequest({ ...request, method: "POST" }));
-  assert.throws(() =>
-    validateProviderRequest({ ...request, body: "unexpected" }),
-  );
-  assert.throws(() =>
+    assert.throws(() => {
+      validateProviderRequest({ ...request, url });
+    });
+  assert.throws(() => {
+    validateProviderRequest({ ...request, method: "POST" });
+  });
+  assert.throws(() => {
+    validateProviderRequest({ ...request, body: "unexpected" });
+  });
+  assert.throws(() => {
     validateProviderRequest({
       ...request,
       headers: { Cookie: "session=secret" },
-    }),
-  );
-  assert.throws(() =>
+    });
+  });
+  assert.throws(() => {
     validateProviderRequest({
       ...request,
       headers: { Authorization: "Token key\r\nHost: evil.test" },
-    }),
-  );
+    });
+  });
 });
 
 test("provider requests allow only documented purchase endpoints", () => {
@@ -54,12 +58,12 @@ test("provider requests allow only documented purchase endpoints", () => {
       headers: { "Content-Type": "application/json" },
       body: '{"paymentId":"balance"}',
     });
-  assert.throws(() =>
+  assert.throws(() => {
     validateProviderRequest({
       url: "https://proxy-seller.com/personal/api/v2/key/proxy/replace",
       method: "POST",
-    }),
-  );
+    });
+  });
 });
 
 test("HTTP requests omit ambient credentials and disallow redirects", async () => {
@@ -122,7 +126,9 @@ test("provider deadlines abort the HTTP request and hide transport details", asy
       );
       requestSignal.addEventListener(
         "abort",
-        () => reject(new Error("secret URL and token")),
+        () => {
+          reject(new Error("secret URL and token"));
+        },
         { once: true },
       );
       started();
@@ -160,7 +166,9 @@ test("caller cancellation aborts a provider HTTP request", async () => {
       );
       requestSignal.addEventListener(
         "abort",
-        () => reject(new Error("private credentials")),
+        () => {
+          reject(new Error("private credentials"));
+        },
         { once: true },
       );
       started();

@@ -1,4 +1,4 @@
-const SCHEME_PATTERN = /^[a-z][a-z\d+.-]*:\/\//i;
+const SCHEME_PATTERN = /^[a-zA-Z][a-zA-Z\d+.-]*:\/\//u;
 
 /**
  * Adds `http://` to a server address typed without a scheme, such as

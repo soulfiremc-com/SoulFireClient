@@ -178,7 +178,7 @@ export function purchaseFernanAccounts(
         !Number.isInteger(amount) ||
         amount < 1 ||
         amount > 100 ||
-        (referral && !/^[a-z\d]{3,16}$/i.test(referral))
+        (referral && !/^[a-zA-Z\d]{3,16}$/u.test(referral))
       )
         return yield* Effect.fail(new ProviderApiError("response"));
       const current = yield* accountEffect(key);
@@ -232,7 +232,7 @@ export function fernanPurchaseAccounts(
   purchase: FernanPurchase,
   format: FernanImportFormat,
 ): { payload: string[]; credentialType: AccountTypeCredentials } {
-  if (!purchase.products.length) throw new ProviderApiError("empty");
+  if (purchase.products.length === 0) throw new ProviderApiError("empty");
   const credentialType = {
     "access-token": AccountTypeCredentials.MICROSOFT_JAVA_ACCESS_TOKEN,
     cookies: AccountTypeCredentials.MICROSOFT_JAVA_COOKIES,
@@ -246,8 +246,9 @@ export function fernanPurchaseAccounts(
     try {
       const value = new TextDecoder("utf-8", { fatal: true })
         .decode(
-          Uint8Array.from(atob(item.data), (character) =>
-            character.charCodeAt(0),
+          Uint8Array.from(
+            atob(item.data),
+            (character) => character.codePointAt(0) ?? 0,
           ),
         )
         .trim();

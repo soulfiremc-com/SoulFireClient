@@ -181,13 +181,14 @@ export function ScriptEditor() {
     if (change.type === "restore") {
       void reactFlowInstance.setViewport(change.viewport);
     } else {
-      const fitted = visibleNodes.length
-        ? reactFlowInstance.fitView({
-            nodes: visibleNodes.map(({ id }) => ({ id })),
-            // A lone first node should not fill the whole canvas.
-            maxZoom: 1,
-          })
-        : reactFlowInstance.setViewport({ x: 0, y: 0, zoom: 1 });
+      const fitted =
+        visibleNodes.length > 0
+          ? reactFlowInstance.fitView({
+              nodes: visibleNodes.map(({ id }) => ({ id })),
+              // A lone first node should not fill the whole canvas.
+              maxZoom: 1,
+            })
+          : reactFlowInstance.setViewport({ x: 0, y: 0, zoom: 1 });
       void fitted.then((success) => {
         if (success) groupViewports.completeFit(currentGroupId, canvasRevision);
       });
@@ -567,7 +568,6 @@ export function ScriptEditor() {
         if (event.key === "V" || event.key === "v") {
           event.preventDefault();
           distributeNodes("vertical");
-          return;
         }
       }
     },
@@ -908,7 +908,9 @@ export function ScriptEditor() {
         edges={visibleEdges}
         updateNodeData={updateNodeData}
         renamingNodeId={renamingNodeId}
-        clearRenamingNodeId={() => setRenamingNodeId(null)}
+        clearRenamingNodeId={() => {
+          setRenamingNodeId(null);
+        }}
       >
         <ReactFlow
           nodes={visibleNodes}

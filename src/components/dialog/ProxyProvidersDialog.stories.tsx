@@ -21,7 +21,7 @@ const meta = {
   args: {
     open: true,
     canImport: true,
-    onOpenChange: fn(),
+    onOpenChange: fn<() => void>(),
     onImport: fn().mockResolvedValue(undefined),
   },
   beforeEach: ({ parameters }) => {
@@ -51,7 +51,10 @@ const meta = {
             status: "success",
             data: {
               total: 1.8,
-              balance: parameters["sellerBalance"] ?? 40,
+              balance:
+                typeof parameters["sellerBalance"] === "number"
+                  ? parameters["sellerBalance"]
+                  : 40,
               currency: "USD",
             },
           });
@@ -93,7 +96,9 @@ async function openProvider(
   action: string,
 ) {
   const dialog = await settledDialog(canvasElement);
-  await userEvent.click(dialog.getByRole("radio", { name: new RegExp(name) }));
+  await userEvent.click(
+    dialog.getByRole("radio", { name: new RegExp(name, "u") }),
+  );
   await userEvent.click(dialog.getByRole("button", { name: action }));
   return dialog;
 }
@@ -214,18 +219,18 @@ export const CheckoutOnlyProvider: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const dialog = await settledDialog(canvasElement);
     await userEvent.click(
-      dialog.getByRole("button", { name: /Checkout only/ }),
+      dialog.getByRole("button", { name: /Checkout only/u }),
     );
-    await expect(dialog.queryByRole("radio", { name: /Webshare/ })).toBeNull();
-    await userEvent.click(dialog.getByRole("radio", { name: /FlameProxies/ }));
+    await expect(dialog.queryByRole("radio", { name: /Webshare/u })).toBeNull();
+    await userEvent.click(dialog.getByRole("radio", { name: /FlameProxies/u }));
     await expect(
       dialog.getByRole("button", { name: "Open FlameProxies checkout" }),
     ).toHaveAttribute("href", expect.stringContaining("referral=42M1SH76"));
     await expect(
-      dialog.queryByRole("button", { name: /Connect|Buy with/ }),
+      dialog.queryByRole("button", { name: /Connect|Buy with/u }),
     ).not.toBeInTheDocument();
     await waitFor(() =>
-      expect(dialog.getByText(/Buy on the provider's site/)).toBeVisible(),
+      expect(dialog.getByText(/Buy on the provider's site/u)).toBeVisible(),
     );
   },
 };
@@ -242,7 +247,7 @@ export const ChangeProviderClearsCredentials: Story = {
     await userEvent.click(
       dialog.getByRole("button", { name: "All providers" }),
     );
-    await userEvent.click(dialog.getByRole("radio", { name: /Thordata/ }));
+    await userEvent.click(dialog.getByRole("radio", { name: /Thordata/u }));
     await expect(dialog.getByText("THORDATA")).toBeVisible();
     await userEvent.click(
       dialog.getByRole("button", { name: "Connect Thordata" }),

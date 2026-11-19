@@ -8,19 +8,21 @@ export type TerminalInteraction = {
   click?: TerminalClick | undefined;
 };
 
-const PRIVATE_PREFIX = "\x1b]777;soulfire;1;";
-const TERMINATOR = "\x1b\\";
-const CLOSE_LINK = "\x1b]8;;\x1b\\";
+const PRIVATE_PREFIX = "\u001B]777;soulfire;1;";
+const TERMINATOR = "\u001B\\";
+const CLOSE_LINK = "\u001B]8;;\u001B\\";
 const decoder = new TextDecoder("utf-8", { fatal: true });
 const controlStrings =
-  /(?:\x1b\[|\x9b)[0-?]*[ -/]*[@-~]?|(?:\x1b[\]PX^_]|[\x90\x98\x9d-\x9f])[\s\S]*?(?:\x07|\x1b\\|\x9c|$)|\x1b[ -/]*[0-~]?/g;
+  /(?:\u001B\[|\u009B)[0-?]*[ -/]*[@-~]?|(?:\u001B[\]PX^_]|[\u0090\u0098\u009D-\u009F])[\s\S]*?(?:\u0007|\u001B\\|\u009C|$)|\u001B[ -/]*[0-~]?/gu;
 
 function parseMetadata(encoded: string): TerminalInteraction | null {
-  if (!/^[\w-]+$/.test(encoded) || encoded.length > 16384) return null;
+  if (!/^[\w-]+$/u.test(encoded) || encoded.length > 16384) return null;
   try {
     const binary = atob(encoded.replaceAll("-", "+").replaceAll("_", "/"));
     const data: unknown = JSON.parse(
-      decoder.decode(Uint8Array.from(binary, (char) => char.charCodeAt(0))),
+      decoder.decode(
+        Uint8Array.from(binary, (char) => char.codePointAt(0) ?? 0),
+      ),
     );
     if (typeof data !== "object" || !data || Array.isArray(data)) return null;
     const hover: unknown = Reflect.get(data, "hover");
@@ -30,7 +32,7 @@ function parseMetadata(encoded: string): TerminalInteraction | null {
       if (
         typeof hover !== "string" ||
         hover.length > 4096 ||
-        /[\x00-\x08\x0b-\x1f\x7f-\x9f]/.test(hover)
+        /[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/u.test(hover)
       )
         return null;
       if (hover) result.hover = hover;
@@ -44,7 +46,7 @@ function parseMetadata(encoded: string): TerminalInteraction | null {
         typeof value !== "string" ||
         !value ||
         value.length > 4096 ||
-        /[\x00-\x1f\x7f-\x9f]/.test(value)
+        /[\u0000-\u001F\u007F-\u009F]/u.test(value)
       )
         return null;
       if (
@@ -56,7 +58,7 @@ function parseMetadata(encoded: string): TerminalInteraction | null {
         return null;
       if (action === "open_url") {
         const url = new URL(value);
-        if (!/^https?:$/.test(url.protocol) || url.username || url.password)
+        if (!/^https?:$/u.test(url.protocol) || url.username || url.password)
           return null;
       }
       result.click = { action, value };
@@ -75,13 +77,13 @@ export function encodeTerminalInteraction(
     metadata === null
       ? "-"
       : btoa(
-          String.fromCharCode(
+          String.fromCodePoint(
             ...new TextEncoder().encode(JSON.stringify(metadata)),
           ),
         )
           .replaceAll("+", "-")
           .replaceAll("/", "_")
-          .replace(/=+$/, "");
+          .replace(/=+$/u, "");
   return PRIVATE_PREFIX + payload + TERMINATOR;
 }
 
@@ -116,20 +118,21 @@ export function parseTerminalText(
     if (previous && previous.interaction === active) previous.text += text;
     else result.push({ start, text, interaction: active });
   };
-  const appendText = (text: string, start: number) =>
+  const appendText = (text: string, start: number) => {
     append(
       text
-        .replaceAll(/\r\n?/g, "\n")
-        .replaceAll(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, ""),
+        .replaceAll(/\r\n?/gu, "\n")
+        .replaceAll(/[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/gu, ""),
       start,
     );
+  };
   for (const match of entry.message.matchAll(controlStrings)) {
     appendText(entry.message.slice(offset, match.index), offset);
     const sequence = match[0];
     offset = match.index + sequence.length;
-    if (colors && /^\x1b\[[\d;:]*m$/.test(sequence))
+    if (colors && /^\u001B\[[\d;:]*m$/u.test(sequence))
       append(sequence, match.index);
-    else if (trusted && sequence.startsWith("\x1b]777;soulfire;")) {
+    else if (trusted && sequence.startsWith("\u001B]777;soulfire;")) {
       active = undefined;
       if (
         !sequence.startsWith(PRIVATE_PREFIX) ||
@@ -159,7 +162,7 @@ export function terminalLogText(
   )
     .map((span) =>
       span.interaction && register
-        ? `\x1b]8;;${register(span.interaction)}\x1b\\${span.text}${CLOSE_LINK}`
+        ? `\u001B]8;;${register(span.interaction)}\u001B\\${span.text}${CLOSE_LINK}`
         : span.text,
     )
     .join("");

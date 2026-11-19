@@ -98,10 +98,18 @@ function Scroller(props: ScrollerProps) {
       if (!container) return;
 
       const scrollMap: Record<ScrollDirection, () => void> = {
-        up: () => (container.scrollTop -= scrollStep),
-        down: () => (container.scrollTop += scrollStep),
-        left: () => (container.scrollLeft -= scrollStep),
-        right: () => (container.scrollLeft += scrollStep),
+        up: () => {
+          container.scrollTop -= scrollStep;
+        },
+        down: () => {
+          container.scrollTop += scrollStep;
+        },
+        left: () => {
+          container.scrollLeft -= scrollStep;
+        },
+        right: () => {
+          container.scrollLeft += scrollStep;
+        },
       };
 
       scrollMap[direction]();
@@ -111,10 +119,18 @@ function Scroller(props: ScrollerProps) {
 
   const scrollHandlers = React.useMemo(
     () => ({
-      up: () => onScrollBy("up"),
-      down: () => onScrollBy("down"),
-      left: () => onScrollBy("left"),
-      right: () => onScrollBy("right"),
+      up: () => {
+        onScrollBy("up");
+      },
+      down: () => {
+        onScrollBy("down");
+      },
+      left: () => {
+        onScrollBy("left");
+      },
+      right: () => {
+        onScrollBy("right");
+      },
     }),
     [onScrollBy],
   );
@@ -367,7 +383,9 @@ function ScrollButton(props: ScrollButtonProps) {
   }, [triggerMode, onAutoScrollStart, onAutoScrollStop, onClick]);
 
   React.useEffect(() => {
-    return () => onAutoScrollStop();
+    return () => {
+      onAutoScrollStop();
+    };
   }, [onAutoScrollStop]);
 
   const Icon = directionToIcon[direction];

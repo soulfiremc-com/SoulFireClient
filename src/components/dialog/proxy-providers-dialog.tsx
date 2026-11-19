@@ -29,7 +29,9 @@ export default function ProxyProvidersDialog({
         <ProxyProvidersContent
           canImport={canImport}
           onBusyChange={setBusy}
-          onClose={() => onOpenChange(false)}
+          onClose={() => {
+            onOpenChange(false);
+          }}
           onImport={onImport}
         />
       </CredenzaContent>
@@ -60,7 +62,9 @@ function ProxyProvidersContent({
         provider={active}
         connection={active.connection}
         canWrite={canImport}
-        onBack={() => setActiveId(null)}
+        onBack={() => {
+          setActiveId(null);
+        }}
         onBusyChange={onBusyChange}
         onClose={onClose}
         onImport={onImport}
@@ -76,7 +80,9 @@ function ProxyProvidersContent({
       canWrite={canImport}
       compareUrl="https://soulfiremc.com/get-proxies?utm_source=soulfire-client"
       onSelect={setSelectedId}
-      onConnect={(provider) => setActiveId(provider.id)}
+      onConnect={(provider) => {
+        setActiveId(provider.id);
+      }}
     />
   );
 }

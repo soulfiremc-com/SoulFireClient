@@ -35,7 +35,10 @@ function loadCachedIcon(name: string) {
   return lazyValue;
 }
 
-const DynamicIcon = React.memo(({ name, ...props }: IconProps) => {
+const DynamicIcon = React.memo(function DynamicIcon({
+  name,
+  ...props
+}: IconProps) {
   const LazyIcon = loadCachedIcon(name);
 
   return (

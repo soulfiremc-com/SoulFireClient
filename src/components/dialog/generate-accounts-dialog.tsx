@@ -95,7 +95,9 @@ export default function GenerateAccountsDialog({
   }, []);
 
   useEffect(
-    () => () => cancelGeneration(),
+    () => () => {
+      cancelGeneration();
+    },
     [instanceInfo.id, cancelGeneration],
   );
   useEffect(() => {
@@ -325,7 +327,9 @@ export default function GenerateAccountsDialog({
                       step={1}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
                       aria-invalid={isInvalid}
                       aria-describedby={
                         isInvalid ? `${field.name}-error` : undefined
@@ -356,7 +360,9 @@ export default function GenerateAccountsDialog({
                       type="text"
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
                       placeholder="Bot_%d"
                       aria-invalid={isInvalid}
                       aria-describedby={
@@ -444,7 +450,9 @@ export default function GenerateAccountsDialog({
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleOpenChange(false)}
+              onClick={() => {
+                handleOpenChange(false);
+              }}
             >
               {t(phase === "saving" ? "common:close" : "common:cancel")}
             </Button>

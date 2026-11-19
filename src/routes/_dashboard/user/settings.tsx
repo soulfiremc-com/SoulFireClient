@@ -286,9 +286,9 @@ function ProfileField({
                         autoComplete={name}
                         value={field.state.value}
                         maxLength={name === "username" ? 32 : 255}
-                        onChange={(event) =>
-                          field.handleChange(event.currentTarget.value)
-                        }
+                        onChange={(event) => {
+                          field.handleChange(event.currentTarget.value);
+                        }}
                         onBlur={() => {
                           field.handleBlur();
                           void form.handleSubmit();

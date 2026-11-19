@@ -6,6 +6,7 @@ import { expect, fn, waitFor, within } from "storybook/test";
 import { Toaster, toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context";
 import {
+  type CommandRequest,
   CommandScopeSchema,
   CommandService,
 } from "@/generated/soulfire/command_pb";
@@ -19,7 +20,7 @@ import { TerminalView } from "./terminal";
 import { assertDefined } from "@/lib/assert-defined";
 
 const copyToken = "terminal-test-token-not-a-secret";
-const commands = fn();
+const commands = fn<(request: CommandRequest) => void>();
 const copy = fn(async (_text: string) => {});
 const open = fn();
 const scope = create(CommandScopeSchema, {
@@ -126,7 +127,7 @@ function Example({
       ]
     : entries;
   const [transport] = useState(() =>
-    createRouterTransport((router) =>
+    createRouterTransport((router) => {
       router.service(CommandService, {
         executeCommand: (request) => {
           commands(request);
@@ -145,13 +146,18 @@ function Example({
                 ]
               : [],
         }),
-      }),
-    ),
+      });
+    }),
   );
   return (
     <TransportContext value={transport}>
       {history && (
-        <button type="button" onClick={() => setNarrow((value) => !value)}>
+        <button
+          type="button"
+          onClick={() => {
+            setNarrow((value) => !value);
+          }}
+        >
           Resize terminal
         </button>
       )}
@@ -192,7 +198,7 @@ type Story = StoryObj<typeof meta>;
 
 export const HoverAndKeyboardActions: Story = {
   play: async ({ canvas, userEvent }) => {
-    const run = await canvas.findByRole("button", { name: /Run help/ });
+    const run = await canvas.findByRole("button", { name: /Run help/u });
     await userEvent.type(canvas.getByRole("combobox"), "draft");
     run.focus();
     await expect(
@@ -205,17 +211,17 @@ export const HoverAndKeyboardActions: Story = {
     await expect(commands.mock.calls[0]?.[0].command).toBe("help");
     await expect(canvas.getByRole("combobox")).toHaveValue("draft");
     await expect(run).toHaveFocus();
-    canvas.getByRole("button", { name: /Insert status/ }).focus();
+    canvas.getByRole("button", { name: /Insert status/u }).focus();
     await userEvent.keyboard(" ");
     await expect(canvas.getByRole("combobox")).toHaveFocus();
     await expect(canvas.getByRole("combobox")).toHaveValue("status");
-    canvas.getByRole("button", { name: /Copy text/ }).focus();
+    canvas.getByRole("button", { name: /Copy text/u }).focus();
     await userEvent.keyboard("{Enter}");
     await expect(copy).toHaveBeenCalledWith("Héllo 🌍");
     await expect(
-      canvas.getByRole("button", { name: /Copy text/ }),
+      canvas.getByRole("button", { name: /Copy text/u }),
     ).toHaveFocus();
-    canvas.getByRole("button", { name: /Open website/ }).focus();
+    canvas.getByRole("button", { name: /Open website/u }).focus();
     await userEvent.keyboard("{Enter}");
     await expect(open).toHaveBeenCalledWith(
       "https://soulfiremc.com",
@@ -223,23 +229,25 @@ export const HoverAndKeyboardActions: Story = {
       "noopener,noreferrer",
     );
     await expect(
-      canvas.getByRole("button", { name: /Open website/ }),
+      canvas.getByRole("button", { name: /Open website/u }),
     ).toHaveFocus();
-    canvas.getByRole("button", { name: /Run failure/ }).focus();
+    canvas.getByRole("button", { name: /Run failure/u }).focus();
     await userEvent.keyboard("{Enter}");
     await waitFor(() =>
-      expect(within(document.body).getByText(/Command rejected/)).toBeVisible(),
+      expect(
+        within(document.body).getByText(/Command rejected/u),
+      ).toBeVisible(),
     );
     await expect(canvas.getByRole("combobox")).toHaveValue("status");
     await expect(
-      canvas.queryByRole("button", { name: /Untrusted chat/ }),
+      canvas.queryByRole("button", { name: /Untrusted chat/u }),
     ).not.toBeInTheDocument();
   },
 };
 
 export const PointerActionsAndSelection: Story = {
   play: async ({ canvas, canvasElement, userEvent }) => {
-    const run = await canvas.findByRole("button", { name: /Run help/ });
+    const run = await canvas.findByRole("button", { name: /Run help/u });
     const host = assertDefined(
       canvasElement.querySelector<HTMLElement>("[data-terminal-viewport]"),
       "Expected canvasElement.querySelector<HTMLElement>([data-terminal-v... to exist",
@@ -288,7 +296,7 @@ export const PointerActionsAndSelection: Story = {
 export const ReadOnlyTerminal: Story = {
   args: { readOnly: true },
   play: async ({ canvas, userEvent }) => {
-    const run = await canvas.findByRole("button", { name: /Run help/ });
+    const run = await canvas.findByRole("button", { name: /Run help/u });
     run.focus();
     await expect(run).toHaveAttribute("aria-disabled", "true");
     await expect(
@@ -318,7 +326,7 @@ export const HistoryWrapAndResize: Story = {
     };
     reveal();
     const wrapped = await canvas.findAllByRole("button", {
-      name: /Run command: wrapped/,
+      name: /Run command: wrapped/u,
     });
     await expect(wrapped.length).toBeGreaterThan(1);
     const [, secondPart] = wrapped;
@@ -334,11 +342,11 @@ export const HistoryWrapAndResize: Story = {
     reveal();
     await waitFor(() =>
       expect(
-        canvas.getAllByRole("button", { name: /Run command: wrapped/ }).length,
+        canvas.getAllByRole("button", { name: /Run command: wrapped/u }).length,
       ).toBeGreaterThan(wrapped.length),
     );
     const [, next] = canvas.getAllByRole("button", {
-      name: /Run command: wrapped/,
+      name: /Run command: wrapped/u,
     });
     if (!next) throw new Error("The resized command has no second part");
     const rect = next.getBoundingClientRect();
@@ -356,7 +364,7 @@ export const HistoryWrapAndResize: Story = {
     host.dispatchEvent(new Event("scroll"));
     await waitFor(() =>
       expect(
-        canvas.queryByRole("button", { name: /Run command: wrapped/ }),
+        canvas.queryByRole("button", { name: /Run command: wrapped/u }),
       ).not.toBeInTheDocument(),
     );
   },
@@ -365,7 +373,7 @@ export const HistoryWrapAndResize: Story = {
 export const SuggestionsFromBlurredDraft: Story = {
   play: async ({ canvas, canvasElement, userEvent }) => {
     const suggest = await canvas.findByRole("button", {
-      name: /Insert status/,
+      name: /Insert status/u,
     });
     const input = canvas.getByRole<HTMLInputElement>("combobox");
     await userEvent.type(input, "older draft");
@@ -389,7 +397,7 @@ export const SuggestionsFromBlurredDraft: Story = {
     await expect(input.selectionStart).toBe(6);
     await expect(input.selectionEnd).toBe(6);
     await expect(
-      await canvas.findByRole("option", { name: /status-detail/ }),
+      await canvas.findByRole("option", { name: /status-detail/u }),
     ).toBeVisible();
     await expect(commands).not.toHaveBeenCalled();
   },
@@ -397,7 +405,7 @@ export const SuggestionsFromBlurredDraft: Story = {
 
 export const IsolatedUrlWindow: Story = {
   play: async ({ canvas, userEvent }) => {
-    const link = await canvas.findByRole("button", { name: /Open website/ });
+    const link = await canvas.findByRole("button", { name: /Open website/u });
     link.focus();
     await userEvent.keyboard("{Enter}");
     await expect(open).toHaveBeenCalledWith(
@@ -411,7 +419,7 @@ export const IsolatedUrlWindow: Story = {
 
 export const SensitiveCopyValue: Story = {
   play: async ({ canvas, userEvent }) => {
-    const button = await canvas.findByRole("button", { name: /^Copy token/ });
+    const button = await canvas.findByRole("button", { name: /^Copy token/u });
     await expect(button).toHaveAccessibleName("Copy token. Copy to clipboard");
     button.focus();
     const tooltip = await within(document.body).findByRole("tooltip");

@@ -315,7 +315,7 @@ function Index() {
             jvmArgs:
               args === null
                 ? DEFAULT_JVM_ARGS
-                : args.split(/\s+/).filter((str) => str !== ""),
+                : args.split(/\s+/u).filter((str) => str !== ""),
           });
           // oxlint-disable-next-line typescript/no-unnecessary-condition -- a newer startup sets cancelled while this one waits
           if (attempt.cancelled) return;
@@ -497,8 +497,8 @@ function Index() {
                         value={
                           activeI18n.resolvedLanguage ?? activeI18n.language
                         }
-                        onValueChange={(value) => {
-                          if (value) {
+                        onValueChange={(value: unknown) => {
+                          if (typeof value === "string" && value) {
                             void activeI18n.changeLanguage(value);
                           }
                         }}
@@ -581,8 +581,12 @@ function DefaultMenu(props: {
       onEnterDemo={() => {
         void props.demoLogin();
       }}
-      onRunLocally={() => props.setLoginType("INTEGRATED")}
-      onConnectExisting={() => props.setLoginType("DEDICATED")}
+      onRunLocally={() => {
+        props.setLoginType("INTEGRATED");
+      }}
+      onConnectExisting={() => {
+        props.setLoginType("DEDICATED");
+      }}
     />
   );
 }
@@ -611,11 +615,12 @@ function IntegratedMenu({
   // Counts failures in a row, so a retry that fails again still gives feedback.
   const [failedAttempts, setFailedAttempts] = useState(0);
   const startWithFeedback = useCallback(
-    (onError: () => void) =>
+    (onError: () => void) => {
       startIntegratedServer(() => {
         setFailedAttempts((count) => count + 1);
         onError();
-      }),
+      });
+    },
     [startIntegratedServer],
   );
   useEffect(() => {
@@ -625,7 +630,9 @@ function IntegratedMenu({
 
     hasAutoStarted.current = true;
     onAutoStart();
-    startWithFeedback(() => setIntegratedState("error"));
+    startWithFeedback(() => {
+      setIntegratedState("error");
+    });
   }, [autoStart, onAutoStart, startWithFeedback]);
 
   switch (integratedState) {
@@ -733,7 +740,9 @@ function IntegratedConfigureMenu({
         setIntegratedState("mobile");
       } else {
         setIntegratedState("loading");
-        startIntegratedServer(() => setIntegratedState("error"));
+        startIntegratedServer(() => {
+          setIntegratedState("error");
+        });
       }
     },
   });
@@ -1260,7 +1269,7 @@ function IntegratedLoadingMenu({
         <Button
           variant="outline"
           disabled={cancelling}
-          onClick={() =>
+          onClick={() => {
             startTransition(async () => {
               try {
                 await cancelStartup();
@@ -1269,8 +1278,8 @@ function IntegratedLoadingMenu({
                   description: String(error),
                 });
               }
-            })
-          }
+            });
+          }}
         >
           <XIcon data-icon="inline-start" />
           {t(cancelling ? "integrated.cancelling" : "integrated.cancel")}
@@ -1335,7 +1344,9 @@ function IntegratedErrorMenu({
             disabled={resetting}
             onClick={() => {
               setIntegratedState("loading");
-              startIntegratedServer(() => setIntegratedState("error"));
+              startIntegratedServer(() => {
+                setIntegratedState("error");
+              });
             }}
           >
             <PlayIcon data-icon="inline-start" />
@@ -1344,7 +1355,9 @@ function IntegratedErrorMenu({
           <Button
             variant="outline"
             disabled={resetting}
-            onClick={() => setIntegratedState("configure")}
+            onClick={() => {
+              setIntegratedState("configure");
+            }}
           >
             <SlidersHorizontalIcon data-icon="inline-start" />
             {t("integrated.changeSettings")}
@@ -1352,7 +1365,9 @@ function IntegratedErrorMenu({
           <Button
             variant="outline"
             disabled={resetting}
-            onClick={() => setLoginType("DEDICATED")}
+            onClick={() => {
+              setLoginType("DEDICATED");
+            }}
           >
             <ServerIcon data-icon="inline-start" />
             {t("integrated.useExisting")}
@@ -1364,7 +1379,9 @@ function IntegratedErrorMenu({
         <Button
           variant="ghost"
           disabled={resetting}
-          onClick={() => setLoginType(null)}
+          onClick={() => {
+            setLoginType(null);
+          }}
         >
           <ArrowLeftIcon data-icon="inline-start" />
           {t("integrated.form.back")}

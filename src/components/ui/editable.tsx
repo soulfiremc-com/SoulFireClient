@@ -173,7 +173,9 @@ function Editable(props: EditableProps) {
   const [formTrigger, setFormTrigger] = React.useState<RootElement | null>(
     null,
   );
-  const composedRef = useComposedRefs(ref, (node) => setFormTrigger(node));
+  const composedRef = useComposedRefs(ref, (node) => {
+    setFormTrigger(node);
+  });
   const isFormControl = formTrigger ? !!formTrigger.closest("form") : true;
 
   const listenersRef = useLazyRef(() => new Set<() => void>());
@@ -196,7 +198,9 @@ function Editable(props: EditableProps) {
     return {
       subscribe: (cb) => {
         listenersRef.current.add(cb);
-        return () => listenersRef.current.delete(cb);
+        return () => {
+          listenersRef.current.delete(cb);
+        };
       },
       getState: () => stateRef.current,
       setState: (key, value) => {

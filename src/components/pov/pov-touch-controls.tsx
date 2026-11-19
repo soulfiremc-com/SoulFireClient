@@ -24,10 +24,18 @@ export function PovTouchControls({
         event.action !== 0,
       );
   };
-  const releaseHeld = useEffectEvent(() => send(input.reset()));
-  useEffect(() => () => releaseHeld(), [screenOpen]);
-  const reset = (event: React.PointerEvent<HTMLElement>) =>
+  const releaseHeld = useEffectEvent(() => {
+    send(input.reset());
+  });
+  useEffect(
+    () => () => {
+      releaseHeld();
+    },
+    [screenOpen],
+  );
+  const reset = (event: React.PointerEvent<HTMLElement>) => {
     send(input.release(event.pointerId));
+  };
   const move = (event: React.PointerEvent<HTMLFieldSetElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
@@ -95,18 +103,18 @@ export function PovTouchControls({
             key={control.id}
             variant="secondary"
             className="min-h-11 touch-none px-2 text-xs select-none"
-            onPointerDown={(event) =>
-              action(event, true, control.code, control.mouse)
-            }
-            onPointerUp={(event) =>
-              action(event, false, control.code, control.mouse)
-            }
-            onPointerCancel={(event) =>
-              action(event, false, control.code, control.mouse)
-            }
-            onLostPointerCapture={(event) =>
-              action(event, false, control.code, control.mouse)
-            }
+            onPointerDown={(event) => {
+              action(event, true, control.code, control.mouse);
+            }}
+            onPointerUp={(event) => {
+              action(event, false, control.code, control.mouse);
+            }}
+            onPointerCancel={(event) => {
+              action(event, false, control.code, control.mouse);
+            }}
+            onLostPointerCapture={(event) => {
+              action(event, false, control.code, control.mouse);
+            }}
           >
             {t(`instance:bots.pov.touch.${control.id}`)}
           </Button>

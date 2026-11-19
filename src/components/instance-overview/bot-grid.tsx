@@ -577,7 +577,9 @@ export function BotGrid({
     });
 
     observer.observe(element);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, [handleIntersection]);
 
   if (filteredAccounts.length === 0) {
@@ -602,7 +604,9 @@ export function BotGrid({
                 key={bot.profileId}
                 bot={bot}
                 instanceId={instanceInfo.id}
-                onContextMenu={(event) => onContextMenu(event, bot)}
+                onContextMenu={(event) => {
+                  onContextMenu(event, bot);
+                }}
               />
             ))}
           </div>

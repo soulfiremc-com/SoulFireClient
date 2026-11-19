@@ -153,10 +153,9 @@ function DataTableSortListContent<TData extends RowData>({
     [onSortingChange],
   );
 
-  const onSortingReset = React.useCallback(
-    () => onSortingChange(table.initialState.sorting),
-    [onSortingChange, table.initialState.sorting],
-  );
+  const onSortingReset = React.useCallback(() => {
+    onSortingChange(table.initialState.sorting);
+  }, [onSortingChange, table.initialState.sorting]);
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -180,7 +179,9 @@ function DataTableSortListContent<TData extends RowData>({
     }
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   const onTriggerKeyDown = React.useCallback(
@@ -392,7 +393,9 @@ function DataTableSortItem({
                   <CommandItem
                     key={column.id}
                     value={column.id}
-                    onSelect={(value) => onSortUpdate(sort.id, { id: value })}
+                    onSelect={(value) => {
+                      onSortUpdate(sort.id, { id: value });
+                    }}
                   >
                     <span className="truncate">{column.label}</span>
                   </CommandItem>
@@ -447,7 +450,9 @@ function DataTableSortItem({
         variant="outline"
         size="icon"
         className="size-8 shrink-0 rounded-sm"
-        onClick={() => onSortRemove(sort.id)}
+        onClick={() => {
+          onSortRemove(sort.id);
+        }}
       >
         <Trash2 />
       </Button>

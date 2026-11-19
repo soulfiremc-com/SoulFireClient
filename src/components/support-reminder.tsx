@@ -55,7 +55,9 @@ function EligibleReminder({
       attempted.current = true;
       setShown(reminder.markShown());
     });
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(frame);
+    };
   }, [blocked, ready, reminder, state.disabled]);
 
   function dismiss(reason: "later" | "never" | "supporter") {
@@ -80,25 +82,37 @@ function EligibleReminder({
               render={
                 <ExternalLink href="https://soulfiremc.com/pricing?utm_source=soulfire-client&utm_medium=app&utm_campaign=support-dialog" />
               }
-              onClick={() => dismiss("later")}
+              onClick={() => {
+                dismiss("later");
+              }}
             >
               {t("dialog.support.action")}
             </Button>
             <Button
               size="sm"
               variant="outline"
-              onClick={() => dismiss("later")}
+              onClick={() => {
+                dismiss("later");
+              }}
             >
               {t("dialog.support.dismiss")}
             </Button>
             <Button
               size="sm"
               variant="ghost"
-              onClick={() => dismiss("supporter")}
+              onClick={() => {
+                dismiss("supporter");
+              }}
             >
               {t("dialog.support.alreadySupport")}
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => dismiss("never")}>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                dismiss("never");
+              }}
+            >
               {t("dialog.support.neverRemind")}
             </Button>
           </div>

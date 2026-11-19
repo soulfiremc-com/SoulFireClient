@@ -76,7 +76,9 @@ export function CustomContextMenu() {
     }
 
     document.addEventListener("contextmenu", onContextMenu);
-    return () => document.removeEventListener("contextmenu", onContextMenu);
+    return () => {
+      document.removeEventListener("contextmenu", onContextMenu);
+    };
   }, [dismiss, handleContextMenu]);
 
   if (!menu) return null;

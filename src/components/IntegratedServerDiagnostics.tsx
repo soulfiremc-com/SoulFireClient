@@ -45,7 +45,7 @@ export function OpenIntegratedDataDirectoryButton() {
       variant="outline"
       size="sm"
       disabled={pending}
-      onClick={() =>
+      onClick={() => {
         startTransition(async () => {
           try {
             await desktop.integratedServer.openDataDirectory();
@@ -54,8 +54,8 @@ export function OpenIntegratedDataDirectoryButton() {
               description: String(error),
             });
           }
-        })
-      }
+        });
+      }}
     >
       <FolderOpenIcon data-icon="inline-start" />
       {t("integratedDiagnostics.openDirectory")}
@@ -74,7 +74,9 @@ export function IntegratedServerSupportActions() {
         type="button"
         variant="outline"
         size="sm"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+        }}
       >
         <ActivityIcon data-icon="inline-start" />
         {t("integratedDiagnostics.title")}
@@ -121,8 +123,12 @@ function ProcessSummary({
     data?.status === "stopping";
   useEffect(() => {
     if (!active) return undefined;
-    const interval = setInterval(() => setNow(Date.now()), 1_000);
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1_000);
+    return () => {
+      clearInterval(interval);
+    };
   }, [active]);
   if (!data) return <Skeleton className="h-5 w-48" />;
   const lastOutputAt = data.logs.at(-1)?.timestamp ?? data.startedAt;
@@ -425,7 +431,9 @@ function DiagnosticsDetails() {
             aria-label={t("integratedDiagnostics.filter")}
             placeholder={t("integratedDiagnostics.filter")}
             value={filter}
-            onChange={(event) => setFilter(event.target.value)}
+            onChange={(event) => {
+              setFilter(event.target.value);
+            }}
           />
         </InputGroup>
         <ProcessOutput logs={data?.logs ?? []} filter={filter} />

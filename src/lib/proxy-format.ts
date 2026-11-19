@@ -13,7 +13,7 @@ export function parseNormalProxy(
   line: string,
   type: ProxyProto_Type,
 ): ProfileProxy {
-  const endpointPattern = /^(\[[^\]]+\]|[^:@\s]+):(\d+)(?::(.*))?$/;
+  const endpointPattern = /^(\[[^\]]+\]|[^:@\s]+):(\d+)(?::(.*))?$/u;
   const flatParts = endpointPattern.exec(line);
   const atIndex = flatParts ? -1 : line.lastIndexOf("@");
   const endpoint = atIndex === -1 ? line : line.slice(atIndex + 1);
@@ -46,7 +46,7 @@ export function parseURIProxy(line: string): ProfileProxy | null {
   const type = URI_PROXY_TYPES.get(uri.protocol());
   if (type === undefined) return null;
   // URI.js normalizes hostless HTTP URLs; read Unix socket paths from the input.
-  const unixPath = /^[^:]+:\/\/(?:[^/]*@)?(\/[^?#]*)/.exec(line)?.[1];
+  const unixPath = /^[^:]+:\/\/(?:[^/]*@)?(\/[^?#]*)/u.exec(line)?.[1];
   const host = uri.host();
   if (!unixPath && !host) throw new Error("Invalid proxy address");
   return {

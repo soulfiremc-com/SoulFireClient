@@ -22,7 +22,7 @@ export class PovInputSources {
     const wasHeld = owners.size > 0;
     if (event.action === 0) owners.delete(source);
     else owners.add(source);
-    if (owners.size) this.held.set(id, owners);
+    if (owners.size > 0) this.held.set(id, owners);
     else this.held.delete(id);
     return event.action === 2 || wasHeld !== owners.size > 0;
   }

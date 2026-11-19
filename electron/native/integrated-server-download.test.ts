@@ -26,7 +26,9 @@ test(
     const server = createServer((_request, response) => {
       response.writeHead(200, { "Content-Length": 10_000 });
       response.write(Buffer.alloc(100));
-      response.on("close", () => events.emit("closed"));
+      response.on("close", () => {
+        events.emit("closed");
+      });
     });
     context.after(() => {
       server.closeAllConnections();
@@ -43,7 +45,9 @@ test(
         `http://127.0.0.1:${address.port}`,
         destination,
         controller.signal,
-        () => controller.abort(),
+        () => {
+          controller.abort();
+        },
       ),
     );
     await responseClosed;
@@ -56,9 +60,9 @@ test("a completed download retains its file after its scope closes", async (cont
     path.join(os.tmpdir(), "soulfire-download-test-"),
   );
   context.after(() => rm(directory, { recursive: true, force: true }));
-  const server = createServer((_request, response) =>
-    response.end("server archive"),
-  );
+  const server = createServer((_request, response) => {
+    response.end("server archive");
+  });
   context.after(() => {
     server.closeAllConnections();
     server.close();
@@ -88,7 +92,9 @@ test("interrupting the download fiber waits for file and response cleanup", asyn
   const server = createServer((_request, response) => {
     response.writeHead(200, { "Content-Length": 10_000 });
     response.write(Buffer.alloc(100));
-    response.on("close", () => events.emit("closed"));
+    response.on("close", () => {
+      events.emit("closed");
+    });
   });
   context.after(() => {
     server.closeAllConnections();
@@ -104,7 +110,9 @@ test("interrupting the download fiber waits for file and response cleanup", asyn
       `http://127.0.0.1:${address.port}`,
       destination,
       new AbortController().signal,
-      () => events.emit("progress"),
+      () => {
+        events.emit("progress");
+      },
     ),
   );
   try {

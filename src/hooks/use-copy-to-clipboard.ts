@@ -14,9 +14,8 @@ async function copyToClipboard(text: string): Promise<void> {
 function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) {
     return text;
-  } else {
-    return `${text.slice(0, maxLength - 3)}...`;
   }
+  return `${text.slice(0, maxLength - 3)}...`;
 }
 
 export function useCopyToClipboard(options?: { sensitive?: boolean }) {

@@ -15,7 +15,7 @@ function requestBody(body: BodyInit | null | undefined): string {
 }
 
 const id = "550e8400-e29b-41d4-a716-446655440000";
-const purchases: Record<string, unknown>[] = [];
+const purchases: unknown[] = [];
 const delivery = {
   purchase_id: id,
   products: [{ data: btoa("cookie-data"), access_token: "test-access-token" }],
@@ -29,8 +29,8 @@ const meta = {
     open: true,
     initialProviderId: "fernan",
     canPurchase: true,
-    onOpenChange: fn(),
-    onImport: fn(),
+    onOpenChange: fn<() => void>(),
+    onImport: fn<() => void>(),
   },
   beforeEach: ({ parameters }) => {
     const original = globalThis.fetch;
@@ -62,7 +62,7 @@ const meta = {
             {
               product_id: 1,
               remaining_allowed: parameters["cooling"] ? 0 : 5,
-              on_cooldown: parameters["cooling"] ?? false,
+              on_cooldown: parameters["cooling"] === true,
             },
           ],
         };
@@ -71,7 +71,8 @@ const meta = {
           purchases: [{ purchase_id: id, product_name: "Cookie accounts" }],
         };
       else if (path.endsWith("/purchase")) {
-        purchases.push(JSON.parse(requestBody(options?.body)));
+        const purchase: unknown = JSON.parse(requestBody(options?.body));
+        purchases.push(purchase);
         if (parameters["purchaseFails"])
           return new Response("", { status: 502 });
         data = delivery;
@@ -107,7 +108,7 @@ export const PurchaseWithReferral: Story = {
     const review = dialog.getByRole("button", { name: "Review order" });
     await expect(review).toBeDisabled();
     await userEvent.click(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     );
     await expect(dialog.getByLabelText("Referral code")).toHaveValue(
       "SOULFIRE",
@@ -119,7 +120,7 @@ export const PurchaseWithReferral: Story = {
     // Going back keeps the order, and nothing is charged until confirmation.
     await userEvent.click(dialog.getByRole("button", { name: "Back" }));
     await expect(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     ).toBeChecked();
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
     await userEvent.click(
@@ -130,7 +131,7 @@ export const PurchaseWithReferral: Story = {
     await expect(purchases).toEqual([
       { product_id: 1, amount: 1, referral_code: "SOULFIRE" },
     ]);
-    await expect(dialog.getByText(/1 account delivered/)).toBeVisible();
+    await expect(dialog.getByText(/1 account delivered/u)).toBeVisible();
     await userEvent.click(
       dialog.getByRole("button", { name: "Import 1 account" }),
     );
@@ -146,7 +147,7 @@ export const RemovedReferralIsNotSent: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const dialog = await connect(canvasElement, userEvent);
     await userEvent.click(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Remove code" }));
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
@@ -164,7 +165,9 @@ export const RecoverEarlierOrder: Story = {
     await userEvent.click(
       dialog.getByRole("button", { name: "Use an earlier order" }),
     );
-    await userEvent.click(dialog.getByRole("radio", { name: new RegExp(id) }));
+    await userEvent.click(
+      dialog.getByRole("radio", { name: new RegExp(id, "u") }),
+    );
     await userEvent.click(dialog.getByRole("button", { name: "Load order" }));
     await expect(await dialog.findByText("Order loaded")).toBeVisible();
     await userEvent.click(
@@ -187,7 +190,7 @@ export const Cooldown: Story = {
     const dialog = await connect(canvasElement, userEvent);
     await expect(dialog.getByText("On cooldown")).toBeVisible();
     await expect(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     ).toHaveAttribute("aria-disabled", "true");
     await expect(
       dialog.getByRole("button", { name: "Review order" }),
@@ -201,7 +204,7 @@ export const LowBalanceOffersTopUp: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const dialog = await connect(canvasElement, userEvent);
     await userEvent.click(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     );
     await expect(dialog.getByText("Add funds to continue")).toBeVisible();
     await expect(
@@ -218,7 +221,7 @@ export const UncertainPurchaseLocksRetry: Story = {
   play: async ({ canvasElement, userEvent }) => {
     const dialog = await connect(canvasElement, userEvent);
     await userEvent.click(
-      dialog.getByRole("radio", { name: /Cookie accounts/ }),
+      dialog.getByRole("radio", { name: /Cookie accounts/u }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Review order" }));
     const buy = dialog.getByRole("button", { name: "Buy 1 account" });
@@ -232,7 +235,7 @@ export const UncertainPurchaseLocksRetry: Story = {
     );
     await dialog.findByRole("heading", { name: "Choose your accounts" });
     await expect(
-      dialog.getByRole("radio", { name: new RegExp(id) }),
+      dialog.getByRole("radio", { name: new RegExp(id, "u") }),
     ).toBeVisible();
     await expect(purchases).toHaveLength(1);
   },

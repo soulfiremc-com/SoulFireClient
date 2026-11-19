@@ -18,7 +18,10 @@ export function downloadToFileEffect(
     Effect.gen(function* () {
       const controller = yield* Effect.acquireRelease(
         Effect.sync(() => new AbortController()),
-        (acquired) => Effect.sync(() => acquired.abort()),
+        (acquired) =>
+          Effect.sync(() => {
+            acquired.abort();
+          }),
       );
       const response = yield* Effect.acquireRelease(
         Effect.tryPromise({
@@ -71,8 +74,12 @@ export function downloadToFileEffect(
           },
         );
         pending.then(
-          () => resume(Effect.void),
-          (error) => resume(Effect.fail(error)),
+          () => {
+            resume(Effect.void);
+          },
+          (error) => {
+            resume(Effect.fail(error));
+          },
         );
         return Effect.gen(function* () {
           controller.abort();

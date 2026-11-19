@@ -209,7 +209,9 @@ export function DataTableFilterList<TData extends RowData>({
     }
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   const onTriggerKeyDown = React.useCallback(
@@ -579,7 +581,9 @@ function DataTableFilterItem<TData extends RowData>({
         variant="outline"
         size="icon"
         className="size-8 rounded-sm"
-        onClick={() => onFilterRemove(filter.filterId)}
+        onClick={() => {
+          onFilterRemove(filter.filterId);
+        }}
       >
         <Trash2 />
       </Button>
@@ -660,11 +664,11 @@ function onFilterInputRender<TData extends RowData>({
           defaultValue={
             typeof filter.value === "string" ? filter.value : undefined
           }
-          onChange={(event) =>
+          onChange={(event) => {
             onFilterUpdate(filter.filterId, {
               value: event.target.value,
-            })
-          }
+            });
+          }}
         />
       );
     }

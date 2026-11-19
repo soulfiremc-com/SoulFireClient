@@ -64,8 +64,8 @@ export function appendIntegratedLog(
 ): string {
   const message = stripVTControlCharacters(rawMessage)
     .trim()
-    .replaceAll(/\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/g, "[redacted token]")
-    .replaceAll(/(\bBearer\s+)\S+/gi, "$1[redacted]")
+    .replaceAll(/\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/gu, "[redacted token]")
+    .replaceAll(/(\bBearer\s+)\S+/giu, "$1[redacted]")
     .slice(0, 16_000);
   if (!message) return message;
   state.diagnostics.logs.push({
@@ -91,8 +91,12 @@ export function appendIntegratedLog(
 function awaitPreparation<A>(promise: Promise<A>): Effect.Effect<A, unknown> {
   return Effect.callback<A, unknown>((resume) => {
     promise.then(
-      (value) => resume(Effect.succeed(value)),
-      (error) => resume(Effect.fail(error)),
+      (value) => {
+        resume(Effect.succeed(value));
+      },
+      (error) => {
+        resume(Effect.fail(error));
+      },
     );
     return Effect.promise(() =>
       promise.then(
@@ -204,7 +208,9 @@ export function terminateIntegratedProcess(
   if (!child) return Promise.resolve();
 
   const closed = Effect.callback<void>((resume) => {
-    const finish = () => resume(Effect.void);
+    const finish = () => {
+      resume(Effect.void);
+    };
     child.once("close", finish);
     return Effect.sync(() => child.removeListener("close", finish));
   });

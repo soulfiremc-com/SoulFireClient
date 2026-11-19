@@ -18,7 +18,13 @@ test("cancellation waits for preparation cleanup and prevents an overlapping ret
   const cleanupDone = once(cleanup, "done");
   const operation = startIntegratedOperation(state, async (signal) => {
     await new Promise<void>((resolve) => {
-      signal.addEventListener("abort", () => resolve(), { once: true });
+      signal.addEventListener(
+        "abort",
+        () => {
+          resolve();
+        },
+        { once: true },
+      );
     });
     await cleanupDone;
     signal.throwIfAborted();
@@ -166,7 +172,7 @@ test("process diagnostics strip interaction controls and retain token redaction"
   ).toString("base64url");
   const message = appendIntegratedLog(
     state,
-    `\x1b]777;soulfire;1;${payload}\x1b\\Copy token\x1b]777;soulfire;1;-\x1b\\ \x1b[31mtext\x1b[0m Bearer visible-token`,
+    `\u001B]777;soulfire;1;${payload}\u001B\\Copy token\u001B]777;soulfire;1;-\u001B\\ \u001B[31mtext\u001B[0m Bearer visible-token`,
     "stdout",
   );
   assert.equal(message, "Copy token text Bearer [redacted]");

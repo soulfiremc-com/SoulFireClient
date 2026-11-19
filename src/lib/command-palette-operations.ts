@@ -8,7 +8,7 @@ import type { PaletteCommand, PaletteOperation } from "@/lib/command-palette";
 import { resumeScript } from "@/lib/resume-script";
 import type { InstanceInfoQueryData } from "@/lib/types";
 
-const BULK_BOT_COMMAND = /^(start|stop|retry)-bots:/;
+const BULK_BOT_COMMAND = /^(start|stop|retry)-bots:/u;
 
 /** Revalidate a selected request against the current permitted catalog and targets. */
 export function isPaletteOperationAvailable(
@@ -33,7 +33,7 @@ export function isPaletteOperationAvailable(
     return false;
   if (operation.kind === "script")
     return live.kind === "script" && live.scriptId === operation.scriptId;
-  if (live.kind !== "bot" || !operation.botIds.length) return false;
+  if (live.kind !== "bot" || operation.botIds.length === 0) return false;
   const accounts = new Set(
     project.profile.accounts.map((account) => account.profileId),
   );
@@ -102,7 +102,7 @@ export async function runPaletteOperation(
   }
   // An empty list can mean every bot to the server, so never send one.
   const botIds = [...new Set(operation.botIds.filter(Boolean))];
-  if (!botIds.length) throw new Error("The operation has no target bots.");
+  if (botIds.length === 0) throw new Error("The operation has no target bots.");
   const client = createRpcClient(BotService, transport);
   const response =
     operation.action === "restart"

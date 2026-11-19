@@ -9,7 +9,7 @@ export function useQueryRefreshFailures() {
     [queryCache],
   );
   const getSnapshot = useCallback(
-    () => queryCache.getAll().some(hasFailedRefresh),
+    () => queryCache.getAll().some((query) => hasFailedRefresh(query)),
     [queryCache],
   );
   return useSyncExternalStore(subscribe, getSnapshot, () => false);

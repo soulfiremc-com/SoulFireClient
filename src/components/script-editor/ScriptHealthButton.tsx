@@ -101,15 +101,15 @@ export function ScriptHealthButton() {
                           return;
                         setOpen(false);
                         // A node inside a group renders after the group opens.
-                        requestAnimationFrame(() =>
+                        requestAnimationFrame(() => {
                           requestAnimationFrame(() => {
                             void reactFlow.fitView({
                               nodes: [{ id: nodeId }],
                               maxZoom: 1,
                               duration: 200,
                             });
-                          }),
-                        );
+                          });
+                        });
                       }}
                     />
                   }

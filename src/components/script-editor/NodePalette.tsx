@@ -53,7 +53,9 @@ function DraggableNodeItem({
       <button
         type="button"
         title={node.description}
-        onClick={() => onAdd(node.type)}
+        onClick={() => {
+          onAdd(node.type);
+        }}
         className="group flex cursor-pointer items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted"
       >
         <DynamicIcon name={node.icon} className="size-4 shrink-0" />
@@ -72,7 +74,9 @@ function DraggableNodeItem({
         if (e.button !== 0) return;
         onDragStart(node.type, e.clientX, e.clientY);
       }}
-      onClick={() => onAdd(node.type)}
+      onClick={() => {
+        onAdd(node.type);
+      }}
       className="group flex cursor-grab items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted active:cursor-grabbing"
     >
       <GripVerticalIcon className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
@@ -210,7 +214,9 @@ export function NodePalette({
             aria-label={t("scripts.editor.palette.search")}
             placeholder={t("scripts.editor.palette.search")}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
           />
         </InputGroup>
         {searchQuery && (

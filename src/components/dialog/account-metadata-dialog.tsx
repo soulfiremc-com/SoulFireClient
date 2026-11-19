@@ -59,7 +59,7 @@ interface MetadataEntry {
 }
 
 function generateId(): string {
-  return Math.random().toString(36).substring(7);
+  return Math.random().toString(36).slice(7);
 }
 
 function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
@@ -494,9 +494,9 @@ function DialogContentInner({
                           type="text"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.currentTarget.value)
-                          }
+                          onChange={(e) => {
+                            field.handleChange(e.currentTarget.value);
+                          }}
                           placeholder={t(
                             "account.metadata.namespacePlaceholder",
                           )}
@@ -532,9 +532,9 @@ function DialogContentInner({
                           type="text"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.currentTarget.value)
-                          }
+                          onChange={(e) => {
+                            field.handleChange(e.currentTarget.value);
+                          }}
                           placeholder={t("account.metadata.keyPlaceholder")}
                           aria-invalid={isInvalid}
                           aria-describedby={
@@ -568,9 +568,9 @@ function DialogContentInner({
                           type="text"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.currentTarget.value)
-                          }
+                          onChange={(e) => {
+                            field.handleChange(e.currentTarget.value);
+                          }}
                           placeholder={t("account.metadata.valuePlaceholder")}
                           className="font-mono"
                           aria-invalid={isInvalid}
@@ -649,9 +649,9 @@ function DialogContentInner({
                   value,
                 )
               }
-              onDelete={() =>
-                handleDeleteEntry(entry.id, entry.namespace, entry.key)
-              }
+              onDelete={() => {
+                handleDeleteEntry(entry.id, entry.namespace, entry.key);
+              }}
               isDeleting={deleteEntryMutation.isPending}
               isUpdating={
                 !isMetadataReady ||
@@ -663,7 +663,12 @@ function DialogContentInner({
         </CardContent>
       </Card>
       <CredenzaFooter>
-        <Button variant="outline" onClick={() => onOpenChange(false)}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            onOpenChange(false);
+          }}
+        >
           {t("common:close")}
         </Button>
       </CredenzaFooter>
@@ -728,10 +733,12 @@ function EntryRow({
             id={`${entry.id}-namespace`}
             type="text"
             value={draft.namespace}
-            onChange={(e) =>
-              setDraft({ ...draft, namespace: e.currentTarget.value })
-            }
-            onBlur={() => saveField("namespace")}
+            onChange={(e) => {
+              setDraft({ ...draft, namespace: e.currentTarget.value });
+            }}
+            onBlur={() => {
+              saveField("namespace");
+            }}
             disabled={isUpdating || isDeleting}
             placeholder={t("account.metadata.namespacePlaceholder")}
             aria-invalid={!isValidNamespace}
@@ -755,8 +762,12 @@ function EntryRow({
             id={`${entry.id}-key`}
             type="text"
             value={draft.key}
-            onChange={(e) => setDraft({ ...draft, key: e.currentTarget.value })}
-            onBlur={() => saveField("key")}
+            onChange={(e) => {
+              setDraft({ ...draft, key: e.currentTarget.value });
+            }}
+            onBlur={() => {
+              saveField("key");
+            }}
             disabled={isUpdating || isDeleting}
             placeholder={t("account.metadata.keyPlaceholder")}
             aria-invalid={!isValidKey}
@@ -778,10 +789,12 @@ function EntryRow({
             id={`${entry.id}-value`}
             type="text"
             value={draft.value}
-            onChange={(e) =>
-              setDraft({ ...draft, value: e.currentTarget.value })
-            }
-            onBlur={() => saveField("value")}
+            onChange={(e) => {
+              setDraft({ ...draft, value: e.currentTarget.value });
+            }}
+            onBlur={() => {
+              saveField("value");
+            }}
             disabled={isUpdating || isDeleting}
             placeholder={t("account.metadata.valuePlaceholder")}
             className="font-mono"

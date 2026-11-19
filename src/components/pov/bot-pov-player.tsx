@@ -312,13 +312,17 @@ function BotPovSession({
           canvasRef.current?.ownerDocument.defaultView ?? window;
         return presentationWindow.requestAnimationFrame(callback);
       },
-      (id) => presentationWindow.cancelAnimationFrame(id),
+      (id) => {
+        presentationWindow.cancelAnimationFrame(id);
+      },
       localStorage.getItem("soulfire.pov.presentation") === "paced",
     );
     presenterRef.current = presenter;
     try {
       decoder = new PovVideoDecoder(
-        (frame, metadata) => presenter.present(frame, metadata),
+        (frame, metadata) => {
+          presenter.present(frame, metadata);
+        },
         () => session.current?.requestKeyFrame(),
         failed,
       );
@@ -368,12 +372,13 @@ function BotPovSession({
             text,
             canvasRef.current?.ownerDocument.defaultView ?? window,
           ),
-        (value) =>
+        (value) => {
           openMinecraftUrl(
             value,
             canvasRef.current?.ownerDocument.defaultView ?? window,
             release,
-          ),
+          );
+        },
       );
     } catch (reason) {
       actions.setError(
@@ -563,7 +568,7 @@ function BotPovSession({
       )
         return;
       const edits = textEditEvents(event);
-      if (!edits.length) return;
+      if (edits.length === 0) return;
       event.preventDefault();
       for (const input of edits) session.current?.enqueue(input);
     };
@@ -976,8 +981,8 @@ function BotPovSession({
             min={0}
             max={100}
             value={[volume]}
-            onValueChange={(value) => {
-              const next = Array.isArray(value) ? value[0] : value;
+            onValueChange={(value: number | readonly number[]) => {
+              const next = typeof value === "number" ? value : value[0];
               if (next === undefined) return;
               setVolume(next);
               audioRef.current?.volume(next / 100);
@@ -1203,10 +1208,20 @@ function BotPovSession({
     <>
       {createPortal(player, popup.document.body)}
       <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={() => popup.focus()}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            popup.focus();
+          }}
+        >
           {t("bots.pov.showWindow")}
         </Button>
-        <Button variant="outline" onClick={() => setPopup(null)}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setPopup(null);
+          }}
+        >
           {t("bots.pov.attachWindow")}
         </Button>
       </div>

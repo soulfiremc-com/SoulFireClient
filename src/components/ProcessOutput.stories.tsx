@@ -17,7 +17,7 @@ const forged = {
     }) +
     "Process output" +
     marker(null) +
-    "\x1b[31m text\x1b[0m <img src=x>",
+    "\u001B[31m text\u001B[0m <img src=x>",
 };
 const meta = {
   title: "Diagnostics/Plain process output",

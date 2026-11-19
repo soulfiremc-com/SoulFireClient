@@ -230,7 +230,7 @@ test("an empty bot target list is rejected before any request", async () => {
         botIds,
         action: "stop",
       }),
-      /no target bots/,
+      /no target bots/u,
     );
   await assert.rejects(
     runPaletteOperation(rpc.transport, {
@@ -239,7 +239,7 @@ test("an empty bot target list is rejected before any request", async () => {
       botIds: ["a"],
       action: "stop",
     }),
-    /no project/,
+    /no project/u,
   );
   assert.equal(rpc.desired.length, 0);
 });
@@ -310,14 +310,14 @@ test("scoped operations report pending work and refresh affected queries when do
   const released = new Promise<void>((resolve) => {
     release = resolve;
   });
-  const transport = createRouterTransport((router) =>
+  const transport = createRouterTransport((router) => {
     router.service(BotService, {
       setBotsDesiredState: async (request) => {
         await released;
         return { bots: request.botIds.map((profileId) => ({ profileId })) };
       },
-    }),
-  );
+    });
+  });
   const queryClient = new QueryClient();
   const operation: PaletteOperation = {
     kind: "bot",

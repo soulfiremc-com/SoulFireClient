@@ -217,7 +217,9 @@ export function DataTableFilterMenu<TData extends RowData>({
     }
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   const onTriggerKeyDown = React.useCallback(
@@ -300,7 +302,9 @@ export function DataTableFilterMenu<TData extends RowData>({
                   <FilterValueSelector
                     column={selectedColumn}
                     value={inputValue}
-                    onSelect={(value) => onFilterAdd(selectedColumn, value)}
+                    onSelect={(value) => {
+                      onFilterAdd(selectedColumn, value);
+                    }}
                   />
                 </>
               ) : (
@@ -528,7 +532,9 @@ function DataTableFilterItem<TData extends RowData>({
           variant="ghost"
           size="sm"
           className="h-full rounded-none rounded-r-md border border-l-0 px-1.5 font-normal dark:bg-input/30"
-          onClick={() => onFilterRemove(filter.filterId)}
+          onClick={() => {
+            onFilterRemove(filter.filterId);
+          }}
         >
           <X className="size-3.5" />
         </Button>
@@ -554,10 +560,20 @@ function FilterValueSelector<TData extends RowData>({
     case "boolean":
       return (
         <CommandGroup>
-          <CommandItem value="true" onSelect={() => onSelect("true")}>
+          <CommandItem
+            value="true"
+            onSelect={() => {
+              onSelect("true");
+            }}
+          >
             True
           </CommandItem>
-          <CommandItem value="false" onSelect={() => onSelect("false")}>
+          <CommandItem
+            value="false"
+            onSelect={() => {
+              onSelect("false");
+            }}
+          >
             False
           </CommandItem>
         </CommandGroup>
@@ -571,7 +587,9 @@ function FilterValueSelector<TData extends RowData>({
             <CommandItem
               key={option.value}
               value={option.value}
-              onSelect={() => onSelect(option.value)}
+              onSelect={() => {
+                onSelect(option.value);
+              }}
             >
               {option.icon && <option.icon />}
               <span className="truncate">{option.label}</span>
@@ -593,7 +611,9 @@ function FilterValueSelector<TData extends RowData>({
           captionLayout="dropdown"
           mode="single"
           selected={value ? new Date(value) : undefined}
-          onSelect={(date) => onSelect(date?.getTime().toString() ?? "")}
+          onSelect={(date) => {
+            onSelect(date?.getTime().toString() ?? "");
+          }}
         />
       );
 
@@ -607,7 +627,9 @@ function FilterValueSelector<TData extends RowData>({
         <CommandGroup>
           <CommandItem
             value={value}
-            onSelect={() => onSelect(value)}
+            onSelect={() => {
+              onSelect(value);
+            }}
             disabled={isEmpty}
           >
             {isEmpty ? (
@@ -689,9 +711,9 @@ function onFilterInputRender<TData extends RowData>({
           placeholder={column.columnDef.meta?.placeholder ?? "Enter value..."}
           className="h-full w-24 rounded-none px-1.5"
           defaultValue={typeof filter.value === "string" ? filter.value : ""}
-          onChange={(event) =>
-            onFilterUpdate(filter.filterId, { value: event.target.value })
-          }
+          onChange={(event) => {
+            onFilterUpdate(filter.filterId, { value: event.target.value });
+          }}
         />
       );
     }

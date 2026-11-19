@@ -243,10 +243,10 @@ test("the desktop bridge cannot retrieve or regenerate Fernan API keys", () => {
     ["user/key", "GET"],
     ["user/key/regenerate", "POST"],
   ] as const)
-    assert.throws(() =>
+    assert.throws(() => {
       validateProviderRequest({
         url: `https://api.fernan.club/api/v1/${path}`,
         method,
-      }),
-    );
+      });
+    });
 });

@@ -148,7 +148,7 @@ export function filterSettingsEntries(
   definitions: readonly SettingsDefinition[],
   query: string,
 ): SettingsEntryIdentifier[] {
-  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const terms = query.trim().toLowerCase().split(/\s+/u).filter(Boolean);
   if (terms.length === 0) return [...entries];
   const byId = new Map(
     definitions.flatMap((definition) =>
@@ -212,15 +212,15 @@ export const PLUGIN_TASKS: readonly PluginTask[] = [
 
 // Logging comes first because a chat logger is a diagnostic tool, not chat.
 const PLUGIN_TASK_PATTERNS: readonly (readonly [PluginTask, RegExp])[] = [
-  ["diagnose", /\blog(s|ger|ging)?\b/i],
-  ["chat", /\bchat|message|dialog|\bai\b/i],
+  ["diagnose", /\blog(s|ger|ging)?\b/iu],
+  ["chat", /\bchat|message|dialog|\bai\b/iu],
   [
     "survive",
-    /eat|food|armor|totem|respawn|attack|aura|afk|jump|combat|health/i,
+    /eat|food|armor|totem|respawn|attack|aura|afk|jump|combat|health/iu,
   ],
   [
     "connect",
-    /reconnect|register|captcha|bypass|virtual host|forwarding|client brand|client settings|connect|login|join/i,
+    /reconnect|register|captcha|bypass|virtual host|forwarding|client brand|client settings|connect|login|join/iu,
   ],
 ];
 

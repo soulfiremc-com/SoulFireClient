@@ -33,10 +33,10 @@ async function setup(cols = 20, rows = 3) {
   bridge.init(cols, rows);
   const output = createTerminalOutput({
     bridge,
-    write: (data) =>
-      typeof data === "string"
-        ? bridge.writeString(data)
-        : bridge.writeRaw(data),
+    write: (data) => {
+      if (typeof data === "string") bridge.writeString(data);
+      else bridge.writeRaw(data);
+    },
   });
   return { bridge, output };
 }
@@ -65,12 +65,12 @@ test("both protobuf trust flags are required, including for personal raw strings
     metadata,
   );
   // Plain fallback rendering must not expose control strings or actions.
-  assert.equal(formatTerminalLine(line("2")), "\x1b[0mClick\x1b[0m\r\n");
+  assert.equal(formatTerminalLine(line("2")), "\u001B[0mClick\u001B[0m\r\n");
 });
 
 test("wire fixture preserves UTF-8 and matches the Java encoder contract", () => {
   const fixture =
-    "\x1b]777;soulfire;1;eyJob3ZlciI6IkjDqWxsbyDwn4yNIiwiY2xpY2siOnsiYWN0aW9uIjoicnVuX2NvbW1hbmQiLCJ2YWx1ZSI6ImhlbHAifX0\x1b\\";
+    "\u001B]777;soulfire;1;eyJob3ZlciI6IkjDqWxsbyDwn4yNIiwiY2xpY2siOnsiYWN0aW9uIjoicnVuX2NvbW1hbmQiLCJ2YWx1ZSI6ImhlbHAifX0\u001B\\";
   assert.equal(marker(metadata), fixture);
   let parsed: TerminalInteraction | undefined;
   terminalLogText(fixture + "visible", true, (value) => {
@@ -81,16 +81,16 @@ test("wire fixture preserves UTF-8 and matches the Java encoder contract", () =>
 });
 
 const raw = (payload: unknown, version = "1") =>
-  `\x1b]777;soulfire;${version};${Buffer.from(JSON.stringify(payload)).toString("base64url").replaceAll("=", "")}\x1b\\`;
+  `\u001B]777;soulfire;${version};${Buffer.from(JSON.stringify(payload)).toString("base64url").replaceAll("=", "")}\u001B\\`;
 
 test("unknown, malformed, oversized and unsafe markers end active metadata", () => {
   const invalid = [
-    "\x1b]777;soulfire;1;%%%\x1b\\",
+    "\u001B]777;soulfire;1;%%%\u001B\\",
     raw(metadata, "2"),
     raw(null),
     raw([]),
     raw({ hover: "x".repeat(4097) }),
-    raw({ hover: "\x1b[2J" }),
+    raw({ hover: "\u001B[2J" }),
     raw({ click: { action: "run_command", value: "help\nstop" } }),
     raw({ click: { action: "open_file", value: "/tmp" } }),
     ...[
@@ -99,7 +99,7 @@ test("unknown, malformed, oversized and unsafe markers end active metadata", () 
       "data:text/plain,hi",
       "https://user:pass@example.com",
     ].map((value) => raw({ click: { action: "open_url", value } })),
-    "\x1b]777;soulfire;1;" + "a".repeat(16385) + "\x1b\\",
+    "\u001B]777;soulfire;1;" + "a".repeat(16385) + "\u001B\\",
   ];
   for (const value of invalid) {
     let registrations = 0;
@@ -109,15 +109,15 @@ test("unknown, malformed, oversized and unsafe markers end active metadata", () 
       () => `test:${registrations++}`,
     );
     assert.equal(registrations, 1);
-    assert.ok(text.includes("A\x1b]8;;\x1b\\B"));
+    assert.ok(text.includes("A\u001B]8;;\u001B\\B"));
   }
   assert.equal(
-    terminalLogText("before\x1b]777;soulfire;1;unfinished"),
+    terminalLogText("before\u001B]777;soulfire;1;unfinished"),
     "before",
   );
   assert.equal(
     terminalLogText(
-      "\x1b]52;c;clipboard\x07\x1b]8;;https://example.com\x1b\\text\x1b]8;;\x1b\\\x1b[2J",
+      "\u001B]52;c;clipboard\u0007\u001B]8;;https://example.com\u001B\\text\u001B]8;;\u001B\\\u001B[2J",
     ),
     "text",
   );
@@ -174,7 +174,7 @@ test("span count is bounded without dropping visible text", () => {
     () => `test:${registrations++}`,
   );
   assert.equal(registrations, 64);
-  assert.equal((text.match(/x/g) ?? []).length, 70);
+  assert.equal((text.match(/x/gu) ?? []).length, 70);
 });
 
 test("renderer-independent spans require both provenance flags and retain Unicode text", () => {
@@ -216,10 +216,10 @@ test("renderer-independent spans require both provenance flags and retain Unicod
 test("React spans remove ANSI styling and unknown controls without losing boundaries", () => {
   const input = {
     message:
-      "\x1b[31mplain\x1b[0m " +
+      "\u001B[31mplain\u001B[0m " +
       marker(metadata) +
-      "\x1b[1mstyled\x1b[0m" +
-      "\x1b]777;soulfire;2;unknown\x1b\\ordinary\x1b]52;c;payload\x07",
+      "\u001B[1mstyled\u001B[0m" +
+      "\u001B]777;soulfire;2;unknown\u001B\\ordinary\u001B]52;c;payload\u0007",
     personal: true,
     terminalInteractions: true,
   };
@@ -235,6 +235,6 @@ test("React spans remove ANSI styling and unknown controls without losing bounda
     parseTerminalText(input, true)
       .map((span) => span.text)
       .join(""),
-    "\x1b[31mplain\x1b[0m \x1b[1mstyled\x1b[0mordinary",
+    "\u001B[31mplain\u001B[0m \u001B[1mstyled\u001B[0mordinary",
   );
 });

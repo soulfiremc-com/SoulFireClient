@@ -296,7 +296,9 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
     <Popover>
       <PopoverTrigger
         openOnHover
-        onMouseDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
         render={
           // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
           <button
@@ -374,7 +376,9 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
       <PopoverTrigger
         openOnHover
         aria-label={t("scripts.editor.node.avgTimeBadge", { display })}
-        onMouseDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
         render={
           // oxlint-disable-next-line jsx-a11y/control-has-associated-label -- the component renders its children inside this button, which gives it its text label
           <button
@@ -613,7 +617,9 @@ function BaseNodeComponent({
           <button
             type="button"
             onClick={handleToggleCollapse}
-            onMouseDown={(e) => e.stopPropagation()}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
             className="nodrag nopan -m-0.5 rounded-sm p-0.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
             title={
               isCollapsed
@@ -689,15 +695,17 @@ function BaseNodeComponent({
                     translatedLabel={getPortLabel(input)}
                     isConnected={connectedInputs.has(input.id)}
                     value={data[getFieldKey(input.id)]}
-                    onValueChange={(val) => handleValueChange(input.id, val)}
+                    onValueChange={(val) => {
+                      handleValueChange(input.id, val);
+                    }}
                     resolvedType={getResolvedType(input)}
                     multiInputItems={
                       multiInputItemsByPort.get(input.id) ??
                       EMPTY_MULTI_INPUT_ITEMS
                     }
-                    onReorderMultiInput={(orderedEdgeIds) =>
-                      reorderMultiInputEdges(id, input.id, orderedEdgeIds)
-                    }
+                    onReorderMultiInput={(orderedEdgeIds) => {
+                      reorderMultiInputEdges(id, input.id, orderedEdgeIds);
+                    }}
                   />
                 ) : (
                   <div />

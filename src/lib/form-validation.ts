@@ -1,4 +1,4 @@
-import { Schema, SchemaIssue } from "effect";
+import { Option, Schema, SchemaIssue } from "effect";
 import { t } from "i18next";
 import type { StandardSchemaV1 } from "effect/StandardSchema";
 
@@ -77,7 +77,7 @@ export const formNumber = Schema.Number.check(
 
 export const emailSchema = Schema.String.check(
   Schema.isPattern(
-    /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/,
+    /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/u,
     { message: "validation:email" },
   ),
 );
@@ -86,16 +86,22 @@ export const urlSchema = Schema.String.check(
   Schema.makeFilter((value) => URL.canParse(value) || message("url")),
 );
 
+const decodeJwtHeader = Schema.decodeUnknownOption(
+  Schema.fromJsonString(
+    Schema.Struct({
+      typ: Schema.optionalKey(Schema.Literal("JWT")),
+      alg: Schema.Unknown,
+    }),
+  ),
+);
+
 export const jwtSchema = Schema.String.check(
   Schema.makeFilter((value) => {
     try {
       const parts = value.split(".");
       if (parts.length !== 3 || !parts[0]) return message("jwt");
-      const header = JSON.parse(atob(parts[0]));
-      return (
-        ((!("typ" in header) || header.typ === "JWT") && !!header.alg) ||
-        message("jwt")
-      );
+      const header = decodeJwtHeader(atob(parts[0]));
+      return (Option.isSome(header) && !!header.value.alg) || message("jwt");
     } catch {
       return message("jwt");
     }

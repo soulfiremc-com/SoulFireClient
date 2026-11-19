@@ -168,7 +168,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                         );
                         addLog(
                           "debug",
-                          `${t("scripts.nodeCompleted", { nodeId: nodeName(event.value.nodeId) })}${Object.keys(outputs).length ? ` ${JSON.stringify(outputs)}` : ""}`,
+                          `${t("scripts.nodeCompleted", { nodeId: nodeName(event.value.nodeId) })}${Object.keys(outputs).length > 0 ? ` ${JSON.stringify(outputs)}` : ""}`,
                           event.value.nodeId,
                         );
                         break;
@@ -272,7 +272,9 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
         <CredenzaBody>
           <form
             action={run}
-            onSubmit={() => setLogs([])}
+            onSubmit={() => {
+              setLogs([]);
+            }}
             className="flex flex-col gap-4"
           >
             <Field>
@@ -321,12 +323,12 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                   id={`${id}-${port.id}`}
                   name={port.id}
                   value={mockInputs[port.id] ?? ""}
-                  onChange={(event) =>
+                  onChange={(event) => {
                     setMockInputs((previous) => ({
                       ...previous,
                       [port.id]: event.target.value,
-                    }))
-                  }
+                    }));
+                  }}
                   aria-describedby={`${id}-hint`}
                   disabled={isPending}
                   placeholder={t("scripts.editor.dryRun.valuePlaceholder", {
@@ -380,7 +382,9 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
               <div className="h-48 min-w-0">
                 <ExecutionLogs
                   logs={logs}
-                  onClearLogs={() => setLogs([])}
+                  onClearLogs={() => {
+                    setLogs([]);
+                  }}
                   getNodeLabel={(nodeId) => getNodeDisplayLabel(nodes, nodeId)}
                 />
               </div>

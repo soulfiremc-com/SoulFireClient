@@ -56,20 +56,23 @@ if (
   !Number.isSafeInteger(signedInstallerInfo.size) ||
   typeof signedInstallerInfo.sha512 !== "string"
 ) {
-  throw new Error("app-builder returned invalid blockmap metadata");
+  throw new TypeError("app-builder returned invalid blockmap metadata");
 }
 const blockMapSize = statSync(blockMapPath).size;
 const metadataFiles = listFilesRecursive(releaseArtifactsDir).filter(
-  (filePath) => /\.(ya?ml)$/i.test(filePath),
+  (filePath) => /\.(ya?ml)$/iu.test(filePath),
 );
 
 function updateBlockMapSize(metadata) {
-  if (/^\s+blockMapSize:\s*\d+$/m.test(metadata)) {
-    return metadata.replace(/^(\s+blockMapSize:\s*)\d+$/m, `$1${blockMapSize}`);
+  if (/^\s+blockMapSize:\s*\d+$/mu.test(metadata)) {
+    return metadata.replace(
+      /^(\s+blockMapSize:\s*)\d+$/mu,
+      `$1${blockMapSize}`,
+    );
   }
 
   const updatedMetadata = metadata.replace(
-    /^(\s+)size:\s*\d+$/m,
+    /^(\s+)size:\s*\d+$/mu,
     `$1size: ${signedInstallerInfo.size}\n$1blockMapSize: ${blockMapSize}`,
   );
   if (updatedMetadata === metadata) {
@@ -87,8 +90,8 @@ for (const metadataFile of metadataFiles) {
   }
 
   const updatedMetadata = updateBlockMapSize(metadata)
-    .replaceAll(/^(\s*sha512:\s*).+$/gm, `$1${signedInstallerInfo.sha512}`)
-    .replaceAll(/^(\s*size:\s*)\d+$/gm, `$1${signedInstallerInfo.size}`);
+    .replaceAll(/^(\s*sha512:\s*).+$/gmu, `$1${signedInstallerInfo.sha512}`)
+    .replaceAll(/^(\s*size:\s*)\d+$/gmu, `$1${signedInstallerInfo.size}`);
 
   writeFileSync(metadataFile, updatedMetadata);
   updatedMetadataFiles += 1;

@@ -12,6 +12,7 @@ import {
   type IntegratedServerState,
 } from "./integrated-server-process";
 
+// oxlint-disable-next-line typescript/strict-void-return -- promisify reads the result from the execFile callback, not from the returned ChildProcess
 const executeFile = promisify(execFile);
 
 export async function validateJcmd(executable: string): Promise<void> {
@@ -27,7 +28,7 @@ export async function validateJcmd(executable: string): Promise<void> {
     windowsHide: true,
     maxBuffer: 64 * 1024,
   });
-  if (!/version "25(?:[.\-+"])/.test(`${result.stdout}\n${result.stderr}`)) {
+  if (!/version "25(?:[.\-+"])/u.test(`${result.stdout}\n${result.stderr}`)) {
     throw new Error(
       "Thread dumps require jcmd from JDK 25 to match the integrated server.",
     );

@@ -97,7 +97,10 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
         const cast = loadBindings();
         const client = yield* Effect.acquireRelease(
           Effect.sync(() => new cast.Client()),
-          (connection) => Effect.sync(() => connection.close()),
+          (connection) =>
+            Effect.sync(() => {
+              connection.close();
+            }),
         );
         const failures = new Set<(error: CastError) => void>();
         const pending = new Map<
@@ -117,7 +120,9 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           pending.clear();
           for (const callback of failures) callback(error);
         };
-        const onError = (error: Error) => fail(castError(error.message));
+        const onError = (error: Error) => {
+          fail(castError(error.message));
+        };
         client.on("error", onError);
         yield* Effect.addFinalizer(() =>
           Effect.sync(() => {
@@ -181,7 +186,9 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           );
 
         yield* Effect.callback<void, CastError>((resume, signal) => {
-          failOpen = (error) => resume(Effect.fail(error));
+          failOpen = (error) => {
+            resume(Effect.fail(error));
+          };
           client.connect({ host: device.address, port: device.port }, () => {
             if (signal.aborted || closed) return;
             const launch = () => {
@@ -227,11 +234,11 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                         if (Option.isSome(reply))
                           pending.get(reply.value.requestId)?.(reply.value);
                       });
-                      app.on("close", () =>
+                      app.on("close", () => {
                         fail(
                           castError("The Cast receiver closed the session."),
-                        ),
-                      );
+                        );
+                      });
                       resume(Effect.void);
                     },
                   );

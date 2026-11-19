@@ -79,9 +79,15 @@ function InlineEditorComponent({
       "hover:border-border",
       className,
     ),
-    onClick: (e: React.MouseEvent) => e.stopPropagation(),
-    onMouseDown: (e: React.MouseEvent) => e.stopPropagation(),
-    onKeyDown: (e: React.KeyboardEvent) => e.stopPropagation(),
+    onClick: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onMouseDown: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onKeyDown: (e: React.KeyboardEvent) => {
+      e.stopPropagation();
+    },
   };
 
   switch (type) {
@@ -100,7 +106,9 @@ function InlineEditorComponent({
         <input
           type="text"
           value={typeof currentValue === "string" ? currentValue : ""}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            onChange(e.target.value);
+          }}
           placeholder="..."
           {...inputProps}
           className={cn(inputProps.className, "w-24")}
@@ -112,10 +120,18 @@ function InlineEditorComponent({
         <Checkbox
           checked={currentValue === true}
           aria-label={label}
-          onCheckedChange={(checked) => onChange(checked)}
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-          onKeyDown={(e) => e.stopPropagation()}
+          onCheckedChange={(checked) => {
+            onChange(checked);
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
+          onKeyDown={(e) => {
+            e.stopPropagation();
+          }}
           className="nodrag nopan"
         />
       );
@@ -146,7 +162,9 @@ function InlineEditorComponent({
         <input
           type="text"
           value={displayText(currentValue ?? "")}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            onChange(e.target.value);
+          }}
           placeholder="..."
           {...inputProps}
           className={cn(inputProps.className, "w-20")}
@@ -180,9 +198,15 @@ function Vector3EditorComponent({
       "nodrag nopan w-10 rounded-sm border border-border/50 bg-muted/80 px-1 py-0.5 text-right text-xs text-foreground",
       "focus:ring-1 focus:ring-primary focus:outline-none",
     ),
-    onClick: (e: React.MouseEvent) => e.stopPropagation(),
-    onMouseDown: (e: React.MouseEvent) => e.stopPropagation(),
-    onKeyDown: (e: React.KeyboardEvent) => e.stopPropagation(),
+    onClick: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onMouseDown: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onKeyDown: (e: React.KeyboardEvent) => {
+      e.stopPropagation();
+    },
   };
 
   const handleChange = (axis: "x" | "y" | "z", num: number) => {
@@ -201,7 +225,9 @@ function Vector3EditorComponent({
           key={axis}
           aria-label={`${label} ${axis.toUpperCase()}`}
           value={current[axis] ?? 0}
-          onChange={(num) => handleChange(axis, num)}
+          onChange={(num) => {
+            handleChange(axis, num);
+          }}
           {...inputProps}
         />
       ))}
@@ -230,15 +256,23 @@ function SelectEditorComponent({
       "nodrag nopan rounded-sm border border-border/50 bg-muted/80 px-1.5 py-0.5 text-xs text-foreground",
       "cursor-pointer focus:ring-1 focus:ring-primary focus:outline-none",
     ),
-    onClick: (e: React.MouseEvent) => e.stopPropagation(),
-    onMouseDown: (e: React.MouseEvent) => e.stopPropagation(),
-    onKeyDown: (e: React.KeyboardEvent) => e.stopPropagation(),
+    onClick: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onMouseDown: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onKeyDown: (e: React.KeyboardEvent) => {
+      e.stopPropagation();
+    },
   };
 
   return (
     <select
       value={value ?? options[0]?.value ?? ""}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => {
+        onChange(e.target.value);
+      }}
       {...inputProps}
     >
       {options.map((opt) => (

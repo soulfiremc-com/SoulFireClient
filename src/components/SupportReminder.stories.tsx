@@ -36,14 +36,34 @@ function OverviewExample({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-2">
-        <Button onClick={() => setVisit((value) => value + 1)}>
+        <Button
+          onClick={() => {
+            setVisit((value) => value + 1);
+          }}
+        >
           Revisit overview
         </Button>
-        <Button onClick={() => setReady(true)}>Finish loading</Button>
-        <Button onClick={() => reminder.observeBots([spawned])}>
+        <Button
+          onClick={() => {
+            setReady(true);
+          }}
+        >
+          Finish loading
+        </Button>
+        <Button
+          onClick={() => {
+            reminder.observeBots([spawned]);
+          }}
+        >
           Observe first spawn
         </Button>
-        <Button onClick={() => setDialogOpen(true)}>Open dialog</Button>
+        <Button
+          onClick={() => {
+            setDialogOpen(true);
+          }}
+        >
+          Open dialog
+        </Button>
       </div>
       <p>The overview remains usable while the support notice is visible.</p>
       <SupportReminder
@@ -53,8 +73,12 @@ function OverviewExample({
       />
       {cookiesOpen && (
         <CookieConsentBanner
-          onAccept={() => setCookiesOpen(false)}
-          onDecline={() => setCookiesOpen(false)}
+          onAccept={() => {
+            setCookiesOpen(false);
+          }}
+          onDecline={() => {
+            setCookiesOpen(false);
+          }}
         />
       )}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

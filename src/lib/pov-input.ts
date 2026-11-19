@@ -53,10 +53,11 @@ const specialKeys: Record<string, number> = {
 };
 
 export function glfwKey(code: string): number | undefined {
-  if (/^Key[A-Z]$/.test(code)) return code.charCodeAt(3);
-  if (/^Digit[0-9]$/.test(code)) return code.charCodeAt(5);
-  if (/^Numpad[0-9]$/.test(code)) return 320 + Number(code.slice(6));
-  if (/^F([1-9]|1[0-9]|2[0-5])$/.test(code)) return 289 + Number(code.slice(1));
+  if (/^Key[A-Z]$/u.test(code)) return code.codePointAt(3);
+  if (/^Digit[0-9]$/u.test(code)) return code.codePointAt(5);
+  if (/^Numpad[0-9]$/u.test(code)) return 320 + Number(code.slice(6));
+  if (/^F([1-9]|1[0-9]|2[0-5])$/u.test(code))
+    return 289 + Number(code.slice(1));
   return specialKeys[code];
 }
 
@@ -114,14 +115,10 @@ type TextShortcutEvent = Pick<
 export function textShortcutKey(
   event: Pick<KeyboardEvent, "code" | "key">,
 ): string {
-  if (
-    event.key.length === 1 &&
-    event.key.charCodeAt(0) >= 32 &&
-    event.key.charCodeAt(0) <= 126
-  )
-    return event.key.toLowerCase();
+  // Printable ASCII, from space (32) to tilde (126).
+  if (/^[ -~]$/u.test(event.key)) return event.key.toLowerCase();
   // Match SDL's Latin shortcut fallback on non-Latin layouts.
-  return /^Key[A-Z]$/.test(event.code)
+  return /^Key[A-Z]$/u.test(event.code)
     ? event.code.slice(3).toLowerCase()
     : event.key;
 }

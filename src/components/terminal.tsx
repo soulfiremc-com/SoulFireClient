@@ -76,7 +76,8 @@ export function TerminalView({
   const interactionFrame = useRef(0);
   const metrics = useRef({ width: 0, height: 0, top: 0, left: 0 });
 
-  const updateInteractions = useEffectEvent(() => {
+  // Reads only refs, so scroll handlers can call it through animation frames.
+  const updateInteractions = () => {
     const host = hostRef.current;
     const core = terminalRef.current?.bridge;
     const registry = outputRef.current?.interactions;
@@ -97,12 +98,12 @@ export function TerminalView({
         Math.ceil((host.scrollTop + host.clientHeight - top) / height),
       ),
     );
-  });
+  };
   const scheduleInteractions = () => {
     cancelAnimationFrame(interactionFrame.current);
-    interactionFrame.current = requestAnimationFrame(() =>
-      updateInteractions(),
-    );
+    interactionFrame.current = requestAnimationFrame(() => {
+      updateInteractions();
+    });
   };
   const interactionAt = (x: number, y: number) => {
     const host = hostRef.current;
@@ -286,7 +287,9 @@ export function TerminalView({
                 null,
             );
           }}
-          onPointerLeave={() => setHovered(null)}
+          onPointerLeave={() => {
+            setHovered(null);
+          }}
           onClickCapture={(event) => {
             if (
               (event.target instanceof HTMLElement &&
@@ -467,8 +470,12 @@ export function TerminalView({
                     aria-disabled={
                       actions.disabled(run.metadata.click) ? true : undefined
                     }
-                    onFocus={() => setFocused(run.key)}
-                    onBlur={() => setFocused(null)}
+                    onFocus={() => {
+                      setFocused(run.key);
+                    }}
+                    onBlur={() => {
+                      setFocused(null);
+                    }}
                     onKeyDown={(event) => {
                       if (event.key === "Escape") {
                         setFocused(null);

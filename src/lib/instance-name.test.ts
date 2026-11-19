@@ -24,10 +24,10 @@ test("instance names support the database boundaries, Unicode and punctuation", 
 
 test("pasted outer whitespace is normalized before validating instance names", () => {
   assert.equal(
-    Schema.decodeSync(schema)(" \u00a0Farm - A_1\ufeff "),
+    Schema.decodeSync(schema)(" \u00A0Farm - A_1\uFEFF "),
     "Farm - A_1",
   );
-  for (const name of ["", "   ", "\u00a0\ufeff"]) {
+  for (const name of ["", "   ", "\u00A0\uFEFF"]) {
     assert.equal(Result.isSuccess(Schema.decodeResult(schema)(name)), false);
   }
 });

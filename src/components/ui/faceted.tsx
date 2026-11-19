@@ -256,7 +256,9 @@ function FacetedItem(props: FacetedItemProps) {
       aria-selected={isSelected}
       data-selected={isSelected}
       className={cn("gap-2", className)}
-      onSelect={() => onItemSelect(value)}
+      onSelect={() => {
+        onItemSelect(value);
+      }}
       {...itemProps}
     >
       <span

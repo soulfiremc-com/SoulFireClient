@@ -65,7 +65,9 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     () => {
       requestedKeys++;
     },
-    (error) => errors.push(error),
+    (error) => {
+      errors.push(error);
+    },
   );
   try {
     decoder.accept(chunk(1, true));

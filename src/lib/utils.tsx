@@ -1,5 +1,5 @@
 import { createRpcClient } from "@/lib/rpc";
-import { Effect } from "effect";
+import { Effect, Schema } from "effect";
 import { create, type JsonValue } from "@bufbuild/protobuf";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import type { Transport } from "@connectrpc/connect";
@@ -84,7 +84,9 @@ export function isDemo() {
 export function cancellablePromiseDefault<T extends () => void>(
   promise: Promise<T>,
 ): () => void {
-  return cancellablePromise(promise, (run) => run());
+  return cancellablePromise(promise, (run) => {
+    run();
+  });
 }
 
 function cancellablePromise<T>(
@@ -747,8 +749,8 @@ export async function addInstanceAccountsBatch(
     return;
   }
 
-  const accountProtos: MinecraftAccountProto[] = accounts.map(
-    toMinecraftAccountProto,
+  const accountProtos: MinecraftAccountProto[] = accounts.map((account) =>
+    toMinecraftAccountProto(account),
   );
 
   await queryClient.cancelQueries({
@@ -865,7 +867,7 @@ export async function applyGeneratedAccounts(
   await Effect.runPromise(
     createRpcClient(InstanceService, transport).replaceInstanceAccounts({
       id: instanceInfo.id,
-      accounts: newAccounts.map(toMinecraftAccountProto),
+      accounts: newAccounts.map((account) => toMinecraftAccountProto(account)),
     }),
   );
 }
@@ -884,7 +886,7 @@ export async function addInstanceProxiesBatch(
     return;
   }
 
-  const proxyProtos: ProxyProto[] = proxies.map(toProxyProto);
+  const proxyProtos: ProxyProto[] = proxies.map((proxy) => toProxyProto(proxy));
 
   await queryClient.cancelQueries({
     queryKey: instanceInfoQueryKey,
@@ -954,7 +956,7 @@ export async function removeInstanceProxyEntries(
   await Effect.runPromise(
     instanceService.removeInstanceProxyEntries({
       id: instanceInfo.id,
-      proxies: proxies.map(toProxyProto),
+      proxies: proxies.map((proxy) => toProxyProto(proxy)),
     }),
   );
 }
@@ -1052,17 +1054,18 @@ export function smartEntries<T extends object>(
   ]);
 }
 
-type McLogsResponse =
-  | {
-      success: true;
-      id: string;
-      url: string;
-      raw: string;
-    }
-  | {
-      success: false;
-      error: string;
-    };
+// Decode only the fields the upload action reads.
+const McLogsResponseSchema = Schema.Union([
+  Schema.Struct({
+    success: Schema.Literal(true),
+    url: Schema.String,
+  }),
+  Schema.Struct({
+    success: Schema.Literal(false),
+    error: Schema.String,
+  }),
+]);
+type McLogsResponse = typeof McLogsResponseSchema.Type;
 
 export async function uploadToMcLogs(content: string): Promise<McLogsResponse> {
   const response = await fetch("https://api.mclo.gs/1/log", {
@@ -1073,5 +1076,7 @@ export async function uploadToMcLogs(content: string): Promise<McLogsResponse> {
     body: new URLSearchParams({ content }),
   });
 
-  return response.json();
+  return Schema.decodeUnknownPromise(McLogsResponseSchema)(
+    await response.json(),
+  );
 }

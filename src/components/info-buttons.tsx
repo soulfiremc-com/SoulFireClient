@@ -64,7 +64,11 @@ function GenericInfoButton(props: {
       >
         <InfoIcon className="size-4" />
       </PopoverTrigger>
-      <PopoverContent>{props.value(() => setOpen(false))}</PopoverContent>
+      <PopoverContent>
+        {props.value(() => {
+          setOpen(false);
+        })}
+      </PopoverContent>
     </Popover>
   );
 }

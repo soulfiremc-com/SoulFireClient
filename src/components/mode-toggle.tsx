@@ -25,15 +25,27 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => setTheme("system")}>
+          <DropdownMenuItem
+            onClick={() => {
+              setTheme("system");
+            }}
+          >
             <SunMoonIcon />
             {t("userSidebar.theme.system")}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("light")}>
+          <DropdownMenuItem
+            onClick={() => {
+              setTheme("light");
+            }}
+          >
             <SunIcon />
             {t("userSidebar.theme.light")}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
+          <DropdownMenuItem
+            onClick={() => {
+              setTheme("dark");
+            }}
+          >
             <MoonIcon />
             {t("userSidebar.theme.dark")}
           </DropdownMenuItem>

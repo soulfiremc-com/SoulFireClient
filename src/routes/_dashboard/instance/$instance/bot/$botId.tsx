@@ -471,7 +471,9 @@ function BotDetailContent({
         <BotStateNotice
           instanceId={instanceId}
           botId={account.profileId}
-          onOpenControls={() => setActiveTab("controls")}
+          onOpenControls={() => {
+            setActiveTab("controls");
+          }}
         />
       </Suspense>
 
@@ -598,7 +600,9 @@ function BotDetailHeader({
     <Item
       variant="outline"
       className="rounded-lg p-4"
-      onContextMenu={(event) => onContextMenu(event, null)}
+      onContextMenu={(event) => {
+        onContextMenu(event, null);
+      }}
     >
       <ItemMedia>
         <img
@@ -788,7 +792,9 @@ function BotPowerActions({
       <Button
         size="sm"
         disabled={change.isPending}
-        onClick={() => run("start")}
+        onClick={() => {
+          run("start");
+        }}
       >
         <PlayIcon data-icon="inline-start" />
         {t("controls.start")}
@@ -801,7 +807,9 @@ function BotPowerActions({
         size="sm"
         variant={state === "failed" ? "default" : "outline"}
         disabled={change.isPending || state === "stopping"}
-        onClick={() => run("restart")}
+        onClick={() => {
+          run("restart");
+        }}
       >
         <RefreshCwIcon data-icon="inline-start" />
         {t("controls.restart")}
@@ -810,7 +818,9 @@ function BotPowerActions({
         size="sm"
         variant="outline"
         disabled={change.isPending || state === "stopping"}
-        onClick={() => run("stop")}
+        onClick={() => {
+          run("stop");
+        }}
       >
         <SquareIcon data-icon="inline-start" />
         {t("controls.stop")}
@@ -961,7 +971,9 @@ function OverviewTab({
         {/* Side: status first, details on request. */}
         <div
           className="flex min-w-0 flex-col gap-6"
-          onContextMenu={(e) => handleContextMenu(e, null)}
+          onContextMenu={(e) => {
+            handleContextMenu(e, null);
+          }}
         >
           <Item variant="outline" size="sm">
             <ItemMedia>
@@ -1373,16 +1385,24 @@ function SlotRegionGrid({
               isSelected={isSelected}
               slotNumber={isHotbar ? i + 1 : undefined}
               isClickable={region.type !== SlotRegionType.SLOT_REGION_DISPLAY}
-              onClick={() => onSlotClick(slotIndex, ClickType.LEFT_CLICK)}
-              onRightClick={() => onSlotClick(slotIndex, ClickType.RIGHT_CLICK)}
-              onShiftClick={() =>
-                onSlotClick(slotIndex, ClickType.SHIFT_LEFT_CLICK)
-              }
+              onClick={() => {
+                onSlotClick(slotIndex, ClickType.LEFT_CLICK);
+              }}
+              onRightClick={() => {
+                onSlotClick(slotIndex, ClickType.RIGHT_CLICK);
+              }}
+              onShiftClick={() => {
+                onSlotClick(slotIndex, ClickType.SHIFT_LEFT_CLICK);
+              }}
               onMiddleClick={
                 containerType === "creative" && region.id === "creative_catalog"
-                  ? () => onSlotClick(slotIndex, ClickType.MIDDLE_CLICK)
+                  ? () => {
+                      onSlotClick(slotIndex, ClickType.MIDDLE_CLICK);
+                    }
                   : isHotbar && onHotbarSlotSelect
-                    ? () => onHotbarSlotSelect(i)
+                    ? () => {
+                        onHotbarSlotSelect(i);
+                      }
                     : undefined
               }
               containerType={containerType}
@@ -1728,9 +1748,9 @@ function BotInventoryPanel({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() =>
-                  closeContainerMutation.mutate(inventoryState.menuId)
-                }
+                onClick={() => {
+                  closeContainerMutation.mutate(inventoryState.menuId);
+                }}
                 disabled={isPending}
               >
                 <XIcon className="mr-1 size-4" />
@@ -1795,7 +1815,9 @@ function BotInventoryPanel({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleDropOutside(false)}
+                onClick={() => {
+                  handleDropOutside(false);
+                }}
                 disabled={!carriedItem}
                 className="text-xs"
               >
@@ -1804,7 +1826,9 @@ function BotInventoryPanel({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleDropOutside(true)}
+                onClick={() => {
+                  handleDropOutside(true);
+                }}
                 disabled={!carriedItem}
                 className="text-xs"
               >
@@ -2022,9 +2046,13 @@ function ContainerTextInputField({
   useEffect(() => {
     const element = fieldRef.current;
     if (!element) return undefined;
-    const beforeInput = (event: InputEvent) => handleBeforeInput(event);
+    const beforeInput = (event: InputEvent) => {
+      handleBeforeInput(event);
+    };
     element.addEventListener("beforeinput", beforeInput);
-    return () => element.removeEventListener("beforeinput", beforeInput);
+    return () => {
+      element.removeEventListener("beforeinput", beforeInput);
+    };
   }, []);
 
   return (
@@ -2082,7 +2110,7 @@ function ContainerTextInputField({
                 event.clipboardData.getData("text/plain"),
               );
             }}
-            onChange={(event) =>
+            onChange={(event) => {
               setDraft(
                 editServerInputDraft(
                   current,
@@ -2091,8 +2119,8 @@ function ContainerTextInputField({
                     : editBoxValue(event.target.value, 0),
                   isPending,
                 ),
-              )
-            }
+              );
+            }}
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton
@@ -2444,7 +2472,9 @@ function BotMovementPanel({
                 variant="outline"
                 size="sm"
                 className="size-10"
-                onPressedChange={() => toggleMovement("forward")}
+                onPressedChange={() => {
+                  toggleMovement("forward");
+                }}
                 disabled={isPending || !currentMovementState}
                 title={t("bots.movementPanel.forward")}
               >
@@ -2457,7 +2487,9 @@ function BotMovementPanel({
                   variant="outline"
                   size="sm"
                   className="size-10"
-                  onPressedChange={() => toggleMovement("left")}
+                  onPressedChange={() => {
+                    toggleMovement("left");
+                  }}
                   disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.left")}
                 >
@@ -2468,7 +2500,9 @@ function BotMovementPanel({
                   variant="outline"
                   size="sm"
                   className="size-10"
-                  onPressedChange={() => toggleMovement("backward")}
+                  onPressedChange={() => {
+                    toggleMovement("backward");
+                  }}
                   disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.backward")}
                 >
@@ -2479,7 +2513,9 @@ function BotMovementPanel({
                   variant="outline"
                   size="sm"
                   className="size-10"
-                  onPressedChange={() => toggleMovement("right")}
+                  onPressedChange={() => {
+                    toggleMovement("right");
+                  }}
                   disabled={isPending || !currentMovementState}
                   title={t("bots.movementPanel.right")}
                 >
@@ -2528,7 +2564,9 @@ function BotMovementPanel({
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => resetMutation.mutate()}
+              onClick={() => {
+                resetMutation.mutate();
+              }}
               disabled={isPending || demo}
             >
               <SquareIcon className="mr-1 size-3" />
@@ -2547,7 +2585,9 @@ function BotMovementPanel({
                 variant="outline"
                 size="sm"
                 className="size-10"
-                onClick={() => handleRotationChange(0, -15)}
+                onClick={() => {
+                  handleRotationChange(0, -15);
+                }}
                 disabled={isPending || demo}
                 title={t("bots.movementPanel.lookUp")}
               >
@@ -2559,7 +2599,9 @@ function BotMovementPanel({
                   variant="outline"
                   size="sm"
                   className="size-10"
-                  onClick={() => handleRotationChange(-15, 0)}
+                  onClick={() => {
+                    handleRotationChange(-15, 0);
+                  }}
                   disabled={isPending || demo}
                   title={t("bots.movementPanel.lookLeft")}
                 >
@@ -2569,7 +2611,9 @@ function BotMovementPanel({
                   variant="outline"
                   size="sm"
                   className="size-10"
-                  onClick={() => handleRotationChange(0, 15)}
+                  onClick={() => {
+                    handleRotationChange(0, 15);
+                  }}
                   disabled={isPending || demo}
                   title={t("bots.movementPanel.lookDown")}
                 >
@@ -2579,7 +2623,9 @@ function BotMovementPanel({
                   variant="outline"
                   size="sm"
                   className="size-10"
-                  onClick={() => handleRotationChange(15, 0)}
+                  onClick={() => {
+                    handleRotationChange(15, 0);
+                  }}
                   disabled={isPending || demo}
                   title={t("bots.movementPanel.lookRight")}
                 >

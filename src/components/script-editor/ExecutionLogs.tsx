@@ -113,7 +113,9 @@ export function ExecutionLogs({
         viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 24;
     };
     viewport.addEventListener("scroll", onScroll, { passive: true });
-    return () => viewport.removeEventListener("scroll", onScroll);
+    return () => {
+      viewport.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   // Auto-scroll to bottom when new logs are added

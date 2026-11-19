@@ -13,7 +13,9 @@ function subscribeToMobileQuery(onChange: () => void) {
 
   const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
   mql.addEventListener("change", onChange);
-  return () => mql.removeEventListener("change", onChange);
+  return () => {
+    mql.removeEventListener("change", onChange);
+  };
 }
 
 export function useIsMobile() {

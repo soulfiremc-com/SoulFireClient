@@ -19,7 +19,9 @@ test("released capture attempts cannot capture a later session", () => {
 test("repeated frames do not publish redundant UI updates", () => {
   const store = createPovPlayerStore();
   let updates = 0;
-  const sub = store.subscribe(() => updates++);
+  const sub = store.subscribe(() => {
+    updates++;
+  });
   store.actions.framePresented(false);
   for (let i = 0; i < 60; i++) store.actions.framePresented(false);
   assert.equal(updates, 1);

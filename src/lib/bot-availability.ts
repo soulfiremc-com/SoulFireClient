@@ -2,7 +2,7 @@ import { Code, ConnectError } from "@connectrpc/connect";
 
 // Older servers fail with a NullPointerException when a bot is connected but
 // has not joined a world yet, for example "...minecraft().level" is null.
-const MISSING_WORLD_MESSAGE = /"[^"]*\b(level|player)" is null/;
+const MISSING_WORLD_MESSAGE = /"[^"]*\b(level|player)" is null/u;
 
 /**
  * Whether a bot RPC failed because the bot is offline or not in a world yet.

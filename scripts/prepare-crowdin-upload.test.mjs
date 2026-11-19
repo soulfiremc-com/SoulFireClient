@@ -25,7 +25,9 @@ function listDirectory(path) {
 
 function prepare(t, files) {
   const root = mkdtempSync(join(tmpdir(), "crowdin-upload-"));
-  t.after(() => rmSync(root, { recursive: true, force: true }));
+  t.after(() => {
+    rmSync(root, { recursive: true, force: true });
+  });
   const repository = join(root, "repository");
   const destination = join(root, "upload");
   for (const [path, contents] of Object.entries({

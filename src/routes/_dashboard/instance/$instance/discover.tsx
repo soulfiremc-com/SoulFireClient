@@ -242,7 +242,9 @@ function Content() {
             aria-label={t("discover.search")}
             placeholder={t("discover.search")}
             value={query}
-            onChange={(event) => setQuery(event.currentTarget.value)}
+            onChange={(event) => {
+              setQuery(event.currentTarget.value);
+            }}
           />
         </InputGroup>
         <ToggleGroup

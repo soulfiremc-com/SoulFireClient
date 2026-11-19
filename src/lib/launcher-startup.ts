@@ -29,22 +29,22 @@ export function getLauncherStartupStage(
 }
 
 const FAILURE_PATTERNS: readonly (readonly [LauncherFailureKind, RegExp])[] = [
-  ["port-in-use", /address already in use|could not bind|port .*in use/i],
+  ["port-in-use", /address already in use|could not bind|port .*in use/iu],
   [
     "out-of-memory",
-    /outofmemoryerror|could not reserve enough space|insufficient memory/i,
+    /outofmemoryerror|could not reserve enough space|insufficient memory/iu,
   ],
   [
     "custom-jar",
-    /unable to access jarfile|invalid or corrupt jarfile|custom .*jar/i,
+    /unable to access jarfile|invalid or corrupt jarfile|custom .*jar/iu,
   ],
   [
     "java",
-    /unrecognized vm option|could not create the java virtual machine|unsupportedclassversion|java (runtime|executable).*(not found|missing)/i,
+    /unrecognized vm option|could not create the java virtual machine|unsupportedclassversion|java (runtime|executable).*(not found|missing)/iu,
   ],
   [
     "download",
-    /download|checksum|enotfound|econnreset|etimedout|network error|fetch failed/i,
+    /download|checksum|enotfound|econnreset|etimedout|network error|fetch failed/iu,
   ],
 ];
 

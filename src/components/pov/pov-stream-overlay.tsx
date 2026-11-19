@@ -6,8 +6,12 @@ export function PovStreamOverlay({ metrics }: { metrics: PovStreamMetrics }) {
     PovStreamMetrics["sample"]
   > | null>(null);
   useEffect(() => {
-    const timer = setInterval(() => setStats(metrics.sample()), 1000);
-    return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      setStats(metrics.sample());
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
   }, [metrics]);
 
   return (

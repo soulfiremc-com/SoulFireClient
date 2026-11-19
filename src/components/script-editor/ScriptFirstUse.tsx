@@ -83,13 +83,13 @@ export function ScriptFirstUse() {
                     size="sm"
                     variant="outline"
                     title={trigger.description}
-                    onClick={() =>
+                    onClick={() => {
                       editor.actions.addNode(
                         trigger.type,
                         canvasCenter().flow,
                         trigger.defaultData,
-                      )
-                    }
+                      );
+                    }}
                   >
                     {trigger.label}
                   </Button>

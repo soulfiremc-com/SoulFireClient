@@ -35,7 +35,7 @@ test("keeps unbounded fields valid and rejects isolated surrogate input", () => 
 });
 
 test("limits inserted text to the space released by the current selection", () => {
-  const original = text(...Array<number>(48).fill(65), 90);
+  const original = text(...Array.from({ length: 48 }, () => 65), 90);
   assert.deepEqual(
     points(editBoxInsertion(original, text(0x1f642), 10, 10, 50)),
     [],

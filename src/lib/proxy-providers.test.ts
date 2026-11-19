@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { Schema } from "effect";
 import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { assertDefined } from "@/lib/assert-defined";
 import {
@@ -19,6 +20,18 @@ import {
   validateProviderRequest,
   type ProviderRequest,
 } from "./provider-request-policy.ts";
+
+const decodeOrderBody = Schema.decodeUnknownSync(
+  Schema.fromJsonString(
+    Schema.Struct({
+      coupon: Schema.String,
+      paymentId: Schema.String,
+      quantity: Schema.Finite,
+      sectionCode: Schema.String,
+      periodId: Schema.String,
+    }),
+  ),
+);
 
 const values: ProviderConnection = {
   apiKey: "secret-key",
@@ -339,7 +352,9 @@ test("Proxy-Seller quotes and purchases with the affiliate coupon using balance 
   assert.equal(id, "order-456");
   assert.equal(requests.length, 3);
   for (const request of requests) {
-    const body = JSON.parse(assertDefined(request.body, "No request body"));
+    const body = decodeOrderBody(
+      assertDefined(request.body, "No request body"),
+    );
     assert.equal(body.coupon, "SOULFIREMC");
     assert.equal(body.paymentId, "balance");
     assert.equal(body.quantity, 5);
@@ -358,7 +373,7 @@ test("a removed coupon stays removed and price checks never place an order", asy
     fetcher,
   );
   assert.equal(
-    JSON.parse(assertDefined(requests[0]?.body, "No request body")).coupon,
+    decodeOrderBody(assertDefined(requests[0]?.body, "No request body")).coupon,
     "",
   );
   assert.ok(requests.every((request) => request.url.endsWith("/order/calc")));

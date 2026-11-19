@@ -150,7 +150,7 @@ export function ProxyFlow({
     !fields.includes("resourceId") || values.resourceId.trim().length > 0;
   const canLoad = hasCredentials && validLimit && hasResource && canWrite;
   const validOrder =
-    /^[A-Z]{3}$/.test(orderCountry) &&
+    /^[A-Z]{3}$/u.test(orderCountry) &&
     Number.isInteger(quantity) &&
     quantity >= 1 &&
     quantity <= MAX_PROVIDER_PROXIES;
@@ -243,7 +243,12 @@ export function ProxyFlow({
             <span />
           )}
           {stage === "connect" && (
-            <Button disabled={!hasCredentials} onClick={() => go("choose")}>
+            <Button
+              disabled={!hasCredentials}
+              onClick={() => {
+                go("choose");
+              }}
+            >
               {t("providers.continue")}
               <ArrowRightIcon data-icon="inline-end" />
             </Button>
@@ -363,8 +368,10 @@ export function ProxyFlow({
               label={t(`providers.fields.${field}`)}
               secret={field !== "username"}
               value={String(values[field])}
-              // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the field list contains only string fields of the connection
-              onChange={(next) => update(field, next as never)}
+              onChange={(next) => {
+                // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the field list contains only string fields of the connection
+                update(field, next as never);
+              }}
             />
           ))}
           {connection === "proxyscrape" && (
@@ -407,7 +414,9 @@ export function ProxyFlow({
               value={values.product}
               disabled={busy}
               className="grid-cols-3"
-              onValueChange={(next) => update("product", String(next))}
+              onValueChange={(next) => {
+                update("product", String(next));
+              }}
             >
               {staticProducts.map((product) => (
                 <ChoiceCard key={product.value} value={product.value}>
@@ -430,7 +439,9 @@ export function ProxyFlow({
                     { value: "direct", label: t("providers.direct") },
                     { value: "backbone", label: t("providers.backbone") },
                   ]}
-                  onChange={(next) => update("mode", next)}
+                  onChange={(next) => {
+                    update("mode", next);
+                  }}
                   disabled={busy}
                 />
               )}
@@ -448,7 +459,9 @@ export function ProxyFlow({
                       label: t("providers.dedicatedDatacenter"),
                     },
                   ]}
-                  onChange={(next) => update("product", next)}
+                  onChange={(next) => {
+                    update("product", next);
+                  }}
                   disabled={busy}
                 />
               )}
@@ -459,7 +472,9 @@ export function ProxyFlow({
                   value={values.resourceId}
                   disabled={busy}
                   description={t(`providers.resourceHelp.${connection}`)}
-                  onChange={(next) => update("resourceId", next)}
+                  onChange={(next) => {
+                    update("resourceId", next);
+                  }}
                 />
               )}
               {connection === "proxy-seller" && (
@@ -469,7 +484,9 @@ export function ProxyFlow({
                   value={values.resourceId}
                   disabled={busy}
                   description={t("providers.optionalOrderHelp")}
-                  onChange={(next) => update("resourceId", next)}
+                  onChange={(next) => {
+                    update("resourceId", next);
+                  }}
                 />
               )}
               {connection !== "decodo" && connection !== "oxylabs" && (
@@ -494,7 +511,9 @@ export function ProxyFlow({
                   value={values.limit}
                   max={MAX_PROVIDER_PROXIES}
                   disabled={busy}
-                  onChange={(next) => update("limit", next)}
+                  onChange={(next) => {
+                    update("limit", next);
+                  }}
                 />
               )}
               {fields.includes("country") && (
@@ -503,7 +522,9 @@ export function ProxyFlow({
                   label={t("providers.fields.country")}
                   value={values.country}
                   disabled={busy}
-                  onChange={(next) => update("country", next.slice(0, 2))}
+                  onChange={(next) => {
+                    update("country", next.slice(0, 2));
+                  }}
                 />
               )}
             </FieldGroup>

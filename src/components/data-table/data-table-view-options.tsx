@@ -38,8 +38,7 @@ export function DataTableViewOptions<TData extends RowData>({
       table
         .getAllColumns()
         .filter(
-          (column) =>
-            typeof column.accessorFn !== "undefined" && column.getCanHide(),
+          (column) => column.accessorFn !== undefined && column.getCanHide(),
         ),
     [table],
   );
@@ -78,9 +77,9 @@ export function DataTableViewOptions<TData extends RowData>({
                   {columns.map((column) => (
                     <CommandItem
                       key={column.id}
-                      onSelect={() =>
-                        column.toggleVisibility(!column.getIsVisible())
-                      }
+                      onSelect={() => {
+                        column.toggleVisibility(!column.getIsVisible());
+                      }}
                     >
                       <span className="truncate">
                         {column.columnDef.meta?.label ?? column.id}

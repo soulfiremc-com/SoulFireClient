@@ -232,7 +232,7 @@ export function isDesktopApp(): boolean {
 
 export const isMac =
   typeof navigator !== "undefined" &&
-  /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
+  /Mac|iPod|iPhone|iPad/u.test(navigator.userAgent);
 
 // macOS lists modifiers as symbols in this order, with no separators.
 const MAC_MODIFIERS = [
@@ -247,7 +247,7 @@ export function formatShortcutForPlatform(
 ): string {
   if (!mac) return shortcut;
 
-  const parts = shortcut.split(/\s*\+\s*/);
+  const parts = shortcut.split(/\s*\+\s*/u);
   const modifiers = MAC_MODIFIERS.filter(([name]) => parts.includes(name));
   const keys = parts.filter(
     (part) => !MAC_MODIFIERS.some(([name]) => name === part),

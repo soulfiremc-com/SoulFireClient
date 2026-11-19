@@ -1,4 +1,4 @@
-import i18n, { use } from "i18next";
+import i18n, { use as addI18nextModule } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
@@ -12,7 +12,7 @@ i18n.on("languageChanged", (language) => {
   });
 });
 
-void use(
+void addI18nextModule(
   resourcesToBackend((lng: string, ns: string) => {
     return import(`../../locales/${lng}/${ns}.json`);
   }),

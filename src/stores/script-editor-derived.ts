@@ -68,8 +68,8 @@ export function createEditorDerivedStores(
   });
   const validationGraph = createStore<{ nodes: Node[]; edges: Edge[] }>(
     (previous) => {
-      const nextNodes = nodes.get().map(validationNode);
-      const nextEdges = edges.get().map(validationEdge);
+      const nextNodes = nodes.get().map((node) => validationNode(node));
+      const nextEdges = edges.get().map((edge) => validationEdge(edge));
       if (
         previous &&
         previous.nodes.length === nextNodes.length &&

@@ -40,7 +40,9 @@ export function openMinecraftUrl(
   toast.info(t("common:minecraftActions.popupBlocked"), {
     action: {
       label: t("common:minecraftActions.openLink"),
-      onClick: () => win.open(url.href, "_blank", "noopener,noreferrer"),
+      onClick: () => {
+        win.open(url.href, "_blank", "noopener,noreferrer");
+      },
     },
   });
 }

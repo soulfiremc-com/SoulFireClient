@@ -65,12 +65,12 @@ function ScriptMenuExample({ kind }: { kind: "quick" | "dry-run" }) {
         ) : (
           <NodeTypesProvider>
             <Button
-              onClick={() =>
+              onClick={() => {
                 session.actions.openQuickAddMenu(
                   { x: 0, y: 0 },
                   { x: innerWidth - 4, y: innerHeight - 4 },
-                )
-              }
+                );
+              }}
             >
               Open Quick Add at edge
             </Button>
@@ -86,7 +86,11 @@ const meta = {
   title: "Scripts/Menu layout",
   component: ScriptMenuExample,
   args: { kind: "quick" },
-  beforeEach: () => initNodeDefinitions(definitions.map(protoNodeTypeToLocal)),
+  beforeEach: () => {
+    initNodeDefinitions(
+      definitions.map((definition) => protoNodeTypeToLocal(definition)),
+    );
+  },
 } satisfies Meta<typeof ScriptMenuExample>;
 export default meta;
 type Story = StoryObj<typeof meta>;

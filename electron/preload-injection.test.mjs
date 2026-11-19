@@ -3,9 +3,8 @@ import { spawn } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 
-const electronDir = path.dirname(fileURLToPath(import.meta.url));
+const electronDir = import.meta.dirname;
 const repoRoot = path.dirname(electronDir);
 
 function runCommand(command, args, options = {}) {
@@ -53,9 +52,9 @@ test(
       "utf8",
     );
 
-    assert.match(preloadBundle, /soulfireElectron/);
-    assert.doesNotMatch(preloadBundle, /desktop:call/);
-    assert.doesNotMatch(preloadBundle, /desktop:emit/);
-    assert.doesNotMatch(preloadBundle, /sendSync\(/);
+    assert.match(preloadBundle, /soulfireElectron/u);
+    assert.doesNotMatch(preloadBundle, /desktop:call/u);
+    assert.doesNotMatch(preloadBundle, /desktop:emit/u);
+    assert.doesNotMatch(preloadBundle, /sendSync\(/u);
   },
 );

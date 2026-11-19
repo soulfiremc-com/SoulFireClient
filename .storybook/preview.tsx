@@ -34,7 +34,7 @@ const preview: Preview = {
   parameters: {
     layout: "padded",
     a11y: { test: "error" },
-    controls: { matchers: { color: /(background|color)$/i, date: /Date$/ } },
+    controls: { matchers: { color: /(background|color)$/iu, date: /Date$/u } },
   },
   decorators: [
     withThemeByClassName<ReactRenderer>({

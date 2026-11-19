@@ -13,10 +13,10 @@ async function terminal(cols = 80, rows = 4) {
   bridge.init(cols, rows);
   return {
     bridge,
-    write: (data: string | Uint8Array) =>
-      typeof data === "string"
-        ? bridge.writeString(data)
-        : bridge.writeRaw(data),
+    write: (data: string | Uint8Array) => {
+      if (typeof data === "string") bridge.writeString(data);
+      else bridge.writeRaw(data);
+    },
   };
 }
 
@@ -58,15 +58,15 @@ test("metadata retains its labels, localized time, and severity color", () => {
       },
       "en-US",
     ),
-    `\x1b[0m\x1b[33mWARN ${new Date(0).toLocaleTimeString("en-US")} Test:Bot Logger\x1b[0m message\x1b[0m\r\n`,
+    `\u001B[0m\u001B[33mWARN ${new Date(0).toLocaleTimeString("en-US")} Test:Bot Logger\u001B[0m message\u001B[0m\r\n`,
   );
   assert.equal(
     formatTerminalLine(line("1", "message\n")),
-    "\x1b[0mmessage\r\n\x1b[0m",
+    "\u001B[0mmessage\r\n\u001B[0m",
   );
   assert.equal(
-    formatTerminalLine(line("1", "message\n\x1b[0m")),
-    "\x1b[0mmessage\r\n\x1b[0m\x1b[0m",
+    formatTerminalLine(line("1", "message\n\u001B[0m")),
+    "\u001B[0mmessage\r\n\u001B[0m\u001B[0m",
   );
 });
 
@@ -77,7 +77,7 @@ test("ANSI colors survive without allowing logs to alter terminal state", async 
     line("1", "keep"),
     line(
       "2",
-      "\x1b[2J\x1b[H\x1b[?1049h\x1b]52;c;bad\x07\x1b[31mred\x1b[0m\x08!",
+      "\u001B[2J\u001B[H\u001B[?1049h\u001B]52;c;bad\u0007\u001B[31mred\u001B[0m\u0008!",
     ),
     line("3", "plain"),
   ]);
@@ -92,9 +92,9 @@ test("unfinished escapes and control strings cannot consume the next log", async
   const term = await terminal();
   const output = createTerminalOutput(term);
   output.sync([
-    line("1", "first\x1b]52;c;unfinished"),
-    line("2", "second\x1b[31"),
-    line("3", "third\x1bPignored\x1b\\!"),
+    line("1", "first\u001B]52;c;unfinished"),
+    line("2", "second\u001B[31"),
+    line("3", "third\u001BPignored\u001B\\!"),
   ]);
   assert.equal(text(term.bridge), "first\nsecond\nthird!");
 });
@@ -102,7 +102,7 @@ test("unfinished escapes and control strings cannot consume the next log", async
 test("multiline messages start at column zero and reset their colors", async () => {
   const term = await terminal();
   createTerminalOutput(term).sync([
-    line("1", "\x1b[32mfirst\r\nsecond\n"),
+    line("1", "\u001B[32mfirst\r\nsecond\n"),
     line("2", "third"),
   ]);
   assert.equal(text(term.bridge), "first\nsecond\nthird");

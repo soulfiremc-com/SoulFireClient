@@ -242,30 +242,37 @@ function StringComponent(props: {
         maxLength={props.setting.maxLength}
         disabled={props.setting.disabled}
         onChange={(e) => void onChangeHandler(e)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
-    );
-  } else {
-    return (
-      <Input
-        id={props.id}
-        appearance="settings"
-        aria-label={props.setting.uiName}
-        aria-busy={pendingWrites > 0}
-        value={inputValue}
-        type={inputTypeToHtml(props.setting.inputType)}
-        placeholder={props.setting.placeholder}
-        minLength={props.setting.minLength}
-        maxLength={props.setting.maxLength}
-        pattern={props.setting.pattern}
-        disabled={props.setting.disabled}
-        onChange={(e) => void onChangeHandler(e)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={() => {
+          setIsFocused(true);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
       />
     );
   }
+  return (
+    <Input
+      id={props.id}
+      appearance="settings"
+      aria-label={props.setting.uiName}
+      aria-busy={pendingWrites > 0}
+      value={inputValue}
+      type={inputTypeToHtml(props.setting.inputType)}
+      placeholder={props.setting.placeholder}
+      minLength={props.setting.minLength}
+      maxLength={props.setting.maxLength}
+      pattern={props.setting.pattern}
+      disabled={props.setting.disabled}
+      onChange={(e) => void onChangeHandler(e)}
+      onFocus={() => {
+        setIsFocused(true);
+      }}
+      onBlur={() => {
+        setIsFocused(false);
+      }}
+    />
+  );
 }
 
 function NumericSettingField(props: {
@@ -359,7 +366,9 @@ function NumericSettingField(props: {
           props.onFocus?.();
           setIsFocused(true);
         }}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
         customInput={Input}
       />
       {invalid && (
@@ -380,7 +389,9 @@ function MinMaxSettingField(props: {
   changeCallback: (value: NumericRange) => void | Promise<void>;
 }) {
   const [editor] = useState(() => new NumericRangeEditor(props.value));
-  const startEdit = () => editor.startEdit(props.value);
+  const startEdit = () => {
+    editor.startEdit(props.value);
+  };
   return (
     <FieldSet className="min-w-0 gap-4">
       <FieldLegend className="sr-only">
@@ -934,7 +945,9 @@ function SettingStatusRow(props: {
           type="button"
           variant="ghost"
           size="xs"
-          onClick={() => props.onReset(defaultValue)}
+          onClick={() => {
+            props.onReset(defaultValue);
+          }}
         >
           <RotateCcwIcon data-icon="inline-start" />
           {t("settingsPage.resetToDefault")}
@@ -1083,15 +1096,15 @@ function SettingField(props: {
           props.mutationTarget.type === "bot" &&
           props.config.settings[namespace]?.[key] !== undefined
         }
-        onReset={(resetValue) =>
+        onReset={(resetValue) => {
           setValueMutation.mutate(
             resetValue,
             // String lists report other save errors inside the list.
             definition.type.case === "stringList"
               ? { onError: onSaveError }
               : {},
-          )
-        }
+          );
+        }}
       />
     </div>
   );
@@ -1217,15 +1230,15 @@ function SettingFieldByKey(props: {
         status={setValueMutation.status}
         persisted={persisted}
         overridden={false}
-        onReset={(resetValue) =>
+        onReset={(resetValue) => {
           setValueMutation.mutate(
             resetValue,
             // String lists report other save errors inside the list.
             definition.type.case === "stringList"
               ? { onError: onSaveError }
               : {},
-          )
-        }
+          );
+        }}
       />
     </div>
   );
@@ -1332,7 +1345,9 @@ export function ClientSettingsPageComponent({
   );
 
   const renderEntries = (entries: SettingsEntryIdentifier[]) => (
-    <FieldGroup className="gap-6">{entries.map(renderEntry)}</FieldGroup>
+    <FieldGroup className="gap-6">
+      {entries.map((entryId) => renderEntry(entryId))}
+    </FieldGroup>
   );
 
   const sections = groupSettingsEntries(data.id, common);
@@ -1357,7 +1372,9 @@ export function ClientSettingsPageComponent({
                 aria-label={t("settingsPage.filter")}
                 placeholder={t("settingsPage.filterPlaceholder")}
                 value={query}
-                onChange={(event) => setQuery(event.currentTarget.value)}
+                onChange={(event) => {
+                  setQuery(event.currentTarget.value);
+                }}
                 onKeyDown={(event) => {
                   if (event.key !== "Escape" || event.nativeEvent.isComposing)
                     return;
@@ -1384,7 +1401,9 @@ export function ClientSettingsPageComponent({
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setFilterOpen(true)}
+              onClick={() => {
+                setFilterOpen(true);
+              }}
             >
               <ListFilterIcon data-icon="inline-start" />
               {t("settingsPage.filter")}
@@ -1408,7 +1427,9 @@ export function ClientSettingsPageComponent({
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => openCommandPalette({ search: query.trim() })}
+              onClick={() => {
+                openCommandPalette({ search: query.trim() });
+              }}
             >
               <SearchIcon data-icon="inline-start" />
               {t("settingsPage.searchEverywhere")}

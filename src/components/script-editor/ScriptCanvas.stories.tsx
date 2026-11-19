@@ -134,7 +134,11 @@ async function dragWire(
         clientY: start.clientY + (to.clientY - start.clientY) * step,
       }),
     );
-    await new Promise(requestAnimationFrame);
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => {
+        resolve();
+      });
+    });
   }
   document.dispatchEvent(new MouseEvent("mouseup", { ...init, ...to }));
 }
@@ -160,7 +164,9 @@ const meta = {
   component: ScriptCanvasExample,
   parameters: { layout: "fullscreen" },
   beforeEach: () => {
-    initNodeDefinitions(definitions.map(protoNodeTypeToLocal));
+    initNodeDefinitions(
+      definitions.map((definition) => protoNodeTypeToLocal(definition)),
+    );
     // A stored dark theme must not leak into the canvas while the page is
     // forced to light. Other stories can leave one behind in CI.
     const storedTheme = localStorage.getItem("theme");
@@ -322,7 +328,11 @@ async function touchWire(from: HTMLElement, to: HTMLElement, offset: number) {
         changedTouches: [touch(at)],
       }),
     );
-    await new Promise(requestAnimationFrame);
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => {
+        resolve();
+      });
+    });
   }
   document.dispatchEvent(
     new TouchEvent("touchend", {

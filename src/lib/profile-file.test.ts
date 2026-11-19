@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create, equals } from "@bufbuild/protobuf";
+import { Schema } from "effect";
 import {
   MinecraftAccountProto_AccountTypeProto,
   MinecraftAccountProtoSchema,
@@ -14,6 +15,32 @@ import {
   type ProfileRoot,
 } from "@/lib/types";
 import { parseProfileFile, serializeProfileFile } from "./profile-file";
+
+const decodeJson = Schema.decodeUnknownSync(
+  Schema.fromJsonString(Schema.MutableJson),
+);
+
+function isJsonObject(
+  value: Schema.MutableJson | undefined,
+): value is Schema.MutableJsonObject {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/** Returns the token of the first account in a serialized profile. */
+function firstAccountToken(
+  profileJson: Schema.MutableJson,
+): Schema.MutableJsonObject {
+  const accounts = isJsonObject(profileJson)
+    ? profileJson["accounts"]
+    : undefined;
+  const account = Array.isArray(accounts) ? accounts[0] : undefined;
+  const accountData = isJsonObject(account)
+    ? account["accountData"]
+    : undefined;
+  const token = isJsonObject(accountData) ? accountData["value"] : undefined;
+  assert.ok(isJsonObject(token), "The profile has no account token");
+  return token;
+}
 
 function profile(expireTimeMs: bigint): ProfileRoot {
   return {
@@ -73,7 +100,7 @@ test("profile files preserve exact token expiries and the complete configuration
     const original = profile(expiry);
     const text = serializeProfileFile(original);
     assert.equal(
-      JSON.parse(text).accounts[0].accountData.value.expireTimeMs,
+      firstAccountToken(decodeJson(text))["expireTimeMs"],
       expiry.toString(),
     );
     const imported = parseProfileFile(text);
@@ -93,8 +120,8 @@ test("existing profile files and numeric token expiries remain importable", () =
   legacy.accounts.shift();
   assert.deepEqual(parseProfileFile(JSON.stringify(legacy)), legacy);
 
-  const numericExpiry = JSON.parse(serializeProfileFile(profile(123n)));
-  numericExpiry.accounts[0].accountData.value.expireTimeMs = 123;
+  const numericExpiry = decodeJson(serializeProfileFile(profile(123n)));
+  firstAccountToken(numericExpiry)["expireTimeMs"] = 123;
   assert.deepEqual(
     parseProfileFile(JSON.stringify(numericExpiry)),
     profile(123n),
@@ -103,8 +130,8 @@ test("existing profile files and numeric token expiries remain importable", () =
 
 test("invalid token expiries fail before a profile can be submitted", () => {
   for (const expiry of ["not-a-number", "1.5", "9223372036854775808"]) {
-    const invalid = JSON.parse(serializeProfileFile(profile(0n)));
-    invalid.accounts[0].accountData.value.expireTimeMs = expiry;
+    const invalid = decodeJson(serializeProfileFile(profile(0n)));
+    firstAccountToken(invalid)["expireTimeMs"] = expiry;
     assert.throws(() => parseProfileFile(JSON.stringify(invalid)));
   }
 });

@@ -155,7 +155,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         !event.metaKey &&
         !event.altKey &&
         event.key.length === 1 &&
-        /[a-zA-Z0-9!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~ ]/.test(event.key) &&
+        /[a-zA-Z0-9!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~ ]/u.test(event.key) &&
         (activeEl === null ||
           (!activeEl.closest(INTERACTIVE_SELECTOR) &&
             !activeEl.isContentEditable))
@@ -806,8 +806,12 @@ export default function CommandInput(props: { scope: CommandScope }) {
               replacementRange: null,
             });
           }}
-          onKeyUp={(event) => updateCursor(event.currentTarget)}
-          onClick={(event) => updateCursor(event.currentTarget)}
+          onKeyUp={(event) => {
+            updateCursor(event.currentTarget);
+          }}
+          onClick={(event) => {
+            updateCursor(event.currentTarget);
+          }}
           onScroll={updateCaretPosition}
           onCompositionStart={() => {
             composing.current = true;

@@ -23,7 +23,9 @@ test("dismissal cancels pending reads and ignores late results and failures", as
         signal = current;
         return read.promise;
       },
-      (texts) => accepted.push(...texts),
+      (texts) => {
+        accepted.push(...texts);
+      },
     );
     session.cancel();
     assert.equal(signal.aborted, true);
@@ -41,7 +43,9 @@ test("an old read cannot clear or deliver over a newer pending read", async () =
   const latest = deferred();
   const pendingOld = session.run(
     () => old.promise,
-    (texts) => accepted.push(...texts),
+    (texts) => {
+      accepted.push(...texts);
+    },
   );
   let latestSignal!: AbortSignal;
   const pendingLatest = session.run(
@@ -49,7 +53,9 @@ test("an old read cannot clear or deliver over a newer pending read", async () =
       latestSignal = signal;
       return latest.promise;
     },
-    (texts) => accepted.push(...texts),
+    (texts) => {
+      accepted.push(...texts);
+    },
   );
   old.resolve(["old"]);
   await pendingOld;
@@ -86,7 +92,9 @@ test("a failed batch imports nothing, aborts remaining reads, and allows retry",
         signal = current;
         return Promise.all([Promise.resolve("ready"), Promise.reject(failure)]);
       },
-      (texts) => accepted.push(...texts),
+      (texts) => {
+        accepted.push(...texts);
+      },
     ),
     (error) => error === failure,
   );
@@ -94,7 +102,9 @@ test("a failed batch imports nothing, aborts remaining reads, and allows retry",
   assert.equal(accepted.length, 0);
   await session.run(
     async () => ["retry"],
-    (texts) => accepted.push(...texts),
+    (texts) => {
+      accepted.push(...texts);
+    },
   );
   assert.deepEqual(accepted, ["retry"]);
 });

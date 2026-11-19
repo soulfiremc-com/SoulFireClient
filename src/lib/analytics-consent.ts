@@ -30,7 +30,9 @@ export function createAnalyticsConsent(
     client.set_config({
       person_profiles: getStatus() === "granted" ? "identified_only" : "never",
     });
-    listeners.forEach((listener) => listener());
+    listeners.forEach((listener) => {
+      listener();
+    });
   }
 
   function setConsent(accepted: boolean) {

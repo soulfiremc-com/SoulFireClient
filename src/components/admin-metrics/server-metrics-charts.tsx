@@ -55,8 +55,13 @@ const TIME_AXIS_PROPS = {
 };
 
 function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
-  const timeLabel = payload[0]?.payload?.timeLabel;
-  return typeof timeLabel === "string" ? timeLabel : "";
+  const point: unknown = payload[0]?.payload;
+  return typeof point === "object" &&
+    point !== null &&
+    "timeLabel" in point &&
+    typeof point.timeLabel === "string"
+    ? point.timeLabel
+    : "";
 }
 
 // ChartContainer hides the outline on the focusable chart surface, so draw a

@@ -1,4 +1,4 @@
-const WHITESPACE_REGEX = /\s/;
+const WHITESPACE_REGEX = /\s/u;
 
 export function getCommandTokenRange(
   text: string,

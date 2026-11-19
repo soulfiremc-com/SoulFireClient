@@ -101,7 +101,9 @@ function DataTableToolbarFilter<TData extends RowData>({
           label={columnMeta.label ?? column.id}
           placeholder={columnMeta.placeholder ?? columnMeta.label}
           value={filterText(column.getFilterValue())}
-          onValueChange={(value) => column.setFilterValue(value)}
+          onValueChange={(value) => {
+            column.setFilterValue(value);
+          }}
           className="h-8 w-full sm:w-56"
         />
       );
@@ -115,7 +117,9 @@ function DataTableToolbarFilter<TData extends RowData>({
             label={columnMeta.label ?? column.id}
             placeholder={columnMeta.placeholder ?? columnMeta.label}
             value={filterText(column.getFilterValue())}
-            onValueChange={(value) => column.setFilterValue(value)}
+            onValueChange={(value) => {
+              column.setFilterValue(value);
+            }}
             className={cn("h-8 w-full sm:w-36", columnMeta.unit && "pr-8")}
           />
           {columnMeta.unit && (

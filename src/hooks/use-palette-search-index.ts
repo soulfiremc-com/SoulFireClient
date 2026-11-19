@@ -1,10 +1,12 @@
 import type { Transport } from "@connectrpc/connect";
 import {
   type FetchQueryOptions,
+  matchQuery,
   type QueryClient,
   type QueryKey,
   useQueryClient,
 } from "@tanstack/react-query";
+import { Schema } from "effect";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import type { IndexedProject } from "@/lib/command-palette";
 import {
@@ -29,7 +31,10 @@ type Source = {
 };
 type SourceStatus = "loaded" | "failed";
 
-const INDEXED_KEYS = new Set(["instance-info", "scripts", "server-info"]);
+const INDEXED_KEYS = ["instance-info", "scripts", "server-info"];
+const decodeProjectIds = Schema.decodeUnknownSync(
+  Schema.fromJsonString(Schema.Array(Schema.String)),
+);
 
 function sourceQuery<TData, TKey extends QueryKey>(
   options: FetchQueryOptions<TData, Error, TData, TKey>,
@@ -78,8 +83,8 @@ export function usePaletteSearchIndex({
   // A new array with the same IDs must not restart the index.
   const idsKey = JSON.stringify(projectIds);
   // Projects need the RPC transport. Demo mode reads only cached projects.
-  const indexedIds = useMemo<string[]>(
-    () => (transport ? JSON.parse(idsKey) : []),
+  const indexedIds = useMemo<readonly string[]>(
+    () => (transport ? decodeProjectIds(idsKey) : []),
     [idsKey, transport],
   );
   const sources = useMemo<Source[]>(
@@ -116,7 +121,9 @@ export function usePaletteSearchIndex({
         if (
           event.type === "updated" &&
           (event.action.type === "success" || event.action.type === "error") &&
-          INDEXED_KEYS.has(String(event.query.queryKey[0]))
+          INDEXED_KEYS.some((key) =>
+            matchQuery({ queryKey: [key] }, event.query),
+          )
         )
           refresh();
       }),
@@ -124,7 +131,7 @@ export function usePaletteSearchIndex({
   );
 
   useEffect(() => {
-    if (!active || !sources.length) return undefined;
+    if (!active || sources.length === 0) return undefined;
     const controller = new AbortController();
     const running = new Map<string, QueryKey>();
     setStatuses((previous) =>

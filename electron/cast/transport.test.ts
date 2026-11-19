@@ -210,7 +210,7 @@ test("a failed launch and a version mismatch release every acquired socket", asy
   for (const options of [{ launchError: true }, { incompatible: true }]) {
     const f = await fixture(options);
     // Bun types `rejects` matchers as void, but they return a promise at runtime.
-    // oxlint-disable-next-line typescript/await-thenable
+    // oxlint-disable-next-line typescript/await-thenable, typescript/no-confusing-void-expression
     await expect(f.open()).rejects.toBeInstanceOf(Error);
     await f.dispose();
     expect(f.clients[0]?.closed).toBe(1);

@@ -101,7 +101,7 @@ interface MetadataEntry {
 }
 
 function generateId(): string {
-  return Math.random().toString(36).substring(7);
+  return Math.random().toString(36).slice(7);
 }
 
 function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
@@ -239,9 +239,9 @@ function InstanceNameField({
                       )}
                       aria-invalid={invalid}
                       disabled={disabled || isSubmitting}
-                      onChange={(event) =>
-                        field.handleChange(event.currentTarget.value)
-                      }
+                      onChange={(event) => {
+                        field.handleChange(event.currentTarget.value);
+                      }}
                       onBlur={() => {
                         field.handleBlur();
                         void form.handleSubmit();
@@ -831,9 +831,9 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                           type="text"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.currentTarget.value)
-                          }
+                          onChange={(e) => {
+                            field.handleChange(e.currentTarget.value);
+                          }}
                           placeholder={t(
                             "instanceMetadata.namespacePlaceholder",
                           )}
@@ -863,9 +863,9 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                           type="text"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.currentTarget.value)
-                          }
+                          onChange={(e) => {
+                            field.handleChange(e.currentTarget.value);
+                          }}
                           placeholder={t("instanceMetadata.keyPlaceholder")}
                           aria-invalid={isInvalid}
                         />
@@ -893,9 +893,9 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                           type="text"
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.currentTarget.value)
-                          }
+                          onChange={(e) => {
+                            field.handleChange(e.currentTarget.value);
+                          }}
                           placeholder={t("instanceMetadata.valuePlaceholder")}
                           className="font-mono"
                           aria-invalid={isInvalid}
@@ -959,18 +959,18 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
             <MetadataEntryRow
               key={entry.id}
               entry={entry}
-              onUpdate={(field, value) =>
+              onUpdate={(field, value) => {
                 handleUpdateEntry(
                   entry.id,
                   entry.namespace,
                   entry.key,
                   field,
                   value,
-                )
-              }
-              onDelete={() =>
-                handleDeleteEntry(entry.id, entry.namespace, entry.key)
-              }
+                );
+              }}
+              onDelete={() => {
+                handleDeleteEntry(entry.id, entry.namespace, entry.key);
+              }}
               isDeleting={deleteEntryMutation.isPending}
               isUpdating={
                 !isMetadataReady ||
@@ -1039,10 +1039,12 @@ function MetadataEntryRow({
             id={`${entry.id}-namespace`}
             type="text"
             value={draft.namespace}
-            onChange={(e) =>
-              setDraft({ ...draft, namespace: e.currentTarget.value })
-            }
-            onBlur={() => saveField("namespace")}
+            onChange={(e) => {
+              setDraft({ ...draft, namespace: e.currentTarget.value });
+            }}
+            onBlur={() => {
+              saveField("namespace");
+            }}
             disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.namespacePlaceholder")}
             aria-invalid={!isValidNamespace}
@@ -1061,8 +1063,12 @@ function MetadataEntryRow({
             id={`${entry.id}-key`}
             type="text"
             value={draft.key}
-            onChange={(e) => setDraft({ ...draft, key: e.currentTarget.value })}
-            onBlur={() => saveField("key")}
+            onChange={(e) => {
+              setDraft({ ...draft, key: e.currentTarget.value });
+            }}
+            onBlur={() => {
+              saveField("key");
+            }}
             disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.keyPlaceholder")}
             aria-invalid={!isValidKey}
@@ -1081,10 +1087,12 @@ function MetadataEntryRow({
             id={`${entry.id}-value`}
             type="text"
             value={draft.value}
-            onChange={(e) =>
-              setDraft({ ...draft, value: e.currentTarget.value })
-            }
-            onBlur={() => saveField("value")}
+            onChange={(e) => {
+              setDraft({ ...draft, value: e.currentTarget.value });
+            }}
+            onBlur={() => {
+              saveField("value");
+            }}
             disabled={isUpdating || isDeleting}
             placeholder={t("instanceMetadata.valuePlaceholder")}
             className="font-mono"

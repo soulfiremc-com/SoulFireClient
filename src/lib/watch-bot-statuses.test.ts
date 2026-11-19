@@ -68,9 +68,15 @@ test("a transient failure reconnects and teardown cancels the live stream", asyn
           await new Promise<void>((resolve) => {
             if (context.signal.aborted) resolve();
             else
-              context.signal.addEventListener("abort", () => resolve(), {
-                once: true,
-              });
+              context.signal.addEventListener(
+                "abort",
+                () => {
+                  resolve();
+                },
+                {
+                  once: true,
+                },
+              );
           });
         } finally {
           ended = true;
@@ -159,9 +165,15 @@ test("cleanup cancels a pending fleet refresh as well as the live stream", async
           await new Promise<void>((resolve) => {
             if (context.signal.aborted) resolve();
             else
-              context.signal.addEventListener("abort", () => resolve(), {
-                once: true,
-              });
+              context.signal.addEventListener(
+                "abort",
+                () => {
+                  resolve();
+                },
+                {
+                  once: true,
+                },
+              );
           });
         } finally {
           ended = true;

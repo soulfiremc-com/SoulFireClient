@@ -81,7 +81,7 @@ test("an incomplete stream or failed settings write cannot report success", asyn
       async () => {},
       () => {},
     ),
-    /completion message/,
+    /completion message/u,
   );
   await assert.rejects(
     checkProxies(
@@ -92,6 +92,6 @@ test("an incomplete stream or failed settings write cannot report success", asyn
       },
       () => {},
     ),
-    /write failed/,
+    /write failed/u,
   );
 });

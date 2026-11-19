@@ -9,7 +9,7 @@ export function createUsernameSchema(messages: {
   return Schema.String.check(Schema.isMinLength(3, { message: messages.min }))
     .check(Schema.isMaxLength(32, { message: messages.max }))
     .check(
-      Schema.isPattern(/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/, {
+      Schema.isPattern(/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/u, {
         message: messages.pattern,
       }),
     );

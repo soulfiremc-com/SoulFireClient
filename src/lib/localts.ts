@@ -10,7 +10,7 @@ import {
 // Contract: https://localts.store/api-docs (authenticated documentation).
 const base = "https://localts.store/v1";
 const productSchema = Schema.Struct({
-  id: Schema.String.check(Schema.isPattern(/^[\w-]+$/)),
+  id: Schema.String.check(Schema.isPattern(/^[\w-]+$/u)),
   name: Schema.String,
   category: Schema.String,
   priceInCredits: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
@@ -22,7 +22,7 @@ const productSchema = Schema.Struct({
   type: Schema.String,
   quantityDiscounts: Schema.optional(
     Schema.Record(
-      Schema.String.check(Schema.isPattern(/^[1-9]\d*$/)),
+      Schema.String.check(Schema.isPattern(/^[1-9]\d*$/u)),
       Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
         Schema.isLessThanOrEqualTo(100),
       ),
@@ -244,7 +244,7 @@ export function localtsOrderAccounts(
     )
       return content;
     // Localts delivers the Microsoft cookie value rather than a cookie file.
-    if (/[\s;]/.test(content)) throw new ProviderApiError("response");
+    if (/[\s;]/u.test(content)) throw new ProviderApiError("response");
     return JSON.stringify([
       { domain: "login.live.com", name: "__Host-MSAAUTHP", value: content },
     ]);

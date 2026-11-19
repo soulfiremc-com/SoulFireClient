@@ -13,7 +13,7 @@ import { Scroller } from "./scroller";
 const meta = {
   title: "UI/Base composition",
   component: Editable,
-  args: { defaultValue: "Initial name", onSubmit: fn() },
+  args: { defaultValue: "Initial name", onSubmit: fn<() => void>() },
 } satisfies Meta<typeof Editable>;
 export default meta;
 type Story = StoryObj<typeof meta>;

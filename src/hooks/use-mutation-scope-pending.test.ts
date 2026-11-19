@@ -94,7 +94,7 @@ describe("mutation scope pending state", () => {
     await secondStarted.promise;
     assert.equal(store.getSnapshot(), true);
     const failure = new Error();
-    const rejected = secondResult.catch((error) => error);
+    const rejected = secondResult.catch((error: unknown) => error);
     second.reject(failure);
     assert.equal(await rejected, failure);
     assert.equal(store.getSnapshot(), false);

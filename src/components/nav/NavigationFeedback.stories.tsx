@@ -22,7 +22,12 @@ let releaseSlowPage: () => void = () => {};
 function MobileSheetProbe() {
   const { openMobile, setOpenMobile } = useSidebar();
   return (
-    <Button variant="outline" onClick={() => setOpenMobile(true)}>
+    <Button
+      variant="outline"
+      onClick={() => {
+        setOpenMobile(true);
+      }}
+    >
       {openMobile ? "Sheet open" : "Sheet closed"}
     </Button>
   );

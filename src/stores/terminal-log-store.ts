@@ -37,8 +37,8 @@ function compareTerminalLines(left: TerminalLine, right: TerminalLine): number {
   if (a.nanos !== b.nanos) return a.nanos - b.nanos;
   // Published log IDs include a numeric sequence for equal timestamps.
   // Personal messages use UUIDs and keep their arrival order on a tie.
-  const leftSequence = /^\d+-(-?\d+)$/.exec(left.id)?.[1];
-  const rightSequence = /^\d+-(-?\d+)$/.exec(right.id)?.[1];
+  const leftSequence = /^\d+-(-?\d+)$/u.exec(left.id)?.[1];
+  const rightSequence = /^\d+-(-?\d+)$/u.exec(right.id)?.[1];
   return leftSequence !== undefined && rightSequence !== undefined
     ? Number(leftSequence) - Number(rightSequence)
     : 0;

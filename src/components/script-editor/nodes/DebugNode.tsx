@@ -51,7 +51,7 @@ function formatValue(value: unknown): string {
   if (Array.isArray(value)) {
     if (value.length === 0) return "[]";
     if (value.length <= 3) {
-      return `[${value.map(formatValue).join(", ")}]`;
+      return `[${value.map((item) => formatValue(item)).join(", ")}]`;
     }
     return `[${value.length} items]`;
   }

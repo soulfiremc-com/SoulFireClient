@@ -27,7 +27,7 @@ export function useProxyCheck(
 
   return useCallback(
     (proxies: ProfileProxy[], removeFailedProxies = true) => {
-      if (!transport || !proxies.length) return;
+      if (!transport || proxies.length === 0) return;
       current.current?.abort.abort();
       if (current.current) toast.dismiss(current.current.toastId);
       const abort = new AbortController();

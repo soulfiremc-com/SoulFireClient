@@ -108,7 +108,7 @@ export function BotListPreview({
                         />
                       }
                       aria-label={t("overview.bots.detailsFor", { name })}
-                      onContextMenu={(event) =>
+                      onContextMenu={(event) => {
                         onContextMenu(event, {
                           ...account,
                           isOnline: bot?.isOnline ?? false,
@@ -119,8 +119,8 @@ export function BotListPreview({
                           accountName: bot?.accountName,
                           liveState: bot?.liveState,
                           status: bot?.status,
-                        })
-                      }
+                        });
+                      }}
                     >
                       <ItemMedia>
                         <MinecraftHead

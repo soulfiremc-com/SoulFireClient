@@ -406,9 +406,9 @@ export function QuickAddMenu() {
                           ? "bg-accent text-accent-foreground"
                           : "hover:bg-accent/50",
                       )}
-                      onClick={() =>
-                        setExpandedCategory(isExpanded ? null : item.id)
-                      }
+                      onClick={() => {
+                        setExpandedCategory(isExpanded ? null : item.id);
+                      }}
                     >
                       {isExpanded ? (
                         <ChevronDownIcon className="size-4" />
@@ -443,7 +443,9 @@ export function QuickAddMenu() {
                           ? "bg-accent text-accent-foreground"
                           : "hover:bg-accent/50",
                       )}
-                      onClick={() => item.node && selectNode(item.node)}
+                      onClick={() => {
+                        if (item.node) selectNode(item.node);
+                      }}
                     >
                       <span
                         className="size-2 rounded-full"

@@ -21,7 +21,7 @@ export class PovVideoDecoder {
     private readonly error: (error: Error) => void,
   ) {
     if (typeof VideoDecoder === "undefined") {
-      throw new Error(
+      throw new TypeError(
         "Live POV requires a browser with WebCodecs video decoding in a secure context.",
       );
     }

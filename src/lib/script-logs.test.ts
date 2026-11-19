@@ -41,7 +41,7 @@ test("script log feed reconciles history and live messages and retains repeated 
   const warning = {
     id: "warning",
     level: "WARNING",
-    message: "\u001b[33mRepeated message\u001b[0m",
+    message: "\u001B[33mRepeated message\u001B[0m",
     timestamp: { seconds: 1n },
   };
   const error = {
@@ -146,21 +146,21 @@ test("script feed retains independent provenance and strips untrusted interactio
     {
       id: "legacy",
       personal: false,
-      message: "\x1b[31mLegacy\x1b[0m\x1b]777;soulfire;1;unfinished",
+      message: "\u001B[31mLegacy\u001B[0m\u001B]777;soulfire;1;unfinished",
     },
   ];
   const pending = new Promise<void>((resolve) => {
     release = resolve;
   });
-  const transport = createRouterTransport((router) =>
+  const transport = createRouterTransport((router) => {
     router.service(LogsService, {
       getPrevious: () => ({ messages }),
       async *subscribe() {
         yield { message: messages[0] };
         await pending;
       },
-    }),
-  );
+    });
+  });
   let logs: LogEntry[] = [];
   const received = new Promise<void>((resolve) => {
     ready = resolve;

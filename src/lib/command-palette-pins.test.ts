@@ -54,7 +54,7 @@ test("pins persist only IDs and project scope, and survive a reload", () => {
   pins = togglePalettePin(pins, darkTheme) ?? [];
   storage.setItem(key, JSON.stringify(pins));
   const stored = storage.getItem(key) ?? "";
-  assert.doesNotMatch(stored, /botIds|operation|destination/);
+  assert.doesNotMatch(stored, /botIds|operation|destination/u);
   assert.deepEqual(readPalettePins(storage, key), [
     { id: "stop-bots:farm", projectId: "farm" },
     { id: "theme-dark" },

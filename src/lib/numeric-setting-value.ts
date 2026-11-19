@@ -4,7 +4,10 @@ export function getNumericSettingValue(
   max: number,
   integer: boolean,
 ): number | undefined {
-  if (typeof draft === "string" && !/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(draft)) {
+  if (
+    typeof draft === "string" &&
+    !/^-?(?:\d+(?:\.\d*)?|\.\d+)$/u.test(draft)
+  ) {
     return undefined;
   }
   const value = typeof draft === "number" ? draft : Number(draft);

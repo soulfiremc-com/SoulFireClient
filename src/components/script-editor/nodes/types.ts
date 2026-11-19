@@ -235,12 +235,18 @@ export function unifyTypes(
   }
 
   // Simple LIST/MAP vs Parameterized LIST/MAP (backward compat)
-  if (resolvedA.kind === "simple" && resolvedB.kind === "parameterized") {
-    if (resolvedA.type === resolvedB.base) return true;
-  }
-  if (resolvedB.kind === "simple" && resolvedA.kind === "parameterized") {
-    if (resolvedB.type === resolvedA.base) return true;
-  }
+  if (
+    resolvedA.kind === "simple" &&
+    resolvedB.kind === "parameterized" &&
+    resolvedA.type === resolvedB.base
+  )
+    return true;
+  if (
+    resolvedB.kind === "simple" &&
+    resolvedA.kind === "parameterized" &&
+    resolvedB.type === resolvedA.base
+  )
+    return true;
 
   return false;
 }

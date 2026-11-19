@@ -100,7 +100,10 @@ export class CastSessionManager {
               },
               catch: (cause) => new CastDiscoveryError({ cause }),
             }),
-            (service) => Effect.sync(() => service.destroy()),
+            (service) =>
+              Effect.sync(() => {
+                service.destroy();
+              }),
           );
           const browser = bonjour.find({ type: "googlecast" }, (service) => {
             const id = service.txt?.["id"];
@@ -120,7 +123,7 @@ export class CastSessionManager {
             this.registerDevice({
               id,
               name: service.txt?.["fn"] ?? service.name,
-              address: address.replace(/\.$/, ""),
+              address: address.replace(/\.$/u, ""),
               port: service.port,
             });
           });
@@ -131,7 +134,11 @@ export class CastSessionManager {
               this.changed();
             }
           });
-          yield* Effect.addFinalizer(() => Effect.sync(() => browser.stop()));
+          yield* Effect.addFinalizer(() =>
+            Effect.sync(() => {
+              browser.stop();
+            }),
+          );
           return yield* Effect.never;
         }),
       ).pipe(
@@ -385,9 +392,9 @@ export class CastSessionManager {
         );
         return yield* attempt.pipe(
           Effect.tapError((error) =>
-            Effect.sync(() =>
-              patch({ phase: "reconnecting", error: error.message }),
-            ),
+            Effect.sync(() => {
+              patch({ phase: "reconnecting", error: error.message });
+            }),
           ),
           Effect.retry({
             times: 5,

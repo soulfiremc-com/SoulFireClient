@@ -60,7 +60,7 @@ const port = Schema.Unknown.pipe(
   .check(Schema.isGreaterThanOrEqualTo(1))
   .check(Schema.isLessThanOrEqualTo(65535));
 const host = Schema.String.check(Schema.isMinLength(1)).check(
-  Schema.makeFilter((value) => !/[\s/@?#]/.test(value)),
+  Schema.makeFilter((value) => !/[\s/@?#]/u.test(value)),
 );
 const optionalCredential = Schema.optional(Schema.NullOr(Schema.String));
 
@@ -96,7 +96,7 @@ function required(value: string): string {
 }
 
 function resource(value: string): string {
-  if (!/^[\w-]+$/.test(value)) throw new ProviderApiError("response");
+  if (!/^[\w-]+$/u.test(value)) throw new ProviderApiError("response");
   return value;
 }
 
@@ -116,7 +116,7 @@ function sellerData(value: unknown): unknown {
 
 function textProxies(text: string): ProfileProxy[] {
   return text
-    .split(/\r?\n/)
+    .split(/\r?\n/u)
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => {
@@ -134,7 +134,9 @@ export function newProviderProxies(
   proxies: ProfileProxy[],
   existing: ProfileProxy[] = [],
 ): ProfileProxy[] {
-  const seen = new Set(existing.map(getProxyKey));
+  const seen = new Set(
+    existing.map((existingProxy) => getProxyKey(existingProxy)),
+  );
   return proxies.filter((entry) => {
     const key = getProxyKey(entry);
     if (seen.has(key)) return false;
@@ -289,7 +291,7 @@ export function loadProviderProxies(
           break;
         }
         case "iproyal": {
-          if (!/^\d+$/.test(values.resourceId))
+          if (!/^\d+$/u.test(values.resourceId))
             throw new ProviderApiError("response");
           const data = parse(
             Schema.Struct({
@@ -329,7 +331,7 @@ export function loadProviderProxies(
               );
             try {
               const parsed = parseNormalProxy(entry, values.protocol);
-              const ip = parsed.address.slice(7).replace(/:\d+$/, "");
+              const ip = parsed.address.slice(7).replace(/:\d+$/u, "");
               return proxy(
                 ip,
                 proxyPort,
@@ -347,7 +349,7 @@ export function loadProviderProxies(
           // This documented generator returns HTTP endpoints only.
           if (values.protocol !== ProxyProto_Type.HTTP)
             throw new ProviderApiError("response");
-          if (values.country && !/^[a-z]{2}$/i.test(values.country))
+          if (values.country && !/^[a-zA-Z]{2}$/u.test(values.country))
             throw new ProviderApiError("response");
           const query = new URLSearchParams({
             username: required(values.username),
@@ -379,7 +381,7 @@ export function loadProviderProxies(
             `${required(values.username)}:${values.password}`,
           );
           const auth = btoa(
-            Array.from(bytes, (byte) => String.fromCharCode(byte)).join(""),
+            Array.from(bytes, (byte) => String.fromCodePoint(byte)).join(""),
           );
           const data = parse(
             Schema.mutable(Schema.Array(Schema.Struct({ ip: host, port }))),
@@ -431,7 +433,7 @@ export function loadProviderProxies(
       }
       if (proxies.length > MAX_PROVIDER_PROXIES)
         throw new ProviderApiError("limit");
-      if (!proxies.length) throw new ProviderApiError("empty");
+      if (proxies.length === 0) throw new ProviderApiError("empty");
       return newProviderProxies(proxies);
     }).pipe(providerParsing),
     signal,
@@ -459,8 +461,8 @@ export type SellerQuote = { total: number; balance: number; currency: string };
 function sellerOrderBody(order: SellerOrder) {
   if (
     !["ipv4", "ipv6", "isp"].includes(order.product) ||
-    !/^[A-Z]{3}$/.test(order.country) ||
-    !/^[\w-]+$/.test(order.period) ||
+    !/^[A-Z]{3}$/u.test(order.country) ||
+    !/^[\w-]+$/u.test(order.period) ||
     !Number.isInteger(order.quantity) ||
     order.quantity < 1 ||
     order.quantity > MAX_PROVIDER_PROXIES

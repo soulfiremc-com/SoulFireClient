@@ -94,29 +94,29 @@ export type BotFailureKind =
  * such as "account" or "version" that can also appear in other messages.
  */
 const FAILURE_PATTERNS: readonly (readonly [BotFailureKind, RegExp])[] = [
-  ["proxy", /proxy|socks[45]?\b/i],
+  ["proxy", /proxy|socks[45]?\b/iu],
   // SoulFire's own message when an offline or Bedrock account meets a server
   // in online mode, and login plugins that reserve premium names.
   [
     "onlineAuth",
-    /online authentication|online.?mode|premium|use a microsoft (java )?account/i,
+    /online authentication|online.?mode|premium|use a microsoft (java )?account/iu,
   ],
-  ["blocked", /\bbanned\b|white-?listed|kicked by an operator/i],
+  ["blocked", /\bbanned\b|white-?listed|kicked by an operator/iu],
   [
     "account",
-    /invalid session|not authenticated|authenticat|failed to verify username|session server|logged in from another location|name is already taken|token|account/i,
+    /invalid session|not authenticated|authenticat|failed to verify username|session server|logged in from another location|name is already taken|token|account/iu,
   ],
   [
     "version",
-    /outdated (client|server)|incompatible client|protocol|unsupported version|version/i,
+    /outdated (client|server)|incompatible client|protocol|unsupported version|version/iu,
   ],
   [
     "throttled",
-    /throttl|too many|too fast|rate.?limit|please wait|wait before|server is full/i,
+    /throttl|too many|too fast|rate.?limit|please wait|wait before|server is full/iu,
   ],
   [
     "unreachable",
-    /connection refused|timed? ?out|no route|unknown host|unresolved|name or service|connection reset|unreachable|failed to connect/i,
+    /connection refused|timed? ?out|no route|unknown host|unresolved|name or service|connection reset|unreachable|failed to connect/iu,
   ],
 ];
 
@@ -141,8 +141,8 @@ export type BotFailureGroup = {
 function normalizeFailure(message: string): string {
   return message
     .trim()
-    .replaceAll(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/gi, "#")
-    .replaceAll(/\d+/g, "#")
+    .replaceAll(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/giu, "#")
+    .replaceAll(/\d+/gu, "#")
     .toLowerCase();
 }
 
@@ -209,7 +209,7 @@ export function selectBotsToStart(
  * `max`. Pass no `max` when the limit is not known yet.
  */
 export function parseBotStartCount(value: string, max?: number): number | null {
-  if (!/^\s*\d+\s*$/.test(value)) return null;
+  if (!/^\s*\d+\s*$/u.test(value)) return null;
   const count = Number(value);
   if (count < 1 || (max !== undefined && count > max)) return null;
   return count;

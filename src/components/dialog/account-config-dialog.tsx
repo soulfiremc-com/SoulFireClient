@@ -223,7 +223,7 @@ function formatSettingValue(
       }
 
       if (listValue.length <= 2) {
-        return listValue.map(displayText).join(", ");
+        return listValue.map((item) => displayText(item)).join(", ");
       }
 
       return translate("instance:account.config.value.entries", {
@@ -449,7 +449,9 @@ function BotSettingRow(props: {
           <Button
             variant="ghost"
             size="xs"
-            onClick={() => resetMutation.mutate()}
+            onClick={() => {
+              resetMutation.mutate();
+            }}
             disabled={resetMutation.isPending}
           >
             <RotateCcwIcon className="size-3.5" />
@@ -771,7 +773,9 @@ function DialogContentInner({
                   defaultValue: "Search settings",
                 })}
                 value={searchQuery}
-                onChange={(event) => setSearchQuery(event.currentTarget.value)}
+                onChange={(event) => {
+                  setSearchQuery(event.currentTarget.value);
+                }}
               />
             </InputGroup>
           </div>
@@ -876,7 +880,9 @@ function DialogContentInner({
                   <button
                     key={page.id}
                     type="button"
-                    onClick={() => setSelectedPage(page.id)}
+                    onClick={() => {
+                      setSelectedPage(page.id);
+                    }}
                     className={cn(
                       "flex items-center gap-3 px-4 py-2 text-left text-sm transition-colors",
                       page.id === currentPage?.id
@@ -905,7 +911,9 @@ function DialogContentInner({
               <div className="border-b px-4 py-3">
                 <Select
                   value={currentPage?.id}
-                  onValueChange={(value) => setSelectedPage(value)}
+                  onValueChange={(value) => {
+                    setSelectedPage(value);
+                  }}
                   items={pageItems}
                 >
                   <SelectTrigger

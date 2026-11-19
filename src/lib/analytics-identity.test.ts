@@ -55,7 +55,9 @@ test("missing, demo, malformed, and zero installation IDs never identify users",
 test("SDK initialization resets legacy identities and their contaminated device IDs", () => {
   for (const id of [root, otherUser]) {
     const posthog = client(id);
-    resetLegacyAnalyticsIdentity(posthog, () => posthog.reset(true));
+    resetLegacyAnalyticsIdentity(posthog, () => {
+      posthog.reset(true);
+    });
     assert.deepEqual(posthog.calls, [["reset", true]]);
   }
   for (const id of [
@@ -66,7 +68,9 @@ test("SDK initialization resets legacy identities and their contaminated device 
     ),
   ]) {
     const posthog = client(id);
-    resetLegacyAnalyticsIdentity(posthog, () => posthog.reset(true));
+    resetLegacyAnalyticsIdentity(posthog, () => {
+      posthog.reset(true);
+    });
     assert.deepEqual(posthog.calls, []);
   }
 });
@@ -78,12 +82,12 @@ test("migration resets before identifying and does not reset the same user again
     "Expected getAnalyticsIdentity(firstInstallation, root) to exist",
   );
   const properties = { installation_id: firstInstallation };
-  syncAnalyticsIdentity(posthog, identity, properties, () =>
-    posthog.reset(true),
-  );
-  syncAnalyticsIdentity(posthog, identity, properties, () =>
-    posthog.reset(true),
-  );
+  syncAnalyticsIdentity(posthog, identity, properties, () => {
+    posthog.reset(true);
+  });
+  syncAnalyticsIdentity(posthog, identity, properties, () => {
+    posthog.reset(true);
+  });
   assert.deepEqual(posthog.calls, [
     ["reset", true],
     ["identify", identity, properties],
@@ -105,8 +109,12 @@ test("switching installations or users resets before the next identity", () => {
     "Expected getAnalyticsIdentity(secondInstallation, otherUser) to exist",
   );
   const posthog = client(first);
-  syncAnalyticsIdentity(posthog, second, {}, () => posthog.reset(true));
-  syncAnalyticsIdentity(posthog, other, {}, () => posthog.reset(true));
+  syncAnalyticsIdentity(posthog, second, {}, () => {
+    posthog.reset(true);
+  });
+  syncAnalyticsIdentity(posthog, other, {}, () => {
+    posthog.reset(true);
+  });
   assert.deepEqual(posthog.calls, [
     ["reset", true],
     ["identify", second, {}],
@@ -122,8 +130,12 @@ test("older servers, demo, and impersonation clear identified state without reid
       "Expected getAnalyticsIdentity(firstInstallation, root) to exist",
     ),
   );
-  syncAnalyticsIdentity(posthog, null, {}, () => posthog.reset(true));
-  syncAnalyticsIdentity(posthog, null, {}, () => posthog.reset(true));
+  syncAnalyticsIdentity(posthog, null, {}, () => {
+    posthog.reset(true);
+  });
+  syncAnalyticsIdentity(posthog, null, {}, () => {
+    posthog.reset(true);
+  });
   assert.deepEqual(posthog.calls, [["reset", true]]);
 });
 
@@ -151,7 +163,9 @@ test("legacy identity migration preserves every consent choice while replacing t
       },
       true,
     );
-    resetLegacyAnalyticsIdentity(posthog, () => consent.resetIdentity(true));
+    resetLegacyAnalyticsIdentity(posthog, () => {
+      consent.resetIdentity(true);
+    });
     assert.deepEqual(posthog.calls, [["reset", true]]);
     assert.equal(consent.getStatus(), initialStatus);
     assert.equal(

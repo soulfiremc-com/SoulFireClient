@@ -31,7 +31,7 @@ export const getSortingStateParser = <TData>(
   return createParser({
     parse: (value) => {
       try {
-        const parsed = JSON.parse(value);
+        const parsed: unknown = JSON.parse(value);
         const result = Schema.decodeUnknownResult(
           Schema.mutable(Schema.Array(sortingItemSchema)),
           { errors: "all" },
@@ -87,7 +87,7 @@ export const getFiltersStateParser = <TData>(
   return createParser({
     parse: (value) => {
       try {
-        const parsed = JSON.parse(value);
+        const parsed: unknown = JSON.parse(value);
         const result = Schema.decodeUnknownResult(
           Schema.mutable(Schema.Array(filterItemSchema)),
           { errors: "all" },

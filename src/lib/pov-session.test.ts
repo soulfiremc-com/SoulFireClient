@@ -71,9 +71,15 @@ function fixture(mode: "no-frame" | "frame" | "offline" | "transient") {
         await new Promise<void>((resolve) => {
           if (context.signal.aborted) resolve();
           else
-            context.signal.addEventListener("abort", () => resolve(), {
-              once: true,
-            });
+            context.signal.addEventListener(
+              "abort",
+              () => {
+                resolve();
+              },
+              {
+                once: true,
+              },
+            );
         });
       },
     });
@@ -85,7 +91,9 @@ function fixture(mode: "no-frame" | "frame" | "offline" | "transient") {
     "bot",
     () => ({ width: 640, height: 480 }),
     () => {},
-    (error) => errors.push(error),
+    (error) => {
+      errors.push(error);
+    },
     () => {},
     () => undefined,
     60,

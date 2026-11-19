@@ -116,7 +116,11 @@ export function ProviderGallery({
             {t("providers.allProviders")}
           </Button>
           {native ? (
-            <Button onClick={() => onConnect(selected)}>
+            <Button
+              onClick={() => {
+                onConnect(selected);
+              }}
+            >
               {t(
                 selected.capabilities.includes("buy")
                   ? "providers.connectBuy"
@@ -163,7 +167,9 @@ export function ProviderGallery({
       <RadioGroup
         aria-label={t("providers.provider")}
         value={selected.id}
-        onValueChange={(next) => onSelect(String(next))}
+        onValueChange={(next) => {
+          onSelect(String(next));
+        }}
         className="sm:grid-cols-2"
       >
         {visible.map((provider) => (

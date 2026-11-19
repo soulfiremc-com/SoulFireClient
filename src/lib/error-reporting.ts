@@ -23,7 +23,7 @@ const NETWORK_FAILURE_MESSAGES = [
 ];
 
 const EXPECTED_CONNECT_MESSAGE =
-  /^\[(canceled|unavailable|deadline_exceeded|unauthenticated|permission_denied|not_found|failed_precondition)\]/;
+  /^\[(canceled|unavailable|deadline_exceeded|unauthenticated|permission_denied|not_found|failed_precondition)\]/u;
 
 function isNetworkFailureMessage(message: string) {
   return NETWORK_FAILURE_MESSAGES.some((text) => message.includes(text));

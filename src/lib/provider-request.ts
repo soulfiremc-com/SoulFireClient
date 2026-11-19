@@ -41,7 +41,9 @@ const providerHttp: Context.Service.Shape<typeof ProviderHttp> = {
   request: (request) =>
     Effect.gen(function* () {
       yield* Effect.try({
-        try: () => validateProviderRequest(request),
+        try: () => {
+          validateProviderRequest(request);
+        },
         catch: () => new ProviderApiError("network"),
       });
       if (isDesktopApp())

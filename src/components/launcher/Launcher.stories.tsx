@@ -10,10 +10,10 @@ const meta = {
     demoMode: false,
     canRunLocally: true,
     savedServer: null,
-    onContinueSaved: fn(),
-    onEnterDemo: fn(),
-    onRunLocally: fn(),
-    onConnectExisting: fn(),
+    onContinueSaved: fn<() => void>(),
+    onEnterDemo: fn<() => void>(),
+    onRunLocally: fn<() => void>(),
+    onConnectExisting: fn<() => void>(),
   },
 } satisfies Meta<typeof ConnectionChoices>;
 
@@ -28,11 +28,11 @@ export const Desktop: Story = {
       canvas.getByText("Minecraft server (you pick it later)"),
     ).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: /Run on this computer/ }),
+      canvas.getByRole("button", { name: /Run on this computer/u }),
     );
     await expect(args.onRunLocally).toHaveBeenCalled();
     await userEvent.click(
-      canvas.getByRole("button", { name: /Connect to a SoulFire server/ }),
+      canvas.getByRole("button", { name: /Connect to a SoulFire server/u }),
     );
     await expect(args.onConnectExisting).toHaveBeenCalled();
   },
@@ -44,16 +44,16 @@ export const Web: Story = {
     const canvas = within(canvasElement);
     // The browser cannot run a server, so the choice leads to the desktop app.
     await expect(
-      canvas.getByRole("link", { name: /Run on this computer/ }),
+      canvas.getByRole("link", { name: /Run on this computer/u }),
     ).toHaveAttribute(
       "href",
       expect.stringContaining("soulfiremc.com/docs/installation"),
     );
     await expect(
-      canvas.queryByRole("button", { name: /Run on this computer/ }),
+      canvas.queryByRole("button", { name: /Run on this computer/u }),
     ).toBeNull();
     await expect(
-      canvas.getByRole("link", { name: /Try the demo/ }),
+      canvas.getByRole("link", { name: /Try the demo/u }),
     ).toBeVisible();
   },
 };
@@ -63,9 +63,11 @@ export const DemoMode: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      canvas.getByRole("button", { name: /Connect to a SoulFire server/ }),
+      canvas.getByRole("button", { name: /Connect to a SoulFire server/u }),
     ).toBeDisabled();
-    await userEvent.click(canvas.getByRole("button", { name: /Try the demo/ }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: /Try the demo/u }),
+    );
     await expect(args.onEnterDemo).toHaveBeenCalled();
   },
 };

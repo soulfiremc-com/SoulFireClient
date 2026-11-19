@@ -40,7 +40,7 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
     }),
     toTerminalLine({
       id: "connected",
-      message: "\x1b[32m3 bots connected\x1b[0m",
+      message: "\u001B[32m3 bots connected\u001B[0m",
       level: "INFO",
       loggerName: "com.soulfiremc.server.BotManager",
       personal: false,
@@ -48,13 +48,16 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
   ]);
   const [transport] = useState(() => {
     let sequence = 0;
-    const append = (message: string, personal = true) =>
+    const append = (message: string, personal = true) => {
       setEntries((current) => [
         ...current,
         toTerminalLine({ id: `fixture-${sequence++}`, message, personal }),
       ]);
-    emitLog = () => append("INFO BotManager Connection healthy", false);
-    return createRouterTransport((router) =>
+    };
+    emitLog = () => {
+      append("INFO BotManager Connection healthy", false);
+    };
+    return createRouterTransport((router) => {
       router.service(CommandService, {
         tabCompleteCommand: (request) => {
           completions(request);
@@ -86,19 +89,23 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
           append(`> ${request.command}`);
           append(
             request.command === "status"
-              ? "\x1b[32m3 bots online, 0 disconnected\x1b[0m"
+              ? "\u001B[32m3 bots online, 0 disconnected\u001B[0m"
               : request.command.startsWith("say ")
                 ? "Message sent to 3 bots."
                 : "Available commands: help, history, say, status",
           );
           return { code: 1 };
         },
-      }),
-    );
+      });
+    });
   });
   useEffect(() => {
-    const timer = setInterval(() => emitLog(), 5000);
-    return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      emitLog();
+    }, 5000);
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
   return (
     <div className="min-h-screen bg-background p-6">
@@ -238,7 +245,7 @@ export const CompositionAndFailure: Story = {
     await userEvent.type(input, "fail");
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(input).toHaveValue("fail"));
-    await within(document.body).findByText(/Command rejected/);
+    await within(document.body).findByText(/Command rejected/u);
   },
 };
 
@@ -314,7 +321,7 @@ export const DemoExplainsUnavailableCommands: Story = {
       name: "Command",
     });
     await userEvent.type(input, "help{Enter}");
-    await within(document.body).findByText(/The demo cannot run commands/);
+    await within(document.body).findByText(/The demo cannot run commands/u);
     await expect(input).toHaveValue("help");
   },
 };

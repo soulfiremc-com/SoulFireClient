@@ -40,9 +40,9 @@ if (!projectToken || !host) {
         app_version: APP_VERSION,
         app_environment: APP_ENVIRONMENT,
       });
-      resetLegacyAnalyticsIdentity(client, () =>
-        analyticsConsent.resetIdentity(true),
-      );
+      resetLegacyAnalyticsIdentity(client, () => {
+        analyticsConsent.resetIdentity(true);
+      });
       analyticsConsent.synchronize();
     },
   });

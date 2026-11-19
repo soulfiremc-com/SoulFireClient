@@ -105,9 +105,9 @@ function DeviceActions({
           size="sm"
           variant="outline"
           disabled={!selected || connect.isPending || active}
-          onClick={() =>
-            selected && connect.mutate({ instanceId: selected, show: false })
-          }
+          onClick={() => {
+            if (selected) connect.mutate({ instanceId: selected, show: false });
+          }}
         >
           {t("connect")}
         </Button>
@@ -115,9 +115,9 @@ function DeviceActions({
           size="sm"
           variant="outline"
           disabled={!instanceId || connect.isPending || stop.isPending}
-          onClick={() =>
-            instanceId && connect.mutate({ instanceId, show: true })
-          }
+          onClick={() => {
+            if (instanceId) connect.mutate({ instanceId, show: true });
+          }}
         >
           {t("showOnTv")}
         </Button>
@@ -126,7 +126,9 @@ function DeviceActions({
             size="sm"
             variant="outline"
             disabled={stop.isPending}
-            onClick={() => stop.mutate()}
+            onClick={() => {
+              stop.mutate();
+            }}
           >
             {t("stop")}
           </Button>
@@ -136,10 +138,10 @@ function DeviceActions({
             size="sm"
             variant="outline"
             disabled={connect.isPending}
-            onClick={() =>
-              device.instanceId &&
-              connect.mutate({ instanceId: device.instanceId, show: false })
-            }
+            onClick={() => {
+              if (device.instanceId)
+                connect.mutate({ instanceId: device.instanceId, show: false });
+            }}
           >
             {t("reconnect")}
           </Button>
@@ -149,9 +151,9 @@ function DeviceActions({
             size="sm"
             variant="outline"
             disabled={connect.isPending}
-            onClick={() =>
-              connect.mutate({ instanceId: selected, show: false })
-            }
+            onClick={() => {
+              connect.mutate({ instanceId: selected, show: false });
+            }}
           >
             {t("switchInstance")}
           </Button>
@@ -260,9 +262,15 @@ function CastPage() {
     },
     retry: false,
   });
-  useHotkey("Mod+Shift+C", () => show.mutate(), {
-    enabled: Boolean(first) && !show.isPending,
-  });
+  useHotkey(
+    "Mod+Shift+C",
+    () => {
+      show.mutate();
+    },
+    {
+      enabled: Boolean(first) && !show.isPending,
+    },
+  );
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6">
       <header className="flex flex-col gap-3">
@@ -346,7 +354,9 @@ function CastPage() {
                   id="cast-search"
                   type="search"
                   value={search}
-                  onChange={(event) => setSearch(event.target.value)}
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                  }}
                 />
               </Field>
             </FieldGroup>
@@ -407,7 +417,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
   const { t } = useTranslation("cast");
   const manualDevice = Schema.Struct({
     address: Schema.String.check(
-      Schema.isPattern(/^[a-zA-Z0-9:.[\]-]+$/, {
+      Schema.isPattern(/^[a-zA-Z0-9:.[\]-]+$/u, {
         message: t("invalidAddress"),
       }),
     ),
@@ -425,7 +435,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
     defaultValues: { address: "", port: 8009 },
     validators: { onSubmit: toFormSchema(manualDevice) },
     onSubmit: async ({ value }) => {
-      const address = value.address.replaceAll(/^\[|\]$/g, "");
+      const address = value.address.replaceAll(/^\[|\]$/gu, "");
       const known = castStore
         .get()
         .state?.devices.find(
@@ -461,9 +471,9 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
                   id="cast-address"
                   placeholder="192.168.1.50"
                   value={field.state.value}
-                  onChange={(event) =>
-                    field.handleChange(event.target.value.trim())
-                  }
+                  onChange={(event) => {
+                    field.handleChange(event.target.value.trim());
+                  }}
                   onBlur={field.handleBlur}
                   aria-invalid={field.state.meta.errors.length > 0}
                 />
@@ -481,9 +491,9 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
                   min={1}
                   max={65535}
                   value={field.state.value}
-                  onChange={(event) =>
-                    field.handleChange(Number(event.target.value))
-                  }
+                  onChange={(event) => {
+                    field.handleChange(Number(event.target.value));
+                  }}
                   aria-invalid={field.state.meta.errors.length > 0}
                 />
                 <FieldError errors={field.state.meta.errors} />

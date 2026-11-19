@@ -52,8 +52,12 @@ test("generated unary clients preserve payloads, metadata, deadlines, and contex
       headers: { authorization: "Bearer token" },
       timeoutMs: 1_000,
       contextValues: createContextValues().set(key, "custom"),
-      onHeader: (headers) => received.push(headers.get("x-request-id") ?? ""),
-      onTrailer: (trailers) => received.push(trailers.get("x-finished") ?? ""),
+      onHeader: (headers) => {
+        received.push(headers.get("x-request-id") ?? "");
+      },
+      onTrailer: (trailers) => {
+        received.push(trailers.get("x-finished") ?? "");
+      },
     },
   );
   assert.equal(calls, 0);
@@ -94,9 +98,15 @@ test("generated streams subscribe lazily and abort after finite consumption", as
         await new Promise<void>((resolve) => {
           if (context.signal.aborted) resolve();
           else
-            context.signal.addEventListener("abort", () => resolve(), {
-              once: true,
-            });
+            context.signal.addEventListener(
+              "abort",
+              () => {
+                resolve();
+              },
+              {
+                once: true,
+              },
+            );
         });
       },
     });
@@ -127,9 +137,15 @@ test("caller cancellation stops a pending generated stream read", async () => {
               await new Promise<void>((resolve) => {
                 if (context.signal.aborted) resolve();
                 else
-                  context.signal.addEventListener("abort", () => resolve(), {
-                    once: true,
-                  });
+                  context.signal.addEventListener(
+                    "abort",
+                    () => {
+                      resolve();
+                    },
+                    {
+                      once: true,
+                    },
+                  );
               });
               return { done: true, value: undefined };
             },

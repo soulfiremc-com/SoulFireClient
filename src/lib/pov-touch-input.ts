@@ -36,7 +36,7 @@ export class PovTouchInput {
     };
     for (const [id, control] of previous) if (!next.has(id)) change(control, 0);
     for (const [id, control] of next) if (!previous.has(id)) change(control, 1);
-    if (next.size) this.pointers.set(pointer, next);
+    if (next.size > 0) this.pointers.set(pointer, next);
     else this.pointers.delete(pointer);
     return events;
   }

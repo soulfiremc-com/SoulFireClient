@@ -37,7 +37,7 @@ export function readPalettePins(
     if (!Array.isArray(value)) return [];
     const seen = new Set<string>();
     return value
-      .filter(isPin)
+      .filter((entry) => isPin(entry))
       .filter((pin) => !seen.has(pin.id) && Boolean(seen.add(pin.id)))
       .slice(0, PIN_LIMIT)
       .map(({ id, projectId }) => (projectId ? { id, projectId } : { id }));

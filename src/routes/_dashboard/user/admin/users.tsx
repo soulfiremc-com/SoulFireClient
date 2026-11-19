@@ -284,7 +284,9 @@ function UpdateUserButton(props: {
         disabled={!props.row.getCanSelect()}
         variant="secondary"
         size="sm"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+        }}
       >
         <PencilIcon />
       </Button>
@@ -349,7 +351,9 @@ function AddButton() {
         size="sm"
         aria-label={t("users.addUserDialog.title")}
         title={t("users.addUserDialog.title")}
-        onClick={() => setCreateOpen(true)}
+        onClick={() => {
+          setCreateOpen(true);
+        }}
       >
         <PlusIcon />
       </Button>
@@ -418,7 +422,9 @@ function ExtraHeader(props: {
     <>
       <DataTableActionBarAction
         tooltip={t("users.removeSelectedTooltip")}
-        onClick={() => setRemoveOpen(true)}
+        onClick={() => {
+          setRemoveOpen(true);
+        }}
       >
         <TrashIcon />
       </DataTableActionBarAction>
@@ -456,7 +462,9 @@ function ExtraHeader(props: {
       />
       <DataTableActionBarAction
         tooltip={t("users.logOutSelectedTooltip")}
-        onClick={() => setSignOutOpen(true)}
+        onClick={() => {
+          setSignOutOpen(true);
+        }}
       >
         <LogOutIcon />
       </DataTableActionBarAction>

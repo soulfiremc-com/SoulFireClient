@@ -290,11 +290,12 @@ export function createScriptEditorSession() {
   let lastCoalesce: { key: string; at: number } | null = null;
   let canvasGesture = false;
 
-  const pushHistory = (entry: ScriptGraphSnapshot) =>
+  const pushHistory = (entry: ScriptGraphSnapshot) => {
     history.setState((state) => ({
       past: [...state.past, entry].slice(-HISTORY_LIMIT),
       future: [],
     }));
+  };
   const clearHistory = () => {
     gestureStart = null;
     lastCoalesce = null;
@@ -434,16 +435,18 @@ export function createScriptEditorSession() {
       // Auto-replace: remove existing edge on non-multiInput target
       const targetNode = nodes.find((n) => n.id === connection.target);
       let baseEdges = edges;
-      if (targetNode && connection.targetHandle) {
-        if (!isPortMultiInput(targetNode.type ?? "", connection.targetHandle)) {
-          baseEdges = edges.filter(
-            (e) =>
-              !(
-                e.target === connection.target &&
-                e.targetHandle === connection.targetHandle
-              ),
-          );
-        }
+      if (
+        targetNode &&
+        connection.targetHandle &&
+        !isPortMultiInput(targetNode.type ?? "", connection.targetHandle)
+      ) {
+        baseEdges = edges.filter(
+          (e) =>
+            !(
+              e.target === connection.target &&
+              e.targetHandle === connection.targetHandle
+            ),
+        );
       }
 
       const newEdge = assignEdgeOrder(nodes, baseEdges, {
@@ -555,8 +558,9 @@ export function createScriptEditorSession() {
         isDirty: true,
       }));
     },
-    setSelectedNode: (nodeId) =>
-      ui.setState((state) => ({ ...state, selectedNodeId: nodeId })),
+    setSelectedNode: (nodeId) => {
+      ui.setState((state) => ({ ...state, selectedNodeId: nodeId }));
+    },
     reorderMultiInputEdges: (targetNodeId, targetHandleId, orderedEdgeIds) => {
       const { nodes, edges } = document.get();
       const orderLookup = new Map(
@@ -653,8 +657,7 @@ export function createScriptEditorSession() {
     },
     updatePreviewValue: (nodeId, outputs) => {
       const current = execution.get().previewValues;
-      const next = new Map(current);
-      next.set(nodeId, outputs);
+      const next = new Map([...current, [nodeId, outputs]]);
       execution.setState((state) => ({ ...state, previewValues: next }));
     },
     createFrame: (nodeIds, label = "Frame") => {
@@ -1847,26 +1850,30 @@ export function createScriptEditorSession() {
         }));
       }
     },
-    setScriptName: (name) =>
+    setScriptName: (name) => {
       document.setState((state) => ({
         ...state,
         scriptName: name,
         isDirty: true,
-      })),
-    setScriptDescription: (description) =>
+      }));
+    },
+    setScriptDescription: (description) => {
       document.setState((state) => ({
         ...state,
         scriptDescription: description,
         isDirty: true,
-      })),
-    setPaused: (paused) =>
-      document.setState((state) => ({ ...state, paused, isDirty: true })),
-    setSavedPaused: (paused) =>
+      }));
+    },
+    setPaused: (paused) => {
+      document.setState((state) => ({ ...state, paused, isDirty: true }));
+    },
+    setSavedPaused: (paused) => {
       document.setState((state) => ({
         ...state,
         paused,
         lastSavedPaused: paused,
-      })),
+      }));
+    },
     syncScriptStatus: (status, preserveActiveNode = false) => {
       if (document.get().scriptId !== status.scriptId) return;
       batch(() => {
@@ -1896,29 +1903,35 @@ export function createScriptEditorSession() {
           activeNodeExecutions:
             status.isActive && preserveActiveNode
               ? state.activeNodeExecutions
-              : new Map(),
+              : new Map<bigint, string>(),
         }));
       });
     },
-    setQuotas: (quotas) =>
-      document.setState((state) => ({ ...state, quotas, isDirty: true })),
-    setActive: (active) =>
-      execution.setState((state) => ({ ...state, isActive: active })),
-    setActiveNode: (nodeId) =>
+    setQuotas: (quotas) => {
+      document.setState((state) => ({ ...state, quotas, isDirty: true }));
+    },
+    setActive: (active) => {
+      execution.setState((state) => ({ ...state, isActive: active }));
+    },
+    setActiveNode: (nodeId) => {
       execution.setState((state) => ({
         ...state,
         activeNodeId: nodeId,
         activeNodeExecutions: new Map(),
-      })),
-    startNode: (nodeId, executionId) =>
+      }));
+    },
+    startNode: (nodeId, executionId) => {
       execution.setState((state) => {
         if (!executionId) return { ...state, activeNodeId: nodeId };
         if (state.activeNodeExecutions.has(executionId)) return state;
-        const activeNodeExecutions = new Map(state.activeNodeExecutions);
-        activeNodeExecutions.set(executionId, nodeId);
+        const activeNodeExecutions = new Map([
+          ...state.activeNodeExecutions,
+          [executionId, nodeId],
+        ]);
         return { ...state, activeNodeId: nodeId, activeNodeExecutions };
-      }),
-    completeNode: (nodeId, executionId) =>
+      });
+    },
+    completeNode: (nodeId, executionId) => {
       execution.setState((state) => {
         if (!executionId) {
           return state.activeNodeExecutions.size === 0 &&
@@ -1935,21 +1948,25 @@ export function createScriptEditorSession() {
           activeNodeExecutions,
           activeNodeId: Array.from(activeNodeExecutions.values()).pop() ?? null,
         };
-      }),
-    addExecutionLog: (log) =>
+      });
+    },
+    addExecutionLog: (log) => {
       execution.setState((state) => ({
         ...state,
         executionLogs: [...state.executionLogs, log].slice(-500),
-      })),
-    addExecutionLogs: (logs) =>
+      }));
+    },
+    addExecutionLogs: (logs) => {
       execution.setState((state) => {
         const executionLogs = mergeExecutionLogs(state.executionLogs, logs);
         return executionLogs === state.executionLogs
           ? state
           : { ...state, executionLogs };
-      }),
-    clearExecutionLogs: () =>
-      execution.setState((state) => ({ ...state, executionLogs: [] })),
+      });
+    },
+    clearExecutionLogs: () => {
+      execution.setState((state) => ({ ...state, executionLogs: [] }));
+    },
     syncScriptDocument: (data) => {
       const current = document.get();
       if (
@@ -1959,7 +1976,7 @@ export function createScriptEditorSession() {
         actions.loadScript(data);
       }
     },
-    loadScript: (data) =>
+    loadScript: (data) => {
       batch(() => {
         clearHistory();
         document.setState((state) => ({
@@ -1991,7 +2008,8 @@ export function createScriptEditorSession() {
             Array<{ value: unknown; timestamp: Date }>
           >(),
         }));
-      }),
+      });
+    },
     loadScriptData: (data) => {
       const current = document.get();
       batch(() => {
@@ -2022,7 +2040,7 @@ export function createScriptEditorSession() {
         }));
       });
     },
-    resetEditor: () =>
+    resetEditor: () => {
       batch(() => {
         clearHistory();
         document.setState((state) => ({
@@ -2072,7 +2090,8 @@ export function createScriptEditorSession() {
           validationDiagnostics: [],
           diagnosticsByNode: new Map(),
         }));
-      }),
+      });
+    },
     getScriptData: () => ({
       nodes: document.get().nodes,
       edges: document.get().edges,
@@ -2081,7 +2100,7 @@ export function createScriptEditorSession() {
       paused: document.get().paused,
       quotas: document.get().quotas,
     }),
-    setValidationDiagnostics: (diagnostics) =>
+    setValidationDiagnostics: (diagnostics) => {
       validation.setState((state) => ({
         ...state,
         validationDiagnostics: diagnostics,
@@ -2089,18 +2108,21 @@ export function createScriptEditorSession() {
           diagnostics,
           state.diagnosticsByNode,
         ),
-      })),
-    addNodeExecutionTime: (nodeId, timeNanos) =>
+      }));
+    },
+    addNodeExecutionTime: (nodeId, timeNanos) => {
       execution.setState((state) => {
         const times = new Map(state.nodeExecutionTimes);
         const existing = times.get(nodeId) ?? [];
         const updated = [...existing, timeNanos].slice(-10);
         times.set(nodeId, updated);
         return { ...state, nodeExecutionTimes: times };
-      }),
-    setExecutionStats: (stats) =>
-      execution.setState((state) => ({ ...state, lastExecutionStats: stats })),
-    markSaved: (data, scriptId, savedPaused = data.paused) =>
+      });
+    },
+    setExecutionStats: (stats) => {
+      execution.setState((state) => ({ ...state, lastExecutionStats: stats }));
+    },
+    markSaved: (data, scriptId, savedPaused = data.paused) => {
       document.setState((state) => {
         const paused =
           state.paused === data.paused ? savedPaused : state.paused;
@@ -2116,7 +2138,8 @@ export function createScriptEditorSession() {
             { ...data, paused: savedPaused },
           ),
         };
-      }),
+      });
+    },
   };
   return {
     document,

@@ -205,7 +205,9 @@ export function ManageUserDialog({
                       )}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
                       aria-invalid={isInvalid}
                       aria-describedby={describedBy}
                       disabled={submitMutation.isPending}
@@ -245,7 +247,9 @@ export function ManageUserDialog({
                       )}
                       value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
                       aria-invalid={isInvalid}
                       aria-describedby={describedBy}
                       disabled={submitMutation.isPending}

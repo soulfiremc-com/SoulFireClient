@@ -27,7 +27,7 @@ export class PovAudioPlayer {
       typeof AudioDecoder === "undefined" ||
       typeof AudioContext === "undefined"
     )
-      throw new Error("POV audio is unavailable in this browser.");
+      throw new TypeError("POV audio is unavailable in this browser.");
     // Resume inside the click handler, before awaiting codec support.
     const context = new AudioContext({
       latencyHint: "interactive",
@@ -71,8 +71,12 @@ export class PovAudioPlayer {
     this.gain.connect(context.destination);
     this.volume(volume);
     this.decoder = new AudioDecoder({
-      output: (data) => this.present(data),
-      error: (error) => this.fail(error),
+      output: (data) => {
+        this.present(data);
+      },
+      error: (error) => {
+        this.fail(error);
+      },
     });
     this.decoder.configure(CONFIG);
   }
@@ -91,7 +95,7 @@ export class PovAudioPlayer {
     try {
       if (this.decoder.decodeQueueSize > 8) this.reset();
       for (const packet of packets.slice(-5)) {
-        if (!packet.data.length || packet.data.length > 4_096) continue;
+        if (packet.data.length === 0 || packet.data.length > 4_096) continue;
         this.decoder.decode(
           new EncodedAudioChunk({
             type: "key",

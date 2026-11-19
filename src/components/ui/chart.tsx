@@ -75,7 +75,7 @@ function ChartContainer({
   };
 }) {
   const uniqueId = React.useId();
-  const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`;
+  const chartId = `chart-${id ?? uniqueId.replace(/:/gu, "")}`;
 
   const contextValue = React.useMemo(() => ({ config }), [config]);
 
@@ -106,7 +106,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     ([, config]) => config.theme ?? config.color,
   );
 
-  if (!colorConfig.length) {
+  if (colorConfig.length === 0) {
     return null;
   }
 
@@ -155,7 +155,7 @@ function ChartTooltipContent({
   const { config } = useChart();
 
   const tooltipLabel = React.useMemo(() => {
-    if (hideLabel || !payload.length) {
+    if (hideLabel || payload.length === 0) {
       return null;
     }
 
@@ -190,7 +190,7 @@ function ChartTooltipContent({
     labelKey,
   ]);
 
-  if (!active || !payload.length) {
+  if (!active || payload.length === 0) {
     return null;
   }
 
@@ -210,7 +210,7 @@ function ChartTooltipContent({
           .map((item, index) => {
             const key = `${nameKey ?? item.name ?? item.dataKey ?? "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color ?? item.payload?.fill ?? item.color;
+            const indicatorColor = color ?? payloadFill(item.payload) ?? item.color;
 
             return (
               <div
@@ -221,7 +221,7 @@ function ChartTooltipContent({
                 )}
               >
                 {formatter && item.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, item.payload)
+                  formatter(item.value, item.name, item, index, payload)
                 ) : (
                   <>
                     {itemConfig?.icon ? (
@@ -285,9 +285,24 @@ function getTooltipItemKey(
     dataKeyToString(item.graphicalItemId) ??
     dataKeyToString(item.dataKey) ??
     dataKeyToString(item.name) ??
-    dataKeyToString(item.payload?.name) ??
+    dataKeyToString(payloadName(item.payload)) ??
     `${dataKeyToString(item.color) ?? "tooltip"}-${dataKeyToString(item.type) ?? "item"}`
   );
+}
+
+function payloadFill(payload: unknown): string | undefined {
+  return typeof payload === "object" &&
+    payload !== null &&
+    "fill" in payload &&
+    typeof payload.fill === "string"
+    ? payload.fill
+    : undefined;
+}
+
+function payloadName(payload: unknown): unknown {
+  return typeof payload === "object" && payload !== null && "name" in payload
+    ? payload.name
+    : undefined;
 }
 
 function dataKeyToString(dataKey: unknown): string | undefined {

@@ -101,7 +101,7 @@ export const TrustedAndUntrustedLogs: Story = {
     await userEvent.keyboard("{Enter}");
     await expect(copy).toHaveBeenCalledTimes(1);
     await expect(
-      canvas.queryByRole("button", { name: /Script output/ }),
+      canvas.queryByRole("button", { name: /Script output/u }),
     ).not.toBeInTheDocument();
     await expect(canvas.getByText("Script output<b>literal</b>")).toBeVisible();
     await expect(canvasElement.querySelector("b")).toBeNull();

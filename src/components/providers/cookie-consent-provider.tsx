@@ -8,7 +8,11 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
   const consent = useAnalyticsConsent();
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const value = useMemo(
-    () => ({ openCookiePreferences: () => setPreferencesOpen(true) }),
+    () => ({
+      openCookiePreferences: () => {
+        setPreferencesOpen(true);
+      },
+    }),
     [],
   );
 
@@ -22,7 +26,9 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
       }
     };
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   function choose(accepted: boolean) {
@@ -35,10 +41,18 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
       {children}
       {isPostHogConfigured && (consent === "pending" || preferencesOpen) && (
         <CookieConsentBanner
-          onAccept={() => choose(true)}
-          onDecline={() => choose(false)}
+          onAccept={() => {
+            choose(true);
+          }}
+          onDecline={() => {
+            choose(false);
+          }}
           onClose={
-            consent === "pending" ? undefined : () => setPreferencesOpen(false)
+            consent === "pending"
+              ? undefined
+              : () => {
+                  setPreferencesOpen(false);
+                }
           }
         />
       )}

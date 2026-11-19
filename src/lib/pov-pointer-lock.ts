@@ -36,7 +36,7 @@ function errorMessage(error: unknown) {
 export function isPointerLockCooldown(error: unknown) {
   return (
     errorName(error) === "SecurityError" &&
-    /immediately after|exited the lock/i.test(errorMessage(error))
+    /immediately after|exited the lock/iu.test(errorMessage(error))
   );
 }
 
@@ -57,10 +57,9 @@ async function attempt(canvas: PointerLockTarget) {
     await Promise.race([
       request(canvas),
       new Promise<never>((_, reject) => {
-        timer = setTimeout(
-          () => reject(new PovPointerLockError("timeout")),
-          ATTEMPT_TIMEOUT_MS,
-        );
+        timer = setTimeout(() => {
+          reject(new PovPointerLockError("timeout"));
+        }, ATTEMPT_TIMEOUT_MS);
       }),
     ]);
   } finally {

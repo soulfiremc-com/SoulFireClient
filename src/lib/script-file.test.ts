@@ -102,11 +102,11 @@ test("invalid quota files fail before they can replace an editor document", () =
     { maxConcurrentTriggers: 2.5 },
     { disableTimeouts: "false" },
   ]) {
-    assert.throws(() =>
+    assert.throws(() => {
       target.actions.loadScriptData(
         parseScriptFile(JSON.stringify({ nodes: [], edges: [], quotas })),
-      ),
-    );
+      );
+    });
     assert.deepEqual(target.actions.getScriptData(), before);
   }
 });
@@ -148,9 +148,9 @@ test("malformed graph elements cannot replace an existing draft", () => {
     { nodes: [node, node], edges: [] },
     { nodes: [node], edges: [edge, edge] },
   ]) {
-    assert.throws(() =>
-      target.actions.loadScriptData(parseScriptFile(JSON.stringify(graph))),
-    );
+    assert.throws(() => {
+      target.actions.loadScriptData(parseScriptFile(JSON.stringify(graph)));
+    });
     assert.deepEqual(target.actions.getScriptData(), before);
   }
   assert.throws(() =>
@@ -247,7 +247,7 @@ test("invalid editor metadata cannot replace an existing script draft", () => {
     ["layout.group", { inputs: [{ id: "port", type: 42, label: "Input" }] }],
     ["layout.group", { outputs: [{ id: "port", type: "number", label: {} }] }],
   ] as const) {
-    assert.throws(() =>
+    assert.throws(() => {
       session.actions.loadScriptData(
         parseScriptFile(
           JSON.stringify({
@@ -255,8 +255,8 @@ test("invalid editor metadata cannot replace an existing script draft", () => {
             edges: [],
           }),
         ),
-      ),
-    );
+      );
+    });
     assert.deepEqual(session.actions.getScriptData(), before);
   }
 });

@@ -128,9 +128,13 @@ export function RavealtsFlow({
     stage === "connect"
       ? onBack
       : stage === "choose"
-        ? () => go("connect")
+        ? () => {
+            go("connect");
+          }
         : stage === "review"
-          ? () => go("choose")
+          ? () => {
+              go("choose");
+            }
           : undefined;
 
   return (
@@ -192,7 +196,9 @@ export function RavealtsFlow({
           {stage === "choose" && (
             <Button
               disabled={busy || !selected || !validAmount || uncertain}
-              onClick={() => go("review")}
+              onClick={() => {
+                go("review");
+              }}
             >
               {t("providers.reviewOrder")}
               <ArrowRightIcon data-icon="inline-end" />
@@ -209,7 +215,7 @@ export function RavealtsFlow({
                     const accounts = (
                       await purchaseAccounts(key.trim(), selected, amount)
                     ).accounts;
-                    if (!Array.isArray(accounts) || !accounts.length)
+                    if (!Array.isArray(accounts) || accounts.length === 0)
                       throw new ProviderApiError("response");
                     // Ravealts has no order lookup, so import the delivery at once.
                     const { payload, credentialType } =
@@ -219,7 +225,9 @@ export function RavealtsFlow({
                     setStage("import");
                     void loadStock();
                     void fetchKeyInfo(key.trim())
-                      .then((result) => setCredits(result.available_credits))
+                      .then((result) => {
+                        setCredits(result.available_credits);
+                      })
                       .catch(() => undefined);
                   } catch (cause) {
                     if (

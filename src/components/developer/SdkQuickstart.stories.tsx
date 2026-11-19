@@ -28,8 +28,8 @@ const meta = {
     ],
     integrated: true,
     generateToken: fn(async () => token),
-    onOpenAccounts: fn(),
-    onOpenBots: fn(),
+    onOpenAccounts: fn<() => void>(),
+    onOpenBots: fn<() => void>(),
   },
   beforeEach: () => {
     const original = Object.getOwnPropertyDescriptor(navigator, "clipboard");
@@ -92,7 +92,7 @@ export const LocalServer: Story = {
       await within(document.body).findByRole("listbox", { name: "Bot" }),
     ).toBeVisible();
     await userEvent.click(
-      await within(document.body).findByRole("option", { name: /Miner/ }),
+      await within(document.body).findByRole("option", { name: /Miner/u }),
     );
     await expect(canvas.getByLabelText("example.py")).toHaveTextContent(
       'instance.bot("33333333-3333-4333-8333-333333333333")',
@@ -212,7 +212,7 @@ export const RestrictedUser: Story = {
       canvas.queryByRole("button", { name: "Generate personal token" }),
     ).not.toBeInTheDocument();
     await expect(
-      canvas.getByText(/Ask your administrator for a personal API token/),
+      canvas.getByText(/Ask your administrator for a personal API token/u),
     ).toBeVisible();
     await expect(
       canvas.getByRole("button", { name: "Copy script" }),
@@ -230,7 +230,7 @@ export const Demo: Story = {
   },
   play: async ({ canvas, args, userEvent }) => {
     await expect(
-      canvas.getByText(/Demo values are shown in the examples/),
+      canvas.getByText(/Demo values are shown in the examples/u),
     ).toBeVisible();
     await expect(
       canvas.queryByRole("button", { name: "Generate personal token" }),
@@ -351,7 +351,7 @@ export const InstanceSelection: Story = {
       },
       { id: "44444444-4444-4444-8444-444444444444", name: "Test fleet" },
     ],
-    onInstanceChange: fn(),
+    onInstanceChange: fn<() => void>(),
   },
   render: (args) => <InstanceSelectionExample {...args} />,
   play: async ({ canvas, userEvent, args }) => {
@@ -394,7 +394,7 @@ export const Impersonating: Story = {
       canvas.queryByRole("button", { name: "Generate personal token" }),
     ).not.toBeInTheDocument();
     await expect(
-      canvas.getByText(/Stop impersonating to generate your own API token/),
+      canvas.getByText(/Stop impersonating to generate your own API token/u),
     ).toBeVisible();
     await expect(args.generateToken).not.toHaveBeenCalled();
   },

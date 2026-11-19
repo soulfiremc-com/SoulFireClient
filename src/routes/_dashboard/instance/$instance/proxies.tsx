@@ -171,7 +171,9 @@ function ProxyCheckDialog({
             <Checkbox
               id="proxy-check-remove-failed"
               checked={removeFailed}
-              onCheckedChange={(checked) => setRemoveFailed(checked)}
+              onCheckedChange={(checked) => {
+                setRemoveFailed(checked);
+              }}
             />
             <FieldContent>
               <FieldLabel htmlFor="proxy-check-remove-failed">
@@ -184,10 +186,19 @@ function ProxyCheckDialog({
           </Field>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              onOpenChange(false);
+            }}
+          >
             {t("common:cancel")}
           </Button>
-          <Button onClick={() => onConfirm(removeFailed)}>
+          <Button
+            onClick={() => {
+              onConfirm(removeFailed);
+            }}
+          >
             {t("proxy.checkDialog.confirm")}
           </Button>
         </DialogFooter>
@@ -220,10 +231,10 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/proxies")({
 });
 
 enum UIProxyType {
-  HTTP,
-  SOCKS4,
-  SOCKS5,
-  URI,
+  HTTP = 0,
+  SOCKS4 = 1,
+  SOCKS5 = 2,
+  URI = 3,
 }
 
 type SimpleProxyType =
@@ -522,7 +533,11 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           {t("setup.backToSetup")}
         </Button>
       )}
-      <GetProxiesButton onClick={() => setProviderDialogOpen(true)} />
+      <GetProxiesButton
+        onClick={() => {
+          setProviderDialogOpen(true);
+        }}
+      />
       <ProxyProvidersDialog
         open={providerDialogOpen}
         onOpenChange={setProviderDialogOpen}
@@ -536,7 +551,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
             proxies,
             current?.profile.proxies ?? [],
           );
-          if (!additions.length) {
+          if (additions.length === 0) {
             toast.info(t("providers.alreadyImported"));
             return;
           }
@@ -596,7 +611,9 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
             type: getEnumKeyByValue(UIProxyType, proxyTypeSelected),
           })}
           description={t("proxy.import.dialog.description")}
-          closer={() => setProxyTypeSelected(null)}
+          closer={() => {
+            setProxyTypeSelected(null);
+          }}
           listener={setImportDraft}
           isPending={isImporting}
           filters={[
@@ -620,7 +637,9 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
               ? "uri"
               : uiProxyTypeToProto(proxyTypeSelected)
           }
-          onBack={() => setImportDraft(null)}
+          onBack={() => {
+            setImportDraft(null);
+          }}
           onImport={async (proxies, skippedLines) => {
             await addProxiesBatchMutation(proxies);
             setImportedProxies(proxies);
@@ -656,10 +675,19 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setImportedProxies(null)}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setImportedProxies(null);
+              }}
+            >
               {t("proxy.postImportCheckDialog.skip")}
             </Button>
-            <Button onClick={() => setCheckDialogOpen(true)}>
+            <Button
+              onClick={() => {
+                setCheckDialogOpen(true);
+              }}
+            >
               {t("proxy.postImportCheckDialog.confirm")}
             </Button>
           </DialogFooter>
@@ -695,7 +723,9 @@ function ExtraHeader(props: {
   const { mutateAsync: removeProxyEntriesMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    onMutate: () => props.table.resetRowSelection(),
+    onMutate: () => {
+      props.table.resetRowSelection();
+    },
     mutationFn: async (proxies: ProfileProxy[]) => {
       await removeInstanceProxyEntries(
         proxies,
@@ -722,7 +752,7 @@ function ExtraHeader(props: {
         .rows.map((r) => r.original);
 
       if (mode === "uri") {
-        const lines = selectedRows.map(formatProxyAsURI);
+        const lines = selectedRows.map((proxy) => formatProxyAsURI(proxy));
         saveProxyFile(lines.join("\n"), "proxies.txt");
       } else {
         const typeMap = {
@@ -735,7 +765,7 @@ function ExtraHeader(props: {
           toast.error(t("proxy.export.noProxies"));
           return;
         }
-        const lines = filtered.map(formatProxyAsFlat);
+        const lines = filtered.map((proxy) => formatProxyAsFlat(proxy));
         saveProxyFile(lines.join("\n"), `${mode}-proxies.txt`);
       }
     },
@@ -763,7 +793,9 @@ function ExtraHeader(props: {
     <>
       <DataTableActionBarAction
         tooltip={t("proxy.checkSelectedTooltip")}
-        onClick={() => setCheckDialogOpen(true)}
+        onClick={() => {
+          setCheckDialogOpen(true);
+        }}
       >
         <Wand2Icon />
       </DataTableActionBarAction>
@@ -790,16 +822,32 @@ function ExtraHeader(props: {
           <DropdownMenuGroup>
             <DropdownMenuLabel>{t("proxy.export.format")}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => exportSelectedProxies("uri")}>
+            <DropdownMenuItem
+              onClick={() => {
+                exportSelectedProxies("uri");
+              }}
+            >
               {t("proxy.export.uri")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => exportSelectedProxies("http")}>
+            <DropdownMenuItem
+              onClick={() => {
+                exportSelectedProxies("http");
+              }}
+            >
               {t("proxy.export.http")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => exportSelectedProxies("socks4")}>
+            <DropdownMenuItem
+              onClick={() => {
+                exportSelectedProxies("socks4");
+              }}
+            >
               {t("proxy.export.socks4")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => exportSelectedProxies("socks5")}>
+            <DropdownMenuItem
+              onClick={() => {
+                exportSelectedProxies("socks5");
+              }}
+            >
               {t("proxy.export.socks5")}
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -807,7 +855,9 @@ function ExtraHeader(props: {
       </DropdownMenu>
       <DataTableActionBarAction
         tooltip={t("proxy.removeSelectedTooltip")}
-        onClick={() => setRemoveOpen(true)}
+        onClick={() => {
+          setRemoveOpen(true);
+        }}
       >
         <TrashIcon />
       </DataTableActionBarAction>
@@ -905,7 +955,9 @@ function Content() {
   const { mutate: removeProxyMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-single", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
-    onMutate: () => table.resetRowSelection(),
+    onMutate: () => {
+      table.resetRowSelection();
+    },
     mutationFn: async (proxy: ProfileProxy) => {
       await removeInstanceProxyEntries(
         [proxy],
@@ -956,7 +1008,11 @@ function Content() {
       >
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
-          <AddButton onBeforeRemove={() => table.resetRowSelection()} />
+          <AddButton
+            onBeforeRemove={() => {
+              table.resetRowSelection();
+            }}
+          />
         </DataTableToolbar>
       </DataTable>
       {contextMenu && (

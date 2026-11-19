@@ -12,7 +12,7 @@ export function parseProxyImport(
   type: ProxyProto_Type | "uri",
 ): ProxyImport {
   const result: ProxyImport = { proxies: [], rejectedLines: [] };
-  for (const [index, raw] of text.split(/\r?\n/).entries()) {
+  for (const [index, raw] of text.split(/\r?\n/u).entries()) {
     const line = raw.trim();
     if (!line) continue;
     try {

@@ -142,7 +142,12 @@ export function ScriptToolbar({
   const [editedName, setEditedName] = useState(scriptName);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [readSession] = useState(() => new ImportReadSession());
-  useEffect(() => () => readSession.cancel(), [readSession]);
+  useEffect(
+    () => () => {
+      readSession.cancel();
+    },
+    [readSession],
+  );
 
   const handleExport = () => {
     const blob = new Blob(
@@ -154,10 +159,10 @@ export function ScriptToolbar({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${scriptName.replaceAll(/[^a-z0-9]/gi, "_")}.soulfire-script.json`;
-    document.body.appendChild(a);
+    a.download = `${scriptName.replaceAll(/[^a-zA-Z0-9]/gu, "_")}.soulfire-script.json`;
+    document.body.append(a);
     a.click();
-    document.body.removeChild(a);
+    a.remove();
     URL.revokeObjectURL(url);
 
     toast.success(t("scripts.editor.toolbar.exportSuccess"));
@@ -245,7 +250,9 @@ export function ScriptToolbar({
         {isEditingName ? (
           <Input
             value={editedName}
-            onChange={(e) => setEditedName(e.target.value)}
+            onChange={(e) => {
+              setEditedName(e.target.value);
+            }}
             onBlur={handleNameSubmit}
             onKeyDown={handleNameKeyDown}
             className={cn(

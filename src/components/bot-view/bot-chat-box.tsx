@@ -56,8 +56,9 @@ export function BotChatBox(props: {
           break;
       }
     },
-    onSuccess: (_response, sentMessage) =>
-      setMessage((draft) => (draft.trim() === sentMessage ? "" : draft)),
+    onSuccess: (_response, sentMessage) => {
+      setMessage((draft) => (draft.trim() === sentMessage ? "" : draft));
+    },
   });
   const errorMessage =
     send.error instanceof ConnectError

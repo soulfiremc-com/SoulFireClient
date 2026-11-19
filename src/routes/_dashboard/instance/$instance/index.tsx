@@ -196,7 +196,9 @@ function OverviewHeaderSection() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setLogsOpen(true)}
+              onClick={() => {
+                setLogsOpen(true);
+              }}
             >
               <SquareTerminalIcon data-icon="inline-start" />
               {t("pageName.logs")}
@@ -304,7 +306,9 @@ function OverviewContentSection() {
         {showSetup ? (
           <FirstBotSetup
             instanceInfo={instanceInfo}
-            onDismiss={() => setSetupDismissed(true)}
+            onDismiss={() => {
+              setSetupDismissed(true);
+            }}
           />
         ) : (
           <LiveFeed

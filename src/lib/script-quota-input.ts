@@ -46,7 +46,7 @@ export function parseScriptQuotaInputs(
     const input = inputs[field].trim();
     if (!input) continue;
     const limit = SCRIPT_QUOTA_LIMITS[field];
-    if (!/^[+-]?\d+$/.test(input)) {
+    if (!/^[+-]?\d+$/u.test(input)) {
       fields.push(field);
       continue;
     }
@@ -54,8 +54,8 @@ export function parseScriptQuotaInputs(
     if (value < limit.min || value > limit.max) fields.push(field);
     else values[field] = value;
   }
-  if (fields.length) return { valid: false, fields };
-  if (!Object.keys(values).length && !inputs.disableTimeouts)
+  if (fields.length > 0) return { valid: false, fields };
+  if (Object.keys(values).length === 0 && !inputs.disableTimeouts)
     return { valid: true, quotas: undefined };
   return {
     valid: true,

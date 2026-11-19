@@ -164,7 +164,9 @@ export function LocaltsFlow({
   const back =
     stage === "connect"
       ? onBack
-      : () => go(stage === "choose" ? "connect" : "choose");
+      : () => {
+          go(stage === "choose" ? "connect" : "choose");
+        };
   const ready = orderReady(order);
 
   return (
@@ -226,7 +228,9 @@ export function LocaltsFlow({
                 purchased ||
                 uncertain
               }
-              onClick={() => go("review")}
+              onClick={() => {
+                go("review");
+              }}
             >
               {t("providers.reviewOrder")}
               <ArrowRightIcon data-icon="inline-end" />
@@ -519,7 +523,9 @@ export function LocaltsFlow({
                   aria-label={t("providers.recentOrders")}
                   value={orderId}
                   disabled={busy}
-                  onValueChange={(next) => setOrderId(String(next))}
+                  onValueChange={(next) => {
+                    setOrderId(String(next));
+                  }}
                 >
                   {orders.map((entry) => (
                     <ChoiceCard key={entry.id} value={entry.id}>
@@ -634,7 +640,9 @@ export function LocaltsFlow({
               aria-label={t("providers.importFormat")}
               value={importFormat}
               disabled={busy}
-              onValueChange={(next) => setImportFormat(String(next))}
+              onValueChange={(next) => {
+                setImportFormat(String(next));
+              }}
             >
               {(
                 [

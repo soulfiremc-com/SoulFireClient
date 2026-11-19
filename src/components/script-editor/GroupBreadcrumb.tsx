@@ -65,7 +65,9 @@ export function GroupBreadcrumb() {
           <ChevronRight className="size-3 text-muted-foreground" />
           <button
             type="button"
-            onClick={() => navigateToDepth(index)}
+            onClick={() => {
+              navigateToDepth(index);
+            }}
             className={cn(
               "rounded-sm px-1.5 py-0.5 text-xs transition-colors",
               index === pathItems.length - 1

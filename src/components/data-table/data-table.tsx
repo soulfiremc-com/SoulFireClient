@@ -32,12 +32,14 @@ interface DataTableProps<
 
 // Every slice that changes which rows, cells, or header states render.
 function selectRenderedState(state: TableState<typeof dataTableFeatures>) {
+  // TanStack Table types the global filter as any.
+  const globalFilter: unknown = state.globalFilter;
   return {
     columnFilters: state.columnFilters,
     columnOrder: state.columnOrder,
     columnPinning: state.columnPinning,
     columnVisibility: state.columnVisibility,
-    globalFilter: state.globalFilter,
+    globalFilter,
     pagination: state.pagination,
     rowSelection: state.rowSelection,
     sorting: state.sorting,
@@ -64,7 +66,11 @@ const DataTableRow = React.memo(function DataTableRow<TData extends RowData>({
     <TableRow
       data-state={selected ? "selected" : undefined}
       onContextMenu={
-        onRowContextMenu ? (e) => onRowContextMenu(e, row.original) : undefined
+        onRowContextMenu
+          ? (e) => {
+              onRowContextMenu(e, row.original);
+            }
+          : undefined
       }
     >
       {cells.map((cell) => (
@@ -125,7 +131,7 @@ export function DataTable<TData extends RowData>({
                   ))}
                 </TableHeader>
                 <TableBody>
-                  {rows.length ? (
+                  {rows.length > 0 ? (
                     rows.map((row) => (
                       <DataTableRow
                         key={row.id}

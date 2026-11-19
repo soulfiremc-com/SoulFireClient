@@ -616,7 +616,7 @@ async function fetchSoulFireJarChecksum(
     }>;
   };
   const asset = release.assets?.find((entry) => entry.name === jarName);
-  const digest = asset?.digest?.replace(/^sha256:/, "");
+  const digest = asset?.digest?.replace(/^sha256:/u, "");
   if (!digest) {
     throw new Error("SoulFire release metadata did not include a checksum");
   }
@@ -644,8 +644,12 @@ async function sha256FileHex(
   const stream = createReadStream(filePath, { signal });
 
   await new Promise<void>((resolve, reject) => {
-    stream.on("data", (chunk) => hash.update(chunk));
-    stream.on("end", () => resolve());
+    stream.on("data", (chunk) => {
+      hash.update(chunk);
+    });
+    stream.on("end", () => {
+      resolve();
+    });
     stream.on("error", reject);
   });
 

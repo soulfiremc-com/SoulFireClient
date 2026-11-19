@@ -283,7 +283,9 @@ export function CommandPaletteTrigger() {
       title={t("commandPalette.shortcutHint", { shortcut })}
       aria-label={t("commandPalette.triggerLabel", { shortcut })}
       aria-keyshortcuts={isMac ? "Meta+K" : "Control+K"}
-      onClick={() => show()}
+      onClick={() => {
+        show();
+      }}
     >
       <SearchIcon data-icon="inline-start" />
       <span className="hidden min-w-0 truncate sm:inline">
@@ -547,9 +549,11 @@ function CommandPaletteContent({
   const groups = new Map<GroupKey, PaletteCommand[]>();
   if (query) {
     // Keep one ranked list so a weaker match never appears above a better one.
-    if (matches.length) groups.set("results", matches.slice(0, RESULT_LIMIT));
+    if (matches.length > 0)
+      groups.set("results", matches.slice(0, RESULT_LIMIT));
   } else if (picking) {
-    if (matches.length) groups.set("projects", matches.slice(0, RESULT_LIMIT));
+    if (matches.length > 0)
+      groups.set("projects", matches.slice(0, RESULT_LIMIT));
   } else {
     const pinned = resolvePalettePins(commands, pins).filter((command) =>
       scopedIds.has(command.id),
@@ -559,8 +563,8 @@ function CommandPaletteContent({
       (command) => !shown.has(command.id),
     );
     for (const command of recents) shown.add(command.id);
-    if (pinned.length) groups.set("pinned", pinned);
-    if (recents.length) groups.set("recent", recents);
+    if (pinned.length > 0) groups.set("pinned", pinned);
+    if (recents.length > 0) groups.set("recent", recents);
     const rest = matches
       .filter((command) => !shown.has(command.id))
       .toSorted(
@@ -686,7 +690,9 @@ function CommandPaletteContent({
       success: (count) => t(`${feedback}.success`, { count }),
       error: t(`${feedback}.error`),
     });
-    promise.catch((error: unknown) => console.error(error));
+    promise.catch((error: unknown) => {
+      console.error(error);
+    });
   };
   const execute = async (command: PaletteCommand) => {
     if (command.action === "browse-project" && command.projectId) {
@@ -997,8 +1003,12 @@ function CommandPaletteContent({
             commands,
             scopeProject,
           )}
-          onCancel={goBack}
-          onConfirm={() => runOperation(confirming)}
+          onCancel={() => {
+            goBack();
+          }}
+          onConfirm={() => {
+            runOperation(confirming);
+          }}
         />
       ) : (
         <CommandList className="max-h-[min(28rem,55dvh)] min-h-0">
@@ -1077,9 +1087,13 @@ function CommandPaletteContent({
               )}
               aria-keyshortcuts={isMac ? "Meta+P" : "Control+P"}
               // Keep focus in the search field so the selected result stays active.
-              onMouseDown={(event) => event.preventDefault()}
+              onMouseDown={(event) => {
+                event.preventDefault();
+              }}
               onKeyDown={keepListKeys}
-              onClick={() => togglePin(selectedCommand)}
+              onClick={() => {
+                togglePin(selectedCommand);
+              }}
             >
               {selectedPinned ? (
                 <PinOffIcon aria-hidden="true" data-icon="inline-start" />

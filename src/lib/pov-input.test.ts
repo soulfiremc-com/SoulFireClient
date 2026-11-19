@@ -23,7 +23,10 @@ test("physical keyboard codes map independently of typed text and include extend
 });
 
 test("browser middle/right buttons and simultaneous modifiers map to GLFW", () => {
-  assert.deepEqual([0, 1, 2, 3, 4].map(mouseButton), [0, 2, 1, 3, 4]);
+  assert.deepEqual(
+    [0, 1, 2, 3, 4].map((button) => mouseButton(button)),
+    [0, 2, 1, 3, 4],
+  );
   assert.equal(
     inputModifiers({
       shiftKey: true,

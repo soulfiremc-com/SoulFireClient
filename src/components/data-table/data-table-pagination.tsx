@@ -44,12 +44,16 @@ export function DataTablePagination<TData extends RowData>({
 
   return (
     <table.Subscribe
-      selector={(state) => ({
-        columnFilters: state.columnFilters,
-        globalFilter: state.globalFilter,
-        pagination: state.pagination,
-        rowSelection: state.rowSelection,
-      })}
+      selector={(state) => {
+        // TanStack Table types the global filter as any.
+        const globalFilter: unknown = state.globalFilter;
+        return {
+          columnFilters: state.columnFilters,
+          globalFilter,
+          pagination: state.pagination,
+          rowSelection: state.rowSelection,
+        };
+      }}
     >
       {({ pagination }) => (
         <div
@@ -112,7 +116,9 @@ export function DataTablePagination<TData extends RowData>({
                 variant="outline"
                 size="icon"
                 className="size-8"
-                onClick={() => table.firstPage()}
+                onClick={() => {
+                  table.firstPage();
+                }}
                 disabled={!table.getCanPreviousPage()}
               >
                 <ChevronsLeft />
@@ -122,7 +128,9 @@ export function DataTablePagination<TData extends RowData>({
                 variant="outline"
                 size="icon"
                 className="size-8"
-                onClick={() => table.previousPage()}
+                onClick={() => {
+                  table.previousPage();
+                }}
                 disabled={!table.getCanPreviousPage()}
               >
                 <ChevronLeft />
@@ -132,7 +140,9 @@ export function DataTablePagination<TData extends RowData>({
                 variant="outline"
                 size="icon"
                 className="size-8"
-                onClick={() => table.nextPage()}
+                onClick={() => {
+                  table.nextPage();
+                }}
                 disabled={!table.getCanNextPage()}
               >
                 <ChevronRight />
@@ -142,7 +152,9 @@ export function DataTablePagination<TData extends RowData>({
                 variant="outline"
                 size="icon"
                 className="size-8"
-                onClick={() => table.lastPage()}
+                onClick={() => {
+                  table.lastPage();
+                }}
                 disabled={!table.getCanLastPage()}
               >
                 <ChevronsRight />

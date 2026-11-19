@@ -61,7 +61,9 @@ export const ReadyOnStart: Story = {
         body.getByText("SoulFire 2.11.0 is ready to install"),
       ).toBeVisible(),
     );
-    await expect(body.getByText(/Restarting stops running bots/)).toBeVisible();
+    await expect(
+      body.getByText(/Restarting stops running bots/u),
+    ).toBeVisible();
     await userEvent.click(body.getByRole("button", { name: "Restart now" }));
     await waitFor(() => expect(installNow).toHaveBeenCalledTimes(1));
   },

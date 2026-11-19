@@ -66,7 +66,9 @@ export function DataTableFacetedFilter<
           newSelectedValues.add(option.value);
         }
         const filterValues = Array.from(newSelectedValues);
-        column.setFilterValue(filterValues.length ? filterValues : undefined);
+        column.setFilterValue(
+          filterValues.length > 0 ? filterValues : undefined,
+        );
       } else {
         column.setFilterValue(isSelected ? undefined : [option.value]);
         setOpen(false);
@@ -159,7 +161,9 @@ export function DataTableFacetedFilter<
                 return (
                   <CommandItem
                     key={option.value}
-                    onSelect={() => onItemSelect(option, isSelected)}
+                    onSelect={() => {
+                      onItemSelect(option, isSelected);
+                    }}
                   >
                     <div
                       className={cn(
@@ -187,7 +191,9 @@ export function DataTableFacetedFilter<
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => onReset()}
+                    onSelect={() => {
+                      onReset();
+                    }}
                     className="justify-center text-center"
                   >
                     {i18n.t("common:dataTable.clearFilters")}

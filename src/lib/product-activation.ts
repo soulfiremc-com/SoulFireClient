@@ -1,4 +1,4 @@
-import type { QueryClient } from "@tanstack/react-query";
+import { matchQuery, type QueryClient } from "@tanstack/react-query";
 import {
   BotConnectionPhase,
   type BotListEntry,
@@ -95,7 +95,7 @@ export function createProductActivationTracker({
       !userId ||
       activated.has(userId) ||
       failed.has(userId) ||
-      bots.some(isSpawned)
+      bots.some((bot) => isSpawned(bot))
     ) {
       return false;
     }
@@ -138,7 +138,11 @@ export function createProductActivationTracker({
   }
 
   function observeActivation(userId: string, bots: readonly ObservedBot[]) {
-    if (!userId || activated.has(userId) || !bots.some(isSpawned)) {
+    if (
+      !userId ||
+      activated.has(userId) ||
+      !bots.some((bot) => isSpawned(bot))
+    ) {
       return false;
     }
 
@@ -184,7 +188,7 @@ export function watchProductActivation(
     if (
       event.type === "updated" &&
       event.action.type === "success" &&
-      event.query.queryKey[0] === "bot-status"
+      matchQuery({ queryKey: ["bot-status"] }, event.query)
     ) {
       tracker.observe(
         userId,

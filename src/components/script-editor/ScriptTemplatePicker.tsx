@@ -49,7 +49,9 @@ export function ScriptTemplatePicker(props: {
                 <button
                   type="button"
                   disabled={props.disabled}
-                  onClick={() => props.onPick(template)}
+                  onClick={() => {
+                    props.onPick(template);
+                  }}
                 />
               }
             >

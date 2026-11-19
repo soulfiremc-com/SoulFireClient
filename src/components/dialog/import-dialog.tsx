@@ -40,7 +40,7 @@ import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { ImportReadSession, readImportFile } from "@/lib/import-read.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
-export type TextInput = {
+export type ImportTextInput = {
   defaultValue: string;
 };
 
@@ -56,7 +56,7 @@ export type ImportDialogProps = {
     extensions: string[];
   }[];
   allowMultiple: boolean;
-  textInput: TextInput | null;
+  textInput: ImportTextInput | null;
   extraContent?: ReactNode;
 };
 
@@ -68,7 +68,12 @@ export default function ImportDialog(props: ImportDialogProps) {
       return <UrlDialog {...props} />;
     case "main":
       return (
-        <MainDialog {...props} openUrlDialog={() => setMenuState("url")} />
+        <MainDialog
+          {...props}
+          openUrlDialog={() => {
+            setMenuState("url");
+          }}
+        />
       );
     default:
       return menuState satisfies never;
@@ -176,9 +181,9 @@ function UrlDialog(props: ImportDialogProps) {
                         )}
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.currentTarget.value)
-                        }
+                        onChange={(e) => {
+                          field.handleChange(e.currentTarget.value);
+                        }}
                         type="url"
                         inputMode="url"
                         disabled={props.isPending}
@@ -241,7 +246,12 @@ function MainDialog(
   const [readSession] = useState(() => new ImportReadSession());
   const [isReading, startReading] = useTransition();
   const isPending = props.isPending || isReading;
-  useEffect(() => () => readSession.cancel(), [readSession]);
+  useEffect(
+    () => () => {
+      readSession.cancel();
+    },
+    [readSession],
+  );
 
   const read = (
     load: (signal: AbortSignal) => Promise<readonly string[]>,
@@ -251,7 +261,7 @@ function MainDialog(
       try {
         await readSession.run(load, (texts) => {
           // No files means the user closed the file picker.
-          if (!texts.length && source === "file") return;
+          if (texts.length === 0 && source === "file") return;
           if (texts.some((text) => text.includes("\u0000"))) {
             toast.error(t("dialog.import.main.unsupportedFile"));
             return;
@@ -336,7 +346,7 @@ function MainDialog(
 
                       const files = Array.from(target.files);
                       target.value = "";
-                      if (!files.length || isPending) return;
+                      if (files.length === 0 || isPending) return;
                       read(
                         (signal) =>
                           Promise.all(
@@ -411,50 +421,44 @@ function MainDialog(
                     read(async (signal) => {
                       if (isDesktopApp()) {
                         return [await desktop.clipboard.readText()];
-                      } else {
-                        const mimeTypes = new Set(
-                          props.filters.map((f) => f.mimeType),
-                        );
-                        let clipboardEntries = (
-                          await navigator.clipboard.read()
-                        )
-                          .map((item) => ({
-                            item,
-                            firstSupportedType: item.types.find((type) =>
-                              mimeTypes.has(type),
-                            ),
-                          }))
-                          .filter(
-                            (
-                              e,
-                            ): e is typeof e & {
-                              firstSupportedType: string;
-                            } => {
-                              return e.firstSupportedType !== undefined;
-                            },
-                          );
-                        signal.throwIfAborted();
-                        if (
-                          !props.allowMultiple &&
-                          clipboardEntries.length > 1
-                        ) {
-                          toast.warning(
-                            t("dialog.import.main.firstClipboardItem"),
-                          );
-                          clipboardEntries = clipboardEntries.slice(0, 1);
-                        }
-
-                        const texts: string[] = [];
-                        for (const entry of clipboardEntries) {
-                          const blob = await entry.item.getType(
-                            entry.firstSupportedType,
-                          );
-                          signal.throwIfAborted();
-                          texts.push(await blob.text());
-                          signal.throwIfAborted();
-                        }
-                        return texts;
                       }
+                      const mimeTypes = new Set(
+                        props.filters.map((f) => f.mimeType),
+                      );
+                      let clipboardEntries = (await navigator.clipboard.read())
+                        .map((item) => ({
+                          item,
+                          firstSupportedType: item.types.find((type) =>
+                            mimeTypes.has(type),
+                          ),
+                        }))
+                        .filter(
+                          (
+                            e,
+                          ): e is typeof e & {
+                            firstSupportedType: string;
+                          } => {
+                            return e.firstSupportedType !== undefined;
+                          },
+                        );
+                      signal.throwIfAborted();
+                      if (!props.allowMultiple && clipboardEntries.length > 1) {
+                        toast.warning(
+                          t("dialog.import.main.firstClipboardItem"),
+                        );
+                        clipboardEntries = clipboardEntries.slice(0, 1);
+                      }
+
+                      const texts: string[] = [];
+                      for (const entry of clipboardEntries) {
+                        const blob = await entry.item.getType(
+                          entry.firstSupportedType,
+                        );
+                        signal.throwIfAborted();
+                        texts.push(await blob.text());
+                        signal.throwIfAborted();
+                      }
+                      return texts;
                     }, "clipboard");
                   }}
                 >
@@ -485,7 +489,7 @@ function MainDialog(
 
 function TextInput(
   props: Omit<ImportDialogProps, "textInput"> & {
-    textInput: TextInput;
+    textInput: ImportTextInput;
   },
 ) {
   const { t } = useTranslation("common");

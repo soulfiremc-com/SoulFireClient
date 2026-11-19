@@ -4,6 +4,19 @@ import * as React from "react";
 
 type InputValue = string[] | string;
 
+// Older browsers report one size object instead of a list.
+function firstBorderSize(
+  sizes: ResizeObserverSize | readonly ResizeObserverSize[],
+): ResizeObserverSize | undefined {
+  return isSizeList(sizes) ? sizes[0] : sizes;
+}
+
+function isSizeList(
+  sizes: ResizeObserverSize | readonly ResizeObserverSize[],
+): sizes is readonly ResizeObserverSize[] {
+  return Array.isArray(sizes);
+}
+
 interface VisuallyHiddenInputProps<T = InputValue> extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "value" | "checked" | "onReset"
@@ -69,7 +82,7 @@ function VisuallyHiddenInput<T = InputValue>(
     if (typeof window === "undefined") return undefined;
 
     const resizeObserver = new ResizeObserver((entries) => {
-      if (!Array.isArray(entries) || !entries.length) return;
+      if (!Array.isArray(entries) || entries.length === 0) return;
 
       const entry = entries[0];
       if (!entry) return;
@@ -78,10 +91,8 @@ function VisuallyHiddenInput<T = InputValue>(
       let height: number;
 
       if ("borderBoxSize" in entry) {
-        const borderSizeEntry = entry.borderBoxSize;
-        const borderSize = Array.isArray(borderSizeEntry)
-          ? borderSizeEntry[0]
-          : borderSizeEntry;
+        const borderSize = firstBorderSize(entry.borderBoxSize);
+        if (!borderSize) return;
         width = borderSize.inlineSize;
         height = borderSize.blockSize;
       } else {

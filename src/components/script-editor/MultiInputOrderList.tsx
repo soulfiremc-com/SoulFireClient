@@ -95,7 +95,9 @@ export function MultiInputOrderList({
     <Sortable
       value={items}
       getItemValue={(item) => item.id}
-      onValueChange={(nextItems) => onReorder(nextItems.map((item) => item.id))}
+      onValueChange={(nextItems) => {
+        onReorder(nextItems.map((item) => item.id));
+      }}
     >
       <SortableContent className="flex w-full flex-col gap-1.5">
         {items.map((item) => (

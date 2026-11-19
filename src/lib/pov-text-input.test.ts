@@ -22,7 +22,7 @@ const actions = (events: ReturnType<typeof textInputEvents>) =>
   }));
 
 test("committed text preserves Unicode scalars and excludes invalid wire characters", () => {
-  assert.deepEqual(actions(textInputEvents("A\u0000\ud800😀\udfff\u0008")), [
+  assert.deepEqual(actions(textInputEvents("A\u0000\uD800😀\uDFFF\u0008")), [
     character(65),
     character(0x1f600),
   ]);

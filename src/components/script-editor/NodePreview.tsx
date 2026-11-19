@@ -44,7 +44,7 @@ function NodePreviewComponent({ values, enabled }: NodePreviewProps) {
 function formatPortName(portId: string): string {
   // Convert to title case (handle snake_case and kebab-case)
   return portId
-    .split(/[-_]/)
+    .split(/[-_]/u)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }

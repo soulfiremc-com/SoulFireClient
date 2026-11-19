@@ -108,7 +108,7 @@ const meta = {
     persisted: true,
     failSave: false,
     disabled: false,
-    onSave: fn(),
+    onSave: fn<() => void>(),
   },
 } satisfies Meta<typeof SettingsFormExample>;
 
@@ -169,7 +169,7 @@ export const AI: Story = {
       "No settings on this page",
     );
     await expect(
-      canvas.getByRole("link", { name: /Pathfinding Settings/ }),
+      canvas.getByRole("link", { name: /Pathfinding Settings/u }),
     ).toBeVisible();
   },
 };
@@ -193,7 +193,7 @@ export const AdvancedSettings: Story = {
     await expect(
       canvas.queryByRole("switch", { name: "Resolve SRV" }),
     ).not.toBeInTheDocument();
-    await userEvent.click(canvas.getByRole("button", { name: /Advanced/ }));
+    await userEvent.click(canvas.getByRole("button", { name: /Advanced/u }));
     await expect(
       canvas.getByRole("switch", { name: "Resolve SRV" }),
     ).toBeVisible();
@@ -324,7 +324,7 @@ export const Demo: Story = {
 export const DemoKeepsChoices: Story = {
   args: { pageId: "bot", persisted: false },
   play: async ({ args, canvas, userEvent, canvasElement }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /Advanced/ }));
+    await userEvent.click(canvas.getByRole("button", { name: /Advanced/u }));
     const toggle = canvas.getByRole("switch", { name: "Resolve SRV" });
     await expect(toggle).toBeChecked();
     await userEvent.click(toggle);
@@ -353,7 +353,7 @@ export const LongOptionList: Story = {
     await expect(await body.findAllByRole("option")).toHaveLength(50);
     // The popup animates in, so wait until the hint is visible.
     await waitFor(() =>
-      expect(body.getByText(/more options\. Type to narrow/)).toBeVisible(),
+      expect(body.getByText(/more options\. Type to narrow/u)).toBeVisible(),
     );
 
     await userEvent.type(body.getByPlaceholderText("Search value..."), "1.20");
@@ -385,7 +385,9 @@ export const UnknownSavedOption: Story = {
     await expect(args.onSave).not.toHaveBeenCalled();
     await userEvent.click(combo);
     const body = within(canvasElement.ownerDocument.body);
-    await userEvent.click(await body.findByRole("option", { name: /1.21.11/ }));
+    await userEvent.click(
+      await body.findByRole("option", { name: /1.21.11/u }),
+    );
     await expect(args.onSave).toHaveBeenCalledTimes(1);
     await expect(args.onSave).toHaveBeenCalledWith(
       "bot",

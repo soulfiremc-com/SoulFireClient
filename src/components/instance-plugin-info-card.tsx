@@ -72,7 +72,9 @@ function PluginInfoCardContent(props: {
     <>
       <Card
         {...(props.cardSize && { size: props.cardSize })}
-        onContextMenu={(e) => handleContextMenu(e, null)}
+        onContextMenu={(e) => {
+          handleContextMenu(e, null);
+        }}
       >
         <CardHeader>
           <div className="flex flex-row items-start justify-between gap-3">

@@ -99,12 +99,12 @@ export const NeedsAttention: Story = {
       }),
     ).toBeVisible();
     await expect(
-      canvas.getByText(/cannot reach the Minecraft server/),
+      canvas.getByText(/cannot reach the Minecraft server/u),
     ).toBeVisible();
-    await expect(canvas.getByText(/account login rejected/)).toBeVisible();
+    await expect(canvas.getByText(/account login rejected/u)).toBeVisible();
     await expect(canvas.getByText("Open accounts")).toBeVisible();
     await expect(
-      canvas.getAllByRole("button", { name: /Restart 1 bot/ }),
+      canvas.getAllByRole("button", { name: /Restart 1 bot/u }),
     ).toHaveLength(3);
   },
 };
@@ -118,9 +118,9 @@ export const ViewOnly: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      await canvas.findByText(/account login rejected/),
+      await canvas.findByText(/account login rejected/u),
     ).toBeVisible();
-    await expect(canvas.queryByRole("button", { name: /Restart/ })).toBeNull();
+    await expect(canvas.queryByRole("button", { name: /Restart/u })).toBeNull();
   },
 };
 

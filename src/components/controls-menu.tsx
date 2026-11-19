@@ -367,7 +367,9 @@ export default function ControlsMenu() {
                     className="underline underline-offset-3"
                     to="/instance/$instance/settings/$pageId"
                     params={{ instance: instanceInfo.id, pageId: "bot" }}
-                    onClick={() => setStartOpen(false)}
+                    onClick={() => {
+                      setStartOpen(false);
+                    }}
                   >
                     {t("controls.changeTarget")}
                   </Link>
@@ -403,7 +405,9 @@ export default function ControlsMenu() {
                   </FieldLabel>
                   <Input
                     ref={startCountRef}
-                    onFocus={(event) => event.currentTarget.select()}
+                    onFocus={(event) => {
+                      event.currentTarget.select();
+                    }}
                     id={startCountId}
                     type="number"
                     min={1}
@@ -412,7 +416,9 @@ export default function ControlsMenu() {
                     required
                     aria-invalid={showCountError}
                     value={startCount}
-                    onChange={(event) => setStartCount(event.target.value)}
+                    onChange={(event) => {
+                      setStartCount(event.target.value);
+                    }}
                     disabled={isPending || startUnavailable}
                   />
                   <FieldDescription>
@@ -464,7 +470,9 @@ export default function ControlsMenu() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => stopMutation.mutate()}
+          onClick={() => {
+            stopMutation.mutate();
+          }}
           disabled={isPending || desiredBotIds.length === 0}
         >
           {stopMutation.isPending ? (
@@ -483,7 +491,9 @@ export default function ControlsMenu() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => restartMutation.mutate()}
+            onClick={() => {
+              restartMutation.mutate();
+            }}
             disabled={isPending}
           >
             {restartMutation.isPending ? (

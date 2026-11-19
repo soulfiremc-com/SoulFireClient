@@ -46,13 +46,13 @@ test("storage failures do not prevent keeping history in memory", () => {
     [],
   );
   const history = appendCommandHistory([], "1");
-  assert.doesNotThrow(() =>
+  assert.doesNotThrow(() => {
     saveCommandHistory(history, {
       setItem: () => {
         throw new Error();
       },
-    }),
-  );
+    });
+  });
   assert.deepEqual(history.map(Number), [1]);
 });
 

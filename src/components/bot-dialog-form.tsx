@@ -188,9 +188,9 @@ export function BotDialogForm({
                   <Checkbox
                     id={fieldId}
                     checked={value === "true"}
-                    onCheckedChange={(checked) =>
-                      update(input, String(checked))
-                    }
+                    onCheckedChange={(checked) => {
+                      update(input, String(checked));
+                    }}
                   />
                   <FieldLabel htmlFor={fieldId}>
                     {control.label || control.key}
@@ -222,14 +222,18 @@ export function BotDialogForm({
                       value={value}
                       maxLength={input.value.maxLength}
                       rows={Math.min(input.value.multilineMaxLines || 3, 10)}
-                      onChange={(event) => update(input, event.target.value)}
+                      onChange={(event) => {
+                        update(input, event.target.value);
+                      }}
                     />
                   ) : (
                     <Input
                       id={fieldId}
                       value={value}
                       maxLength={input.value.maxLength}
-                      onChange={(event) => update(input, event.target.value)}
+                      onChange={(event) => {
+                        update(input, event.target.value);
+                      }}
                     />
                   ))}
                 {input.case === "singleOption" && (
@@ -266,7 +270,9 @@ export function BotDialogForm({
                     max={Math.max(input.value.start, input.value.end)}
                     step="any"
                     required
-                    onChange={(event) => update(input, event.target.value)}
+                    onChange={(event) => {
+                      update(input, event.target.value);
+                    }}
                     disabled={input.value.start === input.value.end}
                   />
                 )}

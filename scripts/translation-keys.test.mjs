@@ -73,7 +73,9 @@ test("source translation keys exist in en-US", () => {
 
 function fixture(t, files) {
   const root = mkdtempSync(join(tmpdir(), "translation-keys-"));
-  t.after(() => rmSync(root, { recursive: true, force: true }));
+  t.after(() => {
+    rmSync(root, { recursive: true, force: true });
+  });
   for (const [path, contents] of Object.entries(files)) {
     const target = join(root, path);
     mkdirSync(dirname(target), { recursive: true });

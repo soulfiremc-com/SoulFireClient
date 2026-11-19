@@ -203,7 +203,9 @@ test("editor sessions isolate document, UI, and execution updates", () => {
   const id = first.actions.addNode("value", { x: 0, y: 0 }, { value: 1 });
   const document = first.document.get();
   let documentUpdates = 0;
-  const sub = first.document.subscribe(() => documentUpdates++);
+  const sub = first.document.subscribe(() => {
+    documentUpdates++;
+  });
   first.actions.setSelectedNode(id);
   first.actions.setActiveNode(id);
   first.actions.updatePreviewValue(id, { value: 2 });
@@ -220,7 +222,9 @@ test("validation ignores canvas changes but observes graph edits", () => {
   const id = session.actions.addNode("value", { x: 0, y: 0 }, { value: 1 });
   const initial = session.validationGraph.get();
   let updates = 0;
-  const sub = session.validationGraph.subscribe(() => updates++);
+  const sub = session.validationGraph.subscribe(() => {
+    updates++;
+  });
   session.actions.onNodesChange([{ type: "select", id, selected: true }]);
   session.actions.onNodesChange([
     { type: "dimensions", id, dimensions: { width: 100, height: 100 } },

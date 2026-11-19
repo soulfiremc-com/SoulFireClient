@@ -122,10 +122,10 @@ test("project destinations obey permissions and keep duplicate names distinct", 
     commands.find((command) => command.id === "project:farm-2")?.destination,
     { to: "/instance/$instance", params: { instance: "farm-2" } },
   );
-  assert(commands.some((command) => command.id === "terminal:farm-1"));
-  assert(!commands.some((command) => command.id === "terminal:farm-2"));
-  assert(!commands.some((command) => command.id === "bots:farm-1"));
-  assert(!commands.some((command) => command.id.endsWith(":hidden")));
+  assert.ok(commands.some((command) => command.id === "terminal:farm-1"));
+  assert.ok(!commands.some((command) => command.id === "terminal:farm-2"));
+  assert.ok(!commands.some((command) => command.id === "bots:farm-1"));
+  assert.ok(!commands.some((command) => command.id.endsWith(":hidden")));
 });
 
 test("creation and administration require granted permissions", () => {
@@ -134,7 +134,7 @@ test("creation and administration require granted permissions", () => {
     instances: [],
     client: client([]),
   });
-  assert(
+  assert.ok(
     !restricted.some(
       (command) =>
         command.group === "admin" || command.action === "create-project",
@@ -149,9 +149,9 @@ test("creation and administration require granted permissions", () => {
       GlobalPermission.CREATE_INSTANCE,
     ]),
   });
-  assert(allowed.some((command) => command.id === "create-project"));
-  assert(allowed.some((command) => command.id === "admin-users"));
-  assert(
+  assert.ok(allowed.some((command) => command.id === "create-project"));
+  assert.ok(allowed.some((command) => command.id === "admin-users"));
+  assert.ok(
     !allowed.some(
       (command) =>
         command.id === "admin-logs" || command.id === "admin-terminal",
@@ -161,7 +161,7 @@ test("creation and administration require granted permissions", () => {
   const [permission] = denied.serverPermissions;
   assert.ok(permission);
   permission.granted = false;
-  assert(
+  assert.ok(
     !createPaletteCommands({ t, instances: [], client: denied }).some(
       (command) => command.id === "create-project",
     ),
@@ -201,7 +201,7 @@ test("current project indexes bot identities, scripts, and setting labels withou
     searchPaletteCommands(commands, "recovery")[0]?.id,
     "script:farm-1:script-1",
   );
-  assert(commands.some((command) => command.group === "currentProject"));
+  assert.ok(commands.some((command) => command.group === "currentProject"));
 });
 
 test("removed projects and revoked access cannot reappear through cached detail or recents", () => {
@@ -219,7 +219,7 @@ test("removed projects and revoked access cannot reappear through cached detail 
       current: { ...current, instancePermissions: [] },
     });
     assert.equal(resolvePaletteRecents(commands, recentIds).length, 0);
-    assert(
+    assert.ok(
       !commands.some((command) => command.context === current.friendlyName),
     );
   }
@@ -438,7 +438,7 @@ test("bot and script operations require control permissions and never include em
     instances: [project(current.id)],
     current,
   });
-  assert(!denied.some((command) => command.operation));
+  assert.ok(!denied.some((command) => command.operation));
   const [account] = current.profile.accounts;
   assert.ok(account);
   const authorized = {
@@ -543,7 +543,7 @@ test("bot and script operations require control permissions and never include em
       ?.status?.label,
     "Off",
   );
-  assert(
+  assert.ok(
     !commands.some(
       (command) =>
         command.operation?.kind === "bot" &&
@@ -582,14 +582,14 @@ test("type filters overlap by meaning and every readable project can be browsed"
       ["browse-project:farm-2", "farm-2"],
     ],
   );
-  assert(ids("bots").includes(`bot:${current.id}:bot-id`));
-  assert(ids("bots").includes(`stop-bot:${current.id}:bot-id`));
-  assert(ids("actions").includes(`stop-bot:${current.id}:bot-id`));
-  assert(!ids("actions").includes(`bot:${current.id}:bot-id`));
-  assert(ids("projects").includes("browse-project:farm-2"));
-  assert(ids("projects").includes("project:farm-2"));
-  assert(!ids("projects").includes("theme-dark"));
-  assert(ids("settings").every((id) => id.startsWith("setting")));
+  assert.ok(ids("bots").includes(`bot:${current.id}:bot-id`));
+  assert.ok(ids("bots").includes(`stop-bot:${current.id}:bot-id`));
+  assert.ok(ids("actions").includes(`stop-bot:${current.id}:bot-id`));
+  assert.ok(!ids("actions").includes(`bot:${current.id}:bot-id`));
+  assert.ok(ids("projects").includes("browse-project:farm-2"));
+  assert.ok(ids("projects").includes("project:farm-2"));
+  assert.ok(!ids("projects").includes("theme-dark"));
+  assert.ok(ids("settings").every((id) => id.startsWith("setting")));
   assert.equal(ids("all").length, commands.length);
 });
 
@@ -688,10 +688,10 @@ test("global search covers each indexed project's own fields, descriptions, and 
     option.id,
   );
   // One project's schema is never copied to another project.
-  assert(
+  assert.ok(
     !commands.some((command) => command.id.startsWith('setting:farm-1:["bot"')),
   );
-  assert(
+  assert.ok(
     !commands.some((command) =>
       command.id.startsWith('setting:far:["anti-afk"'),
     ),
@@ -700,7 +700,9 @@ test("global search covers each indexed project's own fields, descriptions, and 
   // Other projects have destinations only: no live status and no operations.
   const bot = commands.find((command) => command.id === "bot:far:far-bot");
   assert.equal(bot?.status, undefined);
-  assert(!commands.some((command) => command.operation?.instanceId === "far"));
+  assert.ok(
+    !commands.some((command) => command.operation?.instanceId === "far"),
+  );
 });
 
 test("indexed projects need list access and their own read permission", () => {
@@ -715,7 +717,7 @@ test("indexed projects need list access and their own read permission", () => {
       current,
       indexed: [{ project: info }],
     });
-    assert(!commands.some((command) => command.id.includes(":far:")));
+    assert.ok(!commands.some((command) => command.id.includes(":far:")));
   }
 });
 
@@ -754,8 +756,8 @@ test("account and proxy fields open above their tables, except fields edited in 
     },
   );
   for (const hidden of ["account-import-concurrency", "proxy-check-address"])
-    assert(!commands.some((command) => command.id.includes(hidden)));
-  assert(!commands.some((command) => command.id === "settings:far:account"));
+    assert.ok(!commands.some((command) => command.id.includes(hidden)));
+  assert.ok(!commands.some((command) => command.id === "settings:far:account"));
 });
 
 test("server fields need READ_SERVER_CONFIG and link to the exact admin field", () => {
@@ -784,7 +786,7 @@ test("server fields need READ_SERVER_CONFIG and link to the exact admin field", 
     client: client([]),
     server,
   });
-  assert(!denied.some((command) => command.id.startsWith("server-setting")));
+  assert.ok(!denied.some((command) => command.id.startsWith("server-setting")));
   const allowed = createPaletteCommands({
     t,
     instances: [],
@@ -799,7 +801,9 @@ test("server fields need READ_SERVER_CONFIG and link to the exact admin field", 
     search: { focusNamespace: "server", focusKey: "public-address" },
   });
   // The fixed server settings command already covers the page itself.
-  assert(!allowed.some((command) => command.id === "server-settings:server"));
+  assert.ok(
+    !allowed.some((command) => command.id === "server-settings:server"),
+  );
 });
 
 test("long descriptions match contiguous text, not scattered letters", () => {

@@ -15,7 +15,7 @@ let translations = 0;
 for (const { filename, status } of files) {
   if (
     status === "removed" ||
-    !/^locales\/(?!en-US\/|\.\.?\/)[^/]+\/[^/]+\.json$/.test(filename) ||
+    !/^locales\/(?!en-US\/|\.\.?\/)[^/]+\/[^/]+\.json$/u.test(filename) ||
     !existsSync(join(sourceDirectory, basename(filename))) ||
     !existsSync(join(repository, filename))
   ) {

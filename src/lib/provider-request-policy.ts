@@ -19,7 +19,9 @@ export function executeProviderRequestEffect(
 ): Effect.Effect<ProviderResponse, ProviderRequestError> {
   return Effect.gen(function* () {
     yield* Effect.try({
-      try: () => validateProviderRequest(request),
+      try: () => {
+        validateProviderRequest(request);
+      },
       catch: (error) =>
         new ProviderRequestError({
           message:
@@ -77,45 +79,49 @@ export async function executeProviderRequest(
 }
 
 const routes: [string, RegExp, ProviderRequest["method"][]][] = [
-  ["https://proxy.webshare.io", /^\/api\/v2\/proxy\/list\/$/, ["GET"]],
+  ["https://proxy.webshare.io", /^\/api\/v2\/proxy\/list\/$/u, ["GET"]],
   [
     "https://proxy-seller.com",
-    /^\/personal\/api\/v2\/[\w-]+\/(?:proxy\/list\/(?:ipv4|ipv6|isp|mobile|mix|mix_isp)|reference\/list\/(?:ipv4|ipv6|isp))$/,
+    /^\/personal\/api\/v2\/[\w-]+\/(?:proxy\/list\/(?:ipv4|ipv6|isp|mobile|mix|mix_isp)|reference\/list\/(?:ipv4|ipv6|isp))$/u,
     ["GET"],
   ],
   [
     "https://proxy-seller.com",
-    /^\/personal\/api\/v2\/[\w-]+\/order\/(?:calc|make)$/,
+    /^\/personal\/api\/v2\/[\w-]+\/order\/(?:calc|make)$/u,
     ["POST"],
   ],
   [
     "https://api.proxyscrape.com",
-    /^\/v4\/account\/[\w-]+\/(?:datacenter_shared|datacenter_dedicated)\/proxy-list$/,
+    /^\/v4\/account\/[\w-]+\/(?:datacenter_shared|datacenter_dedicated)\/proxy-list$/u,
     ["GET"],
   ],
-  ["https://apid.iproyal.com", /^\/v1\/reseller\/orders\/\d+$/, ["GET"]],
-  ["https://api.decodo.com", /^\/v2\/endpoints-custom\/back-connect$/, ["GET"]],
-  ["https://api.oxylabs.io", /^\/v1\/proxies\/lists(?:\/[\w-]+)?$/, ["GET"]],
-  ["https://api.thordata.com", /^\/api\/gateway\/queryListIsp$/, ["POST"]],
-  ["https://api.ravealts.com", /^\/alts\/(?:stock|key-info)$/, ["GET"]],
-  ["https://api.ravealts.com", /^\/alts\/purchase$/, ["POST"]],
+  ["https://apid.iproyal.com", /^\/v1\/reseller\/orders\/\d+$/u, ["GET"]],
+  [
+    "https://api.decodo.com",
+    /^\/v2\/endpoints-custom\/back-connect$/u,
+    ["GET"],
+  ],
+  ["https://api.oxylabs.io", /^\/v1\/proxies\/lists(?:\/[\w-]+)?$/u, ["GET"]],
+  ["https://api.thordata.com", /^\/api\/gateway\/queryListIsp$/u, ["POST"]],
+  ["https://api.ravealts.com", /^\/alts\/(?:stock|key-info)$/u, ["GET"]],
+  ["https://api.ravealts.com", /^\/alts\/purchase$/u, ["POST"]],
   [
     "https://localts.store",
-    /^\/v1\/(?:me|products|orders|orders\/get-order)$/,
+    /^\/v1\/(?:me|products|orders|orders\/get-order)$/u,
     ["GET"],
   ],
-  ["https://localts.store", /^\/v1\/products\/[\w-]+\/purchase$/, ["POST"]],
+  ["https://localts.store", /^\/v1\/products\/[\w-]+\/purchase$/u, ["POST"]],
   [
     "https://api.fernan.club",
-    /^\/api\/v1\/(?:user\/me|store\/(?:stock|cooldown|purchases))$/,
+    /^\/api\/v1\/(?:user\/me|store\/(?:stock|cooldown|purchases))$/u,
     ["GET"],
   ],
   [
     "https://api.fernan.club",
-    /^\/api\/v1\/store\/purchases\/[\da-f-]{36}$/i,
+    /^\/api\/v1\/store\/purchases\/[\da-f-]{36}$/iu,
     ["GET"],
   ],
-  ["https://api.fernan.club", /^\/api\/v1\/store\/purchase$/, ["POST"]],
+  ["https://api.fernan.club", /^\/api\/v1\/store\/purchase$/u, ["POST"]],
 ];
 
 // Requests can come from the renderer over IPC, so the shape is decoded first.
@@ -178,7 +184,7 @@ export function validateProviderRequest(
       !allowedHeaders.has(key.toLowerCase()) ||
       typeof header !== "string" ||
       header.length > 8_192 ||
-      /[\r\n]/.test(header)
+      /[\r\n]/u.test(header)
     ) {
       throw new Error("Invalid provider request headers");
     }

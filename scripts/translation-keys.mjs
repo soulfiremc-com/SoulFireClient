@@ -45,7 +45,7 @@ export function loadCatalogs(localeDirectory) {
     const namespace = file.slice(0, -".json".length);
     const json = JSON.parse(readFileSync(join(localeDirectory, file), "utf8"));
     const leaves = flatten(json, "", new Set());
-    const bases = new Set([...leaves].map(stripPlural));
+    const bases = new Set([...leaves].map((key) => stripPlural(key)));
     catalogs.set(namespace, { leaves, bases });
   }
   return catalogs;
@@ -59,8 +59,8 @@ function listSourceFiles(directory) {
       if (entry.name === "generated") continue;
       files.push(...listSourceFiles(path));
     } else if (
-      /\.(ts|tsx)$/.test(entry.name) &&
-      !/\.(test|stories)\.tsx?$/.test(entry.name) &&
+      /\.(ts|tsx)$/u.test(entry.name) &&
+      !/\.(test|stories)\.tsx?$/u.test(entry.name) &&
       !entry.name.endsWith(".d.ts")
     ) {
       files.push(path);
@@ -71,7 +71,7 @@ function listSourceFiles(directory) {
 
 function lineOf(source, index) {
   let line = 1;
-  for (let i = 0; i < index; i++) if (source.charCodeAt(i) === 10) line++;
+  for (let i = 0; i < index; i++) if (source[i] === "\n") line++;
   return line;
 }
 
@@ -124,10 +124,10 @@ function literalsIn(text) {
   // Drop literals in comparisons and nested calls, such as
   // `phase === "saving" ? "a" : "b"` or `list.includes("buy") ? "a" : "b"`.
   text = text
-    .replaceAll(/[=!]==?\s*(["'`])(?:(?!\1).)*\1/g, "")
-    .replaceAll(/(["'`])(?:(?!\1).)*\1\s*[=!]==?/g, "")
-    .replaceAll(/\w\(\s*(["'`])(?:(?!\1).)*\1\s*\)/g, "");
-  const pattern = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`([^`]*)`/g;
+    .replaceAll(/[=!]==?\s*(["'`])(?:(?!\1).)*\1/gu, "")
+    .replaceAll(/(["'`])(?:(?!\1).)*\1\s*[=!]==?/gu, "")
+    .replaceAll(/\w\(\s*(["'`])(?:(?!\1).)*\1\s*\)/gu, "");
+  const pattern = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`([^`]*)`/gu;
   for (const match of text.matchAll(pattern)) {
     if (match[3] !== undefined) {
       literals.push({ template: true, value: match[3] });
@@ -153,10 +153,10 @@ function translationBindings(source) {
     bindings.set(name, current);
   };
   for (const match of source.matchAll(
-    /\{([^{}]*)\}\s*=\s*useTranslation\(([^)]*)\)/g,
+    /\{([^{}]*)\}\s*=\s*useTranslation\(([^)]*)\)/gu,
   )) {
     const namespaces = stringArguments(match[2]);
-    const binding = /(?:^|,)\s*t\s*(?::\s*(\w+))?\s*(?:,|$)/.exec(match[1]);
+    const binding = /(?:^|,)\s*t\s*(?::\s*(\w+))?\s*(?:,|$)/u.exec(match[1]);
     if (!binding) continue;
     add(
       binding[1] ?? "t",
@@ -164,20 +164,23 @@ function translationBindings(source) {
     );
   }
   for (const match of source.matchAll(
-    /\b(\w+)\??\s*:\s*TFunction<\s*"(\w+)"/g,
+    /\b(\w+)\??\s*:\s*TFunction<\s*"(\w+)"/gu,
   )) {
     add(match[1], [match[2]]);
   }
   // Modules outside React import the default instance's `t` from i18next.
   for (const match of source.matchAll(
-    /import\s*\{([^}]*)\}\s*from\s*"i18next"/g,
+    /import\s*\{([^}]*)\}\s*from\s*"i18next"/gu,
   )) {
-    const binding = /(?:^|,)\s*t\s*(?:as\s+(\w+))?\s*(?:,|$)/.exec(match[1]);
+    const binding = /(?:^|,)\s*t\s*(?:as\s+(\w+))?\s*(?:,|$)/u.exec(match[1]);
     if (binding) add(binding[1] ?? "t", [DEFAULT_NAMESPACE]);
   }
   // Plain modules receive `t` from a component as `t: (key: string) => string`.
   // Components pass the default namespace translator.
-  if (!bindings.has("t") && /\bt\??\s*:\s*\(\s*key\s*:\s*string/.test(source)) {
+  if (
+    !bindings.has("t") &&
+    /\bt\??\s*:\s*\(\s*key\s*:\s*string/u.test(source)
+  ) {
     add("t", [DEFAULT_NAMESPACE]);
   }
   return bindings;
@@ -185,11 +188,11 @@ function translationBindings(source) {
 
 /** Turn a template literal key into a regular expression. */
 function templatePattern(template) {
-  const parts = template.split(/\$\{[^}]*\}/);
+  const parts = template.split(/\$\{[^}]*\}/u);
   const escaped = parts.map((part) =>
-    part.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    part.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&"),
   );
-  return new RegExp(`^${escaped.join(".+")}$`);
+  return new RegExp(`^${escaped.join(".+")}$`, "u");
 }
 
 function splitNamespace(key, namespaces, candidates) {
@@ -222,7 +225,7 @@ export function scanSources(files, rootDirectory, namespaces) {
         references.push({
           path,
           line: lineOf(source, index),
-          dynamic: text.trim().replaceAll(/\s+/g, " "),
+          dynamic: text.trim().replaceAll(/\s+/gu, " "),
         });
         return;
       }
@@ -230,11 +233,11 @@ export function scanSources(files, rootDirectory, namespaces) {
         // Ternaries also contain unrelated literals, such as comparisons.
         if (
           !literal.template &&
-          !/^[\w-]+(:[\w-]+)?(\.[\w-]+)*$/.test(literal.value)
+          !/^[\w-]+(:[\w-]+)?(\.[\w-]+)*$/u.test(literal.value)
         ) {
           continue;
         }
-        if (literal.template && !/^[\w.:${}()?\s-]+$/.test(literal.value)) {
+        if (literal.template && !/^[\w.:${}()?\s-]+$/u.test(literal.value)) {
           continue;
         }
         const resolved = prefix
@@ -255,7 +258,7 @@ export function scanSources(files, rootDirectory, namespaces) {
     // prefix every key passed to them.
     const prefixes = new Map();
     for (const match of source.matchAll(
-      /const (\w+) = \((\w+)[^)]*\)\s*=>\s*i18n\.t\(`(\w+):([\w.]*)\$\{(\w+)\}`\)/g,
+      /const (\w+) = \((\w+)[^)]*\)\s*=>\s*i18n\.t\(`(\w+):([\w.]*)\$\{(\w+)\}`\)/gu,
     )) {
       if (match[2] !== match[5]) continue;
       bindings.set(match[1], new Set([match[3]]));
@@ -269,7 +272,7 @@ export function scanSources(files, rootDirectory, namespaces) {
       const prefix = prefixes.get(name) ?? "";
       const escaped = name.replace(".", "\\.");
       for (const match of source.matchAll(
-        new RegExp(`(?<![\\w$.])${escaped}\\(`, "g"),
+        new RegExp(`(?<![\\w$.])${escaped}\\(`, "gu"),
       )) {
         const start = match.index + match[0].length;
         const argument = readArgument(source, start);
@@ -282,18 +285,18 @@ export function scanSources(files, rootDirectory, namespaces) {
           start,
           argument.text,
           candidates,
-          /\bcount\b/.test(options),
+          /\bcount\b/u.test(options),
           prefix,
         );
       }
     }
 
-    for (const match of source.matchAll(/<Trans\b([^>]*?)\/?>/gs)) {
+    for (const match of source.matchAll(/<Trans\b([^>]*?)\/?>/gsu)) {
       const attributes = match[1];
-      const keyMatch = /i18nKey=(?:\{([^}]*)\}|("[^"]*"))/.exec(attributes);
+      const keyMatch = /i18nKey=(?:\{([^}]*)\}|("[^"]*"))/u.exec(attributes);
       if (!keyMatch) continue;
-      const translator = /\bt=\{(\w+)\}/.exec(attributes)?.[1];
-      const namespace = /\bns=["{]"?(\w+)/.exec(attributes)?.[1];
+      const translator = /\bt=\{(\w+)\}/u.exec(attributes)?.[1];
+      const namespace = /\bns=["{]"?(\w+)/u.exec(attributes)?.[1];
       const candidates = namespace
         ? [namespace]
         : translator && bindings.has(translator)
@@ -303,13 +306,13 @@ export function scanSources(files, rootDirectory, namespaces) {
         match.index,
         keyMatch[1] ?? keyMatch[2],
         candidates,
-        /\bcount\b/.test(attributes),
+        /\bcount\b/u.test(attributes),
       );
     }
 
     // Fully qualified keys can travel through props, schema annotations, and
     // lookup tables before they reach `t`.
-    for (const match of source.matchAll(/["'`]((\w+):[\w.-]+)["'`]/g)) {
+    for (const match of source.matchAll(/["'`]((\w+):[\w.-]+)["'`]/gu)) {
       strings.add(match[1]);
       if (!namespaces.has(match[2])) continue;
       if (
@@ -329,7 +332,7 @@ export function scanSources(files, rootDirectory, namespaces) {
         hasCount: false,
       });
     }
-    for (const match of source.matchAll(/["'`]([\w-]+(?:\.[\w-]+)+)["'`]/g)) {
+    for (const match of source.matchAll(/["'`]([\w-]+(?:\.[\w-]+)+)["'`]/gu)) {
       strings.add(match[1]);
     }
   }
@@ -459,7 +462,7 @@ function print(title, items) {
   }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (process.argv[1] === import.meta.filename) {
   const rootDirectory = fileURLToPath(new URL("..", import.meta.url));
   const result = checkTranslationKeys({ rootDirectory });
   print("Missing keys", result.missing);

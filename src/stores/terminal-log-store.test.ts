@@ -139,9 +139,15 @@ test("batches stream updates and rejects history that completes after disposal",
       async *subscribe(_, context) {
         for (let id = 1; id <= 10; id++) yield { message: message(id) };
         await new Promise<void>((resolve) => {
-          context.signal.addEventListener("abort", () => resolve(), {
-            once: true,
-          });
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            {
+              once: true,
+            },
+          );
         });
       },
     });
@@ -151,7 +157,9 @@ test("batches stream updates and rejects history that completes after disposal",
     scope(),
   );
   let updates = 0;
-  const subscription = session.state.subscribe(() => updates++);
+  const subscription = session.state.subscribe(() => {
+    updates++;
+  });
   const stop = session.retain();
   try {
     await delay(90);
@@ -175,7 +183,7 @@ test("restarted sessions reject an older snapshot that ignored cancellation", as
     finishOld = resolve;
   });
   let requests = 0;
-  const transport = createRouterTransport((router) =>
+  const transport = createRouterTransport((router) => {
     router.service(LogsService, {
       async getPrevious() {
         if (++requests === 1) {
@@ -187,13 +195,19 @@ test("restarted sessions reject an older snapshot that ignored cancellation", as
       async *subscribe(_, context) {
         yield { message: message(10) };
         await new Promise<void>((resolve) => {
-          context.signal.addEventListener("abort", () => resolve(), {
-            once: true,
-          });
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            {
+              once: true,
+            },
+          );
         });
       },
-    }),
-  );
+    });
+  });
   const session = createTerminalLogSession(
     createRpcClient(LogsService, transport),
     scope(),
@@ -299,9 +313,15 @@ test("reconnecting catches up retained history without duplicating live entries"
         yield { message: message(3) };
         ready();
         await new Promise<void>((resolve) => {
-          context.signal.addEventListener("abort", () => resolve(), {
-            once: true,
-          });
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            {
+              once: true,
+            },
+          );
         });
       },
     });
@@ -364,9 +384,15 @@ test("the first live response queues catch-up behind an in-flight snapshot", asy
         await snapshotReady;
         yield { message: message(3) };
         await new Promise<void>((resolve) => {
-          context.signal.addEventListener("abort", () => resolve(), {
-            once: true,
-          });
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            {
+              once: true,
+            },
+          );
         });
       },
     });

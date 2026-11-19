@@ -15,7 +15,7 @@ const scope = create(LogScopeSchema, { scope: { case: "global", value: {} } });
 
 test("a finite stream consumer aborts the underlying Connect subscription", async () => {
   let aborted = false;
-  const transport = createRouterTransport((router) =>
+  const transport = createRouterTransport((router) => {
     router.service(LogsService, {
       getPrevious: () => ({ messages: [] }),
       async *subscribe(_, context) {
@@ -30,13 +30,19 @@ test("a finite stream consumer aborts the underlying Connect subscription", asyn
           message: create(LogStringSchema, { id: "1", message: "Started" }),
         };
         await new Promise<void>((resolve) => {
-          context.signal.addEventListener("abort", () => resolve(), {
-            once: true,
-          });
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            {
+              once: true,
+            },
+          );
         });
       },
-    }),
-  );
+    });
+  });
   const layer = terminalLogsLayer(
     createRpcClient(LogsService, transport),
     scope,
@@ -51,13 +57,13 @@ test("a finite stream consumer aborts the underlying Connect subscription", asyn
 });
 
 test("history failures retain a typed operation at the RPC adapter", async () => {
-  const transport = createRouterTransport((router) =>
+  const transport = createRouterTransport((router) => {
     router.service(LogsService, {
       getPrevious: () => {
         throw new Error("Service unavailable");
       },
-    }),
-  );
+    });
+  });
   const result = await Effect.runPromise(
     Effect.result(
       Effect.flatMap(TerminalLogs, (logs) => logs.history).pipe(

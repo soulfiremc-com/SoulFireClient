@@ -211,8 +211,8 @@ export function NavAccount() {
                   <DropdownMenuSubContent>
                     <DropdownMenuRadioGroup
                       value={theme}
-                      onValueChange={(value) => {
-                        if (value) {
+                      onValueChange={(value: unknown) => {
+                        if (typeof value === "string" && value) {
                           setTheme(value);
                         }
                       }}
@@ -242,8 +242,8 @@ export function NavAccount() {
                   <DropdownMenuSubContent>
                     <DropdownMenuRadioGroup
                       value={terminalTheme.value}
-                      onValueChange={(value) => {
-                        if (value) {
+                      onValueChange={(value: unknown) => {
+                        if (typeof value === "string" && value) {
                           setTerminalTheme(value);
                           terminalTheme.setter(value);
                         }
@@ -267,8 +267,8 @@ export function NavAccount() {
                   <DropdownMenuSubContent>
                     <DropdownMenuRadioGroup
                       value={i18n.resolvedLanguage ?? i18n.language}
-                      onValueChange={(value) => {
-                        if (value) {
+                      onValueChange={(value: unknown) => {
+                        if (typeof value === "string" && value) {
                           void i18n.changeLanguage(value);
                         }
                       }}
@@ -348,7 +348,9 @@ export function NavAccount() {
                         {t("integratedDiagnostics.openDirectory")}
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={() => setDiagnosticsOpen(true)}
+                        onClick={() => {
+                          setDiagnosticsOpen(true);
+                        }}
                       >
                         <ActivityIcon />
                         {t("integratedDiagnostics.title")}

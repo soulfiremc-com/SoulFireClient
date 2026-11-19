@@ -516,7 +516,7 @@ export function createPaletteCommands({
         botIds: string[],
         description?: string,
       ) => {
-        if (!botIds.length) return;
+        if (botIds.length === 0) return;
         add({
           id,
           label,
@@ -836,8 +836,8 @@ export function searchPaletteCommands(
     recentIds?: readonly string[] | undefined;
   } = {},
 ): PaletteCommand[] {
-  const tokens = search.trim().split(/\s+/).filter(Boolean);
-  if (!tokens.length) return commands;
+  const tokens = search.trim().split(/\s+/u).filter(Boolean);
+  if (tokens.length === 0) return commands;
   return commands
     .map((command) => {
       const sources = [
@@ -982,7 +982,7 @@ export function paletteMatchSegments(
   const matched = new Set<number>();
   for (const token of normalizePaletteText(search)
     .trim()
-    .split(/\s+/)
+    .split(/\s+/u)
     .filter(Boolean)) {
     let found = false;
     for (
@@ -1004,7 +1004,7 @@ export function paletteMatchSegments(
         from = index + character.length;
       }
       if (indexes.length === Array.from(token).length)
-        indexes.forEach((index) => matched.add(index));
+        for (const index of indexes) matched.add(index);
     }
   }
   const mask = Array.from({ length: value.length }, () => false);
