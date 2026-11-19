@@ -211,11 +211,11 @@ function formatFileSize(size: number): string {
   }).format(size >= 1024 * 1024 ? size / 1024 / 1024 : size / 1024);
 }
 
-type AuthFlowData = {
+interface AuthFlowData {
   email: string;
   flowToken: string;
   address: string;
-};
+}
 
 const DEFAULT_JVM_ARGS = [
   "-XX:+EnableDynamicAgentLoading",
@@ -636,7 +636,7 @@ function IntegratedMenu({
   }, [autoStart, onAutoStart, startWithFeedback]);
 
   switch (integratedState) {
-    case "configure":
+    case "configure": {
       return (
         <IntegratedConfigureMenu
           setLoginType={setLoginType}
@@ -647,7 +647,8 @@ function IntegratedMenu({
           startIntegratedServer={startWithFeedback}
         />
       );
-    case "loading":
+    }
+    case "loading": {
       return (
         <IntegratedLoadingMenu
           cancelStartup={async () => {
@@ -656,7 +657,8 @@ function IntegratedMenu({
           }}
         />
       );
-    case "error":
+    }
+    case "error": {
       return (
         <IntegratedErrorMenu
           failedAttempts={failedAttempts}
@@ -665,15 +667,18 @@ function IntegratedMenu({
           startIntegratedServer={startWithFeedback}
         />
       );
-    case "mobile":
+    }
+    case "mobile": {
       return (
         <IntegratedMobileMenu
           setIntegratedState={setIntegratedState}
           redirectWithCredentials={redirectWithCredentials}
         />
       );
-    default:
+    }
+    default: {
       return integratedState satisfies never;
+    }
   }
 }
 

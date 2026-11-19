@@ -20,19 +20,23 @@ import {
 } from "effect";
 import { CastError, castError } from "./errors";
 
-type Session = { appId: string; sessionId: string; transportId: string };
-type Controller = {
+interface Session {
+  appId: string;
+  sessionId: string;
+  transportId: string;
+}
+interface Controller {
   on(event: "message", callback: (message: unknown) => void): void;
   removeListener(event: "message", callback: (message: unknown) => void): void;
   send(message: unknown): void;
-};
-type Application = {
+}
+interface Application {
   session: Session;
   createController(controller: unknown, namespace: string): Controller;
   on(event: "close", callback: () => void): void;
   close(): void;
-};
-type Platform = {
+}
+interface Platform {
   connect(device: { host: string; port: number }, callback: () => void): void;
   close(): void;
   on(event: "error", callback: (error: Error) => void): void;
@@ -62,7 +66,7 @@ type Platform = {
     ): void;
     stop(sessionId: string, callback: (error: Error | null) => void): void;
   };
-};
+}
 
 export interface CastChannel {
   readonly sessionId: string;

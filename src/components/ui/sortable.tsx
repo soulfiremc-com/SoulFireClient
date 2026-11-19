@@ -109,7 +109,7 @@ type SortableProps<T> = DndContextProps &
   (T extends object ? GetItemValue<T> : Partial<GetItemValue<T>>) &
   SortableOwnProps<T>;
 
-type SortableOwnProps<T> = {
+interface SortableOwnProps<T> {
     value: T[];
     onValueChange?: (items: T[]) => void;
     onMove?: (
@@ -118,7 +118,7 @@ type SortableOwnProps<T> = {
     strategy?: SortableContextProps["strategy"];
     orientation?: "vertical" | "horizontal" | "mixed";
     flatCursor?: boolean;
-  };
+  }
 
 function Sortable<T>(props: SortableProps<T>) {
   // A concrete type lets TypeScript check the props passed on to DndContext.

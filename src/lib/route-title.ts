@@ -1,10 +1,10 @@
 const APP_TITLE = "SoulFire";
 
-type RouteTitleMatch = {
+interface RouteTitleMatch {
   context: unknown;
   loaderData?: unknown;
   params: Record<string, string>;
-};
+}
 
 export type RouteTitleResolver = (
   match: RouteTitleMatch,
@@ -110,11 +110,11 @@ export function routeChrome(config: {
 }
 
 export function resolveRouteTitle(
-  matches: Array<{
+  matches: {
     context: unknown;
     loaderData?: unknown;
     params: Record<string, string>;
-  }>,
+  }[],
 ) {
   for (const match of matches.toReversed()) {
     const getTitle = contextResolver(match.context, "getTitle");
@@ -133,11 +133,11 @@ export function resolveRouteTitle(
 }
 
 export function resolveRouteIcon(
-  matches: Array<{
+  matches: {
     context: unknown;
     loaderData?: unknown;
     params: Record<string, string>;
-  }>,
+  }[],
   pageTitle: string,
 ) {
   for (const match of matches.toReversed()) {

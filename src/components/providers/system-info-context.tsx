@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export type SystemInfo = {
+export interface SystemInfo {
   availableProfiles: string[];
   osType: string;
   osVersion: string;
@@ -9,6 +9,6 @@ export type SystemInfo = {
   archName: string;
   mobile: boolean;
   sfServerVersion: string;
-};
+}
 
 export const SystemInfoContext = createContext<SystemInfo | null>(null);

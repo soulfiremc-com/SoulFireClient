@@ -1,8 +1,8 @@
-export type ServerInputDraft = {
+export interface ServerInputDraft {
   value: string;
   serverValue: string;
   dirty: boolean;
-};
+}
 
 export function createServerInputDraft(value: string): ServerInputDraft {
   return { value, serverValue: value, dirty: false };

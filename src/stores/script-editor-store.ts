@@ -272,10 +272,7 @@ export function createScriptEditorSession() {
     activeNodeExecutions: new Map(),
     executionLogs: [],
     previewValues: new Map<string, Record<string, unknown>>(),
-    debugNodeValues: new Map<
-      string,
-      Array<{ value: unknown; timestamp: Date }>
-    >(),
+    debugNodeValues: new Map<string, { value: unknown; timestamp: Date }[]>(),
     nodeExecutionTimes: new Map<string, number[]>(),
     lastExecutionStats: null,
   });
@@ -1646,28 +1643,34 @@ export function createScriptEditorSession() {
 
       let targetValue: number;
       switch (direction) {
-        case "left":
+        case "left": {
           targetValue = Math.min(...positions.map((p) => p.x));
           break;
-        case "right":
+        }
+        case "right": {
           targetValue = Math.max(...positions.map((p) => p.x + p.width));
           break;
-        case "top":
+        }
+        case "top": {
           targetValue = Math.min(...positions.map((p) => p.y));
           break;
-        case "bottom":
+        }
+        case "bottom": {
           targetValue = Math.max(...positions.map((p) => p.y + p.height));
           break;
-        case "centerH":
+        }
+        case "centerH": {
           targetValue =
             positions.reduce((sum, p) => sum + p.x + p.width / 2, 0) /
             positions.length;
           break;
-        case "centerV":
+        }
+        case "centerV": {
           targetValue =
             positions.reduce((sum, p) => sum + p.y + p.height / 2, 0) /
             positions.length;
           break;
+        }
       }
 
       commit((state) => ({
@@ -1680,24 +1683,30 @@ export function createScriptEditorSession() {
 
           const newPosition = { ...n.position };
           switch (direction) {
-            case "left":
+            case "left": {
               newPosition.x = targetValue;
               break;
-            case "right":
+            }
+            case "right": {
               newPosition.x = targetValue - width;
               break;
-            case "top":
+            }
+            case "top": {
               newPosition.y = targetValue;
               break;
-            case "bottom":
+            }
+            case "bottom": {
               newPosition.y = targetValue - height;
               break;
-            case "centerH":
+            }
+            case "centerH": {
               newPosition.x = targetValue - width / 2;
               break;
-            case "centerV":
+            }
+            case "centerV": {
               newPosition.y = targetValue - height / 2;
               break;
+            }
           }
 
           return { ...n, position: newPosition };
@@ -2005,7 +2014,7 @@ export function createScriptEditorSession() {
           previewValues: new Map<string, Record<string, unknown>>(),
           debugNodeValues: new Map<
             string,
-            Array<{ value: unknown; timestamp: Date }>
+            { value: unknown; timestamp: Date }[]
           >(),
         }));
       });
@@ -2035,7 +2044,7 @@ export function createScriptEditorSession() {
           previewValues: new Map<string, Record<string, unknown>>(),
           debugNodeValues: new Map<
             string,
-            Array<{ value: unknown; timestamp: Date }>
+            { value: unknown; timestamp: Date }[]
           >(),
         }));
       });
@@ -2066,7 +2075,7 @@ export function createScriptEditorSession() {
           previewValues: new Map<string, Record<string, unknown>>(),
           debugNodeValues: new Map<
             string,
-            Array<{ value: unknown; timestamp: Date }>
+            { value: unknown; timestamp: Date }[]
           >(),
           nodeExecutionTimes: new Map<string, number[]>(),
           lastExecutionStats: null,

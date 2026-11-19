@@ -52,10 +52,10 @@ import { displayText } from "@/lib/display-text";
 
 const LOG_LEVELS: readonly LogLevel[] = ["debug", "info", "warn", "error"];
 
-type RunResult = {
+interface RunResult {
   status: "idle" | "completed" | "failed" | "cancelled";
   error: string | null;
-};
+}
 
 export function DryRunDialog({ instanceId }: { instanceId: string }) {
   const editor = useScriptEditor();
@@ -151,7 +151,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                   try: () => {
                     const event = response.event;
                     switch (event.case) {
-                      case "nodeStarted":
+                      case "nodeStarted": {
                         addLog(
                           "debug",
                           t("scripts.nodeStarted", {
@@ -160,6 +160,7 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                           event.value.nodeId,
                         );
                         break;
+                      }
                       case "nodeCompleted": {
                         const outputs = Object.fromEntries(
                           Object.entries(event.value.outputs).map(
@@ -173,14 +174,15 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                         );
                         break;
                       }
-                      case "nodeError":
+                      case "nodeError": {
                         addLog(
                           "error",
                           event.value.errorMessage,
                           event.value.nodeId,
                         );
                         break;
-                      case "scriptLog":
+                      }
+                      case "scriptLog": {
                         addLog(
                           isOneOf(event.value.level, LOG_LEVELS)
                             ? event.value.level
@@ -189,7 +191,8 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                           event.value.nodeId ?? null,
                         );
                         break;
-                      case "executionStats":
+                      }
+                      case "executionStats": {
                         addLog(
                           "info",
                           t("scripts.editor.dryRun.stats", {
@@ -197,12 +200,15 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                           }),
                         );
                         break;
-                      case "scriptCompleted":
+                      }
+                      case "scriptCompleted": {
                         success = event.value.success;
                         break;
+                      }
                       case "scriptStarted":
-                      case undefined:
+                      case undefined: {
                         break;
+                      }
                     }
                   },
                   catch: (error) => error,

@@ -12,7 +12,7 @@ import {
 import type { ProxyProviderId } from "@/lib/resource-providers.ts";
 import type { ProfileProxy } from "@/lib/types.ts";
 
-export type ProviderConnection = {
+export interface ProviderConnection {
   apiKey: string;
   username: string;
   password: string;
@@ -23,7 +23,7 @@ export type ProviderConnection = {
   limit: number;
   country: string;
   protocol: ProxyProto_Type.HTTP | ProxyProto_Type.SOCKS5;
-};
+}
 
 export type ConnectionField =
   | "apiKey"
@@ -449,14 +449,18 @@ function parseJsonString(value: string): unknown {
   }
 }
 
-export type SellerOrder = {
+export interface SellerOrder {
   product: "ipv4" | "ipv6" | "isp";
   country: string;
   period: string;
   quantity: number;
   coupon: string;
-};
-export type SellerQuote = { total: number; balance: number; currency: string };
+}
+export interface SellerQuote {
+  total: number;
+  balance: number;
+  currency: string;
+}
 
 function sellerOrderBody(order: SellerOrder) {
   if (

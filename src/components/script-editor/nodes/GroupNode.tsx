@@ -11,9 +11,9 @@ export interface GroupNodeData {
   /** The ID of the node group definition this references */
   groupId?: string;
   /** Exposed input sockets */
-  inputs?: Array<{ id: string; type: PortType; label: string }>;
+  inputs?: { id: string; type: PortType; label: string }[];
   /** Exposed output sockets */
-  outputs?: Array<{ id: string; type: PortType; label: string }>;
+  outputs?: { id: string; type: PortType; label: string }[];
   /** Whether the group is collapsed */
   collapsed?: boolean;
   [key: string]: unknown;

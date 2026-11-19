@@ -9,13 +9,13 @@ export const SUPPORT_REMINDER_KEY = "sf-support-reminder-v1";
 const LEGACY_DISMISSED_KEY = "sf-support-dismissed-at";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-type ReminderState = {
+interface ReminderState {
   firstUsedAt: number | null;
   activeDays: string[];
   hasSpawnedBot: boolean;
   lastShownAt: number | null;
   disabled: "never" | "supporter" | null;
-};
+}
 
 function emptyState(): ReminderState {
   return {

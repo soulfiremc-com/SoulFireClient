@@ -11,14 +11,17 @@ export function getSettingDefaultValue(
     case "int":
     case "double":
     case "bool":
-    case "combo":
+    case "combo": {
       return type.value.def;
-    case "stringList":
+    }
+    case "stringList": {
       return [...type.value.def];
+    }
     case undefined:
     case "minMax":
-    default:
+    default: {
       return undefined;
+    }
   }
 }
 

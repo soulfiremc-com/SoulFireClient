@@ -25,11 +25,11 @@ export interface PaddedSnapshot<T> {
   snapshot: T | null;
 }
 
-type ChartPoint = {
+interface ChartPoint {
   timestampMs: number;
   timeLabel: string;
   [key: string]: number | string | null | undefined;
-};
+}
 
 export function formatChartAxisTime(timestampMs: number): string {
   return axisTimeFormatter.format(timestampMs);

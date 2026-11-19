@@ -83,12 +83,15 @@ export const Route = createFileRoute("/_dashboard/user/admin/users")({
 const roleToIcon = (type: keyof typeof UserRole) =>
   mapUnionToValue(type, (key) => {
     switch (key) {
-      case "USER":
+      case "USER": {
         return UserIcon;
-      case "ADMIN":
+      }
+      case "ADMIN": {
         return ShieldUserIcon;
-      default:
+      }
+      default: {
         return key satisfies never;
+      }
     }
   });
 

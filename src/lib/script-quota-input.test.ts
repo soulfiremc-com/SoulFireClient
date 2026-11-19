@@ -59,7 +59,7 @@ test("empty fields restore defaults while zero and timeout overrides stay explic
 
 test("fractional, incomplete, non-decimal and overflowing quotas identify every invalid field", () => {
   const inputs = scriptQuotasToInputs(undefined);
-  const cases: Array<[ScriptQuotaField, string]> = [
+  const cases: [ScriptQuotaField, string][] = [
     ["maxExecutionCount", "1.5"],
     ["maxExecutionTimeMs", "1e3"],
     ["maxStateStoreEntries", "0x10"],

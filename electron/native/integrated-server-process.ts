@@ -14,7 +14,7 @@ export class IntegratedServerError extends Data.TaggedError(
 const MAX_LOG_LINES = 2_000;
 const MAX_LOG_CHARACTERS = 1_000_000;
 
-export type IntegratedServerState = {
+export interface IntegratedServerState {
   child: ChildProcessWithoutNullStreams | null;
   processFiber: Fiber.Fiber<void> | null;
   controller: AbortController | null;
@@ -25,7 +25,7 @@ export type IntegratedServerState = {
   diagnostics: Omit<DesktopIntegratedServerDiagnostics, "jcmdPath">;
   logSequence: number;
   logCharacters: number;
-};
+}
 
 export function createIntegratedServerState(): IntegratedServerState {
   return {

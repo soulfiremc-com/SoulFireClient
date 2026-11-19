@@ -17,6 +17,7 @@ export type DataType =
   | "array"
   | "any";
 
+// oxlint-disable-next-line typescript/consistent-type-definitions -- React Flow requires edge data to satisfy Record<string, unknown>, which an interface does not
 export type DataEdgeData = {
   dataType?: DataType;
   order?: number;

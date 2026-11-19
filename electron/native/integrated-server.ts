@@ -35,10 +35,10 @@ const AdmZip = require("adm-zip") as {
       targetPath: string,
       overwrite?: boolean,
     ) => Promise<unknown>;
-    getEntries: () => Array<{
+    getEntries: () => {
       entryName: string;
       isDirectory: boolean;
-    }>;
+    }[];
   };
 };
 
@@ -63,18 +63,18 @@ export type IntegratedServerJarSource =
       type: "custom";
     };
 
-export type CustomSoulFireServerJar = {
+export interface CustomSoulFireServerJar {
   id: string;
   importedAt: string;
   originalName: string;
   path: string;
   sha256: string;
   size: number;
-};
+}
 
-type CustomSoulFireServerJarIndex = {
+interface CustomSoulFireServerJarIndex {
   jars: CustomSoulFireServerJar[];
-};
+}
 
 export async function getSoulFireServerVersion(
   app: App,
@@ -479,10 +479,10 @@ function ensureJvm(
         const response = await fetch(jvmUrl, { signal });
         if (!response.ok) throw new Error("Failed to fetch JVM metadata");
         // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the Adoptium API response is checked for the fields used below
-        return (await response.json()) as Array<{
+        return (await response.json()) as {
           binary?: { package?: { checksum?: string; link?: string } };
           release_name?: string;
-        }>;
+        }[];
       });
       const release = metadata[0];
       const checksum = release?.binary?.package?.checksum;
@@ -610,10 +610,10 @@ async function fetchSoulFireJarChecksum(
 
   // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the GitHub release response is checked for the fields used below
   const release = (await response.json()) as {
-    assets?: Array<{
+    assets?: {
       name?: string;
       digest?: string;
-    }>;
+    }[];
   };
   const asset = release.assets?.find((entry) => entry.name === jarName);
   const digest = asset?.digest?.replace(/^sha256:/u, "");
@@ -719,36 +719,47 @@ function base64urlEncode(value: string): string {
 
 function detectArchitecture(): string {
   switch (process.arch) {
-    case "x64":
+    case "x64": {
       return "x64";
-    case "ia32":
+    }
+    case "ia32": {
       return "x32";
-    case "ppc64":
+    }
+    case "ppc64": {
       return "ppc64";
-    case "s390x":
+    }
+    case "s390x": {
       return "s390x";
-    case "arm64":
+    }
+    case "arm64": {
       return "aarch64";
-    case "arm":
+    }
+    case "arm": {
       return "arm";
-    case "riscv64":
+    }
+    case "riscv64": {
       return "riscv64";
+    }
     case "loong64":
     case "mips":
     case "mipsel":
-    default:
+    default: {
       return "unknown";
+    }
   }
 }
 
 function detectOs(): string {
   switch (process.platform) {
-    case "linux":
+    case "linux": {
       return "linux";
-    case "win32":
+    }
+    case "win32": {
       return "windows";
-    case "darwin":
+    }
+    case "darwin": {
       return "mac";
+    }
     case "aix":
     case "android":
     case "cygwin":
@@ -757,8 +768,9 @@ function detectOs(): string {
     case "netbsd":
     case "openbsd":
     case "sunos":
-    default:
+    default: {
       return "unknown";
+    }
   }
 }
 

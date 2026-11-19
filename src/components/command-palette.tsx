@@ -729,31 +729,38 @@ function CommandPaletteContent({
         return;
       }
       switch (command.action) {
-        case "create-project":
+        case "create-project": {
           openCreateInstance();
           break;
-        case "about":
+        }
+        case "about": {
           openAbout();
           break;
-        case "theme-light":
+        }
+        case "theme-light": {
           setTheme("light");
           break;
-        case "theme-dark":
+        }
+        case "theme-dark": {
           setTheme("dark");
           break;
-        case "theme-system":
+        }
+        case "theme-system": {
           setTheme("system");
           break;
-        case "clear-recents":
+        }
+        case "clear-recents": {
           saveRecents([]);
           break;
-        case "refresh":
+        }
+        case "refresh": {
           await queryClient.invalidateQueries(
             { type: "active" },
             { throwOnError: true },
           );
           await router.invalidate();
           break;
+        }
         case "copy-url":
         case "copy-project-id": {
           const value =
@@ -766,8 +773,9 @@ function CommandPaletteContent({
           toast.success(t("commandPalette.copied"));
           break;
         }
-        case "browse-project":
+        case "browse-project": {
           break;
+        }
       }
     } catch (error) {
       console.error(error);

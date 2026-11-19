@@ -43,11 +43,11 @@ import {
   CredenzaTitle,
 } from "../ui/credenza.tsx";
 
-export type FormType = {
+export interface FormType {
   username: string;
   email: string;
   role: UserRole;
-};
+}
 
 export function ManageUserDialog({
   open,

@@ -46,7 +46,11 @@ interface InlineEditorProps {
   className?: string;
 }
 
-type Vector3Value = { x?: number; y?: number; z?: number };
+interface Vector3Value {
+  x?: number;
+  y?: number;
+  z?: number;
+}
 
 function asVector3(value: unknown): Vector3Value | undefined {
   return value !== null && typeof value === "object" && !Array.isArray(value)
@@ -91,7 +95,7 @@ function InlineEditorComponent({
   };
 
   switch (type) {
-    case "number":
+    case "number": {
       return (
         <DraftNumberInput
           value={typeof currentValue === "number" ? currentValue : 0}
@@ -100,8 +104,9 @@ function InlineEditorComponent({
           className={cn(inputProps.className, "w-16 text-right")}
         />
       );
+    }
 
-    case "string":
+    case "string": {
       return (
         <input
           type="text"
@@ -114,8 +119,9 @@ function InlineEditorComponent({
           className={cn(inputProps.className, "w-24")}
         />
       );
+    }
 
-    case "boolean":
+    case "boolean": {
       return (
         <Checkbox
           checked={currentValue === true}
@@ -135,8 +141,9 @@ function InlineEditorComponent({
           className="nodrag nopan"
         />
       );
+    }
 
-    case "vector3":
+    case "vector3": {
       return (
         <Vector3Editor
           value={asVector3(value)}
@@ -145,6 +152,7 @@ function InlineEditorComponent({
           label={label}
         />
       );
+    }
 
     case "any":
     case "block":
@@ -156,7 +164,7 @@ function InlineEditorComponent({
     case "list":
     case "map":
     case "set":
-    default:
+    default: {
       // For other types (entity, bot, block, item, list, any), show as text
       return (
         <input
@@ -170,6 +178,7 @@ function InlineEditorComponent({
           className={cn(inputProps.className, "w-20")}
         />
       );
+    }
   }
 }
 

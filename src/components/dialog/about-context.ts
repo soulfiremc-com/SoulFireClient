@@ -1,8 +1,8 @@
 import { createContext, use } from "react";
 
-type AboutContextValue = {
+interface AboutContextValue {
   openAbout: () => void;
-};
+}
 
 export const AboutContext = createContext<AboutContextValue | null>(null);
 

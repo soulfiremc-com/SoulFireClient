@@ -30,15 +30,20 @@ export function textEditEvents(
 ): PovInputEvent[] {
   if (event.isComposing) return [];
   switch (event.inputType) {
-    case "deleteContentBackward":
+    case "deleteContentBackward": {
       return keyPress(259);
-    case "deleteContentForward":
+    }
+    case "deleteContentForward": {
       return keyPress(261);
-    case "deleteWordBackward":
+    }
+    case "deleteWordBackward": {
       return keyPress(259, 2);
-    case "deleteWordForward":
+    }
+    case "deleteWordForward": {
       return keyPress(261, 2);
-    default:
+    }
+    default: {
       return [];
+    }
   }
 }

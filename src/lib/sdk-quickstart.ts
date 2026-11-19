@@ -38,7 +38,7 @@ export function isLocalSdkServer(address: string): boolean {
   );
 }
 
-export type SdkQuickstartOptions = {
+export interface SdkQuickstartOptions {
   language: SdkLanguage;
   recipe: SdkRecipe;
   shell: SdkShell;
@@ -46,7 +46,7 @@ export type SdkQuickstartOptions = {
   instanceId: string;
   botId?: string | undefined;
   demo?: boolean | undefined;
-};
+}
 
 export function buildSdkQuickstart(options: SdkQuickstartOptions) {
   const { language, recipe, shell, serverUrl, instanceId } = options;

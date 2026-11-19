@@ -41,7 +41,7 @@ import {
   type CommandHistoryPosition,
 } from "@/lib/command-history";
 
-type CompletionState = {
+interface CompletionState {
   baseText: string;
   cursor: number;
   receivedCompletions: CommandCompletion[] | null;
@@ -49,7 +49,7 @@ type CompletionState = {
   replacementRange: { start: number; end: number } | null;
   // Set when the last request failed, so the popup can say why it is empty.
   failed?: boolean;
-};
+}
 
 const COMPLETION_DEBOUNCE_MS = 120;
 

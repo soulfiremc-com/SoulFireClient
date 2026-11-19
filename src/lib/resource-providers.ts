@@ -16,7 +16,7 @@ export type ProviderRequirement =
   | "subaccountId"
   | "balance";
 
-export type ResourceProvider = {
+export interface ResourceProvider {
   id: string;
   name: string;
   url: string;
@@ -29,7 +29,7 @@ export type ResourceProvider = {
   tags: string[];
   // A translated `providers.catalog.<id>.offer` exists for this provider.
   hasOffer?: boolean;
-};
+}
 
 // Keep referral identifiers aligned with soulfiremc.com provider listings.
 export const PROXY_PROVIDERS: [ResourceProvider, ...ResourceProvider[]] = [

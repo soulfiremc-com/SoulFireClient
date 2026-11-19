@@ -4,7 +4,7 @@ import type {
   SettingsEntryIdentifier,
 } from "@/generated/soulfire/common_pb";
 
-export type SettingsRegistry = {
+export interface SettingsRegistry {
   definitions: SettingsDefinition[];
   getDefinition: (
     id: SettingsEntryIdentifier | undefined,
@@ -13,7 +13,7 @@ export type SettingsRegistry = {
     namespace: string,
     key: string,
   ) => SettingsDefinition | undefined;
-};
+}
 
 export const SettingsRegistryContext = createContext<SettingsRegistry | null>(
   null,

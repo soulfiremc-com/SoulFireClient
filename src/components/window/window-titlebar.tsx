@@ -30,13 +30,13 @@ import { titlebarClassName } from "./titlebar-class-name.ts";
 const titlebarButtonClassName =
   "text-sidebar-foreground/72 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground disabled:text-sidebar-foreground/35 disabled:hover:bg-transparent m-0 h-full w-8 rounded-none! p-0 shadow-none transition-colors";
 
-type TitlebarLink = {
+interface TitlebarLink {
   title: string;
   url: string;
   icon: ComponentType<{
     className?: string;
   }>;
-};
+}
 
 function TitlebarExternalLinks() {
   const { t } = useTranslation("common");

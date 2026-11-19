@@ -42,10 +42,10 @@ export type PaletteOperation =
       action: "activate" | "deactivate";
     };
 
-export type PaletteStatus = {
+export interface PaletteStatus {
   label: string;
   tone: "neutral" | "success" | "warning" | "destructive";
-};
+}
 
 export type PaletteAction =
   | "create-project"
@@ -90,12 +90,12 @@ export type PaletteCommand = {
 );
 
 /** Metadata for a project outside the live context, read for global search. */
-export type IndexedProject = {
+export interface IndexedProject {
   project: InstanceInfoQueryData;
   scripts?: readonly ScriptInfo[] | undefined;
-};
+}
 
-type CatalogOptions = {
+interface CatalogOptions {
   t: (key: string, options?: Record<string, string | number>) => string;
   client?: ClientDataResponse | undefined;
   instances: InstanceListResponse_Instance[];
@@ -111,7 +111,7 @@ type CatalogOptions = {
       >
     | undefined;
   demo?: boolean | undefined;
-};
+}
 
 type SettingsTarget =
   | { kind: "project"; id: string; name: string }
@@ -933,26 +933,33 @@ export function matchesPaletteFilter(
   filter: PaletteFilter,
 ): boolean {
   switch (filter) {
-    case "all":
+    case "all": {
       return true;
-    case "projects":
+    }
+    case "projects": {
       return (
         command.group === "projects" ||
         command.group === "currentProject" ||
         command.action === "browse-project"
       );
-    case "bots":
+    }
+    case "bots": {
       return command.group === "bots" || command.operation?.kind === "bot";
-    case "scripts":
+    }
+    case "scripts": {
       return (
         command.group === "scripts" || command.operation?.kind === "script"
       );
-    case "settings":
+    }
+    case "settings": {
       return command.group === "settings";
-    case "actions":
+    }
+    case "actions": {
       return Boolean(command.action || command.operation);
-    default:
+    }
+    default: {
       return filter satisfies never;
+    }
   }
 }
 

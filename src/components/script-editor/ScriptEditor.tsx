@@ -221,7 +221,7 @@ export function ScriptEditor() {
   }, []);
 
   const handleSelectionChange = useCallback(
-    ({ nodes: selectedNodes }: { nodes: Array<{ id: string }> }) => {
+    ({ nodes: selectedNodes }: { nodes: { id: string }[] }) => {
       const [selected] = selectedNodes;
       if (selectedNodes.length === 1 && selected) {
         setSelectedNode(selected.id);
@@ -539,22 +539,26 @@ export function ScriptEditor() {
         selectedNodes.length >= 2
       ) {
         switch (event.key) {
-          case "ArrowLeft":
+          case "ArrowLeft": {
             event.preventDefault();
             alignNodes("left");
             return;
-          case "ArrowRight":
+          }
+          case "ArrowRight": {
             event.preventDefault();
             alignNodes("right");
             return;
-          case "ArrowUp":
+          }
+          case "ArrowUp": {
             event.preventDefault();
             alignNodes("top");
             return;
-          case "ArrowDown":
+          }
+          case "ArrowDown": {
             event.preventDefault();
             alignNodes("bottom");
             return;
+          }
         }
       }
 

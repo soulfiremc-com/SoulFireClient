@@ -65,14 +65,18 @@ export function RavealtsFlow({
     describeError: (cause) => {
       if (cause instanceof RavealtsApiError) {
         switch (cause.errorType) {
-          case "rate_limited":
+          case "rate_limited": {
             return t("account.ravealts.rateLimited");
-          case "insufficient_balance":
+          }
+          case "insufficient_balance": {
             return t("account.ravealts.insufficientBalance");
-          case "out_of_stock":
+          }
+          case "out_of_stock": {
             return t("account.ravealts.outOfStock");
-          default:
+          }
+          default: {
             return t("providers.errors.rejected");
+          }
         }
       }
       if (cause instanceof ProviderApiError && cause.reason !== "network")

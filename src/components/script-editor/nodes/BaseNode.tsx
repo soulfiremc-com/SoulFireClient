@@ -46,12 +46,12 @@ const NO_HIDDEN_SOCKETS: readonly string[] = [];
 
 // Stable empty object to avoid creating new references in selectors
 const EMPTY_PREVIEW_VALUES: Record<string, unknown> = {};
-const EMPTY_MULTI_INPUT_ITEMS: Array<{
+const EMPTY_MULTI_INPUT_ITEMS: {
   id: string;
   index: number;
   label: string;
   sublabel?: string | undefined;
-}> = [];
+}[] = [];
 
 export interface BaseNodeData {
   label?: string;
@@ -112,12 +112,12 @@ interface PortRowProps {
   onValueChange?: (value: unknown) => void;
   /** Resolved port type after generic type inference (overrides static type for color/shape) */
   resolvedType?: PortType | undefined;
-  multiInputItems?: Array<{
+  multiInputItems?: {
     id: string;
     index: number;
     label: string;
     sublabel?: string | undefined;
-  }>;
+  }[];
   onReorderMultiInput?: (orderedEdgeIds: string[]) => void;
 }
 
@@ -492,12 +492,12 @@ function BaseNodeComponent({
   const multiInputItemsByPort = useMemo(() => {
     const itemsByPort = new Map<
       string,
-      Array<{
+      {
         id: string;
         index: number;
         label: string;
         sublabel?: string | undefined;
-      }>
+      }[]
     >();
 
     for (const edge of edges) {

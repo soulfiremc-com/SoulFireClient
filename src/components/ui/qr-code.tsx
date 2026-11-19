@@ -140,7 +140,7 @@ function QRCode(props: QRCodeProps) {
       setStates: (updates) => {
         let hasChanged = false;
 
-        for (const key of Object.keys(updates) as Array<keyof StoreState>) {
+        for (const key of Object.keys(updates) as (keyof StoreState)[]) {
           const value = updates[key];
           if (value !== undefined && !Object.is(stateRef.current[key], value)) {
             Object.assign(stateRef.current, { [key]: value });

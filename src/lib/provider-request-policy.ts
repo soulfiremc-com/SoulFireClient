@@ -4,14 +4,17 @@ export class ProviderRequestError extends Data.TaggedError(
   "ProviderRequestError",
 )<{ readonly message: string; readonly cause?: unknown }> {}
 
-export type ProviderRequest = {
+export interface ProviderRequest {
   url: string;
   method: "GET" | "POST";
   headers?: Record<string, string> | undefined;
   body?: string | undefined;
-};
+}
 
-export type ProviderResponse = { status: number; body: string };
+export interface ProviderResponse {
+  status: number;
+  body: string;
+}
 
 export function executeProviderRequestEffect(
   request: ProviderRequest,

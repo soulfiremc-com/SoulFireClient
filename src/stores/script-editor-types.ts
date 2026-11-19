@@ -79,7 +79,7 @@ export interface ScriptExecutionState {
   activeNodeExecutions: Map<bigint, string>;
   executionLogs: LogEntry[];
   previewValues: Map<string, Record<string, unknown>>;
-  debugNodeValues: Map<string, Array<{ value: unknown; timestamp: Date }>>;
+  debugNodeValues: Map<string, { value: unknown; timestamp: Date }[]>;
   nodeExecutionTimes: Map<string, number[]>;
   lastExecutionStats: { nodeCount: number; maxCount: number } | null;
 }
@@ -89,12 +89,12 @@ export interface ScriptValidationState {
     string,
     ScriptValidationState["validationDiagnostics"]
   >;
-  validationDiagnostics: Array<{
+  validationDiagnostics: {
     nodeId: string;
     edgeId: string;
     message: string;
     severity: "error" | "warning";
-  }>;
+  }[];
 }
 
 export interface ScriptEditorActions {
@@ -209,12 +209,12 @@ export interface ScriptEditorActions {
   resetEditor: () => void;
   getScriptData: () => ScriptDocumentData;
   setValidationDiagnostics: (
-    diagnostics: Array<{
+    diagnostics: {
       nodeId: string;
       edgeId: string;
       message: string;
       severity: "error" | "warning";
-    }>,
+    }[],
   ) => void;
   addNodeExecutionTime: (nodeId: string, timeNanos: number) => void;
   setExecutionStats: (stats: { nodeCount: number; maxCount: number }) => void;

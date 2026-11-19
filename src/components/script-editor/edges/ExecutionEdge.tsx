@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
 
+// oxlint-disable-next-line typescript/consistent-type-definitions -- React Flow requires edge data to satisfy Record<string, unknown>, which an interface does not
 export type ExecutionEdgeData = {
   isActive?: boolean;
 };
@@ -21,16 +22,21 @@ export type ExecutionEdgeType = Edge<ExecutionEdgeData, "execution">;
  */
 function getArrowRotation(position: Position): number {
   switch (position) {
-    case Position.Left:
+    case Position.Left: {
       return 0;
-    case Position.Right:
+    }
+    case Position.Right: {
       return 180;
-    case Position.Top:
+    }
+    case Position.Top: {
       return -90;
-    case Position.Bottom:
+    }
+    case Position.Bottom: {
       return 90;
-    default:
+    }
+    default: {
       return position satisfies never;
+    }
   }
 }
 

@@ -127,15 +127,15 @@ export const Route = createFileRoute("/_dashboard/user/")({
 // Matches the Ctrl/Cmd+1-9 handler in the dashboard layout.
 const MAX_INSTANCE_SHORTCUTS = 9;
 
-type StateAction = {
+interface StateAction {
   key: "start" | "stop";
   desiredState: BotDesiredState;
   Icon: ComponentType<{ className?: string }>;
-};
+}
 
-type DuplicateInstanceForm = {
+interface DuplicateInstanceForm {
   friendlyName: string;
-};
+}
 
 function getAvailableStateActions(summary?: BotFleetSummary): StateAction[] {
   const actions: StateAction[] = [];

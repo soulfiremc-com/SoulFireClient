@@ -46,14 +46,17 @@ export function BotChatBox(props: {
         : Effect.runPromise(client.sendPublicChat({ scope, message: text })));
       // A missing or unspecified status still means the server accepted the call.
       switch (response.result?.status) {
-        case BotActionStatus.FAILED:
+        case BotActionStatus.FAILED: {
           throw new Error(response.result.error ?? "");
-        case BotActionStatus.CANCELLED:
+        }
+        case BotActionStatus.CANCELLED: {
           throw new Error(t("bots.chatPanel.cancelled"));
+        }
         case BotActionStatus.UNSPECIFIED:
         case BotActionStatus.COMPLETED:
-        case undefined:
+        case undefined: {
           break;
+        }
       }
     },
     onSuccess: (_response, sentMessage) => {

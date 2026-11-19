@@ -56,9 +56,9 @@ export function CreateInstanceProvider(props: { children: ReactNode }) {
   );
 }
 
-export type FormType = {
+export interface FormType {
   friendlyName: string;
-};
+}
 
 function CreateInstanceDialog({
   open,

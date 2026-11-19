@@ -7,27 +7,27 @@ export type ScriptTemplateId =
   | "reply-to-chat"
   | "health-report";
 
-type TemplateNode = {
+interface TemplateNode {
   id: string;
   type: string;
   x: number;
   y: number;
   data?: Record<string, string | number | boolean>;
-};
+}
 
-type TemplateEdge = {
+interface TemplateEdge {
   from: string;
   fromPort: string;
   to: string;
   toPort: string;
   kind: "execution" | "data";
-};
+}
 
-export type ScriptTemplate = {
+export interface ScriptTemplate {
   id: ScriptTemplateId;
   nodes: readonly TemplateNode[];
   edges: readonly TemplateEdge[];
-};
+}
 
 const exec = (
   from: string,
@@ -153,12 +153,12 @@ export const SCRIPT_TEMPLATES: readonly ScriptTemplate[] = [
   },
 ];
 
-export type NodeContract = {
+export interface NodeContract {
   type: string;
   isTrigger?: boolean | undefined;
   inputs: readonly { id: string }[];
   outputs: readonly { id: string }[];
-};
+}
 
 /** A server may not offer every node, so hide templates it cannot run. */
 export function isTemplateSupported(

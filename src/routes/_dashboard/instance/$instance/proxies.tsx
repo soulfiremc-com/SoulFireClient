@@ -244,14 +244,18 @@ type SimpleProxyType =
 
 function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
   switch (type) {
-    case UIProxyType.HTTP:
+    case UIProxyType.HTTP: {
       return ProxyProto_Type.HTTP;
-    case UIProxyType.SOCKS4:
+    }
+    case UIProxyType.SOCKS4: {
       return ProxyProto_Type.SOCKS4;
-    case UIProxyType.SOCKS5:
+    }
+    case UIProxyType.SOCKS5: {
       return ProxyProto_Type.SOCKS5;
-    default:
+    }
+    default: {
       return type satisfies never;
+    }
   }
 }
 
@@ -283,14 +287,18 @@ function saveProxyFile(content: string, filename: string) {
 const proxyTypeToIcon = (type: keyof typeof ProxyProto_Type) =>
   mapUnionToValue(type, (key) => {
     switch (key) {
-      case "HTTP":
+      case "HTTP": {
         return GlobeIcon;
-      case "SOCKS4":
+      }
+      case "SOCKS4": {
         return Dice4Icon;
-      case "SOCKS5":
+      }
+      case "SOCKS5": {
         return Dice5Icon;
-      default:
+      }
+      default: {
         return key satisfies never;
+      }
     }
   });
 

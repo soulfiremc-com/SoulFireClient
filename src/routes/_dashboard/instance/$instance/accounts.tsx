@@ -638,8 +638,9 @@ function AddButton() {
               }
               break;
             }
-            case undefined:
+            case undefined: {
               break;
+            }
           }
         },
         onError: (e) => {

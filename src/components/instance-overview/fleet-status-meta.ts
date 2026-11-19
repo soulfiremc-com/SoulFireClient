@@ -54,7 +54,7 @@ export function getFailureFix(
   const params = { instance: instanceId };
   switch (kind) {
     case "unreachable":
-    case "version":
+    case "version": {
       return {
         labelKey: "fleet.fix.checkServer",
         link: {
@@ -62,7 +62,8 @@ export function getFailureFix(
           params: { ...params, pageId: "bot" },
         },
       };
-    case "throttled":
+    }
+    case "throttled": {
       return {
         labelKey: "fleet.fix.slowDown",
         link: {
@@ -70,21 +71,26 @@ export function getFailureFix(
           params: { ...params, pageId: "bot" },
         },
       };
+    }
     case "onlineAuth":
     case "account":
-    case "blocked":
+    case "blocked": {
       return {
         labelKey: "fleet.fix.accounts",
         link: { to: "/instance/$instance/accounts", params },
       };
-    case "proxy":
+    }
+    case "proxy": {
       return {
         labelKey: "fleet.fix.proxies",
         link: { to: "/instance/$instance/proxies", params },
       };
-    case "other":
+    }
+    case "other": {
       return null;
-    default:
+    }
+    default: {
       return kind satisfies never;
+    }
   }
 }

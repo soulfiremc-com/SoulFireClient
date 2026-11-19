@@ -186,20 +186,27 @@ function inputTypeToHtml(
   inputType: Exclude<StringSetting_InputType, StringSetting_InputType.TEXTAREA>,
 ): HTMLInputTypeAttribute {
   switch (inputType) {
-    case StringSetting_InputType.TEXT:
+    case StringSetting_InputType.TEXT: {
       return "text";
-    case StringSetting_InputType.PASSWORD:
+    }
+    case StringSetting_InputType.PASSWORD: {
       return "password";
-    case StringSetting_InputType.EMAIL:
+    }
+    case StringSetting_InputType.EMAIL: {
       return "email";
-    case StringSetting_InputType.URL:
+    }
+    case StringSetting_InputType.URL: {
       return "url";
-    case StringSetting_InputType.SEARCH:
+    }
+    case StringSetting_InputType.SEARCH: {
       return "search";
-    case StringSetting_InputType.TEL:
+    }
+    case StringSetting_InputType.TEL: {
       return "tel";
-    default:
+    }
+    default: {
       return inputType satisfies never;
+    }
   }
 }
 
@@ -886,10 +893,12 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         />
       );
     }
-    case undefined:
+    case undefined: {
       return null;
-    default:
+    }
+    default: {
       return props.settingType satisfies never;
+    }
   }
 });
 
@@ -1244,10 +1253,10 @@ function SettingFieldByKey(props: {
   );
 }
 
-export type DisabledSettingId = {
+export interface DisabledSettingId {
   namespace: string;
   key: string;
-};
+}
 
 const NO_DISABLED_IDS: readonly DisabledSettingId[] = [];
 

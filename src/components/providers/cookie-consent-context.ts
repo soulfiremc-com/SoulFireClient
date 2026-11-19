@@ -1,8 +1,8 @@
 import { createContext, use } from "react";
 
-type CookieConsentContextValue = {
+interface CookieConsentContextValue {
   openCookiePreferences: () => void;
-};
+}
 
 export const CookieConsentContext =
   createContext<CookieConsentContextValue | null>(null);

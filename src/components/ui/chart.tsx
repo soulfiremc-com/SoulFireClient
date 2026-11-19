@@ -24,9 +24,9 @@ export type ChartConfig = Record<
   )
 >;
 
-type ChartContextProps = {
+interface ChartContextProps {
   config: ChartConfig;
-};
+}
 
 export type CustomTooltipProps = React.ComponentProps<
   typeof RechartsPrimitive.Tooltip

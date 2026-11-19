@@ -26,17 +26,22 @@ import { cn } from "@/lib/utils";
 
 function inputValue(input: DialogInput["input"]): string {
   switch (input.case) {
-    case "text":
+    case "text": {
       return input.value.initial;
-    case "boolean":
+    }
+    case "boolean": {
       return String(input.value.initial);
-    case "singleOption":
+    }
+    case "singleOption": {
       return input.value.initialOptionId;
-    case "numberRange":
+    }
+    case "numberRange": {
       return String(input.value.initial);
+    }
     case undefined:
-    default:
+    default: {
       return "";
+    }
   }
 }
 

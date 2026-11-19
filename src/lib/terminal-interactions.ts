@@ -1,12 +1,12 @@
 /* oxlint-disable no-control-regex -- Parse terminal control strings before wterm sees them. */
-export type TerminalClick = {
+export interface TerminalClick {
   action: "run_command" | "suggest_command" | "copy_to_clipboard" | "open_url";
   value: string;
-};
-export type TerminalInteraction = {
+}
+export interface TerminalInteraction {
   hover?: string | undefined;
   click?: TerminalClick | undefined;
-};
+}
 
 const PRIVATE_PREFIX = "\u001B]777;soulfire;1;";
 const TERMINATOR = "\u001B\\";
@@ -87,18 +87,18 @@ export function encodeTerminalInteraction(
   return PRIVATE_PREFIX + payload + TERMINATOR;
 }
 
-export type TerminalLogContent = {
+export interface TerminalLogContent {
   message: string;
   personal?: boolean | undefined;
   terminalInteractions?: boolean | undefined;
-};
+}
 
-export type TerminalTextSpan = {
+export interface TerminalTextSpan {
   // Source offset identifies a span within an immutable log message.
   start: number;
   text: string;
   interaction?: TerminalInteraction | undefined;
-};
+}
 
 // Decode once for both React text and wterm. Stream provenance, not a control
 // string, grants trust; unknown controls never reach either renderer.

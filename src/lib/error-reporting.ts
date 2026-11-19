@@ -45,7 +45,10 @@ export function isExpectedError(error: unknown): boolean {
   return false;
 }
 
-type ExceptionEntry = { type?: unknown; value?: unknown };
+interface ExceptionEntry {
+  type?: unknown;
+  value?: unknown;
+}
 
 function isExpectedExceptionEntry({ type, value }: ExceptionEntry) {
   if (typeof value !== "string") return false;

@@ -1,9 +1,9 @@
 import { createContext, use } from "react";
 
-type TerminalThemeContextValue = {
+interface TerminalThemeContextValue {
   value: string;
   setter: (value: string) => void;
-};
+}
 
 export const TerminalThemeContext =
   createContext<TerminalThemeContextValue | null>(null);

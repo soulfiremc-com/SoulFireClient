@@ -1,8 +1,8 @@
 import { createContext, use } from "react";
 
-type CreateInstanceContextValue = {
+interface CreateInstanceContextValue {
   openCreateInstance: () => void;
-};
+}
 
 export const CreateInstanceContext =
   createContext<CreateInstanceContextValue | null>(null);

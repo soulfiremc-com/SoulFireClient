@@ -88,22 +88,22 @@ protocol.registerSchemesAsPrivileged([
   },
 ]);
 
-type StoredWindowState = {
+interface StoredWindowState {
   height: number;
   isMaximized: boolean;
   width: number;
   x?: number | undefined;
   y?: number | undefined;
-};
+}
 
 type StoredThemeSource = "dark" | "light" | "system";
 
-type FsWatchRegistration = {
+interface FsWatchRegistration {
   changedPaths: Set<string>;
   debounceTimer: NodeJS.Timeout | null;
   ownerContentsId: number;
   watcher: ReturnType<typeof watch>;
-};
+}
 
 const windowStateStore = new Store<{
   themeSource: StoredThemeSource;
@@ -199,10 +199,12 @@ function loadNativeImage(assetPath: string) {
 
 function appIconPath(): string {
   switch (process.platform) {
-    case "darwin":
+    case "darwin": {
       return resolveAssetPath("build/icons/icon.png");
-    case "win32":
+    }
+    case "win32": {
       return resolveAssetPath("build/icons/icon.ico");
+    }
     case "aix":
     case "android":
     case "cygwin":
@@ -212,17 +214,20 @@ function appIconPath(): string {
     case "netbsd":
     case "openbsd":
     case "sunos":
-    default:
+    default: {
       return resolveAssetPath("build/icons/icon.png");
+    }
   }
 }
 
 function trayIconPath(): string {
   switch (process.platform) {
-    case "darwin":
+    case "darwin": {
       return resolveAssetPath("build/icons/trayTemplate.png");
-    case "win32":
+    }
+    case "win32": {
       return resolveAssetPath("build/icons/icon.ico");
+    }
     case "aix":
     case "android":
     case "cygwin":
@@ -232,8 +237,9 @@ function trayIconPath(): string {
     case "netbsd":
     case "openbsd":
     case "sunos":
-    default:
+    default: {
       return resolveAssetPath("build/icons/icon.png");
+    }
   }
 }
 
@@ -1185,14 +1191,18 @@ function restoreThemeSource(): void {
 
 function mapPlatformToType(platformName: string): string {
   switch (platformName) {
-    case "darwin":
+    case "darwin": {
       return "macos";
-    case "win32":
+    }
+    case "win32": {
       return "windows";
-    case "linux":
+    }
+    case "linux": {
       return "linux";
-    default:
+    }
+    default: {
       return platformName;
+    }
   }
 }
 

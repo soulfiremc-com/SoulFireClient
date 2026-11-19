@@ -22,7 +22,11 @@ export function getNumericSettingValue(
   return value;
 }
 
-export type NumericRange = { min: number; max: number };
+// oxlint-disable-next-line typescript/consistent-type-definitions -- ranges are stored as JSON setting values, and only a type alias is assignable to JsonValue
+export type NumericRange = {
+  min: number;
+  max: number;
+};
 
 export function updateNumericRange(
   baseline: NumericRange,

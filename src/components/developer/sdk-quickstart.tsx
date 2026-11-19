@@ -69,14 +69,17 @@ import {
 } from "@/lib/sdk-quickstart.ts";
 import { isOneOf } from "@/lib/is-one-of";
 
-export type SdkQuickstartBot = {
+export interface SdkQuickstartBot {
   id: string;
   name: string;
   online?: boolean | undefined;
-};
-export type SdkQuickstartInstance = { id: string; name: string };
+}
+export interface SdkQuickstartInstance {
+  id: string;
+  name: string;
+}
 
-type Props = {
+interface Props {
   serverUrl: string | null;
   instanceId: string;
   instanceName: string;
@@ -89,7 +92,7 @@ type Props = {
   generateToken?: ((signal: AbortSignal) => Promise<string>) | undefined;
   onOpenAccounts: () => void;
   onOpenBots: () => void;
-};
+}
 
 const recipes = [
   { id: "list-bots", Icon: ListIcon },

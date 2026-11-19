@@ -15,7 +15,7 @@ type ObservedBot = Pick<
   "isOnline" | "connectionPhase" | "status"
 >;
 
-type MeasurementProperties = {
+interface MeasurementProperties {
   client_surface: "desktop" | "web";
   measurement_version: number;
   activation?: "first_bot_spawned";
@@ -25,7 +25,7 @@ type MeasurementProperties = {
     product_first_session_at?: string;
     product_activated_at?: string;
   };
-};
+}
 
 function isSpawned(bot: ObservedBot) {
   return bot.isOnline && bot.connectionPhase === BotConnectionPhase.SPAWNED;

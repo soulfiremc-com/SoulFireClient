@@ -44,10 +44,10 @@ import {
 
 const RECONNECT_INTERVAL_MS = 10_000;
 
-type ErrorComponentProps = {
+interface ErrorComponentProps {
   error: Error;
   reset?: () => void;
-};
+}
 
 export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const { t } = useTranslation("common");

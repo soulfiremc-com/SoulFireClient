@@ -1,4 +1,7 @@
-export type StringListEntry = { id: string; value: string };
+export interface StringListEntry {
+  id: string;
+  value: string;
+}
 
 export function createStringListEntry(value: string): StringListEntry {
   return { id: crypto.randomUUID(), value };

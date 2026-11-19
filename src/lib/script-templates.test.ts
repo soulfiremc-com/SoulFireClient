@@ -9,7 +9,11 @@ import {
   scriptTemplateToProto,
 } from "./script-templates.ts";
 
-type PortContract = { id: string; portType: string; required: boolean };
+interface PortContract {
+  id: string;
+  portType: string;
+  required: boolean;
+}
 type FullContract = Omit<NodeContract, "inputs" | "outputs"> & {
   isTrigger: boolean;
   inputs: PortContract[];

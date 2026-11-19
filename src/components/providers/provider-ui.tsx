@@ -36,14 +36,14 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import type { ResourceProvider } from "@/lib/resource-providers.ts";
 import { cn } from "@/lib/utils.tsx";
 
-export type ProviderFlowProps<Result> = {
+export interface ProviderFlowProps<Result> {
   provider: ResourceProvider;
   canWrite: boolean;
   onBack?: () => void;
   onBusyChange: (busy: boolean) => void;
   onClose: () => void;
   onImport: Result;
-};
+}
 
 export function BusyIcon({ busy, icon }: { busy: boolean; icon?: ReactNode }) {
   return busy ? (

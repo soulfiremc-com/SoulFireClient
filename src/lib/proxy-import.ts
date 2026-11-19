@@ -2,10 +2,10 @@ import type { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { parseNormalProxy, parseURIProxy } from "@/lib/proxy-format";
 import type { ProfileProxy } from "@/lib/types";
 
-export type ProxyImport = {
+export interface ProxyImport {
   proxies: ProfileProxy[];
   rejectedLines: number[];
-};
+}
 
 export function parseProxyImport(
   text: string,

@@ -557,7 +557,7 @@ function FilterValueSelector<TData extends RowData>({
   const variant = column.columnDef.meta?.variant ?? "text";
 
   switch (variant) {
-    case "boolean":
+    case "boolean": {
       return (
         <CommandGroup>
           <CommandItem
@@ -578,9 +578,10 @@ function FilterValueSelector<TData extends RowData>({
           </CommandItem>
         </CommandGroup>
       );
+    }
 
     case "select":
-    case "multiSelect":
+    case "multiSelect": {
       return (
         <CommandGroup>
           {column.columnDef.meta?.options?.map((option) => (
@@ -602,9 +603,10 @@ function FilterValueSelector<TData extends RowData>({
           ))}
         </CommandGroup>
       );
+    }
 
     case "date":
-    case "dateRange":
+    case "dateRange": {
       return (
         <Calendar
           autoFocus
@@ -616,6 +618,7 @@ function FilterValueSelector<TData extends RowData>({
           }}
         />
       );
+    }
 
     case "number":
     case "range":
@@ -957,7 +960,8 @@ function onFilterInputRender<TData extends RowData>({
       );
     }
 
-    default:
+    default: {
       return null;
+    }
   }
 }

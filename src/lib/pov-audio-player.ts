@@ -1,4 +1,7 @@
-type AudioPacket = { data: Uint8Array; timestampUs: bigint };
+interface AudioPacket {
+  data: Uint8Array;
+  timestampUs: bigint;
+}
 
 const CONFIG: AudioDecoderConfig = {
   codec: "opus",

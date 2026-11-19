@@ -14,11 +14,11 @@ import { formatShortcut } from "@/lib/platform.ts";
 
 type MouseInput = "drag" | "rightClick";
 
-const SHORTCUTS: ReadonlyArray<{
+const SHORTCUTS: readonly {
   id: string;
   keys: string;
   mouse?: MouseInput;
-}> = [
+}[] = [
   { id: "quickAdd", keys: "Shift + A" },
   { id: "quickAddAtCursor", keys: "", mouse: "rightClick" },
   { id: "selectAll", keys: "A" },

@@ -10,8 +10,9 @@ function normalizeUpdaterPlatform(
   switch (platformName) {
     case "darwin":
     case "linux":
-    case "win32":
+    case "win32": {
       return platformName;
+    }
     case "aix":
     case "android":
     case "cygwin":
@@ -20,19 +21,23 @@ function normalizeUpdaterPlatform(
     case "netbsd":
     case "openbsd":
     case "sunos":
-    default:
+    default: {
       return null;
+    }
   }
 }
 
 function normalizeUpdaterArch(archName: string): string | null {
   switch (archName) {
-    case "arm64":
+    case "arm64": {
       return "arm64";
-    case "x64":
+    }
+    case "x64": {
       return "x64";
-    default:
+    }
+    default: {
       return null;
+    }
   }
 }
 

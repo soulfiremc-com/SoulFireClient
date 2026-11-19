@@ -44,7 +44,10 @@ export function saveCommandHistory(
   }
 }
 
-export type CommandHistoryPosition = { index: number; draft: string };
+export interface CommandHistoryPosition {
+  index: number;
+  draft: string;
+}
 
 export function navigateCommandHistory(
   history: string[],

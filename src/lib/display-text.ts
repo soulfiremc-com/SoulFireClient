@@ -2,19 +2,24 @@
 export function displayText(value: unknown): string {
   if (value === null || value === undefined) return String(value);
   switch (typeof value) {
-    case "string":
+    case "string": {
       return value;
+    }
     case "number":
     case "boolean":
-    case "bigint":
+    case "bigint": {
       return String(value);
-    case "symbol":
+    }
+    case "symbol": {
       return value.toString();
-    case "function":
+    }
+    case "function": {
       return value.name;
+    }
     case "object":
-    case "undefined":
+    case "undefined": {
       break;
+    }
   }
   if (Array.isArray(value)) {
     // Matches Array#toString, which prints null and undefined items as empty strings.

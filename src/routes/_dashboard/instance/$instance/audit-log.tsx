@@ -104,16 +104,21 @@ export const Route = createFileRoute(
 
 function toI18nKey(type: InstanceAuditLogResponse_AuditLogEntryType) {
   switch (type) {
-    case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND:
+    case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND: {
       return "auditLog.executedCommand";
-    case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE:
+    }
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE: {
       return "auditLog.changedBotDesiredState";
-    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
+    }
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART: {
       return "auditLog.restartedBots";
-    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC:
+    }
+    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC: {
       return "auditLog.calledPluginRpc";
-    default:
+    }
+    default: {
       return type satisfies never;
+    }
   }
 }
 
@@ -122,16 +127,21 @@ const logTypeToIcon = (
 ) =>
   mapUnionToValue(type, (key) => {
     switch (key) {
-      case "BOT_DESIRED_STATE_CHANGE":
+      case "BOT_DESIRED_STATE_CHANGE": {
         return BotIcon;
-      case "BOT_RESTART":
+      }
+      case "BOT_RESTART": {
         return RefreshCwIcon;
-      case "EXECUTE_COMMAND":
+      }
+      case "EXECUTE_COMMAND": {
         return SquareTerminalIcon;
-      case "PLUGIN_RPC":
+      }
+      case "PLUGIN_RPC": {
         return PlugIcon;
-      default:
+      }
+      default: {
         return BotIcon;
+      }
     }
   });
 

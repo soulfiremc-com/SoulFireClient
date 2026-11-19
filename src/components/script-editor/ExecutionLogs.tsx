@@ -22,16 +22,21 @@ function getLogLevelStyles(level: LogLevel): {
   text: string;
 } {
   switch (level) {
-    case "debug":
+    case "debug": {
       return { badge: "secondary", text: "text-muted-foreground" };
-    case "info":
+    }
+    case "info": {
       return { badge: "default", text: "text-foreground" };
-    case "warn":
+    }
+    case "warn": {
       return { badge: "outline", text: "text-warning-emphasis" };
-    case "error":
+    }
+    case "error": {
       return { badge: "outline", text: "text-destructive" };
-    default:
+    }
+    default: {
       return { badge: "default", text: "text-foreground" };
+    }
   }
 }
 

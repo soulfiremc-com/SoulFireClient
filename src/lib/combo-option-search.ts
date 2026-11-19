@@ -1,8 +1,8 @@
-export type ComboOptionLike = {
+export interface ComboOptionLike {
   id: string;
   displayName: string;
   keywords: readonly string[];
-};
+}
 
 /**
  * Finds combo options by name, id, or keyword and returns at most `limit`.

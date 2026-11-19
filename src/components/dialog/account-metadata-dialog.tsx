@@ -77,11 +77,11 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
   return entries;
 }
 
-type AccountMetadataDialogProps = {
+interface AccountMetadataDialogProps {
   account: ProfileAccount;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
+}
 
 export function AccountMetadataDialog({
   account,

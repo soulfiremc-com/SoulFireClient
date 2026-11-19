@@ -40,11 +40,11 @@ import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { ImportReadSession, readImportFile } from "@/lib/import-read.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
-export type ImportTextInput = {
+export interface ImportTextInput {
   defaultValue: string;
-};
+}
 
-export type ImportDialogProps = {
+export interface ImportDialogProps {
   title: string;
   description: string;
   closer: () => void;
@@ -58,15 +58,16 @@ export type ImportDialogProps = {
   allowMultiple: boolean;
   textInput: ImportTextInput | null;
   extraContent?: ReactNode;
-};
+}
 
 export default function ImportDialog(props: ImportDialogProps) {
   const [menuState, setMenuState] = useState<"main" | "url">("main");
 
   switch (menuState) {
-    case "url":
+    case "url": {
       return <UrlDialog {...props} />;
-    case "main":
+    }
+    case "main": {
       return (
         <MainDialog
           {...props}
@@ -75,8 +76,10 @@ export default function ImportDialog(props: ImportDialogProps) {
           }}
         />
       );
-    default:
+    }
+    default: {
       return menuState satisfies never;
+    }
   }
 }
 

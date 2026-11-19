@@ -39,7 +39,7 @@ test("structured mocks round-trip nested values and nulls", () => {
 });
 
 test("invalid typed mocks identify the field that needs correction", () => {
-  const invalid: Array<[PortType, string]> = [
+  const invalid: [PortType, string][] = [
     ["number", "true"],
     ["number", "1e999"],
     ["number", "no"],

@@ -10,17 +10,21 @@ import { createTerminalLogSession } from "@/stores/terminal-log-store";
 export function scriptLogLevel(level: string | undefined): LogEntry["level"] {
   switch (level?.toLowerCase()) {
     case "warn":
-    case "warning":
+    case "warning": {
       return "warn";
+    }
     case "error":
-    case "fatal":
+    case "fatal": {
       return "error";
+    }
     case "debug":
-    case "trace":
+    case "trace": {
       return "debug";
+    }
     case undefined:
-    default:
+    default: {
       return "info";
+    }
   }
 }
 

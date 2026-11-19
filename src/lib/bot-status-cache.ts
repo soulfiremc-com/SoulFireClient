@@ -13,7 +13,7 @@ function applyStatus(bot: BotListEntry, status: BotStatus): BotListEntry {
   switch (status.runtimeState) {
     case BotRuntimeState.STOPPED:
     case BotRuntimeState.FAILED:
-    case BotRuntimeState.RETRYING:
+    case BotRuntimeState.RETRYING: {
       return {
         ...bot,
         status,
@@ -22,13 +22,15 @@ function applyStatus(bot: BotListEntry, status: BotStatus): BotListEntry {
         liveState: undefined,
         pingMs: undefined,
       };
+    }
     case BotRuntimeState.UNSPECIFIED:
     case BotRuntimeState.QUEUED:
     case BotRuntimeState.STARTING:
     case BotRuntimeState.RUNNING:
     case BotRuntimeState.STOPPING:
-    default:
+    default: {
       return { ...bot, status };
+    }
   }
 }
 

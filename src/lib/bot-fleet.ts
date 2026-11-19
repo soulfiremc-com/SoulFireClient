@@ -127,7 +127,7 @@ export function classifyBotFailure(message: string): BotFailureKind {
   );
 }
 
-export type BotFailureGroup = {
+export interface BotFailureGroup {
   id: string;
   kind: BotFailureKind;
   message: string;
@@ -135,7 +135,7 @@ export type BotFailureGroup = {
   severity: "failed" | "retrying";
   botIds: string[];
   botNames: string[];
-};
+}
 
 /** Hides values that differ per bot, so the same cause forms one group. */
 function normalizeFailure(message: string): string {

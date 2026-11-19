@@ -71,12 +71,12 @@ type KeyboardCapture = Navigator & {
 };
 
 /** What to show in place of the view while the bot is not in the world. */
-export type PovOfflineStatus = {
+export interface PovOfflineStatus {
   message: string;
   /** True while the bot is on its way, so the user should wait. */
   waiting: boolean;
   detail?: string | undefined;
-};
+}
 
 export function BotPovPlayer(props: {
   instanceId: string;

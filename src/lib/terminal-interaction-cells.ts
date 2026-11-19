@@ -1,7 +1,7 @@
 import type { TerminalCore } from "@wterm/dom";
 import type { TerminalInteraction } from "./terminal-interactions";
 
-export type TerminalInteractionRun = {
+export interface TerminalInteractionRun {
   key: string;
   uri: string;
   row: number;
@@ -9,7 +9,7 @@ export type TerminalInteractionRun = {
   width: number;
   text: string;
   metadata: TerminalInteraction;
-};
+}
 
 export function terminalInteractionAt(
   core: TerminalCore,

@@ -266,19 +266,22 @@ export function QuickAddMenu() {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       switch (e.key) {
-        case "Escape":
+        case "Escape": {
           closeQuickAddMenu();
           break;
-        case "ArrowDown":
+        }
+        case "ArrowDown": {
           e.preventDefault();
           setSelectedIndex((i) =>
             Math.min(i + 1, Math.max(0, flatList.length - 1)),
           );
           break;
-        case "ArrowUp":
+        }
+        case "ArrowUp": {
           e.preventDefault();
           setSelectedIndex((i) => Math.max(i - 1, 0));
           break;
+        }
         case "Enter": {
           e.preventDefault();
           const selected = flatList[selectedIndex];
@@ -299,10 +302,11 @@ export function QuickAddMenu() {
           }
           break;
         }
-        case "ArrowLeft":
+        case "ArrowLeft": {
           e.preventDefault();
           setExpandedCategory(null);
           break;
+        }
       }
     },
     [closeQuickAddMenu, flatList, selectedIndex, expandedCategory, selectNode],

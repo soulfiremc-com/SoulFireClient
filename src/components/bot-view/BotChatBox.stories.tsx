@@ -36,21 +36,26 @@ async function deliver() {
       finish = resolve;
     });
   switch (outcome) {
-    case "completed":
+    case "completed": {
       return { result: { status: BotActionStatus.COMPLETED } };
-    case "failed":
+    }
+    case "failed": {
       return {
         result: {
           status: BotActionStatus.FAILED,
           error: "Chat is unavailable",
         },
       };
-    case "cancelled":
+    }
+    case "cancelled": {
       return { result: { status: BotActionStatus.CANCELLED } };
-    case "noResult":
+    }
+    case "noResult": {
       return {};
-    default:
+    }
+    default: {
       return outcome satisfies never;
+    }
   }
 }
 const transport = createRouterTransport((router) => {

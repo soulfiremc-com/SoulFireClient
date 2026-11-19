@@ -1,7 +1,10 @@
 import type { PaletteCommand } from "@/lib/command-palette";
 
 /** A pin stores only a stable command ID and its project, never a payload. */
-export type PalettePin = { id: string; projectId?: string };
+export interface PalettePin {
+  id: string;
+  projectId?: string;
+}
 
 export const PIN_LIMIT = 12;
 const MAX_ID_LENGTH = 512;

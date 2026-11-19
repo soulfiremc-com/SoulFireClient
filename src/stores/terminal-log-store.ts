@@ -222,10 +222,10 @@ export function createTerminalLogSession(
   };
 }
 
-type CachedSession = {
+interface CachedSession {
   session: ReturnType<typeof createTerminalLogSession>;
   idleSince: number;
-};
+}
 const connections = new WeakMap<Transport, Map<string, CachedSession>>();
 
 export function getTerminalLogSession(transport: Transport, scope: LogScope) {

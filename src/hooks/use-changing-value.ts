@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export function useChangingData<T>(
   produce: () => T,
-  interval: number = 1000,
+  interval = 1000,
   deps: unknown[] = [],
 ): T {
   const [value, setValue] = useState(produce());

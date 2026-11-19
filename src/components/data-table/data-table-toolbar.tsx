@@ -95,7 +95,7 @@ function DataTableToolbarFilter<TData extends RowData>({
   if (!columnMeta?.variant) return null;
 
   switch (columnMeta.variant) {
-    case "text":
+    case "text": {
       return (
         <DataTableTextFilter
           label={columnMeta.label ?? column.id}
@@ -107,8 +107,9 @@ function DataTableToolbarFilter<TData extends RowData>({
           className="h-8 w-full sm:w-56"
         />
       );
+    }
 
-    case "number":
+    case "number": {
       return (
         <div className="relative w-full sm:w-auto">
           <DataTableTextFilter
@@ -129,17 +130,19 @@ function DataTableToolbarFilter<TData extends RowData>({
           )}
         </div>
       );
+    }
 
-    case "range":
+    case "range": {
       return (
         <DataTableSliderFilter
           column={column}
           title={columnMeta.label ?? column.id}
         />
       );
+    }
 
     case "date":
-    case "dateRange":
+    case "dateRange": {
       return (
         <DataTableDateFilter
           column={column}
@@ -147,9 +150,10 @@ function DataTableToolbarFilter<TData extends RowData>({
           multiple={columnMeta.variant === "dateRange"}
         />
       );
+    }
 
     case "select":
-    case "multiSelect":
+    case "multiSelect": {
       return (
         <DataTableFacetedFilter
           column={column}
@@ -158,10 +162,12 @@ function DataTableToolbarFilter<TData extends RowData>({
           multiple={columnMeta.variant === "multiSelect"}
         />
       );
+    }
 
     case "boolean":
-    default:
+    default: {
       return null;
+    }
   }
 }
 

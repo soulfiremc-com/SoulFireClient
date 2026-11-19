@@ -43,25 +43,32 @@ function lifecycleText(
   message: string | undefined,
 ): string {
   switch (kind) {
-    case BotLifecycleKind.BOT_LIFECYCLE_CONNECTING:
+    case BotLifecycleKind.BOT_LIFECYCLE_CONNECTING: {
       return t("overview.liveFeed.lifecycle.connecting");
-    case BotLifecycleKind.BOT_LIFECYCLE_CONNECTED:
+    }
+    case BotLifecycleKind.BOT_LIFECYCLE_CONNECTED: {
       return t("overview.liveFeed.lifecycle.connected");
-    case BotLifecycleKind.BOT_LIFECYCLE_SPAWNED:
+    }
+    case BotLifecycleKind.BOT_LIFECYCLE_SPAWNED: {
       return t("overview.liveFeed.lifecycle.spawned");
-    case BotLifecycleKind.BOT_LIFECYCLE_DIED:
+    }
+    case BotLifecycleKind.BOT_LIFECYCLE_DIED: {
       return message
         ? `${t("overview.liveFeed.lifecycle.died")}: ${message}`
         : t("overview.liveFeed.lifecycle.died");
-    case BotLifecycleKind.BOT_LIFECYCLE_RESPAWNED:
+    }
+    case BotLifecycleKind.BOT_LIFECYCLE_RESPAWNED: {
       return t("overview.liveFeed.lifecycle.respawned");
-    case BotLifecycleKind.BOT_LIFECYCLE_DISCONNECTED:
+    }
+    case BotLifecycleKind.BOT_LIFECYCLE_DISCONNECTED: {
       return message
         ? `${t("overview.liveFeed.lifecycle.disconnected")}: ${message}`
         : t("overview.liveFeed.lifecycle.disconnected");
+    }
     case BotLifecycleKind.BOT_LIFECYCLE_UNSPECIFIED:
-    default:
+    default: {
       return t("overview.liveFeed.lifecycle.unknown");
+    }
   }
 }
 

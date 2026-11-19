@@ -11,15 +11,15 @@ const LOCAL_STORAGE_RAVEALTS_API_KEY = "ravealts-api-key";
 
 export type RavealtsStock = Record<string, number>;
 
-export type RavealtsStockResponse = {
+export interface RavealtsStockResponse {
   status: "success";
   stock: RavealtsStock;
-};
+}
 
-export type RavealtsKeyInfoResponse = {
+export interface RavealtsKeyInfoResponse {
   status: "success";
   available_credits: number;
-};
+}
 
 export type RavealtsPurchasedAccount =
   | { cookie: string; filename: string }
@@ -27,16 +27,16 @@ export type RavealtsPurchasedAccount =
   | { email: string; password: string }
   | { raw: string };
 
-export type RavealtsPurchaseResponse = {
+export interface RavealtsPurchaseResponse {
   status: "success";
   accounts: RavealtsPurchasedAccount[];
-};
+}
 
-export type RavealtsErrorResponse = {
+export interface RavealtsErrorResponse {
   status: "error";
   error_type: string;
   message: string;
-};
+}
 
 export function getRavealtsApiKey(): string {
   return localStorage.getItem(LOCAL_STORAGE_RAVEALTS_API_KEY) ?? "";

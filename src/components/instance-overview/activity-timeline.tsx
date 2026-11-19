@@ -24,16 +24,21 @@ function entryTypeI18nKey(
   type: InstanceAuditLogResponse_AuditLogEntryType,
 ): string {
   switch (type) {
-    case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND:
+    case InstanceAuditLogResponse_AuditLogEntryType.EXECUTE_COMMAND: {
       return "overview.timeline.types.executeCommand";
-    case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE:
+    }
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_DESIRED_STATE_CHANGE: {
       return "overview.timeline.types.botDesiredStateChange";
-    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART:
+    }
+    case InstanceAuditLogResponse_AuditLogEntryType.BOT_RESTART: {
       return "overview.timeline.types.botRestart";
-    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC:
+    }
+    case InstanceAuditLogResponse_AuditLogEntryType.PLUGIN_RPC: {
       return "overview.timeline.types.pluginRpc";
-    default:
+    }
+    default: {
       return "overview.timeline.types.unknown";
+    }
   }
 }
 

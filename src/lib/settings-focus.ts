@@ -1,6 +1,9 @@
 import type { SettingsDefinition } from "@/generated/soulfire/common_pb";
 
-export type SettingFocus = { namespace: string; key: string };
+export interface SettingFocus {
+  namespace: string;
+  key: string;
+}
 
 const valid = (value: unknown): value is string =>
   typeof value === "string" && value.length > 0 && value.length <= 256;

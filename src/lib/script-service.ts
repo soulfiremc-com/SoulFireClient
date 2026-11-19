@@ -228,7 +228,7 @@ function toProtoValue(value: unknown): Value {
     });
   }
   if (typeof value === "object") {
-    const fields: { [key: string]: Value } = {};
+    const fields: Record<string, Value> = {};
     for (const [k, v] of Object.entries(value)) {
       fields[k] = toProtoValue(v);
     }
@@ -249,16 +249,21 @@ function toProtoValue(value: unknown): Value {
  */
 function fromProtoValue(value: Value): unknown {
   switch (value.kind.case) {
-    case "nullValue":
+    case "nullValue": {
       return null;
-    case "boolValue":
+    }
+    case "boolValue": {
       return value.kind.value;
-    case "numberValue":
+    }
+    case "numberValue": {
       return value.kind.value;
-    case "stringValue":
+    }
+    case "stringValue": {
       return value.kind.value;
-    case "listValue":
+    }
+    case "listValue": {
       return value.kind.value.values.map(fromProtoValue);
+    }
     case "structValue": {
       const result: Record<string, unknown> = {};
       for (const [k, v] of Object.entries(value.kind.value.fields)) {
@@ -267,8 +272,9 @@ function fromProtoValue(value: Value): unknown {
       return result;
     }
     case undefined:
-    default:
+    default: {
       return null;
+    }
   }
 }
 
@@ -277,7 +283,7 @@ function fromProtoValue(value: Value): unknown {
  */
 export function nodesToProto(nodes: Node[]): ScriptNode[] {
   return nodes.map((node) => {
-    const data: { [key: string]: Value } = {};
+    const data: Record<string, Value> = {};
     const nodeData = node.data;
     for (const [key, value] of Object.entries(nodeData)) {
       // Skip internal fields that are handled separately

@@ -86,14 +86,18 @@ export function mapType(
  */
 export function getBaseType(td: TypeDescriptor): PortType {
   switch (td.kind) {
-    case "simple":
+    case "simple": {
       return td.type;
-    case "parameterized":
+    }
+    case "parameterized": {
       return td.base;
-    case "type_variable":
+    }
+    case "type_variable": {
       return "any";
-    default:
+    }
+    default: {
       return td satisfies never;
+    }
   }
 }
 
@@ -102,14 +106,18 @@ export function getBaseType(td: TypeDescriptor): PortType {
  */
 export function typeDescriptorDisplayString(td: TypeDescriptor): string {
   switch (td.kind) {
-    case "simple":
+    case "simple": {
       return td.type;
-    case "parameterized":
+    }
+    case "parameterized": {
       return `${td.base}<${td.params.map(typeDescriptorDisplayString).join(", ")}>`;
-    case "type_variable":
+    }
+    case "type_variable": {
       return td.name;
-    default:
+    }
+    default: {
       return td satisfies never;
+    }
   }
 }
 
@@ -118,14 +126,18 @@ export function typeDescriptorDisplayString(td: TypeDescriptor): string {
  */
 export function hasTypeVariables(td: TypeDescriptor): boolean {
   switch (td.kind) {
-    case "simple":
+    case "simple": {
       return false;
-    case "parameterized":
+    }
+    case "parameterized": {
       return td.params.some(hasTypeVariables);
-    case "type_variable":
+    }
+    case "type_variable": {
       return true;
-    default:
+    }
+    default: {
       return td satisfies never;
+    }
   }
 }
 
@@ -138,9 +150,10 @@ export function resolveTypeDescriptor(
   resolving: ReadonlySet<string> = new Set(),
 ): TypeDescriptor {
   switch (td.kind) {
-    case "simple":
+    case "simple": {
       return td;
-    case "parameterized":
+    }
+    case "parameterized": {
       return {
         kind: "parameterized",
         base: td.base,
@@ -148,6 +161,7 @@ export function resolveTypeDescriptor(
           resolveTypeDescriptor(p, bindings, resolving),
         ),
       };
+    }
     case "type_variable": {
       const bound = bindings.get(td.name);
       if (bound && !resolving.has(td.name)) {
@@ -159,8 +173,9 @@ export function resolveTypeDescriptor(
       }
       return td;
     }
-    default:
+    default: {
       return td satisfies never;
+    }
   }
 }
 
@@ -369,36 +384,51 @@ export function localPortTypeToProto(type: PortType): ProtoPortType {
  */
 export function protoPortTypeToLocal(protoType: ProtoPortType): PortType {
   switch (protoType) {
-    case ProtoPortType.ANY:
+    case ProtoPortType.ANY: {
       return "any";
-    case ProtoPortType.NUMBER:
+    }
+    case ProtoPortType.NUMBER: {
       return "number";
-    case ProtoPortType.STRING:
+    }
+    case ProtoPortType.STRING: {
       return "string";
-    case ProtoPortType.BOOLEAN:
+    }
+    case ProtoPortType.BOOLEAN: {
       return "boolean";
-    case ProtoPortType.VECTOR3:
+    }
+    case ProtoPortType.VECTOR3: {
       return "vector3";
-    case ProtoPortType.BOT:
+    }
+    case ProtoPortType.BOT: {
       return "bot";
-    case ProtoPortType.LIST:
+    }
+    case ProtoPortType.LIST: {
       return "list";
-    case ProtoPortType.EXEC:
+    }
+    case ProtoPortType.EXEC: {
       return "execution";
-    case ProtoPortType.BLOCK:
+    }
+    case ProtoPortType.BLOCK: {
       return "block";
-    case ProtoPortType.ENTITY:
+    }
+    case ProtoPortType.ENTITY: {
       return "entity";
-    case ProtoPortType.ITEM:
+    }
+    case ProtoPortType.ITEM: {
       return "item";
-    case ProtoPortType.MAP:
+    }
+    case ProtoPortType.MAP: {
       return "map";
-    case ProtoPortType.SET:
+    }
+    case ProtoPortType.SET: {
       return "set";
-    case ProtoPortType.COLLECTION:
+    }
+    case ProtoPortType.COLLECTION: {
       return "collection";
-    default:
+    }
+    default: {
       return "any";
+    }
   }
 }
 
@@ -679,14 +709,18 @@ export function isPortMultiInput(nodeType: string, portId: string): boolean {
  */
 function protoHandleShapeToLocal(protoShape: ProtoHandleShape): HandleShape {
   switch (protoShape) {
-    case ProtoHandleShape.CIRCLE:
+    case ProtoHandleShape.CIRCLE: {
       return "circle";
-    case ProtoHandleShape.SQUARE:
+    }
+    case ProtoHandleShape.SQUARE: {
       return "square";
-    case ProtoHandleShape.DIAMOND:
+    }
+    case ProtoHandleShape.DIAMOND: {
       return "diamond";
-    default:
+    }
+    default: {
       return "circle";
+    }
   }
 }
 
@@ -695,14 +729,18 @@ function protoHandleShapeToLocal(protoShape: ProtoHandleShape): HandleShape {
  */
 function protoEdgeStyleToLocal(protoStyle: ProtoEdgeStyle): EdgeStyle {
   switch (protoStyle) {
-    case ProtoEdgeStyle.DEFAULT:
+    case ProtoEdgeStyle.DEFAULT: {
       return "default";
-    case ProtoEdgeStyle.ANIMATED:
+    }
+    case ProtoEdgeStyle.ANIMATED: {
       return "animated";
-    case ProtoEdgeStyle.DASHED:
+    }
+    case ProtoEdgeStyle.DASHED: {
       return "dashed";
-    default:
+    }
+    default: {
       return "default";
+    }
   }
 }
 
@@ -711,13 +749,13 @@ function protoEdgeStyleToLocal(protoStyle: ProtoEdgeStyle): EdgeStyle {
  * Call this when GetNodeTypesResponse is received.
  */
 export function initPortMetadata(
-  metadata: Array<{
+  metadata: {
     portType: ProtoPortType;
     color: string;
     compatibleFrom: ProtoPortType[];
     handleShape: ProtoHandleShape;
     edgeStyle: ProtoEdgeStyle;
-  }>,
+  }[],
 ): void {
   serverPortColors = {};
   serverTypeCompatibility = {};

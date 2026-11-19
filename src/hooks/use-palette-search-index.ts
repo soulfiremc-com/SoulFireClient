@@ -21,14 +21,14 @@ import { scriptListQueryOptions } from "@/lib/script-service";
 import { serverInfoQueryOptions } from "@/lib/server-info-query";
 import type { InstanceInfoQueryData, ServerInfoQueryData } from "@/lib/types";
 
-type SourceQuery = {
+interface SourceQuery {
   queryKey: QueryKey;
   fetch: (queryClient: QueryClient) => Promise<unknown>;
-};
-type Source = {
+}
+interface Source {
   id: string;
   queries: SourceQuery[];
-};
+}
 type SourceStatus = "loaded" | "failed";
 
 const INDEXED_KEYS = ["instance-info", "scripts", "server-info"];

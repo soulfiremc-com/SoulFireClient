@@ -12,7 +12,7 @@ import {
 import { filterScripts, nodesToProto, protoToNodes } from "./script-service";
 
 test("typed reroutes retain their editor type through protobuf binary round trips", () => {
-  const types: Array<[LocalPortType, PortType]> = [
+  const types: [LocalPortType, PortType][] = [
     ["any", PortType.ANY],
     ["number", PortType.NUMBER],
     ["string", PortType.STRING],

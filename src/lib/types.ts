@@ -24,9 +24,9 @@ import { jsonToValue, valueToJson } from "@/lib/protobuf.ts";
 export const SF_SERVER_TYPES = ["integrated", "dedicated"] as const;
 export type SFServerType = (typeof SF_SERVER_TYPES)[number];
 
-export type BaseSettings = {
+export interface BaseSettings {
   settings: Record<string, Record<string, JsonValue>>;
-};
+}
 
 export type ProfileRoot = BaseSettings & {
   accounts: ProfileAccount[];
@@ -80,21 +80,21 @@ export function mapUnionToValue<U, V>(
   return map(union);
 }
 
-export type ProfileAccount = {
+export interface ProfileAccount {
   type: MinecraftAccountProto_AccountTypeProto;
   profileId: string;
   lastKnownName: string;
   accountData: MinecraftAccountProto["accountData"];
   config: SettingsNamespace[];
   persistentMetadata: SettingsNamespace[];
-};
+}
 
-export type ProfileProxy = {
+export interface ProfileProxy {
   type: ProxyProto_Type;
   address: string;
   username?: string | undefined;
   password?: string | undefined;
-};
+}
 
 export function toSettingsNamespace(
   namespace: string,

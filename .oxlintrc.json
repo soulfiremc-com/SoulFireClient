@@ -89,6 +89,7 @@
       }
     ],
     "eslint/no-unmodified-loop-condition": "error",
+    "eslint/no-useless-assignment": "error",
     "eslint/no-useless-call": "error",
     "eslint/no-warning-comments": "off",
     "eslint/preserve-caught-error": "error",
@@ -166,6 +167,7 @@
     "react/set-state-in-effect": "error",
     "react/static-components": "error",
     "react/use-memo": "error",
+    "typescript/array-type": "error",
     "typescript/ban-ts-comment": [
       "error",
       {
@@ -176,7 +178,9 @@
         "minimumDescriptionLength": 10
       }
     ],
+    "typescript/consistent-indexed-object-style": "error",
     "typescript/consistent-return": "error",
+    "typescript/consistent-type-definitions": ["error", "interface"],
     "typescript/consistent-type-exports": "error",
     "typescript/consistent-type-imports": "error",
     "typescript/no-base-to-string": "error",
@@ -204,6 +208,7 @@
         ]
       }
     ],
+    "typescript/no-inferrable-types": "error",
     "typescript/no-misused-promises": "error",
     "typescript/no-misused-spread": "error",
     "typescript/no-non-null-assertion": "error",
@@ -222,6 +227,7 @@
     "typescript/no-unsafe-type-assertion": "error",
     "typescript/no-useless-empty-export": "error",
     "typescript/only-throw-error": "error",
+    "typescript/prefer-function-type": "error",
     "typescript/prefer-nullish-coalescing": [
       "error",
       {
@@ -261,6 +267,7 @@
     "unicorn/prefer-set-has": "error",
     "unicorn/prefer-string-replace-all": "error",
     "unicorn/prefer-top-level-await": "error",
+    "unicorn/switch-case-braces": "error",
     "shadcn/no-arbitrary-values": [
       "error",
       {

@@ -20,6 +20,7 @@ declare global {
 declare module "react" {
   // Components pass theme values to CSS through custom properties.
   interface CSSProperties {
+    // oxlint-disable-next-line typescript/consistent-indexed-object-style -- module augmentation must be an interface to merge with React's CSSProperties
     [property: `--${string}`]: string | number | undefined;
   }
 }

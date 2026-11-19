@@ -92,7 +92,7 @@ export function getSettingSearchTerms(
   const type = definition.type;
   const parts: string[] = [definition.id?.key ?? ""];
   switch (type.case) {
-    case "minMax":
+    case "minMax": {
       parts.push(
         type.value.minEntry?.uiName ?? "",
         type.value.minEntry?.description ?? "",
@@ -100,22 +100,26 @@ export function getSettingSearchTerms(
         type.value.maxEntry?.description ?? "",
       );
       break;
-    case "combo":
+    }
+    case "combo": {
       parts.push(
         type.value.uiName,
         type.value.description,
         ...type.value.options.map((option) => option.displayName),
       );
       break;
-    case undefined:
+    }
+    case undefined: {
       break;
+    }
     case "bool":
     case "double":
     case "int":
     case "string":
     case "stringList":
-    default:
+    default: {
       parts.push(type.value.uiName, type.value.description);
+    }
   }
   return parts.filter(Boolean);
 }

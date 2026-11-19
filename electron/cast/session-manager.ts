@@ -69,13 +69,13 @@ export class CastSessionManager {
     this.discovery = this.runtime.runFork(
       Effect.scoped(
         Effect.gen({ self: this }, function* () {
-          type ServiceRecord = {
+          interface ServiceRecord {
             name: string;
             host?: string;
             addresses?: string[];
             port: number;
             txt?: Record<string, string>;
-          };
+          }
           const bonjour = yield* Effect.acquireRelease(
             Effect.try({
               try: () => {

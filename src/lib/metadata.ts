@@ -3,7 +3,10 @@ import type { JsonValue } from "@bufbuild/protobuf";
 export const metadataNamespacePattern = /^[a-z0-9_.-]+$/u;
 export const metadataKeyPattern = /^[a-z0-9_./-]+$/u;
 
-type MetadataIdentifier = { namespace: string; key: string };
+interface MetadataIdentifier {
+  namespace: string;
+  key: string;
+}
 type MetadataValue = MetadataIdentifier & { value: JsonValue };
 
 export async function updateMetadataEntry(

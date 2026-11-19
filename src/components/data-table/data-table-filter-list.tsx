@@ -891,7 +891,8 @@ function onFilterInputRender<TData extends RowData>({
       );
     }
 
-    default:
+    default: {
       return null;
+    }
   }
 }

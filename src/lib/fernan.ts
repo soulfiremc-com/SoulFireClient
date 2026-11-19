@@ -57,12 +57,12 @@ export const FERNAN_IMPORT_FORMATS = [
   "credentials",
 ] as const;
 export type FernanImportFormat = (typeof FERNAN_IMPORT_FORMATS)[number];
-export type FernanAccount = {
+export interface FernanAccount {
   balance: number;
   stock: FernanProduct[];
   cooldowns: FernanCooldown[];
   purchases: { purchase_id: string; product_name: string }[];
-};
+}
 
 function parse<T>(schema: Schema.ConstraintDecoder<T>, data: unknown) {
   return Schema.decodeUnknownEffect(schema, { errors: "all" })(data).pipe(

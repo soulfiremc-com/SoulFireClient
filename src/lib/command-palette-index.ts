@@ -26,13 +26,13 @@ export async function runBounded(
   );
 }
 
-export type PaletteIndexProgress = {
+export interface PaletteIndexProgress {
   /** Projects in the index, excluding the project already in context. */
   total: number;
   loaded: number;
   failed: number;
   server: "none" | "pending" | "loaded" | "failed";
-};
+}
 
 export function isPaletteIndexComplete(progress: PaletteIndexProgress) {
   return (

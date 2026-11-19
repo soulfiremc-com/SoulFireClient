@@ -13,11 +13,11 @@ import {
 import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
-type NavLink = {
+interface NavLink {
   title: string;
   iconId: string;
   linkProps: LinkProps;
-};
+}
 
 export function NavSettings() {
   const { t } = useTranslation("common");

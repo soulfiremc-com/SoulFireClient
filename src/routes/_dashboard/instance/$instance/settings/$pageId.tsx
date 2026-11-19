@@ -14,19 +14,25 @@ import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
 function getSettingsPageFallbackIcon(pageId: string | undefined) {
   switch (pageId) {
-    case "bot":
+    case "bot": {
       return "bot";
-    case "account":
+    }
+    case "account": {
       return "users";
-    case "proxy":
+    }
+    case "proxy": {
       return "waypoints";
-    case "ai":
+    }
+    case "ai": {
       return "sparkles";
-    case "pathfinding":
+    }
+    case "pathfinding": {
       return "route";
+    }
     case undefined:
-    default:
+    default: {
       return "settings-2";
+    }
   }
 }
 

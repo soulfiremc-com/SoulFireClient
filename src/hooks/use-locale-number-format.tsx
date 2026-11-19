@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-export type LocaleNumberFormat = {
+export interface LocaleNumberFormat {
   thousandSeparator: string;
   decimalSeparator: string;
-};
+}
 
 export function useLocaleNumberFormat(): LocaleNumberFormat {
   const { i18n } = useTranslation();

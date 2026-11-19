@@ -9,7 +9,7 @@ import { getHandleShape, getPortColor, type PortType } from "./types";
 
 export interface GroupInputNodeData {
   /** Output sockets that map to the group's external inputs */
-  outputs?: Array<{ id: string; type: PortType; label: string }>;
+  outputs?: { id: string; type: PortType; label: string }[];
   [key: string]: unknown;
 }
 

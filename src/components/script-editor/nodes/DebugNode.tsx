@@ -250,4 +250,4 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 
 export const DebugNode = memo(DebugNodeComponent);
 
-const EMPTY_DEBUG_HISTORY: Array<{ value: unknown; timestamp: Date }> = [];
+const EMPTY_DEBUG_HISTORY: { value: unknown; timestamp: Date }[] = [];

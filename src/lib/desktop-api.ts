@@ -11,48 +11,48 @@ import type {
 
 export type DesktopTheme = "dark" | "light" | null;
 
-export type DesktopFsEntry = {
+export interface DesktopFsEntry {
   name: string;
   isFile: boolean;
   isDirectory: boolean;
   isSymlink: boolean;
-};
+}
 
-export type DesktopFsWatchEvent = {
+export interface DesktopFsWatchEvent {
   paths: string[];
-};
+}
 
-export type DesktopFsWatchOptions = {
+export interface DesktopFsWatchOptions {
   delayMs?: number;
   recursive?: boolean;
-};
+}
 
-export type DesktopMkdirOptions = {
+export interface DesktopMkdirOptions {
   recursive?: boolean;
-};
+}
 
-export type DesktopFileFilter = {
+export interface DesktopFileFilter {
   name: string;
   extensions: string[];
-};
+}
 
-export type DesktopOpenDialogOptions = {
+export interface DesktopOpenDialogOptions {
   title?: string | undefined;
   filters?: DesktopFileFilter[] | undefined;
   defaultPath?: string | undefined;
   multiple?: boolean | undefined;
   directory?: boolean | undefined;
-};
+}
 
-export type DesktopSaveDialogOptions = {
+export interface DesktopSaveDialogOptions {
   title?: string | undefined;
   filters?: DesktopFileFilter[] | undefined;
   defaultPath?: string | undefined;
-};
+}
 
 export type DesktopUnlisten = () => void;
 
-export type DesktopSystemInfo = {
+export interface DesktopSystemInfo {
   appVersion: string;
   os: {
     arch: string;
@@ -61,21 +61,21 @@ export type DesktopSystemInfo = {
     type: string;
     version: string;
   };
-};
+}
 
-export type DesktopIntegratedServerCredentials = {
+export interface DesktopIntegratedServerCredentials {
   address: string;
   token: string;
-};
+}
 
-export type DesktopIntegratedServerLog = {
+export interface DesktopIntegratedServerLog {
   id: number;
   timestamp: number;
   source: "launcher" | "stdout" | "stderr";
   message: string;
-};
+}
 
-export type DesktopIntegratedServerDiagnostics = {
+export interface DesktopIntegratedServerDiagnostics {
   status:
     | "idle"
     | "preparing"
@@ -98,7 +98,7 @@ export type DesktopIntegratedServerDiagnostics = {
   jcmdPath: string | null;
   logs: DesktopIntegratedServerLog[];
   droppedLogCount: number;
-};
+}
 
 export type DesktopIntegratedServerJarSource =
   | {
@@ -109,20 +109,20 @@ export type DesktopIntegratedServerJarSource =
       type: "custom";
     };
 
-export type DesktopCustomSoulFireServerJar = {
+export interface DesktopCustomSoulFireServerJar {
   id: string;
   importedAt: string;
   originalName: string;
   path: string;
   sha256: string;
   size: number;
-};
+}
 
-export type DesktopPovEscape = {
+export interface DesktopPovEscape {
   target?: "pov";
   action: number;
   modifiers: number;
-};
+}
 
 export interface SoulFireDesktopApi {
   providers: {

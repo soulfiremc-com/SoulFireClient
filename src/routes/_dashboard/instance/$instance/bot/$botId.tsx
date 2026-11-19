@@ -358,17 +358,22 @@ function getGameModeLabel(
   t: (key: string) => string,
 ): string {
   switch (gameMode) {
-    case GameMode.SURVIVAL:
+    case GameMode.SURVIVAL: {
       return t("bots.statsPanel.survival");
-    case GameMode.CREATIVE:
+    }
+    case GameMode.CREATIVE: {
       return t("bots.statsPanel.creative");
-    case GameMode.ADVENTURE:
+    }
+    case GameMode.ADVENTURE: {
       return t("bots.statsPanel.adventure");
-    case GameMode.SPECTATOR:
+    }
+    case GameMode.SPECTATOR: {
       return t("bots.statsPanel.spectator");
+    }
     case GameMode.UNSPECIFIED:
-    default:
+    default: {
       return t("bots.statsPanel.unknown");
+    }
   }
 }
 
@@ -1876,24 +1881,33 @@ function ContainerButtonsPanel({
   // Get title based on container type
   const title = (() => {
     switch (containerType) {
-      case "creative":
+      case "creative": {
         return t("bots.inventoryPanel.buttons.creativeTabs");
-      case "stonecutter":
+      }
+      case "stonecutter": {
         return t("bots.inventoryPanel.buttons.stonecutterRecipes");
-      case "enchanting":
+      }
+      case "enchanting": {
         return t("bots.inventoryPanel.buttons.enchantments");
-      case "loom":
+      }
+      case "loom": {
         return t("bots.inventoryPanel.buttons.patterns");
-      case "merchant":
+      }
+      case "merchant": {
         return t("bots.inventoryPanel.buttons.trades");
-      case "beacon":
+      }
+      case "beacon": {
         return t("bots.inventoryPanel.buttons.beaconEffects");
-      case "crafter":
+      }
+      case "crafter": {
         return t("bots.inventoryPanel.buttons.crafterSlots");
-      case "lectern":
+      }
+      case "lectern": {
         return t("bots.inventoryPanel.buttons.lecternControls");
-      default:
+      }
+      default: {
         return t("bots.inventoryPanel.buttons.actions");
+      }
     }
   })();
 
@@ -2753,18 +2767,24 @@ function BotDialogPanel({
 
   const getDialogTypeName = (type: number) => {
     switch (type) {
-      case 1:
+      case 1: {
         return t("bots.dialogPanel.notice");
-      case 2:
+      }
+      case 2: {
         return t("bots.dialogPanel.confirmation");
-      case 3:
+      }
+      case 3: {
         return t("bots.dialogPanel.multiAction");
-      case 4:
+      }
+      case 4: {
         return t("bots.dialogPanel.serverLinks");
-      case 5:
+      }
+      case 5: {
         return t("bots.dialogPanel.dialogList");
-      default:
+      }
+      default: {
         return t("bots.dialogPanel.unknownType");
+      }
     }
   };
 

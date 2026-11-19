@@ -75,7 +75,7 @@ type BotSettingsPage = SettingsPage & {
 const BOT_SETTINGS_VIEWS = ["overrides", "all"] as const;
 type BotSettingsView = (typeof BOT_SETTINGS_VIEWS)[number];
 
-type ResolvedBotSetting = {
+interface ResolvedBotSetting {
   page: BotSettingsPage;
   identifier: SettingsEntryIdentifier;
   definition: SettingsDefinition;
@@ -86,7 +86,7 @@ type ResolvedBotSetting = {
   defaultValue: JsonValue;
   botValue?: JsonValue | undefined;
   matchesInherited: boolean;
-};
+}
 
 const EMPTY_SETTINGS: BaseSettings = { settings: {} };
 
@@ -145,13 +145,14 @@ function getDirectSettingValue(
 
 function getSettingDisplayName(definition: SettingsDefinition): string {
   switch (definition.type.case) {
-    case "minMax":
+    case "minMax": {
       return (
         definition.type.value.minEntry?.uiName ||
         definition.type.value.maxEntry?.uiName ||
         definition.id?.key ||
         ""
       );
+    }
     case undefined:
     case "bool":
     case "combo":
@@ -159,19 +160,21 @@ function getSettingDisplayName(definition: SettingsDefinition): string {
     case "int":
     case "string":
     case "stringList":
-    default:
+    default: {
       return definition.type.value?.uiName ?? definition.id?.key ?? "";
+    }
   }
 }
 
 function getSettingDescription(definition: SettingsDefinition): string {
   switch (definition.type.case) {
-    case "minMax":
+    case "minMax": {
       return (
         definition.type.value.minEntry?.description ||
         definition.type.value.maxEntry?.description ||
         ""
       );
+    }
     case undefined:
     case "bool":
     case "combo":
@@ -179,8 +182,9 @@ function getSettingDescription(definition: SettingsDefinition): string {
     case "int":
     case "string":
     case "stringList":
-    default:
+    default: {
       return definition.type.value?.description ?? "";
+    }
   }
 }
 
@@ -197,15 +201,17 @@ function formatSettingValue(
   }
 
   switch (definition.type.case) {
-    case "bool":
+    case "bool": {
       return value
         ? translate("instance:account.config.value.on")
         : translate("instance:account.config.value.off");
-    case "combo":
+    }
+    case "combo": {
       return (
         definition.type.value.options.find((option) => option.id === value)
           ?.displayName ?? displayText(value)
       );
+    }
     case "string": {
       const stringValue = displayText(value);
       if (stringValue.length === 0) {
@@ -240,8 +246,9 @@ function formatSettingValue(
     case undefined:
     case "double":
     case "int":
-    default:
+    default: {
       return displayText(value);
+    }
   }
 }
 
@@ -268,14 +275,18 @@ function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
 
 function sourceLabel(source: ResolvedBotSetting["source"]): string {
   switch (source) {
-    case "bot":
+    case "bot": {
       return translate("instance:account.config.source.bot");
-    case "instance":
+    }
+    case "instance": {
       return translate("instance:account.config.source.instance");
-    case "default":
+    }
+    case "default": {
       return translate("instance:account.config.source.default");
-    default:
+    }
+    default: {
       return source satisfies never;
+    }
   }
 }
 
@@ -465,11 +476,11 @@ function BotSettingRow(props: {
   );
 }
 
-type AccountConfigDialogProps = {
+interface AccountConfigDialogProps {
   account: ProfileAccount;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
+}
 
 export function AccountConfigDialog({
   account,

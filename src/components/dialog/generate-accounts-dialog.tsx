@@ -50,7 +50,7 @@ import { GENERATE_ACCOUNTS_MODES } from "@/lib/types";
 
 const DEFAULT_GENERATE_MODE: GenerateAccountsMode = "IGNORE_EXISTING";
 
-export type GenerateAccountsDialogProps = {
+export interface GenerateAccountsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onGenerate: (
@@ -60,15 +60,15 @@ export type GenerateAccountsDialogProps = {
   existingUsernames: Set<string>;
   /** Extra options for the success toast, such as a next step action. */
   successToast?: ExternalToast;
-};
+}
 
 type GenerationPhase = "generating" | "saving";
 
-type GenerationJob = {
+interface GenerationJob {
   controller: AbortController;
   toastId: string | number;
   phase: GenerationPhase;
-};
+}
 
 export default function GenerateAccountsDialog({
   open,
@@ -259,8 +259,9 @@ export default function GenerateAccountsDialog({
             }
             break;
           }
-          case undefined:
+          case undefined: {
             break;
+          }
         }
       },
       onError: (e) => {
