@@ -2,7 +2,9 @@ name: Upload translations to Crowdin
 
 on:
   workflow_dispatch:
-  pull_request_target:
+  # Runs only after a merge. The job checks out trusted main and reads the PR
+  # file list as data, so no pull request code runs with the Crowdin secrets.
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
     types: [closed]
     branches: [main]
     paths:

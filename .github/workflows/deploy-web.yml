@@ -37,12 +37,15 @@ jobs:
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: 1.4.4
+          # Do not restore caches into a job that deploys.
+          no-cache: true
 
       - name: Install Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: lts/*
           check-latest: true
+          package-manager-cache: false
 
       - name: Install dependencies
         run: bun ci
@@ -67,8 +70,9 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
-          bunx cf previews deploy --mode preview "pr-${{ github.event.number }}" > preview.json
+          bunx cf previews deploy --mode preview "pr-$PR_NUMBER" > preview.json
           url=$(jq -r '(.preview_urls // .deployment_urls)[0]' preview.json)
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
@@ -79,7 +83,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           URL: ${{ steps.preview.outputs.url }}
           SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
-          gh pr comment "${{ github.event.number }}" --repo "${{ github.repository }}" \
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
             --edit-last --create-if-none \
             --body "Web preview for ${SHA:0:7}: $URL"

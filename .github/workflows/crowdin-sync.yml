@@ -4,13 +4,15 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   synchronize-with-crowdin:
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      # Pushes the translation branch and opens and auto-merges its pull request.
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
