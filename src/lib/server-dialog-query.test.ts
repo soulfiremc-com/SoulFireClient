@@ -42,6 +42,7 @@ test("an old action refresh preserves its replacement and its pending poll", asy
   const cached = client.getQueryData(queryKey);
   const nextPoll = deferred<ReturnType<typeof dialog>>();
   let aborted = false;
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The deferred response represents an in-flight poll for the exact cache entry under test.
   const poll = client.fetchQuery({
     queryKey,
     queryFn: ({ signal }) => {

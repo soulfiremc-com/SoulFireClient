@@ -93,10 +93,11 @@ export function usePaletteSearchIndex({
         ? indexedIds.map((id) => ({
             id: `project:${id}`,
             queries: [
+              // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
               sourceQuery({
                 queryKey: ["instance-info", id],
-                queryFn: ({ signal }) =>
-                  fetchInstanceInfo(transport, id, queryClient, signal),
+                queryFn: ({ client, signal }) =>
+                  fetchInstanceInfo(transport, id, client, signal),
               }),
               sourceQuery(scriptListQueryOptions(transport, id)),
             ],
@@ -111,7 +112,7 @@ export function usePaletteSearchIndex({
           ]
         : []),
     ],
-    [includeServer, indexedIds, queryClient, transport],
+    [includeServer, indexedIds, transport],
   );
 
   // Re-read cached metadata when a request for it finishes.

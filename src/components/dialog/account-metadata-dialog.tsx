@@ -250,69 +250,71 @@ function DialogContentInner({
   });
 
   // Update entry mutation
-  const updateEntryMutation = useMutation({
-    mutationKey: [...metadataMutationKey, "update"],
-    scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
-    mutationFn: async (entry: {
-      oldNamespace: string;
-      oldKey: string;
-      namespace: string;
-      key: string;
-      value: JsonValue;
-    }) => {
-      if (transport === null) return;
-      const instanceService = createRpcClient(InstanceService, transport);
+  const { mutate: mutateUpdateEntry, isPending: isUpdateEntryPending } =
+    useMutation({
+      mutationKey: [...metadataMutationKey, "update"],
+      scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
+      mutationFn: async (entry: {
+        oldNamespace: string;
+        oldKey: string;
+        namespace: string;
+        key: string;
+        value: JsonValue;
+      }) => {
+        if (transport === null) return;
+        const instanceService = createRpcClient(InstanceService, transport);
 
-      await updateMetadataEntry(entry, {
-        setEntry: (replacement) =>
-          Effect.runPromise(
-            instanceService.setAccountMetadataEntry({
-              instanceId,
-              accountId: account.profileId,
-              ...replacement,
-              value: jsonToValue(replacement.value),
-            }),
-          ),
-        deleteEntry: (original) =>
-          Effect.runPromise(
-            instanceService.deleteAccountMetadataEntry({
-              instanceId,
-              accountId: account.profileId,
-              ...original,
-            }),
-          ),
-      });
-    },
-    onError: (e) => {
-      console.error(e);
-      toast.error(t("account.metadata.updateError"));
-    },
-  });
+        await updateMetadataEntry(entry, {
+          setEntry: (replacement) =>
+            Effect.runPromise(
+              instanceService.setAccountMetadataEntry({
+                instanceId,
+                accountId: account.profileId,
+                ...replacement,
+                value: jsonToValue(replacement.value),
+              }),
+            ),
+          deleteEntry: (original) =>
+            Effect.runPromise(
+              instanceService.deleteAccountMetadataEntry({
+                instanceId,
+                accountId: account.profileId,
+                ...original,
+              }),
+            ),
+        });
+      },
+      onError: (e) => {
+        console.error(e);
+        toast.error(t("account.metadata.updateError"));
+      },
+    });
 
   // Delete entry mutation
-  const deleteEntryMutation = useMutation({
-    mutationKey: [...metadataMutationKey, "delete"],
-    scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
-    mutationFn: async (entry: { namespace: string; key: string }) => {
-      if (transport === null) return;
-      const instanceService = createRpcClient(InstanceService, transport);
-      await Effect.runPromise(
-        instanceService.deleteAccountMetadataEntry({
-          instanceId,
-          accountId: account.profileId,
-          namespace: entry.namespace,
-          key: entry.key,
-        }),
-      );
-    },
-    onSuccess: () => {
-      toast.success(t("account.metadata.deleteSuccess"));
-    },
-    onError: (e) => {
-      console.error(e);
-      toast.error(t("account.metadata.deleteError"));
-    },
-  });
+  const { mutate: mutateDeleteEntry, isPending: isDeleteEntryPending } =
+    useMutation({
+      mutationKey: [...metadataMutationKey, "delete"],
+      scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
+      mutationFn: async (entry: { namespace: string; key: string }) => {
+        if (transport === null) return;
+        const instanceService = createRpcClient(InstanceService, transport);
+        await Effect.runPromise(
+          instanceService.deleteAccountMetadataEntry({
+            instanceId,
+            accountId: account.profileId,
+            namespace: entry.namespace,
+            key: entry.key,
+          }),
+        );
+      },
+      onSuccess: () => {
+        toast.success(t("account.metadata.deleteSuccess"));
+      },
+      onError: (e) => {
+        console.error(e);
+        toast.error(t("account.metadata.deleteError"));
+      },
+    });
 
   const addEntrySchema = useMemo(
     () =>
@@ -436,7 +438,7 @@ function DialogContentInner({
       );
 
       // Send to server
-      updateEntryMutation.mutate({
+      mutateUpdateEntry({
         oldNamespace,
         oldKey,
         namespace: updatedEntry.namespace,
@@ -445,7 +447,7 @@ function DialogContentInner({
       });
       return true;
     },
-    [entries, isMetadataReady, isDuplicate, t, updateEntryMutation],
+    [entries, isMetadataReady, isDuplicate, t, mutateUpdateEntry],
   );
 
   const handleDeleteEntry = useCallback(
@@ -455,9 +457,9 @@ function DialogContentInner({
       setEntries((prev) => prev?.filter((e) => e.id !== id) ?? []);
 
       // Send to server
-      deleteEntryMutation.mutate({ namespace, key });
+      mutateDeleteEntry({ namespace, key });
     },
-    [isMetadataReady, deleteEntryMutation],
+    [isMetadataReady, mutateDeleteEntry],
   );
 
   return (
@@ -652,10 +654,10 @@ function DialogContentInner({
               onDelete={() => {
                 handleDeleteEntry(entry.id, entry.namespace, entry.key);
               }}
-              isDeleting={deleteEntryMutation.isPending}
+              isDeleting={isDeleteEntryPending}
               isUpdating={
                 !isMetadataReady ||
-                updateEntryMutation.isPending ||
+                isUpdateEntryPending ||
                 addEntryMutation.isPending
               }
             />

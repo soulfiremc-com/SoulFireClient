@@ -42,9 +42,11 @@ function fixture() {
       },
     });
   });
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- Each fixture owns a separate cache and keeps its mock transport for that cache's lifetime.
   const options = queryOptions({
     queryKey,
-    queryFn: ({ signal }) => fetchInstanceInfo(transport, id, client, signal),
+    queryFn: ({ client: queryClient, signal }) =>
+      fetchInstanceInfo(transport, id, queryClient, signal),
   });
   return { client, options, conditionalRequests };
 }

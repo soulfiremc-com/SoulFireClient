@@ -468,7 +468,7 @@ function Example({
     activeQueryClient = queryClient;
     let attempts = 0;
     const instanceListQueryOptions = queryOptions({
-      queryKey: ["instance-list"],
+      queryKey: ["instance-list", queryFailure, manyProjects],
       queryFn: async () => {
         loadProjects();
         if (queryFailure && attempts++ === 0)
@@ -490,7 +490,7 @@ function Example({
       },
     });
     const clientDataQueryOptions = queryOptions({
-      queryKey: ["client-data"],
+      queryKey: ["client-data", serverAccess],
       queryFn: async () =>
         create(ClientDataResponseSchema, {
           id: "palette-story",

@@ -24,6 +24,7 @@ import { requireField } from "@/lib/require-field";
  * READ_SERVER_CONFIG permission, so check it before enabling this query.
  */
 export function serverInfoQueryOptions(transport: Transport | null) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
     queryKey: ["server-info"],
     queryFn: async ({ signal }): Promise<ServerInfoQueryData> => {

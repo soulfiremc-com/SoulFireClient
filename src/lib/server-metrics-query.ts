@@ -2,7 +2,7 @@ import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
 import type { Transport } from "@connectrpc/connect";
-import { type QueryClient, queryOptions } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import {
   type GetServerMetricsResponse,
   GetServerMetricsResponseSchema,
@@ -10,15 +10,15 @@ import {
 } from "@/generated/soulfire/metrics_pb";
 import { mergeSnapshots } from "@/lib/metrics-utils";
 
-export function serverMetricsQueryOptions(
-  transport: Transport | null,
-  queryClient: QueryClient,
-) {
-  const queryKey = ["server-metrics"] as const;
-
+export function serverMetricsQueryOptions(transport: Transport | null) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
-    queryKey,
-    queryFn: async ({ signal }): Promise<GetServerMetricsResponse> => {
+    queryKey: ["server-metrics"] as const,
+    queryFn: async ({
+      client: queryClient,
+      queryKey,
+      signal,
+    }): Promise<GetServerMetricsResponse> => {
       if (!transport) {
         return create(GetServerMetricsResponseSchema, {
           snapshots: [],

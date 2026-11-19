@@ -35,6 +35,7 @@ export function botStatusRpcQueryOptions(
   transport: Transport | null,
   instanceId: string,
 ) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The session owns the transport and clears the cache on authentication changes. Both bot readers share this key.
   return queryOptions({
     queryKey: ["bot-status", instanceId],
     structuralSharing: shareBotListData,

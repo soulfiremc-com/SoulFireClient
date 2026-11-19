@@ -1464,7 +1464,7 @@ function BotInventoryPanel({
   // Query for inventory state with layout
   const { data: inventoryState, refetch } = useSuspenseQuery(
     queryOptions({
-      queryKey: ["inventory-state", instanceId, botId],
+      queryKey: ["inventory-state", instanceId, botId, isOnline],
       queryFn: async (): Promise<BotInventoryStateResponse | null> => {
         if (!isOnline) return null;
         const transport = createTransport();
@@ -1506,7 +1506,7 @@ function BotInventoryPanel({
   }, []);
 
   // Mutation for clicking inventory slots
-  const clickMutation = useMutation({
+  const { mutate: mutateClick } = useMutation({
     ...containerMutationOptions(
       instanceId,
       botId,
@@ -1556,7 +1556,7 @@ function BotInventoryPanel({
   });
 
   // Mutation for clicking container buttons (stonecutter recipes, etc.)
-  const buttonClickMutation = useMutation({
+  const { mutate: mutateButtonClick } = useMutation({
     ...containerMutationOptions(
       instanceId,
       botId,
@@ -1580,7 +1580,7 @@ function BotInventoryPanel({
   });
 
   // Mutation for setting container text (anvil rename, etc.)
-  const setTextMutation = useMutation({
+  const { mutate: mutateSetText } = useMutation({
     ...containerMutationOptions(
       instanceId,
       botId,
@@ -1604,7 +1604,7 @@ function BotInventoryPanel({
   });
 
   // Hotbar selection is bot-wide, so it keeps its own queue across menu changes.
-  const setHotbarSlotMutation = useMutation({
+  const { mutate: mutateSetHotbarSlot } = useMutation({
     mutationKey: ["bot", "hotbar", "slot", instanceId, botId],
     scope: { id: `bot-container-${instanceId}-${botId}` },
     mutationFn: async (slot: number) => {
@@ -1627,7 +1627,7 @@ function BotInventoryPanel({
 
   const handleSetText = useCallback(
     (fieldId: string, text: string) => {
-      setTextMutation.mutate(
+      mutateSetText(
         create(BotSetContainerTextRequestSchema, {
           instanceId,
           botId,
@@ -1637,12 +1637,12 @@ function BotInventoryPanel({
         }),
       );
     },
-    [setTextMutation, instanceId, botId, inventoryState?.menuId],
+    [mutateSetText, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleButtonClick = useCallback(
     (buttonId: number) => {
-      buttonClickMutation.mutate(
+      mutateButtonClick(
         create(BotContainerButtonClickRequestSchema, {
           instanceId,
           botId,
@@ -1651,12 +1651,12 @@ function BotInventoryPanel({
         }),
       );
     },
-    [buttonClickMutation, instanceId, botId, inventoryState?.menuId],
+    [mutateButtonClick, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleSlotClick = useCallback(
     (slotIndex: number, clickType: ClickType) => {
-      clickMutation.mutate(
+      mutateClick(
         create(BotInventoryClickRequestSchema, {
           instanceId,
           botId,
@@ -1667,12 +1667,12 @@ function BotInventoryPanel({
         }),
       );
     },
-    [clickMutation, instanceId, botId, inventoryState?.menuId],
+    [mutateClick, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleDropOutside = useCallback(
     (dropAll: boolean) => {
-      clickMutation.mutate(
+      mutateClick(
         create(BotInventoryClickRequestSchema, {
           instanceId,
           botId,
@@ -1683,14 +1683,14 @@ function BotInventoryPanel({
         }),
       );
     },
-    [clickMutation, instanceId, botId, inventoryState?.menuId],
+    [mutateClick, instanceId, botId, inventoryState?.menuId],
   );
 
   const handleHotbarSlotSelect = useCallback(
     (slot: number) => {
-      setHotbarSlotMutation.mutate(slot);
+      mutateSetHotbarSlot(slot);
     },
-    [setHotbarSlotMutation],
+    [mutateSetHotbarSlot],
   );
 
   const layout = inventoryState?.layout;
@@ -2248,7 +2248,7 @@ function BotActionsPanel({
       (mutation.state.variables as BotMouseClickRequest | undefined)?.button,
   });
 
-  const clickMutation = useMutation({
+  const { mutate: mutateClick } = useMutation({
     mutationKey,
     scope: { id: `bot-mouse-${instanceId}-${botId}` },
     mutationFn: async (request: BotMouseClickRequest) => {
@@ -2272,24 +2272,24 @@ function BotActionsPanel({
   const rightPending = pendingButtons.includes(MouseButton.RIGHT_BUTTON);
 
   const handleLeftClick = useCallback(() => {
-    clickMutation.mutate(
+    mutateClick(
       create(BotMouseClickRequestSchema, {
         instanceId,
         botId,
         button: MouseButton.LEFT_BUTTON,
       }),
     );
-  }, [clickMutation, instanceId, botId]);
+  }, [mutateClick, instanceId, botId]);
 
   const handleRightClick = useCallback(() => {
-    clickMutation.mutate(
+    mutateClick(
       create(BotMouseClickRequestSchema, {
         instanceId,
         botId,
         button: MouseButton.RIGHT_BUTTON,
       }),
     );
-  }, [clickMutation, instanceId, botId]);
+  }, [mutateClick, instanceId, botId]);
 
   return (
     <div>
@@ -2371,7 +2371,7 @@ function BotMovementPanel({
   const isPending = useMutationScopePending(mutationScopeId);
 
   // Mutation for setting movement state
-  const movementMutation = useMutation({
+  const { mutate: mutateMovement } = useMutation({
     mutationKey: ["bot", "movement", "state", instanceId, botId],
     scope: { id: mutationScopeId },
     mutationFn: async (state: Partial<typeof movementState>) => {
@@ -2415,7 +2415,7 @@ function BotMovementPanel({
   });
 
   // Mutation for setting rotation
-  const rotationMutation = useMutation({
+  const { mutate: mutateRotation } = useMutation({
     mutationKey: ["bot", "rotation", instanceId, botId],
     scope: { id: mutationScopeId },
     mutationFn: async (rotation: { yaw: number; pitch: number }) => {
@@ -2442,21 +2442,21 @@ function BotMovementPanel({
   const toggleMovement = useCallback(
     (key: keyof typeof movementState) => {
       const newValue = !movementState[key];
-      movementMutation.mutate({ [key]: newValue });
+      mutateMovement({ [key]: newValue });
     },
-    [movementState, movementMutation],
+    [movementState, mutateMovement],
   );
 
   const handleRotationChange = useCallback(
     (deltaYaw: number, deltaPitch: number) => {
       const currentYaw = liveState?.yRot ?? 0;
       const currentPitch = liveState?.xRot ?? 0;
-      rotationMutation.mutate({
+      mutateRotation({
         yaw: currentYaw + deltaYaw,
         pitch: Math.max(-90, Math.min(90, currentPitch + deltaPitch)),
       });
     },
-    [liveState, rotationMutation],
+    [liveState, mutateRotation],
   );
 
   return (
@@ -2666,7 +2666,7 @@ function botDialogQueryOptions(
   isOnline: boolean,
 ) {
   return queryOptions({
-    queryKey: ["bot-dialog", instanceId, botId],
+    queryKey: ["bot-dialog", instanceId, botId, isOnline],
     queryFn: async (queryProps) => {
       // useSuspenseQuery ignores `enabled`, so offline bots must not reach the RPC.
       if (!isOnline) return { dialog: undefined };

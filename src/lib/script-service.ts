@@ -46,6 +46,7 @@ export function scriptListQueryOptions(
   transport: Transport | null,
   instanceId: string,
 ) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
     queryKey: ["scripts", instanceId],
     queryFn: async ({ signal }) => {
@@ -70,6 +71,7 @@ export function scriptQueryOptions(
   instanceId: string,
   scriptId: string,
 ) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
     queryKey: ["script", instanceId, scriptId],
     queryFn: async ({ signal }) => {
@@ -94,6 +96,7 @@ export function scriptStatusQueryOptions(
   instanceId: string,
   scriptId: string,
 ) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
     queryKey: ["script-status", instanceId, scriptId],
     queryFn: async ({ signal }) => {
@@ -122,6 +125,7 @@ export function nodeTypesQueryOptions(
     includeDeprecated?: boolean;
   },
 ) {
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
     queryKey: [
       "node-types",

@@ -368,7 +368,7 @@ function ScriptEditorContent() {
     editor,
   ]);
 
-  const saveMutation = useMutation({
+  const { mutate: mutateSave, isPending: isSavePending } = useMutation({
     mutationKey: ["script", "save", instanceId],
     onMutate: () => getQuerySessionId(),
     mutationFn: async () => {
@@ -433,8 +433,8 @@ function ScriptEditorContent() {
       toast.info(i18n.t("common:commandPalette.feedback.demo"));
       return;
     }
-    saveMutation.mutate();
-  }, [saveMutation, transport]);
+    mutateSave();
+  }, [mutateSave, transport]);
 
   // Handle script activation
   const handleStart = useCallback(async () => {
@@ -865,7 +865,7 @@ function ScriptEditorContent() {
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onFitView={handleFitView}
-          isSaving={saveMutation.isPending}
+          isSaving={isSavePending}
         />
 
         {/* Full-screen canvas */}
@@ -950,7 +950,7 @@ function ScriptEditorContent() {
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onFitView={handleFitView}
-        isSaving={saveMutation.isPending}
+        isSaving={isSavePending}
       />
 
       {/* Main content area */}

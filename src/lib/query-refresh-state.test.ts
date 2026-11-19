@@ -6,6 +6,7 @@ import { hasFailedRefresh } from "./query-refresh-state.ts";
 test("cached refresh failures remain visible until successful recovery", async () => {
   const client = new QueryClient();
   let failing = true;
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The test changes the response for the same cache entry to exercise refresh state.
   const options = {
     queryKey: ["fleet"],
     queryFn: async () => {
@@ -45,6 +46,7 @@ test("an in-progress automatic retry still marks cached data as outdated", async
     recover = resolve;
   });
   let attempts = 0;
+  // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The test changes the response for the same cache entry to exercise refresh state.
   const options = {
     queryKey: ["fleet"],
     queryFn: async () => {
