@@ -160,7 +160,7 @@ jobs:
 
       - name: Refresh signed Windows updater metadata
         if: matrix.platform == 'windows'
-        run: node scripts/refresh-electron-updater-metadata.mjs release-artifacts
+        run: node scripts/refresh-electron-updater-metadata.ts release-artifacts
 
       - name: Upload release artifacts
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -252,7 +252,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY || secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD || secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
           APP_VERSION: ${{ inputs.app-version }}
-        run: node scripts/generate-legacy-updater-assets.mjs release-artifacts "$APP_VERSION"
+        run: node scripts/generate-legacy-updater-assets.ts release-artifacts "$APP_VERSION"
 
       - name: Collect release file names
         id: release-files
@@ -277,7 +277,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Prepare GitHub release assets
-        run: node scripts/prepare-electron-release-assets.mjs release-artifacts release-upload
+        run: node scripts/prepare-electron-release-assets.ts release-artifacts release-upload
 
       - name: Build changelog
         id: github_release

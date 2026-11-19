@@ -19,8 +19,8 @@ if (!releaseVersion) {
   throw new Error("Release version argument is required");
 }
 
-function listFilesRecursive(directory) {
-  const entries = [];
+function listFilesRecursive(directory: string): string[] {
+  const entries: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const entryPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
@@ -32,8 +32,8 @@ function listFilesRecursive(directory) {
   return entries;
 }
 
-function listDirectoriesRecursive(directory) {
-  const entries = [];
+function listDirectoriesRecursive(directory: string): string[] {
+  const entries: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const entryPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
@@ -43,21 +43,28 @@ function listDirectoriesRecursive(directory) {
   return entries;
 }
 
-function findSingleFile(directory, matcher) {
+function findSingleFile(
+  directory: string,
+  matcher: (name: string) => boolean,
+): string {
   const matches = listFilesRecursive(directory).filter((filePath) =>
     matcher(path.basename(filePath)),
   );
 
-  if (matches.length !== 1) {
+  const [match] = matches;
+  if (matches.length !== 1 || match === undefined) {
     throw new Error(
       `Expected exactly one matching file in ${directory}, found ${matches.length}`,
     );
   }
 
-  return matches[0];
+  return match;
 }
 
-function isNestedInAppBundle(directory, appBundlePath) {
+function isNestedInAppBundle(
+  directory: string,
+  appBundlePath: string,
+): boolean {
   const relativeParentPath = path.relative(
     directory,
     path.dirname(appBundlePath),
@@ -71,7 +78,7 @@ function isNestedInAppBundle(directory, appBundlePath) {
     .some((segment) => segment.endsWith(".app"));
 }
 
-function createMacUpdaterArchive(zipPath, outputName) {
+function createMacUpdaterArchive(zipPath: string, outputName: string): string {
   const extractionDir = mkdtempSync(path.join(os.tmpdir(), "sf-updater-mac-"));
 
   try {
@@ -85,13 +92,13 @@ function createMacUpdaterArchive(zipPath, outputName) {
     const topLevelAppBundles = appBundles.filter(
       (candidate) => !isNestedInAppBundle(extractionDir, candidate),
     );
-    if (topLevelAppBundles.length !== 1) {
+    const [appBundle] = topLevelAppBundles;
+    if (topLevelAppBundles.length !== 1 || appBundle === undefined) {
       throw new Error(
         `Expected exactly one top-level .app bundle in ${zipPath}, found ${topLevelAppBundles.length}`,
       );
     }
 
-    const [appBundle] = topLevelAppBundles;
     const outputPath = path.join(releaseArtifactsDir, outputName);
 
     execFileSync(
@@ -114,7 +121,10 @@ function createMacUpdaterArchive(zipPath, outputName) {
   }
 }
 
-function signArtifact(filePath) {
+function signArtifact(filePath: string): {
+  signature: string;
+  signaturePath: string;
+} {
   execFileSync("bunx", ["@tauri-apps/cli@2.10.0", "signer", "sign", filePath], {
     env: process.env,
     stdio: "inherit",

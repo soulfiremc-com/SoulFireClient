@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Node runs these files with type stripping, which needs erasable syntax.
+    "erasableSyntaxOnly": true,
+    "types": ["node"]
+  },
+  "include": ["scripts", "electron/*.test.ts"],
+  "exclude": []
+}

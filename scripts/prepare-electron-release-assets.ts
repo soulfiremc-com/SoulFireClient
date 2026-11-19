@@ -7,6 +7,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
+import { Schema } from "effect";
 import { parse, stringify } from "yaml";
 
 const releaseArtifactsDir = path.resolve(
@@ -23,10 +24,24 @@ const electronUpdaterMetadataNames = new Set([
   "latest-linux.yml",
   "latest-linux-arm64.yml",
 ]);
-const assetNames = new Set();
+const assetNames = new Set<string>();
 
-function listFilesRecursive(directory) {
-  const entries = [];
+// Keep every other field so the rewritten metadata matches electron-builder's.
+const UnknownFields = Schema.Record(Schema.String, Schema.Unknown);
+const UpdateInfoSchema = Schema.StructWithRest(
+  Schema.Struct({ files: Schema.Array(Schema.Unknown) }),
+  [UnknownFields],
+);
+type UpdateInfo = typeof UpdateInfoSchema.Type;
+const isUpdateInfo = Schema.is(UpdateInfoSchema);
+const UpdateFileInfo = Schema.StructWithRest(
+  Schema.Struct({ url: Schema.NonEmptyString }),
+  [UnknownFields],
+);
+const isUpdateFileInfo = Schema.is(UpdateFileInfo);
+
+function listFilesRecursive(directory: string): string[] {
+  const entries: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const entryPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
@@ -38,7 +53,10 @@ function listFilesRecursive(directory) {
   return entries;
 }
 
-function findMetadataFiles(metadataName, platformDirectoryPrefix) {
+function findMetadataFiles(
+  metadataName: string,
+  platformDirectoryPrefix: string,
+): string[] {
   const files = listFilesRecursive(releaseArtifactsDir)
     .filter((filePath) => path.basename(filePath) === metadataName)
     .filter((filePath) =>
@@ -55,7 +73,7 @@ function findMetadataFiles(metadataName, platformDirectoryPrefix) {
   return files;
 }
 
-function findLinuxMetadataFiles() {
+function findLinuxMetadataFiles(): string[] {
   const files = listFilesRecursive(releaseArtifactsDir)
     .filter((filePath) =>
       /^latest-linux(?:-.+)?\.yml$/u.test(path.basename(filePath)),
@@ -72,7 +90,10 @@ function findLinuxMetadataFiles() {
   return files;
 }
 
-function copyAsset(sourceFile, assetName = path.basename(sourceFile)) {
+function copyAsset(
+  sourceFile: string,
+  assetName = path.basename(sourceFile),
+): void {
   const targetFile = path.join(releaseUploadDir, assetName);
   if (assetNames.has(assetName)) {
     throw new Error(`Duplicate release asset name: ${assetName}`);
@@ -82,11 +103,14 @@ function copyAsset(sourceFile, assetName = path.basename(sourceFile)) {
   assetNames.add(assetName);
 }
 
-function isAbsoluteUrl(value) {
+function isAbsoluteUrl(value: string): boolean {
   return URL.canParse(value);
 }
 
-function toGitHubReleaseAssetUrl(releaseVersion, assetPath) {
+function toGitHubReleaseAssetUrl(
+  releaseVersion: string,
+  assetPath: string,
+): string {
   if (isAbsoluteUrl(assetPath)) {
     return assetPath;
   }
@@ -95,55 +119,51 @@ function toGitHubReleaseAssetUrl(releaseVersion, assetPath) {
   return `${githubReleaseDownloadBaseUrl}/${encodeURIComponent(releaseVersion)}/${encodeURIComponent(assetName)}`;
 }
 
-function readUpdateInfo(sourceFile) {
-  const updateInfo = parse(readFileSync(sourceFile, "utf8"));
-  if (
-    updateInfo === null ||
-    typeof updateInfo !== "object" ||
-    !Array.isArray(updateInfo.files)
-  ) {
+function readUpdateInfo(sourceFile: string): UpdateInfo {
+  const updateInfo: unknown = parse(readFileSync(sourceFile, "utf8"));
+  if (!isUpdateInfo(updateInfo)) {
     throw new Error(`Invalid electron-updater metadata in ${sourceFile}`);
   }
 
   return updateInfo;
 }
 
-function normalizeUpdateInfoUrls(updateInfo, sourceFile) {
-  if (
-    typeof updateInfo.version !== "string" ||
-    updateInfo.version.length === 0
-  ) {
+function normalizeUpdateInfoUrls(
+  updateInfo: UpdateInfo,
+  sourceFile: string,
+): UpdateInfo {
+  const { version } = updateInfo;
+  if (typeof version !== "string" || version.length === 0) {
     throw new Error(`Invalid release version in ${sourceFile}`);
   }
 
   const files = updateInfo.files.map((fileInfo) => {
-    if (
-      fileInfo === null ||
-      typeof fileInfo !== "object" ||
-      typeof fileInfo.url !== "string" ||
-      fileInfo.url.length === 0
-    ) {
+    if (!isUpdateFileInfo(fileInfo)) {
       throw new Error(`Invalid updater file entry in ${sourceFile}`);
     }
 
     return {
       ...fileInfo,
-      url: toGitHubReleaseAssetUrl(updateInfo.version, fileInfo.url),
+      url: toGitHubReleaseAssetUrl(version, fileInfo.url),
     };
   });
 
   return {
     ...updateInfo,
     files,
-    ...(typeof updateInfo.path === "string"
+    ...(typeof updateInfo["path"] === "string"
       ? {
-          path: toGitHubReleaseAssetUrl(updateInfo.version, updateInfo.path),
+          path: toGitHubReleaseAssetUrl(version, updateInfo["path"]),
         }
       : {}),
   };
 }
 
-function writeUpdateInfoAsset(outputName, updateInfo, sourceFile) {
+function writeUpdateInfoAsset(
+  outputName: string,
+  updateInfo: UpdateInfo,
+  sourceFile: string,
+): void {
   if (assetNames.has(outputName)) {
     throw new Error(`Duplicate release asset name: ${outputName}`);
   }
@@ -158,21 +178,24 @@ function writeUpdateInfoAsset(outputName, updateInfo, sourceFile) {
 }
 
 function copyUpdateInfoAsset(
-  sourceFile,
+  sourceFile: string,
   assetName = path.basename(sourceFile),
-) {
+): void {
   writeUpdateInfoAsset(assetName, readUpdateInfo(sourceFile), sourceFile);
 }
 
-function mergeUpdateInfo(outputName, sourceFiles) {
+function mergeUpdateInfo(outputName: string, sourceFiles: string[]): void {
   const updateInfos = sourceFiles.map((sourceFile) =>
     readUpdateInfo(sourceFile),
   );
   const [baseUpdateInfo] = updateInfos;
-  const version = baseUpdateInfo.version;
+  if (baseUpdateInfo === undefined) {
+    throw new Error(`No ${outputName} metadata to merge`);
+  }
+  const version = baseUpdateInfo["version"];
 
   for (const updateInfo of updateInfos) {
-    if (updateInfo.version !== version) {
+    if (updateInfo["version"] !== version) {
       throw new Error(
         `Cannot merge ${outputName} metadata with mismatched versions`,
       );
@@ -214,6 +237,6 @@ for (const assetName of [...assetNames].toSorted(compareStrings)) {
 }
 
 // Matches the default sort order, which compares UTF-16 code units.
-function compareStrings(a, b) {
+function compareStrings(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }

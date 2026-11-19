@@ -37,7 +37,6 @@
     "dist-electron/**",
     "locales/**",
     "out/**",
-    "postcss.config.mjs",
     "release-artifacts/**",
     "shared-modules/**",
     "storybook-static/**",
@@ -1126,11 +1125,7 @@
       }
     },
     {
-      "files": [
-        "electron/**/*.mjs",
-        "electron/cast/**/*.test.ts",
-        "scripts/**"
-      ],
+      "files": ["electron/cast/**/*.test.ts"],
       "rules": {
         "typescript/no-unnecessary-condition": "off"
       }
@@ -1248,16 +1243,6 @@
       "files": ["electron/**"],
       "rules": {
         "unicorn/prefer-event-target": "off"
-      }
-    },
-    {
-      "files": ["**/*.mjs"],
-      "rules": {
-        "typescript/no-unsafe-argument": "off",
-        "typescript/no-unsafe-assignment": "off",
-        "typescript/no-unsafe-call": "off",
-        "typescript/no-unsafe-member-access": "off",
-        "typescript/no-unsafe-return": "off"
       }
     }
   ],

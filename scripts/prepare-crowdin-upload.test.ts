@@ -10,20 +10,28 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { test } from "node:test";
+import { test, type TestContext } from "node:test";
 import { fileURLToPath } from "node:url";
 
 const script = fileURLToPath(
-  new URL("./prepare-crowdin-upload.mjs", import.meta.url),
+  new URL("./prepare-crowdin-upload.ts", import.meta.url),
 );
 
 // readdirSync returns entries in filesystem order, which differs between
 // filesystems. Crowdin matches files by glob, so only the set of files matters.
-function listDirectory(path) {
+function listDirectory(path: string): string[] {
   return readdirSync(path).toSorted();
 }
 
-function prepare(t, files) {
+interface PullRequestFile {
+  filename: string;
+  status: string;
+}
+
+function prepare(
+  t: TestContext,
+  files: PullRequestFile[][],
+): { destination: string; output: string } {
   const root = mkdtempSync(join(tmpdir(), "crowdin-upload-"));
   t.after(() => {
     rmSync(root, { recursive: true, force: true });

@@ -32,7 +32,9 @@
     ".storybook/*.tsx",
     "vite.config.ts",
     "vitest.config.ts",
-    "cloudflare.config.ts"
+    "cloudflare.config.ts",
+    "postcss.config.ts",
+    "scripts"
   ],
   "exclude": ["electron/cast/**/*.test.ts"]
 }

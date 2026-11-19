@@ -124,10 +124,10 @@ bun test
 bun run build:web
 ```
 
-For Electron JavaScript tests, also run:
+For Electron Node tests, also run:
 
 ```bash
-node --test electron/*.test.mjs
+node --test electron/*.test.ts
 ```
 
 For desktop integration changes, build an unpacked app with `bun run build:electron:dir` and exercise the affected native workflow.

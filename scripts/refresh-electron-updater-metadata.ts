@@ -1,16 +1,22 @@
 import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import path from "node:path";
+import { appBuilderPath } from "app-builder-bin";
+import { Option, Schema } from "effect";
 
-const require = createRequire(import.meta.url);
-const { appBuilderPath } = require("app-builder-bin");
+const BlockMapInfo = Schema.fromJsonString(
+  Schema.Struct({
+    size: Schema.Finite,
+    sha512: Schema.String,
+  }),
+);
+
 const releaseArtifactsDir = path.resolve(
   process.argv[2] ?? "release-artifacts",
 );
 
-function listFilesRecursive(directory) {
-  const entries = [];
+function listFilesRecursive(directory: string): string[] {
+  const entries: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     const entryPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
@@ -22,18 +28,22 @@ function listFilesRecursive(directory) {
   return entries;
 }
 
-function findSingleTopLevelFile(directory, matcher) {
+function findSingleTopLevelFile(
+  directory: string,
+  matcher: (name: string) => boolean,
+): string {
   const matches = readdirSync(directory, { withFileTypes: true })
     .filter((entry) => entry.isFile() && matcher(entry.name))
     .map((entry) => path.join(directory, entry.name));
 
-  if (matches.length !== 1) {
+  const [match] = matches;
+  if (matches.length !== 1 || match === undefined) {
     throw new Error(
       `Expected exactly one matching file in ${directory}, found ${matches.length}`,
     );
   }
 
-  return matches[0];
+  return match;
 }
 
 const signedInstallerPath = findSingleTopLevelFile(
@@ -42,7 +52,7 @@ const signedInstallerPath = findSingleTopLevelFile(
 );
 const signedInstallerName = path.basename(signedInstallerPath);
 const blockMapPath = `${signedInstallerPath}.blockmap`;
-const signedInstallerInfo = JSON.parse(
+const signedInstallerInfo = Schema.decodeOption(BlockMapInfo)(
   execFileSync(
     appBuilderPath,
     ["blockmap", "--input", signedInstallerPath, "--output", blockMapPath],
@@ -51,19 +61,18 @@ const signedInstallerInfo = JSON.parse(
       stdio: ["ignore", "pipe", "inherit"],
     },
   ),
+).pipe(
+  Option.filter((info) => Number.isSafeInteger(info.size)),
+  Option.getOrThrowWith(
+    () => new TypeError("app-builder returned invalid blockmap metadata"),
+  ),
 );
-if (
-  !Number.isSafeInteger(signedInstallerInfo.size) ||
-  typeof signedInstallerInfo.sha512 !== "string"
-) {
-  throw new TypeError("app-builder returned invalid blockmap metadata");
-}
 const blockMapSize = statSync(blockMapPath).size;
 const metadataFiles = listFilesRecursive(releaseArtifactsDir).filter(
   (filePath) => /\.(ya?ml)$/iu.test(filePath),
 );
 
-function updateBlockMapSize(metadata) {
+function updateBlockMapSize(metadata: string): string {
   if (/^\s+blockMapSize:\s*\d+$/mu.test(metadata)) {
     return metadata.replace(
       /^(\s+blockMapSize:\s*)\d+$/mu,

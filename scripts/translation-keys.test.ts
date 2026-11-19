@@ -2,9 +2,13 @@ import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { test } from "node:test";
+import { test, type TestContext } from "node:test";
 import { fileURLToPath } from "node:url";
-import { checkTranslationKeys } from "./translation-keys.mjs";
+import {
+  checkTranslationKeys,
+  type Finding,
+  type TranslationKeyReport,
+} from "./translation-keys.ts";
 
 const rootDirectory = fileURLToPath(new URL("..", import.meta.url));
 
@@ -32,7 +36,7 @@ const dynamicAllowlist = [
   "src/routes/_dashboard/instance/$instance/accounts.tsx credentialFormatKey(accountTypeCredentialsSelected)",
 ];
 
-function format(items) {
+function format(items: readonly Finding[]): string {
   return items
     .map(
       (item) =>
@@ -71,7 +75,10 @@ test("source translation keys exist in en-US", () => {
   );
 });
 
-function fixture(t, files) {
+function fixture(
+  t: TestContext,
+  files: Record<string, string>,
+): TranslationKeyReport {
   const root = mkdtempSync(join(tmpdir(), "translation-keys-"));
   t.after(() => {
     rmSync(root, { recursive: true, force: true });

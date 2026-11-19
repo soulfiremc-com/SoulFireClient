@@ -48,7 +48,7 @@ jobs:
         run: bun run test
 
       - name: Test Crowdin upload preparation
-        run: node --test scripts/prepare-crowdin-upload.test.mjs
+        run: node --test scripts/prepare-crowdin-upload.test.ts
 
       - name: Run web build
         env:

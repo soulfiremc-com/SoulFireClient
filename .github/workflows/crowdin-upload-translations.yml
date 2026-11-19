@@ -29,6 +29,14 @@ jobs:
           # Use trusted main after merge, including for PRs from forks.
           ref: main
           persist-credentials: false
+      - name: Setup Node.js
+        if: github.event_name == 'pull_request_target'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          # The next step runs TypeScript with Node's type stripping.
+          node-version: lts/*
+          check-latest: true
+          package-manager-cache: false
       - name: Prepare changed translations
         if: github.event_name == 'pull_request_target'
         id: prepare
@@ -37,7 +45,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" > "$RUNNER_TEMP/crowdin-files.json"
-          node scripts/prepare-crowdin-upload.mjs . "$RUNNER_TEMP/crowdin-files.json" .crowdin-upload >> "$GITHUB_OUTPUT"
+          node scripts/prepare-crowdin-upload.ts . "$RUNNER_TEMP/crowdin-files.json" .crowdin-upload >> "$GITHUB_OUTPUT"
       - name: Upload sources and translations
         uses: crowdin/github-action@d651c77756acbe11a31d77a6fb79d8a239e1e05a # v3.6.0
         with:

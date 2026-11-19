@@ -52,7 +52,7 @@ bun run generate-routes    # Regenerate TanStack Router route tree
 - `src/lib/web-rpc.ts` - gRPC transport setup and auth token management
 - `src/lib/script-service.ts` - Query options and proto↔JS conversion utilities
 - `src/stores/` - TanStack Store sessions for the script editor, POV controls, and terminal logs
-- `scripts/generate-legacy-updater-assets.mjs` - Legacy updater bridge for already-installed Tauri clients
+- `scripts/generate-legacy-updater-assets.ts` - Legacy updater bridge for already-installed Tauri clients
 
 ### Import Alias
 

@@ -10,7 +10,7 @@ if (
     {
       encoding: "utf8",
     },
-  ).stdout?.trim();
+  ).stdout.trim();
 
   // Remove only Husky's known paths. Lefthook reports other custom paths itself.
   if (hooksPath === ".husky" || hooksPath === ".husky/_") {

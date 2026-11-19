@@ -7,7 +7,18 @@ import test from "node:test";
 const electronDir = import.meta.dirname;
 const repoRoot = path.dirname(electronDir);
 
-function runCommand(command, args, options = {}) {
+interface CommandResult {
+  code: number | null;
+  signal: NodeJS.Signals | null;
+  stderr: string;
+  stdout: string;
+}
+
+function runCommand(
+  command: string,
+  args: readonly string[],
+  options: { env?: NodeJS.ProcessEnv } = {},
+): Promise<CommandResult> {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd: repoRoot,
@@ -19,10 +30,10 @@ function runCommand(command, args, options = {}) {
     let stdout = "";
     let stderr = "";
 
-    child.stdout.on("data", (chunk) => {
+    child.stdout.on("data", (chunk: Buffer) => {
       stdout += chunk.toString();
     });
-    child.stderr.on("data", (chunk) => {
+    child.stderr.on("data", (chunk: Buffer) => {
       stderr += chunk.toString();
     });
     child.on("error", reject);

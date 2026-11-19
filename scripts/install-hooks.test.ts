@@ -12,23 +12,23 @@ import {
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import test from "node:test";
+import test, { type TestContext } from "node:test";
 
 const project = fileURLToPath(new URL("../", import.meta.url));
-const installer = join(project, "scripts/install-hooks.mjs");
+const installer = join(project, "scripts/install-hooks.ts");
 const env = {
   ...process.env,
-  PATH: `${join(project, "node_modules/.bin")}${delimiter}${process.env.PATH}`,
+  PATH: `${join(project, "node_modules/.bin")}${delimiter}${process.env["PATH"]}`,
 };
-function run(cwd, command, args) {
+function run(cwd: string, command: string, args: readonly string[]) {
   return spawnSync(command, args, { cwd, env, encoding: "utf8" });
 }
-function git(cwd, ...args) {
+function git(cwd: string, ...args: string[]): string {
   const result = run(cwd, "git", args);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   return result.stdout.trim();
 }
-function fixture(t) {
+function fixture(t: TestContext): string {
   const cwd = mkdtempSync(join(tmpdir(), "lefthook-migration-"));
   t.after(() => {
     rmSync(cwd, { recursive: true, force: true });
@@ -42,7 +42,11 @@ function fixture(t) {
     try {
       cpSync(join(project, config), join(cwd, config));
     } catch (error) {
-      if (error.code !== "ENOENT") throw error;
+      if (
+        !(error instanceof Error && "code" in error) ||
+        error.code !== "ENOENT"
+      )
+        throw error;
     }
   }
   symlinkSync(join(project, "node_modules"), join(cwd, "node_modules"), "dir");
