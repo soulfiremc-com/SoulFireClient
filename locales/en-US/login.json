@@ -7,6 +7,7 @@
     "unexpected": "Could not connect to the SoulFire server. Check the URL and token, and make sure the app and server versions are compatible."
   },
   "header": {
+    "backgroundPattern": "Decorative background pattern",
     "image": {
       "alt": "SoulFire logo"
     },

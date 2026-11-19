@@ -703,8 +703,12 @@ export const ShortcutsAndActions: Story = {
       within(dialog).getByRole("combobox"),
       "create project",
     );
+    await within(dialog).findByRole("option", {
+      name: "Create project",
+      selected: true,
+    });
     await userEvent.keyboard("{Enter}");
-    await expect(createProject).toHaveBeenCalledOnce();
+    await waitFor(() => expect(createProject).toHaveBeenCalledOnce());
     // Focus returns when the closing menu leaves, so wait before moving it.
     await waitFor(() =>
       expect(

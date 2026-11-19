@@ -16,7 +16,16 @@
     "vitest",
     "effecttsgo"
   ],
-  "jsPlugins": ["@shadcn/lint", "eslint-plugin-better-tailwindcss"],
+  "jsPlugins": [
+    "@shadcn/lint",
+    "eslint-plugin-better-tailwindcss",
+    {
+      "name": "react-hooks-js",
+      "specifier": "eslint-plugin-react-hooks"
+    },
+    "eslint-plugin-storybook",
+    "eslint-plugin-i18next"
+  ],
   "categories": {
     "correctness": "error",
     "suspicious": "error",
@@ -209,7 +218,12 @@
     "eslint/preserve-caught-error": "error",
     "eslint/require-await": "off",
     "import/max-dependencies": "off",
-    "import/no-cycle": ["error", { "ignoreTypes": true }],
+    "import/no-cycle": [
+      "error",
+      {
+        "ignoreTypes": true
+      }
+    ],
     "import/no-duplicates": "error",
     "import/no-named-as-default": "error",
     "import/no-named-as-default-member": "error",
@@ -902,7 +916,22 @@
     ],
     "shadcn/require-static-classes": "error",
     "unicorn/text-encoding-identifier-case": "error",
-    "unicorn/throw-new-error": "error"
+    "unicorn/throw-new-error": "error",
+    "react-hooks-js/static-components": "error",
+    "react-hooks-js/use-memo": "error",
+    "react-hooks-js/preserve-manual-memoization": "error",
+    "react-hooks-js/incompatible-library": "error",
+    "react-hooks-js/immutability": "error",
+    "react-hooks-js/globals": "error",
+    "react-hooks-js/refs": "error",
+    "react-hooks-js/set-state-in-effect": "error",
+    "react-hooks-js/error-boundaries": "error",
+    "react-hooks-js/purity": "error",
+    "react-hooks-js/set-state-in-render": "error",
+    "react-hooks-js/unsupported-syntax": "error",
+    "react-hooks-js/config": "error",
+    "react-hooks-js/gating": "error",
+    "react-hooks-js/component-hook-factories": "error"
   },
   "overrides": [
     {
@@ -972,7 +1001,9 @@
         "jsx-a11y/label-has-associated-control": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "eslint/no-underscore-dangle": "off",
-        "unicorn/explicit-length-check": "off"
+        "unicorn/explicit-length-check": "off",
+        "react-hooks-js/refs": "off",
+        "react-hooks-js/set-state-in-effect": "off"
       }
     },
     {
@@ -1331,7 +1362,8 @@
         "src/components/visually-hidden-input.tsx"
       ],
       "rules": {
-        "react/refs": "off"
+        "react/refs": "off",
+        "react-hooks-js/refs": "off"
       }
     },
     {
@@ -1351,7 +1383,8 @@
         "src/routes/_dashboard/instance/$instance/meta.tsx"
       ],
       "rules": {
-        "react/set-state-in-effect": "off"
+        "react/set-state-in-effect": "off",
+        "react-hooks-js/set-state-in-effect": "off"
       }
     },
     {
@@ -1390,7 +1423,8 @@
         "src/components/pov/bot-pov-player.tsx"
       ],
       "rules": {
-        "react/immutability": "off"
+        "react/immutability": "off",
+        "react-hooks-js/immutability": "off"
       }
     },
     {
@@ -1406,6 +1440,112 @@
       "files": ["electron/**"],
       "rules": {
         "unicorn/prefer-event-target": "off"
+      }
+    },
+    {
+      "files": ["**/*.stories.{ts,tsx,js,jsx}"],
+      "rules": {
+        "storybook/await-interactions": "error",
+        "storybook/context-in-play-function": "error",
+        "storybook/default-exports": "error",
+        "storybook/hierarchy-separator": "error",
+        "storybook/no-redundant-story-name": "error",
+        "storybook/no-renderer-packages": "error",
+        "storybook/prefer-pascal-case": "error",
+        "storybook/story-exports": "error",
+        "storybook/use-storybook-expect": "error",
+        "storybook/use-storybook-testing-library": "error"
+      }
+    },
+    {
+      "files": [
+        "src/routes/{__root,_dashboard,index}.tsx",
+        "src/components/nav/**/*.tsx"
+      ],
+      "rules": {
+        "i18next/no-literal-string": [
+          "error",
+          {
+            "mode": "jsx-only",
+            "jsx-attributes": {
+              "exclude": [
+                "className",
+                "styleName",
+                "style",
+                "type",
+                "key",
+                "id",
+                "width",
+                "height",
+                "align",
+                "aria-hidden",
+                "attribute",
+                "autoCapitalize",
+                "autoComplete",
+                "autoCorrect",
+                "collapsible",
+                "data-icon",
+                "defaultTheme",
+                "href",
+                "inputMode",
+                "name",
+                "orientation",
+                "size",
+                "to",
+                "value",
+                "variant"
+              ]
+            },
+            "callees": {
+              "exclude": [
+                "i18n(ext)?",
+                "t",
+                "require",
+                "addEventListener",
+                "removeEventListener",
+                "postMessage",
+                "getElementById",
+                "dispatch",
+                "commit",
+                "includes",
+                "indexOf",
+                "endsWith",
+                "startsWith",
+                "createTextBlob",
+                "getItem",
+                "resolve",
+                "saveAs",
+                "setIntegratedState"
+              ]
+            },
+            "words": {
+              "exclude": [
+                "[0-9!-/:-@[-`{-~]+",
+                "[A-Z_-]+",
+                "instance-page-layout",
+                "user-page-layout",
+                "json",
+                "[.]json",
+                "official",
+                "custom",
+                "prepare",
+                "start",
+                "connect",
+                "bottom",
+                "right",
+                "TanStack Query",
+                "TanStack Router",
+                "/user"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.{stories,test,spec}.tsx", "src/components/developer/**"],
+      "rules": {
+        "i18next/no-literal-string": "off"
       }
     }
   ],

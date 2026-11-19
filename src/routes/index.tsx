@@ -360,7 +360,7 @@ function Index() {
         aria-hidden="true"
         className="absolute inset-0 z-[-1] h-dvh w-dvw fill-muted-foreground/5"
       >
-        <title>Decorative background pattern</title>
+        <title>{t("header.backgroundPattern")}</title>
         <defs>
           <pattern
             id={circuitPatternId}
