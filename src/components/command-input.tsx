@@ -233,7 +233,6 @@ export default function CommandInput(props: { scope: CommandScope }) {
   const handleTabPress = async (
     text: string,
     cursor: number,
-    element: HTMLInputElement,
     direction: 1 | -1,
   ) => {
     resetCompletionFetchDebounce();
@@ -703,12 +702,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       if (suggestionsDismissed) return;
       e.preventDefault();
       const direction: 1 | -1 = e.shiftKey ? -1 : 1;
-      void handleTabPress(
-        currentTarget.value,
-        caretPosition,
-        currentTarget,
-        direction,
-      );
+      void handleTabPress(currentTarget.value, caretPosition, direction);
       return;
     }
 
