@@ -48,7 +48,7 @@ export function downloadToFileEffect(
         { interruptible: true },
       );
       if (!response.ok || response.body === null)
-        return yield* new DownloadError({
+        return yield* DownloadError.make({
           message: `Download failed (HTTP ${response.status}) for ${url}`,
         });
       const totalSize = Number(response.headers.get("content-length") ?? 0);

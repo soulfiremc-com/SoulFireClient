@@ -4,37 +4,29 @@ import type { NodeDefinition } from "./nodes/types";
  * Get the label for a node type.
  * Uses server-provided displayName.
  */
-const getNodeLabel = (node: NodeDefinition): string => {
-  return node.label;
-};
+const getNodeLabel = (node: NodeDefinition): string => node.label;
 /**
  * Get the description for a node type.
  * Uses server-provided description.
  */
-const getNodeDescription = (node: NodeDefinition): string => {
-  return node.description ?? "";
-};
+const getNodeDescription = (node: NodeDefinition): string =>
+  node.description ?? "";
 /**
  * Get the name for a node category.
  * Uses server-provided displayName (fallback parameter).
  */
-const getCategoryName = (_categoryId: string, fallback: string): string => {
-  return fallback;
-};
+const getCategoryName = (_categoryId: string, fallback: string): string =>
+  fallback;
 /**
  * Get the label for an inspector field.
  * Returns the field key as-is (server-sent i18n planned for future).
  */
-const getFieldLabel = (fieldKey: string): string => {
-  return fieldKey;
-};
+const getFieldLabel = (fieldKey: string): string => fieldKey;
 /**
  * Get port label.
  * Uses server-provided label.
  */
-const getPortLabel = (_portId: string, fallback: string): string => {
-  return fallback;
-};
+const getPortLabel = (_portId: string, fallback: string): string => fallback;
 
 /**
  * Hook that provides label functions for script editor nodes and categories.

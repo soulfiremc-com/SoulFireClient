@@ -1,5 +1,4 @@
 import { TaggedError as TaggedFailure } from "effect/Schema";
-import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import {
   DEFAULT_SETTINGS,
@@ -21,6 +20,7 @@ import {
   Schedule,
   Semaphore,
 } from "effect";
+import { newCastRequestId } from "./request-id";
 import { castError, type CastError } from "./errors";
 import { MetricsSource, MetricsSourceLive } from "./metrics-source";
 import { CastTransport, CastTransportLive } from "./transport";
@@ -51,13 +51,17 @@ export class CastSessionManager {
   private sourceEpoch = 0;
   private disposal: Promise<void> | undefined;
 
+  private readonly publish: (state: CastState) => void;
+
   constructor(
-    private readonly publish: (state: CastState) => void,
+    publish: (state: CastState) => void,
     layer: Layer.Layer<Service> = Layer.mergeAll(
       CastTransportLive,
       MetricsSourceLive,
     ),
   ) {
+    this.publish = publish;
+
     this.runtime = ManagedRuntime.make(layer);
   }
 
@@ -103,7 +107,7 @@ export class CastSessionManager {
                 };
                 return new Bonjour();
               },
-              catch: (cause) => new CastDiscoveryError({ cause }),
+              catch: (cause) => CastDiscoveryError.make({ cause }),
             }),
             (service) =>
               Effect.sync(() => {
@@ -315,7 +319,7 @@ export class CastSessionManager {
               channel
                 .send({
                   type: "RELEASE",
-                  requestId: randomUUID(),
+                  requestId: newCastRequestId(),
                   sessionId: channel.sessionId,
                 })
                 .pipe(Effect.timeout("1 second"), Effect.ignore),
@@ -342,7 +346,7 @@ export class CastSessionManager {
                 const settings = this.settings;
                 yield* channel.send({
                   type: "SETTINGS",
-                  requestId: randomUUID(),
+                  requestId: newCastRequestId(),
                   sessionId: channel.sessionId,
                   settings,
                 });
@@ -369,7 +373,7 @@ export class CastSessionManager {
                   const snapshots = incoming.slice(offset, offset + 20);
                   yield* channel.send({
                     type: "METRICS",
-                    requestId: randomUUID(),
+                    requestId: newCastRequestId(),
                     sessionId: channel.sessionId,
                     instanceId: source.instanceId,
                     sequence: sequence++,
@@ -383,7 +387,7 @@ export class CastSessionManager {
               }
               const status = yield* channel.send({
                 type: "PING",
-                requestId: randomUUID(),
+                requestId: newCastRequestId(),
                 sessionId: channel.sessionId,
               });
               updateStatus(status);

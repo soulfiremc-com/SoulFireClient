@@ -218,13 +218,11 @@ const columns: ColumnDef<
       },
       variant: "multiSelect",
       options: getEnumEntries(InstanceAuditLogResponse_AuditLogEntryType).map(
-        (type) => {
-          return {
-            label: type.key,
-            value: type.key,
-            icon: logTypeToIcon(type.key),
-          };
-        },
+        (type) => ({
+          label: type.key,
+          value: type.key,
+          icon: logTypeToIcon(type.key),
+        }),
       ),
     },
     filterFn: "arrHas",

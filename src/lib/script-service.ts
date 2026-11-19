@@ -20,12 +20,7 @@ import {
 } from "@/components/script-editor/nodes/types";
 import {
   EdgeType,
-  type GetNodeTypesRequest,
-  type GetNodeTypesResponse,
-  type NodeTypeDefinition,
-  PortType,
   PositionSchema,
-  type PortDefinition as ProtoPortDefinition,
   type ScriptData,
   type ScriptEdge,
   ScriptEdgeSchema,
@@ -40,17 +35,9 @@ import {
   nodeDataStrings,
 } from "@/lib/script-node-data";
 
-export type {
-  GetNodeTypesRequest,
-  GetNodeTypesResponse,
-  NodeTypeDefinition,
-  ProtoPortDefinition,
-  ScriptData,
-  ScriptEdge,
-  ScriptNode,
-};
+export type { ScriptData, ScriptEdge, ScriptNode };
 // Re-export for convenience
-export { EdgeType, PortType };
+export { EdgeType };
 
 /**
  * Query options for listing all scripts in an instance
@@ -158,32 +145,6 @@ export function nodeTypesQueryOptions(
       return result;
     },
     // Node types rarely change, so use a long stale time
-    staleTime: 1000 * 60 * 60, // 1 hour
-    gcTime: 1000 * 60 * 60 * 24, // 24 hours
-  });
-}
-
-/**
- * Query options for getting Minecraft registry data.
- * Registry data is cacheable - it only changes between server versions.
- */
-export function registryDataQueryOptions(
-  transport: Transport | null,
-  registry?: string,
-) {
-  return queryOptions({
-    queryKey: ["registry-data", registry ?? "all"],
-    queryFn: async ({ signal }) => {
-      if (!transport) {
-        return { blocks: [], entities: [], items: [], biomes: [] };
-      }
-      const client = createRpcClient(ScriptService, transport);
-      const result = await Effect.runPromise(
-        client.getRegistryData({ registry }, { signal }),
-      );
-      return result;
-    },
-    // Registry data rarely changes, so use a long stale time
     staleTime: 1000 * 60 * 60, // 1 hour
     gcTime: 1000 * 60 * 60 * 24, // 24 hours
   });

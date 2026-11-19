@@ -65,11 +65,17 @@ export class PovAudioPlayer {
     }
   }
 
+  private readonly context: AudioContext;
+  private readonly onError: (error: Error) => void;
+
   constructor(
-    private readonly context: AudioContext,
+    context: AudioContext,
     volume: number,
-    private readonly onError: (error: Error) => void,
+    onError: (error: Error) => void,
   ) {
+    this.context = context;
+    this.onError = onError;
+
     this.gain = context.createGain();
     this.gain.connect(context.destination);
     this.volume(volume);

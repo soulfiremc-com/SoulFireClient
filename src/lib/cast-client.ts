@@ -17,22 +17,25 @@ class CastDesktopError extends TaggedFailure<
   cause: Schema.Unknown,
 }) {}
 
-const CastDesktop = Context.Service<{
-  readonly connect: (
-    device: CastDevice,
-    source: CastSource,
-    relaunch: boolean,
-  ) => Effect.Effect<void, CastDesktopError>;
-  readonly stop: (id: string) => Effect.Effect<void, CastDesktopError>;
-  readonly setSettings: (
-    settings: DisplaySettings,
-  ) => Effect.Effect<void, CastDesktopError>;
-}>("soulfire/CastDesktop");
+class CastDesktop extends Context.Service<
+  CastDesktop,
+  {
+    readonly connect: (
+      device: CastDevice,
+      source: CastSource,
+      relaunch: boolean,
+    ) => Effect.Effect<void, CastDesktopError>;
+    readonly stop: (id: string) => Effect.Effect<void, CastDesktopError>;
+    readonly setSettings: (
+      settings: DisplaySettings,
+    ) => Effect.Effect<void, CastDesktopError>;
+  }
+>()("soulfire/lib/cast-client/CastDesktop") {}
 const fromPromise = <A>(operation: () => Promise<A>) =>
   Effect.tryPromise({
     try: operation,
     catch: (error) =>
-      new CastDesktopError({
+      CastDesktopError.make({
         message: error instanceof Error ? error.message : String(error),
         cause: error,
       }),

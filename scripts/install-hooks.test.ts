@@ -50,6 +50,17 @@ function fixture(t: TestContext): string {
     }
   }
   symlinkSync(join(project, "node_modules"), join(cwd, "node_modules"), "dir");
+  writeFileSync(
+    join(cwd, "package.json"),
+    JSON.stringify({
+      scripts: { knip: "knip" },
+      devDependencies: { knip: "*" },
+    }),
+  );
+  writeFileSync(
+    join(cwd, "knip.json"),
+    JSON.stringify({ entry: ["src/*.ts"], project: ["src/*.ts"] }),
+  );
   writeFileSync(join(cwd, ".gitignore"), "node_modules/\n");
   mkdirSync(join(cwd, "src"));
   return cwd;

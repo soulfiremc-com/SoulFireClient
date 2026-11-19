@@ -93,11 +93,8 @@ export const stopImpersonation = () => {
   });
 };
 
-export const isImpersonating = () => {
-  return (
-    localStorage.getItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY) !== null
-  );
-};
+export const isImpersonating = () =>
+  localStorage.getItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY) !== null;
 
 export const createTransport = (): Transport | null => {
   if (isDemo()) {
@@ -129,11 +126,10 @@ export const createTransport = (): Transport | null => {
   });
 };
 
-export const createAddressOnlyTransport = (address: string): Transport => {
-  return createGrpcWebTransport({
+export const createAddressOnlyTransport = (address: string): Transport =>
+  createGrpcWebTransport({
     baseUrl: address,
   });
-};
 
 export function povInputUrl(): string {
   const address = localStorage.getItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);

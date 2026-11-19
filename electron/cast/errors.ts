@@ -10,4 +10,4 @@ export class CastError extends TaggedFailure<
 }) {}
 
 export const castError = (message: string, retryable = true) =>
-  new CastError({ message, retryable });
+  CastError.make({ message, retryable });

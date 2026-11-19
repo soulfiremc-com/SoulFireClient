@@ -24,7 +24,6 @@ const dynamicAllowlist = [
   "src/components/instance-overview/activity-timeline.tsx entryTypeI18nKey(entry.type)",
   "src/routes/_dashboard/instance/$instance/audit-log.tsx toI18nKey(row.original.type)",
   // Lookup tables of literal `labelKey` values.
-  "src/components/instance-overview/bot-grid.tsx meta.labelKey",
   "src/components/instance-overview/fleet-status.tsx fix.labelKey",
   "src/components/instance-setup/first-bot-setup.tsx fix.labelKey",
   "src/routes/_dashboard/instance/$instance/bot/$botId.tsx fix.labelKey",

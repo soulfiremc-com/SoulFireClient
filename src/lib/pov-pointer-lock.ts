@@ -11,7 +11,7 @@ export class PovPointerLockError extends TaggedFailure<
   message: Schema.String,
 }) {
   static new(reason: PovPointerLockFailure) {
-    return new PovPointerLockError({
+    return PovPointerLockError.make({
       reason,
       message: `Mouse capture failed: ${reason}`,
     });

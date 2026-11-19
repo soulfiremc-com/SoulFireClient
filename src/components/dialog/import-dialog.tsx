@@ -441,9 +441,7 @@ function MainDialog(
                             e,
                           ): e is typeof e & {
                             firstSupportedType: string;
-                          } => {
-                            return e.firstSupportedType !== undefined;
-                          },
+                          } => e.firstSupportedType !== undefined,
                         );
                       signal.throwIfAborted();
                       if (!props.allowMultiple && clipboardEntries.length > 1) {

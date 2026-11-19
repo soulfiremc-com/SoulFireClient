@@ -88,25 +88,6 @@ export function handleNativePaste(
 }
 
 /**
- * Copy to the desktop clipboard for non-event contexts.
- * In the browser we fall back to localStorage unless there is a user gesture.
- */
-export async function copyToDesktopClipboard(
-  data: ScriptClipboardData,
-): Promise<void> {
-  if (!isDesktopApp()) {
-    // For browser, just save to localStorage - actual clipboard write
-    // should happen via handleNativeCopy in a copy event
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-    return;
-  }
-
-  const serialized = serializeClipboardData(data);
-  await desktop.clipboard.writeText(serialized);
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-}
-
-/**
  * Read from the desktop clipboard for non-event contexts.
  * In the browser we fall back to localStorage unless there is a user gesture.
  */

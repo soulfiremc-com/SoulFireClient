@@ -31,7 +31,7 @@ export function executeProviderRequestEffect(
         validateProviderRequest(request);
       },
       catch: (error) =>
-        new ProviderRequestError({
+        ProviderRequestError.make({
           message:
             error instanceof Error ? error.message : "Invalid provider request",
           cause: error,
@@ -50,20 +50,22 @@ export function executeProviderRequestEffect(
         });
         const body = await response.text();
         if (body.length > 8_000_000)
-          throw new ProviderRequestError({
+          throw ProviderRequestError.make({
             message: "Provider response too large",
           });
         return { status: response.status, body };
       },
       // Fetch errors can include the credential-bearing request URL.
       catch: () =>
-        new ProviderRequestError({ message: "Provider connection failed" }),
+        ProviderRequestError.make({ message: "Provider connection failed" }),
     }).pipe(
       Effect.timeoutOrElse({
         duration: "30 seconds",
         orElse: () =>
           Effect.fail(
-            new ProviderRequestError({ message: "Provider connection failed" }),
+            ProviderRequestError.make({
+              message: "Provider connection failed",
+            }),
           ),
       }),
     );

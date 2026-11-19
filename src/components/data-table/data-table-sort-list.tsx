@@ -135,11 +135,11 @@ function DataTableSortListContent<TData extends RowData>({
 
   const onSortUpdate = React.useCallback(
     (sortId: string, updates: Partial<ColumnSort>) => {
-      onSortingChange((prevSorting) => {
-        return prevSorting.map((sort) =>
+      onSortingChange((prevSorting) =>
+        prevSorting.map((sort) =>
           sort.id === sortId ? { ...sort, ...updates } : sort,
-        );
-      });
+        ),
+      );
     },
     [onSortingChange],
   );

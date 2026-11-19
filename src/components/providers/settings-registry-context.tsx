@@ -65,8 +65,7 @@ export function createSettingsRegistry(
       if (!id) return undefined;
       return definitionMap.get(`${id.namespace}:${id.key}`);
     },
-    getDefinitionByKey: (namespace, key) => {
-      return definitionMap.get(`${namespace}:${key}`);
-    },
+    getDefinitionByKey: (namespace, key) =>
+      definitionMap.get(`${namespace}:${key}`),
   };
 }

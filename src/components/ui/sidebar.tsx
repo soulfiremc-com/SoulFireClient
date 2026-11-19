@@ -7,8 +7,7 @@ import { PanelLeftIcon } from "lucide-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+
 import {
   Sheet,
   SheetContent,
@@ -325,20 +324,6 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   );
 }
 
-function SidebarInput({
-  className,
-  ...props
-}: React.ComponentProps<typeof Input>) {
-  return (
-    <Input
-      data-slot="sidebar-input"
-      data-sidebar="input"
-      className={cn("h-8 w-full bg-background shadow-none", className)}
-      {...props}
-    />
-  );
-}
-
 function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -356,20 +341,6 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="sidebar-footer"
       data-sidebar="footer"
       className={cn("flex flex-col gap-2 p-2", className)}
-      {...props}
-    />
-  );
-}
-
-function SidebarSeparator({
-  className,
-  ...props
-}: React.ComponentProps<typeof Separator>) {
-  return (
-    <Separator
-      data-slot="sidebar-separator"
-      data-sidebar="separator"
-      className={cn("mx-2 w-auto bg-sidebar-border", className)}
       {...props}
     />
   );
@@ -422,44 +393,6 @@ function SidebarGroupLabel({
       sidebar: "group-label",
     },
   });
-}
-
-function SidebarGroupAction({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"button"> & React.ComponentProps<"button">) {
-  return useRender({
-    defaultTagName: "button",
-    props: mergeProps<"button">(
-      {
-        className: cn(
-          "absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-transform group-data-[collapsible=icon]:hidden after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 md:after:hidden [&>svg]:size-4 [&>svg]:shrink-0",
-          className,
-        ),
-      },
-      props,
-    ),
-    render,
-    state: {
-      slot: "sidebar-group-action",
-      sidebar: "group-action",
-    },
-  });
-}
-
-function SidebarGroupContent({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="sidebar-group-content"
-      data-sidebar="group-content"
-      className={cn("w-full text-sm", className)}
-      {...props}
-    />
-  );
 }
 
 function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
@@ -587,23 +520,6 @@ function SidebarMenuAction({
   });
 }
 
-function SidebarMenuBadge({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="sidebar-menu-badge"
-      data-sidebar="menu-badge"
-      className={cn(
-        "pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium text-sidebar-foreground tabular-nums select-none group-data-[collapsible=icon]:hidden peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 peer-data-active/menu-button:text-sidebar-accent-foreground",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
 function SidebarMenuSkeleton({
   className,
   showIcon = false,
@@ -613,9 +529,7 @@ function SidebarMenuSkeleton({
 }) {
   // Random width between 50 to 90%.
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
-  const [width] = React.useState(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
-  });
+  const [width] = React.useState(() => `${Math.floor(Math.random() * 40) + 50}%`);
 
   return (
     <div
@@ -708,15 +622,14 @@ export {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupContent,
+
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
+
   SidebarInset,
   SidebarMenu,
   SidebarMenuAction,
-  SidebarMenuBadge,
+
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSkeleton,
@@ -725,7 +638,7 @@ export {
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
-  SidebarSeparator,
+
   SidebarTrigger,
   useSidebar,
 };

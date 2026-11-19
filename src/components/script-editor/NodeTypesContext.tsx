@@ -222,23 +222,18 @@ export function NodeTypesProvider({
   );
 
   const getNodesByCategory = useCallback(
-    (category: string) => {
-      return nodesByCategory[category] ?? [];
-    },
+    (category: string) => nodesByCategory[category] ?? [],
     [nodesByCategory],
   );
 
   const getCategoryInfo = useCallback(
-    (category: string): CategoryInfo => {
-      return (
-        categoryInfo[category] ?? {
-          id: category,
-          name: category,
-          icon: "Circle",
-          sortOrder: 999,
-        }
-      );
-    },
+    (category: string): CategoryInfo =>
+      categoryInfo[category] ?? {
+        id: category,
+        name: category,
+        icon: "Circle",
+        sortOrder: 999,
+      },
     [categoryInfo],
   );
 

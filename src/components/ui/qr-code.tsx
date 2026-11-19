@@ -5,14 +5,13 @@ import { mergeProps } from "@base-ui/react/merge-props";
 
 import * as React from "react";
 import { useLazyRef } from "@/hooks/use-lazy-ref";
-import { useComposedRefs } from "@/lib/compose-refs";
+
 import { cn } from "@/lib/utils";
 
 const ROOT_NAME = "QRCode";
-const CANVAS_NAME = "QRCodeCanvas";
+
 const SVG_NAME = "QRCodeSvg";
 const IMAGE_NAME = "QRCodeImage";
-const SKELETON_NAME = "QRCodeSkeleton";
 
 type QRCodeLevel = "L" | "M" | "Q" | "H";
 
@@ -123,8 +122,7 @@ function QRCode(props: QRCodeProps) {
     generationKey: "",
   }));
 
-  const store = React.useMemo<Store>(() => {
-    return {
+  const store = React.useMemo<Store>(() => ({
       subscribe: (cb) => {
         listenersRef.current.add(cb);
         return () => {
@@ -157,8 +155,7 @@ function QRCode(props: QRCodeProps) {
           cb();
         }
       },
-    };
-  }, [listenersRef, stateRef]);
+    }), [listenersRef, stateRef]);
 
   const canvasOpts = React.useMemo<QRCodeCanvasOpts>(
     () => ({
@@ -298,34 +295,6 @@ function QRCode(props: QRCodeProps) {
   );
 }
 
-type QRCodeCanvasProps = useRender.ComponentProps<"canvas">;
-
-function QRCodeCanvas(props: QRCodeCanvasProps) {
-  const { render, className, ref, ...canvasProps } = props;
-
-  const context = useQRCodeContext(CANVAS_NAME);
-  const generationKey = useStore((state) => state.generationKey);
-
-  const composedRef = useComposedRefs(ref, context.canvasRef);
-
-  const element = useRender({
-    defaultTagName: "canvas",
-    render,
-    ref: composedRef,
-    props: mergeProps({ "data-slot": "qr-code-canvas" }, canvasProps, {
-      width: context.size,
-      height: context.size,
-      className: cn(
-        "relative max-h-(--qr-code-size) max-w-(--qr-code-size)",
-        !generationKey && "invisible",
-        className,
-      ),
-    }),
-  });
-
-  return element;
-}
-
 type QRCodeSvgProps = useRender.ComponentProps<"div">;
 
 function QRCodeSvg(props: QRCodeSvgProps) {
@@ -376,130 +345,14 @@ function QRCodeImage(props: QRCodeImageProps) {
   return element;
 }
 
-interface QRCodeDownloadProps extends useRender.ComponentProps<"button"> {
-  filename?: string;
-  format?: "png" | "svg";
-}
-
-function QRCodeDownload(props: QRCodeDownloadProps) {
-  const {
-    filename = "qrcode",
-    format = "png",
-    render,
-    className,
-    children,
-    ...buttonProps
-  } = props;
-
-  const dataUrl = useStore((state) => state.dataUrl);
-  const svgString = useStore((state) => state.svgString);
-
-  const onClick = React.useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      buttonProps.onClick?.(event);
-      if (event.defaultPrevented) return;
-
-      const link = document.createElement("a");
-
-      if (format === "png" && dataUrl) {
-        link.href = dataUrl;
-        link.download = `${filename}.png`;
-      } else if (format === "svg" && svgString) {
-        const blob = new Blob([svgString], { type: "image/svg+xml" });
-        link.href = URL.createObjectURL(blob);
-        link.download = `${filename}.svg`;
-      } else {
-        return;
-      }
-
-      document.body.append(link);
-      link.click();
-      link.remove();
-
-      if (format === "svg" && svgString) {
-        URL.revokeObjectURL(link.href);
-      }
-    },
-    [dataUrl, svgString, filename, format, buttonProps.onClick],
-  );
-
-  const element = useRender({
-    defaultTagName: "button",
-    render,
-    props: mergeProps(
-      { type: "button", "data-slot": "qr-code-download" },
-      buttonProps,
-      {
-        className: cn("max-w-(--qr-code-size)", className),
-        onClick,
-        children: children ?? `Download ${format.toUpperCase()}`,
-      },
-    ),
-  });
-
-  return element;
-}
-
-type QRCodeOverlayProps = useRender.ComponentProps<"div">;
-
-function QRCodeOverlay(props: QRCodeOverlayProps) {
-  const { render, className, ...overlayProps } = props;
-
-  const element = useRender({
-    defaultTagName: "div",
-    render,
-    props: mergeProps({ "data-slot": "qr-code-overlay" }, overlayProps, {
-      className: cn(
-        "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm bg-background",
-        className,
-      ),
-    }),
-  });
-
-  return element;
-}
-
-type QRCodeSkeletonProps = useRender.ComponentProps<"div">;
-
-function QRCodeSkeleton(props: QRCodeSkeletonProps) {
-  const { render, className, style, ...skeletonProps } = props;
-
-  const context = useQRCodeContext(SKELETON_NAME);
-  const dataUrl = useStore((state) => state.dataUrl);
-  const svgString = useStore((state) => state.svgString);
-  const generationKey = useStore((state) => state.generationKey);
-
-  const isLoaded = dataUrl || svgString || generationKey;
-
-  const element = useRender({
-    defaultTagName: "div",
-    render,
-    props: mergeProps({ "data-slot": "qr-code-skeleton" }, skeletonProps, {
-      className: cn(
-        "absolute max-h-(--qr-code-size) max-w-(--qr-code-size) animate-pulse bg-accent",
-        className,
-      ),
-      style: {
-        width: context.size,
-        height: context.size,
-        ...style,
-      },
-    }),
-  });
-  if (isLoaded) return null;
-  return element;
-}
-
 export {
   QRCode,
-  QRCodeCanvas,
-  QRCodeDownload,
+
   QRCodeImage,
-  QRCodeOverlay,
+
   //
   type QRCodeProps,
-  QRCodeSkeleton,
+
   QRCodeSvg,
   //
-  useStore as useQRCode,
 };

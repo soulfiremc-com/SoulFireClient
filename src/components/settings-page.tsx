@@ -136,7 +136,6 @@ import type { BaseSettings } from "@/lib/types.ts";
 import {
   cn,
   getSettingValue,
-  updateBotConfigEntry,
   updateInstanceConfigEntry,
   updateServerConfigEntry,
 } from "@/lib/utils.tsx";
@@ -1641,56 +1640,6 @@ export function AdminSettingsPageComponent({
             {label}
           </Link>
         )}
-      />
-    </SettingsRegistryContext.Provider>
-  );
-}
-
-export function BotSettingsPageComponent({
-  data,
-  botConfig,
-  botId,
-}: {
-  data: SettingsPage;
-  botConfig: BaseSettings;
-  botId: string;
-}) {
-  const queryClient = useQueryClient();
-  const instanceInfoQueryOptions = useRouteContext({
-    from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions,
-  });
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const transport = use(TransportContext);
-  const settingsRegistry = useMemo(
-    () => createSettingsRegistry(instanceInfo.settingsDefinitions),
-    [instanceInfo.settingsDefinitions],
-  );
-  return (
-    <SettingsRegistryContext.Provider value={settingsRegistry}>
-      <ClientSettingsPageComponent
-        data={data}
-        mutationTarget={{ type: "bot", instanceId: instanceInfo.id, botId }}
-        updateConfigEntry={async (namespace, key, value) =>
-          updateBotConfigEntry(
-            namespace,
-            key,
-            value,
-            instanceInfo.id,
-            botId,
-            transport,
-            queryClient,
-            instanceInfoQueryOptions.queryKey,
-          )
-        }
-        invalidateQuery={async () => {
-          await queryClient.invalidateQueries({
-            queryKey: instanceInfoQueryOptions.queryKey,
-          });
-        }}
-        config={botConfig}
-        definitions={instanceInfo.settingsDefinitions}
-        persisted={transport !== null}
       />
     </SettingsRegistryContext.Provider>
   );

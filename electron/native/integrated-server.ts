@@ -15,7 +15,8 @@ import { createRequire } from "node:module";
 import net from "node:net";
 import path from "node:path";
 import type { App } from "electron";
-import { Effect } from "effect";
+import { DateTime, Effect, Schema } from "effect";
+import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http";
 import * as tar from "tar";
 import { getAppLocalDataDir } from "./app-paths";
 import { downloadToFileEffect } from "./integrated-server-download";
@@ -41,6 +42,35 @@ const AdmZip = require("adm-zip") as {
     }[];
   };
 };
+
+const json = Schema.fromJsonString(Schema.Unknown);
+const decodeJson = Schema.decodeUnknownSync(json);
+const encodeJson = Schema.encodeSync(json);
+const encodeJarIndex = Schema.encodeSync(
+  Schema.fromJsonString(Schema.Unknown, { space: 2 }),
+);
+
+function fetchMetadata(
+  url: string,
+  signal: AbortSignal,
+  errorMessage: string,
+  headers?: Record<string, string>,
+): Promise<unknown> {
+  return Effect.runPromise(
+    // oxlint-disable-next-line effecttsgo/unstable-api-usage -- Effect v4 exposes HTTP clients through its unstable HTTP module
+    HttpClient.get(url, headers ? { headers } : undefined).pipe(
+      // oxlint-disable-next-line effecttsgo/unstable-api-usage -- Status checks use the same Effect HTTP client response API
+      Effect.flatMap(HttpClientResponse.filterStatusOk),
+      Effect.mapError(() =>
+        IntegratedServerError.make({ message: errorMessage }),
+      ),
+      Effect.flatMap((response) => response.json),
+      // oxlint-disable-next-line effecttsgo/unstable-api-usage -- The metadata requests use the Fetch implementation of the Effect HTTP client
+      Effect.provide(FetchHttpClient.layer),
+    ),
+    { signal },
+  );
+}
 
 const preparationStep = <A>(operation: () => Promise<A>) =>
   Effect.uninterruptible(
@@ -286,7 +316,7 @@ export async function importCustomSoulFireServerJar(
 
   const jar: CustomSoulFireServerJar = {
     id: sha256,
-    importedAt: new Date().toISOString(),
+    importedAt: DateTime.formatIso(DateTime.nowUnsafe()),
     originalName: path.basename(sourcePath),
     path: jarPath,
     sha256,
@@ -396,7 +426,7 @@ async function readCustomJarIndex(
 ): Promise<CustomSoulFireServerJarIndex> {
   try {
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the jar index is our own file, and each entry is checked by isCustomJar below
-    const rawIndex = JSON.parse(
+    const rawIndex = decodeJson(
       await readFile(getCustomJarIndexPath(app), "utf8"),
     ) as Partial<CustomSoulFireServerJarIndex>;
 
@@ -427,7 +457,7 @@ async function writeCustomJarIndex(
 
   await writeFile(
     getCustomJarIndexPath(app),
-    `${JSON.stringify(index, null, 2)}\n`,
+    `${encodeJarIndex(index)}\n`,
     "utf8",
   );
 }
@@ -487,10 +517,13 @@ function ensureJvm(
       const jvmUrl = `https://api.adoptium.net/v3/assets/latest/25/hotspot?architecture=${detectArchitecture()}&image_type=jre&os=${detectOs()}&vendor=eclipse`;
       report("Fetching JVM data...");
       const metadata = yield* preparationStep(async () => {
-        const response = await fetch(jvmUrl, { signal });
-        if (!response.ok) throw new Error("Failed to fetch JVM metadata");
+        const data = await fetchMetadata(
+          jvmUrl,
+          signal,
+          "Failed to fetch JVM metadata",
+        );
         // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the Adoptium API response is checked for the fields used below
-        return (await response.json()) as {
+        return data as {
           binary?: { package?: { checksum?: string; link?: string } };
           release_name?: string;
         }[];
@@ -500,7 +533,7 @@ function ensureJvm(
       const downloadUrl = release?.binary?.package?.link;
       const releaseName = release?.release_name;
       if (!checksum || !downloadUrl || !releaseName)
-        return yield* new IntegratedServerError({
+        return yield* IntegratedServerError.make({
           message: "JVM metadata was incomplete",
         });
 
@@ -532,7 +565,7 @@ function ensureJvm(
           tar.x({ cwd: extractTmpRoot, file: archiveTmpPath }),
         );
       } else {
-        return yield* new IntegratedServerError({
+        return yield* IntegratedServerError.make({
           message: "Unsupported JVM archive type",
         });
       }
@@ -543,7 +576,7 @@ function ensureJvm(
         getJavaExecutableName(),
       );
       if (!(yield* preparationStep(() => exists(extractedJavaExec))))
-        return yield* new IntegratedServerError({
+        return yield* IntegratedServerError.make({
           message: "Extracted JVM is missing the Java executable",
         });
       signal.throwIfAborted();
@@ -606,21 +639,15 @@ async function fetchSoulFireJarChecksum(
   jarName: string,
   signal: AbortSignal,
 ): Promise<string> {
-  const response = await fetch(
+  const data = await fetchMetadata(
     `https://api.github.com/repos/soulfiremc-com/SoulFire/releases/tags/${version}`,
-    {
-      signal,
-      headers: {
-        "User-Agent": "SoulFireClient",
-      },
-    },
+    signal,
+    "Failed to fetch SoulFire release metadata",
+    { "User-Agent": "SoulFireClient" },
   );
-  if (!response.ok) {
-    throw new Error("Failed to fetch SoulFire release metadata");
-  }
 
   // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the GitHub release response is checked for the fields used below
-  const release = (await response.json()) as {
+  const release = data as {
     assets?: {
       name?: string;
       digest?: string;
@@ -703,15 +730,17 @@ async function atomicReplaceFile(
 }
 
 function createRootApiToken(secretKey: Buffer): string {
-  const issuedAt = Math.floor(Date.now() / 1000);
+  const issuedAt = Math.floor(
+    DateTime.toEpochMillis(DateTime.nowUnsafe()) / 1000,
+  );
   const header = base64urlEncode(
-    JSON.stringify({
+    encodeJson({
       alg: "HS256",
       typ: "JWT",
     }),
   );
   const claims = base64urlEncode(
-    JSON.stringify({
+    encodeJson({
       sub: ROOT_USER_UUID,
       iat: issuedAt,
       aud: ["api"],

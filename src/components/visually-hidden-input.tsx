@@ -133,8 +133,8 @@ function VisuallyHiddenInput<T = InputValue>(
     }
   }, [prevValue, value, checked, bubbles, isCheckInput]);
 
-  const composedStyle = React.useMemo<React.CSSProperties>(() => {
-    return {
+  const composedStyle = React.useMemo<React.CSSProperties>(
+    () => ({
       ...style,
       ...(controlSize.width !== undefined && controlSize.height !== undefined
         ? controlSize
@@ -148,8 +148,9 @@ function VisuallyHiddenInput<T = InputValue>(
       position: "absolute",
       whiteSpace: "nowrap",
       width: "1px",
-    };
-  }, [style, controlSize]);
+    }),
+    [style, controlSize],
+  );
 
   return (
     <input

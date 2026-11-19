@@ -17,7 +17,7 @@ export class DownloadHttpError extends TaggedFailure<
   message: Schema.String,
 }) {
   static new(statusCode: number) {
-    return new DownloadHttpError({
+    return DownloadHttpError.make({
       statusCode,
       message: `Download returned HTTP ${statusCode}`,
     });

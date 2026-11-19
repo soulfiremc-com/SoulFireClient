@@ -31,7 +31,7 @@ export class ProviderApiError extends TaggedFailure<
   message: Schema.String,
 }) {
   static new(reason: typeof providerFailureReason.Type) {
-    return new ProviderApiError({
+    return ProviderApiError.make({
       reason,
       message: `Provider request failed: ${reason}`,
     });
@@ -45,7 +45,7 @@ export class ProviderHttp extends Context.Service<
       request: ProviderRequest,
     ) => Effect.Effect<ProviderResponse, ProviderApiError>;
   }
->()("soulfire/ProviderHttp") {}
+>()("soulfire/lib/provider-request/ProviderHttp") {}
 
 const providerHttp: Context.Service.Shape<typeof ProviderHttp> = {
   request: (request) =>
@@ -122,19 +122,6 @@ export const providerJsonEffect = (request: ProviderRequest) =>
   Effect.flatMap(providerTextEffect(request), (text) =>
     decodeProviderJson(text),
   );
-
-export const requestProvider: ProviderFetch = async (request, signal) => {
-  validateProviderRequest(request);
-  return runProviderEffect(providerResponseEffect(request), signal);
-};
-
-export function providerText(
-  request: ProviderRequest,
-  signal?: AbortSignal,
-  fetcher?: ProviderFetch,
-): Promise<string> {
-  return runProviderEffect(providerTextEffect(request), signal, fetcher);
-}
 
 export function providerJson(
   request: ProviderRequest,

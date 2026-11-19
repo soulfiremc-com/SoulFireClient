@@ -582,77 +582,75 @@ function Content() {
         </div>
       ) : (
         <ItemGroup className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-          {instanceList.instances.map((instance, index) => {
-            return (
-              <div
-                key={instance.id}
-                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
-                role="listitem"
-                className="relative max-h-fit"
+          {instanceList.instances.map((instance, index) => (
+            <div
+              key={instance.id}
+              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
+              role="listitem"
+              className="relative max-h-fit"
+            >
+              <Item
+                variant="outline"
+                className="w-full rounded-lg py-4 pr-14 pl-6"
+                render={
+                  <Link
+                    to="/instance/$instance"
+                    params={{ instance: instance.id }}
+                    search={{}}
+                    onContextMenu={(e) => {
+                      handleContextMenu(e, instance);
+                    }}
+                  />
+                }
               >
-                <Item
-                  variant="outline"
-                  className="w-full rounded-lg py-4 pr-14 pl-6"
+                <ItemMedia>
+                  <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <DynamicIcon
+                      name={instance.icon}
+                      className="size-8 shrink-0"
+                    />
+                  </div>
+                </ItemMedia>
+                <ItemContent className="gap-1.5">
+                  <ItemTitle className="max-w-64 truncate">
+                    {instance.friendlyName}
+                  </ItemTitle>
+                  <div data-slot="item-description">
+                    <BotFleetSummaryBadge summary={instance.botSummary} />
+                  </div>
+                </ItemContent>
+                {isDesktopApp() && index < MAX_INSTANCE_SHORTCUTS && (
+                  <div className="ml-auto hidden shrink-0 sm:block">
+                    <Kbd aria-hidden="true" className="h-6 px-2 text-sm">
+                      {formatShortcut(`Ctrl+${index + 1}`)}
+                    </Kbd>
+                  </div>
+                )}
+              </Item>
+              {/* Touch screens cannot open the right-click menu, so the same actions live here. */}
+              <DropdownMenu>
+                <DropdownMenuTrigger
                   render={
-                    <Link
-                      to="/instance/$instance"
-                      params={{ instance: instance.id }}
-                      search={{}}
-                      onContextMenu={(e) => {
-                        handleContextMenu(e, instance);
-                      }}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-1/2 right-3 -translate-y-1/2"
+                      aria-label={t("contextMenu.instance.actions", {
+                        name: instance.friendlyName,
+                      })}
                     />
                   }
                 >
-                  <ItemMedia>
-                    <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                      <DynamicIcon
-                        name={instance.icon}
-                        className="size-8 shrink-0"
-                      />
-                    </div>
-                  </ItemMedia>
-                  <ItemContent className="gap-1.5">
-                    <ItemTitle className="max-w-64 truncate">
-                      {instance.friendlyName}
-                    </ItemTitle>
-                    <div data-slot="item-description">
-                      <BotFleetSummaryBadge summary={instance.botSummary} />
-                    </div>
-                  </ItemContent>
-                  {isDesktopApp() && index < MAX_INSTANCE_SHORTCUTS && (
-                    <div className="ml-auto hidden shrink-0 sm:block">
-                      <Kbd aria-hidden="true" className="h-6 px-2 text-sm">
-                        {formatShortcut(`Ctrl+${index + 1}`)}
-                      </Kbd>
-                    </div>
-                  )}
-                </Item>
-                {/* Touch screens cannot open the right-click menu, so the same actions live here. */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    render={
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-1/2 right-3 -translate-y-1/2"
-                        aria-label={t("contextMenu.instance.actions", {
-                          name: instance.friendlyName,
-                        })}
-                      />
-                    }
-                  >
-                    <EllipsisVerticalIcon />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuGroup>
-                      {renderInstanceActions(instance, () => {})}
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            );
-          })}
+                  <EllipsisVerticalIcon />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuGroup>
+                    {renderInstanceActions(instance, () => {})}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ))}
         </ItemGroup>
       )}
       {contextMenu && (

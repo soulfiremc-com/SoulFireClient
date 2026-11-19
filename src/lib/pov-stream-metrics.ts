@@ -13,7 +13,11 @@ export function povDebugEnabled() {
 // All timing uses the client's clock. Receive-to-draw excludes server/network
 // time and must not be presented as end-to-end latency.
 export class PovStreamMetrics {
-  constructor(private started = performance.now()) {}
+  private started: number;
+
+  constructor(started = performance.now()) {
+    this.started = started;
+  }
   private received = 0;
   private drawn = 0;
   private bytes = 0;

@@ -76,9 +76,10 @@ function UsersChart(props: { userList: UserListResponse }) {
     [props.userList],
   );
 
-  const totalUsers = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.users, 0);
-  }, [chartData]);
+  const totalUsers = React.useMemo(
+    () => chartData.reduce((acc, curr) => acc + curr.users, 0),
+    [chartData],
+  );
 
   return (
     <Card className="flex flex-col border-0">
@@ -182,9 +183,10 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
     [props.instanceList],
   );
 
-  const totalInstances = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.instances, 0);
-  }, [chartData]);
+  const totalInstances = React.useMemo(
+    () => chartData.reduce((acc, curr) => acc + curr.instances, 0),
+    [chartData],
+  );
 
   return (
     <Card className="flex flex-col border-0">

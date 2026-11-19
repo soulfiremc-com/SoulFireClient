@@ -230,17 +230,19 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/proxies")({
   component: ProxySettings,
 });
 
-enum UIProxyType {
-  HTTP = 0,
-  SOCKS4 = 1,
-  SOCKS5 = 2,
-  URI = 3,
-}
+const UIProxyType = {
+  HTTP: 0,
+  SOCKS4: 1,
+  SOCKS5: 2,
+  URI: 3,
+} as const;
+
+type ProxyTypeSelection = (typeof UIProxyType)[keyof typeof UIProxyType];
 
 type SimpleProxyType =
-  | UIProxyType.HTTP
-  | UIProxyType.SOCKS4
-  | UIProxyType.SOCKS5;
+  | typeof UIProxyType.HTTP
+  | typeof UIProxyType.SOCKS4
+  | typeof UIProxyType.SOCKS5;
 
 function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
   switch (type) {
@@ -337,13 +339,11 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
         return i18n.t("instance:proxy.table.type");
       },
       variant: "multiSelect",
-      options: getEnumEntries(ProxyProto_Type).map((type) => {
-        return {
-          label: type.key,
-          value: type.key,
-          icon: proxyTypeToIcon(type.key),
-        };
-      }),
+      options: getEnumEntries(ProxyProto_Type).map((type) => ({
+        label: type.key,
+        value: type.key,
+        icon: proxyTypeToIcon(type.key),
+      })),
     },
     filterFn: "arrHas",
     enableColumnFilter: true,
@@ -458,7 +458,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
   const transport = use(TransportContext);
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [proxyTypeSelected, setProxyTypeSelected] =
-    useState<UIProxyType | null>(null);
+    useState<ProxyTypeSelection | null>(null);
   const [importedProxies, setImportedProxies] = useState<ProfileProxy[] | null>(
     null,
   );

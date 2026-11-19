@@ -9,5 +9,5 @@ plugins:
     out: src/generated
     include_imports: true
     opt:
-      - target=ts
+      - target=js+dts
       - import_extension=js

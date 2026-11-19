@@ -688,13 +688,6 @@ export function getPortDefinition(
 }
 
 /**
- * Check if a port is an execution port.
- */
-export function isExecutionPort(nodeType: string, portId: string): boolean {
-  return getPortTypeFromDefinition(nodeType, portId) === "execution";
-}
-
-/**
  * Check if a port accepts multiple connections.
  */
 export function isPortMultiInput(nodeType: string, portId: string): boolean {
@@ -851,14 +844,4 @@ export function protoCategoryToLocal(
     description: proto.description || undefined,
     sortOrder: proto.sortOrder,
   };
-}
-
-/**
- * Get inline border color style for a node
- */
-export function getNodeBorderColor(color?: string): React.CSSProperties {
-  if (!color) {
-    return {};
-  }
-  return { borderLeftColor: color };
 }

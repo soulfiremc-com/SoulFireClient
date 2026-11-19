@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "entry": [
+    "src/index.tsx",
+    "src/routes/**/*.{ts,tsx}",
+    "electron/{main,preload}.ts",
+    "scripts/**/*.ts",
+    "cloudflare.config.ts"
+  ],
+  "project": [
+    "*.ts",
+    ".storybook/**/*.{ts,tsx}",
+    "scripts/**/*.ts",
+    "electron/**/*.ts",
+    "src/**/*.{ts,tsx}",
+    "src/**/*.css"
+  ],
+  "ignoreDependencies": ["@bufbuild/protoc-gen-es"],
+  "ignoreUnresolved": ["bun-types/test"]
+}

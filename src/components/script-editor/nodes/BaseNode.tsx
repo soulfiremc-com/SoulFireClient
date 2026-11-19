@@ -403,9 +403,7 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
 const EMPTY_EDGES: Edge[] = [];
 
 // Get port label from server-provided definition
-const getPortLabel = (port: PortDefinition): string => {
-  return port.label;
-};
+const getPortLabel = (port: PortDefinition): string => port.label;
 
 function BaseNodeComponent({
   id,
@@ -547,30 +545,34 @@ function BaseNodeComponent({
   }, [edges, id]);
 
   // Filter inputs based on socket visibility
-  const visibleInputs = useMemo(() => {
-    return inputs.filter((input) => {
-      // Always show connected sockets
-      if (connectedInputs.has(input.id)) return true;
-      // Hide if explicitly hidden
-      if (hiddenSockets.includes(input.id)) return false;
-      // Hide unconnected if flag is set
-      if (hideUnconnected) return false;
-      return true;
-    });
-  }, [inputs, connectedInputs, hiddenSockets, hideUnconnected]);
+  const visibleInputs = useMemo(
+    () =>
+      inputs.filter((input) => {
+        // Always show connected sockets
+        if (connectedInputs.has(input.id)) return true;
+        // Hide if explicitly hidden
+        if (hiddenSockets.includes(input.id)) return false;
+        // Hide unconnected if flag is set
+        if (hideUnconnected) return false;
+        return true;
+      }),
+    [inputs, connectedInputs, hiddenSockets, hideUnconnected],
+  );
 
   // Filter outputs based on socket visibility
-  const visibleOutputs = useMemo(() => {
-    return outputs.filter((output) => {
-      // Always show connected sockets
-      if (connectedOutputs.has(output.id)) return true;
-      // Hide if explicitly hidden
-      if (hiddenSockets.includes(output.id)) return false;
-      // Hide unconnected if flag is set
-      if (hideUnconnected) return false;
-      return true;
-    });
-  }, [outputs, connectedOutputs, hiddenSockets, hideUnconnected]);
+  const visibleOutputs = useMemo(
+    () =>
+      outputs.filter((output) => {
+        // Always show connected sockets
+        if (connectedOutputs.has(output.id)) return true;
+        // Hide if explicitly hidden
+        if (hiddenSockets.includes(output.id)) return false;
+        // Hide unconnected if flag is set
+        if (hideUnconnected) return false;
+        return true;
+      }),
+    [outputs, connectedOutputs, hiddenSockets, hideUnconnected],
+  );
 
   // Handler for inline value changes
   const handleValueChange = useCallback(

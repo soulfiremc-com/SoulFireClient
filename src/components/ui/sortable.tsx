@@ -178,9 +178,7 @@ function Sortable<T>(props: SortableProps<T>) {
     [getItemValueProp],
   );
 
-  const items = React.useMemo(() => {
-    return value.map((item) => getItemValue(item));
-  }, [value, getItemValue]);
+  const items = React.useMemo(() => value.map((item) => getItemValue(item)), [value, getItemValue]);
 
   const onDragStart = React.useCallback(
     (event: DragStartEvent) => {
@@ -440,13 +438,11 @@ function SortableItem(props: SortableItemProps) {
     if (asHandle) setActivatorNodeRef(node);
   });
 
-  const composedStyle = React.useMemo<React.CSSProperties>(() => {
-    return {
+  const composedStyle = React.useMemo<React.CSSProperties>(() => ({
       transform: CSS.Translate.toString(transform),
       transition,
       ...style,
-    };
-  }, [transform, transition, style]);
+    }), [transform, transition, style]);
 
   const itemContext = React.useMemo<SortableItemContextValue>(
     () => ({

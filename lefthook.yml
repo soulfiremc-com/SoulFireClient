@@ -12,3 +12,6 @@ pre-commit:
       glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,css,md,mdx,yml,yaml}"
       run: bunx --no-install oxfmt --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
+    - name: knip
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,lock,css,yml,yaml,html}"
+      run: bun run knip

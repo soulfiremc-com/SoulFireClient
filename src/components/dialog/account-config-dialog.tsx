@@ -636,58 +636,61 @@ function DialogContentInner({
     [instanceInfo.settingsDefinitions],
   );
 
-  const resolvedSettings = useMemo(() => {
-    return botSettingsPages.flatMap((page) =>
-      page.entries.flatMap((identifier) => {
-        const definition = settingsDefinitionsById.get(
-          getSettingIdentifierKey(identifier),
-        );
-        if (!definition) {
-          return [];
-        }
+  const resolvedSettings = useMemo(
+    () =>
+      botSettingsPages.flatMap((page) =>
+        page.entries.flatMap((identifier) => {
+          const definition = settingsDefinitionsById.get(
+            getSettingIdentifierKey(identifier),
+          );
+          if (!definition) {
+            return [];
+          }
 
-        const botValue = getDirectSettingValue(botSettingsConfig, identifier);
-        const instanceValue = getDirectSettingValue(
-          instanceInfo.profile,
-          identifier,
-        );
-        const inheritedValue = getSettingValue(
-          instanceInfo.profile,
-          definition,
-        );
-        const defaultValue = getSettingValue(EMPTY_SETTINGS, definition);
-        const source =
-          botValue !== undefined
-            ? "bot"
-            : instanceValue !== undefined
-              ? "instance"
-              : "default";
-
-        return [
-          {
-            botValue,
-            defaultValue,
-            definition,
-            effectiveValue: botValue !== undefined ? botValue : inheritedValue,
+          const botValue = getDirectSettingValue(botSettingsConfig, identifier);
+          const instanceValue = getDirectSettingValue(
+            instanceInfo.profile,
             identifier,
-            inheritedSource:
-              instanceValue !== undefined ? "instance" : "default",
-            inheritedValue,
-            matchesInherited:
-              botValue !== undefined &&
-              areJsonValuesEqual(botValue, inheritedValue),
-            page,
-            source,
-          } satisfies ResolvedBotSetting,
-        ];
-      }),
-    );
-  }, [
-    botSettingsConfig,
-    botSettingsPages,
-    instanceInfo.profile,
-    settingsDefinitionsById,
-  ]);
+          );
+          const inheritedValue = getSettingValue(
+            instanceInfo.profile,
+            definition,
+          );
+          const defaultValue = getSettingValue(EMPTY_SETTINGS, definition);
+          const source =
+            botValue !== undefined
+              ? "bot"
+              : instanceValue !== undefined
+                ? "instance"
+                : "default";
+
+          return [
+            {
+              botValue,
+              defaultValue,
+              definition,
+              effectiveValue:
+                botValue !== undefined ? botValue : inheritedValue,
+              identifier,
+              inheritedSource:
+                instanceValue !== undefined ? "instance" : "default",
+              inheritedValue,
+              matchesInherited:
+                botValue !== undefined &&
+                areJsonValuesEqual(botValue, inheritedValue),
+              page,
+              source,
+            } satisfies ResolvedBotSetting,
+          ];
+        }),
+      ),
+    [
+      botSettingsConfig,
+      botSettingsPages,
+      instanceInfo.profile,
+      settingsDefinitionsById,
+    ],
+  );
 
   const resolvedSettingsById = useMemo(
     () =>

@@ -28,7 +28,7 @@ export async function resumeScript(
           Stream.runCollect,
         );
       if (started.length === 0)
-        return yield* new ScriptActivationError({
+        return yield* ScriptActivationError.make({
           message: "The server ended script activation without confirming it.",
         });
       return undefined;

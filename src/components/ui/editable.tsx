@@ -17,9 +17,7 @@ const LABEL_NAME = "EditableLabel";
 const AREA_NAME = "EditableArea";
 const PREVIEW_NAME = "EditablePreview";
 const INPUT_NAME = "EditableInput";
-const TRIGGER_NAME = "EditableTrigger";
-const TOOLBAR_NAME = "EditableToolbar";
-const CANCEL_NAME = "EditableCancel";
+
 const SUBMIT_NAME = "EditableSubmit";
 
 type Direction = "ltr" | "rtl";
@@ -194,8 +192,7 @@ function Editable(props: EditableProps) {
     onEnterKeyDown,
   });
 
-  const store = React.useMemo<Store>(() => {
-    return {
+  const store = React.useMemo<Store>(() => ({
       subscribe: (cb) => {
         listenersRef.current.add(cb);
         return () => {
@@ -223,8 +220,7 @@ function Editable(props: EditableProps) {
           cb();
         }
       },
-    };
-  }, [listenersRef, stateRef, propsRef]);
+    }), [listenersRef, stateRef, propsRef]);
 
   const value = useStore((state) => state.value, store);
 
@@ -668,126 +664,6 @@ function EditableInput(props: EditableInputProps) {
   return element;
 }
 
-interface EditableTriggerProps extends useRender.ComponentProps<"button"> {
-  forceMount?: boolean;
-}
-
-function EditableTrigger(props: EditableTriggerProps) {
-  const { render, forceMount = false, ref, ...triggerProps } = props;
-  const context = useEditableContext(TRIGGER_NAME);
-  const editing = useStore((state) => state.editing);
-
-  const onTrigger = React.useCallback(() => {
-    if (context.disabled || context.readOnly) return;
-    context.onEdit();
-  }, [context.disabled, context.readOnly, context.onEdit]);
-
-  const element = useRender({
-    defaultTagName: "button",
-    render,
-    ref,
-    props: mergeProps(
-      {
-        type: "button",
-        "aria-controls": context.rootId,
-        "aria-disabled": context.disabled || context.readOnly,
-        "data-disabled": context.disabled ? "" : undefined,
-        "data-readonly": context.readOnly ? "" : undefined,
-        "data-slot": "editable-trigger",
-      },
-      triggerProps,
-      {
-        onClick: context.triggerMode === "click" ? onTrigger : undefined,
-        onDoubleClick:
-          context.triggerMode === "dblclick" ? onTrigger : undefined,
-      },
-    ),
-  });
-  if (!forceMount && (editing || context.readOnly)) return null;
-  return element;
-}
-
-interface EditableToolbarProps extends useRender.ComponentProps<"div"> {
-  orientation?: "horizontal" | "vertical";
-}
-
-function EditableToolbar(props: EditableToolbarProps) {
-  const {
-    render,
-    className,
-    orientation = "horizontal",
-    ref,
-    ...toolbarProps
-  } = props;
-  const context = useEditableContext(TOOLBAR_NAME);
-
-  const element = useRender({
-    defaultTagName: "div",
-    render,
-    ref,
-    props: mergeProps(
-      {
-        role: "toolbar",
-        "aria-controls": context.rootId,
-        "aria-orientation": orientation,
-        "data-slot": "editable-toolbar",
-        dir: context.dir,
-      },
-      toolbarProps,
-      {
-        className: cn(
-          "flex items-center gap-2",
-          orientation === "vertical" && "flex-col",
-          className,
-        ),
-      },
-    ),
-  });
-
-  return element;
-}
-
-type EditableCancelProps = useRender.ComponentProps<"button">;
-
-function EditableCancel(props: EditableCancelProps) {
-  const { onClick: onClickProp, render, ref, ...cancelProps } = props;
-  const context = useEditableContext(CANCEL_NAME);
-  const editing = useStore((state) => state.editing);
-
-  const propsRef = useAsRef({
-    onClick: onClickProp,
-  });
-
-  const onClick = React.useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (context.disabled || context.readOnly) return;
-
-      propsRef.current.onClick?.(event);
-      if (event.defaultPrevented) return;
-
-      context.onCancel();
-    },
-    [propsRef, context.onCancel, context.disabled, context.readOnly],
-  );
-
-  const element = useRender({
-    defaultTagName: "button",
-    render,
-    ref,
-    props: mergeProps(
-      {
-        type: "button",
-        "aria-controls": context.rootId,
-        "data-slot": "editable-cancel",
-      },
-      cancelProps,
-      { onClick },
-    ),
-  });
-  if (!editing && !context.readOnly) return null;
-  return element;
-}
-
 type EditableSubmitProps = useRender.ComponentProps<"button">;
 
 function EditableSubmit(props: EditableSubmitProps) {
@@ -833,15 +709,13 @@ function EditableSubmit(props: EditableSubmitProps) {
 export {
   Editable,
   EditableArea,
-  EditableCancel,
+
   EditableInput,
   EditableLabel,
   EditablePreview,
   //
   type EditableProps,
   EditableSubmit,
-  EditableToolbar,
-  EditableTrigger,
+
   //
-  useStore as useEditable,
 };

@@ -213,9 +213,7 @@ const turnDirection = (
   p1: XYPosition,
   p2: XYPosition,
   p3: XYPosition,
-): number => {
-  return (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
-};
+): number => (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
 
 // Helper function to check if two line segments intersect
 const lineSegmentsIntersect = (
@@ -1614,9 +1612,7 @@ export function createScriptEditorSession() {
         isDirty: true,
       }));
     },
-    canPaste: () => {
-      return hasScriptClipboardData();
-    },
+    canPaste: () => hasScriptClipboardData(),
     alignNodes: (direction) => {
       const { nodes } = document.get();
       const { groupEditStack } = ui.get();

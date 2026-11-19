@@ -21,7 +21,11 @@ test("audio playback bounds latency and releases queued audio on reset and close
     state: CodecState = "unconfigured";
     decodeQueueSize = 0;
     resets = 0;
-    constructor(readonly init: AudioDecoderInit) {
+    readonly init: AudioDecoderInit;
+
+    constructor(init: AudioDecoderInit) {
+      this.init = init;
+
       decoders.push(this);
     }
     configure() {

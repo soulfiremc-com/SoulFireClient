@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2023",
     "lib": ["DOM", "ES2023"],
+    "types": ["bun-types/test", "node"],
     "module": "ESNext",
     "jsx": "react-jsx",
     "noEmit": true,
@@ -19,6 +20,7 @@
     "useDefineForClassFields": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {

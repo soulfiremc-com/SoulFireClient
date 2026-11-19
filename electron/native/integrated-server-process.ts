@@ -5,6 +5,7 @@ import { stripVTControlCharacters } from "node:util";
 import {
   Cause,
   Clock,
+  DateTime,
   Schema,
   Deferred,
   Effect,
@@ -83,7 +84,7 @@ export function appendIntegratedLog(
   if (!message) return message;
   state.diagnostics.logs.push({
     id: ++state.logSequence,
-    timestamp: Date.now(),
+    timestamp: DateTime.toEpochMillis(DateTime.nowUnsafe()),
     source,
     message,
   });
@@ -138,7 +139,7 @@ export function startIntegratedOperation(
   state.diagnostics = {
     ...createIntegratedServerState().diagnostics,
     status: "preparing",
-    startedAt: Date.now(),
+    startedAt: DateTime.toEpochMillis(DateTime.nowUnsafe()),
   };
   state.logCharacters = 0;
   const startup = Effect.scoped(
@@ -149,7 +150,7 @@ export function startIntegratedOperation(
         : awaitPreparation(work);
       controller.signal.throwIfAborted();
       if (state.child?.exitCode !== null || state.child.signalCode !== null)
-        return yield* new IntegratedServerError({
+        return yield* IntegratedServerError.make({
           message: "SoulFire exited before startup completed",
         });
       state.diagnostics.status = "running";
@@ -239,7 +240,7 @@ export function terminateIntegratedProcess(
       child.kill("SIGKILL");
     }
     yield* Effect.sleep(5000);
-    return yield* new IntegratedServerError({
+    return yield* IntegratedServerError.make({
       message:
         "Java did not exit after a forced stop. Check the process in your system monitor.",
     });
@@ -260,7 +261,9 @@ export function waitForIntegratedServerReady(
   state.child = child;
   state.diagnostics.status = "starting";
   state.diagnostics.pid = child.pid ?? null;
-  state.diagnostics.processStartedAt = Date.now();
+  state.diagnostics.processStartedAt = DateTime.toEpochMillis(
+    DateTime.nowUnsafe(),
+  );
   const readiness = Deferred.makeUnsafe<undefined, Error>();
   let ready = false;
 
@@ -292,7 +295,9 @@ export function waitForIntegratedServerReady(
             exitSignal: NodeJS.Signals | null,
           ) => {
             if (state.child !== child) return;
-            state.diagnostics.exitedAt = Date.now();
+            state.diagnostics.exitedAt = DateTime.toEpochMillis(
+              DateTime.nowUnsafe(),
+            );
             state.diagnostics.exitCode = code;
             state.diagnostics.exitSignal = exitSignal;
             if (state.diagnostics.status !== "stopping") {
@@ -313,7 +318,7 @@ export function waitForIntegratedServerReady(
               Deferred.doneUnsafe(
                 readiness,
                 Effect.fail(
-                  new IntegratedServerError({
+                  IntegratedServerError.make({
                     message:
                       state.diagnostics.error ??
                       "SoulFire stopped before it finished loading",

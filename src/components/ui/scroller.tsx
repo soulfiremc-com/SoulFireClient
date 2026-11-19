@@ -380,11 +380,9 @@ function ScrollButton(props: ScrollButtonProps) {
     return triggerModeHandlers[triggerMode];
   }, [triggerMode, onAutoScrollStart, onAutoScrollStop, onClick]);
 
-  React.useEffect(() => {
-    return () => {
+  React.useEffect(() => () => {
       onAutoScrollStop();
-    };
-  }, [onAutoScrollStop]);
+    }, [onAutoScrollStop]);
 
   const Icon = directionToIcon[direction];
 

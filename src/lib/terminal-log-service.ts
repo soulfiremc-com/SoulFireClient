@@ -27,22 +27,22 @@ export class TerminalLogs extends Context.Service<
     readonly history: Effect.Effect<PreviousLogResponse, TerminalLogError>;
     readonly live: Stream.Stream<LogResponse, TerminalLogError>;
   }
->()("terminal/Logs") {}
+>()("soulfire/lib/terminal-log-service/TerminalLogs") {}
 
 export function terminalLogsLayer(client: LogClient, scope: LogScope) {
   return Layer.succeed(TerminalLogs, {
     history: client
       .getPrevious({ scope, count: 300 })
       .pipe(
-        Effect.mapError(
-          (cause) => new TerminalLogError({ operation: "history", cause }),
+        Effect.mapError((cause) =>
+          TerminalLogError.make({ operation: "history", cause }),
         ),
       ),
     live: client
       .subscribe({ scope })
       .pipe(
-        Stream.mapError(
-          (cause) => new TerminalLogError({ operation: "subscribe", cause }),
+        Stream.mapError((cause) =>
+          TerminalLogError.make({ operation: "subscribe", cause }),
         ),
       ),
   });

@@ -710,13 +710,14 @@ function ScriptEditorContent() {
   ]);
 
   // Cleanup on unmount
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (executionAbortRef.current) {
         executionAbortRef.current.abort();
       }
-    };
-  }, []);
+    },
+    [],
+  );
 
   // Handle zoom controls
   const handleZoomIn = useCallback(() => {

@@ -15,11 +15,19 @@ export class PovVideoDecoder {
   private closed = false;
   private readonly metadata = new Map<number, PovFrame>();
 
+  private readonly output: (frame: VideoFrame, metadata: PovFrame) => void;
+  private readonly requestKeyFrame: () => void;
+  private readonly error: (error: Error) => void;
+
   constructor(
-    private readonly output: (frame: VideoFrame, metadata: PovFrame) => void,
-    private readonly requestKeyFrame: () => void,
-    private readonly error: (error: Error) => void,
+    output: (frame: VideoFrame, metadata: PovFrame) => void,
+    requestKeyFrame: () => void,
+    error: (error: Error) => void,
   ) {
+    this.output = output;
+    this.requestKeyFrame = requestKeyFrame;
+    this.error = error;
+
     if (typeof VideoDecoder === "undefined") {
       throw new TypeError(
         "Live POV requires a browser with WebCodecs video decoding in a secure context.",

@@ -404,13 +404,11 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
       variant: "multiSelect",
       get options() {
         return getEnumEntries(MinecraftAccountProto_AccountTypeProto).map(
-          (type) => {
-            return {
-              label: translateAccountType(i18n, type.key),
-              value: type.key,
-              icon: accountTypeToIcon(type.key),
-            };
-          },
+          (type) => ({
+            label: translateAccountType(i18n, type.key),
+            value: type.key,
+            icon: accountTypeToIcon(type.key),
+          }),
         );
       },
     },

@@ -81,36 +81,6 @@ export function isDemo() {
   );
 }
 
-export function cancellablePromiseDefault<T extends () => void>(
-  promise: Promise<T>,
-): () => void {
-  return cancellablePromise(promise, (run) => {
-    run();
-  });
-}
-
-function cancellablePromise<T>(
-  promise: Promise<T>,
-  cancel: (value: T) => void,
-): () => void {
-  let cancelled = false;
-  let resolvedValue: T | null = null;
-  void promise.then((value) => {
-    if (cancelled) {
-      cancel(value);
-    } else {
-      resolvedValue = value;
-    }
-  });
-
-  return () => {
-    cancelled = true;
-    if (resolvedValue != null) {
-      cancel(resolvedValue);
-    }
-  };
-}
-
 export function hasGlobalPermission(
   clientData: ClientDataResponse,
   permission: GlobalPermission,
@@ -1042,16 +1012,6 @@ export function formatIconName(text: string): string {
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-}
-export function smartEntries<T extends object>(
-  obj: T,
-): [keyof T, T[keyof T]][] {
-  return Object.entries(obj).map(([key, value]) => [
-    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Object.entries loses the key and value types of the typed record
-    key as keyof T,
-    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Object.entries loses the key and value types of the typed record
-    value as T[keyof T],
-  ]);
 }
 
 // Decode only the fields the upload action reads.

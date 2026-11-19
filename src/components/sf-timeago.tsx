@@ -26,9 +26,10 @@ export const SFTimeAgo = React.memo(function SFTimeAgo(props: { date: Date }) {
     1000,
     [props.date, dateFnsLocale],
   );
-  const formatted = useMemo(() => {
-    return format(props.date, "PPpp", { locale: dateFnsLocale });
-  }, [props.date, dateFnsLocale]);
+  const formatted = useMemo(
+    () => format(props.date, "PPpp", { locale: dateFnsLocale }),
+    [props.date, dateFnsLocale],
+  );
   const isoString = props.date.toISOString();
 
   return (

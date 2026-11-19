@@ -87,7 +87,7 @@ export class RavealtsApiError extends TaggedFailure<
   { readonly brand: unique symbol }
 >()("RavealtsApiError", { errorType: Schema.String, message: Schema.String }) {
   static new(errorType: string, message: string) {
-    return new RavealtsApiError({ errorType, message });
+    return RavealtsApiError.make({ errorType, message });
   }
 }
 

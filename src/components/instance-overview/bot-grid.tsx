@@ -61,7 +61,7 @@ import { type BotDisplayState, getBotDisplayState } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
-import { connectionPhaseMeta } from "./connection-phase-meta.ts";
+
 import { BOT_STATE_META } from "./fleet-status-meta.ts";
 import { MinecraftHead } from "../minecraft/minecraft-head.tsx";
 
@@ -112,42 +112,6 @@ export function BotStateBadge({
         <span className="inline-flex items-center gap-0.5 text-muted-foreground">
           <WifiIcon aria-hidden="true" className="size-3" />
           {t("bots.connectionPhase.ping", { ms: bot.pingMs })}
-        </span>
-      )}
-    </Badge>
-  );
-}
-
-/// Status pill for a bot's live connection phase, with optional ping readout.
-export function ConnectionPhaseBadge({
-  phase,
-  pingMs,
-  className,
-}: {
-  phase: BotConnectionPhase;
-  pingMs?: number | undefined;
-  className?: string;
-}) {
-  const { t } = useTranslation("instance");
-  const meta = connectionPhaseMeta(phase);
-  return (
-    <Badge
-      variant="outline"
-      className={cn(
-        "gap-1 text-xs",
-        meta.tone === "warning" && "border-warning/40 text-warning-emphasis",
-        meta.tone === "success" && "border-success/40 text-success-emphasis",
-        meta.tone === "destructive" && "border-destructive/40 text-destructive",
-        meta.tone === "muted" && "text-muted-foreground",
-        className,
-      )}
-    >
-      <span className={cn("size-1.5 rounded-full", meta.dot)} />
-      {t(meta.labelKey)}
-      {meta.showPing && pingMs !== undefined && (
-        <span className="inline-flex items-center gap-0.5 text-muted-foreground">
-          <WifiIcon className="size-3" />
-          {t("bots.connectionPhase.ping", { ms: pingMs })}
         </span>
       )}
     </Badge>

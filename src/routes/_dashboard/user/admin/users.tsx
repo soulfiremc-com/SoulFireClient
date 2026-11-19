@@ -189,13 +189,11 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
         return i18n.t("admin:users.table.role");
       },
       variant: "multiSelect",
-      options: getEnumEntries(UserRole).map((type) => {
-        return {
-          label: roleLabel(type.key),
-          value: type.key,
-          icon: roleToIcon(type.key),
-        };
-      }),
+      options: getEnumEntries(UserRole).map((type) => ({
+        label: roleLabel(type.key),
+        value: type.key,
+        icon: roleToIcon(type.key),
+      })),
     },
     filterFn: "arrHas",
     enableColumnFilter: true,

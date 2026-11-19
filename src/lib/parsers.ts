@@ -9,10 +9,7 @@ import {
 
 import { dataTableConfig } from "@/config/data-table";
 
-import type {
-  ExtendedColumnFilter,
-  ExtendedColumnSort,
-} from "@/types/data-table";
+import type { ExtendedColumnSort } from "@/types/data-table";
 
 const sortingItemSchema = Schema.Struct({
   id: Schema.String,
@@ -58,65 +55,6 @@ export const getSortingStateParser = <TData>(
       a.every(
         (item, index) =>
           item.id === b[index]?.id && item.desc === b[index].desc,
-      ),
-  });
-};
-
-const filterItemSchema = Schema.Struct({
-  id: Schema.String,
-  value: Schema.Union([
-    Schema.String,
-    Schema.mutable(Schema.Array(Schema.String)),
-  ]),
-  variant: Schema.Literals(dataTableConfig.filterVariants),
-  operator: Schema.Literals(dataTableConfig.operators),
-  filterId: Schema.String,
-});
-
-export type FilterItemSchema = (typeof filterItemSchema)["Type"];
-
-export const getFiltersStateParser = <TData>(
-  columnIds?: string[] | Set<string>,
-) => {
-  const validKeys = columnIds
-    ? columnIds instanceof Set
-      ? columnIds
-      : new Set(columnIds)
-    : null;
-
-  return createParser({
-    parse: (value) => {
-      try {
-        const parsed: unknown = JSON.parse(value);
-        const result = Schema.decodeUnknownResult(
-          Schema.mutable(Schema.Array(filterItemSchema)),
-          { errors: "all" },
-        )(parsed);
-
-        if (!Result.isSuccess(result)) return null;
-
-        if (
-          validKeys &&
-          result.success.some((item) => !validKeys.has(item.id))
-        ) {
-          return null;
-        }
-
-        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the schema above validates ids against the column ids of TData
-        return result.success as ExtendedColumnFilter<TData>[];
-      } catch {
-        return null;
-      }
-    },
-    serialize: (value) => JSON.stringify(value),
-    eq: (a, b) =>
-      a.length === b.length &&
-      a.every(
-        (filter, index) =>
-          filter.id === b[index]?.id &&
-          filter.value === b[index].value &&
-          filter.variant === b[index].variant &&
-          filter.operator === b[index].operator,
       ),
   });
 };
@@ -194,11 +132,4 @@ export const botListValidateSearch = createStandardSchemaV1(
     ]),
   },
   { partialOutput: true },
-);
-
-export const simpleSearchValidateSearch = createStandardSchemaV1(
-  simpleSearchParams,
-  {
-    partialOutput: true,
-  },
 );

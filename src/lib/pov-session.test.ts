@@ -1,4 +1,3 @@
-/// <reference types="bun-types/test" />
 import { afterEach, beforeEach, expect, jest, test } from "bun:test";
 import { fromBinary } from "@bufbuild/protobuf";
 import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";

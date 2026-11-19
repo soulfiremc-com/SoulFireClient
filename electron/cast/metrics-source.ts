@@ -34,7 +34,7 @@ export class MetricsSource extends Context.Service<
       Scope.Scope
     >;
   }
->()("soulfire/MetricsSource") {}
+>()("soulfire/electron/cast/metrics-source/MetricsSource") {}
 
 export const makeMetricsSource = (
   transportFor: (source: CastSource) => Transport,

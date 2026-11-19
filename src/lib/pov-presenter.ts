@@ -4,12 +4,22 @@ import type { PovFrame } from "@/generated/soulfire/pov_pb";
 export class PovPresenter {
   private pending: { frame: VideoFrame; metadata: PovFrame } | null = null;
   private scheduled: number | null = null;
+  private readonly draw: (frame: VideoFrame, metadata: PovFrame) => void;
+  private readonly request: (callback: FrameRequestCallback) => number;
+  private readonly cancel: (id: number) => void;
+  private readonly paced: boolean;
+
   constructor(
-    private readonly draw: (frame: VideoFrame, metadata: PovFrame) => void,
-    private readonly request: (callback: FrameRequestCallback) => number,
-    private readonly cancel: (id: number) => void,
-    private readonly paced: boolean,
-  ) {}
+    draw: (frame: VideoFrame, metadata: PovFrame) => void,
+    request: (callback: FrameRequestCallback) => number,
+    cancel: (id: number) => void,
+    paced: boolean,
+  ) {
+    this.draw = draw;
+    this.request = request;
+    this.cancel = cancel;
+    this.paced = paced;
+  }
 
   present(frame: VideoFrame, metadata: PovFrame) {
     if (!this.paced) {

@@ -57,11 +57,9 @@ const router = createRouter({
   defaultNotFoundComponent: NotFoundComponent,
   defaultStructuralSharing: true,
   context: { queryClient },
-  Wrap: ({ children }) => {
-    return (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
-  },
+  Wrap: ({ children }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  ),
 });
 
 // Register the router instance for type safety

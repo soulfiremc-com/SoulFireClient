@@ -187,12 +187,14 @@ export function NodePalette({
     return result;
   }, [searchQuery, getNodeLabel, categories, getNodesByCategory]);
 
-  const totalFilteredNodes = useMemo(() => {
-    return Object.values(filteredNodesByCategory).reduce(
-      (sum, nodes) => sum + nodes.length,
-      0,
-    );
-  }, [filteredNodesByCategory]);
+  const totalFilteredNodes = useMemo(
+    () =>
+      Object.values(filteredNodesByCategory).reduce(
+        (sum, nodes) => sum + nodes.length,
+        0,
+      ),
+    [filteredNodesByCategory],
+  );
 
   return (
     <div

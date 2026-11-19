@@ -758,11 +758,9 @@ function windowTarget(sender: BrowserWindow, target: unknown): BrowserWindow {
 }
 
 function registerIpcHandlers(): void {
-  handleIpc("providers:request", async (_window, request: ProviderRequest) => {
-    return executeProviderRequest(request, (input, init) =>
-      net.fetch(input, init),
-    );
-  });
+  handleIpc("providers:request", async (_window, request: ProviderRequest) =>
+    executeProviderRequest(request, (input, init) => net.fetch(input, init)),
+  );
   handleIpc(
     "pov:set-captured",
     (owner, captured: unknown, target?: unknown) => {
@@ -804,13 +802,12 @@ function registerIpcHandlers(): void {
     async (
       _window,
       options: { device: unknown; source: unknown; relaunch?: boolean },
-    ) => {
-      return castManager.connect(
+    ) =>
+      castManager.connect(
         Schema.decodeUnknownSync(CastDevice)(options.device),
         Schema.decodeUnknownSync(CastSource)(options.source),
         options.relaunch === true,
-      );
-    },
+      ),
   );
   handleIpc("cast:discover", () => {
     castManager.discover();
@@ -830,23 +827,20 @@ function registerIpcHandlers(): void {
 
   handleIpc(
     "dialog:open",
-    async (senderWindow, options: DesktopOpenDialogOptions) => {
-      return openDialog(senderWindow, options);
-    },
+    async (senderWindow, options: DesktopOpenDialogOptions) =>
+      openDialog(senderWindow, options),
   );
 
   handleIpc(
     "dialog:save",
-    async (senderWindow, options: DesktopSaveDialogOptions) => {
-      return saveDialog(senderWindow, options);
-    },
+    async (senderWindow, options: DesktopSaveDialogOptions) =>
+      saveDialog(senderWindow, options),
   );
 
   handleIpc(
     "discord:update-activity",
-    async (_window, state: string, details?: string | null) => {
-      return discordPresence.update(state, details);
-    },
+    async (_window, state: string, details?: string | null) =>
+      discordPresence.update(state, details),
   );
 
   handleIpc(
@@ -877,9 +871,9 @@ function registerIpcHandlers(): void {
     }));
   });
 
-  handleIpc("fs:read-text-file", async (_window, targetPath: string) => {
-    return readFile(targetPath, "utf8");
-  });
+  handleIpc("fs:read-text-file", async (_window, targetPath: string) =>
+    readFile(targetPath, "utf8"),
+  );
 
   handleIpc(
     "fs:watch",
@@ -949,9 +943,9 @@ function registerIpcHandlers(): void {
     },
   );
 
-  handleIpc("integrated-server:get-version", async () => {
-    return getSoulFireServerVersion(app, app.getVersion());
-  });
+  handleIpc("integrated-server:get-version", async () =>
+    getSoulFireServerVersion(app, app.getVersion()),
+  );
 
   handleIpc("integrated-server:get-diagnostics", () =>
     getIntegratedDiagnostics(app, integratedServerState),
@@ -977,15 +971,14 @@ function registerIpcHandlers(): void {
     captureIntegratedThreadDump(app, integratedServerState),
   );
 
-  handleIpc("integrated-server:list-custom-jars", async () => {
-    return listCustomSoulFireServerJars(app);
-  });
+  handleIpc("integrated-server:list-custom-jars", async () =>
+    listCustomSoulFireServerJars(app),
+  );
 
   handleIpc(
     "integrated-server:import-custom-jar",
-    async (_window, sourcePath: string) => {
-      return importCustomSoulFireServerJar(app, sourcePath);
-    },
+    async (_window, sourcePath: string) =>
+      importCustomSoulFireServerJar(app, sourcePath),
   );
 
   handleIpc(
@@ -1016,8 +1009,8 @@ function registerIpcHandlers(): void {
         };
         jvmArgs: string[];
       },
-    ) => {
-      return runIntegratedServer(
+    ) =>
+      runIntegratedServer(
         app,
         integratedServerState,
         options.jvmArgs,
@@ -1038,25 +1031,18 @@ function registerIpcHandlers(): void {
           address,
           token,
         };
-      });
-    },
+      }),
   );
 
-  handleIpc("path:app-config-dir", () => {
-    return getAppConfigDir(app);
-  });
+  handleIpc("path:app-config-dir", () => getAppConfigDir(app));
 
-  handleIpc("path:app-local-data-dir", () => {
-    return getAppLocalDataDir(app);
-  });
+  handleIpc("path:app-local-data-dir", () => getAppLocalDataDir(app));
 
-  handleIpc("path:download-dir", () => {
-    return app.getPath("downloads");
-  });
+  handleIpc("path:download-dir", () => app.getPath("downloads"));
 
-  handleIpc("path:resolve", (_window, ...pathsToResolve: string[]) => {
-    return path.resolve(...pathsToResolve);
-  });
+  handleIpc("path:resolve", (_window, ...pathsToResolve: string[]) =>
+    path.resolve(...pathsToResolve),
+  );
 
   handleIpc("shell:open-external", async (_window, target: string) => {
     if (!isSafeExternalUrl(target)) {
@@ -1066,30 +1052,28 @@ function registerIpcHandlers(): void {
     await shell.openExternal(target);
   });
 
-  handleIpc("shell:open-path", async (_window, target: string) => {
-    return shell.openPath(target);
-  });
+  handleIpc("shell:open-path", async (_window, target: string) =>
+    shell.openPath(target),
+  );
 
-  handleIpc("system:get-info", () => {
-    return {
-      appVersion: app.getVersion(),
-      os: {
-        arch: process.arch,
-        locale: app.getLocale(),
-        platform: process.platform,
-        type: mapPlatformToType(process.platform),
-        version: os.release(),
-      },
-    };
-  });
+  handleIpc("system:get-info", () => ({
+    appVersion: app.getVersion(),
+    os: {
+      arch: process.arch,
+      locale: app.getLocale(),
+      platform: process.platform,
+      type: mapPlatformToType(process.platform),
+      version: os.release(),
+    },
+  }));
 
   handleIpc("window:close", (senderWindow, target?: unknown) => {
     windowTarget(senderWindow, target).close();
   });
 
-  handleIpc("window:is-maximized", (senderWindow, target?: unknown) => {
-    return windowTarget(senderWindow, target).isMaximized();
-  });
+  handleIpc("window:is-maximized", (senderWindow, target?: unknown) =>
+    windowTarget(senderWindow, target).isMaximized(),
+  );
 
   handleIpc("window:maximize", (senderWindow, target?: unknown) => {
     windowTarget(senderWindow, target).maximize();

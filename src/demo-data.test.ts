@@ -14,8 +14,8 @@ import {
 import {
   GlobalPermission,
   InstancePermission,
-} from "./generated/soulfire/common_pb.ts";
-import { InstanceInfoSchema } from "./generated/soulfire/instance_pb.ts";
+} from "./generated/soulfire/common_pb.js";
+import { InstanceInfoSchema } from "./generated/soulfire/instance_pb.js";
 
 const catalogs = [
   { pages: demoInstanceSettings, definitions: demoInstanceSettingsDefinitions },

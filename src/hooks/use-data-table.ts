@@ -145,12 +145,14 @@ export function useDataTable<TData extends RowData>(
     [pagination, setPage, setPerPage],
   );
 
-  const columnIds = React.useMemo(() => {
-    return new Set(
-      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
-      columns.map((column) => column.id).filter(Boolean) as string[],
-    );
-  }, [columns]);
+  const columnIds = React.useMemo(
+    () =>
+      new Set(
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
+        columns.map((column) => column.id).filter(Boolean) as string[],
+      ),
+    [columns],
+  );
 
   const [sorting, setSorting] = useQueryState(
     sortKey,

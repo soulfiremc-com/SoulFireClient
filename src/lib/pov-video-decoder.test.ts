@@ -29,7 +29,11 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     }
     state = "unconfigured";
     decodeQueueSize = 0;
-    constructor(readonly callbacks: VideoDecoderInit) {
+    readonly callbacks: VideoDecoderInit;
+
+    constructor(callbacks: VideoDecoderInit) {
+      this.callbacks = callbacks;
+
       decoders.push(this);
     }
     configure() {
@@ -51,7 +55,11 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     configurable: true,
     writable: true,
     value: class {
-      constructor(readonly init: EncodedVideoChunkInit) {}
+      readonly init: EncodedVideoChunkInit;
+
+      constructor(init: EncodedVideoChunkInit) {
+        this.init = init;
+      }
     },
   });
   let requestedKeys = 0;

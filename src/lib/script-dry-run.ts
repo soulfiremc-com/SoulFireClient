@@ -14,7 +14,7 @@ export class InvalidMockInput extends TaggedFailure<
   { readonly brand: unique symbol }
 >()("InvalidMockInput", { portId: Schema.String, message: Schema.String }) {
   static new(portId: string) {
-    return new InvalidMockInput({ portId, message: portId });
+    return InvalidMockInput.make({ portId, message: portId });
   }
 }
 

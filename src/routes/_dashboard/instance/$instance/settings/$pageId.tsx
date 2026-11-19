@@ -42,12 +42,9 @@ export const Route = createFileRoute(
   validateSearch: parseSettingFocusSearch,
   beforeLoad: () =>
     routeChrome({
-      getTitle: (match) => {
-        return (
-          loaderDataString(match, "title")?.trim() ||
-          i18n.t("common:breadcrumbs.settings")
-        );
-      },
+      getTitle: (match) =>
+        loaderDataString(match, "title")?.trim() ||
+        i18n.t("common:breadcrumbs.settings"),
       getIcon: (match) => {
         const iconName = loaderDataString(match, "iconName");
         return {

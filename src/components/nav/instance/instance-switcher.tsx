@@ -145,27 +145,22 @@ function InstanceList() {
 
   return (
     <>
-      {instanceList.instances.map((instance, index) => {
-        return (
-          <DropdownMenuItem
-            key={instance.id}
-            render={
-              <Link
-                to="/instance/$instance"
-                params={{ instance: instance.id }}
-              />
-            }
-          >
-            <DynamicIcon name={instance.icon} className="size-4 shrink-0" />
-            <span>{instance.friendlyName}</span>
-            {isDesktopApp() && index < PROJECT_SHORTCUT_LIMIT && (
-              <DropdownMenuShortcut>
-                {formatShortcut(`Ctrl+${index + 1}`)}
-              </DropdownMenuShortcut>
-            )}
-          </DropdownMenuItem>
-        );
-      })}
+      {instanceList.instances.map((instance, index) => (
+        <DropdownMenuItem
+          key={instance.id}
+          render={
+            <Link to="/instance/$instance" params={{ instance: instance.id }} />
+          }
+        >
+          <DynamicIcon name={instance.icon} className="size-4 shrink-0" />
+          <span>{instance.friendlyName}</span>
+          {isDesktopApp() && index < PROJECT_SHORTCUT_LIMIT && (
+            <DropdownMenuShortcut>
+              {formatShortcut(`Ctrl+${index + 1}`)}
+            </DropdownMenuShortcut>
+          )}
+        </DropdownMenuItem>
+      ))}
     </>
   );
 }

@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import {
   CAST_APP_ID,
@@ -19,6 +18,7 @@ import {
   Schedule,
   type Scope,
 } from "effect";
+import { newCastRequestId } from "./request-id";
 import { CastError, castError } from "./errors";
 
 interface Session {
@@ -85,7 +85,7 @@ export class CastTransport extends Context.Service<
       relaunch: boolean,
     ) => Effect.Effect<CastChannel, CastError, Scope.Scope>;
   }
->()("soulfire/CastTransport") {}
+>()("soulfire/electron/cast/transport/CastTransport") {}
 
 // Keep the callback-based Cast implementation at this boundary. All consumers
 // acquire it through an Effect scope, including failed and interrupted opens.
@@ -112,7 +112,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           string,
           (reply: ReceiverMessage | CastError) => void
         >();
-        const sessionId = randomUUID();
+        const sessionId = newCastRequestId();
         let app: Application | undefined;
         let controller: Controller | undefined;
         let closed = false;
@@ -292,7 +292,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
         const ready = yield* Effect.suspend(() =>
           request({
             type: "HELLO",
-            requestId: randomUUID(),
+            requestId: newCastRequestId(),
             sessionId,
             version: PROTOCOL_VERSION,
           }).pipe(
