@@ -6,7 +6,7 @@ export function editBoxValue(value: string, maxLength: number): string {
       code < 32 ||
       code === 127 ||
       code === 167 ||
-      (code >= 0xd800 && code <= 0xdfff)
+      (code >= 0xd8_00 && code <= 0xdf_ff)
     ) {
       continue;
     }

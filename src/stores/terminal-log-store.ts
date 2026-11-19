@@ -123,8 +123,8 @@ export function createTerminalLogSession(
       Effect.gen(function* () {
         const logs = yield* TerminalLogs;
         // Coalesce snapshot requests while retaining one catch-up behind an active request.
-        const historyRequests = yield* Queue.sliding<void>(1);
-        const flushRequests = yield* Queue.dropping<void>(1);
+        const historyRequests = yield* Queue.sliding<undefined>(1);
+        const flushRequests = yield* Queue.dropping<undefined>(1);
         const loadHistory = Effect.gen(function* () {
           yield* Queue.take(historyRequests);
           const result = yield* Effect.result(logs.history);

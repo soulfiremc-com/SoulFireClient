@@ -117,13 +117,10 @@ test("script log feed reconciles history and live messages and retains repeated 
 test("script feed retains independent provenance and strips untrusted interaction strings", async () => {
   const { encodeTerminalInteraction: marker, parseTerminalText } =
     await import("./terminal-interactions");
-  const text =
-    marker({
-      hover: "Details",
-      click: { action: "copy_to_clipboard", value: "fixture-token" },
-    }) +
-    "Copy token" +
-    marker(null);
+  const text = `${marker({
+    hover: "Details",
+    click: { action: "copy_to_clipboard", value: "fixture-token" },
+  })}Copy token${marker(null)}`;
   const messages = [
     {
       id: "trusted",

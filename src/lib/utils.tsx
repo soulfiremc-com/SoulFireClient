@@ -291,7 +291,7 @@ export async function setInstanceIcon(
 
       return {
         ...old,
-        icon: icon,
+        icon,
       };
     },
   );
@@ -360,7 +360,7 @@ export async function setInstanceFriendlyName(
 
       return {
         ...old,
-        friendlyName: friendlyName,
+        friendlyName,
       };
     },
   );
@@ -478,8 +478,8 @@ export async function updateInstanceConfigEntry(
   await Effect.runPromise(
     instanceService.updateInstanceConfigEntry({
       id: instanceInfo.id,
-      namespace: namespace,
-      key: key,
+      namespace,
+      key,
       value: jsonToValue(value),
     }),
   );
@@ -516,8 +516,8 @@ export async function updateServerConfigEntry(
   const serverService = createRpcClient(ServerService, transport);
   await Effect.runPromise(
     serverService.updateServerConfigEntry({
-      namespace: namespace,
-      key: key,
+      namespace,
+      key,
       value: jsonToValue(value),
     }),
   );
@@ -605,10 +605,10 @@ export async function updateBotConfigEntry(
   const botService = createRpcClient(BotService, transport);
   await Effect.runPromise(
     botService.updateBotConfigEntry({
-      instanceId: instanceId,
-      botId: botId,
-      namespace: namespace,
-      key: key,
+      instanceId,
+      botId,
+      namespace,
+      key,
       value: jsonToValue(value),
     }),
   );
@@ -825,7 +825,7 @@ export async function removeInstanceAccountsBatch(
   await Effect.runPromise(
     instanceService.removeInstanceAccountsBatch({
       id: instanceInfo.id,
-      profileIds: profileIds,
+      profileIds,
     }),
   );
 }
@@ -982,14 +982,14 @@ export async function setSelfUsername(
 
     return {
       ...old,
-      username: username,
+      username,
     };
   });
 
   const clientService = createRpcClient(ClientService, transport);
   await Effect.runPromise(
     clientService.updateSelfUsername({
-      username: username,
+      username,
     }),
   );
 }
@@ -1015,14 +1015,14 @@ export async function setSelfEmail(
 
     return {
       ...old,
-      email: email,
+      email,
     };
   });
 
   const clientService = createRpcClient(ClientService, transport);
   await Effect.runPromise(
     clientService.updateSelfEmail({
-      email: email,
+      email,
     }),
   );
 }

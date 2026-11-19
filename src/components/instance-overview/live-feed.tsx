@@ -152,10 +152,10 @@ export function LiveFeed({
       void observeServerStream(responses, {
         onMessage: receiveEvent,
         onError: () => {
-          retry(3_000);
+          retry(3000);
         },
         onComplete: () => {
-          retry(1_000);
+          retry(1000);
         },
       });
     }

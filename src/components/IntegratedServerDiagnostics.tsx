@@ -125,7 +125,7 @@ function ProcessSummary({
     if (!active) return undefined;
     const interval = setInterval(() => {
       setNow(Date.now());
-    }, 1_000);
+    }, 1000);
     return () => {
       clearInterval(interval);
     };

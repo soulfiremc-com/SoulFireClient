@@ -4,9 +4,7 @@ import { useState } from "react";
 import { expect, fn, screen, userEvent, waitFor } from "storybook/test";
 import { ConfirmDialog } from "./confirm-dialog.tsx";
 
-function ConfirmDialogHarness(props: {
-  onConfirm: () => void | Promise<unknown>;
-}) {
+function ConfirmDialogHarness(props: { onConfirm: () => unknown }) {
   const [open, setOpen] = useState(true);
   return (
     <ConfirmDialog

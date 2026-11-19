@@ -18,7 +18,7 @@ export function textInputEvents(value: string): PovInputEvent[] {
     const code = character.codePointAt(0) ?? 0;
     if (character === "\n") events.push(...keyPress(257));
     else if (character === "\t") events.push(...keyPress(258));
-    else if (code >= 32 && !(code >= 0xd800 && code <= 0xdfff))
+    else if (code >= 32 && !(code >= 0xd8_00 && code <= 0xdf_ff))
       events.push(create(PovInputEventSchema, { kind: Kind.CHARACTER, code }));
   }
   return events;

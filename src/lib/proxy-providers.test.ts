@@ -198,7 +198,7 @@ test("IPRoyal imports an order using the shared protocol port", async () => {
   const { fetcher } = mock([
     {
       proxy_data: {
-        ports: { socks5: 12324, "http|https": 12323 },
+        ports: { socks5: 12_324, "http|https": 12_323 },
         proxies: [
           { ip: "192.0.2.1", username: "user", password: "secret" },
           "192.0.2.2:12323:user:secret:@",

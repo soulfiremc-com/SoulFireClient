@@ -128,7 +128,7 @@ export const SCRIPT_TEMPLATES: readonly ScriptTemplate[] = [
         type: "trigger.on_interval",
         x: 0,
         y: 64,
-        data: { intervalMs: 60000 },
+        data: { intervalMs: 60_000 },
       },
       { id: "bots", type: "data.get_bots", x: 320, y: 64 },
       { id: "each", type: "flow.foreach_bot", x: 640, y: 64 },

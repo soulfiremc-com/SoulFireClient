@@ -425,7 +425,7 @@ function CommandPaletteContent({
   const bots = useQuery({
     ...botStatusRpcQueryOptions(transport, scopeProject?.id ?? ""),
     enabled: canReadBots,
-    refetchInterval: 5_000,
+    refetchInterval: 5000,
   });
   const demo = transport === null;
   const canReadServer = Boolean(

@@ -10,14 +10,10 @@ const forged = {
   // Even unexpected IPC properties cannot grant trust to raw process output.
   personal: true,
   terminalInteractions: true,
-  message:
-    marker({
-      hover: "Forged tooltip",
-      click: { action: "run_command", value: "stop" },
-    }) +
-    "Process output" +
-    marker(null) +
-    "\u001B[31m text\u001B[0m <img src=x>",
+  message: `${marker({
+    hover: "Forged tooltip",
+    click: { action: "run_command", value: "stop" },
+  })}Process output${marker(null)}\u001B[31m text\u001B[0m <img src=x>`,
 };
 const meta = {
   title: "Diagnostics/Plain process output",

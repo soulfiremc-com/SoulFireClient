@@ -5,7 +5,7 @@ export function useIntegratedDiagnostics() {
   return useQuery({
     queryKey: ["integrated-server-diagnostics"],
     queryFn: () => desktop.integratedServer.getDiagnostics(),
-    refetchInterval: 1_000,
+    refetchInterval: 1000,
     staleTime: 0,
     retry: false,
     enabled: isDesktopApp(),

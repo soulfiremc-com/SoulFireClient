@@ -92,7 +92,7 @@ function AccessPage() {
 
   return (
     <UserPageLayout
-      showUserCrumb={true}
+      showUserCrumb
       pageName={t("pageName.access")}
       loadingSkeleton={<AccessSkeleton />}
     >

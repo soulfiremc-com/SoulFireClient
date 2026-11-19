@@ -63,12 +63,14 @@ let sourceId: string;
 let sinkId: string;
 
 function ScriptCanvasExample() {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [editor] = useState(() => {
     session = createScriptEditorSession();
     sourceId = session.actions.addNode("test.source", { x: 0, y: 0 });
     sinkId = session.actions.addNode("test.sink", { x: 320, y: 0 });
     return session;
   });
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [client] = useState(() => {
     const queryClient = new QueryClient();
     queryClient.setQueryData(

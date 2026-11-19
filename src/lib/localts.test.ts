@@ -63,7 +63,7 @@ function mock(
       data = {
         success: true,
         username: "customer",
-        balance: overrides.balance ?? 1_000,
+        balance: overrides.balance ?? 1000,
       };
     else if (url.pathname === "/v1/orders/get-order")
       data = overrides.order ?? { success: true, ...packaged };
@@ -78,7 +78,7 @@ test("Localts pricing applies the highest eligible quantity tier", () => {
   assert.equal(localtsPrice(product, 4), 40);
   assert.equal(localtsPrice(product, 5), 45);
   assert.equal(localtsPrice(product, 10), 80);
-  for (const invalid of [0, -1, 1.5, 1_001, NaN])
+  for (const invalid of [0, -1, 1.5, 1001, NaN])
     assert.throws(() => localtsPrice(product, invalid));
 });
 
@@ -229,7 +229,7 @@ test("Localts aborts sibling preflight requests after failure and never purchase
         body: JSON.stringify({ success: true, products: [product] }),
       };
     }
-    throw new ProviderApiError("authentication");
+    throw ProviderApiError.new("authentication");
   };
   await assert.rejects(
     purchaseLocaltsAccounts("key", product, 1, 10, undefined, fetcher),

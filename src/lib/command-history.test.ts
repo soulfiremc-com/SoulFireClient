@@ -40,7 +40,7 @@ test("storage failures do not prevent keeping history in memory", () => {
   assert.deepEqual(
     readCommandHistory({
       getItem: () => {
-        throw new Error();
+        throw new Error("Test failure");
       },
     }),
     [],
@@ -49,7 +49,7 @@ test("storage failures do not prevent keeping history in memory", () => {
   assert.doesNotThrow(() => {
     saveCommandHistory(history, {
       setItem: () => {
-        throw new Error();
+        throw new Error("Test failure");
       },
     });
   });

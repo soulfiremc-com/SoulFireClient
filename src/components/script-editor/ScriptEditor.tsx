@@ -23,12 +23,12 @@ import { useScriptEditor } from "@/components/script-editor/script-editor-contex
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
 import { ScriptGroupViewports } from "@/lib/script-group-viewports";
+import { ConnectionLine } from "./edges/ConnectionLine";
 import {
-  ConnectionLine,
   createConnectionValidator,
-  edgeTypes,
   getConnectionProblem,
-} from "./edges";
+} from "./edges/connection-validation";
+import { edgeTypes } from "./edges/edge-types";
 import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
@@ -78,6 +78,7 @@ export function ScriptEditor() {
   const showMiniMap = useStore(
     (state) => state.width >= 640 && state.height >= 400,
   );
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [groupViewports] = useState(() => new ScriptGroupViewports());
   const {
     contextMenu: nodeContextMenu,

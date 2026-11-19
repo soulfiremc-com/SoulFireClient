@@ -107,7 +107,7 @@ function CategorySection({
   onNodeDragStart,
   onNodeAdd,
 }: CategorySectionProps) {
-  const [userOpen, setIsOpen] = useState(true);
+  const [userOpen, setUserOpen] = useState(true);
   // Search results stay visible even in a category the user collapsed.
   const isOpen = forceOpen || userOpen;
 
@@ -116,7 +116,7 @@ function CategorySection({
   }
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+    <Collapsible open={isOpen} onOpenChange={setUserOpen}>
       <CollapsibleTrigger
         title={categoryInfo.description}
         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium transition-colors hover:bg-muted"

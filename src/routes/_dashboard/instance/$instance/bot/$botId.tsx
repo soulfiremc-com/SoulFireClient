@@ -212,7 +212,7 @@ export const Route = createFileRoute(
         );
         return result;
       },
-      refetchInterval: 1_000, // Faster polling for live data
+      refetchInterval: 1000, // Faster polling for live data
     });
     return {
       botInfoQueryOptions,
@@ -1483,7 +1483,7 @@ function BotInventoryPanel({
           throw error;
         }
       },
-      refetchInterval: 1_000,
+      refetchInterval: 1000,
     }),
   );
 
@@ -2687,7 +2687,7 @@ function botDialogQueryOptions(
         throw error;
       }
     },
-    refetchInterval: 2_000, // Poll for dialog updates
+    refetchInterval: 2000, // Poll for dialog updates
     enabled: isOnline,
   });
 }

@@ -92,7 +92,7 @@ function UserSettings() {
 
   return (
     <UserPageLayout
-      showUserCrumb={true}
+      showUserCrumb
       pageName={t("pageName.settings")}
       loadingSkeleton={<UserSettingsSkeleton />}
     >

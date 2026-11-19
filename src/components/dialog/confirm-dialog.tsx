@@ -24,7 +24,7 @@ export function ConfirmDialog(props: {
    * Return a promise to keep the dialog open with a pending state until the
    * action settles. Callers report errors themselves.
    */
-  onConfirm: () => void | Promise<unknown>;
+  onConfirm: () => unknown;
 }) {
   const { t } = useTranslation("common");
   const [pending, setPending] = useState(false);

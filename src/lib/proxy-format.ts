@@ -22,7 +22,7 @@ export function parseNormalProxy(
     throw new Error("Invalid proxy format");
   }
   const port = Number(parts[2]);
-  if (port < 1 || port > 65535) throw new Error("Invalid proxy port");
+  if (port < 1 || port > 65_535) throw new Error("Invalid proxy port");
 
   const credentials = atIndex === -1 ? parts[3] : line.slice(0, atIndex);
   const separator = credentials?.indexOf(":") ?? -1;

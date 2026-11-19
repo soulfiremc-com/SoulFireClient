@@ -8,6 +8,7 @@ function randomSkeletonWidth() {
 }
 
 function LoadingSkeleton() {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [width] = React.useState(randomSkeletonWidth);
 
   return (

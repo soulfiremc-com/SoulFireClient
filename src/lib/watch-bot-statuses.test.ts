@@ -29,7 +29,7 @@ test("a deleted instance refreshes its profile without reopening the status stre
   });
   const stop = watchBotStatuses(transport, client, instanceId);
   try {
-    await delay(1_200);
+    await delay(1200);
     assert.equal(attempts, 1);
     assert.equal(client.getQueryState(key)?.isInvalidated, true);
   } finally {
@@ -86,7 +86,7 @@ test("a transient failure reconnects and teardown cancels the live stream", asyn
   });
   const stop = watchBotStatuses(transport, client, instanceId);
   try {
-    const deadline = Date.now() + 3_000;
+    const deadline = Date.now() + 3000;
     while (!running() && Date.now() < deadline) await delay(10);
     assert.equal(attempts, 2);
     assert.equal(
@@ -95,7 +95,7 @@ test("a transient failure reconnects and teardown cancels the live stream", asyn
       "bot",
     );
     stop();
-    await delay(1_200);
+    await delay(1200);
     assert.equal(ended, true);
     assert.equal(attempts, 2);
   } finally {

@@ -24,12 +24,12 @@ const client = () =>
 
 test("a pending instance save does not block other configuration targets", async () => {
   const cache = client();
-  const held = deferred<void>();
-  const started = deferred<void>();
+  const held = deferred<undefined>();
+  const started = deferred<undefined>();
   const first = new MutationObserver(cache, {
     ...settingMutationOptions(instanceA, "plugin", "value", "value"),
     mutationFn: async () => {
-      started.resolve();
+      started.resolve(undefined);
       await held.promise;
     },
   });
@@ -56,7 +56,7 @@ test("a pending instance save does not block other configuration targets", async
     await Promise.all(independent);
     assert.equal(first.getCurrentResult().isPending, true);
   } finally {
-    held.resolve();
+    held.resolve(undefined);
     await Promise.allSettled([pending, ...independent]);
     cache.clear();
   }
@@ -64,15 +64,15 @@ test("a pending instance save does not block other configuration targets", async
 
 test("switching instances detaches a queued save without retargeting it", async () => {
   const cache = client();
-  const held = deferred<void>();
-  const started = deferred<void>();
+  const held = deferred<undefined>();
+  const started = deferred<undefined>();
   const writes: string[] = [];
   const observer = new MutationObserver(cache, {
     ...settingMutationOptions(instanceA, "plugin", "value", "value"),
     mutationFn: async (value: string) => {
       writes.push(`a:${value}`);
       if (writes.length === 1) {
-        started.resolve();
+        started.resolve(undefined);
         await held.promise;
       }
     },
@@ -94,11 +94,11 @@ test("switching instances detaches a queued save without retargeting it", async 
     replacement = observer.mutate("only");
     assert.equal(observer.getCurrentResult().isPaused, false);
     await replacement;
-    held.resolve();
+    held.resolve(undefined);
     await Promise.all([first, queued]);
     assert.deepEqual(writes, ["a:first", "b:only", "a:last"]);
   } finally {
-    held.resolve();
+    held.resolve(undefined);
     await Promise.allSettled([first, queued, replacement]);
     cache.clear();
   }
@@ -116,8 +116,8 @@ const options = (action: "value" | "reset" | "toggle") =>
 
 test("reset runs after every previously queued edit to the setting", async () => {
   const cache = client();
-  const held = deferred<void>();
-  const started = deferred<void>();
+  const held = deferred<undefined>();
+  const started = deferred<undefined>();
   let stored: boolean | undefined;
   const writes: (boolean | undefined)[] = [];
   const edit = new MutationObserver(cache, {
@@ -126,7 +126,7 @@ test("reset runs after every previously queued edit to the setting", async () =>
       stored = value;
       writes.push(value);
       if (writes.length === 1) {
-        started.resolve();
+        started.resolve(undefined);
         await held.promise;
       }
     },
@@ -147,12 +147,12 @@ test("reset runs after every previously queued edit to the setting", async () =>
     removal = reset.mutate();
     assert.equal(reset.getCurrentResult().isPaused, true);
     assert.deepEqual(writes, [true]);
-    held.resolve();
+    held.resolve(undefined);
     await Promise.all([first, latest, removal]);
     assert.deepEqual(writes, [true, false, undefined]);
     assert.equal(stored, undefined);
   } finally {
-    held.resolve();
+    held.resolve(undefined);
     await Promise.allSettled([first, latest, removal]);
     cache.clear();
   }
@@ -160,13 +160,13 @@ test("reset runs after every previously queued edit to the setting", async () =>
 
 test("a rejected edit allows a queued reset and plugin toggle to proceed", async () => {
   const cache = client();
-  const held = deferred<void>();
-  const started = deferred<void>();
+  const held = deferred<undefined>();
+  const started = deferred<undefined>();
   const writes: (boolean | undefined)[] = [];
   const edit = new MutationObserver(cache, {
     ...options("value"),
     mutationFn: async () => {
-      started.resolve();
+      started.resolve(undefined);
       await held.promise;
       throw new Error("Save failed");
     },
@@ -192,11 +192,11 @@ test("a rejected edit allows a queued reset and plugin toggle to proceed", async
     enabled = toggle.mutate(true);
     assert.equal(reset.getCurrentResult().isPaused, true);
     assert.equal(toggle.getCurrentResult().isPaused, true);
-    held.resolve();
+    held.resolve(undefined);
     await Promise.all([failure, removal, enabled]);
     assert.deepEqual(writes, [undefined, true]);
   } finally {
-    held.resolve();
+    held.resolve(undefined);
     await Promise.allSettled([failure, removal, enabled]);
     cache.clear();
   }
@@ -204,12 +204,12 @@ test("a rejected edit allows a queued reset and plugin toggle to proceed", async
 
 test("other instances, bots and entries can save while one setting is pending", async () => {
   const cache = client();
-  const held = deferred<void>();
-  const started = deferred<void>();
+  const held = deferred<undefined>();
+  const started = deferred<undefined>();
   const edit = new MutationObserver(cache, {
     ...options("value"),
     mutationFn: async () => {
-      started.resolve();
+      started.resolve(undefined);
       await held.promise;
     },
   });
@@ -238,7 +238,7 @@ test("other instances, bots and entries can save while one setting is pending", 
     await Promise.all(independent);
     assert.equal(edit.getCurrentResult().isPending, true);
   } finally {
-    held.resolve();
+    held.resolve(undefined);
     await Promise.allSettled([pending, ...independent]);
     cache.clear();
   }

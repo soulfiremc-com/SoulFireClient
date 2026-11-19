@@ -1,6 +1,6 @@
 import { Code, type Transport } from "@connectrpc/connect";
 import type { QueryClient } from "@tanstack/react-query";
-import { Effect, Fiber, Result, Stream } from "effect";
+import { Console, Effect, Fiber, Result, Stream } from "effect";
 import { type BotListResponse, BotService } from "@/generated/soulfire/bot_pb";
 import { reconcileBotStatuses } from "./bot-status-cache.ts";
 import { createRpcClient } from "./rpc.ts";
@@ -16,7 +16,7 @@ export function watchBotStatuses(
         const scope = yield* Effect.scope;
         const client = createRpcClient(BotService, transport);
         let refreshFiber: Fiber.Fiber<void> | undefined;
-        let retryDelay = 1_000;
+        let retryDelay = 1000;
         const refresh = Effect.gen(function* () {
           if (refreshFiber) return;
           // Coalesce fleet events without postponing refreshes under sustained load.
@@ -49,7 +49,7 @@ export function watchBotStatuses(
               // oxlint-disable-next-line eslint/no-loop-func -- the stream finishes inside this iteration and resets the retry delay for the next one
               Stream.runForEach((event) =>
                 Effect.gen(function* () {
-                  retryDelay = 1_000;
+                  retryDelay = 1000;
                   const value = event.event;
                   if (value.case === undefined) return;
                   queryClient.setQueryData<BotListResponse>(
@@ -78,7 +78,7 @@ export function watchBotStatuses(
               if (refreshFiber) yield* Fiber.join(refreshFiber);
               return;
             }
-            console.error("Bot status stream ended", error);
+            yield* Console.error("Bot status stream ended", error);
             if (
               [
                 Code.PermissionDenied,

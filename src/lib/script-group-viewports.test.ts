@@ -4,9 +4,9 @@ import { ScriptGroupViewports } from "./script-group-viewports";
 
 test("group navigation fits new contexts and restores each visited view", () => {
   const history = new ScriptGroupViewports();
-  const root = { x: -8_000, y: -6_000, zoom: 0.5 };
+  const root = { x: -8000, y: -6000, zoom: 0.5 };
   const outer = { x: 12, y: 80, zoom: 0.8 };
-  const inner = { x: 3_000, y: -2_000, zoom: 1.2 };
+  const inner = { x: 3000, y: -2000, zoom: 1.2 };
   assert.equal(history.initialized, false);
   assert.deepEqual(history.enter(null, root, 0), { type: "fit" });
   history.completeFit(null, 0);

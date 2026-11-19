@@ -631,7 +631,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
               extensions: ["txt"],
             },
           ]}
-          allowMultiple={true}
+          allowMultiple
           textInput={{
             defaultValue: "",
           }}

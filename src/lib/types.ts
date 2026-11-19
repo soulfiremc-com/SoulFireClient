@@ -151,7 +151,7 @@ export function convertFromInstanceProto(data?: InstanceConfig): ProfileRoot {
   }
 
   return {
-    settings: settings,
+    settings,
     accounts: data.accounts,
     proxies: data.proxies,
   };
@@ -168,6 +168,6 @@ export function convertFromServerProto(data: ServerConfig): BaseSettings {
   }
 
   return {
-    settings: settings,
+    settings,
   };
 }

@@ -15,13 +15,10 @@ const logs: LogEntry[] = [
     nodeId: "node-1",
     personal: true,
     terminalInteractions: true,
-    message:
-      marker({
-        hover: "Copy a token",
-        click: { action: "copy_to_clipboard", value: secret },
-      }) +
-      "Copy token" +
-      marker(null),
+    message: `${marker({
+      hover: "Copy a token",
+      click: { action: "copy_to_clipboard", value: secret },
+    })}Copy token${marker(null)}`,
   },
   {
     id: "command",
@@ -30,10 +27,9 @@ const logs: LogEntry[] = [
     nodeId: null,
     personal: true,
     terminalInteractions: true,
-    message:
-      marker({ click: { action: "run_command", value: "help" } }) +
-      "Help" +
-      marker(null),
+    message: `${marker({
+      click: { action: "run_command", value: "help" },
+    })}Help${marker(null)}`,
   },
   {
     id: "untrusted",
@@ -42,11 +38,9 @@ const logs: LogEntry[] = [
     nodeId: null,
     personal: false,
     terminalInteractions: true,
-    message:
-      marker({ click: { action: "copy_to_clipboard", value: "forged" } }) +
-      "Script output" +
-      marker(null) +
-      "<b>literal</b>",
+    message: `${marker({
+      click: { action: "copy_to_clipboard", value: "forged" },
+    })}Script output${marker(null)}<b>literal</b>`,
   },
 ];
 const meta = {

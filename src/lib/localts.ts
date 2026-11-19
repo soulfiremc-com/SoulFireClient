@@ -52,7 +52,7 @@ export type LocaltsOrder = (typeof localtsOrderSchema)["Type"];
 
 function parse<T>(schema: Schema.ConstraintDecoder<T>, value: unknown) {
   return Schema.decodeUnknownEffect(schema, { errors: "all" })(value).pipe(
-    Effect.mapError(() => new ProviderApiError("response")),
+    Effect.mapError(() => ProviderApiError.new("response")),
   );
 }
 
@@ -67,30 +67,30 @@ function request(path: string, key: string, method: "GET" | "POST") {
       Schema.Struct({ success: Schema.Boolean }),
       response,
     );
-    if (!result.success)
-      return yield* Effect.fail(new ProviderApiError("rejected"));
+    if (!result.success) return yield* ProviderApiError.new("rejected");
     return response;
   });
 }
 
 const productsEffect = () =>
   Effect.gen(function* () {
+    const response = yield* request("/products", "", "GET");
     return (yield* parse(
       Schema.Struct({ products: Schema.mutable(Schema.Array(productSchema)) }),
-      yield* request("/products", "", "GET"),
+      response,
     )).products;
   });
 const balanceEffect = (key: string) =>
   Effect.gen(function* () {
-    if (!key.trim())
-      return yield* Effect.fail(new ProviderApiError("authentication"));
+    if (!key.trim()) return yield* ProviderApiError.new("authentication");
+    const response = yield* request("/me", key, "GET");
     return (yield* parse(
       Schema.Struct({
         balance: Schema.Finite.check(Schema.isGreaterThanOrEqualTo(0)).check(
           Schema.isFinite(),
         ),
       }),
-      yield* request("/me", key, "GET"),
+      response,
     )).balance;
   });
 
@@ -110,8 +110,8 @@ export function fetchLocaltsBalance(
 }
 
 export function localtsPrice(product: LocaltsProduct, amount: number): number {
-  if (!Number.isInteger(amount) || amount < 1 || amount > 1_000)
-    throw new ProviderApiError("limit");
+  if (!Number.isInteger(amount) || amount < 1 || amount > 1000)
+    throw ProviderApiError.new("limit");
   const tier = Object.entries(product.quantityDiscounts ?? {})
     .filter(([quantity]) => Number(quantity) <= amount)
     .toSorted(([a], [b]) => Number(b) - Number(a))[0];
@@ -132,7 +132,7 @@ export function purchaseLocaltsAccounts(
     Effect.gen(function* () {
       yield* Effect.try({
         try: () => localtsPrice(product, amount),
-        catch: () => new ProviderApiError("limit"),
+        catch: () => ProviderApiError.new("limit"),
       });
       const [products, balance] = yield* Effect.all(
         [productsEffect(), balanceEffect(key)],
@@ -140,12 +140,12 @@ export function purchaseLocaltsAccounts(
       );
       const current = products.find((entry) => entry.id === product.id);
       if (!current || current.stock < amount)
-        return yield* Effect.fail(new ProviderApiError("empty"));
+        return yield* ProviderApiError.new("empty");
       if (
         localtsPrice(current, amount) !== expectedTotal ||
         balance < expectedTotal
       )
-        return yield* Effect.fail(new ProviderApiError("priceChanged"));
+        return yield* ProviderApiError.new("priceChanged");
       const result = yield* request(
         `/products/${current.id}/purchase?amount=${amount}`,
         key,
@@ -169,16 +169,14 @@ export function fetchLocaltsOrder(
 ): Promise<LocaltsOrder> {
   return runProviderEffect(
     Effect.gen(function* () {
-      const order = yield* parse(
-        localtsOrderSchema,
-        yield* request(
-          `/orders/get-order?${new URLSearchParams({ id })}`,
-          key,
-          "GET",
-        ),
+      const response = yield* request(
+        `/orders/get-order?${new URLSearchParams({ id })}`,
+        key,
+        "GET",
       );
+      const order = yield* parse(localtsOrderSchema, response);
       if (order["order-id"] !== id)
-        return yield* Effect.fail(new ProviderApiError("response"));
+        return yield* ProviderApiError.new("response");
       return order;
     }),
     signal,
@@ -193,6 +191,7 @@ export function fetchLocaltsOrders(
 ): Promise<{ id: string; productId: string }[]> {
   return runProviderEffect(
     Effect.gen(function* () {
+      const response = yield* request("/orders?page=0&size=25", key, "GET");
       return (yield* parse(
         Schema.Struct({
           orders: Schema.mutable(
@@ -201,7 +200,7 @@ export function fetchLocaltsOrders(
             ),
           ),
         }),
-        yield* request("/orders?page=0&size=25", key, "GET"),
+        response,
       )).orders;
     }),
     signal,
@@ -226,7 +225,7 @@ export function localtsOrderAccounts(
     !["COMPLETE", "PARTIALLY_REFUNDED"].includes(order["order-status"]) ||
     !order.items?.length
   )
-    throw new ProviderApiError("empty");
+    throw ProviderApiError.new("empty");
   const credentialType = {
     cookies: AccountTypeCredentials.MICROSOFT_JAVA_COOKIES,
     credentials: AccountTypeCredentials.MICROSOFT_JAVA_CREDENTIALS,
@@ -235,7 +234,7 @@ export function localtsOrderAccounts(
   }[format];
   const payload = order.items.map((item) => {
     const content = item.content.trim();
-    if (!content) throw new ProviderApiError("response");
+    if (!content) throw ProviderApiError.new("response");
     if (format !== "cookies") return content;
     if (
       content.startsWith("[") ||
@@ -244,7 +243,7 @@ export function localtsOrderAccounts(
     )
       return content;
     // Localts delivers the Microsoft cookie value rather than a cookie file.
-    if (/[\s;]/u.test(content)) throw new ProviderApiError("response");
+    if (/[\s;]/u.test(content)) throw ProviderApiError.new("response");
     return JSON.stringify([
       { domain: "login.live.com", name: "__Host-MSAAUTHP", value: content },
     ]);

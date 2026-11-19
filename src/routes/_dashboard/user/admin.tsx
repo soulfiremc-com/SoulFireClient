@@ -54,7 +54,7 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
 
         return result;
       },
-      refetchInterval: 3_000,
+      refetchInterval: 3000,
     });
     const serverMetricsOptions = serverMetricsQueryOptions(
       createTransport(),

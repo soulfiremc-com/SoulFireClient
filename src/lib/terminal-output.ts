@@ -48,13 +48,11 @@ export function formatTerminalLine(
     true,
     entry.personal && entry.terminalInteractions ? register : undefined,
   );
-  return (
-    "\u001B[0m" +
-    (prefix ? `${color}${prefix}\u001B[0m ` : "") +
-    message.replaceAll("\n", "\r\n") +
-    "\u001B[0m" +
-    (stripAnsi(message).endsWith("\n") ? "" : "\r\n")
-  );
+  return `\u001B[0m${
+    prefix ? `${color}${prefix}\u001B[0m ` : ""
+  }${message.replaceAll("\n", "\r\n")}\u001B[0m${
+    stripAnsi(message).endsWith("\n") ? "" : "\r\n"
+  }`;
 }
 
 type OutputTerminal = Pick<WTerm, "write" | "bridge">;

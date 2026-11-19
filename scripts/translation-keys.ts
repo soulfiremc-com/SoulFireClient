@@ -170,11 +170,11 @@ function skipString(source: string, start: number): number {
 }
 
 /** Collect the string and template literals inside an expression. */
-function literalsIn(text: string): Literal[] {
+function literalsIn(expression: string): Literal[] {
   const literals: Literal[] = [];
   // Drop literals in comparisons and nested calls, such as
   // `phase === "saving" ? "a" : "b"` or `list.includes("buy") ? "a" : "b"`.
-  text = text
+  const text = expression
     .replaceAll(/[=!]==?\s*(["'`])(?:(?!\1).)*\1/gu, "")
     .replaceAll(/(["'`])(?:(?!\1).)*\1\s*[=!]==?/gu, "")
     .replaceAll(/\w\(\s*(["'`])(?:(?!\1).)*\1\s*\)/gu, "");
@@ -244,7 +244,7 @@ function translationBindings(source: string): Map<string, Set<string>> {
 function templatePattern(template: string): RegExp {
   const parts = template.split(/\$\{[^}]*\}/u);
   const escaped = parts.map((part) =>
-    part.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&"),
+    part.replaceAll(/[.*+?^${}()|[\]\\]/gu, String.raw`\$&`),
   );
   return new RegExp(`^${escaped.join(".+")}$`, "u");
 }
@@ -342,7 +342,7 @@ export function scanSources(
           ? [DEFAULT_NAMESPACE]
           : [...(bindings.get(name) ?? [])];
       const prefix = prefixes.get(name) ?? "";
-      const escaped = name.replace(".", "\\.");
+      const escaped = name.replace(".", String.raw`\.`);
       for (const match of source.matchAll(
         new RegExp(`(?<![\\w$.])${escaped}\\(`, "gu"),
       )) {

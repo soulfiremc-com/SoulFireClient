@@ -1,3 +1,4 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
 import {
   CastState,
   type CastDevice,
@@ -5,21 +6,16 @@ import {
   type DisplaySettings,
 } from "@soulfiremc/cast-protocol";
 import { createStore } from "@tanstack/react-store";
-import {
-  Context,
-  Data,
-  Effect,
-  Fiber,
-  Layer,
-  ManagedRuntime,
-  Schema,
-} from "effect";
+import { Context, Effect, Fiber, Layer, ManagedRuntime, Schema } from "effect";
 import { desktop, isDesktopApp } from "@/lib/desktop";
 
-class CastDesktopError extends Data.TaggedError("CastDesktopError")<{
-  readonly message: string;
-  readonly cause: unknown;
-}> {}
+class CastDesktopError extends TaggedFailure<
+  CastDesktopError,
+  { readonly brand: unique symbol }
+>()("CastDesktopError", {
+  message: Schema.String,
+  cause: Schema.Unknown,
+}) {}
 
 const CastDesktop = Context.Service<{
   readonly connect: (
@@ -72,7 +68,8 @@ export function startCastClient(): () => void {
           fromPromise(() => desktop.cast.onState(accept)),
           (unsubscribe) => Effect.sync(unsubscribe),
         );
-        accept(yield* fromPromise(() => desktop.cast.getState()));
+        const state = yield* fromPromise(() => desktop.cast.getState());
+        accept(state);
         yield* fromPromise(() => desktop.cast.discover());
         return yield* Effect.never;
       }),

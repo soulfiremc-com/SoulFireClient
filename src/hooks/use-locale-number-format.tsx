@@ -10,7 +10,7 @@ export function useLocaleNumberFormat(): LocaleNumberFormat {
   const { i18n } = useTranslation();
   return useMemo<LocaleNumberFormat>(() => {
     const formatter = new Intl.NumberFormat(i18n.language);
-    const parts = formatter.formatToParts(1234567.89);
+    const parts = formatter.formatToParts(1_234_567.89);
 
     let thousandSeparator = ",";
     let decimalSeparator = ".";

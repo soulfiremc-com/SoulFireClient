@@ -42,7 +42,7 @@ const meta = {
       const path = new URL(url).pathname;
       let data: unknown;
       if (path.endsWith("/me"))
-        data = { balance: parameters["lowBalance"] ? 50 : 1_000 };
+        data = { balance: parameters["lowBalance"] ? 50 : 1000 };
       else if (path.endsWith("/stock"))
         data = {
           stock: [

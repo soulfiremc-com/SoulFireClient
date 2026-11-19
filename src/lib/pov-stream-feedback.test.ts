@@ -13,17 +13,17 @@ const frame = (sequence: number, milliseconds: number) =>
 
 test("feedback removes clock offset and tracks extra delivery delay without depending on FPS", () => {
   const tracker = new PovStreamFeedbackTracker();
-  tracker.receive(frame(1, 1000), 20000);
+  tracker.receive(frame(1, 1000), 20_000);
   assert.equal(tracker.sample(stats).deliveryDelayMs, 0);
-  tracker.receive(frame(2, 2000), 21000);
+  tracker.receive(frame(2, 2000), 21_000);
   assert.equal(tracker.sample(stats).deliveryDelayMs, 0);
-  tracker.receive(frame(3, 2100), 21300);
+  tracker.receive(frame(3, 2100), 21_300);
   const delayed = tracker.sample(stats);
   assert.equal(delayed.deliveryDelayMs, 200);
   assert.equal(delayed.decoderQueueSize, 3);
   assert.equal(delayed.decoderRecoveries, 2);
   assert.equal(delayed.receivedSequence, 3n);
-  tracker.receive(frame(4, 2200), 21200);
+  tracker.receive(frame(4, 2200), 21_200);
   assert.equal(tracker.sample(stats).deliveryDelayMs, 0);
 });
 

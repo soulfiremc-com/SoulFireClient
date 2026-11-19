@@ -186,6 +186,7 @@ function Content() {
   );
   // Sections follow the state from when the page opened. A toggled card stays
   // under the pointer instead of jumping to the other section.
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [initiallyEnabled] = useState(
     () =>
       new Set(

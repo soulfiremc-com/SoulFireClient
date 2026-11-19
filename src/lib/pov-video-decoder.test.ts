@@ -7,7 +7,7 @@ import { PovVideoDecoder } from "./pov-video-decoder";
 const chunk = (sequence: number, keyFrame = false, width = 640) =>
   create(PovFrameSchema, {
     sequence: BigInt(sequence),
-    timestampUs: BigInt(sequence * 16667),
+    timestampUs: BigInt(sequence * 16_667),
     keyFrame,
     width,
     height: 360,
@@ -81,7 +81,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     decoder.accept(chunk(3, true));
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     decoders[0].callbacks.output({
-      timestamp: 3 * 16667,
+      timestamp: 3 * 16_667,
       close() {
         closedFrames++;
       },
@@ -100,7 +100,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     assert.ok(requestedKeys > 0);
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     decoders[0].callbacks.output({
-      timestamp: 4 * 16667,
+      timestamp: 4 * 16_667,
       close() {
         closedFrames++;
       },

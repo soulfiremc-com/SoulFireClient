@@ -29,7 +29,7 @@ test("dismissal cancels pending reads and ignores late results and failures", as
     );
     session.cancel();
     assert.equal(signal.aborted, true);
-    if (fail) read.reject(new Error());
+    if (fail) read.reject(new Error("Test failure"));
     else read.resolve(["late"]);
     await pending;
   }
@@ -83,7 +83,7 @@ test("a batch is accepted once in order before its listener closes the dialog", 
 
 test("a failed batch imports nothing, aborts remaining reads, and allows retry", async () => {
   const session = new ImportReadSession();
-  const failure = new Error();
+  const failure = new Error("Test failure");
   const accepted: string[] = [];
   let signal!: AbortSignal;
   await assert.rejects(

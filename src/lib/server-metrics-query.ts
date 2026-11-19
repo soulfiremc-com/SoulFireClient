@@ -32,7 +32,7 @@ export function serverMetricsQueryOptions(
       const client = createRpcClient(MetricsService, transport);
       const result = await Effect.runPromise(
         client.getServerMetrics(since ? { since } : {}, {
-          signal: signal,
+          signal,
         }),
       );
       const response = result;
@@ -45,6 +45,6 @@ export function serverMetricsQueryOptions(
         snapshots: mergeSnapshots(previous.snapshots, response.snapshots),
       });
     },
-    refetchInterval: 3_000,
+    refetchInterval: 3000,
   });
 }

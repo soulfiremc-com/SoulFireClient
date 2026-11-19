@@ -98,7 +98,7 @@ export class PovAudioPlayer {
     try {
       if (this.decoder.decodeQueueSize > 8) this.reset();
       for (const packet of packets.slice(-5)) {
-        if (packet.data.length === 0 || packet.data.length > 4_096) continue;
+        if (packet.data.length === 0 || packet.data.length > 4096) continue;
         this.decoder.decode(
           new EncodedAudioChunk({
             type: "key",
@@ -150,7 +150,7 @@ export class PovAudioPlayer {
       if (
         data.numberOfChannels !== 2 ||
         data.sampleRate !== 48_000 ||
-        data.numberOfFrames > 4_800
+        data.numberOfFrames > 4800
       )
         throw new Error("The server sent an invalid audio frame.");
       const now = this.context.currentTime;

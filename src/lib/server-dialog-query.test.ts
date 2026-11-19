@@ -110,12 +110,12 @@ test("a screen replacement during query cancellation is also preserved", async (
   const client = new QueryClient();
   const original = dialog();
   const replacement = dialog();
-  const cancelling = deferred<void>();
-  const release = deferred<void>();
+  const cancelling = deferred<undefined>();
+  const release = deferred<undefined>();
   const cancel = client.cancelQueries.bind(client);
   client.cancelQueries = async (filters, options) => {
     await cancel(filters, options);
-    cancelling.resolve();
+    cancelling.resolve(undefined);
     await release.promise;
   };
   client.setQueryData(queryKey, original);
@@ -130,11 +130,11 @@ test("a screen replacement during query cancellation is also preserved", async (
     await cancelling.promise;
     client.setQueryData(queryKey, replacement);
     const cached = client.getQueryData(queryKey);
-    release.resolve();
+    release.resolve(undefined);
     await refresh;
     assert.equal(client.getQueryData(queryKey), cached);
   } finally {
-    release.resolve();
+    release.resolve(undefined);
     await refresh;
     client.clear();
   }

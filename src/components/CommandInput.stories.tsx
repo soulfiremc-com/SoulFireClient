@@ -46,6 +46,7 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
       personal: false,
     }),
   ]);
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [transport] = useState(() => {
     let sequence = 0;
     const append = (message: string, personal = true) => {

@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 /// <reference types="bun" />
 import { afterEach, expect, test } from "bun:test";
 import {
@@ -79,7 +80,7 @@ async function fixture(
   }[] = [];
   let feedsClosed = 0;
   let metricsError: CastError | undefined;
-  const settingsGate = Deferred.makeUnsafe<void>();
+  const settingsGate = Deferred.makeUnsafe<undefined>();
   let deferSettings = options.deferSettings;
   const frame: MetricsFrame = {
     snapshots: Array.from({ length: options.history ?? 1 }, (_, i) =>
@@ -117,7 +118,7 @@ async function fixture(
           return yield* castError("incompatible receiver", false);
         if (options.hang) return yield* Effect.never;
         return {
-          sessionId: crypto.randomUUID(),
+          sessionId: randomUUID(),
           onFailure: (callback) => {
             entry.fail = callback;
             return () => {};

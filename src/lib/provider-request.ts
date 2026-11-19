@@ -1,4 +1,5 @@
-import { Context, Effect } from "effect";
+import { TaggedError as TaggedFailure } from "effect/Schema";
+import { Context, Effect, Schema } from "effect";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import {
   executeProviderRequestEffect,
@@ -12,19 +13,28 @@ export type ProviderFetch = (
   signal?: AbortSignal,
 ) => Promise<ProviderResponse>;
 
-export class ProviderApiError extends Error {
-  constructor(
-    readonly reason:
-      | "network"
-      | "authentication"
-      | "rejected"
-      | "response"
-      | "empty"
-      | "limit"
-      | "priceChanged",
-  ) {
-    super(`Provider request failed: ${reason}`);
-    this.name = "ProviderApiError";
+const providerFailureReason = Schema.Literals([
+  "network",
+  "authentication",
+  "rejected",
+  "response",
+  "empty",
+  "limit",
+  "priceChanged",
+]);
+
+export class ProviderApiError extends TaggedFailure<
+  ProviderApiError,
+  { readonly brand: unique symbol }
+>()("ProviderApiError", {
+  reason: providerFailureReason,
+  message: Schema.String,
+}) {
+  static new(reason: typeof providerFailureReason.Type) {
+    return new ProviderApiError({
+      reason,
+      message: `Provider request failed: ${reason}`,
+    });
   }
 }
 
@@ -44,15 +54,15 @@ const providerHttp: Context.Service.Shape<typeof ProviderHttp> = {
         try: () => {
           validateProviderRequest(request);
         },
-        catch: () => new ProviderApiError("network"),
+        catch: () => ProviderApiError.new("network"),
       });
       if (isDesktopApp())
         return yield* Effect.tryPromise({
           try: () => desktop.providers.request(request),
-          catch: () => new ProviderApiError("network"),
+          catch: () => ProviderApiError.new("network"),
         });
       return yield* executeProviderRequestEffect(request).pipe(
-        Effect.mapError(() => new ProviderApiError("network")),
+        Effect.mapError(() => ProviderApiError.new("network")),
       );
     }),
 };
@@ -71,7 +81,7 @@ export async function runProviderEffect<A, E>(
             catch: (error) =>
               error instanceof ProviderApiError
                 ? error
-                : new ProviderApiError("network"),
+                : ProviderApiError.new("network"),
           }),
       }
     : providerHttp;
@@ -94,21 +104,23 @@ export const providerResponseEffect = (request: ProviderRequest) =>
 export const providerTextEffect = (request: ProviderRequest) =>
   Effect.flatMap(providerResponseEffect(request), (result) => {
     if (result.status === 401 || result.status === 403)
-      return Effect.fail(new ProviderApiError("authentication"));
+      return Effect.fail(ProviderApiError.new("authentication"));
     // A server failure can happen after a purchase was accepted. Never retry it.
     if (result.status >= 500)
-      return Effect.fail(new ProviderApiError("response"));
+      return Effect.fail(ProviderApiError.new("response"));
     if (result.status < 200 || result.status >= 300)
-      return Effect.fail(new ProviderApiError("rejected"));
+      return Effect.fail(ProviderApiError.new("rejected"));
     return Effect.succeed(result.body);
   });
 
+export const decodeProviderJson = (text: string) =>
+  Schema.decodeEffect(Schema.fromJsonString(Schema.Unknown))(text).pipe(
+    Effect.mapError(() => ProviderApiError.new("response")),
+  );
+
 export const providerJsonEffect = (request: ProviderRequest) =>
   Effect.flatMap(providerTextEffect(request), (text) =>
-    Effect.try({
-      try: () => JSON.parse(text) as unknown,
-      catch: () => new ProviderApiError("response"),
-    }),
+    decodeProviderJson(text),
   );
 
 export const requestProvider: ProviderFetch = async (request, signal) => {

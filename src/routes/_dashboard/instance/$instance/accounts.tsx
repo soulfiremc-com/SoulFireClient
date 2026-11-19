@@ -887,7 +887,7 @@ function AddButton() {
                 openProviderDialog("fernan");
               }}
             >
-              {"Fernan's Club"}
+              Fernan&apos;s Club
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -937,7 +937,7 @@ function AddButton() {
       </DropdownMenu>
       {deviceCodeData !== null && (
         <DeviceCodeDialog
-          open={true}
+          open
           onOpenChange={(open) => {
             if (!open) setDeviceCodeData(null);
           }}
@@ -946,7 +946,7 @@ function AddButton() {
       )}
       {pendingDeviceCodeType !== null && (
         <Credenza
-          open={true}
+          open
           onOpenChange={(open) => {
             if (!open) setPendingDeviceCodeType(null);
           }}
@@ -1017,7 +1017,7 @@ function AddButton() {
               extensions: ["txt"],
             },
           ]}
-          allowMultiple={true}
+          allowMultiple
           textInput={{
             defaultValue: "",
           }}
@@ -1290,7 +1290,7 @@ function Content() {
       {configAccount && (
         <AccountConfigDialog
           account={configAccount}
-          open={true}
+          open
           onOpenChange={(open) => {
             if (!open) setConfigAccountId(null);
           }}
@@ -1299,7 +1299,7 @@ function Content() {
       {metadataAccount && (
         <AccountMetadataDialog
           account={metadataAccount}
-          open={true}
+          open
           onOpenChange={(open) => {
             if (!open) setMetadataAccountId(null);
           }}

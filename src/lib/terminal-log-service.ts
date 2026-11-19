@@ -1,4 +1,5 @@
-import { Context, Data, Effect, Layer, Stream } from "effect";
+import { TaggedError as TaggedFailure } from "effect/Schema";
+import { Context, Schema, Effect, Layer, Stream } from "effect";
 import type {
   LogResponse,
   LogScope,
@@ -12,10 +13,13 @@ export type LogClient = Pick<
   "getPrevious" | "subscribe"
 >;
 
-export class TerminalLogError extends Data.TaggedError("TerminalLogError")<{
-  readonly operation: "history" | "subscribe";
-  readonly cause: unknown;
-}> {}
+export class TerminalLogError extends TaggedFailure<
+  TerminalLogError,
+  { readonly brand: unique symbol }
+>()("TerminalLogError", {
+  operation: Schema.Literals(["history", "subscribe"]),
+  cause: Schema.Unknown,
+}) {}
 
 export class TerminalLogs extends Context.Service<
   TerminalLogs,

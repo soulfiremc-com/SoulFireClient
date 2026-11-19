@@ -361,7 +361,7 @@ function EditableLabel(props: EditableLabelProps) {
           "font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-required:after:ml-0.5 data-required:after:text-destructive data-required:after:content-['*']",
           className,
         ),
-        children: children,
+        children,
       },
     ),
   });
@@ -650,9 +650,9 @@ function EditableInput(props: EditableInputProps) {
       {
         id: context.inputId,
         "aria-labelledby": context.labelId,
-        maxLength: maxLength,
+        maxLength,
         placeholder: context.placeholder,
-        value: value,
+        value,
         onBlur,
         onChange,
         onKeyDown,

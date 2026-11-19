@@ -87,6 +87,7 @@ const meta = {
     localStorage.removeItem(consentKey);
     localStorage.removeItem(persistenceKey);
     sessionStorage.removeItem(persistenceKey);
+    // oxlint-disable-next-line unicorn/no-document-cookie -- Preserve cookie access on browsers without the Cookie Store API.
     document.cookie = `${persistenceKey}=; path=/; max-age=0`;
     events = [];
     initializeClient();
@@ -94,6 +95,7 @@ const meta = {
       await client.shutdown();
       localStorage.removeItem(consentKey);
       localStorage.removeItem(persistenceKey);
+      // oxlint-disable-next-line unicorn/no-document-cookie -- Preserve cookie access on browsers without the Cookie Store API.
       document.cookie = `${persistenceKey}=; path=/; max-age=0`;
     };
   },

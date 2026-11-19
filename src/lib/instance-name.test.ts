@@ -53,7 +53,7 @@ test("duplicate names stay within the limit without splitting Unicode characters
   for (const name of [
     "x",
     "x".repeat(32),
-    "x".repeat(26) + "😀suffix",
+    `${"x".repeat(26)}😀suffix`,
     "😀".repeat(20),
     "日本語 Farm",
     "   ",

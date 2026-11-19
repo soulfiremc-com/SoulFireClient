@@ -9,8 +9,8 @@ import { timestampToDate } from "@/lib/utils.tsx";
 function formatUptime(from: Date): string {
   const seconds = Math.max(0, Math.floor((Date.now() - from.getTime()) / 1000));
   const days = Math.floor(seconds / 86_400);
-  const hours = Math.floor((seconds % 86_400) / 3_600);
-  const minutes = Math.floor((seconds % 3_600) / 60);
+  const hours = Math.floor((seconds % 86_400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
 
   if (days > 0) return `${days}d ${hours}h`;

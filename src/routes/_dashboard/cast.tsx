@@ -489,7 +489,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
                   id="cast-port"
                   type="number"
                   min={1}
-                  max={65535}
+                  max={65_535}
                   value={field.state.value}
                   onChange={(event) => {
                     field.handleChange(Number(event.target.value));

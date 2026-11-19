@@ -38,20 +38,15 @@ const encoded = (
 const entry = {
   personal: true,
   terminalInteractions: true,
-  message:
-    "Ready: " +
-    encoded("Help", "run_command", "help") +
-    " / " +
-    encoded("Suggest", "suggest_command", "status") +
-    " / " +
-    encoded("Copy token", "copy_to_clipboard", secret) +
-    " / " +
-    encoded("Website", "open_url", "https://soulfiremc.com") +
-    " " +
-    marker({ hover: "Plain hover text <b>" }) +
-    "Details" +
-    marker(null) +
-    " done.",
+  message: `Ready: ${encoded("Help", "run_command", "help")} / ${encoded(
+    "Suggest",
+    "suggest_command",
+    "status",
+  )} / ${encoded("Copy token", "copy_to_clipboard", secret)} / ${encoded(
+    "Website",
+    "open_url",
+    "https://soulfiremc.com",
+  )} ${marker({ hover: "Plain hover text <b>" })}Details${marker(null)} done.`,
 };
 
 function Example({
@@ -185,9 +180,9 @@ export const UntrustedText: Story = {
     value: {
       ...entry,
       personal: false,
-      message:
-        entry.message +
-        "<img src=x onerror=alert(1)>\u001B]8;;https://example.com\u001B\\literal\u001B]8;;\u001B\\",
+      message: `${
+        entry.message
+      }<img src=x onerror=alert(1)>\u001B]8;;https://example.com\u001B\\literal\u001B]8;;\u001B\\`,
     },
   },
   play: async ({ canvas, canvasElement }) => {
@@ -255,13 +250,9 @@ export const WrappedUnicode: Story = {
   args: {
     value: {
       ...entry,
-      message:
-        "Before " +
-        marker({ hover: "Multiline tooltip" }) +
-        "A界é ".repeat(80) +
-        "\nnext line" +
-        marker(null) +
-        " after",
+      message: `Before ${marker({
+        hover: "Multiline tooltip",
+      })}${"A界é ".repeat(80)}\nnext line${marker(null)} after`,
     },
   },
   play: async ({ canvasElement, userEvent }) => {
@@ -273,7 +264,7 @@ export const WrappedUnicode: Story = {
     await expect(
       await within(document.body).findByRole("tooltip"),
     ).toHaveTextContent("Multiline tooltip");
-    await expect(text.innerText).toContain("A界é ".repeat(80) + "\nnext line");
+    await expect(text.innerText).toContain(`${"A界é ".repeat(80)}\nnext line`);
     await expect(text.getBoundingClientRect().width).toBeLessThanOrEqual(320);
     await userEvent.keyboard("{Escape}");
     await waitFor(() =>
@@ -288,16 +279,10 @@ export const WrappedAction: Story = {
   args: {
     value: {
       ...entry,
-      message:
-        "Before " +
-        marker({
-          hover: "Multiline action",
-          click: { action: "copy_to_clipboard", value: secret },
-        }) +
-        "A界é ".repeat(80) +
-        "\nnext line" +
-        marker(null) +
-        " after",
+      message: `Before ${marker({
+        hover: "Multiline action",
+        click: { action: "copy_to_clipboard", value: secret },
+      })}${"A界é ".repeat(80)}\nnext line${marker(null)} after`,
     },
   },
   play: async ({ canvasElement, userEvent }) => {

@@ -363,7 +363,7 @@ function QRCodeImage(props: QRCodeImageProps) {
     render,
     props: mergeProps({ "data-slot": "qr-code-image" }, imageProps, {
       src: dataUrl,
-      alt: alt,
+      alt,
       width: context.size,
       height: context.size,
       className: cn(

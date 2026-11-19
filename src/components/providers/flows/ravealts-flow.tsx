@@ -220,7 +220,7 @@ export function RavealtsFlow({
                       await purchaseAccounts(key.trim(), selected, amount)
                     ).accounts;
                     if (!Array.isArray(accounts) || accounts.length === 0)
-                      throw new ProviderApiError("response");
+                      throw ProviderApiError.new("response");
                     // Ravealts has no order lookup, so import the delivery at once.
                     const { payload, credentialType } =
                       mapPurchasedAccounts(accounts);

@@ -53,7 +53,7 @@ function mock(
     requests.push(request);
     const path = new URL(request.url).pathname;
     let data: unknown;
-    if (path.endsWith("/user/me")) data = { balance: change.balance ?? 1_000 };
+    if (path.endsWith("/user/me")) data = { balance: change.balance ?? 1000 };
     else if (path.endsWith("/store/stock"))
       data = { stock: [{ ...product, price: change.price ?? 100 }] };
     else if (path.endsWith("/store/cooldown"))

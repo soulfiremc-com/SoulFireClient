@@ -27,6 +27,6 @@ export function pluginStatsQueryOptions(instanceId: string) {
         service.getInstancePluginStats({ instanceId }, { signal }),
       );
     },
-    refetchInterval: 3_000,
+    refetchInterval: 3000,
   });
 }

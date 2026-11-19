@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import {
   CAST_APP_ID,
@@ -111,7 +112,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           string,
           (reply: ReceiverMessage | CastError) => void
         >();
-        const sessionId = crypto.randomUUID();
+        const sessionId = randomUUID();
         let app: Application | undefined;
         let controller: Controller | undefined;
         let closed = false;
@@ -189,7 +190,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
             ),
           );
 
-        yield* Effect.callback<void, CastError>((resume, signal) => {
+        yield* Effect.callback<undefined, CastError>((resume, signal) => {
           failOpen = (error) => {
             resume(Effect.fail(error));
           };
@@ -243,7 +244,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                           castError("The Cast receiver closed the session."),
                         );
                       });
-                      resume(Effect.void);
+                      resume(Effect.undefined);
                     },
                   );
                 },
@@ -291,7 +292,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
         const ready = yield* Effect.suspend(() =>
           request({
             type: "HELLO",
-            requestId: crypto.randomUUID(),
+            requestId: randomUUID(),
             sessionId,
             version: PROTOCOL_VERSION,
           }).pipe(

@@ -25,7 +25,7 @@ export function botStatusQueryOptions(instanceId: string) {
         botService.getBotList({ instanceId }, { signal }),
       );
     },
-    refetchInterval: 3_000,
+    refetchInterval: 3000,
   });
 }
 

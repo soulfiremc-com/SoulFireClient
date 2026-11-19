@@ -260,7 +260,7 @@ export function FirstBotSetup({
     proxiesSkipped,
   });
   // Pick the step once. Typing an address must not move the guide on.
-  const [activeStep, setSelectedStep] = useState<FirstBotSetupStep>(
+  const [activeStep, setActiveStep] = useState<FirstBotSetupStep>(
     setup.nextStep,
   );
   const canConfigure = hasInstancePermission(
@@ -300,7 +300,7 @@ export function FirstBotSetup({
         instanceInfoQueryOptions.queryKey,
       ),
     onSuccess: () => {
-      setSelectedStep("proxies");
+      setActiveStep("proxies");
     },
     onSettled: invalidate,
   });
@@ -421,7 +421,7 @@ export function FirstBotSetup({
                   type="button"
                   aria-expanded={isActive}
                   onClick={() => {
-                    setSelectedStep(step.id);
+                    setActiveStep(step.id);
                   }}
                   className="flex w-full items-center gap-3 p-3 text-left hover:bg-muted/50"
                 >
@@ -494,7 +494,7 @@ export function FirstBotSetup({
                             <Button
                               className="w-fit"
                               onClick={() => {
-                                setSelectedStep("accounts");
+                                setActiveStep("accounts");
                               }}
                             >
                               {t("setup.continue")}
@@ -581,7 +581,7 @@ export function FirstBotSetup({
                           <Button
                             className="w-fit"
                             onClick={() => {
-                              setSelectedStep("proxies");
+                              setActiveStep("proxies");
                             }}
                           >
                             {t("setup.continue")}
@@ -599,7 +599,7 @@ export function FirstBotSetup({
                           <Button
                             onClick={() => {
                               setProxiesSkipped(true);
-                              setSelectedStep("start");
+                              setActiveStep("start");
                             }}
                           >
                             <SkipForwardIcon data-icon="inline-start" />
@@ -674,7 +674,7 @@ export function FirstBotSetup({
                             className="w-fit"
                             variant="outline"
                             onClick={() => {
-                              setSelectedStep("accounts");
+                              setActiveStep("accounts");
                             }}
                           >
                             <UsersIcon data-icon="inline-start" />
@@ -746,7 +746,7 @@ export function FirstBotSetup({
                                   size="sm"
                                   className="h-auto w-fit p-0"
                                   onClick={() => {
-                                    setSelectedStep("accounts");
+                                    setActiveStep("accounts");
                                   }}
                                 >
                                   <UsersIcon data-icon="inline-start" />

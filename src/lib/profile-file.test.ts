@@ -153,11 +153,7 @@ test("configuration export retains credentials and account metadata, but omits p
     source.accounts[0]?.persistentMetadata,
   );
   assert.equal(exported.proxies[0]?.password, "qa-test-password");
-  assert.equal(
-    Object.prototype.hasOwnProperty.call(
-      JSON.parse(serialized),
-      "persistentMetadata",
-    ),
-    false,
-  );
+  const parsed: unknown = JSON.parse(serialized);
+  assert.ok(typeof parsed === "object" && parsed !== null);
+  assert.equal(Object.hasOwn(parsed, "persistentMetadata"), false);
 });

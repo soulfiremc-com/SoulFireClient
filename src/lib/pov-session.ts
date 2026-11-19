@@ -54,10 +54,9 @@ export function startPovSession(
     socket: WebSocket | null;
     token: string;
     acknowledged: bigint;
-    connected: Deferred.Deferred<void>;
+    connected: Deferred.Deferred<undefined>;
     failure: Deferred.Deferred<never, unknown>;
   } | null = null;
-  let sessionFiber: Fiber.Fiber<void> | undefined;
   const connectionTimeout = new ConnectError(
     t("instance:bots.pov.connectTimeout"),
     Code.DeadlineExceeded,
@@ -66,7 +65,7 @@ export function startPovSession(
   function stop() {
     if (stopped) return;
     stopped = true;
-    if (sessionFiber) Effect.runFork(Fiber.interrupt(sessionFiber));
+    Effect.runFork(Fiber.interrupt(sessionFiber));
     inputs.reset();
   }
   function fail(reason: unknown) {
@@ -147,15 +146,13 @@ export function startPovSession(
     }
   }
 
-  sessionFiber = Effect.runFork(
+  const sessionFiber = Effect.runFork(
     Effect.scoped(
       Effect.gen(function* () {
-        yield* Effect.acquireRelease(
-          Effect.sync(() => setInterval(flush, 16)),
-          (timer) =>
-            Effect.sync(() => {
-              clearInterval(timer);
-            }),
+        yield* Effect.forkScoped(
+          Effect.forever(
+            Effect.sleep("16 millis").pipe(Effect.andThen(Effect.sync(flush))),
+          ),
         );
         const [displayFps, codecs] = yield* Effect.all(
           [
@@ -182,12 +179,13 @@ export function startPovSession(
                 Effect.gen(function* () {
                   const current = yield* Effect.acquireRelease(
                     Effect.sync(() => ({
+                      // oxlint-disable-next-line effecttsgo/crypto-random-uuid-in-effect -- Use the stable browser API for secure session IDs.
                       id: crypto.randomUUID(),
                       abort: new AbortController(),
                       socket: null as WebSocket | null,
                       token: "",
                       acknowledged: 0n,
-                      connected: Deferred.makeUnsafe<void>(),
+                      connected: Deferred.makeUnsafe<undefined>(),
                       failure: Deferred.makeUnsafe<never, unknown>(),
                     })),
                     (active) =>
@@ -257,7 +255,7 @@ export function startPovSession(
                                 ) {
                                   Deferred.doneUnsafe(
                                     current.connected,
-                                    Effect.void,
+                                    Effect.undefined,
                                   );
                                   ready = true;
                                   flush();

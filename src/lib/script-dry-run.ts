@@ -1,3 +1,4 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
 import type { JsonValue } from "@bufbuild/protobuf";
 import type { Value } from "@bufbuild/protobuf/wkt";
 import { Schema } from "effect";
@@ -8,9 +9,12 @@ const decodeJson = Schema.decodeUnknownSync(
   Schema.fromJsonString(Schema.MutableJson),
 );
 
-export class InvalidMockInput extends Error {
-  constructor(public readonly portId: string) {
-    super(portId);
+export class InvalidMockInput extends TaggedFailure<
+  InvalidMockInput,
+  { readonly brand: unique symbol }
+>()("InvalidMockInput", { portId: Schema.String, message: Schema.String }) {
+  static new(portId: string) {
+    return new InvalidMockInput({ portId, message: portId });
   }
 }
 
@@ -29,19 +33,19 @@ export function parseMockInputs(
           port.type === "number" &&
           (typeof value !== "number" || !Number.isFinite(value))
         )
-          throw new Error();
+          throw new Error("Expected a finite number");
         if (port.type === "boolean" && typeof value !== "boolean")
-          throw new Error();
+          throw new Error("Expected a boolean");
         if (
           ["list", "set", "collection"].includes(port.type) &&
           !Array.isArray(value)
         )
-          throw new Error();
+          throw new Error("Expected an array");
         if (
           port.type === "map" &&
           (value === null || typeof value !== "object" || Array.isArray(value))
         )
-          throw new Error();
+          throw new Error("Expected an object");
         if (
           port.type === "vector3" &&
           (value === null ||
@@ -52,10 +56,12 @@ export function parseMockInputs(
                 typeof coordinate === "number" && Number.isFinite(coordinate),
             ))
         )
-          throw new Error();
+          throw new Error(
+            "Expected a vector with finite x, y, and z coordinates",
+          );
         return [[port.id, jsonToValue(value)]];
       } catch {
-        throw new InvalidMockInput(port.id);
+        throw InvalidMockInput.new(port.id);
       }
     }),
   );

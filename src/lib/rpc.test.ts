@@ -27,7 +27,7 @@ test("generated unary clients preserve payloads, metadata, deadlines, and contex
             "Bearer token",
           );
           assert.ok((context.timeoutMs() ?? 0) > 0);
-          assert.ok((context.timeoutMs() ?? Infinity) <= 1_000);
+          assert.ok((context.timeoutMs() ?? Infinity) <= 1000);
           context.responseHeader.set("x-request-id", "request-1");
           context.responseTrailer.set("x-finished", "true");
           return { messages: [{ id: "log-1", message: "Started" }] };
@@ -50,7 +50,7 @@ test("generated unary clients preserve payloads, metadata, deadlines, and contex
     { count: 7 },
     {
       headers: { authorization: "Bearer token" },
-      timeoutMs: 1_000,
+      timeoutMs: 1000,
       contextValues: createContextValues().set(key, "custom"),
       onHeader: (headers) => {
         received.push(headers.get("x-request-id") ?? "");
@@ -124,7 +124,7 @@ test("generated streams subscribe lazily and abort after finite consumption", as
 });
 
 test("caller cancellation stops a pending generated stream read", async () => {
-  const started = Deferred.makeUnsafe<void>();
+  const started = Deferred.makeUnsafe<undefined>();
   let signal: AbortSignal | undefined;
   const transport = createRouterTransport((router) => {
     router.service(LogsService, {
@@ -133,7 +133,7 @@ test("caller cancellation stops a pending generated stream read", async () => {
         return {
           [Symbol.asyncIterator]: () => ({
             next: async () => {
-              Deferred.doneUnsafe(started, Effect.void);
+              Deferred.doneUnsafe(started, Effect.undefined);
               await new Promise<void>((resolve) => {
                 if (context.signal.aborted) resolve();
                 else
@@ -194,7 +194,7 @@ test("unary failures preserve Connect codes, metadata, and error identity", asyn
 });
 
 test("interrupting a unary call aborts the transport signal", async () => {
-  const started = Deferred.makeUnsafe<void>();
+  const started = Deferred.makeUnsafe<undefined>();
   let aborted = false;
   const fiber = Effect.runFork(
     rpc(
@@ -209,7 +209,7 @@ test("interrupting a unary call aborts the transport signal", async () => {
             },
             { once: true },
           );
-          Deferred.doneUnsafe(started, Effect.void);
+          Deferred.doneUnsafe(started, Effect.undefined);
         }),
     ),
   );
@@ -245,7 +245,7 @@ test("streams are lazy and every consumer gets a fresh subscription", async () =
 });
 
 test("interrupting a pending stream read aborts before returning its iterator", async () => {
-  const started = Deferred.makeUnsafe<void>();
+  const started = Deferred.makeUnsafe<undefined>();
   const events: string[] = [];
   const stream = rpcStream<number>("Test.Watch", (signal) => ({
     [Symbol.asyncIterator]: () => ({
@@ -259,7 +259,7 @@ test("interrupting a pending stream read aborts before returning its iterator", 
             },
             { once: true },
           );
-          Deferred.doneUnsafe(started, Effect.void);
+          Deferred.doneUnsafe(started, Effect.undefined);
         }),
       return: async () => {
         events.push("return");
@@ -344,13 +344,13 @@ test("signal composition preserves call options and cancellation from either own
     const headers = new Headers({ Authorization: "Bearer token" });
     const options: CallOptions = {
       signal: caller.signal,
-      timeoutMs: 1_000,
+      timeoutMs: 1000,
       headers,
       onHeader,
     };
     const composed = withSignal(options, effect.signal);
     assert.equal(composed.signal?.aborted, false);
-    assert.equal(composed.timeoutMs, 1_000);
+    assert.equal(composed.timeoutMs, 1000);
     assert.equal(composed.headers, headers);
     // oxlint-disable-next-line typescript/unbound-method -- the test compares the forwarded callback by identity
     assert.equal(composed.onHeader, onHeader);

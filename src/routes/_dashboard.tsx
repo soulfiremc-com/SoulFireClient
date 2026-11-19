@@ -79,7 +79,7 @@ export const Route = createFileRoute("/_dashboard")({
 
           return result;
         },
-        refetchInterval: 3_000,
+        refetchInterval: 3000,
       });
       props.abortController.signal.addEventListener("abort", () => {
         void props.context.queryClient.cancelQueries({

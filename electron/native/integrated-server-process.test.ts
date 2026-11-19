@@ -152,10 +152,10 @@ test(
 
 test("diagnostic output stays bounded while retaining stable log identities", () => {
   const state = createIntegratedServerState();
-  for (let count = 0; count < 3_000; count++)
-    appendIntegratedLog(state, "x".repeat(1_000));
+  for (let count = 0; count < 3000; count++)
+    appendIntegratedLog(state, "x".repeat(1000));
   assert.ok(state.logCharacters <= 1_000_000);
-  assert.ok(state.diagnostics.logs.length <= 2_000);
+  assert.ok(state.diagnostics.logs.length <= 2000);
   assert.ok(state.diagnostics.droppedLogCount > 0);
   assert.equal(
     new Set(state.diagnostics.logs.map((log) => log.id)).size,

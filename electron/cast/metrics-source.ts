@@ -55,7 +55,8 @@ export const makeMetricsSource = (
               client.clear();
             }),
         );
-        const runPromise = Effect.runPromiseWith(yield* Effect.context());
+        const context = yield* Effect.context();
+        const runPromise = Effect.runPromiseWith(context);
         const transport = transportFor(source);
         const metrics = createRpcClient(MetricsService, transport);
         const instances = createRpcClient(InstanceService, transport);

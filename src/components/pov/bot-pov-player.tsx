@@ -104,13 +104,16 @@ function BotPovSession({
   const { t } = useTranslation("instance");
   // The demo has no server to stream from, so retrying cannot help.
   const demo = use(TransportContext) === null;
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [playerStore] = useState(createPovPlayerStore);
   const actions = playerStore.actions;
   const captureToastId = useId();
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [touch] = useState(() => matchMedia("(pointer: coarse)").matches);
   const guiOpen = useSelector(playerStore, (state) => state.screenOpen);
   const releaseShortcut = isMac ? "Cmd+Shift+G" : "Ctrl+Shift+G";
   const nativeCaptureTarget = useRef<"pov" | undefined>(undefined);
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [metrics] = useState(() =>
     povDebugEnabled() ? new PovStreamMetrics() : null,
   );

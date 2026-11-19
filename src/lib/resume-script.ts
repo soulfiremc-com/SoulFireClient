@@ -1,11 +1,15 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
 import { createRpcClient } from "@/lib/rpc";
 import type { Transport } from "@connectrpc/connect";
-import { Data, Effect, Stream } from "effect";
+import { Schema, Effect, Stream } from "effect";
 import { ScriptService } from "@/generated/soulfire/script_pb";
 
-class ScriptActivationError extends Data.TaggedError("ScriptActivationError")<{
-  readonly message: string;
-}> {}
+class ScriptActivationError extends TaggedFailure<
+  ScriptActivationError,
+  { readonly brand: unique symbol }
+>()("ScriptActivationError", {
+  message: Schema.String,
+}) {}
 
 export async function resumeScript(
   transport: Transport,

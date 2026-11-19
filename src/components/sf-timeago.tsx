@@ -23,7 +23,7 @@ export const SFTimeAgo = React.memo(function SFTimeAgo(props: { date: Date }) {
         includeSeconds: true,
         locale: dateFnsLocale,
       }),
-    1_000,
+    1000,
     [props.date, dateFnsLocale],
   );
   const formatted = useMemo(() => {

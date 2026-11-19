@@ -1,8 +1,13 @@
-import { Data, Effect, Schema } from "effect";
+import { TaggedError as TaggedFailure } from "effect/Schema";
+import { Effect, Schema } from "effect";
 
-export class ProviderRequestError extends Data.TaggedError(
-  "ProviderRequestError",
-)<{ readonly message: string; readonly cause?: unknown }> {}
+export class ProviderRequestError extends TaggedFailure<
+  ProviderRequestError,
+  { readonly brand: unique symbol }
+>()("ProviderRequestError", {
+  message: Schema.String,
+  cause: Schema.optionalKey(Schema.Unknown),
+}) {}
 
 export interface ProviderRequest {
   url: string;
@@ -186,7 +191,7 @@ export function validateProviderRequest(
     if (
       !allowedHeaders.has(key.toLowerCase()) ||
       typeof header !== "string" ||
-      header.length > 8_192 ||
+      header.length > 8192 ||
       /[\r\n]/u.test(header)
     ) {
       throw new Error("Invalid provider request headers");

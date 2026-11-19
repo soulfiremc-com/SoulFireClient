@@ -28,7 +28,7 @@ test("an unavailable clipboard cannot fail a completed Minecraft action", async 
 test("a clipboard method that throws synchronously cannot fail a completed action", async () => {
   const win = browser({
     writeText: () => {
-      throw new Error();
+      throw new Error("Test failure");
     },
   });
   await assert.doesNotReject(async () => {
@@ -39,7 +39,7 @@ test("a clipboard method that throws synchronously cannot fail a completed actio
 test("an asynchronous clipboard denial remains handled", async () => {
   const win = browser({
     writeText: async () => {
-      throw new Error();
+      throw new Error("Test failure");
     },
   });
   await assert.doesNotReject(async () => {

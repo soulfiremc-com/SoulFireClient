@@ -1,18 +1,23 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
 import { createWriteStream } from "node:fs";
 import { rm } from "node:fs/promises";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { Data, Effect } from "effect";
+import { Schema, Effect } from "effect";
 
-class DownloadError extends Data.TaggedError("DownloadError")<{
-  readonly message: string;
-}> {}
+class DownloadError extends TaggedFailure<
+  DownloadError,
+  { readonly brand: unique symbol }
+>()("DownloadError", {
+  message: Schema.String,
+}) {}
 
 export function downloadToFileEffect(
   url: string,
   destinationPath: string,
   signal: AbortSignal,
   onProgress: (percent: number) => void,
+  fetchDownload: typeof fetch = fetch,
 ): Effect.Effect<void, unknown> {
   return Effect.scoped(
     Effect.gen(function* () {
@@ -26,7 +31,7 @@ export function downloadToFileEffect(
       const response = yield* Effect.acquireRelease(
         Effect.tryPromise({
           try: (runtimeSignal) =>
-            fetch(url, {
+            fetchDownload(url, {
               signal: AbortSignal.any([
                 signal,
                 controller.signal,
@@ -64,7 +69,7 @@ export function downloadToFileEffect(
       });
       // Wait for the aborted pipeline to close its file before cleanup removes it.
       const body = response.body;
-      yield* Effect.callback<void, unknown>((resume, runtimeSignal) => {
+      yield* Effect.callback<undefined, unknown>((resume, runtimeSignal) => {
         const pending = pipeline(
           Readable.from(body),
           progress,
@@ -75,9 +80,9 @@ export function downloadToFileEffect(
         );
         pending.then(
           () => {
-            resume(Effect.void);
+            resume(Effect.undefined);
           },
-          (error) => {
+          (error: unknown) => {
             resume(Effect.fail(error));
           },
         );

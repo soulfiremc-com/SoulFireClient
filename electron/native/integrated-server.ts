@@ -54,6 +54,26 @@ function temporaryPath(filePath: string, recursive = false) {
 
 const ROOT_USER_UUID = "00000000-0000-0000-0000-000000000000";
 
+function integratedServerEnvironment(
+  javaHomeDir: string,
+  parentEnvironment: NodeJS.ProcessEnv,
+) {
+  return {
+    ...parentEnvironment,
+    JAVA_HOME: javaHomeDir,
+    LD_LIBRARY_PATH: [
+      path.join(javaHomeDir, "lib"),
+      path.join(javaHomeDir, "lib", "server"),
+      parentEnvironment["LD_LIBRARY_PATH"] ?? "",
+    ].join(path.delimiter),
+    DYLD_LIBRARY_PATH: [
+      path.join(javaHomeDir, "lib"),
+      path.join(javaHomeDir, "lib", "server"),
+      parentEnvironment["DYLD_LIBRARY_PATH"] ?? "",
+    ].join(path.delimiter),
+  };
+}
+
 export type IntegratedServerJarSource =
   | {
       type: "official";
@@ -195,18 +215,7 @@ export async function runIntegratedServer(
         {
           cwd: soulFireRunDir,
           env: {
-            ...process.env,
-            JAVA_HOME: javaHomeDir,
-            LD_LIBRARY_PATH: [
-              path.join(javaHomeDir, "lib"),
-              path.join(javaHomeDir, "lib", "server"),
-              process.env["LD_LIBRARY_PATH"] ?? "",
-            ].join(path.delimiter),
-            DYLD_LIBRARY_PATH: [
-              path.join(javaHomeDir, "lib"),
-              path.join(javaHomeDir, "lib", "server"),
-              process.env["DYLD_LIBRARY_PATH"] ?? "",
-            ].join(path.delimiter),
+            ...integratedServerEnvironment(javaHomeDir, process.env),
           },
           stdio: "pipe",
           windowsHide: true,
@@ -301,8 +310,10 @@ export async function removeCustomSoulFireServerJar(
   const index = await readCustomJarIndex(app);
   const jar = index.jars.find((entry) => entry.id === jarId);
   if (jar !== undefined) {
-    await unlink(jar.path).catch((error: NodeJS.ErrnoException) => {
-      if (error.code !== "ENOENT") {
+    await unlink(jar.path).catch((error: unknown) => {
+      if (
+        !(error instanceof Error && "code" in error && error.code === "ENOENT")
+      ) {
         throw error;
       }
     });

@@ -18,5 +18,5 @@ export function getConnectionRetryDelay(error: unknown, attempts: number) {
   if (getConnectionErrorKind(error) !== "connection" || attempts >= 3) {
     return null;
   }
-  return 5_000 * 2 ** attempts;
+  return 5000 * 2 ** attempts;
 }

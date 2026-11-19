@@ -67,7 +67,7 @@ export function scriptListQueryOptions(
       }
       const client = createRpcClient(ScriptService, transport);
       const result = await Effect.runPromise(
-        client.listScripts({ instanceId }, { signal: signal }),
+        client.listScripts({ instanceId }, { signal }),
       );
       return result;
     },
@@ -91,7 +91,7 @@ export function scriptQueryOptions(
       }
       const client = createRpcClient(ScriptService, transport);
       const result = await Effect.runPromise(
-        client.getScript({ instanceId, scriptId }, { signal: signal }),
+        client.getScript({ instanceId, scriptId }, { signal }),
       );
       return result.script;
     },
@@ -115,12 +115,12 @@ export function scriptStatusQueryOptions(
       }
       const client = createRpcClient(ScriptService, transport);
       const result = await Effect.runPromise(
-        client.getScriptStatus({ instanceId, scriptId }, { signal: signal }),
+        client.getScriptStatus({ instanceId, scriptId }, { signal }),
       );
       return result.status;
     },
     enabled: scriptId !== "new",
-    refetchInterval: 2_000,
+    refetchInterval: 2000,
   });
 }
 
@@ -152,7 +152,7 @@ export function nodeTypesQueryOptions(
             category: options?.category,
             includeDeprecated: options?.includeDeprecated ?? false,
           },
-          { signal: signal },
+          { signal },
         ),
       );
       return result;
@@ -179,7 +179,7 @@ export function registryDataQueryOptions(
       }
       const client = createRpcClient(ScriptService, transport);
       const result = await Effect.runPromise(
-        client.getRegistryData({ registry }, { signal: signal }),
+        client.getRegistryData({ registry }, { signal }),
       );
       return result;
     },

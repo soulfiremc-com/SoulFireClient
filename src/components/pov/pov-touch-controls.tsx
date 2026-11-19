@@ -16,6 +16,7 @@ export function PovTouchControls({
   buttonEvent: (code: number, pressed: boolean) => void;
   screenOpen: boolean;
 }) {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [input] = useState(() => new PovTouchInput());
   const send = (events: PovInputEvent[]) => {
     for (const event of events)

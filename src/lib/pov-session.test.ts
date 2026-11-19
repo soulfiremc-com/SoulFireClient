@@ -214,7 +214,7 @@ test("reconnecting releases the old socket and ignores its late callbacks", asyn
   expect(secondInput.captured).toBe(false);
   staleClose();
   await settle();
-  jest.advanceTimersByTime(1_000);
+  jest.advanceTimersByTime(1000);
   await settle();
   expect(state.calls()).toBe(2);
   expect(second.readyState).toBe(Socket.OPEN);

@@ -99,7 +99,9 @@ await Effect.runPromise(program);
   }
 
   const executable =
-    shell === "powershell" ? ".venv\\Scripts\\python.exe" : ".venv/bin/python";
+    shell === "powershell"
+      ? String.raw`.venv\Scripts\python.exe`
+      : ".venv/bin/python";
   const createVenv =
     shell === "powershell"
       ? "py -3.14 -m venv .venv"

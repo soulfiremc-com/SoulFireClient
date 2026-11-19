@@ -646,7 +646,7 @@ function Content() {
         <ManageUserDialog
           mode="edit"
           user={editUser}
-          open={true}
+          open
           setOpen={(open) => {
             if (!open) setEditUser(null);
           }}

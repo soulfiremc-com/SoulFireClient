@@ -93,9 +93,9 @@ test("date ranges restore timestamp bounds for numeric filtering", () => {
     features,
     columns,
     data: [
-      { id: "before", value: 1760000000000 },
-      { id: "within", value: 1761500000000 },
-      { id: "after", value: 1763000000000 },
+      { id: "before", value: 1_760_000_000_000 },
+      { id: "within", value: 1_761_500_000_000 },
+      { id: "after", value: 1_763_000_000_000 },
     ],
     getRowId: (row) => row.id,
     initialState: {

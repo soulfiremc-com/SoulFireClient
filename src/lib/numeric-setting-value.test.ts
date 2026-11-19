@@ -60,9 +60,9 @@ test("maximum prefixes do not permanently lower the minimum", () => {
 
 test("correcting an overshoot restores the opposite bound from the edit baseline", () => {
   const baseline = { min: 1000, max: 3000 };
-  assert.deepEqual(updateNumericRange(baseline, "min", 45000), {
-    min: 45000,
-    max: 45000,
+  assert.deepEqual(updateNumericRange(baseline, "min", 45_000), {
+    min: 45_000,
+    max: 45_000,
   });
   assert.deepEqual(updateNumericRange(baseline, "min", 4500), {
     min: 4500,

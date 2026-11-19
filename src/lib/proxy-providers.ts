@@ -58,7 +58,7 @@ const port = Schema.Unknown.pipe(
 )
   .check(Schema.isInt())
   .check(Schema.isGreaterThanOrEqualTo(1))
-  .check(Schema.isLessThanOrEqualTo(65535));
+  .check(Schema.isLessThanOrEqualTo(65_535));
 const host = Schema.String.check(Schema.isMinLength(1)).check(
   Schema.makeFilter((value) => !/[\s/@?#]/u.test(value)),
 );
@@ -66,7 +66,7 @@ const optionalCredential = Schema.optional(Schema.NullOr(Schema.String));
 
 function parse<T>(schema: Schema.ConstraintDecoder<T>, value: unknown): T {
   const result = Schema.decodeUnknownResult(schema, { errors: "all" })(value);
-  if (!Result.isSuccess(result)) throw new ProviderApiError("response");
+  if (!Result.isSuccess(result)) throw ProviderApiError.new("response");
   return result.success;
 }
 
@@ -91,12 +91,12 @@ function proxy(
 }
 
 function required(value: string): string {
-  if (!value.trim()) throw new ProviderApiError("authentication");
+  if (!value.trim()) throw ProviderApiError.new("authentication");
   return value.trim();
 }
 
 function resource(value: string): string {
-  if (!/^[\w-]+$/u.test(value)) throw new ProviderApiError("response");
+  if (!/^[\w-]+$/u.test(value)) throw ProviderApiError.new("response");
   return value;
 }
 
@@ -110,7 +110,7 @@ const sellerResponse = Schema.Struct({
 });
 function sellerData(value: unknown): unknown {
   const result = parse(sellerResponse, value);
-  if (result.status !== "success") throw new ProviderApiError("rejected");
+  if (result.status !== "success") throw ProviderApiError.new("rejected");
   return result.data;
 }
 
@@ -125,7 +125,7 @@ function textProxies(text: string): ProfileProxy[] {
         if (!result) throw new Error("Unsupported protocol");
         return result;
       } catch {
-        throw new ProviderApiError("response");
+        throw ProviderApiError.new("response");
       }
     });
 }
@@ -164,12 +164,12 @@ export function loadProviderProxies(
         values.limit < 1 ||
         values.limit > MAX_PROVIDER_PROXIES
       )
-        throw new ProviderApiError("limit");
+        throw ProviderApiError.new("limit");
       let proxies: ProfileProxy[];
       switch (id) {
         case "webshare": {
           if (values.mode !== "direct" && values.mode !== "backbone")
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
           const results: ProfileProxy[] = [];
           const visited = new Set<string>();
           let next: string | null =
@@ -183,8 +183,11 @@ export function loadProviderProxies(
               target.password ||
               visited.has(target.href)
             )
-              throw new ProviderApiError("response");
+              throw ProviderApiError.new("response");
             visited.add(target.href);
+            const pageResponse = yield* json(target.href, {
+              Authorization: `Token ${required(values.apiKey)}`,
+            });
             const page = parse(
               Schema.Struct({
                 next: Schema.NullOr(Schema.String),
@@ -200,12 +203,10 @@ export function loadProviderProxies(
                   ),
                 ),
               }),
-              yield* json(target.href, {
-                Authorization: `Token ${required(values.apiKey)}`,
-              }),
+              pageResponse,
             );
             // A capped page count also bounds empty or invalid-result pagination.
-            if (visited.size > 100) throw new ProviderApiError("limit");
+            if (visited.size > 100) throw ProviderApiError.new("limit");
             results.push(
               ...page.results.flatMap((entry) =>
                 entry.valid && entry.proxy_address !== null
@@ -228,10 +229,14 @@ export function loadProviderProxies(
         }
         case "proxy-seller": {
           if (!["ipv4", "ipv6", "isp"].includes(values.product))
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
           const filter = values.resourceId
             ? `?orderId=${encodeURIComponent(values.resourceId)}`
             : "";
+          const listResponse = yield* json(
+            `${sellerBase(values.apiKey)}/proxy/list/${values.product}${filter}`,
+            {},
+          );
           const data = parse(
             Schema.Struct({
               items: Schema.mutable(
@@ -246,12 +251,7 @@ export function loadProviderProxies(
                 ),
               ),
             }),
-            sellerData(
-              yield* json(
-                `${sellerBase(values.apiKey)}/proxy/list/${values.product}${filter}`,
-                {},
-              ),
-            ),
+            sellerData(listResponse),
           );
           proxies = data.items.map((entry) =>
             proxy(
@@ -272,7 +272,7 @@ export function loadProviderProxies(
               values.product,
             )
           )
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
           const query = new URLSearchParams({
             protocol:
               values.protocol === ProxyProto_Type.SOCKS5 ? "socks" : "http",
@@ -281,18 +281,21 @@ export function loadProviderProxies(
             type: "displayproxies",
             limit: String(values.limit),
           });
-          proxies = textProxies(
-            yield* providerTextEffect({
-              url: `https://api.proxyscrape.com/v4/account/${resource(values.resourceId)}/${values.product}/proxy-list?${query}`,
-              method: "GET",
-              headers: { "api-token": required(values.apiKey) },
-            }),
-          );
+          const proxyText = yield* providerTextEffect({
+            url: `https://api.proxyscrape.com/v4/account/${resource(values.resourceId)}/${values.product}/proxy-list?${query}`,
+            method: "GET",
+            headers: { "api-token": required(values.apiKey) },
+          });
+          proxies = textProxies(proxyText);
           break;
         }
         case "iproyal": {
           if (!/^\d+$/u.test(values.resourceId))
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
+          const orderResponse = yield* json(
+            `https://apid.iproyal.com/v1/reseller/orders/${values.resourceId}`,
+            { "X-Access-Token": required(values.apiKey) },
+          );
           const data = parse(
             Schema.Struct({
               proxy_data: Schema.Struct({
@@ -311,10 +314,7 @@ export function loadProviderProxies(
                 ),
               }),
             }),
-            yield* json(
-              `https://apid.iproyal.com/v1/reseller/orders/${values.resourceId}`,
-              { "X-Access-Token": required(values.apiKey) },
-            ),
+            orderResponse,
           );
           const proxyPort =
             values.protocol === ProxyProto_Type.SOCKS5
@@ -340,7 +340,7 @@ export function loadProviderProxies(
                 parsed.password,
               );
             } catch {
-              throw new ProviderApiError("response");
+              throw ProviderApiError.new("response");
             }
           });
           break;
@@ -348,9 +348,9 @@ export function loadProviderProxies(
         case "decodo": {
           // This documented generator returns HTTP endpoints only.
           if (values.protocol !== ProxyProto_Type.HTTP)
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
           if (values.country && !/^[a-zA-Z]{2}$/u.test(values.country))
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
           const query = new URLSearchParams({
             username: required(values.username),
             password: values.password,
@@ -376,19 +376,20 @@ export function loadProviderProxies(
         }
         case "oxylabs": {
           if (values.protocol !== ProxyProto_Type.HTTP)
-            throw new ProviderApiError("response");
+            throw ProviderApiError.new("response");
           const bytes = new TextEncoder().encode(
             `${required(values.username)}:${values.password}`,
           );
           const auth = btoa(
             Array.from(bytes, (byte) => String.fromCodePoint(byte)).join(""),
           );
+          const listResponse = yield* json(
+            `https://api.oxylabs.io/v1/proxies/lists/${resource(values.resourceId)}`,
+            { Authorization: `Basic ${auth}` },
+          );
           const data = parse(
             Schema.mutable(Schema.Array(Schema.Struct({ ip: host, port }))),
-            yield* json(
-              `https://api.oxylabs.io/v1/proxies/lists/${resource(values.resourceId)}`,
-              { Authorization: `Basic ${auth}` },
-            ),
+            listResponse,
           );
           proxies = data.map((entry) =>
             proxy(
@@ -411,7 +412,7 @@ export function loadProviderProxies(
             Schema.Struct({ code: Schema.Finite, data: Schema.Unknown }),
             result,
           );
-          if (envelope.code !== 200) throw new ProviderApiError("rejected");
+          if (envelope.code !== 200) throw ProviderApiError.new("rejected");
           const data = parse(
             Schema.mutable(
               Schema.Array(
@@ -432,8 +433,8 @@ export function loadProviderProxies(
         }
       }
       if (proxies.length > MAX_PROVIDER_PROXIES)
-        throw new ProviderApiError("limit");
-      if (proxies.length === 0) throw new ProviderApiError("empty");
+        throw ProviderApiError.new("limit");
+      if (proxies.length === 0) throw ProviderApiError.new("empty");
       return newProviderProxies(proxies);
     }).pipe(providerParsing),
     signal,
@@ -445,7 +446,7 @@ function parseJsonString(value: string): unknown {
   try {
     return JSON.parse(value) as unknown;
   } catch {
-    throw new ProviderApiError("response");
+    throw ProviderApiError.new("response");
   }
 }
 
@@ -471,7 +472,7 @@ function sellerOrderBody(order: SellerOrder) {
     order.quantity < 1 ||
     order.quantity > MAX_PROVIDER_PROXIES
   )
-    throw new ProviderApiError("response");
+    throw ProviderApiError.new("response");
   return {
     sectionCode: order.product,
     countryId: order.country,
@@ -490,13 +491,17 @@ const providerParsing = Effect.catchDefect((error) =>
   error instanceof ProviderApiError ? Effect.fail(error) : Effect.die(error),
 );
 
+const encodeSellerOrder = Schema.encodeSync(
+  Schema.fromJsonString(Schema.Unknown),
+);
+
 function sellerQuoteEffect(key: string, order: SellerOrder) {
   return Effect.gen(function* () {
     const result = yield* providerJsonEffect({
       url: `${sellerBase(key)}/order/calc`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sellerOrderBody(order)),
+      body: encodeSellerOrder(sellerOrderBody(order)),
     });
     return parse(
       Schema.Struct({
@@ -537,12 +542,12 @@ export function purchaseSellerOrder(
         current.currency !== quote.currency ||
         current.balance < current.total
       )
-        return yield* Effect.fail(new ProviderApiError("priceChanged"));
+        return yield* ProviderApiError.new("priceChanged");
       const result = yield* providerJsonEffect({
         url: `${sellerBase(key)}/order/make`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sellerOrderBody(order)),
+        body: encodeSellerOrder(sellerOrderBody(order)),
       });
       return parse(
         Schema.Struct({

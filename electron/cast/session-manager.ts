@@ -1,3 +1,5 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
+import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import {
   DEFAULT_SETTINGS,
@@ -10,7 +12,7 @@ import {
 } from "@soulfiremc/cast-protocol";
 import {
   Cause,
-  Data,
+  Schema,
   Deferred,
   Effect,
   Fiber,
@@ -23,9 +25,12 @@ import { castError, type CastError } from "./errors";
 import { MetricsSource, MetricsSourceLive } from "./metrics-source";
 import { CastTransport, CastTransportLive } from "./transport";
 
-class CastDiscoveryError extends Data.TaggedError("CastDiscoveryError")<{
-  readonly cause: unknown;
-}> {}
+class CastDiscoveryError extends TaggedFailure<
+  CastDiscoveryError,
+  { readonly brand: unique symbol }
+>()("CastDiscoveryError", {
+  cause: Schema.Unknown,
+}) {}
 
 interface ActiveSession {
   readonly generation: number;
@@ -149,12 +154,13 @@ export class CastSessionManager {
     );
   }
 
-  registerDevice(device: CastDevice): CastDevice {
+  registerDevice(discovered: CastDevice): CastDevice {
     const known = Array.from(this.devices.values()).find(
       (candidate) =>
-        candidate.address === device.address && candidate.port === device.port,
+        candidate.address === discovered.address &&
+        candidate.port === discovered.port,
     );
-    if (known) device = { ...device, id: known.id };
+    const device = known ? { ...discovered, id: known.id } : discovered;
     const previous = this.devices.get(device.id);
     this.devices.set(device.id, {
       phase: "idle",
@@ -172,7 +178,7 @@ export class CastSessionManager {
   }
 
   connect(
-    device: CastDevice,
+    requestedDevice: CastDevice,
     source: CastSource,
     relaunch = false,
   ): Promise<void> {
@@ -183,7 +189,7 @@ export class CastSessionManager {
           Effect.gen({ self: this }, function* () {
             if (this.disposed || epoch !== this.sourceEpoch)
               return yield* castError("Casting is shutting down.", false);
-            device = this.registerDevice(device);
+            const device = this.registerDevice(requestedDevice);
             const previous = this.sessions.get(device.id);
             if (previous) yield* Fiber.interrupt(previous.fiber);
             if (epoch !== this.sourceEpoch)
@@ -192,7 +198,7 @@ export class CastSessionManager {
                 false,
               );
             const generation = ++this.generation;
-            const ready = yield* Deferred.make<void, CastError>();
+            const ready = yield* Deferred.make<undefined, CastError>();
             const fiber = this.runtime.runFork(
               this.workflow(device, source, generation, relaunch, ready),
             );
@@ -272,7 +278,7 @@ export class CastSessionManager {
     source: CastSource,
     generation: number,
     relaunch: boolean,
-    ready: Deferred.Deferred<void, CastError>,
+    ready: Deferred.Deferred<undefined, CastError>,
   ): Effect.Effect<void, never, Service> {
     const patch = (state: Partial<CastDeviceState>) => {
       if (this.sessions.get(device.id)?.generation === generation)
@@ -309,7 +315,7 @@ export class CastSessionManager {
               channel
                 .send({
                   type: "RELEASE",
-                  requestId: crypto.randomUUID(),
+                  requestId: randomUUID(),
                   sessionId: channel.sessionId,
                 })
                 .pipe(Effect.timeout("1 second"), Effect.ignore),
@@ -336,7 +342,7 @@ export class CastSessionManager {
                 const settings = this.settings;
                 yield* channel.send({
                   type: "SETTINGS",
-                  requestId: crypto.randomUUID(),
+                  requestId: randomUUID(),
                   sessionId: channel.sessionId,
                   settings,
                 });
@@ -363,7 +369,7 @@ export class CastSessionManager {
                   const snapshots = incoming.slice(offset, offset + 20);
                   yield* channel.send({
                     type: "METRICS",
-                    requestId: crypto.randomUUID(),
+                    requestId: randomUUID(),
                     sessionId: channel.sessionId,
                     instanceId: source.instanceId,
                     sequence: sequence++,
@@ -375,13 +381,12 @@ export class CastSessionManager {
                   lastTimestamp = snapshots.at(-1)?.timestamp ?? lastTimestamp;
                 }
               }
-              updateStatus(
-                yield* channel.send({
-                  type: "PING",
-                  requestId: crypto.randomUUID(),
-                  sessionId: channel.sessionId,
-                }),
-              );
+              const status = yield* channel.send({
+                type: "PING",
+                requestId: randomUUID(),
+                sessionId: channel.sessionId,
+              });
+              updateStatus(status);
               yield* Effect.sleep("3 seconds");
             });
             return yield* Effect.raceFirst(

@@ -33,6 +33,7 @@ describe("SDK connection addresses", () => {
       "",
       "localhost:38765",
       "file:///tmp/server",
+      // oxlint-disable-next-line eslint/no-script-url -- Verify that script URLs are rejected.
       "javascript:alert(1)",
     ])
       assert.equal(sdkServerUrl(address), null);
@@ -169,7 +170,7 @@ describe("SDK starter projects", () => {
     assert.ok(result.install.includes("py -3.14 -m venv .venv"));
     assert.ok(
       result.install.includes(
-        ".venv\\Scripts\\python.exe -m pip install soulfire==2.10.7",
+        String.raw`.venv\Scripts\python.exe -m pip install soulfire==2.10.7`,
       ),
     );
     assert.equal(

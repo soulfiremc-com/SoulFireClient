@@ -10,7 +10,7 @@ function event(watcher: FSWatcher, name: string, target: string) {
     const timeout = setTimeout(() => {
       watcher.off("all", listener);
       reject(new Error(`Missing ${name} event for ${target}`));
-    }, 5_000);
+    }, 5000);
     const listener = (kind: string, changed: string) => {
       if (kind !== name || changed !== target) return;
       clearTimeout(timeout);

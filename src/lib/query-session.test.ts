@@ -67,7 +67,7 @@ async function withBrowser(
 }
 
 async function until(predicate: () => boolean) {
-  const deadline = performance.now() + 2_000;
+  const deadline = performance.now() + 2000;
   while (!predicate()) {
     assert.ok(performance.now() < deadline, "Expected a cache broadcast");
     await new Promise((resolve) => {

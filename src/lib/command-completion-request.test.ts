@@ -42,7 +42,7 @@ test("cancellation suppresses late failures and successful replies", async () =>
   const failed = deferred();
   const pendingFailure = request.run(() => failed.promise);
   request.cancel();
-  failed.reject(new Error());
+  failed.reject(new Error("Test failure"));
   assert.equal(await pendingFailure, undefined);
   const succeeded = deferred();
   const pendingSuccess = request.run(() => succeeded.promise);
@@ -53,7 +53,7 @@ test("cancellation suppresses late failures and successful replies", async () =>
 
 test("a current failure is reported and a retry can still succeed", async () => {
   const request = new CommandCompletionRequest();
-  const failure = new Error();
+  const failure = new Error("Test failure");
   await assert.rejects(
     request.run(async () => {
       throw failure;

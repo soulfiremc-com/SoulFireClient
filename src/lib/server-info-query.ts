@@ -52,6 +52,6 @@ export function serverInfoQueryOptions(transport: Transport | null) {
         ),
       };
     },
-    refetchInterval: 3_000,
+    refetchInterval: 3000,
   });
 }

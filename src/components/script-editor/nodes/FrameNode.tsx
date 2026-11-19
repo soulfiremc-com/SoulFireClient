@@ -66,7 +66,7 @@ function FrameNodeComponent({ id, data, selected }: FrameNodeProps) {
             selected ? "text-primary" : "text-muted-foreground",
           )}
           style={{
-            backgroundColor: backgroundColor,
+            backgroundColor,
           }}
         >
           <EditableNodeLabel

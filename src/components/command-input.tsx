@@ -98,11 +98,11 @@ const INTERACTIVE_SELECTOR = [
 export default function CommandInput(props: { scope: CommandScope }) {
   const { t } = useTranslation("common");
   const transport = use(TransportContext);
-  const [inputValue, setInputValueState] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const inputRevision = useRef(0);
-  const setInputValue = useCallback((value: string) => {
+  const updateInputValue = useCallback((value: string) => {
     inputRevision.current++;
-    setInputValueState(value);
+    setInputValue(value);
   }, []);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [commandHistory, setCommandHistory] = useState(readCommandHistory);
@@ -117,6 +117,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingCaret = useRef<number | null>(null);
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [completionRequest] = useState(() => new CommandCompletionRequest());
   useLayoutEffect(() => {
     const cursor = pendingCaret.current;
@@ -126,6 +127,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
   const completionFetchTimeout = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   // Focusing on load opens the on-screen keyboard and hides the log on phones.
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [autoFocus] = useState(
     () => !window.matchMedia("(pointer: coarse)").matches,
   );
@@ -237,7 +239,8 @@ export default function CommandInput(props: { scope: CommandScope }) {
   ) => {
     resetCompletionFetchDebounce();
     completionRequest.cancel();
-    const applyCompletions = (completionStateNew: CompletionState) => {
+    const applyCompletions = (receivedState: CompletionState) => {
+      let completionStateNew = receivedState;
       const suggestionsList = completionStateNew.receivedCompletions ?? [];
       if (suggestionsList.length > 0) {
         const activeIndex = completionStateNew.index ?? 0;
@@ -256,7 +259,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const newRange = { start: before.length, end: newCursor };
 
         setHistoryPosition({ index: -1, draft: "" });
-        setInputValue(newValue);
+        updateInputValue(newValue);
         pendingCaret.current = newCursor;
         setCursorPosition(newCursor);
 
@@ -502,7 +505,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         const newRange = { start: before.length, end: newCursor };
 
         setHistoryPosition({ index: -1, draft: "" });
-        setInputValue(newValue);
+        updateInputValue(newValue);
         pendingCaret.current = newCursor;
         setCursorPosition(newCursor);
 
@@ -515,7 +518,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         };
       });
     },
-    [completionRequest, resetCompletionFetchDebounce, setInputValue],
+    [completionRequest, resetCompletionFetchDebounce, updateInputValue],
   );
 
   const cycleSuggestion = useCallback(
@@ -575,7 +578,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       inputRef.current?.focus({ preventScroll: true });
       resetCompletionFetchDebounce();
       completionRequest.cancel();
-      setInputValue(value);
+      updateInputValue(value);
       pendingCaret.current = value.length;
       setCursorPosition(value.length);
       setHistoryPosition({ index: -1, draft: "" });
@@ -619,7 +622,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       e.preventDefault();
       resetCompletionFetchDebounce();
       completionRequest.cancel();
-      setInputValue("");
+      updateInputValue("");
       pendingCaret.current = 0;
       setCursorPosition(0);
       setHistoryPosition({ index: -1, draft: "" });
@@ -652,7 +655,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         toast.info(t("commandInput.demoUnavailable"));
         return;
       }
-      setInputValue("");
+      updateInputValue("");
       const submittedRevision = inputRevision.current;
       setCompletionState({
         baseText: "",
@@ -682,7 +685,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           return;
         resetCompletionFetchDebounce();
         completionRequest.cancel();
-        setInputValue(submittedText);
+        updateInputValue(submittedText);
         pendingCaret.current = submittedText.length;
         setCursorPosition(submittedText.length);
         setCompletionState({
@@ -725,7 +728,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       );
       if (!next) return;
       setHistoryPosition(next.position);
-      setInputValue(next.value);
+      updateInputValue(next.value);
       setCompletionState({
         baseText: next.value,
         cursor: next.value.length,
@@ -788,7 +791,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
             const { value, selectionStart } = e.currentTarget;
             pendingCaret.current = null;
             setHistoryPosition({ index: -1, draft: "" });
-            setInputValue(value);
+            updateInputValue(value);
             const cursor = selectionStart ?? value.length;
             setCursorPosition(cursor);
             if (!composing.current) scheduleCompletionFetch(value, cursor);

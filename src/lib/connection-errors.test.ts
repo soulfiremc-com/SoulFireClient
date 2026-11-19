@@ -15,7 +15,7 @@ test("only transient RPC failures retry, with backoff and a limit", () => {
     assert.equal(getConnectionErrorKind(error), "connection");
     assert.deepEqual(
       [0, 1, 2, 3, 4].map((attempt) => getConnectionRetryDelay(error, attempt)),
-      [5000, 10000, 20000, null, null],
+      [5000, 10_000, 20_000, null, null],
     );
   }
   for (const error of [

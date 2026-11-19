@@ -64,7 +64,7 @@ export function ActivityTimeline({
         service.getAuditLog({ id: instanceId }, { signal }),
       );
     },
-    refetchInterval: 5_000,
+    refetchInterval: 5000,
   });
 
   const entries = data?.entry.slice(0, MAX_TIMELINE_ENTRIES) ?? [];

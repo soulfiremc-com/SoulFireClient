@@ -1,5 +1,5 @@
 import { createRpcClient } from "@/lib/rpc";
-import { Effect, Stream } from "effect";
+import { Schema, Effect, Stream } from "effect";
 
 import { useSelector } from "@tanstack/react-store";
 import { FlaskConical, LoaderCircle } from "lucide-react";
@@ -56,6 +56,10 @@ interface RunResult {
   status: "idle" | "completed" | "failed" | "cancelled";
   error: string | null;
 }
+
+const encodeOutput = Schema.encodeSync(
+  Schema.fromJsonString(Schema.MutableJson),
+);
 
 export function DryRunDialog({ instanceId }: { instanceId: string }) {
   const editor = useScriptEditor();
@@ -167,9 +171,13 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
                             ([key, value]) => [key, valueToJson(value)],
                           ),
                         );
+                        const outputText =
+                          Object.keys(outputs).length > 0
+                            ? encodeOutput(outputs)
+                            : "";
                         addLog(
                           "debug",
-                          `${t("scripts.nodeCompleted", { nodeId: nodeName(event.value.nodeId) })}${Object.keys(outputs).length > 0 ? ` ${JSON.stringify(outputs)}` : ""}`,
+                          `${t("scripts.nodeCompleted", { nodeId: nodeName(event.value.nodeId) })}${outputText ? ` ${outputText}` : ""}`,
                           event.value.nodeId,
                         );
                         break;

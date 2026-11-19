@@ -25,6 +25,7 @@ export function SupportReminder({
   reminder?: SupportReminderController;
 }) {
   // Eligibility earned during this visit waits for the next overview visit.
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [eligibleOnEntry] = useState(() => reminder.isEligible());
   return eligibleOnEntry ? (
     <EligibleReminder ready={ready} reminder={reminder} />

@@ -29,6 +29,7 @@ const definitions = Array.from({ length: 40 }, (_, id) =>
 );
 
 function ScriptMenuExample({ kind }: { kind: "quick" | "dry-run" }) {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [session] = useState(() => {
     const editor = createScriptEditorSession();
     editor.actions.addNode(
@@ -43,6 +44,7 @@ function ScriptMenuExample({ kind }: { kind: "quick" | "dry-run" }) {
     );
     return editor;
   });
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [client] = useState(() => {
     const queryClient = new QueryClient();
     queryClient.setQueryData(

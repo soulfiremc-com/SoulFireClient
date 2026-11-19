@@ -50,8 +50,20 @@
     "better-tailwindcss/no-deprecated-classes": "error",
     "better-tailwindcss/no-duplicate-classes": "error",
     "effecttsgo/any-unknown-in-error-context": "off",
+    "effecttsgo/crypto-random-uuid-in-effect": "error",
+    "effecttsgo/extends-native-error": "error",
+    "effecttsgo/global-console-in-effect": "error",
+    "effecttsgo/global-date-in-effect": "error",
+    "effecttsgo/global-fetch-in-effect": "error",
+    "effecttsgo/global-json-in-effect": "error",
+    "effecttsgo/global-random-in-effect": "error",
+    "effecttsgo/global-timers-in-effect": "error",
+    "effecttsgo/prefer-schema-over-json": "error",
+    "effecttsgo/prefer-schema-tagged-error": "error",
+    "effecttsgo/process-env-in-effect": "error",
     "effecttsgo/strict-effect-provide": "off",
     "effecttsgo/unsafe-effect-type-assertion": "off",
+    "effecttsgo/yield-in-call-argument": "error",
     "eslint/array-callback-return": "error",
     "eslint/eqeqeq": [
       "error",
@@ -60,11 +72,13 @@
         "null": "ignore"
       }
     ],
+    "eslint/logical-assignment-operators": "error",
     "eslint/max-classes-per-file": "off",
     "eslint/max-depth": "off",
     "eslint/max-lines": "off",
     "eslint/max-lines-per-function": "off",
     "eslint/max-nested-callbacks": "off",
+    "eslint/no-alert": "error",
     "eslint/no-await-in-loop": "off",
     "eslint/no-console": [
       "error",
@@ -77,7 +91,9 @@
     "eslint/no-loop-func": "error",
     "eslint/no-negated-condition": "off",
     "eslint/no-new": "error",
+    "eslint/no-param-reassign": "error",
     "eslint/no-promise-executor-return": "error",
+    "eslint/no-script-url": "error",
     "eslint/no-self-compare": "error",
     "eslint/no-shadow": "error",
     "eslint/no-throw-literal": "error",
@@ -91,6 +107,10 @@
     "eslint/no-useless-assignment": "error",
     "eslint/no-useless-call": "error",
     "eslint/no-warning-comments": "off",
+    "eslint/object-shorthand": "error",
+    "eslint/prefer-const": "error",
+    "eslint/prefer-object-has-own": "error",
+    "eslint/prefer-template": "error",
     "eslint/preserve-caught-error": "error",
     "eslint/require-await": "off",
     "import/max-dependencies": "off",
@@ -126,6 +146,8 @@
     "jsx-a11y/prefer-tag-over-role": "error",
     "jsx-a11y/role-has-required-aria-props": "error",
     "oxc/no-accumulating-spread": "error",
+    "oxc/no-barrel-file": "error",
+    "oxc/no-map-spread": "error",
     "promise/always-return": [
       "error",
       {
@@ -142,8 +164,12 @@
     "react/button-has-type": "error",
     "react/capitalized-calls": "error",
     "react/exhaustive-effect-dependencies": "error",
+    "react/hook-use-state": "error",
     "react/hooks": "error",
     "react/immutability": "error",
+    "react/jsx-boolean-value": "error",
+    "react/jsx-curly-brace-presence": "error",
+    "react/jsx-fragments": "error",
     "react/jsx-no-constructed-context-values": "error",
     "react/jsx-no-target-blank": "error",
     "react/jsx-no-useless-fragment": "error",
@@ -163,6 +189,7 @@
     "react/purity": "error",
     "react/react-in-jsx-scope": "off",
     "react/refs": "error",
+    "react/self-closing-comp": "error",
     "react/set-state-in-effect": "error",
     "react/static-components": "error",
     "react/use-memo": "error",
@@ -184,6 +211,7 @@
     "typescript/consistent-type-imports": "error",
     "typescript/no-base-to-string": "error",
     "typescript/no-deprecated": "error",
+    "typescript/no-dynamic-delete": "error",
     "typescript/no-explicit-any": "error",
     "typescript/no-extraneous-class": "error",
     "typescript/no-floating-promises": [
@@ -207,10 +235,13 @@
         ]
       }
     ],
+    "typescript/no-import-type-side-effects": "error",
     "typescript/no-inferrable-types": "error",
+    "typescript/no-invalid-void-type": "error",
     "typescript/no-misused-promises": "error",
     "typescript/no-misused-spread": "error",
     "typescript/no-non-null-assertion": "error",
+    "typescript/no-redundant-type-constituents": "error",
     "typescript/no-unnecessary-condition": [
       "error",
       {
@@ -250,21 +281,29 @@
     "typescript/strict-boolean-expressions": "off",
     "typescript/switch-exhaustiveness-check": "error",
     "typescript/unbound-method": "error",
+    "typescript/use-unknown-in-catch-callback-variable": "error",
     "unicorn/consistent-function-scoping": "error",
+    "unicorn/error-message": "error",
     "unicorn/no-abusive-eslint-disable": "error",
     "unicorn/no-array-reverse": "error",
     "unicorn/no-array-sort": "error",
+    "unicorn/no-document-cookie": "error",
     "unicorn/no-negated-condition": "off",
     "unicorn/no-useless-switch-case": "off",
     "unicorn/no-useless-undefined": "off",
+    "unicorn/numeric-separators-style": "error",
     "unicorn/prefer-add-event-listener": "error",
     "unicorn/prefer-array-find": "error",
     "unicorn/prefer-array-flat-map": "error",
     "unicorn/prefer-at": "error",
     "unicorn/prefer-node-protocol": "error",
     "unicorn/prefer-number-coercion": "off",
+    "unicorn/prefer-optional-catch-binding": "error",
+    "unicorn/prefer-response-static-json": "error",
     "unicorn/prefer-set-has": "error",
+    "unicorn/prefer-string-raw": "error",
     "unicorn/prefer-string-replace-all": "error",
+    "unicorn/prefer-structured-clone": "error",
     "unicorn/prefer-top-level-await": "error",
     "unicorn/switch-case-braces": "error",
     "shadcn/no-arbitrary-values": [
@@ -766,7 +805,9 @@
         "allow": ["nodrag", "nopan", "ph-no-capture"]
       }
     ],
-    "shadcn/require-static-classes": "error"
+    "shadcn/require-static-classes": "error",
+    "unicorn/text-encoding-identifier-case": "error",
+    "unicorn/throw-new-error": "error"
   },
   "overrides": [
     {

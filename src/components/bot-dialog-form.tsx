@@ -62,6 +62,7 @@ export function BotDialogForm({
   const [drafts, setDrafts] = useState(
     () => new Map<string, ServerInputDraft>(),
   );
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [actions] = useState(() =>
     dialog.actions.map((button, index) => ({
       button,
@@ -69,6 +70,7 @@ export function BotDialogForm({
       id: crypto.randomUUID(),
     })),
   );
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [body] = useState(() =>
     dialog.body.map((element) => ({
       element: element.element,
@@ -112,13 +114,13 @@ export function BotDialogForm({
     const index =
       submitter instanceof HTMLButtonElement ? Number(submitter.value) : 0;
     if (pending) return;
-    const inputValues = { ...values };
+    const inputValues = new Map(Object.entries(values));
     if (index === -1) {
       // Cancel keeps native range values when their text drafts are incomplete.
       for (const { input } of dialog.inputs) {
         if (input.case !== "numberRange") continue;
         const { key, start, end } = input.value;
-        const draft = inputValues[key];
+        const draft = inputValues.get(key);
         if (
           !draft?.trim() ||
           getNumericSettingValue(
@@ -128,13 +130,13 @@ export function BotDialogForm({
             false,
           ) === undefined
         ) {
-          delete inputValues[key];
+          inputValues.delete(key);
         }
       }
     }
     let updated: ServerDialog | undefined;
     try {
-      updated = await onSubmit(index, inputValues);
+      updated = await onSubmit(index, Object.fromEntries(inputValues));
     } catch {
       // The mutation reports the error. Keep all local drafts for a retry.
       return;
@@ -146,7 +148,7 @@ export function BotDialogForm({
         if (!input.case) continue;
         const key = input.value.key;
         const draft = current.get(key);
-        const submitted = inputValues[key];
+        const submitted = inputValues.get(key);
         if (draft && submitted !== undefined) {
           next.set(
             key,

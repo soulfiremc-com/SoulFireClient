@@ -19,7 +19,7 @@ const metadata: TerminalInteraction = {
   hover: "Héllo 🌍",
   click: { action: "run_command", value: "help" },
 };
-const message = marker(metadata) + "Click" + marker(null);
+const message = `${marker(metadata)}Click${marker(null)}`;
 const line = (id: string, text = message, personal = true, trusted = true) =>
   toTerminalLine({
     id,
@@ -73,7 +73,7 @@ test("wire fixture preserves UTF-8 and matches the Java encoder contract", () =>
     "\u001B]777;soulfire;1;eyJob3ZlciI6IkjDqWxsbyDwn4yNIiwiY2xpY2siOnsiYWN0aW9uIjoicnVuX2NvbW1hbmQiLCJ2YWx1ZSI6ImhlbHAifX0\u001B\\";
   assert.equal(marker(metadata), fixture);
   let parsed: TerminalInteraction | undefined;
-  terminalLogText(fixture + "visible", true, (value) => {
+  terminalLogText(`${fixture}visible`, true, (value) => {
     parsed = value;
     return "test:1";
   });
@@ -94,17 +94,18 @@ test("unknown, malformed, oversized and unsafe markers end active metadata", () 
     raw({ click: { action: "run_command", value: "help\nstop" } }),
     raw({ click: { action: "open_file", value: "/tmp" } }),
     ...[
+      // oxlint-disable-next-line eslint/no-script-url -- Verify that script URLs are rejected.
       "javascript:alert(1)",
       "file:///tmp",
       "data:text/plain,hi",
       "https://user:pass@example.com",
     ].map((value) => raw({ click: { action: "open_url", value } })),
-    "\u001B]777;soulfire;1;" + "a".repeat(16385) + "\u001B\\",
+    `\u001B]777;soulfire;1;${"a".repeat(16_385)}\u001B\\`,
   ];
   for (const value of invalid) {
     let registrations = 0;
     const text = terminalLogText(
-      marker(metadata) + "A" + value + "B",
+      `${marker(metadata)}A${value}B`,
       true,
       () => `test:${registrations++}`,
     );
@@ -127,7 +128,7 @@ test("cell identities survive wide glyphs, wrapping, history, replay, and append
   const { bridge, output } = await setup(5, 2);
   const first = line(
     "1",
-    marker(metadata) + "A界e\u0301XYZ" + marker(null) + " plain",
+    `${marker(metadata)}A界e\u0301XYZ${marker(null)} plain`,
   );
   const second = line("2", "next");
   output.sync([first]);
@@ -169,7 +170,7 @@ test("cell identities survive wide glyphs, wrapping, history, replay, and append
 test("span count is bounded without dropping visible text", () => {
   let registrations = 0;
   const text = terminalLogText(
-    (marker(metadata) + "x" + marker(null)).repeat(70),
+    `${marker(metadata)}x${marker(null)}`.repeat(70),
     true,
     () => `test:${registrations++}`,
   );
@@ -178,8 +179,7 @@ test("span count is bounded without dropping visible text", () => {
 });
 
 test("renderer-independent spans require both provenance flags and retain Unicode text", () => {
-  const rendered =
-    "before " + marker(metadata) + "A界é\nline" + marker(null) + " after";
+  const rendered = `before ${marker(metadata)}A界é\nline${marker(null)} after`;
   const spans = parseTerminalText({
     message: rendered,
     personal: true,
@@ -216,10 +216,8 @@ test("renderer-independent spans require both provenance flags and retain Unicod
 test("React spans remove ANSI styling and unknown controls without losing boundaries", () => {
   const input = {
     message:
-      "\u001B[31mplain\u001B[0m " +
-      marker(metadata) +
-      "\u001B[1mstyled\u001B[0m" +
-      "\u001B]777;soulfire;2;unknown\u001B\\ordinary\u001B]52;c;payload\u0007",
+      `\u001B[31mplain\u001B[0m ${marker(metadata)}\u001B[1mstyled\u001B[0m` +
+      `\u001B]777;soulfire;2;unknown\u001B\\ordinary\u001B]52;c;payload\u0007`,
     personal: true,
     terminalInteractions: true,
   };

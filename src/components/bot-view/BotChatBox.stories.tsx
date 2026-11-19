@@ -89,6 +89,7 @@ const meta = {
   },
   decorators: [
     (Story) => {
+      // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
       const [client] = useState(() => new QueryClient());
       return (
         <QueryClientProvider client={client}>

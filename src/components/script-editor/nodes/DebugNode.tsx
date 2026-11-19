@@ -76,8 +76,8 @@ function formatTime(date: Date): string {
   const diff = now.getTime() - date.getTime();
 
   if (diff < 1000) return "now";
-  if (diff < 60000) return `${Math.floor(diff / 1000)}s ago`;
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+  if (diff < 60_000) return `${Math.floor(diff / 1000)}s ago`;
+  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
   return date.toLocaleTimeString();
 }
 

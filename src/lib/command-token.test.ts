@@ -5,8 +5,8 @@ import { getCommandTokenRange } from "./command-token";
 for (const text of [
   'instance "QA Alpha" help',
   "instance 'QA Alpha' help",
-  'instance "QA \\"Alpha\\"" help',
-  'instance "QA \\\\Alpha" help',
+  String.raw`instance "QA \"Alpha\"" help`,
+  String.raw`instance "QA \\Alpha" help`,
 ]) {
   test(`completion replaces the entire quoted argument in ${text}`, () => {
     const end = text.indexOf(" help");

@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import { Grid2x2Icon, PlusIcon, SettingsIcon, ZapIcon } from "lucide-react";
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import {

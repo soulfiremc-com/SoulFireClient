@@ -110,7 +110,7 @@ export function LocaltsFlow({
   const [uncertain, setUncertain] = useState(false);
 
   const product = products?.find((entry) => entry.id === selected);
-  const maxAmount = Math.min(1_000, product?.stock ?? 1_000);
+  const maxAmount = Math.min(1000, product?.stock ?? 1000);
   const validAmount =
     Number.isInteger(amount) && amount >= 1 && amount <= maxAmount;
   const total = product && validAmount ? localtsPrice(product, amount) : null;

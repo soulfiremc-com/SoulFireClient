@@ -27,7 +27,10 @@ async function fixture(code?: Code) {
         return {
           snapshots: [
             create(MetricsSnapshotSchema, {
-              timestamp: { seconds: BigInt(requests.length), nanos: 123456789 },
+              timestamp: {
+                seconds: BigInt(requests.length),
+                nanos: 123_456_789,
+              },
               botsOnline: requests.length,
             }),
           ],
@@ -80,7 +83,7 @@ test("polling uses exact RPC timestamps, merges history, and bounds positions", 
   expect(f.requests[0]).toBeDefined();
   expect(f.requests[0]?.since).toBeUndefined();
   expect(f.requests[1]?.since?.seconds).toBe(1n);
-  expect(f.requests[1]?.since?.nanos).toBe(123456789);
+  expect(f.requests[1]?.since?.nanos).toBe(123_456_789);
   expect(second.snapshots.map((sample) => sample.botsOnline)).toEqual([1, 2]);
   expect(first.distributions.botPositions).toHaveLength(100);
   expect(f.infoRequests()).toBe(1);
@@ -95,9 +98,9 @@ test("permission and authentication errors do not retry; transient RPC errors ca
     const f = await fixture(code);
     const error = await f.read().then(
       () => null,
-      (failure: { retryable: boolean }) => failure,
+      (failure: unknown) => failure,
     );
-    expect(error?.retryable).toBe(retryable);
+    expect(error).toMatchObject({ retryable });
     expect(f.requests).toHaveLength(1);
   }
 });

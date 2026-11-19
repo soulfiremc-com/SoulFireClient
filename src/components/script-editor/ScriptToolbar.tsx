@@ -141,6 +141,7 @@ export function ScriptToolbar({
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(scriptName);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [readSession] = useState(() => new ImportReadSession());
   useEffect(
     () => () => {

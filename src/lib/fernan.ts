@@ -8,6 +8,7 @@ import {
 } from "@/lib/provider-request.ts";
 
 // Contract: https://fernan.club/api (authenticated documentation).
+const encodeJson = Schema.encodeSync(Schema.fromJsonString(Schema.Unknown));
 const base = "https://api.fernan.club/api/v1";
 const stockSchema = Schema.Struct({
   product_id: Schema.Finite.check(Schema.isInt()).check(
@@ -66,28 +67,27 @@ export interface FernanAccount {
 
 function parse<T>(schema: Schema.ConstraintDecoder<T>, data: unknown) {
   return Schema.decodeUnknownEffect(schema, { errors: "all" })(data).pipe(
-    Effect.mapError(() => new ProviderApiError("response")),
+    Effect.mapError(() => ProviderApiError.new("response")),
   );
 }
 
 function request(path: string, key: string, body?: Record<string, unknown>) {
   return Effect.gen(function* () {
-    if (!key.trim())
-      return yield* Effect.fail(new ProviderApiError("authentication"));
+    if (!key.trim()) return yield* ProviderApiError.new("authentication");
+    const response = yield* providerJsonEffect({
+      url: `${base}${path}`,
+      method: body ? "POST" : "GET",
+      headers: {
+        "X-API-Key": key.trim(),
+        ...(body ? { "Content-Type": "application/json" } : {}),
+      },
+      ...(body ? { body: encodeJson(body) } : {}),
+    });
     const result = yield* parse(
       Schema.Struct({ success: Schema.Boolean, data: Schema.Unknown }),
-      yield* providerJsonEffect({
-        url: `${base}${path}`,
-        method: body ? "POST" : "GET",
-        headers: {
-          "X-API-Key": key.trim(),
-          ...(body ? { "Content-Type": "application/json" } : {}),
-        },
-        ...(body ? { body: JSON.stringify(body) } : {}),
-      }),
+      response,
     );
-    if (!result.success)
-      return yield* Effect.fail(new ProviderApiError("rejected"));
+    if (!result.success) return yield* ProviderApiError.new("rejected");
     return result.data;
   });
 }
@@ -180,26 +180,24 @@ export function purchaseFernanAccounts(
         amount > 100 ||
         (referral && !/^[a-zA-Z\d]{3,16}$/u.test(referral))
       )
-        return yield* Effect.fail(new ProviderApiError("response"));
+        return yield* ProviderApiError.new("response");
       const current = yield* accountEffect(key);
       const updated = current.stock.find(
         (entry) => entry.product_id === product.product_id,
       );
       if (!updated || amount > fernanPurchaseLimit(updated, current.cooldowns))
-        return yield* Effect.fail(new ProviderApiError("empty"));
+        return yield* ProviderApiError.new("empty");
       if (
         updated.price * amount !== maximumCost ||
         current.balance < maximumCost
       )
-        return yield* Effect.fail(new ProviderApiError("priceChanged"));
-      return yield* parse(
-        purchaseSchema,
-        yield* request("/store/purchase", key, {
-          product_id: product.product_id,
-          amount,
-          ...(referral ? { referral_code: referral } : {}),
-        }),
-      );
+        return yield* ProviderApiError.new("priceChanged");
+      const response = yield* request("/store/purchase", key, {
+        product_id: product.product_id,
+        amount,
+        ...(referral ? { referral_code: referral } : {}),
+      });
+      return yield* parse(purchaseSchema, response);
     }),
     signal,
     fetcher,
@@ -215,12 +213,13 @@ export function fetchFernanPurchase(
   return runProviderEffect(
     Effect.gen(function* () {
       const parsedId = yield* parse(Schema.String.check(Schema.isUUID()), id);
+      const response = yield* request(`/store/purchases/${parsedId}`, key);
       const purchase = (yield* parse(
         Schema.Struct({ purchase: purchaseSchema }),
-        yield* request(`/store/purchases/${parsedId}`, key),
+        response,
       )).purchase;
       if (purchase.purchase_id !== parsedId)
-        return yield* Effect.fail(new ProviderApiError("response"));
+        return yield* ProviderApiError.new("response");
       return purchase;
     }),
     signal,
@@ -232,7 +231,7 @@ export function fernanPurchaseAccounts(
   purchase: FernanPurchase,
   format: FernanImportFormat,
 ): { payload: string[]; credentialType: AccountTypeCredentials } {
-  if (purchase.products.length === 0) throw new ProviderApiError("empty");
+  if (purchase.products.length === 0) throw ProviderApiError.new("empty");
   const credentialType = {
     "access-token": AccountTypeCredentials.MICROSOFT_JAVA_ACCESS_TOKEN,
     cookies: AccountTypeCredentials.MICROSOFT_JAVA_COOKIES,
@@ -240,7 +239,7 @@ export function fernanPurchaseAccounts(
   }[format];
   const payload = purchase.products.map((item) => {
     if (format === "access-token") {
-      if (!item.access_token?.trim()) throw new ProviderApiError("response");
+      if (!item.access_token?.trim()) throw ProviderApiError.new("response");
       return item.access_token;
     }
     try {
@@ -255,7 +254,7 @@ export function fernanPurchaseAccounts(
       if (!value) throw new Error("Empty delivery");
       return value;
     } catch {
-      throw new ProviderApiError("response");
+      throw ProviderApiError.new("response");
     }
   });
   return { payload, credentialType };

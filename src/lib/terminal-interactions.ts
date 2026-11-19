@@ -16,7 +16,7 @@ const controlStrings =
   /(?:\u001B\[|\u009B)[0-?]*[ -/]*[@-~]?|(?:\u001B[\]PX^_]|[\u0090\u0098\u009D-\u009F])[\s\S]*?(?:\u0007|\u001B\\|\u009C|$)|\u001B[ -/]*[0-~]?/gu;
 
 function parseMetadata(encoded: string): TerminalInteraction | null {
-  if (!/^[\w-]+$/u.test(encoded) || encoded.length > 16384) return null;
+  if (!/^[\w-]+$/u.test(encoded) || encoded.length > 16_384) return null;
   try {
     const binary = atob(encoded.replaceAll("-", "+").replaceAll("_", "/"));
     const data: unknown = JSON.parse(

@@ -336,7 +336,7 @@ export function NavAccount() {
                         onClick={() => {
                           void desktop.integratedServer
                             .openDataDirectory()
-                            .catch((error) =>
+                            .catch((error: unknown) =>
                               toast.error(
                                 t("integratedDiagnostics.openDirectoryError"),
                                 { description: String(error) },

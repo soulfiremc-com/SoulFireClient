@@ -1,6 +1,8 @@
-import { Effect } from "effect";
+import { TaggedError as TaggedFailure } from "effect/Schema";
+import { Effect, Schema } from "effect";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 import {
+  decodeProviderJson,
   ProviderApiError,
   providerResponseEffect,
   runProviderEffect,
@@ -69,30 +71,23 @@ function ravealtsRequest<T>(
       method: "GET",
       ...options,
     });
-    if (response.status >= 500)
-      return yield* Effect.fail(new ProviderApiError("response"));
-    const data = yield* Effect.try({
-      try: () => JSON.parse(response.body) as unknown,
-      catch: () => new ProviderApiError("response"),
-    });
+    if (response.status >= 500) return yield* ProviderApiError.new("response");
+    const data = yield* decodeProviderJson(response.body);
     if (isRavealtsError(data))
-      return yield* Effect.fail(
-        new RavealtsApiError(data.error_type, data.message),
-      );
+      return yield* RavealtsApiError.new(data.error_type, data.message);
     if (response.status < 200 || response.status >= 300)
-      return yield* Effect.fail(new ProviderApiError("rejected"));
+      return yield* ProviderApiError.new("rejected");
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- callers name the response type of the RaveAlts endpoint they call
     return data as T;
   });
 }
 
-export class RavealtsApiError extends Error {
-  constructor(
-    public readonly errorType: string,
-    message: string,
-  ) {
-    super(message);
-    this.name = "RavealtsApiError";
+export class RavealtsApiError extends TaggedFailure<
+  RavealtsApiError,
+  { readonly brand: unique symbol }
+>()("RavealtsApiError", { errorType: Schema.String, message: Schema.String }) {
+  static new(errorType: string, message: string) {
+    return new RavealtsApiError({ errorType, message });
   }
 }
 

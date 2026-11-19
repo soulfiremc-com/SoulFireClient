@@ -111,7 +111,7 @@ function Example({
           personal: true,
           terminalInteractions: true,
           message: span(
-            "Wrapped " + "界é ".repeat(60),
+            `Wrapped ${"界é ".repeat(60)}`,
             { action: "run_command", value: "wrapped" },
             "Wrapped command",
           ),
@@ -126,6 +126,7 @@ function Example({
         ),
       ]
     : entries;
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [transport] = useState(() =>
     createRouterTransport((router) => {
       router.service(CommandService, {

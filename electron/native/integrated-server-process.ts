@@ -1,17 +1,30 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
 import type { ChildProcessWithoutNullStreams } from "node:child_process";
 import readline from "node:readline";
 import { stripVTControlCharacters } from "node:util";
-import { Cause, Data, Deferred, Effect, Exit, Fiber, type Scope } from "effect";
+import {
+  Cause,
+  Clock,
+  Schema,
+  Deferred,
+  Effect,
+  Exit,
+  Fiber,
+  type Scope,
+} from "effect";
 import type {
   DesktopIntegratedServerDiagnostics,
   DesktopIntegratedServerLog,
 } from "../../src/lib/desktop-api";
 
-export class IntegratedServerError extends Data.TaggedError(
-  "IntegratedServerError",
-)<{ readonly message: string }> {}
+export class IntegratedServerError extends TaggedFailure<
+  IntegratedServerError,
+  { readonly brand: unique symbol }
+>()("IntegratedServerError", {
+  message: Schema.String,
+}) {}
 
-const MAX_LOG_LINES = 2_000;
+const MAX_LOG_LINES = 2000;
 const MAX_LOG_CHARACTERS = 1_000_000;
 
 export interface IntegratedServerState {
@@ -94,7 +107,7 @@ function awaitPreparation<A>(promise: Promise<A>): Effect.Effect<A, unknown> {
       (value) => {
         resume(Effect.succeed(value));
       },
-      (error) => {
+      (error: unknown) => {
         resume(Effect.fail(error));
       },
     );
@@ -155,7 +168,7 @@ export function startIntegratedOperation(
         state.diagnostics.status = controller.signal.aborted
           ? "stopped"
           : "failed";
-        state.diagnostics.exitedAt ??= Date.now();
+        state.diagnostics.exitedAt ??= yield* Clock.currentTimeMillis;
       }),
     ),
   );
@@ -201,15 +214,15 @@ export async function killIntegratedServer(
 
 export function terminateIntegratedProcess(
   state: IntegratedServerState,
-  gracePeriodMs = 5_000,
+  gracePeriodMs = 5000,
 ): Promise<void> {
   if (state.termination) return state.termination;
   const child = state.child;
   if (!child) return Promise.resolve();
 
-  const closed = Effect.callback<void>((resume) => {
+  const closed = Effect.callback<undefined>((resume) => {
     const finish = () => {
-      resume(Effect.void);
+      resume(Effect.undefined);
     };
     child.once("close", finish);
     return Effect.sync(() => child.removeListener("close", finish));
@@ -225,7 +238,7 @@ export function terminateIntegratedProcess(
       );
       child.kill("SIGKILL");
     }
-    yield* Effect.sleep(5_000);
+    yield* Effect.sleep(5000);
     return yield* new IntegratedServerError({
       message:
         "Java did not exit after a forced stop. Check the process in your system monitor.",
@@ -248,12 +261,12 @@ export function waitForIntegratedServerReady(
   state.diagnostics.status = "starting";
   state.diagnostics.pid = child.pid ?? null;
   state.diagnostics.processStartedAt = Date.now();
-  const readiness = Deferred.makeUnsafe<void, Error>();
+  const readiness = Deferred.makeUnsafe<undefined, Error>();
   let ready = false;
 
   // The monitor outlives startup so crash diagnostics and trailing logs remain
   // available after credentials have been returned to the renderer.
-  const closed = Deferred.makeUnsafe<void>();
+  const closed = Deferred.makeUnsafe<undefined>();
   const monitor = Effect.scoped(
     Effect.gen(function* () {
       yield* Effect.acquireRelease(
@@ -265,7 +278,7 @@ export function waitForIntegratedServerReady(
               const line = appendIntegratedLog(state, rawLine, source);
               if (line.includes("Finished loading!")) {
                 ready = true;
-                Deferred.doneUnsafe(readiness, Effect.void);
+                Deferred.doneUnsafe(readiness, Effect.undefined);
               }
             });
             return reader;
@@ -307,7 +320,7 @@ export function waitForIntegratedServerReady(
                   }),
                 ),
               );
-            Deferred.doneUnsafe(closed, Effect.void);
+            Deferred.doneUnsafe(closed, Effect.undefined);
           };
           child.once("error", onError);
           child.once("exit", onExit);

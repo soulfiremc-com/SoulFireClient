@@ -741,7 +741,7 @@ test("new group interfaces sit outside all selected content bounds", () => {
     const editor = createScriptEditorSession();
     const first = editor.actions.addNode("action.print", { x: -600, y: -500 });
     const second = editor.actions.addNode("action.print", { x: 850, y: 700 });
-    editor.actions.addNode("action.print", { x: 10000, y: 0 });
+    editor.actions.addNode("action.print", { x: 10_000, y: 0 });
     if (measured) {
       editor.actions.onNodesChange([
         {
@@ -779,7 +779,7 @@ test("new group interfaces sit outside all selected content bounds", () => {
     assert.ok(
       output.position.x + group.position.x > 850 + (measured ? 3500 : 160),
     );
-    assert.ok(output.position.x + group.position.x < 10000);
+    assert.ok(output.position.x + group.position.x < 10_000);
   }
 });
 

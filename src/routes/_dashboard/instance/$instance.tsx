@@ -133,7 +133,7 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
           context.signal,
         );
       },
-      refetchInterval: 3_000,
+      refetchInterval: 3000,
     });
     const transport = createTransport();
     const metricsQueryOptions = instanceMetricsQueryOptions(

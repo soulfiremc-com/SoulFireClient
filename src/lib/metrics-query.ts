@@ -47,7 +47,7 @@ export function instanceMetricsQueryOptions(
                 since,
               }
             : { instanceId },
-          { signal: signal },
+          { signal },
         ),
       );
       const response = result;
@@ -61,6 +61,6 @@ export function instanceMetricsQueryOptions(
         distributions: response.distributions ?? previous.distributions,
       });
     },
-    refetchInterval: 3_000,
+    refetchInterval: 3000,
   });
 }

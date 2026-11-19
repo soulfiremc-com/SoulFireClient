@@ -395,6 +395,7 @@ function MinMaxSettingField(props: {
   value: NumericRange;
   changeCallback: (value: NumericRange) => void | Promise<void>;
 }) {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [editor] = useState(() => new NumericRangeEditor(props.value));
   const startEdit = () => {
     editor.startEdit(props.value);

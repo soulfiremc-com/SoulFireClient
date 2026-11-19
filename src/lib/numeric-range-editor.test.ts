@@ -43,7 +43,7 @@ test("one bound retains its original opposite bound through pending overshoots a
   const held = deferred();
   const writes: NumericRange[] = [];
   editor.startEdit({ min: 1000, max: 3000 });
-  const pending = [45000, 4500, 1500].map((value) =>
+  const pending = [45_000, 4500, 1500].map((value) =>
     editor.save("min", value, (range) => {
       writes.push(range);
       return held.promise;
@@ -51,7 +51,7 @@ test("one bound retains its original opposite bound through pending overshoots a
   );
   try {
     assert.deepEqual(writes, [
-      { min: 45000, max: 45000 },
+      { min: 45_000, max: 45_000 },
       { min: 4500, max: 4500 },
       { min: 1500, max: 3000 },
     ]);

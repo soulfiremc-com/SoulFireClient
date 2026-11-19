@@ -301,7 +301,7 @@ function InstanceSelectPage() {
 
   return (
     <UserPageLayout
-      showUserCrumb={true}
+      showUserCrumb
       pageName={t("pageName.instances")}
       loadingSkeleton={<InstanceListSkeleton />}
     >

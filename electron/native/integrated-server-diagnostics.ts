@@ -24,7 +24,7 @@ export async function validateJcmd(executable: string): Promise<void> {
   }
   await access(executable, constants.X_OK);
   const result = await executeFile(executable, ["-J-version"], {
-    timeout: 5_000,
+    timeout: 5000,
     windowsHide: true,
     maxBuffer: 64 * 1024,
   });

@@ -455,6 +455,7 @@ function Example({
   serverAccess?: boolean;
   initialPath?: string;
 }) {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [setup] = useState(() => {
     const transport = createStoryTransport({
       projectFailure,

@@ -1,13 +1,20 @@
+import { TaggedError as TaggedFailure } from "effect/Schema";
+import { Schema } from "effect";
 /** Why the browser did not capture the mouse for the POV view. */
 export type PovPointerLockFailure = "cooldown" | "timeout" | "denied";
 
-export class PovPointerLockError extends Error {
-  readonly reason: PovPointerLockFailure;
-
-  constructor(reason: PovPointerLockFailure) {
-    super(`Mouse capture failed: ${reason}`);
-    this.name = "PovPointerLockError";
-    this.reason = reason;
+export class PovPointerLockError extends TaggedFailure<
+  PovPointerLockError,
+  { readonly brand: unique symbol }
+>()("PovPointerLockError", {
+  reason: Schema.Literals(["cooldown", "timeout", "denied"]),
+  message: Schema.String,
+}) {
+  static new(reason: PovPointerLockFailure) {
+    return new PovPointerLockError({
+      reason,
+      message: `Mouse capture failed: ${reason}`,
+    });
   }
 }
 
@@ -58,7 +65,7 @@ async function attempt(canvas: PointerLockTarget) {
       request(canvas),
       new Promise<never>((_, reject) => {
         timer = setTimeout(() => {
-          reject(new PovPointerLockError("timeout"));
+          reject(PovPointerLockError.new("timeout"));
         }, ATTEMPT_TIMEOUT_MS);
       }),
     ]);
@@ -91,7 +98,7 @@ export async function lockPovPointer(
     await attempt(canvas);
   } catch (error) {
     throw isPointerLockCooldown(error)
-      ? new PovPointerLockError("cooldown")
+      ? PovPointerLockError.new("cooldown")
       : toLockError(error);
   }
 }
@@ -99,5 +106,5 @@ export async function lockPovPointer(
 function toLockError(error: unknown) {
   return error instanceof PovPointerLockError
     ? error
-    : new PovPointerLockError("denied");
+    : PovPointerLockError.new("denied");
 }

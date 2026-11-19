@@ -209,6 +209,7 @@ export function useDataTable<TData extends RowData>(
 
   // The URL only seeds the filters. Afterwards the table owns them, so typing
   // re-renders the table parts that read filters instead of the whole page.
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [initialColumnFilters] = React.useState<ColumnFiltersState>(() =>
     enableAdvancedFilter
       ? []

@@ -22,13 +22,13 @@ test("different actions in one menu execute in order", async () => {
   const cache = client();
   const menuId = crypto.randomUUID();
   const response = deferred<number>();
-  const started = deferred<void>();
+  const started = deferred<undefined>();
   const calls: number[] = [];
   const text = new MutationObserver(cache, {
     ...containerMutationOptions(instanceId, botId, menuId, "text"),
     mutationFn: () => {
       calls.push(1);
-      started.resolve();
+      started.resolve(undefined);
       return response.promise;
     },
   });
@@ -57,12 +57,12 @@ test("different actions in one menu execute in order", async () => {
 
 test("a replacement menu can close while the old menu's save response is pending", async () => {
   const cache = client();
-  const response = deferred<void>();
-  const started = deferred<void>();
+  const response = deferred<undefined>();
+  const started = deferred<undefined>();
   const text = new MutationObserver(cache, {
     ...containerMutationOptions(instanceId, botId, crypto.randomUUID(), "text"),
     mutationFn: () => {
-      started.resolve();
+      started.resolve(undefined);
       return response.promise;
     },
   });
@@ -84,7 +84,7 @@ test("a replacement menu can close while the old menu's save response is pending
     assert.equal(await replacement, 1);
     assert.equal(text.getCurrentResult().isPending, true);
   } finally {
-    response.resolve();
+    response.resolve(undefined);
     await Promise.allSettled([pending, replacement]);
     cache.clear();
   }
@@ -99,11 +99,11 @@ test("changing menus resets pending controls without moving the old request into
     "text",
   );
   const response = deferred<number>();
-  const started = deferred<void>();
+  const started = deferred<undefined>();
   const observer = new MutationObserver(cache, {
     ...original,
     mutationFn: () => {
-      started.resolve();
+      started.resolve(undefined);
       return response.promise;
     },
   });
