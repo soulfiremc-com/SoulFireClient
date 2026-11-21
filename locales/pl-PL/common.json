@@ -4,16 +4,45 @@
   "cancel": "Anuluj",
   "save": "Zapisz",
   "saving": "Zapisywanie...",
+  "demoReadOnly": "",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Nie znaleziono adresu serwera ani tokena",
     "page": {
       "title": "Błąd",
       "description": "Strona nie została załadowana. Otwórz konsolę, aby uzyskać więcej informacji.",
-      "logOut": "Wyloguj się",
+      "logOut": "",
       "reloadPage": "Odśwież stronę",
-      "showDetails": "Pokaż szczegóły"
+      "showDetails": "Pokaż szczegóły",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "Błąd"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Połączenie do serwera SoulFire nieudane."
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,7 +53,7 @@
     "page": {
       "title": "Nie znaleziono",
       "description": "Pod tym adresem nie ma strony",
-      "logOut": "Wyloguj się",
+      "logOut": "",
       "reloadPage": "Odśwież stronę"
     }
   },
@@ -38,11 +67,11 @@
       "type": "Typ",
       "value": "Wartość",
       "fields": {
-        "serverVersion": "Wersja serwera",
-        "serverCommit": "Commit serwera",
-        "serverBranch": "Gałąź serwera",
-        "minecraftVersion": "Wersja Minecrafta",
-        "operatingSystem": "System operacyjny",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "Platforma",
         "locale": "Język i region",
         "architecture": "Architektura",
@@ -54,41 +83,44 @@
     "support": {
       "title": "Wesprzyj SoulFire",
       "description": "SoulFire jest darmowy i open-source, stworzony z pasją przez społeczność.",
-      "body": "Jeśli SoulFire okazał się dla Ciebie przydatny, rozważ wsparcie projektu. Twoja pomoc pokryje koszty serwera, finansuje rozwój i pozwala utrzymać SoulFire darmowym dla wszystkich.",
+      "body": "",
       "dismiss": "Może później",
-      "action": "Wesprzyj SoulFire"
+      "action": "Wesprzyj SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Stwórz nową instancję",
-      "description": "Nadaj instancji nazwę, którą łatwo rozpoznasz, na przykład \"Mój Bot Minecraft\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Przyjazna nazwa",
-          "placeholder": "Mój bot Minecraft",
-          "description": "Nazwa, którą chcesz nadać tej instancji."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Anuluj",
-        "create": "Utwórz"
+        "create": ""
       },
       "createToast": {
-        "loading": "Tworzenie instancji...",
-        "success": "Instancja została pomyślnie utworzona",
-        "error": "Nie udało się utworzyć instancji"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Duplikuj instancję",
-      "description": "Utwórz nową instancję, używając profilu z \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Nazwa zduplikowanej instancji."
+          "description": ""
         },
-        "duplicate": "Duplikuj"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Duplikowanie instancji...",
-        "success": "Instancja została pomyślnie zduplikowana",
-        "error": "Duplikowanie instancji nie powiodło się"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,9 +129,16 @@
         "fromUrl": "Z adresu URL",
         "firstClipboardItem": "Schowek zawiera kilka elementów. SoulFire użyje pierwszego z nich.",
         "fromClipboard": "Ze schowka",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
+          "label": "",
           "placeholder": "Umieść tekst tutaj...",
-          "submit": "Wczytaj z tekstu"
+          "submit": "Wczytaj z tekstu",
+          "empty": ""
         }
       },
       "url": {
@@ -113,24 +152,28 @@
         "submit": "Wczytaj z adresu URL",
         "toast": {
           "loading": "Pobieranie danych...",
-          "success": "Dane załadowane",
-          "error": "Nie udało się pobrać danych",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "Usunąć instancję?",
-      "description": "To trwale usunie „{{name}}” i powiązane dane. Tej operacji nie można cofnąć.",
-      "descriptionUnnamed": "To trwale usunie tę instancję i jej dane. Tej operacji nie można cofnąć."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Wpisz komendę (napisz 'help' dla listy)",
-    "emptySuggestions": "Wpisz, aby poprosić o sugestie lub naciśnij Tab.",
     "noSuggestions": "Brak dostępnych sugestii.",
-    "emptySuggestionsPrefix": "Zacznij pisać, aby uzyskać podpowiedzi, lub naciśnij"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "Rozpocznij",
@@ -141,25 +184,27 @@
     "startCount": "Liczba botów do uruchomienia",
     "startToast": {
       "loading": "Uruchamianie botów...",
-      "success": "Stan bota został zaktualizowany",
-      "error": "Nie udało się uruchomić botów"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Restartowanie botów...",
       "success": "Boty łączą się ponownie",
-      "error": "Nie udało się zrestartować botów"
+      "error": ""
     },
     "stopToast": {
       "loading": "Zatrzymywanie botów...",
       "success": "Boty są zatrzymywane",
-      "error": "Nie udało się zatrzymać botów"
+      "error": ""
     },
-    "permissionDenied": "Nie masz uprawnień do uruchamiania ani zatrzymywania botów w tej instancji.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Serwer nie zgłosił uprawnień do kontrolowania botów. Sprawdź, czy wersje serwera i klienta są zgodne.",
     "startBots": "Uruchom boty",
-    "moreActions": "Więcej akcji bota",
-    "generateFirst": "Utwórz konta, aby uruchomić swoje pierwsze boty.",
-    "startCountHelp": "Uruchamia dodatkowe boty. Działające boty pozostaną połączone.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "Uruchom wszystkie: {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -180,7 +225,7 @@
     "restartCount_many": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} połączonych · {{desired}} ustawionych do działania · {{total}} łącznie",
+  "botFleetSummary": "",
   "icon": {
     "invalidName": "Nieprawidłowa nazwa ikony: {{name}}"
   },
@@ -232,6 +277,8 @@
     "addSorting": "Dodaj sortowanie, aby uporządkować wiersze.",
     "addSort": "Dodaj sortowanie",
     "resetSorting": "Resetuj sortowanie",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "Rosnąco",
       "desc": "Malejąco",
@@ -262,55 +309,130 @@
       "asc": "Rosnąco",
       "desc": "Malejąco"
     },
-    "openFilterMenu": "Otwórz menu filtrów",
-    "filterOperator": "Operator filtra",
-    "filterValue": "Wartość filtra",
-    "sortDirection": "Kierunek sortowania",
-    "selectJoinOperator": "Wybierz operator łączenia",
-    "joinOperator": "Operator łączenia",
-    "escapeKey": "Escape",
-    "selectDate": "Wybierz datę",
-    "selectDateRange": "Wybierz zakres dat",
-    "clearFilter": "Wyczyść filtr {{title}}",
-    "clearFilters": "Wyczyść filtry",
-    "clear": "Wyczyść",
-    "from": "Od",
-    "to": "Do",
-    "sortDirectionFor": "Kierunek sortowania: {{column}}",
-    "minValue": "Minimalna wartość: {{label}}",
-    "maxValue": "Maksymalna wartość: {{label}}"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": ""
   },
   "pluginCard": {
     "version": "Wersja: {{version}}",
     "author": "Autor: {{author}}",
     "license": "Licencja: {{license}}",
-    "website": "Strona Internetowa"
+    "website": "Strona Internetowa",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "Nie udało się zapisać: {{name}}",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "namespacesNotFound": "Nie znaleziono przestrzeni nazw w ustawieniach",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "Nie udało się zapisać: {{name}}",
+      "saveError": "",
       "placeholder": "Dodaj nowy wpis...",
       "add": "Dodaj",
-      "remove": "Usuń"
+      "remove": "Usuń",
+      "removeAll": "",
+      "undo": "",
+      "count_one": "{{count}} wpis",
+      "count_few": "{{count}} wpisy",
+      "count_many": "{{count}} wpisów",
+      "count_other": "{{count}} wpisów",
+      "removedAll_one": "",
+      "removedAll_few": "",
+      "removedAll_many": "",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "Szukaj wartości..."
+      "searchPlaceholder": "Szukaj wartości...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_one": "",
+      "more_few": "",
+      "more_many": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
       "title": "Nieprawidłowy numer",
       "description": "Wartość musi być pomiędzy {{min}} i {{max}}"
     },
-    "minMaxLegend": "Ustawienia minimum i maksimum"
+    "saving": "Zapisywanie...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "advanced_one": "",
+    "advanced_few": "",
+    "advanced_many": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Kopiuj do schowka",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Brak logów. Uruchom polecenie, aby wygenerować logi.",
+    "noLogsReadOnly": "",
+    "jumpToLatest": "",
     "demo-1": "Witamy w trybie demonstracyjnym! 🧪",
-    "demo-2": "To jest instancja SoulFire tylko do odczytu",
+    "demo-2": "",
     "demo-3": "Sprawdź wszystkie menu i funkcje przed podjęciem decyzji o instalacji SoulFire :D",
     "demo-4": "Dołącz do naszego serwera Discord, jeśli chcesz się skontaktować: https://soulfiremc.com/discord"
   },
@@ -323,8 +445,16 @@
   "uiSheet": {
     "close": "Zamknij"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "Wyświetla/ukrywa panel boczny"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "Minimalizuj",
@@ -350,79 +480,235 @@
     "connectToast": {
       "loading": "Łączenie z {{device}}...",
       "success": "Połączono z {{device}}",
-      "error": "Nie udało się połączyć z {{device}}"
+      "error": ""
     },
     "noDevices": "Nie znaleziono urządzeń",
     "broadcastToast": {
       "loading": "Nadawanie wiadomości...",
-      "success": "Wiadomość nadana",
-      "error": "Nie udało się nadać wiadomości"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Ponów próbę",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_few": "",
+      "failedWithServer_many": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Wszystko",
+      "projects": "",
+      "bots": "Boty",
+      "scripts": "Skrypty",
+      "settings": "Ustawienia",
+      "actions": "Akcje"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Uruchom boty",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Anuluj",
+      "unavailable": "",
+      "start_one": "",
+      "start_few": "",
+      "start_many": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_few": "",
+      "stop_many": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_few": "",
+      "restart_many": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_few": "",
+        "success_many": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "Włączanie skryptu...",
-        "success": "Skrypt włączony",
-        "error": "Nie udało się włączyć skryptu. Spróbuj ponownie."
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "Wyłączanie skryptu...",
-        "success": "Skrypt wyłączony",
-        "error": "Nie udało się wyłączyć skryptu. Spróbuj ponownie."
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "Włącz skrypt {{name}}",
-      "deactivateScript": "Wyłącz skrypt {{name}}"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Uruchom {{count}} bota",
+      "startBots_few": "Uruchom {{count}} boty",
+      "startBots_many": "Uruchom {{count}} botów",
+      "startBots_other": "Uruchom {{count}} botów",
+      "stopBots_one": "Zatrzymaj {{count}} bota",
+      "stopBots_few": "Zatrzymaj {{count}} boty",
+      "stopBots_many": "Zatrzymaj {{count}} botów",
+      "stopBots_other": "Zatrzymaj {{count}} botów",
+      "retryBots_one": "",
+      "retryBots_few": "",
+      "retryBots_many": "",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "Wł.",
-      "paused": "Wył."
-    }
+      "connected": "Połączono",
+      "starting": "Uruchamianie",
+      "retrying": "Ponawianie próby",
+      "failed": "Nie powiodło się",
+      "stopping": "Zatrzymywanie",
+      "stopped": "Zatrzymana",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Zamknij",
+      "pin": "",
+      "back": "Wróć"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Ustawienia",
+      "bots": "Boty",
+      "scripts": "Skrypty",
+      "admin": "",
+      "actions": "Akcje",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_few": "",
+    "moreResults_many": "",
+    "moreResults_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "Przeczytaj dokumentację",
-    "backToDashboard": "Wróć do instancji",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "Usuwanie instancji...",
-      "success": "Instancja usunięta",
-      "error": "Usunięcie instancji nie powiodło się"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instancje",
-    "createInstance": "Utwórz instancję",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Wczytywanie profilu...",
-      "success": "Profil wczytany",
-      "error": "Nie udało się wczytać profilu"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Załaduj profil",
+    "loadProfile": "",
     "loadFromFile": "Wczytaj z pliku",
-    "profileSaved": "Zapisano profil",
-    "saveProfile": "Zapisz profil",
-    "deleteInstance": "Usuń instancję",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Sterowanie",
     "overview": "Przegląd",
     "terminal": "Konsola",
     "bots": "Boty",
-    "audit-log": "Dziennik zdarzeń",
+    "audit-log": "",
     "settingsGroup": "Ustawienia",
     "extensionsGroup": "Rozszerzenia",
-    "botSettings": "Ustawienia botów",
+    "botSettings": "",
     "accountSettings": "Konta",
-    "metaSettings": "Ustawienia instancji",
-    "proxySettings": "Proxy",
-    "aiSettings": "Ustawienia SI",
-    "pathfindingSettings": "Ustawienia pathfindingu",
+    "metaSettings": "",
+    "proxySettings": "Proksy",
+    "aiSettings": "",
+    "pathfindingSettings": "",
     "discoverPlugins": "Wtyczki",
-    "instanceScripts": "Skrypty"
+    "togglePluginSettings": "",
+    "instanceScripts": "Skrypty",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Przeczytaj dokumentację",
     "userGroup": "Użytkownik",
-    "instances": "Instancje",
+    "instances": "",
     "access": "Dostęp",
-    "createInstance": "Utwórz instancję",
+    "createInstance": "",
     "settings": "Ustawienia",
     "adminGroup": "Administrator",
     "adminOverview": "Przegląd",
@@ -430,8 +716,8 @@
     "adminTerminal": "Konsola",
     "users": "Użytkownicy",
     "adminScripts": "Skrypty",
-    "serverSettings": "Ustawienia serwera",
-    "devSettings": "Ustawienia deweloperskie",
+    "serverSettings": "",
+    "devSettings": "",
     "theme": {
       "title": "Motyw",
       "system": "System",
@@ -445,11 +731,11 @@
     "dataDir": "Katalog danych",
     "supportSoulFire": "Wesprzyj SoulFire",
     "about": "O programie",
-    "logOut": "Wyloguj się",
+    "logOut": "",
     "logOutToast": {
-      "loading": "Wylogowywanie...",
-      "success": "Wylogowano",
-      "error": "Wylogowanie nie powiodło się"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "exit": "Wyjdź",
     "stopImpersonating": "Przestań podszywać się",
@@ -467,52 +753,54 @@
     "extensions": "Rozszerzenia",
     "bots": "Boty"
   },
-  "noInstancesFound": "Nie znaleziono instancji",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "Konsola",
     "logs": "Logi",
-    "audit-log": "Dziennik zdarzeń",
+    "audit-log": "",
     "bots": "Boty",
-    "botDetail": "Szczegóły bota",
-    "instances": "Instancje",
+    "botDetail": "",
+    "instances": "",
     "access": "Dostęp",
     "settings": "Ustawienia",
-    "proxySettings": "Proxy",
+    "proxySettings": "Proksy",
     "overview": "Przegląd",
     "users": "Użytkownicy",
     "accountSettings": "Konta",
-    "metaSettings": "Ustawienia instancji",
+    "metaSettings": "",
     "discoverPlugins": "Wtyczki",
     "adminScripts": "Skrypty",
     "instanceScripts": "Skrypty"
   },
   "access": {
     "webdav": {
-      "title": "Dostęp WebDAV",
-      "description": "WebDAV umożliwia dostęp do plików instancji, skryptów i innych plików.",
-      "publicAddress": "Publiczny adres WebDAV",
-      "personalToken": "Osobisty token WebDAV",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "Zachowaj swój osobisty token WebDAV w tajemnicy. Umożliwia on dostęp do Twoich plików. Użyj tokena jako hasła WebDAV. Nazwa użytkownika nie jest wymagana. Jeśli aplikacja jej wymaga, wpisz dowolną wartość, na przykład 'soulfire'.",
       "addressDescription": "Użyj tego adresu, aby uzyskać dostęp do swoich plików. Niektóre aplikacje wymagają prefiksu dav:// lub davs:// zamiast http:// lub https://."
     },
     "api": {
-      "title": "Dostęp API",
-      "description": "Użyj API SoulFire, aby zarządzać instancjami z własnych programów.",
-      "publicAddress": "Publiczny adres API",
-      "personalToken": "Osobisty token API",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "Trzymaj swój osobisty token API w tajemnicy. Umożliwia on dostęp do API.",
       "addressDescription": "Użyj tego adresu, aby uzyskać dostęp do API."
     },
     "token": {
-      "generate": "Generuj token",
-      "placeholder": "Wybierz poniżej „Generuj token”",
+      "generate": "",
+      "placeholder": "",
       "generating": "Generowanie tokena...",
-      "success": "Token został pomyślnie wygenerowany",
-      "error": "Nie udało się wygenerować tokena",
-      "copy": "Kopiuj token"
+      "success": "",
+      "error": "",
+      "copy": ""
     },
     "address": {
-      "copy": "Kopiuj adres"
+      "copy": ""
     },
     "documentation": "Dokumentacja",
     "howToConnect": "Jak się połączyć"
@@ -520,22 +808,23 @@
   "uploadToMcLogs": "Wyślij do mclo.gs",
   "mcLogsUpload": {
     "loading": "Wysyłanie do mclo.gs...",
-    "success": "Wysłano do mclo.gs! Zobacz tutaj: {{url}}",
-    "error": "Nie udało się wysłać do mclo.gs"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Wyszukaj w Google",
   "copyToClipboard": "Kopiuj do schowka",
   "clipboardCopy": {
     "loading": "Kopiowanie do schowka...",
     "success": "Skopiowano \"{{content}}\" do schowka",
-    "error": "Nie udało się skopiować do schowka"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "Nie udało się zaktualizować nazwy instancji"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
@@ -551,9 +840,11 @@
       "uiName": "E-mail",
       "description": "Twój e-mail jest używany do logowania i powiadomień."
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "Nie udało się zaktualizować: {{field}}"
+    "saveError": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filtruj dzienniki audytu...",
@@ -566,9 +857,10 @@
     "executedCommand": "Wykonano polecenie: {{data}}",
     "changedBotDesiredState": "Zmieniono pożądany stan bota",
     "restartedBots": "Zrestartowano boty",
+    "calledPluginRpc": "",
     "contextMenu": {
-      "copyUsername": "Kopiuj nazwę użytkownika",
-      "copyCommand": "Kopiuj polecenie"
+      "copyUsername": "",
+      "copyCommand": ""
     }
   },
   "toggleTheme": "Przełącz motyw",
@@ -582,11 +874,11 @@
           "max": "Nazwy skryptów mogą mieć maksymalnie 32 znaki",
           "regex": "Używaj małych liter, cyfr i myślników. Nazwa musi zaczynać się i kończyć literą lub cyfrą.",
           "label": "Nazwa",
-          "placeholder": "Mój skrypt",
+          "placeholder": "",
           "description": "Nazwa skryptu."
         },
         "elevatedPermissions": {
-          "label": "Podwyższone uprawnienia",
+          "label": "",
           "description": "Skrypt działa z podwyższonymi uprawnieniami. Tylko administratorzy mogą włączyć tę opcję."
         }
       }
@@ -609,56 +901,58 @@
     },
     "removeToast": {
       "loading": "Usuwanie skryptów...",
-      "success": "Usunięto skrypty",
-      "error": "Nie udało się usunąć skryptów"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "Dodawanie skryptu...",
-      "success": "Dodano skrypt",
-      "error": "Nie udało się dodać skryptu"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Aktualizowanie skryptu...",
-      "success": "Zaktualizowano skrypt",
-      "error": "Nie udało się zaktualizować skryptu"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Restartowanie skryptu...",
-      "success": "Zrestartowano skrypt",
-      "error": "Nie udało się zrestartować skryptu"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Typ",
       "scriptName": "Nazwa",
       "language": "Język",
-      "elevatedPermissions": "Podwyższone uprawnienia",
+      "elevatedPermissions": "",
       "createdAt": "Utworzono",
       "actions": "Akcje"
     },
     "globalScript": "Globalny",
-    "instanceScript": "Instancja"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Akcje",
     "instance": {
-      "goToInstance": "Przejdź do instancji",
-      "duplicateInstance": "Duplikuj instancję",
-      "copyInstanceId": "Kopiuj ID instancji",
-      "copyInstanceName": "Kopiuj nazwę instancji",
-      "deleteInstance": "Usuń instancję"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Przejdź do bota",
-      "copyUsername": "Kopiuj nazwę użytkownika",
-      "copyUuid": "Kopiuj ID profilu",
-      "copyCoordinates": "Kopiuj współrzędne"
+      "goToBot": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
       "enable": "Włącz",
       "disable": "Wyłącz",
-      "openSettings": "Otwórz ustawienia",
-      "copyPluginName": "Kopiuj nazwę wtyczki",
-      "copyVersion": "Kopiuj wersję",
-      "openWebsite": "Otwórz stronę internetową"
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -706,21 +1000,135 @@
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Wszystko",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Inne"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Dostępne",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Generowanie tokena...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
     "botOnline": "Połączono",
-    "botOffline": "Rozłączono"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "Nie udało się skopiować tekstu. Użyj HTTPS lub zezwól na dostęp do schowka.",
-    "openError": "Nie udało się otworzyć linku.",
-    "popupBlocked": "Przeglądarka zablokowała nową kartę.",
-    "openLink": "Otwórz link"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "Ikona",
-    "description": "Ikona instancji widoczna w aplikacji."
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_one": "",
+    "more_few": "",
+    "more_many": "",
+    "more_other": ""
   },
-  "unknown": "Nieznane",
-  "minecraftHead": "Głowa z Minecrafta",
-  "textFile": "Plik tekstowy"
+  "unknown": "Nieznany",
+  "minecraftHead": "",
+  "textFile": ""
 }

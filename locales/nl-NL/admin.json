@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Welkom terug, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Serverstatistieken",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Gebruikt geheugen",
+        "heapUsed": "",
         "threads": "Threads",
-        "botsOnline": "Verbonden bots",
+        "botsOnline": "",
         "uptime": "Uptime"
       },
       "cpuUsage": {
-        "title": "CPU-gebruik (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Heap-geheugen (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Aantal threads"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Verbonden bots (alle instanties)"
+        "title": ""
       },
       "legend": {
-        "process": "Proces",
+        "process": "",
         "system": "Systeem",
-        "used": "In gebruik",
-        "committed": "Gereserveerd",
-        "max": "Max.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Totaal",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Verbonden"
       }
     },
     "instancesChart": {
-      "title": "Totaal aantal instanties op deze server",
-      "instances": "Instanties",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Status",
         "active": "Actief",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Rol",
           "placeholder": "Selecteer een rol",
-          "description": "De rol van de gebruiker. Beheerders kunnen gebruikers en alle instanties beheren. Gebruikers kunnen alleen hun eigen instanties beheren.",
+          "description": "",
           "user": "Gebruiker",
           "admin": "Beheerder"
         }
@@ -85,7 +85,7 @@
       "description": "Voeg een nieuwe gebruiker toe aan deze server",
       "form": {
         "cancel": "Annuleren",
-        "add": "Gebruiker toevoegen"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,54 +99,54 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Gebruiker wordt toegevoegd...",
-      "success": "Gebruiker toegevoegd",
-      "error": "Toevoegen van gebruiker mislukt"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Gebruiker bijwerken...",
-      "success": "Gebruiker bijgewerkt",
-      "error": "Bijwerken van gebruiker mislukt"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Gebruikers worden verwijderd...",
-      "success": "Gebruikers verwijderd",
-      "error": "Verwijderen van gebruikers mislukt"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Gebruikers worden uitgelogd...",
-      "success": "Gebruikers uitgelogd",
-      "error": "Uitloggen van gebruikers mislukt"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Gebruikersnaam",
       "email": "E-mailadres",
       "role": "Rol",
       "createdAt": "Aangemaakt",
-      "minIssuedAt": "Sessies geldig sinds",
+      "minIssuedAt": "",
       "actions": "Acties",
       "searchUsernames": "Gebruikersnamen zoeken...",
       "searchEmails": "E-mails zoeken...",
       "searchCreatedAts": "Zoek aanmaakdatums...",
-      "searchMinIssuedAts": "Sessiedatums zoeken..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Geselecteerde gebruikers verwijderen",
-    "logOutSelectedTooltip": "Geselecteerde gebruikers uitloggen",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Gebruiker bewerken",
+      "editUser": "",
       "impersonate": "Als deze gebruiker inloggen",
-      "copyUserId": "Gebruikers-ID kopiëren"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "{{count}} gebruiker verwijderen?",
-      "title_other": "{{count}} gebruikers verwijderen?",
-      "description": "Dit verwijdert de geselecteerde gebruikers en hun toegang definitief. Je kunt dit niet ongedaan maken.",
-      "confirm": "Gebruikers verwijderen"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "{{count}} gebruiker afmelden?",
-      "title_other": "{{count}} gebruikers afmelden?",
-      "description": "Dit beëindigt alle sessies en tokens van de geselecteerde gebruikers. Ze moeten opnieuw inloggen.",
-      "confirm": "Gebruikers afmelden"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

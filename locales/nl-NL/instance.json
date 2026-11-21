@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Ruwe instantie-uitvoer is hier beschikbaar als je de details van de console wilt inspecteren.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Accounts",
       "proxies": "Proxy's",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Live feed",
-      "empty": "Wacht op instantie-activiteit...",
+      "empty": "",
       "noPermission": "Je hebt geen toestemming om de live feed te bekijken.",
       "lifecycle": {
         "connecting": "verbindt",
@@ -97,6 +97,7 @@
         "executeCommand": "voerde een commando uit: {{data}}",
         "botDesiredStateChange": "gewenste botstatus gewijzigd",
         "botRestart": "bots opnieuw gestart",
+        "pluginRpc": "",
         "unknown": "een actie uitgevoerd"
       }
     },
@@ -119,17 +120,37 @@
       "network": "Netwerkadres",
       "unix": "Unix-socket"
     },
-    "getProxies": "Proxy-aanbieders",
-    "addProxies": "Proxies toevoegen",
+    "getProxies": "",
+    "addProxies": "",
     "filterPlaceholder": "Proxies filteren...",
     "listImportToast": {
       "loading": "Proxies importeren...",
-      "success": "{{count}} proxies geïmporteerd",
-      "error": "Importeren van proxies mislukt",
-      "noProxies": "Geen proxies om te importeren"
+      "success": "",
+      "error": "",
+      "noProxies": "Geen proxies om te importeren",
+      "skipped_one": "",
+      "skipped_other": ""
     },
     "import": {
-      "proxyType": "Proxytype",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Proxies importeren...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -141,21 +162,21 @@
     },
     "removeToast": {
       "loading": "Proxies worden verwijderd...",
-      "success": "{{count}} proxies verwijderd",
-      "error": "Verwijderen van proxies mislukt"
+      "success": "",
+      "error": ""
     },
     "checkToast": {
       "loading": "Proxies worden gecontroleerd... {{checked}}/{{total}} (Succes: {{success}} Mislukt: {{failed}})",
-      "success": "{{count}} defecte proxies verwijderd",
-      "error": "Controleren van proxies mislukt",
-      "successKept": "{{failed}} van {{total}} proxies zijn niet door de controle gekomen. Er zijn geen proxies verwijderd."
+      "success": "",
+      "error": "",
+      "successKept": ""
     },
     "checkDialog": {
-      "title": "Proxies controleren",
-      "description": "Je staat op het punt {{count}} proxies te controleren.",
-      "confirm": "Controle starten",
-      "removeFailed": "Mislukte proxies verwijderen",
-      "removeFailedHelp": "Een proxy kan mislukken door een tijdelijk netwerkprobleem. Schakel deze optie uit om alle proxies te behouden en alleen het resultaat te zien."
+      "title": "",
+      "description": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": ""
     },
     "invalidFormat": "Ongeldig proxyformaat",
     "table": {
@@ -171,109 +192,125 @@
     "exportSelectedTooltip": "Geselecteerde proxies exporteren",
     "checkSelectedTooltip": "Geselecteerde proxies controleren",
     "contextMenu": {
-      "copyAddress": "Adres kopiëren",
-      "copyUsername": "Gebruikersnaam kopiëren",
-      "copyPassword": "Wachtwoord kopiëren",
-      "deleteProxy": "Proxy verwijderen"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Geïmporteerde proxies controleren?",
-      "description": "Je hebt {{count}} proxies geïmporteerd. Nu controleren?",
-      "confirm": "Proxies controleren",
+      "description": "",
+      "confirm": "",
       "skip": "Overslaan"
     },
     "export": {
-      "format": "Exportformaat",
-      "uri": "URI-formaat (alle typen)",
-      "http": "Alleen HTTP (vlak)",
-      "socks4": "Alleen SOCKS4 (vlak)",
-      "socks5": "Alleen SOCKS5 (vlak)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "Geen proxies om te exporteren"
     },
     "removeDialog": {
-      "title_one": "{{count}} proxy verwijderen?",
-      "title_other": "{{count}} proxies verwijderen?",
-      "description": "Dit verwijdert de geselecteerde proxies en hun inloggegevens uit deze instantie. Je kunt dit niet ongedaan maken.",
-      "confirm": "Proxies verwijderen"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Wachtwoord tonen",
-    "hidePassword": "Wachtwoord verbergen"
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Accountaanbieders",
-    "addAccounts": "Accounts toevoegen",
-    "generateAccounts": "Accounts genereren",
+    "getAccounts": "",
+    "addAccounts": "",
+    "generateAccounts": "",
     "filterPlaceholder": "Accounts filteren...",
     "listImportToast": {
       "loading": "Accounts worden geïmporteerd... {{checked}}/{{total}} (Succes: {{success}} Mislukt: {{failed}})",
-      "allFailed": "Importeren van accounts mislukt.",
+      "allFailed": "",
       "someFailed": "{{count}} accounts geïmporteerd, importeren van {{failed}} accounts mislukt.",
-      "noneFailed": "{{count}} accounts geïmporteerd",
-      "error": "Importeren van accounts mislukt.",
-      "noAccounts": "Geen accounts om te importeren"
+      "noneFailed": "",
+      "error": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "unknownError": "Onbekende fout",
     "types": {
-      "OFFLINE": "Offline",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Inloggegevens)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Apparaatcode)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Vernieuwtoken)",
-      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Toegangstoken)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Inloggegevens)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Apparaatcode)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Account wordt geïmporteerd...",
-      "success": "Account geïmporteerd",
-      "error": "Importeren van account mislukt"
+      "success": "",
+      "error": ""
     },
     "generate": {
-      "title": "Offline accounts genereren",
+      "title": "",
       "description": "Genereer offline Java-accounts met een aangepast naampatroon.",
       "amount": "Aantal",
-      "nameFormat": "Naamformaat",
-      "nameFormatHelp": "Gebruik %d voor het accountnummer. Bijvoorbeeld, Bot_%d maakt namen zoals Bot_1 en Bot_2.",
-      "mode": "Bestaande accounts",
-      "modeHelp": "Kies hoe je bestaande accounts wilt behandelen:\n\n• Bestaan negeren: Genereer alleen accounts met nieuwe namen. Alle bestaande accounts blijven bewaard.\n\n• Bestaande vervangen: Genereer alle gevraagde accounts. Vervang accounts met overeenkomende UUID's. Alle andere accounts blijven behouden.\n\n• Alles vervangen: Verwijder alle bestaande accounts. Voeg vervolgens de gegenereerde accounts toe.",
-      "modeIgnoreExisting": "Bestaanden negeren",
-      "modeReplaceExisting": "Bestaanden vervangen",
-      "modeReplaceAll": "Alles vervangen",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Genereren",
       "generating": "Bezig met genereren...",
       "progress": "Accounts worden gegenereerd... {{checked}}/{{total}} (Succes: {{success}} Mislukt: {{failed}})",
-      "success": "{{count}} accounts gegenereerd",
-      "allFailed": "Kon geen enkele account genereren",
-      "allExist": "Alle gebruikersnamen bestaan al. Kies 'Bestaanden vervangen' om ze opnieuw te genereren.",
-      "error": "Aanmaken van accounts mislukt",
-      "invalidAmount": "Voer een geldig aantal in (minimaal 1)",
-      "missingPlaceholder": "Naamformaat moet een %d placeholder bevatten"
+      "success": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "invalidAmount": "Voer een geheel getal van ten minste 1 in.",
+      "missingNameFormat": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java-editie",
       "bedrockEdition": "Bedrock-editie",
       "offline": "Offline",
-      "microsoftCredentials": "Microsoft-gegevens",
-      "microsoftDeviceCode": "Microsoft-apparaatcode",
-      "microsoftRefreshToken": "Microsoft-vernieuwingstoken",
-      "microsoftCookies": "Microsoft-cookies",
-      "microsoftAccessToken": "Microsoft-toegangstoken",
-      "theAltening": "TheAltening-token",
-      "altProviders": "Alternatieve providers",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Importeer {{type}} accounts",
-        "description": "Plak hier je accounts, één per regel"
+        "title": "Importeer {{type}} accounts"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Accounts worden verwijderd...",
-      "success": "{{count}} accounts verwijderd",
-      "error": "Verwijderen van accounts mislukt"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Type",
-      "profileId": "Profiel-ID",
+      "profileId": "",
       "lastKnownName": "Gebruikersnaam",
       "searchProfileIds": "Profiel-ID&#39;s zoeken...",
       "searchLastKnownNames": "Laatste bekende namen zoeken...",
@@ -281,10 +318,10 @@
     },
     "removeSelectedTooltip": "Geselecteerde accounts verwijderen",
     "contextMenu": {
-      "openConfig": "Instellingen openen",
-      "openMetadata": "Metadata openen",
-      "copyProfileId": "Profiel-ID kopiëren",
-      "copyUsername": "Gebruikersnaam kopiëren"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "{{name}} configureren",
@@ -303,134 +340,124 @@
       "selectPage": "Selecteer een instellingenpagina",
       "noSearchResults": "Geen instellingen gevonden voor deze zoekopdracht.",
       "matchesInheritedValue": "Komt overeen met de geërfde waarde",
-      "instanceValue": "Instantiewaarde",
+      "instanceValue": "",
       "defaultValue": "Standaardwaarde",
       "resetOverride": "Overschrijving resetten",
       "value": {
-        "notSet": "Niet ingesteld",
-        "on": "Aan",
-        "off": "Uit",
-        "empty": "Leeg",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} item",
-        "entries_other": "{{count}} items",
-        "range": "Bereik"
+        "entries_other": "{{count}} items"
       },
       "source": {
-        "bot": "Bot-specifieke waarde",
-        "instance": "Overgenomen van instantie",
-        "default": "Standaardwaarde"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Authenticatie met apparaatgecode",
+      "title": "",
       "description": "Configureer de opties voordat je de apparaatcodeprocedure start.",
-      "start": "Authenticatie starten"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Authenticatie met apparaatgecode",
+      "title": "",
       "description": "Meld je aan met je Microsoft-account om deze te koppelen.",
-      "openInBrowser": "Openen in browser",
+      "openInBrowser": "",
       "orManually": "Of voer de code handmatig in",
       "codeLabel": "Je code",
       "urlLabel": "Ga naar"
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Koop accounts via Ravealts",
       "description": "Koop Minecraft-accounts met je Ravealts API-sleutel.",
-      "apiKeyLabel": "API-sleutel",
       "apiKeyPlaceholder": "Voer je Ravealts API-sleutel in",
-      "validate": "Valideren",
-      "validating": "Bezig met valideren...",
-      "keyValid": "Sleutel gevalideerd",
-      "keyInvalid": "Ongeldige API-sleutel",
-      "credits": "Credits: {{credits}}",
-      "stockTitle": "Beschikbare voorraad",
       "noStock": "Geen accounts op voorraad",
-      "accountType": "Accounttype",
-      "amount": "Aantal (1-10)",
-      "purchase": "Kopen & Importeren",
-      "purchasing": "Bezig met kopen...",
-      "purchaseSuccess": "{{count}} accounts gekocht, aan het importeren...",
-      "purchaseError": "Aankoop mislukt: {{message}}",
+      "accountType": "",
       "networkError": "Verbinding met de Ravealts API mislukt",
       "outOfStock": "Geselecteerd type is niet op voorraad",
       "insufficientBalance": "Onvoldoende credits",
       "rateLimited": "Te veel verzoeken, probeer het later opnieuw"
     },
     "metadata": {
-      "openButton": "Metadata bewerken",
+      "openButton": "",
       "title": "Metadata: {{name}}",
       "description": "Beheer persistente metadata-items voor dit account. Elk item heeft een namespace, sleutel en JSON-waarde.",
       "namespacePlaceholder": "Namespace",
       "keyPlaceholder": "Sleutel",
       "valuePlaceholder": "Waarde (JSON)",
       "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
-      "loadError": "Metadata kon niet worden geladen",
+      "loadError": "",
       "loadErrorDescription": "",
       "retryLoad": "Opnieuw proberen",
       "addSuccess": "Item toegevoegd",
-      "addError": "Toevoegen van item mislukt",
-      "updateError": "Bijwerken van item mislukt",
+      "addError": "",
+      "updateError": "",
       "deleteSuccess": "Item verwijderd",
-      "deleteError": "Verwijderen van item mislukt",
+      "deleteError": "",
       "duplicateError": "Er bestaat al een item met deze namespace en sleutel",
       "invalidJson": "Ongeldige JSON-waarde",
       "namespaceLabel": "Namespace",
       "keyLabel": "Sleutel",
       "valueLabel": "Waarde",
-      "addEntryLegend": "Metadata-item toevoegen",
-      "addEntryButton": "Item toevoegen",
-      "entryLegend": "Metadata-item",
+      "addEntryLegend": "",
+      "addEntryButton": "",
+      "entryLegend": "",
       "removeEntryButton": "Verwijderen"
     },
     "removeDialog": {
-      "title_one": "{{count}} account verwijderen?",
-      "title_other": "{{count}} accounts verwijderen?",
-      "description": "Dit verwijdert de geselecteerde accounts, hun opgeslagen inloggegevens en hun bots uit deze instantie. Je kunt dit niet ongedaan maken.",
-      "confirm": "Accounts verwijderen"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Instance Metadata",
-    "description": "Beheer permanente metadata-items voor deze instantie. Elk item heeft een namespace, sleutel en JSON-waarde.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Namespace",
     "keyPlaceholder": "Sleutel",
     "valuePlaceholder": "Waarde (JSON)",
+    "valueRequired": "",
     "noEntries": "Geen metadata-items. Voeg er hierboven één toe.",
-    "loadError": "Metadata kon niet worden geladen",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opnieuw proberen",
     "addSuccess": "Item toegevoegd",
-    "addError": "Toevoegen van item mislukt",
-    "updateError": "Bijwerken van item mislukt",
+    "addError": "",
+    "updateError": "",
     "deleteSuccess": "Item verwijderd",
-    "deleteError": "Verwijderen van item mislukt",
+    "deleteError": "",
     "duplicateError": "Er bestaat al een item met deze namespace en sleutel",
     "invalidJson": "Ongeldige JSON-waarde",
     "namespaceLabel": "Namespace",
     "keyLabel": "Sleutel",
     "valueLabel": "Waarde",
-    "addEntryLegend": "Metadata-item toevoegen",
-    "addEntryButton": "Item toevoegen",
-    "entryLegend": "Metadata-item",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "Verwijderen"
   },
   "bots": {
     "searchPlaceholder": "Bots zoeken...",
-    "onlineCount": "{{online}} verbonden / {{total}} totaal",
-    "noBots": "Geen bots geconfigureerd. Voeg accounts toe via de pagina Accountinstellingen.",
+    "onlineCount": "",
+    "noBots": "",
     "noBotsFound": "Geen bots gevonden die overeenkomen met je zoekopdracht.",
     "loadingMore": "Meer laden...",
     "showingCount": "Toont {{loaded}} van {{total}}",
     "allLoaded": "Alle {{total}} bots geladen",
     "online": "Verbonden",
-    "offline": "Niet verbonden",
-    "notJoined": "Niet Deelnomen",
+    "offline": "",
+    "notJoined": "",
     "connectionPhase": {
       "connecting": "Verbindt",
-      "connected": "Bezig met inloggen",
+      "connected": "",
       "spawned": "Verbonden",
       "died": "Dood",
-      "disconnected": "Niet verbonden",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -442,12 +469,13 @@
       "waiting": "Wachten",
       "stopped": "Gestopt"
     },
-    "backToBots": "Terug naar Bots",
+    "backToBots": "",
+    "demoControls": "",
     "tabs": {
-      "overview": "Botweergave",
+      "overview": "",
       "inventory": "Inventaris",
-      "controls": "Bediening",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "terminalPanel": {},
     "connectionPanel": {
@@ -456,27 +484,38 @@
       "unavailable": "Niet beschikbaar"
     },
     "positionPanel": {
-      "title": "Positie & Rotatie",
+      "title": "",
       "position": "Positie",
       "rotation": "Rotatie",
-      "offline": "De bot is niet verbonden. Positiegegevens zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Chatberichten"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "commandPanel": {
-      "title": "Botcommando's",
+      "title": "",
       "placeholder": "Stuur een commando naar deze bot..."
     },
     "povPanel": {
-      "title": "Bot POV",
+      "title": "",
       "capture": "Vastleggen",
       "refresh": "Vernieuwen",
       "auto": "Auto",
       "startAutoRefresh": "Automatisch vernieuwen starten (interval van 1 seconde)",
       "stopAutoRefresh": "Automatisch vernieuwen stoppen",
       "clickToCapture": "Klik op Vastleggen om het perspectief van de bot weer te geven",
-      "offline": "Bot is offline. POV-weergave is alleen beschikbaar wanneer de bot is verbonden."
+      "offline": ""
     },
     "statsPanel": {
       "health": "Gezondheid",
@@ -485,44 +524,48 @@
       "experience": "Ervaring",
       "level": "Niveau",
       "toNextLevel": "tot volgend niveau",
-      "gameMode": "Spelmodus",
+      "gameMode": "",
       "survival": "Overleven",
       "creative": "Creatief",
       "adventure": "Avontuur",
       "spectator": "Toeschouwer",
       "unknown": "Onbekend",
-      "offline": "De bot is niet verbonden. Statistieken zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": ""
     },
     "inventoryPanel": {
       "title": "Inventaris",
       "actionRejected": "",
       "hotbar": "Snelle balk",
-      "main": "Hoofd Inventaris",
+      "main": "",
       "items": "items",
       "carrying": "Draagt",
-      "dropOne": "Laat Eén Vallen",
-      "dropAll": "Laat Alles Vallen",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Sluiten",
-      "clickHint": "Linkermuisklik: oppakken/plaatsen | Rechtermuisklik: helft/één | Shift+klik: snel verplaatsen | Middelste muisklik: hotbar-slot selecteren",
-      "offline": "De bot is niet verbonden. Inventaris is alleen beschikbaar wanneer de bot is verbonden.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Recepten",
         "enchantments": "Betoveringen",
         "patterns": "Patronen",
         "trades": "Handelen",
-        "beaconEffects": "Baken-effecten",
-        "crafterSlots": "Slotbediening",
-        "lecternControls": "Boekbediening",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Acties",
-        "creativeTabs": "Creatieve tabbladen"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Tekstinvoer",
-        "anvilRename": "Item hernoemen",
-        "creativeSearch": "Voorwerpen zoeken"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Boekinhoud",
+        "title": "",
         "emptyPage": "(Lege pagina)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +573,161 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Voorwerp vernietigen",
+      "destroyItem": "",
       "clickHints": {
-        "left": "Linkermuisknop: oppakken of plaatsen",
-        "right": "Rechtermuisknop: de helft oppakken of één plaatsen",
-        "shift": "Shift+klik: snel verplaatsen",
-        "middle": "Middelste muisknop: als actief slot kiezen"
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
       }
     },
     "visualPanel": {
-      "title": "Richting en wereld",
-      "compass": "Kijkrichting",
-      "lookDirection": "Kijkhoek",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Kijkt omhoog",
       "lookingDown": "Kijkt omlaag",
       "lookingStraight": "Kijkt recht vooruit",
-      "worldInfo": "Wereldinformatie",
+      "worldInfo": "",
       "dimension": "Dimensie",
       "biome": "Biome",
-      "offline": "De bot is niet verbonden. Visuele data is alleen beschikbaar wanneer de bot is verbonden."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Botacties",
-      "leftClick": "Linkermuisklik",
-      "rightClick": "Rechtermuisklik",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Entiteit aanvallen of blok breken",
       "rightClickDescription": "Item gebruiken of interactie",
-      "offline": "De bot is niet verbonden. Acties zijn alleen beschikbaar wanneer de bot is verbonden."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Bewegingsbediening",
+      "title": "",
       "movement": "Beweging (WASD)",
-      "forward": "Vooruit gaan (W)",
-      "backward": "Achteruit gaan (S)",
-      "left": "Opzij naar links (A)",
-      "right": "Opzij naar rechts (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Springen",
       "sneak": "Sluipen",
       "sprint": "Rennen",
       "stop": "Stoppen",
-      "rotation": "Kijkrichting",
-      "lookUp": "Omhoog kijken",
-      "lookDown": "Omlaag kijken",
-      "lookLeft": "Links kijken",
-      "lookRight": "Rechts kijken",
-      "offline": "De bot is niet verbonden. Bewegingsbediening is alleen beschikbaar wanneer de bot is verbonden."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": ""
     },
     "dialogPanel": {
-      "title": "Serverdialoog",
+      "title": "",
       "noDialog": "Er wordt momenteel geen serverdialoog weergegeven.",
       "dialogType": "Type",
       "dialogId": "Dialoog-ID",
       "notice": "Melding",
       "confirmation": "Bevestiging",
-      "multiAction": "Meervoudige actie",
-      "serverLinks": "Serverlinks",
-      "dialogList": "Dialooglijst",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Onbekend",
       "dismiss": "Sluiten",
       "submit": "Verzenden",
-      "offline": "De bot is niet verbonden. Dialogen zijn alleen beschikbaar wanneer de bot is verbonden."
+      "offline": ""
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Alles",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Verbonden",
+      "starting": "Starten",
+      "retrying": "Opnieuw proberen",
+      "failed": "Mislukt",
+      "stopping": "Stoppen",
+      "stopped": "Gestopt"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Botweergave",
-      "touchControlling": "Je bestuurt deze bot. Gebruik 'Release control' om te stoppen.",
-      "popupBlocked": "Sta pop-ups toe om het botweergavevenster los te maken.",
-      "windowTitle": "SoulFire-botweergave",
-      "fullscreenUnavailable": "Volledig scherm is niet beschikbaar in dit venster.",
-      "textInputLabel": "Minecraft-tekstinvoer",
-      "videoLabel": "Live botweergave",
-      "touchMove": "Bewegen",
-      "audioError": "Audio kon niet worden gestart.",
-      "startError": "De botweergave kon niet worden gestart.",
-      "releaseHint": "Druk op {{shortcut}} om je toetsenbord en muis vrij te geven.",
-      "captureHint": "Klik op de weergave en sta het vastleggen van toetsenbord en muis toe.",
-      "audioWaiting": "Wachten tot de botweergave verbinding maakt.",
-      "audioWatchFirst": "Bekijk de bot om audio te gebruiken.",
-      "audioUpdateServer": "Werk de server bij om audio in de botweergave te gebruiken.",
-      "muteAudio": "Audio dempen",
-      "unmuteAudio": "Audio inschakelen",
-      "audioStarting": "Audio starten...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "Dempen",
-      "unmute": "Dempen opheffen",
-      "audio": "Audio",
-      "audioUnavailable": "Audio niet beschikbaar",
-      "volume": "Volume van de botweergave",
-      "reconnect": "Opnieuw verbinden",
-      "showWindow": "Botweergavevenster tonen",
-      "attachWindow": "Botweergavevenster vastmaken",
+      "unmute": "Demping opheffen",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Springen",
         "sneak": "Sluipen",
-        "attack": "Aanvallen",
-        "use": "Gebruiken",
+        "attack": "",
+        "use": "",
         "inventory": "Inventaris",
-        "keyboard": "Toetsenbord",
-        "closeMenu": "Menu sluiten"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "De botweergave heeft een verbonden SoulFire-server nodig."
+      "needsServer": "",
+      "connectTimeout": "",
+      "inputUpdateServer": "",
+      "decoderUnsupported": "",
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -643,12 +742,12 @@
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Verbonden bots",
+      "title": "",
       "online": "Verbonden",
       "total": "Totaal"
     },
     "packets": {
-      "title": "Pakketten / Seconde",
+      "title": "",
       "sent": "Verzonden/s",
       "received": "Ontvangen/s"
     },
@@ -658,27 +757,27 @@
       "download": "Download"
     },
     "tick": {
-      "title": "Tickduur",
+      "title": "",
       "avg": "Gem. (ms)",
       "max": "Max (ms)"
     },
     "healthFood": {
-      "title": "Gezondheid / Eten",
-      "health": "Gem. Gezondheid",
-      "food": "Gem. Eten"
+      "title": "",
+      "health": "",
+      "food": ""
     },
     "chunksEntities": {
-      "title": "Chunks / Entiteiten",
+      "title": "",
       "chunks": "Chunks",
       "entities": "Entiteiten"
     },
     "connections": {
-      "title": "Verbindingsgebeurtenissen",
+      "title": "",
       "connections": "Verbindingen",
       "disconnections": "Verbrekingen"
     },
     "healthDistribution": {
-      "title": "Gezondheidsverdeling",
+      "title": "",
       "bots": "Bots"
     },
     "dimensions": {
@@ -686,59 +785,73 @@
       "bots": "Bots"
     },
     "gameModes": {
-      "title": "Spelmodi",
+      "title": "",
       "bots": "Bots"
     },
     "positions": {
-      "title": "Botposities (XZ)",
+      "title": "",
       "bot": "Bot"
     }
   },
   "scripts": {
-    "title": "Visuele scripts",
-    "description": "Maak automatiseringsscripts met behulp van een visuele, op knooppunten gebaseerde editor.",
-    "experimentalTitle": "Experimentele functie",
+    "title": "",
+    "description": "",
+    "experimentalTitle": "",
     "experimentalWarning": "Deze functie is experimenteel. Toekomstige updates kunnen bestaande scripts breken. Gebruik dit met voorzichtigheid.",
-    "createScript": "Script aanmaken",
-    "createScriptTitle": "Nieuw script aanmaken",
-    "createScriptDescription": "Maak een nieuw visueel script voor deze instantie. Scripts kunnen botacties automatiseren en reageren op gebeurtenissen.",
-    "scriptName": "Scriptnaam",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Voer scriptnaam in...",
     "scriptDescription": "Beschrijving",
     "scriptDescriptionPlaceholder": "Beschrijf wat dit script doet...",
     "create": "Aanmaken",
-    "createSuccess": "Script succesvol aangemaakt",
-    "createError": "Aanmaken van script mislukt",
-    "noScripts": "Nog geen scripts",
-    "noScriptsDescription": "Maak je eerste script om botacties te automatiseren met de visuele knooppunteneditor.",
-    "createFirstScript": "Script aanmaken",
-    "running": "Draait",
-    "paused": "Gepauzeerd",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "knooppunten",
     "noDescription": "Geen beschrijving",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Alles",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Naam"
+    },
+    "noMatches": "",
     "edit": "Bewerken",
-    "pause": "Pauzeren",
-    "pauseSuccess": "Script gepauzeerd",
-    "pauseError": "Pauzeren van script mislukt",
-    "resume": "Hervatten",
-    "resumeSuccess": "Script hervat",
-    "resumeError": "Hervatten van script mislukt",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Verwijderen",
-    "deleteSuccess": "Script succesvol verwijderd",
-    "deleteError": "Verwijderen van script mislukt",
-    "saveSuccess": "Script succesvol opgeslagen",
-    "saveError": "Opslaan van script mislukt",
-    "activateSuccess": "Script geactiveerd",
-    "activateError": "Script activeren mislukt",
-    "deactivateSuccess": "Script gedeactiveerd",
-    "untitledScript": "Naamloos script",
-    "saveFirstBeforeActivating": "Sla het script eerst op voordat je het activeert",
-    "activating": "Script wordt geactiveerd...",
-    "activated": "Script geactiveerd",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Script voltooid",
-    "executionCompletedSuccess": "Script succesvol voltooid",
-    "deactivated": "Script gedeactiveerd",
-    "deactivatedByUser": "Script gedeactiveerd door gebruiker",
+    "executionCompletedSuccess": "Script voltooid",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Scriptuitvoering mislukt",
     "executionError": "Uitvoeringsfout: {{error}}",
     "monitoringError": "",
@@ -747,23 +860,23 @@
     "nodeCompleted": "Knooppunt voltooid: {{nodeId}}",
     "nodeError": "Knooppuntfout: {{error}}",
     "contextMenu": {
-      "edit": "Script bewerken",
-      "pause": "Pauzeren",
-      "resume": "Hervatten",
-      "delete": "Script verwijderen",
-      "copyScriptName": "Scriptnaam kopiëren",
-      "copyScriptId": "Script-ID kopiëren"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Terug naar scripts",
+        "backToScripts": "",
         "save": "Opslaan",
-        "saveTooltip": "Script opslaan",
-        "resume": "Hervatten",
-        "resumeTooltip": "Hervat uitvoer van script",
-        "pause": "Pauzeren",
-        "pauseTooltip": "Onderbreek scriptexecutie",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Niet opgeslagen",
         "unsavedChanges": "Niet-opgeslagen wijzigingen",
         "clearCanvas": "Canvas wissen",
@@ -772,46 +885,58 @@
         "fit": "Passend maken",
         "export": "Script exporteren",
         "import": "Script importeren",
-        "exportSuccess": "Script succesvol geëxporteerd",
-        "importSuccess": "Script succesvol geïmporteerd",
-        "importError": "Importeren van script mislukt"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": ""
       },
       "palette": {
-        "title": "Knooppuntpalet",
+        "title": "",
         "search": "Zoek knooppunten...",
-        "noResults": "Geen knooppunten komen overeen met je zoekopdracht",
-        "noResultsDescription": "Probeer een andere term of wis het huidige filter."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Uitvoeringslogboeken",
+        "title": "",
         "clearTitle": "Logboeken wissen",
-        "noLogs": "Nog geen logboeken. Voer het script uit om uitvoeringslogboeken te zien.",
+        "noLogs": "",
         "entries_one": "{{count}} item",
         "entries_other": "{{count}} items"
       },
       "contextMenu": {
         "duplicate": "Dupliceren",
         "rename": "Hernoemen",
-        "disconnectAll": "Alles loskoppelen",
+        "disconnectAll": "",
         "collapse": "Samenvouwen",
         "expand": "Uitvouwen",
         "mute": "Dempen",
         "unmute": "Demping opheffen",
-        "showPreview": "Voorbeeld weergeven",
-        "hidePreview": "Voorbeeld verbergen",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Verwijderen"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Node uitvouwen",
         "collapse": "Node samenvouwen",
-        "avgTime": "Gemiddelde uitvoeringstijd: {{avg}} ms (laatste {{count}} runs)",
-        "preview": "Voorbeeld"
+        "avgTime": "",
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": ""
       },
       "debug": {
         "copyValue": "Huidige waarde kopiëren",
         "clearHistory": "Geschiedenis wissen",
-        "current": "Huidig ({{time}}):",
-        "noValue": "Nog geen waarde ontvangen"
+        "current": "",
+        "noValue": ""
       },
       "edge": {
         "direction": "Randrichting"
@@ -824,35 +949,36 @@
       },
       "group": {
         "returnToRoot": "Ga terug naar de root (Tab)",
-        "root": "Hoofdniveau",
-        "exitHint": "Druk op <key>Tab</key> om af te sluiten",
-        "editHint": "Dubbelklik om te bewerken",
-        "noInputs": "Geen ingangen gedefinieerd",
-        "noOutputs": "Geen uitgangen gedefinieerd"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Snel toevoegen node menu",
         "searchPlaceholder": "Zoek knooppunten...",
-        "noResults": "Geen knooppunten gevonden",
+        "noResults": "",
         "noResultsDescription": "Probeer een andere zoekterm.",
-        "navigate": "Navigeren",
-        "select": "Enter om te selecteren",
-        "close": "Esc om te sluiten"
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Wijzigingen bekijken",
         "title": "Niet-opgeslagen wijzigingen",
-        "description": "Wijzigingen sinds de laatste keer opslaan.",
-        "nodesAdded_one": "{{count}} knooppunt toegevoegd",
-        "nodesAdded_other": "{{count}} knooppunten toegevoegd",
-        "nodesRemoved_one": "{{count}} knooppunt verwijderd",
-        "nodesRemoved_other": "{{count}} knooppunten verwijderd",
-        "nodesModified_one": "{{count}} knooppunt gewijzigd",
-        "nodesModified_other": "{{count}} knooppunten gewijzigd",
-        "edgesAdded_one": "{{count}} verbinding toegevoegd",
-        "edgesAdded_other": "{{count}} verbindingen toegevoegd",
-        "edgesRemoved_one": "{{count}} verbinding verwijderd",
-        "edgesRemoved_other": "{{count}} verbindingen verwijderd"
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +991,647 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Proefdraai",
-        "title": "Script proefdraaien",
-        "description": "Voer een script uit vanaf een geselecteerde trigger met gesimuleerde invoer.",
-        "triggerNode": "Trigger-node",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Selecteer een trigger...",
-        "triggerDescription": "Kies de trigger-node om uit te voeren met gesimuleerde invoerwaarden.",
-        "mockInputs": "Gesimuleerde invoer",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} waarde",
-        "start": "Start proefdraai",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Script limieten",
-        "title": "Script limieten",
+        "tooltip": "",
+        "title": "",
         "description": "Configureer de limieten voor deze scriptbron. Lege velden gebruiken de standaardwaarden van de server.",
-        "maxExecutionCount": "Maximaal aantal uitvoeringen",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Maximaal aantal node-uitvoeringen per triggeraanroep",
         "maxExecutionTime": "Maximale uitvoeringstijd (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Maximale wandkloktijd per triggeruitvoering",
-        "maxConcurrentTriggers": "Max gelijktijdige triggers",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "Maximaal gelijktijdige triggeruitvoeringen",
-        "maxStateStoreEntries": "Maximaal aantal store-items",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Onbeperkt",
         "maxStateStoreEntriesDescription": "Maximum aantal items in de script-statusopslag",
-        "disableTimeouts": "Timeouts uitschakelen",
+        "disableTimeouts": "",
         "disableTimeoutsDescription": "Schakelt time-outs per node en data-edge uit",
-        "save": "Quota opslaan",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "{{label}} herordenen",
-        "empty": "Geen inkomende waarden",
-        "title": "Meervoudige ingang: accepteert meerdere verbindingen",
-        "connectTo": "Verbind waarden met {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Script verwijderen?",
-      "description": "Dit verwijdert '{{name}}' definitief. Je kunt dit niet ongedaan maken.",
-      "descriptionUnnamed": "Dit verwijdert het script definitief. Je kunt dit niet ongedaan maken."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Uitvoeringsstatistieken: {{executed}}/{{max}} knooppunten uitgevoerd"
+    "executionStats": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Actie",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Verbinden",
+    "back": "Terug",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alles",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Verbinden",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Totaal",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Geen",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "verbonden",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "Herstart {{count}} bot",
+    "restartGroup_other": "Herstart {{count}} bots",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Optioneel",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Alle instellingen openen",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Accounts",
+      "reviewProxies": "Proxy's",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "action_one": "Start {{count}} bot",
+      "action_other": "Start {{count}} bots",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

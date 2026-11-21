@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Zde je k dispozici surový výstup instance, když potřebujete zkontrolovat detaily konzole.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Účty",
       "proxies": "Proxy",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Živý přenos",
-      "empty": "Čeká se na aktivitu instance...",
+      "empty": "",
       "noPermission": "Nemáte oprávnění zobrazit živý přenos.",
       "lifecycle": {
         "connecting": "se připojuje",
@@ -97,6 +97,7 @@
         "executeCommand": "spustil příkaz: {{data}}",
         "botDesiredStateChange": "změněn požadovaný stav bota",
         "botRestart": "boty byly restartovány",
+        "pluginRpc": "",
         "unknown": "provedl akci"
       }
     },
@@ -119,17 +120,45 @@
       "network": "Síťová adresa",
       "unix": "Unixový socket"
     },
-    "getProxies": "Poskytovatelé proxy serverů",
-    "addProxies": "Přidat proxy servery",
+    "getProxies": "",
+    "addProxies": "",
     "filterPlaceholder": "Filtrovat proxy...",
     "listImportToast": {
       "loading": "Importuji proxy...",
-      "success": "{{count}} proxy importováno",
-      "error": "Nepodařilo se importovat proxy.",
-      "noProxies": "Žádné proxy k importu"
+      "success": "",
+      "error": "",
+      "noProxies": "Žádné proxy k importu",
+      "skipped_one": "",
+      "skipped_few": "",
+      "skipped_many": "",
+      "skipped_other": ""
     },
     "import": {
-      "proxyType": "Typ proxy",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Importuji proxy...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_few": "",
+        "accepted_many": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_few": "",
+        "rejected_many": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_few": "",
+        "confirm_many": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -141,21 +170,21 @@
     },
     "removeToast": {
       "loading": "Odstraňuji proxy...",
-      "success": "{{count}} proxy odstraněno",
-      "error": "Nepodařilo se odstranit proxy."
+      "success": "",
+      "error": ""
     },
     "checkToast": {
       "loading": "Kontrola proxy... {{checked}}/{{total}} (Úspěšných: {{success}} Neúspěšných: {{failed}})",
-      "success": "{{count}} nefunkčních proxy odstraněno",
-      "error": "Nepodařilo se zkontrolovat proxy.",
-      "successKept": "Kontrolou neprošlo {{failed}} z {{total}} proxy serverů. Žádný proxy server nebyl odebrán."
+      "success": "",
+      "error": "",
+      "successKept": ""
     },
     "checkDialog": {
-      "title": "Zkontrolovat proxy servery",
-      "description": "Chystáte se zkontrolovat proxy servery: {{count}}.",
-      "confirm": "Spustit kontrolu",
-      "removeFailed": "Odebrat proxy servery, které selžou",
-      "removeFailedHelp": "Proxy server může selhat kvůli dočasnému problému se sítí. Zrušte tuto volbu, pokud chcete ponechat všechny proxy servery a jen vidět výsledek."
+      "title": "",
+      "description": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": ""
     },
     "invalidFormat": "Neplatný formát proxy",
     "table": {
@@ -171,111 +200,129 @@
     "exportSelectedTooltip": "Exportovat vybrané proxy",
     "checkSelectedTooltip": "Zkontrolovat vybrané proxy",
     "contextMenu": {
-      "copyAddress": "Kopírovat adresu",
-      "copyUsername": "Kopírovat uživatelské jméno",
-      "copyPassword": "Kopírovat heslo",
-      "deleteProxy": "Smazat proxy"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Zkontrolovat importované proxy?",
-      "description": "Importováno proxy serverů: {{count}}. Zkontrolovat je teď?",
-      "confirm": "Zkontrolovat proxy servery",
+      "description": "",
+      "confirm": "",
       "skip": "Přeskočit"
     },
     "export": {
-      "format": "Exportní formát",
-      "uri": "Formát URI (všechny typy)",
-      "http": "Pouze HTTP (plochý)",
-      "socks4": "Pouze SOCKS4 (plochý)",
-      "socks5": "Pouze SOCKS5 (plochý)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "Žádné proxy k exportu"
     },
     "removeDialog": {
-      "title_one": "Odebrat {{count}} proxy server?",
-      "title_few": "Odebrat {{count}} proxy servery?",
-      "title_many": "Odebrat {{count}} proxy serveru?",
-      "title_other": "Odebrat {{count}} proxy serverů?",
-      "description": "Tím se z této instance odeberou vybrané proxy servery a jejich přihlašovací údaje. Tuto akci nelze vrátit zpět.",
-      "confirm": "Odebrat proxy servery"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
-    "showPassword": "Zobrazit heslo",
-    "hidePassword": "Skrýt heslo"
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Poskytovatelé účtů",
-    "addAccounts": "Přidat účty",
-    "generateAccounts": "Vygenerovat účty",
+    "getAccounts": "",
+    "addAccounts": "",
+    "generateAccounts": "",
     "filterPlaceholder": "Filtrovat účty...",
     "listImportToast": {
       "loading": "Importuji účty... {{checked}}/{{total}} (Úspěšných: {{success}} Neúspěšných: {{failed}})",
-      "allFailed": "Nepodařilo se importovat žádné účty.",
+      "allFailed": "",
       "someFailed": "Importováno {{count}} účtů, nepodařilo se importovat {{failed}} účtů.",
-      "noneFailed": "{{count}} účtů importováno",
-      "error": "Nepodařilo se importovat účty.",
-      "noAccounts": "Žádné účty k importu"
+      "noneFailed": "",
+      "error": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "unknownError": "Neznámá chyba",
     "types": {
-      "OFFLINE": "Offline",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (přihlašovací údaje)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (kód zařízení)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (obnovovací token)",
-      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (přístupový token)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (přihlašovací údaje)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (kód zařízení)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Importuji účet...",
-      "success": "Účet importován",
-      "error": "Nepodařilo se importovat účet"
+      "success": "",
+      "error": ""
     },
     "generate": {
-      "title": "Vygenerovat offline účty",
+      "title": "",
       "description": "Vygenerujte offline Java účty s vlastním formátem jména.",
       "amount": "Počet",
-      "nameFormat": "Formát jména",
-      "nameFormatHelp": "Použijte %d pro číslo účtu. Například Bot_%d vytvoří jména jako Bot_1 a Bot_2.",
-      "mode": "Existující účty",
-      "modeHelp": "Vyberte, jak chcete naložit s existujícími účty:\n\n• Ignorovat stávající: Generovat pouze účty s novými jmény. Všechny stávající účty zůstanou zachovány.\n\n• Nahradit stávající: Generovat všechny požadované účty. Nahradit účty se shodnými UUID. Ostatní účty zůstanou zachovány.\n\n• Nahradit vše: Odebrat všechny stávající účty. Poté přidat vygenerované účty.",
-      "modeIgnoreExisting": "Ignorovat existující",
-      "modeReplaceExisting": "Nahradit existující",
-      "modeReplaceAll": "Nahradit vše",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Generovat",
       "generating": "Generuje se...",
       "progress": "Generování účtů... {{checked}}/{{total}} (Úspěšně: {{success}} Neúspěšně: {{failed}})",
-      "success": "Vygenerováno {{count}} účtů",
-      "allFailed": "Nepodařilo se vygenerovat žádné účty",
-      "allExist": "Všechna uživatelská jména již existují. Zvolte „Nahradit existující“ a vygenerujte je znovu.",
-      "error": "Nepodařilo se vygenerovat účty",
-      "invalidAmount": "Zadejte prosím platný počet (alespoň 1)",
-      "missingPlaceholder": "Formát jména musí obsahovat zástupný znak %d"
+      "success": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "invalidAmount": "Zadejte celé číslo alespoň 1.",
+      "missingNameFormat": "",
+      "preview_one": "",
+      "preview_few": "",
+      "preview_many": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Offline",
-      "microsoftCredentials": "Microsoft přihlašovací údaje",
-      "microsoftDeviceCode": "Microsoft device code",
-      "microsoftRefreshToken": "Microsoft refresh token",
-      "microsoftCookies": "Microsoft cookies",
-      "microsoftAccessToken": "Microsoft access token",
-      "theAltening": "TheAltening token",
-      "altProviders": "Alternativní poskytovatelé",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Importovat účty typu {{type}}",
-        "description": "Vložte své účty zde, jeden na řádek"
+        "title": "Importovat účty typu {{type}}"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Odstraňuji účty...",
-      "success": "{{count}} účtů odstraněno",
-      "error": "Nepodařilo se odstranit účty"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Typ",
-      "profileId": "ID profilu",
+      "profileId": "",
       "lastKnownName": "Uživatelské jméno",
       "searchProfileIds": "Hledat ID profilů...",
       "searchLastKnownNames": "Hledat poslední známá jména...",
@@ -283,10 +330,10 @@
     },
     "removeSelectedTooltip": "Odebrat vybrané účty",
     "contextMenu": {
-      "openConfig": "Otevřít nastavení",
-      "openMetadata": "Otevřít metadata",
-      "copyProfileId": "Kopírovat ID profilu",
-      "copyUsername": "Kopírovat uživatelské jméno"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Nastavit {{name}}",
@@ -305,138 +352,128 @@
       "selectPage": "Vyberte stránku nastavení",
       "noSearchResults": "Žádná nastavení neodpovídají tomuto vyhledávání.",
       "matchesInheritedValue": "Shoduje se s převzatou hodnotou",
-      "instanceValue": "Hodnota instance",
+      "instanceValue": "",
       "defaultValue": "Výchozí hodnota",
       "resetOverride": "Obnovit přepsání",
       "value": {
-        "notSet": "Nenastaveno",
-        "on": "Zap.",
-        "off": "Vyp.",
-        "empty": "Prázdné",
-        "entries_one": "{{count}} položka",
-        "entries_few": "{{count}} položky",
-        "entries_many": "{{count}} položky",
-        "entries_other": "{{count}} položek",
-        "range": "Rozsah"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_one": "{{count}} záznam",
+        "entries_few": "{{count}} záznamy",
+        "entries_many": "{{count}} záznamů",
+        "entries_other": "{{count}} záznamů"
       },
       "source": {
-        "bot": "Přepsáno pro bota",
-        "instance": "Zděděno z instance",
-        "default": "Výchozí hodnota"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Ověření pomocí kódu zařízení",
+      "title": "",
       "description": "Před zahájením procesu s ověřovacím kódem zařízení nastavte možnosti.",
-      "start": "Spustit ověřování"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Ověření pomocí kódu zařízení",
+      "title": "",
       "description": "Přihlaste se ke svému účtu Microsoft pro jeho propojení.",
-      "openInBrowser": "Otevřít v prohlížeči",
+      "openInBrowser": "",
       "orManually": "Nebo zadejte kód ručně",
       "codeLabel": "Váš kód",
       "urlLabel": "Přejděte na"
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Zakupte účty přes Ravealts",
       "description": "Kupujte Minecraft účty pomocí svého Ravealts API klíče.",
-      "apiKeyLabel": "API klíč",
       "apiKeyPlaceholder": "Zadejte svůj API klíč Ravealts",
-      "validate": "Ověřit",
-      "validating": "Ověřování...",
-      "keyValid": "Klíč ověřen",
-      "keyInvalid": "Neplatný API klíč",
-      "credits": "Kredity: {{credits}}",
-      "stockTitle": "Dostupný sklad",
       "noStock": "Žádné účty nejsou skladem",
-      "accountType": "Typ účtu",
-      "amount": "Množství (1-10)",
-      "purchase": "Zakoupit a importovat",
-      "purchasing": "Probíhá nákup...",
-      "purchaseSuccess": "Zakoupeno {{count}} účtů, importuji...",
-      "purchaseError": "Nákup se nezdařil: {{message}}",
+      "accountType": "",
       "networkError": "Nepodařilo se připojit k API Ravealts",
       "outOfStock": "Vybraný typ není skladem",
       "insufficientBalance": "Nedostatek kreditů",
       "rateLimited": "Příliš mnoho požadavků, zkuste to později"
     },
     "metadata": {
-      "openButton": "Upravit metadata",
+      "openButton": "",
       "title": "Metadata: {{name}}",
       "description": "Spravujte trvalé položky metadat pro tento účet. Každá položka má jmenný prostor, klíč a JSON hodnotu.",
       "namespacePlaceholder": "Jmenný prostor",
       "keyPlaceholder": "Klíč",
       "valuePlaceholder": "Hodnota (JSON)",
       "noEntries": "Žádné položky metadat. Přidejte jednu výše.",
-      "loadError": "Metadata se nepodařilo načíst",
+      "loadError": "",
       "loadErrorDescription": "",
       "retryLoad": "Opakovat",
       "addSuccess": "Položka byla přidána",
-      "addError": "Nepodařilo se přidat položku",
-      "updateError": "Nepodařilo se aktualizovat položku",
+      "addError": "",
+      "updateError": "",
       "deleteSuccess": "Záznam byl smazán",
-      "deleteError": "Nepodařilo se smazat záznam",
+      "deleteError": "",
       "duplicateError": "Záznam s tímto jmenným prostorem a klíčem již existuje",
       "invalidJson": "Neplatná hodnota JSON",
       "namespaceLabel": "Jmenný prostor",
       "keyLabel": "Klíč",
       "valueLabel": "Hodnota",
-      "addEntryLegend": "Přidat položku metadat",
-      "addEntryButton": "Přidat položku",
-      "entryLegend": "Položka metadat",
+      "addEntryLegend": "",
+      "addEntryButton": "",
+      "entryLegend": "",
       "removeEntryButton": "Odebrat"
     },
     "removeDialog": {
-      "title_one": "Odebrat {{count}} účet?",
-      "title_few": "Odebrat {{count}} účty?",
-      "title_many": "Odebrat {{count}} účtu?",
-      "title_other": "Odebrat {{count}} účtů?",
-      "description": "Tím se z této instance odeberou vybrané účty, jejich uložené přihlašovací údaje a jejich boti. Tuto akci nelze vrátit zpět.",
-      "confirm": "Odebrat účty"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Metadata instance",
-    "description": "Spravujte trvalé metadata této instance. Každý záznam má jmenný prostor, klíč a hodnotu ve formátu JSON.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Jmenný prostor",
     "keyPlaceholder": "Klíč",
     "valuePlaceholder": "Hodnota (JSON)",
+    "valueRequired": "",
     "noEntries": "Žádné položky metadat. Přidejte jednu výše.",
-    "loadError": "Metadata se nepodařilo načíst",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Opakovat",
     "addSuccess": "Položka byla přidána",
-    "addError": "Nepodařilo se přidat položku",
-    "updateError": "Nepodařilo se aktualizovat položku",
+    "addError": "",
+    "updateError": "",
     "deleteSuccess": "Záznam byl smazán",
-    "deleteError": "Nepodařilo se smazat záznam",
+    "deleteError": "",
     "duplicateError": "Záznam s tímto jmenným prostorem a klíčem již existuje",
     "invalidJson": "Neplatná hodnota JSON",
     "namespaceLabel": "Jmenný prostor",
     "keyLabel": "Klíč",
     "valueLabel": "Hodnota",
-    "addEntryLegend": "Přidat položku metadat",
-    "addEntryButton": "Přidat položku",
-    "entryLegend": "Položka metadat",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "Odebrat"
   },
   "bots": {
     "searchPlaceholder": "Vyhledat boty...",
-    "onlineCount": "{{online}} připojeno / {{total}} celkem",
-    "noBots": "Žádné boty nejsou nastaveny. Přidejte účty na stránce Nastavení účtu.",
+    "onlineCount": "",
+    "noBots": "",
     "noBotsFound": "Žádní boti neodpovídají vašemu hledání.",
     "loadingMore": "Načítání dalších...",
     "showingCount": "Zobrazeno {{loaded}} z {{total}}",
     "allLoaded": "Všech {{total}} botů načteno",
     "online": "Připojeno",
-    "offline": "Odpojeno",
-    "notJoined": "Nepřipojený",
+    "offline": "",
+    "notJoined": "",
     "connectionPhase": {
       "connecting": "Připojování",
-      "connected": "Přihlašování",
+      "connected": "",
       "spawned": "Připojeno",
       "died": "Mrtvý",
-      "disconnected": "Odpojeno",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -448,12 +485,13 @@
       "waiting": "Čekání",
       "stopped": "Zastaveno"
     },
-    "backToBots": "Zpět na boty",
+    "backToBots": "",
+    "demoControls": "",
     "tabs": {
-      "overview": "Pohled bota",
+      "overview": "",
       "inventory": "Inventář",
-      "controls": "Ovládací prvky",
-      "terminal": "Terminál"
+      "controls": "",
+      "terminal": ""
     },
     "terminalPanel": {},
     "connectionPanel": {
@@ -462,27 +500,38 @@
       "unavailable": "Nedostupné"
     },
     "positionPanel": {
-      "title": "Pozice a rotace",
+      "title": "",
       "position": "Pozice",
       "rotation": "Rotace",
-      "offline": "Bot je odpojen. Údaje o pozici jsou k dispozici pouze, když je bot připojen."
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Zprávy chatu"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "commandPanel": {
-      "title": "Příkazy bota",
+      "title": "",
       "placeholder": "Odeslat příkaz tomuto botovi..."
     },
     "povPanel": {
-      "title": "Pohled bota",
+      "title": "",
       "capture": "Zachytit",
       "refresh": "Obnovit",
       "auto": "Auto",
       "startAutoRefresh": "Spustit automatické obnovení (interval 1 sekunda)",
       "stopAutoRefresh": "Zastavit automatické obnovení",
       "clickToCapture": "Kliknutím na Zachytit zobrazíte pohled bota",
-      "offline": "Bot je offline. Zobrazení pohledu je dostupné pouze když je bot připojen."
+      "offline": ""
     },
     "statsPanel": {
       "health": "Zdraví",
@@ -491,44 +540,48 @@
       "experience": "Zkušenosti",
       "level": "Úroveň",
       "toNextLevel": "do další úrovně",
-      "gameMode": "Herní režim",
+      "gameMode": "",
       "survival": "Přežití",
       "creative": "Kreativní",
       "adventure": "Dobrodružství",
       "spectator": "Divák",
       "unknown": "Neznámý",
-      "offline": "Bot je odpojen. Statistiky jsou dostupné pouze když je bot připojen."
+      "offline": ""
     },
     "inventoryPanel": {
       "title": "Inventář",
       "actionRejected": "",
       "hotbar": "Rychlá lišta",
-      "main": "Hlavní inventář",
+      "main": "",
       "items": "položky",
       "carrying": "Nese",
-      "dropOne": "Vyhodit jednu",
-      "dropAll": "Vyhodit vše",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Zavřít",
-      "clickHint": "Levé kliknutí: zvednout/umístit | Pravé kliknutí: polovina/jeden | Shift+kliknutí: rychlý přesun | Prostřední kliknutí: výběr slotu v hotbaru",
-      "offline": "Bot je odpojen. Inventář je dostupný pouze když je bot připojen.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Recepty",
         "enchantments": "Očarování",
         "patterns": "Vzory",
         "trades": "Obchody",
-        "beaconEffects": "Efekty majáku",
-        "crafterSlots": "Ovládání slotů",
-        "lecternControls": "Ovládání knihy",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Akce",
-        "creativeTabs": "Kreativní karty"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Textové pole",
-        "anvilRename": "Přejmenovat předmět",
-        "creativeSearch": "Hledat předměty"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Obsah knihy",
+        "title": "",
         "emptyPage": "(Prázdná stránka)",
         "previousPage": "",
         "nextPage": "",
@@ -536,105 +589,161 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Zničit předmět",
+      "destroyItem": "",
       "clickHints": {
-        "left": "Levé tlačítko: vzít nebo položit",
-        "right": "Pravé tlačítko: vzít polovinu nebo položit jeden",
-        "shift": "Shift+klik: rychlý přesun",
-        "middle": "Prostřední tlačítko: vybrat jako aktivní slot"
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
       }
     },
     "visualPanel": {
-      "title": "Směr a svět",
-      "compass": "Směr pohledu",
-      "lookDirection": "Úhel pohledu",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Dívá se nahoru",
       "lookingDown": "Dívá se dolů",
       "lookingStraight": "Dívá se přímo",
-      "worldInfo": "Informace o světě",
+      "worldInfo": "",
       "dimension": "Dimenze",
       "biome": "Biom",
-      "offline": "Bot je odpojen. Vizuální data jsou dostupná pouze když je bot připojen."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Akce bota",
-      "leftClick": "Levé kliknutí",
-      "rightClick": "Pravé kliknutí",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Zaútočit na entitu nebo rozbít blok",
       "rightClickDescription": "Použít předmět nebo interagovat",
-      "offline": "Bot je odpojen. Akce jsou k dispozici pouze když je bot připojen."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Ovládání pohybu",
+      "title": "",
       "movement": "Pohyb (WASD)",
-      "forward": "Pohyb vpřed (W)",
-      "backward": "Pohyb vzad (S)",
-      "left": "Pohyb vlevo (A)",
-      "right": "Pohyb vpravo (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Skok",
       "sneak": "Plížení",
       "sprint": "Sprint",
       "stop": "Zastavit",
-      "rotation": "Směr pohledu",
-      "lookUp": "Podívat se nahoru",
-      "lookDown": "Podívat se dolů",
-      "lookLeft": "Podívat se vlevo",
-      "lookRight": "Podívat se vpravo",
-      "offline": "Bot je odpojen. Ovládání pohybu je dostupné pouze, když je bot připojen."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": ""
     },
     "dialogPanel": {
-      "title": "Serverový dialog",
+      "title": "",
       "noDialog": "Aktuálně se nezobrazuje žádný serverový dialog.",
       "dialogType": "Typ",
       "dialogId": "ID dialogu",
       "notice": "Upozornění",
       "confirmation": "Potvrzení",
-      "multiAction": "Více akcí",
-      "serverLinks": "Odkazy na server",
-      "dialogList": "Seznam dialogů",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Neznámý",
       "dismiss": "Zavřít",
       "submit": "Odeslat",
-      "offline": "Bot je odpojen. Dialogy jsou k dispozici pouze když je bot připojen."
+      "offline": ""
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Vše",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Připojeno",
+      "starting": "Spouštění",
+      "retrying": "Opakování",
+      "failed": "Selhalo",
+      "stopping": "Zastavování",
+      "stopped": "Zastaveno"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Pohled bota",
-      "touchControlling": "Ovládáte tohoto bota. Ukončíte to tlačítkem „Release control“.",
-      "popupBlocked": "Povolte vyskakovací okna, abyste mohli odpojit okno pohledu bota.",
-      "windowTitle": "Pohled bota SoulFire",
-      "fullscreenUnavailable": "Režim celé obrazovky není v tomto okně dostupný.",
-      "textInputLabel": "Zadávání textu v Minecraftu",
-      "videoLabel": "Živý pohled bota",
-      "touchMove": "Pohyb",
-      "audioError": "Zvuk se nepodařilo spustit.",
-      "startError": "Pohled bota se nepodařilo spustit.",
-      "releaseHint": "Stisknutím {{shortcut}} uvolníte klávesnici a myš.",
-      "captureHint": "Klikněte na pohled a povolte zachytávání klávesnice a myši.",
-      "audioWaiting": "Čeká se na připojení pohledu bota.",
-      "audioWatchFirst": "Sledujte bota, abyste mohli používat zvuk.",
-      "audioUpdateServer": "Aktualizujte server, abyste mohli používat zvuk v pohledu bota.",
-      "muteAudio": "Ztlumit zvuk",
-      "unmuteAudio": "Zapnout zvuk",
-      "audioStarting": "Spouštění zvuku...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "Ztlumit",
       "unmute": "Zrušit ztlumení",
-      "audio": "Zvuk",
-      "audioUnavailable": "Zvuk není dostupný",
-      "volume": "Hlasitost pohledu bota",
-      "reconnect": "Znovu připojit",
-      "showWindow": "Zobrazit okno pohledu bota",
-      "attachWindow": "Připojit okno pohledu bota",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Skok",
         "sneak": "Plížení",
-        "attack": "Útok",
-        "use": "Použít",
+        "attack": "",
+        "use": "",
         "inventory": "Inventář",
-        "keyboard": "Klávesnice",
-        "closeMenu": "Zavřít nabídku"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "Pohled bota vyžaduje připojený server SoulFire."
+      "needsServer": "",
+      "connectTimeout": "",
+      "inputUpdateServer": "",
+      "decoderUnsupported": "",
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -649,12 +758,12 @@
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Připojení boti",
+      "title": "",
       "online": "Připojeno",
       "total": "Celkem"
     },
     "packets": {
-      "title": "Pakety / sekunda",
+      "title": "",
       "sent": "Odesláno/s",
       "received": "Přijato/s"
     },
@@ -664,27 +773,27 @@
       "download": "Stahování"
     },
     "tick": {
-      "title": "Doba trvání ticku",
+      "title": "",
       "avg": "Prům. (ms)",
       "max": "Max. (ms)"
     },
     "healthFood": {
-      "title": "Zdraví / Jídlo",
-      "health": "Průměrné zdraví",
-      "food": "Průměrné jídlo"
+      "title": "",
+      "health": "",
+      "food": ""
     },
     "chunksEntities": {
-      "title": "Chunky / entity",
+      "title": "",
       "chunks": "Chunky",
       "entities": "Entity"
     },
     "connections": {
-      "title": "Události připojení",
+      "title": "",
       "connections": "Připojení",
       "disconnections": "Odpojení"
     },
     "healthDistribution": {
-      "title": "Distribuce zdraví",
+      "title": "",
       "bots": "Boti"
     },
     "dimensions": {
@@ -692,59 +801,73 @@
       "bots": "Boti"
     },
     "gameModes": {
-      "title": "Herní módy",
+      "title": "",
       "bots": "Boti"
     },
     "positions": {
-      "title": "Pozice botů (XZ)",
+      "title": "",
       "bot": "Bot"
     }
   },
   "scripts": {
-    "title": "Vizuální skripty",
-    "description": "Vytvářejte automatizační skripty pomocí vizuálního editoru založeného na uzlech.",
-    "experimentalTitle": "Experimentální funkce",
+    "title": "",
+    "description": "",
+    "experimentalTitle": "",
     "experimentalWarning": "Tato funkce je experimentální. Budoucí aktualizace mohou existující skripty narušit. Používejte ji opatrně.",
-    "createScript": "Vytvořit skript",
-    "createScriptTitle": "Vytvořit nový skript",
-    "createScriptDescription": "Vytvořte nový vizuální skript pro tuto instanci. Skripty mohou automatizovat akce bota a reagovat na události.",
-    "scriptName": "Název skriptu",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Zadejte název skriptu...",
     "scriptDescription": "Popis",
     "scriptDescriptionPlaceholder": "Popište, co tento skript dělá...",
     "create": "Vytvořit",
-    "createSuccess": "Skript byl úspěšně vytvořen",
-    "createError": "Nepodařilo se vytvořit skript",
-    "noScripts": "Zatím žádné skripty",
-    "noScriptsDescription": "Vytvořte svůj první skript pro automatizaci akcí bota pomocí vizuálního editoru založeného na uzlech.",
-    "createFirstScript": "Vytvořit skript",
-    "running": "Běží",
-    "paused": "Pozastaveno",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "uzly",
     "noDescription": "Žádný popis",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Vše",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Název"
+    },
+    "noMatches": "",
     "edit": "Upravit",
-    "pause": "Pozastavit",
-    "pauseSuccess": "Skript pozastaven",
-    "pauseError": "Skript se nepodařilo pozastavit",
-    "resume": "Pokračovat",
-    "resumeSuccess": "Skript obnoven",
-    "resumeError": "Skript se nepodařilo obnovit",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Smazat",
-    "deleteSuccess": "Skript byl úspěšně smazán",
-    "deleteError": "Nepodařilo se smazat skript",
-    "saveSuccess": "Skript byl úspěšně uložen",
-    "saveError": "Nepodařilo se uložit skript",
-    "activateSuccess": "Skript aktivován",
-    "activateError": "Aktivace skriptu se nezdařila",
-    "deactivateSuccess": "Skript deaktivován",
-    "untitledScript": "Nepojmenovaný skript",
-    "saveFirstBeforeActivating": "Nejdříve skript uložte před aktivací",
-    "activating": "Aktivuji skript...",
-    "activated": "Skript aktivován",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skript dokončen",
-    "executionCompletedSuccess": "Skript byl úspěšně dokončen",
-    "deactivated": "Skript deaktivován",
-    "deactivatedByUser": "Skript byl deaktivován uživatelem",
+    "executionCompletedSuccess": "Skript dokončen",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Spuštění skriptu selhalo",
     "executionError": "Chyba při spuštění: {{error}}",
     "monitoringError": "",
@@ -753,23 +876,23 @@
     "nodeCompleted": "Uzel dokončen: {{nodeId}}",
     "nodeError": "Chyba uzlu: {{error}}",
     "contextMenu": {
-      "edit": "Upravit skript",
-      "pause": "Pozastavit",
-      "resume": "Pokračovat",
-      "delete": "Smazat skript",
-      "copyScriptName": "Kopírovat název skriptu",
-      "copyScriptId": "Kopírovat ID skriptu"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Zpět na Skripty",
+        "backToScripts": "",
         "save": "Uložit",
-        "saveTooltip": "Uložit skript",
-        "resume": "Pokračovat",
-        "resumeTooltip": "Obnovit spuštění skriptu",
-        "pause": "Pozastavit",
-        "pauseTooltip": "Pozastavit vykonávání skriptu",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Neuloženo",
         "unsavedChanges": "Neuložené změny",
         "clearCanvas": "Vymazat plátno",
@@ -778,20 +901,23 @@
         "fit": "Přizpůsobit",
         "export": "Exportovat skript",
         "import": "Importovat skript",
-        "exportSuccess": "Skript byl úspěšně exportován",
-        "importSuccess": "Skript byl úspěšně importován",
-        "importError": "Nepodařilo se importovat skript"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": ""
       },
       "palette": {
-        "title": "Paleta uzlů",
+        "title": "",
         "search": "Hledat uzly...",
-        "noResults": "Hledání neodpovídá žádný uzel",
-        "noResultsDescription": "Zkuste jiný výraz nebo vymažte aktuální filtr."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Protokoly spuštění",
+        "title": "",
         "clearTitle": "Vymazat protokoly",
-        "noLogs": "Zatím žádné protokoly. Spusťte skript pro zobrazení protokolů spuštění.",
+        "noLogs": "",
         "entries_one": "{{count}} záznam",
         "entries_few": "{{count}} záznamy",
         "entries_many": "{{count}} záznamů",
@@ -800,26 +926,35 @@
       "contextMenu": {
         "duplicate": "Duplikovat",
         "rename": "Přejmenovat",
-        "disconnectAll": "Odpojit vše",
+        "disconnectAll": "",
         "collapse": "Sbalit",
         "expand": "Rozbalit",
         "mute": "Ztlumit",
         "unmute": "Zrušit ztlumení",
-        "showPreview": "Zobrazit náhled",
-        "hidePreview": "Skrýt náhled",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Smazat"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Rozbalit uzel",
         "collapse": "Sbalit uzel",
-        "avgTime": "Průměrná doba běhu: {{avg}} ms (poslední běhy: {{count}})",
-        "preview": "Náhled"
+        "avgTime": "",
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": ""
       },
       "debug": {
         "copyValue": "Kopírovat aktuální hodnotu",
         "clearHistory": "Vymazat historii",
-        "current": "Aktuální ({{time}}):",
-        "noValue": "Zatím nebyla přijata žádná hodnota"
+        "current": "",
+        "noValue": ""
       },
       "edge": {
         "direction": "Směr hrany"
@@ -832,45 +967,46 @@
       },
       "group": {
         "returnToRoot": "Vrátit se na kořen (Tab)",
-        "root": "Kořen",
-        "exitHint": "Stisknutím <key>Tab</key> odejdete",
-        "editHint": "Dvojklikem upravíte",
-        "noInputs": "Nejsou definovány žádné vstupy",
-        "noOutputs": "Nejsou definovány žádné výstupy"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Rychlé přidání uzlu – nabídka",
         "searchPlaceholder": "Hledat uzly...",
-        "noResults": "Nenalezeny žádné uzly",
-        "noResultsDescription": "Zkuste jiný hledaný výraz.",
-        "navigate": "Navigace",
-        "select": "Enter vybere",
-        "close": "Esc zavře"
+        "noResults": "",
+        "noResultsDescription": "Zkuste jiný vyhledávací výraz.",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Zkontrolovat změny",
         "title": "Neuložené změny",
-        "description": "Změny od posledního uložení.",
-        "nodesAdded_one": "Přidán {{count}} uzel",
-        "nodesAdded_few": "Přidány {{count}} uzly",
-        "nodesAdded_many": "Přidáno {{count}} uzlu",
-        "nodesAdded_other": "Přidáno {{count}} uzlů",
-        "nodesRemoved_one": "Odebrán {{count}} uzel",
-        "nodesRemoved_few": "Odebrány {{count}} uzly",
-        "nodesRemoved_many": "Odebráno {{count}} uzlu",
-        "nodesRemoved_other": "Odebráno {{count}} uzlů",
-        "nodesModified_one": "Změněn {{count}} uzel",
-        "nodesModified_few": "Změněny {{count}} uzly",
-        "nodesModified_many": "Změněno {{count}} uzlu",
-        "nodesModified_other": "Změněno {{count}} uzlů",
-        "edgesAdded_one": "Přidáno {{count}} spojení",
-        "edgesAdded_few": "Přidána {{count}} spojení",
-        "edgesAdded_many": "Přidáno {{count}} spojení",
-        "edgesAdded_other": "Přidáno {{count}} spojení",
-        "edgesRemoved_one": "Odebráno {{count}} spojení",
-        "edgesRemoved_few": "Odebrána {{count}} spojení",
-        "edgesRemoved_many": "Odebráno {{count}} spojení",
-        "edgesRemoved_other": "Odebráno {{count}} spojení"
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_few": "",
+        "nodesAdded_many": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_few": "",
+        "nodesRemoved_many": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_few": "",
+        "nodesModified_many": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_few": "",
+        "edgesAdded_many": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_few": "",
+        "edgesRemoved_many": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -883,57 +1019,703 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Suchý běh",
-        "title": "Suchý běh skriptu",
-        "description": "Spusťte skript ze zvoleného spouštěče s testovacími vstupy.",
-        "triggerNode": "Spouštěcí uzel",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Vyberte spouštěč...",
-        "triggerDescription": "Vyberte uzel spouštěče, který se má provést s testovacími vstupy.",
-        "mockInputs": "Testovací vstupy",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "Hodnota typu {{type}}",
-        "start": "Spustit suchý běh",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_few": "",
         "stats_many": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Limity skriptu",
-        "title": "Limity skriptu",
+        "tooltip": "",
+        "title": "",
         "description": "Nastavte limity zdrojů pro tento skript. Prázdná pole použijí výchozí hodnoty serveru.",
-        "maxExecutionCount": "Maximální počet spuštění",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Maximální počet spuštění uzlů na jedno spuštění spouštěče",
         "maxExecutionTime": "Maximální čas spuštění (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Maximální čas běhu na jedno spuštění spouštěče",
-        "maxConcurrentTriggers": "Maximální počet současně spuštěných spouštěčů",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "Maximální počet souběžně spuštěných spouštěčů",
-        "maxStateStoreEntries": "Maximální počet záznamů ve stavovém úložišti",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Neomezeno",
         "maxStateStoreEntriesDescription": "Maximální počet záznamů ve stavovém úložišti skriptu",
-        "disableTimeouts": "Zakázat časové limity",
+        "disableTimeouts": "",
         "disableTimeoutsDescription": "Zakáže časové limity pro jednotlivé uzly a datové hrany",
-        "save": "Uložit limity",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Změnit pořadí: {{label}}",
-        "empty": "Žádné příchozí hodnoty",
-        "title": "Vícenásobný vstup: přijímá více spojení",
-        "connectTo": "Připojte hodnoty k {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_few": "",
+      "errors_many": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_few": "",
+      "warnings_many": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Smazat skript?",
-      "description": "Tím se trvale smaže „{{name}}“. Tuto akci nelze vrátit zpět.",
-      "descriptionUnnamed": "Tím se skript trvale smaže. Tuto akci nelze vrátit zpět."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Statistika běhu: spuštěno {{executed}}/{{max}} uzlů"
+    "executionStats": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Akce",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Připojit",
+    "back": "Zpět",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Vše",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Připojit",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Celkem",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Žádné",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_few": "",
+      "orderStatus_many": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_few": "",
+      "limit_many": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_few": "",
+      "delivered_many": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_few": "",
+      "importing_many": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_few": "",
+    "importAccounts_many": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_few": "",
+    "inStock_many": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_few": "",
+    "previewMore_many": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_few": "",
+    "preview_many": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_few": "",
+    "importProxies_many": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_few": "",
+      "noneRunning_many": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_few": "",
+      "allConnected_many": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_few": "",
+      "partial_many": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_few": "",
+      "connecting_many": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "připojeno",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_few": "",
+      "retrying_many": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "Restartovat {{count}} bota",
+    "restartGroup_few": "Restartovat {{count}} boty",
+    "restartGroup_many": "Restartovat {{count}} botů",
+    "restartGroup_other": "Restartovat {{count}} botů",
+    "restartRequested_one": "",
+    "restartRequested_few": "",
+    "restartRequested_many": "",
+    "restartRequested_other": "",
+    "connectingHint_one": "",
+    "connectingHint_few": "",
+    "connectingHint_many": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Volitelné",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Otevřít všechna nastavení",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Účty",
+      "reviewProxies": "Proxy",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "action_one": "Spustit {{count}} bota",
+      "action_few": "Spustit {{count}} boty",
+      "action_many": "Spustit {{count}} botů",
+      "action_other": "Spustit {{count}} botů",
+      "countLimit_one": "",
+      "countLimit_few": "",
+      "countLimit_many": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_few": "",
+      "countInvalid_many": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

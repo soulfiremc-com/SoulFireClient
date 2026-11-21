@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "콘솔 세부 정보를 확인해야 할 때 여기에서 원시 인스턴스 출력을 확인할 수 있습니다.",
+    "logsDescription": "",
     "summary": {
       "accounts": "계정",
       "proxies": "프록시",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "실시간 피드",
-      "empty": "인스턴스 활동을 기다리는 중...",
+      "empty": "",
       "noPermission": "실시간 피드를 볼 권한이 없습니다.",
       "lifecycle": {
         "connecting": "연결 중",
@@ -97,6 +97,7 @@
         "executeCommand": "명령 실행: {{data}}",
         "botDesiredStateChange": "봇의 원하는 상태가 변경되었습니다.",
         "botRestart": "봇이 다시 시작되었습니다.",
+        "pluginRpc": "",
         "unknown": "동작 수행함"
       }
     },
@@ -119,17 +120,33 @@
       "network": "네트워크 주소",
       "unix": "유닉스 소켓"
     },
-    "getProxies": "프록시 제공업체",
-    "addProxies": "프록시 추가",
+    "getProxies": "",
+    "addProxies": "",
     "filterPlaceholder": "프록시 필터링...",
     "listImportToast": {
       "loading": "프록시 가져오는 중...",
-      "success": "{{count}}개의 프록시를 가져왔습니다",
-      "error": "프록시 가져오기에 실패했습니다.",
-      "noProxies": "가져올 프록시가 없습니다."
+      "success": "",
+      "error": "",
+      "noProxies": "가져올 프록시가 없습니다.",
+      "skipped_other": ""
     },
     "import": {
-      "proxyType": "프록시 유형",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "프록시 가져오는 중...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "rejected_other": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -141,21 +158,21 @@
     },
     "removeToast": {
       "loading": "프록시 삭제 중...",
-      "success": "{{count}}개의 프록시를 삭제했습니다",
-      "error": "프록시 삭제에 실패했습니다."
+      "success": "",
+      "error": ""
     },
     "checkToast": {
       "loading": "프록시 확인 중... {{checked}}/{{total}} (성공: {{success}} 실패: {{failed}})",
-      "success": "손상된 프록시 {{count}}개를 삭제했습니다",
-      "error": "프록시 확인에 실패했습니다.",
-      "successKept": "프록시 {{total}}개 중 {{failed}}개가 검사에 실패했습니다. 삭제된 프록시는 없습니다."
+      "success": "",
+      "error": "",
+      "successKept": ""
     },
     "checkDialog": {
-      "title": "프록시 확인하기",
-      "description": "프록시 {{count}}개를 검사합니다.",
-      "confirm": "확인 시작",
-      "removeFailed": "실패한 프록시 삭제",
-      "removeFailedHelp": "프록시는 일시적인 네트워크 문제로 실패할 수 있습니다. 모든 프록시를 유지하고 결과만 보려면 이 옵션을 끄세요."
+      "title": "",
+      "description": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": ""
     },
     "invalidFormat": "잘못된 프록시 형식",
     "table": {
@@ -171,108 +188,123 @@
     "exportSelectedTooltip": "선택한 프록시 내보내기",
     "checkSelectedTooltip": "선택한 프록시 확인",
     "contextMenu": {
-      "copyAddress": "주소 복사",
-      "copyUsername": "사용자명 복사",
-      "copyPassword": "비밀번호 복사하기",
-      "deleteProxy": "프록시 삭제"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "가져온 프록시를 확인하시겠습니까?",
-      "description": "프록시 {{count}}개를 가져왔습니다. 지금 검사할까요?",
-      "confirm": "프록시 확인하기",
+      "description": "",
+      "confirm": "",
       "skip": "건너뛰기"
     },
     "export": {
-      "format": "내보내기 형식",
-      "uri": "URI 형식(모든 유형)",
-      "http": "HTTP 전용(평면)",
-      "socks4": "SOCKS4 전용(평면)",
-      "socks5": "SOCKS5 전용(평면)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "내보낼 프록시가 없습니다."
     },
     "removeDialog": {
-      "title_other": "프록시 {{count}}개를 삭제할까요?",
-      "description": "선택한 프록시와 해당 자격 증명을 이 인스턴스에서 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
-      "confirm": "프록시 삭제"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
-    "showPassword": "비밀번호 표시",
-    "hidePassword": "비밀번호 숨기기"
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "계정 제공업체",
-    "addAccounts": "계정 추가",
-    "generateAccounts": "계정 생성",
+    "getAccounts": "",
+    "addAccounts": "",
+    "generateAccounts": "",
     "filterPlaceholder": "계정 필터링...",
     "listImportToast": {
       "loading": "계정 가져오는 중... {{checked}}/{{total}} (성공: {{success}} 실패: {{failed}})",
-      "allFailed": "계정 가져오기에 모두 실패했습니다.",
+      "allFailed": "",
       "someFailed": "{{count}}개의 계정을 가져왔고, {{failed}}개의 계정은 가져오지 못했습니다.",
-      "noneFailed": "{{count}}개의 계정이 가져와졌습니다",
-      "error": "계정 가져오기에 실패했습니다.",
-      "noAccounts": "가져올 계정이 없습니다."
+      "noneFailed": "",
+      "error": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "unknownError": "알 수 없는 오류",
     "types": {
-      "OFFLINE": "오프라인",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (자격 증명)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (디바이스 코드)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (리프레시 토큰)",
-      "MICROSOFT_JAVA_COOKIES": "Java (쿠키)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (액세스 토큰)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (자격 증명)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (디바이스 코드)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "계정 가져오는 중...",
-      "success": "계정이 가져와졌습니다",
-      "error": "계정 가져오기에 실패했습니다."
+      "success": "",
+      "error": ""
     },
     "generate": {
-      "title": "오프라인 계정 생성",
+      "title": "",
       "description": "사용자 지정 이름 형식으로 오프라인 Java 계정을 생성합니다.",
       "amount": "수량",
-      "nameFormat": "이름 형식",
-      "nameFormatHelp": "계정 번호에는 %d를 사용하세요. 예를 들어, Bot_%d로 이름을 만들면 Bot_1, Bot_2와 같이 생성됩니다.",
-      "mode": "기존 계정",
-      "modeHelp": "기존 계정을 처리하는 방법을 선택하세요:\n\n• 기존 무시: 새로운 이름으로만 계정을 생성합니다. 모든 기존 계정은 유지됩니다.\n\n• 기존 교체: 요청한 모든 계정을 생성합니다. 일치하는 UUID의 계정을 교체합니다. 나머지 계정은 유지됩니다.\n\n• 모두 교체: 모든 기존 계정을 삭제합니다. 그 다음, 새로 생성된 계정을 추가합니다.",
-      "modeIgnoreExisting": "기존 무시",
-      "modeReplaceExisting": "기존 교체",
-      "modeReplaceAll": "모두 대체",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "생성",
       "generating": "생성 중...",
       "progress": "계정 생성 중... {{checked}}/{{total}} (성공: {{success}} 실패: {{failed}})",
-      "success": "{{count}}개의 계정이 생성되었습니다",
-      "allFailed": "계정 생성에 모두 실패했습니다.",
-      "allExist": "모든 사용자 이름이 이미 있습니다. 다시 생성하려면 \"기존 교체\"을(를) 선택하세요.",
-      "error": "계정 생성에 실패했습니다.",
-      "invalidAmount": "유효한 수량(최소 1개)을 입력하세요.",
-      "missingPlaceholder": "이름 형식에 %d 자리 표시자가 포함되어야 합니다."
+      "success": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "invalidAmount": "",
+      "missingNameFormat": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java 에디션",
       "bedrockEdition": "Bedrock 에디션",
       "offline": "오프라인",
-      "microsoftCredentials": "Microsoft 자격 증명",
-      "microsoftDeviceCode": "Microsoft 디바이스 코드",
-      "microsoftRefreshToken": "Microsoft 리프레시 토큰",
-      "microsoftCookies": "마이크로소프트 쿠키스 (Microsoft Cookies)",
-      "microsoftAccessToken": "마이크로소프트 엑세스 토큰 (Microsoft Access Token)",
-      "theAltening": "TheAltening 토큰",
-      "altProviders": "대체 공급자",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "{{type}} 계정 가져오기",
-        "description": "여기에 계정을 한 줄에 하나씩 붙여넣으세요."
+        "title": "{{type}} 계정 가져오기"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "계정 삭제 중...",
-      "success": "{{count}}개의 계정을 삭제했습니다",
-      "error": "계정 삭제에 실패했습니다."
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "종류",
-      "profileId": "프로필 ID",
+      "profileId": "",
       "lastKnownName": "사용자 이름",
       "searchProfileIds": "프로필 ID 검색...",
       "searchLastKnownNames": "마지막으로 확인된 이름 검색...",
@@ -280,10 +312,10 @@
     },
     "removeSelectedTooltip": "선택한 계정 제거",
     "contextMenu": {
-      "openConfig": "설정 열기",
-      "openMetadata": "메타데이터 열기",
-      "copyProfileId": "프로필 ID 복사",
-      "copyUsername": "사용자명 복사"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "{{name}} 설정하기",
@@ -302,132 +334,122 @@
       "selectPage": "설정 페이지 선택",
       "noSearchResults": "이 검색어와 일치하는 설정이 없습니다.",
       "matchesInheritedValue": "상속된 값과 일치함",
-      "instanceValue": "인스턴스 값",
+      "instanceValue": "",
       "defaultValue": "기본값",
       "resetOverride": "재정의 초기화",
       "value": {
-        "notSet": "설정되지 않음",
-        "on": "켜짐",
-        "off": "꺼짐",
-        "empty": "비어 있음",
-        "entries_other": "{{count}}개 항목",
-        "range": "범위"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_other": "{{count}}개 항목"
       },
       "source": {
-        "bot": "봇 전용 값",
-        "instance": "인스턴스에서 상속됨",
-        "default": "기본값 사용 중"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "디바이스 코드 인증",
+      "title": "",
       "description": "디바이스 코드 플로우를 시작하기 전에 옵션을 구성하세요.",
-      "start": "인증 시작"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "디바이스 코드 인증",
+      "title": "",
       "description": "Microsoft 계정으로 로그인하여 연결하세요.",
-      "openInBrowser": "브라우저에서 열기",
+      "openInBrowser": "",
       "orManually": "또는 코드를 수동으로 입력",
       "codeLabel": "귀하의 코드",
       "urlLabel": "이동 주소"
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Ravealts를 통해 계정 구매",
       "description": "Ravealts API 키를 사용하여 마인크래프트 계정을 구매하세요.",
-      "apiKeyLabel": "API 키",
       "apiKeyPlaceholder": "Ravealts API 키를 입력하세요",
-      "validate": "검증",
-      "validating": "검증 중...",
-      "keyValid": "키가 검증되었습니다",
-      "keyInvalid": "잘못된 API 키입니다",
-      "credits": "크레딧: {{credits}}",
-      "stockTitle": "사용 가능한 재고",
       "noStock": "재고에 계정이 없습니다",
-      "accountType": "계정 유형",
-      "amount": "수량 (1-10)",
-      "purchase": "구매 및 가져오기",
-      "purchasing": "구매 중...",
-      "purchaseSuccess": "{{count}}개의 계정을 구매하여 가져오는 중...",
-      "purchaseError": "구매 실패: {{message}}",
+      "accountType": "",
       "networkError": "Ravealts API에 연결하지 못했습니다.",
       "outOfStock": "선택한 유형이 재고에 없습니다",
       "insufficientBalance": "크레딧이 부족합니다",
       "rateLimited": "이용 제한됨, 나중에 다시 시도하세요"
     },
     "metadata": {
-      "openButton": "메타데이터 편집하기",
+      "openButton": "",
       "title": "메타데이터: {{name}}",
       "description": "이 계정의 영구 메타데이터 항목을 관리합니다. 각 항목은 네임스페이스, 키, 그리고 JSON 값으로 구성되어 있습니다.",
       "namespacePlaceholder": "네임스페이스",
       "keyPlaceholder": "키",
       "valuePlaceholder": "값 (JSON)",
       "noEntries": "메타데이터 항목이 없습니다. 위에서 하나 추가하세요.",
-      "loadError": "메타데이터를 불러오지 못했습니다",
+      "loadError": "",
       "loadErrorDescription": "",
       "retryLoad": "다시 시도하기",
       "addSuccess": "항목이 추가되었습니다",
-      "addError": "항목 추가에 실패하였습니다",
-      "updateError": "항목 수정에 실패하였습니다",
+      "addError": "",
+      "updateError": "",
       "deleteSuccess": "항목이 삭제되었습니다.",
-      "deleteError": "항목 삭제에 실패했습니다.",
+      "deleteError": "",
       "duplicateError": "이 네임스페이스와 키를 가진 항목이 이미 존재합니다.",
       "invalidJson": "잘못된 JSON 값",
       "namespaceLabel": "네임스페이스",
       "keyLabel": "키",
       "valueLabel": "값",
-      "addEntryLegend": "메타데이터 항목 추가",
-      "addEntryButton": "항목 추가",
-      "entryLegend": "메타데이터 항목",
-      "removeEntryButton": "삭제"
+      "addEntryLegend": "",
+      "addEntryButton": "",
+      "entryLegend": "",
+      "removeEntryButton": "제거"
     },
     "removeDialog": {
-      "title_other": "계정 {{count}}개를 삭제할까요?",
-      "description": "선택한 계정, 저장된 자격 증명, 해당 봇을 이 인스턴스에서 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
-      "confirm": "계정 삭제"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "인스턴스 메타데이터",
-    "description": "이 인스턴스에 대한 영구 메타데이터 항목을 관리합니다. 각 항목에는 네임스페이스, 키, 그리고 JSON 값이 있습니다.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "네임스페이스",
     "keyPlaceholder": "키",
     "valuePlaceholder": "값 (JSON)",
+    "valueRequired": "",
     "noEntries": "메타데이터 항목이 없습니다. 위에서 하나 추가하세요.",
-    "loadError": "메타데이터를 불러오지 못했습니다",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "다시 시도하기",
     "addSuccess": "항목이 추가되었습니다",
-    "addError": "항목 추가에 실패하였습니다",
-    "updateError": "항목 수정에 실패하였습니다",
+    "addError": "",
+    "updateError": "",
     "deleteSuccess": "항목이 삭제되었습니다.",
-    "deleteError": "항목 삭제에 실패했습니다.",
+    "deleteError": "",
     "duplicateError": "이 네임스페이스와 키를 가진 항목이 이미 존재합니다.",
     "invalidJson": "잘못된 JSON 값",
     "namespaceLabel": "네임스페이스",
     "keyLabel": "키",
     "valueLabel": "값",
-    "addEntryLegend": "메타데이터 항목 추가",
-    "addEntryButton": "항목 추가",
-    "entryLegend": "메타데이터 항목",
-    "removeEntryButton": "삭제"
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
+    "removeEntryButton": "제거"
   },
   "bots": {
     "searchPlaceholder": "봇 검색...",
-    "onlineCount": "연결 {{online}} / 전체 {{total}}",
-    "noBots": "설정된 봇이 없습니다. 계정 설정 페이지에서 계정을 추가하세요.",
+    "onlineCount": "",
+    "noBots": "",
     "noBotsFound": "검색 결과에 맞는 봇이 없습니다.",
     "loadingMore": "더 불러오는 중...",
     "showingCount": "{{total}}개 중 {{loaded}}개 표시 중",
     "allLoaded": "모든 {{total}}개의 봇이 불러와졌습니다",
     "online": "연결됨",
-    "offline": "연결 끊김",
-    "notJoined": "미참가",
+    "offline": "",
+    "notJoined": "",
     "connectionPhase": {
       "connecting": "연결 중",
-      "connected": "로그인 중",
+      "connected": "",
       "spawned": "연결됨",
       "died": "사망",
-      "disconnected": "연결 끊김",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -439,12 +461,13 @@
       "waiting": "대기 중",
       "stopped": "중지됨"
     },
-    "backToBots": "봇 목록으로 돌아가기",
+    "backToBots": "",
+    "demoControls": "",
     "tabs": {
-      "overview": "봇 뷰",
+      "overview": "",
       "inventory": "인벤토리",
-      "controls": "컨트롤",
-      "terminal": "터미널"
+      "controls": "",
+      "terminal": ""
     },
     "terminalPanel": {},
     "connectionPanel": {
@@ -453,27 +476,38 @@
       "unavailable": "사용 불가"
     },
     "positionPanel": {
-      "title": "위치 및 회전",
+      "title": "",
       "position": "위치",
       "rotation": "회전",
-      "offline": "봇의 연결이 끊겼습니다. 위치 데이터는 봇이 연결되어 있을 때만 볼 수 있습니다."
+      "offline": ""
     },
     "chatPanel": {
-      "title": "채팅 메시지"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "commandPanel": {
-      "title": "봇 명령어",
+      "title": "",
       "placeholder": "이 봇에 명령어 전송..."
     },
     "povPanel": {
-      "title": "봇 시점",
+      "title": "",
       "capture": "캡처",
       "refresh": "새로고침",
       "auto": "자동",
       "startAutoRefresh": "자동 새로고침 시작 (1초 간격)",
       "stopAutoRefresh": "자동 새로고침 중지",
       "clickToCapture": "캡처를 클릭하면 봇의 시점을 렌더링합니다",
-      "offline": "봇이 오프라인입니다. 시점 렌더링은 봇이 연결되어 있을 때만 사용할 수 있습니다."
+      "offline": ""
     },
     "statsPanel": {
       "health": "체력",
@@ -482,44 +516,48 @@
       "experience": "경험치",
       "level": "레벨",
       "toNextLevel": "다음 레벨까지",
-      "gameMode": "게임 모드",
+      "gameMode": "",
       "survival": "서바이벌",
       "creative": "크리에이티브",
       "adventure": "어드벤처",
       "spectator": "관전자",
       "unknown": "알 수 없음",
-      "offline": "봇의 연결이 끊겼습니다. 통계는 봇이 연결되어 있을 때만 볼 수 있습니다."
+      "offline": ""
     },
     "inventoryPanel": {
       "title": "인벤토리",
       "actionRejected": "",
       "hotbar": "빠른바",
-      "main": "메인 인벤토리",
+      "main": "",
       "items": "아이템",
       "carrying": "소지 중",
-      "dropOne": "하나 버리기",
-      "dropAll": "모두 버리기",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "닫기",
-      "clickHint": "좌클릭: 줍기/두기 | 우클릭: 절반/하나 | Shift+클릭: 빠른 이동 | 휠 클릭: 단축바 슬롯 선택",
-      "offline": "봇의 연결이 끊겼습니다. 인벤토리는 봇이 연결되어 있을 때만 사용할 수 있습니다.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "레시피",
         "enchantments": "인챈트",
         "patterns": "패턴",
         "trades": "거래",
-        "beaconEffects": "비콘 효과",
-        "crafterSlots": "슬롯 컨트롤",
-        "lecternControls": "책 컨트롤",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "동작",
-        "creativeTabs": "크리에이티브 탭"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "텍스트 입력",
-        "anvilRename": "아이템 이름 변경",
-        "creativeSearch": "아이템 검색"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "책 내용",
+        "title": "",
         "emptyPage": "(빈 페이지)",
         "previousPage": "",
         "nextPage": "",
@@ -527,105 +565,161 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "아이템 파괴",
+      "destroyItem": "",
       "clickHints": {
-        "left": "왼쪽 클릭: 집기 또는 놓기",
-        "right": "오른쪽 클릭: 절반 집기 또는 하나 놓기",
-        "shift": "Shift+클릭: 빠른 이동",
-        "middle": "가운데 클릭: 활성 슬롯으로 선택"
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
       }
     },
     "visualPanel": {
-      "title": "방향 및 월드",
-      "compass": "보고 있는 방향",
-      "lookDirection": "시선 각도",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "위쪽 보기",
       "lookingDown": "아래쪽 보기",
       "lookingStraight": "정면 보기",
-      "worldInfo": "월드 정보",
+      "worldInfo": "",
       "dimension": "차원",
       "biome": "생물 군계",
-      "offline": "봇의 연결이 끊겼습니다. 시각 데이터는 봇이 연결되어 있을 때만 사용할 수 있습니다."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "봇 액션",
-      "leftClick": "좌클릭",
-      "rightClick": "우클릭",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "개체 공격 또는 블록 파괴",
       "rightClickDescription": "아이템 사용 또는 상호작용",
-      "offline": "봇의 연결이 끊겼습니다. 봇이 연결되어 있을 때만 액션을 사용할 수 있습니다."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "이동 조작",
+      "title": "",
       "movement": "이동 (WASD)",
-      "forward": "전진 (W)",
-      "backward": "후진 (S)",
-      "left": "왼쪽 이동 (A)",
-      "right": "오른쪽 이동 (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "점프",
       "sneak": "웅크리기",
       "sprint": "달리기",
       "stop": "중지",
-      "rotation": "시선 방향",
-      "lookUp": "위 보기",
-      "lookDown": "아래 보기",
-      "lookLeft": "왼쪽 보기",
-      "lookRight": "오른쪽 보기",
-      "offline": "봇의 연결이 끊겼습니다. 봇이 연결되어 있을 때만 이동 조작을 사용할 수 있습니다."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": ""
     },
     "dialogPanel": {
-      "title": "서버 대화상자",
+      "title": "",
       "noDialog": "현재 표시 중인 서버 대화상자가 없습니다.",
       "dialogType": "종류",
       "dialogId": "대화상자 ID",
       "notice": "공지",
       "confirmation": "확인",
-      "multiAction": "다중 액션",
-      "serverLinks": "서버 링크",
-      "dialogList": "대화상자 목록",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "알 수 없음",
       "dismiss": "닫기",
       "submit": "제출",
-      "offline": "봇의 연결이 끊겼습니다. 봇이 연결되어 있을 때만 대화상자를 사용할 수 있습니다."
+      "offline": ""
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "전체",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "연결됨",
+      "starting": "시작 중",
+      "retrying": "재시도 중",
+      "failed": "실패함",
+      "stopping": "중지 중",
+      "stopped": "중지됨"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "봇 뷰",
-      "touchControlling": "이 봇을 조종하고 있습니다. 멈추려면 \"Release control\"을(를) 사용하세요.",
-      "popupBlocked": "봇 뷰 창을 분리하려면 팝업을 허용하세요.",
-      "windowTitle": "SoulFire 봇 뷰",
-      "fullscreenUnavailable": "이 창에서는 전체 화면을 사용할 수 없습니다.",
-      "textInputLabel": "Minecraft 텍스트 입력",
-      "videoLabel": "실시간 봇 뷰",
-      "touchMove": "이동",
-      "audioError": "오디오를 시작하지 못했습니다.",
-      "startError": "봇 뷰를 시작하지 못했습니다.",
-      "releaseHint": "{{shortcut}}을(를) 누르면 키보드와 마우스가 해제됩니다.",
-      "captureHint": "뷰를 클릭하고 키보드와 마우스 캡처를 허용하세요.",
-      "audioWaiting": "봇 뷰 연결을 기다리는 중입니다.",
-      "audioWatchFirst": "오디오를 사용하려면 봇을 시청하세요.",
-      "audioUpdateServer": "봇 뷰 오디오를 사용하려면 서버를 업데이트하세요.",
-      "muteAudio": "오디오 음소거",
-      "unmuteAudio": "오디오 음소거 해제",
-      "audioStarting": "오디오 시작 중...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "음소거",
       "unmute": "음소거 해제",
-      "audio": "오디오",
-      "audioUnavailable": "오디오를 사용할 수 없음",
-      "volume": "봇 뷰 음량",
-      "reconnect": "다시 연결",
-      "showWindow": "봇 뷰 창 표시",
-      "attachWindow": "봇 뷰 창 다시 붙이기",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "점프",
         "sneak": "웅크리기",
-        "attack": "공격",
-        "use": "사용",
+        "attack": "",
+        "use": "",
         "inventory": "인벤토리",
-        "keyboard": "키보드",
-        "closeMenu": "메뉴 닫기"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "봇 뷰에는 연결된 SoulFire 서버가 필요합니다."
+      "needsServer": "",
+      "connectTimeout": "",
+      "inputUpdateServer": "",
+      "decoderUnsupported": "",
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -640,12 +734,12 @@
       "tick": "틱"
     },
     "botsOnline": {
-      "title": "연결된 봇",
+      "title": "",
       "online": "연결됨",
       "total": "전체"
     },
     "packets": {
-      "title": "패킷 / 초",
+      "title": "",
       "sent": "전송/초",
       "received": "수신/초"
     },
@@ -655,27 +749,27 @@
       "download": "다운로드"
     },
     "tick": {
-      "title": "틱 지속 시간",
+      "title": "",
       "avg": "평균 (ms)",
       "max": "최대 (ms)"
     },
     "healthFood": {
-      "title": "체력 / 음식",
-      "health": "평균 체력",
-      "food": "평균 음식"
+      "title": "",
+      "health": "",
+      "food": ""
     },
     "chunksEntities": {
-      "title": "청크 / 엔터티",
+      "title": "",
       "chunks": "청크",
       "entities": "엔터티"
     },
     "connections": {
-      "title": "연결 이벤트",
+      "title": "",
       "connections": "연결",
       "disconnections": "연결 해제"
     },
     "healthDistribution": {
-      "title": "체력 분포",
+      "title": "",
       "bots": "봇들"
     },
     "dimensions": {
@@ -683,59 +777,73 @@
       "bots": "봇들"
     },
     "gameModes": {
-      "title": "게임 모드",
+      "title": "",
       "bots": "봇들"
     },
     "positions": {
-      "title": "봇 위치 (XZ)",
+      "title": "",
       "bot": "봇"
     }
   },
   "scripts": {
-    "title": "비주얼 스크립트",
-    "description": "비주얼 노드 기반 에디터로 자동화 스크립트를 만들 수 있습니다.",
-    "experimentalTitle": "실험적 기능",
+    "title": "",
+    "description": "",
+    "experimentalTitle": "",
     "experimentalWarning": "이 기능은 실험적입니다. 향후 업데이트로 인해 기존 스크립트가 동작하지 않을 수 있습니다. 주의해서 사용하세요.",
-    "createScript": "스크립트 생성",
-    "createScriptTitle": "새 스크립트 만들기",
-    "createScriptDescription": "이 인스턴스를 위한 새로운 비주얼 스크립트를 만드세요. 스크립트는 봇의 동작을 자동화하고 이벤트에 대응할 수 있습니다.",
-    "scriptName": "스크립트 이름",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "스크립트 이름을 입력하세요...",
     "scriptDescription": "설명",
     "scriptDescriptionPlaceholder": "이 스크립트가 하는 일을 설명하세요...",
     "create": "생성",
-    "createSuccess": "스크립트가 성공적으로 생성되었습니다.",
-    "createError": "스크립트 생성에 실패했습니다.",
-    "noScripts": "아직 스크립트가 없습니다.",
-    "noScriptsDescription": "비주얼 노드 기반 에디터로 첫 번째 스크립트를 만들어 봇의 동작을 자동화하세요.",
-    "createFirstScript": "스크립트 생성",
-    "running": "실행 중",
-    "paused": "일시 정지됨",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "노드",
     "noDescription": "설명 없음",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "전체",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "이름"
+    },
+    "noMatches": "",
     "edit": "편집",
-    "pause": "일시 정지",
-    "pauseSuccess": "스크립트가 일시 중지됨",
-    "pauseError": "스크립트 일시 중지에 실패함",
-    "resume": "다시 시작",
-    "resumeSuccess": "스크립트가 다시 시작됨",
-    "resumeError": "스크립트 재개에 실패함",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "삭제",
-    "deleteSuccess": "스크립트가 성공적으로 삭제되었습니다.",
-    "deleteError": "스크립트 삭제에 실패했습니다.",
-    "saveSuccess": "스크립트가 성공적으로 저장되었습니다.",
-    "saveError": "스크립트 저장에 실패했습니다.",
-    "activateSuccess": "스크립트가 활성화되었습니다",
-    "activateError": "스크립트 활성화에 실패했습니다",
-    "deactivateSuccess": "스크립트가 비활성화되었습니다",
-    "untitledScript": "제목 없음 스크립트",
-    "saveFirstBeforeActivating": "활성화하기 전에 먼저 스크립트를 저장하세요",
-    "activating": "스크립트 활성화 중...",
-    "activated": "스크립트가 활성화되었습니다",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "스크립트가 완료되었습니다.",
-    "executionCompletedSuccess": "스크립트가 성공적으로 완료되었습니다.",
-    "deactivated": "스크립트가 비활성화되었습니다",
-    "deactivatedByUser": "사용자에 의해 스크립트가 비활성화되었습니다.",
+    "executionCompletedSuccess": "스크립트가 완료되었습니다.",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "스크립트 실행에 실패했습니다.",
     "executionError": "실행 오류: {{error}}",
     "monitoringError": "",
@@ -744,23 +852,23 @@
     "nodeCompleted": "노드 완료됨: {{nodeId}}",
     "nodeError": "노드 오류: {{error}}",
     "contextMenu": {
-      "edit": "스크립트 편집",
-      "pause": "일시 정지",
-      "resume": "다시 시작",
-      "delete": "스크립트 삭제",
-      "copyScriptName": "스크립트 이름 복사하기",
-      "copyScriptId": "스크립트 ID 복사하기"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "스크립트 목록으로 돌아가기",
+        "backToScripts": "",
         "save": "저장",
-        "saveTooltip": "스크립트 저장하기",
-        "resume": "다시 시작",
-        "resumeTooltip": "스크립트 실행 재개",
-        "pause": "일시 정지",
-        "pauseTooltip": "스크립트 실행 일시 중지하기",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "저장되지 않음",
         "unsavedChanges": "저장되지 않은 변경 사항",
         "clearCanvas": "캔버스 지우기",
@@ -769,45 +877,57 @@
         "fit": "맞춤",
         "export": "스크립트 내보내기",
         "import": "스크립트 가져오기",
-        "exportSuccess": "스크립트가 성공적으로 내보내졌습니다",
-        "importSuccess": "스크립트가 성공적으로 가져와졌습니다",
-        "importError": "스크립트 가져오기에 실패했습니다"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": ""
       },
       "palette": {
-        "title": "노드 팔레트",
+        "title": "",
         "search": "노드 검색...",
-        "noResults": "검색과 일치하는 노드가 없습니다",
-        "noResultsDescription": "다른 검색어를 쓰거나 현재 필터를 지우세요."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "실행 로그",
+        "title": "",
         "clearTitle": "로그 지우기",
-        "noLogs": "아직 로그가 없습니다. 스크립트를 실행하면 로그가 표시됩니다.",
+        "noLogs": "",
         "entries_other": "{{count}}개 항목"
       },
       "contextMenu": {
         "duplicate": "복제",
         "rename": "이름 변경",
-        "disconnectAll": "모두 연결 해제",
+        "disconnectAll": "",
         "collapse": "접기",
         "expand": "펼치기",
         "mute": "음소거",
         "unmute": "음소거 해제",
-        "showPreview": "미리보기 표시",
-        "hidePreview": "미리보기 숨기기",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "삭제"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "노드 확장",
         "collapse": "노드 접기",
-        "avgTime": "평균 실행 시간: {{avg}} ms(최근 {{count}}회)",
-        "preview": "미리보기"
+        "avgTime": "",
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": ""
       },
       "debug": {
         "copyValue": "현재 값 복사",
         "clearHistory": "기록 지우기",
-        "current": "현재({{time}}):",
-        "noValue": "아직 받은 값이 없습니다"
+        "current": "",
+        "noValue": ""
       },
       "edge": {
         "direction": "엣지 방향"
@@ -820,30 +940,31 @@
       },
       "group": {
         "returnToRoot": "루트로 돌아가기 (Tab)",
-        "root": "루트",
-        "exitHint": "나가려면 <key>Tab</key> 키를 누르세요",
-        "editHint": "두 번 클릭해 편집",
-        "noInputs": "정의된 입력 없음",
-        "noOutputs": "정의된 출력 없음"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "빠른 노드 추가 메뉴",
         "searchPlaceholder": "노드 검색...",
-        "noResults": "노드를 찾을 수 없음",
-        "noResultsDescription": "다른 검색어를 사용해 보세요.",
-        "navigate": "이동",
-        "select": "Enter로 선택",
-        "close": "Esc로 닫기"
+        "noResults": "",
+        "noResultsDescription": "다른 검색어를 시도해 보세요.",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "변경 사항 검토",
         "title": "저장되지 않은 변경 사항",
-        "description": "마지막 저장 이후의 변경 사항입니다.",
-        "nodesAdded_other": "노드 {{count}}개 추가됨",
-        "nodesRemoved_other": "노드 {{count}}개 삭제됨",
-        "nodesModified_other": "노드 {{count}}개 수정됨",
-        "edgesAdded_other": "연결 {{count}}개 추가됨",
-        "edgesRemoved_other": "연결 {{count}}개 삭제됨"
+        "description": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_other": "",
+        "nodesModified_other": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -856,54 +977,619 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "드라이 런",
-        "title": "드라이 런 스크립트",
-        "description": "선택한 트리거에서 스크립트를 모의 입력값과 함께 실행합니다.",
-        "triggerNode": "트리거 노드",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "트리거 선택...",
-        "triggerDescription": "모의 입력값으로 실행할 트리거 노드를 선택하세요.",
-        "mockInputs": "모의 입력값",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} 값",
-        "start": "드라이 런 시작",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "스크립트 할당량",
-        "title": "스크립트 할당량",
+        "tooltip": "",
+        "title": "",
         "description": "이 스크립트의 리소스 제한을 설정합니다. 비워두면 서버 기본값이 사용됩니다.",
-        "maxExecutionCount": "최대 실행 횟수",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "트리거 호출마다 최대 노드 실행 횟수",
         "maxExecutionTime": "최대 실행 시간 (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "트리거 실행당 최대 벽시계 시간",
-        "maxConcurrentTriggers": "최대 동시 트리거 수",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "최대 동시 트리거 호출 수",
-        "maxStateStoreEntries": "최대 상태 저장소 항목 수",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "무제한",
         "maxStateStoreEntriesDescription": "스크립트 상태 저장소의 최대 항목 수",
-        "disableTimeouts": "타임아웃 비활성화",
+        "disableTimeouts": "",
         "disableTimeoutsDescription": "노드별 및 데이터 엣지 타임아웃을 비활성화합니다.",
-        "save": "할당량 저장",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "{{label}} 순서 변경",
-        "empty": "들어오는 값 없음",
-        "title": "다중 입력: 여러 연결을 받습니다",
-        "connectTo": "{{label}}에 값을 연결하세요"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "스크립트를 삭제할까요?",
-      "description": "\"{{name}}\"을(를) 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
-      "descriptionUnnamed": "스크립트를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "실행 통계: 노드 {{executed}}/{{max}}개 실행됨"
+    "executionStats": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "동작",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "연결",
+    "back": "뒤로",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "전체",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "연결",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "전체",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "없음",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_other": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "연결됨",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": "",
+    "restartRequested_other": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "선택 사항",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "모든 설정 열기",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "계정",
+      "reviewProxies": "프록시",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "action_other": "{{count}}개의 봇 시작",
+      "countLimit_other": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

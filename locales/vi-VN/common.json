@@ -4,16 +4,45 @@
   "cancel": "Hủy",
   "save": "Lưu",
   "saving": "Đang lưu...",
+  "demoReadOnly": "",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Không tìm thấy địa chỉ máy chủ hoặc mã thông báo",
     "page": {
       "title": "Lỗi",
       "description": "Trang không tải được. Mở bảng điều khiển để biết thêm thông tin.",
-      "logOut": "Đăng xuất",
+      "logOut": "",
       "reloadPage": "Tải lại trang",
-      "showDetails": "Hiển thị chi tiết"
+      "showDetails": "Hiển thị chi tiết",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "Lỗi"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Kết nối đến máy chủ SoulFire thất bại."
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,7 +53,7 @@
     "page": {
       "title": "Không tìm thấy",
       "description": "Không có trang nào tại địa chỉ này",
-      "logOut": "Đăng xuất",
+      "logOut": "",
       "reloadPage": "Tải lại trang"
     }
   },
@@ -38,11 +67,11 @@
       "type": "Loại",
       "value": "Giá trị",
       "fields": {
-        "serverVersion": "Phiên bản máy chủ",
-        "serverCommit": "Commit máy chủ",
-        "serverBranch": "Nhánh máy chủ",
-        "minecraftVersion": "Phiên bản Minecraft",
-        "operatingSystem": "Hệ điều hành",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "Nền tảng",
         "locale": "Ngôn ngữ",
         "architecture": "Kiến trúc",
@@ -54,41 +83,44 @@
     "support": {
       "title": "Ủng hộ SoulFire",
       "description": "SoulFire là phần mềm miễn phí và mã nguồn mở, được xây dựng với niềm đam mê bởi cộng đồng.",
-      "body": "Nếu SoulFire đã hữu ích với bạn, xin hãy cân nhắc ủng hộ dự án. Sự đóng góp của bạn giúp chi trả chi phí máy chủ, tài trợ phát triển, và giữ cho SoulFire miễn phí cho tất cả mọi người.",
+      "body": "",
       "dismiss": "Để sau",
-      "action": "Ủng hộ SoulFire"
+      "action": "Ủng hộ SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Tạo một phiên bản mới",
-      "description": "Đặt cho phiên bản này một tên mà bạn dễ nhận ra, ví dụ như \"Bot Minecraft Của Tôi\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Tên thân thiện",
-          "placeholder": "Bot Minecraft của tôi",
-          "description": "Tên bạn muốn đặt cho phiên bản này."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Hủy",
-        "create": "Tạo"
+        "create": ""
       },
       "createToast": {
-        "loading": "Đang tạo phiên bản...",
-        "success": "Tạo phiên bản thành công",
-        "error": "Tạo phiên bản thất bại"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Nhân bản phiên bản này",
-      "description": "Tạo một phiên bản mới sử dụng hồ sơ từ \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Tên cho phiên bản được nhân bản."
+          "description": ""
         },
-        "duplicate": "Nhân bản"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Đang nhân bản phiên bản...",
-        "success": "Nhân bản phiên bản thành công",
-        "error": "Nhân bản phiên bản thất bại"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,9 +129,16 @@
         "fromUrl": "Từ URL",
         "firstClipboardItem": "Bộ nhớ tạm có chứa nhiều mục. SoulFire sẽ sử dụng mục đầu tiên.",
         "fromClipboard": "Từ bộ nhớ tạm",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
+          "label": "",
           "placeholder": "Nhập văn bản tại đây...",
-          "submit": "Tải từ văn bản"
+          "submit": "Tải từ văn bản",
+          "empty": ""
         }
       },
       "url": {
@@ -113,24 +152,28 @@
         "submit": "Tải từ URL",
         "toast": {
           "loading": "Đang tải dữ liệu...",
-          "success": "Dữ liệu đã được tải",
-          "error": "Không tải được dữ liệu",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "Xóa phiên bản?",
-      "description": "Thao tác này xóa vĩnh viễn \"{{name}}\" và dữ liệu của nó. Bạn không thể hoàn tác.",
-      "descriptionUnnamed": "Thao tác này xóa vĩnh viễn phiên bản này và dữ liệu của nó. Bạn không thể hoàn tác."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Nhập lệnh (gõ 'help' để xem danh sách)",
-    "emptySuggestions": "Nhập để yêu cầu gợi ý hoặc nhấn Tab.",
     "noSuggestions": "Không có gợi ý nào.",
-    "emptySuggestionsPrefix": "Nhập để yêu cầu gợi ý hoặc nhấn"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "Bắt đầu",
@@ -141,25 +184,27 @@
     "startCount": "Số lượng bot cần khởi động",
     "startToast": {
       "loading": "Đang khởi động bot...",
-      "success": "Trạng thái bot đã được cập nhật",
-      "error": "Không thể khởi động bot"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Đang khởi động lại bot...",
       "success": "Các bot đang kết nối lại",
-      "error": "Không thể khởi động lại bot"
+      "error": ""
     },
     "stopToast": {
       "loading": "Đang dừng bot...",
       "success": "Các bot đang dừng lại",
-      "error": "Không thể dừng bot"
+      "error": ""
     },
-    "permissionDenied": "Bạn không có quyền để khởi động hoặc dừng bot trong phiên bản này.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Máy chủ không báo cáo quyền kiểm soát bot. Hãy kiểm tra rằng phiên bản máy chủ và phiên bản client của bạn trùng khớp nhau.",
     "startBots": "Khởi động bot",
-    "moreActions": "Thêm hành động bot",
-    "generateFirst": "Tạo tài khoản để bắt đầu bot đầu tiên của bạn.",
-    "startCountHelp": "Khởi động thêm bot. Các bot đang chạy sẽ vẫn kết nối.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "Khởi động tất cả {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -168,7 +213,7 @@
     "stopCount_other": "Dừng {{count}} bot",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} đã kết nối · {{desired}} được đặt để chạy · {{total}} tổng",
+  "botFleetSummary": "",
   "icon": {
     "invalidName": "Tên biểu tượng không hợp lệ: {{name}}"
   },
@@ -220,6 +265,8 @@
     "addSorting": "Thêm sắp xếp để sắp xếp các dòng của bạn.",
     "addSort": "Thêm sắp xếp",
     "resetSorting": "Đặt lại sắp xếp",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "Tăng",
       "desc": "Giảm",
@@ -250,55 +297,118 @@
       "asc": "Tăng",
       "desc": "Giảm"
     },
-    "openFilterMenu": "Mở menu bộ lọc",
-    "filterOperator": "Toán tử lọc",
-    "filterValue": "Giá trị lọc",
-    "sortDirection": "Hướng sắp xếp",
-    "selectJoinOperator": "Chọn toán tử kết hợp",
-    "joinOperator": "Toán tử kết hợp",
-    "escapeKey": "Escape",
-    "selectDate": "Chọn ngày",
-    "selectDateRange": "Chọn khoảng ngày",
-    "clearFilter": "Xóa bộ lọc {{title}}",
-    "clearFilters": "Xóa bộ lọc",
-    "clear": "Xóa",
-    "from": "Từ",
-    "to": "Đến",
-    "sortDirectionFor": "Hướng sắp xếp cho {{column}}",
-    "minValue": "Giá trị tối thiểu của {{label}}",
-    "maxValue": "Giá trị tối đa của {{label}}"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": ""
   },
   "pluginCard": {
     "version": "Phiên bản: {{version}}",
     "author": "Tác giả: {{author}}",
     "license": "Giấy phép: {{license}}",
-    "website": "Website"
+    "website": "Website",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "Không thể lưu {{name}}",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "namespacesNotFound": "Không tìm thấy không gian cài đặt",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "Không thể lưu {{name}}",
+      "saveError": "",
       "placeholder": "Thêm mục mới...",
       "add": "Thêm",
-      "remove": "Xóa"
+      "remove": "Xóa",
+      "removeAll": "",
+      "undo": "",
+      "count_other": "{{count}} mục ghi",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "Tìm kiếm giá trị..."
+      "searchPlaceholder": "Tìm kiếm giá trị...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
       "title": "Số không hợp lệ",
       "description": "Giá trị phải nằm trong khoảng từ {{min}} đến {{max}}"
     },
-    "minMaxLegend": "Cài đặt tối thiểu và tối đa"
+    "saving": "Đang lưu...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Sao chép vào bộ nhớ tạm",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Chưa có nhật ký nào. Hãy chạy một lệnh để tạo đầu ra nhật ký.",
+    "noLogsReadOnly": "",
+    "jumpToLatest": "",
     "demo-1": "Chào mừng đến với chế độ dùng thử! 🧪",
-    "demo-2": "Đây là một phiên bản chỉ đọc của SoulFire",
+    "demo-2": "",
     "demo-3": "Hãy kiểm tra tất cả menu và tính năng trước khi quyết định cài đặt SoulFire :D",
     "demo-4": "Bạn có thể tham gia máy chủ Discord của chúng tôi nếu muốn liên hệ: https://soulfiremc.com/discord"
   },
@@ -311,8 +421,16 @@
   "uiSheet": {
     "close": "Đóng"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "Bật/Tắt thanh bên"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "Thu nhỏ",
@@ -338,79 +456,199 @@
     "connectToast": {
       "loading": "Đang kết nối đến {{device}}...",
       "success": "Đã kết nối với {{device}}",
-      "error": "Kết nối đến {{device}} thất bại"
+      "error": ""
     },
     "noDevices": "Không tìm thấy thiết bị nào",
     "broadcastToast": {
       "loading": "Đang truyền tin nhắn...",
-      "success": "Đã truyền tin nhắn",
-      "error": "Truyền tin nhắn thất bại"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Thử lại",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_other": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Tất cả",
+      "projects": "",
+      "bots": "Bot",
+      "scripts": "Scripts",
+      "settings": "Cài đặt",
+      "actions": "Hành động"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Khởi động bot",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Hủy",
+      "unavailable": "",
+      "start_other": "",
+      "stop_other": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "Đang bật script...",
-        "success": "Đã bật script",
-        "error": "Không thể bật script. Hãy thử lại."
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "Đang tắt script...",
-        "success": "Đã tắt script",
-        "error": "Không thể tắt script. Hãy thử lại."
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "Bật script {{name}}",
-      "deactivateScript": "Tắt script {{name}}"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_other": "Khởi động {{count}} bot",
+      "stopBots_other": "Dừng {{count}} bot",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "Bật",
-      "paused": "Tắt"
-    }
+      "connected": "Đã kết nối",
+      "starting": "Đang khởi động",
+      "retrying": "Đang thử lại",
+      "failed": "Thất bại",
+      "stopping": "Đang dừng",
+      "stopped": "Đã dừng",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Đóng",
+      "pin": "",
+      "back": "Quay lại"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Cài đặt",
+      "bots": "Bot",
+      "scripts": "Scripts",
+      "admin": "",
+      "actions": "Hành động",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "Đọc tài liệu hướng dẫn",
-    "backToDashboard": "Quay lại danh sách phiên bản",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "Đang xóa phiên bản...",
-      "success": "Đã xóa phiên bản",
-      "error": "Xóa phiên bản thất bại"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Các phiên bản",
-    "createInstance": "Tạo phiên bản",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Đang tải hồ sơ...",
-      "success": "Đã tải hồ sơ",
-      "error": "Tải hồ sơ thất bại"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Tải hồ sơ",
+    "loadProfile": "",
     "loadFromFile": "Tải từ tệp",
-    "profileSaved": "Đã lưu hồ sơ",
-    "saveProfile": "Lưu hồ sơ",
-    "deleteInstance": "Xóa phiên bản",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Bảng điều khiển",
     "overview": "Tổng quan",
     "terminal": "Terminal",
     "bots": "Bot",
-    "audit-log": "Nhật ký kiểm toán",
+    "audit-log": "",
     "settingsGroup": "Cài đặt",
     "extensionsGroup": "Tiện ích mở rộng",
-    "botSettings": "Cài đặt Bot",
+    "botSettings": "",
     "accountSettings": "Tài khoản",
-    "metaSettings": "Cài đặt phiên bản",
+    "metaSettings": "",
     "proxySettings": "Proxy",
-    "aiSettings": "Cài đặt AI",
-    "pathfindingSettings": "Cài đặt tìm đường",
+    "aiSettings": "",
+    "pathfindingSettings": "",
     "discoverPlugins": "Plugins",
-    "instanceScripts": "Scripts"
+    "togglePluginSettings": "",
+    "instanceScripts": "Scripts",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Đọc tài liệu hướng dẫn",
     "userGroup": "Người dùng",
-    "instances": "Các phiên bản",
+    "instances": "",
     "access": "Quyền truy cập",
-    "createInstance": "Tạo phiên bản",
+    "createInstance": "",
     "settings": "Cài đặt",
     "adminGroup": "Quản trị viên",
     "adminOverview": "Tổng quan",
@@ -418,8 +656,8 @@
     "adminTerminal": "Terminal",
     "users": "Người dùng",
     "adminScripts": "Scripts",
-    "serverSettings": "Cài đặt máy chủ",
-    "devSettings": "Cài đặt nhà phát triển",
+    "serverSettings": "",
+    "devSettings": "",
     "theme": {
       "title": "Chủ đề",
       "system": "Hệ thống",
@@ -433,11 +671,11 @@
     "dataDir": "Thư mục dữ liệu",
     "supportSoulFire": "Ủng hộ SoulFire",
     "about": "Giới thiệu",
-    "logOut": "Đăng xuất",
+    "logOut": "",
     "logOutToast": {
-      "loading": "Đang đăng xuất...",
-      "success": "Đã đăng xuất",
-      "error": "Đăng xuất thất bại"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "exit": "Thoát",
     "stopImpersonating": "Dừng giả lập",
@@ -455,52 +693,54 @@
     "extensions": "Tiện ích mở rộng",
     "bots": "Bot"
   },
-  "noInstancesFound": "Không tìm thấy phiên bản nào",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Nhật ký",
-    "audit-log": "Nhật ký kiểm toán",
+    "audit-log": "",
     "bots": "Bot",
-    "botDetail": "Chi tiết Bot",
-    "instances": "Các phiên bản",
+    "botDetail": "",
+    "instances": "",
     "access": "Quyền truy cập",
     "settings": "Cài đặt",
     "proxySettings": "Proxy",
     "overview": "Tổng quan",
     "users": "Người dùng",
     "accountSettings": "Tài khoản",
-    "metaSettings": "Cài đặt phiên bản",
+    "metaSettings": "",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scripts",
     "instanceScripts": "Scripts"
   },
   "access": {
     "webdav": {
-      "title": "Truy cập WebDAV",
-      "description": "WebDAV cung cấp quyền truy cập vào các tệp phiên bản, script, và các tệp khác.",
-      "publicAddress": "Địa chỉ WebDAV công khai",
-      "personalToken": "Mã thông báo WebDAV cá nhân",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "Giữ bí mật token WebDAV cá nhân của bạn. Nó cấp quyền truy cập vào các tập tin của bạn. Sử dụng token này làm mật khẩu WebDAV. Bạn không cần tên người dùng. Nếu ứng dụng của bạn yêu cầu, nhập bất kỳ giá trị nào, ví dụ như 'soulfire'.",
       "addressDescription": "Sử dụng địa chỉ này để truy cập các tệp của bạn. Một số ứng dụng yêu cầu sử dụng dav:// hoặc davs:// thay cho http:// hoặc https://."
     },
     "api": {
-      "title": "Truy cập API",
-      "description": "Dùng API SoulFire để quản lý các phiên bản từ chương trình của riêng bạn.",
-      "publicAddress": "Địa chỉ API công khai",
-      "personalToken": "Mã thông báo API cá nhân",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "Giữ bí mật token API cá nhân của bạn. Nó cấp quyền truy cập vào API.",
       "addressDescription": "Sử dụng địa chỉ này để truy cập vào API."
     },
     "token": {
-      "generate": "Tạo mã thông báo",
-      "placeholder": "Chọn \"Tạo mã thông báo\" bên dưới",
+      "generate": "",
+      "placeholder": "",
       "generating": "Đang tạo mã thông báo...",
-      "success": "Tạo mã thông báo thành công",
-      "error": "Tạo mã thông báo thất bại",
-      "copy": "Sao chép mã thông báo"
+      "success": "",
+      "error": "",
+      "copy": ""
     },
     "address": {
-      "copy": "Sao chép địa chỉ"
+      "copy": ""
     },
     "documentation": "Tài liệu hướng dẫn",
     "howToConnect": "Cách kết nối"
@@ -508,22 +748,23 @@
   "uploadToMcLogs": "Tải lên mclo.gs",
   "mcLogsUpload": {
     "loading": "Đang tải lên mclo.gs...",
-    "success": "Đã tải lên mclo.gs! Xem tại đây: {{url}}",
-    "error": "Tải lên mclo.gs thất bại"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Tìm kiếm bằng Google",
   "copyToClipboard": "Sao chép vào bộ nhớ tạm",
   "clipboardCopy": {
     "loading": "Đang sao chép vào bộ nhớ tạm...",
     "success": "Đã sao chép \"{{content}}\" vào bộ nhớ tạm",
-    "error": "Sao chép vào bộ nhớ tạm thất bại"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "Không thể cập nhật tên phiên bản"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
@@ -539,9 +780,11 @@
       "uiName": "Email",
       "description": "Email của bạn được dùng để đăng nhập và nhận thông báo."
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "Không thể cập nhật {{field}}"
+    "saveError": ""
   },
   "auditLog": {
     "filterPlaceholder": "Lọc nhật ký kiểm toán...",
@@ -554,9 +797,10 @@
     "executedCommand": "Đã thực thi lệnh: {{data}}",
     "changedBotDesiredState": "Đã thay đổi trạng thái mong muốn của bot",
     "restartedBots": "Đã khởi động lại các bot",
+    "calledPluginRpc": "",
     "contextMenu": {
-      "copyUsername": "Sao chép Tên người dùng",
-      "copyCommand": "Sao chép Lệnh"
+      "copyUsername": "",
+      "copyCommand": ""
     }
   },
   "toggleTheme": "Chuyển đổi giao diện",
@@ -570,11 +814,11 @@
           "max": "Tên script phải có tối đa 32 ký tự",
           "regex": "Sử dụng chữ cái thường, số và dấu gạch ngang. Tên phải bắt đầu và kết thúc bằng chữ cái hoặc số.",
           "label": "Tên",
-          "placeholder": "Script của tôi",
+          "placeholder": "",
           "description": "Tên của script."
         },
         "elevatedPermissions": {
-          "label": "Quyền nâng cao",
+          "label": "",
           "description": "Script sẽ chạy với quyền nâng cao. Chỉ có quản trị viên mới bật được tùy chọn này."
         }
       }
@@ -597,56 +841,58 @@
     },
     "removeToast": {
       "loading": "Đang xóa scripts...",
-      "success": "Đã xóa scripts",
-      "error": "Không xóa được scripts"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "Đang thêm script...",
-      "success": "Đã thêm script",
-      "error": "Không thêm được script"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Đang cập nhật script...",
-      "success": "Đã cập nhật script",
-      "error": "Không cập nhật được script"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Đang khởi động lại script...",
-      "success": "Đã khởi động lại script",
-      "error": "Khởi động lại script thất bại"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Loại",
       "scriptName": "Tên",
       "language": "Ngôn ngữ",
-      "elevatedPermissions": "Quyền nâng cao",
+      "elevatedPermissions": "",
       "createdAt": "Đã tạo",
       "actions": "Hành động"
     },
     "globalScript": "Toàn cục",
-    "instanceScript": "Phiên bản"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Hành động",
     "instance": {
-      "goToInstance": "Đi đến Phiên bản",
-      "duplicateInstance": "Nhân bản phiên bản",
-      "copyInstanceId": "Sao chép ID Phiên bản",
-      "copyInstanceName": "Sao chép Tên Phiên bản",
-      "deleteInstance": "Xóa phiên bản"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Đi đến Bot",
-      "copyUsername": "Sao chép Tên người dùng",
-      "copyUuid": "Sao chép ID hồ sơ",
-      "copyCoordinates": "Sao chép Tọa độ"
+      "goToBot": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
       "enable": "Bật",
       "disable": "Tắt",
-      "openSettings": "Mở Cài đặt",
-      "copyPluginName": "Sao chép Tên Plugin",
-      "copyVersion": "Sao chép Phiên bản",
-      "openWebsite": "Mở Trang web"
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -694,21 +940,132 @@
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Tất cả",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Khác"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Có sẵn",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Đang tạo mã thông báo...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
     "botOnline": "Đã kết nối",
-    "botOffline": "Đã ngắt kết nối"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "Không thể sao chép văn bản. Hãy dùng HTTPS hoặc cho phép truy cập bảng nhớ tạm.",
-    "openError": "Không thể mở liên kết.",
-    "popupBlocked": "Trình duyệt đã chặn thẻ mới.",
-    "openLink": "Mở liên kết"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "Biểu tượng",
-    "description": "Biểu tượng của phiên bản hiển thị trong ứng dụng."
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_other": ""
   },
-  "unknown": "Không rõ",
-  "minecraftHead": "Đầu Minecraft",
-  "textFile": "Tệp văn bản"
+  "unknown": "Không xác định",
+  "minecraftHead": "",
+  "textFile": ""
 }

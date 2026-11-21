@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "请输入一个值。",
-    "null": "请输入一个值。",
-    "number": "请输入一个值。",
-    "boolean": "请输入一个值。",
-    "array": "请输入一个值。",
-    "object": "请输入一个值。",
-    "nan": "请输入一个值。",
-    "infinity": "请输入一个值。"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "请输入数字。",
-    "null": "请输入数字。",
-    "string": "请输入数字。",
-    "boolean": "请输入数字。",
-    "array": "请输入数字。",
-    "object": "请输入数字。",
-    "nan": "请输入数字。",
-    "infinity": "请输入数字。"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "请输入有效的值。",
-    "null": "请输入有效的值。",
-    "number": "请输入有效的值。",
-    "string": "请输入有效的值。",
-    "boolean": "请输入有效的值。",
-    "array": "请输入有效的值。",
-    "nan": "请输入有效的值。",
-    "infinity": "请输入有效的值。"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "请输入有效的电子邮件地址。",
-  "url": "请输入有效的 URL。",
-  "jwt": "请输入有效的令牌。",
-  "emailTooLong": "最多使用 255 个字符。",
-  "jarSource": "请选择官方服务器或自定义 jar。",
-  "generationMode": "请选择如何处理现有账户。",
-  "userRole": "请选择角色。"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

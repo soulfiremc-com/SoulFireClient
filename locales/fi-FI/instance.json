@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Raakatason instanssin tuloste löytyy täältä, kun haluat tarkastella konsolin yksityiskohtia.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Tilillä",
       "proxies": "Välityspalvelimet",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Live-feed",
-      "empty": "Odotetaan instanssiaktiviteettia...",
+      "empty": "",
       "noPermission": "Sinulla ei ole oikeuksia nähdä live-feediä.",
       "lifecycle": {
         "connecting": "yhdistää",
@@ -97,6 +97,7 @@
         "executeCommand": "ajoi komennon: {{data}}",
         "botDesiredStateChange": "vaihdettiin botin toivottu tila",
         "botRestart": "käynnisti botit uudelleen",
+        "pluginRpc": "",
         "unknown": "suoritti toiminnon"
       }
     },
@@ -119,17 +120,37 @@
       "network": "Verkko-osoite",
       "unix": "Unix-pistoke"
     },
-    "getProxies": "Proxyjen tarjoajat",
-    "addProxies": "Lisää proxyja",
+    "getProxies": "",
+    "addProxies": "",
     "filterPlaceholder": "Suodata proxyt...",
     "listImportToast": {
       "loading": "Tuodaan proxyja...",
-      "success": "{{count}} proxy tuotu",
-      "error": "Proxyjen tuominen epäonnistui",
-      "noProxies": "Ei proxyja tuotavaksi"
+      "success": "",
+      "error": "",
+      "noProxies": "Ei proxyja tuotavaksi",
+      "skipped_one": "",
+      "skipped_other": ""
     },
     "import": {
-      "proxyType": "Proxy-tyyppi",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Tuodaan proxyja...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -141,21 +162,21 @@
     },
     "removeToast": {
       "loading": "Poistetaan proxyja...",
-      "success": "{{count}} proxy poistettu",
-      "error": "Proxyjen poistaminen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "checkToast": {
       "loading": "Tarkistetaan proxyja... {{checked}}/{{total}} (Onnistui: {{success}} Epäonnistui: {{failed}})",
-      "success": "{{count}} viallista proxyä poistettu",
-      "error": "Proxyjen tarkistus epäonnistui",
-      "successKept": "{{failed}}/{{total}} proxya ei läpäissyt tarkistusta. Yhtään proxya ei poistettu."
+      "success": "",
+      "error": "",
+      "successKept": ""
     },
     "checkDialog": {
-      "title": "Tarkista välityspalvelimet",
-      "description": "Olet tarkistamassa {{count}} proxya.",
-      "confirm": "Aloita tarkistus",
-      "removeFailed": "Poista epäonnistuneet proxyt",
-      "removeFailedHelp": "Proxy voi epäonnistua tilapäisen verkko-ongelman vuoksi. Poista tämä valinta, jos haluat säilyttää kaikki proxyt ja nähdä vain tuloksen."
+      "title": "",
+      "description": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": ""
     },
     "invalidFormat": "Virheellinen proxyn muoto",
     "table": {
@@ -171,109 +192,125 @@
     "exportSelectedTooltip": "Vie valitut proxyt",
     "checkSelectedTooltip": "Tarkista valitut proxyt",
     "contextMenu": {
-      "copyAddress": "Kopioi osoite",
-      "copyUsername": "Kopioi käyttäjätunnus",
-      "copyPassword": "Kopioi salasana",
-      "deleteProxy": "Poista välityspalvelin"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Tarkista tuodut proxyt?",
-      "description": "Toit {{count}} proxya. Tarkistetaanko ne nyt?",
-      "confirm": "Tarkista välityspalvelimet",
+      "description": "",
+      "confirm": "",
       "skip": "Ohita"
     },
     "export": {
-      "format": "Vientimuoto",
-      "uri": "URI-muoto (kaikki tyypit)",
-      "http": "Vain HTTP (tavallinen)",
-      "socks4": "Vain SOCKS4 (tavallinen)",
-      "socks5": "Vain SOCKS5 (tavallinen)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "Ei proxyja vietäväksi"
     },
     "removeDialog": {
-      "title_one": "Poistetaanko {{count}} proxy?",
-      "title_other": "Poistetaanko {{count}} proxya?",
-      "description": "Tämä poistaa valitut proxyt ja niiden tunnistetiedot tästä instanssista. Tätä ei voi kumota.",
-      "confirm": "Poista proxyt"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Näytä salasana",
-    "hidePassword": "Piilota salasana"
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Tilien tarjoajat",
-    "addAccounts": "Lisää tilejä",
-    "generateAccounts": "Luo tilejä",
+    "getAccounts": "",
+    "addAccounts": "",
+    "generateAccounts": "",
     "filterPlaceholder": "Suodata tilejä...",
     "listImportToast": {
       "loading": "Tuodaan tilejä... {{checked}}/{{total}} (Onnistui: {{success}} Epäonnistui: {{failed}})",
-      "allFailed": "Tilien tuominen epäonnistui kokonaan.",
+      "allFailed": "",
       "someFailed": "Tuotiin {{count}} tiliä, {{failed}} tilin tuominen epäonnistui.",
-      "noneFailed": "{{count}} tiliä tuotu",
-      "error": "Tilien tuominen epäonnistui",
-      "noAccounts": "Ei tilejä tuotavaksi"
+      "noneFailed": "",
+      "error": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "unknownError": "Tuntematon virhe",
     "types": {
-      "OFFLINE": "Offline",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Tunnukset)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Laitteen koodi)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Virkistysavain)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Evästeet)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Käyttöoikeustunnus)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Tunnukset)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Laitteen koodi)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Tiliä tuodaan...",
-      "success": "Tili tuotu",
-      "error": "Tilin tuominen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "generate": {
-      "title": "Luo offline-tilejä",
+      "title": "",
       "description": "Luo offline-Java-tilejä omavalintaisella nimi­muodolla.",
       "amount": "Määrä",
-      "nameFormat": "Nimimuoto",
-      "nameFormatHelp": "Käytä %d tilin numeroa varten. Esimerkiksi Bot_%d luo nimiä kuten Bot_1 ja Bot_2.",
-      "mode": "Olemassa olevat tilit",
-      "modeHelp": "Valitse, kuinka käsittelet olemassa olevia tilejä:\n\n• Ohita olemassa olevat: Luo vain tilejä uusilla nimillä. Säilytä kaikki olemassa olevat tilit.\n\n• Korvaa olemassa olevat: Luo kaikki pyydetyt tilit. Korvaa tilit, joilla on sama UUID. Säilytä muut tilit.\n\n• Korvaa kaikki: Poista kaikki olemassa olevat tilit. Lisää sitten luodut tilit.",
-      "modeIgnoreExisting": "Ohita olemassa olevat",
-      "modeReplaceExisting": "Korvaa olemassa olevat",
-      "modeReplaceAll": "Korvaa kaikki",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Luo",
       "generating": "Luodaan...",
       "progress": "Luodaan tilejä... {{checked}}/{{total}} (Onnistui: {{success}} Epäonnistui: {{failed}})",
-      "success": "{{count}} tiliä luotu",
-      "allFailed": "Yhtään tiliä ei voitu luoda",
-      "allExist": "Kaikki käyttäjänimet ovat jo olemassa. Valitse ”Korvaa olemassa olevat” luodaksesi ne uudelleen.",
-      "error": "Tilien luonti epäonnistui",
-      "invalidAmount": "Syötä kelvollinen määrä (vähintään 1)",
-      "missingPlaceholder": "Nimimuodossa on oltava %d-paikkamerkki"
+      "success": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "invalidAmount": "Anna kokonaisluku, joka on vähintään 1.",
+      "missingNameFormat": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Offline",
-      "microsoftCredentials": "Microsoft-tunnukset",
-      "microsoftDeviceCode": "Microsoft-laitteen koodi",
-      "microsoftRefreshToken": "Microsoft-virkistystunnus",
-      "microsoftCookies": "Microsoft-evästeet",
-      "microsoftAccessToken": "Microsoft access token",
-      "theAltening": "TheAltening-tunnus",
-      "altProviders": "Vaihtoehtoiset tarjoajat",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Tuo {{type}} tilejä",
-        "description": "Liitä tilisi tähän, yksi per rivi"
+        "title": "Tuo {{type}} tilejä"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Poistetaan tilejä...",
-      "success": "{{count}} tiliä poistettu",
-      "error": "Tilien poistaminen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Tyyppi",
-      "profileId": "Profiilin tunnus",
+      "profileId": "",
       "lastKnownName": "Käyttäjätunnus",
       "searchProfileIds": "Etsi profiilitunnuksia...",
       "searchLastKnownNames": "Etsi viimeksi tunnettuja nimiä...",
@@ -281,10 +318,10 @@
     },
     "removeSelectedTooltip": "Poista valitut tilit",
     "contextMenu": {
-      "openConfig": "Avaa asetukset",
-      "openMetadata": "Avaa metatiedot",
-      "copyProfileId": "Kopioi profiilin tunniste",
-      "copyUsername": "Kopioi käyttäjätunnus"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Määritä {{name}}",
@@ -303,134 +340,124 @@
       "selectPage": "Valitse asetus­sivu",
       "noSearchResults": "Hakusi ei tuottanut tuloksia.",
       "matchesInheritedValue": "Vastaa perittyä arvoa",
-      "instanceValue": "Instanssin arvo",
+      "instanceValue": "",
       "defaultValue": "Oletusarvo",
       "resetOverride": "Palauta ohitus",
       "value": {
-        "notSet": "Ei asetettu",
-        "on": "Päällä",
-        "off": "Pois",
-        "empty": "Tyhjä",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} merkintä",
-        "entries_other": "{{count}} merkintää",
-        "range": "Väli"
+        "entries_other": "{{count}} merkintää"
       },
       "source": {
-        "bot": "Botin oma arvo",
-        "instance": "Peritty instanssilta",
-        "default": "Oletusarvo"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Laitteen kooditodennus",
+      "title": "",
       "description": "Määritä asetukset ennen laitteen koodivirran aloittamista.",
-      "start": "Aloita todennus"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Laitteen kooditodennus",
+      "title": "",
       "description": "Kirjaudu sisään Microsoft-tililläsi yhdistääksesi sen.",
-      "openInBrowser": "Avaa selaimessa",
+      "openInBrowser": "",
       "orManually": "Tai syötä koodi manuaalisesti",
       "codeLabel": "Koodisi",
       "urlLabel": "Siirry osoitteeseen"
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Osta tilejä Ravealtsin kautta",
       "description": "Osta Minecraft-tilejä käyttämällä Ravealts API -avaintasi.",
-      "apiKeyLabel": "API-avain",
       "apiKeyPlaceholder": "Syötä Ravealts API-avaimesi",
-      "validate": "Vahvista",
-      "validating": "Vahvistetaan...",
-      "keyValid": "Avain vahvistettu",
-      "keyInvalid": "Virheellinen API-avain",
-      "credits": "Krediitit: {{credits}}",
-      "stockTitle": "Saatavilla oleva varasto",
       "noStock": "Ei tilejä varastossa",
-      "accountType": "Tilin tyyppi",
-      "amount": "Määrä (1-10)",
-      "purchase": "Osta & Tuo",
-      "purchasing": "Ostetaan...",
-      "purchaseSuccess": "Ostettu {{count}} tiliä, tuodaan...",
-      "purchaseError": "Osto epäonnistui: {{message}}",
+      "accountType": "",
       "networkError": "Yhteys Ravealts API:iin epäonnistui",
       "outOfStock": "Valittu tyyppi on loppunut varastosta",
       "insufficientBalance": "Ei tarpeeksi krediittejä",
       "rateLimited": "Liikaa pyyntöjä, yritä uudelleen myöhemmin"
     },
     "metadata": {
-      "openButton": "Muokkaa metatietoja",
+      "openButton": "",
       "title": "Metatiedot: {{name}}",
       "description": "Hallinnoi tämän tilin pysyviä metatietokirjauksia. Jokaisella merkinnällä on nimiavaruus, avain ja JSON-arvo.",
       "namespacePlaceholder": "Nimiavaruus",
       "keyPlaceholder": "Avain",
       "valuePlaceholder": "Arvo (JSON)",
       "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
-      "loadError": "Metatietoja ei voitu ladata",
+      "loadError": "",
       "loadErrorDescription": "",
       "retryLoad": "Yritä uudelleen",
       "addSuccess": "Merkintä lisätty",
-      "addError": "Kirjauksen lisääminen epäonnistui",
-      "updateError": "Kirjauksen päivittäminen epäonnistui",
+      "addError": "",
+      "updateError": "",
       "deleteSuccess": "Merkintä poistettu",
-      "deleteError": "Merkinnän poistaminen epäonnistui",
+      "deleteError": "",
       "duplicateError": "Merkintä tällä nimiavaruudella ja avaimella on jo olemassa",
       "invalidJson": "Virheellinen JSON-arvo",
       "namespaceLabel": "Nimiavaruus",
       "keyLabel": "Avain",
       "valueLabel": "Arvo",
-      "addEntryLegend": "Lisää metatietomerkintä",
-      "addEntryButton": "Lisää merkintä",
-      "entryLegend": "Metatietomerkintä",
+      "addEntryLegend": "",
+      "addEntryButton": "",
+      "entryLegend": "",
       "removeEntryButton": "Poista"
     },
     "removeDialog": {
-      "title_one": "Poistetaanko {{count}} tili?",
-      "title_other": "Poistetaanko {{count}} tiliä?",
-      "description": "Tämä poistaa valitut tilit, niiden tallennetut tunnistetiedot ja niiden botit tästä instanssista. Tätä ei voi kumota.",
-      "confirm": "Poista tilit"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Instanssin metatiedot",
-    "description": "Hallinnoi tämän instanssin pysyviä metatietomerkintöjä. Jokaisella merkinnällä on nimiavaruus, avain ja JSON-arvo.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Nimiavaruus",
     "keyPlaceholder": "Avain",
     "valuePlaceholder": "Arvo (JSON)",
+    "valueRequired": "",
     "noEntries": "Ei metatietokirjauksia. Lisää yksi yllä.",
-    "loadError": "Metatietoja ei voitu ladata",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Yritä uudelleen",
     "addSuccess": "Merkintä lisätty",
-    "addError": "Kirjauksen lisääminen epäonnistui",
-    "updateError": "Kirjauksen päivittäminen epäonnistui",
+    "addError": "",
+    "updateError": "",
     "deleteSuccess": "Merkintä poistettu",
-    "deleteError": "Merkinnän poistaminen epäonnistui",
+    "deleteError": "",
     "duplicateError": "Merkintä tällä nimiavaruudella ja avaimella on jo olemassa",
     "invalidJson": "Virheellinen JSON-arvo",
     "namespaceLabel": "Nimiavaruus",
     "keyLabel": "Avain",
     "valueLabel": "Arvo",
-    "addEntryLegend": "Lisää metatietomerkintä",
-    "addEntryButton": "Lisää merkintä",
-    "entryLegend": "Metatietomerkintä",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "Poista"
   },
   "bots": {
     "searchPlaceholder": "Hae botteja...",
-    "onlineCount": "{{online}} yhdistetty / {{total}} yhteensä",
-    "noBots": "Ei yhtään bottia asetettu. Lisää tilejä Tiliasetukset-sivulta.",
+    "onlineCount": "",
+    "noBots": "",
     "noBotsFound": "Hakusi ei vastannut yhtään bottia.",
     "loadingMore": "Ladataan lisää...",
     "showingCount": "Näytetään {{loaded}} / {{total}}:sta",
     "allLoaded": "Kaikki {{total}} bottia ladattu",
     "online": "Yhdistetty",
-    "offline": "Ei yhteyttä",
-    "notJoined": "Ei liittynyt",
+    "offline": "",
+    "notJoined": "",
     "connectionPhase": {
       "connecting": "Yhdistetään",
-      "connected": "Kirjaudutaan",
+      "connected": "",
       "spawned": "Yhdistetty",
       "died": "Kuollut",
-      "disconnected": "Ei yhteyttä",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -442,12 +469,13 @@
       "waiting": "Odottaa",
       "stopped": "Pysäytetty"
     },
-    "backToBots": "Takaisin botteihin",
+    "backToBots": "",
+    "demoControls": "",
     "tabs": {
-      "overview": "Bottinäkymä",
+      "overview": "",
       "inventory": "Inventaario",
-      "controls": "Ohjaimet",
-      "terminal": "Terminaali"
+      "controls": "",
+      "terminal": ""
     },
     "terminalPanel": {},
     "connectionPanel": {
@@ -456,27 +484,38 @@
       "unavailable": "Ei käytettävissä"
     },
     "positionPanel": {
-      "title": "Sijainti & kääntö",
+      "title": "",
       "position": "Sijainti",
       "rotation": "Kääntö",
-      "offline": "Botti ei ole yhteydessä. Sijaintitiedot saatavilla vain, kun botti on yhdistetty."
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Viestit chatissa"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "commandPanel": {
-      "title": "Bottikomennot",
+      "title": "",
       "placeholder": "Lähetä komento tälle botille..."
     },
     "povPanel": {
-      "title": "Botin näkymä",
+      "title": "",
       "capture": "Kaappaa",
       "refresh": "Päivitä",
       "auto": "Auto",
       "startAutoRefresh": "Aloita automaattinen päivitys (1 sekunnin välein)",
       "stopAutoRefresh": "Lopeta automaattinen päivitys",
       "clickToCapture": "Napsauta Kaappaa nähdäksesi botin näkymän",
-      "offline": "Botti on offline-tilassa. Näkymän renderöinti on käytettävissä vain, kun botti on yhdistettynä."
+      "offline": ""
     },
     "statsPanel": {
       "health": "Terveys",
@@ -485,44 +524,48 @@
       "experience": "Kokemus",
       "level": "Taso",
       "toNextLevel": "seuraavaan tasoon",
-      "gameMode": "Pelitila",
+      "gameMode": "",
       "survival": "Selviytyminen",
       "creative": "Luova",
       "adventure": "Seikkailu",
       "spectator": "Katselija",
       "unknown": "Tuntematon",
-      "offline": "Botti ei ole yhteydessä. Tilastot ovat saatavilla vain, kun botti on yhdistetty."
+      "offline": ""
     },
     "inventoryPanel": {
       "title": "Inventaario",
       "actionRejected": "",
       "hotbar": "Pikavalikko",
-      "main": "Päätavarasto",
+      "main": "",
       "items": "esineet",
       "carrying": "Kantamuksissa",
-      "dropOne": "Pudota yksi",
-      "dropAll": "Pudota kaikki",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Sulje",
-      "clickHint": "Vasen klikkaus: nosta/sijoita | Oikea klikkaus: puolet/yksi | Shift+klikkaus: nopea siirto | Keskimmäinen klikkaus: valitse pikanäppäin",
-      "offline": "Botti ei ole yhteydessä. Varasto on saatavilla vain, kun botti on yhdistetty.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Reseptit",
         "enchantments": "Lumoukset",
         "patterns": "Kuviot",
         "trades": "Kaupat",
-        "beaconEffects": "Majakan efektit",
-        "crafterSlots": "Paikkaohjaimet",
-        "lecternControls": "Kirjaohjaimet",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Toiminnot",
-        "creativeTabs": "Luovan tilan välilehdet"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Tekstisyöte",
-        "anvilRename": "Nimeä esine uudelleen",
-        "creativeSearch": "Hae esineitä"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Kirjan sisältö",
+        "title": "",
         "emptyPage": "(Tyhjä sivu)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +573,161 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Tuhoa esine",
+      "destroyItem": "",
       "clickHints": {
-        "left": "Vasen painike: poimi tai aseta",
-        "right": "Oikea painike: poimi puolet tai aseta yksi",
-        "shift": "Shift+napsautus: pikasiirto",
-        "middle": "Keskipainike: valitse aktiiviseksi paikaksi"
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
       }
     },
     "visualPanel": {
-      "title": "Suunta ja maailma",
-      "compass": "Suunta",
-      "lookDirection": "Katselukulma",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Katsoo ylös",
       "lookingDown": "Katsoo alas",
       "lookingStraight": "Katsoo suoraan",
-      "worldInfo": "Maailman tiedot",
+      "worldInfo": "",
       "dimension": "Ulottuvuus",
       "biome": "Biomi",
-      "offline": "Botti ei ole yhteydessä. Näkymätiedot ovat saatavilla vain, kun botti on yhdistetty."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Botin toiminnot",
-      "leftClick": "Vasen klikkaus",
-      "rightClick": "Oikea klikkaus",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Hyökkää olentoon tai riko lohko",
       "rightClickDescription": "Käytä esinettä tai käytä toimintoa",
-      "offline": "Botti ei ole yhteydessä. Toiminnot ovat käytettävissä vain, kun botti on yhdistetty."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Liikeohjaus",
+      "title": "",
       "movement": "Liikkuminen (WASD)",
-      "forward": "Liiku eteenpäin (W)",
-      "backward": "Liiku taaksepäin (S)",
-      "left": "Siirry vasemmalle (A)",
-      "right": "Siirry oikealle (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Hyppää",
       "sneak": "Kyykisty",
       "sprint": "Juokse",
       "stop": "Pysäytä",
-      "rotation": "Katselusuunta",
-      "lookUp": "Katso ylös",
-      "lookDown": "Katso alas",
-      "lookLeft": "Katso vasemmalle",
-      "lookRight": "Katso oikealle",
-      "offline": "Botti ei ole yhteydessä. Liikeohjaimet ovat käytettävissä vain, kun botti on yhdistetty."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": ""
     },
     "dialogPanel": {
-      "title": "Palvelimen dialogi",
+      "title": "",
       "noDialog": "Palvelimen dialogia ei näytetä tällä hetkellä.",
       "dialogType": "Tyyppi",
       "dialogId": "Dialogin tunniste",
       "notice": "Huomautus",
       "confirmation": "Vahvistus",
-      "multiAction": "Monitoiminto",
-      "serverLinks": "Palvelimen linkit",
-      "dialogList": "Dialogilista",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Tuntematon",
       "dismiss": "Hylkää",
       "submit": "Lähetä",
-      "offline": "Botti ei ole yhteydessä. Dialogit ovat käytettävissä vain, kun botti on yhdistetty."
+      "offline": ""
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Kaikki",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Yhdistetty",
+      "starting": "Käynnistetään",
+      "retrying": "Yritetään uudelleen",
+      "failed": "Epäonnistui",
+      "stopping": "Pysäytetään",
+      "stopped": "Pysäytetty"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Bottinäkymä",
-      "touchControlling": "Ohjaat tätä bottia. Lopeta valitsemalla ”Release control”.",
-      "popupBlocked": "Salli ponnahdusikkunat irrottaaksesi bottinäkymän ikkunan.",
-      "windowTitle": "SoulFire-bottinäkymä",
-      "fullscreenUnavailable": "Koko näytön tila ei ole käytettävissä tässä ikkunassa.",
-      "textInputLabel": "Minecraftin tekstinsyöttö",
-      "videoLabel": "Reaaliaikainen bottinäkymä",
-      "touchMove": "Liiku",
-      "audioError": "Ääntä ei voitu käynnistää.",
-      "startError": "Bottinäkymää ei voitu käynnistää.",
-      "releaseHint": "Vapauta näppäimistö ja hiiri painamalla {{shortcut}}.",
-      "captureHint": "Napsauta näkymää ja salli näppäimistön ja hiiren kaappaus.",
-      "audioWaiting": "Odotetaan bottinäkymän yhdistämistä.",
-      "audioWatchFirst": "Katso bottia käyttääksesi ääntä.",
-      "audioUpdateServer": "Päivitä palvelin käyttääksesi bottinäkymän ääntä.",
-      "muteAudio": "Mykistä ääni",
-      "unmuteAudio": "Poista äänen mykistys",
-      "audioStarting": "Käynnistetään ääntä...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "Mykistä",
       "unmute": "Poista mykistys",
-      "audio": "Ääni",
-      "audioUnavailable": "Ääni ei ole käytettävissä",
-      "volume": "Bottinäkymän äänenvoimakkuus",
-      "reconnect": "Yhdistä uudelleen",
-      "showWindow": "Näytä bottinäkymän ikkuna",
-      "attachWindow": "Kiinnitä bottinäkymän ikkuna",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Hyppää",
-        "sneak": "Hiivi",
-        "attack": "Hyökkää",
-        "use": "Käytä",
+        "sneak": "Kyykisty",
+        "attack": "",
+        "use": "",
         "inventory": "Inventaario",
-        "keyboard": "Näppäimistö",
-        "closeMenu": "Sulje valikko"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "Bottinäkymä tarvitsee yhdistetyn SoulFire-palvelimen."
+      "needsServer": "",
+      "connectTimeout": "",
+      "inputUpdateServer": "",
+      "decoderUnsupported": "",
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -643,12 +742,12 @@
       "tick": "Tick"
     },
     "botsOnline": {
-      "title": "Yhdistetyt botit",
+      "title": "",
       "online": "Yhdistetty",
       "total": "Yhteensä"
     },
     "packets": {
-      "title": "Paketit / sekunti",
+      "title": "",
       "sent": "Lähetetty/s",
       "received": "Vastaanotettu/s"
     },
@@ -658,27 +757,27 @@
       "download": "Lataus"
     },
     "tick": {
-      "title": "Tickin kesto",
+      "title": "",
       "avg": "Avg (ms)",
       "max": "Max (ms)"
     },
     "healthFood": {
-      "title": "Terveys / Ruoka",
-      "health": "Keskimääräinen terveys",
-      "food": "Keskimääräinen ruoka"
+      "title": "",
+      "health": "",
+      "food": ""
     },
     "chunksEntities": {
-      "title": "Palikat / Entiteetit",
+      "title": "",
       "chunks": "Palikat",
       "entities": "Entiteetit"
     },
     "connections": {
-      "title": "Yhteys tapahtumat",
+      "title": "",
       "connections": "Yhteydet",
       "disconnections": "Katkaisut"
     },
     "healthDistribution": {
-      "title": "Terveysjakauma",
+      "title": "",
       "bots": "Botit"
     },
     "dimensions": {
@@ -686,59 +785,73 @@
       "bots": "Botit"
     },
     "gameModes": {
-      "title": "Pelimuodot",
+      "title": "",
       "bots": "Botit"
     },
     "positions": {
-      "title": "Botin sijainnit (XZ)",
+      "title": "",
       "bot": "Botti"
     }
   },
   "scripts": {
-    "title": "Visuaaliset skriptit",
-    "description": "Luo automaatioskriptejä visuaalisella solmupohjaisella editorilla.",
-    "experimentalTitle": "Kokeellinen ominaisuus",
+    "title": "",
+    "description": "",
+    "experimentalTitle": "",
     "experimentalWarning": "Tämä ominaisuus on kokeellinen. Tulevat päivitykset voivat rikkoa olemassa olevia skriptejä. Käytä varoen.",
-    "createScript": "Luo skripti",
-    "createScriptTitle": "Luo uusi skripti",
-    "createScriptDescription": "Luo uusi visuaalinen skripti tälle instanssille. Skriptit voivat automatisoida botin toimintoja ja reagoida tapahtumiin.",
-    "scriptName": "Skriptin nimi",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Syötä skriptin nimi...",
     "scriptDescription": "Kuvaus",
     "scriptDescriptionPlaceholder": "Kuvaile, mitä tämä skripti tekee...",
     "create": "Luo",
-    "createSuccess": "Skripti luotu onnistuneesti",
-    "createError": "Skriptin luonti epäonnistui",
-    "noScripts": "Ei vielä skriptejä",
-    "noScriptsDescription": "Luo ensimmäinen skriptisi automatisoidaksesi botin toimintoja visuaalisella solmupohjaisella editorilla.",
-    "createFirstScript": "Luo skripti",
-    "running": "Käynnissä",
-    "paused": "Tauotettu",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "solmut",
     "noDescription": "Ei kuvausta",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Kaikki",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Nimi"
+    },
+    "noMatches": "",
     "edit": "Muokkaa",
-    "pause": "Tauota",
-    "pauseSuccess": "Skripti keskeytetty",
-    "pauseError": "Skriptin keskeyttäminen epäonnistui",
-    "resume": "Jatka",
-    "resumeSuccess": "Skripti jatkettu",
-    "resumeError": "Skriptin jatkaminen epäonnistui",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Poista",
-    "deleteSuccess": "Skripti poistettiin onnistuneesti",
-    "deleteError": "Skriptin poisto epäonnistui",
-    "saveSuccess": "Skripti tallennettiin onnistuneesti",
-    "saveError": "Skriptin tallennus epäonnistui",
-    "activateSuccess": "Skripti aktivoitu",
-    "activateError": "Skriptin aktivointi epäonnistui",
-    "deactivateSuccess": "Skripti deaktivoitu",
-    "untitledScript": "Nimetön skripti",
-    "saveFirstBeforeActivating": "Tallenna skripti ennen aktivointia",
-    "activating": "Skripti aktivoidaan...",
-    "activated": "Skripti aktivoitu",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skripti suoritettu",
-    "executionCompletedSuccess": "Skripti suoritettu onnistuneesti",
-    "deactivated": "Skripti deaktivoitu",
-    "deactivatedByUser": "Käyttäjä poisti skriptin käytöstä",
+    "executionCompletedSuccess": "Skripti suoritettu",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Skriptin suoritus epäonnistui",
     "executionError": "Suoritusvirhe: {{error}}",
     "monitoringError": "",
@@ -747,23 +860,23 @@
     "nodeCompleted": "Solmu valmis: {{nodeId}}",
     "nodeError": "Solmun virhe: {{error}}",
     "contextMenu": {
-      "edit": "Muokkaa skriptiä",
-      "pause": "Tauota",
-      "resume": "Jatka",
-      "delete": "Poista skripti",
-      "copyScriptName": "Kopioi skriptin nimi",
-      "copyScriptId": "Kopioi skriptin tunniste"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Takaisin skripteihin",
+        "backToScripts": "",
         "save": "Tallenna",
-        "saveTooltip": "Tallenna skripti",
-        "resume": "Jatka",
-        "resumeTooltip": "Jatka skriptin suorittamista",
-        "pause": "Tauota",
-        "pauseTooltip": "Keskeytä skriptin suoritus",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Tallentamaton",
         "unsavedChanges": "Tallentamattomat muutokset",
         "clearCanvas": "Tyhjennä työtila",
@@ -772,46 +885,58 @@
         "fit": "Sovita",
         "export": "Vie skriptiä",
         "import": "Tuo skripti",
-        "exportSuccess": "Skripti viety onnistuneesti",
-        "importSuccess": "Skripti tuotu onnistuneesti",
-        "importError": "Skriptin tuonti epäonnistui"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": ""
       },
       "palette": {
-        "title": "Solmupaletti",
+        "title": "",
         "search": "Etsi solmuja...",
-        "noResults": "Mikään solmu ei vastaa hakuasi",
-        "noResultsDescription": "Kokeile toista hakusanaa tai tyhjennä nykyinen suodatin."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Suorituksen lokit",
+        "title": "",
         "clearTitle": "Tyhjennä lokit",
-        "noLogs": "Ei vielä lokia. Suorita skripti nähdäksesi suorituksen lokit.",
+        "noLogs": "",
         "entries_one": "{{count}} merkintä",
         "entries_other": "{{count}} merkintää"
       },
       "contextMenu": {
         "duplicate": "Monista",
         "rename": "Nimeä uudelleen",
-        "disconnectAll": "Katkaise kaikki yhteydet",
+        "disconnectAll": "",
         "collapse": "Pienennä",
         "expand": "Laajenna",
         "mute": "Mykistä",
         "unmute": "Poista mykistys",
-        "showPreview": "Näytä esikatselu",
-        "hidePreview": "Piilota esikatselu",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Poista"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Laajenna solmu",
         "collapse": "Supista solmu",
-        "avgTime": "Keskimääräinen suoritusaika: {{avg}} ms (viimeiset {{count}} ajoa)",
-        "preview": "Esikatselu"
+        "avgTime": "",
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": ""
       },
       "debug": {
         "copyValue": "Kopioi nykyinen arvo",
         "clearHistory": "Tyhjennä historia",
-        "current": "Nykyinen ({{time}}):",
-        "noValue": "Arvoa ei ole vielä vastaanotettu"
+        "current": "",
+        "noValue": ""
       },
       "edge": {
         "direction": "Reunan suunta"
@@ -824,35 +949,36 @@
       },
       "group": {
         "returnToRoot": "Palaa juureen (Välilehti)",
-        "root": "Juuri",
-        "exitHint": "Poistu painamalla <key>Tab</key>",
-        "editHint": "Muokkaa kaksoisnapsauttamalla",
-        "noInputs": "Tuloja ei ole määritetty",
-        "noOutputs": "Lähtöjä ei ole määritetty"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Pikalisäyssolmun valikko",
         "searchPlaceholder": "Etsi solmuja...",
-        "noResults": "Solmuja ei löytynyt",
-        "noResultsDescription": "Kokeile toista hakusanaa.",
-        "navigate": "Siirry",
-        "select": "Enter valitsee",
-        "close": "Esc sulkee"
+        "noResults": "",
+        "noResultsDescription": "Kokeile toista hakutermia.",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Tarkista muutokset",
         "title": "Tallentamattomat muutokset",
-        "description": "Muutokset edellisen tallennuksen jälkeen.",
-        "nodesAdded_one": "{{count}} solmu lisätty",
-        "nodesAdded_other": "{{count}} solmua lisätty",
-        "nodesRemoved_one": "{{count}} solmu poistettu",
-        "nodesRemoved_other": "{{count}} solmua poistettu",
-        "nodesModified_one": "{{count}} solmu muutettu",
-        "nodesModified_other": "{{count}} solmua muutettu",
-        "edgesAdded_one": "{{count}} yhteys lisätty",
-        "edgesAdded_other": "{{count}} yhteyttä lisätty",
-        "edgesRemoved_one": "{{count}} yhteys poistettu",
-        "edgesRemoved_other": "{{count}} yhteyttä poistettu"
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +991,647 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Testiajo",
-        "title": "Testiajo Skripti",
-        "description": "Suorita skripti valitusta laukaisevasta solmusta käyttäen mallisyötteitä.",
-        "triggerNode": "Laukaiseva solmu",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Valitse laukaisin...",
-        "triggerDescription": "Valitse laukaiseva solmu, joka suoritetaan malliarvoilla.",
-        "mockInputs": "Mallisyötteet",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} arvo",
-        "start": "Aloita testiajo",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Skriptin kiintiöt",
-        "title": "Skriptin kiintiöt",
+        "tooltip": "",
+        "title": "",
         "description": "Aseta tämän skriptin resurssirajat. Tyhjät kentät käyttävät palvelimen oletuksia.",
-        "maxExecutionCount": "Suurin suorituskertojen määrä",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Suurin solmujen suoritusmäärä yhtä laukaisua kohden",
         "maxExecutionTime": "Suurin suoritusaika (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Suurin seinäkelloaika yhtä laukaisevaa suoritusta kohden",
-        "maxConcurrentTriggers": "Suurin samanaikaisten laukaisujen määrä",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "Suurin samanaikaisten laukaisevien suoritusten määrä",
-        "maxStateStoreEntries": "Suurin tilakaupan merkintöjen määrä",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Rajoittamaton",
         "maxStateStoreEntriesDescription": "Suurin määrä merkintöjä skriptin tilakaupassa",
-        "disableTimeouts": "Poista aikakatkaisut käytöstä",
+        "disableTimeouts": "",
         "disableTimeoutsDescription": "Poistaa käytöstä solmu- ja datareunasidonnaiset aikakatkaisut",
-        "save": "Tallenna kiintiöt",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Järjestä uudelleen: {{label}}",
-        "empty": "Ei saapuvia arvoja",
-        "title": "Monitulo: hyväksyy useita yhteyksiä",
-        "connectTo": "Yhdistä arvoja kohteeseen {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Poistetaanko skripti?",
-      "description": "Tämä poistaa kohteen ”{{name}}” pysyvästi. Tätä ei voi kumota.",
-      "descriptionUnnamed": "Tämä poistaa skriptin pysyvästi. Tätä ei voi kumota."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Suoritustilastot: {{executed}}/{{max}} solmua suoritettu"
+    "executionStats": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Toiminto",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Yhdistä",
+    "back": "Takaisin",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Kaikki",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Yhdistä",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Yhteensä",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Ei mitään",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "yhdistetty",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "Käynnistä {{count}} botti uudelleen",
+    "restartGroup_other": "Käynnistä {{count}} bottia uudelleen",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Valinnainen",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Avaa kaikki asetukset",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Tilillä",
+      "reviewProxies": "Välityspalvelimet",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "action_one": "Käynnistä {{count}} botti",
+      "action_other": "Käynnistä {{count}} bottia",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

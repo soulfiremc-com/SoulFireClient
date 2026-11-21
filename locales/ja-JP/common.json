@@ -4,16 +4,45 @@
   "cancel": "キャンセル",
   "save": "保存する",
   "saving": "保存中...",
+  "demoReadOnly": "",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "サーバーアドレスまたはトークンが見つかりません",
     "page": {
       "title": "エラー",
       "description": "ページの読み込みに失敗しました。詳細はコンソールを開いて確認してください。",
-      "logOut": "ログアウト",
+      "logOut": "",
       "reloadPage": "ページを再読み込み",
-      "showDetails": "詳細を表示する。"
+      "showDetails": "詳細を表示する。",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "エラー"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "SoulFireサーバーへの接続に失敗しました。"
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,7 +53,7 @@
     "page": {
       "title": "見つかりません",
       "description": "このアドレスにはページが存在しません",
-      "logOut": "ログアウト",
+      "logOut": "",
       "reloadPage": "ページを再読み込み"
     }
   },
@@ -38,11 +67,11 @@
       "type": "種類",
       "value": "値",
       "fields": {
-        "serverVersion": "サーバーバージョン",
-        "serverCommit": "サーバーコミット",
-        "serverBranch": "サーバーブランチ",
-        "minecraftVersion": "Minecraft バージョン",
-        "operatingSystem": "オペレーティングシステム",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "プラットフォーム",
         "locale": "ロケール",
         "architecture": "アーキテクチャ",
@@ -54,41 +83,44 @@
     "support": {
       "title": "SoulFireを支援する",
       "description": "SoulFireは、コミュニティによって愛情を込めて作られた、無料でオープンソースのプロジェクトです。",
-      "body": "もしSoulFireが役に立ったと感じていただけたなら、プロジェクトの支援をご検討ください。ご支援はサーバーの運用費や開発資金となり、SoulFireをすべての人に無料で提供し続ける助けになります。",
+      "body": "",
       "dismiss": "後で",
-      "action": "SoulFireを支援する"
+      "action": "SoulFireを支援する",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "新しいインスタンスを作成",
-      "description": "インスタンスを認識しやすい名前にしてください（例：「My Minecraft Bot」）。",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "わかりやすい名前",
-          "placeholder": "マイMinecraftボット",
-          "description": "このインスタンスに付けたい名前です。"
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "キャンセル",
-        "create": "作成"
+        "create": ""
       },
       "createToast": {
-        "loading": "インスタンスを作成中...",
-        "success": "インスタンスの作成に成功しました",
-        "error": "インスタンスの作成に失敗しました"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "インスタンスを複製する​",
-      "description": "「{{name}}」のプロファイルを使って新しいインスタンスを作成します。",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "複製されたインスタンスの名前です。"
+          "description": ""
         },
-        "duplicate": "複製"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "インスタンスを複製しています…",
-        "success": "インスタンスの複製に成功しました",
-        "error": "インスタンスの複製に失敗しました"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,9 +129,16 @@
         "fromUrl": "URLから",
         "firstClipboardItem": "クリップボードに複数の項目があります。SoulFire は最初の項目を使用します。",
         "fromClipboard": "クリップボードから",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
+          "label": "",
           "placeholder": "ここにテキストを入力...",
-          "submit": "テキストから読み込む"
+          "submit": "テキストから読み込む",
+          "empty": ""
         }
       },
       "url": {
@@ -113,24 +152,28 @@
         "submit": "URLから読み込む",
         "toast": {
           "loading": "データをダウンロード中...",
-          "success": "データを読み込みました",
-          "error": "データのダウンロードに失敗しました",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "インスタンスを削除しますか？",
-      "description": "「{{name}}」とそのデータを完全に削除します。この操作は元に戻せません。",
-      "descriptionUnnamed": "このインスタンスとそのデータを完全に削除します。この操作は元に戻せません。"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "コマンドを入力 (一覧は「help」と入力)",
-    "emptySuggestions": "提案をリクエストするには入力するか、Tabキーを押してください。",
     "noSuggestions": "利用可能な提案はありません。",
-    "emptySuggestionsPrefix": "入力して候補を表示するか、次のキーを押します:"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "開始",
@@ -141,25 +184,27 @@
     "startCount": "起動するボット数",
     "startToast": {
       "loading": "ボットを起動中...",
-      "success": "ボット状態が更新されました",
-      "error": "ボットの起動に失敗しました"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "ボットを再起動中...",
       "success": "ボットが再接続しています",
-      "error": "ボットの再起動に失敗しました"
+      "error": ""
     },
     "stopToast": {
       "loading": "ボットを停止中...",
       "success": "ボットを停止しています",
-      "error": "ボットの停止に失敗しました"
+      "error": ""
     },
-    "permissionDenied": "このインスタンスでボットの起動または停止を行う権限がありません。",
+    "permissionDenied": "",
     "serverUpdateRequired": "サーバーがボット制御の権限を報告していません。サーバーとクライアントのバージョンが一致していることを確認してください。",
     "startBots": "ボットを起動する",
-    "moreActions": "その他のボット操作",
-    "generateFirst": "アカウントを作成して、最初のボットを起動しましょう。",
-    "startCountHelp": "追加のボットを起動します。実行中のボットは接続されたままです。",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "すべての{{count}}体を起動",
     "validCount": "",
     "positiveCount": "",
@@ -168,7 +213,7 @@
     "stopCount_other": "{{count}}体のボットを停止する",
     "restartCount_other": ""
   },
-  "botFleetSummary": "接続済み {{online}} · 実行設定 {{desired}} · 合計 {{total}}",
+  "botFleetSummary": "",
   "icon": {
     "invalidName": "無効なアイコン名: {{name}}"
   },
@@ -220,6 +265,8 @@
     "addSorting": "行を整理するために並べ替えを追加してください。",
     "addSort": "並べ替えを追加",
     "resetSorting": "並べ替えをリセット",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "昇順",
       "desc": "降順",
@@ -250,55 +297,118 @@
       "asc": "昇順",
       "desc": "降順"
     },
-    "openFilterMenu": "フィルターメニューを開く",
-    "filterOperator": "フィルター演算子",
-    "filterValue": "フィルター値",
-    "sortDirection": "並べ替えの方向",
-    "selectJoinOperator": "結合演算子を選択",
-    "joinOperator": "結合演算子",
-    "escapeKey": "Escape",
-    "selectDate": "日付を選択",
-    "selectDateRange": "日付範囲を選択",
-    "clearFilter": "{{title}} フィルターをクリア",
-    "clearFilters": "フィルターをクリア",
-    "clear": "クリア",
-    "from": "開始",
-    "to": "終了",
-    "sortDirectionFor": "{{column}} の並べ替えの方向",
-    "minValue": "{{label}} の最小値",
-    "maxValue": "{{label}} の最大値"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": ""
   },
   "pluginCard": {
     "version": "バージョン: {{version}}",
     "author": "作成者: {{author}}",
     "license": "ライセンス: {{license}}",
-    "website": "ウェブサイト"
+    "website": "ウェブサイト",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "{{name}} を保存できませんでした",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "namespacesNotFound": "設定のネームスペースが見つかりません",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "{{name}} を保存できませんでした",
+      "saveError": "",
       "placeholder": "新しいエントリを追加...",
       "add": "追加",
-      "remove": "削除"
+      "remove": "削除",
+      "removeAll": "",
+      "undo": "",
+      "count_other": "{{count}}件のエントリ",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "値を検索..."
+      "searchPlaceholder": "値を検索...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
       "title": "無効な数値です",
       "description": "値は{{min}}〜{{max}}の間である必要があります"
     },
-    "minMaxLegend": "最小値と最大値の設定"
+    "saving": "保存中...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "クリップボードにコピー",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "まだログがありません。コマンドを実行するとログが出力されます。",
+    "noLogsReadOnly": "",
+    "jumpToLatest": "",
     "demo-1": "デモモードへようこそ！🧪",
-    "demo-2": "これはSoulFireの読み取り専用インスタンスです",
+    "demo-2": "",
     "demo-3": "SoulFireをインストールする前に、すべてのメニューや機能をチェックしましょう :D",
     "demo-4": "連絡を取りたい方は、Discordサーバーにお気軽にご参加ください: https://soulfiremc.com/discord"
   },
@@ -311,8 +421,16 @@
   "uiSheet": {
     "close": "閉じる"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "サイドバーの切り替え"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "最小化",
@@ -338,79 +456,199 @@
     "connectToast": {
       "loading": "{{device}}に接続中...",
       "success": "{{device}}に接続しました",
-      "error": "{{device}}への接続に失敗しました"
+      "error": ""
     },
     "noDevices": "デバイスが見つかりません",
     "broadcastToast": {
       "loading": "メッセージをブロードキャスト中...",
-      "success": "メッセージがブロードキャストされました",
-      "error": "メッセージのブロードキャストに失敗しました"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "再試行する",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_other": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "すべて",
+      "projects": "",
+      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
+      "scripts": "スクリプト",
+      "settings": "設定",
+      "actions": "操作"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "ボットを起動する",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "キャンセル",
+      "unavailable": "",
+      "start_other": "",
+      "stop_other": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "スクリプトをオンにしています...",
-        "success": "スクリプトをオンにしました",
-        "error": "スクリプトをオンにできませんでした。もう一度お試しください。"
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "スクリプトをオフにしています...",
-        "success": "スクリプトをオフにしました",
-        "error": "スクリプトをオフにできませんでした。もう一度お試しください。"
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "スクリプト {{name}} をオンにする",
-      "deactivateScript": "スクリプト {{name}} をオフにする"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_other": "{{count}}体のボットを起動する",
+      "stopBots_other": "{{count}}体のボットを停止する",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "オン",
-      "paused": "オフ"
-    }
+      "connected": "接続済み",
+      "starting": "起動中",
+      "retrying": "再試行中",
+      "failed": "失敗しました",
+      "stopping": "停止中",
+      "stopped": "停止済み",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "閉じる",
+      "pin": "",
+      "back": "戻る"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "設定",
+      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
+      "scripts": "スクリプト",
+      "admin": "",
+      "actions": "操作",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "ドキュメントを読む",
-    "backToDashboard": "インスタンス一覧に戻る",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "インスタンスを削除中...",
-      "success": "インスタンスを削除しました",
-      "error": "インスタンスの削除に失敗しました"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "インスタンス",
-    "createInstance": "インスタンス作成",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "プロファイルを読み込み中...",
-      "success": "プロファイルを読み込みました",
-      "error": "プロファイルの読み込みに失敗しました"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "プロファイルを読み込む",
+    "loadProfile": "",
     "loadFromFile": "ファイルから読み込む",
-    "profileSaved": "プロファイルを保存しました",
-    "saveProfile": "プロファイルを保存",
-    "deleteInstance": "インスタンスを削除",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "コントロール",
     "overview": "概要",
     "terminal": "ターミナル",
     "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
-    "audit-log": "監査ログ",
+    "audit-log": "",
     "settingsGroup": "設定",
     "extensionsGroup": "拡張機能",
-    "botSettings": "ボット設定",
+    "botSettings": "",
     "accountSettings": "アカウント",
-    "metaSettings": "インスタンス設定",
+    "metaSettings": "",
     "proxySettings": "プロキシ",
-    "aiSettings": "AI設定",
-    "pathfindingSettings": "パスファインディング設定",
+    "aiSettings": "",
+    "pathfindingSettings": "",
     "discoverPlugins": "プラグイン",
-    "instanceScripts": "スクリプト"
+    "togglePluginSettings": "",
+    "instanceScripts": "スクリプト",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "ドキュメントを読む",
     "userGroup": "ユーザー",
-    "instances": "インスタンス",
+    "instances": "",
     "access": "アクセス",
-    "createInstance": "インスタンス作成",
+    "createInstance": "",
     "settings": "設定",
     "adminGroup": "管理者",
     "adminOverview": "概要",
@@ -418,8 +656,8 @@
     "adminTerminal": "ターミナル",
     "users": "ユーザー",
     "adminScripts": "スクリプト",
-    "serverSettings": "サーバー設定",
-    "devSettings": "開発者設定",
+    "serverSettings": "",
+    "devSettings": "",
     "theme": {
       "title": "テーマ",
       "system": "システム",
@@ -433,11 +671,11 @@
     "dataDir": "データディレクトリ",
     "supportSoulFire": "SoulFireを支援する",
     "about": "情報",
-    "logOut": "ログアウト",
+    "logOut": "",
     "logOutToast": {
-      "loading": "ログアウト中...",
-      "success": "ログアウトしました",
-      "error": "ログアウトに失敗しました"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "exit": "終了",
     "stopImpersonating": "なりすましをやめる",
@@ -455,52 +693,54 @@
     "extensions": "拡張機能",
     "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
   },
-  "noInstancesFound": "インスタンスが見つかりません",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "ターミナル",
     "logs": "ログ",
-    "audit-log": "監査ログ",
+    "audit-log": "",
     "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
-    "botDetail": "ボットの詳細",
-    "instances": "インスタンス",
+    "botDetail": "",
+    "instances": "",
     "access": "アクセス",
     "settings": "設定",
     "proxySettings": "プロキシ",
     "overview": "概要",
     "users": "ユーザー",
     "accountSettings": "アカウント",
-    "metaSettings": "インスタンス設定",
+    "metaSettings": "",
     "discoverPlugins": "プラグイン",
     "adminScripts": "スクリプト",
     "instanceScripts": "スクリプト"
   },
   "access": {
     "webdav": {
-      "title": "WebDAVアクセス",
-      "description": "WebDAV により、インスタンスのファイルやスクリプト、その他のファイルにアクセスできます。",
-      "publicAddress": "公開WebDAVアドレス",
-      "personalToken": "個人用WebDAVトークン",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "個人の WebDAV トークンは秘密にしてください。ファイルにアクセス可能になります。トークンを WebDAV のパスワードとして使用してください。ユーザー名の入力は不要ですが、アプリが必要とする場合は 'soulfire' など、任意の値を入力してください。",
       "addressDescription": "このアドレスを使用してファイルにアクセスします。一部のクライアントでは、http:// や https:// の代わりに dav:// や davs:// が必要です。"
     },
     "api": {
-      "title": "APIアクセス",
-      "description": "SoulFire API を使うと、自分のプログラムからインスタンスを管理できます。",
-      "publicAddress": "公開APIアドレス",
-      "personalToken": "個人用APIトークン",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "個人の API トークンは秘密にしてください。このトークンで API にアクセスできます。",
       "addressDescription": "このアドレスを使って API にアクセスしてください。"
     },
     "token": {
-      "generate": "トークンを生成",
-      "placeholder": "下の「トークンを生成」を選択してください",
+      "generate": "",
+      "placeholder": "",
       "generating": "トークンを生成中...",
-      "success": "トークンの生成に成功しました",
-      "error": "トークンの生成に失敗しました",
-      "copy": "トークンをコピー"
+      "success": "",
+      "error": "",
+      "copy": ""
     },
     "address": {
-      "copy": "アドレスをコピー"
+      "copy": ""
     },
     "documentation": "ドキュメント",
     "howToConnect": "接続方法"
@@ -508,22 +748,23 @@
   "uploadToMcLogs": "mclo.gsにアップロード",
   "mcLogsUpload": {
     "loading": "mclo.gsにアップロード中...",
-    "success": "mclo.gsにアップロードしました！こちらで表示: {{url}}",
-    "error": "mclo.gsへのアップロードに失敗しました"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Googleで検索する",
   "copyToClipboard": "クリップボードにコピー",
   "clipboardCopy": {
     "loading": "クリップボードにコピー中...",
     "success": "「{{content}}」をクリップボードにコピーしました",
-    "error": "クリップボードへのコピーに失敗しました"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "インスタンス名を更新できませんでした"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
@@ -539,9 +780,11 @@
       "uiName": "メールアドレス",
       "description": "メールアドレスは、ログインや通知のために使用されます。"
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "{{field}} を更新できませんでした"
+    "saveError": ""
   },
   "auditLog": {
     "filterPlaceholder": "監査ログを絞り込み...",
@@ -554,9 +797,10 @@
     "executedCommand": "コマンドを実行: {{data}}",
     "changedBotDesiredState": "ボットの希望状態を変更しました",
     "restartedBots": "ボットを再起動しました",
+    "calledPluginRpc": "",
     "contextMenu": {
-      "copyUsername": "ユーザー名をコピー",
-      "copyCommand": "コマンドをコピー"
+      "copyUsername": "",
+      "copyCommand": ""
     }
   },
   "toggleTheme": "テーマを切り替える",
@@ -570,11 +814,11 @@
           "max": "スクリプト名は最大32文字までです",
           "regex": "小文字のアルファベット、数字、ハイフンのみを使用してください。名前は英字または数字で始まり、終わる必要があります。",
           "label": "名前",
-          "placeholder": "マイスクリプト",
+          "placeholder": "",
           "description": "スクリプトの名前です。"
         },
         "elevatedPermissions": {
-          "label": "管理者権限",
+          "label": "",
           "description": "このスクリプトは管理者権限で実行されます。このオプションは管理者のみ有効にできます。"
         }
       }
@@ -597,56 +841,58 @@
     },
     "removeToast": {
       "loading": "スクリプトを削除中...",
-      "success": "スクリプトを削除しました",
-      "error": "スクリプトの削除に失敗しました"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "スクリプトを追加中...",
-      "success": "スクリプトを追加しました",
-      "error": "スクリプトの追加に失敗しました"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "スクリプトを更新中...",
-      "success": "スクリプトを更新しました",
-      "error": "スクリプトの更新に失敗しました"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "スクリプトを再起動中...",
-      "success": "スクリプトを再起動しました",
-      "error": "スクリプトの再起動に失敗しました"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "種類",
       "scriptName": "名前",
       "language": "言語",
-      "elevatedPermissions": "管理者権限",
+      "elevatedPermissions": "",
       "createdAt": "作成日",
       "actions": "操作"
     },
     "globalScript": "グローバル",
-    "instanceScript": "インスタンス"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "操作",
     "instance": {
-      "goToInstance": "インスタンスへ移動",
-      "duplicateInstance": "インスタンスを複製",
-      "copyInstanceId": "インスタンスIDをコピー",
-      "copyInstanceName": "インスタンス名をコピー",
-      "deleteInstance": "インスタンスを削除"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Botへ移動",
-      "copyUsername": "ユーザー名をコピー",
-      "copyUuid": "プロファイル ID をコピー",
-      "copyCoordinates": "座標をコピー"
+      "goToBot": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
       "enable": "有効化",
       "disable": "無効化",
-      "openSettings": "設定を開く",
-      "copyPluginName": "プラグイン名をコピー",
-      "copyVersion": "バージョンをコピー",
-      "openWebsite": "ウェブサイトを開く"
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -694,21 +940,132 @@
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "すべて",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "その他"
+    },
+    "enabledHeading": "",
+    "availableHeading": "利用可能",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "トークンを生成中...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "ボット",
     "botOnline": "接続済み",
-    "botOffline": "切断済み"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "テキストをコピーできませんでした。HTTPS を使うか、クリップボードへのアクセスを許可してください。",
-    "openError": "リンクを開けませんでした。",
-    "popupBlocked": "ブラウザーが新しいタブをブロックしました。",
-    "openLink": "リンクを開く"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "アイコン",
-    "description": "アプリに表示されるインスタンスのアイコンです。"
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_other": ""
   },
   "unknown": "不明",
-  "minecraftHead": "Minecraft の頭",
-  "textFile": "テキストファイル"
+  "minecraftHead": "",
+  "textFile": ""
 }

@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "おかえりなさい、{{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "サーバーメトリクス",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "ヒープ使用量",
+        "heapUsed": "",
         "threads": "スレッド",
-        "botsOnline": "接続中のボット",
+        "botsOnline": "",
         "uptime": "稼働時間"
       },
       "cpuUsage": {
-        "title": "CPU使用率（％）"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "ヒープメモリ（MB）"
+        "title": ""
       },
       "threadCount": {
-        "title": "スレッド数"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "接続中のボット（全インスタンス）"
+        "title": ""
       },
       "legend": {
-        "process": "プロセス",
+        "process": "",
         "system": "システム",
-        "used": "使用中",
-        "committed": "確保済み",
-        "max": "最大",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "合計",
-        "daemon": "デーモン",
+        "daemon": "",
         "online": "接続済み"
       }
     },
     "instancesChart": {
-      "title": "このサーバー上の合計インスタンス数",
-      "instances": "インスタンス",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "状態",
         "active": "稼働中",
@@ -74,7 +74,7 @@
         "role": {
           "label": "役割",
           "placeholder": "役割を選択してください",
-          "description": "ユーザーの役割です。管理者はユーザーや全インスタンスを管理できます。ユーザーは自分のインスタンスのみ管理できます。",
+          "description": "",
           "user": "ユーザー",
           "admin": "管理者"
         }
@@ -85,7 +85,7 @@
       "description": "このサーバーに新しいユーザーを追加します",
       "form": {
         "cancel": "キャンセル",
-        "add": "ユーザー追加"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -93,58 +93,58 @@
       "description": "ユーザーの情報を更新します",
       "form": {
         "cancel": "キャンセル",
-        "update": "ユーザー更新"
+        "update": "ユーザー情報の更新"
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "ユーザーを追加中...",
-      "success": "ユーザーが追加されました",
-      "error": "ユーザーの追加に失敗しました"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "ユーザーを更新中...",
-      "success": "ユーザーが更新されました",
-      "error": "ユーザーの更新に失敗しました"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "ユーザーを削除中...",
-      "success": "ユーザーを削除しました",
-      "error": "ユーザーの削除に失敗しました"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "ユーザーをログアウト中...",
-      "success": "ユーザーがログアウトしました",
-      "error": "ユーザーのログアウトに失敗しました"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "ユーザー名",
       "email": "メールアドレス",
       "role": "役割",
       "createdAt": "作成日",
-      "minIssuedAt": "セッションの有効開始日時",
+      "minIssuedAt": "",
       "actions": "操作",
       "searchUsernames": "ユーザー名で検索...",
       "searchEmails": "メールアドレスで検索...",
       "searchCreatedAts": "作成日の検索...",
-      "searchMinIssuedAts": "セッションの日付を検索..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "選択したユーザーを削除",
-    "logOutSelectedTooltip": "選択したユーザーをログアウト",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "ユーザーを編集する",
+      "editUser": "",
       "impersonate": "なりすます",
-      "copyUserId": "ユーザーIDをコピー"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "{{count}} 人のユーザーを削除しますか？",
-      "description": "選択したユーザーとそのアクセス権を完全に削除します。この操作は元に戻せません。",
-      "confirm": "ユーザーを削除"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "{{count}} 人のユーザーをサインアウトしますか？",
-      "description": "選択したユーザーのすべてのセッションとトークンを終了します。ユーザーは再度サインインする必要があります。",
-      "confirm": "ユーザーをサインアウト"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }
