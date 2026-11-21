@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Inserisci un valore.",
-    "null": "Inserisci un valore.",
-    "number": "Inserisci un valore.",
-    "boolean": "Inserisci un valore.",
-    "array": "Inserisci un valore.",
-    "object": "Inserisci un valore.",
-    "nan": "Inserisci un valore.",
-    "infinity": "Inserisci un valore."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Inserisci un numero.",
-    "null": "Inserisci un numero.",
-    "string": "Inserisci un numero.",
-    "boolean": "Inserisci un numero.",
-    "array": "Inserisci un numero.",
-    "object": "Inserisci un numero.",
-    "nan": "Inserisci un numero.",
-    "infinity": "Inserisci un numero."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Inserisci un valore valido.",
-    "null": "Inserisci un valore valido.",
-    "number": "Inserisci un valore valido.",
-    "string": "Inserisci un valore valido.",
-    "boolean": "Inserisci un valore valido.",
-    "array": "Inserisci un valore valido.",
-    "nan": "Inserisci un valore valido.",
-    "infinity": "Inserisci un valore valido."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Inserisci un indirizzo email valido.",
-  "url": "Inserisci un URL valido.",
-  "jwt": "Inserisci un token valido.",
-  "emailTooLong": "Usa al massimo 255 caratteri.",
-  "jarSource": "Scegli il server ufficiale o un jar personalizzato.",
-  "generationMode": "Scegli come gestire gli account esistenti.",
-  "userRole": "Scegli un ruolo."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

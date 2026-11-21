@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Konsol detalları ilə tanış olmağa ehtiyacınız olduqda, xam instance çıxışı burada əlçatandır.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Hesablar",
       "proxies": "Proksilər",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Canlı yayım",
-      "empty": "İnstansta fəaliyyət gözlənilir...",
+      "empty": "",
       "noPermission": "Canlı yayımı izləmək icazəniz yoxdur.",
       "lifecycle": {
         "connecting": "bağlanır",
@@ -97,6 +97,7 @@
         "executeCommand": "əmr icra etdi: {{data}}",
         "botDesiredStateChange": "botun istənilən vəziyyətini dəyişdi",
         "botRestart": "botları yenidən başladıb",
+        "pluginRpc": "",
         "unknown": "hərəkət icra etdi"
       }
     },
@@ -119,17 +120,37 @@
       "network": "Şəbəkə ünvanı",
       "unix": "Unix soketi"
     },
-    "getProxies": "Proksi təminatçıları",
-    "addProxies": "Proksi əlavə et",
+    "getProxies": "",
+    "addProxies": "",
     "filterPlaceholder": "Proxy-ləri filtrlə...",
     "listImportToast": {
       "loading": "Proxy-lər idxal edilir...",
-      "success": "{{count}} proxy idxal olundu",
-      "error": "Proxy-ləri idxal etmək mümkün olmadı.",
-      "noProxies": "Idxal üçün proxy yoxdur"
+      "success": "",
+      "error": "",
+      "noProxies": "Idxal üçün proxy yoxdur",
+      "skipped_one": "",
+      "skipped_other": ""
     },
     "import": {
-      "proxyType": "Proxy Növü",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Proxy-lər idxal edilir...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -141,21 +162,21 @@
     },
     "removeToast": {
       "loading": "Proxy-lər silinir...",
-      "success": "{{count}} proxy silindi",
-      "error": "Proxy-ləri silmək mümkün olmadı."
+      "success": "",
+      "error": ""
     },
     "checkToast": {
       "loading": "Proxy-lər yoxlanılır... {{checked}}/{{total}} (Uğurlu: {{success}} Uğursuz: {{failed}})",
-      "success": "{{count}} pozulmuş proxy silindi",
-      "error": "Proxy-ləri yoxlamaq mümkün olmadı",
-      "successKept": "{{total}} proksidən {{failed}} ədədi yoxlamadan keçmədi. Heç bir proksi silinmədi."
+      "success": "",
+      "error": "",
+      "successKept": ""
     },
     "checkDialog": {
-      "title": "Proksiləri Yoxla",
-      "description": "{{count}} proksi yoxlanılacaq.",
-      "confirm": "Yoxlamaya Başla",
-      "removeFailed": "Uğursuz proksiləri sil",
-      "removeFailedHelp": "Proksi müvəqqəti şəbəkə problemi səbəbindən uğursuz ola bilər. Bütün proksiləri saxlamaq və yalnız nəticəni görmək üçün bu seçimi söndürün."
+      "title": "",
+      "description": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": ""
     },
     "invalidFormat": "Yanlış proxy formatı",
     "table": {
@@ -171,109 +192,125 @@
     "exportSelectedTooltip": "Seçilmiş proksiləri ixrac et.",
     "checkSelectedTooltip": "Seçilmiş proksiləri yoxla",
     "contextMenu": {
-      "copyAddress": "Ünvani kopyala",
-      "copyUsername": "İstifadəçi adını kopyala",
-      "copyPassword": "Şifrəni köçür",
-      "deleteProxy": "Proksini Sil"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "İdxal edilmiş proksiləri yoxlamaq istəyirsiniz?",
-      "description": "{{count}} proksi idxal etdiniz. İndi yoxlanılsın?",
-      "confirm": "Proksiləri Yoxla",
+      "description": "",
+      "confirm": "",
       "skip": "Keç"
     },
     "export": {
-      "format": "İxrac formatı",
-      "uri": "URI formatı (bütün tiplər)",
-      "http": "Yalnız HTTP (səviyyəli)",
-      "socks4": "Yalnız SOCKS4 (səviyyəli)",
-      "socks5": "Yalnız SOCKS5 (səviyyəli)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "İxrac etmək üçün proksi yoxdur"
     },
     "removeDialog": {
-      "title_one": "{{count}} proksi silinsin?",
-      "title_other": "{{count}} proksi silinsin?",
-      "description": "Bu, seçilmiş proksiləri və onların giriş məlumatlarını bu instansiyadan silir. Bunu geri qaytarmaq olmur.",
-      "confirm": "Proksiləri sil"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Şifrəni göstər",
-    "hidePassword": "Şifrəni gizlət"
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Hesab təminatçıları",
-    "addAccounts": "Hesab əlavə et",
-    "generateAccounts": "Hesablar yarat",
+    "getAccounts": "",
+    "addAccounts": "",
+    "generateAccounts": "",
     "filterPlaceholder": "Hesabları filtrlə...",
     "listImportToast": {
       "loading": "Hesablar idxal edilir... {{checked}}/{{total}} (Uğurlu: {{success}} Uğursuz: {{failed}})",
-      "allFailed": "Heç bir hesabı idxal etmək mümkün olmadı.",
+      "allFailed": "",
       "someFailed": "{{count}} hesab idxal olundu, {{failed}} hesabı idxal etmək mümkün olmadı.",
-      "noneFailed": "{{count}} hesab idxal olundu",
-      "error": "Hesabları idxal etmək mümkün olmadı.",
-      "noAccounts": "Idxal üçün hesab yoxdur"
+      "noneFailed": "",
+      "error": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "unknownError": "Naməlum xəta",
     "types": {
-      "OFFLINE": "Offline",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Təhlükəsizlik Məlumatları)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Cihaz Kodu)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Yeniləmə Tokeni)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Kukilər)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Giriş Tokeni)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Təhlükəsizlik Məlumatları)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Cihaz Kodu)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Hesab idxal edilir...",
-      "success": "Hesab idxal olundu",
-      "error": "Hesabı idxal etmək mümkün olmadı"
+      "success": "",
+      "error": ""
     },
     "generate": {
-      "title": "Offline Hesablar Yarat",
+      "title": "",
       "description": "Xüsusi ad formatı ilə offline Java hesabları yaradın.",
       "amount": "Miqdar",
-      "nameFormat": "Ad Formatı",
-      "nameFormatHelp": "Hesab nömrəsi üçün %d istifadə edin. Məsələn, Bot_%d adı ilə Bot_1 və Bot_2 kimi adlar yaradılır.",
-      "mode": "Mövcud Hesablar",
-      "modeHelp": "Mövcud hesablarla necə davranacağınızı seçin:\n\n• Mövcudları İgnore Et: Yalnız yeni adlarla hesablar yaradılır. Mövcud hesablar saxlanılır.\n\n• Mövcudları Əvəz Et: Bütün istənilən hesablar yaradılır. Eyni UUID-li hesablar əvəz olunur. Digər hesablar saxlanılır.\n\n• Hamısını Əvəz Et: Bütün mövcud hesablar silinir. Sonra yaradılan hesablar əlavə olunur.",
-      "modeIgnoreExisting": "Mövcudları İgnore Et",
-      "modeReplaceExisting": "Mövcudları Əvəz Et",
-      "modeReplaceAll": "Hamısını əvəz et",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Yarat",
       "generating": "Yaradılır...",
       "progress": "Hesablar yaradılır... {{checked}}/{{total}} (Uğur: {{success}} Uğursuz: {{failed}})",
-      "success": "{{count}} hesab yaradıldı",
-      "allFailed": "Heç bir hesab yaradılmadı",
-      "allExist": "Bütün istifadəçi adları artıq mövcuddur. Onları yenidən yaratmaq üçün \"Mövcudları Əvəz Et\" seçin.",
-      "error": "Hesabları yaratmaq mümkün olmadı",
-      "invalidAmount": "Zəhmət olmasa düzgün miqdar daxil edin (ən azı 1)",
-      "missingPlaceholder": "Ad formatında %d saxlayıcı olmalıdır"
+      "success": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "invalidAmount": "Ən azı 1 olan tam ədəd daxil edin.",
+      "missingNameFormat": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Offline",
-      "microsoftCredentials": "Microsoft Məlumatları",
-      "microsoftDeviceCode": "Microsoft Cihaz Kodu",
-      "microsoftRefreshToken": "Microsoft Yeniləmə Tokeni",
-      "microsoftCookies": "Microsoft Kukiləridir.",
-      "microsoftAccessToken": "Microsoft Giriş Tokeni",
-      "theAltening": "TheAltening Tokenu",
-      "altProviders": "Alternativ Təchizatçılar",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "{{type}} hesabları idxal et",
-        "description": "Hesablarınızı buraya yapışdırın, hər sətrin birində bir hesab olmalıdır"
+        "title": "{{type}} hesabları idxal et"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Hesablar silinir...",
-      "success": "{{count}} hesab silindi",
-      "error": "Hesabları silmək mümkün olmadı"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Növ",
-      "profileId": "Profil ID",
+      "profileId": "",
       "lastKnownName": "İstifadəçi adı",
       "searchProfileIds": "Profil ID-lərində axtarış...",
       "searchLastKnownNames": "Son məlum adlarda axtarış...",
@@ -281,10 +318,10 @@
     },
     "removeSelectedTooltip": "Seçilmiş hesabları sil",
     "contextMenu": {
-      "openConfig": "Ayarları aç",
-      "openMetadata": "Metadatanı Aç",
-      "copyProfileId": "Profil ID-ni Kopyala",
-      "copyUsername": "İstifadəçi adını kopyala"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "{{name}}-i tənzimləyin",
@@ -303,134 +340,124 @@
       "selectPage": "Parametrlər səhifəsini seçin",
       "noSearchResults": "Axtarışa uyğun heç bir parametr tapılmadı.",
       "matchesInheritedValue": "İrsi dəyərə uyğundur",
-      "instanceValue": "Instance dəyəri",
+      "instanceValue": "",
       "defaultValue": "Susmaya görə dəyər",
       "resetOverride": "İstisnanı sıfırla",
       "value": {
-        "notSet": "Təyin edilməyib",
-        "on": "Açıq",
-        "off": "Sönülü",
-        "empty": "Boş",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} qeyd",
-        "entries_other": "{{count}} qeyd",
-        "range": "Aralıq"
+        "entries_other": "{{count}} qeyd"
       },
       "source": {
-        "bot": "Bota xas dəyər",
-        "instance": "İnstansiyadan miras alınıb",
-        "default": "Standart dəyər istifadə olunur"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Cihaz Kodu İlə Doğrulama",
+      "title": "",
       "description": "Cihaz kodu axınını başlamazdan əvvəl seçimləri konfiqurasiya edin.",
-      "start": "Doğrulamaya Başla"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Cihaz Kodu İlə Doğrulama",
+      "title": "",
       "description": "Bağlamaq üçün Microsoft hesabınızla daxil olun.",
-      "openInBrowser": "Brauzerdə Aç",
+      "openInBrowser": "",
       "orManually": "Və ya kodu əl ilə daxil edin",
       "codeLabel": "Sizin kodunuz",
       "urlLabel": "Keçin"
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Ravealts ilə Hesab Alın",
       "description": "Ravealts API açarınızla Minecraft hesablarını alın.",
-      "apiKeyLabel": "API Açarı",
       "apiKeyPlaceholder": "Ravealts API açarınızı daxil edin",
-      "validate": "Doğrula",
-      "validating": "Doğrulanır...",
-      "keyValid": "Açar doğrulandı",
-      "keyInvalid": "Yanlış API açarı",
-      "credits": "Kreditlər: {{credits}}",
-      "stockTitle": "Mövcud Anbar",
       "noStock": "Anbarda hesab yoxdur",
-      "accountType": "Hesab Növü",
-      "amount": "Miqdar (1-10)",
-      "purchase": "Al və İdxal Et",
-      "purchasing": "Alınır...",
-      "purchaseSuccess": "{{count}} hesab alındı, idxal edilir...",
-      "purchaseError": "Alış uğursuz oldu: {{message}}",
+      "accountType": "",
       "networkError": "Ravealts API-ya qoşulmaq mümkün olmadı",
       "outOfStock": "Seçilmiş növ anbara daxil deyil",
       "insufficientBalance": "Kifayət qədər kredit yoxdur",
       "rateLimited": "Limitə çatıldı, bir az sonra yenidən cəhd edin"
     },
     "metadata": {
-      "openButton": "Metadatanı redaktə et",
+      "openButton": "",
       "title": "Metadata: {{name}}",
       "description": "Bu hesab üçün davamlı metadataya girişləri idarə edin. Hər bir girişdə məkan (namespace), açar (key) və JSON dəyəri var.",
       "namespacePlaceholder": "Məkan (Namespace)",
       "keyPlaceholder": "Açar",
       "valuePlaceholder": "Dəyər (JSON)",
       "noEntries": "Heç bir metadata girişi yoxdur. Yuxarıdan birini əlavə edin.",
-      "loadError": "Metadatanı yükləmək alınmadı",
+      "loadError": "",
       "loadErrorDescription": "",
       "retryLoad": "Təkrar cəhd et",
       "addSuccess": "Giriş əlavə olundu",
-      "addError": "Girişi əlavə etmək mümkün olmadı",
-      "updateError": "Girişi yeniləmək mümkün olmadı",
+      "addError": "",
+      "updateError": "",
       "deleteSuccess": "Qeyd silindi",
-      "deleteError": "Qeydi silmək mümkün olmadı",
+      "deleteError": "",
       "duplicateError": "Bu ad sahəsi və açarla giriş artıq mövcuddur",
       "invalidJson": "Yanlış JSON dəyəri",
-      "namespaceLabel": "Ad sahəsi",
+      "namespaceLabel": "Məkan (Namespace)",
       "keyLabel": "Açar",
       "valueLabel": "Dəyər",
-      "addEntryLegend": "Metadata qeydi əlavə et",
-      "addEntryButton": "Qeyd əlavə et",
-      "entryLegend": "Metadata qeydi",
+      "addEntryLegend": "",
+      "addEntryButton": "",
+      "entryLegend": "",
       "removeEntryButton": "Sil"
     },
     "removeDialog": {
-      "title_one": "{{count}} hesab silinsin?",
-      "title_other": "{{count}} hesab silinsin?",
-      "description": "Bu, seçilmiş hesabları, onların saxlanmış giriş məlumatlarını və botlarını bu instansiyadan silir. Bunu geri qaytarmaq olmur.",
-      "confirm": "Hesabları sil"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "İnstantın Metadatası.",
-    "description": "Bu instant üçün davamlı metadata qeydlərini idarə edin. Hər qeyd bir namespace, açar və JSON dəyərinə malikdir.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Məkan (Namespace)",
     "keyPlaceholder": "Açar",
     "valuePlaceholder": "Dəyər (JSON)",
+    "valueRequired": "",
     "noEntries": "Heç bir metadata girişi yoxdur. Yuxarıdan birini əlavə edin.",
-    "loadError": "Metadatanı yükləmək alınmadı",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Təkrar cəhd et",
     "addSuccess": "Giriş əlavə olundu",
-    "addError": "Girişi əlavə etmək mümkün olmadı",
-    "updateError": "Girişi yeniləmək mümkün olmadı",
+    "addError": "",
+    "updateError": "",
     "deleteSuccess": "Qeyd silindi",
-    "deleteError": "Qeydi silmək mümkün olmadı",
+    "deleteError": "",
     "duplicateError": "Bu ad sahəsi və açarla giriş artıq mövcuddur",
     "invalidJson": "Yanlış JSON dəyəri",
-    "namespaceLabel": "Ad sahəsi",
+    "namespaceLabel": "Məkan (Namespace)",
     "keyLabel": "Açar",
     "valueLabel": "Dəyər",
-    "addEntryLegend": "Metadata qeydi əlavə et",
-    "addEntryButton": "Qeyd əlavə et",
-    "entryLegend": "Metadata qeydi",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "Sil"
   },
   "bots": {
     "searchPlaceholder": "Botları axtar...",
-    "onlineCount": "{{online}} qoşulub / {{total}} cəmi",
-    "noBots": "Heç bir bot qurulmayıb. Hesab Ayarları səhifəsindən hesab əlavə edin.",
+    "onlineCount": "",
+    "noBots": "",
     "noBotsFound": "Axtarışınıza uyğun bot tapılmadı.",
     "loadingMore": "Daha çox yüklənir...",
     "showingCount": "{{total}}-dən {{loaded}} göstərilir",
     "allLoaded": "Bütün {{total}} bot yükləndi",
-    "online": "Qoşulub",
-    "offline": "Bağlantı kəsilib",
-    "notJoined": "Qoşulmayıb",
+    "online": "Bağlandı",
+    "offline": "",
+    "notJoined": "",
     "connectionPhase": {
       "connecting": "Bağlanır",
-      "connected": "Daxil olunur",
-      "spawned": "Qoşulub",
+      "connected": "",
+      "spawned": "Bağlandı",
       "died": "Ölü",
-      "disconnected": "Bağlantı kəsilib",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
     "runtimeState": {
@@ -442,12 +469,13 @@
       "waiting": "Gözləyir",
       "stopped": "Dayandırılıb"
     },
-    "backToBots": "Botlara qayıt",
+    "backToBots": "",
+    "demoControls": "",
     "tabs": {
-      "overview": "Bot görünüşü",
+      "overview": "",
       "inventory": "İnventar",
-      "controls": "İdarəetmə",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": ""
     },
     "terminalPanel": {},
     "connectionPanel": {
@@ -456,27 +484,38 @@
       "unavailable": "Mövcud deyil"
     },
     "positionPanel": {
-      "title": "Mövqe & Fırlanma",
+      "title": "",
       "position": "Mövqe",
       "rotation": "Fırlanma",
-      "offline": "Botun bağlantısı kəsilib. Mövqe məlumatları yalnız bot qoşulduqda mövcuddur."
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Çat Mesajları"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "commandPanel": {
-      "title": "Bot Əmrləri",
+      "title": "",
       "placeholder": "Bu bota əmr göndərin..."
     },
     "povPanel": {
-      "title": "Botun Baxışı",
+      "title": "",
       "capture": "Çəkmək",
       "refresh": "Yenilə",
       "auto": "Avto",
       "startAutoRefresh": "Avto-yeniləməni başlat (1 saniyəlik interval)",
       "stopAutoRefresh": "Avto-yeniləməni dayandır",
       "clickToCapture": "Botun baxış bucağını göstərmək üçün \"Çəkmək\" düyməsini klikləyin",
-      "offline": "Bot oflayndadır. Baxış bucağı yalnız bot qoşulduqda əlçatandır."
+      "offline": ""
     },
     "statsPanel": {
       "health": "Sağlamlıq",
@@ -485,44 +524,48 @@
       "experience": "Təcrübə",
       "level": "Səviyyə",
       "toNextLevel": "növbəti səviyyəyə qədər",
-      "gameMode": "Oyun Rejimi",
+      "gameMode": "",
       "survival": "Sağ qalma",
       "creative": "Yaradıcı",
       "adventure": "Macəra",
       "spectator": "Nəzarətçi",
       "unknown": "Naməlum",
-      "offline": "Botun bağlantısı kəsilib. Statistikalar yalnız bot qoşulduqda əlçatandır."
+      "offline": ""
     },
     "inventoryPanel": {
       "title": "İnventar",
       "actionRejected": "",
       "hotbar": "Qısa Panel",
-      "main": "Əsas Ehtiyat",
+      "main": "",
       "items": "əşyalar",
       "carrying": "Daşıyır",
-      "dropOne": "Birini At",
-      "dropAll": "Hamısını At",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Bağla",
-      "clickHint": "Sol klik: götür/burax | Sağ klik: yarı/bir | Shift+klik: tez hərəkət | Orta klik: isti panel slotunu seç",
-      "offline": "Botun bağlantısı kəsilib. Ehtiyat yalnız bot qoşulduqda əlçatandır.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Reseptlər",
         "enchantments": "Sehrləmələr",
         "patterns": "Naxışlar",
         "trades": "Ticarətlər",
-        "beaconEffects": "Mayak Effektləri",
-        "crafterSlots": "Slot İdarəetməsi",
-        "lecternControls": "Kitab İdarəetməsi",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Əməliyyatlar",
-        "creativeTabs": "Yaradıcı vərəqlər"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Mətn Girişi",
-        "anvilRename": "Əşyaya ad ver",
-        "creativeSearch": "Əşya axtar"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Kitab Məzmunu",
+        "title": "",
         "emptyPage": "(Boş səhifə)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +573,161 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Əşyanı məhv et",
+      "destroyItem": "",
       "clickHints": {
-        "left": "Sol klik: götür və ya qoy",
-        "right": "Sağ klik: yarısını götür və ya birini qoy",
-        "shift": "Shift+klik: sürətli köçür",
-        "middle": "Orta klik: aktiv slot kimi seç"
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
       }
     },
     "visualPanel": {
-      "title": "İstiqamət və dünya",
-      "compass": "Baxılan İstiqamət",
-      "lookDirection": "Baxış Buçağı",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Yuxarıya baxır",
       "lookingDown": "Aşağıya baxır",
       "lookingStraight": "Birbaşa baxır",
-      "worldInfo": "Dünya Məlumatı",
+      "worldInfo": "",
       "dimension": "Ölçü",
       "biome": "Biom",
-      "offline": "Botun bağlantısı kəsilib. Vizual məlumatlar yalnız bot qoşulduqda əlçatandır."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Bot Fəaliyyətləri",
-      "leftClick": "Sol Klik",
-      "rightClick": "Sağ Klik",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Obyekti hücum et və ya bloku sındır",
       "rightClickDescription": "Əşyadan istifadə et və ya qarşılıqlı təsir et",
-      "offline": "Botun bağlantısı kəsilib. Fəaliyyətlər yalnız bot qoşulu olduqda mövcuddur."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Hərəkət İdarəetməsi",
+      "title": "",
       "movement": "Hərəkət (WASD)",
-      "forward": "İrəli Hərəkət et (W)",
-      "backward": "Geriyə Hərəkət et (S)",
-      "left": "Sola Yanla (A)",
-      "right": "Sağa Yanla (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Tullan",
       "sneak": "Sürün",
       "sprint": "Qaç",
       "stop": "Dayandır",
-      "rotation": "Baxış İstiqaməti",
-      "lookUp": "Yuxarıya bax",
-      "lookDown": "Aşağı bax",
-      "lookLeft": "Sola bax",
-      "lookRight": "Sağa bax",
-      "offline": "Botun bağlantısı kəsilib. Hərəkət idarəetməsi yalnız bot qoşulu olduqda mövcuddur."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": ""
     },
     "dialogPanel": {
-      "title": "Server Dialoqu",
+      "title": "",
       "noDialog": "Hazırda heç bir server dialoqu göstərilmir.",
       "dialogType": "Növ",
       "dialogId": "Dialoq İD-si",
       "notice": "Bildiriş",
       "confirmation": "Təsdiq",
-      "multiAction": "Çoxsaylı Fəaliyyət",
-      "serverLinks": "Server Keçidləri",
-      "dialogList": "Dialoq Siyahısı",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Naməlum",
       "dismiss": "Bağla",
       "submit": "Təsdiqlə",
-      "offline": "Botun bağlantısı kəsilib. Dialoqlar yalnız bot qoşulu olduqda mövcuddur."
+      "offline": ""
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Hamısı",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Bağlandı",
+      "starting": "Başladılır",
+      "retrying": "Təkrar cəhd edilir",
+      "failed": "Uğursuz oldu",
+      "stopping": "Dayandırılır",
+      "stopped": "Dayandırılıb"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Bot görünüşü",
-      "touchControlling": "Bu botu siz idarə edirsiniz. Dayanmaq üçün \"Release control\" istifadə edin.",
-      "popupBlocked": "Bot görünüşü pəncərəsini ayırmaq üçün açılan pəncərələrə icazə verin.",
-      "windowTitle": "SoulFire bot görünüşü",
-      "fullscreenUnavailable": "Bu pəncərədə tam ekran əlçatan deyil.",
-      "textInputLabel": "Minecraft mətn girişi",
-      "videoLabel": "Canlı bot görünüşü",
-      "touchMove": "Hərəkət",
-      "audioError": "Səsi başlatmaq alınmadı.",
-      "startError": "Bot görünüşünü başlatmaq alınmadı.",
-      "releaseHint": "Klaviatura və siçanı azad etmək üçün {{shortcut}} basın.",
-      "captureHint": "Görünüşə klikləyin və klaviatura ilə siçanın tutulmasına icazə verin.",
-      "audioWaiting": "Bot görünüşünün qoşulması gözlənilir.",
-      "audioWatchFirst": "Səsdən istifadə üçün botu izləyin.",
-      "audioUpdateServer": "Bot görünüşündə səsdən istifadə üçün serveri yeniləyin.",
-      "muteAudio": "Səsi söndür",
-      "unmuteAudio": "Səsi aç",
-      "audioStarting": "Səs başladılır...",
-      "mute": "Səssiz et",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
+      "mute": "Səsi söndür",
       "unmute": "Səsi aç",
-      "audio": "Səs",
-      "audioUnavailable": "Səs əlçatan deyil",
-      "volume": "Bot görünüşünün səs səviyyəsi",
-      "reconnect": "Yenidən qoşul",
-      "showWindow": "Bot görünüşü pəncərəsini göstər",
-      "attachWindow": "Bot görünüşü pəncərəsini birləşdir",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Tullan",
-        "sneak": "Gizlən",
-        "attack": "Hücum",
-        "use": "İstifadə et",
+        "sneak": "Sürün",
+        "attack": "",
+        "use": "",
         "inventory": "İnventar",
-        "keyboard": "Klaviatura",
-        "closeMenu": "Menyunu bağla"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "Bot görünüşü üçün qoşulmuş SoulFire serveri lazımdır."
+      "needsServer": "",
+      "connectTimeout": "",
+      "inputUpdateServer": "",
+      "decoderUnsupported": "",
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -636,19 +735,19 @@
       "noData": "Məlumat yoxdur"
     },
     "summary": {
-      "online": "Qoşulub",
+      "online": "Bağlandı",
       "packetsPerSecond": "Paket/s",
       "traffic": "Trafik",
       "health": "Sağlamlıq",
       "tick": "Tik"
     },
     "botsOnline": {
-      "title": "Qoşulmuş botlar",
-      "online": "Qoşulub",
+      "title": "",
+      "online": "Bağlandı",
       "total": "Cəmi"
     },
     "packets": {
-      "title": "Paketlər / Saniyə",
+      "title": "",
       "sent": "Göndərilən/s",
       "received": "Alınan/s"
     },
@@ -658,27 +757,27 @@
       "download": "Yüklə (download)"
     },
     "tick": {
-      "title": "Tik Müddəti",
+      "title": "",
       "avg": "Orta (ms)",
       "max": "Maksimum (ms)"
     },
     "healthFood": {
-      "title": "Sağlamlıq / Yemək",
-      "health": "Orta Sağlamlıq",
-      "food": "Orta Yemək"
+      "title": "",
+      "health": "",
+      "food": ""
     },
     "chunksEntities": {
-      "title": "Bloklar / Entitilər",
+      "title": "",
       "chunks": "Bloklar",
       "entities": "Entitilər"
     },
     "connections": {
-      "title": "Bağlantı Hadisələri",
+      "title": "",
       "connections": "Bağlantılar",
       "disconnections": "Bağlantıların kəsilməsi"
     },
     "healthDistribution": {
-      "title": "Sağlamlıq bölgüsü",
+      "title": "",
       "bots": "Botlar"
     },
     "dimensions": {
@@ -686,59 +785,73 @@
       "bots": "Botlar"
     },
     "gameModes": {
-      "title": "Oyun rejimləri",
+      "title": "",
       "bots": "Botlar"
     },
     "positions": {
-      "title": "Bot Mövqeləri (XZ)",
+      "title": "",
       "bot": "Bot"
     }
   },
   "scripts": {
-    "title": "Vizual Skriptlər",
-    "description": "Vizual düyün əsaslı redaktor vasitəsi ilə avtomatlaşdırma skriptləri yaradın.",
-    "experimentalTitle": "Eksperimental Funksiya",
+    "title": "",
+    "description": "",
+    "experimentalTitle": "",
     "experimentalWarning": "Bu funksiya eksperimentaldır. Gələcək yeniləmələr mövcud skriptlərin işləməsinə təsir edə bilər. Onu ehtiyatla istifadə edin.",
-    "createScript": "Skript Yarat",
-    "createScriptTitle": "Yeni Skript Yarat",
-    "createScriptDescription": "Bu instansiya üçün yeni vizual skript yaradın. Skriptlər bot fəaliyyətlərini avtomatlaşdıra və hadisələrə cavab verə bilər.",
-    "scriptName": "Skript Adı",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Skript adını daxil edin...",
     "scriptDescription": "Təsvir",
     "scriptDescriptionPlaceholder": "Bu skriptin nə etdiyini təsvir edin...",
     "create": "Yarat",
-    "createSuccess": "Skript uğurla yaradıldı",
-    "createError": "Skript yaratmaq uğursuz oldu",
-    "noScripts": "Hələ Skript yoxdur",
-    "noScriptsDescription": "Vizual düyün əsaslı redaktor vasitəsi ilə bot hərəkətlərini avtomatlaşdırmaq üçün ilk skriptinizi yaradın.",
-    "createFirstScript": "Skript Yarat",
-    "running": "İşləyir",
-    "paused": "Dayandırılıb",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "düyünlər",
     "noDescription": "Təsvir yoxdur",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Hamısı",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Adı"
+    },
+    "noMatches": "",
     "edit": "Redaktə et",
-    "pause": "Fasilə",
-    "pauseSuccess": "Skript dayandırıldı",
-    "pauseError": "Skripti dayandırmaq mümkün olmadı",
-    "resume": "Davam et",
-    "resumeSuccess": "Skript davam etdirildi",
-    "resumeError": "Skripti davam etdirmək mümkün olmadı",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Sil",
-    "deleteSuccess": "Skript uğurla silindi",
-    "deleteError": "Skriptin silinməsi mümkün olmadı",
-    "saveSuccess": "Skript uğurla yadda saxlanıldı",
-    "saveError": "Skriptin yadda saxlanılması mümkün olmadı",
-    "activateSuccess": "Skript aktivləşdirildi",
-    "activateError": "Skriptin aktivləşdirilməsi uğursuz oldu",
-    "deactivateSuccess": "Skript deaktiv edildi",
-    "untitledScript": "Adsız Skript",
-    "saveFirstBeforeActivating": "Aktiv etməzdən əvvəl skripti əvvəlcə yadda saxlayın",
-    "activating": "Skript aktivləşdirilir...",
-    "activated": "Skript aktivləşdirildi",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skript tamamlandı",
-    "executionCompletedSuccess": "Skript uğurla tamamlandı",
-    "deactivated": "Skript deaktiv edildi",
-    "deactivatedByUser": "Skript istifadəçi tərəfindən deaktiv edildi",
+    "executionCompletedSuccess": "Skript tamamlandı",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Skriptin icrası uğursuz oldu",
     "executionError": "İcra xətası: {{error}}",
     "monitoringError": "",
@@ -747,23 +860,23 @@
     "nodeCompleted": "Düyün tamamlandı: {{nodeId}}",
     "nodeError": "Düyün xətası: {{error}}",
     "contextMenu": {
-      "edit": "Skripti Redaktə Et",
-      "pause": "Fasilə",
-      "resume": "Davam et",
-      "delete": "Skripti Sil",
-      "copyScriptName": "Skript adını köçür",
-      "copyScriptId": "Skript ID-sini köçür"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Skriptlərə Qayıt",
+        "backToScripts": "",
         "save": "Yadda saxla",
-        "saveTooltip": "Skripti yadda saxla",
-        "resume": "Davam et",
-        "resumeTooltip": "Skriptin icrasını davam etdir",
-        "pause": "Fasilə",
-        "pauseTooltip": "Skriptin icrasını dayandırın",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Yadda saxlanılmayıb",
         "unsavedChanges": "Saxlanılmamış dəyişikliklər",
         "clearCanvas": "Kanvası təmizlə",
@@ -772,46 +885,58 @@
         "fit": "Sığdır",
         "export": "Skripti ixrac et",
         "import": "Skripti idxal et",
-        "exportSuccess": "Skript uğurla ixrac edildi",
-        "importSuccess": "Skript uğurla idxal edildi",
-        "importError": "Skripti idxal etmək alınmadı"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": ""
       },
       "palette": {
-        "title": "Düyün Palitrası",
+        "title": "",
         "search": "Düyünləri axtarın...",
-        "noResults": "Axtarışınıza uyğun düyün yoxdur",
-        "noResultsDescription": "Başqa söz yoxlayın və ya cari filtri təmizləyin."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "İcra Jurnalları",
+        "title": "",
         "clearTitle": "Jurnalları təmizlə",
-        "noLogs": "Hələ jurnal yoxdur. İcra jurnallarını görmək üçün skripti işə salın.",
+        "noLogs": "",
         "entries_one": "{{count}} qeyd",
         "entries_other": "{{count}} qeyd"
       },
       "contextMenu": {
         "duplicate": "Dublikat",
         "rename": "Adını dəyiş",
-        "disconnectAll": "Hamısını ayır",
+        "disconnectAll": "",
         "collapse": "Yığışdır",
         "expand": "Genişlət",
         "mute": "Səsi söndür",
         "unmute": "Səsi aç",
-        "showPreview": "İlkin Baxışı Göstər",
-        "hidePreview": "İlkin Baxışı Gizlət",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Sil"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Qovşağı genişlət",
         "collapse": "Qovşağı daralt",
-        "avgTime": "Orta icra vaxtı: {{avg}} ms (son {{count}} icra)",
-        "preview": "Önizləmə"
+        "avgTime": "",
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": ""
       },
       "debug": {
         "copyValue": "Cari dəyəri kopyala",
         "clearHistory": "Tarixçəni təmizlə",
-        "current": "Cari ({{time}}):",
-        "noValue": "Hələ dəyər alınmayıb"
+        "current": "",
+        "noValue": ""
       },
       "edge": {
         "direction": "Kənar istiqaməti"
@@ -824,35 +949,36 @@
       },
       "group": {
         "returnToRoot": "Kökə qayıt (Tab)",
-        "root": "Kök",
-        "exitHint": "Çıxmaq üçün <key>Tab</key> basın",
-        "editHint": "Redaktə üçün iki dəfə klikləyin",
-        "noInputs": "Giriş təyin edilməyib",
-        "noOutputs": "Çıxış təyin edilməyib"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Tez əlavə qovşağı menyusu",
         "searchPlaceholder": "Düyünləri axtarın...",
-        "noResults": "Düyün tapılmadı",
-        "noResultsDescription": "Başqa axtarış sözü yoxlayın.",
-        "navigate": "Hərəkət et",
-        "select": "Seçmək üçün Enter",
-        "close": "Bağlamaq üçün Esc"
+        "noResults": "",
+        "noResultsDescription": "Başqa axtarış sözünü yoxlayın.",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Dəyişiklikləri nəzərdən keçir",
-        "title": "Yadda saxlanmamış dəyişikliklər",
-        "description": "Son yadda saxlamadan bəri dəyişikliklər.",
-        "nodesAdded_one": "{{count}} düyün əlavə edildi",
-        "nodesAdded_other": "{{count}} düyün əlavə edildi",
-        "nodesRemoved_one": "{{count}} düyün silindi",
-        "nodesRemoved_other": "{{count}} düyün silindi",
-        "nodesModified_one": "{{count}} düyün dəyişdirildi",
-        "nodesModified_other": "{{count}} düyün dəyişdirildi",
-        "edgesAdded_one": "{{count}} əlaqə əlavə edildi",
-        "edgesAdded_other": "{{count}} əlaqə əlavə edildi",
-        "edgesRemoved_one": "{{count}} əlaqə silindi",
-        "edgesRemoved_other": "{{count}} əlaqə silindi"
+        "title": "Saxlanılmamış dəyişikliklər",
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +991,647 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Quru İcra",
-        "title": "Quru İcra Skripti",
-        "description": "Seçilmiş tetikçidən skript işlədin, saxta girişlərdən istifadə edin.",
-        "triggerNode": "Tetikçi qovşağı",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Tetikçi seçin...",
-        "triggerDescription": "Saxta giriş dəyərləri ilə işlədiləcək tetikçi qovşağı seçin.",
-        "mockInputs": "Saxta Girişlər",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} dəyər",
-        "start": "Quru İcranı Başlat",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Skript Kotası",
-        "title": "Skript Kotası",
+        "tooltip": "",
+        "title": "",
         "description": "Bu skript üçün resurs limitlərini tənzimləyin. Boş sahələr serverin standart dəyərlərini istifadə edəcəkdir.",
-        "maxExecutionCount": "Maksimum İcra Sayı",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Bir tetikçi istəyi üçün maksimum qovşaq icra sayı",
         "maxExecutionTime": "Maks İcra Müddəti (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Bir tetikçi icrası üçün maksimum divar saatı vaxtı",
-        "maxConcurrentTriggers": "Maksimum Eyni Anda Aktiv Tetikçilər",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "Maksimum eyni anda aktiv tetikçi istəklər",
-        "maxStateStoreEntries": "Maksimum Hal Qeydiyyatları",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Limitsiz",
         "maxStateStoreEntriesDescription": "Skript hal mağazasında maksimum qeyd sayı",
-        "disableTimeouts": "Timeoutları söndür",
+        "disableTimeouts": "",
         "disableTimeoutsDescription": "Qovşaq və məlumat kənarı zamanı timeoutlar söndürüləcək",
-        "save": "Kotaları yadda saxla",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "{{label}} sırasını dəyiş",
-        "empty": "Gələn dəyər yoxdur",
-        "title": "Çoxlu giriş: bir neçə əlaqə qəbul edir",
-        "connectTo": "Dəyərləri {{label}} girişinə qoşun"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Skript silinsin?",
-      "description": "Bu, \"{{name}}\" elementini həmişəlik silir. Bunu geri qaytarmaq olmur.",
-      "descriptionUnnamed": "Bu, skripti həmişəlik silir. Bunu geri qaytarmaq olmur."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "İcra statistikası: {{executed}}/{{max}} düyün icra edildi"
+    "executionStats": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Əməliyyat",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Qoşul",
+    "back": "Geri",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Hamısı",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Qoşul",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Cəmi",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Heç biri",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "bağlandı",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "{{count}} botu yenidən başladın",
+    "restartGroup_other": "{{count}} bot yenidən başladın",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "İstəğe bağlı",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Bütün parametrləri açın",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Hesablar",
+      "reviewProxies": "Proksilər",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "action_one": "{{count}} botu başladın",
+      "action_other": "{{count}} botu başladın",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Yenidən xoş gəldin, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Serverin Metrikləri",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "İstifadə olunan Yığın (Heap)",
+        "heapUsed": "",
         "threads": "Thread-lər",
-        "botsOnline": "Qoşulmuş botlar",
+        "botsOnline": "",
         "uptime": "İşləmə vaxtı"
       },
       "cpuUsage": {
-        "title": "CPU İstifadəsi (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Heap Yaddaşı (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Thread Sayı"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Qoşulmuş botlar (bütün instansiyalar)"
+        "title": ""
       },
       "legend": {
-        "process": "Proses",
+        "process": "",
         "system": "Sistem",
-        "used": "İstifadə olunan",
-        "committed": "Ayrılmış",
-        "max": "Maks.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Cəmi",
-        "daemon": "Daemon",
-        "online": "Qoşulub"
+        "daemon": "",
+        "online": "Bağlandı"
       }
     },
     "instancesChart": {
-      "title": "Bu serverdəki ümumi instanslar",
-      "instances": "Instansiyalar",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Vəziyyət",
         "active": "Aktiv",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Rol",
           "placeholder": "Rol seçin",
-          "description": "İstifadəçinin rolu. Adminlər istifadəçiləri və bütün instansları idarə edə bilər. İstifadəçilər yalnız öz instanslarını idarə edə bilər.",
+          "description": "",
           "user": "İstifadəçi",
           "admin": "Admin"
         }
@@ -85,7 +85,7 @@
       "description": "Bu serverə yeni istifadəçi əlavə edin",
       "form": {
         "cancel": "Ləğv et",
-        "add": "İstifadəçi əlavə et"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,54 +99,54 @@
     "profileConflict": "",
     "addToast": {
       "loading": "İstifadəçi əlavə olunur...",
-      "success": "İstifadəçi əlavə edildi",
-      "error": "İstifadəçi əlavə etmək alınmadı"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "İstifadəçi yenilənir...",
-      "success": "İstifadəçi yeniləndi",
-      "error": "İstifadəçi yenilənə bilmədi"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "İstifadəçilər silinir...",
-      "success": "İstifadəçilər silindi",
-      "error": "İstifadəçiləri silmək mümkün olmadı"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "İstifadəçilər çıxarılır...",
-      "success": "İstifadəçilər çıxarıldı",
-      "error": "İstifadəçiləri çıxarmaq mümkün olmadı"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "İstifadəçi adı",
       "email": "Email",
       "role": "Rol",
       "createdAt": "Yaradılıb",
-      "minIssuedAt": "Sessiyaların etibarlılıq başlanğıcı",
+      "minIssuedAt": "",
       "actions": "Əməliyyatlar",
       "searchUsernames": "İstifadəçi adlarında axtarış...",
       "searchEmails": "E-poçtlarda axtarış...",
       "searchCreatedAts": "Yaradılma tarixində axtarış...",
-      "searchMinIssuedAts": "Sessiya tarixlərində axtar..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Seçilmiş istifadəçiləri sil",
-    "logOutSelectedTooltip": "Seçilmiş istifadəçiləri çıxış etdir",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "İstifadəçini düzəliş et",
+      "editUser": "",
       "impersonate": "Təqlid et",
-      "copyUserId": "İstifadəçi ID-sini köçür"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "{{count}} istifadəçi silinsin?",
-      "title_other": "{{count}} istifadəçi silinsin?",
-      "description": "Bu, seçilmiş istifadəçiləri və onların girişini həmişəlik silir. Bunu geri qaytarmaq olmur.",
-      "confirm": "İstifadəçiləri sil"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "{{count}} istifadəçi sistemdən çıxarılsın?",
-      "title_other": "{{count}} istifadəçi sistemdən çıxarılsın?",
-      "description": "Bu, seçilmiş istifadəçilərin bütün sessiyalarını və tokenlərini bitirir. Onlar yenidən daxil olmalıdır.",
-      "confirm": "İstifadəçiləri sistemdən çıxar"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

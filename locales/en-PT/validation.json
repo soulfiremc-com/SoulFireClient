@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Enter a value.",
-    "null": "Enter a value.",
-    "number": "Enter a value.",
-    "boolean": "Enter a value.",
-    "array": "Enter a value.",
-    "object": "Enter a value.",
-    "nan": "Enter a value.",
-    "infinity": "Enter a value."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Enter a number.",
-    "null": "Enter a number.",
-    "string": "Enter a number.",
-    "boolean": "Enter a number.",
-    "array": "Enter a number.",
-    "object": "Enter a number.",
-    "nan": "Enter a number.",
-    "infinity": "Enter a number."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Enter a valid value.",
-    "null": "Enter a valid value.",
-    "number": "Enter a valid value.",
-    "string": "Enter a valid value.",
-    "boolean": "Enter a valid value.",
-    "array": "Enter a valid value.",
-    "nan": "Enter a valid value.",
-    "infinity": "Enter a valid value."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Enter a valid email address.",
-  "url": "Enter a valid URL.",
-  "jwt": "Enter a valid token.",
-  "emailTooLong": "Use 255 characters or fewer.",
-  "jarSource": "Choose the official server or a custom jar.",
-  "generationMode": "Choose how to handle existing accounts.",
-  "userRole": "Choose a role."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Selamat datang kembali, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Metrix Server",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Heap Digunakan",
+        "heapUsed": "",
         "threads": "Thread",
-        "botsOnline": "Bot terhubung",
+        "botsOnline": "",
         "uptime": "Waktu Aktif"
       },
       "cpuUsage": {
-        "title": "Penggunaan CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Memori Heap (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Jumlah Thread"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bot terhubung (semua instansi)"
+        "title": ""
       },
       "legend": {
-        "process": "Proses",
+        "process": "",
         "system": "Sistem",
-        "used": "Terpakai",
-        "committed": "Dialokasikan",
-        "max": "Maks",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Total",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Terhubung"
       }
     },
     "instancesChart": {
-      "title": "Total instansi di server ini",
-      "instances": "Instansi",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Status",
         "active": "Aktif",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Peran",
           "placeholder": "Pilih peran",
-          "description": "Peran pengguna. Admin dapat mengelola pengguna dan semua instansi. Pengguna hanya dapat mengelola instansi mereka sendiri.",
+          "description": "",
           "user": "Pengguna",
           "admin": "Admin"
         }
@@ -85,7 +85,7 @@
       "description": "Tambahkan pengguna baru ke server ini",
       "form": {
         "cancel": "Batal",
-        "add": "Tambah Pengguna"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -93,58 +93,58 @@
       "description": "Perbarui informasi pengguna",
       "form": {
         "cancel": "Batal",
-        "update": "Perbarui Pengguna"
+        "update": "Perbarui pengguna"
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Menambah pengguna...",
-      "success": "Pengguna berhasil ditambahkan",
-      "error": "Gagal menambah pengguna"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Memperbarui pengguna...",
-      "success": "Pengguna berhasil diperbarui",
-      "error": "Gagal memperbarui pengguna"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Menghapus pengguna...",
-      "success": "Pengguna berhasil dihapus",
-      "error": "Gagal menghapus pengguna"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Mengeluarkan pengguna...",
-      "success": "Pengguna berhasil keluar",
-      "error": "Gagal mengeluarkan pengguna"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Nama Pengguna",
       "email": "Email",
       "role": "Peran",
       "createdAt": "Dibuat",
-      "minIssuedAt": "Sesi berlaku sejak",
+      "minIssuedAt": "",
       "actions": "Aksi",
       "searchUsernames": "Cari nama pengguna...",
       "searchEmails": "Cari email...",
       "searchCreatedAts": "Cari tanggal pembuatan...",
-      "searchMinIssuedAts": "Cari tanggal sesi..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Hapus pengguna yang dipilih",
-    "logOutSelectedTooltip": "Keluar dari pengguna yang dipilih",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Edit Pengguna",
+      "editUser": "",
       "impersonate": "Menjadi Pengguna Ini",
-      "copyUserId": "Salin ID Pengguna"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "Hapus {{count}} pengguna?",
-      "description": "Tindakan ini menghapus pengguna yang dipilih dan aksesnya secara permanen. Tindakan ini tidak dapat dibatalkan.",
-      "confirm": "Hapus pengguna"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "Keluarkan {{count}} pengguna?",
-      "description": "Tindakan ini mengakhiri semua sesi dan token pengguna yang dipilih. Mereka harus masuk lagi.",
-      "confirm": "Keluarkan pengguna"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

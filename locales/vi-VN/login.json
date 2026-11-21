@@ -1,5 +1,13 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": ""
+  },
   "header": {
+    "backgroundPattern": "",
     "image": {
       "alt": "Logo SoulFire"
     },
@@ -7,64 +15,82 @@
   },
   "newUser": "Mới sử dụng SoulFire? Đọc <a>hướng dẫn bắt đầu</a>.",
   "connect": {
-    "title": "Kết nối tới máy chủ SoulFire",
-    "description": "Chọn loại máy chủ SoulFire bạn muốn kết nối.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Máy chủ tích hợp (cục bộ)",
-      "description": "Chạy máy chủ SoulFire trên thiết bị này. Thiết lập sẽ được thực hiện tự động. Tùy chọn này yêu cầu ứng dụng trên máy tính hoặc Android."
+      "title": "",
+      "description": "",
+      "webDescription": ""
     },
     "dedicated": {
-      "title": "Máy chủ riêng (từ xa)",
-      "description": "Kết nối đến máy chủ SoulFire từ xa với địa chỉ và token của máy chủ."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Máy chủ demo",
-      "description": "Cung cấp một máy chủ chỉ đọc với dữ liệu demo. SoulFire sẽ không lưu các thay đổi."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Đang chuẩn bị khởi động máy chủ tích hợp...",
+    "preparing": "",
     "toast": {
-      "loading": "Đang khởi động máy chủ tích hợp...",
-      "success": "Máy chủ tích hợp đã khởi động trong {{time}} giây",
-      "error": "Không thể khởi động máy chủ tích hợp"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "retry": "Thử lại",
+    "retry": "",
     "reset": {
-      "button": "Đặt lại dữ liệu",
+      "button": "",
       "loading": "Đang đặt lại dữ liệu SoulFire...",
-      "success": "Đã đặt lại dữ liệu SoulFire thành công. Hãy thử bắt đầu lại.",
-      "error": "Đặt lại dữ liệu SoulFire thất bại"
+      "success": "",
+      "error": "",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Máy chủ tích hợp chạy trên máy tính của bạn. Bạn có thể thay đổi các tham số khởi động Java ở bên dưới.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "Tham số JVM",
         "description": "Tham số Java VM cho SoulFire. Thêm <bold>-Xmx4G</bold> để sử dụng 4 GB RAM. Mặc định là 25% dung lượng RAM khả dụng.",
-        "placeholder": "Tham số JVM của bạn tại đây"
+        "placeholder": "Tham số JVM của bạn tại đây",
+        "reset": ""
       },
       "back": "Quay lại",
-      "start": "Bắt đầu",
+      "start": "",
       "jar": {
-        "title": "Jar máy chủ",
-        "official": "Chính thức",
-        "custom": "Tùy chỉnh",
-        "officialTitle": "Máy chủ SoulFire chính thức",
-        "customTitle": "Jar máy chủ tùy chỉnh",
-        "officialDescription": "Tải xuống và xác minh bản phát hành SoulFire tương ứng.",
-        "customDescription": "Chạy một tệp jar đã nhập. SoulFire không xác minh hay cập nhật tệp này.",
-        "import": "Nhập jar",
-        "importSuccess": "Đã nhập {{name}}",
-        "importError": "Không thể nhập jar SoulFire tùy chỉnh",
-        "selectCustomFirst": "Hãy nhập và chọn một jar tùy chỉnh trước khi khởi động.",
+        "title": "",
+        "official": "",
+        "custom": "",
+        "officialTitle": "",
+        "customTitle": "",
+        "officialDescription": "",
+        "customDescription": "",
+        "import": "",
+        "remove": "",
+        "importSuccess": "",
+        "importError": "",
+        "selectCustomFirst": "",
         "dialog": {
-          "filter": "Tệp lưu trữ Java",
-          "title": "Chọn jar máy chủ SoulFire"
+          "filter": "",
+          "title": ""
         }
       }
     },
     "mobile": {
-      "description": "Để chạy máy chủ tích hợp trên thiết bị di động, bạn cần thực hiện một số bước thủ công.",
+      "description": "",
       "form": {
         "termuxCommand": {
           "title": "Lệnh Termux",
@@ -85,25 +111,80 @@
     "autoStart": {
       "title": "Tự động bắt đầu lần sau",
       "description": "Bỏ qua bước chọn máy chủ và sử dụng các thiết lập này khi SoulFire mở."
-    }
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "failedAttempts_other": ""
   },
   "dedicated": {
-    "description": "Nhập địa chỉ và token của máy chủ SoulFire.",
-    "toast": {
-      "loading": "Đang kết nối tới máy chủ...",
-      "success": "Đã kết nối tới máy chủ",
-      "error": "Kết nối tới máy chủ thất bại"
-    },
+    "description": "",
     "form": {
       "address": {
         "title": "Địa chỉ",
-        "description": "Địa chỉ máy chủ SoulFire của bạn.",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Mã token bí mật",
-        "description": "Token để xác thực với máy chủ."
+        "description": ""
       },
       "email": {
         "title": "Email",
@@ -113,14 +194,14 @@
       "back": "Quay lại",
       "useToken": "Dùng token",
       "useEmail": "Dùng email",
-      "login": "Đăng nhập"
+      "login": ""
     }
   },
   "emailCode": {
     "description": "Nếu bạn đã có tài khoản, chúng tôi đã gửi một mã đến <bold>{{email}}</bold>. Nhập mã đó bên dưới.",
     "toast": {
       "loading": "Đang kiểm tra mã...",
-      "success": "Đã đăng nhập",
+      "success": "",
       "error": "Mã không hợp lệ"
     },
     "back": "Quay lại"

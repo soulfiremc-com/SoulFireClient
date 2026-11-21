@@ -4,16 +4,45 @@
   "cancel": "cancel k?",
   "save": "SAEV",
   "saving": "SAEVIN...",
+  "demoReadOnly": "",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "No servr addres or token findz",
     "page": {
       "title": "Ewwow",
       "description": "Da page doez not loadz. Opun teh consol fur moar infoz, kthx.",
-      "logOut": "Walk out",
+      "logOut": "",
       "reloadPage": "Spin paeg",
-      "showDetails": "Sho detalez"
+      "showDetails": "Sho detalez",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "Ewwow"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": "Cunnection unsuccessful."
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,7 +53,7 @@
     "page": {
       "title": "Nuh Found",
       "description": "Nawt page at dis addrezz, sry.",
-      "logOut": "Walk out",
+      "logOut": "",
       "reloadPage": "Spin paeg"
     }
   },
@@ -38,11 +67,11 @@
       "type": "Tyep",
       "value": "Value",
       "fields": {
-        "serverVersion": "Servur Verzhun",
-        "serverCommit": "Servur Commitz",
-        "serverBranch": "Servur Brancheh",
-        "minecraftVersion": "Minecraft Verzhun",
-        "operatingSystem": "Operatin Sistem",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "Platform",
         "locale": "Locael",
         "architecture": "Architecchur",
@@ -54,41 +83,44 @@
     "support": {
       "title": "Halp SoulFire plz",
       "description": "SoulFire iz free an open-soars, bilt wif luv by teh community. ",
-      "body": "If SoulFire has bin useful 2 u, plz consider halping teh projek. Ur contribushun helps payz for servur costz, funds devz, an keepz SoulFire free fur all teh kittehs.",
+      "body": "",
       "dismiss": "Maybz latah",
-      "action": "Halp SoulFire plz"
+      "action": "Halp SoulFire plz",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Creaet nu instanec",
-      "description": "Giv da instance a naem u recognizes, liek \"My Minecraft Bot\". Iz easy 2 spot!",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Friendly naym",
-          "placeholder": "Mah Minecraft Bot",
-          "description": "Teh naym u wantz 2 giv 2 dis instanec."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "cancel k?",
-        "create": "Makee Makee"
+        "create": ""
       },
       "createToast": {
-        "loading": "Creatin instanec...",
-        "success": "Instanec creatd successfully",
-        "error": "Faild 2 creaet instanec"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Duplikit instansz",
-      "description": "Mak a noo instansz wit da profile frum \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Da name 4 da duplikatid instansz."
+          "description": ""
         },
-        "duplicate": "Copy dat"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Duplikatin instanec...",
-        "success": "Instanec duplikoted, gud job!",
-        "error": "O noes! Cant duplikaet instanec"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,9 +129,16 @@
         "fromUrl": "Frum URL",
         "firstClipboardItem": "Clipboard haz lotz ov itemz. SoulFire usin da furst one, kthxbai.",
         "fromClipboard": "Frum clipboard",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
+          "label": "",
           "placeholder": "Give taxt here...",
-          "submit": "Load form taxt"
+          "submit": "Load form taxt",
+          "empty": ""
         }
       },
       "url": {
@@ -113,24 +152,28 @@
         "submit": "Load form URL",
         "toast": {
           "loading": "Dawnloadin data...",
-          "success": "Data lodaded!",
-          "error": "Teh download failed",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "Delete instance?",
-      "description": "Dis deletz \"{{name}}\" an its data 4evr. U cant undo dis.",
-      "descriptionUnnamed": "Dis deletz dis instance an its data 4evr. U cant undo dis."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "Entah teh command (type 'help' if yar confoosed)",
-    "emptySuggestions": "Typz to get sugjestshunz or smash Tab, kthx.",
     "noSuggestions": "No sugjestshunz r here, sry.",
-    "emptySuggestionsPrefix": "Type 2 ask 4 hintz or press"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "Strat",
@@ -141,25 +184,27 @@
     "startCount": "How many botz tu stawt",
     "startToast": {
       "loading": "STAWTIN BOTZ...",
-      "success": "Bot state iz updaited, yay!",
-      "error": "Fialed tu stawt botz :c"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Restartin botz...",
       "success": "Botz iz reconectin, brb",
-      "error": "Fialed tu restart botz :<"
+      "error": ""
     },
     "stopToast": {
       "loading": "Stawpin botz...",
       "success": "Botz iz stawpin nao",
-      "error": "Fialed tu stawp botz >:c"
+      "error": ""
     },
-    "permissionDenied": "U haz no pawmission to start or stop teh bots in dis instunce. Sry, kitteh.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Servur didn\\'t say if yu can control bots. Pleez chek if ur servur an client haz same vershun. Meow.",
     "startBots": "Stawt botz",
-    "moreActions": "Moar bot akshunz",
-    "generateFirst": "Mak accountz tu stawt ur furst botz.",
-    "startCountHelp": "Stawts moar bots. Runnin bots stay conected.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "Stawt all {{count}}",
     "validCount": "",
     "positiveCount": "",
@@ -172,7 +217,7 @@
     "restartCount_one": "",
     "restartCount_other": ""
   },
-  "botFleetSummary": "{{online}} catnectd · {{desired}} set 2 run · {{total}} totul",
+  "botFleetSummary": "",
   "icon": {
     "invalidName": "Invalid ikon naym: {{name}}"
   },
@@ -224,6 +269,8 @@
     "addSorting": "Ad sorting 2 organiz ur rowz.",
     "addSort": "Ad sort",
     "resetSorting": "Reset sorting",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "Asc",
       "desc": "Desc",
@@ -254,55 +301,122 @@
       "asc": "Asc",
       "desc": "Desc"
     },
-    "openFilterMenu": "Open filtur menu",
-    "filterOperator": "Filtur operator",
-    "filterValue": "Filtur valu",
-    "sortDirection": "Sort direkshun",
-    "selectJoinOperator": "Pick join operator",
-    "joinOperator": "Join operator",
-    "escapeKey": "Escape",
-    "selectDate": "Pick date",
-    "selectDateRange": "Pick date range",
-    "clearFilter": "Cleer {{title}} filtur",
-    "clearFilters": "Cleer filturz",
-    "clear": "Cleer",
-    "from": "Frum",
-    "to": "2",
-    "sortDirectionFor": "Sort direkshun 4 {{column}}",
-    "minValue": "{{label}} smollest valu",
-    "maxValue": "{{label}} biggest valu"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": ""
   },
   "pluginCard": {
     "version": "Vurshun: {{version}}",
     "author": "Author: {{author}}",
     "license": "License: {{license}}",
-    "website": "Website"
+    "website": "Website",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "Cud not saev {{name}}",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "namespacesNotFound": "Settingz naymespaces not finded",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "Cud not saev {{name}}",
+      "saveError": "",
       "placeholder": "Add new entry...",
       "add": "Put stuff",
-      "remove": "Exit stuff"
+      "remove": "Exit stuff",
+      "removeAll": "",
+      "undo": "",
+      "count_one": "{{count}} entry",
+      "count_other": "{{count}} entriez",
+      "removedAll_one": "",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "SRS VALUE..."
+      "searchPlaceholder": "SRS VALUE...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_one": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
       "title": "Iz Invalid Numberz!",
       "description": "Da valyo must be btw {{min}} an {{max}}"
     },
-    "minMaxLegend": "Smollest an biggest settingz"
+    "saving": "SAEVIN...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Copyz to clipbored",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "No logz yetz. Run a command an log cheezburger out!",
+    "noLogsReadOnly": "",
+    "jumpToLatest": "",
     "demo-1": "Herro, demo mode! 🧪",
-    "demo-2": "Dis iz read-only SoulFire thingy",
+    "demo-2": "",
     "demo-3": "Check awt all teh menuz an fun stuff befur puttin SoulFire on ur blockz :D",
     "demo-4": "If u wanna meow, hopz on our Discord: https://soulfiremc.com/discord"
   },
@@ -315,8 +429,16 @@
   "uiSheet": {
     "close": "Cloes"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "Toggle sidebar"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "minimiez",
@@ -342,79 +464,211 @@
     "connectToast": {
       "loading": "Connektin to {{device}}...",
       "success": "Connekted to {{device}}",
-      "error": "Faild 2 connekt to {{device}}"
+      "error": ""
     },
     "noDevices": "No devisez foundz",
     "broadcastToast": {
       "loading": "Broadcastin messige...",
-      "success": "Messige broadcasted!",
-      "error": "Failed 2 broadcast messige"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Try agin? kthx!",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ALL teh thingz",
+      "projects": "",
+      "bots": "BOTZ",
+      "scripts": "Scriptz",
+      "settings": "Settingz",
+      "actions": "Akshuns"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Stawt botz",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "cancel k?",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "Turnin on skript...",
-        "success": "Skript iz on",
-        "error": "Cud not turn on teh skript. Try agen."
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "Turnin off skript...",
-        "success": "Skript iz off",
-        "error": "Cud not turn off teh skript. Try agen."
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "Turn on skript {{name}}",
-      "deactivateScript": "Turn off skript {{name}}"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Stawt {{count}} bot",
+      "startBots_other": "Stawt {{count}} bots",
+      "stopBots_one": "Stawp {{count}} bot",
+      "stopBots_other": "Stawp {{count}} bots",
+      "retryBots_one": "",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "ON",
-      "paused": "OFF"
-    }
+      "connected": "Catnectd",
+      "starting": "Strat-in",
+      "retrying": "Tryz agin",
+      "failed": "FAILD",
+      "stopping": "Stoppin",
+      "stopped": "Stopped",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Cloes",
+      "pin": "",
+      "back": "Bak"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Settingz",
+      "bots": "BOTZ",
+      "scripts": "Scriptz",
+      "admin": "",
+      "actions": "Akshuns",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "Reed dokumentashun",
-    "backToDashboard": "Bak 2 instances",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "Deletin instance...",
-      "success": "Instance deleted",
-      "error": "Faild 2 delet instance"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instances",
-    "createInstance": "Creeate Instance",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Loadin profile...",
-      "success": "Profile loaded",
-      "error": "Faild 2 load profile"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Load Profile",
+    "loadProfile": "",
     "loadFromFile": "Load frum file",
-    "profileSaved": "Profile saved",
-    "saveProfile": "Save Profile",
-    "deleteInstance": "Deleet Instance",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Controlz",
     "overview": "Ovarview",
     "terminal": "Termenawl",
     "bots": "BOTZ",
-    "audit-log": "Audit log",
+    "audit-log": "",
     "settingsGroup": "Settingz",
     "extensionsGroup": "EXTENSCHUNZ",
-    "botSettings": "Bot Settingz",
-    "accountSettings": "Accountz",
-    "metaSettings": "Instance Settingz",
-    "proxySettings": "Proxyz",
-    "aiSettings": "AI Settingz",
-    "pathfindingSettings": "Pathfindin Settin'z",
+    "botSettings": "",
+    "accountSettings": "Akkountz",
+    "metaSettings": "",
+    "proxySettings": "Proxiez",
+    "aiSettings": "",
+    "pathfindingSettings": "",
     "discoverPlugins": "Plugins",
-    "instanceScripts": "Scriptz"
+    "togglePluginSettings": "",
+    "instanceScripts": "Scriptz",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "Reed dokumentashun",
     "userGroup": "Uzer",
-    "instances": "Instances",
+    "instances": "",
     "access": "Akcess",
-    "createInstance": "Creeate Instance",
+    "createInstance": "",
     "settings": "Settingz",
     "adminGroup": "Admin",
     "adminOverview": "Ovarview",
@@ -422,8 +676,8 @@
     "adminTerminal": "Termenawl",
     "users": "Hoomans",
     "adminScripts": "Scriptz",
-    "serverSettings": "Server Settingz",
-    "devSettings": "Dev Settingz",
+    "serverSettings": "",
+    "devSettings": "",
     "theme": {
       "title": "Theme",
       "system": "Sistem",
@@ -437,11 +691,11 @@
     "dataDir": "Data direktery",
     "supportSoulFire": "Halp SoulFire plz",
     "about": "Aboutz",
-    "logOut": "Walk out",
+    "logOut": "",
     "logOutToast": {
-      "loading": "Loggin owt...",
-      "success": "Logged owt",
-      "error": "Faild 2 log owt"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "exit": "Exitz",
     "stopImpersonating": "Stop im-pur-sonatin",
@@ -459,52 +713,54 @@
     "extensions": "EXTENSCHUNZ",
     "bots": "BOTZ"
   },
-  "noInstancesFound": "No instancez founded",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "Termenawl",
     "logs": "LOGZ",
-    "audit-log": "Audit log",
+    "audit-log": "",
     "bots": "BOTZ",
-    "botDetail": "BOT DTAILZ",
-    "instances": "Instances",
+    "botDetail": "",
+    "instances": "",
     "access": "Akcess",
     "settings": "Settingz",
-    "proxySettings": "Proxyz",
+    "proxySettings": "Proxiez",
     "overview": "Ovarview",
     "users": "Hoomans",
-    "accountSettings": "Accountz",
-    "metaSettings": "Instance Settingz",
+    "accountSettings": "Akkountz",
+    "metaSettings": "",
     "discoverPlugins": "Plugins",
     "adminScripts": "Scriptz",
     "instanceScripts": "Scriptz"
   },
   "access": {
     "webdav": {
-      "title": "WebDAV Akcess",
-      "description": "WebDAV lets u sees ur instance filez, skriptz, an teh udder filez!",
-      "publicAddress": "Public WebDAV Adress",
-      "personalToken": "Pursonal WebDAV Token",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "Hidez ur WebDAV toekn, iz sekrit, openz ur filez! Us up as passwurd, no needz username. If app wantz wun, type anithin, liek 'soulfire'.",
       "addressDescription": "Uze dis addrezz 2 get ur filez. Sum clientz likes dav:// or davs:// insted ov http:// or https://, lol!"
     },
     "api": {
-      "title": "API Akcess",
-      "description": "Uze teh SoulFire API 2 manage instances frum ur own programz.",
-      "publicAddress": "Public API Adress",
-      "personalToken": "Pursonal API Token",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "Hide ur API toekn! It letz hoomanz use API!",
       "addressDescription": "Uze dis addrezz for da API, kthx."
     },
     "token": {
-      "generate": "Genrate Token",
-      "placeholder": "Pick \"Genrate Token\" below plz",
+      "generate": "",
+      "placeholder": "",
       "generating": "Genrating token...",
-      "success": "Token made'd successfulleh",
-      "error": "Faild 2 genrate token",
-      "copy": "Coppy Token"
+      "success": "",
+      "error": "",
+      "copy": ""
     },
     "address": {
-      "copy": "Coppy Adress"
+      "copy": ""
     },
     "documentation": "Documentashun",
     "howToConnect": "How 2 connekt"
@@ -512,22 +768,23 @@
   "uploadToMcLogs": "Uplod to mclo.gs",
   "mcLogsUpload": {
     "loading": "Uplodin to mclo.gs...",
-    "success": "Uploded to mclo.gs! Seez it heer: {{url}}",
-    "error": "Uplod to mclo.gs FAILED!"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Seerch wit Google",
   "copyToClipboard": "Copyz to clipbored",
   "clipboardCopy": {
     "loading": "Copyin to clipbored...",
     "success": "Copied \"{{content}}\" to clipbored",
-    "error": "Copyz to clipbored FAILED!"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "Cud not update instance naem"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
@@ -543,9 +800,11 @@
       "uiName": "EMAYL",
       "description": "Ur email iz used 4 login an notifikashunz."
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "Cud not update {{field}}"
+    "saveError": ""
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logz...",
@@ -558,9 +817,10 @@
     "executedCommand": "Did command: {{data}}",
     "changedBotDesiredState": "Changed bot desierd statez",
     "restartedBots": "Restarted all teh botz",
+    "calledPluginRpc": "",
     "contextMenu": {
-      "copyUsername": "Copy Usernamez",
-      "copyCommand": "Copy Commandz"
+      "copyUsername": "",
+      "copyCommand": ""
     }
   },
   "toggleTheme": "Toggle thiem",
@@ -574,11 +834,11 @@
           "max": "Script naymz can be 32 letterz max",
           "regex": "Use lowercase letturz, numburz an dashz. Name must start an end viz a lettur or numbur, no cheezburgerz.",
           "label": "Naym",
-          "placeholder": "Mah Script",
+          "placeholder": "",
           "description": "Da naym of da script."
         },
         "elevatedPermissions": {
-          "label": "Elevatid Permishunz",
+          "label": "",
           "description": "Skrypt runs wif superpowerz. Only admin catz can turn dizz on."
         }
       }
@@ -601,56 +861,58 @@
     },
     "removeToast": {
       "loading": "Remooving scriptz...",
-      "success": "Scriptz remooved!",
-      "error": "Faild 2 remoove scriptz"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "Addin script...",
-      "success": "Script added!",
-      "error": "Faild 2 add script"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Uppdating script...",
-      "success": "Scriptz updated!",
-      "error": "Faild 2 uppdate script"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Restarrting script...",
-      "success": "Scriptz restarted!",
-      "error": "Faild 2 restarrt script"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Tyep",
       "scriptName": "Naym",
       "language": "Langwage",
-      "elevatedPermissions": "Elevatid Permishunz",
+      "elevatedPermissions": "",
       "createdAt": "Makd",
       "actions": "Akshuns"
     },
     "globalScript": "Globel",
-    "instanceScript": "Inztanz"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "Akshuns",
     "instance": {
-      "goToInstance": "Go tu Instanz",
-      "duplicateInstance": "Duplikate Instanec",
-      "copyInstanceId": "Copy Instunce IDZ",
-      "copyInstanceName": "Copy Instunce Naym",
-      "deleteInstance": "Deleet Instance"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Go tu Bot",
-      "copyUsername": "Copy Usernamez",
-      "copyUuid": "Copy profil ID",
-      "copyCoordinates": "Copy Ceewrdinaytz"
+      "goToBot": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
       "enable": "Enablez",
       "disable": "Disablez",
-      "openSettings": "Open Settingz",
-      "copyPluginName": "Copy Plugun Naym",
-      "copyVersion": "Copy Verzshun",
-      "openWebsite": "Open Websyte"
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -698,21 +960,133 @@
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "ALL teh thingz",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Othr"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Availabuls",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Genrating token...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Botteh",
     "botOnline": "Catnectd",
-    "botOffline": "Discatnectd"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "Cud not copy text. Uze HTTPS or allow clipbord plz.",
-    "openError": "Cud not open teh link.",
-    "popupBlocked": "Ur browzer blokd teh new tab.",
-    "openLink": "Open link"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "Icon",
-    "description": "Teh instance icon shown in teh app."
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_one": "",
+    "more_other": ""
   },
-  "unknown": "Dunno",
-  "minecraftHead": "Minecraft hed",
-  "textFile": "Text file"
+  "unknown": "Unkownz",
+  "minecraftHead": "",
+  "textFile": ""
 }

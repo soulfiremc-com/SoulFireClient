@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Vitaj späť, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Metiky servera",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Použitá halda",
+        "heapUsed": "",
         "threads": "Vlákna",
-        "botsOnline": "Pripojení boti",
+        "botsOnline": "",
         "uptime": "Doba prevádzky"
       },
       "cpuUsage": {
-        "title": "Využitie CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Pamäť vyhradená pre haldu (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Počet vlákien"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Pripojení boti (všetky inštancie)"
+        "title": ""
       },
       "legend": {
-        "process": "Proces",
+        "process": "",
         "system": "Systém",
-        "used": "Využité",
-        "committed": "Vyhradené",
-        "max": "Max.",
-        "total": "Spolu",
-        "daemon": "Daemon",
-        "online": "Pripojené"
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Celkovo",
+        "daemon": "",
+        "online": "Pripojený"
       }
     },
     "instancesChart": {
-      "title": "Celkový počet inštancií na tomto serveri",
-      "instances": "Inštancie",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Stav",
         "active": "Aktívne",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Rola",
           "placeholder": "Vyberte rolu",
-          "description": "Rola používateľa. Správcovia môžu spravovať používateľov a všetky inštancie. Používatelia môžu spravovať iba svoje vlastné inštancie.",
+          "description": "",
           "user": "Používateľ",
           "admin": "Admin"
         }
@@ -85,7 +85,7 @@
       "description": "Pridať nového používateľa na tento server",
       "form": {
         "cancel": "Zrušiť",
-        "add": "Pridať používateľa"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,58 +99,58 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Pridávanie používateľa...",
-      "success": "Používateľ pridaný",
-      "error": "Nepodarilo sa pridať používateľa"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Aktualizácia používateľa...",
-      "success": "Používateľ bol aktualizovaný",
-      "error": "Nepodarilo sa aktualizovať používateľa"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Odstraňovanie používateľov...",
-      "success": "Používatelia boli odstránení",
-      "error": "Nepodarilo sa odstrániť používateľov"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Odhlasovanie používateľov...",
-      "success": "Používatelia boli odhlásení",
-      "error": "Nepodarilo sa odhlásiť používateľov"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Používateľské meno",
       "email": "E-mail",
       "role": "Rola",
       "createdAt": "Vytvorené",
-      "minIssuedAt": "Relácie platné od",
+      "minIssuedAt": "",
       "actions": "Akcie",
       "searchUsernames": "Hľadať používateľské mená...",
       "searchEmails": "Hľadať e‑mailové adresy...",
       "searchCreatedAts": "Hľadať dátumy vytvorenia...",
-      "searchMinIssuedAts": "Hľadať dátumy relácií..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Odstrániť vybraných používateľov",
-    "logOutSelectedTooltip": "Odhlásiť vybraných používateľov",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Upraviť používateľa",
+      "editUser": "",
       "impersonate": "Imitovať",
-      "copyUserId": "Kopírovať ID používateľa"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Odstrániť {{count}} používateľa?",
-      "title_few": "Odstrániť {{count}} používateľov?",
-      "title_many": "Odstrániť {{count}} používateľa?",
-      "title_other": "Odstrániť {{count}} používateľov?",
-      "description": "Týmto sa vybraní používatelia a ich prístup natrvalo odstránia. Túto akciu nemožno vrátiť späť.",
-      "confirm": "Odstrániť používateľov"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Odhlásiť {{count}} používateľa?",
-      "title_few": "Odhlásiť {{count}} používateľov?",
-      "title_many": "Odhlásiť {{count}} používateľa?",
-      "title_other": "Odhlásiť {{count}} používateľov?",
-      "description": "Týmto sa ukončia všetky relácie a tokeny vybraných používateľov. Budú sa musieť prihlásiť znova.",
-      "confirm": "Odhlásiť používateľov"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   }
 }

@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "ยินดีต้อนรับกลับ, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "เมตริกเซิร์ฟเวอร์",
+      "sectionTitle": "",
       "summary": {
         "cpu": "หน่วยประมวลผลกลาง (CPU)",
-        "heapUsed": "หน่วยความจำ Heap ที่ใช้ไป",
+        "heapUsed": "",
         "threads": "เธรด",
-        "botsOnline": "บอทที่เชื่อมต่อ",
+        "botsOnline": "",
         "uptime": "ระยะเวลาทำงาน"
       },
       "cpuUsage": {
-        "title": "การใช้งาน CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "หน่วยความจำฮีป (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "จำนวนเธรด"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "บอทที่เชื่อมต่อ (ทุกอินสแตนซ์)"
+        "title": ""
       },
       "legend": {
-        "process": "โปรเซส",
+        "process": "",
         "system": "ระบบ",
-        "used": "ใช้อยู่",
-        "committed": "จองไว้",
-        "max": "สูงสุด",
-        "total": "ทั้งหมด",
-        "daemon": "Daemon",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "รวม",
+        "daemon": "",
         "online": "เชื่อมต่อแล้ว"
       }
     },
     "instancesChart": {
-      "title": "อินสแตนซ์ทั้งหมดบนเซิร์ฟเวอร์นี้",
-      "instances": "อินสแตนซ์",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "สถานะ",
         "active": "ใช้งานอยู่",
@@ -74,7 +74,7 @@
         "role": {
           "label": "บทบาท",
           "placeholder": "เลือกบทบาท",
-          "description": "บทบาทของผู้ใช้ ผู้ดูแลระบบสามารถจัดการผู้ใช้และอินสแตนซ์ทั้งหมด ผู้ใช้ปกติสามารถจัดการเฉพาะอินสแตนซ์ของตนเองได้",
+          "description": "",
           "user": "ผู้ใช้",
           "admin": "แอดมิน"
         }
@@ -85,7 +85,7 @@
       "description": "เพิ่มผู้ใช้ใหม่ในเซิร์ฟเวอร์นี้",
       "form": {
         "cancel": "ยกเลิก",
-        "add": "เพิ่มผู้ใช้"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,52 +99,52 @@
     "profileConflict": "",
     "addToast": {
       "loading": "กำลังเพิ่มผู้ใช้...",
-      "success": "เพิ่มผู้ใช้แล้ว",
-      "error": "ไม่สามารถเพิ่มผู้ใช้ได้"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "กำลังอัปเดตผู้ใช้...",
-      "success": "อัปเดตผู้ใช้แล้ว",
-      "error": "ไม่สามารถอัปเดตผู้ใช้ได้"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "กำลังลบผู้ใช้...",
-      "success": "ลบผู้ใช้แล้ว",
-      "error": "ไม่สามารถลบผู้ใช้ได้"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "กำลังออกจากระบบผู้ใช้...",
-      "success": "ออกจากระบบผู้ใช้แล้ว",
-      "error": "ไม่สามารถออกจากระบบผู้ใช้ได้"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "ชื่อผู้ใช้",
       "email": "อีเมล",
       "role": "บทบาท",
       "createdAt": "วันที่สร้าง",
-      "minIssuedAt": "เซสชันมีผลตั้งแต่",
+      "minIssuedAt": "",
       "actions": "การดำเนินการ",
       "searchUsernames": "ค้นหาชื่อผู้ใช้...",
       "searchEmails": "ค้นหาอีเมล...",
       "searchCreatedAts": "ค้นหาวันที่สร้าง...",
-      "searchMinIssuedAts": "ค้นหาวันที่ของเซสชัน..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "ลบผู้ใช้ที่เลือก",
-    "logOutSelectedTooltip": "ออกจากระบบผู้ใช้ที่เลือก",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "แก้ไขผู้ใช้",
+      "editUser": "",
       "impersonate": "สวมรอยเป็นผู้ใช้นี้",
-      "copyUserId": "คัดลอก User ID"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "ลบผู้ใช้ {{count}} คนหรือไม่",
-      "description": "การดำเนินการนี้จะลบผู้ใช้ที่เลือกและสิทธิ์เข้าถึงอย่างถาวร คุณไม่สามารถย้อนกลับได้",
-      "confirm": "ลบผู้ใช้"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "ออกจากระบบผู้ใช้ {{count}} คนหรือไม่",
-      "description": "การดำเนินการนี้จะสิ้นสุดทุกเซสชันและโทเค็นของผู้ใช้ที่เลือก ผู้ใช้ต้องเข้าสู่ระบบอีกครั้ง",
-      "confirm": "ออกจากระบบผู้ใช้"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Bienvenue, {{name}}🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Métriques du serveur",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Mémoire utilisée par le tas",
+        "heapUsed": "",
         "threads": "Threads",
-        "botsOnline": "Bots connectés",
+        "botsOnline": "",
         "uptime": "Temps de fonctionnement"
       },
       "cpuUsage": {
-        "title": "Utilisation du CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Mémoire Heap (Mo)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Nombre de threads"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bots connectés (toutes les instances)"
+        "title": ""
       },
       "legend": {
-        "process": "Processus",
+        "process": "",
         "system": "Système",
-        "used": "Utilisée",
-        "committed": "Réservée",
-        "max": "Max.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Total",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Connecté"
       }
     },
     "instancesChart": {
-      "title": "Nombre total d'instances sur ce serveur",
-      "instances": "Instances",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "État",
         "active": "Actif",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Rôle",
           "placeholder": "Sélectionnez un rôle",
-          "description": "Le rôle de l'utilisateur. Les administrateurs peuvent gérer les utilisateurs et toutes les instances. Les utilisateurs ne peuvent gérer que leurs propres instances.",
+          "description": "",
           "user": "Utilisateur",
           "admin": "Administrateur"
         }
@@ -85,7 +85,7 @@
       "description": "Ajouter un nouvel utilisateur à ce serveur",
       "form": {
         "cancel": "Annuler",
-        "add": "Ajouter un utilisateur"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,54 +99,54 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Ajout de l'utilisateur...",
-      "success": "Utilisateur ajouté",
-      "error": "Impossible d'ajouter l'utilisateur"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Mise à jour de l'utilisateur...",
-      "success": "Utilisateur mis à jour",
-      "error": "Impossible de mettre à jour l'utilisateur"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Suppression des utilisateurs...",
-      "success": "Utilisateurs supprimés",
-      "error": "Impossible de supprimer les utilisateurs"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Déconnexion des utilisateurs...",
-      "success": "Utilisateurs déconnectés",
-      "error": "Échec de la déconnexion des utilisateurs"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Nom d´utilisateur",
       "email": "Email",
       "role": "Rôle",
       "createdAt": "Créé",
-      "minIssuedAt": "Sessions valides depuis",
+      "minIssuedAt": "",
       "actions": "Actions",
       "searchUsernames": "Rechercher des noms d'utilisateur...",
       "searchEmails": "Rechercher des emails...",
       "searchCreatedAts": "Rechercher des dates de création...",
-      "searchMinIssuedAts": "Rechercher des dates de session..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Supprimer les utilisateurs sélectionnés",
-    "logOutSelectedTooltip": "Déconnecter les utilisateurs sélectionnés",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Modifier l'utilisateur",
+      "editUser": "",
       "impersonate": "Se connecter en tant qu'utilisateur",
-      "copyUserId": "Copier l'ID de l'utilisateur"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Supprimer {{count}} utilisateur ?",
-      "title_other": "Supprimer {{count}} utilisateurs ?",
-      "description": "Cela supprime définitivement les utilisateurs sélectionnés et leur accès. Cette action est irréversible.",
-      "confirm": "Supprimer les utilisateurs"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Déconnecter {{count}} utilisateur ?",
-      "title_other": "Déconnecter {{count}} utilisateurs ?",
-      "description": "Cela met fin à toutes les sessions et à tous les tokens des utilisateurs sélectionnés. Ils devront se reconnecter.",
-      "confirm": "Déconnecter les utilisateurs"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

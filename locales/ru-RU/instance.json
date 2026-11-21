@@ -1,6 +1,6 @@
 {
   "overview": {
-    "logsDescription": "Сырой вывод экземпляра доступен здесь, если вам нужно просмотреть детали консоли.",
+    "logsDescription": "",
     "summary": {
       "accounts": "Аккаунты",
       "proxies": "Прокси",
@@ -53,7 +53,7 @@
     },
     "liveFeed": {
       "title": "Живая лента",
-      "empty": "Ожидание активности экземпляра...",
+      "empty": "",
       "noPermission": "У вас нет разрешения на просмотр живой ленты.",
       "lifecycle": {
         "connecting": "подключается",
@@ -97,6 +97,7 @@
         "executeCommand": "выполнил команду: {{data}}",
         "botDesiredStateChange": "изменено желаемое состояние бота",
         "botRestart": "боты перезапущены",
+        "pluginRpc": "",
         "unknown": "выполнил действие"
       }
     },
@@ -119,17 +120,45 @@
       "network": "Сетевой адрес",
       "unix": "Юникс-сокет"
     },
-    "getProxies": "Поставщики прокси",
-    "addProxies": "Добавить прокси",
+    "getProxies": "",
+    "addProxies": "",
     "filterPlaceholder": "Фильтр прокси...",
     "listImportToast": {
       "loading": "Импорт прокси...",
-      "success": "Импортировано {{count}} прокси",
-      "error": "Не удалось импортировать прокси",
-      "noProxies": "Нет прокси для импорта"
+      "success": "",
+      "error": "",
+      "noProxies": "Нет прокси для импорта",
+      "skipped_one": "",
+      "skipped_few": "",
+      "skipped_many": "",
+      "skipped_other": ""
     },
     "import": {
-      "proxyType": "Тип прокси",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Импорт прокси...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_few": "",
+        "accepted_many": "",
+        "accepted_other": "",
+        "rejected_one": "",
+        "rejected_few": "",
+        "rejected_many": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_few": "",
+        "confirm_many": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
@@ -141,21 +170,21 @@
     },
     "removeToast": {
       "loading": "Удаление прокси...",
-      "success": "Удаленно {{count}} прокси",
-      "error": "Не удалось удалить прокси"
+      "success": "",
+      "error": ""
     },
     "checkToast": {
       "loading": "Проверка прокси... {{checked}}/{{total}} (Успешно: {{success}} не удалось: {{failed}})",
-      "success": "Удалено {{count}} сломанных прокси серверов",
-      "error": "Не удалось проверить прокси",
-      "successKept": "{{failed}} из {{total}} прокси не прошли проверку. Ни один прокси не удалён."
+      "success": "",
+      "error": "",
+      "successKept": ""
     },
     "checkDialog": {
-      "title": "Проверить прокси",
-      "description": "Вы собираетесь проверить прокси: {{count}}.",
-      "confirm": "Начать проверку",
-      "removeFailed": "Удалять прокси, не прошедшие проверку",
-      "removeFailedHelp": "Прокси может не пройти проверку из-за временной проблемы с сетью. Снимите этот флажок, чтобы сохранить все прокси и только увидеть результат."
+      "title": "",
+      "description": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": ""
     },
     "invalidFormat": "Неверный формат прокси",
     "table": {
@@ -171,111 +200,129 @@
     "exportSelectedTooltip": "Экспортировать выбранные прокси",
     "checkSelectedTooltip": "Проверить выбранные прокси",
     "contextMenu": {
-      "copyAddress": "Скопировать адрес",
-      "copyUsername": "Скопировать имя пользователя",
-      "copyPassword": "Скопировать пароль",
-      "deleteProxy": "Удалить прокси"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Проверить импортированные прокси?",
-      "description": "Импортировано прокси: {{count}}. Проверить их сейчас?",
-      "confirm": "Проверить прокси",
+      "description": "",
+      "confirm": "",
       "skip": "Пропустить"
     },
     "export": {
-      "format": "Формат экспорта",
-      "uri": "Формат URI (все типы)",
-      "http": "Только HTTP (плоский)",
-      "socks4": "Только SOCKS4 (плоский)",
-      "socks5": "Только SOCKS5 (плоский)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "Нет прокси для экспорта"
     },
     "removeDialog": {
-      "title_one": "Удалить {{count}} прокси?",
-      "title_few": "Удалить {{count}} прокси?",
-      "title_many": "Удалить {{count}} прокси?",
-      "title_other": "Удалить {{count}} прокси?",
-      "description": "Это удалит из этого экземпляра выбранные прокси и их учётные данные. Отменить это нельзя.",
-      "confirm": "Удалить прокси"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
-    "showPassword": "Показать пароль",
-    "hidePassword": "Скрыть пароль"
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Поставщики аккаунтов",
-    "addAccounts": "Добавить аккаунты",
-    "generateAccounts": "Сгенерировать аккаунты",
+    "getAccounts": "",
+    "addAccounts": "",
+    "generateAccounts": "",
     "filterPlaceholder": "Фильтр учетных записей...",
     "listImportToast": {
       "loading": "Импорт аккаунтов... {{checked}}/{{total}} (Успешно: {{success}} не удалось: {{failed}})",
-      "allFailed": "Не удалось импортировать ни одного аккаунта",
+      "allFailed": "",
       "someFailed": "Импортировано {{count}} аккаунтов, не удалось импортировать {{failed}} аккаунтов",
-      "noneFailed": "Импортировано {{count}} аккаунтов",
-      "error": "Не удалось импортировать аккаунты",
-      "noAccounts": "Нет аккаунтов для импорта"
+      "noneFailed": "",
+      "error": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "unknownError": "Неизвестная ошибка",
     "types": {
-      "OFFLINE": "Офлайн",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (учётные данные)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (код устройства)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (токен обновления)",
-      "MICROSOFT_JAVA_COOKIES": "Java (cookie-файлы)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (токен доступа)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (учётные данные)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (код устройства)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Импорт аккаунта...",
-      "success": "Аккаунт импортирован",
-      "error": "Не удалось импортировать аккаунт"
+      "success": "",
+      "error": ""
     },
     "generate": {
-      "title": "Сгенерировать оффлайн-аккаунты",
+      "title": "",
       "description": "Сгенерируйте оффлайн Java-аккаунты с пользовательским шаблоном имени.",
       "amount": "Количество",
-      "nameFormat": "Формат имени",
-      "nameFormatHelp": "Используйте %d для номера аккаунта. Например, Bot_%d создаст имена, такие как Bot_1 и Bot_2.",
-      "mode": "Существующие аккаунты",
-      "modeHelp": "Выберите способ обработки существующих аккаунтов:\n\n• Игнорировать существующие: Генерировать только аккаунты с новыми именами. Все существующие аккаунты будут сохранены.\n\n• Заменить существующие: Генерировать все запрошенные аккаунты. Заменить аккаунты с совпадающими UUID. Все остальные аккаунты будут сохранены.\n\n• Заменить все: Удалить все существующие аккаунты, затем добавить сгенерированные аккаунты.",
-      "modeIgnoreExisting": "Игнорировать существующие",
-      "modeReplaceExisting": "Заменить существующие",
-      "modeReplaceAll": "Заменить всё",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Сгенерировать",
       "generating": "Генерация...",
       "progress": "Генерация аккаунтов... {{checked}}/{{total}} (Успешно: {{success}} Не удалось: {{failed}})",
-      "success": "Сгенерировано {{count}} аккаунтов",
-      "allFailed": "Не удалось сгенерировать ни одного аккаунта",
-      "allExist": "Все имена пользователей уже существуют. Выберите «Заменить существующие», чтобы сгенерировать их заново.",
-      "error": "Не удалось сгенерировать аккаунты",
-      "invalidAmount": "Пожалуйста, введите корректное количество (минимум 1)",
-      "missingPlaceholder": "В формате имени должен быть заполнитель %d"
+      "success": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "invalidAmount": "",
+      "missingNameFormat": "",
+      "preview_one": "",
+      "preview_few": "",
+      "preview_many": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Офлайн",
-      "microsoftCredentials": "Учетные данные Microsoft",
-      "microsoftDeviceCode": "Код устройства Microsoft",
-      "microsoftRefreshToken": "Microsoft refresh token",
-      "microsoftCookies": "Файлы cookie Microsoft",
-      "microsoftAccessToken": "Токен доступа Microsoft",
-      "theAltening": "Токен TheAltening",
-      "altProviders": "Альтернативные провайдеры",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Импорт {{type}} аккаунтов",
-        "description": "Вставьте здесь свои аккаунты, по одном на строу"
+        "title": "Импорт {{type}} аккаунтов"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Удаление аккаунтов...",
-      "success": "Удалено {{count}} аккаунтов",
-      "error": "Не удалось удалить аккаунты"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "Тип",
-      "profileId": "ID профиля",
+      "profileId": "",
       "lastKnownName": "Имя пользователя",
       "searchProfileIds": "Поиск ID профиля...",
       "searchLastKnownNames": "Поиск последних известных имён...",
@@ -283,10 +330,10 @@
     },
     "removeSelectedTooltip": "Удалить выбранные аккаунты",
     "contextMenu": {
-      "openConfig": "Открыть настройки",
-      "openMetadata": "Открыть метаданные",
-      "copyProfileId": "Скопировать ID профиля",
-      "copyUsername": "Скопировать имя пользователя"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Настроить {{name}}",
@@ -305,138 +352,128 @@
       "selectPage": "Выберите страницу настроек",
       "noSearchResults": "По вашему запросу не найдено настроек.",
       "matchesInheritedValue": "Совпадает с унаследованным значением",
-      "instanceValue": "Значение экземпляра",
+      "instanceValue": "",
       "defaultValue": "Значение по умолчанию",
       "resetOverride": "Сбросить переопределение",
       "value": {
-        "notSet": "Не задано",
-        "on": "Вкл.",
-        "off": "Выкл.",
-        "empty": "Пусто",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} запись",
         "entries_few": "{{count}} записи",
         "entries_many": "{{count}} записей",
-        "entries_other": "{{count}} записи",
-        "range": "Диапазон"
+        "entries_other": "{{count}} записи"
       },
       "source": {
-        "bot": "Переопределено для бота",
-        "instance": "Унаследовано от экземпляра",
-        "default": "Значение по умолчанию"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Аутентификация с помощью кода устройства",
+      "title": "",
       "description": "Настройте параметры перед запуском авторизации с помощью кода устройства.",
-      "start": "Начать аутентификацию"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Аутентификация с помощью кода устройства",
+      "title": "",
       "description": "Войдите с помощью своей учетной записи Microsoft, чтобы связать её.",
-      "openInBrowser": "Открыть в браузере",
+      "openInBrowser": "",
       "orManually": "Или введите код вручную",
       "codeLabel": "Ваш код",
       "urlLabel": "Перейдите на"
     },
     "ravealts": {
       "button": "Ravealts",
-      "title": "Покупка аккаунтов через Ravealts",
       "description": "Покупайте аккаунты Minecraft, используя ваш API-ключ Ravealts.",
-      "apiKeyLabel": "API-ключ",
       "apiKeyPlaceholder": "Введите ваш API-ключ Ravealts",
-      "validate": "Проверить",
-      "validating": "Проверка...",
-      "keyValid": "Ключ подтверждён",
-      "keyInvalid": "Неверный API-ключ",
-      "credits": "Кредиты: {{credits}}",
-      "stockTitle": "Доступный запас",
       "noStock": "Нет аккаунтов в наличии",
-      "accountType": "Тип аккаунта",
-      "amount": "Количество (1-10)",
-      "purchase": "Купить и импортировать",
-      "purchasing": "Покупка...",
-      "purchaseSuccess": "Куплено аккаунтов: {{count}}, импортируется...",
-      "purchaseError": "Покупка не удалась: {{message}}",
+      "accountType": "",
       "networkError": "Не удалось подключиться к API Ravealts",
       "outOfStock": "Выбранный тип закончился на складе",
       "insufficientBalance": "Недостаточно кредитов",
       "rateLimited": "Слишком много попыток, повторите позже"
     },
     "metadata": {
-      "openButton": "Редактировать метаданные",
+      "openButton": "",
       "title": "Метаданные: {{name}}",
       "description": "Управляйте постоянными метаданными для этого аккаунта. Каждая запись содержит пространство имён, ключ и значение в формате JSON.",
       "namespacePlaceholder": "Пространство имён",
       "keyPlaceholder": "Ключ",
       "valuePlaceholder": "Значение (JSON)",
       "noEntries": "Нет метаданных. Добавьте запись выше.",
-      "loadError": "Не удалось загрузить метаданные",
+      "loadError": "",
       "loadErrorDescription": "",
       "retryLoad": "Повторить",
       "addSuccess": "Запись добавлена",
-      "addError": "Ошибка добавления записи",
-      "updateError": "Ошибка обновления записи",
+      "addError": "",
+      "updateError": "",
       "deleteSuccess": "Запись удалена",
-      "deleteError": "Не удалось удалить запись",
+      "deleteError": "",
       "duplicateError": "Запись с этим пространством имен и ключом уже существует",
       "invalidJson": "Недопустимое значение JSON",
       "namespaceLabel": "Пространство имён",
       "keyLabel": "Ключ",
       "valueLabel": "Значение",
-      "addEntryLegend": "Добавить запись метаданных",
-      "addEntryButton": "Добавить запись",
-      "entryLegend": "Запись метаданных",
+      "addEntryLegend": "",
+      "addEntryButton": "",
+      "entryLegend": "",
       "removeEntryButton": "Удалить"
     },
     "removeDialog": {
-      "title_one": "Удалить {{count}} аккаунт?",
-      "title_few": "Удалить {{count}} аккаунта?",
-      "title_many": "Удалить {{count}} аккаунтов?",
-      "title_other": "Удалить {{count}} аккаунта?",
-      "description": "Это удалит из этого экземпляра выбранные аккаунты, их сохранённые учётные данные и их ботов. Отменить это нельзя.",
-      "confirm": "Удалить аккаунты"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Метаданные экземпляра",
-    "description": "Управляйте постоянными метаданными этого экземпляра. Каждая запись содержит пространство имён, ключ и значение в формате JSON.",
+    "title": "",
+    "description": "",
     "namespacePlaceholder": "Пространство имён",
     "keyPlaceholder": "Ключ",
     "valuePlaceholder": "Значение (JSON)",
+    "valueRequired": "",
     "noEntries": "Нет метаданных. Добавьте запись выше.",
-    "loadError": "Не удалось загрузить метаданные",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Повторить",
     "addSuccess": "Запись добавлена",
-    "addError": "Ошибка добавления записи",
-    "updateError": "Ошибка обновления записи",
+    "addError": "",
+    "updateError": "",
     "deleteSuccess": "Запись удалена",
-    "deleteError": "Не удалось удалить запись",
+    "deleteError": "",
     "duplicateError": "Запись с этим пространством имен и ключом уже существует",
     "invalidJson": "Недопустимое значение JSON",
     "namespaceLabel": "Пространство имён",
     "keyLabel": "Ключ",
     "valueLabel": "Значение",
-    "addEntryLegend": "Добавить запись метаданных",
-    "addEntryButton": "Добавить запись",
-    "entryLegend": "Запись метаданных",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "Удалить"
   },
   "bots": {
     "searchPlaceholder": "Поиск ботов...",
-    "onlineCount": "{{online}} подключено / {{total}} всего",
-    "noBots": "Боты не настроены. Добавьте аккаунты на странице настроек аккаунта.",
+    "onlineCount": "",
+    "noBots": "",
     "noBotsFound": "Боты, соответствующие вашему запросу, не найдены.",
     "loadingMore": "Загрузка дополнительных...",
     "showingCount": "Показано {{loaded}} из {{total}}",
     "allLoaded": "Загружены все {{total}} ботов",
     "online": "Подключён",
-    "offline": "Отключён",
-    "notJoined": "Не присоединился",
+    "offline": "",
+    "notJoined": "",
     "connectionPhase": {
       "connecting": "Подключение",
-      "connected": "Вход",
+      "connected": "",
       "spawned": "Подключён",
       "died": "Мёртв",
-      "disconnected": "Отключён",
+      "disconnected": "",
       "ping": "{{ms}} мс"
     },
     "runtimeState": {
@@ -448,12 +485,13 @@
       "waiting": "Ожидание",
       "stopped": "Остановлен"
     },
-    "backToBots": "Назад к ботам",
+    "backToBots": "",
+    "demoControls": "",
     "tabs": {
-      "overview": "Вид бота",
+      "overview": "",
       "inventory": "Инвентарь",
-      "controls": "Управление",
-      "terminal": "Терминал"
+      "controls": "",
+      "terminal": ""
     },
     "terminalPanel": {},
     "connectionPanel": {
@@ -462,27 +500,38 @@
       "unavailable": "Недоступно"
     },
     "positionPanel": {
-      "title": "Положение и вращение",
+      "title": "",
       "position": "Положение",
       "rotation": "Вращение",
-      "offline": "Бот отключён. Данные о положении доступны только когда бот подключён."
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Чат-сообщения"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "commandPanel": {
-      "title": "Команды бота",
+      "title": "",
       "placeholder": "Отправить команду этому боту..."
     },
     "povPanel": {
-      "title": "POV бота",
+      "title": "",
       "capture": "Сделать снимок",
       "refresh": "Обновить",
       "auto": "Авто",
       "startAutoRefresh": "Запустить автообновление (интервал 1 секунда)",
       "stopAutoRefresh": "Остановить автообновление",
       "clickToCapture": "Нажмите «Сделать снимок», чтобы отобразить точку зрения бота",
-      "offline": "Бот офлайн. Отображение точки зрения доступно только при подключении бота."
+      "offline": ""
     },
     "statsPanel": {
       "health": "Здоровье",
@@ -491,44 +540,48 @@
       "experience": "Опыт",
       "level": "Уровень",
       "toNextLevel": "до следующего уровня",
-      "gameMode": "Режим игры",
+      "gameMode": "",
       "survival": "Выживание",
       "creative": "Творческий",
       "adventure": "Приключение",
       "spectator": "Наблюдатель",
       "unknown": "Неизвестно",
-      "offline": "Бот отключён. Статистика доступна только при подключении бота."
+      "offline": ""
     },
     "inventoryPanel": {
       "title": "Инвентарь",
       "actionRejected": "",
       "hotbar": "Быстрый доступ",
-      "main": "Основной инвентарь",
+      "main": "",
       "items": "предметы",
       "carrying": "В руках",
-      "dropOne": "Выбросить один",
-      "dropAll": "Выбросить все",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Закрыть",
-      "clickHint": "ЛКМ: взять/поставить | ПКМ: половину/один | Shift+клик: быстрое перемещение | Средняя кнопка: выбрать слот панели быстрого доступа",
-      "offline": "Бот отключён. Инвентарь доступен только при подключении бота.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Рецепты",
         "enchantments": "Зачарования",
         "patterns": "Узоры",
         "trades": "Торговля",
-        "beaconEffects": "Эффекты маяка",
-        "crafterSlots": "Управление слотами",
-        "lecternControls": "Управление книгой",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Действия",
-        "creativeTabs": "Вкладки творческого режима"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Ввод текста",
-        "anvilRename": "Переименовать предмет",
-        "creativeSearch": "Поиск предметов"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Содержимое книги",
+        "title": "",
         "emptyPage": "(Пустая страница)",
         "previousPage": "",
         "nextPage": "",
@@ -536,105 +589,161 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Уничтожить предмет",
+      "destroyItem": "",
       "clickHints": {
-        "left": "Левая кнопка: взять или положить",
-        "right": "Правая кнопка: взять половину или положить один",
-        "shift": "Shift+клик: быстро переместить",
-        "middle": "Средняя кнопка: выбрать активным слотом"
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
       }
     },
     "visualPanel": {
-      "title": "Направление и мир",
-      "compass": "Направление взгляда",
-      "lookDirection": "Угол обзора",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Смотрит вверх",
       "lookingDown": "Смотрит вниз",
       "lookingStraight": "Смотрит прямо",
-      "worldInfo": "Информация о мире",
+      "worldInfo": "",
       "dimension": "Измерение",
       "biome": "Биом",
-      "offline": "Бот отключён. Визуальные данные доступны только при подключении бота."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Действия бота",
-      "leftClick": "Левый клик",
-      "rightClick": "Правый клик",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Атаковать существо или сломать блок",
       "rightClickDescription": "Использовать предмет или взаимодействовать",
-      "offline": "Бот отключён. Действия доступны только при подключении бота."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Управление движением",
+      "title": "",
       "movement": "Движение (WASD)",
-      "forward": "Двигаться вперед (W)",
-      "backward": "Двигаться назад (S)",
-      "left": "Двигаться влево (A)",
-      "right": "Двигаться вправо (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Прыжок",
       "sneak": "Красться",
       "sprint": "Бежать",
       "stop": "Остановить",
-      "rotation": "Управление взглядом",
-      "lookUp": "Смотреть вверх",
-      "lookDown": "Смотреть вниз",
-      "lookLeft": "Смотреть влево",
-      "lookRight": "Смотреть вправо",
-      "offline": "Бот отключён. Управление движением доступно только при подключении бота."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": ""
     },
     "dialogPanel": {
-      "title": "Диалог сервера",
+      "title": "",
       "noDialog": "В данный момент нет отображаемого диалога сервера.",
       "dialogType": "Тип",
       "dialogId": "ID диалога",
       "notice": "Уведомление",
       "confirmation": "Подтверждение",
-      "multiAction": "Множественное действие",
-      "serverLinks": "Ссылки сервера",
-      "dialogList": "Список диалогов",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Неизвестно",
       "dismiss": "Закрыть",
       "submit": "Отправить",
-      "offline": "Бот отключён. Диалоги доступны только при подключении бота."
+      "offline": ""
+    },
+    "addFirst": "",
+    "filterLabel": "",
+    "filterAll": "Все",
+    "noBotsInState": "",
+    "runningHint": "",
+    "displayState": {
+      "connected": "Подключён",
+      "starting": "Запуск",
+      "retrying": "Повторная попытка",
+      "failed": "Не удалось",
+      "stopping": "Остановка",
+      "stopped": "Остановлен"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Вид бота",
-      "touchControlling": "Вы управляете этим ботом. Нажмите «Release control», чтобы прекратить.",
-      "popupBlocked": "Разрешите всплывающие окна, чтобы открепить окно вида бота.",
-      "windowTitle": "Вид бота SoulFire",
-      "fullscreenUnavailable": "Полноэкранный режим недоступен в этом окне.",
-      "textInputLabel": "Ввод текста Minecraft",
-      "videoLabel": "Вид бота в реальном времени",
-      "touchMove": "Движение",
-      "audioError": "Не удалось запустить звук.",
-      "startError": "Не удалось запустить вид бота.",
-      "releaseHint": "Нажмите {{shortcut}}, чтобы освободить клавиатуру и мышь.",
-      "captureHint": "Нажмите на вид и разрешите захват клавиатуры и мыши.",
-      "audioWaiting": "Ожидание подключения вида бота.",
-      "audioWatchFirst": "Начните наблюдать за ботом, чтобы использовать звук.",
-      "audioUpdateServer": "Обновите сервер, чтобы использовать звук в виде бота.",
-      "muteAudio": "Выключить звук",
-      "unmuteAudio": "Включить звук",
-      "audioStarting": "Запуск звука...",
-      "mute": "Без звука",
-      "unmute": "Со звуком",
-      "audio": "Звук",
-      "audioUnavailable": "Звук недоступен",
-      "volume": "Громкость вида бота",
-      "reconnect": "Переподключиться",
-      "showWindow": "Показать окно вида бота",
-      "attachWindow": "Прикрепить окно вида бота",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
+      "mute": "Отключить звук",
+      "unmute": "Включить звук",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Прыжок",
         "sneak": "Красться",
-        "attack": "Атака",
-        "use": "Использовать",
+        "attack": "",
+        "use": "",
         "inventory": "Инвентарь",
-        "keyboard": "Клавиатура",
-        "closeMenu": "Закрыть меню"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "Для вида бота нужен подключённый сервер SoulFire."
+      "needsServer": "",
+      "connectTimeout": "",
+      "inputUpdateServer": "",
+      "decoderUnsupported": "",
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -649,12 +758,12 @@
       "tick": "Тик"
     },
     "botsOnline": {
-      "title": "Подключённые боты",
+      "title": "",
       "online": "Подключён",
       "total": "Всего"
     },
     "packets": {
-      "title": "Пакеты / секунда",
+      "title": "",
       "sent": "Отправлено/с",
       "received": "Получено/с"
     },
@@ -664,27 +773,27 @@
       "download": "Скачивание"
     },
     "tick": {
-      "title": "Длительность тика",
+      "title": "",
       "avg": "Среднее (мс)",
       "max": "Максимум (мс)"
     },
     "healthFood": {
-      "title": "Здоровье / Еда",
-      "health": "Среднее здоровье",
-      "food": "Средний запас еды"
+      "title": "",
+      "health": "",
+      "food": ""
     },
     "chunksEntities": {
-      "title": "Чанки / Сущности",
+      "title": "",
       "chunks": "Чанки",
       "entities": "Сущности"
     },
     "connections": {
-      "title": "События соединения",
+      "title": "",
       "connections": "Соединения",
       "disconnections": "Отключения"
     },
     "healthDistribution": {
-      "title": "Распределение здоровья",
+      "title": "",
       "bots": "Боты"
     },
     "dimensions": {
@@ -692,59 +801,73 @@
       "bots": "Боты"
     },
     "gameModes": {
-      "title": "Игровые режимы",
+      "title": "",
       "bots": "Боты"
     },
     "positions": {
-      "title": "Позиции бота (XZ)",
+      "title": "",
       "bot": "Бот"
     }
   },
   "scripts": {
-    "title": "Визуальные скрипты",
-    "description": "Создавайте скрипты автоматизации, используя визуальный редактор на узлах.",
-    "experimentalTitle": "Экспериментальная функция",
+    "title": "",
+    "description": "",
+    "experimentalTitle": "",
     "experimentalWarning": "Эта функция экспериментальная. Последующие обновления могут нарушить работу существующих скриптов. Используйте с осторожностью.",
-    "createScript": "Создать скрипт",
-    "createScriptTitle": "Создать новый скрипт",
-    "createScriptDescription": "Создайте новый визуальный скрипт для этого экземпляра. Скрипты могут автоматизировать действия бота и реагировать на события.",
-    "scriptName": "Имя скрипта",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Введите имя скрипта...",
     "scriptDescription": "Описание",
     "scriptDescriptionPlaceholder": "Опишите, что делает этот скрипт...",
     "create": "Создать",
-    "createSuccess": "Скрипт успешно создан",
-    "createError": "Не удалось создать скрипт",
-    "noScripts": "Скриптов пока нет",
-    "noScriptsDescription": "Создайте свой первый скрипт для автоматизации действий бота с помощью визуального редактора на узлах.",
-    "createFirstScript": "Создать скрипт",
-    "running": "Запущен",
-    "paused": "Приостановлено",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "createFirstScript": "",
+    "running": "",
+    "paused": "",
     "nodes": "узлы",
     "noDescription": "Нет описания",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Все",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Имя"
+    },
+    "noMatches": "",
     "edit": "Редактировать",
-    "pause": "Пауза",
-    "pauseSuccess": "Скрипт приостановлен",
-    "pauseError": "Не удалось приостановить скрипт",
-    "resume": "Возобновить",
-    "resumeSuccess": "Скрипт возобновлён",
-    "resumeError": "Не удалось возобновить скрипт",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Удалить",
-    "deleteSuccess": "Скрипт успешно удален",
-    "deleteError": "Не удалось удалить скрипт",
-    "saveSuccess": "Скрипт успешно сохранён",
-    "saveError": "Не удалось сохранить скрипт",
-    "activateSuccess": "Скрипт активирован",
-    "activateError": "Не удалось активировать скрипт",
-    "deactivateSuccess": "Скрипт деактивирован",
-    "untitledScript": "Безымянный скрипт",
-    "saveFirstBeforeActivating": "Сначала сохраните скрипт, прежде чем активировать",
-    "activating": "Активация скрипта...",
-    "activated": "Скрипт активирован",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Скрипт завершён",
-    "executionCompletedSuccess": "Скрипт успешно завершён",
-    "deactivated": "Скрипт деактивирован",
-    "deactivatedByUser": "Скрипт деактивирован пользователем",
+    "executionCompletedSuccess": "Скрипт завершён",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionFailed": "Ошибка выполнения скрипта",
     "executionError": "Ошибка выполнения: {{error}}",
     "monitoringError": "",
@@ -753,23 +876,23 @@
     "nodeCompleted": "Узел завершён: {{nodeId}}",
     "nodeError": "Ошибка узла: {{error}}",
     "contextMenu": {
-      "edit": "Редактировать скрипт",
-      "pause": "Пауза",
-      "resume": "Возобновить",
-      "delete": "Удалить скрипт",
-      "copyScriptName": "Скопировать имя скрипта",
-      "copyScriptId": "Скопировать ID скрипта"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Назад к скриптам",
+        "backToScripts": "",
         "save": "Сохранить",
-        "saveTooltip": "Сохранить скрипт",
-        "resume": "Возобновить",
-        "resumeTooltip": "Возобновить выполнение скрипта",
-        "pause": "Пауза",
-        "pauseTooltip": "Приостановить выполнение скрипта",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Не сохранено",
         "unsavedChanges": "Несохранённые изменения",
         "clearCanvas": "Очистить полотно",
@@ -778,20 +901,23 @@
         "fit": "Вписать",
         "export": "Экспортировать скрипт",
         "import": "Импортировать скрипт",
-        "exportSuccess": "Скрипт успешно экспортирован",
-        "importSuccess": "Скрипт успешно импортирован",
-        "importError": "Не удалось импортировать скрипт"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": ""
       },
       "palette": {
-        "title": "Палитра узлов",
+        "title": "",
         "search": "Поиск по узлам...",
-        "noResults": "Нет узлов, подходящих под запрос",
-        "noResultsDescription": "Попробуйте другой запрос или очистите текущий фильтр."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Журналы выполнения",
+        "title": "",
         "clearTitle": "Очистить журналы",
-        "noLogs": "Журналов пока нет. Запустите скрипт, чтобы посмотреть журналы выполнения.",
+        "noLogs": "",
         "entries_one": "{{count}} запись",
         "entries_few": "{{count}} записи",
         "entries_many": "{{count}} записей",
@@ -800,26 +926,35 @@
       "contextMenu": {
         "duplicate": "Дублировать",
         "rename": "Переименовать",
-        "disconnectAll": "Отключить всё",
+        "disconnectAll": "",
         "collapse": "Свернуть",
         "expand": "Развернуть",
         "mute": "Отключить звук",
         "unmute": "Включить звук",
-        "showPreview": "Показать предпросмотр",
-        "hidePreview": "Скрыть предпросмотр",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Удалить"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Развернуть узел",
         "collapse": "Свернуть узел",
-        "avgTime": "Среднее время выполнения: {{avg}} мс (последние запуски: {{count}})",
-        "preview": "Предпросмотр"
+        "avgTime": "",
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": ""
       },
       "debug": {
         "copyValue": "Скопировать текущее значение",
         "clearHistory": "Очистить историю",
-        "current": "Текущее ({{time}}):",
-        "noValue": "Значение ещё не получено"
+        "current": "",
+        "noValue": ""
       },
       "edge": {
         "direction": "Направление ребра"
@@ -832,45 +967,46 @@
       },
       "group": {
         "returnToRoot": "Вернуться к корню (Tab)",
-        "root": "Корень",
-        "exitHint": "Нажмите <key>Tab</key>, чтобы выйти",
-        "editHint": "Дважды нажмите, чтобы изменить",
-        "noInputs": "Входы не заданы",
-        "noOutputs": "Выходы не заданы"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Меню быстрого добавления узла",
         "searchPlaceholder": "Поиск по узлам...",
-        "noResults": "Узлы не найдены",
+        "noResults": "",
         "noResultsDescription": "Попробуйте другой поисковый запрос.",
-        "navigate": "Навигация",
-        "select": "Enter — выбрать",
-        "close": "Esc — закрыть"
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Просмотреть изменения",
         "title": "Несохранённые изменения",
-        "description": "Изменения с момента последнего сохранения.",
-        "nodesAdded_one": "Добавлен {{count}} узел",
-        "nodesAdded_few": "Добавлено {{count}} узла",
-        "nodesAdded_many": "Добавлено {{count}} узлов",
-        "nodesAdded_other": "Добавлено {{count}} узла",
-        "nodesRemoved_one": "Удалён {{count}} узел",
-        "nodesRemoved_few": "Удалено {{count}} узла",
-        "nodesRemoved_many": "Удалено {{count}} узлов",
-        "nodesRemoved_other": "Удалено {{count}} узла",
-        "nodesModified_one": "Изменён {{count}} узел",
-        "nodesModified_few": "Изменено {{count}} узла",
-        "nodesModified_many": "Изменено {{count}} узлов",
-        "nodesModified_other": "Изменено {{count}} узла",
-        "edgesAdded_one": "Добавлена {{count}} связь",
-        "edgesAdded_few": "Добавлено {{count}} связи",
-        "edgesAdded_many": "Добавлено {{count}} связей",
-        "edgesAdded_other": "Добавлено {{count}} связи",
-        "edgesRemoved_one": "Удалена {{count}} связь",
-        "edgesRemoved_few": "Удалено {{count}} связи",
-        "edgesRemoved_many": "Удалено {{count}} связей",
-        "edgesRemoved_other": "Удалено {{count}} связи"
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_few": "",
+        "nodesAdded_many": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_few": "",
+        "nodesRemoved_many": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_few": "",
+        "nodesModified_many": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_few": "",
+        "edgesAdded_many": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_few": "",
+        "edgesRemoved_many": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -883,57 +1019,703 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Пробный запуск",
-        "title": "Скрипт пробного запуска",
-        "description": "Запустите скрипт от выбранного триггера с имитацией входных данных.",
-        "triggerNode": "Триггер-узел",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Выберите триггер...",
-        "triggerDescription": "Выберите триггер-узел для выполнения с тестовыми входными значениями.",
-        "mockInputs": "Тестовые входные данные",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "Значение {{type}}",
-        "start": "Запустить пробный запуск",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_few": "",
         "stats_many": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Квоты скрипта",
-        "title": "Квоты скрипта",
+        "tooltip": "",
+        "title": "",
         "description": "Настройте ограничения ресурсов для этого скрипта. Пустые поля используют настройки сервера по умолчанию.",
-        "maxExecutionCount": "Максимальное количество выполнений",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Максимальное число запусков узлов при одном вызове триггера",
         "maxExecutionTime": "Максимальное время выполнения (мс)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Максимальное время исполнения по \"реальным часам\" для одного вызова триггера",
-        "maxConcurrentTriggers": "Максимальное количество одновременных триггеров",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
         "maxConcurrentTriggersDescription": "Максимальное число одновременных запусков триггеров",
-        "maxStateStoreEntries": "Максимальное количество записей в хранилище состояния скрипта",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Без ограничений",
         "maxStateStoreEntriesDescription": "Максимальное количество записей в хранилище состояния скрипта",
-        "disableTimeouts": "Отключить тайм-ауты",
+        "disableTimeouts": "",
         "disableTimeoutsDescription": "Отключить тайм-ауты для каждого узла и передачи данных по ребру",
-        "save": "Сохранить квоты",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Изменить порядок: {{label}}",
-        "empty": "Нет входящих значений",
-        "title": "Множественный вход: принимает несколько соединений",
-        "connectTo": "Подключите значения к {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_few": "",
+      "errors_many": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_few": "",
+      "warnings_many": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Удалить скрипт?",
-      "description": "Это навсегда удалит «{{name}}». Отменить это нельзя.",
-      "descriptionUnnamed": "Это навсегда удалит скрипт. Отменить это нельзя."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Статистика выполнения: выполнено узлов {{executed}}/{{max}}"
+    "executionStats": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Действие",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Подключиться",
+    "back": "Назад",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Все",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Подключиться",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Всего",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Нет",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_few": "",
+      "orderStatus_many": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_few": "",
+      "limit_many": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_few": "",
+      "delivered_many": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "purchase_one": "",
+      "purchase_few": "",
+      "purchase_many": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_few": "",
+      "importing_many": "",
+      "importing_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_few": "",
+    "importAccounts_many": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_few": "",
+    "inStock_many": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_few": "",
+    "previewMore_many": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_few": "",
+    "preview_many": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_few": "",
+    "importProxies_many": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_few": "",
+      "noneRunning_many": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_few": "",
+      "allConnected_many": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_few": "",
+      "partial_many": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_few": "",
+      "connecting_many": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "подключён",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_few": "",
+      "failed_many": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_few": "",
+      "retrying_many": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "namesMore": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_few": "",
+    "restartGroup_many": "",
+    "restartGroup_other": "",
+    "restartRequested_one": "",
+    "restartRequested_few": "",
+    "restartRequested_many": "",
+    "restartRequested_other": "",
+    "connectingHint_one": "",
+    "connectingHint_few": "",
+    "connectingHint_many": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Необязательно",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Открыть все настройки",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_few": "",
+      "summary_many": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Аккаунты",
+      "reviewProxies": "Прокси",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "action_one": "Запустить {{count}} бота",
+      "action_few": "Запустить {{count}} бота",
+      "action_many": "Запустить {{count}} ботов",
+      "action_other": "Запустить {{count}} ботов",
+      "countLimit_one": "",
+      "countLimit_few": "",
+      "countLimit_many": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_few": "",
+      "countInvalid_many": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

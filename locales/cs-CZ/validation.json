@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Zadejte hodnotu.",
-    "null": "Zadejte hodnotu.",
-    "number": "Zadejte hodnotu.",
-    "boolean": "Zadejte hodnotu.",
-    "array": "Zadejte hodnotu.",
-    "object": "Zadejte hodnotu.",
-    "nan": "Zadejte hodnotu.",
-    "infinity": "Zadejte hodnotu."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Zadejte číslo.",
-    "null": "Zadejte číslo.",
-    "string": "Zadejte číslo.",
-    "boolean": "Zadejte číslo.",
-    "array": "Zadejte číslo.",
-    "object": "Zadejte číslo.",
-    "nan": "Zadejte číslo.",
-    "infinity": "Zadejte číslo."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Zadejte platnou hodnotu.",
-    "null": "Zadejte platnou hodnotu.",
-    "number": "Zadejte platnou hodnotu.",
-    "string": "Zadejte platnou hodnotu.",
-    "boolean": "Zadejte platnou hodnotu.",
-    "array": "Zadejte platnou hodnotu.",
-    "nan": "Zadejte platnou hodnotu.",
-    "infinity": "Zadejte platnou hodnotu."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Zadejte platnou e-mailovou adresu.",
-  "url": "Zadejte platnou adresu URL.",
-  "jwt": "Zadejte platný token.",
-  "emailTooLong": "Použijte nejvýše 255 znaků.",
-  "jarSource": "Zvolte oficiální server nebo vlastní jar.",
-  "generationMode": "Zvolte, jak naložit s existujícími účty.",
-  "userRole": "Zvolte roli."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

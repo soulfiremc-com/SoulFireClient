@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Ласкаво просимо назад, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Метрики сервера",
+      "sectionTitle": "",
       "summary": {
         "cpu": "ЦП",
-        "heapUsed": "Використана купа",
+        "heapUsed": "",
         "threads": "Потоки",
-        "botsOnline": "Підключені боти",
+        "botsOnline": "",
         "uptime": "Час роботи"
       },
       "cpuUsage": {
-        "title": "Використання CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Оперативна памʼять (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Кількість потоків"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Підключені боти (усі екземпляри)"
+        "title": ""
       },
       "legend": {
-        "process": "Процес",
+        "process": "",
         "system": "Система",
-        "used": "Зайнято",
-        "committed": "Виділено",
-        "max": "Макс.",
-        "total": "Усього",
-        "daemon": "Демони",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Всього",
+        "daemon": "",
         "online": "Підключено"
       }
     },
     "instancesChart": {
-      "title": "Загальна кількість екземплярів на цьому сервері",
-      "instances": "Екземпляри",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Стан",
         "active": "Активний",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Роль",
           "placeholder": "Оберіть роль",
-          "description": "Роль користувача. Адміністратори можуть керувати користувачами й усіма екземплярами. Користувачі можуть керувати лише своїми екземплярами.",
+          "description": "",
           "user": "Користувач",
           "admin": "Адмін"
         }
@@ -85,7 +85,7 @@
       "description": "Додати нового користувача на цей сервер",
       "form": {
         "cancel": "Скасувати",
-        "add": "Додати користувача"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,58 +99,58 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Додавання користувача...",
-      "success": "Користувача додано",
-      "error": "Не вдалося додати користувача"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Оновлення даних користувача...",
-      "success": "Дані користувача оновлено",
-      "error": "Не вдалося оновити дані користувача"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Видалення користувачів...",
-      "success": "Користувачів видалено",
-      "error": "Не вдалося видалити користувачів"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Вихід користувачів...",
-      "success": "Користувачів виведено з системи",
-      "error": "Не вдалося вивести користувачів з системи"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Ім'я користувача",
       "email": "Електронна пошта",
       "role": "Роль",
       "createdAt": "Створено",
-      "minIssuedAt": "Сеанси дійсні з",
+      "minIssuedAt": "",
       "actions": "Дії",
       "searchUsernames": "Пошук імен користувачів...",
       "searchEmails": "Пошук електронних адрес...",
       "searchCreatedAts": "Пошук дати створення...",
-      "searchMinIssuedAts": "Пошук за датами сеансів..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Видалити вибраних користувачів",
-    "logOutSelectedTooltip": "Вийти з облікових записів вибраних користувачів",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Редагувати користувача",
+      "editUser": "",
       "impersonate": "Увійти як користувач",
-      "copyUserId": "Скопіювати ідентифікатор користувача"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Видалити {{count}} користувача?",
-      "title_few": "Видалити {{count}} користувачів?",
-      "title_many": "Видалити {{count}} користувачів?",
-      "title_other": "Видалити {{count}} користувача?",
-      "description": "Це назавжди видалить вибраних користувачів і їхній доступ. Скасувати це неможливо.",
-      "confirm": "Видалити користувачів"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Завершити сеанси {{count}} користувача?",
-      "title_few": "Завершити сеанси {{count}} користувачів?",
-      "title_many": "Завершити сеанси {{count}} користувачів?",
-      "title_other": "Завершити сеанси {{count}} користувача?",
-      "description": "Це завершить усі сеанси й токени вибраних користувачів. Їм доведеться увійти знову.",
-      "confirm": "Завершити сеанси користувачів"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   }
 }

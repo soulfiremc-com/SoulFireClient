@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Chào mừng trở lại, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Chỉ Số Máy Chủ",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Bộ Nhớ Heap Đã Sử Dụng",
+        "heapUsed": "",
         "threads": "Luồng",
-        "botsOnline": "Bot đã kết nối",
+        "botsOnline": "",
         "uptime": "Thời Gian Hoạt Động"
       },
       "cpuUsage": {
-        "title": "Sử dụng CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Bộ nhớ Heap (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Số lượng luồng"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bot đã kết nối (mọi phiên bản)"
+        "title": ""
       },
       "legend": {
-        "process": "Tiến trình",
+        "process": "",
         "system": "Hệ thống",
-        "used": "Đã dùng",
-        "committed": "Đã cấp phát",
-        "max": "Tối đa",
-        "total": "Tổng",
-        "daemon": "Daemon",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Tổng cộng",
+        "daemon": "",
         "online": "Đã kết nối"
       }
     },
     "instancesChart": {
-      "title": "Tổng số phiên bản trên máy chủ này",
-      "instances": "Các phiên bản",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Trạng thái",
         "active": "Đang hoạt động",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Vai trò",
           "placeholder": "Chọn vai trò",
-          "description": "Vai trò của người dùng. Quản trị viên có thể quản lý người dùng và tất cả các phiên bản. Người dùng chỉ được phép quản lý phiên bản của riêng mình.",
+          "description": "",
           "user": "Người dùng",
           "admin": "Quản trị viên"
         }
@@ -85,7 +85,7 @@
       "description": "Thêm người dùng mới vào máy chủ này",
       "form": {
         "cancel": "Hủy",
-        "add": "Thêm người dùng"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,52 +99,52 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Đang thêm người dùng...",
-      "success": "Đã thêm người dùng",
-      "error": "Thêm người dùng thất bại"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Đang cập nhật người dùng...",
-      "success": "Đã cập nhật người dùng",
-      "error": "Cập nhật người dùng thất bại"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Đang xóa người dùng...",
-      "success": "Đã xóa người dùng",
-      "error": "Xóa người dùng thất bại"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Đang đăng xuất người dùng...",
-      "success": "Đã đăng xuất người dùng",
-      "error": "Đăng xuất người dùng thất bại"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Tên đăng nhập",
       "email": "Email",
       "role": "Vai trò",
       "createdAt": "Đã tạo",
-      "minIssuedAt": "Phiên có hiệu lực từ",
+      "minIssuedAt": "",
       "actions": "Hành động",
       "searchUsernames": "Tìm kiếm tên người dùng...",
       "searchEmails": "Tìm kiếm email...",
       "searchCreatedAts": "Tìm ngày tạo...",
-      "searchMinIssuedAts": "Tìm ngày của phiên..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Xóa người dùng đã chọn",
-    "logOutSelectedTooltip": "Đăng xuất người dùng đã chọn",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Chỉnh sửa người dùng",
+      "editUser": "",
       "impersonate": "Giả lập người dùng",
-      "copyUserId": "Sao chép ID người dùng"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "Xóa {{count}} người dùng?",
-      "description": "Thao tác này xóa vĩnh viễn những người dùng đã chọn và quyền truy cập của họ. Bạn không thể hoàn tác.",
-      "confirm": "Xóa người dùng"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "Đăng xuất {{count}} người dùng?",
-      "description": "Thao tác này kết thúc mọi phiên và token của những người dùng đã chọn. Họ phải đăng nhập lại.",
-      "confirm": "Đăng xuất người dùng"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

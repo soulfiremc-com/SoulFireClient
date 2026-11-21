@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "Willkommen zurück, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "Servermetriken",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Heap verwendet",
+        "heapUsed": "",
         "threads": "Threads",
-        "botsOnline": "Verbundene Bots",
+        "botsOnline": "",
         "uptime": "Betriebszeit"
       },
       "cpuUsage": {
-        "title": "CPU-Auslastung (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Heap-Speicher (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Thread-Anzahl"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Verbundene Bots (alle Instanzen)"
+        "title": ""
       },
       "legend": {
-        "process": "Prozess",
+        "process": "",
         "system": "System",
-        "used": "Belegt",
-        "committed": "Reserviert",
-        "max": "Max.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Gesamt",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Verbunden"
       }
     },
     "instancesChart": {
-      "title": "Gesamte Instanzen auf diesem Server",
-      "instances": "Instanzen",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "Zustand",
         "active": "Aktiv",
@@ -74,7 +74,7 @@
         "role": {
           "label": "Rolle",
           "placeholder": "Rolle auswählen",
-          "description": "Die Rolle des Benutzers. Admins können Benutzer und alle Instanzen verwalten. Benutzer können nur ihre eigenen Instanzen verwalten.",
+          "description": "",
           "user": "Nutzer",
           "admin": "Admin"
         }
@@ -85,7 +85,7 @@
       "description": "Einen neuen Benutzer zu diesem Server hinzufügen",
       "form": {
         "cancel": "Abbrechen",
-        "add": "Benutzer hinzufügen"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,54 +99,54 @@
     "profileConflict": "",
     "addToast": {
       "loading": "Benutzer wird hinzugefügt...",
-      "success": "Benutzer hinzugefügt",
-      "error": "Fehler beim Hinzufügen des Benutzers"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Benutzer wird aktualisiert...",
-      "success": "Benutzer aktualisiert",
-      "error": "Fehler beim Aktualisieren des Benutzers"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Benutzer werden entfernt...",
-      "success": "Benutzer entfernt",
-      "error": "Fehler beim Entfernen der Benutzer"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "Benutzer werden abgemeldet...",
-      "success": "Benutzer abgemeldet",
-      "error": "Fehler beim Abmelden der Benutzer"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "Benutzername",
       "email": "E-Mail",
       "role": "Rolle",
       "createdAt": "Erstellt",
-      "minIssuedAt": "Sitzungen gültig seit",
+      "minIssuedAt": "",
       "actions": "Aktionen",
       "searchUsernames": "Benutzernamen suchen...",
       "searchEmails": "E-Mails suchen...",
       "searchCreatedAts": "Erstellungsdaten suchen...",
-      "searchMinIssuedAts": "Sitzungsdaten durchsuchen..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Ausgewählte Benutzer entfernen",
-    "logOutSelectedTooltip": "Ausgewählte Benutzer abmelden",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Benutzer bearbeiten",
+      "editUser": "",
       "impersonate": "Sich als Benutzer ausgeben",
-      "copyUserId": "Benutzer-ID kopieren"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "{{count}} Benutzer entfernen?",
-      "title_other": "{{count}} Benutzer entfernen?",
-      "description": "Dies löscht die ausgewählten Benutzer und ihren Zugriff dauerhaft. Das lässt sich nicht rückgängig machen.",
-      "confirm": "Benutzer entfernen"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "{{count}} Benutzer abmelden?",
-      "title_other": "{{count}} Benutzer abmelden?",
-      "description": "Dies beendet alle Sitzungen und Tokens der ausgewählten Benutzer. Sie müssen sich erneut anmelden.",
-      "confirm": "Benutzer abmelden"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

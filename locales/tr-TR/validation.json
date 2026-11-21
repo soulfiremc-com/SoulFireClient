@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Bir değer girin.",
-    "null": "Bir değer girin.",
-    "number": "Bir değer girin.",
-    "boolean": "Bir değer girin.",
-    "array": "Bir değer girin.",
-    "object": "Bir değer girin.",
-    "nan": "Bir değer girin.",
-    "infinity": "Bir değer girin."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Bir sayı girin.",
-    "null": "Bir sayı girin.",
-    "string": "Bir sayı girin.",
-    "boolean": "Bir sayı girin.",
-    "array": "Bir sayı girin.",
-    "object": "Bir sayı girin.",
-    "nan": "Bir sayı girin.",
-    "infinity": "Bir sayı girin."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Geçerli bir değer girin.",
-    "null": "Geçerli bir değer girin.",
-    "number": "Geçerli bir değer girin.",
-    "string": "Geçerli bir değer girin.",
-    "boolean": "Geçerli bir değer girin.",
-    "array": "Geçerli bir değer girin.",
-    "nan": "Geçerli bir değer girin.",
-    "infinity": "Geçerli bir değer girin."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Geçerli bir e-posta adresi girin.",
-  "url": "Geçerli bir URL girin.",
-  "jwt": "Geçerli bir jeton girin.",
-  "emailTooLong": "En fazla 255 karakter kullanın.",
-  "jarSource": "Resmi sunucuyu veya özel bir jar dosyasını seçin.",
-  "generationMode": "Mevcut hesapların nasıl ele alınacağını seçin.",
-  "userRole": "Bir rol seçin."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

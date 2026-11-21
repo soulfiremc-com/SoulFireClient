@@ -4,16 +4,45 @@
   "cancel": "˥˥ǝɔuɐↃ",
   "save": "ǝʌɐS",
   "saving": "...ƃuᴉʌɐS",
+  "demoReadOnly": "",
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "puoɟ puoᴉɟ oʞoʇ ɹo  ssǝɹpɐ ɹǝʌɹǝs oN",
     "page": {
       "title": "ɹoɹɹƎ",
       "description": "˙uoıʇɐɯɹoɟ ǝɹoɯ ǝɹoɯ oɟ ǝlᴉɐʇǝp 'ǝloɐ pᴉp ʇou ǝƃɐd ǝɥʇ ˙",
-      "logOut": "ʇno uƃᴉS",
+      "logOut": "",
       "reloadPage": "ǝƃɐd pɐo˥ǝᴚ",
-      "showDetails": "slɐᴉʇǝp ʍoɥS"
+      "showDetails": "slɐᴉʇǝp ʍoɥS",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "ɹoɹɹƎ"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
     },
     "connectionFailed": ".pǝlᴉɐɟ ɹǝʌɹǝs ǝɹᴉɟ˥noS ǝɥʇ oʇ uoᴉʇɔǝuuoↃ"
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,7 +53,7 @@
     "page": {
       "title": "puoɟ ʇoN",
       "description": "˙sǝssǝɹpɐ sᴉɥʇ ɐʇ ǝƃɐd ou sᴉ ǝɹǝɥʇ",
-      "logOut": "ʇno uƃᴉS",
+      "logOut": "",
       "reloadPage": "ǝƃɐd pɐo˥ǝᴚ"
     }
   },
@@ -38,11 +67,11 @@
       "type": "ǝԀʎ┴",
       "value": "ǝnlɐΛ",
       "fields": {
-        "serverVersion": "uoᴉsɹǝʌ ɹǝʌɹǝS",
-        "serverCommit": "ʇᴉɯɯoɔ ɹǝʌɹǝS",
-        "serverBranch": "ɥɔuɐɹq ɹǝʌɹǝS",
-        "minecraftVersion": "uoᴉsɹǝʌ ʇɟɐɹɔǝuᴉW",
-        "operatingSystem": "ɯǝʇsʎs ƃuᴉʇɐɹǝdo",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "ɯɹoɟɐ˥Ԁ",
         "locale": "ǝlɐɔo˥",
         "architecture": "ǝɹnʇɔǝʇᴉɹɥɔɐ",
@@ -54,41 +83,44 @@
     "support": {
       "title": "ǝɹᴉɟlnoS ʇɹoddoS",
       "description": ".ʎʇᴉunɯɯoɔ ǝɥʇ ʎq ǝʌoʅ ɥʇᴉʍ ʇʅᴉnb ǝɔɹnos-uodǝ puɐ ǝǝɹɟ sᴉ ǝɹᴉɟlnoS",
-      "body": ".ǝuoʎǝɹʎǝuoɹǝʌǝɹ ɹoɟ ǝǝɹɟ ɹᴉɟlnoS dǝǝʞ puɐ ‚ʇuǝɯdoʅǝʌǝp puɐ sʇsod ɹǝʌɹǝs ɹǝʌoɔ sǝdlɥ uoᴉʇnᴉɹʇuoɔ ɹnoʎ ˙ʇɔǝɾoɹd ǝɥʇ ƃuᴉʇɹoddns ɹǝpᴉsuoɔ ǝsɐǝʅd ‚noʎ oʇ ʅnɟǝsq ǝɐɥ sɐɥ ǝɹᴉɟlnoS ɟI",
+      "body": "",
       "dismiss": "ɹǝʇɐʅ ǝqɐʎɯ",
-      "action": "ǝɹᴉɟlnoS ʇɹoddoS"
+      "action": "ǝɹᴉɟlnoS ʇɹoddoS",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "ǝɔuɐʇsᴉ uǝʍ ɐ ǝʇɐɹɔ",
-      "description": "˙\"ʇoԀ ʇɐɥɔɐɹʇɔɐɯ ʇɥƃᴉl ʎW ʎɯ\" sɐ ɥɔnS 'ǝzᴉƃouɉǝɹ ɐ noʎ uɐɔ ʇɐɥʇ ǝɯɐu ɐ ǝɔuɐʇsᴉ uǝʌᴉƃ",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "ǝlɐqǝ˥ ǝɯɐu puᴉlǝuᴉɹɟ",
-          "placeholder": "ʇoԐ ʇɐɹɔɐuǝᴉɯ ʎW",
-          "description": ".ǝɔuɐʇsᴉ sᴉɥʇ oʇ ǝʌᴉƃ oʇ ʇuɐʍ noʎ ǝɯɐu ǝɥ┴"
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "˥˥ǝɔuɐↃ",
-        "create": "ǝʇɐɹɔ"
+        "create": ""
       },
       "createToast": {
-        "loading": "...ǝɔuɐʇsᴉ ƃuᴉʇɐǝɹɔ",
-        "success": "pǝʇɐǝɹɔ ʇɔǝɐoɹԀ",
-        "error": "ʇɔǝɐoɹd ǝʇɐǝɹɔ ʇou plnoↃ"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "ǝɔuɐʇsᴉ uǝʇɐɔᴉʇndnᗡ",
-      "description": ".\"{{name}}\" ɯoɹɟ ǝlᴉɟoɹd ǝɥʇ ƃuᴉnsn ǝɔuɐʇsᴉ ʍǝu ɐ ǝʇɐǝɹƆ",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": ".pǝʇɐɔᴉʇndn ǝɔuɐʇsᴉ ǝɥʇ ɹoɟ ǝɯɐu ǝɥʇ"
+          "description": ""
         },
-        "duplicate": "ǝʇɐɔᴉlndnᗡ"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "˙ƃuᴉɔuɐʇsᴉ uƃuᴉʇɐʇlᴉdəpoᴉl ˙˙˙",
-        "success": "ʎlᴉlᴉɐɔɔns pǝʇɐɔᴉl уд сǝlʇɐuᴉ uǝɔuɐʇsᴉ",
-        "error": "ǝɔuɐʇsᴉ ǝʇɐɔᴉl уд pǝlᴉɐɟ"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,11 +129,16 @@
         "fromUrl": "˥ɹn ɯoɹɟ",
         "firstClipboardItem": "˙ɯǝʇᴉ ʇsɹᴉɟ ǝɥʇ ǝs∩ ˙ǝɯǝʇᴉ lᴉdlɐʇᴉlpɐ ǝlʇndᴉlnd lᴉdɐʇuoɔ pɐɹʇuuoɔ ǝɥʇ",
         "fromClipboard": "pɹɐoqdᴉʟ ɯoɹɟ",
-        "clipboardError": ".ʎlʇɔǝɹᴉp ʇxǝʇ ǝɥʇ ǝʇsɐd ɹo ssǝɔɔɐ pɹɐoqdᴉlɔ ʍoll∀ .pɹɐoqdᴉlɔ ǝɥʇ pɐǝɹ ʇou plnoↃ",
-        "fileError": ".uᴉɐƃɐ ʎɹʇ puɐ ssǝɔɔɐ ǝlᴉɟ ʞɔǝɥↃ .sǝlᴉɟ pǝʇɔǝlǝs ǝɥʇ pɐǝɹ ʇou plnoↃ",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
+          "label": "",
           "placeholder": "...ǝɹǝɥ ʇxǝʇ ʇnԀ",
-          "submit": "ʇxǝʇ ɯoɹɟ pɐo˥"
+          "submit": "ʇxǝʇ ɯoɹɟ pɐo˥",
+          "empty": ""
         }
       },
       "url": {
@@ -115,24 +152,28 @@
         "submit": "˥ɹ∩ ɯoɹɟ pɐo˥",
         "toast": {
           "loading": "...ɐʇɐp ƃuᴉpɐo˥",
-          "success": "pǝpɐol ɐʇɐᗡ",
-          "error": "ɐʇɐp pɐoluʍop ʇou plnoↃ",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "¿ʇɔǝɐoɹd ǝʇǝlǝᗡ",
-      "description": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .ɐʇɐp sʇᴉ puɐ I{{name}}I sǝʇǝlǝp ʎlʇuǝuɐɯɹǝd sᴉɥ┴",
-      "descriptionUnnamed": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .ɐʇɐp sʇᴉ puɐ ʇɔǝɐoɹd sᴉɥʇ sǝʇǝlǝp ʎlʇuǝuɐɯɹǝd sᴉɥ┴"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     }
   },
   "commandInput": {
+    "label": "",
+    "suggestions": "",
     "placeholder": "˙)ʇsᴉl ɹoɟ dlǝɥ( 'dlɥǝ ǝdʎʇ pouɐɯɯoƆ ɹǝʇuƎ",
-    "emptySuggestions": ".ǝqɹᴉsǝp o┴ ɹoɟ qǝd oʇ suoᴉʇɔǝƃƃns ʇsǝnbǝɹ do sǝʇsǝnbǝɹ ǝʇɐpd oʇ ǝdʎ┴",
     "noSuggestions": ".ǝlqɐlᴉɐʌ sǝlʇɔǝlǝS oN",
-    "emptySuggestionsPrefix": "ssǝɹd ɹo suoᴉʇsǝƃƃns ʇsǝn˙ǝɹ oʇ ǝdʎ┴"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "ʇɹɐ┴S",
@@ -143,25 +184,27 @@
     "startCount": "ʇɐɹʇ oʇ sʇoq ɟo ɹǝqɯnN",
     "startToast": {
       "loading": "...sʇoq ƃuɐʇɹɐʇS",
-      "success": "ǝʇɐʇs ʇoq pǝʇɐpdn",
-      "error": "sʇoq ʇɹɐʇs ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "...sʇoq ƃuıʇɹɐʇsǝɹ",
       "success": "ƃuıʇɔǝuoɔǝɹ ǝɹɐ sʇoԐ",
-      "error": "sʇoq ʇɹɐʇsǝɹ ʇou plnoↃ"
+      "error": ""
     },
     "stopToast": {
       "loading": "...sʇoԐ ƃuıddoʇS",
       "success": "ƃuıddoʇs ǝɹɐ sʇoԐ",
-      "error": "sʇoq doʇs ʇou plnoↃ"
+      "error": ""
     },
-    "permissionDenied": "˙ǝɔuɐʇsᴉu sᴉɥʇ uᴉ sʇoq doddns ɹo ʇɐɹʇs oʇ uᴉssᴉɯɹǝdd ǝʌɐɥ ʇo uop ǝnoʎ",
+    "permissionDenied": "",
     "serverUpdateRequired": ".ɯnlǝʌ suoᴉsɹǝʌ ʇuǝᴉlɔ puɐ ɹǝʌɹǝʌɹǝs ɹnoʎ ʇɐɥʇ ʞɔǝɥɔ .suoᴉssᴉɯɹǝdd lɹoʇuoɔ ʇoq ʇɹodǝɹ pᴉp ʇoɔ sɹǝʌɹǝs ǝɥʇ",
     "startBots": "sʇoq ʇɐɹʇS",
-    "moreActions": "suoᴉʇɔɐ ʇoq ǝɹoɯ",
-    "generateFirst": "sʇunoɔɔɐ ǝʇɐǝɹɔ oʇ sʇoq ʇsɹᴉɟ ɹnoʎ ʇɐɹʇs.",
-    "startCountHelp": "sʇoq lɐuoᴉʇᴉppɐ sʇɹɐʇs. sʇoq ƃuᴉuuɐɹ ʎɐʇs pǝʇɔǝuuoɔ.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "{{count}} llɐ ʇɹɐʇS",
     "validCount": ".{{count}} puɐ puɐ 1 uǝʍǝʇǝq ɹǝqɯnu ǝloɥʍ ɐ ɹǝʇuǝƎ ",
     "positiveCount": ".1 tsael ta fo rebmun elohw a retnƎ",
@@ -174,7 +217,7 @@
     "restartCount_one": "ɹǝʇɹɐʇsǝᴚ {{count}} ʇoq",
     "restartCount_other": "ɹǝʇɹɐʇsǝᴚ {{count}} sʇoq"
   },
-  "botFleetSummary": "lɐʇoʇ {{total}} · unɹ oʇ ʇǝs {{desired}} · pǝʇɔǝuuoɔ {{online}}",
+  "botFleetSummary": "",
   "icon": {
     "invalidName": "{{name}} :ǝɯɐu uoɔᴉ 'pᴉlɐʌuI"
   },
@@ -226,6 +269,8 @@
     "addSorting": ".sʍoɹ ɹnoʎ ǝzᴉuɐƃɹo oʇ ƃuᴉʇɹos pp∀",
     "addSort": "ʇɹos pp∀",
     "resetSorting": "ƃuᴉʇɹos ʇǝsǝᴚ",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "ɔs∀",
       "desc": "ɔsǝᗡ",
@@ -256,55 +301,122 @@
       "asc": "ɔs∀",
       "desc": "ɔsǝᗡ"
     },
-    "openFilterMenu": "nuǝɯ ɹǝʇlᴉɟ uǝdo",
-    "filterOperator": "ɹoʇɐɹǝdo ɹǝʇlᴉℲ",
-    "filterValue": "ǝnlɐʌ ɹǝʇlᴉℲ",
-    "sortDirection": "uoᴉʇɔǝɹᴉp ʇɹoS",
-    "selectJoinOperator": "ɹoʇɐɹǝdo uᴉoɐ ʇɔǝlǝS",
-    "joinOperator": "ɹoʇɐɹǝdo uᴉo)",
-    "escapeKey": "ǝdɐɔsƎ",
-    "selectDate": "ǝʇɐp ʇɔǝlǝS",
-    "selectDateRange": "ǝƃuɐɹ ǝʇɐp ʇɔǝlǝS",
-    "clearFilter": "ɹǝʇlᴉɟ {{title}} ɹɐǝlↃ",
-    "clearFilters": "sɹǝʇlᴉɟ ɹɐǝlↃ",
-    "clear": "ɹɐǝlↃ",
-    "from": "ɯoɹℲ",
-    "to": "o┴",
-    "sortDirectionFor": "{{column}} ɹoɟ uoᴉʇɔǝɹᴉp ʇɹoS",
-    "minValue": "ǝnlɐʌ ɯnɯᴉuᴉɯ {{label}}",
-    "maxValue": "ǝnlɐʌ ɯnɯᴉxɐɯ {{label}}"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": ""
   },
   "pluginCard": {
     "version": "{{version}} :uoᴉsɹǝΛ",
     "author": "{{author}} :ɹoɥʇn∀",
     "license": "{{license}} :ǝsɔuǝɔᴉ˥",
-    "website": "ǝʇᴉsqǝM"
+    "website": "ǝʇᴉsqǝM",
+    "meta": "",
+    "configure": "",
+    "enabled": "",
+    "disabled": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "{{name}} ǝʌɐs ʇou plnoↃ",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "namespacesNotFound": "punoɟ ʇoN sǝɯɐu sǝƃuᴉʇʇǝS",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "{{name}} ǝʌɐs ʇou plnoↃ",
+      "saveError": "",
       "placeholder": "...ʎɹʇuǝ ʍǝu ɐ ppp∀",
       "add": "pp∀",
-      "remove": "ǝʌoɯǝᴚ"
+      "remove": "ǝʌoɯǝᴚ",
+      "removeAll": "",
+      "undo": "",
+      "count_one": "ʎɹʇuǝ {{count}}",
+      "count_other": "sǝᴉɹʇuǝ {{count}}",
+      "removedAll_one": "",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "˙˙˙ǝnlɐʌ ɥɔɹɐǝS"
+      "searchPlaceholder": "˙˙˙ǝnlɐʌ ɥɔɹɐǝS",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_one": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
       "title": "ɹǝqɯnu pᴉlɐʌuI",
       "description": "{{max}} puɐ {{min}} uǝǝʇʍǝq ǝq ʇsnɯ ǝnlɐʌ ǝɥ┴"
     },
-    "minMaxLegend": "sƃuᴉʇʇǝs ɯnɯᴉxɐɯ puɐ ɯnɯᴉuᴉW"
+    "saving": "...ƃuᴉʌɐS",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "overridden": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "bot": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "pɹɐoqdᴉʟ oʇ ʎdoↃ",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "˙ʇndʇno ƃo lƃo lǝʇɐǝɹɔ oʇ pɐɯɯoɔ ɐ uɹn ˙ʇǝʎ sƃol ou",
+    "noLogsReadOnly": "",
+    "jumpToLatest": "",
     "demo-1": "!🧪 ǝpoɯ oɯǝp ǝɯoפ o┴ oɯoɔןǝM",
-    "demo-2": "ɹǝɹᴉɟ˥noS ɟo ǝɔuɐʇsᴉ uoʎluo ʎlᴉuʎ ɐ sᴉ sᴉɥ┴",
+    "demo-2": "",
     "demo-3": ":ᗡ ɹǝɹᴉɟ˥noS ןןɐʇsni oʇ ƃuᴉpǝpᴉɔǝp ǝɹoɟǝq sǝɹnʇɐǝɟ puɐ snǝunɯ ʒlןɐ ɗnoʎ ʇno ʞɔǝɥↃ",
     "demo-4": ";pɹɐoɔsᴉᗡ ɹno uoɾ oʇ ǝʞᴉl plnoʍ noʎ ɟᴉ ɹǝʌɹǝs pɹɐoɔsᴉᗡ ɹno ƃuᴉuoɾ oʇ ǝǝɹɟ ʅǝǝℲ"
   },
@@ -317,8 +429,16 @@
   "uiSheet": {
     "close": "ǝsolↃ"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "ɹɐqǝpᴉs ǝlƃƃo┴"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "ǝzᴉɯᴉuᴉW",
@@ -344,79 +464,211 @@
     "connectToast": {
       "loading": "...{{device}} oʇ ƃuᴉʇɔǝuuoↃ",
       "success": "{{device}} oʇ pǝʇɔǝuuoↃ",
-      "error": "{{device}} oʇ ʇɔǝuuoɔ ʇou plnoↃ"
+      "error": ""
     },
     "noDevices": "punoɟ sǝɔᴉʌǝp oN",
     "broadcastToast": {
       "loading": "...ǝƃɐssǝɯ ƃuᴉʇsɐpodɐoɹԐ",
-      "success": "pǝʇsɐɔpɐoɹq ǝƃɐssǝW",
-      "error": "ǝƃɐssǝɯ ʇsɐɔpɐoɹq ʇou plnoↃ"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "ʎɹʇǝɹ",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ll∀",
+      "projects": "",
+      "bots": "sʇoԐ",
+      "scripts": "sʇdᴉɹɔS",
+      "settings": "sƃuᴉʇʇǝS",
+      "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "pinLimit": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "sʇoq ʇɐɹʇS",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "˥˥ǝɔuɐↃ",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "...ʇdᴉɹɔs uo ƃuᴉuɹn┴",
-        "success": "uo pǝuɹnʇ ʇdᴉɹɔS",
-        "error": ".uᴉɐƃɐ ʎɹ┴ .ʇdᴉɹɔs ǝɥʇ uo uɹnʇ ʇou plnoↃ"
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "...ʇdᴉɹɔs ɟɟo ƃuᴉuɹn┴",
-        "success": "ɟɟo pǝuɹnʇ ʇdᴉɹɔS",
-        "error": ".uᴉɐƃɐ ʎɹ┴ .ʇdᴉɹɔs ǝɥʇ ɟɟo uɹnʇ ʇou plnoↃ"
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "{{name}} ʇdᴉɹɔs uo uɹn┴",
-      "deactivateScript": "{{name}} ʇdᴉɹɔs ɟɟo uɹn┴"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "ʇoq {{count}} ʇɐɹʇS",
+      "startBots_other": "sʇoq {{count}} ʇɐɹʇS",
+      "stopBots_one": "ʇoq {{count}} doʇS",
+      "stopBots_other": "sʇoq {{count}} doʇS",
+      "retryBots_one": "",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "uo",
-      "paused": "ɟɟo"
-    }
+      "connected": "pǝʇɔǝuuoɔ",
+      "starting": "ƃuᴉʇɹɐʇS",
+      "retrying": "ƃuᴉʎɹʇǝᴚ",
+      "failed": "pǝlᴉɐℲ",
+      "stopping": "ƃuᴉddodS",
+      "stopped": "pǝddo┴S",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "ǝsolↃ",
+      "pin": "",
+      "back": "ʞɔɐԐ"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "sƃuᴉʇʇǝS",
+      "bots": "sʇoԐ",
+      "scripts": "sʇdᴉɹɔS",
+      "admin": "",
+      "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
+      "results": "",
+      "projectPages": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "uoᴉʇɐʇuǝɯnɔoᗡ pɐǝᴚ",
-    "backToDashboard": "sʇɔǝɐoɹd oʇ ʞɔɐԐ",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "...ǝɔuɐʇsᴉ ƃuᴉʇǝlǝp",
-      "success": "pǝʇǝlǝp ǝɔuɐʇsᴉ",
-      "error": "ʇɔǝɐoɹd ǝʇǝlǝp ʇou plnoↃ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "sǝɔuɐʇsᴉ",
-    "createInstance": "ǝɔuɐʇsᴉ ǝʇɐǝɹↃ",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "...ǝlᴉɟ ɯoɹɟ ƃuᴉpɐo˥",
-      "success": "pǝpɐo˥ ǝlᴉɟoɹԀ",
-      "error": "ǝlᴉɟoɹԀ pɐo˥ oʇ pǝlᴉɐɟ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "ǝlᴉɟoɹԀ pɐo˥",
+    "loadProfile": "",
     "loadFromFile": "ǝlᴉɟ ɯoɹɟ pɐo˥",
-    "profileSaved": "pǝʌɐs ǝlᴉɟoɹԀ",
-    "saveProfile": "ǝlᴉɟoɹԀ ǝʌɐS",
-    "deleteInstance": "ǝɔuɐʇsᴉ ǝʇǝlǝpǝᗡ",
+    "profileSaved": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "sdoɹʇuoↃ",
     "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
     "terminal": "ןɐuᴉɯɹǝ┴",
     "bots": "sʇoԐ",
-    "audit-log": "ƃol ʇᴉpn∀",
+    "audit-log": "",
     "settingsGroup": "sƃuᴉʇʇǝS",
     "extensionsGroup": "sᴎoᴉsᴎɐᴉʇxƎ",
-    "botSettings": "sƃuᴉʇʇǝs ʇoԐ",
-    "accountSettings": "sʇunoɔɔ∀",
-    "metaSettings": "sƃuᴉʇʇǝS ǝɔuɐʇsᴉ",
-    "proxySettings": "sǝᴉxoɹԀ",
-    "aiSettings": "sƃuᴉʇʇǝs I∀",
-    "pathfindingSettings": "sƃuᴉʇʇǝs ƃuᴉpuᴉɟɥʇɐԀ",
+    "botSettings": "",
+    "accountSettings": "snuoccA",
+    "metaSettings": "",
+    "proxySettings": "seixorP",
+    "aiSettings": "",
+    "pathfindingSettings": "",
     "discoverPlugins": "sƃuᴉƃnlԀ",
-    "instanceScripts": "sʇdᴉɹɔS"
+    "togglePluginSettings": "",
+    "instanceScripts": "sʇdᴉɹɔS",
+    "configurationFileType": "",
+    "exportWarning": ""
   },
   "userSidebar": {
     "readDocumentation": "uoᴉʇɐʇuǝɯnɔoᗡ pɐǝᴚ",
     "userGroup": "ɹǝs∩",
-    "instances": "sǝɔuɐʇsᴉ",
+    "instances": "",
     "access": "ssǝɔɔ∀",
-    "createInstance": "ǝɔuɐʇsᴉ ǝʇɐǝɹↃ",
+    "createInstance": "",
     "settings": "sƃuᴉʇʇǝS",
     "adminGroup": "uᴉɯp∀",
     "adminOverview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
@@ -424,8 +676,8 @@
     "adminTerminal": "ןɐuᴉɯɹǝ┴",
     "users": "\u00073\u00072\u00065\u00073",
     "adminScripts": "sʇdᴉɹɔS",
-    "serverSettings": "sƃuᴉʇʇǝs ɹǝʌɹǝS",
-    "devSettings": "sƃuᴉʇʇǝs ʌǝᗡ",
+    "serverSettings": "",
+    "devSettings": "",
     "theme": {
       "title": "ǝɯǝɥ┴",
       "system": "ɯǝʇsʎS",
@@ -439,11 +691,11 @@
     "dataDir": "ʎɹoʇɔǝɹᴉp ɐʇɐᗡ",
     "supportSoulFire": "ǝɹᴉɟlnoS ʇɹoddoS",
     "about": "ʇnoq∀",
-    "logOut": "ʇno uƃᴉS",
+    "logOut": "",
     "logOutToast": {
-      "loading": "...ʇno ƃuᴉuƃᴉS",
-      "success": "ʇno pǝuƃᴉS",
-      "error": "ʇno uƃᴉs ʇou plnoↃ"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "exit": "ʇᴉxƎ",
     "stopImpersonating": "ƃuᴉʇɐʇuǝɔɹǝʇuᴉ ɥʇoԀ",
@@ -461,52 +713,54 @@
     "extensions": "sᴎoᴉsᴎɐᴉʇxƎ",
     "bots": "sʇoԐ"
   },
-  "noInstancesFound": "punoɟ sǝɔuɐʇsᴉ oN",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "ןɐuᴉɯɹǝ┴",
     "logs": "sƃo˥",
-    "audit-log": "ƃol ʇᴉpn∀",
+    "audit-log": "",
     "bots": "sʇoԐ",
-    "botDetail": "slᴉɐʇǝp ʇoԐ",
-    "instances": "sǝɔuɐʇsᴉ",
+    "botDetail": "",
+    "instances": "",
     "access": "ssǝɔɔ∀",
     "settings": "sƃuᴉʇʇǝS",
-    "proxySettings": "sǝᴉxoɹԀ",
+    "proxySettings": "seixorP",
     "overview": "ʍǝɹʌǝᴚ ǝʌᴉǝʌɹƆ",
     "users": "\u00073\u00072\u00065\u00073",
-    "accountSettings": "sʇunoɔɔ∀",
-    "metaSettings": "sƃuᴉʇʇǝS ǝɔuɐʇsᴉ",
+    "accountSettings": "snuoccA",
+    "metaSettings": "",
     "discoverPlugins": "sƃuᴉƃnlԀ",
     "adminScripts": "sʇdᴉɹɔS",
     "instanceScripts": "sʇdᴉɹɔS"
   },
   "access": {
     "webdav": {
-      "title": "ssǝɔɔɐ Λ∀ᗡqǝM",
-      "description": "˙sǝlᴉɟ ɹǝɥʇo puɐ sʇdᴉɹɔs 'sǝlᴉɟ ǝɔuɐʇsᴉ oʇ sssǝɔɔɐ sǝpᴉɹʌ ɥɐʌpǝM",
-      "publicAddress": "ssǝɹppɐ Λ∀ᗡqǝM ɔᴉlqnԀ",
-      "personalToken": "uǝʞoʇ Λ∀ᗡqǝM lɐuosɹǝԀ",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "˙ǝɯɐuɹnoʎ uɐ sɐ ǝnlɐʇ ǝɥʇ ǝs∩ ˙sǝlᴉɟ ɹnoʎ oʇ sssǝɔɔɐ sʇuɐɹƃ ʇᴉ ˙ʇǝɹɔǝs uǝʞoʇ ʌpɐqǝM lɐuosɹǝd ɹnoʎ dǝǝʞ ˙ʎuɐɹoʍ ʎʇᴉɹnɔǝs sᴉɥʇ sI ˙uǝɯɐu ɐ pǝǝu uoɐ ʇou op noʎ ˙'.ǝɹᴉɟlons' ɐ sɐ ǝnlɐʌ ʎuɐ ɹǝʇuǝ  ,ǝuo ǝɹᴉnbǝɹ ppɐ sddɐ ɹnoʎ ɟI",
       "addressDescription": "˙˙˙sʇǝpɐǝɹ ǝɹɐ sʇuǝᴉlɔ ǝɯos ˙sǝlᴉɟ ɹnoʎ sssǝɔɔɐ oʇ ssǝɹpppɐ sᴉɥʇ ǝs∩"
     },
     "api": {
-      "title": "ssǝɔɔɐ IԀ∀",
-      "description": ".sɯɐɹƃoɹd uʍo ɹnoʎ ɯoɹɟ sʇɔǝɐoɹd ǝƃɐuɐɯ oʇ IԀ∀ ǝɹᴉℲlnoS ǝɥʇ ǝs∩",
-      "publicAddress": "ssǝɹppɐ IԀ∀ ɔᴉlqnԀ",
-      "personalToken": "uǝʞoʇ IԀ∀ lɐuosɹǝԀ",
+      "title": "",
+      "description": "",
+      "publicAddress": "",
+      "personalToken": "",
       "securityWarning": "˙IԀ∀ ǝɥʇ oʇ sssǝɔɔɐ sʇuɐɹƃ ʇᴉ ˙ʇǝɹɔǝs uǝʞoʇ IԀ∀ lɐuosɹǝd ɹnoʎ dǝǝʞ",
       "addressDescription": "˙IԀ∀ ǝɥʇ sssǝɔɔɐ oʇ ssǝɹpddɐ sᴉɥʇ ǝs∩"
     },
     "token": {
-      "generate": "uǝʞoʇ ǝʇɐɹǝuǝƃ",
-      "placeholder": "ʍolǝq uǝʞoʇ ǝʇɐɹǝuǝƃ ʇɔǝlǝS",
+      "generate": "",
+      "placeholder": "",
       "generating": "...uǝʞo┴ ƃuᴉʇɐɹǝuǝ⅁",
-      "success": "pǝʇɐɹǝuǝƃ uǝʞo┴",
-      "error": "uǝʞoʇ ǝʇɐɹǝuǝƃ ʇou plnoↃ",
-      "copy": "uǝʞoʇ ʎdoↃ"
+      "success": "",
+      "error": "",
+      "copy": ""
     },
     "address": {
-      "copy": "ssǝɹppɐ ʎdoↃ"
+      "copy": ""
     },
     "documentation": "uoᴉʇɐʇuǝɯnɔoᗡ",
     "howToConnect": "ʇɔǝuuoↃ oʇ ʍoɥ"
@@ -514,22 +768,23 @@
   "uploadToMcLogs": "sƃo˥ɔɯ oʇ pɐoʅdn",
   "mcLogsUpload": {
     "loading": "...sƃo˥ɔɯ oʇ ƃuᴉpɐoʅdn",
-    "success": "{{url}} eǝɹǝɥ ʇᴉ ʍǝᴉΛ .sƃ.olɔɯ oʇ pǝpɐold∩",
-    "error": "sƃ.olɔɯ oʇ pɐoldn ʇou plnoↃ"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "ǝlƃooƃ ɥʇᴉM ɥɔɹɐǝS",
   "copyToClipboard": "pɹɐoqdᴉʟ oʇ ʎdoↃ",
   "clipboardCopy": {
     "loading": "...pɹɐoqdᴉʟ oʇ ƃuᴉʎdoↃ",
     "success": "pɹɐoqdᴉʟ oʇ \"{{content}}\" pǝᴉdoↃ",
-    "error": "pɹɐoqdᴉlɔ oʇ ʎdoɔ ʇou plnoↃ"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "ǝɯɐu ʇɔǝɐoɹd ǝʇɐpdn ʇou plnoↃ"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
@@ -545,9 +800,11 @@
       "uiName": "lᴉɐɯǝ",
       "description": ".suoᴉʇɐɔᴉɟᴉɟᴉʇoN puɐ uᴉƃo˥ ɹoɟ sᴉ ʅᴉɐɯǝ ɹno⅄"
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "{{field}} ǝʇɐpdn ʇou plnoↃ"
+    "saveError": ""
   },
   "auditLog": {
     "filterPlaceholder": "...sƃo˥ ʇᴉp∩∀ ɹǝʇlᴉℲ",
@@ -560,9 +817,10 @@
     "executedCommand": "{{data}} :puɐɯɯoɔ pǝʇnɔǝxƎ",
     "changedBotDesiredState": "pǝʇɐʇs puǝɹǝpuǝ pǝƃuɐɥɔ",
     "restartedBots": "sʇoԐ pǝʇɹɐʇsǝɹ",
+    "calledPluginRpc": "",
     "contextMenu": {
-      "copyUsername": "ǝɯɐuɹǝsn ʎdoↃ",
-      "copyCommand": "puɐɯɯoɔ ʎdoↃ"
+      "copyUsername": "",
+      "copyCommand": ""
     }
   },
   "toggleTheme": "ǝɯǝɥ┴ ǝƃƃlo┴",
@@ -576,11 +834,11 @@
           "max": "sɹǝʇɔɐɹɐɥɔ 23 ʇsɐǝ˥ ǝq sʇnɯ sǝɯɐu ʇdᴉɹɔs",
           "regex": "˙ɹǝqɯnu ɹo ɹǝʇʇǝl ɥʇᴉʍ puǝ puɐ ʇɹɐʇs ʇsnɯ ǝɯɐu ǝɥʇ ˙sǝɥsɐp puɐ sɹǝqɯun uɐ ǝsɐɔɹǝʍ dosn ∩",
           "label": "ןǝqɐ˥ ǝɯɐu",
-          "placeholder": "ʇdᴉɹɔs-ʎɯ",
+          "placeholder": "",
           "description": ".ʇdᴉɹɔs ǝɥʇ ɟo ǝɯɐu"
         },
         "elevatedPermissions": {
-          "label": "suoᴉssᴉɯɹǝd pǝʇɐʌǝlƎ",
+          "label": "",
           "description": "˙uoᴉʇdo ᴉɥʇ ǝlqɐuɐ ǝlqɐuǝ uɐɔ sɹoʇɐɹʇsᴉuᴉɟpɐ ǝlʎuo ˙suoᴉssᴉɯɹǝd pǝʇɐʇǝʌǝ hʇᴉʍ suɐɹ sʇdᴉɹɔs ǝɥʇ"
         }
       }
@@ -603,56 +861,58 @@
     },
     "removeToast": {
       "loading": "...sʇdᴉɹɔs ƃuᴉʌoɯǝᴚ",
-      "success": "pǝʌoɯǝɹ sʇdᴉɹɔS",
-      "error": "sʇdᴉɹɔs ǝʌoɯǝɹ ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "...ƃuᴉpp∀ ʇdᴉɹɔs",
-      "success": "pǝppɐ ʇdᴉɹɔS",
-      "error": "ʇdᴉɹɔs ppɐ ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "...ƃuᴉʇɐpdn ʇdᴉɹɔs",
-      "success": "pǝʇɐpdn ʇdᴉɹɔS",
-      "error": "ʇdᴉɹɔs ǝʇɐpdn ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "...ƃuᴉʇɹɐʇsǝɹ ʇdᴉɹɔs",
-      "success": "pǝʇɹɐʇsǝɹ ʇdᴉɹɔS",
-      "error": "ʇdᴉɹɔs ʇɹɐʇsǝɹ ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "table": {
       "type": "ǝԀʎ┴",
       "scriptName": "ןǝqɐ˥ ǝɯɐu",
       "language": "ǝƃɐnƃuɐ˥",
-      "elevatedPermissions": "suoᴉssᴉɯɹǝd pǝʇɐʌǝlƎ",
+      "elevatedPermissions": "",
       "createdAt": "\u00064\u00065\u00074\u00061\u00065\u00072\u00043",
       "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072"
     },
     "globalScript": "lɐqol⅁",
-    "instanceScript": "ǝɔuɐʇsᴉuI"
+    "instanceScript": ""
   },
   "contextMenu": {
+    "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
     "instance": {
-      "goToInstance": "ǝɔuɐʇsᴉ I oʇ oƃ",
-      "duplicateInstance": "ǝɔuɐʇsᴉ ǝʇɐɔᴉl уд",
-      "copyInstanceId": "pᴉpnI ǝɔuɐʇsᴉ ʎdoↃ",
-      "copyInstanceName": "ǝɯɐN ǝɔuɐʇsᴉ ʎdoↃ",
-      "deleteInstance": "ǝɔuɐʇsᴉ ǝʇǝlǝpǝᗡ"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "ʇoq oʇ oƃ",
-      "copyUsername": "ǝɯɐuɹǝsn ʎdoↃ",
-      "copyUuid": "ᗡI ǝlᴉɟoɹd ʎdoↃ",
-      "copyCoordinates": "sǝʇɐuᴉpɹooɔ ʎdoↃ"
+      "goToBot": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
       "enable": "ǝlqɐu ǝlqɐu ǝlqɐu ǝlqɐu ǝlqɐu ǝlqɐu ǝlɐ",
       "disable": ".ƃuiʇʇǝlᴉ ff oƆ O N",
-      "openSettings": "sƃuᴉʇʇǝs uǝdo",
-      "copyPluginName": "ǝɯɐu uᴉƃnld ʎdoↃ",
-      "copyVersion": "uoᴉsɹǝʌ ʎdoↃ",
-      "openWebsite": "ǝʇᴉsqǝʍ uǝdo"
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -700,21 +960,133 @@
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "ll∀",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "\u00072\u00065\u00068\u00065\u00072"
+    },
+    "enabledHeading": "",
+    "availableHeading": "ǝlqɐlᴉlɐʌ∀",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
-    "botOnline": "pǝʇɔǝuuoↃ",
-    "botOffline": "pǝʇɔǝuuoɔsᴉᗡ"
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "...uǝʞo┴ ƃuᴉʇɐɹǝuǝ⅁",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "ʇoq",
+    "botOnline": "pǝʇɔǝuuoɔ",
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": ".ssǝɔɔɐ pɹɐoqdᴉlɔ ʍollɐ ɹo SԀ┴┴H ǝs∩ .ʇxǝʇ ʎdoɔ ʇou plnoↃ",
-    "openError": ".ʞuᴉl ǝɥʇ uǝdo ʇou plnoↃ",
-    "popupBlocked": ".qɐʇ ʍǝu ǝɥʇ pǝʞɔolq ɹǝsʍoɹq ɹno⅄",
-    "openLink": "ʞuᴉl uǝdo"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "uoɔI",
-    "description": ".ddɐ ǝɥʇ uᴉ uʍoɥs uoɔᴉ ʇɔǝɐoɹd ǝɥ┴"
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_one": "",
+    "more_other": ""
   },
-  "unknown": "uʍouʞu∩",
-  "minecraftHead": "pɐǝɥ ʇɟɐɹɔǝuᴉW",
-  "textFile": "ǝlᴉɟ ʇxǝ┴"
+  "unknown": "uʍoʞu∩",
+  "minecraftHead": "",
+  "textFile": ""
 }

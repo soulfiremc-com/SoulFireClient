@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Saisissez une valeur.",
-    "null": "Saisissez une valeur.",
-    "number": "Saisissez une valeur.",
-    "boolean": "Saisissez une valeur.",
-    "array": "Saisissez une valeur.",
-    "object": "Saisissez une valeur.",
-    "nan": "Saisissez une valeur.",
-    "infinity": "Saisissez une valeur."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Saisissez un nombre.",
-    "null": "Saisissez un nombre.",
-    "string": "Saisissez un nombre.",
-    "boolean": "Saisissez un nombre.",
-    "array": "Saisissez un nombre.",
-    "object": "Saisissez un nombre.",
-    "nan": "Saisissez un nombre.",
-    "infinity": "Saisissez un nombre."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Saisissez une valeur valide.",
-    "null": "Saisissez une valeur valide.",
-    "number": "Saisissez une valeur valide.",
-    "string": "Saisissez une valeur valide.",
-    "boolean": "Saisissez une valeur valide.",
-    "array": "Saisissez une valeur valide.",
-    "nan": "Saisissez une valeur valide.",
-    "infinity": "Saisissez une valeur valide."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Saisissez une adresse e-mail valide.",
-  "url": "Saisissez une URL valide.",
-  "jwt": "Saisissez un token valide.",
-  "emailTooLong": "Utilisez 255 caractères au maximum.",
-  "jarSource": "Choisissez le serveur officiel ou un jar personnalisé.",
-  "generationMode": "Choisissez comment traiter les comptes existants.",
-  "userRole": "Choisissez un rôle."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "Masukkan nilai.",
-    "null": "Masukkan nilai.",
-    "number": "Masukkan nilai.",
-    "boolean": "Masukkan nilai.",
-    "array": "Masukkan nilai.",
-    "object": "Masukkan nilai.",
-    "nan": "Masukkan nilai.",
-    "infinity": "Masukkan nilai."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Masukkan angka.",
-    "null": "Masukkan angka.",
-    "string": "Masukkan angka.",
-    "boolean": "Masukkan angka.",
-    "array": "Masukkan angka.",
-    "object": "Masukkan angka.",
-    "nan": "Masukkan angka.",
-    "infinity": "Masukkan angka."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Masukkan nilai yang valid.",
-    "null": "Masukkan nilai yang valid.",
-    "number": "Masukkan nilai yang valid.",
-    "string": "Masukkan nilai yang valid.",
-    "boolean": "Masukkan nilai yang valid.",
-    "array": "Masukkan nilai yang valid.",
-    "nan": "Masukkan nilai yang valid.",
-    "infinity": "Masukkan nilai yang valid."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Masukkan alamat email yang valid.",
-  "url": "Masukkan URL yang valid.",
-  "jwt": "Masukkan token yang valid.",
-  "emailTooLong": "Gunakan paling banyak 255 karakter.",
-  "jarSource": "Pilih server resmi atau jar kustom.",
-  "generationMode": "Pilih cara menangani akun yang sudah ada.",
-  "userRole": "Pilih peran."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }

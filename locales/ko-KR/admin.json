@@ -1,41 +1,41 @@
 {
   "overview": {
-    "welcome": "다시 오신 것을 환영합니다, {{name}} 🧙",
+    "welcome": "",
     "serverMetrics": {
-      "sectionTitle": "서버 메트릭스(지표)",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "사용된 힙",
+        "heapUsed": "",
         "threads": "스레드",
-        "botsOnline": "연결된 봇",
+        "botsOnline": "",
         "uptime": "가동 시간"
       },
       "cpuUsage": {
-        "title": "CPU 사용량 (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "힙 메모리 (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "스레드 수"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "연결된 봇(모든 인스턴스)"
+        "title": ""
       },
       "legend": {
-        "process": "프로세스",
+        "process": "",
         "system": "시스템",
-        "used": "사용 중",
-        "committed": "할당됨",
-        "max": "최대",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "전체",
-        "daemon": "데몬",
+        "daemon": "",
         "online": "연결됨"
       }
     },
     "instancesChart": {
-      "title": "이 서버의 전체 인스턴스 개수",
-      "instances": "인스턴스",
+      "title": "",
+      "instances": "",
       "label": {
         "state": "상태",
         "active": "활성화됨",
@@ -74,7 +74,7 @@
         "role": {
           "label": "역할",
           "placeholder": "역할 선택하기",
-          "description": "사용자의 역할입니다. 관리자는 사용자를 관리하고 모든 인스턴스를 관리할 수 있습니다. 일반 사용자는 자신의 인스턴스만 관리할 수 있습니다.",
+          "description": "",
           "user": "사용자",
           "admin": "관리자"
         }
@@ -85,7 +85,7 @@
       "description": "이 서버에 새 사용자를 추가합니다",
       "form": {
         "cancel": "취소",
-        "add": "사용자 추가"
+        "add": ""
       }
     },
     "updateUserDialog": {
@@ -99,52 +99,52 @@
     "profileConflict": "",
     "addToast": {
       "loading": "사용자 추가 중...",
-      "success": "사용자가 추가되었습니다",
-      "error": "사용자 추가 실패"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "사용자 업데이트 중...",
-      "success": "사용자가 업데이트되었습니다",
-      "error": "사용자 업데이트 실패"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "사용자 삭제 중...",
-      "success": "사용자가 삭제되었습니다",
-      "error": "사용자 삭제 실패"
+      "success": "",
+      "error": ""
     },
     "invalidateToast": {
-      "loading": "사용자 로그아웃 중...",
-      "success": "사용자가 로그아웃되었습니다",
-      "error": "사용자 로그아웃 실패"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
     "table": {
       "username": "사용자 이름",
       "email": "이메일",
       "role": "역할",
       "createdAt": "생성일",
-      "minIssuedAt": "세션 유효 시작 시점",
+      "minIssuedAt": "",
       "actions": "동작",
       "searchUsernames": "사용자 이름 검색...",
       "searchEmails": "이메일 검색...",
       "searchCreatedAts": "생성 날짜 검색...",
-      "searchMinIssuedAts": "세션 날짜 검색..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "선택한 사용자 삭제",
-    "logOutSelectedTooltip": "선택한 사용자 로그아웃",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "사용자 편집",
+      "editUser": "",
       "impersonate": "가상 사용자로 전환",
-      "copyUserId": "사용자 ID 복사"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "사용자 {{count}}명을 삭제할까요?",
-      "description": "선택한 사용자와 접근 권한을 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다.",
-      "confirm": "사용자 삭제"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "사용자 {{count}}명을 로그아웃할까요?",
-      "description": "선택한 사용자의 모든 세션과 토큰을 종료합니다. 사용자는 다시 로그인해야 합니다.",
-      "confirm": "사용자 로그아웃"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

@@ -1,39 +1,39 @@
 {
   "string": {
-    "undefined": "ป้อนค่า",
-    "null": "ป้อนค่า",
-    "number": "ป้อนค่า",
-    "boolean": "ป้อนค่า",
-    "array": "ป้อนค่า",
-    "object": "ป้อนค่า",
-    "nan": "ป้อนค่า",
-    "infinity": "ป้อนค่า"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "ป้อนตัวเลข",
-    "null": "ป้อนตัวเลข",
-    "string": "ป้อนตัวเลข",
-    "boolean": "ป้อนตัวเลข",
-    "array": "ป้อนตัวเลข",
-    "object": "ป้อนตัวเลข",
-    "nan": "ป้อนตัวเลข",
-    "infinity": "ป้อนตัวเลข"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "ป้อนค่าที่ถูกต้อง",
-    "null": "ป้อนค่าที่ถูกต้อง",
-    "number": "ป้อนค่าที่ถูกต้อง",
-    "string": "ป้อนค่าที่ถูกต้อง",
-    "boolean": "ป้อนค่าที่ถูกต้อง",
-    "array": "ป้อนค่าที่ถูกต้อง",
-    "nan": "ป้อนค่าที่ถูกต้อง",
-    "infinity": "ป้อนค่าที่ถูกต้อง"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "ป้อนอีเมลที่ถูกต้อง",
-  "url": "ป้อน URL ที่ถูกต้อง",
-  "jwt": "ป้อนโทเค็นที่ถูกต้อง",
-  "emailTooLong": "ใช้ไม่เกิน 255 ตัวอักษร",
-  "jarSource": "เลือกเซิร์ฟเวอร์ทางการหรือ jar แบบกำหนดเอง",
-  "generationMode": "เลือกวิธีจัดการไอดีที่มีอยู่",
-  "userRole": "เลือกบทบาท"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "jarSource": "",
+  "generationMode": "",
+  "userRole": ""
 }
