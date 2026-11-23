@@ -72,6 +72,8 @@ export function DeviceCodeDialog({
                   <Button
                     variant="outline"
                     size="icon"
+                    aria-label={t("account.deviceCodeDialog.copyCode")}
+                    title={t("account.deviceCodeDialog.copyCode")}
                     onClick={() =>
                       void copyToClipboard(deviceCodeData.userCode)
                     }
@@ -85,12 +87,14 @@ export function DeviceCodeDialog({
                   {t("account.deviceCodeDialog.urlLabel")}
                 </span>
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 truncate rounded-md bg-muted px-3 py-2 text-center text-sm">
+                  <code className="min-w-0 flex-1 rounded-md bg-muted px-3 py-2 text-center text-sm break-all">
                     {deviceCodeData.verificationUri}
                   </code>
                   <Button
                     variant="outline"
                     size="icon"
+                    aria-label={t("account.deviceCodeDialog.copyUrl")}
+                    title={t("account.deviceCodeDialog.copyUrl")}
                     onClick={() =>
                       void copyToClipboard(deviceCodeData.verificationUri)
                     }

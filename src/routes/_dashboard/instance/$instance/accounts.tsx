@@ -19,7 +19,7 @@ import {
   TrashIcon,
 } from "lucide-react";
 import { usePostHog } from "posthog-js/react";
-import { use, useCallback, useMemo, useState } from "react";
+import { createContext, use, useCallback, useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
@@ -115,6 +115,8 @@ import {
   updateInstanceConfigEntry,
 } from "@/lib/utils.tsx";
 import { requireField } from "@/lib/require-field";
+import { splitAccountCredentialPayloads } from "@/lib/account-credential-payloads.ts";
+import { useCredentialLoginStream } from "@/hooks/use-credential-login-stream.ts";
 
 const CREDENTIAL_FORMAT_KEYS = {
   [AccountTypeCredentials.OFFLINE]: "offline",
@@ -264,54 +266,18 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
   },
 );
 
-function splitAccountCredentialPayloads(
-  text: string,
-  accountType: AccountTypeCredentials,
-) {
-  const trimmed = text.trim();
-  if (trimmed.length === 0) {
-    return [];
-  }
-
-  if (
-    accountType === AccountTypeCredentials.MICROSOFT_JAVA_COOKIES &&
-    (looksLikeCookieJar(trimmed) || looksLikeCookieEditorJson(trimmed))
-  ) {
-    return trimmed
-      .split(/(?:\r?\n){2,}/u)
-      .map((payload) => payload.trim())
-      .filter((payload) => payload.length > 0);
-  }
-
-  return text
-    .split(/\r?\n/u)
-    .map((payload) => payload.trim())
-    .filter((payload) => payload.length > 0);
-}
-
-function looksLikeCookieJar(input: string) {
-  const hasLiveCookieMarker =
-    input.includes("__Host-MSAAUTHP") ||
-    input.includes("login.live.com") ||
-    input.includes("\tMSPAuth\t") ||
-    input.includes("\tMSPProf\t") ||
-    input.includes("\tPPLState\t");
-  return input.includes("\t") && hasLiveCookieMarker;
-}
-
-function looksLikeCookieEditorJson(input: string) {
-  return (
-    input.startsWith("[") &&
-    input.endsWith("]") &&
-    input.includes('"name"') &&
-    input.includes('"value"')
-  );
-}
+/// Opens the page level account dialogs, so rows do not mount their own copies.
+const AccountDialogsContext = createContext<{
+  openConfig: (profileId: string) => void;
+  openMetadata: (profileId: string) => void;
+} | null>(null);
 
 function ActionsCell({ account }: { account: ProfileAccount }) {
   const { t } = useTranslation("instance");
-  const [configOpen, setConfigOpen] = useState(false);
-  const [metadataOpen, setMetadataOpen] = useState(false);
+  const dialogs = use(AccountDialogsContext);
+  if (dialogs === null) {
+    throw new Error("ActionsCell must render inside AccountDialogsContext");
+  }
 
   return (
     <div className="flex items-center">
@@ -323,7 +289,7 @@ function ActionsCell({ account }: { account: ProfileAccount }) {
               size="icon"
               className="size-8"
               onClick={() => {
-                setConfigOpen(true);
+                dialogs.openConfig(account.profileId);
               }}
             />
           }
@@ -341,7 +307,7 @@ function ActionsCell({ account }: { account: ProfileAccount }) {
               size="icon"
               className="size-8"
               onClick={() => {
-                setMetadataOpen(true);
+                dialogs.openMetadata(account.profileId);
               }}
             />
           }
@@ -351,16 +317,6 @@ function ActionsCell({ account }: { account: ProfileAccount }) {
         </TooltipTrigger>
         <TooltipContent>{t("account.metadata.openButton")}</TooltipContent>
       </Tooltip>
-      <AccountConfigDialog
-        account={account}
-        open={configOpen}
-        onOpenChange={setConfigOpen}
-      />
-      <AccountMetadataDialog
-        account={account}
-        open={metadataOpen}
-        onOpenChange={setMetadataOpen}
-      />
     </div>
   );
 }
@@ -537,127 +493,102 @@ function AddButton() {
 
   const startBotsToastAction = useStartBotsToastAction();
 
+  const startCredentialLogin = useCredentialLoginStream();
   const importCredentials = useCallback(
     (payload: string[], credentialType: AccountTypeCredentials) => {
-      if (transport === null) {
-        toast.error(t("account.import.demo"));
-        return;
-      }
-
-      const service = createRpcClient(MCAuthService, transport);
-      const abortController = new AbortController();
-      const loadingData: ExternalToast = {
-        cancel: {
-          label: t("common:cancel"),
-          onClick: () => {
-            abortController.abort();
-          },
-        },
-      };
       const formatHint = t(credentialFormatKey(credentialType));
-      const total = payload.length;
-      let failed = 0;
-      let success = 0;
-      const accountsToAdd: ProfileAccount[] = [];
-      const loadingReport = () =>
-        t("account.listImportToast.loading", {
-          checked: success + failed,
-          total,
-          success,
-          failed,
-        });
-      const toastId = toast.loading(loadingReport(), loadingData);
-      const responses = service.loginCredentials(
-        {
-          instanceId: instanceInfo.id,
-          service: credentialType,
-          payload,
-        },
-        {
-          signal: abortController.signal,
-        },
-      );
-      void observeServerStream(responses, {
-        onMessage: async (r) => {
-          const data = r.data;
-          switch (data.case) {
-            case "oneSuccess": {
-              if (abortController.signal.aborted) return;
-              if (data.value.account) {
-                accountsToAdd.push(data.value.account);
-              }
-              success++;
-              toast.loading(loadingReport(), {
+      const handle = startCredentialLogin({
+        instanceId: instanceInfo.id,
+        service: credentialType,
+        payload,
+        progressMessage: (progress) =>
+          t("account.listImportToast.loading", { ...progress }),
+        onSettled: async ({ outcome, accounts, failed, error }, toastId) => {
+          // Accounts that signed in are already authenticated. Save them for
+          // every outcome, since purchased credentials may not work again.
+          if (accounts.length > 0) {
+            try {
+              await addAccountsBatchMutation(accounts);
+            } catch (saveError) {
+              console.error(saveError);
+              toast.error(t("account.listImportToast.error"), {
                 id: toastId,
-                ...loadingData,
+                cancel: undefined,
+                description: t(
+                  `account.listImportToast.errorReason.${getConnectionErrorKind(saveError)}`,
+                ),
               });
-              break;
-            }
-            case "oneFailure": {
-              if (abortController.signal.aborted) return;
-              failed++;
-              toast.loading(loadingReport(), {
-                id: toastId,
-                ...loadingData,
-              });
-              break;
-            }
-            case "end": {
-              if (accountsToAdd.length > 0) {
-                await addAccountsBatchMutation(accountsToAdd);
-              }
-              if (accountsToAdd.length === 0) {
-                toast.error(t("account.listImportToast.allFailed"), {
-                  id: toastId,
-                  cancel: undefined,
-                  description: formatHint,
-                  duration: 10_000,
-                });
-              } else if (failed > 0) {
-                toast.warning(
-                  t("account.listImportToast.someFailed", {
-                    count: accountsToAdd.length,
-                    failed,
-                  }),
-                  {
-                    ...startBotsToastAction,
-                    id: toastId,
-                    cancel: undefined,
-                    description: formatHint,
-                  },
-                );
-              } else {
-                toast.success(
-                  t("account.listImportToast.noneFailed", {
-                    count: accountsToAdd.length,
-                  }),
-                  { ...startBotsToastAction, id: toastId, cancel: undefined },
-                );
-              }
-              break;
-            }
-            case undefined: {
-              break;
+              return;
             }
           }
-        },
-        onError: (e) => {
-          console.error(e);
-          toast.error(t("account.listImportToast.error"), {
+
+          const finished = {
+            ...startBotsToastAction,
             id: toastId,
             cancel: undefined,
-            description: t(
-              `account.listImportToast.errorReason.${getConnectionErrorKind(e)}`,
-            ),
-          });
+          };
+          if (outcome === "cancelled") {
+            if (accounts.length > 0) {
+              toast.success(
+                t("account.listImportToast.cancelledSaved", {
+                  count: accounts.length,
+                }),
+                finished,
+              );
+            }
+          } else if (outcome === "error") {
+            console.error(error);
+            const description = t(
+              `account.listImportToast.errorReason.${getConnectionErrorKind(error)}`,
+            );
+            if (accounts.length > 0) {
+              toast.warning(
+                t("account.listImportToast.errorSaved", {
+                  count: accounts.length,
+                }),
+                { ...finished, description },
+              );
+            } else {
+              toast.error(t("account.listImportToast.error"), {
+                id: toastId,
+                cancel: undefined,
+                description,
+              });
+            }
+          } else if (accounts.length === 0) {
+            toast.error(t("account.listImportToast.allFailed"), {
+              id: toastId,
+              cancel: undefined,
+              description: formatHint,
+              duration: 10_000,
+            });
+          } else if (failed > 0) {
+            toast.warning(
+              t("account.listImportToast.someFailed", {
+                count: accounts.length,
+                failed,
+              }),
+              { ...finished, description: formatHint },
+            );
+          } else {
+            toast.success(
+              t("account.listImportToast.noneFailed", {
+                count: accounts.length,
+              }),
+              finished,
+            );
+          }
         },
       });
+      if (handle === null) {
+        toast.error(t("account.import.demo"));
+      }
     },
     [
       instanceInfo.id,
       addAccountsBatchMutation,
       t,
-      transport,
+      startCredentialLogin,
       startBotsToastAction,
     ],
   );
@@ -1083,6 +1014,9 @@ function ExtraHeader(props: {
   const { mutateAsync: removeAccountsBatchMutation } = useMutation({
     mutationKey: ["instance", "accounts", "remove-batch", instanceInfo.id],
     scope: { id: `instance-accounts-${instanceInfo.id}` },
+    onMutate: () => {
+      props.table.resetRowSelection();
+    },
     mutationFn: async (profileIds: string[]) => {
       await removeInstanceAccountsBatch(
         profileIds,
@@ -1208,6 +1142,13 @@ function Content() {
   const metadataAccount = profile.accounts.find(
     (account) => account.profileId === metadataAccountId,
   );
+  const accountDialogs = useMemo(
+    () => ({
+      openConfig: setConfigAccountId,
+      openMetadata: setMetadataAccountId,
+    }),
+    [],
+  );
 
   return (
     <div className="container flex size-full grow flex-col gap-4">
@@ -1225,20 +1166,22 @@ function Content() {
           }
         />
       </div>
-      <DataTable
-        table={table}
-        onRowContextMenu={handleContextMenu}
-        actionBar={
-          <DataTableActionBar table={table}>
-            <ExtraHeader table={table} />
-          </DataTableActionBar>
-        }
-      >
-        <DataTableToolbar table={table}>
-          <DataTableSortList table={table} />
-          <AddButton />
-        </DataTableToolbar>
-      </DataTable>
+      <AccountDialogsContext value={accountDialogs}>
+        <DataTable
+          table={table}
+          onRowContextMenu={handleContextMenu}
+          actionBar={
+            <DataTableActionBar table={table}>
+              <ExtraHeader table={table} />
+            </DataTableActionBar>
+          }
+        >
+          <DataTableToolbar table={table}>
+            <DataTableSortList table={table} />
+            <AddButton />
+          </DataTableToolbar>
+        </DataTable>
+      </AccountDialogsContext>
       {contextMenu && (
         <ContextMenuPortal
           onClose={dismiss}

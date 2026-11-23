@@ -2,6 +2,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CheckIcon,
+  CopyIcon,
   KeyRoundIcon,
   PackageIcon,
   ShoppingCartIcon,
@@ -33,6 +34,7 @@ import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { RadioGroup } from "@/components/ui/radio-group.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useProviderTask } from "@/hooks/use-provider-task.ts";
 import { ProviderApiError } from "@/lib/provider-request.ts";
 import {
@@ -91,7 +93,11 @@ export function RavealtsFlow({
   const [stockFailed, setStockFailed] = useState(false);
   const [selected, setSelected] = useState("");
   const [amount, setAmount] = useState(1);
-  const [delivered, setDelivered] = useState(0);
+  // Ravealts cannot deliver an order again, so keep the credentials until the
+  // dialog closes and let the user copy them in case the import fails.
+  const [delivered, setDelivered] = useState<string[]>([]);
+  const [lastOrderSize, setLastOrderSize] = useState(0);
+  const copyToClipboard = useCopyToClipboard({ sensitive: true });
   const [uncertain, setUncertain] = useState(false);
 
   const available = Object.entries(stock ?? {}).filter(
@@ -225,7 +231,9 @@ export function RavealtsFlow({
                     const { payload, credentialType } =
                       mapPurchasedAccounts(accounts);
                     onImport(payload, credentialType);
-                    setDelivered(accounts.length);
+                    // Keep earlier orders too, so "Buy more" cannot drop them.
+                    setDelivered((previous) => [...previous, ...payload]);
+                    setLastOrderSize(payload.length);
                     setStage("import");
                     void loadStock();
                     void fetchKeyInfo(key.trim())
@@ -399,7 +407,29 @@ export function RavealtsFlow({
       )}
       {stage === "import" && (
         <Notice tone="success" title={t("providers.purchaseComplete")}>
-          {t("providers.ravealts.importing", { count: delivered })}
+          {t("providers.ravealts.importing", { count: lastOrderSize })}
+        </Notice>
+      )}
+      {stage === "import" && (
+        <Notice
+          tone="warning"
+          title={t("providers.ravealts.backupTitle")}
+          action={
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                void copyToClipboard(delivered.join("\n\n"));
+              }}
+            >
+              <CopyIcon data-icon="inline-start" />
+              {t("providers.ravealts.copyCredentials", {
+                count: delivered.length,
+              })}
+            </Button>
+          }
+        >
+          {t("providers.ravealts.backupDescription")}
         </Notice>
       )}
       {error && <Notice tone="error">{error}</Notice>}

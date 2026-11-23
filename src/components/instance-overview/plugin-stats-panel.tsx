@@ -30,7 +30,9 @@ function PluginStatRow({
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-col">
-          <span className="truncate text-sm font-medium">{stat.pluginId}</span>
+          <span className="truncate text-sm font-medium" title={stat.pluginId}>
+            {stat.pluginId}
+          </span>
           <span className="truncate text-xs text-muted-foreground">
             {t("overview.plugins.activeBots", { count: stat.activeBotCount })}
             {stat.runningSince &&

@@ -99,9 +99,11 @@ export const NeedsAttention: Story = {
       }),
     ).toBeVisible();
     await expect(
-      canvas.getByText(/cannot reach the Minecraft server/u),
+      canvas.getByText("Cannot reach the Minecraft server"),
     ).toBeVisible();
-    await expect(canvas.getByText(/account login rejected/u)).toBeVisible();
+    await expect(
+      canvas.getByText("The server rejected the account login"),
+    ).toBeVisible();
     await expect(canvas.getByText("Open accounts")).toBeVisible();
     await expect(
       canvas.getAllByRole("button", { name: /Restart 1 bot/u }),
@@ -118,7 +120,7 @@ export const ViewOnly: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      await canvas.findByText(/account login rejected/u),
+      await canvas.findByText("The server rejected the account login"),
     ).toBeVisible();
     await expect(canvas.queryByRole("button", { name: /Restart/u })).toBeNull();
   },
@@ -171,7 +173,7 @@ export const OnlineModeServer: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      await canvas.findByText("the server requires Microsoft accounts"),
+      await canvas.findByText("The server requires Microsoft accounts"),
     ).toBeVisible();
     await expect(canvas.getByText("Open accounts")).toBeVisible();
   },

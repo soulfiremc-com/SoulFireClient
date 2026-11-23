@@ -474,9 +474,7 @@ function DialogContentInner({
           >
             <FieldSet className="gap-3">
               <FieldLegend variant="label">
-                {t("account.metadata.addEntryLegend", {
-                  defaultValue: "Add metadata entry",
-                })}
+                {t("account.metadata.addEntryLegend")}
               </FieldLegend>
               <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
                 <addEntryForm.Field name="namespace">
@@ -487,9 +485,7 @@ function DialogContentInner({
                     return (
                       <Field data-invalid={isInvalid} className="gap-2">
                         <FieldLabel htmlFor={field.name}>
-                          {t("account.metadata.namespaceLabel", {
-                            defaultValue: "Namespace",
-                          })}
+                          {t("account.metadata.namespaceLabel")}
                         </FieldLabel>
                         <Input
                           id={field.name}
@@ -525,9 +521,7 @@ function DialogContentInner({
                     return (
                       <Field data-invalid={isInvalid} className="gap-2">
                         <FieldLabel htmlFor={field.name}>
-                          {t("account.metadata.keyLabel", {
-                            defaultValue: "Key",
-                          })}
+                          {t("account.metadata.keyLabel")}
                         </FieldLabel>
                         <Input
                           id={field.name}
@@ -561,9 +555,7 @@ function DialogContentInner({
                     return (
                       <Field data-invalid={isInvalid} className="gap-2">
                         <FieldLabel htmlFor={field.name}>
-                          {t("account.metadata.valueLabel", {
-                            defaultValue: "Value",
-                          })}
+                          {t("account.metadata.valueLabel")}
                         </FieldLabel>
                         <Input
                           id={field.name}
@@ -597,9 +589,7 @@ function DialogContentInner({
                     disabled={!isMetadataReady || addEntryMutation.isPending}
                   >
                     <PlusIcon data-icon="inline-start" />
-                    {t("account.metadata.addEntryButton", {
-                      defaultValue: "Add entry",
-                    })}
+                    {t("account.metadata.addEntryButton")}
                   </Button>
                 </div>
               </FieldGroup>
@@ -720,16 +710,12 @@ function EntryRow({
   return (
     <FieldSet className="gap-3 rounded-lg border p-3">
       <FieldLegend className="sr-only">
-        {t("account.metadata.entryLegend", {
-          defaultValue: "Metadata entry",
-        })}
+        {t("account.metadata.entryLegend")}
       </FieldLegend>
       <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
         <Field data-invalid={!isValidNamespace} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-namespace`}>
-            {t("account.metadata.namespaceLabel", {
-              defaultValue: "Namespace",
-            })}
+            {t("account.metadata.namespaceLabel")}
           </FieldLabel>
           <Input
             id={`${entry.id}-namespace`}
@@ -756,9 +742,7 @@ function EntryRow({
         </Field>
         <Field data-invalid={!isValidKey} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-key`}>
-            {t("account.metadata.keyLabel", {
-              defaultValue: "Key",
-            })}
+            {t("account.metadata.keyLabel")}
           </FieldLabel>
           <Input
             id={`${entry.id}-key`}
@@ -783,9 +767,7 @@ function EntryRow({
         </Field>
         <Field data-invalid={!isValidJson} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-value`}>
-            {t("account.metadata.valueLabel", {
-              defaultValue: "Value",
-            })}
+            {t("account.metadata.valueLabel")}
           </FieldLabel>
           <Input
             id={`${entry.id}-value`}
@@ -818,9 +800,7 @@ function EntryRow({
             disabled={isDeleting || isUpdating}
           >
             <TrashIcon data-icon="inline-start" />
-            {t("account.metadata.removeEntryButton", {
-              defaultValue: "Remove",
-            })}
+            {t("account.metadata.removeEntryButton")}
           </Button>
         </div>
       </FieldGroup>

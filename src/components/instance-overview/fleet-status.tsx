@@ -111,11 +111,11 @@ function FailureGroupRow({
         </ItemMedia>
         <ItemContent className="min-w-48">
           <ItemTitle className="flex-wrap">
-            {t(`fleet.groupTitle.${group.severity}`, {
-              count: group.botIds.length,
-            })}
-            <span className="font-normal">
-              {t(`fleet.kind.${group.kind}.title`)}
+            {t(`fleet.kind.${group.kind}.title`)}
+            <span className="font-normal text-muted-foreground">
+              {t(`fleet.groupTitle.${group.severity}`, {
+                count: group.botIds.length,
+              })}
             </span>
           </ItemTitle>
           <ItemDescription className="line-clamp-none">
@@ -174,7 +174,9 @@ export function FleetStatus({
   instanceInfo: InstanceInfoQueryData;
 }) {
   const { t } = useTranslation("instance");
-  const { data, isPending } = useQuery(botStatusQueryOptions(instanceInfo.id));
+  const { data, isPending, isError } = useQuery(
+    botStatusQueryOptions(instanceInfo.id),
+  );
   const accountIds = new Set(
     instanceInfo.profile.accounts.map((account) => account.profileId),
   );
@@ -187,9 +189,24 @@ export function FleetStatus({
     return <Skeleton className="h-14 w-full" />;
   }
 
-  const bots = (data?.bots ?? []).filter((bot) =>
-    accountIds.has(bot.profileId),
-  );
+  // Without a status list every bot would look stopped, so say that the
+  // status is unknown instead of reporting a stopped fleet.
+  if (isError && data === undefined) {
+    return (
+      <p
+        role="alert"
+        className="flex items-center gap-2 text-sm text-muted-foreground"
+      >
+        <CircleAlertIcon
+          aria-hidden="true"
+          className="size-3.5 shrink-0 text-destructive"
+        />
+        {t("overview.loadError")}
+      </p>
+    );
+  }
+
+  const bots = data.bots.filter((bot) => accountIds.has(bot.profileId));
   // Accounts without a live entry still count as stopped bots.
   const counts = countBotFleet([
     ...bots,

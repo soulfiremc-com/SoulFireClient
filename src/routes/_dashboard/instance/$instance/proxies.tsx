@@ -264,7 +264,7 @@ function uiProxyTypeToProto(type: SimpleProxyType): ProxyProto_Type {
 function saveProxyFile(content: string, filename: string) {
   if (isDesktopApp()) {
     runAsync(async () => {
-      let selected = await desktop.dialog.save({
+      const selected = await desktop.dialog.save({
         title: filename,
         filters: [
           {
@@ -274,10 +274,8 @@ function saveProxyFile(content: string, filename: string) {
         ],
       });
 
+      // The desktop app adds a missing .txt extension itself.
       if (selected) {
-        if (!selected.endsWith(".txt")) {
-          selected += ".txt";
-        }
         await desktop.fs.writeTextFile(selected, content);
       }
     });
@@ -551,7 +549,7 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
         onOpenChange={setProviderDialogOpen}
         canImport={transport !== null}
         onImport={async (proxies) => {
-          if (transport === null) throw new Error("Server connection required");
+          if (transport === null) throw new Error(t("common:demoReadOnly"));
           const current = queryClient.getQueryData<InstanceInfoQueryData>(
             instanceInfoQueryOptions.queryKey,
           );
@@ -648,20 +646,23 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
           onBack={() => {
             setImportDraft(null);
           }}
-          onImport={async (proxies, skippedLines) => {
-            await addProxiesBatchMutation(proxies);
-            setImportedProxies(proxies);
+          existingProxies={instanceInfo.profile.proxies}
+          onImport={async (additions, skippedLines, duplicates) => {
+            await addProxiesBatchMutation(additions);
+            setImportedProxies(additions);
             setImportDraft(null);
             setProxyTypeSelected(null);
-            toast.success(
-              t("proxy.listImportToast.success", { count: proxies.length }),
+            const notes = [
               skippedLines > 0
-                ? {
-                    description: t("proxy.listImportToast.skipped", {
-                      count: skippedLines,
-                    }),
-                  }
-                : undefined,
+                ? t("proxy.listImportToast.skipped", { count: skippedLines })
+                : null,
+              duplicates > 0
+                ? t("proxy.listImportToast.duplicates", { count: duplicates })
+                : null,
+            ].filter((note) => note !== null);
+            toast.success(
+              t("proxy.listImportToast.success", { count: additions.length }),
+              notes.length > 0 ? { description: notes.join(" ") } : undefined,
             );
           }}
         />
@@ -960,7 +961,12 @@ function Content() {
     useContextMenu<ProfileProxy>();
   const copyToClipboard = useCopyToClipboard();
 
-  const { mutate: removeProxyMutation } = useMutation({
+  // Keep the proxy after closing so the title stays during the exit animation.
+  const [pendingRemoval, setPendingRemoval] = useState<ProfileProxy | null>(
+    null,
+  );
+  const [removalOpen, setRemovalOpen] = useState(false);
+  const { mutateAsync: removeProxyMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-single", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
     onMutate: () => {
@@ -1032,7 +1038,9 @@ function Content() {
         >
           <DropdownMenuItem
             onClick={() => {
-              void copyToClipboard(contextMenu.data.address);
+              void copyToClipboard(
+                stripAddressPrefix(contextMenu.data.address),
+              );
               dismiss();
             }}
           >
@@ -1065,7 +1073,8 @@ function Content() {
           <DropdownMenuItem
             variant="destructive"
             onClick={() => {
-              removeProxyMutation(contextMenu.data);
+              setPendingRemoval(contextMenu.data);
+              setRemovalOpen(true);
               dismiss();
             }}
           >
@@ -1074,6 +1083,23 @@ function Content() {
           </DropdownMenuItem>
         </ContextMenuPortal>
       )}
+      <ConfirmDialog
+        open={removalOpen}
+        onOpenChange={setRemovalOpen}
+        icon={<TrashIcon />}
+        title={t("proxy.removeSingleDialog.title", {
+          address: pendingRemoval
+            ? stripAddressPrefix(pendingRemoval.address)
+            : "",
+        })}
+        description={t("proxy.removeSingleDialog.description")}
+        confirmLabel={t("proxy.removeSingleDialog.confirm")}
+        onConfirm={() =>
+          pendingRemoval === null
+            ? undefined
+            : removeProxyMutation(pendingRemoval)
+        }
+      />
     </div>
   );
 }

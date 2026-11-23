@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   formatAccountName,
+  MAX_GENERATED_ACCOUNTS,
   parseAccountAmount,
   resolveNameFormat,
 } from "@/lib/generate-accounts.ts";
@@ -24,7 +25,11 @@ describe("parseAccountAmount", () => {
     expect(parseAccountAmount("1e3")).toBeNull();
   });
 
-  test("rejects values beyond the safe integer range", () => {
+  test("accepts the maximum and rejects larger amounts", () => {
+    expect(parseAccountAmount(String(MAX_GENERATED_ACCOUNTS))).toBe(
+      MAX_GENERATED_ACCOUNTS,
+    );
+    expect(parseAccountAmount(String(MAX_GENERATED_ACCOUNTS + 1))).toBeNull();
     expect(parseAccountAmount("9007199254740993")).toBeNull();
   });
 });

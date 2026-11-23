@@ -1,20 +1,23 @@
-import { createRpcClient } from "@/lib/rpc";
+import { formatNumber } from "@/lib/format.ts";
 import { toFormSchema } from "@/lib/form-validation";
 import {
   formatAccountName,
+  MAX_GENERATED_ACCOUNTS,
   parseAccountAmount,
   resolveNameFormat,
 } from "@/lib/generate-accounts.ts";
 import { Schema } from "effect";
 
 import { useForm } from "@tanstack/react-form";
+import { TriangleAlertIcon } from "lucide-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ExternalToast, toast } from "sonner";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { TextInfoButton } from "@/components/info-buttons.tsx";
-import { TransportContext } from "@/components/providers/transport-context.tsx";
+import { useCredentialLoginStream } from "@/hooks/use-credential-login-stream.ts";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -42,8 +45,6 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
-import { MCAuthService } from "@/generated/soulfire/mc-auth_pb";
-import { observeServerStream } from "@/lib/protobuf.ts";
 import type { GenerateAccountsMode, ProfileAccount } from "@/lib/types.ts";
 import { isOneOf } from "@/lib/is-one-of";
 import { GENERATE_ACCOUNTS_MODES } from "@/lib/types";
@@ -65,7 +66,7 @@ export interface GenerateAccountsDialogProps {
 type GenerationPhase = "generating" | "saving";
 
 interface GenerationJob {
-  controller: AbortController;
+  cancel: () => void;
   toastId: string | number;
   phase: GenerationPhase;
 }
@@ -78,18 +79,23 @@ export default function GenerateAccountsDialog({
   successToast,
 }: GenerateAccountsDialogProps) {
   const { t } = useTranslation("instance");
-  const transport = use(TransportContext);
+  const startCredentialLogin = useCredentialLoginStream();
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [phase, setPhase] = useState<GenerationPhase | "idle">("idle");
+  const [pendingReplaceAll, setPendingReplaceAll] = useState<{
+    amount: number;
+    nameFormat: string;
+    mode: GenerateAccountsMode;
+  } | null>(null);
   const activeJob = useRef<GenerationJob | null>(null);
   const cancelGeneration = useCallback((job = activeJob.current) => {
     if (!job || activeJob.current !== job) return;
     activeJob.current = null;
-    job.controller.abort();
+    job.cancel();
     toast.dismiss(job.toastId);
     setPhase("idle");
   }, []);
@@ -114,7 +120,9 @@ export default function GenerateAccountsDialog({
       Schema.makeFilter(
         (value) =>
           parseAccountAmount(value) !== null ||
-          t("account.generate.invalidAmount"),
+          t("account.generate.amountOutOfRange", {
+            max: formatNumber(MAX_GENERATED_ACCOUNTS),
+          }),
       ),
     ),
     nameFormat: Schema.String.check(
@@ -139,10 +147,6 @@ export default function GenerateAccountsDialog({
     mode: GenerateAccountsMode;
   }) => {
     if (!open || activeJob.current) return;
-    if (transport === null) {
-      toast.error(t("account.import.demo"));
-      return;
-    }
 
     // Generate usernames based on format
     const usernames: string[] = [];
@@ -160,121 +164,70 @@ export default function GenerateAccountsDialog({
       return;
     }
 
-    const service = createRpcClient(MCAuthService, transport);
-
-    const abortController = new AbortController();
-    const loadingData: ExternalToast = {
-      cancel: {
-        label: t("common:cancel"),
-        onClick: () => {
-          if (job.phase === "generating") cancelGeneration(job);
-        },
-      },
-    };
-    const total = usernames.length;
-    let failed = 0;
-    let success = 0;
-    const accountsToAdd: ProfileAccount[] = [];
-    const loadingReport = () =>
-      t("account.generate.progress", {
-        checked: success + failed,
-        total,
-        success,
-        failed,
-      });
-    const toastId = toast.loading(loadingReport(), loadingData);
     const job: GenerationJob = {
-      controller: abortController,
-      toastId,
+      cancel: () => {},
+      toastId: "",
       phase: "generating",
     };
-    activeJob.current = job;
-    setPhase("generating");
-
-    const responses = service.loginCredentials(
-      {
-        instanceId: instanceInfo.id,
-        service: AccountTypeCredentials.OFFLINE,
-        payload: usernames,
-      },
-      {
-        signal: abortController.signal,
-      },
-    );
-
-    void observeServerStream(responses, {
-      onMessage: async (r) => {
-        if (activeJob.current !== job || abortController.signal.aborted) return;
-        const data = r.data;
-        switch (data.case) {
-          case "oneSuccess": {
-            if (data.value.account) {
-              accountsToAdd.push(data.value.account);
-            }
-            success++;
-            toast.loading(loadingReport(), {
-              id: toastId,
-              ...loadingData,
-            });
-            break;
-          }
-          case "oneFailure": {
-            failed++;
-            toast.loading(loadingReport(), {
-              id: toastId,
-              ...loadingData,
-            });
-            break;
-          }
-          case "end": {
-            if (accountsToAdd.length === 0) {
-              activeJob.current = null;
-              setPhase("idle");
-              toast.error(t("account.generate.allFailed"), {
-                id: toastId,
-                cancel: undefined,
-              });
-            } else {
-              job.phase = "saving";
-              setPhase("saving");
-              toast.loading(loadingReport(), {
-                id: toastId,
-                cancel: undefined,
-              });
-              await onGenerate(accountsToAdd, value.mode);
-              if (activeJob.current !== job) return;
-              activeJob.current = null;
-              setPhase("idle");
-              onOpenChange(false);
-              toast.success(
-                t("account.generate.success", {
-                  count: accountsToAdd.length,
-                }),
-                {
-                  ...successToast,
-                  id: toastId,
-                  cancel: undefined,
-                },
-              );
-            }
-            break;
-          }
-          case undefined: {
-            break;
-          }
+    const handle = startCredentialLogin({
+      instanceId: instanceInfo.id,
+      service: AccountTypeCredentials.OFFLINE,
+      payload: usernames,
+      progressMessage: (progress) =>
+        t("account.generate.progress", { ...progress }),
+      onSettled: async ({ outcome, accounts, error }, toastId) => {
+        // Closing the dialog already canceled this job.
+        if (activeJob.current !== job) return;
+        const fail = (message: string) => {
+          activeJob.current = null;
+          setPhase("idle");
+          toast.error(message, { id: toastId, cancel: undefined });
+        };
+        // Offline accounts are free to generate again, and saving part of a
+        // replace-all run would remove the other accounts. Only a complete
+        // run is saved.
+        if (outcome === "cancelled") {
+          activeJob.current = null;
+          setPhase("idle");
+          return;
         }
-      },
-      onError: (e) => {
-        if (activeJob.current !== job || abortController.signal.aborted) return;
+        if (outcome === "error") {
+          console.error(error);
+          fail(t("account.generate.error"));
+          return;
+        }
+        if (accounts.length === 0) {
+          fail(t("account.generate.allFailed"));
+          return;
+        }
+
+        job.phase = "saving";
+        setPhase("saving");
+        try {
+          await onGenerate(accounts, value.mode);
+        } catch (saveError) {
+          console.error(saveError);
+          if (activeJob.current === job) fail(t("account.generate.error"));
+          return;
+        }
+        if (activeJob.current !== job) return;
         activeJob.current = null;
-        console.error(e);
         setPhase("idle");
-        toast.error(t("account.generate.error"), {
-          id: toastId,
-          cancel: undefined,
-        });
+        onOpenChange(false);
+        toast.success(
+          t("account.generate.success", { count: accounts.length }),
+          { ...successToast, id: toastId, cancel: undefined },
+        );
       },
     });
+    if (handle === null) {
+      toast.error(t("account.import.demo"));
+      return;
+    }
+    job.cancel = handle.cancel;
+    job.toastId = handle.toastId;
+    activeJob.current = job;
+    setPhase("generating");
   };
 
   const form = useForm({
@@ -290,7 +243,17 @@ export default function GenerateAccountsDialog({
       const amount = parseAccountAmount(value.amount);
       const nameFormat = resolveNameFormat(value.nameFormat);
       if (amount === null || nameFormat === null) return;
-      handleGenerate({ ...value, amount, nameFormat });
+      const request = { ...value, amount, nameFormat };
+      // Replacing all accounts also removes imported accounts that cannot be
+      // generated again, so ask first.
+      if (
+        request.mode === "REPLACE_ALL" &&
+        instanceInfo.profile.accounts.length > 0
+      ) {
+        setPendingReplaceAll(request);
+        return;
+      }
+      handleGenerate(request);
     },
   });
 
@@ -325,6 +288,7 @@ export default function GenerateAccountsDialog({
                       type="number"
                       inputMode="numeric"
                       min={1}
+                      max={MAX_GENERATED_ACCOUNTS}
                       step={1}
                       value={field.state.value}
                       onBlur={field.handleBlur}
@@ -464,6 +428,21 @@ export default function GenerateAccountsDialog({
             </Button>
           </CredenzaFooter>
         </form>
+        <ConfirmDialog
+          open={pendingReplaceAll !== null}
+          onOpenChange={(nextOpen) => {
+            if (!nextOpen) setPendingReplaceAll(null);
+          }}
+          icon={<TriangleAlertIcon />}
+          title={t("account.generate.replaceAllDialog.title", {
+            count: instanceInfo.profile.accounts.length,
+          })}
+          description={t("account.generate.replaceAllDialog.description")}
+          confirmLabel={t("account.generate.replaceAllDialog.confirm")}
+          onConfirm={() => {
+            if (pendingReplaceAll !== null) handleGenerate(pendingReplaceAll);
+          }}
+        />
       </CredenzaContent>
     </Credenza>
   );

@@ -15,7 +15,7 @@ import {
   OnlineCountBadge,
 } from "@/components/instance-overview/bot-grid.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import {
   InputGroup,
@@ -140,22 +140,14 @@ function Content() {
             }}
           >
             <ToggleGroupItem value="all">{t("bots.filterAll")}</ToggleGroupItem>
-            {BOT_DISPLAY_STATES.filter((state) => state !== "stopping").map(
-              (state) => (
-                <ToggleGroupItem key={state} value={state}>
-                  {t(`bots.displayState.${state}`)}
-                </ToggleGroupItem>
-              ),
-            )}
+            {BOT_DISPLAY_STATES.map((state) => (
+              <ToggleGroupItem key={state} value={state}>
+                {t(`bots.displayState.${state}`)}
+              </ToggleGroupItem>
+            ))}
           </ToggleGroup>
         </div>
-        <Suspense
-          fallback={
-            <Badge variant="outline" className="w-fit">
-              {t("bots.onlineCount", { online: "...", total: "..." })}
-            </Badge>
-          }
-        >
+        <Suspense fallback={<Skeleton className="h-5 w-36 rounded-4xl" />}>
           <OnlineCountBadgeContainer />
         </Suspense>
       </div>

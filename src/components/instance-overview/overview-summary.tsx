@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import type { MetricsSnapshot } from "@/generated/soulfire/metrics_pb";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
-import { formatBytesPerSecond } from "@/lib/format.ts";
+import { formatBytesPerSecond, formatMilliseconds } from "@/lib/format.ts";
 import type { InstanceInfoQueryData } from "@/lib/types.ts";
 
 export function OverviewSummary({
@@ -67,7 +67,7 @@ export function OverviewSummary({
           {metricsPending ? (
             <Skeleton className="h-4 w-12" />
           ) : latest ? (
-            `${latest.avgTickDurationMs.toFixed(1)} ms`
+            formatMilliseconds(latest.avgTickDurationMs, 1)
           ) : (
             "-"
           )}

@@ -14,10 +14,12 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { getConnectionErrorKind } from "@/lib/connection-errors";
 import { parseProxyImport } from "@/lib/proxy-import";
+import { removeProxyEntries } from "@/lib/proxy-selection";
 import type { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import type { ProfileProxy } from "@/lib/types";
 
 const MAX_LISTED_LINES = 10;
+const NO_PROXIES: ProfileProxy[] = [];
 
 function formatRejectedLines(lines: number[]) {
   const listed = lines.slice(0, MAX_LISTED_LINES).join(", ");
@@ -27,25 +29,39 @@ function formatRejectedLines(lines: number[]) {
 export function ProxyImportReview({
   text,
   type,
+  existingProxies = NO_PROXIES,
   onBack,
   onImport,
 }: {
   text: string;
   type: ProxyProto_Type | "uri";
+  /** Proxies already in the project. Matching entries are skipped. */
+  existingProxies?: ProfileProxy[];
   onBack: () => void;
-  /** Receives the parsed proxies and how many rejected lines were skipped. */
-  onImport: (proxies: ProfileProxy[], skippedLines: number) => Promise<void>;
+  /**
+   * Receives the new proxies, how many rejected lines were skipped, and how
+   * many entries were skipped because the project already has them.
+   */
+  onImport: (
+    proxies: ProfileProxy[],
+    skippedLines: number,
+    alreadyInProject: number,
+  ) => Promise<void>;
 }) {
   const { t } = useTranslation("instance");
   const [draft, setDraft] = useState(text);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const result = parseProxyImport(draft, type);
+  // Each existing entry skips one matching line. Repeats within the list stay,
+  // since several identical entries let more bots share one rotating gateway.
+  const additions = removeProxyEntries(result.proxies, existingProxies);
+  const alreadyInProject = result.proxies.length - additions.length;
   const confirmImport = async () => {
     setPending(true);
     setError(null);
     try {
-      await onImport(result.proxies, result.rejectedLines.length);
+      await onImport(additions, result.rejectedLines.length, alreadyInProject);
     } catch (reason) {
       setError(reason);
     } finally {
@@ -84,7 +100,9 @@ export function ProxyImportReview({
           />
         </Field>
         <output className="block">
-          {t("proxy.import.review.accepted", { count: result.proxies.length })}
+          {t("proxy.import.review.accepted", { count: additions.length })}
+          {alreadyInProject > 0 &&
+            ` ${t("proxy.import.review.alreadyInProject", { count: alreadyInProject })}`}
         </output>
         {result.rejectedLines.length > 0 && (
           <Alert role="alert">
@@ -108,14 +126,14 @@ export function ProxyImportReview({
             {t("common:cancel")}
           </Button>
           <Button
-            disabled={pending || result.proxies.length === 0}
+            disabled={pending || additions.length === 0}
             aria-busy={pending}
             onClick={() => void confirmImport()}
           >
             {pending
               ? t("proxy.import.review.importing")
               : t("proxy.import.review.confirm", {
-                  count: result.proxies.length,
+                  count: additions.length,
                 })}
           </Button>
         </DialogFooter>

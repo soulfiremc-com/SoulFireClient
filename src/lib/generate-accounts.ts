@@ -1,9 +1,15 @@
-/** Parses the generator amount field. Returns null unless it is a whole number of at least 1. */
+/**
+ * The most accounts one generation can create. The client builds every name
+ * before it sends the request, so a larger amount would freeze the page.
+ */
+export const MAX_GENERATED_ACCOUNTS = 100_000;
+
+/** Parses the generator amount field. Returns null unless it is a whole number from 1 to MAX_GENERATED_ACCOUNTS. */
 export function parseAccountAmount(value: string): number | null {
   const trimmed = value.trim();
   if (!/^\d+$/u.test(trimmed)) return null;
   const amount = Number(trimmed);
-  return Number.isSafeInteger(amount) && amount >= 1 ? amount : null;
+  return amount >= 1 && amount <= MAX_GENERATED_ACCOUNTS ? amount : null;
 }
 
 export const ACCOUNT_NUMBER_PLACEHOLDER = "%d";

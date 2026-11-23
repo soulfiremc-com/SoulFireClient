@@ -1,5 +1,6 @@
 import { createRpcClient } from "@/lib/rpc";
 
+import type { TFunction } from "i18next";
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { use, useEffect, useEffectEvent, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,7 @@ import {
   type InstanceEvent,
   InstanceLiveService,
 } from "@/generated/soulfire/instance_live_pb";
+import { toIntlLocale } from "@/lib/intl-locale.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { cn, timestampToDate } from "@/lib/utils.tsx";
 
@@ -38,7 +40,7 @@ type FeedEntry = {
 );
 
 function lifecycleText(
-  t: (key: string) => string,
+  t: TFunction<"instance">,
   kind: BotLifecycleKind,
   message: string | undefined,
 ): string {
@@ -54,7 +56,7 @@ function lifecycleText(
     }
     case BotLifecycleKind.BOT_LIFECYCLE_DIED: {
       return message
-        ? `${t("overview.liveFeed.lifecycle.died")}: ${message}`
+        ? t("overview.liveFeed.lifecycle.diedWithReason", { reason: message })
         : t("overview.liveFeed.lifecycle.died");
     }
     case BotLifecycleKind.BOT_LIFECYCLE_RESPAWNED: {
@@ -62,7 +64,9 @@ function lifecycleText(
     }
     case BotLifecycleKind.BOT_LIFECYCLE_DISCONNECTED: {
       return message
-        ? `${t("overview.liveFeed.lifecycle.disconnected")}: ${message}`
+        ? t("overview.liveFeed.lifecycle.disconnectedWithReason", {
+            reason: message,
+          })
         : t("overview.liveFeed.lifecycle.disconnected");
     }
     case BotLifecycleKind.BOT_LIFECYCLE_UNSPECIFIED:
@@ -97,12 +101,15 @@ export function LiveFeed({
   const visibleEntries = displayedEntries.filter(
     (entry) => filter === "all" || entry.kind === filter,
   );
-  const timeFormatter = new Intl.DateTimeFormat(i18n.resolvedLanguage, {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
+  const timeFormatter = new Intl.DateTimeFormat(
+    toIntlLocale(i18n.resolvedLanguage),
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    },
+  );
 
   const receiveEvent = useEffectEvent((event: InstanceEvent) => {
     setReconnecting(false);

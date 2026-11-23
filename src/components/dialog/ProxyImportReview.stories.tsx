@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Code, ConnectError } from "@connectrpc/connect";
 import { expect, fn, within } from "storybook/test";
+import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { ProxyImportReview } from "./proxy-import-review";
 
 const meta = {
@@ -30,6 +31,34 @@ export const ImportValidLinesAndSkipRejected: Story = {
     await expect(args.onImport).toHaveBeenCalledWith(
       [{ type: 2, address: "inet://localhost:1080" }],
       1,
+      0,
+    );
+  },
+};
+
+export const SkipProxiesAlreadyInProject: Story = {
+  args: {
+    text: "socks5://localhost:1080\nsocks5://localhost:1080\nsocks5://localhost:1081",
+    existingProxies: [
+      { type: ProxyProto_Type.SOCKS5, address: "inet://localhost:1080" },
+    ],
+  },
+  play: async ({ args, canvasElement, userEvent }) => {
+    const body = within(canvasElement.ownerDocument.body);
+    await expect(
+      await body.findByText(/1 proxy is already in this project/u),
+    ).toBeInTheDocument();
+    await userEvent.click(
+      body.getByRole("button", { name: "Import 2 proxies" }),
+    );
+    // A repeated line stays when the project has only one copy of it.
+    await expect(args.onImport).toHaveBeenCalledWith(
+      [
+        { type: 2, address: "inet://localhost:1080" },
+        { type: 2, address: "inet://localhost:1081" },
+      ],
+      0,
+      1,
     );
   },
 };
@@ -58,6 +87,7 @@ export const CorrectRejectedLines: Story = {
         },
         { type: 2, address: "inet://localhost:1081" },
       ],
+      0,
       0,
     );
   },

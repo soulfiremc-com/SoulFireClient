@@ -2,37 +2,45 @@ import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 
 import {
-  infiniteQueryOptions,
   useMutation,
   useQueryClient,
-  useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ClipboardCopyIcon,
+  EllipsisVerticalIcon,
   ExternalLinkIcon,
-  LoaderCircleIcon,
   MapPinIcon,
   PlayIcon,
+  PlusIcon,
   RefreshCwIcon,
+  SearchXIcon,
   SquareIcon,
+  UsersIcon,
   WifiIcon,
 } from "lucide-react";
 import {
+  memo,
   type ReactNode,
   use,
   useCallback,
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -43,9 +51,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx";
+import {
+  Empty,
+  EmptyContent,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import {
-  BotConnectionPhase,
+  type BotConnectionPhase,
   BotDesiredState,
   type BotListEntry,
   BotService,
@@ -59,6 +74,8 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { accountTypeIcons, translateAccountType } from "@/lib/account-types.ts";
 import { type BotDisplayState, getBotDisplayState } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { type BotWithStatus, withBotStatus } from "@/lib/bot-with-status.ts";
+import { formatFixed } from "@/lib/format.ts";
 import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 
@@ -66,16 +83,6 @@ import { BOT_STATE_META } from "./fleet-status-meta.ts";
 import { MinecraftHead } from "../minecraft/minecraft-head.tsx";
 
 const PAGE_SIZE = 50;
-
-export type BotWithStatus =
-  InstanceInfoQueryData["profile"]["accounts"][number] & {
-    isOnline: boolean;
-    connectionPhase: BotConnectionPhase;
-    pingMs?: number | undefined;
-    accountName?: string | undefined;
-    liveState?: BotListEntry["liveState"] | undefined;
-    status?: BotListEntry["status"] | undefined;
-  };
 
 /// One status per bot, so "should run" never reads as "connected".
 export function BotStateBadge({
@@ -143,103 +150,135 @@ function buildStatusMap(bots: BotListEntry[]): Map<string, BotListEntry> {
   return map;
 }
 
-function mergeBotStatus(
-  accounts: InstanceInfoQueryData["profile"]["accounts"],
-  statusMap: Map<string, BotListEntry>,
-): BotWithStatus[] {
-  return accounts.map((account): BotWithStatus => {
-    const status = statusMap.get(account.profileId);
-    return {
-      ...account,
-      isOnline: status?.isOnline ?? false,
-      connectionPhase:
-        status?.connectionPhase ?? BotConnectionPhase.DISCONNECTED,
-      pingMs: status?.pingMs,
-      accountName: status?.accountName,
-      liveState: status?.liveState,
-      status: status?.status,
-    };
-  });
+type BotActionsRenderer = (bot: BotWithStatus, close: () => void) => ReactNode;
+
+function closeOnSelect() {
+  // Menu items close the dropdown on click by themselves.
 }
 
-function BotCard({
+/// Builds the action items only while the dropdown is open.
+function BotCardActions({
   bot,
-  instanceId,
-  onContextMenu,
+  renderActions,
 }: {
   bot: BotWithStatus;
-  instanceId: string;
-  onContextMenu: (e: React.MouseEvent) => void;
+  renderActions: BotActionsRenderer;
 }) {
+  return renderActions(bot, closeOnSelect);
+}
+
+/// Memoized, so a status poll only re-renders the cards whose entry changed.
+/// The status query keeps unchanged entries by reference.
+const BotCard = memo(function BotCard({
+  account,
+  entry,
+  instanceId,
+  onContextMenu,
+  renderActions,
+}: {
+  account: InstanceInfoQueryData["profile"]["accounts"][number];
+  entry: BotListEntry | undefined;
+  instanceId: string;
+  onContextMenu: (event: React.MouseEvent, bot: BotWithStatus) => void;
+  renderActions: BotActionsRenderer;
+}) {
+  const bot = useMemo(() => withBotStatus(account, entry), [account, entry]);
   const typeKey = getEnumKeyByValue(
     MinecraftAccountProto_AccountTypeProto,
     bot.type,
   );
   const Icon = accountTypeIcons[typeKey];
-  const { i18n } = useTranslation("instance");
+  const { i18n, t } = useTranslation("common");
   const typeLabel = translateAccountType(i18n, typeKey);
   const displayName = bot.accountName || bot.lastKnownName;
 
   return (
-    <Link
-      to="/instance/$instance/bot/$botId"
-      params={{ instance: instanceId, botId: bot.profileId }}
-      onContextMenu={onContextMenu}
-    >
-      <Card className="h-full cursor-pointer transition-colors hover:bg-muted/50">
-        <CardHeader className="pb-2">
-          <div className="flex items-start gap-3">
-            <MinecraftHead
-              skinTextureHash={bot.liveState?.skinTextureHash}
-              size={48}
-              name={displayName}
-            />
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <CardTitle className="truncate text-base">
-                {displayName}
-              </CardTitle>
-              <div className="flex flex-wrap gap-1">
-                <Badge variant="outline" className="text-xs">
-                  <Icon className="mr-1 size-3" />
-                  {typeLabel}
-                </Badge>
-                <BotStateBadge bot={bot} />
+    <li className="relative">
+      <Link
+        to="/instance/$instance/bot/$botId"
+        params={{ instance: instanceId, botId: bot.profileId }}
+        onContextMenu={(event) => {
+          onContextMenu(event, bot);
+        }}
+      >
+        <Card className="h-full cursor-pointer transition-colors hover:bg-muted/50">
+          <CardHeader className="pr-12 pb-2">
+            <div className="flex items-start gap-3">
+              <MinecraftHead
+                skinTextureHash={bot.liveState?.skinTextureHash}
+                size={48}
+                name={displayName}
+              />
+              <div className="flex min-w-0 flex-1 flex-col gap-1">
+                <CardTitle className="truncate text-base" title={displayName}>
+                  {displayName}
+                </CardTitle>
+                <div className="flex flex-wrap gap-1">
+                  <Badge variant="outline" className="text-xs">
+                    <Icon className="mr-1 size-3" />
+                    {typeLabel}
+                  </Badge>
+                  <BotStateBadge bot={bot} />
+                </div>
               </div>
             </div>
-          </div>
-        </CardHeader>
-        {!bot.isOnline && bot.status?.lastError && (
-          <CardContent className="pt-0">
-            <p
-              className="line-clamp-2 text-xs wrap-break-word text-muted-foreground"
-              title={bot.status.lastError}
-            >
-              {bot.status.lastError}
-            </p>
-          </CardContent>
-        )}
-        {bot.isOnline && bot.liveState && (
-          <CardContent className="flex flex-col gap-2 pt-0">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <HeartsBar
-                health={bot.liveState.health}
-                maxHealth={bot.liveState.maxHealth}
-              />
-              <FoodBar foodLevel={bot.liveState.foodLevel} />
-            </div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <MapPinIcon className="size-3" />
-              <span className="select-text">
-                {bot.liveState.x.toFixed(1)}, {bot.liveState.y.toFixed(1)},{" "}
-                {bot.liveState.z.toFixed(1)}
-              </span>
-            </div>
-          </CardContent>
-        )}
-      </Card>
-    </Link>
+          </CardHeader>
+          {!bot.isOnline && bot.status?.lastError && (
+            <CardContent className="pt-0">
+              <p
+                className="line-clamp-2 text-xs wrap-break-word text-muted-foreground"
+                title={bot.status.lastError}
+              >
+                {bot.status.lastError}
+              </p>
+            </CardContent>
+          )}
+          {bot.isOnline && bot.liveState && (
+            <CardContent className="flex flex-col gap-2 pt-0">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <HeartsBar
+                  health={bot.liveState.health}
+                  maxHealth={bot.liveState.maxHealth}
+                />
+                <FoodBar foodLevel={bot.liveState.foodLevel} />
+              </div>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPinIcon className="size-3" />
+                <span className="select-text">
+                  {t("instance:bots.positionPanel.coordinates", {
+                    x: formatFixed(bot.liveState.x, 1),
+                    y: formatFixed(bot.liveState.y, 1),
+                    z: formatFixed(bot.liveState.z, 1),
+                  })}
+                </span>
+              </div>
+            </CardContent>
+          )}
+        </Card>
+      </Link>
+      {/* Touch screens cannot open the right-click menu, so the same actions live here. */}
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-3 right-3"
+              aria-label={t("contextMenu.bot.actions", { name: displayName })}
+            />
+          }
+        >
+          <EllipsisVerticalIcon />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuGroup>
+            <BotCardActions bot={bot} renderActions={renderActions} />
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </li>
   );
-}
+});
 
 /// Shares bot actions between the card grid and compact overview list.
 export function BotContextMenu({
@@ -250,6 +289,7 @@ export function BotContextMenu({
   instanceId: string;
   children: (
     onContextMenu: (event: React.MouseEvent, bot: BotWithStatus) => void,
+    renderActions: BotActionsRenderer,
   ) => ReactNode;
   canControl: boolean;
 }) {
@@ -288,7 +328,12 @@ export function BotContextMenu({
         }),
       );
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error, { action }) => {
+      console.error(error);
+      toast.error(tCommon(`controls.${action}Toast.error`), {
+        description: error.message,
+      });
+    },
     onSettled: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
@@ -300,9 +345,123 @@ export function BotContextMenu({
     },
   });
 
+  const { mutate: mutateBotState } = botStateMutation;
+  const renderActions = useCallback<BotActionsRenderer>(
+    (bot, close) => (
+      <>
+        <DropdownMenuItem
+          onClick={() => {
+            void navigate({
+              to: "/instance/$instance/bot/$botId",
+              params: {
+                instance: instanceId,
+                botId: bot.profileId,
+              },
+            });
+            close();
+          }}
+        >
+          <ExternalLinkIcon />
+          {tCommon("contextMenu.bot.goToBot")}
+        </DropdownMenuItem>
+        {canControl && (
+          <>
+            <DropdownMenuSeparator />
+            {bot.status?.desiredState === BotDesiredState.RUNNING ? (
+              <>
+                <DropdownMenuItem
+                  onClick={() => {
+                    mutateBotState({
+                      botId: bot.profileId,
+                      action: "restart",
+                    });
+                    close();
+                  }}
+                >
+                  <RefreshCwIcon />
+                  {tCommon("controls.restart")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    mutateBotState({
+                      botId: bot.profileId,
+                      action: "stop",
+                    });
+                    close();
+                  }}
+                >
+                  <SquareIcon />
+                  {tCommon("controls.stop")}
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem
+                onClick={() => {
+                  mutateBotState({
+                    botId: bot.profileId,
+                    action: "start",
+                  });
+                  close();
+                }}
+              >
+                <PlayIcon />
+                {tCommon("controls.start")}
+              </DropdownMenuItem>
+            )}
+          </>
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => {
+            void copyToClipboard(bot.accountName || bot.lastKnownName);
+            close();
+          }}
+        >
+          <ClipboardCopyIcon />
+          {tCommon("contextMenu.bot.copyUsername")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            void copyToClipboard(bot.profileId);
+            close();
+          }}
+        >
+          <ClipboardCopyIcon />
+          {tCommon("contextMenu.bot.copyUuid")}
+        </DropdownMenuItem>
+        {bot.isOnline && bot.liveState && (
+          <DropdownMenuItem
+            onClick={() => {
+              const { x, y, z } = bot.liveState ?? {
+                x: 0,
+                y: 0,
+                z: 0,
+              };
+              void copyToClipboard(
+                `${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)}`,
+              );
+              close();
+            }}
+          >
+            <ClipboardCopyIcon />
+            {tCommon("contextMenu.bot.copyCoordinates")}
+          </DropdownMenuItem>
+        )}
+      </>
+    ),
+    [
+      canControl,
+      copyToClipboard,
+      instanceId,
+      mutateBotState,
+      navigate,
+      tCommon,
+    ],
+  );
+
   return (
     <>
-      {children(handleContextMenu)}
+      {children(handleContextMenu, renderActions)}
       {contextMenu && (
         <ContextMenuPortal
           onClose={dismiss}
@@ -310,107 +469,7 @@ export function BotContextMenu({
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <DropdownMenuItem
-            onClick={() => {
-              void navigate({
-                to: "/instance/$instance/bot/$botId",
-                params: {
-                  instance: instanceId,
-                  botId: contextMenu.data.profileId,
-                },
-              });
-              dismiss();
-            }}
-          >
-            <ExternalLinkIcon />
-            {tCommon("contextMenu.bot.goToBot")}
-          </DropdownMenuItem>
-          {canControl && (
-            <>
-              <DropdownMenuSeparator />
-              {contextMenu.data.status?.desiredState ===
-              BotDesiredState.RUNNING ? (
-                <>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      botStateMutation.mutate({
-                        botId: contextMenu.data.profileId,
-                        action: "restart",
-                      });
-                      dismiss();
-                    }}
-                  >
-                    <RefreshCwIcon />
-                    {tCommon("controls.restart")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      botStateMutation.mutate({
-                        botId: contextMenu.data.profileId,
-                        action: "stop",
-                      });
-                      dismiss();
-                    }}
-                  >
-                    <SquareIcon />
-                    {tCommon("controls.stop")}
-                  </DropdownMenuItem>
-                </>
-              ) : (
-                <DropdownMenuItem
-                  onClick={() => {
-                    botStateMutation.mutate({
-                      botId: contextMenu.data.profileId,
-                      action: "start",
-                    });
-                    dismiss();
-                  }}
-                >
-                  <PlayIcon />
-                  {tCommon("controls.start")}
-                </DropdownMenuItem>
-              )}
-            </>
-          )}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              void copyToClipboard(
-                contextMenu.data.accountName || contextMenu.data.lastKnownName,
-              );
-              dismiss();
-            }}
-          >
-            <ClipboardCopyIcon />
-            {tCommon("contextMenu.bot.copyUsername")}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              void copyToClipboard(contextMenu.data.profileId);
-              dismiss();
-            }}
-          >
-            <ClipboardCopyIcon />
-            {tCommon("contextMenu.bot.copyUuid")}
-          </DropdownMenuItem>
-          {contextMenu.data.isOnline && contextMenu.data.liveState && (
-            <DropdownMenuItem
-              onClick={() => {
-                const { x, y, z } = contextMenu.data.liveState ?? {
-                  x: 0,
-                  y: 0,
-                  z: 0,
-                };
-                void copyToClipboard(
-                  `${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)}`,
-                );
-                dismiss();
-              }}
-            >
-              <ClipboardCopyIcon />
-              {tCommon("contextMenu.bot.copyCoordinates")}
-            </DropdownMenuItem>
-          )}
+          {renderActions(contextMenu.data, dismiss)}
         </ContextMenuPortal>
       )}
     </>
@@ -478,58 +537,36 @@ export function BotGrid({
     );
   }, [instanceInfo.profile.accounts, search, status, statusMap]);
 
-  const botsInfiniteQueryOptions = useMemo(
-    () =>
-      infiniteQueryOptions({
-        queryKey: [
-          "bot-account-pages",
-          instanceInfo.id,
-          filteredAccounts.map((a) => a.profileId).join(","),
-        ],
-        queryFn: ({ pageParam }) => {
-          const start = pageParam * PAGE_SIZE;
-          const end = start + PAGE_SIZE;
-          return {
-            profileIds: filteredAccounts
-              .slice(start, end)
-              .map((account) => account.profileId),
-            nextPage: end < filteredAccounts.length ? pageParam + 1 : undefined,
-          };
-        },
-        initialPageParam: 0,
-        getNextPageParam: (lastPage) => lastPage.nextPage,
-      }),
-    [instanceInfo.id, filteredAccounts],
-  );
+  // Show one more page each time the end of the grid scrolls into view. A new
+  // search or filter starts again at the first page, but status polls do not.
+  const pagingKey = `${instanceInfo.id}\u0000${search}\u0000${status ?? ""}`;
+  const [paging, setPaging] = useState({ key: pagingKey, count: PAGE_SIZE });
+  if (paging.key !== pagingKey) {
+    setPaging({ key: pagingKey, count: PAGE_SIZE });
+  }
+  const visibleCount = paging.key === pagingKey ? paging.count : PAGE_SIZE;
+  const hasNextPage = visibleCount < filteredAccounts.length;
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useSuspenseInfiniteQuery(botsInfiniteQueryOptions);
-
-  const visibleAccounts = useMemo(() => {
-    const visibleIds = new Set(data.pages.flatMap((page) => page.profileIds));
-    return filteredAccounts.filter((account) =>
-      visibleIds.has(account.profileId),
-    );
-  }, [data.pages, filteredAccounts]);
-
-  const botsWithStatus = useMemo(
-    () => mergeBotStatus(visibleAccounts, statusMap),
-    [visibleAccounts, statusMap],
+  const visibleAccounts = useMemo(
+    () => filteredAccounts.slice(0, visibleCount),
+    [filteredAccounts, visibleCount],
   );
 
   const totalCount = filteredAccounts.length;
-  const loadedCount = botsWithStatus.length;
+  const loadedCount = visibleAccounts.length;
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const handleIntersection = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
-        void fetchNextPage();
+      if (entry?.isIntersecting && hasNextPage) {
+        // Setting a count instead of adding to it keeps repeated reports
+        // from one observer from skipping pages.
+        setPaging({ key: pagingKey, count: visibleCount + PAGE_SIZE });
       }
     },
-    [fetchNextPage, hasNextPage, isFetchingNextPage],
+    [hasNextPage, pagingKey, visibleCount],
   );
 
   useEffect(() => {
@@ -544,45 +581,68 @@ export function BotGrid({
     return () => {
       observer.disconnect();
     };
+    // handleIntersection changes after each page. The new observer reports
+    // the sentinel at once, so a sentinel that stays in view on a tall
+    // screen still loads the next page.
   }, [handleIntersection]);
 
   if (filteredAccounts.length === 0) {
+    const noAccounts = instanceInfo.profile.accounts.length === 0;
     return (
-      <div className="flex flex-1 items-center justify-center text-muted-foreground">
-        {instanceInfo.profile.accounts.length === 0
-          ? t("bots.noBots")
-          : status && !search.trim()
-            ? t("bots.noBotsInState")
-            : t("bots.noBotsFound")}
-      </div>
+      <Empty className="flex-1 border-0">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            {noAccounts ? <UsersIcon /> : <SearchXIcon />}
+          </EmptyMedia>
+          <EmptyTitle>
+            {noAccounts
+              ? t("bots.noBots")
+              : status && !search.trim()
+                ? t("bots.noBotsInState")
+                : t("bots.noBotsFound")}
+          </EmptyTitle>
+        </EmptyHeader>
+        {noAccounts && (
+          <EmptyContent>
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={
+                <Link
+                  to="/instance/$instance/accounts"
+                  params={{ instance: instanceInfo.id }}
+                />
+              }
+            >
+              <PlusIcon data-icon="inline-start" />
+              {t("account.addAccounts")}
+            </Button>
+          </EmptyContent>
+        )}
+      </Empty>
     );
   }
 
   return (
     <>
       <BotContextMenu instanceId={instanceInfo.id} canControl={canControl}>
-        {(onContextMenu) => (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {botsWithStatus.map((bot) => (
+        {(onContextMenu, renderActions) => (
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {visibleAccounts.map((account) => (
               <BotCard
-                key={bot.profileId}
-                bot={bot}
+                key={account.profileId}
+                account={account}
+                entry={statusMap.get(account.profileId)}
                 instanceId={instanceInfo.id}
-                onContextMenu={(event) => {
-                  onContextMenu(event, bot);
-                }}
+                onContextMenu={onContextMenu}
+                renderActions={renderActions}
               />
             ))}
-          </div>
+          </ul>
         )}
       </BotContextMenu>
       <div ref={loadMoreRef} className="flex justify-center py-4">
-        {isFetchingNextPage ? (
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <LoaderCircleIcon className="size-4 animate-spin" />
-            <span>{t("bots.loadingMore")}</span>
-          </div>
-        ) : hasNextPage ? (
+        {hasNextPage ? (
           <span className="text-sm text-muted-foreground">
             {t("bots.showingCount", { loaded: loadedCount, total: totalCount })}
           </span>

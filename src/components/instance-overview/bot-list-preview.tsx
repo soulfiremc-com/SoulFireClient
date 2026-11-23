@@ -11,6 +11,7 @@ import {
   BotContextMenu,
   BotStateBadge,
 } from "@/components/instance-overview/bot-grid.tsx";
+import { withBotStatus } from "@/lib/bot-with-status.ts";
 import { connectionPhaseMeta } from "@/components/instance-overview/connection-phase-meta.ts";
 import { MinecraftHead } from "@/components/minecraft/minecraft-head.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -109,17 +110,7 @@ export function BotListPreview({
                       }
                       aria-label={t("overview.bots.detailsFor", { name })}
                       onContextMenu={(event) => {
-                        onContextMenu(event, {
-                          ...account,
-                          isOnline: bot?.isOnline ?? false,
-                          connectionPhase:
-                            bot?.connectionPhase ??
-                            BotConnectionPhase.DISCONNECTED,
-                          pingMs: bot?.pingMs,
-                          accountName: bot?.accountName,
-                          liveState: bot?.liveState,
-                          status: bot?.status,
-                        });
+                        onContextMenu(event, withBotStatus(account, bot));
                       }}
                     >
                       <ItemMedia>
@@ -160,7 +151,7 @@ export function BotListPreview({
                               className="size-3 text-destructive"
                             />
                             <span className="sr-only">
-                              {t("bots.statsPanel.health")}:{" "}
+                              {t("bots.statsPanel.healthLabel")}{" "}
                             </span>
                             {isPending ? (
                               <Skeleton className="h-3 w-8" />
@@ -179,7 +170,7 @@ export function BotListPreview({
                               className="size-3 text-warning-emphasis"
                             />
                             <span className="sr-only">
-                              {t("bots.statsPanel.food")}:{" "}
+                              {t("bots.statsPanel.foodLabel")}{" "}
                             </span>
                             {isPending ? (
                               <Skeleton className="h-3 w-8" />

@@ -1,6 +1,8 @@
+import type { TFunction } from "i18next";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pie, PieChart } from "recharts";
+import { ChartBreakdown } from "@/components/chart-breakdown.tsx";
 import {
   BandwidthChart,
   PositionScatterChart,
@@ -22,15 +24,16 @@ import {
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty.tsx";
 import type { GetInstanceMetricsResponse } from "@/generated/soulfire/metrics_pb";
 
+// Each slice color pairs a chart fill with the matching swatch utility.
 const PIE_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
+  { fill: "var(--chart-1)", swatch: "bg-chart-1" },
+  { fill: "var(--chart-2)", swatch: "bg-chart-2" },
+  { fill: "var(--chart-3)", swatch: "bg-chart-3" },
+  { fill: "var(--chart-4)", swatch: "bg-chart-4" },
+  { fill: "var(--chart-5)", swatch: "bg-chart-5" },
 ] as const;
 
-function pieColor(index: number): string {
+function pieColor(index: number) {
   return PIE_COLORS[index % PIE_COLORS.length] ?? PIE_COLORS[0];
 }
 
@@ -39,8 +42,9 @@ function MiniDonut({
   data,
 }: {
   label: string;
-  data: { name: string; value: number; fill: string }[];
+  data: { name: string; value: number; fill: string; swatch: string }[];
 }) {
+  const { t } = useTranslation("instance");
   const config = useMemo<ChartConfig>(() => ({ value: { label } }), [label]);
 
   return (
@@ -48,7 +52,7 @@ function MiniDonut({
       <span className="text-xs text-muted-foreground">{label}</span>
       {data.length === 0 ? (
         <div className="flex h-36 items-center text-xs text-muted-foreground">
-          —
+          {t("metrics.empty.noData")}
         </div>
       ) : (
         <ChartContainer config={config} className="mx-auto h-36 max-w-36">
@@ -70,8 +74,44 @@ function MiniDonut({
           </PieChart>
         </ChartContainer>
       )}
+      {data.length > 0 && (
+        <ChartBreakdown
+          className="flex-col items-start"
+          items={data.map((entry) => ({
+            id: entry.name,
+            label: entry.name,
+            value: entry.value,
+            swatchClassName: entry.swatch,
+          }))}
+        />
+      )}
     </div>
   );
+}
+
+// The server sends game mode enum names as map keys.
+function gameModeLabel(mode: string, t: TFunction<"instance">): string {
+  switch (mode) {
+    case "SURVIVAL": {
+      return t("bots.statsPanel.survival");
+    }
+    case "CREATIVE": {
+      return t("bots.statsPanel.creative");
+    }
+    case "ADVENTURE": {
+      return t("bots.statsPanel.adventure");
+    }
+    case "SPECTATOR": {
+      return t("bots.statsPanel.spectator");
+    }
+    case "": {
+      return t("bots.statsPanel.unknown");
+    }
+    default: {
+      // Show modes this client does not know by their server name.
+      return mode.charAt(0) + mode.slice(1).toLowerCase();
+    }
+  }
 }
 
 function WorldCompositionCard({
@@ -87,7 +127,8 @@ function WorldCompositionCard({
         ([dim, count], index) => ({
           name: dim.replace("minecraft:", ""),
           value: count,
-          fill: pieColor(index),
+          fill: pieColor(index).fill,
+          swatch: pieColor(index).swatch,
         }),
       ),
     [distributions?.dimensionCounts],
@@ -97,12 +138,13 @@ function WorldCompositionCard({
     () =>
       Object.entries(distributions?.gameModeCounts ?? {}).map(
         ([mode, count], index) => ({
-          name: mode.charAt(0) + mode.slice(1).toLowerCase(),
+          name: gameModeLabel(mode, t),
           value: count,
-          fill: pieColor(index),
+          fill: pieColor(index).fill,
+          swatch: pieColor(index).swatch,
         }),
       ),
-    [distributions?.gameModeCounts],
+    [distributions?.gameModeCounts, t],
   );
 
   if (dimensionData.length === 0 && gameModeData.length === 0) {

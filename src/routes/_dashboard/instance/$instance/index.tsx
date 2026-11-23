@@ -183,7 +183,10 @@ function OverviewHeaderSection() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
       <div className="flex flex-row items-center gap-2">
-        <h2 className="max-w-64 truncate text-xl font-semibold">
+        <h2
+          className="max-w-64 truncate text-xl font-semibold"
+          title={instanceInfo.friendlyName}
+        >
           {instanceInfo.friendlyName}
         </h2>
       </div>

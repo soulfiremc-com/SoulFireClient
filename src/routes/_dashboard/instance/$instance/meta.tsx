@@ -50,6 +50,7 @@ import {
   FieldGroup,
   FieldLabel,
   FieldLegend,
+  FieldTitle,
   FieldSet,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -119,20 +120,22 @@ function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
   return entries;
 }
 
+// The field labels are static, so they stay visible while the values load.
 function MetaSettingsSkeleton() {
+  const { t } = useTranslation("common");
   return (
     <div className="container flex size-full grow flex-col gap-4">
       <div className="flex flex-col gap-2">
-        {/* Friendly Name field */}
-        <div className="flex flex-col gap-1">
-          <Skeleton className="h-4 w-24" />
+        <Field>
+          <FieldTitle>
+            {t("dialog.createInstance.form.friendlyName.label")}
+          </FieldTitle>
           <Skeleton className="h-9 w-full" />
-        </div>
-        {/* Icon combo field */}
-        <div className="flex flex-col gap-1">
-          <Skeleton className="h-4 w-12" />
+        </Field>
+        <Field className="max-w-xl">
+          <FieldTitle>{t("instanceIcon.label")}</FieldTitle>
           <Skeleton className="h-9 w-full" />
-        </div>
+        </Field>
       </div>
       {/* Metadata editor */}
       <div className="flex flex-col gap-2">
@@ -811,9 +814,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
           >
             <FieldSet className="gap-3">
               <FieldLegend variant="label">
-                {t("instanceMetadata.addEntryLegend", {
-                  defaultValue: "Add metadata entry",
-                })}
+                {t("instanceMetadata.addEntryLegend")}
               </FieldLegend>
               <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
                 <addEntryForm.Field name="namespace">
@@ -824,9 +825,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                     return (
                       <Field data-invalid={isInvalid} className="gap-2">
                         <FieldLabel htmlFor={field.name}>
-                          {t("instanceMetadata.namespaceLabel", {
-                            defaultValue: "Namespace",
-                          })}
+                          {t("instanceMetadata.namespaceLabel")}
                         </FieldLabel>
                         <Input
                           id={field.name}
@@ -856,9 +855,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                     return (
                       <Field data-invalid={isInvalid} className="gap-2">
                         <FieldLabel htmlFor={field.name}>
-                          {t("instanceMetadata.keyLabel", {
-                            defaultValue: "Key",
-                          })}
+                          {t("instanceMetadata.keyLabel")}
                         </FieldLabel>
                         <Input
                           id={field.name}
@@ -886,9 +883,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                     return (
                       <Field data-invalid={isInvalid} className="gap-2">
                         <FieldLabel htmlFor={field.name}>
-                          {t("instanceMetadata.valueLabel", {
-                            defaultValue: "Value",
-                          })}
+                          {t("instanceMetadata.valueLabel")}
                         </FieldLabel>
                         <Input
                           id={field.name}
@@ -916,9 +911,7 @@ function InstanceMetadataEditor({ instanceId }: { instanceId: string }) {
                     disabled={!isMetadataReady || addEntryMutation.isPending}
                   >
                     <PlusIcon data-icon="inline-start" />
-                    {t("instanceMetadata.addEntryButton", {
-                      defaultValue: "Add entry",
-                    })}
+                    {t("instanceMetadata.addEntryButton")}
                   </Button>
                 </div>
               </FieldGroup>
@@ -1026,16 +1019,12 @@ function MetadataEntryRow({
   return (
     <FieldSet className="gap-3 rounded-lg border p-3">
       <FieldLegend className="sr-only">
-        {t("instanceMetadata.entryLegend", {
-          defaultValue: "Metadata entry",
-        })}
+        {t("instanceMetadata.entryLegend")}
       </FieldLegend>
       <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
         <Field data-invalid={!isValidNamespace} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-namespace`}>
-            {t("instanceMetadata.namespaceLabel", {
-              defaultValue: "Namespace",
-            })}
+            {t("instanceMetadata.namespaceLabel")}
           </FieldLabel>
           <Input
             id={`${entry.id}-namespace`}
@@ -1057,9 +1046,7 @@ function MetadataEntryRow({
         </Field>
         <Field data-invalid={!isValidKey} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-key`}>
-            {t("instanceMetadata.keyLabel", {
-              defaultValue: "Key",
-            })}
+            {t("instanceMetadata.keyLabel")}
           </FieldLabel>
           <Input
             id={`${entry.id}-key`}
@@ -1081,9 +1068,7 @@ function MetadataEntryRow({
         </Field>
         <Field data-invalid={!isValidJson} className="gap-2">
           <FieldLabel htmlFor={`${entry.id}-value`}>
-            {t("instanceMetadata.valueLabel", {
-              defaultValue: "Value",
-            })}
+            {t("instanceMetadata.valueLabel")}
           </FieldLabel>
           <Input
             id={`${entry.id}-value`}
@@ -1111,9 +1096,7 @@ function MetadataEntryRow({
             disabled={isDeleting || isUpdating}
           >
             <TrashIcon data-icon="inline-start" />
-            {t("instanceMetadata.removeEntryButton", {
-              defaultValue: "Remove",
-            })}
+            {t("instanceMetadata.removeEntryButton")}
           </Button>
         </div>
       </FieldGroup>
