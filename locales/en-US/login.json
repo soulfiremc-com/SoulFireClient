@@ -47,7 +47,6 @@
     "preparing": "Preparing to start the local SoulFire server...",
     "toast": {
       "loading": "Starting your local SoulFire server",
-      "success": "Local SoulFire server started in {{time}}s",
       "error": "The local SoulFire server did not start"
     },
     "retry": "Try again",
@@ -188,7 +187,6 @@
     "description": "If you have an account, we have sent a code to <bold>{{email}}</bold>. Enter it below.",
     "toast": {
       "loading": "Checking code...",
-      "success": "Signed in",
       "error": "Code is invalid"
     },
     "back": "Back"

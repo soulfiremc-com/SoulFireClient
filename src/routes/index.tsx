@@ -268,7 +268,6 @@ function Index() {
       if (startupAttempt.current) return;
       const attempt = { cancelled: false, done: Promise.resolve(), onError };
       startupAttempt.current = attempt;
-      const startTime = Date.now();
       attempt.done = (async () => {
         try {
           await desktop.integratedServer.kill();
@@ -298,11 +297,6 @@ function Index() {
             credentials.address,
             credentials.token,
           );
-          toast.success(
-            t("integrated.toast.success", {
-              time: ((Date.now() - startTime) / 1000).toFixed(1),
-            }),
-          );
         } catch (error) {
           if (!attempt.cancelled) {
             // The failure card explains this, with recovery actions.
@@ -314,7 +308,7 @@ function Index() {
         }
       })();
     },
-    [redirectWithCredentials, t],
+    [redirectWithCredentials],
   );
   const cancelIntegratedStartup = useCallback(async () => {
     const attempt = startupAttempt.current;
@@ -978,10 +972,17 @@ function IntegratedConfigureMenu({
                           }}
                           onChange={(e) => {
                             field.handleChange(e.target.value);
-                            localStorage.setItem(
-                              LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-                              e.target.value,
-                            );
+                            // Store only custom arguments, so a later release
+                            // can change the defaults.
+                            if (e.target.value === defaultJvmArgs)
+                              localStorage.removeItem(
+                                LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
+                              );
+                            else
+                              localStorage.setItem(
+                                LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
+                                e.target.value,
+                              );
                           }}
                           aria-invalid={isInvalid}
                         />
@@ -993,9 +994,8 @@ function IntegratedConfigureMenu({
                             className="w-fit"
                             onClick={() => {
                               field.handleChange(defaultJvmArgs);
-                              localStorage.setItem(
+                              localStorage.removeItem(
                                 LOCAL_STORAGE_FORM_INTEGRATED_SERVER_JVM_ARGS,
-                                defaultJvmArgs,
                               );
                             }}
                           >
@@ -1878,7 +1878,6 @@ function EmailCodeMenu(props: {
         ),
       );
       if (response.next.case === "success") {
-        toast.success(t("emailCode.toast.success"), { id: toastId });
         await props.redirectWithCredentials(
           "dedicated",
           props.authFlowData.address,

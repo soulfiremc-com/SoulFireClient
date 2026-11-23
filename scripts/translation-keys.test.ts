@@ -92,7 +92,6 @@ const placeholderAllowlist = [
   "instance:proxy.checkToast.successKept {{total}}",
   // Crowdin: en-UD flipped the placeholder names. Fix these in Crowdin.
   "en-UD instance:scripts.editor.dryRun.valuePlaceholder {{ʎdǝʇ}}",
-  "en-UD login:integrated.toast.success {{s}}",
   "en-UD login:emailCode.description {{lᴉɐɯǝ}}",
   "en-UD login:footer.version {{ʎ}}",
 ];
