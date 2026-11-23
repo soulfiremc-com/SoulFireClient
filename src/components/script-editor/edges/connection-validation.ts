@@ -28,22 +28,37 @@ export function canConvertType(
   return isTypeCompatible(sourceType, targetType);
 }
 
-/**
- * Check if a source TypeDescriptor can connect to a target TypeDescriptor.
- * Uses unification for generic type checking.
- */
-export function canConvertDescriptor(
-  source: TypeDescriptor,
-  target: TypeDescriptor,
-): boolean {
-  return isDescriptorCompatible(source, target);
+const GROUP_PORT_FIELDS: Readonly<Record<string, readonly string[]>> = {
+  "layout.group": ["inputs", "outputs"],
+  "layout.group_input": ["outputs"],
+  "layout.group_output": ["inputs"],
+};
+
+// Group ports keep the type of the wire they replaced. Only execution counts
+// here: a data port passes values on to inner inputs of other types.
+function isGroupExecutionPort(node: Node, handleId: string): boolean {
+  return (GROUP_PORT_FIELDS[node.type ?? ""] ?? []).some((field) => {
+    const ports: unknown = node.data[field];
+    return (
+      Array.isArray(ports) &&
+      ports.some(
+        (port: unknown) =>
+          typeof port === "object" &&
+          port !== null &&
+          "id" in port &&
+          "type" in port &&
+          port.id === handleId &&
+          port.type === "execution",
+      )
+    );
+  });
 }
 
 /**
- * Get port type from node definition.
- * Returns the port type or "any" if not found.
+ * Looks up a port's type in the node definitions, then in the types that
+ * reroute and group nodes store. Returns "any" when neither knows the port.
  */
-function getPortType(
+export function getPortType(
   nodes: Node[],
   nodeId: string,
   handleId: string | null | undefined,
@@ -53,15 +68,13 @@ function getPortType(
   const node = nodes.find((n) => n.id === nodeId);
   if (!node) return "any";
 
-  // Try to look up from node definition
   const portType = getPortTypeFromDefinition(node.type ?? "", handleId);
   if (portType) return portType;
 
-  // Fallback for layout nodes (reroute, group) that store resolved type in data
   const nodeData = node.data as { resolvedType?: PortType } | undefined;
   if (nodeData?.resolvedType) return nodeData.resolvedType;
 
-  return "any";
+  return isGroupExecutionPort(node, handleId) ? "execution" : "any";
 }
 
 /**
@@ -72,20 +85,11 @@ function getPortDescriptor(
   nodeId: string,
   handleId: string | null | undefined,
 ): TypeDescriptor {
-  if (!handleId) return simpleType("any");
-
-  const node = nodes.find((n) => n.id === nodeId);
-  if (!node) return simpleType("any");
-
-  const portDef = getPortDefinition(node.type ?? "", handleId);
+  const node = handleId ? nodes.find((n) => n.id === nodeId) : undefined;
+  const portDef =
+    node && handleId ? getPortDefinition(node.type ?? "", handleId) : undefined;
   if (portDef?.typeDescriptor) return portDef.typeDescriptor;
-  if (portDef) return simpleType(portDef.type);
-
-  // Fallback for layout nodes
-  const nodeData = node.data as { resolvedType?: PortType } | undefined;
-  if (nodeData?.resolvedType) return simpleType(nodeData.resolvedType);
-
-  return simpleType("any");
+  return simpleType(getPortType(nodes, nodeId, handleId));
 }
 
 export type ConnectionProblem =
@@ -130,7 +134,7 @@ export function getConnectionProblem(
     connection.target,
     connection.targetHandle,
   );
-  return canConvertDescriptor(sourceDesc, targetDesc)
+  return isDescriptorCompatible(sourceDesc, targetDesc)
     ? null
     : { kind: "type", sourceType, targetType };
 }

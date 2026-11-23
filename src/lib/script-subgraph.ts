@@ -12,6 +12,20 @@ export function isGroupInterfaceNode(node: Pick<Node, "type">) {
   return GROUP_INTERFACE_TYPES.has(node.type ?? "");
 }
 
+/** The group whose canvas shows this node, or null for the root canvas. */
+export function parentGroupOf(node: Pick<Node, "data">): string | null {
+  return nodeDataString(node.data, "parentGroupId") ?? null;
+}
+
+/** Node data placed on a group canvas, without a key on the root canvas. */
+export function withParentGroup(
+  data: Record<string, unknown>,
+  groupId: string | null,
+): Record<string, unknown> {
+  const { parentGroupId: _previous, ...rest } = data;
+  return groupId ? { ...rest, parentGroupId: groupId } : rest;
+}
+
 export function selectedSubgraph(
   nodes: Node[],
   edges: Edge[],
@@ -80,21 +94,7 @@ export function cloneSubgraph(
         position: parent
           ? { ...node.position }
           : { x: node.position.x + offset.x, y: node.position.y + offset.y },
-        data: {
-          ...node.data,
-          parentGroupId: parent ?? groupId ?? undefined,
-          parentFrameId: ids.get(
-            nodeDataString(node.data, "parentFrameId") ?? "",
-          ),
-          ...(Array.isArray(node.data["containedNodes"]) && {
-            containedNodes: node.data["containedNodes"].flatMap(
-              (id: string) => {
-                const copy = ids.get(id);
-                return copy ? [copy] : [];
-              },
-            ),
-          }),
-        },
+        data: withParentGroup(node.data, parent ?? groupId),
         selected: !parent,
       };
     }),

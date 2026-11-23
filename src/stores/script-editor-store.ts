@@ -1,38 +1,36 @@
 import { batch, createStore } from "@tanstack/store";
-import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  type Connection,
-  type Edge,
-  type Node,
-  reconnectEdge,
-  type XYPosition,
-} from "@xyflow/react";
-import {
-  getEdgeStyle,
-  getNodeDefinition,
-  getPortTypeFromDefinition,
-  isPortMultiInput,
-  isTypeCompatible,
-  type PortType,
-} from "@/components/script-editor/nodes/types";
+import { applyEdgeChanges, applyNodeChanges, type Node } from "@xyflow/react";
 import { mergeExecutionLogs } from "@/lib/script-logs";
-import { optionalEdgeFields } from "@/lib/script-edge-fields";
 import { sameScriptDocument } from "@/lib/script-document";
-import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
 import { outputKey } from "@/lib/script-debug-sources";
+import { edgeShapes, polylineCrossesSegment } from "@/lib/script-edge-geometry";
 import {
-  type EdgeShapes,
-  edgeShapes,
-  polylineCrossesSegment,
-  polylineDistance,
-} from "@/lib/script-edge-geometry";
+  alignSelection,
+  canvasGraph,
+  canvasSelection,
+  connectEdge,
+  createFrame,
+  distributeSelection,
+  findClosestEdge,
+  groupSelection,
+  insertNodeOnEdge,
+  insertReroute,
+  linkedNodes,
+  normalizeEdgeOrders,
+  normalizeScriptGraph,
+  reconnectEdge,
+  selectOnCanvas,
+  shortestPath,
+  ungroup,
+  type ScriptGraph,
+} from "@/lib/script-graph-ops";
 import {
   cloneSubgraph,
   isGroupInterfaceNode,
+  parentGroupOf,
   selectedSubgraph,
   subgraphRoots,
+  withParentGroup,
 } from "@/lib/script-subgraph";
 import {
   createEditorDerivedStores,
@@ -49,98 +47,7 @@ import type {
   ScriptHistoryState,
   ScriptValidationState,
 } from "./script-editor-types";
-import { nodeDataString, nodeDataStrings } from "@/lib/script-node-data";
-
-export type { PortType };
-
-function getMultiInputOrder(edge: Edge): number {
-  const rawOrder = Number((edge.data as { order?: number } | undefined)?.order);
-  return Number.isFinite(rawOrder) ? rawOrder : Number.MAX_SAFE_INTEGER;
-}
-
-function normalizeMultiInputEdgeOrders(nodes: Node[], edges: Edge[]): Edge[] {
-  const groupedEdges = new Map<string, Edge[]>();
-  const nodeTypes = new Map(nodes.map((node) => [node.id, node.type ?? ""]));
-  for (const edge of edges) {
-    const targetType = nodeTypes.get(edge.target);
-    const targetHandle = edge.targetHandle;
-    if (
-      targetType === undefined ||
-      !targetHandle ||
-      !isPortMultiInput(targetType, targetHandle)
-    ) {
-      continue;
-    }
-
-    const key = `${edge.target}:${targetHandle}`;
-    const group = groupedEdges.get(key) ?? [];
-    group.push(edge);
-    groupedEdges.set(key, group);
-  }
-
-  const normalizedOrders = new Map<string, number>();
-  for (const group of groupedEdges.values()) {
-    group
-      .slice()
-      .toSorted((a, b) => getMultiInputOrder(a) - getMultiInputOrder(b))
-      .forEach((edge, index) => {
-        normalizedOrders.set(edge.id, index);
-      });
-  }
-
-  return edges.map((edge) => {
-    const nextOrder = normalizedOrders.get(edge.id);
-    if (nextOrder === undefined) {
-      return edge;
-    }
-
-    const currentOrder =
-      (edge.data as { order?: number } | undefined)?.order ?? -1;
-    if (currentOrder === nextOrder) {
-      return edge;
-    }
-
-    return {
-      ...edge,
-      data: {
-        ...edge.data,
-        order: nextOrder,
-      },
-    };
-  });
-}
-
-function assignEdgeOrder(
-  nodes: Node[],
-  edges: Edge[],
-  edge: Connection & { type: string; data: Record<string, unknown> },
-): Connection & { type: string; data: Record<string, unknown> } {
-  const targetNode = nodes.find((n) => n.id === edge.target);
-  const targetHandle = edge.targetHandle;
-  if (
-    !targetNode ||
-    !targetHandle ||
-    !isPortMultiInput(targetNode.type ?? "", targetHandle)
-  ) {
-    return edge;
-  }
-
-  const nextOrder =
-    edges
-      .filter(
-        (e) => e.target === edge.target && e.targetHandle === targetHandle,
-      )
-      .map((e) => (e.data as { order?: number } | undefined)?.order ?? -1)
-      .reduce((max, value) => Math.max(max, value), -1) + 1;
-
-  return {
-    ...edge,
-    data: {
-      ...(edge.data as Record<string, unknown> | undefined),
-      order: nextOrder,
-    },
-  };
-}
+import { nodeDataStrings } from "@/lib/script-node-data";
 
 const HISTORY_LIMIT = 100;
 const sameItems = <T>(first: readonly T[], second: readonly T[]) =>
@@ -149,76 +56,18 @@ const sameItems = <T>(first: readonly T[], second: readonly T[]) =>
     first.every((item, index) => item === second[index]));
 const HISTORY_COALESCE_MS = 1500;
 
-// Generate unique IDs
 const generateId = () => crypto.randomUUID();
-
-// Helper to get port type from node definition
-// Primary method: look up port type from node definitions
-// Fallback: for layout nodes (reroute, group) that use dynamic port types
-const getPortTypeForNode = (
-  nodes: Node[],
-  nodeId: string,
-  handleId: string | null | undefined,
-): PortType => {
-  if (!handleId) return "any";
-
-  const node = nodes.find((n) => n.id === nodeId);
-  if (!node) return "any";
-
-  // Try to look up from node definition
-  const portType = getPortTypeFromDefinition(node.type ?? "", handleId);
-  if (portType) return portType;
-
-  // Fallback for layout nodes (reroute, group) that store resolved type in data
-  const nodeData = node.data as { resolvedType?: PortType } | undefined;
-  if (nodeData?.resolvedType) return nodeData.resolvedType;
-
-  return "any";
-};
-
-/** Find the edge closest to a point within a threshold, in flow coordinates. */
-const findClosestEdgeToPoint = (
-  nodes: Node[],
-  edges: Edge[],
-  point: XYPosition,
-  threshold: number,
-  drawn?: EdgeShapes,
-): Edge | null => {
-  const shapes = edgeShapes(nodes, edges, drawn);
-  let closest: Edge | null = null;
-  let closestDist = threshold;
-  for (const edge of edges) {
-    const shape = shapes.get(edge.id);
-    if (!shape) continue;
-    const d = polylineDistance(point, shape);
-    if (d < closestDist) {
-      closestDist = d;
-      closest = edge;
-    }
-  }
-  return closest;
-};
-
-/** The nodes and edges on one group's canvas. Positions share one space. */
-function canvasGraph(nodes: Node[], edges: Edge[], groupId: string | null) {
-  const canvasNodes = nodes.filter(
-    (node) => (nodeDataString(node.data, "parentGroupId") ?? null) === groupId,
-  );
-  const ids = new Set(canvasNodes.map((node) => node.id));
-  return {
-    nodes: canvasNodes,
-    edges: edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target)),
-  };
-}
 
 // An empty name means untitled. The UI shows and saves it in the user's language.
 const UNTITLED_SCRIPT_NAME = "";
-const emptyDocument = (): ScriptDocumentData => ({
-  nodes: [],
-  edges: [],
+
+type SavedMetadata = Pick<
+  ScriptDocumentData,
+  "name" | "description" | "quotas"
+>;
+const emptyMetadata = (): SavedMetadata => ({
   name: UNTITLED_SCRIPT_NAME,
   description: "",
-  paused: true,
   quotas: undefined,
 });
 
@@ -269,16 +118,22 @@ export function createScriptEditorSession() {
   // Typing into one field merges into one undo step while it continues.
   let lastCoalesce: { key: string; at: number } | null = null;
   let canvasGesture = false;
-  // The document the server last confirmed. Its paused state is lastSavedPaused.
-  let savedDocument: ScriptDocumentData = emptyDocument();
-  const differsFromSaved = (current: ScriptDocumentData) =>
-    !sameScriptDocument(current, {
-      ...savedDocument,
-      paused: document.get().lastSavedPaused,
+  // The fields of the confirmed document that the state does not hold. The
+  // state holds its graph (lastSavedNodes, lastSavedEdges) and paused state.
+  let savedMetadata = emptyMetadata();
+  const differsFromSaved = (current: ScriptDocumentData) => {
+    const state = document.get();
+    return !sameScriptDocument(current, {
+      ...savedMetadata,
+      nodes: state.lastSavedNodes ?? [],
+      edges: state.lastSavedEdges ?? [],
+      paused: state.lastSavedPaused,
     });
+  };
+  const currentGroupId = () => ui.get().groupEditStack.at(-1) ?? null;
   const currentCanvas = () => {
     const { nodes, edges } = document.get();
-    return canvasGraph(nodes, edges, ui.get().groupEditStack.at(-1) ?? null);
+    return canvasGraph(nodes, edges, currentGroupId());
   };
 
   const pushHistory = (entry: ScriptGraphSnapshot) => {
@@ -326,6 +181,21 @@ export function createScriptEditorSession() {
       // An edit that changed nothing leaves nothing new to save.
       document.setState((state) => ({ ...state, isDirty: before.isDirty }));
   };
+  // Commits a graph edit. Null means the edit did not apply.
+  const commitGraph = (graph: Partial<ScriptGraph> | null) => {
+    if (!graph) return;
+    commit((state) => ({ ...state, ...graph, isDirty: true }));
+  };
+  const commitNodes = (nodes: Node[] | null) => {
+    commitGraph(nodes && { nodes });
+  };
+  // Selection is not part of the document, so it is not an undo step.
+  const setSelection = (selected: (node: Node) => boolean) => {
+    document.setState((state) => ({
+      ...state,
+      nodes: selectOnCanvas(state.nodes, currentGroupId(), selected),
+    }));
+  };
   const restoreGraph = (entry: ScriptGraphSnapshot) => {
     const ids = new Set(entry.nodes.map((node) => node.id));
     batch(() => {
@@ -359,6 +229,59 @@ export function createScriptEditorSession() {
           quickAddMenu: null,
         };
       });
+    });
+  };
+  // A new or imported document starts at the root with no previews.
+  const resetView = () => {
+    ui.setState((state) => ({
+      ...state,
+      selectedNodeId: null,
+      groupEditStack: [],
+      canvasRevision: state.canvasRevision + 1,
+      previewEnabledNodes: new Set<string>(),
+    }));
+    execution.setState((state) => ({
+      ...state,
+      previewValues: new Map<string, Record<string, unknown>>(),
+      debugNodeValues: new Map<string, DebugValue[]>(),
+    }));
+  };
+  const toggleNodeFlag = (nodeId: string, key: "muted" | "collapsed") => {
+    commitNodes(
+      document
+        .get()
+        .nodes.map((node) =>
+          node.id === nodeId
+            ? { ...node, data: { ...node.data, [key]: !node.data[key] } }
+            : node,
+        ),
+    );
+  };
+  const cutEdgesIntersectingLine: ScriptEditorActions["endLinkCutting"] = (
+    drawn,
+  ) => {
+    const { startPoint: start, endPoint: end } = ui.get().linkCutting;
+    if (!start || !end) return;
+    // Only cut wires drawn on this canvas. Other groups use other positions.
+    const canvas = currentCanvas();
+    const shapes = edgeShapes(canvas.nodes, canvas.edges, drawn);
+    const removed = new Set(
+      canvas.edges
+        .filter((edge) => {
+          const shape = shapes.get(edge.id);
+          return (
+            shape !== undefined && polylineCrossesSegment(shape, start, end)
+          );
+        })
+        .map((edge) => edge.id),
+    );
+    if (removed.size === 0) return;
+    const { nodes, edges } = document.get();
+    commitGraph({
+      edges: normalizeEdgeOrders(
+        nodes,
+        edges.filter((edge) => !removed.has(edge.id)),
+      ),
     });
   };
 
@@ -422,83 +345,28 @@ export function createScriptEditorSession() {
         document.setState((state) => ({ ...state, edges: nextEdges }));
         return;
       }
-      commit((state) => ({
-        ...state,
-        edges: normalizeMultiInputEdgeOrders(document.get().nodes, nextEdges),
-        isDirty: true,
-      }));
+      commitGraph({
+        edges: normalizeEdgeOrders(document.get().nodes, nextEdges),
+      });
     },
     onConnect: (connection) => {
-      // Look up port type from node definition
       const { nodes, edges } = document.get();
-      const sourcePortType = getPortTypeForNode(
-        nodes,
-        connection.source,
-        connection.sourceHandle,
-      );
-      const edgeStyle = getEdgeStyle(sourcePortType);
-
-      // Execution edges use "animated" style, data edges use "default"
-      const isExecutionStyle = edgeStyle === "animated";
-      const edgeType = isExecutionStyle ? "execution" : "data";
-
-      // Auto-replace: remove existing edge on non-multiInput target
-      const targetNode = nodes.find((n) => n.id === connection.target);
-      let baseEdges = edges;
-      if (
-        targetNode &&
-        connection.targetHandle &&
-        !isPortMultiInput(targetNode.type ?? "", connection.targetHandle)
-      ) {
-        baseEdges = edges.filter(
-          (e) =>
-            !(
-              e.target === connection.target &&
-              e.targetHandle === connection.targetHandle
-            ),
-        );
-      }
-
-      const newEdge = assignEdgeOrder(nodes, baseEdges, {
-        ...connection,
-        type: edgeType,
-        data: { edgeType, edgeStyle },
-      });
-
-      commit((state) => ({
-        ...state,
-        edges: normalizeMultiInputEdgeOrders(
-          nodes,
-          addEdge(newEdge, baseEdges),
-        ),
-        isDirty: true,
-      }));
+      commitGraph({ edges: connectEdge(nodes, edges, connection) });
     },
     onReconnect: (oldEdge, newConnection) => {
       const { nodes, edges } = document.get();
-      const reconnected = reconnectEdge(oldEdge, newConnection, edges);
-      commit((state) => ({
-        ...state,
-        edges: normalizeMultiInputEdgeOrders(nodes, reconnected),
-        isDirty: true,
-      }));
+      commitGraph({
+        edges: reconnectEdge(nodes, edges, oldEdge, newConnection),
+      });
     },
     addNode: (type, position, data = {}) => {
-      const currentGroupId = actions.getCurrentGroupId();
       const newNode: Node = {
         id: generateId(),
         type,
         position,
-        data: {
-          ...data,
-          ...(currentGroupId && { parentGroupId: currentGroupId }),
-        },
+        data: withParentGroup(data, currentGroupId()),
       };
-      commit((state) => ({
-        ...state,
-        nodes: [...document.get().nodes, newNode],
-        isDirty: true,
-      }));
+      commitNodes([...document.get().nodes, newNode]);
       return newNode.id;
     },
     updateNodeData: (nodeId, data) => {
@@ -519,54 +387,41 @@ export function createScriptEditorSession() {
     },
     deleteSelected: () => {
       const { nodes, edges } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      const { nodes: nodesToDelete } = selectedSubgraph(
-        nodes,
-        edges,
-        currentGroupId,
+      const groupId = currentGroupId();
+      const deleted = new Set(
+        selectedSubgraph(nodes, edges, groupId).nodes.map((n) => n.id),
       );
-      const nodeIdsToDelete = new Set(nodesToDelete.map((n) => n.id));
-      const visibleIds = new Set(
-        nodes
-          .filter(
-            (node) => (node.data["parentGroupId"] ?? null) === currentGroupId,
-          )
-          .map((node) => node.id),
+      // Selected wires in hidden groups stay. Only this canvas shows them.
+      const visible = new Set(
+        canvasGraph(nodes, edges, groupId).nodes.map((n) => n.id),
       );
-
-      commit((state) => ({
-        ...state,
-        nodes: nodes.filter((node) => !nodeIdsToDelete.has(node.id)),
-        edges: normalizeMultiInputEdgeOrders(
+      commitGraph({
+        nodes: nodes.filter((node) => !deleted.has(node.id)),
+        edges: normalizeEdgeOrders(
           nodes,
           edges.filter(
             (edge) =>
               !(
                 edge.selected &&
-                visibleIds.has(edge.source) &&
-                visibleIds.has(edge.target)
+                visible.has(edge.source) &&
+                visible.has(edge.target)
               ) &&
-              !nodeIdsToDelete.has(edge.source) &&
-              !nodeIdsToDelete.has(edge.target),
+              !deleted.has(edge.source) &&
+              !deleted.has(edge.target),
           ),
         ),
-        isDirty: true,
-      }));
+      });
     },
     disconnectNode: (nodeId) => {
       const { edges, nodes } = document.get();
-      commit((state) => ({
-        ...state,
-        edges: normalizeMultiInputEdgeOrders(
+      commitGraph({
+        edges: normalizeEdgeOrders(
           nodes,
           edges.filter(
             (edge) => edge.source !== nodeId && edge.target !== nodeId,
           ),
         ),
-        isDirty: true,
-      }));
+      });
     },
     setSelectedNode: (nodeId) => {
       ui.setState((state) => ({ ...state, selectedNodeId: nodeId }));
@@ -577,92 +432,38 @@ export function createScriptEditorSession() {
         orderedEdgeIds.map((edgeId, index) => [edgeId, index]),
       );
       const reorderedEdges = edges.map((edge) => {
-        if (
-          edge.target !== targetNodeId ||
-          edge.targetHandle !== targetHandleId
-        ) {
-          return edge;
-        }
-
-        const nextOrder = orderLookup.get(edge.id);
-        if (nextOrder === undefined) {
-          return edge;
-        }
-
-        return {
-          ...edge,
-          data: {
-            ...edge.data,
-            order: nextOrder,
-          },
-        };
+        const order =
+          edge.target === targetNodeId && edge.targetHandle === targetHandleId
+            ? orderLookup.get(edge.id)
+            : undefined;
+        return order === undefined
+          ? edge
+          : { ...edge, data: { ...edge.data, order } };
       });
-
-      commit((state) => ({
-        ...state,
-        edges: normalizeMultiInputEdgeOrders(nodes, reorderedEdges),
-        isDirty: true,
-      }));
+      commitGraph({ edges: normalizeEdgeOrders(nodes, reorderedEdges) });
     },
     toggleMute: (nodeId) => {
-      commit((state) => ({
-        ...state,
-        nodes: document
-          .get()
-          .nodes.map((node) =>
-            node.id === nodeId
-              ? { ...node, data: { ...node.data, muted: !node.data["muted"] } }
-              : node,
-          ),
-        isDirty: true,
-      }));
+      toggleNodeFlag(nodeId, "muted");
     },
     toggleCollapse: (nodeId) => {
-      commit((state) => ({
-        ...state,
-        nodes: document.get().nodes.map((node) =>
-          node.id === nodeId
-            ? {
-                ...node,
-                data: { ...node.data, collapsed: !node.data["collapsed"] },
-              }
-            : node,
-        ),
-        isDirty: true,
-      }));
+      toggleNodeFlag(nodeId, "collapsed");
     },
     toggleSocketVisibility: (nodeId) => {
       const { nodes } = document.get();
       const node = nodes.find((n) => n.id === nodeId);
       if (!node) return;
-
-      // Current hidden sockets
-      const currentHidden = nodeDataStrings(node.data, "hiddenSockets") ?? [];
-
-      // Toggle: if any hidden, show all; otherwise we'll hide unconnected
-      // Note: We can't know all sockets here without the definition,
-      // so we just toggle the hiddenSockets flag
-      const newHidden =
-        currentHidden.length > 0 ? [] : ["__hide_unconnected__"];
-
-      commit((state) => ({
-        ...state,
-        nodes: nodes.map((n) =>
-          n.id === nodeId
-            ? { ...n, data: { ...n.data, hiddenSockets: newHidden } }
-            : n,
+      // The node component hides unconnected sockets while this marker is set.
+      const hidden = nodeDataStrings(node.data, "hiddenSockets") ?? [];
+      const hiddenSockets = hidden.length > 0 ? [] : ["__hide_unconnected__"];
+      commitNodes(
+        nodes.map((n) =>
+          n.id === nodeId ? { ...n, data: { ...n.data, hiddenSockets } } : n,
         ),
-        isDirty: true,
-      }));
+      );
     },
     togglePreview: (nodeId) => {
-      const current = ui.get().previewEnabledNodes;
-      const next = new Set(current);
-      if (next.has(nodeId)) {
-        next.delete(nodeId);
-      } else {
-        next.add(nodeId);
-      }
+      const next = new Set(ui.get().previewEnabledNodes);
+      if (!next.delete(nodeId)) next.add(nodeId);
       ui.setState((state) => ({ ...state, previewEnabledNodes: next }));
     },
     observesNodeOutputs: (nodeId) => {
@@ -702,147 +503,29 @@ export function createScriptEditorSession() {
       });
     },
     createFrame: (nodeIds, label) => {
-      if (nodeIds.length === 0) return;
-
       const { nodes } = document.get();
-      const selectedNodes = nodes.filter((n) => nodeIds.includes(n.id));
-      if (selectedNodes.length === 0) return;
-
-      // Calculate bounding box of selected nodes
-      const padding = 40;
-      const minX =
-        Math.min(...selectedNodes.map((n) => n.position.x)) - padding;
-      const minY =
-        Math.min(...selectedNodes.map((n) => n.position.y)) - padding;
-      const maxX =
-        Math.max(
-          ...selectedNodes.map(
-            (n) => n.position.x + (n.measured?.width ?? 160),
-          ),
-        ) + padding;
-      const maxY =
-        Math.max(
-          ...selectedNodes.map(
-            (n) => n.position.y + (n.measured?.height ?? 100),
-          ),
-        ) + padding;
-
-      const frameId = generateId();
-      const currentGroupId = actions.getCurrentGroupId();
-      const frameNode: Node = {
-        id: frameId,
-        type: "layout.frame",
-        position: { x: minX, y: minY },
-        data: {
-          // Without a label, the frame shows its name in the viewer's language.
-          ...(label !== undefined && { label }),
-          containedNodes: nodeIds,
-          ...(currentGroupId && { parentGroupId: currentGroupId }),
-        },
-        width: maxX - minX,
-        height: maxY - minY,
-        // Frames should be behind other nodes
-        zIndex: -1,
-      };
-
-      // Update contained nodes to reference the frame
-      const updatedNodes = nodes.map((node) =>
-        nodeIds.includes(node.id)
-          ? { ...node, data: { ...node.data, parentFrameId: frameId } }
-          : node,
-      );
-
-      commit((state) => ({
-        ...state,
-        nodes: [frameNode, ...updatedNodes],
-        isDirty: true,
-      }));
+      const frame = createFrame(nodes, nodeIds, currentGroupId(), label);
+      commitNodes(frame && [frame, ...nodes]);
     },
     insertReroute: (edgeId, position) => {
-      const { edges, nodes } = document.get();
-      const edge = edges.find((e) => e.id === edgeId);
-      if (!edge) return;
-
-      const rerouteId = generateId();
-      const currentGroupId = actions.getCurrentGroupId();
-      const rerouteNode: Node = {
-        id: rerouteId,
-        type: "layout.reroute",
-        position,
-        data: {
-          ...(currentGroupId && { parentGroupId: currentGroupId }),
-        },
-      };
-
-      // Get the port type from node definition
-      const sourceType = getPortTypeForNode(
-        nodes,
-        edge.source,
-        edge.sourceHandle,
+      commitGraph(
+        insertReroute(document.get(), edgeId, position, currentGroupId()),
       );
-
-      // Create new edges with simple port IDs
-      const newEdge1: Edge = {
-        id: generateId(),
-        source: edge.source,
-        target: rerouteId,
-        targetHandle: "in",
-        type: edge.type,
-        ...optionalEdgeFields({
-          sourceHandle: edge.sourceHandle,
-          data: edge.data,
-        }),
-      };
-
-      const newEdge2: Edge = {
-        id: generateId(),
-        source: rerouteId,
-        sourceHandle: "out",
-        target: edge.target,
-        type: edge.type,
-        ...optionalEdgeFields({
-          targetHandle: edge.targetHandle,
-          data: edge.data,
-        }),
-      };
-
-      commit((state) => ({
-        ...state,
-        nodes: [
-          ...nodes,
-          {
-            ...rerouteNode,
-            data: { ...rerouteNode.data, resolvedType: sourceType },
-          },
-        ],
-        edges: [...edges.filter((e) => e.id !== edgeId), newEdge1, newEdge2],
-        isDirty: true,
-      }));
     },
     duplicateSelected: () => {
       const { nodes, edges } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      const selected = selectedSubgraph(nodes, edges, currentGroupId);
+      const groupId = currentGroupId();
+      const selected = selectedSubgraph(nodes, edges, groupId);
       if (selected.nodes.length === 0) return;
-      const { nodes: newNodes, edges: newEdges } = cloneSubgraph(
-        selected,
-        currentGroupId,
-        { x: 50, y: 50 },
-      );
-
-      // Deselect original nodes
-      const updatedNodes = nodes.map((n) =>
-        n.selected ? { ...n, selected: false } : n,
-      );
-
-      commit((state) => ({
-        ...state,
-        nodes: [...updatedNodes, ...newNodes],
-        edges: [...edges, ...newEdges],
-        isDirty: true,
-      }));
+      const copy = cloneSubgraph(selected, groupId, { x: 50, y: 50 });
+      commitGraph({
+        // The copies replace the originals in the selection.
+        nodes: [
+          ...nodes.map((n) => (n.selected ? { ...n, selected: false } : n)),
+          ...copy.nodes,
+        ],
+        edges: [...edges, ...copy.edges],
+      });
     },
     enterGroup: (groupNodeId) => {
       const node = document.get().nodes.find((n) => n.id === groupNodeId);
@@ -850,7 +533,7 @@ export function createScriptEditorSession() {
 
       ui.setState((state) => ({
         ...state,
-        groupEditStack: [...ui.get().groupEditStack, groupNodeId],
+        groupEditStack: [...state.groupEditStack, groupNodeId],
         selectedNodeId: null,
       }));
     },
@@ -874,12 +557,14 @@ export function createScriptEditorSession() {
     revealNode: (nodeId) => {
       const { nodes } = document.get();
       const byId = new Map(nodes.map((node) => [node.id, node]));
-      if (!byId.has(nodeId)) return false;
+      const target = byId.get(nodeId);
+      if (!target) return false;
       const groupPath: string[] = [];
-      let parent = nodeDataString(byId.get(nodeId)?.data, "parentGroupId");
+      let parent = parentGroupOf(target);
       while (parent && byId.has(parent) && !groupPath.includes(parent)) {
         groupPath.unshift(parent);
-        parent = nodeDataString(byId.get(parent)?.data, "parentGroupId");
+        const group = byId.get(parent);
+        parent = group ? parentGroupOf(group) : null;
       }
       batch(() => {
         ui.setState((state) => ({
@@ -898,354 +583,16 @@ export function createScriptEditorSession() {
       });
       return true;
     },
-    getCurrentGroupId: () => {
-      const stack = ui.get().groupEditStack;
-      return stack.at(-1) ?? null;
-    },
-
     createGroupFromSelection: () => {
-      const { nodes, edges } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Get selected nodes in current view. The enclosing group's interface
-      // nodes must stay on its canvas.
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected || isGroupInterfaceNode(n)) return false;
-        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length === 0) return;
-
-      const selectedIds = new Set(selectedNodes.map((n) => n.id));
-
-      // Find edges that cross the selection boundary
-      const incomingEdges = edges.filter(
-        (e) => !selectedIds.has(e.source) && selectedIds.has(e.target),
-      );
-      const outgoingEdges = edges.filter(
-        (e) => selectedIds.has(e.source) && !selectedIds.has(e.target),
-      );
-      // Internal edges (between selected nodes) are automatically preserved
-      // since we only remove incoming/outgoing crossing edges
-
-      // Create group input/output sockets based on crossing edges
-      // Port IDs are now simple names, so use them directly as labels
-      const groupInputs = incomingEdges.map((e, i) => ({
-        id: `group-in-${i}`,
-        type: getPortTypeForNode(nodes, e.source, e.sourceHandle),
-        label: e.targetHandle || `Input ${i + 1}`,
-        originalTarget: e.target,
-        originalTargetHandle: e.targetHandle,
-        edge: e,
-      }));
-
-      const groupOutputs = outgoingEdges.map((e, i) => ({
-        id: `group-out-${i}`,
-        type: getPortTypeForNode(nodes, e.source, e.sourceHandle),
-        label: e.sourceHandle || `Output ${i + 1}`,
-        originalSource: e.source,
-        originalSourceHandle: e.sourceHandle,
-        edge: e,
-      }));
-
-      // Calculate group position (center of selected nodes)
-      const centerX =
-        selectedNodes.reduce((sum, n) => sum + n.position.x, 0) /
-        selectedNodes.length;
-      const centerY =
-        selectedNodes.reduce((sum, n) => sum + n.position.y, 0) /
-        selectedNodes.length;
-
-      const groupId = generateId();
-
-      // Create group node
-      const groupNode: Node = {
-        id: groupId,
-        type: "layout.group",
-        position: { x: centerX - 80, y: centerY - 40 },
-        data: {
-          inputs: groupInputs.map((i) => ({
-            id: i.id,
-            type: i.type,
-            label: i.label,
-          })),
-          outputs: groupOutputs.map((o) => ({
-            id: o.id,
-            type: o.type,
-            label: o.label,
-          })),
-          ...(currentGroupId && { parentGroupId: currentGroupId }),
-        },
-      };
-
-      // Keep interfaces outside the contents, including wide or spread-out nodes.
-      const contentLeft = Math.min(...selectedNodes.map((n) => n.position.x));
-      const contentRight = Math.max(
-        ...selectedNodes.map(
-          (n) =>
-            n.position.x +
-            (n.measured?.width ?? n.width ?? n.initialWidth ?? 160),
-        ),
-      );
-      const contentTop = Math.min(...selectedNodes.map((n) => n.position.y));
-      const interfaceGap = 80;
-
-      // Create GroupInput and GroupOutput nodes inside the group
-      const groupInputNode: Node = {
-        id: generateId(),
-        type: "layout.group_input",
-        position: {
-          x:
-            contentLeft -
-            groupNode.position.x -
-            GROUP_INTERFACE_NODE_WIDTH -
-            interfaceGap,
-          y: contentTop - groupNode.position.y,
-        },
-        data: {
-          parentGroupId: groupId,
-          outputs: groupInputs.map((i) => ({
-            id: i.id,
-            type: i.type,
-            label: i.label,
-          })),
-        },
-      };
-
-      const groupOutputNode: Node = {
-        id: generateId(),
-        type: "layout.group_output",
-        position: {
-          x: contentRight - groupNode.position.x + interfaceGap,
-          y: contentTop - groupNode.position.y,
-        },
-        data: {
-          parentGroupId: groupId,
-          inputs: groupOutputs.map((o) => ({
-            id: o.id,
-            type: o.type,
-            label: o.label,
-          })),
-        },
-      };
-
-      // Update selected nodes to be inside group
-      const updatedNodes = nodes.map((n) => {
-        if (selectedIds.has(n.id)) {
-          // Store positions relative to the group origin so ungrouping restores them.
-          return {
-            ...n,
-            data: { ...n.data, parentGroupId: groupId },
-            position: {
-              x: n.position.x - groupNode.position.x,
-              y: n.position.y - groupNode.position.y,
-            },
-            selected: false,
-          };
-        }
-        return n;
-      });
-
-      // Create new edges:
-      // 1. External edges now connect to group node
-      // 2. Internal edges from GroupInput to original targets
-      // 3. Internal edges from original sources to GroupOutput
-      const newExternalEdges: Edge[] = [];
-      const newInternalEdges: Edge[] = [];
-
-      // Rewire incoming edges to group
-      for (const input of groupInputs) {
-        const e = input.edge;
-
-        // External: source -> group
-        newExternalEdges.push({
-          ...e,
-          id: generateId(),
-          target: groupId,
-          targetHandle: input.id,
-        });
-
-        // Internal: GroupInput -> original target
-        newInternalEdges.push({
-          id: generateId(),
-          source: groupInputNode.id,
-          sourceHandle: input.id,
-          target: input.originalTarget,
-          type: e.type,
-          ...optionalEdgeFields({
-            targetHandle: input.originalTargetHandle,
-            data: e.data,
-          }),
-        });
-      }
-
-      // Rewire outgoing edges from group
-      for (const output of groupOutputs) {
-        const e = output.edge;
-
-        // External: group -> target
-        newExternalEdges.push({
-          ...e,
-          id: generateId(),
-          source: groupId,
-          sourceHandle: output.id,
-        });
-
-        // Internal: original source -> GroupOutput
-        newInternalEdges.push({
-          id: generateId(),
-          source: output.originalSource,
-          target: groupOutputNode.id,
-          targetHandle: output.id,
-          type: e.type,
-          ...optionalEdgeFields({
-            sourceHandle: output.originalSourceHandle,
-            data: e.data,
-          }),
-        });
-      }
-
-      // Remove old crossing edges, keep internal edges
-      const edgesToRemove = new Set([
-        ...incomingEdges.map((e) => e.id),
-        ...outgoingEdges.map((e) => e.id),
-      ]);
-
-      commit((state) => ({
-        ...state,
-        nodes: [...updatedNodes, groupNode, groupInputNode, groupOutputNode],
-        edges: [
-          ...edges.filter((e) => !edgesToRemove.has(e.id)),
-          ...newExternalEdges,
-          ...newInternalEdges,
-        ],
-        isDirty: true,
-      }));
+      commitGraph(groupSelection(document.get(), currentGroupId()));
     },
     ungroupSelected: () => {
-      const { nodes, edges } = document.get();
-      const { selectedNodeId, groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      const groupNode = nodes.find(
-        (n) => n.id === selectedNodeId && n.type === "layout.group",
-      );
-      if (!groupNode) return;
-
-      const groupId = groupNode.id;
-
-      // Find nodes inside this group
-      const innerNodes = nodes.filter(
-        (n) => n.data["parentGroupId"] === groupId,
-      );
-
-      // Find GroupInput and GroupOutput nodes
-      const groupInputNode = innerNodes.find(
-        (n) => n.type === "layout.group_input",
-      );
-      const groupOutputNode = innerNodes.find(
-        (n) => n.type === "layout.group_output",
-      );
-
-      // Get position offset to move inner nodes back to parent level
-      const offsetX = groupNode.position.x;
-      const offsetY = groupNode.position.y;
-
-      // Nodes to keep (inner nodes minus GroupInput/GroupOutput, with adjusted positions)
-      const nodesFromGroup = innerNodes
-        .filter(
-          (n) =>
-            n.type !== "layout.group_input" && n.type !== "layout.group_output",
-        )
-        .map((n) => ({
-          ...n,
-          data: {
-            ...n.data,
-            parentGroupId: currentGroupId ?? undefined,
-          },
-          position: {
-            x: n.position.x + offsetX,
-            y: n.position.y + offsetY,
-          },
-        }));
-
-      // Find edges to/from group node and rewire them
-      const edgesToGroup = edges.filter((e) => e.target === groupId);
-      const edgesFromGroup = edges.filter((e) => e.source === groupId);
-
-      let rewiredEdges = [...edges];
-
-      for (const externalEdge of edgesToGroup) {
-        const internalEdges = edges.filter(
-          (e) =>
-            e.source === groupInputNode?.id &&
-            e.sourceHandle === externalEdge.targetHandle,
-        );
-        for (const internalEdge of internalEdges) {
-          const {
-            targetHandle: _targetHandle,
-            data: _data,
-            ...rest
-          } = externalEdge;
-          rewiredEdges.push({
-            ...rest,
-            id: generateId(),
-            target: internalEdge.target,
-            ...optionalEdgeFields({
-              targetHandle: internalEdge.targetHandle,
-              data: internalEdge.data,
-            }),
-          });
-        }
-      }
-
-      // Pass-through wires now have real upstream sources. Resolve outputs
-      // after removing the input interface's original edges.
-      rewiredEdges = rewiredEdges.filter(
-        (e) =>
-          e.source !== groupInputNode?.id && e.target !== groupInputNode?.id,
-      );
-
-      for (const externalEdge of edgesFromGroup) {
-        const internalEdges = rewiredEdges.filter(
-          (e) =>
-            e.target === groupOutputNode?.id &&
-            e.targetHandle === externalEdge.sourceHandle,
-        );
-        for (const internalEdge of internalEdges) {
-          const { sourceHandle: _sourceHandle, ...rest } = externalEdge;
-          rewiredEdges.push({
-            ...rest,
-            id: generateId(),
-            source: internalEdge.source,
-            ...optionalEdgeFields({ sourceHandle: internalEdge.sourceHandle }),
-          });
-        }
-      }
-
-      // Remove the group node and every interface node, with their edges.
-      const nodesToRemove = new Set([
-        groupId,
-        ...innerNodes.filter((n) => isGroupInterfaceNode(n)).map((n) => n.id),
-      ]);
-
+      const { selectedNodeId } = ui.get();
+      if (!selectedNodeId) return;
+      const graph = ungroup(document.get(), selectedNodeId);
+      if (!graph) return;
       batch(() => {
-        commit((state) => ({
-          ...state,
-          nodes: [
-            ...nodes.filter(
-              (n) =>
-                !nodesToRemove.has(n.id) && n.data["parentGroupId"] !== groupId,
-            ),
-            ...nodesFromGroup,
-          ],
-          edges: rewiredEdges.filter(
-            (e) => !nodesToRemove.has(e.source) && !nodesToRemove.has(e.target),
-          ),
-          isDirty: true,
-        }));
+        commitGraph(graph);
         ui.setState((state) => ({ ...state, selectedNodeId: null }));
       });
     },
@@ -1294,298 +641,59 @@ export function createScriptEditorSession() {
     },
     findClosestEdge: (position, threshold, drawn) => {
       const { nodes, edges } = currentCanvas();
-      return findClosestEdgeToPoint(nodes, edges, position, threshold, drawn);
+      return findClosestEdge(nodes, edges, position, threshold, drawn);
     },
     insertNodeOnEdge: (nodeId, edgeId) => {
-      const { nodes, edges } = document.get();
-      const edge = edges.find((e) => e.id === edgeId);
-      const node = nodes.find((n) => n.id === nodeId);
-      if (!edge || !node) return;
-
-      // Get port types from the edge's source/target
-      const sourceType = getPortTypeForNode(
-        nodes,
-        edge.source,
-        edge.sourceHandle,
-      );
-      const targetType = getPortTypeForNode(
-        nodes,
-        edge.target,
-        edge.targetHandle,
-      );
-      const isExecutionEdge = sourceType === "execution";
-
-      // Look up ports from the node definition
-      const definition = getNodeDefinition(node.type ?? "");
-      const defInputs = definition?.inputs ?? [];
-      const defOutputs = definition?.outputs ?? [];
-
-      // Find compatible input port on the new node
-      let inputHandle: string | undefined;
-      if (isExecutionEdge) {
-        inputHandle = defInputs.find((p) => p.type === "execution")?.id;
-      } else {
-        inputHandle = defInputs.find(
-          (p) =>
-            p.type !== "execution" &&
-            isTypeCompatible(sourceType, p.type as PortType),
-        )?.id;
-      }
-
-      // Find compatible output port on the new node
-      let outputHandle: string | undefined;
-      if (isExecutionEdge) {
-        outputHandle = defOutputs.find((p) => p.type === "execution")?.id;
-      } else {
-        outputHandle = defOutputs.find(
-          (p) =>
-            p.type !== "execution" &&
-            isTypeCompatible(p.type as PortType, targetType),
-        )?.id;
-      }
-
-      // Fallback for layout nodes (reroute, group) without definitions
-      if (!inputHandle) inputHandle = "in";
-      if (!outputHandle) outputHandle = "out";
-
-      // If definition exists but no compatible ports found, bail out
-      if (
-        definition &&
-        (!defInputs.some((p) => p.id === inputHandle) ||
-          !defOutputs.some((p) => p.id === outputHandle))
-      ) {
-        return;
-      }
-
-      // Create new edges
-      const newEdge1: Edge = {
-        id: generateId(),
-        source: edge.source,
-        target: nodeId,
-        targetHandle: inputHandle,
-        type: edge.type,
-        ...optionalEdgeFields({
-          sourceHandle: edge.sourceHandle,
-          data: edge.data,
-        }),
-      };
-
-      const newEdge2: Edge = {
-        id: generateId(),
-        source: nodeId,
-        sourceHandle: outputHandle,
-        target: edge.target,
-        type: edge.type,
-        ...optionalEdgeFields({
-          targetHandle: edge.targetHandle,
-          data: edge.data,
-        }),
-      };
-
-      commit((state) => ({
-        ...state,
-        edges: [...edges.filter((e) => e.id !== edgeId), newEdge1, newEdge2],
-        isDirty: true,
-      }));
+      commitGraph(insertNodeOnEdge(document.get(), nodeId, edgeId));
     },
     clearDebugValues: (nodeId) => {
-      const current = execution.get().debugNodeValues;
-      const next = new Map(current);
+      const next = new Map(execution.get().debugNodeValues);
       next.delete(nodeId);
       execution.setState((state) => ({ ...state, debugNodeValues: next }));
     },
 
     selectAll: () => {
-      const { nodes } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Select all nodes in current view
-      document.setState((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-          if (nodeGroupId !== currentGroupId) return n;
-          return { ...n, selected: true };
-        }),
-      }));
+      setSelection(() => true);
     },
     deselectAll: () => {
-      const { nodes } = document.get();
       document.setState((state) => ({
         ...state,
-        nodes: nodes.map((n) => ({ ...n, selected: false })),
+        nodes: state.nodes.map((n) =>
+          n.selected ? { ...n, selected: false } : n,
+        ),
       }));
     },
     selectShortestPath: (fromNodeId, toNodeId) => {
-      const { nodes, edges } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Build undirected adjacency list (treat edges as bidirectional for path finding)
-      const adjacency = new Map<string, string[]>();
-      for (const edge of edges) {
-        if (!adjacency.has(edge.source)) adjacency.set(edge.source, []);
-        if (!adjacency.has(edge.target)) adjacency.set(edge.target, []);
-        adjacency.get(edge.source)?.push(edge.target);
-        adjacency.get(edge.target)?.push(edge.source);
-      }
-
-      // BFS to find shortest path
-      const visited = new Set<string>();
-      const parent = new Map<string, string>();
-      const queue: string[] = [fromNodeId];
-      visited.add(fromNodeId);
-
-      while (queue.length > 0) {
-        const current = queue.shift();
-        if (!current) continue;
-
-        if (current === toNodeId) break;
-
-        for (const neighbor of adjacency.get(current) ?? []) {
-          if (!visited.has(neighbor)) {
-            visited.add(neighbor);
-            parent.set(neighbor, current);
-            queue.push(neighbor);
-          }
-        }
-      }
-
-      // Reconstruct path
-      const pathNodes = new Set<string>();
-      if (visited.has(toNodeId)) {
-        let current: string | undefined = toNodeId;
-        while (current) {
-          pathNodes.add(current);
-          current = parent.get(current);
-        }
-      }
-
-      // If no path found, just select both nodes
-      if (pathNodes.size === 0) {
-        pathNodes.add(fromNodeId);
-        pathNodes.add(toNodeId);
-      }
-
-      // Update selection (add path nodes to current selection)
-      document.setState((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-          if (nodeGroupId !== currentGroupId) return n;
-          if (pathNodes.has(n.id)) return { ...n, selected: true };
-          return n;
-        }),
-      }));
+      // Adds the path to the current selection.
+      const path = shortestPath(document.get().edges, fromNodeId, toNodeId);
+      setSelection((n) => !!n.selected || path.has(n.id));
     },
     selectLinked: (direction) => {
-      const { nodes, edges } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Get currently selected nodes in current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length === 0) return;
-
-      const selectedIds = new Set(selectedNodes.map((n) => n.id));
-      const toSelect = new Set(selectedIds);
-
-      // Build adjacency lists
-      const upstream = new Map<string, string[]>();
-      const downstream = new Map<string, string[]>();
-      for (const edge of edges) {
-        if (!downstream.has(edge.source)) downstream.set(edge.source, []);
-        downstream.get(edge.source)?.push(edge.target);
-        if (!upstream.has(edge.target)) upstream.set(edge.target, []);
-        upstream.get(edge.target)?.push(edge.source);
-      }
-
-      // BFS traversal
-      const queue = [...selectedIds];
-      while (queue.length > 0) {
-        const current = queue.shift();
-        if (!current) continue;
-
-        if (direction === "upstream" || direction === "both") {
-          for (const source of upstream.get(current) ?? []) {
-            if (!toSelect.has(source)) {
-              toSelect.add(source);
-              queue.push(source);
-            }
-          }
-        }
-
-        if (direction === "downstream" || direction === "both") {
-          for (const target of downstream.get(current) ?? []) {
-            if (!toSelect.has(target)) {
-              toSelect.add(target);
-              queue.push(target);
-            }
-          }
-        }
-      }
-
-      // Update selection (only nodes in current view)
-      document.setState((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-          if (nodeGroupId !== currentGroupId) return n;
-          return { ...n, selected: toSelect.has(n.id) };
-        }),
-      }));
+      const selected = canvasSelection(document.get().nodes, currentGroupId());
+      if (selected.length === 0) return;
+      const linked = linkedNodes(
+        document.get().edges,
+        selected.map((n) => n.id),
+        direction,
+      );
+      setSelection((n) => linked.has(n.id));
     },
     selectSimilar: () => {
-      const { nodes } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Get types of selected nodes
-      const selectedTypes = new Set(
-        nodes
-          .filter((n) => {
-            if (!n.selected) return false;
-            const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-            return nodeGroupId === currentGroupId;
-          })
-          .map((n) => n.type),
+      const types = new Set(
+        canvasSelection(document.get().nodes, currentGroupId()).map(
+          (n) => n.type,
+        ),
       );
-
-      if (selectedTypes.size === 0) return;
-
-      // Select all nodes of the same types in current view
-      document.setState((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-          if (nodeGroupId !== currentGroupId) return n;
-          return { ...n, selected: selectedTypes.has(n.type) };
-        }),
-      }));
+      if (types.size === 0) return;
+      setSelection((n) => types.has(n.type));
     },
     getSelectedForClipboard: () => {
-      const { nodes, edges, scriptId } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      const selected = selectedSubgraph(nodes, edges, currentGroupId);
-      if (selected.nodes.length === 0) return null;
-
-      return {
-        ...selected,
-        sourceScriptId: scriptId,
-      };
+      const { nodes, edges } = document.get();
+      const selected = selectedSubgraph(nodes, edges, currentGroupId());
+      return selected.nodes.length === 0 ? null : selected;
     },
     pasteClipboardData: (pasted, position) => {
       const { nodes, edges } = document.get();
-      const { groupEditStack } = ui.get();
-
       // A group input or output node only works inside its own group, which
       // already has one. Older clients could copy them on their own.
       const looseInterfaces = new Set(
@@ -1601,10 +709,6 @@ export function createScriptEditorSession() {
             !looseInterfaces.has(edge.target),
         ),
       };
-      if (clipboardData.nodes.length === 0) return;
-
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
       const roots = subgraphRoots(clipboardData.nodes);
       if (roots.length === 0) return;
 
@@ -1613,180 +717,28 @@ export function createScriptEditorSession() {
         roots.reduce((sum, n) => sum + n.position.x, 0) / roots.length;
       const centerY =
         roots.reduce((sum, n) => sum + n.position.y, 0) / roots.length;
-      const { nodes: newNodes, edges: newEdges } = cloneSubgraph(
-        clipboardData,
-        currentGroupId,
-        { x: position.x - centerX, y: position.y - centerY },
-      );
-
-      // Deselect existing nodes
-      const updatedNodes = nodes.map((n) =>
-        n.selected ? { ...n, selected: false } : n,
-      );
-
-      commit((state) => ({
-        ...state,
-        nodes: [...updatedNodes, ...newNodes],
-        edges: [...edges, ...newEdges],
-        isDirty: true,
-      }));
+      const copy = cloneSubgraph(clipboardData, currentGroupId(), {
+        x: position.x - centerX,
+        y: position.y - centerY,
+      });
+      const nextNodes = [
+        ...nodes.map((n) => (n.selected ? { ...n, selected: false } : n)),
+        ...copy.nodes,
+      ];
+      commitGraph({
+        nodes: nextNodes,
+        edges: normalizeEdgeOrders(nextNodes, [...edges, ...copy.edges]),
+      });
     },
     alignNodes: (direction) => {
-      const { nodes } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Get selected nodes in current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length < 2) return;
-
-      const selectedIds = new Set(selectedNodes.map((n) => n.id));
-
-      // Calculate reference values
-      const positions = selectedNodes.map((n) => ({
-        x: n.position.x,
-        y: n.position.y,
-        width: n.measured?.width ?? 160,
-        height: n.measured?.height ?? 100,
-      }));
-
-      let targetValue: number;
-      switch (direction) {
-        case "left": {
-          targetValue = Math.min(...positions.map((p) => p.x));
-          break;
-        }
-        case "right": {
-          targetValue = Math.max(...positions.map((p) => p.x + p.width));
-          break;
-        }
-        case "top": {
-          targetValue = Math.min(...positions.map((p) => p.y));
-          break;
-        }
-        case "bottom": {
-          targetValue = Math.max(...positions.map((p) => p.y + p.height));
-          break;
-        }
-        case "centerH": {
-          targetValue =
-            positions.reduce((sum, p) => sum + p.x + p.width / 2, 0) /
-            positions.length;
-          break;
-        }
-        case "centerV": {
-          targetValue =
-            positions.reduce((sum, p) => sum + p.y + p.height / 2, 0) /
-            positions.length;
-          break;
-        }
-      }
-
-      commit((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          if (!selectedIds.has(n.id)) return n;
-
-          const width = n.measured?.width ?? 160;
-          const height = n.measured?.height ?? 100;
-
-          const newPosition = { ...n.position };
-          switch (direction) {
-            case "left": {
-              newPosition.x = targetValue;
-              break;
-            }
-            case "right": {
-              newPosition.x = targetValue - width;
-              break;
-            }
-            case "top": {
-              newPosition.y = targetValue;
-              break;
-            }
-            case "bottom": {
-              newPosition.y = targetValue - height;
-              break;
-            }
-            case "centerH": {
-              newPosition.x = targetValue - width / 2;
-              break;
-            }
-            case "centerV": {
-              newPosition.y = targetValue - height / 2;
-              break;
-            }
-          }
-
-          return { ...n, position: newPosition };
-        }),
-        isDirty: true,
-      }));
+      commitNodes(
+        alignSelection(document.get().nodes, currentGroupId(), direction),
+      );
     },
     distributeNodes: (direction) => {
-      const { nodes } = document.get();
-      const { groupEditStack } = ui.get();
-      const currentGroupId = groupEditStack.at(-1) ?? null;
-
-      // Get selected nodes in current view
-      const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
-        const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
-        return nodeGroupId === currentGroupId;
-      });
-
-      if (selectedNodes.length < 3) return;
-
-      const selectedIds = new Set(selectedNodes.map((n) => n.id));
-
-      // Sort by position
-      const sorted = [...selectedNodes].toSorted((a, b) =>
-        direction === "horizontal"
-          ? a.position.x - b.position.x
-          : a.position.y - b.position.y,
+      commitNodes(
+        distributeSelection(document.get().nodes, currentGroupId(), direction),
       );
-
-      // Calculate spacing
-      const first = sorted[0];
-      const last = sorted.at(-1);
-      if (first === undefined || last === undefined) return;
-      const lastPos =
-        direction === "horizontal" ? last.position.x : last.position.y;
-      const firstPos =
-        direction === "horizontal" ? first.position.x : first.position.y;
-
-      const totalSpace = lastPos - firstPos;
-      const step = totalSpace / (sorted.length - 1);
-
-      // Create position map
-      const positionMap = new Map<string, number>();
-      for (const [i, node] of sorted.entries()) {
-        positionMap.set(node.id, firstPos + i * step);
-      }
-
-      commit((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          if (!selectedIds.has(n.id)) return n;
-
-          const newPos = positionMap.get(n.id);
-          if (newPos === undefined) return n;
-
-          return {
-            ...n,
-            position:
-              direction === "horizontal"
-                ? { ...n.position, x: newPos }
-                : { ...n.position, y: newPos },
-          };
-        }),
-        isDirty: true,
-      }));
     },
     openQuickAddMenu: (position, screenPosition, sourceSocket) => {
       ui.setState((state) => ({
@@ -1824,19 +776,7 @@ export function createScriptEditorSession() {
       }
     },
     endLinkCutting: (drawn) => {
-      const { linkCutting } = ui.get();
-      if (
-        linkCutting.active &&
-        linkCutting.startPoint &&
-        linkCutting.endPoint
-      ) {
-        // Cut edges that intersect the line
-        actions.cutEdgesIntersectingLine(
-          linkCutting.startPoint,
-          linkCutting.endPoint,
-          drawn,
-        );
-      }
+      if (ui.get().linkCutting.active) cutEdgesIntersectingLine(drawn);
       actions.cancelLinkCutting();
     },
     cancelLinkCutting: () => {
@@ -1849,28 +789,6 @@ export function createScriptEditorSession() {
           endPoint: null,
         },
       }));
-    },
-    cutEdgesIntersectingLine: (start, end, drawn) => {
-      const { edges } = document.get();
-      // Only cut wires drawn on this canvas. Other groups use other positions.
-      const canvas = currentCanvas();
-      const shapes = edgeShapes(canvas.nodes, canvas.edges, drawn);
-      const edgesToRemove = canvas.edges.filter((edge) => {
-        const shape = shapes.get(edge.id);
-        return shape !== undefined && polylineCrossesSegment(shape, start, end);
-      });
-
-      if (edgesToRemove.length > 0) {
-        const removed = new Set(edgesToRemove.map((edge) => edge.id));
-        commit((state) => ({
-          ...state,
-          edges: normalizeMultiInputEdgeOrders(
-            document.get().nodes,
-            edges.filter((edge) => !removed.has(edge.id)),
-          ),
-          isDirty: true,
-        }));
-      }
     },
     setScriptName: (name) => {
       document.setState((state) => ({
@@ -1991,16 +909,28 @@ export function createScriptEditorSession() {
     },
     syncScriptDocument: (data) => {
       const current = document.get();
-      if (
-        current.scriptId !== data.id ||
-        (!current.isDirty && !sameScriptDocument(actions.getScriptData(), data))
-      ) {
+      if (current.scriptId !== data.id) {
         actions.loadScript(data);
+        return;
       }
+      // Compare with the repaired graph that loading would show, so a script
+      // from an older client does not reload on every refresh.
+      if (
+        !current.isDirty &&
+        !sameScriptDocument(actions.getScriptData(), {
+          ...data,
+          ...normalizeScriptGraph(data),
+        })
+      )
+        actions.loadScript(data);
     },
     loadScript: (data) => {
-      const edges = normalizeMultiInputEdgeOrders(data.nodes, data.edges);
-      savedDocument = { ...data, edges };
+      const { nodes, edges } = normalizeScriptGraph(data);
+      savedMetadata = {
+        name: data.name,
+        description: data.description,
+        quotas: data.quotas,
+      };
       batch(() => {
         clearHistory();
         document.setState((state) => ({
@@ -2011,55 +941,33 @@ export function createScriptEditorSession() {
           paused: data.paused,
           lastSavedPaused: data.paused,
           quotas: data.quotas,
-          nodes: data.nodes,
+          nodes,
           edges,
           isDirty: false,
-          lastSavedNodes: data.nodes,
+          lastSavedNodes: nodes,
           lastSavedEdges: edges,
         }));
-        ui.setState((state) => ({
-          ...state,
-          selectedNodeId: null,
-          groupEditStack: [],
-          canvasRevision: state.canvasRevision + 1,
-          previewEnabledNodes: new Set<string>(),
-        }));
-        execution.setState((state) => ({
-          ...state,
-          previewValues: new Map<string, Record<string, unknown>>(),
-          debugNodeValues: new Map<string, DebugValue[]>(),
-        }));
+        resetView();
       });
     },
     loadScriptData: (data) => {
-      const current = document.get();
+      const { nodes, edges } = normalizeScriptGraph(data);
       batch(() => {
         commit((state) => ({
           ...state,
-          nodes: data.nodes,
-          edges: normalizeMultiInputEdgeOrders(data.nodes, data.edges),
-          scriptName: data.name ?? current.scriptName,
-          scriptDescription: data.description ?? current.scriptDescription,
-          paused: data.paused ?? current.paused,
+          nodes,
+          edges,
+          scriptName: data.name ?? state.scriptName,
+          scriptDescription: data.description ?? state.scriptDescription,
+          paused: data.paused ?? state.paused,
           quotas: data.quotas,
           isDirty: true,
         }));
-        ui.setState((state) => ({
-          ...state,
-          selectedNodeId: null,
-          groupEditStack: [],
-          canvasRevision: state.canvasRevision + 1,
-          previewEnabledNodes: new Set<string>(),
-        }));
-        execution.setState((state) => ({
-          ...state,
-          previewValues: new Map<string, Record<string, unknown>>(),
-          debugNodeValues: new Map<string, DebugValue[]>(),
-        }));
+        resetView();
       });
     },
     resetEditor: () => {
-      savedDocument = emptyDocument();
+      savedMetadata = emptyMetadata();
       batch(() => {
         clearHistory();
         document.setState((state) => ({
@@ -2076,24 +984,18 @@ export function createScriptEditorSession() {
           lastSavedNodes: null,
           lastSavedEdges: null,
         }));
+        resetView();
         execution.setState((state) => ({
           ...state,
           isActive: false,
           activeNodeId: null,
           activeNodeExecutions: new Map(),
           executionLogs: [],
-          previewValues: new Map<string, Record<string, unknown>>(),
-          debugNodeValues: new Map<string, DebugValue[]>(),
           nodeExecutionTimes: new Map<string, number[]>(),
         }));
         ui.setState((state) => ({
           ...state,
-          selectedNodeId: null,
           quickAddMenu: null,
-          groupEditStack: [],
-          canvasRevision: state.canvasRevision + 1,
-          previewEnabledNodes: new Set<string>(),
-
           linkCutting: {
             active: false,
             startPoint: null,
@@ -2107,14 +1009,17 @@ export function createScriptEditorSession() {
         }));
       });
     },
-    getScriptData: () => ({
-      nodes: document.get().nodes,
-      edges: document.get().edges,
-      name: document.get().scriptName,
-      description: document.get().scriptDescription,
-      paused: document.get().paused,
-      quotas: document.get().quotas,
-    }),
+    getScriptData: () => {
+      const state = document.get();
+      return {
+        nodes: state.nodes,
+        edges: state.edges,
+        name: state.scriptName,
+        description: state.scriptDescription,
+        paused: state.paused,
+        quotas: state.quotas,
+      };
+    },
     setValidationDiagnostics: (diagnostics) => {
       validation.setState((state) => ({
         ...state,
@@ -2129,13 +1034,16 @@ export function createScriptEditorSession() {
       execution.setState((state) => {
         const times = new Map(state.nodeExecutionTimes);
         const existing = times.get(nodeId) ?? [];
-        const updated = [...existing, timeMs].slice(-10);
-        times.set(nodeId, updated);
+        times.set(nodeId, [...existing, timeMs].slice(-10));
         return { ...state, nodeExecutionTimes: times };
       });
     },
     markSaved: (data, scriptId, savedPaused = data.paused) => {
-      savedDocument = data;
+      savedMetadata = {
+        name: data.name,
+        description: data.description,
+        quotas: data.quotas,
+      };
       document.setState((state) => {
         const paused =
           state.paused === data.paused ? savedPaused : state.paused;

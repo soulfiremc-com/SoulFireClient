@@ -305,3 +305,52 @@ test("pasting skips group interface nodes copied on their own", () => {
   );
   assert.equal(edges.length, 0);
 });
+
+test("framing inside a group skips selected nodes on other canvases", () => {
+  const { editor, group } = overlappingCanvases();
+  editor.actions.selectAll();
+  editor.actions.enterGroup(group);
+  editor.actions.selectAll();
+  const selected = editor.document
+    .get()
+    .nodes.filter((node) => node.selected)
+    .map((node) => node.id);
+  editor.actions.createFrame(selected);
+  const frame = editor.document
+    .get()
+    .nodes.find((node) => node.type === "layout.frame");
+  assert.ok(frame);
+  assert.equal(frame.data["parentGroupId"], group);
+  // The inner nodes span x 0 to 360 with the 40 padding on both sides.
+  assert.deepEqual(frame.position, { x: -40, y: -40 });
+  assert.equal(frame.width, 440);
+});
+
+test("a script with nodes from a deleted group loads once and shows them", () => {
+  const editor = createScriptEditorSession();
+  const script = {
+    id: "script",
+    name: "Old script",
+    description: "",
+    paused: true,
+    quotas: undefined,
+    nodes: [
+      {
+        id: "orphan",
+        type: "action.print",
+        position: { x: 0, y: 0 },
+        data: { parentGroupId: "deleted" },
+      },
+    ],
+    edges: [],
+  };
+  editor.actions.loadScript(script);
+  assert.deepEqual(
+    editor.visibleNodes.get().map((node) => node.id),
+    ["orphan"],
+  );
+  assert.equal(editor.document.get().isDirty, false);
+  const revision = editor.ui.get().canvasRevision;
+  editor.actions.syncScriptDocument(script);
+  assert.equal(editor.ui.get().canvasRevision, revision);
+});

@@ -12,7 +12,6 @@ const graph = {
     },
   ],
   edges: [],
-  sourceScriptId: null,
 };
 
 const paste = (text: string) => {
@@ -56,4 +55,11 @@ test("clipboard reads validate both supplied text and the stored fallback", () =
     if (previous) Object.defineProperty(globalThis, "localStorage", previous);
     else Reflect.deleteProperty(globalThis, "localStorage");
   }
+});
+
+test("clipboard text from older clients still pastes", () => {
+  assert.deepEqual(paste(encoded({ ...graph, sourceScriptId: "old" })), {
+    data: graph,
+    consumed: true,
+  });
 });

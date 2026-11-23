@@ -4,7 +4,7 @@ import type { Edge, Node, XYPosition } from "@xyflow/react";
 export type EdgeShapes = ReadonlyMap<string, readonly XYPosition[]>;
 
 /** Distance from a point to a line segment. */
-export function pointToSegmentDistance(
+function pointToSegmentDistance(
   p: XYPosition,
   a: XYPosition,
   b: XYPosition,
@@ -27,7 +27,7 @@ const turnDirection = (
 ): number => (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
 
 /** Whether segment p1-p2 crosses segment p3-p4. */
-export function lineSegmentsIntersect(
+function lineSegmentsIntersect(
   p1: XYPosition,
   p2: XYPosition,
   p3: XYPosition,

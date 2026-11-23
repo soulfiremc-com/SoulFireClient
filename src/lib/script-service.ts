@@ -29,11 +29,7 @@ import {
   ScriptNodeSchema,
   ScriptService,
 } from "@/generated/soulfire/script_pb";
-import {
-  nodeDataBoolean,
-  nodeDataString,
-  nodeDataStrings,
-} from "@/lib/script-node-data";
+import { nodeDataBoolean, nodeDataString } from "@/lib/script-node-data";
 
 export type { ScriptData, ScriptEdge, ScriptNode };
 // Re-export for convenience
@@ -251,7 +247,8 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
     const data: Record<string, Value> = {};
     const nodeData = node.data;
     for (const [key, value] of Object.entries(nodeData)) {
-      // Skip internal fields that are handled separately
+      // Skip fields that the proto holds separately, editor-only fields,
+      // and the frame membership that older clients stored.
       if (
         [
           "muted",
@@ -278,8 +275,6 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
       muted: nodeDataBoolean(nodeData, "muted") ?? false,
       collapsed: nodeDataBoolean(nodeData, "collapsed") ?? false,
       label: nodeDataString(nodeData, "label") ?? "",
-      containedNodes: nodeDataStrings(nodeData, "containedNodes") ?? [],
-      parentFrameId: nodeDataString(nodeData, "parentFrameId") ?? "",
       ...persistedNodeDimensions(node),
       resolvedType:
         nodeData["resolvedType"] === undefined
@@ -303,9 +298,6 @@ export function protoToNodes(nodes: ScriptNode[]): Node[] {
     if (node.label) data["label"] = node.label;
     if (node.muted) data["muted"] = node.muted;
     if (node.collapsed) data["collapsed"] = node.collapsed;
-    if (node.containedNodes.length > 0)
-      data["containedNodes"] = node.containedNodes;
-    if (node.parentFrameId) data["parentFrameId"] = node.parentFrameId;
     if (node.resolvedType !== undefined)
       data["resolvedType"] = protoPortTypeToLocal(node.resolvedType);
     return {

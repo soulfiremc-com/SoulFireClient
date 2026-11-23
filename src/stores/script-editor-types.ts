@@ -9,6 +9,7 @@ import type {
 } from "@xyflow/react";
 import type { LogEntry } from "@/components/script-editor/types";
 import type { EdgeShapes } from "@/lib/script-edge-geometry";
+import type { AlignDirection } from "@/lib/script-graph-ops";
 import type {
   ScriptQuotas,
   ScriptStatus,
@@ -139,7 +140,6 @@ export interface ScriptEditorActions {
   exitToRoot: () => void;
   createGroupFromSelection: () => void;
   ungroupSelected: () => void;
-  getCurrentGroupId: () => string | null;
   /** Opens the groups that contain a node and selects it. */
   revealNode: (nodeId: string) => boolean;
   undo: () => void;
@@ -162,18 +162,12 @@ export interface ScriptEditorActions {
   selectLinked: (direction: "upstream" | "downstream" | "both") => void;
   selectSimilar: () => void;
   selectShortestPath: (fromNodeId: string, toNodeId: string) => void;
-  getSelectedForClipboard: () => {
-    nodes: Node[];
-    edges: Edge[];
-    sourceScriptId: string | null;
-  } | null;
+  getSelectedForClipboard: () => { nodes: Node[]; edges: Edge[] } | null;
   pasteClipboardData: (
     data: { nodes: Node[]; edges: Edge[] },
     position: XYPosition,
   ) => void;
-  alignNodes: (
-    direction: "left" | "right" | "top" | "bottom" | "centerH" | "centerV",
-  ) => void;
+  alignNodes: (direction: AlignDirection) => void;
   distributeNodes: (direction: "horizontal" | "vertical") => void;
   openQuickAddMenu: (
     position: XYPosition,
@@ -190,11 +184,6 @@ export interface ScriptEditorActions {
   endLinkCutting: (drawn?: EdgeShapes) => void;
   /** Stops a link cut without cutting anything. */
   cancelLinkCutting: () => void;
-  cutEdgesIntersectingLine: (
-    start: XYPosition,
-    end: XYPosition,
-    drawn?: EdgeShapes,
-  ) => void;
   setScriptName: (name: string) => void;
   setScriptDescription: (description: string) => void;
   setPaused: (paused: boolean) => void;

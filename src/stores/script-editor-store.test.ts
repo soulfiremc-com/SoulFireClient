@@ -282,14 +282,8 @@ function nestedGraph() {
   const outside = session.actions.addNode("value", { x: 300, y: 400 });
   session.actions.enterGroup(group);
   const frame = session.actions.addNode("layout.frame", { x: -20, y: -30 });
-  const child = session.actions.addNode(
-    "value",
-    { x: 10, y: 20 },
-    {
-      parentFrameId: frame,
-    },
-  );
-  session.actions.updateNodeData(frame, { containedNodes: [child] });
+  const child = session.actions.addNode("value", { x: 10, y: 20 });
+  session.actions.updateNodeData(frame, { label: "Frame" });
   const nested = session.actions.addNode("layout.group", { x: 70, y: 80 });
   session.actions.onConnect({
     source: child,
@@ -336,7 +330,7 @@ test("each group view shows only its direct nodes and connections", () => {
   assert.equal(session.visibleEdges.get()[0]?.source, first);
 });
 
-test("duplicating a group clones its nested graph and internal frame references", () => {
+test("duplicating a group clones its nested graph", () => {
   const { session, outside } = nestedGraph();
   session.actions.markSaved(session.actions.getScriptData());
   const before = session.document.get();
@@ -359,16 +353,6 @@ test("duplicating a group clones its nested graph and internal frame references"
       copy.data["parentGroupId"],
       ids.get(nodeDataString(original.data, "parentGroupId") ?? ""),
     );
-    assert.equal(
-      copy.data["parentFrameId"],
-      ids.get(nodeDataString(original.data, "parentFrameId") ?? ""),
-    );
-    if (Array.isArray(original.data["containedNodes"])) {
-      assert.deepEqual(
-        copy.data["containedNodes"],
-        original.data["containedNodes"].map((id: string) => ids.get(id)),
-      );
-    }
     assert.deepEqual(
       copy.position,
       original.data["parentGroupId"]
@@ -419,10 +403,6 @@ test("pasting groups into another group retains hierarchy and offsets only root 
     assert.equal(
       copy.data["parentGroupId"],
       ids.get(nodeDataString(original.data, "parentGroupId") ?? "") ?? parent,
-    );
-    assert.equal(
-      copy.data["parentFrameId"],
-      ids.get(nodeDataString(original.data, "parentFrameId") ?? ""),
     );
     assert.deepEqual(
       copy.position,
@@ -728,12 +708,6 @@ test("framing selected nodes creates explicit dimensions for saving and resizing
   assert.deepEqual(frame.position, { x: -30, y: -20 });
   assert.equal(frame.width, 240);
   assert.equal(frame.height, 180);
-  assert.equal(
-    session.document.get().nodes.find((node) => node.id === id)?.data[
-      "parentFrameId"
-    ],
-    frame.id,
-  );
 });
 
 test("new group interfaces sit outside all selected content bounds", () => {

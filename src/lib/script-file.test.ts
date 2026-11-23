@@ -235,8 +235,6 @@ test("invalid editor metadata cannot replace an existing script draft", () => {
     ["constant.number", { hiddenSockets: [null] }],
     ["constant.number", { label: { text: "invalid" } }],
     ["constant.number", { parentGroupId: [] }],
-    ["constant.number", { parentFrameId: 42 }],
-    ["constant.number", { containedNodes: [42] }],
     ["constant.number", { collapsed: "false" }],
     ["constant.number", { muted: "false" }],
     ["layout.reroute", { resolvedType: {} }],

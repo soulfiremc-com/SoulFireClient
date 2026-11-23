@@ -12,10 +12,6 @@ const editorDataSchema = Schema.StructWithRest(
       Schema.NullOr(Schema.mutable(Schema.Array(Schema.String))),
     ),
     parentGroupId: Schema.optional(Schema.NullOr(idSchema)),
-    parentFrameId: Schema.optional(Schema.NullOr(Schema.String)),
-    containedNodes: Schema.optional(
-      Schema.NullOr(Schema.mutable(Schema.Array(idSchema))),
-    ),
     resolvedType: Schema.optional(Schema.NullOr(Schema.String)),
   }),
   [Schema.Record(Schema.String, Schema.Unknown)],

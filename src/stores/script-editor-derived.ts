@@ -8,12 +8,7 @@ import type {
   ScriptValidationState,
 } from "./script-editor-types";
 
-const VISUAL_NODE_FIELDS = new Set([
-  "collapsed",
-  "hiddenSockets",
-  "isActive",
-  "parentFrameId",
-]);
+const VISUAL_NODE_FIELDS = new Set(["collapsed", "hiddenSockets", "isActive"]);
 
 // Validation operates on the graph's meaning, independently of canvas layout.
 function validationNode(node: Node): Node {
