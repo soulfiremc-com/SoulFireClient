@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { createHash, createHmac } from "node:crypto";
+import { createHash, createHmac, randomUUID } from "node:crypto";
 import { createReadStream } from "node:fs";
 import {
   copyFile,
@@ -8,7 +8,6 @@ import {
   rename,
   rm,
   stat,
-  unlink,
   writeFile,
 } from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -20,6 +19,12 @@ import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http";
 import * as tar from "tar";
 import { getAppLocalDataDir } from "./app-paths";
 import { downloadToFileEffect } from "./integrated-server-download";
+import {
+  clearIntegratedServerPid,
+  stopStaleIntegratedServer,
+  writeIntegratedServerPid,
+} from "./integrated-server-pid";
+import { hasJarManifest } from "./jar-manifest";
 import { findBlockedJvmArg } from "./jvm-args";
 import {
   appendIntegratedLog,
@@ -32,21 +37,15 @@ import {
 const require = createRequire(__filename);
 // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- adm-zip is loaded with require so its types are declared here
 const AdmZip = require("adm-zip") as {
-  new (path: string): {
+  new (archive: Buffer): {
     extractAllToAsync: (
       targetPath: string,
       overwrite?: boolean,
     ) => Promise<unknown>;
-    getEntries: () => {
-      entryName: string;
-      isDirectory: boolean;
-    }[];
   };
 };
 
-const json = Schema.fromJsonString(Schema.Unknown);
-const decodeJson = Schema.decodeUnknownSync(json);
-const encodeJson = Schema.encodeSync(json);
+const encodeJson = Schema.encodeSync(Schema.fromJsonString(Schema.Unknown));
 const encodeJarIndex = Schema.encodeSync(
   Schema.fromJsonString(Schema.Unknown, { space: 2 }),
 );
@@ -131,10 +130,6 @@ export interface CustomSoulFireServerJar {
   path: string;
   sha256: string;
   size: number;
-}
-
-interface CustomSoulFireServerJarIndex {
-  jars: CustomSoulFireServerJar[];
 }
 
 export async function getSoulFireServerVersion(
@@ -240,6 +235,12 @@ export async function runIntegratedServer(
         findRandomAvailablePort(),
       );
 
+      // A Java process from a crashed session would share the data directory.
+      const pidFilePath = path.join(appLocalDataDir, "integrated-server.pid");
+      yield* preparationStep(() =>
+        stopStaleIntegratedServer(pidFilePath, report),
+      );
+
       signal.throwIfAborted();
       Object.assign(state.diagnostics, {
         javaPath: javaExecPath,
@@ -268,13 +269,28 @@ export async function runIntegratedServer(
         ],
         {
           cwd: soulFireRunDir,
-          env: {
-            ...integratedServerEnvironment(javaHomeDir, process.env),
-          },
+          env: integratedServerEnvironment(javaHomeDir, process.env),
           stdio: "pipe",
           windowsHide: true,
         },
       );
+      const { pid } = child;
+      if (pid !== undefined) {
+        // Do not yield here: the child is not tracked for cleanup until
+        // waitForIntegratedServerReady below.
+        const recorded = writeIntegratedServerPid(pidFilePath, {
+          pid,
+          jarPath: soulFireJarPath,
+          startedAt: DateTime.toEpochMillis(DateTime.nowUnsafe()),
+        }).catch((error: unknown) => {
+          report(`Could not record the Java process ID: ${String(error)}`);
+        });
+        child.once("close", () => {
+          void recorded
+            .then(() => clearIntegratedServerPid(pidFilePath, pid))
+            .catch(() => {});
+        });
+      }
 
       yield* Effect.tryPromise({
         try: () => waitForIntegratedServerReady(state, child, signal),
@@ -294,22 +310,19 @@ export async function runIntegratedServer(
 export async function listCustomSoulFireServerJars(
   app: App,
 ): Promise<CustomSoulFireServerJar[]> {
-  const index = await readCustomJarIndex(app);
-  const existingJars = (
-    await Promise.all(
-      index.jars.map(async (jar) => ((await exists(jar.path)) ? jar : null)),
-    )
-  ).filter((jar) => jar !== null);
-
-  if (existingJars.length !== index.jars.length) {
-    await writeCustomJarIndex(app, {
-      jars: existingJars,
-    });
-  }
-
-  return [...existingJars].toSorted((a, b) =>
-    b.importedAt.localeCompare(a.importedAt),
-  );
+  return updateCustomJarIndex(app, async (jars) => {
+    const existingJars = (
+      await Promise.all(
+        jars.map(async (jar) => ((await exists(jar.path)) ? jar : null)),
+      )
+    ).filter((jar) => jar !== null);
+    return {
+      jars: existingJars.length === jars.length ? null : existingJars,
+      result: existingJars.toSorted((a, b) =>
+        b.importedAt.localeCompare(a.importedAt),
+      ),
+    };
+  });
 }
 
 export async function importCustomSoulFireServerJar(
@@ -319,62 +332,65 @@ export async function importCustomSoulFireServerJar(
   if (path.extname(sourcePath).toLowerCase() !== ".jar") {
     throw new Error("Custom SoulFire server file must be a jar");
   }
-
-  validateJar(sourcePath);
-
   const fileStat = await stat(sourcePath);
   if (!fileStat.isFile()) {
     throw new Error("Custom SoulFire server jar path is not a file");
   }
 
-  const sha256 = await sha256FileHex(sourcePath);
   const customJarsDir = getCustomJarsDir(app);
-  await mkdir(customJarsDir, {
-    recursive: true,
-  });
+  await mkdir(customJarsDir, { recursive: true });
+  // Check and hash the copy, so a source that changes during import cannot
+  // be stored under a hash that does not match its content.
+  const temporaryJarPath = path.join(
+    customJarsDir,
+    `import-${randomUUID()}.jar.tmp`,
+  );
+  try {
+    await copyFile(sourcePath, temporaryJarPath);
+    if (!(await hasJarManifest(temporaryJarPath).catch(() => false))) {
+      throw new Error(
+        "Custom SoulFire server jar is not a valid jar file with a manifest",
+      );
+    }
+    const sha256 = await sha256FileHex(temporaryJarPath);
+    const { size } = await stat(temporaryJarPath);
+    const jarPath = customJarPath(app, sha256);
+    // A running server can lock the existing jar on Windows, so keep a
+    // matching copy instead of replacing it.
+    const existingSha256 = (await exists(jarPath))
+      ? await sha256FileHex(jarPath).catch(() => null)
+      : null;
+    if (existingSha256 !== sha256) await rename(temporaryJarPath, jarPath);
 
-  const jarPath = path.join(customJarsDir, `${sha256}.jar`);
-  if (!(await exists(jarPath))) {
-    await copyFile(sourcePath, jarPath);
+    const jar: CustomSoulFireServerJar = {
+      id: sha256,
+      importedAt: DateTime.formatIso(DateTime.nowUnsafe()),
+      originalName: path.basename(sourcePath),
+      path: jarPath,
+      sha256,
+      size,
+    };
+    await updateCustomJarIndex(app, (jars) => ({
+      jars: [jar, ...jars.filter((existingJar) => existingJar.id !== jar.id)],
+      result: undefined,
+    }));
+    return jar;
+  } finally {
+    await rm(temporaryJarPath, { force: true });
   }
-
-  const jar: CustomSoulFireServerJar = {
-    id: sha256,
-    importedAt: DateTime.formatIso(DateTime.nowUnsafe()),
-    originalName: path.basename(sourcePath),
-    path: jarPath,
-    sha256,
-    size: fileStat.size,
-  };
-  const index = await readCustomJarIndex(app);
-  await writeCustomJarIndex(app, {
-    jars: [
-      jar,
-      ...index.jars.filter((existingJar) => existingJar.id !== jar.id),
-    ],
-  });
-
-  return jar;
 }
 
 export async function removeCustomSoulFireServerJar(
   app: App,
   jarId: string,
 ): Promise<void> {
-  const index = await readCustomJarIndex(app);
-  const jar = index.jars.find((entry) => entry.id === jarId);
-  if (jar !== undefined) {
-    await unlink(jar.path).catch((error: unknown) => {
-      if (
-        !(error instanceof Error && "code" in error && error.code === "ENOENT")
-      ) {
-        throw error;
-      }
-    });
-  }
-
-  await writeCustomJarIndex(app, {
-    jars: index.jars.filter((entry) => entry.id !== jarId),
+  await updateCustomJarIndex(app, async (jars) => {
+    if (CUSTOM_JAR_ID.test(jarId))
+      await rm(customJarPath(app, jarId), { force: true });
+    return {
+      jars: jars.filter((entry) => entry.id !== jarId),
+      result: undefined,
+    };
   });
 }
 
@@ -433,90 +449,92 @@ async function findCustomSoulFireServerJar(
   app: App,
   jarId: string,
 ): Promise<CustomSoulFireServerJar | null> {
-  const index = await readCustomJarIndex(app);
-  return index.jars.find((jar) => jar.id === jarId) ?? null;
+  return updateCustomJarIndex(app, (jars) => ({
+    jars: null,
+    result: jars.find((jar) => jar.id === jarId) ?? null,
+  }));
 }
 
 function getCustomJarsDir(app: App): string {
   return path.join(getAppLocalDataDir(app), "custom-jars");
 }
 
-function getCustomJarIndexPath(app: App): string {
-  return path.join(getCustomJarsDir(app), "index.json");
+function customJarPath(app: App, sha256: string): string {
+  return path.join(getCustomJarsDir(app), `${sha256}.jar`);
+}
+
+const decodeCustomJarIndex = Schema.decodeUnknownSync(
+  Schema.fromJsonString(Schema.Struct({ jars: Schema.Array(Schema.Unknown) })),
+);
+const isCustomJarEntry = Schema.is(
+  Schema.Struct({
+    id: Schema.String,
+    importedAt: Schema.String,
+    originalName: Schema.String,
+    sha256: Schema.String,
+    size: Schema.Finite,
+  }),
+);
+
+let customJarIndexQueue: Promise<unknown> = Promise.resolve();
+
+/**
+ * Runs one read or update of the custom jar index at a time. The update
+ * returns the new jar list, or null to leave the file unchanged.
+ */
+function updateCustomJarIndex<A>(
+  app: App,
+  update: (
+    jars: CustomSoulFireServerJar[],
+  ) =>
+    | { jars: CustomSoulFireServerJar[] | null; result: A }
+    | Promise<{ jars: CustomSoulFireServerJar[] | null; result: A }>,
+): Promise<A> {
+  const run = async () => {
+    const indexPath = path.join(getCustomJarsDir(app), "index.json");
+    const { jars, result } = await update(await readCustomJarIndex(app));
+    if (jars !== null) {
+      await mkdir(path.dirname(indexPath), { recursive: true });
+      const temporary = `${indexPath}.tmp`;
+      await writeFile(temporary, `${encodeJarIndex({ jars })}\n`, "utf8");
+      await rename(temporary, indexPath);
+    }
+    return result;
+  };
+  const pending = customJarIndexQueue.then(run, run);
+  customJarIndexQueue = pending.catch(() => undefined);
+  return pending;
 }
 
 async function readCustomJarIndex(
   app: App,
-): Promise<CustomSoulFireServerJarIndex> {
+): Promise<CustomSoulFireServerJar[]> {
+  const indexPath = path.join(getCustomJarsDir(app), "index.json");
+  let contents: string;
   try {
-    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the jar index is our own file, and each entry is checked by isCustomJar below
-    const rawIndex = decodeJson(
-      await readFile(getCustomJarIndexPath(app), "utf8"),
-    ) as Partial<CustomSoulFireServerJarIndex>;
-
-    return {
-      jars: Array.isArray(rawIndex.jars)
-        ? rawIndex.jars.filter(isCustomSoulFireServerJar)
-        : [],
-    };
+    contents = await readFile(indexPath, "utf8");
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      return {
-        jars: [],
-      };
-    }
-
+    if (error instanceof Error && "code" in error && error.code === "ENOENT")
+      return [];
     throw error;
   }
-}
-
-async function writeCustomJarIndex(
-  app: App,
-  index: CustomSoulFireServerJarIndex,
-): Promise<void> {
-  const customJarsDir = getCustomJarsDir(app);
-  await mkdir(customJarsDir, {
-    recursive: true,
-  });
-
-  await writeFile(
-    getCustomJarIndexPath(app),
-    `${encodeJarIndex(index)}\n`,
-    "utf8",
-  );
-}
-
-function isCustomSoulFireServerJar(
-  value: unknown,
-): value is CustomSoulFireServerJar {
-  if (typeof value !== "object" || value === null) {
-    return false;
-  }
-
-  return (
-    ["id", "importedAt", "originalName", "path", "sha256"].every(
-      (key) => typeof Reflect.get(value, key) === "string",
-    ) && typeof Reflect.get(value, "size") === "number"
-  );
-}
-
-function validateJar(jarPath: string): void {
-  let zip: InstanceType<typeof AdmZip>;
   try {
-    zip = new AdmZip(jarPath);
+    // Paths come from the ID, so an edited index cannot point at other files.
+    return decodeCustomJarIndex(contents)
+      .jars.filter(isCustomJarEntry)
+      .filter((jar) => CUSTOM_JAR_ID.test(jar.id))
+      .map((jar) => ({
+        id: jar.id,
+        importedAt: jar.importedAt,
+        originalName: jar.originalName,
+        path: customJarPath(app, jar.id),
+        sha256: jar.sha256,
+        size: jar.size,
+      }));
   } catch {
-    throw new Error("Custom SoulFire server jar is not a valid jar file");
-  }
-
-  const hasManifest = zip
-    .getEntries()
-    .some(
-      (entry) =>
-        !entry.isDirectory &&
-        entry.entryName.toUpperCase() === "META-INF/MANIFEST.MF",
-    );
-  if (!hasManifest) {
-    throw new Error("Custom SoulFire server jar is missing a manifest");
+    // Keep the damaged file for recovery and start with an empty list.
+    await rename(indexPath, `${indexPath}.invalid`);
+    return [];
   }
 }
 
@@ -580,9 +598,13 @@ function ensureJvm(
       report("Extracting JVM...");
       yield* preparationStep(() => mkdir(extractTmpRoot, { recursive: true }));
       if (downloadUrl.endsWith(".zip")) {
-        const zip = new AdmZip(archiveTmpPath);
-        yield* preparationStep(() =>
-          zip.extractAllToAsync(extractTmpRoot, true),
+        // Read the archive without blocking the main process. adm-zip
+        // inflates entries asynchronously.
+        yield* preparationStep(async () =>
+          new AdmZip(await readFile(archiveTmpPath)).extractAllToAsync(
+            extractTmpRoot,
+            true,
+          ),
         );
       } else if (downloadUrl.endsWith(".tar.gz")) {
         yield* preparationStep(() =>
@@ -664,7 +686,8 @@ function ensureSoulFireJar(
         ),
       );
       signal.throwIfAborted();
-      yield* preparationStep(() => atomicReplaceFile(tempJarPath, jarPath));
+      // The download sits next to the jar, so the rename replaces it atomically.
+      yield* preparationStep(() => rename(tempJarPath, jarPath));
       yield* preparationStep(() => writeFile(checksumPath, expectedChecksum));
       report("Downloaded SoulFire");
     }),
@@ -746,24 +769,6 @@ async function atomicReplaceDirectory(
     recursive: true,
   });
   await rename(replacementPath, targetPath);
-}
-
-async function atomicReplaceFile(
-  sourcePath: string,
-  targetPath: string,
-): Promise<void> {
-  await mkdir(path.dirname(targetPath), {
-    recursive: true,
-  });
-  if (await exists(targetPath)) {
-    await rm(targetPath, {
-      force: true,
-    });
-  }
-  await copyFile(sourcePath, targetPath);
-  await rm(sourcePath, {
-    force: true,
-  });
 }
 
 function createRootApiToken(secretKey: Buffer): string {

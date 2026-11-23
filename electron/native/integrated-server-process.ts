@@ -165,7 +165,14 @@ export function startIntegratedOperation(
             error instanceof Error ? error.message : String(error);
           appendIntegratedLog(state, state.diagnostics.error);
         }
-        yield* Effect.promise(() => terminateIntegratedProcess(state));
+        // A failed forced stop already records its own error and status.
+        const stopped = yield* Effect.promise(() =>
+          terminateIntegratedProcess(state).then(
+            () => true,
+            () => false,
+          ),
+        );
+        if (!stopped) return;
         state.diagnostics.status = controller.signal.aborted
           ? "stopped"
           : "failed";
@@ -194,21 +201,12 @@ export async function killIntegratedServer(
   const monitor = state.processFiber;
   state.controller?.abort(new Error("Integrated server startup cancelled"));
   // Keep startup occupied until preparation finalizers and process shutdown settle.
-  await Effect.runPromise(
-    Effect.all(
-      [
-        Effect.promise(() => terminateIntegratedProcess(state)),
-        Effect.promise(
-          () =>
-            state.startup?.then(
-              () => undefined,
-              () => undefined,
-            ) ?? Promise.resolve(),
-        ),
-      ],
-      { concurrency: "unbounded" },
-    ),
-  );
+  const [termination] = await Promise.allSettled([
+    terminateIntegratedProcess(state),
+    state.startup,
+  ]);
+  // The process did not exit, so its monitor would never finish.
+  if (termination.status === "rejected") throw termination.reason;
   if (monitor) await Effect.runPromise(Fiber.join(monitor));
   state.diagnostics.status = "stopped";
 }
@@ -258,10 +256,12 @@ export function terminateIntegratedProcess(
       child.kill("SIGKILL");
     }
     yield* Effect.sleep(5000);
-    return yield* IntegratedServerError.make({
-      message:
-        "Java did not exit after a forced stop. Check the process in your system monitor.",
-    });
+    const message =
+      "Java did not exit after a forced stop. Check the process in your system monitor.";
+    appendIntegratedLog(state, message);
+    state.diagnostics.status = "failed";
+    state.diagnostics.error = message;
+    return yield* IntegratedServerError.make({ message });
   });
   state.termination = Effect.runPromise(
     Effect.raceFirst(closed, terminate),
@@ -358,7 +358,9 @@ export function waitForIntegratedServerReady(
               child.exitCode === null &&
               child.signalCode === null
             )
-              yield* Effect.promise(() => terminateIntegratedProcess(state));
+              yield* Effect.promise(() =>
+                terminateIntegratedProcess(state).catch(() => undefined),
+              );
             for (const reader of readers) reader.close();
             child.removeListener("error", onError);
             child.removeListener("exit", onExit);

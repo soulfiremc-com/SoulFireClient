@@ -261,3 +261,31 @@ test("failed Effect preparation releases its scope and preserves the original er
   assert.equal(state.diagnostics.error, error.message);
   assert.equal(state.startup, null);
 });
+
+test(
+  "a process that survives a forced stop ends in a failed state instead of stopping forever",
+  { timeout: 15_000 },
+  async () => {
+    const state = createIntegratedServerState();
+    const signals: string[] = [];
+    // A fake child that never exits, like a process stuck in the kernel.
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members terminateIntegratedProcess uses
+    state.child = Object.assign(new EventEmitter(), {
+      exitCode: null,
+      signalCode: null,
+      kill: (signal: string) => {
+        signals.push(signal);
+        return true;
+      },
+    }) as unknown as NonNullable<typeof state.child>;
+    state.diagnostics.status = "running";
+
+    const terminating = terminateIntegratedProcess(state, 10);
+    await assert.rejects(killIntegratedServer(state), /forced stop/u);
+    await assert.rejects(terminating);
+
+    assert.deepEqual(signals, ["SIGTERM", "SIGKILL"]);
+    assert.equal(state.diagnostics.status, "failed");
+    assert.match(state.diagnostics.error ?? "", /forced stop/u);
+  },
+);
