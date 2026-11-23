@@ -94,10 +94,16 @@ export const logOut = () => {
  * server does not stop, so a failed stop cannot keep the user signed in.
  * Returns the stop error so the caller can tell the user.
  */
-export async function disconnectSession(): Promise<{ stopError: unknown }> {
+const stopLocalServer = async () => {
+  if (isDesktopApp()) await desktop.integratedServer.kill();
+};
+
+export async function disconnectSession(
+  stopServer: () => Promise<unknown> = stopLocalServer,
+): Promise<{ stopError: unknown }> {
   let stopError: unknown = null;
   try {
-    if (isDesktopApp()) await desktop.integratedServer.kill();
+    await stopServer();
   } catch (error) {
     console.error(error);
     stopError = error;

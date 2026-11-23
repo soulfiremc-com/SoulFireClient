@@ -1,4 +1,4 @@
-import { expect, mock, test } from "bun:test";
+import { afterAll, expect, mock, test } from "bun:test";
 
 const values = new Map<string, string>();
 const storage: Storage = {
@@ -17,26 +17,32 @@ const storage: Storage = {
     values.clear();
   },
 };
+const originalGlobals = {
+  localStorage: Object.getOwnPropertyDescriptor(globalThis, "localStorage"),
+  window: Object.getOwnPropertyDescriptor(globalThis, "window"),
+};
 Object.assign(globalThis, {
   localStorage: storage,
   window: Object.assign(new EventTarget(), { localStorage: storage }),
 });
+// Other test files share this process, so put the real globals back.
+afterAll(() => {
+  for (const [name, descriptor] of Object.entries(originalGlobals)) {
+    if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+    else Reflect.deleteProperty(globalThis, name);
+  }
+});
 
+// i18n.ts and posthog.ts need Vite build-time globals, so no other bun test
+// can load them. Mocking them here cannot change another file's results.
+// Do not mock shared modules such as desktop.ts: bun keeps module mocks for
+// the whole test process.
 void mock.module("@/lib/i18n.ts", () => ({
   default: { t: (key: string) => key },
 }));
 void mock.module("@/lib/posthog.ts", () => ({
   analyticsConsent: { resetIdentity: () => undefined },
   isPostHogConfigured: false,
-}));
-
-let killServer: () => Promise<undefined> = async () => undefined;
-void mock.module("@/lib/desktop.ts", () => ({
-  isDesktopApp: () => true,
-  desktop: {
-    cast: { stopAll: async () => undefined },
-    integratedServer: { kill: () => killServer() },
-  },
 }));
 
 const { disconnectSession, logOut, setAuthentication } =
@@ -74,26 +80,26 @@ test("sign-in removes a token draft that older versions saved", () => {
 
 test("disconnecting signs out even when the local server does not stop", async () => {
   const failure = new Error("kill failed");
-  killServer = () => Promise.reject(failure);
   const consoleError = console.error;
   console.error = () => undefined;
   try {
     setAuthentication("integrated", "http://127.0.0.1:38765", "local-token");
 
-    const result = await disconnectSession();
+    const result = await disconnectSession(() => Promise.reject(failure));
 
     expect(result.stopError).toBe(failure);
     expect(storage.getItem("server-type")).toBeNull();
     expect(storage.getItem("server-token")).toBeNull();
   } finally {
     console.error = consoleError;
-    killServer = async () => undefined;
   }
 });
 
 test("disconnecting reports no error when the local server stops", async () => {
   setAuthentication("integrated", "http://127.0.0.1:38765", "local-token");
 
-  expect(await disconnectSession()).toEqual({ stopError: null });
+  expect(await disconnectSession(async () => undefined)).toEqual({
+    stopError: null,
+  });
   expect(storage.getItem("server-type")).toBeNull();
 });
