@@ -54,6 +54,7 @@ import {
 } from "@/components/ui/sidebar.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
+import { useDisconnectSession } from "@/hooks/use-disconnect-session.ts";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import { isPostHogConfigured } from "@/lib/posthog";
 import {
@@ -65,7 +66,6 @@ import {
 import {
   getServerType,
   isImpersonating,
-  logOut,
   stopImpersonation,
 } from "@/lib/web-rpc.ts";
 
@@ -165,16 +165,7 @@ export function NavAccount() {
   const { theme, setTheme } = useTheme();
   const { isMobile } = useSidebar();
 
-  const disconnect = async () => {
-    if (isDesktopApp()) {
-      await desktop.integratedServer.kill();
-    }
-    logOut();
-    await navigate({
-      to: "/",
-      replace: true,
-    });
-  };
+  const disconnect = useDisconnectSession();
 
   return (
     <SidebarMenu>
@@ -300,7 +291,7 @@ export function NavAccount() {
                 </DropdownMenuPortal>
               </DropdownMenuSub>
             </DropdownMenuGroup>
-            {isDesktopApp() && systemInfo && !systemInfo.mobile && (
+            {isDesktopApp() && systemInfo && (
               <>
                 <DropdownMenuSeparator />
                 <CastMenuEntry />
@@ -400,14 +391,7 @@ export function NavAccount() {
               )}
               <DropdownMenuItem
                 onClick={() => {
-                  toast.promise(disconnect(), {
-                    loading: t("userSidebar.logOutToast.loading"),
-                    success: t("userSidebar.logOutToast.success"),
-                    error: (e) => {
-                      console.error(e);
-                      return t("userSidebar.logOutToast.error");
-                    },
-                  });
+                  void disconnect();
                 }}
               >
                 <LogOutIcon />

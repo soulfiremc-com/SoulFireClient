@@ -1,7 +1,7 @@
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import {
+  HouseIcon,
   LoaderCircleIcon,
-  LogOutIcon,
   RotateCwIcon,
   SearchXIcon,
 } from "lucide-react";
@@ -17,13 +17,10 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
-import { desktop, isDesktopApp } from "@/lib/desktop.ts";
-import { runAsync } from "@/lib/utils.tsx";
-import { logOut } from "@/lib/web-rpc.ts";
+import { isAuthenticated } from "@/lib/web-rpc.ts";
 
 export function NotFoundComponent() {
   const { t } = useTranslation("common");
-  const navigate = useNavigate();
   const router = useRouter();
   const [revalidating, setRevalidating] = useState(false);
 
@@ -40,21 +37,11 @@ export function NotFoundComponent() {
         <EmptyContent>
           <ButtonGroup>
             <Button
-              onClick={() => {
-                runAsync(async () => {
-                  if (isDesktopApp()) {
-                    await desktop.integratedServer.kill();
-                  }
-                  logOut();
-                  await navigate({
-                    to: "/",
-                    replace: true,
-                  });
-                });
-              }}
+              nativeButton={false}
+              render={<Link to={isAuthenticated() ? "/user" : "/"} />}
             >
-              <LogOutIcon />
-              {t("notFound.page.logOut")}
+              <HouseIcon />
+              {t("notFound.page.home")}
             </Button>
             <Button
               variant="outline"

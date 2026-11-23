@@ -30,7 +30,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible.tsx";
-import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { useDisconnectSession } from "@/hooks/use-disconnect-session.ts";
+import { isDesktopApp } from "@/lib/desktop.ts";
 import { getConnectionErrorKind } from "@/lib/connection-errors";
 import { isExpectedError } from "@/lib/error-reporting";
 import posthog, { isPostHogConfigured } from "@/lib/posthog.ts";
@@ -38,7 +39,6 @@ import { runAsync } from "@/lib/utils.tsx";
 import {
   getServerType,
   isImpersonating,
-  logOut,
   stopImpersonation,
 } from "@/lib/web-rpc.ts";
 
@@ -59,6 +59,8 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const retryingRef = useRef(false);
   const [revalidating, setRevalidating] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const disconnect = useDisconnectSession();
   const errorKind = getConnectionErrorKind(error);
   const canRestartLocal =
     errorKind === "connection" &&
@@ -228,20 +230,20 @@ export function ErrorComponent({ error, reset }: ErrorComponentProps) {
           )}
           <Button
             className="w-fit"
+            disabled={signingOut}
+            aria-busy={signingOut}
             onClick={() => {
-              runAsync(async () => {
-                if (isDesktopApp()) {
-                  await desktop.integratedServer.kill();
-                }
-                logOut();
-                await navigate({
-                  to: "/",
-                  replace: true,
-                });
+              setSigningOut(true);
+              void disconnect().finally(() => {
+                if (mountedRef.current) setSigningOut(false);
               });
             }}
           >
-            <LogOutIcon />
+            {signingOut ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              <LogOutIcon />
+            )}
             {t("error.page.logOut")}
           </Button>
           <Button

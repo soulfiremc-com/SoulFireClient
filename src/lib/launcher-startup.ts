@@ -22,9 +22,6 @@ export function getLauncherStartupStage(
 ): LauncherStartupStage {
   if (!diagnostics) return "prepare";
   if (diagnostics.status === "running") return "connect";
-  if (diagnostics.status === "starting" && diagnostics.processStartedAt) {
-    return "start";
-  }
   return diagnostics.processStartedAt ? "start" : "prepare";
 }
 

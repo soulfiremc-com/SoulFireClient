@@ -329,9 +329,14 @@ export function FirstBotSetup({
       return response.bots;
     },
     onSuccess: (bots) => {
+      // With no started bot, the connecting card would wait forever.
+      if (bots.length === 0) {
+        toast.info(t("setup.start.noneStarted"));
+        return;
+      }
       setStarting(true);
       // Count guide starts too, or the first-run funnel misses these users.
-      if (isPostHogConfigured && bots.length > 0) {
+      if (isPostHogConfigured) {
         posthog.capture("bot_start_completed", {
           bot_count: bots.length,
           source: "setup_guide",

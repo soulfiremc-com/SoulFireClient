@@ -1,5 +1,6 @@
 import type { Interceptor, Transport } from "@connectrpc/connect";
 import { createGrpcWebTransport } from "@connectrpc/connect-web";
+import { desktop, isDesktopApp } from "@/lib/desktop.ts";
 import i18n from "@/lib/i18n.ts";
 import { analyticsConsent, isPostHogConfigured } from "@/lib/posthog.ts";
 import { resetQuerySession } from "@/lib/query-session.ts";
@@ -10,9 +11,20 @@ import { isOneOf } from "@/lib/is-one-of";
 const LOCAL_STORAGE_SERVER_TYPE_KEY = "server-type";
 const LOCAL_STORAGE_SERVER_ADDRESS_KEY = "server-address";
 const LOCAL_STORAGE_SERVER_TOKEN_KEY = "server-token";
-const LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY = "server-webdav-token";
 const LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY =
   "server-impersonation-token";
+// Tokens that older clients wrote, including the token login form draft.
+// Sign-in and sign-out remove them, so an upgraded install does not keep
+// credentials that nothing reads any more.
+const LEGACY_TOKEN_KEYS = [
+  "form-server-token",
+  "server-webdav-token",
+  "form-mobile-integrated-server-token",
+];
+
+function removeLegacyTokens() {
+  for (const key of LEGACY_TOKEN_KEYS) localStorage.removeItem(key);
+}
 
 const AUTHENTICATION_KEYS = [
   LOCAL_STORAGE_SERVER_TYPE_KEY,
@@ -52,6 +64,7 @@ export const setAuthentication = (
     localStorage.setItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY, address);
     localStorage.setItem(LOCAL_STORAGE_SERVER_TOKEN_KEY, token);
   });
+  removeLegacyTokens();
 };
 
 export const getServerType = () => {
@@ -70,10 +83,29 @@ export const logOut = () => {
     localStorage.removeItem(LOCAL_STORAGE_SERVER_TYPE_KEY);
     localStorage.removeItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
     localStorage.removeItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
-    localStorage.removeItem(LOCAL_STORAGE_SERVER_WEBDAV_TOKEN_KEY);
     localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
   });
+  // Signing out must not leave a token for the next person to reuse.
+  removeLegacyTokens();
 };
+
+/**
+ * Stops the local server, then signs out. Sign-out happens even when the
+ * server does not stop, so a failed stop cannot keep the user signed in.
+ * Returns the stop error so the caller can tell the user.
+ */
+export async function disconnectSession(): Promise<{ stopError: unknown }> {
+  let stopError: unknown = null;
+  try {
+    if (isDesktopApp()) await desktop.integratedServer.kill();
+  } catch (error) {
+    console.error(error);
+    stopError = error;
+  } finally {
+    logOut();
+  }
+  return { stopError };
+}
 
 export const startImpersonation = (token: string) => {
   if (isPostHogConfigured) {

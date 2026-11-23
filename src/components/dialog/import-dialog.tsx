@@ -18,7 +18,6 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { SystemInfoContext } from "@/components/providers/system-info-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -244,7 +243,6 @@ function MainDialog(
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const systemInfo = use(SystemInfoContext);
   const fileInputRef = useRef<HTMLInputElement>(null);
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [readSession] = useState(() => new ImportReadSession());
@@ -280,7 +278,9 @@ function MainDialog(
             );
             return;
           }
-          props.listener(texts.join("\n"));
+          // A blank line keeps files apart, so multi-line formats such as
+          // cookie jars stay one entry per file.
+          props.listener(texts.join("\n\n"));
         });
       } catch (error) {
         console.error(error);
@@ -372,9 +372,7 @@ function MainDialog(
                         signal.throwIfAborted();
                         const input = await desktop.dialog.open({
                           title: props.title,
-                          filters: systemInfo?.mobile
-                            ? undefined
-                            : props.filters,
+                          filters: props.filters,
                           defaultPath: downloadsDir,
                           multiple: props.allowMultiple,
                           directory: false,

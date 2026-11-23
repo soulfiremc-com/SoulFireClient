@@ -3,7 +3,6 @@ import { startCastClient } from "@/lib/cast-client";
 import {
   createBrowserHistory,
   createRouter,
-  deepEqual,
   RouterProvider,
 } from "@tanstack/react-router";
 import { StrictMode } from "react";
@@ -29,8 +28,6 @@ const queryClient = new QueryClient({
         getConnectionRetryDelay(error, failureCount) !== null,
       retryDelay: (failureCount, error) =>
         getConnectionRetryDelay(error, failureCount) ?? 0,
-      structuralSharing: (prev: unknown, next: unknown) =>
-        deepEqual(prev, next) ? prev : next,
     },
   },
 });
@@ -70,17 +67,20 @@ declare module "@tanstack/react-router" {
   }
 }
 
-if (
+// A saved server opens the dashboard, unless the user asked for the
+// connection settings. Render nothing while the browser leaves the page.
+const opensSavedServer =
   isAuthenticated() &&
   getServerType() === "dedicated" &&
-  window.location.pathname === "/"
-) {
-  window.location.pathname = "/user";
+  window.location.pathname === "/" &&
+  new URLSearchParams(window.location.search).get("configure") !== "true";
+if (opensSavedServer) {
+  window.location.replace(`/user${window.location.search}`);
 }
 
 // Render the app
 const rootElement = document.querySelector("#root");
-if (rootElement) {
+if (rootElement && !opensSavedServer) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>

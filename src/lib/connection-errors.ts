@@ -14,9 +14,14 @@ export function getConnectionErrorKind(error: unknown) {
   return "unexpected";
 }
 
+/**
+ * Retries a lost connection briefly so a short network blip does not show an
+ * error. Longer outages go to the error page, which keeps reconnecting and
+ * tells the user what is happening.
+ */
 export function getConnectionRetryDelay(error: unknown, attempts: number) {
   if (getConnectionErrorKind(error) !== "connection" || attempts >= 3) {
     return null;
   }
-  return 5000 * 2 ** attempts;
+  return 1000 * 2 ** attempts;
 }

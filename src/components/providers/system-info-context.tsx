@@ -7,7 +7,6 @@ export interface SystemInfo {
   platformName: string;
   osLocale: string | null;
   archName: string;
-  mobile: boolean;
   sfServerVersion: string;
 }
 

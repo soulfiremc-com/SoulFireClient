@@ -162,3 +162,27 @@ test("TanStack Form blocks invalid submissions and retains translated field erro
     unmount();
   }
 });
+
+test("server addresses must use HTTP or HTTPS without embedded credentials", async () => {
+  await changeLanguage("en-US");
+  const validator = toFormSchema(emailFormSchema);
+  for (const address of ["ftp://example.com", "https://user:pw@example.com"]) {
+    expect(
+      await validator["~standard"].validate({
+        address,
+        email: "user@example.com",
+      }),
+    ).toEqual({ issues: [{ path: ["address"], message: en.serverUrl }] });
+  }
+  expect(
+    await validator["~standard"].validate({
+      address: " https://example.com/soulfire ",
+      email: "user@example.com",
+    }),
+  ).toEqual({
+    value: {
+      address: "https://example.com/soulfire",
+      email: "user@example.com",
+    },
+  });
+});

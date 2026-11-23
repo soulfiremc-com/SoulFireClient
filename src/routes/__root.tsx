@@ -26,6 +26,7 @@ import {
 import { CookieConsentProvider } from "@/components/providers/cookie-consent-provider";
 import { TerminalThemeContext } from "@/components/providers/terminal-theme-context";
 import { ThemeProvider } from "@/components/providers/theme-provider.tsx";
+import { SkipToContent } from "@/components/skip-to-content.tsx";
 import { TailwindIndicator } from "@/components/tailwind-indicator.tsx";
 import { Toaster } from "@/components/ui/sonner.tsx";
 import { UpdateReadyPrompt } from "@/components/update-ready-prompt.tsx";
@@ -45,6 +46,17 @@ import { buildDocumentTitle } from "@/lib/route-title.ts";
 import { getTerminalTheme } from "@/lib/utils.tsx";
 
 async function getAvailableProfiles() {
+  try {
+    return await readProfileNames();
+  } catch (error) {
+    // A missing or unreadable profile folder must not stop the app from
+    // loading. The profile pickers show an empty list instead.
+    console.error(error);
+    return [];
+  }
+}
+
+async function readProfileNames() {
   const profileDir = await desktop.path.resolve(
     await desktop.path.appConfigDir(),
     "profile",
@@ -58,26 +70,19 @@ async function getAvailableProfiles() {
     .filter((file) => file.endsWith(".json"));
 }
 
-function isMobile(osType: string) {
-  return osType === "android" || osType === "ios";
-}
-
 async function createSystemInfo() {
   const [desktopInfo, availableProfiles, sfServerVersion] = await Promise.all([
     desktop.system.getInfo(),
     getAvailableProfiles(),
     desktop.integratedServer.getVersion(),
   ]);
-  const osType = desktopInfo.os.type;
-
   return {
     availableProfiles,
-    osType,
+    osType: desktopInfo.os.type,
     osVersion: desktopInfo.os.version,
     platformName: desktopInfo.os.platform,
     osLocale: desktopInfo.os.locale,
     archName: desktopInfo.os.arch,
-    mobile: isMobile(osType),
     sfServerVersion,
   };
 }
@@ -97,6 +102,9 @@ export const Route = createRootRouteWithContext<{
       systemInfo,
     };
   },
+  // RootLayout reads systemInfo once and the profile watcher keeps it current,
+  // so reloading it on every navigation would only repeat desktop calls.
+  staleTime: Number.POSITIVE_INFINITY,
   component: RootLayout,
   // To make pendingComponent work on root route
   wrapInSuspense: true,
@@ -261,14 +269,16 @@ function RootLayout() {
         const unwatchFn = await desktop.fs.watch(
           profileDir,
           () => {
-            void createSystemInfo().then((newSystemInfo) => {
-              setSystemInfoState((oldSystemInfo) => {
-                if (deepEqual(oldSystemInfo, newSystemInfo)) {
-                  return oldSystemInfo;
-                }
-                return newSystemInfo;
-              });
-            });
+            void createSystemInfo()
+              .then((newSystemInfo) => {
+                setSystemInfoState((oldSystemInfo) => {
+                  if (deepEqual(oldSystemInfo, newSystemInfo)) {
+                    return oldSystemInfo;
+                  }
+                  return newSystemInfo;
+                });
+              })
+              .catch(console.error);
           },
           {
             delayMs: 500,
@@ -282,7 +292,10 @@ function RootLayout() {
         } else {
           unwatch = unwatchFn;
         }
-      })();
+      })().catch((error: unknown) => {
+        // Without the watcher the profile list keeps its startup value.
+        console.error(error);
+      });
 
       return () => {
         didUnmount = true;
@@ -319,6 +332,7 @@ function RootLayout() {
                     className="flex h-dvh w-dvw flex-col"
                     style={appShellStyle}
                   >
+                    <SkipToContent />
                     <PointerReset />
                     <CustomContextMenu />
                     <CookieConsentProvider>
