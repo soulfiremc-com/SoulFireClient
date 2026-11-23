@@ -30,3 +30,14 @@ export function withBotStatus(
     status: status?.status,
   };
 }
+
+/**
+ * The name the UI shows for a bot: the name the server reports, then the last
+ * name SoulFire saw for the account, then the profile ID.
+ */
+export function botDisplayName(
+  account: Pick<ProfileAccount, "lastKnownName"> | undefined,
+  entry: Pick<BotListEntry, "accountName" | "profileId"> | undefined,
+): string {
+  return entry?.accountName || account?.lastKnownName || entry?.profileId || "";
+}

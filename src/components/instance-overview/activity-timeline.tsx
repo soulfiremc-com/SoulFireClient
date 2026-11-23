@@ -14,6 +14,7 @@ import {
   InstanceAuditLogResponseSchema,
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
+import { queryKeys } from "@/lib/query-keys.ts";
 import { timestampToDate } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 
@@ -52,7 +53,7 @@ export function ActivityTimeline({
 }) {
   const { t } = useTranslation("instance");
   const { data, isPending, isError } = useQuery({
-    queryKey: ["instance-audit-log", instanceId],
+    queryKey: queryKeys.instanceAuditLog(instanceId),
     enabled: canView,
     queryFn: async ({ signal }): Promise<InstanceAuditLogResponse> => {
       const transport = createTransport();

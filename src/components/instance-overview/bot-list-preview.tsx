@@ -11,7 +11,7 @@ import {
   BotContextMenu,
   BotStateBadge,
 } from "@/components/instance-overview/bot-grid.tsx";
-import { withBotStatus } from "@/lib/bot-with-status.ts";
+import { botDisplayName, withBotStatus } from "@/lib/bot-with-status.ts";
 import { connectionPhaseMeta } from "@/components/instance-overview/connection-phase-meta.ts";
 import { MinecraftHead } from "@/components/minecraft/minecraft-head.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -89,7 +89,7 @@ export function BotListPreview({
             <ItemGroup>
               {preview.map((account) => {
                 const bot = statusMap.get(account.profileId);
-                const name = bot?.accountName || account.lastKnownName;
+                const name = botDisplayName(account, bot);
                 const phase = connectionPhaseMeta(
                   bot?.connectionPhase ?? BotConnectionPhase.DISCONNECTED,
                 );

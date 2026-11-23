@@ -107,6 +107,21 @@ test("keeps failed bots visible when the server gives no error", () => {
   assert.deepEqual(group.botIds, ["a"]);
 });
 
+test("names failed bots by account instead of profile ID", () => {
+  const unnamed = create(BotListEntrySchema, {
+    ...bot("b", BotRuntimeState.FAILED),
+    accountName: undefined,
+  });
+  const names = new Map([["b", "Birch"]]);
+  const [group] = groupBotFailures(
+    [bot("a", BotRuntimeState.FAILED), unnamed],
+    (entry) => entry.accountName || names.get(entry.profileId) || "",
+  );
+  assert.deepEqual(group?.botNames, ["Bot a", "Birch"]);
+  const [fallback] = groupBotFailures([unnamed]);
+  assert.deepEqual(fallback?.botNames, ["b"]);
+});
+
 test("classifies failures only when the message supports it", () => {
   assert.equal(classifyBotFailure("Invalid session"), "account");
   assert.equal(

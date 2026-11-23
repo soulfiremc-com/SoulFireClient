@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, waitFor, within } from "storybook/test";
-import { Toaster, toast } from "sonner";
 import { useState, type ComponentProps } from "react";
 import { SdkQuickstart } from "./sdk-quickstart.tsx";
 
 const token = "test-api-token-not-a-secret";
-const writeClipboard = fn(async (_text: string) => {});
+const copyText = async (_text: string) => {};
+const writeClipboard = fn(copyText);
 
 const meta = {
   title: "Developers/SDK quickstart",
@@ -33,32 +33,25 @@ const meta = {
   },
   beforeEach: () => {
     const original = Object.getOwnPropertyDescriptor(navigator, "clipboard");
-    writeClipboard.mockClear();
+    // Drop queued one-time results, such as an unused rejection.
+    writeClipboard.mockReset();
+    writeClipboard.mockImplementation(copyText);
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
       value: { writeText: writeClipboard },
     });
     return () => {
-      toast.dismiss();
       if (original) Object.defineProperty(navigator, "clipboard", original);
       else Reflect.deleteProperty(navigator, "clipboard");
     };
   },
-  render: (args) => (
-    <>
-      <SdkQuickstart {...args} />
-      <Toaster />
-    </>
-  ),
 } satisfies Meta<typeof SdkQuickstart>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LocalServer: Story = {
   play: async ({ canvas, userEvent }) => {
-    await expect(
-      canvas.getByRole("heading", { name: "SDK quickstart" }),
-    ).toBeVisible();
+    // The page heading now comes from the page layout, not this component.
     await expect(
       canvas.getByText("Local connection", { exact: true }),
     ).toBeVisible();
@@ -201,12 +194,7 @@ export const EmptyInstance: Story = {
 };
 
 export const RestrictedUser: Story = {
-  render: (args) => (
-    <>
-      <SdkQuickstart {...args} generateToken={undefined} />
-      <Toaster />
-    </>
-  ),
+  render: (args) => <SdkQuickstart {...args} generateToken={undefined} />,
   play: async ({ canvas }) => {
     await expect(
       canvas.queryByRole("button", { name: "Generate personal token" }),

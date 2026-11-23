@@ -16,32 +16,44 @@ export function watchBotStatuses(
         const scope = yield* Effect.scope;
         const client = createRpcClient(BotService, transport);
         let refreshFiber: Fiber.Fiber<void> | undefined;
+        let fleetChanged = false;
         let retryDelay = 1000;
-        const refresh = Effect.gen(function* () {
-          if (refreshFiber) return;
-          // Coalesce fleet events without postponing refreshes under sustained load.
-          refreshFiber = yield* Effect.forkIn(
-            Effect.sleep("250 millis").pipe(
-              Effect.andThen(
-                Effect.sync(() => {
-                  refreshFiber = undefined;
-                  for (const queryKey of [
-                    ["bot-status", instanceId],
-                    ["bot-info", instanceId],
-                    ["instance-info", instanceId],
-                    ["instance-list"],
-                  ]) {
-                    void queryClient.invalidateQueries(
-                      { queryKey },
-                      { cancelRefetch: false },
-                    );
-                  }
-                }),
+        // Status events keep the bot list fresh. Instance info and the
+        // instance list already poll for fleet counts, so they only refresh
+        // here when bots join or leave the fleet, or after a reconnect.
+        const refresh = (fleet: boolean) =>
+          Effect.gen(function* () {
+            fleetChanged ||= fleet;
+            if (refreshFiber) return;
+            // Coalesce fleet events without postponing refreshes under sustained load.
+            refreshFiber = yield* Effect.forkIn(
+              Effect.sleep("250 millis").pipe(
+                Effect.andThen(
+                  Effect.sync(() => {
+                    refreshFiber = undefined;
+                    const queryKeys: unknown[][] = [
+                      ["bot-status", instanceId],
+                      ["bot-info", instanceId],
+                    ];
+                    if (fleetChanged) {
+                      queryKeys.push(
+                        ["instance-info", instanceId],
+                        ["instance-list"],
+                      );
+                    }
+                    fleetChanged = false;
+                    for (const queryKey of queryKeys) {
+                      void queryClient.invalidateQueries(
+                        { queryKey },
+                        { cancelRefetch: false },
+                      );
+                    }
+                  }),
+                ),
               ),
-            ),
-            scope,
-          );
-        });
+              scope,
+            );
+          });
 
         while (true) {
           const result = yield* Effect.result(
@@ -52,6 +64,17 @@ export function watchBotStatuses(
                   retryDelay = 1000;
                   const value = event.event;
                   if (value.case === undefined) return;
+                  const known = queryClient.getQueryData<BotListResponse>([
+                    "bot-status",
+                    instanceId,
+                  ]);
+                  // An update for a bot the list does not have yet means it joined.
+                  const membershipChanged =
+                    value.case !== "update" ||
+                    (known !== undefined &&
+                      !known.bots.some(
+                        (bot) => bot.profileId === value.value.profileId,
+                      ));
                   queryClient.setQueryData<BotListResponse>(
                     ["bot-status", instanceId],
                     (current) =>
@@ -66,7 +89,7 @@ export function watchBotStatuses(
                         value.case === "removedBotId" ? value.value : undefined,
                       ),
                   );
-                  yield* refresh;
+                  yield* refresh(membershipChanged);
                 }),
               ),
             ),
@@ -74,7 +97,7 @@ export function watchBotStatuses(
           if (Result.isFailure(result)) {
             const error = result.failure;
             if (error.code === Code.NotFound) {
-              yield* refresh;
+              yield* refresh(true);
               if (refreshFiber) yield* Fiber.join(refreshFiber);
               return;
             }
@@ -90,7 +113,7 @@ export function watchBotStatuses(
               return;
             }
           }
-          yield* refresh;
+          yield* refresh(true);
           yield* Effect.sleep(retryDelay);
           retryDelay = Math.min(retryDelay * 2, 30_000);
         }

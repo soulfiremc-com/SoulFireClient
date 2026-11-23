@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { SearchIcon } from "lucide-react";
 import {
@@ -7,15 +7,13 @@ import {
   throttle,
   useQueryState,
 } from "nuqs";
-import { memo, Suspense, useDeferredValue } from "react";
+import { memo, Suspense, useDeferredValue, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BotCardSkeleton,
   BotGrid,
-  OnlineCountBadge,
 } from "@/components/instance-overview/bot-grid.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import {
   InputGroup,
@@ -24,7 +22,11 @@ import {
 } from "@/components/ui/input-group.tsx";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
 import i18n from "@/lib/i18n";
-import { BOT_DISPLAY_STATES, type BotDisplayState } from "@/lib/bot-fleet.ts";
+import {
+  BOT_DISPLAY_STATES,
+  type BotDisplayState,
+  countBotFleet,
+} from "@/lib/bot-fleet.ts";
 import { botListValidateSearch } from "@/lib/parsers.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { isOneOf } from "@/lib/is-one-of";
@@ -107,6 +109,7 @@ function Content() {
   // without blocking input and keeps its old cards until the new ones load.
   const deferredSearch = useDeferredValue(search);
   const deferredStatus = useDeferredValue(status);
+  const counts = useFleetCounts();
 
   return (
     <div className="container flex size-full grow flex-col gap-4">
@@ -139,17 +142,18 @@ function Content() {
               }
             }}
           >
-            <ToggleGroupItem value="all">{t("bots.filterAll")}</ToggleGroupItem>
+            <ToggleGroupItem value="all">
+              {t("bots.filterAll")}
+              <FilterCount count={counts?.total} />
+            </ToggleGroupItem>
             {BOT_DISPLAY_STATES.map((state) => (
               <ToggleGroupItem key={state} value={state}>
                 {t(`bots.displayState.${state}`)}
+                <FilterCount count={counts?.[state]} />
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
         </div>
-        <Suspense fallback={<Skeleton className="h-5 w-36 rounded-4xl" />}>
-          <OnlineCountBadgeContainer />
-        </Suspense>
       </div>
 
       <Suspense fallback={<BotGridSkeleton />}>
@@ -159,10 +163,28 @@ function Content() {
   );
 }
 
-function OnlineCountBadgeContainer() {
+/// Counts bots per state for the filter. Accounts without a status entry are stopped.
+function useFleetCounts() {
   const { instanceInfoQueryOptions } = Route.useRouteContext();
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  return <OnlineCountBadge instanceInfo={instanceInfo} />;
+  const { instance } = Route.useParams();
+  const { data: instanceInfo } = useQuery(instanceInfoQueryOptions);
+  const { data: botStatus } = useQuery(botStatusQueryOptions(instance));
+  return useMemo(() => {
+    if (!instanceInfo || !botStatus) return undefined;
+    const statusById = new Map(
+      botStatus.bots.map((bot) => [bot.profileId, bot]),
+    );
+    return countBotFleet(
+      instanceInfo.profile.accounts.map((account) =>
+        statusById.get(account.profileId),
+      ),
+    );
+  }, [instanceInfo, botStatus]);
+}
+
+function FilterCount({ count }: { count: number | undefined }) {
+  if (count === undefined) return null;
+  return <span className="text-muted-foreground tabular-nums">{count}</span>;
 }
 
 const BotGridContainer = memo(function BotGridContainer({

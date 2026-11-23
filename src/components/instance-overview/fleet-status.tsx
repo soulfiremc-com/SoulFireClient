@@ -10,7 +10,7 @@ import {
   RotateCwIcon,
   SquareIcon,
 } from "lucide-react";
-import { use } from "react";
+import { type ReactNode, use } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -35,6 +35,7 @@ import {
   groupBotFailures,
 } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { botDisplayName } from "@/lib/bot-with-status.ts";
 import type { InstanceInfoQueryData } from "@/lib/types.ts";
 import { BOT_STATE_META, getFailureFix } from "./fleet-status-meta.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
@@ -170,15 +171,21 @@ function FailureGroupRow({
 /** Explains desired state against connection readiness and what to do next. */
 export function FleetStatus({
   instanceInfo,
+  aside,
 }: {
   instanceInfo: InstanceInfoQueryData;
+  /** Extra details shown on the headline row, such as live metrics. */
+  aside?: ReactNode;
 }) {
   const { t } = useTranslation("instance");
   const { data, isPending, isError } = useQuery(
     botStatusQueryOptions(instanceInfo.id),
   );
-  const accountIds = new Set(
-    instanceInfo.profile.accounts.map((account) => account.profileId),
+  const accountsById = new Map(
+    instanceInfo.profile.accounts.map((account) => [
+      account.profileId,
+      account,
+    ]),
   );
   const canControl = hasInstancePermission(
     instanceInfo,
@@ -206,16 +213,20 @@ export function FleetStatus({
     );
   }
 
-  const bots = data.bots.filter((bot) => accountIds.has(bot.profileId));
+  const bots = data.bots.filter((bot) => accountsById.has(bot.profileId));
   // Accounts without a live entry still count as stopped bots.
   const counts = countBotFleet([
     ...bots,
     ...Array.from(
-      { length: Math.max(0, accountIds.size - bots.length) },
+      { length: Math.max(0, accountsById.size - bots.length) },
       () => undefined,
     ),
   ]);
-  const groups = groupBotFailures(bots);
+  const groups = groupBotFailures(bots, (bot) =>
+    botDisplayName(accountsById.get(bot.profileId), bot),
+  );
+  // With one state the headline already says everything the bar would show.
+  const presentStates = STATE_ORDER.filter((state) => counts[state] > 0);
 
   const headline =
     counts.desired === 0
@@ -238,60 +249,62 @@ export function FleetStatus({
       className="flex min-w-0 flex-col gap-3"
     >
       <div className="flex flex-col gap-2">
-        <h3 id="fleet-status-title" className="text-sm font-medium">
-          {headline}
-        </h3>
-        {counts.total > 0 && (
-          <div
-            aria-hidden="true"
-            className="flex h-2 w-full gap-px overflow-hidden rounded-sm bg-muted"
-          >
-            {STATE_ORDER.map(
-              (state) =>
-                counts[state] > 0 && (
-                  <div
-                    key={state}
-                    className={cn(
-                      "grow-(--bot-share) basis-0",
-                      BOT_STATE_META[state].bar,
-                    )}
-                    // The share carries real fleet data, so it cannot be a class.
-                    style={{ "--bot-share": counts[state] }}
-                  />
-                ),
-            )}
-          </div>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+          <h3 id="fleet-status-title" className="text-sm font-medium">
+            {headline}
+          </h3>
+          {aside}
+        </div>
+        {presentStates.length > 1 && (
+          <>
+            <div
+              aria-hidden="true"
+              className="flex h-2 w-full gap-px overflow-hidden rounded-sm bg-muted"
+            >
+              {presentStates.map((state) => (
+                <div
+                  key={state}
+                  className={cn(
+                    "grow-(--bot-share) basis-0",
+                    BOT_STATE_META[state].bar,
+                  )}
+                  // The share carries real fleet data, so it cannot be a class.
+                  style={{ "--bot-share": counts[state] }}
+                />
+              ))}
+            </div>
+            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              {presentStates.map((state) => {
+                const meta = BOT_STATE_META[state];
+                return (
+                  <li key={state}>
+                    <Link
+                      to="/instance/$instance/bots"
+                      params={{ instance: instanceInfo.id }}
+                      search={{ status: state }}
+                      className="inline-flex items-center gap-1 hover:underline"
+                    >
+                      <meta.icon
+                        aria-hidden="true"
+                        className={cn(
+                          "size-3.5",
+                          meta.text,
+                          meta.spin && "motion-safe:animate-spin",
+                        )}
+                      />
+                      <span className="font-medium tabular-nums">
+                        {counts[state]}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {t(`fleet.state.${state}`)}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         )}
-        <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
-          {STATE_ORDER.filter((state) => counts[state] > 0).map((state) => {
-            const meta = BOT_STATE_META[state];
-            return (
-              <li key={state}>
-                <Link
-                  to="/instance/$instance/bots"
-                  params={{ instance: instanceInfo.id }}
-                  search={{ status: state }}
-                  className="inline-flex items-center gap-1 hover:underline"
-                >
-                  <meta.icon
-                    aria-hidden="true"
-                    className={cn(
-                      "size-3.5",
-                      meta.text,
-                      meta.spin && "motion-safe:animate-spin",
-                    )}
-                  />
-                  <span className="font-medium tabular-nums">
-                    {counts[state]}
-                  </span>
-                  <span className="text-muted-foreground">
-                    {t(`fleet.state.${state}`)}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
       </div>
       {counts.starting > 0 && (
         <output className="flex items-center gap-2 text-sm text-muted-foreground">

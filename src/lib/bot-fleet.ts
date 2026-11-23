@@ -153,6 +153,8 @@ function normalizeFailure(message: string): string {
  */
 export function groupBotFailures(
   bots: readonly BotListEntry[],
+  nameOf: (bot: BotListEntry) => string = (bot) =>
+    bot.accountName || bot.profileId,
 ): BotFailureGroup[] {
   const groups = new Map<string, BotFailureGroup>();
   for (const bot of bots) {
@@ -169,7 +171,7 @@ export function groupBotFailures(
       botNames: [],
     };
     group.botIds.push(bot.profileId);
-    group.botNames.push(bot.accountName ?? bot.profileId);
+    group.botNames.push(nameOf(bot));
     groups.set(key, group);
   }
   return [...groups.values()].toSorted(

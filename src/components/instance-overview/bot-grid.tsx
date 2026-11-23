@@ -74,7 +74,11 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { accountTypeIcons, translateAccountType } from "@/lib/account-types.ts";
 import { type BotDisplayState, getBotDisplayState } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
-import { type BotWithStatus, withBotStatus } from "@/lib/bot-with-status.ts";
+import {
+  botDisplayName,
+  type BotWithStatus,
+  withBotStatus,
+} from "@/lib/bot-with-status.ts";
 import { formatFixed } from "@/lib/format.ts";
 import { getEnumKeyByValue, type InstanceInfoQueryData } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
@@ -190,7 +194,7 @@ const BotCard = memo(function BotCard({
   const Icon = accountTypeIcons[typeKey];
   const { i18n, t } = useTranslation("common");
   const typeLabel = translateAccountType(i18n, typeKey);
-  const displayName = bot.accountName || bot.lastKnownName;
+  const displayName = botDisplayName(account, entry);
 
   return (
     <li className="relative">
@@ -413,7 +417,7 @@ export function BotContextMenu({
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            void copyToClipboard(bot.accountName || bot.lastKnownName);
+            void copyToClipboard(botDisplayName(bot, bot));
             close();
           }}
         >
@@ -476,33 +480,6 @@ export function BotContextMenu({
   );
 }
 
-/// Badge showing how many configured accounts are currently online.
-export function OnlineCountBadge({
-  instanceInfo,
-}: {
-  instanceInfo: InstanceInfoQueryData;
-}) {
-  const { t } = useTranslation("instance");
-  const { data: botStatus } = useSuspenseQuery(
-    botStatusQueryOptions(instanceInfo.id),
-  );
-  const onlineCount = useMemo(() => {
-    const statusMap = buildStatusMap(botStatus.bots);
-    return instanceInfo.profile.accounts.filter(
-      (account) => statusMap.get(account.profileId)?.isOnline ?? false,
-    ).length;
-  }, [instanceInfo.profile.accounts, botStatus.bots]);
-
-  return (
-    <Badge variant="outline" className="w-fit">
-      {t("bots.onlineCount", {
-        online: onlineCount,
-        total: instanceInfo.profile.accounts.length,
-      })}
-    </Badge>
-  );
-}
-
 /// Full bot grid with search filtering and client side infinite scrolling.
 export function BotGrid({
   instanceInfo,
@@ -531,7 +508,9 @@ export function BotGrid({
     const searchLower = search.trim().toLowerCase();
     return instanceInfo.profile.accounts.filter(
       (account) =>
-        account.lastKnownName.toLowerCase().includes(searchLower) &&
+        botDisplayName(account, statusMap.get(account.profileId))
+          .toLowerCase()
+          .includes(searchLower) &&
         (!status ||
           getBotDisplayState(statusMap.get(account.profileId)) === status),
     );

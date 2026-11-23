@@ -59,11 +59,6 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/")({
   component: Overview,
 });
 
-const OVERVIEW_CONTROL_SKELETON_IDS = [
-  "control-1",
-  "control-2",
-  "control-3",
-] as const;
 function Overview() {
   const { t } = useTranslation("common");
 
@@ -71,6 +66,7 @@ function Overview() {
     <InstancePageLayout
       extraCrumbs={[{ id: "controls", content: t("breadcrumbs.controls") }]}
       pageName={t("pageName.overview")}
+      pageActions={<OverviewActions />}
       loadingSkeleton={<OverviewSkeleton />}
     >
       <Content />
@@ -82,9 +78,6 @@ function Content() {
   const { instance } = Route.useParams();
   return (
     <div className="flex w-full flex-col gap-5 py-2 xl:px-2">
-      <Suspense fallback={<OverviewHeaderSkeleton />}>
-        <OverviewHeaderSection />
-      </Suspense>
       <Suspense fallback={<OverviewContentSkeleton />}>
         <OverviewContentSection key={instance} />
       </Suspense>
@@ -95,24 +88,7 @@ function Content() {
 function OverviewSkeleton() {
   return (
     <div className="flex w-full flex-col gap-5 py-2 xl:px-2">
-      <OverviewHeaderSkeleton />
       <OverviewContentSkeleton />
-    </div>
-  );
-}
-
-function OverviewHeaderSkeleton() {
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <div className="flex flex-row items-center gap-2">
-        <Skeleton className="h-7 w-40" />
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {OVERVIEW_CONTROL_SKELETON_IDS.map((id) => (
-          <Skeleton key={id} className="h-8 w-20 rounded-lg" />
-        ))}
-        <Skeleton className="h-8 w-20 rounded-lg" />
-      </div>
     </div>
   );
 }
@@ -121,18 +97,21 @@ function OverviewContentSkeleton() {
   const { t } = useTranslation("instance");
   return (
     <div className="flex flex-col gap-4">
-      <dl className="flex flex-wrap gap-8 text-sm">
-        {["online", "traffic", "tick"].map((metric) => (
-          <div key={metric} className="flex items-center gap-2">
-            <dt className="text-muted-foreground">
-              {t(`metrics.summary.${metric}`)}
-            </dt>
-            <dd>
-              <Skeleton className="h-4 w-12" />
-            </dd>
-          </div>
-        ))}
-      </dl>
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+        <Skeleton className="h-5 w-56" />
+        <dl className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs">
+          {(["traffic", "tick"] as const).map((metric) => (
+            <div key={metric} className="flex items-center gap-2">
+              <dt className="text-muted-foreground">
+                {t(`metrics.summary.${metric}`)}
+              </dt>
+              <dd>
+                <Skeleton className="h-4 w-12" />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
       <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_16rem] xl:grid-cols-[minmax(0,1fr)_18rem]">
         <section className="flex min-w-0 flex-col gap-3">
           <h3 className="text-sm font-medium">
@@ -157,7 +136,8 @@ function OverviewContentSkeleton() {
   );
 }
 
-function OverviewHeaderSection() {
+/** Fleet controls and the logs dialog, shown next to the page heading. */
+function OverviewActions() {
   const { t } = useTranslation("common");
   const { t: tInstance } = useTranslation("instance");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
@@ -181,48 +161,39 @@ function OverviewHeaderSection() {
   );
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <div className="flex flex-row items-center gap-2">
-        <h2
-          className="max-w-64 truncate text-xl font-semibold"
-          title={instanceInfo.friendlyName}
-        >
-          {instanceInfo.friendlyName}
-        </h2>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <Suspense fallback={<Skeleton className="h-8 w-56" />}>
-          <ControlsMenu />
-        </Suspense>
-        {canViewLogs && (
-          <>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setLogsOpen(true);
-              }}
-            >
-              <SquareTerminalIcon data-icon="inline-start" />
-              {t("pageName.logs")}
-            </Button>
-            <Credenza open={logsOpen} onOpenChange={setLogsOpen}>
-              <CredenzaContent className="overflow-hidden sm:max-w-5xl">
-                <CredenzaHeader>
-                  <CredenzaTitle>{t("pageName.logs")}</CredenzaTitle>
-                  <CredenzaDescription>
-                    {tInstance("overview.logsDescription")}
-                  </CredenzaDescription>
-                </CredenzaHeader>
-                <CredenzaBody className="pb-4 md:px-0 md:pb-0">
-                  {logsOpen && <TerminalComponent scope={logScope} />}
-                </CredenzaBody>
-              </CredenzaContent>
-            </Credenza>
-          </>
-        )}
-      </div>
-    </div>
+    <>
+      <Suspense fallback={<Skeleton className="h-8 w-56" />}>
+        <ControlsMenu />
+      </Suspense>
+      {canViewLogs && (
+        <>
+          {/* Logs only opens a view, so it stays quieter than the fleet controls. */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setLogsOpen(true);
+            }}
+          >
+            <SquareTerminalIcon data-icon="inline-start" />
+            {t("pageName.logs")}
+          </Button>
+          <Credenza open={logsOpen} onOpenChange={setLogsOpen}>
+            <CredenzaContent className="overflow-hidden sm:max-w-5xl">
+              <CredenzaHeader>
+                <CredenzaTitle>{t("pageName.logs")}</CredenzaTitle>
+                <CredenzaDescription>
+                  {tInstance("overview.logsDescription")}
+                </CredenzaDescription>
+              </CredenzaHeader>
+              <CredenzaBody className="pb-4 md:px-0 md:pb-0">
+                {logsOpen && <TerminalComponent scope={logScope} />}
+              </CredenzaBody>
+            </CredenzaContent>
+          </Credenza>
+        </>
+      )}
+    </>
   );
 }
 
@@ -279,12 +250,10 @@ function OverviewContentSection() {
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      {canReadBots && !showSetup && <FleetStatus instanceInfo={instanceInfo} />}
       {canReadBots && !showSetup && (
-        <OverviewSummary
+        <FleetStatus
           instanceInfo={instanceInfo}
-          latest={latest}
-          metricsPending={isPending}
+          aside={<OverviewSummary latest={latest} metricsPending={isPending} />}
         />
       )}
       {transport && !isImpersonating() && (

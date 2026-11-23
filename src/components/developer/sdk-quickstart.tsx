@@ -1,10 +1,8 @@
 import {
   ArrowUpRightIcon,
-  BookOpenTextIcon,
   CheckIcon,
   ChevronDownIcon,
   ClipboardIcon,
-  CodeXmlIcon,
   KeyRoundIcon,
   ListIcon,
   LoaderCircleIcon,
@@ -199,40 +197,6 @@ export function SdkQuickstart({
 
   return (
     <div className="container flex w-full max-w-6xl flex-col gap-6 py-4">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <h2 className="flex items-center gap-2 text-2xl font-semibold">
-            <CodeXmlIcon className="size-6" />
-            {t("sdk.title")}
-          </h2>
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            {t("sdk.description")}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            onClick={() => {
-              copy("agentPrompt", agentPrompt);
-            }}
-          >
-            {copiedKey === "agentPrompt" ? (
-              <CheckIcon data-icon="inline-start" />
-            ) : (
-              <SparklesIcon data-icon="inline-start" />
-            )}
-            {t("sdk.copyAgentPrompt")}
-          </Button>
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={<ExternalLink href="https://soulfiremc.com/docs/sdk" />}
-          >
-            <BookOpenTextIcon data-icon="inline-start" />
-            {t("sdk.docs")}
-          </Button>
-        </div>
-      </div>
-
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -619,17 +583,31 @@ export function SdkQuickstart({
         </Collapsible>
 
         <Collapsible>
-          <CollapsibleTrigger
-            render={
-              <Button variant="ghost" size="sm" className="group/prompt" />
-            }
-          >
-            {t("sdk.previewAgentPrompt")}
-            <ChevronDownIcon
-              data-icon="inline-end"
-              className="group-data-panel-open/prompt:rotate-180"
-            />
-          </CollapsibleTrigger>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              onClick={() => {
+                copy("agentPrompt", agentPrompt);
+              }}
+            >
+              {copiedKey === "agentPrompt" ? (
+                <CheckIcon data-icon="inline-start" />
+              ) : (
+                <SparklesIcon data-icon="inline-start" />
+              )}
+              {t("sdk.copyAgentPrompt")}
+            </Button>
+            <CollapsibleTrigger
+              render={
+                <Button variant="ghost" size="sm" className="group/prompt" />
+              }
+            >
+              {t("sdk.previewAgentPrompt")}
+              <ChevronDownIcon
+                data-icon="inline-end"
+                className="group-data-panel-open/prompt:rotate-180"
+              />
+            </CollapsibleTrigger>
+          </div>
           <CollapsibleContent>
             <pre
               className="mt-3 overflow-x-auto rounded-lg border bg-muted/40 p-4 text-xs/relaxed wrap-break-word whitespace-pre-wrap"

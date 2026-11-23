@@ -4,7 +4,12 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Link, useNavigate, useRouteContext } from "@tanstack/react-router";
+import {
+  Link,
+  useNavigate,
+  useRouteContext,
+  useRouterState,
+} from "@tanstack/react-router";
 import {
   ClipboardCopyIcon,
   ExternalLinkIcon,
@@ -15,7 +20,6 @@ import {
 import type { ReactNode } from "react";
 import { use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import {
   DropdownMenuItem,
@@ -39,6 +43,7 @@ import type {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { DemoReadOnlyError } from "@/lib/instance-mutations.ts";
 import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
@@ -65,7 +70,14 @@ function PluginInfoCardContent(props: {
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<null>();
   const copyToClipboard = useCopyToClipboard();
-  const { settingsUrl } = props;
+  // On the plugin's own settings page the page heading already names it, so
+  // the card drops its title and the links back to that page.
+  const onOwnPage = useRouterState({
+    select: (state) =>
+      props.settingsUrl !== undefined &&
+      state.location.pathname === props.settingsUrl,
+  });
+  const settingsUrl = onOwnPage ? undefined : props.settingsUrl;
 
   return (
     <>
@@ -77,7 +89,13 @@ function PluginInfoCardContent(props: {
       >
         <CardHeader>
           <div className="flex flex-row items-start justify-between gap-3">
-            {props.link}
+            {onOwnPage ? (
+              <CardDescription className="whitespace-pre-line">
+                {props.plugin.description}
+              </CardDescription>
+            ) : (
+              props.link
+            )}
             <Switch
               aria-label={t("pluginCard.enable", {
                 name: props.settingsEntry.pageName,
@@ -86,9 +104,11 @@ function PluginInfoCardContent(props: {
               onCheckedChange={props.onEnabledChange}
             />
           </div>
-          <CardDescription className="whitespace-pre-line">
-            {props.plugin.description}
-          </CardDescription>
+          {!onOwnPage && (
+            <CardDescription className="whitespace-pre-line">
+              {props.plugin.description}
+            </CardDescription>
+          )}
           <p className="mt-1 text-xs text-muted-foreground select-text">
             {t("pluginCard.meta", {
               version: props.plugin.version,
@@ -114,13 +134,13 @@ function PluginInfoCardContent(props: {
               {props.note}
             </output>
           )}
-          {props.settingsUrl && props.enabledValue && (
+          {settingsUrl && props.enabledValue && (
             <Button
               className="mt-2 w-fit"
               size="sm"
               variant="outline"
               nativeButton={false}
-              render={<Link to={props.settingsUrl} />}
+              render={<Link to={settingsUrl} />}
             >
               <SlidersHorizontalIcon data-icon="inline-start" />
               {t("pluginCard.configure")}
@@ -244,7 +264,6 @@ export function InstancePluginInfoCard(props: {
   /** Explains a state change that the surrounding list does not show yet. */
   note?: string | undefined;
 }) {
-  const { t } = useTranslation("common");
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
     select: (context) => context.instanceInfoQueryOptions,
@@ -270,11 +289,8 @@ export function InstancePluginInfoCard(props: {
     ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
-      if (!transport) {
-        // The demo keeps its sample state, so say why the switch did not move.
-        toast.info(t("settingsPage.demoNotSaved"));
-        return;
-      }
+      // The shared mutation handler explains that the demo does not save.
+      if (!transport) throw DemoReadOnlyError.make({});
       await updateInstanceConfigEntry(
         enabledIdentifier.namespace,
         enabledIdentifier.key,
@@ -327,7 +343,6 @@ export function BotPluginInfoCard(props: {
   instanceInfoQueryKey: readonly unknown[];
   settingsDefinitions: SettingsDefinition[];
 }) {
-  const { t } = useTranslation("common");
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
@@ -347,11 +362,8 @@ export function BotPluginInfoCard(props: {
     ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
-      if (!transport) {
-        // The demo keeps its sample state, so say why the switch did not move.
-        toast.info(t("settingsPage.demoNotSaved"));
-        return;
-      }
+      // The shared mutation handler explains that the demo does not save.
+      if (!transport) throw DemoReadOnlyError.make({});
       await updateBotConfigEntry(
         enabledIdentifier.namespace,
         enabledIdentifier.key,
@@ -387,7 +399,6 @@ export function ServerPluginInfoCard(props: {
   settingsEntry: SettingsPage;
   plugin: ServerPlugin;
 }) {
-  const { t } = useTranslation("common");
   const serverInfoQueryOptions = useRouteContext({
     from: "/_dashboard/user/admin",
     select: (context) => context.serverInfoQueryOptions,
@@ -413,11 +424,8 @@ export function ServerPluginInfoCard(props: {
     ),
     mutationFn: async (value: JsonValue) => {
       if (!enabledIdentifier) return;
-      if (!transport) {
-        // The demo keeps its sample state, so say why the switch did not move.
-        toast.info(t("settingsPage.demoNotSaved"));
-        return;
-      }
+      // The shared mutation handler explains that the demo does not save.
+      if (!transport) throw DemoReadOnlyError.make({});
       await updateServerConfigEntry(
         enabledIdentifier.namespace,
         enabledIdentifier.key,

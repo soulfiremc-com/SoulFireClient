@@ -5,7 +5,10 @@ import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { use } from "react";
 import { useTranslation } from "react-i18next";
+import { BookOpenTextIcon } from "lucide-react";
 import { SdkQuickstart } from "@/components/developer/sdk-quickstart.tsx";
+import { ExternalLink } from "@/components/external-link.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { ClientService } from "@/generated/soulfire/client_pb";
@@ -14,6 +17,7 @@ import {
   InstancePermission,
 } from "@/generated/soulfire/common_pb";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { botDisplayName } from "@/lib/bot-with-status.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { sdkServerUrl } from "@/lib/sdk-quickstart.ts";
@@ -33,12 +37,25 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/sdk")({
   component: SdkPage,
 });
 
+const SDK_DOCS_URL = "https://soulfiremc.com/docs/sdk";
+
 function SdkPage() {
   const { t } = useTranslation("common");
   return (
     <InstancePageLayout
       pageName={t("sdk.title")}
-      documentationLink="https://soulfiremc.com/docs/sdk"
+      pageDescription={t("sdk.description")}
+      pageActions={
+        <Button
+          variant="outline"
+          size="sm"
+          nativeButton={false}
+          render={<ExternalLink href={SDK_DOCS_URL} />}
+        >
+          <BookOpenTextIcon data-icon="inline-start" />
+          {t("sdk.docs")}
+        </Button>
+      }
     >
       <Content />
     </InstancePageLayout>
@@ -63,9 +80,7 @@ function Content() {
       InstancePermission.READ_BOT_INFO,
     ),
   });
-  const onlineById = new Map(
-    statuses?.bots.map((bot) => [bot.profileId, bot.isOnline]),
-  );
+  const statusById = new Map(statuses?.bots.map((bot) => [bot.profileId, bot]));
   const demo = transport === null;
   const impersonating = !demo && isImpersonating();
   const serverUrl = demo
@@ -89,11 +104,14 @@ function Content() {
           params: { instance },
         })
       }
-      bots={instanceInfo.profile.accounts.map((account) => ({
-        id: account.profileId,
-        name: account.lastKnownName,
-        online: onlineById.get(account.profileId),
-      }))}
+      bots={instanceInfo.profile.accounts.map((account) => {
+        const entry = statusById.get(account.profileId);
+        return {
+          id: account.profileId,
+          name: botDisplayName(account, entry),
+          online: entry?.isOnline,
+        };
+      })}
       demo={demo}
       impersonating={impersonating}
       integrated={!demo && getServerType() === "integrated"}

@@ -14,6 +14,15 @@ import { watchBotStatuses } from "./watch-bot-statuses.ts";
 
 const instanceId = "instance";
 
+function update(profileId: string) {
+  return {
+    event: {
+      case: "update" as const,
+      value: { profileId, runtimeState: BotRuntimeState.RUNNING },
+    },
+  };
+}
+
 test("a deleted instance refreshes its profile without reopening the status stream", async () => {
   const client = new QueryClient();
   const key = ["instance-info", instanceId];
@@ -143,6 +152,51 @@ test("stream reconnects after EOF, refreshes details, and stops on cleanup", asy
     stop();
     await delay(1100);
     assert.equal(subscriptions, 2);
+  } finally {
+    stop();
+    cache.clear();
+  }
+});
+
+test("status updates refresh the bot list, and only new bots refresh instance info", async () => {
+  const cache = new QueryClient();
+  const botKey = ["bot-status", instanceId];
+  const infoKey = ["instance-info", instanceId];
+  cache.setQueryData(
+    botKey,
+    create(BotListResponseSchema, { bots: [{ profileId: "known" }] }),
+  );
+  cache.setQueryData(infoKey, { id: instanceId });
+  let releaseJoin: (() => void) | undefined;
+  const joinReleased = new Promise<void>((resolve) => {
+    releaseJoin = resolve;
+  });
+  const transport = createRouterTransport((router) => {
+    router.service(BotService, {
+      async *watchBotStatuses(_request, context) {
+        yield update("known");
+        await joinReleased;
+        yield update("joined");
+        await new Promise<void>((resolve) => {
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            { once: true },
+          );
+        });
+      },
+    });
+  });
+  const stop = watchBotStatuses(transport, cache, instanceId);
+  try {
+    await delay(400);
+    assert.equal(cache.getQueryState(botKey)?.isInvalidated, true);
+    assert.equal(cache.getQueryState(infoKey)?.isInvalidated, false);
+    releaseJoin?.();
+    await delay(400);
+    assert.equal(cache.getQueryState(infoKey)?.isInvalidated, true);
   } finally {
     stop();
     cache.clear();

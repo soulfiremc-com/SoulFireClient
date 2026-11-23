@@ -2,7 +2,15 @@ import { createRpcClient } from "@/lib/rpc";
 
 import type { TFunction } from "i18next";
 import { PauseIcon, PlayIcon } from "lucide-react";
-import { use, useEffect, useEffectEvent, useRef, useState } from "react";
+import {
+  memo,
+  use,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -21,23 +29,14 @@ import {
 import { toIntlLocale } from "@/lib/intl-locale.ts";
 import { observeServerStream } from "@/lib/protobuf.ts";
 import { cn, timestampToDate } from "@/lib/utils.tsx";
+import { addFeedEntry, type FeedEntry } from "./live-feed-buffer.ts";
 
 const MAX_FEED_ENTRIES = 200;
 const FEED_COLUMNS =
   "grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[5.5rem_7.5rem_minmax(0,1fr)]";
 type FeedFilter = "all" | "chat" | "lifecycle";
-type FeedEntry = {
-  id: number;
-  botName: string;
-  timestamp: Date;
-} & (
-  | { kind: "chat"; senderName?: string | undefined; text: string }
-  | {
-      kind: "lifecycle";
-      lifecycleKind: BotLifecycleKind;
-      message?: string | undefined;
-    }
-);
+/** Limits the bot list in the tooltip of a line many bots received. */
+const MAX_TITLE_BOTS = 20;
 
 function lifecycleText(
   t: TFunction<"instance">,
@@ -76,6 +75,58 @@ function lifecycleText(
   }
 }
 
+/** Rows only re-render when their entry changes, not on every new line. */
+const FeedRow = memo(function FeedRow({
+  entry,
+  timeFormatter,
+}: {
+  entry: FeedEntry;
+  timeFormatter: Intl.DateTimeFormat;
+}) {
+  const { t } = useTranslation("instance");
+  const [firstBot = ""] = entry.botNames;
+  const manyBots = entry.botNames.length > 1;
+  return (
+    <li className={FEED_COLUMNS}>
+      <time
+        dateTime={entry.timestamp.toISOString()}
+        className="hidden text-muted-foreground tabular-nums sm:block"
+      >
+        {timeFormatter.format(entry.timestamp)}
+      </time>
+      <span
+        className="truncate text-muted-foreground"
+        title={
+          manyBots
+            ? entry.botNames.slice(0, MAX_TITLE_BOTS).join(", ")
+            : firstBot
+        }
+      >
+        {manyBots
+          ? t("overview.liveFeed.botCount", { count: entry.botNames.length })
+          : firstBot || "-"}
+      </span>
+      <span
+        className={cn(
+          "min-w-0 pr-3 wrap-anywhere whitespace-pre-wrap",
+          entry.kind === "lifecycle" && "text-muted-foreground",
+        )}
+      >
+        {entry.kind === "chat" ? (
+          <>
+            {entry.senderName && (
+              <span className="font-medium">{entry.senderName}: </span>
+            )}
+            {entry.text}
+          </>
+        ) : (
+          lifecycleText(t, entry.lifecycleKind, entry.message)
+        )}
+      </span>
+    </li>
+  );
+});
+
 export function LiveFeed({
   instanceId,
   canWatch,
@@ -97,22 +148,36 @@ export function LiveFeed({
   const viewportRef = useRef<HTMLDivElement>(null);
   const followingRef = useRef(true);
   const nextIdRef = useRef(0);
+  // Events change this buffer right away. React shows it at most once per
+  // frame, so a chat line that reaches 1000 bots causes one render.
+  const bufferRef = useRef<FeedEntry[]>([]);
+  const frameRef = useRef<number | null>(null);
+  const reconnectingRef = useRef(false);
   const displayedEntries = pausedEntries ?? entries;
-  const visibleEntries = displayedEntries.filter(
-    (entry) => filter === "all" || entry.kind === filter,
+  const visibleEntries = useMemo(
+    () =>
+      filter === "all"
+        ? displayedEntries
+        : displayedEntries.filter((entry) => entry.kind === filter),
+    [displayedEntries, filter],
   );
-  const timeFormatter = new Intl.DateTimeFormat(
-    toIntlLocale(i18n.resolvedLanguage),
-    {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    },
+  const locale = toIntlLocale(i18n.resolvedLanguage);
+  const timeFormatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }),
+    [locale],
   );
 
   const receiveEvent = useEffectEvent((event: InstanceEvent) => {
-    setReconnecting(false);
+    if (reconnectingRef.current) {
+      reconnectingRef.current = false;
+      setReconnecting(false);
+    }
     if (event.event.case !== "chat" && event.event.case !== "lifecycle") return;
     if (botName !== undefined && event.botName !== botName) return;
     const timestamp =
@@ -123,7 +188,7 @@ export function LiveFeed({
       event.event.case === "chat"
         ? {
             id: nextIdRef.current++,
-            botName: event.botName,
+            botNames: [event.botName],
             timestamp,
             kind: "chat",
             senderName: event.event.value.senderName,
@@ -131,14 +196,25 @@ export function LiveFeed({
           }
         : {
             id: nextIdRef.current++,
-            botName: event.botName,
+            botNames: [event.botName],
             timestamp,
             kind: "lifecycle",
             lifecycleKind: event.event.value.kind,
             message: event.event.value.message,
           };
-    setEntries((previous) => [...previous, entry].slice(-MAX_FEED_ENTRIES));
+    addFeedEntry(bufferRef.current, entry, MAX_FEED_ENTRIES);
+    frameRef.current ??= requestAnimationFrame(() => {
+      frameRef.current = null;
+      setEntries([...bufferRef.current]);
+    });
   });
+
+  useEffect(
+    () => () => {
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!canWatch || transport === null) return undefined;
@@ -147,6 +223,7 @@ export function LiveFeed({
     let retryTimer: ReturnType<typeof setTimeout> | undefined;
     function retry(delay: number) {
       if (controller.signal.aborted) return;
+      reconnectingRef.current = true;
       setReconnecting(true);
       retryTimer = setTimeout(connect, delay);
     }
@@ -273,39 +350,11 @@ export function LiveFeed({
               className="flex flex-col gap-2 px-3 pt-4 font-mono text-xs/5 sm:px-4"
             >
               {visibleEntries.map((entry) => (
-                <li key={entry.id} className={FEED_COLUMNS}>
-                  <time
-                    dateTime={entry.timestamp.toISOString()}
-                    className="hidden text-muted-foreground tabular-nums sm:block"
-                  >
-                    {timeFormatter.format(entry.timestamp)}
-                  </time>
-                  <span
-                    className="truncate text-muted-foreground"
-                    title={entry.botName}
-                  >
-                    {entry.botName || "-"}
-                  </span>
-                  <span
-                    className={cn(
-                      "min-w-0 pr-3 wrap-anywhere whitespace-pre-wrap",
-                      entry.kind === "lifecycle" && "text-muted-foreground",
-                    )}
-                  >
-                    {entry.kind === "chat" ? (
-                      <>
-                        {entry.senderName && (
-                          <span className="font-medium">
-                            {entry.senderName}:{" "}
-                          </span>
-                        )}
-                        {entry.text}
-                      </>
-                    ) : (
-                      lifecycleText(t, entry.lifecycleKind, entry.message)
-                    )}
-                  </span>
-                </li>
+                <FeedRow
+                  key={entry.id}
+                  entry={entry}
+                  timeFormatter={timeFormatter}
+                />
               ))}
             </ol>
           ) : (
