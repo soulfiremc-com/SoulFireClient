@@ -26,8 +26,6 @@ import { isMac } from "@/lib/desktop";
 import { hasOpenDialog, isPrimaryKeyShortcut } from "@/lib/keyboard-shortcuts";
 import { cn } from "@/lib/utils";
 
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
@@ -82,10 +80,6 @@ function SidebarProvider({
       } else {
         setInternalOpen(openState);
       }
-
-      // This sets the cookie to keep the sidebar state.
-      // oxlint-disable-next-line unicorn/no-document-cookie -- Preserve cookie access on browsers without the Cookie Store API.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
     },
     [setOpenProp, open],
   );

@@ -122,11 +122,3 @@ export const providerJsonEffect = (request: ProviderRequest) =>
   Effect.flatMap(providerTextEffect(request), (text) =>
     decodeProviderJson(text),
   );
-
-export function providerJson(
-  request: ProviderRequest,
-  signal?: AbortSignal,
-  fetcher?: ProviderFetch,
-): Promise<unknown> {
-  return runProviderEffect(providerJsonEffect(request), signal, fetcher);
-}

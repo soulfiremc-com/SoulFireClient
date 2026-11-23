@@ -104,15 +104,3 @@ export function downloadToFileEffect(
     ),
   );
 }
-
-export function downloadToFile(
-  url: string,
-  destinationPath: string,
-  signal: AbortSignal,
-  onProgress: (percent: number) => void,
-): Promise<void> {
-  return Effect.runPromise(
-    downloadToFileEffect(url, destinationPath, signal, onProgress),
-    { signal },
-  );
-}

@@ -119,11 +119,9 @@ export function downsampleTimeSeriesData<T extends ChartPoint>(
   data: T[],
   options?: {
     maxPoints?: number;
-    mode?: "last" | "sum";
   },
 ): T[] {
   const maxPoints = options?.maxPoints ?? MAX_CHART_POINTS;
-  const mode = options?.mode ?? "last";
 
   if (data.length <= maxPoints) {
     return data;
@@ -139,39 +137,8 @@ export function downsampleTimeSeriesData<T extends ChartPoint>(
       continue;
     }
 
-    if (mode === "last") {
-      // A gap in the final slot must not hide the rest of the bucket.
-      result.push(
-        bucket.findLast((point) => hasChartValue(point)) ?? lastPoint,
-      );
-      continue;
-    }
-
-    const aggregatedPoint = {
-      ...lastPoint,
-    } as Record<string, number | string | null | undefined>;
-
-    for (const key of Object.keys(lastPoint)) {
-      if (key === "timestampMs" || key === "timeLabel") {
-        continue;
-      }
-
-      let sum = 0;
-      let hasNumericValue = false;
-
-      for (const point of bucket) {
-        const value = point[key];
-        if (typeof value === "number") {
-          sum += value;
-          hasNumericValue = true;
-        }
-      }
-
-      aggregatedPoint[key] = hasNumericValue ? sum : null;
-    }
-
-    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the aggregated point copies every field of a T and replaces numeric fields with sums
-    result.push(aggregatedPoint as T);
+    // A gap in the final slot must not hide the rest of the bucket.
+    result.push(bucket.findLast((point) => hasChartValue(point)) ?? lastPoint);
   }
 
   const latestPoint = data.at(-1);

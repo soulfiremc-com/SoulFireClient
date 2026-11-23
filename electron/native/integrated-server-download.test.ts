@@ -6,10 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { Effect, Fiber } from "effect";
-import {
-  downloadToFile,
-  downloadToFileEffect,
-} from "./integrated-server-download";
+import { downloadToFileEffect } from "./integrated-server-download";
 
 test(
   "cancelling an in-flight download closes the response and removes the partial file",
@@ -41,13 +38,16 @@ test(
     const controller = new AbortController();
     const destination = path.join(directory, "java.download");
     await assert.rejects(
-      downloadToFile(
-        `http://127.0.0.1:${address.port}`,
-        destination,
-        controller.signal,
-        () => {
-          controller.abort();
-        },
+      Effect.runPromise(
+        downloadToFileEffect(
+          `http://127.0.0.1:${address.port}`,
+          destination,
+          controller.signal,
+          () => {
+            controller.abort();
+          },
+        ),
+        { signal: controller.signal },
       ),
     );
     await responseClosed;
@@ -72,11 +72,13 @@ test("a completed download retains its file after its scope closes", async (cont
   const address = server.address();
   assert.ok(address && typeof address !== "string");
   const destination = path.join(directory, "java.download");
-  await downloadToFile(
-    `http://127.0.0.1:${address.port}`,
-    destination,
-    new AbortController().signal,
-    () => {},
+  await Effect.runPromise(
+    downloadToFileEffect(
+      `http://127.0.0.1:${address.port}`,
+      destination,
+      new AbortController().signal,
+      () => {},
+    ),
   );
   assert.equal(await readFile(destination, "utf8"), "server archive");
 });

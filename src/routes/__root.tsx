@@ -6,11 +6,7 @@ import {
 } from "@tanstack/react-router";
 import "../App.css";
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import {
-  type QueryClient,
-  QueryClientProvider,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { type QueryClient, useQueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useTheme } from "next-themes";
@@ -245,7 +241,6 @@ function WindowThemeSyncer() {
 
 function RootLayout() {
   const { systemInfo } = Route.useLoaderData();
-  const { queryClient } = Route.useRouteContext();
   const shouldShowWindowTitlebar = useShouldShowWindowTitlebar();
   const [systemInfoState, setSystemInfoState] = useState<SystemInfo | null>(
     systemInfo,
@@ -311,59 +306,57 @@ function RootLayout() {
     <PostHogProvider client={posthog}>
       <NuqsAdapter>
         <DocumentTitleSyncer />
-        <QueryClientProvider client={queryClient}>
-          <DiscordPresenceUpdater />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <WindowThemeSyncer />
-            <TooltipProvider delay={500}>
-              <SystemInfoContext value={systemInfoState}>
-                <TerminalThemeContext
-                  value={{
-                    value: terminalTheme,
-                    setter: setTerminalTheme,
-                  }}
+        <DiscordPresenceUpdater />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <WindowThemeSyncer />
+          <TooltipProvider delay={500}>
+            <SystemInfoContext value={systemInfoState}>
+              <TerminalThemeContext
+                value={{
+                  value: terminalTheme,
+                  setter: setTerminalTheme,
+                }}
+              >
+                <div
+                  className="flex h-dvh w-dvw flex-col"
+                  style={appShellStyle}
                 >
-                  <div
-                    className="flex h-dvh w-dvw flex-col"
-                    style={appShellStyle}
-                  >
-                    <SkipToContent />
-                    <PointerReset />
-                    <CustomContextMenu />
-                    <CookieConsentProvider>
-                      <AboutProvider>
-                        {shouldShowWindowTitlebar && <WindowTitlebar />}
-                        <div className="flex min-h-0 flex-1 flex-col">
-                          <Outlet />
-                        </div>
-                        <TanStackDevtools
-                          plugins={[
-                            {
-                              name: "TanStack Query",
-                              render: <ReactQueryDevtoolsPanel />,
-                            },
-                            {
-                              name: "TanStack Router",
-                              render: <TanStackRouterDevtoolsPanel />,
-                            },
-                          ]}
-                        />
-                      </AboutProvider>
-                    </CookieConsentProvider>
-                  </div>
-                </TerminalThemeContext>
-              </SystemInfoContext>
-              <Toaster richColors />
-              <UpdateReadyPrompt />
-            </TooltipProvider>
-          </ThemeProvider>
-          <TailwindIndicator />
-        </QueryClientProvider>
+                  <SkipToContent />
+                  <PointerReset />
+                  <CustomContextMenu />
+                  <CookieConsentProvider>
+                    <AboutProvider>
+                      {shouldShowWindowTitlebar && <WindowTitlebar />}
+                      <div className="flex min-h-0 flex-1 flex-col">
+                        <Outlet />
+                      </div>
+                      <TanStackDevtools
+                        plugins={[
+                          {
+                            name: "TanStack Query",
+                            render: <ReactQueryDevtoolsPanel />,
+                          },
+                          {
+                            name: "TanStack Router",
+                            render: <TanStackRouterDevtoolsPanel />,
+                          },
+                        ]}
+                      />
+                    </AboutProvider>
+                  </CookieConsentProvider>
+                </div>
+              </TerminalThemeContext>
+            </SystemInfoContext>
+            <Toaster richColors />
+            <UpdateReadyPrompt />
+          </TooltipProvider>
+        </ThemeProvider>
+        <TailwindIndicator />
       </NuqsAdapter>
     </PostHogProvider>
   );

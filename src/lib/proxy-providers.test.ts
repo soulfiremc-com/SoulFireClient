@@ -5,8 +5,9 @@ import { ProxyProto_Type } from "@/generated/soulfire/common_pb";
 import { assertDefined } from "@/lib/assert-defined";
 import {
   ProviderApiError,
-  providerJson,
   type ProviderFetch,
+  providerJsonEffect,
+  runProviderEffect,
 } from "./provider-request.ts";
 import {
   loadProviderProxies,
@@ -421,8 +422,11 @@ test("HTTP and JSON errors do not expose provider secrets", async () => {
   for (const status of [401, 403, 429, 500]) {
     const fetcher: ProviderFetch = async () => ({ status, body: "secret-key" });
     await assert.rejects(
-      providerJson(
-        { url: "https://proxy.webshare.io/api/v2/proxy/list/", method: "GET" },
+      runProviderEffect(
+        providerJsonEffect({
+          url: "https://proxy.webshare.io/api/v2/proxy/list/",
+          method: "GET",
+        }),
         undefined,
         fetcher,
       ),
