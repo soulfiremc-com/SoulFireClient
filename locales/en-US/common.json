@@ -399,8 +399,8 @@
     "advanced": "Advanced",
     "demoNotSaved": "The demo does not save changes.",
     "scope": {
-      "instance": "Project default. Applies to every bot in this project unless a bot has its own value.",
-      "server": "Server setting. Applies to the whole SoulFire server and every project on it."
+      "instance": "These are project defaults. Every bot in this project uses them unless the bot has its own value.",
+      "server": "These settings apply to the whole SoulFire server and every project on it."
     },
     "minMaxLegend": "Minimum and maximum settings",
     "rangeValue": "{{min}} to {{max}}"
