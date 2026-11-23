@@ -3,13 +3,11 @@ import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 import { expect, fn, waitFor, within } from "storybook/test";
-import { Toaster, toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context";
 import {
   CommandScopeSchema,
   CommandService,
 } from "@/generated/soulfire/command_pb";
-import { COMMAND_HISTORY_KEY } from "@/lib/command-history";
 import { getCommandTokenRange } from "@/lib/command-token";
 import { toTerminalLine } from "@/stores/terminal-log-store";
 import CommandInput from "./command-input";
@@ -114,7 +112,6 @@ function ShellPromptExample({ theme = "mocha" }: { theme?: string }) {
         <TerminalView entries={entries} theme={theme}>
           <CommandInput scope={scope} />
         </TerminalView>
-        <Toaster />
       </TransportContext>
     </div>
   );
@@ -125,15 +122,8 @@ const meta = {
   component: ShellPromptExample,
   parameters: { layout: "fullscreen" },
   beforeEach: () => {
-    const history = localStorage.getItem(COMMAND_HISTORY_KEY);
-    localStorage.removeItem(COMMAND_HISTORY_KEY);
     commands.mockClear();
     completions.mockClear();
-    return () => {
-      toast.dismiss();
-      if (history === null) localStorage.removeItem(COMMAND_HISTORY_KEY);
-      else localStorage.setItem(COMMAND_HISTORY_KEY, history);
-    };
   },
 } satisfies Meta<typeof ShellPromptExample>;
 export default meta;
@@ -309,7 +299,6 @@ function DemoPromptExample() {
         <TerminalView entries={[]} theme="mocha">
           <CommandInput scope={scope} />
         </TerminalView>
-        <Toaster />
       </TransportContext>
     </div>
   );

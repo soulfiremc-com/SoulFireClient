@@ -182,10 +182,9 @@ export function ProcessOutput({
     initial: "instant",
     resize: "instant",
   });
-  const filtered = filter
-    ? logs.filter((log) =>
-        log.message.toLowerCase().includes(filter.toLowerCase()),
-      )
+  const query = filter.toLowerCase();
+  const filtered = query
+    ? logs.filter((log) => log.message.toLowerCase().includes(query))
     : logs;
   return (
     <Scroller ref={scrollRef} className="h-56" offset={1}>

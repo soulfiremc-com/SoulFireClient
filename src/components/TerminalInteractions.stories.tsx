@@ -3,7 +3,6 @@ import { ConnectError, createRouterTransport } from "@connectrpc/connect";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, fn, waitFor, within } from "storybook/test";
-import { Toaster, toast } from "sonner";
 import { TransportContext } from "@/components/providers/transport-context";
 import {
   type CommandRequest,
@@ -167,7 +166,6 @@ function Example({
           {!readOnly && <CommandInput scope={scope} />}
         </TerminalView>
       </div>
-      <Toaster />
     </TransportContext>
   );
 }
@@ -187,7 +185,6 @@ const meta = {
     });
     window.open = open;
     return () => {
-      toast.dismiss();
       window.open = originalOpen;
       if (original) Object.defineProperty(navigator, "clipboard", original);
       else Reflect.deleteProperty(navigator, "clipboard");

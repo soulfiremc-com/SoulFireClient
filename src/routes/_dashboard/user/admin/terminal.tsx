@@ -3,9 +3,17 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { LockIcon } from "lucide-react";
 import CommandInput from "@/components/command-input.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout";
 import { TerminalComponent } from "@/components/terminal.tsx";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import {
   type CommandScope,
@@ -61,6 +69,7 @@ function Terminal() {
 }
 
 function Content() {
+  const { t } = useTranslation("common");
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientData } = useSuspenseQuery(clientDataQueryOptions);
   const logScope = useMemo<LogScope>(
@@ -84,12 +93,28 @@ function Content() {
     [],
   );
 
+  // The personal log only shows replies to this user's commands, so it stays
+  // empty without a command prompt.
+  if (
+    !hasGlobalPermission(clientData, GlobalPermission.GLOBAL_COMMAND_EXECUTION)
+  )
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <LockIcon />
+          </EmptyMedia>
+          <EmptyTitle>{t("terminal.commandsNoPermission.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("terminal.commandsNoPermission.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+
   return (
     <TerminalComponent scope={logScope}>
-      {hasGlobalPermission(
-        clientData,
-        GlobalPermission.GLOBAL_COMMAND_EXECUTION,
-      ) && <CommandInput scope={commandScope} />}
+      <CommandInput scope={commandScope} />
     </TerminalComponent>
   );
 }

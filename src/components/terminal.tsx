@@ -7,6 +7,7 @@ import {
   useEffect,
   useEffectEvent,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -58,9 +59,15 @@ export function TerminalView({
   );
   const interactionId = useId();
   const commandHandler = useRef<TerminalCommandHandler | null>(null);
-  const onCommand: TerminalCommandHandler | undefined = children
-    ? (action, value) => commandHandler.current?.(action, value)
-    : undefined;
+  const hasPrompt = !!children;
+  // A stable handler lets the plain output skip unchanged messages.
+  const onCommand = useMemo<TerminalCommandHandler | undefined>(
+    () =>
+      hasPrompt
+        ? (action, value) => commandHandler.current?.(action, value)
+        : undefined,
+    [hasPrompt],
+  );
   const actions = useTerminalInteractionActions(onCommand);
   const [runs, setRuns] = useState<TerminalInteractionRun[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -537,43 +544,41 @@ export function TerminalComponent({
   const { t } = useTranslation("common");
   const transport = use(TransportContext);
   const demo = isDemo();
+  // Read-only views, such as the logs page, have no command prompt.
+  const readOnly = !children;
   const {
     entries: liveEntries,
     historyLoaded,
     denied,
-  } = useTerminalLogs(demo ? null : transport, scope);
-  // Read-only views, such as the logs page, have no command prompt.
-  const readOnly = !children;
-  const entries = demo
-    ? [1, 2, 3, 4].map((id) =>
-        toTerminalLine({
-          id: `demo-${id}`,
-          message: t(`terminal.demo-${id}`),
-          personal: false,
-        }),
-      )
-    : denied
-      ? // Replies to this user's own commands can still arrive, so keep them
-        // below the notice.
-        [
-          toTerminalLine({
-            id: "denied",
-            message: t("terminal.logsDenied"),
-            personal: false,
-          }),
-          ...liveEntries,
-        ]
-      : liveEntries.length === 0 && historyLoaded
-        ? [
-            toTerminalLine({
-              id: "empty",
-              message: t(
-                readOnly ? "terminal.noLogsReadOnly" : "terminal.noLogs",
-              ),
-              personal: false,
-            }),
-          ]
-        : liveEntries;
+  } = useTerminalLogs(demo ? null : transport, scope, !readOnly);
+  // A new array resets the terminal and drops the selection, so the notices
+  // change only when their inputs change.
+  const entries = useMemo(() => {
+    const notice = (id: string, message: string) =>
+      toTerminalLine({ id, message, personal: false });
+    if (demo)
+      return [
+        notice("demo-welcome", t("terminal.demo.welcome")),
+        notice(
+          "demo-view",
+          t(readOnly ? "terminal.demo.logs" : "terminal.demo.commands"),
+        ),
+        notice("demo-install", t("terminal.demo.install")),
+        notice("demo-discord", t("terminal.demo.discord")),
+      ];
+    // Replies to this user's own commands can still arrive, so keep them
+    // below the notice.
+    if (denied)
+      return [notice("denied", t("terminal.logsDenied")), ...liveEntries];
+    if (liveEntries.length === 0 && historyLoaded)
+      return [
+        notice(
+          "empty",
+          t(readOnly ? "terminal.noLogsReadOnly" : "terminal.noLogs"),
+        ),
+      ];
+    return liveEntries;
+  }, [demo, denied, historyLoaded, liveEntries, readOnly, t]);
   const terminalTheme = useTerminalThemeContext();
 
   return (

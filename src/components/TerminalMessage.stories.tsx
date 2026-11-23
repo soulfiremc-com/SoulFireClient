@@ -14,7 +14,6 @@ import { toTerminalLine } from "@/stores/terminal-log-store";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, fn, waitFor, within } from "storybook/test";
-import { Toaster, toast } from "sonner";
 import {
   encodeTerminalInteraction as marker,
   type TerminalLogContent,
@@ -76,7 +75,6 @@ function Example({
       >
         Replace message
       </button>
-      <Toaster />
     </>
   );
 }
@@ -96,7 +94,6 @@ const meta = {
     });
     window.open = open;
     return () => {
-      toast.dismiss();
       window.open = originalOpen;
       if (original) Object.defineProperty(navigator, "clipboard", original);
       else Reflect.deleteProperty(navigator, "clipboard");
@@ -335,7 +332,6 @@ export const WasmFailureFallback: Story = {
           })}
         />
       </TerminalView>
-      <Toaster />
     </TransportContext>
   ),
   play: async ({ canvas, userEvent }) => {

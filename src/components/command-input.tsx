@@ -35,6 +35,7 @@ import { CommandCompletionRequest } from "@/lib/command-completion-request";
 import { cn } from "@/lib/utils";
 import {
   appendCommandHistory,
+  commandHistoryKey,
   readCommandHistory,
   saveCommandHistory,
   navigateCommandHistory,
@@ -105,7 +106,19 @@ export default function CommandInput(props: { scope: CommandScope }) {
     setInputValue(value);
   }, []);
   const [cursorPosition, setCursorPosition] = useState(0);
-  const [commandHistory, setCommandHistory] = useState(readCommandHistory);
+  // The key follows the signed-in user and server, so a session change while
+  // the prompt stays mounted loads the history of the new session.
+  const historyKey = commandHistoryKey();
+  const [storedHistory, setStoredHistory] = useState(() => ({
+    key: historyKey,
+    entries: readCommandHistory(historyKey),
+  }));
+  if (storedHistory.key !== historyKey)
+    setStoredHistory({
+      key: historyKey,
+      entries: readCommandHistory(historyKey),
+    });
+  const commandHistory = storedHistory.entries;
   const [historyPosition, setHistoryPosition] =
     useState<CommandHistoryPosition>({ index: -1, draft: "" });
   const [completionState, setCompletionState] = useState<CompletionState>({
@@ -441,7 +454,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
   const suggestions = completionState.receivedCompletions ?? [];
   const hasSuggestions = suggestions.length > 0;
-  const highlightedIndex = completionState.index ?? 0;
+  // Nothing is highlighted until Tab picks a suggestion.
+  // Until then, the arrow keys browse the command history.
+  const highlightedIndex = completionState.index;
   const showSuggestions =
     isFocused &&
     !suggestionsDismissed &&
@@ -548,11 +563,14 @@ export default function CommandInput(props: { scope: CommandScope }) {
     return ConnectError.from(error).rawMessage;
   };
   const executeCommand = (value: string) => {
-    const nextHistory = appendCommandHistory(commandHistory, value);
-    if (nextHistory !== commandHistory) {
-      setCommandHistory(nextHistory);
-      saveCommandHistory(nextHistory);
-    }
+    // Another prompt may have saved commands since this one loaded. Without
+    // browser storage, the history stays in memory.
+    const stored = readCommandHistory(historyKey);
+    const savedHistory = stored.length > 0 ? stored : commandHistory;
+    const nextHistory = appendCommandHistory(savedHistory, value);
+    if (nextHistory !== savedHistory)
+      saveCommandHistory(historyKey, nextHistory);
+    setStoredHistory({ key: historyKey, entries: nextHistory });
     if (!transport) return Promise.resolve();
     return Effect.runPromise(
       createRpcClient(CommandService, transport).executeCommand({
@@ -777,7 +795,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           aria-expanded={listboxVisible}
           aria-controls={listboxVisible ? suggestionsId : undefined}
           aria-activedescendant={
-            listboxVisible
+            listboxVisible && highlightedIndex !== null
               ? `${suggestionsId}-option-${highlightedIndex}`
               : undefined
           }
@@ -879,20 +897,6 @@ export default function CommandInput(props: { scope: CommandScope }) {
                         : "hover:bg-(--terminal-active)/50",
                     )}
                     ref={isActive ? setActiveSuggestionNode : undefined}
-                    onMouseEnter={() => {
-                      setCompletionState((prev) => {
-                        if (
-                          !prev.receivedCompletions ||
-                          prev.receivedCompletions.length === 0
-                        ) {
-                          return prev;
-                        }
-                        return {
-                          ...prev,
-                          index,
-                        };
-                      });
-                    }}
                     onMouseDown={(event) => {
                       event.preventDefault();
                       acceptCompletion(index);

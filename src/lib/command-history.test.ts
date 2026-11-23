@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  COMMAND_HISTORY_KEY,
   appendCommandHistory,
+  clearCommandHistory,
+  commandHistoryKey,
   navigateCommandHistory,
   readCommandHistory,
   saveCommandHistory,
@@ -9,7 +12,86 @@ import {
 } from "./command-history";
 
 const read = (value: string | null) =>
-  readCommandHistory({ getItem: () => value });
+  readCommandHistory(COMMAND_HISTORY_KEY, { getItem: () => value });
+
+const token = (payload: object) =>
+  `header.${btoa(JSON.stringify(payload)).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_")}.signature`;
+
+function memoryStorage(values: Record<string, string>) {
+  const map = new Map(Object.entries(values));
+  return {
+    get length() {
+      return map.size;
+    },
+    key: (index: number) => [...map.keys()][index] ?? null,
+    getItem: (key: string) => map.get(key) ?? null,
+    removeItem: (key: string) => {
+      map.delete(key);
+    },
+    keys: () => [...map.keys()],
+  };
+}
+
+const key = (values: Record<string, string>) =>
+  commandHistoryKey(memoryStorage(values));
+
+test("each user on each server gets a separate history", () => {
+  const alice = token({ sub: "alice-id" });
+  const bob = token({ sub: "bob-id" });
+  const aliceHere = key({
+    "server-address": "https://a",
+    "server-token": alice,
+  });
+  assert.notEqual(
+    aliceHere,
+    key({ "server-address": "https://b", "server-token": alice }),
+  );
+  assert.notEqual(
+    aliceHere,
+    key({ "server-address": "https://a", "server-token": bob }),
+  );
+  // A new sign-in issues a new token for the same user.
+  assert.equal(
+    aliceHere,
+    key({
+      "server-address": "https://a",
+      "server-token": token({ sub: "alice-id", iat: 2 }),
+    }),
+  );
+  // Impersonation uses the history of the impersonated user.
+  assert.equal(
+    key({
+      "server-address": "https://a",
+      "server-token": alice,
+      "server-impersonation-token": bob,
+    }),
+    key({ "server-address": "https://a", "server-token": bob }),
+  );
+  // The key never contains the token itself.
+  assert.ok(!aliceHere.includes(alice));
+  for (const values of [
+    {},
+    { "server-address": "https://a" },
+    { "server-address": "https://a", "server-token": "not-a-jwt" },
+    { "server-address": "https://a", "server-token": token({}) },
+  ])
+    assert.equal(key(values), COMMAND_HISTORY_KEY);
+});
+
+test("clearing removes the history of every user and keeps other data", () => {
+  const storage = memoryStorage({
+    [COMMAND_HISTORY_KEY]: "[]",
+    [`${COMMAND_HISTORY_KEY}:alice@https://a`]: "[]",
+    [`${COMMAND_HISTORY_KEY}:bob@https://b`]: "[]",
+    "sf-command-history-settings": "keep",
+    "server-address": "https://a",
+  });
+  clearCommandHistory(storage);
+  assert.deepEqual(storage.keys(), [
+    "sf-command-history-settings",
+    "server-address",
+  ]);
+});
 
 test("history loading tolerates corruption while retaining valid entries", () => {
   for (const value of [null, "{", "null", "{}"])
@@ -38,7 +120,7 @@ test("loading and appending retain the latest hundred entries without mutation",
 
 test("storage failures do not prevent keeping history in memory", () => {
   assert.deepEqual(
-    readCommandHistory({
+    readCommandHistory(COMMAND_HISTORY_KEY, {
       getItem: () => {
         throw new Error("Test failure");
       },
@@ -47,7 +129,7 @@ test("storage failures do not prevent keeping history in memory", () => {
   );
   const history = appendCommandHistory([], "1");
   assert.doesNotThrow(() => {
-    saveCommandHistory(history, {
+    saveCommandHistory(COMMAND_HISTORY_KEY, history, {
       setItem: () => {
         throw new Error("Test failure");
       },

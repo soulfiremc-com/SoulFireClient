@@ -571,3 +571,40 @@ test("a refused scope stops retrying until the session is retained again", async
     again();
   }
 });
+
+test("a refused scope drops the logs it cached while access was allowed", async () => {
+  let allowed = true;
+  const transport = createRouterTransport((router) => {
+    router.service(LogsService, {
+      getPrevious: () => {
+        if (!allowed) throw new ConnectError("denied", Code.PermissionDenied);
+        return { messages: [message(1), message(2)] };
+      },
+      // oxlint-disable-next-line require-yield -- the stream only reports refusal
+      async *subscribe() {
+        if (!allowed) throw new ConnectError("denied", Code.PermissionDenied);
+        await delay(10_000);
+      },
+    });
+  });
+  const session = createTerminalLogSession(
+    createRpcClient(LogsService, transport),
+    scope(),
+  );
+  const release = session.retain();
+  await delay(100);
+  assert.deepEqual(
+    session.state.get().entries.map((entry) => entry.id),
+    ["1", "2"],
+  );
+  release();
+  allowed = false;
+  const again = session.retain();
+  try {
+    await delay(100);
+    assert.equal(session.state.get().denied, true);
+    assert.deepEqual(session.state.get().entries, []);
+  } finally {
+    again();
+  }
+});

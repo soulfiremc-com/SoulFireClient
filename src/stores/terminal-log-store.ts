@@ -139,15 +139,19 @@ export function createTerminalLogSession(
     let denied = false;
     // A refused history request also ends the stream retry loop.
     const retrying = () => !denied;
-    const deny = Effect.sync(() => {
-      denied = true;
-      if (!current()) return;
-      state.setState((value) =>
-        value.denied && value.historyLoaded
-          ? value
-          : { ...value, denied: true, historyLoaded: true },
-      );
-    });
+    // Logs cached before the refusal must not stay visible without access.
+    const deny = Effect.andThen(
+      Ref.set(pending, []),
+      Effect.sync(() => {
+        denied = true;
+        if (!current()) return;
+        state.setState((value) =>
+          value.denied && value.historyLoaded && value.entries.length === 0
+            ? value
+            : { ...value, entries: [], denied: true, historyLoaded: true },
+        );
+      }),
+    );
     state.setState((value) =>
       value.denied ? { ...value, denied: false } : value,
     );

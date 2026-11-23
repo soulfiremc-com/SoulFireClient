@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, fn, waitFor, within } from "storybook/test";
-import { Toaster, toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { toTerminalLine } from "@/stores/terminal-log-store";
 import { TerminalView } from "./terminal";
@@ -76,7 +75,6 @@ function TerminalHarness() {
         </Button>
       </div>
       <TerminalView entries={logs} theme={theme} />
-      <Toaster />
     </div>
   );
 }
@@ -100,7 +98,6 @@ const meta = {
       value: { writeText: writeClipboard },
     });
     return () => {
-      toast.dismiss();
       window.fetch = originalFetch;
       if (original) Object.defineProperty(navigator, "clipboard", original);
       else Reflect.deleteProperty(navigator, "clipboard");
@@ -158,7 +155,20 @@ export const JumpToLatest: Story = {
     await expect(Number.parseFloat(getComputedStyle(host).paddingLeft)).toBe(
       12,
     );
-    await waitFor(() => expect(host.scrollTop).toBeGreaterThan(0));
+    // Let the initial follow scroll settle at the end before scrolling away.
+    let lastTop = -1;
+    await waitFor(
+      () => {
+        const top = host.scrollTop;
+        const settled =
+          top > 0 &&
+          top === lastTop &&
+          top + host.clientHeight >= host.scrollHeight - 1;
+        lastTop = top;
+        return expect(settled).toBe(true);
+      },
+      { interval: 100 },
+    );
     await expect(
       canvas.queryByRole("button", { name: "Jump to latest" }),
     ).toBeNull();
@@ -166,7 +176,10 @@ export const JumpToLatest: Story = {
     host.dispatchEvent(new Event("scroll"));
     await userEvent.click(canvas.getByRole("button", { name: "Append" }));
     const jump = await canvas.findByRole("button", { name: "Jump to latest" });
-    await expect(host.scrollTop).toBeCloseTo(100, 0);
+    // New output must not move a reader who scrolled away from the end.
+    await waitFor(() => expect(host.scrollTop).toBeCloseTo(100, 0));
+    // Jump only after the terminal has drawn the new row, as a reader would.
+    await waitFor(() => expect(host).toHaveTextContent("New log"));
     await userEvent.click(jump);
     await waitFor(() =>
       expect(host.scrollTop + host.clientHeight).toBeGreaterThanOrEqual(
