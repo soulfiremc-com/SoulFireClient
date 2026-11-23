@@ -225,8 +225,11 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                         if (Option.isSome(reply))
                           pending.get(reply.value.requestId)?.(reply.value);
                       });
+                      // The TV closes our app when someone presses Back or
+                      // Home, or starts another app. Relaunching would take
+                      // the screen back from them, so this ends the session.
                       app.on("close", () => {
-                        fail(castError("receiverClosed"));
+                        fail(castError("receiverClosed", false));
                       });
                       resume(Effect.undefined);
                     },

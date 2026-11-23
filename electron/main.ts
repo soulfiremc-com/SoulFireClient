@@ -463,6 +463,8 @@ function registerSecurityHandlers(): void {
         if (mainFrame && !inPlace) {
           povInputOwners.delete(contents.id);
           updatePovEscapeShortcut();
+          // A reload drops the page's watch subscriptions with it.
+          cleanupFsWatchesForContents(contents.id);
         }
       },
     );
@@ -967,6 +969,12 @@ function registerIpcHandlers(): void {
       registration.watcher.on("change", queuePath);
       registration.watcher.on("unlink", queuePath);
       registration.watcher.on("unlinkDir", queuePath);
+      // Without a listener, chokidar's "error" event (EACCES, or the inotify
+      // watch limit) would throw in the main process.
+      registration.watcher.on("error", (error) => {
+        console.error(`File watch ${watchId} failed`, error);
+        cleanupFsWatch(watchId);
+      });
 
       fsWatchers.set(watchId, registration);
 

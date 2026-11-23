@@ -85,23 +85,33 @@ function temporaryPath(filePath: string, recursive = false) {
 
 const ROOT_USER_UUID = "00000000-0000-0000-0000-000000000000";
 
-function integratedServerEnvironment(
+// An empty entry in a library search path means the current directory, which
+// for Java is the writable data directory. Only keep real entries.
+function libraryPath(javaHomeDir: string, parent: string | undefined) {
+  return [
+    path.join(javaHomeDir, "lib"),
+    path.join(javaHomeDir, "lib", "server"),
+    ...(parent ?? "").split(path.delimiter),
+  ]
+    .filter((entry) => entry !== "")
+    .join(path.delimiter);
+}
+
+export function integratedServerEnvironment(
   javaHomeDir: string,
   parentEnvironment: NodeJS.ProcessEnv,
 ) {
   return {
     ...parentEnvironment,
     JAVA_HOME: javaHomeDir,
-    LD_LIBRARY_PATH: [
-      path.join(javaHomeDir, "lib"),
-      path.join(javaHomeDir, "lib", "server"),
-      parentEnvironment["LD_LIBRARY_PATH"] ?? "",
-    ].join(path.delimiter),
-    DYLD_LIBRARY_PATH: [
-      path.join(javaHomeDir, "lib"),
-      path.join(javaHomeDir, "lib", "server"),
-      parentEnvironment["DYLD_LIBRARY_PATH"] ?? "",
-    ].join(path.delimiter),
+    LD_LIBRARY_PATH: libraryPath(
+      javaHomeDir,
+      parentEnvironment["LD_LIBRARY_PATH"],
+    ),
+    DYLD_LIBRARY_PATH: libraryPath(
+      javaHomeDir,
+      parentEnvironment["DYLD_LIBRARY_PATH"],
+    ),
   };
 }
 

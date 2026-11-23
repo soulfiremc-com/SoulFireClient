@@ -5,7 +5,10 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import type { App } from "electron";
-import { runIntegratedServer } from "./integrated-server";
+import {
+  integratedServerEnvironment,
+  runIntegratedServer,
+} from "./integrated-server";
 import { createIntegratedServerState } from "./integrated-server-process";
 
 function requestUrl(input: RequestInfo | URL): string {
@@ -142,4 +145,22 @@ test("a custom jar ID that is not a hash cannot choose the data directory", asyn
     /no longer available/u,
   );
   assert.equal(state.diagnostics.dataDirectory, "");
+});
+
+test("the Java library path never includes the working directory", () => {
+  const javaHome = path.join("/opt", "java");
+  const lib = path.join(javaHome, "lib");
+  const server = path.join(javaHome, "lib", "server");
+  const withoutParent = integratedServerEnvironment(javaHome, {});
+  assert.equal(
+    withoutParent.LD_LIBRARY_PATH,
+    [lib, server].join(path.delimiter),
+  );
+  const withParent = integratedServerEnvironment(javaHome, {
+    DYLD_LIBRARY_PATH: `${path.delimiter}/usr/lib${path.delimiter}`,
+  });
+  assert.equal(
+    withParent.DYLD_LIBRARY_PATH,
+    [lib, server, "/usr/lib"].join(path.delimiter),
+  );
 });
