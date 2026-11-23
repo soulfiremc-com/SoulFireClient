@@ -2,7 +2,8 @@
 import { afterEach, expect, test } from "bun:test";
 import { create } from "@bufbuild/protobuf";
 import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
-import { Effect, Exit, ManagedRuntime, Scope } from "effect";
+import { Effect, Exit, Layer, ManagedRuntime, Scope } from "effect";
+import { TestClock } from "effect/testing";
 import { InstanceService } from "../../src/generated/soulfire/instance_pb";
 import {
   MetricsService,
@@ -53,7 +54,12 @@ async function fixture(code?: Code) {
       },
     });
   });
-  const runtime = ManagedRuntime.make(makeMetricsSource(() => transport));
+  const runtime = ManagedRuntime.make(
+    Layer.merge(
+      makeMetricsSource(() => transport),
+      TestClock.layer(),
+    ),
+  );
   const scope = Scope.makeUnsafe();
   cleanup.push(async () => {
     await Effect.runPromise(Scope.close(scope, Exit.void));
@@ -71,6 +77,7 @@ async function fixture(code?: Code) {
   );
   return {
     read: () => runtime.runPromise(feed.read),
+    advance: (millis: number) => runtime.runPromise(TestClock.adjust(millis)),
     requests,
     infoRequests: () => infoRequests,
   };
@@ -103,4 +110,16 @@ test("permission and authentication errors do not retry; transient RPC errors ca
     expect(error).toMatchObject({ retryable });
     expect(f.requests).toHaveLength(1);
   }
+});
+
+test("project info refreshes after it is ten seconds old", async () => {
+  const f = await fixture();
+  await f.read();
+  await f.advance(9999);
+  await f.read();
+  expect(f.infoRequests()).toBe(1);
+  await f.advance(1);
+  await f.read();
+  expect(f.infoRequests()).toBe(2);
+  expect(f.requests).toHaveLength(3);
 });

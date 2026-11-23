@@ -19,13 +19,26 @@ import {
   useTable,
 } from "@tanstack/react-table";
 import { Schema } from "effect";
-import { ArrowLeftIcon, ArrowUpRightIcon, CastIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import {
+  ArrowLeftIcon,
+  ArrowUpRightIcon,
+  CastIcon,
+  MonitorDownIcon,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import {
   Field,
   FieldDescription,
@@ -52,8 +65,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { castClient, castErrorMessage, castStore } from "@/lib/cast-client";
-import { isDesktopApp } from "@/lib/desktop";
+import { castErrorMessage, castStore } from "@/lib/cast-client";
+import { desktop, isDesktopApp } from "@/lib/desktop";
 import { toFormSchema } from "@/lib/form-validation";
 import i18n from "@/lib/i18n";
 import { staticRouteTitle } from "@/lib/route-title";
@@ -88,16 +101,29 @@ function DeviceActions({
     }) => {
       const source = getCastSource(instanceId);
       if (!source) return Promise.reject(new Error(t("serverRequired")));
-      return castClient.connect(device, source, show);
+      return desktop.cast.connect(device, source, show);
     },
     retry: false,
   });
   const stop = useMutation({
-    mutationFn: () => castClient.stop(device.id),
+    mutationFn: () => desktop.cast.stop(device.id),
     retry: false,
   });
   const active = ["connecting", "ready", "reconnecting"].includes(device.phase);
   const instanceId = device.instanceId ?? selected;
+  // A request error is out of date once the display connects, for example
+  // after Show on TV or Connect by address. The status column already shows
+  // errors that the display itself reports.
+  const { reset: resetConnect } = connect;
+  const { reset: resetStop } = stop;
+  useEffect(() => {
+    if (device.phase === "ready") {
+      resetConnect();
+      resetStop();
+    }
+  }, [device.phase, resetConnect, resetStop]);
+  const requestError = connect.error ?? stop.error;
+  const requestMessage = requestError && castErrorMessage(requestError.message);
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap gap-2">
@@ -159,13 +185,12 @@ function DeviceActions({
           </Button>
         )}
       </div>
-      {(connect.error ?? stop.error) && (
-        <p role="alert" className="text-sm text-destructive">
-          {castErrorMessage(
-            connect.error?.message ?? stop.error?.message ?? "",
-          )}
-        </p>
-      )}
+      {requestMessage &&
+        requestMessage !== (device.error && castErrorMessage(device.error)) && (
+          <p role="alert" className="text-sm text-destructive">
+            {requestMessage}
+          </p>
+        )}
     </div>
   );
 }
@@ -187,6 +212,11 @@ function CastPage() {
   const { instance } = Route.useSearch();
   const navigate = Route.useNavigate();
   const { state, error } = useSelector(castStore, (value) => value);
+  // Discovery stops when the network blocks mDNS. Opening this page starts it
+  // again; the desktop app ignores the request while discovery runs.
+  useEffect(() => {
+    if (isDesktopApp()) void desktop.cast.discover().catch(console.error);
+  }, []);
   const [search, setSearch] = useState("");
   const [filter] = useDebouncedValue(search, { wait: 150 });
   const devices = useMemo(
@@ -231,7 +261,13 @@ function CastPage() {
               </span>
             )}
             {row.original.error && (
-              <span className="text-xs text-destructive">
+              <span
+                className={
+                  row.original.phase === "idle"
+                    ? "text-xs text-muted-foreground"
+                    : "text-xs text-destructive"
+                }
+              >
                 {castErrorMessage(row.original.error)}
               </span>
             )}
@@ -260,7 +296,7 @@ function CastPage() {
     mutationFn: async () => {
       if (!first?.instanceId) return;
       const source = getCastSource(first.instanceId);
-      if (source) await castClient.connect(first, source, true);
+      if (source) await desktop.cast.connect(first, source, true);
     },
     retry: false,
   });
@@ -292,25 +328,26 @@ function CastPage() {
         <p className="text-muted-foreground">{t("description")}</p>
       </header>
       {!isDesktopApp() ? (
-        <Alert>
-          <AlertTitle>{t("desktopRequired")}</AlertTitle>
-          <AlertDescription>
-            <div className="flex flex-col items-start gap-2">
-              <p>{t("desktopDescription")}</p>
-              <Button
-                variant="outline"
-                size="sm"
-                nativeButton={false}
-                render={
-                  <ExternalLink href="https://soulfiremc.com/docs/installation?utm_source=soulfire-client&utm_medium=app&utm_campaign=cast-desktop" />
-                }
-              >
-                {t("getDesktopApp")}
-                <ArrowUpRightIcon data-icon="inline-end" />
-              </Button>
-            </div>
-          </AlertDescription>
-        </Alert>
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <MonitorDownIcon />
+            </EmptyMedia>
+            <EmptyTitle>{t("desktopRequired")}</EmptyTitle>
+            <EmptyDescription>{t("desktopDescription")}</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button
+              nativeButton={false}
+              render={
+                <ExternalLink href="https://soulfiremc.com/docs/installation?utm_source=soulfire-client&utm_medium=app&utm_campaign=cast-desktop" />
+              }
+            >
+              {t("getDesktopApp")}
+              <ArrowUpRightIcon data-icon="inline-end" />
+            </Button>
+          </EmptyContent>
+        </Empty>
       ) : (
         <>
           {(error || instanceError || show.error) && (
@@ -323,7 +360,13 @@ function CastPage() {
               </AlertDescription>
             </Alert>
           )}
-          <section className="flex flex-col gap-4" aria-label={t("displays")}>
+          <section
+            className="flex flex-col gap-4"
+            aria-labelledby="cast-displays"
+          >
+            <h2 id="cast-displays" className="text-lg font-medium">
+              {t("displays")}
+            </h2>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="cast-instance">{t("instance")}</FieldLabel>
@@ -431,7 +474,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
     mutationFn: (device: CastDevice) => {
       const source = instance ? getCastSource(instance) : null;
       if (!source) return Promise.reject(new Error(t("chooseInstance")));
-      return castClient.connect(device, source);
+      return desktop.cast.connect(device, source);
     },
     retry: false,
   });
@@ -538,7 +581,7 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
     { value: "large", label: t("large") },
   ];
   const save = useMutation({
-    mutationFn: castClient.setSettings,
+    mutationFn: desktop.cast.setSettings,
     retry: false,
   });
   const form = useForm({

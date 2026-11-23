@@ -12,6 +12,7 @@ import {
 } from "@soulfiremc/cast-protocol";
 import { Clock, Deferred, Effect, Exit, Layer, Scope } from "effect";
 import { TestClock } from "effect/testing";
+import { CastDiscovery, CastDiscoveryError } from "./discovery";
 import { castError, type CastError } from "./errors";
 import { MetricsSource, type MetricsFrame } from "./metrics-source";
 import { CastSessionManager } from "./session-manager";
@@ -152,6 +153,19 @@ async function fixture(
         };
       }),
   });
+  const browses: {
+    up: (device: CastDevice) => void;
+    down: (id: string) => void;
+    failure: Deferred.Deferred<never, CastDiscoveryError>;
+  }[] = [];
+  const discovery = Layer.succeed(CastDiscovery, {
+    browse: (handlers) =>
+      Effect.suspend(() => {
+        const failure = Deferred.makeUnsafe<never, CastDiscoveryError>();
+        browses.push({ ...handlers, failure });
+        return Deferred.await(failure);
+      }),
+  });
   const metrics = Layer.succeed(MetricsSource, {
     open: () =>
       Effect.acquireRelease(
@@ -170,7 +184,12 @@ async function fixture(
     (state) => {
       states.push(state);
     },
-    Layer.mergeAll(transport, metrics, Layer.succeed(Clock.Clock, clock)),
+    Layer.mergeAll(
+      discovery,
+      transport,
+      metrics,
+      Layer.succeed(Clock.Clock, clock),
+    ),
   );
   disposers.push(async () => {
     await manager.dispose();
@@ -180,6 +199,7 @@ async function fixture(
     manager,
     clock,
     channels,
+    browses,
     channel: (index: number) => {
       const channel = channels[index];
       if (!channel) throw new Error(`Channel ${index} was not opened`);
@@ -407,4 +427,61 @@ test("settings changed during an acknowledgement are delivered on the next cycle
     .messages.filter((message) => message.type === "SETTINGS");
   expect(updates[0]?.settings.scale).toBe("normal");
   expect(updates[1]?.settings.scale).toBe("large");
+});
+
+test("discovered displays appear and leave unless they are casting", async () => {
+  const f = await fixture();
+  f.manager.discover();
+  await until(() => f.browses.length === 1);
+  const browse = f.browses[0];
+  browse?.up(device);
+  browse?.up({ ...device, id: "other", address: "192.0.2.2" });
+  expect(f.manager.getState().devices).toHaveLength(2);
+  await f.manager.connect(device, source);
+  browse?.down(device.id);
+  browse?.down("other");
+  expect(f.manager.getState().devices.map((entry) => entry.id)).toEqual([
+    device.id,
+  ]);
+});
+
+test("discovery that fails, such as on a busy mDNS port, can start again", async () => {
+  const f = await fixture();
+  f.manager.discover();
+  f.manager.discover();
+  await until(() => f.browses.length === 1);
+  const failure = f.browses[0]?.failure;
+  if (failure)
+    Effect.runSync(
+      Deferred.fail(
+        failure,
+        CastDiscoveryError.make({ cause: new Error("EADDRINUSE") }),
+      ),
+    );
+  await until(() => {
+    f.manager.discover();
+    return f.browses.length === 2;
+  });
+});
+
+test("a TV that closes the receiver leaves the display idle without retrying", async () => {
+  const f = await fixture();
+  await f.manager.connect(device, source);
+  await until(() =>
+    f.channel(0).messages.some((message) => message.type === "PING"),
+  );
+  f.channel(0).fail?.(castError("receiverClosed", false));
+  await until(() => f.channel(0).closed);
+  await until(() => f.device(0).phase === "idle");
+  expect(f.device(0)).toMatchObject({
+    error: "receiverClosed",
+    instanceId: source.instanceId,
+  });
+  await Effect.runPromise(f.clock.adjust("60 seconds"));
+  expect(f.channels).toHaveLength(1);
+  expect(
+    f.states.some((state) =>
+      state.devices.some((entry) => entry.phase === "reconnecting"),
+    ),
+  ).toBe(false);
 });

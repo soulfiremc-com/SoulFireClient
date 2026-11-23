@@ -1,5 +1,3 @@
-import { TaggedError as TaggedFailure } from "effect/Schema";
-import { createRequire } from "node:module";
 import {
   DEFAULT_SETTINGS,
   type CastDevice,
@@ -11,7 +9,6 @@ import {
 } from "@soulfiremc/cast-protocol";
 import {
   Cause,
-  Schema,
   Deferred,
   Effect,
   Fiber,
@@ -19,6 +16,7 @@ import {
   ManagedRuntime,
   Semaphore,
 } from "effect";
+import { CastDiscovery, CastDiscoveryLive } from "./discovery";
 import { newCastRequestId } from "./request-id";
 import { castError, type CastError } from "./errors";
 import { MetricsSource, MetricsSourceLive } from "./metrics-source";
@@ -27,18 +25,11 @@ import { CastTransport, CastTransportLive } from "./transport";
 const MAX_RETRIES = 5;
 const RETRY_BASE_MS = 1000;
 
-class CastDiscoveryError extends TaggedFailure<
-  CastDiscoveryError,
-  { readonly brand: unique symbol }
->()("CastDiscoveryError", {
-  cause: Schema.Unknown,
-}) {}
-
 interface ActiveSession {
   readonly generation: number;
   readonly fiber: Fiber.Fiber<void>;
 }
-type Service = CastTransport | MetricsSource;
+type Service = CastDiscovery | CastTransport | MetricsSource;
 
 export class CastSessionManager {
   private readonly runtime: ManagedRuntime.ManagedRuntime<Service, never>;
@@ -46,6 +37,7 @@ export class CastSessionManager {
   private readonly sessions = new Map<string, ActiveSession>();
   private readonly lock = Semaphore.makeUnsafe(1);
   private discovery: Fiber.Fiber<void> | undefined;
+  private discovering = false;
   private generation = 0;
   private revision = 0;
   private settings: DisplaySettings = DEFAULT_SETTINGS;
@@ -58,6 +50,7 @@ export class CastSessionManager {
   constructor(
     publish: (state: CastState) => void,
     layer: Layer.Layer<Service> = Layer.mergeAll(
+      CastDiscoveryLive,
       CastTransportLive,
       MetricsSourceLive,
     ),
@@ -76,85 +69,28 @@ export class CastSessionManager {
   }
 
   discover(): void {
-    if (this.discovery || this.disposed) return;
+    if (this.discovering || this.disposed) return;
+    this.discovering = true;
     this.discovery = this.runtime.runFork(
-      Effect.scoped(
-        Effect.gen({ self: this }, function* () {
-          interface ServiceRecord {
-            name: string;
-            host?: string;
-            addresses?: string[];
-            port: number;
-            txt?: Record<string, string>;
-          }
-          const bonjour = yield* Effect.acquireRelease(
-            Effect.try({
-              try: () => {
-                const require = createRequire(__filename);
-                // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- bonjour-service is loaded with require so its types are declared here
-                const { Bonjour } = require("bonjour-service") as {
-                  Bonjour: new () => {
-                    destroy(): void;
-                    find(
-                      options: { type: string },
-                      callback: (service: ServiceRecord) => void,
-                    ): {
-                      on(
-                        event: "down",
-                        callback: (service: ServiceRecord) => void,
-                      ): void;
-                      stop(): void;
-                    };
-                  };
-                };
-                return new Bonjour();
-              },
-              catch: (cause) => CastDiscoveryError.make({ cause }),
-            }),
-            (service) =>
-              Effect.sync(() => {
-                service.destroy();
-              }),
-          );
-          const browser = bonjour.find({ type: "googlecast" }, (service) => {
-            const id = service.txt?.["id"];
-            const address =
-              service.addresses?.find((candidate) => candidate.includes(".")) ??
-              service.addresses?.[0] ??
-              service.host;
-            // Advertised capabilities include video output in bit zero. Do not
-            // assume that every compatible TV calls its model "Chromecast".
-            if (
-              !id ||
-              !address ||
-              (service.txt?.["ca"] !== undefined &&
-                (Number(service.txt["ca"]) & 1) === 0)
-            )
-              return;
-            this.registerDevice({
-              id,
-              name: service.txt?.["fn"] ?? service.name,
-              address: address.replace(/\.$/u, ""),
-              port: service.port,
-            });
-          });
-          browser.on("down", (service) => {
-            const id = service.txt?.["id"];
-            if (id && !this.sessions.has(id)) {
-              this.devices.delete(id);
+      Effect.flatMap(CastDiscovery, (service) =>
+        service.browse({
+          up: (device) => {
+            this.registerDevice(device);
+          },
+          down: (id) => {
+            if (!this.sessions.has(id) && this.devices.delete(id))
               this.changed();
-            }
-          });
-          yield* Effect.addFinalizer(() =>
-            Effect.sync(() => {
-              browser.stop();
-            }),
-          );
-          return yield* Effect.never;
+          },
         }),
       ).pipe(
         Effect.catch((error) =>
           Effect.logWarning("Cast discovery failed", error),
+        ),
+        // A failed browse can start again on the next discover request.
+        Effect.ensuring(
+          Effect.sync(() => {
+            this.discovering = false;
+          }),
         ),
       ),
     );
@@ -412,20 +348,32 @@ export class CastSessionManager {
         for (;;) {
           const healthyBefore = healthySessions;
           const error = yield* Effect.flip(attempt);
-          patch({ phase: "reconnecting", error: error.message });
           if (healthySessions !== healthyBefore) retries = 0;
           if (!error.retryable || retries >= MAX_RETRIES) return yield* error;
+          patch({ phase: "reconnecting", error: error.message });
           yield* Effect.sleep(RETRY_BASE_MS * 2 ** retries++);
         }
       }),
     ).pipe(
       Effect.catch((error) =>
         Effect.gen({ self: this }, function* () {
-          patch({
-            phase: "failed",
-            error: error.message,
-            visibility: "unknown",
-          });
+          // Someone on the TV closed our app. That is a normal end, so the
+          // display goes back to idle and keeps its project for Show on TV.
+          patch(
+            error.message === "receiverClosed"
+              ? {
+                  phase: "idle",
+                  error: error.message,
+                  visibility: "unknown",
+                  metricsAt: 0,
+                  receivedAt: 0,
+                }
+              : {
+                  phase: "failed",
+                  error: error.message,
+                  visibility: "unknown",
+                },
+          );
           yield* Deferred.fail(ready, error);
         }),
       ),
