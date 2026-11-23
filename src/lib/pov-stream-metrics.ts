@@ -27,7 +27,7 @@ export class PovStreamMetrics {
   private lastReceived: number | null = null;
   private readonly arrivals = new Map<bigint, number>();
   private targetBitrate = 0;
-  private format = "Waiting for video";
+  private format: string | null = null;
   decoder:
     | (() => { pending: number; queued: number; waitingForKey: boolean })
     | null = null;

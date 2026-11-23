@@ -52,7 +52,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { castClient, castStore } from "@/lib/cast-client";
+import { castClient, castErrorMessage, castStore } from "@/lib/cast-client";
 import { isDesktopApp } from "@/lib/desktop";
 import { toFormSchema } from "@/lib/form-validation";
 import i18n from "@/lib/i18n";
@@ -161,7 +161,9 @@ function DeviceActions({
       </div>
       {(connect.error ?? stop.error) && (
         <p role="alert" className="text-sm text-destructive">
-          {connect.error?.message ?? stop.error?.message}
+          {castErrorMessage(
+            connect.error?.message ?? stop.error?.message ?? "",
+          )}
         </p>
       )}
     </div>
@@ -230,7 +232,7 @@ function CastPage() {
             )}
             {row.original.error && (
               <span className="text-xs text-destructive">
-                {row.original.error}
+                {castErrorMessage(row.original.error)}
               </span>
             )}
           </div>
@@ -315,7 +317,9 @@ function CastPage() {
             <Alert variant="destructive">
               <AlertTitle>{t("error")}</AlertTitle>
               <AlertDescription>
-                {error ?? instanceError?.message ?? show.error?.message}
+                {castErrorMessage(
+                  error ?? instanceError?.message ?? show.error?.message ?? "",
+                )}
               </AlertDescription>
             </Alert>
           )}
@@ -516,7 +520,7 @@ function ManualConnection({ instance }: { instance: string | undefined }) {
       </form>
       {connect.error && (
         <p role="alert" className="text-sm text-destructive">
-          {connect.error.message}
+          {castErrorMessage(connect.error.message)}
         </p>
       )}
     </section>
@@ -614,9 +618,9 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {[60, 300, 900, 1800].map((seconds) => (
-                        <SelectItem key={seconds} value={String(seconds)}>
-                          {t("minutes", { count: seconds / 60 })}
+                      {historyItems.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -646,8 +650,11 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="normal">{t("normal")}</SelectItem>
-                      <SelectItem value="large">{t("large")}</SelectItem>
+                      {scaleItems.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -665,7 +672,7 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
       </form>
       {save.error && (
         <p role="alert" className="text-sm text-destructive">
-          {save.error.message}
+          {castErrorMessage(save.error.message)}
         </p>
       )}
     </section>

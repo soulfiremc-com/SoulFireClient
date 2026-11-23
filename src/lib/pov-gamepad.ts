@@ -57,14 +57,12 @@ export class PovGamepad {
         hold(Kind.KEY, 32, button(0));
         hold(Kind.KEY, 340, button(1));
         hold(Kind.KEY, 81, button(2));
-        hold(Kind.KEY, 69, button(3));
         hold(Kind.KEY, 341, button(10));
         hold(Kind.BUTTON, 0, button(7));
         hold(Kind.BUTTON, 1, button(6));
       } else {
         hold(Kind.BUTTON, 0, button(0) || button(7));
         hold(Kind.BUTTON, 1, button(2) || button(6));
-        hold(Kind.KEY, 256, button(1));
         this.x = Math.max(0, Math.min(1, this.x + x * seconds));
         this.y = Math.max(0, Math.min(1, this.y + y * seconds));
         if (x || y)

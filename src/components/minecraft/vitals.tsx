@@ -1,5 +1,5 @@
 import { DrumstickIcon, HeartIcon, type LucideIcon } from "lucide-react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils.tsx";
 import { generateN } from "@/lib/generate-n.ts";
 
@@ -107,6 +107,7 @@ export function HeartsBar({
   size?: number;
   className?: string | undefined;
 }) {
+  const { t } = useTranslation("instance");
   const units = Math.min(10, Math.max(1, Math.ceil(maxHealth / 2)));
   return (
     <Meter
@@ -118,7 +119,10 @@ export function HeartsBar({
       baseClassName="text-muted-foreground/25"
       fillClassName="text-destructive"
       idPrefix="heart"
-      label={`${t("instance:bots.statsPanel.health")}: ${Math.round(health)}/${Math.round(maxHealth)}`}
+      label={t("instance:bots.statsPanel.healthValue", {
+        value: Math.round(health),
+        max: Math.round(maxHealth),
+      })}
       className={className}
     />
   );
@@ -134,6 +138,7 @@ export function FoodBar({
   size?: number;
   className?: string | undefined;
 }) {
+  const { t } = useTranslation("instance");
   return (
     <Meter
       value={foodLevel}
@@ -144,7 +149,10 @@ export function FoodBar({
       baseClassName="text-muted-foreground/25"
       fillClassName="text-warning"
       idPrefix="food"
-      label={`${t("instance:bots.statsPanel.food")}: ${Math.round(foodLevel)}/20`}
+      label={t("instance:bots.statsPanel.foodValue", {
+        value: Math.round(foodLevel),
+        max: 20,
+      })}
       className={className}
     />
   );

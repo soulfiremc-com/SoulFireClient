@@ -17,13 +17,15 @@ import {
   Fiber,
   Layer,
   ManagedRuntime,
-  Schedule,
   Semaphore,
 } from "effect";
 import { newCastRequestId } from "./request-id";
 import { castError, type CastError } from "./errors";
 import { MetricsSource, MetricsSourceLive } from "./metrics-source";
 import { CastTransport, CastTransportLive } from "./transport";
+
+const MAX_RETRIES = 5;
+const RETRY_BASE_MS = 1000;
 
 class CastDiscoveryError extends TaggedFailure<
   CastDiscoveryError,
@@ -192,15 +194,12 @@ export class CastSessionManager {
         this.lock.withPermit(
           Effect.gen({ self: this }, function* () {
             if (this.disposed || epoch !== this.sourceEpoch)
-              return yield* castError("Casting is shutting down.", false);
+              return yield* castError("shuttingDown", false);
             const device = this.registerDevice(requestedDevice);
             const previous = this.sessions.get(device.id);
             if (previous) yield* Fiber.interrupt(previous.fiber);
             if (epoch !== this.sourceEpoch)
-              return yield* castError(
-                "The server connection changed. Connect again.",
-                false,
-              );
+              return yield* castError("sourceChanged", false);
             const generation = ++this.generation;
             const ready = yield* Deferred.make<undefined, CastError>();
             const fiber = this.runtime.runFork(
@@ -295,6 +294,9 @@ export class CastSessionManager {
         const feed = yield* metricsSource.open(source);
         const transport = yield* CastTransport;
         let attempts = 0;
+        // Counts sessions that answered a status request, to reset the retry
+        // budget. A receiver that closes right after launch never counts.
+        let healthySessions = 0;
         const attempt = Effect.scoped(
           Effect.gen({ self: this }, function* () {
             patch({
@@ -340,6 +342,7 @@ export class CastSessionManager {
               }
             };
             patch({ phase: "ready", error: null });
+            let healthy = false;
             yield* Deferred.succeed(ready, undefined);
             const poll = Effect.gen({ self: this }, function* () {
               if (lastSettings !== this.settings) {
@@ -391,6 +394,10 @@ export class CastSessionManager {
                 sessionId: channel.sessionId,
               });
               updateStatus(status);
+              if (!healthy) {
+                healthy = true;
+                healthySessions++;
+              }
               yield* Effect.sleep("3 seconds");
             });
             return yield* Effect.raceFirst(
@@ -399,18 +406,17 @@ export class CastSessionManager {
             );
           }),
         );
-        return yield* attempt.pipe(
-          Effect.tapError((error) =>
-            Effect.sync(() => {
-              patch({ phase: "reconnecting", error: error.message });
-            }),
-          ),
-          Effect.retry({
-            times: 5,
-            schedule: Schedule.exponential("1 second"),
-            while: (error) => error.retryable,
-          }),
-        );
+        // A session that worked earns a fresh retry budget, so occasional
+        // network drops over a long cast never add up to a failure.
+        let retries = 0;
+        for (;;) {
+          const healthyBefore = healthySessions;
+          const error = yield* Effect.flip(attempt);
+          patch({ phase: "reconnecting", error: error.message });
+          if (healthySessions !== healthyBefore) retries = 0;
+          if (!error.retryable || retries >= MAX_RETRIES) return yield* error;
+          yield* Effect.sleep(RETRY_BASE_MS * 2 ** retries++);
+        }
       }),
     ).pipe(
       Effect.catch((error) =>
@@ -427,10 +433,7 @@ export class CastSessionManager {
         (cause) => !Cause.hasInterruptsOnly(cause),
         () =>
           Effect.gen(function* () {
-            const error = castError(
-              "Could not start casting. Check the connection settings.",
-              false,
-            );
+            const error = castError("startFailed", false);
             patch({
               phase: "failed",
               error: error.message,
@@ -440,10 +443,7 @@ export class CastSessionManager {
           }),
       ),
       Effect.onInterrupt(() =>
-        Deferred.fail(
-          ready,
-          castError("The Cast request was canceled.", false),
-        ),
+        Deferred.fail(ready, castError("canceled", false)),
       ),
       Effect.ensuring(
         Effect.sync(() => {

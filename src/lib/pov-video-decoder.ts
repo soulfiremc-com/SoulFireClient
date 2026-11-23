@@ -5,6 +5,7 @@ import type { PovFrame } from "@/generated/soulfire/pov_pb";
 // whenever decoding falls behind, rather than displaying an ever-older queue.
 export class PovVideoDecoder {
   private decoder: VideoDecoder | null = null;
+  private config: VideoDecoderConfig | null = null;
   private configuration = "";
   private generation = 0;
   private waitingForKey = true;
@@ -29,9 +30,7 @@ export class PovVideoDecoder {
     this.error = error;
 
     if (typeof VideoDecoder === "undefined") {
-      throw new TypeError(
-        "Live POV requires a browser with WebCodecs video decoding in a secure context.",
-      );
+      throw new TypeError(t("instance:bots.pov.videoUnsupportedBrowser"));
     }
   }
 
@@ -48,6 +47,7 @@ export class PovVideoDecoder {
     this.generation++;
     if (this.decoder && this.decoder.state !== "closed") this.decoder.close();
     this.decoder = null;
+    this.config = null;
     this.configuration = "";
     this.waitingForKey = true;
     this.lastSequence = 0n;
@@ -82,10 +82,9 @@ export class PovVideoDecoder {
       this.metadata.size >= 8 ||
       (this.lastSequence !== 0n && chunk.sequence !== this.lastSequence + 1n)
     ) {
-      this.recoveries++;
-      this.reset();
-      this.requestKey();
-      return;
+      // A keyframe after a gap is the recovery point, so decode it at once.
+      this.resync(decoder, !chunk.keyFrame);
+      if (!chunk.keyFrame) return;
     }
     this.lastSequence = chunk.sequence;
     if (this.waitingForKey && !chunk.keyFrame) {
@@ -108,13 +107,32 @@ export class PovVideoDecoder {
     }
   }
 
+  // Drop queued work but keep the configured decoder. Rebuilding it would
+  // discard the requested keyframe while codec support is checked again.
+  private resync(decoder: VideoDecoder, requestKey: boolean) {
+    this.recoveries++;
+    this.metadata.clear();
+    this.waitingForKey = true;
+    this.lastSequence = 0n;
+    if (this.config) {
+      decoder.reset();
+      decoder.configure(this.config);
+    }
+    if (!requestKey) return;
+    // Always ask after a gap. Later delta frames reuse the throttle.
+    this.lastKeyRequest = performance.now();
+    this.requestKeyFrame();
+  }
+
   private recover(reason: unknown) {
     if (this.closed) return;
     this.recoveries++;
+    const lastKeyRequest = this.lastKeyRequest;
     this.reset();
-    if (++this.failures > 3) {
+    // Keep the throttle. The next chunk reconfigures and requests a keyframe.
+    this.lastKeyRequest = lastKeyRequest;
+    if (++this.failures > 3)
       this.error(reason instanceof Error ? reason : new Error(String(reason)));
-    } else this.requestKey();
   }
 
   private async configure(chunk: PovFrame, generation: number) {
@@ -153,6 +171,7 @@ export class PovVideoDecoder {
         },
       });
       this.decoder.configure(config);
+      this.config = config;
       // Frames arriving during capability detection were discarded. Resume at a fresh IDR.
       this.requestKey();
     } catch (reason) {

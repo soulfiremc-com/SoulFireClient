@@ -142,18 +142,11 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
         const request = (message: SenderMessage) =>
           Effect.callback<ReceiverMessage, CastError>((resume) => {
             if (closed || !controller) {
-              resume(Effect.fail(castError("The Cast connection is closed.")));
+              resume(Effect.fail(castError("connectionClosed")));
               return undefined;
             }
             if (payloadBytes(message) > MAX_PAYLOAD_BYTES) {
-              resume(
-                Effect.fail(
-                  castError(
-                    "The Cast message exceeds the payload limit.",
-                    false,
-                  ),
-                ),
-              );
+              resume(Effect.fail(castError("payloadTooLarge", false)));
               return undefined;
             }
             pending.set(message.requestId, (reply) => {
@@ -172,9 +165,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
             } catch (error) {
               fail(
                 castError(
-                  error instanceof Error
-                    ? error.message
-                    : "Could not send the Cast message.",
+                  error instanceof Error ? error.message : "sendFailed",
                 ),
               );
             }
@@ -186,7 +177,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
             Effect.mapError((error) =>
               error instanceof CastError
                 ? error
-                : castError("The Cast receiver did not respond."),
+                : castError("receiverNoResponse"),
             ),
           );
 
@@ -210,12 +201,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                   );
                   if (error || !session) {
                     resume(
-                      Effect.fail(
-                        castError(
-                          error?.message ??
-                            `Could not launch SoulFire: ${response?.reason ?? "no receiver session"}.`,
-                        ),
-                      ),
+                      Effect.fail(castError(error?.message ?? "launchFailed")),
                     );
                     return;
                   }
@@ -240,9 +226,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
                           pending.get(reply.value.requestId)?.(reply.value);
                       });
                       app.on("close", () => {
-                        fail(
-                          castError("The Cast receiver closed the session."),
-                        );
+                        fail(castError("receiverClosed"));
                       });
                       resume(Effect.undefined);
                     },
@@ -283,9 +267,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
         }).pipe(
           Effect.timeout("15 seconds"),
           Effect.mapError((error) =>
-            error instanceof CastError
-              ? error
-              : castError("Timed out while launching the Cast receiver."),
+            error instanceof CastError ? error : castError("launchTimeout"),
           ),
         );
 
@@ -300,7 +282,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
             Effect.mapError((error) =>
               error instanceof CastError
                 ? error
-                : castError("The Cast receiver is still starting."),
+                : castError("receiverStarting"),
             ),
           ),
         ).pipe(
@@ -315,10 +297,7 @@ export const makeCastTransport = (loadBindings: () => CastBindings) =>
           ready.version !== PROTOCOL_VERSION ||
           ready.sessionId !== sessionId
         ) {
-          return yield* castError(
-            "Update both SoulFire and the Cast receiver to compatible versions.",
-            false,
-          );
+          return yield* castError("incompatibleVersion", false);
         }
         return {
           sessionId,

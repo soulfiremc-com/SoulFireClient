@@ -6,7 +6,16 @@ import {
   type DisplaySettings,
 } from "@soulfiremc/cast-protocol";
 import { createStore } from "@tanstack/react-store";
-import { Context, Effect, Fiber, Layer, ManagedRuntime, Schema } from "effect";
+import {
+  Context,
+  Effect,
+  Fiber,
+  Layer,
+  ManagedRuntime,
+  Option,
+  Schema,
+} from "effect";
+import { exists, t } from "i18next";
 import { desktop, isDesktopApp } from "@/lib/desktop";
 
 class CastDesktopError extends TaggedFailure<
@@ -49,18 +58,39 @@ const runtime = ManagedRuntime.make(
       fromPromise(() => desktop.cast.setSettings(settings)),
   }),
 );
+// `error` holds a Cast error code or raw message. Pass it through
+// castErrorMessage when rendering, so it follows language changes.
 export const castStore = createStore<{
   state: CastState | null;
   error: string | null;
 }>({ state: null, error: null });
 const accept = (input: unknown) => {
-  const state = Schema.decodeUnknownSync(CastState)(input);
+  const decoded = Schema.decodeUnknownOption(CastState)(input);
+  if (Option.isNone(decoded)) {
+    castStore.setState((current) => ({
+      ...current,
+      error: "invalidState",
+    }));
+    return;
+  }
+  const state = decoded.value;
   castStore.setState((current) =>
     !current.state || state.revision >= current.state.revision
       ? { state, error: null }
       : current,
   );
 };
+
+/**
+ * Translates a Cast error code from the desktop process. Electron prefixes
+ * IPC errors, so the code is the last word after a colon. Other text, such as
+ * a socket or receiver error, is shown as it is.
+ */
+export function castErrorMessage(message: string): string {
+  const code = /(?:^|:\s)([a-z][A-Za-z]*)$/u.exec(message)?.[1];
+  const key = `cast:errors.${code}`;
+  return code !== undefined && exists(key) ? t(key) : message;
+}
 
 export function startCastClient(): () => void {
   if (!isDesktopApp()) return () => {};

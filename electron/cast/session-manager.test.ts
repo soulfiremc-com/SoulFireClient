@@ -65,6 +65,7 @@ async function fixture(
     reject?: boolean;
     history?: number;
     deferSettings?: boolean;
+    holdSettings?: boolean;
   } = {},
 ) {
   const scope = Scope.makeUnsafe();
@@ -126,6 +127,8 @@ async function fixture(
           send: (message) =>
             Effect.gen(function* () {
               entry.messages.push(message);
+              if (options.holdSettings && message.type === "SETTINGS")
+                return yield* Effect.never;
               if (deferSettings && message.type === "SETTINGS") {
                 deferSettings = false;
                 yield* Deferred.await(settingsGate);
@@ -320,6 +323,42 @@ test("transport failure reconnects with backoff and restores history", async () 
   expect(
     f.channel(1).messages.find((message) => message.type === "METRICS")?.reset,
   ).toBe(true);
+});
+
+test("each successful reconnect restores the full retry budget", async () => {
+  const f = await fixture();
+  await f.manager.connect(device, source);
+  for (let drop = 0; drop < 7; drop++) {
+    await until(() =>
+      f.channel(drop).messages.some((message) => message.type === "PING"),
+    );
+    f.channel(drop).fail?.(castError("connection lost"));
+    await until(() => f.channel(drop).closed);
+    // The first retry waits one second again after every successful session.
+    await Effect.runPromise(f.clock.adjust("1 second"));
+    await until(() => f.channels.length === drop + 2);
+  }
+  await until(() => f.device(0).phase === "ready");
+  expect(f.channels).toHaveLength(8);
+});
+
+test("a receiver that fails before its first status reply uses up the retry budget", async () => {
+  const f = await fixture({ holdSettings: true });
+  await f.manager.connect(device, source);
+  for (let drop = 0; drop < 6; drop++) {
+    await until(() =>
+      f.channel(drop).messages.some((message) => message.type === "SETTINGS"),
+    );
+    f.channel(drop).fail?.(castError("receiver closed"));
+    await until(() => f.channel(drop).closed);
+    if (drop < 5) {
+      await Effect.runPromise(f.clock.adjust(`${2 ** drop} seconds`));
+      await until(() => f.channels.length === drop + 2);
+    }
+  }
+  await until(() => f.device(0).phase === "failed");
+  await Effect.runPromise(f.clock.adjust("60 seconds"));
+  expect(f.channels).toHaveLength(6);
 });
 
 test("manual and discovered addresses share one identity and connection", async () => {

@@ -1,7 +1,12 @@
 import { afterEach, beforeEach, expect, jest, test } from "bun:test";
-import { fromBinary } from "@bufbuild/protobuf";
+import { create, fromBinary } from "@bufbuild/protobuf";
 import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
-import { PovInputRequestSchema, PovService } from "@/generated/soulfire/pov_pb";
+import {
+  PovInputEvent_Kind,
+  PovInputEventSchema,
+  PovInputRequestSchema,
+  PovService,
+} from "@/generated/soulfire/pov_pb";
 import { assertDefined } from "@/lib/assert-defined";
 import { startPovSession } from "./pov-session";
 
@@ -144,6 +149,49 @@ test("a connected stream clears the deadline and stop cancels all pending work",
   expect(state.aborted()).toBe(true);
   expect(state.calls()).toBe(1);
   expect(state.errors).toHaveLength(0);
+});
+
+test("a slow reconnect after a working stream retries instead of failing", async () => {
+  const state = fixture("frame");
+  await settle();
+  const first = assertDefined(Socket.instances[0], "No first socket");
+  first.open();
+  first.close();
+  await settle();
+  jest.advanceTimersByTime(500);
+  await settle();
+  expect(state.calls()).toBe(2);
+  jest.advanceTimersByTime(15_000);
+  await settle();
+  expect(state.errors).toHaveLength(0);
+  jest.advanceTimersByTime(500);
+  await settle();
+  expect(state.calls()).toBe(3);
+});
+
+test("input is sent in one batch shortly after it is queued", async () => {
+  const state = fixture("frame");
+  await settle();
+  const socket = assertDefined(Socket.instances[0], "No socket");
+  socket.open();
+  state.session.capture(true);
+  const sent = socket.sent.length;
+  for (const code of [87, 65])
+    state.session.enqueue(
+      create(PovInputEventSchema, {
+        kind: PovInputEvent_Kind.KEY,
+        code,
+        action: 1,
+      }),
+    );
+  expect(socket.sent).toHaveLength(sent);
+  jest.advanceTimersByTime(16);
+  expect(socket.sent).toHaveLength(sent + 1);
+  const request = fromBinary(
+    PovInputRequestSchema,
+    assertDefined(socket.sent.at(-1), "No input"),
+  );
+  expect(request.events.map((event) => event.code)).toEqual([87, 65]);
 });
 
 test("offline bots stop instead of reconnecting forever", async () => {

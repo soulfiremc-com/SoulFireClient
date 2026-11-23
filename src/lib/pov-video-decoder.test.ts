@@ -29,6 +29,7 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     }
     state = "unconfigured";
     decodeQueueSize = 0;
+    resets = 0;
     readonly callbacks: VideoDecoderInit;
 
     constructor(callbacks: VideoDecoderInit) {
@@ -41,6 +42,11 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     }
     close() {
       this.state = "closed";
+    }
+    reset() {
+      this.resets++;
+      this.decodeQueueSize = 0;
+      this.state = "unconfigured";
     }
     decode() {
       this.decodeQueueSize++;
@@ -96,16 +102,27 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     } as VideoFrame);
     assert.equal(displayed, 1);
     assert.equal(closedFrames, 1);
+    const keysBeforeBacklog = requestedKeys;
     decoder.accept(chunk(4));
     decoder.accept(chunk(5));
     decoder.accept(chunk(6));
     decoder.accept(chunk(7));
+    assert.equal(decoders[0].resets, 1, "Reset a decoder that falls behind");
     assert.equal(
       decoders[0].state,
-      "closed",
-      "Reset a decoder that falls behind",
+      "configured",
+      "Keep the configured decoder so the next keyframe can decode at once",
     );
-    assert.ok(requestedKeys > 0);
+    assert.equal(decoders.length, 1);
+    assert.equal(requestedKeys, keysBeforeBacklog + 1);
+    decoder.accept(chunk(9));
+    assert.equal(
+      requestedKeys,
+      keysBeforeBacklog + 1,
+      "Throttle keyframe requests while the recovery keyframe is on its way",
+    );
+    decoder.accept(chunk(10, true));
+    assert.equal(decoders[0].decodeQueueSize, 1, "Resume at the next keyframe");
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     decoders[0].callbacks.output({
       timestamp: 4 * 16_667,
@@ -115,9 +132,24 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     } as VideoFrame);
     assert.equal(displayed, 1, "Never display stale output after reset");
     assert.equal(closedFrames, 2);
-    decoder.accept(chunk(8, true, 800));
+    const keysBeforeGap = requestedKeys;
+    decoder.accept(chunk(15, true));
+    assert.equal(decoders[0].resets, 2, "Reset after a sequence gap");
+    assert.equal(
+      decoders[0].decodeQueueSize,
+      1,
+      "Decode the keyframe that follows a gap",
+    );
+    assert.equal(
+      requestedKeys,
+      keysBeforeGap,
+      "Do not ask for another keyframe when one already arrived",
+    );
+    decoder.accept(chunk(16));
+    assert.equal(decoders[0].decodeQueueSize, 2, "Continue after the keyframe");
+    decoder.accept(chunk(11, true, 800));
     await settle();
-    decoder.accept(chunk(9, true, 800));
+    decoder.accept(chunk(12, true, 800));
     assert.equal(
       decoders[1]?.decodeQueueSize,
       1,

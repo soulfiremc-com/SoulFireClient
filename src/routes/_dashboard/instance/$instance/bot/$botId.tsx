@@ -28,7 +28,6 @@ import {
   Gamepad2Icon,
   GamepadIcon,
   HandIcon,
-  HeartIcon,
   LoaderIcon,
   MonitorIcon,
   MousePointerClickIcon,
@@ -42,7 +41,6 @@ import {
   SquareIcon,
   SquareTerminalIcon,
   Trash2Icon,
-  UtensilsIcon,
   XIcon,
 } from "lucide-react";
 import {
@@ -190,6 +188,11 @@ import { cn, hasInstancePermission } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 import { demoBotInfo } from "@/demo-data.ts";
 import { isOneOf } from "@/lib/is-one-of";
+import { generateN } from "@/lib/generate-n.ts";
+import { formatFixed } from "@/lib/format.ts";
+import { minecraftAvatarUrl } from "@/lib/minecraft-avatar.ts";
+import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
+import { slotKeyAction } from "@/lib/inventory-slot-keys.ts";
 
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/bot/$botId",
@@ -245,13 +248,6 @@ export const Route = createFileRoute(
   },
   component: BotDetail,
 });
-
-function generateN(count: number) {
-  return Array.from(
-    { length: Math.max(0, Math.floor(count)) },
-    (_, index) => index + 1,
-  );
-}
 
 function BotDetailSkeleton() {
   return (
@@ -377,14 +373,24 @@ function getGameModeLabel(
   }
 }
 
-// Helper to get the avatar URL based on online status and skin hash
-function getAvatarUrl(skinTextureHash?: string): string {
-  if (skinTextureHash) {
-    // Use the skin texture hash for online bots with skins
-    return `https://mc-heads.net/body/${skinTextureHash}`;
-  }
-  // Default to Steve for offline bots or bots without skin data
-  return "https://mc-heads.net/body/MHF_Steve";
+/** Creates a bot RPC client, or fails with a translated message in the demo. */
+function createBotClient() {
+  const transport = createTransport();
+  if (transport === null) throw new Error(i18n.t("instance:bots.notConnected"));
+  return createRpcClient(BotService, transport);
+}
+
+/** The server's own reason, without the "[code]" prefix that ConnectError adds. */
+function errorDescription(error: Error): string | undefined {
+  return (
+    (error instanceof ConnectError ? error.rawMessage : error.message) ||
+    undefined
+  );
+}
+
+/** Shows a translated title with the server's reason as the description. */
+function toastError(title: string, error: Error) {
+  toast.error(title, { description: errorDescription(error) });
 }
 
 function BotDetailContent({
@@ -611,7 +617,7 @@ function BotDetailHeader({
     >
       <ItemMedia>
         <img
-          src={getAvatarUrl(liveState?.skinTextureHash)}
+          src={minecraftAvatarUrl("body", liveState?.skinTextureHash)}
           alt={account.lastKnownName}
           className="h-16 w-auto"
           loading="lazy"
@@ -637,46 +643,12 @@ function BotDetailHeader({
       </ItemContent>
       {isOnline && liveState && (
         <div className="ml-auto flex flex-wrap items-center gap-3">
-          <Tooltip>
-            <TooltipTrigger
-              render={<div className="flex items-center gap-1" />}
-            >
-              <HeartIcon className="size-3.5 text-destructive" />
-              <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full bg-destructive transition-all"
-                  style={{
-                    width: `${liveState.maxHealth > 0 ? Math.min(100, (liveState.health / liveState.maxHealth) * 100) : 0}%`,
-                  }}
-                />
-              </div>
-              <span className="text-xs tabular-nums">
-                <span className="sr-only">{t("bots.statsPanel.health")} </span>
-                {liveState.health.toFixed(0)}/{liveState.maxHealth.toFixed(0)}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>{t("bots.statsPanel.health")}</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger
-              render={<div className="flex items-center gap-1" />}
-            >
-              <UtensilsIcon className="size-3.5 text-warning" />
-              <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full bg-warning transition-all"
-                  style={{
-                    width: `${(liveState.foodLevel / 20) * 100}%`,
-                  }}
-                />
-              </div>
-              <span className="text-xs tabular-nums">
-                <span className="sr-only">{t("bots.statsPanel.food")} </span>
-                {liveState.foodLevel}/20
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>{t("bots.statsPanel.food")}</TooltipContent>
-          </Tooltip>
+          <HeartsBar
+            health={liveState.health}
+            maxHealth={liveState.maxHealth}
+            size={12}
+          />
+          <FoodBar foodLevel={liveState.foodLevel} size={12} />
           <Tooltip>
             <TooltipTrigger
               render={<div className="flex items-center gap-1" />}
@@ -694,7 +666,9 @@ function BotDetailHeader({
                 <span className="sr-only">
                   {t("bots.statsPanel.experience")}{" "}
                 </span>
-                L{liveState.experienceLevel}
+                {t("bots.statsPanel.levelShort", {
+                  level: liveState.experienceLevel,
+                })}
               </span>
             </TooltipTrigger>
             <TooltipContent>{t("bots.statsPanel.experience")}</TooltipContent>
@@ -770,7 +744,9 @@ function BotPowerActions({
         }),
       );
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error, action) => {
+      toastError(t(`controls.${action}Toast.error`), error);
+    },
     onSettled: () =>
       Promise.all([
         queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
@@ -1023,16 +999,22 @@ function OverviewTab({
                   </p>
                   <div className="mt-1 grid grid-cols-3 gap-2 font-mono text-sm select-text">
                     <div>
-                      <span className="text-muted-foreground">X:</span>{" "}
-                      {liveState.x.toFixed(2)}
+                      <span className="text-muted-foreground">
+                        {t("bots.positionPanel.x")}:
+                      </span>{" "}
+                      {formatFixed(liveState.x, 2)}
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Y:</span>{" "}
-                      {liveState.y.toFixed(2)}
+                      <span className="text-muted-foreground">
+                        {t("bots.positionPanel.y")}:
+                      </span>{" "}
+                      {formatFixed(liveState.y, 2)}
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Z:</span>{" "}
-                      {liveState.z.toFixed(2)}
+                      <span className="text-muted-foreground">
+                        {t("bots.positionPanel.z")}:
+                      </span>{" "}
+                      {formatFixed(liveState.z, 2)}
                     </div>
                   </div>
                 </div>
@@ -1042,12 +1024,16 @@ function OverviewTab({
                   </p>
                   <div className="mt-1 grid grid-cols-2 gap-2 font-mono text-sm select-text">
                     <div>
-                      <span className="text-muted-foreground">Pitch:</span>{" "}
-                      {liveState.xRot.toFixed(1)}°
+                      <span className="text-muted-foreground">
+                        {t("bots.positionPanel.pitch")}:
+                      </span>{" "}
+                      {formatFixed(liveState.xRot, 1)}°
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Yaw:</span>{" "}
-                      {liveState.yRot.toFixed(1)}°
+                      <span className="text-muted-foreground">
+                        {t("bots.positionPanel.yaw")}:
+                      </span>{" "}
+                      {formatFixed(liveState.yRot, 1)}°
                     </div>
                   </div>
                 </div>
@@ -1164,8 +1150,28 @@ function BotTerminalPanel({
   logScope: LogScope;
   commandScope: CommandScope;
 }) {
+  const { t } = useTranslation("common");
   const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+
+  // The server refuses the bot log stream without this permission.
+  if (
+    !hasInstancePermission(
+      instanceInfo,
+      InstancePermission.INSTANCE_SUBSCRIBE_LOGS,
+    )
+  ) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>{t("terminal.botLogsNoPermission.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("terminal.botLogsNoPermission.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
 
   return (
     <TerminalComponent scope={logScope}>
@@ -1234,6 +1240,7 @@ function InventorySlotDisplay({
   if (onMiddleClick && !isCreativeCatalog) {
     clickHints.push(t("bots.inventoryPanel.clickHints.middle"));
   }
+  clickHints.push(t("bots.inventoryPanel.clickHints.keyboard"));
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -1261,17 +1268,45 @@ function InventorySlotDisplay({
     }
   };
 
+  // Keyboard users get the same click types as mouse users. The native
+  // contextmenu event already covers right clicks from the keyboard.
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const action = slotKeyAction(e);
+    if (action === undefined) return;
+    const handler = {
+      shift: onShiftClick,
+      middle: onMiddleClick,
+    }[action];
+    if (!handler) return;
+    e.preventDefault();
+    handler();
+  };
+
   const baseClasses = `flex size-8 items-center justify-center rounded border text-xs transition-colors ${
     isSelected ? "ring-primary ring-2" : ""
   } ${isClickable ? "cursor-pointer hover:border-primary/50" : ""}`;
 
   const devInfoParts: string[] = [];
-  if (slotIndex !== undefined) devInfoParts.push(`Slot: ${slotIndex}`);
-  if (item) devInfoParts.push(`Item: ${item.itemId}`);
-  if (regionId !== undefined) devInfoParts.push(`Region: ${regionId}`);
+  if (slotIndex !== undefined)
+    devInfoParts.push(
+      t("bots.inventoryPanel.slotInfo.slot", { value: slotIndex }),
+    );
+  if (item)
+    devInfoParts.push(
+      t("bots.inventoryPanel.slotInfo.item", { value: item.itemId }),
+    );
+  if (regionId !== undefined)
+    devInfoParts.push(
+      t("bots.inventoryPanel.slotInfo.region", { value: regionId }),
+    );
   if (containerType !== undefined)
-    devInfoParts.push(`Container: ${containerType}`);
-  if (hotbarIndex !== undefined) devInfoParts.push(`Hotbar: ${hotbarIndex}`);
+    devInfoParts.push(
+      t("bots.inventoryPanel.slotInfo.container", { value: containerType }),
+    );
+  if (hotbarIndex !== undefined)
+    devInfoParts.push(
+      t("bots.inventoryPanel.slotInfo.hotbar", { value: hotbarIndex }),
+    );
 
   if (!item) {
     const description = [
@@ -1286,7 +1321,9 @@ function InventorySlotDisplay({
         onClick={handleClick}
         onContextMenu={handleContextMenu}
         onMouseDown={handleMouseDown}
+        onKeyDown={handleKeyDown}
         disabled={!isClickable}
+        aria-pressed={hotbarIndex === undefined ? undefined : isSelected}
         aria-label={description}
         title={description}
       >
@@ -1321,6 +1358,8 @@ function InventorySlotDisplay({
       onClick={handleClick}
       onContextMenu={handleContextMenu}
       onMouseDown={handleMouseDown}
+      onKeyDown={handleKeyDown}
+      aria-pressed={hotbarIndex === undefined ? undefined : isSelected}
       aria-label={titleParts.join("\n")}
       title={titleParts.join("\n")}
       disabled={!isClickable}
@@ -1372,7 +1411,11 @@ function SlotRegionGrid({
       <p className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
         {isArmor && <ShieldIcon className="size-3" />}
         {region.label}
-        {isOutput && <span className="text-muted-foreground/50">(output)</span>}
+        {isOutput && (
+          <span className="text-muted-foreground/50">
+            {t("bots.inventoryPanel.output")}
+          </span>
+        )}
       </p>
       <div
         className="inline-grid gap-1"
@@ -1501,9 +1544,12 @@ function BotInventoryPanel({
     return result;
   };
 
-  const handleContainerError = useCallback((error: Error) => {
-    toast.error(error.message);
-  }, []);
+  const handleContainerError = useCallback(
+    (error: Error) => {
+      toastError(t("bots.inventoryPanel.actionError"), error);
+    },
+    [t],
+  );
 
   // Mutation for clicking inventory slots
   const { mutate: mutateClick } = useMutation({
@@ -1514,13 +1560,9 @@ function BotInventoryPanel({
       "click",
     ),
     mutationFn: async (request: BotInventoryClickRequest) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return requireSuccess(
-        await Effect.runPromise(botService.clickInventorySlot(request)),
+        await Effect.runPromise(client.clickInventorySlot(request)),
       );
     },
     onError: handleContainerError,
@@ -1538,14 +1580,10 @@ function BotInventoryPanel({
       "close",
     ),
     mutationFn: async (expectedMenuId: string | undefined) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return requireSuccess(
         await Effect.runPromise(
-          botService.closeContainer({ instanceId, botId, expectedMenuId }),
+          client.closeContainer({ instanceId, botId, expectedMenuId }),
         ),
       );
     },
@@ -1564,13 +1602,9 @@ function BotInventoryPanel({
       "button",
     ),
     mutationFn: async (request: BotContainerButtonClickRequest) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return requireSuccess(
-        await Effect.runPromise(botService.clickContainerButton(request)),
+        await Effect.runPromise(client.clickContainerButton(request)),
       );
     },
     onError: handleContainerError,
@@ -1588,13 +1622,9 @@ function BotInventoryPanel({
       "text",
     ),
     mutationFn: async (request: BotSetContainerTextRequest) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return requireSuccess(
-        await Effect.runPromise(botService.setContainerText(request)),
+        await Effect.runPromise(client.setContainerText(request)),
       );
     },
     onError: handleContainerError,
@@ -1608,14 +1638,10 @@ function BotInventoryPanel({
     mutationKey: ["bot", "hotbar", "slot", instanceId, botId],
     scope: { id: `bot-container-${instanceId}-${botId}` },
     mutationFn: async (slot: number) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return requireSuccess(
         await Effect.runPromise(
-          botService.setHotbarSlot({ instanceId, botId, slot }),
+          client.setHotbarSlot({ instanceId, botId, slot }),
         ),
       );
     },
@@ -2252,20 +2278,14 @@ function BotActionsPanel({
     mutationKey,
     scope: { id: `bot-mouse-${instanceId}-${botId}` },
     mutationFn: async (request: BotMouseClickRequest) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
-      const response = await Effect.runPromise(botService.mouseClick(request));
+      const client = createBotClient();
+      const response = await Effect.runPromise(client.mouseClick(request));
       if (!response.success) throw new Error(response.error ?? "");
     },
     onError: (error) =>
       toast.error(t("bots.actionsPanel.clickError"), {
         id: `bot-mouse-error-${instanceId}-${botId}`,
-        description:
-          (error instanceof ConnectError ? error.rawMessage : error.message) ||
-          undefined,
+        description: errorDescription(error),
       }),
   });
   const leftPending = pendingButtons.includes(MouseButton.LEFT_BUTTON);
@@ -2375,20 +2395,18 @@ function BotMovementPanel({
     mutationKey: ["bot", "movement", "state", instanceId, botId],
     scope: { id: mutationScopeId },
     mutationFn: async (state: Partial<typeof movementState>) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return Effect.runPromise(
-        botService.setMovementState({
+        client.setMovementState({
           instanceId,
           botId,
           ...state,
         }),
       );
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toastError(t("bots.movementPanel.movementError"), error);
+    },
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: botInfoQueryOptions.queryKey,
@@ -2400,14 +2418,12 @@ function BotMovementPanel({
     mutationKey: ["bot", "movement", "reset", instanceId, botId],
     scope: { id: mutationScopeId },
     mutationFn: async () => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
-      return Effect.runPromise(botService.resetMovement({ instanceId, botId }));
+      const client = createBotClient();
+      return Effect.runPromise(client.resetMovement({ instanceId, botId }));
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toastError(t("bots.movementPanel.movementError"), error);
+    },
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: botInfoQueryOptions.queryKey,
@@ -2419,20 +2435,18 @@ function BotMovementPanel({
     mutationKey: ["bot", "rotation", instanceId, botId],
     scope: { id: mutationScopeId },
     mutationFn: async (rotation: { yaw: number; pitch: number }) => {
-      const transport = createTransport();
-      if (transport === null) {
-        throw new Error("Not connected");
-      }
-      const botService = createRpcClient(BotService, transport);
+      const client = createBotClient();
       return Effect.runPromise(
-        botService.setRotation({
+        client.setRotation({
           instanceId,
           botId,
           ...rotation,
         }),
       );
     },
-    onError: (error) => toast.error(error.message),
+    onError: (error) => {
+      toastError(t("bots.movementPanel.rotationError"), error);
+    },
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: botInfoQueryOptions.queryKey,
@@ -2727,9 +2741,7 @@ function BotDialogPanel({
       inputValues: Record<string, string>;
       expectedScreenId: string;
     }) => {
-      const transport = createTransport();
-      if (transport === null) throw new Error("Not connected");
-      const service = createRpcClient(BotService, transport);
+      const service = createBotClient();
       const result = await Effect.runPromise(
         service.submitDialog({
           instanceId,
@@ -2740,7 +2752,9 @@ function BotDialogPanel({
         }),
       );
       if (!result.success)
-        throw new Error(result.error || "The dialog action failed.");
+        // The toast title already says the action failed, so only the
+        // server's reason goes in the description.
+        throw new Error(result.error ?? "");
       if (result.clipboard !== undefined)
         void copyMinecraftText(result.clipboard);
       if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
@@ -2757,7 +2771,7 @@ function BotDialogPanel({
         state,
       ),
     onError: (error) => {
-      toast.error(error.message);
+      toastError(t("bots.dialogPanel.submitError"), error);
       if (error instanceof ConnectError && error.code === Code.Aborted)
         void queryClient.invalidateQueries({
           queryKey: dialogQueryOptions.queryKey,
@@ -2846,24 +2860,34 @@ function BotDialogPanel({
   );
 }
 
-function formatDimension(dimension: string): string {
-  // Format dimension ID like "minecraft:overworld" to "Overworld"
-  const name = dimension.replace("minecraft:", "").replaceAll("_", " ");
-  return name.charAt(0).toUpperCase() + name.slice(1);
+const VANILLA_DIMENSIONS = ["overworld", "the_nether", "the_end"] as const;
+
+/** Names vanilla dimensions in the active language and shows other IDs as they are. */
+function formatDimension(
+  dimension: string,
+  t: (key: string) => string,
+): string {
+  const id = dimension.replace(/^minecraft:/u, "");
+  return isOneOf(id, VANILLA_DIMENSIONS)
+    ? t(`bots.visualPanel.dimensions.${id}`)
+    : dimension;
 }
 
-// Convert yaw to compass direction
+// Minecraft yaw 0 faces south and increases clockwise toward west.
+const COMPASS_DIRECTIONS = [
+  "s",
+  "sw",
+  "w",
+  "nw",
+  "n",
+  "ne",
+  "e",
+  "se",
+] as const;
+
 const getCompassDirection = (yaw: number) => {
-  // Normalize yaw to 0-360
   const normalizedYaw = ((yaw % 360) + 360) % 360;
-  if (normalizedYaw >= 337.5 || normalizedYaw < 22.5) return "S";
-  if (normalizedYaw >= 22.5 && normalizedYaw < 67.5) return "SW";
-  if (normalizedYaw >= 67.5 && normalizedYaw < 112.5) return "W";
-  if (normalizedYaw >= 112.5 && normalizedYaw < 157.5) return "NW";
-  if (normalizedYaw >= 157.5 && normalizedYaw < 202.5) return "N";
-  if (normalizedYaw >= 202.5 && normalizedYaw < 247.5) return "NE";
-  if (normalizedYaw >= 247.5 && normalizedYaw < 292.5) return "E";
-  return "SE";
+  return COMPASS_DIRECTIONS[Math.round(normalizedYaw / 45) % 8] ?? "s";
 };
 
 function BotVisualPanel({
@@ -2910,16 +2934,16 @@ function BotVisualPanel({
               <div className="absolute inset-0 rounded-full border-2 border-border bg-muted/30" />
               {/* Cardinal directions */}
               <span className="absolute top-1 left-1/2 -translate-x-1/2 text-xs font-bold text-muted-foreground">
-                N
+                {t("bots.visualPanel.directions.n")}
               </span>
               <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-bold text-muted-foreground">
-                S
+                {t("bots.visualPanel.directions.s")}
               </span>
               <span className="absolute top-1/2 left-1 -translate-y-1/2 text-xs font-bold text-muted-foreground">
-                W
+                {t("bots.visualPanel.directions.w")}
               </span>
               <span className="absolute top-1/2 right-1 -translate-y-1/2 text-xs font-bold text-muted-foreground">
-                E
+                {t("bots.visualPanel.directions.e")}
               </span>
               {/* Direction indicator */}
               <div
@@ -2936,10 +2960,12 @@ function BotVisualPanel({
             </div>
             <div className="text-center">
               <p className="text-lg font-bold select-text">
-                {getCompassDirection(liveState.yRot)}
+                {t(
+                  `bots.visualPanel.directions.${getCompassDirection(liveState.yRot)}`,
+                )}
               </p>
               <p className="text-xs text-muted-foreground select-text">
-                {liveState.yRot.toFixed(1)}°
+                {formatFixed(liveState.yRot, 1)}°
               </p>
             </div>
           </div>
@@ -2971,7 +2997,7 @@ function BotVisualPanel({
                       : t("bots.visualPanel.lookingStraight")}
                 </p>
                 <p className="text-xs text-muted-foreground select-text">
-                  {liveState.xRot.toFixed(1)}°
+                  {formatFixed(liveState.xRot, 1)}°
                 </p>
               </div>
             </div>
@@ -2990,7 +3016,7 @@ function BotVisualPanel({
               </span>{" "}
               <span className="font-mono select-text">
                 {liveState.dimension
-                  ? formatDimension(liveState.dimension)
+                  ? formatDimension(liveState.dimension, t)
                   : t("bots.statsPanel.unknown")}
               </span>
             </div>

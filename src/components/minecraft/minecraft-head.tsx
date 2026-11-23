@@ -1,17 +1,6 @@
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+import { minecraftAvatarUrl } from "@/lib/minecraft-avatar.ts";
 import { cn } from "@/lib/utils.tsx";
-
-const FALLBACK_SKIN = "MHF_Steve";
-
-/// Builds a mc-heads.net avatar URL for a skin texture hash, falling back to
-/// the default Steve head when no skin is available.
-function getMinecraftHeadUrl(
-  skinTextureHash: string | undefined,
-  size: number,
-): string {
-  const resolution = Math.min(512, Math.max(64, Math.round(size * 2)));
-  return `https://mc-heads.net/head/${skinTextureHash ?? FALLBACK_SKIN}/${resolution}`;
-}
 
 /// Renders a Minecraft player head from a skin texture hash.
 export function MinecraftHead({
@@ -25,10 +14,15 @@ export function MinecraftHead({
   name?: string;
   className?: string;
 }) {
+  const { t } = useTranslation("common");
   return (
     <img
-      src={getMinecraftHeadUrl(skinTextureHash, size)}
-      alt={name ?? t("common:minecraftHead")}
+      src={minecraftAvatarUrl(
+        "head",
+        skinTextureHash,
+        Math.min(512, Math.max(64, Math.round(size * 2))),
+      )}
+      alt={name ?? t("minecraftHead")}
       width={size}
       height={size}
       style={{ width: size, height: size }}

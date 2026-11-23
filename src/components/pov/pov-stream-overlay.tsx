@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { formatFixed as fixed, formatNumber } from "@/lib/format";
 import type { PovStreamMetrics } from "@/lib/pov-stream-metrics";
 
 export function PovStreamOverlay({ metrics }: { metrics: PovStreamMetrics }) {
+  const { t } = useTranslation("instance");
   const [stats, setStats] = useState<ReturnType<
     PovStreamMetrics["sample"]
   > | null>(null);
@@ -13,34 +16,60 @@ export function PovStreamOverlay({ metrics }: { metrics: PovStreamMetrics }) {
       clearInterval(timer);
     };
   }, [metrics]);
+  const unknown = t("bots.pov.streamMetrics.unknown");
 
   return (
     <div
       className="pointer-events-none absolute top-2 right-2 z-10 rounded-sm bg-black/80 px-2 py-1.5 font-mono text-2xs/4 text-white tabular-nums"
       aria-hidden="true"
     >
-      <div>{stats?.format ?? "POV stream metrics"}</div>
+      <div>
+        {stats
+          ? (stats.format ?? t("bots.pov.streamMetrics.waitingForVideo"))
+          : t("bots.pov.streamMetrics.title")}
+      </div>
       {stats && (
         <>
           <div>
-            FPS {stats.drawnFps.toFixed(1)} drawn /{" "}
-            {stats.receivedFps.toFixed(1)} received
+            {t("bots.pov.streamMetrics.fps", {
+              drawn: fixed(stats.drawnFps, 1),
+              received: fixed(stats.receivedFps, 1),
+            })}
           </div>
           <div>
-            Video {stats.mbps.toFixed(2)} Mbit/s · {stats.frameKiB.toFixed(1)}{" "}
-            KiB/frame
+            {t("bots.pov.streamMetrics.video", {
+              mbps: fixed(stats.mbps, 2),
+              frameKiB: fixed(stats.frameKiB, 1),
+            })}
           </div>
           <div>
-            Target {stats.targetMbps.toFixed(2)} Mbit/s · Receive→draw{" "}
-            {stats.receiveToDrawMs?.toFixed(1) ?? "–"} ms
+            {t("bots.pov.streamMetrics.target", {
+              mbps: fixed(stats.targetMbps, 2),
+              ms:
+                stats.receiveToDrawMs === null
+                  ? unknown
+                  : fixed(stats.receiveToDrawMs, 1),
+            })}
           </div>
           <div>
-            Decoder {stats.queued ?? 0} queued / {stats.pending ?? 0} pending
-            {stats.waitingForKey ? " · awaiting keyframe" : ""}
+            {t(
+              stats.waitingForKey
+                ? "bots.pov.streamMetrics.decoderWaitingForKey"
+                : "bots.pov.streamMetrics.decoder",
+              {
+                queued: formatNumber(stats.queued ?? 0),
+                pending: formatNumber(stats.pending ?? 0),
+              },
+            )}
           </div>
           <div>
-            Keyframes {stats.keyframes.toFixed(1)}/s · Last frame{" "}
-            {stats.frameAgeMs?.toFixed(0) ?? "–"} ms ago
+            {t("bots.pov.streamMetrics.keyframes", {
+              rate: fixed(stats.keyframes, 1),
+              age:
+                stats.frameAgeMs === null
+                  ? unknown
+                  : fixed(stats.frameAgeMs, 0),
+            })}
           </div>
         </>
       )}

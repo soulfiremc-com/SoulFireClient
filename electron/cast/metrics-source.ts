@@ -92,7 +92,7 @@ export const makeMetricsSource = (
                 }),
               ]);
               if (info.result.case !== "info")
-                throw new Error("The project is unavailable.");
+                throw new Error("projectUnavailable");
               snapshots = mergeSnapshots(
                 snapshots,
                 response.snapshots.flatMap((snapshot) =>
@@ -142,7 +142,7 @@ export const makeMetricsSource = (
             catch: (error) => {
               const code = ConnectError.from(error).code;
               return castError(
-                "Could not fetch Cast metrics from the SoulFire server.",
+                "metricsFailed",
                 ![
                   Code.Unauthenticated,
                   Code.PermissionDenied,
@@ -154,9 +154,7 @@ export const makeMetricsSource = (
           }).pipe(
             Effect.timeout("10 seconds"),
             Effect.mapError((error) =>
-              error._tag === "CastError"
-                ? error
-                : castError("The metrics request timed out."),
+              error._tag === "CastError" ? error : castError("metricsTimeout"),
             ),
           ),
         };

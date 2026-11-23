@@ -16,6 +16,11 @@ import { PovInputQueue } from "@/lib/pov-input-queue";
 import { createRpcClient } from "@/lib/rpc";
 
 const CONNECTION_TIMEOUT_MS = 15_000;
+// Batch input to the display rate, and check the heartbeat and backpressure
+// often enough to send one roughly every 500 ms.
+const INPUT_BATCH_MS = 16;
+const HEARTBEAT_CHECK_MS = 250;
+const SIZE_POLL_MS = 100;
 
 // Bound both input and frame queues. A replacement stream always gets a fresh lease and sequence.
 export function startPovSession(
@@ -46,6 +51,10 @@ export function startPovSession(
   let lastSent = 0;
   let lastCaptured = false;
   let stopped = false;
+  // A timeout before the first connection means the server cannot stream.
+  // After that, a slow reconnect is retried like other transient failures.
+  let connectedOnce = false;
+  let flushTimer: ReturnType<typeof setTimeout> | undefined;
   // stop() sets this flag from outside the reconnect loop.
   const isStopped = () => stopped;
   let attempt: {
@@ -65,6 +74,8 @@ export function startPovSession(
   function stop() {
     if (stopped) return;
     stopped = true;
+    clearTimeout(flushTimer);
+    flushTimer = undefined;
     Effect.runFork(Fiber.interrupt(sessionFiber));
     inputs.reset();
   }
@@ -82,6 +93,13 @@ export function startPovSession(
     if (stopped || !attempt) return;
     ready = false;
     Deferred.doneUnsafe(attempt.failure, Effect.fail(reason));
+  }
+  function scheduleFlush() {
+    if (flushTimer !== undefined || stopped) return;
+    flushTimer = setTimeout(() => {
+      flushTimer = undefined;
+      flush();
+    }, INPUT_BATCH_MS);
   }
   function flush() {
     const current = attempt;
@@ -151,7 +169,9 @@ export function startPovSession(
       Effect.gen(function* () {
         yield* Effect.forkScoped(
           Effect.forever(
-            Effect.sleep("16 millis").pipe(Effect.andThen(Effect.sync(flush))),
+            Effect.sleep(HEARTBEAT_CHECK_MS).pipe(
+              Effect.andThen(Effect.sync(flush)),
+            ),
           ),
         );
         const [displayFps, codecs] = yield* Effect.all(
@@ -172,175 +192,178 @@ export function startPovSession(
         let failures = 0;
         while (!isStopped()) {
           const size = dimensions();
-          if (size) {
-            const result = yield* Effect.result(
-              Effect.scoped(
-                // oxlint-disable-next-line eslint/no-loop-func -- the session runs to completion inside this iteration and resets the failure count for the next one
-                Effect.gen(function* () {
-                  const current = yield* Effect.acquireRelease(
-                    Effect.sync(() => ({
-                      // oxlint-disable-next-line effecttsgo/crypto-random-uuid-in-effect -- Use the stable browser API for secure session IDs.
-                      id: crypto.randomUUID(),
-                      abort: new AbortController(),
-                      socket: null as WebSocket | null,
-                      token: "",
-                      acknowledged: 0n,
-                      connected: Deferred.makeUnsafe<undefined>(),
-                      failure: Deferred.makeUnsafe<never, unknown>(),
-                    })),
-                    (active) =>
-                      Effect.sync(() => {
-                        active.abort.abort();
-                        if (active.socket) {
-                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
-                          active.socket.onopen = null;
-                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
-                          active.socket.onmessage = null;
-                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
-                          active.socket.onerror = null;
-                          // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
-                          active.socket.onclose = null;
-                          active.socket.close();
-                        }
-                        if (attempt === active) {
-                          attempt = null;
-                          ready = false;
-                          captured = false;
-                          inputs.reset();
-                          clipboard = undefined;
-                          readClipboard = false;
-                          clipboardSequence = 0n;
-                        }
-                      }),
-                  );
-                  attempt = current;
-                  sequence = 0n;
-                  lastSent = 0;
-                  lastCaptured = false;
-                  lastAudioEnabled = false;
-                  const watch = client
-                    .watch(
-                      {
-                        instanceId,
-                        botId,
-                        sessionId: current.id,
-                        ...size,
-                        maxFps: size.maxFps ?? displayFps,
-                        codecs,
-                      },
-                      { signal: current.abort.signal },
-                    )
-                    .pipe(
-                      Stream.takeWhile(
-                        () => !stopped && !current.abort.signal.aborted,
-                      ),
-                      Stream.runForEach((frame) =>
-                        Effect.try({
-                          try: () => {
-                            if (!current.socket) {
-                              current.token = frame.inputToken;
-                              if (!current.token)
-                                throw new ConnectError(
-                                  t("instance:bots.pov.inputUpdateServer"),
-                                  Code.Unimplemented,
-                                );
-                              const socket = new WebSocket(inputUrl);
-                              current.socket = socket;
-                              // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
-                              socket.onopen = () => {
-                                if (
-                                  attempt === current &&
-                                  !stopped &&
-                                  !current.abort.signal.aborted
-                                ) {
-                                  Deferred.doneUnsafe(
-                                    current.connected,
-                                    Effect.undefined,
-                                  );
-                                  ready = true;
-                                  flush();
-                                }
-                              };
-                              // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
-                              socket.onmessage = (
-                                event: MessageEvent<unknown>,
-                              ) => {
-                                if (attempt !== current) return;
-                                try {
-                                  if (typeof event.data !== "string")
-                                    throw new TypeError(
-                                      "Invalid input acknowledgement",
-                                    );
-                                  const ack = BigInt(event.data);
-                                  if (
-                                    ack < current.acknowledged ||
-                                    ack > sequence
-                                  )
-                                    throw new Error(
-                                      "Invalid input acknowledgement",
-                                    );
-                                  current.acknowledged = ack;
-                                } catch (error) {
-                                  reconnect(error);
-                                }
-                              };
-                              // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
-                              socket.onerror = socket.onclose = () => {
-                                if (
-                                  attempt === current &&
-                                  !current.abort.signal.aborted
-                                )
-                                  reconnect();
-                              };
-                            }
-                            failures = 0;
-                            if (
-                              (frame.clipboardSequence === 0n ||
-                                frame.clipboardSequence ===
-                                  clipboardSequence) &&
-                              frame.clipboard !== undefined
-                            ) {
-                              clipboardSequence = 0n;
-                              onClipboard(frame.clipboard);
-                            }
-                            if (frame.openUrl !== undefined)
-                              onOpenUrl(frame.openUrl);
-                            onFrame(frame);
-                          },
-                          catch: (error) => error,
-                        }),
-                      ),
-                    );
-                  const deadline = Deferred.await(current.connected).pipe(
-                    Effect.timeoutOrElse({
-                      duration: CONNECTION_TIMEOUT_MS,
-                      orElse: () => Effect.fail(connectionTimeout),
+          if (!size) {
+            // Wait for layout without counting it as a failed connection.
+            yield* Effect.sleep(SIZE_POLL_MS);
+            continue;
+          }
+          const result = yield* Effect.result(
+            Effect.scoped(
+              // oxlint-disable-next-line eslint/no-loop-func -- the session runs to completion inside this iteration and resets the failure count for the next one
+              Effect.gen(function* () {
+                const current = yield* Effect.acquireRelease(
+                  Effect.sync(() => ({
+                    // oxlint-disable-next-line effecttsgo/crypto-random-uuid-in-effect -- Use the stable browser API for secure session IDs.
+                    id: crypto.randomUUID(),
+                    abort: new AbortController(),
+                    socket: null as WebSocket | null,
+                    token: "",
+                    acknowledged: 0n,
+                    connected: Deferred.makeUnsafe<undefined>(),
+                    failure: Deferred.makeUnsafe<never, unknown>(),
+                  })),
+                  (active) =>
+                    Effect.sync(() => {
+                      active.abort.abort();
+                      if (active.socket) {
+                        // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                        active.socket.onopen = null;
+                        // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                        active.socket.onmessage = null;
+                        // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                        active.socket.onerror = null;
+                        // oxlint-disable-next-line unicorn/prefer-add-event-listener -- clears the handlers that the session assigned to this socket
+                        active.socket.onclose = null;
+                        active.socket.close();
+                      }
+                      if (attempt === active) {
+                        attempt = null;
+                        ready = false;
+                        captured = false;
+                        inputs.reset();
+                        clipboard = undefined;
+                        readClipboard = false;
+                        clipboardSequence = 0n;
+                      }
                     }),
-                    Effect.andThen(Effect.never),
+                );
+                attempt = current;
+                sequence = 0n;
+                lastSent = 0;
+                lastCaptured = false;
+                lastAudioEnabled = false;
+                const watch = client
+                  .watch(
+                    {
+                      instanceId,
+                      botId,
+                      sessionId: current.id,
+                      ...size,
+                      maxFps: size.maxFps ?? displayFps,
+                      codecs,
+                    },
+                    { signal: current.abort.signal },
+                  )
+                  .pipe(
+                    Stream.takeWhile(
+                      () => !stopped && !current.abort.signal.aborted,
+                    ),
+                    Stream.runForEach((frame) =>
+                      Effect.try({
+                        try: () => {
+                          if (!current.socket) {
+                            current.token = frame.inputToken;
+                            if (!current.token)
+                              throw new ConnectError(
+                                t("instance:bots.pov.inputUpdateServer"),
+                                Code.Unimplemented,
+                              );
+                            const socket = new WebSocket(inputUrl);
+                            current.socket = socket;
+                            // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
+                            socket.onopen = () => {
+                              if (
+                                attempt === current &&
+                                !stopped &&
+                                !current.abort.signal.aborted
+                              ) {
+                                Deferred.doneUnsafe(
+                                  current.connected,
+                                  Effect.undefined,
+                                );
+                                ready = true;
+                                connectedOnce = true;
+                                flush();
+                              }
+                            };
+                            // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
+                            socket.onmessage = (
+                              event: MessageEvent<unknown>,
+                            ) => {
+                              if (attempt !== current) return;
+                              try {
+                                if (typeof event.data !== "string")
+                                  throw new TypeError(
+                                    "Invalid input acknowledgement",
+                                  );
+                                const ack = BigInt(event.data);
+                                if (
+                                  ack < current.acknowledged ||
+                                  ack > sequence
+                                )
+                                  throw new Error(
+                                    "Invalid input acknowledgement",
+                                  );
+                                current.acknowledged = ack;
+                              } catch (error) {
+                                reconnect(error);
+                              }
+                            };
+                            // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
+                            socket.onerror = socket.onclose = () => {
+                              if (
+                                attempt === current &&
+                                !current.abort.signal.aborted
+                              )
+                                reconnect();
+                            };
+                          }
+                          failures = 0;
+                          if (
+                            (frame.clipboardSequence === 0n ||
+                              frame.clipboardSequence === clipboardSequence) &&
+                            frame.clipboard !== undefined
+                          ) {
+                            clipboardSequence = 0n;
+                            onClipboard(frame.clipboard);
+                          }
+                          if (frame.openUrl !== undefined)
+                            onOpenUrl(frame.openUrl);
+                          onFrame(frame);
+                        },
+                        catch: (error) => error,
+                      }),
+                    ),
                   );
-                  yield* Effect.raceFirst(
-                    watch,
-                    Effect.raceFirst(Deferred.await(current.failure), deadline),
-                  );
-                }),
-              ),
-            );
-            if (Result.isFailure(result)) {
-              const error = result.failure;
-              if (
-                error === connectionTimeout ||
-                (error instanceof ConnectError &&
-                  [
-                    Code.NotFound,
-                    Code.PermissionDenied,
-                    Code.Unauthenticated,
-                    Code.InvalidArgument,
-                    Code.Unimplemented,
-                    Code.FailedPrecondition,
-                  ].includes(error.code))
-              )
-                return yield* Effect.fail(error);
-            }
+                const deadline = Deferred.await(current.connected).pipe(
+                  Effect.timeoutOrElse({
+                    duration: CONNECTION_TIMEOUT_MS,
+                    orElse: () => Effect.fail(connectionTimeout),
+                  }),
+                  Effect.andThen(Effect.never),
+                );
+                yield* Effect.raceFirst(
+                  watch,
+                  Effect.raceFirst(Deferred.await(current.failure), deadline),
+                );
+              }),
+            ),
+          );
+          if (Result.isFailure(result)) {
+            const error = result.failure;
+            if (
+              (error === connectionTimeout && !connectedOnce) ||
+              (error instanceof ConnectError &&
+                [
+                  Code.NotFound,
+                  Code.PermissionDenied,
+                  Code.Unauthenticated,
+                  Code.InvalidArgument,
+                  Code.Unimplemented,
+                  Code.FailedPrecondition,
+                ].includes(error.code))
+            )
+              return yield* Effect.fail(error);
           }
           if (stopped) break;
           onReconnecting();
@@ -368,7 +391,8 @@ export function startPovSession(
     // before accepting the next event so held-input ownership stays ordered.
     if (inputs.isFull) flush();
     if (!acceptsInput()) return;
-    if (!inputs.enqueue(event, source)) reconnect();
+    if (inputs.enqueue(event, source)) scheduleFlush();
+    else reconnect();
   }
 
   return {
@@ -394,6 +418,8 @@ export function startPovSession(
         );
     },
     capture(value: boolean) {
+      // The player confirms capture on every frame. Only a change needs work.
+      if (value === captured) return;
       // Deliver the last edit or click before the server releases held inputs.
       if (captured && !value) flush();
       captured = value;

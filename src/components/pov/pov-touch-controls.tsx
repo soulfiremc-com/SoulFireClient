@@ -1,6 +1,6 @@
 import { useEffect, useEffectEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import {
   type PovInputEvent,
   PovInputEvent_Kind as Kind,
@@ -16,6 +16,7 @@ export function PovTouchControls({
   buttonEvent: (code: number, pressed: boolean) => void;
   screenOpen: boolean;
 }) {
+  const { t } = useTranslation("instance");
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [input] = useState(() => new PovTouchInput());
   const send = (events: PovInputEvent[]) => {
@@ -136,6 +137,7 @@ export function PovTouchToolbar({
   closeMenu: () => void;
   release: () => void;
 }) {
+  const { t } = useTranslation("instance");
   return (
     <div
       className="flex shrink-0 touch-manipulation flex-wrap justify-end gap-2 p-2"

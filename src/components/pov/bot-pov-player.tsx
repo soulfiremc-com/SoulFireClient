@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import { use, useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { t as translate } from "i18next";
 import { useTranslation } from "react-i18next";
+import { useAsRef } from "@/hooks/use-as-ref";
 import { toast } from "sonner";
 import { PovStreamOverlay } from "@/components/pov/pov-stream-overlay";
 import { TransportContext } from "@/components/providers/transport-context";
@@ -102,6 +102,9 @@ function BotPovSession({
 }) {
   const queryClient = useQueryClient();
   const { t } = useTranslation("instance");
+  // The stream effect reads the translator through a ref so that switching
+  // the language does not restart the session.
+  const tRef = useAsRef(t);
   // The demo has no server to stream from, so retrying cannot help.
   const demo = use(TransportContext) === null;
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
@@ -192,7 +195,7 @@ function BotPovSession({
         toast.error(
           reason instanceof Error
             ? reason.message
-            : translate("instance:bots.pov.audioError"),
+            : t("instance:bots.pov.audioError"),
         );
     } finally {
       if (generation === audioGeneration.current) {
@@ -335,7 +338,7 @@ function BotPovSession({
       }
       const transport = createTransport();
       if (!transport)
-        throw new Error(translate("instance:bots.pov.needsServer"));
+        throw new Error(tRef.current("instance:bots.pov.needsServer"));
       session.current = startPovSession(
         transport,
         povInputUrl(),
@@ -387,7 +390,7 @@ function BotPovSession({
       actions.setError(
         reason instanceof Error
           ? reason.message
-          : translate("instance:bots.pov.startError"),
+          : tRef.current("instance:bots.pov.startError"),
       );
     }
     return () => {
@@ -418,6 +421,7 @@ function BotPovSession({
     actions,
     playerStore,
     muteAudio,
+    tRef,
   ]);
 
   useEffect(() => {
@@ -603,35 +607,6 @@ function BotPovSession({
     textInput?.addEventListener("input", text);
     textInput?.addEventListener("compositionend", text);
     textInput?.addEventListener("paste", paste);
-    const gamepad = new PovGamepad();
-    let padFrame = 0;
-    let padTime = win.performance.now();
-    const pollPad = (now: number) => {
-      const seconds = Math.min(0.05, (now - padTime) / 1000);
-      padTime = now;
-      if (
-        playerStore.get().capture === "captured" &&
-        playerStore.get().connected
-      ) {
-        const pad =
-          Array.from(win.navigator.getGamepads()).find(
-            (connectedPad) =>
-              connectedPad?.connected && connectedPad.mapping === "standard",
-          ) ?? null;
-        if (pad?.buttons[8]?.pressed && pad.buttons[9]?.pressed) {
-          release();
-          gamepad.reset();
-        } else
-          for (const event of gamepad.sample(
-            pad,
-            seconds,
-            playerStore.get().screenOpen,
-          ))
-            session.current?.enqueue(event, "gamepad");
-      } else gamepad.reset();
-      padFrame = win.requestAnimationFrame(pollPad);
-    };
-    padFrame = win.requestAnimationFrame(pollPad);
     const touches = new Map<number, { x: number; y: number }>();
     const touchStart = (event: PointerEvent) => {
       if (
@@ -760,7 +735,6 @@ function BotPovSession({
     win.addEventListener("pagehide", release);
     return () => {
       disposed = true;
-      win.cancelAnimationFrame(padFrame);
       canvas.removeEventListener("pointerdown", touchStart);
       canvas.removeEventListener("pointermove", touchMove);
       canvas.removeEventListener("pointerup", touchEnd);
@@ -787,6 +761,42 @@ function BotPovSession({
       win.removeEventListener("pagehide", release);
     };
   }, [canvas, release, actions, playerStore]);
+
+  // Poll gamepads only while the user controls the bot. An idle loop would
+  // wake the browser on every display refresh.
+  useEffect(() => {
+    const win = canvas?.ownerDocument.defaultView;
+    if (!win || !captured) return undefined;
+    const gamepad = new PovGamepad();
+    let padTime = win.performance.now();
+    let padFrame = 0;
+    const pollPad = (now: number) => {
+      const seconds = Math.min(0.05, (now - padTime) / 1000);
+      padTime = now;
+      if (playerStore.get().connected) {
+        const pad =
+          Array.from(win.navigator.getGamepads()).find(
+            (connectedPad) =>
+              connectedPad?.connected && connectedPad.mapping === "standard",
+          ) ?? null;
+        if (pad?.buttons[8]?.pressed && pad.buttons[9]?.pressed) {
+          release();
+          return;
+        }
+        for (const event of gamepad.sample(
+          pad,
+          seconds,
+          playerStore.get().screenOpen,
+        ))
+          session.current?.enqueue(event, "gamepad");
+      } else gamepad.reset();
+      padFrame = win.requestAnimationFrame(pollPad);
+    };
+    padFrame = win.requestAnimationFrame(pollPad);
+    return () => {
+      win.cancelAnimationFrame(padFrame);
+    };
+  }, [canvas, captured, release, playerStore]);
 
   useEffect(() => {
     if (!popup) return undefined;
@@ -850,7 +860,7 @@ function BotPovSession({
       if (!actions.isCurrentCapture(attempt)) return;
       if (!touch)
         toast.info(
-          translate("instance:bots.pov.releaseHint", {
+          t("instance:bots.pov.releaseHint", {
             shortcut: releaseShortcut,
           }),
           {
@@ -873,12 +883,12 @@ function BotPovSession({
       release();
       actions.setCaptureError(
         cause instanceof PovPointerLockError && cause.reason === "cooldown"
-          ? translate("instance:bots.pov.captureCooldown")
+          ? t("instance:bots.pov.captureCooldown")
           : cause instanceof PovPointerLockError && cause.reason === "timeout"
-            ? translate("instance:bots.pov.captureTimeout")
+            ? t("instance:bots.pov.captureTimeout")
             : cause instanceof Error && !(cause instanceof PovPointerLockError)
-              ? `${cause.message} ${translate("instance:bots.pov.captureHint")}`
-              : translate("instance:bots.pov.captureHint"),
+              ? `${cause.message} ${t("instance:bots.pov.captureHint")}`
+              : t("instance:bots.pov.captureHint"),
       );
     }
   }, [
@@ -890,6 +900,7 @@ function BotPovSession({
     touch,
     actions,
     playerStore,
+    t,
   ]);
 
   function detach() {

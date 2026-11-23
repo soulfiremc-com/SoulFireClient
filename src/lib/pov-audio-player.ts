@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 interface AudioPacket {
   data: Uint8Array;
   timestampUs: bigint;
@@ -8,8 +10,6 @@ const CONFIG: AudioDecoderConfig = {
   sampleRate: 48_000,
   numberOfChannels: 2,
 };
-
-let rejectAbort: (reason: unknown) => void = () => {};
 
 // Keep a short jitter buffer and discard stale sound after stalls or reconnects.
 export class PovAudioPlayer {
@@ -30,18 +30,20 @@ export class PovAudioPlayer {
       typeof AudioDecoder === "undefined" ||
       typeof AudioContext === "undefined"
     )
-      throw new TypeError("POV audio is unavailable in this browser.");
+      throw new TypeError(t("instance:bots.pov.audioUnsupportedBrowser"));
     // Resume inside the click handler, before awaiting codec support.
     const context = new AudioContext({
       latencyHint: "interactive",
       sampleRate: 48_000,
     });
+    // Each call owns its rejection, so aborting one start never cancels another.
+    let rejectAbort: ((reason: unknown) => void) | undefined;
     const aborted = new Promise<never>((_resolve, reject) => {
       rejectAbort = reject;
     });
     const cancelled = () => {
       void context.close().catch(() => {});
-      rejectAbort(signal?.reason);
+      rejectAbort?.(signal?.reason);
     };
     signal?.addEventListener("abort", cancelled, { once: true });
     try {
@@ -52,10 +54,10 @@ export class PovAudioPlayer {
         !(await Promise.race([AudioDecoder.isConfigSupported(CONFIG), aborted]))
           .supported
       )
-        throw new Error("This browser cannot decode POV audio.");
+        throw new Error(t("instance:bots.pov.audioDecodeUnsupported"));
       signal?.throwIfAborted();
       if (context.state !== "running")
-        throw new Error("Audio playback was blocked. Click Unmute to retry.");
+        throw new Error(t("instance:bots.pov.audioBlocked"));
       return new PovAudioPlayer(context, volume, onError);
     } catch (error) {
       if (context.state !== "closed") await context.close();
@@ -158,7 +160,7 @@ export class PovAudioPlayer {
         data.sampleRate !== 48_000 ||
         data.numberOfFrames > 4800
       )
-        throw new Error("The server sent an invalid audio frame.");
+        throw new Error(t("instance:bots.pov.audioInvalidFrame"));
       const now = this.context.currentTime;
       let when =
         this.originTimestamp === undefined

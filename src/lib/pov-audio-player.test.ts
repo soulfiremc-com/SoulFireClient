@@ -181,3 +181,48 @@ test("cancelling unmute closes an audio context while browser resume is pending"
     globalThis.AudioDecoder = originalDecoder;
   }
 });
+
+test("cancelling one pending unmute leaves another pending unmute running", async () => {
+  const originalContext = globalThis.AudioContext;
+  const originalDecoder = globalThis.AudioDecoder;
+  class PendingContext {
+    state = "suspended";
+    resume() {
+      return new Promise<void>(() => {});
+    }
+    close() {
+      this.state = "closed";
+      return Promise.resolve();
+    }
+  }
+  try {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
+    globalThis.AudioContext = PendingContext as unknown as typeof AudioContext;
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion, typescript/no-extraneous-class -- the fake class implements only the members this test uses
+    globalThis.AudioDecoder = class {} as unknown as typeof AudioDecoder;
+    const first = new AbortController();
+    const second = new AbortController();
+    const firstStart = PovAudioPlayer.create(0.8, () => {}, first.signal);
+    let secondSettled = false;
+    const secondStart = PovAudioPlayer.create(0.8, () => {}, second.signal);
+    secondStart.then(
+      () => {
+        secondSettled = true;
+      },
+      () => {
+        secondSettled = true;
+      },
+    );
+    first.abort();
+    await assert.rejects(firstStart, (error) => error === first.signal.reason);
+    assert.equal(secondSettled, false);
+    second.abort();
+    await assert.rejects(
+      secondStart,
+      (error) => error === second.signal.reason,
+    );
+  } finally {
+    globalThis.AudioContext = originalContext;
+    globalThis.AudioDecoder = originalDecoder;
+  }
+});
