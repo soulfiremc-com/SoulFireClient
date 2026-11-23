@@ -120,8 +120,8 @@ type SettingsTarget =
 /** Admin pages with their own fixed commands. */
 const STATIC_SERVER_PAGES = new Set(["server", "dev"]);
 
-function settingDestination(
-  target: SettingsTarget,
+export function settingDestination(
+  target: { kind: "project"; id: string } | { kind: "server" },
   pageId: string,
   focus?: { focusNamespace: string; focusKey: string },
 ): LinkOptions {

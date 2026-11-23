@@ -98,6 +98,26 @@ test("search reports matches on other pages", () => {
   assert.deepEqual(findSettingsOnOtherPages("ai", pages, defs, "model"), []);
 });
 
+test("other-page matches skip plugin toggles and fields kept in dialogs", () => {
+  const defs = [
+    stringSetting("proxy", "proxy-check-address", "Proxy check address"),
+    stringSetting("auto-chat", "enabled", "Enable proxy chat"),
+  ];
+  const pages = [
+    create(SettingsPageSchema, { id: "bot", entries: [] }),
+    create(SettingsPageSchema, {
+      id: "proxy",
+      entries: [id("proxy", "proxy-check-address")],
+    }),
+    create(SettingsPageSchema, {
+      id: "auto-chat",
+      entries: [id("auto-chat", "enabled")],
+      enabledIdentifier: id("auto-chat", "enabled"),
+    }),
+  ];
+  assert.deepEqual(findSettingsOnOtherPages("bot", pages, defs, "proxy"), []);
+});
+
 test("plugins group by task and unknown plugins stay available", () => {
   assert.equal(
     classifyPluginTask("Chat Logger logs chat messages"),

@@ -51,3 +51,42 @@ export function reconcileStringListEntries(
     return createStringListEntry(value);
   });
 }
+
+/**
+ * Tracks entries the user cleared. A cleared entry stays on screen while it
+ * has focus, but saves leave it out, so blank text never reaches the server.
+ */
+export function markClearedEntry(
+  cleared: ReadonlySet<string>,
+  entry: StringListEntry,
+): ReadonlySet<string> {
+  const blank = entry.value.trim() === "";
+  if (blank === cleared.has(entry.id)) return cleared;
+  const next = new Set(cleared);
+  if (blank) next.add(entry.id);
+  else next.delete(entry.id);
+  return next;
+}
+
+/** Keeps only cleared entries that are still in the list and still blank. */
+export function keepClearedEntries(
+  cleared: ReadonlySet<string>,
+  entries: readonly StringListEntry[],
+): ReadonlySet<string> {
+  if (cleared.size === 0) return cleared;
+  return new Set(
+    entries
+      .filter((entry) => cleared.has(entry.id) && entry.value.trim() === "")
+      .map((entry) => entry.id),
+  );
+}
+
+/** Returns the values a save writes, without cleared entries. */
+export function getSavedStringListValues(
+  entries: readonly StringListEntry[],
+  cleared: ReadonlySet<string>,
+): string[] {
+  return entries
+    .filter((entry) => !cleared.has(entry.id))
+    .map((entry) => entry.value);
+}

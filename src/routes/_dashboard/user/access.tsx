@@ -11,7 +11,7 @@ import {
   LoaderCircleIcon,
   PlusIcon,
 } from "lucide-react";
-import { use, useId, useState } from "react";
+import { type ReactNode, Suspense, use, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ExternalLink } from "@/components/external-link.tsx";
@@ -34,7 +34,10 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { ClientService } from "@/generated/soulfire/client_pb";
+import {
+  type ClientDataResponse,
+  ClientService,
+} from "@/generated/soulfire/client_pb";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
@@ -48,54 +51,24 @@ export const Route = createFileRoute("/_dashboard/user/access")({
   component: AccessPage,
 });
 
-function AccessCardSkeleton() {
-  return (
-    <div className="container rounded-lg border p-6">
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <Skeleton className="size-5" />
-          <Skeleton className="h-6 w-32" />
-        </div>
-        <Skeleton className="h-4 w-64" />
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-4 w-24" />
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-9 flex-1" />
-            <Skeleton className="h-9 w-20" />
-          </div>
-          <Skeleton className="h-4 w-24" />
-          <div className="flex items-center gap-2">
-            <Skeleton className="h-9 flex-1" />
-            <Skeleton className="h-9 w-20" />
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Skeleton className="h-9 w-32" />
-          <Skeleton className="h-9 w-32" />
-        </div>
-      </div>
-    </div>
-  );
-}
+type ServerInfo = NonNullable<ClientDataResponse["serverInfo"]>;
 
-function AccessSkeleton() {
-  return (
-    <div className="flex flex-col gap-4">
-      <AccessCardSkeleton />
-      <AccessCardSkeleton />
-    </div>
-  );
+/// Reads the server addresses, so only the values that need them wait for the query.
+function WithServerInfo({
+  children,
+}: {
+  children: (serverInfo: ServerInfo | undefined) => ReactNode;
+}) {
+  const { clientDataQueryOptions } = Route.useRouteContext();
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  return children(clientInfo.serverInfo);
 }
 
 function AccessPage() {
   const { t } = useTranslation("common");
 
   return (
-    <UserPageLayout
-      showUserCrumb
-      pageName={t("pageName.access")}
-      loadingSkeleton={<AccessSkeleton />}
-    >
+    <UserPageLayout showUserCrumb pageName={t("pageName.access")}>
       <Content />
     </UserPageLayout>
   );
@@ -105,8 +78,6 @@ function Content() {
   const { t } = useTranslation("common");
   const copyToClipboard = useCopyToClipboard();
   const copySecret = useCopyToClipboard({ sensitive: true });
-  const { clientDataQueryOptions } = Route.useRouteContext();
-  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const transport = use(TransportContext);
   const [webDavToken, setWebDavToken] = useState("");
   const [apiToken, setApiToken] = useState("");
@@ -169,26 +140,32 @@ function Content() {
             <FieldLabel htmlFor={webdavAddressId}>
               {t("access.webdav.publicAddress")}
             </FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                id={webdavAddressId}
-                className="select-all"
-                value={clientInfo.serverInfo?.publicWebdavAddress}
-                readOnly
-              />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  onClick={() => {
-                    void copyToClipboard(
-                      clientInfo.serverInfo?.publicWebdavAddress || "",
-                    );
-                  }}
-                >
-                  <CopyIcon />
-                  <span>{t("access.address.copy")}</span>
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
+            <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+              <WithServerInfo>
+                {(serverInfo) => (
+                  <InputGroup>
+                    <InputGroupInput
+                      id={webdavAddressId}
+                      className="select-all"
+                      value={serverInfo?.publicWebdavAddress}
+                      readOnly
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        onClick={() => {
+                          void copyToClipboard(
+                            serverInfo?.publicWebdavAddress || "",
+                          );
+                        }}
+                      >
+                        <CopyIcon />
+                        <span>{t("access.address.copy")}</span>
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                )}
+              </WithServerInfo>
+            </Suspense>
             <FieldDescription>
               {t("access.webdav.addressDescription")}
             </FieldDescription>
@@ -262,26 +239,32 @@ function Content() {
             <FieldLabel htmlFor={apiAddressId}>
               {t("access.api.publicAddress")}
             </FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                id={apiAddressId}
-                className="select-all"
-                value={clientInfo.serverInfo?.publicApiAddress}
-                readOnly
-              />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  onClick={() => {
-                    void copyToClipboard(
-                      clientInfo.serverInfo?.publicApiAddress || "",
-                    );
-                  }}
-                >
-                  <CopyIcon />
-                  <span>{t("access.address.copy")}</span>
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
+            <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+              <WithServerInfo>
+                {(serverInfo) => (
+                  <InputGroup>
+                    <InputGroupInput
+                      id={apiAddressId}
+                      className="select-all"
+                      value={serverInfo?.publicApiAddress}
+                      readOnly
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        onClick={() => {
+                          void copyToClipboard(
+                            serverInfo?.publicApiAddress || "",
+                          );
+                        }}
+                      >
+                        <CopyIcon />
+                        <span>{t("access.address.copy")}</span>
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                )}
+              </WithServerInfo>
+            </Suspense>
             <FieldDescription>
               {t("access.api.addressDescription")}
             </FieldDescription>
@@ -330,16 +313,20 @@ function Content() {
             )}
             <span>{t("access.token.generate")}</span>
           </Button>
-          <Button
-            variant="secondary"
-            nativeButton={false}
-            render={
-              <ExternalLink href={clientInfo.serverInfo?.publicDocsAddress} />
-            }
-          >
-            <BookOpenTextIcon />
-            <span>{t("access.documentation")}</span>
-          </Button>
+          <Suspense fallback={<Skeleton className="h-9 w-36" />}>
+            <WithServerInfo>
+              {(serverInfo) => (
+                <Button
+                  variant="secondary"
+                  nativeButton={false}
+                  render={<ExternalLink href={serverInfo?.publicDocsAddress} />}
+                >
+                  <BookOpenTextIcon />
+                  <span>{t("access.documentation")}</span>
+                </Button>
+              )}
+            </WithServerInfo>
+          </Suspense>
         </CardFooter>
       </Card>
     </div>

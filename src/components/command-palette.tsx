@@ -113,6 +113,7 @@ import { hasOpenDialog } from "@/lib/keyboard-shortcuts";
 import { fetchInstanceInfo } from "@/lib/instance-info-query";
 import { scriptListQueryOptions } from "@/lib/script-service";
 import type { InstanceInfoQueryData } from "@/lib/types";
+import { createSettingFocusState } from "@/lib/settings-focus";
 import { cn, hasGlobalPermission, hasInstancePermission } from "@/lib/utils";
 import { getServerAddress } from "@/lib/web-rpc";
 
@@ -712,8 +713,15 @@ function CommandPaletteContent({
     try {
       if (command.destination) {
         saveRecents(rememberPaletteCommand(recentIds, command.id));
-        const destination = command.destination;
-        const destinationSearch = destination.search;
+        const destinationSearch = command.destination.search;
+        // A new request focuses the field again, even when the URL already
+        // names it.
+        const destination =
+          destinationSearch &&
+          typeof destinationSearch === "object" &&
+          "focusKey" in destinationSearch
+            ? { ...command.destination, state: createSettingFocusState() }
+            : command.destination;
         // Jumping to a field on this page must not reset its table filters.
         if (
           destinationSearch &&

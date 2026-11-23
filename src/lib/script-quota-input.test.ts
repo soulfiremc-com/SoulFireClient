@@ -14,11 +14,11 @@ test("quota input boundaries remain exact through protobuf serialization", () =>
       maxExecutionCount: 9_007_199_254_740_993n,
       maxExecutionTimeMs: 9_223_372_036_854_775_807n,
       maxConcurrentTriggers: 2_147_483_647,
-      maxStateStoreEntries: -9_223_372_036_854_775_808n,
+      maxStateStoreEntries: 0n,
     }),
     create(ScriptQuotasSchema, {
       maxExecutionCount: 0n,
-      maxConcurrentTriggers: -2_147_483_648,
+      maxConcurrentTriggers: 1,
       disableTimeouts: true,
     }),
   ]) {
@@ -57,7 +57,7 @@ test("empty fields restore defaults while zero and timeout overrides stay explic
   }
 });
 
-test("fractional, incomplete, non-decimal and overflowing quotas identify every invalid field", () => {
+test("fractional, incomplete, negative, non-decimal and overflowing quotas identify every invalid field", () => {
   const inputs = scriptQuotasToInputs(undefined);
   const cases: [ScriptQuotaField, string][] = [
     ["maxExecutionCount", "1.5"],
@@ -68,10 +68,12 @@ test("fractional, incomplete, non-decimal and overflowing quotas identify every 
     ["maxExecutionTimeMs", "Infinity"],
     ["maxConcurrentTriggers", "1.5"],
     ["maxExecutionCount", "9223372036854775808"],
-    ["maxExecutionTimeMs", "-9223372036854775809"],
+    ["maxExecutionTimeMs", "-1"],
+    ["maxStateStoreEntries", "-5"],
+    ["maxConcurrentTriggers", "0"],
     ["maxStateStoreEntries", "9223372036854775808"],
     ["maxConcurrentTriggers", "2147483648"],
-    ["maxConcurrentTriggers", "-2147483649"],
+    ["maxConcurrentTriggers", "-3"],
   ];
   for (const [field, value] of cases) {
     assert.deepEqual(parseScriptQuotaInputs({ ...inputs, [field]: value }), {

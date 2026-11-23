@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  formatSettingNumber,
   getNumericSettingValue,
   updateNumericRange,
 } from "./numeric-setting-value.ts";
@@ -72,4 +73,22 @@ test("correcting an overshoot restores the opposite bound from the edit baseline
     min: 1500,
     max: 3000,
   });
+});
+
+test("setting numbers use the locale and keep grouping off for plain fields", () => {
+  assert.equal(formatSettingNumber(0.5, "de-DE", true), "0,5");
+  assert.equal(
+    formatSettingNumber(2_147_483_647, "en-US", true),
+    "2,147,483,647",
+  );
+  assert.equal(formatSettingNumber(25_565, "en-US", false), "25565");
+});
+
+test("setting numbers format English app variants like en-US", () => {
+  for (const language of ["en-PT", "en-UD", "lol-US"]) {
+    assert.equal(
+      formatSettingNumber(1_234_567.5, language, true),
+      "1,234,567.5",
+    );
+  }
 });

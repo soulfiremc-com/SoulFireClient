@@ -5,6 +5,22 @@ export interface SettingFocus {
   key: string;
 }
 
+declare module "@tanstack/history" {
+  interface HistoryState {
+    /**
+     * Changes on each jump to a setting. Jumping to the setting that the URL
+     * already names would not change the URL, so this lets the page focus it
+     * again.
+     */
+    settingFocusRequest?: string;
+  }
+}
+
+/** History state for a jump to a setting. */
+export function createSettingFocusState(): { settingFocusRequest: string } {
+  return { settingFocusRequest: crypto.randomUUID() };
+}
+
 const valid = (value: unknown): value is string =>
   typeof value === "string" && value.length > 0 && value.length <= 256;
 

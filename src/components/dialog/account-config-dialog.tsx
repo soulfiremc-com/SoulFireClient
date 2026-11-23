@@ -1,4 +1,4 @@
-import { t as translate } from "i18next";
+import type { TFunction } from "i18next";
 import type { JsonValue } from "@bufbuild/protobuf";
 import type { Transport } from "@connectrpc/connect";
 import {
@@ -54,6 +54,7 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { useSettingValueMutation } from "@/hooks/use-setting-value-mutation.ts";
 import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";
@@ -67,6 +68,7 @@ import {
 import { isOneOf } from "@/lib/is-one-of";
 import { requireField } from "@/lib/require-field";
 import { displayText } from "@/lib/display-text";
+import { generateN } from "@/lib/generate-n.ts";
 
 type BotSettingsPage = SettingsPage & {
   plugin?: ServerPlugin | undefined;
@@ -193,18 +195,19 @@ function areJsonValuesEqual(left: JsonValue, right: JsonValue): boolean {
 }
 
 function formatSettingValue(
+  t: TFunction<"instance">,
   definition: SettingsDefinition,
   value: JsonValue,
 ): string {
   if (value === null) {
-    return translate("instance:account.config.value.notSet");
+    return t("account.config.value.notSet");
   }
 
   switch (definition.type.case) {
     case "bool": {
       return value
-        ? translate("instance:account.config.value.on")
-        : translate("instance:account.config.value.off");
+        ? t("account.config.value.on")
+        : t("account.config.value.off");
     }
     case "combo": {
       return (
@@ -215,7 +218,7 @@ function formatSettingValue(
     case "string": {
       const stringValue = displayText(value);
       if (stringValue.length === 0) {
-        return translate("instance:account.config.value.empty");
+        return t("account.config.value.empty");
       }
 
       return stringValue.length > 64
@@ -225,20 +228,20 @@ function formatSettingValue(
     case "stringList": {
       const listValue = Array.isArray(value) ? value : [];
       if (listValue.length === 0) {
-        return translate("instance:account.config.value.empty");
+        return t("account.config.value.empty");
       }
 
       if (listValue.length <= 2) {
         return listValue.map((item) => displayText(item)).join(", ");
       }
 
-      return translate("instance:account.config.value.entries", {
+      return t("account.config.value.entries", {
         count: listValue.length,
       });
     }
     case "minMax": {
       if (typeof value !== "object" || !("min" in value) || !("max" in value)) {
-        return translate("instance:account.config.value.range");
+        return t("account.config.value.range");
       }
 
       return `${displayText(value["min"])} – ${displayText(value["max"])}`;
@@ -252,7 +255,11 @@ function formatSettingValue(
   }
 }
 
-function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
+function matchesSettingQuery(
+  t: TFunction<"instance">,
+  row: ResolvedBotSetting,
+  query: string,
+): boolean {
   const normalizedQuery = query.trim().toLowerCase();
   if (normalizedQuery.length === 0) {
     return true;
@@ -264,8 +271,8 @@ function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
     row.identifier.key,
     getSettingDisplayName(row.definition),
     getSettingDescription(row.definition),
-    formatSettingValue(row.definition, row.effectiveValue),
-    formatSettingValue(row.definition, row.inheritedValue),
+    formatSettingValue(t, row.definition, row.effectiveValue),
+    formatSettingValue(t, row.definition, row.inheritedValue),
   ]
     .filter(Boolean)
     .join(" ")
@@ -273,16 +280,19 @@ function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
     .includes(normalizedQuery);
 }
 
-function sourceLabel(source: ResolvedBotSetting["source"]): string {
+function sourceLabel(
+  t: TFunction<"instance">,
+  source: ResolvedBotSetting["source"],
+): string {
   switch (source) {
     case "bot": {
-      return translate("instance:account.config.source.bot");
+      return t("account.config.source.bot");
     }
     case "instance": {
-      return translate("instance:account.config.source.instance");
+      return t("account.config.source.instance");
     }
     case "default": {
-      return translate("instance:account.config.source.default");
+      return t("account.config.source.default");
     }
     default: {
       return source satisfies never;
@@ -304,14 +314,14 @@ function BotSettingRow(props: {
     props.row.definition,
     `${props.row.identifier.namespace}:${props.row.identifier.key}`,
   );
-  const valueMutation = useMutation({
-    ...settingMutationOptions(
-      { type: "bot", instanceId: props.instanceId, botId: props.botId },
-      props.row.identifier.namespace,
-      props.row.identifier.key,
-      "value",
-    ),
-    mutationFn: async (value: JsonValue) =>
+  const setting = useSettingValueMutation({
+    definition: props.row.definition,
+    target: { type: "bot", instanceId: props.instanceId, botId: props.botId },
+    namespace: props.row.identifier.namespace,
+    settingKey: props.row.identifier.key,
+    storedValue: props.row.effectiveValue,
+    persisted: props.transport !== null,
+    save: async (value: JsonValue) =>
       updateBotConfigEntry(
         props.row.identifier.namespace,
         props.row.identifier.key,
@@ -322,10 +332,7 @@ function BotSettingRow(props: {
         queryClient,
         props.instanceInfoQueryKey,
       ),
-    ...(props.row.definition.type.case !== "stringList" && {
-      onError: onSaveError,
-    }),
-    onSettled: async () => {
+    invalidate: async () => {
       await queryClient.invalidateQueries({
         queryKey: props.instanceInfoQueryKey,
       });
@@ -369,14 +376,10 @@ function BotSettingRow(props: {
           </div>
           <div className="flex items-center gap-3">
             {props.row.matchesInherited && props.row.source === "bot" && (
-              <span>
-                {t("account.config.matchesInheritedValue", {
-                  defaultValue: "Matches inherited value",
-                })}
-              </span>
+              <span>{t("account.config.matchesInheritedValue")}</span>
             )}
             <span className="font-medium text-foreground">
-              {sourceLabel(props.row.source)}
+              {sourceLabel(t, props.row.source)}
             </span>
           </div>
         </div>
@@ -385,16 +388,9 @@ function BotSettingRow(props: {
       <div className={props.showPage ? "mt-2.5" : undefined}>
         <SettingTypeRenderer
           settingType={props.row.definition.type}
-          value={props.row.effectiveValue}
-          changeCallback={
-            props.row.definition.type.case === "stringList" ||
-            props.row.definition.type.case === "string" ||
-            props.row.definition.type.case === "int" ||
-            props.row.definition.type.case === "double" ||
-            props.row.definition.type.case === "minMax"
-              ? valueMutation.mutateAsync
-              : valueMutation.mutate
-          }
+          value={setting.value}
+          pending={setting.pending}
+          changeCallback={setting.changeCallback}
         />
       </div>
 
@@ -404,36 +400,29 @@ function BotSettingRow(props: {
             {props.row.source === "bot" ? (
               <>
                 {props.row.inheritedSource === "instance"
-                  ? t("account.config.instanceValue", {
-                      defaultValue: "Project value",
-                    })
-                  : t("account.config.defaultValue", {
-                      defaultValue: "Default value",
-                    })}
+                  ? t("account.config.instanceValue")
+                  : t("account.config.defaultValue")}
                 :{" "}
                 {formatSettingValue(
+                  t,
                   props.row.definition,
                   props.row.inheritedValue,
                 )}
               </>
             ) : props.row.source === "instance" ? (
               <>
-                {t("account.config.instanceValue", {
-                  defaultValue: "Project value",
-                })}
-                :{" "}
+                {t("account.config.instanceValue")}:{" "}
                 {formatSettingValue(
+                  t,
                   props.row.definition,
                   props.row.inheritedValue,
                 )}
               </>
             ) : (
               <>
-                {t("account.config.defaultValue", {
-                  defaultValue: "Default value",
-                })}
-                :{" "}
+                {t("account.config.defaultValue")}:{" "}
                 {formatSettingValue(
+                  t,
                   props.row.definition,
                   props.row.defaultValue,
                 )}
@@ -443,14 +432,10 @@ function BotSettingRow(props: {
           {!props.showPage && (
             <>
               {props.row.matchesInherited && props.row.source === "bot" && (
-                <span>
-                  {t("account.config.matchesInheritedValue", {
-                    defaultValue: "Matches inherited value",
-                  })}
-                </span>
+                <span>{t("account.config.matchesInheritedValue")}</span>
               )}
               <span className="font-medium text-foreground">
-                {sourceLabel(props.row.source)}
+                {sourceLabel(t, props.row.source)}
               </span>
             </>
           )}
@@ -466,9 +451,7 @@ function BotSettingRow(props: {
             disabled={resetMutation.isPending}
           >
             <RotateCcwIcon className="size-3.5" />
-            {t("account.config.resetOverride", {
-              defaultValue: "Reset override",
-            })}
+            {t("account.config.resetOverride")}
           </Button>
         )}
       </div>
@@ -547,10 +530,10 @@ function DialogSkeleton({ isMobile }: { isMobile: boolean }) {
       <div className="flex min-h-0 flex-1">
         {!isMobile && (
           <div className="hidden w-60 shrink-0 border-r md:block">
-            <div className="space-y-1 p-2">
-              {[1, 2, 3, 4].map((index) => (
+            <div className="flex flex-col gap-1 p-2">
+              {generateN(4).map((id) => (
                 <div
-                  key={index}
+                  key={id}
                   className="flex items-center gap-3 rounded-md p-2"
                 >
                   <Skeleton className="size-4" />
@@ -568,7 +551,7 @@ function DialogSkeleton({ isMobile }: { isMobile: boolean }) {
             </div>
           )}
 
-          <div className="space-y-4 overflow-y-auto p-4">
+          <div className="flex flex-col gap-4 overflow-y-auto p-4">
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />
@@ -706,9 +689,10 @@ function DialogContentInner({
   const overrideSettings = useMemo(
     () =>
       resolvedSettings.filter(
-        (row) => row.source === "bot" && matchesSettingQuery(row, searchQuery),
+        (row) =>
+          row.source === "bot" && matchesSettingQuery(t, row, searchQuery),
       ),
-    [resolvedSettings, searchQuery],
+    [resolvedSettings, searchQuery, t],
   );
 
   const filteredPages = useMemo(
@@ -721,11 +705,11 @@ function DialogContentInner({
               getSettingIdentifierKey(identifier),
             );
 
-            return row ? matchesSettingQuery(row, searchQuery) : false;
+            return row ? matchesSettingQuery(t, row, searchQuery) : false;
           }),
         }))
         .filter((page) => page.entries.length > 0),
-    [botSettingsPages, resolvedSettingsById, searchQuery],
+    [botSettingsPages, resolvedSettingsById, searchQuery, t],
   );
 
   useEffect(() => {
@@ -783,9 +767,9 @@ function DialogContentInner({
                 <SearchIcon className="text-muted-foreground" />
               </InputGroupAddon>
               <InputGroupInput
-                placeholder={t("account.config.search", {
-                  defaultValue: "Search settings",
-                })}
+                type="search"
+                aria-label={t("account.config.search")}
+                placeholder={t("account.config.search")}
                 value={searchQuery}
                 onChange={(event) => {
                   setSearchQuery(event.currentTarget.value);
@@ -807,17 +791,13 @@ function DialogContentInner({
             className="mt-4"
           >
             <ToggleGroupItem value="overrides">
-              {t("account.config.overrides", {
-                defaultValue: "Overrides",
-              })}{" "}
+              {t("account.config.overrides")}{" "}
               <span className="text-xs text-muted-foreground tabular-nums">
                 {resolvedSettings.filter((row) => row.source === "bot").length}
               </span>
             </ToggleGroupItem>
             <ToggleGroupItem value="all">
-              {t("account.config.allSettings", {
-                defaultValue: "All settings",
-              })}{" "}
+              {t("account.config.allSettings")}{" "}
               <span className="text-xs text-muted-foreground tabular-nums">
                 {resolvedSettings.length}
               </span>
@@ -848,23 +828,13 @@ function DialogContentInner({
               <EmptyHeader className="items-start">
                 <EmptyTitle className="text-sm">
                   {searchQuery.trim().length > 0
-                    ? t("account.config.noOverridesMatching", {
-                        defaultValue: "No overrides match this search.",
-                      })
-                    : t("account.config.noOverrides", {
-                        defaultValue:
-                          "This bot does not have any explicit overrides yet.",
-                      })}
+                    ? t("account.config.noOverridesMatching")
+                    : t("account.config.noOverrides")}
                 </EmptyTitle>
                 <EmptyDescription>
                   {searchQuery.trim().length > 0
-                    ? t("account.config.tryDifferentSearch", {
-                        defaultValue: "Try a different search term.",
-                      })
-                    : t("account.config.noOverridesHelp", {
-                        defaultValue:
-                          "Open All settings to inherit values or create the first bot-specific override.",
-                      })}
+                    ? t("account.config.tryDifferentSearch")
+                    : t("account.config.noOverridesHelp")}
                 </EmptyDescription>
               </EmptyHeader>
 
@@ -876,9 +846,7 @@ function DialogContentInner({
                       setView("all");
                     }}
                   >
-                    {t("account.config.openAllSettings", {
-                      defaultValue: "Open all settings",
-                    })}
+                    {t("account.config.openAllSettings")}
                   </Button>
                 </EmptyContent>
               )}
@@ -889,16 +857,22 @@ function DialogContentInner({
         <div className="flex min-h-0 flex-1">
           {!isMobile && (
             <aside className="hidden w-[248px] shrink-0 border-r md:block">
-              <nav className="flex h-full flex-col overflow-y-auto py-1">
+              <nav
+                aria-label={t("account.config.pages")}
+                className="flex h-full flex-col overflow-y-auto py-1"
+              >
                 {filteredPages.map((page) => (
                   <button
                     key={page.id}
                     type="button"
+                    aria-current={
+                      page.id === currentPage?.id ? "page" : undefined
+                    }
                     onClick={() => {
                       setSelectedPage(page.id);
                     }}
                     className={cn(
-                      "flex items-center gap-3 px-4 py-2 text-left text-sm transition-colors",
+                      "flex items-center gap-3 px-4 py-2 text-left text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
                       page.id === currentPage?.id
                         ? "bg-muted text-foreground"
                         : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
@@ -931,24 +905,14 @@ function DialogContentInner({
                   items={pageItems}
                 >
                   <SelectTrigger
-                    aria-label={t("account.config.selectPage", {
-                      defaultValue: "Select a settings page",
-                    })}
+                    aria-label={t("account.config.selectPage")}
                     className="w-full"
                   >
-                    <SelectValue
-                      placeholder={t("account.config.selectPage", {
-                        defaultValue: "Select a settings page",
-                      })}
-                    />
+                    <SelectValue placeholder={t("account.config.selectPage")} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>
-                        {t("account.config.selectPage", {
-                          defaultValue: "Settings pages",
-                        })}
-                      </SelectLabel>
+                      <SelectLabel>{t("account.config.pages")}</SelectLabel>
                       {pageItems.map((page) => (
                         <SelectItem key={page.value} value={page.value}>
                           <div className="flex items-center gap-2">
@@ -1010,16 +974,12 @@ function DialogContentInner({
                   <EmptyHeader className="items-start">
                     <EmptyTitle className="text-sm">
                       {searchQuery.trim().length > 0
-                        ? t("account.config.noSearchResults", {
-                            defaultValue: "No settings match this search.",
-                          })
+                        ? t("account.config.noSearchResults")
                         : t("account.config.noSettings")}
                     </EmptyTitle>
                     {searchQuery.trim().length > 0 ? (
                       <EmptyDescription>
-                        {t("account.config.tryDifferentSearch", {
-                          defaultValue: "Try a different search term.",
-                        })}
+                        {t("account.config.tryDifferentSearch")}
                       </EmptyDescription>
                     ) : null}
                   </EmptyHeader>

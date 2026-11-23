@@ -1,3 +1,5 @@
+import { toIntlLocale } from "./intl-locale.ts";
+
 export function getNumericSettingValue(
   draft: string | number,
   min: number,
@@ -36,4 +38,19 @@ export function updateNumericRange(
   return bound === "min"
     ? { min: value, max: Math.max(baseline.max, value) }
     : { min: Math.min(baseline.min, value), max: value };
+}
+
+/**
+ * Formats a setting number for display, with grouping only where the field
+ * uses it. Takes the app language and maps it to a locale Intl understands.
+ */
+export function formatSettingNumber(
+  value: number,
+  language: string,
+  grouping: boolean,
+): string {
+  return new Intl.NumberFormat(toIntlLocale(language), {
+    useGrouping: grouping,
+    maximumFractionDigits: 20,
+  }).format(value);
 }

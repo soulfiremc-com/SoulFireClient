@@ -4,7 +4,7 @@ import type {
   SettingsEntryIdentifier,
   SettingsPage,
 } from "@/generated/soulfire/common_pb";
-import type { SettingFocus } from "@/lib/settings-focus";
+import { isFocusedSetting, type SettingFocus } from "@/lib/settings-focus";
 
 /**
  * Settings most people need first on built-in pages. The server still owns all
@@ -169,6 +169,18 @@ export function filterSettingsEntries(
   });
 }
 
+/** Entries a page shows in its settings section, without its toggle or dialog fields. */
+export function getPageSettingsEntries(
+  page: SettingsPage,
+): SettingsEntryIdentifier[] {
+  const hidden = PAGE_HIDDEN_SETTINGS[page.id] ?? [];
+  return page.entries.filter(
+    (entry) =>
+      !isFocusedSetting(entry, page.enabledIdentifier) &&
+      !hidden.some((id) => isFocusedSetting(entry, id)),
+  );
+}
+
 /** Finds other settings pages with matches, so search works across pages. */
 export function findSettingsOnOtherPages(
   currentPageId: string,
@@ -180,7 +192,7 @@ export function findSettingsOnOtherPages(
   return pages.flatMap((page) => {
     if (page.id === currentPageId) return [];
     const count = filterSettingsEntries(
-      page.entries,
+      getPageSettingsEntries(page),
       definitions,
       query,
     ).length;

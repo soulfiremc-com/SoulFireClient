@@ -1,11 +1,6 @@
-import { t as translate } from "i18next";
 import type { JsonValue } from "@bufbuild/protobuf";
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { Link, useLocation, useRouteContext } from "@tanstack/react-router";
 import {
   Check,
   CheckIcon,
@@ -24,6 +19,7 @@ import {
 import {
   type ChangeEvent,
   type HTMLInputTypeAttribute,
+  type KeyboardEvent,
   type ReactNode,
   memo,
   use,
@@ -45,7 +41,6 @@ import {
   useSettingsDefinitionByKey,
 } from "@/components/providers/settings-registry-context.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Collapsible,
@@ -99,14 +94,22 @@ import {
   StringSetting_InputType,
 } from "@/generated/soulfire/common_pb";
 import { useCachedState } from "@/hooks/use-cached-state.ts";
-import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { useSettingValueMutation } from "@/hooks/use-setting-value-mutation.ts";
 import { useLocaleNumberFormat } from "@/hooks/use-locale-number-format.tsx";
 import {
   createStringListEntry,
+  getSavedStringListValues,
+  keepClearedEntries,
+  markClearedEntry,
   reconcileStringListEntries,
   type StringListEntry,
 } from "@/lib/string-list-entries.ts";
 import { NumericRangeEditor } from "@/lib/numeric-range-editor.ts";
+import {
+  DebouncedCommit,
+  flushWhenPageHides,
+  SETTING_SAVE_DELAY_MS,
+} from "@/lib/debounced-commit.ts";
 import { searchComboOptions } from "@/lib/combo-option-search.ts";
 import {
   focusSettingElement,
@@ -115,6 +118,7 @@ import {
   type SettingFocus,
 } from "@/lib/settings-focus";
 import {
+  formatSettingNumber,
   getNumericSettingValue,
   type NumericRange,
 } from "@/lib/numeric-setting-value.ts";
@@ -122,6 +126,7 @@ import {
   settingMutationOptions,
   type SettingMutationTarget,
 } from "@/lib/setting-mutation-options.ts";
+import { settingDestination } from "@/lib/command-palette.ts";
 import {
   filterSettingsEntries,
   findSettingsOnOtherPages,
@@ -166,6 +171,7 @@ export function ComponentTitle(props: {
   title: ReactNode;
   description: ReactNode;
   inputId?: string;
+  descriptionId?: string | undefined;
 }) {
   return (
     <div className="flex flex-col gap-0.5">
@@ -175,10 +181,30 @@ export function ComponentTitle(props: {
         <p className="text-sm font-medium">{props.title}</p>
       )}
       {props.description && (
-        <FieldDescription>{props.description}</FieldDescription>
+        <FieldDescription id={props.descriptionId}>
+          {props.description}
+        </FieldDescription>
       )}
     </div>
   );
+}
+
+/**
+ * Saves the latest edit once typing pauses, on unmount, and when the page is
+ * hidden. React does not unmount on reload or window close, so hiding the
+ * page sends a held edit before the pause would end.
+ */
+function useDebouncedSave<T>() {
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
+  const [saver] = useState(() => new DebouncedCommit<T>(SETTING_SAVE_DELAY_MS));
+  useEffect(() => flushWhenPageHides(saver), [saver]);
+  return saver;
+}
+
+function flushOnEnter(saver: { flush: () => void }) {
+  return (event: KeyboardEvent) => {
+    if (event.key === "Enter") saver.flush();
+  };
 }
 
 function inputTypeToHtml(
@@ -211,29 +237,41 @@ function inputTypeToHtml(
 
 function StringComponent(props: {
   id: string;
+  describedBy: string | undefined;
   setting: StringSetting;
   value: string;
   changeCallback: (value: string) => void | Promise<void>;
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const [pendingWrites, setPendingWrites] = useState(0);
+  const [scheduled, setScheduled] = useState(false);
   const [inputValue, setInputValue] = useCachedState(props.value, {
-    shouldSync: !isFocused && pendingWrites === 0,
+    shouldSync: !isFocused && pendingWrites === 0 && !scheduled,
   });
+  const saver = useDebouncedSave<string>();
 
-  const onChangeHandler = async (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const newValue = e.currentTarget.value;
-    setInputValue(newValue);
+  const saveValue = async (value: string) => {
+    setScheduled(false);
     setPendingWrites((count) => count + 1);
     try {
-      await props.changeCallback(newValue);
+      await props.changeCallback(value);
     } catch {
       // The mutation reports the failure and reloads the stored value.
     } finally {
       setPendingWrites((count) => count - 1);
     }
+  };
+  const onChangeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const newValue = e.currentTarget.value;
+    setInputValue(newValue);
+    setScheduled(true);
+    saver.schedule(newValue, (value) => void saveValue(value));
+  };
+  const onBlur = () => {
+    setIsFocused(false);
+    saver.flush();
   };
 
   if (props.setting.inputType === StringSetting_InputType.TEXTAREA) {
@@ -241,19 +279,18 @@ function StringComponent(props: {
       <Textarea
         id={props.id}
         aria-label={props.setting.uiName}
-        aria-busy={pendingWrites > 0}
+        aria-describedby={props.describedBy}
+        aria-busy={pendingWrites > 0 || scheduled}
         value={inputValue}
         placeholder={props.setting.placeholder}
         minLength={props.setting.minLength}
         maxLength={props.setting.maxLength}
         disabled={props.setting.disabled}
-        onChange={(e) => void onChangeHandler(e)}
+        onChange={onChangeHandler}
         onFocus={() => {
           setIsFocused(true);
         }}
-        onBlur={() => {
-          setIsFocused(false);
-        }}
+        onBlur={onBlur}
       />
     );
   }
@@ -262,7 +299,8 @@ function StringComponent(props: {
       id={props.id}
       appearance="settings"
       aria-label={props.setting.uiName}
-      aria-busy={pendingWrites > 0}
+      aria-describedby={props.describedBy}
+      aria-busy={pendingWrites > 0 || scheduled}
       value={inputValue}
       type={inputTypeToHtml(props.setting.inputType)}
       placeholder={props.setting.placeholder}
@@ -270,13 +308,12 @@ function StringComponent(props: {
       maxLength={props.setting.maxLength}
       pattern={props.setting.pattern}
       disabled={props.setting.disabled}
-      onChange={(e) => void onChangeHandler(e)}
+      onChange={onChangeHandler}
+      onKeyDown={flushOnEnter(saver)}
       onFocus={() => {
         setIsFocused(true);
       }}
-      onBlur={() => {
-        setIsFocused(false);
-      }}
+      onBlur={onBlur}
     />
   );
 }
@@ -288,14 +325,16 @@ function NumericSettingField(props: {
   changeCallback: (value: number) => void | Promise<void>;
   onFocus?: () => void;
 }) {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
   const id = useId();
   const localeNumberFormat = useLocaleNumberFormat();
   const [isFocused, setIsFocused] = useState(false);
   const [pendingWrites, setPendingWrites] = useState(0);
+  const [scheduled, setScheduled] = useState(false);
   const [draft, setDraft] = useCachedState<string | number>(props.value, {
-    shouldSync: !isFocused && pendingWrites === 0,
+    shouldSync: !isFocused && pendingWrites === 0 && !scheduled,
   });
+  const saver = useDebouncedSave<number>();
   const decimalScale =
     "decimalScale" in props.setting ? props.setting.decimalScale : 0;
   const invalid =
@@ -306,7 +345,16 @@ function NumericSettingField(props: {
       decimalScale === 0,
     ) === undefined;
   const errorId = `${id}-error`;
+  const descriptionId = props.entry.description
+    ? `${id}-description`
+    : undefined;
+  const describedBy =
+    [descriptionId, invalid ? errorId : undefined].filter(Boolean).join(" ") ||
+    undefined;
+  const formatBound = (value: number) =>
+    formatSettingNumber(value, i18n.language, props.setting.thousandSeparator);
   const saveValue = async (value: number) => {
+    setScheduled(false);
     setPendingWrites((count) => count + 1);
     try {
       await props.changeCallback(value);
@@ -321,10 +369,11 @@ function NumericSettingField(props: {
     <SettingInputLayout
       invalid={invalid}
       disabled={props.setting.disabled}
-      busy={pendingWrites > 0}
+      busy={pendingWrites > 0 || scheduled}
       title={
         <ComponentTitle
           inputId={id}
+          descriptionId={descriptionId}
           title={props.entry.uiName}
           description={props.entry.description}
         />
@@ -357,7 +406,14 @@ function NumericSettingField(props: {
             props.setting.max,
             decimalScale === 0,
           );
-          if (value !== undefined) void saveValue(value);
+          if (value === undefined) {
+            // Keep the stored value instead of an earlier valid prefix.
+            saver.cancel();
+            setScheduled(false);
+            return;
+          }
+          setScheduled(true);
+          saver.schedule(value, (next) => void saveValue(next));
         }}
         placeholder={props.entry.placeholder}
         inputMode={decimalScale === 0 ? "numeric" : "decimal"}
@@ -366,7 +422,8 @@ function NumericSettingField(props: {
         step={props.setting.step}
         disabled={props.setting.disabled}
         aria-invalid={invalid}
-        aria-describedby={invalid ? errorId : undefined}
+        aria-describedby={describedBy}
+        onKeyDown={flushOnEnter(saver)}
         onFocusCapture={() => {
           // NumericFormat defers onFocus, so capture the baseline before a change.
           props.onFocus?.();
@@ -374,14 +431,15 @@ function NumericSettingField(props: {
         }}
         onBlur={() => {
           setIsFocused(false);
+          saver.flush();
         }}
         customInput={Input}
       />
       {invalid && (
         <FieldError id={errorId}>
           {t("settingsPage.invalidNumberToast.description", {
-            min: props.setting.min,
-            max: props.setting.max,
+            min: formatBound(props.setting.min),
+            max: formatBound(props.setting.max),
           })}
         </FieldError>
       )}
@@ -394,6 +452,7 @@ function MinMaxSettingField(props: {
   value: NumericRange;
   changeCallback: (value: NumericRange) => void | Promise<void>;
 }) {
+  const { t } = useTranslation("common");
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [editor] = useState(() => new NumericRangeEditor(props.value));
   const startEdit = () => {
@@ -404,7 +463,7 @@ function MinMaxSettingField(props: {
       <FieldLegend className="sr-only">
         {props.setting.minEntry?.uiName ??
           props.setting.maxEntry?.uiName ??
-          translate("common:settingsPage.minMaxLegend")}
+          t("settingsPage.minMaxLegend")}
       </FieldLegend>
       <FieldGroup className="gap-4">
         <NumericSettingField
@@ -475,6 +534,7 @@ const COMBO_RESULT_LIMIT = 50;
 
 function ComboComponent(props: {
   id: string;
+  describedBy: string | undefined;
   setting: ComboSetting;
   value: string;
   pending?: boolean | undefined;
@@ -517,6 +577,7 @@ function ComboComponent(props: {
             // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role, jsx-a11y/role-has-required-aria-props -- custom combobox with a filtered popup list, which a native select cannot provide; PopoverTrigger adds aria-controls for the popup it opens
             role="combobox"
             aria-label={props.setting.uiName}
+            aria-describedby={props.describedBy}
             aria-expanded={open}
             aria-busy={props.pending || undefined}
             className="w-full justify-between"
@@ -602,12 +663,21 @@ function StringListComponent(props: {
     entries: StringListEntry[];
     source: string[] | undefined;
     pending: number;
+    edited: boolean;
+    cleared: ReadonlySet<string>;
   }>(() => ({
     entries: props.value.map(createStringListEntry),
     source: props.value,
     pending: 0,
+    edited: false,
+    cleared: new Set(),
   }));
-  if (list.pending === 0 && list.source !== props.value) {
+  if (
+    list.pending === 0 &&
+    !list.edited &&
+    list.cleared.size === 0 &&
+    list.source !== props.value
+  ) {
     setList({
       ...list,
       entries: reconcileStringListEntries(list.entries, props.value),
@@ -616,22 +686,30 @@ function StringListComponent(props: {
   }
   const [newEntryInput, setNewEntryInput] = useState("");
   const draftRevision = useRef(0);
+  const saver = useDebouncedSave<{
+    entries: StringListEntry[];
+    cleared: ReadonlySet<string>;
+  }>();
 
-  const saveEntries = async (entries: StringListEntry[]) => {
+  const saveEntries = async (
+    entries: StringListEntry[],
+    cleared: ReadonlySet<string> = list.cleared,
+  ) => {
+    // This save includes any edit that was still waiting for a pause.
+    saver.cancel();
+    const kept = keepClearedEntries(cleared, entries);
     setList((current) => ({
       entries,
       source: undefined,
       pending: current.pending + 1,
+      edited: false,
+      cleared: kept,
     }));
     try {
-      await props.changeCallback(entries.map((entry) => entry.value));
+      await props.changeCallback(getSavedStringListValues(entries, kept));
       return true;
     } catch {
-      toast.error(
-        t("settingsPage.stringList.saveError", {
-          name: props.setting.uiName,
-        }),
-      );
+      // The setting mutation reports the failure.
       return false;
     } finally {
       setList((current) => ({ ...current, pending: current.pending - 1 }));
@@ -650,17 +728,29 @@ function StringListComponent(props: {
     }
   };
   const updateId = (id: string, value: string) => {
-    void saveEntries(
-      list.entries.map((entry) =>
-        entry.id === id ? { ...entry, value } : entry,
-      ),
+    const entries = list.entries.map((entry) =>
+      entry.id === id ? { ...entry, value } : entry,
+    );
+    const cleared = markClearedEntry(list.cleared, { id, value });
+    setList((current) => ({
+      ...current,
+      entries,
+      source: undefined,
+      edited: true,
+      cleared,
+    }));
+    saver.schedule(
+      { entries, cleared },
+      (next) => void saveEntries(next.entries, next.cleared),
     );
   };
   const deleteId = (id: string) => {
     void saveEntries(list.entries.filter((entry) => entry.id !== id));
   };
   const removeAll = async () => {
-    const previous = list.entries;
+    const previous = list.entries.filter(
+      (entry) => !list.cleared.has(entry.id),
+    );
     if (!(await saveEntries([]))) return;
     toast.success(
       t("settingsPage.stringList.removedAll", {
@@ -671,7 +761,7 @@ function StringListComponent(props: {
         action: {
           label: t("settingsPage.stringList.undo"),
           onClick: () => {
-            void saveEntries(previous);
+            void saveEntries(previous, new Set());
           },
         },
       },
@@ -746,6 +836,17 @@ function StringListComponent(props: {
               onChange={(e) => {
                 updateId(item.id, e.currentTarget.value);
               }}
+              onKeyDown={flushOnEnter(saver)}
+              onBlur={() => {
+                // A cleared entry is removed instead of saved as blank text.
+                // Switching to another window keeps it, so a replacement
+                // can be pasted in place.
+                if (item.value.trim() === "" && document.hasFocus()) {
+                  deleteId(item.id);
+                } else {
+                  saver.flush();
+                }
+              }}
               disabled={props.setting.disabled}
             />
             <InputGroupAddon align="inline-end">
@@ -784,6 +885,12 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
   pending?: boolean | undefined;
 }) {
   const inputId = useId();
+  const descriptionId =
+    props.settingType.case !== undefined &&
+    props.settingType.case !== "minMax" &&
+    props.settingType.value.description
+      ? `${inputId}-description`
+      : undefined;
   switch (props.settingType.case) {
     case "string": {
       return (
@@ -792,6 +899,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
           title={
             <ComponentTitle
               inputId={inputId}
+              descriptionId={descriptionId}
               title={props.settingType.value.uiName}
               description={props.settingType.value.description}
             />
@@ -799,6 +907,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         >
           <StringComponent
             id={inputId}
+            describedBy={descriptionId}
             setting={props.settingType.value}
             value={typeof props.value === "string" ? props.value : ""}
             changeCallback={props.changeCallback}
@@ -850,6 +959,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
           title={
             <ComponentTitle
               inputId={inputId}
+              descriptionId={descriptionId}
               title={props.settingType.value.uiName}
               description={props.settingType.value.description}
             />
@@ -857,6 +967,7 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
         >
           <ComboComponent
             id={inputId}
+            describedBy={descriptionId}
             setting={props.settingType.value}
             value={typeof props.value === "string" ? props.value : ""}
             pending={props.pending}
@@ -902,17 +1013,38 @@ export const SettingTypeRenderer = memo(function SettingTypeRenderer(props: {
   }
 });
 
-function formatDefault(value: JsonValue, definition: SettingsDefinition) {
-  if (definition.type.case === "stringList") {
-    return undefined;
+function formatDefault(
+  value: JsonValue,
+  definition: SettingsDefinition,
+  formatNumber: (value: number) => string,
+  formatRange: (min: string, max: string) => string,
+) {
+  switch (definition.type.case) {
+    case "stringList": {
+      return undefined;
+    }
+    case "combo": {
+      return definition.type.value.options.find((option) => option.id === value)
+        ?.displayName;
+    }
+    case "minMax": {
+      return isNumericRange(value)
+        ? formatRange(formatNumber(value.min), formatNumber(value.max))
+        : undefined;
+    }
+    case "int":
+    case "double": {
+      return typeof value === "number" ? formatNumber(value) : undefined;
+    }
+    case "string":
+    case "bool":
+    case undefined:
+    default: {
+      return typeof value === "boolean" || value === ""
+        ? undefined
+        : displayText(value);
+    }
   }
-  if (definition.type.case === "combo") {
-    return definition.type.value.options.find((option) => option.id === value)
-      ?.displayName;
-  }
-  return typeof value === "boolean" || value === ""
-    ? undefined
-    : displayText(value);
 }
 
 /** Reports the save result next to the setting that changed. */
@@ -921,21 +1053,34 @@ function SettingStatusRow(props: {
   value: JsonValue;
   status: "idle" | "pending" | "success" | "error";
   persisted: boolean;
-  overridden: boolean;
   onReset: (value: JsonValue) => void;
 }) {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+  const type = props.definition.type;
   const defaultValue = getSettingDefaultValue(props.definition);
   const label =
     defaultValue === undefined
       ? undefined
-      : formatDefault(defaultValue, props.definition);
+      : formatDefault(
+          defaultValue,
+          props.definition,
+          (value) =>
+            formatSettingNumber(
+              value,
+              i18n.language,
+              (type.case === "int" ||
+                type.case === "double" ||
+                type.case === "minMax") &&
+                type.value.thousandSeparator,
+            ),
+          (min, max) => t("settingsPage.rangeValue", { min, max }),
+        );
   const isDefault =
     defaultValue === undefined || isSameSettingValue(props.value, defaultValue);
-  const canReset = !isDefault && !props.definition.type.value?.disabled;
+  const canReset = !isDefault && !type.value?.disabled;
   const showStatus =
     props.status === "error" || (props.persisted && props.status !== "idle");
-  if (!props.overridden && label === undefined && !canReset && !showStatus) {
+  if (label === undefined && !canReset && !showStatus) {
     return null;
   }
   return (
@@ -943,9 +1088,6 @@ function SettingStatusRow(props: {
       data-slot="setting-status"
       className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground"
     >
-      {props.overridden && (
-        <Badge variant="secondary">{t("settingsPage.overridden")}</Badge>
-      )}
       {label !== undefined && (
         <span>{t("settingsPage.defaultValue", { value: label })}</span>
       )}
@@ -986,36 +1128,10 @@ function SettingStatusRow(props: {
   );
 }
 
-/**
- * Picks the value a setting shows. Toggles and option pickers have no draft
- * state, so they show the chosen value while it saves instead of waiting for
- * the refetch. Without a server, the chosen value stays in this session.
- */
-function getShownSettingValue(
-  definition: SettingsDefinition | undefined,
-  storedValue: JsonValue,
-  mutation: { isPending: boolean; variables: JsonValue | undefined },
-  unsaved: { value: JsonValue } | undefined,
-): JsonValue {
-  if (unsaved) return unsaved.value;
-  const type = definition?.type.case;
-  if (
-    mutation.isPending &&
-    mutation.variables !== undefined &&
-    (type === "bool" || type === "combo")
-  ) {
-    return mutation.variables;
-  }
-  return storedValue;
-}
+/** Settings pages edit project or server settings. Bot overrides use the account dialog. */
+type SettingsPageTarget = Exclude<SettingMutationTarget, { type: "bot" }>;
 
-/**
- * Component that renders a setting field by its identifier.
- * This is the main component for mounting settings anywhere in the UI.
- * It looks up the setting definition from context and handles value management.
- */
-function SettingField(props: {
-  settingId: SettingsEntryIdentifier;
+interface SettingFieldProps {
   invalidateQuery: () => Promise<void>;
   updateConfigEntry: (
     namespace: string,
@@ -1023,48 +1139,62 @@ function SettingField(props: {
     value: JsonValue,
   ) => Promise<void>;
   config: BaseSettings;
-  mutationTarget: SettingMutationTarget;
+  mutationTarget: SettingsPageTarget;
   persisted: boolean;
-  focused?: boolean;
-}) {
-  const definition = useSettingsDefinition(props.settingId);
+}
+
+/**
+ * Component that renders a setting field by its identifier.
+ * This is the main component for mounting settings anywhere in the UI.
+ * It looks up the setting definition from context and handles value management.
+ */
+function SettingField(
+  props: SettingFieldProps & {
+    definition: SettingsDefinition | undefined;
+    namespace: string;
+    settingKey: string;
+    focused?: boolean;
+    /** Changes on each jump to a setting, so a repeated jump focuses again. */
+    focusRequest?: string | undefined;
+  },
+) {
+  const { definition } = props;
   const fieldRef = useRef<HTMLDivElement>(null);
-  const didFocus = useRef(false);
+  // The focus request this field already handled, or undefined.
+  const handledRequest = useRef<string | null | undefined>(undefined);
+  const focusRequest = props.focusRequest ?? null;
   useEffect(() => {
-    if (props.focused && definition && fieldRef.current && !didFocus.current) {
+    if (!props.focused) {
+      // Focus again when a later navigation points at this setting.
+      handledRequest.current = undefined;
+      return undefined;
+    }
+    if (
+      definition &&
+      fieldRef.current &&
+      handledRequest.current !== focusRequest
+    ) {
       return focusSettingElement(fieldRef.current, () => {
-        didFocus.current = true;
+        handledRequest.current = focusRequest;
       });
     }
     return undefined;
-  }, [props.focused, definition]);
-  const namespace = props.settingId.namespace;
-  const key = props.settingId.key;
-  const onSaveError = useSettingSaveError(definition, `${namespace}:${key}`);
+  }, [props.focused, focusRequest, definition]);
   const storedValue = useMemo(
     () => getSettingValue(props.config, definition),
     [props.config, definition],
   );
-  const [unsavedValue, setUnsavedValue] = useState<{ value: JsonValue }>();
-  const setValueMutation = useMutation({
-    ...settingMutationOptions(props.mutationTarget, namespace, key, "value"),
-    onMutate: (value: JsonValue) => {
-      if (!props.persisted) setUnsavedValue({ value });
-    },
-    mutationFn: async (value: JsonValue) => {
-      await props.updateConfigEntry(namespace, key, value);
-    },
-    ...(definition?.type.case !== "stringList" && { onError: onSaveError }),
-    onSettled: async () => {
-      await props.invalidateQuery();
-    },
-  });
-  const value = getShownSettingValue(
+  const setting = useSettingValueMutation({
     definition,
+    target: props.mutationTarget,
+    namespace: props.namespace,
+    settingKey: props.settingKey,
     storedValue,
-    setValueMutation,
-    unsavedValue,
-  );
+    persisted: props.persisted,
+    save: async (value) =>
+      props.updateConfigEntry(props.namespace, props.settingKey, value),
+    invalidate: props.invalidateQuery,
+  });
 
   if (!definition) {
     return null;
@@ -1084,39 +1214,52 @@ function SettingField(props: {
     >
       <SettingTypeRenderer
         settingType={definition.type}
-        value={value}
-        pending={setValueMutation.isPending}
-        changeCallback={
-          definition.type.case === "stringList" ||
-          definition.type.case === "string" ||
-          definition.type.case === "int" ||
-          definition.type.case === "double" ||
-          definition.type.case === "minMax"
-            ? setValueMutation.mutateAsync
-            : setValueMutation.mutate
-        }
+        value={setting.value}
+        pending={setting.pending}
+        changeCallback={setting.changeCallback}
       />
       <SettingStatusRow
         definition={definition}
-        value={value}
-        status={setValueMutation.status}
+        value={setting.value}
+        status={setting.status}
         persisted={props.persisted}
-        overridden={
-          props.mutationTarget.type === "bot" &&
-          props.config.settings[namespace]?.[key] !== undefined
-        }
-        onReset={(resetValue) => {
-          setValueMutation.mutate(
-            resetValue,
-            // String lists report other save errors inside the list.
-            definition.type.case === "stringList"
-              ? { onError: onSaveError }
-              : {},
-          );
-        }}
+        onReset={setting.reset}
       />
     </div>
   );
+}
+
+function SettingFieldById(
+  props: SettingFieldProps & {
+    settingId: SettingsEntryIdentifier;
+    focused: boolean;
+    focusRequest: string | undefined;
+  },
+) {
+  const { settingId, ...rest } = props;
+  const definition = useSettingsDefinition(settingId);
+  return (
+    <SettingField
+      {...rest}
+      definition={definition}
+      namespace={settingId.namespace}
+      settingKey={settingId.key}
+    />
+  );
+}
+
+/**
+ * Component that renders a setting field by namespace and key strings.
+ * Convenience wrapper around SettingField for when you have separate strings.
+ */
+function SettingFieldByKey(
+  props: SettingFieldProps & { namespace: string; settingKey: string },
+) {
+  const definition = useSettingsDefinitionByKey(
+    props.namespace,
+    props.settingKey,
+  );
+  return <SettingField {...props} definition={definition} />;
 }
 
 export function InstanceSettingFieldByKey(props: {
@@ -1135,6 +1278,7 @@ export function InstanceSettingFieldByKey(props: {
     select: (context) => context.instanceInfoQueryOptions,
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const persisted = use(TransportContext) !== null;
   const settingsRegistry = useMemo(
     () => createSettingsRegistry(instanceInfo.settingsDefinitions),
     [instanceInfo.settingsDefinitions],
@@ -1152,104 +1296,10 @@ export function InstanceSettingFieldByKey(props: {
           ).scope.id
         }
         {...props}
+        persisted={persisted}
         mutationTarget={{ type: "instance", instanceId: instanceInfo.id }}
       />
     </SettingsRegistryContext.Provider>
-  );
-}
-
-/**
- * Component that renders a setting field by namespace and key strings.
- * Convenience wrapper around SettingField for when you have separate strings.
- */
-function SettingFieldByKey(props: {
-  namespace: string;
-  settingKey: string;
-  invalidateQuery: () => Promise<void>;
-  updateConfigEntry: (
-    namespace: string,
-    key: string,
-    value: JsonValue,
-  ) => Promise<void>;
-  config: BaseSettings;
-  mutationTarget: SettingMutationTarget;
-}) {
-  const definition = useSettingsDefinitionByKey(
-    props.namespace,
-    props.settingKey,
-  );
-  const onSaveError = useSettingSaveError(
-    definition,
-    `${props.namespace}:${props.settingKey}`,
-  );
-  const persisted = use(TransportContext) !== null;
-  const storedValue = useMemo(
-    () => getSettingValue(props.config, definition),
-    [props.config, definition],
-  );
-  const [unsavedValue, setUnsavedValue] = useState<{ value: JsonValue }>();
-  const setValueMutation = useMutation({
-    ...settingMutationOptions(
-      props.mutationTarget,
-      props.namespace,
-      props.settingKey,
-      "value",
-    ),
-    onMutate: (value: JsonValue) => {
-      if (!persisted) setUnsavedValue({ value });
-    },
-    mutationFn: async (value: JsonValue) => {
-      await props.updateConfigEntry(props.namespace, props.settingKey, value);
-    },
-    ...(definition?.type.case !== "stringList" && { onError: onSaveError }),
-    onSettled: async () => {
-      await props.invalidateQuery();
-    },
-  });
-  const value = getShownSettingValue(
-    definition,
-    storedValue,
-    setValueMutation,
-    unsavedValue,
-  );
-
-  if (!definition) {
-    return null;
-  }
-
-  return (
-    <div className="flex flex-col gap-1">
-      <SettingTypeRenderer
-        settingType={definition.type}
-        value={value}
-        pending={setValueMutation.isPending}
-        changeCallback={
-          definition.type.case === "stringList" ||
-          definition.type.case === "string" ||
-          definition.type.case === "int" ||
-          definition.type.case === "double" ||
-          definition.type.case === "minMax"
-            ? setValueMutation.mutateAsync
-            : setValueMutation.mutate
-        }
-      />
-      <SettingStatusRow
-        definition={definition}
-        value={value}
-        status={setValueMutation.status}
-        persisted={persisted}
-        overridden={false}
-        onReset={(resetValue) => {
-          setValueMutation.mutate(
-            resetValue,
-            // String lists report other save errors inside the list.
-            definition.type.case === "stringList"
-              ? { onError: onSaveError }
-              : {},
-          );
-        }}
-      />
-    </div>
   );
 }
 
@@ -1272,6 +1322,7 @@ export function ClientSettingsPageComponent({
   persisted,
   linkToPage,
   focusSetting,
+  focusRequest,
 }: {
   data: SettingsPage;
   invalidateQuery: () => Promise<void>;
@@ -1281,13 +1332,15 @@ export function ClientSettingsPageComponent({
     value: JsonValue,
   ) => Promise<void>;
   config: BaseSettings;
-  mutationTarget: SettingMutationTarget;
+  mutationTarget: SettingsPageTarget;
   disabledIds?: readonly DisabledSettingId[] | undefined;
   definitions: readonly SettingsDefinition[];
   allPages?: readonly SettingsPage[];
   persisted: boolean;
   linkToPage?: (page: SettingsPage, label: ReactNode) => ReactNode;
   focusSetting?: SettingFocus | undefined;
+  /** Changes on each jump to a setting, so a repeated jump focuses again. */
+  focusRequest?: string | undefined;
 }) {
   const { t } = useTranslation("common");
   const openCommandPalette = useCommandPalette();
@@ -1334,7 +1387,7 @@ export function ClientSettingsPageComponent({
   );
   const searching = query.trim() !== "";
   const renderEntry = (entryId: SettingsEntryIdentifier) => (
-    <SettingField
+    <SettingFieldById
       key={
         settingMutationOptions(
           mutationTarget,
@@ -1350,6 +1403,7 @@ export function ClientSettingsPageComponent({
       config={config}
       persisted={persisted}
       focused={isFocusedSetting(entryId, focusSetting)}
+      focusRequest={focusRequest}
     />
   );
 
@@ -1531,6 +1585,9 @@ export function InstanceSettingsPageComponent({
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const transport = use(TransportContext);
   const profile = instanceInfo.profile;
+  const focusRequest = useLocation({
+    select: (location) => location.state.settingFocusRequest,
+  });
   const settingsRegistry = useMemo(
     () => createSettingsRegistry(instanceInfo.settingsDefinitions),
     [instanceInfo.settingsDefinitions],
@@ -1538,14 +1595,10 @@ export function InstanceSettingsPageComponent({
   return (
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
-        key={JSON.stringify([
-          instanceInfo.id,
-          data.id,
-          focusSetting?.namespace,
-          focusSetting?.key,
-        ])}
+        key={JSON.stringify([instanceInfo.id, data.id])}
         data={data}
         focusSetting={focusSetting}
+        focusRequest={focusRequest}
         mutationTarget={{ type: "instance", instanceId: instanceInfo.id }}
         updateConfigEntry={async (namespace, key, value) =>
           updateInstanceConfigEntry(
@@ -1571,8 +1624,10 @@ export function InstanceSettingsPageComponent({
         linkToPage={(page, label) => (
           <Link
             className="underline underline-offset-3"
-            to="/instance/$instance/settings/$pageId"
-            params={{ instance: instanceInfo.id, pageId: page.id }}
+            {...settingDestination(
+              { kind: "project", id: instanceInfo.id },
+              page.id,
+            )}
           >
             {label}
           </Link>
@@ -1597,6 +1652,9 @@ export function AdminSettingsPageComponent({
   const { data: serverInfo } = useSuspenseQuery(serverInfoQueryOptions);
   const serverConfig = serverInfo.profile;
   const transport = use(TransportContext);
+  const focusRequest = useLocation({
+    select: (location) => location.state.settingFocusRequest,
+  });
   const settingsRegistry = useMemo(
     () => createSettingsRegistry(serverInfo.settingsDefinitions),
     [serverInfo.settingsDefinitions],
@@ -1604,13 +1662,10 @@ export function AdminSettingsPageComponent({
   return (
     <SettingsRegistryContext.Provider value={settingsRegistry}>
       <ClientSettingsPageComponent
-        key={JSON.stringify([
-          data.id,
-          focusSetting?.namespace,
-          focusSetting?.key,
-        ])}
+        key={data.id}
         data={data}
         focusSetting={focusSetting}
+        focusRequest={focusRequest}
         mutationTarget={{ type: "server" }}
         updateConfigEntry={async (namespace, key, value) =>
           updateServerConfigEntry(

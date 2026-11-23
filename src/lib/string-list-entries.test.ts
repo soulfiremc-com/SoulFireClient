@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   createStringListEntry,
+  getSavedStringListValues,
+  keepClearedEntries,
+  markClearedEntry,
   reconcileStringListEntries,
 } from "./string-list-entries.ts";
 
@@ -68,4 +71,44 @@ test("replacing a row with a duplicate does not move the unchanged row", () => {
   const updated = reconcileStringListEntries(previous, ["beta", "beta"]);
   assert.equal(updated[1], previous[1]);
   assert.equal(updated[0]?.id, previous[0]?.id);
+});
+
+test("a cleared entry stays in the draft but never saves as blank text", () => {
+  const list = entries("alpha", "beta", "gamma");
+  const [, beta] = list;
+  assert.ok(beta);
+  const clearedBeta = { id: beta.id, value: " " };
+  const draft = [list[0], clearedBeta, list[2]].filter((entry) => !!entry);
+  const cleared = markClearedEntry(new Set(), clearedBeta);
+  assert.deepEqual([...cleared], [beta.id]);
+  assert.deepEqual(getSavedStringListValues(draft, cleared), [
+    "alpha",
+    "gamma",
+  ]);
+  assert.deepEqual([...keepClearedEntries(cleared, draft)], [beta.id]);
+});
+
+test("typing into a cleared entry saves it again in place", () => {
+  const list = entries("alpha", "");
+  const [first, second] = list;
+  assert.ok(first && second);
+  const cleared = markClearedEntry(new Set(), second);
+  const retyped = { ...second, value: "beta" };
+  const next = markClearedEntry(cleared, retyped);
+  assert.equal(next.size, 0);
+  assert.deepEqual(getSavedStringListValues([first, retyped], next), [
+    "alpha",
+    "beta",
+  ]);
+});
+
+test("removed or refilled entries leave the cleared set", () => {
+  const list = entries("alpha", "", "");
+  const ids = new Set(list.slice(1).map((entry) => entry.id));
+  const [first, second] = list;
+  assert.ok(first && second);
+  assert.deepEqual(
+    [...keepClearedEntries(ids, [first, { ...second, value: "x" }])],
+    [],
+  );
 });

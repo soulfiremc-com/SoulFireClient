@@ -8,7 +8,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { use, useId } from "react";
+import { type ComponentProps, Suspense, use, useId, useState } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldTitle,
 } from "@/components/ui/field.tsx";
 import {
   InputGroup,
@@ -56,34 +57,70 @@ export const Route = createFileRoute("/_dashboard/user/settings")({
   component: UserSettings,
 });
 
-function UserSettingsSkeleton() {
+function SelfAvatar() {
+  const { clientDataQueryOptions } = Route.useRouteContext();
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   return (
-    <div className="container flex size-full grow flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        {/* Avatar section */}
-        <div className="flex max-w-xl flex-col gap-1">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-48" />
-          <div className="flex w-fit flex-row items-center gap-2 rounded-lg border p-3">
-            <Skeleton className="size-10 rounded-full" />
-            <div className="flex flex-col gap-1">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-3 w-32" />
-            </div>
-          </div>
-        </div>
-        {/* Username field */}
-        <div className="flex flex-col gap-1">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-9 w-full" />
-        </div>
-        {/* Email field */}
-        <div className="flex flex-col gap-1">
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-9 w-full" />
-        </div>
+    <Item variant="outline" size="sm" className="w-fit text-left">
+      <ItemMedia>
+        <UserAvatar
+          username={clientInfo.username}
+          email={clientInfo.email}
+          className="size-10"
+        />
+      </ItemMedia>
+      <ItemContent className="text-base/tight">
+        <ItemTitle>{clientInfo.username}</ItemTitle>
+        <ItemDescription>{clientInfo.email}</ItemDescription>
+      </ItemContent>
+    </Item>
+  );
+}
+
+function SelfAvatarSkeleton() {
+  return (
+    <div className="flex w-fit flex-row items-center gap-2 rounded-lg border p-3">
+      <Skeleton className="size-10 rounded-full" />
+      <div className="flex flex-col gap-1">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-3 w-32" />
       </div>
     </div>
+  );
+}
+
+/// Keeps the field label and description visible while the stored value loads.
+function ProfileFieldSkeleton({
+  label,
+  description,
+}: {
+  label: string;
+  description: string;
+}) {
+  return (
+    <Field>
+      <FieldTitle>{label}</FieldTitle>
+      <Skeleton className="h-9 w-full" />
+      <FieldDescription>{description}</FieldDescription>
+    </Field>
+  );
+}
+
+/// Loads the stored profile value and permission, then renders the editable field.
+function SelfProfileField({
+  permission,
+  ...props
+}: Omit<ComponentProps<typeof ProfileField>, "value" | "disabled"> & {
+  permission: GlobalPermission;
+}) {
+  const { clientDataQueryOptions } = Route.useRouteContext();
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  return (
+    <ProfileField
+      {...props}
+      value={clientInfo[props.name]}
+      disabled={!hasGlobalPermission(clientInfo, permission)}
+    />
   );
 }
 
@@ -91,11 +128,7 @@ function UserSettings() {
   const { t } = useTranslation("common");
 
   return (
-    <UserPageLayout
-      showUserCrumb
-      pageName={t("pageName.settings")}
-      loadingSkeleton={<UserSettingsSkeleton />}
-    >
+    <UserPageLayout showUserCrumb pageName={t("pageName.settings")}>
       <Content />
     </UserPageLayout>
   );
@@ -106,7 +139,6 @@ function Content() {
   const { clientDataQueryOptions } = Route.useRouteContext();
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
-  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const setUsernameMutation = useMutation({
     mutationKey: ["user", "self", "username"],
     scope: { id: "user-self-username" },
@@ -161,51 +193,50 @@ function Content() {
               </>
             }
           />
-          <Item variant="outline" size="sm" className="w-fit text-left">
-            <ItemMedia>
-              <UserAvatar
-                username={clientInfo.username}
-                email={clientInfo.email}
-                className="size-10"
-              />
-            </ItemMedia>
-            <ItemContent className="text-base/tight">
-              <ItemTitle>{clientInfo.username}</ItemTitle>
-              <ItemDescription>{clientInfo.email}</ItemDescription>
-            </ItemContent>
-          </Item>
+          <Suspense fallback={<SelfAvatarSkeleton />}>
+            <SelfAvatar />
+          </Suspense>
         </div>
-        <ProfileField
-          name="username"
-          label={t("userSettings.username.uiName")}
-          description={t("userSettings.username.description")}
-          value={clientInfo.username}
-          schema={createUsernameSchema({
-            min: t("admin:users.baseUserDialog.form.username.min"),
-            max: t("admin:users.baseUserDialog.form.username.max"),
-            pattern: t("admin:users.baseUserDialog.form.username.regex"),
-          })}
-          disabled={
-            !hasGlobalPermission(
-              clientInfo,
-              GlobalPermission.UPDATE_SELF_USERNAME,
-            )
+        <Suspense
+          fallback={
+            <ProfileFieldSkeleton
+              label={t("userSettings.username.uiName")}
+              description={t("userSettings.username.description")}
+            />
           }
-          demo={transport === null}
-          onSave={setUsernameMutation.mutateAsync}
-        />
-        <ProfileField
-          name="email"
-          label={t("userSettings.email.uiName")}
-          description={t("userSettings.email.description")}
-          value={clientInfo.email}
-          schema={userEmailSchema}
-          disabled={
-            !hasGlobalPermission(clientInfo, GlobalPermission.UPDATE_SELF_EMAIL)
+        >
+          <SelfProfileField
+            name="username"
+            label={t("userSettings.username.uiName")}
+            description={t("userSettings.username.description")}
+            schema={createUsernameSchema({
+              min: t("admin:users.baseUserDialog.form.username.min"),
+              max: t("admin:users.baseUserDialog.form.username.max"),
+              pattern: t("admin:users.baseUserDialog.form.username.regex"),
+            })}
+            permission={GlobalPermission.UPDATE_SELF_USERNAME}
+            demo={transport === null}
+            onSave={setUsernameMutation.mutateAsync}
+          />
+        </Suspense>
+        <Suspense
+          fallback={
+            <ProfileFieldSkeleton
+              label={t("userSettings.email.uiName")}
+              description={t("userSettings.email.description")}
+            />
           }
-          demo={transport === null}
-          onSave={setEmailMutation.mutateAsync}
-        />
+        >
+          <SelfProfileField
+            name="email"
+            label={t("userSettings.email.uiName")}
+            description={t("userSettings.email.description")}
+            schema={userEmailSchema}
+            permission={GlobalPermission.UPDATE_SELF_EMAIL}
+            demo={transport === null}
+            onSave={setEmailMutation.mutateAsync}
+          />
+        </Suspense>
       </div>
     </div>
   );
@@ -232,11 +263,22 @@ function ProfileField({
 }) {
   const { t } = useTranslation("common");
   const id = useId();
+  // The last value the server rejected. The field keeps it, so the user can
+  // correct it, and blur does not resend a value that is already taken.
+  const [saveError, setSaveError] = useState<{
+    value: string;
+    message: string;
+    retry: boolean;
+  }>();
   const form = useForm({
     defaultValues: { value },
     validators: { onSubmit: toFormSchema(Schema.Struct({ value: schema })) },
     onSubmit: async ({ value: fields, formApi }) => {
-      if (fields.value === value) return;
+      if (fields.value === value) {
+        setSaveError(undefined);
+        return;
+      }
+      if (saveError?.value === fields.value && !saveError.retry) return;
       if (demo) {
         formApi.reset({ value });
         toast.info(t("demoReadOnly"));
@@ -244,15 +286,17 @@ function ProfileField({
       }
       try {
         await onSave(fields.value);
+        setSaveError(undefined);
         formApi.reset({ value: fields.value });
         toast.success(t("userSettings.saved", { field: label }));
       } catch (error) {
-        if (ConnectError.from(error).code === Code.AlreadyExists) {
-          toast.error(t("userSettings.conflict", { field: label }));
-        } else {
-          console.error(error);
-          toast.error(t("userSettings.saveError", { field: label }));
-        }
+        const conflict = ConnectError.from(error).code === Code.AlreadyExists;
+        if (!conflict) console.error(error);
+        const message = conflict
+          ? t("userSettings.conflict", { field: label })
+          : t("userSettings.saveError", { field: label });
+        setSaveError({ value: fields.value, message, retry: !conflict });
+        toast.error(message);
       }
     },
   });
@@ -270,8 +314,13 @@ function ProfileField({
           <FieldGroup>
             <form.Field name="value">
               {(field) => {
+                const rejected =
+                  saveError?.value === field.state.value
+                    ? saveError
+                    : undefined;
                 const invalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
+                  (field.state.meta.isTouched && !field.state.meta.isValid) ||
+                  rejected !== undefined;
                 return (
                   <Field
                     data-invalid={invalid}
@@ -295,7 +344,11 @@ function ProfileField({
                         }}
                         disabled={disabled || isSubmitting}
                         aria-invalid={invalid}
-                        aria-describedby={`${id}-description`}
+                        aria-describedby={
+                          invalid
+                            ? `${id}-description ${id}-error`
+                            : `${id}-description`
+                        }
                       />
                       {isSubmitting && (
                         <InputGroupAddon align="inline-end">
@@ -313,7 +366,14 @@ function ProfileField({
                         : t("userSettings.autoSave")}
                     </FieldDescription>
                     {invalid ? (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${id}-error`}
+                        errors={
+                          rejected
+                            ? [{ message: rejected.message }]
+                            : field.state.meta.errors
+                        }
+                      />
                     ) : null}
                   </Field>
                 );

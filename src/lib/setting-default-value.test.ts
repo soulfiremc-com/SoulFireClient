@@ -25,11 +25,32 @@ test("scalar defaults are returned unchanged", () => {
   );
 });
 
-test("min/max ranges have no single default", () => {
+test("min/max ranges reset to both entry defaults", () => {
+  assert.deepEqual(
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
+    getSettingDefaultValue({
+      type: {
+        case: "minMax",
+        value: { minEntry: { def: 2 }, maxEntry: { def: 5 } },
+      },
+    } as never),
+    { min: 2, max: 5 },
+  );
   assert.equal(
     // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test double implements only the members this test uses
     getSettingDefaultValue({ type: { case: "minMax", value: {} } } as never),
     undefined,
+  );
+});
+
+test("ranges compare by both bounds", () => {
+  assert.equal(
+    isSameSettingValue({ min: 2, max: 5 }, { min: 2, max: 5 }),
+    true,
+  );
+  assert.equal(
+    isSameSettingValue({ min: 2, max: 5 }, { min: 2, max: 6 }),
+    false,
   );
 });
 

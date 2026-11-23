@@ -4,17 +4,16 @@ import {
   ScriptQuotasSchema,
 } from "@/generated/soulfire/script_pb";
 
-const int64 = {
-  min: -9_223_372_036_854_775_808n,
-  max: 9_223_372_036_854_775_807n,
-};
-const int32 = { min: -2_147_483_648n, max: 2_147_483_647n };
+const INT64_MAX = 9_223_372_036_854_775_807n;
+const INT32_MAX = 2_147_483_647n;
 
+// Negative limits have no meaning, and the server runs triggers through a
+// concurrency limit that rejects anything below one.
 export const SCRIPT_QUOTA_LIMITS = {
-  maxExecutionCount: int64,
-  maxExecutionTimeMs: int64,
-  maxConcurrentTriggers: int32,
-  maxStateStoreEntries: int64,
+  maxExecutionCount: { min: 0n, max: INT64_MAX },
+  maxExecutionTimeMs: { min: 0n, max: INT64_MAX },
+  maxConcurrentTriggers: { min: 1n, max: INT32_MAX },
+  maxStateStoreEntries: { min: 0n, max: INT64_MAX },
 };
 
 export type ScriptQuotaField = keyof typeof SCRIPT_QUOTA_LIMITS;
@@ -46,7 +45,7 @@ export function parseScriptQuotaInputs(
     const input = inputs[field].trim();
     if (!input) continue;
     const limit = SCRIPT_QUOTA_LIMITS[field];
-    if (!/^[+-]?\d+$/u.test(input)) {
+    if (!/^\+?\d+$/u.test(input)) {
       fields.push(field);
       continue;
     }
