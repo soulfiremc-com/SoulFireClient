@@ -321,16 +321,12 @@ function InstanceActionButtons({
 
                       const selected = await desktop.dialog.open({
                         title: t("instanceSidebar.loadProfile"),
-                        filters: systemInfo.mobile
-                          ? undefined
-                          : [
-                              {
-                                name: t(
-                                  "instanceSidebar.configurationFileType",
-                                ),
-                                extensions: ["json"],
-                              },
-                            ],
+                        filters: [
+                          {
+                            name: t("instanceSidebar.configurationFileType"),
+                            extensions: ["json"],
+                          },
+                        ],
                         defaultPath: profileDir,
                         multiple: false,
                         directory: false,
@@ -380,14 +376,14 @@ function InstanceActionButtons({
           onClick={() => {
             const data = serializeProfileFile(profile);
             if (isDesktopApp()) {
-              runAsync(async () => {
+              void (async () => {
                 const profileDir = await desktop.path.resolve(
                   await desktop.path.appConfigDir(),
                   "profile",
                 );
                 await desktop.fs.mkdir(profileDir, { recursive: true });
 
-                let selected = await desktop.dialog.save({
+                const selected = await desktop.dialog.save({
                   title: t("instanceSidebar.saveProfile"),
                   filters: [
                     {
@@ -401,22 +397,23 @@ function InstanceActionButtons({
                   ),
                 });
 
-                if (selected) {
-                  if (!selected.endsWith(".json")) {
-                    selected += ".json";
-                  }
+                // The user closed the save dialog without picking a file.
+                // The desktop app adds a missing .json extension itself.
+                if (!selected) return;
 
-                  await desktop.fs.writeTextFile(selected, data);
-                }
+                await desktop.fs.writeTextFile(selected, data);
+                toast.success(t("instanceSidebar.profileSaved"));
+              })().catch((error: unknown) => {
+                console.error(error);
+                toast.error(t("instanceSidebar.profileSaveError"));
               });
             } else {
               saveAs(
                 createTextBlob(data, "application/json"),
                 "soulfire-configuration.json",
               );
+              toast.success(t("instanceSidebar.profileSaved"));
             }
-
-            toast.success(t("instanceSidebar.profileSaved"));
           }}
         >
           <DownloadIcon className="size-4" />
@@ -453,6 +450,8 @@ export function InstanceSwitcher() {
   const { isMobile } = useSidebar();
   const { instance } = useParams({ from: "/_dashboard/instance/$instance" });
   const instanceProfileInputRef = useRef<HTMLInputElement>(null);
+  // The menu unmounts its content when it closes, so the dialog lives outside it.
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <SidebarMenu>
@@ -498,10 +497,21 @@ export function InstanceSwitcher() {
               />
             </Suspense>
             <Suspense>
-              <DeleteInstanceButton />
+              <DeleteInstanceMenuItem
+                onSelect={() => {
+                  setDeleteOpen(true);
+                }}
+              />
             </Suspense>
           </DropdownMenuContent>
         </DropdownMenu>
+        <Suspense>
+          <DeleteInstanceDialog
+            key={instance}
+            open={deleteOpen}
+            onOpenChange={setDeleteOpen}
+          />
+        </Suspense>
       </SidebarMenuItem>
     </SidebarMenu>
   );
@@ -528,21 +538,50 @@ function CreateInstanceButton() {
   );
 }
 
-function DeleteInstanceButton() {
+function useDeletableInstance() {
+  const instanceInfoQueryOptions = useRouteContext({
+    from: "/_dashboard/instance/$instance",
+    select: (context) => context.instanceInfoQueryOptions,
+  });
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  return {
+    instanceInfo,
+    canDelete: hasInstancePermission(
+      instanceInfo,
+      InstancePermission.DELETE_INSTANCE,
+    ),
+  };
+}
+
+function DeleteInstanceMenuItem({ onSelect }: { onSelect: () => void }) {
+  const { t } = useTranslation("common");
+  const { canDelete } = useDeletableInstance();
+  if (!canDelete) return null;
+
+  return (
+    <DropdownMenuItem onClick={onSelect}>
+      <TrashIcon />
+      {t("instanceSidebar.deleteInstance")}
+    </DropdownMenuItem>
+  );
+}
+
+function DeleteInstanceDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const { t } = useTranslation("common");
   const instanceListQueryOptions = useRouteContext({
     from: "/_dashboard",
     select: (context) => context.instanceListQueryOptions,
   });
-  const instanceInfoQueryOptions = useRouteContext({
-    from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions,
-  });
   const transport = use(TransportContext);
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const { instanceInfo, canDelete } = useDeletableInstance();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const deleteMutation = useMutation({
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
@@ -555,7 +594,7 @@ function DeleteInstanceButton() {
         instanceService.deleteInstance({
           id: instanceId,
         }),
-      ).then((r) => r);
+      );
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: t("instanceSidebar.deleteToast.success"),
@@ -567,6 +606,13 @@ function DeleteInstanceButton() {
 
       return promise;
     },
+    // Leave the project only after the server deleted it. This runs in the
+    // mutation, not in `mutate()`, because the project layout can unmount this
+    // dialog once its next poll finds the project gone.
+    onSuccess: () => {
+      onOpenChange(false);
+      void navigate({ to: "/user" });
+    },
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: instanceListQueryOptions.queryKey,
@@ -574,57 +620,44 @@ function DeleteInstanceButton() {
     },
   });
 
-  if (
-    !hasInstancePermission(instanceInfo, InstancePermission.DELETE_INSTANCE)
-  ) {
-    return null;
-  }
+  if (!canDelete) return null;
 
   return (
-    <>
-      <DropdownMenuItem
-        onClick={() => {
-          setDeleteOpen(true);
-        }}
-      >
-        <TrashIcon />
-        {t("instanceSidebar.deleteInstance")}
-      </DropdownMenuItem>
-      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogMedia>
-              <TrashIcon />
-            </AlertDialogMedia>
-            <AlertDialogTitle>
-              {t("dialog.deleteInstance.title")}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("dialog.deleteInstance.description", {
-                name: instanceInfo.friendlyName,
-              })}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleteMutation.isPending}>
-              {t("dialog.createInstance.form.cancel")}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              variant="destructive"
-              disabled={deleteMutation.isPending}
-              onClick={() => {
-                deleteMutation.mutate(instanceInfo.id);
-                setDeleteOpen(false);
-                void navigate({
-                  to: "/user",
-                });
-              }}
-            >
-              {t("instanceSidebar.deleteInstance")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+    <AlertDialog
+      open={open}
+      onOpenChange={(next) => {
+        if (!deleteMutation.isPending) onOpenChange(next);
+      }}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogMedia>
+            <TrashIcon />
+          </AlertDialogMedia>
+          <AlertDialogTitle>
+            {t("dialog.deleteInstance.title")}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("dialog.deleteInstance.description", {
+              name: instanceInfo.friendlyName,
+            })}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={deleteMutation.isPending}>
+            {t("dialog.createInstance.form.cancel")}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            variant="destructive"
+            disabled={deleteMutation.isPending}
+            onClick={() => {
+              deleteMutation.mutate(instanceInfo.id);
+            }}
+          >
+            {t("instanceSidebar.deleteInstance")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

@@ -3,7 +3,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import { Grid2x2Icon, PlusIcon, SettingsIcon, ZapIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreateInstanceContext } from "@/components/dialog/create-instance-context.ts";
 import {
@@ -24,7 +24,7 @@ type NavLinks = {
   createInstance?: boolean;
 }[];
 
-export function NavUserOptions() {
+function CreateInstanceAction() {
   const { t } = useTranslation("common");
   const clientDataQueryOptions = useRouteContext({
     from: "/_dashboard",
@@ -32,6 +32,24 @@ export function NavUserOptions() {
   });
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const { openCreateInstance } = useCreateInstanceContext();
+
+  if (!hasGlobalPermission(clientInfo, GlobalPermission.CREATE_INSTANCE)) {
+    return null;
+  }
+
+  return (
+    <SidebarMenuAction
+      onClick={openCreateInstance}
+      title={t("userSidebar.createInstance")}
+      aria-label={t("userSidebar.createInstance")}
+    >
+      <PlusIcon />
+    </SidebarMenuAction>
+  );
+}
+
+export function NavUserOptions() {
+  const { t } = useTranslation("common");
 
   const navLinks: NavLinks = [
     {
@@ -66,7 +84,7 @@ export function NavUserOptions() {
       <SidebarGroupLabel>{t("userSidebar.userGroup")}</SidebarGroupLabel>
       <SidebarMenu>
         {navLinks.map((item) => (
-          <SidebarMenuItem key={item.title}>
+          <SidebarMenuItem key={item.linkProps.to}>
             <SidebarMenuButton
               tooltip={item.title}
               render={
@@ -82,19 +100,11 @@ export function NavUserOptions() {
               <item.icon className="size-4" />
               <span>{item.title}</span>
             </SidebarMenuButton>
-            {item.createInstance &&
-              hasGlobalPermission(
-                clientInfo,
-                GlobalPermission.CREATE_INSTANCE,
-              ) && (
-                <SidebarMenuAction
-                  onClick={openCreateInstance}
-                  title={t("userSidebar.createInstance")}
-                  aria-label={t("userSidebar.createInstance")}
-                >
-                  <PlusIcon />
-                </SidebarMenuAction>
-              )}
+            {item.createInstance && (
+              <Suspense>
+                <CreateInstanceAction />
+              </Suspense>
+            )}
           </SidebarMenuItem>
         ))}
       </SidebarMenu>

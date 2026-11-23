@@ -126,6 +126,7 @@ function AdminSettingsStoryPage({ data }: { data: SettingsPage }) {
 const MODIFIER = isMac ? "Meta" : "Control";
 const OPEN_SHORTCUT = `{${MODIFIER}>}k{/${MODIFIER}}`;
 const PIN_SHORTCUT = `{${MODIFIER}>}p{/${MODIFIER}}`;
+const SIDEBAR_SHORTCUT = `{${MODIFIER}>}b{/${MODIFIER}}`;
 
 const createProject = fn<() => void>();
 const loadProjects = fn();
@@ -820,6 +821,26 @@ const closed = () =>
       within(document.body).queryByRole("combobox", { name: "Command menu" }),
     ).not.toBeInTheDocument(),
   );
+
+export const SidebarShortcutWaitsForOpenMenu: Story = {
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText("Project overview");
+    const sidebar = assertDefined(
+      canvasElement.querySelector<HTMLElement>('[data-slot="sidebar"]'),
+      "Expected the sidebar to render",
+    );
+    await expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    await userEvent.keyboard(OPEN_SHORTCUT);
+    await within(document.body).findByRole("dialog", { name: "Command menu" });
+    await userEvent.keyboard(SIDEBAR_SHORTCUT);
+    await expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    await userEvent.keyboard("{Escape}");
+    await closed();
+    await userEvent.keyboard(SIDEBAR_SHORTCUT);
+    await expect(sidebar).toHaveAttribute("data-state", "expanded");
+  },
+};
 
 export const BrowseProjectInPlace: Story = {
   play: async (context) => {

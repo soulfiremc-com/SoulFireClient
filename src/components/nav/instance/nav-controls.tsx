@@ -1,10 +1,9 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   Link,
   type LinkProps,
-  useRouteContext,
+  useParams,
   useRouterState,
 } from "@tanstack/react-router";
 import {
@@ -35,11 +34,10 @@ type NavLinks = {
 
 export function NavControls() {
   const { t } = useTranslation("common");
-  const instanceInfoQueryOptions = useRouteContext({
+  const instance = useParams({
     from: "/_dashboard/instance/$instance",
-    select: (context) => context.instanceInfoQueryOptions,
+    select: (params) => params.instance,
   });
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const routeIds = useRouterState({
     select: (state) => state.matches.map((match) => match.routeId as string),
   });
@@ -50,7 +48,7 @@ export function NavControls() {
       icon: HouseIcon,
       linkProps: {
         to: "/instance/$instance",
-        params: { instance: instanceInfo.id },
+        params: { instance },
       },
     },
     {
@@ -58,7 +56,7 @@ export function NavControls() {
       icon: SquareTerminalIcon,
       linkProps: {
         to: "/instance/$instance/terminal",
-        params: { instance: instanceInfo.id },
+        params: { instance },
       },
     },
     {
@@ -66,7 +64,7 @@ export function NavControls() {
       icon: UsersIcon,
       linkProps: {
         to: "/instance/$instance/bots",
-        params: { instance: instanceInfo.id },
+        params: { instance },
       },
       detailRouteId: "/_dashboard/instance/$instance/bot/$botId",
     },
@@ -75,7 +73,7 @@ export function NavControls() {
       icon: IdCardIcon,
       linkProps: {
         to: "/instance/$instance/accounts",
-        params: { instance: instanceInfo.id },
+        params: { instance },
       },
     },
     {
@@ -83,7 +81,7 @@ export function NavControls() {
       icon: WaypointsIcon,
       linkProps: {
         to: "/instance/$instance/proxies",
-        params: { instance: instanceInfo.id },
+        params: { instance },
       },
     },
     {
@@ -91,7 +89,7 @@ export function NavControls() {
       icon: TextSearchIcon,
       linkProps: {
         to: "/instance/$instance/audit-log",
-        params: { instance: instanceInfo.id },
+        params: { instance },
       },
     },
   ];
@@ -103,7 +101,7 @@ export function NavControls() {
       </SidebarGroupLabel>
       <SidebarMenu>
         {navLinks.map((item) => (
-          <SidebarMenuItem key={item.title}>
+          <SidebarMenuItem key={item.linkProps.to}>
             <SidebarMenuButton
               tooltip={item.title}
               isActive={

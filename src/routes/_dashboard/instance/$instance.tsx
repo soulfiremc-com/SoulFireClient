@@ -1,12 +1,7 @@
 import { create } from "@bufbuild/protobuf";
 import { TimestampSchema } from "@bufbuild/protobuf/wkt";
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import {
-  CatchBoundary,
-  createFileRoute,
-  Link,
-  Outlet,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
@@ -42,12 +37,10 @@ import {
   InstanceInfoSchema,
 } from "@/generated/soulfire/instance_pb";
 import { useBotStatusStream } from "@/hooks/use-bot-status-stream.ts";
-import { useIsMobile } from "@/hooks/use-mobile.ts";
-import i18n from "@/lib/i18n";
+import { useStoredSidebarOpen } from "@/hooks/use-stored-sidebar-open.ts";
 import { fetchInstanceInfo } from "@/lib/instance-info-query.ts";
 import { instanceMetricsQueryOptions } from "@/lib/metrics-query.ts";
 import { isResourceUnavailable } from "@/lib/resource-errors";
-import { routeChrome } from "@/lib/route-title.ts";
 import {
   convertFromInstanceProto,
   type InstanceInfoQueryData,
@@ -140,34 +133,9 @@ export const Route = createFileRoute("/_dashboard/instance/$instance")({
       transport,
       instance,
     );
-    props.abortController.signal.addEventListener("abort", () => {
-      void props.context.queryClient.cancelQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    });
     return {
       instanceInfoQueryOptions,
       metricsQueryOptions,
-      ...routeChrome({
-        getTitle: () => {
-          const instanceInfo =
-            props.context.queryClient.getQueryData<InstanceInfoQueryData>(
-              instanceInfoQueryOptions.queryKey,
-            );
-          return (
-            instanceInfo?.friendlyName ?? i18n.t("common:pageName.overview")
-          );
-        },
-        getIcon: () => {
-          const instanceInfo =
-            props.context.queryClient.getQueryData<InstanceInfoQueryData>(
-              instanceInfoQueryOptions.queryKey,
-            );
-          return instanceInfo?.icon
-            ? { kind: "dynamic", name: instanceInfo.icon }
-            : null;
-        },
-      }),
     };
   },
   loader: (props) => {
@@ -226,23 +194,19 @@ function InstanceLayout() {
 
 function InstanceLayoutContent() {
   useBotStatusStream(Route.useParams().instance);
-  const isMobile = useIsMobile();
-  const sidebarState = localStorage.getItem("sidebar:state");
-  const defaultOpen =
-    sidebarState === null ? !isMobile : sidebarState === "true";
+  const sidebar = useStoredSidebarOpen();
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen} className="min-h-0 flex-1">
+    <SidebarProvider
+      open={sidebar.open}
+      onOpenChange={sidebar.setOpen}
+      className="min-h-0 flex-1"
+    >
       <InstanceSidebar />
       <TooltipProvider delay={500}>
         <SidebarInset className="min-w-0">
           <NavigationFeedback />
-          <CatchBoundary
-            getResetKey={() => "instance-layout"}
-            errorComponent={ErrorComponent}
-          >
-            <Outlet />
-          </CatchBoundary>
+          <Outlet />
         </SidebarInset>
       </TooltipProvider>
     </SidebarProvider>

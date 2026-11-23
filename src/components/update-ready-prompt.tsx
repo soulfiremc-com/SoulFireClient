@@ -9,9 +9,12 @@ import { desktop, isDesktopApp } from "@/lib/desktop.ts";
  * the update installs the next time SoulFire quits.
  */
 export function UpdateReadyPrompt() {
-  const { t } = useTranslation("common");
+  const { i18n } = useTranslation("common");
 
   useEffect(() => {
+    // Read text when the toast shows. Depending on `t` would re-run this
+    // effect on a language change and bring back a toast the user put off.
+    const t = i18n.getFixedT(null, "common");
     if (!isDesktopApp()) return undefined;
     let active = true;
     let unlisten: (() => void) | undefined;
@@ -38,7 +41,7 @@ export function UpdateReadyPrompt() {
       active = false;
       unlisten?.();
     };
-  }, [t]);
+  }, [i18n]);
 
   return null;
 }

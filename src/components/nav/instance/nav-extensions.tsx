@@ -39,6 +39,7 @@ import {
 import { getSettingValue } from "@/lib/utils.tsx";
 
 type NavLinks = {
+  id: string;
   title: string;
   icon: (props: { className: string }) => ReactNode;
   linkProps: LinkProps;
@@ -79,6 +80,7 @@ export function NavExtensions() {
 
   const navLinks: NavLinks = [
     {
+      id: "discover",
       title: t("instanceSidebar.discoverPlugins"),
       icon: BlocksIcon,
       linkProps: {
@@ -88,6 +90,7 @@ export function NavExtensions() {
       pluginList: true,
     },
     {
+      id: "scripts",
       title: t("instanceSidebar.instanceScripts"),
       icon: ScrollTextIcon,
       linkProps: {
@@ -97,6 +100,7 @@ export function NavExtensions() {
       detailRouteId: "/_dashboard/instance/$instance/script/$scriptId",
     },
     {
+      id: "sdk",
       title: t("sdk.title"),
       icon: CodeXmlIcon,
       linkProps: {
@@ -124,6 +128,7 @@ export function NavExtensions() {
       return getSettingValue(profile, enabledDefinition) === true;
     })
     .map((setting) => ({
+      id: `settings:${setting.id}`,
       title: setting.pageName,
       icon: (props) => <DynamicIcon {...props} name={setting.iconId} />,
       linkProps: {
@@ -147,7 +152,7 @@ export function NavExtensions() {
               open={pluginCollapsibleOpen}
               onOpenChange={setPluginCollapsibleOpen}
               render={<SidebarMenuItem className="group/collapsible" />}
-              key={item.title}
+              key={item.id}
             >
               <SidebarMenuButton
                 tooltip={item.title}
@@ -193,7 +198,7 @@ export function NavExtensions() {
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {pluginSettingLinks.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubItem key={subItem.id}>
                       <SidebarMenuSubButton
                         render={
                           <Link
@@ -214,7 +219,7 @@ export function NavExtensions() {
               </CollapsibleContent>
             </Collapsible>
           ) : (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.id}>
               <SidebarMenuButton
                 tooltip={item.title}
                 isActive={

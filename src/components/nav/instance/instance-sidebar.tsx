@@ -27,9 +27,12 @@ export function InstanceSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <ScrollArea className="min-h-0 w-full flex-1 pr-2">
         <SidebarContent className="min-h-full">
+          {/* Fixed links stay usable while project data loads. */}
+          <NavControls />
           <Suspense fallback={<NavDefaultSkeleton />}>
-            <NavControls />
             <NavSettings />
+          </Suspense>
+          <Suspense fallback={<NavDefaultSkeleton />}>
             <NavExtensions />
           </Suspense>
         </SidebarContent>

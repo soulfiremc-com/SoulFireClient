@@ -52,8 +52,9 @@ export function CustomContextMenu() {
       if ("__entityContextMenu" in e && e.__entityContextMenu === true) return;
 
       const target = e.target instanceof Element ? e.target : null;
-      // Keep the native cut, copy, and paste menu in text fields.
-      if (isEditableTarget(target)) {
+      // Keep the native cut, copy, and paste menu in text fields, and the
+      // open and copy link actions on links.
+      if (isEditableTarget(target) || target?.closest("a[href]")) {
         dismiss();
         return;
       }

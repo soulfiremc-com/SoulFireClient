@@ -23,8 +23,9 @@ export function UserSidebar({
     >
       <ScrollArea className="min-h-0 w-full flex-1 pr-2">
         <SidebarContent className="min-h-full">
+          {/* Fixed links stay usable while client data loads. */}
+          <NavUserOptions />
           <Suspense fallback={<NavDefaultSkeleton />}>
-            <NavUserOptions />
             <NavUserAdmin />
           </Suspense>
         </SidebarContent>

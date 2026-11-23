@@ -14,10 +14,20 @@ import { InstancePermission } from "@/generated/soulfire/common_pb";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
 interface NavLink {
+  id: string;
   title: string;
   iconId: string;
   linkProps: LinkProps;
 }
+
+// Pages with their own sidebar entry or their own route.
+const KNOWN_SETTING_PAGE_IDS = new Set([
+  "bot",
+  "account",
+  "proxy",
+  "ai",
+  "pathfinding",
+]);
 
 export function NavSettings() {
   const { t } = useTranslation("common");
@@ -27,29 +37,17 @@ export function NavSettings() {
   });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
-  // Create a lookup map for page icons from server settings
-  const pageIconMap = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const page of instanceInfo.instanceSettings) {
-      map.set(page.id, page.iconId);
-    }
-    return map;
-  }, [instanceInfo.instanceSettings]);
-
-  const builtinPageMap = useMemo(() => {
-    const map = new Map(
-      instanceInfo.instanceSettings.map((page) => [page.id, page]),
-    );
-    return map;
-  }, [instanceInfo.instanceSettings]);
-
-  const knownSettingPageIds = useMemo(
-    () => new Set(["bot", "account", "proxy", "ai", "pathfinding"]),
-    [],
+  const pageIconMap = useMemo(
+    () =>
+      new Map(
+        instanceInfo.instanceSettings.map((page) => [page.id, page.iconId]),
+      ),
+    [instanceInfo.instanceSettings],
   );
 
   const navLinks: NavLink[] = [
     {
+      id: "settings:bot",
       title: t("instanceSidebar.botSettings"),
       iconId: pageIconMap.get("bot") ?? "bot",
       linkProps: {
@@ -58,6 +56,7 @@ export function NavSettings() {
       },
     },
     {
+      id: "settings:ai",
       title: t("instanceSidebar.aiSettings"),
       iconId: pageIconMap.get("ai") ?? "sparkles",
       linkProps: {
@@ -66,6 +65,7 @@ export function NavSettings() {
       },
     },
     {
+      id: "settings:pathfinding",
       title: t("instanceSidebar.pathfindingSettings"),
       iconId: pageIconMap.get("pathfinding") ?? "route",
       linkProps: {
@@ -79,6 +79,7 @@ export function NavSettings() {
     )
       ? [
           {
+            id: "meta",
             title: t("instanceSidebar.metaSettings"),
             iconId: "bolt",
             linkProps: {
@@ -92,15 +93,14 @@ export function NavSettings() {
       .filter(
         (page) =>
           page.owningPluginId === undefined &&
-          !knownSettingPageIds.has(page.id) &&
-          page.id !== "account" &&
-          page.id !== "proxy",
+          !KNOWN_SETTING_PAGE_IDS.has(page.id),
       )
       .map(
         (page) =>
           ({
+            id: `settings:${page.id}`,
             title: page.pageName,
-            iconId: builtinPageMap.get(page.id)?.iconId ?? "settings-2",
+            iconId: page.iconId,
             linkProps: {
               to: "/instance/$instance/settings/$pageId" as const,
               params: { instance: instanceInfo.id, pageId: page.id },
@@ -116,7 +116,7 @@ export function NavSettings() {
       </SidebarGroupLabel>
       <SidebarMenu>
         {navLinks.map((item) => (
-          <SidebarMenuItem key={item.title}>
+          <SidebarMenuItem key={item.id}>
             <SidebarMenuButton
               tooltip={item.title}
               render={

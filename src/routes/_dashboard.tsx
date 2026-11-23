@@ -1,7 +1,6 @@
 import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import type { Transport } from "@connectrpc/connect";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import {
   createFileRoute,
@@ -11,10 +10,8 @@ import {
 } from "@tanstack/react-router";
 import { usePostHog } from "posthog-js/react";
 import { Suspense, use, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { CommandPaletteProvider } from "@/components/command-palette";
 import { CreateInstanceProvider } from "@/components/dialog/create-instance-dialog.tsx";
-import { ErrorComponent } from "@/components/error-component.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { demoClientData, demoInstancePermissions } from "@/demo-data.ts";
 import { BotFleetSummarySchema } from "@/generated/soulfire/bot_pb";
@@ -27,7 +24,7 @@ import {
   InstanceService,
 } from "@/generated/soulfire/instance_pb";
 import { hasOpenDialog, projectShortcutIndex } from "@/lib/keyboard-shortcuts";
-import { desktop, isDesktopApp, isMac } from "@/lib/desktop.ts";
+import { isDesktopApp, isMac } from "@/lib/desktop.ts";
 import {
   getAnalyticsIdentity,
   syncAnalyticsIdentity,
@@ -38,8 +35,8 @@ import { useSupportReminderUsage } from "@/hooks/use-support-reminder-usage";
 import {
   createTransport,
   isAuthenticated,
+  disconnectSession,
   isImpersonating,
-  logOut,
 } from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard")({
@@ -81,11 +78,6 @@ export const Route = createFileRoute("/_dashboard")({
         },
         refetchInterval: 3000,
       });
-      props.abortController.signal.addEventListener("abort", () => {
-        void props.context.queryClient.cancelQueries({
-          queryKey: instanceListQueryOptions.queryKey,
-        });
-      });
       const clientDataQueryOptions = queryOptions({
         queryKey: ["client-data"],
         queryFn: async (context): Promise<ClientDataResponse> => {
@@ -104,24 +96,16 @@ export const Route = createFileRoute("/_dashboard")({
             ),
           );
 
-          // console.log(JSON.stringify(result))
           return result;
         },
-      });
-      props.abortController.signal.addEventListener("abort", () => {
-        void props.context.queryClient.cancelQueries({
-          queryKey: clientDataQueryOptions.queryKey,
-        });
       });
       return {
         instanceListQueryOptions,
         clientDataQueryOptions,
       };
     }
-    if (isDesktopApp()) {
-      await desktop.integratedServer.kill();
-    }
-    logOut();
+    // A failed server stop is logged; the start page still opens.
+    await disconnectSession();
     // oxlint-disable-next-line typescript/only-throw-error -- TanStack Router handles a thrown redirect
     throw redirect({
       to: "/",
@@ -130,48 +114,18 @@ export const Route = createFileRoute("/_dashboard")({
       },
     });
   },
-  loader: (
-    props,
-  ):
-    | {
-        success: true;
-        transport: Transport | null;
-      }
-    | {
-        success: false;
-        connectionError: object;
-      } => {
+  loader: (props) => {
+    // Demo mode has no server to read from.
     const transport = createTransport();
-    if (transport === null) {
-      return {
-        success: true,
-        transport,
-      };
-    }
-
-    try {
+    if (transport !== null) {
       void props.context.queryClient.prefetchQuery(
         props.context.instanceListQueryOptions,
       );
       void props.context.queryClient.prefetchQuery(
         props.context.clientDataQueryOptions,
       );
-
-      // We need this as demo data
-      // if (APP_ENVIRONMENT === 'development') {
-      //   console.debug(JSON.stringify(configResult.response));
-      // }
-
-      return {
-        success: true,
-        transport,
-      };
-    } catch (e) {
-      return {
-        success: false,
-        connectionError: e instanceof Error ? e : new Error(String(e)),
-      };
     }
+    return { transport };
   },
   component: DashboardLayout,
   // Ensure we show the pending component when needed
@@ -257,11 +211,7 @@ function ClientSession() {
 }
 
 function DashboardLayout() {
-  const { t } = useTranslation("common");
   const loaderData = Route.useLoaderData();
-  if (!loaderData.success) {
-    return <ErrorComponent error={new Error(t("error.connectionFailed"))} />;
-  }
 
   return (
     <TransportContext value={loaderData.transport}>
