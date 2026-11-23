@@ -64,19 +64,28 @@ export function getReadyUpdateVersion(): string | null {
   return readyVersion;
 }
 
-export function installUpdateNow(): void {
-  if (readyVersion === null) return;
+/**
+ * Starts the installer and quits. On Windows and Linux the installer starts at
+ * once, so the caller must close the window and stop the integrated server
+ * first. Returns false when no update is ready.
+ */
+export function installUpdateNow(): boolean {
+  if (readyVersion === null) return false;
   if (process.platform === "win32") {
     autoUpdater.quitAndInstall(true, true);
-    return;
+    return true;
   }
 
   autoUpdater.quitAndInstall();
+  return true;
 }
 
 // Fallback when no app window can show the translated prompt. Restarting stops
 // running bots and the integrated server, so ask first.
-async function promptToInstall(version: string): Promise<void> {
+async function promptToInstall(
+  version: string,
+  restartToUpdate: () => void,
+): Promise<void> {
   const options: Electron.MessageBoxOptions = {
     buttons: ["Restart now", "Later"],
     cancelId: 1,
@@ -88,17 +97,19 @@ async function promptToInstall(version: string): Promise<void> {
     type: "info",
   };
   const { response } = await dialog.showMessageBox(options);
-  if (response === 0) installUpdateNow();
+  if (response === 0) restartToUpdate();
 }
 
 /**
  * Starts background updates. When an update finishes downloading, it installs
  * on quit, and `notifyReady` lets the app window ask the user to restart now.
- * Without a window, a native dialog asks instead.
+ * Without a window, a native dialog asks instead, and `restartToUpdate`
+ * installs the update when the user agrees.
  */
 export function startUpdater(
   getMainWindow: () => BrowserWindow | null,
   notifyReady: (version: string) => void,
+  restartToUpdate: () => void,
 ): void {
   if (
     !app.isPackaged ||
@@ -153,7 +164,7 @@ export function startUpdater(
       notifyReady(info.version);
       return;
     }
-    promptToInstall(info.version).catch((error: unknown) => {
+    promptToInstall(info.version, restartToUpdate).catch((error: unknown) => {
       electronLog.error("Could not show the update prompt", error);
     });
   });

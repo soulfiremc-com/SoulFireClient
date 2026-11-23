@@ -150,6 +150,32 @@ test(
   },
 );
 
+test(
+  "Windows shutdown asks the server console to stop before forcing it",
+  { timeout: 10_000 },
+  async () => {
+    const state = createIntegratedServerState();
+    const child = spawn(
+      process.execPath,
+      [
+        "-e",
+        "process.on('SIGTERM', () => {}); console.log('Finished loading!'); process.stdin.on('data', (data) => { if (String(data).trim() === 'stop') process.exit(0); });",
+      ],
+      { stdio: "pipe" },
+    );
+    await waitForIntegratedServerReady(
+      state,
+      child,
+      new AbortController().signal,
+    );
+    state.diagnostics.status = "stopping";
+    await terminateIntegratedProcess(state, 5000, "win32");
+    assert.equal(child.exitCode, 0);
+    assert.equal(child.signalCode, null);
+    assert.equal(state.child, null);
+  },
+);
+
 test("diagnostic output stays bounded while retaining stable log identities", () => {
   const state = createIntegratedServerState();
   for (let count = 0; count < 3000; count++)

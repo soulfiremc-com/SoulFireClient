@@ -20,10 +20,12 @@ export function resetQuerySession() {
 
 export function synchronizeQuerySession(queryClient: QueryClient) {
   let sessionId = getQuerySessionId();
-  let stopBroadcast: (() => void) | undefined = broadcastQueryClient({
-    queryClient,
-    broadcastChannel: `soulfire-${sessionId}`,
-  });
+  const connect = () =>
+    broadcastQueryClient({
+      queryClient,
+      broadcastChannel: `soulfire-${sessionId}`,
+    });
+  let stopBroadcast: (() => void) | undefined = connect();
   const disconnect = () => {
     stopBroadcast?.();
     stopBroadcast = undefined;
@@ -38,7 +40,9 @@ export function synchronizeQuerySession(queryClient: QueryClient) {
     return true;
   };
   const onLocalChange = () => {
-    discardPreviousSession();
+    // This tab started the new session, so it keeps running and joins the
+    // new channel. Other tabs reload through the storage event instead.
+    if (discardPreviousSession()) stopBroadcast = connect();
   };
   const onStorage = (event: StorageEvent) => {
     if (

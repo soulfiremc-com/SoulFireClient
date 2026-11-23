@@ -20,6 +20,7 @@ import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http";
 import * as tar from "tar";
 import { getAppLocalDataDir } from "./app-paths";
 import { downloadToFileEffect } from "./integrated-server-download";
+import { findBlockedJvmArg } from "./jvm-args";
 import {
   appendIntegratedLog,
   type IntegratedServerState,
@@ -158,6 +159,8 @@ export async function resetIntegratedData(app: App): Promise<void> {
   });
 }
 
+const CUSTOM_JAR_ID = /^[\da-f]{64}$/u;
+
 export async function runIntegratedServer(
   app: App,
   state: IntegratedServerState,
@@ -171,6 +174,17 @@ export async function runIntegratedServer(
       const report = (message: string) => {
         if (!signal.aborted) appendIntegratedLog(state, message);
       };
+      const blockedArg = findBlockedJvmArg(jvmArgs);
+      if (blockedArg !== null) {
+        throw new Error(
+          `The JVM argument "${blockedArg}" is not allowed because it can load code from outside SoulFire. Remove it from the JVM arguments.`,
+        );
+      }
+      // Custom jar IDs are SHA-256 hashes. The ID becomes part of the data
+      // directory path, so reject anything else before it is used there.
+      if (jarSource.type === "custom" && !CUSTOM_JAR_ID.test(jarSource.jarId)) {
+        throw new Error("Custom SoulFire server jar is no longer available");
+      }
       const serverVersion = yield* preparationStep(() =>
         getSoulFireServerVersion(app, fallbackVersion),
       );
@@ -599,18 +613,30 @@ function ensureSoulFireJar(
 ): Effect.Effect<void, unknown> {
   return Effect.scoped(
     Effect.gen(function* () {
-      report("Fetching SoulFire checksum metadata...");
-      const expectedChecksum = yield* preparationStep(() =>
-        fetchSoulFireJarChecksum(version, jarName, signal),
+      const checksumPath = `${jarPath}.sha256`;
+      // A checksum saved after an earlier verified download lets SoulFire
+      // start offline and without a GitHub API request.
+      const existingChecksum = (yield* preparationStep(() => exists(jarPath)))
+        ? yield* preparationStep(() => sha256FileHex(jarPath, signal))
+        : null;
+      const savedChecksum = yield* preparationStep(() =>
+        readFile(checksumPath, "utf8").then(
+          (value) => value.trim().toLowerCase(),
+          () => null,
+        ),
       );
-      if (yield* preparationStep(() => exists(jarPath))) {
-        const existingChecksum = yield* preparationStep(() =>
-          sha256FileHex(jarPath, signal),
-        );
-        if (existingChecksum.toLowerCase() === expectedChecksum.toLowerCase()) {
-          report("SoulFire already downloaded and verified");
-          return;
-        }
+      if (existingChecksum !== null && existingChecksum === savedChecksum) {
+        report("SoulFire already downloaded and verified");
+        return;
+      }
+      report("Fetching SoulFire checksum metadata...");
+      const expectedChecksum = (yield* preparationStep(() =>
+        fetchSoulFireJarChecksum(version, jarName, signal),
+      )).toLowerCase();
+      if (existingChecksum === expectedChecksum) {
+        yield* preparationStep(() => writeFile(checksumPath, expectedChecksum));
+        report("SoulFire already downloaded and verified");
+        return;
       }
       const jarUrl = `https://github.com/soulfiremc-com/SoulFire/releases/download/${version}/${jarName}`;
       const tempJarPath = `${jarPath}.download`;
@@ -629,6 +655,7 @@ function ensureSoulFireJar(
       );
       signal.throwIfAborted();
       yield* preparationStep(() => atomicReplaceFile(tempJarPath, jarPath));
+      yield* preparationStep(() => writeFile(checksumPath, expectedChecksum));
       report("Downloaded SoulFire");
     }),
   );

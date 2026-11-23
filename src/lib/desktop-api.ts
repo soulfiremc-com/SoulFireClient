@@ -75,6 +75,15 @@ export interface DesktopIntegratedServerLog {
   message: string;
 }
 
+/**
+ * A diagnostics poll. With `logsAfter` set, `logs` holds only entries newer
+ * than that ID, and older entries below `firstLogId` were dropped.
+ */
+export interface DesktopIntegratedServerDiagnosticsUpdate extends DesktopIntegratedServerDiagnostics {
+  logsAfter: number | null;
+  firstLogId: number | null;
+}
+
 export interface DesktopIntegratedServerDiagnostics {
   status:
     | "idle"
@@ -138,7 +147,6 @@ export interface SoulFireDesktopApi {
     ) => Promise<DesktopUnlisten>;
   };
   app: {
-    onOpenUrl: (callback: (url: string) => void) => Promise<DesktopUnlisten>;
     quit: () => Promise<void>;
     setTheme: (theme: DesktopTheme) => Promise<void>;
   };
@@ -186,7 +194,9 @@ export interface SoulFireDesktopApi {
     writeTextFile: (path: string, contents: string) => Promise<void>;
   };
   integratedServer: {
-    getDiagnostics: () => Promise<DesktopIntegratedServerDiagnostics>;
+    getDiagnostics: (
+      afterLogId?: number,
+    ) => Promise<DesktopIntegratedServerDiagnosticsUpdate>;
     openDataDirectory: () => Promise<void>;
     selectJcmd: () => Promise<string | null>;
     captureThreadDump: () => Promise<string>;

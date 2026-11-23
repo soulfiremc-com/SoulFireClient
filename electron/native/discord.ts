@@ -1,41 +1,50 @@
 import { createRequire } from "node:module";
 
+export interface DiscordRpcClient {
+  login: () => Promise<void>;
+  on: (event: "disconnected", handler: () => void) => void;
+  readonly user:
+    | {
+        setActivity: (activity: Record<string, unknown>) => Promise<unknown>;
+      }
+    | undefined;
+}
+
 const require = createRequire(__filename);
 // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- @xhayper/discord-rpc is loaded with require so its types are declared here
 const DiscordRpc = require("@xhayper/discord-rpc") as {
-  Client: new (options: { transport: "ipc" }) => {
-    login: (options: { clientId: string }) => Promise<void>;
-    on: (event: string, handler: () => void) => void;
-    setActivity: (activity: Record<string, unknown>) => Promise<void>;
-  };
+  Client: new (options: { clientId: string }) => DiscordRpcClient;
 };
 
 const CLIENT_ID = "1248603974475583608";
 
 export class DiscordPresenceManager {
-  private readonly client = new DiscordRpc.Client({
-    transport: "ipc",
-  });
+  private readonly client: DiscordRpcClient;
 
   private readonly startedAt = Math.floor(Date.now() / 1000);
 
-  private ready = false;
-
   private loginPromise: Promise<void> | null = null;
+
+  constructor(
+    client: DiscordRpcClient = new DiscordRpc.Client({ clientId: CLIENT_ID }),
+  ) {
+    this.client = client;
+    // Discord can quit or restart while SoulFire runs. Log in again on the
+    // next update instead of sending activity to a closed connection.
+    this.client.on("disconnected", () => {
+      this.loginPromise = null;
+    });
+  }
 
   async update(state: string, details?: string | null): Promise<void> {
     try {
       await this.ensureConnected();
-      if (!this.ready) {
-        return;
-      }
-
-      await this.client.setActivity({
+      await this.client.user?.setActivity({
         state,
         details: details ?? undefined,
         startTimestamp: this.startedAt,
         largeImageKey: "logo",
-        largeImageText: "SoulFire \uD83E\uDDD9",
+        largeImageText: "SoulFire 🧙",
         buttons: [
           {
             label: "Learn more",
@@ -49,30 +58,13 @@ export class DiscordPresenceManager {
   }
 
   private async ensureConnected(): Promise<void> {
-    if (this.ready) {
-      return;
-    }
-
-    if (this.loginPromise !== null) {
-      await this.loginPromise;
-      return;
-    }
-
-    this.loginPromise = (async () => {
-      this.client.on("ready", () => {
-        this.ready = true;
-      });
-
-      await this.client.login({
-        clientId: CLIENT_ID,
-      });
-      this.ready = true;
-    })();
-
+    this.loginPromise ??= this.client.login();
+    const login = this.loginPromise;
     try {
-      await this.loginPromise;
+      await login;
     } catch (error) {
-      this.loginPromise = null;
+      // Discord may not be running yet. Try again on the next update.
+      if (this.loginPromise === login) this.loginPromise = null;
       throw error;
     }
   }

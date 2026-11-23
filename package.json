@@ -287,14 +287,6 @@
       "perMachine": false
     },
     "productName": "SoulFire",
-    "protocols": [
-      {
-        "name": "SoulFire",
-        "schemes": [
-          "soulfire"
-        ]
-      }
-    ],
     "win": {
       "icon": "build/icons/icon.ico",
       "target": [

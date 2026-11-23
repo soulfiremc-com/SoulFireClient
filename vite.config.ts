@@ -7,6 +7,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import electron from "vite-plugin-electron/simple";
 import svgr from "vite-plugin-svgr";
+import { hashInlineScriptsInCsp } from "./scripts/csp-inline-script-hashes.ts";
 import { getBuildEnvironment } from "./src/lib/build-environment.ts";
 
 const locales = fs
@@ -79,6 +80,15 @@ export default defineConfig(async ({ mode }) => {
       react(),
       // babel({ presets: [reactCompilerPreset()] }),
       svgr(),
+      {
+        // Dev keeps 'unsafe-inline' for the React Refresh preamble.
+        name: "soulfire-csp-inline-script-hashes",
+        apply: "build",
+        transformIndexHtml: {
+          order: "post",
+          handler: hashInlineScriptsInCsp,
+        },
+      },
       ...(!isDev && process.env["POSTHOG_PERSONAL_API_KEY"]
         ? [
             posthog({

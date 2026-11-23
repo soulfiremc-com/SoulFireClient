@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -6,6 +6,7 @@ import { watch } from "chokidar";
 import {
   app,
   BrowserWindow,
+  clipboard,
   dialog,
   globalShortcut,
   type IpcMainInvokeEvent,
@@ -18,8 +19,10 @@ import {
   protocol,
   type SaveDialogOptions,
   screen,
+  session,
   shell,
   Tray,
+  type WebContents,
 } from "electron";
 import Store from "electron-store";
 import type {
@@ -60,6 +63,15 @@ import {
   createIntegratedServerState,
   killIntegratedServer,
 } from "./native/integrated-server-process";
+import { PathAccess, withFilterExtension } from "./native/path-access";
+import { resolveAppProtocolPath } from "./app-protocol";
+import { createQuitFlow } from "./quit-flow";
+import {
+  APP_PROTOCOL,
+  APP_PROTOCOL_HOST,
+  isAllowedRendererUrl as isRendererUrl,
+  isSafeExternalUrl,
+} from "./url-policy";
 import { trayGuidForPlatform } from "./tray-args";
 import {
   getReadyUpdateVersion,
@@ -68,9 +80,6 @@ import {
 } from "./updater";
 
 const APP_ID = "com.soulfiremc.soulfire";
-const APP_PROTOCOL = "app";
-const APP_PROTOCOL_HOST = "soulfire";
-const DEEP_LINK_PREFIX = "soulfire://";
 const DEFAULT_WINDOW_HEIGHT = 675;
 const DEFAULT_WINDOW_WIDTH = 1200;
 // Match --background in src/App.css so new and resized windows do not flash.
@@ -132,9 +141,12 @@ const castManager = new CastSessionManager((state) => {
 });
 
 const fsWatchers = new Map<number, FsWatchRegistration>();
-const devServerUrl = process.env["VITE_DEV_SERVER_URL"]
-  ? new URL(process.env["VITE_DEV_SERVER_URL"])
-  : null;
+// Packaged builds ignore this variable. Otherwise anyone who can set the
+// environment could load a remote page with the desktop API.
+const devServerUrl =
+  !app.isPackaged && process.env["VITE_DEV_SERVER_URL"]
+    ? new URL(process.env["VITE_DEV_SERVER_URL"])
+    : null;
 const hasSingleInstanceLock =
   !app.isPackaged || app.requestSingleInstanceLock();
 
@@ -145,23 +157,34 @@ const povInputOwners = new Map<
   { owner: BrowserWindow; target?: "pov" | undefined }
 >();
 let nextFsWatchId = 1;
-let pendingOpenUrl = findProtocolUrl(process.argv);
+// The renderer may use the profile directory and files the user picked in a
+// native dialog. Thread dumps are the only files it may open with the shell.
+const pathAccess = new PathAccess(() => [getAppConfigDir(app)]);
+const openableFiles = new Set<string>();
 let tray: Tray | null = null;
 let appStarted = false;
-
-app.on("open-url", (event, url) => {
-  event.preventDefault();
-  handleOpenUrl(url);
+const quitFlow = createQuitFlow({
+  getWindow: () => mainWindow,
+  // Wait for Java too, so a server that ignores the stop request is still
+  // forced to stop before the app exits.
+  cleanup: async () => {
+    const [cast, server] = await Promise.allSettled([
+      castManager.dispose(),
+      killIntegratedServer(integratedServerState),
+    ]);
+    if (cast.status === "rejected")
+      console.error("Could not finish Cast cleanup", cast.reason);
+    if (server.status === "rejected")
+      console.error("Could not stop the integrated server", server.reason);
+  },
+  quit: () => {
+    app.quit();
+  },
 });
 
 if (hasSingleInstanceLock) {
-  app.on("second-instance", (_event, argv) => {
-    const protocolUrl = findProtocolUrl(argv);
-    if (protocolUrl !== null) {
-      handleOpenUrl(protocolUrl);
-    } else {
-      focusMainWindow();
-    }
+  app.on("second-instance", () => {
+    focusMainWindow();
   });
 } else {
   app.quit();
@@ -270,8 +293,25 @@ function sendToMainWindow(channel: string, payload?: unknown): void {
   mainWindow.webContents.send(channel, payload);
 }
 
+// Windows and Linux start the installer as soon as electron-updater is told to
+// install. Close the window and stop Java first, so a "Stay" answer to the
+// unsaved changes prompt cancels the update restart too. On macOS, Squirrel
+// closes the windows itself and installs only after they closed.
+function restartToUpdate(): void {
+  if (process.platform === "darwin") {
+    installUpdateNow();
+    return;
+  }
+  quitFlow.quitWith(() => {
+    if (!installUpdateNow()) app.quit();
+  });
+}
+
 function focusMainWindow(): void {
   if (mainWindow === null || mainWindow.isDestroyed()) {
+    // The app is stopping Java before it exits. A new window would close
+    // again when cleanup finishes.
+    if (quitFlow.isQuitting()) return;
     // On macOS the app keeps running after its window closes. Reopen it for
     // the tray, the Dock, and deep links.
     if (appStarted) {
@@ -289,56 +329,8 @@ function focusMainWindow(): void {
   mainWindow.focus();
 }
 
-function handleOpenUrl(url: string): void {
-  pendingOpenUrl = url;
-  focusMainWindow();
-  flushPendingOpenUrl();
-}
-
-function flushPendingOpenUrl(): void {
-  if (
-    pendingOpenUrl === null ||
-    mainWindow === null ||
-    mainWindow.webContents.isDestroyed() ||
-    mainWindow.webContents.isLoadingMainFrame()
-  ) {
-    return;
-  }
-
-  sendToMainWindow("app:open-url", pendingOpenUrl);
-  pendingOpenUrl = null;
-}
-
-function findProtocolUrl(argv: string[]): string | null {
-  return argv.find((value) => value.startsWith(DEEP_LINK_PREFIX)) ?? null;
-}
-
 function isAllowedRendererUrl(target: string): boolean {
-  try {
-    const parsedUrl = new URL(target);
-
-    if (
-      parsedUrl.protocol === `${APP_PROTOCOL}:` &&
-      parsedUrl.host === APP_PROTOCOL_HOST
-    ) {
-      return true;
-    }
-
-    if (devServerUrl !== null && parsedUrl.origin === devServerUrl.origin) {
-      return true;
-    }
-  } catch {}
-
-  return false;
-}
-
-function isSafeExternalUrl(target: string): boolean {
-  try {
-    const parsedUrl = new URL(target);
-    return parsedUrl.protocol === "https:" || parsedUrl.protocol === "mailto:";
-  } catch {
-    return false;
-  }
+  return isRendererUrl(target, devServerUrl);
 }
 
 function validateIpcSender(event: IpcMainInvokeEvent): BrowserWindow {
@@ -361,47 +353,12 @@ function validateIpcSender(event: IpcMainInvokeEvent): BrowserWindow {
   return senderWindow;
 }
 
-async function resolveAppProtocolPath(
-  requestUrl: string,
-): Promise<string | null> {
-  let parsedUrl: URL;
-  try {
-    parsedUrl = new URL(requestUrl);
-  } catch {
-    return null;
-  }
-
-  if (
-    parsedUrl.protocol !== `${APP_PROTOCOL}:` ||
-    parsedUrl.host !== APP_PROTOCOL_HOST
-  ) {
-    return null;
-  }
-
-  const distRoot = path.join(app.getAppPath(), "dist");
-  const pathname = decodeURIComponent(parsedUrl.pathname);
-  const relativePath = pathname === "/" ? "index.html" : pathname.slice(1);
-  const filePath = path.resolve(
-    distRoot,
-    path.extname(relativePath) ? relativePath : "index.html",
-  );
-  const normalizedRoot = `${distRoot}${path.sep}`;
-
-  if (filePath !== distRoot && !filePath.startsWith(normalizedRoot)) {
-    return null;
-  }
-
-  try {
-    const fileInfo = await stat(filePath);
-    return fileInfo.isFile() ? filePath : null;
-  } catch {
-    return null;
-  }
-}
-
 function registerAppProtocol(): void {
   protocol.handle(APP_PROTOCOL, async (request) => {
-    const filePath = await resolveAppProtocolPath(request.url);
+    const filePath = await resolveAppProtocolPath(
+      request.url,
+      path.join(app.getAppPath(), "dist"),
+    );
     if (filePath === null) {
       return new Response("Not found", { status: 404 });
     }
@@ -434,7 +391,48 @@ function updatePovEscapeShortcut(): void {
   });
 }
 
+// Permissions the app uses: clipboard import and copy, POV pointer, keyboard
+// and fullscreen capture, and connections to local and LAN SoulFire servers.
+const ALLOWED_PERMISSIONS = new Set([
+  "clipboard-read",
+  "clipboard-sanitized-write",
+  "fullscreen",
+  "keyboardLock",
+  "local-network",
+  "local-network-access",
+  "loopback-network",
+  "pointerLock",
+]);
+
+function isTrustedContents(contents: WebContents | null): boolean {
+  if (contents === null || mainWindow === null || mainWindow.isDestroyed()) {
+    return false;
+  }
+  if (contents === mainWindow.webContents) {
+    return isAllowedRendererUrl(contents.getURL());
+  }
+  // POV popups load about:blank and are scripted by the main window.
+  return [...povWindows.values()].some(
+    (window) => !window.isDestroyed() && window.webContents === contents,
+  );
+}
+
+function registerPermissionHandlers(): void {
+  session.defaultSession.setPermissionRequestHandler(
+    (contents, permission, callback) => {
+      callback(
+        ALLOWED_PERMISSIONS.has(permission) && isTrustedContents(contents),
+      );
+    },
+  );
+  session.defaultSession.setPermissionCheckHandler(
+    (contents, permission) =>
+      ALLOWED_PERMISSIONS.has(permission) && isTrustedContents(contents),
+  );
+}
+
 function registerSecurityHandlers(): void {
+  registerPermissionHandlers();
   app.on("browser-window-focus", updatePovEscapeShortcut);
   app.on("browser-window-blur", (_event, window) => {
     globalShortcut.unregister("Escape");
@@ -542,8 +540,28 @@ function showEditContextMenu(
   contents: Electron.WebContents,
   params: Electron.ContextMenuParams,
 ): void {
-  const { editFlags, isEditable, selectionText } = params;
-  const template: Electron.MenuItemConstructorOptions[] = isEditable
+  const { editFlags, isEditable, linkURL, selectionText } = params;
+  // In-app links use the app protocol and are not offered here.
+  const linkItems: Electron.MenuItemConstructorOptions[] =
+    linkURL !== "" && isSafeExternalUrl(linkURL)
+      ? [
+          {
+            label: "Open link",
+            click: () => {
+              void shell.openExternal(linkURL);
+            },
+          },
+          {
+            label: "Copy link address",
+            click: () => {
+              clipboard.writeText(linkURL).catch((error: unknown) => {
+                console.error("Could not copy the link", error);
+              });
+            },
+          },
+        ]
+      : [];
+  const editItems: Electron.MenuItemConstructorOptions[] = isEditable
     ? [
         { role: "undo", enabled: editFlags.canUndo },
         { role: "redo", enabled: editFlags.canRedo },
@@ -557,6 +575,13 @@ function showEditContextMenu(
     : selectionText.trim().length > 0
       ? [{ role: "copy", enabled: editFlags.canCopy }]
       : [];
+  const template = [
+    ...linkItems,
+    ...(linkItems.length > 0 && editItems.length > 0
+      ? [{ type: "separator" } as const]
+      : []),
+    ...editItems,
+  ];
   if (template.length === 0) return;
 
   const window = BrowserWindow.fromWebContents(contents);
@@ -613,13 +638,36 @@ async function createMainWindow(): Promise<BrowserWindow> {
   window.once("ready-to-show", () => {
     window.show();
   });
-  window.on("close", () => {
-    void killIntegratedServer(integratedServerState);
+  // The script editor blocks unloading while it has unsaved changes. Ask here,
+  // because Electron otherwise refuses the close without telling the user.
+  window.webContents.on("will-prevent-unload", (event) => {
+    // A tray quit can arrive while the window is hidden or minimized. Show it,
+    // so the modal prompt is visible.
+    if (window.isMinimized()) window.restore();
+    window.show();
+    const response = dialog.showMessageBoxSync(window, {
+      buttons: ["Leave", "Stay"],
+      cancelId: 1,
+      defaultId: 1,
+      detail: "Your changes are not saved. If you leave now, they are lost.",
+      message: "Leave without saving?",
+      title: "Unsaved changes",
+      type: "warning",
+    });
+    if (response === 0) {
+      event.preventDefault();
+    } else {
+      quitFlow.closeCancelled();
+    }
   });
+  // Stop the server only after the close is confirmed. The "close" event
+  // fires before the renderer can cancel it.
   window.on("closed", () => {
     if (mainWindow === window) {
       mainWindow = null;
     }
+    void killIntegratedServer(integratedServerState);
+    quitFlow.windowClosed();
   });
   window.on("resize", () => {
     sendToMainWindow("window:resized");
@@ -633,9 +681,6 @@ async function createMainWindow(): Promise<BrowserWindow> {
   });
   window.on("unmaximize", () => {
     persistWindowState(window);
-  });
-  window.webContents.on("did-finish-load", () => {
-    flushPendingOpenUrl();
   });
 
   await window.loadURL(rendererEntryUrl());
@@ -790,7 +835,7 @@ function registerIpcHandlers(): void {
 
   handleIpc("updates:get-ready", () => getReadyUpdateVersion());
   handleIpc("updates:install-now", () => {
-    installUpdateNow();
+    restartToUpdate();
   });
 
   handleIpc("app:set-theme", (_window, theme: DesktopTheme) => {
@@ -852,14 +897,14 @@ function registerIpcHandlers(): void {
         recursive?: boolean;
       },
     ) => {
-      await mkdir(targetPath, {
-        recursive: options?.recursive ?? false,
+      await mkdir(pathAccess.resolve(targetPath), {
+        recursive: options?.recursive === true,
       });
     },
   );
 
   handleIpc("fs:read-dir", async (_window, targetPath: string) => {
-    const entries = await readdir(targetPath, {
+    const entries = await readdir(pathAccess.resolve(targetPath), {
       withFileTypes: true,
     });
 
@@ -872,7 +917,7 @@ function registerIpcHandlers(): void {
   });
 
   handleIpc("fs:read-text-file", async (_window, targetPath: string) =>
-    readFile(targetPath, "utf8"),
+    readFile(pathAccess.resolve(targetPath), "utf8"),
   );
 
   handleIpc(
@@ -885,7 +930,7 @@ function registerIpcHandlers(): void {
         changedPaths: new Set<string>(),
         debounceTimer: null,
         ownerContentsId,
-        watcher: watch(targetPath, {
+        watcher: watch(pathAccess.resolve(targetPath), {
           ...(options?.recursive === false && { depth: 0 }),
           ignoreInitial: true,
           persistent: true,
@@ -936,10 +981,13 @@ function registerIpcHandlers(): void {
   handleIpc(
     "fs:write-text-file",
     async (_window, targetPath: string, contents: string) => {
-      await mkdir(path.dirname(targetPath), {
+      const resolvedPath = pathAccess.resolve(targetPath);
+      if (typeof contents !== "string")
+        throw new TypeError("Invalid file contents");
+      await mkdir(path.dirname(resolvedPath), {
         recursive: true,
       });
-      await writeFile(targetPath, contents, "utf8");
+      await writeFile(resolvedPath, contents, "utf8");
     },
   );
 
@@ -947,8 +995,10 @@ function registerIpcHandlers(): void {
     getSoulFireServerVersion(app, app.getVersion()),
   );
 
-  handleIpc("integrated-server:get-diagnostics", () =>
-    getIntegratedDiagnostics(app, integratedServerState),
+  handleIpc(
+    "integrated-server:get-diagnostics",
+    (_window, afterLogId?: unknown) =>
+      getIntegratedDiagnostics(app, integratedServerState, afterLogId),
   );
   handleIpc("integrated-server:open-data-directory", async () => {
     const directory = integratedDataDirectory(app, integratedServerState);
@@ -967,9 +1017,14 @@ function registerIpcHandlers(): void {
     integratedServerState.jcmdPath = executable;
     return executable;
   });
-  handleIpc("integrated-server:capture-thread-dump", async () =>
-    captureIntegratedThreadDump(app, integratedServerState),
-  );
+  handleIpc("integrated-server:capture-thread-dump", async () => {
+    const dumpPath = await captureIntegratedThreadDump(
+      app,
+      integratedServerState,
+    );
+    openableFiles.add(path.resolve(dumpPath));
+    return dumpPath;
+  });
 
   handleIpc("integrated-server:list-custom-jars", async () =>
     listCustomSoulFireServerJars(app),
@@ -977,8 +1032,15 @@ function registerIpcHandlers(): void {
 
   handleIpc(
     "integrated-server:import-custom-jar",
-    async (_window, sourcePath: string) =>
-      importCustomSoulFireServerJar(app, sourcePath),
+    async (_window, sourcePath: unknown) => {
+      if (
+        !pathAccess.isGrantedFile(sourcePath) ||
+        path.extname(sourcePath).toLowerCase() !== ".jar"
+      ) {
+        throw new Error("Choose the server jar in the file dialog first");
+      }
+      return importCustomSoulFireServerJar(app, sourcePath);
+    },
   );
 
   handleIpc(
@@ -1007,13 +1069,20 @@ function registerIpcHandlers(): void {
           jarId?: string;
           type: "custom" | "official";
         };
-        jvmArgs: string[];
+        jvmArgs: unknown;
       },
-    ) =>
-      runIntegratedServer(
+    ) => {
+      const { jvmArgs } = options;
+      if (
+        !Array.isArray(jvmArgs) ||
+        !jvmArgs.every((arg): arg is string => typeof arg === "string")
+      ) {
+        throw new Error("Invalid JVM arguments");
+      }
+      return runIntegratedServer(
         app,
         integratedServerState,
-        options.jvmArgs,
+        jvmArgs,
         options.jarSource?.type === "custom" && options.jarSource.jarId
           ? {
               jarId: options.jarSource.jarId,
@@ -1031,7 +1100,8 @@ function registerIpcHandlers(): void {
           address,
           token,
         };
-      }),
+      });
+    },
   );
 
   handleIpc("path:app-config-dir", () => getAppConfigDir(app));
@@ -1052,9 +1122,20 @@ function registerIpcHandlers(): void {
     await shell.openExternal(target);
   });
 
-  handleIpc("shell:open-path", async (_window, target: string) =>
-    shell.openPath(target),
-  );
+  handleIpc("shell:open-path", async (_window, target: unknown) => {
+    if (typeof target !== "string") throw new TypeError("Invalid path");
+    const resolved = path.resolve(target);
+    const openableDirectories = [getAppConfigDir(app), getAppLocalDataDir(app)];
+    if (
+      !openableFiles.has(resolved) &&
+      !openableDirectories.some(
+        (directory) => path.resolve(directory) === resolved,
+      )
+    ) {
+      throw new Error(`Blocked opening path: ${resolved}`);
+    }
+    return shell.openPath(resolved);
+  });
 
   handleIpc("system:get-info", () => ({
     appVersion: app.getVersion(),
@@ -1139,6 +1220,10 @@ async function openDialog(
     return null;
   }
 
+  for (const filePath of result.filePaths) {
+    if (options.directory) pathAccess.grantDirectory(filePath);
+    else pathAccess.grantFile(filePath);
+  }
   return options.multiple ? result.filePaths : (result.filePaths[0] ?? null);
 }
 
@@ -1151,11 +1236,13 @@ async function saveDialog(
     dialogBaseOptions(options),
   );
 
-  if (result.canceled) {
+  if (result.canceled || !result.filePath) {
     return null;
   }
 
-  return result.filePath;
+  const filePath = withFilterExtension(result.filePath, options.filters);
+  pathAccess.grantFile(filePath);
+  return filePath;
 }
 
 function setThemeSource(theme: DesktopTheme): void {
@@ -1204,19 +1291,10 @@ async function bootstrap(): Promise<void> {
   );
   registerAppProtocol();
 
-  let castCleanupComplete = false;
+  // Tray, menu, renderer, and updater quits all close the window first, so
+  // unsaved script changes get the same prompt as closing the window.
   app.on("before-quit", (event) => {
-    if (castCleanupComplete) return;
-    event.preventDefault();
-    const finish = () => {
-      castCleanupComplete = true;
-      app.quit();
-    };
-    void castManager.dispose().then(finish, (error: unknown) => {
-      console.error("Could not finish Cast cleanup", error);
-      finish();
-    });
-    void killIntegratedServer(integratedServerState);
+    if (quitFlow.beforeQuit()) event.preventDefault();
   });
 
   const firstWindow = createMainWindow();
@@ -1228,6 +1306,7 @@ async function bootstrap(): Promise<void> {
     (version) => {
       sendToMainWindow("updates:ready", version);
     },
+    restartToUpdate,
   );
 
   app.on("activate", () => {

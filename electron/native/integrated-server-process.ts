@@ -213,9 +213,27 @@ export async function killIntegratedServer(
   state.diagnostics.status = "stopped";
 }
 
+// Windows has no SIGTERM: Node terminates the process at once, so Java shutdown
+// hooks never run. Use the server console's stop command there instead.
+function requestGracefulStop(
+  child: ChildProcessWithoutNullStreams,
+  platform: NodeJS.Platform,
+): void {
+  if (platform !== "win32") {
+    child.kill("SIGTERM");
+    return;
+  }
+  if (child.stdin.writable) {
+    // The process can exit before the write lands. The forced stop still follows.
+    child.stdin.on("error", () => {});
+    child.stdin.write("stop\n");
+  }
+}
+
 export function terminateIntegratedProcess(
   state: IntegratedServerState,
   gracePeriodMs = 5000,
+  platform: NodeJS.Platform = process.platform,
 ): Promise<void> {
   if (state.termination) return state.termination;
   const child = state.child;
@@ -230,7 +248,7 @@ export function terminateIntegratedProcess(
   });
   const terminate = Effect.gen(function* () {
     if (child.exitCode === null && child.signalCode === null)
-      child.kill("SIGTERM");
+      requestGracefulStop(child, platform);
     yield* Effect.sleep(gracePeriodMs);
     if (child.exitCode === null && child.signalCode === null) {
       appendIntegratedLog(

@@ -5,7 +5,7 @@ import { access, mkdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import type { App } from "electron";
-import type { DesktopIntegratedServerDiagnostics } from "../../src/lib/desktop-api";
+import type { DesktopIntegratedServerDiagnosticsUpdate } from "../../src/lib/desktop-api";
 import { getAppLocalDataDir } from "./app-paths";
 import {
   appendIntegratedLog,
@@ -69,7 +69,8 @@ export function integratedDataDirectory(
 export function getIntegratedDiagnostics(
   app: App,
   state: IntegratedServerState,
-): DesktopIntegratedServerDiagnostics {
+  afterLogId?: unknown,
+): DesktopIntegratedServerDiagnosticsUpdate {
   if (state.jcmdPath === undefined && !state.jcmdSearch) {
     state.jcmdSearch = findJcmd(state)
       .then((executable) => {
@@ -80,10 +81,20 @@ export function getIntegratedDiagnostics(
         state.jcmdSearch = null;
       });
   }
+  const { logs } = state.diagnostics;
+  // Send only new lines while the caller still has the line it last saw.
+  // A new startup clears the logs, so the caller then gets the full list.
+  const lastSeen =
+    typeof afterLogId === "number"
+      ? logs.findIndex((log) => log.id === afterLogId)
+      : -1;
   return {
     ...state.diagnostics,
     dataDirectory: integratedDataDirectory(app, state),
     jcmdPath: state.jcmdPath ?? null,
+    logs: lastSeen === -1 ? logs : logs.slice(lastSeen + 1),
+    logsAfter: lastSeen === -1 ? null : (logs[lastSeen]?.id ?? null),
+    firstLogId: logs[0]?.id ?? null,
   };
 }
 

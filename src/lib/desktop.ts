@@ -10,7 +10,7 @@ import type {
   DesktopFsWatchEvent,
   DesktopFsWatchOptions,
   DesktopIntegratedServerCredentials,
-  DesktopIntegratedServerDiagnostics,
+  DesktopIntegratedServerDiagnosticsUpdate,
   DesktopIntegratedServerJarSource,
   DesktopMkdirOptions,
   DesktopOpenDialogOptions,
@@ -85,9 +85,6 @@ export const desktop = {
     },
   },
   app: {
-    async onOpenUrl(callback: (url: string) => void): Promise<() => void> {
-      return requireDesktopRuntime().app.onOpenUrl(callback);
-    },
     async quit(): Promise<void> {
       await requireDesktopRuntime().app.quit();
     },
@@ -153,8 +150,12 @@ export const desktop = {
     },
   },
   integratedServer: {
-    async getDiagnostics(): Promise<DesktopIntegratedServerDiagnostics> {
-      return requireDesktopRuntime().integratedServer.getDiagnostics();
+    async getDiagnostics(
+      afterLogId?: number,
+    ): Promise<DesktopIntegratedServerDiagnosticsUpdate> {
+      return requireDesktopRuntime().integratedServer.getDiagnostics(
+        afterLogId,
+      );
     },
     async openDataDirectory(): Promise<void> {
       await requireDesktopRuntime().integratedServer.openDataDirectory();

@@ -150,11 +150,9 @@ test("new sessions reject old broadcasts while tabs in the same session still sy
     try {
       oldPublisher.setQueryData(["account"], 1);
       await until(() => current.getQueryData(["account"]) === 1);
+      // The tab that starts the new session keeps its original subscription.
       resetQuerySession();
-      stops.push(
-        synchronizeQuerySession(current),
-        synchronizeQuerySession(freshPeer),
-      );
+      stops.push(synchronizeQuerySession(freshPeer));
       oldPublisher.setQueryData(["account"], 2);
       await until(() => oldWitness.getQueryData(["account"]) === 2);
       freshPeer.setQueryData(["current"], 3);
