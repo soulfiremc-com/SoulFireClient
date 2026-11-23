@@ -17,11 +17,22 @@ import { Button } from "@/components/ui/button.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { SidebarTrigger } from "@/components/ui/sidebar.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 export interface PageLayoutProps {
   children: ReactNode;
   extraCrumbs?: { id: string; content: ReactNode }[];
+  /** The last breadcrumb and the visible page heading. */
   pageName: ReactNode;
+  /** A short line under the page heading. */
+  pageDescription?: ReactNode;
+  /** Buttons next to the page heading, such as the page's main action. */
+  pageActions?: ReactNode;
+  /**
+   * Hide the visible page heading when the page renders its own, such as a
+   * full-height editor. The breadcrumb then holds the page's h1.
+   */
+  hidePageHeading?: boolean;
   documentationLink?: string;
   loadingSkeleton?: ReactNode;
 }
@@ -43,6 +54,8 @@ export function PageLayout(
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
+  const titleText =
+    typeof props.pageName === "string" ? props.pageName : undefined;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -88,16 +101,15 @@ export function PageLayout(
               ))}
               <BreadcrumbItem className="min-w-0">
                 <BreadcrumbPage className="min-w-0">
-                  <h1
-                    className="block truncate"
-                    title={
-                      typeof props.pageName === "string"
-                        ? props.pageName
-                        : undefined
-                    }
-                  >
-                    {props.pageName}
-                  </h1>
+                  {props.hidePageHeading ? (
+                    <h1 className="block truncate" title={titleText}>
+                      {props.pageName}
+                    </h1>
+                  ) : (
+                    <span className="block truncate" title={titleText}>
+                      {props.pageName}
+                    </span>
+                  )}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -109,7 +121,31 @@ export function PageLayout(
         </div>
       </header>
       <ScrollArea className="min-h-0 w-full max-w-dvw flex-1">
-        <div className="flex min-h-full w-full max-w-dvw flex-col p-4">
+        <div className="flex min-h-full w-full max-w-dvw flex-col gap-4 p-4">
+          {!props.hidePageHeading && (
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <div className="flex min-w-0 flex-col gap-1">
+                <h1
+                  className="truncate text-xl font-semibold"
+                  title={titleText}
+                >
+                  {props.pageName}
+                </h1>
+                {props.pageDescription && (
+                  <p className="text-sm text-muted-foreground">
+                    {props.pageDescription}
+                  </p>
+                )}
+              </div>
+              {props.pageActions && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+                    {props.pageActions}
+                  </Suspense>
+                </div>
+              )}
+            </div>
+          )}
           <CatchBoundary
             getResetKey={() => pathname}
             errorComponent={ErrorComponent}

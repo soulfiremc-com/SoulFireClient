@@ -15,6 +15,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
 } from "react";
 import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
@@ -216,6 +217,28 @@ export function WindowControls({
   );
 }
 
+// The Navigation API tracks forward entries exactly. `history.length` stops
+// growing at 50 entries in Chromium, so it cannot tell whether forward works.
+function subscribeToNavigation(onChange: () => void) {
+  if (!("navigation" in window)) return () => {};
+  window.navigation.addEventListener("currententrychange", onChange);
+  return () => {
+    window.navigation.removeEventListener("currententrychange", onChange);
+  };
+}
+
+function getCanGoForward() {
+  return "navigation" in window && window.navigation.canGoForward;
+}
+
+function useCanGoForward() {
+  return useSyncExternalStore(
+    subscribeToNavigation,
+    getCanGoForward,
+    () => false,
+  );
+}
+
 export function WindowTitlebar() {
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -223,9 +246,7 @@ export function WindowTitlebar() {
   const desktopApp = isDesktopApp();
   const shouldShowWindowTitlebar = useShouldShowWindowTitlebar();
   const { title: pageTitle, icon: pageIcon } = useCurrentRouteChrome();
-  const canGoForward =
-    typeof window !== "undefined" &&
-    router.history.location.state.__TSR_index < router.history.length - 1;
+  const canGoForward = useCanGoForward();
 
   const handleBack = useCallback(() => {
     router.history.back();

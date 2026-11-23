@@ -23,6 +23,7 @@ import {
   PAGE_HIDDEN_SETTINGS,
 } from "@/lib/settings-discovery";
 import { getSettingLabel, isFocusedSetting } from "@/lib/settings-focus";
+import { settingsPageName } from "@/lib/page-names";
 import {
   isPrimaryKeyShortcut,
   type ShortcutEvent,
@@ -58,7 +59,8 @@ export type PaletteAction =
   | "theme-system"
   | "clear-recents"
   | "browse-project"
-  | "browse-all";
+  | "browse-all"
+  | "remove-pin";
 export type PaletteGroup =
   | "navigation"
   | "currentProject"
@@ -164,6 +166,7 @@ function settingsCommands(
   definitionList: readonly SettingsDefinition[],
   plugins: readonly Pick<ServerPlugin, "id" | "description">[],
   searchOnlyPages: boolean,
+  t: CatalogOptions["t"],
 ): PaletteCommand[] {
   const commands: PaletteCommand[] = [];
   const definitions = new Map(
@@ -206,12 +209,13 @@ function settingsCommands(
           target.kind === "project"
             ? `settings:${prefix}:${page.id}`
             : `server-settings:${page.id}`,
-        label: page.pageName,
+        label: settingsPageName(page, t),
         icon: page.iconId || "settings-2",
         group: "settings",
         searchOnly: searchOnlyPages,
         keywords: [
           page.id,
+          page.pageName,
           page.owningPluginId ?? "",
           ...entries.map(({ definition }) => getSettingLabel(definition)),
         ],
@@ -227,7 +231,7 @@ function settingsCommands(
             ? `setting:${prefix}:${JSON.stringify([page.id, entry.namespace, entry.key])}`
             : `server-setting:${JSON.stringify([page.id, entry.namespace, entry.key])}`,
         label,
-        description: page.pageName,
+        description: settingsPageName(page, t),
         icon: page.iconId || "settings-2",
         group: "settings",
         searchOnly: true,
@@ -462,6 +466,7 @@ export function createPaletteCommands({
         current.settingsDefinitions,
         current.plugins,
         false,
+        t,
       ),
     );
     const botSnapshot = canInstance(current, InstancePermission.READ_BOT_INFO)
@@ -673,6 +678,7 @@ export function createPaletteCommands({
         project.settingsDefinitions,
         project.plugins,
         true,
+        t,
       ),
     );
     if (
@@ -725,7 +731,7 @@ export function createPaletteCommands({
     });
     add({
       id: "server-settings",
-      label: t("userSidebar.serverSettings"),
+      label: settingsPageName({ id: "server", pageName: "server" }, t),
       icon: "server",
       group: "admin",
       destination: {
@@ -735,7 +741,7 @@ export function createPaletteCommands({
     });
     add({
       id: "dev-settings",
-      label: t("userSidebar.devSettings"),
+      label: settingsPageName({ id: "dev", pageName: "dev" }, t),
       icon: "bug",
       group: "admin",
       destination: {
@@ -751,6 +757,7 @@ export function createPaletteCommands({
           server.settingsDefinitions,
           server.plugins,
           false,
+          t,
         ),
       );
     if (canGlobal(GlobalPermission.GLOBAL_SUBSCRIBE_LOGS))

@@ -35,7 +35,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Toaster } from "@/components/ui/sonner";
 import {
   Sidebar,
   SidebarContent,
@@ -432,7 +431,6 @@ function Shell({ transport }: { transport: StoryTransport }) {
               </DialogDescription>
             </DialogContent>
           </Dialog>
-          <Toaster />
         </AboutContext>
       </TransportContext>
     </ThemeProvider>
@@ -606,18 +604,6 @@ const meta = {
       deactivateScript,
     ])
       mock.mockClear();
-    const server = localStorage.getItem("server-address");
-    const keys = [
-      `sf-palette-recents:${JSON.stringify([server, "palette-story"])}`,
-      palettePinKey(server, "palette-story"),
-    ];
-    const clear = () => {
-      keys.forEach((key) => {
-        localStorage.removeItem(key);
-      });
-    };
-    clear();
-    return clear;
   },
 } satisfies Meta<typeof Example>;
 export default meta;
@@ -1412,6 +1398,9 @@ export const ExplicitProjectScope: Story = {
     await opened.menu.findByRole("button", {
       name: "Change search scope, current: All projects",
     });
+    // Replace the query, whether or not the scope change kept it. A doubled
+    // query fuzzy-matches the project name and splits it into highlights.
+    await context.userEvent.clear(opened.input);
     await context.userEvent.type(opened.input, "terminal");
     const terminal = await opened.menu.findByRole("option", {
       name: /Terminal.*Test farm/u,

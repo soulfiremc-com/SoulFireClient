@@ -16,7 +16,8 @@ import {
   type PaletteIndexProgress,
   runBounded,
 } from "@/lib/command-palette-index";
-import { fetchInstanceInfo } from "@/lib/instance-info-query";
+import { instanceInfoQueryOptions } from "@/lib/instance-info-query";
+import { queryKeys } from "@/lib/query-keys";
 import { scriptListQueryOptions } from "@/lib/script-service";
 import { serverInfoQueryOptions } from "@/lib/server-info-query";
 import type { InstanceInfoQueryData, ServerInfoQueryData } from "@/lib/types";
@@ -31,7 +32,11 @@ interface Source {
 }
 type SourceStatus = "loaded" | "failed";
 
-const INDEXED_KEYS = ["instance-info", "scripts", "server-info"];
+const INDEXED_KEYS = [
+  queryKeys.instanceInfo("")[0],
+  queryKeys.scripts("")[0],
+  queryKeys.serverInfo()[0],
+];
 const decodeProjectIds = Schema.decodeUnknownSync(
   Schema.fromJsonString(Schema.Array(Schema.String)),
 );
@@ -93,12 +98,7 @@ export function usePaletteSearchIndex({
         ? indexedIds.map((id) => ({
             id: `project:${id}`,
             queries: [
-              // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
-              sourceQuery({
-                queryKey: ["instance-info", id],
-                queryFn: ({ client, signal }) =>
-                  fetchInstanceInfo(transport, id, client, signal),
-              }),
+              sourceQuery(instanceInfoQueryOptions(transport, id)),
               sourceQuery(scriptListQueryOptions(transport, id)),
             ],
           }))
@@ -173,14 +173,14 @@ export function usePaletteSearchIndex({
   return useMemo(() => {
     void revision;
     const projects: IndexedProject[] = indexedIds.flatMap((id) => {
-      const project = queryClient.getQueryData<InstanceInfoQueryData>([
-        "instance-info",
-        id,
-      ]);
+      const project = queryClient.getQueryData<InstanceInfoQueryData>(
+        queryKeys.instanceInfo(id),
+      );
       // Failed refreshes can leave old data in the cache, including permissions.
       if (
         project?.id !== id ||
-        queryClient.getQueryState(["instance-info", id])?.status === "error"
+        queryClient.getQueryState(queryKeys.instanceInfo(id))?.status ===
+          "error"
       )
         return [];
       const scripts =
@@ -195,10 +195,9 @@ export function usePaletteSearchIndex({
     if (!transport)
       // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- idsKey is a JSON.stringify of a string array built in this hook
       for (const id of JSON.parse(idsKey) as string[]) {
-        const project = queryClient.getQueryData<InstanceInfoQueryData>([
-          "instance-info",
-          id,
-        ]);
+        const project = queryClient.getQueryData<InstanceInfoQueryData>(
+          queryKeys.instanceInfo(id),
+        );
         if (project?.id === id) projects.push({ project });
       }
     const server =

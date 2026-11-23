@@ -1,9 +1,9 @@
-"use client";
-
+import { useQuery } from "@tanstack/react-query";
 import {
   Link,
   type LinkProps,
   useParams,
+  useRouteContext,
   useRouterState,
 } from "@tanstack/react-router";
 import {
@@ -23,6 +23,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { hasInstancePermission } from "@/lib/utils.tsx";
 
 type NavLinks = {
   title: string;
@@ -38,6 +40,22 @@ export function NavControls() {
     from: "/_dashboard/instance/$instance",
     select: (params) => params.instance,
   });
+  const instanceInfoQueryOptions = useRouteContext({
+    from: "/_dashboard/instance/$instance",
+    select: (context) => context.instanceInfoQueryOptions,
+  });
+  // The other links stay usable while project data loads. The audit log link
+  // appears once permissions are known.
+  const { data: instanceInfo } = useQuery({
+    ...instanceInfoQueryOptions,
+    refetchInterval: false,
+  });
+  const canReadAuditLog =
+    instanceInfo !== undefined &&
+    hasInstancePermission(
+      instanceInfo,
+      InstancePermission.READ_INSTANCE_AUDIT_LOGS,
+    );
   const routeIds = useRouterState({
     select: (state) => state.matches.map((match) => match.routeId as string),
   });
@@ -84,14 +102,18 @@ export function NavControls() {
         params: { instance },
       },
     },
-    {
-      title: t("instanceSidebar.audit-log"),
-      icon: TextSearchIcon,
-      linkProps: {
-        to: "/instance/$instance/audit-log",
-        params: { instance },
-      },
-    },
+    ...(canReadAuditLog
+      ? [
+          {
+            title: t("instanceSidebar.audit-log"),
+            icon: TextSearchIcon,
+            linkProps: {
+              to: "/instance/$instance/audit-log",
+              params: { instance },
+            },
+          } satisfies NavLinks[number],
+        ]
+      : []),
   ];
 
   return (

@@ -1,5 +1,3 @@
-"use client";
-
 import { flavorEntries } from "@catppuccin/palette";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";

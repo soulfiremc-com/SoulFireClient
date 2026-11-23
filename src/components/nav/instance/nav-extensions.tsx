@@ -147,7 +147,8 @@ export function NavExtensions() {
       </SidebarGroupLabel>
       <SidebarMenu>
         {navLinks.map((item) =>
-          item.pluginList ? (
+          // Without enabled plugin pages the toggle would open an empty list.
+          item.pluginList && pluginSettingLinks.length > 0 ? (
             <Collapsible
               open={pluginCollapsibleOpen}
               onOpenChange={setPluginCollapsibleOpen}

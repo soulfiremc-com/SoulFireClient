@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
+import { settingsPageName } from "@/lib/page-names.ts";
 import { hasInstancePermission } from "@/lib/utils.tsx";
 
 interface NavLink {
@@ -44,35 +45,20 @@ export function NavSettings() {
       ),
     [instanceInfo.instanceSettings],
   );
+  const builtInPage = (id: string, icon: string): NavLink => ({
+    id: `settings:${id}`,
+    title: settingsPageName({ id, pageName: id }, t),
+    iconId: pageIconMap.get(id) ?? icon,
+    linkProps: {
+      to: "/instance/$instance/settings/$pageId",
+      params: { instance: instanceInfo.id, pageId: id },
+    },
+  });
 
   const navLinks: NavLink[] = [
-    {
-      id: "settings:bot",
-      title: t("instanceSidebar.botSettings"),
-      iconId: pageIconMap.get("bot") ?? "bot",
-      linkProps: {
-        to: "/instance/$instance/settings/$pageId",
-        params: { instance: instanceInfo.id, pageId: "bot" },
-      },
-    },
-    {
-      id: "settings:ai",
-      title: t("instanceSidebar.aiSettings"),
-      iconId: pageIconMap.get("ai") ?? "sparkles",
-      linkProps: {
-        to: "/instance/$instance/settings/$pageId",
-        params: { instance: instanceInfo.id, pageId: "ai" },
-      },
-    },
-    {
-      id: "settings:pathfinding",
-      title: t("instanceSidebar.pathfindingSettings"),
-      iconId: pageIconMap.get("pathfinding") ?? "route",
-      linkProps: {
-        to: "/instance/$instance/settings/$pageId",
-        params: { instance: instanceInfo.id, pageId: "pathfinding" },
-      },
-    },
+    builtInPage("bot", "bot"),
+    builtInPage("ai", "sparkles"),
+    builtInPage("pathfinding", "route"),
     ...(hasInstancePermission(
       instanceInfo,
       InstancePermission.UPDATE_INSTANCE_META,
@@ -99,7 +85,7 @@ export function NavSettings() {
         (page) =>
           ({
             id: `settings:${page.id}`,
-            title: page.pageName,
+            title: settingsPageName(page, t),
             iconId: page.iconId,
             linkProps: {
               to: "/instance/$instance/settings/$pageId" as const,

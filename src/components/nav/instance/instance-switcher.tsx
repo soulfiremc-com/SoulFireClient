@@ -69,6 +69,11 @@ import {
 } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
 import { desktop, isDesktopApp } from "@/lib/desktop.ts";
+import { toastDemoReadOnly, toastMutation } from "@/lib/error-toast.ts";
+import {
+  DemoReadOnlyError,
+  setInstanceConfigFull,
+} from "@/lib/instance-mutations.ts";
 import { createTextBlob } from "@/lib/download.ts";
 import { PROJECT_SHORTCUT_LIMIT } from "@/lib/keyboard-shortcuts";
 import { formatShortcut } from "@/lib/platform.ts";
@@ -78,7 +83,6 @@ import {
   hasGlobalPermission,
   hasInstancePermission,
   runAsync,
-  setInstanceConfigFull,
 } from "@/lib/utils.tsx";
 
 function SidebarInstanceButton() {
@@ -90,6 +94,14 @@ function SidebarInstanceButton() {
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
 
   const fleetSummary = formatBotFleetSummary(t, instanceInfo.botSummary);
+  const totalBots = instanceInfo.botSummary?.totalBots ?? 0;
+  const fleetStatus =
+    totalBots === 0
+      ? t("instanceSidebar.fleetStatusEmpty")
+      : t("instanceSidebar.fleetStatus", {
+          online: instanceInfo.botSummary?.onlineBots ?? 0,
+          count: totalBots,
+        });
   return (
     <DropdownMenuTrigger
       render={
@@ -108,7 +120,7 @@ function SidebarInstanceButton() {
           {instanceInfo.friendlyName}
         </span>
         <span className="truncate text-xs" title={fleetSummary}>
-          {fleetSummary}
+          {fleetStatus}
         </span>
       </div>
       <ChevronsUpDownIcon className="ml-auto" />
@@ -174,6 +186,17 @@ function InstanceListSkeleton() {
   );
 }
 
+interface PendingProfileImport {
+  fileName: string;
+  profile: ProfileRoot;
+}
+
+/** Reads and parses a profile file, then asks before it replaces the config. */
+type RequestProfileImport = (
+  fileName: string,
+  readFile: () => Promise<string>,
+) => void;
+
 function useProfileImport() {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
@@ -201,17 +224,20 @@ function useProfileImport() {
     },
   });
 
-  return { instanceInfo, importProfile: setProfileMutation.mutateAsync };
+  return {
+    instanceInfo,
+    importProfile: setProfileMutation.mutateAsync,
+    importPending: setProfileMutation.isPending,
+  };
 }
 
 function InstanceProfileFileInput({
   inputRef,
+  onRequestImport,
 }: {
   inputRef: RefObject<HTMLInputElement | null>;
+  onRequestImport: RequestProfileImport;
 }) {
-  const { t } = useTranslation("common");
-  const { importProfile } = useProfileImport();
-
   return (
     <input
       ref={inputRef}
@@ -222,21 +248,7 @@ function InstanceProfileFileInput({
         const file = event.currentTarget.files?.item(0);
         event.currentTarget.value = "";
         if (!file) return;
-
-        toast.promise(
-          (async () => {
-            const data = await file.text();
-            await importProfile(parseProfileFile(data));
-          })(),
-          {
-            loading: t("instanceSidebar.loadProfileToast.loading"),
-            success: t("instanceSidebar.loadProfileToast.success"),
-            error: (error) => {
-              console.error(error);
-              return t("instanceSidebar.loadProfileToast.error");
-            },
-          },
-        );
+        onRequestImport(file.name, () => file.text());
       }}
     />
   );
@@ -244,13 +256,24 @@ function InstanceProfileFileInput({
 
 function InstanceActionButtons({
   onLoadProfile,
+  onRequestImport,
 }: {
   onLoadProfile: () => void;
+  onRequestImport: RequestProfileImport;
 }) {
   const { t } = useTranslation("common");
-  const { instanceInfo, importProfile } = useProfileImport();
+  const instanceInfoQueryOptions = useRouteContext({
+    from: "/_dashboard/instance/$instance",
+    select: (context) => context.instanceInfoQueryOptions,
+  });
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const systemInfo = use(SystemInfoContext);
+  // Importing replaces every setting, account, and proxy in the project.
+  const canImport = hasInstancePermission(
+    instanceInfo,
+    InstancePermission.UPDATE_INSTANCE_CONFIG,
+  );
 
   return (
     <>
@@ -258,7 +281,7 @@ function InstanceActionButtons({
         <DropdownMenuLabel className="max-w-64 truncate text-xs text-muted-foreground">
           {instanceInfo.friendlyName}
         </DropdownMenuLabel>
-        {isDesktopApp() && systemInfo ? (
+        {!canImport ? null : isDesktopApp() && systemInfo ? (
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <UploadIcon className="size-4" />
@@ -268,45 +291,25 @@ function InstanceActionButtons({
               <DropdownMenuSubContent>
                 {systemInfo.availableProfiles.length > 0 && (
                   <>
-                    {systemInfo.availableProfiles.map((file) => {
-                      const loadProfile = async () => {
-                        const data = await desktop.fs.readTextFile(
-                          await desktop.path.resolve(
-                            await desktop.path.resolve(
-                              await desktop.path.appConfigDir(),
-                              "profile",
+                    {systemInfo.availableProfiles.map((file) => (
+                      <DropdownMenuItem
+                        key={file}
+                        onClick={() => {
+                          onRequestImport(file, async () =>
+                            desktop.fs.readTextFile(
+                              await desktop.path.resolve(
+                                await desktop.path.appConfigDir(),
+                                "profile",
+                                file,
+                              ),
                             ),
-                            file,
-                          ),
-                        );
-
-                        await importProfile(parseProfileFile(data));
-                      };
-                      return (
-                        <DropdownMenuItem
-                          key={file}
-                          onClick={() => {
-                            toast.promise(loadProfile(), {
-                              loading: t(
-                                "instanceSidebar.loadProfileToast.loading",
-                              ),
-                              success: t(
-                                "instanceSidebar.loadProfileToast.success",
-                              ),
-                              error: (e) => {
-                                console.error(e);
-                                return t(
-                                  "instanceSidebar.loadProfileToast.error",
-                                );
-                              },
-                            });
-                          }}
-                        >
-                          <FileIcon className="size-4" />
-                          {file}
-                        </DropdownMenuItem>
-                      );
-                    })}
+                          );
+                        }}
+                      >
+                        <FileIcon className="size-4" />
+                        {file}
+                      </DropdownMenuItem>
+                    ))}
                     <DropdownMenuSeparator />
                   </>
                 )}
@@ -332,31 +335,11 @@ function InstanceActionButtons({
                         directory: false,
                       });
 
-                      if (selected) {
-                        if (Array.isArray(selected)) {
-                          return;
-                        }
-                        const data = await desktop.fs.readTextFile(selected);
-                        toast.promise(
-                          (async () => {
-                            await importProfile(parseProfileFile(data));
-                          })(),
-                          {
-                            loading: t(
-                              "instanceSidebar.loadProfileToast.loading",
-                            ),
-                            success: t(
-                              "instanceSidebar.loadProfileToast.success",
-                            ),
-                            error: (e) => {
-                              console.error(e);
-                              return t(
-                                "instanceSidebar.loadProfileToast.error",
-                              );
-                            },
-                          },
-                        );
-                      }
+                      if (!selected || Array.isArray(selected)) return;
+                      onRequestImport(
+                        selected.split(/[\\/]/u).at(-1) ?? selected,
+                        () => desktop.fs.readTextFile(selected),
+                      );
                     });
                   }}
                 >
@@ -450,19 +433,34 @@ export function InstanceSwitcher() {
   const { isMobile } = useSidebar();
   const { instance } = useParams({ from: "/_dashboard/instance/$instance" });
   const instanceProfileInputRef = useRef<HTMLInputElement>(null);
-  // The menu unmounts its content when it closes, so the dialog lives outside it.
+  // The menu unmounts its content when it closes, so the dialogs live outside it.
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+  const [pendingImport, setPendingImport] =
+    useState<PendingProfileImport | null>(null);
+  const requestImport: RequestProfileImport = (fileName, readFile) => {
+    void (async () => {
+      let profile: ProfileRoot;
+      try {
+        profile = parseProfileFile(await readFile());
+      } catch (error) {
+        console.error(error);
+        toast.error(t("instanceSidebar.loadProfileToast.error"));
+        return;
+      }
+      setPendingImport({ fileName, profile });
+      setImportOpen(true);
+    })();
+  };
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         {!isDesktopApp() && (
-          <Suspense>
-            <InstanceProfileFileInput
-              key={instance}
-              inputRef={instanceProfileInputRef}
-            />
-          </Suspense>
+          <InstanceProfileFileInput
+            inputRef={instanceProfileInputRef}
+            onRequestImport={requestImport}
+          />
         )}
         <DropdownMenu>
           <Suspense fallback={<SidebarInstanceButtonSkeleton />}>
@@ -494,6 +492,7 @@ export function InstanceSwitcher() {
             <Suspense fallback={<InstanceActionButtonsSkeleton />}>
               <InstanceActionButtons
                 onLoadProfile={() => instanceProfileInputRef.current?.click()}
+                onRequestImport={requestImport}
               />
             </Suspense>
             <Suspense>
@@ -512,8 +511,70 @@ export function InstanceSwitcher() {
             onOpenChange={setDeleteOpen}
           />
         </Suspense>
+        <Suspense>
+          <ImportProfileDialog
+            key={instance}
+            pending={pendingImport}
+            open={importOpen}
+            onOpenChange={setImportOpen}
+          />
+        </Suspense>
       </SidebarMenuItem>
     </SidebarMenu>
+  );
+}
+
+function ImportProfileDialog({
+  pending,
+  open,
+  onOpenChange,
+}: {
+  pending: PendingProfileImport | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const { t } = useTranslation("common");
+  const { instanceInfo, importProfile } = useProfileImport();
+
+  return (
+    <AlertDialog open={open && pending !== null} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogMedia>
+            <UploadIcon />
+          </AlertDialogMedia>
+          <AlertDialogTitle>
+            {t("dialog.importConfiguration.title")}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("dialog.importConfiguration.description", {
+              file: pending?.fileName ?? "",
+              name: instanceInfo.friendlyName,
+            })}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogAction
+            variant="destructive"
+            onClick={() => {
+              onOpenChange(false);
+              if (!pending) return;
+              // A demo write fails with the demo notice from the mutation cache.
+              toastMutation(importProfile(pending.profile), {
+                loading: t("instanceSidebar.loadProfileToast.loading"),
+                success: t("instanceSidebar.loadProfileToast.success"),
+                error: t("instanceSidebar.loadProfileToast.error"),
+              }).catch(() => {
+                // toastMutation already reported the failure.
+              });
+            }}
+          >
+            {t("dialog.importConfiguration.confirm")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
@@ -585,26 +646,17 @@ function DeleteInstanceDialog({
   const deleteMutation = useMutation({
     mutationKey: ["instance", "delete"],
     mutationFn: async (instanceId: string) => {
-      if (transport === null) {
-        return undefined;
-      }
+      if (transport === null) throw DemoReadOnlyError.make({});
 
       const instanceService = createRpcClient(InstanceService, transport);
-      const promise = Effect.runPromise(
-        instanceService.deleteInstance({
-          id: instanceId,
-        }),
-      );
-      toast.promise(promise, {
-        loading: t("instanceSidebar.deleteToast.loading"),
-        success: t("instanceSidebar.deleteToast.success"),
-        error: (e) => {
-          console.error(e);
-          return t("instanceSidebar.deleteToast.error");
+      return toastMutation(
+        Effect.runPromise(instanceService.deleteInstance({ id: instanceId })),
+        {
+          loading: t("instanceSidebar.deleteToast.loading"),
+          success: t("instanceSidebar.deleteToast.success"),
+          error: t("instanceSidebar.deleteToast.error"),
         },
-      });
-
-      return promise;
+      );
     },
     // Leave the project only after the server deleted it. This runs in the
     // mutation, not in `mutate()`, because the project layout can unmount this
@@ -651,6 +703,11 @@ function DeleteInstanceDialog({
             variant="destructive"
             disabled={deleteMutation.isPending}
             onClick={() => {
+              if (transport === null) {
+                onOpenChange(false);
+                toastDemoReadOnly();
+                return;
+              }
               deleteMutation.mutate(instanceInfo.id);
             }}
           >

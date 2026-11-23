@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { PaletteCommand } from "./command-palette";
 import {
+  findUnresolvedPalettePins,
   PIN_LIMIT,
   palettePinKey,
   prunePalettePins,
@@ -123,6 +124,25 @@ test("pins resolve only to live commands for the same project", () => {
       (command) => command.id,
     ),
     ["theme-dark"],
+  );
+});
+
+test("pins without a live command are reported so they can be removed", () => {
+  const pins = [
+    { id: "terminal:farm", projectId: "farm" },
+    { id: "removed-command" },
+    { id: "terminal:farm", projectId: "other" },
+  ];
+  assert.deepEqual(findUnresolvedPalettePins([terminal, darkTheme], pins), [
+    { id: "removed-command" },
+    { id: "terminal:farm", projectId: "other" },
+  ]);
+  assert.deepEqual(
+    findUnresolvedPalettePins(
+      [terminal],
+      [{ id: "terminal:farm", projectId: "farm" }],
+    ),
+    [],
   );
 });
 

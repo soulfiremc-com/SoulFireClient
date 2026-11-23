@@ -1,9 +1,4 @@
-import {
-  type QueryFunction,
-  skipToken,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   useMatch,
   useNavigate,
@@ -99,6 +94,7 @@ import {
   startPaletteOperation,
 } from "@/lib/command-palette-operations";
 import {
+  findUnresolvedPalettePins,
   isPalettePinned,
   PIN_LIMIT,
   type PalettePin,
@@ -110,9 +106,8 @@ import {
 } from "@/lib/command-palette-pins";
 import { formatShortcut, isDesktopApp, isMac } from "@/lib/desktop";
 import { hasOpenDialog } from "@/lib/keyboard-shortcuts";
-import { fetchInstanceInfo } from "@/lib/instance-info-query";
+import { instanceInfoQueryOptions } from "@/lib/instance-info-query";
 import { scriptListQueryOptions } from "@/lib/script-service";
-import type { InstanceInfoQueryData } from "@/lib/types";
 import { createSettingFocusState } from "@/lib/settings-focus";
 import { cn, hasGlobalPermission, hasInstancePermission } from "@/lib/utils";
 import { getServerAddress } from "@/lib/web-rpc";
@@ -141,6 +136,13 @@ function keepListKeys(event: ReactKeyboardEvent) {
 export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
+  // Read when the closed dialog returns focus, which can happen after the menu
+  // opened again. A late return must not take focus from the new search field.
+  const openRef = useRef(false);
+  const setPaletteOpen = useCallback((next: boolean) => {
+    openRef.current = next;
+    setOpen(next);
+  }, []);
   const lastShift = useRef<number | null>(null);
   const shiftPressedAt = useRef<number | null>(null);
   const recentCache = useRef(new Map<string, string[]>());
@@ -148,16 +150,20 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   const escapeHandler = useRef<EscapeHandler | null>(null);
   const previousFocus = useRef<HTMLElement | null>(null);
   const restorePreviousFocus = useRef(true);
+  const paletteInputRef = useRef<HTMLInputElement>(null);
   const [initialSearch, setInitialSearch] = useState("");
-  const show = useCallback<OpenCommandPalette>((options) => {
-    setInitialSearch(options?.search ?? "");
-    restorePreviousFocus.current = true;
-    previousFocus.current =
-      document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : null;
-    setOpen(true);
-  }, []);
+  const show = useCallback<OpenCommandPalette>(
+    (options) => {
+      setInitialSearch(options?.search ?? "");
+      restorePreviousFocus.current = true;
+      previousFocus.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      setPaletteOpen(true);
+    },
+    [setPaletteOpen],
+  );
 
   useEffect(() => {
     const hasOtherDialog = () => hasOpenDialog(document);
@@ -177,7 +183,7 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
       if (isPaletteShortcut(event, isMac) && (open || !hasOtherDialog())) {
         event.preventDefault();
         resetShift();
-        if (open) setOpen(false);
+        if (open) setPaletteOpen(false);
         else show();
         return;
       }
@@ -229,7 +235,7 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
       document.removeEventListener("keyup", up);
       window.removeEventListener("blur", resetShift);
     };
-  }, [open, show]);
+  }, [open, setPaletteOpen, show]);
 
   return (
     <CommandPaletteContext value={show}>
@@ -244,12 +250,17 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
             escapeHandler.current?.()
           )
             return;
-          setOpen(next);
+          setPaletteOpen(next);
         }}
         title={t("commandPalette.title")}
         description={t("commandPalette.description")}
+        // Focus the search field directly. Relying on autoFocus lets the
+        // dialog's own focus handling win on a slow machine.
+        initialFocus={paletteInputRef}
         finalFocus={() =>
-          restorePreviousFocus.current ? previousFocus.current : false
+          restorePreviousFocus.current && !openRef.current
+            ? previousFocus.current
+            : false
         }
         className="top-[15dvh] flex max-h-[75dvh] flex-col sm:max-w-2xl"
       >
@@ -259,9 +270,10 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
             recentCache={recentCache.current}
             pinCache={pinCache.current}
             escapeHandler={escapeHandler}
+            inputRef={paletteInputRef}
             onClose={(restoreFocus = true) => {
               restorePreviousFocus.current = restoreFocus;
-              setOpen(false);
+              setPaletteOpen(false);
             }}
           />
         )}
@@ -325,12 +337,14 @@ function CommandPaletteContent({
   recentCache,
   pinCache,
   escapeHandler,
+  inputRef,
 }: {
   initialSearch: string;
   onClose: (restoreFocus?: boolean) => void;
   recentCache: Map<string, string[]>;
   pinCache: Map<string, PalettePin[]>;
   escapeHandler: RefObject<EscapeHandler | null>;
+  inputRef: RefObject<HTMLInputElement | null>;
 }) {
   const { t } = useTranslation("common");
   const [search, setSearch] = useState(initialSearch);
@@ -340,7 +354,6 @@ function CommandPaletteContent({
   const [confirming, setConfirming] = useState<PaletteCommand | null>(null);
   const [selected, setSelected] = useState("");
   const [, setPinRevision] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
   const transport = use(TransportContext);
   const navigate = useNavigate();
   const router = useRouter();
@@ -381,25 +394,15 @@ function CommandPaletteContent({
   // Search covers every project unless the user picks one. The route project
   // stays in context for live bot status, operations, and ranking.
   const scopeId = browsing ?? routeId;
-  const routeInfoFn =
-    scopeId === routeId
-      ? instanceMatch?.context.instanceInfoQueryOptions.queryFn
-      : undefined;
-  const infoFn:
-    | QueryFunction<InstanceInfoQueryData, string[]>
-    | typeof skipToken = !scopeId
-    ? skipToken
-    : (routeInfoFn ??
-      (transport
-        ? ({ signal }) =>
-            fetchInstanceInfo(transport, scopeId, queryClient, signal)
-        : skipToken));
+  const infoEnabled = Boolean(scopeId);
+  // The route project reuses the layout's query, which already has its data.
   const info = useQuery({
-    queryKey: ["instance-info", scopeId ?? ""],
-    queryFn: infoFn,
+    ...(instanceMatch && scopeId === routeId
+      ? instanceMatch.context.instanceInfoQueryOptions
+      : instanceInfoQueryOptions(transport, scopeId ?? "")),
+    enabled: infoEnabled,
     refetchInterval: false,
   });
-  const infoEnabled = infoFn !== skipToken;
   const scopeProject =
     !info.isError &&
     info.data?.id === scopeId &&
@@ -465,6 +468,25 @@ function CommandPaletteContent({
     transport,
   });
   const indexComplete = isPaletteIndexComplete(index.progress);
+  const loading =
+    client.isPending ||
+    instances.isPending ||
+    (infoEnabled && info.isPending) ||
+    (canReadScope && scripts.isPending) ||
+    (canReadBots && bots.isPending);
+  const failed =
+    client.isError ||
+    instances.isError ||
+    (infoEnabled && info.isError) ||
+    (canReadScope && scripts.isError) ||
+    (canReadBots && bots.isError);
+  const pinsSettled =
+    indexing &&
+    indexComplete &&
+    index.progress.failed === 0 &&
+    index.progress.server !== "failed" &&
+    !loading &&
+    !failed;
   const commands = useMemo(
     () =>
       createPaletteCommands({
@@ -507,6 +529,13 @@ function CommandPaletteContent({
   );
   const pinKey = palettePinKey(getServerAddress(), client.data?.id ?? "");
   const pins = pinCache.get(pinKey) ?? readPins(pinKey);
+  // Pins for other projects or server settings resolve only after the index
+  // loads, so the default list loads it when a pin is missing.
+  const unresolvedPins = browsing
+    ? []
+    : findUnresolvedPalettePins(commands, pins);
+  const indexForPins = unresolvedPins.length > 0 && !picking;
+  if (indexForPins && !indexRequested && !browsing) setIndexRequested(true);
 
   const query = search.trim();
   const scoped = useMemo(
@@ -560,6 +589,31 @@ function CommandPaletteContent({
     const pinned = resolvePalettePins(commands, pins).filter((command) =>
       scopedIds.has(command.id),
     );
+    // After every source loads, a pin that still has no command points to
+    // something deleted. Show it so it can be removed. Other projects' bot and
+    // script actions load only while that project is in scope, so their pins
+    // stay hidden until then.
+    if (pinsSettled && filter === "all")
+      for (const pin of unresolvedPins.filter(
+        (entry) =>
+          !entry.projectId ||
+          entry.projectId === scopeProject?.id ||
+          !accessibleIds.has(entry.projectId),
+      ))
+        pinned.push({
+          id: pin.id,
+          label: t("commandPalette.missingPin.label"),
+          description: t("commandPalette.missingPin.description"),
+          projectId: pin.projectId,
+          context: pin.projectId
+            ? instances.data.instances.find(
+                (instance) => instance.id === pin.projectId,
+              )?.friendlyName
+            : undefined,
+          icon: "pin-off",
+          group: "actions",
+          action: "remove-pin",
+        });
     const shown = new Set(pinned.map((command) => command.id));
     const recents = resolvePaletteRecents(scoped, recentIds).filter(
       (command) => !shown.has(command.id),
@@ -630,6 +684,9 @@ function CommandPaletteContent({
       return;
     }
     savePins(next);
+    // The pin button swaps for an unpin button, which can drop focus to the
+    // dialog. Keep typing in the search field.
+    focusInput();
   };
   const browseProject = (projectId: string) => {
     setBrowseId(projectId);
@@ -703,6 +760,10 @@ function CommandPaletteContent({
     }
     if (command.action === "browse-all") {
       leaveProject();
+      return;
+    }
+    if (command.action === "remove-pin") {
+      togglePin(command);
       return;
     }
     if (command.operation) {
@@ -791,18 +852,6 @@ function CommandPaletteContent({
     }
   };
 
-  const loading =
-    client.isPending ||
-    instances.isPending ||
-    (infoEnabled && info.isPending) ||
-    (canReadScope && scripts.isPending) ||
-    (canReadBots && bots.isPending);
-  const failed =
-    client.isError ||
-    instances.isError ||
-    (infoEnabled && info.isError) ||
-    (canReadScope && scripts.isError) ||
-    (canReadBots && bots.isError);
   const projectName =
     scopeProject?.friendlyName ??
     instances.data?.instances.find((instance) => instance.id === scopeId)
@@ -979,37 +1028,40 @@ function CommandPaletteContent({
           </Button>
         </output>
       )}
-      {indexStatus && !picking && !confirming && (
-        <output
-          className={cn(
-            "-mx-1 flex shrink-0 items-center gap-2 border-b px-3 py-2",
-            indexFailed ? "text-sm" : "text-xs text-muted-foreground",
-          )}
-        >
-          {indexFailed ? (
-            <CircleAlertIcon
-              aria-hidden="true"
-              className="size-4 shrink-0 text-destructive"
-            />
-          ) : (
-            <LoaderCircleIcon
-              aria-hidden="true"
-              className="size-3.5 shrink-0 motion-safe:animate-spin"
-            />
-          )}
-          <span className="min-w-0 flex-1">{indexStatus}</span>
-          {indexFailed && (
-            <Button
-              variant="outline"
-              size="sm"
-              onKeyDown={keepListKeys}
-              onClick={index.retry}
-            >
-              {t("commandPalette.retry")}
-            </Button>
-          )}
-        </output>
-      )}
+      {indexStatus &&
+        (query || filter !== "all" || indexFailed) &&
+        !picking &&
+        !confirming && (
+          <output
+            className={cn(
+              "-mx-1 flex shrink-0 items-center gap-2 border-b px-3 py-2",
+              indexFailed ? "text-sm" : "text-xs text-muted-foreground",
+            )}
+          >
+            {indexFailed ? (
+              <CircleAlertIcon
+                aria-hidden="true"
+                className="size-4 shrink-0 text-destructive"
+              />
+            ) : (
+              <LoaderCircleIcon
+                aria-hidden="true"
+                className="size-3.5 shrink-0 motion-safe:animate-spin"
+              />
+            )}
+            <span className="min-w-0 flex-1">{indexStatus}</span>
+            {indexFailed && (
+              <Button
+                variant="outline"
+                size="sm"
+                onKeyDown={keepListKeys}
+                onClick={index.retry}
+              >
+                {t("commandPalette.retry")}
+              </Button>
+            )}
+          </output>
+        )}
       {confirming?.operation?.kind === "bot" ? (
         <OperationConfirmation
           key={confirming.id}

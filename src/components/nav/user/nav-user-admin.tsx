@@ -1,5 +1,3 @@
-"use client";
-
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import {
@@ -20,6 +18,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
 import { GlobalPermission } from "@/generated/soulfire/common_pb";
+import { settingsPageName } from "@/lib/page-names.ts";
 import { hasGlobalPermission } from "@/lib/utils.tsx";
 
 type NavLinks = {
@@ -74,7 +73,7 @@ export function NavUserAdmin() {
       },
     },
     {
-      title: t("userSidebar.serverSettings"),
+      title: settingsPageName({ id: "server", pageName: "server" }, t),
       icon: ServerIcon,
       linkProps: {
         to: "/user/admin/settings/$pageId",
@@ -82,7 +81,7 @@ export function NavUserAdmin() {
       },
     },
     {
-      title: t("userSidebar.devSettings"),
+      title: settingsPageName({ id: "dev", pageName: "dev" }, t),
       icon: BugIcon,
       linkProps: {
         to: "/user/admin/settings/$pageId",

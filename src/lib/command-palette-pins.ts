@@ -85,6 +85,18 @@ export function resolvePalettePins(
   });
 }
 
+/** Pins with no matching command in the catalog, in pin order. */
+export function findUnresolvedPalettePins(
+  commands: readonly PaletteCommand[],
+  pins: readonly PalettePin[],
+): PalettePin[] {
+  const byId = new Map(commands.map((command) => [command.id, command]));
+  return pins.filter((pin) => {
+    const command = byId.get(pin.id);
+    return !command || command.projectId !== pin.projectId;
+  });
+}
+
 /** Drop pins for projects that are no longer in the accessible project list. */
 export function prunePalettePins(
   pins: readonly PalettePin[],

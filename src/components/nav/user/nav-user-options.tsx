@@ -1,5 +1,3 @@
-"use client";
-
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, type LinkProps, useRouteContext } from "@tanstack/react-router";
 import { Grid2x2Icon, PlusIcon, SettingsIcon, ZapIcon } from "lucide-react";
