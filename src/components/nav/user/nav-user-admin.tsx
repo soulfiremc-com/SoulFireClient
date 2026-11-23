@@ -101,7 +101,7 @@ export function NavUserAdmin() {
               tooltip={item.title}
               render={
                 <Link
-                  activeOptions={{ exact: true }}
+                  activeOptions={{ exact: true, includeSearch: false }}
                   activeProps={{
                     "data-active": true,
                   }}

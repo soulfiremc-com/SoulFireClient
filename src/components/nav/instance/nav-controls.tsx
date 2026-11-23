@@ -111,7 +111,7 @@ export function NavControls() {
               }
               render={
                 <Link
-                  activeOptions={{ exact: true }}
+                  activeOptions={{ exact: true, includeSearch: false }}
                   activeProps={{
                     "data-active": true,
                   }}

@@ -121,7 +121,7 @@ export function NavSettings() {
               tooltip={item.title}
               render={
                 <Link
-                  activeOptions={{ exact: true }}
+                  activeOptions={{ exact: true, includeSearch: false }}
                   activeProps={{
                     "data-active": true,
                   }}

@@ -164,7 +164,7 @@ export function NavExtensions() {
                 }
                 render={
                   <Link
-                    activeOptions={{ exact: true }}
+                    activeOptions={{ exact: true, includeSearch: false }}
                     activeProps={{
                       "data-active": true,
                     }}
@@ -202,7 +202,10 @@ export function NavExtensions() {
                       <SidebarMenuSubButton
                         render={
                           <Link
-                            activeOptions={{ exact: true }}
+                            activeOptions={{
+                              exact: true,
+                              includeSearch: false,
+                            }}
                             activeProps={{
                               "data-active": true,
                             }}
@@ -228,7 +231,7 @@ export function NavExtensions() {
                 }
                 render={
                   <Link
-                    activeOptions={{ exact: true }}
+                    activeOptions={{ exact: true, includeSearch: false }}
                     activeProps={{
                       "data-active": true,
                     }}
