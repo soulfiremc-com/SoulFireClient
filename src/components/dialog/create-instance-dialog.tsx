@@ -56,7 +56,7 @@ export function CreateInstanceProvider(props: { children: ReactNode }) {
   );
 }
 
-export interface FormType {
+interface FormType {
   friendlyName: string;
 }
 
@@ -97,7 +97,7 @@ function CreateInstanceDialog({
         instanceService.createInstance({
           friendlyName: Schema.decodeSync(formSchema)(values).friendlyName,
         }),
-      ).then((r) => r);
+      );
       toast.promise(promise, {
         loading: t("dialog.createInstance.createToast.loading"),
         success: (r) => {
@@ -177,7 +177,10 @@ function CreateInstanceDialog({
                           <Input
                             id={field.name}
                             name={field.name}
-                            disabled={isSubmitting}
+                            autoFocus
+                            // Read-only keeps focus in the field while it saves.
+                            readOnly={isSubmitting}
+                            aria-busy={isSubmitting}
                             placeholder={t(
                               "dialog.createInstance.form.friendlyName.placeholder",
                             )}

@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  dismissFirstBotSetup,
   getFirstBotSetupState,
+  isFirstBotSetupDismissed,
+  isFirstBotSetupStarted,
+  markFirstBotSetupStarted,
   shouldShowFirstBotSetup,
 } from "./first-bot-setup.ts";
 
@@ -64,4 +68,30 @@ test("existing instances with stopped bots keep the normal overview", () => {
   };
   assert.equal(shouldShowFirstBotSetup(input), false);
   assert.equal(shouldShowFirstBotSetup({ ...input, started: true }), true);
+});
+
+function blockedStorage(): never {
+  throw new DOMException("Blocked", "SecurityError");
+}
+
+test("blocked storage does not break the guide", () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    value: { getItem: blockedStorage, setItem: blockedStorage },
+  });
+  try {
+    assert.doesNotThrow(() => {
+      dismissFirstBotSetup("instance");
+      markFirstBotSetupStarted("instance");
+    });
+    assert.equal(isFirstBotSetupDismissed("instance"), false);
+    assert.equal(isFirstBotSetupStarted("instance"), false);
+  } finally {
+    if (original) {
+      Object.defineProperty(globalThis, "localStorage", original);
+    } else {
+      Reflect.deleteProperty(globalThis, "localStorage");
+    }
+  }
 });

@@ -8,21 +8,16 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {
-  createFileRoute,
-  Link,
-  useNavigate,
-  useRouteContext,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ClipboardCopyIcon,
   CopyPlusIcon,
   EllipsisVerticalIcon,
   ExternalLinkIcon,
+  FolderPlusIcon,
   LoaderCircleIcon,
   PlayIcon,
   PlusIcon,
-  SearchXIcon,
   SquareIcon,
   TrashIcon,
   XIcon,
@@ -123,6 +118,9 @@ export const Route = createFileRoute("/_dashboard/user/")({
     }),
   component: InstanceSelectPage,
 });
+
+const INSTANCE_GRID_CLASS =
+  "grid w-full grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3";
 
 // Matches the Ctrl/Cmd+1-9 handler in the dashboard layout.
 const MAX_INSTANCE_SHORTCUTS = 9;
@@ -227,7 +225,9 @@ function DuplicateInstanceDialog({
                       id={field.name}
                       name={field.name}
                       autoFocus
-                      disabled={pending}
+                      // Read-only keeps focus in the field while it saves.
+                      readOnly={pending}
+                      aria-busy={pending}
                       placeholder={t(
                         "dialog.createInstance.form.friendlyName.placeholder",
                       )}
@@ -288,10 +288,13 @@ function InstanceCardSkeleton() {
 
 function InstanceListSkeleton() {
   return (
-    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-      {generateN(4).map((item) => (
-        <InstanceCardSkeleton key={item} />
-      ))}
+    <div className="flex w-full flex-col gap-4">
+      <Skeleton className="h-9 w-full" />
+      <div className={INSTANCE_GRID_CLASS}>
+        {generateN(4).map((item) => (
+          <InstanceCardSkeleton key={item} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -327,6 +330,7 @@ function Content() {
     useState<InstanceListResponse_Instance | null>(null);
   const [deleteTarget, setDeleteTarget] =
     useState<InstanceListResponse_Instance | null>(null);
+  const { openCreateInstance } = useCreateInstanceContext();
 
   const stateMutation = useMutation({
     mutationKey: ["bots", "desired-state", "list"],
@@ -433,7 +437,7 @@ function Content() {
       const instanceService = createRpcClient(InstanceService, transport);
       const promise = Effect.runPromise(
         instanceService.deleteInstance({ id: instanceId }),
-      ).then((r) => r);
+      );
       toast.promise(promise, {
         loading: t("instanceSidebar.deleteToast.loading"),
         success: () => {
@@ -559,6 +563,13 @@ function Content() {
     );
   };
 
+  const createButton = canCreateInstance ? (
+    <Button onClick={openCreateInstance}>
+      <PlusIcon data-icon="inline-start" />
+      {t("instanceSidebar.createInstance")}
+    </Button>
+  ) : null;
+
   return (
     <>
       {instanceList.instances.length === 0 ? (
@@ -566,7 +577,7 @@ function Content() {
           <Empty className="m-auto max-w-md border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <SearchXIcon className="size-6" />
+                <FolderPlusIcon />
               </EmptyMedia>
               <EmptyTitle>{t("noInstancesFound")}</EmptyTitle>
               <EmptyDescription>
@@ -575,86 +586,92 @@ function Content() {
                   : t("noInstancesNoPermission")}
               </EmptyDescription>
             </EmptyHeader>
-            <EmptyContent>
-              <CreateInstanceButton />
-            </EmptyContent>
+            {createButton && <EmptyContent>{createButton}</EmptyContent>}
           </Empty>
         </div>
       ) : (
-        <ItemGroup className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-          {instanceList.instances.map((instance, index) => (
-            <div
-              key={instance.id}
-              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
-              role="listitem"
-              className="relative max-h-fit"
-            >
-              <Item
-                variant="outline"
-                className="w-full rounded-lg py-4 pr-14 pl-6"
-                render={
-                  <Link
-                    to="/instance/$instance"
-                    params={{ instance: instance.id }}
-                    search={{}}
-                    onContextMenu={(e) => {
-                      handleContextMenu(e, instance);
-                    }}
-                  />
-                }
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex min-h-9 flex-wrap items-center justify-between gap-2">
+            <p className="text-sm text-muted-foreground">
+              {t("instanceCount", { count: instanceList.instances.length })}
+            </p>
+            {createButton}
+          </div>
+          <ItemGroup className={INSTANCE_GRID_CLASS}>
+            {instanceList.instances.map((instance, index) => (
+              <div
+                key={instance.id}
+                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- ItemGroup from shadcn/ui renders a div with the list role, so its items cannot be li elements
+                role="listitem"
+                className="relative max-h-fit min-w-0"
               >
-                <ItemMedia>
-                  <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                    <DynamicIcon
-                      name={instance.icon}
-                      className="size-8 shrink-0"
-                    />
-                  </div>
-                </ItemMedia>
-                <ItemContent className="gap-1.5">
-                  <ItemTitle
-                    className="max-w-64 truncate"
-                    title={instance.friendlyName}
-                  >
-                    {instance.friendlyName}
-                  </ItemTitle>
-                  <div data-slot="item-description">
-                    <BotFleetSummaryBadge summary={instance.botSummary} />
-                  </div>
-                </ItemContent>
-                {isDesktopApp() && index < MAX_INSTANCE_SHORTCUTS && (
-                  <div className="ml-auto hidden shrink-0 sm:block">
-                    <Kbd aria-hidden="true" className="h-6 px-2 text-sm">
-                      {formatShortcut(`Ctrl+${index + 1}`)}
-                    </Kbd>
-                  </div>
-                )}
-              </Item>
-              {/* Touch screens cannot open the right-click menu, so the same actions live here. */}
-              <DropdownMenu>
-                <DropdownMenuTrigger
+                <Item
+                  variant="outline"
+                  className="w-full flex-nowrap rounded-lg py-4 pr-14 pl-6"
                   render={
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute top-1/2 right-3 -translate-y-1/2"
-                      aria-label={t("contextMenu.instance.actions", {
-                        name: instance.friendlyName,
-                      })}
+                    <Link
+                      to="/instance/$instance"
+                      params={{ instance: instance.id }}
+                      search={{}}
+                      onContextMenu={(e) => {
+                        handleContextMenu(e, instance);
+                      }}
                     />
                   }
                 >
-                  <EllipsisVerticalIcon />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuGroup>
-                    {renderInstanceActions(instance, () => {})}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          ))}
-        </ItemGroup>
+                  <ItemMedia>
+                    <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                      <DynamicIcon
+                        name={instance.icon}
+                        className="size-8 shrink-0"
+                      />
+                    </div>
+                  </ItemMedia>
+                  <ItemContent className="min-w-0 gap-1.5">
+                    <ItemTitle
+                      className="block w-full truncate"
+                      title={instance.friendlyName}
+                    >
+                      {instance.friendlyName}
+                    </ItemTitle>
+                    <div data-slot="item-description">
+                      <BotFleetSummaryBadge summary={instance.botSummary} />
+                    </div>
+                  </ItemContent>
+                  {isDesktopApp() && index < MAX_INSTANCE_SHORTCUTS && (
+                    <div className="ml-auto hidden shrink-0 sm:block">
+                      <Kbd aria-hidden="true" className="h-6 px-2 text-sm">
+                        {formatShortcut(`Ctrl+${index + 1}`)}
+                      </Kbd>
+                    </div>
+                  )}
+                </Item>
+                {/* Touch screens cannot open the right-click menu, so the same actions live here. */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-1/2 right-3 -translate-y-1/2"
+                        aria-label={t("contextMenu.instance.actions", {
+                          name: instance.friendlyName,
+                        })}
+                      />
+                    }
+                  >
+                    <EllipsisVerticalIcon />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuGroup>
+                      {renderInstanceActions(instance, () => {})}
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            ))}
+          </ItemGroup>
+        </div>
       )}
       {contextMenu && (
         <ContextMenuPortal
@@ -733,26 +750,5 @@ function Content() {
         </AlertDialogContent>
       </AlertDialog>
     </>
-  );
-}
-
-function CreateInstanceButton() {
-  const { t } = useTranslation("common");
-  const clientDataQueryOptions = useRouteContext({
-    from: "/_dashboard",
-    select: (context) => context.clientDataQueryOptions,
-  });
-  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
-  const { openCreateInstance } = useCreateInstanceContext();
-
-  if (!hasGlobalPermission(clientInfo, GlobalPermission.CREATE_INSTANCE)) {
-    return null;
-  }
-
-  return (
-    <Button onClick={openCreateInstance} variant="outline" className="w-fit">
-      <PlusIcon data-icon="inline-start" />
-      {t("instanceSidebar.createInstance")}
-    </Button>
   );
 }

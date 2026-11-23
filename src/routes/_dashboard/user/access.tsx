@@ -8,8 +8,9 @@ import {
   CopyIcon,
   FoldersIcon,
   GlobeIcon,
+  KeyRoundIcon,
   LoaderCircleIcon,
-  PlusIcon,
+  type LucideIcon,
 } from "lucide-react";
 import { type ReactNode, Suspense, use, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,9 +21,9 @@ import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx";
@@ -38,9 +39,11 @@ import {
   type ClientDataResponse,
   ClientService,
 } from "@/generated/soulfire/client_pb";
+import { GlobalPermission } from "@/generated/soulfire/common_pb";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
+import { hasGlobalPermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/user/access")({
   beforeLoad: () =>
@@ -51,17 +54,17 @@ export const Route = createFileRoute("/_dashboard/user/access")({
   component: AccessPage,
 });
 
-type ServerInfo = NonNullable<ClientDataResponse["serverInfo"]>;
+type TokenKind = "webdav" | "api";
 
-/// Reads the server addresses, so only the values that need them wait for the query.
-function WithServerInfo({
+/// Reads the client data, so only the values that need it wait for the query.
+function WithClientData({
   children,
 }: {
-  children: (serverInfo: ServerInfo | undefined) => ReactNode;
+  children: (clientData: ClientDataResponse) => ReactNode;
 }) {
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
-  return children(clientInfo.serverInfo);
+  return children(clientInfo);
 }
 
 function AccessPage() {
@@ -69,37 +72,109 @@ function AccessPage() {
 
   return (
     <UserPageLayout showUserCrumb pageName={t("pageName.access")}>
-      <Content />
+      <div className="grid w-full grid-cols-1 items-start gap-4 xl:grid-cols-2">
+        <AccessCard
+          kind="webdav"
+          icon={FoldersIcon}
+          title={t("access.webdav.title")}
+          description={t("access.webdav.description")}
+          addressDescription={t("access.webdav.addressDescription")}
+          tokenDescription={t("access.webdav.securityWarning")}
+          permission={GlobalPermission.GENERATE_SELF_WEBDAV_TOKEN}
+          getAddress={(serverInfo) => serverInfo?.publicWebdavAddress}
+          docs={
+            <DocsButton href="https://soulfiremc.com/docs/guides/webdav?utm_source=soulfire-client&utm_medium=app&utm_campaign=access-webdav-docs">
+              {t("access.howToConnect")}
+            </DocsButton>
+          }
+        />
+        <AccessCard
+          kind="api"
+          icon={GlobeIcon}
+          title={t("access.api.title")}
+          description={t("access.api.description")}
+          tokenDescription={t("access.api.securityWarning")}
+          permission={GlobalPermission.GENERATE_SELF_API_TOKEN}
+          getAddress={(serverInfo) => serverInfo?.publicApiAddress}
+          docs={
+            <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+              <WithClientData>
+                {(clientData) =>
+                  clientData.serverInfo?.publicDocsAddress ? (
+                    <DocsButton href={clientData.serverInfo.publicDocsAddress}>
+                      {t("access.documentation")}
+                    </DocsButton>
+                  ) : null
+                }
+              </WithClientData>
+            </Suspense>
+          }
+        />
+      </div>
     </UserPageLayout>
   );
 }
 
-function Content() {
+function DocsButton({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      nativeButton={false}
+      render={<ExternalLink href={href} />}
+    >
+      <BookOpenTextIcon data-icon="inline-start" />
+      {children}
+    </Button>
+  );
+}
+
+function AccessCard({
+  kind,
+  icon: Icon,
+  title,
+  description,
+  addressDescription,
+  tokenDescription,
+  permission,
+  getAddress,
+  docs,
+}: {
+  kind: TokenKind;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  addressDescription?: string;
+  tokenDescription: string;
+  permission: GlobalPermission;
+  getAddress: (
+    serverInfo: ClientDataResponse["serverInfo"],
+  ) => string | undefined;
+  docs: ReactNode;
+}) {
   const { t } = useTranslation("common");
   const copyToClipboard = useCopyToClipboard();
   const copySecret = useCopyToClipboard({ sensitive: true });
   const transport = use(TransportContext);
-  const [webDavToken, setWebDavToken] = useState("");
-  const [apiToken, setApiToken] = useState("");
-  const generateTokenMutation = useMutation({
-    mutationKey: ["access", "generate-token"],
-    mutationFn: async (kind: "webdav" | "api") => {
+  const [token, setToken] = useState("");
+  const addressId = useId();
+  const tokenId = useId();
+  const tokenDescriptionId = useId();
+  const generateToken = useMutation({
+    mutationKey: ["access", "generate-token", kind],
+    mutationFn: async () => {
       if (transport === null) {
         toast.info(t("demoReadOnly"));
-        return undefined;
+        return;
       }
 
       const clientService = createRpcClient(ClientService, transport);
-      const request =
+      const promise = Effect.runPromise<{ token: string }, ConnectError>(
         kind === "webdav"
-          ? Effect.runPromise(clientService.generateWebDAVToken({}))
-          : Effect.runPromise(clientService.generateAPIToken({}));
-      const promise = request.then((response) => {
-        if (kind === "webdav") {
-          setWebDavToken(response.token);
-        } else {
-          setApiToken(response.token);
-        }
+          ? clientService.generateWebDAVToken({})
+          : clientService.generateAPIToken({}),
+      ).then((response) => {
+        setToken(response.token);
         void copySecret(response.token);
         return undefined;
       });
@@ -114,48 +189,42 @@ function Content() {
           };
         },
       });
-      return promise;
+      await promise;
     },
   });
-  const generatingKind = generateTokenMutation.isPending
-    ? generateTokenMutation.variables
-    : null;
-  const webdavAddressId = useId();
-  const webdavTokenId = useId();
-  const apiAddressId = useId();
-  const apiTokenId = useId();
 
   return (
-    <div className="flex flex-col gap-4">
-      <Card className="container">
-        <CardHeader>
-          <CardTitle className="inline-flex items-center gap-2">
-            <FoldersIcon />
-            <span>{t("access.webdav.title")}</span>
-          </CardTitle>
-          <CardDescription>{t("access.webdav.description")}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <Field>
-            <FieldLabel htmlFor={webdavAddressId}>
-              {t("access.webdav.publicAddress")}
-            </FieldLabel>
-            <Suspense fallback={<Skeleton className="h-9 w-full" />}>
-              <WithServerInfo>
-                {(serverInfo) => (
+    <Card>
+      <CardHeader>
+        <CardTitle className="inline-flex items-center gap-2">
+          <Icon />
+          <h2>{title}</h2>
+        </CardTitle>
+        <CardDescription>{description}</CardDescription>
+        <CardAction>{docs}</CardAction>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        <Field>
+          <FieldLabel htmlFor={addressId}>
+            {t("access.address.label")}
+          </FieldLabel>
+          <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+            <WithClientData>
+              {(clientData) => {
+                const address = getAddress(clientData.serverInfo) ?? "";
+                return (
                   <InputGroup>
                     <InputGroupInput
-                      id={webdavAddressId}
+                      id={addressId}
                       className="select-all"
-                      value={serverInfo?.publicWebdavAddress}
+                      value={address}
                       readOnly
                     />
                     <InputGroupAddon align="inline-end">
                       <InputGroupButton
+                        disabled={address === ""}
                         onClick={() => {
-                          void copyToClipboard(
-                            serverInfo?.publicWebdavAddress || "",
-                          );
+                          void copyToClipboard(address);
                         }}
                       >
                         <CopyIcon />
@@ -163,172 +232,71 @@ function Content() {
                       </InputGroupButton>
                     </InputGroupAddon>
                   </InputGroup>
-                )}
-              </WithServerInfo>
-            </Suspense>
-            <FieldDescription>
-              {t("access.webdav.addressDescription")}
-            </FieldDescription>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={webdavTokenId}>
-              {t("access.webdav.personalToken")}
-            </FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                id={webdavTokenId}
-                className="select-all"
-                disabled={webDavToken === ""}
-                value={webDavToken}
-                placeholder={t("access.token.placeholder")}
-                readOnly
-              />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  onClick={() => {
-                    void copySecret(webDavToken);
-                  }}
-                  disabled={webDavToken === ""}
-                >
-                  <CopyIcon />
-                  <span>{t("access.token.copy")}</span>
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-            <FieldDescription>
-              {t("access.webdav.securityWarning")}
-            </FieldDescription>
-          </Field>
-        </CardContent>
-        <CardFooter className="gap-2">
-          <Button
-            disabled={generateTokenMutation.isPending}
-            onClick={() => {
-              generateTokenMutation.mutate("webdav");
-            }}
-          >
-            {generatingKind === "webdav" ? (
-              <LoaderCircleIcon className="animate-spin" />
-            ) : (
-              <PlusIcon />
-            )}
-            <span>{t("access.token.generate")}</span>
-          </Button>
-          <Button
-            variant="secondary"
-            nativeButton={false}
-            render={
-              <ExternalLink href="https://soulfiremc.com/docs/guides/webdav?utm_source=soulfire-client&utm_medium=app&utm_campaign=access-webdav-docs" />
-            }
-          >
-            <BookOpenTextIcon />
-            <span>{t("access.howToConnect")}</span>
-          </Button>
-        </CardFooter>
-      </Card>
-      <Card className="container">
-        <CardHeader>
-          <CardTitle className="inline-flex items-center gap-2">
-            <GlobeIcon />
-            <span>{t("access.api.title")}</span>
-          </CardTitle>
-          <CardDescription>{t("access.api.description")}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <Field>
-            <FieldLabel htmlFor={apiAddressId}>
-              {t("access.api.publicAddress")}
-            </FieldLabel>
-            <Suspense fallback={<Skeleton className="h-9 w-full" />}>
-              <WithServerInfo>
-                {(serverInfo) => (
-                  <InputGroup>
-                    <InputGroupInput
-                      id={apiAddressId}
-                      className="select-all"
-                      value={serverInfo?.publicApiAddress}
-                      readOnly
-                    />
-                    <InputGroupAddon align="inline-end">
-                      <InputGroupButton
-                        onClick={() => {
-                          void copyToClipboard(
-                            serverInfo?.publicApiAddress || "",
-                          );
-                        }}
-                      >
-                        <CopyIcon />
-                        <span>{t("access.address.copy")}</span>
-                      </InputGroupButton>
-                    </InputGroupAddon>
-                  </InputGroup>
-                )}
-              </WithServerInfo>
-            </Suspense>
-            <FieldDescription>
-              {t("access.api.addressDescription")}
-            </FieldDescription>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={apiTokenId}>
-              {t("access.api.personalToken")}
-            </FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                id={apiTokenId}
-                className="select-all"
-                disabled={apiToken === ""}
-                value={apiToken}
-                placeholder={t("access.token.placeholder")}
-                readOnly
-              />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  onClick={() => {
-                    void copySecret(apiToken);
-                  }}
-                  disabled={apiToken === ""}
-                >
-                  <CopyIcon />
-                  <span>{t("access.token.copy")}</span>
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-            <FieldDescription>
-              {t("access.api.securityWarning")}
-            </FieldDescription>
-          </Field>
-        </CardContent>
-        <CardFooter className="gap-2">
-          <Button
-            disabled={generateTokenMutation.isPending}
-            onClick={() => {
-              generateTokenMutation.mutate("api");
-            }}
-          >
-            {generatingKind === "api" ? (
-              <LoaderCircleIcon className="animate-spin" />
-            ) : (
-              <PlusIcon />
-            )}
-            <span>{t("access.token.generate")}</span>
-          </Button>
-          <Suspense fallback={<Skeleton className="h-9 w-36" />}>
-            <WithServerInfo>
-              {(serverInfo) => (
-                <Button
-                  variant="secondary"
-                  nativeButton={false}
-                  render={<ExternalLink href={serverInfo?.publicDocsAddress} />}
-                >
-                  <BookOpenTextIcon />
-                  <span>{t("access.documentation")}</span>
-                </Button>
-              )}
-            </WithServerInfo>
+                );
+              }}
+            </WithClientData>
           </Suspense>
-        </CardFooter>
-      </Card>
-    </div>
+          {addressDescription && (
+            <FieldDescription>{addressDescription}</FieldDescription>
+          )}
+        </Field>
+        <Field>
+          <FieldLabel htmlFor={tokenId}>{t("access.token.label")}</FieldLabel>
+          <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+            <WithClientData>
+              {(clientData) => {
+                const canGenerate = hasGlobalPermission(clientData, permission);
+                return (
+                  <>
+                    <InputGroup>
+                      <InputGroupInput
+                        id={tokenId}
+                        className="select-all"
+                        value={token}
+                        placeholder={t("access.token.placeholder")}
+                        aria-describedby={tokenDescriptionId}
+                        readOnly
+                      />
+                      <InputGroupAddon align="inline-end">
+                        {token !== "" && (
+                          <InputGroupButton
+                            onClick={() => {
+                              void copySecret(token);
+                            }}
+                          >
+                            <CopyIcon />
+                            <span>{t("access.token.copy")}</span>
+                          </InputGroupButton>
+                        )}
+                        <InputGroupButton
+                          variant="default"
+                          disabled={!canGenerate || generateToken.isPending}
+                          aria-busy={generateToken.isPending}
+                          onClick={() => {
+                            generateToken.mutate();
+                          }}
+                        >
+                          {generateToken.isPending ? (
+                            <LoaderCircleIcon className="animate-spin" />
+                          ) : (
+                            <KeyRoundIcon />
+                          )}
+                          <span>{t("access.token.generate")}</span>
+                        </InputGroupButton>
+                      </InputGroupAddon>
+                    </InputGroup>
+                    <FieldDescription id={tokenDescriptionId}>
+                      {canGenerate
+                        ? tokenDescription
+                        : t("access.token.noPermission")}
+                    </FieldDescription>
+                  </>
+                );
+              }}
+            </WithClientData>
+          </Suspense>
+        </Field>
+      </CardContent>
+    </Card>
   );
 }

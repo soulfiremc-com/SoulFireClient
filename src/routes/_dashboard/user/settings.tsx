@@ -11,7 +11,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { type ComponentProps, Suspense, use, useId, useState } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { ExternalLink } from "@/components/external-link.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
@@ -42,11 +42,8 @@ import { GlobalPermission } from "@/generated/soulfire/common_pb";
 import { createUsernameSchema, userEmailSchema } from "@/lib/user-profile.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
-import {
-  hasGlobalPermission,
-  setSelfEmail,
-  setSelfUsername,
-} from "@/lib/utils.tsx";
+import { setSelfEmail, setSelfUsername } from "@/lib/instance-mutations.ts";
+import { hasGlobalPermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/user/settings")({
   beforeLoad: () =>
@@ -181,16 +178,17 @@ function Content() {
           <ComponentTitle
             title={t("userSettings.avatar.title")}
             description={
-              <>
-                {t("userSettings.avatar.description")}{" "}
-                <ExternalLink
-                  className="font-semibold underline-offset-4 hover:underline"
-                  href="https://gravatar.com"
-                >
-                  {t("userSettings.avatar.gravatar")}
-                </ExternalLink>
-                .
-              </>
+              <Trans
+                i18nKey="common:userSettings.avatar.hint"
+                components={{
+                  link: (
+                    <ExternalLink
+                      className="font-semibold underline-offset-4 hover:underline"
+                      href="https://gravatar.com"
+                    />
+                  ),
+                }}
+              />
             }
           />
           <Suspense fallback={<SelfAvatarSkeleton />}>
@@ -306,6 +304,8 @@ function ProfileField({
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
+        // Enter during a save would send the same value a second time.
+        if (form.state.isSubmitting) return;
         void form.handleSubmit();
       }}
     >
@@ -322,10 +322,7 @@ function ProfileField({
                   (field.state.meta.isTouched && !field.state.meta.isValid) ||
                   rejected !== undefined;
                 return (
-                  <Field
-                    data-invalid={invalid}
-                    data-disabled={disabled || isSubmitting}
-                  >
+                  <Field data-invalid={invalid} data-disabled={disabled}>
                     <FieldLabel htmlFor={id}>{label}</FieldLabel>
                     <InputGroup>
                       <InputGroupInput
@@ -340,9 +337,13 @@ function ProfileField({
                         }}
                         onBlur={() => {
                           field.handleBlur();
+                          if (form.state.isSubmitting) return;
                           void form.handleSubmit();
                         }}
-                        disabled={disabled || isSubmitting}
+                        disabled={disabled}
+                        // Read-only keeps focus in the field while it saves.
+                        readOnly={isSubmitting}
+                        aria-busy={isSubmitting}
                         aria-invalid={invalid}
                         aria-describedby={
                           invalid

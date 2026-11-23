@@ -4,21 +4,39 @@ const DISMISSED_PREFIX = "first-bot-setup-dismissed:";
 
 const STARTED_PREFIX = "first-bot-setup-started:";
 
+// Blocked site data makes storage throw. The guide then forgets its state
+// instead of breaking the project overview.
+function readFlag(key: string): boolean {
+  try {
+    return localStorage.getItem(key) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function writeFlag(key: string): void {
+  try {
+    localStorage.setItem(key, "true");
+  } catch {
+    // The guide state lasts for this page view only.
+  }
+}
+
 export function isFirstBotSetupDismissed(instanceId: string): boolean {
-  return localStorage.getItem(DISMISSED_PREFIX + instanceId) === "true";
+  return readFlag(DISMISSED_PREFIX + instanceId);
 }
 
 export function dismissFirstBotSetup(instanceId: string): void {
-  localStorage.setItem(DISMISSED_PREFIX + instanceId, "true");
+  writeFlag(DISMISSED_PREFIX + instanceId);
 }
 
 /** Remembers an open guide while the user adds accounts on another page. */
 export function isFirstBotSetupStarted(instanceId: string): boolean {
-  return localStorage.getItem(STARTED_PREFIX + instanceId) === "true";
+  return readFlag(STARTED_PREFIX + instanceId);
 }
 
 export function markFirstBotSetupStarted(instanceId: string): void {
-  localStorage.setItem(STARTED_PREFIX + instanceId, "true");
+  writeFlag(STARTED_PREFIX + instanceId);
 }
 
 /**
