@@ -941,7 +941,9 @@ function OverviewTab({
               isOnline ? undefined : t("bots.chatPanel.offlineHint")
             }
           />
+          {/* A new bot starts a new feed instead of showing the last one's. */}
           <LiveFeed
+            key={`feed:${instanceId}:${botId}`}
             instanceId={instanceId}
             canWatch={canWatchFeed}
             botName={botName}

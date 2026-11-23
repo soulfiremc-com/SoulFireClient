@@ -552,7 +552,13 @@ function DisplayForm({ settings }: { settings: DisplaySettings }) {
     () => {
       void form.handleSubmit();
     },
-    { wait: 400 },
+    // Leaving the page right after a change still saves it.
+    {
+      wait: 400,
+      onUnmount: (debouncer) => {
+        debouncer.flush();
+      },
+    },
   );
   return (
     <section className="flex flex-col gap-3">

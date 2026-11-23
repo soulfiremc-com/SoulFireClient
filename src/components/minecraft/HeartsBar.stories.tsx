@@ -19,3 +19,4 @@ export const Injured: Story = { args: { health: 13 } };
 export const Critical: Story = { args: { health: 1 } };
 export const Dead: Story = { args: { health: 0 } };
 export const ReducedMaximum: Story = { args: { health: 5, maxHealth: 10 } };
+export const ExtendedMaximum: Story = { args: { health: 25, maxHealth: 40 } };

@@ -95,7 +95,8 @@ function Meter({
   );
 }
 
-/// Renders a Minecraft style hearts bar. Each heart represents 2 health points.
+/// Renders a Minecraft style hearts bar. Each heart represents 2 health points,
+/// up to 10 hearts. Above 20 max health the 10 hearts share it evenly.
 export function HeartsBar({
   health,
   maxHealth = 20,
@@ -112,7 +113,7 @@ export function HeartsBar({
   return (
     <Meter
       value={health}
-      maxValue={units * 2}
+      maxValue={Math.max(maxHealth, units * 2)}
       units={units}
       Icon={HeartIcon}
       size={size}
