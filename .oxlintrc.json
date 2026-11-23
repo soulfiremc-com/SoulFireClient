@@ -1284,36 +1284,6 @@
       }
     },
     {
-      "files": ["src/routes/_dashboard/instance/$instance/bot/$botId.tsx"],
-      "rules": {
-        "shadcn/no-inline-styles": [
-          "error",
-          {
-            "allow": [
-              "borderBottomColor",
-              "gridTemplateColumns",
-              "top",
-              "transform",
-              "width"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "files": [
-        "src/routes/_dashboard/instance/$instance/script/$scriptId.tsx"
-      ],
-      "rules": {
-        "shadcn/no-inline-styles": [
-          "error",
-          {
-            "allow": ["transform"]
-          }
-        ]
-      }
-    },
-    {
       "files": ["src/routes/**", "src/components/ui/**"],
       "rules": {
         "react/only-export-components": "off"

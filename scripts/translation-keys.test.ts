@@ -21,6 +21,9 @@ const dynamicAllowlist = [
   // Forwards the component translator to createPaletteCommands, whose keys
   // are checked in src/lib/command-palette.ts.
   "src/components/command-palette.tsx key",
+  // Forward settingsPageName keys, which are checked in src/lib/page-names.ts.
+  "src/routes/_dashboard/instance/$instance/settings/$pageId.tsx key",
+  "src/routes/_dashboard/user/admin/settings/$pageId.tsx key",
   // Switch over audit log entry types that returns literal keys.
   "src/components/instance-overview/activity-timeline.tsx entryTypeI18nKey(entry.type)",
   "src/routes/_dashboard/instance/$instance/audit-log.tsx toI18nKey(row.original.type)",
@@ -33,9 +36,14 @@ const dynamicAllowlist = [
   "src/components/providers/flows/localts-flow.tsx label",
   // Cast error codes from the desktop process, checked with exists() first.
   "src/lib/cast-client.ts key",
-  // Switch over credential types that returns literal format hint keys.
-  "src/routes/_dashboard/instance/$instance/accounts.tsx credentialFormatKey(credentialType)",
-  "src/routes/_dashboard/instance/$instance/accounts.tsx credentialFormatKey(accountTypeCredentialsSelected)",
+  // Lookup table of credential types to literal format hint keys, and the
+  // literal labels of the import menu groups.
+  "src/components/accounts/add-accounts-menu.tsx credentialFormatKey(type)",
+  "src/components/accounts/add-accounts-menu.tsx credentialFormatKey(credentialType)",
+  "src/components/accounts/add-accounts-menu.tsx group.label",
+  "src/components/accounts/add-accounts-menu.tsx entry.label",
+  // Validation message keys of the validation namespace.
+  "src/components/settings/string-setting-field.tsx error",
 ];
 
 function format(items: readonly Finding[]): string {
@@ -229,6 +237,11 @@ test("checks templates, ternaries, wrappers, and qualified literals", (t) => {
         ];
       }
     `,
+    "src/types.ts": `
+      export function label(instance: i18n, kind: string) {
+        return instance.t(\`instance:gone.\${kind}\`);
+      }
+    `,
     "src/table.ts": `
       const t = (key: string) => i18n.t(\`common:dataTable.\${key}\`);
       export const labels = [t("clear"), t("reset")];
@@ -240,6 +253,7 @@ test("checks templates, ternaries, wrappers, and qualified literals", (t) => {
     "common:absent",
     "common:dataTable.reset",
     "common:missing.${kind}",
+    "instance:gone.${kind}",
     "instance:proxy.gone",
   ]);
   assert.deepEqual(
@@ -263,6 +277,36 @@ test("requires count for keys that only have plural forms", (t) => {
   assert.deepEqual(
     result.missingPlurals.map((item) => `${item.location} ${item.reason}`),
     ["src/bots.tsx:4 plural key used without count"],
+  );
+});
+
+test("flags count passed to a key that ignores it", (t) => {
+  const result = fixture(t, {
+    ...catalogs,
+    "src/count.tsx": `
+      function Count({ count, online }) {
+        const { t } = useTranslation("common");
+        return [
+          t("save", { count }),
+          t("bots", { count }),
+          t(online ? "status.online" : "bots", { count }),
+        ];
+      }
+    `,
+    "locales/en-US/instance.json": JSON.stringify({
+      limit: "Enter a number up to {{count}}.",
+    }),
+    "src/limit.tsx": `
+      function Limit({ count }) {
+        const { t } = useTranslation("instance");
+        return t("limit", { count });
+      }
+    `,
+  });
+
+  assert.deepEqual(
+    result.missingPlurals.map((item) => `${item.location} ${item.key}`),
+    ["src/count.tsx:5 common:save"],
   );
 });
 

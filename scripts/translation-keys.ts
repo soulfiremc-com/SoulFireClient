@@ -2,15 +2,17 @@
 //
 // The scanner reads source text with regular expressions. It understands the
 // patterns this repository uses: `useTranslation` bindings (including aliases
-// such as `{ t: tCommon }`), `TFunction<"ns">` parameters, `i18n.t` and `t`
-// imported from i18next, `<Trans
+// such as `{ t: tCommon }`), `TFunction<"ns">` parameters, `i18n.t`, `.t` on
+// parameters of type `i18n`, `t` imported from i18next, `<Trans
 // i18nKey>`, and fully qualified `"ns:key"` string literals anywhere in source.
 // Template literal keys become patterns that must match at least one key.
 // Keys built only from variables cannot be checked and are counted as dynamic.
 //
 // Run `node scripts/translation-keys.ts` for a report of missing and unused
 // en-US keys, and for translations whose placeholders or syntax do not match
-// en-US. scripts/translation-keys.test.ts fails on missing keys.
+// en-US. scripts/translation-keys.test.ts fails on missing keys and on plural
+// problems: a plural key called without `count`, or `count` passed to a key
+// that has neither plural forms nor `{{count}}`.
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -27,6 +29,8 @@ export interface Catalog {
   bases: Set<string>;
   /** Keys without plural suffixes whose text puts a word after `{{count}}`. */
   countWithoutPlural: Set<string>;
+  /** Base keys that read `count`: they have plural forms or use `{{count}}`. */
+  readsCount: Set<string>;
 }
 
 interface Literal {
@@ -44,6 +48,8 @@ export type Reference =
       key: string;
       template: boolean;
       hasCount: boolean;
+      /** False when the call picks one of several keys, as in a ternary. */
+      soleKey: boolean;
     };
 
 export interface Finding {
@@ -83,6 +89,7 @@ function flatten(
 
 // A word after the count, as in "{{count}} proxies", needs plural forms.
 const COUNTED_WORD = /\{\{\s*count\s*\}\}\s+\p{L}/u;
+const COUNT_PLACEHOLDER = /\{\{\s*count\s*[,}]/u;
 
 function stripPlural(key: string): string {
   for (const suffix of PLURAL_SUFFIXES) {
@@ -109,7 +116,15 @@ export function loadCatalogs(localeDirectory: string): Map<string, Catalog> {
         )
         .map(([key]) => key),
     );
-    catalogs.set(namespace, { leaves, bases, countWithoutPlural });
+    const readsCount = new Set(
+      [...values]
+        .filter(
+          ([key, text]) =>
+            stripPlural(key) !== key || COUNT_PLACEHOLDER.test(text),
+        )
+        .map(([key]) => stripPlural(key)),
+    );
+    catalogs.set(namespace, { leaves, bases, countWithoutPlural, readsCount });
   }
   return catalogs;
 }
@@ -284,9 +299,10 @@ export function scanSources(
   files: readonly string[],
   rootDirectory: string,
   namespaces: ReadonlySet<string>,
-): { references: Reference[]; strings: Set<string> } {
+): { references: Reference[]; strings: Set<string>; templates: string[] } {
   const references: Reference[] = [];
   const strings = new Set<string>();
+  const templates: string[] = [];
 
   for (const file of files) {
     const source = readFileSync(file, "utf8");
@@ -333,6 +349,7 @@ export function scanSources(
           key: resolved.key,
           template: literal.template,
           hasCount,
+          soleKey: literals.length === 1,
         });
       }
     };
@@ -350,12 +367,16 @@ export function scanSources(
       prefixes.set(name, prefix);
     }
 
-    const calls = [...bindings.keys(), "i18n.t"];
+    // Helpers can take the i18next instance as a parameter of type `i18n`.
+    const instances = new Set(["i18n.t"]);
+    for (const [, name = ""] of source.matchAll(/\b(\w+)\??\s*:\s*i18n\b/gu)) {
+      instances.add(`${name}.t`);
+    }
+    const calls = [...bindings.keys(), ...instances];
     for (const name of calls) {
-      const candidates =
-        name === "i18n.t"
-          ? [DEFAULT_NAMESPACE]
-          : [...(bindings.get(name) ?? [])];
+      const candidates = instances.has(name)
+        ? [DEFAULT_NAMESPACE]
+        : [...(bindings.get(name) ?? [])];
       const prefix = prefixes.get(name) ?? "";
       const escaped = name.replace(".", String.raw`\.`);
       for (const match of source.matchAll(
@@ -418,6 +439,7 @@ export function scanSources(
         key: resolved.key,
         template: false,
         hasCount: false,
+        soleKey: true,
       });
     }
     for (const [, key = ""] of source.matchAll(
@@ -425,9 +447,16 @@ export function scanSources(
     )) {
       strings.add(key);
     }
+    // Template keys built outside `t`, such as `account.types.${type}` in a
+    // helper that returns the key, keep their keys from the unused report.
+    for (const [, template = ""] of source.matchAll(
+      /`((?:[\w-]+:)?[\w-]+(?:\.[\w-]+)*\.\$\{[^}`]+\}[\w.-]*)`/gu,
+    )) {
+      templates.push(template);
+    }
   }
 
-  return { references, strings };
+  return { references, strings, templates };
 }
 
 /** Compare source references with the en-US catalogs. */
@@ -445,11 +474,22 @@ export function checkTranslationKeys({
   const catalogs = loadCatalogs(localeDirectory);
   const namespaces = new Set(catalogs.keys());
   const files = listSourceFiles(sourceDirectory);
-  const { references, strings } = scanSources(files, rootDirectory, namespaces);
+  const { references, strings, templates } = scanSources(
+    files,
+    rootDirectory,
+    namespaces,
+  );
 
   const missing: Finding[] = [];
   const missingPlurals: Finding[] = [];
-  const usedPatterns: { namespaces: string[]; pattern: RegExp }[] = [];
+  const usedPatterns: { namespaces: string[]; pattern: RegExp }[] =
+    templates.map((template) => {
+      const resolved = splitNamespace(template, namespaces, [...namespaces]);
+      return {
+        namespaces: resolved.namespaces,
+        pattern: templatePattern(resolved.key),
+      };
+    });
   const usedKeys = new Set<string>();
   const dynamic: Finding[] = [];
 
@@ -504,6 +544,18 @@ export function checkTranslationKeys({
         location,
         key: `${namespace}:${reference.key}`,
         reason: "plural key used without count",
+      });
+    } else if (
+      reference.hasCount &&
+      reference.soleKey &&
+      !catalog.readsCount.has(reference.key)
+    ) {
+      // The text ignores the count, so "1 bot" and "5 bots" read the same.
+      // A ternary may pass the count for only one of its keys.
+      missingPlurals.push({
+        location,
+        key: `${namespace}:${reference.key}`,
+        reason: "count passed to a key without plural forms or {{count}}",
       });
     }
   }

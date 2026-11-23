@@ -5,6 +5,11 @@
   "save": "Save",
   "saving": "Saving...",
   "demoReadOnly": "The demo is read-only. Connect to a SoulFire server to make changes.",
+  "errorToast": {
+    "connection": "Could not reach the SoulFire server. Check the connection and try again.",
+    "authentication": "Your token was rejected or has expired. Sign in again, then try again.",
+    "permission": "You do not have permission to do this. Ask the server administrator for access."
+  },
   "analyticsConsent": {
     "title": "Analytics cookies",
     "description": "We use analytics cookies to understand how you use SoulFire and improve the app. Accepting links usage to your SoulFire user account.",
@@ -18,8 +23,6 @@
   "error": {
     "noAddressOrToken": "No server address or token found",
     "page": {
-      "title": "Error",
-      "description": "The page did not load. Open the console for more information.",
       "logOut": "Sign out",
       "reloadPage": "Reload page",
       "showDetails": "Show details",
@@ -56,9 +59,6 @@
       "reloadPage": "Reload page"
     }
   },
-  "pending": {
-    "connecting": "Connecting..."
-  },
   "dialog": {
     "about": {
       "title": "About SoulFire",
@@ -81,8 +81,7 @@
     },
     "support": {
       "title": "Support SoulFire",
-      "description": "SoulFire is free and open-source, built with love by the community.",
-      "body": "If SoulFire has been useful to you, please consider supporting SoulFire. Your contribution helps cover server costs, fund development, and keep SoulFire free for everyone.",
+      "body": "If SoulFire is useful to you, consider supporting it. Your contribution helps cover server costs, fund development, and keep SoulFire free for everyone.",
       "dismiss": "Maybe later",
       "action": "Support SoulFire",
       "alreadySupport": "I already support SoulFire",
@@ -135,7 +134,7 @@
         "emptyClipboard": "The clipboard has no text to import. Copy the list, then try again.",
         "textarea": {
           "label": "Text to import",
-          "placeholder": "Put text here...",
+          "placeholder": "Paste text here...",
           "submit": "Load from text",
           "empty": "Paste the text to import first."
         }
@@ -144,8 +143,8 @@
         "description": "The SoulFire server sends a GET request to this URL and imports the response.",
         "form": {
           "url": {
-            "placeholder": "Put URL here...",
-            "empty": "Please enter a valid URL"
+            "placeholder": "Paste a URL here...",
+            "empty": "Enter a valid URL."
           }
         },
         "submit": "Load from URL",
@@ -162,12 +161,17 @@
       "title": "Delete project?",
       "description": "This permanently deletes \"{{name}}\" and its data. You cannot undo this.",
       "descriptionUnnamed": "This permanently deletes this project and its data. You cannot undo this."
+    },
+    "importConfiguration": {
+      "title": "Replace project configuration?",
+      "description": "Importing \"{{file}}\" replaces all settings, accounts, and proxies in \"{{name}}\". Export the current configuration first if you want to keep it.",
+      "confirm": "Replace configuration"
     }
   },
   "commandInput": {
     "label": "Command",
     "suggestions": "Command suggestions",
-    "placeholder": "Enter command (type 'help' for list)",
+    "placeholder": "Enter a command (type help for a list)",
     "noSuggestions": "No suggestions available.",
     "suggestionsUnavailable": "Could not load suggestions. Check the server connection.",
     "botNotReady": "The bot has not joined a world yet. Run the command again after it joins.",
@@ -217,9 +221,7 @@
     "positiveCount": "Enter a whole number of at least 1."
   },
   "botFleetSummary": "{{online}} connected · {{desired}} set to run · {{total}} total",
-  "icon": {
-    "invalidName": "Invalid icon name: {{name}}"
-  },
+  "botFleetSummaryEmpty": "No bots yet",
   "dataTable": {
     "noResults": "No results.",
     "rowsSelected_one": "{{selected}} of {{count}} row selected",
@@ -322,14 +324,9 @@
     "maxValue": "{{label}} maximum value"
   },
   "pluginCard": {
-    "version": "Version: {{version}}",
-    "author": "Author: {{author}}",
-    "license": "License: {{license}}",
     "website": "Website",
     "meta": "Version {{version}}, by {{author}}, {{license}} license",
     "configure": "Configure",
-    "enabled": "On",
-    "disabled": "Off",
     "enable": "Turn on {{name}}"
   },
   "settingsPage": {
@@ -357,7 +354,6 @@
     },
     "autoSave": "Changes save automatically.",
     "saveError": "Could not save {{name}}",
-    "namespacesNotFound": "Settings namespaces not found",
     "stringList": {
       "newEntry": "New {{name}} entry",
       "entry": "{{name}} entry {{number}}",
@@ -380,8 +376,7 @@
       "more_other": "{{count}} more options. Type to narrow the list."
     },
     "invalidNumberToast": {
-      "title": "Invalid number",
-      "description": "The value must be between {{min}} and {{max}}"
+      "description": "Enter a number between {{min}} and {{max}}."
     },
     "saving": "Saving...",
     "saved": "Saved",
@@ -399,8 +394,8 @@
     "advanced": "Advanced",
     "demoNotSaved": "The demo does not save changes.",
     "scope": {
-      "instance": "These are project defaults. Every bot in this project uses them unless the bot has its own value.",
-      "server": "These settings apply to the whole SoulFire server and every project on it."
+      "instance": "Project defaults. Bots use them unless they have their own value.",
+      "server": "Server-wide settings for every project."
     },
     "minMaxLegend": "Minimum and maximum settings",
     "rangeValue": "{{min}} to {{max}}"
@@ -422,16 +417,20 @@
     "logsDenied": "You do not have permission to view these logs.",
     "botLogsNoPermission": {
       "title": "You cannot view this bot's logs",
-      "description": "Ask an administrator for permission to view logs in this instance."
+      "description": "Ask an administrator for permission to view logs in this project."
     },
     "jumpToLatest": "Jump to latest",
-    "demo-1": "Welcome to demo mode! 🧪",
-    "demo-2": "This is a read-only demo of SoulFire",
-    "demo-3": "Check out all the menus and features before deciding to install SoulFire :D",
-    "demo-4": "Feel free to join our Discord server if you would like to reach out: https://soulfiremc.com/discord"
-  },
-  "uiBreadcrumb": {
-    "more": "More"
+    "commandsNoPermission": {
+      "title": "You cannot run commands here",
+      "description": "Ask an administrator for permission to run commands."
+    },
+    "demo": {
+      "welcome": "Welcome to demo mode! 🧪",
+      "logs": "Server logs appear here when you connect to a SoulFire server.",
+      "commands": "Connect to a SoulFire server to run commands. Their output appears here.",
+      "install": "Look around the menus and features before you install SoulFire.",
+      "discord": "Questions? Join our Discord server: https://soulfiremc.com/discord"
+    }
   },
   "skipToContent": "Skip to content",
   "uiDialog": {
@@ -442,7 +441,7 @@
   },
   "updateReady": {
     "title": "SoulFire {{version}} is ready to install",
-    "description": "Restarting stops running bots and the integrated server. If you choose Later, SoulFire installs the update when you quit.",
+    "description": "Restarting stops running bots and the local server. If you choose Later, SoulFire installs the update when you quit.",
     "restart": "Restart now",
     "later": "Later"
   },
@@ -470,14 +469,11 @@
   },
   "castMenu": {
     "title": "Cast",
-    "disconnected": "Disconnected from {{device}}",
-    "alreadyConnected": "Already connected to {{device}}",
     "connectToast": {
       "loading": "Connecting to {{device}}...",
       "success": "Connected to {{device}}",
       "error": "Could not connect to {{device}}"
     },
-    "noDevices": "No devices found",
     "broadcastToast": {
       "loading": "Broadcasting message...",
       "success": "Message broadcast",
@@ -618,7 +614,6 @@
       "navigate": "Navigate",
       "select": "Select",
       "close": "Close",
-      "pin": "Pin",
       "back": "Back"
     },
     "groups": {
@@ -634,6 +629,10 @@
       "actions": "Actions",
       "results": "Best matches",
       "projectPages": "Project pages"
+    },
+    "missingPin": {
+      "label": "Unavailable pin",
+      "description": "Select to remove this pin"
     }
   },
   "instanceSidebar": {
@@ -664,17 +663,17 @@
     "audit-log": "Audit log",
     "settingsGroup": "Settings",
     "extensionsGroup": "Extensions",
-    "botSettings": "Bot settings",
     "accountSettings": "Accounts",
     "metaSettings": "Project settings",
     "proxySettings": "Proxies",
-    "aiSettings": "AI settings",
-    "pathfindingSettings": "Pathfinding settings",
     "discoverPlugins": "Plugins",
     "togglePluginSettings": "Show or hide plugin settings",
     "instanceScripts": "Scripts",
     "configurationFileType": "SoulFire configuration (JSON)",
-    "exportWarning": "Exported files include account and proxy credentials. Keep them private."
+    "exportWarning": "Exported files include account and proxy credentials. Keep them private.",
+    "fleetStatus_one": "{{online}} of {{count}} bot connected",
+    "fleetStatus_other": "{{online}} of {{count}} bots connected",
+    "fleetStatusEmpty": "No bots"
   },
   "userSidebar": {
     "readDocumentation": "Read documentation",
@@ -688,8 +687,6 @@
     "adminLogs": "Logs",
     "adminTerminal": "Terminal",
     "users": "Users",
-    "serverSettings": "Server settings",
-    "devSettings": "Dev settings",
     "theme": {
       "title": "Theme",
       "system": "System",
@@ -726,7 +723,9 @@
     "extensions": "Extensions",
     "bots": "Bots"
   },
-  "noInstancesFound": "No projects found",
+  "noInstancesFound": "No projects yet",
+  "instanceCount_one": "{{count}} project",
+  "instanceCount_other": "{{count}} projects",
   "noInstancesDescription": "Create a project to add accounts, proxies, and bots.",
   "noInstancesNoPermission": "Ask a server admin to give you access to a project.",
   "pageName": {
@@ -749,30 +748,28 @@
   "access": {
     "webdav": {
       "title": "WebDAV access",
-      "description": "WebDAV provides access to project files, scripts, and other files.",
-      "publicAddress": "Public WebDAV address",
-      "personalToken": "Personal WebDAV token",
-      "securityWarning": "Keep your personal WebDAV token secret. It grants access to your files. Use the token as your WebDAV password. You do not need a username. If your app requires one, enter any value, such as 'soulfire'.",
-      "addressDescription": "Use this address to access your files. Some clients require dav:// or davs:// instead of http:// or https://."
+      "description": "Open project files and scripts in a file manager or code editor.",
+      "securityWarning": "Use the token as the password. Any username works. Keep the token secret. It gives access to your files.",
+      "addressDescription": "Some clients need dav:// or davs:// in place of http:// or https://."
     },
     "api": {
       "title": "API access",
-      "description": "Use the SoulFire API to manage projects from your own programs.",
-      "publicAddress": "Public API address",
-      "personalToken": "Personal API token",
-      "securityWarning": "Keep your personal API token secret. It grants access to the API.",
-      "addressDescription": "Use this address to access the API."
+      "description": "Manage projects from your own programs.",
+      "securityWarning": "Keep the token secret. It gives API access to your account."
     },
     "token": {
       "generate": "Generate token",
-      "placeholder": "Select Generate token below",
+      "placeholder": "No token generated yet",
       "generating": "Generating token...",
       "success": "Token generated",
       "error": "Could not generate token",
-      "copy": "Copy token"
+      "copy": "Copy token",
+      "label": "Personal token",
+      "noPermission": "You do not have permission to generate this token."
     },
     "address": {
-      "copy": "Copy address"
+      "copy": "Copy address",
+      "label": "Address"
     },
     "documentation": "Documentation",
     "howToConnect": "How to connect"
@@ -780,13 +777,12 @@
   "uploadToMcLogs": "Upload to mclo.gs",
   "mcLogsUpload": {
     "loading": "Uploading to mclo.gs...",
-    "success": "Uploaded to mclo.gs. View it here: {{url}}",
+    "success": "Uploaded to mclo.gs: {{url}}",
     "error": "Could not upload to mclo.gs"
   },
   "searchWithGoogle": "Search with Google",
   "copyToClipboard": "Copy to clipboard",
   "clipboardCopy": {
-    "loading": "Copying to clipboard...",
     "success": "Copied \"{{content}}\" to clipboard",
     "error": "Could not copy to clipboard",
     "sensitiveSuccess": "Copied to clipboard"
@@ -801,16 +797,15 @@
   "userSettings": {
     "avatar": {
       "title": "Avatar",
-      "description": "Your user avatar is based on your account email address. You can change the avatar for your email address at",
-      "gravatar": "Gravatar"
+      "hint": "Your avatar comes from <link>Gravatar</link> and matches your email address."
     },
     "username": {
       "uiName": "Username",
-      "description": "Your username is used to identify you in the UI and in logs."
+      "description": "Identifies you in the app and in logs."
     },
     "email": {
       "uiName": "Email",
-      "description": "Your email is used for login and notifications."
+      "description": "Used for sign-in and notifications."
     },
     "autoSave": "Changes save when you press Enter or leave the field.",
     "noPermission": "You do not have permission to change this.",
@@ -819,10 +814,8 @@
     "saveError": "Could not update {{field}}"
   },
   "auditLog": {
-    "filterPlaceholder": "Filter audit logs...",
     "refresh": "Refresh",
     "user": "User",
-    "action": "Action",
     "type": "Type",
     "timestamp": "Timestamp",
     "searchUsers": "Search users...",
@@ -840,10 +833,13 @@
     "contextMenu": {
       "copyUsername": "Copy username",
       "copyCommand": "Copy command"
+    },
+    "noPermission": {
+      "title": "You cannot view the audit log",
+      "description": "Ask an administrator for permission to view this project's audit log."
     }
   },
   "toggleTheme": "Toggle theme",
-  "pickADate": "Pick a date",
   "scripts": {
     "removeToast": {
       "loading": "Removing scripts...",
@@ -884,8 +880,8 @@
       "copyCoordinates": "Copy coordinates"
     },
     "plugin": {
-      "enable": "Enable",
-      "disable": "Disable",
+      "enable": "Turn on",
+      "disable": "Turn off",
       "openSettings": "Open settings",
       "copyPluginName": "Copy plugin name",
       "copyVersion": "Copy version",
@@ -912,7 +908,7 @@
     "noOutput": "Waiting for process output...",
     "noMatches": "No matching output.",
     "java": "Java executable",
-    "jar": "Server JAR",
+    "jar": "Server jar",
     "data": "Data directory",
     "port": "RPC port",
     "exit": "Exit code or signal",
@@ -933,7 +929,8 @@
   },
   "instanceUnavailable": {
     "title": "Project unavailable",
-    "description": "This project was deleted or you no longer have access to it."
+    "description": "This project was deleted or you no longer have access to it.",
+    "retry": "Check again"
   },
   "botUnavailable": {
     "title": "Bot unavailable",
@@ -1067,5 +1064,14 @@
   },
   "unknown": "Unknown",
   "minecraftHead": "Minecraft head",
-  "textFile": "Text file"
+  "textFile": "Text file",
+  "settingsPageName": {
+    "bot": "Bot settings",
+    "account": "Account settings",
+    "proxy": "Proxy settings",
+    "ai": "AI settings",
+    "pathfinding": "Pathfinding settings",
+    "server": "Server settings",
+    "dev": "Developer settings"
+  }
 }
