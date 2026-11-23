@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import type { SettingsDefinition } from "@/generated/soulfire/common_pb";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
+import { isDemoReadOnlyError } from "@/lib/instance-mutations.ts";
 import {
   settingMutationOptions,
   type SettingMutationTarget,
@@ -54,7 +55,16 @@ export function useSettingValueMutation(options: {
     onMutate: (value: JsonValue) => {
       if (!options.persisted) setUnsavedValue({ value });
     },
-    mutationFn: options.save,
+    mutationFn: async (value: JsonValue) => {
+      try {
+        await options.save(value);
+      } catch (error) {
+        // The demo keeps the value for this session and already says that it
+        // does not save, so a refused write is not reported as a failure.
+        if (!options.persisted && isDemoReadOnlyError(error)) return;
+        throw error;
+      }
+    },
     onError: onSaveError,
     onSettled: options.invalidate,
   });

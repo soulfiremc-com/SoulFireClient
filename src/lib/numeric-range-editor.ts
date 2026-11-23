@@ -1,18 +1,24 @@
 import { updateNumericRange, type NumericRange } from "./numeric-setting-value";
 
+/**
+ * Builds range writes when one bound changes. The other bound comes from the
+ * newest write that has not failed, so a failed write is never sent again.
+ */
 export class NumericRangeEditor {
+  #confirmed: NumericRange;
   #baseline: NumericRange;
-  #latest: NumericRange;
-  #pendingWrites = 0;
+  // Writes in the order they were sent.
+  readonly #pending: NumericRange[] = [];
 
   constructor(value: NumericRange) {
+    this.#confirmed = value;
     this.#baseline = value;
-    this.#latest = value;
   }
 
   startEdit(value: NumericRange) {
+    if (this.#pending.length === 0) this.#confirmed = value;
     // A refetch can still describe an earlier write while newer edits are queued.
-    this.#baseline = this.#pendingWrites > 0 ? this.#latest : value;
+    this.#baseline = this.#pending.at(-1) ?? value;
   }
 
   async save(
@@ -21,12 +27,19 @@ export class NumericRangeEditor {
     commit: (value: NumericRange) => void | Promise<void>,
   ) {
     const next = updateNumericRange(this.#baseline, bound, value);
-    this.#latest = next;
-    this.#pendingWrites++;
+    this.#pending.push(next);
+    let failed = false;
     try {
       await commit(next);
+      this.#confirmed = next;
+    } catch (error) {
+      failed = true;
+      throw error;
     } finally {
-      this.#pendingWrites--;
+      this.#pending.splice(this.#pending.indexOf(next), 1);
+      if (failed && this.#baseline === next) {
+        this.#baseline = this.#pending.at(-1) ?? this.#confirmed;
+      }
     }
   }
 }

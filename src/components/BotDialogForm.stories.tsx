@@ -153,6 +153,22 @@ export const Pending: Story = {
   },
 };
 
+export const EnterDoesNotSubmit: Story = {
+  play: async ({ args, canvas, userEvent }) => {
+    const name = canvas.getByRole("textbox", { name: "Display name" });
+    await userEvent.clear(name);
+    await userEvent.type(name, "Trailblazer{Enter}");
+    await userEvent.type(canvas.getByRole("spinbutton"), "{Enter}");
+    await expect(args.onSubmit).not.toHaveBeenCalled();
+    await expect(name).toHaveValue("Trailblazer");
+    // A line break in the notes still works.
+    const notes = canvas.getByRole("textbox", { name: "Notes" });
+    await userEvent.type(notes, "{Enter}Stay close.");
+    await expect(notes).toHaveValue("Follow the marked path.\nStay close.");
+    await expect(args.onSubmit).not.toHaveBeenCalled();
+  },
+};
+
 export const DismissInvalidNumber: Story = {
   play: async ({ args, canvas, userEvent }) => {
     await userEvent.clear(canvas.getByRole("spinbutton"));

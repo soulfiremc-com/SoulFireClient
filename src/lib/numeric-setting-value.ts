@@ -54,3 +54,15 @@ export function formatSettingNumber(
     maximumFractionDigits: 20,
   }).format(value);
 }
+
+export function isNumericRange(value: unknown): value is NumericRange {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    "min" in value &&
+    "max" in value &&
+    typeof value.min === "number" &&
+    typeof value.max === "number"
+  );
+}

@@ -2,13 +2,13 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { ServerPluginInfoCard } from "@/components/instance-plugin-info-card.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout";
 import { NotFoundComponent } from "@/components/not-found-component.tsx";
 import { AdminSettingsPageComponent } from "@/components/settings-page.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import i18n from "@/lib/i18n";
+import { settingsPageName } from "@/lib/page-names.ts";
 import { loaderDataString, routeChrome } from "@/lib/route-title.ts";
 import { parseSettingFocusSearch } from "@/lib/settings-focus";
 
@@ -17,9 +17,20 @@ export const Route = createFileRoute("/_dashboard/user/admin/settings/$pageId")(
     validateSearch: parseSettingFocusSearch,
     beforeLoad: () =>
       routeChrome({
-        getTitle: (match) =>
-          loaderDataString(match, "title")?.trim() ||
-          i18n.t("common:breadcrumbs.settings"),
+        // Translate when the title is read: translations may not be loaded yet
+        // while the loader runs.
+        getTitle: (match) => {
+          const title = loaderDataString(match, "title")?.trim();
+          if (!title) return i18n.t("common:breadcrumbs.settings");
+          return settingsPageName(
+            {
+              id: match.params["pageId"] ?? "",
+              pageName: title,
+              owningPluginId: loaderDataString(match, "pluginId"),
+            },
+            (key) => i18n.t(key),
+          );
+        },
         getIcon: (match) => {
           const iconName = loaderDataString(match, "iconName");
           return {
@@ -45,6 +56,7 @@ export const Route = createFileRoute("/_dashboard/user/admin/settings/$pageId")(
       return settingsEntry
         ? {
             title: settingsEntry.pageName,
+            pluginId: settingsEntry.owningPluginId ?? null,
             iconName: settingsEntry.iconId || fallbackIconName,
           }
         : {
@@ -146,18 +158,9 @@ function Content() {
               content: t("breadcrumbs.settings"),
             },
       ]}
-      pageName={settingsEntry.pageName}
+      pageName={settingsPageName(settingsEntry, t)}
     >
       <div className="flex w-full flex-col gap-5">
-        {!plugin && (
-          <h2 className="flex items-center gap-2 text-xl font-semibold">
-            <DynamicIcon
-              name={settingsEntry.iconId}
-              className="size-5 shrink-0"
-            />
-            {settingsEntry.pageName}
-          </h2>
-        )}
         {plugin && (
           <ServerPluginInfoCard settingsEntry={settingsEntry} plugin={plugin} />
         )}

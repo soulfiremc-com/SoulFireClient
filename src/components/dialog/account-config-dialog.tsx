@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { BotPluginInfoCard } from "@/components/instance-plugin-info-card.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { SettingTypeRenderer } from "@/components/settings-page.tsx";
+import { SettingTypeRenderer } from "@/components/settings/setting-type-renderer.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Credenza,
@@ -59,12 +59,10 @@ import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import { valueToJson } from "@/lib/protobuf.ts";
 import type { BaseSettings, ProfileAccount } from "@/lib/types.ts";
 import {
-  cn,
-  getSettingIdentifierKey,
-  getSettingValue,
   removeBotConfigEntry,
   updateBotConfigEntry,
-} from "@/lib/utils.tsx";
+} from "@/lib/instance-mutations.ts";
+import { cn, getSettingIdentifierKey, getSettingValue } from "@/lib/utils.tsx";
 import { isOneOf } from "@/lib/is-one-of";
 import { requireField } from "@/lib/require-field";
 import { displayText } from "@/lib/display-text";
@@ -255,11 +253,11 @@ function formatSettingValue(
   }
 }
 
-function matchesSettingQuery(
-  t: TFunction<"instance">,
-  row: ResolvedBotSetting,
-  query: string,
-): boolean {
+/**
+ * Matches only text that editing a value cannot change. Matching the value
+ * would hide the row being edited as soon as the value stopped matching.
+ */
+function matchesSettingQuery(row: ResolvedBotSetting, query: string): boolean {
   const normalizedQuery = query.trim().toLowerCase();
   if (normalizedQuery.length === 0) {
     return true;
@@ -271,8 +269,6 @@ function matchesSettingQuery(
     row.identifier.key,
     getSettingDisplayName(row.definition),
     getSettingDescription(row.definition),
-    formatSettingValue(t, row.definition, row.effectiveValue),
-    formatSettingValue(t, row.definition, row.inheritedValue),
   ]
     .filter(Boolean)
     .join(" ")
@@ -450,7 +446,7 @@ function BotSettingRow(props: {
             }}
             disabled={resetMutation.isPending}
           >
-            <RotateCcwIcon className="size-3.5" />
+            <RotateCcwIcon data-icon="inline-start" />
             {t("account.config.resetOverride")}
           </Button>
         )}
@@ -689,10 +685,9 @@ function DialogContentInner({
   const overrideSettings = useMemo(
     () =>
       resolvedSettings.filter(
-        (row) =>
-          row.source === "bot" && matchesSettingQuery(t, row, searchQuery),
+        (row) => row.source === "bot" && matchesSettingQuery(row, searchQuery),
       ),
-    [resolvedSettings, searchQuery, t],
+    [resolvedSettings, searchQuery],
   );
 
   const filteredPages = useMemo(
@@ -705,11 +700,11 @@ function DialogContentInner({
               getSettingIdentifierKey(identifier),
             );
 
-            return row ? matchesSettingQuery(t, row, searchQuery) : false;
+            return row ? matchesSettingQuery(row, searchQuery) : false;
           }),
         }))
         .filter((page) => page.entries.length > 0),
-    [botSettingsPages, resolvedSettingsById, searchQuery, t],
+    [botSettingsPages, resolvedSettingsById, searchQuery],
   );
 
   useEffect(() => {

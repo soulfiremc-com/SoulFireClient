@@ -101,3 +101,47 @@ test("after rejected writes settle a new edit starts from the stored range", asy
   });
   assert.deepEqual(final, { min: 2, max: 9 });
 });
+
+test("a write that fails while the other bound is edited is not sent again", async () => {
+  const editor = new NumericRangeEditor({ min: 2, max: 5 });
+  const minimumResponse = deferred();
+  editor.startEdit({ min: 2, max: 5 });
+  const failure = assert.rejects(
+    editor.save("min", 3, () => minimumResponse.promise),
+  );
+  // The user moves to the maximum while the minimum is still saving.
+  editor.startEdit({ min: 2, max: 5 });
+  minimumResponse.reject(new Error("Rejected"));
+  await failure;
+  let final: NumericRange | undefined;
+  await editor.save("max", 9, (range) => {
+    final = range;
+  });
+  assert.deepEqual(final, { min: 2, max: 9 });
+});
+
+test("a later edit starts from the last confirmed write", async () => {
+  const editor = new NumericRangeEditor({ min: 2, max: 5 });
+  editor.startEdit({ min: 2, max: 5 });
+  await editor.save("min", 3, () => undefined);
+  const latest = deferred();
+  const pending = editor.save("max", 7, () => latest.promise);
+  editor.startEdit({ min: 2, max: 5 });
+  const writes: NumericRange[] = [];
+  const failure = assert.rejects(
+    editor.save("min", 4, async (range) => {
+      writes.push(range);
+      throw new Error("Rejected");
+    }),
+  );
+  await failure;
+  latest.reject(new Error("Rejected"));
+  await assert.rejects(pending);
+  await editor.save("max", 8, (range) => {
+    writes.push(range);
+  });
+  assert.deepEqual(writes, [
+    { min: 4, max: 7 },
+    { min: 3, max: 8 },
+  ]);
+});

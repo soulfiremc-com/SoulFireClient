@@ -1,4 +1,4 @@
-import { type SubmitEvent, useId, useState } from "react";
+import { type KeyboardEvent, type SubmitEvent, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,6 +42,16 @@ function inputValue(input: DialogInput["input"]): string {
     default: {
       return "";
     }
+  }
+}
+
+/**
+ * Enter in a single-line input would submit with the first button, which can
+ * be any server action. Only a button the user activates submits the dialog.
+ */
+function preventImplicitSubmit(event: KeyboardEvent) {
+  if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+    event.preventDefault();
   }
 }
 
@@ -238,6 +248,7 @@ export function BotDialogForm({
                       id={fieldId}
                       value={value}
                       maxLength={input.value.maxLength}
+                      onKeyDown={preventImplicitSubmit}
                       onChange={(event) => {
                         update(input, event.target.value);
                       }}
@@ -277,6 +288,7 @@ export function BotDialogForm({
                     max={Math.max(input.value.start, input.value.end)}
                     step="any"
                     required
+                    onKeyDown={preventImplicitSubmit}
                     onChange={(event) => {
                       update(input, event.target.value);
                     }}

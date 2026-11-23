@@ -1,4 +1,4 @@
-import type { JsonValue } from "@bufbuild/protobuf";
+import { create, type JsonValue } from "@bufbuild/protobuf";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState } from "react";
@@ -12,9 +12,17 @@ import {
   demoInstanceSettings,
   demoInstanceSettingsDefinitions,
 } from "@/demo-data";
+import {
+  SettingsDefinitionSchema,
+  SettingsEntryIdentifierSchema,
+  SettingsPageEntryScopeType,
+  StringSetting_InputType,
+} from "@/generated/soulfire/common_pb";
 import type { BaseSettings } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { assertDefined } from "@/lib/assert-defined";
+
+const STORY_LIST_KEY = "story-list";
 
 function SettingsFormExample({
   pageId,
@@ -26,6 +34,8 @@ function SettingsFormExample({
   focusKey,
   invalidCombo,
   emptyCombo,
+  urlInput,
+  stringList,
 }: {
   pageId: string;
   compact: boolean;
@@ -36,6 +46,10 @@ function SettingsFormExample({
   focusKey?: string;
   invalidCombo?: boolean;
   emptyCombo?: boolean;
+  /** Makes the API base URL a URL input. */
+  urlInput?: boolean;
+  /** Adds a string list setting to the page. */
+  stringList?: boolean;
 }) {
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [queryClient] = useState(
@@ -48,21 +62,51 @@ function SettingsFormExample({
   });
   const definitions = useMemo(() => {
     const result = structuredClone(demoInstanceSettingsDefinitions);
+    if (stringList) {
+      result.push(
+        create(SettingsDefinitionSchema, {
+          id: { namespace: pageId, key: STORY_LIST_KEY },
+          scope: SettingsPageEntryScopeType.INSTANCE,
+          type: {
+            case: "stringList",
+            value: { uiName: "Allowed hosts", def: ["alpha.example"] },
+          },
+        }),
+      );
+    }
     for (const definition of result) {
       if (definition.type.value) definition.type.value.disabled = disabled;
       if (emptyCombo && definition.type.case === "combo")
         definition.type.value.options = [];
+      if (
+        urlInput &&
+        definition.type.case === "string" &&
+        definition.id?.key === "api-base-url"
+      )
+        definition.type.value.inputType = StringSetting_InputType.URL;
     }
     return result;
-  }, [disabled, emptyCombo]);
+  }, [disabled, emptyCombo, urlInput, stringList, pageId]);
   const registry = useMemo(
     () => createSettingsRegistry(definitions),
     [definitions],
   );
-  const page = assertDefined(
+  const demoPage = assertDefined(
     demoInstanceSettings.find((entry) => entry.id === pageId),
     "Expected demoInstanceSettings.find((entry) => entry.id === pageId) to exist",
   );
+  const page = stringList
+    ? {
+        ...demoPage,
+        entries: [
+          create(SettingsEntryIdentifierSchema, {
+            namespace: pageId,
+            key: STORY_LIST_KEY,
+          }),
+          ...demoPage.entries,
+        ],
+      }
+    : demoPage;
   return (
     <QueryClientProvider client={queryClient}>
       <SettingsRegistryContext value={registry}>
@@ -410,5 +454,50 @@ export const EmptyOptions: Story = {
     const combo = canvas.getByRole("combobox", { name: "Protocol Version" });
     await expect(combo).toBeDisabled();
     await expect(args.onSave).not.toHaveBeenCalled();
+  },
+};
+
+export const InvalidUrlIsNotSaved: Story = {
+  args: { pageId: "ai", urlInput: true },
+  play: async ({ args, canvas, userEvent }) => {
+    const input = canvas.getByLabelText("API Base URL");
+    await userEvent.clear(input);
+    await userEvent.type(input, "https:");
+    await expect(canvas.getByText("Enter a valid URL.")).toBeVisible();
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    // Wait past the save delay, then leave the field.
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, 600);
+    });
+    await userEvent.tab();
+    await expect(args.onSave).not.toHaveBeenCalled();
+    await userEvent.clear(input);
+    await userEvent.type(input, "https://api.example.com/v1");
+    await userEvent.tab();
+    await expect(args.onSave).toHaveBeenLastCalledWith(
+      "ai",
+      "api-base-url",
+      "https://api.example.com/v1",
+    );
+  },
+};
+
+export const FailedListSaveKeepsTypedEntry: Story = {
+  args: { pageId: "ai", stringList: true, failSave: true },
+  play: async ({ args, canvas, userEvent }) => {
+    const entry = canvas.getByRole("textbox", {
+      name: "Allowed hosts entry 1",
+    });
+    await userEvent.clear(entry);
+    await userEvent.type(entry, "beta.example");
+    // The save fails after the typing pause while the entry keeps focus.
+    await waitFor(() =>
+      expect(args.onSave).toHaveBeenCalledWith("ai", STORY_LIST_KEY, [
+        "beta.example",
+      ]),
+    );
+    await waitFor(() => expect(canvas.getByText("Not saved")).toBeVisible());
+    await expect(entry).toHaveFocus();
+    await expect(entry).toHaveValue("beta.example");
   },
 };
