@@ -6,6 +6,7 @@ import type {
 import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import type { dataTableFeatures } from "@/lib/data-table-features";
+import { setFilteredRowsSelected } from "@/lib/data-table-state";
 
 // The label grows the tap target to 40px without changing the row height.
 const HIT_AREA_CLASS_NAME =
@@ -15,15 +16,17 @@ export function SelectAllHeader<T extends RowData>({
   table,
 }: HeaderContext<typeof dataTableFeatures, T>) {
   const { t } = useTranslation("common");
+  // Both states count only the rows that pass the current filters.
+  const allSelected = table.getIsAllRowsSelected();
+  const someSelected =
+    !allSelected && table.getFilteredSelectedRowModel().rows.length > 0;
   return (
     <label className={HIT_AREA_CLASS_NAME}>
       <Checkbox
-        checked={table.getIsAllRowsSelected()}
-        indeterminate={
-          !table.getIsAllRowsSelected() && table.getIsSomeRowsSelected()
-        }
+        checked={allSelected}
+        indeterminate={someSelected}
         onCheckedChange={(value) => {
-          table.toggleAllRowsSelected(value);
+          setFilteredRowsSelected(table, value);
         }}
         aria-label={t("dataTable.selectAll")}
       />

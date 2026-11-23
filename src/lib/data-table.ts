@@ -3,33 +3,23 @@ import type { dataTableFeatures } from "@/lib/data-table-features";
 
 export function getColumnPinningStyle<TData extends RowData>({
   column,
-  withBorder = false,
 }: {
   column: Column<typeof dataTableFeatures, TData>;
-  withBorder?: boolean;
 }): React.CSSProperties {
   const isPinned = column.getIsPinned();
-  const isLastStartPinnedColumn =
-    isPinned === "start" && column.getIsLastColumn("start");
-  const isFirstEndPinnedColumn =
-    isPinned === "end" && column.getIsFirstColumn("end");
+  if (!isPinned) return { width: column.getSize() };
 
+  // Only pinned cells get a background, since an opaque cell would hide the
+  // row's hover and selection colors.
   return {
-    boxShadow: withBorder
-      ? isLastStartPinnedColumn
-        ? "-4px 0 4px -4px var(--border) inset"
-        : isFirstEndPinnedColumn
-          ? "4px 0 4px -4px var(--border) inset"
-          : undefined
-      : undefined,
     insetInlineStart:
       isPinned === "start" ? `${column.getStart("start")}px` : undefined,
     insetInlineEnd:
       isPinned === "end" ? `${column.getAfter("end")}px` : undefined,
-    opacity: isPinned ? 0.97 : 1,
-    position: isPinned ? "sticky" : "relative",
-    background: isPinned ? "var(--background)" : "var(--background)",
+    opacity: 0.97,
+    position: "sticky",
+    background: "var(--background)",
     width: column.getSize(),
-    zIndex: isPinned ? 1 : undefined,
+    zIndex: 1,
   };
 }

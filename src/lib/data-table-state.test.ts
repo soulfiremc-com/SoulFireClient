@@ -7,6 +7,7 @@ import {
   getTableColumnFilters,
   getTablePagination,
   getValidPageIndex,
+  setFilteredRowsSelected,
 } from "./data-table-state.ts";
 
 const features = tableFeatures({
@@ -135,4 +136,27 @@ test("unavailable pages reset without changing valid saved pages", () => {
   assert.equal(getValidPageIndex(0, 0), 0);
   assert.equal(getValidPageIndex(1, 2), 1);
   assert.equal(getValidPageIndex(998, -1), 998);
+});
+
+test("select all only changes rows that pass the current filters", () => {
+  const columns = [{ id: "text", accessorKey: "text" }];
+  const table = constructTable({
+    features,
+    columns,
+    data: [...data, { id: "three", text: "other", value: 0 }],
+    getRowId: (row) => row.id,
+    enableRowSelection: (row) => row.id !== "two",
+    initialState: { columnFilters: [{ id: "text", value: "table-qa" }] },
+  });
+  const selectedIds = () =>
+    Object.keys(table.atoms.rowSelection.get()).toSorted();
+
+  // "two" passes the filter but cannot be selected, and "three" is hidden.
+  setFilteredRowsSelected(table, true);
+  assert.deepEqual(selectedIds(), ["one"]);
+
+  // Clearing leaves the selection of hidden rows alone.
+  table.setRowSelection({ one: true, three: true });
+  setFilteredRowsSelected(table, false);
+  assert.deepEqual(selectedIds(), ["three"]);
 });

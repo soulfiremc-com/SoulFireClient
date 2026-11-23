@@ -33,8 +33,6 @@ import type { ExtendedColumnSort, QueryKeys } from "@/types/data-table";
 const PAGE_KEY = "page";
 const PER_PAGE_KEY = "perPage";
 const SORT_KEY = "sort";
-const FILTERS_KEY = "filters";
-const JOIN_OPERATOR_KEY = "joinOperator";
 const ARRAY_SEPARATOR = ",";
 const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
@@ -62,7 +60,6 @@ interface UseDataTableProps<TData extends RowData>
   debounceMs?: number;
   throttleMs?: number;
   clearOnDefault?: boolean;
-  enableAdvancedFilter?: boolean;
   scroll?: boolean;
   shallow?: boolean;
   startTransition?: React.TransitionStartFunction;
@@ -80,7 +77,6 @@ export function useDataTable<TData extends RowData>(
     debounceMs = DEBOUNCE_MS,
     throttleMs = THROTTLE_MS,
     clearOnDefault = false,
-    enableAdvancedFilter = false,
     scroll = false,
     shallow = true,
     startTransition,
@@ -89,8 +85,6 @@ export function useDataTable<TData extends RowData>(
   const pageKey = queryKeys?.page ?? PAGE_KEY;
   const perPageKey = queryKeys?.perPage ?? PER_PAGE_KEY;
   const sortKey = queryKeys?.sort ?? SORT_KEY;
-  const filtersKey = queryKeys?.filters ?? FILTERS_KEY;
-  const joinOperatorKey = queryKeys?.joinOperator ?? JOIN_OPERATOR_KEY;
 
   const queryStateOptions = React.useMemo<
     Omit<UseQueryStateOptions<string>, "parse">
@@ -175,29 +169,28 @@ export function useDataTable<TData extends RowData>(
     [sorting, setSorting],
   );
 
-  const filterableColumns = React.useMemo(() => {
-    if (enableAdvancedFilter) return [];
+  const filterableColumns = React.useMemo(
+    () => columns.filter((column) => column.enableColumnFilter),
+    [columns],
+  );
 
-    return columns.filter((column) => column.enableColumnFilter);
-  }, [columns, enableAdvancedFilter]);
-
-  const filterParsers = React.useMemo(() => {
-    if (enableAdvancedFilter) return {};
-
-    return filterableColumns.reduce<
-      Record<string, SingleParser<string> | SingleParser<string[]>>
-    >((acc, column) => {
-      if (column.meta?.options) {
-        acc[column.id ?? ""] = parseAsArrayOf(
-          parseAsString,
-          ARRAY_SEPARATOR,
-        ).withOptions(queryStateOptions);
-      } else {
-        acc[column.id ?? ""] = parseAsString.withOptions(queryStateOptions);
-      }
-      return acc;
-    }, {});
-  }, [filterableColumns, queryStateOptions, enableAdvancedFilter]);
+  const filterParsers = React.useMemo(
+    () =>
+      filterableColumns.reduce<
+        Record<string, SingleParser<string> | SingleParser<string[]>>
+      >((acc, column) => {
+        if (column.meta?.options) {
+          acc[column.id ?? ""] = parseAsArrayOf(
+            parseAsString,
+            ARRAY_SEPARATOR,
+          ).withOptions(queryStateOptions);
+        } else {
+          acc[column.id ?? ""] = parseAsString.withOptions(queryStateOptions);
+        }
+        return acc;
+      }, {}),
+    [filterableColumns, queryStateOptions],
+  );
 
   const [filterValues, setFilterValues] = useQueryStates(filterParsers);
 
@@ -213,9 +206,7 @@ export function useDataTable<TData extends RowData>(
   // re-renders the table parts that read filters instead of the whole page.
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [initialColumnFilters] = React.useState<ColumnFiltersState>(() =>
-    enableAdvancedFilter
-      ? []
-      : getTableColumnFilters(filterValues, filterableColumns),
+    getTableColumnFilters(filterValues, filterableColumns),
   );
 
   const table = useTable(
@@ -242,24 +233,12 @@ export function useDataTable<TData extends RowData>(
       enableRowSelection: tableProps.enableRowSelection ?? true,
       onPaginationChange,
       onSortingChange,
-      meta: {
-        ...tableProps.meta,
-        queryKeys: {
-          page: pageKey,
-          perPage: perPageKey,
-          sort: sortKey,
-          filters: filtersKey,
-          joinOperator: joinOperatorKey,
-        },
-      },
     },
     // Do not re-render the host component for table state changes.
     () => null,
   );
 
   React.useEffect(() => {
-    if (enableAdvancedFilter) return undefined;
-
     let previous = table.atoms.columnFilters.get();
     const subscription = table.atoms.columnFilters.subscribe((next) => {
       if (next === previous) return;
@@ -285,13 +264,7 @@ export function useDataTable<TData extends RowData>(
     return () => {
       subscription.unsubscribe();
     };
-  }, [
-    table,
-    debouncedSetFilterValues,
-    filterableColumns,
-    enableAdvancedFilter,
-    setPage,
-  ]);
+  }, [table, debouncedSetFilterValues, filterableColumns, setPage]);
 
   const validPageIndex = getValidPageIndex(
     pagination.pageIndex,
@@ -308,10 +281,7 @@ export function useDataTable<TData extends RowData>(
       // Read state with `table.Subscribe` or the table getters instead.
       // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- TanStack Table types state and features without the extended filter and sort fields this table adds
       table: table as unknown as ReactTable<typeof dataTableFeatures, TData>,
-      shallow,
-      debounceMs,
-      throttleMs,
     }),
-    [table, shallow, debounceMs, throttleMs],
+    [table],
   );
 }

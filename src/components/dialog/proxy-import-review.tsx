@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import {
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { getConnectionErrorKind } from "@/lib/connection-errors";
+import { isDemoReadOnlyError } from "@/lib/instance-mutations";
 import { parseProxyImport } from "@/lib/proxy-import";
 import { removeProxyEntries } from "@/lib/proxy-selection";
 import type { ProxyProto_Type } from "@/generated/soulfire/common_pb";
@@ -20,6 +21,22 @@ import type { ProfileProxy } from "@/lib/types";
 
 const MAX_LISTED_LINES = 10;
 const NO_PROXIES: ProfileProxy[] = [];
+
+function reviewImport(
+  text: string,
+  type: ProxyProto_Type | "uri",
+  existingProxies: ProfileProxy[],
+) {
+  const { proxies, rejectedLines } = parseProxyImport(text, type);
+  // Each existing entry skips one matching line. Repeats within the list stay,
+  // since several identical entries let more bots share one rotating gateway.
+  const additions = removeProxyEntries(proxies, existingProxies);
+  return {
+    additions,
+    rejectedLines,
+    alreadyInProject: proxies.length - additions.length,
+  };
+}
 
 function formatRejectedLines(lines: number[]) {
   const listed = lines.slice(0, MAX_LISTED_LINES).join(", ");
@@ -52,18 +69,32 @@ export function ProxyImportReview({
   const [draft, setDraft] = useState(text);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const result = parseProxyImport(draft, type);
-  // Each existing entry skips one matching line. Repeats within the list stay,
-  // since several identical entries let more bots share one rotating gateway.
-  const additions = removeProxyEntries(result.proxies, existingProxies);
-  const alreadyInProject = result.proxies.length - additions.length;
+  // Large lists take a while to parse, so typing stays responsive and the
+  // summary catches up once React is idle.
+  const deferredDraft = useDeferredValue(draft);
+  const review = useMemo(
+    () => reviewImport(deferredDraft, type, existingProxies),
+    [deferredDraft, type, existingProxies],
+  );
+  const { additions, rejectedLines, alreadyInProject } = review;
   const confirmImport = async () => {
+    // Import exactly what the text box holds, even if the summary lags behind.
+    const current =
+      deferredDraft === draft
+        ? review
+        : reviewImport(draft, type, existingProxies);
+    if (current.additions.length === 0) return;
     setPending(true);
     setError(null);
     try {
-      await onImport(additions, result.rejectedLines.length, alreadyInProject);
+      await onImport(
+        current.additions,
+        current.rejectedLines.length,
+        current.alreadyInProject,
+      );
     } catch (reason) {
-      setError(reason);
+      // The demo notice already explains a demo write.
+      if (!isDemoReadOnlyError(reason)) setError(reason);
     } finally {
       setPending(false);
     }
@@ -104,12 +135,12 @@ export function ProxyImportReview({
           {alreadyInProject > 0 &&
             ` ${t("proxy.import.review.alreadyInProject", { count: alreadyInProject })}`}
         </output>
-        {result.rejectedLines.length > 0 && (
+        {rejectedLines.length > 0 && (
           <Alert role="alert">
             <AlertDescription>
               {t("proxy.import.review.rejected", {
-                count: result.rejectedLines.length,
-                lines: formatRejectedLines(result.rejectedLines),
+                count: rejectedLines.length,
+                lines: formatRejectedLines(rejectedLines),
               })}
             </AlertDescription>
           </Alert>

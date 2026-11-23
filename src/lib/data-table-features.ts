@@ -19,7 +19,7 @@ import {
   sortFns,
   tableFeatures,
 } from "@tanstack/react-table";
-import type { TableColumnMeta, TableQueryMeta } from "@/types/data-table";
+import type { TableColumnMeta } from "@/types/data-table";
 
 export const dataTableFeatures = tableFeatures({
   columnFacetingFeature,
@@ -44,6 +44,4 @@ export const dataTableFeatures = tableFeatures({
   filterFns,
   // oxlint-disable-next-line typescript/no-deprecated -- columns resolve built-in sort functions by name, which needs the full registry
   sortFns,
-  // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- tsc needs the type carrier because TableQueryMeta comes from a module augmentation
-  tableMeta: {} as TableQueryMeta,
 });

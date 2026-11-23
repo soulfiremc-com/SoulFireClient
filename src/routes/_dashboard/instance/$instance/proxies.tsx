@@ -103,9 +103,10 @@ import {
 import {
   addInstanceProxiesBatch,
   removeInstanceProxyEntries,
-  runAsync,
   updateInstanceConfigEntry,
-} from "@/lib/utils.tsx";
+} from "@/lib/instance-mutations.ts";
+import { runAsync } from "@/lib/utils.tsx";
+import { toastError, toastMutation } from "@/lib/error-toast.ts";
 import { requireField } from "@/lib/require-field";
 
 const PROXY_CHECK_SETTING_KEYS = [
@@ -314,7 +315,6 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
   {
     id: "type",
     accessorFn: (row) => getEnumKeyByValue(ProxyProto_Type, row.type),
-    accessorKey: "type",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -446,7 +446,10 @@ function GetProxiesButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
+type CheckProxies = ReturnType<typeof useProxyCheck>;
+type RemoveProxies = (proxies: ProfileProxy[]) => Promise<void>;
+
+function AddButton({ checkProxies }: { checkProxies: CheckProxies }) {
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
   const { instanceInfoQueryOptions } = Route.useRouteContext();
@@ -483,32 +486,6 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
         });
       },
     });
-  // Batch remove proxies mutation (for post-import check)
-  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
-    mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
-    scope: { id: `instance-proxies-${instanceInfo.id}` },
-    onMutate: onBeforeRemove,
-    mutationFn: async (proxies: ProfileProxy[]) => {
-      await removeInstanceProxyEntries(
-        proxies,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
-
-  const checkProxies = useProxyCheck(
-    transport,
-    instanceInfo.id,
-    removeProxyEntriesMutation,
-  );
   const performProxyCheck = useCallback(
     (removeFailed: boolean) => {
       if (importedProxies === null) return;
@@ -717,36 +694,12 @@ function AddButton({ onBeforeRemove }: { onBeforeRemove: () => void }) {
 
 function ExtraHeader(props: {
   table: ReactTable<typeof dataTableFeatures, ProxyTableRow>;
+  checkProxies: CheckProxies;
+  removeProxies: RemoveProxies;
 }) {
   const { t } = useTranslation("instance");
-  const queryClient = useQueryClient();
-  const { instanceInfoQueryOptions } = Route.useRouteContext();
-  const transport = use(TransportContext);
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const [checkDialogOpen, setCheckDialogOpen] = useState(false);
   const [removeOpen, setRemoveOpen] = useState(false);
-  // Batch remove proxies mutation
-  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
-    mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
-    scope: { id: `instance-proxies-${instanceInfo.id}` },
-    onMutate: () => {
-      props.table.resetRowSelection();
-    },
-    mutationFn: async (proxies: ProfileProxy[]) => {
-      await removeInstanceProxyEntries(
-        proxies,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
 
   const selectedProxyCount =
     props.table.getFilteredSelectedRowModel().rows.length;
@@ -778,21 +731,15 @@ function ExtraHeader(props: {
     [props.table, t],
   );
 
-  const checkProxies = useProxyCheck(
-    transport,
-    instanceInfo.id,
-    removeProxyEntriesMutation,
-  );
+  const { table, checkProxies, removeProxies } = props;
   const performProxyCheck = useCallback(
     (removeFailed: boolean) => {
       checkProxies(
-        props.table
-          .getFilteredSelectedRowModel()
-          .rows.map((row) => row.original),
+        table.getFilteredSelectedRowModel().rows.map((row) => row.original),
         removeFailed,
       );
     },
-    [checkProxies, props.table],
+    [checkProxies, table],
   );
 
   return (
@@ -879,15 +826,12 @@ function ExtraHeader(props: {
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
 
-          toast.promise(removeProxyEntriesMutation(selectedRows), {
+          void toastMutation(removeProxies(selectedRows), {
             loading: t("proxy.removeToast.loading"),
             success: t("proxy.removeToast.success", {
               count: selectedRows.length,
             }),
-            error: (e) => {
-              console.error(e);
-              return t("proxy.removeToast.error");
-            },
+            error: t("proxy.removeToast.error"),
           });
         }}
       />
@@ -898,17 +842,17 @@ function ExtraHeader(props: {
 
 function ProxySettingsSkeleton() {
   return (
-    <div className="container flex size-full grow flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <Skeleton className="h-10 w-full" />
+    <div className="container flex size-full grow flex-col gap-8">
+      <DataTableSkeleton
+        columnCount={5}
+        filterCount={3}
+        cellWidths={["2rem", "6rem", "auto", "auto", "auto"]}
+      />
+      <div className="flex flex-col gap-4 border-t pt-6">
+        <Skeleton className="h-6 w-40" />
         <Skeleton className="h-10 w-full" />
         <Skeleton className="h-10 w-full" />
       </div>
-      <DataTableSkeleton
-        columnCount={6}
-        filterCount={4}
-        cellWidths={["2rem", "6rem", "auto", "auto", "auto", "auto"]}
-      />
     </div>
   );
 }
@@ -963,6 +907,34 @@ function Content() {
     null,
   );
   const [removalOpen, setRemovalOpen] = useState(false);
+  // The bulk remove and the check runner live here, not in the selection
+  // action bar, so a running check survives the bar closing.
+  const { mutateAsync: removeProxyEntriesMutation } = useMutation({
+    mutationKey: ["instance", "proxies", "remove-batch", instanceInfo.id],
+    scope: { id: `instance-proxies-${instanceInfo.id}` },
+    onMutate: () => {
+      table.resetRowSelection();
+    },
+    mutationFn: async (proxies: ProfileProxy[]) => {
+      await removeInstanceProxyEntries(
+        proxies,
+        instanceInfo,
+        transport,
+        queryClient,
+        instanceInfoQueryOptions.queryKey,
+      );
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: instanceInfoQueryOptions.queryKey,
+      });
+    },
+  });
+  const checkProxies = useProxyCheck(
+    transport,
+    instanceInfo.id,
+    removeProxyEntriesMutation,
+  );
   const { mutateAsync: removeProxyMutation } = useMutation({
     mutationKey: ["instance", "proxies", "remove-single", instanceInfo.id],
     scope: { id: `instance-proxies-${instanceInfo.id}` },
@@ -981,9 +953,8 @@ function Content() {
     onSuccess: () => {
       toast.success(t("proxy.removeToast.success", { count: 1 }));
     },
-    onError: (e) => {
-      console.error(e);
-      toast.error(t("proxy.removeToast.error"));
+    onError: (error) => {
+      toastError(t("proxy.removeToast.error"), error);
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
@@ -993,8 +964,32 @@ function Content() {
   });
 
   return (
-    <div className="container flex size-full grow flex-col gap-4">
-      <div className="flex flex-col gap-2">
+    <div className="container flex size-full grow flex-col gap-8">
+      <DataTable
+        table={table}
+        onRowContextMenu={handleContextMenu}
+        actionBar={
+          <DataTableActionBar table={table}>
+            <ExtraHeader
+              table={table}
+              checkProxies={checkProxies}
+              removeProxies={removeProxyEntriesMutation}
+            />
+          </DataTableActionBar>
+        }
+      >
+        <DataTableToolbar table={table}>
+          <DataTableSortList table={table} />
+          <AddButton checkProxies={checkProxies} />
+        </DataTableToolbar>
+      </DataTable>
+      <section
+        aria-labelledby="proxy-settings-heading"
+        className="flex flex-col gap-4 border-t pt-6"
+      >
+        <h2 id="proxy-settings-heading" className="text-lg font-semibold">
+          {t("proxy.settingsTitle")}
+        </h2>
         <InstanceSettingsPageComponent
           data={requireField(
             instanceInfo.instanceSettings.find((s) => s.id === "proxy"),
@@ -1007,25 +1002,7 @@ function Content() {
               : undefined
           }
         />
-      </div>
-      <DataTable
-        table={table}
-        onRowContextMenu={handleContextMenu}
-        actionBar={
-          <DataTableActionBar table={table}>
-            <ExtraHeader table={table} />
-          </DataTableActionBar>
-        }
-      >
-        <DataTableToolbar table={table}>
-          <DataTableSortList table={table} />
-          <AddButton
-            onBeforeRemove={() => {
-              table.resetRowSelection();
-            }}
-          />
-        </DataTableToolbar>
-      </DataTable>
+      </section>
       {contextMenu && (
         <ContextMenuPortal
           onClose={dismiss}

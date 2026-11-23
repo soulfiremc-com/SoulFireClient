@@ -76,9 +76,7 @@ const DataTableRow = React.memo(function DataTableRow<TData extends RowData>({
       {cells.map((cell) => (
         <TableCell
           key={cell.id}
-          style={{
-            ...getColumnPinningStyle({ column: cell.column }),
-          }}
+          style={getColumnPinningStyle({ column: cell.column })}
         >
           <FlexRender cell={cell} />
         </TableCell>
@@ -117,11 +115,9 @@ export function DataTable<TData extends RowData>({
                         <TableHead
                           key={header.id}
                           colSpan={header.colSpan}
-                          style={{
-                            ...getColumnPinningStyle({
-                              column: header.column,
-                            }),
-                          }}
+                          style={getColumnPinningStyle({
+                            column: header.column,
+                          })}
                         >
                           {header.isPlaceholder ? null : (
                             <FlexRender header={header} />

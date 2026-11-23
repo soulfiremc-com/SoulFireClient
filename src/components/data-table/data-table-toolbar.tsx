@@ -105,14 +105,15 @@ function DataTableToolbarFilter<TData extends RowData>({
           onValueChange={(value) => {
             column.setFilterValue(value);
           }}
-          className="h-8 w-full sm:w-56"
+          // Two text filters share a row on phones.
+          className="h-8 min-w-32 flex-1 sm:w-56 sm:flex-none"
         />
       );
     }
 
     case "number": {
       return (
-        <div className="relative w-full sm:w-auto">
+        <div className="relative min-w-32 flex-1 sm:flex-none">
           <DataTableTextFilter
             type="number"
             inputMode="numeric"
