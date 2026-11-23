@@ -80,7 +80,7 @@ Conversion utilities in `src/lib/script-service.ts` may need updates after proto
 
 ### Demo Mode
 
-The app supports a demo mode (no server connection) using fallback data from `src/demo-data.ts`. Check `getTransport()` returning null for demo detection.
+The app supports a demo mode (no server connection) using fallback data from `src/demo-data.ts`. `isDemo()` in `src/lib/utils.tsx` reports whether demo mode is on. In demo mode, `createTransport()` in `src/lib/web-rpc.ts` returns `null`, and so does `use(TransportContext)` in components. Treat a `null` transport as demo mode: return demo data for reads, and do not report a write as saved.
 
 ## React conventions
 

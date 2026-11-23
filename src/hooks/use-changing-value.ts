@@ -1,28 +1,17 @@
-import { deepEqual } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
+import { subscribeToTicker } from "@/lib/ticker.ts";
 
-export function useChangingData<T>(
+/**
+ * Recomputes a value on a shared timer and re-renders only when it changes.
+ * The value must be a primitive, so equal results compare equal.
+ */
+export function useChangingData<T extends string | number | boolean | null>(
   produce: () => T,
-  interval = 1000,
-  deps: unknown[] = [],
+  intervalMs = 1000,
 ): T {
-  const [value, setValue] = useState(produce());
-
-  useEffect(() => {
-    function checkUpdate() {
-      setValue((previous) => {
-        const next = produce();
-        return deepEqual(previous, next) ? previous : next;
-      });
-    }
-
-    checkUpdate();
-    const timer = setInterval(checkUpdate, interval);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [interval, ...deps, produce]);
-
-  return value;
+  const subscribe = useCallback(
+    (onTick: () => void) => subscribeToTicker(intervalMs, onTick),
+    [intervalMs],
+  );
+  return useSyncExternalStore(subscribe, produce, produce);
 }

@@ -33,6 +33,7 @@ import { ServerService } from "@/generated/soulfire/server_pb";
 import { mergeAccounts } from "@/lib/account-list.ts";
 import { isDemoHostname } from "@/lib/app-deployment.ts";
 import { desktop } from "@/lib/desktop.ts";
+import { getPseudoLocale, toIntlLocale } from "@/lib/intl-locale.ts";
 import { getLanguageFlag } from "@/lib/language-flags.ts";
 import { jsonToValue } from "@/lib/protobuf.ts";
 import { removeProxyEntries } from "@/lib/proxy-selection.ts";
@@ -114,17 +115,8 @@ export function getGravatarUrl(email: string) {
 }
 
 export function languageEmoji(locale: string): ReactNode {
-  if (locale === "lol-US") {
-    return "🐱";
-  }
-
-  if (locale === "en-UD") {
-    return "🙃";
-  }
-
-  if (locale === "en-PT") {
-    return "🏴‍☠️";
-  }
+  const pseudoLocale = getPseudoLocale(locale);
+  if (pseudoLocale) return pseudoLocale.emoji;
 
   const Flag = getLanguageFlag(locale);
   if (!Flag) return "";
@@ -133,19 +125,10 @@ export function languageEmoji(locale: string): ReactNode {
 }
 
 export function getLanguageName(languageCode: string, displayLanguage: string) {
-  if (languageCode === "lol-US") {
-    return "LOLCAT";
-  }
+  const pseudoLocale = getPseudoLocale(languageCode);
+  if (pseudoLocale) return pseudoLocale.name;
 
-  if (languageCode === "en-UD") {
-    return "Upside Down English";
-  }
-
-  if (languageCode === "en-PT") {
-    return "Pirate English";
-  }
-
-  const displayNames = new Intl.DisplayNames([displayLanguage], {
+  const displayNames = new Intl.DisplayNames([toIntlLocale(displayLanguage)], {
     type: "language",
   });
   return displayNames.of(languageCode) ?? languageCode;

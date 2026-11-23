@@ -16,15 +16,12 @@ export const SFTimeAgo = React.memo(function SFTimeAgo(props: { date: Date }) {
   const { t } = useTranslation("common");
   const dateFnsLocale = useDateFnsLocale();
   const copyToClipboard = useCopyToClipboard();
-  const baseText = useChangingData(
-    () =>
-      formatDistanceToNow(props.date, {
-        addSuffix: true,
-        includeSeconds: true,
-        locale: dateFnsLocale,
-      }),
-    1000,
-    [props.date, dateFnsLocale],
+  const baseText = useChangingData(() =>
+    formatDistanceToNow(props.date, {
+      addSuffix: true,
+      includeSeconds: true,
+      locale: dateFnsLocale,
+    }),
   );
   const formatted = useMemo(
     () => format(props.date, "PPpp", { locale: dateFnsLocale }),
