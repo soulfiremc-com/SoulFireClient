@@ -62,8 +62,6 @@
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@soulfiremc/cast-protocol": "./vendor/soulfiremc-cast-protocol-1.0.1.tgz",
     "@tanstack/match-sorter-utils": "^9.0.0",
-    "@tanstack/query-broadcast-client-experimental": "^5.99.0",
-    "@tanstack/query-core": "^5.105.0",
     "@tanstack/react-form": "^1.29.0",
     "@tanstack/react-hotkeys": "^0.27.0",
     "@tanstack/react-pacer": "^0.24.1",
