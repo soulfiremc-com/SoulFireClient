@@ -24,6 +24,7 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar.tsx
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { SFTimeAgo } from "@/components/sf-timeago.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
 import {
   type InstanceAuditLogResponse,
@@ -79,7 +80,10 @@ export const Route = createFileRoute(
 
         return result;
       },
-      refetchInterval: 3000,
+      // The server returns the whole audit log on every request, so poll
+      // rarely. Focus and the refresh button pick up new entries sooner.
+      refetchInterval: 30_000,
+      refetchOnWindowFocus: true,
     });
     props.abortController.signal.addEventListener("abort", () => {
       void props.context.queryClient.cancelQueries({
@@ -201,7 +205,7 @@ const columns: ColumnDef<
       );
 
       return (
-        <Badge variant="outline" className="capitalize">
+        <Badge variant="outline">
           <Icon />
           <Trans
             i18nKey={toI18nKey(row.original.type)}
@@ -219,7 +223,9 @@ const columns: ColumnDef<
       variant: "multiSelect",
       options: getEnumEntries(InstanceAuditLogResponse_AuditLogEntryType).map(
         (type) => ({
-          label: type.key,
+          get label() {
+            return i18n.t(`common:auditLog.types.${type.key}`);
+          },
           value: type.key,
           icon: logTypeToIcon(type.key),
         }),
@@ -296,7 +302,11 @@ function AuditLog() {
 function Content() {
   const { t } = useTranslation("common");
   const { auditLogQueryOptions } = Route.useRouteContext();
-  const { data: auditLog } = useSuspenseQuery(auditLogQueryOptions);
+  const {
+    data: auditLog,
+    refetch,
+    isFetching,
+  } = useSuspenseQuery(auditLogQueryOptions);
   const { table } = useDataTable({
     data: auditLog.entry,
     columns,
@@ -311,6 +321,17 @@ function Content() {
       <DataTable table={table} onRowContextMenu={handleContextMenu}>
         <DataTableToolbar table={table}>
           <DataTableSortList table={table} />
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={isFetching}
+            onClick={() => {
+              void refetch();
+            }}
+          >
+            <RefreshCwIcon data-icon="inline-start" />
+            {t("auditLog.refresh")}
+          </Button>
         </DataTableToolbar>
       </DataTable>
       {contextMenu && (

@@ -10,6 +10,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable, Row } from "@tanstack/react-table";
 import {
   ClipboardCopyIcon,
+  LockIcon,
   LogOutIcon,
   PencilIcon,
   PlusIcon,
@@ -49,8 +50,16 @@ import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { SFTimeAgo } from "@/components/sf-timeago.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
-import { UserRole } from "@/generated/soulfire/common_pb";
+import type { ClientDataResponse } from "@/generated/soulfire/client_pb";
+import { GlobalPermission, UserRole } from "@/generated/soulfire/common_pb";
 import type { UserListResponse_User } from "@/generated/soulfire/user_pb";
 import { UserService } from "@/generated/soulfire/user_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
@@ -67,7 +76,11 @@ import {
   getEnumKeyByValue,
   mapUnionToValue,
 } from "@/lib/types.ts";
-import { ROOT_USER_ID, runAsync, timestampToDate } from "@/lib/utils.tsx";
+import {
+  hasGlobalPermission,
+  ROOT_USER_ID,
+  timestampToDate,
+} from "@/lib/utils.tsx";
 import { startImpersonation } from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard/user/admin/users")({
@@ -77,6 +90,21 @@ export const Route = createFileRoute("/_dashboard/user/admin/users")({
       kind: "dynamic",
       name: "users",
     }),
+  loader: (props) => {
+    const { queryClient, clientDataQueryOptions, usersQueryOptions } =
+      props.context;
+    // Listing users needs READ_USER. Without it the request always fails.
+    void queryClient
+      .ensureQueryData(clientDataQueryOptions)
+      .then((clientInfo) =>
+        hasGlobalPermission(clientInfo, GlobalPermission.READ_USER)
+          ? queryClient.prefetchQuery(usersQueryOptions)
+          : undefined,
+      )
+      .catch(() => {
+        // The page reads client data itself and shows its error state.
+      });
+  },
   component: Users,
 });
 
@@ -99,6 +127,58 @@ function roleLabel(role: keyof typeof UserRole) {
   return role === "ADMIN"
     ? i18n.t("admin:users.baseUserDialog.form.role.admin")
     : i18n.t("admin:users.baseUserDialog.form.role.user");
+}
+
+// The server rejects edits and tokens for the root user and for the caller.
+function isManageableUser(
+  user: UserListResponse_User,
+  clientInfo: ClientDataResponse,
+) {
+  return user.id !== ROOT_USER_ID && user.id !== clientInfo.id;
+}
+
+function useUserPermissions() {
+  const { clientDataQueryOptions } = Route.useRouteContext();
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  const can = (permission: GlobalPermission) =>
+    hasGlobalPermission(clientInfo, permission);
+  return {
+    clientInfo,
+    read: can(GlobalPermission.READ_USER),
+    create: can(GlobalPermission.CREATE_USER),
+    update: can(GlobalPermission.UPDATE_USER),
+    remove: can(GlobalPermission.DELETE_USER),
+    invalidate: can(GlobalPermission.INVALIDATE_SESSIONS),
+    impersonate: can(GlobalPermission.GENERATE_API_TOKEN),
+  };
+}
+
+function useImpersonateUser() {
+  const { t } = useTranslation(["admin", "common"]);
+  const transport = use(TransportContext);
+  const navigate = useNavigate();
+  return async (userId: string) => {
+    if (transport === null) {
+      toast.info(t("common:demoReadOnly"));
+      return;
+    }
+    try {
+      const token = await Effect.runPromise(
+        createRpcClient(UserService, transport).generateUserAPIToken({
+          id: userId,
+        }),
+      );
+      startImpersonation(token.token);
+      await navigate({
+        to: "/user",
+        replace: true,
+        reloadDocument: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(t("users.impersonateToast.error"));
+    }
+  };
 }
 
 const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
@@ -126,7 +206,9 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
           email={row.original.email}
           className="size-8"
         />
-        <span className="max-w-64 truncate">{row.original.username}</span>
+        <span className="max-w-64 truncate" title={row.original.username}>
+          {row.original.username}
+        </span>
         <CopyInfoButton value={row.original.id} />
       </div>
     ),
@@ -276,13 +358,15 @@ function UpdateUserButton(props: {
 }) {
   const { t } = useTranslation("admin");
   const [open, setOpen] = useState(false);
+  const permissions = useUserPermissions();
+  if (!permissions.update) return null;
 
   return (
     <>
       <Button
         aria-label={t("users.contextMenu.editUser")}
         title={t("users.contextMenu.editUser")}
-        disabled={!props.row.getCanSelect()}
+        disabled={!isManageableUser(props.row.original, permissions.clientInfo)}
         variant="secondary"
         size="sm"
         onClick={() => {
@@ -304,36 +388,19 @@ function UpdateUserButton(props: {
 function ImpersonateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
-  const { t } = useTranslation(["admin", "common"]);
-  const transport = use(TransportContext);
-  const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const permissions = useUserPermissions();
+  const impersonate = useImpersonateUser();
+  if (!permissions.impersonate) return null;
   return (
     <Button
       aria-label={t("users.contextMenu.impersonate")}
       title={t("users.contextMenu.impersonate")}
-      disabled={!props.row.getCanSelect()}
+      disabled={!isManageableUser(props.row.original, permissions.clientInfo)}
       variant="secondary"
       size="sm"
       onClick={() => {
-        runAsync(async () => {
-          if (transport === null) {
-            toast.info(t("common:demoReadOnly"));
-            return;
-          }
-
-          const userService = createRpcClient(UserService, transport);
-          const token = await Effect.runPromise(
-            userService.generateUserAPIToken({
-              id: props.row.original.id,
-            }),
-          );
-          startImpersonation(token.token);
-          await navigate({
-            to: "/user",
-            replace: true,
-            reloadDocument: true,
-          });
-        });
+        void impersonate(props.row.original.id);
       }}
     >
       <VenetianMaskIcon />
@@ -344,6 +411,8 @@ function ImpersonateUserButton(props: {
 function AddButton() {
   const { t } = useTranslation("admin");
   const [createOpen, setCreateOpen] = useState(false);
+  const permissions = useUserPermissions();
+  if (!permissions.create) return null;
 
   return (
     <>
@@ -418,86 +487,95 @@ function ExtraHeader(props: {
   const [removeOpen, setRemoveOpen] = useState(false);
   const [signOutOpen, setSignOutOpen] = useState(false);
   const selectedCount = props.table.getFilteredSelectedRowModel().rows.length;
+  const permissions = useUserPermissions();
 
   return (
     <>
-      <DataTableActionBarAction
-        tooltip={t("users.removeSelectedTooltip")}
-        onClick={() => {
-          setRemoveOpen(true);
-        }}
-      >
-        <TrashIcon />
-      </DataTableActionBarAction>
-      <ConfirmDialog
-        open={removeOpen}
-        onOpenChange={setRemoveOpen}
-        icon={<TrashIcon />}
-        title={t("users.removeDialog.title", { count: selectedCount })}
-        description={t("users.removeDialog.description")}
-        confirmLabel={t("users.removeDialog.confirm")}
-        onConfirm={() => {
-          if (transport === null) {
-            toast.info(t("common:demoReadOnly"));
-            return undefined;
-          }
+      {permissions.remove && (
+        <>
+          <DataTableActionBarAction
+            tooltip={t("users.removeSelectedTooltip")}
+            onClick={() => {
+              setRemoveOpen(true);
+            }}
+          >
+            <TrashIcon />
+          </DataTableActionBarAction>
+          <ConfirmDialog
+            open={removeOpen}
+            onOpenChange={setRemoveOpen}
+            icon={<TrashIcon />}
+            title={t("users.removeDialog.title", { count: selectedCount })}
+            description={t("users.removeDialog.description")}
+            confirmLabel={t("users.removeDialog.confirm")}
+            onConfirm={() => {
+              if (transport === null) {
+                toast.info(t("common:demoReadOnly"));
+                return undefined;
+              }
 
-          const selectedRows = props.table
-            .getFilteredSelectedRowModel()
-            .rows.map((r) => r.original);
+              const selectedRows = props.table
+                .getFilteredSelectedRowModel()
+                .rows.map((r) => r.original);
 
-          const promise = deleteUsersMutation(selectedRows);
-          toast.promise(promise, {
-            loading: t("users.removeToast.loading"),
-            success: () => {
-              props.table.resetRowSelection();
-              return t("users.removeToast.success");
-            },
-            error: (e) => {
-              console.error(e);
-              return t("users.removeToast.error");
-            },
-          });
-          return promise;
-        }}
-      />
-      <DataTableActionBarAction
-        tooltip={t("users.logOutSelectedTooltip")}
-        onClick={() => {
-          setSignOutOpen(true);
-        }}
-      >
-        <LogOutIcon />
-      </DataTableActionBarAction>
-      <ConfirmDialog
-        open={signOutOpen}
-        onOpenChange={setSignOutOpen}
-        icon={<LogOutIcon />}
-        title={t("users.invalidateDialog.title", { count: selectedCount })}
-        description={t("users.invalidateDialog.description")}
-        confirmLabel={t("users.invalidateDialog.confirm")}
-        onConfirm={() => {
-          if (transport === null) {
-            toast.info(t("common:demoReadOnly"));
-            return undefined;
-          }
+              const promise = deleteUsersMutation(selectedRows);
+              toast.promise(promise, {
+                loading: t("users.removeToast.loading"),
+                success: () => {
+                  props.table.resetRowSelection();
+                  return t("users.removeToast.success");
+                },
+                error: (e) => {
+                  console.error(e);
+                  return t("users.removeToast.error");
+                },
+              });
+              return promise;
+            }}
+          />
+        </>
+      )}
+      {permissions.invalidate && (
+        <>
+          <DataTableActionBarAction
+            tooltip={t("users.logOutSelectedTooltip")}
+            onClick={() => {
+              setSignOutOpen(true);
+            }}
+          >
+            <LogOutIcon />
+          </DataTableActionBarAction>
+          <ConfirmDialog
+            open={signOutOpen}
+            onOpenChange={setSignOutOpen}
+            icon={<LogOutIcon />}
+            title={t("users.invalidateDialog.title", { count: selectedCount })}
+            description={t("users.invalidateDialog.description")}
+            confirmLabel={t("users.invalidateDialog.confirm")}
+            onConfirm={() => {
+              if (transport === null) {
+                toast.info(t("common:demoReadOnly"));
+                return undefined;
+              }
 
-          const selectedRows = props.table
-            .getFilteredSelectedRowModel()
-            .rows.map((r) => r.original);
+              const selectedRows = props.table
+                .getFilteredSelectedRowModel()
+                .rows.map((r) => r.original);
 
-          const promise = invalidateUsersMutation(selectedRows);
-          toast.promise(promise, {
-            loading: t("users.invalidateToast.loading"),
-            success: t("users.invalidateToast.success"),
-            error: (e) => {
-              console.error(e);
-              return t("users.invalidateToast.error");
-            },
-          });
-          return promise;
-        }}
-      />
+              const promise = invalidateUsersMutation(selectedRows);
+              toast.promise(promise, {
+                loading: t("users.invalidateToast.loading"),
+                success: t("users.invalidateToast.success"),
+                error: (e) => {
+                  console.error(e);
+                  return t("users.invalidateToast.error");
+                },
+              });
+              return promise;
+            }}
+          />
+        </>
+      )}
       <DataTableActionBarSelection table={props.table} />
     </>
   );
@@ -542,12 +620,33 @@ function phoneColumnVisibility(isMobile: boolean) {
 }
 
 function Content() {
+  const { t } = useTranslation("admin");
+  const permissions = useUserPermissions();
+  if (!permissions.read) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <LockIcon />
+          </EmptyMedia>
+          <EmptyTitle>{t("users.noPermission.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("users.noPermission.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
+  return <UsersTable />;
+}
+
+function UsersTable() {
   const { t } = useTranslation(["admin", "common"]);
-  const { usersQueryOptions, clientDataQueryOptions } = Route.useRouteContext();
-  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
+  const { usersQueryOptions } = Route.useRouteContext();
+  const permissions = useUserPermissions();
+  const { clientInfo } = permissions;
   const { data: userList } = useSuspenseQuery(usersQueryOptions);
-  const transport = use(TransportContext);
-  const navigate = useNavigate();
+  const impersonate = useImpersonateUser();
   const isMobile = useIsMobile();
   const { table } = useDataTable({
     data: userList.users,
@@ -555,8 +654,10 @@ function Content() {
     initialState: {
       columnVisibility: phoneColumnVisibility(isMobile),
     },
+    // Selection only serves the bulk actions, so it needs one of them.
     enableRowSelection: (row) =>
-      row.original.id !== ROOT_USER_ID && row.original.id !== clientInfo.id,
+      (permissions.remove || permissions.invalidate) &&
+      isManageableUser(row.original, clientInfo),
     getRowId: (row) => row.id,
   });
   useEffect(() => {
@@ -569,6 +670,10 @@ function Content() {
     useContextMenu<UserListResponse_User>();
   const copyToClipboard = useCopyToClipboard();
   const [editUser, setEditUser] = useState<UserListResponse_User | null>(null);
+  const manageable =
+    contextMenu !== null && isManageableUser(contextMenu.data, clientInfo);
+  const canEdit = manageable && permissions.update;
+  const canImpersonate = manageable && permissions.impersonate;
 
   return (
     <div className="container flex size-full grow flex-col gap-4">
@@ -593,42 +698,29 @@ function Content() {
           y={contextMenu.position.y}
           menuRef={menuRef}
         >
-          <DropdownMenuItem
-            onClick={() => {
-              setEditUser(contextMenu.data);
-              dismiss();
-            }}
-          >
-            <PencilIcon />
-            {t("users.contextMenu.editUser")}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              runAsync(async () => {
-                if (transport === null) {
-                  toast.info(t("common:demoReadOnly"));
-                  return;
-                }
-                const userService = createRpcClient(UserService, transport);
-                const token = await Effect.runPromise(
-                  userService.generateUserAPIToken({
-                    id: contextMenu.data.id,
-                  }),
-                );
-                startImpersonation(token.token);
-                await navigate({
-                  to: "/user",
-                  replace: true,
-                  reloadDocument: true,
-                });
-              });
-              dismiss();
-            }}
-          >
-            <VenetianMaskIcon />
-            {t("users.contextMenu.impersonate")}
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {canEdit && (
+            <DropdownMenuItem
+              onClick={() => {
+                setEditUser(contextMenu.data);
+                dismiss();
+              }}
+            >
+              <PencilIcon />
+              {t("users.contextMenu.editUser")}
+            </DropdownMenuItem>
+          )}
+          {canImpersonate && (
+            <DropdownMenuItem
+              onClick={() => {
+                void impersonate(contextMenu.data.id);
+                dismiss();
+              }}
+            >
+              <VenetianMaskIcon />
+              {t("users.contextMenu.impersonate")}
+            </DropdownMenuItem>
+          )}
+          {(canEdit || canImpersonate) && <DropdownMenuSeparator />}
           <DropdownMenuItem
             onClick={() => {
               void copyToClipboard(contextMenu.data.id);

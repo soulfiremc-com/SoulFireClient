@@ -1,19 +1,28 @@
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { currentIntlLocale } from "@/lib/intl-locale.ts";
 
 const INTERVAL_SECONDS = 3;
 const MAX_SNAPSHOTS = 600; // 30 minutes at 3-second intervals
 const MAX_CHART_POINTS = 120;
 
-const axisTimeFormatter = new Intl.DateTimeFormat(undefined, {
-  hour: "2-digit",
-  minute: "2-digit",
-});
+const timeFormatters = new Map<string, Intl.DateTimeFormat>();
 
-const tooltipTimeFormatter = new Intl.DateTimeFormat(undefined, {
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-});
+// Cache one formatter per language and style, so charts follow language
+// changes without building a formatter for every point.
+function timeFormatter(withSeconds: boolean): Intl.DateTimeFormat {
+  const locale = currentIntlLocale();
+  const cacheKey = `${locale ?? ""}:${withSeconds}`;
+  let formatter = timeFormatters.get(cacheKey);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+      ...(withSeconds && { second: "2-digit" }),
+    });
+    timeFormatters.set(cacheKey, formatter);
+  }
+  return formatter;
+}
 
 interface HasTimestamp {
   timestamp?: Timestamp | undefined;
@@ -32,11 +41,11 @@ interface ChartPoint {
 }
 
 export function formatChartAxisTime(timestampMs: number): string {
-  return axisTimeFormatter.format(timestampMs);
+  return timeFormatter(false).format(timestampMs);
 }
 
 export function formatChartTooltipTime(timestampMs: number): string {
-  return tooltipTimeFormatter.format(timestampMs);
+  return timeFormatter(true).format(timestampMs);
 }
 
 export function getSnapshotTimestampMs(
@@ -55,12 +64,22 @@ export function getSnapshotTimestampMs(
 /// Pads a sparse snapshot array into a full 30-minute time grid.
 /// Returns 600 entries at 3-second intervals; slots without a real
 /// snapshot have `snapshot: null` so Recharts can render gaps.
+/// The grid ends at the newest snapshot, so it follows the server's sampling
+/// phase and clock. A grid built from the client clock splits evenly spaced
+/// snapshots across slot boundaries and drops snapshots from a server ahead
+/// of the client.
 export function padSnapshots<T extends HasTimestamp>(
   snapshots: T[],
+  nowMs = Date.now(),
 ): PaddedSnapshot<T>[] {
-  const nowMs = Date.now();
   const intervalMs = INTERVAL_SECONDS * 1000;
-  const endSlot = Math.round(nowMs / intervalMs) * intervalMs;
+  const newestMs = snapshots.reduce<number | null>((newest, snapshot) => {
+    const timestampMs = getSnapshotTimestampMs(snapshot);
+    return timestampMs !== null && (newest === null || timestampMs > newest)
+      ? timestampMs
+      : newest;
+  }, null);
+  const endSlot = newestMs ?? Math.round(nowMs / intervalMs) * intervalMs;
   const startSlot = endSlot - (MAX_SNAPSHOTS - 1) * intervalMs;
 
   const snapshotMap = new Map<number, T>();
@@ -70,7 +89,9 @@ export function padSnapshots<T extends HasTimestamp>(
       continue;
     }
 
-    const slotMs = Math.round(timestampMs / intervalMs) * intervalMs;
+    const slotMs =
+      startSlot +
+      Math.round((timestampMs - startSlot) / intervalMs) * intervalMs;
     snapshotMap.set(slotMs, snapshot);
   }
 
@@ -85,6 +106,13 @@ export function padSnapshots<T extends HasTimestamp>(
   }
 
   return result;
+}
+
+function hasChartValue(point: ChartPoint): boolean {
+  return Object.entries(point).some(
+    ([key, value]) =>
+      key !== "timestampMs" && key !== "timeLabel" && typeof value === "number",
+  );
 }
 
 export function downsampleTimeSeriesData<T extends ChartPoint>(
@@ -112,7 +140,10 @@ export function downsampleTimeSeriesData<T extends ChartPoint>(
     }
 
     if (mode === "last") {
-      result.push(lastPoint);
+      // A gap in the final slot must not hide the rest of the bucket.
+      result.push(
+        bucket.findLast((point) => hasChartValue(point)) ?? lastPoint,
+      );
       continue;
     }
 

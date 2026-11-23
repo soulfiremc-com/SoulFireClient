@@ -612,7 +612,10 @@ function Content() {
                   </div>
                 </ItemMedia>
                 <ItemContent className="gap-1.5">
-                  <ItemTitle className="max-w-64 truncate">
+                  <ItemTitle
+                    className="max-w-64 truncate"
+                    title={instance.friendlyName}
+                  >
                     {instance.friendlyName}
                   </ItemTitle>
                   <div data-slot="item-description">

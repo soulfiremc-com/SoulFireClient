@@ -24,16 +24,15 @@ import {
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import type { MetricsSnapshot } from "@/generated/soulfire/metrics_pb";
 import {
+  formatBytes,
+  formatBytesPerSecond,
+  formatMilliseconds,
+} from "@/lib/format.ts";
+import {
   downsampleTimeSeriesData,
   formatChartAxisTime,
   padSnapshots,
 } from "@/lib/metrics-utils";
-
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes.toFixed(0)} B/s`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB/s`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB/s`;
-}
 
 const TIME_AXIS_PROPS = {
   dataKey: "timestampMs",
@@ -126,7 +125,7 @@ export function BandwidthChart({
             />
             <YAxis
               tick={{ fontSize: 10 }}
-              tickFormatter={(v: number) => formatBytes(v).replace("/s", "")}
+              tickFormatter={(v: number) => formatBytes(v)}
             />
             <ChartTooltip
               content={(props: CustomTooltipProps) => (
@@ -148,7 +147,9 @@ export function BandwidthChart({
                           )?.[1].label ?? name}
                         </span>
                         <span className="font-mono font-medium text-foreground tabular-nums">
-                          {formatBytes(typeof value === "number" ? value : 0)}
+                          {formatBytesPerSecond(
+                            typeof value === "number" ? value : 0,
+                          )}
                         </span>
                       </div>
                     </>
@@ -225,7 +226,7 @@ export function TickDurationChart({
             />
             <YAxis
               tick={{ fontSize: 10 }}
-              tickFormatter={(v: number) => `${v}ms`}
+              tickFormatter={(v: number) => formatMilliseconds(v)}
             />
             <ChartTooltip
               content={(props: CustomTooltipProps) => (

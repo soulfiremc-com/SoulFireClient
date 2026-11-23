@@ -2,9 +2,11 @@ import { createRpcClient } from "@/lib/rpc";
 import { toJsonString } from "@bufbuild/protobuf";
 import type { Transport } from "@connectrpc/connect";
 import { createStore } from "@tanstack/store";
-import { Effect, Fiber, Queue, Ref, Schedule, Stream } from "effect";
+import { Effect, Fiber, Queue, Ref, Stream } from "effect";
+import { getConnectionErrorKind } from "@/lib/connection-errors";
 import {
   type LogClient,
+  type TerminalLogError,
   TerminalLogs,
   terminalLogsLayer,
 } from "@/lib/terminal-log-service";
@@ -20,6 +22,10 @@ export type TerminalLine = Pick<LogString, "id" | "message" | "personal"> &
     Omit<LogString, "$typeName" | "$unknown" | "id" | "message" | "personal">
   > & { lines: number };
 const MAX_LINES = 500;
+// The buffer may grow this far past MAX_LINES before it is trimmed. Trimming
+// changes the oldest entry, which makes the terminal replay its whole buffer,
+// so a busy log replays once per TRIM_SLACK lines instead of on every message.
+const TRIM_SLACK = 50;
 const FLUSH_INTERVAL = 50;
 const IDLE_RETENTION = 5 * 60_000;
 
@@ -48,6 +54,7 @@ export function mergeTerminalLines(
   previous: TerminalLine[],
   incoming: TerminalLine[],
   prepend = false,
+  bounded = true,
 ) {
   const existing = new Map(previous.map((entry) => [entry.id, entry]));
   const seen = new Set<string>();
@@ -61,30 +68,43 @@ export function mergeTerminalLines(
   }
   // A history snapshot can be newer than the oldest cached messages.
   merged.sort(compareTerminalLines);
+  const total = merged.reduce((sum, entry) => sum + entry.lines, 0);
+  const result =
+    bounded && total > MAX_LINES + TRIM_SLACK
+      ? trimTerminalLines(merged)
+      : merged;
+  return result.length === previous.length &&
+    result.every((entry, i) => entry === previous[i])
+    ? previous
+    : result;
+}
+
+function trimTerminalLines(entries: TerminalLine[]): TerminalLine[] {
   let lines = 0;
-  let first = merged.length;
-  for (const entry of merged.toReversed()) {
+  let first = entries.length;
+  for (const entry of entries.toReversed()) {
     if (lines >= MAX_LINES) break;
     lines += entry.lines;
     first--;
   }
-  const bounded = merged.slice(first);
-  const oldest = bounded[0];
+  const trimmed = entries.slice(first);
+  const oldest = trimmed[0];
   if (oldest && lines > MAX_LINES) {
     const retainedLines = oldest.lines - (lines - MAX_LINES);
-    bounded[0] = {
+    trimmed[0] = {
       ...oldest,
       message: oldest.message.split("\n").slice(-retainedLines).join("\n"),
       lines: retainedLines,
     };
   }
-  return bounded.length === previous.length &&
-    bounded.every((entry, i) => entry === previous[i])
-    ? previous
-    : bounded;
+  return trimmed;
 }
 
-let stop: () => void = () => {};
+// Retrying cannot fix a missing permission or sign-in, so the session stops.
+function isAccessDenied(error: TerminalLogError): boolean {
+  const kind = getConnectionErrorKind(error.cause);
+  return kind === "permission" || kind === "authentication";
+}
 
 export function createTerminalLogSession(
   client: LogClient | null,
@@ -94,16 +114,13 @@ export function createTerminalLogSession(
   const state = createStore({
     entries: [] as TerminalLine[],
     historyLoaded: false,
+    // Set when the server refuses this scope. Retaining the session again retries.
+    denied: false,
   });
-  const lines = createStore(() =>
-    state
-      .get()
-      .entries.filter(
-        (entry, i, all) => i === 0 || entry.message !== all[i - 1]?.message,
-      ),
-  );
   let consumers = 0;
   let generation = 0;
+  // Each session owns its stop handle. Another session must never replace it.
+  let stop: (() => void) | undefined;
 
   function start(): () => void {
     if (!client) return () => {};
@@ -119,6 +136,21 @@ export function createTerminalLogSession(
     });
     const epoch = ++generation;
     const current = () => epoch === generation && consumers > 0;
+    let denied = false;
+    // A refused history request also ends the stream retry loop.
+    const retrying = () => !denied;
+    const deny = Effect.sync(() => {
+      denied = true;
+      if (!current()) return;
+      state.setState((value) =>
+        value.denied && value.historyLoaded
+          ? value
+          : { ...value, denied: true, historyLoaded: true },
+      );
+    });
+    state.setState((value) =>
+      value.denied ? { ...value, denied: false } : value,
+    );
     const program = Effect.scoped(
       Effect.gen(function* () {
         const logs = yield* TerminalLogs;
@@ -130,6 +162,10 @@ export function createTerminalLogSession(
           const result = yield* Effect.result(logs.history);
           if (!current()) return;
           if (result._tag === "Failure") {
+            if (isAccessDenied(result.failure)) {
+              yield* deny;
+              return;
+            }
             yield* Effect.logWarning(
               "Could not load previous logs",
               result.failure,
@@ -148,7 +184,7 @@ export function createTerminalLogSession(
             );
             return entries === value.entries && value.historyLoaded
               ? value
-              : { entries, historyLoaded: true };
+              : { ...value, entries, historyLoaded: true };
           });
         }).pipe(Effect.forever);
         yield* loadHistory.pipe(Effect.forkScoped);
@@ -180,14 +216,18 @@ export function createTerminalLogSession(
             );
           });
         });
-        yield* attempt.pipe(
-          Effect.catch((error) =>
-            Effect.logWarning("Log stream ended", error).pipe(
-              Effect.andThen(Effect.sleep(2000)),
-            ),
-          ),
-          Effect.repeat(Schedule.spaced(1000)),
-        );
+        while (retrying()) {
+          const result = yield* Effect.result(attempt);
+          if (result._tag === "Failure") {
+            if (isAccessDenied(result.failure)) {
+              yield* deny;
+              return;
+            }
+            yield* Effect.logWarning("Log stream ended", result.failure);
+            yield* Effect.sleep(2000);
+          }
+          yield* Effect.sleep(1000);
+        }
       }),
     ).pipe(Effect.provide(terminalLogsLayer(client, scope)), Effect.asVoid);
     const running = Effect.runFork(program);
@@ -199,7 +239,6 @@ export function createTerminalLogSession(
 
   return {
     state,
-    lines,
     get active() {
       return consumers > 0;
     },
@@ -214,8 +253,8 @@ export function createTerminalLogSession(
         released = true;
         if (--consumers !== 0) return;
         generation++;
-        stop();
-        stop = () => {};
+        stop?.();
+        stop = undefined;
         onActivity(false);
       };
     },

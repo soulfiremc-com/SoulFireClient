@@ -11,6 +11,7 @@ import {
   ServerMetricsSummaryCards,
   ThreadCountChart,
 } from "@/components/admin-metrics/server-metrics-charts.tsx";
+import { ChartBreakdown } from "@/components/chart-breakdown.tsx";
 import UserPageLayout from "@/components/nav/user/user-page-layout.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -21,11 +22,13 @@ import {
   type CustomTooltipProps,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UserRole } from "@/generated/soulfire/common_pb";
+import { GlobalPermission, UserRole } from "@/generated/soulfire/common_pb";
 import type { InstanceListResponse } from "@/generated/soulfire/instance_pb";
 import type { UserListResponse } from "@/generated/soulfire/user_pb";
+import { formatNumber } from "@/lib/format.ts";
 import i18n from "@/lib/i18n";
 import { staticRouteChrome } from "@/lib/route-title.ts";
+import { hasGlobalPermission } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/user/admin/")({
   beforeLoad: () =>
@@ -33,6 +36,24 @@ export const Route = createFileRoute("/_dashboard/user/admin/")({
       kind: "dynamic",
       name: "chart-area",
     }),
+  loader: (props) => {
+    const { queryClient, clientDataQueryOptions, usersQueryOptions } =
+      props.context;
+    // The users chart needs READ_USER. Without it the request always fails.
+    void queryClient
+      .ensureQueryData(clientDataQueryOptions)
+      .then((clientInfo) =>
+        hasGlobalPermission(clientInfo, GlobalPermission.READ_USER)
+          ? queryClient.prefetchQuery(usersQueryOptions)
+          : undefined,
+      )
+      .catch(() => {
+        // The page reads client data itself and shows its error state.
+      });
+    void props.context.queryClient.prefetchQuery(
+      props.context.serverMetricsOptions,
+    );
+  },
   component: OverviewPage,
 });
 
@@ -48,10 +69,6 @@ const usersChartConfig = {
     label: <Trans i18nKey="admin:overview.usersChart.label.admin" />,
     color: "var(--chart-1)",
   },
-  other: {
-    label: <Trans i18nKey="admin:overview.usersChart.label.other" />,
-    color: "var(--chart-3)",
-  },
 } satisfies ChartConfig;
 
 function forType(userList: UserListResponse, type: UserRole) {
@@ -60,20 +77,22 @@ function forType(userList: UserListResponse, type: UserRole) {
 
 function UsersChart(props: { userList: UserListResponse }) {
   const { t } = useTranslation("admin");
+  const adminCount = forType(props.userList, UserRole.ADMIN);
+  const userCount = forType(props.userList, UserRole.USER);
   const chartData = useMemo(
     () => [
       {
         userRole: "admin",
-        users: forType(props.userList, UserRole.ADMIN),
+        users: adminCount,
         fill: "var(--color-admin)",
       },
       {
         userRole: "user",
-        users: forType(props.userList, UserRole.USER),
+        users: userCount,
         fill: "var(--color-user)",
       },
     ],
-    [props.userList],
+    [adminCount, userCount],
   );
 
   const totalUsers = React.useMemo(
@@ -120,7 +139,7 @@ function UsersChart(props: { userList: UserListResponse }) {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalUsers.toLocaleString()}
+                          {formatNumber(totalUsers)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -138,6 +157,23 @@ function UsersChart(props: { userList: UserListResponse }) {
             </Pie>
           </PieChart>
         </ChartContainer>
+        <ChartBreakdown
+          className="pt-2"
+          items={[
+            {
+              id: "admin",
+              label: t("overview.usersChart.label.admin"),
+              value: adminCount,
+              swatchClassName: "bg-chart-1",
+            },
+            {
+              id: "user",
+              label: t("overview.usersChart.label.user"),
+              value: userCount,
+              swatchClassName: "bg-chart-2",
+            },
+          ]}
+        />
       </CardContent>
     </Card>
   );
@@ -155,32 +191,28 @@ const instancesChartConfig = {
     label: <Trans i18nKey="admin:overview.instancesChart.label.stopped" />,
     color: "var(--chart-1)",
   },
-  other: {
-    label: <Trans i18nKey="admin:overview.instancesChart.label.other" />,
-    color: "var(--chart-3)",
-  },
 } satisfies ChartConfig;
 
 function InstancesChart(props: { instanceList: InstanceListResponse }) {
   const { t } = useTranslation("admin");
+  const activeCount = props.instanceList.instances.filter(
+    (instance) => (instance.botSummary?.desiredBots ?? 0) > 0,
+  ).length;
+  const stoppedCount = props.instanceList.instances.length - activeCount;
   const chartData = useMemo(
     () => [
       {
         instanceState: "active",
-        instances: props.instanceList.instances.filter(
-          (instance) => (instance.botSummary?.desiredBots ?? 0) > 0,
-        ).length,
+        instances: activeCount,
         fill: "var(--color-active)",
       },
       {
         instanceState: "stopped",
-        instances: props.instanceList.instances.filter(
-          (instance) => (instance.botSummary?.desiredBots ?? 0) === 0,
-        ).length,
+        instances: stoppedCount,
         fill: "var(--color-stopped)",
       },
     ],
-    [props.instanceList],
+    [activeCount, stoppedCount],
   );
 
   const totalInstances = React.useMemo(
@@ -227,7 +259,7 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalInstances.toLocaleString()}
+                          {formatNumber(totalInstances)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -245,6 +277,23 @@ function InstancesChart(props: { instanceList: InstanceListResponse }) {
             </Pie>
           </PieChart>
         </ChartContainer>
+        <ChartBreakdown
+          className="pt-2"
+          items={[
+            {
+              id: "active",
+              label: t("overview.instancesChart.label.active"),
+              value: activeCount,
+              swatchClassName: "bg-chart-2",
+            },
+            {
+              id: "stopped",
+              label: t("overview.instancesChart.label.stopped"),
+              value: stoppedCount,
+              swatchClassName: "bg-chart-1",
+            },
+          ]}
+        />
       </CardContent>
     </Card>
   );
@@ -255,6 +304,7 @@ function AdminOverviewSkeleton() {
     <div className="flex size-full grow flex-col gap-2 pl-2">
       <Skeleton className="h-7 w-48" />
       <AdminChartsSkeleton />
+      <Skeleton className="mt-4 h-7 w-48" />
       <AdminMetricsSkeleton />
     </div>
   );
@@ -281,6 +331,7 @@ function OverviewPage() {
 }
 
 function Content() {
+  const { t } = useTranslation("common");
   return (
     <div className="flex size-full grow flex-col gap-2 pl-2">
       <Suspense fallback={<Skeleton className="h-7 w-48" />}>
@@ -289,6 +340,9 @@ function Content() {
       <Suspense fallback={<AdminChartsSkeleton />}>
         <AdminChartsSection />
       </Suspense>
+      <h3 className="mt-4 text-lg font-semibold">
+        {t("admin:overview.serverMetrics.sectionTitle")}
+      </h3>
       <Suspense fallback={<AdminMetricsSkeleton />}>
         <AdminMetricsSection />
       </Suspense>
@@ -320,23 +374,32 @@ function AdminChartsSkeleton() {
 }
 
 function AdminChartsSection() {
-  const { usersQueryOptions, instanceListQueryOptions } =
+  const { clientDataQueryOptions, instanceListQueryOptions } =
     Route.useRouteContext();
-  const { data: userList } = useSuspenseQuery(usersQueryOptions);
+  const { data: clientInfo } = useSuspenseQuery(clientDataQueryOptions);
   const { data: instanceList } = useSuspenseQuery(instanceListQueryOptions);
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <UsersChart userList={userList} />
+      {/* Listing users needs its own permission. Without it the request fails
+          and would take the rest of the overview down with it. */}
+      {hasGlobalPermission(clientInfo, GlobalPermission.READ_USER) && (
+        <UsersChartSection />
+      )}
       <InstancesChart instanceList={instanceList} />
     </div>
   );
 }
 
+function UsersChartSection() {
+  const { usersQueryOptions } = Route.useRouteContext();
+  const { data: userList } = useSuspenseQuery(usersQueryOptions);
+  return <UsersChart userList={userList} />;
+}
+
 function AdminMetricsSkeleton() {
   return (
     <>
-      <Skeleton className="mt-4 h-7 w-48" />
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Skeleton className="h-24 w-full rounded-lg" />
         <Skeleton className="h-24 w-full rounded-lg" />
@@ -352,15 +415,11 @@ function AdminMetricsSkeleton() {
 }
 
 function AdminMetricsSection() {
-  const { t } = useTranslation("common");
   const { serverMetricsOptions } = Route.useRouteContext();
   const { data: serverMetrics } = useSuspenseQuery(serverMetricsOptions);
 
   return (
     <>
-      <h3 className="mt-4 text-lg font-semibold">
-        {t("admin:overview.serverMetrics.sectionTitle")}
-      </h3>
       <ServerMetricsSummaryCards data={serverMetrics} />
       {serverMetrics.snapshots.length >= 2 && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

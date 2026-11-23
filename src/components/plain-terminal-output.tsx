@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useStickToBottom } from "use-stick-to-bottom";
 import type { TerminalCommandHandler } from "@/components/terminal-command-context";
 import { TerminalMessage } from "@/components/terminal-message";
 import { terminalLogText } from "@/lib/terminal-interactions";
@@ -14,21 +15,29 @@ export function PlainTerminalOutput({
   locale?: string | undefined;
   onCommand?: TerminalCommandHandler | undefined;
 }) {
+  // Follow new output like the terminal view, unless the reader scrolls up.
+  const { scrollRef, contentRef } = useStickToBottom({
+    initial: "instant",
+    resize: "instant",
+  });
   return (
-    <pre
-      data-terminal-plain
-      className="h-full overflow-auto p-1 font-mono text-xs break-all whitespace-pre-wrap select-text"
-    >
-      {entries.map((entry) => {
-        const prefix = formatTerminalPrefix(entry, locale);
-        return (
-          <Fragment key={entry.id}>
-            {prefix ? `${prefix} ` : ""}
-            <TerminalMessage entry={entry} onCommand={onCommand} />
-            {terminalLogText(entry.message, false).endsWith("\n") ? "" : "\n"}
-          </Fragment>
-        );
-      })}
-    </pre>
+    <div ref={scrollRef} className="h-full overflow-auto">
+      <pre
+        ref={contentRef}
+        data-terminal-plain
+        className="p-1 font-mono text-xs break-all whitespace-pre-wrap select-text"
+      >
+        {entries.map((entry) => {
+          const prefix = formatTerminalPrefix(entry, locale);
+          return (
+            <Fragment key={entry.id}>
+              {prefix ? `${prefix} ` : ""}
+              <TerminalMessage entry={entry} onCommand={onCommand} />
+              {terminalLogText(entry.message, false).endsWith("\n") ? "" : "\n"}
+            </Fragment>
+          );
+        })}
+      </pre>
+    </div>
   );
 }

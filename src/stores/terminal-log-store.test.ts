@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
 import { create } from "@bufbuild/protobuf";
-import { createRouterTransport } from "@connectrpc/connect";
+import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
 import { createRpcClient } from "@/lib/rpc";
 import {
   LogScopeSchema,
@@ -65,16 +65,36 @@ test("multiline messages retain the newest lines across buffer boundaries", () =
   );
   assert.equal(mergeTerminalLines(bounded, [large]), bounded);
 
+  // Small overflows keep the oldest entry, so the view can append in place.
   const latest = toTerminalLine(message(2));
-  const updated = mergeTerminalLines(bounded, [latest]);
-  assert.equal(updated.length, 2);
-  assert.equal(updated[0]?.lines, 499);
-  assert.equal(Number(updated[0].message.split("\n")[0]), 101);
+  const appended = mergeTerminalLines(bounded, [latest]);
+  assert.deepEqual(appended, [bounded[0], latest]);
+
+  const overflow = Array.from({ length: 50 }, (_, id) =>
+    toTerminalLine(message(id + 3)),
+  );
+  const updated = mergeTerminalLines(appended, overflow);
+  assert.equal(updated.length, 52);
+  assert.equal(updated[0]?.lines, 449);
+  assert.equal(Number(updated[0].message.split("\n")[0]), 151);
   assert.equal(updated[1], latest);
   assert.equal(
     updated.reduce((total, entry) => total + entry.lines, 0),
     500,
   );
+});
+
+test("the buffer trims only after it overflows by a batch of lines", () => {
+  let entries: ReturnType<typeof toTerminalLine>[] = [];
+  let trims = 0;
+  for (let id = 0; id < 700; id++) {
+    const next = mergeTerminalLines(entries, [toTerminalLine(message(id))]);
+    if (next[0] !== entries[0] && entries.length > 0) trims++;
+    entries = next;
+  }
+  assert.ok(entries.length <= 550);
+  assert.equal(entries.at(-1)?.id, "699");
+  assert.ok(trims <= 4, `expected few trims, got ${trims}`);
 });
 
 test("same connection and scope share one stream until the last consumer leaves", async () => {
@@ -108,7 +128,7 @@ test("same connection and scope share one stream until the last consumer leaves"
     await delay(90);
     assert.equal(subscriptions, 1);
     assert.deepEqual(
-      first.lines.get().map((entry) => Number(entry.id)),
+      first.state.get().entries.map((entry) => Number(entry.id)),
       [1, 2],
     );
     stopFirst();
@@ -164,12 +184,12 @@ test("batches stream updates and rejects history that completes after disposal",
   try {
     await delay(90);
     assert.equal(updates, 1);
-    assert.equal(session.lines.get().length, 10);
+    assert.equal(session.state.get().entries.length, 10);
     stop();
     finishHistory?.();
     await delay(10);
     assert.equal(session.state.get().historyLoaded, false);
-    assert.equal(session.lines.get().length, 10);
+    assert.equal(session.state.get().entries.length, 10);
   } finally {
     stop();
     finishHistory?.();
@@ -221,7 +241,7 @@ test("restarted sessions reject an older snapshot that ignored cancellation", as
     finishOld();
     await delay(10);
     assert.deepEqual(
-      session.lines.get().map((entry) => Number(entry.id)),
+      session.state.get().entries.map((entry) => Number(entry.id)),
       [10, 20],
     );
     assert.equal(session.state.get().historyLoaded, true);
@@ -263,15 +283,15 @@ test("a newer history window keeps older cached logs ordered before trimming", (
   const previous = Array.from({ length: 500 }, (_, id) =>
     toTerminalLine(message(id)),
   );
-  const history = Array.from({ length: 300 }, (_, id) =>
+  const history = Array.from({ length: 360 }, (_, id) =>
     toTerminalLine(message(id + 201)),
   );
   const merged = mergeTerminalLines(previous, history, true);
   assert.deepEqual(
     merged.map((entry) => Number(entry.id)),
-    Array.from({ length: 500 }, (_, id) => id + 1),
+    Array.from({ length: 500 }, (_, id) => id + 61),
   );
-  assert.equal(merged[0], previous[1]);
+  assert.equal(merged[0], previous[61]);
 });
 
 const logEntry = (sequence: number) =>
@@ -343,7 +363,7 @@ test("reconnecting catches up retained history without duplicating live entries"
     ]);
     await delay(90);
     assert.deepEqual(
-      session.lines.get().map((entry) => Number(entry.id)),
+      session.state.get().entries.map((entry) => Number(entry.id)),
       [1, 2, 3],
     );
   } finally {
@@ -405,13 +425,13 @@ test("the first live response queues catch-up behind an in-flight snapshot", asy
   try {
     await delay(90);
     assert.deepEqual(
-      session.lines.get().map((entry) => Number(entry.id)),
+      session.state.get().entries.map((entry) => Number(entry.id)),
       [3],
     );
     finishSnapshot();
     await delay(90);
     assert.deepEqual(
-      session.lines.get().map((entry) => Number(entry.id)),
+      session.state.get().entries.map((entry) => Number(entry.id)),
       [1, 2, 3],
     );
     assert.equal(peak, 1);
@@ -419,5 +439,135 @@ test("the first live response queues catch-up behind an in-flight snapshot", asy
   } finally {
     finishSnapshot();
     stop();
+  }
+});
+
+test("releasing one scope stops its own stream and leaves other scopes open", async () => {
+  const open = new Set<string>();
+  const transport = createRouterTransport((router) => {
+    router.service(LogsService, {
+      getPrevious: () => ({ messages: [] }),
+      async *subscribe(request, context) {
+        const key = request.scope?.scope.case ?? "";
+        open.add(key);
+        yield { message: message(1) };
+        await new Promise<void>((resolve) => {
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            { once: true },
+          );
+        });
+        open.delete(key);
+      },
+    });
+  });
+  const global = getTerminalLogSession(transport, scope());
+  const personal = getTerminalLogSession(
+    transport,
+    create(LogScopeSchema, { scope: { case: "personal", value: {} } }),
+  );
+  const releaseGlobal = global.retain();
+  const releasePersonal = personal.retain();
+  try {
+    await delay(90);
+    assert.deepEqual([...open].toSorted(), ["global", "personal"]);
+    releaseGlobal();
+    await delay(10);
+    assert.deepEqual([...open], ["personal"]);
+    releasePersonal();
+    await delay(10);
+    assert.deepEqual([...open], []);
+  } finally {
+    releaseGlobal();
+    releasePersonal();
+  }
+});
+
+const connected = (id: number, botAccountName: string) =>
+  create(LogStringSchema, {
+    id: String(id),
+    message: "Connected to server",
+    botAccountName,
+    timestamp: { seconds: BigInt(id), nanos: 0 },
+  });
+
+test("repeated message text from different sources stays visible", async () => {
+  const transport = createRouterTransport((router) => {
+    router.service(LogsService, {
+      getPrevious: () => ({
+        messages: [connected(1, "A"), connected(2, "B"), connected(3, "C")],
+      }),
+      async *subscribe(_, context) {
+        yield { message: connected(4, "D") };
+        await new Promise<void>((resolve) => {
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            { once: true },
+          );
+        });
+      },
+    });
+  });
+  const session = createTerminalLogSession(
+    createRpcClient(LogsService, transport),
+    scope(),
+  );
+  const stop = session.retain();
+  try {
+    await delay(90);
+    assert.deepEqual(
+      session.state.get().entries.map((entry) => entry.botAccountName),
+      ["A", "B", "C", "D"],
+    );
+  } finally {
+    stop();
+  }
+});
+
+test("a refused scope stops retrying until the session is retained again", async () => {
+  let historyCalls = 0;
+  let subscribeCalls = 0;
+  const transport = createRouterTransport((router) => {
+    router.service(LogsService, {
+      getPrevious: () => {
+        historyCalls++;
+        throw new ConnectError("denied", Code.PermissionDenied);
+      },
+      // oxlint-disable-next-line require-yield -- the server refuses before it sends a message
+      async *subscribe() {
+        subscribeCalls++;
+        throw new ConnectError("denied", Code.PermissionDenied);
+      },
+    });
+  });
+  const session = createTerminalLogSession(
+    createRpcClient(LogsService, transport),
+    scope(),
+  );
+  const release = session.retain();
+  try {
+    await delay(100);
+    assert.equal(session.state.get().denied, true);
+    assert.equal(session.state.get().historyLoaded, true);
+    const calls = historyCalls + subscribeCalls;
+    // A retry would start after about three seconds; none may start at all.
+    await delay(3200);
+    assert.equal(historyCalls + subscribeCalls, calls);
+  } finally {
+    release();
+  }
+  const again = session.retain();
+  try {
+    await delay(100);
+    assert.ok(subscribeCalls >= 2, "retaining again must retry");
+    assert.equal(session.state.get().denied, true);
+  } finally {
+    again();
   }
 });

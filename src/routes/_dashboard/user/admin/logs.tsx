@@ -3,8 +3,16 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { LockIcon } from "lucide-react";
 import UserPageLayout from "@/components/nav/user/user-page-layout";
 import { TerminalComponent } from "@/components/terminal.tsx";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { GlobalPermission } from "@/generated/soulfire/common_pb";
 import {
@@ -54,6 +62,7 @@ function Logs() {
 }
 
 function Content() {
+  const { t } = useTranslation("common");
   const { clientDataQueryOptions } = Route.useRouteContext();
   const { data: clientData } = useSuspenseQuery(clientDataQueryOptions);
   const logScope = useMemo<LogScope>(
@@ -72,7 +81,21 @@ function Content() {
       {hasGlobalPermission(
         clientData,
         GlobalPermission.GLOBAL_SUBSCRIBE_LOGS,
-      ) && <TerminalComponent scope={logScope} />}
+      ) ? (
+        <TerminalComponent scope={logScope} />
+      ) : (
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <LockIcon />
+            </EmptyMedia>
+            <EmptyTitle>{t("terminal.logsNoPermission.title")}</EmptyTitle>
+            <EmptyDescription>
+              {t("terminal.logsNoPermission.description")}
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      )}
     </div>
   );
 }

@@ -36,6 +36,7 @@ import {
 import { useContextMenu } from "@/hooks/use-context-menu";
 import { useTerminalLogs } from "@/hooks/use-terminal-logs";
 import { readableTerminalColor } from "@/lib/terminal-colors";
+import { toIntlLocale } from "@/lib/intl-locale.ts";
 import { createTerminalOutput } from "@/lib/terminal-output";
 import { isDemo } from "@/lib/utils";
 import { type TerminalLine, toTerminalLine } from "@/stores/terminal-log-store";
@@ -164,7 +165,11 @@ export function TerminalView({
     if (!host || !output) return;
     const top = host.scrollTop;
     const atBottom = top + host.clientHeight >= host.scrollHeight - 1;
-    const update = output.sync(entries, i18n.resolvedLanguage, resized);
+    const update = output.sync(
+      entries,
+      toIntlLocale(i18n.resolvedLanguage),
+      resized,
+    );
     const latest = entries.at(-1);
     if (!atBottom && lastEntry.current && latest !== lastEntry.current)
       setNewBelow(true);
@@ -392,7 +397,7 @@ export function TerminalView({
           {failed ? (
             <PlainTerminalOutput
               entries={entries}
-              locale={i18n.resolvedLanguage}
+              locale={toIntlLocale(i18n.resolvedLanguage)}
               onCommand={onCommand}
             />
           ) : (
@@ -532,10 +537,11 @@ export function TerminalComponent({
   const { t } = useTranslation("common");
   const transport = use(TransportContext);
   const demo = isDemo();
-  const { entries: liveEntries, historyLoaded } = useTerminalLogs(
-    demo ? null : transport,
-    scope,
-  );
+  const {
+    entries: liveEntries,
+    historyLoaded,
+    denied,
+  } = useTerminalLogs(demo ? null : transport, scope);
   // Read-only views, such as the logs page, have no command prompt.
   const readOnly = !children;
   const entries = demo
@@ -546,17 +552,28 @@ export function TerminalComponent({
           personal: false,
         }),
       )
-    : liveEntries.length === 0 && historyLoaded
-      ? [
+    : denied
+      ? // Replies to this user's own commands can still arrive, so keep them
+        // below the notice.
+        [
           toTerminalLine({
-            id: "empty",
-            message: t(
-              readOnly ? "terminal.noLogsReadOnly" : "terminal.noLogs",
-            ),
+            id: "denied",
+            message: t("terminal.logsDenied"),
             personal: false,
           }),
+          ...liveEntries,
         ]
-      : liveEntries;
+      : liveEntries.length === 0 && historyLoaded
+        ? [
+            toTerminalLine({
+              id: "empty",
+              message: t(
+                readOnly ? "terminal.noLogsReadOnly" : "terminal.noLogs",
+              ),
+              personal: false,
+            }),
+          ]
+        : liveEntries;
   const terminalTheme = useTerminalThemeContext();
 
   return (

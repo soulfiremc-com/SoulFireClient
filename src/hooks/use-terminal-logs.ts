@@ -33,13 +33,21 @@ export function useTerminalLogs(transport: Transport | null, scope: LogScope) {
       for (const release of releases) release();
     };
   }, [sessions]);
-  const scopedEntries = useSelector(sessions.scoped.lines);
-  const personalEntries = useSelector(sessions.personal.lines);
+  const scopedEntries = useSelector(
+    sessions.scoped.state,
+    (state) => state.entries,
+  );
+  const personalEntries = useSelector(
+    sessions.personal.state,
+    (state) => state.entries,
+  );
   const entries = useMemo(
     () =>
       sessions.scoped === sessions.personal
         ? scopedEntries
-        : mergeTerminalLines(scopedEntries, personalEntries),
+        : // Both sessions are already bounded. Trimming the combined list
+          // would shift its oldest entry on every message and replay the view.
+          mergeTerminalLines(scopedEntries, personalEntries, false, false),
     [sessions, scopedEntries, personalEntries],
   );
   const scopedLoaded = useSelector(
@@ -50,5 +58,8 @@ export function useTerminalLogs(transport: Transport | null, scope: LogScope) {
     sessions.personal.state,
     (state) => state.historyLoaded,
   );
-  return { entries, historyLoaded: scopedLoaded && personalLoaded };
+  // The personal scope only carries replies to this user, so a refusal of the
+  // requested scope is what decides whether the logs are visible.
+  const denied = useSelector(sessions.scoped.state, (state) => state.denied);
+  return { entries, historyLoaded: scopedLoaded && personalLoaded, denied };
 }

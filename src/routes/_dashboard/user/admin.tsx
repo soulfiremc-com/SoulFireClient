@@ -82,15 +82,5 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
       }),
     };
   },
-  loader: (props) => {
-    void props.context.queryClient.prefetchQuery(
-      props.context.serverInfoQueryOptions,
-    );
-    void props.context.queryClient.prefetchQuery(
-      props.context.usersQueryOptions,
-    );
-    void props.context.queryClient.prefetchQuery(
-      props.context.serverMetricsOptions,
-    );
-  },
+  // Each child route prefetches only the queries it reads.
 });

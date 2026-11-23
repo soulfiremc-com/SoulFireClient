@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { t as translate } from "i18next";
+import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import {
   Area,
@@ -25,13 +25,23 @@ import type {
   ServerMetricsSnapshot,
 } from "@/generated/soulfire/metrics_pb";
 import {
+  BYTES_PER_MEGABYTE,
+  formatMegabytes,
+  formatNumber,
+  formatPercent,
+} from "@/lib/format.ts";
+import {
   downsampleTimeSeriesData,
   formatChartAxisTime,
   padSnapshots,
 } from "@/lib/metrics-utils";
 
 function formatMB(bytes: number): string {
-  return `${(bytes / (1024 * 1024)).toFixed(0)} MB`;
+  return formatMegabytes(bytes / BYTES_PER_MEGABYTE);
+}
+
+function formatDurationUnit(value: number, unit: string): string {
+  return formatNumber(value, { style: "unit", unit, unitDisplay: "narrow" });
 }
 
 function formatUptime(ms: number): string {
@@ -39,9 +49,13 @@ function formatUptime(ms: number): string {
   const days = Math.floor(totalSeconds / 86_400);
   const hours = Math.floor((totalSeconds % 86_400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
-  if (days > 0) return `${days}d ${hours}h`;
-  if (hours > 0) return `${hours}h ${minutes}m`;
-  return `${minutes}m`;
+  if (days > 0) {
+    return `${formatDurationUnit(days, "day")} ${formatDurationUnit(hours, "hour")}`;
+  }
+  if (hours > 0) {
+    return `${formatDurationUnit(hours, "hour")} ${formatDurationUnit(minutes, "minute")}`;
+  }
+  return formatDurationUnit(minutes, "minute");
 }
 
 const TIME_AXIS_PROPS = {
@@ -64,8 +78,6 @@ function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
     : "";
 }
 
-// ChartContainer hides the outline on the focusable chart surface, so draw a
-// ring around the chart while keyboard users move through its data points.
 export function ServerMetricsSummaryCards({
   data,
 }: {
@@ -79,7 +91,10 @@ export function ServerMetricsSummaryCards({
       label: t("overview.serverMetrics.summary.cpu"),
       value: latest
         ? latest.processCpuLoad >= 0
-          ? `${(latest.processCpuLoad * 100).toFixed(1)}%`
+          ? formatNumber(latest.processCpuLoad, {
+              style: "percent",
+              maximumFractionDigits: 1,
+            })
           : "-"
         : "-",
     },
@@ -89,12 +104,12 @@ export function ServerMetricsSummaryCards({
     },
     {
       label: t("overview.serverMetrics.summary.threads"),
-      value: latest ? `${latest.threadCount}` : "-",
+      value: latest ? formatNumber(latest.threadCount) : "-",
     },
     {
       label: t("overview.serverMetrics.summary.botsOnline"),
       value: latest
-        ? `${latest.totalBotsOnline}/${latest.totalBotsTotal}`
+        ? `${formatNumber(latest.totalBotsOnline)}/${formatNumber(latest.totalBotsTotal)}`
         : "-/-",
     },
     {
@@ -117,20 +132,18 @@ export function ServerMetricsSummaryCards({
   );
 }
 
-const cpuConfig = {
-  process: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.process");
+function cpuConfig(t: TFunction<"admin">) {
+  return {
+    process: {
+      label: t("overview.serverMetrics.legend.process"),
+      color: "var(--chart-1)",
     },
-    color: "var(--chart-1)",
-  },
-  system: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.system");
+    system: {
+      label: t("overview.serverMetrics.legend.system"),
+      color: "var(--chart-2)",
     },
-    color: "var(--chart-2)",
-  },
-} satisfies ChartConfig;
+  } satisfies ChartConfig;
+}
 
 export function CpuUsageChart({
   snapshots,
@@ -138,22 +151,23 @@ export function CpuUsageChart({
   snapshots: ServerMetricsSnapshot[];
 }) {
   const { t } = useTranslation("admin");
+  const cpuChartConfig = cpuConfig(t);
   const chartData = useMemo(
     () =>
       downsampleTimeSeriesData(
         padSnapshots(snapshots).map(({ timestampMs, timeLabel, snapshot }) => ({
           timestampMs,
           timeLabel,
-          process: snapshot
-            ? snapshot.processCpuLoad >= 0
+          // A negative load means the JVM could not measure it. Leave a gap
+          // instead of drawing an idle CPU.
+          process:
+            snapshot && snapshot.processCpuLoad >= 0
               ? Number((snapshot.processCpuLoad * 100).toFixed(1))
-              : 0
-            : null,
-          system: snapshot
-            ? snapshot.systemCpuLoad >= 0
+              : null,
+          system:
+            snapshot && snapshot.systemCpuLoad >= 0
               ? Number((snapshot.systemCpuLoad * 100).toFixed(1))
-              : 0
-            : null,
+              : null,
         })),
       ),
     [snapshots],
@@ -167,7 +181,10 @@ export function CpuUsageChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={cpuConfig} className="min-h-[200px] w-full">
+        <ChartContainer
+          config={cpuChartConfig}
+          className="min-h-[200px] w-full"
+        >
           <AreaChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -178,7 +195,7 @@ export function CpuUsageChart({
             <YAxis
               domain={[0, 100]}
               tick={{ fontSize: 10 }}
-              tickFormatter={(v: number) => `${v}%`}
+              tickFormatter={(v: number) => formatPercent(v)}
             />
             <ChartTooltip
               content={(props: CustomTooltipProps) => (
@@ -217,26 +234,22 @@ export function CpuUsageChart({
   );
 }
 
-const memoryConfig = {
-  used: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.used");
+function memoryConfig(t: TFunction<"admin">) {
+  return {
+    used: {
+      label: t("overview.serverMetrics.legend.used"),
+      color: "var(--chart-1)",
     },
-    color: "var(--chart-1)",
-  },
-  committed: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.committed");
+    committed: {
+      label: t("overview.serverMetrics.legend.committed"),
+      color: "var(--chart-3)",
     },
-    color: "var(--chart-3)",
-  },
-  max: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.max");
+    max: {
+      label: t("overview.serverMetrics.legend.max"),
+      color: "var(--chart-4)",
     },
-    color: "var(--chart-4)",
-  },
-} satisfies ChartConfig;
+  } satisfies ChartConfig;
+}
 
 export function MemoryUsageChart({
   snapshots,
@@ -244,6 +257,7 @@ export function MemoryUsageChart({
   snapshots: ServerMetricsSnapshot[];
 }) {
   const { t } = useTranslation("admin");
+  const memoryChartConfig = memoryConfig(t);
   const chartData = useMemo(
     () =>
       downsampleTimeSeriesData(
@@ -251,14 +265,14 @@ export function MemoryUsageChart({
           timestampMs,
           timeLabel,
           used: snapshot
-            ? Number(snapshot.heapUsedBytes) / (1024 * 1024)
+            ? Number(snapshot.heapUsedBytes) / BYTES_PER_MEGABYTE
             : null,
           committed: snapshot
-            ? Number(snapshot.heapCommittedBytes) / (1024 * 1024)
+            ? Number(snapshot.heapCommittedBytes) / BYTES_PER_MEGABYTE
             : null,
           max: snapshot
             ? Number(snapshot.heapMaxBytes) > 0
-              ? Number(snapshot.heapMaxBytes) / (1024 * 1024)
+              ? Number(snapshot.heapMaxBytes) / BYTES_PER_MEGABYTE
               : undefined
             : null,
         })),
@@ -274,7 +288,10 @@ export function MemoryUsageChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={memoryConfig} className="min-h-[200px] w-full">
+        <ChartContainer
+          config={memoryChartConfig}
+          className="min-h-[200px] w-full"
+        >
           <AreaChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -284,7 +301,7 @@ export function MemoryUsageChart({
             />
             <YAxis
               tick={{ fontSize: 10 }}
-              tickFormatter={(v: number) => `${v.toFixed(0)} MB`}
+              tickFormatter={(v: number) => formatMegabytes(v)}
             />
             <ChartTooltip
               content={(props: CustomTooltipProps) => (
@@ -301,15 +318,13 @@ export function MemoryUsageChart({
                       />
                       <div className="flex flex-1 items-center justify-between leading-none">
                         <span className="text-muted-foreground">
-                          {Object.entries(memoryConfig).find(
+                          {Object.entries(memoryChartConfig).find(
                             ([key]) => key === name,
                           )?.[1].label ?? name}
                         </span>
                         <span className="font-mono font-medium text-foreground tabular-nums">
-                          {formatMB(
-                            (typeof value === "number" ? value : 0) *
-                              1024 *
-                              1024,
+                          {formatMegabytes(
+                            typeof value === "number" ? value : 0,
                           )}
                         </span>
                       </div>
@@ -354,20 +369,18 @@ export function MemoryUsageChart({
   );
 }
 
-const threadConfig = {
-  total: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.total");
+function threadConfig(t: TFunction<"admin">) {
+  return {
+    total: {
+      label: t("overview.serverMetrics.legend.total"),
+      color: "var(--chart-1)",
     },
-    color: "var(--chart-1)",
-  },
-  daemon: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.daemon");
+    daemon: {
+      label: t("overview.serverMetrics.legend.daemon"),
+      color: "var(--chart-2)",
     },
-    color: "var(--chart-2)",
-  },
-} satisfies ChartConfig;
+  } satisfies ChartConfig;
+}
 
 export function ThreadCountChart({
   snapshots,
@@ -375,6 +388,7 @@ export function ThreadCountChart({
   snapshots: ServerMetricsSnapshot[];
 }) {
   const { t } = useTranslation("admin");
+  const threadChartConfig = threadConfig(t);
   const chartData = useMemo(
     () =>
       downsampleTimeSeriesData(
@@ -396,7 +410,10 @@ export function ThreadCountChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={threadConfig} className="min-h-[200px] w-full">
+        <ChartContainer
+          config={threadChartConfig}
+          className="min-h-[200px] w-full"
+        >
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -439,20 +456,18 @@ export function ThreadCountChart({
   );
 }
 
-const botsConfig = {
-  online: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.online");
+function botsConfig(t: TFunction<"admin">) {
+  return {
+    online: {
+      label: t("overview.serverMetrics.legend.online"),
+      color: "var(--chart-1)",
     },
-    color: "var(--chart-1)",
-  },
-  total: {
-    get label() {
-      return translate("admin:overview.serverMetrics.legend.total");
+    total: {
+      label: t("overview.serverMetrics.legend.total"),
+      color: "var(--chart-3)",
     },
-    color: "var(--chart-3)",
-  },
-} satisfies ChartConfig;
+  } satisfies ChartConfig;
+}
 
 export function AggregateBotsChart({
   snapshots,
@@ -460,6 +475,7 @@ export function AggregateBotsChart({
   snapshots: ServerMetricsSnapshot[];
 }) {
   const { t } = useTranslation("admin");
+  const botsChartConfig = botsConfig(t);
   const chartData = useMemo(
     () =>
       downsampleTimeSeriesData(
@@ -481,7 +497,10 @@ export function AggregateBotsChart({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={botsConfig} className="min-h-[200px] w-full">
+        <ChartContainer
+          config={botsChartConfig}
+          className="min-h-[200px] w-full"
+        >
           <AreaChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
