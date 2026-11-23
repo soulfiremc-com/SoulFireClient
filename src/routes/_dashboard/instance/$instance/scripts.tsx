@@ -121,22 +121,17 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/scripts")({
   component: InstanceScripts,
 });
 
+// The page heading is static, so only the scripts and the action wait for data.
 function ScriptsPageSkeleton() {
+  const { t } = useTranslation("instance");
   return (
     <div className="container flex size-full grow flex-col gap-4 py-4">
-      {/* Alert skeleton */}
-      <div className="flex items-start gap-3 rounded-lg border p-4">
-        <Skeleton className="size-5 shrink-0" />
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <Skeleton className="h-5 w-32" />
-          <Skeleton className="h-4 w-64" />
-        </div>
-      </div>
-      {/* Header skeleton */}
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-1">
-          <Skeleton className="h-7 w-24" />
-          <Skeleton className="h-4 w-48" />
+          <h2 className="text-2xl font-semibold">{t("scripts.title")}</h2>
+          <p className="text-sm text-muted-foreground">
+            {t("scripts.description")}
+          </p>
         </div>
         <Skeleton className="h-9 w-32" />
       </div>

@@ -1,5 +1,5 @@
-import { t } from "i18next";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { displayText } from "@/lib/display-text";
 
 interface NodePreviewProps {
@@ -14,20 +14,24 @@ interface NodePreviewProps {
  * Shows computed output values directly on the node during execution.
  */
 function NodePreviewComponent({ values, enabled }: NodePreviewProps) {
+  const { t } = useTranslation("instance");
   if (!enabled || Object.keys(values).length === 0) return null;
 
   return (
     <div className="border-t border-border/50 bg-muted/30 px-2 py-1">
       <div className="mb-1 text-xs text-muted-foreground">
-        {t("instance:scripts.editor.node.preview")}
+        {t("scripts.editor.node.preview")}
       </div>
-      <div className="space-y-0.5">
+      <div className="flex flex-col gap-0.5">
         {Object.entries(values).map(([key, value]) => (
           <div key={key} className="flex items-center gap-2 text-xs">
             <span className="text-muted-foreground">
               {formatPortName(key)}:
             </span>
-            <span className="max-w-[120px] truncate font-mono">
+            <span
+              className="max-w-[120px] truncate font-mono"
+              title={formatValue(value)}
+            >
               {formatValue(value)}
             </span>
           </div>

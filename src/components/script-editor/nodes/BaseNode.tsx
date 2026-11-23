@@ -1,4 +1,3 @@
-import { t as translate } from "i18next";
 import { useSelector } from "@tanstack/react-store";
 import {
   type Edge,
@@ -134,6 +133,7 @@ function PortRow({
   multiInputItems = EMPTY_MULTI_INPUT_ITEMS,
   onReorderMultiInput,
 }: PortRowProps) {
+  const { t } = useTranslation("instance");
   // Use resolved type for color/shape when available (from generic inference)
   const effectiveType = resolvedType ?? port.type;
   const color = getPortColor(effectiveType);
@@ -216,7 +216,7 @@ function PortRow({
         }}
         title={
           isMultiInput
-            ? `${translate("instance:scripts.editor.multiInput.title")}${port.description ? ` (${port.description})` : ""}`
+            ? `${t("scripts.editor.multiInput.title")}${port.description ? ` (${port.description})` : ""}`
             : port.description || undefined
         }
       />
@@ -250,12 +250,9 @@ function PortRow({
                 items={multiInputItems}
                 onReorder={onReorderMultiInput}
                 compact
-                emptyLabel={translate(
-                  "instance:scripts.editor.multiInput.connectTo",
-                  {
-                    label: translatedLabel,
-                  },
-                )}
+                emptyLabel={t("scripts.editor.multiInput.connectTo", {
+                  label: translatedLabel,
+                })}
               />
             </div>
           )}

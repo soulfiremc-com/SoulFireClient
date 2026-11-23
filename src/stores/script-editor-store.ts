@@ -19,11 +19,18 @@ import {
 } from "@/components/script-editor/nodes/types";
 import { mergeExecutionLogs } from "@/lib/script-logs";
 import { optionalEdgeFields } from "@/lib/script-edge-fields";
-import { hasScriptClipboardData } from "@/lib/script-clipboard";
 import { sameScriptDocument } from "@/lib/script-document";
 import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
+import { outputKey } from "@/lib/script-debug-sources";
+import {
+  type EdgeShapes,
+  edgeShapes,
+  polylineCrossesSegment,
+  polylineDistance,
+} from "@/lib/script-edge-geometry";
 import {
   cloneSubgraph,
+  isGroupInterfaceNode,
   selectedSubgraph,
   subgraphRoots,
 } from "@/lib/script-subgraph";
@@ -32,6 +39,8 @@ import {
   indexDiagnostics,
 } from "./script-editor-derived";
 import type {
+  DebugValue,
+  ScriptDocumentData,
   ScriptDocumentState,
   ScriptEditorActions,
   ScriptEditorUIState,
@@ -51,13 +60,14 @@ function getMultiInputOrder(edge: Edge): number {
 
 function normalizeMultiInputEdgeOrders(nodes: Node[], edges: Edge[]): Edge[] {
   const groupedEdges = new Map<string, Edge[]>();
+  const nodeTypes = new Map(nodes.map((node) => [node.id, node.type ?? ""]));
   for (const edge of edges) {
-    const targetNode = nodes.find((n) => n.id === edge.target);
+    const targetType = nodeTypes.get(edge.target);
     const targetHandle = edge.targetHandle;
     if (
-      !targetNode ||
+      targetType === undefined ||
       !targetHandle ||
-      !isPortMultiInput(targetNode.type ?? "", targetHandle)
+      !isPortMultiInput(targetType, targetHandle)
     ) {
       continue;
     }
@@ -166,41 +176,21 @@ const getPortTypeForNode = (
   return "any";
 };
 
-/** Distance from point to line segment */
-const pointToSegmentDistance = (
-  p: XYPosition,
-  a: XYPosition,
-  b: XYPosition,
-): number => {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const lenSq = dx * dx + dy * dy;
-  if (lenSq === 0) return Math.hypot(p.x - a.x, p.y - a.y);
-  const t = Math.max(
-    0,
-    Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / lenSq),
-  );
-  return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
-};
-
-/** Find edge closest to a point within threshold (flow coords). */
+/** Find the edge closest to a point within a threshold, in flow coordinates. */
 const findClosestEdgeToPoint = (
   nodes: Node[],
   edges: Edge[],
   point: XYPosition,
   threshold: number,
+  drawn?: EdgeShapes,
 ): Edge | null => {
-  const nodePositions = new Map(nodes.map((n) => [n.id, n.position]));
+  const shapes = edgeShapes(nodes, edges, drawn);
   let closest: Edge | null = null;
   let closestDist = threshold;
   for (const edge of edges) {
-    const sp = nodePositions.get(edge.source);
-    const tp = nodePositions.get(edge.target);
-    if (!sp || !tp) continue;
-    // Same offset logic as cutEdgesIntersectingLine
-    const a = { x: sp.x + 80, y: sp.y + 40 };
-    const b = { x: tp.x, y: tp.y + 40 };
-    const d = pointToSegmentDistance(point, a, b);
+    const shape = shapes.get(edge.id);
+    if (!shape) continue;
+    const d = polylineDistance(point, shape);
     if (d < closestDist) {
       closestDist = d;
       closest = edge;
@@ -209,39 +199,35 @@ const findClosestEdgeToPoint = (
   return closest;
 };
 
-const turnDirection = (
-  p1: XYPosition,
-  p2: XYPosition,
-  p3: XYPosition,
-): number => (p3.x - p1.x) * (p2.y - p1.y) - (p2.x - p1.x) * (p3.y - p1.y);
+/** The nodes and edges on one group's canvas. Positions share one space. */
+function canvasGraph(nodes: Node[], edges: Edge[], groupId: string | null) {
+  const canvasNodes = nodes.filter(
+    (node) => (nodeDataString(node.data, "parentGroupId") ?? null) === groupId,
+  );
+  const ids = new Set(canvasNodes.map((node) => node.id));
+  return {
+    nodes: canvasNodes,
+    edges: edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target)),
+  };
+}
 
-// Helper function to check if two line segments intersect
-const lineSegmentsIntersect = (
-  p1: XYPosition,
-  p2: XYPosition,
-  p3: XYPosition,
-  p4: XYPosition,
-): boolean => {
-  const d1 = turnDirection(p3, p4, p1);
-  const d2 = turnDirection(p3, p4, p2);
-  const d3 = turnDirection(p1, p2, p3);
-  const d4 = turnDirection(p1, p2, p4);
-
-  if (
-    ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) &&
-    ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))
-  ) {
-    return true;
-  }
-  return false;
-};
+// An empty name means untitled. The UI shows and saves it in the user's language.
+const UNTITLED_SCRIPT_NAME = "";
+const emptyDocument = (): ScriptDocumentData => ({
+  nodes: [],
+  edges: [],
+  name: UNTITLED_SCRIPT_NAME,
+  description: "",
+  paused: true,
+  quotas: undefined,
+});
 
 export function createScriptEditorSession() {
   const document = createStore<ScriptDocumentState>({
     nodes: [],
     edges: [],
     scriptId: null,
-    scriptName: "Untitled Script",
+    scriptName: UNTITLED_SCRIPT_NAME,
     scriptDescription: "",
     // New scripts start paused, so saving an unfinished graph never runs it.
     paused: true,
@@ -270,9 +256,8 @@ export function createScriptEditorSession() {
     activeNodeExecutions: new Map(),
     executionLogs: [],
     previewValues: new Map<string, Record<string, unknown>>(),
-    debugNodeValues: new Map<string, { value: unknown; timestamp: Date }[]>(),
+    debugNodeValues: new Map<string, DebugValue[]>(),
     nodeExecutionTimes: new Map<string, number[]>(),
-    lastExecutionStats: null,
   });
   const validation = createStore<ScriptValidationState>({
     diagnosticsByNode: new Map(),
@@ -284,6 +269,17 @@ export function createScriptEditorSession() {
   // Typing into one field merges into one undo step while it continues.
   let lastCoalesce: { key: string; at: number } | null = null;
   let canvasGesture = false;
+  // The document the server last confirmed. Its paused state is lastSavedPaused.
+  let savedDocument: ScriptDocumentData = emptyDocument();
+  const differsFromSaved = (current: ScriptDocumentData) =>
+    !sameScriptDocument(current, {
+      ...savedDocument,
+      paused: document.get().lastSavedPaused,
+    });
+  const currentCanvas = () => {
+    const { nodes, edges } = document.get();
+    return canvasGraph(nodes, edges, ui.get().groupEditStack.at(-1) ?? null);
+  };
 
   const pushHistory = (entry: ScriptGraphSnapshot) => {
     history.setState((state) => ({
@@ -320,6 +316,15 @@ export function createScriptEditorSession() {
       !sameItems(after.edges, before.edges)
     )
       remember({ nodes: before.nodes, edges: before.edges }, coalesceKey);
+    else if (
+      after.isDirty !== before.isDirty &&
+      after.scriptName === before.scriptName &&
+      after.scriptDescription === before.scriptDescription &&
+      after.paused === before.paused &&
+      after.quotas === before.quotas
+    )
+      // An edit that changed nothing leaves nothing new to save.
+      document.setState((state) => ({ ...state, isDirty: before.isDirty }));
   };
   const restoreGraph = (entry: ScriptGraphSnapshot) => {
     const ids = new Set(entry.nodes.map((node) => node.id));
@@ -328,7 +333,15 @@ export function createScriptEditorSession() {
         ...state,
         nodes: entry.nodes,
         edges: entry.edges,
-        isDirty: true,
+        // Undoing back to the saved graph leaves nothing to save.
+        isDirty: differsFromSaved({
+          nodes: entry.nodes,
+          edges: entry.edges,
+          name: state.scriptName,
+          description: state.scriptDescription,
+          paused: state.paused,
+          quotas: state.quotas,
+        }),
       }));
       ui.setState((state) => {
         // Leave groups that the restored graph no longer has.
@@ -348,6 +361,8 @@ export function createScriptEditorSession() {
       });
     });
   };
+
+  const derived = createEditorDerivedStores(document, ui);
 
   const actions: ScriptEditorActions = {
     onNodesChange: (changes) => {
@@ -650,12 +665,43 @@ export function createScriptEditorSession() {
       }
       ui.setState((state) => ({ ...state, previewEnabledNodes: next }));
     },
-    updatePreviewValue: (nodeId, outputs) => {
-      const current = execution.get().previewValues;
-      const next = new Map([...current, [nodeId, outputs]]);
-      execution.setState((state) => ({ ...state, previewValues: next }));
+    observesNodeOutputs: (nodeId) => {
+      if (ui.get().previewEnabledNodes.has(nodeId)) return true;
+      const prefix = outputKey(nodeId, "");
+      for (const key of derived.debugOutputs.get().keys()) {
+        if (key.startsWith(prefix)) return true;
+      }
+      return false;
     },
-    createFrame: (nodeIds, label = "Frame") => {
+    recordNodeOutputs: (nodeId, outputs) => {
+      // The server skips layout nodes, so debug nodes show the output that
+      // reaches them through reroutes, other debug nodes, and groups.
+      const sources = derived.debugOutputs.get();
+      const debugValues = Object.entries(outputs).flatMap(([port, value]) =>
+        (sources.get(outputKey(nodeId, port)) ?? []).map((debugId) => ({
+          debugId,
+          value,
+        })),
+      );
+      const timestamp = new Date();
+      execution.setState((state) => {
+        const previewValues = new Map([
+          ...state.previewValues,
+          [nodeId, outputs],
+        ]);
+        if (debugValues.length === 0) return { ...state, previewValues };
+        const debugNodeValues = new Map(state.debugNodeValues);
+        for (const { debugId, value } of debugValues) {
+          const previous = debugNodeValues.get(debugId) ?? [];
+          debugNodeValues.set(debugId, [
+            ...previous.slice(-49),
+            { id: crypto.randomUUID(), value, timestamp },
+          ]);
+        }
+        return { ...state, previewValues, debugNodeValues };
+      });
+    },
+    createFrame: (nodeIds, label) => {
       if (nodeIds.length === 0) return;
 
       const { nodes } = document.get();
@@ -688,7 +734,8 @@ export function createScriptEditorSession() {
         type: "layout.frame",
         position: { x: minX, y: minY },
         data: {
-          label,
+          // Without a label, the frame shows its name in the viewer's language.
+          ...(label !== undefined && { label }),
           containedNodes: nodeIds,
           ...(currentGroupId && { parentGroupId: currentGroupId }),
         },
@@ -708,36 +755,6 @@ export function createScriptEditorSession() {
       commit((state) => ({
         ...state,
         nodes: [frameNode, ...updatedNodes],
-        isDirty: true,
-      }));
-    },
-    removeFromFrame: (nodeId) => {
-      const { nodes } = document.get();
-      const node = nodes.find((n) => n.id === nodeId);
-      if (!node?.data["parentFrameId"]) return;
-
-      const frameId = nodeDataString(node.data, "parentFrameId");
-
-      commit((state) => ({
-        ...state,
-        nodes: nodes.map((n) => {
-          if (n.id === nodeId) {
-            const { parentFrameId: _parentFrameId, ...restData } = n.data;
-            return { ...n, data: restData };
-          }
-          if (n.id === frameId && n.data["containedNodes"]) {
-            return {
-              ...n,
-              data: {
-                ...n.data,
-                containedNodes: (
-                  nodeDataStrings(n.data, "containedNodes") ?? []
-                ).filter((id) => id !== nodeId),
-              },
-            };
-          }
-          return n;
-        }),
         isDirty: true,
       }));
     },
@@ -891,9 +908,10 @@ export function createScriptEditorSession() {
       const { groupEditStack } = ui.get();
       const currentGroupId = groupEditStack.at(-1) ?? null;
 
-      // Get selected nodes in current view
+      // Get selected nodes in current view. The enclosing group's interface
+      // nodes must stay on its canvas.
       const selectedNodes = nodes.filter((n) => {
-        if (!n.selected) return false;
+        if (!n.selected || isGroupInterfaceNode(n)) return false;
         const nodeGroupId = nodeDataString(n.data, "parentGroupId") ?? null;
         return nodeGroupId === currentGroupId;
       });
@@ -948,7 +966,6 @@ export function createScriptEditorSession() {
         type: "layout.group",
         position: { x: centerX - 80, y: centerY - 40 },
         data: {
-          label: "Group",
           inputs: groupInputs.map((i) => ({
             id: i.id,
             type: i.type,
@@ -1208,11 +1225,10 @@ export function createScriptEditorSession() {
         }
       }
 
-      // Remove group node and its special nodes, remove edges to/from them
+      // Remove the group node and every interface node, with their edges.
       const nodesToRemove = new Set([
         groupId,
-        groupInputNode?.id,
-        groupOutputNode?.id,
+        ...innerNodes.filter((n) => isGroupInterfaceNode(n)).map((n) => n.id),
       ]);
 
       batch(() => {
@@ -1276,9 +1292,9 @@ export function createScriptEditorSession() {
       )
         remember(start);
     },
-    findClosestEdge: (position, threshold) => {
-      const { nodes, edges } = document.get();
-      return findClosestEdgeToPoint(nodes, edges, position, threshold);
+    findClosestEdge: (position, threshold, drawn) => {
+      const { nodes, edges } = currentCanvas();
+      return findClosestEdgeToPoint(nodes, edges, position, threshold, drawn);
     },
     insertNodeOnEdge: (nodeId, edgeId) => {
       const { nodes, edges } = document.get();
@@ -1371,18 +1387,6 @@ export function createScriptEditorSession() {
         edges: [...edges.filter((e) => e.id !== edgeId), newEdge1, newEdge2],
         isDirty: true,
       }));
-    },
-    updateDebugValue: (nodeId, value) => {
-      const current = execution.get().debugNodeValues;
-      const next = new Map(current);
-      const nodeHistory = next.get(nodeId) ?? [];
-      // Keep last 50 values
-      const newHistory = [
-        ...nodeHistory.slice(-49),
-        { value, timestamp: new Date() },
-      ];
-      next.set(nodeId, newHistory);
-      execution.setState((state) => ({ ...state, debugNodeValues: next }));
     },
     clearDebugValues: (nodeId) => {
       const current = execution.get().debugNodeValues;
@@ -1578,10 +1582,25 @@ export function createScriptEditorSession() {
         sourceScriptId: scriptId,
       };
     },
-    pasteClipboardData: (clipboardData, position) => {
+    pasteClipboardData: (pasted, position) => {
       const { nodes, edges } = document.get();
       const { groupEditStack } = ui.get();
 
+      // A group input or output node only works inside its own group, which
+      // already has one. Older clients could copy them on their own.
+      const looseInterfaces = new Set(
+        subgraphRoots(pasted.nodes)
+          .filter((node) => isGroupInterfaceNode(node))
+          .map((node) => node.id),
+      );
+      const clipboardData = {
+        nodes: pasted.nodes.filter((node) => !looseInterfaces.has(node.id)),
+        edges: pasted.edges.filter(
+          (edge) =>
+            !looseInterfaces.has(edge.source) &&
+            !looseInterfaces.has(edge.target),
+        ),
+      };
       if (clipboardData.nodes.length === 0) return;
 
       const currentGroupId = groupEditStack.at(-1) ?? null;
@@ -1612,7 +1631,6 @@ export function createScriptEditorSession() {
         isDirty: true,
       }));
     },
-    canPaste: () => hasScriptClipboardData(),
     alignNodes: (direction) => {
       const { nodes } = document.get();
       const { groupEditStack } = ui.get();
@@ -1805,7 +1823,7 @@ export function createScriptEditorSession() {
         }));
       }
     },
-    endLinkCutting: () => {
+    endLinkCutting: (drawn) => {
       const { linkCutting } = ui.get();
       if (
         linkCutting.active &&
@@ -1816,8 +1834,13 @@ export function createScriptEditorSession() {
         actions.cutEdgesIntersectingLine(
           linkCutting.startPoint,
           linkCutting.endPoint,
+          drawn,
         );
       }
+      actions.cancelLinkCutting();
+    },
+    cancelLinkCutting: () => {
+      if (!ui.get().linkCutting.active) return;
       ui.setState((state) => ({
         ...state,
         linkCutting: {
@@ -1827,30 +1850,24 @@ export function createScriptEditorSession() {
         },
       }));
     },
-    cutEdgesIntersectingLine: (start, end) => {
-      const { edges, nodes } = document.get();
-
-      // Get node positions for edge endpoints
-      const nodePositions = new Map(nodes.map((n) => [n.id, n.position]));
-
-      // Find edges to cut
-      const edgesToRemove = edges.filter((edge) => {
-        const sourcePos = nodePositions.get(edge.source);
-        const targetPos = nodePositions.get(edge.target);
-        if (!sourcePos || !targetPos) return false;
-
-        // Approximate edge as a straight line between node centers
-        // (In reality, edges are curves, but this is a reasonable approximation)
-        const edgeStart = { x: sourcePos.x + 80, y: sourcePos.y + 40 };
-        const edgeEnd = { x: targetPos.x, y: targetPos.y + 40 };
-
-        return lineSegmentsIntersect(start, end, edgeStart, edgeEnd);
+    cutEdgesIntersectingLine: (start, end, drawn) => {
+      const { edges } = document.get();
+      // Only cut wires drawn on this canvas. Other groups use other positions.
+      const canvas = currentCanvas();
+      const shapes = edgeShapes(canvas.nodes, canvas.edges, drawn);
+      const edgesToRemove = canvas.edges.filter((edge) => {
+        const shape = shapes.get(edge.id);
+        return shape !== undefined && polylineCrossesSegment(shape, start, end);
       });
 
       if (edgesToRemove.length > 0) {
+        const removed = new Set(edgesToRemove.map((edge) => edge.id));
         commit((state) => ({
           ...state,
-          edges: edges.filter((e) => !edgesToRemove.some((r) => r.id === e.id)),
+          edges: normalizeMultiInputEdgeOrders(
+            document.get().nodes,
+            edges.filter((edge) => !removed.has(edge.id)),
+          ),
           isDirty: true,
         }));
       }
@@ -1982,6 +1999,8 @@ export function createScriptEditorSession() {
       }
     },
     loadScript: (data) => {
+      const edges = normalizeMultiInputEdgeOrders(data.nodes, data.edges);
+      savedDocument = { ...data, edges };
       batch(() => {
         clearHistory();
         document.setState((state) => ({
@@ -1993,10 +2012,10 @@ export function createScriptEditorSession() {
           lastSavedPaused: data.paused,
           quotas: data.quotas,
           nodes: data.nodes,
-          edges: normalizeMultiInputEdgeOrders(data.nodes, data.edges),
+          edges,
           isDirty: false,
           lastSavedNodes: data.nodes,
-          lastSavedEdges: normalizeMultiInputEdgeOrders(data.nodes, data.edges),
+          lastSavedEdges: edges,
         }));
         ui.setState((state) => ({
           ...state,
@@ -2008,10 +2027,7 @@ export function createScriptEditorSession() {
         execution.setState((state) => ({
           ...state,
           previewValues: new Map<string, Record<string, unknown>>(),
-          debugNodeValues: new Map<
-            string,
-            { value: unknown; timestamp: Date }[]
-          >(),
+          debugNodeValues: new Map<string, DebugValue[]>(),
         }));
       });
     },
@@ -2038,14 +2054,12 @@ export function createScriptEditorSession() {
         execution.setState((state) => ({
           ...state,
           previewValues: new Map<string, Record<string, unknown>>(),
-          debugNodeValues: new Map<
-            string,
-            { value: unknown; timestamp: Date }[]
-          >(),
+          debugNodeValues: new Map<string, DebugValue[]>(),
         }));
       });
     },
     resetEditor: () => {
+      savedDocument = emptyDocument();
       batch(() => {
         clearHistory();
         document.setState((state) => ({
@@ -2053,7 +2067,7 @@ export function createScriptEditorSession() {
           nodes: [],
           edges: [],
           scriptId: null,
-          scriptName: "Untitled Script",
+          scriptName: UNTITLED_SCRIPT_NAME,
           scriptDescription: "",
           paused: true,
           lastSavedPaused: true,
@@ -2069,12 +2083,8 @@ export function createScriptEditorSession() {
           activeNodeExecutions: new Map(),
           executionLogs: [],
           previewValues: new Map<string, Record<string, unknown>>(),
-          debugNodeValues: new Map<
-            string,
-            { value: unknown; timestamp: Date }[]
-          >(),
+          debugNodeValues: new Map<string, DebugValue[]>(),
           nodeExecutionTimes: new Map<string, number[]>(),
-          lastExecutionStats: null,
         }));
         ui.setState((state) => ({
           ...state,
@@ -2115,19 +2125,17 @@ export function createScriptEditorSession() {
         ),
       }));
     },
-    addNodeExecutionTime: (nodeId, timeNanos) => {
+    addNodeExecutionTime: (nodeId, timeMs) => {
       execution.setState((state) => {
         const times = new Map(state.nodeExecutionTimes);
         const existing = times.get(nodeId) ?? [];
-        const updated = [...existing, timeNanos].slice(-10);
+        const updated = [...existing, timeMs].slice(-10);
         times.set(nodeId, updated);
         return { ...state, nodeExecutionTimes: times };
       });
     },
-    setExecutionStats: (stats) => {
-      execution.setState((state) => ({ ...state, lastExecutionStats: stats }));
-    },
     markSaved: (data, scriptId, savedPaused = data.paused) => {
+      savedDocument = data;
       document.setState((state) => {
         const paused =
           state.paused === data.paused ? savedPaused : state.paused;
@@ -2153,7 +2161,7 @@ export function createScriptEditorSession() {
     validation,
     history,
     actions,
-    ...createEditorDerivedStores(document, ui),
+    ...derived,
   };
 }
 export type ScriptEditorSession = ReturnType<typeof createScriptEditorSession>;

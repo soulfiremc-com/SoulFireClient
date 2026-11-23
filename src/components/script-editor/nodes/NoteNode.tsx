@@ -22,7 +22,7 @@ interface NoteNodeProps extends NodeProps {
 function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
   const { t } = useTranslation("instance");
   const { updateNodeData } = useNodeEditing();
-  const label = data.label ?? "Note";
+  const label = data.label ?? t("scripts.editor.layoutNodes.note.label");
   const content = data.content ?? "";
   const backgroundColor = data.color ?? "#fbbf24";
 
@@ -74,7 +74,8 @@ function NoteNodeComponent({ id, data, selected }: NoteNodeProps) {
 
         {/* Content area */}
         <textarea
-          className="nodrag nopan w-full flex-1 resize-none bg-transparent p-3 text-sm text-black/70 outline-none placeholder:text-black/30"
+          className="nodrag nopan w-full flex-1 resize-none rounded-b-lg bg-transparent p-3 text-sm text-black/70 outline-none placeholder:text-black/30 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+          aria-label={t("scripts.editor.note.contentLabel")}
           value={content}
           onChange={handleContentChange}
           placeholder={t("scripts.editor.note.placeholder")}

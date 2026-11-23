@@ -1,8 +1,11 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { NodeTypes } from "@xyflow/react";
+import type { TFunction } from "i18next";
 import { type ReactNode, use, useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { TransportContext } from "@/components/providers/transport-context";
 import { nodeTypesQueryOptions } from "@/lib/script-service";
+import { isGroupInterfaceNode } from "@/lib/script-subgraph";
 import { createNodeComponent } from "./nodes/create-node-component";
 import { DebugNode } from "./nodes/DebugNode";
 import { FrameNode } from "./nodes/FrameNode";
@@ -24,95 +27,111 @@ import {
   protoNodeTypeToLocal,
 } from "./nodes/types";
 
+type LayoutNodeKey =
+  | "reroute"
+  | "frame"
+  | "group"
+  | "groupInput"
+  | "groupOutput"
+  | "debug"
+  | "note";
+
 // Client-side layout node definitions (not from server)
 // Port IDs are simple names - type is stored separately
-const LAYOUT_NODE_DEFINITIONS: NodeDefinition[] = [
-  {
-    type: "layout.reroute",
-    label: "Reroute",
-    category: "layout",
-    icon: "Circle",
-    inputs: [{ id: "in", label: "", type: "any" }],
-    outputs: [{ id: "out", label: "", type: "any" }],
-    description: "A pass-through node for organizing connections",
-    isLayoutNode: true,
-    keywords: ["reroute", "redirect", "organize", "passthrough"],
-  },
-  {
-    type: "layout.frame",
-    label: "Frame",
-    category: "layout",
-    icon: "Square",
-    inputs: [],
-    outputs: [],
-    description: "A visual container for grouping related nodes",
-    isLayoutNode: true,
-    keywords: ["frame", "group", "organize", "container"],
-  },
-  {
-    type: "layout.group",
-    label: "Node Group",
-    category: "layout",
-    icon: "Layers",
-    inputs: [],
-    outputs: [],
-    description: "A reusable composite node containing a sub-graph",
-    isLayoutNode: true,
-    keywords: ["group", "subgraph", "reusable", "composite"],
-  },
-  {
-    type: "layout.group_input",
-    label: "Group Input",
-    category: "layout",
-    icon: "ArrowRightFromLine",
-    inputs: [],
-    outputs: [],
-    description: "Defines inputs for a node group (inside the group)",
-    isLayoutNode: true,
-    keywords: ["input", "group"],
-  },
-  {
-    type: "layout.group_output",
-    label: "Group Output",
-    category: "layout",
-    icon: "ArrowLeftFromLine",
-    inputs: [],
-    outputs: [],
-    description: "Defines outputs for a node group (inside the group)",
-    isLayoutNode: true,
-    keywords: ["output", "group"],
-  },
-  {
-    type: "layout.debug",
-    label: "Debug",
-    category: "layout",
-    icon: "Bug",
-    inputs: [{ id: "in", label: "In", type: "any" }],
-    outputs: [{ id: "out", label: "Out", type: "any" }],
-    description: "Debug node for inspecting values during execution",
-    isLayoutNode: true,
-    keywords: ["debug", "viewer", "inspect", "watch", "log"],
-  },
-  {
-    type: "layout.note",
-    label: "Note",
-    category: "layout",
-    icon: "StickyNote",
-    inputs: [],
-    outputs: [],
-    description: "A sticky note for adding comments and annotations",
-    isLayoutNode: true,
-    keywords: ["note", "comment", "annotation", "sticky", "text"],
-  },
-];
+function layoutNodeDefinitions(t: TFunction<"instance">): NodeDefinition[] {
+  const text = (key: LayoutNodeKey) => ({
+    label: t(`scripts.editor.layoutNodes.${key}.label`),
+    description: t(`scripts.editor.layoutNodes.${key}.description`),
+  });
+  return [
+    {
+      type: "layout.reroute",
+      ...text("reroute"),
+      category: "layout",
+      icon: "Circle",
+      inputs: [{ id: "in", label: "", type: "any" }],
+      outputs: [{ id: "out", label: "", type: "any" }],
+      isLayoutNode: true,
+      keywords: ["reroute", "redirect", "organize", "passthrough"],
+    },
+    {
+      type: "layout.frame",
+      ...text("frame"),
+      category: "layout",
+      icon: "Square",
+      inputs: [],
+      outputs: [],
+      isLayoutNode: true,
+      keywords: ["frame", "group", "organize", "container"],
+    },
+    {
+      type: "layout.group",
+      ...text("group"),
+      category: "layout",
+      icon: "Layers",
+      inputs: [],
+      outputs: [],
+      isLayoutNode: true,
+      keywords: ["group", "subgraph", "reusable", "composite"],
+    },
+    {
+      type: "layout.group_input",
+      ...text("groupInput"),
+      category: "layout",
+      icon: "ArrowRightFromLine",
+      inputs: [],
+      outputs: [],
+      isLayoutNode: true,
+      keywords: ["input", "group"],
+    },
+    {
+      type: "layout.group_output",
+      ...text("groupOutput"),
+      category: "layout",
+      icon: "ArrowLeftFromLine",
+      inputs: [],
+      outputs: [],
+      isLayoutNode: true,
+      keywords: ["output", "group"],
+    },
+    {
+      type: "layout.debug",
+      ...text("debug"),
+      category: "layout",
+      icon: "Bug",
+      inputs: [
+        { id: "in", label: t("scripts.editor.debug.input"), type: "any" },
+      ],
+      outputs: [
+        { id: "out", label: t("scripts.editor.debug.output"), type: "any" },
+      ],
+      isLayoutNode: true,
+      keywords: ["debug", "viewer", "inspect", "watch", "log"],
+    },
+    {
+      type: "layout.note",
+      ...text("note"),
+      category: "layout",
+      icon: "StickyNote",
+      inputs: [],
+      outputs: [],
+      isLayoutNode: true,
+      keywords: ["note", "comment", "annotation", "sticky", "text"],
+    },
+  ];
+}
 
-// Layout category info
-const LAYOUT_CATEGORY_INFO: CategoryInfo = {
-  id: "layout",
-  name: "Layout",
-  icon: "Layout",
-  description: "Nodes for organizing your script visually",
-  sortOrder: 1000, // Put at the end
+const LAYOUT_CATEGORY_ID = "layout";
+
+// Client-side components for the layout nodes
+const LAYOUT_NODE_COMPONENTS: NodeTypes = {
+  "layout.reroute": RerouteNode,
+  "layout.frame": FrameNode,
+  "layout.group": GroupNode,
+  "layout.group_input": GroupInputNode,
+  "layout.group_output": GroupOutputNode,
+  "layout.debug": DebugNode,
+  "layout.note": NoteNode,
 };
 
 interface NodeTypesProviderProps {
@@ -125,6 +144,7 @@ export function NodeTypesProvider({
   includeDeprecated = false,
 }: NodeTypesProviderProps) {
   const transport = use(TransportContext);
+  const { t } = useTranslation("instance");
 
   const { data, isLoading } = useSuspenseQuery(
     nodeTypesQueryOptions(transport, { includeDeprecated }),
@@ -137,51 +157,39 @@ export function NodeTypesProvider({
     }
   }, [data.portTypeMetadata]);
 
-  // Convert proto definitions to local format and add layout nodes
+  // Convert proto definitions to local format
+  const serverDefinitions = useMemo(
+    () => data.nodeTypes.map((proto) => protoNodeTypeToLocal(proto)),
+    [data.nodeTypes],
+  );
+
+  // Add the layout nodes, whose text follows the language
   const definitions = useMemo(() => {
     const result: Record<string, NodeDefinition> = {};
-    // Add server-provided node types
-    for (const proto of data.nodeTypes) {
-      const local = protoNodeTypeToLocal(proto);
+    for (const local of serverDefinitions) {
       result[local.type] = local;
     }
-    // Add client-side layout node types
-    for (const layoutNode of LAYOUT_NODE_DEFINITIONS) {
+    for (const layoutNode of layoutNodeDefinitions(t)) {
       result[layoutNode.type] = layoutNode;
     }
     return result;
-  }, [data.nodeTypes]);
+  }, [serverDefinitions, t]);
 
   // Initialize node definitions for port type lookup
   useEffect(() => {
     initNodeDefinitions(Object.values(definitions));
   }, [definitions]);
 
-  // Create React Flow node types from definitions
+  // Create React Flow node types. They only change with the server's node
+  // types, because a new component type remounts every node of that type.
   const nodeTypes = useMemo(() => {
-    const result: NodeTypes = {};
-    for (const [type, definition] of Object.entries(definitions)) {
-      // Use special components for layout nodes
-      if (type === "layout.reroute") {
-        result[type] = RerouteNode;
-      } else if (type === "layout.frame") {
-        result[type] = FrameNode;
-      } else if (type === "layout.group") {
-        result[type] = GroupNode;
-      } else if (type === "layout.group_input") {
-        result[type] = GroupInputNode;
-      } else if (type === "layout.group_output") {
-        result[type] = GroupOutputNode;
-      } else if (type === "layout.debug") {
-        result[type] = DebugNode;
-      } else if (type === "layout.note") {
-        result[type] = NoteNode;
-      } else {
-        result[type] = createNodeComponent(definition);
-      }
+    const result: NodeTypes = { ...LAYOUT_NODE_COMPONENTS };
+    for (const definition of serverDefinitions) {
+      if (definition.type in LAYOUT_NODE_COMPONENTS) continue;
+      result[definition.type] = createNodeComponent(definition);
     }
     return result;
-  }, [definitions]);
+  }, [serverDefinitions]);
 
   // Convert and sort categories from server response, add layout category
   const categoryInfo = useMemo(() => {
@@ -191,9 +199,15 @@ export function NodeTypesProvider({
       result[local.id] = local;
     }
     // Add layout category
-    result[LAYOUT_CATEGORY_INFO.id] = LAYOUT_CATEGORY_INFO;
+    result[LAYOUT_CATEGORY_ID] = {
+      id: LAYOUT_CATEGORY_ID,
+      name: t("scripts.editor.layoutNodes.category.name"),
+      icon: "Layout",
+      description: t("scripts.editor.layoutNodes.category.description"),
+      sortOrder: 1000, // Put at the end
+    };
     return result;
-  }, [data.categories]);
+  }, [data.categories, t]);
 
   // Get sorted category IDs
   const categories = useMemo(() => {
@@ -201,7 +215,7 @@ export function NodeTypesProvider({
       .toSorted((a, b) => a.sortOrder - b.sortOrder)
       .map((c) => c.id);
     // Add layout category at the end
-    return [...serverCategories, LAYOUT_CATEGORY_INFO.id];
+    return [...serverCategories, LAYOUT_CATEGORY_ID];
   }, [data.categories]);
 
   // Group nodes by category
@@ -211,6 +225,8 @@ export function NodeTypesProvider({
       result[category] = [];
     }
     for (const node of Object.values(definitions)) {
+      // A group creates its own input and output node. Extra ones break it.
+      if (isGroupInterfaceNode(node)) continue;
       (result[node.category] ??= []).push(node);
     }
     return result;
@@ -237,18 +253,13 @@ export function NodeTypesProvider({
     [categoryInfo],
   );
 
+  // Leave the label unset, so the node shows its name in the viewer's
+  // language until someone renames it.
   const createNodeData = useCallback(
-    (type: string, overrides?: Record<string, unknown>) => {
-      const definition = definitions[type];
-      if (!definition) {
-        return { label: type, ...overrides };
-      }
-      return {
-        label: definition.label,
-        ...definition.defaultData,
-        ...overrides,
-      };
-    },
+    (type: string, overrides?: Record<string, unknown>) => ({
+      ...definitions[type]?.defaultData,
+      ...overrides,
+    }),
     [definitions],
   );
 

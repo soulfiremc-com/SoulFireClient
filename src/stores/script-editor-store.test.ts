@@ -208,7 +208,7 @@ test("editor sessions isolate document, UI, and execution updates", () => {
   });
   first.actions.setSelectedNode(id);
   first.actions.setActiveNode(id);
-  first.actions.updatePreviewValue(id, { value: 2 });
+  first.actions.recordNodeOutputs(id, { value: 2 });
   assert.equal(documentUpdates, 0);
   assert.equal(first.document.get(), document);
   assert.equal(second.document.get().nodes.length, 0);
@@ -267,7 +267,7 @@ test("group views cache their results and update with graph membership", () => {
     [child],
   );
   session.actions.openQuickAddMenu({ x: 5, y: 5 }, { x: 5, y: 5 });
-  session.actions.updateDebugValue(child, 42);
+  session.actions.recordNodeOutputs(child, { out: 42 });
   assert.equal(session.visibleNodes.get(), visible);
   session.actions.exitToRoot();
   assert.deepEqual(

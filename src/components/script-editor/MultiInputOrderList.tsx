@@ -1,7 +1,7 @@
 "use client";
 
-import { t } from "i18next";
 import { GripVertical, Link2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import {
   Sortable,
@@ -37,6 +37,7 @@ function ItemCard({
   showHandle?: boolean;
   className?: string;
 }) {
+  const { t } = useTranslation("instance");
   return (
     <div
       className={cn(
@@ -65,7 +66,7 @@ function ItemCard({
             "nodrag nopan inline-flex size-6 items-center justify-center rounded-sm border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
             compact && "size-5",
           )}
-          aria-label={t("instance:scripts.editor.multiInput.reorder", {
+          aria-label={t("scripts.editor.multiInput.reorder", {
             label: item.label,
           })}
         >
@@ -80,13 +81,14 @@ export function MultiInputOrderList({
   items,
   onReorder,
   compact = false,
-  emptyLabel = t("instance:scripts.editor.multiInput.empty"),
+  emptyLabel,
 }: MultiInputOrderListProps) {
+  const { t } = useTranslation("instance");
   if (items.length === 0) {
     return (
       <div className="flex items-center gap-1.5 rounded-md border border-dashed border-border/60 bg-muted/20 px-2 py-1 text-2xs text-muted-foreground">
         <Link2 className="size-3" />
-        <span>{emptyLabel}</span>
+        <span>{emptyLabel ?? t("scripts.editor.multiInput.empty")}</span>
       </div>
     );
   }

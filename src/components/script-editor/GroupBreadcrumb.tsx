@@ -5,6 +5,7 @@ import { useScriptEditor } from "@/components/script-editor/script-editor-contex
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
 import { nodeDataString } from "@/lib/script-node-data";
+import { sameNodeLabels } from "./node-label";
 
 /**
  * GroupBreadcrumb - Blender-style breadcrumb navigation for group editing
@@ -13,7 +14,9 @@ import { nodeDataString } from "@/lib/script-node-data";
 export function GroupBreadcrumb() {
   const editor = useScriptEditor();
   const { t } = useTranslation("instance");
-  const nodes = useSelector(editor.document, (s) => s.nodes);
+  const nodes = useSelector(editor.document, (s) => s.nodes, {
+    compare: sameNodeLabels,
+  });
   const groupEditStack = useSelector(editor.ui, (s) => s.groupEditStack);
   const exitToRoot = editor.actions.exitToRoot;
   const exitGroup = editor.actions.exitGroup;

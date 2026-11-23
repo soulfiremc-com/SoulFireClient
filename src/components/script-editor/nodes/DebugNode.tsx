@@ -1,4 +1,5 @@
 import { useSelector } from "@tanstack/react-store";
+import { formatDistanceToNow } from "date-fns";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { Bug, Copy, Trash2 } from "lucide-react";
 import { memo, useCallback } from "react";
@@ -8,8 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import type { DebugValue } from "@/stores/script-editor-types";
 import { getPortColor, type PortType } from "./types";
 import { displayText } from "@/lib/display-text";
+import { useChangingData } from "@/hooks/use-changing-value";
+import { useDateFnsLocale } from "@/hooks/use-date-fns-locale";
 
 export interface DebugNodeData {
   /** Custom label for the debug node */
@@ -68,17 +72,31 @@ function formatValue(value: unknown): string {
   return displayText(value);
 }
 
-/**
- * Format timestamp relative to now
- */
-function formatTime(date: Date): string {
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
+/** How long ago a value arrived, in the user's language. */
+function useRelativeTime(date: Date): string {
+  const locale = useDateFnsLocale();
+  return useChangingData(() =>
+    formatDistanceToNow(date, {
+      addSuffix: true,
+      includeSeconds: true,
+      locale,
+    }),
+  );
+}
 
-  if (diff < 1000) return "now";
-  if (diff < 60_000) return `${Math.floor(diff / 1000)}s ago`;
-  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
-  return date.toLocaleTimeString();
+function RelativeTime({ date }: { date: Date }) {
+  const text = useRelativeTime(date);
+  return <time dateTime={date.toISOString()}>{text}</time>;
+}
+
+function CurrentValueTime({ date }: { date: Date }) {
+  const { t } = useTranslation("instance");
+  const time = useRelativeTime(date);
+  return (
+    <div className="text-xs text-muted-foreground">
+      {t("scripts.editor.debug.current", { time })}
+    </div>
+  );
 }
 
 /**
@@ -90,7 +108,7 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
   const { t } = useTranslation("instance");
   const resolvedType = data.resolvedType ?? "any";
   const color = getPortColor(resolvedType);
-  const label = data.label ?? "Debug";
+  const label = data.label ?? t("scripts.editor.layoutNodes.debug.label");
 
   // Get debug history from store
   const history = useSelector(
@@ -167,7 +185,9 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
                 borderRadius: "50%",
               }}
             />
-            <span className="text-xs text-muted-foreground">In</span>
+            <span className="text-xs text-muted-foreground">
+              {t("scripts.editor.debug.input")}
+            </span>
           </div>
 
           {/* Output (pass-through) */}
@@ -185,7 +205,9 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
                 borderRadius: "50%",
               }}
             />
-            <span className="text-xs text-muted-foreground">Out</span>
+            <span className="text-xs text-muted-foreground">
+              {t("scripts.editor.debug.output")}
+            </span>
           </div>
         </div>
       </div>
@@ -194,12 +216,8 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
       <div className="px-2 pb-2">
         <div className="rounded-sm bg-muted/50 p-2">
           {currentValue ? (
-            <div className="space-y-1">
-              <div className="text-xs text-muted-foreground">
-                {t("scripts.editor.debug.current", {
-                  time: formatTime(currentValue.timestamp),
-                })}
-              </div>
+            <div className="flex flex-col gap-1">
+              <CurrentValueTime date={currentValue.timestamp} />
               <div className="font-mono text-sm break-all">
                 {formatValue(currentValue.value)}
               </div>
@@ -220,22 +238,25 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
       {history.length > 1 && (
         <div className="border-t border-border/50 p-2">
           <div className="mb-1 text-xs text-muted-foreground">
-            History ({history.length} values)
+            {t("scripts.editor.debug.history", { count: history.length })}
           </div>
           <ScrollArea className="h-[80px]">
-            <div className="space-y-1">
+            <div className="flex flex-col gap-1">
               {history
                 .slice(-5)
                 .toReversed()
                 .map((entry) => (
                   <div
-                    key={`${entry.timestamp.getTime()}-${formatValue(entry.value)}`}
+                    key={entry.id}
                     className="flex items-center gap-2 text-xs"
                   >
                     <span className="shrink-0 text-muted-foreground">
-                      {formatTime(entry.timestamp)}
+                      <RelativeTime date={entry.timestamp} />
                     </span>
-                    <span className="truncate font-mono">
+                    <span
+                      className="truncate font-mono"
+                      title={formatValue(entry.value)}
+                    >
                       {formatValue(entry.value)}
                     </span>
                   </div>
@@ -250,4 +271,4 @@ function DebugNodeComponent({ id, data, selected }: DebugNodeProps) {
 
 export const DebugNode = memo(DebugNodeComponent);
 
-const EMPTY_DEBUG_HISTORY: { value: unknown; timestamp: Date }[] = [];
+const EMPTY_DEBUG_HISTORY: DebugValue[] = [];

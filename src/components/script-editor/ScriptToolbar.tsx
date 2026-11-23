@@ -138,6 +138,8 @@ export function ScriptToolbar({
     state.validationDiagnostics.some((item) => item.severity === "error"),
   );
 
+  // A new script has no name until someone gives it one.
+  const displayName = scriptName || t("scripts.untitledScript");
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(scriptName);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -160,7 +162,7 @@ export function ScriptToolbar({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${scriptName.replaceAll(/[^a-zA-Z0-9]/gu, "_")}.soulfire-script.json`;
+    a.download = `${displayName.replaceAll(/[^a-zA-Z0-9]/gu, "_")}.soulfire-script.json`;
     document.body.append(a);
     a.click();
     a.remove();
@@ -256,6 +258,8 @@ export function ScriptToolbar({
             }}
             onBlur={handleNameSubmit}
             onKeyDown={handleNameKeyDown}
+            aria-label={t("scripts.editor.toolbar.scriptName")}
+            placeholder={t("scripts.untitledScript")}
             className={cn(
               "h-7 text-sm font-medium",
               isMobile ? "w-24" : "w-48",
@@ -265,7 +269,7 @@ export function ScriptToolbar({
         ) : (
           <button
             type="button"
-            title={scriptName}
+            title={displayName}
             onClick={() => {
               setIsEditingName(true);
               setEditedName(scriptName);
@@ -275,7 +279,7 @@ export function ScriptToolbar({
               isMobile ? "max-w-24" : "max-w-48",
             )}
           >
-            <span className="truncate">{scriptName}</span>
+            <span className="truncate">{displayName}</span>
             {isDirty && (
               <span
                 className="shrink-0 text-muted-foreground"
@@ -365,7 +369,9 @@ export function ScriptToolbar({
                   size={isMobile ? "icon" : "sm"}
                   aria-label={t("scripts.editor.toolbar.resume")}
                   onClick={onStart}
-                  disabled={isControlling || hasErrors || nodeCount === 0}
+                  disabled={
+                    isControlling || hasErrors || isDirty || nodeCount === 0
+                  }
                 />
               }
             >
@@ -374,9 +380,11 @@ export function ScriptToolbar({
             </TooltipTrigger>
             <TooltipContent>
               <p>
-                {hasErrors
-                  ? t("scripts.editor.toolbar.resumeBlocked")
-                  : t("scripts.editor.toolbar.resumeTooltip")}
+                {isDirty
+                  ? t("scripts.editor.toolbar.resumeSaveFirst")
+                  : hasErrors
+                    ? t("scripts.editor.toolbar.resumeBlocked")
+                    : t("scripts.editor.toolbar.resumeTooltip")}
               </p>
             </TooltipContent>
           </Tooltip>

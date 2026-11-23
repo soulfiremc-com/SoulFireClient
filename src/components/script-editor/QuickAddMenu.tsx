@@ -17,6 +17,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
+import { isGroupInterfaceNode } from "@/lib/script-subgraph";
 import {
   Empty,
   EmptyDescription,
@@ -73,22 +74,24 @@ export function QuickAddMenu() {
   const quickAddMenu = useSelector(editor.ui, (s) => s.quickAddMenu);
   const closeQuickAddMenu = editor.actions.closeQuickAddMenu;
   const addNode = editor.actions.addNode;
-  const nodes = useSelector(editor.document, (s) => s.nodes);
 
   const { definitions, categories, getCategoryInfo, createNodeData } =
     useNodeTypes();
 
   // Layout nodes such as reroutes keep their resolved type in their data.
+  // Read the graph on demand so the closed menu ignores node moves.
   const getSocketType = useCallback(
     (socket: { nodeId: string; handleId: string }): PortType => {
-      const node = nodes.find((n) => n.id === socket.nodeId);
+      const node = editor.document
+        .get()
+        .nodes.find((n) => n.id === socket.nodeId);
       return (
         getPortTypeFromDefinition(node?.type ?? "", socket.handleId) ??
         (node?.data as { resolvedType?: PortType } | undefined)?.resolvedType ??
         "any"
       );
     },
-    [nodes],
+    [editor],
   );
 
   useLayoutEffect(() => {
@@ -138,7 +141,10 @@ export function QuickAddMenu() {
     if (!quickAddMenu) return [];
 
     const sourceSocket = quickAddMenu.sourceSocket;
-    let nodeDefinitions = Object.values(definitions);
+    // Groups create their own input and output nodes.
+    let nodeDefinitions = Object.values(definitions).filter(
+      (node) => !isGroupInterfaceNode(node),
+    );
 
     // Filter by search term
     if (search.trim()) {

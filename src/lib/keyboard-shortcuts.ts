@@ -64,3 +64,18 @@ export function hasOpenDialog(root: Pick<Document, "querySelector">): boolean {
     ),
   );
 }
+
+/**
+ * The letter that a shortcut key stands for. Uses the typed letter, so
+ * layouts like AZERTY keep their labels. Falls back to the physical key
+ * when the key types no ASCII letter, such as with Option on macOS or a
+ * non-Latin layout.
+ */
+export function shortcutLetter(
+  event: Pick<KeyboardEvent, "code" | "key">,
+): string | null {
+  if (/^[a-z]$/iu.test(event.key)) return event.key.toLowerCase();
+  return /^Key[A-Z]$/u.test(event.code)
+    ? event.code.slice(3).toLowerCase()
+    : null;
+}

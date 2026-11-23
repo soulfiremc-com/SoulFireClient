@@ -2,6 +2,16 @@ import type { Edge, Node, XYPosition } from "@xyflow/react";
 import { assertDefined } from "@/lib/assert-defined";
 import { nodeDataString } from "@/lib/script-node-data";
 
+const GROUP_INTERFACE_TYPES = new Set([
+  "layout.group_input",
+  "layout.group_output",
+]);
+
+/** Group input and output nodes belong to their group and move with it. */
+export function isGroupInterfaceNode(node: Pick<Node, "type">) {
+  return GROUP_INTERFACE_TYPES.has(node.type ?? "");
+}
+
 export function selectedSubgraph(
   nodes: Node[],
   edges: Edge[],
@@ -16,7 +26,14 @@ export function selectedSubgraph(
       siblings.push(node.id);
       children.set(parent, siblings);
     }
-    if (node.selected && (parent ?? null) === groupId) pending.push(node.id);
+    // A group keeps exactly one input and one output node. They are only
+    // copied or removed together with the whole group.
+    if (
+      node.selected &&
+      (parent ?? null) === groupId &&
+      !isGroupInterfaceNode(node)
+    )
+      pending.push(node.id);
   }
 
   const ids = new Set(pending);

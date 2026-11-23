@@ -1,5 +1,6 @@
 import { type NodeProps, NodeResizer } from "@xyflow/react";
 import { memo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { useNodeEditing } from "../node-editing-context";
 import { EditableNodeLabel } from "./EditableNodeLabel";
@@ -25,7 +26,8 @@ interface FrameNodeProps extends NodeProps {
  */
 function FrameNodeComponent({ id, data, selected }: FrameNodeProps) {
   const { updateNodeData } = useNodeEditing();
-  const label = data.label ?? "Frame";
+  const { t } = useTranslation("instance");
+  const label = data.label ?? t("scripts.editor.layoutNodes.frame.label");
   const backgroundColor = data.color ?? "var(--muted)";
 
   const handleLabelSubmit = useCallback(

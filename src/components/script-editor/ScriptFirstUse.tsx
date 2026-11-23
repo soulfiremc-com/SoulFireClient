@@ -28,8 +28,8 @@ export function ScriptFirstUse() {
   const editor = useScriptEditor();
   const reactFlow = useReactFlow();
   const flowStore = useStoreApi();
-  const nodes = useSelector(editor.document, (state) => state.nodes);
-  const edges = useSelector(editor.document, (state) => state.edges);
+  const nodeCount = useSelector(editor.document, (state) => state.nodes.length);
+  const edgeCount = useSelector(editor.document, (state) => state.edges.length);
   const scriptName = useSelector(editor.document, (state) => state.scriptName);
   const { definitions } = useNodeTypes();
   const templates = useMemo(() => {
@@ -51,7 +51,7 @@ export function ScriptFirstUse() {
     return { screen, flow: reactFlow.screenToFlowPosition(screen) };
   };
 
-  if (nodes.length === 0) {
+  if (nodeCount === 0) {
     const applyTemplate = (template: ScriptTemplate) => {
       editor.actions.loadScriptData({
         ...instantiateScriptTemplate(template),
@@ -124,7 +124,7 @@ export function ScriptFirstUse() {
     );
   }
 
-  if (edges.length === 0 && nodes.length <= 2) {
+  if (edgeCount === 0 && nodeCount <= 2) {
     return (
       <Panel position="top-center">
         <p className="flex flex-wrap items-center gap-2 rounded-lg border bg-card px-3 py-2 text-sm text-muted-foreground shadow-sm">

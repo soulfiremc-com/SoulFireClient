@@ -1,7 +1,7 @@
-import { t } from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { Layers } from "lucide-react";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { getHandleShape, getPortColor, type PortType } from "./types";
 
@@ -73,7 +73,8 @@ function PortRow({
  * Blender-style: Can be entered to edit, or used as a black box.
  */
 function GroupNodeComponent({ data, selected }: GroupNodeProps) {
-  const label = data.label ?? "Node Group";
+  const { t } = useTranslation("instance");
+  const label = data.label || t("scripts.editor.group.defaultLabel");
   const inputs = data.inputs ?? [];
   const outputs = data.outputs ?? [];
 
@@ -131,7 +132,7 @@ function GroupNodeComponent({ data, selected }: GroupNodeProps) {
 
       {/* Footer hint */}
       <div className="border-t border-border/50 px-3 py-1 text-xs text-muted-foreground">
-        {t("instance:scripts.editor.group.editHint")}
+        {t("scripts.editor.group.editHint")}
       </div>
     </div>
   );

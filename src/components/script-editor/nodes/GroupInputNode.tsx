@@ -1,7 +1,7 @@
-import { t } from "i18next";
 import { Handle, type NodeProps, Position } from "@xyflow/react";
 import { ArrowRightFromLine } from "lucide-react";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { cn } from "@/lib/utils";
 import { GROUP_INTERFACE_NODE_WIDTH } from "@/lib/script-node-layout";
@@ -22,6 +22,7 @@ interface GroupInputNodeProps extends NodeProps {
  * Blender-style: This node exposes values passed into the group.
  */
 function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
+  const { t } = useTranslation("instance");
   const outputs = data.outputs ?? [];
 
   return (
@@ -36,7 +37,9 @@ function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border/50 bg-success/10 px-3 py-2">
         <ArrowRightFromLine className="size-4 text-success" />
-        <span className="text-sm font-medium">Group Input</span>
+        <span className="text-sm font-medium">
+          {t("scripts.editor.layoutNodes.groupInput.label")}
+        </span>
       </div>
 
       {/* Output ports */}
@@ -81,7 +84,7 @@ function GroupInputNodeComponent({ data, selected }: GroupInputNodeProps) {
         <Empty className="border-0 p-3">
           <EmptyHeader className="gap-1">
             <EmptyTitle className="text-xs text-muted-foreground">
-              {t("instance:scripts.editor.group.noInputs")}
+              {t("scripts.editor.group.noInputs")}
             </EmptyTitle>
           </EmptyHeader>
         </Empty>

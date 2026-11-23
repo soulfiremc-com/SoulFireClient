@@ -9,9 +9,11 @@ import {
 } from "@tanstack/react-query";
 import {
   createFileRoute,
+  useBlocker,
   useNavigate,
   useRouter,
 } from "@tanstack/react-router";
+import { batch } from "@tanstack/store";
 import { useSelector } from "@tanstack/react-store";
 import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { PlusIcon, ScrollTextIcon } from "lucide-react";
@@ -27,10 +29,21 @@ import { NodePalette } from "@/components/script-editor/NodePalette.tsx";
 import { NodeTypesProvider } from "@/components/script-editor/NodeTypesContext.tsx";
 import { useNodeTypes } from "@/components/script-editor/node-types-context.ts";
 import { ScriptEditor } from "@/components/script-editor/ScriptEditor.tsx";
+import { readDrawnEdgeShapes } from "@/components/script-editor/drawn-edge-shapes";
 import { ScriptEditorProvider } from "@/components/script-editor/ScriptEditorProvider";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { ScriptExecutionLogs } from "@/components/script-editor/ScriptExecutionLogs.tsx";
 import { ScriptToolbar } from "@/components/script-editor/ScriptToolbar.tsx";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Drawer,
@@ -58,7 +71,7 @@ import {
 } from "@/generated/soulfire/script_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
-import { observeServerStream } from "@/lib/protobuf.ts";
+import { observeServerStream, valueToJson } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import { saveScript } from "@/lib/save-script";
 import {
@@ -181,6 +194,7 @@ function ScriptEditorPage() {
   if (current !== session) setSession(current);
   return (
     <ScriptEditorProvider key={current.key} session={current.editor}>
+      <UnsavedChangesGuard />
       <ReactFlowProvider>
         <NodeTypesProvider>
           <Suspense fallback={<ScriptEditorSkeleton />}>
@@ -189,6 +203,56 @@ function ScriptEditorPage() {
         </NodeTypesProvider>
       </ReactFlowProvider>
     </ScriptEditorProvider>
+  );
+}
+
+/** Asks before leaving the editor with changes that are not saved. */
+function UnsavedChangesGuard() {
+  const editor = useScriptEditor();
+  const { t } = useTranslation("instance");
+  const isDirty = useSelector(editor.document, (state) => state.isDirty);
+  const blocker = useBlocker({
+    shouldBlockFn: ({ current, next }) => {
+      const { isDirty: dirty, scriptId } = editor.document.get();
+      if (!dirty || next.pathname === current.pathname) return false;
+      // Saving a new script moves the same editor to the script's own URL.
+      return !(
+        next.routeId === Route.id &&
+        "scriptId" in next.params &&
+        next.params.scriptId === scriptId
+      );
+    },
+    // In Electron, the main process shows a native prompt for this.
+    enableBeforeUnload: () => isDirty,
+    withResolver: true,
+  });
+
+  return (
+    <AlertDialog
+      open={blocker.status === "blocked"}
+      onOpenChange={(open) => {
+        if (!open) blocker.reset?.();
+      }}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {t("scripts.editor.unsavedDialog.title")}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("scripts.editor.unsavedDialog.description")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>
+            {t("scripts.editor.unsavedDialog.stay")}
+          </AlertDialogCancel>
+          <AlertDialogAction variant="destructive" onClick={blocker.proceed}>
+            {t("scripts.editor.unsavedDialog.leave")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
@@ -232,7 +296,8 @@ function ScriptEditorContent() {
   const findClosestEdge = editor.actions.findClosestEdge;
   const insertNodeOnEdge = editor.actions.insertNodeOnEdge;
   const addNodeExecutionTime = editor.actions.addNodeExecutionTime;
-  const setExecutionStats = editor.actions.setExecutionStats;
+  const recordNodeOutputs = editor.actions.recordNodeOutputs;
+  const observesNodeOutputs = editor.actions.observesNodeOutputs;
   const [isControlling, setIsControlling] = useState(false);
   const [hasExecutionStream, setHasExecutionStream] = useState(false);
   const statusOptions = scriptStatusQueryOptions(
@@ -508,29 +573,46 @@ function ScriptEditorContent() {
               }),
             });
           } else if (event.event.case === "nodeCompleted") {
-            const nodeId = event.event.value.nodeId;
-            completeNode(nodeId, event.event.value.executionId);
-            const execTimeNanos = event.event.value.executionTimeNanos;
-            if (execTimeNanos > 0n) {
-              addNodeExecutionTime(nodeId, Number(execTimeNanos) / 1_000_000);
-            }
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "debug",
-              nodeId,
-              message: tInstance("scripts.nodeCompleted", {
-                nodeId:
-                  getNodeDisplayLabel(editor.document.get().nodes, nodeId) ??
+            const { nodeId, executionId, outputs, executionTimeNanos } =
+              event.event.value;
+            // One update per event keeps node selectors from running twice.
+            batch(() => {
+              completeNode(nodeId, executionId);
+              // Converting outputs is costly, so skip nodes nobody watches.
+              if (
+                Object.keys(outputs).length > 0 &&
+                observesNodeOutputs(nodeId)
+              ) {
+                recordNodeOutputs(
                   nodeId,
-              }),
+                  Object.fromEntries(
+                    Object.entries(outputs).map(([port, value]) => [
+                      port,
+                      valueToJson(value),
+                    ]),
+                  ),
+                );
+              }
+              if (executionTimeNanos > 0n) {
+                addNodeExecutionTime(
+                  nodeId,
+                  Number(executionTimeNanos) / 1_000_000,
+                );
+              }
+              addExecutionLog({
+                id: crypto.randomUUID(),
+                timestamp: new Date(),
+                level: "debug",
+                nodeId,
+                message: tInstance("scripts.nodeCompleted", {
+                  nodeId:
+                    getNodeDisplayLabel(editor.document.get().nodes, nodeId) ??
+                    nodeId,
+                }),
+              });
             });
           } else if (event.event.case === "executionStats") {
             const { nodeCount, maxCount } = event.event.value;
-            setExecutionStats({
-              nodeCount: Number(nodeCount),
-              maxCount: Number(maxCount),
-            });
             addExecutionLog({
               id: crypto.randomUUID(),
               timestamp: new Date(),
@@ -639,7 +721,8 @@ function ScriptEditorContent() {
     tInstance,
     queryClient,
     addNodeExecutionTime,
-    setExecutionStats,
+    recordNodeOutputs,
+    observesNodeOutputs,
     addExecutionLog,
     editor.document,
     canViewLogs,
@@ -824,8 +907,14 @@ function ScriptEditorContent() {
       };
 
       // Check if dropping near an existing edge
-      const closestEdge = findClosestEdge(position, 30);
+      const closestEdge = findClosestEdge(
+        position,
+        30,
+        readDrawnEdgeShapes(reactFlowWrapper.current),
+      );
 
+      // Adding the node and splicing it into the wire is one undo step.
+      editor.actions.beginHistoryGesture();
       const newNodeId = addNode(
         nodeType,
         centeredPosition,
@@ -835,6 +924,7 @@ function ScriptEditorContent() {
       if (closestEdge) {
         insertNodeOnEdge(newNodeId, closestEdge.id);
       }
+      editor.actions.endHistoryGesture();
     };
 
     document.addEventListener("pointermove", handlePointerMove);
@@ -845,6 +935,7 @@ function ScriptEditorContent() {
     };
   }, [
     dragPreview,
+    editor,
     reactFlowInstance,
     addNode,
     getDefinition,

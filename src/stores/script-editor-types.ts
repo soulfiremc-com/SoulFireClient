@@ -8,6 +8,7 @@ import type {
   XYPosition,
 } from "@xyflow/react";
 import type { LogEntry } from "@/components/script-editor/types";
+import type { EdgeShapes } from "@/lib/script-edge-geometry";
 import type {
   ScriptQuotas,
   ScriptStatus,
@@ -73,15 +74,21 @@ export interface ScriptEditorUIState {
   };
 }
 
+/** One value that reached a debug node. */
+export interface DebugValue {
+  id: string;
+  value: unknown;
+  timestamp: Date;
+}
+
 export interface ScriptExecutionState {
   isActive: boolean;
   activeNodeId: string | null;
   activeNodeExecutions: Map<bigint, string>;
   executionLogs: LogEntry[];
   previewValues: Map<string, Record<string, unknown>>;
-  debugNodeValues: Map<string, { value: unknown; timestamp: Date }[]>;
+  debugNodeValues: Map<string, DebugValue[]>;
   nodeExecutionTimes: Map<string, number[]>;
-  lastExecutionStats: { nodeCount: number; maxCount: number } | null;
 }
 
 export interface ScriptValidationState {
@@ -120,12 +127,11 @@ export interface ScriptEditorActions {
   toggleCollapse: (nodeId: string) => void;
   toggleSocketVisibility: (nodeId: string) => void;
   togglePreview: (nodeId: string) => void;
-  updatePreviewValue: (
-    nodeId: string,
-    outputs: Record<string, unknown>,
-  ) => void;
+  /** Whether a preview or a debug node shows this node's outputs. */
+  observesNodeOutputs: (nodeId: string) => boolean;
+  /** Stores a node's outputs for its preview and for connected debug nodes. */
+  recordNodeOutputs: (nodeId: string, outputs: Record<string, unknown>) => void;
   createFrame: (nodeIds: string[], label?: string) => void;
-  removeFromFrame: (nodeId: string) => void;
   insertReroute: (edgeId: string, position: XYPosition) => void;
   duplicateSelected: () => void;
   enterGroup: (groupNodeId: string) => void;
@@ -142,9 +148,13 @@ export interface ScriptEditorActions {
   beginHistoryGesture: () => void;
   endHistoryGesture: () => void;
 
-  findClosestEdge: (position: XYPosition, threshold: number) => Edge | null;
+  /** `drawn` holds the rendered wire shapes, when the canvas has them. */
+  findClosestEdge: (
+    position: XYPosition,
+    threshold: number,
+    drawn?: EdgeShapes,
+  ) => Edge | null;
   insertNodeOnEdge: (nodeId: string, edgeId: string) => void;
-  updateDebugValue: (nodeId: string, value: unknown) => void;
   clearDebugValues: (nodeId: string) => void;
 
   selectAll: () => void;
@@ -161,7 +171,6 @@ export interface ScriptEditorActions {
     data: { nodes: Node[]; edges: Edge[] },
     position: XYPosition,
   ) => void;
-  canPaste: () => boolean;
   alignNodes: (
     direction: "left" | "right" | "top" | "bottom" | "centerH" | "centerV",
   ) => void;
@@ -178,8 +187,14 @@ export interface ScriptEditorActions {
   closeQuickAddMenu: () => void;
   startLinkCutting: (point: XYPosition) => void;
   updateLinkCutting: (point: XYPosition) => void;
-  endLinkCutting: () => void;
-  cutEdgesIntersectingLine: (start: XYPosition, end: XYPosition) => void;
+  endLinkCutting: (drawn?: EdgeShapes) => void;
+  /** Stops a link cut without cutting anything. */
+  cancelLinkCutting: () => void;
+  cutEdgesIntersectingLine: (
+    start: XYPosition,
+    end: XYPosition,
+    drawn?: EdgeShapes,
+  ) => void;
   setScriptName: (name: string) => void;
   setScriptDescription: (description: string) => void;
   setPaused: (paused: boolean) => void;
@@ -216,8 +231,7 @@ export interface ScriptEditorActions {
       severity: "error" | "warning";
     }[],
   ) => void;
-  addNodeExecutionTime: (nodeId: string, timeNanos: number) => void;
-  setExecutionStats: (stats: { nodeCount: number; maxCount: number }) => void;
+  addNodeExecutionTime: (nodeId: string, timeMs: number) => void;
   markSaved: (
     data: ScriptDocumentData,
     scriptId?: string,

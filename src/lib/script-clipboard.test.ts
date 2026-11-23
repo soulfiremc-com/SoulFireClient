@@ -1,10 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
-  handleNativePaste,
-  hasScriptClipboardData,
-  readFromDesktopClipboard,
-} from "./script-clipboard";
+import { handleNativePaste } from "./script-clipboard";
 
 const graph = {
   nodes: [
@@ -33,7 +29,7 @@ const paste = (text: string) => {
 const encoded = (data: unknown) =>
   `SOULFIRE_SCRIPT_CLIPBOARD:${JSON.stringify(data)}`;
 
-test("clipboard reads validate both supplied text and the stored fallback", async () => {
+test("clipboard reads validate both supplied text and the stored fallback", () => {
   const previous = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
   let stored = JSON.stringify(graph);
   Object.defineProperty(globalThis, "localStorage", {
@@ -54,12 +50,8 @@ test("clipboard reads validate both supplied text and the stored fallback", asyn
       assert.deepEqual(paste(text), { data: null, consumed: false });
     }
     assert.deepEqual(paste(""), { data: graph, consumed: true });
-    assert.equal(hasScriptClipboardData(), true);
-    assert.deepEqual(await readFromDesktopClipboard(), graph);
     stored = JSON.stringify(invalid);
     assert.deepEqual(paste(""), { data: null, consumed: false });
-    assert.equal(hasScriptClipboardData(), false);
-    assert.equal(await readFromDesktopClipboard(), null);
   } finally {
     if (previous) Object.defineProperty(globalThis, "localStorage", previous);
     else Reflect.deleteProperty(globalThis, "localStorage");

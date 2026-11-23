@@ -47,6 +47,24 @@ test("typed reroutes retain their editor type through protobuf binary round trip
   }
 });
 
+test("hidden sockets survive a save and reload", () => {
+  const node: Node = {
+    id: "node",
+    type: "action.print",
+    position: { x: 0, y: 0 },
+    data: { hiddenSockets: ["__hide_unconnected__"] },
+  };
+  const proto = nodesToProto([node])[0];
+  assert.ok(proto);
+  const decoded = fromBinary(
+    ScriptNodeSchema,
+    toBinary(ScriptNodeSchema, proto),
+  );
+  assert.deepEqual(protoToNodes([decoded])[0]?.data["hiddenSockets"], [
+    "__hide_unconnected__",
+  ]);
+});
+
 test("unresolved reroutes stay unset rather than acquiring an explicit any type", () => {
   const node: Node = {
     id: crypto.randomUUID(),

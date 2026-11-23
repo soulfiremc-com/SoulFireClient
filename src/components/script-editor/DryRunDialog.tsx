@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { TransportContext } from "@/components/providers/transport-context";
 import { getNodeDefinition } from "@/components/script-editor/nodes/types";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
+import { sameNodeLabels } from "@/components/script-editor/node-label";
 import { Button } from "@/components/ui/button";
 import {
   Credenza,
@@ -66,7 +67,9 @@ export function DryRunDialog({ instanceId }: { instanceId: string }) {
   const transport = use(TransportContext);
   const { t } = useTranslation("instance");
   const id = useId();
-  const nodes = useSelector(editor.document, (s) => s.nodes);
+  const nodes = useSelector(editor.document, (s) => s.nodes, {
+    compare: sameNodeLabels,
+  });
   const isDirty = useSelector(editor.document, (s) => s.isDirty);
   const scriptId = useSelector(editor.document, (s) => s.scriptId);
   const [open, setOpen] = useState(false);

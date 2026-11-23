@@ -290,7 +290,7 @@ export const NodeBadgesOpenOnTap: Story = {
     await waitFor(() =>
       expect(
         document.querySelector('[data-slot="popover-content"]'),
-      ).toHaveTextContent("Average execution time: 12.40 ms (last 1 runs)"),
+      ).toHaveTextContent("Average execution time: 12.40 ms (last 1 run)"),
     );
   },
 };

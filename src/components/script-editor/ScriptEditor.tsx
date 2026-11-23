@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
+import { shortcutLetter } from "@/lib/keyboard-shortcuts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
 import { ScriptGroupViewports } from "@/lib/script-group-viewports";
 import { ConnectionLine } from "./edges/ConnectionLine";
@@ -34,6 +35,7 @@ import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
 import { useNodeTypes } from "./node-types-context";
 import { getNodeDefinition, isPortMultiInput } from "./nodes/types";
+import { readDrawnEdgeShapes } from "./drawn-edge-shapes";
 import { QuickAddMenu } from "./QuickAddMenu";
 import { ScriptFirstUse } from "./ScriptFirstUse";
 
@@ -89,9 +91,6 @@ export function ScriptEditor() {
   const [renamingNodeId, setRenamingNodeId] = useState<string | null>(null);
   const { nodeTypes } = useNodeTypes();
 
-  const nodes = useSelector(editor.document, (state) => state.nodes);
-  // Re-render when edges change; React Flow reads them from the store.
-  useSelector(editor.document, (state) => state.edges);
   const onNodesChange = editor.actions.onNodesChange;
   const onEdgesChange = editor.actions.onEdgesChange;
   const onConnect = editor.actions.onConnect;
@@ -162,6 +161,10 @@ export function ScriptEditor() {
 
   const handleInit = useCallback((instance: ReactFlowInstance) => {
     setReactFlowInstance(instance);
+  }, []);
+
+  const clearRenamingNodeId = useCallback(() => {
+    setRenamingNodeId(null);
   }, []);
 
   // Keep the first fit behind measurement; later fits are queued for the new group's nodes.
@@ -238,14 +241,16 @@ export function ScriptEditor() {
     (event: React.MouseEvent, node: { id: string }) => {
       if (event.shiftKey) {
         // Find the currently selected node (if any)
-        const currentlySelected = nodes.find((n) => n.selected);
+        const currentlySelected = editor.document
+          .get()
+          .nodes.find((n) => n.selected);
         if (currentlySelected && currentlySelected.id !== node.id) {
           event.preventDefault();
           selectShortestPath(currentlySelected.id, node.id);
         }
       }
     },
-    [nodes, selectShortestPath],
+    [editor, selectShortestPath],
   );
 
   // Double-click on a group node to enter it
@@ -260,10 +265,21 @@ export function ScriptEditor() {
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
+      // Escape - Stop a link cut without cutting
+      if (event.key === "Escape" && editor.ui.get().linkCutting.active) {
+        event.preventDefault();
+        editor.actions.cancelLinkCutting();
+        return;
+      }
       if (!isCanvasShortcutTarget(event.currentTarget, event.target)) return;
 
+      // Read the graph on demand so dragging does not re-render the canvas.
+      const { nodes } = editor.document.get();
       const selectedNodes = nodes.filter((n) => n.selected);
       const commandKey = event.ctrlKey || event.metaKey;
+      // Alt shortcuts read the typed letter, or the physical key when Alt
+      // changes it, as Option does on macOS.
+      const letter = shortcutLetter(event);
 
       // Ctrl+Z - Undo, Ctrl+Shift+Z or Ctrl+Y - Redo
       if (commandKey && !event.altKey && event.key.toLowerCase() === "z") {
@@ -298,7 +314,7 @@ export function ScriptEditor() {
 
       // Alt+A - Deselect all nodes
       if (
-        (event.key === "a" || event.key === "A") &&
+        letter === "a" &&
         event.altKey &&
         !event.ctrlKey &&
         !event.metaKey &&
@@ -381,7 +397,8 @@ export function ScriptEditor() {
         event.key === "m" &&
         !event.ctrlKey &&
         !event.metaKey &&
-        !event.shiftKey
+        !event.shiftKey &&
+        !event.altKey
       ) {
         const selected = nodes.find((n) => n.id === selectedNodeId);
         if (
@@ -398,7 +415,8 @@ export function ScriptEditor() {
         event.key === "h" &&
         !event.ctrlKey &&
         !event.metaKey &&
-        !event.shiftKey
+        !event.shiftKey &&
+        !event.altKey
       ) {
         if (selectedNodeId) {
           toggleCollapse(selectedNodeId);
@@ -410,7 +428,8 @@ export function ScriptEditor() {
       if (
         event.key === "h" &&
         (event.ctrlKey || event.metaKey) &&
-        !event.shiftKey
+        !event.shiftKey &&
+        !event.altKey
       ) {
         event.preventDefault();
         if (selectedNodeId) {
@@ -424,7 +443,8 @@ export function ScriptEditor() {
         (event.key === "H" || event.key === "h") &&
         event.shiftKey &&
         !event.ctrlKey &&
-        !event.metaKey
+        !event.metaKey &&
+        !event.altKey
       ) {
         event.preventDefault();
         if (selectedNodeId) {
@@ -448,11 +468,7 @@ export function ScriptEditor() {
       }
 
       // Ctrl+Alt+G - Ungroup selected group node (Blender convention)
-      if (
-        (event.key === "g" || event.key === "G") &&
-        (event.ctrlKey || event.metaKey) &&
-        event.altKey
-      ) {
+      if (letter === "g" && (event.ctrlKey || event.metaKey) && event.altKey) {
         event.preventDefault();
         ungroupSelected();
         return;
@@ -510,12 +526,7 @@ export function ScriptEditor() {
       }
 
       // Alt+L / ⌥L - Select downstream only
-      if (
-        (event.key === "l" || event.key === "L") &&
-        event.altKey &&
-        !event.ctrlKey &&
-        !event.metaKey
-      ) {
+      if (letter === "l" && event.altKey && !event.ctrlKey && !event.metaKey) {
         event.preventDefault();
         selectLinked("downstream");
         return;
@@ -565,12 +576,12 @@ export function ScriptEditor() {
 
       // Distribute shortcuts
       if (event.altKey && event.shiftKey && selectedNodes.length >= 3) {
-        if (event.key === "H" || event.key === "h") {
+        if (letter === "h") {
           event.preventDefault();
           distributeNodes("horizontal");
           return;
         }
-        if (event.key === "V" || event.key === "v") {
+        if (letter === "v") {
           event.preventDefault();
           distributeNodes("vertical");
         }
@@ -578,7 +589,6 @@ export function ScriptEditor() {
     },
     [
       editor,
-      nodes,
       onNodesChange,
       deleteSelected,
       getCanvasCenter,
@@ -673,8 +683,9 @@ export function ScriptEditor() {
       if (!node.selected) {
         onNodesChange([
           // Deselect all other nodes
-          ...nodes
-            .filter((n) => n.selected && n.id !== node.id)
+          ...editor.document
+            .get()
+            .nodes.filter((n) => n.selected && n.id !== node.id)
             .map((n) => ({
               type: "select" as const,
               id: n.id,
@@ -687,7 +698,7 @@ export function ScriptEditor() {
 
       openNodeContextMenu(event, node.id);
     },
-    [nodes, onNodesChange, openNodeContextMenu],
+    [editor, onNodesChange, openNodeContextMenu],
   );
 
   // Close node context menu on pane click
@@ -703,6 +714,8 @@ export function ScriptEditor() {
     (event: React.PointerEvent) => {
       if (event.altKey && event.button === 0 && reactFlowInstance) {
         event.preventDefault();
+        // Keep receiving the release when the pointer leaves the canvas.
+        event.currentTarget.setPointerCapture(event.pointerId);
         const flowPosition = reactFlowInstance.screenToFlowPosition({
           x: event.clientX,
           y: event.clientY,
@@ -728,11 +741,22 @@ export function ScriptEditor() {
   );
 
   // Handle pointer up for link cutting
-  const handlePointerUp = useCallback(() => {
-    if (linkCutting.active) {
-      endLinkCutting();
-    }
-  }, [linkCutting.active, endLinkCutting]);
+  const handlePointerUp = useCallback(
+    (event: React.PointerEvent) => {
+      // Cut before releasing capture, so the lost capture event finds no cut.
+      if (linkCutting.active) {
+        endLinkCutting(readDrawnEdgeShapes(containerRef.current));
+      }
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      }
+    },
+    [linkCutting.active, endLinkCutting],
+  );
+
+  // The system took the pointer, for example on a window switch. Without a
+  // release there is no line to cut along.
+  const cancelLinkCutting = editor.actions.cancelLinkCutting;
 
   // Create connection validator with current nodes
   const connectionValidator = useMemo(
@@ -771,7 +795,11 @@ export function ScriptEditor() {
   // Handle-based reconnection: dragging from an occupied single input
   // detaches the existing edge so the user can reconnect it elsewhere. If
   // dropped on empty space the original edge is restored.
-  const detachedEdgeRef = useRef<{ edge: Edge; index: number } | null>(null);
+  const detachedEdgeRef = useRef<{
+    edge: Edge;
+    index: number;
+    wasDirty: boolean;
+  } | null>(null);
   const connectionMadeRef = useRef(false);
 
   const handleConnectStart = useCallback(
@@ -789,8 +817,11 @@ export function ScriptEditor() {
       editor.actions.beginHistoryGesture();
 
       if (params.handleType === "target" && params.nodeId && params.handleId) {
-        const { edges: currentEdges, nodes: currentNodes } =
-          editor.document.get();
+        const {
+          edges: currentEdges,
+          nodes: currentNodes,
+          isDirty,
+        } = editor.document.get();
         const nodeType =
           currentNodes.find((node) => node.id === params.nodeId)?.type ?? "";
         // Multi-input ports keep their wires, so a drag adds another one.
@@ -804,6 +835,7 @@ export function ScriptEditor() {
           detachedEdgeRef.current = {
             edge,
             index: currentEdges.indexOf(edge),
+            wasDirty: isDirty,
           };
           onEdgesChange([{ id: edge.id, type: "remove" }]);
         }
@@ -826,11 +858,12 @@ export function ScriptEditor() {
       const detached = detachedEdgeRef.current;
       const connected = connectionMadeRef.current;
       if (detached && !connected) {
-        // Restore the detached edge in place since no new connection was made
+        // Restore the detached edge in place since no new connection was made.
+        // The graph is unchanged, so it is as dirty as it was before.
         editor.document.setState((current) => {
           const edges = [...current.edges];
           edges.splice(detached.index, 0, detached.edge);
-          return { ...current, edges };
+          return { ...current, edges, isDirty: detached.wasDirty };
         });
       }
       detachedEdgeRef.current = null;
@@ -908,14 +941,14 @@ export function ScriptEditor() {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onPointerCancel={cancelLinkCutting}
+      onLostPointerCapture={cancelLinkCutting}
     >
       <NodeEditingProvider
         edges={visibleEdges}
         updateNodeData={updateNodeData}
         renamingNodeId={renamingNodeId}
-        clearRenamingNodeId={() => {
-          setRenamingNodeId(null);
-        }}
+        clearRenamingNodeId={clearRenamingNodeId}
       >
         <ReactFlow
           nodes={visibleNodes}
@@ -1016,7 +1049,6 @@ export function ScriptEditor() {
             style={{ overflow: "visible" }}
             aria-hidden="true"
           >
-            <title>Link cutting line</title>
             <line
               x1={
                 reactFlowInstance.flowToScreenPosition(linkCutting.startPoint)

@@ -3,6 +3,7 @@ import { test } from "node:test";
 import {
   isPrimaryKeyShortcut,
   projectShortcutIndex,
+  shortcutLetter,
 } from "./keyboard-shortcuts";
 
 const keyEvent = (key: string, code: string) => ({
@@ -62,4 +63,15 @@ test("letter shortcuts fall back to the physical key only on non-Latin layouts",
   assert.equal(isPrimaryKeyShortcut(event, "b", false), true);
   assert.equal(isPrimaryKeyShortcut({ ...event, key: "и" }, "b", false), true);
   assert.equal(isPrimaryKeyShortcut({ ...event, key: "x" }, "b", false), false);
+});
+
+test("shortcut letters follow the layout and fall back to the physical key", () => {
+  // AZERTY: the key labelled A sits where QWERTY has Q.
+  assert.equal(shortcutLetter({ key: "a", code: "KeyQ" }), "a");
+  assert.equal(shortcutLetter({ key: "H", code: "KeyH" }), "h");
+  // macOS Option types other characters or starts a dead key.
+  assert.equal(shortcutLetter({ key: "å", code: "KeyA" }), "a");
+  assert.equal(shortcutLetter({ key: "Dead", code: "KeyE" }), "e");
+  assert.equal(shortcutLetter({ key: "л", code: "KeyK" }), "k");
+  assert.equal(shortcutLetter({ key: "[", code: "BracketLeft" }), null);
 });

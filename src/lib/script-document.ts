@@ -27,19 +27,26 @@ export function sameScriptDocument(
       !equals(ScriptQuotasSchema, first.quotas, second.quotas))
   )
     return false;
-  if (first.nodes === second.nodes && first.edges === second.edges) return true;
-  const firstNodes = nodesToProto(first.nodes);
-  const secondNodes = nodesToProto(second.nodes);
-  const firstEdges = edgesToProto(first.edges);
-  const secondEdges = edgesToProto(second.edges);
+  // Most edits change a few items. Skip the items both documents share and
+  // convert only the rest.
   return (
-    firstNodes.every((node, index) => {
-      const other = secondNodes[index];
-      return other !== undefined && equals(ScriptNodeSchema, node, other);
+    first.nodes.every((node, index) => {
+      const other = second.nodes[index];
+      if (node === other) return true;
+      const [a] = nodesToProto([node]);
+      const [b] = other ? nodesToProto([other]) : [];
+      return (
+        a !== undefined && b !== undefined && equals(ScriptNodeSchema, a, b)
+      );
     }) &&
-    firstEdges.every((edge, index) => {
-      const other = secondEdges[index];
-      return other !== undefined && equals(ScriptEdgeSchema, edge, other);
+    first.edges.every((edge, index) => {
+      const other = second.edges[index];
+      if (edge === other) return true;
+      const [a] = edgesToProto([edge]);
+      const [b] = other ? edgesToProto([other]) : [];
+      return (
+        a !== undefined && b !== undefined && equals(ScriptEdgeSchema, a, b)
+      );
     })
   );
 }

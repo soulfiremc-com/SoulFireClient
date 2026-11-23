@@ -32,7 +32,7 @@ export function ScriptHealthButton() {
   const editor = useScriptEditor();
   const reactFlow = useReactFlow();
   const [open, setOpen] = useState(false);
-  const nodes = useSelector(editor.document, (state) => state.nodes);
+  const nodeCount = useSelector(editor.document, (state) => state.nodes.length);
   const diagnostics = useSelector(
     editor.validation,
     (state) => state.validationDiagnostics,
@@ -40,7 +40,7 @@ export function ScriptHealthButton() {
   const errors = diagnostics.filter((item) => item.severity === "error");
   const warnings = diagnostics.filter((item) => item.severity !== "error");
   const label =
-    nodes.length === 0
+    nodeCount === 0
       ? t("scripts.health.empty")
       : errors.length > 0
         ? t("scripts.health.errors", { count: errors.length })
@@ -48,7 +48,7 @@ export function ScriptHealthButton() {
           ? t("scripts.health.warnings", { count: warnings.length })
           : t("scripts.health.ok");
   const Icon =
-    nodes.length === 0
+    nodeCount === 0
       ? CircleDashedIcon
       : errors.length > 0
         ? CircleAlertIcon
@@ -62,7 +62,7 @@ export function ScriptHealthButton() {
         <Icon
           data-icon="inline-start"
           className={
-            nodes.length === 0
+            nodeCount === 0
               ? "text-muted-foreground"
               : errors.length > 0
                 ? "text-destructive"

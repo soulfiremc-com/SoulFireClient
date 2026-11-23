@@ -1,5 +1,6 @@
 import { createStore, type Store, shallow } from "@tanstack/store";
 import type { Edge, Node } from "@xyflow/react";
+import { debugSources } from "@/lib/script-debug-sources";
 import { optionalEdgeFields } from "@/lib/script-edge-fields";
 import type {
   ScriptDocumentState,
@@ -58,13 +59,20 @@ export function createEditorDerivedStores(
     );
     return visible.length === all.length ? all : visible;
   });
-  const visibleEdges = createStore(() => {
+  // Node moves create a new node list. Keep the edge list when its edges stay
+  // the same, so nodes that read it do not re-render on every drag frame.
+  const visibleEdges = createStore<Edge[]>((previous) => {
     const all = edges.get();
     const ids = new Set(visibleNodes.get().map((node) => node.id));
     const visible = all.filter(
       (edge) => ids.has(edge.source) && ids.has(edge.target),
     );
-    return visible.length === all.length ? all : visible;
+    const next = visible.length === all.length ? all : visible;
+    return previous &&
+      previous.length === next.length &&
+      previous.every((edge, index) => edge === next[index])
+      ? previous
+      : next;
   });
   const validationGraph = createStore<{ nodes: Node[]; edges: Edge[] }>(
     (previous) => {
@@ -101,7 +109,12 @@ export function createEditorDerivedStores(
       return { nodes: nextNodes, edges: nextEdges };
     },
   );
-  return { visibleNodes, visibleEdges, validationGraph };
+  // Moving nodes keeps the validation graph, so this only reruns on rewiring.
+  const debugOutputs = createStore(() => {
+    const graph = validationGraph.get();
+    return debugSources(graph.nodes, graph.edges);
+  });
+  return { visibleNodes, visibleEdges, validationGraph, debugOutputs };
 }
 
 export type ValidationDiagnostic =

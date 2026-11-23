@@ -261,7 +261,6 @@ export function nodesToProto(nodes: Node[]): ScriptNode[] {
           "resolvedType",
           "parentFrameId",
           "isActive",
-          "hiddenSockets",
         ].includes(key)
       ) {
         continue;

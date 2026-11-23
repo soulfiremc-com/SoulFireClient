@@ -1,6 +1,6 @@
 import { useSelector } from "@tanstack/react-store";
 import { FileDiff } from "lucide-react";
-import { useMemo } from "react";
+import { useDeferredValue, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import {
   CredenzaTitle,
   CredenzaTrigger,
 } from "@/components/ui/credenza";
-import type { ScriptDocumentState } from "@/stores/script-editor-types";
+import type { Edge, Node } from "@xyflow/react";
 
 interface DiffResult {
   addedNodes: string[];
@@ -23,9 +23,12 @@ interface DiffResult {
   removedEdges: string[];
 }
 
-function computeDiff(state: ScriptDocumentState): DiffResult {
-  const { nodes, edges, lastSavedNodes, lastSavedEdges } = state;
-
+function computeDiff(
+  nodes: Node[],
+  edges: Edge[],
+  lastSavedNodes: Node[] | null,
+  lastSavedEdges: Edge[] | null,
+): DiffResult {
   const result: DiffResult = {
     addedNodes: [],
     removedNodes: [],
@@ -44,9 +47,11 @@ function computeDiff(state: ScriptDocumentState): DiffResult {
       result.addedNodes.push(node.id);
     } else {
       const saved = savedNodeMap.get(node.id);
+      // Unchanged nodes keep their object, which skips the deep comparison.
       if (
-        JSON.stringify(saved?.data) !== JSON.stringify(node.data) ||
-        JSON.stringify(saved?.position) !== JSON.stringify(node.position)
+        saved !== node &&
+        (JSON.stringify(saved?.data) !== JSON.stringify(node.data) ||
+          JSON.stringify(saved?.position) !== JSON.stringify(node.position))
       ) {
         result.modifiedNodes.push(node.id);
       }
@@ -79,12 +84,20 @@ export function ScriptDiffDialog() {
   const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const isDirty = useSelector(editor.document, (s) => s.isDirty);
+  // The change count can lag behind a drag, so React may skip frames of it.
+  const nodes = useDeferredValue(useSelector(editor.document, (s) => s.nodes));
+  const edges = useDeferredValue(useSelector(editor.document, (s) => s.edges));
   const lastSavedNodes = useSelector(editor.document, (s) => s.lastSavedNodes);
+  const lastSavedEdges = useSelector(editor.document, (s) => s.lastSavedEdges);
+  const diff = useMemo(
+    () =>
+      isDirty
+        ? computeDiff(nodes, edges, lastSavedNodes, lastSavedEdges)
+        : null,
+    [isDirty, nodes, edges, lastSavedNodes, lastSavedEdges],
+  );
 
-  const document = useSelector(editor.document);
-  const diff = useMemo(() => computeDiff(document), [document]);
-
-  if (!isDirty || !lastSavedNodes) return null;
+  if (!diff || !lastSavedNodes) return null;
 
   const totalChanges =
     diff.addedNodes.length +

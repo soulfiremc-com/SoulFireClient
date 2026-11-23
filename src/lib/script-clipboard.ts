@@ -1,6 +1,5 @@
 import { Schema, Effect } from "effect";
 import type { Edge, Node } from "@xyflow/react";
-import { desktop, isDesktopApp } from "@/lib/desktop";
 import { scriptGraphSchema } from "@/lib/script-graph";
 
 const CLIPBOARD_PREFIX = "SOULFIRE_SCRIPT_CLIPBOARD:";
@@ -85,33 +84,4 @@ export function handleNativePaste(
   const data = text ? parseClipboardText(text) : readStoredClipboard();
   if (data) event.preventDefault();
   return data;
-}
-
-/**
- * Read from the desktop clipboard for non-event contexts.
- * In the browser we fall back to localStorage unless there is a user gesture.
- */
-export async function readFromDesktopClipboard(): Promise<ScriptClipboardData | null> {
-  if (!isDesktopApp()) {
-    // For browser, read from localStorage - actual clipboard read
-    // should happen via handleNativePaste in a paste event
-    return readStoredClipboard();
-  }
-
-  try {
-    const text = await desktop.clipboard.readText();
-    if (text) return parseClipboardText(text);
-  } catch {
-    // Clipboard read failed
-  }
-
-  // Fallback to localStorage
-  return readStoredClipboard();
-}
-
-/**
- * Check if there's valid script data available (localStorage check only).
- */
-export function hasScriptClipboardData(): boolean {
-  return (readStoredClipboard()?.nodes.length ?? 0) > 0;
 }
